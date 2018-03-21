@@ -1,0 +1,159 @@
+<?php
+/*
+ * Copyright 2018 Google LLC
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @package marketplace_metering
+ * @version 1.0
+ */
+/*
+Plugin Name: Usage Metering
+Plugin URI: https://cloud.google.com/launcher
+Description: Wordpress usage metering.
+Author: Google LLC
+Version: 1.0
+Author URI: https://cloud.google.com/
+*/
+
+const AGENT_PORT = %%AGENT_LOCAL_PORT%%;
+
+/**
+ * Returns the current time in ISO8601 format with microsecond resolution.
+ */
+function now() {
+    list($usec, $sec) = explode(" ", microtime());
+    return date("Y-m-d\TH:i:s", $sec) . substr($usec, 1, 8) . date("P", $sec);
+}
+
+/**
+ * Returns the metering agent url with an optional path component.
+ */
+function agent_url($path) {
+  $port = AGENT_PORT;
+  return esc_url_raw( "http://localhost:$port/$path" );
+}
+
+/**
+ * Returns the metering agent report url.
+ */
+function report_url() {
+  return agent_url('report');
+}
+
+/**
+ * Returns the metering agent status url.
+ */
+function status_url() {
+  return agent_url('status');
+}
+
+/*
+ * Reports a single request to the metering agent.
+ */
+function report_request() {
+  $now = now();
+  $body = array(
+    'name' => 'requests',
+    'startTime' => $now,
+    'endTime' => $now,
+    'value' => array( 'int64Value' => 1 )
+  );
+  $args = array(
+    'headers' => array( 'Content-Type' => 'application/json' ),
+    'body' => json_encode( $body )
+  );
+
+  $response = wp_remote_post( report_url(), $args);
+  $response_code = wp_remote_retrieve_response_code( $response );
+
+  return $response_code == 200;
+}
+
+/**
+ * A 'wp' action that reports requests for singular post/page views.
+ */
+function handle_view() {
+  if (is_singular()) {
+    report_request();
+  }
+}
+
+/**
+ * Renders the Metering Status widget.
+ */
+function usage_metering_status_widget_display() {
+  $response = wp_remote_get(status_url());
+  $error = '';
+  $status = NULL;
+  if (is_wp_error($request)) {
+    $error = 'Cannot reach agent';
+  } else {
+    $body = wp_remote_retrieve_body($response);
+    $status = json_decode($body, true);
+    if ($status["currentFailureCount"] > 0) {
+      $error = 'Agent is failing to report usage';
+    }
+    $lastSuccess = DateTime::createFromFormat('Y-m-d\TH:i:s+', $status['lastReportSuccess']);
+    $now = new DateTime();
+    $successInterval = $now->diff($lastSuccess)->format('%ad %hh %im %ss');
+  }
+
+  if ($error == '') {
+    $current_status = '<font color="green">SUCCESS</font>';
+  } else {
+    $current_status = "<font color=\"red\">FAILURE: $error</font>";
+  }
+
+  // Widget HTML
+  ?>
+  <h3>Reporting Health</h3>
+  <p><?= $current_status ?></p>
+
+  <? if ($status != null) : ?>
+  <h3>Status Data</h3>
+  <table>
+    <tr>
+      <td><b>Last report success</b></td>
+      <td><?= $successInterval ?> ago</td>
+    </tr>
+    <tr>
+      <td><b>Current failures</b></td>
+      <td><?= $status['currentFailureCount'] ?></td>
+    </tr>
+    <tr>
+      <td><b>Total failures</b></td>
+      <td><?= $status['totalFailureCount'] ?></td>
+    </tr>
+  </table>
+  <? endif; ?>
+  <?
+}
+
+/**
+ * Registers the Metering Status widget.
+ */
+function register_usage_metering_status_widget() {
+  wp_add_dashboard_widget(
+    'usage_metering_status_widget',
+    'Usage Metering Status',
+    'usage_metering_status_widget_display'
+  );
+}
+
+// Action registrations.
+add_action('wp', 'handle_view');
+add_action('wp_dashboard_setup', 'register_usage_metering_status_widget');
+
+?>

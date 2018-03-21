@@ -1,0 +1,223 @@
+---
+apiVersion: marketplace.cloud.google.com/v1
+kind: Application
+metadata:
+  annotations:
+    marketplace.cloud.google.com: |
+      {"name":"Wordpress","version":"v0.1","description":"The most popular blogging platform","url":"wordpress.org","tagline":"wordpress blog","support_info":"Community support","documentations":[{"url":"https://codex.wordpress.org/Getting_Started_with_WordPress","title":"Getting Started","description":"A quick walkthrough"}]}
+  ApplicationStatus:
+    ready: true
+  generation: 0
+  initializers: null
+  name: "$APP_INSTANCE_NAME"
+  namespace: "$NAMESPACE"
+spec:
+  # TODO(huyhuynh): This list "replaces" the original list created
+  # by the up script. As a result, the deployer service account, for example,
+  # is no longer owned by this application. We have to hackily list such
+  # non-application resources here.
+  # To correctly fix this, we need to use a proper merge stategy. The idea is
+  # that kubectl wouldn't touch the components that it doesn't manage.
+  #
+  # TODO(huyhuynh): Need a good way to do this. Listing the components
+  # manually like this is error-prone and especially hard when there are
+  # many manifest files or when they are modified.
+  components:
+  - $APP_INSTANCE_NAME-controller:
+      kind: Deployment
+  - $APP_INSTANCE_NAME-controller-sa:
+      kind: ServiceAccount
+  - $APP_INSTANCE_NAME-controller-approle:
+      kind: Role
+  - $APP_INSTANCE_NAME-controller-apprb:
+      kind: RoleBinding
+  - $APP_INSTANCE_NAME-controller-editrb:
+      kind: RoleBinding
+  - $APP_INSTANCE_NAME-mysql:
+      kind: Deployment
+  - $APP_INSTANCE_NAME-mysql-pvc:
+      kind: PersistentVolumeClaim
+  - $APP_INSTANCE_NAME-mysql-svc:
+      kind: Service
+  - $APP_INSTANCE_NAME-wordpress:
+      kind: Deployment
+  - $APP_INSTANCE_NAME-wordpress-pvc:
+      kind: PersistentVolumeClaim
+  - $APP_INSTANCE_NAME-wordpress-svc:
+      kind: Service
+  # The following shouldn't be listed here. They are not part of the
+  # application itself, and the solution crafter shouldn't have to worry
+  # about them. See TODOs above.
+  - $APP_INSTANCE_NAME-deployer:
+      kind: Job
+  - $APP_INSTANCE_NAME-deployer-sa:
+      kind: ServiceAccount
+  - $APP_INSTANCE_NAME-deployer-role:
+      apiGroup: rbac.authorization.k8s.io
+      kind: Role
+  - $APP_INSTANCE_NAME-deployer-rb:
+      apiGroup: rbac.authorization.k8s.io
+      kind: RoleBinding
+---
+# TODO(huyhuynh): Change this to using StatefulSet
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: $APP_INSTANCE_NAME-mysql
+  labels: &MysqlDeploymentLabels
+    app: $APP_INSTANCE_NAME
+    component: wordpress-mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels: *MysqlDeploymentLabels
+  template:
+    metadata:
+      labels: *MysqlDeploymentLabels
+    spec:
+      containers:
+      - image: launcher.gcr.io/google/mysql5
+        name: mysql
+        env:
+        - name: "MYSQL_ROOT_PASSWORD"
+          value: "example-password"
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/mysql
+          subPath: data
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: $APP_INSTANCE_NAME-mysql-pvc
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: $APP_INSTANCE_NAME-mysql-pvc
+  labels:
+    app: $APP_INSTANCE_NAME
+    component: wordpress-mysql
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $APP_INSTANCE_NAME-mysql-svc
+  labels:
+    app: $APP_INSTANCE_NAME
+    component: wordpress-mysql
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: $APP_INSTANCE_NAME
+    component: wordpress-mysql
+  clusterIP: None
+---
+# TODO(huyhuynh): Change this to using StatefulSet
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: $APP_INSTANCE_NAME-wordpress
+  labels: &WordpressDeploymentLabels
+    app: $APP_INSTANCE_NAME
+    component: wordpress-webserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels: *WordpressDeploymentLabels
+  template:
+    metadata:
+      labels: *WordpressDeploymentLabels
+    spec:
+      initContainers:
+      - image: $REGISTRY/init
+        name: wordpress-init
+        env:
+        - name: AGENT_LOCAL_PORT
+          value: "6080"
+        volumeMounts:
+        - name: data
+          mountPath: /var/www/html
+          subPath: wp
+        - name: ubbagent-config
+          mountPath: /etc/ubbagent
+      containers:
+      - image: launcher.gcr.io/google/wordpress4-php5-apache
+        name: wordpress
+        env:
+        - name: WORDPRESS_DB_HOST
+          value: $APP_INSTANCE_NAME-mysql-svc
+        # TODO(huyhuynh): Use secrets.
+        - name: WORDPRESS_DB_PASSWORD
+          value: example-password
+        - name: WORDPRESS_DB_USER
+          value: root
+        ports:
+        - name: http
+          containerPort: 80
+        volumeMounts:
+        - name: data
+          mountPath: /var/www/html
+          subPath: wp
+      - image: $MARKETPLACE_REGISTRY/ubbagent
+        name: ubbagent
+        env:
+        - name: AGENT_CONFIG_FILE
+          value: /etc/ubbagent/config.yaml
+        - name: AGENT_LOCAL_PORT
+          value: "6080"
+        - name: AGENT_STATE_DIR
+          value: /var/lib/ubbagent
+        - name: AGENT_REPORT_DIR
+          value: /var/lib/ubbagent/reports
+        volumeMounts:
+        - name: ubbagent-config
+          mountPath: /etc/ubbagent
+        - name: ubbagent-state
+          mountPath: /var/lib/ubbagent
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: $APP_INSTANCE_NAME-wordpress-pvc
+      - name: ubbagent-config
+        emptyDir: {}
+      # TODO(volkman): state directory should maybe be on a PV.
+      - name: ubbagent-state
+        emptyDir: {}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: $APP_INSTANCE_NAME-wordpress-pvc
+  labels:
+    app: $APP_INSTANCE_NAME
+    component: wordpress-webserver
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $APP_INSTANCE_NAME-wordpress-svc
+  labels:
+    app: $APP_INSTANCE_NAME
+    component: wordpress-webserver
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+  selector:
+    app: $APP_INSTANCE_NAME
+    component: wordpress-webserver
+  type: LoadBalancer

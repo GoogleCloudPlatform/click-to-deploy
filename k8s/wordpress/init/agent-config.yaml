@@ -1,0 +1,25 @@
+metrics:
+- name: requests
+  type: int
+  aggregation:
+    bufferSeconds: 60
+  endpoints:
+  - name: disk
+- name: instance_time
+  type: int
+  aggregation:
+    bufferSeconds: 60
+  endpoints:
+  - name: disk
+endpoints:
+- name: disk
+  disk:
+    reportDir: $AGENT_REPORT_DIR
+    expireSeconds: 3600
+sources:
+- name: instance_time
+  heartbeat:
+    metric: instance_time
+    intervalSeconds: 10
+    value:
+      int64Value: 10

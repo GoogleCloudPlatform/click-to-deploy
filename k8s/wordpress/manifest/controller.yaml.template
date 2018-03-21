@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: $APP_INSTANCE_NAME-controller-sa
+  namespace: $NAMESPACE
+---
+# This role is what an application specific controller would
+# typically need.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: $APP_INSTANCE_NAME-controller-approle
+  namespace: $NAMESPACE
+rules:
+- apiGroups: ['marketplace.cloud.google.com']
+  resources: ['applications']
+  verbs: ['*']
+- apiGroups: ['']
+  resources: ['events']
+  verbs: ['*']
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: $APP_INSTANCE_NAME-controller-apprb
+  namespace: $NAMESPACE
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: $APP_INSTANCE_NAME-controller-approle
+subjects:
+- kind: ServiceAccount
+  name: $APP_INSTANCE_NAME-controller-sa
+---
+# We need this binding because the controller currently
+# needs to assign owner references. This functionality
+# will be replaced by the CRD controller.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: $APP_INSTANCE_NAME-controller-editrb
+  namespace: $NAMESPACE
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  # This role is intended for the deployer container. See comment
+  # above about this binding.
+  name: $APP_INSTANCE_NAME-deployer-role
+subjects:
+- kind: ServiceAccount
+  name: $APP_INSTANCE_NAME-controller-sa
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: $APP_INSTANCE_NAME-controller
+  labels: &MysqlDeploymentLabels
+    app: $APP_INSTANCE_NAME
+    component: wordpress-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels: *MysqlDeploymentLabels
+  template:
+    metadata:
+      labels: *MysqlDeploymentLabels
+    spec:
+      serviceAccountName: $APP_INSTANCE_NAME-controller-sa
+      containers:
+      - image: $MARKETPLACE_REGISTRY/controller
+        name: controller
+        env:
+        - name: APP_INSTANCE_NAME
+          value: "$APP_INSTANCE_NAME"
+        - name: NAMESPACE
+          value: "$NAMESPACE"
