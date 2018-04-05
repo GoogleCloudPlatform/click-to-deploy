@@ -1,14 +1,12 @@
-*This directory contains an example Kubernetes application (app) based on
-WordPress for the purpose of demonstrating app integration with
-Google Cloud Marketplace. **Not intended for actual use!***
-
-*Content below is intended as a template for end-user documentation. Work in
-progress.*
-
 # Overview
 
-WordPress is a free and open-source content management system (CMS) based on PHP
-and MySQL...
+WordPress is web software used to create websites and blogs.
+
+[Learn more](https://wordpress.org/).
+
+## About Google Click to Deploy
+
+Popular open stacks on Kubernetes packaged by Google.
 
 # Installation
 
@@ -16,47 +14,79 @@ and MySQL...
 
 Get up and running with a few clicks! Install this WordPress app to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
-on-screen instructions:
-*TODO: link to solution details page*
+[on-screen instructions](https://console.cloud.google.com/launcher/details/google/wordpress).
 
 ## Command line instructions
 
-Follow these instructions to install WordPress from the command line.
+### Clone this repo
 
-### Prerequisites
+Clone this repo and initialize the git submodules.
 
-- Setup cluster
-  - Permissions
-- Setup kubectl
-- Install Application Resource
-- Acquire License
-
-*TODO: add details above*
-
-### Commands
-
-Set environment variables (modify if necessary):
+```shell
+git clone git@github.com:GoogleCloudPlatform/click-to-deploy.git
+cd click-to-deploy
+git submodule update --recursive --init
 ```
+
+### Create a Google Kubernetes Engine cluster
+
+You can use [gcloud](https://cloud.google.com/sdk/gcloud/) to create a new
+cluster from the command line.
+
+```shell
+export CLUSTER_NAME=marketplace-cluster
+export ZONE=us-west1-a
+
+gcloud container clusters create "$CLUSTER_NAME" --zone "$ZONE"
+```
+
+Grant yourself cluster admin privileges. For more information about this
+role based access control workaround, visit this
+[Kubernetes engine help page](https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control).
+
+```shell
+kubectl create clusterrolebinding cluster-admin-binding \
+  --clusterrole cluster-admin --user $(gcloud config get-value account)
+```
+
+### Install the Application resource definition
+
+Do a one-time setup for your cluster to understand Application resources.
+
+```shell
+kubectl apply -f k8s/vendor/marketplace-tools/crd/*
+```
+
+The Application resource is defined by the
+[Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps)
+community. The source code can be found on
+[github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
+
+### Install the Application
+
+Set environment variables to determine where the app should be installed.
+
+```shell
 export APP_INSTANCE_NAME=wordpress-1
 export NAMESPACE=default
 ```
 
-Expand manifest template:
+Set environment variables for the app container images.
+
+```shell
+export ENV IMAGE_WORDPRESS="marketplace.gcr.io/google/wordpress:latest"
+export ENV IMAGE_INIT="marketplace.gcr.io/google/wordpress/init:latest"
+export ENV IMAGE_MYSQL="marketplace.gcr.io/google/wordpress/mysql:latest"
+export ENV IMAGE_UBBAGENT="marketplace.gcr.io/google/wordpress/ubbagent:latest"
+export ENV IMAGE_CONTROLLER="marketplace.gcr.io/google/wordpress/controller:latest"
 ```
-cat manifest/* | envsubst > expanded.yaml
+
+Expand manifest template and run `kubectl apply`:
+
 ```
+cd k8s/wordpress
 
-Run kubectl:
+awk 'BEGINFILE {print "---"}{print}' manifest/* \
+  | envsubst \
+  | kubectl apply -f - --namespace "$NAMESPACE"
 ```
-kubectl apply -f expanded.yaml
-```
-
-*TODO: fix instructions*
-
-# Backups
-
-*TODO: instructions for backups*
-
-# Upgrades
-
-*TODO: instructions for upgrades*
