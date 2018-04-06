@@ -39,6 +39,10 @@ Set environment variables (modify if necessary):
 ```
 export APP_INSTANCE_NAME=wordpress-1
 export NAMESPACE=default
+export IMAGE_WORDPRESS=launcher.gcr.io/google/wordpress:4
+export IMAGE_INIT=launcher.gcr.io/google/wordpress/init:4
+export IMAGE_MYSQL=launcher.gcr.io/google/mysql:5
+export IMAGE_UBBAGENT=launcher.gcr.io/google/ubbagent
 ```
 
 Expand manifest template:

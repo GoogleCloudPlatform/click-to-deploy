@@ -40,7 +40,7 @@ spec:
     spec:
       serviceAccountName: $APP_INSTANCE_NAME-controller-sa
       containers:
-      - image: $IMAGE_CONTROLLER
+      - image: $MARKETPLACE_REGISTRY/controller
         name: controller
         env:
         - name: APP_INSTANCE_NAME
