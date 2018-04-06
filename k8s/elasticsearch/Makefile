@@ -8,15 +8,25 @@ include $(tools_path)/crd.Makefile
 include $(tools_path)/app.Makefile
 include $(tools_path)/ubbagent.Makefile
 
-app/build:: .build/deployer
+app/build:: .build/deployer .build/elasticsearch .build/controller
 
-.build/deployer: deployer/* manifest/* $(MARKETPLACE_BASE_BUILD)/deployer-kubectl .build/controller $(APP_BUILD)/registry_prefix | app/setup
+.build/deployer: deployer/* manifest/* $(MARKETPLACE_BASE_BUILD)/deployer-kubectl $(APP_BUILD)/registry_prefix | app/setup
 	docker build \
+            --build-arg REGISTRY="$(APP_REGISTRY)" \
+            --build-arg TAG="$(APP_TAG)" \
 	    --build-arg MARKETPLACE_REGISTRY="$(MARKETPLACE_REGISTRY)" \
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
 	    -f deployer/Dockerfile \
 	    .
 	gcloud docker -- push "$(APP_DEPLOYER_IMAGE)"
+	@touch "$@"
+
+# Simulate building of primary app image. Actually just copying public image to
+# local registry.
+.build/elasticsearch: $(APP_BUILD)/registry_prefix | app/setup
+	gcloud docker -- pull launcher.gcr.io/google/elasticsearch5
+	docker tag launcher.gcr.io/google/elasticsearch5 "$(APP_REGISTRY):$(APP_TAG)"
+	gcloud docker -- push "$(APP_REGISTRY):$(APP_TAG)"
 	@touch "$@"
 
 # Relocate public controller image to $APP_REGISTRY.
