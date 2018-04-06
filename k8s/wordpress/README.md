@@ -18,17 +18,9 @@ Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 
 ## Command line instructions
 
-### Clone this repo
+### Prerequisites
 
-Clone this repo and initialize the git submodules.
-
-```shell
-git clone git@github.com:GoogleCloudPlatform/click-to-deploy.git
-cd click-to-deploy
-git submodule update --recursive --init
-```
-
-### Create a Google Kubernetes Engine cluster
+#### Create a Google Kubernetes Engine cluster
 
 You can use [gcloud](https://cloud.google.com/sdk/gcloud/) to create a new
 cluster from the command line.
@@ -40,16 +32,7 @@ export ZONE=us-west1-a
 gcloud container clusters create "$CLUSTER_NAME" --zone "$ZONE"
 ```
 
-Grant yourself cluster admin privileges. For more information about this
-role based access control workaround, visit this
-[Kubernetes engine help page](https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control).
-
-```shell
-kubectl create clusterrolebinding cluster-admin-binding \
-  --clusterrole cluster-admin --user $(gcloud config get-value account)
-```
-
-### Install the Application resource definition
+#### Install the Application resource definition
 
 Do a one-time setup for your cluster to understand Application resources.
 
@@ -61,6 +44,16 @@ The Application resource is defined by the
 [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps)
 community. The source code can be found on
 [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
+
+### Clone this repo
+
+Clone this repo and initialize the git submodules.
+
+```shell
+git clone git@github.com:GoogleCloudPlatform/click-to-deploy.git
+cd click-to-deploy
+git submodule update --recursive --init
+```
 
 ### Install the Application
 
