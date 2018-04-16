@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: exp-config
+data:
+  key0: abc
+  key1: def
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: exp
+spec:
+  containers:
+    - name: deployer
+      image: gcr.io/huyhuynh-kube/elasticsearch/deployer
+      volumeMounts:
+        - name: config-volume
+          mountPath: /etc/configs
+      command: ["/bin/sh"]
+      args: ["-c", "while true; do echo hello; sleep 5; done"]
+  volumes:
+    - name: config-volume
+      configMap:
+        name: exp-config
+  terminationGracePeriodSeconds: 0
