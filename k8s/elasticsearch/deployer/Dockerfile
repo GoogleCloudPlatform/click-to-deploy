@@ -6,3 +6,6 @@ ARG TAG
 ENV IMAGE_ELASTICSEARCH "$REGISTRY:$TAG"
 
 ADD manifest/* /data/manifest/
+
+RUN mkdir -p /etc/configs \
+    && echo "default" > /etc/configs/key0
