@@ -13,7 +13,7 @@ metadata:
 spec:
   containers:
     - name: deployer
-      image: gcr.io/huyhuynh-kube/elasticsearch/deployer
+      image: ${APP_DEPLOYER_IMAGE}
       volumeMounts:
         - name: config-volume
           mountPath: /etc/configs

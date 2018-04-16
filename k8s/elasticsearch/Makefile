@@ -13,6 +13,20 @@ $(info ---- REGISTRY_FOR_DEPLOYER = $(REGISTRY_FOR_DEPLOYER))
 
 app/build:: .build/deployer .build/elasticsearch
 
+PHONY: app/test-install
+app/test-install: app/build | app/setup
+	export APP_DEPLOYER_IMAGE="$(APP_DEPLOYER_IMAGE)" \
+	&& cat test.yaml.template | envsubst | kubectl create -f -
+
+PHONY: app/test-uninstall
+app/test-uninstall: app/build | app/setup
+	export APP_DEPLOYER_IMAGE="$(APP_DEPLOYER_IMAGE)" \
+	&& cat test.yaml.template | envsubst | kubectl delete -f -
+
+PHONY: app/test-exec
+app/test-exec: | app/setup
+	kubectl exec -it exp /bin/sh
+
 .build/deployer: deployer/* manifest/* $(MARKETPLACE_BASE_BUILD)/deployer-kubectl $(APP_BUILD)/registry_prefix | app/setup
 	docker build \
 	    --build-arg REGISTRY="$(REGISTRY_FOR_DEPLOYER)" \
