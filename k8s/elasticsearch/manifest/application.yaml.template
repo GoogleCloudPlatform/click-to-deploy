@@ -30,6 +30,7 @@ spec:
   componentKinds:
   - kind: Job
   - kind: Deployment
+  - kind: ConfigMap
   - kind: StatefulSet
   - kind: ServiceAccount
   - kind: Role
