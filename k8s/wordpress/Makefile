@@ -8,11 +8,14 @@ include $(tools_path)/crd.Makefile
 include $(tools_path)/app.Makefile
 include $(tools_path)/ubbagent.Makefile
 
+REGISTRY_FOR_DEPLOYER ?= $(APP_REGISTRY)
+$(info ---- REGISTRY_FOR_DEPLOYER = $(REGISTRY_FOR_DEPLOYER))
+
 app/build:: .build/deployer .build/wordpress .build/init .build/mysql .build/controller .build/ubbagent
 
 .build/deployer: deployer/* manifest/* $(MARKETPLACE_BASE_BUILD)/deployer-kubectl .build/controller $(APP_BUILD)/registry_prefix | app/setup
 	docker build \
-	    --build-arg REGISTRY="$(APP_REGISTRY)" \
+	    --build-arg REGISTRY="$(REGISTRY_FOR_DEPLOYER)" \
 	    --build-arg TAG="$(APP_TAG)" \
 	    --build-arg MARKETPLACE_REGISTRY="$(MARKETPLACE_REGISTRY)" \
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
