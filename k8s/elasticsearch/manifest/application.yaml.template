@@ -30,3 +30,27 @@ spec:
   componentKinds:
   - kind: StatefulSet
   - kind: Service
+  notes: |-
+    # Expose Elasticsearch service
+
+    By default, the service does not have an external IP. Run the
+    following command to expose an external IP:
+
+    ```
+    TODO
+    ```
+
+    # Access Elasticsearch
+
+    Get the external IP of the Elasticsearch service and visit
+    the URL printed below in your browser. Note that it might take
+    some time for the external IP to be provisioned.
+
+    ```
+    SERVICE_IP=$(kubectl get \
+      --namespace ${NAMESPACE} \
+      svc ${APP_INSTANCE_NAME}-elasticsearch-svc \
+      -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+    echo "http://${SERVICE_IP}:9200"
+    ```
