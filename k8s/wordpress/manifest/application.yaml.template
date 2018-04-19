@@ -18,7 +18,7 @@ metadata:
 spec:
   type: Wordpress
   version: '0.1'
-  description: The most popular blogging platform
+  description: WordPress is web software used to create websites and blogs.
   maintainers:
   - name: Google Click to Deploy
     url: https://cloud.google.com/solutions/#click-to-deploy
@@ -30,9 +30,5 @@ spec:
       app.kubernetes.io/name: "$APP_INSTANCE_NAME"
   componentKinds:
   - kind: Deployment
-  - kind: ServiceAccount
-  - kind: Role
-  - kind: RoleBinding
   - kind: PersistentVolumeClaim
   - kind: Service
-  - kind: Job

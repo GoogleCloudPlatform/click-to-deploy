@@ -28,10 +28,5 @@ spec:
     matchLabels:
       app.kubernetes.io/name: "$APP_INSTANCE_NAME"
   componentKinds:
-  - kind: Job
-  - kind: Deployment
   - kind: StatefulSet
-  - kind: ServiceAccount
-  - kind: Role
-  - kind: RoleBinding
   - kind: Service
