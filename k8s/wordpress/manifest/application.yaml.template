@@ -32,3 +32,27 @@ spec:
   - kind: Deployment
   - kind: PersistentVolumeClaim
   - kind: Service
+  notes: |-
+    # Expose Wordpress service
+
+    By default, the application does not have an external IP. Run the
+    following command to expose an external IP:
+
+    ```
+    TODO
+    ```
+
+    # Access Wordpress site
+
+    Get the external IP of the Wordpress site service and visit
+    the URL printed below in your browser. Note that it might take
+    some time for the external IP to be provisioned.
+
+    ```
+    SERVICE_IP=$(kubectl get \
+      --namespace ${NAMESPACE} \
+      svc ${APP_INSTANCE_NAME}-wordpress-svc \
+      -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+    echo "http://${SERVICE_IP}"
+    ```
