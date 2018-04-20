@@ -199,4 +199,4 @@ spec:
   selector:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app.kubernetes.io/component: wordpress-webserver
-  type: LoadBalancer
+  type: ClusterIP
