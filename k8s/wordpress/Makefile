@@ -11,9 +11,9 @@ include $(tools_path)/ubbagent.Makefile
 REGISTRY_FOR_DEPLOYER ?= $(APP_REGISTRY)
 $(info ---- REGISTRY_FOR_DEPLOYER = $(REGISTRY_FOR_DEPLOYER))
 
-app/build:: .build/deployer .build/wordpress .build/init .build/mysql .build/controller .build/ubbagent
+app/build:: .build/deployer .build/wordpress .build/init .build/mysql .build/ubbagent
 
-.build/deployer: deployer/* manifest/* $(MARKETPLACE_BASE_BUILD)/deployer-kubectl .build/controller $(APP_BUILD)/registry_prefix | app/setup
+.build/deployer: deployer/* manifest/* $(MARKETPLACE_BASE_BUILD)/deployer-kubectl $(APP_BUILD)/registry_prefix | app/setup
 	docker build \
 	    --build-arg REGISTRY="$(REGISTRY_FOR_DEPLOYER)" \
 	    --build-arg TAG="$(APP_TAG)" \
@@ -44,13 +44,6 @@ app/build:: .build/deployer .build/wordpress .build/init .build/mysql .build/con
 	gcloud docker -- pull launcher.gcr.io/google/mysql5
 	docker tag launcher.gcr.io/google/mysql5 "$(APP_REGISTRY)/mysql:$(APP_TAG)"
 	gcloud docker -- push "$(APP_REGISTRY)/mysql:$(APP_TAG)"
-	@touch "$@"
-
-# Relocate public controller image to $APP_REGISTRY.
-.build/controller: $(APP_BUILD)/registry_prefix $(MARKETPLACE_BASE_BUILD)/controller | app/setup
-	gcloud docker -- pull "$(MARKETPLACE_REGISTRY)/controller"
-	docker tag "$(MARKETPLACE_REGISTRY)/controller" "$(APP_REGISTRY)/controller:$(APP_TAG)"
-	gcloud docker -- push "$(APP_REGISTRY)/controller:$(APP_TAG)"
 	@touch "$@"
 
 # Relocate public ubbagent image to $APP_REGISTRY.
