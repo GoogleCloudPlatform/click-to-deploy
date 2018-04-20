@@ -40,7 +40,10 @@ spec:
     following command to expose an external IP:
 
     ```
-    TODO
+    kubectl get svc "$APP_INSTANCE_NAME-elasticsearch-svc" \
+      --namespace "$NAMESPACE" -o yaml \
+      | sed 's/type: ClusterIP/type: LoadBalancer/g' \
+      | kubectl apply -f - --namespace "$NAMESPACE"
     ```
 
     # Access Elasticsearch
