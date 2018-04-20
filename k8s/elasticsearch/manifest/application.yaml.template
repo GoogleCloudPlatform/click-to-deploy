@@ -28,12 +28,9 @@ spec:
     matchLabels:
       app.kubernetes.io/name: "$APP_INSTANCE_NAME"
   componentKinds:
-<<<<<<< HEAD
   - kind: Job
   - kind: Deployment
   - kind: ConfigMap
-=======
->>>>>>> master
   - kind: StatefulSet
   - kind: Service
   notes: |-
