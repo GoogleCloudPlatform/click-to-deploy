@@ -42,6 +42,9 @@ spec:
     spec:
       terminationGracePeriodSeconds: 180
       initContainers:
+      # This init container is responsible for setting the appropriate limits for mmap counts
+      # on the hosting node.
+      # Read more: https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html
       - name: elasticsearch-init
         image: busybox
         imagePullPolicy: IfNotPresent
