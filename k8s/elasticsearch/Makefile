@@ -8,11 +8,14 @@ include $(tools_path)/crd.Makefile
 include $(tools_path)/app.Makefile
 include $(tools_path)/ubbagent.Makefile
 
-app/build:: .build/deployer .build/elasticsearch .build/controller
+REGISTRY_FOR_DEPLOYER ?= $(APP_REGISTRY)
+$(info ---- REGISTRY_FOR_DEPLOYER = $(REGISTRY_FOR_DEPLOYER))
+
+app/build:: .build/deployer .build/elasticsearch
 
 .build/deployer: deployer/* manifest/* $(MARKETPLACE_BASE_BUILD)/deployer-kubectl $(APP_BUILD)/registry_prefix | app/setup
 	docker build \
-	    --build-arg REGISTRY="$(APP_REGISTRY)" \
+	    --build-arg REGISTRY="$(REGISTRY_FOR_DEPLOYER)" \
 	    --build-arg TAG="$(APP_TAG)" \
 	    --build-arg MARKETPLACE_REGISTRY="$(MARKETPLACE_REGISTRY)" \
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
@@ -27,11 +30,4 @@ app/build:: .build/deployer .build/elasticsearch .build/controller
 	gcloud docker -- pull launcher.gcr.io/google/elasticsearch5
 	docker tag launcher.gcr.io/google/elasticsearch5 "$(APP_REGISTRY):$(APP_TAG)"
 	gcloud docker -- push "$(APP_REGISTRY):$(APP_TAG)"
-	@touch "$@"
-
-# Relocate public controller image to $APP_REGISTRY.
-.build/controller: $(APP_BUILD)/registry_prefix $(MARKETPLACE_BASE_BUILD)/controller | app/setup
-	gcloud docker -- pull "$(MARKETPLACE_REGISTRY)/controller"
-	docker tag "$(MARKETPLACE_REGISTRY)/controller" "$(APP_REGISTRY)/controller:$(APP_TAG)"
-	gcloud docker -- push "$(APP_REGISTRY)/controller:$(APP_TAG)"
 	@touch "$@"

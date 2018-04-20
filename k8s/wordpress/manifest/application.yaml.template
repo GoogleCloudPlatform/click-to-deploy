@@ -18,7 +18,7 @@ metadata:
 spec:
   type: Wordpress
   version: '0.1'
-  description: The most popular blogging platform
+  description: WordPress is web software used to create websites and blogs.
   maintainers:
   - name: Google Click to Deploy
     url: https://cloud.google.com/solutions/#click-to-deploy
@@ -30,9 +30,29 @@ spec:
       app.kubernetes.io/name: "$APP_INSTANCE_NAME"
   componentKinds:
   - kind: Deployment
-  - kind: ServiceAccount
-  - kind: Role
-  - kind: RoleBinding
   - kind: PersistentVolumeClaim
   - kind: Service
-  - kind: Job
+  notes: |-
+    # Expose Wordpress service
+
+    By default, the application does not have an external IP. Run the
+    following command to expose an external IP:
+
+    ```
+    TODO
+    ```
+
+    # Access Wordpress site
+
+    Get the external IP of the Wordpress site service and visit
+    the URL printed below in your browser. Note that it might take
+    some time for the external IP to be provisioned.
+
+    ```
+    SERVICE_IP=$(kubectl get \
+      --namespace ${NAMESPACE} \
+      svc ${APP_INSTANCE_NAME}-wordpress-svc \
+      -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+    echo "http://${SERVICE_IP}"
+    ```

@@ -4,6 +4,5 @@ FROM ${MARKETPLACE_REGISTRY}/deployer_kubectl_base
 ARG REGISTRY
 ARG TAG
 ENV IMAGE_ELASTICSEARCH "$REGISTRY:$TAG"
-ENV IMAGE_CONTROLLER "$REGISTRY/controller:$TAG"
 
 ADD manifest/* /data/manifest/
