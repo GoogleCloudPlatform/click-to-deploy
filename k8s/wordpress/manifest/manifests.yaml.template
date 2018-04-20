@@ -155,12 +155,7 @@ spec:
           mountPath: /etc/ubbagent
         - name: ubbagent-state
           mountPath: /var/lib/ubbagent
-        - name: wp-install
-          mountPath: /opt
       volumes:
-      - name: wp-install
-        configMap:
-          name: $APP_INSTANCE_NAME-wp-startup
       - name: data
         persistentVolumeClaim:
           claimName: $APP_INSTANCE_NAME-wordpress-pvc
