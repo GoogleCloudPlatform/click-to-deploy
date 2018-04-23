@@ -46,7 +46,7 @@ spec:
       # on the hosting node.
       # Read more: https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html
       - name: elasticsearch-init
-        image: busybox
+        image: $IMAGE_INIT
         imagePullPolicy: IfNotPresent
         securityContext:
           privileged: true

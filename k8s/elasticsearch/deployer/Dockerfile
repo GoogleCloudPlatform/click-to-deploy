@@ -4,5 +4,6 @@ FROM ${MARKETPLACE_REGISTRY}/deployer_kubectl_base
 ARG REGISTRY
 ARG TAG
 ENV IMAGE_ELASTICSEARCH "$REGISTRY:$TAG"
+ENV IMAGE_INIT "launcher.gcr.io/google/debian9"
 
 ADD manifest/* /data/manifest/
