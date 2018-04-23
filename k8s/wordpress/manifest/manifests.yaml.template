@@ -8,10 +8,10 @@ metadata:
     app.kubernetes.io/component: wordpress-mysql
 type: Opaque
 data:
-  root_password: $PASS_B64_MYSQL_ROOT_PASSWORD
+  root_password: %% generate_password_base64(length=10) %%
   # wordpress in Base64
   wp_user: d29yZHByZXNz
-  wp_password: $PASS_B64_WP_DB_PASSWORD
+  wp_password: %% generate_password_base64(length=10) %%
 ---
 # TODO(huyhuynh): Change this to using StatefulSet
 apiVersion: apps/v1beta2
