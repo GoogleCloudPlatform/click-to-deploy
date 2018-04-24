@@ -121,9 +121,7 @@ for manifest_template_file in "$data_dir"/manifest/*; do
   cat "$manifest_template_file" \
     | envsubst "$environment_variables" \
     > "$manifest_dir/$manifest_file"
-  echo "before replacement for $manifest_dir/$manifest_file"
   replace_password_expressions_inplace "$manifest_dir/$manifest_file"
-  echo "after replacement for $manifest_dir/$manifest_file"
 done
 
 # Set Application to own all resources defined in its component kinds.
