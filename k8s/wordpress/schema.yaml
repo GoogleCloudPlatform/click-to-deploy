@@ -1,0 +1,36 @@
+properties:
+  APP_INSTANCE_NAME:
+    type: string
+    x-google-marketplace:
+      type: INSTANCE_NAME
+  NAMESPACE:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  IMAGE_WORDPRESS:
+    type: string
+    default: marketplace.gcr.io/google/wordpress:latest
+    x-google-marketplace:
+      type: IMAGE
+  IMAGE_INIT:
+    type: string
+    default: marketplace.gcr.io/google/wordpress/init:latest
+    x-google-marketplace:
+      type: IMAGE
+  IMAGE_MYSQL:
+    type: string
+    default: marketplace.gcr.io/google/wordpress/mysql:latest
+    x-google-marketplace:
+      type: IMAGE
+  IMAGE_UBBAGENT:
+    type: string
+    default: marketplace.gcr.io/google/wordpress/ubbagent:latest
+    x-google-marketplace:
+      type: IMAGE
+required:
+- APP_INSTANCE_NAME
+- NAMESPACE
+- IMAGE_WORDPRESS
+- IMAGE_INIT
+- IMAGE_MYSQL
+- IMAGE_UBBAGENT
