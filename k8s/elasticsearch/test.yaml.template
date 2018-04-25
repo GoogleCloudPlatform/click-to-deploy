@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: exp-config
+data:
+  key0: abc
+  key1: def
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: overrides
+spec:
+  containers:
+    - name: deployer
+      image: ${APP_DEPLOYER_IMAGE}
+      volumeMounts:
+        - name: config-volume
+          mountPath: /etc/configs
+      command: ["/bin/sh"]
+      args: ["-c", "while true; do echo hello; sleep 5; done"]
+  volumes:
+    - name: config-volume
+      configMap:
+        name: exp-config
+  terminationGracePeriodSeconds: 0
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: defaults
+spec:
+  containers:
+    - name: deployer
+      image: ${APP_DEPLOYER_IMAGE}
+      volumeMounts:
+        - name: config-volume
+          mountPath: /etc/configs/configmap
+      command: ["/bin/sh"]
+      args: ["-c", "while true; do echo hello; sleep 5; done"]
+  volumes:
+    - name: config-volume
+      configMap:
+        name: exp-config
+  terminationGracePeriodSeconds: 0
