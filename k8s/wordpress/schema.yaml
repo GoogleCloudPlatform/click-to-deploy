@@ -9,22 +9,22 @@ properties:
       type: NAMESPACE
   IMAGE_WORDPRESS:
     type: string
-    default: marketplace.gcr.io/google/wordpress:latest
+    default: $REGISTRY:$TAG
     x-google-marketplace:
       type: IMAGE
   IMAGE_INIT:
     type: string
-    default: marketplace.gcr.io/google/wordpress/init:latest
+    default: $REGISTRY/init:$TAG
     x-google-marketplace:
       type: IMAGE
   IMAGE_MYSQL:
     type: string
-    default: marketplace.gcr.io/google/wordpress/mysql:latest
+    default: $REGISTRY/mysql:$TAG
     x-google-marketplace:
       type: IMAGE
   IMAGE_UBBAGENT:
     type: string
-    default: marketplace.gcr.io/google/wordpress/ubbagent:latest
+    default: $REGISTRY/ubbagent:$TAG
     x-google-marketplace:
       type: IMAGE
 required:

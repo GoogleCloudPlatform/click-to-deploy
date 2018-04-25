@@ -9,12 +9,12 @@ properties:
       type: NAMESPACE
   IMAGE_ELASTICSEARCH:
     type: string
-    default: marketplace.gcr.io/google/elasticsearch:latest
+    default: $REGISTRY:$TAG
     x-google-marketplace:
       type: IMAGE
   IMAGE_INIT:
     type: string
-    default: marketplace.gcr.io/google/elasticsearch/debian9:latest
+    default: $REGISTRY/debian9:$TAG
     x-google-marketplace:
       type: IMAGE
 required:
