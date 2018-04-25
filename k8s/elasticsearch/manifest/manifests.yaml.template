@@ -77,6 +77,13 @@ spec:
           mountPath: /usr/share/elasticsearch/data
         - name: elasticsearchconfig
           mountPath: /usr/share/elasticsearch/config
+        readinessProbe:
+          exec:
+            command:
+            - /usr/bin/pgrep
+            - -x
+            - "java"
+          initialDelaySeconds: 15
         livenessProbe:
           httpGet:
             path: /
