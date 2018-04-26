@@ -12,25 +12,13 @@ properties:
     default: $REGISTRY:$TAG
     x-google-marketplace:
       type: IMAGE
-  IMAGE_INIT:
-    type: string
-    default: $REGISTRY/init:$TAG
-    x-google-marketplace:
-      type: IMAGE
   IMAGE_MYSQL:
     type: string
     default: $REGISTRY/mysql:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  IMAGE_UBBAGENT:
-    type: string
-    default: $REGISTRY/ubbagent:$TAG
     x-google-marketplace:
       type: IMAGE
 required:
 - APP_INSTANCE_NAME
 - NAMESPACE
 - IMAGE_WORDPRESS
-- IMAGE_INIT
 - IMAGE_MYSQL
-- IMAGE_UBBAGENT
