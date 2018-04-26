@@ -1,0 +1,24 @@
+properties:
+  APP_INSTANCE_NAME:
+    type: string
+    x-google-marketplace:
+      type: INSTANCE_NAME
+  NAMESPACE:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  IMAGE_WORDPRESS:
+    type: string
+    default: $REGISTRY:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  IMAGE_MYSQL:
+    type: string
+    default: $REGISTRY/mysql:$TAG
+    x-google-marketplace:
+      type: IMAGE
+required:
+- APP_INSTANCE_NAME
+- NAMESPACE
+- IMAGE_WORDPRESS
+- IMAGE_MYSQL

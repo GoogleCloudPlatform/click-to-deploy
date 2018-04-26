@@ -1,11 +1,13 @@
 ARG MARKETPLACE_REGISTRY
 FROM ${MARKETPLACE_REGISTRY}/deployer_kubectl_base
 
+ADD manifest/* /data/manifest/
+ADD schema.yaml /data/
+
+# Override default values for images.
+# TODO(#12): Remove this.
 ARG REGISTRY
 ARG TAG
-ENV IMAGE_WORDPRESS "$REGISTRY:$TAG"
-ENV IMAGE_INIT "$REGISTRY/init:$TAG"
-ENV IMAGE_MYSQL "$REGISTRY/mysql:$TAG"
-ENV IMAGE_UBBAGENT "$REGISTRY/ubbagent:$TAG"
-
-ADD manifest/* /data/manifest/
+RUN cat /data/schema.yaml \
+    | env -i "REGISTRY=$REGISTRY" "TAG=$TAG" envsubst \
+    >> /data/schema.yaml
