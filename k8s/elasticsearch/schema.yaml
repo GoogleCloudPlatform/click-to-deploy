@@ -14,7 +14,7 @@ properties:
       type: IMAGE
   IMAGE_INIT:
     type: string
-    default: $REGISTRY/debian9:$TAG
+    default: $REGISTRY/ubuntu16_04:$TAG
     x-google-marketplace:
       type: IMAGE
 required:

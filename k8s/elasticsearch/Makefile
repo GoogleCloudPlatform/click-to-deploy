@@ -11,7 +11,7 @@ include $(tools_path)/ubbagent.Makefile
 REGISTRY_FOR_DEPLOYER ?= $(APP_REGISTRY)
 $(info ---- REGISTRY_FOR_DEPLOYER = $(REGISTRY_FOR_DEPLOYER))
 
-app/build:: .build/deployer .build/debian9 .build/elasticsearch
+app/build:: .build/deployer .build/ubuntu16_04 .build/elasticsearch
 
 .build/deployer: deployer/* manifest/* $(MARKETPLACE_BASE_BUILD)/deployer-kubectl $(APP_BUILD)/registry_prefix | app/setup
 	docker build \
@@ -24,11 +24,11 @@ app/build:: .build/deployer .build/debian9 .build/elasticsearch
 	gcloud docker -- push "$(APP_DEPLOYER_IMAGE)"
 	@touch "$@"
 
-# Relocate public debian9 image to $APP_REGISTRY.
-.build/debian9: $(APP_BUILD)/registry_prefix | app/setup
-	gcloud docker -- pull launcher.gcr.io/google/debian9
-	docker tag launcher.gcr.io/google/debian9 "$(APP_REGISTRY)/debian9:$(APP_TAG)"
-	gcloud docker -- push "$(APP_REGISTRY)/debian9:$(APP_TAG)"
+# Relocate public ubuntu16_04 image to $APP_REGISTRY.
+.build/ubuntu16_04: $(APP_BUILD)/registry_prefix | app/setup
+	gcloud docker -- pull launcher.gcr.io/google/ubuntu16_04
+	docker tag launcher.gcr.io/google/ubuntu16_04 "$(APP_REGISTRY)/ubuntu16_04:$(APP_TAG)"
+	gcloud docker -- push "$(APP_REGISTRY)/ubuntu16_04:$(APP_TAG)"
 	@touch "$@"
 
 # Simulate building of primary app image. Actually just copying public image to
