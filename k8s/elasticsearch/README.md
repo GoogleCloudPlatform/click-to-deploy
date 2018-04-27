@@ -81,3 +81,17 @@ awk 'BEGINFILE {print "---"}{print}' manifest/* \
   | envsubst \
   | kubectl apply -f - --namespace "$NAMESPACE"
 ```
+
+### How to scale the cluster?
+
+Elasticsearch is deployed to StatefulSet built with 3 replicas.
+To scale the cluster, use either a GKE UI (use the Scale option in the Stateful set details screen)
+or a kubectl command:
+
+```
+kubectl scale statefulsets "$APP_INSTANCE_NAME-elasticsearch" \
+  --namespace "$NAMESPACE" --replicas=<new-replicas>
+```
+
+For more information about the StatefulSets scaling, check the 
+[Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/#kubectl-scale). 
