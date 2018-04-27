@@ -8,7 +8,6 @@ ADD schema.yaml /data/
 # TODO(#12): Remove this.
 ARG REGISTRY
 ARG TAG
-
 RUN cat /data/schema.yaml \
     | env -i "REGISTRY=$REGISTRY" "TAG=$TAG" envsubst \
     >> /data/schema.yaml
