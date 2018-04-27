@@ -7,14 +7,14 @@ metadata:
     app.kubernetes.io/component: elasticsearch-server
 data:
   elasticsearch.yml: |
-    cluster.name: "${DOLLAR}{CLUSTER_NAME}"
-    node.name: "${DOLLAR}{NODE_NAME}"
+    cluster.name: "${CLUSTER_NAME}"
+    node.name: "${NODE_NAME}"
 
     path.data: /usr/share/elasticsearch/data
     network.host: 0.0.0.0
 
     discovery.zen.minimum_master_nodes: 2
-    discovery.zen.ping.unicast.hosts: ${DOLLAR}{DISCOVERY_SERVICE}
+    discovery.zen.ping.unicast.hosts: ${DISCOVERY_SERVICE}
   log4j2.properties: |
     status = error
 
