@@ -69,6 +69,7 @@ Set environment variables for the app container images.
 
 ```shell
 export IMAGE_ELASTICSEARCH="marketplace.gcr.io/google/elasticsearch:latest"
+export IMAGE_INIT="marketplace.gcr.io/google/ubuntu16_04:latest"
 ```
 
 Expand manifest template and run `kubectl apply`:
