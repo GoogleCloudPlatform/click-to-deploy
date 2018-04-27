@@ -67,10 +67,8 @@ export NAMESPACE=default
 Set environment variables for the app container images.
 
 ```shell
-export IMAGE_WORDPRESS="marketplace.gcr.io/google/wordpress:latest"
-export IMAGE_INIT="marketplace.gcr.io/google/wordpress/init:latest"
-export IMAGE_MYSQL="marketplace.gcr.io/google/wordpress/mysql:latest"
-export IMAGE_UBBAGENT="marketplace.gcr.io/google/wordpress/ubbagent:latest"
+export IMAGE_WORDPRESS="gcr.io/k8s-marketplace-eap/google/wordpress:latest"
+export IMAGE_MYSQL="gcr.io/k8s-marketplace-eap/google/wordpress/mysql:latest"
 ```
 
 Expand manifest template and run `kubectl apply`:

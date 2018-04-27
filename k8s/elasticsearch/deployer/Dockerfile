@@ -1,8 +1,11 @@
 ARG MARKETPLACE_REGISTRY
 FROM ${MARKETPLACE_REGISTRY}/deployer_kubectl_base
 
+ADD manifest/* /data/manifest/
+ADD schema.yaml /data/
+
 ARG REGISTRY
 ARG TAG
-ENV IMAGE_ELASTICSEARCH "$REGISTRY:$TAG"
-
-ADD manifest/* /data/manifest/
+RUN cat /data/schema.yaml \
+    | env -i "REGISTRY=$REGISTRY" "TAG=$TAG" envsubst \
+    >> /data/schema.yaml

@@ -1,3 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: $APP_INSTANCE_NAME-configmap
+  namespace: "$NAMESPACE"
+data:
+  elasticsearch.yml: |
+    cluster.name: "${CLUSTER_NAME}"
+    node.name: "${NODE_NAME}"
+
+    path.data: /usr/share/elasticsearch/data
+    network.host: 0.0.0.0
+
+    discovery.zen.minimum_master_nodes: 2
+    discovery.zen.ping.unicast.hosts: ${DISCOVERY_SERVICE}
+  log4j2.properties: |
+    status = error
+
+    appender.console.type = Console
+    appender.console.name = console
+    appender.console.layout.type = PatternLayout
+    appender.console.layout.pattern = [%d{ISO8601}][%-5p][%-25c{1.}] %marker%m%n
+
+    rootLogger.level = info
+    rootLogger.appenderRef.console.ref = console
 ---
 apiVersion: apps/v1beta2
 kind: StatefulSet
@@ -10,16 +35,38 @@ spec:
   selector:
     matchLabels: *ElasticsearchDeploymentLabels
   serviceName: $APP_INSTANCE_NAME-elasticsearch-svc
-  replicas: 1
+  replicas: 3
   template:
     metadata:
       labels: *ElasticsearchDeploymentLabels
     spec:
       terminationGracePeriodSeconds: 180
+      initContainers:
+      # This init container is responsible for setting the appropriate limits for mmap counts
+      # on the hosting node.
+      # Read more: https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html
+      - name: elasticsearch-init
+        image: $IMAGE_INIT
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          privileged: true
+        command:
+        - sh
+        - -c
+        - 'if [[ "$(sysctl vm.max_map_count --values)" -lt 262144 ]]; then  sysctl -w vm.max_map_count=262144; fi'
       containers:
       - name: elasticsearch
         image: $IMAGE_ELASTICSEARCH
         imagePullPolicy: Always
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: CLUSTER_NAME
+          value: "$APP_INSTANCE_NAME-cluster"
+        - name: DISCOVERY_SERVICE
+          value: "$APP_INSTANCE_NAME-elasticsearch-svc"
         ports:
         - name: http
           containerPort: 9200
@@ -28,11 +75,30 @@ spec:
         volumeMounts:
         - name: $APP_INSTANCE_NAME-elasticsearch-pvc
           mountPath: /usr/share/elasticsearch/data
+        - name: elasticsearchconfig
+          mountPath: /usr/share/elasticsearch/config
+        readinessProbe:
+          exec:
+            command:
+            - /usr/bin/pgrep
+            - -x
+            - "java"
+          initialDelaySeconds: 15
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 9200
+          initialDelaySeconds: 120
+          timeoutSeconds: 3
+      volumes:
+      - name: elasticsearchconfig
+        configMap:
+          name: "$APP_INSTANCE_NAME-configmap"
   volumeClaimTemplates:
   - metadata:
       name: $APP_INSTANCE_NAME-elasticsearch-pvc
       labels:
-        app: $APP_INSTANCE_NAME
+        app.kubernetes.io/name: "$APP_INSTANCE_NAME"
         app.kubernetes.io/component: elasticsearch-server
     spec:
       accessModes: [ "ReadWriteOnce" ]
@@ -57,4 +123,4 @@ spec:
   selector:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app.kubernetes.io/component: elasticsearch-server
-  type: LoadBalancer
+  type: ClusterIP

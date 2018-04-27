@@ -1,0 +1,24 @@
+properties:
+  APP_INSTANCE_NAME:
+    type: string
+    x-google-marketplace:
+      type: INSTANCE_NAME
+  NAMESPACE:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  IMAGE_ELASTICSEARCH:
+    type: string
+    default: $REGISTRY:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  IMAGE_INIT:
+    type: string
+    default: $REGISTRY/debian9:$TAG
+    x-google-marketplace:
+      type: IMAGE
+required:
+- APP_INSTANCE_NAME
+- NAMESPACE
+- IMAGE_ELASTICSEARCH
+- IMAGE_INIT
