@@ -10,4 +10,5 @@ ARG REGISTRY
 ARG TAG
 RUN cat /data/schema.yaml \
     | env -i "REGISTRY=$REGISTRY" "TAG=$TAG" envsubst \
-    >> /data/schema.yaml
+    > /data/schema.yaml.new \
+    && mv /data/schema.yaml.new /data/schema.yaml
