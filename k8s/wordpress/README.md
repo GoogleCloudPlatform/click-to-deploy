@@ -80,3 +80,54 @@ awk 'BEGINFILE {print "---"}{print}' manifest/* \
   | envsubst \
   | kubectl apply -f - --namespace "$NAMESPACE"
 ```
+
+### Expose WordPress service
+
+By default, the application does not have an external IP. Run the
+following command to expose an external IP:
+
+```
+kubectl get svc "$APP_INSTANCE_NAME-wordpress-svc" \
+     --namespace "$NAMESPACE" -o yaml \
+     | sed 's/type: ClusterIP/type: LoadBalancer/g' \
+     | kubectl apply -f - --namespace "$NAMESPACE"
+```
+
+### Access WordPress site
+
+Get the external IP of the Wordpress site service and visit
+the URL printed below in your browser. Note that it might take
+some time for the external IP to be provisioned.
+
+```
+SERVICE_IP=$(kubectl get \
+  --namespace ${NAMESPACE} \
+  svc ${APP_INSTANCE_NAME}-wordpress-svc \
+  -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+echo "http://${SERVICE_IP}"
+```
+
+### Install WordPress
+
+After accessing the WordPress main page, you will see the installation wizard.
+Follow the instructions presented on the screen to finish the process.
+
+### How to get database passwords generated automatically?
+
+Passwords are stored in encrypted format in a Secret resource. To obtain passwords,
+use the following CLI commands:
+
+```
+# MySQL root user password:
+DB_ROOT_PWD="$(kubectl get secret "$APP_INSTANCE_NAME-mysql-secret" \
+  -n "$NAMESPACE" \
+  -o jsonpath='{.data.root_password}' \
+  | base64 -d)"
+
+# MySQL wordpress user password:
+DB_WORDPRESS_PWD="$(kubectl get secret "$APP_INSTANCE_NAME-mysql-secret" \
+  -n "$NAMESPACE" \
+  -o jsonpath='{.data.wp_password}' \
+  | base64 -d)"
+```
