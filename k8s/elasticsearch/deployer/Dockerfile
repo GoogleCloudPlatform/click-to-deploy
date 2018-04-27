@@ -4,6 +4,8 @@ FROM ${MARKETPLACE_REGISTRY}/deployer_kubectl_base
 ADD manifest/* /data/manifest/
 ADD schema.yaml /data/
 
+ENV DOLLAR="$"
+
 ARG REGISTRY
 ARG TAG
 RUN cat /data/schema.yaml \
