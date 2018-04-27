@@ -59,3 +59,27 @@ spec:
 
     echo "http://${SERVICE_IP}"
     ```
+
+    # Install WordPress
+
+    After accessing the WordPress main page, you will see the installation wizard.
+    Follow the instructions presented on the screen to finish the process.
+
+    # How to get database passwords generated automatically?
+
+    Passwords are stored in encrypted format in a Secret resource. To obtain passwords,
+    use the following CLI commands:
+
+    ```
+    # MySQL root user password:
+    DB_ROOT_PWD="$(kubectl get secret "$APP_INSTANCE_NAME-mysql-secret" \
+      -n "$NAMESPACE" \
+      -o jsonpath='{.data.root_password}' \
+      | base64 -d)"
+
+    # MySQL wordpress user password:
+    DB_WORDPRESS_PWD="$(kubectl get secret "$APP_INSTANCE_NAME-mysql-secret" \
+      -n "$NAMESPACE" \
+      -o jsonpath='{.data.wp_password}' \
+      | base64 -d)"
+    ```
