@@ -13,7 +13,6 @@ data:
   wp_user: d29yZHByZXNz
   wp_password: "${WORDPRESS_DB_PASSWORD}"
 ---
-# TODO(huyhuynh): Change this to using StatefulSet
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
