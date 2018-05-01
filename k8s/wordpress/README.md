@@ -95,8 +95,7 @@ kubectl patch svc "$APP_INSTANCE_NAME-wordpress-svc" \
 ### Access WordPress site
 
 Get the external IP of the Wordpress site service and visit
-the URL printed below in your browser. Note that it might take
-some time for the external IP to be provisioned.
+the URL printed below in your browser.
 
 ```
 SERVICE_IP=$(kubectl get \
@@ -106,6 +105,8 @@ SERVICE_IP=$(kubectl get \
 
 echo "http://${SERVICE_IP}"
 ```
+
+Note that it might take some time for the external IP to be provisioned.
 
 ### Install WordPress
 
