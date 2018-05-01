@@ -2,7 +2,9 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: $APP_INSTANCE_NAME-configmap
-  namespace: "$NAMESPACE"
+  labels:
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/component: elasticsearch-server
 data:
   elasticsearch.yml: |
     cluster.name: "${CLUSTER_NAME}"
@@ -35,25 +37,42 @@ spec:
   selector:
     matchLabels: *ElasticsearchDeploymentLabels
   serviceName: $APP_INSTANCE_NAME-elasticsearch-svc
-  replicas: 3
+  replicas: 2
   template:
     metadata:
       labels: *ElasticsearchDeploymentLabels
     spec:
       terminationGracePeriodSeconds: 180
       initContainers:
-      # This init container is responsible for setting the appropriate limits for mmap counts
-      # on the hosting node.
-      # Read more: https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html
-      - name: elasticsearch-init
+      # This init container sets the appropriate limits for mmap counts on the hosting node.
+      # https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html
+      - name: set-max-map-count
         image: $IMAGE_INIT
         imagePullPolicy: IfNotPresent
         securityContext:
           privileged: true
         command:
-        - sh
+        - /bin/bash
         - -c
-        - 'if [[ "$(sysctl vm.max_map_count --values)" -lt 262144 ]]; then  sysctl -w vm.max_map_count=262144; fi'
+        - 'if [[ "$(sysctl vm.max_map_count --values)" -lt 262144 ]]; then sysctl -w vm.max_map_count=262144; fi'
+      # This init container copies config files from the configmap into
+      # a normal file system. Configmap mounted as a volume lives on a read-only
+      # filesystem that would fail Elasticsearch.
+      - name: copy-config
+        image: $IMAGE_INIT
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: config
+          mountPath: /usr/share/elasticsearch/config
+        - name: configmap
+          mountPath: /elasticsearchconfig
+        command:
+        - /bin/bash
+        - -c
+        - >-
+          mkdir -p /usr/share/elasticsearch/config;
+          cp /elasticsearchconfig/* /usr/share/elasticsearch/config/;
+          chmod 777 /usr/share/elasticsearch/config/*
       containers:
       - name: elasticsearch
         image: $IMAGE_ELASTICSEARCH
@@ -73,27 +92,31 @@ spec:
         - name: tcp-transport
           containerPort: 9300
         volumeMounts:
+        - name: config
+          mountPath: /usr/share/elasticsearch/config
         - name: $APP_INSTANCE_NAME-elasticsearch-pvc
           mountPath: /usr/share/elasticsearch/data
-        - name: elasticsearchconfig
-          mountPath: /usr/share/elasticsearch/config
         readinessProbe:
+          httpGet:
+            path: /_cluster/health
+            port: 9200
+          initialDelaySeconds: 5
+        livenessProbe:
           exec:
             command:
             - /usr/bin/pgrep
             - -x
             - "java"
-          initialDelaySeconds: 15
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 9200
-          initialDelaySeconds: 120
-          timeoutSeconds: 3
+          initialDelaySeconds: 5
+        resources:
+          requests:
+            memory: "2Gi"
       volumes:
-      - name: elasticsearchconfig
+      - name: configmap
         configMap:
           name: "$APP_INSTANCE_NAME-configmap"
+      - name: config
+        emptyDir: {}
   volumeClaimTemplates:
   - metadata:
       name: $APP_INSTANCE_NAME-elasticsearch-pvc

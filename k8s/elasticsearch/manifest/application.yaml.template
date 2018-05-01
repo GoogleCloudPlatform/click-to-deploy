@@ -39,17 +39,18 @@ spec:
   - kind: Service
   notes: |-
     # Expose Elasticsearch service
+
     By default, the service does not have an external IP. Run the
     following command to expose an external IP:
 
     ```
-    kubectl get svc "$APP_INSTANCE_NAME-elasticsearch-svc" \
-      --namespace "$NAMESPACE" -o yaml \
-      | sed 's/type: ClusterIP/type: LoadBalancer/g' \
-      | kubectl apply -f - --namespace "$NAMESPACE"
+    kubectl patch svc "$APP_INSTANCE_NAME-elasticsearch-svc" \
+      --namespace "$NAMESPACE" \
+      -p '{"spec": {"type": "LoadBalancer"}}'
     ```
 
     # Access Elasticsearch
+
     Get the external IP of the Elasticsearch service:
 
     ```
@@ -60,4 +61,22 @@ spec:
 
     echo "http://${SERVICE_IP}:9200"
     ```
+
     Note that it might take some time for the external IP to be provisioned.
+
+    # Scale the cluster
+
+    To scale the cluster, use either a GKE UI (use the Scale option in the
+    StatefulSet details screen) or the following command:
+
+    ```
+    kubectl scale statefulsets "$APP_INSTANCE_NAME-elasticsearch" \
+      --namespace "$NAMESPACE" --replicas=<new-replicas>
+    ```
+
+    By default, there are 2 replicas to satisfy the minimum master quorum.
+    To increase resilience, it is recommended to scale the number of replicas
+    to at least 3.
+
+    For more information about the StatefulSets scaling, check the
+    [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/#kubectl-scale).
