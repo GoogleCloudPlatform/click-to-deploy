@@ -64,16 +64,19 @@ spec:
 
     Note that it might take some time for the external IP to be provisioned.
 
-    # How to scale the cluster?
+    # Scale the cluster
 
-    Elasticsearch is deployed to StatefulSet.
     To scale the cluster, use either a GKE UI (use the Scale option in the
-    Stateful set details screen) or the following command:
+    StatefulSet details screen) or the following command:
 
     ```
     kubectl scale statefulsets "$APP_INSTANCE_NAME-elasticsearch" \
       --namespace "$NAMESPACE" --replicas=<new-replicas>
     ```
+
+    By default, there are 2 replicas to satisfy the minimum master quorum.
+    To increase resilience, it is recommended to scale the number of replicas
+    to at least 3.
 
     For more information about the StatefulSets scaling, check the
     [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/#kubectl-scale).
