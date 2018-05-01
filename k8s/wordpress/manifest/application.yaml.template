@@ -14,11 +14,12 @@ spec:
   version: '0.1'
   description: >-
     WordPress is web software used to create websites and blogs.
-    Google does not offer support for this solution.
-    However, community support is available on
-    [Stack Overflow](https://stackoverflow.com/questions/tagged/wordpress).
-    Additional support is available on
-    [community forums](https://en.forums.wordpress.com).
+
+    # Support
+    Google does not offer support for this solution. However, community support is available on
+    [Stack Overflow](https://stackoverflow.com/questions/tagged/wordpress/).
+    Additional community support is available on
+    [communmity forums](https://en.forums.wordpress.com).
   maintainers:
   - name: Google Click to Deploy
     url: https://cloud.google.com/solutions/#click-to-deploy
