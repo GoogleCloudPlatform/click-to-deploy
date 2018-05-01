@@ -17,8 +17,22 @@ properties:
     default: $REGISTRY/mysql:$TAG
     x-google-marketplace:
       type: IMAGE
+  ROOT_DB_PASSWORD:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 12
+  WORDPRESS_DB_PASSWORD:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 12
 required:
 - APP_INSTANCE_NAME
 - NAMESPACE
 - IMAGE_WORDPRESS
 - IMAGE_MYSQL
+- ROOT_DB_PASSWORD
+- WORDPRESS_DB_PASSWORD

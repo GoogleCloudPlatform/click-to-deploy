@@ -1,4 +1,18 @@
 ---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: $APP_INSTANCE_NAME-mysql-secret
+  labels:
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/component: wordpress-mysql
+type: Opaque
+data:
+  root_password: "${ROOT_DB_PASSWORD}"
+  # wordpress in Base64
+  wp_user: d29yZHByZXNz
+  wp_password: "${WORDPRESS_DB_PASSWORD}"
+---
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
@@ -19,7 +33,22 @@ spec:
         name: mysql
         env:
         - name: "MYSQL_ROOT_PASSWORD"
-          value: "example-password"
+          valueFrom:
+            secretKeyRef:
+              name: $APP_INSTANCE_NAME-mysql-secret
+              key: root_password
+        - name: "MYSQL_DATABASE"
+          value: wordpress
+        - name: MYSQL_USER
+          valueFrom:
+           secretKeyRef:
+             name: $APP_INSTANCE_NAME-mysql-secret
+             key: wp_user
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: $APP_INSTANCE_NAME-mysql-secret
+              key: wp_password
         volumeMounts:
         - name: data
           mountPath: /var/lib/mysql
@@ -79,11 +108,16 @@ spec:
         env:
         - name: WORDPRESS_DB_HOST
           value: $APP_INSTANCE_NAME-mysql-svc
-        # TODO(huyhuynh): Use secrets.
-        - name: WORDPRESS_DB_PASSWORD
-          value: example-password
         - name: WORDPRESS_DB_USER
-          value: root
+          valueFrom:
+            secretKeyRef:
+              name: $APP_INSTANCE_NAME-mysql-secret
+              key: wp_user
+        - name: WORDPRESS_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: $APP_INSTANCE_NAME-mysql-secret
+              key: wp_password
         ports:
         - name: http
           containerPort: 80
@@ -123,6 +157,6 @@ spec:
     port: 80
     targetPort: http
   selector:
-    app.kubernetes.io/name: wordpress-1
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app.kubernetes.io/component: wordpress-webserver
-  type: LoadBalancer
+  type: ClusterIP

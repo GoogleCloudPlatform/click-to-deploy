@@ -80,3 +80,35 @@ awk 'BEGINFILE {print "---"}{print}' manifest/* \
   | envsubst \
   | kubectl apply -f - --namespace "$NAMESPACE"
 ```
+
+### Expose WordPress service
+
+By default, the application does not have an external IP. Run the
+following command to expose an external IP:
+
+```
+kubectl patch svc "$APP_INSTANCE_NAME-wordpress-svc" \
+  --namespace "$NAMESPACE" \
+  -p '{"spec": {"type": "LoadBalancer"}}'
+```
+
+### Access WordPress site
+
+Get the external IP of the Wordpress site service and visit
+the URL printed below in your browser.
+
+```
+SERVICE_IP=$(kubectl get \
+  --namespace ${NAMESPACE} \
+  svc ${APP_INSTANCE_NAME}-wordpress-svc \
+  -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+echo "http://${SERVICE_IP}"
+```
+
+Note that it might take some time for the external IP to be provisioned.
+
+### Install WordPress
+
+After accessing the WordPress main page, you will see the installation wizard.
+Follow the instructions presented on the screen to finish the process.
