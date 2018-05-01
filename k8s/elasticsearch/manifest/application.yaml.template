@@ -39,17 +39,18 @@ spec:
   - kind: Service
   notes: |-
     # Expose Elasticsearch service
+
     By default, the service does not have an external IP. Run the
     following command to expose an external IP:
 
     ```
-    kubectl get svc "$APP_INSTANCE_NAME-elasticsearch-svc" \
-      --namespace "$NAMESPACE" -o yaml \
-      | sed 's/type: ClusterIP/type: LoadBalancer/g' \
-      | kubectl apply -f - --namespace "$NAMESPACE"
+    kubectl patch svc "$APP_INSTANCE_NAME-elasticsearch-svc" \
+      --namespace "$NAMESPACE" \
+      -p '{"spec": {"type": "LoadBalancer"}}'
     ```
 
     # Access Elasticsearch
+
     Get the external IP of the Elasticsearch service:
 
     ```
@@ -60,13 +61,14 @@ spec:
 
     echo "http://${SERVICE_IP}:9200"
     ```
+
     Note that it might take some time for the external IP to be provisioned.
 
     # How to scale the cluster?
 
-    Elasticsearch is deployed to StatefulSet built with 3 replicas.
-    To scale the cluster, use either a GKE UI (use the Scale option in the Stateful set details screen)
-    or a kubectl command:
+    Elasticsearch is deployed to StatefulSet.
+    To scale the cluster, use either a GKE UI (use the Scale option in the
+    Stateful set details screen) or the following command:
 
     ```
     kubectl scale statefulsets "$APP_INSTANCE_NAME-elasticsearch" \
