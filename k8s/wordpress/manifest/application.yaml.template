@@ -39,10 +39,9 @@ spec:
     following command to expose an external IP:
 
     ```
-    kubectl get svc "$APP_INSTANCE_NAME-wordpress-svc" \
-         --namespace "$NAMESPACE" -o yaml \
-         | sed 's/type: ClusterIP/type: LoadBalancer/g' \
-         | kubectl apply -f - --namespace "$NAMESPACE"
+    kubectl patch svc "$APP_INSTANCE_NAME-wordpress-svc" \
+      --namespace "$NAMESPACE" \
+      -p '{"spec": {"type": "LoadBalancer"}}'
     ```
 
     # Access WordPress site
