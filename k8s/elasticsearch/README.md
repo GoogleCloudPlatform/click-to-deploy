@@ -69,6 +69,7 @@ Set environment variables for the app container images.
 
 ```shell
 export IMAGE_ELASTICSEARCH="marketplace.gcr.io/google/elasticsearch:latest"
+export IMAGE_INIT="marketplace.gcr.io/google/ubuntu16_04:latest"
 ```
 
 Expand manifest template and run `kubectl apply`:
@@ -80,3 +81,19 @@ awk 'BEGINFILE {print "---"}{print}' manifest/* \
   | envsubst \
   | kubectl apply -f - --namespace "$NAMESPACE"
 ```
+
+### Scale the cluster
+
+Scale the number of master node replicas by the following command:
+
+```
+kubectl scale statefulsets "$APP_INSTANCE_NAME-elasticsearch" \
+  --namespace "$NAMESPACE" --replicas=<new-replicas>
+```
+
+By default, there are 2 replicas to satisfy the minimum master quorum.
+To increase resilience, it is recommended to scale the number of replicas
+to at least 3.
+
+For more information about the StatefulSets scaling, check the
+[Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/#kubectl-scale).
