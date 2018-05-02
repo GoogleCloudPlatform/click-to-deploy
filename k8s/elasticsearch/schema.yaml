@@ -2,7 +2,7 @@ properties:
   APP_INSTANCE_NAME:
     type: string
     x-google-marketplace:
-      type: INSTANCE_NAME
+      type: NAME
   NAMESPACE:
     type: string
     x-google-marketplace:
