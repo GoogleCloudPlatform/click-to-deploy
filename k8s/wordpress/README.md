@@ -29,7 +29,7 @@ You'll need the following tools in your development environment:
 
 #### Create a Google Kubernetes Engine cluster
 
-Create a new cluster frmo the command-line.
+Create a new cluster from the command-line.
 
 ```shell
 export CLUSTER=marketplace-cluster
@@ -103,7 +103,7 @@ for i in "IMAGE_WORDPRESS" "IMAGE_MYSQL"; do
   repo=`echo ${!i} | cut -d: -f1`;
   digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
   export $i="$repo@$digest";
-  echo "$i:"$repo@$digest"
+  env | grep $i;
 done
 ```
 
