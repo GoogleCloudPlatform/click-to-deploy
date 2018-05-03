@@ -120,7 +120,7 @@ Use `envsubst` to expand the template. It is recomended that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-cat manifest/* | envsubst > "${APP_INSTANCE_NAME}_manifest.yaml"
+awk 'BEGINFILE {print "---"}{print}' manifest/* | envsubst > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply to Kubernetes
