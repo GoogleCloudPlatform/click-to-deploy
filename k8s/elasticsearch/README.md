@@ -47,16 +47,6 @@ gcloud container clusters get-credentials "$CLUSTER"
 
 #### Clone this repo
 
-Clone this repo and initialize the git submodules.
-
-```shell
-git clone git@github.com:GoogleCloudPlatform/click-to-deploy.git
-cd click-to-deploy
-git submodule update --recursive --init
-```
-
-#### Clone this repo
-
 Clone this repo and the associated tools repo.
 
 ```shell
