@@ -46,12 +46,11 @@ gcloud container clusters get-credentials "$CLUSTER"
 
 #### Clone this repo
 
-Clone this repo and initialize the git submodules.
+Clone this repo and the associated tools repo.
 
 ```shell
-git clone git@github.com:GoogleCloudPlatform/click-to-deploy.git
-cd click-to-deploy
-git submodule update --recursive --init
+gcloud source repos clone google-click-to-deploy --project=k8s-marketplace-eap
+gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketplace-eap
 ```
 
 #### Install the Application resource definition
@@ -59,7 +58,7 @@ git submodule update --recursive --init
 Do a one-time setup for your cluster to understand Application resources.
 
 ```shell
-kubectl apply -f k8s/vendor/marketplace-tools/crd/*
+kubectl apply -f google-marketplace-k8s-app-tools/crd/*
 ```
 
 The Application resource is defined by the
@@ -72,7 +71,7 @@ community. The source code can be found on
 Navigate to the `wordpress` directory.
 
 ```shell
-cd k8s/wordpress
+cd google-click-to-deploy/k8s/wordpress
 ```
 
 #### Configure the app with environment variables
