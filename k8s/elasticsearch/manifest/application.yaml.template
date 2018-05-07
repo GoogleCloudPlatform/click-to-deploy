@@ -30,6 +30,8 @@ spec:
   links:
   - description: 'User Guide: Google Click to Deploy Elasticsearch'
     url: https://console.cloud.google.com/code/develop/browse/google-click-to-deploy/master/k8s/elasticsearch?project=k8s-marketplace-eap
+  - description: 'Elasticsearch: Getting Started'
+    url: https://www.elastic.co/webinars/getting-started-elasticsearch
   selector:
     matchLabels:
       app.kubernetes.io/name: "$APP_INSTANCE_NAME"
