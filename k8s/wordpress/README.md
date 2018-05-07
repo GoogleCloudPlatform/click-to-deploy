@@ -69,7 +69,7 @@ community. The source code can be found on
 
 ### Install the Application
 
-Navigate to the wordpress directory.
+Navigate to the `wordpress` directory.
 
 ```shell
 cd k8s/wordpress
@@ -116,11 +116,13 @@ export WORDPRESS_DB_PASSWORD=`pwgen 16 1`
 
 #### Expand the manifest template
 
-Use `envsubst` to expand the template. It is recomended that you save the
+Use `envsubst` to expand the template. It is recommended that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-awk 'BEGINFILE {print "---"}{print}' manifest/* | envsubst > "${APP_INSTANCE_NAME}_manifest.yaml"
+awk 'BEGINFILE {print "---"}{print}' manifest/* \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_WORDPRESS $IMAGE_MYSQL $ROOT_DB_PASSWORD $WORDPRESS_DB_PASSWORD' \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply to Kubernetes
