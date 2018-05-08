@@ -51,8 +51,7 @@ gcloud --project "$PROJECT" container clusters get-credentials "$CLUSTER" --zone
 Clone this repo and the associated tools repo.
 
 ```shell
-gcloud --project "$PROJECT" source repos clone google-click-to-deploy --project=k8s-marketplace-eap
-gcloud --project "$PROJECT" source repos clone google-marketplace-k8s-app-tools --project=k8s-marketplace-eap
+git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 ```
 
 #### Install the Application resource definition
