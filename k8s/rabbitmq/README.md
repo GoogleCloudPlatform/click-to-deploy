@@ -3,7 +3,7 @@
 RabbitMQ is an open source messaging system that implements the Advanced
 Message Queueing Protocol to serve a variety of messaging applications.
 
-[Learn more](https://www.rabbitmq.com/).
+[Learn more](https://www.rabbitmq.com/)
 
 ## About Google Click to Deploy
 
