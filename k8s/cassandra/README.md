@@ -155,7 +155,7 @@ SERVICE_IP=$(kubectl get \
   svc ${APP_INSTANCE_NAME}-cassandra-svc \
   -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
-echo "cqlsh ${SERVICE_IP} 9042"
+cqlsh ${SERVICE_IP} 9042
 ```
 
 Note that it might take some time for the external IP to be provisioned.
