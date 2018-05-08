@@ -133,7 +133,7 @@ Point your browser to:
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
 ```
 
-### Expose Elasticsearch service
+### Expose Cassandra service
 
 By default, the application does not have an external IP. Run the
 following command to expose an external IP:
