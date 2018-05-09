@@ -1,0 +1,63 @@
+apiVersion: apps/v1beta2
+kind: StatefulSet
+metadata:
+  name: $APP_INSTANCE_NAME-cassandra
+  labels: &CassandraDeploymentLabels
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/component: cassandra-server
+spec:
+  selector:
+    matchLabels: *CassandraDeploymentLabels
+  serviceName: $APP_INSTANCE_NAME-cassandra-svc
+  replicas: 1
+  template:
+    metadata:
+      labels: *CassandraDeploymentLabels
+    spec:
+      terminationGracePeriodSeconds: 180
+      containers:
+      - name: cassandra
+        image: $IMAGE_CASSANDRA
+        imagePullPolicy: Always
+        ports:
+        - name: pure-intra
+          containerPort: 7000
+        - name: tls-intra
+          containerPort: 7001
+        - name: jmx
+          containerPort: 7199
+        - name: cql
+          containerPort: 9042
+        - name: thrift
+          containerPort: 9160
+        volumeMounts:
+        - name: $APP_INSTANCE_NAME-cassandra-pvc
+          mountPath: /var/lib/cassandra
+  volumeClaimTemplates:
+  - metadata:
+      name: $APP_INSTANCE_NAME-cassandra-pvc
+      labels: *CassandraDeploymentLabels
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: standard
+      resources:
+        requests:
+          storage: 5Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $APP_INSTANCE_NAME-cassandra-svc
+  labels:
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/component: cassandra-server
+spec:
+  ports:
+  - name: cql
+    port: 9042
+  - name: thrift
+    port: 9160
+  selector:
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/component: cassandra-server
+  type: LoadBalancer
