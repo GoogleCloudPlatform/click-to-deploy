@@ -60,7 +60,7 @@ spec:
       svc ${APP_INSTANCE_NAME}-memcached-svc \
       -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
-    echo "http://${SERVICE_IP}:9200"
+    echo "http://${SERVICE_IP}:11211"
     ```
 
     Note that it might take some time for the external IP to be provisioned.
