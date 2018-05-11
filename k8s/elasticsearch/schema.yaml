@@ -17,8 +17,13 @@ properties:
     default: $REGISTRY/ubuntu16_04:$TAG
     x-google-marketplace:
       type: IMAGE
+  REPLICAS:
+    type: integer
+    default: 2
+    min: 1
 required:
 - APP_INSTANCE_NAME
 - NAMESPACE
 - IMAGE_ELASTICSEARCH
 - IMAGE_INIT
+- REPLICAS

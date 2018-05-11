@@ -1,5 +1,9 @@
 APP_NAME = elasticsearch
 
+ifndef APP_PARAMETERS
+  APP_PARAMETERS = {"APP_INSTANCE_NAME": "$(APP_INSTANCE_NAME)", "NAMESPACE": "$(NAMESPACE)", "REPLICAS": "2"}
+endif
+
 tools_path = ../vendor/marketplace-tools
 
 include $(tools_path)/gcloud.Makefile
@@ -11,6 +15,7 @@ include $(tools_path)/ubbagent.Makefile
 REGISTRY_FOR_DEPLOYER ?= $(APP_REGISTRY)
 $(info ---- REGISTRY_FOR_DEPLOYER = $(REGISTRY_FOR_DEPLOYER))
 
+
 app/build:: .build/deployer .build/ubuntu16_04 .build/elasticsearch
 
 .build/deployer: deployer/* manifest/* $(MARKETPLACE_BASE_BUILD)/deployer-kubectl $(APP_BUILD)/registry_prefix | app/setup
@@ -21,20 +26,20 @@ app/build:: .build/deployer .build/ubuntu16_04 .build/elasticsearch
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
 	    -f deployer/Dockerfile \
 	    .
-	gcloud docker -- push "$(APP_DEPLOYER_IMAGE)"
+	docker push "$(APP_DEPLOYER_IMAGE)"
 	@touch "$@"
 
 # Relocate public ubuntu16_04 image to $APP_REGISTRY.
 .build/ubuntu16_04: $(APP_BUILD)/registry_prefix | app/setup
-	gcloud docker -- pull launcher.gcr.io/google/ubuntu16_04
+	docker pull launcher.gcr.io/google/ubuntu16_04
 	docker tag launcher.gcr.io/google/ubuntu16_04 "$(APP_REGISTRY)/ubuntu16_04:$(APP_TAG)"
-	gcloud docker -- push "$(APP_REGISTRY)/ubuntu16_04:$(APP_TAG)"
+	docker push "$(APP_REGISTRY)/ubuntu16_04:$(APP_TAG)"
 	@touch "$@"
 
 # Simulate building of primary app image. Actually just copying public image to
 # local registry.
 .build/elasticsearch: $(APP_BUILD)/registry_prefix | app/setup
-	gcloud docker -- pull launcher.gcr.io/google/elasticsearch5
+	docker pull launcher.gcr.io/google/elasticsearch5
 	docker tag launcher.gcr.io/google/elasticsearch5 "$(APP_REGISTRY):$(APP_TAG)"
-	gcloud docker -- push "$(APP_REGISTRY):$(APP_TAG)"
+	docker push "$(APP_REGISTRY):$(APP_TAG)"
 	@touch "$@"

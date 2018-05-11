@@ -37,7 +37,7 @@ spec:
   selector:
     matchLabels: *ElasticsearchDeploymentLabels
   serviceName: $APP_INSTANCE_NAME-elasticsearch-svc
-  replicas: 2
+  replicas: $REPLICAS
   template:
     metadata:
       labels: *ElasticsearchDeploymentLabels
