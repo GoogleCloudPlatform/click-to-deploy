@@ -39,4 +39,28 @@ spec:
   - kind: StatefulSet
   - kind: Service
   notes: |-
-    TODO
+    # Expose RabbitMQ service
+
+    By default, the application does not have an external IP. Run the
+    following command to expose an external IP:
+
+    ```
+    kubectl patch svc "$APP_INSTANCE_NAME-rabbitmq-svc" \
+      --namespace "$NAMESPACE" \
+      -p '{"spec": {"type": "LoadBalancer"}}'
+    ```
+
+    # Access RabbitMQ service
+
+    Get the external IP of the RabbitMQ service.
+
+    ```
+    SERVICE_IP=$(kubectl get \
+      --namespace ${NAMESPACE} \
+      svc ${APP_INSTANCE_NAME}-rabbitmq-svc \
+      -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+    echo "http://${SERVICE_IP}"
+    ```
+
+    Note that it might take some time for the external IP to be provisioned.

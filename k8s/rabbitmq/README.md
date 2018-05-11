@@ -152,8 +152,7 @@ kubectl patch svc "$APP_INSTANCE_NAME-rabbitmq-svc" \
 
 ### Access RabbitMQ service
 
-Get the external IP of the RabbitMQ service and visit
-the URL printed below in your browser.
+Get the external IP of the RabbitMQ service.
 
 ```
 SERVICE_IP=$(kubectl get \
