@@ -1,9 +1,9 @@
 # Overview
 
-Elasticsearch is an open-source search engine that provides a distributed, multitenant-capable
-full-text search engine with an HTTP web interface and schema-free JSON documents..
+The Apache Cassandra database management system provides asynchronous masterless replication of
+large amounts of data across many servers, avoiding a single point of failure and reducing latency.
 
-[Learn more](https://www.elastic.co/).
+[Learn more](https://cassandra.apache.org/).
 
 ## About Google Click to Deploy
 
@@ -13,9 +13,9 @@ Popular open stacks on Kubernetes packaged by Google.
 
 ## Quick install with Google Cloud Marketplace
 
-Get up and running with a few clicks! Install this Elasticsearch app to a
+Get up and running with a few clicks! Install this Cassandra app to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
-[on-screen instructions](https://console.cloud.google.com/launcher/details/google/elasticsearch).
+[on-screen instructions](https://console.cloud.google.com/launcher/details/google/cassandra).
 
 ## Command line instructions
 
@@ -69,10 +69,10 @@ community. The source code can be found on
 
 ### Install the Application
 
-Navigate to the `elasticsearch` directory.
+Navigate to the `cassandra` directory.
 
 ```shell
-cd google-click-to-deploy/k8s/elasticsearch
+cd google-click-to-deploy/k8s/cassandra
 ```
 
 #### Configure the app with environment variables
@@ -80,15 +80,14 @@ cd google-click-to-deploy/k8s/elasticsearch
 Choose the instance name and namespace for the app.
 
 ```shell
-export APP_INSTANCE_NAME=elasticsearch-1
+export APP_INSTANCE_NAME=cassandra-1
 export NAMESPACE=default
 ```
 
 Configure the container images.
 
 ```shell
-export IMAGE_ELASTICSEARCH="gcr.io/k8s-marketplace-eap/google/elasticsearch:latest"
-export IMAGE_INIT="gcr.io/k8s-marketplace-eap/google/elasticsearch/ubuntu16_04:latest"
+export IMAGE_CASSANDRA="gcr.io/k8s-marketplace-eap/google/cassandra:latest"
 ```
 
 The images above are referenced by
@@ -99,7 +98,7 @@ This will ensure that the installed application will always use the same images,
 until you are ready to upgrade.
 
 ```shell
-for i in "IMAGE_ELASTICSEARCH" "IMAGE_INIT"; do
+for i in "IMAGE_CASSANDRA"; do
   repo=`echo ${!i} | cut -d: -f1`;
   digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
   export $i="$repo@$digest";
@@ -114,7 +113,7 @@ expanded manifest file for future updates to the application.
 
 ```shell
 awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_ELASTICSEARCH $IMAGE_INIT' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_CASSANDRA' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
@@ -134,45 +133,41 @@ Point your browser to:
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
 ```
 
-### Expose Elasticsearch service
+### Expose Cassandra service
 
 By default, the application does not have an external IP. Run the
 following command to expose an external IP:
 
 ```
-kubectl patch svc "$APP_INSTANCE_NAME-elasticsearch-svc" \
+kubectl patch svc "$APP_INSTANCE_NAME-cassandra-svc" \
   --namespace "$NAMESPACE" \
   -p '{"spec": {"type": "LoadBalancer"}}'
 ```
 
-### Access Elasticsearch service
+### Access Cassandra service
 
-Get the external IP of the Elasticsearch service and visit
+Get the external IP of the Cassandra service and visit
 the URL printed below in your browser.
 
 ```
 SERVICE_IP=$(kubectl get \
   --namespace ${NAMESPACE} \
-  svc ${APP_INSTANCE_NAME}-elasticsearch-svc \
+  svc ${APP_INSTANCE_NAME}-cassandra-svc \
   -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
-echo "http://${SERVICE_IP}:9200"
+cqlsh ${SERVICE_IP} 9042
 ```
 
 Note that it might take some time for the external IP to be provisioned.
 
-### Scale the cluster
+# Scaling
 
-Scale the number of master node replicas by the following command:
+*TODO: instructions for scaling*
 
-```
-kubectl scale statefulsets "$APP_INSTANCE_NAME-elasticsearch" \
-  --namespace "$NAMESPACE" --replicas=<new-replicas>
-```
+# Backups
 
-By default, there are 2 replicas to satisfy the minimum master quorum.
-To increase resilience, it is recommended to scale the number of replicas
-to at least 3.
+*TODO: instructions for backups*
 
-For more information about the StatefulSets scaling, check the
-[Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/#kubectl-scale).
+# Upgrades
+
+*TODO: instructions for upgrades*

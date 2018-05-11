@@ -25,7 +25,9 @@ spec:
   - name: Google Click to Deploy
     url: https://cloud.google.com/solutions/#click-to-deploy
   links:
-  - description: Getting Started
+  - description: 'User Guide: Google Click to Deploy WordPress'
+    url: https://console.cloud.google.com/code/develop/browse/google-click-to-deploy/master/k8s/wordpress?project=k8s-marketplace-eap
+  - description: Getting Started with WordPress
     url: https://codex.wordpress.org/Getting_Started_with_WordPress
   selector:
     matchLabels:
