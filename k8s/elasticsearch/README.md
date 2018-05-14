@@ -28,6 +28,12 @@ You'll need the following tools in your development environment:
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 - [docker](https://docs.docker.com/install/)
 
+Configure `gcloud` as a Docker credential helper:
+
+```shell
+gcloud auth configure-docker
+```
+
 #### Create a Google Kubernetes Engine cluster
 
 Create a new cluster from the command-line.

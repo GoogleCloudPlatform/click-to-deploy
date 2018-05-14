@@ -20,20 +20,20 @@ app/build:: .build/deployer .build/wordpress .build/mysql
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
 	    -f deployer/Dockerfile \
 	    .
-	gcloud docker -- push "$(APP_DEPLOYER_IMAGE)"
+	docker push "$(APP_DEPLOYER_IMAGE)"
 	@touch "$@"
 
 # Simulate building of primary app image. Actually just copying public image to
 # local registry.
 .build/wordpress: $(APP_BUILD)/registry_prefix | app/setup
-	gcloud docker -- pull launcher.gcr.io/google/wordpress4-php5-apache
+	docker pull launcher.gcr.io/google/wordpress4-php5-apache
 	docker tag launcher.gcr.io/google/wordpress4-php5-apache "$(APP_REGISTRY):$(APP_TAG)"
-	gcloud docker -- push "$(APP_REGISTRY):$(APP_TAG)"
+	docker push "$(APP_REGISTRY):$(APP_TAG)"
 	@touch "$@"
 
 # Relocate public mysql image to $APP_REGISTRY.
 .build/mysql: $(APP_BUILD)/registry_prefix | app/setup
-	gcloud docker -- pull launcher.gcr.io/google/mysql5
+	docker pull launcher.gcr.io/google/mysql5
 	docker tag launcher.gcr.io/google/mysql5 "$(APP_REGISTRY)/mysql:$(APP_TAG)"
-	gcloud docker -- push "$(APP_REGISTRY)/mysql:$(APP_TAG)"
+	docker push "$(APP_REGISTRY)/mysql:$(APP_TAG)"
 	@touch "$@"
