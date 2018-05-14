@@ -1,8 +1,6 @@
 APP_NAME = elasticsearch
 
-ifndef APP_PARAMETERS
-  APP_PARAMETERS = {"APP_INSTANCE_NAME": "$(APP_INSTANCE_NAME)", "NAMESPACE": "$(NAMESPACE)", "REPLICAS": "2"}
-endif
+APP_PARAMETERS ?= {"APP_INSTANCE_NAME": "$(APP_INSTANCE_NAME)", "NAMESPACE": "$(NAMESPACE)", "REPLICAS": "2"}
 
 tools_path = ../vendor/marketplace-tools
 
