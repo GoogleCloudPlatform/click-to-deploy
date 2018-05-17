@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -eo pipefail
+set -xeo pipefail
 
 for i in "$@"
 do
@@ -66,9 +66,13 @@ jwt_token="$($DIR/get_jwt.py --secret "$secret" --issuer " $issuer")"
 accept_header="Accept: application/vnd.github.machine-man-preview+json"
 auth_header="Authorization: Bearer $jwt_token"
 
+# One app might be installed in many organizations. We need to select the installation that matches
+# the organization of the repo
+account_login=$(echo $repo | sed -e 's/\/.*//')
+
 install_id=$(curl -X GET https://api.github.com/app/installations \
 -H "$accept_header" \
--H "$auth_header" | jq -r '.[0].id')
+-H "$auth_header" | jq -r ".[] | select(.account.login==\"$account_login\") | .id")
 
 token=$(curl -X POST "https://api.github.com/installations/$install_id/access_tokens" \
 -H "$accept_header" \
