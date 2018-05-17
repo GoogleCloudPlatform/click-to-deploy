@@ -8,6 +8,7 @@ steps:
   - cloudbuild.pem
 
 - id: Set commit as pending
+  waitFor: [ 'Fetch key for the github app' ]
   name: 'gcr.io/$PROJECT_ID/verifier'
   entrypoint: 'bash'
   args:
@@ -27,6 +28,7 @@ steps:
     path: /root/.ssh
 
 - id: Fetch deploy keys for tools repo
+  waitFor: [ '-' ]
   name: 'gcr.io/cloud-builders/gsutil'
   args:
   - cp
@@ -37,6 +39,7 @@ steps:
     path: /root/.ssh
 
 - id: Fetch deploy keys for ubbagent repo
+  waitFor: [ '-' ]
   name: 'gcr.io/cloud-builders/gsutil'
   args:
   - cp
@@ -47,6 +50,9 @@ steps:
     path: /root/.ssh
 
 - id: Setup git repo
+  waitFor:
+  - Fetch deploy keys for tools repo
+  - Fetch deploy keys for ubbagent repo
   name: 'gcr.io/cloud-builders/git'
   entrypoint: 'bash'
   args:
@@ -56,8 +62,8 @@ steps:
     path: /root/.ssh
 
 - id: Run the verification on cassandra
-  name: 'gcr.io/$PROJECT_ID/verifier'
   waitFor: [ 'Setup git repo' ]
+  name: 'gcr.io/$PROJECT_ID/verifier'
   entrypoint: 'bash'
   dir: 'k8s/cassandra'
   args:
@@ -67,8 +73,8 @@ steps:
     make app/verify
 
 - id: Run the verification on elasticsearch
-  name: 'gcr.io/$PROJECT_ID/verifier'
   waitFor: [ 'Setup git repo' ]
+  name: 'gcr.io/$PROJECT_ID/verifier'
   entrypoint: 'bash'
   dir: 'k8s/elasticsearch'
   args:
@@ -78,8 +84,8 @@ steps:
     make app/verify
 
 - id: Run the verification on rabbitmq
-  name: 'gcr.io/$PROJECT_ID/verifier'
   waitFor: [ 'Setup git repo' ]
+  name: 'gcr.io/$PROJECT_ID/verifier'
   entrypoint: 'bash'
   dir: 'k8s/rabbitmq'
   args:
@@ -89,8 +95,8 @@ steps:
     make app/verify
 
 - id: Run the verification on wordpress
-  name: 'gcr.io/$PROJECT_ID/verifier'
   waitFor: [ 'Setup git repo' ]
+  name: 'gcr.io/$PROJECT_ID/verifier'
   entrypoint: 'bash'
   dir: 'k8s/wordpress'
   args:
