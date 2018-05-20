@@ -9,7 +9,7 @@ spec:
   selector:
     matchLabels: *MemcachedDeploymentLabels
   serviceName: $APP_INSTANCE_NAME-memcached-svc
-  replicas: 3
+  replicas: 2
   template:
     metadata:
       labels: *MemcachedDeploymentLabels
@@ -32,6 +32,7 @@ metadata:
     app: $APP_INSTANCE_NAME
     component: memcached-server
 spec:
+  clusterIP: None
   ports:
   - name: memcached-port
     port: 11211
@@ -39,4 +40,4 @@ spec:
   selector:
     app: $APP_INSTANCE_NAME
     component: memcached-server
-  type: ClusterIP
+  type: ClusterIP # LoadBalancer
