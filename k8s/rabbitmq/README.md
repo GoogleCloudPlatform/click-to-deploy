@@ -1,9 +1,9 @@
 # Overview
 
-Elasticsearch is an open-source search engine that provides a distributed, multitenant-capable
-full-text search engine with an HTTP web interface and schema-free JSON documents..
+RabbitMQ is an open source messaging system that implements the Advanced
+Message Queueing Protocol to serve a variety of messaging applications.
 
-[Learn more](https://www.elastic.co/).
+[Learn more](https://www.rabbitmq.com/)
 
 ## About Google Click to Deploy
 
@@ -13,9 +13,9 @@ Popular open stacks on Kubernetes packaged by Google.
 
 ## Quick install with Google Cloud Marketplace
 
-Get up and running with a few clicks! Install this Elasticsearch app to a
+Get up and running with a few clicks! Install this RabbitMQ app to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
-[on-screen instructions](https://console.cloud.google.com/launcher/details/google/elasticsearch).
+[on-screen instructions](https://console.cloud.google.com/launcher/details/google/rabbitmq).
 
 ## Command line instructions
 
@@ -28,27 +28,22 @@ You'll need the following tools in your development environment:
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 - [docker](https://docs.docker.com/install/)
 
-Configure `gcloud` as a Docker credential helper:
-
-```shell
-gcloud auth configure-docker
-```
-
 #### Create a Google Kubernetes Engine cluster
 
 Create a new cluster from the command-line.
 
 ```shell
+export PROJECT=your-gcp-project
 export CLUSTER=marketplace-cluster
 export ZONE=us-west1-a
 
-gcloud container clusters create "$CLUSTER" --zone "$ZONE"
+gcloud --project "$PROJECT" container clusters create "$CLUSTER" --zone "$ZONE"
 ```
 
 Configure `kubectl` to talk to the new cluster.
 
 ```shell
-gcloud container clusters get-credentials "$CLUSTER"
+gcloud --project "$PROJECT" container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 ```
 
 #### Clone this repo
@@ -56,16 +51,21 @@ gcloud container clusters get-credentials "$CLUSTER"
 Clone this repo and the associated tools repo.
 
 ```shell
-gcloud source repos clone google-click-to-deploy --project=k8s-marketplace-eap
-gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketplace-eap
+git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 ```
 
 #### Install the Application resource definition
 
+Navigate to the `rabbitmq` directory.
+
+```shell
+cd click-to-deploy/k8s/rabbitmq
+```
+
 Do a one-time setup for your cluster to understand Application resources.
 
 ```shell
-kubectl apply -f google-marketplace-k8s-app-tools/crd/*
+make crd/install
 ```
 
 The Application resource is defined by the
@@ -75,10 +75,10 @@ community. The source code can be found on
 
 ### Install the Application
 
-Navigate to the `elasticsearch` directory.
+Navigate to the `rabbitmq` directory.
 
 ```shell
-cd google-click-to-deploy/k8s/elasticsearch
+cd click-to-deploy/k8s/rabbitmq
 ```
 
 #### Configure the app with environment variables
@@ -86,15 +86,14 @@ cd google-click-to-deploy/k8s/elasticsearch
 Choose the instance name and namespace for the app.
 
 ```shell
-export APP_INSTANCE_NAME=elasticsearch-1
+export APP_INSTANCE_NAME=rabbitmq-1
 export NAMESPACE=default
 ```
 
 Configure the container images.
 
 ```shell
-export IMAGE_ELASTICSEARCH="gcr.io/k8s-marketplace-eap/google/elasticsearch:latest"
-export IMAGE_INIT="gcr.io/k8s-marketplace-eap/google/elasticsearch/ubuntu16_04:latest"
+export IMAGE_RABBITMQ="gcr.io/k8s-marketplace-eap/google/rabbitmq3:latest"
 ```
 
 The images above are referenced by
@@ -105,7 +104,7 @@ This will ensure that the installed application will always use the same images,
 until you are ready to upgrade.
 
 ```shell
-for i in "IMAGE_ELASTICSEARCH" "IMAGE_INIT"; do
+for i in "IMAGE_RABBITMQ"; do
   repo=`echo ${!i} | cut -d: -f1`;
   digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
   export $i="$repo@$digest";
@@ -120,7 +119,7 @@ expanded manifest file for future updates to the application.
 
 ```shell
 awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_ELASTICSEARCH $IMAGE_INIT' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_RABBITMQ' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
@@ -140,45 +139,28 @@ Point your browser to:
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
 ```
 
-### Expose Elasticsearch service
+### Expose RabbitMQ service
 
 By default, the application does not have an external IP. Run the
 following command to expose an external IP:
 
 ```
-kubectl patch svc "$APP_INSTANCE_NAME-elasticsearch-svc" \
+kubectl patch svc "$APP_INSTANCE_NAME-rabbitmq-svc" \
   --namespace "$NAMESPACE" \
   -p '{"spec": {"type": "LoadBalancer"}}'
 ```
 
-### Access Elasticsearch service
+### Access RabbitMQ service
 
-Get the external IP of the Elasticsearch service and visit
-the URL printed below in your browser.
+Get the external IP of the RabbitMQ service.
 
 ```
 SERVICE_IP=$(kubectl get \
   --namespace ${NAMESPACE} \
-  svc ${APP_INSTANCE_NAME}-elasticsearch-svc \
+  svc ${APP_INSTANCE_NAME}-rabbitmq-svc \
   -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
-echo "http://${SERVICE_IP}:9200"
+echo "http://${SERVICE_IP}"
 ```
 
 Note that it might take some time for the external IP to be provisioned.
-
-### Scale the cluster
-
-Scale the number of master node replicas by the following command:
-
-```
-kubectl scale statefulsets "$APP_INSTANCE_NAME-elasticsearch" \
-  --namespace "$NAMESPACE" --replicas=<new-replicas>
-```
-
-By default, there are 2 replicas to satisfy the minimum master quorum.
-To increase resilience, it is recommended to scale the number of replicas
-to at least 3.
-
-For more information about the StatefulSets scaling, check the
-[Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/#kubectl-scale).
