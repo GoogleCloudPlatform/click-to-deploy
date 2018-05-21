@@ -8,7 +8,7 @@ If you would like to learn more about Memcached, please, visit [Memcached websit
 
 Popular open source software stacks on Kubernetes packaged by Google and made available in Google Cloud Marketplace.
 
-# Memcache K8s App - Installation and Management
+# Installation
 
 ## Quick install with Google Cloud Marketplace
 
