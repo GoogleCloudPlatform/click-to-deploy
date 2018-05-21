@@ -2,9 +2,9 @@
 Memcached is an open source in-memory, key-value store. Key features of this solution include high performance and ease of distribution.
 Although Memcached is intended to be use with dynamic web applications, it can be used as a caching system for a number of databases.
 
-[Learn more](https://memcached.org/).
+If you would like to learn more about Memcached, please, visit [Memcached website](https://memcached.org/).
 
-## About Google Click to Deploy
+## About Google Click to Deploy K8s Solutions
 
 Popular open source software stacks on Kubernetes packaged by Google and made available in Google Cloud Marketplace.
 
