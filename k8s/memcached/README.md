@@ -8,7 +8,7 @@ If you would like to learn more about Memcached, please, visit [Memcached websit
 
 Popular open source software stacks on Kubernetes packaged by Google and made available in Google Cloud Marketplace.
 
-# Installation
+# Memcache K8s App - Installation and Management
 
 ## Quick install with Google Cloud Marketplace
 
@@ -132,31 +132,33 @@ Point your browser to:
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
 ```
 
-# Instalation
-
-*TODO: instructions to be written *
-
 # Basic Usage
 
 *TODO: instructions to be written *
 
 ## Acquire IP addresses of Memcached instances
 
-*TODO: instructions to be written *
+Your application can retrieve information about Memcached instances using kubectl command or pragmatically (e.g. via Python).
+
+To discover IP addresses of Memcached instances using kubectl, please, run the following command:
 
 ## Expose Memcached service to external world
 
-It is not recommended to expose Memcached K8s App for external access.
+In this specific example, there is no encyption between an application and Memcached instances and no authentication/authorization schema is applied. The assumption is that applications deployed within the same Kubernetes cluster can talk freely to Memcached instances which are meant to be an internal cache of an application. 
 
-By default, Memcached is not exposed to external world. It's meant to be an internal cache of an application so access to Memcached from external world.
+It is not recommended to expose Memcached K8s App for external access.
 
 # Scaling
 
-*TODO: instructions for scaling*
+By default, Memcached K8s application is deployed using 2 replicas. You can manually scale it to deploy more replicas using the following command.
+
+```shell
+kubectl scale statefulsets "$APP_INSTANCE_NAME-memcached" --namespace "$NAMESPACE" --replicas=<new-replicas>
+```
 
 # Backup and Restore
 
-*TODO: instructions for backups*
+There is no need to backup Memcached application - it's due to the nature of Memcached which serves as internal application cache and is updated by application in a dynamic way. 
 
 # Memcached updates
 
@@ -164,7 +166,24 @@ By default, Memcached is not exposed to external world. It's meant to be an inte
 
 # Deletion
 
-*TODO: instructions for deletetion of running Memcached solution *
+You can uninstall/delete Memcached application either using Google Cloud Console or using K8s Apps tools.
+
+* Navigate to the `memcached` directory.
+
+```shell
+cd google-click-to-deploy/k8s/memcached
+```
+* Run the uninstall command
+
+```shell
+make app/uninstall
+```
+
+Optionally, if you don't need both the deployed application and GKE cluster used for deployment then you can delete the whole GKE cluster using this command:
+
+```shell
+gcloud container clusters delete "$CLUSTER" --zone "$ZONE"
+```
 
 # Logging and Monitoring
 
