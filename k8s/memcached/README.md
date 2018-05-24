@@ -58,7 +58,8 @@ gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketp
 Do a one-time setup for your cluster to understand Application resources.
 
 ```shell
-kubectl apply -f google-marketplace-k8s-app-tools/crd/*
+cd google-click-to-deploy/k8s/memcached
+make crd/install
 ```
 
 The Application resource is defined by the
@@ -105,23 +106,12 @@ for i in "IMAGE_MEMCACHED"; do
 done
 ```
 
-#### Expand the manifest template
-
-Use `envsubst` to expand the template. It is recommended that you save the
-expanded manifest file for future updates to the application.
-
-```shell
-awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_MEMCACHED' \
-  > "${APP_INSTANCE_NAME}_manifest.yaml"
-```
-
 #### Apply to Kubernetes
 
-Use `kubectl` to apply the manifest to your Kubernetes cluster.
+Use make to install Memcached application
 
 ```shell
-kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
+make app/install
 ```
 
 #### View the app in the Google Cloud Console
