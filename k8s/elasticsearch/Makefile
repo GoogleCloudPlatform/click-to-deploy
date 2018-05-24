@@ -1,25 +1,47 @@
-APP_NAME = elasticsearch
+###########################################################
+# Define convenience parameters (if not already defined). #
+###########################################################
 
-APP_PARAMETERS ?= {"APP_INSTANCE_NAME": "$(APP_INSTANCE_NAME)", "NAMESPACE": "$(NAMESPACE)", "REPLICAS": "2"}
+NAME ?= elasticsearch-1
+TAG ?= latest
 
-tools_path = ../vendor/marketplace-tools
+REGISTRY ?= gcr.io/$(shell gcloud config get-value project | tr ':' '/')
 
-include $(tools_path)/gcloud.Makefile
+ELASTICSEARCH_REGISTRY ?= $(REGISTRY)/elasticsearch
+REGISTRY_FOR_DEPLOYER ?= $(REGISTRY)
 
-include $(tools_path)/crd.Makefile
-include $(tools_path)/app.Makefile
-include $(tools_path)/ubbagent.Makefile
+########################################
+# Include marketplace-tools Makefiles. #
+########################################
 
-REGISTRY_FOR_DEPLOYER ?= $(APP_REGISTRY)
-$(info ---- REGISTRY_FOR_DEPLOYER = $(REGISTRY_FOR_DEPLOYER))
+include ../vendor/marketplace-tools/app.Makefile
+include ../vendor/marketplace-tools/base_containers.Makefile
+include ../vendor/marketplace-tools/crd.Makefile
+include ../vendor/marketplace-tools/gcloud.Makefile
+include ../vendor/marketplace-tools/ubbagent.Makefile
 
+##############################################
+# Define variables required by app.Makefile. #
+##############################################
+
+APP_DEPLOYER_IMAGE ?= $(ELASTICSEARCH_REGISTRY)/deployer:latest
+APP_PARAMETERS ?= { \
+  "APP_INSTANCE_NAME": "$(NAME)", \
+  "NAMESPACE": "$(NAMESPACE)", \
+  "REPLICAS": "2" \
+}
+APP_TEST_PARAMETERS ?= {}
+
+#######################################
+# Define extensions for app.Makefile. #
+#######################################
 
 app/build:: .build/deployer .build/ubuntu16_04 .build/elasticsearch
 
-.build/deployer: deployer/* manifest/* $(MARKETPLACE_BASE_BUILD)/deployer-kubectl $(APP_BUILD)/registry_prefix | app/setup
+.build/deployer: deployer/* manifest/* base/build/deployer/kubectl | gcloud/REGISTRY gcloud/TAG
 	docker build \
 	    --build-arg REGISTRY="$(REGISTRY_FOR_DEPLOYER)" \
-	    --build-arg TAG="$(APP_TAG)" \
+	    --build-arg TAG="$(TAG)" \
 	    --build-arg MARKETPLACE_REGISTRY="$(MARKETPLACE_REGISTRY)" \
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
 	    -f deployer/Dockerfile \
@@ -27,17 +49,17 @@ app/build:: .build/deployer .build/ubuntu16_04 .build/elasticsearch
 	docker push "$(APP_DEPLOYER_IMAGE)"
 	@touch "$@"
 
-# Relocate public ubuntu16_04 image to $APP_REGISTRY.
-.build/ubuntu16_04: $(APP_BUILD)/registry_prefix | app/setup
+# Relocate public ubuntu16_04 image to $ELASTICSEARCH_REGISTRY.
+.build/ubuntu16_04: | gcloud/REGISTRY gcloud/TAG
 	docker pull launcher.gcr.io/google/ubuntu16_04
-	docker tag launcher.gcr.io/google/ubuntu16_04 "$(APP_REGISTRY)/ubuntu16_04:$(APP_TAG)"
-	docker push "$(APP_REGISTRY)/ubuntu16_04:$(APP_TAG)"
+	docker tag launcher.gcr.io/google/ubuntu16_04 "$(ELASTICSEARCH_REGISTRY)/ubuntu16_04:$(TAG)"
+	docker push "$(ELASTICSEARCH_REGISTRY)/ubuntu16_04:$(TAG)"
 	@touch "$@"
 
 # Simulate building of primary app image. Actually just copying public image to
 # local registry.
-.build/elasticsearch: $(APP_BUILD)/registry_prefix | app/setup
+.build/elasticsearch: | gcloud/REGISTRY gcloud/TAG
 	docker pull launcher.gcr.io/google/elasticsearch5
-	docker tag launcher.gcr.io/google/elasticsearch5 "$(APP_REGISTRY):$(APP_TAG)"
-	docker push "$(APP_REGISTRY):$(APP_TAG)"
+	docker tag launcher.gcr.io/google/elasticsearch5 "$(ELASTICSEARCH_REGISTRY):$(TAG)"
+	docker push "$(ELASTICSEARCH_REGISTRY):$(TAG)"
 	@touch "$@"

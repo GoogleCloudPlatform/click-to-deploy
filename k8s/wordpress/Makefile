@@ -1,21 +1,48 @@
-APP_NAME = wordpress
+###########################################################
+# Define convenience parameters (if not already defined). #
+###########################################################
 
-tools_path = ../vendor/marketplace-tools
+NAME ?= wordpress-1
+TAG ?= latest
 
-include $(tools_path)/gcloud.Makefile
+REGISTRY ?= gcr.io/$(shell gcloud config get-value project | tr ':' '/')
 
-include $(tools_path)/crd.Makefile
-include $(tools_path)/app.Makefile
+WORDPRESS_REGISTRY ?= $(REGISTRY)/wordpress
+REGISTRY_FOR_DEPLOYER ?= $(REGISTRY)
 
-REGISTRY_FOR_DEPLOYER ?= $(APP_REGISTRY)
-$(info ---- REGISTRY_FOR_DEPLOYER = $(REGISTRY_FOR_DEPLOYER))
+########################################
+# Include marketplace-tools Makefiles. #
+########################################
+
+include ../vendor/marketplace-tools/app.Makefile
+include ../vendor/marketplace-tools/base_containers.Makefile
+include ../vendor/marketplace-tools/crd.Makefile
+include ../vendor/marketplace-tools/gcloud.Makefile
+include ../vendor/marketplace-tools/ubbagent.Makefile
+
+##############################################
+# Define variables required by app.Makefile. #
+##############################################
+
+APP_DEPLOYER_IMAGE ?= $(WORDPRESS_REGISTRY)/deployer:latest
+APP_PARAMETERS ?= { \
+  "APP_INSTANCE_NAME": "$(NAME)", \
+  "NAMESPACE": "$(NAMESPACE)", \
+  "IMAGE_WORDPRESS": "$(WORDPRESS_REGISTRY):$(TAG)", \
+  "IMAGE_MYSQL": "$(WORDPRESS_REGISTRY)/mysql:$(TAG)" \
+}
+APP_TEST_PARAMETERS ?= {}
+
+#######################################
+# Define extensions for app.Makefile. #
+#######################################
 
 app/build:: .build/deployer .build/wordpress .build/mysql
 
-.build/deployer: deployer/* manifest/* $(MARKETPLACE_BASE_BUILD)/deployer-kubectl $(APP_BUILD)/registry_prefix | app/setup
+.build/deployer: deployer/* manifest/* base/build/deployer/kubectl | gcloud/REGISTRY
 	docker build \
 	    --build-arg REGISTRY="$(REGISTRY_FOR_DEPLOYER)" \
-	    --build-arg TAG="$(APP_TAG)" \
+	    --build-arg TAG="$(TAG)" \
 	    --build-arg MARKETPLACE_REGISTRY="$(MARKETPLACE_REGISTRY)" \
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
 	    -f deployer/Dockerfile \
@@ -25,15 +52,15 @@ app/build:: .build/deployer .build/wordpress .build/mysql
 
 # Simulate building of primary app image. Actually just copying public image to
 # local registry.
-.build/wordpress: $(APP_BUILD)/registry_prefix | app/setup
+.build/wordpress: | gcloud/REGISTRY
 	docker pull launcher.gcr.io/google/wordpress4-php5-apache
-	docker tag launcher.gcr.io/google/wordpress4-php5-apache "$(APP_REGISTRY):$(APP_TAG)"
-	docker push "$(APP_REGISTRY):$(APP_TAG)"
+	docker tag launcher.gcr.io/google/wordpress4-php5-apache "$(WORDPRESS_REGISTRY):$(TAG)"
+	docker push "$(WORDPRESS_REGISTRY):$(TAG)"
 	@touch "$@"
 
-# Relocate public mysql image to $APP_REGISTRY.
-.build/mysql: $(APP_BUILD)/registry_prefix | app/setup
+# Relocate public mysql image to $REGISTRY.
+.build/mysql: | gcloud/REGISTRY
 	docker pull launcher.gcr.io/google/mysql5
-	docker tag launcher.gcr.io/google/mysql5 "$(APP_REGISTRY)/mysql:$(APP_TAG)"
-	docker push "$(APP_REGISTRY)/mysql:$(APP_TAG)"
+	docker tag launcher.gcr.io/google/mysql5 "$(WORDPRESS_REGISTRY)/mysql:$(TAG)"
+	docker push "$(WORDPRESS_REGISTRY)/mysql:$(TAG)"
 	@touch "$@"
