@@ -1,0 +1,43 @@
+apiVersion: apps/v1beta2
+kind: StatefulSet
+metadata:
+  name: $APP_INSTANCE_NAME-memcached
+  labels: &MemcachedDeploymentLabels
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/component: memcached-server
+spec:
+  selector:
+    matchLabels: *MemcachedDeploymentLabels
+  serviceName: $APP_INSTANCE_NAME-memcached-svc
+  replicas: 2
+  template:
+    metadata:
+      labels: *MemcachedDeploymentLabels
+    spec:
+      terminationGracePeriodSeconds: 180
+      containers:
+      - name: memcached
+        image: $IMAGE_MEMCACHED
+        imagePullPolicy: Always
+        ports:
+        - name: memcached
+          containerPort: 11211
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $APP_INSTANCE_NAME-memcached-svc
+  labels:
+    app: $APP_INSTANCE_NAME
+    component: memcached-server
+spec:
+  clusterIP: None
+  ports:
+  - name: memcached-port
+    port: 11211
+    protocol: TCP
+  selector:
+    app: $APP_INSTANCE_NAME
+    component: memcached-server
+  type: ClusterIP # LoadBalancer

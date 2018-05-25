@@ -37,11 +37,11 @@ spec:
   selector:
     matchLabels: *ElasticsearchDeploymentLabels
   serviceName: $APP_INSTANCE_NAME-elasticsearch-svc
-  replicas: 2
+  replicas: $REPLICAS
   updateStrategy:
-    # The procedure for updating the ElasticSearch cluster is described at
-    # https://www.elastic.co/guide/en/elasticsearch/reference/current/rolling-upgrades.html
-    type: OnDelete
+      # The procedure for updating the ElasticSearch cluster is described at
+      # https://www.elastic.co/guide/en/elasticsearch/reference/current/rolling-upgrades.html
+      type: OnDelete
   template:
     metadata:
       labels: *ElasticsearchDeploymentLabels
