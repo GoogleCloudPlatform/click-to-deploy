@@ -14,10 +14,11 @@ REGISTRY_FOR_DEPLOYER ?= $(RABBITMQ_REGISTRY)
 ########################################
 
 include ../vendor/marketplace-tools/app.Makefile
-include ../vendor/marketplace-tools/base_containers.Makefile
 include ../vendor/marketplace-tools/crd.Makefile
 include ../vendor/marketplace-tools/gcloud.Makefile
+include ../vendor/marketplace-tools/marketplace.Makefile
 include ../vendor/marketplace-tools/ubbagent.Makefile
+include ../vendor/marketplace-tools/var.Makefile
 
 ##############################################
 # Define variables required by app.Makefile. #
@@ -39,7 +40,7 @@ APP_TEST_PARAMETERS ?= {}
 app/build:: .build/deployer .build/rabbitmq
 
 .build/deployer: deployer/* manifest/* \
-                 .build/marketplace-base-containers/deployer-kubectl \
+                 .build/marketplace/deployer/envsubst \
                  .build/var/APP_DEPLOYER_IMAGE \
                  .build/var/REGISTRY \
                  .build/var/REGISTRY_FOR_DEPLOYER \
@@ -47,7 +48,7 @@ app/build:: .build/deployer .build/rabbitmq
 	docker build \
 	    --build-arg REGISTRY="$(REGISTRY_FOR_DEPLOYER)" \
 	    --build-arg TAG="$(TAG)" \
-	    --build-arg MARKETPLACE_REGISTRY="$(MARKETPLACE_REGISTRY)" \
+	    --build-arg REGISTRY="$(REGISTRY)" \
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
 	    -f deployer/Dockerfile \
 	    .

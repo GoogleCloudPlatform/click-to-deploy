@@ -1,5 +1,4 @@
-ARG MARKETPLACE_REGISTRY
-FROM ${MARKETPLACE_REGISTRY}/deployer_kubectl_base
+FROM "gcr.io/google-marketplace-tools/k8s/deployer_envsubst"
 
 ADD manifest/* /data/manifest/
 ADD schema.yaml /data/
