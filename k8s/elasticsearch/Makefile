@@ -38,7 +38,13 @@ APP_TEST_PARAMETERS ?= {}
 
 app/build:: .build/deployer .build/ubuntu16_04 .build/elasticsearch
 
-.build/deployer: deployer/* manifest/* base/build/deployer/kubectl | gcloud/REGISTRY gcloud/TAG
+.build/deployer: deployer/* manifest/* \
+                 .build/marketplace-base-containers/deployer-kubectl \
+                 .build/var/APP_DEPLOYER_IMAGE \
+                 .build/var/MARKETPLACE_REGISTRY \
+                 .build/var/REGISTRY \
+                 .build/var/REGISTRY_FOR_DEPLOYER \
+                 .build/var/TAG
 	docker build \
 	    --build-arg REGISTRY="$(REGISTRY_FOR_DEPLOYER)" \
 	    --build-arg TAG="$(TAG)" \
@@ -50,7 +56,9 @@ app/build:: .build/deployer .build/ubuntu16_04 .build/elasticsearch
 	@touch "$@"
 
 # Relocate public ubuntu16_04 image to $ELASTICSEARCH_REGISTRY.
-.build/ubuntu16_04: | gcloud/REGISTRY gcloud/TAG
+.build/ubuntu16_04: .build/var/REGISTRY \
+                    .build/var/TAG \
+                    .build/var/ELASTICSEARCH_REGISTRY
 	docker pull launcher.gcr.io/google/ubuntu16_04
 	docker tag launcher.gcr.io/google/ubuntu16_04 "$(ELASTICSEARCH_REGISTRY)/ubuntu16_04:$(TAG)"
 	docker push "$(ELASTICSEARCH_REGISTRY)/ubuntu16_04:$(TAG)"
@@ -58,7 +66,9 @@ app/build:: .build/deployer .build/ubuntu16_04 .build/elasticsearch
 
 # Simulate building of primary app image. Actually just copying public image to
 # local registry.
-.build/elasticsearch: | gcloud/REGISTRY gcloud/TAG
+.build/elasticsearch: .build/var/REGISTRY \
+                      .build/var/TAG \
+                      .build/var/ELASTICSEARCH_REGISTRY
 	docker pull launcher.gcr.io/google/elasticsearch5
 	docker tag launcher.gcr.io/google/elasticsearch5 "$(ELASTICSEARCH_REGISTRY):$(TAG)"
 	docker push "$(ELASTICSEARCH_REGISTRY):$(TAG)"

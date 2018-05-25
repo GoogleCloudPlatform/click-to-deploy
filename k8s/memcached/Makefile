@@ -38,7 +38,13 @@ APP_TEST_PARAMETERS ?= {}
 
 app/build:: .build/deployer .build/memcached
 
-.build/deployer: deployer/* manifest/* base/build/deployer/kubectl | gcloud/REGISTRY
+.build/deployer: deployer/* manifest/* \
+                 .build/marketplace-base-containers/deployer-kubectl \
+                 .build/var/APP_DEPLOYER_IMAGE \
+                 .build/var/MARKETPLACE_REGISTRY \
+                 .build/var/REGISTRY \
+                 .build/var/REGISTRY_FOR_DEPLOYER \
+                 .build/var/TAG
 	docker build \
 	    --build-arg REGISTRY="$(REGISTRY_FOR_DEPLOYER)" \
 	    --build-arg TAG="$(TAG)" \
@@ -51,7 +57,9 @@ app/build:: .build/deployer .build/memcached
 
 # Simulate building of primary app image. Actually just copying public image to
 # local registry.
-.build/memcached: | gcloud/REGISTRY
+.build/memcached: .build/var/REGISTRY \
+                  .build/var/TAG \
+                  .build/var/MEMCACHED_REGISTRY
 	gcloud docker -- pull launcher.gcr.io/google/memcached1
 	docker tag launcher.gcr.io/google/memcached1 "$(MEMCACHED_REGISTRY):$(TAG)"
 	gcloud docker -- push "$(MEMCACHED_REGISTRY):$(TAG)"

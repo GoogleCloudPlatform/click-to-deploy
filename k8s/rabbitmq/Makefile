@@ -38,7 +38,12 @@ APP_TEST_PARAMETERS ?= {}
 
 app/build:: .build/deployer .build/rabbitmq
 
-.build/deployer: deployer/* manifest/* base/build/deployer/kubectl | gcloud/REGISTRY
+.build/deployer: deployer/* manifest/* \
+                 .build/marketplace-base-containers/deployer-kubectl \
+                 .build/var/APP_DEPLOYER_IMAGE \
+                 .build/var/REGISTRY \
+                 .build/var/REGISTRY_FOR_DEPLOYER \
+                 .build/var/TAG
 	docker build \
 	    --build-arg REGISTRY="$(REGISTRY_FOR_DEPLOYER)" \
 	    --build-arg TAG="$(TAG)" \
@@ -51,7 +56,9 @@ app/build:: .build/deployer .build/rabbitmq
 
 # Simulate building of primary app image. Actually just copying public image to
 # local registry.
-.build/rabbitmq: | gcloud/REGISTRY
+.build/rabbitmq: .build/var/RABBITMQ_REGISTRY \
+                 .build/var/REGISTRY_FOR_DEPLOYER \
+                 .build/var/TAG
 	gcloud docker -- pull launcher.gcr.io/google/rabbitmq3
 	docker tag launcher.gcr.io/google/rabbitmq3 "$(RABBITMQ_REGISTRY):$(TAG)"
 	gcloud docker -- push "$(RABBITMQ_REGISTRY):$(TAG)"

@@ -19,6 +19,7 @@ include ../vendor/marketplace-tools/base_containers.Makefile
 include ../vendor/marketplace-tools/crd.Makefile
 include ../vendor/marketplace-tools/gcloud.Makefile
 include ../vendor/marketplace-tools/ubbagent.Makefile
+include ../vendor/marketplace-tools/var.Makefile
 
 ##############################################
 # Define variables required by app.Makefile. #
@@ -38,7 +39,13 @@ APP_TEST_PARAMETERS ?= {}
 
 app/build:: .build/deployer .build/cassandra
 
-.build/deployer: deployer/* manifest/* base/build/deployer/kubectl | gcloud/REGISTRY gcloud/TAG
+.build/deployer: deployer/* manifest/* \
+                 .build/marketplace-base-containers/deployer-kubectl \
+                 .build/var/APP_DEPLOYER_IMAGE \
+                 .build/var/MARKETPLACE_REGISTRY \
+                 .build/var/REGISTRY \
+                 .build/var/REGISTRY_FOR_DEPLOYER \
+                 .build/var/TAG
 	docker build \
 	    --build-arg REGISTRY="$(REGISTRY_FOR_DEPLOYER)" \
 	    --build-arg TAG="$(TAG)" \
@@ -51,7 +58,9 @@ app/build:: .build/deployer .build/cassandra
 
 # Simulate building of primary app image. Actually just copying public image to
 # local registry.
-.build/cassandra: | gcloud/REGISTRY gcloud/TAG
+.build/cassandra: .build/var/CASSANDRA_REGISTRY \
+                  .build/var/REGISTRY \
+                  .build/var/TAG
 	gcloud docker -- pull launcher.gcr.io/google/cassandra3
 	docker tag launcher.gcr.io/google/cassandra3 "$(CASSANDRA_REGISTRY):$(TAG)"
 	gcloud docker -- push "$(CASSANDRA_REGISTRY):$(TAG)"
