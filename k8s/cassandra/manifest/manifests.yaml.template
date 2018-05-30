@@ -9,7 +9,7 @@ spec:
   selector:
     matchLabels: *CassandraDeploymentLabels
   serviceName: $APP_INSTANCE_NAME-cassandra-svc
-  replicas: 1
+  replicas: 3
   template:
     metadata:
       labels: *CassandraDeploymentLabels
@@ -19,6 +19,11 @@ spec:
       - name: cassandra
         image: $IMAGE_CASSANDRA
         imagePullPolicy: Always
+        env:
+        - name: CASSANDRA_CLUSTER_NAME
+          value: $APP_INSTANCE_NAME-cassandra-svc
+        - name: CASSANDRA_SEEDS
+          value: $APP_INSTANCE_NAME-cassandra-0.$APP_INSTANCE_NAME-cassandra-svc.$NAMESPACE.svc.cluster.local
         ports:
         - name: pure-intra
           containerPort: 7000
@@ -33,6 +38,13 @@ spec:
         volumeMounts:
         - name: $APP_INSTANCE_NAME-cassandra-pvc
           mountPath: /var/lib/cassandra
+        livenessProbe:
+          exec:
+            command:
+            - /usr/bin/pgrep
+            - -x
+            - "java"
+          initialDelaySeconds: 5
   volumeClaimTemplates:
   - metadata:
       name: $APP_INSTANCE_NAME-cassandra-pvc
@@ -60,4 +72,5 @@ spec:
   selector:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app.kubernetes.io/component: cassandra-server
-  type: LoadBalancer
+  type: ClusterIP
+  clusterIP: None
