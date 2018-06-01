@@ -4,7 +4,6 @@ ADD manifest/* /data/manifest/
 ADD schema.yaml /data/
 
 # Provide registry prefix and tag for default values for images.
-# TODO(#12): Remove this.
 ARG REGISTRY
 ARG TAG
 RUN cat /data/schema.yaml \
