@@ -1,31 +1,16 @@
-###########################################################
-# Define convenience parameters (if not already defined). #
-###########################################################
-
-NAME ?= elasticsearch-1
-TAG ?= latest
-
-REGISTRY ?= gcr.io/$(shell gcloud config get-value project | tr ':' '/')
-
-ELASTICSEARCH_REGISTRY ?= $(REGISTRY)/elasticsearch
-REGISTRY_FOR_DEPLOYER ?= $(REGISTRY)
-
-########################################
-# Include marketplace-tools Makefiles. #
-########################################
-
-include ../vendor/marketplace-tools/app.Makefile
 include ../vendor/marketplace-tools/crd.Makefile
 include ../vendor/marketplace-tools/gcloud.Makefile
 include ../vendor/marketplace-tools/marketplace.Makefile
 include ../vendor/marketplace-tools/ubbagent.Makefile
 include ../vendor/marketplace-tools/var.Makefile
 
-##############################################
-# Define variables required by app.Makefile. #
-##############################################
+include ../vendor/marketplace-tools/app.Makefile
 
-APP_DEPLOYER_IMAGE ?= $(ELASTICSEARCH_REGISTRY)/deployer:latest
+TAG ?= latest
+$(info ---- TAG = $(TAG))
+
+APP_DEPLOYER_IMAGE ?= $(REGISTRY)/elasticsearch/deployer:$(TAG)
+NAME ?= elasticsearch-1
 APP_PARAMETERS ?= { \
   "APP_INSTANCE_NAME": "$(NAME)", \
   "NAMESPACE": "$(NAMESPACE)", \
@@ -33,43 +18,48 @@ APP_PARAMETERS ?= { \
 }
 APP_TEST_PARAMETERS ?= {}
 
-#######################################
-# Define extensions for app.Makefile. #
-#######################################
 
-app/build:: .build/deployer .build/ubuntu16_04 .build/elasticsearch
+app/build:: .build/elasticsearch/elasticsearch \
+            .build/elasticsearch/deployer \
+            .build/elasticsearch/ubuntu16_04
 
-.build/deployer: deployer/* manifest/* \
-                 .build/marketplace/deployer/envsubst \
-                 .build/var/APP_DEPLOYER_IMAGE \
-                 .build/var/REGISTRY \
-                 .build/var/REGISTRY_FOR_DEPLOYER \
-                 .build/var/TAG
+
+.build/elasticsearch: | .build
+	mkdir -p "$@"
+
+
+.build/elasticsearch/deployer: deployer/* \
+                               manifest/* \
+                               .build/marketplace/deployer/envsubst \
+                               .build/var/APP_DEPLOYER_IMAGE \
+                               .build/var/REGISTRY \
+                               .build/var/TAG \
+                               | .build/elasticsearch
 	docker build \
-	    --build-arg REGISTRY="$(REGISTRY_FOR_DEPLOYER)" \
+	    --build-arg REGISTRY="$(REGISTRY)/elasticsearch" \
 	    --build-arg TAG="$(TAG)" \
-	    --build-arg REGISTRY="$(REGISTRY)" \
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
 	    -f deployer/Dockerfile \
 	    .
 	docker push "$(APP_DEPLOYER_IMAGE)"
 	@touch "$@"
 
-# Relocate public ubuntu16_04 image to $ELASTICSEARCH_REGISTRY.
-.build/ubuntu16_04: .build/var/REGISTRY \
-                    .build/var/TAG \
-                    .build/var/ELASTICSEARCH_REGISTRY
-	docker pull launcher.gcr.io/google/ubuntu16_04
-	docker tag launcher.gcr.io/google/ubuntu16_04 "$(ELASTICSEARCH_REGISTRY)/ubuntu16_04:$(TAG)"
-	docker push "$(ELASTICSEARCH_REGISTRY)/ubuntu16_04:$(TAG)"
+
+.build/elasticsearch/elasticsearch: .build/var/REGISTRY \
+                                    .build/var/TAG \
+                                    | .build/elasticsearch
+	docker pull launcher.gcr.io/google/elasticsearch5
+	docker tag launcher.gcr.io/google/elasticsearch5 \
+	    "$(REGISTRY)/elasticsearch:$(TAG)"
+	docker push "$(REGISTRY)/elasticsearch:$(TAG)"
 	@touch "$@"
 
-# Simulate building of primary app image. Actually just copying public image to
-# local registry.
-.build/elasticsearch: .build/var/REGISTRY \
-                      .build/var/TAG \
-                      .build/var/ELASTICSEARCH_REGISTRY
-	docker pull launcher.gcr.io/google/elasticsearch5
-	docker tag launcher.gcr.io/google/elasticsearch5 "$(ELASTICSEARCH_REGISTRY):$(TAG)"
-	docker push "$(ELASTICSEARCH_REGISTRY):$(TAG)"
+
+.build/elasticsearch/ubuntu16_04: .build/var/REGISTRY \
+                                  .build/var/TAG \
+                                  | .build/elasticsearch
+	docker pull launcher.gcr.io/google/ubuntu16_04
+	docker tag launcher.gcr.io/google/ubuntu16_04 \
+	    "$(REGISTRY)/elasticsearch/ubuntu16_04:$(TAG)"
+	docker push "$(REGISTRY)/elasticsearch/ubuntu16_04:$(TAG)"
 	@touch "$@"

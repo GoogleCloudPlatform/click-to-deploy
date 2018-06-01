@@ -1,9 +1,9 @@
-FROM "gcr.io/google-marketplace-tools/k8s/deployer_envsubst"
+FROM gcr.io/google-marketplace-tools/k8s/deployer_envsubst
 
 ADD manifest/* /data/manifest/
 ADD schema.yaml /data/
 
-# Override default values for images.
+# Provide registry prefix and tag for default values for images.
 # TODO(#12): Remove this.
 ARG REGISTRY
 ARG TAG
