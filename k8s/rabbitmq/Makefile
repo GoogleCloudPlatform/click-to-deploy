@@ -1,33 +1,53 @@
-APP_NAME = rabbitmq
+include ../vendor/marketplace-tools/app.Makefile
+include ../vendor/marketplace-tools/crd.Makefile
+include ../vendor/marketplace-tools/gcloud.Makefile
+include ../vendor/marketplace-tools/marketplace.Makefile
+include ../vendor/marketplace-tools/ubbagent.Makefile
+include ../vendor/marketplace-tools/var.Makefile
 
-tools_path = ../vendor/marketplace-tools
 
-include $(tools_path)/gcloud.Makefile
+TAG ?= latest
+$(info ---- TAG = $(TAG))
 
-include $(tools_path)/crd.Makefile
-include $(tools_path)/app.Makefile
-include $(tools_path)/ubbagent.Makefile
+APP_DEPLOYER_IMAGE ?= $(REGISTRY)/rabbitmq/deployer:$(TAG)
+NAME ?= rabbitmq-1
+APP_PARAMETERS ?= { \
+  "APP_INSTANCE_NAME": "$(NAME)", \
+  "NAMESPACE": "$(NAMESPACE)" \
+}
+APP_TEST_PARAMETERS ?= {}
 
-REGISTRY_FOR_DEPLOYER ?= $(APP_REGISTRY)
-$(info ---- REGISTRY_FOR_DEPLOYER = $(REGISTRY_FOR_DEPLOYER))
 
-app/build:: .build/deployer .build/rabbitmq
+app/build:: .build/rabbitmq/deployer \
+            .build/rabbitmq/rabbitmq
 
-.build/deployer: deployer/* manifest/* $(MARKETPLACE_BASE_BUILD)/deployer-kubectl $(APP_BUILD)/registry_prefix | app/setup
+
+.build/rabbitmq: | .build
+	mkdir -p "$@"
+
+
+.build/rabbitmq/deployer: deployer/* \
+                          manifest/* \
+                          .build/marketplace/deployer/envsubst \
+                          .build/var/APP_DEPLOYER_IMAGE \
+                          .build/var/REGISTRY \
+                          .build/var/TAG \
+                          | .build/rabbitmq
 	docker build \
-	    --build-arg REGISTRY="$(REGISTRY_FOR_DEPLOYER)" \
-	    --build-arg TAG="$(APP_TAG)" \
-	    --build-arg MARKETPLACE_REGISTRY="$(MARKETPLACE_REGISTRY)" \
+	    --build-arg REGISTRY="$(REGISTRY)/rabbitmq" \
+	    --build-arg TAG="$(TAG)" \
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
 	    -f deployer/Dockerfile \
 	    .
-	gcloud docker -- push "$(APP_DEPLOYER_IMAGE)"
+	docker push "$(APP_DEPLOYER_IMAGE)"
 	@touch "$@"
 
-# Simulate building of primary app image. Actually just copying public image to
-# local registry.
-.build/rabbitmq: $(APP_BUILD)/registry_prefix | app/setup
-	gcloud docker -- pull launcher.gcr.io/google/rabbitmq3
-	docker tag launcher.gcr.io/google/rabbitmq3 "$(APP_REGISTRY):$(APP_TAG)"
-	gcloud docker -- push "$(APP_REGISTRY):$(APP_TAG)"
+
+.build/rabbitmq/rabbitmq: .build/var/REGISTRY \
+                          .build/var/TAG \
+                          | .build/rabbitmq
+	docker pull launcher.gcr.io/google/rabbitmq3
+	docker tag launcher.gcr.io/google/rabbitmq3 \
+	    "$(REGISTRY)/rabbitmq:$(TAG)"
+	docker push "$(REGISTRY)/rabbitmq:$(TAG)"
 	@touch "$@"
