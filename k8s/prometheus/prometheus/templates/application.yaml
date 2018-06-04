@@ -56,4 +56,15 @@ spec:
   - group: extensions/v1beta1
     kind: DaemonSet
   notes: |-
-    TODO
+    # How to connect:
+
+    Forward the server port to your local machine:
+
+    ```
+    export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} \
+      -l "app={{ template "prometheus.name" . }},component={{ .Values.server.name }}" \
+      -o jsonpath="{.items[0].metadata.name}")
+    kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 9090
+    ```
+
+    Access the following URL in your web browser: `http://localhost:9090/`.
