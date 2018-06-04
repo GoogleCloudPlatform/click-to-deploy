@@ -185,7 +185,92 @@ For more information about the StatefulSets scaling, check the
 
 # Backup and restore
 
-TODO
+## Overview
+
+
+## Setup GCP project for backup
+
+The following steps use `gcloud` and `gsutil` tools to setup the environment for your backups. 
+For more information about the tools, please read the official documentation - respectively:
+[gcloud Overview](https://cloud.google.com/sdk/gcloud/) 
+and [gsutil Tool](https://cloud.google.com/storage/docs/gsutil).
+
+### Create a dedicated service account and store locally its JSON key
+
+```
+PROJECT=<your_GCP_project_name>
+
+SA_NAME=elasticsearch-backup # feel free to customize this name
+SA_EMAIL="$SA_NAME@$PROJECT.iam.gserviceaccount.com"
+
+SA_KEY_FILE=<path_to_store_generated_service_account_key>
+
+# Create a service account
+gcloud iam service-accounts create $SA_NAME
+
+# Create and store a JSON key
+gcloud iam service-accounts keys create $SA_KEY_FILE \
+  --iam-account=$SA_EMAIL
+```
+
+### Create a GCS bucket for backups
+
+```
+BUCKET_NAME=my-es-backup # must be globally unique
+
+gsutil mb -c multi_regional -l us gs://$BUCKET_NAME
+gsutil acl ch -u $SA_EMAIL:WRITE gs://$BUCKET_NAME
+```
+
+## Setup the cluster to make it able to send backup to the GCS bucket
+
+### Expose the key in a Secret
+
+```
+KEY_BASE64="$(cat $SA_KEY_FILE | base64 -w 0)"
+kubectl patch secret "$APP_INSTANCE_NAME-backup-key" --namespace "$NAMESPACE" \
+  -p "{\"data\": {\"sa-key.json\": \"$KEY_BASE64\"}}"
+```
+
+### Recreate the Elasticsearch pods when updated the Secret
+
+```
+kubectl get pods --namespace $NAMESPACE --selector "app.kubernetes.io/name"="$APP_INSTANCE_NAME" -o yaml \
+  | kubectl replace --force -f -
+```
+
+### Store the key in Elasticsearch keystore 
+
+```
+kubectl exec $APP_INSTANCE_NAME-elasticsearch-0 --namespace $NAMESPACE \
+  -c elasticsearch -it -- /bin/bash
+
+CLIENT_NAME=default
+SETTING_NAME=gcs.client.$CLIENT_NAME.credentials_file
+
+elasticsearch-keystore create
+elasticsearch-keystore add-file $SETTING_NAME /usr/share/elasticsearch/gcs-backup/sa-key.json
+```
+
+### Configure the repository for storage
+
+```
+CLIENT_NAME=default
+SERVICE_IP=$(kubectl get \
+  --namespace ${NAMESPACE} \
+  svc ${APP_INSTANCE_NAME}-elasticsearch-svc \
+  -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+curl -X PUT "$SERVICE_IP:9200/_snapshot/backup_gcs_repository" -H 'Content-Type: application/json' \
+  -d "{ \
+    \"type\": \"gcs\", \
+    \"settings\": { \
+      \"bucket\": \"$BUCKET_NAME\", \
+      \"client\": \"$CLIENT_NAME\" \
+    } \
+  }"
+```
+
 
 # Update procedure
 

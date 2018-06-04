@@ -37,7 +37,8 @@ app/build:: .build/deployer .build/ubuntu16_04 .build/elasticsearch
 # Simulate building of primary app image. Actually just copying public image to
 # local registry.
 .build/elasticsearch: $(APP_BUILD)/registry_prefix | app/setup
-	docker pull launcher.gcr.io/google/elasticsearch5
-	docker tag launcher.gcr.io/google/elasticsearch5 "$(APP_REGISTRY):$(APP_TAG)"
+	#docker pull launcher.gcr.io/google/elasticsearch6
+	#docker tag launcher.gcr.io/google/elasticsearch6 "$(APP_REGISTRY):$(APP_TAG)"
+	docker tag my-elasticsearch-6 "$(APP_REGISTRY):$(APP_TAG)"
 	docker push "$(APP_REGISTRY):$(APP_TAG)"
 	@touch "$@"
