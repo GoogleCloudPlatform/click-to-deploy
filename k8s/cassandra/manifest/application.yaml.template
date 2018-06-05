@@ -40,7 +40,7 @@ spec:
   componentKinds:
   - group: v1
     kind: Service
-  - group: apps/v1beta1
+  - group: apps/v1beta2
     kind: StatefulSet
   notes: |-
     # Expose Cassandra service
