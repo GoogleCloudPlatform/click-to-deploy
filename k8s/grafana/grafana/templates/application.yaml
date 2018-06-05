@@ -57,5 +57,27 @@ spec:
   - group: rbac.authorization.k8s.io/v1beta1
     kind: RoleBinding
   notes: |-
-    # TODO
+    # How to connect to Grafana server
 
+    ## Check your admin password
+
+    ```
+    kubectl get secret --namespace {{ .Release.Namespace }} {{ template "grafana.fullname" . }} \
+      -o jsonpath="{.data.admin-password}" \
+      | base64 --decode ; echo
+    ```
+
+    ## Check your service public IP address
+
+    ```
+    SERVICE_IP="$(kubectl get svc --namespace {{ .Release.Namespace }} \
+      {{ template "grafana.fullname" . }} \
+      -o jsonpath='{.status.loadBalancer.ingress[0].ip}')"
+    ```
+
+    NOTE: It may take a few minutes to have a public IP available set up Load Balancer.
+
+    ## Log in to Grafana
+
+    Navigate in your web browser to: `http://$SERVICE_IP:{{ .Values.service.port -}}`.
+    In the login form, use the username of `admin` and the password as described above.

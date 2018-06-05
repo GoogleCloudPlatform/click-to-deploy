@@ -1,0 +1,28 @@
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  image.grafana:
+    type: string
+    default: $REGISTRY/grafana:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  replicas:
+    type: integer
+    default: 2
+  service.type:
+    type: string
+    default: LoadBalancer
+  service.port:
+    type: integer
+    default: 3000
+required:
+- name
+- namespace
+- image.grafana
+- replicas
