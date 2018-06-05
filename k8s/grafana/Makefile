@@ -27,7 +27,8 @@ APP_DEPLOYER_IMAGE ?= $(REGISTRY)/grafana/deployer:$(TAG)
 NAME ?= grafana-1
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
-  "namespace": "$(NAMESPACE)" \
+  "namespace": "$(NAMESPACE)", \
+  "image.grafana": "$(REGISTRY)/grafana:$(TAG)" \
 }
 
 # Extend the target as defined in app.Makefile to

@@ -10,8 +10,12 @@ replicas: 1
 deploymentStrategy: RollingUpdate
 
 image:
-  repository: grafana/grafana
-  tag: 5.1.2
+  # The following properties (repository and tag) were changed into one (grafana) due to
+  # requirements of GKE Apps.
+  # This change is represented in templates/deployment.yaml file as well.
+  #repository: grafana/grafana
+  #tag: 5.1.2
+  grafana: grafana/grafana:5.1.2
   pullPolicy: IfNotPresent
 
   ## Optionally specify an array of imagePullSecrets.
