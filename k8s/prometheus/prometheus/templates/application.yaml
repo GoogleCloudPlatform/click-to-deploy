@@ -69,7 +69,19 @@ spec:
 
     Access the following URL in your web browser: `http://localhost:9090/`.
 
-    # How to grant access to GKE cluster metrics to service account:
+    # How to grant access to GKE cluster metrics to service accounts:
+
+    NOTE: you will need a role of cluster-admin in your cluster. It is not assigned to GKE users by
+    default. IN order to grant yourself the role, run the following command:
+
+    ```
+    kubectl create clusterrolebinding <your_binding_name> \
+      --clusterrole=cluster-admin \
+      --user=<your email>
+    ```
+
+    Run the following commands to create cluster roles and role bindings allowing Prometheus
+    service accounts to monitor the cluster:
 
     ```
     kubectl apply --filename=- <<EOF
