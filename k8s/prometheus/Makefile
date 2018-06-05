@@ -74,8 +74,8 @@ app/build:: .build/prometheus/deployer \
 # Simulate building of primary app image. Actually just copying public image to
 # local registry.
 .build/prometheus/alertmanager: .build/var/REGISTRY \
-							    .build/var/TAG \
-							    | .build/prometheus
+			        .build/var/TAG \
+				| .build/prometheus
 	docker pull prom/alertmanager:v0.14.0
 	docker tag prom/alertmanager:v0.14.0 "$(REGISTRY)/prometheus/alertmanager:$(TAG)"
 	docker push "$(REGISTRY)/prometheus/alertmanager:$(TAG)"
@@ -85,8 +85,8 @@ app/build:: .build/prometheus/deployer \
 # Simulate building of primary app image. Actually just copying public image to
 # local registry.
 .build/prometheus/configmapreload: .build/var/REGISTRY \
-							       .build/var/TAG \
-							       | .build/prometheus
+				   .build/var/TAG \
+				   | .build/prometheus
 	docker pull jimmidyson/configmap-reload:v0.1
 	docker tag jimmidyson/configmap-reload:v0.1 "$(REGISTRY)/prometheus/configmapreload:$(TAG)"
 	docker push "$(REGISTRY)/prometheus/configmapreload:$(TAG)"
@@ -96,8 +96,8 @@ app/build:: .build/prometheus/deployer \
 # Simulate building of primary app image. Actually just copying public image to
 # local registry.
 .build/prometheus/initchowndata: .build/var/REGISTRY \
-							     .build/var/TAG \
-							     | .build/prometheus
+				 .build/var/TAG \
+				 | .build/prometheus
 	docker pull busybox
 	docker tag busybox "$(REGISTRY)/prometheus/initchowndata:$(TAG)"
 	docker push "$(REGISTRY)/prometheus/initchowndata:$(TAG)"
@@ -107,8 +107,8 @@ app/build:: .build/prometheus/deployer \
 # Simulate building of primary app image. Actually just copying public image to
 # local registry.
 .build/prometheus/kubestatemetrics: .build/var/REGISTRY \
-							        .build/var/TAG \
-							        | .build/prometheus
+				    .build/var/TAG \
+				    | .build/prometheus
 	docker pull quay.io/coreos/kube-state-metrics:v1.3.1
 	docker tag quay.io/coreos/kube-state-metrics:v1.3.1 "$(REGISTRY)/prometheus/kubestatemetrics:$(TAG)"
 	docker push "$(REGISTRY)/prometheus/kubestatemetrics:$(TAG)"
@@ -118,8 +118,8 @@ app/build:: .build/prometheus/deployer \
 # Simulate building of primary app image. Actually just copying public image to
 # local registry.
 .build/prometheus/nodeexporter: .build/var/REGISTRY \
-								.build/var/TAG \
-								| .build/prometheus
+				.build/var/TAG \
+				| .build/prometheus
 	docker pull prom/node-exporter:v0.15.2
 	docker tag prom/node-exporter:v0.15.2 "$(REGISTRY)/prometheus/nodeexporter:$(TAG)"
 	docker push "$(REGISTRY)/prometheus/nodeexporter:$(TAG)"
@@ -129,8 +129,8 @@ app/build:: .build/prometheus/deployer \
 # Simulate building of primary app image. Actually just copying public image to
 # local registry.
 .build/prometheus/server: .build/var/REGISTRY \
-						  .build/var/TAG \
-						  | .build/prometheus
+			  .build/var/TAG \
+			  | .build/prometheus
 	docker pull prom/prometheus:v2.2.1
 	docker tag prom/prometheus:v2.2.1 "$(REGISTRY)/prometheus/server:$(TAG)"
 	docker push "$(REGISTRY)/prometheus/server:$(TAG)"
@@ -140,8 +140,8 @@ app/build:: .build/prometheus/deployer \
 # Simulate building of primary app image. Actually just copying public image to
 # local registry.
 .build/prometheus/pushgateway: .build/var/REGISTRY \
-							   .build/var/TAG \
-							   | .build/prometheus
+			       .build/var/TAG \
+			       | .build/prometheus
 	docker pull prom/pushgateway:v0.4.0
 	docker tag prom/pushgateway:v0.4.0 "$(REGISTRY)/prometheus/pushgateway:$(TAG)"
 	docker push "$(REGISTRY)/prometheus/pushgateway:$(TAG)"
