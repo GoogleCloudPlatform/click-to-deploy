@@ -1,11 +1,9 @@
-ARG MARKETPLACE_REGISTRY
-FROM ${MARKETPLACE_REGISTRY}/deployer_kubectl_base
+FROM gcr.io/google-marketplace-tools/k8s/deployer_envsubst
 
 ADD manifest/* /data/manifest/
 ADD schema.yaml /data/
 
-# Override default values for images.
-# TODO(#12): Remove this.
+# Provide registry prefix and tag for default values for images.
 ARG REGISTRY
 ARG TAG
 RUN cat /data/schema.yaml \
