@@ -27,7 +27,14 @@ APP_DEPLOYER_IMAGE ?= $(REGISTRY)/prometheus/deployer:$(TAG)
 NAME ?= prometheus-1
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
-  "namespace": "$(NAMESPACE)" \
+  "namespace": "$(NAMESPACE)", \
+  "alertmanager.image.reference": "$(REGISTRY)/prometheus/alertmanager:$(TAG)", \
+  "configmapReload.image.reference": "$(REGISTRY)/prometheus/configmapreload:$(TAG)", \
+  "initChownData.image.reference": "$(REGISTRY)/prometheus/initchowndata:$(TAG)", \
+  "kubeStateMetrics.image.reference": "$(REGISTRY)/prometheus/kubestatemetrics:$(TAG)", \
+  "nodeExporter.image.reference": "$(REGISTRY)/prometheus/nodeexporter:$(TAG)", \
+  "server.image.reference": "$(REGISTRY)/prometheus/server:$(TAG)", \
+  "pushGateway.image.reference": "$(REGISTRY)/prometheus/pushgateway:$(TAG)" \
 }
 
 # Extend the target as defined in app.Makefile to

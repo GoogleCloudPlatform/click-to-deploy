@@ -25,7 +25,9 @@ spec:
       serviceAccountName: {{ template "prometheus.serviceAccountName.pushgateway" . }}
       containers:
         - name: {{ template "prometheus.name" . }}-{{ .Values.pushgateway.name }}
-          image: "{{ .Values.pushgateway.image.repository }}:{{ .Values.pushgateway.image.tag }}"
+          # The image specification was modified due to GKE Apps requirements:
+          # image: "{{ .Values.pushgateway.image.repository }}:{{ .Values.pushgateway.image.tag }}"
+          image: "{{ .Values.pushgateway.image.reference }}"
           imagePullPolicy: "{{ .Values.pushgateway.image.pullPolicy }}"
           args:
           {{- range $key, $value := .Values.pushgateway.extraArgs }}

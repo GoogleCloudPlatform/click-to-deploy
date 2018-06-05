@@ -28,7 +28,9 @@ spec:
       serviceAccountName: {{ template "prometheus.serviceAccountName.kubeStateMetrics" . }}
       containers:
         - name: {{ template "prometheus.name" . }}-{{ .Values.kubeStateMetrics.name }}
-          image: "{{ .Values.kubeStateMetrics.image.repository }}:{{ .Values.kubeStateMetrics.image.tag }}"
+          # The image specification was modified due to GKE Apps requirements:
+          # image: "{{ .Values.kubeStateMetrics.image.repository }}:{{ .Values.kubeStateMetrics.image.tag }}"
+          image: "{{ .Values.kubeStateMetrics.image.reference }}"
           imagePullPolicy: "{{ .Values.kubeStateMetrics.image.pullPolicy }}"
         {{- if .Values.kubeStateMetrics.args }}
           args:

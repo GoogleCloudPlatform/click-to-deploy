@@ -32,7 +32,9 @@ spec:
       serviceAccountName: {{ template "prometheus.serviceAccountName.alertmanager" . }}
       containers:
         - name: {{ template "prometheus.name" . }}-{{ .Values.alertmanager.name }}
-          image: "{{ .Values.alertmanager.image.repository }}:{{ .Values.alertmanager.image.tag }}"
+          # The image specification was modified due to GKE Apps requirements:
+          # image: "{{ .Values.alertmanager.image.repository }}:{{ .Values.alertmanager.image.tag }}"
+          image: "{{ .Values.alertmanager.image.reference }}"
           imagePullPolicy: "{{ .Values.alertmanager.image.pullPolicy }}"
           env:
             {{- range $key, $value := .Values.alertmanager.extraEnv }}
@@ -67,7 +69,9 @@ spec:
               subPath: "{{ .Values.alertmanager.persistentVolume.subPath }}"
 
         - name: {{ template "prometheus.name" . }}-{{ .Values.alertmanager.name }}-{{ .Values.configmapReload.name }}
-          image: "{{ .Values.configmapReload.image.repository }}:{{ .Values.configmapReload.image.tag }}"
+          # The image specification was modified due to GKE Apps requirements:
+          # image: "{{ .Values.configmapReload.image.repository }}:{{ .Values.configmapReload.image.tag }}"
+          image: "{{ .Values.configmapReload.image.reference }}"
           imagePullPolicy: "{{ .Values.configmapReload.image.pullPolicy }}"
           args:
             - --volume-dir=/etc/config

@@ -32,8 +32,10 @@ alertmanager:
   ## alertmanager container image
   ##
   image:
-    repository: prom/alertmanager
-    tag: v0.14.0
+    # Image reference was changed due to GKE Apps requirements
+    #repository: prom/alertmanager
+    #tag: v0.14.0
+    reference: prom/alertmanager:v0.14.0
     pullPolicy: IfNotPresent
 
   ## Additional alertmanager container arguments
@@ -209,8 +211,10 @@ configmapReload:
   ## configmap-reload container image
   ##
   image:
-    repository: jimmidyson/configmap-reload
-    tag: v0.1
+    # Image reference was changed due to GKE Apps requirements
+    # repository: jimmidyson/configmap-reload
+    # tag: v0.1
+    reference: jimmidyson/configmap-reload:v0.1
     pullPolicy: IfNotPresent
 
   ## Additional configmap-reload container arguments
@@ -244,8 +248,10 @@ initChownData:
   ## initChownData container image
   ##
   image:
-    repository: busybox
-    tag: latest
+    # Image reference was changed due to GKE Apps requirements
+    # repository: busybox
+    # tag: latest
+    reference: busybox:latest
     pullPolicy: IfNotPresent
 
   ## initChownData resource requests and limits
@@ -265,8 +271,10 @@ kubeStateMetrics:
   ## kube-state-metrics container image
   ##
   image:
-    repository: quay.io/coreos/kube-state-metrics
-    tag: v1.3.1
+    # Image reference was changed due to GKE Apps requirements
+    # repository: quay.io/coreos/kube-state-metrics
+    # tag: v1.3.1
+    reference: quay.io/coreos/kube-state-metrics:v1.3.1
     pullPolicy: IfNotPresent
 
   ## kube-state-metrics container arguments
@@ -342,8 +350,10 @@ nodeExporter:
   ## node-exporter container image
   ##
   image:
-    repository: prom/node-exporter
-    tag: v0.15.2
+    # Image reference was changed due to GKE Apps requirements
+    # repository: prom/node-exporter
+    # tag: v0.15.2
+    reference: prom/node-exporter:v0.15.2
     pullPolicy: IfNotPresent
 
   ## Custom Update Strategy
@@ -436,8 +446,10 @@ server:
   ## Prometheus server container image
   ##
   image:
-    repository: prom/prometheus
-    tag: v2.2.1
+    # Image reference was changed due to GKE Apps requirements
+    # repository: prom/prometheus
+    # tag: v2.2.1
+    reference: prom/prometheus:v2.2.1
     pullPolicy: IfNotPresent
 
   ## The URL prefix at which the container can be accessed. Useful in the case the '-web.external-url' includes a slug
@@ -639,8 +651,10 @@ pushgateway:
   ## pushgateway container image
   ##
   image:
-    repository: prom/pushgateway
-    tag: v0.4.0
+    # Image reference was changed due to GKE Apps requirements
+    # repository: prom/pushgateway
+    # tag: v0.4.0
+    reference: prom/pushgateway:v0.4.0
     pullPolicy: IfNotPresent
 
   ## Additional pushgateway container arguments

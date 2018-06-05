@@ -31,7 +31,9 @@ spec:
       serviceAccountName: {{ template "prometheus.serviceAccountName.nodeExporter" . }}
       containers:
         - name: {{ template "prometheus.name" . }}-{{ .Values.nodeExporter.name }}
-          image: "{{ .Values.nodeExporter.image.repository }}:{{ .Values.nodeExporter.image.tag }}"
+          # The image specification was modified due to GKE Apps requirements:
+          # image: "{{ .Values.nodeExporter.image.repository }}:{{ .Values.nodeExporter.image.tag }}"
+          image: "{{ .Values.nodeExporter.image.reference }}"
           imagePullPolicy: "{{ .Values.nodeExporter.image.pullPolicy }}"
           args:
             - --path.procfs=/host/proc

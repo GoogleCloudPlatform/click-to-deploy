@@ -12,37 +12,37 @@ properties:
     type: boolean
     default: false
 
-  imageAlertManager.image:
+  alertmanager.image.reference:
     type: string
     default: $REGISTRY/prometheus/alertmanager:$TAG
     x-google-marketplace:
       type: IMAGE
-  imageConfigmapReload.image:
+  configmapReload.image.reference:
     type: string
     default: $REGISTRY/prometheus/configmapreload:$TAG
     x-google-marketplace:
       type: IMAGE
-  imageInitChownData.image:
+  initChownData.image.reference:
     type: string
     default: $REGISTRY/prometheus/initchowndata:$TAG
     x-google-marketplace:
       type: IMAGE
-  imageKubeStateMetrics.image:
+  kubeStateMetrics.image.reference:
     type: string
     default: $REGISTRY/prometheus/kubestatemetrics:$TAG
     x-google-marketplace:
       type: IMAGE
-  imageNodeExporter.image:
+  nodeExporter.image.reference:
     type: string
     default: $REGISTRY/prometheus/nodeexporter:$TAG
     x-google-marketplace:
       type: IMAGE
-  imageServer.image:
+  server.image.reference:
     type: string
     default: $REGISTRY/prometheus/server:$TAG
     x-google-marketplace:
       type: IMAGE
-  imagePushGateway.image:
+  pushGateway.image.reference:
     type: string
     default: $REGISTRY/prometheus/pushgateway:$TAG
     x-google-marketplace:
@@ -50,10 +50,10 @@ properties:
 required:
 - name
 - namespace
-- imageAlertManager.image
-- imageConfigmapReload.image
-- imageInitChownData.image
-- imageKubeStateMetrics.image
-- imageNodeExporter.image
-- imageServer.image
-- imagePushGateway.image
+- alertmanager.image.reference
+- configmapReload.image.reference
+- initChownData.image.reference
+- kubeStateMetrics.image.reference
+- nodeExporter.image.reference
+- server.image.reference
+- pushGateway.image.reference

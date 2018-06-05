@@ -32,7 +32,9 @@ spec:
       {{- if .Values.initChownData.enabled }}
       initContainers:
       - name: "{{ .Values.initChownData.name }}"
-        image: "{{ .Values.initChownData.image.repository }}:{{ .Values.initChownData.image.tag }}"
+        # The image specification was modified due to GKE Apps requirements:
+        # image: "{{ .Values.initChownData.image.repository }}:{{ .Values.initChownData.image.tag }}"
+        image: "{{ .Values.initChownData.image.reference }}"
         imagePullPolicy: "{{ .Values.initChownData.image.pullPolicy }}"
         resources:
 {{ toYaml .Values.initChownData.resources | indent 12 }}
@@ -45,7 +47,9 @@ spec:
       {{- end }}
       containers:
         - name: {{ template "prometheus.name" . }}-{{ .Values.server.name }}-{{ .Values.configmapReload.name }}
-          image: "{{ .Values.configmapReload.image.repository }}:{{ .Values.configmapReload.image.tag }}"
+          # The image specification was modified due to GKE Apps requirements:
+          # image: "{{ .Values.configmapReload.image.repository }}:{{ .Values.configmapReload.image.tag }}"
+          image: "{{ .Values.configmapReload.image.reference }}"
           imagePullPolicy: "{{ .Values.configmapReload.image.pullPolicy }}"
           args:
             - --volume-dir=/etc/config
@@ -66,7 +70,9 @@ spec:
           {{- end }}
 
         - name: {{ template "prometheus.name" . }}-{{ .Values.server.name }}
-          image: "{{ .Values.server.image.repository }}:{{ .Values.server.image.tag }}"
+          # The image specification was modified due to GKE Apps requirements:
+          # image: "{{ .Values.server.image.repository }}:{{ .Values.server.image.tag }}"
+          image: "{{ .Values.server.image.reference }}"
           imagePullPolicy: "{{ .Values.server.image.pullPolicy }}"
           args:
           {{- if .Values.server.retention }}
