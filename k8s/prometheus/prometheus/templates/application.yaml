@@ -56,7 +56,7 @@ spec:
   - group: extensions/v1beta1
     kind: DaemonSet
   notes: |-
-    # How to connect:
+    # How to connect to Prometheus UI:
 
     Forward the server port to your local machine:
 
@@ -68,6 +68,20 @@ spec:
     ```
 
     Access the following URL in your web browser: `http://localhost:9090/`.
+
+    # How to read Prometheus data in Grafana:
+
+    Check the internal IP address of your Prometheus server:
+
+    ```
+    export PROMETHEUS_IP="$(kubectl get service --namespace {{ .Release.Namespace}} \
+      {{ .Release.Name }}-server \
+      -o jsonpath='{.spec.clusterIP}')"
+    echo $PROMETHEUS_IP
+    ```
+
+    In Grafana, navigate to Data Sources management. When creating a new data source, select its
+    `Type` as `Prometheus` and configure the `URL` to point to: `http://<IP as above>/`.
 
     # How to grant access to GKE cluster metrics to service accounts:
 
