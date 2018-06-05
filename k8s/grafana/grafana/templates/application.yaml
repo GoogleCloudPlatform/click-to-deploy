@@ -67,17 +67,41 @@ spec:
       | base64 --decode ; echo
     ```
 
-    ## Check your service public IP address
+    ## Log in to Grafana
+
+    Check your public address:
 
     ```
     SERVICE_IP="$(kubectl get svc --namespace {{ .Release.Namespace }} \
       {{ template "grafana.fullname" . }} \
       -o jsonpath='{.status.loadBalancer.ingress[0].ip}')"
+    echo "http://$SERVICE_IP:{{ .Values.service.port -}}/"
     ```
 
     NOTE: It may take a few minutes to have a public IP available set up Load Balancer.
 
-    ## Log in to Grafana
+    Navigate in your web browser to the URL address as printed above. In the login form,
+    use the username of `admin` and the password as described above.
 
-    Navigate in your web browser to: `http://$SERVICE_IP:{{ .Values.service.port -}}`.
-    In the login form, use the username of `admin` and the password as described above.
+    # How to configure Kubernetes monitoring dashboard backed by Prometheus
+
+    ## Create a Prometheus data source
+
+    Navigate to `Configuration` > `Data Sources`. Select an option to add new data source.
+
+    In the configuration form, use the name `prometheus`, select the `Type`: `Prometheus` and
+    in the URL field, enter your Prometheus server address (it must must be visible to the Grafana
+    server).
+
+    Save and test the configuration.
+
+    ## Import a sample dashboard
+
+    Grafana allows to import preconfigured dashboards in json format. One of the example Kubernetes
+    dashboards, based on Prometheus is available [here](https://gist.github.com/sacreman/fdb9ea898af314dbb89c93299f746c0e).
+    Download the json file of the dashboard.
+
+    In Grafana, navigate to `Create` > `Import`. Select the option to upload a `.json` file and pick
+    your downloaded dashboard.
+
+    At this point you should see your first Kubernetes dashboard!
