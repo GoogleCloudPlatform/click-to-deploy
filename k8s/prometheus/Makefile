@@ -54,13 +54,13 @@ app/build:: .build/prometheus/deployer \
 
 
 .build/prometheus/deployer: deployer/* \
-						    prometheus/* \
-						    schema.yaml \
-						    .build/marketplace/deployer/helm \
-						    .build/var/APP_DEPLOYER_IMAGE \
-						    .build/var/REGISTRY \
-						    .build/var/TAG \
-						    | .build/prometheus
+			    prometheus/* \
+			    schema.yaml \
+			    .build/marketplace/deployer/helm \
+			    .build/var/APP_DEPLOYER_IMAGE \
+			    .build/var/REGISTRY \
+			    .build/var/TAG \
+			    | .build/prometheus
 	docker build \
 	    --build-arg REGISTRY="$(REGISTRY)" \
 	    --build-arg TAG="$(TAG)" \
