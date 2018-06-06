@@ -38,12 +38,12 @@ spec:
   componentKinds:
   - group: v1
     kind: Service
-  - group: apps/v1beta1
+  - group: apps/v1beta2
     kind: StatefulSet
   notes: |-
     # Access Memcached instances
-    
-    By default, the Memcached service is not exposed to external world so it doesn't have external IP address. 
+
+    By default, the Memcached service is not exposed to external world so it doesn't have external IP address.
     What's more, Memcached service is defined as headless service which means that service itself doesn't have internal IP address and when you query DNS name of Memcached service you retrieve multiple A records for the service and each IP address points to a specific Memcached POD backing Memcached service at a given momement.
 
     Usually, applications using Memcached as a cache retrieve IP addresses of Memcached instances and they implement
@@ -51,9 +51,9 @@ spec:
     There are several methods how to obtain IP addresses of Memcached instances and below you can find one of them:
 
     kubectl get pods -o wide -l app.kubernetes.io/name=$APP_INSTANCE_NAME
-    
+
     Although, technically you could expose Memcached service to esternal world, it's not recommended because it is meant to be an internal cache of the system.
-    
+
     # Scale the cluster
 
     To scale the cluster, use either a GKE UI (use the Scale option in the
