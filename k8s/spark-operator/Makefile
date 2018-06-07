@@ -10,10 +10,13 @@ TAG ?= latest
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/spark-operator/deployer:$(TAG)
-NAME ?= elasticsearch-1
+NAME ?= spark-operator-1
+# TODO(huyhg): Remove serviceAccount from APP_PARAMETERS
+# once tools can provision it.
 APP_PARAMETERS ?= { \
-  "APP_INSTANCE_NAME": "$(NAME)", \
-  "NAMESPACE": "$(NAMESPACE)", \
+  "name": "$(NAME)", \
+  "namespace": "$(NAMESPACE)", \
+  "serviceAccount": "spark-sa" \
 }
 APP_TEST_PARAMETERS ?= {}
 
