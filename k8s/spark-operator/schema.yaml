@@ -13,6 +13,11 @@ properties:
     x-google-marketplace:
       type: IMAGE
   serviceAccount:
+    title: Cluster Admin Service Account
+    description: >-
+      Name of a service account in the target namespace that
+      has cluster-admin permissions. This is needed for the operator
+      to create Spark CRD and jobs.
     type: string
     x-google-marketplace:
       type: SERVICE_ACCOUNT
