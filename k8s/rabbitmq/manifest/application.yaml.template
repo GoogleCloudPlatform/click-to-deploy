@@ -36,10 +36,18 @@ spec:
     matchLabels:
       app.kubernetes.io/name: "$APP_INSTANCE_NAME"
   componentKinds:
-  - group: v1
-    kind: Service
   - group: apps/v1beta2
     kind: StatefulSet
+  - group: v1
+    kind: Service
+  - group: v1
+    kind: ConfigMap
+  - group: v1
+    kind: ServiceAccount
+  - group: rbac.authorization.k8s.io/v1
+    kind: Role
+  - group: rbac.authorization.k8s.io/v1
+    kind: RoleBinding
   notes: |-
     # Expose RabbitMQ service
 
