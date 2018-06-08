@@ -34,7 +34,7 @@ app/build:: .build/spark-operator/deployer \
 
 
 .build/spark-operator/deployer: schema.yaml \
-																deployer/* \
+                                deployer/* \
                                 manifest/* \
                                 .build/marketplace/deployer/envsubst \
                                 .build/var/APP_DEPLOYER_IMAGE \

@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -xeo pipefail
+set -eo pipefail
 
 export NAME="spark-$(uuidgen)"
 cat spark-pi.yaml.template | envsubst > spark-pi.yaml
@@ -32,15 +32,20 @@ while true; do
 
   echo "Checking events for completed status"
   completed_status=$(echo $events | grep "SparkExecutorCompleted" || true)
-  [[ -z "$completed_status" ]] || exit 0
+  if [[ -z "$completed_status" ]]; then
+    echo "Delete application $NAME"
+    kubectl delete sparkapplication "$NAME"
+    exit 0
+  fi
 
   echo "Checking events for failed status"
   failed_status=$(echo $events | grep "SparkDriverFailed" || true)
-  [[ -z "$failed_status" ]] || exit 1
+  if [[ -z "$failed_status" ]]; then
+    echo "Delete application $NAME"
+    kubectl delete sparkapplication "$NAME"
+    exit 1
+  fi
 
   echo "Waiting 4 seconds before retry"
   sleep 4
 done
-
-echo "Delete application $NAME"
-kubectl delete sparkapplication "$NAME"
