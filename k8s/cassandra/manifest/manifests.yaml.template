@@ -40,11 +40,14 @@ spec:
           mountPath: /var/lib/cassandra
         livenessProbe:
           exec:
-            command:
-            - /usr/bin/pgrep
-            - -x
-            - "java"
-          initialDelaySeconds: 5
+            command: [ "/bin/sh", "-c", "nodetool status" ]
+          initialDelaySeconds: 90
+          periodSeconds: 30
+        readinessProbe:
+          exec:
+            command: [ "/bin/sh", "-c", "nodetool status | grep -E \"^UN\\s+${POD_IP}\"" ]
+          initialDelaySeconds: 90
+          periodSeconds: 30
   volumeClaimTemplates:
   - metadata:
       name: $APP_INSTANCE_NAME-cassandra-pvc
