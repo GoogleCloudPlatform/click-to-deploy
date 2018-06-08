@@ -18,11 +18,15 @@ APP_PARAMETERS ?= { \
   "namespace": "$(NAMESPACE)", \
   "serviceAccount": "spark-sa" \
 }
-APP_TEST_PARAMETERS ?= {}
+TESTER_IMAGE ?= $(REGISTRY)/spark-operator/tester:$(TAG)
+APP_TEST_PARAMETERS ?= { \
+  "testerImage": "$(TESTER_IMAGE)" \
+}
 
 
 app/build:: .build/spark-operator/deployer \
-            .build/spark-operator/spark-operator
+            .build/spark-operator/spark-operator \
+            .build/spark-operator/tester
 
 
 .build/spark-operator: | .build
@@ -30,12 +34,14 @@ app/build:: .build/spark-operator/deployer \
 
 
 .build/spark-operator/deployer: schema.yaml \
+																deployer/* \
                                 manifest/* \
                                 .build/marketplace/deployer/envsubst \
                                 .build/var/APP_DEPLOYER_IMAGE \
                                 .build/var/REGISTRY \
                                 .build/var/TAG \
                                 | .build/spark-operator
+	$(call print_target, $@)
 	docker build \
 	    --build-arg REGISTRY="$(REGISTRY)/spark-operator" \
 	    --build-arg TAG="$(TAG)" \
@@ -46,9 +52,18 @@ app/build:: .build/spark-operator/deployer \
 	@touch "$@"
 
 
+.build/spark-operator/tester: apptest/**/*
+	$(call print_target, $@)
+	cd apptest/tester \
+	&& docker build --tag "$(TESTER_IMAGE)" .
+	docker push "$(TESTER_IMAGE)"
+	@touch "$@"
+
+
 .build/spark-operator/spark-operator: .build/var/REGISTRY \
                                       .build/var/TAG \
                                       | .build/spark-operator
+	$(call print_target, $@)
 	docker pull gcr.io/spark-operator/spark-operator:v2.3.0-v1alpha1-latest
 	docker tag gcr.io/spark-operator/spark-operator:v2.3.0-v1alpha1-latest "$(REGISTRY)/spark-operator:$(TAG)"
 	docker push "$(REGISTRY)/spark-operator:$(TAG)"
