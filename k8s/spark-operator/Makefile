@@ -53,3 +53,10 @@ app/build:: .build/spark-operator/deployer \
 	docker tag gcr.io/spark-operator/spark-operator:v2.3.0-v1alpha1-latest "$(REGISTRY)/spark-operator:$(TAG)"
 	docker push "$(REGISTRY)/spark-operator:$(TAG)"
 	@touch "$@"
+
+
+# TODO(huyhg): Remove once tools can provision it.
+.PHONY: app/serviceaccount
+app/serviceaccount:
+	kubectl create serviceaccount spark-sa
+	kubectl create clusterrolebinding test-cli-spark-sa-rb --clusterrole=cluster-admin --serviceaccount=$(NAMESPACE):spark-sa
