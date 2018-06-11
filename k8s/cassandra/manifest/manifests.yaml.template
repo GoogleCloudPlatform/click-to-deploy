@@ -76,4 +76,7 @@ spec:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app.kubernetes.io/component: cassandra-server
   type: ClusterIP
+# While bootstraping Cassandra, we need to provide a list of IPs or hostnames
+# to connect. Setting clusterIP to None enables connection between Cassandra
+# nodes directly.
   clusterIP: None
