@@ -9,7 +9,7 @@ spec:
   selector:
     matchLabels: *RabbitMQDeploymentLabels
   serviceName: $APP_INSTANCE_NAME-rabbitmq-svc
-  replicas: 3 # TODO(wgrzelak): use $REPLICAS instead
+  replicas: $REPLICAS
   template:
     metadata:
       labels: *RabbitMQDeploymentLabels

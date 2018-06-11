@@ -90,6 +90,12 @@ export APP_INSTANCE_NAME=rabbitmq-1
 export NAMESPACE=default
 ```
 
+Set the number of replicas.
+
+```shell
+export REPLICAS=3
+```
+
 Configure the container images.
 
 ```shell
@@ -119,7 +125,7 @@ expanded manifest file for future updates to the application.
 
 ```shell
 awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_RABBITMQ' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_RABBITMQ $REPLICAS' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
