@@ -10,14 +10,14 @@ TAG ?= latest
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/cassandra/deployer:$(TAG)
-NAME ?= cassandra-1
+APP_INSTANCE_NAME ?= cassandra-1
 
 ifdef REPLICAS
   REPLICAS_FIELD = , "REPLICAS": "$(REPLICAS)"
 endif
 
 APP_PARAMETERS ?= { \
-  "APP_INSTANCE_NAME": "$(NAME)", \
+  "APP_INSTANCE_NAME": "$(APP_INSTANCE_NAME)", \
   "NAMESPACE": "$(NAMESPACE)"\
   $(REPLICAS_FIELD) \
 }

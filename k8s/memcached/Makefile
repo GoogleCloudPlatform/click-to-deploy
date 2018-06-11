@@ -10,9 +10,9 @@ TAG ?= latest
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/memcached/deployer:$(TAG)
-NAME ?= memcached-1
+APP_INSTANCE_NAME ?= memcached-1
 APP_PARAMETERS ?= { \
-  "APP_INSTANCE_NAME": "$(NAME)", \
+  "APP_INSTANCE_NAME": "$(APP_INSTANCE_NAME)", \
   "NAMESPACE": "$(NAMESPACE)" \
 }
 APP_TEST_PARAMETERS ?= {}
