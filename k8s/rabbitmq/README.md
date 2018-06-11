@@ -170,3 +170,12 @@ echo "http://${SERVICE_IP}"
 ```
 
 Note that it might take some time for the external IP to be provisioned.
+
+### Scale the cluster
+
+By default, RabbitMQ K8s application is deployed using 3 replicas. You can manually scale it to deploy more replicas using the following command.
+
+```
+kubectl scale statefulsets "$APP_INSTANCE_NAME-rabbitmq" \
+  --namespace "$NAMESPACE" --replicas=<new-replicas>
+```
