@@ -10,9 +10,9 @@ TAG ?= latest
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/rabbitmq/deployer:$(TAG)
-NAME ?= rabbitmq-1
+APP_INSTANCE_NAME ?= rabbitmq-1
 APP_PARAMETERS ?= { \
-  "APP_INSTANCE_NAME": "$(NAME)", \
+  "APP_INSTANCE_NAME": "$(APP_INSTANCE_NAME)", \
   "NAMESPACE": "$(NAMESPACE)" \
 }
 APP_TEST_PARAMETERS ?= {}
