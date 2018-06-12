@@ -55,11 +55,12 @@ gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketp
 
 #### Install the Application resource definition
 
-Do a one-time setup for your cluster to understand Application resources.
+Do a one-time setup of your cluster and install Custom Reference Definition object for Kubernetes Application.
+
+To do that, please, navidate to k8s/vendor subfolder of click-to-deploy repository and run the following command:
 
 ```shell
-cd google-click-to-deploy/k8s/memcached
-make crd/install
+kubectl apply -f marketplace-tools/crd/*
 ```
 
 The Application resource is defined by the
