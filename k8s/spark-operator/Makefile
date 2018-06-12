@@ -55,7 +55,7 @@ app/build:: .build/spark-operator/deployer \
 .build/spark-operator/tester: apptest/**/*
 	$(call print_target, $@)
 	cd apptest/tester \
-	&& docker build --tag "$(TESTER_IMAGE)" .
+	    && docker build --tag "$(TESTER_IMAGE)" .
 	docker push "$(TESTER_IMAGE)"
 	@touch "$@"
 

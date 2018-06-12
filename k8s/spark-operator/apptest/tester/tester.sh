@@ -41,7 +41,7 @@ while true; do
   echo "Checking events for failed status"
   failed_status=$(echo $events | grep "SparkDriverFailed" || true)
   if [[ -z "$failed_status" ]]; then
-    echo "Delete application $NAME"
+    echo "Delete sparkapplication $NAME"
     kubectl delete sparkapplication "$NAME"
     exit 1
   fi
