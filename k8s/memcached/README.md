@@ -162,11 +162,13 @@ It is not recommended to expose Memcached K8s App for external access.
 
 # Scaling
 
-By default, Memcached K8s application is deployed using 2 replicas. You can manually scale it to deploy more replicas using the following command.
+By default, Memcached K8s application is deployed using 2 replicas. You can manually scale it up or down to deploy Memcached solution with desired number of replicas using the following command.
 
 ```shell
 kubectl scale statefulsets "$APP_INSTANCE_NAME-memcached" --namespace "$NAMESPACE" --replicas=<new-replicas>
 ```
+
+where <new_replicas> defines the number of replicas.
 
 # Backup and Restore
 
