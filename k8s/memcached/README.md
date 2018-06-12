@@ -148,11 +148,39 @@ To discover IP addresses of Memcached instances using kubectl, please, run the f
 kubectl get pods -o wide -l app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
 
-To discover IP addresses of Memcached instances using Python, please, use this code:
+To discover IP addresses of Memcached instances using Python you can use kubernetes module.
+
+Use this command to install kubernetes module on your computer
+```shell
+pip install kubernetes
+
+```
+
+Here is an examplary code that could be used by you as a starting for your Python program to discover Memcached instances IP addresses:
 
 ```shell
-TO BE DELIVERED
+
+import os
+
+# if kubernetes module is not installed, please, install it, e.g. pip install kubernetes
+from kubernetes import client, config
+
+# Load Kube config
+config.load_kube_config()
+
+# Create a Kubernetes client
+k8s_client = client.CoreV1Api()
+
+# Get the list of all pods
+pod_list = k8s_client.list_namespaced_pod("default")
+
+# list all pods from the default namespace
+for pod in pod_list.items:
+    print("%s\t%s\t%s" % (pod.metadata.name, pod.status.phase, pod.status.pod_ip))
+
 ```
+
+For more information about using Python to manage & discover Kubernetes cluster information, please, go to this page: https://github.com/kubernetes-client/python
 
 ## Expose Memcached service to external world
 
