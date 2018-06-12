@@ -96,6 +96,12 @@ Set the number of replicas.
 export REPLICAS=3
 ```
 
+Set or generate the [Erlang cookie](https://www.rabbitmq.com/clustering.html#erlang-cookie). The cookie has be encoded in base64.
+
+```shell
+export RABBITMQ_ERLANG_COOKIE=$(openssl rand -base64 32)
+```
+
 Configure the container images.
 
 ```shell
@@ -125,7 +131,7 @@ expanded manifest file for future updates to the application.
 
 ```shell
 awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_RABBITMQ $REPLICAS' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_RABBITMQ $REPLICAS $RABBITMQ_ERLANG_COOKIE' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
