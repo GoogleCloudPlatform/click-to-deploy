@@ -23,6 +23,16 @@ spec:
         - name: memcached
           containerPort: 11211
           protocol: TCP
+        livenessProbe:
+          tcpSocket:
+            port: memcaches
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: memcached
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
 ---
 apiVersion: v1
 kind: Service
