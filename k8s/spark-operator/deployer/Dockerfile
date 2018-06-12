@@ -1,7 +1,8 @@
 FROM gcr.io/google-marketplace-tools/k8s/deployer_envsubst
 
-ADD manifest/* /data/manifest/
-ADD schema.yaml /data/
+COPY manifest /data/manifest
+COPY schema.yaml /data/
+COPY apptest/deployer /data-test/
 
 # Provide registry prefix and tag for default values for images.
 ARG REGISTRY
