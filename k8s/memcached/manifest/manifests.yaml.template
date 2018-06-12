@@ -25,7 +25,7 @@ spec:
           protocol: TCP
         livenessProbe:
           tcpSocket:
-            port: memcaches
+            port: memcached
           initialDelaySeconds: 10
           timeoutSeconds: 5
         readinessProbe:
