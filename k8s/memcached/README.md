@@ -55,11 +55,12 @@ gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketp
 
 #### Install the Application resource definition
 
-Do a one-time setup for your cluster to understand Application resources.
+Do a one-time setup of your cluster and install Custom Reference Definition object for Kubernetes Application.
+
+To do that, please, navidate to k8s/vendor subfolder of click-to-deploy repository and run the following command:
 
 ```shell
-cd google-click-to-deploy/k8s/memcached
-make crd/install
+kubectl apply -f marketplace-tools/crd/*
 ```
 
 The Application resource is defined by the
@@ -106,12 +107,23 @@ for i in "IMAGE_MEMCACHED"; do
 done
 ```
 
-#### Apply to Kubernetes
+#### Expand the manifest template
 
-Use make to install Memcached application
+Use `envsubst` to expand the template. It is recommended that you save the
+expanded manifest file for future updates to the application.
 
 ```shell
-make app/install
+awk 'BEGINFILE {print "---"}{print}' manifest/* \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_ELASTICSEARCH $IMAGE_INIT' \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
+```
+
+#### Apply to Kubernetes
+
+Use `kubectl` to apply the manifest to your Kubernetes cluster.
+
+```shell
+kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
 
 #### View the app in the Google Cloud Console
@@ -150,11 +162,13 @@ It is not recommended to expose Memcached K8s App for external access.
 
 # Scaling
 
-By default, Memcached K8s application is deployed using 2 replicas. You can manually scale it to deploy more replicas using the following command.
+By default, Memcached K8s application is deployed using 2 replicas. You can manually scale it up or down to deploy Memcached solution with desired number of replicas using the following command.
 
 ```shell
 kubectl scale statefulsets "$APP_INSTANCE_NAME-memcached" --namespace "$NAMESPACE" --replicas=<new-replicas>
 ```
+
+where <new_replicas> defines the number of replicas.
 
 # Backup and Restore
 
@@ -187,4 +201,4 @@ gcloud container clusters delete "$CLUSTER" --zone "$ZONE"
 
 # Logging and Monitoring
 
-*TODO: instructions for turning on logging and monitoring *
+*to be written: instructions for turning on logging and monitoring *
