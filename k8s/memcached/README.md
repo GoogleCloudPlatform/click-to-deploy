@@ -136,7 +136,7 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 # Basic Usage
 
-*TODO: instructions to be written *
+To be able to use Memcached in your application your first need to acquire IP addresses of Memcached instances. Once you have IP addresses, your application is responsible for entering the data into Memcached instances. Usually, applications use specialized memcached clients (e.g. [pymemcache](http://pymemcache.readthedocs.io/en/latest/getting_started.html)) to run a hashing algorithm that is responsible for makingvselection which Memcached server to use for storing/retrieving cached data. 
 
 ## Acquire IP addresses of Memcached instances
 
@@ -176,6 +176,10 @@ for pod in pod_list.items:
 ```
 
 For more information about using Python to manage & discover Kubernetes cluster information, please, go to this page: https://github.com/kubernetes-client/python
+
+## Using Memcached instances as a cache in your application
+There are many memcached clients that potentially could be used for getting access to Memcached servers running in the cluster. Python pymemcache client is one of them. Please, refer to this documentation
+http://pymemcache.readthedocs.io/en/latest/getting_started.html if you wold like to learn more about it.
 
 ## Expose Memcached service to external world
 
