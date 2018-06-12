@@ -114,7 +114,7 @@ expanded manifest file for future updates to the application.
 
 ```shell
 awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_ELASTICSEARCH $IMAGE_INIT' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_MEMCACHED' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
