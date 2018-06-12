@@ -185,11 +185,11 @@ For more information about using Python to manage & discover Kubernetes cluster 
 There are many memcached clients that potentially could be used for getting access to Memcached servers running in the cluster. Python pymemcache client is one of them. Please, refer to this documentation
 http://pymemcache.readthedocs.io/en/latest/getting_started.html if you wold like to learn more about it.
 
-## Expose Memcached service to external world
-
-In this specific example, there is no encyption between an application and Memcached instances and no authentication/authorization schema is applied. The assumption is that applications deployed within the same Kubernetes cluster can talk freely to Memcached instances which are meant to be an internal cache of an application. 
+## Exposure of Memcached service to external world
 
 It is not recommended to expose Memcached K8s App for external access.
+
+In this specific example, there is no encyption between an application and Memcached instances and no authentication/authorization schema is applied. The assumption is that applications deployed within the same Kubernetes cluster can talk freely to Memcached instances which are meant to be an internal cache of an application. 
 
 # Scaling
 
