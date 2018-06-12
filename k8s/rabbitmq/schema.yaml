@@ -16,8 +16,15 @@ properties:
     type: integer
     default: 3
     min: 1
+  RABBITMQ_ERLANG_COOKIE:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 32
 required:
 - APP_INSTANCE_NAME
 - NAMESPACE
 - IMAGE_RABBITMQ
 - REPLICAS
+- RABBITMQ_ERLANG_COOKIE

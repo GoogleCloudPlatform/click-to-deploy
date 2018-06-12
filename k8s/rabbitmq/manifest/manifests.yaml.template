@@ -1,3 +1,15 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: $APP_INSTANCE_NAME-rabbitmq-secret
+  labels:
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/component: rabbitmq-server
+type: Opaque
+data:
+  # this value comes from schema.yaml or environment variable
+  rabbitmq-erlang-cookie: "$RABBITMQ_ERLANG_COOKIE"
+---
 apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
@@ -32,7 +44,10 @@ spec:
         - name: K8S_SERVICE_NAME
           value: '$APP_INSTANCE_NAME-rabbitmq-svc'
         - name: RABBITMQ_ERLANG_COOKIE
-          value: 'secret-cookie-here' # TODO(wgrzelak): use Secret resource instead
+          valueFrom:
+            secretKeyRef:
+              name: $APP_INSTANCE_NAME-rabbitmq-secret
+              key: rabbitmq-erlang-cookie
         ports:
         - name: clitool
           containerPort: 25672
