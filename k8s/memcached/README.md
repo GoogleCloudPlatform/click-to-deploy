@@ -201,4 +201,4 @@ gcloud container clusters delete "$CLUSTER" --zone "$ZONE"
 
 # Logging and Monitoring
 
-*to be written: instructions for turning on logging and monitoring *
+To set up logging for Memcached solution using Stackdriver, please, follow the instructuction decomented here: https://kubernetes.io/docs/tasks/debug-application-cluster/logging-stackdriver/#verifying-your-logging-agent-deployment
