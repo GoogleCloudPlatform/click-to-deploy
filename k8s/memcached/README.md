@@ -124,6 +124,7 @@ Use `kubectl` to apply the manifest to your Kubernetes cluster.
 
 ```shell
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
+```
 
 #### View the app in the Google Cloud Console
 
@@ -198,4 +199,4 @@ gcloud container clusters delete "$CLUSTER" --zone "$ZONE"
 
 # Logging and Monitoring
 
-*TODO: instructions for turning on logging and monitoring *
+*to be written: instructions for turning on logging and monitoring *
