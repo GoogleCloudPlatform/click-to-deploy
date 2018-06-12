@@ -107,13 +107,23 @@ for i in "IMAGE_MEMCACHED"; do
 done
 ```
 
-#### Apply to Kubernetes
+#### Expand the manifest template
 
-Use make to install Memcached application
+Use `envsubst` to expand the template. It is recommended that you save the
+expanded manifest file for future updates to the application.
 
 ```shell
-make app/install
+awk 'BEGINFILE {print "---"}{print}' manifest/* \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_ELASTICSEARCH $IMAGE_INIT' \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
+
+#### Apply to Kubernetes
+
+Use `kubectl` to apply the manifest to your Kubernetes cluster.
+
+```shell
+kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 
 #### View the app in the Google Cloud Console
 
