@@ -110,7 +110,7 @@ make app/install
 Point your browser to:
 
 ```shell
-echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
+echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${NAME}"
 ```
 
 ### Expose Elasticsearch service
@@ -119,7 +119,7 @@ By default, the application does not have an external IP. Run the
 following command to expose an external IP:
 
 ```
-kubectl patch svc "$APP_INSTANCE_NAME-elasticsearch-svc" \
+kubectl patch svc "$NAME-elasticsearch-svc" \
   --namespace "$NAMESPACE" \
   -p '{"spec": {"type": "LoadBalancer"}}'
 ```
@@ -132,7 +132,7 @@ the URL printed below in your browser.
 ```
 SERVICE_IP=$(kubectl get \
   --namespace ${NAMESPACE} \
-  svc ${APP_INSTANCE_NAME}-elasticsearch-svc \
+  svc ${NAME}-elasticsearch-svc \
   -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
 echo "http://${SERVICE_IP}:9200"
@@ -145,7 +145,7 @@ Note that it might take some time for the external IP to be provisioned.
 Scale the number of master node replicas by the following command:
 
 ```
-kubectl scale statefulsets "$APP_INSTANCE_NAME-elasticsearch" \
+kubectl scale statefulsets "$NAME-elasticsearch" \
   --namespace "$NAMESPACE" --replicas=<new-replicas>
 ```
 
