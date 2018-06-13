@@ -14,7 +14,7 @@ data:
   wp_password: "${WORDPRESS_DB_PASSWORD}"
 ---
 apiVersion: apps/v1beta2
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: $APP_INSTANCE_NAME-mysql
   labels: &MysqlDeploymentLabels
@@ -24,6 +24,7 @@ spec:
   replicas: 1
   selector:
     matchLabels: *MysqlDeploymentLabels
+  serviceName: $APP_INSTANCE_NAME-mysql-svc
   template:
     metadata:
       labels: *MysqlDeploymentLabels
@@ -50,27 +51,21 @@ spec:
               name: $APP_INSTANCE_NAME-mysql-secret
               key: wp_password
         volumeMounts:
-        - name: data
+        - name: $APP_INSTANCE_NAME-mysql-pvc
           mountPath: /var/lib/mysql
           subPath: data
-      volumes:
-      - name: data
-        persistentVolumeClaim:
-          claimName: $APP_INSTANCE_NAME-mysql-pvc
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: $APP_INSTANCE_NAME-mysql-pvc
-  labels:
-    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
-    app.kubernetes.io/component: wordpress-mysql
-spec:
-  accessModes: [ReadWriteOnce]
-  storageClassName: standard
-  resources:
-    requests:
-      storage: 5Gi
+  volumeClaimTemplates:
+  - metadata:
+      name: $APP_INSTANCE_NAME-mysql-pvc
+      labels:
+        app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+        app.kubernetes.io/component: wordpress-server
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: standard
+      resources:
+        requests:
+          storage: 5Gi
 ---
 apiVersion: v1
 kind: Service
@@ -88,7 +83,7 @@ spec:
   clusterIP: None
 ---
 apiVersion: apps/v1beta2
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: $APP_INSTANCE_NAME-wordpress
   labels: &WordpressDeploymentLabels
@@ -96,6 +91,7 @@ metadata:
     app.kubernetes.io/component: wordpress-webserver
 spec:
   replicas: 1
+  serviceName: $APP_INSTANCE_NAME-wordpress-svc
   selector:
     matchLabels: *WordpressDeploymentLabels
   template:
@@ -122,27 +118,21 @@ spec:
         - name: http
           containerPort: 80
         volumeMounts:
-        - name: data
+        - name: $APP_INSTANCE_NAME-wordpress-pvc
           mountPath: /var/www/html
           subPath: wp
-      volumes:
-      - name: data
-        persistentVolumeClaim:
-          claimName: $APP_INSTANCE_NAME-wordpress-pvc
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: $APP_INSTANCE_NAME-wordpress-pvc
-  labels:
-    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
-    app.kubernetes.io/component: wordpress-webserver
-spec:
-  accessModes: [ReadWriteOnce]
-  storageClassName: standard
-  resources:
-    requests:
-      storage: 5Gi
+  volumeClaimTemplates:
+  - metadata:
+      name: $APP_INSTANCE_NAME-wordpress-pvc
+      labels:
+        app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+        app.kubernetes.io/component: wordpress-webserver
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: standard
+      resources:
+        requests:
+          storage: 5Gi
 ---
 apiVersion: v1
 kind: Service
