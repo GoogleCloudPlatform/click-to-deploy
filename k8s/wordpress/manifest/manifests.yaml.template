@@ -25,6 +25,8 @@ spec:
   selector:
     matchLabels: *MysqlDeploymentLabels
   serviceName: $APP_INSTANCE_NAME-mysql-svc
+  updateStrategy:
+    type: RollingUpdate
   template:
     metadata:
       labels: *MysqlDeploymentLabels
@@ -102,6 +104,8 @@ spec:
   serviceName: $APP_INSTANCE_NAME-wordpress-svc
   selector:
     matchLabels: *WordpressDeploymentLabels
+  updateStrategy:
+    type: RollingUpdate
   template:
     metadata:
       labels: *WordpressDeploymentLabels
