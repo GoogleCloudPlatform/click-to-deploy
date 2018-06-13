@@ -113,7 +113,7 @@ following command to expose an external IP:
 ```
 kubectl patch svc "$NAME-wordpress-svc" \
   --namespace "$NAMESPACE" \
-  -p '{"spec": {"type": "LoadBalancer"}}'
+  --patch '{"spec": {"type": "LoadBalancer"}}'
 ```
 
 ### Access WordPress site
@@ -136,6 +136,97 @@ Note that it might take some time for the external IP to be provisioned.
 
 After accessing the WordPress main page, you will see the installation wizard.
 Follow the instructions presented on the screen to finish the process.
+
+# Upgrade the Application
+
+## Prepare the environment
+
+We recommend to create backup of your data before starting the upgrade procedure.
+
+Please keep in mind that during the upgrade procedure your WordPress site will be unavailable.
+
+Set your environment variables to match the installation properties:
+
+```shell
+NAME=wordpress-1
+NAMESPACE=default
+```
+
+## Upgrade Wordpress
+
+Set the new image version in an environment variable:
+
+```shell
+export IMAGE_WORDPRESS=launcher.gcr.io/google/wordpress4-php5-apache:4.9
+```
+
+Update the StatefulSet definition with new image reference:
+
+```shell
+kubectl patch statefulset $NAME-wordpress \
+  --namespace $NAMESPACE \
+  --type='json' \
+  --patch="[{ \
+      \"op\": \"replace\", \
+      \"path\": \"/spec/template/spec/containers/0/image\", \
+      \"value\":\"${IMAGE_WORDPRESS}\" \
+    }]"
+```
+
+Monitor the process with:
+
+```shell
+kubectl get pods $NAME-wordpress-0 --namespace $NAMESPACE --watch
+```
+
+The pod should terminated and recreated with new image for `wordpress` container. The final state of
+the pod should be `Running` and marked as 1/1 in `READY` column.
+
+To check the current image used for `wordpress` container, you can run the following command:
+
+```shell
+kubectl get pod $NAME-wordpress-0 \
+  --namespace $NAMESPACE \
+  --output jsonpath='{.spec.containers[0].image}'
+```
+
+## Upgrade MySQL
+
+Set the new image version in an environment variable:
+
+```shell
+export IMAGE_MYSQL=launcher.gcr.io/google/mysql5:5.7
+```
+
+Update the StatefulSet definition with new image reference:
+
+```shell
+kubectl patch statefulset $NAME-mysql \
+  --namespace $NAMESPACE \
+  --type='json' \
+  --patch="[{ \
+      \"op\": \"replace\", \
+      \"path\": \"/spec/template/spec/containers/0/image\", \
+      \"value\":\"${IMAGE_MYSQL}\" \
+    }]"
+```
+
+Monitor the process with:
+
+```shell
+kubectl get pods $NAME-mysql-0 --namespace $NAMESPACE --watch
+```
+
+The pod should terminated and recreated with new image for `mysql` container. The final state of
+the pod should be `Running` and marked as 1/1 in `READY` column.
+
+To check the current image used for `mysql` container, you can run the following command:
+
+```shell
+kubectl get pod $NAME-mysql-0 \
+  --namespace $NAMESPACE \
+  --output jsonpath='{.spec.containers[0].image}'
+```
 
 # Uninstall the Application
 
