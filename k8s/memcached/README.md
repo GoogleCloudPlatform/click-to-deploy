@@ -136,7 +136,11 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 # Basic Usage
 
-*TODO: instructions to be written *
+Usually, there are two steps necessary to be able to use Memcache cluster
+
+1. One needs to acquire IP addresses of servers running with Memcached cluster. 
+
+2. One needs to configure an application so it can use Memcached cluster as a cache. Usually, applications use specialized memcached clients (e.g. [pymemcache](http://pymemcache.readthedocs.io/en/latest/getting_started.html)) to run a hashing algorithm that is responsible for making selection which Memcached server to use for storing/retrieving cached data. 
 
 ## Acquire IP addresses of Memcached instances
 
@@ -148,17 +152,44 @@ To discover IP addresses of Memcached instances using kubectl, please, run the f
 kubectl get pods -o wide -l app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
 
-To discover IP addresses of Memcached instances using Python, please, use this code:
+To discover IP addresses of Memcached instances using Python you can use kubernetes module.
 
+Use this command to install kubernetes module on your computer
 ```shell
-TO BE DELIVERED
+pip install kubernetes
+
 ```
 
-## Expose Memcached service to external world
+Here is an examplary code that could be used as a starting for ar Python program to discover Memcached IP addresses:
 
-In this specific example, there is no encyption between an application and Memcached instances and no authentication/authorization schema is applied. The assumption is that applications deployed within the same Kubernetes cluster can talk freely to Memcached instances which are meant to be an internal cache of an application. 
+```python
+
+import os
+# if kubernetes module is not installed, please, install it, e.g. pip install kubernetes
+from kubernetes import client, config
+# Load Kube config
+config.load_kube_config()
+# Create a Kubernetes client
+k8s_client = client.CoreV1Api()
+# Get the list of all pods
+pod_list = k8s_client.list_namespaced_pod("default")
+# list all pods from the default namespace
+for pod in pod_list.items:
+    print("%s\t%s\t%s" % (pod.metadata.name, pod.status.phase, pod.status.pod_ip))
+
+```
+
+For more information about using Python to manage & discover Kubernetes cluster information, please, go to this page: https://github.com/kubernetes-client/python
+
+## Using Memcached instances as a cache in your application
+There are many memcached clients that potentially could be used for getting access to Memcached servers running in the cluster. Python pymemcache client is one of them. Please, refer to this documentation
+http://pymemcache.readthedocs.io/en/latest/getting_started.html if you wold like to learn more about it.
+
+## Exposure of Memcached service to external world
 
 It is not recommended to expose Memcached K8s App for external access.
+
+In this specific example, there is no encyption between an application and Memcached instances and no authentication/authorization schema is applied. The assumption is that applications deployed within the same Kubernetes cluster can talk freely to Memcached instances which are meant to be an internal cache of an application. 
 
 # Scaling
 
