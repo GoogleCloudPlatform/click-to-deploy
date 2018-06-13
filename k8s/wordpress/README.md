@@ -89,7 +89,7 @@ export NAME=wordpress-1
 export NAMESPACE=default
 ```
 
-#### Use `make` to install your application
+#### Use `make app/install` to install your application
 
 make will build a deployer container image and then run your installation:
 
@@ -137,9 +137,9 @@ Note that it might take some time for the external IP to be provisioned.
 After accessing the WordPress main page, you will see the installation wizard.
 Follow the instructions presented on the screen to finish the process.
 
-### Uninstall the Application
+# Uninstall the Application
 
-#### Using GKE UI
+## Using GKE UI
 
 Navigate to `GKE > Applications` in GCP console. From the list of applications, click on the one
 that you wish to uninstall.
@@ -147,7 +147,9 @@ that you wish to uninstall.
 On the new screen, click on the `Delete` button located in the top menu. It will remove
 the resources attached to this application.
 
-#### Using the command line
+## Using the command line
+
+### Delete the resources using `make app/uninstall`
 
 Make sure your environment variable point to values matching the installation:
 
@@ -162,7 +164,7 @@ Then run `make` command to remove the resources created by your installation:
 make app/uninstall
 ```
 
-#### Delete the persistent volumes of your installation
+### Delete the persistent volumes of your installation
 
 By design, removal of StatefulSets in Kubernetes does not remove the PersistentVolumeClaims that
 were attached to their Pods. It protects your installations from mistakenly deleting stateful data.
