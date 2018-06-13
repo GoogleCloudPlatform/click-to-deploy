@@ -89,7 +89,7 @@ export NAME=wordpress-1
 export NAMESPACE=default
 ```
 
-#### Use `make` to install your application
+#### Use `make app/install` to install your application
 
 make will build a deployer container image and then run your installation:
 
@@ -149,7 +149,7 @@ the resources attached to this application.
 
 ## Using the command line
 
-### Delete the resources using `make`
+### Delete the resources using `make app/uninstall`
 
 Make sure your environment variable point to values matching the installation:
 
