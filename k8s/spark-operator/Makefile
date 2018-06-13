@@ -16,7 +16,7 @@ NAME ?= spark-operator-1
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)", \
-  "serviceAccount": "spark-sa" \
+  "serviceAccount": "$(NAME)-sa" \
 }
 TESTER_IMAGE ?= $(REGISTRY)/spark-operator/tester:$(TAG)
 APP_TEST_PARAMETERS ?= { \
@@ -73,5 +73,5 @@ app/build:: .build/spark-operator/deployer \
 # TODO(huyhg): Remove once tools can provision it.
 .PHONY: app/serviceaccount
 app/serviceaccount:
-	kubectl create serviceaccount spark-sa
-	kubectl create clusterrolebinding test-cli-spark-sa-rb --clusterrole=cluster-admin --serviceaccount=$(NAMESPACE):spark-sa
+	kubectl create serviceaccount "$(NAME)-sa"
+	kubectl create clusterrolebinding "$(NAMESPACE)-$(NAME)-sa-rb" --clusterrole=cluster-admin --serviceaccount="$(NAMESPACE):$(NAME)-sa"
