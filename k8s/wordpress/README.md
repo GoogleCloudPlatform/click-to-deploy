@@ -85,57 +85,16 @@ cd google-click-to-deploy/k8s/wordpress
 Choose the instance name and namespace for the app.
 
 ```shell
-export APP_INSTANCE_NAME=wordpress-1
+export NAME=wordpress-1
 export NAMESPACE=default
 ```
 
-Configure the container images.
+#### Use `make` to install your application
+
+make will build a deployer container image and then run your installation:
 
 ```shell
-export IMAGE_WORDPRESS="gcr.io/k8s-marketplace-eap/google/wordpress:latest"
-export IMAGE_MYSQL="gcr.io/k8s-marketplace-eap/google/wordpress/mysql:latest"
-```
-
-The images above are referenced by
-[tag](https://docs.docker.com/engine/reference/commandline/tag). It is strongly
-recommended to pin each image to an immutable
-[content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This will ensure that the installed application will always use the same images,
-until you are ready to upgrade.
-
-```shell
-for i in "IMAGE_WORDPRESS" "IMAGE_MYSQL"; do
-  repo=`echo ${!i} | cut -d: -f1`;
-  digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
-  export $i="$repo@$digest";
-  env | grep $i;
-done
-```
-
-Set or generate passwords:
-
-```shell
-export ROOT_DB_PASSWORD=`pwgen 16 1`
-export WORDPRESS_DB_PASSWORD=`pwgen 16 1`
-```
-
-#### Expand the manifest template
-
-Use `envsubst` to expand the template. It is recommended that you save the
-expanded manifest file for future updates to the application.
-
-```shell
-awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_WORDPRESS $IMAGE_MYSQL $ROOT_DB_PASSWORD $WORDPRESS_DB_PASSWORD' \
-  > "${APP_INSTANCE_NAME}_manifest.yaml"
-```
-
-#### Apply to Kubernetes
-
-Use `kubectl` to apply the manifest to your Kubernetes cluster.
-
-```shell
-kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
+make app/install
 ```
 
 #### View the app in the Google Cloud Console
@@ -143,7 +102,7 @@ kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 Point your browser to:
 
 ```shell
-echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
+echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${NAME}"
 ```
 
 ### Expose WordPress service
@@ -152,7 +111,7 @@ By default, the application does not have an external IP. Run the
 following command to expose an external IP:
 
 ```
-kubectl patch svc "$APP_INSTANCE_NAME-wordpress-svc" \
+kubectl patch svc "$NAME-wordpress-svc" \
   --namespace "$NAMESPACE" \
   -p '{"spec": {"type": "LoadBalancer"}}'
 ```
@@ -165,7 +124,7 @@ the URL printed below in your browser.
 ```
 SERVICE_IP=$(kubectl get \
   --namespace ${NAMESPACE} \
-  svc ${APP_INSTANCE_NAME}-wordpress-svc \
+  svc ${NAME}-wordpress-svc \
   -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
 echo "http://${SERVICE_IP}"
