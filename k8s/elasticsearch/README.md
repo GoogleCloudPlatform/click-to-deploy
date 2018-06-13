@@ -86,50 +86,23 @@ cd google-click-to-deploy/k8s/elasticsearch
 Choose the instance name and namespace for the app.
 
 ```shell
-export APP_INSTANCE_NAME=elasticsearch-1
+export NAME=elasticsearch-1
 export NAMESPACE=default
 ```
 
-Configure the container images.
+Optionally, define how many pods should be run in StatefulSet.
+If not specified, it will default to 2.
 
 ```shell
-export IMAGE_ELASTICSEARCH="gcr.io/k8s-marketplace-eap/google/elasticsearch:latest"
-export IMAGE_INIT="gcr.io/k8s-marketplace-eap/google/elasticsearch/ubuntu16_04:latest"
+export REPLICAS=2
 ```
 
-The images above are referenced by
-[tag](https://docs.docker.com/engine/reference/commandline/tag). It is strongly
-recommended to pin each image to an immutable
-[content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This will ensure that the installed application will always use the same images,
-until you are ready to upgrade.
+#### Use `make` to install your application
+
+`make` will build a deployer container image and then run your installation:
 
 ```shell
-for i in "IMAGE_ELASTICSEARCH" "IMAGE_INIT"; do
-  repo=`echo ${!i} | cut -d: -f1`;
-  digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
-  export $i="$repo@$digest";
-  env | grep $i;
-done
-```
-
-#### Expand the manifest template
-
-Use `envsubst` to expand the template. It is recommended that you save the
-expanded manifest file for future updates to the application.
-
-```shell
-awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_ELASTICSEARCH $IMAGE_INIT' \
-  > "${APP_INSTANCE_NAME}_manifest.yaml"
-```
-
-#### Apply to Kubernetes
-
-Use `kubectl` to apply the manifest to your Kubernetes cluster.
-
-```shell
-kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
+make app/install
 ```
 
 #### View the app in the Google Cloud Console
@@ -182,3 +155,47 @@ to at least 3.
 
 For more information about the StatefulSets scaling, check the
 [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/#kubectl-scale).
+
+
+### Uninstall the Application
+
+#### Using GKE UI
+
+Navigate to `GKE > Applications` in GCP console. From the list of applications, click on the one
+that you wish to uninstall.
+
+On the new screen, click on the `Delete` button located in the top menu. It will remove
+the resources attached to this application.
+
+#### Using the command line
+
+Make sure your environment variable point to values matching the installation:
+
+```shell
+export NAME=elasticsearch-1
+export NAMESPACE=default
+```
+
+Then run `make` command to remove the resources created by your installation:
+
+```shell
+make app/uninstall
+```
+
+#### Delete the persistent volumes of your installation
+
+By design, removal of StatefulSets in Kubernetes does not remove the PersistentVolumeClaims that
+were attached to their Pods. It protects your installations from mistakenly deleting stateful data.
+
+If you wish to remove the PersistentVolumeClaims with their attached persistent disks, run the
+following `kubectl` command:
+
+```shell
+# specify the variables values matching your installation:
+export NAME=elasticsearch-1
+export NAMESPACE=default
+
+kubectl delete persistentvolumeclaims \
+  --namespace $NAMESPACE
+  --selector app.kubernetes.io/name=$NAME
+```
