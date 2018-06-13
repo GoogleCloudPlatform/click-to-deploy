@@ -36,3 +36,6 @@ spec:
     url: https://github.com/GoogleCloudPlatform/spark-on-k8s-operator/blob/master/docs/quick-start-guide.md
   - description: Apache Spark documentations
     url: https://spark.apache.org/docs/latest/
+  notes: |-
+    Follow these [examples](https://github.com/GoogleCloudPlatform/spark-on-k8s-operator/blob/master/docs/quick-start-guide.md#running-the-examples)
+    to deploy your Spark jobs.
