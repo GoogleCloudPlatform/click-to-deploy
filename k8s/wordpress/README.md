@@ -136,3 +136,45 @@ Note that it might take some time for the external IP to be provisioned.
 
 After accessing the WordPress main page, you will see the installation wizard.
 Follow the instructions presented on the screen to finish the process.
+
+### Uninstall the Application
+
+#### Using GKE UI
+
+Navigate to `GKE > Applications` in GCP console. From the list of applications, click on the one
+that you wish to uninstall.
+
+On the new screen, click on the `Delete` button located in the top menu. It will remove
+the resources attached to this application.
+
+#### Using the command line
+
+Make sure your environment variable point to values matching the installation:
+
+```shell
+export NAME=wordpress-1
+export NAMESPACE=default
+```
+
+Then run `make` command to remove the resources created by your installation:
+
+```shell
+make app/uninstall
+```
+
+#### Delete the persistent volumes of your installation
+
+By design, removal of StatefulSets in Kubernetes does not remove the PersistentVolumeClaims that
+were attached to their Pods. It protects your installations from mistakenly deleting stateful data.
+
+If you wish to remove the PersistentVolumeClaims with their attached persistent disks, run the
+following `kubectl` command:
+
+```shell
+# specify the variables values matching your installation:
+export NAME=wordpress-1
+export NAMESPACE=default
+
+kubectl delete persistentvolumeclaims \
+  --namespace $NAMESPACE
+  --selector app.kubernetes.io/name=$NAME
