@@ -1,32 +1,53 @@
-APP_NAME = memcached
+include ../vendor/marketplace-tools/app.Makefile
+include ../vendor/marketplace-tools/crd.Makefile
+include ../vendor/marketplace-tools/gcloud.Makefile
+include ../vendor/marketplace-tools/marketplace.Makefile
+include ../vendor/marketplace-tools/ubbagent.Makefile
+include ../vendor/marketplace-tools/var.Makefile
 
-tools_path = ../vendor/marketplace-tools
 
-include $(tools_path)/gcloud.Makefile
+TAG ?= latest
+$(info ---- TAG = $(TAG))
 
-include $(tools_path)/crd.Makefile
-include $(tools_path)/app.Makefile
+APP_DEPLOYER_IMAGE ?= $(REGISTRY)/memcached/deployer:$(TAG)
+NAME ?= memcached-1
+APP_PARAMETERS ?= { \
+  "APP_INSTANCE_NAME": "$(NAME)", \
+  "NAMESPACE": "$(NAMESPACE)" \
+}
+APP_TEST_PARAMETERS ?= {}
 
-REGISTRY_FOR_DEPLOYER ?= $(APP_REGISTRY)
-$(info ---- REGISTRY_FOR_DEPLOYER = $(REGISTRY_FOR_DEPLOYER))
 
-app/build:: .build/deployer .build/memcached
+app/build:: .build/memcached/deployer \
+	    .build/memcached/memcached
 
-.build/deployer: deployer/* manifest/* $(MARKETPLACE_BASE_BUILD)/deployer-kubectl $(APP_BUILD)/registry_prefix | app/setup
+
+.build/memcached: | .build
+	mkdir -p "$@"
+
+
+.build/memcached/deployer: deployer/* \
+                           manifest/* \
+                           .build/marketplace/deployer/envsubst \
+                           .build/var/APP_DEPLOYER_IMAGE \
+                           .build/var/REGISTRY \
+                           .build/var/TAG \
+                           | .build/memcached
 	docker build \
-	    --build-arg REGISTRY="$(REGISTRY_FOR_DEPLOYER)" \
-	    --build-arg TAG="$(APP_TAG)" \
-	    --build-arg MARKETPLACE_REGISTRY="$(MARKETPLACE_REGISTRY)" \
+	    --build-arg REGISTRY="$(REGISTRY)/memcached" \
+	    --build-arg TAG="$(TAG)" \
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
 	    -f deployer/Dockerfile \
 	    .
-	gcloud docker -- push "$(APP_DEPLOYER_IMAGE)"
+	docker push "$(APP_DEPLOYER_IMAGE)"
 	@touch "$@"
 
-# Simulate building of primary app image. Actually just copying public image to
-# local registry.
-.build/memcached: $(APP_BUILD)/registry_prefix | app/setup
-	gcloud docker -- pull launcher.gcr.io/google/memcached1
-	docker tag launcher.gcr.io/google/memcached1 "$(APP_REGISTRY):$(APP_TAG)"
-	gcloud docker -- push "$(APP_REGISTRY):$(APP_TAG)"
+
+.build/memcached/memcached: .build/var/REGISTRY \
+                            .build/var/TAG \
+                            | .build/memcached
+	docker pull launcher.gcr.io/google/memcached1
+	docker tag launcher.gcr.io/google/memcached1 \
+	    "$(REGISTRY)/memcached:$(TAG)"
+	docker push "$(REGISTRY)/memcached:$(TAG)"
 	@touch "$@"
