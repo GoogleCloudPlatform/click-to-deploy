@@ -33,12 +33,12 @@ spec:
       - image: $IMAGE_MYSQL
         name: mysql
         env:
-        - name: "MYSQL_ROOT_PASSWORD"
+        - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
               name: $APP_INSTANCE_NAME-mysql-secret
               key: root_password
-        - name: "MYSQL_DATABASE"
+        - name: MYSQL_DATABASE
           value: wordpress
         - name: MYSQL_USER
           valueFrom:
@@ -54,6 +54,14 @@ spec:
         - name: $APP_INSTANCE_NAME-mysql-pvc
           mountPath: /var/lib/mysql
           subPath: data
+        readinessProbe:
+          exec:
+            command: ["sh", "-c", "exec mysqladmin status -uroot -p$MYSQL_ROOT_PASSWORD"]
+          initialDelaySeconds: 15
+        livenessProbe:
+          exec:
+            command: ["sh", "-c", "exec mysqladmin status -uroot -p$MYSQL_ROOT_PASSWORD"]
+          initialDelaySeconds: 120
   volumeClaimTemplates:
   - metadata:
       name: $APP_INSTANCE_NAME-mysql-pvc
@@ -121,6 +129,16 @@ spec:
         - name: $APP_INSTANCE_NAME-wordpress-pvc
           mountPath: /var/www/html
           subPath: wp
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 30
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 120
   volumeClaimTemplates:
   - metadata:
       name: $APP_INSTANCE_NAME-wordpress-pvc
