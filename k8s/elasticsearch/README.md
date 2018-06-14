@@ -248,6 +248,6 @@ export NAME=elasticsearch-1
 export NAMESPACE=default
 
 kubectl delete persistentvolumeclaims \
-  --namespace $NAMESPACE
+  --namespace $NAMESPACE \
   --selector app.kubernetes.io/name=$NAME
 ```
