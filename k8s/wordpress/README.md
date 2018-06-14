@@ -240,19 +240,37 @@ the resources attached to this application.
 
 ## Using the command line
 
-### Delete the resources using `make app/uninstall`
+### Prepare the environment
 
-Make sure your environment variable point to values matching the installation:
+Set your installation name and Kubernetes namespace:
 
 ```shell
-export NAME=wordpress-1
+export APP_INSTANCE_NAME=wordpress-1
 export NAMESPACE=default
 ```
 
-Then run `make` command to remove the resources created by your installation:
+### Prepare the manifest file
+
+If you still have the expanded manifest file used for the installation, you can skip this part.
+Otherwise, generate it again. You can use a simplified variables substitution:
 
 ```shell
-make app/uninstall
+awk 'BEGINFILE {print "---"}{print}' manifest/* \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE' \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
+```
+
+### Delete the resources using `kubectl delete`
+
+NOTE: Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions.
+  It means that for instance if you have `kubectl` in version 1.10.* and Kubernetes server 1.8.*,
+  you may experience incompatibility issues, like not removing the StatefulSets with
+  apiVersion of apps/v1beta2.
+
+Run `kubectl` on expanded manifest file matching your installation:
+
+```shell
+kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 ```
 
 ### Delete the persistent volumes of your installation
@@ -265,9 +283,9 @@ following `kubectl` command:
 
 ```shell
 # specify the variables values matching your installation:
-export NAME=wordpress-1
+export APP_INSTANCE_NAME=wordpress-1
 export NAMESPACE=default
 
 kubectl delete persistentvolumeclaims \
   --namespace $NAMESPACE
-  --selector app.kubernetes.io/name=$NAME
+  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
