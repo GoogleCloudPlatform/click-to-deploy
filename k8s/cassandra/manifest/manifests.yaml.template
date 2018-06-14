@@ -23,7 +23,7 @@ spec:
         - name: CASSANDRA_CLUSTER_NAME
           value: $APP_INSTANCE_NAME-cassandra-svc
         - name: CASSANDRA_SEEDS
-          value: $APP_INSTANCE_NAME-cassandra-0.$APP_INSTANCE_NAME-cassandra-svc.$NAMESPACE.svc.cluster.local
+          value: $APP_INSTANCE_NAME-cassandra-0.$APP_INSTANCE_NAME-cassandra-svc.$NAMESPACE.svc.cluster.local, $APP_INSTANCE_NAME-cassandra-1.$APP_INSTANCE_NAME-cassandra-svc.$NAMESPACE.svc.cluster.local, $APP_INSTANCE_NAME-cassandra-2.$APP_INSTANCE_NAME-cassandra-svc.$NAMESPACE.svc.cluster.local
         ports:
         - name: pure-intra
           containerPort: 7000
@@ -48,6 +48,13 @@ spec:
             command: [ "/bin/sh", "-c", "nodetool status | grep -E \"^UN\\s+${POD_IP}\"" ]
           initialDelaySeconds: 90
           periodSeconds: 30
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - /bin/sh
+              - -c
+              - nodetool drain
   volumeClaimTemplates:
   - metadata:
       name: $APP_INSTANCE_NAME-cassandra-pvc
