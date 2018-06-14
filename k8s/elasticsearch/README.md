@@ -86,23 +86,56 @@ cd google-click-to-deploy/k8s/elasticsearch
 Choose the instance name and namespace for the app.
 
 ```shell
-export NAME=elasticsearch-1
+export APP_INSTANCE_NAME=elasticsearch-1
 export NAMESPACE=default
 ```
 
-Optionally, define how many pods should be run in StatefulSet.
-If not specified, it will default to 2.
+Specify the number of replicas for the Elasticsearch server:
 
 ```shell
 export REPLICAS=2
 ```
 
-#### Use `make app/install` to install your application
-
-`make` will build a deployer container image and then run your installation:
+Configure the container images.
 
 ```shell
-make app/install
+export IMAGE_ELASTICSEARCH="gcr.io/k8s-marketplace-eap/google/elasticsearch:latest"
+export IMAGE_INIT="gcr.io/k8s-marketplace-eap/google/elasticsearch/ubuntu16_04:latest"
+```
+
+The images above are referenced by
+[tag](https://docs.docker.com/engine/reference/commandline/tag). It is strongly
+recommended to pin each image to an immutable
+[content digest](https://docs.docker.com/registry/spec/api/#content-digests).
+This will ensure that the installed application will always use the same images,
+until you are ready to upgrade.
+
+```shell
+for i in "IMAGE_ELASTICSEARCH" "IMAGE_INIT"; do
+  repo=`echo ${!i} | cut -d: -f1`;
+  digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
+  export $i="$repo@$digest";
+  env | grep $i;
+done
+```
+
+#### Expand the manifest template
+
+Use `envsubst` to expand the template. It is recommended that you save the
+expanded manifest file for future updates to the application.
+
+```shell
+awk 'BEGINFILE {print "---"}{print}' manifest/* \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_ELASTICSEARCH $IMAGE_INIT $REPLICAS' \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
+```
+
+#### Apply to Kubernetes
+
+Use `kubectl` to apply the manifest to your Kubernetes cluster.
+
+```shell
+kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
 
 #### View the app in the Google Cloud Console
@@ -110,7 +143,7 @@ make app/install
 Point your browser to:
 
 ```shell
-echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${NAME}"
+echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
 ```
 
 ### Expose Elasticsearch service
@@ -119,7 +152,7 @@ By default, the application does not have an external IP. Run the
 following command to expose an external IP:
 
 ```
-kubectl patch svc "$NAME-elasticsearch-svc" \
+kubectl patch svc "$APP_INSTANCE_NAME-elasticsearch-svc" \
   --namespace "$NAMESPACE" \
   -p '{"spec": {"type": "LoadBalancer"}}'
 ```
@@ -132,7 +165,7 @@ the URL printed below in your browser.
 ```
 SERVICE_IP=$(kubectl get \
   --namespace ${NAMESPACE} \
-  svc ${NAME}-elasticsearch-svc \
+  svc ${APP_INSTANCE_NAME}-elasticsearch-svc \
   -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
 echo "http://${SERVICE_IP}:9200"
@@ -145,7 +178,7 @@ Note that it might take some time for the external IP to be provisioned.
 Scale the number of master node replicas by the following command:
 
 ```
-kubectl scale statefulsets "$NAME-elasticsearch" \
+kubectl scale statefulsets "$APP_INSTANCE_NAME-elasticsearch" \
   --namespace "$NAMESPACE" --replicas=<new-replicas>
 ```
 
@@ -155,7 +188,6 @@ to at least 3.
 
 For more information about the StatefulSets scaling, check the
 [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/#kubectl-scale).
-
 
 # Uninstall the Application
 
@@ -169,19 +201,37 @@ the resources attached to this application.
 
 ## Using the command line
 
-### Delete the resources using `make app/uninstall`
+### Prepare the environment
 
-Make sure your environment variable point to values matching the installation:
+Set your installation name and Kubernetes namespace:
 
 ```shell
-export NAME=elasticsearch-1
+export APP_INSTANCE_NAME=elasticsearch-1
 export NAMESPACE=default
 ```
 
-Then run `make` command to remove the resources created by your installation:
+### Prepare the manifest file
+
+If you still have the expanded manifest file used for the installation, you can skip this part.
+Otherwise, generate it again. You can use a simplified variables substitution:
 
 ```shell
-make app/uninstall
+awk 'BEGINFILE {print "---"}{print}' manifest/* \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE' \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
+```
+
+### Delete the resources using `kubectl delete`
+
+NOTE: Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions.
+  It means that for instance if you have `kubectl` in version 1.10.* and Kubernetes server 1.8.*,
+  you may experience incompatibility issues, like not removing the StatefulSets with
+  apiVersion of apps/v1beta2.  
+
+Run `kubectl` on expanded manifest file matching your installation:
+
+```shell
+kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 ```
 
 ### Delete the persistent volumes of your installation
