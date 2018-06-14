@@ -85,16 +85,57 @@ cd google-click-to-deploy/k8s/wordpress
 Choose the instance name and namespace for the app.
 
 ```shell
-export NAME=wordpress-1
+export APP_INSTANCE_NAME=wordpress-1
 export NAMESPACE=default
 ```
 
-#### Use `make app/install` to install your application
-
-make will build a deployer container image and then run your installation:
+Configure the container images.
 
 ```shell
-make app/install
+export IMAGE_WORDPRESS="gcr.io/k8s-marketplace-eap/google/wordpress:latest"
+export IMAGE_MYSQL="gcr.io/k8s-marketplace-eap/google/wordpress/mysql:latest"
+```
+
+The images above are referenced by
+[tag](https://docs.docker.com/engine/reference/commandline/tag). It is strongly
+recommended to pin each image to an immutable
+[content digest](https://docs.docker.com/registry/spec/api/#content-digests).
+This will ensure that the installed application will always use the same images,
+until you are ready to upgrade.
+
+```shell
+for i in "IMAGE_WORDPRESS" "IMAGE_MYSQL"; do
+  repo=`echo ${!i} | cut -d: -f1`;
+  digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
+  export $i="$repo@$digest";
+  env | grep $i;
+done
+```
+
+Set or generate passwords:
+
+```shell
+export ROOT_DB_PASSWORD=`pwgen 16 1`
+export WORDPRESS_DB_PASSWORD=`pwgen 16 1`
+```
+
+#### Expand the manifest template
+
+Use `envsubst` to expand the template. It is recommended that you save the
+expanded manifest file for future updates to the application.
+
+```shell
+awk 'BEGINFILE {print "---"}{print}' manifest/* \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_WORDPRESS $IMAGE_MYSQL $ROOT_DB_PASSWORD $WORDPRESS_DB_PASSWORD' \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
+```
+
+#### Apply to Kubernetes
+
+Use `kubectl` to apply the manifest to your Kubernetes cluster.
+
+```shell
+kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
 
 #### View the app in the Google Cloud Console
@@ -102,7 +143,7 @@ make app/install
 Point your browser to:
 
 ```shell
-echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${NAME}"
+echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
 ```
 
 ### Expose WordPress service
@@ -111,7 +152,7 @@ By default, the application does not have an external IP. Run the
 following command to expose an external IP:
 
 ```
-kubectl patch svc "$NAME-wordpress-svc" \
+kubectl patch svc "$APP_INSTANCE_NAME-wordpress-svc" \
   --namespace "$NAMESPACE" \
   -p '{"spec": {"type": "LoadBalancer"}}'
 ```
@@ -124,7 +165,7 @@ the URL printed below in your browser.
 ```
 SERVICE_IP=$(kubectl get \
   --namespace ${NAMESPACE} \
-  svc ${NAME}-wordpress-svc \
+  svc ${APP_INSTANCE_NAME}-wordpress-svc \
   -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
 echo "http://${SERVICE_IP}"
@@ -149,19 +190,37 @@ the resources attached to this application.
 
 ## Using the command line
 
-### Delete the resources using `make app/uninstall`
+### Prepare the environment
 
-Make sure your environment variable point to values matching the installation:
+Set your installation name and Kubernetes namespace:
 
 ```shell
-export NAME=wordpress-1
+export APP_INSTANCE_NAME=wordpress-1
 export NAMESPACE=default
 ```
 
-Then run `make` command to remove the resources created by your installation:
+### Prepare the manifest file
+
+If you still have the expanded manifest file used for the installation, you can skip this part.
+Otherwise, generate it again. You can use a simplified variables substitution:
 
 ```shell
-make app/uninstall
+awk 'BEGINFILE {print "---"}{print}' manifest/* \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE' \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
+```
+
+### Delete the resources using `kubectl delete`
+
+NOTE: Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions.
+  It means that for instance if you have `kubectl` in version 1.10.* and Kubernetes server 1.8.*,
+  you may experience incompatibility issues, like not removing the StatefulSets with
+  apiVersion of apps/v1beta2.  
+
+Run `kubectl` on expanded manifest file matching your installation:
+
+```shell
+kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 ```
 
 ### Delete the persistent volumes of your installation
@@ -174,9 +233,9 @@ following `kubectl` command:
 
 ```shell
 # specify the variables values matching your installation:
-export NAME=wordpress-1
+export APP_INSTANCE_NAME=wordpress-1
 export NAMESPACE=default
 
 kubectl delete persistentvolumeclaims \
   --namespace $NAMESPACE
-  --selector app.kubernetes.io/name=$NAME
+  --selector app.kubernetes.io/name=APP_INSTANCE_NAME
