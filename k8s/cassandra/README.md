@@ -107,10 +107,9 @@ until you are ready to upgrade.
 
 ```shell
 for i in "IMAGE_CASSANDRA"; do
-  repo=`echo ${!i} | cut -d: -f1`;
-  digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
-  export $i="$repo@$digest";
-  env | grep $i;
+  image="${!i}";
+  export $i=$(docker inspect --format='{{index .RepoDigests 0}}' $image)
+  env | grep $i
 done
 ```
 
@@ -262,17 +261,39 @@ By design, removal of StatefulSets in Kubernetes does not remove the PersistentV
 were attached to their Pods. It protects your installations from mistakenly deleting stateful data.
 
 If you wish to remove the PersistentVolumeClaims with their attached persistent disks, run the
-following `kubectl` command:
+following `kubectl` commands:
 
 ```shell
+for i in $(kubectl get pvc -n $NAMESPACE \
+             --selector  app.kubernetes.io/name=$APP_INSTANCE_NAME \
+             -ojsonpath='{range .items[*]}{.spec.volumeName}{"\n"}{end}'); do
+  kubectl delete pv/$i --namespace $NAMESPACE
+done
+
 kubectl delete persistentvolumeclaims \
   --namespace $NAMESPACE \
   --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
 
-# Backups
+# Backup & Restore
 
-*TODO: instructions for backups*
+### Backup
+
+To backup Cassandra, `nodetool snapshot` command must be executed on each node to
+get eventually consistent backup. Script `scripts/backup.sh` does following steps:
+
+1. Upload `make_backup.sh` script to each container.
+1. Run this scripts.
+1. Gather packed data and downloads them to invoking machine.
+
+After running this script, there exists `backup-$NODENUMBER.tar.gz` files, that
+contain whole backup.
+
+Also, database schema and token information is also backed up.
+
+### Restoring
+
+*TODO: instructions for restore*
 
 # Upgrades
 
