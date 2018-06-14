@@ -141,7 +141,8 @@ Follow the instructions presented on the screen to finish the process.
 
 ## Prepare the environment
 
-We recommend to create backup of your data before starting the upgrade procedure.
+We recommend to create backup of your data before starting the upgrade procedure
+(TODO - create and link Backup and restore chapter).
 
 Please keep in mind that during the upgrade procedure your WordPress site will be unavailable.
 
