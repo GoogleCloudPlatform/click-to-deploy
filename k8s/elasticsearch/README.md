@@ -90,6 +90,12 @@ export APP_INSTANCE_NAME=elasticsearch-1
 export NAMESPACE=default
 ```
 
+Specify the number of replicas for the Elasticsearch server:
+
+```shell
+export REPLICAS=2
+```
+
 Configure the container images.
 
 ```shell
@@ -120,7 +126,7 @@ expanded manifest file for future updates to the application.
 
 ```shell
 awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_ELASTICSEARCH $IMAGE_INIT' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_ELASTICSEARCH $IMAGE_INIT $REPLICAS' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
@@ -182,3 +188,66 @@ to at least 3.
 
 For more information about the StatefulSets scaling, check the
 [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/#kubectl-scale).
+
+# Uninstall the Application
+
+## Using GKE UI
+
+Navigate to `GKE > Applications` in GCP console. From the list of applications, click on the one
+that you wish to uninstall.
+
+On the new screen, click on the `Delete` button located in the top menu. It will remove
+the resources attached to this application.
+
+## Using the command line
+
+### Prepare the environment
+
+Set your installation name and Kubernetes namespace:
+
+```shell
+export APP_INSTANCE_NAME=elasticsearch-1
+export NAMESPACE=default
+```
+
+### Prepare the manifest file
+
+If you still have the expanded manifest file used for the installation, you can skip this part.
+Otherwise, generate it again. You can use a simplified variables substitution:
+
+```shell
+awk 'BEGINFILE {print "---"}{print}' manifest/* \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE' \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
+```
+
+### Delete the resources using `kubectl delete`
+
+NOTE: Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions.
+  It means that for instance if you have `kubectl` in version 1.10.* and Kubernetes server 1.8.*,
+  you may experience incompatibility issues, like not removing the StatefulSets with
+  apiVersion of apps/v1beta2.  
+
+Run `kubectl` on expanded manifest file matching your installation:
+
+```shell
+kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
+```
+
+### Delete the persistent volumes of your installation
+
+By design, removal of StatefulSets in Kubernetes does not remove the PersistentVolumeClaims that
+were attached to their Pods. It protects your installations from mistakenly deleting stateful data.
+
+If you wish to remove the PersistentVolumeClaims with their attached persistent disks, run the
+following `kubectl` command:
+
+```shell
+# specify the variables values matching your installation:
+export NAME=elasticsearch-1
+export NAMESPACE=default
+
+kubectl delete persistentvolumeclaims \
+  --namespace $NAMESPACE
+  --selector app.kubernetes.io/name=$NAME
+```
