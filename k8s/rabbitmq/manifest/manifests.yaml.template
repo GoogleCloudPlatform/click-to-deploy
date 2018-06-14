@@ -58,7 +58,7 @@ spec:
         - name: epmd
           containerPort: 4369
         volumeMounts:
-        - name: config-volume # TODO(wgrzelak): it seems like it has read-only access, verify this
+        - name: config-volume
           mountPath: /etc/rabbitmq
         - name: $APP_INSTANCE_NAME-rabbitmq-pvc
           mountPath: /var/lib/rabbitmq
