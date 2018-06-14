@@ -176,19 +176,13 @@ kubectl patch statefulset $NAME-wordpress \
 Monitor the process with:
 
 ```shell
-kubectl get pods $NAME-wordpress-0 --namespace $NAMESPACE --watch
+kubectl get pods "$NAME-wordpress-0" \
+  --output go-template='Status={{.status.phase}} Image={{(index .spec.containers 0).image}}' \
+  --watch
 ```
 
 The pod should terminated and recreated with new image for `wordpress` container. The final state of
 the pod should be `Running` and marked as 1/1 in `READY` column.
-
-To check the current image used for `wordpress` container, you can run the following command:
-
-```shell
-kubectl get pod $NAME-wordpress-0 \
-  --namespace $NAMESPACE \
-  --output jsonpath='{.spec.containers[0].image}'
-```
 
 ## Upgrade MySQL
 
