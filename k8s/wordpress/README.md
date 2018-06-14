@@ -238,4 +238,4 @@ export NAMESPACE=default
 
 kubectl delete persistentvolumeclaims \
   --namespace $NAMESPACE
-  --selector app.kubernetes.io/name=APP_INSTANCE_NAME
+  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
