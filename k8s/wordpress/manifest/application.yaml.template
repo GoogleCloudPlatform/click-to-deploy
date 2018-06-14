@@ -20,7 +20,7 @@ spec:
     Google does not offer support for this solution. However, community support is available on
     [Stack Overflow](https://stackoverflow.com/questions/tagged/wordpress/).
     Additional community support is available on
-    [communmity forums](https://en.forums.wordpress.com).
+    [community forums](https://en.forums.wordpress.com).
   maintainers:
   - name: Google Click to Deploy
     url: https://cloud.google.com/solutions/#click-to-deploy
