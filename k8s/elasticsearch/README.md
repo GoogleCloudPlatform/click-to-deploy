@@ -377,10 +377,10 @@ following `kubectl` command:
 
 ```shell
 # specify the variables values matching your installation:
-export NAME=elasticsearch-1
+export APP_INSTANCE_NAME=elasticsearch-1
 export NAMESPACE=default
 
 kubectl delete persistentvolumeclaims \
   --namespace $NAMESPACE
-  --selector app.kubernetes.io/name=$NAME
+  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
