@@ -17,8 +17,7 @@ properties:
     description: The number of Pod replicas
     type: integer
     default: 3
-    minimum: 1
-    maximum: 100
+    minimum: 3
 required:
 - APP_INSTANCE_NAME
 - NAMESPACE

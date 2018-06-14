@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eu
+set -eo pipefail
 
 export SCRIPT_DIR=$(readlink -f "$(dirname "${BASH_SOURCE[0]}")")
 
@@ -16,7 +16,9 @@ if [[ -z "$1" ]]; then
   exit 1
 fi
 
-KEYSPACE="${1}"
+KEYSPACE="$1"
+
+set -e
 
 function upload_backup_script_cmd {
   for index in $(seq 0 $(( "${REPLICAS}" - 1 )) ); do
@@ -68,7 +70,7 @@ if [[ $STATUS -ne 0 ]]; then
 # Check for one of possible reasons for error, Cassandra cluster was scaled during
 # backup procedure
   NEW_REPLICAS=$(get_desired_number_of_replicas_in_sts)
-  if [[ $COUNT -ne $NEW_COUNT ]]; then
+  if [[ $REPLICAS -ne $NEW_REPLICAS ]]; then
     info "Number of containers has changed from ${REPLICAS} to ${NEW_REPLICAS}"
   fi
   exit 1
