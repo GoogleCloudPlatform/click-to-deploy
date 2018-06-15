@@ -55,24 +55,6 @@ spec:
         - /bin/bash
         - -c
         - 'if [[ "$(sysctl vm.max_map_count --values)" -lt 262144 ]]; then sysctl -w vm.max_map_count=262144; fi'
-      # This init container copies config files from the configmap into
-      # a normal file system. Configmap mounted as a volume lives on a read-only
-      # filesystem that would fail Elasticsearch.
-      - name: copy-config
-        image: $IMAGE_INIT
-        imagePullPolicy: IfNotPresent
-        volumeMounts:
-        - name: config
-          mountPath: /usr/share/elasticsearch/config
-        - name: configmap
-          mountPath: /elasticsearchconfig
-        command:
-        - /bin/bash
-        - -c
-        - >-
-          mkdir -p /usr/share/elasticsearch/config;
-          cp /elasticsearchconfig/* /usr/share/elasticsearch/config/;
-          chmod 777 /usr/share/elasticsearch/config/*
       containers:
       - name: elasticsearch
         image: $IMAGE_ELASTICSEARCH
@@ -92,8 +74,12 @@ spec:
         - name: tcp-transport
           containerPort: 9300
         volumeMounts:
-        - name: config
-          mountPath: /usr/share/elasticsearch/config
+        - name: configmap
+          mountPath: /etc/elasticsearch/elasticsearch.yml
+          subPath: elasticsearch.yml
+        - name: configmap
+          mountPath: /etc/elasticsearch/log4j2.properties
+          subPath: log4j2.properties
         - name: $APP_INSTANCE_NAME-elasticsearch-pvc
           mountPath: /usr/share/elasticsearch/data
         readinessProbe:
@@ -115,8 +101,6 @@ spec:
       - name: configmap
         configMap:
           name: "$APP_INSTANCE_NAME-configmap"
-      - name: config
-        emptyDir: {}
   volumeClaimTemplates:
   - metadata:
       name: $APP_INSTANCE_NAME-elasticsearch-pvc
