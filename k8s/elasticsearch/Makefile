@@ -11,10 +11,15 @@ $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/elasticsearch/deployer:$(TAG)
 NAME ?= elasticsearch-1
+
+ifdef REPLICAS
+  REPLICAS_FIELD = , "REPLICAS": "$(REPLICAS)"
+endif
+
 APP_PARAMETERS ?= { \
   "APP_INSTANCE_NAME": "$(NAME)", \
-  "NAMESPACE": "$(NAMESPACE)", \
-  "REPLICAS": "2" \
+  "NAMESPACE": "$(NAMESPACE)" \
+  $(REPLICAS_FIELD) \
 }
 APP_TEST_PARAMETERS ?= {}
 
@@ -48,8 +53,8 @@ app/build:: .build/elasticsearch/elasticsearch \
 .build/elasticsearch/elasticsearch: .build/var/REGISTRY \
                                     .build/var/TAG \
                                     | .build/elasticsearch
-	docker pull launcher.gcr.io/google/elasticsearch5
-	docker tag launcher.gcr.io/google/elasticsearch5 \
+	docker pull launcher.gcr.io/google/elasticsearch6
+	docker tag launcher.gcr.io/google/elasticsearch6 \
 	    "$(REGISTRY)/elasticsearch:$(TAG)"
 	docker push "$(REGISTRY)/elasticsearch:$(TAG)"
 	@touch "$@"
