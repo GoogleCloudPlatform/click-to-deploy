@@ -227,7 +227,7 @@ ELASTIC_URL="http://${SERVICE_IP}:9200"
 ```
 
 The application is installed by default with the `updateStrategy` of "OnDelete"
-assigned to the StatefulSet. If your configuration was chenged or if you are
+assigned to the StatefulSet. If your configuration was changed or if you are
 unsure if it still up to date, run the following command to ensure the right
 `updateStrategy`:
 
