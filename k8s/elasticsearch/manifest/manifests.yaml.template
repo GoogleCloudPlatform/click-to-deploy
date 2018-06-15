@@ -15,77 +15,6 @@ data:
 
     discovery.zen.minimum_master_nodes: 2
     discovery.zen.ping.unicast.hosts: ${DISCOVERY_SERVICE}
-
-  jvm.options: |
-    -Xms2g
-    -Xmx2g
-
-    ## GC configuration
-    -XX:+UseConcMarkSweepGC
-    -XX:CMSInitiatingOccupancyFraction=75
-    -XX:+UseCMSInitiatingOccupancyOnly
-
-    ## optimizations
-
-    # pre-touch memory pages used by the JVM during initialization
-    -XX:+AlwaysPreTouch
-
-    ## basic
-
-    # explicitly set the stack size
-    -Xss1m
-
-    # set to headless, just in case
-    -Djava.awt.headless=true
-
-    # ensure UTF-8 encoding by default (e.g. filenames)
-    -Dfile.encoding=UTF-8
-
-    # use our provided JNA always versus the system one
-    -Djna.nosys=true
-
-    # turn off a JDK optimization that throws away stack traces for common
-    # exceptions because stack traces are important for debugging
-    -XX:-OmitStackTraceInFastThrow
-
-    # flags to configure Netty
-    -Dio.netty.noUnsafe=true
-    -Dio.netty.noKeySetOptimization=true
-    -Dio.netty.recycler.maxCapacityPerThread=0
-
-    # log4j 2
-    -Dlog4j.shutdownHookEnabled=false
-    -Dlog4j2.disable.jmx=true
-
-    -Djava.io.tmpdir=${ES_TMPDIR}
-
-    ## heap dumps
-
-    # generate a heap dump when an allocation from the Java heap fails
-    # heap dumps are created in the working directory of the JVM
-    -XX:+HeapDumpOnOutOfMemoryError
-
-    # specify an alternative path for heap dumps
-    # ensure the directory exists and has sufficient space
-    #-XX:HeapDumpPath=/heap/dump/path
-
-    ## JDK 8 GC logging
-
-    8:-XX:+PrintGCDetails
-    8:-XX:+PrintGCDateStamps
-    8:-XX:+PrintTenuringDistribution
-    8:-XX:+PrintGCApplicationStoppedTime
-    8:-Xloggc:logs/gc.log
-    8:-XX:+UseGCLogFileRotation
-    8:-XX:NumberOfGCLogFiles=32
-    8:-XX:GCLogFileSize=64m
-
-    # JDK 9+ GC logging
-    9-:-Xlog:gc*,gc+age=trace,safepoint:file=logs/gc.log:utctime,pid,tags:filecount=32,filesize=64m
-    # due to internationalization enhancements in JDK 9 Elasticsearch need to set the provider to COMPAT otherwise
-    # time/date parsing will break in an incompatible way for some date patterns and locals
-    9-:-Djava.locale.providers=COMPAT
-
   log4j2.properties: |
     status = error
 
@@ -130,24 +59,6 @@ spec:
         - /bin/bash
         - -c
         - 'if [[ "$(sysctl vm.max_map_count --values)" -lt 262144 ]]; then sysctl -w vm.max_map_count=262144; fi'
-      # This init container copies config files from the configmap into
-      # a normal file system. Configmap mounted as a volume lives on a read-only
-      # filesystem that would fail Elasticsearch.
-      - name: copy-config
-        image: $IMAGE_INIT
-        imagePullPolicy: IfNotPresent
-        volumeMounts:
-        - name: config
-          mountPath: /etc/elasticsearch
-        - name: configmap
-          mountPath: /elasticsearchconfig
-        command:
-        - /bin/bash
-        - -c
-        - >-
-          mkdir -p /etc/elasticsearch;
-          cp /elasticsearchconfig/* /etc/elasticsearch/;
-          chmod 777 /etc/elasticsearch/*
       containers:
       - name: elasticsearch
         image: $IMAGE_ELASTICSEARCH
@@ -167,8 +78,12 @@ spec:
         - name: tcp-transport
           containerPort: 9300
         volumeMounts:
-        - name: config
-          mountPath: /etc/elasticsearch
+        - name: configmap
+          mountPath: /etc/elasticsearch/elasticsearch.yml
+          subPath: elasticsearch.yml
+        - name: configmap
+          mountPath: /etc/elasticsearch/log4j2.properties
+          subPath: log4j2.properties
         - name: $APP_INSTANCE_NAME-elasticsearch-pvc
           mountPath: /usr/share/elasticsearch/data
         readinessProbe:
@@ -190,8 +105,6 @@ spec:
       - name: configmap
         configMap:
           name: "$APP_INSTANCE_NAME-configmap"
-      - name: config
-        emptyDir: {}
   volumeClaimTemplates:
   - metadata:
       name: $APP_INSTANCE_NAME-elasticsearch-pvc
