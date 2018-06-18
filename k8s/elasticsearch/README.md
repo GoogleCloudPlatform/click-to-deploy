@@ -233,6 +233,7 @@ In another window:
 PROXY_BASE_URL=http://localhost:$KUBE_PROXY_PORT/api/v1/proxy
 ELASTIC_URL=$PROXY_BASE_URL/namespaces/$NAMESPACE/services/$APP_INSTANCE_NAME-elasticsearch-svc:http
 ```
+
 In both cases, you should have an `ELASTIC_URL` environment variable that points to Elasticsearch
 base URL. You can check this by running `curl`:
 
@@ -288,36 +289,14 @@ replacing any container until its deletion.
 
 ### Run the `upgrade.sh` script to run the rolling update procedure
 
-The rolling update procedure for Elasticsearch is described by the
-[official documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/rolling-upgrades.html).
-
-The steps described by the guide were automated in the script `scripts/upgrade.sh` delivered in
-this repository.
-
-Before running the script, make sure that your Kubernetes cluster is in stable status (not
-performing autoscaling operations or not rescaling the StatefulSet) and the StatefulSet has the
-size matching its specification (number of replicas) with all Pods running and healthy.
-
-Your Elasticsearch cluster should have all nodes connected and healthy (with green status).
-You can check the status of your cluster by running the following command:
+Make sure that the cluster is healthy before proceeding:
 
 ```shell
 curl $ELASTIC_URL/_cluster/health?pretty
 ```
 
-If all the conditions are met and your StatefulSet is already patched with new image specification,
-run the `upgrade.sh` script:
-
-```shell
-scripts/upgrade.sh
-```
-
-The script will print information about its tasks and progress of the upgrade procedure to standard
-output. It should finish with the following information:
-
-```shell
-Update procedure of your Elasticseach StatefulSet has been finished.
-```
+Run the `scripts/upgrade.sh` script. This script will take down and update one replica at a time -
+it should print out diagnostic messages.
 
 # Uninstall the Application
 
