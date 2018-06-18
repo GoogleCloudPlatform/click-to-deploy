@@ -110,20 +110,14 @@ function recreate_pod() {
   delete_pod "${namespace}" "${pod_name}"
 
   local new_uid="$(get_pod_uid "${namespace}" "${pod_name}")"
-  while [[ "${new_uid}" == "${old_uid}" ]]; do
-    echo "Waiting for new pod creation..."
+  local status="$(get_pod_status "${namespace}" "${pod_name}")"
+  while [[ "${new_uid}" == "${old_uid}" ]] || [[ "${status}" != "Running" ]]; do
+    echo "Waiting for new pod status: Running..."
     sleep 5
     new_uid="$(get_pod_uid "${namespace}" "${pod_name}")"
-  done
-  echo "New pod created with UID: ${new_uid}..."
-
-  local status="$(get_pod_status "${namespace}" "${pod_name}")"
-  while [[ "${status}" != "Running" ]]; do
-    echo "Waiting for pod status: Running..."
-    sleep 5
     status="$(get_pod_status "${namespace}" "${pod_name}")"
   done
-  echo "Pod is running."
+  echo "Pod is running (UID: ${new_uid})."
 }
 
 
@@ -145,6 +139,9 @@ function main() {
         echo "- elastic_url: $elastic_url"
         shift 2
         ;;
+      *)
+        echo "Unsupported flag: $1 - EXIT"
+        exit 1
     esac
   done;
 
