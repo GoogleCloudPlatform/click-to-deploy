@@ -230,6 +230,12 @@ Set your installation name and Kubernetes namespace:
 export APP_INSTANCE_NAME=rabbitmq-1
 export NAMESPACE=default
 ```
+
+### Prepare the manifest file
+
+If you still have the expanded manifest file used for the installation, you can skip this part.
+Otherwise, generate it again. You can use a simplified variables substitution:
+
 Set all other variables:
 
 ```shell
@@ -238,12 +244,9 @@ export REPLICAS=$(kubectl get statefulsets "$APP_INSTANCE_NAME-rabbitmq" --names
 export RABBITMQ_ERLANG_COOKIE=$(kubectl exec -it --namespace "$NAMESPACE" "$APP_INSTANCE_NAME-rabbitmq-0" -- cat /var/lib/rabbitmq/.erlang.cookie)
 ```
 
-### Prepare the manifest file
+Use `envsubst` to expand the template:
 
-If you still have the expanded manifest file used for the installation, you can skip this part.
-Otherwise, generate it again. You can use a simplified variables substitution:
-
-```
+```shell
 awk 'BEGINFILE {print "---"}{print}' manifest/* \
   | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_RABBITMQ $REPLICAS $RABBITMQ_ERLANG_COOKIE' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
