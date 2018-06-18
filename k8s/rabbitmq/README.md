@@ -61,7 +61,7 @@ Do a one-time setup for your cluster to understand Application resources.
 To do that, please, navidate to `k8s/vendor` subdirectory of click-to-deploy repository and run the following command:
 
 ```shell
-kubectl apply -f marketplace-tools/crd/.
+kubectl apply -f marketplace-tools/crd/app-crd.yaml
 ```
 
 The Application resource is defined by the
