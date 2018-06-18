@@ -280,6 +280,12 @@ kubectl delete persistentvolumeclaims \
 
 Optionally, if you do not need both the deployed application and GKE cluster used for deployment then you can delete the whole GKE cluster using this command:
 
+```shell
+export PROJECT=your-gcp-project # or export PROJECT=$(gcloud config get-value project)
+export CLUSTER=marketplace-cluster
+export ZONE=us-west1-a # or export ZONE=$(gcloud config get-value compute/zone)
+```
+
 ```
 gcloud --project "$PROJECT" container clusters delete "$CLUSTER" --zone "$ZONE"
 ```
