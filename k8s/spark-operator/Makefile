@@ -11,12 +11,9 @@ $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/spark-operator/deployer:$(TAG)
 NAME ?= spark-operator-1
-# TODO(huyhg): Remove serviceAccount from APP_PARAMETERS
-# once tools can provision it.
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
-  "namespace": "$(NAMESPACE)", \
-  "serviceAccount": "$(NAME)-sa" \
+  "namespace": "$(NAMESPACE)" \
 }
 TESTER_IMAGE ?= $(REGISTRY)/spark-operator/tester:$(TAG)
 APP_TEST_PARAMETERS ?= { \
@@ -68,10 +65,3 @@ app/build:: .build/spark-operator/deployer \
 	docker tag gcr.io/spark-operator/spark-operator:v2.3.0-v1alpha1-latest "$(REGISTRY)/spark-operator:$(TAG)"
 	docker push "$(REGISTRY)/spark-operator:$(TAG)"
 	@touch "$@"
-
-
-# TODO(huyhg): Remove once tools can provision it.
-.PHONY: app/serviceaccount
-app/serviceaccount:
-	kubectl create serviceaccount "$(NAME)-sa"
-	kubectl create clusterrolebinding "$(NAMESPACE)-$(NAME)-sa-rb" --clusterrole=cluster-admin --serviceaccount="$(NAMESPACE):$(NAME)-sa"
