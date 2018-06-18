@@ -219,7 +219,7 @@ ELASTIC_URL="http://${SERVICE_IP}:9200"
 ```
 
 You could also use a local proxy to access the service that is not exposed publicly
-(this process will need to be continued during the whole update process):
+(run in another window, this process will need to be continued during the whole update process):
 
 ```shell
 # select a local port to play the role of proxy
@@ -227,9 +227,10 @@ KUBE_PROXY_PORT=8080
 kubectl proxy -p $KUBE_PROXY_PORT
 ```
 
-In another window:
+Back in the main windows:
 
 ```shell
+KUBE_PROXY_PORT=8080
 PROXY_BASE_URL=http://localhost:$KUBE_PROXY_PORT/api/v1/proxy
 ELASTIC_URL=$PROXY_BASE_URL/namespaces/$NAMESPACE/services/$APP_INSTANCE_NAME-elasticsearch-svc:http
 ```
@@ -245,28 +246,6 @@ In the response, you should see a message including Elasticsearch characteristic
 
 ```shell
 "tagline" : "You Know, for Search"
-```
-
-## Set the `updateStrategy` of the StatefulSet to `OnDelete`
-
-Following the official update documentation of Elasticsearch, StatefulSet of your Elasticsearch
-cluster should not be updated with `RollingUpdate` strategy. There are additional operations
-involved in the update process before and after each node upgrade.
-
-To check the `updateStrategy` of the StatefulSet, run the following command:
-
-```shell
-kuebctl get statefulset ${APP_INSTANCE_NAME}-elasticsearch \
-  --namespace $NAMESPACE \
-  --jsonpath='{.spec.updateStrategy.type}'
-```
-
-If it is not `OnDelete`, update the strategy by running:
-
-```
-kubectl patch statefulset ${APP_INSTANCE_NAME}-elasticsearch \
-  --namespace $NAMESPACE \
-  -p '{"spec":{"updateStrategy":{"type":"OnDelete"}}}'
 ```
 
 ## Perform the update on cluster nodes
@@ -333,7 +312,7 @@ awk 'BEGINFILE {print "---"}{print}' manifest/* \
 ### Delete the resources using `kubectl delete`
 
 NOTE: Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions.
-  It means that for instance if you have `kubectl` in version 1.10.* and Kubernetes server 1.8.*,
+  It means that for instance if you have `kubectl` in version 1.10.&ast; and Kubernetes 1.8.&ast;,
   you may experience incompatibility issues, like not removing the StatefulSets with
   apiVersion of apps/v1beta2. 
 
