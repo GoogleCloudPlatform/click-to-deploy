@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -euo pipefail
 
 readonly ES_SHARD_ENABLED_VALUE=null
 readonly ES_SHARD_DISABLED_VALUE=\"none\"
@@ -90,6 +91,7 @@ function get_pod_uid() {
     --output jsonpath='{.metadata.uid}'
 }
 
+
 function get_pod_status() {
   local -r namespace="$1"
   local -r pod_name="$2"
@@ -128,17 +130,17 @@ function recreate_pod() {
 function main() {
   while [[ "$#" != 0 ]]; do
     case "$1" in
-      -a|--app)
+      --app)
         local -r app="$2"
         echo "- app: $app"
         shift 2
         ;;
-      -n|--namespace)
+      --namespace)
         local -r namespace="$2"
         echo "- namespace: $namespace"
         shift 2
         ;;
-      -e|--elastic_url)
+      --elastic_url)
         local -r elastic_url="$2"
         echo "- elastic_url: $elastic_url"
         shift 2

@@ -195,38 +195,18 @@ TODO
 
 # Update procedure
 
-
-kubectl patch sts ${NAME}-elasticsearch \
-    --namespace $NAMESPACE \
-    --type='json' \
-    --patch="[{ \
-        \"op\": \"replace\", \
-        \"path\": \"/spec/template/spec/containers/0/image\", \
-        \"value\": \"${IMAGE_ELASTICSEARCH}\" \
-      }]"
-
-
-For detailed instructions about the update procedure, please check the
+For more background about the rolling update procedure, please check the
 [official documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/rolling-upgrades.html).
 
 Before starting the update procedure on your cluster, we strongly advise to
 prepare a backup of your installation in order to eliminate the risk of losing
 your data.
 
-## Background
+## Obtain Elasticsearch URL
 
-Elasticsearch supports a procedure of a rolling update since version 5.6. In
-case of this application though, the rolling update means that it is possible to
-update particular nodes, one by one, in a running cluster. This procedure should
-not be mixed with Kubernetes rolling update of a StatefulSet, because it
-requires additional manual steps from the administrator before and after the
-update of each node.
+WARNING: Prepare a backup of your installation before approaching further steps.
 
-## Prepare the environment
-
-WARNING: prepare a backup of your installation before approaching further steps.
-
-If you run your Elasticsearch cluster behind a LoadBalancer service, obtain the service IP to 
+If you run your Elasticsearch cluster behind a LoadBalancer service, obtain the service IP to
 run administrative operations against the REST API:
 
 ```
@@ -278,7 +258,7 @@ To check the `updateStrategy` of the StatefulSet, run the following command:
 kuebctl get statefulset ${APP_INSTANCE_NAME}-elasticsearch \
   --namespace $NAMESPACE \
   --jsonpath='{.spec.updateStrategy.type}'
-``` 
+```
 
 If it is not `OnDelete`, update the strategy by running:
 
@@ -298,7 +278,7 @@ Start with assigning the new image to your StatefulSet definition:
 IMAGE_ELASTICSEARCH=<put your new image reference here>
 
 kubectl patch statefulset ${APP_INSTANCE_NAME}-elasticsearch \
-  --namespace $NAMESPACE 
+  --namespace $NAMESPACE \
   --patch "{\"spec\":{\"containers\":[{\"name\":\"elasticsearch\",\"image\":\"$IMAGE_ELASTICSEARCH\"}]}}"
 ```
 
@@ -337,7 +317,7 @@ output. It should finish with the following information:
 
 ```shell
 Update procedure of your Elasticseach StatefulSet has been finished.
-``` 
+```
 
 # Uninstall the Application
 
@@ -376,7 +356,7 @@ awk 'BEGINFILE {print "---"}{print}' manifest/* \
 NOTE: Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions.
   It means that for instance if you have `kubectl` in version 1.10.* and Kubernetes server 1.8.*,
   you may experience incompatibility issues, like not removing the StatefulSets with
-  apiVersion of apps/v1beta2.  
+  apiVersion of apps/v1beta2. 
 
 Run `kubectl` on expanded manifest file matching your installation:
 
