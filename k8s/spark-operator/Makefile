@@ -30,9 +30,9 @@ app/build:: .build/spark-operator/deployer \
 	mkdir -p "$@"
 
 
-.build/spark-operator/deployer: schema.yaml \
-                                deployer/* \
+.build/spark-operator/deployer: deployer/* \
                                 manifest/* \
+                                schema.yaml \
                                 .build/marketplace/deployer/envsubst \
                                 .build/var/APP_DEPLOYER_IMAGE \
                                 .build/var/REGISTRY \
