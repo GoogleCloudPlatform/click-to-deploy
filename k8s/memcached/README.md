@@ -242,7 +242,7 @@ cd google-click-to-deploy/k8s/memcached
 * Run the uninstall command
 
 ```shell
-make app/uninstall
+kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 ```
 
 Optionally, if you don't need both the deployed application and GKE cluster used for deployment then you can delete the whole GKE cluster using this command:
