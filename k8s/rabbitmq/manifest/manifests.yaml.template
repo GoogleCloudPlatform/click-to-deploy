@@ -1,3 +1,15 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: $APP_INSTANCE_NAME-rabbitmq-secret
+  labels:
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/component: rabbitmq-server
+type: Opaque
+data:
+  # this value comes from schema.yaml or environment variable
+  rabbitmq-erlang-cookie: "$RABBITMQ_ERLANG_COOKIE"
+---
 apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
@@ -9,16 +21,33 @@ spec:
   selector:
     matchLabels: *RabbitMQDeploymentLabels
   serviceName: $APP_INSTANCE_NAME-rabbitmq-svc
-  replicas: 1
+  replicas: $REPLICAS
   template:
     metadata:
       labels: *RabbitMQDeploymentLabels
     spec:
+      serviceAccountName: $APP_INSTANCE_NAME-rabbitmq-sa
       terminationGracePeriodSeconds: 180
       containers:
       - name: rabbitmq
         image: $IMAGE_RABBITMQ
         imagePullPolicy: Always
+        env:
+        - name: MY_POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: RABBITMQ_USE_LONGNAME
+          value: 'true'
+        - name: RABBITMQ_NODENAME
+          value: 'rabbit@$(MY_POD_IP)'
+        - name: K8S_SERVICE_NAME
+          value: '$APP_INSTANCE_NAME-rabbitmq-svc'
+        - name: RABBITMQ_ERLANG_COOKIE
+          valueFrom:
+            secretKeyRef:
+              name: $APP_INSTANCE_NAME-rabbitmq-secret
+              key: rabbitmq-erlang-cookie
         ports:
         - name: clitool
           containerPort: 25672
@@ -29,14 +58,40 @@ spec:
         - name: epmd
           containerPort: 4369
         volumeMounts:
+        - name: config-volume
+          mountPath: /etc/rabbitmq
         - name: $APP_INSTANCE_NAME-rabbitmq-pvc
           mountPath: /var/lib/rabbitmq
+        livenessProbe:
+          exec:
+            command:
+            - rabbitmqctl
+            - status
+          initialDelaySeconds: 60
+          timeoutSeconds: 30
+        readinessProbe:
+          exec:
+            command:
+            - rabbitmqctl
+            - status
+          initialDelaySeconds: 20
+          timeoutSeconds: 30
+      volumes:
+        - name: config-volume
+          configMap:
+            name: $APP_INSTANCE_NAME-rabbitmq-config
+            items:
+            - key: rabbitmq.conf
+              path: rabbitmq.conf
+            - key: enabled_plugins
+              path: enabled_plugins
   volumeClaimTemplates:
   - metadata:
       name: $APP_INSTANCE_NAME-rabbitmq-pvc
       labels: *RabbitMQDeploymentLabels
     spec:
-      accessModes: [ "ReadWriteOnce" ]
+      accessModes:
+      - ReadWriteOnce
       storageClassName: standard
       resources:
         requests:
@@ -63,3 +118,31 @@ spec:
     app.kubernetes.io/name: $APP_INSTANCE_NAME
     app.kubernetes.io/component: rabbitmq-server
   type: ClusterIP
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: $APP_INSTANCE_NAME-rabbitmq-config
+  labels:
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/component: rabbitmq-server
+data:
+  enabled_plugins: |
+      [rabbitmq_peer_discovery_k8s].
+  rabbitmq.conf: |
+      ## Clustering
+      cluster_formation.peer_discovery_backend = rabbit_peer_discovery_k8s
+      cluster_formation.k8s.host = kubernetes.default.svc.cluster.local
+      cluster_formation.k8s.address_type = ip
+      cluster_formation.node_cleanup.interval = 10
+      # Set to false if automatic removal of unknown/absent nodes
+      # is desired. This can be dangerous, see
+      #  * http://www.rabbitmq.com/cluster-formation.html#node-health-checks-and-cleanup
+      #  * https://groups.google.com/forum/#!msg/rabbitmq-users/wuOfzEywHXo/k8z_HWIkBgAJ
+      cluster_formation.node_cleanup.only_log_warning = true
+      cluster_partition_handling = autoheal
+      ## queue master locator
+      queue_master_locator=min-masters
+      ## enable guest user
+      ## See http://www.rabbitmq.com/access-control.html#loopback-users
+      loopback_users.guest = false

@@ -90,6 +90,18 @@ export APP_INSTANCE_NAME=rabbitmq-1
 export NAMESPACE=default
 ```
 
+Set the number of replicas.
+
+```shell
+export REPLICAS=3
+```
+
+Set or generate the [Erlang cookie](https://www.rabbitmq.com/clustering.html#erlang-cookie). The cookie has be encoded in base64.
+
+```shell
+export RABBITMQ_ERLANG_COOKIE=$(openssl rand -base64 32)
+```
+
 Configure the container images.
 
 ```shell
@@ -119,7 +131,7 @@ expanded manifest file for future updates to the application.
 
 ```shell
 awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_RABBITMQ' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_RABBITMQ $REPLICAS $RABBITMQ_ERLANG_COOKIE' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
@@ -164,3 +176,12 @@ echo "http://${SERVICE_IP}"
 ```
 
 Note that it might take some time for the external IP to be provisioned.
+
+### Scale the cluster
+
+By default, RabbitMQ K8s application is deployed using 3 replicas. You can manually scale it to deploy more replicas using the following command.
+
+```
+kubectl scale statefulsets "$APP_INSTANCE_NAME-rabbitmq" \
+  --namespace "$NAMESPACE" --replicas=<new-replicas>
+```

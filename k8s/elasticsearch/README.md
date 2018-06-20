@@ -90,6 +90,12 @@ export APP_INSTANCE_NAME=elasticsearch-1
 export NAMESPACE=default
 ```
 
+Specify the number of replicas for the Elasticsearch server:
+
+```shell
+export REPLICAS=2
+```
+
 Configure the container images.
 
 ```shell
@@ -120,7 +126,7 @@ expanded manifest file for future updates to the application.
 
 ```shell
 awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_ELASTICSEARCH $IMAGE_INIT' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_ELASTICSEARCH $IMAGE_INIT $REPLICAS' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
@@ -274,27 +280,19 @@ curl -X PUT "$SERVICE_IP:9200/_snapshot/backup_gcs_repository" -H 'Content-Type:
 
 # Update procedure
 
-For detailed instructions about the update procedure, please check the
+For more background about the rolling update procedure, please check the
 [official documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/rolling-upgrades.html).
 
 Before starting the update procedure on your cluster, we strongly advise to
 prepare a backup of your installation in order to eliminate the risk of losing
 your data.
 
-## Background
+## Obtain Elasticsearch URL
 
-Elasticsearch supports a procedure of a rolling update since version 5.6. In
-case of this application though, the rolling update means that it is possible to
-update particular nodes, one by one, in a running cluster. This procedure should
-not be mixed with Kubernetes rolling update of a StatefulSet, because it
-requires additional manual steps from the administrator before and after the
-update of each node.
+WARNING: Prepare a backup of your installation before approaching further steps.
 
-## Prepare the environment
-
-WARNING: prepare a backup of your installation before approaching further steps.
-
-Obtain the service IP to run administrative operations against the REST API:
+If you run your Elasticsearch cluster behind a LoadBalancer service, obtain the service IP to
+run administrative operations against the REST API:
 
 ```
 SERVICE_IP=$(kubectl get \
@@ -305,15 +303,34 @@ SERVICE_IP=$(kubectl get \
 ELASTIC_URL="http://${SERVICE_IP}:9200"
 ```
 
-The application is installed by default with the `updateStrategy` of "OnDelete"
-assigned to the StatefulSet. If your configuration was chenged or if you are
-unsure if it still up to date, run the following command to ensure the right
-`updateStrategy`:
+You could also use a local proxy to access the service that is not exposed publicly
+(run in another window, this process will need to be continued during the whole update process):
 
+```shell
+# select a local port to play the role of proxy
+KUBE_PROXY_PORT=8080
+kubectl proxy -p $KUBE_PROXY_PORT
 ```
-kubectl patch statefulset ${APP_INSTANCE_NAME}-elasticsearch \
-  --namespace $NAMESPACE \
-  -p '{"spec":{"updateStrategy":{"type":"OnDelete"}}}'
+
+Back in the main windows:
+
+```shell
+KUBE_PROXY_PORT=8080
+PROXY_BASE_URL=http://localhost:$KUBE_PROXY_PORT/api/v1/proxy
+ELASTIC_URL=$PROXY_BASE_URL/namespaces/$NAMESPACE/services/$APP_INSTANCE_NAME-elasticsearch-svc:http
+```
+
+In both cases, you should have an `ELASTIC_URL` environment variable that points to Elasticsearch
+base URL. You can check this by running `curl`:
+
+```shell
+curl "${ELASTIC_URL}"
+```
+
+In the response, you should see a message including Elasticsearch characteristic tagline:
+
+```shell
+"tagline" : "You Know, for Search"
 ```
 
 ## Perform the update on cluster nodes
@@ -323,80 +340,87 @@ kubectl patch statefulset ${APP_INSTANCE_NAME}-elasticsearch \
 Start with assigning the new image to your StatefulSet definition:
 
 ```
-NEW_IMAGE=<put your new image reference here>
+IMAGE_ELASTICSEARCH=<put your new image reference here>
 
 kubectl patch statefulset ${APP_INSTANCE_NAME}-elasticsearch \
-  --namespace $NAMESPACE --type='json' \
-  -p="[{\"op\": \"replace\", \"path\": \"/spec/template/spec/containers/0/image\", \"value\": \"${NEW_IMAGE}\"}]"
+  --namespace $NAMESPACE \
+  --patch "{\"spec\":{\"containers\":[{\"name\":\"elasticsearch\",\"image\":\"$IMAGE_ELASTICSEARCH\"}]}}"
 ```
 
 After this operation the StatefulSet has a new image configured for its
 containers, but considering the `OnDelete` strategy, it will not start
 replacing any container until its deletion.
 
-### Perform the update for the first node
+### Run the `upgrade.sh` script to run the rolling update procedure
 
-This procedure is based on the [official documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/rolling-upgrades.html).
+Make sure that the cluster is healthy before proceeding:
 
-Disable shard allocation:
-
-```
-curl -X PUT "${ELASTIC_URL}/_cluster/settings" -H 'Content-Type: application/json' -d'
-{
-  "persistent": {
-    "cluster.routing.allocation.enable": "none"
-  }
-}'
+```shell
+curl $ELASTIC_URL/_cluster/health?pretty
 ```
 
-Perform a synced-flush:
+Run the `scripts/upgrade.sh` script. This script will take down and update one replica at a time -
+it should print out diagnostic messages.
 
-```
-curl -X POST "${ELASTIC_URL}/_flush/synced"
+# Uninstall the Application
+
+## Using GKE UI
+
+Navigate to `GKE > Applications` in GCP console. From the list of applications, click on the one
+that you wish to uninstall.
+
+On the new screen, click on the `Delete` button located in the top menu. It will remove
+the resources attached to this application.
+
+## Using the command line
+
+### Prepare the environment
+
+Set your installation name and Kubernetes namespace:
+
+```shell
+export APP_INSTANCE_NAME=elasticsearch-1
+export NAMESPACE=default
 ```
 
-Delete the first pod:
+### Prepare the manifest file
 
+If you still have the expanded manifest file used for the installation, you can skip this part.
+Otherwise, generate it again. You can use a simplified variables substitution:
+
+```shell
+awk 'BEGINFILE {print "---"}{print}' manifest/* \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE' \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
-POD_TO_DELETE=${APP_INSTANCE_NAME}-elasticsearch-0
-kubectl delete pod ${POD_TO_DELETE} \
+
+### Delete the resources using `kubectl delete`
+
+NOTE: Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions.
+  It means that for instance if you have `kubectl` in version 1.10.&ast; and Kubernetes 1.8.&ast;,
+  you may experience incompatibility issues, like not removing the StatefulSets with
+  apiVersion of apps/v1beta2. 
+
+Run `kubectl` on expanded manifest file matching your installation:
+
+```shell
+kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
+```
+
+### Delete the persistent volumes of your installation
+
+By design, removal of StatefulSets in Kubernetes does not remove the PersistentVolumeClaims that
+were attached to their Pods. It protects your installations from mistakenly deleting stateful data.
+
+If you wish to remove the PersistentVolumeClaims with their attached persistent disks, run the
+following `kubectl` command:
+
+```shell
+# specify the variables values matching your installation:
+export APP_INSTANCE_NAME=elasticsearch-1
+export NAMESPACE=default
+
+kubectl delete persistentvolumeclaims \
   --namespace $NAMESPACE
+  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
-
-At this point, the StatefulSet will take care of the pod's recreation. It will
-use the new image spec to create a new pod with the same name. Old pod's persistent
-volume will not be deleted and will be attached to the new one.
-
-Wait until the new pod joined the cluster. To check for the number of nodes in
-the cluster, run:
-
-```
-curl -X GET "${ELASTIC_URL}/_cat/nodes"
-```
-
-Reenable shard allocation:
-
-```
-curl -X PUT "${ELASTIC_URL}/_cluster/settings" -H 'Content-Type: application/json' -d'
-{
-  "persistent": {
-    "cluster.routing.allocation.enable": null
-  }
-}'
-```
-
-Once the new node joined the cluster, wait until the cluster recovers. Check the
-status of your cluster by running:
-
-```
-curl -X GET "${ELASTIC_URL}/_cat/health"
-```
-
-The status reported for the cluster should switch from yellow to green.
-
-### Repeat the procedure for each node in the cluster
-
-Continue the rolling update procedure for each pod in your StatefulSet. During
-the process, the cluster should be still reachable and operating normally, with
-all the functionality of the older version. Only when all the nodes are updated,
-the cluster will switch to the new version functionality.
