@@ -9,6 +9,7 @@ type: Opaque
 data:
   # this value comes from schema.yaml or environment variable
   rabbitmq-erlang-cookie: "$RABBITMQ_ERLANG_COOKIE"
+  rabbitmq-pass: "$RABBITMQ_DEFAULT_PASS"
 ---
 apiVersion: apps/v1beta2
 kind: StatefulSet
@@ -28,6 +29,24 @@ spec:
     spec:
       serviceAccountName: $APP_INSTANCE_NAME-rabbitmq-sa
       terminationGracePeriodSeconds: 180
+      initContainers:
+      # This init container copies config files from the configmap int a normal file system.
+      # The ConfigMap mounted as a volume lives on a read-only filesystem.
+      - name: copy-rabbitmq-config
+        image: launcher.gcr.io/google/debian9:latest
+        imagePullPolicy: Always
+        command:
+        - /bin/bash
+        - -euc
+        - |
+          # copy the mounted configuration to both places
+          cp /rabbitmqconfig/rabbitmq.conf /etc/rabbitmq/rabbitmq.conf
+          cp /rabbitmqconfig/enabled_plugins /etc/rabbitmq/enabled_plugins
+        volumeMounts:
+        - name: configmap
+          mountPath: /rabbitmqconfig
+        - name: config
+          mountPath: /etc/rabbitmq
       containers:
       - name: rabbitmq
         image: $IMAGE_RABBITMQ
@@ -48,6 +67,15 @@ spec:
             secretKeyRef:
               name: $APP_INSTANCE_NAME-rabbitmq-secret
               key: rabbitmq-erlang-cookie
+        # User name to create when RabbitMQ creates a new database from scratch.
+        - name: RABBITMQ_DEFAULT_USER
+          value: '$RABBITMQ_DEFAULT_USER'
+        # Password for the default user.
+        - name: RABBITMQ_DEFAULT_PASS
+          valueFrom:
+            secretKeyRef:
+              name: $APP_INSTANCE_NAME-rabbitmq-secret
+              key: rabbitmq-pass
         ports:
         - name: clitool
           containerPort: 25672
@@ -57,8 +85,10 @@ spec:
           containerPort: 5671
         - name: epmd
           containerPort: 4369
+        - name: http
+          containerPort: 15672
         volumeMounts:
-        - name: config-volume
+        - name: config
           mountPath: /etc/rabbitmq
         - name: $APP_INSTANCE_NAME-rabbitmq-pvc
           mountPath: /var/lib/rabbitmq
@@ -77,14 +107,16 @@ spec:
           initialDelaySeconds: 20
           timeoutSeconds: 30
       volumes:
-        - name: config-volume
-          configMap:
-            name: $APP_INSTANCE_NAME-rabbitmq-config
-            items:
-            - key: rabbitmq.conf
-              path: rabbitmq.conf
-            - key: enabled_plugins
-              path: enabled_plugins
+      - name: configmap
+        configMap:
+          name: $APP_INSTANCE_NAME-rabbitmq-config
+          items:
+          - key: rabbitmq.conf
+            path: rabbitmq.conf
+          - key: enabled_plugins
+            path: enabled_plugins
+      - name: config
+        emptyDir: {}
   volumeClaimTemplates:
   - metadata:
       name: $APP_INSTANCE_NAME-rabbitmq-pvc
@@ -114,6 +146,8 @@ spec:
     port: 25672
   - name: epmd
     port: 4369
+  - name: http
+    port: 15672
   selector:
     app.kubernetes.io/name: $APP_INSTANCE_NAME
     app.kubernetes.io/component: rabbitmq-server
@@ -128,7 +162,7 @@ metadata:
     app.kubernetes.io/component: rabbitmq-server
 data:
   enabled_plugins: |
-      [rabbitmq_peer_discovery_k8s].
+      [rabbitmq_management,rabbitmq_peer_discovery_k8s].
   rabbitmq.conf: |
       ## Clustering
       cluster_formation.peer_discovery_backend = rabbit_peer_discovery_k8s
@@ -142,7 +176,7 @@ data:
       cluster_formation.node_cleanup.only_log_warning = true
       cluster_partition_handling = autoheal
       ## queue master locator
-      queue_master_locator=min-masters
-      ## enable guest user
-      ## See http://www.rabbitmq.com/access-control.html#loopback-users
+      queue_master_locator = min-masters
+      ## The default "guest" user is only permitted to access the server
+      ## via a loopback interface (e.g. localhost)
       loopback_users.guest = false

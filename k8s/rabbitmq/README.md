@@ -98,10 +98,23 @@ Set or generate the [Erlang cookie](https://www.rabbitmq.com/clustering.html#erl
 export RABBITMQ_ERLANG_COOKIE=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1 | tr -d '\n' | base64)
 ```
 
+Set username of the app.
+
+```shell
+export RABBITMQ_DEFAULT_USER=rabbit
+```
+
+
+Set or generate the password. The password has be encoded in base64.
+
+```shell
+export RABBITMQ_DEFAULT_PASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1 | tr -d '\n' | base64)
+```
+
 Configure the container images.
 
 ```shell
-export IMAGE_RABBITMQ="gcr.io/k8s-marketplace-eap/google/rabbitmq3:latest"
+export IMAGE_RABBITMQ=gcr.io/k8s-marketplace-eap/google/rabbitmq3:latest
 ```
 
 The images above are referenced by
@@ -137,7 +150,7 @@ expanded manifest file for future updates to the application.
 
 ```shell
 awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_RABBITMQ $REPLICAS $RABBITMQ_ERLANG_COOKIE' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_RABBITMQ $REPLICAS $RABBITMQ_ERLANG_COOKIE $RABBITMQ_DEFAULT_USER $RABBITMQ_DEFAULT_PASS' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
@@ -165,6 +178,16 @@ By default, the application does not have an external IP. Use `kubectl` to execu
 kubectl exec -it "$APP_INSTANCE_NAME-rabbitmq-0" --namespace "$NAMESPACE" -- rabbitmqctl cluster_status
 ```
 
+#### Authorization
+
+The default username is `rabbit`. Use `kubectl` to get generated password.
+
+```shell
+kubectl get secret $APP_INSTANCE_NAME-rabbitmq-secret \
+  --namespace $NAMESPACE \
+  --output=jsonpath='{.data.rabbitmq-pass}' | base64 --decode | less
+```
+
 #### Expose RabbitMQ service (optional)
 
 By default, the application does not have an external IP. Run the
@@ -178,28 +201,35 @@ kubectl patch svc "$APP_INSTANCE_NAME-rabbitmq-svc" \
 
 #### Access RabbitMQ service
 
-To discover IP address of RabbitMQ service using `kubectl`, run the following command:
+**Option 1:** To discover IP addresses of RabbitMQ service using `kubectl`, run the following command:
 
 ```
-kubectl get svc $APP_INSTANCE_NAME-rabbitmq-svc --namespace $NAMESPACE -o jsonpath='{.spec.clusterIP}'
+kubectl get svc $APP_INSTANCE_NAME-rabbitmq-svc --namespace $NAMESPACE
 ```
 
-If you run your RabbitMQ cluster behind a LoadBalancer, run the command below to get an external IP of the RabbitMQ service:
-
-```
-SERVICE_IP=$(kubectl get \
-  --namespace ${NAMESPACE} \
-  svc ${APP_INSTANCE_NAME}-rabbitmq-svc \
-  -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-
-echo "http://${SERVICE_IP}"
-```
+**Option 2:** If you run your RabbitMQ cluster behind a LoadBalancer, run the command below to get an external IP of the RabbitMQ service:
 
 > **NOTE:** It might take some time for the external IP to be provisioned.
+
+```
+kubectl get svc $APP_INSTANCE_NAME-rabbitmq-svc --namespace $NAMESPACE -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
+```
+
+Enter http://`<EXTERNAL-IP>`:15672 to access RabbitMQ Management. Where `<EXTERNAL-IP>` is provided by command above.
+
+**Option 3:** Use Port Forwarding:
+
+```
+kubectl port-forward svc/$APP_INSTANCE_NAME-rabbitmq-svc --namespace $NAMESPACE 15672
+```
+
+Enter http://127.0.0.1:15672 to access RabbitMQ Management.
 
 #### Scale the cluster
 
 By default, RabbitMQ K8s application is deployed using 3 replicas. You can manually scale it up or down using the following command.
+
+> **NOTE:** Scaling down will leave `persistentvolumeclaims` of your StatefulSet untouched.
 
 ```
 kubectl scale statefulsets "$APP_INSTANCE_NAME-rabbitmq" \
@@ -207,8 +237,6 @@ kubectl scale statefulsets "$APP_INSTANCE_NAME-rabbitmq" \
 ```
 
 where `<new-replicas>` defines the number of replicas.
-
-> **NOTE:** Scaling down will leave `persistentvolumeclaims` of your StatefulSet untouched.
 
 # Backup and restore
 
@@ -244,19 +272,21 @@ export NAMESPACE=default
 If you still have the expanded manifest file used for the installation, you can skip this part.
 Otherwise, generate it again. You can use a simplified variables substitution:
 
-Set all other variables:
+Set all other variables (optional):
 
 ```shell
 export IMAGE_RABBITMQ=$(kubectl get statefulsets "$APP_INSTANCE_NAME-rabbitmq" --namespace "$NAMESPACE" --output jsonpath='{.spec.template.spec.containers[0].image}')
 export REPLICAS=$(kubectl get statefulsets "$APP_INSTANCE_NAME-rabbitmq" --namespace "$NAMESPACE" --output jsonpath='{.spec.replicas}')
-export RABBITMQ_ERLANG_COOKIE=$(kubectl exec -it --namespace "$NAMESPACE" "$APP_INSTANCE_NAME-rabbitmq-0" -- cat /var/lib/rabbitmq/.erlang.cookie)
+export RABBITMQ_ERLANG_COOKIE=$(kubectl get secret "$APP_INSTANCE_NAME-rabbitmq-secret" --namespace "$NAMESPACE" --output=jsonpath='{.data.rabbitmq-erlang-cookie}')
+export RABBITMQ_DEFAULT_USER=$(kubectl get statefulsets "$APP_INSTANCE_NAME-rabbitmq" --namespace "$NAMESPACE" --output jsonpath='{.spec.template.spec.containers[0].env[?(@.name=="RABBITMQ_DEFAULT_USER")].value}')
+export RABBITMQ_DEFAULT_PASS=$(kubectl get secret "$APP_INSTANCE_NAME-rabbitmq-secret" --namespace "$NAMESPACE" --output=jsonpath='{.data.rabbitmq-pass}')
 ```
 
 Use `envsubst` to expand the template:
 
 ```shell
 awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_RABBITMQ $REPLICAS $RABBITMQ_ERLANG_COOKIE' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_RABBITMQ $REPLICAS $RABBITMQ_ERLANG_COOKIE $RABBITMQ_DEFAULT_USER $RABBITMQ_DEFAULT_PASS' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
