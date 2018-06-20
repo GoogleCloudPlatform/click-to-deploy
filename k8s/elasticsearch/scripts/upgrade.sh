@@ -76,6 +76,7 @@ function get_number_of_replicas_in_sts() {
     --output jsonpath='{.spec.replicas}'
 }
 
+
 function delete_pod() {
   local -r namespace="$1"
   local -r pod_name="$2"

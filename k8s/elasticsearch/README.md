@@ -257,9 +257,8 @@ Start with assigning the new image to your StatefulSet definition:
 ```
 IMAGE_ELASTICSEARCH=<put your new image reference here>
 
-kubectl patch statefulset ${APP_INSTANCE_NAME}-elasticsearch \
-  --namespace $NAMESPACE \
-  --patch "{\"spec\":{\"containers\":[{\"name\":\"elasticsearch\",\"image\":\"$IMAGE_ELASTICSEARCH\"}]}}"
+kubectl set image statefulset "${APP_INSTANCE_NAME}-elasticsearch" \
+  --namespace $NAMESPACE "$IMAGE_ELASTICSEARCH"
 ```
 
 After this operation the StatefulSet has a new image configured for its
