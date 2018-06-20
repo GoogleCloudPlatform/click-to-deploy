@@ -227,7 +227,7 @@ kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME -w
 To check the current image used for `memcached` container, you can run the following command:
 
 ```shell
-kubectl get statefulsets "$APP_INSTANCE_NAME-rabbitmq" \
+kubectl get statefulsets "$APP_INSTANCE_NAME-memcached" \
   --namespace "$NAMESPACE" \
   --output jsonpath='{.spec.template.spec.containers[0].image}'
 ```
