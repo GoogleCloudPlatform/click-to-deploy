@@ -7,18 +7,11 @@ readonly ES_SHARD_DISABLED_VALUE=\"none\"
 
 function wait_for_green_elastic_cluster() {
   local -r elastic_url="$1"
-  local -r timeout="${2:-120}"
   local -r health_url="${elastic_url}/_cluster/health"
   local -r status_health_url="${health_url}?filter_path=status"
-  local -r start_time="$(date +%s)"
-  local -r max_finish_time="$(( start_time + timeout ))"
   local status="$(curl -s -m 2 -X GET "${status_health_url}" \
     | sed -nr 's/\{"status":"(.*)"\}/\1/p')"
   until [[ "${status}" == "green" ]]; do
-    if [[ "$(date +%s)" -gt "${max_finish_time}" ]]; then
-      echo "Timed out after ${timeout}s while waiting for green status in the cluster - EXIT"
-      exit 1
-    fi
     echo "Current status: ${status}. Waiting for status green..."
     sleep 5
     local status="$(curl -s -m 2 -X GET "${status_health_url}" \
@@ -31,14 +24,8 @@ function wait_for_green_elastic_cluster() {
 function wait_for_nodes_in_cluster() {
   local -r elastic_url="$1"
   local -r expected_nodes="$2"
-  local -r timeout="${3:-120}"
-  local -r start_time="$(date +%s)"
   local nodes_in_cluster="$(curl -s -m 2 -X GET "${elastic_url}/_cat/nodes" | wc -l)"
   until [[ "${nodes_in_cluster}" = "${expected_nodes}" ]]; do
-    if [[ "$(date +%s)" > $(( start_time + timeout )) ]]; then
-      echo "Timed out after ${timeout}s while waiting for ${expected_nodes} nodes in cluster - EXIT"
-      exit 1
-    fi
     echo "Nodes in the cluster: $nodes_in_cluster. Waiting for ${expected_nodes}..."
     sleep 5
     nodes_in_cluster=$(curl -s -m 5 -X GET "${elastic_url}/_cat/nodes" | wc -l)
@@ -159,8 +146,8 @@ function main() {
 
   # Perform the initial validation of Elasticsearch cluster:
   echo "Checking if the cluster is healthy and all pods joined the cluster..."
-  wait_for_green_elastic_cluster "${elastic_url}" 10
-  wait_for_nodes_in_cluster "${elastic_url}" "${replicas}" 10
+  wait_for_green_elastic_cluster "${elastic_url}"
+  wait_for_nodes_in_cluster "${elastic_url}" "${replicas}"
 
   # Rolling update procedure:
   echo "Starting the rolling update procedure on the cluster..."
