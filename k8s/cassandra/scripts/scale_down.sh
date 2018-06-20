@@ -50,17 +50,20 @@ info "Application name: ${APP_INSTANCE_NAME}"
 info "Statefulset name: ${STS_NAME}"
 info ""
 
-for i in $(seq $(( $(get_desired_number_of_replicas_in_sts) - 1 )) -1 $DESIRED_NUMBER); do
+for node_number in $(seq $(( $(get_desired_number_of_replicas_in_sts) - 1 )) -1 $DESIRED_NUMBER); do
+  POD_NAME="${APP_INSTANCE_NAME}-cassandra-${node_number}"
+  PVC_NAME="${APP_INSTANCE_NAME}-cassandra-pvc-${APP_INSTANCE_NAME}-cassandra-${node_number}"
+  PV_NAME=$(kubectl get pvc -n "${NAMESPACE}" "${PVC_NAME}" --output jsonpath='{.spec.volumeName}')
+
   $(wait_for_healthy_sts)
-  info "Removing Cassandra node ${i} from Cassandra cluster"
-  kubectl exec "${APP_INSTANCE_NAME}-cassandra-${i}" --namespace $NAMESPACE -c cassandra -- nodetool decommission
-  info "Removing pod ${APP_INSTANCE_NAME}-cassandra-${i} from stateful set"
-  kubectl scale statefulsets cassandra-1-cassandra -n $NAMESPACE "--replicas=${i}"
+  info "Removing Cassandra node ${node_number} from Cassandra cluster"
+  kubectl exec "${POD_NAME}" --namespace "${NAMESPACE}" -c cassandra -- nodetool decommission
+  info "Removing pod ${POD_NAME} from stateful set ${STS_NAME}"
+  kubectl scale statefulsets "${STS_NAME}" -n "${NAMESPACE}" "--replicas=${node_number}"
   $(wait_for_healthy_sts)
-  PV_NAME=$(kubectl get pvc -n $NAMESPACE "${APP_INSTANCE_NAME}-cassandra-pvc-${APP_INSTANCE_NAME}-cassandra-${i}" --output jsonpath='{.spec.volumeName}')
-  info "Removing persitent volumes and persitent volume claims for pod ${APP_INSTANCE_NAME}-cassandra-${i}"
-  kubectl delete pvc/"${APP_INSTANCE_NAME}-cassandra-pvc-${APP_INSTANCE_NAME}-cassandra-${i}" -n "$NAMESPACE"
-  kubectl delete pv/"${PV_NAME}" -n "$NAMESPACE"
+  info "Removing persitent volumes and persitent volume claims for pod ${POD_NAME}"
+  kubectl delete "pvc/${PVC_NAME}" -n "${NAMESPACE}"
+  kubectl delete "pv/${PV_NAME}" -n "${NAMESPACE}"
   info ""
 done
 

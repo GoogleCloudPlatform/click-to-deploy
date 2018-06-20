@@ -81,7 +81,7 @@ Choose the instance name and namespace for the app.
 
 ```shell
 export APP_INSTANCE_NAME=cassandra-1
-export NAMESPACE=default
+export NAMESPACE=cs-jj
 ```
 
 Specify the number of nodes for the Cassandra:
@@ -150,13 +150,13 @@ kubectl exec cassandra-1-cassandra-0 --namespace $NAMESPACE -c cassandra -- node
 
 ### Exposing Cassandra cluster
 
-It is possible to provide a load balancer upfront the cluster (although it is not a suggested approach)
+It is possible to provide a load balancer in front of the cluster (although it is not a suggested approach)
 
 ```shell
-export APP_INSTANCE_NAME=<your app instane name>
-export NAMESPACE=<your namespace>
+export APP_INSTANCE_NAME=cassandra-1
+export NAMESPACE=default
 
-envsubst scripts/external.yaml.template > scripts/external.yaml
+envsubst '$APP_INSTANCE_NAME $NAMESPACE' scripts/external.yaml.template > scripts/external.yaml
 kubectl apply -f scripts/external.yaml -n $NAMESPACE
 ```
 
@@ -197,15 +197,16 @@ By default, there are 3 replicas, to provide resilience system.
 To scale down number of replicas, please use script `scripts/scale_down.sh`,
 or manually scale down cluster in following steps.
 
-To remove nodes from cluster, start from highest numbered pod $INDEX
+To remove Cassandra nodes from cluster Cassandra cluster, and then pod from K8s,
+start from highest numbered pod $INDEX
 
 For each node, do following steps
 1. Run `nodetool decommission` on Cassandra container
 1. Scale down stateful set by one with `kubectl scale sts` command
-1. Wait till pod is removed from cluster
+1. Wait until pod is removed from cluster
 1. Remove persistent volume and persistent volume claim belonging to that replica
 
-Repeat this procedure till Cassandra cluster has expected number of pods
+Repeat this procedure until Cassandra cluster has expected number of pods
 
 For more information about the StatefulSets scaling, check the
 [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/#kubectl-scale).
@@ -229,8 +230,6 @@ Set your installation name and Kubernetes namespace:
 ```shell
 export APP_INSTANCE_NAME=cassandra-1
 export NAMESPACE=default
-export IMAGE_CASSANDRA="gcr.io/k8s-marketplace-eap/google/cassandra:latest"
-export REPLICAS=3
 ```
 
 ### Prepare the manifest file
@@ -240,7 +239,7 @@ Otherwise, generate it again. You can use a simplified variables substitution:
 
 ```shell
 awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_CASSANDRA $REPLICAS' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
