@@ -205,9 +205,30 @@ where <new_replicas> defines the number of replicas.
 
 There is no need to backup Memcached application - it's due to the nature of Memcached which serves as internal application cache and is updated by application in a dynamic way. 
 
-# Memcached updates
+# Update
 
-*TODO: instructions for upgrades*
+This procudure assumes that you have a new image for memcached container published and being available to your Kubernetes cluster. The new image is available at <url-pointing-to-new-image>.
+
+Start with modification of the image used for pod temaplate within Memcached StatefulSet:
+
+```shell
+kubectl set image statefulset "$APP_INSTANCE_NAME-memcached" \
+  memcached=<url-pointing-to-new-image>
+```
+
+where `<url-pointing-to-new-image>` is the new image.
+
+To check the status of Pods in the StatefulSet and the progress of deployment of new image run the following command:
+
+```shell
+kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME
+```
+
+To check the current image used by pods within `Memcached` K8s application, you can run the following command:
+
+```shell
+kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}' | sort
+```
 
 # Deletion
 
