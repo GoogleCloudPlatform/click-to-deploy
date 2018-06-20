@@ -227,7 +227,7 @@ kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME
 To check the current image used by pods within `Memcached` K8s application, you can run the following command:
 
 ```shell
-kubectl get pods -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}' | sort
+kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}' | sort
 ```
 
 # Deletion
