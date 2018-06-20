@@ -224,7 +224,7 @@ To check the status of Pods in the StatefulSet and the progress of deployment of
 kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
 
-To check the current image used for `memcached` container, you can run the following command:
+To check the current image used by pods within `Memcached` K8s application, you can run the following command:
 
 ```shell
 kubectl get pods -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}' |sort
