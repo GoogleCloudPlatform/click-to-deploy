@@ -207,7 +207,28 @@ There is no need to backup Memcached application - it's due to the nature of Mem
 
 # Memcached updates
 
-*TODO: instructions for upgrades*
+Start with modification of the image used for pod temaplate within Memcached StatefulSet:
+
+```shell
+kubectl set image statefulset "$APP_INSTANCE_NAME-memcached" \
+  memcached=<url-pointing-to-new-image>
+```
+
+where `<url-pointing-to-new-image>` is the new image.
+
+To check the status of Pods in the StatefulSet and the progress of deployment of new image run the following command:
+
+```shell
+kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME -w
+```
+
+To check the current image used for `memcached` container, you can run the following command:
+
+```shell
+kubectl get statefulsets "$APP_INSTANCE_NAME-rabbitmq" \
+  --namespace "$NAMESPACE" \
+  --output jsonpath='{.spec.template.spec.containers[0].image}'
+```
 
 # Deletion
 
