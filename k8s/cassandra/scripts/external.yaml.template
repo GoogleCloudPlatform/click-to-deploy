@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: $APP_INSTANCE_NAME-cassandra-external-svc
+  labels:
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/component: cassandra-server
+spec:
+  ports:
+  - name: cql
+    port: 9042
+  selector:
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/component: cassandra-server
+  type: LoadBalancer
