@@ -11,6 +11,7 @@ data:
     node.name: "${NODE_NAME}"
 
     path.data: /usr/share/elasticsearch/data
+    path.repo: ["${BACKUP_REPO_PATH}"]
 
     network.host: 0.0.0.0
 
@@ -73,6 +74,8 @@ spec:
           value: "$APP_INSTANCE_NAME-cluster"
         - name: DISCOVERY_SERVICE
           value: "$APP_INSTANCE_NAME-elasticsearch-svc"
+        - name: BACKUP_REPO_PATH
+          value: ""
         ports:
         - name: http
           containerPort: 9200
@@ -135,4 +138,4 @@ spec:
   selector:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app.kubernetes.io/component: elasticsearch-server
-  type: LoadBalancer
+  type: ClusterIP

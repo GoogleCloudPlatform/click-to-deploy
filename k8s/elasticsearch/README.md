@@ -146,7 +146,7 @@ Point your browser to:
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
 ```
 
-### Expose Elasticsearch service
+### Expose Elasticsearch service (optional)
 
 By default, the application does not have an external IP. Run the
 following command to expose an external IP:
@@ -157,93 +157,7 @@ kubectl patch svc "$APP_INSTANCE_NAME-elasticsearch-svc" \
   -p '{"spec": {"type": "LoadBalancer"}}'
 ```
 
-### Access Elasticsearch service
-
-Get the external IP of the Elasticsearch service and visit
-the URL printed below in your browser.
-
-```
-SERVICE_IP=$(kubectl get \
-  --namespace ${NAMESPACE} \
-  svc ${APP_INSTANCE_NAME}-elasticsearch-svc \
-  -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-
-echo "http://${SERVICE_IP}:9200"
-```
-
-Note that it might take some time for the external IP to be provisioned.
-
-### Scale the cluster
-
-Scale the number of master node replicas by the following command:
-
-```
-kubectl scale statefulsets "$APP_INSTANCE_NAME-elasticsearch" \
-  --namespace "$NAMESPACE" --replicas=<new-replicas>
-```
-
-By default, there are 2 replicas to satisfy the minimum master quorum.
-To increase resilience, it is recommended to scale the number of replicas
-to at least 3.
-
-For more information about the StatefulSets scaling, check the
-[Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/#kubectl-scale).
-
-# Backup and restore
-
-```shell
-export APP_INSTANCE_NAME=elasticsearch-1
-export NAMESPACE=default
-
-cat scripts/backup-nfs.yaml.template \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE' \
-  > scripts/backup-nfs-expanded.yaml
-
-cat scripts/backup-patch.yaml.template \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE' \
-  > scripts/backup-patch-expanded.yaml
-```
-
-```shell
-kubectl apply -f scripts/backup-nfs-expanded.yaml --namespace $NAMESPACE
-```
-
-```shell
-kubectl patch statefulset ${APP_INSTANCE_NAME}-elasticsearch \
-  --namespace $NAMESPACE \
-  --patch "$(cat scripts/backup-patch-expanded.yaml)"
-```
-
-```shell
-
-ELASTIC_URL=...
-
-curl -X PUT "$ELASTIC_URL/_snapshot/es_backup" -H 'Content-Type: application/json' -d'
-{
-  "type": "fs",
-  "settings": {
-    "location": "/usr/share/elasticsearch/backup"
-  }
-}
-'
-```
-
-```shell
-curl -X PUT "$ELASTIC_URL/_snapshot/es_backup/snapshot_1?wait_for_completion=true"
-```
-
-# Update procedure
-
-For more background about the rolling update procedure, please check the
-[official documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/rolling-upgrades.html).
-
-Before starting the update procedure on your cluster, we strongly advise to
-prepare a backup of your installation in order to eliminate the risk of losing
-your data.
-
-## Obtain Elasticsearch URL
-
-WARNING: Prepare a backup of your installation before approaching further steps.
+# Obtain Elasticsearch URL
 
 If you run your Elasticsearch cluster behind a LoadBalancer service, obtain the service IP to
 run administrative operations against the REST API:
@@ -286,6 +200,131 @@ In the response, you should see a message including Elasticsearch characteristic
 ```shell
 "tagline" : "You Know, for Search"
 ```
+
+Note that it might take some time for the external IP to be provisioned.
+
+### Scale the cluster
+
+Scale the number of master node replicas by the following command:
+
+```
+kubectl scale statefulsets "$APP_INSTANCE_NAME-elasticsearch" \
+  --namespace "$NAMESPACE" --replicas=<new-replicas>
+```
+
+By default, there are 2 replicas to satisfy the minimum master quorum.
+To increase resilience, it is recommended to scale the number of replicas
+to at least 3.
+
+For more information about the StatefulSets scaling, check the
+[Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/#kubectl-scale).
+
+# Snapshot and restore
+
+This procedure is based on the official Elasticsearch documentation about
+[Snapshot And Restore](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-snapshots.html).
+
+In this procedure we will use NFS storage built on top of a StatefulSet in Kubernetes. You could
+also consider using other NFS providers or one of the repository plugins supported by Elasticsearch. 
+
+## Backup
+
+### Create a backup infrastructure
+
+To create a NFS server on Kubernetes and create a shared disk to be used for backup,
+run the script from `scripts/create-backup-infra.sh`: 
+
+```shell
+scripts/create-backup-infra.sh \
+  --app elasticsearch-1 \
+  --namespace default \
+  --disk-size 10Gi \
+  --backup-claim elasticsearch-1-backup
+```
+
+### Patch Elasticsearch StatefulSet to mount a backup disk
+
+Your Elasticsearch StatefulSet needs to be patched to mount the backup disk. To run the patch
+and automatically perform a rolling update on the StatefulSet, use the script from
+`scripts/patch-sts-for-backup.sh`. 
+
+```shell
+scripts/patch-sts-for-backup.sh \
+  --app elasticsearch-1 \
+  --namespace default \
+  --backup-claim elasticsearch-1-backup
+```
+
+### Register the snapshot repository in Elasticsearch cluster
+
+Obtain the URL for Elasticsearch API (instructions are available above). Environment variable of
+`ELASTIC_URL` should point to Elasticsearch REST API.
+
+To register your new backup repository:
+
+```shell
+curl -X PUT "$ELASTIC_URL/_snapshot/es_backup" -H 'Content-Type: application/json' -d '{
+  "type": "fs",
+  "settings": {
+    "location": "/usr/share/elasticsearch/backup"
+  }
+}'
+```
+
+### Create a snapshot
+
+To create a snapshot of data in your indices, call the REST API:
+
+```shell
+curl -X PUT "$ELASTIC_URL/_snapshot/es_backup/snapshot_1?wait_for_completion=true"
+```
+
+## Restore
+
+For the needs of this instruction, we will assume that you have a "clean" installation of
+Elasticsearch cluster and you want to restore all data from a snapshot.
+
+### Patch Elasticsearch StatefulSet to mount a backup disk
+
+Let's assume that environment variable of `ES_BACKUP_CLAIM` contains the name of a Persistent Volume
+Claim that was previously used as a snapshot repository in Elasticsearch cluster in the version
+compatible with the new cluster.
+
+Run the following command to run a rolling update for mounting the disk to all Elasticsearch Pods
+of your installation:
+
+```shell
+scripts/patch-sts-for-backup.sh \
+  --app elasticsearch-1 \
+  --namespace default \
+  --backup-claim "$ES_BACKUP_CLAIM"
+```
+
+### Register the snapshot repository
+
+Call exactly the same command as in case of registering a repository for backup above.
+
+After the repository is mounted, you can list all of the available snapshots to be restored by
+calling:
+
+```shell
+curl "$ELASTIC_URL/_snapshot/es_backup/_all"
+```
+
+To restore a snapshot called `snapshot_1`, run the following command:
+
+```shell
+curl -X POST "$ELASTIC_URL/_snapshot/es_backup/snapshot_1/_restore"
+```
+
+# Update procedure
+
+For more background about the rolling update procedure, please check the
+[official documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/rolling-upgrades.html).
+
+Before starting the update procedure on your cluster, we strongly advise to
+prepare a backup of your installation in order to eliminate the risk of losing
+your data.
 
 ## Perform the update on cluster nodes
 

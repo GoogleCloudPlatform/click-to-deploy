@@ -18,7 +18,9 @@ spec:
         fsGroup: 65533
       containers:
       - name: nfs-server
-        image: gcr.io/google_containers/volume-nfs:0.8 # gcr.io/orbitera-dev/nfs-server1
+        #TODO: switch to launcher.gcr.io/google/nfs-server1 after it is published
+        image: gcr.io/google_containers/volume-nfs:0.8 #
+        imagePullPolicy: Always
         ports:
         - name: nfs
           containerPort: 2049
@@ -65,8 +67,9 @@ kind: PersistentVolume
 metadata:
   name: $APP_INSTANCE_NAME-nfs
 spec:
+  persistentVolumeReclaimPolicy: Delete
   capacity:
-    storage: 2Gi
+    storage: $BACKUP_DISK_SIZE
   accessModes:
     - ReadWriteMany
   nfs:
@@ -76,7 +79,7 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: $APP_INSTANCE_NAME-nfs
+  name: $BACKUP_CLAIM_NAME
   labels:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app.kubernetes.io/component: elasticsearch-backup-server
@@ -86,4 +89,4 @@ spec:
   storageClassName: ""
   resources:
     requests:
-      storage: 1Gi
+      storage: $BACKUP_DISK_SIZE
