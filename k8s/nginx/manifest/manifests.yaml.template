@@ -1,0 +1,55 @@
+apiVersion: apps/v1beta2
+kind: StatefulSet
+metadata:
+  name: $APP_INSTANCE_NAME-nginx
+  labels: &NginxDeploymentLabels
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/component: nginx-server
+spec:
+  selector:
+    matchLabels: *NginxDeploymentLabels
+  updateStrategy:
+    type: RollingUpdate
+  serviceName: $APP_INSTANCE_NAME-nginx-svc
+  replicas: 2
+  template:
+    metadata:
+      labels: *NginxDeploymentLabels
+    spec:
+      terminationGracePeriodSeconds: 180
+      containers:
+      - name: nginx
+        image: $IMAGE_NGINX
+        imagePullPolicy: Always
+        ports:
+        - name: nginx
+          containerPort: 11211
+          protocol: TCP
+        livenessProbe:
+          tcpSocket:
+            port: nginx
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: nginx
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $APP_INSTANCE_NAME-nginx-svc
+  labels:
+    app: $APP_INSTANCE_NAME
+    component: nginx-server
+spec:
+  clusterIP: None
+  ports:
+  - name: nginx-port
+    port: 11211
+    protocol: TCP
+  selector:
+    app: $APP_INSTANCE_NAME
+    component: nginx-server
+  type: ClusterIP # LoadBalancer
