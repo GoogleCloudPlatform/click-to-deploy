@@ -81,7 +81,7 @@ Choose the instance name and namespace for the app.
 
 ```shell
 export APP_INSTANCE_NAME=cassandra-1
-export NAMESPACE=cs-jj
+export NAMESPACE=default
 ```
 
 Specify the number of nodes for the Cassandra:

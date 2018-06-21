@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# While scaling down we want to gracefully remove Cassandra node from cluster,
+# moving all data that belong to that node to other nodes and stop all writes
+# to this node.
+#
+# To do this, we use `nodetool decommission` command, that marks node as 'to be
+# removed', also on disk. This disk cannot be used again to connect to this
+# cluster, as Cassandra has marked that this disk belongs to decommissioned
+# node. Thus, we need to delete this disk, removing PV and PVC.
+
 function info {
   >&2 echo "${@}"
 }
