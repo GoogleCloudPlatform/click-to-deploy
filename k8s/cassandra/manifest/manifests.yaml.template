@@ -35,6 +35,13 @@ spec:
           containerPort: 9042
         - name: thrift
           containerPort: 9160
+        resources:
+          limits:
+            cpu: 1
+            memory: 3Gi
+          requests:
+           cpu: 1
+           memory: 3Gi
         volumeMounts:
         - name: $APP_INSTANCE_NAME-cassandra-pvc
           mountPath: /var/lib/cassandra
@@ -52,9 +59,9 @@ spec:
           preStop:
             exec:
               command:
-              - /bin/sh
-              - -c
-              - nodetool drain
+              - "/bin/sh"
+              - "-c"
+              - "nodetool drain"
   volumeClaimTemplates:
   - metadata:
       name: $APP_INSTANCE_NAME-cassandra-pvc
