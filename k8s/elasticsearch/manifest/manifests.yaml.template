@@ -11,6 +11,7 @@ data:
     node.name: "${NODE_NAME}"
 
     path.data: /usr/share/elasticsearch/data
+
     network.host: 0.0.0.0
 
     discovery.zen.minimum_master_nodes: 2
@@ -25,17 +26,6 @@ data:
 
     rootLogger.level = info
     rootLogger.appenderRef.console.ref = console
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: $APP_INSTANCE_NAME-backup-key
-  labels:
-    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
-    app.kubernetes.io/component: elasticsearch-server
-type: Opaque
-data:
-  README.txt: UGxlYXNlIGZvbGxvdyB0aGUgaW5zdHJ1Y3Rpb25zIGZvciBjb25maWd1cmluZyBiYWNrdXAgYXZhaWxhYmxlIGZvciB5b3VyIEs4cyBhcHBsaWNhdGlvbi4K
 ---
 apiVersion: apps/v1beta2
 kind: StatefulSet
@@ -83,8 +73,6 @@ spec:
           value: "$APP_INSTANCE_NAME-cluster"
         - name: DISCOVERY_SERVICE
           value: "$APP_INSTANCE_NAME-elasticsearch-svc"
-        - name: GCS_BACKUP_CLIENT_NAME
-          value: esbackup
         ports:
         - name: http
           containerPort: 9200
@@ -99,8 +87,6 @@ spec:
           subPath: log4j2.properties
         - name: $APP_INSTANCE_NAME-elasticsearch-pvc
           mountPath: /usr/share/elasticsearch/data
-        - name: $APP_INSTANCE_NAME-elasticsearch-config-pvc
-          mountPath: /etc/elasticsearch
         readinessProbe:
           httpGet:
             path: /_cluster/health?local=true
@@ -120,9 +106,6 @@ spec:
       - name: configmap
         configMap:
           name: "$APP_INSTANCE_NAME-configmap"
-      - name: backup-sa-key
-        secret:
-          secretName: "$APP_INSTANCE_NAME-backup-key"
   volumeClaimTemplates:
   - metadata:
       name: $APP_INSTANCE_NAME-elasticsearch-pvc
@@ -135,17 +118,6 @@ spec:
       resources:
         requests:
           storage: 5Gi
-  - metadata:
-      name: $APP_INSTANCE_NAME-elasticsearch-config-pvc
-      labels:
-        app.kubernetes.io/name: "$APP_INSTANCE_NAME"
-        app.kubernetes.io/component: elasticsearch-server
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      storageClassName: standard
-      resources:
-       requests:
-         storage: 2Gi
 ---
 apiVersion: v1
 kind: Service
