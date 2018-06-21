@@ -257,8 +257,8 @@ SERVICE_IP=$(kubectl get \
 ELASTIC_URL="http://${SERVICE_IP}:9200"
 ```
 
-You could also use a local proxy to access the service that is not exposed publicly
-(run in another window, this process will need to be continued during the whole update process):
+You could also use a local proxy to access the service that is not exposed publicly.
+Run the following command in a separate background terminal:
 
 ```shell
 # select a local port to play the role of proxy
@@ -266,7 +266,7 @@ KUBE_PROXY_PORT=8080
 kubectl proxy -p $KUBE_PROXY_PORT
 ```
 
-Back in the main windows:
+In you main terminal:
 
 ```shell
 KUBE_PROXY_PORT=8080
@@ -296,14 +296,12 @@ Start with assigning the new image to your StatefulSet definition:
 ```
 IMAGE_ELASTICSEARCH=<put your new image reference here>
 
-kubectl patch statefulset ${APP_INSTANCE_NAME}-elasticsearch \
-  --namespace $NAMESPACE \
-  --patch "{\"spec\":{\"containers\":[{\"name\":\"elasticsearch\",\"image\":\"$IMAGE_ELASTICSEARCH\"}]}}"
+kubectl set image statefulset "${APP_INSTANCE_NAME}-elasticsearch" \
+  --namespace $NAMESPACE "$IMAGE_ELASTICSEARCH"
 ```
 
-After this operation the StatefulSet has a new image configured for its
-containers, but considering the `OnDelete` strategy, it will not start
-replacing any container until its deletion.
+After this operation the StatefulSet has a new image configured for its containers, but the pods
+will not automatically restart due to the OnDelete update strategy set on the StatefulSet.
 
 ### Run the `upgrade.sh` script to run the rolling update procedure
 
@@ -314,7 +312,7 @@ curl $ELASTIC_URL/_cluster/health?pretty
 ```
 
 Run the `scripts/upgrade.sh` script. This script will take down and update one replica at a time -
-it should print out diagnostic messages.
+it should print out diagnostic messages. You should be done when the script finishes.
 
 # Uninstall the Application
 

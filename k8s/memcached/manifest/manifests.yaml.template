@@ -8,6 +8,8 @@ metadata:
 spec:
   selector:
     matchLabels: *MemcachedDeploymentLabels
+  updateStrategy:
+    type: RollingUpdate
   serviceName: $APP_INSTANCE_NAME-memcached-svc
   replicas: 2
   template:
