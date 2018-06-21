@@ -189,6 +189,92 @@ to at least 3.
 For more information about the StatefulSets scaling, check the
 [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/#kubectl-scale).
 
+# Backup and restore
+
+TODO
+
+# Update procedure
+
+For more background about the rolling update procedure, please check the
+[official documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/rolling-upgrades.html).
+
+Before starting the update procedure on your cluster, we strongly advise to
+prepare a backup of your installation in order to eliminate the risk of losing
+your data.
+
+## Obtain Elasticsearch URL
+
+WARNING: Prepare a backup of your installation before approaching further steps.
+
+If you run your Elasticsearch cluster behind a LoadBalancer service, obtain the service IP to
+run administrative operations against the REST API:
+
+```
+SERVICE_IP=$(kubectl get \
+  --namespace ${NAMESPACE} \
+  svc ${APP_INSTANCE_NAME}-elasticsearch-svc \
+  -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+ELASTIC_URL="http://${SERVICE_IP}:9200"
+```
+
+You could also use a local proxy to access the service that is not exposed publicly.
+Run the following command in a separate background terminal:
+
+```shell
+# select a local port to play the role of proxy
+KUBE_PROXY_PORT=8080
+kubectl proxy -p $KUBE_PROXY_PORT
+```
+
+In you main terminal:
+
+```shell
+KUBE_PROXY_PORT=8080
+PROXY_BASE_URL=http://localhost:$KUBE_PROXY_PORT/api/v1/proxy
+ELASTIC_URL=$PROXY_BASE_URL/namespaces/$NAMESPACE/services/$APP_INSTANCE_NAME-elasticsearch-svc:http
+```
+
+In both cases, you should have an `ELASTIC_URL` environment variable that points to Elasticsearch
+base URL. You can check this by running `curl`:
+
+```shell
+curl "${ELASTIC_URL}"
+```
+
+In the response, you should see a message including Elasticsearch characteristic tagline:
+
+```shell
+"tagline" : "You Know, for Search"
+```
+
+## Perform the update on cluster nodes
+
+### Patch the StatefulSet with the new image
+
+Start with assigning the new image to your StatefulSet definition:
+
+```
+IMAGE_ELASTICSEARCH=<put your new image reference here>
+
+kubectl set image statefulset "${APP_INSTANCE_NAME}-elasticsearch" \
+  --namespace $NAMESPACE "$IMAGE_ELASTICSEARCH"
+```
+
+After this operation the StatefulSet has a new image configured for its containers, but the pods
+will not automatically restart due to the OnDelete update strategy set on the StatefulSet.
+
+### Run the `upgrade.sh` script to run the rolling update procedure
+
+Make sure that the cluster is healthy before proceeding:
+
+```shell
+curl $ELASTIC_URL/_cluster/health?pretty
+```
+
+Run the `scripts/upgrade.sh` script. This script will take down and update one replica at a time -
+it should print out diagnostic messages. You should be done when the script finishes.
+
 # Uninstall the Application
 
 ## Using GKE UI
@@ -224,9 +310,9 @@ awk 'BEGINFILE {print "---"}{print}' manifest/* \
 ### Delete the resources using `kubectl delete`
 
 NOTE: Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions.
-  It means that for instance if you have `kubectl` in version 1.10.* and Kubernetes server 1.8.*,
+  It means that for instance if you have `kubectl` in version 1.10.&ast; and Kubernetes 1.8.&ast;,
   you may experience incompatibility issues, like not removing the StatefulSets with
-  apiVersion of apps/v1beta2.  
+  apiVersion of apps/v1beta2. 
 
 Run `kubectl` on expanded manifest file matching your installation:
 
@@ -244,10 +330,10 @@ following `kubectl` command:
 
 ```shell
 # specify the variables values matching your installation:
-export NAME=elasticsearch-1
+export APP_INSTANCE_NAME=elasticsearch-1
 export NAMESPACE=default
 
 kubectl delete persistentvolumeclaims \
   --namespace $NAMESPACE
-  --selector app.kubernetes.io/name=$NAME
+  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
