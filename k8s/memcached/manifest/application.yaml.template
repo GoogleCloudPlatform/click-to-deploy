@@ -14,7 +14,10 @@ spec:
   type: Memcached
   version: '0.1'
   description: |-
-    Memcached is an open source in-memory, key-value store. Key features of this solution include high performance and ease of distribution.
+    Memcached is an open source in-memory, key-value store.
+
+    Key features of this solution include high performance and ease of distribution.
+
     Although Memcached is intended to be use with dynamic web applications, it can be used as a caching system for a number of databases.
 
     # Support
@@ -22,7 +25,6 @@ spec:
     [Stack Overflow](https://stackoverflow.com/questions/tagged/memcached/).
     Additional community support is available on [community forums](https://groups.google.com/forum/#!forum/memcached).
     
-    If you would like to read more about how Memcached solution was built for Cloud Marketplace, please, naviagate to [Memcached GitHub repository](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/k8s/memcached)
   info:
   - name: Service endpoint
     value: TODO
@@ -44,13 +46,12 @@ spec:
     kind: StatefulSet
   notes: |-
     # Access Memcached instances
-    Your application can retrieve information about Memcached instances using kubectl command or pragmatically (e.g. via Python).
 
-    To discover IP addresses of Memcached instances using kubectl, please, run the following command:
+    Run the following command to discover IP addresses of Memcached instances using kubectl:
 
-    kubectl get pods -o wide -l app.kubernetes.io/name=$APP_INSTANCE_NAME
-
-    Navigate to [Memcached GitHub repository](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/k8s/memcached) to learn how you could retrieve information about Memcached instances via Python.
+    ```shell
+    kubectl get pods -o wide -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace "$NAMESPACE"
+    ```
 
     # Scale the cluster
 
