@@ -193,7 +193,7 @@ In this specific example, there is no encyption between an application and Memca
 
 # Scaling
 
-By default, Memcached K8s application is deployed using 2 replicas. You can manually scale it up or down to deploy Memcached solution with desired number of replicas using the following command.
+You can manually scale it up or down to deploy Memcached solution with desired number of replicas using the following command.
 
 ```shell
 kubectl scale statefulsets "$APP_INSTANCE_NAME-memcached" --namespace "$NAMESPACE" --replicas=<new-replicas>
