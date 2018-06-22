@@ -75,7 +75,7 @@ community. The source code can be found on
 Navigate to the `rabbitmq` directory.
 
 ```shell
-cd click-to-deploy/k8s/rabbitmq
+cd google-click-to-deploy/k8s/rabbitmq
 ```
 
 #### Configure the app with environment variables
