@@ -58,7 +58,7 @@ git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 
 Do a one-time setup for your cluster to understand Application resources.
 
-To do that, please, navidate to `k8s/vendor` subdirectory of click-to-deploy repository and run the following command:
+To do that, navigate to `k8s/vendor` subdirectory of the repository and run the following command:
 
 ```shell
 kubectl apply -f marketplace-tools/crd/app-crd.yaml
@@ -201,6 +201,8 @@ kubectl scale statefulsets "$APP_INSTANCE_NAME-rabbitmq" \
 ```
 
 where `<new-replicas>` defines the number of replicas.
+
+> **NOTE:** Scaling down will leave `persistentvolumeclaims` of your StatefulSet untouched.
 
 # Backup and restore
 
