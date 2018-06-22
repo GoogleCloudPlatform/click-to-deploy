@@ -189,7 +189,7 @@ SERVICE_IP=$(kubectl get \
 echo "http://${SERVICE_IP}"
 ```
 
-> Note that it might take some time for the external IP to be provisioned.
+> **NOTE:** It might take some time for the external IP to be provisioned.
 
 #### Scale the cluster
 
@@ -256,7 +256,7 @@ awk 'BEGINFILE {print "---"}{print}' manifest/* \
 
 ### Delete the resources
 
-> NOTE: Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions. It means that for instance if you have kubectl in version `1.10.*` and Kubernetes server `1.8.*`, you may experience incompatibility issues, like not removing the *StatefulSets* with apiVersion of *apps/v1beta2*.
+> **NOTE:** Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions. It means that for instance if you have kubectl in version `1.10.&ast;` and Kubernetes server `1.8.&ast;`, you may experience incompatibility issues, like not removing the *StatefulSets* with apiVersion of *apps/v1beta2*.
 
 Run `kubectl` on expanded manifest file matching your installation:
 

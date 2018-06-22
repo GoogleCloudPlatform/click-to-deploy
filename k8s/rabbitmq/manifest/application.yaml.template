@@ -74,7 +74,7 @@ spec:
     echo "http://${SERVICE_IP}"
     ```
 
-    > Note that it might take some time for the external IP to be provisioned.
+    > **NOTE:** It might take some time for the external IP to be provisioned.
 
     # Scale the cluster
 
