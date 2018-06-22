@@ -199,6 +199,31 @@ echo "http://${SERVICE_IP}"
 
 > **NOTE:** It might take some time for the external IP to be provisioned.
 
+
+If you would like to get cluster IP and external IP addressses of 'RabbitMQ' service  using Python you could use the following code
+```shell
+
+import os
+
+# if kubernetes module is not installed, please, install it, e.g. pip install kubernetes
+from kubernetes import client, config
+
+# Load Kube config
+config.load_kube_config()
+
+# Create a Kubernetes client
+k8s_client = client.CoreV1Api()
+
+# Get the list of all pods
+service = k8s_client.read_namespaced_service(namespace="default", name="rabbitmq-1-rabbitmq-svc")
+
+print("Cluster IP: {}\n".format(service.spec.cluster_ip))
+for item in service.status.load_balancer.ingress:
+  print("External IP: {}\n".format(item.ip))
+```
+
+
+
 If you would like to send and receive messages to RabbitMQ using Python [here](https://www.rabbitmq.com/tutorials/tutorial-one-python.html) is a good reference how to do that.
 
 #### Scale the cluster
