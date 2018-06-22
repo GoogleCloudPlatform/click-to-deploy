@@ -171,6 +171,7 @@ kubectl exec -it "$APP_INSTANCE_NAME-rabbitmq-0" --namespace "$NAMESPACE" -- rab
 By default, the application does not have an external IP. Run the
 following command to expose an external IP:
 
+> **WARNING:** The application has defaulted *quest* user. Please be careful with exposing the application for the world.
 ```
 kubectl patch svc "$APP_INSTANCE_NAME-rabbitmq-svc" \
   --namespace "$NAMESPACE" \
