@@ -218,7 +218,29 @@ TODO
 
 # Update procedure
 
-TODO
+This procedure assumes that you have a new image for `RabbitMQ' container published and being available to your Kubernetes cluster. The new image is available at <url-pointing-to-new-image>.
+
+Start with modification of the image used for pod temaplate within RabbitMQ StatefulSet:
+
+```shell
+kubectl set image statefulset "$APP_INSTANCE_NAME-rabbitmq" \
+  rabbitmq=<url-pointing-to-new-image>
+```
+
+where `<url-pointing-to-new-image>` is the new image.
+
+To check the status of Pods in the StatefulSet and the progress of deployment of new image run the following command:
+
+```shell
+kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME
+```
+
+To check the current image used by pods within `RabbitMQ` K8s application, you can run the following command:
+
+```shell
+kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}' | sort
+```
+
 
 # Uninstall the Application
 
