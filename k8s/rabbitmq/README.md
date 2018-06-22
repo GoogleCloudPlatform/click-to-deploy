@@ -178,7 +178,7 @@ kubectl patch svc "$APP_INSTANCE_NAME-rabbitmq-svc" \
 
 #### Access RabbitMQ service
 
-To discover IP address of RabbitMQ service using `kubectl`, run the following command:
+To discover IP addresses (internal and external ones) of RabbitMQ service using `kubectl`, run the following command:
 
 ```
 kubectl get svc $APP_INSTANCE_NAME-rabbitmq-svc --namespace $NAMESPACE -o jsonpath='{.spec.clusterIP}'
@@ -196,6 +196,8 @@ echo "http://${SERVICE_IP}"
 ```
 
 > **NOTE:** It might take some time for the external IP to be provisioned.
+
+If you would like to send and receive messages to RabbitMQ using Python [here](https://www.rabbitmq.com/tutorials/tutorial-one-python.html) is a good reference how to do that.
 
 #### Scale the cluster
 
@@ -279,6 +281,12 @@ If you wish to remove the *PersistentVolumeClaims* with their attached persisten
 following `kubectl` command:
 
 ```shell
+for i in $(kubectl get pvc -n $NAMESPACE \
+             --selector  app.kubernetes.io/name=$APP_INSTANCE_NAME \
+             -ojsonpath='{range .items[*]}{.spec.volumeName}{"\n"}{end}'); do
+  kubectl delete pv/$i --namespace $NAMESPACE
+done
+
 kubectl delete persistentvolumeclaims \
   --namespace $NAMESPACE \
   --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
