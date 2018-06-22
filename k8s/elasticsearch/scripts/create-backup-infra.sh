@@ -55,7 +55,7 @@ export APP_INSTANCE_NAME="${app}"
 export BACKUP_DISK_SIZE="${disk_size}"
 export BACKUP_CLAIM_NAME="${backup_claim}"
 cat scripts/backup-nfs.yaml.template \
-  | envsubst '$APP_INSTANCE_NAME $BACKUP_DISK_SIZE' \
+  | envsubst '$APP_INSTANCE_NAME $BACKUP_DISK_SIZE $BACKUP_CLAIM_NAME' \
   > "${nfs_manifest_file}"
 
 echo "Creating NFS server and shared disk..."

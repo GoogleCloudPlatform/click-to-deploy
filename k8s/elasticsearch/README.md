@@ -227,7 +227,7 @@ This procedure is based on the official Elasticsearch documentation about
 In this procedure we will use NFS storage built on top of a StatefulSet in Kubernetes. You could
 also consider using other NFS providers or one of the repository plugins supported by Elasticsearch. 
 
-## Backup
+## Snapshot
 
 ### Create a backup infrastructure
 
