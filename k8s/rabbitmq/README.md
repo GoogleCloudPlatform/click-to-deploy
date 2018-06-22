@@ -165,7 +165,7 @@ By default, the application does not have an external IP. Use `kubectl` to execu
 kubectl exec -it "$APP_INSTANCE_NAME-rabbitmq-0" --namespace "$NAMESPACE" -- rabbitmqctl cluster_status
 ```
 
-#### Expose RabbitMQ service
+#### Expose RabbitMQ service (optional)
 
 By default, the application does not have an external IP. Run the
 following command to expose an external IP:
@@ -178,7 +178,13 @@ kubectl patch svc "$APP_INSTANCE_NAME-rabbitmq-svc" \
 
 #### Access RabbitMQ service
 
-Get the external IP of the RabbitMQ service.
+To discover IP address of RabbitMQ service using `kubectl`, run the following command:
+
+```
+kubectl get svc $APP_INSTANCE_NAME-rabbitmq-svc --namespace $NAMESPACE -o jsonpath='{.spec.clusterIP}'
+```
+
+If you run your RabbitMQ cluster behind a LoadBalancer, run the command below to get an external IP of the RabbitMQ service:
 
 ```
 SERVICE_IP=$(kubectl get \
