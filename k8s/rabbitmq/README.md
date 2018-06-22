@@ -51,7 +51,8 @@ gcloud --project "$PROJECT" container clusters get-credentials "$CLUSTER" --zone
 Clone this repo and the associated tools repo.
 
 ```shell
-git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
+gcloud source repos clone google-click-to-deploy --project=k8s-marketplace-eap
+gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketplace-eap
 ```
 
 #### Install the Application resource definition
@@ -74,7 +75,7 @@ community. The source code can be found on
 Navigate to the `rabbitmq` directory.
 
 ```shell
-cd click-to-deploy/k8s/rabbitmq
+cd google-click-to-deploy/k8s/rabbitmq
 ```
 
 #### Configure the app with environment variables
@@ -170,6 +171,7 @@ kubectl exec -it "$APP_INSTANCE_NAME-rabbitmq-0" --namespace "$NAMESPACE" -- rab
 By default, the application does not have an external IP. Run the
 following command to expose an external IP:
 
+> **WARNING:** The application has defaulted *quest* user. Please be careful with exposing the application for the world.
 ```
 kubectl patch svc "$APP_INSTANCE_NAME-rabbitmq-svc" \
   --namespace "$NAMESPACE" \
