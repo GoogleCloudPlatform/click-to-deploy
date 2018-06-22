@@ -51,7 +51,8 @@ gcloud --project "$PROJECT" container clusters get-credentials "$CLUSTER" --zone
 Clone this repo and the associated tools repo.
 
 ```shell
-git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
+gcloud source repos clone google-click-to-deploy --project=k8s-marketplace-eap
+gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketplace-eap
 ```
 
 #### Install the Application resource definition
@@ -74,7 +75,7 @@ community. The source code can be found on
 Navigate to the `rabbitmq` directory.
 
 ```shell
-cd click-to-deploy/k8s/rabbitmq
+cd google-click-to-deploy/k8s/rabbitmq
 ```
 
 #### Configure the app with environment variables
@@ -170,6 +171,7 @@ kubectl exec -it "$APP_INSTANCE_NAME-rabbitmq-0" --namespace "$NAMESPACE" -- rab
 By default, the application does not have an external IP. Run the
 following command to expose an external IP:
 
+> **WARNING:** The application has defaulted *quest* user. Please be careful with exposing the application for the world.
 ```
 kubectl patch svc "$APP_INSTANCE_NAME-rabbitmq-svc" \
   --namespace "$NAMESPACE" \
@@ -178,7 +180,7 @@ kubectl patch svc "$APP_INSTANCE_NAME-rabbitmq-svc" \
 
 #### Access RabbitMQ service
 
-To discover IP address of RabbitMQ service using `kubectl`, run the following command:
+To discover IP addresses (internal and external ones) of RabbitMQ service using `kubectl`, run the following command:
 
 ```
 kubectl get svc $APP_INSTANCE_NAME-rabbitmq-svc --namespace $NAMESPACE -o jsonpath='{.spec.clusterIP}'
@@ -196,6 +198,33 @@ echo "http://${SERVICE_IP}"
 ```
 
 > **NOTE:** It might take some time for the external IP to be provisioned.
+
+
+If you would like to get cluster IP and external IP addressses of 'RabbitMQ' service  using Python you could use the following code
+```shell
+
+import os
+
+# if kubernetes module is not installed, please, install it, e.g. pip install kubernetes
+from kubernetes import client, config
+
+# Load Kube config
+config.load_kube_config()
+
+# Create a Kubernetes client
+k8s_client = client.CoreV1Api()
+
+# Get the list of all pods
+service = k8s_client.read_namespaced_service(namespace="default", name="rabbitmq-1-rabbitmq-svc")
+
+print("Cluster IP: {}\n".format(service.spec.cluster_ip))
+for item in service.status.load_balancer.ingress:
+  print("External IP: {}\n".format(item.ip))
+```
+
+
+
+If you would like to send and receive messages to RabbitMQ using Python [here](https://www.rabbitmq.com/tutorials/tutorial-one-python.html) is a good reference how to do that.
 
 #### Scale the cluster
 
@@ -279,6 +308,12 @@ If you wish to remove the *PersistentVolumeClaims* with their attached persisten
 following `kubectl` command:
 
 ```shell
+for i in $(kubectl get pvc -n $NAMESPACE \
+             --selector  app.kubernetes.io/name=$APP_INSTANCE_NAME \
+             -ojsonpath='{range .items[*]}{.spec.volumeName}{"\n"}{end}'); do
+  kubectl delete pv/$i --namespace $NAMESPACE
+done
+
 kubectl delete persistentvolumeclaims \
   --namespace $NAMESPACE \
   --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
