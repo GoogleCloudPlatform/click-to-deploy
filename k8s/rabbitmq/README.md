@@ -199,10 +199,9 @@ echo "http://${SERVICE_IP}"
 
 > **NOTE:** It might take some time for the external IP to be provisioned.
 
+If you would like to get cluster IP and external IP addressses of RabbitMQ service using Python you could use the following code:
 
-If you would like to get cluster IP and external IP addressses of 'RabbitMQ' service  using Python you could use the following code
-```shell
-
+```python
 import os
 
 # if kubernetes module is not installed, please, install it, e.g. pip install kubernetes
@@ -218,11 +217,10 @@ k8s_client = client.CoreV1Api()
 service = k8s_client.read_namespaced_service(namespace="default", name="rabbitmq-1-rabbitmq-svc")
 
 print("Cluster IP: {}\n".format(service.spec.cluster_ip))
+
 for item in service.status.load_balancer.ingress:
   print("External IP: {}\n".format(item.ip))
 ```
-
-
 
 If you would like to send and receive messages to RabbitMQ using Python [here](https://www.rabbitmq.com/tutorials/tutorial-one-python.html) is a good reference how to do that.
 
@@ -305,12 +303,13 @@ By design, removal of *StatefulSets* in Kubernetes does not remove the *Persiste
 were attached to their Pods. It protects your installations from mistakenly deleting stateful data.
 
 If you wish to remove the *PersistentVolumeClaims* with their attached persistent disks, run the
-following `kubectl` command:
+following `kubectl` commands:
 
 ```shell
-for i in $(kubectl get pvc -n $NAMESPACE \
-             --selector  app.kubernetes.io/name=$APP_INSTANCE_NAME \
-             -ojsonpath='{range .items[*]}{.spec.volumeName}{"\n"}{end}'); do
+for i in $(kubectl get pvc --namespace $NAMESPACE \
+  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME \
+  --output jsonpath='{.items[*].spec.volumeName}');
+do
   kubectl delete pv/$i --namespace $NAMESPACE
 done
 
