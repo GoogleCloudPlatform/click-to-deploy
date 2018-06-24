@@ -1,0 +1,72 @@
+apiVersion: apps/v1beta2
+kind: StatefulSet
+metadata:
+  name: $APP_INSTANCE_NAME-influxdb
+  labels: &InfluxdbDeploymentLabels
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/component: influxdb-server
+spec:
+  selector:
+    matchLabels: *InfluxdbDeploymentLabels
+  updateStrategy:
+    type: RollingUpdate
+  serviceName: $APP_INSTANCE_NAME-influxdb-svc
+  replicas: 1
+  template:
+    metadata:
+      labels: *InfluxdbDeploymentLabels
+    spec:
+      terminationGracePeriodSeconds: 180
+      containers:
+      - name: influxdb
+        image: $IMAGE_INFLUXDB
+        imagePullPolicy: Always
+        ports:
+        - name: influxdb
+          containerPort: 8086
+          protocol: TCP
+        livenessProbe:
+          tcpSocket:
+            port: influxdb
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: influxdb
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+        - name: influxdb-backuprestore
+          containerPort: 8088
+          protocol: TCP
+        livenessProbe:
+          tcpSocket:
+            port: influxdb-backuprestore
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: influxdb-backuprestore
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+        - name: influxdb-graphite
+          containerPort: 2003
+          protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $APP_INSTANCE_NAME-influxdb-svc
+  labels:
+    app: $APP_INSTANCE_NAME
+    component: influxdb-server
+spec:
+  clusterIP: None
+  ports:
+  - name: influxdb
+    port: 8086
+    protocol: TCP
+  selector:
+    app: $APP_INSTANCE_NAME
+    component: influxdb-server
+  type: ClusterIP # LoadBalancer
