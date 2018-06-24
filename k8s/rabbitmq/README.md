@@ -33,9 +33,9 @@ You'll need the following tools in your development environment:
 Create a new cluster from the command-line.
 
 ```shell
-export PROJECT=your-gcp-project
+export PROJECT=your-gcp-project # or export PROJECT=$(gcloud config get-value project)
 export CLUSTER=marketplace-cluster
-export ZONE=us-west1-a
+export ZONE=us-west1-a # or export ZONE=$(gcloud config get-value compute/zone)
 
 gcloud --project "$PROJECT" container clusters create "$CLUSTER" --zone "$ZONE"
 ```
@@ -51,21 +51,18 @@ gcloud --project "$PROJECT" container clusters get-credentials "$CLUSTER" --zone
 Clone this repo and the associated tools repo.
 
 ```shell
-git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
+gcloud source repos clone google-click-to-deploy --project=k8s-marketplace-eap
+gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketplace-eap
 ```
 
 #### Install the Application resource definition
 
-Navigate to the `rabbitmq` directory.
-
-```shell
-cd click-to-deploy/k8s/rabbitmq
-```
-
 Do a one-time setup for your cluster to understand Application resources.
 
+To do that, navigate to `k8s/vendor` subdirectory of the repository and run the following command:
+
 ```shell
-make crd/install
+kubectl apply -f marketplace-tools/crd/app-crd.yaml
 ```
 
 The Application resource is defined by the
@@ -78,7 +75,7 @@ community. The source code can be found on
 Navigate to the `rabbitmq` directory.
 
 ```shell
-cd click-to-deploy/k8s/rabbitmq
+cd google-click-to-deploy/k8s/rabbitmq
 ```
 
 #### Configure the app with environment variables
@@ -99,7 +96,7 @@ export REPLICAS=3
 Set or generate the [Erlang cookie](https://www.rabbitmq.com/clustering.html#erlang-cookie). The cookie has be encoded in base64.
 
 ```shell
-export RABBITMQ_ERLANG_COOKIE=$(openssl rand -base64 32)
+export RABBITMQ_ERLANG_COOKIE=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1 | tr -d '\n' | base64)
 ```
 
 Configure the container images.
@@ -122,6 +119,16 @@ for i in "IMAGE_RABBITMQ"; do
   export $i="$repo@$digest";
   env | grep $i;
 done
+```
+
+#### Prerequisites for using Role-Based Access Control
+
+You must grant your user the ability to create roles in Kubernetes by running the following command. You have to do it **once** for the cluster. [Read more](https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control)
+
+```shell
+kubectl create clusterrolebinding cluster-admin-binding \
+  --clusterrole cluster-admin \
+  --user $(gcloud config get-value account)
 ```
 
 #### Expand the manifest template
@@ -151,20 +158,35 @@ Point your browser to:
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
 ```
 
-### Expose RabbitMQ service
+#### Cluster status
+
+By default, the application does not have an external IP. Use `kubectl` to execute `rabbitmqctl` on the master node.
+
+```
+kubectl exec -it "$APP_INSTANCE_NAME-rabbitmq-0" --namespace "$NAMESPACE" -- rabbitmqctl cluster_status
+```
+
+#### Expose RabbitMQ service (optional)
 
 By default, the application does not have an external IP. Run the
 following command to expose an external IP:
 
+> **WARNING:** The application has defaulted *quest* user. Please be careful with exposing the application for the world.
 ```
 kubectl patch svc "$APP_INSTANCE_NAME-rabbitmq-svc" \
   --namespace "$NAMESPACE" \
   -p '{"spec": {"type": "LoadBalancer"}}'
 ```
 
-### Access RabbitMQ service
+#### Access RabbitMQ service
 
-Get the external IP of the RabbitMQ service.
+To discover IP addresses (internal and external ones) of RabbitMQ service using `kubectl`, run the following command:
+
+```
+kubectl get svc $APP_INSTANCE_NAME-rabbitmq-svc --namespace $NAMESPACE -o jsonpath='{.spec.clusterIP}'
+```
+
+If you run your RabbitMQ cluster behind a LoadBalancer, run the command below to get an external IP of the RabbitMQ service:
 
 ```
 SERVICE_IP=$(kubectl get \
@@ -175,13 +197,137 @@ SERVICE_IP=$(kubectl get \
 echo "http://${SERVICE_IP}"
 ```
 
-Note that it might take some time for the external IP to be provisioned.
+> **NOTE:** It might take some time for the external IP to be provisioned.
 
-### Scale the cluster
+If you would like to get cluster IP and external IP addressses of RabbitMQ service using Python you could use the following code:
 
-By default, RabbitMQ K8s application is deployed using 3 replicas. You can manually scale it to deploy more replicas using the following command.
+```python
+import os
+
+# if kubernetes module is not installed, please, install it, e.g. pip install kubernetes
+from kubernetes import client, config
+
+# Load Kube config
+config.load_kube_config()
+
+# Create a Kubernetes client
+k8s_client = client.CoreV1Api()
+
+# Get the list of all pods
+service = k8s_client.read_namespaced_service(namespace="default", name="rabbitmq-1-rabbitmq-svc")
+
+print("Cluster IP: {}\n".format(service.spec.cluster_ip))
+
+for item in service.status.load_balancer.ingress:
+  print("External IP: {}\n".format(item.ip))
+```
+
+If you would like to send and receive messages to RabbitMQ using Python [here](https://www.rabbitmq.com/tutorials/tutorial-one-python.html) is a good reference how to do that.
+
+#### Scale the cluster
+
+By default, RabbitMQ K8s application is deployed using 3 replicas. You can manually scale it up or down using the following command.
 
 ```
 kubectl scale statefulsets "$APP_INSTANCE_NAME-rabbitmq" \
   --namespace "$NAMESPACE" --replicas=<new-replicas>
+```
+
+where `<new-replicas>` defines the number of replicas.
+
+> **NOTE:** Scaling down will leave `persistentvolumeclaims` of your StatefulSet untouched.
+
+# Backup and restore
+
+TODO
+
+# Update procedure
+
+TODO
+
+# Uninstall the Application
+
+## Using GKE UI
+
+Navigate to `GKE > Applications` in GCP console. From the list of applications, click on the one
+that you wish to uninstall.
+
+On the new screen, click on the `Delete` button located in the top menu. It will remove
+the resources attached to this application.
+
+## Using the command line
+
+### Prepare the environment
+
+Set your installation name and Kubernetes namespace:
+
+```shell
+export APP_INSTANCE_NAME=rabbitmq-1
+export NAMESPACE=default
+```
+
+### Prepare the manifest file
+
+If you still have the expanded manifest file used for the installation, you can skip this part.
+Otherwise, generate it again. You can use a simplified variables substitution:
+
+Set all other variables:
+
+```shell
+export IMAGE_RABBITMQ=$(kubectl get statefulsets "$APP_INSTANCE_NAME-rabbitmq" --namespace "$NAMESPACE" --output jsonpath='{.spec.template.spec.containers[0].image}')
+export REPLICAS=$(kubectl get statefulsets "$APP_INSTANCE_NAME-rabbitmq" --namespace "$NAMESPACE" --output jsonpath='{.spec.replicas}')
+export RABBITMQ_ERLANG_COOKIE=$(kubectl exec -it --namespace "$NAMESPACE" "$APP_INSTANCE_NAME-rabbitmq-0" -- cat /var/lib/rabbitmq/.erlang.cookie)
+```
+
+Use `envsubst` to expand the template:
+
+```shell
+awk 'BEGINFILE {print "---"}{print}' manifest/* \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_RABBITMQ $REPLICAS $RABBITMQ_ERLANG_COOKIE' \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
+```
+
+### Delete the resources
+
+> **NOTE:** Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions. It means that for instance if you have kubectl in version `1.10.&ast;` and Kubernetes server `1.8.&ast;`, you may experience incompatibility issues, like not removing the *StatefulSets* with apiVersion of *apps/v1beta2*.
+
+Run `kubectl` on expanded manifest file matching your installation:
+
+```shell
+kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
+```
+
+### Delete the persistent volumes of your installation
+
+By design, removal of *StatefulSets* in Kubernetes does not remove the *PersistentVolumeClaims* that
+were attached to their Pods. It protects your installations from mistakenly deleting stateful data.
+
+If you wish to remove the *PersistentVolumeClaims* with their attached persistent disks, run the
+following `kubectl` commands:
+
+```shell
+for i in $(kubectl get pvc --namespace $NAMESPACE \
+  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME \
+  --output jsonpath='{.items[*].spec.volumeName}');
+do
+  kubectl delete pv/$i --namespace $NAMESPACE
+done
+
+kubectl delete persistentvolumeclaims \
+  --namespace $NAMESPACE \
+  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
+```
+
+### Delete GKE cluster
+
+Optionally, if you do not need both the deployed application and GKE cluster used for deployment then you can delete the whole GKE cluster using this command:
+
+```shell
+export PROJECT=your-gcp-project # or export PROJECT=$(gcloud config get-value project)
+export CLUSTER=marketplace-cluster
+export ZONE=us-west1-a # or export ZONE=$(gcloud config get-value compute/zone)
+```
+
+```
+gcloud --project "$PROJECT" container clusters delete "$CLUSTER" --zone "$ZONE"
 ```
