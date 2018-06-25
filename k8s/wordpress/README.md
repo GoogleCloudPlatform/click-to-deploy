@@ -234,8 +234,7 @@ backup_time="$(date +%Y%m%d-%H%M%S)"
 # All parameters except --app and --namespace are optional.
 scripts/backup.sh --app $APP_INSTANCE_NAME --namespace $NAMESPACE \
   --mysql_host 127.0.0.1 --mysql_port 3306 \
-  --sql-backup-file "wp-mysql-dump-${backup_time}.sql" \
-  --files-backup-file "wp-files-dump-${backup_time}.tar.gz"
+  --backup-file "wp-backup-${backup_time}.tar.gz"
 ```
 
 ### Secure your backup files
@@ -243,6 +242,27 @@ scripts/backup.sh --app $APP_INSTANCE_NAME --namespace $NAMESPACE \
 It is recommended to store your backup files in an independent and reliable location like
 Google Cloud Storage (GCS) buckets. Read the [official documentation](https://cloud.google.com/storage/docs/creating-buckets)
 to learn more about creating GCS buckets, setting permissions and uploading files.  
+
+## Restore
+
+For restore procedure we assume that you already have your local environment populated with
+variables of `APP_INSTANCE_NAME` and `NAMESPACE` pointing to WordPress installation and
+established a MySQL connection. 
+
+### Restore WordPress database and files from backup
+
+Run the script:
+
+```shell
+# Required: --app, --namespace and --backup-file.
+scripts/restore.sh --app $APP_INSTANCE_NAME --namespace $NAMESPACE \
+  --backup-file "wp-backup-${backup_time}.tar.gz" \
+  --mysql_host 127.0.0.1 --mysql_port 3306
+```
+
+At first, it will automatically create backups of current database and filesystem of your WordPress
+installation (they will not be deleted automatically by the script). Then the database will be
+restored from an SQL dump and WordPress files will be replaced with the ones from the backup file.
 
 # Upgrade the Application
 
