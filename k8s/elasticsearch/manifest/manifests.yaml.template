@@ -11,6 +11,8 @@ data:
     node.name: "${NODE_NAME}"
 
     path.data: /usr/share/elasticsearch/data
+    path.repo: ["${BACKUP_REPO_PATH}"]
+
     network.host: 0.0.0.0
 
     discovery.zen.minimum_master_nodes: 2
@@ -72,6 +74,8 @@ spec:
           value: "$APP_INSTANCE_NAME-cluster"
         - name: DISCOVERY_SERVICE
           value: "$APP_INSTANCE_NAME-elasticsearch-svc"
+        - name: BACKUP_REPO_PATH
+          value: ""
         ports:
         - name: http
           containerPort: 9200
