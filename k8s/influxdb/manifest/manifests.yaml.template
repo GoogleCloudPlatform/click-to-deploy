@@ -25,33 +25,22 @@ spec:
         - name: influxdb
           containerPort: 8086
           protocol: TCP
-        livenessProbe:
-          tcpSocket:
-            port: influxdb
-          initialDelaySeconds: 10
-          timeoutSeconds: 5
-        readinessProbe:
-          tcpSocket:
-            port: influxdb
-          initialDelaySeconds: 5
-          timeoutSeconds: 2
-        - name: influxdb-backuprestore
+        - name: influx-admin
           containerPort: 8088
           protocol: TCP
+        - name: influx-graphite
+          containerPort: 2003
+          protocol: TCP
         livenessProbe:
           tcpSocket:
-            port: influxdb-backuprestore
+            port: influxdb
           initialDelaySeconds: 10
           timeoutSeconds: 5
         readinessProbe:
           tcpSocket:
-            port: influxdb-backuprestore
+            port: influxdb
           initialDelaySeconds: 5
           timeoutSeconds: 2
-        - name: influxdb-graphite
-          containerPort: 2003
-          protocol: TCP
-
 ---
 apiVersion: v1
 kind: Service
