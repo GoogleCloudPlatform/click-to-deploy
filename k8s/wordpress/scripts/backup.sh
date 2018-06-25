@@ -2,11 +2,13 @@
 
 set -euo pipefail
 
-readonly backup_time="$(date +%Y%m%d-%H%M%S)"
+backup_time="$(date +%Y%m%d-%H%M%S)"
 
 # Set default values for flags:
 sql_backup_file="wp-mysql-dump-${backup_time}.sql"
 files_backup_file="wp-files-dump-${backup_time}.tar.gz"
+final_backup_file="wp-backup-${backup_time}.tar.gz"
+
 mysql_host=127.0.0.1
 mysql_port=3306
 
@@ -22,14 +24,9 @@ while [[ "$#" != 0 ]]; do
       echo "- namespace: ${namespace}"
       shift 2
       ;;
-    --sql-backup-file)
-      sql_backup_file="$2"
-      echo "- sql-backup-file: ${sql_backup_file}"
-      shift 2
-      ;;
-    --files-backup-file)
-      files_backup_file="$2"
-      echo "- files-backup-file: ${files_backup_file}"
+    --backup-file)
+      final_backup_file="$2"
+      echo "- backup-file: ${final_backup_file}"
       shift 2
       ;;
     --mysql-host)
@@ -50,7 +47,7 @@ done;
 
 
 remote_backup_dir="/var/wp-backup"
-remote_backup_file="${remote_backup_dir}/wp-files-dump-${backup_time}.tar.gz"
+remote_backup_file="${remote_backup_dir}/${files_backup_file}"
 wordpress_pod0_name="${app}-wordpress-0"
 
 # Check if required flags were provided:
@@ -69,32 +66,41 @@ readonly wordpress_db_password="$(kubectl get secret -n ${namespace} ${app}-mysq
 # Run in background:
 # run kubectl port-forward pod/${app}-mysql-0 3306 -n $NAMESPACE
 
+local_backup_dir="/tmp/wp-backup-${backup_time}"
+mkdir -p "${local_backup_dir}"
+
 echo "Creating mysql dump file..."
 mysqldump --host 127.0.0.1 -P 3306 \
   -u wordpress -p"${wordpress_db_password}" \
-  --databases wordpress > "${sql_backup_file}"
+  --databases wordpress > "${local_backup_dir}/${sql_backup_file}"
 
 echo "Creating remote backup of wordpress files..."
-kubectl exec ${app}-wordpress-0 -n ${namespace} -c wordpress \
+kubectl exec "${wordpress_pod0_name}" -n "${namespace}" -c wordpress \
   -- /bin/bash -c "\
      mkdir -p ${remote_backup_dir} && \
-     tar -zcvf ${remote_backup_file} /var/www/html && \
-     cat ${remote_backup_file} | md5sum - > ${remote_backup_file}.md5"
+     cd ${remote_backup_dir} && \
+     tar -zcvf ${files_backup_file} -C /var/www/html . && \
+     md5sum ${files_backup_file}  > ${files_backup_file}.md5"
+
+cd "${local_backup_dir}"
+
+echo "${backup_time}" > backup_version
 
 echo "Downloading wordpress files backup from remote pod..."
-kubectl cp "${wordpress_pod0_name}:${remote_backup_file}" "${files_backup_file}" \
-  -n "${namespace}"
-kubectl cp "${wordpress_pod0_name}:${remote_backup_file}.md5" "${files_backup_file}.md5" \
-  -n "${namespace}"
+kubectl cp -n "${namespace}" "${wordpress_pod0_name}:${remote_backup_file}" \
+  "${files_backup_file}"
+kubectl cp -n "${namespace}" "${wordpress_pod0_name}:${remote_backup_file}.md5" \
+  "${files_backup_file}.md5"
 
 echo "Verifying local copy of files dump..."
-cat "${files_backup_file}" | md5sum -c "${files_backup_file}.md5"
+md5sum -c "${files_backup_file}.md5"
+
+cd -
+
+tar -zcvf "${final_backup_file}" -C "${local_backup_dir}" .
 
 echo "Removing remote backup files..."
 kubectl exec ${app}-wordpress-0 -n ${namespace} -c wordpress \
   -- /bin/bash -c "rm ${remote_backup_file} ${remote_backup_file}.md5"
 
-echo "Backup files stored in:"
-echo "- sql: ${sql_backup_file}"
-echo "- files: ${files_backup_file}"
-echo "Done."
+echo "Done. Backup files stored in: ${final_backup_file}."
