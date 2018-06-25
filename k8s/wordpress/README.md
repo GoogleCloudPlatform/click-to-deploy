@@ -178,6 +178,72 @@ Note that it might take some time for the external IP to be provisioned.
 After accessing the WordPress main page, you will see the installation wizard.
 Follow the instructions presented on the screen to finish the process.
 
+# Backup and restore
+
+## Using WordPress plugins
+
+Using one of the available plugins for WordPress backups is probably the most convenient way to
+protect your data from loss. Nevertheless, there is a large variety of choices, when selecting
+the right plugin for backups, including both paid and free options.
+
+Topics to consider when selecting a backup plugin should include:
+* *scope of backup* - your installation will contain not only media files or database data,
+  but also themes, plugins and configurations; check if the plugin supports backing up all of them;
+* *schedule and manual triggering* - does the plugin perform regular backups with a schedule 
+  that you can define and does it allow to trigger backup manually (for instance, before updating 
+  the installation or just after finishing a large update to your configuration);
+* *location to store data* - your backup data should not be stored on the same server as your
+  installation; one of the options to secure your backup data from accidental loss might be
+  using a cloud provider - like Google Cloud Storage or Google Drive.
+
+## Backup without a plugin
+
+Backing up data directly from the server gives you full control over the schedule and scope of
+backup, but is recommended only to advanced users.
+
+We will cover a scenario for backing up WordPress database and all installation files, including
+media content, themes and plugins. It is recommended to export the backup files to Google Cloud 
+Storage to secure the data in an independent location.
+
+### Setup local environment
+
+Setup environment variables to match with your WordPress installation:
+
+```shell
+export APP_INSTANCE_NAME=wordpress-1
+export NAMESPACE=default
+```
+
+### Establish MySQL connection
+
+For backing up WordPress database, you will need to have connection to MySQL host and port.
+You can setup a local proxy with the following `kubectl` command in background:
+
+```shell
+kubectl port-forward "pod/${APP_INSTANCE_NAME}-mysql-0" 3306 -n "${NAMESPACE}"
+```
+
+### Create backup
+
+The following command creates WordPress database and files backup and saves the backup files
+as specified by `sql-backup-file` and `files-backup-file`:
+
+```shell
+backup_time="$(date +%Y%m%d-%H%M%S)"
+
+# All parameters except --app and --namespace are optional.
+scripts/backup.sh --app $APP_INSTANCE_NAME --namespace $NAMESPACE \
+  --mysql_host 127.0.0.1 --mysql_port 3306 \
+  --sql-backup-file "wp-mysql-dump-${backup_time}.sql" \
+  --files-backup-file "wp-files-dump-${backup_time}.tar.gz"
+```
+
+### Secure your backup files
+
+It is recommended to store your backup files in an independent and reliable location like
+Google Cloud Storage (GCS) buckets. Read the [official documentation](https://cloud.google.com/storage/docs/creating-buckets)
+to learn more about creating GCS buckets, setting permissions and uploading files.  
+
 # Upgrade the Application
 
 ## Prepare the environment
