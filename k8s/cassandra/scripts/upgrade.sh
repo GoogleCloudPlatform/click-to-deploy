@@ -13,14 +13,12 @@ fi
 
 function delete_pod() {
   local -r pod_name="$1"
-
   kubectl delete pod "${pod_name}" --namespace "${NAMESPACE}"
 }
 
 
 function get_pod_uid() {
   local -r pod_name="$1"
-
   kubectl get pod "${pod_name}" \
     --namespace "${NAMESPACE}" \
     --output jsonpath='{.metadata.uid}'
@@ -29,7 +27,6 @@ function get_pod_uid() {
 
 function get_pod_status() {
   local -r pod_name="$1"
-
   kubectl get pod "${pod_name}" \
     --namespace "${NAMESPACE}" \
     --output jsonpath='{.status.phase}'
