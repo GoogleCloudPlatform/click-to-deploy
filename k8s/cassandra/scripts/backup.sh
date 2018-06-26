@@ -1,13 +1,17 @@
 #!/bin/bash
 
-if [[ ! -f scripts/util.sh ]]; then
+set -eu
+
+export SCRIPT_DIR=$(readlink -f "$(dirname "${BASH_SOURCE[0]}")")
+
+if [[ ! -f "${SCRIPT_DIR}/util.sh" ]]; then
   >&2 echo "Missing util.sh file, exiting"
   exit 1
 fi
 
-. scripts/util.sh
+. "${SCRIPT_DIR}/util.sh"
 
-if [[ -z "${1}" ]]; then
+if [[ -z "$1" ]]; then
   info "Please provide a keyspace"
   exit 1
 fi
@@ -15,55 +19,57 @@ fi
 KEYSPACE="${1}"
 
 function upload_backup_script_cmd {
-  for i in $(seq 0 $(( "${1}" - 1 )) ); do
-    echo "kubectl cp scripts/make_backup.sh ${APP_INSTANCE_NAME}-cassandra-${i}:/make_backup.sh -n $NAMESPACE"
+  for index in $(seq 0 $(( "${REPLICAS}" - 1 )) ); do
+    echo "kubectl cp ${SCRIPT_DIR}/make_backup.sh ${APP_INSTANCE_NAME}-cassandra-${index}:/make_backup.sh -n $NAMESPACE"
   done
 }
 
 function backup_containers_cmd {
-  for i in $(seq 0 $(( "${1}" - 1 )) ); do
-    echo "kubectl exec ${APP_INSTANCE_NAME}-cassandra-${i} -n $NAMESPACE -- /make_backup.sh ${2}"
+  for index in $(seq 0 $(( "${REPLICAS}" - 1 )) ); do
+    echo "kubectl exec ${APP_INSTANCE_NAME}-cassandra-${index} -n $NAMESPACE -- /make_backup.sh ${KEYSPACE}"
   done
 }
 
 function get_backups_containers_cmd {
-  for i in $(seq 0 $(( "${1}" - 1 )) ); do
-    echo "kubectl cp ${APP_INSTANCE_NAME}-cassandra-${i}:/tmp/backup.tar.gz backup-${i}.tar.gz -n $NAMESPACE"
+  for index in $(seq 0 $(( "${REPLICAS}" - 1 )) ); do
+    echo "kubectl cp ${APP_INSTANCE_NAME}-cassandra-${index}:/tmp/backup.tar.gz backup-${index}.tar.gz -n $NAMESPACE"
   done
 }
 
 function delete_files_from_containers_cmd {
-  for i in $(seq 0 $(( "${1}" - 1 )) ); do
-    for j in "/make_backup.sh" "/tmp/backup.tar.gz" "/tmp/backup"; do
-      echo "kubectl exec ${APP_INSTANCE_NAME}-cassandra-${i} -n $NAMESPACE -- rm -rf ${j}"
+  for index in $(seq 0 $(( "${REPLICAS}" - 1 )) ); do
+    for path in "/make_backup.sh" "/tmp/backup.tar.gz" "/tmp/backup"; do
+      echo "kubectl exec ${APP_INSTANCE_NAME}-cassandra-${index} -n $NAMESPACE -- rm -rf ${path}"
     done
   done
 }
 
-$(current_status)
+current_status
 info "Preparing to make a backup of keyspace '$KEYSPACE'"
 
-$(wait_for_healthy_sts)
+wait_for_healthy_sts
 
-COUNT=$(get_desired_number_of_replicas_in_sts)
+REPLICAS=$(get_desired_number_of_replicas_in_sts)
 
-info "Performing backup of $COUNT containers"
+info "Performing backup of ${REPLICAS} containers"
 
 info "Uploading backup script"
-upload_backup_script_cmd "${COUNT}" | parallel
+upload_backup_script_cmd "${REPLICAS}" | parallel
 if [[ $? -ne 0 ]]; then
   info "Cannot upload backup script"
   exit 1
 fi
 
 info "Running backup script"
-backup_containers_cmd "${COUNT}" "${KEYSPACE}" | parallel
+backup_containers_cmd "${REPLICAS}" | parallel
 STATUS=$?
 if [[ $STATUS -ne 0 ]]; then
-  info "Backup failed, $STATUS failed of $COUNT backub jobs"
-  NEW_COUNT=$(get_desired_number_of_replicas_in_sts)
+  info "Backup failed, $STATUS failed of ${REPLICAS} backub jobs"
+# Check for one of possible reasons for error, Cassandra cluster was scaled during
+# backup procedure
+  NEW_REPLICAS=$(get_desired_number_of_replicas_in_sts)
   if [[ $COUNT -ne $NEW_COUNT ]]; then
-    info "Number of containers has changed from $COUNT to $NEW_COUNT"
+    info "Number of containers has changed from ${REPLICAS} to ${NEW_REPLICAS}"
   fi
   exit 1
 fi
@@ -71,7 +77,7 @@ fi
 info ""
 info "Downloading backups"
 info ""
-get_backups_containers_cmd "${COUNT}" | parallel
+get_backups_containers_cmd "${REPLICAS}" | parallel
 if [[ $? -ne 0 ]]; then
   info "Downloading backups failed"
   exit 1
@@ -80,7 +86,7 @@ info "Backup is successful"
 info ""
 info "Removing files from pods"
 info ""
-delete_files_from_containers_cmd "${COUNT}" | parallel
+delete_files_from_containers_cmd "${REPLICAS}" | parallel
 if [[ $? -ne 0 ]]; then
   info "Removing failed"
   exit 1
