@@ -104,8 +104,7 @@ Set username of the app.
 export RABBITMQ_DEFAULT_USER=rabbit
 ```
 
-
-Set or generate the password. The password has be encoded in base64.
+Set or generate the password. The value has to be encoded in base64.
 
 ```shell
 export RABBITMQ_DEFAULT_PASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1 | tr -d '\n' | base64)
@@ -180,12 +179,12 @@ kubectl exec -it "$APP_INSTANCE_NAME-rabbitmq-0" --namespace "$NAMESPACE" -- rab
 
 #### Authorization
 
-The default username is `rabbit`. Use `kubectl` to get generated password.
+The default username is `rabbit`. Use `kubectl` to get the generated password.
 
 ```shell
 kubectl get secret $APP_INSTANCE_NAME-rabbitmq-secret \
   --namespace $NAMESPACE \
-  --output=jsonpath='{.data.rabbitmq-pass}' | base64 --decode | less
+  --output=jsonpath='{.data.rabbitmq-pass}' | base64 --decode
 ```
 
 #### Expose RabbitMQ service (optional)
@@ -215,7 +214,7 @@ kubectl get svc $APP_INSTANCE_NAME-rabbitmq-svc --namespace $NAMESPACE
 kubectl get svc $APP_INSTANCE_NAME-rabbitmq-svc --namespace $NAMESPACE -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
 ```
 
-Enter http://`<EXTERNAL-IP>`:15672 to access RabbitMQ Management. Where `<EXTERNAL-IP>` is provided by command above.
+Navigate http://`<EXTERNAL-IP>`:15672 to access RabbitMQ Management UI. Where `<EXTERNAL-IP>` is provided by command above.
 
 **Option 3:** Use Port Forwarding:
 
@@ -223,7 +222,7 @@ Enter http://`<EXTERNAL-IP>`:15672 to access RabbitMQ Management. Where `<EXTERN
 kubectl port-forward svc/$APP_INSTANCE_NAME-rabbitmq-svc --namespace $NAMESPACE 15672
 ```
 
-Enter http://127.0.0.1:15672 to access RabbitMQ Management.
+Navigate http://127.0.0.1:15672 to access RabbitMQ Management UI.
 
 #### Scale the cluster
 
