@@ -30,8 +30,7 @@ spec:
       serviceAccountName: $APP_INSTANCE_NAME-rabbitmq-sa
       terminationGracePeriodSeconds: 180
       initContainers:
-      # This init container copies config files from the configmap int a normal file system.
-      # The ConfigMap mounted as a volume lives on a read-only filesystem.
+      # This init container copies the config files from read-only ConfigMap to writable location.
       - name: copy-rabbitmq-config
         image: launcher.gcr.io/google/debian9:latest
         imagePullPolicy: Always
