@@ -6,7 +6,7 @@ include ../vendor/marketplace-tools/ubbagent.Makefile
 include ../vendor/marketplace-tools/var.Makefile
 
 
-TAG ?= latest
+TAG ?= 6.3
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/elasticsearch/deployer:$(TAG)
@@ -58,8 +58,8 @@ app/build:: .build/elasticsearch/elasticsearch \
 .build/elasticsearch/elasticsearch: .build/var/REGISTRY \
                                     .build/var/TAG \
                                     | .build/elasticsearch
-	docker pull launcher.gcr.io/google/elasticsearch6
-	docker tag launcher.gcr.io/google/elasticsearch6 \
+	docker pull launcher.gcr.io/google/elasticsearch6:$TAG
+	docker tag launcher.gcr.io/google/elasticsearch6:$TAG \
 	    "$(REGISTRY)/elasticsearch:$(TAG)"
 	docker push "$(REGISTRY)/elasticsearch:$(TAG)"
 	@touch "$@"
