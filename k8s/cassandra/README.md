@@ -265,7 +265,7 @@ following `kubectl` commands:
 
 ```shell
 for pv in $(kubectl get pvc --namespace $NAMESPACE \
-             --selector  app.kubernetes.io/name=$APP_INSTANCE_NAME \
+             --selector app.kubernetes.io/name=$APP_INSTANCE_NAME \
              --output jsonpath='{.items[*].spec.volumeName}'); do
   kubectl delete "pv/${pv}" --namespace $NAMESPACE
 done
