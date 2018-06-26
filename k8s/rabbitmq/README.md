@@ -231,7 +231,7 @@ kubectl port-forward svc/$APP_INSTANCE_NAME-rabbitmq-svc --namespace $NAMESPACE 
 
 Navigate http://127.0.0.1:15672 to access RabbitMQ Management UI.
 
-If you would like to get cluster IP and external IP addressses of RabbitMQ service using Python you could use the following code:
+**Option 4:** If you would like to get cluster IP and external IP addressses of RabbitMQ service using Python you could use the following code:
 
 ```python
 import os
