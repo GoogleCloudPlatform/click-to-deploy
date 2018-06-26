@@ -9,7 +9,7 @@
 # cluster, as Cassandra has marked that this disk belongs to decommissioned
 # node. Thus, we need to delete this disk, removing PV and PVC.
 
-set -eu
+set -euo pipefail
 
 export SCRIPT_DIR=$(readlink -f "$(dirname "${BASH_SOURCE[0]}")")
 
@@ -37,8 +37,8 @@ current_status
 info "Scalling down to ${DESIRED_NUMBER} of replicas"
 
 for node_number in $(seq $(( $(get_desired_number_of_replicas_in_sts) - 1 )) -1 $DESIRED_NUMBER); do
-  POD_NAME="${APP_INSTANCE_NAME}-cassandra-${node_number}"
-  PVC_NAME="${APP_INSTANCE_NAME}-cassandra-pvc-${APP_INSTANCE_NAME}-cassandra-${node_number}"
+  POD_NAME="${STS_NAME}-${node_number}"
+  PVC_NAME="${STS_NAME}-pvc-${POD_NAME}"
   PV_NAME=$(kubectl get pvc -n "${NAMESPACE}" "${PVC_NAME}" --output jsonpath='{.spec.volumeName}')
 
   wait_for_healthy_sts
