@@ -115,6 +115,9 @@ done
 Set or generate passwords:
 
 ```shell
+# If not installed pwgen previously, run:
+sudo apt-get install -y pwgen
+
 export ROOT_DB_PASSWORD=`pwgen 16 1`
 export WORDPRESS_DB_PASSWORD=`pwgen 16 1`
 ```
@@ -220,10 +223,16 @@ For backing up WordPress database, you will need to have connection to MySQL hos
 You can setup a local proxy with the following `kubectl` command in background:
 
 ```shell
-kubectl port-forward "pod/${APP_INSTANCE_NAME}-mysql-0" 3306 -n "${NAMESPACE}"
+kubectl port-forward "svc/${APP_INSTANCE_NAME}-mysql-svc" 3306 -n "${NAMESPACE}"
 ```
 
 ### Create backup
+
+Backup procedure will require `mysql-client` package. To install it on Debian, run:
+
+```shell
+sudo apt-get install mysql-client
+```
 
 The following command creates WordPress database and files backup and saves the backup files
 as specified by `sql-backup-file` and `files-backup-file`:
@@ -233,7 +242,7 @@ backup_time="$(date +%Y%m%d-%H%M%S)"
 
 # All parameters except --app and --namespace are optional.
 scripts/backup.sh --app $APP_INSTANCE_NAME --namespace $NAMESPACE \
-  --mysql_host 127.0.0.1 --mysql_port 3306 \
+  --mysql-host 127.0.0.1 --mysql-port 3306 \
   --backup-file "wp-backup-${backup_time}.tar.gz"
 ```
 
@@ -257,7 +266,7 @@ Run the script:
 # Required: --app, --namespace and --backup-file.
 scripts/restore.sh --app $APP_INSTANCE_NAME --namespace $NAMESPACE \
   --backup-file "wp-backup-${backup_time}.tar.gz" \
-  --mysql_host 127.0.0.1 --mysql_port 3306
+  --mysql-host 127.0.0.1 --mysql-port 3306
 ```
 
 At first, it will automatically create backups of current database and filesystem of your WordPress
