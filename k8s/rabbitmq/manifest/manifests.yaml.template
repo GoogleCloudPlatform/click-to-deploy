@@ -20,7 +20,7 @@ metadata:
 spec:
   selector:
     matchLabels: *RabbitMQDeploymentLabels
-  serviceName: $APP_INSTANCE_NAME-rabbitmq-svc
+  serviceName: $APP_INSTANCE_NAME-rabbitmq-discovery
   replicas: $REPLICAS
   template:
     metadata:
@@ -40,11 +40,11 @@ spec:
         - name: RABBITMQ_USE_LONGNAME
           value: 'true'
         - name: RABBITMQ_NODENAME
-          value: 'rabbit@$(MY_POD_NAME).$APP_INSTANCE_NAME-rabbitmq-svc.$NAMESPACE.svc.cluster.local'
+          value: 'rabbit@$(MY_POD_NAME).$APP_INSTANCE_NAME-rabbitmq-discovery.$NAMESPACE.svc.cluster.local'
         - name: K8S_SERVICE_NAME
-          value: '$APP_INSTANCE_NAME-rabbitmq-svc'
+          value: '$APP_INSTANCE_NAME-rabbitmq-discovery'
         - name: K8S_HOSTNAME_SUFFIX
-          value: '.$APP_INSTANCE_NAME-rabbitmq-svc.$NAMESPACE.svc.cluster.local'
+          value: '.$APP_INSTANCE_NAME-rabbitmq-discovery.$NAMESPACE.svc.cluster.local'
         - name: RABBITMQ_ERLANG_COOKIE
           valueFrom:
             secretKeyRef:
@@ -98,29 +98,6 @@ spec:
       resources:
         requests:
           storage: 5Gi
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: $APP_INSTANCE_NAME-rabbitmq-svc
-  labels:
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
-    app.kubernetes.io/component: rabbitmq-server
-spec:
-  ports:
-  - name: client-access-2
-    port: 5672
-  - name: client-access-1
-    port: 5671
-  - name: clitool
-    port: 25672
-  - name: epmd
-    port: 4369
-  selector:
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
-    app.kubernetes.io/component: rabbitmq-server
-  type: ClusterIP
-  clusterIP: None
 ---
 apiVersion: v1
 kind: ConfigMap
