@@ -266,37 +266,23 @@ export APP_INSTANCE_NAME=rabbitmq-1
 export NAMESPACE=default
 ```
 
-### Prepare the manifest file
-
-If you still have the expanded manifest file used for the installation, you can skip this part.
-Otherwise, generate it again. You can use a simplified variables substitution:
-
-Set all other variables (optional):
-
-```shell
-export IMAGE_RABBITMQ=$(kubectl get statefulsets "$APP_INSTANCE_NAME-rabbitmq" --namespace "$NAMESPACE" --output jsonpath='{.spec.template.spec.containers[0].image}')
-export REPLICAS=$(kubectl get statefulsets "$APP_INSTANCE_NAME-rabbitmq" --namespace "$NAMESPACE" --output jsonpath='{.spec.replicas}')
-export RABBITMQ_ERLANG_COOKIE=$(kubectl get secret "$APP_INSTANCE_NAME-rabbitmq-secret" --namespace "$NAMESPACE" --output=jsonpath='{.data.rabbitmq-erlang-cookie}')
-export RABBITMQ_DEFAULT_USER=$(kubectl get statefulsets "$APP_INSTANCE_NAME-rabbitmq" --namespace "$NAMESPACE" --output jsonpath='{.spec.template.spec.containers[0].env[?(@.name=="RABBITMQ_DEFAULT_USER")].value}')
-export RABBITMQ_DEFAULT_PASS=$(kubectl get secret "$APP_INSTANCE_NAME-rabbitmq-secret" --namespace "$NAMESPACE" --output=jsonpath='{.data.rabbitmq-pass}')
-```
-
-Use `envsubst` to expand the template:
-
-```shell
-awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_RABBITMQ $REPLICAS $RABBITMQ_ERLANG_COOKIE $RABBITMQ_DEFAULT_USER $RABBITMQ_DEFAULT_PASS' \
-  > "${APP_INSTANCE_NAME}_manifest.yaml"
-```
-
 ### Delete the resources
 
-> **NOTE:** Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions. It means that for instance if you have kubectl in version `1.10.&ast;` and Kubernetes server `1.8.&ast;`, you may experience incompatibility issues, like not removing the *StatefulSets* with apiVersion of *apps/v1beta2*.
+> **NOTE:** Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions. It means that for instance if you have kubectl in version `1.10.*` and Kubernetes server `1.8.*`, you may experience incompatibility issues, like not removing the *StatefulSets* with apiVersion of *apps/v1beta2*.
 
+If you still have the expanded manifest file used for the installation, you can use it to delete the resources.
 Run `kubectl` on expanded manifest file matching your installation:
 
 ```shell
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
+```
+
+Otherwise, delete the resources by indication types and label:
+
+```shell
+kubectl delete statefulset,secret,service,configmap,serviceaccount,role,rolebinding,application \
+  --namespace $NAMESPACE \
+  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
 
 ### Delete the persistent volumes of your installation
