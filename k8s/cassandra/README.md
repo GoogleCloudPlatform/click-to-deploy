@@ -106,10 +106,10 @@ This will ensure that the installed application will always use the same images,
 until you are ready to upgrade.
 
 ```shell
-for i in "IMAGE_CASSANDRA"; do
-  image="${!i}";
-  export $i=$(docker inspect --format='{{index .RepoDigests 0}}' $image)
-  env | grep $i
+for var in "IMAGE_CASSANDRA"; do
+  image="${!var}";
+  export $var=$(docker inspect --format='{{index .RepoDigests 0}}' $image)
+  env | grep $var
 done
 ```
 
@@ -264,10 +264,10 @@ If you wish to remove the PersistentVolumeClaims with their attached persistent 
 following `kubectl` commands:
 
 ```shell
-for i in $(kubectl get pvc -n $NAMESPACE \
+for pv in $(kubectl get pvc -n $NAMESPACE \
              --selector  app.kubernetes.io/name=$APP_INSTANCE_NAME \
              -ojsonpath='{range .items[*]}{.spec.volumeName}{"\n"}{end}'); do
-  kubectl delete pv/$i --namespace $NAMESPACE
+  kubectl delete "pv/${pv}" --namespace $NAMESPACE
 done
 
 kubectl delete persistentvolumeclaims \
