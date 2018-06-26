@@ -252,7 +252,7 @@ NOTE: Please keep in mind that `kubectl` guarantees support for Kubernetes serve
 Run `kubectl` on expanded manifest file matching your installation:
 
 ```shell
-kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
+kubectl delete -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
 
 ### Delete the persistent volumes of your installation
@@ -264,20 +264,27 @@ If you wish to remove the PersistentVolumeClaims with their attached persistent 
 following `kubectl` commands:
 
 ```shell
-for pv in $(kubectl get pvc --namespace $NAMESPACE \
-             --selector app.kubernetes.io/name=$APP_INSTANCE_NAME \
+for pv in $(kubectl get pvc --namespace "${NAMESPACE}" \
+             --selector "app.kubernetes.io/name=${APP_INSTANCE_NAME}" \
              --output jsonpath='{.items[*].spec.volumeName}'); do
-  kubectl delete "pv/${pv}" --namespace $NAMESPACE
+  kubectl delete "pv/${pv}" --namespace "${NAMESPACE}"
 done
 
 kubectl delete persistentvolumeclaims \
-  --namespace $NAMESPACE \
-  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
+  --namespace "${NAMESPACE}" \
+  --selector "app.kubernetes.io/name=${APP_INSTANCE_NAME}"
 ```
 
 # Backup & Restore
 
 ### Backup
+
+Set your installation name and Kubernetes namespace:
+
+```shell
+export APP_INSTANCE_NAME=cassandra-1
+export NAMESPACE=default
+```
 
 To backup Cassandra, `nodetool snapshot` command must be executed on each node to
 get eventually consistent backup. Script `scripts/backup.sh` does following steps:
@@ -295,6 +302,39 @@ Also, database schema and token information is also backed up.
 
 *TODO: instructions for restore*
 
-# Upgrades
+# Update procedure
 
-*TODO: instructions for upgrades*
+For more background about the rolling update procedure, please check the
+[Upgrade Guide](https://docs.datastax.com/en/upgrade/doc/upgrade/datastax_enterprise/upgrdDSE.html).
+
+Before starting the update procedure on your cluster, we strongly advise to
+prepare a backup of your installation in order to eliminate the risk of losing
+your data.
+
+## Perform the update on cluster nodes
+
+### Patch the StatefulSet with the new image
+
+Set your installation name and Kubernetes namespace:
+
+```shell
+export APP_INSTANCE_NAME=cassandra-1
+export NAMESPACE=default
+```
+
+Assign the new image to your StatefulSet definition:
+
+```
+IMAGE_CASSANDRA=<put your new image reference here>
+
+kubectl set image statefulset "${APP_INSTANCE_NAME}-cassandra" \
+  --namespace "${NAMESPACE}" "cassandra=${IMAGE_CASSANDRA}"
+```
+
+After this operation the StatefulSet has a new image configured for its containers, but the pods
+will not automatically restart due to the OnDelete update strategy set on the StatefulSet.
+
+### Run the `upgrade.sh` script to run the rolling update procedure
+
+Run the `scripts/upgrade.sh` script. This script will take down and update one replica at a time -
+it should print out diagnostic messages. You should be done when the script finishes.
