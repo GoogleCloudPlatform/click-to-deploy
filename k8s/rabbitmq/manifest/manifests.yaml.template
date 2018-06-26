@@ -33,16 +33,18 @@ spec:
         image: $IMAGE_RABBITMQ
         imagePullPolicy: Always
         env:
-        - name: MY_POD_IP
+        - name: MY_POD_NAME
           valueFrom:
             fieldRef:
-              fieldPath: status.podIP
+              fieldPath: metadata.name
         - name: RABBITMQ_USE_LONGNAME
           value: 'true'
         - name: RABBITMQ_NODENAME
-          value: 'rabbit@$(MY_POD_IP)'
+          value: 'rabbit@$(MY_POD_NAME).$APP_INSTANCE_NAME-rabbitmq-svc.$NAMESPACE.svc.cluster.local'
         - name: K8S_SERVICE_NAME
           value: '$APP_INSTANCE_NAME-rabbitmq-svc'
+        - name: K8S_HOSTNAME_SUFFIX
+          value: '.$APP_INSTANCE_NAME-rabbitmq-svc.$NAMESPACE.svc.cluster.local'
         - name: RABBITMQ_ERLANG_COOKIE
           valueFrom:
             secretKeyRef:
@@ -118,6 +120,7 @@ spec:
     app.kubernetes.io/name: $APP_INSTANCE_NAME
     app.kubernetes.io/component: rabbitmq-server
   type: ClusterIP
+  clusterIP: None
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -133,7 +136,7 @@ data:
       ## Clustering
       cluster_formation.peer_discovery_backend = rabbit_peer_discovery_k8s
       cluster_formation.k8s.host = kubernetes.default.svc.cluster.local
-      cluster_formation.k8s.address_type = ip
+      cluster_formation.k8s.address_type = hostname
       cluster_formation.node_cleanup.interval = 10
       # Set to false if automatic removal of unknown/absent nodes
       # is desired. This can be dangerous, see
@@ -142,7 +145,7 @@ data:
       cluster_formation.node_cleanup.only_log_warning = true
       cluster_partition_handling = autoheal
       ## queue master locator
-      queue_master_locator=min-masters
+      queue_master_locator = min-masters
       ## enable guest user
       ## See http://www.rabbitmq.com/access-control.html#loopback-users
       loopback_users.guest = false
