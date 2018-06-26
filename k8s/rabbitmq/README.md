@@ -192,6 +192,8 @@ kubectl get secret $APP_INSTANCE_NAME-rabbitmq-secret \
 By default, the application does not have an external IP. Run the
 following command to expose an external IP:
 
+> **NOTE:** It might take some time for the external IP to be provisioned.
+
 ```
 kubectl patch svc "$APP_INSTANCE_NAME-rabbitmq-svc" \
   --namespace "$NAMESPACE" \
@@ -208,10 +210,12 @@ kubectl get svc $APP_INSTANCE_NAME-rabbitmq-svc --namespace $NAMESPACE
 
 **Option 2:** If you run your RabbitMQ cluster behind a LoadBalancer, run the command below to get an external IP of the RabbitMQ service:
 
-> **NOTE:** It might take some time for the external IP to be provisioned.
-
 ```
-kubectl get svc $APP_INSTANCE_NAME-rabbitmq-svc --namespace $NAMESPACE -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
+SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-rabbitmq-svc \
+  --namespace $NAMESPACE \
+  --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+echo "http://${SERVICE_IP}:15672"
 ```
 
 Navigate http://`<EXTERNAL-IP>`:15672 to access RabbitMQ Management UI. Where `<EXTERNAL-IP>` is provided by command above.
