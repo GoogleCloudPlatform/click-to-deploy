@@ -11,7 +11,7 @@ spec:
   updateStrategy:
     type: RollingUpdate
   serviceName: $APP_INSTANCE_NAME-nginx-svc
-  replicas: 2
+  replicas: 3
   template:
     metadata:
       labels: *NginxDeploymentLabels
@@ -23,7 +23,7 @@ spec:
         imagePullPolicy: Always
         ports:
         - name: nginx
-          containerPort: 11211
+          containerPort: 80
           protocol: TCP
         livenessProbe:
           tcpSocket:
@@ -35,6 +35,19 @@ spec:
             port: nginx
           initialDelaySeconds: 5
           timeoutSeconds: 2
+#        volumeMounts:
+#          - name: $APP_INSTANCE_NAME-nginx-pvc
+#          mountPath: /usr/share/nginx/html
+  volumeClaimTemplates:
+  - metadata:
+      name: $APP_INSTANCE_NAME-nginx-pvc
+      labels: *NginxDeploymentLabels
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: standard
+      resources:
+        requests:
+          storage: 5Gi
 ---
 apiVersion: v1
 kind: Service
@@ -44,12 +57,11 @@ metadata:
     app: $APP_INSTANCE_NAME
     component: nginx-server
 spec:
-  clusterIP: None
   ports:
   - name: nginx-port
-    port: 11211
+    port: 80
     protocol: TCP
   selector:
     app: $APP_INSTANCE_NAME
     component: nginx-server
-  type: ClusterIP # LoadBalancer
+  type: LoadBalancer # ClusterIP # LoadBalancer
