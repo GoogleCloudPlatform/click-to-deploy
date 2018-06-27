@@ -38,7 +38,12 @@ spec:
         - /bin/bash
         - -euc
         - |
-          # copy the mounted configuration to both places
+          # Remove cached erlang cookie since we are always providing it,
+          # that opens the way to recreate the application and access to existing data
+          # as a new erlang will be regenerated again.
+          rm -f /var/lib/rabbitmq/.erlang.cookie
+
+          # Copy the mounted configuration to both places.
           cp /rabbitmqconfig/rabbitmq.conf /etc/rabbitmq/rabbitmq.conf
           cp /rabbitmqconfig/enabled_plugins /etc/rabbitmq/enabled_plugins
         volumeMounts:
@@ -46,6 +51,8 @@ spec:
           mountPath: /rabbitmqconfig
         - name: config
           mountPath: /etc/rabbitmq
+        - name: $APP_INSTANCE_NAME-rabbitmq-pvc
+          mountPath: /var/lib/rabbitmq
       containers:
       - name: rabbitmq
         image: $IMAGE_RABBITMQ
