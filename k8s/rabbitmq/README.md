@@ -275,6 +275,8 @@ TODO
 
 # Update procedure
 
+For more background about the rolling update procedure, check the [Upgrading RabbitMQ](https://www.rabbitmq.com/upgrade.html) guide.
+
 Start with assigning a new image to your StatefulSet definition:
 
 ```shell
