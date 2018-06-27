@@ -275,7 +275,34 @@ TODO
 
 # Update procedure
 
-TODO
+For more background about the rolling update procedure, check the [Upgrading RabbitMQ](https://www.rabbitmq.com/upgrade.html) guide.
+
+Start with assigning a new image to your StatefulSet definition:
+
+```shell
+kubectl set image statefulset "$APP_INSTANCE_NAME-rabbitmq" \
+  rabbitmq=<put-your-new-image-reference-here>
+```
+
+where `<put-your-new-image-reference-here>` is the new image.
+
+To check that the Pods in the StatefulSet running the `rabbitmq` container are updating, run the following command:
+
+```shell
+kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME -w
+```
+
+The Pods in the StatefulSet are updated in reverse ordinal order.
+The StatefulSet controller terminates each Pod, and waits for it to transition to `Running` and `Ready` prior to updating the next Pod.
+The final state of the Pods should be `Running` and marked as `1/1` in **READY** column.
+
+To check the current image used for `rabbitmq` container, you can run the following command:
+
+```shell
+kubectl get statefulsets "$APP_INSTANCE_NAME-rabbitmq" \
+  --namespace "$NAMESPACE" \
+  --output jsonpath='{.spec.template.spec.containers[0].image}'
+```
 
 # Uninstall the Application
 

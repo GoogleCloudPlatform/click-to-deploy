@@ -23,6 +23,10 @@ spec:
     matchLabels: *RabbitMQDeploymentLabels
   serviceName: $APP_INSTANCE_NAME-rabbitmq-discovery
   replicas: $REPLICAS
+  updateStrategy:
+      # https://www.rabbitmq.com/upgrade.html
+      # https://cloud.google.com/kubernetes-engine/docs/how-to/updating-apps
+      type: RollingUpdate
   template:
     metadata:
       labels: *RabbitMQDeploymentLabels
