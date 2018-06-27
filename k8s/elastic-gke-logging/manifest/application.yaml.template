@@ -39,6 +39,10 @@ spec:
     kind: Service
   - group: apps/v1beta2
     kind: StatefulSet
+  - group: apps/v1beta2
+    kind: Deployment
+  - group: apps/v1beta2
+    kind: DaemonSet
   notes: |-
     # Expose Elasticsearch service
 

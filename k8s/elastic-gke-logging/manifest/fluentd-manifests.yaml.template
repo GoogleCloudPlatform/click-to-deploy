@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: $APP_INSTANCE_NAME-fluentd-es-config
   # TODO: confirm if fluentd resources need to be put in kube-system namespace
-  namespace: kube-system
+  # namespace: kube-system
   labels:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app.kubernetes.io/component: fluentd-es-logging
@@ -38,7 +38,7 @@ data:
     # The time_format specification below makes sure we properly
     # parse the time format produced by Docker. This will be
     # submitted to Elasticsearch and should appear like:
-    # $ curl 'http://elasticsearch-logging:9200/_search?pretty'
+    # $ curl 'http://$APP_INSTANCE_NAME-elasticsearch-svc:9200/_search?pretty'
     # ...
     # {
     #      "_index" : "logstash-2014.09.25",
@@ -211,7 +211,7 @@ data:
       @type elasticsearch
       @log_level info
        include_tag_key true
-      host elasticsearch-logging
+      host $APP_INSTANCE_NAME-elasticsearch-svc
       port 9200
        logstash_format true
       <buffer>
@@ -233,7 +233,7 @@ apiVersion: apps/v1beta2
 kind: DaemonSet
 metadata:
   name: $APP_INSTANCE_NAME-fluentd-es
-  namespace: kube-system
+  #namespace: kube-system
   labels: &FluentdLabels
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app.kubernetes.io/component: fluentd-es-logging
@@ -252,7 +252,7 @@ spec:
       tolerations:
       - key: node-role.kubernetes.io/master
         effect: NoSchedule
-      serviceAccountName: $APP_INSTANCE_NAME-fluentd-es
+      serviceAccountName: $FLUENTD_SA
       containers:
       - name: fluentd-es
         image: $IMAGE_FLUENTD
@@ -275,7 +275,6 @@ spec:
           mountPath: /etc/fluent/config.d
         ports:
         - containerPort: 24231
-      hostNetwork: true
       terminationGracePeriodSeconds: 30
       volumes:
       - name: varlog
@@ -287,47 +286,3 @@ spec:
       - name: config-volume
         configMap:
           name: $APP_INSTANCE_NAME-fluentd-es-config
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: $APP_INSTANCE_NAME-fluentd-es
-  namespace: kube-system
-  labels:
-    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
-    app.kubernetes.io/component: fluentd-es-logging
----
-apiVersion: rbac.authorization.k8s.io/v1beta1
-kind: ClusterRole
-metadata:
-  name: $APP_INSTANCE_NAME-fluentd-es
-  labels:
-    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
-    app.kubernetes.io/component: fluentd-es-logging
-rules:
-- apiGroups:
-  - ""
-  resources:
-  - "namespaces"
-  - "pods"
-  verbs:
-  - "get"
-  - "watch"
-  - "list"
----
-kind: ClusterRoleBinding
-apiVersion: rbac.authorization.k8s.io/v1beta1
-metadata:
-  name: $APP_INSTANCE_NAME-fluentd-es
-  labels:
-    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
-    app.kubernetes.io/component: fluentd-es-logging
-subjects:
-- kind: ServiceAccount
-  name: $APP_INSTANCE_NAME-fluentd-es
-  namespace: kube-system
-  apiGroup: ""
-roleRef:
-  kind: ClusterRole
-  name: $APP_INSTANCE_NAME-fluentd-es
-  apiGroup: ""
