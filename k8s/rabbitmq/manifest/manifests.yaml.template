@@ -20,7 +20,7 @@ metadata:
 spec:
   selector:
     matchLabels: *RabbitMQDeploymentLabels
-  serviceName: $APP_INSTANCE_NAME-rabbitmq-svc
+  serviceName: $APP_INSTANCE_NAME-rabbitmq-discovery
   replicas: $REPLICAS
   template:
     metadata:
@@ -33,16 +33,18 @@ spec:
         image: $IMAGE_RABBITMQ
         imagePullPolicy: Always
         env:
-        - name: MY_POD_IP
+        - name: MY_POD_NAME
           valueFrom:
             fieldRef:
-              fieldPath: status.podIP
+              fieldPath: metadata.name
         - name: RABBITMQ_USE_LONGNAME
           value: 'true'
         - name: RABBITMQ_NODENAME
-          value: 'rabbit@$(MY_POD_IP)'
+          value: 'rabbit@$(MY_POD_NAME).$APP_INSTANCE_NAME-rabbitmq-discovery.$NAMESPACE.svc.cluster.local'
         - name: K8S_SERVICE_NAME
-          value: '$APP_INSTANCE_NAME-rabbitmq-svc'
+          value: '$APP_INSTANCE_NAME-rabbitmq-discovery'
+        - name: K8S_HOSTNAME_SUFFIX
+          value: '.$APP_INSTANCE_NAME-rabbitmq-discovery.$NAMESPACE.svc.cluster.local'
         - name: RABBITMQ_ERLANG_COOKIE
           valueFrom:
             secretKeyRef:
@@ -98,28 +100,6 @@ spec:
           storage: 5Gi
 ---
 apiVersion: v1
-kind: Service
-metadata:
-  name: $APP_INSTANCE_NAME-rabbitmq-svc
-  labels:
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
-    app.kubernetes.io/component: rabbitmq-server
-spec:
-  ports:
-  - name: client-access-2
-    port: 5672
-  - name: client-access-1
-    port: 5671
-  - name: clitool
-    port: 25672
-  - name: epmd
-    port: 4369
-  selector:
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
-    app.kubernetes.io/component: rabbitmq-server
-  type: ClusterIP
----
-apiVersion: v1
 kind: ConfigMap
 metadata:
   name: $APP_INSTANCE_NAME-rabbitmq-config
@@ -133,7 +113,10 @@ data:
       ## Clustering
       cluster_formation.peer_discovery_backend = rabbit_peer_discovery_k8s
       cluster_formation.k8s.host = kubernetes.default.svc.cluster.local
-      cluster_formation.k8s.address_type = ip
+      # Use the Pods hostname instead of IP addresses to create a cluster.
+      # The Pod IP doesn't work with persistence because new Pods get a new IP addresses,
+      # that doesn't have access to existing data after the node name has changed.
+      cluster_formation.k8s.address_type = hostname
       cluster_formation.node_cleanup.interval = 10
       # Set to false if automatic removal of unknown/absent nodes
       # is desired. This can be dangerous, see
@@ -142,7 +125,7 @@ data:
       cluster_formation.node_cleanup.only_log_warning = true
       cluster_partition_handling = autoheal
       ## queue master locator
-      queue_master_locator=min-masters
+      queue_master_locator = min-masters
       ## enable guest user
       ## See http://www.rabbitmq.com/access-control.html#loopback-users
       loopback_users.guest = false
