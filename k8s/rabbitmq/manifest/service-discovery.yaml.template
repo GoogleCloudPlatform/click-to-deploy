@@ -1,4 +1,4 @@
-# This headless service allows communication between RabbitMQ nodes via hostname instead of IP addresses..
+# This headless service allows communication between RabbitMQ nodes via hostname instead of IP addresses.
 # The clusterIP is set to None.
 # See: https://kubernetes.io/docs/concepts/services-networking/service/#headless-services
 apiVersion: v1
