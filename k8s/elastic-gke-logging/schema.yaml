@@ -1,0 +1,35 @@
+properties:
+  APP_INSTANCE_NAME:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  NAMESPACE:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  IMAGE_ELASTICSEARCH:
+    type: string
+    default: $REGISTRY:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  IMAGE_KIBANA:
+    type: string
+    default: $REGISTRY/kibana:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  IMAGE_INIT:
+    type: string
+    default: $REGISTRY/ubuntu16_04:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  REPLICAS:
+    type: integer
+    default: 2
+    min: 1
+required:
+- APP_INSTANCE_NAME
+- NAMESPACE
+- IMAGE_ELASTICSEARCH
+- IMAGE_KIBANA
+- IMAGE_INIT
+- REPLICAS
