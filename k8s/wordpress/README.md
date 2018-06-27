@@ -234,8 +234,8 @@ Backup procedure will require `mysql-client` package. To install it on Debian, r
 sudo apt-get install mysql-client
 ```
 
-The following command creates WordPress database and files backup and saves the backup files
-as specified by `sql-backup-file` and `files-backup-file`:
+The following command creates WordPress database and files backup and saves the backup
+archive as specified by `backup-file`:
 
 ```shell
 backup_time="$(date +%Y%m%d-%H%M%S)"
