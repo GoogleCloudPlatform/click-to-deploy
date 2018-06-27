@@ -115,8 +115,8 @@ done
 Set or generate passwords:
 
 ```shell
-export ROOT_DB_PASSWORD=`pwgen 16 1`
-export WORDPRESS_DB_PASSWORD=`pwgen 16 1`
+export ROOT_DB_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
+export WORDPRESS_DB_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
 ```
 
 #### Expand the manifest template
