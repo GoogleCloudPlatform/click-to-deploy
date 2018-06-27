@@ -116,10 +116,10 @@ Set or generate passwords:
 
 ```shell
 # If not installed pwgen previously, run:
-sudo apt-get install -y pwgen
+sudo apt-get install -y pwgen base64
 
-export ROOT_DB_PASSWORD=`pwgen 16 1`
-export WORDPRESS_DB_PASSWORD=`pwgen 16 1`
+export ROOT_DB_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
+export WORDPRESS_DB_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
 ```
 
 #### Expand the manifest template

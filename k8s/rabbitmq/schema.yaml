@@ -22,9 +22,20 @@ properties:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 32
+  RABBITMQ_DEFAULT_USER:
+    type: string
+    default: rabbit
+  RABBITMQ_DEFAULT_PASS:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 12
 required:
 - APP_INSTANCE_NAME
 - NAMESPACE
 - IMAGE_RABBITMQ
 - REPLICAS
 - RABBITMQ_ERLANG_COOKIE
+- RABBITMQ_DEFAULT_USER
+- RABBITMQ_DEFAULT_PASS
