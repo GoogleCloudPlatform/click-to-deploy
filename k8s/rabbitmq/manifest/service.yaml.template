@@ -17,6 +17,8 @@ spec:
     port: 25672
   - name: epmd
     port: 4369
+  - name: http
+    port: 15672
   selector:
     app.kubernetes.io/name: $APP_INSTANCE_NAME
     app.kubernetes.io/component: rabbitmq-server
