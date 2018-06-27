@@ -1,0 +1,81 @@
+#!/bin/bash
+
+set -euo pipefail
+
+export SCRIPT_DIR=$(readlink -f "$(dirname "${BASH_SOURCE[0]}")")
+
+if [[ ! -f "${SCRIPT_DIR}/util.sh" ]]; then
+  >&2 echo "Missing util.sh file, exiting"
+  exit 1
+fi
+
+. "${SCRIPT_DIR}/util.sh"
+
+function delete_pod() {
+  local -r pod_name="$1"
+  kubectl delete pod "${pod_name}" --namespace "${NAMESPACE}"
+}
+
+
+function get_pod_uid() {
+  local -r pod_name="$1"
+  kubectl get pod "${pod_name}" \
+    --namespace "${NAMESPACE}" \
+    --output jsonpath='{.metadata.uid}'
+}
+
+
+function get_pod_status() {
+  local -r pod_name="$1"
+  kubectl get pod "${pod_name}" \
+    --namespace "${NAMESPACE}" \
+    --output jsonpath='{.status.phase}'
+}
+
+
+function recreate_pod() {
+  local -r pod_name="$1"
+
+  local -r old_uid="$(get_pod_uid "${pod_name}")"
+  info "Old pod UID: ${old_uid} - deleting..."
+  delete_pod "${pod_name}"
+
+  local new_uid="$(get_pod_uid "${pod_name}")"
+  local status="$(get_pod_status "${pod_name}")"
+
+  while [[ "${new_uid}" == "${old_uid}" ]] || [[ "${status}" != "Running" ]]; do
+    info "Waiting for new pod status: Running..."
+    sleep 5
+    new_uid="$(get_pod_uid "${pod_name}")"
+    status="$(get_pod_status "${pod_name}")"
+  done
+  info "Pod is running (UID: ${new_uid})."
+}
+
+function exec_nodetool() {
+  local -r pod_name="$1"
+  shift
+
+  kubectl exec "${pod_name}" -c cassandra -n "${NAMESPACE}" -- nodetool $@
+}
+
+current_status
+
+wait_for_healthy_sts
+
+# Rolling update procedure:
+info "Starting the rolling update procedure on the cluster..."
+
+for node_number in $(seq $(( $(get_desired_number_of_replicas_in_sts) - 1 )) -1 0); do
+  POD_NAME="${STS_NAME}-${node_number}"
+
+  info "Performing update on pod: ${POD_NAME}..."
+  exec_nodetool "${POD_NAME}" drain
+  recreate_pod "${POD_NAME}"
+
+  wait_for_healthy_sts
+  exec_nodetool "${POD_NAME}" upgradesstables
+  wait_for_healthy_sts
+done
+
+info "Update procedure of your Cassandra StatefulSet has been finished."
