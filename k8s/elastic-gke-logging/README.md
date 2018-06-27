@@ -220,7 +220,7 @@ If exposing the Kibana service externally, run the following command:
 ```shell
 SERVICE_IP=$(kubectl get \
   --namespace ${NAMESPACE} \
-  svc ${APP_INSTANCE_NAME}-elasticsearch-svc \
+  svc ${APP_INSTANCE_NAME}-kibana-svc \
   -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
 KIBANA_URL="http://${SERVICE_IP}:5601"
@@ -379,7 +379,7 @@ Start with assigning the new image to your StatefulSet definition:
 IMAGE_ELASTICSEARCH=<put your new image reference here>
 
 kubectl set image statefulset "${APP_INSTANCE_NAME}-elasticsearch" \
-  --namespace "${NAMESPACE}" elasticsearch="$IMAGE_ELASTICSEARCH"
+  --namespace "${NAMESPACE}" elasticsearch="${IMAGE_ELASTICSEARCH}"
 ```
 
 After this operation the StatefulSet has a new image configured for its containers, but the pods

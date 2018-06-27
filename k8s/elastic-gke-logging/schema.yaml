@@ -17,6 +17,11 @@ properties:
     default: $REGISTRY/kibana:$TAG
     x-google-marketplace:
       type: IMAGE
+  IMAGE_KIBANA:
+    type: string
+    default: $REGISTRY/fluentd:$TAG
+    x-google-marketplace:
+      type: IMAGE
   IMAGE_INIT:
     type: string
     default: $REGISTRY/ubuntu16_04:$TAG

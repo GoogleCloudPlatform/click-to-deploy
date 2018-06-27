@@ -24,12 +24,17 @@ ifdef IMAGE_KIBANA
   IMAGE_KIBANA_FIELD = , "IMAGE_KIBANA": "$(IMAGE_KIBANA)"
 endif
 
+ifdef IMAGE_FLUENTD
+  IMAGE_FLUENTD_FIELD = , "IMAGE_FLUENTD": "$(IMAGE_FLUENTD)"
+endif
+
 APP_PARAMETERS ?= { \
   "APP_INSTANCE_NAME": "$(NAME)", \
   "NAMESPACE": "$(NAMESPACE)" \
   $(REPLICAS_FIELD) \
   $(IMAGE_ELASTICSEARCH_FIELD) \
   $(IMAGE_KIBANA_FIELD) \
+  $(IMAGE_FLUENTD_FIELD) \
 }
 APP_TEST_PARAMETERS ?= {}
 
@@ -78,6 +83,17 @@ app/build:: .build/elasticsearch/elasticsearch \
 #	docker tag launcher.gcr.io/google/kibana6 \
 #	    "$(REGISTRY)/elasticsearch/kibana:$(TAG)"
 #	docker push "$(REGISTRY)/elasticsearch/kibana:$(TAG)"
+#	@touch "$@"
+
+
+# Uncomment when Fluentd image is published
+#.build/elasticsearch/fluentd: .build/var/REGISTRY \
+#                              .build/var/TAG \
+#                              | .build/elasticsearch
+#	docker pull launcher.gcr.io/google/fluentd1
+#	docker tag launcher.gcr.io/google/fluentd1 \
+#	    "$(REGISTRY)/elasticsearch/fluentd:$(TAG)"
+#	docker push "$(REGISTRY)/elasticsearch/fluentd:$(TAG)"
 #	@touch "$@"
 
 

@@ -1,0 +1,333 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: $APP_INSTANCE_NAME-fluentd-es-config
+  # TODO: confirm if fluentd resources need to be put in kube-system namespace
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/component: fluentd-es-logging
+data:
+  system.conf: |-
+    <system>
+      root_dir /tmp/fluentd-buffers/
+    </system>
+  containers.input.conf: |-
+    # This configuration file for Fluentd / td-agent is used
+    # to watch changes to Docker log files. The kubelet creates symlinks that
+    # capture the pod name, namespace, container name & Docker container ID
+    # to the docker logs for pods in the /var/log/containers directory on the host.
+    # If running this fluentd configuration in a Docker container, the /var/log
+    # directory should be mounted in the container.
+    #
+    # These logs are then submitted to Elasticsearch which assumes the
+    # installation of the fluent-plugin-elasticsearch & the
+    # fluent-plugin-kubernetes_metadata_filter plugins.
+    # See https://github.com/uken/fluent-plugin-elasticsearch &
+    # https://github.com/fabric8io/fluent-plugin-kubernetes_metadata_filter for
+    # more information about the plugins.
+    #
+    # Example
+    # =======
+    # A line in the Docker log file might look like this JSON:
+    #
+    # {"log":"2014/09/25 21:15:03 Got request with path wombat\n",
+    #  "stream":"stderr",
+    #   "time":"2014-09-25T21:15:03.499185026Z"}
+    #
+    # The time_format specification below makes sure we properly
+    # parse the time format produced by Docker. This will be
+    # submitted to Elasticsearch and should appear like:
+    # $ curl 'http://elasticsearch-logging:9200/_search?pretty'
+    # ...
+    # {
+    #      "_index" : "logstash-2014.09.25",
+    #      "_type" : "fluentd",
+    #      "_id" : "VBrbor2QTuGpsQyTCdfzqA",
+    #      "_score" : 1.0,
+    #      "_source":{"log":"2014/09/25 22:45:50 Got request with path wombat\n",
+    #                 "stream":"stderr","tag":"docker.container.all",
+    #                 "@timestamp":"2014-09-25T22:45:50+00:00"}
+    #    },
+    # ...
+    #
+    # The Kubernetes fluentd plugin is used to write the Kubernetes metadata to the log
+    # record & add labels to the log record if properly configured. This enables users
+    # to filter & search logs on any metadata.
+    # For example a Docker container's logs might be in the directory:
+    #
+    #  /var/lib/docker/containers/997599971ee6366d4a5920d25b79286ad45ff37a74494f262e3bc98d909d0a7b
+    #
+    # and in the file:
+    #
+    #  997599971ee6366d4a5920d25b79286ad45ff37a74494f262e3bc98d909d0a7b-json.log
+    #
+    # where 997599971ee6... is the Docker ID of the running container.
+    # The Kubernetes kubelet makes a symbolic link to this file on the host machine
+    # in the /var/log/containers directory which includes the pod name and the Kubernetes
+    # container name:
+    #
+    #    synthetic-logger-0.25lps-pod_default_synth-lgr-997599971ee6366d4a5920d25b79286ad45ff37a74494f262e3bc98d909d0a7b.log
+    #    ->
+    #    /var/lib/docker/containers/997599971ee6366d4a5920d25b79286ad45ff37a74494f262e3bc98d909d0a7b/997599971ee6366d4a5920d25b79286ad45ff37a74494f262e3bc98d909d0a7b-json.log
+    #
+    # The /var/log directory on the host is mapped to the /var/log directory in the container
+    # running this instance of Fluentd and we end up collecting the file:
+    #
+    #   /var/log/containers/synthetic-logger-0.25lps-pod_default_synth-lgr-997599971ee6366d4a5920d25b79286ad45ff37a74494f262e3bc98d909d0a7b.log
+    #
+    # This results in the tag:
+    #
+    #  var.log.containers.synthetic-logger-0.25lps-pod_default_synth-lgr-997599971ee6366d4a5920d25b79286ad45ff37a74494f262e3bc98d909d0a7b.log
+    #
+    # The Kubernetes fluentd plugin is used to extract the namespace, pod name & container name
+    # which are added to the log message as a kubernetes field object & the Docker container ID
+    # is also added under the docker field object.
+    # The final tag is:
+    #
+    #   kubernetes.var.log.containers.synthetic-logger-0.25lps-pod_default_synth-lgr-997599971ee6366d4a5920d25b79286ad45ff37a74494f262e3bc98d909d0a7b.log
+    #
+    # And the final log record look like:
+    #
+    # {
+    #   "log":"2014/09/25 21:15:03 Got request with path wombat\n",
+    #   "stream":"stderr",
+    #   "time":"2014-09-25T21:15:03.499185026Z",
+    #   "kubernetes": {
+    #     "namespace": "default",
+    #     "pod_name": "synthetic-logger-0.25lps-pod",
+    #     "container_name": "synth-lgr"
+    #   },
+    #   "docker": {
+    #     "container_id": "997599971ee6366d4a5920d25b79286ad45ff37a74494f262e3bc98d909d0a7b"
+    #   }
+    # }
+    #
+    # This makes it easier for users to search for logs by pod name or by
+    # the name of the Kubernetes container regardless of how many times the
+    # Kubernetes pod has been restarted (resulting in a several Docker container IDs).
+
+    # Json Log Example:
+    # {"log":"[info:2016-02-16T16:04:05.930-08:00] Some log text here\n","stream":"stdout","time":"2016-02-17T00:04:05.931087621Z"}
+    # CRI Log Example:
+    # 2016-02-17T00:04:05.931087621Z stdout F [info:2016-02-16T16:04:05.930-08:00] Some log text here
+    <source>
+      @id fluentd-containers.log
+      @type tail
+      path /var/log/containers/*.log
+      pos_file /var/log/es-containers.log.pos
+      time_format %Y-%m-%dT%H:%M:%S.%NZ
+      tag raw.kubernetes.*
+      <parse>
+        @type multi_format
+      <pattern>
+        format json
+        time_key time
+        time_format %Y-%m-%dT%H:%M:%S.%NZ
+      </pattern>
+      <pattern>
+        format /^(?<time>.+) (?<stream>stdout|stderr) [^ ]* (?<log>.*)$/
+        time_format %Y-%m-%dT%H:%M:%S.%N%:z
+      </pattern>
+      </parse>
+    </source>
+    # Detect exceptions in the log output and forward them as one log entry.
+    <match raw.kubernetes.**>
+      @id raw.kubernetes
+      @type detect_exceptions
+      remove_tag_prefix raw
+      message log
+      stream stream
+      multiline_flush_interval 5
+      max_bytes 500000
+      max_lines 1000
+    </match>
+  system.input.conf: |-
+    # Logs from systemd-journal for interesting services.
+    <source>
+      @id journald-docker
+      @type systemd
+      filters [{ "_SYSTEMD_UNIT": "docker.service" }, { "_SYSTEMD_UNIT": "kubelet.service" }, { "_TRANSPORT": "kernel" }]
+      <storage>
+        @type local
+        persistent true
+      </storage>
+      <entry>
+        field_map {"MESSAGE": "log", "_PID": ["process", "pid"], "_CMDLINE": "process", "_COMM": "cmd"}
+        field_map_strict false
+        fields_strip_underscores true
+        fields_lowercase true
+      </entry>
+      tag systemd
+    </source>
+
+  forward.input.conf: |-
+    # Takes the messages sent over TCP
+    <source>
+      @type forward
+    </source>
+  monitoring.conf: |-
+    # Prometheus Exporter Plugin
+    # input plugin that exports metrics
+    <source>
+      @type prometheus
+    </source>
+
+    <source>
+      @type monitor_agent
+    </source>
+
+    # input plugin that collects metrics from MonitorAgent
+    <source>
+      @type prometheus_monitor
+      <labels>
+        host ${hostname}
+      </labels>
+    </source>
+
+    # input plugin that collects metrics for output plugin
+    <source>
+      @type prometheus_output_monitor
+      <labels>
+        host ${hostname}
+      </labels>
+    </source>
+
+    # input plugin that collects metrics for in_tail plugin
+    <source>
+      @type prometheus_tail_monitor
+      <labels>
+        host ${hostname}
+      </labels>
+    </source>
+  output.conf: |-
+    # Enriches records with Kubernetes metadata
+    <filter kubernetes.**>
+      @type kubernetes_metadata
+    </filter>
+
+    <match **>
+      @id elasticsearch
+      @type elasticsearch
+      @log_level info
+       include_tag_key true
+      host elasticsearch-logging
+      port 9200
+       logstash_format true
+      <buffer>
+        @type file
+        path /var/log/fluentd-buffers/kubernetes.system.buffer
+        flush_mode interval
+        retry_type exponential_backoff
+        flush_thread_count 2
+       flush_interval 5s
+        retry_forever
+        retry_max_interval 30
+        chunk_limit_size 2M
+        queue_limit_length 8
+        overflow_action block
+      </buffer>
+    </match>
+---
+apiVersion: apps/v1beta2
+kind: DaemonSet
+metadata:
+  name: $APP_INSTANCE_NAME-fluentd-es
+  namespace: kube-system
+  labels: &FluentdLabels
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/component: fluentd-es-logging
+spec:
+  selector:
+    matchLabels: *FluentdLabels
+  template:
+    metadata:
+      labels: *FluentdLabels
+      # This annotation ensures that fluentd does not get evicted if the node
+      # supports critical pod annotation based priority scheme.
+      # Note that this does not guarantee admission on the nodes.
+      annotations:
+        scheduler.alpha.kubernetes.io/critical-pod: ''
+    spec:
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+      serviceAccountName: $APP_INSTANCE_NAME-fluentd-es
+      containers:
+      - name: fluentd-es
+        image: $IMAGE_FLUENTD
+        env:
+        - name: FLUENTD_ARGS
+          value: --no-supervisor -q
+        resources:
+          limits:
+            memory: 500Mi
+          requests:
+            cpu: 100m
+            memory: 200Mi
+        volumeMounts:
+        - name: varlog
+          mountPath: /var/log
+        - name: varlibdockercontainers
+          mountPath: /var/lib/docker/containers
+          readOnly: true
+        - name: config-volume
+          mountPath: /etc/fluent/config.d
+        ports:
+        - containerPort: 24231
+      hostNetwork: true
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: varlog
+        hostPath:
+          path: /var/log
+      - name: varlibdockercontainers
+        hostPath:
+          path: /var/lib/docker/containers
+      - name: config-volume
+        configMap:
+          name: $APP_INSTANCE_NAME-fluentd-es-config
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: $APP_INSTANCE_NAME-fluentd-es
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/component: fluentd-es-logging
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: $APP_INSTANCE_NAME-fluentd-es
+  labels:
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/component: fluentd-es-logging
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - "namespaces"
+  - "pods"
+  verbs:
+  - "get"
+  - "watch"
+  - "list"
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: $APP_INSTANCE_NAME-fluentd-es
+  labels:
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/component: fluentd-es-logging
+subjects:
+- kind: ServiceAccount
+  name: $APP_INSTANCE_NAME-fluentd-es
+  namespace: kube-system
+  apiGroup: ""
+roleRef:
+  kind: ClusterRole
+  name: $APP_INSTANCE_NAME-fluentd-es
+  apiGroup: ""
