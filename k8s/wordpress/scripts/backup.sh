@@ -45,7 +45,6 @@ while [[ "$#" != 0 ]]; do
   esac
 done;
 
-
 remote_backup_dir="/var/wp-backup"
 remote_backup_file="${remote_backup_dir}/${files_backup_file}"
 wordpress_pod0_name="${app}-wordpress-0"
