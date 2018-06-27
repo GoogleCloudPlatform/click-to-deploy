@@ -97,7 +97,6 @@ mysql -h "${mysql_host}" -P "${mysql_port}" \
   -u wordpress -p"${wordpress_db_password}" \
   "${wp_database}" < "${sql_dump_file}"
 
-
 remote_backup_dir="/var/wp-backup"
 remote_restore_dir="/var/wp-restore"
 wp_files_backup="wp-files-${restore_time}.tar.gz"
