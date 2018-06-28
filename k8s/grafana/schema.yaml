@@ -9,7 +9,7 @@ properties:
       type: NAMESPACE
   image.grafana:
     type: string
-    default: $REGISTRY/grafana:$TAG
+    default: $REGISTRY:$TAG
     x-google-marketplace:
       type: IMAGE
   replicas:

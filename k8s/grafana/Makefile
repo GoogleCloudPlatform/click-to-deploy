@@ -62,9 +62,9 @@ app/build:: .build/grafana/deployer \
 # Simulate building of primary app image. Actually just copying public image to
 # local registry.
 .build/grafana/grafana: .build/var/REGISTRY \
-				.build/var/TAG \
-				| .build/grafana
+						.build/var/TAG \
+						| .build/grafana
 	docker pull grafana/grafana:5.1.2
-	docker tag grafana/grafana:5.1.2 "$(REGISTRY)/grafana:$(TAG)"
-	docker push "$(REGISTRY)/grafana:$(TAG)"
+	docker tag grafana/grafana:5.1.2 "$(REGISTRY):$(TAG)"
+	docker push "$(REGISTRY):$(TAG)"
 	@touch "$@"
