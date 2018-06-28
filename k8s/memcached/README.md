@@ -41,7 +41,7 @@ gcloud container clusters create "$CLUSTER" --zone "$ZONE"
 Configure `kubectl` to talk to the new cluster.
 
 ```shell
-gcloud container clusters get-credentials "$CLUSTER"
+gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 ```
 
 #### Clone this repo
@@ -55,11 +55,12 @@ gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketp
 
 #### Install the Application resource definition
 
-Do a one-time setup for your cluster to understand Application resources.
+Do a one-time setup of your cluster and install Custom Reference Definition object for Kubernetes Application.
+
+To do that, please, navidate to k8s/vendor subfolder of click-to-deploy repository and run the following command:
 
 ```shell
-cd google-click-to-deploy/k8s/memcached
-make crd/install
+kubectl apply -f marketplace-tools/crd/*
 ```
 
 The Application resource is defined by the
@@ -106,12 +107,23 @@ for i in "IMAGE_MEMCACHED"; do
 done
 ```
 
-#### Apply to Kubernetes
+#### Expand the manifest template
 
-Use make to install Memcached application
+Use `envsubst` to expand the template. It is recommended that you save the
+expanded manifest file for future updates to the application.
 
 ```shell
-make app/install
+awk 'BEGINFILE {print "---"}{print}' manifest/* \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_MEMCACHED' \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
+```
+
+#### Apply to Kubernetes
+
+Use `kubectl` to apply the manifest to your Kubernetes cluster.
+
+```shell
+kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
 
 #### View the app in the Google Cloud Console
@@ -124,7 +136,11 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 # Basic Usage
 
-*TODO: instructions to be written *
+Usually, there are two steps necessary to be able to use Memcache cluster
+
+1. One needs to acquire IP addresses of servers running with Memcached cluster. 
+
+2. One needs to configure an application so it can use Memcached cluster as a cache. Usually, applications use specialized memcached clients (e.g. [pymemcache](http://pymemcache.readthedocs.io/en/latest/getting_started.html)) to run a hashing algorithm that is responsible for making selection which Memcached server to use for storing/retrieving cached data. 
 
 ## Acquire IP addresses of Memcached instances
 
@@ -136,33 +152,83 @@ To discover IP addresses of Memcached instances using kubectl, please, run the f
 kubectl get pods -o wide -l app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
 
-To discover IP addresses of Memcached instances using Python, please, use this code:
+To discover IP addresses of Memcached instances using Python you can use kubernetes module.
 
+Use this command to install kubernetes module on your computer
 ```shell
-TO BE DELIVERED
+pip install kubernetes
+
 ```
 
-## Expose Memcached service to external world
+Here is an examplary code that could be used as a starting for ar Python program to discover Memcached IP addresses:
 
-In this specific example, there is no encyption between an application and Memcached instances and no authentication/authorization schema is applied. The assumption is that applications deployed within the same Kubernetes cluster can talk freely to Memcached instances which are meant to be an internal cache of an application. 
+```python
+
+import os
+# if kubernetes module is not installed, please, install it, e.g. pip install kubernetes
+from kubernetes import client, config
+# Load Kube config
+config.load_kube_config()
+# Create a Kubernetes client
+k8s_client = client.CoreV1Api()
+# Get the list of all pods
+pod_list = k8s_client.list_namespaced_pod("default")
+# list all pods from the default namespace
+for pod in pod_list.items:
+    print("%s\t%s\t%s" % (pod.metadata.name, pod.status.phase, pod.status.pod_ip))
+
+```
+
+For more information about using Python to manage & discover Kubernetes cluster information, please, go to this page: https://github.com/kubernetes-client/python
+
+## Using Memcached instances as a cache in your application
+There are many memcached clients that potentially could be used for getting access to Memcached servers running in the cluster. Python pymemcache client is one of them. Please, refer to this documentation
+http://pymemcache.readthedocs.io/en/latest/getting_started.html if you wold like to learn more about it.
+
+## Exposure of Memcached service to external world
 
 It is not recommended to expose Memcached K8s App for external access.
 
+In this specific example, there is no encyption between an application and Memcached instances and no authentication/authorization schema is applied. The assumption is that applications deployed within the same Kubernetes cluster can talk freely to Memcached instances which are meant to be an internal cache of an application. 
+
 # Scaling
 
-By default, Memcached K8s application is deployed using 2 replicas. You can manually scale it to deploy more replicas using the following command.
+You can manually scale it up or down to deploy Memcached solution with desired number of replicas using the following command.
 
 ```shell
 kubectl scale statefulsets "$APP_INSTANCE_NAME-memcached" --namespace "$NAMESPACE" --replicas=<new-replicas>
 ```
 
+where <new_replicas> defines the number of replicas.
+
 # Backup and Restore
 
 There is no need to backup Memcached application - it's due to the nature of Memcached which serves as internal application cache and is updated by application in a dynamic way. 
 
-# Memcached updates
+# Update
 
-*TODO: instructions for upgrades*
+This procudure assumes that you have a new image for memcached container published and being available to your Kubernetes cluster. The new image is available at <url-pointing-to-new-image>.
+
+Start with modification of the image used for pod temaplate within Memcached StatefulSet:
+
+```shell
+kubectl set image statefulset "$APP_INSTANCE_NAME-memcached" \
+  memcached=<url-pointing-to-new-image>
+```
+
+where `<url-pointing-to-new-image>` is the new image.
+
+To check the status of Pods in the StatefulSet and the progress of deployment of new image run the following command:
+
+```shell
+kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME
+```
+
+To check the current image used by pods within `Memcached` K8s application, you can run the following command:
+
+```shell
+kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}' | sort
+```
 
 # Deletion
 
@@ -176,7 +242,7 @@ cd google-click-to-deploy/k8s/memcached
 * Run the uninstall command
 
 ```shell
-make app/uninstall
+kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 ```
 
 Optionally, if you don't need both the deployed application and GKE cluster used for deployment then you can delete the whole GKE cluster using this command:
@@ -187,4 +253,4 @@ gcloud container clusters delete "$CLUSTER" --zone "$ZONE"
 
 # Logging and Monitoring
 
-*TODO: instructions for turning on logging and monitoring *
+To set up logging for Memcached solution using Stackdriver, please, follow the instructuction decomented here: https://kubernetes.io/docs/tasks/debug-application-cluster/logging-stackdriver/#verifying-your-logging-agent-deployment

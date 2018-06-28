@@ -9,7 +9,9 @@ spec:
   selector:
     matchLabels: *CassandraDeploymentLabels
   serviceName: $APP_INSTANCE_NAME-cassandra-svc
-  replicas: 1
+  replicas: $REPLICAS
+  updateStrategy:
+      type: OnDelete
   template:
     metadata:
       labels: *CassandraDeploymentLabels
@@ -19,6 +21,11 @@ spec:
       - name: cassandra
         image: $IMAGE_CASSANDRA
         imagePullPolicy: Always
+        env:
+        - name: CASSANDRA_CLUSTER_NAME
+          value: $APP_INSTANCE_NAME-cassandra-svc
+        - name: CASSANDRA_SEEDS
+          value: $APP_INSTANCE_NAME-cassandra-0.$APP_INSTANCE_NAME-cassandra-svc.$NAMESPACE.svc.cluster.local, $APP_INSTANCE_NAME-cassandra-1.$APP_INSTANCE_NAME-cassandra-svc.$NAMESPACE.svc.cluster.local, $APP_INSTANCE_NAME-cassandra-2.$APP_INSTANCE_NAME-cassandra-svc.$NAMESPACE.svc.cluster.local
         ports:
         - name: pure-intra
           containerPort: 7000
@@ -30,9 +37,33 @@ spec:
           containerPort: 9042
         - name: thrift
           containerPort: 9160
+        resources:
+          limits:
+            cpu: 1
+            memory: 3Gi
+          requests:
+           cpu: 1
+           memory: 3Gi
         volumeMounts:
         - name: $APP_INSTANCE_NAME-cassandra-pvc
           mountPath: /var/lib/cassandra
+        livenessProbe:
+          exec:
+            command: [ "/bin/sh", "-c", "nodetool status" ]
+          initialDelaySeconds: 90
+          periodSeconds: 30
+        readinessProbe:
+          exec:
+            command: [ "/bin/sh", "-c", "nodetool status | grep -E \"^UN\\s+${POD_IP}\"" ]
+          initialDelaySeconds: 90
+          periodSeconds: 30
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - "/bin/sh"
+              - "-c"
+              - "nodetool drain"
   volumeClaimTemplates:
   - metadata:
       name: $APP_INSTANCE_NAME-cassandra-pvc
@@ -60,4 +91,8 @@ spec:
   selector:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app.kubernetes.io/component: cassandra-server
-  type: LoadBalancer
+  type: ClusterIP
+# While bootstraping Cassandra, we need to provide a list of IPs or hostnames
+# to connect. Setting clusterIP to None enables connection between Cassandra
+# nodes directly.
+  clusterIP: None
