@@ -25,16 +25,37 @@ include ../vendor/marketplace-tools/app.Makefile
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/prometheus/deployer:$(TAG)
 NAME ?= prometheus-1
+
+ifdef IMAGE_PROMETHEUS
+  IMAGE_PROMETHEUS_FIELD = , "server.image.reference": "$(IMAGE_PROMETHEUS)"
+endif
+
+ifdef IMAGE_ALERTMANAGER
+  IMAGE_ALERTMANAGER_FIELD = , "alertmanager.image.reference": "$(IMAGE_ALERTMANAGER)"
+endif
+
+ifdef IMAGE_NODE_EXPORTER
+  IMAGE_NODE_EXPORTER_FIELD = , "nodeExporter.image.reference": "$(IMAGE_NODE_EXPORTER)"
+endif
+
+ifdef IMAGE_PUSHGATEWAY
+  IMAGE_PUSHGATEWAY_FIELD = , "pushGateway.image.reference": "$(IMAGE_PUSHGATEWAY)"
+endif
+
+ifdef IMAGE_KUBE_STATE_METRICS
+  IMAGE_KUBE_STATE_METRICS_FIELD = , "kubeStateMetrics.image.reference": "$(IMAGE_KUBE_STATE_METRICS)"
+endif
+
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
-  "namespace": "$(NAMESPACE)", \
-  "alertmanager.image.reference": "$(REGISTRY)/prometheus/alertmanager:$(TAG)", \
-  "configmapReload.image.reference": "$(REGISTRY)/prometheus/configmapreload:$(TAG)", \
-  "initChownData.image.reference": "$(REGISTRY)/prometheus/initchowndata:$(TAG)", \
-  "kubeStateMetrics.image.reference": "$(REGISTRY)/prometheus/kubestatemetrics:$(TAG)", \
-  "nodeExporter.image.reference": "$(REGISTRY)/prometheus/nodeexporter:$(TAG)", \
-  "server.image.reference": "$(REGISTRY)/prometheus/server:$(TAG)", \
-  "pushGateway.image.reference": "$(REGISTRY)/prometheus/pushgateway:$(TAG)" \
+  "namespace": "$(NAMESPACE)" \
+  $(IMAGE_ALERTMANAGER_FIELD) \
+  ", configmapReload.image.reference": "$(REGISTRY)/prometheus/configmapreload:$(TAG)" \
+  ", initChownData.image.reference": "$(REGISTRY)/prometheus/initchowndata:$(TAG)" \
+  $(IMAGE_KUBE_STATE_METRICS) \
+  $(IMAGE_NODE_EXPORTER_FIELD) \
+  $(IMAGE_PROMETHEUS_FIELD) \
+  $(IMAGE_PUSHGATEWAY_FIELD) \
 }
 
 # Extend the target as defined in app.Makefile to
