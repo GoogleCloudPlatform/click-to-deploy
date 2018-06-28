@@ -38,11 +38,13 @@ properties:
       serviceAccount:
         roles:
         - type: ClusterRole
-          rulesType: CUSTOM
-          rules:
-          - apiGroups: ['v1']
-            resources: ['Pod', 'Namespace']
-            verbs: ['get', 'list', 'watch']
+          rulesType: PREDEFINED
+          rulesFromRoleName: cluster-admin
+#          rulesType: CUSTOM
+#          rules:
+#          - apiGroups: ['v1']
+#            resources: ['Pod', 'Namespace']
+#            verbs: ['get', 'list', 'watch']
 required:
 - APP_INSTANCE_NAME
 - NAMESPACE
