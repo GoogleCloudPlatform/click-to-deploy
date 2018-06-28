@@ -25,7 +25,3 @@ spec:
       - name: airflowoperator
         image: $airflowOperatorImage
         imagePullPolicy: Always
-        command: ["/usr/bin/airflow-operator"]
-        args:
-        - -logtostderr
-        - -enable-initializer=false

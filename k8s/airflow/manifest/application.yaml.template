@@ -18,7 +18,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: "$name"
-  version: v2.3.0-v1alpha1
+  version: latest
   description: |-
     Airflow Operator enables specifying and running Apache Airflow on Kubernetes.
 
