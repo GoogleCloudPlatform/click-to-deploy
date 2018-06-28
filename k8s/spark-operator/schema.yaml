@@ -1,0 +1,34 @@
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  sparkOperatorImage:
+    type: string
+    default: $REGISTRY:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  serviceAccount:
+    title: Cluster Admin Service Account
+    description: >-
+      Name of a service account in the target namespace that
+      has cluster-admin permissions. This is needed for the operator
+      to create Spark CRD and jobs.
+    type: string
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        roles:
+        - type: ClusterRole
+          rulesType: PREDEFINED
+          # TODO(liyinan926): Reduce the permission set.
+          rulesFromRoleName: cluster-admin
+required:
+- name
+- namespace
+- sparkOperatorImage
+- serviceAccount

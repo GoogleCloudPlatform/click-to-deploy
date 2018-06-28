@@ -14,13 +14,17 @@ spec:
   type: Memcached
   version: '0.1'
   description: |-
-    Memcached is an open source in-memory, key-value store. Key features of this solution include high performance and ease of distribution.
+    Memcached is an open source in-memory, key-value store.
+
+    Key features of this solution include high performance and ease of distribution.
+
     Although Memcached is intended to be use with dynamic web applications, it can be used as a caching system for a number of databases.
 
     # Support
     Google does not offer support for this solution. However, community support is available on
     [Stack Overflow](https://stackoverflow.com/questions/tagged/memcached/).
     Additional community support is available on [community forums](https://groups.google.com/forum/#!forum/memcached).
+    
   info:
   - name: Service endpoint
     value: TODO
@@ -38,22 +42,17 @@ spec:
   componentKinds:
   - group: v1
     kind: Service
-  - group: apps/v1beta1
+  - group: apps/v1beta2
     kind: StatefulSet
   notes: |-
     # Access Memcached instances
-    
-    By default, the Memcached service is not exposed to external world so it doesn't have external IP address. 
-    What's more, Memcached service is defined as headless service which means that service itself doesn't have internal IP address and when you query DNS name of Memcached service you retrieve multiple A records for the service and each IP address points to a specific Memcached POD backing Memcached service at a given momement.
 
-    Usually, applications using Memcached as a cache retrieve IP addresses of Memcached instances and they implement
+    Run the following command to discover IP addresses of Memcached instances using kubectl:
 
-    There are several methods how to obtain IP addresses of Memcached instances and below you can find one of them:
+    ```shell
+    kubectl get pods -o wide -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace "$NAMESPACE"
+    ```
 
-    kubectl get pods -o wide -l app.kubernetes.io/name=$APP_INSTANCE_NAME
-    
-    Although, technically you could expose Memcached service to esternal world, it's not recommended because it is meant to be an internal cache of the system.
-    
     # Scale the cluster
 
     To scale the cluster, use either a GKE UI (use the Scale option in the
@@ -64,9 +63,7 @@ spec:
       --namespace "$NAMESPACE" --replicas=<new-replicas>
     ```
 
-    By default, there are 2 replicas to satisfy the minimum master quorum.
-    To increase resilience, it is recommended to scale the number of replicas
-    to at least 3.
+    Default configuration of Memcached solution deploys 2 replicas.
 
     For more information about the StatefulSets scaling, check the
     [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/#kubectl-scale).

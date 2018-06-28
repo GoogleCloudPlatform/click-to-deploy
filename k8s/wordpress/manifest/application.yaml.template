@@ -20,7 +20,7 @@ spec:
     Google does not offer support for this solution. However, community support is available on
     [Stack Overflow](https://stackoverflow.com/questions/tagged/wordpress/).
     Additional community support is available on
-    [communmity forums](https://en.forums.wordpress.com).
+    [community forums](https://en.forums.wordpress.com).
   maintainers:
   - name: Google Click to Deploy
     url: https://cloud.google.com/solutions/#click-to-deploy
@@ -33,10 +33,10 @@ spec:
     matchLabels:
       app.kubernetes.io/name: "$APP_INSTANCE_NAME"
   componentKinds:
-  - group: apps/v1beta1
-    kind: Deployment
+  - group: apps/v1beta2
+    kind: StatefulSet
   - group: v1
-    kind: PersistentVolumeClaim
+    kind: Secret
   - group: v1
     kind: Service
   notes: |-
