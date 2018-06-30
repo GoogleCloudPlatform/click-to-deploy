@@ -24,11 +24,11 @@ spec:
         args: ["influxd"]
         env:
         - name: INFLUXDB_ADMIN_ENABLED
-          value: "true"
+          value: 'true'
         - name: INFLUXDB_ADMIN_USER
-          value: "root"
+          value: '$INFLUXDB_ADMIN_USER'
         - name: INFLUXDB_ADMIN_PASSWORD
-          value: 'root'
+          value: '$INFLUXDB_ADMIN_PASSWORD'
         ports:
         - name: influxdb
           containerPort: 8086
