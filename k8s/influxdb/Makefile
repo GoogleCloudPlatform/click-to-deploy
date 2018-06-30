@@ -46,8 +46,8 @@ app/build:: .build/influxdb/deployer \
 .build/influxdb/influxdb: .build/var/REGISTRY \
                             .build/var/TAG \
                             | .build/influxdb
-	docker pull launcher.gcr.io/google/influxdb
-	docker tag launcher.gcr.io/google/influxdb \
+	docker pull gcr.io/orbitera-dev/influxdb
+	docker tag gcr.io/orbitera-dev/influxdb \
 	    "$(REGISTRY)/influxdb:$(TAG)"
 	docker push "$(REGISTRY)/influxdb:$(TAG)"
 	@touch "$@"

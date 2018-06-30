@@ -1,16 +1,3 @@
-# apiVersion: v1
-# kind: Secret
-# metadata:
-#   name: $APP_INSTANCE_NAME-influxdb-secret
-#   labels:
-#     app.kubernetes.io/name: $APP_INSTANCE_NAME
-#     app.kubernetes.io/component: influxdb-server
-# type: Opaque
-# data:
-#   # this value comes from schema.yaml or environment variable
-#   indluxdb_admin: "$INFLUXDB_ADMIN_USER"
-#   indluxdb_admin: "$INFLUXDB_ADMIN_PASSWORD"
-# ---
 apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
@@ -34,19 +21,14 @@ spec:
       - name: influxdb
         image: $IMAGE_INFLUXDB
         imagePullPolicy: Always
-        command: ["/init-influxdb.sh"]
         args: ["influxd"]
         env:
         - name: INFLUXDB_ADMIN_ENABLED
-          value: true
+          value: "true"
         - name: INFLUXDB_ADMIN_USER
-          value: 'root'
+          value: "root"
         - name: INFLUXDB_ADMIN_PASSWORD
           value: 'root'
-#          valueFrom:
-#            secretKeyRef:
-#              name: $APP_INSTANCE_NAME-influxdb-secret
-#              key: influxdb-admin-password       
         ports:
         - name: influxdb
           containerPort: 8086
