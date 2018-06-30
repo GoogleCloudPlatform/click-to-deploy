@@ -1,5 +1,7 @@
 # Overview
-InfluxDB is an open source database for storing time series data. The source of time series data may come from logging and monitoring systems and IoT devices. This is a single instance version of InfluxDB. 
+InfluxDB is an open source database for storing time series data. The source of time series data may come from logging and monitoring systems and IoT devices.
+
+This is a single-instance version of InfluxDB. Multi-instance version of InfluxDB requires commercial license.
 
 If you are interested in enterprise version of InfluxDB or you would like to learn more about InfluxDB in general, please, visit [InfluxDB website](https://www.influxdata.com/).
 
@@ -90,6 +92,18 @@ Configure the container images.
 export IMAGE_INFLUXDB="gcr.io/k8s-marketplace-eap/google/influxdb:latest"
 ```
 
+Configure InfluxDB administrator account:
+
+```shell
+export INFLUXDB_ADMIN_USER=influxdb_admin
+```
+
+Configure password for InfluxDB administrator account (the value has to be encoded in base64)
+
+```shell
+export INFLUXDB_ADMIN_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1 | tr -d '\n' | base64)
+```
+
 The images above are referenced by
 [tag](https://docs.docker.com/engine/reference/commandline/tag). It is strongly
 recommended to pin each image to an immutable
@@ -113,7 +127,7 @@ expanded manifest file for future updates to the application.
 
 ```shell
 awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_INFLUXDB' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_INFLUXDB $INFLUXDB_ADMIN_USER $INFLUXDB_ADMIN_PASSWORD' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
@@ -141,13 +155,17 @@ TBD
 
 This is a single-instance version of InfluxDB. You cannot scale it.
 
-If you are interested in enterprise version of InfluxDB, please, visit [InfluxDB website](https://www.influxdata.com/).
+If you are interested in multi-instance/enterprise version of InfluxDB, please, visit [InfluxDB website](https://www.influxdata.com/).
 
 # Backup and Restore
 
 TBD
 
-# Update
+# Upgrade
+
+This is single-instance InfluxDB solution:
+- Upgrade will case some downtime of your application
+- Configuration and data of InfluxDB will be retained.
 
 This procudure assumes that you have a new image for InfluxDB container published and being available to your Kubernetes cluster. The new image is available at <url-pointing-to-new-image>.
 
