@@ -12,7 +12,20 @@ properties:
     default: $REGISTRY:$TAG
     x-google-marketplace:
       type: IMAGE
+  INFLUXDB_ADMIN_USER:
+    type: string
+    default: $REGISTRY:$TAG
+    x-google-marketplace:
+      type: INFLUXDB_ADMIN_PASSWORD
+  INFLUXDB_ADMIN_PASSWORD:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 32
 required:
 - APP_INSTANCE_NAME
 - NAMESPACE
 - IMAGE_INFLUXDB
+- INFLUXDB_ADMIN_USER
+- INFLUXDB_ADMIN_PASSWORD
