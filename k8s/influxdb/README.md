@@ -1,5 +1,7 @@
 # Overview
-InfluxDB is an open source database for storing time series data. The source of time series data may come from logging and monitoring systems and IoT devices. This is a single instance version of InfluxDB. 
+InfluxDB is an open source database for storing time series data. The source of time series data may come from logging and monitoring systems and IoT devices.
+
+This is a single-instance version of InfluxDB. 
 
 If you are interested in enterprise version of InfluxDB or you would like to learn more about InfluxDB in general, please, visit [InfluxDB website](https://www.influxdata.com/).
 
