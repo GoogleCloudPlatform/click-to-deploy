@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-state-metrics
+  namespace: kube-system
+  labels:
+    kubernetes.io/name: "kube-state-metrics"
+spec:
+  ports:
+  - name: http-metrics
+    port: 8080
+    targetPort: http-metrics
+    protocol: TCP
+  - name: telemetry
+    port: 8081
+    targetPort: telemetry
+    protocol: TCP
+  selector:
+    k8s-app: kube-state-metrics

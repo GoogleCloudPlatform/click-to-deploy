@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-config
+  namespace: kube-system
+data:
+  alertmanager.yml: |
+    global: null
+    receivers:
+    - name: default-receiver
+    route:
+      group_interval: 5m
+      group_wait: 10s
+      receiver: default-receiver
+      repeat_interval: 3h

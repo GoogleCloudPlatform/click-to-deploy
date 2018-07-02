@@ -1,0 +1,98 @@
+apiVersion: apps/v1beta2
+kind: StatefulSet
+metadata:
+  name: prometheus
+  namespace: kube-system
+  labels:
+    k8s-app: prometheus
+spec:
+  serviceName: "prometheus"
+  replicas: 2
+  podManagementPolicy: "Parallel"
+  updateStrategy:
+    type: "RollingUpdate"
+  selector:
+    matchLabels:
+      k8s-app: prometheus
+  template:
+    metadata:
+      labels:
+        k8s-app: prometheus
+      annotations:
+        scheduler.alpha.kubernetes.io/critical-pod: ''
+    spec:
+      priorityClassName: system-cluster-critical
+      serviceAccountName: prometheus
+      initContainers:
+      - name: "init-chown-data"
+        image: "alpine:latest"
+        imagePullPolicy: "IfNotPresent"
+        command: ["chown", "-R", "65534:65534", "/data"]
+        volumeMounts:
+        - name: prometheus-data
+          mountPath: /data
+          subPath: ""
+      containers:
+        - name: prometheus-server
+          image: "prom/prometheus:v2.2.1"
+          imagePullPolicy: "IfNotPresent"
+          args:
+            - --config.file=/etc/config/prometheus.yaml
+            - --storage.tsdb.path=/data
+            - --web.console.libraries=/etc/prometheus/console_libraries
+            - --web.console.templates=/etc/prometheus/consoles
+            - --web.enable-lifecycle
+          ports:
+            - containerPort: 9090
+          readinessProbe:
+            httpGet:
+              path: /-/ready
+              port: 9090
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+          livenessProbe:
+            httpGet:
+              path: /-/healthy
+              port: 9090
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+          # based on 10 running nodes with 30 pods each
+          resources:
+            limits:
+              cpu: 200m
+              memory: 1000Mi
+            requests:
+              cpu: 200m
+              memory: 1000Mi
+
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config
+            - name: prometheus-data
+              mountPath: /data
+              subPath: ""
+      terminationGracePeriodSeconds: 300
+      volumes:
+        - name: config-volume
+          configMap:
+            name: prometheus-config
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: k8s-app
+                operator: In
+                values:
+                - prometheus
+            topologyKey: "kubernetes.io/hostname"
+  volumeClaimTemplates:
+  - metadata:
+      name: prometheus-data
+    spec:
+      storageClassName: standard
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: "16Gi"
