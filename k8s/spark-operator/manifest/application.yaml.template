@@ -31,7 +31,7 @@ spec:
     url: https://cloud.google.com/solutions/#click-to-deploy
   links:
   - description: 'User Guide: Google Click to Deploy Spark Operator'
-    url: https://console.cloud.google.com/code/develop/browse/google-click-to-deploy/master/k8s/spark-operator/README.md?project=k8s-marketplace-eap
+    url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/spark-operator/README.md
   - description: Quick start with Spark Operator
     url: https://github.com/GoogleCloudPlatform/spark-on-k8s-operator/blob/master/docs/quick-start-guide.md
   - description: Apache Spark documentations
