@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: alertmanager
+  namespace: kube-system
+  labels:
+    kubernetes.io/name: "Alertmanager"
+spec:
+  ports:
+    - name: http
+      port: 9093
+      protocol: TCP
+      targetPort: 9093
+  selector:
+    k8s-app: alertmanager
+  type: "ClusterIP"
