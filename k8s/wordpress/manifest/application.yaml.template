@@ -51,6 +51,10 @@ spec:
       -p '{"spec": {"type": "LoadBalancer"}}'
     ```
 
+    Warning: Do not leave your WordPress installation in this initial setup
+    state. Other visitors can set up a website on your cluster and use it to serve
+    potentially malicious content.
+
     # Access WordPress site
 
     Get the external IP of the Wordpress site service and visit
@@ -71,9 +75,3 @@ spec:
 
     After accessing the WordPress main page, you will see the installation wizard.
     Follow the instructions presented on the screen to finish the process.
-
-    Warning: Do not leave your WordPress installation in this initial setup
-    state. Other visitors can set up a website on your cluster and use it to serve
-    potentially malicious content. You should either continue with the installation
-    steps on this interface or continue with the tutorial to clean up this
-    deployment.
