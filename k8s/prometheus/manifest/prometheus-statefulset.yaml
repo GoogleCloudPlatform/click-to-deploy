@@ -1,9 +1,10 @@
 apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
-  name: prometheus
+  name: $APP_INSTANCE_NAME-prometheus
   labels:
     k8s-app: prometheus
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
 spec:
   serviceName: "prometheus"
   replicas: 2
@@ -63,7 +64,6 @@ spec:
             requests:
               cpu: 200m
               memory: 1000Mi
-
           volumeMounts:
             - name: config-volume
               mountPath: /etc/config
@@ -87,7 +87,7 @@ spec:
             topologyKey: "kubernetes.io/hostname"
   volumeClaimTemplates:
   - metadata:
-      name: prometheus-data
+      name: $APP_INSTANCE_NAME-prometheus-data
     spec:
       storageClassName: standard
       accessModes:

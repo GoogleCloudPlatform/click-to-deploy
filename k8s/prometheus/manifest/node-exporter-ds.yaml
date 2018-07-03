@@ -1,9 +1,10 @@
 apiVersion: extensions/v1beta1
 kind: DaemonSet
 metadata:
-  name: node-exporter
+  name: $APP_INSTANCE_NAME-node-exporter
   labels:
     k8s-app: node-exporter
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
 spec:
   updateStrategy:
     type: OnDelete

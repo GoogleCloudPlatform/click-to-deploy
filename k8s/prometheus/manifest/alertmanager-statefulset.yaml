@@ -1,9 +1,10 @@
 apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
-  name: alertmanager
+  name: $APP_INSTANCE_NAME-alertmanager
   labels:
     k8s-app: alertmanager
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
 spec:
   serviceName: "alertmanager-operated"
   replicas: 3
@@ -83,7 +84,7 @@ spec:
             topologyKey: "kubernetes.io/hostname"
   volumeClaimTemplates:
   - metadata:
-      name: alertmanager-data
+      name: $APP_INSTANCE_NAME-alertmanager-data
     spec:
       storageClassName: standard
       accessModes:

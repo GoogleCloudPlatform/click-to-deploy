@@ -1,9 +1,10 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: prometheus
+  name: $APP_INSTANCE_NAME-prometheus
   labels:
     kubernetes.io/name: "Prometheus"
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
 spec:
   ports:
     - name: http

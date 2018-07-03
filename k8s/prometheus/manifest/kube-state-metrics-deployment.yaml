@@ -1,9 +1,10 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: kube-state-metrics
+  name: $APP_INSTANCE_NAME-kube-state-metrics
   labels:
     k8s-app: kube-state-metrics
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
 spec:
   selector:
     matchLabels:

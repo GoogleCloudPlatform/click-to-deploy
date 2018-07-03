@@ -1,7 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: grafana-ini
+  name: $APP_INSTANCE_NAME-grafana-ini
+  labels:
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
 data:
   grafana.ini: |
     [analytics]
@@ -18,7 +20,9 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: grafana-datasources
+  name: $APP_INSTANCE_NAME-grafana-datasources
+  labels:
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
 data:
   datasources.yaml: |
     apiVersion: 1
@@ -33,7 +37,9 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: grafana-dashboardproviders
+  name: $APP_INSTANCE_NAME-grafana-dashboardproviders
+  labels:
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
 data:
   dashboardproviders.yaml: |
     apiVersion: 1
