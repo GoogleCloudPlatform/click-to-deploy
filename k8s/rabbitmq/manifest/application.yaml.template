@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
 spec:
   type: RabbitMQ
-  version: '3.6.15'
+  version: '3.7'
   description: |-
     RabbitMQ is an open source messaging system that implements the Advanced Message Queueing Protocol to serve a variety of messaging applications.
 
