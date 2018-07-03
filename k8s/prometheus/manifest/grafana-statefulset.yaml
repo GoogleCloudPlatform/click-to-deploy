@@ -16,6 +16,14 @@ spec:
         k8s-app: grafana
     spec:
       serviceAccountName: $GRAFANA_SA
+      initContainers:
+          - name: "init-chmod-data"
+            image: $IMAGE_PROMETHEUS_INIT
+            imagePullPolicy: "IfNotPresent"
+            command: ["chmod", "777", "/var/lib/grafana"]
+            volumeMounts:
+            - name: grafana-data
+              mountPath: "/var/lib/grafana"
       containers:
         - name: grafana
           image: $IMAGE_GRAFANA
