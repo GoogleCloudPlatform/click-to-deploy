@@ -29,7 +29,7 @@ spec:
         imagePullPolicy: "IfNotPresent"
         command: ["chown", "-R", "65534:65534", "/data"]
         volumeMounts:
-        - name: prometheus-data
+        - name: $APP_INSTANCE_NAME-prometheus-data
           mountPath: /data
           subPath: ""
       containers:
@@ -67,14 +67,14 @@ spec:
           volumeMounts:
             - name: config-volume
               mountPath: /etc/config
-            - name: prometheus-data
+            - name: $APP_INSTANCE_NAME-prometheus-data
               mountPath: /data
               subPath: ""
       terminationGracePeriodSeconds: 300
       volumes:
         - name: config-volume
           configMap:
-            name: prometheus-config
+            name: $APP_INSTANCE_NAME-prometheus-config
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:

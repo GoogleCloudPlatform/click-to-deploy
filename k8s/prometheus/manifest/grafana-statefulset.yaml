@@ -23,7 +23,7 @@ spec:
             imagePullPolicy: "IfNotPresent"
             command: ["chmod", "777", "/var/lib/grafana"]
             volumeMounts:
-            - name: grafana-data
+            - name: $APP_INSTANCE_NAME-grafana-data
               mountPath: "/var/lib/grafana"
       containers:
         - name: grafana
@@ -38,7 +38,7 @@ spec:
               mountPath: "/etc/grafana/provisioning/datasources/"
             - name: dashboardproviders
               mountPath: "/etc/grafana/provisioning/dashboards/"
-            - name: grafana-data
+            - name: $APP_INSTANCE_NAME-grafana-data
               mountPath: "/var/lib/grafana"
           ports:
             - name: service
@@ -51,12 +51,12 @@ spec:
             - name: GF_SECURITY_ADMIN_USER
               valueFrom:
                 secretKeyRef:
-                  name: grafana
+                  name: $APP_INSTANCE_NAME-grafana
                   key: admin-user
             - name: GF_SECURITY_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: grafana
+                  name: $APP_INSTANCE_NAME-grafana
                   key: admin-password
           livenessProbe:
             httpGet:
@@ -80,16 +80,16 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: grafana-ini
+            name: $APP_INSTANCE_NAME-grafana-ini
         - name: datasources
           configMap:
-            name: grafana-datasources
+            name: $APP_INSTANCE_NAME-grafana-datasources
         - name: dashboardproviders
           configMap:
-            name: grafana-dashboardproviders
+            name: $APP_INSTANCE_NAME-grafana-dashboardproviders
         - name: dashboards
           configMap:
-            name: dashboards
+            name: $APP_INSTANCE_NAME-dashboards
   volumeClaimTemplates:
   - metadata:
       name: $APP_INSTANCE_NAME-grafana-data

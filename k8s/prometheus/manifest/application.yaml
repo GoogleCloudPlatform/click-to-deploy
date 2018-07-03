@@ -9,8 +9,8 @@ metadata:
   labels:
     app.kubernetes.io/name: $APP_INSTANCE_NAME
 spec:
-  type: Prometheus
-  version: '0.0.1'
+  type: Prometheus & Grafana
+  version: '2.3'
   description: |-
     Prometheus is an open-source monitoring and alerting platform, widely adopted by many companies
     as a Kubernetes monitoring tool.
@@ -20,8 +20,20 @@ spec:
     [Stack Overflow](https://stackoverflow.com/questions/tagged/prometheus/).
     Additional support is available on [community forums](https://prometheus.io/community/).
   info:
-  - name: Service endpoint
-    value: TODO
+  - name: Grafana username
+    type: Reference
+    valueFrom:
+      type: SecretKeyRef
+      secretKeyRef:
+        name: $APP_INSTANCE_NAME-grafana
+        key: admin-user
+  - name: Grafana password
+    type: Reference
+    valueFrom:
+      type: SecretKeyRef
+      secretKeyRef:
+        name: $APP_INSTANCE_NAME-grafana
+        key: admin-password
   maintainers:
   - name: Google Click to Deploy
     url: https://cloud.google.com/solutions/#click-to-deploy

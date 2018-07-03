@@ -58,7 +58,7 @@ spec:
           volumeMounts:
             - name: config-volume
               mountPath: /etc/config
-            - name: alertmanager-data
+            - name: $APP_INSTANCE_NAME-alertmanager-data
               mountPath: "/data"
               subPath: ""
           resources:
@@ -71,7 +71,7 @@ spec:
       volumes:
         - name: config-volume
           configMap:
-            name: alertmanager-config
+            name: $APP_INSTANCE_NAME-alertmanager-config
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
