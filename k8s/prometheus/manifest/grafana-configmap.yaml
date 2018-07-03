@@ -31,7 +31,7 @@ data:
       isDefault: true
       name: prometheus
       type: prometheus
-      url: http://prometheus:9090
+      url: http://$APP_INSTANCE_NAME-prometheus:9090
       version: 1
 ---
 apiVersion: v1
