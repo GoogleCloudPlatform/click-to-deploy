@@ -1,8 +1,7 @@
-apiVersion: apps/v1
+apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
   name: kube-state-metrics
-  namespace: kube-system
   labels:
     k8s-app: kube-state-metrics
 spec:
@@ -18,10 +17,10 @@ spec:
         scheduler.alpha.kubernetes.io/critical-pod: ''
     spec:
       priorityClassName: system-cluster-critical
-      serviceAccountName: kube-state-metrics
+      serviceAccountName: $KUBE_STATE_METRICS_SA
       containers:
       - name: kube-state-metrics
-        image: quay.io/coreos/kube-state-metrics:v1.3.0
+        image: $IMAGE_KUBE_STATE_METRICS
         ports:
         - name: http-metrics
           containerPort: 8080

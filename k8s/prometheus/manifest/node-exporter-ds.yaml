@@ -2,7 +2,6 @@ apiVersion: extensions/v1beta1
 kind: DaemonSet
 metadata:
   name: node-exporter
-  namespace: kube-system
   labels:
     k8s-app: node-exporter
 spec:
@@ -15,14 +14,14 @@ spec:
       annotations:
         scheduler.alpha.kubernetes.io/critical-pod: ''
     spec:
-      serviceAccountName: node-exporter
+      serviceAccountName: $NODE_EXPORTER_SA
       tolerations:
       - key: node-role.kubernetes.io/master
         effect: NoSchedule
       priorityClassName: system-node-critical
       containers:
         - name: prometheus-node-exporter
-          image: "prom/node-exporter:v0.15.2"
+          image: $IMAGE_NODE_EXPORTER
           imagePullPolicy: "IfNotPresent"
           args:
             - --path.procfs=/host/proc

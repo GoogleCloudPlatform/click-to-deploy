@@ -32,4 +32,3 @@ kind: ConfigMap
 metadata:
   creationTimestamp: null
   name: dashboards
-  namespace: kube-system

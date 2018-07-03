@@ -2,7 +2,6 @@ apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
   name: grafana
-  namespace: kube-system
   labels:
     k8s-app: grafana
 spec:
@@ -16,10 +15,10 @@ spec:
       labels:
         k8s-app: grafana
     spec:
-      serviceAccountName: grafana
+      serviceAccountName: $GRAFANA_SA
       containers:
         - name: grafana
-          image: "grafana/grafana:5.0.4"
+          image: $IMAGE_GRAFANA
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: config

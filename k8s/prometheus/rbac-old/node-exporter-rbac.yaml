@@ -1,5 +1,4 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: alertmanager
-  namespace: kube-system
+  name: node-exporter

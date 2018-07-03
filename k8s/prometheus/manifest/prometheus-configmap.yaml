@@ -531,4 +531,3 @@ kind: ConfigMap
 metadata:
   creationTimestamp: null
   name: prometheus-config
-  namespace: kube-system

@@ -2,7 +2,6 @@ apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
   name: prometheus
-  namespace: kube-system
   labels:
     k8s-app: prometheus
 spec:
@@ -22,10 +21,10 @@ spec:
         scheduler.alpha.kubernetes.io/critical-pod: ''
     spec:
       priorityClassName: system-cluster-critical
-      serviceAccountName: prometheus
+      serviceAccountName: $PROMETHEUS_SA
       initContainers:
       - name: "init-chown-data"
-        image: "alpine:latest"
+        image: $IMAGE_PROMETHEUS_INIT
         imagePullPolicy: "IfNotPresent"
         command: ["chown", "-R", "65534:65534", "/data"]
         volumeMounts:
@@ -34,7 +33,7 @@ spec:
           subPath: ""
       containers:
         - name: prometheus-server
-          image: "prom/prometheus:v2.2.1"
+          image: $IMAGE_PROMETHEUS
           imagePullPolicy: "IfNotPresent"
           args:
             - --config.file=/etc/config/prometheus.yaml
