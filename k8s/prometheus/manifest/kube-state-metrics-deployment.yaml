@@ -59,4 +59,4 @@ spec:
           - --memory=100Mi
           - --extra-memory=2Mi
           - --threshold=5
-          - --deployment=kube-state-metrics
+          - --deployment=$APP_INSTANCE_NAME-kube-state-metrics
