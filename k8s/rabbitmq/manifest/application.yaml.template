@@ -19,8 +19,14 @@ spec:
     [Stack Overflow](https://stackoverflow.com/questions/tagged/rabbitmq/).
     Additional support is available on [community forums](https://groups.google.com/forum/#!forum/rabbitmq-users).
   info:
-  - name: Service endpoint
-    value: TODO
+  - name: RabbitMQ username
+    value: '$RABBITMQ_DEFAULT_USER'
+  - name: RabbitMQ password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: rabbitmq-pass
+        name: $APP_INSTANCE_NAME-rabbitmq-secret
   maintainers:
   - name: Google Click to Deploy
     url: https://cloud.google.com/solutions/#click-to-deploy
@@ -50,6 +56,17 @@ spec:
   - group: rbac.authorization.k8s.io/v1
     kind: RoleBinding
   notes: |-
+    # Get authentication credentials for the cluster
+
+    ```shell
+    gcloud container clusters get-credentials [CLUSTER_NAME]
+    ```
+    where `[CLUSTER_NAME]` is the name you choose for the cluster.
+
+    Please read [here](https://cloud.google.com/kubernetes-engine/docs/quickstart#get_authentication_credentials_for_the_cluster) for more information.
+
+    <!--- ALL THIS BELOW IS COPIED FROM README.MD -->
+
     # Cluster status
 
     By default, the application does not have an external IP. Use `kubectl` to execute `rabbitmqctl` on the master node.
@@ -96,8 +113,7 @@ spec:
     ```
     SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-rabbitmq-svc \
       --namespace $NAMESPACE \
-      --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
-
+      --output jsonpath='{.status.loadBalancer.ingress[0].ip}'); \
     echo "http://${SERVICE_IP}:15672"
     ```
 
@@ -123,3 +139,5 @@ spec:
     ```
 
     where `<new-replicas>` defines the number of replicas.
+
+    <!--- ALL THIS ABOVE IS COPIED FROM README.MD -->
