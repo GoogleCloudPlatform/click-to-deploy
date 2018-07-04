@@ -1,0 +1,59 @@
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+
+  rbac.create:
+    type: boolean
+    default: false
+
+  alertmanager.image.reference:
+    type: string
+    default: $REGISTRY/prometheus/alertmanager:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  configmapReload.image.reference:
+    type: string
+    default: $REGISTRY/prometheus/configmapreload:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  initChownData.image.reference:
+    type: string
+    default: $REGISTRY/prometheus/initchowndata:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  kubeStateMetrics.image.reference:
+    type: string
+    default: $REGISTRY/prometheus/kubestatemetrics:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  nodeExporter.image.reference:
+    type: string
+    default: $REGISTRY/prometheus/nodeexporter:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  server.image.reference:
+    type: string
+    default: $REGISTRY/prometheus/server:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  pushGateway.image.reference:
+    type: string
+    default: $REGISTRY/prometheus/pushgateway:$TAG
+    x-google-marketplace:
+      type: IMAGE
+required:
+- name
+- namespace
+- alertmanager.image.reference
+- configmapReload.image.reference
+- initChownData.image.reference
+- kubeStateMetrics.image.reference
+- nodeExporter.image.reference
+- server.image.reference
+- pushGateway.image.reference
