@@ -36,7 +36,7 @@ data:
         }
       }
     }
-  search-kubelet-cmd.json: |-
+  search-kubelet.json: |-
     {
       "attributes": {
         "title": "kubelet logs",
@@ -52,7 +52,7 @@ data:
         ],
         "version": 1,
         "kibanaSavedObjectMeta": {
-          "searchSourceJSON": "{\"index\":\"logstash-*\",\"highlightAll\":true,\"version\":true,\"query\":{\"query\":\"cmd:kubelet\",\"language\":\"kuery\"},\"filter\":[]}"
+          "searchSourceJSON": "{\"index\":\"logstash-*\",\"highlightAll\":true,\"version\":true,\"query\":{\"query\":\"systemd_unit:kubelet.service\",\"language\":\"kuery\"},\"filter\":[]}"
         }
       }
     }
