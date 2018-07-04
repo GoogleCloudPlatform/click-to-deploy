@@ -285,9 +285,9 @@ data:
     rejected\"\n    \"expr\": |\n      increase(prometheus_target_scrapes_sample_duplicate_timestamp_total{job=\"prometheus\"}[5m])
     > 0\n    \"for\": \"10m\"\n    \"labels\": \n      \"severity\": \"warning\"\n"
   prometheus.yaml: "\"alerting\": \n  \"alertmanagers\": \n  - \"kubernetes_sd_configs\":
-    \n    - \"namespaces\": \n        \"names\": \n        - \"kube-system\"\n      \"role\":
+    \n    - \"namespaces\": \n        \"names\": \n        - \"$NAMESPACE\"\n      \"role\":
     \"endpoints\"\n    \"path_prefix\": \"/\"\n    \"relabel_configs\": \n    - \"action\":
-    \"keep\"\n      \"regex\": \"kube-system;alertmanager;http\"\n      \"source_labels\":
+    \"keep\"\n      \"regex\": \"$NAMESPACE;$APP_INSTANCE_NAME-alertmanager;http\"\n      \"source_labels\":
     \n      - \"__meta_kubernetes_namespace\"\n      - \"__meta_kubernetes_service_name\"\n
     \     - \"__meta_kubernetes_endpoint_port_name\"\n    \"scheme\": \"http\"\n    \"timeout\":
     \"10s\"\n\"global\": \n  \"scrape_interval\": \"15s\"\n\"rule_files\": \n- \"/etc/config/rules.yaml\"\n-
@@ -335,7 +335,7 @@ data:
     \ \"relabel_configs\": \n  - \"action\": \"labelmap\"\n    \"regex\": \"__meta_kubernetes_service_label_(.+)\"\n
     \ - \"action\": \"replace\"\n    \"regex\": \"([^:]+)(?::\\\\d+)?\"\n    \"replacement\":
     \"$1:9093\"\n    \"source_labels\": \n    - \"__address__\"\n    \"target_label\":
-    \"__address__\"\n  - \"action\": \"keep\"\n    \"regex\": \"kube-system;alertmanager\"\n
+    \"__address__\"\n  - \"action\": \"keep\"\n    \"regex\": \"$NAMESPACE;$APP_INSTANCE_NAME-alertmanager\"\n
     \   \"source_labels\": \n    - \"__meta_kubernetes_namespace\"\n    - \"__meta_kubernetes_service_name\"\n
     \ - \"action\": \"replace\"\n    \"source_labels\": \n    - \"__meta_kubernetes_namespace\"\n
     \   \"target_label\": \"namespace\"\n  - \"action\": \"replace\"\n    \"source_labels\":
@@ -369,7 +369,7 @@ data:
     \"instance\"\n- \"job_name\": \"kube-state-metrics\"\n  \"kubernetes_sd_configs\":
     \n  - \"role\": \"service\"\n  \"relabel_configs\": \n  - \"action\": \"labelmap\"\n
     \   \"regex\": \"__meta_kubernetes_service_label_(.+)\"\n  - \"action\": \"keep\"\n
-    \   \"regex\": \"kube-system;kube-state-metrics\"\n    \"source_labels\": \n    -
+    \   \"regex\": \"$NAMESPACE;$APP_INSTANCE_NAME-kube-state-metrics\"\n    \"source_labels\": \n    -
     \"__meta_kubernetes_namespace\"\n    - \"__meta_kubernetes_service_name\"\n- \"job_name\":
     \"kubelet\"\n  \"kubernetes_sd_configs\": \n  - \"role\": \"node\"\n  \"relabel_configs\":
     \n  - \"action\": \"labelmap\"\n    \"regex\": \"__meta_kubernetes_node_label_(.+)\"\n
@@ -380,7 +380,7 @@ data:
     \   \"regex\": \"__meta_kubernetes_pod_label_(.+)\"\n  - \"action\": \"replace\"\n
     \   \"regex\": \"([^:]+)(?::\\\\d+)?\"\n    \"replacement\": \"$1:9100\"\n    \"source_labels\":
     \n    - \"__address__\"\n    \"target_label\": \"__address__\"\n  - \"action\":
-    \"keep\"\n    \"regex\": \"kube-system;node-exporter\"\n    \"source_labels\":
+    \"keep\"\n    \"regex\": \"$NAMESPACE;$APP_INSTANCE_NAME-node-exporter\"\n    \"source_labels\":
     \n    - \"__meta_kubernetes_namespace\"\n    - \"__meta_kubernetes_pod_label_k8s_app\"\n
     \ - \"action\": \"replace\"\n    \"source_labels\": \n    - \"__meta_kubernetes_namespace\"\n
     \   \"target_label\": \"namespace\"\n  - \"action\": \"replace\"\n    \"source_labels\":
@@ -391,7 +391,7 @@ data:
     \   \"regex\": \"__meta_kubernetes_pod_label_(.+)\"\n  - \"action\": \"replace\"\n
     \   \"regex\": \"([^:]+)(?::\\\\d+)?\"\n    \"replacement\": \"$1:9090\"\n    \"source_labels\":
     \n    - \"__address__\"\n    \"target_label\": \"__address__\"\n  - \"action\":
-    \"keep\"\n    \"regex\": \"kube-system;prometheus\"\n    \"source_labels\": \n
+    \"keep\"\n    \"regex\": \"$NAMESPACE;$APP_INSTANCE_NAME-prometheus\"\n    \"source_labels\": \n
     \   - \"__meta_kubernetes_namespace\"\n    - \"__meta_kubernetes_pod_label_k8s_app\"\n
     \ - \"action\": \"replace\"\n    \"source_labels\": \n    - \"__meta_kubernetes_namespace\"\n
     \   \"target_label\": \"namespace\"\n  - \"action\": \"replace\"\n    \"source_labels\":
