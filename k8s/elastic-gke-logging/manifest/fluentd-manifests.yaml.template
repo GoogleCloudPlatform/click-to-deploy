@@ -69,7 +69,7 @@ data:
       time_format %m%d %H:%M:%S.%N
       path /var/log/kube-proxy.log
       pos_file /var/log/es-kube-proxy.log.pos
-      tag kube-proxy
+      tag kubeproxy
     </source>
 
   monitoring.conf: |-
