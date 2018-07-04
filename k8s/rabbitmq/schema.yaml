@@ -18,7 +18,7 @@ properties:
     type: integer
     default: 3
     minimum: 1
-    maximum: 100
+    maximum: 11
   RABBITMQ_ERLANG_COOKIE:
     type: string
     x-google-marketplace:
