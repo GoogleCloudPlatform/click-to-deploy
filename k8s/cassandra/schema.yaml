@@ -13,9 +13,12 @@ properties:
     x-google-marketplace:
       type: IMAGE
   REPLICAS:
+    title: Replicas
+    description: The number of Pod replicas
     type: integer
     default: 3
-    min: 1
+    minimum: 1
+    maximum: 100
 required:
 - APP_INSTANCE_NAME
 - NAMESPACE
