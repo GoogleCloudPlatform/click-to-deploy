@@ -6,7 +6,7 @@ metadata:
     k8s-app: prometheus
     app.kubernetes.io/name: $APP_INSTANCE_NAME
 spec:
-  serviceName: "prometheus"
+  serviceName: "$APP_INSTANCE_NAME-prometheus"
   replicas: 2
   podManagementPolicy: "Parallel"
   updateStrategy:
