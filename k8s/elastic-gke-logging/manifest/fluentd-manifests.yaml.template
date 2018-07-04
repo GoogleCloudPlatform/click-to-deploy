@@ -85,6 +85,14 @@ data:
     </source>
 
   output.conf: |-
+    <filter kubeproxy>
+      @type record_transformer
+      enable_ruby
+      <record>
+        hostname ${ENV["HOSTNAME"]}
+      </record>
+    </filter>
+    
     <filter **>
       @type prometheus
       <metric>
@@ -151,6 +159,10 @@ spec:
         env:
         - name: FLUENTD_ARGS
           value: --no-supervisor -q
+        - name: HOSTNAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
         resources:
           limits:
             memory: 500Mi
