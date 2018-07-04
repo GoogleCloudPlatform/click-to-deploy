@@ -20,11 +20,11 @@ data:
         "description": "",
         "hits": 0,
         "columns": [
+          "kubernetes.labels.app_kubernetes_io/name",
+          "kubernetes.namespace_name",
           "kubernetes.pod_name",
           "kubernetes.container_name",
-          "log",
-          "kubernetes.namespace_name",
-          "kubernetes.labels.app_kubernetes_io/name"
+          "log"
         ],
         "sort": [
           "@timestamp",
@@ -43,9 +43,8 @@ data:
         "description": "",
         "hits": 0,
         "columns": [
-          "log",
           "hostname",
-          "pid"
+          "log"
         ],
         "sort": [
           "@timestamp",
