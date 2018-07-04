@@ -56,6 +56,66 @@ data:
         }
       }
     }
+  search-kube-proxy.json: |-
+    {
+      "attributes": {
+        "title": "kube-proxy logs",
+        "description": "",
+        "hits": 0,
+        "columns": [
+          "hostname",
+          "log"
+        ],
+        "sort": [
+          "@timestamp",
+          "desc"
+        ],
+        "version": 1,
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"index\":\"logstash-*\",\"highlightAll\":true,\"version\":true,\"query\":{\"query\":\"tag:kubeproxy\",\"language\":\"kuery\"},\"filter\":[]}"
+        }
+      }
+    }
+  search-docker.json: |-
+    {
+      "attributes": {
+        "title": "docker logs",
+        "description": "",
+        "hits": 0,
+        "columns": [
+          "hostname",
+          "log"
+        ],
+        "sort": [
+          "@timestamp",
+          "desc"
+        ],
+        "version": 1,
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"index\":\"logstash-*\",\"highlightAll\":true,\"version\":true,\"query\":{\"query\":\"systemd_unit:docker.service\",\"language\":\"kuery\"},\"filter\":[]}"
+        }
+      }
+    }
+  search-kernel.json: |-
+    {
+      "attributes": {
+        "title": "kernel logs",
+        "description": "",
+        "hits": 0,
+        "columns": [
+          "hostname",
+          "log"
+        ],
+        "sort": [
+          "@timestamp",
+          "desc"
+        ],
+        "version": 1,
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"index\":\"logstash-*\",\"highlightAll\":true,\"version\":true,\"query\":{\"query\":\"transport:kernel\",\"language\":\"kuery\"},\"filter\":[]}"
+        }
+      }
+    }
 ---
 apiVersion: apps/v1beta2
 kind: Deployment
