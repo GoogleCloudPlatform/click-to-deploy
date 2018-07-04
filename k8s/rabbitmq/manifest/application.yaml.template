@@ -19,8 +19,14 @@ spec:
     [Stack Overflow](https://stackoverflow.com/questions/tagged/rabbitmq/).
     Additional support is available on [community forums](https://groups.google.com/forum/#!forum/rabbitmq-users).
   info:
-  - name: Service endpoint
-    value: TODO
+  - name: RabbitMQ username
+    value: '$RABBITMQ_DEFAULT_USER'
+  - name: RabbitMQ password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: rabbitmq-pass
+        name: $APP_INSTANCE_NAME-rabbitmq-secret
   maintainers:
   - name: Google Click to Deploy
     url: https://cloud.google.com/solutions/#click-to-deploy
