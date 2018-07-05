@@ -19,10 +19,7 @@ spec:
     metadata:
       labels:
         k8s-app: alertmanager
-      annotations:
-        scheduler.alpha.kubernetes.io/critical-pod: ''
     spec:
-      priorityClassName: system-cluster-critical
       serviceAccountName: $ALERTMANAGER_SA
       containers:
         - name: prometheus-alertmanager

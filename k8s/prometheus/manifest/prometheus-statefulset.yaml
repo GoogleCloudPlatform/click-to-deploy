@@ -18,10 +18,7 @@ spec:
     metadata:
       labels:
         k8s-app: prometheus
-      annotations:
-        scheduler.alpha.kubernetes.io/critical-pod: ''
     spec:
-      priorityClassName: system-cluster-critical
       serviceAccountName: $PROMETHEUS_SA
       initContainers:
       - name: "init-chown-data"
