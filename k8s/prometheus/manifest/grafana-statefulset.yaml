@@ -28,7 +28,7 @@ spec:
       containers:
         - name: grafana
           image: $IMAGE_GRAFANA
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           volumeMounts:
             - name: config
               mountPath: "/etc/grafana/"

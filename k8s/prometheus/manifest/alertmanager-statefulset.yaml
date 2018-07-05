@@ -24,7 +24,7 @@ spec:
       containers:
         - name: prometheus-alertmanager
           image: $IMAGE_ALERTMANAGER
-          imagePullPolicy: "IfNotPresent"
+          imagePullPolicy: Always
           args:
             - --config.file=/etc/config/alertmanager.yml
             - --storage.path=/data
