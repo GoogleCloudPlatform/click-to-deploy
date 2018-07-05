@@ -40,6 +40,8 @@ APP_TEST_PARAMETERS ?= {}
 
 
 app/build:: .build/elasticsearch/elasticsearch \
+            .build/elasticsearch/kibana \
+            .build/elasticsearch/fluentd \
             .build/elasticsearch/deployer \
             .build/elasticsearch/ubuntu16_04
 
@@ -68,33 +70,31 @@ app/build:: .build/elasticsearch/elasticsearch \
 .build/elasticsearch/elasticsearch: .build/var/REGISTRY \
                                     .build/var/TAG \
                                     | .build/elasticsearch
-	docker pull launcher.gcr.io/google/elasticsearch6
-	docker tag launcher.gcr.io/google/elasticsearch6 \
+	docker pull launcher.gcr.io/google/elasticsearch6:6.3
+	docker tag launcher.gcr.io/google/elasticsearch6:6.3 \
 	    "$(REGISTRY)/elasticsearch:$(TAG)"
 	docker push "$(REGISTRY)/elasticsearch:$(TAG)"
 	@touch "$@"
 
 
-# Uncomment when Kibana image is published
-#.build/elasticsearch/kibana: .build/var/REGISTRY \
-#                             .build/var/TAG \
-#                             | .build/elasticsearch
-#	docker pull launcher.gcr.io/google/kibana6
-#	docker tag launcher.gcr.io/google/kibana6 \
-#	    "$(REGISTRY)/elasticsearch/kibana:$(TAG)"
-#	docker push "$(REGISTRY)/elasticsearch/kibana:$(TAG)"
-#	@touch "$@"
+.build/elasticsearch/kibana: .build/var/REGISTRY \
+                             .build/var/TAG \
+                             | .build/elasticsearch
+	docker pull launcher.gcr.io/google/kibana6:6.3
+	docker tag launcher.gcr.io/google/kibana6:6.3 \
+	    "$(REGISTRY)/elasticsearch/kibana:$(TAG)"
+	docker push "$(REGISTRY)/elasticsearch/kibana:$(TAG)"
+	@touch "$@"
 
 
-# Uncomment when Fluentd image is published
-#.build/elasticsearch/fluentd: .build/var/REGISTRY \
-#                              .build/var/TAG \
-#                              | .build/elasticsearch
-#	docker pull launcher.gcr.io/google/fluentd1
-#	docker tag launcher.gcr.io/google/fluentd1 \
-#	    "$(REGISTRY)/elasticsearch/fluentd:$(TAG)"
-#	docker push "$(REGISTRY)/elasticsearch/fluentd:$(TAG)"
-#	@touch "$@"
+.build/elasticsearch/fluentd: .build/var/REGISTRY \
+                              .build/var/TAG \
+                              | .build/elasticsearch
+	docker pull launcher.gcr.io/google/fluentd1:1.2
+	docker tag launcher.gcr.io/google/fluentd1:1.2 \
+	    "$(REGISTRY)/elasticsearch/fluentd:$(TAG)"
+	docker push "$(REGISTRY)/elasticsearch/fluentd:$(TAG)"
+	@touch "$@"
 
 
 .build/elasticsearch/ubuntu16_04: .build/var/REGISTRY \
