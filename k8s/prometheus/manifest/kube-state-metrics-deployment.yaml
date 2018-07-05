@@ -14,14 +14,12 @@ spec:
     metadata:
       labels:
         k8s-app: kube-state-metrics
-      annotations:
-        scheduler.alpha.kubernetes.io/critical-pod: ''
     spec:
-      priorityClassName: system-cluster-critical
       serviceAccountName: $KUBE_STATE_METRICS_SA
       containers:
       - name: kube-state-metrics
         image: $IMAGE_KUBE_STATE_METRICS
+        imagePullPolicy: Always
         ports:
         - name: http-metrics
           containerPort: 8080

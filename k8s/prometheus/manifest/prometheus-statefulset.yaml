@@ -18,15 +18,12 @@ spec:
     metadata:
       labels:
         k8s-app: prometheus
-      annotations:
-        scheduler.alpha.kubernetes.io/critical-pod: ''
     spec:
-      priorityClassName: system-cluster-critical
       serviceAccountName: $PROMETHEUS_SA
       initContainers:
       - name: "init-chown-data"
         image: $IMAGE_PROMETHEUS_INIT
-        imagePullPolicy: "IfNotPresent"
+        imagePullPolicy: Always
         command: ["chown", "-R", "65534:65534", "/data"]
         volumeMounts:
         - name: $APP_INSTANCE_NAME-prometheus-data

@@ -19,15 +19,12 @@ spec:
     metadata:
       labels:
         k8s-app: alertmanager
-      annotations:
-        scheduler.alpha.kubernetes.io/critical-pod: ''
     spec:
-      priorityClassName: system-cluster-critical
       serviceAccountName: $ALERTMANAGER_SA
       containers:
         - name: prometheus-alertmanager
           image: $IMAGE_ALERTMANAGER
-          imagePullPolicy: "IfNotPresent"
+          imagePullPolicy: Always
           args:
             - --config.file=/etc/config/alertmanager.yml
             - --storage.path=/data
