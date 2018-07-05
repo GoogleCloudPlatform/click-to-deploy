@@ -41,9 +41,9 @@ spec:
   serviceName: $APP_INSTANCE_NAME-elasticsearch-svc
   replicas: $REPLICAS
   updateStrategy:
-      # The procedure for updating the ElasticSearch cluster is described at
-      # https://www.elastic.co/guide/en/elasticsearch/reference/current/rolling-upgrades.html
-      type: OnDelete
+    # The procedure for updating the ElasticSearch cluster is described at
+    # https://www.elastic.co/guide/en/elasticsearch/reference/current/rolling-upgrades.html
+    type: OnDelete
   template:
     metadata:
       labels: *ElasticsearchDeploymentLabels
@@ -74,8 +74,6 @@ spec:
           value: "$APP_INSTANCE_NAME-cluster"
         - name: DISCOVERY_SERVICE
           value: "$APP_INSTANCE_NAME-elasticsearch-svc"
-        - name: BACKUP_REPO_PATH
-          value: ""
         ports:
         - name: http
           containerPort: 9200
