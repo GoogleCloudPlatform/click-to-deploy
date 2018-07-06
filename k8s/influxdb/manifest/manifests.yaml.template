@@ -10,6 +10,18 @@ stringData:
 data:
   influxdb-pass: $INFLUXDB_ADMIN_PASSWORD
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: $APP_INSTANCE_NAME-data-pvc
+spec:
+  resources:
+    requests:
+      storage: 1Gi
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: standard
+---
 apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
@@ -24,22 +36,15 @@ spec:
   replicas: 1
   updateStrategy:
     type: RollingUpdate
-  volumeClaimTemplates:
-  - metadata:
-      name: $APP_INSTANCE_NAME-influxdb-pvc
-      labels: *InfluxdbDeploymentLabels
-    spec:
-      accessModes:
-      - ReadWriteOnce
-      storageClassName: standard
-      resources:
-        requests:
-          storage: 1Gi
-  template:
+ template:
     metadata:
       labels: *InfluxdbDeploymentLabels
     spec:
       terminationGracePeriodSeconds: 180
+      volumes:
+      - name: influxdb-data
+        persistentVolumeClaim:
+          claimName: $APP_INSTANCE_NAME-data-pvc
       containers:
       - name: influxdb
         image: $IMAGE_INFLUXDB
@@ -79,8 +84,8 @@ spec:
           initialDelaySeconds: 5
           timeoutSeconds: 2
         volumeMounts:
-	  -name: $APP_INSTANCE_NAME-influxdb-pvc
-	   mountPath: /var/lib/influxdb
+          -name: influxdb-data
+           mountPath: /var/lib/influxdb
 ---
 apiVersion: v1
 kind: Service
