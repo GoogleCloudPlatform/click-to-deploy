@@ -140,6 +140,8 @@ metadata:
 spec:
   selector:
     matchLabels: *FluentdLabels
+  updateStrategy:
+    type: RollingUpdate
   template:
     metadata:
       labels: *FluentdLabels

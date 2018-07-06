@@ -1,7 +1,9 @@
 # Overview
 
-Elasticsearch is an open-source search engine that provides a distributed, multitenant-capable
-full-text search engine with an HTTP web interface and schema-free JSON documents..
+Elastic GKE Logging is an application that provides a fully functional solution for collecting
+and analyzing logs from a Kubernetes cluster. It is built on top of popular open-source systems,
+including Fluentd for logs collection and Elasticsearch with Kibana for searching and analyzing
+data.
 
 [Learn more](https://www.elastic.co/).
 
@@ -13,7 +15,7 @@ Popular open stacks on Kubernetes packaged by Google.
 
 ## Quick install with Google Cloud Marketplace
 
-Get up and running with a few clicks! Install this Elasticsearch app to a
+Get up and running with a few clicks! Install this Elastic GKE Logging app to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 [on-screen instructions](https://console.cloud.google.com/launcher/details/google/elasticsearch).
 
@@ -78,7 +80,7 @@ community. The source code can be found on
 Navigate to the `elasticsearch` directory.
 
 ```shell
-cd google-click-to-deploy/k8s/elasticsearch
+cd google-click-to-deploy/k8s/elastic-gke-logging
 ```
 
 #### Configure the app with environment variables
@@ -86,21 +88,25 @@ cd google-click-to-deploy/k8s/elasticsearch
 Choose the instance name and namespace for the app.
 
 ```shell
-export APP_INSTANCE_NAME=elasticsearch-1
+export APP_INSTANCE_NAME=elastic-logging-1
 export NAMESPACE=default
 ```
 
 Specify the number of replicas for the Elasticsearch server:
 
 ```shell
-export REPLICAS=2
+export ES_REPLICAS=2
 ```
 
 Configure the container images.
 
 ```shell
-export IMAGE_ELASTICSEARCH="gcr.io/k8s-marketplace-eap/google/elasticsearch:latest"
-export IMAGE_INIT="gcr.io/k8s-marketplace-eap/google/elasticsearch/ubuntu16_04:latest"
+APP_VERSION=6.3
+
+export IMAGE_ELASTICSEARCH="gcr.io/k8s-marketplace-eap/google/elastic-gke-logging/elasticsearch:$APP_VERSION"
+export IMAGE_KIBANA="gcr.io/k8s-marketplace-eap/google/elastic-gke-logging/kibana:$APP_VERSION"
+export IMAGE_FLUENTD="gcr.io/k8s-marketplace-eap/google/elastic-gke-logging/fluentd:$APP_VERSION"
+export IMAGE_INIT="gcr.io/k8s-marketplace-eap/google/elasticsearch/ubuntu16_04:$APP_VERSION"
 ```
 
 The images above are referenced by
@@ -111,7 +117,7 @@ This will ensure that the installed application will always use the same images,
 until you are ready to upgrade.
 
 ```shell
-for i in "IMAGE_ELASTICSEARCH" "IMAGE_INIT"; do
+for i in IMAGE_ELASTICSEARCH IMAGE_KIBANA IMAGE_FLUENTD IMAGE_INIT; do
   repo=`echo ${!i} | cut -d: -f1`;
   digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
   export $i="$repo@$digest";
@@ -126,7 +132,8 @@ expanded manifest file for future updates to the application.
 
 ```shell
 awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_ELASTICSEARCH $IMAGE_INIT $REPLICAS' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE \
+      $IMAGE_ELASTICSEARCH $IMAGE_KIBANA $IMAGE_FLUENTD $IMAGE_INIT $ES_REPLICAS' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
@@ -267,6 +274,8 @@ also consider using other NFS providers or one of the repository plugins support
 Kibana has all its stateful data stored in Elasticsearch index called `.kibana`, so it requires no
 additional backup steps.
 
+Fluentd DaemonSet stateless by design and requires no backup procedure. 
+
 ## Snapshot
 
 ### Create a backup infrastructure
@@ -359,6 +368,8 @@ curl -X POST "$ELASTIC_URL/_snapshot/es_backup/snapshot_1/_restore"
 
 # Update procedure
 
+## Elasticsearch update
+
 For more background about the rolling update procedure, please check the
 [official documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/rolling-upgrades.html).
 
@@ -410,6 +421,21 @@ kubectl set image deployment "${APP_INSTANCE_NAME}-kibana" \
 The Kibana deployment will automatically start creating a new pod with new image and delete the old
 one, once the procedure is successfully finished. 
 
+## Update the Fluentd Daemon Set
+
+To update Fluentd, follow the instructions from the 
+[official documentation](https://docs.fluentd.org/v1.0/articles/quickstart). 
+Make sure that the configuration format in `${APP_INSTANCE_NAME}-fluentd-es-config` ConfigMap
+is compatible with the new application version.
+
+To update the Fluentd image, run the following command:
+
+```shell
+IMAGE_FLUENTD=<put the new image reference>
+
+kubectl set image ds/${APP_INSTANCE_NAME}-fluentd-es fluentd-es="${IMAGE_FLUENTD}"
+``` 
+
 # Uninstall the Application
 
 ## Using GKE UI
@@ -427,7 +453,7 @@ the resources attached to this application.
 Set your installation name and Kubernetes namespace:
 
 ```shell
-export APP_INSTANCE_NAME=elasticsearch-1
+export APP_INSTANCE_NAME=elastic-logging-1
 export NAMESPACE=default
 ```
 
@@ -444,15 +470,25 @@ awk 'BEGINFILE {print "---"}{print}' manifest/* \
 
 ### Delete the resources using `kubectl delete`
 
-NOTE: Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions.
+> NOTE: Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions.
   It means that for instance if you have `kubectl` in version 1.10.&ast; and Kubernetes 1.8.&ast;,
   you may experience incompatibility issues, like not removing the StatefulSets with
   apiVersion of apps/v1beta2.
 
+
+If you still have the expanded manifest file used for the installation, you can use it to delete the resources.
 Run `kubectl` on expanded manifest file matching your installation:
 
 ```shell
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
+```
+
+Otherwise, delete the resources by indication types and label:
+
+```shell
+kubectl delete deployment,statefulset,service,configmap,serviceaccount,clusterrole,clusterrolebinding,application,job \
+  --namespace $NAMESPACE \
+  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
 
 ### Delete the persistent volumes of your installation
@@ -465,7 +501,7 @@ following `kubectl` command:
 
 ```shell
 # specify the variables values matching your installation:
-export APP_INSTANCE_NAME=elasticsearch-1
+export APP_INSTANCE_NAME=elastic-logging-1
 export NAMESPACE=default
 
 kubectl delete persistentvolumeclaims \

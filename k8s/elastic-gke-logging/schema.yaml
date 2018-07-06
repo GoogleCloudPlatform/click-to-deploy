@@ -9,7 +9,7 @@ properties:
       type: NAMESPACE
   IMAGE_ELASTICSEARCH:
     type: string
-    default: $REGISTRY:$TAG
+    default: $REGISTRY/elasticsearch:$TAG
     x-google-marketplace:
       type: IMAGE
   IMAGE_KIBANA:
@@ -27,7 +27,7 @@ properties:
     default: $REGISTRY/ubuntu16_04:$TAG
     x-google-marketplace:
       type: IMAGE
-  REPLICAS:
+  ES_REPLICAS:
     type: integer
     default: 2
     min: 1
@@ -40,11 +40,6 @@ properties:
         - type: ClusterRole
           rulesType: PREDEFINED
           rulesFromRoleName: cluster-admin
-#          rulesType: CUSTOM
-#          rules:
-#          - apiGroups: ['v1']
-#            resources: ['Pod', 'Namespace']
-#            verbs: ['get', 'list', 'watch']
 required:
 - APP_INSTANCE_NAME
 - NAMESPACE
@@ -52,4 +47,4 @@ required:
 - IMAGE_KIBANA
 - IMAGE_FLUENTD
 - IMAGE_INIT
-- REPLICAS
+- ES_REPLICAS
