@@ -53,7 +53,7 @@ spec:
   - group: batch/v1
     kind: Job
   notes: |-
-    # Expose Kibana service
+    # Expose Kibana service (optional)
 
     By default, the service does not have an external IP. Run the
     following command to expose an external IP:
@@ -62,6 +62,17 @@ spec:
     kubectl patch svc "$APP_INSTANCE_NAME-kibana-svc" \
       --namespace "$NAMESPACE" \
       -p '{"spec": {"type": "LoadBalancer"}}'
+    ```
+
+    Alternatively, you could also run in background a `kubectl port-forward` command to access
+    Kibana from your localhost:
+
+    ```
+    KIBANA_POD_NAME="$(kubectl get pods -n $NAMESPACE \
+      -l=app.kubernetes.io/name=$APP_INSTANCE_NAME,app.kubernetes.io/component=kibana-server \
+      -o jsonpath='{metadata.name}')"
+
+    kubectl port-forward $KIBANA_POD_NAME -n $NAMESPACE 5601
     ```
 
     # Access Kibana
