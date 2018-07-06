@@ -193,8 +193,6 @@ kubectl get secret $APP_INSTANCE_NAME-rabbitmq-secret \
 By default, the application does not have an external IP. Run the
 following command to expose an external IP:
 
-> **WARNING:** The application has defaulted *quest* user. Please be careful with exposing the application for the world.
-
 > **NOTE:** It might take some time for the external IP to be provisioned.
 
 ```
@@ -216,8 +214,7 @@ kubectl get svc $APP_INSTANCE_NAME-rabbitmq-svc --namespace $NAMESPACE
 ```
 SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-rabbitmq-svc \
   --namespace $NAMESPACE \
-  --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
-
+  --output jsonpath='{.status.loadBalancer.ingress[0].ip}'); \
 echo "http://${SERVICE_IP}:15672"
 ```
 
