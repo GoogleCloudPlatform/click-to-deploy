@@ -11,7 +11,7 @@ metadata:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
 spec:
   type: Cassandra
-  version: '3.11.2'
+  version: '1.0.0'
   description: |-
     Cassandra is a NoSQL, highly scalable, high-performance distributed database with high
     availability with no single point of failure.

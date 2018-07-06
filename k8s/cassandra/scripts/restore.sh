@@ -23,13 +23,12 @@ fi
 
 KEYSPACE="$1"
 BACKUPS="$2"
-set -e
+set -u
 
 current_status
 info "Preparing to restore a backup of keyspace '${KEYSPACE}' from ${BACKUPS} archieves"
 
 wait_for_healthy_sts
-
 
 REPLICAS=$(get_desired_number_of_replicas_in_sts)
 
@@ -38,7 +37,6 @@ info "Performing restore of ${REPLICAS} sized cluster"
 info "Restoring schema"
 kubectl exec -i "${APP_INSTANCE_NAME}-cassandra-0" -n "${NAMESPACE}" -c cassandra -- \
   cqlsh < backup-schema.cql
-
 
 info "Creating restore instance"
 info ""

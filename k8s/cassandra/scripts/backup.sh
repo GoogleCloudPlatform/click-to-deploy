@@ -17,8 +17,7 @@ if [[ -z "$1" ]]; then
 fi
 
 KEYSPACE="$1"
-
-set -e
+set -u
 
 function upload_backup_script_cmd {
   for index in $(seq 0 $(( "${REPLICAS}" - 1 )) ); do

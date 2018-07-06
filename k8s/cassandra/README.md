@@ -159,6 +159,9 @@ envsubst '$APP_INSTANCE_NAME $NAMESPACE' scripts/external.yaml.template > script
 kubectl apply -f scripts/external.yaml -n $NAMESPACE
 ```
 
+**NOTE** Please configure Cassandra access control, while exposing it to public
+access.
+
 ### Access Cassandra service
 
 Get the external IP of the Cassandra service invoking `kubectl get`
