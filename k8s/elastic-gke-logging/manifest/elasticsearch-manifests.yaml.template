@@ -70,10 +70,21 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
+        - name: ES_JAVA_OPTS
+          value: -Xms1536m -Xmx1536m
         - name: CLUSTER_NAME
           value: "$APP_INSTANCE_NAME-cluster"
         - name: DISCOVERY_SERVICE
           value: "$APP_INSTANCE_NAME-elasticsearch-svc"
+        - name: BACKUP_REPO_PATH
+          value: ""
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 4Gi
+          requests:
+            cpu: 100m
+            memory: 1536Mi
         ports:
         - name: http
           containerPort: 9200
@@ -101,12 +112,25 @@ spec:
             - "java"
           initialDelaySeconds: 5
         resources:
+          limits:
+            cpu: 1000m
+            memory: 4Gi
           requests:
-            memory: "2Gi"
+            cpu: 100m
+            memory: 1536Mi
       volumes:
       - name: configmap
         configMap:
           name: "$APP_INSTANCE_NAME-configmap"
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values: ["$APP_INSTANCE_NAME"]
+            topologyKey: "kubernetes.io/hostname"
   volumeClaimTemplates:
   - metadata:
       name: $APP_INSTANCE_NAME-elasticsearch-pvc
@@ -118,7 +142,7 @@ spec:
       storageClassName: standard
       resources:
         requests:
-          storage: 5Gi
+          storage: 20Gi
 ---
 apiVersion: v1
 kind: Service
