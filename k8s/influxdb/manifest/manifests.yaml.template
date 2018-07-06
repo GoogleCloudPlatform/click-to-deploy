@@ -34,7 +34,7 @@ spec:
       storageClassName: standard
       resources:
         requests:
-	  storage: 5Gi
+          storage: 5Gi
   template:
     metadata:
       labels: *InfluxdbDeploymentLabels
@@ -50,14 +50,14 @@ spec:
           value: 'true'
         - name: INFLUXDB_ADMIN_USER
           valueFrom:
-	    secretKeyRef:
-	      name: $APP_INSTANCE_NAME-influxdb-secret
-	      key: influxdb-admin
+            secretKeyRef:
+              name: $APP_INSTANCE_NAME-influxdb-secret
+              key: influxdb-admin
         - name: INFLUXDB_ADMIN_PASSWORD
           valueFrom:
-	    secretKeyRef:
-	      name: $APP_INSTANCE_NAME-influxdb-secret
-	      key: influxdb-pass
+            secretKeyRef:
+              name: $APP_INSTANCE_NAME-influxdb-secret
+              key: influxdb-pass
         ports:
         - name: influxdb
           containerPort: 8086
