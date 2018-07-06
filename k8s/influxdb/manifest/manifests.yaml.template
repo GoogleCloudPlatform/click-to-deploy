@@ -78,6 +78,9 @@ spec:
             port: influxdb
           initialDelaySeconds: 5
           timeoutSeconds: 2
+        volumeMounts:
+	  -name: $APP_INSTANCE_NAME-influxdb-pvc
+	   mountPath: /var/lib/influxdb
 ---
 apiVersion: v1
 kind: Service
