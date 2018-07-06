@@ -1,3 +1,15 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: $APP_INSTANCE_NAME-influxdb-secret
+  labels: 
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/component: influxdb-server
+stringData:
+  influxdb-admin: $INFLUXDB_ADMIN_USER
+data:
+  influxdb-pass: $INFLUXDB_ADMIN_PASSWORD
+---
 apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
@@ -12,6 +24,17 @@ spec:
     type: RollingUpdate
   serviceName: $APP_INSTANCE_NAME-influxdb-svc
   replicas: 1
+  volumeClaimTemplates:
+  - metadata:
+      name: $APP_INSTANCE_NAME-influxdb-pvc
+      labels: *InfluxDBDeploymentLabels
+    spec:
+      accessModes:
+      - ReadWriteMany
+      storageClassName: standard
+      resources:
+        requests:
+	  storage: 5Gi
   template:
     metadata:
       labels: *InfluxdbDeploymentLabels
@@ -26,9 +49,15 @@ spec:
         - name: INFLUXDB_ADMIN_ENABLED
           value: 'true'
         - name: INFLUXDB_ADMIN_USER
-          value: '$INFLUXDB_ADMIN_USER'
+          valueFrom:
+	    secretKeyRef:
+	      name: $APP_INSTANCE_NAME-influxdb-secret
+	      key: influxdb-admin
         - name: INFLUXDB_ADMIN_PASSWORD
-          value: '$INFLUXDB_ADMIN_PASSWORD'
+          valueFrom:
+	    secretKeyRef:
+	      name: $APP_INSTANCE_NAME-influxdb-secret
+	      key: influxdb-pass
         ports:
         - name: influxdb
           containerPort: 8086
