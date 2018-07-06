@@ -127,9 +127,6 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
               matchExpressions:
-              - key: app.kubernetes.io/name
-                operator: In
-                values: ["$APP_INSTANCE_NAME"]
               - key: app.kubernetes.io/component
                 operator: In
                 values: ["elasticsearch-server"]
