@@ -25,15 +25,15 @@ spec:
 apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
-  name: $APP_INSTANCE_NAME-influxdb
   labels: &InfluxdbDeploymentLabels
     app.kubernetes.io/name: $APP_INSTANCE_NAME
     app.kubernetes.io/component: influxdb-server
+  name: $APP_INSTANCE_NAME-influxdb
 spec:
+  replicas: 1
   selector:
     matchLabels: *InfluxdbDeploymentLabels
   serviceName: $APP_INSTANCE_NAME-influxdb-svc
-  replicas: 1
   updateStrategy:
     type: RollingUpdate
  template:
