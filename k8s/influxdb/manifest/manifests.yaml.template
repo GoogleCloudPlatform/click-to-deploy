@@ -84,7 +84,7 @@ spec:
           initialDelaySeconds: 5
           timeoutSeconds: 2
         volumeMounts:
-          -name: influxdb-data
+         - name: influxdb-data
            mountPath: /var/lib/influxdb
 ---
 apiVersion: v1
