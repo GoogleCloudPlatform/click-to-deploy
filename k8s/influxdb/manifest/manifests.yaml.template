@@ -20,21 +20,21 @@ metadata:
 spec:
   selector:
     matchLabels: *InfluxdbDeploymentLabels
-  updateStrategy:
-    type: RollingUpdate
   serviceName: $APP_INSTANCE_NAME-influxdb-svc
   replicas: 1
+  updateStrategy:
+    type: RollingUpdate
   volumeClaimTemplates:
   - metadata:
       name: $APP_INSTANCE_NAME-influxdb-pvc
-      labels: *InfluxDBDeploymentLabels
+      labels: *InfluxdbDeploymentLabels
     spec:
       accessModes:
-      - ReadWriteMany
+      - ReadWriteOnce
       storageClassName: standard
       resources:
         requests:
-          storage: 5Gi
+          storage: 1Gi
   template:
     metadata:
       labels: *InfluxdbDeploymentLabels
