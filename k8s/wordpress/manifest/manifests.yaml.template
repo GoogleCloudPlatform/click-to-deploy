@@ -52,6 +52,9 @@ spec:
             secretKeyRef:
               name: $APP_INSTANCE_NAME-mysql-secret
               key: wp_password
+        ports:
+        - name: mysql
+          containerPort: 3306
         volumeMounts:
         - name: $APP_INSTANCE_NAME-mysql-pvc
           mountPath: /var/lib/mysql
@@ -86,7 +89,8 @@ metadata:
     app.kubernetes.io/component: wordpress-mysql
 spec:
   ports:
-  - port: 3306
+  - name: mysql
+    port: 3306
   selector:
     app.kubernetes.io/name: $APP_INSTANCE_NAME
     app.kubernetes.io/component: wordpress-mysql

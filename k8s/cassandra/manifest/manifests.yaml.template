@@ -10,6 +10,8 @@ spec:
     matchLabels: *CassandraDeploymentLabels
   serviceName: $APP_INSTANCE_NAME-cassandra-svc
   replicas: $REPLICAS
+  updateStrategy:
+      type: OnDelete
   template:
     metadata:
       labels: *CassandraDeploymentLabels
