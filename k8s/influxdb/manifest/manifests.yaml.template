@@ -36,7 +36,7 @@ spec:
   serviceName: $APP_INSTANCE_NAME-influxdb-svc
   updateStrategy:
     type: RollingUpdate
- template:
+  template:
     metadata:
       labels: *InfluxdbDeploymentLabels
     spec:
