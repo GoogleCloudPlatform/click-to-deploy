@@ -21,18 +21,18 @@ spec:
     
   info:
   - name: InfluxDB admin
-    value: '$INFLUXDB_ADMIN_USER'
+    type: Reference
     valueFrom:
       secretKeyRef:
-        name: $APP_INSTANCE_NAME-influxdb-secret
         key: influxdb-admin
+        name: $APP_INSTANCE_NAME-influxdb-secret
   - name: InfluxDB admin password
     type: Reference
     valueFrom:
       secretKeyRef:
         key: influxdb-pass
         name: $APP_INSTANCE_NAME-influxdb-secret
- maintainers:
+  maintainers:
   - name: Google Click to Deploy
     url: https://cloud.google.com/solutions/#click-to-deploy
   links:
@@ -50,7 +50,9 @@ spec:
     kind: Secret
   - group: apps/v1beta2
     kind: StatefulSet
-  notes: |-
+  - group: v1
+    kind: ConfigMap
+notes: |-
     # Access Influxdb instances
 
     Run the following command to discover IP addresses of Influxdb instances using kubectl:
