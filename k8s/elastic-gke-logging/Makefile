@@ -6,14 +6,17 @@ include ../vendor/marketplace-tools/ubbagent.Makefile
 include ../vendor/marketplace-tools/var.Makefile
 
 
-TAG ?= 1.0.0
+ELASTICSEARCH_VERSION = 6.3
+FLUENTD_VERSION = 1.2
+
+TAG ?= $(ELASTICSEARCH_VERSION)
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/elastic-gke-logging/deployer:$(TAG)
 NAME ?= elastic-gke-logging-1
 
-ifdef REPLICAS
-  REPLICAS_FIELD = , "REPLICAS": "$(REPLICAS)"
+ifdef ES_REPLICAS
+  ES_REPLICAS_FIELD = , "ES_REPLICAS": "$(ES_REPLICAS)"
 endif
 
 ifdef IMAGE_ELASTICSEARCH
@@ -31,7 +34,7 @@ endif
 APP_PARAMETERS ?= { \
   "APP_INSTANCE_NAME": "$(NAME)", \
   "NAMESPACE": "$(NAMESPACE)" \
-  $(REPLICAS_FIELD) \
+  $(ES_REPLICAS_FIELD) \
   $(IMAGE_ELASTICSEARCH_FIELD) \
   $(IMAGE_KIBANA_FIELD) \
   $(IMAGE_FLUENTD_FIELD) \
@@ -70,8 +73,8 @@ app/build:: .build/elastic-gke-logging/elasticsearch \
 .build/elastic-gke-logging/elasticsearch: .build/var/REGISTRY \
                                           .build/var/TAG \
                                           | .build/elastic-gke-logging
-	docker pull launcher.gcr.io/google/elasticsearch6:6.3
-	docker tag launcher.gcr.io/google/elasticsearch6:6.3 \
+	docker pull launcher.gcr.io/google/elasticsearch6:$(ELASTICSEARCH_VERSION)
+	docker tag launcher.gcr.io/google/elasticsearch6:$(ELASTICSEARCH_VERSION) \
 	    "$(REGISTRY)/elastic-gke-logging/elasticsearch:$(TAG)"
 	docker push "$(REGISTRY)/elastic-gke-logging/elasticsearch:$(TAG)"
 	@touch "$@"
@@ -80,8 +83,8 @@ app/build:: .build/elastic-gke-logging/elasticsearch \
 .build/elastic-gke-logging/kibana: .build/var/REGISTRY \
                                    .build/var/TAG \
                                    | .build/elastic-gke-logging
-	docker pull launcher.gcr.io/google/kibana6:6.3
-	docker tag launcher.gcr.io/google/kibana6:6.3 \
+	docker pull launcher.gcr.io/google/kibana6:$(ELASTICSEARCH_VERSION)
+	docker tag launcher.gcr.io/google/kibana6:$(ELASTICSEARCH_VERSION) \
 	    "$(REGISTRY)/elastic-gke-logging/kibana:$(TAG)"
 	docker push "$(REGISTRY)/elastic-gke-logging/kibana:$(TAG)"
 	@touch "$@"
@@ -90,8 +93,8 @@ app/build:: .build/elastic-gke-logging/elasticsearch \
 .build/elastic-gke-logging/fluentd: .build/var/REGISTRY \
                                     .build/var/TAG \
                                     | .build/elastic-gke-logging
-	docker pull launcher.gcr.io/google/fluentd1:1.2
-	docker tag launcher.gcr.io/google/fluentd1:1.2 \
+	docker pull launcher.gcr.io/google/fluentd1:$(FLUENTD_VERSION)
+	docker tag launcher.gcr.io/google/fluentd1:$(FLUENTD_VERSION) \
 	    "$(REGISTRY)/elastic-gke-logging/fluentd:$(TAG)"
 	docker push "$(REGISTRY)/elastic-gke-logging/fluentd:$(TAG)"
 	@touch "$@"
