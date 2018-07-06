@@ -12,7 +12,7 @@ metadata:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
 spec:
   type: Elastic GKE Logging
-  version: '0.1'
+  version: $TAG
   description: |-
     Elastic GKE Logging is an application that provides a fully functional solution for collecting
     and analyzing logs from a Kubernetes cluster. It is built on top of popular open-source systems,
