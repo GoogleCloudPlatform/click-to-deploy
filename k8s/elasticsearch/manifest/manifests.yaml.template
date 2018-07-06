@@ -74,6 +74,8 @@ spec:
           value: "$APP_INSTANCE_NAME-cluster"
         - name: DISCOVERY_SERVICE
           value: "$APP_INSTANCE_NAME-elasticsearch-svc"
+        - name: BACKUP_REPO_PATH
+          value: ""
         ports:
         - name: http
           containerPort: 9200
