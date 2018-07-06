@@ -190,25 +190,79 @@ To check the current image used by pods within `Influxdb` K8s application, you c
 kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}' | sort
 ```
 
-# Deletion
+# Uninstall the Application
 
-You can uninstall/delete InfluxDB application either using Google Cloud Console or using K8s Apps tools.
+## Using GKE UI
 
-* Navigate to the `influxdb` directory.
+Navigate to `GKE > Applications` in GCP console. From the list of applications, click on the one
+that you wish to uninstall.
+
+On the new screen, click on the `Delete` button located in the top menu. It will remove
+the resources attached to this application.
+
+## Using the command line
+
+### Prepare the environment
+
+Set your installation name and Kubernetes namespace:
 
 ```shell
-cd google-click-to-deploy/k8s/influxdb
+export APP_INSTANCE_NAME=influxdb-1
+export NAMESPACE=default
 ```
-* Run the uninstall command
+
+### Delete the resources
+
+> **NOTE:** Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions. It means that for instance if you have kubectl in version `1.10.*` and Kubernetes server `1.8.*`, you may experience incompatibility issues, like not removing the *StatefulSets* with apiVersion of *apps/v1beta2*.
+
+If you still have the expanded manifest file used for the installation, you can use it to delete the resources.
+Run `kubectl` on expanded manifest file matching your installation:
 
 ```shell
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 ```
 
-Optionally, if you don't need both the deployed application and GKE cluster used for deployment then you can delete the whole GKE cluster using this command:
+Otherwise, delete the resources by indication types and label:
 
 ```shell
-gcloud container clusters delete "$CLUSTER" --zone "$ZONE"
+kubectl delete statefulset,secret,service,configmap,serviceaccount,role,rolebinding,application \
+  --namespace $NAMESPACE \
+  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
+```
+
+### Delete the persistent volumes of your installation
+
+By design, removal of *StatefulSets* in Kubernetes does not remove the *PersistentVolumeClaims* that
+were attached to their Pods. It protects your installations from mistakenly deleting stateful data.
+
+If you wish to remove the *PersistentVolumeClaims* with their attached persistent disks, run the
+following `kubectl` commands:
+
+```shell
+for i in $(kubectl get pvc --namespace $NAMESPACE \
+  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME \
+  --output jsonpath='{.items[*].spec.volumeName}');
+do
+  kubectl delete pv/$i --namespace $NAMESPACE
+done
+
+kubectl delete persistentvolumeclaims \
+  --namespace $NAMESPACE \
+  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
+```
+
+### Delete GKE cluster
+
+Optionally, if you do not need both the deployed application and GKE cluster used for deployment then you can delete the whole GKE cluster using this command:
+
+```shell
+export PROJECT=your-gcp-project # or export PROJECT=$(gcloud config get-value project)
+export CLUSTER=marketplace-cluster
+export ZONE=us-west1-a # or export ZONE=$(gcloud config get-value compute/zone)
+```
+
+```
+gcloud --project "$PROJECT" container clusters delete "$CLUSTER" --zone "$ZONE"
 ```
 
 # Logging and Monitoring
