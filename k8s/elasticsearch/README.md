@@ -336,7 +336,7 @@ Start with assigning the new image to your StatefulSet definition:
 IMAGE_ELASTICSEARCH=<put your new image reference here>
 
 kubectl set image statefulset "${APP_INSTANCE_NAME}-elasticsearch" \
-  --namespace $NAMESPACE "$IMAGE_ELASTICSEARCH"
+  --namespace $NAMESPACE elasticsearch="$IMAGE_ELASTICSEARCH"
 ```
 
 After this operation the StatefulSet has a new image configured for its containers, but the pods
@@ -390,7 +390,7 @@ awk 'BEGINFILE {print "---"}{print}' manifest/* \
 NOTE: Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions.
   It means that for instance if you have `kubectl` in version 1.10.&ast; and Kubernetes 1.8.&ast;,
   you may experience incompatibility issues, like not removing the StatefulSets with
-  apiVersion of apps/v1beta2. 
+  apiVersion of apps/v1beta2.
 
 Run `kubectl` on expanded manifest file matching your installation:
 

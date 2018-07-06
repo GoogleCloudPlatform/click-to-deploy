@@ -51,6 +51,10 @@ spec:
       -p '{"spec": {"type": "LoadBalancer"}}'
     ```
 
+    Warning: Do not leave your WordPress installation in this initial setup
+    state. Other visitors can set up a website on your cluster and use it to serve
+    potentially malicious content.
+
     # Access WordPress site
 
     Get the external IP of the Wordpress site service and visit
