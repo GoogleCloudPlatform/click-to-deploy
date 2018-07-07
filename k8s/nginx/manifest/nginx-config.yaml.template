@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: $APP_INSTANCE_NAME-nginx-configmap
+  labels:
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/component: $APP_INSTANCE_NAME-server
+data:
+  index.html: |
+    <!DOCTYPE> <html> <head> <title>Under Construction</title> </head> <body> <p>This page is under construction. Please come back soon!</p> </body> </html>
+  nginx-config.conf: |
+    server {
+      listen 80;
+      location / {
+        root /usr/share/nginx/html;
+      }
+    }
