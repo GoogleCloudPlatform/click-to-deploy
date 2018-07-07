@@ -78,10 +78,10 @@ spec:
         volumeMounts:
         - name: $APP_INSTANCE_NAME-nginx-data
           mountPath: /usr/share/nginx/html
-  volumes:
-    - name: $APP_INSTANCE_NAME-nginx-data
-      persistentVolumeClaim:
-        claimName: $APP_INSTANCE_NAME-data-pvc
+      volumes:
+      - name: $APP_INSTANCE_NAME-nginx-data
+        persistentVolumeClaim:
+          claimName: $APP_INSTANCE_NAME-data-pvc
 ---
 apiVersion: v1
 kind: Service
