@@ -12,7 +12,14 @@ properties:
     default: $REGISTRY:$TAG
     x-google-marketplace:
       type: IMAGE
+  REPLICAS:
+    title: number of replicas
+    type: integer
+    default: 3
+    minimum: 2
+    maximum: 20
 required:
 - APP_INSTANCE_NAME
 - NAMESPACE
 - IMAGE_NGINX
+- REPLICAS
