@@ -76,7 +76,7 @@ spec:
           initialDelaySeconds: 5
           timeoutSeconds: 2
         volumeMounts:
-          - name: $APP_INSTANCE_NAME-nginx-data
+        - name: $APP_INSTANCE_NAME-nginx-data
           mountPath: /usr/share/nginx/html
   volumes:
     - name: $APP_INSTANCE_NAME-nginx-data
