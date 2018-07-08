@@ -270,7 +270,7 @@ where `<new-replicas>` defines the number of replicas.
 
 **Option 1:** Use `kubectl` to scale down by following command:
 
-> **NOTE:** Scaling down via `kubectl` will leave `persistentvolumeclaims` of your StatefulSet untouched.
+This option reduce number of replicas without disconnect nodes from a cluster. Also scaling down will leave `persistentvolumeclaims` of your StatefulSet untouched.
 
 ```
 kubectl scale statefulsets "$APP_INSTANCE_NAME-rabbitmq" \
@@ -280,7 +280,7 @@ where `<new-replicas>` defines the number of replicas.
 
 **Option 2:** Remove a RabbitMQ node permanently:
 
-> **WARNING:** This option will delete `persistentvolumeclaims` permanently and all data from removed nodes.
+> **WARNING:** This option is delete `persistentvolumeclaims` permanently and all data from removed nodes.
 > Consider to enable HA mode to replicate data between all nodes before you start.
 
 To remove a RabbitMQ node permanently and scale down number of replicas, please use script `scripts/scale-down.sh` with `--help` argument to get more information,
