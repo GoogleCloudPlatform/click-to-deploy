@@ -251,6 +251,26 @@ In both cases, you can navigate in your browser to the URL pointed by `KIBANA_UR
 echo $KIBANA_URL
 ```
 
+# Discover the logs
+
+## Index Pattern
+
+Your installation automatically adds a default Index Pattern to be tracked by Kibana - it
+matches the Fluentd DaemonSet configuration and equals to `logstash-*`. Thanks to this configuration
+you can view the logs from the Kubernetes cluster immediately after the successful installation -
+when entering the Kibana UI page, click on the `Discover` button in the main menu or navigate to:
+
+```shell
+echo "${KIBANA_URL}/discover"
+```
+
+## Saved searches
+
+Kibana allows to save predefined searches with their filters and presented columns configuration.
+To view the searches shipped with this installation, visit the `Discover` page of Kibana and in the
+top menu, click on the `Open` option. It will present a list of some useful searches, including logs
+from: GKE Apps, kubelet, docker, kernel and others.
+
 ### Scale the Elasticsearch cluster
 
 Scale the number of master node replicas by the following command:
