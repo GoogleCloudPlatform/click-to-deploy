@@ -47,6 +47,11 @@ function wait_for_healthy_sts() {
   done
 }
 
+function print_usage() {
+  echo "Usage:"
+  echo "${0} --app [APP_INSTANCE_NAME] --namespace [NAMESPACE] --replicas [COUNT]"
+}
+
 function main() {
   while [[ $# -gt 0 ]]; do
     # TODO(wgrzelak): Fix '$2: unbound variable', when a parameter value is empty.
@@ -64,9 +69,15 @@ function main() {
         local -ri replicas="$2"
         shift 2
         ;;
+      --help)
+        print_usage
+        exit 0
+        ;;
       *)
         echo "Unrecognized flag: $1"
+        print_usage
         exit 1
+        ;;
     esac
   done;
 
@@ -74,6 +85,7 @@ function main() {
   for var in app namespace replicas; do
     if ! [[ -v "${var}" ]]; then
       echo "Parameter '--${var}' is required"
+      print_usage
       exit 1
     fi
   done
