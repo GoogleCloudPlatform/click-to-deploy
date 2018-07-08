@@ -30,7 +30,7 @@ properties:
   ES_REPLICAS:
     type: integer
     default: 2
-    min: 1
+    min: 2
   FLUENTD_SA:
     type: string
     x-google-marketplace:
