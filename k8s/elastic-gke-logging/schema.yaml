@@ -27,11 +27,11 @@ properties:
     default: $REGISTRY/ubuntu16_04:$TAG
     x-google-marketplace:
       type: IMAGE
-  ES_REPLICAS:
+  ELASTICSEARCH_REPLICAS:
     type: integer
     default: 2
     min: 2
-  FLUENTD_SA:
+  FLUENTD_SERVICE_ACCOUNT:
     type: string
     x-google-marketplace:
       type: SERVICE_ACCOUNT
@@ -47,4 +47,5 @@ required:
 - IMAGE_KIBANA
 - IMAGE_FLUENTD
 - IMAGE_INIT
-- ES_REPLICAS
+- ELASTICSEARCH_REPLICAS
+- FLUENTD_SERVICE_ACCOUNT

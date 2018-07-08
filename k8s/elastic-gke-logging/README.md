@@ -95,7 +95,7 @@ export NAMESPACE=default
 Specify the number of replicas for the Elasticsearch server:
 
 ```shell
-export ES_REPLICAS=2
+export ELASTICSEARCH_REPLICAS=2
 ```
 
 Configure the container images.
@@ -133,7 +133,7 @@ expanded manifest file for future updates to the application.
 ```shell
 awk 'BEGINFILE {print "---"}{print}' manifest/* \
   | envsubst '$APP_INSTANCE_NAME $NAMESPACE \
-      $IMAGE_ELASTICSEARCH $IMAGE_KIBANA $IMAGE_FLUENTD $IMAGE_INIT $ES_REPLICAS' \
+      $IMAGE_ELASTICSEARCH $IMAGE_KIBANA $IMAGE_FLUENTD $IMAGE_INIT $ELASTICSEARCH_REPLICAS' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 

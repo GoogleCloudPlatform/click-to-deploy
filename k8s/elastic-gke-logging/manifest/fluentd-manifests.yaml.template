@@ -154,7 +154,7 @@ spec:
       tolerations:
       - key: node-role.kubernetes.io/master
         effect: NoSchedule
-      serviceAccountName: $FLUENTD_SA
+      serviceAccountName: $FLUENTD_SERVICE_ACCOUNT
       containers:
       - name: fluentd-es
         image: $IMAGE_FLUENTD
