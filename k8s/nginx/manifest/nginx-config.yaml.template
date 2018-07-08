@@ -7,11 +7,12 @@ metadata:
     app.kubernetes.io/component: $APP_INSTANCE_NAME-server
 data:
   index.html: |
-    <!DOCTYPE> <html> <head> <title>Under Construction</title> </head> <body> <p>This page is under construction. Please come back soon!</p> </body> </html>
+    <!DOCTYPE> <html> <head> <title>Web Server Application</title> </head> <body> <h1>Web site powered by NGINX</h1> <p>This page is under construction. Please come back soon!</p> </body> </html>
   nginx-config.conf: |
     server {
       listen 80;
       location / {
+        index index.html;
         root /usr/share/nginx/html;
       }
     }
