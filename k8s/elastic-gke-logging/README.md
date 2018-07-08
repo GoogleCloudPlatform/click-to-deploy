@@ -1,7 +1,9 @@
 # Overview
 
-Elasticsearch is an open-source search engine that provides a distributed, multitenant-capable
-full-text search engine with an HTTP web interface and schema-free JSON documents..
+Elastic GKE Logging is an application that provides a fully functional solution for collecting
+and analyzing logs from a Kubernetes cluster. It is built on top of popular open-source systems,
+including Fluentd for logs collection and Elasticsearch with Kibana for searching and analyzing
+data.
 
 [Learn more](https://www.elastic.co/).
 
@@ -13,7 +15,7 @@ Popular open stacks on Kubernetes packaged by Google.
 
 ## Quick install with Google Cloud Marketplace
 
-Get up and running with a few clicks! Install this Elasticsearch app to a
+Get up and running with a few clicks! Install this Elastic GKE Logging app to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 [on-screen instructions](https://console.cloud.google.com/launcher/details/google/elasticsearch).
 
@@ -78,7 +80,7 @@ community. The source code can be found on
 Navigate to the `elasticsearch` directory.
 
 ```shell
-cd google-click-to-deploy/k8s/elasticsearch
+cd google-click-to-deploy/k8s/elastic-gke-logging
 ```
 
 #### Configure the app with environment variables
@@ -86,21 +88,25 @@ cd google-click-to-deploy/k8s/elasticsearch
 Choose the instance name and namespace for the app.
 
 ```shell
-export APP_INSTANCE_NAME=elasticsearch-1
+export APP_INSTANCE_NAME=elastic-logging-1
 export NAMESPACE=default
 ```
 
 Specify the number of replicas for the Elasticsearch server:
 
 ```shell
-export REPLICAS=2
+export ELASTICSEARCH_REPLICAS=2
 ```
 
 Configure the container images.
 
 ```shell
-export IMAGE_ELASTICSEARCH="gcr.io/k8s-marketplace-eap/google/elasticsearch:latest"
-export IMAGE_INIT="gcr.io/k8s-marketplace-eap/google/elasticsearch/ubuntu16_04:latest"
+APP_VERSION=6.3
+
+export IMAGE_ELASTICSEARCH="gcr.io/k8s-marketplace-eap/google/elastic-gke-logging/elasticsearch:$APP_VERSION"
+export IMAGE_KIBANA="gcr.io/k8s-marketplace-eap/google/elastic-gke-logging/kibana:$APP_VERSION"
+export IMAGE_FLUENTD="gcr.io/k8s-marketplace-eap/google/elastic-gke-logging/fluentd:$APP_VERSION"
+export IMAGE_INIT="gcr.io/k8s-marketplace-eap/google/elasticsearch/ubuntu16_04:$APP_VERSION"
 ```
 
 The images above are referenced by
@@ -111,7 +117,7 @@ This will ensure that the installed application will always use the same images,
 until you are ready to upgrade.
 
 ```shell
-for i in "IMAGE_ELASTICSEARCH" "IMAGE_INIT"; do
+for i in IMAGE_ELASTICSEARCH IMAGE_KIBANA IMAGE_FLUENTD IMAGE_INIT; do
   repo=`echo ${!i} | cut -d: -f1`;
   digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
   export $i="$repo@$digest";
@@ -126,7 +132,8 @@ expanded manifest file for future updates to the application.
 
 ```shell
 awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_ELASTICSEARCH $IMAGE_INIT $REPLICAS' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE \
+      $IMAGE_ELASTICSEARCH $IMAGE_KIBANA $IMAGE_FLUENTD $IMAGE_INIT $ELASTICSEARCH_REPLICAS' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
@@ -150,13 +157,21 @@ Point your browser to:
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
 ```
 
-### Expose Elasticsearch service (optional)
+### Expose Elasticsearch & Kibana services (optional)
 
 By default, the application does not have an external IP. Run the
-following command to expose an external IP:
+following command to expose an external IP for Elasticsearch service:
 
 ```
 kubectl patch svc "$APP_INSTANCE_NAME-elasticsearch-svc" \
+  --namespace "$NAMESPACE" \
+  -p '{"spec": {"type": "LoadBalancer"}}'
+```
+
+And the following to expose Kibana service:
+
+```
+kubectl patch svc "$APP_INSTANCE_NAME-kibana-svc" \
   --namespace "$NAMESPACE" \
   -p '{"spec": {"type": "LoadBalancer"}}'
 ```
@@ -207,7 +222,56 @@ In the response, you should see a message including Elasticsearch characteristic
 
 Note that it might take some time for the external IP to be provisioned.
 
-### Scale the cluster
+# Obtain Kibana URL
+
+For Kibana, you can follow the same instructions for obtaining a URL as for Elasticsearch itself.
+
+If exposing the Kibana service externally, run the following command:
+
+```shell
+SERVICE_IP=$(kubectl get \
+  --namespace ${NAMESPACE} \
+  svc ${APP_INSTANCE_NAME}-kibana-svc \
+  -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+KIBANA_URL="http://${SERVICE_IP}:5601"
+``` 
+
+Alternatively, if running a `kubectl proxy`:
+
+```shell
+KUBE_PROXY_PORT=8080
+PROXY_BASE_URL=http://localhost:$KUBE_PROXY_PORT/api/v1/proxy
+KIBANA_URL=$PROXY_BASE_URL/namespaces/$NAMESPACE/services/$APP_INSTANCE_NAME-kibana-svc:http
+```
+
+In both cases, you can navigate in your browser to the URL pointed by `KIBANA_URL`:
+
+```shell
+echo $KIBANA_URL
+```
+
+# Discover the logs
+
+## Index Pattern
+
+Your installation automatically adds a default Index Pattern to be tracked by Kibana - it
+matches the Fluentd DaemonSet configuration and equals to `logstash-*`. Thanks to this configuration
+you can view the logs from the Kubernetes cluster immediately after the successful installation -
+when entering the Kibana UI page, click on the `Discover` button in the main menu or navigate to:
+
+```shell
+echo "${KIBANA_URL}/discover"
+```
+
+## Saved searches
+
+Kibana allows to save predefined searches with their filters and presented columns configuration.
+To view the searches shipped with this installation, visit the `Discover` page of Kibana and in the
+top menu, click on the `Open` option. It will present a list of some useful searches, including logs
+from: GKE Apps, kubelet, docker, kernel and others.
+
+### Scale the Elasticsearch cluster
 
 Scale the number of master node replicas by the following command:
 
@@ -230,6 +294,11 @@ This procedure is based on the official Elasticsearch documentation about
 
 In this procedure we will use NFS storage built on top of a StatefulSet in Kubernetes. You could
 also consider using other NFS providers or one of the repository plugins supported by Elasticsearch. 
+
+Kibana has all its stateful data stored in Elasticsearch index called `.kibana`, so it requires no
+additional backup steps.
+
+Fluentd DaemonSet stateless by design and requires no backup procedure. 
 
 ## Snapshot
 
@@ -323,6 +392,8 @@ curl -X POST "$ELASTIC_URL/_snapshot/es_backup/snapshot_1/_restore"
 
 # Update procedure
 
+## Elasticsearch update
+
 For more background about the rolling update procedure, please check the
 [official documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/rolling-upgrades.html).
 
@@ -330,7 +401,10 @@ Before starting the update procedure on your cluster, we strongly advise to
 prepare a backup of your installation in order to eliminate the risk of losing
 your data.
 
-## Perform the update on cluster nodes
+Keep in mind that Kibana and Elasticsearch versions must match - after updating Elasticsearch, you
+will have to update the Kibana deployment too.
+
+## Perform the update on Elasticsearch cluster nodes
 
 ### Patch the StatefulSet with the new image
 
@@ -340,7 +414,7 @@ Start with assigning the new image to your StatefulSet definition:
 IMAGE_ELASTICSEARCH=<put your new image reference here>
 
 kubectl set image statefulset "${APP_INSTANCE_NAME}-elasticsearch" \
-  --namespace $NAMESPACE elasticsearch="${IMAGE_ELASTICSEARCH}"
+  --namespace "${NAMESPACE}" elasticsearch="${IMAGE_ELASTICSEARCH}"
 ```
 
 After this operation the StatefulSet has a new image configured for its containers, but the pods
@@ -356,6 +430,35 @@ curl $ELASTIC_URL/_cluster/health?pretty
 
 Run the `scripts/upgrade.sh` script. This script will take down and update one replica at a time -
 it should print out diagnostic messages. You should be done when the script finishes.
+
+## Update the Kibana deployment 
+
+After successfully updating the Elasticsearch cluster, update the Kibana deployment too:
+
+```shell
+IMAGE_KIBANA=<put the image reference matching the version of Elasticsearch>
+
+kubectl set image deployment "${APP_INSTANCE_NAME}-kibana" \
+  --namespace "${NAMESPACE}" kibana="${IMAGE_KIBANA}"
+```
+
+The Kibana deployment will automatically start creating a new pod with new image and delete the old
+one, once the procedure is successfully finished. 
+
+## Update the Fluentd Daemon Set
+
+To update Fluentd, follow the instructions from the 
+[official documentation](https://docs.fluentd.org/v1.0/articles/quickstart). 
+Make sure that the configuration format in `${APP_INSTANCE_NAME}-fluentd-es-config` ConfigMap
+is compatible with the new application version.
+
+To update the Fluentd image, run the following command:
+
+```shell
+IMAGE_FLUENTD=<put the new image reference>
+
+kubectl set image ds/${APP_INSTANCE_NAME}-fluentd-es fluentd-es="${IMAGE_FLUENTD}"
+``` 
 
 # Uninstall the Application
 
@@ -374,7 +477,7 @@ the resources attached to this application.
 Set your installation name and Kubernetes namespace:
 
 ```shell
-export APP_INSTANCE_NAME=elasticsearch-1
+export APP_INSTANCE_NAME=elastic-logging-1
 export NAMESPACE=default
 ```
 
@@ -391,15 +494,25 @@ awk 'BEGINFILE {print "---"}{print}' manifest/* \
 
 ### Delete the resources using `kubectl delete`
 
-NOTE: Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions.
+> NOTE: Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions.
   It means that for instance if you have `kubectl` in version 1.10.&ast; and Kubernetes 1.8.&ast;,
   you may experience incompatibility issues, like not removing the StatefulSets with
   apiVersion of apps/v1beta2.
 
+
+If you still have the expanded manifest file used for the installation, you can use it to delete the resources.
 Run `kubectl` on expanded manifest file matching your installation:
 
 ```shell
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
+```
+
+Otherwise, delete the resources by indication types and label:
+
+```shell
+kubectl delete deployment,statefulset,service,configmap,serviceaccount,clusterrole,clusterrolebinding,application,job \
+  --namespace $NAMESPACE \
+  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
 
 ### Delete the persistent volumes of your installation
@@ -412,7 +525,7 @@ following `kubectl` command:
 
 ```shell
 # specify the variables values matching your installation:
-export APP_INSTANCE_NAME=elasticsearch-1
+export APP_INSTANCE_NAME=elastic-logging-1
 export NAMESPACE=default
 
 kubectl delete persistentvolumeclaims \
