@@ -3,7 +3,7 @@
 # While scaling down we want to gracefully remove a RabbitMQ node from a cluster.
 #
 # To do this, rabbitmq CLI is used that removes a node from a cluster.
-# Also, PV and PVC is removed.
+# Also, PV and PVC are removed.
 
 set -euo pipefail
 
