@@ -9,7 +9,7 @@ properties:
       type: NAMESPACE
   IMAGE_ELASTICSEARCH:
     type: string
-    default: $REGISTRY/elasticsearch:$TAG
+    default: $REGISTRY:$TAG
     x-google-marketplace:
       type: IMAGE
   IMAGE_KIBANA:
