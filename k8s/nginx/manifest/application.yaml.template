@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
 spec:
   type: NGINX
-  version: '1.14'
+  version: '1.15'
   description: |-
     NGINX is open-source software for web serving, reverse proxying, caching, load balancing, and media streaming.
 
