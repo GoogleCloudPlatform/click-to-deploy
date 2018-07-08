@@ -6,10 +6,10 @@ include ../vendor/marketplace-tools/ubbagent.Makefile
 include ../vendor/marketplace-tools/var.Makefile
 
 
-ELASTICSEARCH_VERSION = 6.3
+ELASTICSEARCH_KIBANA_VERSION = 6.3
 FLUENTD_VERSION = 1.2
 
-TAG ?= $(ELASTICSEARCH_VERSION)
+TAG ?= $(ELASTICSEARCH_KIBANA_VERSION)
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/elastic-gke-logging/deployer:$(TAG)
@@ -73,8 +73,8 @@ app/build:: .build/elastic-gke-logging/elasticsearch \
 .build/elastic-gke-logging/elasticsearch: .build/var/REGISTRY \
                                           .build/var/TAG \
                                           | .build/elastic-gke-logging
-	docker pull launcher.gcr.io/google/elasticsearch6:$(ELASTICSEARCH_VERSION)
-	docker tag launcher.gcr.io/google/elasticsearch6:$(ELASTICSEARCH_VERSION) \
+	docker pull launcher.gcr.io/google/elasticsearch6:$(ELASTICSEARCH_KIBANA_VERSION)
+	docker tag launcher.gcr.io/google/elasticsearch6:$(ELASTICSEARCH_KIBANA_VERSION) \
 	    "$(REGISTRY)/elastic-gke-logging/elasticsearch:$(TAG)"
 	docker push "$(REGISTRY)/elastic-gke-logging/elasticsearch:$(TAG)"
 	@touch "$@"
@@ -83,8 +83,8 @@ app/build:: .build/elastic-gke-logging/elasticsearch \
 .build/elastic-gke-logging/kibana: .build/var/REGISTRY \
                                    .build/var/TAG \
                                    | .build/elastic-gke-logging
-	docker pull launcher.gcr.io/google/kibana6:$(ELASTICSEARCH_VERSION)
-	docker tag launcher.gcr.io/google/kibana6:$(ELASTICSEARCH_VERSION) \
+	docker pull launcher.gcr.io/google/kibana6:$(ELASTICSEARCH_KIBANA_VERSION)
+	docker tag launcher.gcr.io/google/kibana6:$(ELASTICSEARCH_KIBANA_VERSION) \
 	    "$(REGISTRY)/elastic-gke-logging/kibana:$(TAG)"
 	docker push "$(REGISTRY)/elastic-gke-logging/kibana:$(TAG)"
 	@touch "$@"
