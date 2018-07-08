@@ -49,7 +49,7 @@ function wait_for_healthy_sts() {
 
 function print_usage() {
   echo "Usage:"
-  echo "${0} --app [APP_INSTANCE_NAME] --namespace [NAMESPACE] --replicas [COUNT]"
+  echo "$0 --app [APP_INSTANCE_NAME] --namespace [NAMESPACE] --replicas [COUNT]"
 }
 
 function main() {
