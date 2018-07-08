@@ -145,6 +145,10 @@ Use `kubectl` to apply the manifest to your Kubernetes cluster.
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
 
+> NOTE: Elasticsearch pods have an `initContainer` that assures the hosting node to have the system
+  property of `vm.max_map_count` set at least to 262144.
+  This follows the [official documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html).
+
 #### View the app in the Google Cloud Console
 
 Point your browser to:
