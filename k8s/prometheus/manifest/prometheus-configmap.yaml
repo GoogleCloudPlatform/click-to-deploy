@@ -510,18 +510,18 @@ data:
     \     avg by (node) (\n        irate(node_disk_io_time_weighted{job=\"node-exporter\",device=~\"(sd|xvd|nvme).+\"}[1m])
     / 1e3\n      * on (namespace, pod) group_left(node)\n        node_namespace_pod:kube_pod_info:\n
     \     )\n    \"record\": \"node:node_disk_saturation:avg_irate\"\n  - \"expr\":
-    |\n      sum(irate(node_network_receive_bytes{job=\"node-exporter\",device=~\"ens.*\"}[1m]))
-    +\n      sum(irate(node_network_transmit_bytes{job=\"node-exporter\",device=~\"ens.*\"}[1m]))\n
+    |\n      sum(irate(node_network_receive_bytes{job=\"node-exporter\",device=\"eth0\"}[1m]))
+    +\n      sum(irate(node_network_transmit_bytes{job=\"node-exporter\",device=\"eth0\"}[1m]))\n
     \   \"record\": \":node_net_utilisation:sum_irate\"\n  - \"expr\": |\n      sum
-    by (node) (\n        (irate(node_network_receive_bytes{job=\"node-exporter\",device=~\"ens.*\"}[1m])
-    +\n        irate(node_network_transmit_bytes{job=\"node-exporter\",device=~\"ens.*\"}[1m]))\n
+    by (node) (\n        (irate(node_network_receive_bytes{job=\"node-exporter\",device=\"eth0\"}[1m])
+    +\n        irate(node_network_transmit_bytes{job=\"node-exporter\",device=\"eth0\"}[1m]))\n
     \     * on (namespace, pod) group_left(node)\n        node_namespace_pod:kube_pod_info:\n
     \     )\n    \"record\": \"node:node_net_utilisation:sum_irate\"\n  - \"expr\":
-    |\n      sum(irate(node_network_receive_drop{job=\"node-exporter\",device=~\"ens.*\"}[1m]))
-    +\n      sum(irate(node_network_transmit_drop{job=\"node-exporter\",device=~\"ens.*\"}[1m]))\n
+    |\n      sum(irate(node_network_receive_drop{job=\"node-exporter\",device=\"eth0\"}[1m]))
+    +\n      sum(irate(node_network_transmit_drop{job=\"node-exporter\",device=\"eth0\"}[1m]))\n
     \   \"record\": \":node_net_saturation:sum_irate\"\n  - \"expr\": |\n      sum
-    by (node) (\n        (irate(node_network_receive_drop{job=\"node-exporter\",device=~\"ens.*\"}[1m])
-    +\n        irate(node_network_transmit_drop{job=\"node-exporter\",device=~\"ens.*\"}[1m]))\n
+    by (node) (\n        (irate(node_network_receive_drop{job=\"node-exporter\",device=\"eth0\"}[1m])
+    +\n        irate(node_network_transmit_drop{job=\"node-exporter\",device=\"eth0\"}[1m]))\n
     \     * on (namespace, pod) group_left(node)\n        node_namespace_pod:kube_pod_info:\n
     \     )\n    \"record\": \"node:node_net_saturation:sum_irate\"\n- \"name\": \"kube-prometheus-node-recording.rules\"\n
     \ \"rules\": \n  - \"expr\": \"sum(rate(node_cpu{mode!=\\\"idle\\\",mode!=\\\"iowait\\\"}[3m]))
