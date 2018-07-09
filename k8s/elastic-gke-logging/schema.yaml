@@ -1,0 +1,51 @@
+properties:
+  APP_INSTANCE_NAME:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  NAMESPACE:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  IMAGE_ELASTICSEARCH:
+    type: string
+    default: $REGISTRY/elasticsearch:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  IMAGE_KIBANA:
+    type: string
+    default: $REGISTRY/kibana:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  IMAGE_FLUENTD:
+    type: string
+    default: $REGISTRY/fluentd:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  IMAGE_INIT:
+    type: string
+    default: $REGISTRY/ubuntu16_04:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  ELASTICSEARCH_REPLICAS:
+    type: integer
+    default: 2
+    min: 2
+  FLUENTD_SERVICE_ACCOUNT:
+    type: string
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        roles:
+        - type: ClusterRole
+          rulesType: PREDEFINED
+          rulesFromRoleName: cluster-admin
+required:
+- APP_INSTANCE_NAME
+- NAMESPACE
+- IMAGE_ELASTICSEARCH
+- IMAGE_KIBANA
+- IMAGE_FLUENTD
+- IMAGE_INIT
+- ELASTICSEARCH_REPLICAS
+- FLUENTD_SERVICE_ACCOUNT
