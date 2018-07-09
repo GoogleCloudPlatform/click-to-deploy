@@ -306,7 +306,7 @@ For more information about removing a node from RabbitMQ cluster, check the [off
 
 # Backup and restore
 
-TODO
+Read the [official documentation](https://www.rabbitmq.com/backup.html) for more information.
 
 # Update procedure
 
