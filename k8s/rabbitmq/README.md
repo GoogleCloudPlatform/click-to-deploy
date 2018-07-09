@@ -283,7 +283,7 @@ where `<new-replicas>` defines the number of replicas.
 > **WARNING:** This option deletes `persistentvolumeclaims` permanently, which results in permanent data loss from the deleted Pods.
 > Consider enabling HA mode to replicate data between all nodes before you start the procedure.
 
-To remove a RabbitMQ node permanently and scale down number of replicas, please use script `scripts/scale-down.sh` with `--help` argument to get more information,
+To remove a RabbitMQ node permanently and scale down the number of replicas, please use script `scripts/scale-down.sh` with `--help` argument to get more information,
 or manually scale down the cluster in following steps.
 
 To manually remove a nodes from the cluster, and then Pod from K8s,
