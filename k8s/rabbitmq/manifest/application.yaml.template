@@ -27,12 +27,18 @@ spec:
       secretKeyRef:
         key: rabbitmq-pass
         name: $APP_INSTANCE_NAME-rabbitmq-secret
+  - name: Erlang cookie
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: rabbitmq-erlang-cookie
+        name: $APP_INSTANCE_NAME-rabbitmq-secret
   maintainers:
   - name: Google Click to Deploy
     url: https://cloud.google.com/solutions/#click-to-deploy
   links:
   - description: 'User Guide: Google Click to Deploy RabbitMQ'
-    url: https://console.cloud.google.com/code/develop/browse/google-click-to-deploy/master/k8s/rabbitmq?project=k8s-marketplace-eap
+    url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/rabbitmq/README.md
   - description: 'RabbitMQ documentation'
     url: https://www.rabbitmq.com/documentation.html
   - description: 'RabbitMQ Getting Started Tutorials'
@@ -124,18 +130,5 @@ spec:
     ```
 
     Navigate http://127.0.0.1:15672 to access RabbitMQ Management UI.
-
-    # Scale the cluster
-
-    By default, RabbitMQ K8s application is deployed using 3 replicas. You can manually scale it up or down using the following command.
-
-    > **NOTE:** Scaling down will leave `persistentvolumeclaims` of your StatefulSet untouched.
-
-    ```
-    kubectl scale statefulsets "$APP_INSTANCE_NAME-rabbitmq" \
-      --namespace "$NAMESPACE" --replicas=<new-replicas>
-    ```
-
-    where `<new-replicas>` defines the number of replicas.
 
     <!--- ALL THIS ABOVE IS COPIED FROM README.MD -->
