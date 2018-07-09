@@ -12,7 +12,7 @@ metadata:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
 spec:
   type: Memcached
-  version: '0.1'
+  version: '1.5'
   description: |-
     Memcached is an open source in-memory, key-value store.
 
@@ -25,9 +25,6 @@ spec:
     [Stack Overflow](https://stackoverflow.com/questions/tagged/memcached/).
     Additional community support is available on [community forums](https://groups.google.com/forum/#!forum/memcached).
     
-  info:
-  - name: Service endpoint
-    value: TODO
   maintainers:
   - name: Google Click to Deploy
     url: https://cloud.google.com/solutions/#click-to-deploy
