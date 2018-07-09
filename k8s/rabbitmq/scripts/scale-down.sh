@@ -37,12 +37,12 @@ function wait_for_healthy_sts() {
   local -r namespace="$1"
   local -r pvc_name="$2"
 
-  local -i desired_replicas="$(get_desired_number_of_replicas_in_sts "${namespace}" "${sts_name}")"
+  local -i current_desired_replicas="$(get_desired_number_of_replicas_in_sts "${namespace}" "${sts_name}")"
   local -i current_replicas="$(get_current_number_of_replicas_in_sts "${namespace}" "${sts_name}")"
-  while [[ "${desired_replicas}" != "${current_replicas}" ]]; do
+  while [[ "${current_desired_replicas}" != "${current_replicas}" ]]; do
     echo "Waiting for stable Pods status... It can take a moment"
     sleep 15
-    desired_replicas="$(get_desired_number_of_replicas_in_sts "${namespace}" "${sts_name}")"
+    current_desired_replicas="$(get_desired_number_of_replicas_in_sts "${namespace}" "${sts_name}")"
     current_replicas="$(get_current_number_of_replicas_in_sts "${namespace}" "${sts_name}")"
   done
 }
@@ -91,7 +91,7 @@ function main() {
   done
 
   if (( "${replicas}" < 1 )); then
-    echo "Sorry, cannot scale below 1 :("
+    echo "Sorry, cannot scale below 1"
     exit 1
   fi
 
@@ -107,9 +107,9 @@ function main() {
   wait_for_healthy_sts "${namespace}" "${sts_name}"
 
   echo "Starting scaling down..."
-  local -i desired_replicas="$(get_desired_number_of_replicas_in_sts "${namespace}" "${sts_name}")"
-  while (( "${desired_replicas}" > "${replicas}" )); do
-    local -i pod_index="$(( desired_replicas - 1 ))"
+  local -i current_desired_replicas="$(get_desired_number_of_replicas_in_sts "${namespace}" "${sts_name}")"
+  while (( "${current_desired_replicas}" > "${replicas}" )); do
+    local -i pod_index="$(( current_desired_replicas - 1 ))"
     local pod_name="${sts_name}-${pod_index}"
     local pvc_name="${sts_name}-pvc-${pod_name}"
     local pv_name="$(get_pv_name "${namespace}" "${pvc_name}")"
@@ -125,7 +125,7 @@ function main() {
     kubectl delete "pvc/${pvc_name}" --namespace "${namespace}"
     kubectl delete "pv/${pv_name}" --namespace "${namespace}"
 
-    desired_replicas="$(get_desired_number_of_replicas_in_sts "${namespace}" "${sts_name}")"
+    current_desired_replicas="$(get_desired_number_of_replicas_in_sts "${namespace}" "${sts_name}")"
   done
   echo "DONE :)"
 }
