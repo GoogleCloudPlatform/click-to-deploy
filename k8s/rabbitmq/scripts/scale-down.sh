@@ -96,18 +96,19 @@ function main() {
   fi
 
   local -r sts_name="${app}-rabbitmq"
+  local -i current_desired_replicas="$(get_desired_number_of_replicas_in_sts "${namespace}" "${sts_name}")"
 
   echo "============================================="
-  echo "| Application:   ${app}"
-  echo "| K8s namespace: ${namespace}"
-  echo "| StatefulSets:  ${sts_name}"
-  echo "| New replicas:  ${replicas}"
+  echo "| Application:      ${app}"
+  echo "| K8s namespace:    ${namespace}"
+  echo "| StatefulSets:     ${sts_name}"
+  echo "| Current replicas: ${current_desired_replicas}"
+  echo "| New replicas:     ${replicas}"
   echo "============================================="
 
   wait_for_healthy_sts "${namespace}" "${sts_name}"
 
   echo "Starting scaling down..."
-  local -i current_desired_replicas="$(get_desired_number_of_replicas_in_sts "${namespace}" "${sts_name}")"
   while (( "${current_desired_replicas}" > "${replicas}" )); do
     local -i pod_index="$(( current_desired_replicas - 1 ))"
     local pod_name="${sts_name}-${pod_index}"
@@ -126,6 +127,13 @@ function main() {
     kubectl delete "pv/${pv_name}" --namespace "${namespace}"
 
     current_desired_replicas="$(get_desired_number_of_replicas_in_sts "${namespace}" "${sts_name}")"
+
+    # This check is to stop the script in case another process is scaling the cluster
+    # or someone does it manually.
+    if [[ "${current_desired_replicas}" != "${pod_index}" ]]; then
+      echo "Something went wrong, it looks like another process also wants to scale the cluster"
+      exit 2
+    fi
   done
   echo "DONE :)"
 }
