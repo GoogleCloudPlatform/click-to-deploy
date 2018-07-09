@@ -9,20 +9,28 @@ if [[ ! -f "${SCRIPT_DIR}/util.sh" ]]; then
   exit 1
 fi
 
+USAGE='
+This script restores Cassandra cluster data from backup files. Following files
+are required:
+- multiple backup .tar.gz archives, containing raw data
+- backup-schema.cql schema file
+
+Parameters:
+--keyspace             (Required) Name of Cassandra keyspace to backup
+--backups              (Required) Number of backup .tar.gz archives
+--namespace            (Default: default ) Name of K8s namespace, where Cassandra
+                       cluster exists
+--app_instance_name    (Default: cassandra-1 ) Name of application in K8s cluster
+
+Example:
+<SCRIPT DIR>/restores.sh --keyspace demo --backups 3 --namespace custom-namespace
+'
+
 . "${SCRIPT_DIR}/util.sh"
 
-if [[ -z "$1" ]]; then
-  info "Please provide a keyspace"
-  exit 1
-fi
+parse_required_argument KEYSPACE keyspace $@
+parse_required_argument BACKUPS backups $@
 
-if [[ -z "$2" ]]; then
-  info "Please provide a number of backup archives"
-  exit 1
-fi
-
-KEYSPACE="$1"
-BACKUPS="$2"
 set -u
 
 current_status
@@ -30,8 +38,20 @@ info "Preparing to restore a backup of keyspace '${KEYSPACE}' from ${BACKUPS} ar
 
 wait_for_healthy_sts
 
-REPLICAS=$(get_desired_number_of_replicas_in_sts)
+info "Checking if required files exists"
+for backup in $(seq 0 $(( "${BACKUPS}" - 1 )) ); do
+  if [[ ! -f "backup-${backup}.tar.gz" ]]; then
+    info "Missing backup-${backup}.tar.gz"
+    exit 1
+  fi
+done
+if [[ ! -f backup-schema.cql ]]; then
+  info "Missing backup-schema.cql"
+  exit 1
+fi
+info "All required files are available"
 
+REPLICAS=$(get_desired_number_of_replicas_in_sts)
 info "Performing restore of ${REPLICAS} sized cluster"
 
 info "Restoring schema"

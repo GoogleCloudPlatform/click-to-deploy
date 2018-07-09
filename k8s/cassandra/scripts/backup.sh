@@ -9,14 +9,27 @@ if [[ ! -f "${SCRIPT_DIR}/util.sh" ]]; then
   exit 1
 fi
 
+USAGE='
+This script creates a backup files from Cassandra cluster. Following files
+are generated:
+- multiple backup .tar.gz archives, containing raw data
+- backup-schema.cql schema file
+- backup-ring.info file, with ring information, useful for manual restore
+
+Parameters:
+--keyspace             (Required) Name of Cassandra keyspace to backup
+--namespace            (Default: default ) Name of K8s namespace, where Cassandra
+                       cluster exists
+--app_instance_name    (Default: cassandra-1 ) Name of application in K8s cluster
+
+Example:
+<SCRIPT DIR>/backup.sh --keyspace demo --namespace custom-namespace
+'
+
 . "${SCRIPT_DIR}/util.sh"
 
-if [[ -z "$1" ]]; then
-  info "Please provide a keyspace"
-  exit 1
-fi
+parse_required_argument KEYSPACE keyspace $@
 
-KEYSPACE="$1"
 set -u
 
 function upload_backup_script_cmd {
@@ -69,7 +82,7 @@ if [[ $STATUS -ne 0 ]]; then
 # Check for one of possible reasons for error, Cassandra cluster was scaled during
 # backup procedure
   NEW_REPLICAS=$(get_desired_number_of_replicas_in_sts)
-  if [[ $REPLICAS -ne $NEW_REPLICAS ]]; then
+  if [[ "${REPLICAS}" -ne "${NEW_REPLICAS}" ]]; then
     info "Number of containers has changed from ${REPLICAS} to ${NEW_REPLICAS}"
   fi
   exit 1
@@ -96,11 +109,11 @@ fi
 
 info "Getting schema..."
 info ""
-kubectl exec -it ${APP_INSTANCE_NAME}-cassandra-0 -n $NAMESPACE -c cassandra -- cqlsh -e "DESC KEYSPACE ${KEYSPACE}" > backup-schema.cql
+kubectl exec ${APP_INSTANCE_NAME}-cassandra-0 -n $NAMESPACE -c cassandra -- cqlsh -e "DESC KEYSPACE ${KEYSPACE}" > backup-schema.cql
 
 info "Getting ring info..."
 info ""
-kubectl exec -it ${APP_INSTANCE_NAME}-cassandra-0 -n $NAMESPACE -c cassandra -- nodetool ring > backup-ring.info
+kubectl exec ${APP_INSTANCE_NAME}-cassandra-0 -n $NAMESPACE -c cassandra -- nodetool ring > backup-ring.info
 
 info ""
 info "Backups..."

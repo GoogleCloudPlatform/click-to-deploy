@@ -107,9 +107,10 @@ until you are ready to upgrade.
 
 ```shell
 for var in "IMAGE_CASSANDRA"; do
-  image="${!var}";
-  export $var=$(docker inspect --format='{{index .RepoDigests 0}}' $image)
-  env | grep $var
+  repo=`echo ${!i} | cut -d: -f1`;
+  digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
+  export $i="$repo@$digest";
+  env | grep $i;
 done
 ```
 
@@ -213,6 +214,12 @@ Repeat this procedure until Cassandra cluster has expected number of pods
 For more information about the StatefulSets scaling, check the
 [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/#kubectl-scale).
 
+To invoke cluster by script, please invoke
+
+```shell
+<SCRIPT DIR>/scale_down.sh --desired_number 3
+```
+
 # Uninstall the Application
 
 ## Using GKE UI
@@ -303,8 +310,8 @@ Also, database schema and token information is also backed up.
 
 Please run it with key space
 
-```
-scripts/backup.sh <KEY SPACE>
+```shell
+<SCRIPT DIR>/backup.sh --keyspace <KEYSPACE>
 ```
 
 This script will generate backup files.
@@ -322,8 +329,8 @@ To restore Cassandra, `sstableloader` tool is used. This is automated via
 `scirpts/restore.sh`. Please run this script from directory with backup files,
 providing as arguments key space and number of generated archives.
 
-```
-scripts/restore.sh <KEY SPACE> <NUMBER OF ARCHIVES>
+```shell
+<SCRIPT DIR>/restore.sh --keyspace <KEYSPACE> --backups <NUMBER OF ARCHIVES>
 ```
 
 This script will recreate schema and upload data. Clusters (source and
@@ -351,7 +358,7 @@ export NAMESPACE=default
 
 Assign the new image to your StatefulSet definition:
 
-```
+```shell
 IMAGE_CASSANDRA=<put your new image reference here>
 
 kubectl set image statefulset "${APP_INSTANCE_NAME}-cassandra" \
@@ -364,4 +371,9 @@ will not automatically restart due to the OnDelete update strategy set on the St
 ### Run the `upgrade.sh` script to run the rolling update procedure
 
 Run the `scripts/upgrade.sh` script. This script will take down and update one replica at a time -
-it should print out diagnostic messages. You should be done when the script finishes.
+it should print out diagnostic messages.
+
+Please invoke script by following command line
+```shell
+<SCRIPT DIR>/upgrade.sh
+```

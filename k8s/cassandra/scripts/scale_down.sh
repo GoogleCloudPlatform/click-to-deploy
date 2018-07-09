@@ -9,7 +9,7 @@
 # cluster, as Cassandra has marked that this disk belongs to decommissioned
 # node. Thus, we need to delete this disk, removing PV and PVC.
 
-set -euo pipefail
+set -eo pipefail
 
 export SCRIPT_DIR=$(readlink -f "$(dirname "${BASH_SOURCE[0]}")")
 
@@ -18,17 +18,32 @@ if [[ ! -f "${SCRIPT_DIR}/util.sh" ]]; then
   exit 1
 fi
 
+USAGE='
+This script scales down Cassandra cluster.
+
+Parameters:
+--desired_number       (Required) Desired number of of nodes in Cassandra
+--namespace            (Default: default ) Name of K8s namespace, where Cassandra
+                       cluster exists
+--app_instance_name    (Default: cassandra-1 ) Name of application in K8s cluster
+
+Example:
+<SCRIPT DIR>/scale_down.sh --desired_number 3 --namespace custom-namespace
+'
+
 . "${SCRIPT_DIR}/util.sh"
 
-DESIRED_NUMBER=${1:-1}
+parse_required_argument DESIRED_NUMBER desired_number $@
+
+set -u
 
 if [[ $DESIRED_NUMBER -gt $(get_desired_number_of_replicas_in_sts) ]]; then
   info "Desired number exceedes current number of desired replicas"
   exit 1
 fi
 
-if [[ $DESIRED_NUMBER -lt 1 ]]; then
-  info "Cannot scale below 1"
+if [[ $DESIRED_NUMBER -lt 3 ]]; then
+  info "Cannot scale below 3"
   exit 1
 fi
 
