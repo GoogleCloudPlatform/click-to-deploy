@@ -131,17 +131,4 @@ spec:
 
     Navigate http://127.0.0.1:15672 to access RabbitMQ Management UI.
 
-    # Scale the cluster
-
-    By default, RabbitMQ K8s application is deployed using 3 replicas. You can manually scale it up or down using the following command.
-
-    > **NOTE:** Scaling down will leave `persistentvolumeclaims` of your StatefulSet untouched.
-
-    ```
-    kubectl scale statefulsets "$APP_INSTANCE_NAME-rabbitmq" \
-      --namespace "$NAMESPACE" --replicas=<new-replicas>
-    ```
-
-    where `<new-replicas>` defines the number of replicas.
-
     <!--- ALL THIS ABOVE IS COPIED FROM README.MD -->
