@@ -266,14 +266,6 @@ kubectl scale statefulsets "$APP_INSTANCE_NAME-rabbitmq" \
 
 where `<new-replicas>` defines the number of replicas.
 
-#### Queue Mirroring
-
-By default, RabbitMQ K8s application does not have [Highly Available](https://www.rabbitmq.com/ha.html) policies enabled, using the following command to enable it.
-
-```shell
-kubectl exec -it "$APP_INSTANCE_NAME-rabbitmq-0" --namespace "$NAMESPACE" -- rabbitmqctl set_policy ha-all "." '{"ha-mode":"all", "ha-sync-mode":"automatic"}' --apply-to all --priority 0
-```
-
 # Backup and restore
 
 TODO
