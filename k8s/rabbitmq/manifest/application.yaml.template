@@ -27,6 +27,12 @@ spec:
       secretKeyRef:
         key: rabbitmq-pass
         name: $APP_INSTANCE_NAME-rabbitmq-secret
+  - name: Erlang cookie
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: rabbitmq-erlang-cookie
+        name: $APP_INSTANCE_NAME-rabbitmq-secret
   maintainers:
   - name: Google Click to Deploy
     url: https://cloud.google.com/solutions/#click-to-deploy
