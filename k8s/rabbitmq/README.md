@@ -270,7 +270,7 @@ where `<new-replicas>` defines the number of replicas.
 
 **Option 1:** Use `kubectl` to scale down by following command:
 
-This option reduce number of replicas without disconnect nodes from a cluster. Also scaling down will leave `persistentvolumeclaims` of your StatefulSet untouched.
+This option reduces the number of replicas without disconnecting nodes from the cluster. Scaling down will also leave `persistentvolumeclaims` of your StatefulSet untouched.
 
 ```
 kubectl scale statefulsets "$APP_INSTANCE_NAME-rabbitmq" \
@@ -280,13 +280,13 @@ where `<new-replicas>` defines the number of replicas.
 
 **Option 2:** Remove a RabbitMQ node permanently:
 
-> **WARNING:** This option is delete `persistentvolumeclaims` permanently and all data from removed nodes.
-> Consider to enable HA mode to replicate data between all nodes before you start.
+> **WARNING:** This option deletes `persistentvolumeclaims` permanently, which results in permanent data loss from the deleted Pods.
+> Consider enabling HA mode to replicate data between all nodes before you start the procedure.
 
 To remove a RabbitMQ node permanently and scale down number of replicas, please use script `scripts/scale-down.sh` with `--help` argument to get more information,
-or manually scale down cluster in following steps.
+or manually scale down the cluster in following steps.
 
-To manually remove a nodes from a cluster, and then Pod from K8s,
+To manually remove a nodes from the cluster, and then Pod from K8s,
 start from highest numbered Pod.
 
 For each node, do following steps:
@@ -302,8 +302,7 @@ Repeat this procedure until RabbitMQ cluster has expected number of Pods.
 For more information about the StatefulSets scaling, check the
 [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/#kubectl-scale).
 
-For more information about the RabbitMQ removing a node, check the
-[Breaking Up a Cluster](https://www.rabbitmq.com/clustering.html#breakup).
+For more information about removing a node from RabbitMQ cluster, check the [official documentation](https://www.rabbitmq.com/clustering.html#breakup).
 
 # Backup and restore
 

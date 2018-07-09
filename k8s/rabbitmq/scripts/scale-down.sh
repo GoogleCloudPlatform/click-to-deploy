@@ -1,9 +1,9 @@
 #!/bin/bash
 #
-# While scaling down we want to gracefully remove a RabbitMQ node from a cluster.
+# While scaling down we want to gracefully remove a RabbitMQ node from the cluster.
 #
-# To do this, rabbitmq CLI is used that removes a node from a cluster.
-# Also, PV and PVC are removed.
+# RabbitMQ CLI is used to detach nodes from the cluster.
+# Then kubectl command removes the Pod, persistent volumes and persistent volume claims.
 
 set -euo pipefail
 
