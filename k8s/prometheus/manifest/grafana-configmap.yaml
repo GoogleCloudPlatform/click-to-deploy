@@ -1,8 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: grafana-ini
-  namespace: kube-system
+  name: $APP_INSTANCE_NAME-grafana-ini
+  labels:
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
 data:
   grafana.ini: |
     [analytics]
@@ -19,8 +20,9 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: grafana-datasources
-  namespace: kube-system
+  name: $APP_INSTANCE_NAME-grafana-datasources
+  labels:
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
 data:
   datasources.yaml: |
     apiVersion: 1
@@ -29,14 +31,15 @@ data:
       isDefault: true
       name: prometheus
       type: prometheus
-      url: http://prometheus:9090
+      url: http://$APP_INSTANCE_NAME-prometheus:9090
       version: 1
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: grafana-dashboardproviders
-  namespace: kube-system
+  name: $APP_INSTANCE_NAME-grafana-dashboardproviders
+  labels:
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
 data:
   dashboardproviders.yaml: |
     apiVersion: 1

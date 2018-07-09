@@ -1,12 +1,12 @@
 apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
-  name: alertmanager
-  namespace: kube-system
+  name: $APP_INSTANCE_NAME-alertmanager
   labels:
     k8s-app: alertmanager
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
 spec:
-  serviceName: "alertmanager-operated"
+  serviceName: "$APP_INSTANCE_NAME-alertmanager-operated"
   replicas: 3
   podManagementPolicy: OrderedReady
   updateStrategy:
@@ -19,24 +19,21 @@ spec:
     metadata:
       labels:
         k8s-app: alertmanager
-      annotations:
-        scheduler.alpha.kubernetes.io/critical-pod: ''
     spec:
-      priorityClassName: system-cluster-critical
-      serviceAccountName: alertmanager
+      serviceAccountName: $ALERTMANAGER_SA
       containers:
         - name: prometheus-alertmanager
-          image: "prom/alertmanager:v0.14.0"
-          imagePullPolicy: "IfNotPresent"
+          image: $IMAGE_ALERTMANAGER
+          imagePullPolicy: Always
           args:
             - --config.file=/etc/config/alertmanager.yml
             - --storage.path=/data
             - --web.listen-address=:9093
             - --web.route-prefix=/
             - --mesh.listen-address=$(POD_IP):6783
-            - --mesh.peer=alertmanager-0.alertmanager-operated.kube-system.svc:6783
-            - --mesh.peer=alertmanager-1.alertmanager-operated.kube-system.svc:6783
-            - --mesh.peer=alertmanager-2.alertmanager-operated.kube-system.svc:6783
+            - --mesh.peer=$APP_INSTANCE_NAME-alertmanager-0.$APP_INSTANCE_NAME-alertmanager-operated.$NAMESPACE.svc:6783
+            - --mesh.peer=$APP_INSTANCE_NAME-alertmanager-1.$APP_INSTANCE_NAME-alertmanager-operated.$NAMESPACE.svc:6783
+            - --mesh.peer=$APP_INSTANCE_NAME-alertmanager-2.$APP_INSTANCE_NAME-alertmanager-operated.$NAMESPACE.svc:6783
             - --log.level=debug
           env:
           - name: POD_IP
@@ -58,7 +55,7 @@ spec:
           volumeMounts:
             - name: config-volume
               mountPath: /etc/config
-            - name: alertmanager-data
+            - name: $APP_INSTANCE_NAME-alertmanager-data
               mountPath: "/data"
               subPath: ""
           resources:
@@ -71,7 +68,7 @@ spec:
       volumes:
         - name: config-volume
           configMap:
-            name: alertmanager-config
+            name: $APP_INSTANCE_NAME-alertmanager-config
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -84,7 +81,7 @@ spec:
             topologyKey: "kubernetes.io/hostname"
   volumeClaimTemplates:
   - metadata:
-      name: alertmanager-data
+      name: $APP_INSTANCE_NAME-alertmanager-data
     spec:
       storageClassName: standard
       accessModes:

@@ -1,10 +1,10 @@
 apiVersion: extensions/v1beta1
 kind: DaemonSet
 metadata:
-  name: node-exporter
-  namespace: kube-system
+  name: $APP_INSTANCE_NAME-node-exporter
   labels:
     k8s-app: node-exporter
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
 spec:
   updateStrategy:
     type: OnDelete
@@ -12,18 +12,12 @@ spec:
     metadata:
       labels:
         k8s-app: node-exporter
-      annotations:
-        scheduler.alpha.kubernetes.io/critical-pod: ''
     spec:
-      serviceAccountName: node-exporter
-      tolerations:
-      - key: node-role.kubernetes.io/master
-        effect: NoSchedule
-      priorityClassName: system-node-critical
+      serviceAccountName: $NODE_EXPORTER_SA
       containers:
         - name: prometheus-node-exporter
-          image: "prom/node-exporter:v0.15.2"
-          imagePullPolicy: "IfNotPresent"
+          image: $IMAGE_NODE_EXPORTER
+          imagePullPolicy: Always
           args:
             - --path.procfs=/host/proc
             - --path.sysfs=/host/sys

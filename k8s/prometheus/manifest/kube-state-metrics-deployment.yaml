@@ -1,10 +1,10 @@
-apiVersion: apps/v1
+apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: kube-state-metrics
-  namespace: kube-system
+  name: $APP_INSTANCE_NAME-kube-state-metrics
   labels:
     k8s-app: kube-state-metrics
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
 spec:
   selector:
     matchLabels:
@@ -14,14 +14,12 @@ spec:
     metadata:
       labels:
         k8s-app: kube-state-metrics
-      annotations:
-        scheduler.alpha.kubernetes.io/critical-pod: ''
     spec:
-      priorityClassName: system-cluster-critical
-      serviceAccountName: kube-state-metrics
+      serviceAccountName: $KUBE_STATE_METRICS_SA
       containers:
       - name: kube-state-metrics
-        image: quay.io/coreos/kube-state-metrics:v1.3.0
+        image: $IMAGE_KUBE_STATE_METRICS
+        imagePullPolicy: Always
         ports:
         - name: http-metrics
           containerPort: 8080
@@ -59,4 +57,4 @@ spec:
           - --memory=100Mi
           - --extra-memory=2Mi
           - --threshold=5
-          - --deployment=kube-state-metrics
+          - --deployment=$APP_INSTANCE_NAME-kube-state-metrics

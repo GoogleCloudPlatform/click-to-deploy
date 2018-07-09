@@ -1,12 +1,12 @@
 apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
-  name: prometheus
-  namespace: kube-system
+  name: $APP_INSTANCE_NAME-prometheus
   labels:
     k8s-app: prometheus
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
 spec:
-  serviceName: "prometheus"
+  serviceName: "$APP_INSTANCE_NAME-prometheus"
   replicas: 2
   podManagementPolicy: "Parallel"
   updateStrategy:
@@ -18,23 +18,20 @@ spec:
     metadata:
       labels:
         k8s-app: prometheus
-      annotations:
-        scheduler.alpha.kubernetes.io/critical-pod: ''
     spec:
-      priorityClassName: system-cluster-critical
-      serviceAccountName: prometheus
+      serviceAccountName: $PROMETHEUS_SA
       initContainers:
       - name: "init-chown-data"
-        image: "alpine:latest"
-        imagePullPolicy: "IfNotPresent"
+        image: $IMAGE_PROMETHEUS_INIT
+        imagePullPolicy: Always
         command: ["chown", "-R", "65534:65534", "/data"]
         volumeMounts:
-        - name: prometheus-data
+        - name: $APP_INSTANCE_NAME-prometheus-data
           mountPath: /data
           subPath: ""
       containers:
         - name: prometheus-server
-          image: "prom/prometheus:v2.2.1"
+          image: $IMAGE_PROMETHEUS
           imagePullPolicy: "IfNotPresent"
           args:
             - --config.file=/etc/config/prometheus.yaml
@@ -64,18 +61,17 @@ spec:
             requests:
               cpu: 200m
               memory: 1000Mi
-
           volumeMounts:
             - name: config-volume
               mountPath: /etc/config
-            - name: prometheus-data
+            - name: $APP_INSTANCE_NAME-prometheus-data
               mountPath: /data
               subPath: ""
       terminationGracePeriodSeconds: 300
       volumes:
         - name: config-volume
           configMap:
-            name: prometheus-config
+            name: $APP_INSTANCE_NAME-prometheus-config
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -88,7 +84,7 @@ spec:
             topologyKey: "kubernetes.io/hostname"
   volumeClaimTemplates:
   - metadata:
-      name: prometheus-data
+      name: $APP_INSTANCE_NAME-prometheus-data
     spec:
       storageClassName: standard
       accessModes:

@@ -1,8 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: alertmanager-operated
-  namespace: kube-system
+  name: $APP_INSTANCE_NAME-alertmanager-operated
+  labels:
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
 spec:
   type: "ClusterIP"
   clusterIP: None

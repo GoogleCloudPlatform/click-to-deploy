@@ -1,10 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: grafana
-  namespace: kube-system
+  name: $APP_INSTANCE_NAME-grafana
   labels:
-    kubernetes.io/name: "Grafana"
+    k8s-app: grafana
 spec:
   ports:
     - name: http
