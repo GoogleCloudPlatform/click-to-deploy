@@ -30,7 +30,7 @@ spec:
     url: https://cloud.google.com/solutions/#click-to-deploy
   links:
   - description: 'User Guide: Google Click to Deploy Memcached'
-    url: https://console.cloud.google.com/code/develop/browse/google-click-to-deploy/master/k8s/memcached?project=k8s-marketplace-eap
+    url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/memcached/README.md
   - description: 'Memcached: Getting Started'
     url: https://github.com/GoogleCloudPlatform/memcached-docker/blob/master/1/README.md
   selector:
