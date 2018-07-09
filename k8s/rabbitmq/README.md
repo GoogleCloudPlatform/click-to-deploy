@@ -268,7 +268,7 @@ where `<new-replicas>` defines the number of replicas.
 
 # Backup and restore
 
-TODO
+Read the [official documentation](https://www.rabbitmq.com/backup.html) for more information.
 
 # Update procedure
 
