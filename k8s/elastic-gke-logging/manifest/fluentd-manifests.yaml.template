@@ -133,7 +133,6 @@ apiVersion: apps/v1beta2
 kind: DaemonSet
 metadata:
   name: $APP_INSTANCE_NAME-fluentd-es
-  #namespace: kube-system
   labels: &FluentdLabels
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app.kubernetes.io/component: fluentd-es-logging
