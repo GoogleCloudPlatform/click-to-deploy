@@ -225,7 +225,7 @@ For backing up WordPress database, you will need to have connection to MySQL hos
 You can setup a local proxy with the following `kubectl` command in background:
 
 ```shell
-kubectl port-forward "svc/${APP_INSTANCE_NAME}-mysql-svc" 3306 -n "${NAMESPACE}"
+kubectl port-forward "svc/${APP_INSTANCE_NAME}-mysql-svc" 3306 --namespace "${NAMESPACE}"
 ```
 
 ### Create backup
