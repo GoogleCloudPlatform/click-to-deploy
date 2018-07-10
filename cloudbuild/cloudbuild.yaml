@@ -156,3 +156,5 @@ steps:
   volumes:
   - name: 'ssh'
     path: /root/.ssh
+
+timeout: 20m
