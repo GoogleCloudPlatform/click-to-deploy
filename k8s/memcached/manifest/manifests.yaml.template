@@ -11,7 +11,7 @@ spec:
   updateStrategy:
     type: RollingUpdate
   serviceName: $APP_INSTANCE_NAME-memcached-svc
-  replicas: 2
+  replicas: $REPLICAS
   template:
     metadata:
       labels: *MemcachedDeploymentLabels

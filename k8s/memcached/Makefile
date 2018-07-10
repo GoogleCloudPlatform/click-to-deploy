@@ -6,7 +6,7 @@ include ../vendor/marketplace-tools/ubbagent.Makefile
 include ../vendor/marketplace-tools/var.Makefile
 
 
-TAG ?= latest
+TAG ?= 1.5
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/memcached/deployer:$(TAG)
@@ -46,8 +46,8 @@ app/build:: .build/memcached/deployer \
 .build/memcached/memcached: .build/var/REGISTRY \
                             .build/var/TAG \
                             | .build/memcached
-	docker pull launcher.gcr.io/google/memcached1
-	docker tag launcher.gcr.io/google/memcached1 \
+	docker pull launcher.gcr.io/google/memcached1:1.5
+	docker tag launcher.gcr.io/google/memcached1:1.5 \
 	    "$(REGISTRY)/memcached:$(TAG)"
 	docker push "$(REGISTRY)/memcached:$(TAG)"
 	@touch "$@"
