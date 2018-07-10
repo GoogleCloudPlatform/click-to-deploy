@@ -178,7 +178,7 @@ Start with modification of the image used for pod temaplate within InfluxDB Stat
 
 ```shell
 kubectl set image statefulset "$APP_INSTANCE_NAME-influxdb" \
-  influxdb=`<url-pointing-to-new-image>`
+  influxdb=<url-pointing-to-new-image>
 ```
 
 where `<url-pointing-to-new-image>` is the new image.
@@ -189,7 +189,7 @@ To check the status of Pods in the StatefulSet and the progress of deployment of
 kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
 
-To check the current image used by pods within `Influxdb` K8s application, you can run the following command:
+To check the current image used by pods within `InfluxDB` K8s application, you can run the following command:
 
 ```shell
 kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}' | sort
