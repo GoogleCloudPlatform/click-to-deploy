@@ -13,9 +13,10 @@ properties:
     x-google-marketplace:
       type: IMAGE
   INFLUXDB_ADMIN_USER:
+    title: InfluxDB admin username
+    description: Username for administrator account of InfluxDB database
     type: string
-    x-google-marketplace:
-      type: NAME
+    default: influxdb-admin
   INFLUXDB_ADMIN_PASSWORD:
     type: string
     x-google-marketplace:
