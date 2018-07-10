@@ -156,7 +156,7 @@ By default, NGINX K8s application is deployed using 3 replicas. You can manually
 kubectl scale statefulsets "$APP_INSTANCE_NAME-nginx" --namespace "$NAMESPACE" --replicas=<new-replicas>
 ```
 
-where <new_replicas> defines the number of replicas.
+where `<new_replicas>` defines the number of replicas.
 
 # Backup and Restore
 

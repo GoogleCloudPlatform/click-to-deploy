@@ -7,7 +7,7 @@ Prometheus is a monitoring addon. It consists of:
 1.  **Alert Manager** - a manager for alerts.
 1.  **Grafana** - the monitoring UI.
 
-[Learn more](https://prometheus.io/).
+[Learn more](https://prometheus.io/)
 
 ## About Google Click to Deploy
 
@@ -196,7 +196,7 @@ As an alternative to exposing Grafana publicly, you can use a local port forward
 following command in background:
 
 ```shell
-kubectl port-forward -n ${NAMESPACE} ${APP_INSTANCE_NAME}-grafana-0 3000
+kubectl port-forward --namespace ${NAMESPACE} ${APP_INSTANCE_NAME}-grafana-0 3000
 ```
 
 With the port forwarded locally, you can access Grafana UI with `http://localhost:3000/`.

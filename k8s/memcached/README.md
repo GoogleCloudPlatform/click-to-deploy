@@ -197,7 +197,7 @@ You can manually scale it up or down to deploy Memcached solution with desired n
 kubectl scale statefulsets "$APP_INSTANCE_NAME-memcached" --namespace "$NAMESPACE" --replicas=<new-replicas>
 ```
 
-where <new_replicas> defines the number of replicas.
+where `<new_replicas>` defines the number of replicas.
 
 # Backup and Restore
 
