@@ -1,5 +1,5 @@
 ---
-apiVersion: app.k8s.io/v1alpha1
+apiVersion: app.k8s.io/v1beta1
 kind: Application
 metadata:
   name: "$APP_INSTANCE_NAME"
@@ -13,14 +13,15 @@ metadata:
 spec:
   type: Elasticsearch
   version: '0.1'
-  description: |-
-    Elasticsearch is an open-source search engine that provides a distributed, multitenant-capable
-    full-text search engine with an HTTP web interface and schema-free JSON documents.
+  descriptor:
+    description: |-
+      Elasticsearch is an open-source search engine that provides a distributed, multitenant-capable
+      full-text search engine with an HTTP web interface and schema-free JSON documents.
 
-    # Support
-    Google does not offer support for this solution. However, community support is available on
-    [Stack Overflow](https://stackoverflow.com/questions/tagged/elasticsearch/).
-    Additional community support is available on [elastic.co forums](https://discuss.elastic.co/).
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/elasticsearch/).
+      Additional community support is available on [elastic.co forums](https://discuss.elastic.co/).
   maintainers:
   - name: Google Click to Deploy
     url: https://cloud.google.com/solutions/#click-to-deploy

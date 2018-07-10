@@ -1,4 +1,4 @@
-apiVersion: app.k8s.io/v1alpha1
+apiVersion: app.k8s.io/v1beta1
 kind: Application
 metadata:
   name: "$APP_INSTANCE_NAME"
@@ -11,13 +11,14 @@ metadata:
 spec:
   type: RabbitMQ
   version: '3.6.15'
-  description: |-
-    RabbitMQ is an open source messaging system that implements the Advanced Message Queueing Protocol to serve a variety of messaging applications.
+  descriptor:
+    description: |-
+      RabbitMQ is an open source messaging system that implements the Advanced Message Queueing Protocol to serve a variety of messaging applications.
 
-    # Support
-    Google does not offer support for this solution. However, community support is available on
-    [Stack Overflow](https://stackoverflow.com/questions/tagged/rabbitmq/).
-    Additional support is available on [community forums](https://groups.google.com/forum/#!forum/rabbitmq-users).
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/rabbitmq/).
+      Additional support is available on [community forums](https://groups.google.com/forum/#!forum/rabbitmq-users).
   info:
   - name: Service endpoint
     value: TODO

@@ -1,5 +1,5 @@
 ---
-apiVersion: app.k8s.io/v1alpha1
+apiVersion: app.k8s.io/v1beta1
 kind: Application
 metadata:
   name: "$APP_INSTANCE_NAME"
@@ -13,18 +13,19 @@ metadata:
 spec:
   type: Memcached
   version: '0.1'
-  description: |-
-    Memcached is an open source in-memory, key-value store.
+  descriptor:
+    description: |-
+      Memcached is an open source in-memory, key-value store.
 
-    Key features of this solution include high performance and ease of distribution.
+      Key features of this solution include high performance and ease of distribution.
 
-    Although Memcached is intended to be use with dynamic web applications, it can be used as a caching system for a number of databases.
+      Although Memcached is intended to be use with dynamic web applications, it can be used as a caching system for a number of databases.
 
-    # Support
-    Google does not offer support for this solution. However, community support is available on
-    [Stack Overflow](https://stackoverflow.com/questions/tagged/memcached/).
-    Additional community support is available on [community forums](https://groups.google.com/forum/#!forum/memcached).
-    
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/memcached/).
+      Additional community support is available on [community forums](https://groups.google.com/forum/#!forum/memcached).
+      
   info:
   - name: Service endpoint
     value: TODO

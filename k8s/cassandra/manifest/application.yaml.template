@@ -1,5 +1,5 @@
 ---
-apiVersion: app.k8s.io/v1alpha1
+apiVersion: app.k8s.io/v1beta1
 kind: Application
 metadata:
   name: "$APP_INSTANCE_NAME"
@@ -13,14 +13,15 @@ metadata:
 spec:
   type: Cassandra
   version: '3.11.2'
-  description: |-
-    Cassandra is a NoSQL, highly scalable, high-performance distributed database with high
-    availability with no single point of failure.
+  descriptor:
+    description: |-
+      Cassandra is a NoSQL, highly scalable, high-performance distributed database with high
+      availability with no single point of failure.
 
-    # Support
-    Google does not offer support for this solution. However, community support is available on
-    [Stack Overflow](https://stackoverflow.com/questions/tagged/cassandra/).
-    Additional community support is available on [cassandra website](http://cassandra.apache.org).
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/cassandra/).
+      Additional community support is available on [cassandra website](http://cassandra.apache.org).
   info:
   - name: Service endpoint
     value: TODO

@@ -1,5 +1,5 @@
 ---
-apiVersion: app.k8s.io/v1alpha1
+apiVersion: app.k8s.io/v1beta1
 kind: Application
 metadata:
   name: "$name"
@@ -19,13 +19,14 @@ spec:
     matchLabels:
       app.kubernetes.io/name: "$name"
   version: v2.3.0-v1alpha1
-  description: |-
-    Spark Operator enables specifying and running Apache Spark applications idiomatically on Kubernetes.
+  descriptor:
+    description: |-
+      Spark Operator enables specifying and running Apache Spark applications idiomatically on Kubernetes.
 
-    # Support
-    Google does not offer support for this solution. However, community support is available on
-    [Stack Overflow](https://stackoverflow.com/questions/tagged/elasticsearch/).
-    Additional community support is available on [elastic.co forums](https://discuss.elastic.co/).
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/elasticsearch/).
+      Additional community support is available on [elastic.co forums](https://discuss.elastic.co/).
   maintainers:
   - name: Google Click to Deploy
     url: https://cloud.google.com/solutions/#click-to-deploy
