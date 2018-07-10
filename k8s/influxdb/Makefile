@@ -19,7 +19,7 @@ APP_TEST_PARAMETERS ?= {}
 
 
 app/build:: .build/influxdb/deployer \
-	    .build/influxdb/influxdb
+            .build/influxdb/influxdb
 
 
 .build/influxdb: | .build
