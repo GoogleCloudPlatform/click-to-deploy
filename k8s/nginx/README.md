@@ -1,5 +1,5 @@
 # Overview
-NGINX is open-source software for web serving, reverse proxying, caching, load balancing, and media streaming. NGINX can also function as a proxy server for email (IMAP, POP3, and SMTP) and a reverse proxy and load balancer for HTTP, TCP, and UDP servers.
+NGINX is open source software for web serving, reverse proxying, caching, load balancing, and media streaming. NGINX can also function as a proxy server for email (IMAP, POP3, and SMTP) and a reverse proxy and load balancer for HTTP, TCP, and UDP servers.
 
 If you would like to learn more about NGINX, please, visit [NGINX website](https://www.nginx.com/).
 
@@ -135,7 +135,20 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 # Basic Usage
 
-TBD 
+You can learn IP addresses of your NGINX solution either thru command line or thru GCP User Interface.
+
+If you would like to learn IP addresses of the NGINX solution via GCP User Interface, please, do the following:
+- navigate to Kubernetes Engine -> Services section
+- identify NGINX solution using its name (e.g. nginx-1-nginx-svc)
+- read the IP addresses (for port 80 and 443) from the "Endpoints" column.
+
+If you are using CLI then run the following command:
+
+```shell
+kubectl get svc -l app.kubernetes.io/name=$APP_INSTANCE_NAME
+```
+
+This command will display internal and external IP address of your NGINX service.
 
 # Scaling
 
@@ -149,7 +162,7 @@ where <new_replicas> defines the number of replicas.
 
 # Backup and Restore
 
-TBD
+TODO by rafalbiegacz@
 
 # Update
 
