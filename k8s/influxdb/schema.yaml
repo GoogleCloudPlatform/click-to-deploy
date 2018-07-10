@@ -14,9 +14,8 @@ properties:
       type: IMAGE
   INFLUXDB_ADMIN_USER:
     type: string
-    default: influxdb_admin
     x-google-marketplace:
-      type: string
+      type: NAME
   INFLUXDB_ADMIN_PASSWORD:
     type: string
     x-google-marketplace:
