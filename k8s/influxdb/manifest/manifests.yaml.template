@@ -88,6 +88,6 @@ spec:
     port: 8086
     protocol: TCP
   selector:
-    app: $APP_INSTANCE_NAME
-    component: influxdb-server
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/component: influxdb-server
   type: ClusterIP # LoadBalancer
