@@ -247,11 +247,11 @@ If you wish to remove the PersistentVolumeClaims with their attached persistent 
 following `kubectl` commands:
 
 ```shell
-for i in $(kubectl get pvc --namespace $NAMESPACE \
+for pv in $(kubectl get pvc --namespace $NAMESPACE \
   --selector app.kubernetes.io/name=$APP_INSTANCE_NAME \
   --output jsonpath='{.items[*].spec.volumeName}');
 do
-  kubectl delete pv/$i --namespace $NAMESPACE
+  kubectl delete pv/$pv --namespace $NAMESPACE
 done
 
 kubectl delete persistentvolumeclaims \
