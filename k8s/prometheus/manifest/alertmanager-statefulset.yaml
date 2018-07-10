@@ -19,24 +19,21 @@ spec:
     metadata:
       labels:
         k8s-app: alertmanager
-      annotations:
-        scheduler.alpha.kubernetes.io/critical-pod: ''
     spec:
-      priorityClassName: system-cluster-critical
       serviceAccountName: $ALERTMANAGER_SERVICE_ACCOUNT
       containers:
         - name: prometheus-alertmanager
           image: $IMAGE_ALERTMANAGER
-          imagePullPolicy: "IfNotPresent"
+          imagePullPolicy: Always
           args:
             - --config.file=/etc/config/alertmanager.yml
             - --storage.path=/data
             - --web.listen-address=:9093
             - --web.route-prefix=/
             - --mesh.listen-address=$(POD_IP):6783
-            - --mesh.peer=alertmanager-0.alertmanager-operated.kube-system.svc:6783
-            - --mesh.peer=alertmanager-1.alertmanager-operated.kube-system.svc:6783
-            - --mesh.peer=alertmanager-2.alertmanager-operated.kube-system.svc:6783
+            - --mesh.peer=$APP_INSTANCE_NAME-alertmanager-0.$APP_INSTANCE_NAME-alertmanager-operated.$NAMESPACE.svc:6783
+            - --mesh.peer=$APP_INSTANCE_NAME-alertmanager-1.$APP_INSTANCE_NAME-alertmanager-operated.$NAMESPACE.svc:6783
+            - --mesh.peer=$APP_INSTANCE_NAME-alertmanager-2.$APP_INSTANCE_NAME-alertmanager-operated.$NAMESPACE.svc:6783
             - --log.level=debug
           env:
           - name: POD_IP

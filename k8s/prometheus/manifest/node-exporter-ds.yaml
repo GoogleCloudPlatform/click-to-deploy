@@ -12,18 +12,12 @@ spec:
     metadata:
       labels:
         k8s-app: node-exporter
-      annotations:
-        scheduler.alpha.kubernetes.io/critical-pod: ''
     spec:
       serviceAccountName: $NODE_EXPORTER_SERVICE_ACCOUNT
-      tolerations:
-      - key: node-role.kubernetes.io/master
-        effect: NoSchedule
-      priorityClassName: system-node-critical
       containers:
         - name: prometheus-node-exporter
           image: $IMAGE_NODE_EXPORTER
-          imagePullPolicy: "IfNotPresent"
+          imagePullPolicy: Always
           args:
             - --path.procfs=/host/proc
             - --path.sysfs=/host/sys

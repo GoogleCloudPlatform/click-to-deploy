@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: $APP_INSTANCE_NAME-grafana
   labels:
-    kubernetes.io/name: "Grafana"
+    k8s-app: grafana
 spec:
   ports:
     - name: http

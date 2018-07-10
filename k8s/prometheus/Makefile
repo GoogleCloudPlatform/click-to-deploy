@@ -21,10 +21,6 @@ ifdef IMAGE_NODE_EXPORTER
   IMAGE_NODE_EXPORTER_FIELD = , "IMAGE_NODE_EXPORTER": "$(IMAGE_NODE_EXPORTER)"
 endif
 
-ifdef IMAGE_PUSHGATEWAY
-  IMAGE_PUSHGATEWAY_FIELD = , "IMAGE_PUSHGATEWAY": "$(IMAGE_PUSHGATEWAY)"
-endif
-
 ifdef IMAGE_KUBE_STATE_METRICS
   IMAGE_KUBE_STATE_METRICS_FIELD = , "IMAGE_KUBE_STATE_METRICS": "$(IMAGE_KUBE_STATE_METRICS)"
 endif
@@ -44,7 +40,6 @@ APP_PARAMETERS ?= { \
   $(IMAGE_KUBE_STATE_METRICS_FIELD) \
   $(IMAGE_NODE_EXPORTER_FIELD) \
   $(IMAGE_PROMETHEUS_FIELD) \
-  $(IMAGE_PUSHGATEWAY_FIELD) \
   $(IMAGE_GRAFANA_FIELD) \
   $(IMAGE_PROMETHEUS_INIT_FIELD) \
 }
@@ -56,9 +51,7 @@ app/build:: .build/prometheus/deployer \
             .build/prometheus/kubestatemetrics \
             .build/prometheus/nodeexporter \
             .build/prometheus/server \
-            .build/prometheus/pushgateway \
             .build/prometheus/grafana \
-
 
 
 .build/prometheus: | .build
@@ -88,7 +81,7 @@ app/build:: .build/prometheus/deployer \
                           | .build/prometheus
 	docker pull launcher.gcr.io/google/prometheus2:2.2
 	docker tag launcher.gcr.io/google/prometheus2:2.2 "$(REGISTRY)/prometheus:$(TAG)"
-	docker push "$(REGISTRY)/prometheus/server:$(TAG)"
+	docker push "$(REGISTRY)/prometheus:$(TAG)"
 	@touch "$@"
 
 
@@ -137,14 +130,4 @@ app/build:: .build/prometheus/deployer \
 	docker pull launcher.gcr.io/google/grafana5:5.1
 	docker tag launcher.gcr.io/google/grafana5:5.1 "$(REGISTRY)/prometheus/grafana:$(TAG)"
 	docker push "$(REGISTRY)/prometheus/grafana:$(TAG)"
-	@touch "$@"
-
-
-.build/prometheus/pushgateway: .build/var/REGISTRY \
-                               .build/var/TAG \
-                               | .build/prometheus
-	docker pull launcher.gcr.io/google/prometheus-pushgateway0:0.4
-	docker tag launcher.gcr.io/google/prometheus-pushgateway0:0.4 \
-	  "$(REGISTRY)/prometheus/pushgateway:$(TAG)"
-	docker push "$(REGISTRY)/prometheus/pushgateway:$(TAG)"
 	@touch "$@"
