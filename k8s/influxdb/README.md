@@ -6,7 +6,7 @@ This is a single-instance version of InfluxDB. Multi-instance version of InfluxD
 
 If you are interested in enterprise version of InfluxDB or you would like to learn more about InfluxDB in general, please, visit [InfluxDB website](https://www.influxdata.com/).
 
-## About Google Click to Deploy K8s Solutions
+## About Google Click to Deploy
 
 Popular open source software stacks on Kubernetes packaged by Google and made available in Google Cloud Marketplace.
 
@@ -57,7 +57,7 @@ gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketp
 
 #### Install the Application resource definition
 
-Do a one-time setup of your cluster and install Custom Reference Definition object for Kubernetes Application.
+Do a one-time setup for your cluster to understand Application resources.
 
 To do that, navigate to `k8s/vendor` subdirectory of the repository and run the following command:
 
@@ -178,7 +178,7 @@ Start with modification of the image used for pod temaplate within InfluxDB Stat
 
 ```shell
 kubectl set image statefulset "$APP_INSTANCE_NAME-influxdb" \
-  influxdb=<url-pointing-to-new-image>
+  influxdb=`<url-pointing-to-new-image>`
 ```
 
 where `<url-pointing-to-new-image>` is the new image.
@@ -218,7 +218,10 @@ export NAMESPACE=default
 
 ### Delete the resources
 
-> **NOTE:** Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions. It means that for instance if you have kubectl in version `1.10.*` and Kubernetes server `1.8.*`, you may experience incompatibility issues, like not removing the *StatefulSets* with apiVersion of *apps/v1beta2*.
+> **NOTE:** Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions.
+> It means that for instance if you have `kubectl` in version 1.10.&ast; and Kubernetes 1.8.&ast;,
+> you may experience incompatibility issues, like not removing the StatefulSets with
+> apiVersion of apps/v1beta2.
 
 If you still have the expanded manifest file used for the installation, you can use it to delete the resources.
 Run `kubectl` on expanded manifest file matching your installation:
@@ -237,10 +240,10 @@ kubectl delete statefulset,secret,service \
 
 ### Delete the persistent volumes of your installation
 
-By design, removal of *StatefulSets* in Kubernetes does not remove the *PersistentVolumeClaims* that
+By design, removal of StatefulSets in Kubernetes does not remove the PersistentVolumeClaims that
 were attached to their Pods. It protects your installations from mistakenly deleting stateful data.
 
-If you wish to remove the *PersistentVolumeClaims* with their attached persistent disks, run the
+If you wish to remove the PersistentVolumeClaims with their attached persistent disks, run the
 following `kubectl` commands:
 
 ```shell
@@ -261,11 +264,10 @@ kubectl delete persistentvolumeclaims \
 Optionally, if you do not need both the deployed application and GKE cluster used for deployment then you can delete the whole GKE cluster using this command:
 
 ```shell
-export PROJECT=your-gcp-project # or export PROJECT=$(gcloud config get-value project)
 export CLUSTER=marketplace-cluster
-export ZONE=us-west1-a # or export ZONE=$(gcloud config get-value compute/zone)
+export ZONE=us-west1-a
 ```
 
 ```
-gcloud --project "$PROJECT" container clusters delete "$CLUSTER" --zone "$ZONE"
+gcloud container clusters delete "$CLUSTER" --zone "$ZONE"
 ```
