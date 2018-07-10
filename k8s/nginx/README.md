@@ -98,12 +98,9 @@ This will ensure that the installed application will always use the same images,
 until you are ready to upgrade.
 
 ```shell
-for i in "IMAGE_NGINX"; do
-  repo=`echo ${!i} | cut -d: -f1`;
-  digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
-  export $i="$repo@$digest";
-  env | grep $i;
-done
+digest=`docker pull $IMAGE_NGINX | sed -n -e 's/Digest: //p'`;
+export $i="$repo@$digest";
+env | grep $i;
 ```
 
 #### Expand the manifest template
