@@ -12,20 +12,26 @@ spec:
   type: NGINX
   version: '1.15'
   description: |-
-    NGINX is open-source software for web serving, reverse proxying, caching, load balancing, and media streaming.
+    NGINX is open-source software for web serving, reverse proxying, \
+    caching, load balancing, and media streaming.
 
-    NGINX can also function as a proxy server for email (IMAP, POP3, and SMTP) and a reverse proxy and load balancer for HTTP, TCP, and UDP servers.
+    NGINX can also function as a proxy server for email (IMAP, POP3, and SMTP)\
+    and a reverse proxy and load balancer for HTTP, TCP, and UDP servers.
 
-    If you would like to learn more about NGINX, please, visit [NGINX website](https://www.nginx.com/).
+    If you would like to learn more about NGINX, please,\
+    visit [NGINX website](https://www.nginx.com/).
 
     # Support
 
-    This image is built by Google. It is your responsibility to keep container images you run or store in your own
-    repositories up to date with security patches.
+    This image is built by Google. It is your responsibility to keep \
+    container images you run or store in your own repositories \
+    up to date with security patches.
 
-    Community support for Nginx is available on [Stack Overflow](http://stackoverflow.com/questions/tagged/nginx/).
+    Community support for NGINX is available on \
+    [Stack Overflow](http://stackoverflow.com/questions/tagged/nginx/).
 
-    Please report issues with this Nginx container image via the [GitHub Issue Tracker](https://github.com/GoogleCloudPlatform/nginx-docker/issues).
+    Please report issues with this NGINX container image via \
+    the [GitHub Issue Tracker](https://github.com/GoogleCloudPlatform/nginx-docker/issues).
 
   info:
   - name: Nginx Configuration
@@ -47,9 +53,9 @@ spec:
     url: https://cloud.google.com/solutions/#click-to-deploy
   links:
   - description: 'User Guide: Google Click to Deploy NGINX'
-    url: https://console.cloud.google.com/code/develop/browse/google-click-to-deploy/master/k8s/nginx?project=k8s-marketplace-eap
-  - description: 'NGINX: Getting Started'
     url: https://github.com/GoogleCloudPlatform/nginx-docker/blob/master/1/README.md
+  - description: 'NGINX: Getting Started'
+    url: https://www.nginx.com/resources/wiki/start/
   selector:
     matchLabels:
       app.kubernetes.io/name: "$APP_INSTANCE_NAME"
@@ -63,5 +69,13 @@ spec:
   - group: v1
     kind: ConfigMap
   notes: |-
+    Identify Persistent Volume used by NGINX solution and upload the content \
+    you would like NGINX web server to serve.
+    To upload web content to the Persistent Volume used by NGINX solution one can do the following:
+    1) Navigate to a folder where directory containing your website is located \
+    (e.g. assuming that your web content is stored in 'html' directory)
+    2) Run the following command to copy the content of 'html' directory to the Persistent Volume:
+       kubectl cp html nginx-1-nginx-0:/usr/share/nginx
+    3) Set permissions so NGINX server has access to the newly uploaded 'html' directory
+       kubectl exec nginx-1-nginx-0 -- chmod -R a+r /usr/share/nginx/html
 
-    Identify Persistent Volume used by NGINX for HTML content and upload the content you would like to sever by your web server.
