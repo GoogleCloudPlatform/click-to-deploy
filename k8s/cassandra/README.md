@@ -106,11 +106,10 @@ This will ensure that the installed application will always use the same images,
 until you are ready to upgrade.
 
 ```shell
-for i in "IMAGE_CASSANDRA"; do
-  repo=`echo ${!i} | cut -d: -f1`;
-  digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
-  export $i="$repo@$digest";
-  env | grep $i;
+for var in "IMAGE_CASSANDRA"; do
+  image="${!var}";
+  export $var=$(docker inspect --format='{{index .RepoDigests 0}}' $image)
+  env | grep $var
 done
 ```
 
@@ -159,6 +158,9 @@ export NAMESPACE=default
 envsubst '$APP_INSTANCE_NAME $NAMESPACE' scripts/external.yaml.template > scripts/external.yaml
 kubectl apply -f scripts/external.yaml -n $NAMESPACE
 ```
+
+**NOTE** Please configure Cassandra access control, while exposing it to public
+access.
 
 ### Access Cassandra service
 
@@ -253,7 +255,7 @@ NOTE: Please keep in mind that `kubectl` guarantees support for Kubernetes serve
 Run `kubectl` on expanded manifest file matching your installation:
 
 ```shell
-kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
+kubectl delete -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
 
 ### Delete the persistent volumes of your installation
@@ -262,18 +264,104 @@ By design, removal of StatefulSets in Kubernetes does not remove the PersistentV
 were attached to their Pods. It protects your installations from mistakenly deleting stateful data.
 
 If you wish to remove the PersistentVolumeClaims with their attached persistent disks, run the
-following `kubectl` command:
+following `kubectl` commands:
 
 ```shell
+for pv in $(kubectl get pvc --namespace "${NAMESPACE}" \
+             --selector "app.kubernetes.io/name=${APP_INSTANCE_NAME}" \
+             --output jsonpath='{.items[*].spec.volumeName}'); do
+  kubectl delete "pv/${pv}" --namespace "${NAMESPACE}"
+done
+
 kubectl delete persistentvolumeclaims \
-  --namespace $NAMESPACE \
-  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
+  --namespace "${NAMESPACE}" \
+  --selector "app.kubernetes.io/name=${APP_INSTANCE_NAME}"
 ```
 
-# Backups
+# Backup & Restore
 
-*TODO: instructions for backups*
+### Backup
 
-# Upgrades
+Set your installation name and Kubernetes namespace:
 
-*TODO: instructions for upgrades*
+```shell
+export APP_INSTANCE_NAME=cassandra-1
+export NAMESPACE=default
+```
+
+To backup Cassandra, `nodetool snapshot` command must be executed on each node to
+get eventually consistent backup. Script `scripts/backup.sh` does following steps:
+
+1. Upload `make_backup.sh` script to each container.
+1. Run this scripts.
+1. Gather packed data and downloads them to invoking machine.
+
+After running this script, there exists `backup-$NODENUMBER.tar.gz` files, that
+contain whole backup.
+
+Also, database schema and token information is also backed up.
+
+Please run it with key space
+
+```
+scripts/backup.sh <KEY SPACE>
+```
+
+This script will generate backup files.
+
+### Restoring
+
+Set your installation name and Kubernetes namespace:
+
+```shell
+export APP_INSTANCE_NAME=cassandra-1
+export NAMESPACE=default
+```
+
+To restore Cassandra, `sstableloader` tool is used. This is automated via
+`scirpts/restore.sh`. Please run this script from directory with backup files,
+providing as arguments key space and number of generated archives.
+
+```
+scripts/restore.sh <KEY SPACE> <NUMBER OF ARCHIVES>
+```
+
+This script will recreate schema and upload data. Clusters (source and
+destination) can have different number of nodes.
+
+# Update procedure
+
+For more background about the rolling update procedure, please check the
+[Upgrade Guide](https://docs.datastax.com/en/upgrade/doc/upgrade/datastax_enterprise/upgrdDSE.html).
+
+Before starting the update procedure on your cluster, we strongly advise to
+prepare a backup of your installation in order to eliminate the risk of losing
+your data.
+
+## Perform the update on cluster nodes
+
+### Patch the StatefulSet with the new image
+
+Set your installation name and Kubernetes namespace:
+
+```shell
+export APP_INSTANCE_NAME=cassandra-1
+export NAMESPACE=default
+```
+
+Assign the new image to your StatefulSet definition:
+
+```
+IMAGE_CASSANDRA=<put your new image reference here>
+
+kubectl set image statefulset "${APP_INSTANCE_NAME}-cassandra" \
+  --namespace "${NAMESPACE}" "cassandra=${IMAGE_CASSANDRA}"
+```
+
+After this operation the StatefulSet has a new image configured for its containers, but the pods
+will not automatically restart due to the OnDelete update strategy set on the StatefulSet.
+
+### Run the `upgrade.sh` script to run the rolling update procedure
+
+Run the `scripts/upgrade.sh` script. This script will take down and update one replica at a time -
+it should print out diagnostic messages. You should be done when the script finishes.
