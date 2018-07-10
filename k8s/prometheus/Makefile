@@ -48,6 +48,7 @@ APP_PARAMETERS ?= { \
   $(IMAGE_PROMETHEUS_INIT_FIELD) \
   $(PROMETHEUS_REPLICAS_FIELD) \
 }
+APP_TEST_PARAMETERS ?= {}
 
 
 app/build:: .build/prometheus/deployer \
