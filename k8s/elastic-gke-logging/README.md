@@ -497,7 +497,7 @@ Run `kubectl` on expanded manifest file matching your installation:
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 ```
 
-Otherwise, delete the resources by indication types and label:
+Otherwise, delete the resources by indication of types and a label:
 
 ```shell
 kubectl delete deployment,statefulset,service,configmap,serviceaccount,clusterrole,clusterrolebinding,application,job \
