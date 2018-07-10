@@ -16,18 +16,8 @@
 
 set -eu
 
-if [[ -z "$1" ]]; then
-  info "Please provide number of pods"
-  exit 1
-fi
-
-readonly loop_end=$1-1
-
-for ((i=0; i<=$loop_end; i++))
-do
-  command="cp html nginx-1-nginx-${i}:/usr/share/nginx/html"
-  echo "Executing: $command" 
-  kubectl cp html nginx-1-nginx-${i}:/usr/share/nginx
-  kubectl exec nginx-1-nginx-${i} -- chmod -R a+r /usr/share/nginx/html
-done
+command="cp html nginx-1-nginx-0:/usr/share/nginx/html"
+echo "Executing: $command" 
+kubectl cp html nginx-1-nginx-0:/usr/share/nginx
+kubectl exec nginx-1-nginx-0 -- chmod -R a+r /usr/share/nginx/html
 
