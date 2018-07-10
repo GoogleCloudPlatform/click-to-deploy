@@ -159,7 +159,7 @@ following command to expose an external IP:
 ```
 kubectl patch svc "$APP_INSTANCE_NAME-wordpress-svc" \
   --namespace "$NAMESPACE" \
-  -p '{"spec": {"type": "LoadBalancer"}}'
+  --patch '{"spec": {"type": "LoadBalancer"}}'
 ```
 
 ### Access WordPress site

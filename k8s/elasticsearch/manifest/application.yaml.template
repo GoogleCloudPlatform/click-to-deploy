@@ -48,7 +48,7 @@ spec:
     ```
     kubectl patch svc "$APP_INSTANCE_NAME-elasticsearch-svc" \
       --namespace "$NAMESPACE" \
-      -p '{"spec": {"type": "LoadBalancer"}}'
+      --patch '{"spec": {"type": "LoadBalancer"}}'
     ```
 
     # Access Elasticsearch

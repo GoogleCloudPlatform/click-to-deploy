@@ -167,7 +167,7 @@ following command to expose an external IP for Elasticsearch service:
 ```
 kubectl patch svc "$APP_INSTANCE_NAME-elasticsearch-svc" \
   --namespace "$NAMESPACE" \
-  -p '{"spec": {"type": "LoadBalancer"}}'
+  --patch '{"spec": {"type": "LoadBalancer"}}'
 ```
 
 And the following to expose Kibana service:
@@ -175,7 +175,7 @@ And the following to expose Kibana service:
 ```
 kubectl patch svc "$APP_INSTANCE_NAME-kibana-svc" \
   --namespace "$NAMESPACE" \
-  -p '{"spec": {"type": "LoadBalancer"}}'
+  --patch '{"spec": {"type": "LoadBalancer"}}'
 ```
 
 # Obtain Elasticsearch URL

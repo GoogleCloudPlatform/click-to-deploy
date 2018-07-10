@@ -197,7 +197,7 @@ following command to expose an external IP:
 ```
 kubectl patch svc "$APP_INSTANCE_NAME-rabbitmq-svc" \
   --namespace "$NAMESPACE" \
-  -p '{"spec": {"type": "LoadBalancer"}}'
+  --patch '{"spec": {"type": "LoadBalancer"}}'
 ```
 
 #### Access RabbitMQ service

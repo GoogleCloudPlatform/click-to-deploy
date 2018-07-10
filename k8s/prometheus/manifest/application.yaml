@@ -76,7 +76,7 @@ spec:
     ```shell
     kubectl patch svc "$APP_INSTANCE_NAME-grafana" \
       --namespace "$NAMESPACE" \
-      -p '{"spec": {"type": "LoadBalancer"}}
+      --patch '{"spec": {"type": "LoadBalancer"}}'
     ```
 
     It takes a while until service gets reconfigured to be publicly available. After the process

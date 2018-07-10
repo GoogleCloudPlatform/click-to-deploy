@@ -50,7 +50,7 @@ spec:
     ```
     kubectl patch svc "$APP_INSTANCE_NAME-cassandra-svc" \
       --namespace "$NAMESPACE" \
-      -p '{"spec": {"type": "LoadBalancer"}}'
+      --patch '{"spec": {"type": "LoadBalancer"}}'
     ```
 
     # Access Cassandra service

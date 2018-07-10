@@ -61,7 +61,7 @@ spec:
     ```
     kubectl patch svc "$APP_INSTANCE_NAME-kibana-svc" \
       --namespace "$NAMESPACE" \
-      -p '{"spec": {"type": "LoadBalancer"}}'
+      --patch '{"spec": {"type": "LoadBalancer"}}'
     ```
 
     Note that it might take some time for the external IP to be provisioned.

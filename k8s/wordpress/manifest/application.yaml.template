@@ -48,7 +48,7 @@ spec:
     ```
     kubectl patch svc "$APP_INSTANCE_NAME-wordpress-svc" \
       --namespace "$NAMESPACE" \
-      -p '{"spec": {"type": "LoadBalancer"}}'
+      --patch '{"spec": {"type": "LoadBalancer"}}'
     ```
 
     Warning: Do not leave your WordPress installation in this initial setup
