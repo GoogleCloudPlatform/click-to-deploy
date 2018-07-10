@@ -398,8 +398,11 @@ kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 
 Otherwise, delete the resources by indication types and label:
 
-TODO(wgrzelak): add the comment
-
+```shell
+kubectl delete statefulset,secret,service \
+  --namespace $NAMESPACE \
+  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
+```
 ### Delete the persistent volumes of your installation
 
 By design, removal of StatefulSets in Kubernetes does not remove the PersistentVolumeClaims that

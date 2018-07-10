@@ -396,7 +396,11 @@ kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 
 Otherwise, delete the resources by indication types and label:
 
-TODO(wgrzelak): add the comment
+```shell
+kubectl delete statefulset,service,configmap \
+  --namespace $NAMESPACE \
+  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
+```
 
 ### Delete the persistent volumes of your installation
 
