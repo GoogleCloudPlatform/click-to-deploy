@@ -92,8 +92,8 @@ kind: Service
 metadata:
   name: $APP_INSTANCE_NAME-influxdb-svc
   labels:
-    app: $APP_INSTANCE_NAME
-    component: influxdb-server
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/component: influxdb-server
 spec:
   ports:
   - name: influxdb
