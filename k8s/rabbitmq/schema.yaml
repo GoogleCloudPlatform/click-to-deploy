@@ -37,6 +37,22 @@ properties:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 12
+  RABBITMQ_SERVICE_ACCOUNT:
+    type: string
+    title: RabbitMQ Service Account
+    description: >-
+      Service account to assign to RabbitMQ StatefulSet.
+      It is required by rabbitmq-peer-discovery-k8s plugin.
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        roles:
+        - type: Role
+          rulesType: CUSTOM
+          rules:
+          - apiGroups: [""]
+            resources: ["endpoints"]
+            verbs: ["get"]
 required:
 - APP_INSTANCE_NAME
 - NAMESPACE
@@ -45,3 +61,4 @@ required:
 - RABBITMQ_ERLANG_COOKIE
 - RABBITMQ_DEFAULT_USER
 - RABBITMQ_DEFAULT_PASS
+- RABBITMQ_SERVICE_ACCOUNT

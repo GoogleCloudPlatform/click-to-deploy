@@ -31,7 +31,7 @@ spec:
     metadata:
       labels: *RabbitMQDeploymentLabels
     spec:
-      serviceAccountName: $APP_INSTANCE_NAME-rabbitmq-sa
+      serviceAccountName: $RABBITMQ_SERVICE_ACCOUNT
       terminationGracePeriodSeconds: 180
       initContainers:
       # This init container copies the config files from read-only ConfigMap to writable location.
