@@ -6,7 +6,7 @@ include ../vendor/marketplace-tools/ubbagent.Makefile
 include ../vendor/marketplace-tools/var.Makefile
 
 
-TAG ?= latest
+TAG ?= 1.5
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/influxdb/deployer:$(TAG)
@@ -46,8 +46,8 @@ app/build:: .build/influxdb/deployer \
 .build/influxdb/influxdb: .build/var/REGISTRY \
                             .build/var/TAG \
                             | .build/influxdb
-	docker pull gcr.io/orbitera-dev/influxdb
-	docker tag gcr.io/orbitera-dev/influxdb \
+	docker pull gcr.io/orbitera-dev/influxdb1:1.5
+	docker tag gcr.io/orbitera-dev/influxdb1:1.5 \
 	    "$(REGISTRY)/influxdb:$(TAG)"
 	docker push "$(REGISTRY)/influxdb:$(TAG)"
 	@touch "$@"
