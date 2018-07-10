@@ -163,7 +163,7 @@ kubectl apply -f scripts/external.yaml -n $NAMESPACE
 **NOTE** Please configure Cassandra access control, while exposing it to public
 access.
 
-### Access Cassandra service
+### Access Cassandra service (external)
 
 Get the external IP of the Cassandra service invoking `kubectl get`
 ```shell
@@ -182,13 +182,20 @@ docker run --rm -it -e CQLSH_HOST=$CASSANDRA_IP \
   launcher.gcr.io/google/cassandra3 cqlsh --cqlversion=3.4.4
 ```
 
+### Access Cassandra service (internal)
+
+It is possible to connect to Cassandra without exposing it to public access.
+
+To do this, please connect to from container inside K8s cluster using hostname
+`$APP_INSTANCE_NAME-cassandra-0.$APP_INSTANCE_NAME-cassandra-svc.$NAMESPACE.svc.cluster.local`
+
 # Scaling
 
 ### Scale the cluster up
 
 Scale the number of replicas up by the following command:
 
-```
+```shell
 kubectl scale statefulsets "$APP_INSTANCE_NAME-cassandra" \
   --namespace "$NAMESPACE" --replicas=<new-replicas>
 ```
@@ -211,14 +218,16 @@ For each node, do following steps
 
 Repeat this procedure until Cassandra cluster has expected number of pods
 
-For more information about the StatefulSets scaling, check the
-[Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/#kubectl-scale).
-
-To invoke cluster by script, please invoke
+To scale down by script, please invoke
 
 ```shell
-<SCRIPT DIR>/scale_down.sh --desired_number 3
+<SCRIPT DIR>/scale_down.sh --desired_number 3 \
+                           --namespace custom-namespace \
+                           --app_instance_name cassandra-1
 ```
+
+For more information about the StatefulSets scaling, check the
+[Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/#kubectl-scale).
 
 # Uninstall the Application
 
@@ -311,7 +320,9 @@ Also, database schema and token information is also backed up.
 Please run it with key space
 
 ```shell
-<SCRIPT DIR>/backup.sh --keyspace <KEYSPACE>
+<SCRIPT DIR>/backup.sh --keyspace demo \
+                       --namespace custom-namespace \
+                       --app_instance_name cassandra-1
 ```
 
 This script will generate backup files.
@@ -330,7 +341,9 @@ To restore Cassandra, `sstableloader` tool is used. This is automated via
 providing as arguments key space and number of generated archives.
 
 ```shell
-<SCRIPT DIR>/restore.sh --keyspace <KEYSPACE> --backups <NUMBER OF ARCHIVES>
+<SCRIPT DIR>/restores.sh   --keyspace demo \
+                           --backups 3 \
+                           --namespace custom-namespace
 ```
 
 This script will recreate schema and upload data. Clusters (source and
@@ -371,9 +384,9 @@ will not automatically restart due to the OnDelete update strategy set on the St
 ### Run the `upgrade.sh` script to run the rolling update procedure
 
 Run the `scripts/upgrade.sh` script. This script will take down and update one replica at a time -
-it should print out diagnostic messages.
+it should print out diagnostic messages. You should be done when the script finishes.
 
-Please invoke script by following command line
 ```shell
-<SCRIPT DIR>/upgrade.sh
+<SCRIPT DIR>/upgrade.sh    --namespace custom-namespace \
+                           --app_instance_name cassandra-1
 ```

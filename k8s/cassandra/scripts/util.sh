@@ -35,65 +35,78 @@ function current_status {
   info ""
 }
 
-function parse_argument {
-  local exported_variable=$1
-  local name_of_variable=$2
-
-  shift 2
-  while [[ "$#" != 0 ]]; do
-    case "$1" in
-      --$name_of_variable)
-        export "${exported_variable}"="$2"
-        info "- ${name_of_variable}: ${!exported_variable}"
-        shift 2
-        ;;
-      *)
-        shift
-        ;;
-    esac
-  done;
-}
-
-function parse_argument_with_default {
-  local exported_variable=$1
-  local name_of_variable=$2
-  local default_vaule=$3
-
-  shift 3
-  export "${exported_variable}=${default_vaule}"
-  parse_argument "${exported_variable}" "${name_of_variable}" $@
-}
-
-function parse_required_argument {
-  local exported_variable=$1
-  local name_of_variable=$2
-
-  shift 2
-  parse_argument "${exported_variable}" "${name_of_variable}" $@
-  if [[ ! -v "${exported_variable}" ]]; then
+function show_help {
+  if [[ "${SHOW_HELP}" == true ]]; then
     info "${USAGE}"
-    info ""
-    info "Missing parameter --${name_of_variable}"
-    exit 1
+    exit 0
   fi
 }
 
-function show_help {
-  while [[ "$#" != 0 ]]; do
-    case "$1" in
-      --help)
-        info "${USAGE}"
-        exit 0
-        ;;
-      *)
-        shift
-        ;;
-    esac
-  done;
+declare -a flags_variables_with_argument=()
+declare -a flags_parameters_with_argument=()
+declare -a flags_variables_boolean=()
+declare -a flags_parameters_boolean=()
+
+function add_flag_with_argument {
+  flags_variables_with_argument+=($1)
+  flags_parameters_with_argument+=($2)
 }
 
-show_help $@
+function add_flag_boolean {
+  flags_variables_boolean+=($1)
+  flags_parameters_boolean+=($2)
+}
 
-parse_argument_with_default NAMESPACE namespace default $@
-parse_argument_with_default APP_INSTANCE_NAME app_instance_name cassandra-1 $@
-STS_NAME=${APP_INSTANCE_NAME}-cassandra
+function parse_flags {
+  for i in $( seq 0 $(( ${#flags_parameters_boolean[@]} - 1 )) ); do
+    export ${flags_variables_boolean[${i}]}=false
+  done
+  while [[ $# -gt 0 ]]; do
+    found=false
+    if [[ $# -gt 1 ]]; then
+      for i in $( seq 0 $(( ${#flags_parameters_with_argument[@]} - 1 )) ); do
+        if [[ "--${flags_parameters_with_argument[${i}]}" == "$1" ]]; then
+          export ${flags_variables_with_argument[${i}]}=$2
+          shift 2
+          found=true
+          break
+        fi
+      done
+    fi
+    if [[ $# -gt 0 ]]; then
+      for i in $( seq 0 $(( ${#flags_parameters_boolean[@]} - 1 )) ); do
+        if [[ "--${flags_parameters_boolean[${i}]}" == "$1" ]]; then
+          export ${flags_variables_boolean[${i}]}=true
+          shift
+          found=true
+          break
+        fi
+      done
+    fi
+    if [[ $found == false ]]; then
+      echo "Cannot parse parameter $1"
+      info "${USAGE}"
+      exit 1
+    fi
+  done
+}
+
+function required_variables {
+  for i in $@; do
+    if [[ ! -v $i ]]; then
+      info "${USAGE}"
+      exit 1
+    fi
+  done
+}
+
+function init_util {
+  parse_flags $@
+  show_help
+  required_variables APP_INSTANCE_NAME NAMESPACE
+  STS_NAME=${APP_INSTANCE_NAME}-cassandra
+}
+
+add_flag_boolean SHOW_HELP help
+add_flag_with_argument NAMESPACE namespace
+add_flag_with_argument APP_INSTANCE_NAME app_instance_name

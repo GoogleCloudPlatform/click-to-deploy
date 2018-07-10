@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eo pipefail
+set -euo pipefail
 
 export SCRIPT_DIR=$(readlink -f "$(dirname "${BASH_SOURCE[0]}")")
 
@@ -18,19 +18,23 @@ are generated:
 
 Parameters:
 --keyspace             (Required) Name of Cassandra keyspace to backup
---namespace            (Default: default ) Name of K8s namespace, where Cassandra
+--namespace            (Required) Name of K8s namespace, where Cassandra
                        cluster exists
---app_instance_name    (Default: cassandra-1 ) Name of application in K8s cluster
+--app_instance_name    (Required) Name of application in K8s cluster
 
 Example:
-<SCRIPT DIR>/backup.sh --keyspace demo --namespace custom-namespace
+<SCRIPT DIR>/backup.sh --keyspace demo \
+                       --namespace custom-namespace \
+                       --app_instance_name cassandra-1
 '
 
 . "${SCRIPT_DIR}/util.sh"
 
-parse_required_argument KEYSPACE keyspace $@
+add_flag_with_argument KEYSPACE keyspace
 
-set -u
+init_util $@
+
+required_variables KEYSPACE
 
 function upload_backup_script_cmd {
   for index in $(seq 0 $(( "${REPLICAS}" - 1 )) ); do

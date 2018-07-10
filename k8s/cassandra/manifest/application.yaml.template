@@ -12,7 +12,7 @@ metadata:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
 spec:
   type: Cassandra
-  version: '1.0.0'
+  version: '3.11.2'
   description: |-
     Cassandra is a NoSQL, highly scalable, high-performance distributed database with high
     availability with no single point of failure.
@@ -43,29 +43,57 @@ spec:
   - group: apps/v1beta2
     kind: StatefulSet
   notes: |-
-    # Expose Cassandra service
+    # Check full Guide
 
-    By default, the application does not have an external IP. Run the
-    following command to expose an external IP:
+    Full guide is available on [GitHub](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/k8s/cassandra).
 
+    # Get tooling from GitHub
+
+    Please download K8s Cassandra tools from GitHub, invoking following commands
     ```
-    kubectl patch svc "$APP_INSTANCE_NAME-cassandra-svc" \
-      --namespace "$NAMESPACE" \
-      -p '{"spec": {"type": "LoadBalancer"}}'
-    ```
-
-    # Access Cassandra service
-
-    Get the external IP of the Cassandra service and visit
-    the URL printed below in your browser.
-
-    ```
-    SERVICE_IP=$(kubectl get \
-      --namespace ${NAMESPACE} \
-      svc ${APP_INSTANCE_NAME}-cassandra-svc \
-      -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-
-    cqlsh ${SERVICE_IP} 9042
+    git clone https://github.com/GoogleCloudPlatform/click-to-deploy
+    cd click-to-deploy/k8s/cassandra
     ```
 
-    Note that it might take some time for the external IP to be provisioned.
+    Scripts and tools are availabe in `scripts` directory.
+
+    # Exposing Cassandra cluster
+
+    It is possible to provide a load balancer in front of the cluster (although it is not a suggested approach)
+
+    ```shell
+    export APP_INSTANCE_NAME=cassandra-1
+    export NAMESPACE=default
+
+    envsubst '$APP_INSTANCE_NAME $NAMESPACE' scripts/external.yaml.template > scripts/external.yaml
+    kubectl apply -f scripts/external.yaml -n $NAMESPACE
+    ```
+
+    **NOTE** Please configure Cassandra access control, while exposing it to public
+    access.
+
+    # Access Cassandra service (external)
+
+    Get the external IP of the Cassandra service invoking `kubectl get`
+    ```shell
+    CASSANDRA_IP=$(kubectl get svc/$APP_INSTANCE_NAME-cassandra-external-svc \
+      -n $NAMESPACE -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+    echo $CASSANDRA_IP
+    ```
+
+    It can take few seconds to provide this IP.
+
+    With this IP, we can connect by `cqlsh` to Cassandra, for example
+
+    ```shell
+    docker run --rm -it -e CQLSH_HOST=$CASSANDRA_IP \
+      launcher.gcr.io/google/cassandra3 cqlsh --cqlversion=3.4.4
+    ```
+
+    # Access Cassandra service (internal)
+
+    It is possible to connect to Cassandra without exposing it to public access.
+
+    To do this, please connect to from container inside K8s cluster using hostname
+    `$APP_INSTANCE_NAME-cassandra-0.$APP_INSTANCE_NAME-cassandra-svc.$NAMESPACE.svc.cluster.local`.

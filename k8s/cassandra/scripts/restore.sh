@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eo pipefail
+set -euo pipefail
 
 export SCRIPT_DIR=$(readlink -f "$(dirname "${BASH_SOURCE[0]}")")
 
@@ -18,20 +18,24 @@ are required:
 Parameters:
 --keyspace             (Required) Name of Cassandra keyspace to backup
 --backups              (Required) Number of backup .tar.gz archives
---namespace            (Default: default ) Name of K8s namespace, where Cassandra
+--namespace            (Required) Name of K8s namespace, where Cassandra
                        cluster exists
---app_instance_name    (Default: cassandra-1 ) Name of application in K8s cluster
+--app_instance_name    (Required) Name of application in K8s cluster
 
 Example:
-<SCRIPT DIR>/restores.sh --keyspace demo --backups 3 --namespace custom-namespace
+<SCRIPT DIR>/restores.sh   --keyspace demo \
+                           --backups 3 \
+                           --namespace custom-namespace
 '
 
 . "${SCRIPT_DIR}/util.sh"
 
-parse_required_argument KEYSPACE keyspace $@
-parse_required_argument BACKUPS backups $@
+add_flag_with_argument KEYSPACE keyspace
+add_flag_with_argument BACKUPS backups
 
-set -u
+init_util $@
+
+required_variables KEYSPACE BACKUPS
 
 current_status
 info "Preparing to restore a backup of keyspace '${KEYSPACE}' from ${BACKUPS} archieves"
