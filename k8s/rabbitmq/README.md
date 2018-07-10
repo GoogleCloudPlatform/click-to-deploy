@@ -361,7 +361,10 @@ export NAMESPACE=default
 
 ### Delete the resources
 
-> **NOTE:** Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions. It means that for instance if you have kubectl in version `1.10.*` and Kubernetes server `1.8.*`, you may experience incompatibility issues, like not removing the *StatefulSets* with apiVersion of *apps/v1beta2*.
+> **NOTE:** Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions.
+> It means that for instance if you have `kubectl` in version 1.10.&ast; and Kubernetes 1.8.&ast;,
+> you may experience incompatibility issues, like not removing the StatefulSets with
+> apiVersion of apps/v1beta2.
 
 If you still have the expanded manifest file used for the installation, you can use it to delete the resources.
 Run `kubectl` on expanded manifest file matching your installation:
@@ -380,10 +383,10 @@ kubectl delete statefulset,secret,service,configmap,serviceaccount,role,rolebind
 
 ### Delete the persistent volumes of your installation
 
-By design, removal of *StatefulSets* in Kubernetes does not remove the *PersistentVolumeClaims* that
+By design, removal of StatefulSets in Kubernetes does not remove the PersistentVolumeClaims that
 were attached to their Pods. It protects your installations from mistakenly deleting stateful data.
 
-If you wish to remove the *PersistentVolumeClaims* with their attached persistent disks, run the
+If you wish to remove the PersistentVolumeClaims with their attached persistent disks, run the
 following `kubectl` commands:
 
 ```shell
@@ -404,11 +407,10 @@ kubectl delete persistentvolumeclaims \
 Optionally, if you do not need both the deployed application and GKE cluster used for deployment then you can delete the whole GKE cluster using this command:
 
 ```shell
-export PROJECT=your-gcp-project # or export PROJECT=$(gcloud config get-value project)
 export CLUSTER=marketplace-cluster
-export ZONE=us-west1-a # or export ZONE=$(gcloud config get-value compute/zone)
+export ZONE=us-west1-a
 ```
 
 ```
-gcloud --project "$PROJECT" container clusters delete "$CLUSTER" --zone "$ZONE"
+gcloud container clusters delete "$CLUSTER" --zone "$ZONE"
 ```

@@ -158,13 +158,11 @@ To discover IP addresses of Memcached instances using Python you can use kuberne
 Use this command to install kubernetes module on your computer
 ```shell
 pip install kubernetes
-
 ```
 
 Here is an examplary code that could be used as a starting for ar Python program to discover Memcached IP addresses:
 
 ```python
-
 import os
 # if kubernetes module is not installed, please, install it, e.g. pip install kubernetes
 from kubernetes import client, config
@@ -177,7 +175,6 @@ pod_list = k8s_client.list_namespaced_pod("default")
 # list all pods from the default namespace
 for pod in pod_list.items:
     print("%s\t%s\t%s" % (pod.metadata.name, pod.status.phase, pod.status.pod_ip))
-
 ```
 
 For more information about using Python to manage & discover Kubernetes cluster information, please, go to this page: https://github.com/kubernetes-client/python

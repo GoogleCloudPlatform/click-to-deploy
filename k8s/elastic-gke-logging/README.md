@@ -483,24 +483,12 @@ export APP_INSTANCE_NAME=elastic-logging-1
 export NAMESPACE=default
 ```
 
-### Prepare the manifest file
+### Delete the resources
 
-If you still have the expanded manifest file used for the installation, you can skip this part.
-Otherwise, generate it again. You can use a simplified variables substitution:
-
-```shell
-awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE' \
-  > "${APP_INSTANCE_NAME}_manifest.yaml"
-```
-
-### Delete the resources using `kubectl delete`
-
-> NOTE: Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions.
-  It means that for instance if you have `kubectl` in version 1.10.&ast; and Kubernetes 1.8.&ast;,
-  you may experience incompatibility issues, like not removing the StatefulSets with
-  apiVersion of apps/v1beta2.
-
+> **NOTE:** Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions.
+> It means that for instance if you have `kubectl` in version 1.10.&ast; and Kubernetes 1.8.&ast;,
+> you may experience incompatibility issues, like not removing the StatefulSets with
+> apiVersion of apps/v1beta2.
 
 If you still have the expanded manifest file used for the installation, you can use it to delete the resources.
 Run `kubectl` on expanded manifest file matching your installation:
@@ -523,7 +511,7 @@ By design, removal of StatefulSets in Kubernetes does not remove the PersistentV
 were attached to their Pods. It protects your installations from mistakenly deleting stateful data.
 
 If you wish to remove the PersistentVolumeClaims with their attached persistent disks, run the
-following `kubectl` command:
+following `kubectl` commands:
 
 ```shell
 # specify the variables values matching your installation:

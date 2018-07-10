@@ -196,6 +196,7 @@ You can uninstall/delete NGINX application either using Google Cloud Console or 
 ```shell
 cd google-click-to-deploy/k8s/nginx
 ```
+
 * Run the uninstall command
 
 ```shell
