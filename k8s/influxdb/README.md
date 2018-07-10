@@ -149,7 +149,7 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 # Basic Usage
 
-TBD
+TODO by rafalbiegacz@ after merging
 
 # Scaling
 
@@ -159,7 +159,7 @@ If you are interested in multi-instance/enterprise version of InfluxDB, please, 
 
 # Backup and Restore
 
-TBD
+TODO by rafalbiegacz@ after merging
 
 # Upgrade
 
@@ -225,7 +225,7 @@ kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 Otherwise, delete the resources by indication types and label:
 
 ```shell
-kubectl delete statefulset,secret,service,configmap,serviceaccount,role,rolebinding,application \
+kubectl delete statefulset,secret,service,serviceaccount,rolebinding,application \
   --namespace $NAMESPACE \
   --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
@@ -264,7 +264,3 @@ export ZONE=us-west1-a # or export ZONE=$(gcloud config get-value compute/zone)
 ```
 gcloud --project "$PROJECT" container clusters delete "$CLUSTER" --zone "$ZONE"
 ```
-
-# Logging and Monitoring
-
-To set up logging for InfluxDB solution using Stackdriver, please, follow the instructuction decomented here: https://kubernetes.io/docs/tasks/debug-application-cluster/logging-stackdriver/#verifying-your-logging-agent-deployment
