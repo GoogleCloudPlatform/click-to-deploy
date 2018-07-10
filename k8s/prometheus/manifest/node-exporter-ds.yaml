@@ -15,7 +15,7 @@ spec:
       annotations:
         scheduler.alpha.kubernetes.io/critical-pod: ''
     spec:
-      serviceAccountName: $NODE_EXPORTER_SA
+      serviceAccountName: $NODE_EXPORTER_SERVICE_ACCOUNT
       tolerations:
       - key: node-role.kubernetes.io/master
         effect: NoSchedule

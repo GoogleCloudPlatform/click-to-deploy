@@ -16,7 +16,7 @@ spec:
       labels:
         k8s-app: grafana
     spec:
-      serviceAccountName: $GRAFANA_SA
+      serviceAccountName: $GRAFANA_SERVICE_ACCOUNT
       initContainers:
           - name: "init-chmod-data"
             image: $IMAGE_PROMETHEUS_INIT

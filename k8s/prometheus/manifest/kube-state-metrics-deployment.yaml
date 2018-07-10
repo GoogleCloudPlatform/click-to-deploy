@@ -18,7 +18,7 @@ spec:
         scheduler.alpha.kubernetes.io/critical-pod: ''
     spec:
       priorityClassName: system-cluster-critical
-      serviceAccountName: $KUBE_STATE_METRICS_SA
+      serviceAccountName: $KUBE_STATE_METRICS_SERVICE_ACCOUNT
       containers:
       - name: kube-state-metrics
         image: $IMAGE_KUBE_STATE_METRICS

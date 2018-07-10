@@ -23,7 +23,7 @@ spec:
         scheduler.alpha.kubernetes.io/critical-pod: ''
     spec:
       priorityClassName: system-cluster-critical
-      serviceAccountName: $ALERTMANAGER_SA
+      serviceAccountName: $ALERTMANAGER_SERVICE_ACCOUNT
       containers:
         - name: prometheus-alertmanager
           image: $IMAGE_ALERTMANAGER

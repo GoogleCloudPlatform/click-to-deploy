@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/name: $APP_INSTANCE_NAME
 spec:
   serviceName: "$APP_INSTANCE_NAME-prometheus"
-  replicas: 2
+  replicas: $PROMETHEUS_REPLICAS
   podManagementPolicy: "Parallel"
   updateStrategy:
     type: "RollingUpdate"
@@ -22,7 +22,7 @@ spec:
         scheduler.alpha.kubernetes.io/critical-pod: ''
     spec:
       priorityClassName: system-cluster-critical
-      serviceAccountName: $PROMETHEUS_SA
+      serviceAccountName: $PROMETHEUS_SERVICE_ACCOUNT
       initContainers:
       - name: "init-chown-data"
         image: $IMAGE_PROMETHEUS_INIT

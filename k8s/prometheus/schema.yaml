@@ -7,14 +7,21 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-
+  PROMETHEUS_REPLICAS:
+    type: integer
+    default: 2
+    min: 1
   GRAFANA_GENERATED_PASSWORD:
     type: string
     x-google-marketplace:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 12
-
+  IMAGE_PROMETHEUS:
+    type: string
+    default: $REGISTRY/prometheus:$TAG
+    x-google-marketplace:
+      type: IMAGE
   IMAGE_ALERTMANAGER:
     type: string
     default: $REGISTRY/prometheus/alertmanager:$TAG
@@ -28,11 +35,6 @@ properties:
   IMAGE_NODE_EXPORTER:
     type: string
     default: $REGISTRY/prometheus/nodeexporter:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  IMAGE_PROMETHEUS:
-    type: string
-    default: $REGISTRY/prometheus/server:$TAG
     x-google-marketplace:
       type: IMAGE
   IMAGE_PUSHGATEWAY:
@@ -50,30 +52,19 @@ properties:
     default: $REGISTRY/prometheus/debian9:$TAG
     x-google-marketplace:
       type: IMAGE
-
-  #TODO(khajduczenia): reduce the permissions
-  ALERTMANAGER_SA:
+  ALERTMANAGER_SERVICE_ACCOUNT:
     type: string
     x-google-marketplace:
       type: SERVICE_ACCOUNT
-  GRAFANA_SA:
+  GRAFANA_SERVICE_ACCOUNT:
     type: string
     x-google-marketplace:
       type: SERVICE_ACCOUNT
-  NODE_EXPORTER_SA:
+  NODE_EXPORTER_SERVICE_ACCOUNT:
     type: string
     x-google-marketplace:
       type: SERVICE_ACCOUNT
-  KUBE_STATE_METRICS_SA:
-    type: string
-    x-google-marketplace:
-      type: SERVICE_ACCOUNT
-      serviceAccount:
-        roles:
-        - type: ClusterRole
-          rulesType: PREDEFINED
-          rulesFromRoleName: cluster-admin
-  PROMETHEUS_SA:
+  KUBE_STATE_METRICS_SERVICE_ACCOUNT:
     type: string
     x-google-marketplace:
       type: SERVICE_ACCOUNT
@@ -82,10 +73,19 @@ properties:
         - type: ClusterRole
           rulesType: PREDEFINED
           rulesFromRoleName: cluster-admin
-
+  PROMETHEUS_SERVICE_ACCOUNT:
+    type: string
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        roles:
+        - type: ClusterRole
+          rulesType: PREDEFINED
+          rulesFromRoleName: cluster-admin
 required:
 - APP_INSTANCE_NAME
 - NAMESPACE
+- PROMETHEUS_REPLICAS
 - GRAFANA_GENERATED_PASSWORD
 - IMAGE_ALERTMANAGER
 - IMAGE_KUBE_STATE_METRICS
@@ -94,3 +94,7 @@ required:
 - IMAGE_PUSHGATEWAY
 - IMAGE_GRAFANA
 - IMAGE_PROMETHEUS_INIT
+- ALERTMANAGER_SERVICE_ACCOUNT
+- GRAFANA_SERVICE_ACCOUNT
+- NODE_EXPORTER_SERVICE_ACCOUNT
+- PROMETHEUS_SERVICE_ACCOUNT
