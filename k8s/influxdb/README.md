@@ -1,4 +1,5 @@
 # Overview
+
 InfluxDB is an open source database for storing time series data. The source of time series data may come from logging and monitoring systems and IoT devices.
 
 This is a single-instance version of InfluxDB. Multi-instance version of InfluxDB requires commercial license.
@@ -58,7 +59,7 @@ gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketp
 
 Do a one-time setup of your cluster and install Custom Reference Definition object for Kubernetes Application.
 
-To do that, please, navidate to k8s/vendor subfolder of click-to-deploy repository and run the following command:
+To do that, navigate to `k8s/vendor` subdirectory of the repository and run the following command:
 
 ```shell
 kubectl apply -f marketplace-tools/crd/*
@@ -84,6 +85,7 @@ Choose the instance name and namespace for the app.
 ```shell
 export APP_INSTANCE_NAME=influxdb-1
 export NAMESPACE=default
+export REPLICAS=3
 ```
 
 Configure the container images.
@@ -112,12 +114,9 @@ This will ensure that the installed application will always use the same images,
 until you are ready to upgrade.
 
 ```shell
-for i in "IMAGE_INFLUXDB"; do
-  repo=`echo ${!i} | cut -d: -f1`;
-  digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
-  export $i="$repo@$digest";
-  env | grep $i;
-done
+digest=`docker pull $IMAGE_INFLUXDB | sed -n -e 's/Digest: //p'`;
+export $i="$repo@$digest";
+env | grep $i;
 ```
 
 #### Expand the manifest template
@@ -222,7 +221,7 @@ Run `kubectl` on expanded manifest file matching your installation:
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 ```
 
-Otherwise, delete the resources by indication types and label:
+Otherwise, delete the resources by indication of types and a label:
 
 ```shell
 kubectl delete statefulset,secret,service,serviceaccount,rolebinding,application \
