@@ -1,4 +1,4 @@
-apiVersion: app.k8s.io/v1alpha1
+apiVersion: app.k8s.io/v1beta1
 kind: Application
 metadata:
   name: "$APP_INSTANCE_NAME"
@@ -11,27 +11,28 @@ metadata:
 spec:
   type: NGINX
   version: '1.15'
-  description: |-
-    NGINX is open-source software for web serving, reverse proxying, \
-    caching, load balancing, and media streaming.
+  descriptor:
+    description: |-
+      NGINX is open-source software for web serving, reverse proxying, \
+      caching, load balancing, and media streaming.
 
-    NGINX can also function as a proxy server for email (IMAP, POP3, and SMTP)\
-    and a reverse proxy and load balancer for HTTP, TCP, and UDP servers.
+      NGINX can also function as a proxy server for email (IMAP, POP3, and SMTP)\
+      and a reverse proxy and load balancer for HTTP, TCP, and UDP servers.
 
-    If you would like to learn more about NGINX, please,\
-    visit [NGINX website](https://www.nginx.com/).
+      If you would like to learn more about NGINX, please,\
+      visit [NGINX website](https://www.nginx.com/).
 
-    # Support
+      # Support
 
-    This image is built by Google. It is your responsibility to keep \
-    container images you run or store in your own repositories \
-    up to date with security patches.
+      This image is built by Google. It is your responsibility to keep \
+      container images you run or store in your own repositories \
+      up to date with security patches.
 
-    Community support for NGINX is available on \
-    [Stack Overflow](http://stackoverflow.com/questions/tagged/nginx/).
+      Community support for NGINX is available on \
+      [Stack Overflow](http://stackoverflow.com/questions/tagged/nginx/).
 
-    Please report issues with this NGINX container image via \
-    the [GitHub Issue Tracker](https://github.com/GoogleCloudPlatform/nginx-docker/issues).
+      Please report issues with this NGINX container image via \
+      the [GitHub Issue Tracker](https://github.com/GoogleCloudPlatform/nginx-docker/issues).
 
   info:
   - name: Nginx Configuration

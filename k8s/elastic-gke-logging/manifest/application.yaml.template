@@ -1,5 +1,5 @@
 ---
-apiVersion: app.k8s.io/v1alpha1
+apiVersion: app.k8s.io/v1beta1
 kind: Application
 metadata:
   name: "$APP_INSTANCE_NAME"
@@ -13,17 +13,18 @@ metadata:
 spec:
   type: Elastic GKE Logging
   version: '6.3'
-  description: |-
-    Elastic GKE Logging is an application that provides a fully functional solution for collecting
-    and analyzing logs from a Kubernetes cluster. It is built on top of popular open-source systems,
-    including Fluentd for logs collection and Elasticsearch with Kibana for searching and analyzing
-    data.
+  descriptor:
+    description: |-
+      Elastic GKE Logging is an application that provides a fully functional solution for collecting
+      and analyzing logs from a Kubernetes cluster. It is built on top of popular open-source systems,
+      including Fluentd for logs collection and Elasticsearch with Kibana for searching and analyzing
+      data.
 
-    # Support
-    Google does not offer support for this solution. However, community support is available on
-    Stack Overflow for [Fluentd](https://stackoverflow.com/questions/tagged/fluentd/),
-    [Elasticsearch](https://stackoverflow.com/questions/tagged/elasticsearch/) and
-    [Kibana](https://stackoverflow.com/questions/tagged/kibana/).
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      Stack Overflow for [Fluentd](https://stackoverflow.com/questions/tagged/fluentd/),
+      [Elasticsearch](https://stackoverflow.com/questions/tagged/elasticsearch/) and
+      [Kibana](https://stackoverflow.com/questions/tagged/kibana/).
   maintainers:
   - name: Google Click to Deploy
     url: https://cloud.google.com/solutions/#click-to-deploy

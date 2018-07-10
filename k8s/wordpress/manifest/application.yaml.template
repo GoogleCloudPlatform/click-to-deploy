@@ -1,5 +1,5 @@
 ---
-apiVersion: app.k8s.io/v1alpha1
+apiVersion: app.k8s.io/v1beta1
 kind: Application
 metadata:
   name: "$APP_INSTANCE_NAME"
@@ -13,14 +13,15 @@ metadata:
 spec:
   type: Wordpress
   version: '0.1'
-  description: >-
-    WordPress is web software used to create websites and blogs.
+  descriptor:
+    description: >-
+      WordPress is web software used to create websites and blogs.
 
-    # Support
-    Google does not offer support for this solution. However, community support is available on
-    [Stack Overflow](https://stackoverflow.com/questions/tagged/wordpress/).
-    Additional community support is available on
-    [community forums](https://en.forums.wordpress.com).
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/wordpress/).
+      Additional community support is available on
+      [community forums](https://en.forums.wordpress.com).
   maintainers:
   - name: Google Click to Deploy
     url: https://cloud.google.com/solutions/#click-to-deploy

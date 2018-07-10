@@ -1,4 +1,4 @@
-apiVersion: app.k8s.io/v1alpha1
+apiVersion: app.k8s.io/v1beta1
 kind: Application
 metadata:
   name: "$APP_INSTANCE_NAME"
@@ -11,13 +11,14 @@ metadata:
 spec:
   type: InfluxDB
   version: '1.5'
-  description: |-
-    InfluxDB is an open source database for storing time series data. The source of time series data may come from logging and monitoring systems and IoT devices. This is a single instance version of InfluxDB.
+  descriptor:
+    description: |-
+      InfluxDB is an open source database for storing time series data. The source of time series data may come from logging and monitoring systems and IoT devices. This is a single instance version of InfluxDB.
 
-    # Support
-    Google does not offer support for this solution. However, community support is available on
-    [Stack Overflow](https://stackoverflow.com/questions/tagged/influxdb/).
-    Additional community support is available on [community forums](http://community.influxdata.com).
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/influxdb/).
+      Additional community support is available on [community forums](http://community.influxdata.com).
   info:
   - name: InfluxDB admin
     type: Reference

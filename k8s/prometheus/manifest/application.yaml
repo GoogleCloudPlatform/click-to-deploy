@@ -1,4 +1,4 @@
-apiVersion: app.k8s.io/v1alpha1
+apiVersion: app.k8s.io/v1beta1
 kind: Application
 metadata:
   name: $APP_INSTANCE_NAME
@@ -11,16 +11,17 @@ metadata:
 spec:
   type: Prometheus & Grafana
   version: '2.2'
-  description: |-
-    Prometheus is an open-source monitoring and alerting platform, widely adopted by many companies
-    as a Kubernetes monitoring tool. In this application Prometheus is supported by Grafana,
-    a highly customizable user interface providing a number of preinstalled dashboards visualizing
-    the metrics collected by the Prometheus server.
+  descriptor:
+    description: |-
+      Prometheus is an open-source monitoring and alerting platform, widely adopted by many companies
+      as a Kubernetes monitoring tool. In this application Prometheus is supported by Grafana,
+      a highly customizable user interface providing a number of preinstalled dashboards visualizing
+      the metrics collected by the Prometheus server.
 
-    # Support
-    Google does not offer support for this solution. However, community support is available on
-    [Stack Overflow](https://stackoverflow.com/questions/tagged/prometheus+grafana/).
-    Additional support is available on [community forums](https://prometheus.io/community/).
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/prometheus+grafana/).
+      Additional support is available on [community forums](https://prometheus.io/community/).
   info:
   - name: Grafana username
     type: Reference
