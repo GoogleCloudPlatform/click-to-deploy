@@ -139,9 +139,9 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 Usually, there are two steps necessary to be able to use Memcache cluster
 
-1. One needs to acquire IP addresses of servers running with Memcached cluster. 
+1. One needs to acquire IP addresses of servers running with Memcached cluster.
 
-2. One needs to configure an application so it can use Memcached cluster as a cache. Usually, applications use specialized memcached clients (e.g. [pymemcache](http://pymemcache.readthedocs.io/en/latest/getting_started.html)) to run a hashing algorithm that is responsible for making selection which Memcached server to use for storing/retrieving cached data. 
+2. One needs to configure an application so it can use Memcached cluster as a cache. Usually, applications use specialized memcached clients (e.g. [pymemcache](http://pymemcache.readthedocs.io/en/latest/getting_started.html)) to run a hashing algorithm that is responsible for making selection which Memcached server to use for storing/retrieving cached data.
 
 ## Acquire IP addresses of Memcached instances
 
@@ -187,7 +187,7 @@ http://pymemcache.readthedocs.io/en/latest/getting_started.html if you wold like
 
 It is not recommended to expose Memcached K8s App for external access.
 
-In this specific example, there is no encyption between an application and Memcached instances and no authentication/authorization schema is applied. The assumption is that applications deployed within the same Kubernetes cluster can talk freely to Memcached instances which are meant to be an internal cache of an application. 
+In this specific example, there is no encyption between an application and Memcached instances and no authentication/authorization schema is applied. The assumption is that applications deployed within the same Kubernetes cluster can talk freely to Memcached instances which are meant to be an internal cache of an application.
 
 # Scaling
 
@@ -197,11 +197,11 @@ You can manually scale it up or down to deploy Memcached solution with desired n
 kubectl scale statefulsets "$APP_INSTANCE_NAME-memcached" --namespace "$NAMESPACE" --replicas=<new-replicas>
 ```
 
-where `<new_replicas>` defines the number of replicas.
+where `<new_replicas>` defines the new desired number.
 
 # Backup and Restore
 
-There is no need to backup Memcached application - it's due to the nature of Memcached which serves as internal application cache and is updated by application in a dynamic way. 
+There is no need to backup Memcached application - it's due to the nature of Memcached which serves as internal application cache and is updated by application in a dynamic way.
 
 # Update
 

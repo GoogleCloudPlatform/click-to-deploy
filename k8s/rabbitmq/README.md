@@ -263,7 +263,7 @@ Scale the number of replicas up by the following command:
 kubectl scale statefulsets "$APP_INSTANCE_NAME-rabbitmq" \
   --namespace "$NAMESPACE" --replicas=<new-replicas>
 ```
-where `<new-replicas>` defines the number of replicas.
+where `<new-replicas>` defines the new desired number.
 
 ## Scale the cluster down
 
@@ -275,7 +275,7 @@ This option reduces the number of replicas without disconnecting nodes from the 
 kubectl scale statefulsets "$APP_INSTANCE_NAME-rabbitmq" \
   --namespace "$NAMESPACE" --replicas=<new-replicas>
 ```
-where `<new-replicas>` defines the number of replicas.
+where `<new-replicas>` defines the new desired number.
 
 **Option 2:** Remove a RabbitMQ node permanently:
 
