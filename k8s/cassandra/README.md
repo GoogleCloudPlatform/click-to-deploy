@@ -108,10 +108,11 @@ This will ensure that the installed application will always use the same images,
 until you are ready to upgrade.
 
 ```shell
-for var in "IMAGE_CASSANDRA"; do
-  image="${!var}";
-  export $var=$(docker inspect --format='{{index .RepoDigests 0}}' $image)
-  env | grep $var
+for i in "IMAGE_CASSANDRA"; do
+  repo=`echo ${!i} | cut -d: -f1`;
+  digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
+  export $i="$repo@$digest";
+  env | grep $i;
 done
 ```
 
@@ -146,7 +147,7 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 By default, the application does not have an external IP.
 ```shell
-kubectl exec cassandra-1-cassandra-0 --namespace $NAMESPACE -c cassandra -- nodetool status
+kubectl exec "$APP_INSTANCE_NAME-cassandra-0" --namespace $NAMESPACE -c cassandra -- nodetool status
 ```
 
 ### Exposing Cassandra cluster
@@ -157,19 +158,18 @@ It is possible to provide a load balancer in front of the cluster (although it i
 export APP_INSTANCE_NAME=cassandra-1
 export NAMESPACE=default
 
-envsubst '$APP_INSTANCE_NAME $NAMESPACE' scripts/external.yaml.template > scripts/external.yaml
-kubectl apply -f scripts/external.yaml -n $NAMESPACE
+envsubst '$APP_INSTANCE_NAME $NAMESPACE' < scripts/external.yaml.template > scripts/external.yaml
+kubectl apply -f scripts/external.yaml --namespace $NAMESPACE
 ```
 
-**NOTE** Please configure Cassandra access control, while exposing it to public
-access.
+**NOTE** Please configure Cassandra access control, while exposing it to public access.
 
 ### Access Cassandra service
 
 Get the external IP of the Cassandra service invoking `kubectl get`
 ```shell
 CASSANDRA_IP=$(kubectl get svc/$APP_INSTANCE_NAME-cassandra-external-svc \
-  -n $NAMESPACE -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+  --namespace $NAMESPACE -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
 echo $CASSANDRA_IP
 ```
