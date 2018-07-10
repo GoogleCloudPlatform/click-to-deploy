@@ -14,7 +14,7 @@ properties:
       type: IMAGE
   REPLICAS:
     title: Replicas
-    description: The number of pods run within NGINX solution
+    description: The number of Pods run within NGINX solution
     type: integer
     default: 3
     minimum: 1
