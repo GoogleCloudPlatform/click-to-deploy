@@ -83,6 +83,7 @@ Choose the instance name and namespace for the app.
 ```shell
 export APP_INSTANCE_NAME=nginx-1
 export NAMESPACE=default
+export REPLICAS=3
 ```
 
 Configure the container images.
