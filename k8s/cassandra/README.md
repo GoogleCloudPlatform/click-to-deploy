@@ -159,6 +159,9 @@ envsubst '$APP_INSTANCE_NAME $NAMESPACE' scripts/external.yaml.template > script
 kubectl apply -f scripts/external.yaml -n $NAMESPACE
 ```
 
+**NOTE** Please configure Cassandra access control, while exposing it to public
+access.
+
 ### Access Cassandra service
 
 Get the external IP of the Cassandra service invoking `kubectl get`
@@ -298,9 +301,33 @@ contain whole backup.
 
 Also, database schema and token information is also backed up.
 
+Please run it with key space
+
+```
+scripts/backup.sh <KEY SPACE>
+```
+
+This script will generate backup files.
+
 ### Restoring
 
-*TODO: instructions for restore*
+Set your installation name and Kubernetes namespace:
+
+```shell
+export APP_INSTANCE_NAME=cassandra-1
+export NAMESPACE=default
+```
+
+To restore Cassandra, `sstableloader` tool is used. This is automated via
+`scirpts/restore.sh`. Please run this script from directory with backup files,
+providing as arguments key space and number of generated archives.
+
+```
+scripts/restore.sh <KEY SPACE> <NUMBER OF ARCHIVES>
+```
+
+This script will recreate schema and upload data. Clusters (source and
+destination) can have different number of nodes.
 
 # Update procedure
 

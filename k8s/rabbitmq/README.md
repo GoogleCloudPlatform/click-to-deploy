@@ -193,8 +193,6 @@ kubectl get secret $APP_INSTANCE_NAME-rabbitmq-secret \
 By default, the application does not have an external IP. Run the
 following command to expose an external IP:
 
-> **WARNING:** The application has defaulted *quest* user. Please be careful with exposing the application for the world.
-
 > **NOTE:** It might take some time for the external IP to be provisioned.
 
 ```
@@ -216,8 +214,7 @@ kubectl get svc $APP_INSTANCE_NAME-rabbitmq-svc --namespace $NAMESPACE
 ```
 SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-rabbitmq-svc \
   --namespace $NAMESPACE \
-  --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
-
+  --output jsonpath='{.status.loadBalancer.ingress[0].ip}'); \
 echo "http://${SERVICE_IP}:15672"
 ```
 
@@ -256,22 +253,60 @@ for item in service.status.load_balancer.ingress:
 
 If you would like to send and receive messages to RabbitMQ using Python [here](https://www.rabbitmq.com/tutorials/tutorial-one-python.html) is a good reference how to do that.
 
-#### Scale the cluster
+# Scaling
 
-By default, RabbitMQ K8s application is deployed using 3 replicas. You can manually scale it up or down using the following command.
+## Scale the cluster up
 
-> **NOTE:** Scaling down will leave `persistentvolumeclaims` of your StatefulSet untouched.
+By default, RabbitMQ K8s application is deployed using 3 replicas.
+Scale the number of replicas up by the following command:
 
 ```
 kubectl scale statefulsets "$APP_INSTANCE_NAME-rabbitmq" \
   --namespace "$NAMESPACE" --replicas=<new-replicas>
 ```
-
 where `<new-replicas>` defines the number of replicas.
+
+## Scale the cluster down
+
+**Option 1:** Use `kubectl` to scale down by following command:
+
+This option reduces the number of replicas without disconnecting nodes from the cluster. Scaling down will also leave `persistentvolumeclaims` of your StatefulSet untouched.
+
+```
+kubectl scale statefulsets "$APP_INSTANCE_NAME-rabbitmq" \
+  --namespace "$NAMESPACE" --replicas=<new-replicas>
+```
+where `<new-replicas>` defines the number of replicas.
+
+**Option 2:** Remove a RabbitMQ node permanently:
+
+> **WARNING:** This option deletes `persistentvolumeclaims` permanently, which results in permanent data loss from the deleted Pods.
+> Consider enabling HA mode to replicate data between all nodes before you start the procedure.
+
+To remove a RabbitMQ node permanently and scale down the number of replicas, please use script `scripts/scale-down.sh` with `--help` argument to get more information,
+or manually scale down the cluster in following steps.
+
+To manually remove a nodes from the cluster, and then Pod from K8s,
+start from highest numbered Pod.
+
+For each node, do following steps:
+1. Run `rabbitmqctl stop_app` and `rabbitmqctl reset` commands on RabbitMQ container
+1. Scale down StatefulSet by one with `kubectl scale sts` command
+1. Wait until Pod is removed from StatefulSet
+1. Remove Persistent Volumes and Persistent Volume Claim belonging to that replica
+
+Repeat this procedure until RabbitMQ cluster has expected number of Pods.
+
+---
+
+For more information about the StatefulSets scaling, check the
+[Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/#kubectl-scale).
+
+For more information about removing a node from RabbitMQ cluster, check the [official documentation](https://www.rabbitmq.com/clustering.html#breakup).
 
 # Backup and restore
 
-TODO
+Read the [official documentation](https://www.rabbitmq.com/backup.html) for more information.
 
 # Update procedure
 
