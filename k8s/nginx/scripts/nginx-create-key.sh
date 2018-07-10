@@ -1,2 +1,26 @@
-openssl genrsa -out https.key 2048
-openssl req -new -x509 -key https.key -out https.cert -days 365 -subj /CN=www.my-website.com
+#!/bin/bash
+#
+# Copyright 2018 Google Inc. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -eu
+
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout https1.key -out https1.cert
+
+echo "Base64 for https1.key"
+cat https1.cert | tr -d '\n' | base64 | tr -d '\n'
+echo ""
+echo "Base64 for https1.cert"
+cat https1.key | tr -d '\n' | base64 | tr -d '\n'
+echo ""
