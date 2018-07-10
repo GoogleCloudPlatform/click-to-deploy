@@ -263,7 +263,7 @@ By design, removal of StatefulSets in Kubernetes does not remove the PersistentV
 were attached to their Pods. It protects your installations from mistakenly deleting stateful data.
 
 If you wish to remove the PersistentVolumeClaims with their attached persistent disks, run the
-following `kubectl` commandss:
+following `kubectl` commands:
 
 ```shell
 for i in $(kubectl get pvc --namespace $NAMESPACE \
