@@ -9,6 +9,8 @@ properties:
       type: NAMESPACE
   PROMETHEUS_REPLICAS:
     type: integer
+    title: Prometheus replicas
+    description: The number of replicas for Prometheus StatefulSet
     default: 2
     minimum: 1
   GRAFANA_GENERATED_PASSWORD:
