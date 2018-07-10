@@ -20,9 +20,6 @@ spec:
     Google does not offer support for this solution. However, community support is available on
     [Stack Overflow](https://stackoverflow.com/questions/tagged/cassandra/).
     Additional community support is available on [cassandra website](http://cassandra.apache.org).
-  info:
-  - name: Service endpoint
-    value: TODO
   maintainers:
   - name: Google Click to Deploy
     url: https://cloud.google.com/solutions/#click-to-deploy
