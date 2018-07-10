@@ -14,9 +14,9 @@ properties:
       type: IMAGE
   INFLUXDB_ADMIN_USER:
     type: string
-    default: $REGISTRY:$TAG
+    default: influxdb-admin
     x-google-marketplace:
-      type: INFLUXDB_ADMIN_PASSWORD
+      type: string
   INFLUXDB_ADMIN_PASSWORD:
     type: string
     x-google-marketplace:
