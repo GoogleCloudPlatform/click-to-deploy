@@ -75,8 +75,8 @@ app/build:: .build/elastic-gke-logging/elasticsearch \
                                           | .build/elastic-gke-logging
 	docker pull launcher.gcr.io/google/elasticsearch6:$(ELASTICSEARCH_KIBANA_VERSION)
 	docker tag launcher.gcr.io/google/elasticsearch6:$(ELASTICSEARCH_KIBANA_VERSION) \
-	    "$(REGISTRY)/elastic-gke-logging/elasticsearch:$(TAG)"
-	docker push "$(REGISTRY)/elastic-gke-logging/elasticsearch:$(TAG)"
+	    "$(REGISTRY)/elastic-gke-logging:$(TAG)"
+	docker push "$(REGISTRY)/elastic-gke-logging:$(TAG)"
 	@touch "$@"
 
 
