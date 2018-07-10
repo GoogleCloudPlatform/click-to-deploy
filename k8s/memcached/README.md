@@ -1,4 +1,5 @@
 # Overview
+
 Memcached is an open source in-memory, key-value store. Key features of this solution include high performance and ease of distribution.
 Although Memcached is intended to be use with dynamic web applications, it can be used as a caching system for a number of databases.
 
@@ -55,12 +56,12 @@ gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketp
 
 #### Install the Application resource definition
 
-Do a one-time setup of your cluster and install Custom Reference Definition object for Kubernetes Application.
+Do a one-time setup for your cluster to understand Application resources.
 
-To do that, please, navidate to k8s/vendor subfolder of click-to-deploy repository and run the following command:
+To do that, navigate to `k8s/vendor` subdirectory of the repository and run the following command:
 
 ```shell
-kubectl apply -f marketplace-tools/crd/*
+kubectl apply -f google-marketplace-k8s-app-tools/crd/app-crd.yaml
 ```
 
 The Application resource is defined by the
