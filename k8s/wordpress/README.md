@@ -287,8 +287,8 @@ Please keep in mind that during the upgrade procedure your WordPress site will b
 Set your environment variables to match the installation properties:
 
 ```shell
-NAME=wordpress-1
-NAMESPACE=default
+export APP_INSTANCE_NAME=wordpress-1
+export NAMESPACE=default
 ```
 
 ## Upgrade Wordpress
@@ -302,7 +302,7 @@ export IMAGE_WORDPRESS=launcher.gcr.io/google/wordpress4-php5-apache:4.9
 Update the StatefulSet definition with new image reference:
 
 ```shell
-kubectl patch statefulset $NAME-wordpress \
+kubectl patch statefulset $APP_INSTANCE_NAME-wordpress \
   --namespace $NAMESPACE \
   --type='json' \
   --patch="[{ \
@@ -315,7 +315,7 @@ kubectl patch statefulset $NAME-wordpress \
 Monitor the process with:
 
 ```shell
-kubectl get pods "$NAME-wordpress-0" \
+kubectl get pods "$APP_INSTANCE_NAME-wordpress-0" \
   --output go-template='Status={{.status.phase}} Image={{(index .spec.containers 0).image}}' \
   --watch
 ```
@@ -334,7 +334,7 @@ export IMAGE_MYSQL=launcher.gcr.io/google/mysql5:5.7
 Update the StatefulSet definition with new image reference:
 
 ```shell
-kubectl patch statefulset $NAME-mysql \
+kubectl patch statefulset $APP_INSTANCE_NAME-mysql \
   --namespace $NAMESPACE \
   --type='json' \
   --patch="[{ \
@@ -347,7 +347,7 @@ kubectl patch statefulset $NAME-mysql \
 Monitor the process with:
 
 ```shell
-kubectl get pods $NAME-mysql-0 --namespace $NAMESPACE --watch
+kubectl get pods $APP_INSTANCE_NAME-mysql-0 --namespace $NAMESPACE --watch
 ```
 
 The pod should terminated and recreated with new image for `mysql` container. The final state of
@@ -356,7 +356,7 @@ the pod should be `Running` and marked as 1/1 in `READY` column.
 To check the current image used for `mysql` container, you can run the following command:
 
 ```shell
-kubectl get pod $NAME-mysql-0 \
+kubectl get pod $APP_INSTANCE_NAME-mysql-0 \
   --namespace $NAMESPACE \
   --output jsonpath='{.spec.containers[0].image}'
 ```
