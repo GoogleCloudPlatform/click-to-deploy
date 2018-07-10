@@ -1,0 +1,106 @@
+properties:
+  APP_INSTANCE_NAME:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  NAMESPACE:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  PROMETHEUS_REPLICAS:
+    type: integer
+    title: Prometheus replicas
+    description: The number of replicas for Prometheus StatefulSet
+    default: 2
+    minimum: 1
+  GRAFANA_GENERATED_PASSWORD:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 12
+  IMAGE_PROMETHEUS:
+    type: string
+    default: $REGISTRY/prometheus:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  IMAGE_ALERTMANAGER:
+    type: string
+    default: $REGISTRY/prometheus/alertmanager:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  IMAGE_KUBE_STATE_METRICS:
+    type: string
+    default: $REGISTRY/prometheus/kubestatemetrics:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  IMAGE_NODE_EXPORTER:
+    type: string
+    default: $REGISTRY/prometheus/nodeexporter:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  IMAGE_GRAFANA:
+    type: string
+    default: $REGISTRY/prometheus/grafana:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  IMAGE_PROMETHEUS_INIT:
+    type: string
+    default: $REGISTRY/prometheus/debian9:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  PROMETHEUS_SERVICE_ACCOUNT:
+    type: string
+    title: Prometheus Service Account
+    description: Service account to assign to main Prometheus StatefulSet
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        roles:
+        - type: ClusterRole
+          rulesType: PREDEFINED
+          rulesFromRoleName: cluster-admin
+  ALERTMANAGER_SERVICE_ACCOUNT:
+    type: string
+    title: Prometheus Alertmanager Service Account
+    description: Service account to assign to Prometheus Alertmanager StatefulSet
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+  NODE_EXPORTER_SERVICE_ACCOUNT:
+    type: string
+    title: Prometheus Node exporter Account
+    description: Service account to assign to Prometheus Node exporter DaemonSet
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+  GRAFANA_SERVICE_ACCOUNT:
+    type: string
+    title: Grafana Service Account
+    description: Service account to assign to Grafana StatefulSet
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+  KUBE_STATE_METRICS_SERVICE_ACCOUNT:
+    type: string
+    title: Kube State Metrics Service Account
+    description: Service account to assign to Kube State Metrics Deployment
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        roles:
+        - type: ClusterRole
+          rulesType: PREDEFINED
+          rulesFromRoleName: cluster-admin
+required:
+- APP_INSTANCE_NAME
+- NAMESPACE
+- PROMETHEUS_REPLICAS
+- GRAFANA_GENERATED_PASSWORD
+- IMAGE_ALERTMANAGER
+- IMAGE_KUBE_STATE_METRICS
+- IMAGE_NODE_EXPORTER
+- IMAGE_PROMETHEUS
+- IMAGE_GRAFANA
+- IMAGE_PROMETHEUS_INIT
+- ALERTMANAGER_SERVICE_ACCOUNT
+- GRAFANA_SERVICE_ACCOUNT
+- NODE_EXPORTER_SERVICE_ACCOUNT
+- PROMETHEUS_SERVICE_ACCOUNT
