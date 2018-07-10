@@ -113,6 +113,7 @@ This will ensure that the installed application will always use the same images,
 until you are ready to upgrade.
 
 ```shell
+repo=`echo $IMAGE_INFLUXDB | cut -d: -f1`;
 digest=`docker pull $IMAGE_INFLUXDB | sed -n -e 's/Digest: //p'`;
 export $i="$repo@$digest";
 env | grep $i;
@@ -148,6 +149,12 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 # Basic Usage
 
 TODO by rafalbiegacz@ after merging
+
+Run the following command to discover IP address of InfluxDB instance using kubectl:
+
+```shell
+kubectl get svc -o wide -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace "$NAMESPACE"
+```
 
 # Scaling
 
