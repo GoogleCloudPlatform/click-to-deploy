@@ -4,7 +4,7 @@ metadata:
   name: $APP_INSTANCE_NAME-memcached
   labels: &MemcachedDeploymentLabels
     app.kubernetes.io/name: $APP_INSTANCE_NAME
-    app.kubernetes.io/component: $APP_INSTANCE_NAME-server
+    app.kubernetes.io/component: memcached-server
 spec:
   selector:
     matchLabels: *MemcachedDeploymentLabels
@@ -40,9 +40,9 @@ apiVersion: v1
 kind: Service
 metadata:
   name: $APP_INSTANCE_NAME-memcached-svc
-  labels: &MemcachedDeploymentLabels
+  labels:
     app.kubernetes.io/name: $APP_INSTANCE_NAME
-    app.kubernetes.io/component: $APP_INSTANCE_NAME-server
+    app.kubernetes.io/component: memcached-server
 spec:
   clusterIP: None
   ports:
@@ -51,5 +51,5 @@ spec:
     protocol: TCP
   selector:
     app.kubernetes.io/name: $APP_INSTANCE_NAME
-    app.kubernetes.io/component: $APP_INSTANCE_NAME-server
+    app.kubernetes.io/component: memcached-server
   type: ClusterIP # LoadBalancer
