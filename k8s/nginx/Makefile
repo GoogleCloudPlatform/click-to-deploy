@@ -6,7 +6,7 @@ include ../vendor/marketplace-tools/ubbagent.Makefile
 include ../vendor/marketplace-tools/var.Makefile
 
 
-TAG ?= latest
+TAG ?= 1.15
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/nginx/deployer:$(TAG)
@@ -19,7 +19,7 @@ APP_TEST_PARAMETERS ?= {}
 
 
 app/build:: .build/nginx/deployer \
-	    .build/nginx/nginx
+            .build/nginx/nginx
 
 
 .build/nginx: | .build
@@ -46,8 +46,8 @@ app/build:: .build/nginx/deployer \
 .build/nginx/nginx: .build/var/REGISTRY \
                             .build/var/TAG \
                             | .build/nginx
-	docker pull launcher.gcr.io/google/nginx1
-	docker tag launcher.gcr.io/google/nginx1 \
+	docker pull launcher.gcr.io/google/nginx1:1.15
+	docker tag launcher.gcr.io/google/nginx1:1.15 \
 	    "$(REGISTRY)/nginx:$(TAG)"
 	docker push "$(REGISTRY)/nginx:$(TAG)"
 	@touch "$@"
