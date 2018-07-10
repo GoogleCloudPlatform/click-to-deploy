@@ -87,7 +87,7 @@ export NAMESPACE=default
 Configure the container images.
 
 ```shell
-export IMAGE_NGINX="gcr.io/k8s-marketplace-eap/google/nginx1:1.14"
+export IMAGE_NGINX="gcr.io/k8s-marketplace-eap/google/nginx1:1.15"
 ```
 
 The images above are referenced by
@@ -110,7 +110,7 @@ expanded manifest file for future updates to the application.
 
 ```shell
 awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_NGINX' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_NGINX $REPLICAS' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
@@ -149,7 +149,7 @@ This command will display internal and external IP address of your NGINX service
 
 # Scaling
 
-By default, NGINX K8s application is deployed using 2 replicas. You can manually scale it up or down to deploy NGINX solution with desired number of replicas using the following command.
+By default, NGINX K8s application is deployed using 3 replicas. You can manually scale it up or down to deploy NGINX solution with desired number of replicas using the following command.
 
 ```shell
 kubectl scale statefulsets "$APP_INSTANCE_NAME-nginx" --namespace "$NAMESPACE" --replicas=<new-replicas>
@@ -206,7 +206,3 @@ Optionally, if you don't need both the deployed application and GKE cluster used
 ```shell
 gcloud container clusters delete "$CLUSTER" --zone "$ZONE"
 ```
-
-# Logging and Monitoring
- 
- TBD
