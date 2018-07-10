@@ -7,7 +7,7 @@ Prometheus is a monitoring addon. It consists of:
 1.  **Alert Manager** - a manager for alerts.
 1.  **Grafana** - the monitoring UI.
 
-[Learn more](https://www.elastic.co/).
+[Learn more](https://prometheus.io/).
 
 ## About Google Click to Deploy
 
@@ -17,9 +17,9 @@ Popular open stacks on Kubernetes packaged by Google.
 
 ## Quick install with Google Cloud Marketplace
 
-Get up and running with a few clicks! Install this Elasticsearch app to a
+Get up and running with a few clicks! Install this Prometheus app to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
-[on-screen instructions](https://console.cloud.google.com/launcher/details/google/elasticsearch).
+[on-screen instructions](https://console.cloud.google.com/launcher/details/google/prometheus).
 
 ## Command line instructions
 
@@ -79,7 +79,7 @@ community. The source code can be found on
 
 ### Install the Application
 
-Navigate to the `elasticsearch` directory.
+Navigate to the `prometheus` directory.
 
 ```shell
 cd google-click-to-deploy/k8s/prometheus
@@ -94,7 +94,7 @@ export APP_INSTANCE_NAME=prometheus-1
 export NAMESPACE=default
 ```
 
-Specify the number of replicas for the Elasticsearch server:
+Specify the number of replicas for the Prometheus cluster:
 
 ```shell
 export PROMETHEUS_REPLICAS=2
