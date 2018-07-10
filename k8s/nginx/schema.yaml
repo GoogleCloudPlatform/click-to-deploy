@@ -18,7 +18,6 @@ properties:
     type: integer
     default: 3
     minimum: 1
-    maximum: 30
 required:
 - APP_INSTANCE_NAME
 - NAMESPACE
