@@ -85,7 +85,6 @@ Choose the instance name and namespace for the app.
 ```shell
 export APP_INSTANCE_NAME=influxdb-1
 export NAMESPACE=default
-export REPLICAS=3
 ```
 
 Configure the container images.
@@ -97,7 +96,7 @@ export IMAGE_INFLUXDB="gcr.io/k8s-marketplace-eap/google/influxdb:latest"
 Configure InfluxDB administrator account:
 
 ```shell
-export INFLUXDB_ADMIN_USER=influxdb_admin
+export INFLUXDB_ADMIN_USER=influxdb-admin
 ```
 
 Configure password for InfluxDB administrator account (the value has to be encoded in base64)
