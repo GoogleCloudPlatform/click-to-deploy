@@ -13,9 +13,9 @@ properties:
     x-google-marketplace:
       type: IMAGE
   REPLICAS:
+    type: integer
     title: Replicas
     description: The number of Pod replicas
-    type: integer
     default: 3
     minimum: 1
     maximum: 11
@@ -26,10 +26,10 @@ properties:
       generatedPassword:
         length: 32
   RABBITMQ_DEFAULT_USER:
-    title: RabbitMQ username
-    description: Username to be used for connecting to RabbitMQ
     # TODO(wgrzelak): define pattern
     type: string
+    title: RabbitMQ username
+    description: Username to be used for connecting to RabbitMQ
     default: rabbit
   RABBITMQ_DEFAULT_PASS:
     type: string

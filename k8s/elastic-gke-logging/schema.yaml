@@ -29,10 +29,14 @@ properties:
       type: IMAGE
   ELASTICSEARCH_REPLICAS:
     type: integer
+    title: Elasticsearch replicas
+    description: The number of replicas for Elasticsearch StatefulSet
     default: 2
-    min: 2
+    minimum: 2
   FLUENTD_SERVICE_ACCOUNT:
     type: string
+    title: Fluentd Service Account
+    description: Service account to assign to Fluentd StatefulSet
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
