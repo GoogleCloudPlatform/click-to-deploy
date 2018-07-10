@@ -52,7 +52,7 @@ data:
         ],
         "version": 1,
         "kibanaSavedObjectMeta": {
-          "searchSourceJSON": "{\"index\":\"logstash-*\",\"highlightAll\":true,\"version\":true,\"query\":{\"query\":\"systemd_unit:kubelet.service\",\"language\":\"kuery\"},\"filter\":[]}"
+          "searchSourceJSON": "{\"index\":\"logstash-*\",\"highlightAll\":true,\"version\":true,\"query\":{\"query\":\"systemd_unit:\\\"kubelet.service\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
         }
       }
     }
@@ -72,7 +72,7 @@ data:
         ],
         "version": 1,
         "kibanaSavedObjectMeta": {
-          "searchSourceJSON": "{\"index\":\"logstash-*\",\"highlightAll\":true,\"version\":true,\"query\":{\"query\":\"tag:kubeproxy\",\"language\":\"kuery\"},\"filter\":[]}"
+          "searchSourceJSON": "{\"index\":\"logstash-*\",\"highlightAll\":true,\"version\":true,\"query\":{\"query\":\"tag:\\\"kubeproxy\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
         }
       }
     }
@@ -92,7 +92,7 @@ data:
         ],
         "version": 1,
         "kibanaSavedObjectMeta": {
-          "searchSourceJSON": "{\"index\":\"logstash-*\",\"highlightAll\":true,\"version\":true,\"query\":{\"query\":\"systemd_unit:docker.service\",\"language\":\"kuery\"},\"filter\":[]}"
+          "searchSourceJSON": "{\"index\":\"logstash-*\",\"highlightAll\":true,\"version\":true,\"query\":{\"query\":\"systemd_unit:\\\"docker.service\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
         }
       }
     }
@@ -112,7 +112,7 @@ data:
         ],
         "version": 1,
         "kibanaSavedObjectMeta": {
-          "searchSourceJSON": "{\"index\":\"logstash-*\",\"highlightAll\":true,\"version\":true,\"query\":{\"query\":\"transport:kernel\",\"language\":\"kuery\"},\"filter\":[]}"
+          "searchSourceJSON": "{\"index\":\"logstash-*\",\"highlightAll\":true,\"version\":true,\"query\":{\"query\":\"transport:\\\"kernel\\\"\",\"language\":\"kuery\"},\"filter\":[]}"
         }
       }
     }
@@ -139,6 +139,8 @@ spec:
         env:
         - name: ELASTICSEARCH_URL
           value: "http://$APP_INSTANCE_NAME-elasticsearch-svc:9200"
+        - name: KIBANA_DEFAULTAPPID
+          value: "discover"
         ports:
         - name: http
           containerPort: 5601
