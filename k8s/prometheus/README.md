@@ -183,10 +183,9 @@ It takes a while until service gets reconfigured to be publicly available. After
 is finished, obtain the public IP address with:
 
 ```shell
-SERVICE_IP=$(kubectl get \
-  --namespace ${NAMESPACE} \
-  svc ${APP_INSTANCE_NAME}-grafana \
-  -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-grafana \
+  --namespace $NAMESPACE \
+  --output jsonpath='{.status.loadBalancer.ingress[0].ip}');)
 echo "http://${SERVICE_IP}/"
 ```
 

@@ -167,9 +167,11 @@ kubectl apply -f scripts/external.yaml --namespace $NAMESPACE
 ### Access Cassandra service
 
 Get the external IP of the Cassandra service invoking `kubectl get`
+
 ```shell
-CASSANDRA_IP=$(kubectl get svc/$APP_INSTANCE_NAME-cassandra-external-svc \
-  --namespace $NAMESPACE -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+CASSANDRA_IP=$(kubectl get svc $APP_INSTANCE_NAME-cassandra-external-svc \
+  --namespace $NAMESPACE \
+  --output jsonpath='{.status.loadBalancer.ingress[0].ip}');)
 
 echo $CASSANDRA_IP
 ```

@@ -169,10 +169,9 @@ If you run your Elasticsearch cluster behind a LoadBalancer service, obtain the 
 run administrative operations against the REST API:
 
 ```
-SERVICE_IP=$(kubectl get \
-  --namespace ${NAMESPACE} \
-  svc ${APP_INSTANCE_NAME}-elasticsearch-svc \
-  -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-elasticsearch-svc \
+  --namespace $NAMESPACE \
+  --output jsonpath='{.status.loadBalancer.ingress[0].ip}');)
 
 ELASTIC_URL="http://${SERVICE_IP}:9200"
 ```
@@ -231,14 +230,14 @@ This procedure is based on the official Elasticsearch documentation about
 [Snapshot And Restore](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-snapshots.html).
 
 In this procedure we will use NFS storage built on top of a StatefulSet in Kubernetes. You could
-also consider using other NFS providers or one of the repository plugins supported by Elasticsearch. 
+also consider using other NFS providers or one of the repository plugins supported by Elasticsearch.
 
 ## Snapshot
 
 ### Create a backup infrastructure
 
 To create a NFS server on Kubernetes and create a shared disk to be used for backup,
-run the script from `scripts/create-backup-infra.sh`: 
+run the script from `scripts/create-backup-infra.sh`:
 
 ```shell
 scripts/create-backup-infra.sh \
@@ -252,7 +251,7 @@ scripts/create-backup-infra.sh \
 
 Your Elasticsearch StatefulSet needs to be patched to mount the backup disk. To run the patch
 and automatically perform a rolling update on the StatefulSet, use the script from
-`scripts/patch-sts-for-backup.sh`. 
+`scripts/patch-sts-for-backup.sh`.
 
 ```shell
 scripts/patch-sts-for-backup.sh \

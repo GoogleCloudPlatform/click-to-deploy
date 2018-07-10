@@ -184,10 +184,9 @@ If you run your Elasticsearch cluster behind a LoadBalancer service, obtain the 
 run administrative operations against the REST API:
 
 ```
-SERVICE_IP=$(kubectl get \
-  --namespace ${NAMESPACE} \
-  svc ${APP_INSTANCE_NAME}-elasticsearch-svc \
-  -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-elasticsearch-svc \
+  --namespace $NAMESPACE \
+  --output jsonpath='{.status.loadBalancer.ingress[0].ip}');)
 
 ELASTIC_URL="http://${SERVICE_IP}:9200"
 ```
@@ -231,13 +230,12 @@ For Kibana, you can follow the same instructions for obtaining a URL as for Elas
 If exposing the Kibana service externally, run the following command:
 
 ```shell
-SERVICE_IP=$(kubectl get \
-  --namespace ${NAMESPACE} \
-  svc ${APP_INSTANCE_NAME}-kibana-svc \
-  -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-kibana-svc \
+  --namespace $NAMESPACE \
+  --output jsonpath='{.status.loadBalancer.ingress[0].ip}');)
 
 KIBANA_URL="http://${SERVICE_IP}:5601"
-``` 
+```
 
 Alternatively, if running a `kubectl proxy`:
 
@@ -295,19 +293,19 @@ This procedure is based on the official Elasticsearch documentation about
 [Snapshot And Restore](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-snapshots.html).
 
 In this procedure we will use NFS storage built on top of a StatefulSet in Kubernetes. You could
-also consider using other NFS providers or one of the repository plugins supported by Elasticsearch. 
+also consider using other NFS providers or one of the repository plugins supported by Elasticsearch.
 
 Kibana has all its stateful data stored in Elasticsearch index called `.kibana`, so it requires no
 additional backup steps.
 
-Fluentd DaemonSet stateless by design and requires no backup procedure. 
+Fluentd DaemonSet stateless by design and requires no backup procedure.
 
 ## Snapshot
 
 ### Create a backup infrastructure
 
 To create a NFS server on Kubernetes and create a shared disk to be used for backup,
-run the script from `scripts/create-backup-infra.sh`: 
+run the script from `scripts/create-backup-infra.sh`:
 
 ```shell
 scripts/create-backup-infra.sh \
@@ -321,7 +319,7 @@ scripts/create-backup-infra.sh \
 
 Your Elasticsearch StatefulSet needs to be patched to mount the backup disk. To run the patch
 and automatically perform a rolling update on the StatefulSet, use the script from
-`scripts/patch-sts-for-backup.sh`. 
+`scripts/patch-sts-for-backup.sh`.
 
 ```shell
 scripts/patch-sts-for-backup.sh \
@@ -433,7 +431,7 @@ curl $ELASTIC_URL/_cluster/health?pretty
 Run the `scripts/upgrade.sh` script. This script will take down and update one replica at a time -
 it should print out diagnostic messages. You should be done when the script finishes.
 
-## Update the Kibana deployment 
+## Update the Kibana deployment
 
 After successfully updating the Elasticsearch cluster, update the Kibana deployment too:
 
@@ -445,12 +443,12 @@ kubectl set image deployment "${APP_INSTANCE_NAME}-kibana" \
 ```
 
 The Kibana deployment will automatically start creating a new pod with new image and delete the old
-one, once the procedure is successfully finished. 
+one, once the procedure is successfully finished.
 
 ## Update the Fluentd Daemon Set
 
-To update Fluentd, follow the instructions from the 
-[official documentation](https://docs.fluentd.org/v1.0/articles/quickstart). 
+To update Fluentd, follow the instructions from the
+[official documentation](https://docs.fluentd.org/v1.0/articles/quickstart).
 Make sure that the configuration format in `${APP_INSTANCE_NAME}-fluentd-es-config` ConfigMap
 is compatible with the new application version.
 
@@ -460,7 +458,7 @@ To update the Fluentd image, run the following command:
 IMAGE_FLUENTD=<put the new image reference>
 
 kubectl set image ds/${APP_INSTANCE_NAME}-fluentd-es fluentd-es="${IMAGE_FLUENTD}"
-``` 
+```
 
 # Uninstall the Application
 

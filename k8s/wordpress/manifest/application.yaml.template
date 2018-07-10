@@ -61,10 +61,9 @@ spec:
     the URL printed below in your browser.
 
     ```
-    SERVICE_IP=$(kubectl get \
-      --namespace ${NAMESPACE} \
-      svc ${APP_INSTANCE_NAME}-wordpress-svc \
-      -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+    SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-wordpress-svc \
+      --namespace $NAMESPACE \
+      --output jsonpath='{.status.loadBalancer.ingress[0].ip}');)
 
     echo "http://${SERVICE_IP}"
     ```

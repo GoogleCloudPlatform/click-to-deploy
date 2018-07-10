@@ -168,10 +168,9 @@ Get the external IP of the Wordpress site service and visit
 the URL printed below in your browser.
 
 ```
-SERVICE_IP=$(kubectl get \
-  --namespace ${NAMESPACE} \
-  svc ${APP_INSTANCE_NAME}-wordpress-svc \
-  -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-wordpress-svc \
+  --namespace $NAMESPACE \
+  --output jsonpath='{.status.loadBalancer.ingress[0].ip}');)
 
 echo "http://${SERVICE_IP}"
 ```
@@ -194,8 +193,8 @@ the right plugin for backups, including both paid and free options.
 Topics to consider when selecting a backup plugin should include:
 * *scope of backup* - your installation will contain not only media files or database data,
   but also themes, plugins and configurations; check if the plugin supports backing up all of them;
-* *schedule and manual triggering* - does the plugin perform regular backups with a schedule 
-  that you can define and does it allow to trigger backup manually (for instance, before updating 
+* *schedule and manual triggering* - does the plugin perform regular backups with a schedule
+  that you can define and does it allow to trigger backup manually (for instance, before updating
   the installation or just after finishing a large update to your configuration);
 * *location to store data* - your backup data should not be stored on the same server as your
   installation; one of the options to secure your backup data from accidental loss might be
@@ -207,7 +206,7 @@ Backing up data directly from the server gives you full control over the schedul
 backup, but is recommended only to advanced users.
 
 We will cover a scenario for backing up WordPress database and all installation files, including
-media content, themes and plugins. It is recommended to export the backup files to Google Cloud 
+media content, themes and plugins. It is recommended to export the backup files to Google Cloud
 Storage to secure the data in an independent location.
 
 ### Setup local environment
@@ -252,13 +251,13 @@ scripts/backup.sh --app $APP_INSTANCE_NAME --namespace $NAMESPACE \
 
 It is recommended to store your backup files in an independent and reliable location like
 Google Cloud Storage (GCS) buckets. Read the [official documentation](https://cloud.google.com/storage/docs/creating-buckets)
-to learn more about creating GCS buckets, setting permissions and uploading files.  
+to learn more about creating GCS buckets, setting permissions and uploading files.
 
 ## Restore
 
 For restore procedure we assume that you already have your local environment populated with
 variables of `APP_INSTANCE_NAME` and `NAMESPACE` pointing to WordPress installation and
-established a MySQL connection. 
+established a MySQL connection.
 
 ### Restore WordPress database and files from backup
 
