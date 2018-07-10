@@ -17,7 +17,7 @@ metadata:
   name: $APP_INSTANCE_NAME-nginx
   labels: &NginxDeploymentLabels
     app.kubernetes.io/name: $APP_INSTANCE_NAME
-    app.kubernetes.io/component: $APP_INSTANCE_NAME-server
+    app.kubernetes.io/component: nginx-server
 spec:
   selector:
     matchLabels: *NginxDeploymentLabels
@@ -99,7 +99,7 @@ metadata:
   name: $APP_INSTANCE_NAME-nginx-svc
   labels:
     app.kubernetes.io/name: $APP_INSTANCE_NAME
-    app.kubernetes.io/component: $APP_INSTANCE_NAME-server
+    app.kubernetes.io/component: nginx-server
 spec:
   ports:
   - name: nginx-http-port
@@ -110,5 +110,5 @@ spec:
     protocol: TCP
   selector:
     app.kubernetes.io/name: $APP_INSTANCE_NAME
-    app.kubernetes.io/component: $APP_INSTANCE_NAME-server
+    app.kubernetes.io/component: nginx-server
   type: LoadBalancer #ClusterIP #LoadBalancer
