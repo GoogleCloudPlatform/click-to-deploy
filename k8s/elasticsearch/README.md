@@ -7,7 +7,7 @@ full-text search engine with an HTTP web interface and schema-free JSON document
 
 ## About Google Click to Deploy
 
-Popular open stacks on Kubernetes packaged by Google.
+Popular open source software stacks on Kubernetes packaged by Google and made available in Google Cloud Marketplace.
 
 # Installation
 

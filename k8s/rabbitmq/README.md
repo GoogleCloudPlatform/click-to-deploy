@@ -7,7 +7,7 @@ Message Queueing Protocol to serve a variety of messaging applications.
 
 ## About Google Click to Deploy
 
-Popular open stacks on Kubernetes packaged by Google.
+Popular open source software stacks on Kubernetes packaged by Google and made available in Google Cloud Marketplace.
 
 # Installation
 

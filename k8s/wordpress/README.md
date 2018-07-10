@@ -6,7 +6,7 @@ WordPress is web software used to create websites and blogs.
 
 ## About Google Click to Deploy
 
-Popular open stacks on Kubernetes packaged by Google.
+Popular open source software stacks on Kubernetes packaged by Google and made available in Google Cloud Marketplace.
 
 # Installation
 

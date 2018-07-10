@@ -1,9 +1,10 @@
 # Overview
+
 NGINX is open source software for web serving, reverse proxying, caching, load balancing, and media streaming. NGINX can also function as a proxy server for email (IMAP, POP3, and SMTP) and a reverse proxy and load balancer for HTTP, TCP, and UDP servers.
 
 If you would like to learn more about NGINX, please, visit [NGINX website](https://www.nginx.com/).
 
-## About Google Click to Deploy K8s Solutions
+## About Google Click to Deploy
 
 Popular open source software stacks on Kubernetes packaged by Google and made available in Google Cloud Marketplace.
 
@@ -13,7 +14,7 @@ Popular open source software stacks on Kubernetes packaged by Google and made av
 
 Get up and running with a few clicks! Install this NGINX app to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
-[on-screen instructions](https://console.cloud.google.com/launcher/details/google/nginx1).
+[on-screen instructions](https://console.cloud.google.com/launcher/details/google/nginx).
 
 ## Command line instructions
 
