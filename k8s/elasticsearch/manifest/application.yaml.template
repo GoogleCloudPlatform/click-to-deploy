@@ -12,7 +12,7 @@ metadata:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
 spec:
   type: Elasticsearch
-  version: '0.1'
+  version: '6.3'
   description: |-
     Elasticsearch is an open-source search engine that provides a distributed, multitenant-capable
     full-text search engine with an HTTP web interface and schema-free JSON documents.
