@@ -6,11 +6,11 @@ include ../vendor/marketplace-tools/ubbagent.Makefile
 include ../vendor/marketplace-tools/var.Makefile
 
 
-TAG ?= 1.5
+TAG ?= 1.15
 $(info ---- TAG = $(TAG))
 
-APP_DEPLOYER_IMAGE ?= $(REGISTRY)/memcached/deployer:$(TAG)
-NAME ?= memcached-1
+APP_DEPLOYER_IMAGE ?= $(REGISTRY)/nginx/deployer:$(TAG)
+NAME ?= nginx-1
 APP_PARAMETERS ?= { \
   "APP_INSTANCE_NAME": "$(NAME)", \
   "NAMESPACE": "$(NAMESPACE)" \
@@ -18,23 +18,23 @@ APP_PARAMETERS ?= { \
 APP_TEST_PARAMETERS ?= {}
 
 
-app/build:: .build/memcached/deployer \
-	    .build/memcached/memcached
+app/build:: .build/nginx/deployer \
+            .build/nginx/nginx
 
 
-.build/memcached: | .build
+.build/nginx: | .build
 	mkdir -p "$@"
 
 
-.build/memcached/deployer: deployer/* \
+.build/nginx/deployer: deployer/* \
                            manifest/* \
                            .build/marketplace/deployer/envsubst \
                            .build/var/APP_DEPLOYER_IMAGE \
                            .build/var/REGISTRY \
                            .build/var/TAG \
-                           | .build/memcached
+                           | .build/nginx
 	docker build \
-	    --build-arg REGISTRY="$(REGISTRY)/memcached" \
+	    --build-arg REGISTRY="$(REGISTRY)/nginx" \
 	    --build-arg TAG="$(TAG)" \
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
 	    -f deployer/Dockerfile \
@@ -43,11 +43,11 @@ app/build:: .build/memcached/deployer \
 	@touch "$@"
 
 
-.build/memcached/memcached: .build/var/REGISTRY \
+.build/nginx/nginx: .build/var/REGISTRY \
                             .build/var/TAG \
-                            | .build/memcached
-	docker pull launcher.gcr.io/google/memcached1:1.5
-	docker tag launcher.gcr.io/google/memcached1:1.5 \
-	    "$(REGISTRY)/memcached:$(TAG)"
-	docker push "$(REGISTRY)/memcached:$(TAG)"
+                            | .build/nginx
+	docker pull launcher.gcr.io/google/nginx1:1.15
+	docker tag launcher.gcr.io/google/nginx1:1.15 \
+	    "$(REGISTRY)/nginx:$(TAG)"
+	docker push "$(REGISTRY)/nginx:$(TAG)"
 	@touch "$@"
