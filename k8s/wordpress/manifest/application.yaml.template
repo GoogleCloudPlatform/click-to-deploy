@@ -12,7 +12,7 @@ metadata:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
 spec:
   descriptor:
-    type: Wordpress
+    type: WordPress
     version: '0.1'
     description: >-
       WordPress is web software used to create websites and blogs.
@@ -48,7 +48,7 @@ spec:
 
       # Access WordPress site
 
-      Get the external IP of the Wordpress site service and visit
+      Get the external IP of the WordPress site service and visit
       the URL printed below in your browser.
 
       ```
