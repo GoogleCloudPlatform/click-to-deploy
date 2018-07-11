@@ -66,7 +66,7 @@ spec:
       After accessing the WordPress main page, you will see the installation wizard.
       Follow the instructions presented on the screen to finish the process.
   info:
-  - name: External IP
+  - name: WordPress external IP
     type: Reference
     valueFrom:
       serviceRef:
