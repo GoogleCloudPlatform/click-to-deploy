@@ -342,13 +342,13 @@ export NAMESPACE=default
 ```
 
 To restore Cassandra, `sstableloader` tool is used. This is automated via
-`scirpts/restore.sh`. Please run this script from directory with backup files,
+`scripts/restore.sh`. Please run this script from directory with backup files,
 providing as arguments key space and number of generated archives.
 
 ```shell
 <SCRIPT DIR>/restores.sh   --keyspace demo \
-                           --backups 3 \
                            --namespace custom-namespace
+                           --app_instance_name cassandra-1
 ```
 
 This script will recreate schema and upload data. Clusters (source and
