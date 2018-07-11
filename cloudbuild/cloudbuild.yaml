@@ -83,17 +83,6 @@ steps:
     gcloud container clusters get-credentials "$_CLUSTER_NAME" --zone "$_CLUSTER_LOCATION"
     make app/verify
 
-- id: Run the verification on influxdb
-  waitFor: [ 'Setup git repo' ]
-  name: 'gcr.io/$PROJECT_ID/verifier'
-  entrypoint: 'bash'
-  dir: 'k8s/influxdb'
-  args:
-  - -c
-  - |
-    gcloud container clusters get-credentials "$_CLUSTER_NAME" --zone "$_CLUSTER_LOCATION"
-    make app/verify
-
 - id: Run the verification on memcached
   waitFor: [ 'Setup git repo' ]
   name: 'gcr.io/$PROJECT_ID/verifier'
