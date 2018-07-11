@@ -44,13 +44,19 @@ spec:
     notes: |-
       Identify Persistent Volume used by NGINX solution and upload the content
       you would like NGINX web server to serve.
+
       To upload web content to the Persistent Volume used by NGINX solution one can do the following:
-      1) Navigate to a folder where directory containing your website is located
-      (e.g. assuming that your web content is stored in 'html' directory)
-      2) Run the following command to copy the content of 'html' directory to the Persistent Volume:
-         kubectl cp html nginx-1-nginx-0:/usr/share/nginx
-      3) Set permissions so NGINX server has access to the newly uploaded 'html' directory
-         kubectl exec nginx-1-nginx-0 -- chmod -R a+r /usr/share/nginx/html
+
+      1. Navigate to a folder where directory containing your website is located
+         (e.g. assuming that your web content is stored in `html` directory)
+      1. Run the following command to copy the content of `html` directory to the Persistent Volume:
+         ```
+         kubectl cp html $APP_INSTANCE_NAME-nginx-0:/usr/share/nginx
+         ```
+      1. Set permissions so NGINX server has access to the newly uploaded `html` directory:
+         ```
+         kubectl exec $APP_INSTANCE_NAME-nginx-0 -- chmod -R a+r /usr/share/nginx/html
+         ```
   info:
   - name: Nginx Configuration
     value: nginx-config.conf
