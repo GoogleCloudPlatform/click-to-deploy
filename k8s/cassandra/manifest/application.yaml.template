@@ -1,5 +1,5 @@
 ---
-apiVersion: app.k8s.io/v1alpha1
+apiVersion: app.k8s.io/v1beta1
 kind: Application
 metadata:
   name: "$APP_INSTANCE_NAME"
@@ -11,29 +11,84 @@ metadata:
   labels:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
 spec:
-  type: Cassandra
   version: '3.11.2'
-  description: |-
-    Cassandra is a NoSQL, highly scalable, high-performance distributed database with high
-    availability with no single point of failure.
+  descriptor:
+    type: Cassandra
+    version: '3.11.2'
+    description: |-
+      Cassandra is a NoSQL, highly scalable, high-performance distributed database with high
+      availability with no single point of failure.
 
-    # Support
-    Google does not offer support for this solution. However, community support is available on
-    [Stack Overflow](https://stackoverflow.com/questions/tagged/cassandra/).
-    Additional community support is available on [cassandra website](http://cassandra.apache.org).
-  info:
-  - name: Service endpoint
-    value: TODO
-  maintainers:
-  - name: Google Click to Deploy
-    url: https://cloud.google.com/solutions/#click-to-deploy
-  links:
-  - description: 'User Guide: Google Click to Deploy Cassandra'
-    url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/cassandra/README.md
-  - description: 'DataStax Cassandra documentation'
-    url: https://docs.datastax.com/en/cassandra/3.0/
-  - description: 'Apache documentation for Cassandra'
-    url: https://cassandra.apache.org/doc/latest/getting_started/index.html
+        # Support
+        Google does not offer support for this solution. However, community support is available on
+        [Stack Overflow](https://stackoverflow.com/questions/tagged/cassandra/).
+        Additional community support is available on [cassandra website](http://cassandra.apache.org).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy Cassandra'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/cassandra/README.md
+    - description: 'DataStax Cassandra documentation'
+      url: https://docs.datastax.com/en/cassandra/3.0/
+    - description: 'Apache documentation for Cassandra'
+      url: https://cassandra.apache.org/doc/latest/getting_started/index.html
+    notes: |-
+      # Check full Guide
+
+      Full guide is available on [GitHub](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/k8s/cassandra).
+
+      # Get tooling from GitHub
+
+      Please download K8s Cassandra tools from GitHub, invoking following commands
+      ```
+      git clone https://github.com/GoogleCloudPlatform/click-to-deploy
+      cd click-to-deploy/k8s/cassandra
+      ```
+
+      Scripts and tools are availabe in `scripts` directory.
+
+      # Exposing Cassandra cluster
+
+      It is possible to provide a load balancer in front of the cluster (although it is not a suggested approach)
+
+      ```shell
+      export CASSANDRA_NAME=${APP_INSTANCE_NAME}
+      export CASSANDRA_NAMESPACE=${NAMESPACE}
+
+      envsubst '$CASSANDRA_NAME $CASSANDRA_NAME' < scripts/external.yaml.template > scripts/external.yaml
+      kubectl apply -f scripts/external.yaml --namespace $CASSANDRA_NAMESPACE
+      ```
+
+      **NOTE** Please configure Cassandra access control, while exposing it to public
+      access.
+
+      # Access Cassandra service (external)
+
+      Get the external IP of the Cassandra service invoking `kubectl get`
+      ```shell
+      CASSANDRA_IP=$(kubectl get svc/$APP_INSTANCE_NAME-cassandra-external-svc \
+        --namespace $NAMESPACE \
+        --output jsonpath=='{.status.loadBalancer.ingress[0].ip}')
+
+      echo $CASSANDRA_IP
+      ```
+
+      It can take few seconds to provide this IP.
+
+      With this IP, we can connect by `cqlsh` to Cassandra, for example
+
+      ```shell
+      docker run --rm -it -e CQLSH_HOST=$CASSANDRA_IP \
+        launcher.gcr.io/google/cassandra3 cqlsh --cqlversion=3.4.4
+      ```
+
+      # Access Cassandra service (internal)
+
+      It is possible to connect to Cassandra without exposing it to public access.
+
+      To do this, please connect to from container inside K8s cluster using hostname
+      `$APP_INSTANCE_NAME-cassandra-0.$APP_INSTANCE_NAME-cassandra-svc.$NAMESPACE.svc.cluster.local`.
   selector:
     matchLabels:
       app.kubernetes.io/name: "$APP_INSTANCE_NAME"
@@ -42,58 +97,3 @@ spec:
     kind: Service
   - group: apps/v1beta2
     kind: StatefulSet
-  notes: |-
-    # Check full Guide
-
-    Full guide is available on [GitHub](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/k8s/cassandra).
-
-    # Get tooling from GitHub
-
-    Please download K8s Cassandra tools from GitHub, invoking following commands
-    ```
-    git clone https://github.com/GoogleCloudPlatform/click-to-deploy
-    cd click-to-deploy/k8s/cassandra
-    ```
-
-    Scripts and tools are availabe in `scripts` directory.
-
-    # Exposing Cassandra cluster
-
-    It is possible to provide a load balancer in front of the cluster (although it is not a suggested approach)
-
-    ```shell
-    export APP_INSTANCE_NAME=cassandra-1
-    export NAMESPACE=default
-
-    envsubst '$APP_INSTANCE_NAME $NAMESPACE' scripts/external.yaml.template > scripts/external.yaml
-    kubectl apply -f scripts/external.yaml -n $NAMESPACE
-    ```
-
-    **NOTE** Please configure Cassandra access control, while exposing it to public
-    access.
-
-    # Access Cassandra service (external)
-
-    Get the external IP of the Cassandra service invoking `kubectl get`
-    ```shell
-    CASSANDRA_IP=$(kubectl get svc/$APP_INSTANCE_NAME-cassandra-external-svc \
-      -n $NAMESPACE -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-
-    echo $CASSANDRA_IP
-    ```
-
-    It can take few seconds to provide this IP.
-
-    With this IP, we can connect by `cqlsh` to Cassandra, for example
-
-    ```shell
-    docker run --rm -it -e CQLSH_HOST=$CASSANDRA_IP \
-      launcher.gcr.io/google/cassandra3 cqlsh --cqlversion=3.4.4
-    ```
-
-    # Access Cassandra service (internal)
-
-    It is possible to connect to Cassandra without exposing it to public access.
-
-    To do this, please connect to from container inside K8s cluster using hostname
-    `$APP_INSTANCE_NAME-cassandra-0.$APP_INSTANCE_NAME-cassandra-svc.$NAMESPACE.svc.cluster.local`.

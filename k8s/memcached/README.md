@@ -1,12 +1,13 @@
 # Overview
+
 Memcached is an open source in-memory, key-value store. Key features of this solution include high performance and ease of distribution.
 Although Memcached is intended to be use with dynamic web applications, it can be used as a caching system for a number of databases.
 
 If you would like to learn more about Memcached, please, visit [Memcached website](https://memcached.org/).
 
-## About Google Click to Deploy K8s Solutions
+## About Google Click to Deploy
 
-Popular open source software stacks on Kubernetes packaged by Google and made available in Google Cloud Marketplace.
+Popular open stacks on Kubernetes packaged by Google.
 
 # Installation
 
@@ -14,7 +15,7 @@ Popular open source software stacks on Kubernetes packaged by Google and made av
 
 Get up and running with a few clicks! Install this Memcached app to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
-[on-screen instructions](https://console.cloud.google.com/launcher/details/google/memcached1).
+[on-screen instructions](https://console.cloud.google.com/launcher/details/google/memcached).
 
 ## Command line instructions
 
@@ -55,12 +56,14 @@ gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketp
 
 #### Install the Application resource definition
 
-Do a one-time setup of your cluster and install Custom Reference Definition object for Kubernetes Application.
+Do a one-time setup for your cluster to understand Application resources.
 
-To do that, please, navidate to k8s/vendor subfolder of click-to-deploy repository and run the following command:
+<!--
+To do that, navigate to `k8s/vendor` subdirectory of the repository and run the following command:
+-->
 
 ```shell
-kubectl apply -f marketplace-tools/crd/*
+kubectl apply -f google-marketplace-k8s-app-tools/crd/*
 ```
 
 The Application resource is defined by the
@@ -114,7 +117,7 @@ expanded manifest file for future updates to the application.
 
 ```shell
 awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_MEMCACHED' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_MEMCACHED $REPLICAS' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
@@ -138,9 +141,9 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 Usually, there are two steps necessary to be able to use Memcache cluster
 
-1. One needs to acquire IP addresses of servers running with Memcached cluster. 
+1. One needs to acquire IP addresses of servers running with Memcached cluster.
 
-2. One needs to configure an application so it can use Memcached cluster as a cache. Usually, applications use specialized memcached clients (e.g. [pymemcache](http://pymemcache.readthedocs.io/en/latest/getting_started.html)) to run a hashing algorithm that is responsible for making selection which Memcached server to use for storing/retrieving cached data. 
+2. One needs to configure an application so it can use Memcached cluster as a cache. Usually, applications use specialized memcached clients (e.g. [pymemcache](http://pymemcache.readthedocs.io/en/latest/getting_started.html)) to run a hashing algorithm that is responsible for making selection which Memcached server to use for storing/retrieving cached data.
 
 ## Acquire IP addresses of Memcached instances
 
@@ -157,13 +160,11 @@ To discover IP addresses of Memcached instances using Python you can use kuberne
 Use this command to install kubernetes module on your computer
 ```shell
 pip install kubernetes
-
 ```
 
 Here is an examplary code that could be used as a starting for ar Python program to discover Memcached IP addresses:
 
 ```python
-
 import os
 # if kubernetes module is not installed, please, install it, e.g. pip install kubernetes
 from kubernetes import client, config
@@ -176,7 +177,6 @@ pod_list = k8s_client.list_namespaced_pod("default")
 # list all pods from the default namespace
 for pod in pod_list.items:
     print("%s\t%s\t%s" % (pod.metadata.name, pod.status.phase, pod.status.pod_ip))
-
 ```
 
 For more information about using Python to manage & discover Kubernetes cluster information, please, go to this page: https://github.com/kubernetes-client/python
@@ -189,7 +189,7 @@ http://pymemcache.readthedocs.io/en/latest/getting_started.html if you wold like
 
 It is not recommended to expose Memcached K8s App for external access.
 
-In this specific example, there is no encyption between an application and Memcached instances and no authentication/authorization schema is applied. The assumption is that applications deployed within the same Kubernetes cluster can talk freely to Memcached instances which are meant to be an internal cache of an application. 
+In this specific example, there is no encyption between an application and Memcached instances and no authentication/authorization schema is applied. The assumption is that applications deployed within the same Kubernetes cluster can talk freely to Memcached instances which are meant to be an internal cache of an application.
 
 # Scaling
 
@@ -199,11 +199,11 @@ You can manually scale it up or down to deploy Memcached solution with desired n
 kubectl scale statefulsets "$APP_INSTANCE_NAME-memcached" --namespace "$NAMESPACE" --replicas=<new-replicas>
 ```
 
-where <new_replicas> defines the number of replicas.
+where `<new_replicas>` defines the new desired number.
 
 # Backup and Restore
 
-There is no need to backup Memcached application - it's due to the nature of Memcached which serves as internal application cache and is updated by application in a dynamic way. 
+There is no need to backup Memcached application - it's due to the nature of Memcached which serves as internal application cache and is updated by application in a dynamic way.
 
 # Update
 
