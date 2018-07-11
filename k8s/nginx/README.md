@@ -1,11 +1,12 @@
 # Overview
+
 NGINX is open source software for web serving, reverse proxying, caching, load balancing, and media streaming. NGINX can also function as a proxy server for email (IMAP, POP3, and SMTP) and a reverse proxy and load balancer for HTTP, TCP, and UDP servers.
 
 If you would like to learn more about NGINX, please, visit [NGINX website](https://www.nginx.com/).
 
-## About Google Click to Deploy K8s Solutions
+## About Google Click to Deploy
 
-Popular open source software stacks on Kubernetes packaged by Google and made available in Google Cloud Marketplace.
+Popular open stacks on Kubernetes packaged by Google.
 
 # Installation
 
@@ -13,7 +14,7 @@ Popular open source software stacks on Kubernetes packaged by Google and made av
 
 Get up and running with a few clicks! Install this NGINX app to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
-[on-screen instructions](https://console.cloud.google.com/launcher/details/google/nginx1).
+[on-screen instructions](https://console.cloud.google.com/launcher/details/google/nginx).
 
 ## Command line instructions
 
@@ -40,7 +41,7 @@ gcloud container clusters create "$CLUSTER" --zone "$ZONE"
 Configure `kubectl` to talk to the new cluster.
 
 ```shell
-gcloud container clusters get-credentials "$CLUSTER"
+gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 ```
 
 #### Clone this repo
@@ -54,12 +55,14 @@ gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketp
 
 #### Install the Application resource definition
 
-Do a one-time setup of your cluster and install Custom Reference Definition object for Kubernetes Application.
+Do a one-time setup for your cluster to understand Application resources.
 
-To do that, please, navidate to k8s/vendor subfolder of click-to-deploy repository and run the following command:
+<!--
+To do that, navigate to `k8s/vendor` subdirectory of the repository and run the following command:
+-->
 
 ```shell
-kubectl apply -f marketplace-tools/crd/*
+kubectl apply -f google-marketplace-k8s-app-tools/crd/*
 ```
 
 The Application resource is defined by the
@@ -156,7 +159,7 @@ By default, NGINX K8s application is deployed using 3 replicas. You can manually
 kubectl scale statefulsets "$APP_INSTANCE_NAME-nginx" --namespace "$NAMESPACE" --replicas=<new-replicas>
 ```
 
-where <new_replicas> defines the number of replicas.
+where `<new_replicas>` defines the new desired number.
 
 # Backup and Restore
 
@@ -196,6 +199,7 @@ You can uninstall/delete NGINX application either using Google Cloud Console or 
 ```shell
 cd google-click-to-deploy/k8s/nginx
 ```
+
 * Run the uninstall command
 
 ```shell
