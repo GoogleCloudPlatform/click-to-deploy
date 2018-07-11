@@ -180,6 +180,3 @@ steps:
     path: /root/.ssh
 
 timeout: 20m
-
-options:
-  machineType: 'N1_HIGHCPU_8'
