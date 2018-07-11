@@ -328,7 +328,9 @@ Please run it with key space
                        --app_instance_name cassandra-1
 ```
 
-This script will generate backup files.
+This script will generate backup files. For each Cassandra node one archive will
+be generated. For whole cluster one schema is backed up and token ring is backed
+up.
 
 ### Restoring
 

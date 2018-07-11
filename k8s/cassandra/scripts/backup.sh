@@ -12,7 +12,8 @@ fi
 USAGE='
 This script creates a backup files from Cassandra cluster. Following files
 are generated:
-- multiple backup .tar.gz archives, containing raw data
+- multiple backup .tar.gz archives, containing raw data from Cassandra. For each
+  Cassandra node one archive is generated
 - backup-schema.cql schema file
 - backup-ring.info file, with ring information, useful for manual restore
 

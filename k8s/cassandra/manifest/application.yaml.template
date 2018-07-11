@@ -13,7 +13,7 @@ metadata:
 spec:
   descriptor:
     type: Cassandra
-    version: '3.11.2'
+    version: '3.11'
     description: |-
       Cassandra is a NoSQL, highly scalable, high-performance distributed database with high
       availability with no single point of failure.
