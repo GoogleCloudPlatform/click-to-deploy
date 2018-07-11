@@ -1,4 +1,4 @@
-apiVersion: app.k8s.io/v1alpha1
+apiVersion: app.k8s.io/v1beta1
 kind: Application
 metadata:
   name: "$APP_INSTANCE_NAME"
@@ -9,15 +9,97 @@ metadata:
   labels:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
 spec:
-  type: RabbitMQ
-  version: '3.6.15'
-  description: |-
-    RabbitMQ is an open source messaging system that implements the Advanced Message Queueing Protocol to serve a variety of messaging applications.
+  descriptor:
+    type: RabbitMQ
+    version: '3.6.15'
+    description: |-
+      RabbitMQ is an open source messaging system that implements the Advanced Message Queueing Protocol to serve a variety of messaging applications.
 
-    # Support
-    Google does not offer support for this solution. However, community support is available on
-    [Stack Overflow](https://stackoverflow.com/questions/tagged/rabbitmq/).
-    Additional support is available on [community forums](https://groups.google.com/forum/#!forum/rabbitmq-users).
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/rabbitmq/).
+      Additional support is available on [community forums](https://groups.google.com/forum/#!forum/rabbitmq-users).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy RabbitMQ'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/rabbitmq/README.md
+    - description: 'RabbitMQ documentation'
+      url: https://www.rabbitmq.com/documentation.html
+    - description: 'RabbitMQ Getting Started Tutorials'
+      url: https://www.rabbitmq.com/getstarted.html
+    notes: |-
+      # Get authentication credentials for the cluster
+
+      ```shell
+      gcloud container clusters get-credentials [CLUSTER_NAME]
+      ```
+      where `[CLUSTER_NAME]` is the name you choose for the cluster.
+
+      Please read [here](https://cloud.google.com/kubernetes-engine/docs/quickstart#get_authentication_credentials_for_the_cluster) for more information.
+
+      <!--- ALL THIS BELOW IS COPIED FROM README.MD -->
+
+      # Cluster status
+
+      By default, the application does not have an external IP. Use `kubectl` to execute `rabbitmqctl` on the master node.
+
+      ```
+      kubectl exec -it "$APP_INSTANCE_NAME-rabbitmq-0" --namespace "$NAMESPACE" -- rabbitmqctl cluster_status
+      ```
+
+      # Authorization
+
+      The default username is `rabbit`. Use `kubectl` to get the generated password.
+
+      ```shell
+      kubectl get secret $APP_INSTANCE_NAME-rabbitmq-secret \
+        --namespace $NAMESPACE \
+        --output=jsonpath='{.data.rabbitmq-pass}' | base64 --decode
+      ```
+
+      # Expose RabbitMQ service (optional)
+
+      By default, the application does not have an external IP. Run the
+      following command to expose an external IP:
+
+      > **NOTE:** It might take some time for the external IP to be provisioned.
+
+      ```
+      kubectl patch svc "$APP_INSTANCE_NAME-rabbitmq-svc" \
+        --namespace "$NAMESPACE" \
+        --patch '{"spec": {"type": "LoadBalancer"}}'
+      ```
+
+      # Access RabbitMQ service
+
+      **Option 1:** To discover IP addresses of RabbitMQ service using `kubectl`, run the following command:
+
+      ```
+      kubectl get svc $APP_INSTANCE_NAME-rabbitmq-svc --namespace $NAMESPACE
+      ```
+
+      **Option 2:** If you run your RabbitMQ cluster behind a LoadBalancer, run the command below to get an external IP of the RabbitMQ service:
+
+      ```
+      SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-rabbitmq-svc \
+        --namespace $NAMESPACE \
+        --output jsonpath='{.status.loadBalancer.ingress[0].ip}'); \
+      echo "http://${SERVICE_IP}:15672"
+      ```
+
+      Navigate http://`<EXTERNAL-IP>`:15672 to access RabbitMQ Management UI. Where `<EXTERNAL-IP>` is provided by command above.
+
+      **Option 3:** Use Port Forwarding:
+
+      ```
+      kubectl port-forward svc/$APP_INSTANCE_NAME-rabbitmq-svc --namespace $NAMESPACE 15672
+      ```
+
+      Navigate http://127.0.0.1:15672 to access RabbitMQ Management UI.
+
+      <!--- ALL THIS ABOVE IS COPIED FROM README.MD -->
   info:
   - name: RabbitMQ username
     value: '$RABBITMQ_DEFAULT_USER'
@@ -33,16 +115,6 @@ spec:
       secretKeyRef:
         key: rabbitmq-erlang-cookie
         name: $APP_INSTANCE_NAME-rabbitmq-secret
-  maintainers:
-  - name: Google Click to Deploy
-    url: https://cloud.google.com/solutions/#click-to-deploy
-  links:
-  - description: 'User Guide: Google Click to Deploy RabbitMQ'
-    url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/rabbitmq/README.md
-  - description: 'RabbitMQ documentation'
-    url: https://www.rabbitmq.com/documentation.html
-  - description: 'RabbitMQ Getting Started Tutorials'
-    url: https://www.rabbitmq.com/getstarted.html
   selector:
     matchLabels:
       app.kubernetes.io/name: "$APP_INSTANCE_NAME"
@@ -61,74 +133,3 @@ spec:
     kind: Role
   - group: rbac.authorization.k8s.io/v1
     kind: RoleBinding
-  notes: |-
-    # Get authentication credentials for the cluster
-
-    ```shell
-    gcloud container clusters get-credentials [CLUSTER_NAME]
-    ```
-    where `[CLUSTER_NAME]` is the name you choose for the cluster.
-
-    Please read [here](https://cloud.google.com/kubernetes-engine/docs/quickstart#get_authentication_credentials_for_the_cluster) for more information.
-
-    <!--- ALL THIS BELOW IS COPIED FROM README.MD -->
-
-    # Cluster status
-
-    By default, the application does not have an external IP. Use `kubectl` to execute `rabbitmqctl` on the master node.
-
-    ```
-    kubectl exec -it "$APP_INSTANCE_NAME-rabbitmq-0" --namespace "$NAMESPACE" -- rabbitmqctl cluster_status
-    ```
-
-    # Authorization
-
-    The default username is `rabbit`. Use `kubectl` to get the generated password.
-
-    ```shell
-    kubectl get secret $APP_INSTANCE_NAME-rabbitmq-secret \
-      --namespace $NAMESPACE \
-      --output=jsonpath='{.data.rabbitmq-pass}' | base64 --decode
-    ```
-
-    # Expose RabbitMQ service (optional)
-
-    By default, the application does not have an external IP. Run the
-    following command to expose an external IP:
-
-    > **NOTE:** It might take some time for the external IP to be provisioned.
-
-    ```
-    kubectl patch svc "$APP_INSTANCE_NAME-rabbitmq-svc" \
-      --namespace "$NAMESPACE" \
-      --patch '{"spec": {"type": "LoadBalancer"}}'
-    ```
-
-    # Access RabbitMQ service
-
-    **Option 1:** To discover IP addresses of RabbitMQ service using `kubectl`, run the following command:
-
-    ```
-    kubectl get svc $APP_INSTANCE_NAME-rabbitmq-svc --namespace $NAMESPACE
-    ```
-
-    **Option 2:** If you run your RabbitMQ cluster behind a LoadBalancer, run the command below to get an external IP of the RabbitMQ service:
-
-    ```
-    SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-rabbitmq-svc \
-      --namespace $NAMESPACE \
-      --output jsonpath='{.status.loadBalancer.ingress[0].ip}'); \
-    echo "http://${SERVICE_IP}:15672"
-    ```
-
-    Navigate http://`<EXTERNAL-IP>`:15672 to access RabbitMQ Management UI. Where `<EXTERNAL-IP>` is provided by command above.
-
-    **Option 3:** Use Port Forwarding:
-
-    ```
-    kubectl port-forward svc/$APP_INSTANCE_NAME-rabbitmq-svc --namespace $NAMESPACE 15672
-    ```
-
-    Navigate http://127.0.0.1:15672 to access RabbitMQ Management UI.
-
-    <!--- ALL THIS ABOVE IS COPIED FROM README.MD -->

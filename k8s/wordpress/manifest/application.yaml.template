@@ -1,5 +1,5 @@
 ---
-apiVersion: app.k8s.io/v1alpha1
+apiVersion: app.k8s.io/v1beta1
 kind: Application
 metadata:
   name: "$APP_INSTANCE_NAME"
@@ -11,24 +11,60 @@ metadata:
   labels:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
 spec:
-  type: Wordpress
-  version: '0.1'
-  description: >-
-    WordPress is web software used to create websites and blogs.
+  descriptor:
+    type: Wordpress
+    version: '0.1'
+    description: >-
+      WordPress is web software used to create websites and blogs.
 
-    # Support
-    Google does not offer support for this solution. However, community support is available on
-    [Stack Overflow](https://stackoverflow.com/questions/tagged/wordpress/).
-    Additional community support is available on
-    [community forums](https://en.forums.wordpress.com).
-  maintainers:
-  - name: Google Click to Deploy
-    url: https://cloud.google.com/solutions/#click-to-deploy
-  links:
-  - description: 'User Guide: Google Click to Deploy WordPress'
-    url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/wordpress/README.md
-  - description: Getting Started with WordPress
-    url: https://codex.wordpress.org/Getting_Started_with_WordPress
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/wordpress/).
+      Additional community support is available on
+      [community forums](https://en.forums.wordpress.com).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy WordPress'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/wordpress/README.md
+    - description: Getting Started with WordPress
+      url: https://codex.wordpress.org/Getting_Started_with_WordPress
+    notes: |-
+      # Expose WordPress service
+
+      By default, the application does not have an external IP. Run the
+      following command to expose an external IP:
+
+      ```
+      kubectl patch svc "$APP_INSTANCE_NAME-wordpress-svc" \
+        --namespace "$NAMESPACE" \
+        --patch '{"spec": {"type": "LoadBalancer"}}'
+      ```
+
+      Warning: Do not leave your WordPress installation in this initial setup
+      state. Other visitors can set up a website on your cluster and use it to serve
+      potentially malicious content.
+
+      # Access WordPress site
+
+      Get the external IP of the Wordpress site service and visit
+      the URL printed below in your browser.
+
+      ```
+      SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-wordpress-svc \
+        --namespace $NAMESPACE \
+        --output jsonpath='{.status.loadBalancer.ingress[0].ip}');)
+
+      echo "http://${SERVICE_IP}"
+      ```
+
+      Note that it might take some time for the external IP to be provisioned.
+
+      # Install WordPress
+
+      After accessing the WordPress main page, you will see the installation wizard.
+      Follow the instructions presented on the screen to finish the process.
   selector:
     matchLabels:
       app.kubernetes.io/name: "$APP_INSTANCE_NAME"
@@ -39,38 +75,3 @@ spec:
     kind: Secret
   - group: v1
     kind: Service
-  notes: |-
-    # Expose WordPress service
-
-    By default, the application does not have an external IP. Run the
-    following command to expose an external IP:
-
-    ```
-    kubectl patch svc "$APP_INSTANCE_NAME-wordpress-svc" \
-      --namespace "$NAMESPACE" \
-      --patch '{"spec": {"type": "LoadBalancer"}}'
-    ```
-
-    Warning: Do not leave your WordPress installation in this initial setup
-    state. Other visitors can set up a website on your cluster and use it to serve
-    potentially malicious content.
-
-    # Access WordPress site
-
-    Get the external IP of the Wordpress site service and visit
-    the URL printed below in your browser.
-
-    ```
-    SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-wordpress-svc \
-      --namespace $NAMESPACE \
-      --output jsonpath='{.status.loadBalancer.ingress[0].ip}');)
-
-    echo "http://${SERVICE_IP}"
-    ```
-
-    Note that it might take some time for the external IP to be provisioned.
-
-    # Install WordPress
-
-    After accessing the WordPress main page, you will see the installation wizard.
-    Follow the instructions presented on the screen to finish the process.
