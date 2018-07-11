@@ -116,10 +116,32 @@ steps:
     gcloud container clusters get-credentials "$_CLUSTER_NAME" --zone "$_CLUSTER_LOCATION"
     make app/verify
 
+- id: Run the verification on elastic-gke-logging
+  waitFor: [ 'Setup git repo' ]
+  name: 'gcr.io/$PROJECT_ID/verifier'
+  entrypoint: 'bash'
+  dir: 'k8s/elastic-gke-logging'
+  args:
+  - -c
+  - |
+    gcloud container clusters get-credentials "$_CLUSTER_NAME" --zone "$_CLUSTER_LOCATION"
+    make app/verify
+
+- id: Run the verification on prometheus
+  waitFor: [ 'Setup git repo' ]
+  name: 'gcr.io/$PROJECT_ID/verifier'
+  entrypoint: 'bash'
+  dir: 'k8s/prometheus'
+  args:
+  - -c
+  - |
+    gcloud container clusters get-credentials "$_CLUSTER_NAME" --zone "$_CLUSTER_LOCATION"
+    make app/verify
+
 - id: Set commit as succeeded
   name: 'gcr.io/$PROJECT_ID/verifier'
   entrypoint: 'bash'
-  args: 
+  args:
   - -c
   - |
     cloudbuild/set_commit_status.sh \
@@ -134,3 +156,5 @@ steps:
   volumes:
   - name: 'ssh'
     path: /root/.ssh
+
+timeout: 20m

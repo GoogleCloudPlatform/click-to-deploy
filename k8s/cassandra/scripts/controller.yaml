@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cassandra-restore
+spec:
+  containers:
+  - name: cassandra-restore
+    image: launcher.gcr.io/google/cassandra3
+    command: ["/bin/sh"]
+    args: ["-c", "while true; do sleep 60; done"]
