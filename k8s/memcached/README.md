@@ -62,14 +62,14 @@ git submodule update --recursive --init
 
 #### Install the Application resource definition
 
-Do a one-time setup for your cluster to understand Application resources.
+Do a one-time setup for your cluster to understand Application resource via installing Application's Custom Resource Definition.
 
 <!--
-To do that, navigate to `k8s/vendor` subdirectory of the repository and run the following command:
+Being in `google-click-to-deploy` directory run the following command:
 -->
 
 ```shell
-kubectl apply -f google-marketplace-k8s-app-tools/crd/*
+kubectl apply -f k8s/vendor/marketplace-tools/crd/*
 ```
 
 The Application resource is defined by the
@@ -92,6 +92,7 @@ Choose the instance name and namespace for the app.
 ```shell
 export APP_INSTANCE_NAME=memcached-1
 export NAMESPACE=default
+export REPLICAS=3
 ```
 
 Configure the container images.
