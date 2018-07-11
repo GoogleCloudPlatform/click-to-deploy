@@ -27,8 +27,8 @@ spec:
     links:
     - description: 'User Guide: Google Click to Deploy InfluxDB'
       url: https://console.cloud.google.com/code/develop/browse/google-click-to-deploy/master/k8s/influxdb?project=k8s-marketplace-eap
-    - description: 'InfluxDB: Getting Started'
-      url: https://github.com/GoogleCloudPlatform/influxdb-docker/blob/master/1/README.md
+    - description: 'Official documentation for InfluxDB'
+      url: https://docs.influxdata.com/influxdb/v1.5/introduction/getting-started/
     notes: |-
       # Access InfluxDB instance
 
@@ -44,7 +44,7 @@ spec:
       If you are interested in cluster version of InfluxDB, please, take a look on
       [Enterprise version of InfluxDB](https://www.influxdata.com/)
   info:
-  - name: InfluxDB admin
+  - name: InfluxDB admin username
     type: Reference
     valueFrom:
       secretKeyRef:
