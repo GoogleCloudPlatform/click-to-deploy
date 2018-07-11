@@ -13,7 +13,9 @@ spec:
     type: InfluxDB
     version: '1.5'
     description: |-
-      InfluxDB is an open source database for storing time series data. The source of time series data may come from logging and monitoring systems and IoT devices. This is a single instance version of InfluxDB.
+      InfluxDB is an open source database for storing time series data. The source of time series
+      data may come from logging and monitoring systems and IoT devices. This is a single instance
+      version of InfluxDB.
 
       # Support
       Google does not offer support for this solution. However, community support is available on
@@ -39,7 +41,8 @@ spec:
       # Scale the cluster
 
       This is a free version of InfluxDB that doesn't offer a cluster version option for InfluxDB.
-      If you are interested in cluster version of InfluxDB, please, take a look on [Enterprise version of InfluxDB](https://www.influxdata.com/)
+      If you are interested in cluster version of InfluxDB, please, take a look on
+      [Enterprise version of InfluxDB](https://www.influxdata.com/)
   info:
   - name: InfluxDB admin
     type: Reference

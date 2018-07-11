@@ -19,7 +19,8 @@ spec:
 
       Key features of this solution include high performance and ease of distribution.
 
-      Although Memcached is intended to be use with dynamic web applications, it can be used as a caching system for a number of databases.
+      Although Memcached is intended to be use with dynamic web applications, it can be used as
+      a caching system for a number of databases.
 
       # Support
       Google does not offer support for this solution. However, community support is available on

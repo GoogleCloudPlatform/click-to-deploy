@@ -39,18 +39,17 @@ spec:
       ```
       kubectl patch svc "$APP_INSTANCE_NAME-elasticsearch-svc" \
         --namespace "$NAMESPACE" \
-        -p '{"spec": {"type": "LoadBalancer"}}'
+        --patch '{"spec": {"type": "LoadBalancer"}}'
       ```
 
-      # Access Elasticsearch
+        # Access Elasticsearch
 
-      Get the external IP of the Elasticsearch service:
+        Get the external IP of the Elasticsearch service:
 
       ```
-      SERVICE_IP=$(kubectl get \
-        --namespace ${NAMESPACE} \
-        svc ${APP_INSTANCE_NAME}-elasticsearch-svc \
-        -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+      SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-elasticsearch-svc \
+        --namespace $NAMESPACE \
+        --output jsonpath='{.status.loadBalancer.ingress[0].ip}');)
 
       echo "http://${SERVICE_IP}:9200"
       ```

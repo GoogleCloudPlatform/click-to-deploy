@@ -50,7 +50,7 @@ gcloud container clusters create "$CLUSTER" --zone "$ZONE"
 Configure `kubectl` to talk to the new cluster.
 
 ```shell
-gcloud container clusters get-credentials "$CLUSTER"
+gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 ```
 
 #### Clone this repo
@@ -65,6 +65,10 @@ gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketp
 #### Install the Application resource definition
 
 Do a one-time setup for your cluster to understand Application resources.
+
+<!--
+To do that, navigate to `k8s/vendor` subdirectory of the repository and run the following command:
+-->
 
 ```shell
 kubectl apply -f google-marketplace-k8s-app-tools/crd/*
