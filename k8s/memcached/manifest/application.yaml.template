@@ -1,5 +1,5 @@
 ---
-apiVersion: app.k8s.io/v1alpha1
+apiVersion: app.k8s.io/v1beta1
 kind: Application
 metadata:
   name: "$APP_INSTANCE_NAME"
@@ -11,28 +11,52 @@ metadata:
   labels:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
 spec:
-  type: Memcached
-  version: '1.5'
-  description: |-
-    Memcached is an open source in-memory, key-value store.
+  descriptor:
+    type: Memcached
+    version: '1.5'
+    description: |-
+      Memcached is an open source in-memory, key-value store.
 
-    Key features of this solution include high performance and ease of distribution.
+      Key features of this solution include high performance and ease of distribution.
 
-    Although Memcached is intended to be use with dynamic web applications, it can be used as a caching system for a number of databases.
+      Although Memcached is intended to be use with dynamic web applications, it can be used as
+      a caching system for a number of databases.
 
-    # Support
-    Google does not offer support for this solution. However, community support is available on
-    [Stack Overflow](https://stackoverflow.com/questions/tagged/memcached/).
-    Additional community support is available on [community forums](https://groups.google.com/forum/#!forum/memcached).
-    
-  maintainers:
-  - name: Google Click to Deploy
-    url: https://cloud.google.com/solutions/#click-to-deploy
-  links:
-  - description: 'User Guide: Google Click to Deploy Memcached'
-    url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/memcached/README.md
-  - description: 'Memcached: Getting Started'
-    url: https://github.com/GoogleCloudPlatform/memcached-docker/blob/master/1/README.md
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/memcached/).
+      Additional community support is available on [community forums](https://groups.google.com/forum/#!forum/memcached).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy Memcached'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/memcached/README.md
+    - description: 'Memcached: Getting Started'
+      url: https://github.com/GoogleCloudPlatform/memcached-docker/blob/master/1/README.md
+    notes: |-
+      # Access Memcached instances
+
+      Run the following command to discover IP addresses of Memcached instances using kubectl:
+
+      ```shell
+      kubectl get pods -o wide -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace "$NAMESPACE"
+      ```
+
+      # Scale the cluster
+
+      To scale the cluster, use either a GKE UI (use the Scale option in the
+      StatefulSet details screen) or the following command:
+
+      ```
+      kubectl scale statefulsets "$APP_INSTANCE_NAME-memcached" \
+        --namespace "$NAMESPACE" --replicas=<new-replicas>
+      ```
+
+      Default configuration of Memcached solution deploys 2 replicas.
+
+      For more information about the StatefulSets scaling, check the
+      [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/#kubectl-scale).
   selector:
     matchLabels:
       app.kubernetes.io/name: "$APP_INSTANCE_NAME"
@@ -41,26 +65,3 @@ spec:
     kind: Service
   - group: apps/v1beta2
     kind: StatefulSet
-  notes: |-
-    # Access Memcached instances
-
-    Run the following command to discover IP addresses of Memcached instances using kubectl:
-
-    ```shell
-    kubectl get pods -o wide -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace "$NAMESPACE"
-    ```
-
-    # Scale the cluster
-
-    To scale the cluster, use either a GKE UI (use the Scale option in the
-    StatefulSet details screen) or the following command:
-
-    ```
-    kubectl scale statefulsets "$APP_INSTANCE_NAME-memcached" \
-      --namespace "$NAMESPACE" --replicas=<new-replicas>
-    ```
-
-    Default configuration of Memcached solution deploys 2 replicas.
-
-    For more information about the StatefulSets scaling, check the
-    [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/#kubectl-scale).
