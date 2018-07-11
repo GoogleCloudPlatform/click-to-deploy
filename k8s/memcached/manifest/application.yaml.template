@@ -37,6 +37,14 @@ spec:
     notes: |-
       # Access Memcached instances
 
+      Activate Google Cloud Shell.
+
+      Identify the cluster where your application was deployed and run the following command:
+      ```shell
+      gcloud container clusters get-credentials <your cluster> --zone <zone where your cluster was created>
+      ```
+      You can get this information from Kubernetes Engine->Clusters tab.
+
       Run the following command to discover IP addresses of Memcached instances using kubectl:
 
       ```shell
@@ -45,6 +53,14 @@ spec:
 
       # Scale the cluster
 
+      Activate Google Cloud Shell.
+      
+      Identify the cluster where your application was deployed and run the following command:
+      ```shell
+      gcloud container clusters get-credentials <your cluster> --zone <zone where your cluster was created>
+      ```
+      You can get this information from Kubernetes Engine->Clusters tab.
+
       To scale the cluster, use either a GKE UI (use the Scale option in the
       StatefulSet details screen) or the following command:
 
@@ -52,11 +68,6 @@ spec:
       kubectl scale statefulsets "$APP_INSTANCE_NAME-memcached" \
         --namespace "$NAMESPACE" --replicas=<new-replicas>
       ```
-
-      Default configuration of Memcached solution deploys 2 replicas.
-
-      For more information about the StatefulSets scaling, check the
-      [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/#kubectl-scale).
   selector:
     matchLabels:
       app.kubernetes.io/name: "$APP_INSTANCE_NAME"
