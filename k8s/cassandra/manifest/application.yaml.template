@@ -11,7 +11,6 @@ metadata:
   labels:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
 spec:
-  version: '3.11.2'
   descriptor:
     type: Cassandra
     version: '3.11.2'
