@@ -10,29 +10,54 @@ metadata:
   labels:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
 spec:
-  type: Cassandra
-  version: '1.0.0'
-  description: |-
-    Cassandra is a NoSQL, highly scalable, high-performance distributed database with high
-    availability with no single point of failure.
+  descriptor:
+    type: Cassandra
+    version: '1.0.0'
+    description: |-
+      Cassandra is a NoSQL, highly scalable, high-performance distributed database with high
+      availability with no single point of failure.
 
-      # Support
-      Google does not offer support for this solution. However, community support is available on
-      [Stack Overflow](https://stackoverflow.com/questions/tagged/cassandra/).
-      Additional community support is available on [cassandra website](http://cassandra.apache.org).
-  info:
-  - name: Service endpoint
-    value: TODO
-  maintainers:
-  - name: Google Click to Deploy
-    url: https://cloud.google.com/solutions/#click-to-deploy
-  links:
-  - description: 'User Guide: Google Click to Deploy Cassandra'
-    url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/cassandra/README.md
-  - description: 'DataStax Cassandra documentation'
-    url: https://docs.datastax.com/en/cassandra/3.0/
-  - description: 'Apache documentation for Cassandra'
-    url: https://cassandra.apache.org/doc/latest/getting_started/index.html
+        # Support
+        Google does not offer support for this solution. However, community support is available on
+        [Stack Overflow](https://stackoverflow.com/questions/tagged/cassandra/).
+        Additional community support is available on [cassandra website](http://cassandra.apache.org).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy Cassandra'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/cassandra/README.md
+    - description: 'DataStax Cassandra documentation'
+      url: https://docs.datastax.com/en/cassandra/3.0/
+    - description: 'Apache documentation for Cassandra'
+      url: https://cassandra.apache.org/doc/latest/getting_started/index.html
+    notes: |-
+      # Expose Cassandra service
+
+      By default, the application does not have an external IP. Run the
+      following command to expose an external IP:
+
+      ```
+      kubectl patch svc "$APP_INSTANCE_NAME-cassandra-svc" \
+        --namespace "$NAMESPACE" \
+        -p '{"spec": {"type": "LoadBalancer"}}'
+      ```
+
+      # Access Cassandra service
+
+      Get the external IP of the Cassandra service and visit
+      the URL printed below in your browser.
+
+      ```
+      SERVICE_IP=$(kubectl get \
+        --namespace ${NAMESPACE} \
+        svc ${APP_INSTANCE_NAME}-cassandra-svc \
+        -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+      cqlsh ${SERVICE_IP} 9042
+      ```
+
+      Note that it might take some time for the external IP to be provisioned.
   selector:
     matchLabels:
       app.kubernetes.io/name: "$APP_INSTANCE_NAME"
@@ -41,30 +66,3 @@ spec:
     kind: Service
   - group: apps/v1beta2
     kind: StatefulSet
-  notes: |-
-    # Expose Cassandra service
-
-    By default, the application does not have an external IP. Run the
-    following command to expose an external IP:
-
-    ```
-    kubectl patch svc "$APP_INSTANCE_NAME-cassandra-svc" \
-      --namespace "$NAMESPACE" \
-      -p '{"spec": {"type": "LoadBalancer"}}'
-    ```
-
-    # Access Cassandra service
-
-    Get the external IP of the Cassandra service and visit
-    the URL printed below in your browser.
-
-    ```
-    SERVICE_IP=$(kubectl get \
-      --namespace ${NAMESPACE} \
-      svc ${APP_INSTANCE_NAME}-cassandra-svc \
-      -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-
-    cqlsh ${SERVICE_IP} 9042
-    ```
-
-    Note that it might take some time for the external IP to be provisioned.
