@@ -188,7 +188,7 @@ run administrative operations against the REST API:
 ```
 SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-elasticsearch-svc \
   --namespace $NAMESPACE \
-  --output jsonpath='{.status.loadBalancer.ingress[0].ip}');)
+  --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
 ELASTIC_URL="http://${SERVICE_IP}:9200"
 ```
@@ -234,7 +234,7 @@ If exposing the Kibana service externally, run the following command:
 ```shell
 SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-kibana-svc \
   --namespace $NAMESPACE \
-  --output jsonpath='{.status.loadBalancer.ingress[0].ip}');)
+  --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
 KIBANA_URL="http://${SERVICE_IP}:5601"
 ```
