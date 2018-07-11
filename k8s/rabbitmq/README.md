@@ -215,7 +215,7 @@ kubectl get svc $APP_INSTANCE_NAME-rabbitmq-svc --namespace $NAMESPACE
 ```
 SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-rabbitmq-svc \
   --namespace $NAMESPACE \
-  --output jsonpath='{.status.loadBalancer.ingress[0].ip}');
+  --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 echo "http://${SERVICE_IP}:15672"
 ```
 
