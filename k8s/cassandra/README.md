@@ -42,7 +42,7 @@ gcloud container clusters create "$CLUSTER" --zone "$ZONE"
 Configure `kubectl` to talk to the new cluster.
 
 ```shell
-gcloud container clusters get-credentials "$CLUSTER"
+gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 ```
 
 #### Clone this repo
@@ -57,6 +57,10 @@ gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketp
 #### Install the Application resource definition
 
 Do a one-time setup for your cluster to understand Application resources.
+
+<!--
+To do that, navigate to `k8s/vendor` subdirectory of the repository and run the following command:
+-->
 
 ```shell
 kubectl apply -f google-marketplace-k8s-app-tools/crd/*
@@ -106,10 +110,11 @@ This will ensure that the installed application will always use the same images,
 until you are ready to upgrade.
 
 ```shell
-for var in "IMAGE_CASSANDRA"; do
-  image="${!var}";
-  export $var=$(docker inspect --format='{{index .RepoDigests 0}}' $image)
-  env | grep $var
+for i in "IMAGE_CASSANDRA"; do
+  repo=`echo ${!i} | cut -d: -f1`;
+  digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
+  export $i="$repo@$digest";
+  env | grep $i;
 done
 ```
 
@@ -144,7 +149,7 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 By default, the application does not have an external IP.
 ```shell
-kubectl exec cassandra-1-cassandra-0 --namespace $NAMESPACE -c cassandra -- nodetool status
+kubectl exec "$APP_INSTANCE_NAME-cassandra-0" --namespace $NAMESPACE -c cassandra -- nodetool status
 ```
 
 ### Exposing Cassandra cluster
@@ -155,19 +160,20 @@ It is possible to provide a load balancer in front of the cluster (although it i
 export APP_INSTANCE_NAME=cassandra-1
 export NAMESPACE=default
 
-envsubst '$APP_INSTANCE_NAME $NAMESPACE' scripts/external.yaml.template > scripts/external.yaml
-kubectl apply -f scripts/external.yaml -n $NAMESPACE
+envsubst '$APP_INSTANCE_NAME $NAMESPACE' < scripts/external.yaml.template > scripts/external.yaml
+kubectl apply -f scripts/external.yaml --namespace $NAMESPACE
 ```
 
-**NOTE** Please configure Cassandra access control, while exposing it to public
-access.
+**NOTE** Please configure Cassandra access control, while exposing it to public access.
 
 ### Access Cassandra service
 
 Get the external IP of the Cassandra service invoking `kubectl get`
+
 ```shell
-CASSANDRA_IP=$(kubectl get svc/$APP_INSTANCE_NAME-cassandra-external-svc \
-  -n $NAMESPACE -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+CASSANDRA_IP=$(kubectl get svc $APP_INSTANCE_NAME-cassandra-external-svc \
+  --namespace $NAMESPACE \
+  --output jsonpath='{.status.loadBalancer.ingress[0].ip}');)
 
 echo $CASSANDRA_IP
 ```
@@ -234,30 +240,27 @@ export APP_INSTANCE_NAME=cassandra-1
 export NAMESPACE=default
 ```
 
-### Prepare the manifest file
+### Delete the resources
 
-If you still have the expanded manifest file used for the installation, you can skip this part.
-Otherwise, generate it again. You can use a simplified variables substitution:
+> **NOTE:** Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions.
+> It means that for instance if you have `kubectl` in version 1.10.&ast; and Kubernetes 1.8.&ast;,
+> you may experience incompatibility issues, like not removing the StatefulSets with
+> apiVersion of apps/v1beta2.
 
-```shell
-awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE' \
-  > "${APP_INSTANCE_NAME}_manifest.yaml"
-```
-
-### Delete the resources using `kubectl delete`
-
-NOTE: Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions.
-  It means that for instance if you have `kubectl` in version 1.10.* and Kubernetes server 1.8.\*,
-  you may experience incompatibility issues, like not removing the StatefulSets with
-  apiVersion of apps/v1beta2.
-
+If you still have the expanded manifest file used for the installation, you can use it to delete the resources.
 Run `kubectl` on expanded manifest file matching your installation:
 
 ```shell
-kubectl delete -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
+kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 ```
 
+Otherwise, delete the resources by indication of types and a label:
+
+```shell
+kubectl delete statefulset,service \
+  --namespace $NAMESPACE \
+  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
+```
 ### Delete the persistent volumes of your installation
 
 By design, removal of StatefulSets in Kubernetes does not remove the PersistentVolumeClaims that
@@ -267,15 +270,16 @@ If you wish to remove the PersistentVolumeClaims with their attached persistent 
 following `kubectl` commands:
 
 ```shell
-for pv in $(kubectl get pvc --namespace "${NAMESPACE}" \
-             --selector "app.kubernetes.io/name=${APP_INSTANCE_NAME}" \
-             --output jsonpath='{.items[*].spec.volumeName}'); do
-  kubectl delete "pv/${pv}" --namespace "${NAMESPACE}"
+for pv in $(kubectl get pvc --namespace $NAMESPACE \
+  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME \
+  --output jsonpath='{.items[*].spec.volumeName}');
+do
+  kubectl delete pv/$pv --namespace $NAMESPACE
 done
 
 kubectl delete persistentvolumeclaims \
-  --namespace "${NAMESPACE}" \
-  --selector "app.kubernetes.io/name=${APP_INSTANCE_NAME}"
+  --namespace $NAMESPACE \
+  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
 
 # Backup & Restore
