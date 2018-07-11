@@ -7,7 +7,7 @@ If you would like to learn more about Memcached, please, visit [Memcached websit
 
 ## About Google Click to Deploy
 
-Popular open source software stacks on Kubernetes packaged by Google and made available in Google Cloud Marketplace.
+Popular open stacks on Kubernetes packaged by Google.
 
 # Installation
 
