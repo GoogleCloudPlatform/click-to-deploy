@@ -62,16 +62,15 @@ spec:
     ```
     kubectl patch svc "$APP_INSTANCE_NAME-kibana-svc" \
       --namespace "$NAMESPACE" \
-      -p '{"spec": {"type": "LoadBalancer"}}'
+      --patch '{"spec": {"type": "LoadBalancer"}}'
     ```
 
     Note that it might take some time for the external IP to be provisioned.
 
     ```shell
-    KIBANA_HOST=$(kubectl get \
-      --namespace ${NAMESPACE} \
-      svc ${APP_INSTANCE_NAME}-kibana-svc \
-      -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+    KIBANA_HOST=$(kubectl get svc $APP_INSTANCE_NAME-kibana-svc \
+      --namespace $NAMESPACE \
+      --output jsonpath='{.status.loadBalancer.ingress[0].ip}');)
     ```
 
     Alternatively, you could also run in background a `kubectl port-forward` command to access
