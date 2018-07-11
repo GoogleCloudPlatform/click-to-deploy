@@ -54,6 +54,7 @@ Clone this repo and the associated tools repo.
 ```shell
 gcloud source repos clone google-click-to-deploy --project=k8s-marketplace-eap
 gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketplace-eap
+cd google-click-to-deploy 
 git submodule init
 git submodule sync --recursive
 git submodule update --recursive --init
