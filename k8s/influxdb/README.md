@@ -8,7 +8,7 @@ If you are interested in enterprise version of InfluxDB or you would like to lea
 
 ## About Google Click to Deploy
 
-Popular open source software stacks on Kubernetes packaged by Google and made available in Google Cloud Marketplace.
+Popular open stacks on Kubernetes packaged by Google.
 
 # Installation
 
@@ -59,10 +59,12 @@ gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketp
 
 Do a one-time setup for your cluster to understand Application resources.
 
+<!--
 To do that, navigate to `k8s/vendor` subdirectory of the repository and run the following command:
+-->
 
 ```shell
-kubectl apply -f marketplace-tools/crd/*
+kubectl apply -f google-marketplace-k8s-app-tools/crd/*
 ```
 
 The Application resource is defined by the
@@ -247,11 +249,11 @@ If you wish to remove the PersistentVolumeClaims with their attached persistent 
 following `kubectl` commands:
 
 ```shell
-for i in $(kubectl get pvc --namespace $NAMESPACE \
+for pv in $(kubectl get pvc --namespace $NAMESPACE \
   --selector app.kubernetes.io/name=$APP_INSTANCE_NAME \
   --output jsonpath='{.items[*].spec.volumeName}');
 do
-  kubectl delete pv/$i --namespace $NAMESPACE
+  kubectl delete pv/$pv --namespace $NAMESPACE
 done
 
 kubectl delete persistentvolumeclaims \

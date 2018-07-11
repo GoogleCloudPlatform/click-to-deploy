@@ -1,5 +1,5 @@
 ---
-apiVersion: app.k8s.io/v1alpha1
+apiVersion: app.k8s.io/v1beta1
 kind: Application
 metadata:
   name: "$APP_INSTANCE_NAME"
@@ -11,31 +11,97 @@ metadata:
   labels:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
 spec:
-  type: Elastic GKE Logging
-  version: '6.3'
-  description: |-
-    Elastic GKE Logging is an application that provides a fully functional solution for collecting
-    and analyzing logs from a Kubernetes cluster. It is built on top of popular open-source systems,
-    including Fluentd for logs collection and Elasticsearch with Kibana for searching and analyzing
-    data.
+  descriptor:
+    type: Elastic GKE Logging
+    version: '6.3'
+    description: |-
+      Elastic GKE Logging is an application that provides a fully functional solution for collecting
+      and analyzing logs from a Kubernetes cluster. It is built on top of popular open-source systems,
+      including Fluentd for logs collection and Elasticsearch with Kibana for searching and analyzing
+      data.
 
-    # Support
-    Google does not offer support for this solution. However, community support is available on
-    Stack Overflow for [Fluentd](https://stackoverflow.com/questions/tagged/fluentd/),
-    [Elasticsearch](https://stackoverflow.com/questions/tagged/elasticsearch/) and
-    [Kibana](https://stackoverflow.com/questions/tagged/kibana/).
-  maintainers:
-  - name: Google Click to Deploy
-    url: https://cloud.google.com/solutions/#click-to-deploy
-  links:
-  - description: 'User Guide: Google Click to Deploy Elastic GKE Logging'
-    url: https://console.cloud.google.com/code/develop/browse/google-click-to-deploy/master/k8s/elastic-gke-logging/README.md?project=k8s-marketplace-eap
-  - description: 'Elasticsearch: Getting Started'
-    url: https://www.elastic.co/webinars/getting-started-elasticsearch
-  - description: 'Kibana official documentation'
-    url: https://www.elastic.co/guide/en/kibana/6.x/index.html
-  - description: 'Fluentd Quickstart Guide'
-    url: https://docs.fluentd.org/v1.0/articles/quickstart
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      Stack Overflow for [Fluentd](https://stackoverflow.com/questions/tagged/fluentd/),
+      [Elasticsearch](https://stackoverflow.com/questions/tagged/elasticsearch/) and
+      [Kibana](https://stackoverflow.com/questions/tagged/kibana/).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy Elastic GKE Logging'
+      url: https://console.cloud.google.com/code/develop/browse/google-click-to-deploy/master/k8s/elastic-gke-logging/README.md?project=k8s-marketplace-eap
+    - description: 'Elasticsearch: Getting Started'
+      url: https://www.elastic.co/webinars/getting-started-elasticsearch
+    - description: 'Kibana official documentation'
+      url: https://www.elastic.co/guide/en/kibana/6.x/index.html
+    - description: 'Fluentd Quickstart Guide'
+      url: https://docs.fluentd.org/v1.0/articles/quickstart
+    notes: |-
+      # Expose Kibana service (optional)
+
+      By default, the service does not have an external IP. Run the
+      following command to expose an external IP:
+
+      ```
+      kubectl patch svc "$APP_INSTANCE_NAME-kibana-svc" \
+        --namespace "$NAMESPACE" \
+        --patch '{"spec": {"type": "LoadBalancer"}}'
+      ```
+
+      Note that it might take some time for the external IP to be provisioned.
+
+      ```shell
+      KIBANA_HOST=$(kubectl get svc $APP_INSTANCE_NAME-kibana-svc \
+        --namespace $NAMESPACE \
+        --output jsonpath='{.status.loadBalancer.ingress[0].ip}');)
+      ```
+
+      Alternatively, you could also run in background a `kubectl port-forward` command to access
+      Kibana from your localhost:
+
+      ```
+      KIBANA_POD_NAME="$(kubectl get pods -n $NAMESPACE \
+        -l=app.kubernetes.io/name=$APP_INSTANCE_NAME,app.kubernetes.io/component=kibana-server \
+        -o jsonpath='{.items[0].metadata.name}')"
+
+      kubectl port-forward $KIBANA_POD_NAME -n $NAMESPACE 5601
+      ```
+
+      Then your host for Kibana is `localhost`:
+
+      ```
+      KIBANA_HOST=localhost
+      ```
+
+      # Open Kibana UI
+
+      Open in your web browser the following URL:
+
+      ```
+      echo "http://${KIBANA_HOST}:5601"
+      ```
+
+      # Discover the logs
+
+      ## Index Pattern
+
+      Your installation automatically adds a default Index Pattern to be tracked by Kibana - it
+      matches the Fluentd DaemonSet configuration and equals to `logstash-*`. Thanks to this
+      configuration you can view the logs from the Kubernetes cluster immediately after the successful
+      installation - when entering the Kibana UI page, click on the `Discover` button in the main menu
+      or navigate to:
+
+      ```shell
+      echo "${KIBANA_URL}/discover"
+      ```
+
+      ## Saved searches
+
+      Kibana allows to save predefined searches with their filters and presented columns
+      configuration. To view the searches shipped with this installation, visit the `Discover` page
+      of Kibana and in the top menu, click on the `Open` option. It will present a list of some useful
+      searches, including logs from: GKE Apps, kubelet, docker, kernel and others.
   selector:
     matchLabels:
       app.kubernetes.io/name: "$APP_INSTANCE_NAME"
@@ -52,69 +118,3 @@ spec:
     kind: DaemonSet
   - group: batch/v1
     kind: Job
-  notes: |-
-    # Expose Kibana service (optional)
-
-    By default, the service does not have an external IP. Run the
-    following command to expose an external IP:
-
-    ```
-    kubectl patch svc "$APP_INSTANCE_NAME-kibana-svc" \
-      --namespace "$NAMESPACE" \
-      -p '{"spec": {"type": "LoadBalancer"}}'
-    ```
-
-    Note that it might take some time for the external IP to be provisioned.
-
-    ```shell
-    KIBANA_HOST=$(kubectl get \
-      --namespace ${NAMESPACE} \
-      svc ${APP_INSTANCE_NAME}-kibana-svc \
-      -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-    ```
-
-    Alternatively, you could also run in background a `kubectl port-forward` command to access
-    Kibana from your localhost:
-
-    ```
-    KIBANA_POD_NAME="$(kubectl get pods -n $NAMESPACE \
-      -l=app.kubernetes.io/name=$APP_INSTANCE_NAME,app.kubernetes.io/component=kibana-server \
-      -o jsonpath='{.items[0].metadata.name}')"
-
-    kubectl port-forward $KIBANA_POD_NAME -n $NAMESPACE 5601
-    ```
-
-    Then your host for Kibana is `localhost`:
-
-    ```
-    KIBANA_HOST=localhost
-    ```
-
-    # Open Kibana UI
-
-    Open in your web browser the following URL:
-
-    ```
-    echo "http://${KIBANA_HOST}:5601"
-    ```
-
-    # Discover the logs
-
-    ## Index Pattern
-
-    Your installation automatically adds a default Index Pattern to be tracked by Kibana - it
-    matches the Fluentd DaemonSet configuration and equals to `logstash-*`. Thanks to this
-    configuration you can view the logs from the Kubernetes cluster immediately after the successful
-    installation - when entering the Kibana UI page, click on the `Discover` button in the main menu
-    or navigate to:
-
-    ```shell
-    echo "${KIBANA_URL}/discover"
-    ```
-
-    ## Saved searches
-
-    Kibana allows to save predefined searches with their filters and presented columns
-    configuration. To view the searches shipped with this installation, visit the `Discover` page
-    of Kibana and in the top menu, click on the `Open` option. It will present a list of some useful
-    searches, including logs from: GKE Apps, kubelet, docker, kernel and others.
