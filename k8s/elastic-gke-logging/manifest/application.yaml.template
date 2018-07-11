@@ -54,7 +54,7 @@ spec:
       ```shell
       KIBANA_HOST=$(kubectl get svc $APP_INSTANCE_NAME-kibana-svc \
         --namespace $NAMESPACE \
-        --output jsonpath='{.status.loadBalancer.ingress[0].ip}');)
+        --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
       ```
 
       Alternatively, you could also run in background a `kubectl port-forward` command to access
