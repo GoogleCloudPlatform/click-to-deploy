@@ -48,8 +48,8 @@ app/build:: .build/rabbitmq/deployer \
 .build/rabbitmq/rabbitmq: .build/var/REGISTRY \
                           .build/var/TAG \
                           | .build/rabbitmq
-	docker pull launcher.gcr.io/google/rabbitmq3:3.7
-	docker tag launcher.gcr.io/google/rabbitmq3:3.7 \
+	docker pull launcher.gcr.io/google/rabbitmq3:$(TAG)
+	docker tag launcher.gcr.io/google/rabbitmq3:$(TAG) \
 	    "$(REGISTRY)/rabbitmq:$(TAG)"
 	docker push "$(REGISTRY)/rabbitmq:$(TAG)"
 	@touch "$@"
