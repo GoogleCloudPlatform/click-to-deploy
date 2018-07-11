@@ -51,7 +51,7 @@ spec:
       ```
       SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-cassandra-svc \
         --namespace $NAMESPACE \
-        --output jsonpath='{.status.loadBalancer.ingress[0].ip}');)
+        --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
       cqlsh ${SERVICE_IP} 9042
       ```
