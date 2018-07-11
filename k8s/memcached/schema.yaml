@@ -13,9 +13,9 @@ properties:
     x-google-marketplace:
       type: IMAGE
   REPLICAS:
+    type: integer
     title: Replicas
     description: The number of Pods in the solution
-    type: integer
     default: 3
     minimum: 1
 required:
