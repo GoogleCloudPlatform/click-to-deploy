@@ -27,6 +27,7 @@ You'll need the following tools in your development environment:
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 - [docker](https://docs.docker.com/install/)
+- [cqlsh](https://pypi.org/project/cqlsh/)
 
 #### Create a Google Kubernetes Engine cluster
 
@@ -137,6 +138,8 @@ Use `kubectl` to apply the manifest to your Kubernetes cluster.
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
 
+Deploying can take few minutes, please wait.
+
 #### View the app in the Google Cloud Console
 
 Point your browser to:
@@ -147,26 +150,67 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 ### Check Cassandra cluster
 
-By default, the application does not have an external IP.
+If deployment is successful, you should be able to check status of Cassandra cluster.
+
+To do this, use `nodetool status` command on one of containers. `nodetool` is Cassandra
+specific tool to manage Cassandra cluster. It is part of Cassandra container image.
+
 ```shell
-kubectl exec "$APP_INSTANCE_NAME-cassandra-0" --namespace $NAMESPACE -c cassandra -- nodetool status
+kubectl exec "${APP_INSTANCE_NAME}-cassandra-0" --namespace "${NAMESPACE}" -c cassandra -- nodetool status
 ```
 
-### Exposing Cassandra cluster
+### Access Cassandra service (internal)
 
-It is possible to provide a load balancer in front of the cluster (although it is not a suggested approach)
+It is possible to connect to Cassandra without exposing it to public access.
+
+To do this, please connect to from container inside K8s cluster using hostname
+`$APP_INSTANCE_NAME-cassandra-0.$APP_INSTANCE_NAME-cassandra-svc.$NAMESPACE.svc.cluster.local`
+
+### Access Cassandra service (via `kubectl port-forward`)
+
+You could also use a local proxy to access the service that is not exposed publicly.
+Run the following command in a separate background terminal:
 
 ```shell
-export APP_INSTANCE_NAME=cassandra-1
-export NAMESPACE=default
+ kubectl port-forward "${APP_INSTANCE_NAME}-cassandra-0" 9042:9042 --namespace "${NAMESPACE}"
+ ```
 
-envsubst '$APP_INSTANCE_NAME $NAMESPACE' < scripts/external.yaml.template > scripts/external.yaml
+In you main terminal:
+
+```shell
+cqlsh --cqlversion=3.4.4
+```
+
+In the response, you should see a Cassandra welcome message:
+
+```shell
+Connected to cassandra-1-cassandra-svc at 127.0.0.1:9042.
+[cqlsh 5.0.1 | Cassandra 3.11.2 | CQL spec 3.4.4 | Native protocol v4]
+Use HELP for help.
+cqlsh>
+```
+
+Note that it might take some time for the external IP to be provisioned.
+
+### Access Cassandra service (external)
+By default, the application does not have an external IP.
+
+[Please configure Cassandra access control, while exposing it to public access.](https://www.datastax.com/dev/blog/role-based-access-control-in-cassandra)
+
+#### Exposing Cassandra cluster
+
+It is possible to expose the Cassandra (although it is not a suggested approach)
+
+```shell
+export CASSANDRA_APP_INSTANCE_NAME="${APP_INSTANCE_NAME}"
+
+envsubst '$APP_INSTANCE_NAME' < scripts/external.yaml.template > scripts/external.yaml
 kubectl apply -f scripts/external.yaml --namespace $NAMESPACE
 ```
 
-**NOTE** Please configure Cassandra access control, while exposing it to public access.
+Please configure Cassandra access control, while exposing it to public access.
 
-### Access Cassandra service (external)
+#### Extract IP addess
 
 Get the external IP of the Cassandra service invoking `kubectl get`
 
@@ -183,16 +227,8 @@ It can take few seconds to provide this IP.
 With this IP, we can connect by `cqlsh` to Cassandra, for example
 
 ```shell
-docker run --rm -it -e CQLSH_HOST=$CASSANDRA_IP \
-  launcher.gcr.io/google/cassandra3 cqlsh --cqlversion=3.4.4
+CQLSH_HOST=$CASSANDRA_IP cqlsh --cqlversion=3.4.4
 ```
-
-### Access Cassandra service (internal)
-
-It is possible to connect to Cassandra without exposing it to public access.
-
-To do this, please connect to from container inside K8s cluster using hostname
-`$APP_INSTANCE_NAME-cassandra-0.$APP_INSTANCE_NAME-cassandra-svc.$NAMESPACE.svc.cluster.local`
 
 # Scaling
 
@@ -227,8 +263,8 @@ To scale down by script, please invoke
 
 ```shell
 <SCRIPT DIR>/scale_down.sh --desired_number 3 \
-                           --namespace custom-namespace \
-                           --app_instance_name cassandra-1
+                           --namespace "${NAMESPACE}" \
+                           --app_instance_name "${APP_INSTANCE_NAME}"
 ```
 
 For more information about the StatefulSets scaling, check the
@@ -324,8 +360,8 @@ Please run it with key space
 
 ```shell
 <SCRIPT DIR>/backup.sh --keyspace demo \
-                       --namespace custom-namespace \
-                       --app_instance_name cassandra-1
+                       --namespace "${NAMESPACE}" \
+                      --app_instance_name "${APP_INSTANCE_NAME}"
 ```
 
 This script will generate backup files. For each Cassandra node one archive will
@@ -347,8 +383,8 @@ providing as arguments key space and number of generated archives.
 
 ```shell
 <SCRIPT DIR>/restores.sh   --keyspace demo \
-                           --namespace custom-namespace
-                           --app_instance_name cassandra-1
+                           --namespace "${NAMESPACE}" \
+                           --app_instance_name "${APP_INSTANCE_NAME}"
 ```
 
 This script will recreate schema and upload data. Clusters (source and
@@ -392,6 +428,7 @@ Run the `scripts/upgrade.sh` script. This script will take down and update one r
 it should print out diagnostic messages. You should be done when the script finishes.
 
 ```shell
-<SCRIPT DIR>/upgrade.sh    --namespace custom-namespace \
-                           --app_instance_name cassandra-1
+<SCRIPT DIR>/upgrade.sh    --namespace "${NAMESPACE}" \
+                           --app_instance_name "${APP_INSTANCE_NAME}"
+
 ```
