@@ -1,9 +1,5 @@
 #!/bin/bash
 
-NAMESPACE=${NAMESPACE:-default}
-APP_INSTANCE_NAME=${APP_INSTANCE_NAME:-cassandra-1}
-STS_NAME=${APP_INSTANCE_NAME}-cassandra
-
 function info {
   >&2 echo "${@}"
 }
@@ -38,3 +34,79 @@ function current_status {
   info "Current expected number of replicas is $(get_desired_number_of_replicas_in_sts)"
   info ""
 }
+
+function show_help {
+  if [[ "${SHOW_HELP}" == true ]]; then
+    info "${USAGE}"
+    exit 0
+  fi
+}
+
+declare -a flags_variables_with_argument=()
+declare -a flags_parameters_with_argument=()
+declare -a flags_variables_boolean=()
+declare -a flags_parameters_boolean=()
+
+function add_flag_with_argument {
+  flags_variables_with_argument+=($1)
+  flags_parameters_with_argument+=($2)
+}
+
+function add_flag_boolean {
+  flags_variables_boolean+=($1)
+  flags_parameters_boolean+=($2)
+}
+
+function parse_flags {
+  for i in $( seq 0 $(( ${#flags_parameters_boolean[@]} - 1 )) ); do
+    export ${flags_variables_boolean[${i}]}=false
+  done
+  while [[ $# -gt 0 ]]; do
+    found=false
+    if [[ $# -gt 1 ]]; then
+      for i in $( seq 0 $(( ${#flags_parameters_with_argument[@]} - 1 )) ); do
+        if [[ "--${flags_parameters_with_argument[${i}]}" == "$1" ]]; then
+          export ${flags_variables_with_argument[${i}]}=$2
+          shift 2
+          found=true
+          break
+        fi
+      done
+    fi
+    if [[ $# -gt 0 ]]; then
+      for i in $( seq 0 $(( ${#flags_parameters_boolean[@]} - 1 )) ); do
+        if [[ "--${flags_parameters_boolean[${i}]}" == "$1" ]]; then
+          export ${flags_variables_boolean[${i}]}=true
+          shift
+          found=true
+          break
+        fi
+      done
+    fi
+    if [[ $found == false ]]; then
+      echo "Cannot parse parameter $1"
+      info "${USAGE}"
+      exit 1
+    fi
+  done
+}
+
+function required_variables {
+  for i in $@; do
+    if [[ ! -v $i ]]; then
+      info "${USAGE}"
+      exit 1
+    fi
+  done
+}
+
+function init_util {
+  parse_flags $@
+  show_help
+  required_variables APP_INSTANCE_NAME NAMESPACE
+  STS_NAME=${APP_INSTANCE_NAME}-cassandra
+}
+
+add_flag_boolean SHOW_HELP help
+add_flag_with_argument NAMESPACE namespace
+add_flag_with_argument APP_INSTANCE_NAME app_instance_name

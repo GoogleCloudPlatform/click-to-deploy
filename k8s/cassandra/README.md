@@ -27,6 +27,7 @@ You'll need the following tools in your development environment:
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 - [docker](https://docs.docker.com/install/)
+- [cqlsh](https://pypi.org/project/cqlsh/)
 
 #### Create a Google Kubernetes Engine cluster
 
@@ -137,6 +138,8 @@ Use `kubectl` to apply the manifest to your Kubernetes cluster.
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
 
+Deploying can take a few minutes, please wait.
+
 #### View the app in the Google Cloud Console
 
 Point your browser to:
@@ -147,26 +150,61 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 ### Check Cassandra cluster
 
+If deployment is successful, you should be able to check status of Cassandra cluster.
+
+To do this, use `nodetool status` command on one of containers. `nodetool` is Cassandra
+specific tool to manage Cassandra cluster. It is part of Cassandra container image.
+
+```shell
+kubectl exec "${APP_INSTANCE_NAME}-cassandra-0" --namespace "${NAMESPACE}" -c cassandra -- nodetool status
+```
+
+### Access Cassandra service (internal)
+
+It is possible to connect to Cassandra without exposing it to public access.
+
+To do this, please connect from container inside K8s cluster using hostname
+`$APP_INSTANCE_NAME-cassandra-0.$APP_INSTANCE_NAME-cassandra-svc.$NAMESPACE.svc.cluster.local`
+
+### Access Cassandra service (via `kubectl port-forward`)
+
+You could also use a local proxy to access the service that is not exposed publicly.
+Run the following command in a separate background terminal:
+
+```shell
+ kubectl port-forward "${APP_INSTANCE_NAME}-cassandra-0" 9042:9042 --namespace "${NAMESPACE}"
+ ```
+
+In you main terminal:
+
+```shell
+cqlsh --cqlversion=3.4.4
+```
+
+In the response, you should see a Cassandra welcome message:
+
+```shell
+Use HELP for help.
+cqlsh>
+```
+
+### Access Cassandra service (external)
 By default, the application does not have an external IP.
+
+[Please configure Cassandra access control, while exposing it to public access.](https://www.datastax.com/dev/blog/role-based-access-control-in-cassandra)
+
+#### Exposing Cassandra cluster
+
+It is possible to expose the Cassandra (although it is not a suggested approach)
+
 ```shell
-kubectl exec "$APP_INSTANCE_NAME-cassandra-0" --namespace $NAMESPACE -c cassandra -- nodetool status
+envsubst '${APP_INSTANCE_NAME}' < scripts/external.yaml.template > scripts/external.yaml
+kubectl apply -f scripts/external.yaml --namespace "${NAMESPACE}"
 ```
 
-### Exposing Cassandra cluster
+Note that it might take some time for the external IP to be provisioned.
 
-It is possible to provide a load balancer in front of the cluster (although it is not a suggested approach)
-
-```shell
-export APP_INSTANCE_NAME=cassandra-1
-export NAMESPACE=default
-
-envsubst '$APP_INSTANCE_NAME $NAMESPACE' < scripts/external.yaml.template > scripts/external.yaml
-kubectl apply -f scripts/external.yaml --namespace $NAMESPACE
-```
-
-**NOTE** Please configure Cassandra access control, while exposing it to public access.
-
-### Access Cassandra service
+#### Extract IP addess
 
 Get the external IP of the Cassandra service invoking `kubectl get`
 
@@ -183,8 +221,7 @@ It can take few seconds to provide this IP.
 With this IP, we can connect by `cqlsh` to Cassandra, for example
 
 ```shell
-docker run --rm -it -e CQLSH_HOST=$CASSANDRA_IP \
-  launcher.gcr.io/google/cassandra3 cqlsh --cqlversion=3.4.4
+CQLSH_HOST=$CASSANDRA_IP cqlsh --cqlversion=3.4.4
 ```
 
 # Scaling
@@ -193,7 +230,7 @@ docker run --rm -it -e CQLSH_HOST=$CASSANDRA_IP \
 
 Scale the number of replicas up by the following command:
 
-```
+```shell
 kubectl scale statefulsets "$APP_INSTANCE_NAME-cassandra" \
   --namespace "$NAMESPACE" --replicas=<new-replicas>
 ```
@@ -215,6 +252,14 @@ For each node, do following steps
 1. Remove persistent volume and persistent volume claim belonging to that replica
 
 Repeat this procedure until Cassandra cluster has expected number of pods
+
+To scale down by script, please invoke
+
+```shell
+<SCRIPT DIR>/scale_down.sh --desired_number 3 \
+                           --namespace "${NAMESPACE}" \
+                           --app_instance_name "${APP_INSTANCE_NAME}"
+```
 
 For more information about the StatefulSets scaling, check the
 [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/#kubectl-scale).
@@ -307,11 +352,15 @@ Also, database schema and token information is also backed up.
 
 Please run it with key space
 
-```
-scripts/backup.sh <KEY SPACE>
+```shell
+<SCRIPT DIR>/backup.sh --keyspace demo \
+                       --namespace "${NAMESPACE}" \
+                      --app_instance_name "${APP_INSTANCE_NAME}"
 ```
 
-This script will generate backup files.
+This script will generate backup files. For each Cassandra node one archive will
+be generated. For whole cluster one schema is backed up and token ring is backed
+up.
 
 ### Restoring
 
@@ -323,11 +372,13 @@ export NAMESPACE=default
 ```
 
 To restore Cassandra, `sstableloader` tool is used. This is automated via
-`scirpts/restore.sh`. Please run this script from directory with backup files,
+`scripts/restore.sh`. Please run this script from directory with backup files,
 providing as arguments key space and number of generated archives.
 
-```
-scripts/restore.sh <KEY SPACE> <NUMBER OF ARCHIVES>
+```shell
+<SCRIPT DIR>/restores.sh   --keyspace demo \
+                           --namespace "${NAMESPACE}" \
+                           --app_instance_name "${APP_INSTANCE_NAME}"
 ```
 
 This script will recreate schema and upload data. Clusters (source and
@@ -355,7 +406,7 @@ export NAMESPACE=default
 
 Assign the new image to your StatefulSet definition:
 
-```
+```shell
 IMAGE_CASSANDRA=<put your new image reference here>
 
 kubectl set image statefulset "${APP_INSTANCE_NAME}-cassandra" \
@@ -369,3 +420,9 @@ will not automatically restart due to the OnDelete update strategy set on the St
 
 Run the `scripts/upgrade.sh` script. This script will take down and update one replica at a time -
 it should print out diagnostic messages. You should be done when the script finishes.
+
+```shell
+<SCRIPT DIR>/upgrade.sh    --namespace "${NAMESPACE}" \
+                           --app_instance_name "${APP_INSTANCE_NAME}"
+
+```
