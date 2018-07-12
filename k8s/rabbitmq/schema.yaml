@@ -43,7 +43,7 @@ properties:
     title: RabbitMQ Service Account
     description: >-
       Service account to assign to RabbitMQ StatefulSet.
-      It is required by rabbitmq-peer-discovery-k8s plugin.
+      It should have ability to query endpoints in the same namespace.
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
