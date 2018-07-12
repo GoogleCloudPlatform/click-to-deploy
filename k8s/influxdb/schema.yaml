@@ -1,3 +1,4 @@
+application_api_version: v1beta1
 properties:
   APP_INSTANCE_NAME:
     type: string
@@ -13,9 +14,9 @@ properties:
     x-google-marketplace:
       type: IMAGE
   INFLUXDB_ADMIN_USER:
+    type: string
     title: InfluxDB admin username
     description: Username for administrator account of InfluxDB database
-    type: string
     default: influxdb-admin
   INFLUXDB_ADMIN_PASSWORD:
     type: string

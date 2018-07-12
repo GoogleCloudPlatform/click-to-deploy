@@ -17,19 +17,19 @@ apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
   name: $APP_INSTANCE_NAME-mysql
-  labels: &MysqlDeploymentLabels
+  labels: &MySQLDeploymentLabels
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app.kubernetes.io/component: wordpress-mysql
 spec:
   replicas: 1
   selector:
-    matchLabels: *MysqlDeploymentLabels
+    matchLabels: *MySQLDeploymentLabels
   serviceName: $APP_INSTANCE_NAME-mysql-svc
   updateStrategy:
     type: RollingUpdate
   template:
     metadata:
-      labels: *MysqlDeploymentLabels
+      labels: *MySQLDeploymentLabels
     spec:
       containers:
       - image: $IMAGE_MYSQL
@@ -100,19 +100,19 @@ apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
   name: $APP_INSTANCE_NAME-wordpress
-  labels: &WordpressDeploymentLabels
+  labels: &WordPressDeploymentLabels
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app.kubernetes.io/component: wordpress-webserver
 spec:
   replicas: 1
   serviceName: $APP_INSTANCE_NAME-wordpress-svc
   selector:
-    matchLabels: *WordpressDeploymentLabels
+    matchLabels: *WordPressDeploymentLabels
   updateStrategy:
     type: RollingUpdate
   template:
     metadata:
-      labels: *WordpressDeploymentLabels
+      labels: *WordPressDeploymentLabels
     spec:
       containers:
       - image: $IMAGE_WORDPRESS
