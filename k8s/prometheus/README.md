@@ -187,7 +187,7 @@ is finished, obtain the public IP address with:
 ```shell
 SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-grafana \
   --namespace $NAMESPACE \
-  --output jsonpath='{.status.loadBalancer.ingress[0].ip}');)
+  --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 echo "http://${SERVICE_IP}/"
 ```
 
