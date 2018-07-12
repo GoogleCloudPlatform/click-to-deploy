@@ -1,0 +1,53 @@
+include ../vendor/marketplace-tools/app.Makefile
+include ../vendor/marketplace-tools/crd.Makefile
+include ../vendor/marketplace-tools/gcloud.Makefile
+include ../vendor/marketplace-tools/marketplace.Makefile
+include ../vendor/marketplace-tools/ubbagent.Makefile
+include ../vendor/marketplace-tools/var.Makefile
+
+
+TAG ?= latest
+$(info ---- TAG = $(TAG))
+
+APP_DEPLOYER_IMAGE ?= $(REGISTRY)/jenkins/deployer:$(TAG)
+NAME ?= jenkins-1
+APP_PARAMETERS ?= { \
+  "APP_INSTANCE_NAME": "$(NAME)", \
+  "NAMESPACE": "$(NAMESPACE)" \
+}
+APP_TEST_PARAMETERS ?= {}
+
+
+app/build:: .build/jenkins/deployer \
+	    .build/jenkins/jenkins
+
+
+.build/jenkins: | .build
+	mkdir -p "$@"
+
+
+.build/jenkins/deployer: deployer/* \
+                           manifest/* \
+                           .build/marketplace/deployer/envsubst \
+                           .build/var/APP_DEPLOYER_IMAGE \
+                           .build/var/REGISTRY \
+                           .build/var/TAG \
+                           | .build/jenkins
+	docker build \
+	    --build-arg REGISTRY="$(REGISTRY)/jenkins" \
+	    --build-arg TAG="$(TAG)" \
+	    --tag "$(APP_DEPLOYER_IMAGE)" \
+	    -f deployer/Dockerfile \
+	    .
+	docker push "$(APP_DEPLOYER_IMAGE)"
+	@touch "$@"
+
+
+.build/jenkins/jenkins: .build/var/REGISTRY \
+                            .build/var/TAG \
+                            | .build/jenkins
+	docker pull launcher.gcr.io/google/jenkins2
+	docker tag launcher.gcr.io/google/jenkins2 \
+	    "$(REGISTRY)/jenkins:$(TAG)"
+	docker push "$(REGISTRY)/jenkins:$(TAG)"
+	@touch "$@"

@@ -1,0 +1,18 @@
+properties:
+  APP_INSTANCE_NAME:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  NAMESPACE:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  IMAGE_JENKINS:
+    type: string
+    default: $REGISTRY:$TAG
+    x-google-marketplace:
+      type: IMAGE
+required:
+- APP_INSTANCE_NAME
+- NAMESPACE
+- IMAGE_JENKINS

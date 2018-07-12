@@ -1,0 +1,115 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: $APP_INSTANCE_NAME-pvc
+  labels:
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/component: jenkins-master
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 8Gi
+  storageClassName: standard
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: $APP_INSTANCE_NAME-deployment
+  labels: &JenkinsDeploymentLabels
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/component: jenkins-master
+spec:
+  replicas: 1
+  selector:
+    matchLabels: *JenkinsDeploymentLabels
+  template:
+    metadata:
+      labels: *JenkinsDeploymentLabels
+    spec:
+      volumes:
+      - name: $APP_INSTANCE_NAME-pvc
+        persistentVolumeClaim:
+          claimName: $APP_INSTANCE_NAME-pvc
+      initContainers:
+        - name: $APP_INSTANCE_NAME-volume-permissions-fix
+          image: busybox
+          command: ["sh", "-c", "chown 1000:1000 /var/jenkins_home"]
+          volumeMounts:
+          - name: $APP_INSTANCE_NAME-pvc
+            mountPath: /var/jenkins_home
+      containers:
+      - name: $APP_INSTANCE_NAME-master
+        image: $IMAGE_JENKINS
+        ports:
+        - containerPort: 8080
+        - containerPort: 50000
+        volumeMounts:
+        - name: $APP_INSTANCE_NAME-pvc
+          mountPath: /var/jenkins_home
+        readinessProbe:
+          httpGet:
+            path: /login
+            port: 8080
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 2
+          failureThreshold: 5
+        env:
+        - name: JENKINS_OPTS
+          value: ''
+        - name: JAVA_OPTS
+          value: '-Xmx2400m'
+        resources:
+          limits:
+            cpu: 500m
+            memory: 2000Mi
+          requests:
+            cpu: 500m
+            memory: 2000Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $APP_INSTANCE_NAME-ui
+  labels: &JenkinsDeploymentLabels
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/component: jenkins-master
+spec:
+  type: NodePort
+  selector: *JenkinsDeploymentLabels
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      name: ui
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $APP_INSTANCE_NAME-slaves-connector
+  labels: &JenkinsDeploymentLabels
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/component: jenkins-master
+spec:
+  selector: *JenkinsDeploymentLabels
+  ports:
+    - protocol: TCP
+      port: 50000
+      targetPort: 50000
+      name: slaves-connector
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: $APP_INSTANCE_NAME-ui
+  labels:
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/component: jenkins-master
+spec:
+  tls:
+  - secretName: $APP_INSTANCE_NAME-tls
+  backend:
+    serviceName: $APP_INSTANCE_NAME-ui
+    servicePort: 8080
