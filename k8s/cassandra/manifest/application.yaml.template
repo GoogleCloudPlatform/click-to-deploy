@@ -32,10 +32,6 @@ spec:
     - description: 'Apache documentation for Cassandra'
       url: https://cassandra.apache.org/doc/latest/getting_started/index.html
     notes: |-
-      # Check full Guide
-
-      Full guide is available on [GitHub](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/k8s/cassandra).
-
       # Get tooling from GitHub
 
       Please download K8s Cassandra tools from GitHub, invoking following commands
@@ -46,47 +42,46 @@ spec:
 
       Scripts and tools are availabe in `scripts` directory.
 
-      # Exposing Cassandra cluster
+      # Check Cassandra cluster
 
-      It is possible to provide a load balancer in front of the cluster (although it is not a suggested approach)
+      If deployment is successful, you should be able to check status of Cassandra cluster.
 
-      ```shell
-      export CASSANDRA_NAME=${APP_INSTANCE_NAME}
-      export CASSANDRA_NAMESPACE=${NAMESPACE}
-
-      envsubst '$CASSANDRA_NAME $CASSANDRA_NAME' < scripts/external.yaml.template > scripts/external.yaml
-      kubectl apply -f scripts/external.yaml --namespace $CASSANDRA_NAMESPACE
-      ```
-
-      **NOTE** Please configure Cassandra access control, while exposing it to public
-      access.
-
-      # Access Cassandra service (external)
-
-      Get the external IP of the Cassandra service invoking `kubectl get`
-      ```shell
-      CASSANDRA_IP=$(kubectl get svc/$APP_INSTANCE_NAME-cassandra-external-svc \
-        --namespace $NAMESPACE \
-        --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
-
-      echo $CASSANDRA_IP
-      ```
-
-      It can take few seconds to provide this IP.
-
-      With this IP, we can connect by `cqlsh` to Cassandra, for example
+      To do this, use `nodetool status` command on one of containers. `nodetool` is Cassandra
+      specific tool to manage Cassandra cluster. It is part of Cassandra container image.
 
       ```shell
-      docker run --rm -it -e CQLSH_HOST=$CASSANDRA_IP \
-        launcher.gcr.io/google/cassandra3 cqlsh --cqlversion=3.4.4
+      kubectl exec "${APP_INSTANCE_NAME}-cassandra-0" --namespace "${NAMESPACE}" -c cassandra -- nodetool status
       ```
 
       # Access Cassandra service (internal)
 
       It is possible to connect to Cassandra without exposing it to public access.
 
-      To do this, please connect to from container inside K8s cluster using hostname
-      `$APP_INSTANCE_NAME-cassandra-0.$APP_INSTANCE_NAME-cassandra-svc.$NAMESPACE.svc.cluster.local`.
+      To do this, please connect from container inside K8s cluster using hostname
+      `$APP_INSTANCE_NAME-cassandra-0.$APP_INSTANCE_NAME-cassandra-svc.$NAMESPACE.svc.cluster.local`
+
+      # Access Cassandra service (via `kubectl port-forward`)
+
+      You could also use a local proxy to access the service that is not exposed publicly.
+      Run the following command in a separate background terminal:
+
+      ```shell
+       kubectl port-forward "${APP_INSTANCE_NAME}-cassandra-0" 9042:9042 --namespace "${NAMESPACE}"
+       ```
+
+      In you main terminal:
+
+      ```shell
+      cqlsh --cqlversion=3.4.4
+      ```
+
+      In the response, you should see a Cassandra welcome message:
+
+      ```shell
+      Use HELP for help.
+      cqlsh>
+      ```
+
   selector:
     matchLabels:
       app.kubernetes.io/name: "$APP_INSTANCE_NAME"
