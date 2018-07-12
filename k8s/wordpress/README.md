@@ -166,13 +166,13 @@ kubectl patch svc "$APP_INSTANCE_NAME-wordpress-svc" \
 
 ### Access WordPress site
 
-Get the external IP of the Wordpress site service and visit
+Get the external IP of the WordPress site service and visit
 the URL printed below in your browser.
 
 ```
 SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-wordpress-svc \
   --namespace $NAMESPACE \
-  --output jsonpath='{.status.loadBalancer.ingress[0].ip}');)
+  --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
 echo "http://${SERVICE_IP}"
 ```
@@ -292,7 +292,7 @@ export APP_INSTANCE_NAME=wordpress-1
 export NAMESPACE=default
 ```
 
-## Upgrade Wordpress
+## Upgrade WordPress
 
 Set the new image version in an environment variable:
 

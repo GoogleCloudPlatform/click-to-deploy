@@ -1,4 +1,4 @@
-apiVersion: app.k8s.io/v1alpha1
+apiVersion: app.k8s.io/v1beta1
 kind: Application
 metadata:
   name: "$APP_INSTANCE_NAME"
@@ -9,17 +9,42 @@ metadata:
   labels:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
 spec:
-  type: InfluxDB
-  version: '1.5'
-  description: |-
-    InfluxDB is an open source database for storing time series data. The source of time series data may come from logging and monitoring systems and IoT devices. This is a single instance version of InfluxDB.
+  descriptor:
+    type: InfluxDB
+    version: '1.5'
+    description: |-
+      InfluxDB is an open source database for storing time series data. The source of time series
+      data may come from logging and monitoring systems and IoT devices. This is a single instance
+      version of InfluxDB.
 
-    # Support
-    Google does not offer support for this solution. However, community support is available on
-    [Stack Overflow](https://stackoverflow.com/questions/tagged/influxdb/).
-    Additional community support is available on [community forums](http://community.influxdata.com).
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/influxdb/).
+      Additional community support is available on [community forums](http://community.influxdata.com).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy InfluxDB'
+      url: https://console.cloud.google.com/code/develop/browse/google-click-to-deploy/master/k8s/influxdb?project=k8s-marketplace-eap
+    - description: 'Official documentation for InfluxDB'
+      url: https://docs.influxdata.com/influxdb/v1.5/introduction/getting-started/
+    notes: |-
+      # Access InfluxDB instance
+
+      Run the following command to discover IP address of InfluxDB instance using kubectl:
+
+      ```shell
+      kubectl get svc -o wide -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace "$NAMESPACE"
+      ```
+
+      # Scale the cluster
+
+      This is a free version of InfluxDB that doesn't offer a cluster version option for InfluxDB.
+      If you are interested in cluster version of InfluxDB, please, take a look on
+      [Enterprise version of InfluxDB](https://www.influxdata.com/)
   info:
-  - name: InfluxDB admin
+  - name: InfluxDB admin username
     type: Reference
     valueFrom:
       secretKeyRef:
@@ -31,14 +56,6 @@ spec:
       secretKeyRef:
         key: influxdb-pass
         name: $APP_INSTANCE_NAME-influxdb-secret
-  maintainers:
-  - name: Google Click to Deploy
-    url: https://cloud.google.com/solutions/#click-to-deploy
-  links:
-  - description: 'User Guide: Google Click to Deploy InfluxDB'
-    url: https://console.cloud.google.com/code/develop/browse/google-click-to-deploy/master/k8s/influxdb?project=k8s-marketplace-eap
-  - description: 'Influxdb: Getting Started'
-    url: https://github.com/GoogleCloudPlatform/influxdb-docker/blob/master/1/README.md
   selector:
     matchLabels:
       app.kubernetes.io/name: "$APP_INSTANCE_NAME"
@@ -49,16 +66,3 @@ spec:
     kind: Secret
   - group: apps/v1beta2
     kind: StatefulSet
-notes: |-
-    # Access InfluxDB instance
-
-    Run the following command to discover IP address of InfluxDB instance using kubectl:
-
-    ```shell
-    kubectl get svc -o wide -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace "$NAMESPACE"
-    ```
-
-    # Scale the cluster
-
-    This is a free version of InfluxDB that doesn't offer a cluster version option for InfluxDB.
-    If you are interested in cluster version of InfluxDB, please, take a look on [Enterprise version of InfluxDB](https://www.influxdata.com/)
