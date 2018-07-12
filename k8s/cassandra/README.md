@@ -138,7 +138,7 @@ Use `kubectl` to apply the manifest to your Kubernetes cluster.
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
 
-Deploying can take few minutes, please wait.
+Deploying can take a few minutes, please wait.
 
 #### View the app in the Google Cloud Console
 
@@ -163,7 +163,7 @@ kubectl exec "${APP_INSTANCE_NAME}-cassandra-0" --namespace "${NAMESPACE}" -c ca
 
 It is possible to connect to Cassandra without exposing it to public access.
 
-To do this, please connect to from container inside K8s cluster using hostname
+To do this, please connect from container inside K8s cluster using hostname
 `$APP_INSTANCE_NAME-cassandra-0.$APP_INSTANCE_NAME-cassandra-svc.$NAMESPACE.svc.cluster.local`
 
 ### Access Cassandra service (via `kubectl port-forward`)
@@ -184,13 +184,9 @@ cqlsh --cqlversion=3.4.4
 In the response, you should see a Cassandra welcome message:
 
 ```shell
-Connected to cassandra-1-cassandra-svc at 127.0.0.1:9042.
-[cqlsh 5.0.1 | Cassandra 3.11.2 | CQL spec 3.4.4 | Native protocol v4]
 Use HELP for help.
 cqlsh>
 ```
-
-Note that it might take some time for the external IP to be provisioned.
 
 ### Access Cassandra service (external)
 By default, the application does not have an external IP.
@@ -202,13 +198,11 @@ By default, the application does not have an external IP.
 It is possible to expose the Cassandra (although it is not a suggested approach)
 
 ```shell
-export CASSANDRA_APP_INSTANCE_NAME="${APP_INSTANCE_NAME}"
-
-envsubst '$APP_INSTANCE_NAME' < scripts/external.yaml.template > scripts/external.yaml
-kubectl apply -f scripts/external.yaml --namespace $NAMESPACE
+envsubst '${APP_INSTANCE_NAME}' < scripts/external.yaml.template > scripts/external.yaml
+kubectl apply -f scripts/external.yaml --namespace "${NAMESPACE}"
 ```
 
-Please configure Cassandra access control, while exposing it to public access.
+Note that it might take some time for the external IP to be provisioned.
 
 #### Extract IP addess
 
