@@ -54,10 +54,6 @@ Clone this repo and the associated tools repo.
 ```shell
 gcloud source repos clone google-click-to-deploy --project=k8s-marketplace-eap
 gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketplace-eap
-cd google-click-to-deploy 
-git submodule init
-git submodule sync --recursive
-git submodule update --recursive --init
 ```
 
 #### Install the Application resource definition
@@ -69,7 +65,7 @@ Being in `google-click-to-deploy` directory run the following command:
 -->
 
 ```shell
-kubectl apply -f k8s/vendor/marketplace-tools/crd/*
+kubectl apply -f google-marketplace-k8s-app-tools/crd/*
 ```
 
 The Application resource is defined by the
