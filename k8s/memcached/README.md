@@ -61,7 +61,7 @@ gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketp
 Do a one-time setup for your cluster to understand Application resource via installing Application's Custom Resource Definition.
 
 <!--
-Being in `google-click-to-deploy` directory run the following command:
+To do that, navigate to `k8s/vendor` subdirectory of the repository and run the following command:
 -->
 
 ```shell
