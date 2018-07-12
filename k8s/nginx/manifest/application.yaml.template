@@ -58,6 +58,11 @@ spec:
          kubectl exec $APP_INSTANCE_NAME-nginx-0 -- chmod -R a+r /usr/share/nginx/html
          ```
   info:
+  - name: Nginx External IP
+    type: Reference
+    valueFrom:
+      serviceRef:
+        name: $APP_INSTANCE_NAME-nginx-svc
   - name: Nginx Configuration
     value: nginx-config.conf
   - name: Nginx Cert
