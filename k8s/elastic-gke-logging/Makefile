@@ -60,7 +60,7 @@ app/build:: .build/elastic-gke-logging/elasticsearch \
                                      .build/var/TAG \
                                      | .build/elastic-gke-logging
 	docker build \
-			--build-arg REGISTRY="$(REGISTRY)/elastic-gke-logging" \
+	    --build-arg REGISTRY="$(REGISTRY)/elastic-gke-logging" \
 	    --build-arg TAG="$(TAG)" \
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
 	    -f deployer/Dockerfile \
