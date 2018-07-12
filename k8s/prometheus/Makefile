@@ -67,7 +67,7 @@ app/build:: .build/prometheus/deployer \
 .build/prometheus/deployer: deployer/* \
                             manifest/* \
                             schema.yaml \
-                            .build/marketplace/deployer/helm \
+                            .build/marketplace/deployer/envsubst \
                             .build/var/APP_DEPLOYER_IMAGE \
                             .build/var/REGISTRY \
                             .build/var/TAG \
