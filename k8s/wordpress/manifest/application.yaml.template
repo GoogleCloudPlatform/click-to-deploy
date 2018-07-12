@@ -54,7 +54,7 @@ spec:
       ```
       SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-wordpress-svc \
         --namespace $NAMESPACE \
-        --output jsonpath='{.status.loadBalancer.ingress[0].ip}');)
+        --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
       echo "http://${SERVICE_IP}"
       ```
@@ -65,6 +65,12 @@ spec:
 
       After accessing the WordPress main page, you will see the installation wizard.
       Follow the instructions presented on the screen to finish the process.
+  info:
+  - name: WordPress external IP
+    type: Reference
+    valueFrom:
+      serviceRef:
+        name: $APP_INSTANCE_NAME-wordpress-svc
   selector:
     matchLabels:
       app.kubernetes.io/name: "$APP_INSTANCE_NAME"
