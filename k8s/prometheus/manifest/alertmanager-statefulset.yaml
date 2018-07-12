@@ -20,7 +20,7 @@ spec:
       labels:
         k8s-app: alertmanager
     spec:
-      serviceAccountName: $ALERTMANAGER_SERVICE_ACCOUNT
+      serviceAccountName: $PROMETHEUS_SERVICE_ACCOUNT
       containers:
         - name: prometheus-alertmanager
           image: $IMAGE_ALERTMANAGER
