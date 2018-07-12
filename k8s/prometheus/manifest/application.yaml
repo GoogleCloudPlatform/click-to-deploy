@@ -55,6 +55,13 @@ spec:
       Grafana is configured to require authentication. You can find username and password in the
       'Prometheus & Grafana info' section on the left. They are stored in
       `$APP_INSTANCE_NAME-grafana` secret.
+
+      # Explore the GKE dashboards
+
+      After logging in to Grafana UI, explore the preconfigured dashboards visualizing the metrics
+      collected by Prometheus. Click on the `Home` button in the top left corner of Grafana homepage
+      and you will be presented a list of available dashboards. Click on a selected dashboard to see
+      its metrics visualization.
   info:
   - name: Forward Grafana port locally
     value: kubectl port-forward --namespace ${NAMESPACE} ${APP_INSTANCE_NAME}-grafana-0 3000
