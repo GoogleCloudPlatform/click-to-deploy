@@ -37,7 +37,7 @@ spec:
     notes: |-
       # Access Memcached instances
 
-      Activate Google Cloud Shell.
+      Activate Google Cloud Shell or use other environment where you have kubectl configured in appropriate way.
 
       Identify the cluster where your application was deployed and run the following command:
       ```shell
