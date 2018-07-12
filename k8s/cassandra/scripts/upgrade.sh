@@ -9,7 +9,23 @@ if [[ ! -f "${SCRIPT_DIR}/util.sh" ]]; then
   exit 1
 fi
 
+USAGE='
+Upgrade script to Cassandra cluster running on K8s. Gracefully shuting down,
+recreating new pod and waiting for healthy status of the cluster.
+
+Parameters:
+--namespace            (Required) Name of K8s namespace, where Cassandra
+                       cluster exists
+--app_instance_name    (Required) Name of application in K8s cluster
+
+Example:
+<SCRIPT DIR>/upgrade.sh    --namespace custom-namespace \
+                           --app_instance_name cassandra-1
+'
+
 . "${SCRIPT_DIR}/util.sh"
+
+init_util $@
 
 function delete_pod() {
   local -r pod_name="$1"
