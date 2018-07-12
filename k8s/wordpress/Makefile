@@ -29,7 +29,6 @@ app/build:: .build/wordpress/deployer \
 
 .build/wordpress/deployer: deployer/* \
                            manifest/* \
-                           .build/marketplace/deployer/envsubst \
                            .build/var/APP_DEPLOYER_IMAGE \
                            .build/var/REGISTRY \
                            .build/var/TAG \
