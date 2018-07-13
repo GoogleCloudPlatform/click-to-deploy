@@ -115,7 +115,7 @@ export RABBITMQ_DEFAULT_PASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 1
 Configure the container images.
 
 ```shell
-export IMAGE_RABBITMQ=gcr.io/k8s-marketplace-eap/google/rabbitmq3:latest
+export IMAGE_RABBITMQ=gcr.io/k8s-marketplace-eap/google/rabbitmq:3.7
 ```
 
 The images above are referenced by
