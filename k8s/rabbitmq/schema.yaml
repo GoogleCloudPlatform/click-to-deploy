@@ -40,10 +40,10 @@ properties:
         length: 12
   RABBITMQ_SERVICE_ACCOUNT:
     type: string
-    title: RabbitMQ Service Account
+    title: RabbitMQ service account
     description: >-
       Service account to assign to RabbitMQ StatefulSet.
-      It should have ability to query endpoints in the same namespace.
+      It should have ability to query endpoints in the same namespace
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
