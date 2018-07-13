@@ -13,6 +13,7 @@ properties:
     default: $REGISTRY:$TAG
     x-google-marketplace:
       type: IMAGE
+
 required:
 - APP_INSTANCE_NAME
 - NAMESPACE

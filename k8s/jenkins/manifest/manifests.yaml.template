@@ -1,8 +1,8 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: $APP_INSTANCE_NAME-pvc
-  labels:
+  name: $APP_INSTANCE_NAME-jenkins-pvc
+  labels: &JenkinsDeploymentLabels
     app.kubernetes.io/name: $APP_INSTANCE_NAME
     app.kubernetes.io/component: jenkins-master
 spec:
@@ -16,7 +16,7 @@ spec:
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: $APP_INSTANCE_NAME-deployment
+  name: $APP_INSTANCE_NAME-jenkins-deployment
   labels: &JenkinsDeploymentLabels
     app.kubernetes.io/name: $APP_INSTANCE_NAME
     app.kubernetes.io/component: jenkins-master
@@ -29,24 +29,24 @@ spec:
       labels: *JenkinsDeploymentLabels
     spec:
       volumes:
-      - name: $APP_INSTANCE_NAME-pvc
+      - name: $APP_INSTANCE_NAME-jenkins-pvc
         persistentVolumeClaim:
-          claimName: $APP_INSTANCE_NAME-pvc
+          claimName: $APP_INSTANCE_NAME-jenkins-pvc
       initContainers:
-        - name: $APP_INSTANCE_NAME-volume-permissions-fix
-          image: busybox
+        - name: volume-permissions-fix
+          image: launcher.gcr.io/google/debian9:latest
           command: ["sh", "-c", "chown 1000:1000 /var/jenkins_home"]
           volumeMounts:
-          - name: $APP_INSTANCE_NAME-pvc
+          - name: $APP_INSTANCE_NAME-jenkins-pvc
             mountPath: /var/jenkins_home
       containers:
-      - name: $APP_INSTANCE_NAME-master
+      - name: jenkins-master
         image: $IMAGE_JENKINS
         ports:
         - containerPort: 8080
         - containerPort: 50000
         volumeMounts:
-        - name: $APP_INSTANCE_NAME-pvc
+        - name: $APP_INSTANCE_NAME-jenkins-pvc
           mountPath: /var/jenkins_home
         readinessProbe:
           httpGet:
@@ -72,7 +72,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: $APP_INSTANCE_NAME-ui
+  name: $APP_INSTANCE_NAME-jenkins-ui
   labels: &JenkinsDeploymentLabels
     app.kubernetes.io/name: $APP_INSTANCE_NAME
     app.kubernetes.io/component: jenkins-master
@@ -88,7 +88,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: $APP_INSTANCE_NAME-slaves-connector
+  name: $APP_INSTANCE_NAME-jenkins-slaves-connector
   labels: &JenkinsDeploymentLabels
     app.kubernetes.io/name: $APP_INSTANCE_NAME
     app.kubernetes.io/component: jenkins-master
@@ -103,8 +103,8 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: $APP_INSTANCE_NAME-ui
-  labels:
+  name: $APP_INSTANCE_NAME-jenkins-ui
+  labels: &JenkinsDeploymentLabels
     app.kubernetes.io/name: $APP_INSTANCE_NAME
     app.kubernetes.io/component: jenkins-master
 spec:

@@ -14,4 +14,4 @@ RUN cat /data/schema.yaml \
 RUN mv -f /bin/deploy.sh /bin/deploy-org.sh \
     && cp /bin/clean_iam_resources.sh /bin/clean_iam_resources-org.sh \
     && echo '#!/bin/bash\nexit' > /bin/clean_iam_resources.sh
-ADD entrypoint.sh /bin/deploy.sh
+ADD deployer/entrypoint.sh /bin/deploy.sh
