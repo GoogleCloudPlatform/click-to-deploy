@@ -56,8 +56,6 @@ git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 
 Do a one-time setup for your cluster to understand Application resources.
 
-Do a one-time setup for your cluster to understand Application resources.
-
 ```shell
 kubectl apply -f click-to-deploy/k8s/vendor/marketplace-tools/crd/*
 ```
