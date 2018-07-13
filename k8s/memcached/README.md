@@ -1,13 +1,13 @@
 # Overview
 
-Memcached is an open source in-memory, key-value store. Key features of this solution include high performance and ease of distribution.
+Memcached is an open source in-memory key-value store. The key features of this solution include high performance and ease of distribution.
 Although Memcached is intended to be use with dynamic web applications, it can be used as a caching system for a number of databases.
 
-If you would like to learn more about Memcached, please, visit [Memcached website](https://memcached.org/).
+To learn more about Memcached, visit the [Memcached website](https://memcached.org/).
 
 ## About Google Click to Deploy
 
-Popular open stacks on Kubernetes packaged by Google.
+Popular open stacks on Kubernetes, packaged by Google.
 
 # Installation
 
@@ -15,7 +15,7 @@ Popular open stacks on Kubernetes packaged by Google.
 
 Get up and running with a few clicks! Install this Memcached app to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
-[on-screen instructions](https://console.cloud.google.com/launcher/details/google/memcached).
+[on-screen instructions](https://console.cloud.google.com/marketplace/details/google/memcached).
 
 ## Command line instructions
 
@@ -30,16 +30,16 @@ You'll need the following tools in your development environment:
 
 #### Create a Google Kubernetes Engine cluster
 
-Create a new cluster from the command-line.
+Create a new cluster from the command line.
 
 ```shell
-export CLUSTER=marketplace-cluster
+export CLUSTER=memcached-cluster
 export ZONE=us-west1-a
 
 gcloud container clusters create "$CLUSTER" --zone "$ZONE"
 ```
 
-Configure `kubectl` to talk to the new cluster.
+Configure `kubectl` to connect to the new cluster.
 
 ```shell
 gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
@@ -56,15 +56,17 @@ gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketp
 
 #### Install the Application resource definition
 
-Do a one-time setup for your cluster to understand Application resources.
+An Application resource is a collection of individual Kubernetes components,
+such as Services, Deployments, and so on, that you can manage as a group.
 
-<!--
-To do that, navigate to `k8s/vendor` subdirectory of the repository and run the following command:
--->
+Set up your cluster to understand Application resources, navigate to `k8s/vendor`
+folder in the repository and run the following command:
 
 ```shell
-kubectl apply -f google-marketplace-k8s-app-tools/crd/*
+kubectl apply -f marketplace-k8s-app-tools/crd/*
 ```
+
+You need to run this command once.
 
 The Application resource is defined by the
 [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps)
@@ -81,24 +83,24 @@ cd google-click-to-deploy/k8s/memcached
 
 #### Configure the app with environment variables
 
-Choose the instance name and namespace for the app.
+Choose an instance name and namespace for the app.
 
 ```shell
 export APP_INSTANCE_NAME=memcached-1
 export NAMESPACE=default
 ```
 
-Configure the container images.
+Configure the container image:
 
 ```shell
 export IMAGE_MEMCACHED="gcr.io/k8s-marketplace-eap/google/memcached:latest"
 ```
 
 The images above are referenced by
-[tag](https://docs.docker.com/engine/reference/commandline/tag). It is strongly
-recommended to pin each image to an immutable
+[tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
+that you pin each image to an immutable
 [content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This will ensure that the installed application will always use the same images,
+This ensures that the installed application always uses the same images,
 until you are ready to upgrade.
 
 ```shell
