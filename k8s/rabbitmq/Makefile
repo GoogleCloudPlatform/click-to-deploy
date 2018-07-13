@@ -20,12 +20,22 @@ APP_PARAMETERS ?= { \
 APP_TEST_PARAMETERS ?= {}
 
 
-app/build:: .build/rabbitmq/deployer \
-            .build/rabbitmq/rabbitmq
+app/build:: .build/rabbitmq/debian9  \
+            .build/rabbitmq/deployer \
+						.build/rabbitmq/rabbitmq
 
 
 .build/rabbitmq: | .build
 	mkdir -p "$@"
+
+
+.build/rabbitmq/debian9: .build/var/REGISTRY \
+                      .build/var/TAG \
+	                    | .build/nginx
+	docker pull launcher.gcr.io/google/debian9
+	docker tag launcher.gcr.io/google/debian9 "$(REGISTRY)/debian9:$(TAG)"
+	docker push "$(REGISTRY)/debian9:$(TAG)"
+	@touch "$@"
 
 
 .build/rabbitmq/deployer: deployer/* \
@@ -48,8 +58,8 @@ app/build:: .build/rabbitmq/deployer \
 .build/rabbitmq/rabbitmq: .build/var/REGISTRY \
                           .build/var/TAG \
                           | .build/rabbitmq
-	docker pull launcher.gcr.io/google/rabbitmq3:$(TAG)
-	docker tag launcher.gcr.io/google/rabbitmq3:$(TAG) \
+	docker pull launcher.gcr.io/google/rabbitmq:$(TAG)
+	docker tag launcher.gcr.io/google/rabbitmq:$(TAG) \
 	    "$(REGISTRY)/rabbitmq:$(TAG)"
 	docker push "$(REGISTRY)/rabbitmq:$(TAG)"
 	@touch "$@"
