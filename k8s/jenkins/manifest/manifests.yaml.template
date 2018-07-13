@@ -34,7 +34,7 @@ spec:
           claimName: $APP_INSTANCE_NAME-jenkins-pvc
       initContainers:
         - name: volume-permissions-fix
-          image: launcher.gcr.io/google/debian9:latest
+          image: $IMAGE_JENKINS_INIT
           command: ["sh", "-c", "chown 1000:1000 /var/jenkins_home"]
           volumeMounts:
           - name: $APP_INSTANCE_NAME-jenkins-pvc

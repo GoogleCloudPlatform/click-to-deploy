@@ -13,8 +13,14 @@ properties:
     default: $REGISTRY:$TAG
     x-google-marketplace:
       type: IMAGE
+  IMAGE_JENKINS_INIT:
+    type: string
+    default: $REGISTRY/debian9:$TAG
+    x-google-marketplace:
+      type: IMAGE
 
 required:
 - APP_INSTANCE_NAME
 - NAMESPACE
 - IMAGE_JENKINS
+- IMAGE_JENKINS_INIT

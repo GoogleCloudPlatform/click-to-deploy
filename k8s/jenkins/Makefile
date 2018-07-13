@@ -18,21 +18,30 @@ APP_PARAMETERS ?= { \
 APP_TEST_PARAMETERS ?= {}
 
 
-app/build:: .build/jenkins/deployer \
-	    .build/jenkins/jenkins
+app/build:: .build/jenkins/debian9  \
+	          .build/jenkins/deployer \
+	          .build/jenkins/jenkins
 
 
 .build/jenkins: | .build
 	mkdir -p "$@"
 
 
+.build/jenkins/debian9: .build/var/REGISTRY \
+                        .build/var/TAG \
+                        | .build/jenkins
+	docker pull launcher.gcr.io/google/debian9
+	docker tag launcher.gcr.io/google/debian9 "$(REGISTRY)/jenkins/debian9:$(TAG)"
+	docker push "$(REGISTRY)/jenkins/debian9:$(TAG)"
+	@touch "$@"
+
 .build/jenkins/deployer: deployer/* \
-                           manifest/* \
-                           .build/marketplace/deployer/envsubst \
-                           .build/var/APP_DEPLOYER_IMAGE \
-                           .build/var/REGISTRY \
-                           .build/var/TAG \
-                           | .build/jenkins
+                         manifest/* \
+                         .build/marketplace/deployer/envsubst \
+                         .build/var/APP_DEPLOYER_IMAGE \
+                         .build/var/REGISTRY \
+                         .build/var/TAG \
+                         | .build/jenkins
 	docker build \
 	    --build-arg REGISTRY="$(REGISTRY)/jenkins" \
 	    --build-arg TAG="$(TAG)" \
