@@ -92,7 +92,7 @@ steps:
   - -c
   - |
     gcloud container clusters get-credentials "$_CLUSTER_NAME" --zone "$_CLUSTER_LOCATION"
-    make app/verify
+    make -j4 app/verify
 
 - id: Run the verification on jenkins
   waitFor: [ 'Setup git repo' ]
@@ -125,7 +125,7 @@ steps:
   - -c
   - |
     gcloud container clusters get-credentials "$_CLUSTER_NAME" --zone "$_CLUSTER_LOCATION"
-    make app/verify
+    make -j4 app/verify
 
 - id: Run the verification on rabbitmq
   waitFor: [ 'Setup git repo' ]
