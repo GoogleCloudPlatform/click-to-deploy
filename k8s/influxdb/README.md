@@ -221,7 +221,44 @@ If you are interested in multi-instance/enterprise version of InfluxDB, please, 
 
 # Backup and Restore
 
-TODO by rafalbiegacz@ after merging
+Backup and restore of InfluxDB data will be done as it was suggested on [InfluxDB website](https://docs.influxdata.com/influxdb/v1.5/administration/backup_and_restore/)
+
+`influxd backup` and `influxd restore` commands will be used for backing up InfluxDB databases and restoring them (respectively).
+
+Connectivity on port 8088 to InfluxDB instance will be required to perform these operations.
+
+Before you proceed, please, make sure that `influxdb-backup` directory on your local computer is empty.
+
+## Backup InfluxDB data to your local computer
+
+Navigate to the `influxdb/scripts` directory.
+
+```shell
+cd google-click-to-deploy/k8s/influxdb/scripts
+```
+
+Run `make-backup.sh` script passing the name of your InfluxDB instance as an argument to this script.
+```shell
+cd google-click-to-deploy/k8s/influxdb/scripts
+```
+
+Backup data will be stored in `influxdb-backup` directory on your local computer.
+
+
+## Restore InfluxDB data on running InfluxDB instance
+Navigate to the `influxdb/scripts` directory.
+
+```shell
+cd google-click-to-deploy/k8s/influxdb/scripts
+```
+
+Run `make-restore.sh` script passing the name of your InfluxDB instance as an argument to this script.
+```shell
+cd google-click-to-deploy/k8s/influxdb/scripts
+```
+
+Restore will be performed based on the data that is stored in `influxdb-backup` on your local computer.
+
 
 # Upgrade
 
