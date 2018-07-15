@@ -16,8 +16,10 @@
 
 set -eu
 
-command="cp html nginx-1-nginx-0:/usr/share/nginx/html"
-echo "Executing: $command" 
-kubectl cp html nginx-1-nginx-0:/usr/share/nginx
-kubectl exec nginx-1-nginx-0 -- chmod -R a+r /usr/share/nginx/html
-
+echo "Performing upload of content to NGINX server..."
+echo "- Connecting to $APP_INSTANCE_NAME-nginx-0 Pod"
+command="cp html $APP_INSTANCE_NAME-nginx-0:/usr/share/nginx/html"
+echo "- Executing: $command" 
+kubectl cp html $APP_INSTANCE_NAME-nginx-0:/usr/share/nginx
+kubectl exec $APP_INSTANCE_NAME-nginx-0 -- chmod -R a+r /usr/share/nginx/html
+echo "Upload operation finished."

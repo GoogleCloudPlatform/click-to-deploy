@@ -16,5 +16,8 @@
 
 set -eu
 
-mkdir backup
-kubectl cp nginx-1-nginx-0:/usr/share/nginx/html backup
+echo "Performing backup of NGINX server content..."
+echo "- Connecting to $APP_INSTANCE_NAME-nginx-0 Pod"
+mkdir -p backup
+kubectl cp $APP_INSTANCE_NAME-nginx-0:/usr/share/nginx/html backup
+echo "Backup operation finished."
