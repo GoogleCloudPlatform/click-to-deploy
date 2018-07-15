@@ -12,19 +12,20 @@ APP_DEPLOYER_IMAGE ?= $(REGISTRY)/grafana/deployer:$(TAG)
 NAME ?= grafana-1
 
 ifdef IMAGE_GRAFANA
-  IMAGE_GRAFANA_FIELD = , "image.grafana": "$(IMAGE_GRAFANA)"
+  IMAGE_GRAFANA_FIELD = , "IMAGE_GRAFANA": "$(IMAGE_GRAFANA)"
 endif
 
 APP_PARAMETERS ?= { \
-  "name": "$(NAME)", \
-  "namespace": "$(NAMESPACE)" \
+  "APP_INSTANCE_NAME": "$(NAME)", \
+  "NAMESPACE": "$(NAMESPACE)" \
   $(IMAGE_GRAFANA_FIELD) \
 }
 APP_TEST_PARAMETERS ?= {}
 
 
 app/build:: .build/grafana/deployer \
-            .build/grafana/grafana
+            .build/grafana/grafana \
+            .build/grafana/debian9
 
 
 .build/grafana: | .build
@@ -32,15 +33,14 @@ app/build:: .build/grafana/deployer \
 
 
 .build/grafana/deployer: deployer/* \
-                         grafana/* \
+                         manifest/* \
                          schema.yaml \
-                         .build/marketplace/deployer/helm \
                          .build/var/APP_DEPLOYER_IMAGE \
                          .build/var/REGISTRY \
                          .build/var/TAG \
                          | .build/grafana
 	docker build \
-	    --build-arg REGISTRY="$(REGISTRY)" \
+	    --build-arg REGISTRY="$(REGISTRY)/grafana" \
 	    --build-arg TAG="$(TAG)" \
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
 	    -f deployer/Dockerfile \
@@ -53,6 +53,15 @@ app/build:: .build/grafana/deployer \
                         .build/var/TAG \
                         | .build/grafana
 	docker pull launcher.gcr.io/google/grafana5:$(TAG)
-	docker tag launcher.gcr.io/google/grafana5:$(TAG) "$(REGISTRY):$(TAG)"
-	docker push "$(REGISTRY):$(TAG)"
+	docker tag launcher.gcr.io/google/grafana5:$(TAG) "$(REGISTRY)/grafana:$(TAG)"
+	docker push "$(REGISTRY)/grafana:$(TAG)"
+	@touch "$@"
+
+
+.build/grafana/debian9: .build/var/REGISTRY \
+                        .build/var/TAG \
+                        | .build/grafana
+	docker pull launcher.gcr.io/google/debian9
+	docker tag launcher.gcr.io/google/debian9 "$(REGISTRY)/grafana/debian9:$(TAG)"
+	docker push "$(REGISTRY)/grafana/debian9:$(TAG)"
 	@touch "$@"

@@ -1,25 +1,12 @@
-FROM launcher.gcr.io/google/debian9 AS build
+FROM gcr.io/cloud-marketplace-tools/k8s/deployer_envsubst:v0.5
 
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends gettext
-
-ADD grafana /tmp/chart
-RUN rm /tmp/chart/templates/podsecuritypolicy.yaml
-
-RUN cd /tmp \
-    && tar -czvf /tmp/grafana.tar.gz chart
-
-ADD schema.yaml /tmp/schema.yaml
+ADD manifest/* /data/manifest/
+ADD schema.yaml /data/
 
 # Provide registry prefix and tag for default values for images.
 ARG REGISTRY
 ARG TAG
-RUN cat /tmp/schema.yaml \
+RUN cat /data/schema.yaml \
     | env -i "REGISTRY=$REGISTRY" "TAG=$TAG" envsubst \
-    > /tmp/schema.yaml.new \
-    && mv /tmp/schema.yaml.new /tmp/schema.yaml
-
-
-FROM gcr.io/google-marketplace-tools/k8s/deployer_helm
-COPY --from=build /tmp/grafana.tar.gz /data/chart/
-COPY --from=build /tmp/schema.yaml /data/
+    > /data/schema.yaml.new \
+    && mv /data/schema.yaml.new /data/schema.yaml

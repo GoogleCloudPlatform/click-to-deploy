@@ -1,28 +1,43 @@
+application_api_version: v1beta1
 properties:
-  name:
+  APP_INSTANCE_NAME:
     type: string
     x-google-marketplace:
       type: NAME
-  namespace:
+  NAMESPACE:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  image.grafana:
+  IMAGE_GRAFANA:
     type: string
     default: $REGISTRY:$TAG
     x-google-marketplace:
       type: IMAGE
-  replicas:
-    type: integer
-    default: 1
-  service.type:
+  IMAGE_GRAFANA_INIT:
     type: string
-    default: LoadBalancer
-  service.port:
-    type: integer
-    default: 3000
+    default: $REGISTRY/debian9:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  GRAFANA_GENERATED_PASSWORD:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 12
+  GRAFANA_SERVICE_ACCOUNT:
+    type: string
+    title: Grafana Service Account
+    description: Service account to assign to main Grafana StatefulSet
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        roles:
+        - type: ClusterRole
+          rulesType: PREDEFINED
+          rulesFromRoleName: cluster-admin
 required:
-- name
-- namespace
-- image.grafana
-- replicas
+- APP_INSTANCE_NAME
+- NAMESPACE
+- IMAGE_GRAFANA
+- GRAFANA_GENERATED_PASSWORD
+- GRAFANA_SERVICE_ACCOUNT
