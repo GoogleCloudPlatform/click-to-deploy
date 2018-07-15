@@ -39,7 +39,19 @@ spec:
         - /bin/bash
         - -euc
         - |
-          chmod -R a+r /usr/share/nginx/html
+          chmod -R a+rx /usr/share/nginx/html
+        volumeMounts:
+        - name: $APP_INSTANCE_NAME-nginx-data
+          mountPath: /usr/share/nginx/html
+      # This init container is reponsible for creating default index html file
+      - name: initialize-nginx
+        image: launcher.gcr.io/google/debian9:latest
+        imagePullPolicy: Always
+        command:
+        - /bin/bash
+        - -euc
+        - |
+          echo '<!DOCTYPE><html><head> <title>Web Server Application</title> </head><body> <h1>Web site powered by NGINX</h1><p>This page is under construction. Please come back soon!</p></body></html>' > /usr/share/nginx/html/index.html
         volumeMounts:
         - name: $APP_INSTANCE_NAME-nginx-data
           mountPath: /usr/share/nginx/html
