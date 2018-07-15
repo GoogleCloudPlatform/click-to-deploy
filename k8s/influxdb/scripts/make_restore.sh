@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -eu
+set -e
 
 if [[ -z "$1" ]]; then
   info "Please provide InfluxDB instance name"
@@ -23,6 +23,7 @@ fi
 
 if [[ -z "$2" ]]; then
   NAMESPACE=default
+  echo "Using default Kubernetes namespace"
 else
   NAMESPACE=$2
 fi
@@ -30,8 +31,13 @@ fi
 INFLUXDB_INSTANCE="$1"
 INFLUXDB_BACKUP_DIR=influxdb-backup
 
-echo "Connecting to InfluxDB instance and creating restore dirctory."
-kubectl exec -it $INFLUXDB_INSTANCE-influxdb-0 --namespace "$NAMESPACE" -- mkdir /$INFLUXDB_BACKUP_DIR
+echo "Connecting to the following InfluxDB: $INFLUXDB_INSTANCE..."
+
+echo "Creating restore directory..."
+kubectl exec $INFLUXDB_INSTANCE-influxdb-0 --namespace "$NAMESPACE" -- mkdir -p /$INFLUXDB_BACKUP_DIR
+echo "Copying backup to local computer"
+kubectl cp $INFLUXDB_BACKUP_DIR $INFLUXDB_INSTANCE-influxdb-0:/$INFLUXDB_BACKUP_DIR
 echo "Connecting to InfluxDB instance and performing restore operation"
-kubectl exec -it $INFLUXDB_INSTANCE-influxdb-0 --namespace "$NAMESPACE" -- influxd restore -portable /$INFLUXDB_BACKUP_DIR
+kubectl exec $INFLUXDB_INSTANCE-influxdb-0 --namespace "$NAMESPACE" -- influxd restore -portable /$INFLUXDB_BACKUP_DIR/$INFLUXDB_BACKUP_DIR
 #kubectl exec -it $INFLUXDB_INSTANCE-influxdb-0 --namespace "$NAMESPACE" -- rmdir -rf /$INFLUXDB_BACKUP_DIR
+echo "Restore operation finished."
