@@ -6,7 +6,7 @@ include ../vendor/marketplace-tools/ubbagent.Makefile
 include ../vendor/marketplace-tools/var.Makefile
 
 
-TAG ?= latest
+TAG ?= 3.11
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/cassandra/deployer:$(TAG)
@@ -35,7 +35,6 @@ app/build:: .build/cassandra/cassandra \
 
 .build/cassandra/deployer: deployer/* \
                            manifest/* \
-                           .build/marketplace/deployer/envsubst \
                            .build/var/APP_DEPLOYER_IMAGE \
                            .build/var/REGISTRY \
                            .build/var/TAG \
@@ -53,8 +52,8 @@ app/build:: .build/cassandra/cassandra \
 .build/cassandra/cassandra: .build/var/REGISTRY \
                             .build/var/TAG \
                             | .build/cassandra
-	docker pull launcher.gcr.io/google/cassandra3
-	docker tag launcher.gcr.io/google/cassandra3 \
+	docker pull launcher.gcr.io/google/cassandra3:$(TAG)
+	docker tag launcher.gcr.io/google/cassandra3:$(TAG) \
 	    "$(REGISTRY)/cassandra:$(TAG)"
 	docker push "$(REGISTRY)/cassandra:$(TAG)"
 	@touch "$@"

@@ -1,3 +1,4 @@
+application_api_version: v1beta1
 properties:
   APP_INSTANCE_NAME:
     type: string
@@ -14,8 +15,11 @@ properties:
       type: IMAGE
   REPLICAS:
     type: integer
+    title: Replicas
+    description: The number of Pod replicas
     default: 3
-    min: 1
+    minimum: 3
+    maximum: 11
 required:
 - APP_INSTANCE_NAME
 - NAMESPACE

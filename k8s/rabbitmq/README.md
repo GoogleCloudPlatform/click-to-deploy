@@ -33,17 +33,16 @@ You'll need the following tools in your development environment:
 Create a new cluster from the command-line.
 
 ```shell
-export PROJECT=your-gcp-project # or export PROJECT=$(gcloud config get-value project)
 export CLUSTER=marketplace-cluster
-export ZONE=us-west1-a # or export ZONE=$(gcloud config get-value compute/zone)
+export ZONE=us-west1-a
 
-gcloud --project "$PROJECT" container clusters create "$CLUSTER" --zone "$ZONE"
+gcloud container clusters create "$CLUSTER" --zone "$ZONE"
 ```
 
 Configure `kubectl` to talk to the new cluster.
 
 ```shell
-gcloud --project "$PROJECT" container clusters get-credentials "$CLUSTER" --zone "$ZONE"
+gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 ```
 
 #### Clone this repo
@@ -59,10 +58,12 @@ gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketp
 
 Do a one-time setup for your cluster to understand Application resources.
 
+<!--
 To do that, navigate to `k8s/vendor` subdirectory of the repository and run the following command:
+-->
 
 ```shell
-kubectl apply -f marketplace-tools/crd/app-crd.yaml
+kubectl apply -f google-marketplace-k8s-app-tools/crd/*
 ```
 
 The Application resource is defined by the
@@ -193,14 +194,12 @@ kubectl get secret $APP_INSTANCE_NAME-rabbitmq-secret \
 By default, the application does not have an external IP. Run the
 following command to expose an external IP:
 
-> **WARNING:** The application has defaulted *quest* user. Please be careful with exposing the application for the world.
-
 > **NOTE:** It might take some time for the external IP to be provisioned.
 
 ```
 kubectl patch svc "$APP_INSTANCE_NAME-rabbitmq-svc" \
   --namespace "$NAMESPACE" \
-  -p '{"spec": {"type": "LoadBalancer"}}'
+  --patch '{"spec": {"type": "LoadBalancer"}}'
 ```
 
 #### Access RabbitMQ service
@@ -217,7 +216,6 @@ kubectl get svc $APP_INSTANCE_NAME-rabbitmq-svc --namespace $NAMESPACE
 SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-rabbitmq-svc \
   --namespace $NAMESPACE \
   --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
-
 echo "http://${SERVICE_IP}:15672"
 ```
 
@@ -256,22 +254,60 @@ for item in service.status.load_balancer.ingress:
 
 If you would like to send and receive messages to RabbitMQ using Python [here](https://www.rabbitmq.com/tutorials/tutorial-one-python.html) is a good reference how to do that.
 
-#### Scale the cluster
+# Scaling
 
-By default, RabbitMQ K8s application is deployed using 3 replicas. You can manually scale it up or down using the following command.
+## Scale the cluster up
 
-> **NOTE:** Scaling down will leave `persistentvolumeclaims` of your StatefulSet untouched.
+By default, RabbitMQ K8s application is deployed using 3 replicas.
+Scale the number of replicas up by the following command:
 
 ```
 kubectl scale statefulsets "$APP_INSTANCE_NAME-rabbitmq" \
   --namespace "$NAMESPACE" --replicas=<new-replicas>
 ```
+where `<new-replicas>` defines the new desired number.
 
-where `<new-replicas>` defines the number of replicas.
+## Scale the cluster down
+
+**Option 1:** Use `kubectl` to scale down by following command:
+
+This option reduces the number of replicas without disconnecting nodes from the cluster. Scaling down will also leave `persistentvolumeclaims` of your StatefulSet untouched.
+
+```
+kubectl scale statefulsets "$APP_INSTANCE_NAME-rabbitmq" \
+  --namespace "$NAMESPACE" --replicas=<new-replicas>
+```
+where `<new-replicas>` defines the new desired number.
+
+**Option 2:** Remove a RabbitMQ node permanently:
+
+> **WARNING:** This option deletes `persistentvolumeclaims` permanently, which results in permanent data loss from the deleted Pods.
+> Consider enabling HA mode to replicate data between all nodes before you start the procedure.
+
+To remove a RabbitMQ node permanently and scale down the number of replicas, please use script `scripts/scale-down.sh` with `--help` argument to get more information,
+or manually scale down the cluster in following steps.
+
+To manually remove a nodes from the cluster, and then Pod from K8s,
+start from highest numbered Pod.
+
+For each node, do following steps:
+1. Run `rabbitmqctl stop_app` and `rabbitmqctl reset` commands on RabbitMQ container
+1. Scale down StatefulSet by one with `kubectl scale sts` command
+1. Wait until Pod is removed from StatefulSet
+1. Remove Persistent Volumes and Persistent Volume Claim belonging to that replica
+
+Repeat this procedure until RabbitMQ cluster has expected number of Pods.
+
+---
+
+For more information about the StatefulSets scaling, check the
+[Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/#kubectl-scale).
+
+For more information about removing a node from RabbitMQ cluster, check the [official documentation](https://www.rabbitmq.com/clustering.html#breakup).
 
 # Backup and restore
 
-TODO
+Read the [official documentation](https://www.rabbitmq.com/backup.html) for more information.
 
 # Update procedure
 
@@ -327,7 +363,10 @@ export NAMESPACE=default
 
 ### Delete the resources
 
-> **NOTE:** Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions. It means that for instance if you have kubectl in version `1.10.*` and Kubernetes server `1.8.*`, you may experience incompatibility issues, like not removing the *StatefulSets* with apiVersion of *apps/v1beta2*.
+> **NOTE:** Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions.
+> It means that for instance if you have `kubectl` in version 1.10.&ast; and Kubernetes 1.8.&ast;,
+> you may experience incompatibility issues, like not removing the StatefulSets with
+> apiVersion of apps/v1beta2.
 
 If you still have the expanded manifest file used for the installation, you can use it to delete the resources.
 Run `kubectl` on expanded manifest file matching your installation:
@@ -336,7 +375,7 @@ Run `kubectl` on expanded manifest file matching your installation:
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 ```
 
-Otherwise, delete the resources by indication types and label:
+Otherwise, delete the resources by indication of types and a label:
 
 ```shell
 kubectl delete statefulset,secret,service,configmap,serviceaccount,role,rolebinding,application \
@@ -346,18 +385,18 @@ kubectl delete statefulset,secret,service,configmap,serviceaccount,role,rolebind
 
 ### Delete the persistent volumes of your installation
 
-By design, removal of *StatefulSets* in Kubernetes does not remove the *PersistentVolumeClaims* that
+By design, removal of StatefulSets in Kubernetes does not remove the PersistentVolumeClaims that
 were attached to their Pods. It protects your installations from mistakenly deleting stateful data.
 
-If you wish to remove the *PersistentVolumeClaims* with their attached persistent disks, run the
+If you wish to remove the PersistentVolumeClaims with their attached persistent disks, run the
 following `kubectl` commands:
 
 ```shell
-for i in $(kubectl get pvc --namespace $NAMESPACE \
+for pv in $(kubectl get pvc --namespace $NAMESPACE \
   --selector app.kubernetes.io/name=$APP_INSTANCE_NAME \
   --output jsonpath='{.items[*].spec.volumeName}');
 do
-  kubectl delete pv/$i --namespace $NAMESPACE
+  kubectl delete pv/$pv --namespace $NAMESPACE
 done
 
 kubectl delete persistentvolumeclaims \
@@ -370,11 +409,10 @@ kubectl delete persistentvolumeclaims \
 Optionally, if you do not need both the deployed application and GKE cluster used for deployment then you can delete the whole GKE cluster using this command:
 
 ```shell
-export PROJECT=your-gcp-project # or export PROJECT=$(gcloud config get-value project)
 export CLUSTER=marketplace-cluster
-export ZONE=us-west1-a # or export ZONE=$(gcloud config get-value compute/zone)
+export ZONE=us-west1-a
 ```
 
 ```
-gcloud --project "$PROJECT" container clusters delete "$CLUSTER" --zone "$ZONE"
+gcloud container clusters delete "$CLUSTER" --zone "$ZONE"
 ```

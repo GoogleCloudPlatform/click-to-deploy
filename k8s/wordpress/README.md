@@ -47,7 +47,7 @@ gcloud container clusters create "$CLUSTER" --zone "$ZONE"
 Configure `kubectl` to talk to the new cluster.
 
 ```shell
-gcloud container clusters get-credentials "$CLUSTER"
+gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 ```
 
 #### Clone this repo
@@ -62,6 +62,10 @@ gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketp
 #### Install the Application resource definition
 
 Do a one-time setup for your cluster to understand Application resources.
+
+<!--
+To do that, navigate to `k8s/vendor` subdirectory of the repository and run the following command:
+-->
 
 ```shell
 kubectl apply -f google-marketplace-k8s-app-tools/crd/*
@@ -157,19 +161,18 @@ following command to expose an external IP:
 ```
 kubectl patch svc "$APP_INSTANCE_NAME-wordpress-svc" \
   --namespace "$NAMESPACE" \
-  -p '{"spec": {"type": "LoadBalancer"}}'
+  --patch '{"spec": {"type": "LoadBalancer"}}'
 ```
 
 ### Access WordPress site
 
-Get the external IP of the Wordpress site service and visit
+Get the external IP of the WordPress site service and visit
 the URL printed below in your browser.
 
 ```
-SERVICE_IP=$(kubectl get \
-  --namespace ${NAMESPACE} \
-  svc ${APP_INSTANCE_NAME}-wordpress-svc \
-  -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-wordpress-svc \
+  --namespace $NAMESPACE \
+  --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
 echo "http://${SERVICE_IP}"
 ```
@@ -192,8 +195,8 @@ the right plugin for backups, including both paid and free options.
 Topics to consider when selecting a backup plugin should include:
 * *scope of backup* - your installation will contain not only media files or database data,
   but also themes, plugins and configurations; check if the plugin supports backing up all of them;
-* *schedule and manual triggering* - does the plugin perform regular backups with a schedule 
-  that you can define and does it allow to trigger backup manually (for instance, before updating 
+* *schedule and manual triggering* - does the plugin perform regular backups with a schedule
+  that you can define and does it allow to trigger backup manually (for instance, before updating
   the installation or just after finishing a large update to your configuration);
 * *location to store data* - your backup data should not be stored on the same server as your
   installation; one of the options to secure your backup data from accidental loss might be
@@ -205,7 +208,7 @@ Backing up data directly from the server gives you full control over the schedul
 backup, but is recommended only to advanced users.
 
 We will cover a scenario for backing up WordPress database and all installation files, including
-media content, themes and plugins. It is recommended to export the backup files to Google Cloud 
+media content, themes and plugins. It is recommended to export the backup files to Google Cloud
 Storage to secure the data in an independent location.
 
 ### Setup local environment
@@ -223,7 +226,7 @@ For backing up WordPress database, you will need to have connection to MySQL hos
 You can setup a local proxy with the following `kubectl` command in background:
 
 ```shell
-kubectl port-forward "svc/${APP_INSTANCE_NAME}-mysql-svc" 3306 -n "${NAMESPACE}"
+kubectl port-forward "svc/${APP_INSTANCE_NAME}-mysql-svc" 3306 --namespace "${NAMESPACE}"
 ```
 
 ### Create backup
@@ -250,13 +253,13 @@ scripts/backup.sh --app $APP_INSTANCE_NAME --namespace $NAMESPACE \
 
 It is recommended to store your backup files in an independent and reliable location like
 Google Cloud Storage (GCS) buckets. Read the [official documentation](https://cloud.google.com/storage/docs/creating-buckets)
-to learn more about creating GCS buckets, setting permissions and uploading files.  
+to learn more about creating GCS buckets, setting permissions and uploading files.
 
 ## Restore
 
 For restore procedure we assume that you already have your local environment populated with
 variables of `APP_INSTANCE_NAME` and `NAMESPACE` pointing to WordPress installation and
-established a MySQL connection. 
+established a MySQL connection.
 
 ### Restore WordPress database and files from backup
 
@@ -285,11 +288,11 @@ Please keep in mind that during the upgrade procedure your WordPress site will b
 Set your environment variables to match the installation properties:
 
 ```shell
-NAME=wordpress-1
-NAMESPACE=default
+export APP_INSTANCE_NAME=wordpress-1
+export NAMESPACE=default
 ```
 
-## Upgrade Wordpress
+## Upgrade WordPress
 
 Set the new image version in an environment variable:
 
@@ -300,7 +303,7 @@ export IMAGE_WORDPRESS=launcher.gcr.io/google/wordpress4-php5-apache:4.9
 Update the StatefulSet definition with new image reference:
 
 ```shell
-kubectl patch statefulset $NAME-wordpress \
+kubectl patch statefulset $APP_INSTANCE_NAME-wordpress \
   --namespace $NAMESPACE \
   --type='json' \
   --patch="[{ \
@@ -313,7 +316,7 @@ kubectl patch statefulset $NAME-wordpress \
 Monitor the process with:
 
 ```shell
-kubectl get pods "$NAME-wordpress-0" \
+kubectl get pods "$APP_INSTANCE_NAME-wordpress-0" \
   --output go-template='Status={{.status.phase}} Image={{(index .spec.containers 0).image}}' \
   --watch
 ```
@@ -332,7 +335,7 @@ export IMAGE_MYSQL=launcher.gcr.io/google/mysql5:5.7
 Update the StatefulSet definition with new image reference:
 
 ```shell
-kubectl patch statefulset $NAME-mysql \
+kubectl patch statefulset $APP_INSTANCE_NAME-mysql \
   --namespace $NAMESPACE \
   --type='json' \
   --patch="[{ \
@@ -345,7 +348,7 @@ kubectl patch statefulset $NAME-mysql \
 Monitor the process with:
 
 ```shell
-kubectl get pods $NAME-mysql-0 --namespace $NAMESPACE --watch
+kubectl get pods $APP_INSTANCE_NAME-mysql-0 --namespace $NAMESPACE --watch
 ```
 
 The pod should terminated and recreated with new image for `mysql` container. The final state of
@@ -354,7 +357,7 @@ the pod should be `Running` and marked as 1/1 in `READY` column.
 To check the current image used for `mysql` container, you can run the following command:
 
 ```shell
-kubectl get pod $NAME-mysql-0 \
+kubectl get pod $APP_INSTANCE_NAME-mysql-0 \
   --namespace $NAMESPACE \
   --output jsonpath='{.spec.containers[0].image}'
 ```
@@ -380,37 +383,34 @@ export APP_INSTANCE_NAME=wordpress-1
 export NAMESPACE=default
 ```
 
-### Prepare the manifest file
+### Delete the resources
 
-If you still have the expanded manifest file used for the installation, you can skip this part.
-Otherwise, generate it again. You can use a simplified variables substitution:
+> **NOTE:** Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions.
+> It means that for instance if you have `kubectl` in version 1.10.&ast; and Kubernetes 1.8.&ast;,
+> you may experience incompatibility issues, like not removing the StatefulSets with
+> apiVersion of apps/v1beta2.
 
-```shell
-awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE' \
-  > "${APP_INSTANCE_NAME}_manifest.yaml"
-```
-
-### Delete the resources using `kubectl delete`
-
-NOTE: Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions.
-  It means that for instance if you have `kubectl` in version 1.10.* and Kubernetes server 1.8.*,
-  you may experience incompatibility issues, like not removing the StatefulSets with
-  apiVersion of apps/v1beta2.
-
+If you still have the expanded manifest file used for the installation, you can use it to delete the resources.
 Run `kubectl` on expanded manifest file matching your installation:
 
 ```shell
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 ```
 
+Otherwise, delete the resources by indication of types and a label:
+
+```shell
+kubectl delete statefulset,secret,service \
+  --namespace $NAMESPACE \
+  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
+```
 ### Delete the persistent volumes of your installation
 
 By design, removal of StatefulSets in Kubernetes does not remove the PersistentVolumeClaims that
 were attached to their Pods. It protects your installations from mistakenly deleting stateful data.
 
 If you wish to remove the PersistentVolumeClaims with their attached persistent disks, run the
-following `kubectl` command:
+following `kubectl` commands:
 
 ```shell
 # specify the variables values matching your installation:

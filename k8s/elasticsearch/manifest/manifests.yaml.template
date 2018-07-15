@@ -41,7 +41,7 @@ spec:
   serviceName: $APP_INSTANCE_NAME-elasticsearch-svc
   replicas: $REPLICAS
   updateStrategy:
-      # The procedure for updating the ElasticSearch cluster is described at
+      # The procedure for updating the Elasticsearch cluster is described at
       # https://www.elastic.co/guide/en/elasticsearch/reference/current/rolling-upgrades.html
       type: OnDelete
   template:
