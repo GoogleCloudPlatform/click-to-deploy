@@ -194,17 +194,15 @@ spec:
           kibana_url="http://${APP_INSTANCE_NAME}-kibana-svc:5601"
           index_pattern_id="logstash-*"
 
-          set -e
-
           # Create index pattern to catch 'logstash-*':
-          curl --fail -XPOST --retry 5 \
+          curl --fail -XPOST \
             -H "Content-Type: application/json" -H "kbn-xsrf: anything" \
             "${kibana_url}/api/saved_objects/index-pattern/${index_pattern_id}" \
             -d"@/etc/kibana-config/index-logstash.json"
           echo "Index created."
 
           # Mark the 'logstash-*' pattern as default:
-          curl --fail -XPOST --retry 5 \
+          curl --fail -XPOST \
             -H "Content-Type: application/json" -H "kbn-xsrf: anything" \
             "${kibana_url}/api/kibana/settings/defaultIndex" \
             -d"{\"value\":\"${index_pattern_id}\"}"
@@ -212,7 +210,7 @@ spec:
 
           # Store saved searches:
           for search_file in /etc/kibana-config/search-*.json; do
-            curl --fail -XPOST --retry 5 \
+            curl --fail -XPOST \
               -H "Content-Type: application/json" -H "kbn-xsrf: anything" \
               "${kibana_url}/api/saved_objects/search" \
               -d"@${search_file}"

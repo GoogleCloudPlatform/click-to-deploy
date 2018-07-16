@@ -33,7 +33,7 @@ spec:
       initContainers:
       # This init container is reponsible for setting appropriate permissions
       - name: initialize-volume
-        image: launcher.gcr.io/google/debian9:latest
+        image: $IMAGE_NGINX_INIT
         imagePullPolicy: Always
         command:
         - /bin/bash
