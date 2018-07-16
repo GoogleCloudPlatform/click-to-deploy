@@ -159,11 +159,13 @@ for more information about `influx` usage and how to upload sample data to your 
 #### Connect to InfluxDB via Pod
 
 To do this, please identify InfluxDB's Pod using the following command:
+
 ```shell
 kubectl get pods -o wide -l app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
 
 Now, you can access InfluxDB using `influx` tool
+
 ```shell
 kubectl exec -it "$APP_INSTANCE_NAME-influxdb-0" --namespace "$NAMESPACE" -- influx -host localhost -port 8086 -username <admin username> -password <admin password>
 ```
@@ -175,11 +177,13 @@ Please, refer to [InfluxDB installation instructions](https://docs.influxdata.co
 to learn how to do that.
 
 You could also use a local proxy to access InfluxDB that is not exposed publicly. Run the following command in a separate background terminal:
+
 ```shell
  kubectl port-forward "${APP_INSTANCE_NAME}-influxdb-0" 8086:8086 --namespace "${NAMESPACE}"
  ```
 
 Now, in your main terminal you can invoke `influx` tool as follows:
+
 ```shell
 influx -host localhost -port 8086 -username <admin username> -password <admin password>
 ```
