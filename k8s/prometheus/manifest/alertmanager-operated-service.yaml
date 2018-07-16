@@ -4,6 +4,7 @@ metadata:
   name: $APP_INSTANCE_NAME-alertmanager-operated
   labels:
     app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/component: alertmanager
 spec:
   type: "ClusterIP"
   clusterIP: None
