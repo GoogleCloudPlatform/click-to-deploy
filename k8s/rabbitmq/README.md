@@ -59,8 +59,8 @@ gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketp
 An Application resource is a collection of individual Kubernetes components,
 such as Services, Deployments, and so on, that you can manage as a group.
 
-Set up your cluster to understand Application resources, navigate to `k8s/vendor`
-folder in the repository and run the following command:
+To set up your cluster to understand Application resources, navigate to the `k8s/vendor`
+folder in the repository, then run the following command:
 
 ```shell
 kubectl apply -f marketplace-k8s-app-tools/crd/*
