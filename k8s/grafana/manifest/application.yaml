@@ -13,9 +13,9 @@ spec:
     type: Grafana
     version: '5.1'
     description: |-
-      Grafana is an open-source platform for data visualization and monitoring. A large number of supported data sources
-      makes it a universal visualization tool for many popular open source data collection systems - including Prometheus,
-      InfluxDB, Elasticsearch, MySQL or PostgreSQL.
+      Grafana is an open-source platform for data visualization and monitoring. A large number of
+      supported data sources makes it a universal visualization tool for many popular open source
+      data collection systems - including Prometheus, InfluxDB, Elasticsearch, MySQL or PostgreSQL.
 
       # Support
       Google does not offer support for this solution. However, community support is available on
