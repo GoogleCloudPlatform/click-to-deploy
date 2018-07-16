@@ -26,6 +26,7 @@ You'll need the following tools in your development environment:
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 - [docker](https://docs.docker.com/install/)
+- [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
 #### Create a Google Kubernetes Engine cluster
 
@@ -163,7 +164,37 @@ where `<new_replicas>` defines the new desired number.
 
 # Backup and Restore
 
-TODO by rafalbiegacz@
+To perform backup & restore of the content of your NGINX web server you can use scripts proved for you in `google-click-to-deploy/k8s/nginx/scripts` folder.
+
+## To perform backup of the content of your NGINX web server run the following commands
+
+```shell
+export APP_INSTANCE_NAME=<the name of your application, e.g. nginx-1>
+cd google-click-to-deploy/k8s/nginx/scripts
+./backup-webdata.sh
+```
+
+## To perform restore of the content of your NGINX web server run the following commands
+
+```shell
+export APP_INSTANCE_NAME=<the name of your application, e.g. nginx-1>
+cd google-click-to-deploy/k8s/nginx/scripts
+./upload-webdata.sh
+```
+
+# Re-configure certificate of your NGINX server
+
+It's higly recommened that you use a valid certificate issued by an approved Certificate Authority for your NGINX server
+
+To update the certificate for NGINX server you need to have:
+- certificate file
+- private key file
+
+To update the certificate for a running NGINX server do the following:
+1. Save the certificate under `https1.cert` file in `google-click-to-deploy/k8s/nginx/scripts` folder.
+1. Save the private key of your certificate under `https1.key` file in `google-click-to-deploy/k8s/nginx/scripts` folder.
+1. Navigate to `google-click-to-deploy/k8s/nginx/` folder.
+1. Run the update script: `./nginx-update-cert.sh`.
 
 # Update
 
