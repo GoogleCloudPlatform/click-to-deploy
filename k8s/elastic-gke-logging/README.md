@@ -29,6 +29,7 @@ You'll need the following tools in your development environment:
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 - [docker](https://docs.docker.com/install/)
+- [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
 Configure `gcloud` as a Docker credential helper:
 
@@ -63,7 +64,7 @@ git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 
 #### Install the Application resource definition
 
-Do a one-time setup for your cluster to understand Application resources.
+Do a one-time setup for your cluster to understand Application resource via installing Application's Custom Resource Definition.
 
 ```shell
 kubectl apply -f click-to-deploy/k8s/vendor/marketplace-tools/crd/*
