@@ -19,8 +19,8 @@ APP_TEST_PARAMETERS ?= {}
 
 
 app/build:: .build/jenkins/debian9  \
-	          .build/jenkins/deployer \
-	          .build/jenkins/jenkins
+            .build/jenkins/deployer \
+            .build/jenkins/jenkins
 
 
 .build/jenkins: | .build
@@ -52,10 +52,11 @@ app/build:: .build/jenkins/debian9  \
 
 
 .build/jenkins/jenkins: .build/var/REGISTRY \
-                            .build/var/TAG \
-                            | .build/jenkins
-	docker pull launcher.gcr.io/google/jenkins2
-	docker tag launcher.gcr.io/google/jenkins2 \
+                        .build/var/TAG \
+                        | .build/jenkins
+
+	docker pull "launcher.gcr.io/google/jenkins2:$(TAG)"
+	docker tag "launcher.gcr.io/google/jenkins2:$(TAG)" \
 	    "$(REGISTRY)/jenkins:$(TAG)"
 	docker push "$(REGISTRY)/jenkins:$(TAG)"
 	@touch "$@"

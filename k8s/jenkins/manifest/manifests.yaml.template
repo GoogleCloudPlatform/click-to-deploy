@@ -2,7 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: $APP_INSTANCE_NAME-jenkins-pvc
-  labels: &JenkinsDeploymentLabels
+  labels:
     app.kubernetes.io/name: $APP_INSTANCE_NAME
     app.kubernetes.io/component: jenkins-master
 spec:
@@ -64,10 +64,10 @@ spec:
         resources:
           limits:
             cpu: 500m
-            memory: 2000Mi
+            memory: 2.5Gi
           requests:
             cpu: 500m
-            memory: 2000Mi
+            memory: 2.5Gi
 ---
 apiVersion: v1
 kind: Service
@@ -104,10 +104,11 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: $APP_INSTANCE_NAME-jenkins-ui
-  labels: &JenkinsDeploymentLabels
+  labels:
     app.kubernetes.io/name: $APP_INSTANCE_NAME
     app.kubernetes.io/component: jenkins-master
 spec:
+# Resource Secret $APP_INSTANCE_NAME-tls is created by deployer via entrypoint.sh 
   tls:
   - secretName: $APP_INSTANCE_NAME-tls
   backend:
