@@ -14,7 +14,7 @@ Popular open stacks on Kubernetes packaged by Google.
 
 Get up and running with a few clicks! Install this WordPress app to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
-[on-screen instructions](https://console.cloud.google.com/launcher/details/google/wordpress).
+[on-screen instructions](https://console.cloud.google.com/marketplace/details/google/wordpress).
 
 ## Command line instructions
 

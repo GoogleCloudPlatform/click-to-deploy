@@ -17,7 +17,7 @@ Popular open stacks on Kubernetes packaged by Google.
 
 Get up and running with a few clicks! Install Spark Operator app to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
-[on-screen instructions](https://console.cloud.google.com/launcher/details/google/spark-operator).
+[on-screen instructions](https://console.cloud.google.com/marketplace/details/google/spark-operator).
 
 ## Command line instructions
 

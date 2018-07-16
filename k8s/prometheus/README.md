@@ -19,7 +19,7 @@ Popular open stacks on Kubernetes packaged by Google.
 
 Get up and running with a few clicks! Install this Prometheus app to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
-[on-screen instructions](https://console.cloud.google.com/launcher/details/google/prometheus).
+[on-screen instructions](https://console.cloud.google.com/marketplace/details/google/prometheus).
 
 ## Command line instructions
 

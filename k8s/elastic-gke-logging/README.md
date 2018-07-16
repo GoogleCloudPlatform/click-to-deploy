@@ -17,7 +17,7 @@ Popular open stacks on Kubernetes packaged by Google.
 
 Get up and running with a few clicks! Install this Elastic GKE Logging app to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
-[on-screen instructions](https://console.cloud.google.com/launcher/details/google/elastic-gke-logging).
+[on-screen instructions](https://console.cloud.google.com/marketplace/details/google/elastic-gke-logging).
 
 ## Command line instructions
 
