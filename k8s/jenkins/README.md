@@ -221,7 +221,7 @@ Just kill your Jenkins pod and let Kubernetes install new version (please, consi
 
 ```shell
 ### did I mention backup?
-kubectl -n$namespace delete $(kubectl -n$namespace get pod -oname)
+kubectl -n$NAMESPACE delete $(kubectl -n$NAMESPACE get pod -oname | sed -n /\\/$APP_INSTANCE_NAME/s.pods\\?/..p)
 ```
 
 # Deletion
