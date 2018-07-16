@@ -56,6 +56,8 @@ spec:
       If you are interested in clustered version of InfluxDB, please, take a look on
       [Enterprise version of InfluxDB](https://www.influxdata.com/)
   info:
+  - name: InfluxDB service URL
+    value: http://${APP_INSTANCE_NAME}-influxdb-svc:8086/
   - name: InfluxDB admin username
     type: Reference
     valueFrom:
