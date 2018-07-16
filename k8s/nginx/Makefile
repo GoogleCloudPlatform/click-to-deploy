@@ -30,7 +30,7 @@ APP_TEST_PARAMETERS ?= {}
 
 
 app/build:: .build/nginx/debian9  \
-	          .build/nginx/deployer \
+            .build/nginx/deployer \
             .build/nginx/nginx
 
 
@@ -40,7 +40,7 @@ app/build:: .build/nginx/debian9  \
 
 .build/nginx/debian9: .build/var/REGISTRY \
                       .build/var/TAG \
-	                    | .build/nginx
+                      | .build/nginx
 	docker pull launcher.gcr.io/google/debian9
 	docker tag launcher.gcr.io/google/debian9 "$(REGISTRY)/debian9:$(TAG)"
 	docker push "$(REGISTRY)/debian9:$(TAG)"
