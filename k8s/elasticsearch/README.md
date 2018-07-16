@@ -90,7 +90,9 @@ cd google-click-to-deploy/k8s/elasticsearch
 
 #### Configure the app with environment variables
 
-Choose the instance name and namespace for the app:
+Choose an instance name and
+[namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)
+for the app. In most cases, you can use the `default` namespace.
 
 ```shell
 export APP_INSTANCE_NAME=elasticsearch-1
@@ -375,7 +377,7 @@ takes down and updates one replica at a time.
 
 1. In the GCP Console, open [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
 
-1. From the list of applications, click **Cassandra**.
+1. From the list of applications, click **Elasticsearch**.
 
 1. On the Application Details page, click **Delete**.
 
