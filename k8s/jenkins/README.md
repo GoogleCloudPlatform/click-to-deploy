@@ -12,7 +12,7 @@ Popular open source software stacks on Kubernetes packaged by Google and made av
 
 ## Quick install with Google Cloud Marketplace
 
-Install this Jenkins app to a Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
+Get up and running with a few clicks! Install this Jenkins app to a Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 [on-screen instructions](https://console.cloud.google.com/launcher/details/google/jenkins2).
 
 ## Command line instructions
@@ -24,16 +24,12 @@ Install this Jenkins app to a Google Kubernetes Engine cluster using Google Clou
 You'll need the following tools in your environment:
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-
-If you don't have gcloud command authenticated (or installed), please, follow this procedure to configure it for the first time.
-- [Download and authenticate gcloud](https://cloud.google.com/sdk/#Quick_Start)
+- [docker](https://docs.docker.com/install/)
 
 #### Configuration referenced in this readme
 
 ```shell
-### a bit of configuration
-### feel free to put it in a file for future use
-export CLUSTER=a-cluster
+export CLUSTER=marketplace-cluster
 export ZONE=us-west1-a
 ```
 
@@ -97,6 +93,15 @@ export NAMESPACE=default
 Configure the container images.
 
 ```shell
+# create a certificate for jenkins
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout /tmp/tls.key \
+    -out /tmp/tls.crt \
+    -subj "/CN=jenkins/O=jenkins"
+
+kubectl --namespace ${NAMESPACE} create secret generic ${APP_INSTANCE_NAME}-tls \
+        --from-file=/tmp/tls.crt --from-file=/tmp/tls.key
+
 export IMAGE_JENKINS="gcr.io/k8s-marketplace-eap/google/jenkins:latest"
 ```
 
@@ -108,10 +113,7 @@ This will ensure that the installed application will always use the same images,
 until you are ready to upgrade.
 
 ```shell
-repo=`echo $IMAGE_JENKINS | cut -d: -f1`;
-digest=`docker pull $IMAGE_JENKINS | sed -n -e 's/Digest: //p'`;
-export $i="$repo@$digest";
-env | grep $i;
+docker pull $IMAGE_JENKINS | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_JENKINS\")\":\"\$3}"
 ```
 
 #### Expand the manifest template
@@ -121,7 +123,7 @@ expanded manifest file for future updates to the application.
 
 ```shell
 awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_MEMCACHED $REPLICAS' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_JENKINS' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
@@ -148,17 +150,14 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 Get the Jenkins HTTP/HTTPS address
 
 ```shell
-echo https://$(kubectl -n$namespace get ingress \
-  -ojsonpath="{.items[0].status.loadBalancer.ingress[0].ip}")/
-### it's just a funcy way to do this
-kubectl -n $namespace get ingress
-### and copy ip address into browser
+echo https://$(kubectl -n$NAMESPACE get ingress -l "app.kubernetes.io/name=$APP_INSTANCE_NAME" -ojsonpath="{.items[0].status.loadBalancer.ingress[0].ip}")/
 ```
 
 For HTTPS you have to accept a certificate (we created a temporary one). Now you probably need a password
 
 ```shell
-kubectl -n$namespace exec $(kubectl -n$namespace get pod -oname|sed s.pods\\?/..) \
+kubectl -n$NAMESPACE exec \
+  $(kubectl -n$NAMESPACE get pod -oname | sed -n /\\/$APP_INSTANCE_NAME/s.pods\\?/..p) \
   cat /var/jenkins_home/secrets/initialAdminPassword
 ```
 
@@ -173,11 +172,48 @@ kubectl -n$namespace exec $(kubectl -n$namespace get pod -oname|sed s.pods\\?/..
 
 This installation is single master. If you need more power, just configure additional jenkins workers (slaves).
 
-# Backup and Restore
+# Backup
 
-Copy content of jenkins persistent volume or install Jenkins backup plugin, configure it to use .tar.gz format and create backup from Jenkins UI.
+Copy content of jenkins persistent volume or install Jenkins backup plugin (Backup plugin -- Backup or restore your Hudson configuration files) here:
 
-Copy backup into jenkins persistent volume or use Jenkins backup plugin to restore configuration.
+```shell
+echo https://$(kubectl -n$NAMESPACE get ingress -l "app.kubernetes.io/name=$APP_INSTANCE_NAME" \
+  -ojsonpath="{.items[0].status.loadBalancer.ingress[0].ip}")/pluginManager/available
+```
+
+set "Backup directory" to "/var/jenkins_home", configure it to use .tar.gz format and set other backup options here:
+
+```shell
+echo https://$(kubectl -n$NAMESPACE get ingress -l "app.kubernetes.io/name=$APP_INSTANCE_NAME" \
+  -ojsonpath="{.items[0].status.loadBalancer.ingress[0].ip}")/backup/backupsettings
+```
+
+create backup from Jenkins UI here:
+
+```shell
+echo https://$(kubectl -n$NAMESPACE get ingress -l "app.kubernetes.io/name=$APP_INSTANCE_NAME" \
+  -ojsonpath="{.items[0].status.loadBalancer.ingress[0].ip}")/backup/backup
+```
+
+copy your newly created backup file to your workstation:
+
+```shell
+kubectl cp $(kubectl -n$NAMESPACE get ingress -l "app.kubernetes.io/name=$APP_INSTANCE_NAME" -ojsonpath="{.items[0].status.loadBalancer.ingress[0].ip}"):/var/jenkins_home/<YOUR-BACKUP-FILE-NAME.tar.gz> /tmp
+```
+# and Restore
+
+Copy backup into jenkins persistent volume or copy backup file to Jankins container:
+
+```shell
+kubectl cp /tmp/<YOUR-BACKUP-FILE-NAME.tar.gz> $(kubectl -n$NAMESPACE get ingress -l "app.kubernetes.io/name=$APP_INSTANCE_NAME" -ojsonpath="{.items[0].status.loadBalancer.ingress[0].ip}"):/var/jenkins_home/
+```
+
+and use Jenkins backup plugin to restore configuration here:
+
+```shell
+echo https://$(kubectl -n$NAMESPACE get ingress -l "app.kubernetes.io/name=$APP_INSTANCE_NAME" \
+  -ojsonpath="{.items[0].status.loadBalancer.ingress[0].ip}")/backup/launchrestore
+```
 
 # Update and Upgrade
 
