@@ -46,3 +46,13 @@ fi
 kubectl --namespace $NAMESPACE create secret generic $APP_INSTANCE_NAME-nginx-secret \
 	--from-file=$CERT_FILE --from-file=$KEY_FILE \
 	--dry-run -o yaml | kubectl apply -f -
+PODS=$(kubectl get pods | awk 'FNR>1 {print $1}')
+
+TIMEOUT=30
+
+for i in ${PODS[@]}; do
+  echo "Deleting Pod: $i..."
+  kubectl delete pod $i
+  echo "Sleeping for $TIMEOUT seconds..."
+  sleep $TIMEOUT
+done
