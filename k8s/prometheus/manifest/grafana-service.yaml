@@ -4,6 +4,8 @@ metadata:
   name: $APP_INSTANCE_NAME-grafana
   labels:
     k8s-app: grafana
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/component: grafana
 spec:
   ports:
     - name: http

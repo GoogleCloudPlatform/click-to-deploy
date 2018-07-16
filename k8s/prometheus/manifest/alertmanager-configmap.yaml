@@ -4,6 +4,7 @@ metadata:
   name: $APP_INSTANCE_NAME-alertmanager-config
   labels:
     app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/component: alertmanager
 data:
   alertmanager.yml: |
     global: null
