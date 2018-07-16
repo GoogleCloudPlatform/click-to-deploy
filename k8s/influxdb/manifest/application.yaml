@@ -32,16 +32,28 @@ spec:
     notes: |-
       # Access InfluxDB instance
 
-      Run the following command to discover IP address of InfluxDB instance using kubectl:
+      It is possible to connect to InfluxDB using `influx` tool.
 
+      Please, refer to [InfluxDB Getting Started](https://docs.influxdata.com/influxdb/v1.5/introduction/getting-started/) for more information about `influx` usage and how to upload sample data to your InfluxDB instance.
+
+      To connect to your InfluxDB instance, please, follow the instructions presented below.
+
+      Identify InfluxDB's Pod using the following command:
       ```shell
-      kubectl get svc -o wide -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace "$NAMESPACE"
+      kubectl get pods -o wide -l app.kubernetes.io/name=$APP_INSTANCE_NAME
       ```
 
-      # Scale the cluster
+      Now, you can access InfluxDB using `influx` tool
+      ```shell
+      kubectl exec -it "$APP_INSTANCE_NAME-influxdb-0" --namespace "$NAMESPACE" -- influx -host localhost -port 8086 -username <InfluxDB Admin username> -password <InfluxDB Admin user's password>
+      ```
 
-      This is a free version of InfluxDB that doesn't offer a cluster version option for InfluxDB.
-      If you are interested in cluster version of InfluxDB, please, take a look on
+      NOTE: Influx Admin username and password are available in the section InfluxDB Info.
+
+      # Scaling InfluxDB solution
+
+      This is a free version of InfluxDB that doesn't offer a clustered version of InfluxDB.
+      If you are interested in clustered version of InfluxDB, please, take a look on
       [Enterprise version of InfluxDB](https://www.influxdata.com/)
   info:
   - name: InfluxDB admin username
