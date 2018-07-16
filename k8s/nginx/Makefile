@@ -18,12 +18,22 @@ APP_PARAMETERS ?= { \
 APP_TEST_PARAMETERS ?= {}
 
 
-app/build:: .build/nginx/deployer \
+app/build:: .build/nginx/debian9  \
+	          .build/nginx/deployer \
             .build/nginx/nginx
 
 
 .build/nginx: | .build
 	mkdir -p "$@"
+
+
+.build/nginx/debian9: .build/var/REGISTRY \
+                      .build/var/TAG \
+	                    | .build/nginx
+	docker pull launcher.gcr.io/google/debian9
+	docker tag launcher.gcr.io/google/debian9 "$(REGISTRY)/debian9:$(TAG)"
+	docker push "$(REGISTRY)/debian9:$(TAG)"
+	@touch "$@"
 
 
 .build/nginx/deployer: deployer/* \
