@@ -11,21 +11,45 @@ $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/rabbitmq/deployer:$(TAG)
 NAME ?= rabbitmq-1
-REPLICAS ?= 3
+
+ifdef IMAGE_RABBITMQ
+  IMAGE_RABBITMQ_FIELD = , "IMAGE_RABBITMQ": "$(IMAGE_RABBITMQ)"
+endif
+
+ifdef IMAGE_RABBITMQ_INIT
+  IMAGE_RABBITMQ_INIT_FIELD = , "IMAGE_RABBITMQ_INIT": "$(IMAGE_RABBITMQ_INIT)"
+endif
+
+ifdef REPLICAS
+  REPLICAS_FIELD = , "REPLICAS": "$(REPLICAS)"
+endif
+
 APP_PARAMETERS ?= { \
   "APP_INSTANCE_NAME": "$(NAME)", \
-  "NAMESPACE": "$(NAMESPACE)", \
-  "REPLICAS": "$(REPLICAS)" \
+  "NAMESPACE": "$(NAMESPACE)" \
+  $(IMAGE_RABBITMQ_FIELD) \
+  $(IMAGE_RABBITMQ_INIT_FIELD) \
+  $(REPLICAS_FIELD) \
 }
 APP_TEST_PARAMETERS ?= {}
 
 
-app/build:: .build/rabbitmq/deployer \
+app/build:: .build/rabbitmq/debian9  \
+            .build/rabbitmq/deployer \
             .build/rabbitmq/rabbitmq
 
 
 .build/rabbitmq: | .build
 	mkdir -p "$@"
+
+
+.build/rabbitmq/debian9: .build/var/REGISTRY \
+                         .build/var/TAG \
+                         | .build/rabbitmq
+	docker pull launcher.gcr.io/google/debian9
+	docker tag launcher.gcr.io/google/debian9 "$(REGISTRY)/rabbitmq/debian9:$(TAG)"
+	docker push "$(REGISTRY)/rabbitmq/debian9:$(TAG)"
+	@touch "$@"
 
 
 .build/rabbitmq/deployer: deployer/* \
