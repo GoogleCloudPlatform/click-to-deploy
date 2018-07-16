@@ -64,12 +64,22 @@ spec:
       This version of NGINX application uses pre-generated certificate which is self-signed and is meant to be
       only a temporary solution just to exemplify SSL/TLS configuration.
 
+      Generate a new certificate for your NGINX server using `openssl` command.
+
       Configure your own certificate using the following command:
       ```
-      kubectl
+      export CERT_FILE=https1.cert
+      export KEY_FILE=https1.key
+      export APP_INSTANCE_NAME=<name of your NGINX instance, e.g. nginx-1>
+      export NAMESPACE=<name of your Kurbernetes namespace, e.g. default>
+
+      kubectl --namespace $NAMESPACE create secret generic $APP_INSTANCE_NAME-nginx-secret \
+        --from-file=$CERT_FILE --from-file=$KEY_FILE \
+        --dry-run -o yaml | kubectl apply -f -
       ```
-      where .crt is a file containing SSL certificate and .key file contains private part of it.
-      
+      where .cert is a file containing SSL certificate and .key file contains private part of it.
+
+      Restart all the Pods within NGINX StatefulSet.
   info:
   - name: Nginx External IP
     type: Reference
