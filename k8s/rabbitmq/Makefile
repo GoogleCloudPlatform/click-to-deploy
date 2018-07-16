@@ -33,8 +33,8 @@ app/build:: .build/rabbitmq/debian9  \
                       .build/var/TAG \
 	                    | .build/nginx
 	docker pull launcher.gcr.io/google/debian9
-	docker tag launcher.gcr.io/google/debian9 "$(REGISTRY)/debian9:$(TAG)"
-	docker push "$(REGISTRY)/debian9:$(TAG)"
+	docker tag launcher.gcr.io/google/debian9 "$(REGISTRY)/rabbitmq/debian9:$(TAG)"
+	docker push "$(REGISTRY)/rabbitmq/debian9:$(TAG)"
 	@touch "$@"
 
 
