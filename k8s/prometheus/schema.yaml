@@ -22,32 +22,32 @@ properties:
         length: 12
   IMAGE_PROMETHEUS:
     type: string
-    default: $REGISTRY/prometheus:$TAG
+    default: $REGISTRY:$TAG
     x-google-marketplace:
       type: IMAGE
   IMAGE_ALERTMANAGER:
     type: string
-    default: $REGISTRY/prometheus/alertmanager:$TAG
+    default: $REGISTRY/alertmanager:$TAG
     x-google-marketplace:
       type: IMAGE
   IMAGE_KUBE_STATE_METRICS:
     type: string
-    default: $REGISTRY/prometheus/kubestatemetrics:$TAG
+    default: $REGISTRY/kubestatemetrics:$TAG
     x-google-marketplace:
       type: IMAGE
   IMAGE_NODE_EXPORTER:
     type: string
-    default: $REGISTRY/prometheus/nodeexporter:$TAG
+    default: $REGISTRY/nodeexporter:$TAG
     x-google-marketplace:
       type: IMAGE
   IMAGE_GRAFANA:
     type: string
-    default: $REGISTRY/prometheus/grafana:$TAG
+    default: $REGISTRY/grafana:$TAG
     x-google-marketplace:
       type: IMAGE
   IMAGE_PROMETHEUS_INIT:
     type: string
-    default: $REGISTRY/prometheus/debian9:$TAG
+    default: $REGISTRY/debian9:$TAG
     x-google-marketplace:
       type: IMAGE
   PROMETHEUS_SERVICE_ACCOUNT:
