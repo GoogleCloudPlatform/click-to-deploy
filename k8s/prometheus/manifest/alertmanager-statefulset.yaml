@@ -5,6 +5,7 @@ metadata:
   labels:
     k8s-app: alertmanager
     app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/component: alertmanager
 spec:
   serviceName: "$APP_INSTANCE_NAME-alertmanager-operated"
   replicas: 2
