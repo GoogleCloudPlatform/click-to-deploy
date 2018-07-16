@@ -110,5 +110,5 @@ spec:
   tls:
   - secretName: $APP_INSTANCE_NAME-tls
   backend:
-    serviceName: $APP_INSTANCE_NAME-ui
+    serviceName: $APP_INSTANCE_NAME-jenkins-ui
     servicePort: 8080
