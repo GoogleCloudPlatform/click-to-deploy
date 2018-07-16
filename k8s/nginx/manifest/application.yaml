@@ -42,6 +42,8 @@ spec:
     - description: 'NGINX: Getting Started'
       url: https://www.nginx.com/resources/wiki/start/
     notes: |-
+      # Configuring content of NGINX server
+      
       Identify Persistent Volume used by NGINX solution and upload the content
       you would like NGINX web server to serve.
 
@@ -57,6 +59,17 @@ spec:
          ```
          kubectl exec $APP_INSTANCE_NAME-nginx-0 -- chmod -R a+r /usr/share/nginx/html
          ```
+      # Configuring SSL certificate for NGINX server
+
+      This version of NGINX application uses pre-generated certificate which is self-signed and is meant to be
+      only a temporary solution just to exemplify SSL/TLS configuration.
+
+      Configure your own certificate using the following command:
+      ```
+      kubectl
+      ```
+      where .crt is a file containing SSL certificate and .key file contains private part of it.
+      
   info:
   - name: Nginx External IP
     type: Reference
