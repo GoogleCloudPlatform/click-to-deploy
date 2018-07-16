@@ -33,7 +33,6 @@ app/build:: .build/spark-operator/deployer \
 .build/spark-operator/deployer: deployer/* \
                                 manifest/* \
                                 schema.yaml \
-                                .build/marketplace/deployer/envsubst \
                                 .build/var/APP_DEPLOYER_IMAGE \
                                 .build/var/REGISTRY \
                                 .build/var/TAG \
