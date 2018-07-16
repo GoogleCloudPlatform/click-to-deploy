@@ -48,7 +48,7 @@ kubectl --namespace $NAMESPACE create secret generic $APP_INSTANCE_NAME-nginx-se
 	--dry-run -o yaml | kubectl apply -f -
 PODS=$(kubectl get pods | awk 'FNR>1 {print $1}')
 
-TIMEOUT=30
+TIMEOUT=60
 
 for i in ${PODS[@]}; do
   echo "Deleting Pod: $i..."
