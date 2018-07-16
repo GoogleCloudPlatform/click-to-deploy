@@ -26,7 +26,7 @@ endif
 
 APP_PARAMETERS ?= { \
   "APP_INSTANCE_NAME": "$(NAME)", \
-  "NAMESPACE": "$(NAMESPACE)", \
+  "NAMESPACE": "$(NAMESPACE)" \
   $(IMAGE_RABBITMQ_FIELD) \
   $(IMAGE_RABBITMQ_INIT_FIELD) \
   $(REPLICAS_FIELD) \
@@ -45,7 +45,7 @@ app/build:: .build/rabbitmq/debian9  \
 
 .build/rabbitmq/debian9: .build/var/REGISTRY \
                          .build/var/TAG \
-                         | .build/nginx
+                         | .build/rabbitmq
 	docker pull launcher.gcr.io/google/debian9
 	docker tag launcher.gcr.io/google/debian9 "$(REGISTRY)/rabbitmq/debian9:$(TAG)"
 	docker push "$(REGISTRY)/rabbitmq/debian9:$(TAG)"
