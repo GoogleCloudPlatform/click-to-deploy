@@ -34,8 +34,10 @@ spec:
           claimName: $APP_INSTANCE_NAME-jenkins-pvc
       initContainers:
         - name: volume-permissions-fix
-          image: $IMAGE_JENKINS_INIT
+          image: $IMAGE_JENKINS
           command: ["sh", "-c", "chown 1000:1000 /var/jenkins_home"]
+          securityContext:
+            runAsUser: 0
           volumeMounts:
           - name: $APP_INSTANCE_NAME-jenkins-pvc
             mountPath: /var/jenkins_home
@@ -63,9 +65,9 @@ spec:
           value: '-Xmx1800m'
         resources:
           limits:
-            memory: 2Gi
+            memory: 2.0Gi
           requests:
-            memory: 2Gi
+            memory: 2.0Gi
 ---
 apiVersion: v1
 kind: Service
