@@ -14,12 +14,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -eu
+set -e
 
-echo "Performing upload of content to NGINX server..."
-echo "- Connecting to $APP_INSTANCE_NAME-nginx-0 Pod"
-command="cp html $APP_INSTANCE_NAME-nginx-0:/usr/share/nginx/html"
-echo "- Executing: $command" 
-kubectl cp html $APP_INSTANCE_NAME-nginx-0:/usr/share/nginx
-kubectl exec $APP_INSTANCE_NAME-nginx-0 -- chmod -R a+r /usr/share/nginx/html
+if [[ -z "$NAMESPACE" ]]; then
+  echo "Define NAMESPACE environment variable!"
+  exit 1
+fi
+
+if [[ -z "$APP_INSTANCE_NAME" ]]; then
+  echo "Define APP_INSTANCE_NAME environment variable!"
+  exit 1
+fi
+
+PODS=$(kubectl get pods --namespace $NAMESPACE | awk 'FNR>1 {print $1}')
+TIMEOUT=60
+
+echo "Performing upload of content to NGINX server instances..."
+
+for i in ${PODS[@]}; do
+  echo "- uploading data to $i Pod"
+  kubectl cp html $i:/usr/share/nginx
+  kubectl exec $i -- chmod -R a+r /usr/share/nginx/html
+done
+
 echo "Upload operation finished."
