@@ -28,9 +28,9 @@ APP_PARAMETERS ?= { \
 APP_TEST_PARAMETERS ?= {}
 
 
-app/build:: .build/grafana/deployer \
-            .build/grafana/grafana \
-            .build/grafana/debian9
+app/build:: .build/grafana/debian9 \
+            .build/grafana/deployer \
+            .build/grafana/grafana
 
 
 .build/grafana: | .build
