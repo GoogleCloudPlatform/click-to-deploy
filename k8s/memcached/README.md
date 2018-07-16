@@ -15,7 +15,7 @@ Popular open stacks on Kubernetes, packaged by Google.
 
 Get up and running with a few clicks! Install this Memcached app to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
-[on-screen instructions](https://console.cloud.google.com/marketplace/details/google/memcached).
+[on-screen instructions](https://console.cloud.google.com/launcher/details/google/memcached).
 
 ## Command line instructions
 
@@ -65,7 +65,7 @@ Set up your cluster to understand Application resources, navigate to `k8s/vendor
 folder in the repository and run the following command:
 
 ```shell
-kubectl apply -f marketplace-k8s-app-tools/crd/*
+kubectl apply -f google-marketplace-k8s-app-tools/crd/*
 ```
 
 You need to run this command once.
