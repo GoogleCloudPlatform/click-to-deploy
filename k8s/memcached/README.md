@@ -27,6 +27,8 @@ You'll need the following tools in your development environment:
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 - [docker](https://docs.docker.com/install/)
+- [pip](https://pip.pypa.io/en/stable/installing/)
+- [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
 #### Create a Google Kubernetes Engine cluster
 
@@ -56,7 +58,7 @@ gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketp
 
 #### Install the Application resource definition
 
-Do a one-time setup for your cluster to understand Application resources.
+Do a one-time setup for your cluster to understand Application resource via installing Application's Custom Resource Definition.
 
 <!--
 To do that, navigate to `k8s/vendor` subdirectory of the repository and run the following command:
@@ -88,6 +90,11 @@ export APP_INSTANCE_NAME=memcached-1
 export NAMESPACE=default
 ```
 
+Specify the number of nodes for Memcached solution:
+```shell
+export REPLICAS=3
+```
+
 Configure the container images.
 
 ```shell
@@ -102,12 +109,10 @@ This will ensure that the installed application will always use the same images,
 until you are ready to upgrade.
 
 ```shell
-for i in "IMAGE_MEMCACHED"; do
-  repo=`echo ${!i} | cut -d: -f1`;
-  digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
-  export $i="$repo@$digest";
-  env | grep $i;
-done
+repo=`echo $IMAGE_MEMCACHED | cut -d: -f1`;
+digest=`docker pull $IMAGE_MEMCACHED | sed -n -e 's/Digest: //p'`;
+export $i="$repo@$digest";
+env | grep $i;
 ```
 
 #### Expand the manifest template
@@ -239,6 +244,18 @@ You can uninstall/delete Memcached application either using Google Cloud Console
 ```shell
 cd google-click-to-deploy/k8s/memcached
 ```
+
+* Expand the manifest template
+
+Use `envsubst` to expand the template. It is recommended that you save the
+expanded manifest file for future updates to the application.
+
+```shell
+awk 'BEGINFILE {print "---"}{print}' manifest/* \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_MEMCACHED $REPLICAS' \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
+```
+
 * Run the uninstall command
 
 ```shell
