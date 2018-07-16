@@ -161,7 +161,7 @@ for more information about `influx` usage and how to upload sample data to your 
 To do this, please identify InfluxDB's Pod using the following command:
 
 ```shell
-kubectl get pods -o wide -l app.kubernetes.io/name=$APP_INSTANCE_NAME
+kubectl get pods -o wide -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace "$NAMESPACE"
 ```
 
 Now, you can access InfluxDB using `influx` tool

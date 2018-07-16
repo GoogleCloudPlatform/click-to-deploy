@@ -40,12 +40,12 @@ spec:
 
       Identify InfluxDB's Pod using the following command:
       ```shell
-      kubectl get pods -o wide -l app.kubernetes.io/name=$APP_INSTANCE_NAME
+      kubectl get pods -o wide -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace "$NAMESPACE"
       ```
 
       Now, you can access InfluxDB using `influx` tool
       ```shell
-      kubectl exec -it "$APP_INSTANCE_NAME-influxdb-0" --namespace "$NAMESPACE" -- influx -host localhost -port 8086 -username <InfluxDB Admin username> -password <InfluxDB Admin user's password>
+      kubectl exec -it "$APP_INSTANCE_NAME-influxdb-0" --namespace "$NAMESPACE" -- influx -host localhost -port 8086 -username <admin username> -password <admin password>
       ```
 
       NOTE: Influx Admin username and password are available in the section InfluxDB Info.
@@ -56,8 +56,10 @@ spec:
       If you are interested in clustered version of InfluxDB, please, take a look on
       [Enterprise version of InfluxDB](https://www.influxdata.com/)
   info:
-  - name: InfluxDB service URL
+  - name: InfluxDB URL (internal)
     value: http://${APP_INSTANCE_NAME}-influxdb-svc:8086/
+  - name: Application Namespace
+    value: $NAMESPACE
   - name: InfluxDB admin username
     type: Reference
     valueFrom:
