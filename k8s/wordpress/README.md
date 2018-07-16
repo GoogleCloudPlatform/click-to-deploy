@@ -381,7 +381,7 @@ kubectl get pod $APP_INSTANCE_NAME-mysql-0 \
 
 1. In the GCP Console, open [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
 
-1. From the list of applications, click **Cassandra**.
+1. From the list of applications, click **WordPress**.
 
 1. On the Application Details page, click **Delete**.
 
@@ -418,7 +418,7 @@ kubectl delete statefulset,service \
 ```
 ### Delete the persistent volumes of your installation
 
-By design, removal of StatefulSets in Kubernetes does not remove
+By design, the removal of StatefulSets in Kubernetes does not remove
 PersistentVolumeClaims that were attached to their Pods. This prevents your
 installations from accidentally deleting stateful data.
 

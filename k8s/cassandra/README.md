@@ -358,7 +358,7 @@ export NAMESPACE=default
 Assign the new image to your StatefulSet definition:
 
 ```shell
-IMAGE_CASSANDRA=[IMAGE_REFERENCE]
+IMAGE_CASSANDRA=[INEW_MAGE_REFERENCE]
 
 kubectl set image statefulset "${APP_INSTANCE_NAME}-cassandra" \
   --namespace "${NAMESPACE}" "cassandra=${IMAGE_CASSANDRA}"
@@ -420,9 +420,10 @@ kubectl delete statefulset,service \
   --namespace $NAMESPACE \
   --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
+
 ### Delete the persistent volumes of your installation
 
-By design, removal of StatefulSets in Kubernetes does not remove
+By design, the removal of StatefulSets in Kubernetes does not remove
 PersistentVolumeClaims that were attached to their Pods. This prevents your
 installations from accidentally deleting stateful data.
 
