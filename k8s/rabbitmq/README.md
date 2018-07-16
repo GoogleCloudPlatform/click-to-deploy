@@ -438,6 +438,11 @@ kubectl delete persistentvolumeclaims \
 Optionally, if you don't need the deployed application or the GKE cluster,
 delete the cluster using this command:
 
-```
+
+```shell
+export CLUSTER=rabbitmq-cluster
+# replace with the zone that you used
+export ZONE=us-west1-a
+
 gcloud container clusters delete "$CLUSTER" --zone "$ZONE"
 ```
