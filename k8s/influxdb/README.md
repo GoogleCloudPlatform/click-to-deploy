@@ -244,7 +244,6 @@ cd google-click-to-deploy/k8s/influxdb/scripts
 
 Backup data will be stored in `influxdb-backup` directory on your local computer.
 
-
 ## Restore InfluxDB data on running InfluxDB instance
 Navigate to the `influxdb/scripts` directory.
 

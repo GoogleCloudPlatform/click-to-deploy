@@ -35,9 +35,10 @@ echo "Connecting to the following InfluxDB: $INFLUXDB_INSTANCE..."
 
 echo "Creating restore directory..."
 kubectl exec $INFLUXDB_INSTANCE-influxdb-0 --namespace "$NAMESPACE" -- mkdir -p /$INFLUXDB_BACKUP_DIR
-echo "Copying backup to local computer"
+echo "- Copying backup to local computer"
 kubectl cp $INFLUXDB_BACKUP_DIR $INFLUXDB_INSTANCE-influxdb-0:/$INFLUXDB_BACKUP_DIR
-echo "Connecting to InfluxDB instance and performing restore operation"
+echo "- Connecting to InfluxDB instance and performing restore operation"
 kubectl exec $INFLUXDB_INSTANCE-influxdb-0 --namespace "$NAMESPACE" -- influxd restore -portable /$INFLUXDB_BACKUP_DIR/$INFLUXDB_BACKUP_DIR
-#kubectl exec -it $INFLUXDB_INSTANCE-influxdb-0 --namespace "$NAMESPACE" -- rmdir -rf /$INFLUXDB_BACKUP_DIR
+echo "- Removing temporary backup files from $INFLUXDB_INSTANCE-influxdb-0 Pod"
+kubectl exec -it $INFLUXDB_INSTANCE-influxdb-0 --namespace "$NAMESPACE" -- rmdir -rf /$INFLUXDB_BACKUP_DIR
 echo "Restore operation finished."
