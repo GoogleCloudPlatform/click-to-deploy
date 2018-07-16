@@ -72,6 +72,17 @@ steps:
     gcloud container clusters get-credentials "$_CLUSTER_NAME" --zone "$_CLUSTER_LOCATION"
     make -j4 app/verify
 
+- id: Run the verification on elastic-gke-logging
+  waitFor: [ 'Setup git repo' ]
+  name: 'gcr.io/$PROJECT_ID/verifier'
+  entrypoint: 'bash'
+  dir: 'k8s/elastic-gke-logging'
+  args:
+  - -c
+  - |
+    gcloud container clusters get-credentials "$_CLUSTER_NAME" --zone "$_CLUSTER_LOCATION"
+    make -j4 app/verify
+
 - id: Run the verification on elasticsearch
   waitFor: [ 'Setup git repo' ]
   name: 'gcr.io/$PROJECT_ID/verifier'
@@ -83,11 +94,33 @@ steps:
     gcloud container clusters get-credentials "$_CLUSTER_NAME" --zone "$_CLUSTER_LOCATION"
     make -j4 app/verify
 
+- id: Run the verification on grafana
+  waitFor: [ 'Setup git repo' ]
+  name: 'gcr.io/$PROJECT_ID/verifier'
+  entrypoint: 'bash'
+  dir: 'k8s/grafana'
+  args:
+  - -c
+  - |
+    gcloud container clusters get-credentials "$_CLUSTER_NAME" --zone "$_CLUSTER_LOCATION"
+    make -j4 app/verify
+
 - id: Run the verification on influxdb
   waitFor: [ 'Setup git repo' ]
   name: 'gcr.io/$PROJECT_ID/verifier'
   entrypoint: 'bash'
   dir: 'k8s/influxdb'
+  args:
+  - -c
+  - |
+    gcloud container clusters get-credentials "$_CLUSTER_NAME" --zone "$_CLUSTER_LOCATION"
+    make -j4 app/verify
+
+- id: Run the verification on jenkins
+  waitFor: [ 'Setup git repo' ]
+  name: 'gcr.io/$PROJECT_ID/verifier'
+  entrypoint: 'bash'
+  dir: 'k8s/jenkins'
   args:
   - -c
   - |
@@ -116,6 +149,17 @@ steps:
     gcloud container clusters get-credentials "$_CLUSTER_NAME" --zone "$_CLUSTER_LOCATION"
     make -j4 app/verify
 
+- id: Run the verification on prometheus
+  waitFor: [ 'Setup git repo' ]
+  name: 'gcr.io/$PROJECT_ID/verifier'
+  entrypoint: 'bash'
+  dir: 'k8s/prometheus'
+  args:
+  - -c
+  - |
+    gcloud container clusters get-credentials "$_CLUSTER_NAME" --zone "$_CLUSTER_LOCATION"
+    make -j4 app/verify
+
 - id: Run the verification on rabbitmq
   waitFor: [ 'Setup git repo' ]
   name: 'gcr.io/$PROJECT_ID/verifier'
@@ -132,28 +176,6 @@ steps:
   name: 'gcr.io/$PROJECT_ID/verifier'
   entrypoint: 'bash'
   dir: 'k8s/wordpress'
-  args:
-  - -c
-  - |
-    gcloud container clusters get-credentials "$_CLUSTER_NAME" --zone "$_CLUSTER_LOCATION"
-    make -j4 app/verify
-
-- id: Run the verification on elastic-gke-logging
-  waitFor: [ 'Setup git repo' ]
-  name: 'gcr.io/$PROJECT_ID/verifier'
-  entrypoint: 'bash'
-  dir: 'k8s/elastic-gke-logging'
-  args:
-  - -c
-  - |
-    gcloud container clusters get-credentials "$_CLUSTER_NAME" --zone "$_CLUSTER_LOCATION"
-    make -j4 app/verify
-
-- id: Run the verification on prometheus
-  waitFor: [ 'Setup git repo' ]
-  name: 'gcr.io/$PROJECT_ID/verifier'
-  entrypoint: 'bash'
-  dir: 'k8s/prometheus'
   args:
   - -c
   - |

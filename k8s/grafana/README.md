@@ -1,13 +1,8 @@
 # Overview
 
-Prometheus is a monitoring addon. It consists of:
-
-1.  **Prometheus** - the server for metrics.
-1.  **Node Exporter** - monitoring agent for exposing per-node metrics.
-1.  **Alert Manager** - a manager for alerts.
-1.  **Grafana** - the monitoring UI.
-
-[Learn more](https://prometheus.io/)
+Grafana is an open-source platform for data visualization and monitoring. A large number of
+supported data sources makes it a universal visualization tool for many popular open source
+data collection systems - including Prometheus, InfluxDB, Elasticsearch, MySQL or PostgreSQL.
 
 ## About Google Click to Deploy
 
@@ -17,9 +12,9 @@ Popular open stacks on Kubernetes packaged by Google.
 
 ## Quick install with Google Cloud Marketplace
 
-Get up and running with a few clicks! Install this Prometheus app to a
+Get up and running with a few clicks! Install this Grafana app to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
-[on-screen instructions](https://console.cloud.google.com/launcher/details/google/prometheus).
+[on-screen instructions](https://console.cloud.google.com/launcher/details/google/grafana).
 
 ## Command line instructions
 
@@ -67,7 +62,8 @@ gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketp
 
 #### Install the Application resource definition
 
-Do a one-time setup for your cluster to understand Application resource via installing Application's Custom Resource Definition.
+Do a one-time setup for your cluster to understand Application resource via installing
+Application's Custom Resource Definition.
 
 <!--
 To do that, navigate to `k8s/vendor` subdirectory of the repository and run the following command:
@@ -84,10 +80,10 @@ community. The source code can be found on
 
 ### Install the Application
 
-Navigate to the `prometheus` directory.
+Navigate to the `grafana` directory.
 
 ```shell
-cd google-click-to-deploy/k8s/prometheus
+cd google-click-to-deploy/k8s/grafana
 ```
 
 #### Configure the app with environment variables
@@ -95,26 +91,15 @@ cd google-click-to-deploy/k8s/prometheus
 Choose the instance name and namespace for the app.
 
 ```shell
-export APP_INSTANCE_NAME=prometheus-1
+export APP_INSTANCE_NAME=grafana-1
 export NAMESPACE=default
-```
-
-Specify the number of replicas for the Prometheus cluster:
-
-```shell
-export PROMETHEUS_REPLICAS=2
 ```
 
 Configure the container images.
 
 ```shell
-export IMAGE_PROMETHEUS="gcr.io/k8s-marketplace-eap/google/prometheus:latest"
-export IMAGE_ALERTMANAGER="gcr.io/k8s-marketplace-eap/google/prometheus/alertmanager:latest"
-export IMAGE_KUBE_STATE_METRICS="gcr.io/k8s-marketplace-eap/google/prometheus/kubestatemetrics:latest"
-export IMAGE_NODE_EXPORTER="gcr.io/k8s-marketplace-eap/google/prometheus/nodeexporter:latest"
-export IMAGE_PUSHGATEWAY="gcr.io/k8s-marketplace-eap/google/prometheus/pushgateway:latest"
-export IMAGE_GRAFANA="gcr.io/k8s-marketplace-eap/google/prometheus/grafana:latest"
-export IMAGE_PROMETHEUS_INIT="gcr.io/k8s-marketplace-eap/google/prometheus/debian9:latest"
+export IMAGE_GRAFANA="gcr.io/k8s-marketplace-eap/google/grafana:latest"
+export IMAGE_GRAFANA_INIT="gcr.io/k8s-marketplace-eap/google/grafana/debian9:latest"
 ```
 
 The images above are referenced by
@@ -125,13 +110,8 @@ This will ensure that the installed application will always use the same images,
 until you are ready to upgrade.
 
 ```shell
-for i in "IMAGE_PROMETHEUS" \
-         "IMAGE_ALERTMANAGER" \
-         "IMAGE_KUBE_STATE_METRICS" \
-         "IMAGE_NODE_EXPORTER" \
-         "IMAGE_PUSHGATEWAY" \
-         "IMAGE_GRAFANA" \
-         "IMAGE_PROMETHEUS_INIT"; do
+for i in "IMAGE_GRAFANA" \
+         "IMAGE_GRAFANA_INIT"; do
   repo=`echo ${!i} | cut -d: -f1`;
   digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
   export $i="$repo@$digest";
@@ -146,7 +126,7 @@ expanded manifest file for future updates to the application.
 
 ```shell
 awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_PROMETHEUS $IMAGE_ALERTMANAGER $IMAGE_KUBE_STATE_METRICS $IMAGE_NODE_EXPORTER $IMAGE_PUSHGATEWAY $IMAGE_GRAFANA $IMAGE_PROMETHEUS_INIT $NAMESPACE  $REPLICAS' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_GRAFANA $IMAGE_GRAFANA_INIT $NAMESPACE' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
@@ -189,7 +169,7 @@ is finished, obtain the public IP address with:
 SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-grafana \
   --namespace $NAMESPACE \
   --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
-echo "http://${SERVICE_IP}/"
+echo "http://${SERVICE_IP}:3000/"
 ```
 
 ## Forward Grafana port in local environment

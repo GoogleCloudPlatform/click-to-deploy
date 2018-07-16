@@ -13,6 +13,11 @@ properties:
     default: $REGISTRY:$TAG
     x-google-marketplace:
       type: IMAGE
+  IMAGE_RABBITMQ_INIT:
+    type: string
+    default: $REGISTRY/debian9:$TAG
+    x-google-marketplace:
+      type: IMAGE
   REPLICAS:
     type: integer
     title: Replicas
@@ -42,6 +47,7 @@ required:
 - APP_INSTANCE_NAME
 - NAMESPACE
 - IMAGE_RABBITMQ
+- IMAGE_RABBITMQ_INIT
 - REPLICAS
 - RABBITMQ_ERLANG_COOKIE
 - RABBITMQ_DEFAULT_USER

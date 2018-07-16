@@ -2,49 +2,39 @@ apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
   name: $APP_INSTANCE_NAME-grafana
-  labels:
-    k8s-app: grafana
+  labels: &GrafanaDeploymentLabels
     app.kubernetes.io/name: $APP_INSTANCE_NAME
-    app.kubernetes.io/component: grafana
+    app.kubernetes.io/component: grafana-server
 spec:
-  serviceName: $APP_INSTANCE_NAME-grafana
   replicas: 1
   selector:
-    matchLabels:
-      k8s-app: grafana
+    matchLabels: *GrafanaDeploymentLabels
+  serviceName: $APP_INSTANCE_NAME-grafana
   template:
     metadata:
-      labels:
-        k8s-app: grafana
+      labels: *GrafanaDeploymentLabels
     spec:
-      serviceAccountName: $PROMETHEUS_SERVICE_ACCOUNT
+      serviceAccountName: $GRAFANA_SERVICE_ACCOUNT
       initContainers:
-          - name: "init-chmod-data"
-            image: $IMAGE_PROMETHEUS_INIT
-            imagePullPolicy: "IfNotPresent"
-            command: ["chmod", "777", "/var/lib/grafana"]
-            volumeMounts:
-            - name: $APP_INSTANCE_NAME-grafana-data
-              mountPath: "/var/lib/grafana"
+        - name: "init-chmod-data"
+          image: $IMAGE_GRAFANA_INIT
+          imagePullPolicy: "IfNotPresent"
+          command: ["chmod", "777", "/var/lib/grafana"]
+          volumeMounts:
+          - name: $APP_INSTANCE_NAME-grafana-data
+            mountPath: "/var/lib/grafana"
       containers:
         - name: grafana
           image: $IMAGE_GRAFANA
           imagePullPolicy: Always
           volumeMounts:
             - name: config
-              mountPath: "/etc/grafana/"
-            - name: dashboards
-              mountPath: "/var/lib/grafana/dashboards"
-            - name: datasources
-              mountPath: "/etc/grafana/provisioning/datasources/"
-            - name: dashboardproviders
-              mountPath: "/etc/grafana/provisioning/dashboards/"
+              mountPath: "/etc/grafana/grafana.ini"
+              subPath: grafana.ini
             - name: $APP_INSTANCE_NAME-grafana-data
               mountPath: "/var/lib/grafana"
+              subPath: grafana-data
           ports:
-            - name: service
-              containerPort: 80
-              protocol: TCP
             - name: grafana
               containerPort: 3000
               protocol: TCP
@@ -81,16 +71,7 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: $APP_INSTANCE_NAME-grafana-ini
-        - name: datasources
-          configMap:
-            name: $APP_INSTANCE_NAME-grafana-datasources
-        - name: dashboardproviders
-          configMap:
-            name: $APP_INSTANCE_NAME-grafana-dashboardproviders
-        - name: dashboards
-          configMap:
-            name: $APP_INSTANCE_NAME-dashboards
+            name: $APP_INSTANCE_NAME-grafana
   volumeClaimTemplates:
   - metadata:
       name: $APP_INSTANCE_NAME-grafana-data

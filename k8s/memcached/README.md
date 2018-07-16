@@ -27,6 +27,8 @@ You'll need the following tools in your development environment:
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 - [docker](https://docs.docker.com/install/)
+- [pip](https://pip.pypa.io/en/stable/installing/)
+- [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
 #### Create a Google Kubernetes Engine cluster
 
@@ -93,6 +95,11 @@ export APP_INSTANCE_NAME=memcached-1
 export NAMESPACE=default
 ```
 
+Set the number of replicas:
+```shell
+export REPLICAS=3
+```
+
 Configure the container image:
 
 ```shell
@@ -108,12 +115,10 @@ until you are ready to upgrade. To get the digest for the image, use the
 following script:
 
 ```shell
-for i in "IMAGE_MEMCACHED"; do
-  repo=`echo ${!i} | cut -d: -f1`;
-  digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
-  export $i="$repo@$digest";
-  env | grep $i;
-done
+repo=`echo $IMAGE_MEMCACHED | cut -d: -f1`;
+digest=`docker pull $IMAGE_MEMCACHED | sed -n -e 's/Digest: //p'`;
+export $i="$repo@$digest";
+env | grep $i;
 ```
 
 #### Expand the manifest template
@@ -262,6 +267,18 @@ Console, or using `kubectl`.
     ```shell
     cd google-click-to-deploy/k8s/memcached
     ```
+
+1. Expand the manifest template
+
+    Use `envsubst` to expand the template. It is recommended that you save the
+    expanded manifest file for future updates to the application.
+
+    ```shell
+    awk 'BEGINFILE {print "---"}{print}' manifest/* \
+      | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_MEMCACHED $REPLICAS' \
+      > "${APP_INSTANCE_NAME}_manifest.yaml"
+    ```
+
 1. Run the `delete` command
 
     ```shell
