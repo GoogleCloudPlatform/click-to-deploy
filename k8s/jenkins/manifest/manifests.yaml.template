@@ -63,10 +63,8 @@ spec:
           value: '-Xmx1800m'
         resources:
           limits:
-            cpu: 400m
             memory: 2Gi
           requests:
-            cpu: 400m
             memory: 2Gi
 ---
 apiVersion: v1
