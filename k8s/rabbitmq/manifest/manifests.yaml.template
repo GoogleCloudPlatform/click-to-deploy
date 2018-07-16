@@ -36,7 +36,7 @@ spec:
       initContainers:
       # This init container copies the config files from read-only ConfigMap to writable location.
       - name: copy-rabbitmq-config
-        image: launcher.gcr.io/google/debian9:latest
+        image: $IMAGE_INIT
         imagePullPolicy: Always
         command:
         - /bin/bash
