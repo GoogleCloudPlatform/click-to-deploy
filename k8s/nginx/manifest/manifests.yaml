@@ -19,7 +19,7 @@ spec:
       labels: *NginxDeploymentLabels
     spec:
       accessModes:
-      - ReadOnlyMany
+      - ReadWriteOnce
       storageClassName: standard
       resources:
         requests:
@@ -38,7 +38,18 @@ spec:
         - /bin/bash
         - -euc
         - |
-          echo '<!DOCTYPE><html><head> <title>Web Server Application</title></head><body><h1>Web site powered by NGINX</h1><p>This page is under construction. Please come back soon!</p></body></html>' > /usr/share/nginx/html/index.html
+          cat <<EOF >/usr/share/nginx/html/index.html
+          <!DOCTYPE>
+          <html>
+            <head>
+              <title>Web Server Application</title>
+            </head>
+            <body>
+               <h1>Web site powered by NGINX</h1>
+               <p>This page is under construction. Please come back soon!</p>
+            </body>
+          </html>
+          EOF
         volumeMounts:
         - name: $APP_INSTANCE_NAME-nginx-pvc
           mountPath: /usr/share/nginx/html
@@ -101,4 +112,4 @@ spec:
   selector:
     app.kubernetes.io/name: $APP_INSTANCE_NAME
     app.kubernetes.io/component: nginx-server
-  type: LoadBalancer #ClusterIP
+  type: LoadBalancer
