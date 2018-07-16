@@ -13,6 +13,7 @@ data:
       path /var/log/containers/*.log
       pos_file /var/log/es-containers.log.pos
       tag raw.kubernetes.*
+      read_from_head true
       <parse>
         @type multi_format
         <pattern>
@@ -70,6 +71,7 @@ data:
       path /var/log/kube-proxy.log
       pos_file /var/log/es-kube-proxy.log.pos
       tag kubeproxy
+      read_from_head true
     </source>
 
   monitoring.conf: |-

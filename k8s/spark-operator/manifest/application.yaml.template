@@ -1,5 +1,5 @@
 ---
-apiVersion: app.k8s.io/v1alpha1
+apiVersion: app.k8s.io/v1beta1
 kind: Application
 metadata:
   name: "$name"
@@ -10,31 +10,32 @@ metadata:
   labels:
     app.kubernetes.io/name: "$name"
 spec:
-  type: Spark Operator
+  descriptor:
+    type: Spark Operator
+    version: v2.3.0-v1alpha1
+    description: |-
+      Spark Operator enables specifying and running Apache Spark applications idiomatically on Kubernetes.
+
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/elasticsearch/).
+      Additional community support is available on [elastic.co forums](https://discuss.elastic.co/).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy Spark Operator'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/spark-operator/README.md
+    - description: Quick start with Spark Operator
+      url: https://github.com/GoogleCloudPlatform/spark-on-k8s-operator/blob/master/docs/quick-start-guide.md
+    - description: Apache Spark documentations
+      url: https://spark.apache.org/docs/latest/
+    notes: |-
+      Follow these [examples](https://github.com/GoogleCloudPlatform/spark-on-k8s-operator/blob/master/docs/quick-start-guide.md#running-the-examples)
+      to deploy your Spark jobs.
   componentKinds:
   - group: apps/v1beta2
     kind: Deployment
   selector:
     matchLabels:
       app.kubernetes.io/name: "$name"
-  version: v2.3.0-v1alpha1
-  description: |-
-    Spark Operator enables specifying and running Apache Spark applications idiomatically on Kubernetes.
-
-    # Support
-    Google does not offer support for this solution. However, community support is available on
-    [Stack Overflow](https://stackoverflow.com/questions/tagged/elasticsearch/).
-    Additional community support is available on [elastic.co forums](https://discuss.elastic.co/).
-  maintainers:
-  - name: Google Click to Deploy
-    url: https://cloud.google.com/solutions/#click-to-deploy
-  links:
-  - description: 'User Guide: Google Click to Deploy Spark Operator'
-    url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/spark-operator/README.md
-  - description: Quick start with Spark Operator
-    url: https://github.com/GoogleCloudPlatform/spark-on-k8s-operator/blob/master/docs/quick-start-guide.md
-  - description: Apache Spark documentations
-    url: https://spark.apache.org/docs/latest/
-  notes: |-
-    Follow these [examples](https://github.com/GoogleCloudPlatform/spark-on-k8s-operator/blob/master/docs/quick-start-guide.md#running-the-examples)
-    to deploy your Spark jobs.

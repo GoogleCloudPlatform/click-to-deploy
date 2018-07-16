@@ -5,6 +5,7 @@ metadata:
   labels:
     k8s-app: kube-state-metrics
     app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/component: kube-state-metrics
 spec:
   selector:
     matchLabels:
@@ -15,7 +16,7 @@ spec:
       labels:
         k8s-app: kube-state-metrics
     spec:
-      serviceAccountName: $KUBE_STATE_METRICS_SERVICE_ACCOUNT
+      serviceAccountName: $PROMETHEUS_SERVICE_ACCOUNT
       containers:
       - name: kube-state-metrics
         image: $IMAGE_KUBE_STATE_METRICS

@@ -27,6 +27,7 @@ You'll need the following tools in your development environment:
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 - [docker](https://docs.docker.com/install/)
+- [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
 Configure `gcloud` as a Docker credential helper:
 
@@ -48,7 +49,7 @@ gcloud container clusters create "$CLUSTER" --zone "$ZONE"
 Configure `kubectl` to talk to the new cluster.
 
 ```shell
-gcloud container clusters get-credentials "$CLUSTER"
+gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 ```
 
 #### Clone this repo
@@ -62,7 +63,11 @@ gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketp
 
 #### Install the Application resource definition
 
-Do a one-time setup for your cluster to understand Application resources.
+Do a one-time setup for your cluster to understand Application resource via installing Application's Custom Resource Definition.
+
+<!--
+To do that, navigate to `k8s/vendor` subdirectory of the repository and run the following command:
+-->
 
 ```shell
 kubectl apply -f google-marketplace-k8s-app-tools/crd/*
@@ -158,7 +163,7 @@ following command to expose an external IP:
 ```
 kubectl patch svc "$APP_INSTANCE_NAME-elasticsearch-svc" \
   --namespace "$NAMESPACE" \
-  -p '{"spec": {"type": "LoadBalancer"}}'
+  --patch '{"spec": {"type": "LoadBalancer"}}'
 ```
 
 # Obtain Elasticsearch URL
@@ -167,10 +172,9 @@ If you run your Elasticsearch cluster behind a LoadBalancer service, obtain the 
 run administrative operations against the REST API:
 
 ```
-SERVICE_IP=$(kubectl get \
-  --namespace ${NAMESPACE} \
-  svc ${APP_INSTANCE_NAME}-elasticsearch-svc \
-  -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-elasticsearch-svc \
+  --namespace $NAMESPACE \
+  --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
 ELASTIC_URL="http://${SERVICE_IP}:9200"
 ```
@@ -229,14 +233,14 @@ This procedure is based on the official Elasticsearch documentation about
 [Snapshot And Restore](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-snapshots.html).
 
 In this procedure we will use NFS storage built on top of a StatefulSet in Kubernetes. You could
-also consider using other NFS providers or one of the repository plugins supported by Elasticsearch. 
+also consider using other NFS providers or one of the repository plugins supported by Elasticsearch.
 
 ## Snapshot
 
 ### Create a backup infrastructure
 
 To create a NFS server on Kubernetes and create a shared disk to be used for backup,
-run the script from `scripts/create-backup-infra.sh`: 
+run the script from `scripts/create-backup-infra.sh`:
 
 ```shell
 scripts/create-backup-infra.sh \
@@ -250,7 +254,7 @@ scripts/create-backup-infra.sh \
 
 Your Elasticsearch StatefulSet needs to be patched to mount the backup disk. To run the patch
 and automatically perform a rolling update on the StatefulSet, use the script from
-`scripts/patch-sts-for-backup.sh`. 
+`scripts/patch-sts-for-backup.sh`.
 
 ```shell
 scripts/patch-sts-for-backup.sh \
@@ -378,28 +382,26 @@ export APP_INSTANCE_NAME=elasticsearch-1
 export NAMESPACE=default
 ```
 
-### Prepare the manifest file
+### Delete the resources
 
-If you still have the expanded manifest file used for the installation, you can skip this part.
-Otherwise, generate it again. You can use a simplified variables substitution:
+> **NOTE:** Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions.
+> It means that for instance if you have `kubectl` in version 1.10.&ast; and Kubernetes 1.8.&ast;,
+> you may experience incompatibility issues, like not removing the StatefulSets with
+> apiVersion of apps/v1beta2.
 
-```shell
-awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE' \
-  > "${APP_INSTANCE_NAME}_manifest.yaml"
-```
-
-### Delete the resources using `kubectl delete`
-
-NOTE: Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions.
-  It means that for instance if you have `kubectl` in version 1.10.&ast; and Kubernetes 1.8.&ast;,
-  you may experience incompatibility issues, like not removing the StatefulSets with
-  apiVersion of apps/v1beta2.
-
+If you still have the expanded manifest file used for the installation, you can use it to delete the resources.
 Run `kubectl` on expanded manifest file matching your installation:
 
 ```shell
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
+```
+
+Otherwise, delete the resources by indication of types and a label:
+
+```shell
+kubectl delete statefulset,service,configmap \
+  --namespace $NAMESPACE \
+  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
 
 ### Delete the persistent volumes of your installation
@@ -408,7 +410,7 @@ By design, removal of StatefulSets in Kubernetes does not remove the PersistentV
 were attached to their Pods. It protects your installations from mistakenly deleting stateful data.
 
 If you wish to remove the PersistentVolumeClaims with their attached persistent disks, run the
-following `kubectl` command:
+following `kubectl` commands:
 
 ```shell
 # specify the variables values matching your installation:

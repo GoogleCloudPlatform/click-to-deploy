@@ -29,7 +29,6 @@ app/build:: .build/wordpress/deployer \
 
 .build/wordpress/deployer: deployer/* \
                            manifest/* \
-                           .build/marketplace/deployer/envsubst \
                            .build/var/APP_DEPLOYER_IMAGE \
                            .build/var/REGISTRY \
                            .build/var/TAG \
@@ -47,8 +46,8 @@ app/build:: .build/wordpress/deployer \
 .build/wordpress/wordpress: .build/var/REGISTRY \
                             .build/var/TAG \
                             | .build/wordpress
-	docker pull launcher.gcr.io/google/wordpress4-php5-apache
-	docker tag launcher.gcr.io/google/wordpress4-php5-apache \
+	docker pull launcher.gcr.io/google/wordpress4-php7-apache
+	docker tag launcher.gcr.io/google/wordpress4-php7-apache \
 	    "$(REGISTRY)/wordpress:$(TAG)"
 	docker push "$(REGISTRY)/wordpress:$(TAG)"
 	@touch "$@"

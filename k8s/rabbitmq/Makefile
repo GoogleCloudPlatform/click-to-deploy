@@ -6,7 +6,7 @@ include ../vendor/marketplace-tools/ubbagent.Makefile
 include ../vendor/marketplace-tools/var.Makefile
 
 
-TAG ?= latest
+TAG ?= 3.7
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/rabbitmq/deployer:$(TAG)
@@ -30,7 +30,6 @@ app/build:: .build/rabbitmq/deployer \
 
 .build/rabbitmq/deployer: deployer/* \
                           manifest/* \
-                          .build/marketplace/deployer/envsubst \
                           .build/var/APP_DEPLOYER_IMAGE \
                           .build/var/REGISTRY \
                           .build/var/TAG \
@@ -48,8 +47,8 @@ app/build:: .build/rabbitmq/deployer \
 .build/rabbitmq/rabbitmq: .build/var/REGISTRY \
                           .build/var/TAG \
                           | .build/rabbitmq
-	docker pull launcher.gcr.io/google/rabbitmq3:3.7-debian9
-	docker tag launcher.gcr.io/google/rabbitmq3:3.7-debian9 \
+	docker pull launcher.gcr.io/google/rabbitmq3:$(TAG)
+	docker tag launcher.gcr.io/google/rabbitmq3:$(TAG) \
 	    "$(REGISTRY)/rabbitmq:$(TAG)"
 	docker push "$(REGISTRY)/rabbitmq:$(TAG)"
 	@touch "$@"

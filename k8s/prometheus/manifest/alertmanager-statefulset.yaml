@@ -5,9 +5,10 @@ metadata:
   labels:
     k8s-app: alertmanager
     app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/component: alertmanager
 spec:
   serviceName: "$APP_INSTANCE_NAME-alertmanager-operated"
-  replicas: 3
+  replicas: 2
   podManagementPolicy: OrderedReady
   updateStrategy:
     type: RollingUpdate
@@ -20,7 +21,7 @@ spec:
       labels:
         k8s-app: alertmanager
     spec:
-      serviceAccountName: $ALERTMANAGER_SERVICE_ACCOUNT
+      serviceAccountName: $PROMETHEUS_SERVICE_ACCOUNT
       containers:
         - name: prometheus-alertmanager
           image: $IMAGE_ALERTMANAGER

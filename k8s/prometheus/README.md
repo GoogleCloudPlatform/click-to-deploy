@@ -7,7 +7,7 @@ Prometheus is a monitoring addon. It consists of:
 1.  **Alert Manager** - a manager for alerts.
 1.  **Grafana** - the monitoring UI.
 
-[Learn more](https://prometheus.io/).
+[Learn more](https://prometheus.io/)
 
 ## About Google Click to Deploy
 
@@ -31,6 +31,7 @@ You'll need the following tools in your development environment:
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 - [docker](https://docs.docker.com/install/)
+- [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
 Configure `gcloud` as a Docker credential helper:
 
@@ -52,7 +53,7 @@ gcloud container clusters create "$CLUSTER" --zone "$ZONE"
 Configure `kubectl` to talk to the new cluster.
 
 ```shell
-gcloud container clusters get-credentials "$CLUSTER"
+gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 ```
 
 #### Clone this repo
@@ -66,7 +67,11 @@ gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketp
 
 #### Install the Application resource definition
 
-Do a one-time setup for your cluster to understand Application resources.
+Do a one-time setup for your cluster to understand Application resource via installing Application's Custom Resource Definition.
+
+<!--
+To do that, navigate to `k8s/vendor` subdirectory of the repository and run the following command:
+-->
 
 ```shell
 kubectl apply -f google-marketplace-k8s-app-tools/crd/*
@@ -181,10 +186,9 @@ It takes a while until service gets reconfigured to be publicly available. After
 is finished, obtain the public IP address with:
 
 ```shell
-SERVICE_IP=$(kubectl get \
-  --namespace ${NAMESPACE} \
-  svc ${APP_INSTANCE_NAME}-grafana \
-  -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-grafana \
+  --namespace $NAMESPACE \
+  --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 echo "http://${SERVICE_IP}/"
 ```
 
@@ -194,7 +198,7 @@ As an alternative to exposing Grafana publicly, you can use a local port forward
 following command in background:
 
 ```shell
-kubectl port-forward -n ${NAMESPACE} ${APP_INSTANCE_NAME}-grafana-0 3000
+kubectl port-forward --namespace ${NAMESPACE} ${APP_INSTANCE_NAME}-grafana-0 3000
 ```
 
 With the port forwarded locally, you can access Grafana UI with `http://localhost:3000/`.

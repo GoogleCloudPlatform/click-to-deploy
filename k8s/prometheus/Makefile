@@ -51,13 +51,13 @@ APP_PARAMETERS ?= { \
 APP_TEST_PARAMETERS ?= {}
 
 
-app/build:: .build/prometheus/deployer \
+app/build:: .build/prometheus/alertmanager \
             .build/prometheus/debian9 \
-            .build/prometheus/alertmanager \
+            .build/prometheus/deployer \
+            .build/prometheus/grafana \
             .build/prometheus/kubestatemetrics \
             .build/prometheus/nodeexporter \
-            .build/prometheus/server \
-            .build/prometheus/grafana \
+            .build/prometheus/server
 
 
 .build/prometheus: | .build
@@ -67,13 +67,12 @@ app/build:: .build/prometheus/deployer \
 .build/prometheus/deployer: deployer/* \
                             manifest/* \
                             schema.yaml \
-                            .build/marketplace/deployer/helm \
                             .build/var/APP_DEPLOYER_IMAGE \
                             .build/var/REGISTRY \
                             .build/var/TAG \
                             | .build/prometheus
 	docker build \
-	    --build-arg REGISTRY="$(REGISTRY)" \
+	    --build-arg REGISTRY="$(REGISTRY)/prometheus" \
 	    --build-arg TAG="$(TAG)" \
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
 	    -f deployer/Dockerfile \
