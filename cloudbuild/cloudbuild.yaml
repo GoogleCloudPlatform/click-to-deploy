@@ -116,6 +116,17 @@ steps:
     gcloud container clusters get-credentials "$_CLUSTER_NAME" --zone "$_CLUSTER_LOCATION"
     make -j4 app/verify
 
+- id: Run the verification on jenkins
+  waitFor: [ 'Setup git repo' ]
+  name: 'gcr.io/$PROJECT_ID/verifier'
+  entrypoint: 'bash'
+  dir: 'k8s/jenkins'
+  args:
+  - -c
+  - |
+    gcloud container clusters get-credentials "$_CLUSTER_NAME" --zone "$_CLUSTER_LOCATION"
+    make -j4 app/verify
+
 - id: Run the verification on memcached
   waitFor: [ 'Setup git repo' ]
   name: 'gcr.io/$PROJECT_ID/verifier'
