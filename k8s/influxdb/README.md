@@ -179,7 +179,7 @@ to learn how to do that.
 You could also use a local proxy to access InfluxDB that is not exposed publicly. Run the following command in a separate background terminal:
 
 ```shell
- kubectl port-forward "${APP_INSTANCE_NAME}-influxdb-0" 8086:8086 --namespace "${NAMESPACE}"
+ kubectl port-forward "${APP_INSTANCE_NAME}-influxdb-0" 8086 --namespace "${NAMESPACE}"
  ```
 
 Now, in your main terminal you can invoke `influx` tool as follows:
@@ -278,7 +278,7 @@ Backup and restore of InfluxDB data will be done as it was suggested on [InfluxD
 
 `influxd backup` and `influxd restore` commands will be used for backing up InfluxDB databases and restoring them (respectively).
 
-Connectivity on port 8088 to InfluxDB instance will be required to perform these operations.
+Connectivity on port 8088 (admin interface) to InfluxDB instance will be required to perform these operations.
 
 Before you proceed, please, make sure that `influxdb-backup` directory on your local computer is empty.
 
@@ -290,9 +290,9 @@ Navigate to the `influxdb/scripts` directory.
 cd google-click-to-deploy/k8s/influxdb/scripts
 ```
 
-Run `make-backup.sh` script passing the name of your InfluxDB instance as an argument to this script.
+Run `make_backup.sh` script passing the name of your InfluxDB instance as an argument to this script.
 ```shell
-cd google-click-to-deploy/k8s/influxdb/scripts
+./make_backup.sh <APP_INSTANCE_NAME> <namespace> <backup folder>
 ```
 
 Backup data will be stored in `influxdb-backup` directory on your local computer.
@@ -304,9 +304,9 @@ Navigate to the `influxdb/scripts` directory.
 cd google-click-to-deploy/k8s/influxdb/scripts
 ```
 
-Run `make-restore.sh` script passing the name of your InfluxDB instance as an argument to this script.
+Run `make_restore.sh` script passing the name of your InfluxDB instance as an argument to this script.
 ```shell
-cd google-click-to-deploy/k8s/influxdb/scripts
+./make_restore.sh <APP_INSTANCE_NAME> <namespace> <backup folder>
 ```
 
 Restore will be performed based on the data that is stored in `influxdb-backup` on your local computer.
