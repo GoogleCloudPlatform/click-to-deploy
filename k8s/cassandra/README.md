@@ -33,7 +33,7 @@ You'll need the following tools in your development environment:
 
 #### Create a Google Kubernetes Engine cluster
 
-Create a new cluster from the command line.
+Create a new cluster from the command line:
 
 ```shell
 export CLUSTER=cassandra-cluster
@@ -42,7 +42,7 @@ export ZONE=us-west1-a
 gcloud container clusters create "$CLUSTER" --zone "$ZONE"
 ```
 
-Configure `kubectl` to connect to the new cluster.
+Configure `kubectl` to connect to the new cluster:
 
 ```shell
 gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
@@ -442,7 +442,7 @@ kubectl delete persistentvolumeclaims \
   --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
 
-### Delete GKE cluster
+### Delete the GKE cluster
 
 Optionally, if you don't need the deployed application or the GKE cluster,
 delete the cluster using this command:

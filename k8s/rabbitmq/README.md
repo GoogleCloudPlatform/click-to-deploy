@@ -430,7 +430,7 @@ kubectl delete persistentvolumeclaims \
   --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
 
-### Delete GKE cluster
+### Delete the GKE cluster
 
 Optionally, if you don't need the deployed application or the GKE cluster,
 delete the cluster using this command:
