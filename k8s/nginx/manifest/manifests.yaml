@@ -18,12 +18,11 @@ spec:
       name: $APP_INSTANCE_NAME-nginx-pvc
       labels: *NginxDeploymentLabels
     spec:
-      accessModes:
-      - ReadWriteOnce
+      accessModes: [ "ReadWriteOnce" ]
       storageClassName: standard
       resources:
         requests:
-          storage: 5Gi
+          storage: 1Gi
   template:
     metadata:
       labels: *NginxDeploymentLabels
