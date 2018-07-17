@@ -39,16 +39,16 @@ gcloud auth configure-docker
 
 #### Create a Google Kubernetes Engine cluster
 
-Create a new cluster from the command-line.
+Create a new cluster from the command line:
 
 ```shell
-export CLUSTER=marketplace-cluster
+export CLUSTER=spark-operator-cluster
 export ZONE=us-west1-a
 
 gcloud container clusters create "$CLUSTER" --zone "$ZONE"
 ```
 
-Configure `kubectl` to talk to the new cluster.
+Configure `kubectl` to connect to the new cluster:
 
 ```shell
 gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
@@ -64,11 +64,17 @@ git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 
 #### Install the Application resource definition
 
-Do a one-time setup for your cluster to understand Application resource via installing Application's Custom Resource Definition.
+An Application resource is a collection of individual Kubernetes components,
+such as Services, Deployments, and so on, that you can manage as a group.
+
+To set up your cluster to understand Application resources, navigate to the
+`k8s/vendor` folder in the repository, and run the following command:
 
 ```shell
 kubectl apply -f marketplace-tools/crd/*
 ```
+
+You need to run this command once.
 
 The Application resource is defined by the
 [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps)
@@ -77,7 +83,7 @@ community. The source code can be found on
 
 ### Install the Application
 
-Navigate to the `spark-operator` directory.
+Navigate to the `spark-operator` directory:
 
 ```shell
 cd click-to-deploy/k8s/spark-operator
@@ -85,25 +91,28 @@ cd click-to-deploy/k8s/spark-operator
 
 #### Configure the app with environment variables
 
-Choose the instance name and namespace for the app.
+Choose an instance name and
+[namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)
+for the app. In most cases, you can use the `default` namespace.
 
 ```shell
 export name=spark-operator-1
 export namespace=default
 ```
 
-Configure the container images.
+Configure the container images:
 
 ```shell
 export sparkOperatorImage="gcr.io/k8s-marketplace-eap/google/spark-operator:latest"
 ```
 
 The images above are referenced by
-[tag](https://docs.docker.com/engine/reference/commandline/tag). It is strongly
-recommended to pin each image to an immutable
+[tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
+that you pin each image to an immutable
 [content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This will ensure that the installed application will always use the same images,
-until you are ready to upgrade.
+This ensures that the installed application always uses the same images,
+until you are ready to upgrade. To get the digest for the image, use the
+following script:
 
 ```shell
 for i in "sparkOperatorImage"; do
@@ -129,7 +138,7 @@ export serviceAccount="${name}-sa"
 
 #### Expand the manifest template
 
-Use `envsubst` to expand the template. It is recommended that you save the
+Use `envsubst` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
@@ -138,9 +147,9 @@ awk 'BEGINFILE {print "---"}{print}' manifest/* \
   > "${name}_manifest.yaml"
 ```
 
-#### Apply to Kubernetes
+#### Apply the manifest to your Kubernetes cluster
 
-Use `kubectl` to apply the manifest to your Kubernetes cluster.
+Use `kubectl` to apply the manifest to your Kubernetes cluster:
 
 ```shell
 kubectl apply -f "${name}_manifest.yaml" --namespace "${namespace}"
@@ -148,11 +157,13 @@ kubectl apply -f "${name}_manifest.yaml" --namespace "${namespace}"
 
 #### View the app in the Google Cloud Console
 
-Point your browser to:
+To get the Console URL for your app, run the following command:
 
 ```shell
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${namespace}/${name}"
 ```
+
+To view your app, open the URL in your browser.
 
 ### Create your Spark Applications
 

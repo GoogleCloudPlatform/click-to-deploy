@@ -39,16 +39,16 @@ gcloud auth configure-docker
 
 #### Create a Google Kubernetes Engine cluster
 
-Create a new cluster from the command-line.
+Create a new cluster from the command line:
 
 ```shell
-export CLUSTER=marketplace-cluster
+export CLUSTER=elastic-gke-logging-cluster
 export ZONE=us-west1-a
 
 gcloud container clusters create "$CLUSTER" --zone "$ZONE"
 ```
 
-Configure `kubectl` to talk to the new cluster.
+Configure `kubectl` to connect to the new cluster:
 
 ```shell
 gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
@@ -64,11 +64,17 @@ git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 
 #### Install the Application resource definition
 
-Do a one-time setup for your cluster to understand Application resource via installing Application's Custom Resource Definition.
+An Application resource is a collection of individual Kubernetes components,
+such as Services, Deployments, and so on, that you can manage as a group.
+
+To set up your cluster to understand Application resources, navigate to the
+`k8s/vendor` folder in the repository, and run the following command:
 
 ```shell
 kubectl apply -f marketplace-tools/crd/*
 ```
+
+You need to run this command once.
 
 The Application resource is defined by the
 [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps)
@@ -77,7 +83,7 @@ community. The source code can be found on
 
 ### Install the Application
 
-Navigate to the `elastic-gke-logging` directory.
+Navigate to the `elastic-gke-logging` directory:
 
 ```shell
 cd click-to-deploy/k8s/elastic-gke-logging
@@ -85,7 +91,9 @@ cd click-to-deploy/k8s/elastic-gke-logging
 
 #### Configure the app with environment variables
 
-Choose the instance name and namespace for the app.
+Choose an instance name and
+[namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)
+for the app. In most cases, you can use the `default` namespace.
 
 ```shell
 export APP_INSTANCE_NAME=elastic-logging-1
@@ -98,7 +106,7 @@ Specify the number of replicas for the Elasticsearch server:
 export ELASTICSEARCH_REPLICAS=2
 ```
 
-Configure the container images.
+Configure the container images:
 
 ```shell
 APP_VERSION=6.3
@@ -110,11 +118,12 @@ export IMAGE_INIT="gcr.io/k8s-marketplace-eap/google/elasticsearch/ubuntu16_04:$
 ```
 
 The images above are referenced by
-[tag](https://docs.docker.com/engine/reference/commandline/tag). It is strongly
-recommended to pin each image to an immutable
+[tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
+that you pin each image to an immutable
 [content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This will ensure that the installed application will always use the same images,
-until you are ready to upgrade.
+This ensures that the installed application always uses the same images,
+until you are ready to upgrade. To get the digest for the image, use the
+following script:
 
 ```shell
 for i in IMAGE_ELASTICSEARCH IMAGE_KIBANA IMAGE_FLUENTD IMAGE_INIT; do
@@ -127,7 +136,7 @@ done
 
 #### Expand the manifest template
 
-Use `envsubst` to expand the template. It is recommended that you save the
+Use `envsubst` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
@@ -137,9 +146,9 @@ awk 'BEGINFILE {print "---"}{print}' manifest/* \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
-#### Apply to Kubernetes
+#### Apply the manifest to your Kubernetes cluster
 
-Use `kubectl` to apply the manifest to your Kubernetes cluster.
+Use `kubectl` to apply the manifest to your Kubernetes cluster:
 
 ```shell
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
@@ -151,11 +160,13 @@ kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 
 #### View the app in the Google Cloud Console
 
-Point your browser to:
+To get the Console URL for your app, run the following command:
 
 ```shell
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
 ```
+
+To view your app, open the URL in your browser.
 
 ### Expose Elasticsearch & Kibana services (optional)
 
@@ -481,19 +492,18 @@ export NAMESPACE=default
 
 ### Delete the resources
 
-> **NOTE:** Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions.
-> It means that for instance if you have `kubectl` in version 1.10.&ast; and Kubernetes 1.8.&ast;,
-> you may experience incompatibility issues, like not removing the StatefulSets with
-> apiVersion of apps/v1beta2.
+> **NOTE:** We recommend to use a kubectl version that is the same as the version of your cluster. Using the same versions of kubectl and the cluster helps avoid unforeseen issues.
 
-If you still have the expanded manifest file used for the installation, you can use it to delete the resources.
-Run `kubectl` on expanded manifest file matching your installation:
+To delete the resources, use the expanded manifest file used for the
+installation.
+
+Run `kubectl` on the expanded manifest file:
 
 ```shell
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 ```
 
-Otherwise, delete the resources by indication of types and a label:
+Otherwise, delete the resources using types and a label:
 
 ```shell
 kubectl delete deployment,statefulset,service,configmap,serviceaccount,clusterrole,clusterrolebinding,application,job \
@@ -503,11 +513,12 @@ kubectl delete deployment,statefulset,service,configmap,serviceaccount,clusterro
 
 ### Delete the persistent volumes of your installation
 
-By design, removal of StatefulSets in Kubernetes does not remove the PersistentVolumeClaims that
-were attached to their Pods. It protects your installations from mistakenly deleting stateful data.
+By design, the removal of StatefulSets in Kubernetes does not remove
+PersistentVolumeClaims that were attached to their Pods. This prevents your
+installations from accidentally deleting stateful data.
 
-If you wish to remove the PersistentVolumeClaims with their attached persistent disks, run the
-following `kubectl` commands:
+To remove the PersistentVolumeClaims with their attached persistent disks, run
+the following `kubectl` commands:
 
 ```shell
 # specify the variables values matching your installation:
@@ -517,4 +528,13 @@ export NAMESPACE=default
 kubectl delete persistentvolumeclaims \
   --namespace $NAMESPACE \
   --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
+```
+
+### Delete the GKE cluster
+
+Optionally, if you don't need the deployed application or the GKE cluster,
+delete the cluster using this command:
+
+```
+gcloud container clusters delete "$CLUSTER" --zone "$ZONE"
 ```

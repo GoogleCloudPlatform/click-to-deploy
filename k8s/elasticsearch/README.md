@@ -130,7 +130,7 @@ done
 
 #### Expand the manifest template
 
-Use `envsubst` to expand the template. It is recommended that you save the
+Use `envsubst` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
@@ -141,7 +141,7 @@ awk 'BEGINFILE {print "---"}{print}' manifest/* \
 
 #### Apply the manifest to your Kubernetes cluster
 
-Use `kubectl` to apply the manifest to your Kubernetes cluster.
+Use `kubectl` to apply the manifest to your Kubernetes cluster:
 
 ```shell
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"

@@ -154,7 +154,7 @@ awk 'BEGINFILE {print "---"}{print}' manifest/* \
 
 #### Apply the manifest to your Kubernetes cluster
 
-Use `kubectl` to apply the manifest to your Kubernetes cluster.
+Use `kubectl` to apply the manifest to your Kubernetes cluster:
 
 ```shell
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
