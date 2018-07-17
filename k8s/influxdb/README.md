@@ -60,8 +60,6 @@ gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketp
 
 #### Install the Application resource definition
 
-#### Install the Application resource definition
-
 An Application resource is a collection of individual Kubernetes components,
 such as Services, Deployments, and so on, that you can manage as a group.
 
@@ -160,14 +158,73 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 To view the app, open the URL in your browser.
 
-# Using the app
+### Access InfluxDB (internally)
 
-TODO by rafalbiegacz@ after merging
+You connect to InfluxDB  without exposing it to public access, using the
+`influx` tool.
 
-To get the IP address of your InfluxDB instance, run the following command:
+For information about using `influx`, and steps to upload sample data
+to your instance, see the [InfluxDB Getting Started guide](https://docs.influxdata.com/influxdb/v1.5/introduction/getting-started/).
+
+#### Connect to the InfluxDB Pod
+
+To identify the InfluxDB Pod, run the following command:
 
 ```shell
-kubectl get svc -o wide -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace "$NAMESPACE"
+kubectl get pods -o wide -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace "$NAMESPACE"
+```
+
+Now, you can access InfluxDB using the `influx` tool:
+
+```shell
+kubectl exec -it "$APP_INSTANCE_NAME-influxdb-0" --namespace "$NAMESPACE" -- influx -host localhost -port 8086 -username [ADMIN_USERNAME] -password [ADMIN_PASSWORD]
+```
+
+#### Connect to InfluxDB using port forwarding
+
+Before you begin, [install `influx`](https://docs.influxdata.com/influxdb/v1.5/introduction/installation/) on your local machine.
+
+In a background terminal, run the following command :
+
+```shell
+ kubectl port-forward "${APP_INSTANCE_NAME}-influxdb-0" 8086 --namespace "${NAMESPACE}"
+ ```
+
+Now, in your main terminal, run the `influx` tool:
+
+```shell
+influx -host localhost -port 8086 -username [ADMIN_USERNAME] -password [ADMIN_PASSWORD]
+```
+
+### Access InfluxDB (externally)
+
+This InfluxDB configuration was prepared to be used as internal component of
+your system, for example, as part of a log collection system with Prometheus,
+InfluxDB, and Grafana.
+
+If you want to open your InfluxDB application externally, we recommend that
+you secure the connection to the database with SSL/TLS.
+
+To get an external IP address for InfluxDB, run the following command:
+
+```
+kubectl patch svc "$APP_INSTANCE_NAME-influxdb-svc" \
+  --namespace "$NAMESPACE" \
+  --patch '{"spec": {"type": "LoadBalancer"}}'
+```
+
+It might take some time to create the external IP address.
+
+#### Get the external IP address
+
+Get the external IP of InfluxDB instance using the following command:
+
+```shell
+INFLUXDB_IP=$(kubectl get svc $APP_INSTANCE_NAME-influxdb-svc \
+  --namespace $NAMESPACE \
+  --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+echo $INFLUXDB_IP
 ```
 
 # Scaling
@@ -178,7 +235,48 @@ If you are interested in multi-instance/enterprise version of InfluxDB, please, 
 
 # Backup and Restore
 
-TODO by rafalbiegacz@ after merging
+The following steps are based on the [InfluxDB documentation](https://docs.influxdata.com/influxdb/v1.5/administration/backup_and_restore/).
+
+For backing up and restoring the database, use the `influxd backup` and `influxd restore` commands respectively.
+
+To access the admin interface for InfluxDB, you need connectivity on port 8088.
+
+Before you begin, create an `influxdb-backup` directory on your local
+computer, and make sure that is empty.
+
+## Backup InfluxDB data to your local computer
+
+Navigate to the `influxdb/scripts` directory:
+
+```shell
+cd google-click-to-deploy/k8s/influxdb/scripts
+```
+
+Run the `make_backup.sh` script, passing the name of your InfluxDB instance as
+an argument.
+```shell
+./make_backup.sh $APP_INSTANCE_NAME $NAMESPACE [BACKUP_FOLDER]
+```
+
+The backup is stored in the `influxdb-backup` directory on your local
+computer.
+
+## Restore InfluxDB data on running InfluxDB instance
+
+Navigate to the `influxdb/scripts` directory:
+
+```shell
+cd google-click-to-deploy/k8s/influxdb/scripts
+```
+
+Run the `make_restore.sh` script, passing the name of your InfluxDB instance
+as an argument.
+```shell
+./make_restore.sh $APP_INSTANCE_NAME $NAMESPACE [BACKUP_FOLDER]
+```
+
+The data is restored from the backup in the `influxdb-backup` directory on
+your local computer.
 
 # Upgrading the app
 
