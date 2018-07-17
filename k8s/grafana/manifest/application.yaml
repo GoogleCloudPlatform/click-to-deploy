@@ -77,6 +77,8 @@ spec:
   componentKinds:
   - group: v1
     kind: ConfigMap
+  - group: v1
+    kind: PersistentVolumeClaim
   - group: apps/v1beta2
     kind: StatefulSet
   - group: v1

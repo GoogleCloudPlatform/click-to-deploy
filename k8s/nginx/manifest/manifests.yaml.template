@@ -3,6 +3,9 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: $APP_INSTANCE_NAME-data-pvc
+  labels:
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/component: nginx-server
 spec:
   resources:
     requests:
@@ -33,7 +36,7 @@ spec:
       initContainers:
       # This init container is reponsible for setting appropriate permissions
       - name: initialize-volume
-        image: launcher.gcr.io/google/debian9:latest
+        image: $IMAGE_NGINX_INIT
         imagePullPolicy: Always
         command:
         - /bin/bash

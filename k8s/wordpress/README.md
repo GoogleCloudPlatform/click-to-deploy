@@ -185,6 +185,10 @@ Note that it might take some time for the external IP to be provisioned.
 After accessing the WordPress main page, you will see the installation wizard.
 Follow the instructions presented on the screen to finish the process.
 
+# Scaling
+
+This is a single-instance version of WordPress.
+It is not intended to be scaled up with the current configuration.
 # Backup and restore
 
 ## Using WordPress plugins
