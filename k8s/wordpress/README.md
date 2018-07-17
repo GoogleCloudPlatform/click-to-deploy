@@ -187,8 +187,8 @@ Follow the instructions presented on the screen to finish the process.
 
 # Scaling
 
-This is a single-instance version of WordPress. You cannot scale it.
-
+This is a single-instance version of WordPress.
+It is not intended to be scaled up with the current configuration.
 # Backup and restore
 
 ## Using WordPress plugins
