@@ -31,6 +31,7 @@ You'll need the following tools in your development environment:
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 - [docker](https://docs.docker.com/install/)
+- [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
 #### Create a Google Kubernetes Engine cluster
 
@@ -176,10 +177,66 @@ kubectl get pods -o wide -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespac
 
 Now, you can access InfluxDB using the `influx` tool:
 
+#### Connect to InfluxDB via Pod
+
+To do this, please identify InfluxDB's Pod using the following command:
+
+```shell
+kubectl get pods -o wide -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace "$NAMESPACE"
+```
+
+Now, you can access InfluxDB using `influx` tool
+
+```shell
+kubectl exec -it "$APP_INSTANCE_NAME-influxdb-0" --namespace "$NAMESPACE" -- influx -host localhost -port 8086 -username <admin username> -password <admin password>
+```
+
+#### Connect to InfluxDB using `kubectl port-forward` method
+
+This method assumes that you installed `influx` tool on your local machine.
+Please, refer to [InfluxDB installation instructions](https://docs.influxdata.com/influxdb/v1.5/introduction/installation/)
+to learn how to do that.
+
+You could also use a local proxy to access InfluxDB that is not exposed publicly. Run the following command in a separate background terminal:
+
+```shell
+ kubectl port-forward "${APP_INSTANCE_NAME}-influxdb-0" 8086 --namespace "${NAMESPACE}"
+ ```
+
+Now, in your main terminal you can invoke `influx` tool as follows:
+
+```shell
+influx -host localhost -port 8086 -username <admin username> -password <admin password>
+```
+
+### Access InfluxDB (externally)
+
+This specific InfluxDB configuration was prepared to be used as internal component of your system,
+e.g. as part of your log collection system consistig of Prometheus+InfluxDB+Grafana.
+
+It is possible to expose InfluxDB to external world - it's not recommened though to do that without securing connection to the database with SSL/TLS.
+
+In case you would like, anyway, to expose InfluxDB solution for testing purposes (for example) you can do that in the following way:
+
+```
+kubectl patch svc "$APP_INSTANCE_NAME-influxdb-svc" \
+  --namespace "$NAMESPACE" \
+  --patch '{"spec": {"type": "LoadBalancer"}}'
+```
+
+> **NOTE:** It might take some time for the external IP to be provisioned.
+
+#### Extract IP addess
+
+Get the external IP of InfluxDB instance using the following command:
+
+#### Connect to InfluxDB in the Pod
+
+Identify InfluxDB's Pod using the following command:
+
 ```shell
 kubectl exec -it "$APP_INSTANCE_NAME-influxdb-0" --namespace "$NAMESPACE" -- influx -host localhost -port 8086 -username [ADMIN_USERNAME] -password [ADMIN_PASSWORD]
 ```
-
 #### Connect to InfluxDB using port forwarding
 
 Before you begin, [install `influx`](https://docs.influxdata.com/influxdb/v1.5/introduction/installation/) on your local machine.
