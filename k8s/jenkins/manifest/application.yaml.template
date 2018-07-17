@@ -19,7 +19,7 @@ spec:
       # Support
       Google does not offer support for this solution. However, community support is available on
       [Stack Overflow](https://stackoverflow.com/questions/tagged/jenkins/).
-      Additional community support is available on [community forums](https://groups.google.com/forum/#!forum/jenkins).
+      Additional community support is available on [community forums](https://groups.google.com/forum/#!forum/jenkinsci-usershttps://groups.google.com/forum/#!forum/jenkinsci-users).
     maintainers:
     - name: Google Click to Deploy
       url: https://cloud.google.com/solutions/#click-to-deploy
@@ -39,7 +39,7 @@ spec:
 
       # Optional step, only if gcloud and kubectl are not configured yet.
 
-      First you need to configure gcloud, refer to [gcloud Quickstart](https://www.gnu.org/software/sed/https://cloud.google.com/sdk/gcloud/) and
+      First you need to configure gcloud, refer to [gcloud Quickstart](https://cloud.google.com/sdk/gcloud/) and
       set kubectl to use specific cluster, refer to [container get-credentials](https://cloud.google.com/sdk/gcloud/reference/container/clusters/get-credentials)
 
       # Access Jenkins instance.
@@ -47,7 +47,7 @@ spec:
       Identify HTTPS endpoint.
 
       ```shell
-      kubectl -n$NAMESPACE get ingress -l "app.kubernetes.io/name=$APP_INSTANCE_NAME" -ojsonpath="{.items[0].status.loadBalancer.ingress[0].ip}"
+      echo https://$(kubectl -n$NAMESPACE get ingress -l "app.kubernetes.io/name=$APP_INSTANCE_NAME" -ojsonpath="{.items[0].status.loadBalancer.ingress[0].ip}")/
       ```
 
       For HTTPS you have to accept a certificate (we created a temporary one for you). Now you need a password.
