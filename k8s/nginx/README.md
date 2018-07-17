@@ -170,7 +170,7 @@ where `<new_replicas>` defines the new desired number.
 
 # Backup and Restore
 
-To perform backup & restore of the content of your NGINX web server you can use scripts proved for you in `google-click-to-deploy/k8s/nginx/scripts` folder.
+To perform backup & restore of the content of your NGINX web server you can use scripts proved for you in `click-to-deploy/k8s/nginx/scripts` folder.
 
 ## Backup 
 
@@ -179,7 +179,7 @@ To perform backup of the content of your NGINX web server run the following comm
 ```shell
 export APP_INSTANCE_NAME=<the name of your application, e.g. nginx-1>
 export NAMESPACE=default
-cd google-click-to-deploy/k8s/nginx/scripts
+cd click-to-deploy/k8s/nginx/scripts
 ./backup-webdata.sh
 ```
 The web server content will be stored in `backup` folder.
@@ -190,7 +190,7 @@ To perform restore of the content of your NGINX web server run the following com
 ```shell
 export APP_INSTANCE_NAME=<the name of your application, e.g. nginx-1>
 export NAMESPACE=default
-cd google-click-to-deploy/k8s/nginx/scripts
+cd click-to-deploy/k8s/nginx/scripts
 ./upload-webdata.sh
 ```
 
@@ -203,17 +203,17 @@ To update the certificate for NGINX server you need to have:
 - private key file (in the PEM format; if using a signed certificate - use bundled file with your domain certificate and the intermediate one)
 
 To update the certificate for a running NGINX server do the following:
-1. Save the certificate under `https1.cert` file in `google-click-to-deploy/k8s/nginx/scripts` folder.
-1. Save the private key of your certificate under `https1.key` file in `google-click-to-deploy/k8s/nginx/scripts` folder.
-1. Copy `google-click-to-deploy/k8s/nginx/scripts/nginx-update-cert.sh` to the folder where `https1.cert` and `https1.key` are stored.
+1. Save the certificate under `https1.cert` file in `click-to-deploy/k8s/nginx/scripts` folder.
+1. Save the private key of your certificate under `https1.key` file in `click-to-deploy/k8s/nginx/scripts` folder.
+1. Copy `click-to-deploy/k8s/nginx/scripts/nginx-update-cert.sh` to the folder where `https1.cert` and `https1.key` are stored.
 1. Define APP_INSTANCE_NAME environment variable ```export APP_INSTANCE_NAME=<the name of your application, e.g. nginx-1>```
 1. Define NAMESPACE environment variable ``` export NAMESPACE=default```
 1. Run the update script: `./nginx-update-cert.sh`.
 
 NOTE: Please, make sure to perform above-mentioned operations outside of directory
-where you cloned `google-click-to-deploy` repository to avoid accidental commit on `https1.cert` and `https1.key` files.
+where you cloned `click-to-deploy` repository to avoid accidental commit on `https1.cert` and `https1.key` files.
 
-NOTE: `google-click-to-deploy/k8s/nginx/scripts/nginx-create-key.sh` script can be helpful
+NOTE: `click-to-deploy/k8s/nginx/scripts/nginx-create-key.sh` script can be helpful
 if you would like to generate self-signed certificate.
 
 # Update

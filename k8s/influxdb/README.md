@@ -233,7 +233,7 @@ Before you proceed, please, make sure that `influxdb-backup` directory on your l
 Navigate to the `influxdb/scripts` directory.
 
 ```shell
-cd google-click-to-deploy/k8s/influxdb/scripts
+cd click-to-deploy/k8s/influxdb/scripts
 ```
 
 Run `make_backup.sh` script passing the name of your InfluxDB instance as an argument to this script.
@@ -247,7 +247,7 @@ Backup data will be stored in `influxdb-backup` directory on your local computer
 Navigate to the `influxdb/scripts` directory.
 
 ```shell
-cd google-click-to-deploy/k8s/influxdb/scripts
+cd click-to-deploy/k8s/influxdb/scripts
 ```
 
 Run `make_restore.sh` script passing the name of your InfluxDB instance as an argument to this script.
