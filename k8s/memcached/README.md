@@ -169,7 +169,7 @@ To get the IP addresses of your Memcached instances using `kubectl`, run the
 following command:
 
 ```shell
-kubectl get pods -o wide -l app.kubernetes.io/name=$APP_INSTANCE_NAME
+kubectl get pods -o wide -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace "$NAMESPACE"
 ```
 
 To get the IP addresses of your Memcached instances using Python, you can use

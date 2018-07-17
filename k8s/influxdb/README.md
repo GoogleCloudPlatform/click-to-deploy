@@ -3,7 +3,7 @@
 InfluxDB is an open source database for storing time series data, such
 as data from from logging and monitoring systems, or from IoT devices.
 
-This is a single-instance version of InfluxDB. The multi--instance version of
+This is a single-instance version of InfluxDB. The multi-instance version of
 InfluxDB requires a commercial license.
 
 If you are interested in the enterprise version of InfluxDB visit the
@@ -390,9 +390,9 @@ export NAMESPACE=default
 
 ### Delete the resources
 
-> **NOTE:** You must use a kubectl version that is the same, or later, as the version of your cluster. Using the latest version of kubectl helps avoid unforeseen issues.
+> **NOTE:** We recommend to use a kubectl version that is the same as the version of your cluster. Using the same versions of kubectl and the cluster helps avoid unforeseen issues.
 
-To to delete the resources, use the expanded manifest file used for the
+To delete the resources, use the expanded manifest file used for the
 installation.
 
 Run `kubectl` on the expanded manifest file:

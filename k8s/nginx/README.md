@@ -65,7 +65,7 @@ To set up your cluster to understand Application resources, navigate to the `k8s
 folder in the repository, then run the following command:
 
 ```shell
-kubectl apply -f marketplace-k8s-app-tools/crd/*
+kubectl apply -f google-marketplace-k8s-app-tools/crd/*
 ```
 
 You need to run this command once.
