@@ -280,5 +280,5 @@ Optionally, if you don't need the deployed application or the Kubernetes
 Engine cluster, delete the whole cluster using this command:
 
 ```shell
-gcloud container clusters delete "$CLUSTER" --zone "$ZONE"tainer clusters delete "$CLUSTER" --zone "$ZONE"
+gcloud container clusters delete "$CLUSTER" --zone "$ZONE"
 ```
