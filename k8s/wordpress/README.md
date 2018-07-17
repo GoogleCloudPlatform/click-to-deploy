@@ -412,7 +412,7 @@ kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 Otherwise, delete the resources using types and a label:
 
 ```shell
-kubectl delete statefulset,service \
+kubectl delete application,statefulset,service \
   --namespace $NAMESPACE \
   --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
