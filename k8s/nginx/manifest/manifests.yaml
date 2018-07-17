@@ -37,6 +37,7 @@ spec:
         - /bin/bash
         - -euc
         - |
+          if [[ ! -f /usr/share/nginx/html/index.html ]]; then
           cat <<EOF >/usr/share/nginx/html/index.html
           <!DOCTYPE>
           <html>
@@ -49,6 +50,7 @@ spec:
             </body>
           </html>
           EOF
+          fi
         volumeMounts:
         - name: $APP_INSTANCE_NAME-nginx-pvc
           mountPath: /usr/share/nginx/html
