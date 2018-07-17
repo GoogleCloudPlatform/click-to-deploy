@@ -7,7 +7,7 @@ To learn more about Memcached, visit the [Memcached website](https://memcached.o
 
 ## About Google Click to Deploy
 
-Popular open stacks on Kubernetes, packaged by Google.
+Popular open stacks on Kubernetes packaged by Google.
 
 # Installation
 
@@ -133,7 +133,7 @@ awk 'BEGINFILE {print "---"}{print}' manifest/* \
 
 #### Apply the manifest to your Kubernetes cluster
 
-Use `kubectl` to apply the manifest to your Kubernetes cluster.
+Use `kubectl` to apply the manifest to your Kubernetes cluster:
 
 ```shell
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
@@ -269,7 +269,7 @@ Console, or using `kubectl`.
 
 1. Expand the manifest template
 
-    Use `envsubst` to expand the template. It is recommended that you save the
+    Use `envsubst` to expand the template. We recommend that you save the
     expanded manifest file for future updates to the application.
 
     ```shell
