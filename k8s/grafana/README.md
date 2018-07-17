@@ -199,3 +199,41 @@ echo "Grafana credentials:"
 echo "- user: ${GRAFANA_USERNAME}"
 echo "- pass: ${GRAFANA_PASSWORD}"
 ```
+
+# Scaling
+
+This installation of Grafana is not intended to be scaled up. Please use it with a single replica
+only.
+
+# Backup and restore
+
+## Backup Grafana database
+
+Grafana container stores its stateful data in sqlite database, in a file located at
+`/var/lib/grafana/grafana.db`.
+
+
+To backup the current version of the database file, run the following command:
+
+```shell
+kubectl cp $NAMESPACE/$APP_INSTANCE_NAME-grafana-0:var/lib/grafana/grafana.db \
+  [YOUR_BACKUP_FILE_PATH]
+```
+
+To secure your data, we recommend to upload the backup file to a reliable remote location, like
+a Google Cloud Storage bucket.
+
+## Restore the database
+
+To restore the Grafana database from backup we will overwrite the `grafana.db` file with a backup
+data and recreate the Grafana server's Pod. Run the following instructions:
+
+```shell
+kubectl cp [YOUR_BACKUP_FILE_PATH] \
+  $NAMESPACE/$APP_INSTANCE_NAME-grafana-0:var/lib/grafana/grafana.db
+kubectl delete pod -n $NAMESPACE $APP_INSTANCE_NAME-grafana-0
+```
+
+Now wait a while until the Pod gets recreated and changes its status to `Ready`. At this point,
+your backup should be restored. Keep in mind that your username and password are also restored
+from backup.
