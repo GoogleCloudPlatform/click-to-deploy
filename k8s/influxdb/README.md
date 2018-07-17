@@ -205,7 +205,7 @@ kubectl patch svc "$APP_INSTANCE_NAME-influxdb-svc" \
 
 > **NOTE:** It might take some time for the external IP to be provisioned.
 
-#### Extract IP addess
+#### Extract IP address
 
 Get the external IP of InfluxDB instance using the following command:
 
