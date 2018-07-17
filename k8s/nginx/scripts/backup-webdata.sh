@@ -16,8 +16,18 @@
 
 set -eu
 
-echo "Performing backup of NGINX server content..."
+if [[ -z "$NAMESPACE" ]]; then
+  echo "Define NAMESPACE environment variable!"
+  exit 1
+fi
+
+if [[ -z "$APP_INSTANCE_NAME" ]]; then
+  echo "Define APP_INSTANCE_NAME environment variable!"
+  exit 1
+fi
+
+echo "Performing backup of NGINX server content from the first Pod..."
 echo "- Connecting to $APP_INSTANCE_NAME-nginx-0 Pod"
 mkdir -p backup
-kubectl cp $APP_INSTANCE_NAME-nginx-0:/usr/share/nginx/html backup
+kubectl cp --namespace $NAMESPACE $APP_INSTANCE_NAME-nginx-0:/usr/share/nginx/html backup
 echo "Backup operation finished."
