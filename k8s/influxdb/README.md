@@ -189,7 +189,7 @@ to learn how to do that.
 You could also use a local proxy to access InfluxDB that is not exposed publicly. Run the following command in a separate background terminal:
 
 ```shell
- kubectl port-forward "${APP_INSTANCE_NAME}-influxdb-0" 8086 --namespace "${NAMESPACE}"
+kubectl port-forward "${APP_INSTANCE_NAME}-influxdb-0" 8086 --namespace "${NAMESPACE}"
  ```
 
 Now, in your main terminal you can invoke `influx` tool as follows:

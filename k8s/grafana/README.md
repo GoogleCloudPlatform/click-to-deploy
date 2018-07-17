@@ -65,7 +65,7 @@ Do a one-time setup for your cluster to understand Application resource via inst
 Application's Custom Resource Definition.
 
 ```shell
-kubectl apply -f click-to-deploy/k8s/vendor/marketplace-tools/crd/*
+kubectl apply -f marketplace-tools/crd/*
 ```
 
 The Application resource is defined by the
