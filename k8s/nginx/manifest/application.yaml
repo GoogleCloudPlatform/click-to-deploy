@@ -42,12 +42,9 @@ spec:
     - description: 'NGINX: Getting Started'
       url: https://www.nginx.com/resources/wiki/start/
     notes: |-
-      # Configuring content of NGINX server
+      # Configuring the web content of NGINX server
       
-      Identify Persistent Volume used by NGINX solution and upload the content
-      you would like NGINX web server to serve.
-
-      To upload web content to the Persistent Volume used by NGINX solution one can do the following:
+      Follow this instructions to upload web content to your Web Server:
 
       1. Navigate to a folder where directory containing your website is located
          (e.g. assuming that your web content is stored in `html` directory)
@@ -64,7 +61,14 @@ spec:
       This version of NGINX application uses pre-generated certificate which is self-signed and is meant to be
       only a temporary solution just to exemplify SSL/TLS configuration.
 
-      Generate a new certificate for your NGINX server using `openssl` command.
+      Generate a new self-signed certificate for your NGINX server using `openssl` command
+      or use a signed certifcate that you already own.
+
+      For example, if you would like to generate self-signed certifcate and private key
+      you could run the following command:
+      ```
+      openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout https1.key -out https1.cert
+      ```
 
       Configure your own certificate using the following command:
       ```
@@ -80,7 +84,20 @@ spec:
       ```
       where .cert is a file containing SSL certificate and .key file contains private part of it.
 
-      Restart all the Pods within NGINX StatefulSet.
+
+      Run these commands to restart all Pods without causing a downtime
+      ```
+      PODS=$(kubectl get pods --namespace $NAMESPACE | awk 'FNR>1 {print $1}')
+
+      TIMEOUT=60
+
+      for i in ${PODS[@]}; do
+        echo "Deleting Pod: $i..."
+        kubectl delete pod $i --namespace $NAMESPACE
+        echo "Sleeping for $TIMEOUT seconds..."
+        sleep $TIMEOUT
+      done
+      ```
   info:
   - name: Nginx External IP
     type: Reference
