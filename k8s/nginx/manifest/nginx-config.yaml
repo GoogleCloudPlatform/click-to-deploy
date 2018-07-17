@@ -24,4 +24,10 @@ data:
                index index.html;
                root /usr/share/nginx/html;
       }
+      location = /favicon.ico {
+               error_page 404 = @empty;
+      }
+      location @empty {
+               empty_gif;
+      }
     }
