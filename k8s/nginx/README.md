@@ -203,13 +203,16 @@ It's higly recommened that you use a valid certificate issued by an approved Cer
 
 To update the certificate for NGINX server you need to have:
 - certificate file (for example in X509 format)
-- private key file (in the PEM format)
+- private key file (in the PEM format; if using a signed certificate - use bundled file with your domain certificate and the intermediate one)
 
 To update the certificate for a running NGINX server do the following:
 1. Save the certificate under `https1.cert` file in `google-click-to-deploy/k8s/nginx/scripts` folder.
 1. Save the private key of your certificate under `https1.key` file in `google-click-to-deploy/k8s/nginx/scripts` folder.
-1. Navigate to `google-click-to-deploy/k8s/nginx/scripts` folder.
+1. Copy `google-click-to-deploy/k8s/nginx/scripts/nginx-update-cert.sh` to the folder where `https1.cert` and `https1.key` are stored.
 1. Run the update script: `./nginx-update-cert.sh`.
+
+NOTE: Please, make sure to perform above-mentioned operations outside of directory
+where you cloned `google-click-to-deploy` repository to avoid accidental commit on `https1.cert` and `https1.key` files.
 
 # Update
 
