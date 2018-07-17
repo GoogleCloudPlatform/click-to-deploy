@@ -117,7 +117,7 @@ Set or generate a password. The value must be encoded in base64.
 export RABBITMQ_DEFAULT_PASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1 | tr -d '\n' | base64)
 ```
 
-Configure the container image:
+Configure the container images:
 
 ```shell
 TAG=3.7
