@@ -42,7 +42,7 @@ gcloud auth configure-docker
 Create a new cluster from the command-line.
 
 ```shell
-export CLUSTER=marketplace-cluster
+export CLUSTER=spark-operator-cluster
 export ZONE=us-west1-a
 
 gcloud container clusters create "$CLUSTER" --zone "$ZONE"
