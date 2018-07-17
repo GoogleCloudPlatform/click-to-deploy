@@ -126,7 +126,7 @@ expanded manifest file for future updates to the application.
 
 ```shell
 awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '${APP_INSTANCE_NAME} ${NAMESPACE} $IMAGE_GRAFANA $IMAGE_GRAFANA_INIT ${NAMESPACE}' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_GRAFANA $IMAGE_GRAFANA_INIT' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
@@ -252,11 +252,14 @@ kubectl set image statefulset ${APP_INSTANCE_NAME}-grafana --namespace ${NAMESPA
   "grafana=[NEW_IMAGE_REFERENCE]"
 ```
 
+Where `[NEW_IMAGE_REFERENCE]` is the docker image reference of the new image you want to use.
+
 To check the status of Pods in the StatefulSet, and the progress of
 the new image, run the following command:
 
 ```shell
-kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME
+kubectl get pods --selector app.kubernetes.io/name=$APP_INSTANCE_NAME \
+  --namespace ${NAMESPACE}
 ```
 
 # Uninstall the Application
