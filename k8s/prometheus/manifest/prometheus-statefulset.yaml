@@ -2,7 +2,7 @@ apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
   name: $APP_INSTANCE_NAME-prometheus
-  labels:
+  labels: &Labels
     k8s-app: prometheus
     app.kubernetes.io/name: $APP_INSTANCE_NAME
     app.kubernetes.io/component: prometheus
@@ -13,12 +13,10 @@ spec:
   updateStrategy:
     type: "RollingUpdate"
   selector:
-    matchLabels:
-      k8s-app: prometheus
+    matchLabels: *Labels
   template:
     metadata:
-      labels:
-        k8s-app: prometheus
+      labels: *Labels
     spec:
       serviceAccountName: $PROMETHEUS_SERVICE_ACCOUNT
       initContainers:
@@ -86,6 +84,7 @@ spec:
   volumeClaimTemplates:
   - metadata:
       name: $APP_INSTANCE_NAME-prometheus-data
+      labels: *Labels
     spec:
       storageClassName: standard
       accessModes:
