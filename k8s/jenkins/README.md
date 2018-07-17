@@ -153,11 +153,11 @@ Get the Jenkins HTTP/HTTPS address
 echo https://$(kubectl -n$NAMESPACE get ingress -l "app.kubernetes.io/name=$APP_INSTANCE_NAME" -ojsonpath="{.items[0].status.loadBalancer.ingress[0].ip}")/
 ```
 
-For HTTPS you have to accept a certificate (we created a temporary one). Now you probably need a password
+For HTTPS you have to accept a certificate (we created a temporary one). Now you probably need a password.
 
 ```shell
 kubectl -n$NAMESPACE exec \
-  $(kubectl -n$NAMESPACE get pod -oname | sed -n /\\/$APP_INSTANCE_NAME/s.pods\\?/..p) \
+  $(kubectl -n$NAMESPACE get pod -oname | sed -n /\\/$APP_INSTANCE_NAME-jenkins-deployment/s.pods\\?/..p) \
   cat /var/jenkins_home/secrets/initialAdminPassword
 ```
 
@@ -226,7 +226,7 @@ kubectl -n$NAMESPACE delete $(kubectl -n$NAMESPACE get pod -oname | sed -n /\\/$
 
 # Deletion
 
-Warning! Nothing will left, persistent volume will be deleted as well and there is no "are you sure?" question. Have you thought about backup?
+Warning! Nothing will be left, persistent volume will be deleted as well and there is no "are you sure?" question. Have you thought about backup?
 
 ```shell
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
