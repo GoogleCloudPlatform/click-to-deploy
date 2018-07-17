@@ -102,7 +102,8 @@ export REPLICAS=3
 Configure the container image:
 
 ```shell
-export IMAGE_MEMCACHED="gcr.io/k8s-marketplace-eap/google/memcached:latest"
+TAG=1.5
+export IMAGE_MEMCACHED="gcr.io/k8s-marketplace-eap/google/memcached:${TAG}"
 ```
 
 The images above are referenced by

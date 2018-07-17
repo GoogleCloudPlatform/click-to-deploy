@@ -98,7 +98,8 @@ export NAMESPACE=default
 Configure the container image:
 
 ```shell
-export IMAGE_INFLUXDB="gcr.io/k8s-marketplace-eap/google/influxdb:latest"
+TAG=1.5
+export IMAGE_INFLUXDB="gcr.io/k8s-marketplace-eap/google/influxdb:${TAG}"
 ```
 
 Configure the InfluxDB administrator account:

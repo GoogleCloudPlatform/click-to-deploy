@@ -109,13 +109,15 @@ export PROMETHEUS_REPLICAS=2
 Configure the container images:
 
 ```shell
-export IMAGE_PROMETHEUS="gcr.io/k8s-marketplace-eap/google/prometheus:latest"
-export IMAGE_ALERTMANAGER="gcr.io/k8s-marketplace-eap/google/prometheus/alertmanager:latest"
-export IMAGE_KUBE_STATE_METRICS="gcr.io/k8s-marketplace-eap/google/prometheus/kubestatemetrics:latest"
-export IMAGE_NODE_EXPORTER="gcr.io/k8s-marketplace-eap/google/prometheus/nodeexporter:latest"
-export IMAGE_PUSHGATEWAY="gcr.io/k8s-marketplace-eap/google/prometheus/pushgateway:latest"
-export IMAGE_GRAFANA="gcr.io/k8s-marketplace-eap/google/prometheus/grafana:latest"
-export IMAGE_PROMETHEUS_INIT="gcr.io/k8s-marketplace-eap/google/prometheus/debian9:latest"
+TAG=2.2
+export IMAGE_PROMETHEUS="gcr.io/k8s-marketplace-eap/google/prometheus:${TAG}"
+export IMAGE_ALERTMANAGER="gcr.io/k8s-marketplace-eap/google/prometheus/alertmanager:${TAG}"
+export IMAGE_KUBE_STATE_METRICS="gcr.io/k8s-marketplace-eap/google/prometheus/kubestatemetrics:${TAG}"
+export IMAGE_NODE_EXPORTER="gcr.io/k8s-marketplace-eap/google/prometheus/nodeexporter:${TAG}"
+# TODO(khajduczenia): Add pushgateway to Makefile.
+export IMAGE_PUSHGATEWAY="gcr.io/k8s-marketplace-eap/google/prometheus/pushgateway:${TAG}"
+export IMAGE_GRAFANA="gcr.io/k8s-marketplace-eap/google/prometheus/grafana:${TAG}"
+export IMAGE_PROMETHEUS_INIT="gcr.io/k8s-marketplace-eap/google/prometheus/debian9:${TAG}"
 ```
 
 The images above are referenced by
@@ -135,7 +137,7 @@ for i in "IMAGE_PROMETHEUS" \
          "IMAGE_GRAFANA" \
          "IMAGE_PROMETHEUS_INIT"; do
   repo=`echo ${!i} | cut -d: -f1`;
-  digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
+  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
   export $i="$repo@$digest";
   env | grep $i;
 done
