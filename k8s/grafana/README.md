@@ -121,7 +121,7 @@ expanded manifest file for future updates to the application.
 
 ```shell
 awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_GRAFANA $IMAGE_GRAFANA_INIT $NAMESPACE' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_GRAFANA $IMAGE_GRAFANA_INIT' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
@@ -143,7 +143,7 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 # Access Grafana UI
 
-Grafana is exposed in a ClusterP-only service `$APP_INSTANCE_NAME-grafana`. To connect to
+Grafana is exposed in a ClusterP-only service `${APP_INSTANCE_NAME}-grafana`. To connect to
 Grafana UI, you can either expose a public service endpoint or keep it private, but connect
 from you local environment with `kubectl port-forward`.
 
@@ -152,8 +152,8 @@ from you local environment with `kubectl port-forward`.
 To expose Grafana with a publicly available IP address, run the following command:
 
 ```shell
-kubectl patch svc "$APP_INSTANCE_NAME-grafana" \
-  --namespace "$NAMESPACE" \
+kubectl patch svc "${APP_INSTANCE_NAME}-grafana" \
+  --namespace "${NAMESPACE}" \
   -p '{"spec": {"type": "LoadBalancer"}}
 ```
 
@@ -161,8 +161,8 @@ It takes a while until service gets reconfigured to be publicly available. After
 is finished, obtain the public IP address with:
 
 ```shell
-SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-grafana \
-  --namespace $NAMESPACE \
+SERVICE_IP=$(kubectl get svc ${APP_INSTANCE_NAME}-grafana \
+  --namespace ${NAMESPACE} \
   --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 echo "http://${SERVICE_IP}:3000/"
 ```
@@ -184,11 +184,11 @@ Grafana is configured to require authentication. To check your username and pass
 following commands:
 
 ```shell
-GRAFANA_USERNAME="$(kubectl get secret $APP_INSTANCE_NAME-grafana \
-                      --namespace $NAMESPACE \
+GRAFANA_USERNAME="$(kubectl get secret ${APP_INSTANCE_NAME}-grafana \
+                      --namespace ${NAMESPACE} \
                       --output=jsonpath='{.data.admin-user}' | base64 --decode)"
-GRAFANA_PASSWORD="$(kubectl get secret $APP_INSTANCE_NAME-grafana \
-                      --namespace $NAMESPACE \
+GRAFANA_PASSWORD="$(kubectl get secret ${APP_INSTANCE_NAME}-grafana \
+                      --namespace ${NAMESPACE} \
                       --output=jsonpath='{.data.admin-password}' | base64 --decode)"
 echo "Grafana credentials:"
 echo "- user: ${GRAFANA_USERNAME}"
@@ -211,7 +211,7 @@ Grafana container stores its stateful data in sqlite database, in a file located
 To backup the current version of the database file, run the following command:
 
 ```shell
-kubectl cp $NAMESPACE/$APP_INSTANCE_NAME-grafana-0:var/lib/grafana/grafana.db \
+kubectl cp ${NAMESPACE}/${APP_INSTANCE_NAME}-grafana-0:var/lib/grafana/grafana.db \
   [YOUR_BACKUP_FILE_PATH]
 ```
 
@@ -225,10 +225,87 @@ data and recreate the Grafana server's Pod. Run the following instructions:
 
 ```shell
 kubectl cp [YOUR_BACKUP_FILE_PATH] \
-  $NAMESPACE/$APP_INSTANCE_NAME-grafana-0:var/lib/grafana/grafana.db
-kubectl delete pod -n $NAMESPACE $APP_INSTANCE_NAME-grafana-0
+  ${NAMESPACE}/${APP_INSTANCE_NAME}-grafana-0:var/lib/grafana/grafana.db
+kubectl delete pod --namespace ${NAMESPACE} ${APP_INSTANCE_NAME}-grafana-0
 ```
 
 Now wait a while until the Pod gets recreated and changes its status to `Ready`. At this point,
 your backup should be restored. Keep in mind that your username and password are also restored
 from backup.
+
+# Upgrade procedure
+
+Before the upgrade, we recommend to prepare a backup of your Grafana database. Follow the
+instruction available above. For more details about Grafana upgrades, please visit the
+[official documentation](http://docs.grafana.org/installation/upgrading/).
+
+Grafana StatefulSet is configured to roll out updates automatically. Start the procedure by patching
+the StatefulSet with a new image reference:
+
+```shell
+kubectl set image statefulset ${APP_INSTANCE_NAME}-grafana --namespace ${NAMESPACE} \
+  "grafana=[NEW_IMAGE_REFERENCE]"
+```
+
+Where `[NEW_IMAGE_REFERENCE]` is the docker image reference of the new image you want to use.
+
+To check the status of Pods in the StatefulSet, and the progress of
+the new image, run the following command:
+
+```shell
+kubectl get pods --selector app.kubernetes.io/name=$APP_INSTANCE_NAME \
+  --namespace ${NAMESPACE}
+```
+
+# Uninstall the Application
+
+## Using the Google Cloud Platform Console
+
+1. In the GCP Console, open [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
+1. From the list of applications, click **Grafana**.
+1. On the Application Details page, click **Delete**.
+
+## Using the command line
+
+### Delete the resources
+
+> **NOTE:** We recommend to use a kubectl version that is the same as the version of your cluster.
+Using the same versions of kubectl and the cluster helps avoid unforeseen issues.
+
+To delete the resources, use the expanded manifest file used for the installation.
+
+Run `kubectl` on the expanded manifest file:
+
+```shell
+kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace ${NAMESPACE}
+```
+
+Otherwise, delete the resources using types and a label:
+
+```shell
+kubectl delete statefulset,service,configmap,secret,application \
+  --namespace ${NAMESPACE} \
+  --selector app.kubernetes.io/name=${APP_INSTANCE_NAME}
+```
+
+By design, the removal of StatefulSets in Kubernetes does not remove PersistentVolumeClaims that
+were attached to their Pods. This prevents your installations from accidentally deleting stateful
+data.
+
+To remove the PersistentVolumeClaim with their attached persistent disks, run the following
+`kubectl` commands:
+
+```shell
+kubectl delete persistentvolumeclaims \
+  --namespace ${NAMESPACE} \
+  --selector app.kubernetes.io/name=${APP_INSTANCE_NAME}
+```
+
+### Delete the GKE cluster
+
+Optionally, if you don't need the deployed application or the GKE cluster, delete the cluster
+using this command:
+
+```shell
+gcloud container clusters delete "${CLUSTER}" --zone "${ZONE}"
+```
