@@ -1,13 +1,13 @@
 # Overview
 
-Prometheus is a monitoring addon. It consists of:
+Prometheus is a monitoring toolkit. This application consists of:
 
 1.  **Prometheus** - the server for metrics.
 1.  **Node Exporter** - monitoring agent for exposing per-node metrics.
 1.  **Alert Manager** - a manager for alerts.
 1.  **Grafana** - the monitoring UI.
 
-[Learn more](https://prometheus.io/)
+[Learn more](https://prometheus.io/).
 
 ## About Google Click to Deploy
 
@@ -19,7 +19,7 @@ Popular open stacks on Kubernetes packaged by Google.
 
 Get up and running with a few clicks! Install this Prometheus app to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
-[on-screen instructions](https://console.cloud.google.com/launcher/details/google/prometheus).
+[on-screen instructions](https://console.cloud.google.com/marketplace/details/google/prometheus).
 
 ## Command line instructions
 
@@ -41,16 +41,16 @@ gcloud auth configure-docker
 
 #### Create a Google Kubernetes Engine cluster
 
-Create a new cluster from the command-line.
+Create a new cluster from the command line:
 
 ```shell
-export CLUSTER=marketplace-cluster
+export CLUSTER=prometheus-cluster
 export ZONE=us-west1-a
 
 gcloud container clusters create "$CLUSTER" --zone "$ZONE"
 ```
 
-Configure `kubectl` to talk to the new cluster.
+Configure `kubectl` to connect to the new cluster.
 
 ```shell
 gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
@@ -58,24 +58,25 @@ gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 
 #### Clone this repo
 
-Clone this repo and the associated tools repo.
+Clone this repo and the associated tools repo:
 
 ```shell
-gcloud source repos clone google-click-to-deploy --project=k8s-marketplace-eap
-gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketplace-eap
+git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 ```
 
 #### Install the Application resource definition
 
-Do a one-time setup for your cluster to understand Application resource via installing Application's Custom Resource Definition.
+An Application resource is a collection of individual Kubernetes components,
+such as Services, Deployments, and so on, that you can manage as a group.
 
-<!--
-To do that, navigate to `k8s/vendor` subdirectory of the repository and run the following command:
--->
+To set up your cluster to understand Application resources, navigate to the
+`k8s/vendor` folder in the repository, and run the following command:
 
 ```shell
-kubectl apply -f google-marketplace-k8s-app-tools/crd/*
+kubectl apply -f marketplace-tools/crd/*
 ```
+
+You need to run this command once.
 
 The Application resource is defined by the
 [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps)
@@ -84,15 +85,15 @@ community. The source code can be found on
 
 ### Install the Application
 
-Navigate to the `prometheus` directory.
+Navigate to the `prometheus` directory:
 
 ```shell
-cd google-click-to-deploy/k8s/prometheus
+cd click-to-deploy/k8s/prometheus
 ```
 
 #### Configure the app with environment variables
 
-Choose the instance name and namespace for the app.
+Choose the instance name and namespace for the app:
 
 ```shell
 export APP_INSTANCE_NAME=prometheus-1
@@ -105,7 +106,7 @@ Specify the number of replicas for the Prometheus cluster:
 export PROMETHEUS_REPLICAS=2
 ```
 
-Configure the container images.
+Configure the container images:
 
 ```shell
 export IMAGE_PROMETHEUS="gcr.io/k8s-marketplace-eap/google/prometheus:latest"
@@ -118,11 +119,12 @@ export IMAGE_PROMETHEUS_INIT="gcr.io/k8s-marketplace-eap/google/prometheus/debia
 ```
 
 The images above are referenced by
-[tag](https://docs.docker.com/engine/reference/commandline/tag). It is strongly
-recommended to pin each image to an immutable
+[tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
+that you pin each image to an immutable
 [content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This will ensure that the installed application will always use the same images,
-until you are ready to upgrade.
+This ensures that the installed application always uses the same images,
+until you are ready to upgrade. To get the digest for the image, use the
+following script:
 
 ```shell
 for i in "IMAGE_PROMETHEUS" \
@@ -141,7 +143,7 @@ done
 
 #### Expand the manifest template
 
-Use `envsubst` to expand the template. It is recommended that you save the
+Use `envsubst` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
@@ -150,9 +152,9 @@ awk 'BEGINFILE {print "---"}{print}' manifest/* \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
-#### Apply to Kubernetes
+#### Apply the manifest to your Kubernetes cluster
 
-Use `kubectl` to apply the manifest to your Kubernetes cluster.
+Use `kubectl` to apply the manifest to your Kubernetes cluster:
 
 ```shell
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
@@ -160,21 +162,22 @@ kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 
 #### View the app in the Google Cloud Console
 
-Point your browser to:
+To get the Console URL for your app, run the following command:
 
 ```shell
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
 ```
 
-# Access Grafana UI
+To view your app, open the URL in your browser.
 
-Grafana is exposed in a ClusterP-only service `$APP_INSTANCE_NAME-grafana`. To connect to
-Grafana UI, you can either expose a public service endpoint or keep it private, but connect
-from you local environment with `kubectl port-forward`.
+# Access the Grafana UI
 
-## Expose Grafana service publicly
+Grafana is exposed as a ClusterIP-only Service, `$APP_INSTANCE_NAME-grafana`.
+To connect to the Grafana UI, you can either expose a public service endpoint, or keep it private and connect from you local environment with `kubectl port-forward`.
 
-To expose Grafana with a publicly available IP address, run the following command:
+## Expose Grafana service externally
+
+To expose Grafana with an external IP address, run the following command:
 
 ```shell
 kubectl patch svc "$APP_INSTANCE_NAME-grafana" \
@@ -182,8 +185,9 @@ kubectl patch svc "$APP_INSTANCE_NAME-grafana" \
   -p '{"spec": {"type": "LoadBalancer"}}
 ```
 
-It takes a while until service gets reconfigured to be publicly available. After the process
-is finished, obtain the public IP address with:
+It might take a while for the external IP address to be created.
+
+Get the public IP address with the following command:
 
 ```shell
 SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-grafana \
@@ -194,19 +198,18 @@ echo "http://${SERVICE_IP}/"
 
 ## Forward Grafana port in local environment
 
-As an alternative to exposing Grafana publicly, you can use a local port forwarding. Run the
-following command in background:
+As an alternative to exposing Grafana publicly, use local port forwarding.
+In a terminal, run the following command:
 
 ```shell
 kubectl port-forward --namespace ${NAMESPACE} ${APP_INSTANCE_NAME}-grafana-0 3000
 ```
 
-With the port forwarded locally, you can access Grafana UI with `http://localhost:3000/`.
+You can access the Grafana UI at `http://localhost:3000/`.
 
 ## Login to Grafana
 
-Grafana is configured to require authentication. To check your username and password, run the
-following commands:
+Grafana requires authentication. To check your username and password, run the following commands:
 
 ```shell
 GRAFANA_USERNAME="$(kubectl get secret $APP_INSTANCE_NAME-grafana \
