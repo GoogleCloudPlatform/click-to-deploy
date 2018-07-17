@@ -43,6 +43,8 @@ else
   exit 1
 fi
 
+# using --dry-run and then using kubectl apply... to avoid errors
+# while invoking kubectl create for the secret that already exist
 kubectl --namespace $NAMESPACE create secret generic $APP_INSTANCE_NAME-nginx-secret \
 	--from-file=$CERT_FILE --from-file=$KEY_FILE \
 	--dry-run -o yaml | kubectl apply -f -
