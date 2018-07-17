@@ -300,14 +300,14 @@ To check the status of Pods in the StatefulSet and the progress of deploying
 the new image, run the following command:
 
 ```shell
-kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME
+kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace "$NAMESPACE"
 ```
 
 To check the current image used by Pods in the application, run the following
 command:
 
 ```shell
-kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}' | sort
+kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace "$NAMESPACE" -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}' | sort
 ```
 
 # Uninstall the Application
