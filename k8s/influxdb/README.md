@@ -19,7 +19,7 @@ Popular open stacks on Kubernetes packaged by Google.
 
 Get up and running with a few clicks! Install this InfluxDB app to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
-[on-screen instructions](https://console.cloud.google.com/launcher/details/google/influxdb).
+[on-screen instructions](https://console.cloud.google.com/marketplace/details/google/influxdb).
 
 ## Command line instructions
 
@@ -55,8 +55,7 @@ gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 Clone this repo and the associated tools repo:
 
 ```shell
-gcloud source repos clone google-click-to-deploy --project=k8s-marketplace-eap
-gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketplace-eap
+git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 ```
 
 #### Install the Application resource definition
@@ -68,7 +67,7 @@ To set up your cluster to understand Application resources, navigate to the
 `k8s/vendor` folder in the repository, and run the following command:
 
 ```shell
-kubectl apply -f google-marketplace-k8s-app-tools/crd/*
+kubectl apply -f marketplace-tools/crd/*
 ```
 
 You need to run this command once.
@@ -82,7 +81,7 @@ The Application resource is defined by the
 Navigate to the `influxdb` directory:
 
 ```shell
-cd google-click-to-deploy/k8s/influxdb
+cd click-to-deploy/k8s/influxdb
 ```
 
 #### Configure the app with environment variables
@@ -190,7 +189,7 @@ to learn how to do that.
 You could also use a local proxy to access InfluxDB that is not exposed publicly. Run the following command in a separate background terminal:
 
 ```shell
- kubectl port-forward "${APP_INSTANCE_NAME}-influxdb-0" 8086 --namespace "${NAMESPACE}"
+kubectl port-forward "${APP_INSTANCE_NAME}-influxdb-0" 8086 --namespace "${NAMESPACE}"
  ```
 
 Now, in your main terminal you can invoke `influx` tool as follows:
@@ -250,7 +249,7 @@ computer, and make sure that is empty.
 Navigate to the `influxdb/scripts` directory:
 
 ```shell
-cd google-click-to-deploy/k8s/influxdb/scripts
+cd click-to-deploy/k8s/influxdb/scripts
 ```
 
 Run the `make_backup.sh` script, passing the name of your InfluxDB instance as
@@ -267,7 +266,7 @@ computer.
 Navigate to the `influxdb/scripts` directory:
 
 ```shell
-cd google-click-to-deploy/k8s/influxdb/scripts
+cd click-to-deploy/k8s/influxdb/scripts
 ```
 
 Run the `make_restore.sh` script, passing the name of your InfluxDB instance

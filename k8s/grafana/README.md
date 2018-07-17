@@ -14,7 +14,7 @@ Popular open stacks on Kubernetes packaged by Google.
 
 Get up and running with a few clicks! Install this Grafana app to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
-[on-screen instructions](https://console.cloud.google.com/launcher/details/google/grafana).
+[on-screen instructions](https://console.cloud.google.com/marketplace/details/google/grafana).
 
 ## Command line instructions
 
@@ -56,8 +56,7 @@ gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 Clone this repo and the associated tools repo.
 
 ```shell
-gcloud source repos clone google-click-to-deploy --project=k8s-marketplace-eap
-gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketplace-eap
+git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 ```
 
 #### Install the Application resource definition
@@ -65,12 +64,8 @@ gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketp
 Do a one-time setup for your cluster to understand Application resource via installing
 Application's Custom Resource Definition.
 
-<!--
-To do that, navigate to `k8s/vendor` subdirectory of the repository and run the following command:
--->
-
 ```shell
-kubectl apply -f google-marketplace-k8s-app-tools/crd/*
+kubectl apply -f marketplace-tools/crd/*
 ```
 
 The Application resource is defined by the
@@ -83,7 +78,7 @@ community. The source code can be found on
 Navigate to the `grafana` directory.
 
 ```shell
-cd google-click-to-deploy/k8s/grafana
+cd click-to-deploy/k8s/grafana
 ```
 
 #### Configure the app with environment variables
