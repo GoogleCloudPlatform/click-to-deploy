@@ -10,6 +10,8 @@ spec:
   selector:
     matchLabels: *GrafanaDeploymentLabels
   serviceName: $APP_INSTANCE_NAME-grafana
+  updateStrategy:
+    type: RollingUpdate
   template:
     metadata:
       labels: *GrafanaDeploymentLabels
