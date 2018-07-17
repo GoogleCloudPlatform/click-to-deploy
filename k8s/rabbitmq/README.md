@@ -59,11 +59,11 @@ gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketp
 An Application resource is a collection of individual Kubernetes components,
 such as Services, Deployments, and so on, that you can manage as a group.
 
-To set up your cluster to understand Application resources, navigate to the `k8s/vendor`
-folder in the repository, then run the following command:
+To set up your cluster to understand Application resources, navigate to the
+`k8s/vendor` folder in the repository, and run the following command:
 
 ```shell
-kubectl apply -f marketplace-k8s-app-tools/crd/*
+kubectl apply -f google-marketplace-k8s-app-tools/crd/*
 ```
 
 You need to run this command once.
@@ -119,7 +119,9 @@ export RABBITMQ_DEFAULT_PASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 1
 Configure the container image:
 
 ```shell
-export IMAGE_RABBITMQ=gcr.io/k8s-marketplace-eap/google/rabbitmq3:latest
+TAG=3.7
+export IMAGE_RABBITMQ=gcr.io/k8s-marketplace-eap/google/rabbitmq:${TAG}
+export IMAGE_RABBITMQ_INIT=gcr.io/k8s-marketplace-eap/google/rabbitmq/debian9:${TAG}
 ```
 
 The images above are referenced by
@@ -131,7 +133,7 @@ until you are ready to upgrade. To get the digest for the image, use the
 following script:
 
 ```shell
-for i in "IMAGE_RABBITMQ"; do
+for i in "IMAGE_RABBITMQ IMAGE_RABBITMQ_INIT"; do
   repo=`echo ${!i} | cut -d: -f1`;
   digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
   export $i="$repo@$digest";
@@ -162,7 +164,7 @@ expanded manifest file for future updates to the application.
 
 ```shell
 awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_RABBITMQ $REPLICAS $RABBITMQ_ERLANG_COOKIE $RABBITMQ_DEFAULT_USER $RABBITMQ_DEFAULT_PASS' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_RABBITMQ $IMAGE_RABBITMQ_INIT $REPLICAS $RABBITMQ_ERLANG_COOKIE $RABBITMQ_DEFAULT_USER $RABBITMQ_DEFAULT_PASS' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
@@ -435,6 +437,12 @@ kubectl delete persistentvolumeclaims \
 Optionally, if you don't need the deployed application or the GKE cluster,
 delete the cluster using this command:
 
+```shell
+export CLUSTER=rabbitmq-cluster
+# replace with the zone that you used
+export ZONE=us-west1-a
 ```
+
+```shell
 gcloud container clusters delete "$CLUSTER" --zone "$ZONE"
 ```
