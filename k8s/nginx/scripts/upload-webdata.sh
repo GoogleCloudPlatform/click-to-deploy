@@ -26,7 +26,8 @@ if [[ -z "$APP_INSTANCE_NAME" ]]; then
   exit 1
 fi
 
-PODS=$(kubectl get pods --namespace $NAMESPACE | awk 'FNR>1 {print $1}')
+PODS=$(kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace $NAMESPACE | awk 'FNR>1 {print $1}')
+
 TIMEOUT=60
 
 echo "Performing upload of content to NGINX server instances..."

@@ -85,7 +85,6 @@ spec:
       ```
       where .cert is a file containing SSL certificate and .key file contains private part of it.
 
-
       Run these commands to restart all Pods without causing a downtime
       ```
       PODS=$(kubectl get pods --namespace $NAMESPACE -l app.kubernetes.io/name=$APP_INSTANCE_NAME | awk 'FNR>1 {print $1}')
