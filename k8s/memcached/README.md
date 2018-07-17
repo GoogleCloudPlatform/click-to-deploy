@@ -239,10 +239,10 @@ following steps:
 
     ```shell
     kubectl set image statefulset "$APP_INSTANCE_NAME-memcached" \
-      memcached=[NEW_IMAGE_URL]
+      memcached=[NEW_IMAGE_REFERENCE]
     ```
 
-    where `[NEW_IMAGE_URL]` is the updated image.
+    where `[NEW_IMAGE_REFERENCE]` is the updated image.
 
 1. To check the status of Pods in the StatefulSet, and the progress of
    the new image, run the following command:

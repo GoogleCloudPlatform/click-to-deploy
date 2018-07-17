@@ -117,7 +117,6 @@ This ensures that the installed application always uses the same images,
 until you are ready to upgrade. To get the digest for the image, use the
 following script:
 
-
 ```shell
 for i in "IMAGE_CASSANDRA"; do
   repo=`echo ${!i} | cut -d: -f1`;
@@ -358,7 +357,7 @@ export NAMESPACE=default
 Assign the new image to your StatefulSet definition:
 
 ```shell
-IMAGE_CASSANDRA=[INEW_MAGE_REFERENCE]
+IMAGE_CASSANDRA=[NEW_MAGE_REFERENCE]
 
 kubectl set image statefulset "${APP_INSTANCE_NAME}-cassandra" \
   --namespace "${NAMESPACE}" "cassandra=${IMAGE_CASSANDRA}"

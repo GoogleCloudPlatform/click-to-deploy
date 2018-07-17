@@ -346,10 +346,10 @@ Start with assigning a new image to your StatefulSet definition:
 
 ```shell
 kubectl set image statefulset "$APP_INSTANCE_NAME-rabbitmq" \
-  rabbitmq=[NEW_IMAGE_URL]
+  rabbitmq=[NEW_IMAGE_REFERENCE]
 ```
 
-where `[NEW_IMAGE_URL]` is the new image.
+where `[NEW_IMAGE_REFERENCE]` is the new image.
 
 To check that the Pods in the StatefulSet running the `rabbitmq` container are updating, run the following command:
 

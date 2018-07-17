@@ -167,16 +167,6 @@ You connect to InfluxDB  without exposing it to public access, using the
 For information about using `influx`, and steps to upload sample data
 to your instance, see the [InfluxDB Getting Started guide](https://docs.influxdata.com/influxdb/v1.5/introduction/getting-started/).
 
-#### Connect to the InfluxDB Pod
-
-To identify the InfluxDB Pod, run the following command:
-
-```shell
-kubectl get pods -o wide -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace "$NAMESPACE"
-```
-
-Now, you can access InfluxDB using the `influx` tool:
-
 #### Connect to InfluxDB via Pod
 
 To do this, please identify InfluxDB's Pod using the following command:
