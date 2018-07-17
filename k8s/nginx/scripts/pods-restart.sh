@@ -14,17 +14,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -eu
+set -e
 
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout https1.key -out https1.cert
+if [[ -z "$NAMESPACE" ]]; then
+  echo "Define NAMESPACE environment variable!"
+  exit 1
+fi
 
-echo "HTTP Certicate"
-cat https1.cert
-echo "Base64 for Certificate"
-cat https1.cert | base64 -w 0
-echo ""
-echo "Certificate Key"
-cat https1.key
-echo "Base64 for Certificate Key"
-cat https1.key | base64 -w 0
-echo ""
+if [[ -z "$APP_INSTANCE_NAME" ]]; then
+  echo "Define APP_INSTANCE_NAME environment variable!"
+  exit 1
+fi
+
+PODS=$(kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace $NAMESPACE | awk 'FNR>1 {print $1}')
+
+TIMEOUT=60
+
+for i in ${PODS[@]}; do
+  echo "Deleting Pod: $i..."
+  kubectl delete pod $i --namespace $NAMESPACE
+  echo "Sleeping for $TIMEOUT seconds..."
+  sleep $TIMEOUT
+done

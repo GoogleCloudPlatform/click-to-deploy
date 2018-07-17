@@ -226,53 +226,7 @@ kubectl patch svc "$APP_INSTANCE_NAME-influxdb-svc" \
 
 > **NOTE:** It might take some time for the external IP to be provisioned.
 
-#### Extract IP addess
-
-Get the external IP of InfluxDB instance using the following command:
-
-#### Connect to InfluxDB in the Pod
-
-Identify InfluxDB's Pod using the following command:
-
-```shell
-kubectl exec -it "$APP_INSTANCE_NAME-influxdb-0" --namespace "$NAMESPACE" -- influx -host localhost -port 8086 -username [ADMIN_USERNAME] -password [ADMIN_PASSWORD]
-```
-#### Connect to InfluxDB using port forwarding
-
-Before you begin, [install `influx`](https://docs.influxdata.com/influxdb/v1.5/introduction/installation/) on your local machine.
-
-In a background terminal, run the following command :
-
-```shell
- kubectl port-forward "${APP_INSTANCE_NAME}-influxdb-0" 8086 --namespace "${NAMESPACE}"
- ```
-
-Now, in your main terminal, run the `influx` tool:
-
-```shell
-influx -host localhost -port 8086 -username [ADMIN_USERNAME] -password [ADMIN_PASSWORD]
-```
-
-### Access InfluxDB (externally)
-
-This InfluxDB configuration was prepared to be used as internal component of
-your system, for example, as part of a log collection system with Prometheus,
-InfluxDB, and Grafana.
-
-If you want to open your InfluxDB application externally, we recommend that
-you secure the connection to the database with SSL/TLS.
-
-To get an external IP address for InfluxDB, run the following command:
-
-```
-kubectl patch svc "$APP_INSTANCE_NAME-influxdb-svc" \
-  --namespace "$NAMESPACE" \
-  --patch '{"spec": {"type": "LoadBalancer"}}'
-```
-
-It might take some time to create the external IP address.
-
-#### Get the external IP address
+#### Extract IP address
 
 Get the external IP of InfluxDB instance using the following command:
 

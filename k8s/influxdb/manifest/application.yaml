@@ -77,6 +77,8 @@ spec:
       app.kubernetes.io/name: "$APP_INSTANCE_NAME"
   componentKinds:
   - group: v1
+    kind: PersistentVolumeClaim
+  - group: v1
     kind: Service
   - group: v1
     kind: Secret

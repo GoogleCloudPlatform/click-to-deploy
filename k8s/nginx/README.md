@@ -7,6 +7,11 @@ TCP, and UDP servers.
 
 To learn more about NGINX, see the [NGINX website](https://www.nginx.com/).
 
+This particular web server application uses NGINX for web serving and it was configured to serve only static content.
+Each NGINX pod is associated with its own persistent volume created as standard persistent disk type defined by Google Kubernetes Engine.
+
+This web server application is pre-configured with SSL certificate. Please, replace it (per instructions delivered) with your valid SSL certificate.
+
 ## About Google Click to Deploy
 
 Popular open stacks on Kubernetes packaged by Google.
@@ -29,6 +34,7 @@ You'll need the following tools in your development environment:
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 - [docker](https://docs.docker.com/install/)
+- [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
 #### Create a Google Kubernetes Engine cluster
 
@@ -178,7 +184,51 @@ where [NEW_REPLICAS] is the new number of replicas.
 
 # Backup and Restore
 
-TODO by rafalbiegacz@
+To perform backup & restore of the content of your NGINX web server you can use scripts proved for you in `google-click-to-deploy/k8s/nginx/scripts` folder.
+
+## Backup 
+
+To perform backup of the content of your NGINX web server run the following command:
+
+```shell
+export APP_INSTANCE_NAME=<the name of your application, e.g. nginx-1>
+export NAMESPACE=default
+cd google-click-to-deploy/k8s/nginx/scripts
+./backup-webdata.sh
+```
+The web server content will be stored in `backup` folder.
+
+## Restore
+To perform restore of the content of your NGINX web server run the following commands
+
+```shell
+export APP_INSTANCE_NAME=<the name of your application, e.g. nginx-1>
+export NAMESPACE=default
+cd google-click-to-deploy/k8s/nginx/scripts
+./upload-webdata.sh
+```
+
+# Re-configure certificate of your NGINX server
+
+It's higly recommened that you use a valid certificate issued by an approved Certificate Authority for your NGINX server.
+
+To update the certificate for NGINX server you need to have:
+- certificate file (for example in X509 format)
+- private key file (in the PEM format; if using a signed certificate - use bundled file with your domain certificate and the intermediate one)
+
+To update the certificate for a running NGINX server do the following:
+1. Save the certificate under `https1.cert` file in `google-click-to-deploy/k8s/nginx/scripts` folder.
+1. Save the private key of your certificate under `https1.key` file in `google-click-to-deploy/k8s/nginx/scripts` folder.
+1. Copy `google-click-to-deploy/k8s/nginx/scripts/nginx-update-cert.sh` to the folder where `https1.cert` and `https1.key` are stored.
+1. Define APP_INSTANCE_NAME environment variable ```export APP_INSTANCE_NAME=<the name of your application, e.g. nginx-1>```
+1. Define NAMESPACE environment variable ``` export NAMESPACE=default```
+1. Run the update script: `./nginx-update-cert.sh`.
+
+NOTE: Please, make sure to perform above-mentioned operations outside of directory
+where you cloned `google-click-to-deploy` repository to avoid accidental commit on `https1.cert` and `https1.key` files.
+
+NOTE: `google-click-to-deploy/k8s/nginx/scripts/nginx-create-key.sh` script can be helpful
+if you would like to generate self-signed certificate.
 
 # Update
 

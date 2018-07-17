@@ -192,6 +192,10 @@ The command shows you the URL of your site.
 When you open the WordPress main page, an installation wizard starts.
 Follow the steps on the screen to finish setting up WordPress.
 
+# Scaling
+
+This is a single-instance version of WordPress.
+It is not intended to be scaled up with the current configuration.
 # Backup and restore
 
 ## Using WordPress plugins

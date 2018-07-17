@@ -1,16 +1,4 @@
 ---
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: $APP_INSTANCE_NAME-data-pvc
-spec:
-  resources:
-    requests:
-      storage: 1Gi
-  accessModes:
-  - ReadOnlyMany
-  storageClassName: standard
----
 apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
@@ -25,13 +13,23 @@ spec:
     type: RollingUpdate
   serviceName: $APP_INSTANCE_NAME-nginx-svc
   replicas: $REPLICAS
+  volumeClaimTemplates:
+  - metadata:
+      name: $APP_INSTANCE_NAME-nginx-pvc
+      labels: *NginxDeploymentLabels
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: standard
+      resources:
+        requests:
+          storage: 1Gi
   template:
     metadata:
       labels: *NginxDeploymentLabels
     spec:
       terminationGracePeriodSeconds: 180
       initContainers:
-      # This init container is reponsible for setting appropriate permissions
+      # This init container is reponsible for creating default index html file
       - name: initialize-volume
         image: $IMAGE_NGINX_INIT
         imagePullPolicy: Always
@@ -39,9 +37,22 @@ spec:
         - /bin/bash
         - -euc
         - |
-          chmod -R a+r /usr/share/nginx/html
+          if [[ ! -f /usr/share/nginx/html/index.html ]]; then
+          cat <<EOF >/usr/share/nginx/html/index.html
+          <!DOCTYPE>
+          <html>
+            <head>
+              <title>Web Server Application</title>
+            </head>
+            <body>
+               <h1>Web site powered by NGINX</h1>
+               <p>This page is under construction. Please come back soon!</p>
+            </body>
+          </html>
+          EOF
+          fi
         volumeMounts:
-        - name: $APP_INSTANCE_NAME-nginx-data
+        - name: $APP_INSTANCE_NAME-nginx-pvc
           mountPath: /usr/share/nginx/html
       containers:
       - name: nginx
@@ -62,10 +73,10 @@ spec:
         readinessProbe:
           tcpSocket:
             port: nginx
-          initialDelaySeconds: 5
-          timeoutSeconds: 2
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
         volumeMounts:
-        - name: $APP_INSTANCE_NAME-nginx-data
+        - name: $APP_INSTANCE_NAME-nginx-pvc
           mountPath: /usr/share/nginx/html
         - name: nginx-config
           mountPath: /etc/nginx/conf.d
@@ -74,9 +85,6 @@ spec:
           mountPath: /etc/nginx/certs
           readOnly: true
       volumes:
-      - name: $APP_INSTANCE_NAME-nginx-data
-        persistentVolumeClaim:
-          claimName: $APP_INSTANCE_NAME-data-pvc
       - name: certs
         secret:
           secretName: $APP_INSTANCE_NAME-nginx-secret
@@ -86,12 +94,6 @@ spec:
           items:
           - key: nginx-config.conf
             path: nginx-config.conf
-      - name: nginx-index
-        configMap:
-          name: $APP_INSTANCE_NAME-nginx-configmap
-          items:
-          - key: index.html
-            path: index.html
 ---
 apiVersion: v1
 kind: Service
@@ -111,4 +113,4 @@ spec:
   selector:
     app.kubernetes.io/name: $APP_INSTANCE_NAME
     app.kubernetes.io/component: nginx-server
-  type: LoadBalancer #ClusterIP #LoadBalancer
+  type: LoadBalancer
