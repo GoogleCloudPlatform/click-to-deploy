@@ -1,10 +1,13 @@
 # Overview
 
-InfluxDB is an open source database for storing time series data. The source of time series data may come from logging and monitoring systems and IoT devices.
+InfluxDB is an open source database for storing time series data, such
+as data from from logging and monitoring systems, or from IoT devices.
 
-This is a single-instance version of InfluxDB. Multi-instance version of InfluxDB requires commercial license.
+This is a single-instance version of InfluxDB. The multi-instance version of
+InfluxDB requires a commercial license.
 
-If you are interested in enterprise version of InfluxDB or you would like to learn more about InfluxDB in general, please, visit [InfluxDB website](https://www.influxdata.com/).
+If you are interested in the enterprise version of InfluxDB visit the
+[InfluxDB website](https://www.influxdata.com/).
 
 ## About Google Click to Deploy
 
@@ -32,16 +35,16 @@ You'll need the following tools in your development environment:
 
 #### Create a Google Kubernetes Engine cluster
 
-Create a new cluster from the command-line.
+Create a new cluster from the command line:
 
 ```shell
-export CLUSTER=marketplace-cluster
+export CLUSTER=influxdb-cluster
 export ZONE=us-west1-a
 
 gcloud container clusters create "$CLUSTER" --zone "$ZONE"
 ```
 
-Configure `kubectl` to talk to the new cluster.
+Configure `kubectl` to connect to the new cluster.
 
 ```shell
 gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
@@ -49,7 +52,7 @@ gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 
 #### Clone this repo
 
-Clone this repo and the associated tools repo.
+Clone this repo and the associated tools repo:
 
 ```shell
 git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
@@ -57,20 +60,25 @@ git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 
 #### Install the Application resource definition
 
-Do a one-time setup for your cluster to understand Application resource via installing Application's Custom Resource Definition.
+An Application resource is a collection of individual Kubernetes components,
+such as Services, Deployments, and so on, that you can manage as a group.
+
+To set up your cluster to understand Application resources, navigate to the
+`k8s/vendor` folder in the repository, and run the following command:
 
 ```shell
-kubectl apply -f click-to-deploy/k8s/vendor/marketplace-tools/crd/*
+kubectl apply -f marketplace-tools/crd/*
 ```
 
+You need to run this command once.
+
 The Application resource is defined by the
-[Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps)
-community. The source code can be found on
+[Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps) community. The source code can be found on
 [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
 
 ### Install the Application
 
-Navigate to the `influxdb` directory.
+Navigate to the `influxdb` directory:
 
 ```shell
 cd click-to-deploy/k8s/influxdb
@@ -78,37 +86,41 @@ cd click-to-deploy/k8s/influxdb
 
 #### Configure the app with environment variables
 
-Choose the instance name and namespace for the app.
+Choose an instance name and
+[namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)
+for the app. In most cases, you can use the `default` namespace.
 
 ```shell
 export APP_INSTANCE_NAME=influxdb-1
 export NAMESPACE=default
 ```
 
-Configure the container images.
+Configure the container image:
 
 ```shell
 export IMAGE_INFLUXDB="gcr.io/k8s-marketplace-eap/google/influxdb:latest"
 ```
 
-Configure InfluxDB administrator account:
+Configure the InfluxDB administrator account:
 
 ```shell
 export INFLUXDB_ADMIN_USER=influxdb-admin
 ```
 
-Configure password for InfluxDB administrator account (the value has to be encoded in base64)
+Configure password for InfluxDB administrator account (the value must be
+encoded in base64)
 
 ```shell
 export INFLUXDB_ADMIN_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1 | tr -d '\n' | base64)
 ```
 
 The images above are referenced by
-[tag](https://docs.docker.com/engine/reference/commandline/tag). It is strongly
-recommended to pin each image to an immutable
+[tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
+that you pin each image to an immutable
 [content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This will ensure that the installed application will always use the same images,
-until you are ready to upgrade.
+This ensures that the installed application always uses the same images,
+until you are ready to upgrade. To get the digest for the image, use the
+following script:
 
 ```shell
 repo=`echo $IMAGE_INFLUXDB | cut -d: -f1`;
@@ -119,7 +131,7 @@ env | grep $i;
 
 #### Expand the manifest template
 
-Use `envsubst` to expand the template. It is recommended that you save the
+Use `envsubst` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
@@ -128,9 +140,9 @@ awk 'BEGINFILE {print "---"}{print}' manifest/* \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
-#### Apply to Kubernetes
+#### Apply the manifest to your Kubernetes cluster
 
-Use `kubectl` to apply the manifest to your Kubernetes cluster.
+Use `kubectl` to apply the manifest to your Kubernetes cluster:
 
 ```shell
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
@@ -138,18 +150,21 @@ kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 
 #### View the app in the Google Cloud Console
 
-Point your browser to:
+To get the Console URL for your app, run the following command:
 
 ```shell
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
 ```
 
+To view the app, open the URL in your browser.
+
 ### Access InfluxDB (internally)
 
-It is possible to connect to InfluxDB  without exposing it to public access and using `influx` tool.
+You connect to InfluxDB  without exposing it to public access, using the
+`influx` tool.
 
-Please, refer to [InfluxDB Getting Started](https://docs.influxdata.com/influxdb/v1.5/introduction/getting-started/)
-for more information about `influx` usage and how to upload sample data to your InfluxDB instance.
+For information about using `influx`, and steps to upload sample data
+to your instance, see the [InfluxDB Getting Started guide](https://docs.influxdata.com/influxdb/v1.5/introduction/getting-started/).
 
 #### Connect to InfluxDB via Pod
 
@@ -220,68 +235,76 @@ If you are interested in multi-instance/enterprise version of InfluxDB, please, 
 
 # Backup and Restore
 
-Backup and restore of InfluxDB data will be done as it was suggested on [InfluxDB website](https://docs.influxdata.com/influxdb/v1.5/administration/backup_and_restore/)
+The following steps are based on the [InfluxDB documentation](https://docs.influxdata.com/influxdb/v1.5/administration/backup_and_restore/).
 
-`influxd backup` and `influxd restore` commands will be used for backing up InfluxDB databases and restoring them (respectively).
+For backing up and restoring the database, use the `influxd backup` and `influxd restore` commands respectively.
 
-Connectivity on port 8088 (admin interface) to InfluxDB instance will be required to perform these operations.
+To access the admin interface for InfluxDB, you need connectivity on port 8088.
 
-Before you proceed, please, make sure that `influxdb-backup` directory on your local computer is empty.
+Before you begin, create an `influxdb-backup` directory on your local
+computer, and make sure that is empty.
 
 ## Backup InfluxDB data to your local computer
 
-Navigate to the `influxdb/scripts` directory.
+Navigate to the `influxdb/scripts` directory:
 
 ```shell
 cd click-to-deploy/k8s/influxdb/scripts
 ```
 
-Run `make_backup.sh` script passing the name of your InfluxDB instance as an argument to this script.
+Run the `make_backup.sh` script, passing the name of your InfluxDB instance as
+an argument.
 ```shell
-./make_backup.sh <APP_INSTANCE_NAME> <namespace> <backup folder>
+./make_backup.sh $APP_INSTANCE_NAME $NAMESPACE [BACKUP_FOLDER]
 ```
 
-Backup data will be stored in `influxdb-backup` directory on your local computer.
+The backup is stored in the `influxdb-backup` directory on your local
+computer.
 
 ## Restore InfluxDB data on running InfluxDB instance
-Navigate to the `influxdb/scripts` directory.
+
+Navigate to the `influxdb/scripts` directory:
 
 ```shell
 cd click-to-deploy/k8s/influxdb/scripts
 ```
 
-Run `make_restore.sh` script passing the name of your InfluxDB instance as an argument to this script.
+Run the `make_restore.sh` script, passing the name of your InfluxDB instance
+as an argument.
 ```shell
-./make_restore.sh <APP_INSTANCE_NAME> <namespace> <backup folder>
+./make_restore.sh $APP_INSTANCE_NAME $NAMESPACE [BACKUP_FOLDER]
 ```
 
-Restore will be performed based on the data that is stored in `influxdb-backup` on your local computer.
+The data is restored from the backup in the `influxdb-backup` directory on
+your local computer.
 
+# Upgrading the app
 
-# Upgrade
+Because this is a single-instance InfluxDB solution, note that an upgrade
+causes some downtime for your application. Your InfluxDB configuration and
+data are retained after the upgrade.
 
-This is single-instance InfluxDB solution:
-- Upgrade will case some downtime of your application
-- Configuration and data of InfluxDB will be retained.
+This procudure assumes that you have a new image for InfluxDB container published and being available to your Kubernetes cluster. The new image is
+used in the commands below as `[NEW_IMAGE_REFERENCE]`.
 
-This procudure assumes that you have a new image for InfluxDB container published and being available to your Kubernetes cluster. The new image is available at <url-pointing-to-new-image>.
-
-Start with modification of the image used for pod temaplate within InfluxDB StatefulSet:
+In the InfluxDB StatefulSet, modify the image used for the Pod template:
 
 ```shell
 kubectl set image statefulset "$APP_INSTANCE_NAME-influxdb" \
-  influxdb=<url-pointing-to-new-image>
+  influxdb=[NEW_IMAGE_REFERENCE]
 ```
 
-where `<url-pointing-to-new-image>` is the new image.
+where `[NEW_IMAGE_REFERENCE]` is the new image.
 
-To check the status of Pods in the StatefulSet and the progress of deployment of new image run the following command:
+To check the status of Pods in the StatefulSet and the progress of deploying
+the new image, run the following command:
 
 ```shell
 kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
 
-To check the current image used by pods within `InfluxDB` K8s application, you can run the following command:
+To check the current image used by Pods in the application, run the following
+command:
 
 ```shell
 kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}' | sort
@@ -289,13 +312,13 @@ kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME -o=jsonpath='{rang
 
 # Uninstall the Application
 
-## Using GKE UI
+## Using the Google Cloud Platform Console
 
-Navigate to `GKE > Applications` in GCP console. From the list of applications, click on the one
-that you wish to uninstall.
+1. In the GCP Console, open [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
 
-On the new screen, click on the `Delete` button located in the top menu. It will remove
-the resources attached to this application.
+1. From the list of applications, click **InfluxDB**.
+
+1. On the Application Details page, click **Delete**.
 
 ## Using the command line
 
@@ -310,55 +333,48 @@ export NAMESPACE=default
 
 ### Delete the resources
 
-> **NOTE:** Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions.
-> It means that for instance if you have `kubectl` in version 1.10.&ast; and Kubernetes 1.8.&ast;,
-> you may experience incompatibility issues, like not removing the StatefulSets with
-> apiVersion of apps/v1beta2.
+> **NOTE:** We recommend to use a kubectl version that is the same as the version of your cluster. Using the same versions of kubectl and the cluster helps avoid unforeseen issues.
 
-If you still have the expanded manifest file used for the installation, you can use it to delete the resources.
-Run `kubectl` on expanded manifest file matching your installation:
+To delete the resources, use the expanded manifest file used for the
+installation.
+
+Run `kubectl` on the expanded manifest file:
 
 ```shell
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 ```
 
-Otherwise, delete the resources by indication of types and a label:
+Otherwise, delete the resources using types and a label:
 
 ```shell
-kubectl delete statefulset,secret,service \
+kubectl delete application,statefulset,service \
   --namespace $NAMESPACE \
   --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
 
 ### Delete the persistent volumes of your installation
 
-By design, removal of StatefulSets in Kubernetes does not remove the PersistentVolumeClaims that
-were attached to their Pods. It protects your installations from mistakenly deleting stateful data.
+By design, the removal of StatefulSets in Kubernetes does not remove
+PersistentVolumeClaims that were attached to their Pods. This prevents your
+installations from accidentally deleting stateful data.
 
-If you wish to remove the PersistentVolumeClaims with their attached persistent disks, run the
-following `kubectl` commands:
+To remove the PersistentVolumeClaims with their attached persistent disks, run
+the following `kubectl` commands:
 
 ```shell
-for pv in $(kubectl get pvc --namespace $NAMESPACE \
-  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME \
-  --output jsonpath='{.items[*].spec.volumeName}');
-do
-  kubectl delete pv/$pv --namespace $NAMESPACE
-done
+# specify the variables values matching your installation:
+export APP_INSTANCE_NAME=influxdb-1
+export NAMESPACE=default
 
 kubectl delete persistentvolumeclaims \
   --namespace $NAMESPACE \
   --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
 
-### Delete GKE cluster
+### Delete the GKE cluster
 
-Optionally, if you do not need both the deployed application and GKE cluster used for deployment then you can delete the whole GKE cluster using this command:
-
-```shell
-export CLUSTER=marketplace-cluster
-export ZONE=us-west1-a
-```
+Optionally, if you don't need the deployed application or the GKE cluster,
+delete the cluster using this command:
 
 ```
 gcloud container clusters delete "$CLUSTER" --zone "$ZONE"

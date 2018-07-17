@@ -1,9 +1,11 @@
 # Overview
 
-NGINX is open source software for web serving, reverse proxying, caching, load balancing, and media streaming.
-NGINX can also function as a proxy server for email (IMAP, POP3, and SMTP) and a reverse proxy and load balancer for HTTP, TCP, and UDP servers.
+NGINX is open source software for web serving, reverse proxying, caching, load
+balancing, and media streaming. You can also use NGINX as a proxy server for
+email (IMAP, POP3, and SMTP), and a reverse proxy and load balancer for HTTP,
+TCP, and UDP servers.
 
-If you would like to learn more about NGINX, please, visit [NGINX website](https://www.nginx.com/).
+To learn more about NGINX, see the [NGINX website](https://www.nginx.com/).
 
 This particular web server application uses NGINX for web serving and it was configured to serve only static content.
 Each NGINX pod is associated with its own persistent volume created as standard persistent disk type defined by Google Kubernetes Engine.
@@ -36,16 +38,16 @@ You'll need the following tools in your development environment:
 
 #### Create a Google Kubernetes Engine cluster
 
-Create a new cluster from the command-line.
+Create a new cluster from the command line:
 
 ```shell
-export CLUSTER=marketplace-cluster
+export CLUSTER=nginx-cluster
 export ZONE=us-west1-a
 
 gcloud container clusters create "$CLUSTER" --zone "$ZONE"
 ```
 
-Configure `kubectl` to talk to the new cluster.
+Configure `kubectl` to connect to the new cluster.
 
 ```shell
 gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
@@ -61,11 +63,17 @@ git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 
 #### Install the Application resource definition
 
-Do a one-time setup for your cluster to understand Application resources.
+An Application resource is a collection of individual Kubernetes components,
+such as Services, Deployments, and so on, that you can manage as a group.
+
+To set up your cluster to understand Application resources, navigate to the
+`k8s/vendor` folder in the repository, and run the following command:
 
 ```shell
-kubectl apply -f click-to-deploy/k8s/vendor/marketplace-tools/crd/*
+kubectl apply -f marketplace-tools/crd/*
 ```
+
+You need to run this command once.
 
 The Application resource is defined by the
 [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps)
@@ -74,7 +82,7 @@ community. The source code can be found on
 
 ### Install the Application
 
-Navigate to the `nginx` directory.
+Navigate to the `nginx` directory:
 
 ```shell
 cd click-to-deploy/k8s/nginx
@@ -82,7 +90,7 @@ cd click-to-deploy/k8s/nginx
 
 #### Configure the app with environment variables
 
-Choose the instance name and namespace for the app.
+Choose the instance name and namespace for the app:
 
 ```shell
 export APP_INSTANCE_NAME=nginx-1
@@ -90,7 +98,7 @@ export NAMESPACE=default
 export REPLICAS=3
 ```
 
-Configure the container images.
+Configure the container images:
 
 ```shell
 TAG=1.15
@@ -99,11 +107,12 @@ export IMAGE_NGINX_INIT="gcr.io/k8s-marketplace-eap/google/nginx/debian9:${TAG}"
 ```
 
 The images above are referenced by
-[tag](https://docs.docker.com/engine/reference/commandline/tag). It is strongly
-recommended to pin each image to an immutable
+[tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
+that you pin each image to an immutable
 [content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This will ensure that the installed application will always use the same images,
-until you are ready to upgrade.
+This ensures that the installed application always uses the same images,
+until you are ready to upgrade. To get the digest for the image, use the
+following script:
 
 ```shell
 for i in "IMAGE_NGINX IMAGE_NGINX_INIT"; do
@@ -116,7 +125,7 @@ done
 
 #### Expand the manifest template
 
-Use `envsubst` to expand the template. It is recommended that you save the
+Use `envsubst` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
@@ -125,48 +134,52 @@ awk 'BEGINFILE {print "---"}{print}' manifest/* \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
-#### Apply to Kubernetes
+#### Apply the manifest to your Kubernetes cluster
 
-Use `kubectl` to apply the manifest to your Kubernetes cluster.
-
+Use `kubectl` to apply the manifest to your Kubernetes cluster:
 ```shell
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
 
 #### View the app in the Google Cloud Console
 
-Point your browser to:
+To get the Console URL for your app, run the following command:
 
 ```shell
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
 ```
 
-# Basic Usage
+To view your app, open the URL in your browser.
 
-You can learn IP addresses of your NGINX solution either thru command line or thru GCP User Interface.
+# Using the app
 
-If you would like to learn IP addresses of the NGINX solution via GCP User Interface, please, do the following:
-- navigate to Kubernetes Engine -> Services section
-- identify NGINX solution using its name (e.g. nginx-1-nginx-svc)
-- read the IP addresses (for port 80 and 443) from the "Endpoints" column.
+You can get the IP addresses for your NGINX solution either from the command
+line, or from the Google Cloud Platform Console.
 
-If you are using CLI then run the following command:
+In the GCP Console, do the following:
+
+1. Open the [Kubernetes Engine Services](https://console.cloud.google.com/kubernetes/discovery) page.
+1. Identify the NGINX solution using its name (for example, `nginx-1-nginx-svc`)
+1. From the Endpoints column, note the IP addresses for ports 80 and 443.
+
+If you are using the command line, run the following command:
 
 ```shell
 kubectl get svc -l app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
 
-This command will display internal and external IP address of your NGINX service.
+This command shows the internal and external IP address of your NGINX service.
 
 # Scaling
 
-By default, NGINX K8s application is deployed using 3 replicas. You can manually scale it up or down to deploy NGINX solution with desired number of replicas using the following command.
+By default, the NGINX application is deployed using 3 replicas. You can
+manually scale it up or down using the following command:
 
 ```shell
-kubectl scale statefulsets "$APP_INSTANCE_NAME-nginx" --namespace "$NAMESPACE" --replicas=<new-replicas>
+kubectl scale statefulsets "$APP_INSTANCE_NAME-nginx" --namespace "$NAMESPACE" --replicas=[NEW_REPLICAS]
 ```
 
-where `<new_replicas>` defines the new desired number.
+where [NEW_REPLICAS] is the new number of replicas.
 
 # Backup and Restore
 
@@ -218,47 +231,54 @@ if you would like to generate self-signed certificate.
 
 # Update
 
-This procedure assumes that you have a new image for NGINX container published and being available to your Kubernetes cluster. The new image is available at <url-pointing-to-new-image>.
+This procedure assumes that you have a new image for the NGINX container
+available to your Kubernetes cluster. The new image is used in the following
+commands as [NEW_IMAGE_REFERENCE].
 
-Start with modification of the image used for pod temaplate within NGINX StatefulSet:
+In the NGINX StatefulSet, modify the image used for the Pod template:
 
 ```shell
 kubectl set image statefulset "$APP_INSTANCE_NAME-nginx" \
-  nginx=<url-pointing-to-new-image>
+  nginx=[NEW_IMAGE_REFERENCE]
 ```
 
-where `<url-pointing-to-new-image>` is the new image.
+where `[NEW_IMAGE_REFERENCE]` is the new image.
 
-To check the status of Pods in the StatefulSet and the progress of deployment of new image run the following command:
+To check the status of Pods in the StatefulSet, and the progress of deploying
+the new image, run the following command:
 
 ```shell
 kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
 
-To check the current image used by pods within `NGINX` K8s application, you can run the following command:
+To check the current image used by Pods in the `NGINX` Kubernetes application,
+run the following command:
 
 ```shell
 kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}' | sort
 ```
 
-# Deletion
+# Uninstalling the app
 
-You can uninstall/delete NGINX application either using Google Cloud Console or using K8s Apps tools.
+You can delete the NGINX application using the Google Cloud Platform Console, or using Kubernetes tools.
 
-* Navigate to the `nginx` directory.
+If you are using the command line:
+
+1. Navigate to the `nginx` directory.
+
+    ```shell
+    cd click-to-deploy/k8s/nginx
+    ```
+
+1. Run the `delete` command:
+
+    ```shell
+    kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
+    ```
+
+Optionally, if you don't need the deployed application or the Kubernetes
+Engine cluster, delete the whole cluster using this command:
 
 ```shell
-cd click-to-deploy/k8s/nginx
-```
-
-* Run the uninstall command
-
-```shell
-kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
-```
-
-Optionally, if you don't need both the deployed application and GKE cluster used for deployment then you can delete the whole GKE cluster using this command:
-
-```shell
-gcloud container clusters delete "$CLUSTER" --zone "$ZONE"
+gcloud container clusters delete "$CLUSTER" --zone "$ZONE"tainer clusters delete "$CLUSTER" --zone "$ZONE"
 ```

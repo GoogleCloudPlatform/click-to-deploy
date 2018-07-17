@@ -1,7 +1,8 @@
 # Overview
 
-The Apache Cassandra database management system provides asynchronous masterless replication of
-large amounts of data across many servers, avoiding a single point of failure and reducing latency.
+Apache Cassandra is a database management system that replicates
+large amounts of data across many servers, avoiding a single point of failure
+and reducing latency.
 
 [Learn more](https://cassandra.apache.org/).
 
@@ -32,16 +33,16 @@ You'll need the following tools in your development environment:
 
 #### Create a Google Kubernetes Engine cluster
 
-Create a new cluster from the command-line.
+Create a new cluster from the command line:
 
 ```shell
-export CLUSTER=marketplace-cluster
+export CLUSTER=cassandra-cluster
 export ZONE=us-west1-a
 
 gcloud container clusters create "$CLUSTER" --zone "$ZONE"
 ```
 
-Configure `kubectl` to talk to the new cluster.
+Configure `kubectl` to connect to the new cluster:
 
 ```shell
 gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
@@ -57,11 +58,17 @@ git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 
 #### Install the Application resource definition
 
-Do a one-time setup for your cluster to understand Application resource via installing Application's Custom Resource Definition.
+An Application resource is a collection of individual Kubernetes components,
+such as Services, Deployments, and so on, that you can manage as a group.
+
+To set up your cluster to understand Application resources, navigate to the
+`k8s/vendor` folder in the repository, and run the following command:
 
 ```shell
-kubectl apply -f click-to-deploy/k8s/vendor/marketplace-tools/crd/*
+kubectl apply -f marketplace-tools/crd/*
 ```
+
+You need to run this command once.
 
 The Application resource is defined by the
 [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps)
@@ -70,7 +77,7 @@ community. The source code can be found on
 
 ### Install the Application
 
-Navigate to the `cassandra` directory.
+Navigate to the `cassandra` directory:
 
 ```shell
 cd click-to-deploy/k8s/cassandra
@@ -78,33 +85,36 @@ cd click-to-deploy/k8s/cassandra
 
 #### Configure the app with environment variables
 
-Choose the instance name and namespace for the app.
+Choose an instance name and
+[namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)
+for the app. In most cases, you can use the `default` namespace.
 
 ```shell
 export APP_INSTANCE_NAME=cassandra-1
 export NAMESPACE=default
 ```
 
-Specify the number of nodes for the Cassandra:
+Set the number of replicas for Cassandra:
 
 ```shell
 # Setting a single node in Cassandra cluster means single point of failure.
-# For production grade system please consider at least 3 replicas.
+# For production environments, consider at least 3 replicas.
 export REPLICAS=3
 ```
 
-Configure the container images.
+Configure the container images:
 
 ```shell
 export IMAGE_CASSANDRA="gcr.io/k8s-marketplace-eap/google/cassandra:latest"
 ```
 
 The images above are referenced by
-[tag](https://docs.docker.com/engine/reference/commandline/tag). It is strongly
-recommended to pin each image to an immutable
+[tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
+that you pin each image to an immutable
 [content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This will ensure that the installed application will always use the same images,
-until you are ready to upgrade.
+This ensures that the installed application always uses the same images,
+until you are ready to upgrade. To get the digest for the image, use the
+following script:
 
 ```shell
 for i in "IMAGE_CASSANDRA"; do
@@ -117,7 +127,7 @@ done
 
 #### Expand the manifest template
 
-Use `envsubst` to expand the template. It is recommended that you save the
+Use `envsubst` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
@@ -126,83 +136,89 @@ awk 'BEGINFILE {print "---"}{print}' manifest/* \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
-#### Apply to Kubernetes
+#### Apply the manifest to your Kubernetes cluster
 
-Use `kubectl` to apply the manifest to your Kubernetes cluster.
+Use `kubectl` to apply the manifest to your Kubernetes cluster:
 
 ```shell
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
 
-Deploying can take a few minutes, please wait.
 
 #### View the app in the Google Cloud Console
 
-Point your browser to:
+To get the Console URL for your app, run the following command:
 
 ```shell
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
 ```
 
-### Check Cassandra cluster
+To view your app, open the URL in your browser.
 
-If deployment is successful, you should be able to check status of Cassandra cluster.
+### Check the status of the Cassandra cluster
 
-To do this, use `nodetool status` command on one of containers. `nodetool` is Cassandra
-specific tool to manage Cassandra cluster. It is part of Cassandra container image.
+If your deployment is successful, you can check status of your Cassandra
+cluster.
+
+On one of the Cassandra containers, run the `nodetool status` command.
+`nodetool` is a Cassandra utility for managing a cluster. It is part of
+the Cassandra container image.
 
 ```shell
 kubectl exec "${APP_INSTANCE_NAME}-cassandra-0" --namespace "${NAMESPACE}" -c cassandra -- nodetool status
 ```
 
-### Access Cassandra service (internal)
+### Connecting to Cassandra (internal access)
 
-It is possible to connect to Cassandra without exposing it to public access.
+You can connect to the Cassandra service without exposing your cluster
+for public access, using the following options:
 
-To do this, please connect from container inside K8s cluster using hostname
-`$APP_INSTANCE_NAME-cassandra-0.$APP_INSTANCE_NAME-cassandra-svc.$NAMESPACE.svc.cluster.local`
+*  From a container in your Kubernetes cluster, connect using the hostname
+  `$APP_INSTANCE_NAME-cassandra-0.$APP_INSTANCE_NAME-cassandra-svc.$NAMESPACE.svc.cluster.local`
 
-### Access Cassandra service (via `kubectl port-forward`)
+* Use port forwarding to access the service. In a separate terminal, run the
+  following command:
 
-You could also use a local proxy to access the service that is not exposed publicly.
-Run the following command in a separate background terminal:
+     ```shell
+     kubectl port-forward "${APP_INSTANCE_NAME}-cassandra-0" 9042:9042 --namespace "${NAMESPACE}"
+     ```
 
-```shell
- kubectl port-forward "${APP_INSTANCE_NAME}-cassandra-0" 9042:9042 --namespace "${NAMESPACE}"
- ```
+    Then, in your main terminal, start `cqlsh`:
 
-In you main terminal:
+    ```shell
+    cqlsh --cqlversion=3.4.4
+    ```
 
-```shell
-cqlsh --cqlversion=3.4.4
-```
+    In the response, you see the Cassandra welcome message:
 
-In the response, you should see a Cassandra welcome message:
+    ```shell
+    Use HELP for help.
+    cqlsh>
+    ```
 
-```shell
-Use HELP for help.
-cqlsh>
-```
+### Connecting to Cassandra using an external IP address
 
-### Access Cassandra service (external)
-By default, the application does not have an external IP.
+By default, the application does not have an external IP address.
 
-[Please configure Cassandra access control, while exposing it to public access.](https://www.datastax.com/dev/blog/role-based-access-control-in-cassandra)
+If you want to expose your Cassandra cluster using an external IP address,
+first [configure access control](https://www.datastax.com/dev/blog/role-based-access-control-in-cassandra).
 
-#### Exposing Cassandra cluster
+#### Configuring the Cassandra service
 
-It is possible to expose the Cassandra (although it is not a suggested approach)
+To configure Cassandra as an external service, run the following command:
 
 ```shell
 envsubst '${APP_INSTANCE_NAME}' < scripts/external.yaml.template > scripts/external.yaml
 kubectl apply -f scripts/external.yaml --namespace "${NAMESPACE}"
 ```
 
-Note that it might take some time for the external IP to be provisioned.
+An external IP address is provisioned for the Service. It might take
+a few minutes to get the external IP address.
 
-#### Extract IP addess
+#### Get the IP address of the Service
 
-Get the external IP of the Cassandra service invoking `kubectl get`
+Get the external IP address of the Cassandra service using the following
+command:
 
 ```shell
 CASSANDRA_IP=$(kubectl get svc $APP_INSTANCE_NAME-cassandra-external-svc \
@@ -212,63 +228,164 @@ CASSANDRA_IP=$(kubectl get svc $APP_INSTANCE_NAME-cassandra-external-svc \
 echo $CASSANDRA_IP
 ```
 
-It can take few seconds to provide this IP.
-
-With this IP, we can connect by `cqlsh` to Cassandra, for example
+Connect `cqlsh` to the external IP address, using the following command:
 
 ```shell
 CQLSH_HOST=$CASSANDRA_IP cqlsh --cqlversion=3.4.4
 ```
 
-# Scaling
+# Scaling the Cassandra app
 
-### Scale the cluster up
+### Scaling the cluster up
 
-Scale the number of replicas up by the following command:
+By default, the Cassandra app is deployed using 3 replicas. To change the number of replicas, use the following command:
 
-```shell
+```
 kubectl scale statefulsets "$APP_INSTANCE_NAME-cassandra" \
-  --namespace "$NAMESPACE" --replicas=<new-replicas>
+  --namespace "$NAMESPACE" --replicas=[NEW_REPLICAS]
 ```
 
-By default, there are 3 replicas, to provide resilience system.
+where `[NEW_REPLICAS]` is the new number.
 
-### Scale the cluster down
+### Scaling the cluster down
 
-To scale down number of replicas, please use script `scripts/scale_down.sh`,
-or manually scale down cluster in following steps.
+To scale down the number of replicas, use
+[scripts/scale-down.sh](scripts/scale-down.sh), or manually scale down
+the cluster.
 
-To remove Cassandra nodes from cluster Cassandra cluster, and then pod from K8s,
-start from highest numbered pod $INDEX
+To manually remove Cassandra nodes from your cluster, and then remove pods
+from Kubernetes, start from the highest-numbered pod. For each node,
+do following:
 
-For each node, do following steps
-1. Run `nodetool decommission` on Cassandra container
-1. Scale down stateful set by one with `kubectl scale sts` command
-1. Wait until pod is removed from cluster
-1. Remove persistent volume and persistent volume claim belonging to that replica
+1. On the Cassandra container, Run `nodetool decommission`.
+1. Scale down the StatefulSet by one, using the `kubectl scale sts` command.
+1. Wait until the pod is removed from the cluster.
+1. Remove any persistent volumes and persistent volume claims that belong to
+   that replica.
 
-Repeat this procedure until Cassandra cluster has expected number of pods
+Repeat this procedure until the Cassandra cluster has the number of pods you
+want.
 
-To scale down by script, please invoke
+To scale down using the script, run the following command:
 
 ```shell
-<SCRIPT DIR>/scale_down.sh --desired_number 3 \
-                           --namespace "${NAMESPACE}" \
-                           --app_instance_name "${APP_INSTANCE_NAME}"
+scripts/scale_down.sh --desired_number 3 \
+                      --namespace "${NAMESPACE}" \
+                      --app_instance_name "${APP_INSTANCE_NAME}"
 ```
 
-For more information about the StatefulSets scaling, check the
+For more information about scaling StatefulSets, see the
 [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/#kubectl-scale).
+
+# Backup and Restore
+
+### Backing up your Cassandra data
+
+These steps back up your Cassandra data, database schema, and token
+information.
+
+Set your installation name and Kubernetes namespace:
+
+```shell
+export APP_INSTANCE_NAME=cassandra-1
+export NAMESPACE=default
+```
+
+The script [`scripts/backup.sh`](scripts/backup.sh) does the following:
+
+1. Uploads the `make_backup.sh` script to each container.
+1. Runs the script to create a backup package, using the `nodetool snapshot`
+   command.
+1. Downloads the backup to your machine.
+
+After you run the script, the `backup-$NODENUMBER.tar.gz` file contains
+the backup for each node.
+
+Run the script using the following options:
+
+```shell
+scripts/backup.sh --keyspace demo \
+                  --namespace "${NAMESPACE}" \
+                  --app_instance_name "${APP_INSTANCE_NAME}"
+```
+
+This script generates one backup file for each Cassandra node. For your whole
+cluster, one schema and one token ring is backed up.
+
+### Restoring
+
+Set your installation name and Kubernetes namespace:
+
+```shell
+export APP_INSTANCE_NAME=cassandra-1
+export NAMESPACE=default
+```
+
+To restore Cassandra, you use the `sstableloader` tool. The restore process
+is automated in [`scripts/restore.sh`](scripts/restore.sh). Your source and
+destination clusters can have a different number of nodes.
+
+In the directory that contains your backup files, run the restore script:
+
+```shell
+scripts/restore.sh  --keyspace demo \
+                    --namespace "${NAMESPACE}" \
+                    --app_instance_name "${APP_INSTANCE_NAME}"
+```
+
+The script recreates the schema and uploads data to your cluster.
+
+# Updating the app
+
+For background information on rolling updates for Cassandra, see the
+[Upgrade Guide](https://docs.datastax.com/en/upgrade/doc/upgrade/datastax_enterprise/upgrdDSE.html).
+
+Before updating, we recommend backing up your data.
+
+## Update the cluster nodes
+
+### Patch the StatefulSet with the new image
+
+Set your installation name and Kubernetes namespace:
+
+```shell
+export APP_INSTANCE_NAME=cassandra-1
+export NAMESPACE=default
+```
+
+Assign the new image to your StatefulSet definition:
+
+```shell
+IMAGE_CASSANDRA=[NEW_MAGE_REFERENCE]
+
+kubectl set image statefulset "${APP_INSTANCE_NAME}-cassandra" \
+  --namespace "${NAMESPACE}" "cassandra=${IMAGE_CASSANDRA}"
+```
+
+After this operation, the StatefulSet has a new image configured for the
+containers. However, because of the OnDelete update strategy on the
+StatefulSet, the pods will not automatically restart.
+
+### Run the `upgrade.sh` script
+
+To start the rolling update, run the `scripts/upgrade.sh` script. The script
+takes down and updates one replica at a time.
+
+```shell
+scripts/upgrade.sh    --namespace "${NAMESPACE}" \
+                      --app_instance_name "${APP_INSTANCE_NAME}"
+
+```
 
 # Uninstall the Application
 
-## Using GKE UI
+## Using the Google Cloud Platform Console
 
-Navigate to `GKE > Applications` in GCP console. From the list of applications, click on the one
-that you wish to uninstall.
+1. In the GCP Console, open [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
 
-On the new screen, click on the `Delete` button located in the top menu. It will remove
-the resources attached to this application.
+1. From the list of applications, click **Cassandra**.
+
+1. On the Application Details page, click **Delete**.
 
 ## Using the command line
 
@@ -283,32 +400,33 @@ export NAMESPACE=default
 
 ### Delete the resources
 
-> **NOTE:** Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions.
-> It means that for instance if you have `kubectl` in version 1.10.&ast; and Kubernetes 1.8.&ast;,
-> you may experience incompatibility issues, like not removing the StatefulSets with
-> apiVersion of apps/v1beta2.
+> **NOTE:** We recommend to use a kubectl version that is the same as the version of your cluster. Using the same versions of kubectl and the cluster helps avoid unforeseen issues.
 
-If you still have the expanded manifest file used for the installation, you can use it to delete the resources.
-Run `kubectl` on expanded manifest file matching your installation:
+To delete the resources, use the expanded manifest file used for the
+installation.
+
+Run `kubectl` on the expanded manifest file:
 
 ```shell
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 ```
 
-Otherwise, delete the resources by indication of types and a label:
+Otherwise, delete the resources using types and a label:
 
 ```shell
-kubectl delete statefulset,service \
+kubectl delete application,statefulset,service \
   --namespace $NAMESPACE \
   --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
+
 ### Delete the persistent volumes of your installation
 
-By design, removal of StatefulSets in Kubernetes does not remove the PersistentVolumeClaims that
-were attached to their Pods. It protects your installations from mistakenly deleting stateful data.
+By design, the removal of StatefulSets in Kubernetes does not remove
+PersistentVolumeClaims that were attached to their Pods. This prevents your
+installations from accidentally deleting stateful data.
 
-If you wish to remove the PersistentVolumeClaims with their attached persistent disks, run the
-following `kubectl` commands:
+To remove the PersistentVolumeClaims with their attached persistent disks, run
+the following `kubectl` commands:
 
 ```shell
 for pv in $(kubectl get pvc --namespace $NAMESPACE \
@@ -323,102 +441,11 @@ kubectl delete persistentvolumeclaims \
   --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
 
-# Backup & Restore
+### Delete the GKE cluster
 
-### Backup
+Optionally, if you don't need the deployed application or the GKE cluster,
+delete the cluster using this command:
 
-Set your installation name and Kubernetes namespace:
-
-```shell
-export APP_INSTANCE_NAME=cassandra-1
-export NAMESPACE=default
 ```
-
-To backup Cassandra, `nodetool snapshot` command must be executed on each node to
-get eventually consistent backup. Script `scripts/backup.sh` does following steps:
-
-1. Upload `make_backup.sh` script to each container.
-1. Run this scripts.
-1. Gather packed data and downloads them to invoking machine.
-
-After running this script, there exists `backup-$NODENUMBER.tar.gz` files, that
-contain whole backup.
-
-Also, database schema and token information is also backed up.
-
-Please run it with key space
-
-```shell
-<SCRIPT DIR>/backup.sh --keyspace demo \
-                       --namespace "${NAMESPACE}" \
-                      --app_instance_name "${APP_INSTANCE_NAME}"
-```
-
-This script will generate backup files. For each Cassandra node one archive will
-be generated. For whole cluster one schema is backed up and token ring is backed
-up.
-
-### Restoring
-
-Set your installation name and Kubernetes namespace:
-
-```shell
-export APP_INSTANCE_NAME=cassandra-1
-export NAMESPACE=default
-```
-
-To restore Cassandra, `sstableloader` tool is used. This is automated via
-`scripts/restore.sh`. Please run this script from directory with backup files,
-providing as arguments key space and number of generated archives.
-
-```shell
-<SCRIPT DIR>/restores.sh   --keyspace demo \
-                           --namespace "${NAMESPACE}" \
-                           --app_instance_name "${APP_INSTANCE_NAME}"
-```
-
-This script will recreate schema and upload data. Clusters (source and
-destination) can have different number of nodes.
-
-# Update procedure
-
-For more background about the rolling update procedure, please check the
-[Upgrade Guide](https://docs.datastax.com/en/upgrade/doc/upgrade/datastax_enterprise/upgrdDSE.html).
-
-Before starting the update procedure on your cluster, we strongly advise to
-prepare a backup of your installation in order to eliminate the risk of losing
-your data.
-
-## Perform the update on cluster nodes
-
-### Patch the StatefulSet with the new image
-
-Set your installation name and Kubernetes namespace:
-
-```shell
-export APP_INSTANCE_NAME=cassandra-1
-export NAMESPACE=default
-```
-
-Assign the new image to your StatefulSet definition:
-
-```shell
-IMAGE_CASSANDRA=<put your new image reference here>
-
-kubectl set image statefulset "${APP_INSTANCE_NAME}-cassandra" \
-  --namespace "${NAMESPACE}" "cassandra=${IMAGE_CASSANDRA}"
-```
-
-After this operation the StatefulSet has a new image configured for its containers, but the pods
-will not automatically restart due to the OnDelete update strategy set on the StatefulSet.
-
-### Run the `upgrade.sh` script to run the rolling update procedure
-
-Run the `scripts/upgrade.sh` script. This script will take down and update one replica at a time -
-it should print out diagnostic messages. You should be done when the script finishes.
-
-```shell
-<SCRIPT DIR>/upgrade.sh    --namespace "${NAMESPACE}" \
-                           --app_instance_name "${APP_INSTANCE_NAME}"
-
+gcloud container clusters delete "$CLUSTER" --zone "$ZONE"
 ```
