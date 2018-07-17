@@ -78,6 +78,7 @@ spec:
       export NAMESPACE=<name of your Kurbernetes namespace, e.g. default>
 
       # using --dry-run option because we update existing secret resource
+      # if we used kubectl create... for existing secret we would get an error
       kubectl --namespace $NAMESPACE create secret generic $APP_INSTANCE_NAME-nginx-secret \
         --from-file=$CERT_FILE --from-file=$KEY_FILE \
         --dry-run -o yaml | kubectl apply -f -
@@ -87,7 +88,7 @@ spec:
 
       Run these commands to restart all Pods without causing a downtime
       ```
-      PODS=$(kubectl get pods --namespace $NAMESPACE | awk 'FNR>1 {print $1}')
+      PODS=$(kubectl get pods --namespace $NAMESPACE -l app.kubernetes.io/name=$APP_INSTANCE_NAME | awk 'FNR>1 {print $1}')
 
       TIMEOUT=60
 
