@@ -14,7 +14,7 @@ Popular open stacks on Kubernetes packaged by Google.
 
 Get up and running with a few clicks! Install this WordPress app to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
-[on-screen instructions](https://console.cloud.google.com/launcher/details/google/wordpress).
+[on-screen instructions](https://console.cloud.google.com/marketplace/details/google/wordpress).
 
 ## Command line instructions
 
@@ -56,8 +56,7 @@ gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 Clone this repo and the associated tools repo:
 
 ```shell
-gcloud source repos clone google-click-to-deploy --project=k8s-marketplace-eap
-gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketplace-eap
+git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 ```
 
 #### Install the Application resource definition
@@ -69,7 +68,7 @@ To set up your cluster to understand Application resources, navigate to the
 `k8s/vendor` folder in the repository, and run the following command:
 
 ```shell
-kubectl apply -f google-marketplace-k8s-app-tools/crd/*
+kubectl apply -f marketplace-tools/crd/*
 ```
 
 You need to run this command once.
@@ -84,7 +83,7 @@ community. The source code can be found on
 Navigate to the `wordpress` directory:
 
 ```shell
-cd google-click-to-deploy/k8s/wordpress
+cd click-to-deploy/k8s/wordpress
 ```
 
 #### Configure the app with environment variables

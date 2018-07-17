@@ -17,7 +17,7 @@ Popular open stacks on Kubernetes packaged by Google.
 
 Get up and running with a few clicks! Install this Elastic GKE Logging app to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
-[on-screen instructions](https://console.cloud.google.com/launcher/details/google/elastic-gke-logging).
+[on-screen instructions](https://console.cloud.google.com/marketplace/details/google/elastic-gke-logging).
 
 ## Command line instructions
 
@@ -59,20 +59,15 @@ gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 Clone this repo and the associated tools repo.
 
 ```shell
-gcloud source repos clone google-click-to-deploy --project=k8s-marketplace-eap
-gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketplace-eap
+git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 ```
 
 #### Install the Application resource definition
 
 Do a one-time setup for your cluster to understand Application resource via installing Application's Custom Resource Definition.
 
-<!--
-To do that, navigate to `k8s/vendor` subdirectory of the repository and run the following command:
--->
-
 ```shell
-kubectl apply -f google-marketplace-k8s-app-tools/crd/*
+kubectl apply -f marketplace-tools/crd/*
 ```
 
 The Application resource is defined by the
@@ -85,7 +80,7 @@ community. The source code can be found on
 Navigate to the `elastic-gke-logging` directory.
 
 ```shell
-cd google-click-to-deploy/k8s/elastic-gke-logging
+cd click-to-deploy/k8s/elastic-gke-logging
 ```
 
 #### Configure the app with environment variables
