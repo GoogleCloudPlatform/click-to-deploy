@@ -219,8 +219,18 @@ To update the certificate for a running NGINX server do the following:
 1. Save the certificate under `https1.cert` file in `click-to-deploy/k8s/nginx/scripts` folder.
 1. Save the private key of your certificate under `https1.key` file in `click-to-deploy/k8s/nginx/scripts` folder.
 1. Copy `click-to-deploy/k8s/nginx/scripts/nginx-update-cert.sh` to the folder where `https1.cert` and `https1.key` are stored.
-1. Define APP_INSTANCE_NAME environment variable ```export APP_INSTANCE_NAME=<the name of your application, e.g. nginx-1>```
-1. Define NAMESPACE environment variable ``` export NAMESPACE=default```
+1. Define `APP_INSTANCE_NAME` environment variable:
+
+    ```shell
+    export APP_INSTANCE_NAME=<the name of your application, e.g. nginx-1>
+    ```
+
+1. Define `NAMESPACE` environment variable:
+
+    ```shell
+    export NAMESPACE=default
+    ```
+
 1. Run the update script: `./nginx-update-cert.sh`.
 
 NOTE: Please, make sure to perform above-mentioned operations outside of directory
