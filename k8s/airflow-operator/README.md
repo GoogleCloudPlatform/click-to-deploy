@@ -49,7 +49,7 @@ gcloud container clusters create "$CLUSTER" --zone "$ZONE"
 Configure `kubectl` to talk to the new cluster.
 
 ```shell
-gcloud container clusters get-credentials "$CLUSTER"
+gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 ```
 
 #### Clone this repo
@@ -76,7 +76,7 @@ community. The source code can be found on
 
 ### Install the Application
 
-Navigate to the `-operator` directory.
+Navigate to the `airflow-operator` directory.
 
 ```shell
 cd google-click-to-deploy/k8s/airflow-operator
@@ -153,5 +153,5 @@ Point your browser to:
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${namespace}/${name}"
 ```
 
-### Create your Airflow clusters`
+### Create your Airflow clusters
 TODO
