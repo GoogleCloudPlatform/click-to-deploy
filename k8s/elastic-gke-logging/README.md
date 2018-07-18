@@ -128,7 +128,7 @@ following script:
 ```shell
 for i in IMAGE_ELASTICSEARCH IMAGE_KIBANA IMAGE_FLUENTD IMAGE_INIT; do
   repo=`echo ${!i} | cut -d: -f1`;
-  digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
+  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
   export $i="$repo@$digest";
   env | grep $i;
 done

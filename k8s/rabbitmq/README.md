@@ -133,9 +133,9 @@ until you are ready to upgrade. To get the digest for the image, use the
 following script:
 
 ```shell
-for i in "IMAGE_RABBITMQ IMAGE_RABBITMQ_INIT"; do
+for i in "IMAGE_RABBITMQ" "IMAGE_RABBITMQ_INIT"; do
   repo=`echo ${!i} | cut -d: -f1`;
-  digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
+  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
   export $i="$repo@$digest";
   env | grep $i;
 done

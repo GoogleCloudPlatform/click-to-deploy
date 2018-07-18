@@ -100,8 +100,9 @@ export NAMESPACE=default
 Configure the container images:
 
 ```shell
-export IMAGE_GRAFANA="gcr.io/k8s-marketplace-eap/google/grafana:latest"
-export IMAGE_GRAFANA_INIT="gcr.io/k8s-marketplace-eap/google/grafana/debian9:latest"
+TAG=5.1
+export IMAGE_GRAFANA="gcr.io/k8s-marketplace-eap/google/grafana:${TAG}"
+export IMAGE_GRAFANA_INIT="gcr.io/k8s-marketplace-eap/google/grafana/debian9:${TAG}"
 ```
 
 The images above are referenced by
@@ -116,7 +117,7 @@ following script:
 for i in "IMAGE_GRAFANA" \
          "IMAGE_GRAFANA_INIT"; do
   repo=`echo ${!i} | cut -d: -f1`;
-  digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
+  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
   export $i="$repo@$digest";
   env | grep $i;
 done

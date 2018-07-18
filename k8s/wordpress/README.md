@@ -113,7 +113,7 @@ following script:
 ```shell
 for i in "IMAGE_WORDPRESS" "IMAGE_MYSQL"; do
   repo=`echo ${!i} | cut -d: -f1`;
-  digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
+  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
   export $i="$repo@$digest";
   env | grep $i;
 done

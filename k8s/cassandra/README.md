@@ -105,7 +105,8 @@ export REPLICAS=3
 Configure the container images:
 
 ```shell
-export IMAGE_CASSANDRA="gcr.io/k8s-marketplace-eap/google/cassandra:latest"
+TAG=3.11
+export IMAGE_CASSANDRA="gcr.io/k8s-marketplace-eap/google/cassandra:${TAG}"
 ```
 
 The images above are referenced by
@@ -119,7 +120,7 @@ following script:
 ```shell
 for i in "IMAGE_CASSANDRA"; do
   repo=`echo ${!i} | cut -d: -f1`;
-  digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
+  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
   export $i="$repo@$digest";
   env | grep $i;
 done
