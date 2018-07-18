@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eu
+set -euo pipefail
 
 export SCRIPT_DIR=$(readlink -f "$(dirname "${BASH_SOURCE[0]}")")
 
@@ -9,14 +9,33 @@ if [[ ! -f "${SCRIPT_DIR}/util.sh" ]]; then
   exit 1
 fi
 
+USAGE='
+This script creates a backup files from Cassandra cluster. Following files
+are generated:
+- multiple backup .tar.gz archives, containing raw data from Cassandra. For each
+  Cassandra node one archive is generated
+- backup-schema.cql schema file
+- backup-ring.info file, with ring information, useful for manual restore
+
+Parameters:
+--keyspace             (Required) Name of Cassandra keyspace to backup
+--namespace            (Required) Name of K8s namespace, where Cassandra
+                       cluster exists
+--app_instance_name    (Required) Name of application in K8s cluster
+
+Example:
+<SCRIPT DIR>/backup.sh --keyspace demo \
+                       --namespace custom-namespace \
+                       --app_instance_name cassandra-1
+'
+
 . "${SCRIPT_DIR}/util.sh"
 
-if [[ -z "$1" ]]; then
-  info "Please provide a keyspace"
-  exit 1
-fi
+add_flag_with_argument KEYSPACE keyspace
 
-KEYSPACE="${1}"
+init_util $@
+
+required_variables KEYSPACE
 
 function upload_backup_script_cmd {
   for index in $(seq 0 $(( "${REPLICAS}" - 1 )) ); do
@@ -68,7 +87,7 @@ if [[ $STATUS -ne 0 ]]; then
 # Check for one of possible reasons for error, Cassandra cluster was scaled during
 # backup procedure
   NEW_REPLICAS=$(get_desired_number_of_replicas_in_sts)
-  if [[ $COUNT -ne $NEW_COUNT ]]; then
+  if [[ "${REPLICAS}" -ne "${NEW_REPLICAS}" ]]; then
     info "Number of containers has changed from ${REPLICAS} to ${NEW_REPLICAS}"
   fi
   exit 1
@@ -95,11 +114,11 @@ fi
 
 info "Getting schema..."
 info ""
-kubectl exec -it ${APP_INSTANCE_NAME}-cassandra-0 -n $NAMESPACE -c cassandra -- cqlsh -e "DESC KEYSPACE ${KEYSPACE}" > backup-schema.cql
+kubectl exec ${APP_INSTANCE_NAME}-cassandra-0 -n $NAMESPACE -c cassandra -- cqlsh -e "DESC KEYSPACE ${KEYSPACE}" > backup-schema.cql
 
 info "Getting ring info..."
 info ""
-kubectl exec -it ${APP_INSTANCE_NAME}-cassandra-0 -n $NAMESPACE -c cassandra -- nodetool ring > backup-ring.info
+kubectl exec ${APP_INSTANCE_NAME}-cassandra-0 -n $NAMESPACE -c cassandra -- nodetool ring > backup-ring.info
 
 info ""
 info "Backups..."

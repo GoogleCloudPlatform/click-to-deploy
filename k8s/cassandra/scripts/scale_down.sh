@@ -18,17 +18,36 @@ if [[ ! -f "${SCRIPT_DIR}/util.sh" ]]; then
   exit 1
 fi
 
+USAGE='
+This script scales down Cassandra cluster to lower number of instances:
+
+Parameters:
+--desired_number       (Required) Desired number of instances
+--namespace            (Required) Name of K8s namespace, where Cassandra
+                       cluster exists
+--app_instance_name    (Required) Name of application in K8s cluster
+
+Example:
+<SCRIPT DIR>/scale_down.sh --desired_number 3 \
+                           --namespace custom-namespace \
+                           --app_instance_name cassandra-1
+'
+
 . "${SCRIPT_DIR}/util.sh"
 
-DESIRED_NUMBER=${1:-1}
+add_flag_with_argument DESIRED_NUMBER desired_number
+
+init_util $@
+
+required_variables DESIRED_NUMBER
 
 if [[ $DESIRED_NUMBER -gt $(get_desired_number_of_replicas_in_sts) ]]; then
   info "Desired number exceedes current number of desired replicas"
   exit 1
 fi
 
-if [[ $DESIRED_NUMBER -lt 1 ]]; then
-  info "Cannot scale below 1"
+if [[ $DESIRED_NUMBER -lt 3 ]]; then
+  info "Cannot scale below 3"
   exit 1
 fi
 

@@ -6,7 +6,7 @@ include ../vendor/marketplace-tools/ubbagent.Makefile
 include ../vendor/marketplace-tools/var.Makefile
 
 
-TAG ?= latest
+TAG ?= 6.3
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/elasticsearch/deployer:$(TAG)
@@ -20,11 +20,16 @@ ifdef IMAGE_ELASTICSEARCH
   IMAGE_ELASTICSEARCH_FIELD = , "IMAGE_ELASTICSEARCH": "$(IMAGE_ELASTICSEARCH)"
 endif
 
+ifdef IMAGE_INIT
+  IMAGE_INIT_FIELD = , "IMAGE_INIT": "$(IMAGE_INIT)"
+endif
+
 APP_PARAMETERS ?= { \
   "APP_INSTANCE_NAME": "$(NAME)", \
   "NAMESPACE": "$(NAMESPACE)" \
   $(REPLICAS_FIELD) \
   $(IMAGE_ELASTICSEARCH_FIELD) \
+  $(IMAGE_INIT_FIELD) \
 }
 APP_TEST_PARAMETERS ?= {}
 
@@ -40,7 +45,6 @@ app/build:: .build/elasticsearch/elasticsearch \
 
 .build/elasticsearch/deployer: deployer/* \
                                manifest/* \
-                               .build/marketplace/deployer/envsubst \
                                .build/var/APP_DEPLOYER_IMAGE \
                                .build/var/REGISTRY \
                                .build/var/TAG \
@@ -58,8 +62,8 @@ app/build:: .build/elasticsearch/elasticsearch \
 .build/elasticsearch/elasticsearch: .build/var/REGISTRY \
                                     .build/var/TAG \
                                     | .build/elasticsearch
-	docker pull launcher.gcr.io/google/elasticsearch6
-	docker tag launcher.gcr.io/google/elasticsearch6 \
+	docker pull launcher.gcr.io/google/elasticsearch6:$(TAG)
+	docker tag launcher.gcr.io/google/elasticsearch6:$(TAG) \
 	    "$(REGISTRY)/elasticsearch:$(TAG)"
 	docker push "$(REGISTRY)/elasticsearch:$(TAG)"
 	@touch "$@"

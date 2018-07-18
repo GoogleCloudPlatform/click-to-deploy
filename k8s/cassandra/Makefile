@@ -6,11 +6,15 @@ include ../vendor/marketplace-tools/ubbagent.Makefile
 include ../vendor/marketplace-tools/var.Makefile
 
 
-TAG ?= latest
+TAG ?= 3.11
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/cassandra/deployer:$(TAG)
 NAME ?= cassandra-1
+
+ifdef IMAGE_CASSANDRA
+  IMAGE_CASSANDRA_FIELD = , "IMAGE_CASSANDRA": "$(IMAGE_CASSANDRA)"
+endif
 
 ifdef REPLICAS
   REPLICAS_FIELD = , "REPLICAS": "$(REPLICAS)"
@@ -18,7 +22,8 @@ endif
 
 APP_PARAMETERS ?= { \
   "APP_INSTANCE_NAME": "$(NAME)", \
-  "NAMESPACE": "$(NAMESPACE)"\
+  "NAMESPACE": "$(NAMESPACE)" \
+  $(IMAGE_CASSANDRA_FIELD) \
   $(REPLICAS_FIELD) \
 }
 
@@ -35,7 +40,6 @@ app/build:: .build/cassandra/cassandra \
 
 .build/cassandra/deployer: deployer/* \
                            manifest/* \
-                           .build/marketplace/deployer/envsubst \
                            .build/var/APP_DEPLOYER_IMAGE \
                            .build/var/REGISTRY \
                            .build/var/TAG \
@@ -53,8 +57,8 @@ app/build:: .build/cassandra/cassandra \
 .build/cassandra/cassandra: .build/var/REGISTRY \
                             .build/var/TAG \
                             | .build/cassandra
-	docker pull launcher.gcr.io/google/cassandra3
-	docker tag launcher.gcr.io/google/cassandra3 \
+	docker pull launcher.gcr.io/google/cassandra3:$(TAG)
+	docker tag launcher.gcr.io/google/cassandra3:$(TAG) \
 	    "$(REGISTRY)/cassandra:$(TAG)"
 	docker push "$(REGISTRY)/cassandra:$(TAG)"
 	@touch "$@"

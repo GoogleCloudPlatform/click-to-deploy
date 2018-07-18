@@ -1,4 +1,4 @@
-FROM gcr.io/cloud-marketplace-tools/k8s/deployer_envsubst
+FROM gcr.io/cloud-marketplace-tools/k8s/deployer_envsubst:v0.6.2
 
 COPY manifest /data/manifest
 COPY schema.yaml /data/

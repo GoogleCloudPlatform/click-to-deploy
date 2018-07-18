@@ -1,0 +1,32 @@
+application_api_version: v1beta1
+properties:
+  APP_INSTANCE_NAME:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  NAMESPACE:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  IMAGE_NGINX:
+    type: string
+    default: $REGISTRY:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  IMAGE_NGINX_INIT:
+    type: string
+    default: $REGISTRY/debian9:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  REPLICAS:
+    type: integer
+    title: Replicas
+    description: The number of Pods run within NGINX solution
+    default: 3
+    minimum: 1
+required:
+- APP_INSTANCE_NAME
+- NAMESPACE
+- IMAGE_NGINX
+- IMAGE_NGINX_INIT
+- REPLICAS
