@@ -115,8 +115,8 @@ until you are ready to upgrade. To get the digest for the image, use the
 following script:
 
 ```shell
-for i in "IMAGE_NGINX IMAGE_NGINX_INIT"; do
-  repo=`echo ${!i} | cut -d: -f1`;
+for i in "IMAGE_NGINX" "IMAGE_NGINX_INIT"; do
+  repo=$(echo ${!i} | cut -d: -f1);
   digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
   export $i="$repo@$digest";
   env | grep $i;

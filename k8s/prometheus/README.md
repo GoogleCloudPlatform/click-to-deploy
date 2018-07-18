@@ -136,7 +136,7 @@ for i in "IMAGE_PROMETHEUS" \
          "IMAGE_PUSHGATEWAY" \
          "IMAGE_GRAFANA" \
          "IMAGE_PROMETHEUS_INIT"; do
-  repo=`echo ${!i} | cut -d: -f1`;
+  repo=$(echo ${!i} | cut -d: -f1);
   digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
   export $i="$repo@$digest";
   env | grep $i;
