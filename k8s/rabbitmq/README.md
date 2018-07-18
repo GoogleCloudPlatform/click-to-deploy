@@ -213,7 +213,7 @@ external IP address for the service, run the following command:
 
 ```
 kubectl patch svc $APP_INSTANCE_NAME-rabbitmq-svc \
-  --namespace "$NAMESPACE" \
+  --namespace $NAMESPACE \
   --patch '{"spec": {"type": "LoadBalancer"}}'
 ```
 
