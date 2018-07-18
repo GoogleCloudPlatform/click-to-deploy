@@ -294,7 +294,7 @@ export NAMESPACE=default
 
 The script [`scripts/backup.sh`](scripts/backup.sh) does the following:
 
-1. Uploads the `make_backup.sh` script to each container.
+1. Uploads the [`make_backup.sh`](scripts/make_backup.sh) script to each container.
 1. Runs the script to create a backup package, using the `nodetool snapshot`
    command.
 1. Downloads the backup to your machine.
@@ -329,9 +329,9 @@ destination clusters can have a different number of nodes.
 In the directory that contains your backup files, run the restore script:
 
 ```shell
-scripts/restore.sh  --keyspace demo \
-                    --namespace "${NAMESPACE}" \
-                    --app_instance_name "${APP_INSTANCE_NAME}"
+scripts/restore.sh --keyspace demo \
+                   --namespace "${NAMESPACE}" \
+                   --app_instance_name "${APP_INSTANCE_NAME}"
 ```
 
 The script recreates the schema and uploads data to your cluster.
@@ -369,12 +369,12 @@ StatefulSet, the pods will not automatically restart.
 
 ### Run the `upgrade.sh` script
 
-To start the rolling update, run the `scripts/upgrade.sh` script. The script
+To start the rolling update, run the [`scripts/upgrade.sh`](scripts/upgrade.sh) script. The script
 takes down and updates one replica at a time.
 
 ```shell
-scripts/upgrade.sh    --namespace "${NAMESPACE}" \
-                      --app_instance_name "${APP_INSTANCE_NAME}"
+scripts/upgrade.sh --namespace "${NAMESPACE}" \
+                   --app_instance_name "${APP_INSTANCE_NAME}"
 
 ```
 

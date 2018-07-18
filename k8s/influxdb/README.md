@@ -253,8 +253,9 @@ Navigate to the `influxdb/scripts` directory:
 cd click-to-deploy/k8s/influxdb/scripts
 ```
 
-Run the `make_backup.sh` script, passing the name of your InfluxDB instance as
+Run the [`make_backup.sh`](scripts/make_backup.sh) script, passing the name of your InfluxDB instance as
 an argument.
+
 ```shell
 ./make_backup.sh $APP_INSTANCE_NAME $NAMESPACE [BACKUP_FOLDER]
 ```
@@ -270,8 +271,9 @@ Navigate to the `influxdb/scripts` directory:
 cd click-to-deploy/k8s/influxdb/scripts
 ```
 
-Run the `make_restore.sh` script, passing the name of your InfluxDB instance
+Run the [`make_restore.sh`](scripts/make_restore.sh) script, passing the name of your InfluxDB instance
 as an argument.
+
 ```shell
 ./make_restore.sh $APP_INSTANCE_NAME $NAMESPACE [BACKUP_FOLDER]
 ```

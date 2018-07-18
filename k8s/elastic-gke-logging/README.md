@@ -314,7 +314,7 @@ Fluentd DaemonSet stateless by design and requires no backup procedure.
 ### Create a backup infrastructure
 
 To create a NFS server on Kubernetes and create a shared disk to be used for backup,
-run the script from `scripts/create-backup-infra.sh`:
+run the script from [`scripts/create-backup-infra.sh`](scripts/create-backup-infra.sh):
 
 ```shell
 scripts/create-backup-infra.sh \
@@ -328,7 +328,7 @@ scripts/create-backup-infra.sh \
 
 Your Elasticsearch StatefulSet needs to be patched to mount the backup disk. To run the patch
 and automatically perform a rolling update on the StatefulSet, use the script from
-`scripts/patch-sts-for-backup.sh`.
+[`scripts/patch-sts-for-backup.sh`](scripts/patch-sts-for-backup.sh).
 
 ```shell
 scripts/patch-sts-for-backup.sh \
@@ -437,7 +437,7 @@ Make sure that the cluster is healthy before proceeding:
 curl $ELASTIC_URL/_cluster/health?pretty
 ```
 
-Run the `scripts/upgrade.sh` script. This script will take down and update one replica at a time -
+Run the [`scripts/upgrade.sh`](scripts/upgrade.sh) script. This script will take down and update one replica at a time -
 it should print out diagnostic messages. You should be done when the script finishes.
 
 ## Update the Kibana deployment
