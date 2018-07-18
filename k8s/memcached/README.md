@@ -248,13 +248,13 @@ following steps:
    the new image, run the following command:
 
     ```shell
-    kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME
+    kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace "$NAMESPACE"
     ```
 
 1. To verify the image used by the Pods, run the following command:
 
     ```shell
-    kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}' | sort
+    kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace "$NAMESPACE" -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}' | sort
     ```
 
 # Uninstalling the Memcached application

@@ -353,7 +353,7 @@ where `[NEW_IMAGE_REFERENCE]` is the new image.
 To check that the Pods in the StatefulSet running the `rabbitmq` container are updating, run the following command:
 
 ```shell
-kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME -w
+kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace "$NAMESPACE" -w
 ```
 
 The StatefulSet controller terminates each Pod, and waits for it to transition to `Running` and `Ready` prior to updating the next Pod.
