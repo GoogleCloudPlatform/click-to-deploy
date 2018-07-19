@@ -142,6 +142,14 @@ for i in "IMAGE_PROMETHEUS" \
 done
 ```
 
+#### Create namespace in your Kubernetes cluster
+
+If you use a different namespace than the `default`, run the command below to create a new namespace:
+
+```shell
+kubectl create namespace "$NAMESPACE"
+```
+
 #### Expand the manifest template
 
 Use `envsubst` to expand the template. We recommend that you save the

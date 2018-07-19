@@ -122,6 +122,14 @@ for i in "sparkOperatorImage"; do
 done
 ```
 
+#### Create namespace in your Kubernetes cluster
+
+If you use a different namespace than the `default`, run the command below to create a new namespace:
+
+```shell
+kubectl create namespace "${namespace}"
+```
+
 #### Configure the service account
 
 The operator needs a service account in the target namespace with cluster wide
