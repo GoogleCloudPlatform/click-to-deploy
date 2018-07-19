@@ -103,7 +103,7 @@ export namespace=default
 Configure the container images:
 
 ```shell
-export sparkOperatorImage="gcr.io/k8s-marketplace-eap/google/spark-operator:latest"
+export sparkOperatorImage="marketplace.gcr.io/google/spark-operator:latest"
 ```
 
 The images above are referenced by
@@ -116,8 +116,8 @@ following script:
 
 ```shell
 for i in "sparkOperatorImage"; do
-  repo=`echo ${!i} | cut -d: -f1`;
-  digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
+  repo=$(echo ${!i} | cut -d: -f1);
+  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
   export $i="$repo@$digest";
   env | grep $i;
 done

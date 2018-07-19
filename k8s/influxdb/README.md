@@ -95,12 +95,6 @@ export APP_INSTANCE_NAME=influxdb-1
 export NAMESPACE=default
 ```
 
-Configure the container image:
-
-```shell
-export IMAGE_INFLUXDB="gcr.io/k8s-marketplace-eap/google/influxdb:latest"
-```
-
 Configure the InfluxDB administrator account:
 
 ```shell
@@ -114,6 +108,13 @@ encoded in base64)
 export INFLUXDB_ADMIN_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1 | tr -d '\n' | base64)
 ```
 
+Configure the container image:
+
+```shell
+TAG=1.5
+export IMAGE_INFLUXDB="marketplace.gcr.io/google/influxdb:${TAG}"
+```
+
 The images above are referenced by
 [tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
 that you pin each image to an immutable
@@ -123,8 +124,8 @@ until you are ready to upgrade. To get the digest for the image, use the
 following script:
 
 ```shell
-repo=`echo $IMAGE_INFLUXDB | cut -d: -f1`;
-digest=`docker pull $IMAGE_INFLUXDB | sed -n -e 's/Digest: //p'`;
+repo=$(echo $IMAGE_INFLUXDB | cut -d: -f1);
+digest=$(docker pull $IMAGE_INFLUXDB | sed -n -e 's/Digest: //p');
 export $i="$repo@$digest";
 env | grep $i;
 ```
@@ -252,8 +253,9 @@ Navigate to the `influxdb/scripts` directory:
 cd click-to-deploy/k8s/influxdb/scripts
 ```
 
-Run the `make_backup.sh` script, passing the name of your InfluxDB instance as
+Run the [`make_backup.sh`](scripts/make_backup.sh) script, passing the name of your InfluxDB instance as
 an argument.
+
 ```shell
 ./make_backup.sh $APP_INSTANCE_NAME $NAMESPACE [BACKUP_FOLDER]
 ```
@@ -269,8 +271,9 @@ Navigate to the `influxdb/scripts` directory:
 cd click-to-deploy/k8s/influxdb/scripts
 ```
 
-Run the `make_restore.sh` script, passing the name of your InfluxDB instance
+Run the [`make_restore.sh`](scripts/make_restore.sh) script, passing the name of your InfluxDB instance
 as an argument.
+
 ```shell
 ./make_restore.sh $APP_INSTANCE_NAME $NAMESPACE [BACKUP_FOLDER]
 ```

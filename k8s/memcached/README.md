@@ -102,7 +102,8 @@ export REPLICAS=3
 Configure the container image:
 
 ```shell
-export IMAGE_MEMCACHED="gcr.io/k8s-marketplace-eap/google/memcached:latest"
+TAG=1.5
+export IMAGE_MEMCACHED="marketplace.gcr.io/google/memcached:${TAG}"
 ```
 
 The images above are referenced by
@@ -114,8 +115,8 @@ until you are ready to upgrade. To get the digest for the image, use the
 following script:
 
 ```shell
-repo=`echo $IMAGE_MEMCACHED | cut -d: -f1`;
-digest=`docker pull $IMAGE_MEMCACHED | sed -n -e 's/Digest: //p'`;
+repo=$(echo $IMAGE_MEMCACHED | cut -d: -f1);
+digest=$(docker pull $IMAGE_MEMCACHED | sed -n -e 's/Digest: //p');
 export $i="$repo@$digest";
 env | grep $i;
 ```

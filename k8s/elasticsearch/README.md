@@ -107,8 +107,8 @@ export REPLICAS=2
 Configure the container images:
 
 ```shell
-export IMAGE_ELASTICSEARCH="gcr.io/k8s-marketplace-eap/google/elasticsearch:latest"
-export IMAGE_INIT="gcr.io/k8s-marketplace-eap/google/elasticsearch/ubuntu16_04:latest"
+export IMAGE_ELASTICSEARCH="marketplace.gcr.io/google/elasticsearch:latest"
+export IMAGE_INIT="marketplace.gcr.io/google/elasticsearch/ubuntu16_04:latest"
 ```
 
 The images above are referenced by
@@ -121,8 +121,8 @@ following script:
 
 ```shell
 for i in "IMAGE_ELASTICSEARCH" "IMAGE_INIT"; do
-  repo=`echo ${!i} | cut -d: -f1`;
-  digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
+  repo=$(echo ${!i} | cut -d: -f1);
+  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
   export $i="$repo@$digest";
   env | grep $i;
 done

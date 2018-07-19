@@ -98,8 +98,8 @@ export NAMESPACE=default
 Configure the container images:
 
 ```shell
-export IMAGE_WORDPRESS="gcr.io/k8s-marketplace-eap/google/wordpress:latest"
-export IMAGE_MYSQL="gcr.io/k8s-marketplace-eap/google/wordpress/mysql:latest"
+export IMAGE_WORDPRESS="marketplace.gcr.io/google/wordpress:latest"
+export IMAGE_MYSQL="marketplace.gcr.io/google/wordpress/mysql:latest"
 ```
 
 The images above are referenced by
@@ -112,8 +112,8 @@ following script:
 
 ```shell
 for i in "IMAGE_WORDPRESS" "IMAGE_MYSQL"; do
-  repo=`echo ${!i} | cut -d: -f1`;
-  digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
+  repo=$(echo ${!i} | cut -d: -f1);
+  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
   export $i="$repo@$digest";
   env | grep $i;
 done
