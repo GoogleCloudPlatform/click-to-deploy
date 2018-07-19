@@ -16,7 +16,7 @@
 
 set -eo pipefail
 
-export NAME="airflow-$(uuidgen)"
+export NAME="airflow-$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 8 | head -n 1)"
 cat airflowcluster.yaml.template | envsubst > airflowcluster.yaml
 cat airflowbase.yaml.template | envsubst > airflowbase.yaml
 

@@ -26,17 +26,17 @@ spec:
   redis:
     operator: False
   scheduler:
-    version: "e167271baac5ee0cc3cfd63cbbec2be3887dd5d5"
+    version: "1.10.0rc2"
   ui:
     replicas: 1
-    version: "e167271baac5ee0cc3cfd63cbbec2be3887dd5d5"
+    version: "1.10.0rc2"
   worker:
     replicas: 2
-    version: "e167271baac5ee0cc3cfd63cbbec2be3887dd5d5"
+    version: "1.10.0rc2"
   dags:
     subdir: "airflow/example_dags/"
     git:
       repo: "https://github.com/apache/incubator-airflow/"
       once: true
   airflowbase:
-    name: mc-base
+    name: $NAME
