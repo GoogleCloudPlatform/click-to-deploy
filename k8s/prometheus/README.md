@@ -110,14 +110,14 @@ Configure the container images:
 
 ```shell
 TAG=2.2
-export IMAGE_PROMETHEUS="gcr.io/k8s-marketplace-eap/google/prometheus:${TAG}"
-export IMAGE_ALERTMANAGER="gcr.io/k8s-marketplace-eap/google/prometheus/alertmanager:${TAG}"
-export IMAGE_KUBE_STATE_METRICS="gcr.io/k8s-marketplace-eap/google/prometheus/kubestatemetrics:${TAG}"
-export IMAGE_NODE_EXPORTER="gcr.io/k8s-marketplace-eap/google/prometheus/nodeexporter:${TAG}"
+export IMAGE_PROMETHEUS="marketplace.gcr.io/google/prometheus:${TAG}"
+export IMAGE_ALERTMANAGER="marketplace.gcr.io/google/prometheus/alertmanager:${TAG}"
+export IMAGE_KUBE_STATE_METRICS="marketplace.gcr.io/google/prometheus/kubestatemetrics:${TAG}"
+export IMAGE_NODE_EXPORTER="marketplace.gcr.io/google/prometheus/nodeexporter:${TAG}"
 # TODO(khajduczenia): Add pushgateway to Makefile.
-export IMAGE_PUSHGATEWAY="gcr.io/k8s-marketplace-eap/google/prometheus/pushgateway:${TAG}"
-export IMAGE_GRAFANA="gcr.io/k8s-marketplace-eap/google/prometheus/grafana:${TAG}"
-export IMAGE_PROMETHEUS_INIT="gcr.io/k8s-marketplace-eap/google/prometheus/debian9:${TAG}"
+export IMAGE_PUSHGATEWAY="marketplace.gcr.io/google/prometheus/pushgateway:${TAG}"
+export IMAGE_GRAFANA="marketplace.gcr.io/google/prometheus/grafana:${TAG}"
+export IMAGE_PROMETHEUS_INIT="marketplace.gcr.io/google/prometheus/debian9:${TAG}"
 ```
 
 The images above are referenced by
