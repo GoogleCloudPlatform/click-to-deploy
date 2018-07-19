@@ -224,7 +224,9 @@ schema is applied.
 You can scale your Memcached service up or down by changing the number of replicas, using the following command:
 
 ```shell
-kubectl scale statefulsets "$APP_INSTANCE_NAME-memcached" --namespace "$NAMESPACE" --replicas=[NEW_REPLICAS]
+kubectl scale statefulsets "$APP_INSTANCE_NAME-memcached" \
+  --namespace "$NAMESPACE" \
+  --replicas=[NEW_REPLICAS]
 ```
 
 where `[NEW_REPLICAS]` is the new number.
@@ -239,7 +241,7 @@ following steps:
 
     ```shell
     kubectl set image statefulset "$APP_INSTANCE_NAME-memcached" \
-      memcached=[NEW_IMAGE_REFERENCE]
+      --namespace "$NAMESPACE" memcached=[NEW_IMAGE_REFERENCE]
     ```
 
     where `[NEW_IMAGE_REFERENCE]` is the updated image.

@@ -294,7 +294,7 @@ In the InfluxDB StatefulSet, modify the image used for the Pod template:
 
 ```shell
 kubectl set image statefulset "$APP_INSTANCE_NAME-influxdb" \
-  influxdb=[NEW_IMAGE_REFERENCE]
+  --namespace "$NAMESPACE" influxdb=[NEW_IMAGE_REFERENCE]
 ```
 
 where `[NEW_IMAGE_REFERENCE]` is the new image.

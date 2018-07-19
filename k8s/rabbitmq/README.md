@@ -338,7 +338,7 @@ Start with assigning a new image to your StatefulSet definition:
 
 ```shell
 kubectl set image statefulset "$APP_INSTANCE_NAME-rabbitmq" \
-  rabbitmq=[NEW_IMAGE_REFERENCE]
+  --namespace "$NAMESPACE" rabbitmq=[NEW_IMAGE_REFERENCE]
 ```
 
 where `[NEW_IMAGE_REFERENCE]` is the new image.
