@@ -61,7 +61,7 @@ app/build:: .build/airflow-operator/deployer \
                                       .build/var/TAG \
                                       | .build/airflow-operator
 	$(call print_target, $@)
-	docker pull gcr.io/kubeflow-193622/airflow-controller:latest
-	docker tag gcr.io/kubeflow-193622/airflow-controller:latest "$(REGISTRY)/airflow-operator:$(TAG)"
+	docker pull gcr.io/airflow-operator/airflow-operator:v1alpha1
+	docker tag gcr.io/airflow-operator/airflow-operator:v1alpha1 "$(REGISTRY)/airflow-operator:$(TAG)"
 	docker push "$(REGISTRY)/airflow-operator:$(TAG)"
 	@touch "$@"
