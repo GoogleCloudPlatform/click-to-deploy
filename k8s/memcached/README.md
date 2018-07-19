@@ -60,11 +60,10 @@ git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 An Application resource is a collection of individual Kubernetes components,
 such as Services, Deployments, and so on, that you can manage as a group.
 
-To set up your cluster to understand Application resources, navigate to the
-`k8s/vendor` folder in the repository, and run the following command:
+To set up your cluster to understand Application resources, run the following command:
 
 ```shell
-kubectl apply -f marketplace-tools/crd/*
+kubectl apply -f click-to-deploy/k8s/vendor/marketplace-tools/crd/*
 ```
 
 You need to run this command once.
@@ -224,7 +223,9 @@ schema is applied.
 You can scale your Memcached service up or down by changing the number of replicas, using the following command:
 
 ```shell
-kubectl scale statefulsets "$APP_INSTANCE_NAME-memcached" --namespace "$NAMESPACE" --replicas=[NEW_REPLICAS]
+kubectl scale statefulsets "$APP_INSTANCE_NAME-memcached" \
+  --namespace "$NAMESPACE" \
+  --replicas=[NEW_REPLICAS]
 ```
 
 where `[NEW_REPLICAS]` is the new number.
@@ -239,7 +240,7 @@ following steps:
 
     ```shell
     kubectl set image statefulset "$APP_INSTANCE_NAME-memcached" \
-      memcached=[NEW_IMAGE_REFERENCE]
+      --namespace "$NAMESPACE" memcached=[NEW_IMAGE_REFERENCE]
     ```
 
     where `[NEW_IMAGE_REFERENCE]` is the updated image.

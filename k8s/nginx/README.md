@@ -66,11 +66,10 @@ git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 An Application resource is a collection of individual Kubernetes components,
 such as Services, Deployments, and so on, that you can manage as a group.
 
-To set up your cluster to understand Application resources, navigate to the
-`k8s/vendor` folder in the repository, and run the following command:
+To set up your cluster to understand Application resources, run the following command:
 
 ```shell
-kubectl apply -f marketplace-tools/crd/*
+kubectl apply -f click-to-deploy/k8s/vendor/marketplace-tools/crd/*
 ```
 
 You need to run this command once.
@@ -176,10 +175,12 @@ By default, the NGINX application is deployed using 3 replicas. You can
 manually scale it up or down using the following command:
 
 ```shell
-kubectl scale statefulsets "$APP_INSTANCE_NAME-nginx" --namespace "$NAMESPACE" --replicas=[NEW_REPLICAS]
+kubectl scale statefulsets "$APP_INSTANCE_NAME-nginx" \
+  --namespace "$NAMESPACE" \
+  --replicas=[NEW_REPLICAS]
 ```
 
-where [NEW_REPLICAS] is the new number of replicas.
+where `[NEW_REPLICAS]` is the new number of replicas.
 
 # Backup and Restore
 
@@ -249,7 +250,7 @@ In the NGINX StatefulSet, modify the image used for the Pod template:
 
 ```shell
 kubectl set image statefulset "$APP_INSTANCE_NAME-nginx" \
-  nginx=[NEW_IMAGE_REFERENCE]
+  --namespace "$NAMESPACE" nginx=[NEW_IMAGE_REFERENCE]
 ```
 
 where `[NEW_IMAGE_REFERENCE]` is the new image.
@@ -280,7 +281,7 @@ If you are using the command line:
     cd click-to-deploy/k8s/nginx
     ```
 
-1. Run the `delete` command:
+1. Run the `kubectl delete` command:
 
     ```shell
     kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
