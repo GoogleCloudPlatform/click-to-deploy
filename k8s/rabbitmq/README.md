@@ -119,8 +119,8 @@ Configure the container images:
 
 ```shell
 TAG=3.7
-export IMAGE_RABBITMQ=gcr.io/k8s-marketplace-eap/google/rabbitmq:${TAG}
-export IMAGE_RABBITMQ_INIT=gcr.io/k8s-marketplace-eap/google/rabbitmq/debian9:${TAG}
+export IMAGE_RABBITMQ=marketplace.gcr.io/google/rabbitmq:${TAG}
+export IMAGE_RABBITMQ_INIT=marketplace.gcr.io/google/rabbitmq/debian9:${TAG}
 ```
 
 The images above are referenced by

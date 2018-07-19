@@ -102,7 +102,7 @@ Configure the container image:
 
 ```shell
 TAG=1.5
-export IMAGE_MEMCACHED="gcr.io/k8s-marketplace-eap/google/memcached:${TAG}"
+export IMAGE_MEMCACHED="marketplace.gcr.io/google/memcached:${TAG}"
 ```
 
 The images above are referenced by
