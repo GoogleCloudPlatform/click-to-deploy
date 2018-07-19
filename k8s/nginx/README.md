@@ -244,7 +244,7 @@ if you would like to generate self-signed certificate.
 
 This procedure assumes that you have a new image for the NGINX container
 available to your Kubernetes cluster. The new image is used in the following
-commands as [NEW_IMAGE_REFERENCE].
+commands as `[NEW_IMAGE_REFERENCE]`.
 
 In the NGINX StatefulSet, modify the image used for the Pod template:
 
