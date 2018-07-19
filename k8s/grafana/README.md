@@ -101,8 +101,8 @@ Configure the container images:
 
 ```shell
 TAG=5.1
-export IMAGE_GRAFANA="gcr.io/k8s-marketplace-eap/google/grafana:${TAG}"
-export IMAGE_GRAFANA_INIT="gcr.io/k8s-marketplace-eap/google/grafana/debian9:${TAG}"
+export IMAGE_GRAFANA="marketplace.gcr.io/google/grafana:${TAG}"
+export IMAGE_GRAFANA_INIT="marketplace.gcr.io/google/grafana/debian9:${TAG}"
 ```
 
 The images above are referenced by

@@ -103,7 +103,7 @@ export namespace=default
 Configure the container images:
 
 ```shell
-export sparkOperatorImage="gcr.io/k8s-marketplace-eap/google/spark-operator:latest"
+export sparkOperatorImage="marketplace.gcr.io/google/spark-operator:latest"
 ```
 
 The images above are referenced by

@@ -112,7 +112,7 @@ Configure the container image:
 
 ```shell
 TAG=1.5
-export IMAGE_INFLUXDB="gcr.io/k8s-marketplace-eap/google/influxdb:${TAG}"
+export IMAGE_INFLUXDB="marketplace.gcr.io/google/influxdb:${TAG}"
 ```
 
 The images above are referenced by

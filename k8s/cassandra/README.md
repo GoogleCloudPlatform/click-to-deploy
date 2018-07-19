@@ -106,7 +106,7 @@ Configure the container images:
 
 ```shell
 TAG=3.11
-export IMAGE_CASSANDRA="gcr.io/k8s-marketplace-eap/google/cassandra:${TAG}"
+export IMAGE_CASSANDRA="marketplace.gcr.io/google/cassandra:${TAG}"
 ```
 
 The images above are referenced by

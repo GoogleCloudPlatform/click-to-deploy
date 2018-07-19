@@ -102,8 +102,8 @@ Configure the container images:
 
 ```shell
 TAG=1.15
-export IMAGE_NGINX="gcr.io/k8s-marketplace-eap/google/nginx:${TAG}"
-export IMAGE_NGINX_INIT="gcr.io/k8s-marketplace-eap/google/nginx/debian9:${TAG}"
+export IMAGE_NGINX="marketplace.gcr.io/google/nginx:${TAG}"
+export IMAGE_NGINX_INIT="marketplace.gcr.io/google/nginx/debian9:${TAG}"
 ```
 
 The images above are referenced by
