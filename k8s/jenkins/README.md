@@ -52,8 +52,7 @@ gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 Clone this repo and the associated tools repo.
 
 ```shell
-gcloud source repos clone google-click-to-deploy --project=k8s-marketplace-eap
-gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketplace-eap
+git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 ```
 
 #### Install the Application resource definition
@@ -89,7 +88,7 @@ Choose application instance name, namespace and Jenkins image for the app.
 export APP_INSTANCE_NAME=jenkins-1
 export NAMESPACE=default
 
-export IMAGE_JENKINS="gcr.io/k8s-marketplace-ops/google/jenkins:latest"
+export IMAGE_JENKINS="marketplace.gcr.io/google/jenkins:latest"
 ```
 
 Create namespace if it doesn't exist.
