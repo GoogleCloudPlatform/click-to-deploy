@@ -7,10 +7,10 @@ TCP, and UDP servers.
 
 To learn more about NGINX, see the [NGINX website](https://www.nginx.com/).
 
-This particular web server application uses NGINX for web serving and it was configured to serve only static content.
-Each NGINX pod is associated with its own persistent volume created as standard persistent disk type defined by Google Kubernetes Engine.
+This particular web server application uses NGINX for web serving and is configured to serve only static content.
+Each NGINX pod is associated with its own persistent volume created as a standard persistent disk type defined by Google Kubernetes Engine.
 
-This web server application is pre-configured with SSL certificate. Please, replace it (per instructions delivered) with your valid SSL certificate.
+This web server application is pre-configured with an SSL certificate. Please replace it (per instructions delivered) with your valid SSL certificate.
 
 ## About Google Click to Deploy
 
