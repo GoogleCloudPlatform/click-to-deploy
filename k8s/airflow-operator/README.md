@@ -1,8 +1,14 @@
 # Overview
 
-Apache Airflow is a workflow engine.
+Airflow Operator is a custom Kubernetes operator that makes it easy to deploy and manage Apache Airflow on Kubernetes. Apache Airflow is a platform to programmatically author, schedule and monitor workflows. Using the Airflow Operator, an Airflow cluster is split into 2 parts represented by AirflowBase and AirflowCluster [custom resources](https://kubernetes.io/docs/tasks/access-kubernetes-api/extend-api-custom-resource-definitions/).
 
-Airflow Operator enables running Apache Airflow applications on Kubernetes.
+The Airflow Operator performs these jobs:
+
+1. Creates and manages the necessary Kubernetes resources for an Airflow deployment.
+2. Updates the corresponding Kubernetes resources when the AirflowBase or AirflowCluster specification changes.
+3. Restores managed Kubernetes resources that are deleted.
+4. Supports creation of different kinds of Airflow schedulers
+5. Supports mulitple AirflowClusters per AirflowBase
 
 Learn more about the [Airflow](https://airflow.apache.org/).
 
@@ -28,28 +34,28 @@ You'll need the following tools in your development environment:
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 - [docker](https://docs.docker.com/install/)
-
-Configure `gcloud` as a Docker credential helper:
-
-```shell
-gcloud auth configure-docker
-```
+- [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
 #### Create a Google Kubernetes Engine cluster
 
-Create a new cluster from the command-line.
+Create a new cluster from the command line:
 
 ```shell
-export CLUSTER=marketplace-cluster
+export CLUSTER=airflow-cluster
 export ZONE=us-west1-a
 
 gcloud container clusters create "$CLUSTER" --zone "$ZONE"
 ```
 
-Configure `kubectl` to talk to the new cluster.
+Configure `kubectl` to connect to the new cluster:
 
 ```shell
 gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
+```
+Configure `gcloud` as a Docker credential helper:
+
+```shell
+gcloud auth configure-docker
 ```
 
 #### Clone this repo
@@ -57,17 +63,20 @@ gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 Clone this repo and the associated tools repo.
 
 ```shell
-gcloud source repos clone google-click-to-deploy --project=k8s-marketplace-eap
-gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketplace-eap
+git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 ```
 
 #### Install the Application resource definition
 
-Do a one-time setup for your cluster to understand Application resources.
+An Application resource is a collection of individual Kubernetes components,
+such as Services, Deployments, and so on, that you can manage as a group.
 
+To set up your cluster to understand Application resources, run the following command:
 ```shell
-kubectl apply -f google-marketplace-k8s-app-tools/crd/*
+kubectl apply -f click-to-deploy/k8s/vendor/marketplace-tools/crd/*
 ```
+
+You need to run this command once.
 
 The Application resource is defined by the
 [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps)
@@ -79,38 +88,50 @@ community. The source code can be found on
 Navigate to the `airflow-operator` directory.
 
 ```shell
-cd google-click-to-deploy/k8s/airflow-operator
+cd click-to-deploy/k8s/airflow-operator
 ```
 
 #### Configure the app with environment variables
 
-Choose the instance name and namespace for the app.
+Choose an instance name and
+[namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)
+for the app. In most cases, you can use the `default` namespace.
 
 ```shell
-export name=airflow-operator-1
-export namespace=default
+export APP_INSTANCE_NAME=airflow-operator-1
+export NAMESPACE=default
 ```
 
-Configure the container images.
+Configure the container images:
 
 ```shell
-export airflowOperatorImage="gcr.io/k8s-marketplace-eap/google/airflow-operator:latest"
+TAG=alpha
+export IMAGE_AIRFLOWOPERATOR="marketplace.gcr.io/google/airflow-operator:${TAG}"
 ```
 
 The images above are referenced by
-[tag](https://docs.docker.com/engine/reference/commandline/tag). It is strongly
-recommended to pin each image to an immutable
+[tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
+that you pin each image to an immutable
 [content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This will ensure that the installed application will always use the same images,
-until you are ready to upgrade.
+This ensures that the installed application always uses the same images,
+until you are ready to upgrade. To get the digest for the image, use the
+following script:
 
 ```shell
-for i in "airflowOperatorImage"; do
-  repo=`echo ${!i} | cut -d: -f1`;
-  digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
+for i in "IMAGE_AIRFLOWOPERATOR"; do
+  repo=$(echo ${!i} | cut -d: -f1);
+  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
   export $i="$repo@$digest";
   env | grep $i;
 done
+```
+
+#### Create namespace in your Kubernetes cluster
+
+If you use a different namespace than the `default`, run the command below to create a new namespace:
+
+```shell
+kubectl create namespace "$NAMESPACE"
 ```
 
 #### Configure the service account
@@ -121,37 +142,94 @@ permissions to manipulate Kubernetes resources.
 Provision a service account and export its via an environment variable as follows:
 
 ```shell
-kubectl create serviceaccount "${name}-sa" --namespace "${namespace}"
-kubectl create clusterrolebinding "${namespace}-${name}-sa-rb" --clusterrole=cluster-admin --serviceaccount="${namespace}:${name}-sa"
-export serviceAccount="${name}-sa"
+kubectl create serviceaccount "${APP_INSTANCE_NAME}-sa" --namespace "${NAMESPACE}"
+kubectl create clusterrolebinding "${NAMESPACE}-${APP_INSTANCE_NAME}-sa-rb" --clusterrole=cluster-admin --serviceaccount="${NAMESPACE}:${APP_INSTANCE_NAME}-sa"
+export serviceAccount="${APP_INSTANCE_NAME}-sa"
 ```
 
 #### Expand the manifest template
 
-Use `envsubst` to expand the template. It is recommended that you save the
+Use `envsubst` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
 awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$name $namespace $airflowOperatorImage $serviceAccount' \
-  > "${name}_manifest.yaml"
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_AIRFLOWOPERATOR
+  $SERVICE_ACCOUNT' \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
-#### Apply to Kubernetes
+#### Apply the manifest to your Kubernetes cluster
 
-Use `kubectl` to apply the manifest to your Kubernetes cluster.
+Use `kubectl` to apply the manifest to your Kubernetes cluster:
 
 ```shell
-kubectl apply -f "${name}_manifest.yaml" --namespace "${namespace}"
+kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
+
 
 #### View the app in the Google Cloud Console
 
-Point your browser to:
+To get the Console URL for your app, run the following command:
 
 ```shell
-echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${namespace}/${name}"
+echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
 ```
 
-### Create your Airflow clusters
-TODO
+To view your app, open the URL in your browser.
+
+
+
+# Using Airflow Operator
+
+
+# Uninstall the Application
+
+## Using the Google Cloud Platform Console
+
+1. In the GCP Console, open [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
+
+1. From the list of applications, click **Airflow Operator**.
+
+1. On the Application Details page, click **Delete**.
+
+## Using the command line
+
+### Prepare the environment
+
+Set your installation name and Kubernetes namespace:
+
+```shell
+export APP_INSTANCE_NAME=airflow-operator-1
+export NAMESPACE=default
+```
+
+### Delete the resources
+
+> **NOTE:** We recommend to use a kubectl version that is the same as the version of your cluster. Using the same versions of kubectl and the cluster helps avoid unforeseen issues.
+
+To delete the resources, use the expanded manifest file used for the
+installation.
+
+Run `kubectl` on the expanded manifest file:
+
+```shell
+kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
+```
+
+Otherwise, delete the resources using types and a label:
+
+```shell
+kubectl delete application,statefulset,service \
+  --namespace $NAMESPACE \
+  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
+```
+
+### Delete the GKE cluster
+
+Optionally, if you don't need the deployed application or the GKE cluster,
+delete the cluster using this command:
+
+```
+gcloud container clusters delete "$CLUSTER" --zone "$ZONE"
+```

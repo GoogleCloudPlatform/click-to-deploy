@@ -6,14 +6,14 @@ include ../vendor/marketplace-tools/ubbagent.Makefile
 include ../vendor/marketplace-tools/var.Makefile
 
 
-TAG ?= latest
+TAG ?= alpha
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/airflow-operator/deployer:$(TAG)
 NAME ?= airflow-operator-1
 APP_PARAMETERS ?= { \
-  "name": "$(NAME)", \
-  "namespace": "$(NAMESPACE)" \
+  "APP_INSTANCE_NAME": "$(NAME)", \
+  "NAMESPACE": "$(NAMESPACE)" \
 }
 TESTER_IMAGE ?= $(REGISTRY)/airflow-operator/tester:$(TAG)
 APP_TEST_PARAMETERS ?= { \
@@ -31,13 +31,12 @@ app/build:: .build/airflow-operator/deployer \
 
 
 .build/airflow-operator/deployer: deployer/* \
-                                manifest/* \
-                                schema.yaml \
-                                .build/marketplace/deployer/envsubst \
-                                .build/var/APP_DEPLOYER_IMAGE \
-                                .build/var/REGISTRY \
-                                .build/var/TAG \
-                                | .build/airflow-operator
+                                  manifest/* \
+                                  schema.yaml \
+                                  .build/var/APP_DEPLOYER_IMAGE \
+                                  .build/var/REGISTRY \
+                                  .build/var/TAG \
+                                  | .build/airflow-operator
 	$(call print_target, $@)
 	docker build \
 	    --build-arg REGISTRY="$(REGISTRY)/airflow-operator" \
@@ -58,8 +57,8 @@ app/build:: .build/airflow-operator/deployer \
 
 
 .build/airflow-operator/airflow-operator: .build/var/REGISTRY \
-                                      .build/var/TAG \
-                                      | .build/airflow-operator
+                                          .build/var/TAG \
+                                          | .build/airflow-operator
 	$(call print_target, $@)
 	docker pull gcr.io/airflow-operator/airflow-operator:v1alpha1
 	docker tag gcr.io/airflow-operator/airflow-operator:v1alpha1 "$(REGISTRY)/airflow-operator:$(TAG)"

@@ -1,18 +1,18 @@
 properties:
-  name:
+  APP_INSTANCE_NAME:
     type: string
     x-google-marketplace:
       type: NAME
-  namespace:
+  NAMESPACE:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  airflowOperatorImage:
+  IMAGE_AIRFLOWOPERATOR:
     type: string
     default: $REGISTRY:$TAG
     x-google-marketplace:
       type: IMAGE
-  serviceAccount:
+  SERVICE_ACCOUNT:
     title: Cluster Admin Service Account
     description: >-
       Name of a service account in the target namespace that
@@ -28,7 +28,7 @@ properties:
           # TODO(barney-s): Reduce the permission set.
           rulesFromRoleName: cluster-admin
 required:
-- name
-- namespace
-- airflowOperatorImage
-- serviceAccount
+- APP_INSTANCE_NAME
+- NAMESPACE
+- IMAGE_AIRFLOWOPERATOR
+- SERVICE_ACCOUNT
