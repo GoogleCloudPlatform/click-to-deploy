@@ -63,11 +63,10 @@ git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 An Application resource is a collection of individual Kubernetes components,
 such as Services, Deployments, and so on, that you can manage as a group.
 
-To set up your cluster to understand Application resources, navigate to the
-`k8s/vendor` folder in the repository, and run the following command:
+To set up your cluster to understand Application resources, run the following command:
 
 ```shell
-kubectl apply -f marketplace-tools/crd/*
+kubectl apply -f click-to-deploy/k8s/vendor/marketplace-tools/crd/*
 ```
 
 You need to run this command once.
@@ -128,6 +127,14 @@ repo=$(echo $IMAGE_INFLUXDB | cut -d: -f1);
 digest=$(docker pull $IMAGE_INFLUXDB | sed -n -e 's/Digest: //p');
 export $i="$repo@$digest";
 env | grep $i;
+```
+
+#### Create namespace in your Kubernetes cluster
+
+If you use a different namespace than the `default`, run the command below to create a new namespace:
+
+```shell
+kubectl create namespace "$NAMESPACE"
 ```
 
 #### Expand the manifest template
@@ -294,7 +301,7 @@ In the InfluxDB StatefulSet, modify the image used for the Pod template:
 
 ```shell
 kubectl set image statefulset "$APP_INSTANCE_NAME-influxdb" \
-  influxdb=[NEW_IMAGE_REFERENCE]
+  --namespace "$NAMESPACE" influxdb=[NEW_IMAGE_REFERENCE]
 ```
 
 where `[NEW_IMAGE_REFERENCE]` is the new image.
