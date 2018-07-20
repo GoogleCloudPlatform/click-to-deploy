@@ -2,7 +2,8 @@
 
 Apache Spark is a unified analytics engine for large-scale data processing.
 
-Spark Operator enables specifying and running Apache Spark applications idiomatically on Kubernetes.
+Spark Operator is a Kubernetes CRD operator for specifying and running Apache
+Spark applications idiomatically on Kubernetes.
 
 Learn more about the [Spark Operator](https://github.com/GoogleCloudPlatform/spark-on-k8s-operator)
 and [Spark](https://spark.apache.org/).
@@ -23,7 +24,7 @@ Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 
 ### Prerequisites
 
-#### Set up command-line tools
+#### Set up command line tools
 
 You'll need the following tools in your development environment:
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
@@ -56,7 +57,7 @@ gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 
 #### Clone this repo
 
-Clone this repo and the associated tools repo.
+Clone this repo and the associated tools repo:
 
 ```shell
 git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
