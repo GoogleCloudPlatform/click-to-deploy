@@ -169,7 +169,7 @@ the [Kubernetes Engine documentation](https://cloud.google.com/kubernetes-engine
 Use `envsubst` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
-* Expand RBAC YAML file. You must configure RBAC related stuff to support access nodes information successfully by `rabbitmq_peer_discovery_k8s` plugin.
+1. Expand `RBAC` YAML file. You must configure RBAC related stuff to support access nodes information successfully by `rabbitmq_peer_discovery_k8s` plugin.
 
     ```shell
     # Define name of service account
@@ -178,7 +178,7 @@ expanded manifest file for future updates to the application.
     envsubst '$APP_INSTANCE_NAME' < scripts/rbac.yaml.template > "${APP_INSTANCE_NAME}_rbac.yaml"
     ```
 
-* Expand `Application`/`Secret`/`StatefulSet`/`ConfigMap` YAML files.
+1. Expand `Application`/`Secret`/`StatefulSet`/`ConfigMap` YAML files.
 
     ```shell
     awk 'BEGINFILE {print "---"}{print}' manifest/* \
