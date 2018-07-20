@@ -28,6 +28,7 @@ app/build:: .build/memcached/deployer \
 
 .build/memcached/deployer: deployer/* \
                            manifest/* \
+                           schema.yaml \
                            .build/var/APP_DEPLOYER_IMAGE \
                            .build/var/REGISTRY \
                            .build/var/TAG \

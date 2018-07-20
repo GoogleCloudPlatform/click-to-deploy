@@ -29,6 +29,7 @@ app/build:: .build/wordpress/deployer \
 
 .build/wordpress/deployer: deployer/* \
                            manifest/* \
+                           schema.yaml \
                            .build/var/APP_DEPLOYER_IMAGE \
                            .build/var/REGISTRY \
                            .build/var/TAG \
