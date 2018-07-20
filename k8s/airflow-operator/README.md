@@ -22,7 +22,7 @@ Popular open stacks on Kubernetes packaged by Google.
 
 Get up and running with a few clicks! Install Airflow Operator app to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
-[on-screen instructions](https://console.cloud.google.com/launcher/details/google/airflow-operator).
+[on-screen instructions](https://console.cloud.google.com/marketplace/details/google/airflow-operator).
 
 ## Command line instructions
 
@@ -167,7 +167,6 @@ Use `kubectl` to apply the manifest to your Kubernetes cluster:
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
 
-
 #### View the app in the Google Cloud Console
 
 To get the Console URL for your app, run the following command:
@@ -175,10 +174,7 @@ To get the Console URL for your app, run the following command:
 ```shell
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
 ```
-
 To view your app, open the URL in your browser.
-
-
 
 # Using Airflow Operator
 
@@ -270,7 +266,7 @@ kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 Otherwise, delete the resources using types and a label:
 
 ```shell
-kubectl delete application,statefulset,service \
+kubectl delete application,deployment\
   --namespace $NAMESPACE \
   --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
