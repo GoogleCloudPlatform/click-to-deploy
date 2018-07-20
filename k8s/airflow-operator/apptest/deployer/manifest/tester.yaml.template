@@ -16,10 +16,10 @@ spec:
       valueFrom:
         configMapKeyRef:
           name: ${APP_INSTANCE_NAME}-deployer-config
-          key: namespace
+          key: NAMESPACE
     - name: SERVICEACCOUNT
       valueFrom:
         configMapKeyRef:
           name: ${APP_INSTANCE_NAME}-deployer-config
-          key: serviceAccount
+          key: SERVICE_ACCOUNT
   restartPolicy: Never
