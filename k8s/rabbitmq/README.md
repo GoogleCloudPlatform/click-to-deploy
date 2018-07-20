@@ -171,20 +171,20 @@ expanded manifest file for future updates to the application.
 
 * Expand RBAC YAML file. You must configure RBAC related stuff to support access nodes information successfully by `rabbitmq_peer_discovery_k8s` plugin.
 
-```shell
-# Define name of service account
-export RABBITMQ_SERVICE_ACCOUNT=$APP_INSTANCE_NAME-rabbitmq-sa
-# Expand rbac.yaml.template
-envsubst '$APP_INSTANCE_NAME' < scripts/rbac.yaml.template > "${APP_INSTANCE_NAME}_rbac.yaml"
-```
+    ```shell
+    # Define name of service account
+    export RABBITMQ_SERVICE_ACCOUNT=$APP_INSTANCE_NAME-rabbitmq-sa
+    # Expand rbac.yaml.template
+    envsubst '$APP_INSTANCE_NAME' < scripts/rbac.yaml.template > "${APP_INSTANCE_NAME}_rbac.yaml"
+    ```
 
 * Expand `Application`/`Secret`/`StatefulSet`/`ConfigMap` YAML files.
 
-```shell
-awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_RABBITMQ $IMAGE_RABBITMQ_INIT $REPLICAS $RABBITMQ_ERLANG_COOKIE $RABBITMQ_DEFAULT_USER $RABBITMQ_DEFAULT_PASS $RABBITMQ_SERVICE_ACCOUNT' \
-  > "${APP_INSTANCE_NAME}_manifest.yaml"
-```
+    ```shell
+    awk 'BEGINFILE {print "---"}{print}' manifest/* \
+      | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_RABBITMQ $IMAGE_RABBITMQ_INIT $REPLICAS $RABBITMQ_ERLANG_COOKIE $RABBITMQ_DEFAULT_USER $RABBITMQ_DEFAULT_PASS $RABBITMQ_SERVICE_ACCOUNT' \
+      > "${APP_INSTANCE_NAME}_manifest.yaml"
+    ```
 
 #### Apply the manifest to your Kubernetes cluster
 
