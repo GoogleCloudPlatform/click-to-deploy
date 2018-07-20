@@ -54,6 +54,7 @@ app/build:: .build/rabbitmq/debian9  \
 
 .build/rabbitmq/deployer: deployer/* \
                           manifest/* \
+                          schema.yaml \
                           .build/var/APP_DEPLOYER_IMAGE \
                           .build/var/REGISTRY \
                           .build/var/TAG \
