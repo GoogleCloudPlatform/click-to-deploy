@@ -18,9 +18,13 @@ set -eu
 
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout https1.key -out https1.cert
 
-echo "Base64 for https1.key"
-cat https1.cert | tr -d '\n' | base64 | tr -d '\n'
+echo "HTTP Certicate"
+cat https1.cert
+echo "Base64 for Certificate"
+cat https1.cert | base64 -w 0
 echo ""
-echo "Base64 for https1.cert"
-cat https1.key | tr -d '\n' | base64 | tr -d '\n'
+echo "Certificate Key"
+cat https1.key
+echo "Base64 for Certificate Key"
+cat https1.key | base64 -w 0
 echo ""

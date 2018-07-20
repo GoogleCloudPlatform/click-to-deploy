@@ -1,0 +1,87 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: $APP_INSTANCE_NAME
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,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
+    marketplace.cloud.google.com/deploy-info: '{partner_id: "click-to-deploy-containers", product_id: "grafana", partner_name: "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
+spec:
+  descriptor:
+    type: Grafana
+    version: '5.1'
+    description: |-
+      Grafana is an open-source platform for data visualization and monitoring. A large number of
+      supported data sources makes it a universal visualization tool for many popular open source
+      data collection systems - including Prometheus, InfluxDB, Elasticsearch, MySQL or PostgreSQL.
+
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/grafana/).
+      Additional support is available on [community forums](https://community.grafana.com/).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy Grafana'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/grafana/README.md
+    - description: 'Grafana documentation'
+      url: https://docs.grafana.org/
+    notes: |-
+      # Access Grafana UI
+
+      Grafana is exposed in a ClusterP-only service `$APP_INSTANCE_NAME-grafana`. To connect to
+      Grafana UI, you can either expose a public service endpoint or keep it private, but connect
+      from you local environment with `kubectl port-forward`.
+
+      ## Forward Grafana port in local environment
+
+      You can use port forwarding feature of `kubectl` to forward Grafana's port to your local
+      machine. Run the following command in background:
+
+      ```shell
+      kubectl port-forward --namespace ${NAMESPACE} ${APP_INSTANCE_NAME}-grafana-0 3000
+      ```
+
+      Now you can access Grafana UI with `http://localhost:3000/`.
+
+      ## Login to Grafana
+
+      Grafana is configured to require authentication. You can find username and password in the
+      'Prometheus & Grafana info' section on the left. They are stored in
+      `$APP_INSTANCE_NAME-grafana` secret.
+  info:
+  - name: Forward Grafana port locally
+    value: kubectl port-forward --namespace ${NAMESPACE} ${APP_INSTANCE_NAME}-grafana-0 3000
+  - name: Grafana UI URL
+    value: http://localhost:3000/
+  - name: Grafana username
+    type: Reference
+    valueFrom:
+      type: SecretKeyRef
+      secretKeyRef:
+        name: $APP_INSTANCE_NAME-grafana
+        key: admin-user
+  - name: Grafana password
+    type: Reference
+    valueFrom:
+      type: SecretKeyRef
+      secretKeyRef:
+        name: $APP_INSTANCE_NAME-grafana
+        key: admin-password
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: $APP_INSTANCE_NAME
+  componentKinds:
+  - group: v1
+    kind: ConfigMap
+  - group: v1
+    kind: PersistentVolumeClaim
+  - group: apps/v1beta2
+    kind: StatefulSet
+  - group: v1
+    kind: Service
+  - group: v1
+    kind: Secret

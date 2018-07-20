@@ -11,19 +11,40 @@ $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/nginx/deployer:$(TAG)
 NAME ?= nginx-1
+
+ifdef IMAGE_NGINX
+  IMAGE_NGINX_FIELD = , "IMAGE_NGINX": "$(IMAGE_NGINX)"
+endif
+
+ifdef IMAGE_NGINX_INIT
+  IMAGE_NGINX_INIT_FIELD = , "IMAGE_NGINX_INIT": "$(IMAGE_NGINX_INIT)"
+endif
+
 APP_PARAMETERS ?= { \
   "APP_INSTANCE_NAME": "$(NAME)", \
   "NAMESPACE": "$(NAMESPACE)" \
+  $(IMAGE_NGINX_FIELD) \
+  $(IMAGE_NGINX_INIT_FIELD) \
 }
 APP_TEST_PARAMETERS ?= {}
 
 
-app/build:: .build/nginx/deployer \
+app/build:: .build/nginx/debian9  \
+            .build/nginx/deployer \
             .build/nginx/nginx
 
 
 .build/nginx: | .build
 	mkdir -p "$@"
+
+
+.build/nginx/debian9: .build/var/REGISTRY \
+                      .build/var/TAG \
+                      | .build/nginx
+	docker pull launcher.gcr.io/google/debian9
+	docker tag launcher.gcr.io/google/debian9 "$(REGISTRY)/nginx/debian9:$(TAG)"
+	docker push "$(REGISTRY)/nginx/debian9:$(TAG)"
+	@touch "$@"
 
 
 .build/nginx/deployer: deployer/* \

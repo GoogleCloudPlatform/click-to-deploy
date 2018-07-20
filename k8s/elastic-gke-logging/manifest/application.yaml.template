@@ -38,49 +38,19 @@ spec:
     - description: 'Fluentd Quickstart Guide'
       url: https://docs.fluentd.org/v1.0/articles/quickstart
     notes: |-
-      # Expose Kibana service (optional)
+      # Access Kibana UI
 
-      By default, the service does not have an external IP. Run the
-      following command to expose an external IP:
+      By default, the Kibana Service does not have an external IP. To open Kibana UI you can
+      use `kubectl port-forward` and access the UI from your local machine.
 
-      ```
-      kubectl patch svc "$APP_INSTANCE_NAME-kibana-svc" \
-        --namespace "$NAMESPACE" \
-        --patch '{"spec": {"type": "LoadBalancer"}}'
-      ```
-
-      Note that it might take some time for the external IP to be provisioned.
-
-      ```shell
-      KIBANA_HOST=$(kubectl get svc $APP_INSTANCE_NAME-kibana-svc \
-        --namespace $NAMESPACE \
-        --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
-      ```
-
-      Alternatively, you could also run in background a `kubectl port-forward` command to access
-      Kibana from your localhost:
+      Run the following command in background:
 
       ```
-      KIBANA_POD_NAME="$(kubectl get pods -n $NAMESPACE \
-        -l=app.kubernetes.io/name=$APP_INSTANCE_NAME,app.kubernetes.io/component=kibana-server \
-        -o jsonpath='{.items[0].metadata.name}')"
-
-      kubectl port-forward $KIBANA_POD_NAME -n $NAMESPACE 5601
+      kubectl port-forward -n $NAMESPACE \
+        svc/$APP_INSTANCE_NAME-kibana-svc 5601
       ```
 
-      Then your host for Kibana is `localhost`:
-
-      ```
-      KIBANA_HOST=localhost
-      ```
-
-      # Open Kibana UI
-
-      Open in your web browser the following URL:
-
-      ```
-      echo "http://${KIBANA_HOST}:5601"
-      ```
+      Open Kibana in your web browser with `http://localhost:5601/`.
 
       # Discover the logs
 
@@ -88,13 +58,8 @@ spec:
 
       Your installation automatically adds a default Index Pattern to be tracked by Kibana - it
       matches the Fluentd DaemonSet configuration and equals to `logstash-*`. Thanks to this
-      configuration you can view the logs from the Kubernetes cluster immediately after the successful
-      installation - when entering the Kibana UI page, click on the `Discover` button in the main menu
-      or navigate to:
-
-      ```shell
-      echo "${KIBANA_URL}/discover"
-      ```
+      configuration you can view the logs from the Kubernetes cluster immediately after the
+      successful installation.
 
       ## Saved searches
 
@@ -102,19 +67,26 @@ spec:
       configuration. To view the searches shipped with this installation, visit the `Discover` page
       of Kibana and in the top menu, click on the `Open` option. It will present a list of some useful
       searches, including logs from: GKE Apps, kubelet, docker, kernel and others.
+  info:
+  - name: Forward Kibana port locally
+    value: kubectl port-forward svc/$APP_INSTANCE_NAME-kibana-svc -n $NAMESPACE 5601
+  - name: Kibana UI URL
+    value: http://localhost:5601/
   selector:
     matchLabels:
       app.kubernetes.io/name: "$APP_INSTANCE_NAME"
   componentKinds:
   - group: v1
     kind: ConfigMap
-  - group: v1
-    kind: Service
-  - group: apps/v1beta2
-    kind: StatefulSet
   - group: apps/v1beta2
     kind: Deployment
   - group: apps/v1beta2
     kind: DaemonSet
   - group: batch/v1
     kind: Job
+  - group: v1
+    kind: PersistentVolumeClaim
+  - group: v1
+    kind: Service
+  - group: apps/v1beta2
+    kind: StatefulSet
