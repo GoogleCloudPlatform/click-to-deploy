@@ -60,6 +60,7 @@ app/build:: .build/elastic-gke-logging/elasticsearch \
 
 .build/elastic-gke-logging/deployer: deployer/* \
                                      manifest/* \
+                                     schema.yaml \
                                      .build/var/APP_DEPLOYER_IMAGE \
                                      .build/var/REGISTRY \
                                      .build/var/TAG \
