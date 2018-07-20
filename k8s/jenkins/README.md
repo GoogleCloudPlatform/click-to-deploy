@@ -64,7 +64,7 @@ To do that, navigate to `k8s/vendor` subdirectory of the repository and run the 
 -->
 
 ```shell
-kubectl apply -f google-marketplace-k8s-app-tools/crd/*
+kubectl apply -f click-to-deploy/k8s/vendor/marketplace-tools/crd/*
 ```
 
 The Application resource is defined by the
@@ -77,7 +77,7 @@ community. The source code can be found on
 Navigate to the `jenkins` directory.
 
 ```shell
-cd google-click-to-deploy/k8s/jenkins
+cd click-to-deploy/k8s/jenkins
 ```
 
 #### Configure the app with environment variables
