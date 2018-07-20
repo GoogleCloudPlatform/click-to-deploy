@@ -1,6 +1,6 @@
 # Overview
 
-WordPress is web software used to create websites and blogs.
+WordPress is web publishing software used to create websites and blogs.
 
 [Learn more](https://wordpress.org/).
 
@@ -14,7 +14,7 @@ Popular open stacks on Kubernetes packaged by Google.
 
 Get up and running with a few clicks! Install this WordPress app to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
-[on-screen instructions](https://console.cloud.google.com/launcher/details/google/wordpress).
+[on-screen instructions](https://console.cloud.google.com/marketplace/details/google/wordpress).
 
 ## Command line instructions
 
@@ -36,16 +36,16 @@ gcloud auth configure-docker
 
 #### Create a Google Kubernetes Engine cluster
 
-Create a new cluster from the command-line.
+Create a new cluster from the command line:
 
 ```shell
-export CLUSTER=marketplace-cluster
+export CLUSTER=wordpress-cluster
 export ZONE=us-west1-a
 
 gcloud container clusters create "$CLUSTER" --zone "$ZONE"
 ```
 
-Configure `kubectl` to talk to the new cluster.
+Configure `kubectl` to connect to the new cluster:
 
 ```shell
 gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
@@ -53,24 +53,24 @@ gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 
 #### Clone this repo
 
-Clone this repo and the associated tools repo.
+Clone this repo and the associated tools repo:
 
 ```shell
-gcloud source repos clone google-click-to-deploy --project=k8s-marketplace-eap
-gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketplace-eap
+git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 ```
 
 #### Install the Application resource definition
 
-Do a one-time setup for your cluster to understand Application resource via installing Application's Custom Resource Definition.
+An Application resource is a collection of individual Kubernetes components,
+such as Services, Deployments, and so on, that you can manage as a group.
 
-<!--
-To do that, navigate to `k8s/vendor` subdirectory of the repository and run the following command:
--->
+To set up your cluster to understand Application resources, run the following command:
 
 ```shell
-kubectl apply -f google-marketplace-k8s-app-tools/crd/*
+kubectl apply -f click-to-deploy/k8s/vendor/marketplace-tools/crd/*
 ```
+
+You need to run this command once.
 
 The Application resource is defined by the
 [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps)
@@ -79,10 +79,10 @@ community. The source code can be found on
 
 ### Install the Application
 
-Navigate to the `wordpress` directory.
+Navigate to the `wordpress` directory:
 
 ```shell
-cd google-click-to-deploy/k8s/wordpress
+cd click-to-deploy/k8s/wordpress
 ```
 
 #### Configure the app with environment variables
@@ -94,24 +94,25 @@ export APP_INSTANCE_NAME=wordpress-1
 export NAMESPACE=default
 ```
 
-Configure the container images.
+Configure the container images:
 
 ```shell
-export IMAGE_WORDPRESS="gcr.io/k8s-marketplace-eap/google/wordpress:latest"
-export IMAGE_MYSQL="gcr.io/k8s-marketplace-eap/google/wordpress/mysql:latest"
+export IMAGE_WORDPRESS="marketplace.gcr.io/google/wordpress:latest"
+export IMAGE_MYSQL="marketplace.gcr.io/google/wordpress/mysql:latest"
 ```
 
 The images above are referenced by
-[tag](https://docs.docker.com/engine/reference/commandline/tag). It is strongly
-recommended to pin each image to an immutable
+[tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
+that you pin each image to an immutable
 [content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This will ensure that the installed application will always use the same images,
-until you are ready to upgrade.
+This ensures that the installed application always uses the same images,
+until you are ready to upgrade. To get the digest for the image, use the
+following script:
 
 ```shell
 for i in "IMAGE_WORDPRESS" "IMAGE_MYSQL"; do
-  repo=`echo ${!i} | cut -d: -f1`;
-  digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
+  repo=$(echo ${!i} | cut -d: -f1);
+  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
   export $i="$repo@$digest";
   env | grep $i;
 done
@@ -120,16 +121,25 @@ done
 Set or generate passwords:
 
 ```shell
-# If not installed pwgen previously, run:
+# Install pwgen and base64
 sudo apt-get install -y pwgen base64
 
+# Set the root and Wordpress database passwords
 export ROOT_DB_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
 export WORDPRESS_DB_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
 ```
 
+#### Create namespace in your Kubernetes cluster
+
+If you use a different namespace than the `default`, run the command below to create a new namespace:
+
+```shell
+kubectl create namespace "$NAMESPACE"
+```
+
 #### Expand the manifest template
 
-Use `envsubst` to expand the template. It is recommended that you save the
+Use `envsubst` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
@@ -138,9 +148,9 @@ awk 'BEGINFILE {print "---"}{print}' manifest/* \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
-#### Apply to Kubernetes
+#### Apply the manifest to your Kubernetes cluster
 
-Use `kubectl` to apply the manifest to your Kubernetes cluster.
+Use `kubectl` to apply the manifest to your Kubernetes cluster:
 
 ```shell
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
@@ -148,16 +158,18 @@ kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 
 #### View the app in the Google Cloud Console
 
-Point your browser to:
+To get the Console URL for your app, run the following command:
 
 ```shell
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
 ```
 
-### Expose WordPress service
+To view the app, open the URL in your browser.
 
-By default, the application does not have an external IP. Run the
-following command to expose an external IP:
+### Expose WordPress service externally
+
+By default, the application does not have an external IP address. To create
+an external IP address for your WordPress app, run the following command:
 
 ```
 kubectl patch svc "$APP_INSTANCE_NAME-wordpress-svc" \
@@ -165,10 +177,11 @@ kubectl patch svc "$APP_INSTANCE_NAME-wordpress-svc" \
   --patch '{"spec": {"type": "LoadBalancer"}}'
 ```
 
-### Access WordPress site
+It might take some time for the external IP address to be created.
 
-Get the external IP of the WordPress site service and visit
-the URL printed below in your browser.
+### Open your WordPress site
+
+Get the external IP of your WordPress site using the following command:
 
 ```
 SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-wordpress-svc \
@@ -178,73 +191,81 @@ SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-wordpress-svc \
 echo "http://${SERVICE_IP}"
 ```
 
-Note that it might take some time for the external IP to be provisioned.
+The command shows you the URL of your site.
 
 ### Set up WordPress
 
-After accessing the WordPress main page, you will see the installation wizard.
-Follow the instructions presented on the screen to finish the process.
+When you open the WordPress main page, an installation wizard starts.
+Follow the steps on the screen to finish setting up WordPress.
 
+# Scaling
+
+This is a single-instance version of WordPress.
+It is not intended to be scaled up with the current configuration.
 # Backup and restore
 
 ## Using WordPress plugins
 
-Using one of the available plugins for WordPress backups is probably the most convenient way to
-protect your data from loss. Nevertheless, there is a large variety of choices, when selecting
-the right plugin for backups, including both paid and free options.
+There are a number of plugins, both free and paid, that can create and manage
+backups for your WordPress site.
 
-Topics to consider when selecting a backup plugin should include:
-* *scope of backup* - your installation will contain not only media files or database data,
-  but also themes, plugins and configurations; check if the plugin supports backing up all of them;
-* *schedule and manual triggering* - does the plugin perform regular backups with a schedule
-  that you can define and does it allow to trigger backup manually (for instance, before updating
-  the installation or just after finishing a large update to your configuration);
-* *location to store data* - your backup data should not be stored on the same server as your
-  installation; one of the options to secure your backup data from accidental loss might be
-  using a cloud provider - like Google Cloud Storage or Google Drive.
+When you are selecting a backup plugin, consider the following:
 
-## Backup without a plugin
+* *scope of backup* - your installation contains not only media files
+  and database data, but also themes, plugins and configurations; check if the
+  plugin can back up all your data.
+* *schedule and manual triggering* - does the plugin perform regular backups
+  on a schedule that you can define, and does it let you trigger backups
+  manually (for instance, before updating the installation or just after
+  finishing a large update to your configuration)?
+* *location to store data* - your backup data should not be stored on the same
+  server as your installation; one of the options to secure your backup data
+  from accidental loss might be using a cloud provider - like Google Cloud
+  Storage or Google Drive.
 
-Backing up data directly from the server gives you full control over the schedule and scope of
-backup, but is recommended only to advanced users.
+## Backup from the server
 
-We will cover a scenario for backing up WordPress database and all installation files, including
-media content, themes and plugins. It is recommended to export the backup files to Google Cloud
-Storage to secure the data in an independent location.
+Backing up data directly from the server gives you full control over the
+schedule and scope of backup, but is recommended for advanced users.
 
-### Setup local environment
+The steps below are for backing up the WordPress database and all installation
+files, including media content, themes and plugins. We recommend that you store
+the data outside your cluster, for example, in cloud-based storage.
 
-Setup environment variables to match with your WordPress installation:
+### Set up your local environment
+
+Set up environment variables to match your WordPress installation:
 
 ```shell
 export APP_INSTANCE_NAME=wordpress-1
 export NAMESPACE=default
 ```
 
-### Establish MySQL connection
+### Establish the MySQL connection
 
-For backing up WordPress database, you will need to have connection to MySQL host and port.
-You can setup a local proxy with the following `kubectl` command in background:
+For backing up WordPress database, you must connect to the MySQL host and port.
+Using a separate terminal, create a local proxy using the following `kubectl`
+command:
 
 ```shell
 kubectl port-forward "svc/${APP_INSTANCE_NAME}-mysql-svc" 3306 --namespace "${NAMESPACE}"
 ```
 
-### Create backup
+### Create the backup
 
-Backup procedure will require `mysql-client` package. To install it on Debian, run:
+To create the backup, you need the `mysql-client` package. To install the
+package, on Debian-based distributions, run:
 
 ```shell
 sudo apt-get install mysql-client
 ```
 
-The following command creates WordPress database and files backup and saves the backup
-archive as specified by `backup-file`:
+To create the backup, run the following command:
 
 ```shell
 backup_time="$(date +%Y%m%d-%H%M%S)"
 
-# All parameters except --app and --namespace are optional.
+# `--app` and `--namespace` are required; all other parameters are optional
 scripts/backup.sh --app $APP_INSTANCE_NAME --namespace $NAMESPACE \
   --mysql-host 127.0.0.1 --mysql-port 3306 \
   --backup-file "wp-backup-${backup_time}.tar.gz"
@@ -252,15 +273,16 @@ scripts/backup.sh --app $APP_INSTANCE_NAME --namespace $NAMESPACE \
 
 ### Secure your backup files
 
-It is recommended to store your backup files in an independent and reliable location like
-Google Cloud Storage (GCS) buckets. Read the [official documentation](https://cloud.google.com/storage/docs/creating-buckets)
-to learn more about creating GCS buckets, setting permissions and uploading files.
+We recommend that you store your backup files outside your Kubernetes cluster,
+such as in a Google Cloud Storage bucket. Read the
+[Cloud Storage documentation](https://cloud.google.com/storage/docs/creating-buckets)
+to learn more about creating buckets, setting permissions and uploading files.
 
-## Restore
+## Restoring your data
 
-For restore procedure we assume that you already have your local environment populated with
-variables of `APP_INSTANCE_NAME` and `NAMESPACE` pointing to WordPress installation and
-established a MySQL connection.
+Before restoring, configure your local environment with the `APP_INSTANCE_NAME`
+and `NAMESPACE` environment variables for your WordPress cluster, and
+create a MySQL connection.
 
 ### Restore WordPress database and files from backup
 
@@ -273,18 +295,17 @@ scripts/restore.sh --app $APP_INSTANCE_NAME --namespace $NAMESPACE \
   --mysql-host 127.0.0.1 --mysql-port 3306
 ```
 
-At first, it will automatically create backups of current database and filesystem of your WordPress
-installation (they will not be deleted automatically by the script). Then the database will be
-restored from an SQL dump and WordPress files will be replaced with the ones from the backup file.
+The script first creates a backup of the current database and file system,
+and then restores the database and file system from the backup file
+that you selected.
 
 # Upgrade the Application
 
 ## Prepare the environment
 
-We recommend to create backup of your data before starting the upgrade procedure
-(TODO - create and link Backup and restore chapter).
+We recommend to backing up your data before starting the upgrade.
 
-Please keep in mind that during the upgrade procedure your WordPress site will be unavailable.
+Note that during the upgrade, your WordPress site will be unavailable.
 
 Set your environment variables to match the installation properties:
 
@@ -301,7 +322,7 @@ Set the new image version in an environment variable:
 export IMAGE_WORDPRESS=launcher.gcr.io/google/wordpress4-php7-apache:latest
 ```
 
-Update the StatefulSet definition with new image reference:
+Update the StatefulSet definition with the reference to the new image:
 
 ```shell
 kubectl patch statefulset $APP_INSTANCE_NAME-wordpress \
@@ -322,8 +343,9 @@ kubectl get pods "$APP_INSTANCE_NAME-wordpress-0" \
   --watch
 ```
 
-The pod should terminated and recreated with new image for `wordpress` container. The final state of
-the pod should be `Running` and marked as 1/1 in `READY` column.
+The Pod is terminated, and recreated with a new image for the `wordpress`
+container. After the update is complete, the final state of
+the Pod is `Running`, and marked as 1/1 in the `READY` column.
 
 ## Upgrade MySQL
 
@@ -352,10 +374,10 @@ Monitor the process with:
 kubectl get pods $APP_INSTANCE_NAME-mysql-0 --namespace $NAMESPACE --watch
 ```
 
-The pod should terminated and recreated with new image for `mysql` container. The final state of
-the pod should be `Running` and marked as 1/1 in `READY` column.
+The Pod is terminated, and recreated with a new image for the `mysql` container. After the update is complete, the final state of
+the Pod is `Running`, and marked as 1/1 in the `READY` column.
 
-To check the current image used for `mysql` container, you can run the following command:
+To check the current image used for `mysql` container, run the following command:
 
 ```shell
 kubectl get pod $APP_INSTANCE_NAME-mysql-0 \
@@ -365,13 +387,13 @@ kubectl get pod $APP_INSTANCE_NAME-mysql-0 \
 
 # Uninstall the Application
 
-## Using GKE UI
+## Using the Google Cloud Platform Console
 
-Navigate to `GKE > Applications` in GCP console. From the list of applications, click on the one
-that you wish to uninstall.
+1. In the GCP Console, open [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
 
-On the new screen, click on the `Delete` button located in the top menu. It will remove
-the resources attached to this application.
+1. From the list of applications, click **WordPress**.
+
+1. On the Application Details page, click **Delete**.
 
 ## Using the command line
 
@@ -386,32 +408,32 @@ export NAMESPACE=default
 
 ### Delete the resources
 
-> **NOTE:** Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions.
-> It means that for instance if you have `kubectl` in version 1.10.&ast; and Kubernetes 1.8.&ast;,
-> you may experience incompatibility issues, like not removing the StatefulSets with
-> apiVersion of apps/v1beta2.
+> **NOTE:** We recommend to use a kubectl version that is the same as the version of your cluster. Using the same versions of kubectl and the cluster helps avoid unforeseen issues.
 
-If you still have the expanded manifest file used for the installation, you can use it to delete the resources.
-Run `kubectl` on expanded manifest file matching your installation:
+To delete the resources, use the expanded manifest file used for the
+installation.
+
+Run `kubectl` on the expanded manifest file:
 
 ```shell
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 ```
 
-Otherwise, delete the resources by indication of types and a label:
+Otherwise, delete the resources using types and a label:
 
 ```shell
-kubectl delete statefulset,secret,service \
+kubectl delete application,statefulset,secret,service \
   --namespace $NAMESPACE \
   --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
 ### Delete the persistent volumes of your installation
 
-By design, removal of StatefulSets in Kubernetes does not remove the PersistentVolumeClaims that
-were attached to their Pods. It protects your installations from mistakenly deleting stateful data.
+By design, the removal of StatefulSets in Kubernetes does not remove
+PersistentVolumeClaims that were attached to their Pods. This prevents your
+installations from accidentally deleting stateful data.
 
-If you wish to remove the PersistentVolumeClaims with their attached persistent disks, run the
-following `kubectl` commands:
+To remove the PersistentVolumeClaims with their attached persistent disks, run
+the following `kubectl` commands:
 
 ```shell
 # specify the variables values matching your installation:

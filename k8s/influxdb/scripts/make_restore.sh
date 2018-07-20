@@ -17,26 +17,25 @@
 set -e
 
 if [[ -z "$1" ]]; then
-  info "Please, provide InfluxDB instance name"
-  info "Invoke make_restore.sh script in the following way:"
-  info "make_restore.sh <app instance name> <namespace> <backup folder>"
+  echo "Please, provide InfluxDB instance name"
+  echo "Invoke the script in the following way:"
+  echo "$0 <app instance name> <namespace> <backup folder>"
   exit 1
 fi
 
 if [[ -z "$2" ]]; then
-  info "Please, provide Kubernetes namespace to use"
-  info "Invoke make_restore.sh script in the following way:"
-  info "make_restore.sh <app instance name> <namespace> <backup folder>"
+  echo "Please, provide Kubernetes namespace to use"
+  echo "Invoke the script in the following way:"
+  echo "$0 <app instance name> <namespace> <backup folder>"
   exit 1
 fi
 
 if [[ -z "$3" ]]; then
-  info "Please, provide folder for backup"
-  info "Invoke make_restore.sh script in the following way:"
-  info "make_restore.sh <app instance name> <namespace> <backup folder>"
+  echo "Please, provide folder for backup"
+  echo "Invoke the script in the following way:"
+  echo "$0 <app instance name> <namespace> <backup folder>"
   exit 1
 fi
-
 
 INFLUXDB_INSTANCE="$1"
 NAMESPACE="$2"

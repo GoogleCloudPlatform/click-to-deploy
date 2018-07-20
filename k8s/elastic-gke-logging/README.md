@@ -17,7 +17,7 @@ Popular open stacks on Kubernetes packaged by Google.
 
 Get up and running with a few clicks! Install this Elastic GKE Logging app to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
-[on-screen instructions](https://console.cloud.google.com/launcher/details/google/elastic-gke-logging).
+[on-screen instructions](https://console.cloud.google.com/marketplace/details/google/elastic-gke-logging).
 
 ## Command line instructions
 
@@ -39,16 +39,16 @@ gcloud auth configure-docker
 
 #### Create a Google Kubernetes Engine cluster
 
-Create a new cluster from the command-line.
+Create a new cluster from the command line:
 
 ```shell
-export CLUSTER=marketplace-cluster
+export CLUSTER=elastic-gke-logging-cluster
 export ZONE=us-west1-a
 
 gcloud container clusters create "$CLUSTER" --zone "$ZONE"
 ```
 
-Configure `kubectl` to talk to the new cluster.
+Configure `kubectl` to connect to the new cluster:
 
 ```shell
 gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
@@ -59,21 +59,21 @@ gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 Clone this repo and the associated tools repo.
 
 ```shell
-gcloud source repos clone google-click-to-deploy --project=k8s-marketplace-eap
-gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketplace-eap
+git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 ```
 
 #### Install the Application resource definition
 
-Do a one-time setup for your cluster to understand Application resource via installing Application's Custom Resource Definition.
+An Application resource is a collection of individual Kubernetes components,
+such as Services, Deployments, and so on, that you can manage as a group.
 
-<!--
-To do that, navigate to `k8s/vendor` subdirectory of the repository and run the following command:
--->
+To set up your cluster to understand Application resources, run the following command:
 
 ```shell
-kubectl apply -f google-marketplace-k8s-app-tools/crd/*
+kubectl apply -f click-to-deploy/k8s/vendor/marketplace-tools/crd/*
 ```
+
+You need to run this command once.
 
 The Application resource is defined by the
 [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps)
@@ -82,15 +82,17 @@ community. The source code can be found on
 
 ### Install the Application
 
-Navigate to the `elastic-gke-logging` directory.
+Navigate to the `elastic-gke-logging` directory:
 
 ```shell
-cd google-click-to-deploy/k8s/elastic-gke-logging
+cd click-to-deploy/k8s/elastic-gke-logging
 ```
 
 #### Configure the app with environment variables
 
-Choose the instance name and namespace for the app.
+Choose an instance name and
+[namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)
+for the app. In most cases, you can use the `default` namespace.
 
 ```shell
 export APP_INSTANCE_NAME=elastic-logging-1
@@ -103,36 +105,45 @@ Specify the number of replicas for the Elasticsearch server:
 export ELASTICSEARCH_REPLICAS=2
 ```
 
-Configure the container images.
+Configure the container images:
 
 ```shell
 APP_VERSION=6.3
 
-export IMAGE_ELASTICSEARCH="gcr.io/k8s-marketplace-eap/google/elastic-gke-logging:$APP_VERSION"
-export IMAGE_KIBANA="gcr.io/k8s-marketplace-eap/google/elastic-gke-logging/kibana:$APP_VERSION"
-export IMAGE_FLUENTD="gcr.io/k8s-marketplace-eap/google/elastic-gke-logging/fluentd:$APP_VERSION"
-export IMAGE_INIT="gcr.io/k8s-marketplace-eap/google/elasticsearch/ubuntu16_04:$APP_VERSION"
+export IMAGE_ELASTICSEARCH="marketplace.gcr.io/google/elastic-gke-logging:$APP_VERSION"
+export IMAGE_KIBANA="marketplace.gcr.io/google/elastic-gke-logging/kibana:$APP_VERSION"
+export IMAGE_FLUENTD="marketplace.gcr.io/google/elastic-gke-logging/fluentd:$APP_VERSION"
+export IMAGE_INIT="marketplace.gcr.io/google/elasticsearch/ubuntu16_04:$APP_VERSION"
 ```
 
 The images above are referenced by
-[tag](https://docs.docker.com/engine/reference/commandline/tag). It is strongly
-recommended to pin each image to an immutable
+[tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
+that you pin each image to an immutable
 [content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This will ensure that the installed application will always use the same images,
-until you are ready to upgrade.
+This ensures that the installed application always uses the same images,
+until you are ready to upgrade. To get the digest for the image, use the
+following script:
 
 ```shell
 for i in IMAGE_ELASTICSEARCH IMAGE_KIBANA IMAGE_FLUENTD IMAGE_INIT; do
-  repo=`echo ${!i} | cut -d: -f1`;
-  digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
+  repo=$(echo ${!i} | cut -d: -f1);
+  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
   export $i="$repo@$digest";
   env | grep $i;
 done
 ```
 
+#### Create namespace in your Kubernetes cluster
+
+If you use a different namespace than the `default`, run the command below to create a new namespace:
+
+```shell
+kubectl create namespace "$NAMESPACE"
+```
+
 #### Expand the manifest template
 
-Use `envsubst` to expand the template. It is recommended that you save the
+Use `envsubst` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
@@ -142,9 +153,9 @@ awk 'BEGINFILE {print "---"}{print}' manifest/* \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
-#### Apply to Kubernetes
+#### Apply the manifest to your Kubernetes cluster
 
-Use `kubectl` to apply the manifest to your Kubernetes cluster.
+Use `kubectl` to apply the manifest to your Kubernetes cluster:
 
 ```shell
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
@@ -156,11 +167,13 @@ kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 
 #### View the app in the Google Cloud Console
 
-Point your browser to:
+To get the Console URL for your app, run the following command:
 
 ```shell
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
 ```
+
+To view your app, open the URL in your browser.
 
 ### Expose Elasticsearch & Kibana services (optional)
 
@@ -308,7 +321,7 @@ Fluentd DaemonSet stateless by design and requires no backup procedure.
 ### Create a backup infrastructure
 
 To create a NFS server on Kubernetes and create a shared disk to be used for backup,
-run the script from `scripts/create-backup-infra.sh`:
+run the script from [`scripts/create-backup-infra.sh`](scripts/create-backup-infra.sh):
 
 ```shell
 scripts/create-backup-infra.sh \
@@ -322,7 +335,7 @@ scripts/create-backup-infra.sh \
 
 Your Elasticsearch StatefulSet needs to be patched to mount the backup disk. To run the patch
 and automatically perform a rolling update on the StatefulSet, use the script from
-`scripts/patch-sts-for-backup.sh`.
+[`scripts/patch-sts-for-backup.sh`](scripts/patch-sts-for-backup.sh).
 
 ```shell
 scripts/patch-sts-for-backup.sh \
@@ -431,7 +444,7 @@ Make sure that the cluster is healthy before proceeding:
 curl $ELASTIC_URL/_cluster/health?pretty
 ```
 
-Run the `scripts/upgrade.sh` script. This script will take down and update one replica at a time -
+Run the [`scripts/upgrade.sh`](scripts/upgrade.sh) script. This script will take down and update one replica at a time -
 it should print out diagnostic messages. You should be done when the script finishes.
 
 ## Update the Kibana deployment
@@ -486,19 +499,18 @@ export NAMESPACE=default
 
 ### Delete the resources
 
-> **NOTE:** Please keep in mind that `kubectl` guarantees support for Kubernetes server in +/- 1 versions.
-> It means that for instance if you have `kubectl` in version 1.10.&ast; and Kubernetes 1.8.&ast;,
-> you may experience incompatibility issues, like not removing the StatefulSets with
-> apiVersion of apps/v1beta2.
+> **NOTE:** We recommend to use a kubectl version that is the same as the version of your cluster. Using the same versions of kubectl and the cluster helps avoid unforeseen issues.
 
-If you still have the expanded manifest file used for the installation, you can use it to delete the resources.
-Run `kubectl` on expanded manifest file matching your installation:
+To delete the resources, use the expanded manifest file used for the
+installation.
+
+Run `kubectl` on the expanded manifest file:
 
 ```shell
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 ```
 
-Otherwise, delete the resources by indication of types and a label:
+Otherwise, delete the resources using types and a label:
 
 ```shell
 kubectl delete deployment,statefulset,service,configmap,serviceaccount,clusterrole,clusterrolebinding,application,job \
@@ -508,11 +520,12 @@ kubectl delete deployment,statefulset,service,configmap,serviceaccount,clusterro
 
 ### Delete the persistent volumes of your installation
 
-By design, removal of StatefulSets in Kubernetes does not remove the PersistentVolumeClaims that
-were attached to their Pods. It protects your installations from mistakenly deleting stateful data.
+By design, the removal of StatefulSets in Kubernetes does not remove
+PersistentVolumeClaims that were attached to their Pods. This prevents your
+installations from accidentally deleting stateful data.
 
-If you wish to remove the PersistentVolumeClaims with their attached persistent disks, run the
-following `kubectl` commands:
+To remove the PersistentVolumeClaims with their attached persistent disks, run
+the following `kubectl` commands:
 
 ```shell
 # specify the variables values matching your installation:
@@ -522,4 +535,13 @@ export NAMESPACE=default
 kubectl delete persistentvolumeclaims \
   --namespace $NAMESPACE \
   --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
+```
+
+### Delete the GKE cluster
+
+Optionally, if you don't need the deployed application or the GKE cluster,
+delete the cluster using this command:
+
+```
+gcloud container clusters delete "$CLUSTER" --zone "$ZONE"
 ```

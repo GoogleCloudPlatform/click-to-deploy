@@ -33,25 +33,29 @@ spec:
       # Get authentication credentials for the cluster
 
       ```shell
-      gcloud container clusters get-credentials [CLUSTER_NAME]
+      gcloud container clusters get-credentials [CLUSTER_NAME] --zone [CLUSTER_ZONE]
       ```
-      where `[CLUSTER_NAME]` is the name you choose for the cluster.
+      where:
+      * `[CLUSTER_NAME]` is the name of the cluster for this application
+      * `[CLUSTER_ZONE]` is the zone, in which the cluster is operating
 
       Please read [here](https://cloud.google.com/kubernetes-engine/docs/quickstart#get_authentication_credentials_for_the_cluster) for more information.
 
       <!--- ALL THIS BELOW IS COPIED FROM README.MD -->
 
-      # Cluster status
+      # Get the status of the cluster
 
-      By default, the application does not have an external IP. Use `kubectl` to execute `rabbitmqctl` on the master node.
+      By default, the application does not have an external IP address. To get the
+      status of the cluster, use `kubectl` to execute `rabbitmqctl` on the master
+      node:
 
       ```
-      kubectl exec -it "$APP_INSTANCE_NAME-rabbitmq-0" --namespace "$NAMESPACE" -- rabbitmqctl cluster_status
+      kubectl exec -it $APP_INSTANCE_NAME-rabbitmq-0 --namespace $NAMESPACE -- rabbitmqctl cluster_status
       ```
 
       # Authorization
 
-      The default username is `rabbit`. Use `kubectl` to get the generated password.
+      The default username is `$RABBITMQ_DEFAULT_USER`. Use `kubectl` to get the generated password:
 
       ```shell
       kubectl get secret $APP_INSTANCE_NAME-rabbitmq-secret \
@@ -59,45 +63,42 @@ spec:
         --output=jsonpath='{.data.rabbitmq-pass}' | base64 --decode
       ```
 
-      # Expose RabbitMQ service (optional)
+      # (Optional) Expose the RabbitMQ service externally
 
-      By default, the application does not have an external IP. Run the
-      following command to expose an external IP:
-
-      > **NOTE:** It might take some time for the external IP to be provisioned.
+      By default, the application does not have an external IP. To create an
+      external IP address for the service, run the following command:
 
       ```
-      kubectl patch svc "$APP_INSTANCE_NAME-rabbitmq-svc" \
-        --namespace "$NAMESPACE" \
+      kubectl patch svc $APP_INSTANCE_NAME-rabbitmq-svc \
+        --namespace $NAMESPACE \
         --patch '{"spec": {"type": "LoadBalancer"}}'
       ```
 
+      > **NOTE:** It might take some time for the external IP to be provisioned.
+
       # Access RabbitMQ service
 
-      **Option 1:** To discover IP addresses of RabbitMQ service using `kubectl`, run the following command:
-
-      ```
-      kubectl get svc $APP_INSTANCE_NAME-rabbitmq-svc --namespace $NAMESPACE
-      ```
-
-      **Option 2:** If you run your RabbitMQ cluster behind a LoadBalancer, run the command below to get an external IP of the RabbitMQ service:
+      **Option 1:** If you run your RabbitMQ cluster behind a LoadBalancer, run the
+      following command to get the external IP of the RabbitMQ service:
 
       ```
       SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-rabbitmq-svc \
         --namespace $NAMESPACE \
         --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
       echo "http://${SERVICE_IP}:15672"
       ```
 
-      Navigate http://`<EXTERNAL-IP>`:15672 to access RabbitMQ Management UI. Where `<EXTERNAL-IP>` is provided by command above.
+      To access the RabbitMQ management UI, open `http://[EXTERNAL-IP]:15672`, where
+      `[EXTERNAL-IP]` is the output of the command above.
 
-      **Option 3:** Use Port Forwarding:
+      **Option 2:** Use port forwarding:
 
       ```
       kubectl port-forward svc/$APP_INSTANCE_NAME-rabbitmq-svc --namespace $NAMESPACE 15672
       ```
 
-      Navigate http://127.0.0.1:15672 to access RabbitMQ Management UI.
+      To access the RabbitMQ management UI, open [http://127.0.0.1:15672](http://127.0.0.1:15672).
 
       <!--- ALL THIS ABOVE IS COPIED FROM README.MD -->
   info:
