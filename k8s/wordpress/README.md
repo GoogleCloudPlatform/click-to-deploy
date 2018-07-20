@@ -64,11 +64,10 @@ git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 An Application resource is a collection of individual Kubernetes components,
 such as Services, Deployments, and so on, that you can manage as a group.
 
-To set up your cluster to understand Application resources, navigate to the
-`k8s/vendor` folder in the repository, and run the following command:
+To set up your cluster to understand Application resources, run the following command:
 
 ```shell
-kubectl apply -f marketplace-tools/crd/*
+kubectl apply -f click-to-deploy/k8s/vendor/marketplace-tools/crd/*
 ```
 
 You need to run this command once.
@@ -98,8 +97,8 @@ export NAMESPACE=default
 Configure the container images:
 
 ```shell
-export IMAGE_WORDPRESS="gcr.io/k8s-marketplace-eap/google/wordpress:latest"
-export IMAGE_MYSQL="gcr.io/k8s-marketplace-eap/google/wordpress/mysql:latest"
+export IMAGE_WORDPRESS="marketplace.gcr.io/google/wordpress:latest"
+export IMAGE_MYSQL="marketplace.gcr.io/google/wordpress/mysql:latest"
 ```
 
 The images above are referenced by
@@ -112,8 +111,8 @@ following script:
 
 ```shell
 for i in "IMAGE_WORDPRESS" "IMAGE_MYSQL"; do
-  repo=`echo ${!i} | cut -d: -f1`;
-  digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
+  repo=$(echo ${!i} | cut -d: -f1);
+  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
   export $i="$repo@$digest";
   env | grep $i;
 done
@@ -128,6 +127,14 @@ sudo apt-get install -y pwgen base64
 # Set the root and Wordpress database passwords
 export ROOT_DB_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
 export WORDPRESS_DB_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
+```
+
+#### Create namespace in your Kubernetes cluster
+
+If you use a different namespace than the `default`, run the command below to create a new namespace:
+
+```shell
+kubectl create namespace "$NAMESPACE"
 ```
 
 #### Expand the manifest template

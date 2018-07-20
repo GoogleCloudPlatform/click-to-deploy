@@ -59,11 +59,10 @@ git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 An Application resource is a collection of individual Kubernetes components,
 such as Services, Deployments, and so on, that you can manage as a group.
 
-To set up your cluster to understand Application resources, navigate to the
-`k8s/vendor` folder in the repository, and run the following command:
+To set up your cluster to understand Application resources, run the following command:
 
 ```shell
-kubectl apply -f marketplace-tools/crd/*
+kubectl apply -f click-to-deploy/k8s/vendor/marketplace-tools/crd/*
 ```
 
 You need to run this command once.
@@ -120,8 +119,8 @@ Configure the container images:
 
 ```shell
 TAG=3.7
-export IMAGE_RABBITMQ=gcr.io/k8s-marketplace-eap/google/rabbitmq:${TAG}
-export IMAGE_RABBITMQ_INIT=gcr.io/k8s-marketplace-eap/google/rabbitmq/debian9:${TAG}
+export IMAGE_RABBITMQ=marketplace.gcr.io/google/rabbitmq:${TAG}
+export IMAGE_RABBITMQ_INIT=marketplace.gcr.io/google/rabbitmq/debian9:${TAG}
 ```
 
 The images above are referenced by
@@ -133,12 +132,20 @@ until you are ready to upgrade. To get the digest for the image, use the
 following script:
 
 ```shell
-for i in "IMAGE_RABBITMQ IMAGE_RABBITMQ_INIT"; do
-  repo=`echo ${!i} | cut -d: -f1`;
-  digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
+for i in "IMAGE_RABBITMQ" "IMAGE_RABBITMQ_INIT"; do
+  repo=$(echo ${!i} | cut -d: -f1);
+  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
   export $i="$repo@$digest";
   env | grep $i;
 done
+```
+
+#### Create namespace in your Kubernetes cluster
+
+If you use a different namespace than the `default`, run the command below to create a new namespace:
+
+```shell
+kubectl create namespace "$NAMESPACE"
 ```
 
 #### Prerequisites for using Role-Based Access Control
@@ -193,7 +200,7 @@ status of the cluster, use `kubectl` to execute `rabbitmqctl` on the master
 node:
 
 ```
-kubectl exec -it "$APP_INSTANCE_NAME-rabbitmq-0" --namespace "$NAMESPACE" -- rabbitmqctl cluster_status
+kubectl exec -it $APP_INSTANCE_NAME-rabbitmq-0 --namespace $NAMESPACE -- rabbitmqctl cluster_status
 ```
 
 #### Authorization
@@ -212,8 +219,8 @@ By default, the application does not have an external IP. To create an
 external IP address for the service, run the following command:
 
 ```
-kubectl patch svc "$APP_INSTANCE_NAME-rabbitmq-svc" \
-  --namespace "$NAMESPACE" \
+kubectl patch svc $APP_INSTANCE_NAME-rabbitmq-svc \
+  --namespace $NAMESPACE \
   --patch '{"spec": {"type": "LoadBalancer"}}'
 ```
 
@@ -221,35 +228,29 @@ kubectl patch svc "$APP_INSTANCE_NAME-rabbitmq-svc" \
 
 #### Access RabbitMQ service
 
-**Option 1:** To get the IP addresses of the RabbitMQ service using `kubectl`,
-run the following command:
-
-```
-kubectl get svc $APP_INSTANCE_NAME-rabbitmq-svc --namespace $NAMESPACE
-```
-
-**Option 2:** If you run your RabbitMQ cluster behind a LoadBalancer, run the
+**Option 1:** If you run your RabbitMQ cluster behind a LoadBalancer, run the
 following command to get the external IP of the RabbitMQ service:
 
 ```
 SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-rabbitmq-svc \
   --namespace $NAMESPACE \
   --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
 echo "http://${SERVICE_IP}:15672"
 ```
 
 To access the RabbitMQ management UI, open `http://[EXTERNAL-IP]:15672`, where
 `[EXTERNAL-IP]` is the output of the command above.
 
-**Option 3:** Use port forwarding:
+**Option 2:** Use port forwarding:
 
 ```
 kubectl port-forward svc/$APP_INSTANCE_NAME-rabbitmq-svc --namespace $NAMESPACE 15672
 ```
 
-To access the RabbitMQ management UI, open http://127.0.0.1:15672.
+To access the RabbitMQ management UI, open [http://127.0.0.1:15672](http://127.0.0.1:15672).
 
-**Option 4:** If you want to get the cluster IP and external IP addresses
+**Option 3:** If you want to get the cluster IP and external IP addresses
 of the RabbitMQ service using Python, use the following sample code:
 
 ```python
@@ -293,7 +294,6 @@ where `[NEW_REPLICAS]` is the new number.
 ## Scale the cluster down
 
 **Option 1:** Use `kubectl` to scale down, using the following command:
-
 
 ```
 kubectl scale statefulsets "$APP_INSTANCE_NAME-rabbitmq" \
@@ -345,7 +345,7 @@ Start with assigning a new image to your StatefulSet definition:
 
 ```shell
 kubectl set image statefulset "$APP_INSTANCE_NAME-rabbitmq" \
-  rabbitmq=[NEW_IMAGE_REFERENCE]
+  --namespace "$NAMESPACE" rabbitmq=[NEW_IMAGE_REFERENCE]
 ```
 
 where `[NEW_IMAGE_REFERENCE]` is the new image.

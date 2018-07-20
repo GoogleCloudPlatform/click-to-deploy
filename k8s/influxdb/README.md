@@ -63,11 +63,10 @@ git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 An Application resource is a collection of individual Kubernetes components,
 such as Services, Deployments, and so on, that you can manage as a group.
 
-To set up your cluster to understand Application resources, navigate to the
-`k8s/vendor` folder in the repository, and run the following command:
+To set up your cluster to understand Application resources, run the following command:
 
 ```shell
-kubectl apply -f marketplace-tools/crd/*
+kubectl apply -f click-to-deploy/k8s/vendor/marketplace-tools/crd/*
 ```
 
 You need to run this command once.
@@ -95,12 +94,6 @@ export APP_INSTANCE_NAME=influxdb-1
 export NAMESPACE=default
 ```
 
-Configure the container image:
-
-```shell
-export IMAGE_INFLUXDB="gcr.io/k8s-marketplace-eap/google/influxdb:latest"
-```
-
 Configure the InfluxDB administrator account:
 
 ```shell
@@ -114,6 +107,13 @@ encoded in base64)
 export INFLUXDB_ADMIN_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1 | tr -d '\n' | base64)
 ```
 
+Configure the container image:
+
+```shell
+TAG=1.5
+export IMAGE_INFLUXDB="marketplace.gcr.io/google/influxdb:${TAG}"
+```
+
 The images above are referenced by
 [tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
 that you pin each image to an immutable
@@ -123,10 +123,18 @@ until you are ready to upgrade. To get the digest for the image, use the
 following script:
 
 ```shell
-repo=`echo $IMAGE_INFLUXDB | cut -d: -f1`;
-digest=`docker pull $IMAGE_INFLUXDB | sed -n -e 's/Digest: //p'`;
+repo=$(echo $IMAGE_INFLUXDB | cut -d: -f1);
+digest=$(docker pull $IMAGE_INFLUXDB | sed -n -e 's/Digest: //p');
 export $i="$repo@$digest";
 env | grep $i;
+```
+
+#### Create namespace in your Kubernetes cluster
+
+If you use a different namespace than the `default`, run the command below to create a new namespace:
+
+```shell
+kubectl create namespace "$NAMESPACE"
 ```
 
 #### Expand the manifest template
@@ -252,8 +260,9 @@ Navigate to the `influxdb/scripts` directory:
 cd click-to-deploy/k8s/influxdb/scripts
 ```
 
-Run the `make_backup.sh` script, passing the name of your InfluxDB instance as
+Run the [`make_backup.sh`](scripts/make_backup.sh) script, passing the name of your InfluxDB instance as
 an argument.
+
 ```shell
 ./make_backup.sh $APP_INSTANCE_NAME $NAMESPACE [BACKUP_FOLDER]
 ```
@@ -269,8 +278,9 @@ Navigate to the `influxdb/scripts` directory:
 cd click-to-deploy/k8s/influxdb/scripts
 ```
 
-Run the `make_restore.sh` script, passing the name of your InfluxDB instance
+Run the [`make_restore.sh`](scripts/make_restore.sh) script, passing the name of your InfluxDB instance
 as an argument.
+
 ```shell
 ./make_restore.sh $APP_INSTANCE_NAME $NAMESPACE [BACKUP_FOLDER]
 ```
@@ -291,7 +301,7 @@ In the InfluxDB StatefulSet, modify the image used for the Pod template:
 
 ```shell
 kubectl set image statefulset "$APP_INSTANCE_NAME-influxdb" \
-  influxdb=[NEW_IMAGE_REFERENCE]
+  --namespace "$NAMESPACE" influxdb=[NEW_IMAGE_REFERENCE]
 ```
 
 where `[NEW_IMAGE_REFERENCE]` is the new image.

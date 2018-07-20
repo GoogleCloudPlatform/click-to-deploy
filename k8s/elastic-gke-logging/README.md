@@ -67,11 +67,10 @@ git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 An Application resource is a collection of individual Kubernetes components,
 such as Services, Deployments, and so on, that you can manage as a group.
 
-To set up your cluster to understand Application resources, navigate to the
-`k8s/vendor` folder in the repository, and run the following command:
+To set up your cluster to understand Application resources, run the following command:
 
 ```shell
-kubectl apply -f marketplace-tools/crd/*
+kubectl apply -f click-to-deploy/k8s/vendor/marketplace-tools/crd/*
 ```
 
 You need to run this command once.
@@ -111,10 +110,10 @@ Configure the container images:
 ```shell
 APP_VERSION=6.3
 
-export IMAGE_ELASTICSEARCH="gcr.io/k8s-marketplace-eap/google/elastic-gke-logging:$APP_VERSION"
-export IMAGE_KIBANA="gcr.io/k8s-marketplace-eap/google/elastic-gke-logging/kibana:$APP_VERSION"
-export IMAGE_FLUENTD="gcr.io/k8s-marketplace-eap/google/elastic-gke-logging/fluentd:$APP_VERSION"
-export IMAGE_INIT="gcr.io/k8s-marketplace-eap/google/elasticsearch/ubuntu16_04:$APP_VERSION"
+export IMAGE_ELASTICSEARCH="marketplace.gcr.io/google/elastic-gke-logging:$APP_VERSION"
+export IMAGE_KIBANA="marketplace.gcr.io/google/elastic-gke-logging/kibana:$APP_VERSION"
+export IMAGE_FLUENTD="marketplace.gcr.io/google/elastic-gke-logging/fluentd:$APP_VERSION"
+export IMAGE_INIT="marketplace.gcr.io/google/elasticsearch/ubuntu16_04:$APP_VERSION"
 ```
 
 The images above are referenced by
@@ -127,11 +126,19 @@ following script:
 
 ```shell
 for i in IMAGE_ELASTICSEARCH IMAGE_KIBANA IMAGE_FLUENTD IMAGE_INIT; do
-  repo=`echo ${!i} | cut -d: -f1`;
-  digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
+  repo=$(echo ${!i} | cut -d: -f1);
+  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
   export $i="$repo@$digest";
   env | grep $i;
 done
+```
+
+#### Create namespace in your Kubernetes cluster
+
+If you use a different namespace than the `default`, run the command below to create a new namespace:
+
+```shell
+kubectl create namespace "$NAMESPACE"
 ```
 
 #### Expand the manifest template

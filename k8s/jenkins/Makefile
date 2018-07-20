@@ -29,8 +29,7 @@ APP_PARAMETERS ?= { \
 APP_TEST_PARAMETERS ?= {}
 
 
-app/build:: .build/jenkins/debian9  \
-            .build/jenkins/deployer \
+app/build:: .build/jenkins/deployer \
             .build/jenkins/jenkins
 
 
@@ -38,16 +37,9 @@ app/build:: .build/jenkins/debian9  \
 	mkdir -p "$@"
 
 
-.build/jenkins/debian9: .build/var/REGISTRY \
-                        .build/var/TAG \
-                        | .build/jenkins
-	docker pull launcher.gcr.io/google/debian9
-	docker tag launcher.gcr.io/google/debian9 "$(REGISTRY)/jenkins/debian9:$(TAG)"
-	docker push "$(REGISTRY)/jenkins/debian9:$(TAG)"
-	@touch "$@"
-
 .build/jenkins/deployer: deployer/* \
                          manifest/* \
+                         schema.yaml \
                          .build/var/APP_DEPLOYER_IMAGE \
                          .build/var/REGISTRY \
                          .build/var/TAG \
@@ -58,6 +50,7 @@ app/build:: .build/jenkins/debian9  \
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
 	    -f deployer/Dockerfile \
 	    .
+
 	docker push "$(APP_DEPLOYER_IMAGE)"
 	@touch "$@"
 

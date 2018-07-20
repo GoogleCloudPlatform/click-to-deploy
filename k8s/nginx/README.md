@@ -7,10 +7,10 @@ TCP, and UDP servers.
 
 To learn more about NGINX, see the [NGINX website](https://www.nginx.com/).
 
-This particular web server application uses NGINX for web serving and it was configured to serve only static content.
-Each NGINX pod is associated with its own persistent volume created as standard persistent disk type defined by Google Kubernetes Engine.
+This particular web server application uses NGINX for web serving and is configured to serve only static content.
+Each NGINX pod is associated with its own persistent volume created as a standard persistent disk type defined by Google Kubernetes Engine.
 
-This web server application is pre-configured with SSL certificate. Please, replace it (per instructions delivered) with your valid SSL certificate.
+This web server application is pre-configured with an SSL certificate. Please replace it (per instructions delivered) with your valid SSL certificate.
 
 ## About Google Click to Deploy
 
@@ -66,11 +66,10 @@ git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 An Application resource is a collection of individual Kubernetes components,
 such as Services, Deployments, and so on, that you can manage as a group.
 
-To set up your cluster to understand Application resources, navigate to the
-`k8s/vendor` folder in the repository, and run the following command:
+To set up your cluster to understand Application resources, run the following command:
 
 ```shell
-kubectl apply -f marketplace-tools/crd/*
+kubectl apply -f click-to-deploy/k8s/vendor/marketplace-tools/crd/*
 ```
 
 You need to run this command once.
@@ -102,8 +101,8 @@ Configure the container images:
 
 ```shell
 TAG=1.15
-export IMAGE_NGINX="gcr.io/k8s-marketplace-eap/google/nginx:${TAG}"
-export IMAGE_NGINX_INIT="gcr.io/k8s-marketplace-eap/google/nginx/debian9:${TAG}"
+export IMAGE_NGINX="marketplace.gcr.io/google/nginx:${TAG}"
+export IMAGE_NGINX_INIT="marketplace.gcr.io/google/nginx/debian9:${TAG}"
 ```
 
 The images above are referenced by
@@ -115,12 +114,20 @@ until you are ready to upgrade. To get the digest for the image, use the
 following script:
 
 ```shell
-for i in "IMAGE_NGINX IMAGE_NGINX_INIT"; do
-  repo=`echo ${!i} | cut -d: -f1`;
-  digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
+for i in "IMAGE_NGINX" "IMAGE_NGINX_INIT"; do
+  repo=$(echo ${!i} | cut -d: -f1);
+  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
   export $i="$repo@$digest";
   env | grep $i;
 done
+```
+
+#### Create namespace in your Kubernetes cluster
+
+If you use a different namespace than the `default`, run the command below to create a new namespace:
+
+```shell
+kubectl create namespace "$NAMESPACE"
 ```
 
 #### Expand the manifest template
@@ -176,16 +183,18 @@ By default, the NGINX application is deployed using 3 replicas. You can
 manually scale it up or down using the following command:
 
 ```shell
-kubectl scale statefulsets "$APP_INSTANCE_NAME-nginx" --namespace "$NAMESPACE" --replicas=[NEW_REPLICAS]
+kubectl scale statefulsets "$APP_INSTANCE_NAME-nginx" \
+  --namespace "$NAMESPACE" \
+  --replicas=[NEW_REPLICAS]
 ```
 
-where [NEW_REPLICAS] is the new number of replicas.
+where `[NEW_REPLICAS]` is the new number of replicas.
 
 # Backup and Restore
 
 To perform backup & restore of the content of your NGINX web server you can use scripts proved for you in `click-to-deploy/k8s/nginx/scripts` folder.
 
-## Backup 
+## Backup
 
 To perform backup of the content of your NGINX web server run the following command:
 
@@ -218,28 +227,38 @@ To update the certificate for NGINX server you need to have:
 To update the certificate for a running NGINX server do the following:
 1. Save the certificate under `https1.cert` file in `click-to-deploy/k8s/nginx/scripts` folder.
 1. Save the private key of your certificate under `https1.key` file in `click-to-deploy/k8s/nginx/scripts` folder.
-1. Copy `click-to-deploy/k8s/nginx/scripts/nginx-update-cert.sh` to the folder where `https1.cert` and `https1.key` are stored.
-1. Define APP_INSTANCE_NAME environment variable ```export APP_INSTANCE_NAME=<the name of your application, e.g. nginx-1>```
-1. Define NAMESPACE environment variable ``` export NAMESPACE=default```
-1. Run the update script: `./nginx-update-cert.sh`.
+1. Copy [`click-to-deploy/k8s/nginx/scripts/nginx-update-cert.sh`](scripts/nginx-update-cert.sh) to the folder where `https1.cert` and `https1.key` are stored.
+1. Define `APP_INSTANCE_NAME` environment variable:
+
+    ```shell
+    export APP_INSTANCE_NAME=<the name of your application, e.g. nginx-1>
+    ```
+
+1. Define `NAMESPACE` environment variable:
+
+    ```shell
+    export NAMESPACE=default
+    ```
+
+1. Run the update script: [`./nginx-update-cert.sh`](scripts/nginx-update-cert.sh).
 
 NOTE: Please, make sure to perform above-mentioned operations outside of directory
 where you cloned `click-to-deploy` repository to avoid accidental commit on `https1.cert` and `https1.key` files.
 
-NOTE: `click-to-deploy/k8s/nginx/scripts/nginx-create-key.sh` script can be helpful
+NOTE: [`click-to-deploy/k8s/nginx/scripts/nginx-create-key.sh`](scripts/nginx-create-key.sh) script can be helpful
 if you would like to generate self-signed certificate.
 
 # Update
 
 This procedure assumes that you have a new image for the NGINX container
 available to your Kubernetes cluster. The new image is used in the following
-commands as [NEW_IMAGE_REFERENCE].
+commands as `[NEW_IMAGE_REFERENCE]`.
 
 In the NGINX StatefulSet, modify the image used for the Pod template:
 
 ```shell
 kubectl set image statefulset "$APP_INSTANCE_NAME-nginx" \
-  nginx=[NEW_IMAGE_REFERENCE]
+  --namespace "$NAMESPACE" nginx=[NEW_IMAGE_REFERENCE]
 ```
 
 where `[NEW_IMAGE_REFERENCE]` is the new image.
@@ -270,7 +289,7 @@ If you are using the command line:
     cd click-to-deploy/k8s/nginx
     ```
 
-1. Run the `delete` command:
+1. Run the `kubectl delete` command:
 
     ```shell
     kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE

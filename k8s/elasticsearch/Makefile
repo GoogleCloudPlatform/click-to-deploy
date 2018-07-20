@@ -45,6 +45,7 @@ app/build:: .build/elasticsearch/elasticsearch \
 
 .build/elasticsearch/deployer: deployer/* \
                                manifest/* \
+                               schema.yaml \
                                .build/var/APP_DEPLOYER_IMAGE \
                                .build/var/REGISTRY \
                                .build/var/TAG \

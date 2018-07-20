@@ -69,11 +69,10 @@ git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 An Application resource is a collection of individual Kubernetes components,
 such as Services, Deployments, and so on, that you can manage as a group.
 
-To set up your cluster to understand Application resources, navigate to the
-`k8s/vendor` folder in the repository, and run the following command:
+To set up your cluster to understand Application resources, run the following command:
 
 ```shell
-kubectl apply -f marketplace-tools/crd/*
+kubectl apply -f click-to-deploy/k8s/vendor/marketplace-tools/crd/*
 ```
 
 You need to run this command once.
@@ -109,13 +108,15 @@ export PROMETHEUS_REPLICAS=2
 Configure the container images:
 
 ```shell
-export IMAGE_PROMETHEUS="gcr.io/k8s-marketplace-eap/google/prometheus:latest"
-export IMAGE_ALERTMANAGER="gcr.io/k8s-marketplace-eap/google/prometheus/alertmanager:latest"
-export IMAGE_KUBE_STATE_METRICS="gcr.io/k8s-marketplace-eap/google/prometheus/kubestatemetrics:latest"
-export IMAGE_NODE_EXPORTER="gcr.io/k8s-marketplace-eap/google/prometheus/nodeexporter:latest"
-export IMAGE_PUSHGATEWAY="gcr.io/k8s-marketplace-eap/google/prometheus/pushgateway:latest"
-export IMAGE_GRAFANA="gcr.io/k8s-marketplace-eap/google/prometheus/grafana:latest"
-export IMAGE_PROMETHEUS_INIT="gcr.io/k8s-marketplace-eap/google/prometheus/debian9:latest"
+TAG=2.2
+export IMAGE_PROMETHEUS="marketplace.gcr.io/google/prometheus:${TAG}"
+export IMAGE_ALERTMANAGER="marketplace.gcr.io/google/prometheus/alertmanager:${TAG}"
+export IMAGE_KUBE_STATE_METRICS="marketplace.gcr.io/google/prometheus/kubestatemetrics:${TAG}"
+export IMAGE_NODE_EXPORTER="marketplace.gcr.io/google/prometheus/nodeexporter:${TAG}"
+# TODO(khajduczenia): Add pushgateway to Makefile.
+export IMAGE_PUSHGATEWAY="marketplace.gcr.io/google/prometheus/pushgateway:${TAG}"
+export IMAGE_GRAFANA="marketplace.gcr.io/google/prometheus/grafana:${TAG}"
+export IMAGE_PROMETHEUS_INIT="marketplace.gcr.io/google/prometheus/debian9:${TAG}"
 ```
 
 The images above are referenced by
@@ -134,11 +135,19 @@ for i in "IMAGE_PROMETHEUS" \
          "IMAGE_PUSHGATEWAY" \
          "IMAGE_GRAFANA" \
          "IMAGE_PROMETHEUS_INIT"; do
-  repo=`echo ${!i} | cut -d: -f1`;
-  digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
+  repo=$(echo ${!i} | cut -d: -f1);
+  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
   export $i="$repo@$digest";
   env | grep $i;
 done
+```
+
+#### Create namespace in your Kubernetes cluster
+
+If you use a different namespace than the `default`, run the command below to create a new namespace:
+
+```shell
+kubectl create namespace "$NAMESPACE"
 ```
 
 #### Expand the manifest template

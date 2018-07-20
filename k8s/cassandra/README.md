@@ -61,11 +61,10 @@ git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 An Application resource is a collection of individual Kubernetes components,
 such as Services, Deployments, and so on, that you can manage as a group.
 
-To set up your cluster to understand Application resources, navigate to the
-`k8s/vendor` folder in the repository, and run the following command:
+To set up your cluster to understand Application resources, run the following command:
 
 ```shell
-kubectl apply -f marketplace-tools/crd/*
+kubectl apply -f click-to-deploy/k8s/vendor/marketplace-tools/crd/*
 ```
 
 You need to run this command once.
@@ -105,7 +104,8 @@ export REPLICAS=3
 Configure the container images:
 
 ```shell
-export IMAGE_CASSANDRA="gcr.io/k8s-marketplace-eap/google/cassandra:latest"
+TAG=3.11
+export IMAGE_CASSANDRA="marketplace.gcr.io/google/cassandra:${TAG}"
 ```
 
 The images above are referenced by
@@ -118,11 +118,19 @@ following script:
 
 ```shell
 for i in "IMAGE_CASSANDRA"; do
-  repo=`echo ${!i} | cut -d: -f1`;
-  digest=`docker pull ${!i} | sed -n -e 's/Digest: //p'`;
+  repo=$(echo ${!i} | cut -d: -f1);
+  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
   export $i="$repo@$digest";
   env | grep $i;
 done
+```
+
+#### Create namespace in your Kubernetes cluster
+
+If you use a different namespace than the `default`, run the command below to create a new namespace:
+
+```shell
+kubectl create namespace "$NAMESPACE"
 ```
 
 #### Expand the manifest template
@@ -293,7 +301,7 @@ export NAMESPACE=default
 
 The script [`scripts/backup.sh`](scripts/backup.sh) does the following:
 
-1. Uploads the `make_backup.sh` script to each container.
+1. Uploads the [`make_backup.sh`](scripts/make_backup.sh) script to each container.
 1. Runs the script to create a backup package, using the `nodetool snapshot`
    command.
 1. Downloads the backup to your machine.
@@ -328,9 +336,9 @@ destination clusters can have a different number of nodes.
 In the directory that contains your backup files, run the restore script:
 
 ```shell
-scripts/restore.sh  --keyspace demo \
-                    --namespace "${NAMESPACE}" \
-                    --app_instance_name "${APP_INSTANCE_NAME}"
+scripts/restore.sh --keyspace demo \
+                   --namespace "${NAMESPACE}" \
+                   --app_instance_name "${APP_INSTANCE_NAME}"
 ```
 
 The script recreates the schema and uploads data to your cluster.
@@ -368,12 +376,12 @@ StatefulSet, the pods will not automatically restart.
 
 ### Run the `upgrade.sh` script
 
-To start the rolling update, run the `scripts/upgrade.sh` script. The script
+To start the rolling update, run the [`scripts/upgrade.sh`](scripts/upgrade.sh) script. The script
 takes down and updates one replica at a time.
 
 ```shell
-scripts/upgrade.sh    --namespace "${NAMESPACE}" \
-                      --app_instance_name "${APP_INSTANCE_NAME}"
+scripts/upgrade.sh --namespace "${NAMESPACE}" \
+                   --app_instance_name "${APP_INSTANCE_NAME}"
 
 ```
 
