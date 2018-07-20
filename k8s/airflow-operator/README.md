@@ -182,6 +182,56 @@ To view your app, open the URL in your browser.
 
 # Using Airflow Operator
 
+To deploy an Airflow cluster, we need to create the AirflowBase resource first followed by AirflowCluster resource.
+
+```
+# create AirflowBase resource first
+$ kubectl apply -f - <<EOF
+apiVersion: airflow.k8s.io/v1alpha1
+kind: AirflowBase
+metadata:
+  name: mc-base
+spec:
+  mysql:
+    operator: False
+EOF
+
+# get status of the CRs
+$ kubectl get airflowbase/mc-base -o yaml
+
+# after 30-60s deploy cluster components
+# create AirflowCluster resource next
+$ kubectl apply -f - <<EOF
+apiVersion: airflow.k8s.io/v1alpha1
+kind: AirflowCluster
+metadata:
+  name: mc-cluster
+spec:
+  executor: Celery
+  redis:
+    operator: False
+  scheduler:
+    version: "1.10.0rc2"
+  ui:
+    replicas: 1
+  worker:
+    replicas: 2
+  dags:
+    subdir: "airflow/example_dags/"
+    git:
+      repo: "https://github.com/apache/incubator-airflow/"
+      once: true
+  airflowbase:
+    name: mc-base
+EOF
+
+# get status of the cluster
+$ kubectl get airflowcluster/mc-cluster -o yaml
+
+# after 30-60s deploy port forward to access UI
+# access UI by pointing browser to localhost:8080
+$ kubectl port-forward mc-cluster-airflowui-0 8080:8080
+```
 
 # Uninstall the Application
 
