@@ -13,7 +13,7 @@ Popular open source software stacks on Kubernetes packaged by Google and made av
 ## Quick install with Google Cloud Marketplace
 
 Get up and running with a few clicks! Install this Jenkins app to a Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
-[on-screen instructions](https://console.cloud.google.com/launcher/details/google/jenkins2).
+[on-screen instructions](https://console.cloud.google.com/marketplace/details/google/jenkins).
 
 ## Command line instructions
 
