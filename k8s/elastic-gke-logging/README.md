@@ -1,9 +1,9 @@
 # Overview
 
-Elastic GKE Logging is an application that provides a fully functional solution for collecting
-and analyzing logs from a Kubernetes cluster. It is built on top of popular open-source systems,
-including Fluentd for logs collection and Elasticsearch with Kibana for searching and analyzing
-data.
+Elastic GKE Logging is an application that provides a fully functional
+solution for collecting and analyzing logs from a Kubernetes cluster. It is
+built on top of popular open-source systems, including Fluentd for collecting
+logs, and Elasticsearch with Kibana for searching and analyzing data.
 
 [Learn more](https://www.elastic.co/).
 
@@ -56,7 +56,7 @@ gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 
 #### Clone this repo
 
-Clone this repo and the associated tools repo.
+Clone this repo and the associated tools repo:
 
 ```shell
 git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
@@ -161,9 +161,10 @@ Use `kubectl` to apply the manifest to your Kubernetes cluster:
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
 
-> NOTE: Elasticsearch pods have an `initContainer` that assures the hosting node to have the system
-  property of `vm.max_map_count` set at least to 262144.
-  This follows the [official documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html).
+> NOTE: Elasticsearch Pods have an [Init Container](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/)
+  that sets the system property of `vm.max_map_count` set at least to 262144
+  on the hosting node. For background information, see the
+  [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html).
 
 #### View the app in the Google Cloud Console
 
@@ -175,10 +176,10 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 To view your app, open the URL in your browser.
 
-### Expose Elasticsearch & Kibana services (optional)
+### (Optional) Make the Elasticsearch and Kibana services externally available
 
-By default, the application does not have an external IP. Run the
-following command to expose an external IP for Elasticsearch service:
+By default, the application does not have an external IP. To expose an
+external IP for Elasticsearch service, run the following command:
 
 ```
 kubectl patch svc "$APP_INSTANCE_NAME-elasticsearch-svc" \
@@ -194,10 +195,10 @@ kubectl patch svc "$APP_INSTANCE_NAME-kibana-svc" \
   --patch '{"spec": {"type": "LoadBalancer"}}'
 ```
 
-# Obtain Elasticsearch URL
+# Get the Elasticsearch URL
 
-If you run your Elasticsearch cluster behind a LoadBalancer service, obtain the service IP to
-run administrative operations against the REST API:
+If you run your Elasticsearch cluster behind a LoadBalancer service, get
+the service IP to run administrative operations against the REST API:
 
 ```
 SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-elasticsearch-svc \
@@ -207,16 +208,18 @@ SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-elasticsearch-svc \
 ELASTIC_URL="http://${SERVICE_IP}:9200"
 ```
 
-You could also use a local proxy to access the service that is not exposed publicly.
-Run the following command in a separate background terminal:
+It might take some time for the external IP address to be created.
+
+If you haven't exposed your Elasticsearch service externally, use a local proxy to access the service. In a background terminal, run the following
+command:
 
 ```shell
-# select a local port to play the role of proxy
+# select a local port for the proxy
 KUBE_PROXY_PORT=8080
 kubectl proxy -p $KUBE_PROXY_PORT
 ```
 
-In you main terminal:
+In your main terminal, run:
 
 ```shell
 KUBE_PROXY_PORT=8080
@@ -224,26 +227,24 @@ PROXY_BASE_URL=http://localhost:$KUBE_PROXY_PORT/api/v1/proxy
 ELASTIC_URL=$PROXY_BASE_URL/namespaces/$NAMESPACE/services/$APP_INSTANCE_NAME-elasticsearch-svc:http
 ```
 
-In both cases, you should have an `ELASTIC_URL` environment variable that points to Elasticsearch
-base URL. You can check this by running `curl`:
+In both cases, the `ELASTIC_URL` environment variable points to your
+Elasticsearch base URL. Verify the variable using `curl`:
 
 ```shell
 curl "${ELASTIC_URL}"
 ```
 
-In the response, you should see a message including Elasticsearch characteristic tagline:
+In the response, you should see a message including Elasticsearch's tagline:
 
 ```shell
 "tagline" : "You Know, for Search"
 ```
 
-Note that it might take some time for the external IP to be provisioned.
+# Get the Kibana URL
 
-# Obtain Kibana URL
+To get the Kibana URL, follow the same steps as for Elasticsearch.
 
-For Kibana, you can follow the same instructions for obtaining a URL as for Elasticsearch itself.
-
-If exposing the Kibana service externally, run the following command:
+If you want to expose the Kibana service externally, run the following command:
 
 ```shell
 SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-kibana-svc \
@@ -253,7 +254,7 @@ SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-kibana-svc \
 KIBANA_URL="http://${SERVICE_IP}:5601"
 ```
 
-Alternatively, if running a `kubectl proxy`:
+If you don't want to expose the service externally, create a local proxy:
 
 ```shell
 KUBE_PROXY_PORT=8080
@@ -261,7 +262,8 @@ PROXY_BASE_URL=http://localhost:$KUBE_PROXY_PORT/api/v1/proxy
 KIBANA_URL=$PROXY_BASE_URL/namespaces/$NAMESPACE/services/$APP_INSTANCE_NAME-kibana-svc:http
 ```
 
-In both cases, you can navigate in your browser to the URL pointed by `KIBANA_URL`:
+In both cases, the environment variable `KIBANA_URL` points to your Kibana
+URL. To see the URL, run:
 
 ```shell
 echo $KIBANA_URL
@@ -271,10 +273,14 @@ echo $KIBANA_URL
 
 ## Index Pattern
 
-Your installation automatically adds a default Index Pattern to be tracked by Kibana - it
-matches the Fluentd DaemonSet configuration and equals to `logstash-*`. Thanks to this configuration
-you can view the logs from the Kubernetes cluster immediately after the successful installation -
-when entering the Kibana UI page, click on the `Discover` button in the main menu or navigate to:
+Your installation includes a default Index Pattern to be tracked by Kibana. The
+index pattern matches the Fluentd DaemonSet configuration and is
+`logstash-*`.
+
+After you have installed the app, open the Kibana UI, and in the main menu,
+click **Discover**.
+
+To get the direct URL for the Discover page, run:
 
 ```shell
 echo "${KIBANA_URL}/discover"
@@ -282,10 +288,10 @@ echo "${KIBANA_URL}/discover"
 
 ## Saved searches
 
-Kibana allows to save predefined searches with their filters and presented columns configuration.
-To view the searches shipped with this installation, visit the `Discover` page of Kibana and in the
-top menu, click on the `Open` option. It will present a list of some useful searches, including logs
-from: GKE Apps, kubelet, docker, kernel and others.
+To see the searches included with this installation of Kibana, open the
+Discover page, and in the top menu, click **Open**. The list of searches
+includes logs from Kubernetes Engine Apps, Kubelet, Docker, `kernel`,
+and others.
 
 ### Scale the Elasticsearch cluster
 
@@ -293,35 +299,35 @@ Scale the number of master node replicas by the following command:
 
 ```
 kubectl scale statefulsets "$APP_INSTANCE_NAME-elasticsearch" \
-  --namespace "$NAMESPACE" --replicas=<new-replicas>
+  --namespace "$NAMESPACE" --replicas=[NEW_REPLICAS]
 ```
 
 By default, there are 2 replicas to satisfy the minimum master quorum.
-To increase resilience, it is recommended to scale the number of replicas
+To increase resilience, we recommend that you scale the number of replicas
 to at least 3.
 
-For more information about the StatefulSets scaling, check the
+For more information about scaling StatefulSets, see the
 [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/#kubectl-scale).
 
 # Snapshot and restore
 
-This procedure is based on the official Elasticsearch documentation about
+The following steps are based on the Elasticsearch documentation about
 [Snapshot And Restore](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-snapshots.html).
 
-In this procedure we will use NFS storage built on top of a StatefulSet in Kubernetes. You could
-also consider using other NFS providers or one of the repository plugins supported by Elasticsearch.
+These steps use NFS storage on top of a StatefulSet in Kubernetes. You could
+use other NFS providers, or one of the repository plugins supported by Elasticsearch.
 
-Kibana has all its stateful data stored in Elasticsearch index called `.kibana`, so it requires no
-additional backup steps.
+The stateful data for Kibana is stored in an Elasticsearch index called
+`.kibana`, so it requires no additional backup steps.
 
-Fluentd DaemonSet stateless by design and requires no backup procedure.
+The Fluentd DaemonSet is stateless by design, and so requires no backup.
 
 ## Snapshot
 
 ### Create a backup infrastructure
 
-To create a NFS server on Kubernetes and create a shared disk to be used for backup,
-run the script from [`scripts/create-backup-infra.sh`](scripts/create-backup-infra.sh):
+To create a NFS server on Kubernetes and create a shared disk for the
+backup, run [`scripts/create-backup-infra.sh`](scripts/create-backup-infra.sh):
 
 ```shell
 scripts/create-backup-infra.sh \
@@ -331,11 +337,11 @@ scripts/create-backup-infra.sh \
   --backup-claim elasticsearch-1-backup
 ```
 
-### Patch Elasticsearch StatefulSet to mount a backup disk
+### Patch the Elasticsearch StatefulSet to mount a backup disk
 
-Your Elasticsearch StatefulSet needs to be patched to mount the backup disk. To run the patch
-and automatically perform a rolling update on the StatefulSet, use the script from
-[`scripts/patch-sts-for-backup.sh`](scripts/patch-sts-for-backup.sh).
+Your Elasticsearch StatefulSet needs to be patched to mount the backup disk.
+To run the patch and automatically perform a rolling update on the StatefulSet,
+run [`scripts/patch-sts-for-backup.sh`](scripts/patch-sts-for-backup.sh).
 
 ```shell
 scripts/patch-sts-for-backup.sh \
@@ -344,12 +350,12 @@ scripts/patch-sts-for-backup.sh \
   --backup-claim elasticsearch-1-backup
 ```
 
-### Register the snapshot repository in Elasticsearch cluster
+### Register the snapshot repository in the Elasticsearch cluster
 
-Obtain the URL for Elasticsearch API (instructions are available above). Environment variable of
-`ELASTIC_URL` should point to Elasticsearch REST API.
+[Get the URL for the Elasticsearch API](#get-the-elasticsearch-url). The
+`ELASTIC_URL` variable points to the Elasticsearch REST API.
 
-To register your new backup repository:
+To register your new backup repository, run the following command:
 
 ```shell
 curl -X PUT "$ELASTIC_URL/_snapshot/es_backup" -H 'Content-Type: application/json' -d '{
@@ -370,17 +376,19 @@ curl -X PUT "$ELASTIC_URL/_snapshot/es_backup/snapshot_1?wait_for_completion=tru
 
 ## Restore
 
-For the needs of this instruction, we will assume that you have a "clean" installation of
-Elasticsearch cluster and you want to restore all data from a snapshot.
+These steps assume that you have a clean installation of
+Elasticsearch on your cluster, and you want to restore all data from a
+snapshot.
 
-### Patch Elasticsearch StatefulSet to mount a backup disk
+### Patch the Elasticsearch StatefulSet to mount a backup disk
 
-Let's assume that environment variable of `ES_BACKUP_CLAIM` contains the name of a Persistent Volume
-Claim that was previously used as a snapshot repository in Elasticsearch cluster in the version
+These steps assume that the `ES_BACKUP_CLAIM` environment variable contains
+the name of a Persistent Volume Claim that was used as a snapshot repository
+in Elasticsearch cluster, and that the version of the Claim is
 compatible with the new cluster.
 
-Run the following command to run a rolling update for mounting the disk to all Elasticsearch Pods
-of your installation:
+Run the following command to run a rolling update that mounts the disk to all
+the Elasticsearch Pods in your installation:
 
 ```shell
 scripts/patch-sts-for-backup.sh \
@@ -391,10 +399,11 @@ scripts/patch-sts-for-backup.sh \
 
 ### Register the snapshot repository
 
-Call exactly the same command as in case of registering a repository for backup above.
+Repeat [the steps](#register-the-snapshot-repository-in-the-elasticsearch-cluster)
+to register a snapshot repository for your backup.
 
-After the repository is mounted, you can list all of the available snapshots to be restored by
-calling:
+After the repository is mounted, list all of the available snapshots to be
+restored:
 
 ```shell
 curl "$ELASTIC_URL/_snapshot/es_backup/_all"
@@ -406,37 +415,37 @@ To restore a snapshot called `snapshot_1`, run the following command:
 curl -X POST "$ELASTIC_URL/_snapshot/es_backup/snapshot_1/_restore"
 ```
 
-# Update procedure
+# Updating the app
 
-## Elasticsearch update
+## Updating Elasticsearch
 
-For more background about the rolling update procedure, please check the
-[official documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/rolling-upgrades.html).
+For background information about rolling updates to Elasticsearch, see the
+[Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/rolling-upgrades.html).
 
-Before starting the update procedure on your cluster, we strongly advise to
-prepare a backup of your installation in order to eliminate the risk of losing
-your data.
+Before starting the update procedure on your cluster, we recommend that you
+back up your installation, to eliminate the risk of losing your data.
 
-Keep in mind that Kibana and Elasticsearch versions must match - after updating Elasticsearch, you
-will have to update the Kibana deployment too.
+After updating Elasticsearch, you must also update Kibana. The Elasticsearch
+and Kibana versions must match.
 
-## Perform the update on Elasticsearch cluster nodes
+## Update the Elasticsearch cluster nodes
 
 ### Patch the StatefulSet with the new image
 
 Start with assigning the new image to your StatefulSet definition:
 
 ```
-IMAGE_ELASTICSEARCH=<put your new image reference here>
+IMAGE_ELASTICSEARCH=[NEW_IMAGE_REFERENCE]
 
 kubectl set image statefulset "${APP_INSTANCE_NAME}-elasticsearch" \
   --namespace "${NAMESPACE}" elasticsearch="${IMAGE_ELASTICSEARCH}"
 ```
 
-After this operation the StatefulSet has a new image configured for its containers, but the pods
-will not automatically restart due to the OnDelete update strategy set on the StatefulSet.
+After this operation, the StatefulSet has a new image configured for the
+containers. However, because of the OnDelete update strategy on the
+StatefulSet, the pods will not automatically restart.
 
-### Run the `upgrade.sh` script to run the rolling update procedure
+### Run the `upgrade.sh` script to run the rolling update
 
 Make sure that the cluster is healthy before proceeding:
 
@@ -444,47 +453,47 @@ Make sure that the cluster is healthy before proceeding:
 curl $ELASTIC_URL/_cluster/health?pretty
 ```
 
-Run the [`scripts/upgrade.sh`](scripts/upgrade.sh) script. This script will take down and update one replica at a time -
-it should print out diagnostic messages. You should be done when the script finishes.
+Run [`scripts/upgrade.sh`](scripts/upgrade.sh). The script
+takes down and updates one replica at a time.
 
-## Update the Kibana deployment
+## Update Kibana
 
-After successfully updating the Elasticsearch cluster, update the Kibana deployment too:
+After successfully updating Elasticsearch, update the Kibana StatefulSet with
+the new image:
 
 ```shell
-IMAGE_KIBANA=<put the image reference matching the version of Elasticsearch>
+IMAGE_KIBANA=[NEW_IMAGE_REFERENCE]
 
 kubectl set image deployment "${APP_INSTANCE_NAME}-kibana" \
   --namespace "${NAMESPACE}" kibana="${IMAGE_KIBANA}"
 ```
 
-The Kibana deployment will automatically start creating a new pod with new image and delete the old
-one, once the procedure is successfully finished.
+The Kibana deployment automatically starts creating new Pods with the new image, and deletes the old Pods.
 
-## Update the Fluentd Daemon Set
+## Update the Fluentd Daemonset
 
-To update Fluentd, follow the instructions from the
-[official documentation](https://docs.fluentd.org/v1.0/articles/quickstart).
+To update Fluentd, follow the installation steps in the
+[Fluentd documentation](https://docs.fluentd.org/v1.0/articles/quickstart).
 Make sure that the configuration format in `${APP_INSTANCE_NAME}-fluentd-es-config` ConfigMap
 is compatible with the new application version.
 
 To update the Fluentd image, run the following command:
 
 ```shell
-IMAGE_FLUENTD=<put the new image reference>
+IMAGE_FLUENTD=[NEW_IMAGE_REFERENCE]
 
 kubectl set image ds/${APP_INSTANCE_NAME}-fluentd-es fluentd-es="${IMAGE_FLUENTD}"
 ```
 
 # Uninstall the Application
 
-## Using GKE UI
+## Using the Google Cloud Platform Console
 
-Navigate to `GKE > Applications` in GCP console. From the list of applications, click on the one
-that you wish to uninstall.
+1. In the GCP Console, open [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
 
-On the new screen, click on the `Delete` button located in the top menu. It will remove
-the resources attached to this application.
+1. From the list of applications, click **Elasticsearch**.
+
+1. On the Application Details page, click **Delete**.
 
 ## Using the command line
 
@@ -499,7 +508,7 @@ export NAMESPACE=default
 
 ### Delete the resources
 
-> **NOTE:** We recommend to use a kubectl version that is the same as the version of your cluster. Using the same versions of kubectl and the cluster helps avoid unforeseen issues.
+> **NOTE:** We recommend that you use a kubectl version that is the same as the version of your cluster. Using the same versions of `kubectl` and the cluster helps avoid unforeseen issues.
 
 To delete the resources, use the expanded manifest file used for the
 installation.
@@ -510,7 +519,7 @@ Run `kubectl` on the expanded manifest file:
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 ```
 
-Otherwise, delete the resources using types and a label:
+If you don't have the expanded manifest file, delete the resources using types and a label:
 
 ```shell
 kubectl delete deployment,statefulset,service,configmap,serviceaccount,clusterrole,clusterrolebinding,application,job \
@@ -518,7 +527,7 @@ kubectl delete deployment,statefulset,service,configmap,serviceaccount,clusterro
   --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
 
-### Delete the persistent volumes of your installation
+### Delete the persistent volumes for your installation
 
 By design, the removal of StatefulSets in Kubernetes does not remove
 PersistentVolumeClaims that were attached to their Pods. This prevents your

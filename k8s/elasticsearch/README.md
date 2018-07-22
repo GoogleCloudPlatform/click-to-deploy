@@ -204,7 +204,7 @@ KUBE_PROXY_PORT=8080
 kubectl proxy -p $KUBE_PROXY_PORT
 ```
 
-In you main terminal, run the following commands:
+In your main terminal, run the following commands:
 
 ```shell
 KUBE_PROXY_PORT=8080
@@ -264,7 +264,7 @@ scripts/create-backup-infra.sh \
   --backup-claim elasticsearch-1-backup
 ```
 
-### Patch Elasticsearch StatefulSet to mount a backup disk
+### Patch the Elasticsearch StatefulSet to mount a backup disk
 
 Your Elasticsearch StatefulSet needs to be patched to mount the backup disk.
 To run the patch and automatically perform a rolling update on the StatefulSet,
@@ -277,7 +277,7 @@ scripts/patch-sts-for-backup.sh \
   --backup-claim elasticsearch-1-backup
 ```
 
-### Register the snapshot repository in Elasticsearch cluster
+### Register the snapshot repository in the Elasticsearch cluster
 
 [Get the URL for the Elasticsearch API](#get-the-elasticsearch-url). The
 `ELASTIC_URL` points to the Elasticsearch REST API.
@@ -307,7 +307,7 @@ These steps assume that you have a clean installation of
 Elasticsearch on your cluster, and you want to restore all data from a
 snapshot.
 
-### Patch Elasticsearch StatefulSet to mount a backup disk
+### Patch the Elasticsearch StatefulSet to mount a backup disk
 
 These steps assume that the `ES_BACKUP_CLAIM` environment variable contains
 the name of a Persistent Volume Claim that was used as a snapshot repository
@@ -411,7 +411,7 @@ Run `kubectl` on the expanded manifest file:
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 ```
 
-Otherwise, delete the resources using types and a label:
+If you don't have the expanded manifest file, delete the resources using types and a label:
 
 ```shell
 kubectl delete application,statefulset,service,configmap \
