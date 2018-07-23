@@ -2,7 +2,6 @@ include ../vendor/marketplace-tools/app.Makefile
 include ../vendor/marketplace-tools/crd.Makefile
 include ../vendor/marketplace-tools/gcloud.Makefile
 include ../vendor/marketplace-tools/marketplace.Makefile
-include ../vendor/marketplace-tools/ubbagent.Makefile
 include ../vendor/marketplace-tools/var.Makefile
 
 
