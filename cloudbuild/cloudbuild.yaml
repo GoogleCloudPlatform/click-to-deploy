@@ -182,6 +182,17 @@ steps:
     gcloud container clusters get-credentials "$_CLUSTER_NAME" --zone "$_CLUSTER_LOCATION"
     make -j4 app/verify
 
+- id: Run the verification on Airflow Operator
+  waitFor: [ 'Setup git repo' ]
+  name: 'gcr.io/$PROJECT_ID/verifier'
+  entrypoint: 'bash'
+  dir: 'k8s/airflow-operator'
+  args:
+  - -c
+  - |
+    gcloud container clusters get-credentials "$_CLUSTER_NAME" --zone "$_CLUSTER_LOCATION"
+    make -j4 app/verify
+
 - id: Set commit as succeeded
   name: 'gcr.io/$PROJECT_ID/verifier'
   entrypoint: 'bash'
