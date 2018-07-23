@@ -13,7 +13,7 @@ Popular open source software stacks on Kubernetes packaged by Google and made av
 ## Quick install with Google Cloud Marketplace
 
 Get up and running with a few clicks! Install this Jenkins app to a Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
-[on-screen instructions](https://console.cloud.google.com/launcher/details/google/jenkins2).
+[on-screen instructions](https://console.cloud.google.com/marketplace/details/google/jenkins).
 
 ## Command line instructions
 
@@ -52,8 +52,7 @@ gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 Clone this repo and the associated tools repo.
 
 ```shell
-gcloud source repos clone google-click-to-deploy --project=k8s-marketplace-eap
-gcloud source repos clone google-marketplace-k8s-app-tools --project=k8s-marketplace-eap
+git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 ```
 
 #### Install the Application resource definition
@@ -65,7 +64,7 @@ To do that, navigate to `k8s/vendor` subdirectory of the repository and run the 
 -->
 
 ```shell
-kubectl apply -f google-marketplace-k8s-app-tools/crd/*
+kubectl apply -f click-to-deploy/k8s/vendor/marketplace-tools/crd/*
 ```
 
 The Application resource is defined by the
@@ -78,7 +77,7 @@ community. The source code can be found on
 Navigate to the `jenkins` directory.
 
 ```shell
-cd google-click-to-deploy/k8s/jenkins
+cd click-to-deploy/k8s/jenkins
 ```
 
 #### Configure the app with environment variables
@@ -89,7 +88,7 @@ Choose application instance name, namespace and Jenkins image for the app.
 export APP_INSTANCE_NAME=jenkins-1
 export NAMESPACE=default
 
-export IMAGE_JENKINS="gcr.io/k8s-marketplace-ops/google/jenkins:latest"
+export IMAGE_JENKINS="marketplace.gcr.io/google/jenkins:2.121"
 ```
 
 Create namespace if it doesn't exist.
