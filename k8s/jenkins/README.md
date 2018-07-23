@@ -88,7 +88,7 @@ Choose application instance name, namespace and Jenkins image for the app.
 export APP_INSTANCE_NAME=jenkins-1
 export NAMESPACE=default
 
-export IMAGE_JENKINS="marketplace.gcr.io/google/jenkins:latest"
+export IMAGE_JENKINS="marketplace.gcr.io/google/jenkins:2.121"
 ```
 
 Create namespace if it doesn't exist.
