@@ -11,7 +11,7 @@ metadata:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
 spec:
   descriptor:
-    version: '2.131'
+    version: '2.121'
     type: Jenkins
     description: |-
       Jenkins is an open source automation server.
