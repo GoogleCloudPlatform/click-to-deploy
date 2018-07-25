@@ -19,8 +19,8 @@ spec:
 
       # Support
       Google does not offer support for this solution. However, community support is available on
-      [Stack Overflow](https://stackoverflow.com/questions/tagged/elasticsearch/).
-      Additional community support is available on [elastic.co forums](https://discuss.elastic.co/).
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/apache-spark/).
+      Additional community support is available on the [mailing list](user@spark.apache.org).
     maintainers:
     - name: Google Click to Deploy
       url: https://cloud.google.com/solutions/#click-to-deploy
