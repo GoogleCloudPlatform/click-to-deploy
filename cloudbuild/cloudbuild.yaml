@@ -18,7 +18,7 @@ steps:
       --secret=cloudbuild.pem \
       --issuer=11572 \
       --state=pending \
-      --target_url="https://pantheon.corp.google.com/gcr/builds/$BUILD_ID?project=$PROJECT_ID" \
+      --target_url="https://console.cloud.google.com/gcr/builds/$BUILD_ID?project=$PROJECT_ID" \
       --description="Running integration tests" \
       --context="google-cloud/builder/integration-test" \
       --repo="$_REPO_NAME" \
@@ -203,7 +203,7 @@ steps:
       --secret=cloudbuild.pem \
       --issuer=11572 \
       --state=success \
-      --target_url="https://pantheon.corp.google.com/gcr/builds/$BUILD_ID?project=$PROJECT_ID" \
+      --target_url="https://console.cloud.google.com/gcr/builds/$BUILD_ID?project=$PROJECT_ID" \
       --description="Integration tests passed." \
       --context="google-cloud/builder/integration-test" \
       --repo="$_REPO_NAME" \
