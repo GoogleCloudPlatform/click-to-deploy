@@ -32,7 +32,6 @@ spec:
             - --mesh.listen-address=$(POD_IP):6783
             - --mesh.peer=$APP_INSTANCE_NAME-alertmanager-0.$APP_INSTANCE_NAME-alertmanager-operated.$NAMESPACE.svc:6783
             - --mesh.peer=$APP_INSTANCE_NAME-alertmanager-1.$APP_INSTANCE_NAME-alertmanager-operated.$NAMESPACE.svc:6783
-            - --mesh.peer=$APP_INSTANCE_NAME-alertmanager-2.$APP_INSTANCE_NAME-alertmanager-operated.$NAMESPACE.svc:6783
             - --log.level=debug
           env:
           - name: POD_IP
