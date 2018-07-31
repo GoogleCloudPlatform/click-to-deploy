@@ -4,6 +4,40 @@ Elasticsearch is an open-source search engine that provides a distributed,
 multitenant-capable full-text search engine with an HTTP web interface and
 schema-free JSON documents.
 
+## Architecture
+
+The application installs an Elasticsearch cluster with the number of replicas
+configured by the user, before the installation. All nodes are configured to be
+master-eligible and they discover each other with unicast zen discovery.
+
+The Elasticsearch cluster is deployed to a StatefulSet with PersistentVolumeClaims
+attached. It allows the Elasticsearch nodes to keep their data across Pods
+recreations.
+
+The cluster is exposed through a Kubernetes Service, created as ClusterIP.
+The service should not be exposed publicly without additional configuration,
+including enabling authentication and securing the communication channel
+with encryption.
+
+The instruction below describes the backup procedure based on Elasticsearch
+Snapshots mechanism. For the needs of backup, a dedicated NFS server deployment
+is described, allowing for the attachment of a single shared disk to all
+Elasticsearch Pods for storing the snapshots.
+
+## Configuration
+
+* Elasticsearch configuration is delivered with a ConfigMap containing
+  the configuration files mounted directly to their expected locations
+  in Elasticsearch Pods.
+
+* Elasticsearch requires from hosts to have `sysctl` configuration for
+  `vm.max_map_count` to be at least `262144`. This application assures the
+  configuration with an initContainer for each Elasticsearch Pod.
+
+* The `updateStrategy` for Elasticsearch StatefulSet is intentionally
+  configured to be `OnDelete` only. To perform a rolling update of the
+  StatefulSet, please follow the update instruction below.
+
 [Learn more](https://www.elastic.co/).
 
 ## About Google Click to Deploy
