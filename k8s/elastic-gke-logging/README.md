@@ -13,7 +13,7 @@ The application is designed to collect and present the log messages from
 a GKE cluster. It consists of the following components:
 * **Fluentd DaemonSet** - for collecting logs from each Kubernetes node in
   a cluster and exporting them to Elasticsearch.
-* **Elasticsearch StatefulSet** - a database for storing and searching the logs
+* **Elasticsearch StatefulSet** - a database for storing and searching the logs.
 * **Kibana Deployment** - a visualization tool connected to Elasticsearch
   for presenting and querying the logs.
 
@@ -24,7 +24,7 @@ of the resources growth.
 
 **Fluentd** - it contains a ConfigMap defining a few files for logs locations
   and formats. It exports logs to Elasticsearch daily indexes, starting with
-  “logstash-*” prefix.
+  “logstash-\*” prefix.
 
 **Elasticsearch** - forms a cluster with a configurable number of replicas
   (specified by user before the installation); It uses a dedicated disk
