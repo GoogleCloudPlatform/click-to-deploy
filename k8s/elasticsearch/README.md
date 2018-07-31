@@ -4,6 +4,8 @@ Elasticsearch is an open-source search engine that provides a distributed,
 multitenant-capable full-text search engine with an HTTP web interface and
 schema-free JSON documents.
 
+[Learn more](https://www.elastic.co/).
+
 ## Architecture
 
 The application installs an Elasticsearch cluster with the number of replicas
@@ -37,8 +39,6 @@ Elasticsearch Pods for storing the snapshots.
 * The `updateStrategy` for Elasticsearch StatefulSet is intentionally
   configured to be `OnDelete` only. To perform a rolling update of the
   StatefulSet, please follow the update instruction below.
-
-[Learn more](https://www.elastic.co/).
 
 ## About Google Click to Deploy
 
