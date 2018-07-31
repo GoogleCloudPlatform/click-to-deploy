@@ -46,7 +46,7 @@ steps:
   dir: k8s/airflow-operator
   args:
   - -exc
-  - make -j4 clean app/build
+  - make -j4 app/build
 
 - id: Verify Airflow Operator
   name: gcr.io/cloud-marketplace-tools/k8s/dev:latest
@@ -72,7 +72,7 @@ steps:
   dir: k8s/cassandra
   args:
   - -exc
-  - make -j4 clean app/build
+  - make -j4 app/build
 
 - id: Verify Cassandra
   name: gcr.io/cloud-marketplace-tools/k8s/dev:latest
