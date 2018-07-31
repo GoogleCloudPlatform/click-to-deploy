@@ -11,6 +11,37 @@ logs, and Elasticsearch with Kibana for searching and analyzing data.
 
 Popular open stacks on Kubernetes packaged by Google.
 
+## Design
+
+![Architecture diagram](resources/elastic-gke-logging-architecture.png)
+
+The application is designed to collect and present the log messages from
+a GKE cluster. It consists of the following components:
+* **Fluentd DaemonSet** - for collecting logs from each Kubernetes node in
+  a cluster and exporting them to Elasticsearch.
+* **Elasticsearch StatefulSet** - a database for storing and searching the logs.
+* **Kibana Deployment** - a visualization tool connected to Elasticsearch
+  for presenting and querying the logs.
+
+None of the components is designed to be exposed publicly or autoscale in case
+of the resources growth.
+
+## Configuration
+
+**Fluentd** - it contains a ConfigMap defining a few files for logs locations
+  and formats. It exports logs to Elasticsearch daily indexes, starting with
+  “logstash-\*” prefix.
+
+**Elasticsearch** - forms a cluster with a configurable number of replicas
+  (specified by user before the installation); It uses a dedicated disk
+  (VolumeClaim) for storing data in a stateful manner.
+
+**Kibana** - it stores all the configuration in Elasticsearch index, this is
+  why Kibana itself is installed in a single-replica, “stateless” Deployment.
+  Kibana has initial configuration represented by JSON payloads that are used
+  against Kibana’s REST API to set an index pattern for “logstash-\*” and some
+  useful saved searches.
+
 # Installation
 
 ## Quick install with Google Cloud Marketplace
