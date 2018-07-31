@@ -1,0 +1,64 @@
+steps:
+
+# Initializations
+
+- id: Initialize git
+  name: gcr.io/cloud-builders/git
+  entrypoint: /bin/bash
+  args:
+  - -exc
+  - |
+    # Cloud Build x GitHub integration uses source archives to fetch
+    # the source, rather than Git source fetching, and as a consequence
+    # does not include the .git/ directory. As a workaround, we clone
+    # the repository and reset it to this build's commit sha.
+    git clone 'https://github.com/GoogleCloudPlatform/click-to-deploy.git' tmp
+    mv tmp/.git .git
+    rm -rf tmp
+    git reset "$COMMIT_SHA"
+    git submodule sync --recursive
+    git submodule update --init --recursive
+
+- id: Get Kubernetes Credentials
+  name: gcr.io/cloud-builders/gcloud
+  args:
+  - container
+  - clusters
+  - get-credentials
+  - "limani-integ"
+  - --region
+  - "us-central1"
+  - --project
+  - "$PROJECT_ID"
+
+- id: Initialized
+  name: bash
+  waitFor:
+  - Initialize git
+  - Get Kubernetes Credentials
+
+# Cassandra Verification
+
+- id: Build Cassandra
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:latest
+  waitFor:
+  - Initialized
+  dir: k8s/cassandra
+  args:
+  - -exc
+  - make -j4 clean app/build
+
+- id: Verify Cassandra
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:latest
+  waitFor:
+  - Initialized
+  - Build Cassandra
+  env:
+  - APP_DEPLOYER=gcr.io/cloud-marketplace-ops-test/cassandra/deployer
+  - APP_PARAMETERS={}
+  args:
+  - -exc
+  - |
+    /scripts/driver_internal.sh \
+        --deployer="$$APP_DEPLOYER" \
+        --parameters="$$APP_PARAMETERS"
