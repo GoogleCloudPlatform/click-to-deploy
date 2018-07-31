@@ -7,6 +7,10 @@ logs, and Elasticsearch with Kibana for searching and analyzing data.
 
 [Learn more](https://www.elastic.co/).
 
+## About Google Click to Deploy
+
+Popular open stacks on Kubernetes packaged by Google.
+
 ## Design
 
 ![Architecture diagram](resources/elastic-gke-logging-architecture.png)
@@ -35,12 +39,8 @@ of the resources growth.
 **Kibana** - it stores all the configuration in Elasticsearch index, this is
   why Kibana itself is installed in a single-replica, “stateless” Deployment.
   Kibana has initial configuration represented by JSON payloads that are used
-  against Kibana’s REST API to set an index pattern for “logstash-*” and some
+  against Kibana’s REST API to set an index pattern for “logstash-\*” and some
   useful saved searches.
-
-## About Google Click to Deploy
-
-Popular open stacks on Kubernetes packaged by Google.
 
 # Installation
 
