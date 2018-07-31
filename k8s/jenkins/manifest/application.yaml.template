@@ -67,7 +67,12 @@ spec:
 
 
       # For further information refer to [Jenkins website](https://jenkins.io/) or [this project GitHub page](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/k8s/jenkins).
-
+  info:
+  - name: Jenkins HTTP address
+    type: Reference
+    valueFrom:
+      ingressRef:
+        name: $APP_INSTANCE_NAME-jenkins-ui
   selector:
     matchLabels:
       app.kubernetes.io/name: "$APP_INSTANCE_NAME"
