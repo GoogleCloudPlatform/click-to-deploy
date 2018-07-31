@@ -54,7 +54,7 @@ steps:
   - Initialized
   - Build Airflow Operator
   env:
-  - APP_DEPLOYER=gcr.io/cloud-marketplace-ops-test/airflow-operator/deployer
+  - APP_DEPLOYER=gcr.io/cloud-marketplace-ops-test/airflow-operator/deployer:alpha
   - APP_PARAMETERS={}
   args:
   - -exc
@@ -80,7 +80,7 @@ steps:
   - Initialized
   - Build Cassandra
   env:
-  - APP_DEPLOYER=gcr.io/cloud-marketplace-ops-test/cassandra/deployer
+  - APP_DEPLOYER=gcr.io/cloud-marketplace-ops-test/cassandra/deployer:3.11
   - APP_PARAMETERS={}
   args:
   - -exc
