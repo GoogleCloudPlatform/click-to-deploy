@@ -1,17 +1,59 @@
 # Overview
 
-Prometheus is a monitoring toolkit. This application consists of:
-
-1.  **Prometheus** - the server for metrics.
-1.  **Node Exporter** - monitoring agent for exposing per-node metrics.
-1.  **Alert Manager** - a manager for alerts.
-1.  **Grafana** - the monitoring UI.
+Prometheus is a monitoring toolkit. In this application it collects the metrics from a Kubernetes
+cluster to which the application is deployed and presents them in pre-configured dashboard of
+Grafana. Additionally, it allows to configure the alerting rules served automatically by Prometheus
+Alert Manager.
 
 [Learn more](https://prometheus.io/).
 
 ## About Google Click to Deploy
 
 Popular open stacks on Kubernetes packaged by Google.
+
+## Design
+
+![Architecture diagram](resources/prometheus-grafana-architecture.png)
+
+The application is designed to automatically collect metrics from Kubernetes cluster, collect them
+in the Prometheus server and present in Grafana.
+
+* **Prometheus StatefulSet** - collects all the configured metrics in pull model (by querying
+  all the configured sources periodically). Each Prometheus Pod stored its data in 
+  a PersistentVolumeClaim.
+
+* **Prometheus Node Exporter DaemonSet** - runs a Pod on each Kubernetes cluster node and collects
+  node's metrics related to hardware and the operating system - by monitoring the host filesystem
+  at `/proc` and `/sys`. The metrics are exposed on port 9100 of Node Exporter's Pods.
+
+* **Kube State Metrics Deployment** - listens to the Kubernetes API server and produces metrics
+  related to resources (deployments, nodes, pods, etc.). It exposes the metrics on HTTP endpoint
+  `/metrics` on port 8080. Prometheus server consumes the metrics.
+
+* **Prometheus Alert Manager** - receives the alerts raised by the Prometheus server and handles
+  them accordingly to its configuration, specified in a ConfigMap.
+
+* **Grafana StatefulSet** - provides a user interface for querying Prometheus about the metrics
+  and visualizes the metrics in pre-configured dashboards.
+
+## Configuration
+
+* Prometheus server is deployed to a custom-size stateful set with the number of replicas specified
+  by the user before installation. The configuration for Prometheus jobs, rules and alerts is
+  stored in a ConfigMap.
+
+* Kube State Metrics comes with a default-size deployment of one replica, but it includes
+  a resizer addon monitoring the actual resources necessary to maintain the operations and
+  dynamically rescaling the deployment.
+
+* Prometheus Alert Manager - the application comes with a very simple configuration, including only
+  the default receiver and simple grouping rules. To customize the configuration, edit the ConfigMap
+  and recreate the Pods. Alert Manager StatefulSet is currently configured to spin up 2 replicas -
+  if you are going to change it, adjust the `--mesh.peer` arguments of Alert Manager containers.
+
+* Grafana StatefulSet - all the pre-configured dashboards of Grafana are stored in a ConfigMap.
+  The StatefulSet is currently configured to have just one replica - the configuration does not
+  currently allow to scale this number up.
 
 # Installation
 
