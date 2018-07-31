@@ -84,8 +84,8 @@ app/build:: .build/prometheus/alertmanager \
 .build/prometheus/server: .build/var/REGISTRY \
                           .build/var/TAG \
                           | .build/prometheus
-	docker pull launcher.gcr.io/google/prometheus2:2.2
-	docker tag launcher.gcr.io/google/prometheus2:2.2 "$(REGISTRY)/prometheus:$(TAG)"
+	docker pull launcher.gcr.io/google/prometheus2:$(TAG)
+	docker tag launcher.gcr.io/google/prometheus2:$(TAG) "$(REGISTRY)/prometheus:$(TAG)"
 	docker push "$(REGISTRY)/prometheus:$(TAG)"
 	@touch "$@"
 
