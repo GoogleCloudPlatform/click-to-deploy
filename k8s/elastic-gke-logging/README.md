@@ -5,9 +5,11 @@ solution for collecting and analyzing logs from a Kubernetes cluster. It is
 built on top of popular open-source systems, including Fluentd for collecting
 logs, and Elasticsearch with Kibana for searching and analyzing data.
 
+[Learn more](https://www.elastic.co/).
+
 ## Design
 
-![Architecture diagram](https://storage.googleapis.com/c2d-k8s-apps/elastic-gke-logging/elastic-gke-logging-architecture.png)
+![Architecture diagram](resources/elastic-gke-logging-architecture.png)
 
 The application is designed to collect and present the log messages from
 a GKE cluster. It consists of the following components:
@@ -35,8 +37,6 @@ of the resources growth.
   Kibana has initial configuration represented by JSON payloads that are used
   against Kibana’s REST API to set an index pattern for “logstash-*” and some
   useful saved searches.
-
-[Learn more](https://www.elastic.co/).
 
 ## About Google Click to Deploy
 
