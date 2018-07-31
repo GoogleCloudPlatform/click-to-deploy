@@ -37,6 +37,32 @@ steps:
   - Initialize git
   - Get Kubernetes Credentials
 
+# Airflow Operator Verification
+
+- id: Build Airflow Operator
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:latest
+  waitFor:
+  - Initialized
+  dir: k8s/airflow-operator
+  args:
+  - -exc
+  - make -j4 clean app/build
+
+- id: Verify Airflow Operator
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:latest
+  waitFor:
+  - Initialized
+  - Build Airflow Operator
+  env:
+  - APP_DEPLOYER=gcr.io/cloud-marketplace-ops-test/airflow-operator/deployer
+  - APP_PARAMETERS={}
+  args:
+  - -exc
+  - |
+    /scripts/driver_internal.sh \
+        --deployer="$$APP_DEPLOYER" \
+        --parameters="$$APP_PARAMETERS"
+
 # Cassandra Verification
 
 - id: Build Cassandra
