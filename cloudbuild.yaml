@@ -143,3 +143,55 @@ steps:
     /scripts/driver_internal.sh \
         --deployer="$$APP_DEPLOYER" \
         --parameters="$$APP_PARAMETERS"
+
+# Grafna Verification
+
+- id: Build Grafna
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:latest
+  waitFor:
+  - Initialized
+  dir: k8s/grafana
+  args:
+  - -exc
+  - make -j4 app/build
+
+- id: Verify Grafna
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:latest
+  waitFor:
+  - Initialized
+  - Build Grafna
+  env:
+  - APP_DEPLOYER=gcr.io/cloud-marketplace-ops-test/grafana/deployer:5.1
+  - APP_PARAMETERS={}
+  args:
+  - -exc
+  - |
+    /scripts/driver_internal.sh \
+        --deployer="$$APP_DEPLOYER" \
+        --parameters="$$APP_PARAMETERS"
+
+# Influx DB Verification
+
+- id: Build Influx DB
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:latest
+  waitFor:
+  - Initialized
+  dir: k8s/influxdb
+  args:
+  - -exc
+  - make -j4 app/build
+
+- id: Verify Influx DB
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:latest
+  waitFor:
+  - Initialized
+  - Build Influx DB
+  env:
+  - APP_DEPLOYER=gcr.io/cloud-marketplace-ops-test/influxdb/deployer:1.5
+  - APP_PARAMETERS={}
+  args:
+  - -exc
+  - |
+    /scripts/driver_internal.sh \
+        --deployer="$$APP_DEPLOYER" \
+        --parameters="$$APP_PARAMETERS"
