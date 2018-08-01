@@ -91,3 +91,55 @@ steps:
     /scripts/driver_internal.sh \
         --deployer="$$APP_DEPLOYER" \
         --parameters="$$APP_PARAMETERS"
+
+# Elastic GKE Logging Verification
+
+- id: Build Elastic GKE Logging
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:latest
+  waitFor:
+  - Initialized
+  dir: k8s/elastic-gke-logging
+  args:
+  - -exc
+  - make -j4 app/build
+
+- id: Verify Elastic GKE Logging
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:latest
+  waitFor:
+  - Initialized
+  - Build Elastic GKE Logging
+  env:
+  - APP_DEPLOYER=gcr.io/cloud-marketplace-ops-test/elastic-gke-logging/deployer:6.3
+  - APP_PARAMETERS={}
+  args:
+  - -exc
+  - |
+    /scripts/driver_internal.sh \
+        --deployer="$$APP_DEPLOYER" \
+        --parameters="$$APP_PARAMETERS"
+
+# Elasticsearch Verification
+
+- id: Build Elasticsearch
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:latest
+  waitFor:
+  - Initialized
+  dir: k8s/elasticsearch
+  args:
+  - -exc
+  - make -j4 app/build
+
+- id: Verify Elasticsearch
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:latest
+  waitFor:
+  - Initialized
+  - Build Elasticsearch
+  env:
+  - APP_DEPLOYER=gcr.io/cloud-marketplace-ops-test/elasticsearch/deployer:6.3
+  - APP_PARAMETERS={}
+  args:
+  - -exc
+  - |
+    /scripts/driver_internal.sh \
+        --deployer="$$APP_DEPLOYER" \
+        --parameters="$$APP_PARAMETERS"
