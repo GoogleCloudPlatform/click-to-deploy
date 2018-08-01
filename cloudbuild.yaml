@@ -55,8 +55,8 @@ steps:
   - Build Airflow Operator
   env:
   - APP_DEPLOYER=gcr.io/cloud-marketplace-ops-test/airflow-operator/deployer:alpha
-  - APP_PARAMETERS=|
-                   {
+  - |
+    APP_PARAMETERS={
                      "testerImage": "gcr.io/cloud-marketplace-ops-test/airflow-operator/tester:alpha"
                    }
   args:
