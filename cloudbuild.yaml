@@ -377,9 +377,7 @@ steps:
   env:
   - APP_DEPLOYER=gcr.io/cloud-marketplace-ops-test/wordpress/deployer:latest
   - |
-    APP_PARAMETERS={
-                     "testerImage": "gcr.io/cloud-marketplace-ops-test/wordpress/tester:latest"
-                   }
+    APP_PARAMETERS={}
   args:
   - -exc
   - |
