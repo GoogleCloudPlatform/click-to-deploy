@@ -329,35 +329,6 @@ steps:
         --deployer="$$APP_DEPLOYER" \
         --parameters="$$APP_PARAMETERS"
 
-# Spark Operator Verification
-
-- id: Build Spark Operator
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:latest
-  waitFor:
-  - Initialized
-  dir: k8s/spark-operator
-  args:
-  - -exc
-  - make -j4 app/build
-
-- id: Verify Spark Operator
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:latest
-  waitFor:
-  - Initialized
-  - Build Spark Operator
-  env:
-  - APP_DEPLOYER=gcr.io/cloud-marketplace-ops-test/spark-operator/deployer:latest
-  - |
-    APP_PARAMETERS={
-                     "testerImage": "gcr.io/cloud-marketplace-ops-test/spark-operator/tester:latest"
-                   }
-  args:
-  - -exc
-  - |
-    /scripts/driver_internal.sh \
-        --deployer="$$APP_DEPLOYER" \
-        --parameters="$$APP_PARAMETERS"
-
 # Wordpress Verification
 
 - id: Build Wordpress
