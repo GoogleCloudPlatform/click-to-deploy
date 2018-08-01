@@ -1,0 +1,9 @@
+steps:
+
+- id: Initialize git
+  name: gcr.io/cloud-builders/docker
+  entrypoint: /bin/bash
+  args:
+  - -exc
+  - |
+    docker run bash -c "docker run bash -c date"
