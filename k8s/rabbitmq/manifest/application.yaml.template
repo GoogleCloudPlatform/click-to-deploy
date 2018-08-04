@@ -58,7 +58,7 @@ spec:
       The default username is `$RABBITMQ_DEFAULT_USER`. Use `kubectl` to get the generated password:
 
       ```shell
-      kubectl get secret $APP_INSTANCE_NAME-rabbitmq-secret \
+      kubectl get secret/$APP_INSTANCE_NAME-rabbitmq-secret \
         --namespace $NAMESPACE \
         --output=jsonpath='{.data.rabbitmq-pass}' | base64 --decode
       ```
@@ -69,7 +69,7 @@ spec:
       external IP address for the service, run the following command:
 
       ```
-      kubectl patch svc $APP_INSTANCE_NAME-rabbitmq-svc \
+      kubectl patch service/$APP_INSTANCE_NAME-rabbitmq-svc \
         --namespace $NAMESPACE \
         --patch '{"spec": {"type": "LoadBalancer"}}'
       ```
@@ -82,7 +82,7 @@ spec:
       following command to get the external IP of the RabbitMQ service:
 
       ```
-      SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-rabbitmq-svc \
+      SERVICE_IP=$(kubectl get service/$APP_INSTANCE_NAME-rabbitmq-svc \
         --namespace $NAMESPACE \
         --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
