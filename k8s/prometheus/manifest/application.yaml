@@ -24,7 +24,7 @@ spec:
       Additional support is available on [community forums](https://prometheus.io/community/).
     links:
     - description: 'User Guide: Google Click to Deploy Prometheus'
-      url: https://console.cloud.google.com/code/develop/browse/google-click-to-deploy/master/k8s/prometheus?project=k8s-marketplace-eap
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/prometheus/README.md
     - description: 'First steps with Prometheus'
       url: https://prometheus.io/docs/introduction/first_steps/
     - description: 'Official documentation for Grafana'
