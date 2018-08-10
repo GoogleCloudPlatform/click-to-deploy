@@ -45,7 +45,7 @@ app/build:: .build/airflow-operator/deployer \
 	#     -f deployer/Dockerfile \
 	#     .
 	# docker push "$(APP_DEPLOYER_IMAGE)"
-	echo "$(MARKETPLACE_TOOLS_TAG"
+	echo "$(MARKETPLACE_TOOLS_TAG)"
 	ls -l "$(HOME)/.kube"
 	ls -l "$(HOME)/.config/gcloud"
 	docker run \
