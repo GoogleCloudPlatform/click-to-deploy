@@ -37,21 +37,31 @@ app/build:: .build/airflow-operator/deployer \
                                   .build/var/TAG \
                                   | .build/airflow-operator
 	$(call print_target, $@)
-	docker build \
-	    --build-arg REGISTRY="$(REGISTRY)/airflow-operator" \
-	    --build-arg TAG="$(TAG)" \
-	    --tag "$(APP_DEPLOYER_IMAGE)" \
-	    -f deployer/Dockerfile \
-	    .
-	docker push "$(APP_DEPLOYER_IMAGE)"
+	# docker build \
+	#     --build-arg REGISTRY="$(REGISTRY)/airflow-operator" \
+	#     --build-arg TAG="$(TAG)" \
+	#     --tag "$(APP_DEPLOYER_IMAGE)" \
+	#     -f deployer/Dockerfile \
+	#     .
+	# docker push "$(APP_DEPLOYER_IMAGE)"
+	docker run \
+	    --volume "/var/run/docker.sock:/var/run/docker.sock:ro" \
+	    --volume "$(HOME)/.kube:/root/mount/.kube:ro" \
+	    --volume "$(HOME)/.config/gcloud:/root/mount/.config/gcloud:ro" \
+	    --rm \
+	    "gcr.io/marketplace-k8s-app-tools/k8s/dev:$(MARKETPLACE_TOOLS_TAG)" \
+	    -- \
+	    /scripts/verify \
+	          --deployer='$(APP_DEPLOYER_IMAGE)' \
+	          --parameters='$(call combined_parameters)'
 	@touch "$@"
 
 
 .build/airflow-operator/tester: apptest/**/*
 	$(call print_target, $@)
-	cd apptest/tester \
-	    && docker build --tag "$(TESTER_IMAGE)" .
-	docker push "$(TESTER_IMAGE)"
+	# cd apptest/tester \
+	#     && docker build --tag "$(TESTER_IMAGE)" .
+	# docker push "$(TESTER_IMAGE)"
 	@touch "$@"
 
 
@@ -59,7 +69,7 @@ app/build:: .build/airflow-operator/deployer \
                                           .build/var/TAG \
                                           | .build/airflow-operator
 	$(call print_target, $@)
-	docker pull gcr.io/airflow-operator/airflow-operator:v1alpha1
-	docker tag gcr.io/airflow-operator/airflow-operator:v1alpha1 "$(REGISTRY)/airflow-operator:$(TAG)"
-	docker push "$(REGISTRY)/airflow-operator:$(TAG)"
+	# docker pull gcr.io/airflow-operator/airflow-operator:v1alpha1
+	# docker tag gcr.io/airflow-operator/airflow-operator:v1alpha1 "$(REGISTRY)/airflow-operator:$(TAG)"
+	# docker push "$(REGISTRY)/airflow-operator:$(TAG)"
 	@touch "$@"
