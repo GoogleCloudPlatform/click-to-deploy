@@ -35,6 +35,7 @@ app/build:: .build/airflow-operator/deployer \
                                   .build/var/APP_DEPLOYER_IMAGE \
                                   .build/var/REGISTRY \
                                   .build/var/TAG \
+                                  .build/var/MARKETPLACE_TOOLS_TAG \
                                   | .build/airflow-operator
 	$(call print_target, $@)
 	# docker build \
@@ -44,6 +45,9 @@ app/build:: .build/airflow-operator/deployer \
 	#     -f deployer/Dockerfile \
 	#     .
 	# docker push "$(APP_DEPLOYER_IMAGE)"
+	echo "$(MARKETPLACE_TOOLS_TAG"
+	ls -l "$(HOME)/.kube"
+	ls -l "$(HOME)/.config/gcloud"
 	docker run \
 	    --volume "/var/run/docker.sock:/var/run/docker.sock:ro" \
 	    --volume "$(HOME)/.kube:/root/mount/.kube:ro" \
