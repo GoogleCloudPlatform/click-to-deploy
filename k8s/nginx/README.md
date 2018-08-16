@@ -20,10 +20,22 @@ Popular open stacks on Kubernetes packaged by Google.
 
 ![Architecture diagram](resources/nginx-k8s-app-architecture.png)
 
+### Solution Information
+
+NGINX is a multi-purpose software that delivers not only the functionality of web server but also reverse proxy, load balancer, HTTP cache and mail proxy.
+
 The application is designed to be easy starting point for servicing web content using NGINX web server.
 
 Initial configuration of application serves some default, exemplary content. This application exposes
-two endpoints: HTTP on port 80 and HTTPS on port 443. NGINX uses pre-generated certificates to configure HTTPS endpoint.
+two endpoints: HTTP on port 80 and HTTPS on port 443. 
+
+This application uses pre-generated certificates to configure HTTPS endpoint. The validity of the certificate used for this application is 365 days.
+
+### Solution Configuration
+
+If a user considers using this application as production workload they need to configure their own, valid SSL certificate that will be associated with their DNS domain name.
+
+The instructions how to update the certificate in case NGINX application is up and running are documented in the section [Re-configure certificate of your NGINX server](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/k8s/nginx#re-configure-certificate-of-your-nginx-server)
 
 
 # Installation
