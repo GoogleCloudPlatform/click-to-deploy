@@ -16,6 +16,16 @@ This web server application is pre-configured with an SSL certificate. Please re
 
 Popular open stacks on Kubernetes packaged by Google.
 
+## Design
+
+![Architecture diagram](resources/nginx-k8s-app-architecture.png)
+
+The application is designed to be easy starting point for servicing web content using NGINX web server.
+
+Initial configuration of application serves some default, exemplary content. This application exposes
+two endpoints: HTTP on port 80 and HTTPS on port 443. NGINX uses pre-generated certificates to configure HTTPS endpoint.
+
+
 # Installation
 
 ## Quick install with Google Cloud Marketplace
