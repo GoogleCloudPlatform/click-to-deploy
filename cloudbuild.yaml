@@ -51,7 +51,7 @@ steps:
   name: bash
   waitFor:
   - Initialize git
-  - Copy tmpfs Credentials
+  - Copy tmpfs Configurations
   - Get Kubernetes Credentials
 
 - id: Verify Airflow Operator
