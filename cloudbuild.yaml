@@ -22,6 +22,18 @@ steps:
     git submodule sync --recursive
     git submodule update --init --recursive
 
+- id: Get Kubernetes Credentials
+  name: gcr.io/cloud-builders/gcloud
+  args:
+  - container
+  - clusters
+  - get-credentials
+  - "limani-integ"
+  - --region
+  - "us-central1"
+  - --project
+  - "$PROJECT_ID"
+
 - id: Copy tmpfs Configurations
   name: gcr.io/cloud-builders/gcloud
   waitFor:
@@ -37,18 +49,6 @@ steps:
     find $$HOME
     cp -r $$HOME/.config/gcloud /workspace/gcloud/
     cp -r $$HOME/.kube /workspace/kube/
-
-- id: Get Kubernetes Credentials
-  name: gcr.io/cloud-builders/gcloud
-  args:
-  - container
-  - clusters
-  - get-credentials
-  - "limani-integ"
-  - --region
-  - "us-central1"
-  - --project
-  - "$PROJECT_ID"
 
 - id: Initialized
   name: bash
