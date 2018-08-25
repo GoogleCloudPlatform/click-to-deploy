@@ -42,316 +42,132 @@ steps:
 
 # Airflow Operator Verification
 
-- id: Build Airflow Operator
+- id: Verify Airflow Operator
   name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
   waitFor:
   - Initialized
   dir: k8s/airflow-operator
   args:
   - -exc
-  - make -j4 app/build
-
-- id: Verify Airflow Operator
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
-  waitFor:
-  - Initialized
-  - Build Airflow Operator
-  env:
-  - APP_DEPLOYER=gcr.io/cloud-marketplace-ops-test/airflow-operator/deployer:alpha
-  - |
-    APP_PARAMETERS={
-                     "testerImage": "gcr.io/cloud-marketplace-ops-test/airflow-operator/tester:alpha"
-                   }
-  args:
-  - -exc
-  - |
-    /scripts/verify \
-        --deployer="$$APP_DEPLOYER" \
-        --parameters="$$APP_PARAMETERS"
+  - make -j4 app/verify
 
 # Cassandra Verification
 
-- id: Build Cassandra
+- id: Verify Cassandra
   name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
   waitFor:
   - Initialized
   dir: k8s/cassandra
   args:
   - -exc
-  - make -j4 app/build
-
-- id: Verify Cassandra
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
-  waitFor:
-  - Initialized
-  - Build Cassandra
-  env:
-  - APP_DEPLOYER=gcr.io/cloud-marketplace-ops-test/cassandra/deployer:3.11
-  - APP_PARAMETERS={}
-  args:
-  - -exc
-  - |
-    /scripts/verify \
-        --deployer="$$APP_DEPLOYER" \
-        --parameters="$$APP_PARAMETERS"
+  - make -j4 app/verify
 
 # Elastic GKE Logging Verification
 
-- id: Build Elastic GKE Logging
+- id: Verify Elastic GKE Logging
   name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
   waitFor:
   - Initialized
   dir: k8s/elastic-gke-logging
   args:
   - -exc
-  - make -j4 app/build
-
-- id: Verify Elastic GKE Logging
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
-  waitFor:
-  - Initialized
-  - Build Elastic GKE Logging
-  env:
-  - APP_DEPLOYER=gcr.io/cloud-marketplace-ops-test/elastic-gke-logging/deployer:6.3
-  - APP_PARAMETERS={}
-  args:
-  - -exc
-  - |
-    /scripts/verify \
-        --deployer="$$APP_DEPLOYER" \
-        --parameters="$$APP_PARAMETERS"
+  - make -j4 app/verify
 
 # Elasticsearch Verification
 
-- id: Build Elasticsearch
+- id: Verify Elasticsearch
   name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
   waitFor:
   - Initialized
   dir: k8s/elasticsearch
   args:
   - -exc
-  - make -j4 app/build
-
-- id: Verify Elasticsearch
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
-  waitFor:
-  - Initialized
-  - Build Elasticsearch
-  env:
-  - APP_DEPLOYER=gcr.io/cloud-marketplace-ops-test/elasticsearch/deployer:6.3
-  - APP_PARAMETERS={}
-  args:
-  - -exc
-  - |
-    /scripts/verify \
-        --deployer="$$APP_DEPLOYER" \
-        --parameters="$$APP_PARAMETERS"
+  - make -j4 app/verify
 
 # Grafna Verification
 
-- id: Build Grafna
+- id: Verify Grafna
   name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
   waitFor:
   - Initialized
   dir: k8s/grafana
   args:
   - -exc
-  - make -j4 app/build
-
-- id: Verify Grafna
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
-  waitFor:
-  - Initialized
-  - Build Grafna
-  env:
-  - APP_DEPLOYER=gcr.io/cloud-marketplace-ops-test/grafana/deployer:5.1
-  - APP_PARAMETERS={}
-  args:
-  - -exc
-  - |
-    /scripts/verify \
-        --deployer="$$APP_DEPLOYER" \
-        --parameters="$$APP_PARAMETERS"
+  - make -j4 app/verify
 
 # Influx DB Verification
 
-- id: Build Influx DB
+- id: Verify Influx DB
   name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
   waitFor:
   - Initialized
   dir: k8s/influxdb
   args:
   - -exc
-  - make -j4 app/build
-
-- id: Verify Influx DB
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
-  waitFor:
-  - Initialized
-  - Build Influx DB
-  env:
-  - APP_DEPLOYER=gcr.io/cloud-marketplace-ops-test/influxdb/deployer:1.5
-  - APP_PARAMETERS={}
-  args:
-  - -exc
-  - |
-    /scripts/verify \
-        --deployer="$$APP_DEPLOYER" \
-        --parameters="$$APP_PARAMETERS"
+  - make -j4 app/verify
 
 # Jenkins Verification
 
-- id: Build Jenkins
+- id: Verify Jenkins
   name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
   waitFor:
   - Initialized
   dir: k8s/jenkins
   args:
   - -exc
-  - make -j4 app/build
-
-- id: Verify Jenkins
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
-  waitFor:
-  - Initialized
-  - Build Jenkins
-  env:
-  - APP_DEPLOYER=gcr.io/cloud-marketplace-ops-test/jenkins/deployer:2.121
-  - APP_PARAMETERS={}
-  args:
-  - -exc
-  - |
-    /scripts/verify \
-        --deployer="$$APP_DEPLOYER" \
-        --parameters="$$APP_PARAMETERS"
+  - make -j4 app/verify
 
 # Memcached Verification
 
-- id: Build Memcached
+- id: Verify Memcached
   name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
   waitFor:
   - Initialized
   dir: k8s/memcached
   args:
   - -exc
-  - make -j4 app/build
-
-- id: Verify Memcached
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
-  waitFor:
-  - Initialized
-  - Build Memcached
-  env:
-  - APP_DEPLOYER=gcr.io/cloud-marketplace-ops-test/memcached/deployer:1.5
-  - APP_PARAMETERS={}
-  args:
-  - -exc
-  - |
-    /scripts/verify \
-        --deployer="$$APP_DEPLOYER" \
-        --parameters="$$APP_PARAMETERS"
+  - make -j4 app/verify
 
 # NGINX Verification
 
-- id: Build NGINX
+- id: Verify NGINX
   name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
   waitFor:
   - Initialized
   dir: k8s/nginx
   args:
   - -exc
-  - make -j4 app/build
-
-- id: Verify NGINX
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
-  waitFor:
-  - Initialized
-  - Build NGINX
-  env:
-  - APP_DEPLOYER=gcr.io/cloud-marketplace-ops-test/nginx/deployer:1.15
-  - APP_PARAMETERS={}
-  args:
-  - -exc
-  - |
-    /scripts/verify \
-        --deployer="$$APP_DEPLOYER" \
-        --parameters="$$APP_PARAMETERS"
+  - make -j4 app/verify
 
 # Prometheus Verification
 
-- id: Build Prometheus
+- id: Verify Prometheus
   name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
   waitFor:
   - Initialized
   dir: k8s/prometheus
   args:
   - -exc
-  - make -j4 app/build
-
-- id: Verify Prometheus
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
-  waitFor:
-  - Initialized
-  - Build Prometheus
-  env:
-  - APP_DEPLOYER=gcr.io/cloud-marketplace-ops-test/prometheus/deployer:2.2
-  - APP_PARAMETERS={}
-  args:
-  - -exc
-  - |
-    /scripts/verify \
-        --deployer="$$APP_DEPLOYER" \
-        --parameters="$$APP_PARAMETERS"
+  - make -j4 app/verify
 
 # RabbitMQ Verification
 
-- id: Build RabbitMQ
+- id: Verify RabbitMQ
   name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
   waitFor:
   - Initialized
   dir: k8s/rabbitmq
   args:
   - -exc
-  - make -j4 app/build
-
-- id: Verify RabbitMQ
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
-  waitFor:
-  - Initialized
-  - Build RabbitMQ
-  env:
-  - APP_DEPLOYER=gcr.io/cloud-marketplace-ops-test/rabbitmq/deployer:3.7
-  - APP_PARAMETERS={}
-  args:
-  - -exc
-  - |
-    /scripts/verify \
-        --deployer="$$APP_DEPLOYER" \
-        --parameters="$$APP_PARAMETERS"
+  - make -j4 app/verify
 
 # Wordpress Verification
 
-- id: Build Wordpress
+- id: Verify Wordpress
   name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
   waitFor:
   - Initialized
   dir: k8s/wordpress
   args:
   - -exc
-  - make -j4 app/build
-
-- id: Verify Wordpress
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
-  waitFor:
-  - Initialized
-  - Build Wordpress
-  env:
-  - APP_DEPLOYER=gcr.io/cloud-marketplace-ops-test/wordpress/deployer:latest
-  - |
-    APP_PARAMETERS={}
-  args:
-  - -exc
-  - |
-    /scripts/verify \
-        --deployer="$$APP_DEPLOYER" \
-        --parameters="$$APP_PARAMETERS"
+  - make -j4 app/verify
