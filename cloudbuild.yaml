@@ -22,6 +22,19 @@ steps:
     git submodule sync --recursive
     git submodule update --init --recursive
 
+- id: Copy tmpfs Credentials
+  name: gcr.io/cloud-builders/gcloud
+  entrypoint: /bin/bash
+  args:
+  - -exc
+  - |
+    # Cloud Build mounts the gcloud and kubectl configuration directories
+    # as tmpfs volumes, which do not mount via docker --volume. As a
+    # workaround, we copy the configuration directories to the workspace
+    # and override it.
+    cp /builder/home/.config/gcloud /workspace/gcloud/
+    cp /builder/home/.kube /workspace/kube/
+
 - id: Get Kubernetes Credentials
   name: gcr.io/cloud-builders/gcloud
   args:
@@ -38,9 +51,8 @@ steps:
   name: bash
   waitFor:
   - Initialize git
+  - Copy tmpfs Credentials
   - Get Kubernetes Credentials
-
-# Airflow Operator Verification
 
 - id: Verify Airflow Operator
   name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
@@ -49,9 +61,7 @@ steps:
   dir: k8s/airflow-operator
   args:
   - -exc
-  - make -j4 app/verify
-
-# Cassandra Verification
+  - GCLOUD_CONFIG=/workspace/kube KUBE_CONFIG=/workspace/gcloud make -j4 app/verify
 
 - id: Verify Cassandra
   name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
@@ -60,9 +70,7 @@ steps:
   dir: k8s/cassandra
   args:
   - -exc
-  - make -j4 app/verify
-
-# Elastic GKE Logging Verification
+  - GCLOUD_CONFIG=/workspace/kube KUBE_CONFIG=/workspace/gcloud make -j4 app/verify
 
 - id: Verify Elastic GKE Logging
   name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
@@ -71,9 +79,7 @@ steps:
   dir: k8s/elastic-gke-logging
   args:
   - -exc
-  - make -j4 app/verify
-
-# Elasticsearch Verification
+  - GCLOUD_CONFIG=/workspace/kube KUBE_CONFIG=/workspace/gcloud make -j4 app/verify
 
 - id: Verify Elasticsearch
   name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
@@ -82,9 +88,7 @@ steps:
   dir: k8s/elasticsearch
   args:
   - -exc
-  - make -j4 app/verify
-
-# Grafna Verification
+  - GCLOUD_CONFIG=/workspace/kube KUBE_CONFIG=/workspace/gcloud make -j4 app/verify
 
 - id: Verify Grafna
   name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
@@ -93,9 +97,7 @@ steps:
   dir: k8s/grafana
   args:
   - -exc
-  - make -j4 app/verify
-
-# Influx DB Verification
+  - GCLOUD_CONFIG=/workspace/kube KUBE_CONFIG=/workspace/gcloud make -j4 app/verify
 
 - id: Verify Influx DB
   name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
@@ -104,9 +106,7 @@ steps:
   dir: k8s/influxdb
   args:
   - -exc
-  - make -j4 app/verify
-
-# Jenkins Verification
+  - GCLOUD_CONFIG=/workspace/kube KUBE_CONFIG=/workspace/gcloud make -j4 app/verify
 
 - id: Verify Jenkins
   name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
@@ -115,9 +115,7 @@ steps:
   dir: k8s/jenkins
   args:
   - -exc
-  - make -j4 app/verify
-
-# Memcached Verification
+  - GCLOUD_CONFIG=/workspace/kube KUBE_CONFIG=/workspace/gcloud make -j4 app/verify
 
 - id: Verify Memcached
   name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
@@ -126,9 +124,7 @@ steps:
   dir: k8s/memcached
   args:
   - -exc
-  - make -j4 app/verify
-
-# NGINX Verification
+  - GCLOUD_CONFIG=/workspace/kube KUBE_CONFIG=/workspace/gcloud make -j4 app/verify
 
 - id: Verify NGINX
   name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
@@ -137,9 +133,7 @@ steps:
   dir: k8s/nginx
   args:
   - -exc
-  - make -j4 app/verify
-
-# Prometheus Verification
+  - GCLOUD_CONFIG=/workspace/kube KUBE_CONFIG=/workspace/gcloud make -j4 app/verify
 
 - id: Verify Prometheus
   name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
@@ -148,9 +142,7 @@ steps:
   dir: k8s/prometheus
   args:
   - -exc
-  - make -j4 app/verify
-
-# RabbitMQ Verification
+  - GCLOUD_CONFIG=/workspace/kube KUBE_CONFIG=/workspace/gcloud make -j4 app/verify
 
 - id: Verify RabbitMQ
   name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
@@ -159,9 +151,7 @@ steps:
   dir: k8s/rabbitmq
   args:
   - -exc
-  - make -j4 app/verify
-
-# Wordpress Verification
+  - GCLOUD_CONFIG=/workspace/kube KUBE_CONFIG=/workspace/gcloud make -j4 app/verify
 
 - id: Verify Wordpress
   name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
@@ -170,4 +160,4 @@ steps:
   dir: k8s/wordpress
   args:
   - -exc
-  - make -j4 app/verify
+  - GCLOUD_CONFIG=/workspace/kube KUBE_CONFIG=/workspace/gcloud make -j4 app/verify
