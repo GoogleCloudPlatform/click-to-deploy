@@ -24,6 +24,8 @@ steps:
 
 - id: Copy tmpfs Configurations
   name: gcr.io/cloud-builders/gcloud
+  waitFor:
+  - Get Kubernetes Credentials
   entrypoint: /bin/bash
   args:
   - -exc
@@ -32,8 +34,9 @@ steps:
     # as tmpfs volumes, which do not mount via docker --volume. As a
     # workaround, we copy the configuration directories to the workspace
     # and override it.
-    cp -r /builder/home/.config/gcloud /workspace/gcloud/
-    cp -r /builder/home/.kube /workspace/kube/
+    find $$HOME
+    cp -r $$HOME/.config/gcloud /workspace/gcloud/
+    cp -r $$HOME/.kube /workspace/kube/
 
 - id: Get Kubernetes Credentials
   name: gcr.io/cloud-builders/gcloud
