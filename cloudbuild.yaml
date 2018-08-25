@@ -22,7 +22,7 @@ steps:
     git submodule sync --recursive
     git submodule update --init --recursive
 
-- id: Copy tmpfs Credentials
+- id: Copy tmpfs Configurations
   name: gcr.io/cloud-builders/gcloud
   entrypoint: /bin/bash
   args:
@@ -32,8 +32,8 @@ steps:
     # as tmpfs volumes, which do not mount via docker --volume. As a
     # workaround, we copy the configuration directories to the workspace
     # and override it.
-    cp /builder/home/.config/gcloud /workspace/gcloud/
-    cp /builder/home/.kube /workspace/kube/
+    cp -r /builder/home/.config/gcloud /workspace/gcloud/
+    cp -r /builder/home/.kube /workspace/kube/
 
 - id: Get Kubernetes Credentials
   name: gcr.io/cloud-builders/gcloud
