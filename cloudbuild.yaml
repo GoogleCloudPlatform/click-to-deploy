@@ -1,4 +1,4 @@
-timeout: 20m
+timeout: 1200s
 options:
   machineType: 'N1_HIGHCPU_8'
 steps:
@@ -61,109 +61,109 @@ steps:
   - Get Kubernetes Credentials
 
 - id: Verify Airflow Operator
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_d1d07a2a02829b7c568cc12e270be371fd0f487f
   waitFor:
   - Initialized
   dir: k8s/airflow-operator
   args:
   - -exc
-  - GCLOUD_CONFIG=/workspace/gcloud KUBE_CONFIG=/workspace/kube make -j4 app/verify
+  - EXTRA_DOCKER_PARAMS="--link metadata:metadata.google.internal" GCLOUD_CONFIG=/workspace/gcloud KUBE_CONFIG=/workspace/kube make -j4 app/verify
 
 - id: Verify Cassandra
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_d1d07a2a02829b7c568cc12e270be371fd0f487f
   waitFor:
   - Initialized
   dir: k8s/cassandra
   args:
   - -exc
-  - GCLOUD_CONFIG=/workspace/gcloud KUBE_CONFIG=/workspace/kube make -j4 app/verify
+  - EXTRA_DOCKER_PARAMS="--link metadata:metadata.google.internal" GCLOUD_CONFIG=/workspace/gcloud KUBE_CONFIG=/workspace/kube make -j4 app/verify
 
 - id: Verify Elastic GKE Logging
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_d1d07a2a02829b7c568cc12e270be371fd0f487f
   waitFor:
   - Initialized
   dir: k8s/elastic-gke-logging
   args:
   - -exc
-  - GCLOUD_CONFIG=/workspace/gcloud KUBE_CONFIG=/workspace/kube make -j4 app/verify
+  - EXTRA_DOCKER_PARAMS="--link metadata:metadata.google.internal" GCLOUD_CONFIG=/workspace/gcloud KUBE_CONFIG=/workspace/kube make -j4 app/verify
 
 - id: Verify Elasticsearch
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_d1d07a2a02829b7c568cc12e270be371fd0f487f
   waitFor:
   - Initialized
   dir: k8s/elasticsearch
   args:
   - -exc
-  - GCLOUD_CONFIG=/workspace/gcloud KUBE_CONFIG=/workspace/kube make -j4 app/verify
+  - EXTRA_DOCKER_PARAMS="--link metadata:metadata.google.internal" GCLOUD_CONFIG=/workspace/gcloud KUBE_CONFIG=/workspace/kube make -j4 app/verify
 
 - id: Verify Grafna
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_d1d07a2a02829b7c568cc12e270be371fd0f487f
   waitFor:
   - Initialized
   dir: k8s/grafana
   args:
   - -exc
-  - GCLOUD_CONFIG=/workspace/gcloud KUBE_CONFIG=/workspace/kube make -j4 app/verify
+  - EXTRA_DOCKER_PARAMS="--link metadata:metadata.google.internal" GCLOUD_CONFIG=/workspace/gcloud KUBE_CONFIG=/workspace/kube make -j4 app/verify
 
 - id: Verify Influx DB
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_d1d07a2a02829b7c568cc12e270be371fd0f487f
   waitFor:
   - Initialized
   dir: k8s/influxdb
   args:
   - -exc
-  - GCLOUD_CONFIG=/workspace/gcloud KUBE_CONFIG=/workspace/kube make -j4 app/verify
+  - EXTRA_DOCKER_PARAMS="--link metadata:metadata.google.internal" GCLOUD_CONFIG=/workspace/gcloud KUBE_CONFIG=/workspace/kube make -j4 app/verify
 
 - id: Verify Jenkins
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_d1d07a2a02829b7c568cc12e270be371fd0f487f
   waitFor:
   - Initialized
   dir: k8s/jenkins
   args:
   - -exc
-  - GCLOUD_CONFIG=/workspace/gcloud KUBE_CONFIG=/workspace/kube make -j4 app/verify
+  - EXTRA_DOCKER_PARAMS="--link metadata:metadata.google.internal" GCLOUD_CONFIG=/workspace/gcloud KUBE_CONFIG=/workspace/kube make -j4 app/verify
 
 - id: Verify Memcached
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_d1d07a2a02829b7c568cc12e270be371fd0f487f
   waitFor:
   - Initialized
   dir: k8s/memcached
   args:
   - -exc
-  - GCLOUD_CONFIG=/workspace/gcloud KUBE_CONFIG=/workspace/kube make -j4 app/verify
+  - EXTRA_DOCKER_PARAMS="--link metadata:metadata.google.internal" GCLOUD_CONFIG=/workspace/gcloud KUBE_CONFIG=/workspace/kube make -j4 app/verify
 
 - id: Verify NGINX
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_d1d07a2a02829b7c568cc12e270be371fd0f487f
   waitFor:
   - Initialized
   dir: k8s/nginx
   args:
   - -exc
-  - GCLOUD_CONFIG=/workspace/gcloud KUBE_CONFIG=/workspace/kube make -j4 app/verify
+  - EXTRA_DOCKER_PARAMS="--link metadata:metadata.google.internal" GCLOUD_CONFIG=/workspace/gcloud KUBE_CONFIG=/workspace/kube make -j4 app/verify
 
 - id: Verify Prometheus
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_d1d07a2a02829b7c568cc12e270be371fd0f487f
   waitFor:
   - Initialized
   dir: k8s/prometheus
   args:
   - -exc
-  - GCLOUD_CONFIG=/workspace/gcloud KUBE_CONFIG=/workspace/kube make -j4 app/verify
+  - EXTRA_DOCKER_PARAMS="--link metadata:metadata.google.internal" GCLOUD_CONFIG=/workspace/gcloud KUBE_CONFIG=/workspace/kube make -j4 app/verify
 
 - id: Verify RabbitMQ
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_d1d07a2a02829b7c568cc12e270be371fd0f487f
   waitFor:
   - Initialized
   dir: k8s/rabbitmq
   args:
   - -exc
-  - GCLOUD_CONFIG=/workspace/gcloud KUBE_CONFIG=/workspace/kube make -j4 app/verify
+  - EXTRA_DOCKER_PARAMS="--link metadata:metadata.google.internal" GCLOUD_CONFIG=/workspace/gcloud KUBE_CONFIG=/workspace/kube make -j4 app/verify
 
 - id: Verify Wordpress
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_d1d07a2a02829b7c568cc12e270be371fd0f487f
   waitFor:
   - Initialized
   dir: k8s/wordpress
   args:
   - -exc
-  - GCLOUD_CONFIG=/workspace/gcloud KUBE_CONFIG=/workspace/kube make -j4 app/verify
+  - EXTRA_DOCKER_PARAMS="--link metadata:metadata.google.internal" GCLOUD_CONFIG=/workspace/gcloud KUBE_CONFIG=/workspace/kube make -j4 app/verify
