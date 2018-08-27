@@ -29,12 +29,12 @@ This specific application is designed to use NGINX for serving web content.
 Initial configuration of application serves some default, exemplary content. This application exposes
 two endpoints: HTTP on port 80 and HTTPS on port 443. 
 
-This application uses pre-generated certificates to configure HTTPS endpoint. The validity of the certificate used for this application is 365 days.
+This application uses pre-generated certificates to configure HTTPS endpoint. The validity of the certificate used for this application is 365 days. The certificate is stored as `https1.cert` secret and private key ise stored as `https1.key` secret.
 
 ### Solution Configuration
 
 If users consider using this application for production purposes then they need:
-* to configure their own, valid SSL certificate that will be associated with their DNS domain name
+* configure their own valid SSL certificate that will be associated with appropriate DNS domain name
 * upload their web content to K8s application
 
 The instructions how to update the certificate in case NGINX application is up and running are documented in the section [Re-configure certificate of your NGINX server](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/k8s/nginx#re-configure-certificate-of-your-nginx-server)
