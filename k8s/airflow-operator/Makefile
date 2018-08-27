@@ -47,7 +47,8 @@ app/build:: .build/airflow-operator/deployer \
 	@touch "$@"
 
 
-.build/airflow-operator/tester: apptest/**/*
+.build/airflow-operator/tester: apptest/**/* \
+                                | .build/airflow-operator
 	$(call print_target, $@)
 	cd apptest/tester \
 	    && docker build --tag "$(TESTER_IMAGE)" .
