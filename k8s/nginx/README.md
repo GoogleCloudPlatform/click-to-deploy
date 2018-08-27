@@ -190,9 +190,23 @@ kubectl scale statefulsets "$APP_INSTANCE_NAME-nginx" \
 
 where `[NEW_REPLICAS]` is the new number of replicas.
 
+# Web Content Update
+
+To perform update of the content of your NGINX web server you can use scripts provided for you in `click-to-deploy/k8s/nginx/scripts` folder.
+
+Put web content TBD
+
+```shell
+export APP_INSTANCE_NAME=<the name of your application, e.g. nginx-1>
+export NAMESPACE=default
+cd click-to-deploy/k8s/nginx/scripts
+./upload-webdata.sh
+```
+
+
 # Backup and Restore
 
-To perform backup & restore of the content of your NGINX web server you can use scripts proved for you in `click-to-deploy/k8s/nginx/scripts` folder.
+To perform backup & restore of the content of your NGINX web server you can use scripts provided for you in `click-to-deploy/k8s/nginx/scripts` folder.
 
 ## Backup
 
