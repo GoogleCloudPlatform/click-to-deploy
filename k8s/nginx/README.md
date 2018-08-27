@@ -192,7 +192,7 @@ where `[NEW_REPLICAS]` is the new number of replicas.
 
 # Backup and Restore
 
-To perform backup & restore of the content of your NGINX web server you can use scripts proved for you in `click-to-deploy/k8s/nginx/scripts` folder.
+To perform backup & restore of the content of your NGINX web server you can use scripts provided for you in `click-to-deploy/k8s/nginx/scripts` folder.
 
 ## Backup
 
