@@ -33,10 +33,13 @@ This application uses pre-generated certificates to configure HTTPS endpoint. Th
 
 ### Solution Configuration
 
-If a user considers using this application as production workload they need to configure their own, valid SSL certificate that will be associated with their DNS domain name.
+If users consider using this application for production purposes then they need:
+* to configure their own, valid SSL certificate that will be associated with their DNS domain name
+* upload their web content to K8s application
 
 The instructions how to update the certificate in case NGINX application is up and running are documented in the section [Re-configure certificate of your NGINX server](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/k8s/nginx#re-configure-certificate-of-your-nginx-server)
 
+The instructions how to upload web content to this application are presented in [Web Content Update section](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/k8s/nginx#web-content-update).
 
 # Installation
 
