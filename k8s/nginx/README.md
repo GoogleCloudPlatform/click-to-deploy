@@ -24,7 +24,7 @@ Popular open stacks on Kubernetes packaged by Google.
 
 NGINX is a multi-purpose software that delivers not only the functionality of web server but also reverse proxy, load balancer, HTTP cache and mail proxy.
 
-The application is designed to be easy starting point for servicing web content using NGINX web server.
+This specific application is designed to use NGINX for serving web content.
 
 Initial configuration of application serves some default, exemplary content. This application exposes
 two endpoints: HTTP on port 80 and HTTPS on port 443. 
