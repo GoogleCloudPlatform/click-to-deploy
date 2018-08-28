@@ -37,7 +37,7 @@ spec:
       following command to expose an external IP:
 
       ```
-      kubectl patch svc "$APP_INSTANCE_NAME-elasticsearch-svc" \
+      kubectl patch service/"$APP_INSTANCE_NAME-elasticsearch-svc" \
         --namespace "$NAMESPACE" \
         --patch '{"spec": {"type": "LoadBalancer"}}'
       ```
@@ -47,7 +47,7 @@ spec:
         Get the external IP of the Elasticsearch service:
 
       ```
-      SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-elasticsearch-svc \
+      SERVICE_IP=$(kubectl get service/$APP_INSTANCE_NAME-elasticsearch-svc \
         --namespace $NAMESPACE \
         --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
