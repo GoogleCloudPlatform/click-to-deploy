@@ -17,10 +17,10 @@ spec:
       Cassandra is a NoSQL, highly scalable, high-performance distributed database with high
       availability with no single point of failure.
 
-        # Support
-        Google does not offer support for this solution. However, community support is available on
-        [Stack Overflow](https://stackoverflow.com/questions/tagged/cassandra/).
-        Additional community support is available on [cassandra website](http://cassandra.apache.org).
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/cassandra/).
+      Additional community support is available on [cassandra website](http://cassandra.apache.org).
     maintainers:
     - name: Google Click to Deploy
       url: https://cloud.google.com/solutions/#click-to-deploy
