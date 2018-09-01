@@ -9,7 +9,12 @@ To learn more about Memcached, visit the [Memcached website](https://memcached.o
 
 Popular open stacks on Kubernetes packaged by Google.
 
-# Installation
+## Design
+
+![Architecture diagram](resources/memcached-k8s-app-architecture.png)
+
+### Solution Information
+
 
 ## Quick install with Google Cloud Marketplace
 
