@@ -13,6 +13,15 @@ If you are interested in the enterprise version of InfluxDB visit the
 
 Popular open stacks on Kubernetes packaged by Google.
 
+## Design
+
+![Architecture diagram](resources/influxdb-k8s-app-architecture.png)
+
+### Solution Information
+
+### Solution Configuration
+
+
 # Installation
 
 ## Quick install with Google Cloud Marketplace
