@@ -22,6 +22,19 @@ steps:
     git submodule sync --recursive
     git submodule update --init --recursive
 
+- id: Pull Dev Image
+  name: gcr.io/cloud-builders/docker
+  waitFor:
+  - Initialize git
+  dir: k8s/vendor/marketplace-tools
+  entrypoint: bash
+  args:
+  - -exc
+  - |
+    TAG="$$(./scripts/derive_tag.sh)"
+    docker pull "gcr.io/cloud-marketplace-tools/k8s/dev:$$TAG"
+    docker tag "gcr.io/cloud-marketplace-tools/k8s/dev:$$TAG" "gcr.io/cloud-marketplace-tools/k8s/dev:local"
+
 - id: Get Kubernetes Credentials
   name: gcr.io/cloud-builders/gcloud
   args:
@@ -43,7 +56,7 @@ steps:
 # Airflow Operator Verification
 
 - id: Build Airflow Operator
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Initialized
   dir: k8s/airflow-operator
@@ -52,7 +65,7 @@ steps:
   - make -j4 app/build
 
 - id: Verify Airflow Operator
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Initialized
   - Build Airflow Operator
@@ -72,7 +85,7 @@ steps:
 # Cassandra Verification
 
 - id: Build Cassandra
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Initialized
   dir: k8s/cassandra
@@ -81,7 +94,7 @@ steps:
   - make -j4 app/build
 
 - id: Verify Cassandra
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Initialized
   - Build Cassandra
@@ -98,7 +111,7 @@ steps:
 # Elastic GKE Logging Verification
 
 - id: Build Elastic GKE Logging
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Initialized
   dir: k8s/elastic-gke-logging
@@ -107,7 +120,7 @@ steps:
   - make -j4 app/build
 
 - id: Verify Elastic GKE Logging
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Initialized
   - Build Elastic GKE Logging
@@ -124,7 +137,7 @@ steps:
 # Elasticsearch Verification
 
 - id: Build Elasticsearch
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Initialized
   dir: k8s/elasticsearch
@@ -133,7 +146,7 @@ steps:
   - make -j4 app/build
 
 - id: Verify Elasticsearch
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Initialized
   - Build Elasticsearch
@@ -150,7 +163,7 @@ steps:
 # Grafna Verification
 
 - id: Build Grafna
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Initialized
   dir: k8s/grafana
@@ -159,7 +172,7 @@ steps:
   - make -j4 app/build
 
 - id: Verify Grafna
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Initialized
   - Build Grafna
@@ -176,7 +189,7 @@ steps:
 # Influx DB Verification
 
 - id: Build Influx DB
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Initialized
   dir: k8s/influxdb
@@ -185,7 +198,7 @@ steps:
   - make -j4 app/build
 
 - id: Verify Influx DB
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Initialized
   - Build Influx DB
@@ -202,7 +215,7 @@ steps:
 # Jenkins Verification
 
 - id: Build Jenkins
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Initialized
   dir: k8s/jenkins
@@ -211,7 +224,7 @@ steps:
   - make -j4 app/build
 
 - id: Verify Jenkins
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Initialized
   - Build Jenkins
@@ -228,7 +241,7 @@ steps:
 # Memcached Verification
 
 - id: Build Memcached
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Initialized
   dir: k8s/memcached
@@ -237,7 +250,7 @@ steps:
   - make -j4 app/build
 
 - id: Verify Memcached
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Initialized
   - Build Memcached
@@ -254,7 +267,7 @@ steps:
 # NGINX Verification
 
 - id: Build NGINX
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Initialized
   dir: k8s/nginx
@@ -263,7 +276,7 @@ steps:
   - make -j4 app/build
 
 - id: Verify NGINX
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Initialized
   - Build NGINX
@@ -280,7 +293,7 @@ steps:
 # Prometheus Verification
 
 - id: Build Prometheus
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Initialized
   dir: k8s/prometheus
@@ -289,7 +302,7 @@ steps:
   - make -j4 app/build
 
 - id: Verify Prometheus
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Initialized
   - Build Prometheus
@@ -306,7 +319,7 @@ steps:
 # RabbitMQ Verification
 
 - id: Build RabbitMQ
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Initialized
   dir: k8s/rabbitmq
@@ -315,7 +328,7 @@ steps:
   - make -j4 app/build
 
 - id: Verify RabbitMQ
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Initialized
   - Build RabbitMQ
@@ -332,7 +345,7 @@ steps:
 # Wordpress Verification
 
 - id: Build Wordpress
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Initialized
   dir: k8s/wordpress
@@ -341,7 +354,7 @@ steps:
   - make -j4 app/build
 
 - id: Verify Wordpress
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_7c70bcd83a8c490a11f93abfc4ec7a5f39c61ab6
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Initialized
   - Build Wordpress

@@ -16,6 +16,31 @@ This web server application is pre-configured with an SSL certificate. Please re
 
 Popular open stacks on Kubernetes packaged by Google.
 
+## Design
+
+![Architecture diagram](resources/nginx-k8s-app-architecture.png)
+
+### Solution Information
+
+NGINX is a multi-purpose software that delivers not only the functionality of web server but also reverse proxy, load balancer, HTTP cache and mail proxy.
+
+This specific application is designed to use NGINX for serving web content.
+
+Initial configuration of application serves some default, exemplary content. This application exposes
+two endpoints: HTTP on port 80 and HTTPS on port 443. 
+
+This application uses pre-generated certificates to configure HTTPS endpoint. The validity of the certificate used for this application is 365 days. The certificate is stored as `https1.cert` secret and private key ise stored as `https1.key` secret.
+
+### Solution Configuration
+
+If users consider using this application for production purposes then they need:
+* configure their own valid SSL certificate that will be associated with appropriate DNS domain name
+* upload their web content to K8s application
+
+The instructions how to update the certificate in case NGINX application is up and running are documented in the section [Re-configure certificate of your NGINX server](#re-configure-certificate-of-your-nginx-server)
+
+The instructions how to upload web content to this application are presented in [Web Content Update section](#web-content-update).
+
 # Installation
 
 ## Quick install with Google Cloud Marketplace
@@ -190,9 +215,21 @@ kubectl scale statefulsets "$APP_INSTANCE_NAME-nginx" \
 
 where `[NEW_REPLICAS]` is the new number of replicas.
 
+# Web Content Update
+
+To perform update of the content of your NGINX web server you can use scripts provided for you in `click-to-deploy/k8s/nginx/scripts` folder.
+
+Navigate to `click-to-deploy/k8s/nginx/scripts` folder, save your web content in `html` folder and follow the instructions below.
+
+```shell
+export APP_INSTANCE_NAME=<the name of your application, e.g. nginx-1>
+export NAMESPACE=default
+./upload-webdata.sh
+```
+
 # Backup and Restore
 
-To perform backup & restore of the content of your NGINX web server you can use scripts proved for you in `click-to-deploy/k8s/nginx/scripts` folder.
+To perform backup & restore of the content of your NGINX web server you can use scripts provided for you in `click-to-deploy/k8s/nginx/scripts` folder.
 
 ## Backup
 
