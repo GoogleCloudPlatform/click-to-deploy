@@ -190,6 +190,12 @@ following command:
 kubectl get pods -o wide -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace "$NAMESPACE"
 ```
 
+To get the IP addresses of your Memcached instances from within the very Kubernetes cluster
+(e.g. from a Memcached Pod) run the following command:
+```shell
+nslookup $APP_INSTANCE_NAME-memcached-svc.$NAMESPACE.svc.cluster.local
+```
+
 To get the IP addresses of your Memcached instances using Python, you can use
 the `kubernetes` module.
 
