@@ -10,6 +10,20 @@ and reducing latency.
 
 Popular open stacks on Kubernetes packaged by Google.
 
+## Design
+
+![Architecture diagram](resources/cassandra-k8s-app-architecture.png)
+
+### Solution Information
+
+StatefulSet Kubernetes object is used to manage all Cassandra pods within this K8s application. Each pod runs a single instance of Cassandra process.
+
+All pods are behind Service object. Cassandra service is not exposed to the external traffic as this Cassandra K8s application is meant to be an internal database
+and access to Cassandra instances is not authenticated by default. Please configure authentication and other layers of protection, like firewalls, before exposing
+Cassandra outside K8s cluster.
+
+Cassandra service can be used to discover current number of pods and their addresses.
+
 # Installation
 
 ## Quick install with Google Cloud Marketplace
