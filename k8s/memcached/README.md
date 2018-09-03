@@ -9,7 +9,18 @@ To learn more about Memcached, visit the [Memcached website](https://memcached.o
 
 Popular open stacks on Kubernetes packaged by Google.
 
-# Installation
+## Design
+
+![Architecture diagram](resources/memcached-k8s-app-architecture.png)
+
+### Solution Information
+
+StatefulSet Kubernetes object is used to manage all Memcached pods within this K8s application. Each pod runs a single instance of Memcached process which listens on 11211 TCP port.
+
+All pods are behind Service object. Memcached service is not exposed to the external traffic as this Memcached K8s application is meant to be an internal cache of a system
+and memory of Memcached instances is not encrypted in any way and communication to Memcached instances happens over plain text.
+Memcached Service also doesn’t have a service IP address to allow for discovery of IP addresses of all Memcached pods.
+Usually, Memcached clients discover IP addresses of Memcached instances on their own and implement a mechanism to query and to distribute their requests to the pool of Memcached instances.
 
 ## Quick install with Google Cloud Marketplace
 
