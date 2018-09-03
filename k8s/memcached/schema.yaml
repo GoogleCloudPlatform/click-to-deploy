@@ -19,6 +19,7 @@ properties:
     description: The number of Pods in the solution
     default: 3
     minimum: 1
+    maximum: 11
 required:
 - APP_INSTANCE_NAME
 - NAMESPACE
