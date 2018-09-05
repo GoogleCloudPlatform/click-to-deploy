@@ -23,7 +23,7 @@ This application is single-instance InfluxDB Kubernetes solution implemented usi
 
 Single pod running InfluxDB container is behind Service Kubernetes object and by default it is not exposed to communication outside of Kubernetes cluster.
 
-3 ports are confiugred by default:
+3 ports are configured by default:
 
 * 8086 - for communication to InfluxDB instance and to connect Grafana monitoring application.
 
