@@ -38,9 +38,6 @@ spec:
         - name: thrift
           containerPort: 9160
         resources:
-          limits:
-            cpu: 500m
-            memory: 2.5Gi
           requests:
            cpu: 500m
            memory: 2.5Gi
