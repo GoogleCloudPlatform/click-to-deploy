@@ -9,6 +9,26 @@ Message Queuing Protocol (AMQP) to serve a variety of messaging applications.
 
 Popular open stacks on Kubernetes packaged by Google.
 
+## Design
+ 
+![Architecture diagram](resources/rabbitmq-k8s-app-architecture.png)
+ 
+### Solution Information
+ 
+RabbitMQ cluster is deployed within a Kubernetes StatefulSet. The configuration
+is attached with a ConfigMap (which contents is copied to writable location at
+`/etc/rabbitmq` by an init container). An Erlang cookie required by
+the application is generated dynamically and passed to the deployment with
+a Secret object.
+ 
+The deployment creates two services:
+- client-facing one, designed to be used for client connections to the RabbitMQ
+  cluster with port forwarding or using a LoadBalancer,
+- and service discovery - a headless service for connections between
+  the RabbitMQ nodes.
+ 
+This deployment includes automated enabling the Highly Available policies. It is enabled as part of the installation, on each node's `postStart` event.
+
 # Installation
 
 ## Quick install with Google Cloud Marketplace
