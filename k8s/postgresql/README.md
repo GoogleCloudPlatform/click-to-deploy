@@ -179,8 +179,7 @@ To sign in to PosgreSQL, get the ip address:
 EXTERNAL_IP=$(kubectl --namespace $NAMESPACE get service $APP_INSTANCE_NAME-postgresql-svc -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 PGPASSWORD=$(kubectl get secret "${APP_INSTANCE_NAME}-secret" --output=jsonpath='{.data.password}' | openssl base64 -d -A)
 
-## echo PGPASSWORD=$PGPASSWORD psql -U postgres -h $EXTERNAL_IP
-psql -U postgres -h $EXTERNAL_IP
+echo PGPASSWORD=$PGPASSWORD sslmode=require psql -U postgres -h $EXTERNAL_IP
 ```
 
 # Scaling
