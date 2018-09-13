@@ -94,8 +94,7 @@ export NAMESPACE=default
 Configure the container image:
 
 ```shell
-### export IMAGE_POSTGRESQL="marketplace.gcr.io/google/postgresql9:9.6"
-export IMAGE_POSTGRESQL=gcr.io/orbitera-dev/postgresql:ats-9.6.10
+export IMAGE_POSTGRESQL=launcher.gcr.io/google/postgresql9:9.6-kubernetes
 ```
 
 The image above is referenced by

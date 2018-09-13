@@ -6,7 +6,7 @@ include ../vendor/marketplace-tools/ubbagent.Makefile
 include ../vendor/marketplace-tools/var.Makefile
 
 
-TAG ?= latest
+TAG ?= 9.6-kubernetes
 IMAGE_POSTGRESQL ?= launcher.gcr.io/google/postgresql9:$(TAG)
 $(info ---- TAG = $(TAG))
 
