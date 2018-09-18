@@ -114,6 +114,15 @@ spec:
     metadata:
       labels: *WordPressDeploymentLabels
     spec:
+      initContainers:
+        - name: deny-access-before-configuration
+          image: $IMAGE_WORDPRESS
+
+          command: ["sh", "-c", "ipadm=$WPADMINISTRATOR_IP_ADDRESS; wpadm=/var/www/html/wp-admin/; if [[ -d $wpadm ]]; then exit; fi; mkdir -m755 $wpadm; chown www-data:www-data $wpadm; echo 'Require all denied\n<If \"%{HTTP_USER_AGENT} =~ /^(kube-probe|GoogleHC)/ && %{HTTP:X-Forwarded-For} =~ /^$/\">\n  Require all granted\n  DirectoryIndex /wp-admin/install.php\n</If>\n<If \"%{HTTP:X-Forwarded-For} =~ /^'${ipadm:=127.0.0.1}'/\">\n  Require all granted\n</If>' >> $wpadm/.htaccess"]
+          volumeMounts:
+          - name: $APP_INSTANCE_NAME-wordpress-pvc
+            mountPath: /var/www/html
+            subPath: wp
       containers:
       - image: $IMAGE_WORDPRESS
         name: wordpress
@@ -139,9 +148,13 @@ spec:
           subPath: wp
         readinessProbe:
           httpGet:
-            path: /
+            path: /wp-admin/install.php
             port: 80
           initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 2
+          failureThreshold: 5
         livenessProbe:
           httpGet:
             path: /
@@ -168,11 +181,26 @@ metadata:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app.kubernetes.io/component: wordpress-webserver
 spec:
+  type: NodePort
   ports:
-  - name: http
-    port: 80
-    targetPort: http
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      name: http
   selector:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app.kubernetes.io/component: wordpress-webserver
-  type: ClusterIP
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: $APP_INSTANCE_NAME-wordpress
+  labels:
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/component: wordpress-webserver
+spec:
+  tls:
+  - secretName: $APP_INSTANCE_NAME-tls
+  backend:
+    serviceName: $APP_INSTANCE_NAME-wordpress-svc
+    servicePort: http

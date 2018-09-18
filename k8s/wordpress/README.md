@@ -27,6 +27,7 @@ You'll need the following tools in your development environment:
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 - [docker](https://docs.docker.com/install/)
 - [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+- [openssl](https://www.openssl.org/)
 
 Configure `gcloud` as a Docker credential helper:
 
@@ -127,14 +128,36 @@ sudo apt-get install -y pwgen base64
 # Set the root and Wordpress database passwords
 export ROOT_DB_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
 export WORDPRESS_DB_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
+export WPADMINISTRATOR_IP_ADDRESS=<YOUR COMPUTER EXTERNAL IP ADDRESS>
 ```
-
-#### Create namespace in your Kubernetes cluster
 
 If you use a different namespace than the `default`, run the command below to create a new namespace:
 
 ```shell
 kubectl create namespace "$NAMESPACE"
+```
+
+Initially Wordpress installation is open to the world, anyone can create user and password, to avoid taking over the application, access to /wp-admin is restricted to WPADMINISTRATOR_IP_ADDRESS. If you don't set the address, the default will be 127.0.0.1, it means noone will be able to configure Wordpress. To change it, you will need to edit /var/www/html/wp-admin/.htaccess file. To completely remove access control run following command:
+
+```shell
+kubectl exec --namespace $NAMESPACE $APP_INSTANCE_NAME-wordpress-0 \
+    rm /var/www/html/wp-admin/.htaccess 
+```
+
+Create a certificate for Wordpress. If you already have a certificate that you
+want to use, copy your certificate and key pair in to the `/tmp/tls.crt` and
+`/tmp/tls.key` files.
+
+```shell
+# create a certificate for wordpress
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout /tmp/tls.key \
+    -out /tmp/tls.crt \
+    -subj "/CN=wordpress/O=wordpress"
+
+# create a secret for Kubernetes ingress TLS
+kubectl --namespace $NAMESPACE create secret generic $APP_INSTANCE_NAME-tls \
+    --from-file=/tmp/tls.crt --from-file=/tmp/tls.key
 ```
 
 #### Expand the manifest template
@@ -144,7 +167,7 @@ expanded manifest file for future updates to the application.
 
 ```shell
 awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_WORDPRESS $IMAGE_MYSQL $ROOT_DB_PASSWORD $WORDPRESS_DB_PASSWORD' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_WORDPRESS $IMAGE_MYSQL $ROOT_DB_PASSWORD $WORDPRESS_DB_PASSWORD $WPADMINISTRATOR_IP_ADDRESS' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
@@ -184,11 +207,11 @@ It might take some time for the external IP address to be created.
 Get the external IP of your WordPress site using the following command:
 
 ```
-SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-wordpress-svc \
+SERVICE_IP=$(kubectl get ingress $APP_INSTANCE_NAME-wordpress \
   --namespace $NAMESPACE \
   --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
-echo "http://${SERVICE_IP}"
+echo "https://${SERVICE_IP}"
 ```
 
 The command shows you the URL of your site.

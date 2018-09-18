@@ -31,32 +31,17 @@ spec:
     - description: Getting Started with WordPress
       url: https://codex.wordpress.org/Getting_Started_with_WordPress
     notes: |-
-      # Expose WordPress service
-
-      By default, the application does not have an external IP. Run the
-      following command to expose an external IP:
-
-      ```
-      kubectl patch service/"$APP_INSTANCE_NAME-wordpress-svc" \
-        --namespace "$NAMESPACE" \
-        --patch '{"spec": {"type": "LoadBalancer"}}'
-      ```
-
-      Warning: Do not leave your WordPress installation in this initial setup
-      state. Other visitors can set up a website on your cluster and use it to serve
-      potentially malicious content.
-
       # Access WordPress site
 
       Get the external IP of the WordPress site service and visit
       the URL printed below in your browser.
 
       ```
-      SERVICE_IP=$(kubectl get service/$APP_INSTANCE_NAME-wordpress-svc \
+      SERVICE_IP=$(kubectl get ingress $APP_INSTANCE_NAME-wordpress \
         --namespace $NAMESPACE \
         --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
-      echo "http://${SERVICE_IP}"
+      echo "https://${SERVICE_IP}"
       ```
 
       Note that it might take some time for the external IP to be provisioned.
@@ -83,3 +68,5 @@ spec:
     kind: Secret
   - group: v1
     kind: Service
+  - group: extensions/v1beta1
+    kind: Ingress

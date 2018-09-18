@@ -30,6 +30,8 @@ properties:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 12
+  WPADMINISTRATOR_IP_ADDRESS:
+    type: string
 required:
 - APP_INSTANCE_NAME
 - NAMESPACE
@@ -37,3 +39,4 @@ required:
 - IMAGE_MYSQL
 - ROOT_DB_PASSWORD
 - WORDPRESS_DB_PASSWORD
+- WPADMINISTRATOR_IP_ADDRESS
