@@ -145,13 +145,13 @@ awk 'BEGINFILE {print "---"}{print}' manifest/* \
 #### Apply the manifest to your Kubernetes cluster
 
 Use `kubectl` to apply the manifest to your Kubernetes cluster. This installation will create:
-- Application, it connects all deployment resources into one logical entity,
-- ServiceAccount for PostgreSQL Pod,
-- PersistentVolume and PersistentVolumeClaim, volume won't be deleted with application, please remember that if you delete installation and recreate with the same name
-	the latter will use exising PersistenVolume, that means no new Database initialization and no new password set,
-- Secret with PostgreSQL initial random password,
-- Deployment,
-- Service, it exposes PostgreSQL server to the external world,
+
+- An Application resource, which collects all the deployment resources into one logical entity
+- A ServiceAccount for the PostgreSQL Pod
+- A PersistentVolume and PersistentVolumeClaim. Note that the volume isn't be deleted with application. If you delete the installation and recreate it with the same name, the new installation uses the same PersistentVolume. As a result, there is no new database initialization, and no new password is set.
+- A Secret with the PostgreSQL initial random password
+- A Deployment
+- A Service, which exposes PostgreSQL server to the external world
 
 
 ```shell
