@@ -88,7 +88,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: $APP_INSTANCE_NAME-jenkins-slaves-connector
+  name: $APP_INSTANCE_NAME-jenkins-agents-connector
   labels: &JenkinsDeploymentLabels
     app.kubernetes.io/name: $APP_INSTANCE_NAME
     app.kubernetes.io/component: jenkins-master
@@ -98,7 +98,7 @@ spec:
     - protocol: TCP
       port: 50000
       targetPort: 50000
-      name: slaves-connector
+      name: agents-connector
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress

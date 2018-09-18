@@ -1,0 +1,35 @@
+application_api_version: v1beta1
+properties:
+  APP_INSTANCE_NAME:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  NAMESPACE:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  IMAGE_AIRFLOWOPERATOR:
+    type: string
+    default: $REGISTRY:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  SERVICE_ACCOUNT:
+    title: Cluster Admin Service Account
+    description: >-
+      Name of a service account in the target namespace that
+      has cluster-admin permissions. This is needed for the operator
+      to create Airflow CRD and resources.
+    type: string
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        roles:
+        - type: ClusterRole
+          rulesType: PREDEFINED
+          # TODO(barney-s): Reduce the permission set.
+          rulesFromRoleName: cluster-admin
+required:
+- APP_INSTANCE_NAME
+- NAMESPACE
+- IMAGE_AIRFLOWOPERATOR
+- SERVICE_ACCOUNT

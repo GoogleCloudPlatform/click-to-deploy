@@ -16,15 +16,10 @@ ifdef IMAGE_JENKINS
   IMAGE_JENKINS_FIELD = , "IMAGE_JENKINS": "$(IMAGE_JENKINS)"
 endif
 
-ifdef IMAGE_JENKINS_INIT
-  IMAGE_JENKINS_INIT_FIELD = , "IMAGE_JENKINS_INIT": "$(IMAGE_JENKINS_INIT)"
-endif
-
 APP_PARAMETERS ?= { \
   "APP_INSTANCE_NAME": "$(NAME)", \
   "NAMESPACE": "$(NAMESPACE)" \
   $(IMAGE_JENKINS_FIELD) \
-  $(IMAGE_JENKINS_INIT_FIELD) \
 }
 APP_TEST_PARAMETERS ?= {}
 
@@ -39,6 +34,7 @@ app/build:: .build/jenkins/deployer \
 
 .build/jenkins/deployer: deployer/* \
                          manifest/* \
+                         schema.yaml \
                          .build/var/APP_DEPLOYER_IMAGE \
                          .build/var/REGISTRY \
                          .build/var/TAG \

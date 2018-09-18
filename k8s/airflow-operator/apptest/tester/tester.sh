@@ -16,36 +16,18 @@
 
 set -eo pipefail
 
-for i in "$@"
-do
-case $i in
-  --githubapp=*)
-    githubapp="${i#*=}"
-    shift
-    ;;
-  --keyfile=*)
-    keyfile="${i#*=}"
-    shift
-    ;;
-  --bucket=*)
-    bucket="${i#*=}"
-    shift
-    ;;
-  *)
-    >&2 echo "Unrecognized flag: $i"
-    exit 1
-    ;;
-esac
-done
+export NAME="airflow-$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 8 | head -n 1)"
+cat airflowcluster.yaml.template | envsubst > airflowcluster.yaml
+cat airflowbase.yaml.template | envsubst > airflowbase.yaml
 
-# Replace slashes with underscore in the name of the app
-keyname="$(echo $githubapp | tr / _ | tr '[:upper:]' '[:lower:]')"
+cat airflowbase.yaml
+cat airflowcluster.yaml
 
-bucket_path="$bucket/appkeys/$keyname"
-echo "$keyfile"
-gsutil cp "$keyfile" "$bucket_path"
-
-echo ""
-echo "Private key $keyname added to $bucket_path."
-echo ""
-echo "Remove the private key."
+kubectl apply -f airflowbase.yaml
+sleep 60
+kubectl apply -f airflowcluster.yaml
+sleep 60
+kubectl get -f airflowbase.yaml -o yaml
+kubectl get -f airflowcluster.yaml -o yaml
+kubectl delete -f airflowbase.yaml
+kubectl delete -f airflowcluster.yaml

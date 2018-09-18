@@ -48,11 +48,12 @@ app/build:: .build/nginx/debian9  \
 
 
 .build/nginx/deployer: deployer/* \
-                           manifest/* \
-                           .build/var/APP_DEPLOYER_IMAGE \
-                           .build/var/REGISTRY \
-                           .build/var/TAG \
-                           | .build/nginx
+                       manifest/* \
+                       schema.yaml \
+                       .build/var/APP_DEPLOYER_IMAGE \
+                       .build/var/REGISTRY \
+                       .build/var/TAG \
+                       | .build/nginx
 	docker build \
 	    --build-arg REGISTRY="$(REGISTRY)/nginx" \
 	    --build-arg TAG="$(TAG)" \
@@ -64,10 +65,10 @@ app/build:: .build/nginx/debian9  \
 
 
 .build/nginx/nginx: .build/var/REGISTRY \
-                            .build/var/TAG \
-                            | .build/nginx
-	docker pull launcher.gcr.io/google/nginx1:1.15
-	docker tag launcher.gcr.io/google/nginx1:1.15 \
+                    .build/var/TAG \
+                    | .build/nginx
+	docker pull launcher.gcr.io/google/nginx1:$(TAG)
+	docker tag launcher.gcr.io/google/nginx1:$(TAG) \
 	    "$(REGISTRY)/nginx:$(TAG)"
 	docker push "$(REGISTRY)/nginx:$(TAG)"
 	@touch "$@"

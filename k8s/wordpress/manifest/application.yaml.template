@@ -13,7 +13,7 @@ metadata:
 spec:
   descriptor:
     type: WordPress
-    version: '0.1'
+    version: '4.x.x'
     description: >-
       WordPress is web software used to create websites and blogs.
 
@@ -37,7 +37,7 @@ spec:
       following command to expose an external IP:
 
       ```
-      kubectl patch svc "$APP_INSTANCE_NAME-wordpress-svc" \
+      kubectl patch service/"$APP_INSTANCE_NAME-wordpress-svc" \
         --namespace "$NAMESPACE" \
         --patch '{"spec": {"type": "LoadBalancer"}}'
       ```
@@ -52,7 +52,7 @@ spec:
       the URL printed below in your browser.
 
       ```
-      SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-wordpress-svc \
+      SERVICE_IP=$(kubectl get service/$APP_INSTANCE_NAME-wordpress-svc \
         --namespace $NAMESPACE \
         --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
