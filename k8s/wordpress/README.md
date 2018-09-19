@@ -436,7 +436,7 @@ export NAMESPACE=default
 To delete the resources, use the expanded manifest file used for the
 installation.
 
-Run `kubectl` on the expanded manifest file:
+Run `kubectl` on the expanded manifest file
 
 ```shell
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
