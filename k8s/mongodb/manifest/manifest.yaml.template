@@ -1,0 +1,100 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: default
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+  - kind: ServiceAccount
+    name: default
+    namespace: $NAMESPACE
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $APP_INSTANCE_NAME-mongo
+  labels: &MongoDeploymentLabels
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/component: mongo
+spec:
+  ports:
+  - port: 27017
+    targetPort: 27017
+  clusterIP: None
+  selector: *MongoDeploymentLabels
+---
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: $APP_INSTANCE_NAME-mongo
+  labels: &MongoDeploymentLabels
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/component: mongo
+spec:
+  selector:
+    matchLabels: *MongoDeploymentLabels
+  serviceName: $APP_INSTANCE_NAME-mongo-svc
+  replicas: $REPLICAS
+  updateStrategy:
+      type: OnDelete
+  template:
+    metadata:
+      labels: *MongoDeploymentLabels
+    spec:
+      terminationGracePeriodSeconds: 120
+      containers:
+        - name: mongo
+          image: $IMAGE_MONGODB
+          imagePullPolicy: Always
+          command:
+            - mongod
+            - "--replSet"
+            - rs0
+            - "--smallfiles"
+            - "--noprealloc"
+            - "--bind_ip"
+            - 0.0.0.0
+          ports:
+            - containerPort: 27017
+          resources:
+            requests:
+             cpu: 250m
+             memory: 2Gi
+            limits:
+             memory: "2.5Gi"
+             cpu: "500m"
+          volumeMounts:
+            - name: $APP_INSTANCE_NAME-mongo-pvc
+              mountPath: /data/db
+          livenessProbe:
+            exec:
+              command: [ "/bin/bash", "-c", "mongo --eval 'rs.status()' | grep PRIMARY" ]
+            initialDelaySeconds: 120
+            periodSeconds: 60
+        - name: mongo-sidecar
+          image: $IMAGE_SIDECAR 
+          env:
+            - name: MONGO_SIDECAR_POD_LABELS
+              value: "app.kubernetes.io/name=$APP_INSTANCE_NAME,app.kubernetes.io/component=mongo"
+            - name: KUBE_NAMESPACE
+              value: "$NAMESPACE"
+          resources:
+            requests:
+             cpu: 250m
+             memory: 64Mi
+            limits:
+             memory: "128Mi"
+             cpu: "500m"
+  volumeClaimTemplates:
+  - metadata:
+      name: $APP_INSTANCE_NAME-mongo-pvc
+      annotations:
+        volume.beta.kubernetes.io/storage-class: "standard"
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 100Gi

@@ -1,0 +1,84 @@
+---
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "$APP_INSTANCE_NAME"
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,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
+    marketplace.cloud.google.com/deploy-info: '{partner_id: "click-to-deploy-containers", product_id: "mongodb", partner_name: "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+spec:
+  descriptor:
+    type: MongoDB
+    version: '4.0'
+    description: |-
+      MongoDB is a NoSQL document-oriented database that stores JSON-like documents with dynamic schemas, simplifying the integration of data in content-driven applications.
+
+        # Support
+        Google does not offer support for this solution. However, community support is available on
+        [Stack Overflow](https://stackoverflow.com/questions/tagged/mongodb/).
+        Additional community support is available on [MongoDB website](https://www.mongodb.com/community).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy MongoDB'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/mongodb/README.md
+    - description: 'MongoDB manual'
+      url: https://docs.mongodb.com/manual/
+    notes: |-
+      # Get tooling from GitHub
+
+      Please download K8s MongoDB tools from GitHub, invoking following commands
+      ```
+      git clone https://github.com/GoogleCloudPlatform/click-to-deploy
+      cd click-to-deploy/k8s/mongodb
+      ```
+
+      Scripts and tools are availabe in `scripts` directory.
+
+      # Check MongoDB cluster
+
+      If deployment is successful, you should be able to check status of MongoDB cluster.
+
+      To do this, use MongoDB database function `rs.status()`.
+      ```shell
+      kubectl -n "${NAMESPACE}" exec  ${APP_INSTANCE_NAME}-mongo-0 --container mongo -- mongo --eval "rs.status()"
+      ```
+      # Access MongoDB service (via `kubectl port-forward`)
+
+      You could also use a local proxy to access the service that is not exposed publicly.
+      Run the following command in a separate background terminal:
+
+      ```shell
+       kubectl port-forward "${APP_INSTANCE_NAME}-mongo-0" 27017:27017 --namespace "${NAMESPACE}"
+       ```
+
+      In you main terminal:
+
+      ```shell
+      mongo
+      ```
+
+      In the response, you should see a MongoDB welcome message:
+
+      ```shell
+      To enable free monitoring, run the following command: db.enableFreeMonitoring()
+      To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+      ---
+
+      rs0:PRIMARY> 
+      ```
+
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+  componentKinds:
+  - group: v1
+    kind: PersistentVolumeClaim
+  - group: v1
+    kind: Service
+  - group: apps/v1beta2
+    kind: StatefulSet
