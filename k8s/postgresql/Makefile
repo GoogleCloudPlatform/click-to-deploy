@@ -63,4 +63,3 @@ show-config:
 	echo "command:";\
 	echo "PGPASSWORD=$$psqlpass psql sslmode=require -U$$psqluser -h $$psqladdr";\
 	echo
-
