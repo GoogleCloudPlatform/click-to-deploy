@@ -218,8 +218,6 @@ kubectl -n $NAMESPACE delete pod $(kubectl -n$NAMESPACE get pod -oname | \
 	sed -n /\\/$APP_INSTANCE_NAME-postgresql-deployment/s.pods\\?/..p)
 ```
 
-# Logging and Monitoring
-
 # Deleting your PostgreSQL installation
 
 > Warning: The following command deletes PostgreSQL from your cluster. If you
