@@ -42,7 +42,7 @@ Create a new cluster from the command line:
 export CLUSTER=mongodb-cluster
 export ZONE=us-central1-b
 
-gcloud container clusters create "$CLUSTER" --zone "$ZONE"
+gcloud container clusters create "$CLUSTER" --zone "$ZONE" --machine-type n1-standard-2 --num-nodes 3
 ```
 
 Configure `kubectl` to connect to the new cluster:
