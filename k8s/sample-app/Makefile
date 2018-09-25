@@ -13,18 +13,18 @@ APP_DEPLOYER_IMAGE ?= $(REGISTRY)/nginx/deployer:$(TAG)
 NAME ?= sample-app
 
 ifdef IMAGE_SAMPLE_APP
-  IMAGE_SAMPLE_APP = , "IMAGE_SAMPLE_APP": "$(IMAGE_SAMPLE_APP)"
+  IMAGE_SAMPLE_APP_FIELD = , "IMAGE_SAMPLE_APP": "$(IMAGE_SAMPLE_APP)"
 endif
 
 ifdef SAMPLE_APP_PARAMETER1
-  SAMPLE_APP_PARAMETER1 = , "SAMPLE_APP_PARAMETER1": "$(SAMPLE_APP_PARAMETER1)"
+  SAMPLE_APP_PARAMETER1_FIELD = , "SAMPLE_APP_PARAMETER1": "$(SAMPLE_APP_PARAMETER1)"
 endif
 
 APP_PARAMETERS ?= { \
   "APP_INSTANCE_NAME": "$(NAME)", \
   "NAMESPACE": "$(NAMESPACE)" \
-  $(IMAGE_SAMPLE_APP) \
-  $(SAMPLE_APP_PARAMETER1) \
+  $(IMAGE_SAMPLE_APP_FIELD) \
+  $(SAMPLE_APP_PARAMETER1_FIELD) \
 }
 APP_TEST_PARAMETERS ?= {}
 
@@ -67,8 +67,8 @@ app/build:: .build/nginx/debian9  \
 .build/nginx/nginx: .build/var/REGISTRY \
                     .build/var/TAG \
                     | .build/nginx
-	docker pull launcher.gcr.io/google/nginx1baaaad:$(TAG)
-	docker tag launcher.gcr.io/google/nginx1baaaad:$(TAG) \
+	docker pull launcher.gcr.io/google/nginx1:$(TAG)
+	docker tag launcher.gcr.io/google/nginx1:$(TAG) \
 	    "$(REGISTRY)/nginx:$(TAG)"
 	docker push "$(REGISTRY)/nginx:$(TAG)"
 	@touch "$@"

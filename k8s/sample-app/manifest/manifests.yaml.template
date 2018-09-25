@@ -14,7 +14,7 @@ spec:
   storageClassName: standard
 ---
 kind: Deployment
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 metadata:
   name: $APP_INSTANCE_NAME-sample-app-deployment
   labels: &DeploymentLabels
@@ -23,10 +23,10 @@ metadata:
 spec:
   replicas: 1
   selector:
-    matchLabels: *sample-appDeploymentLabels
+    matchLabels: *DeploymentLabels
   template:
     metadata:
-      labels: *sample-appDeploymentLabels
+      labels: *DeploymentLabels
     spec:
       volumes:
       - name: $APP_INSTANCE_NAME-sample-app-pvc
@@ -46,7 +46,7 @@ spec:
             port: 80
         env:
         - name: SAMPLE_APP_PARAMETER1
-          value: $SAMPLE_APP_PARAMETER1
+          value: '$SAMPLE_APP_PARAMETER1'
         resources:
           limits:
             memory: 1.0Gi
@@ -54,15 +54,15 @@ spec:
             memory: 1.0Gi
 ---
 kind: Service
-kpiVersion: v1
+apiVersion: v1
 metadata:
   name: $APP_INSTANCE_NAME-sample-app-service
-  labels: &sample-appDeploymentLabels
+  labels: &DeploymentLabels
     app.kubernetes.io/name: $APP_INSTANCE_NAME
     app.kubernetes.io/component: sample-app-instance
 spec:
   type: NodePort
-  selector: *sample-appDeploymentLabels
+  selector: *DeploymentLabels
   ports:
     - protocol: TCP
       port: 80
