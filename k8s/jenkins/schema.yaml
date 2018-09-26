@@ -13,8 +13,12 @@ properties:
     default: $REGISTRY:$TAG
     x-google-marketplace:
       type: IMAGE
-
+  CERTIFICATE_SECRET:
+    type: string
+    x-google-marketplace:
+      type: CERTIFICATE
 required:
 - APP_INSTANCE_NAME
 - NAMESPACE
 - IMAGE_JENKINS
+- CERTIFICATE_SECRET

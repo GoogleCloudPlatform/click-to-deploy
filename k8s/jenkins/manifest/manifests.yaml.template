@@ -108,9 +108,8 @@ metadata:
     app.kubernetes.io/name: $APP_INSTANCE_NAME
     app.kubernetes.io/component: jenkins-master
 spec:
-# Resource Secret $APP_INSTANCE_NAME-tls is created by deployer via entrypoint.sh
   tls:
-  - secretName: $APP_INSTANCE_NAME-tls
+  - secretName: $CERTIFICATE_SECRET
   backend:
     serviceName: $APP_INSTANCE_NAME-jenkins-ui
     servicePort: 8080
