@@ -109,7 +109,18 @@ metadata:
     app.kubernetes.io/component: jenkins-master
 spec:
   tls:
-  - secretName: $CERTIFICATE_SECRET
+  - secretName: $APP_INSTANCE_NAME-tls
   backend:
     serviceName: $APP_INSTANCE_NAME-jenkins-ui
     servicePort: 8080
+---
+apiVersion: extensions/v1beta1
+kind: Secret
+metadata:
+  name: $APP_INSTANCE_NAME-tls
+  labels:
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/component: jenkins-master
+data:
+	server.crt: $CERTIFICATE_CRT
+	server.key: $CERTIFICATE_KEY
