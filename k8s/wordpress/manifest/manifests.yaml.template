@@ -129,7 +129,7 @@ spec:
             fi
             mkdir -m755 $wpadm
             chown www-data:www-data $wpadm
-            cat <<EOF >> $wpadm/.htaccess
+            cat <<EOF > $wpadm/.htaccess
             Require all denied
             <If "%{HTTP_USER_AGENT} =~ /^(kube-probe|GoogleHC)/ && %{HTTP:X-Forwarded-For} =~ /^$/">
               Require all granted
