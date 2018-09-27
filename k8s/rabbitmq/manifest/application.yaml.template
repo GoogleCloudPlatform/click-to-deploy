@@ -129,10 +129,6 @@ spec:
     kind: ConfigMap
   - group: v1
     kind: PersistentVolumeClaim
-  - group: rbac.authorization.k8s.io/v1
-    kind: Role
-  - group: rbac.authorization.k8s.io/v1
-    kind: RoleBinding
   - group: apps/v1beta2
     kind: StatefulSet
   - group: v1
