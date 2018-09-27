@@ -8,10 +8,14 @@ include ../vendor/marketplace-tools/var.Makefile
 TAG ?= 4.0.1
 $(info ---- TAG = $(TAG))
 
-#CONTAINER_REGISTRY ?= "gcr.io/cloud-marketplace-ops-test"
-CONTAINER_REGISTRY ?= "gcr.io/orbitera-dev"
-APP_DEPLOYER_IMAGE ?= $(REGISTRY)/mongodb/deployer:$(TAG)
+#temporarry 
+CONTAINER_REGISTRY ?= gcr.io/cloud-marketplace-ops-test
+
+
+SOURCE_REGISTRY_SOLUTION_NAME ?= mongodb4
+DESTYNATION_REGISTRY_SOLUTION_NAME ?= mongodb4
 NAME ?= mongodb-1
+APP_DEPLOYER_IMAGE ?= $(REGISTRY)/$(DESTYNATION_REGISTRY_SOLUTION_NAME)/deployer:$(TAG)
 
 ifdef IMAGE_MONGODB
   IMAGE_MONGODB_FIELD = , "IMAGE_MONGODB": "$(IMAGE_MONGODB)"
@@ -47,7 +51,7 @@ app/build:: .build/mongodb/mongo-sidecar \
                          .build/var/TAG \
                          | .build/mongodb
 	docker build \
-	    --build-arg REGISTRY="$(REGISTRY)/mongodb" \
+	    --build-arg REGISTRY="$(REGISTRY)/$(SOURCE_REGISTRY_SOLUTION_NAME)" \
 	    --build-arg TAG="$(TAG)" \
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
 	    -f deployer/Dockerfile \
@@ -59,16 +63,16 @@ app/build:: .build/mongodb/mongo-sidecar \
 .build/mongodb/mongodb: .build/var/REGISTRY \
                         .build/var/TAG \
                         | .build/mongodb
-	docker pull $(CONTAINER_REGISTRY)/mongodb:$(TAG)
-	docker tag $(CONTAINER_REGISTRY)/mongodb:$(TAG) "$(REGISTRY)/mongodb:$(TAG)"
-	docker push "$(REGISTRY)/mongodb:$(TAG)"
+	docker pull $(CONTAINER_REGISTRY)/$(SOURCE_REGISTRY_SOLUTION_NAME):$(TAG)
+	docker tag $(CONTAINER_REGISTRY)/$(SOURCE_REGISTRY_SOLUTION_NAME):$(TAG) "$(REGISTRY)/$(DESTYNATION_REGISTRY_SOLUTION_NAME):$(TAG)"
+	docker push "$(REGISTRY)/$(DESTYNATION_REGISTRY_SOLUTION_NAME):$(TAG)"
 	@touch "$@"
 
 
 .build/mongodb/mongo-sidecar: .build/var/REGISTRY \
                         .build/var/TAG \
                         | .build/mongodb
-	docker pull $(CONTAINER_REGISTRY)/mongodb/mongodb-sidecar:$(TAG)
-	docker tag $(CONTAINER_REGISTRY)/mongodb/mongodb-sidecar:$(TAG) "$(REGISTRY)/mongodb/mongodb-sidecar:$(TAG)"
-	docker push "$(REGISTRY)/mongodb/mongodb-sidecar:$(TAG)"
+	docker pull $(CONTAINER_REGISTRY)/$(SOURCE_REGISTRY_SOLUTION_NAME)/mongodb-sidecar:$(TAG)
+	docker tag $(CONTAINER_REGISTRY)/$(SOURCE_REGISTRY_SOLUTION_NAME)/mongodb-sidecar:$(TAG) "$(REGISTRY)/$(DESTYNATION_REGISTRY_SOLUTION_NAME)/mongodb-sidecar:$(TAG)"
+	docker push "$(REGISTRY)/$(DESTYNATION_REGISTRY_SOLUTION_NAME)/mongodb-sidecar:$(TAG)"
 	@touch "$@"
