@@ -12,7 +12,7 @@ RUN cat /data/schema.yaml \
     && mv /data/schema.yaml.new /data/schema.yaml
 
 RUN mv -f /bin/deploy.sh /bin/deploy-original.sh \
-    && mv -f /bin/deploy_with_tests.sh /bin/deploy_with_tests.sh-original \
+    && mv -f /bin/deploy_with_tests.sh /bin/deploy_with_tests-original.sh \
     && cp /bin/clean_iam_resources.sh /bin/clean_iam_resources-original.sh \
     && echo '#!/bin/bash\nexit' > /bin/clean_iam_resources.sh
 

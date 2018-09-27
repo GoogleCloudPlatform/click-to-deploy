@@ -54,6 +54,7 @@ app_api_version=$(kubectl get "applications/$NAME" \
   --namespace="$NAMESPACE" \
   --output=jsonpath='{.apiVersion}')
 
+## tls
 application_uid=$app_uid
 kubectl patch secret ${name}-tls -p \
 '
@@ -71,6 +72,7 @@ kubectl patch secret ${name}-tls -p \
 	}
 }
 '
+## tls
 
 create_manifests.sh --mode="test"
 
