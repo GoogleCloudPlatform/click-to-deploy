@@ -118,7 +118,27 @@ spec:
         - name: deny-access-before-configuration
           image: $IMAGE_WORDPRESS
 
-          command: ["sh", "-c", "ipadm=$WPADMINISTRATOR_IP_ADDRESS; wpadm=/var/www/html/wp-admin/; if [[ -d $wpadm ]]; then exit; fi; mkdir -m755 $wpadm; chown www-data:www-data $wpadm; echo 'Require all denied\n<If \"%{HTTP_USER_AGENT} =~ /^(kube-probe|GoogleHC)/ && %{HTTP:X-Forwarded-For} =~ /^$/\">\n  Require all granted\n  DirectoryIndex /wp-admin/install.php\n</If>\n<If \"%{HTTP:X-Forwarded-For} =~ /^'${ipadm:=127.0.0.1}'/\">\n  Require all granted\n</If>' >> $wpadm/.htaccess"]
+          command: 
+          - "/bin/bash"
+          - "-c"
+          - |
+            ipadm=$WPADMINISTRATOR_IP_ADDRESS
+            wpadm=/var/www/html/wp-admin/
+            if [[ -d $wpadm ]]; then
+              exit
+            fi
+            mkdir -m755 $wpadm
+            chown www-data:www-data $wpadm
+            cat <<EOF >> $wpadm/.htaccess
+            Require all denied
+            <If "%{HTTP_USER_AGENT} =~ /^(kube-probe|GoogleHC)/ && %{HTTP:X-Forwarded-For} =~ /^$/">
+              Require all granted
+              DirectoryIndex /wp-admin/install.php
+            </If>
+            <If "%{HTTP:X-Forwarded-For} =~ /^${ipadm:=127.0.0.1}/">
+              Require all granted
+            </If>
+            EOF
           volumeMounts:
           - name: $APP_INSTANCE_NAME-wordpress-pvc
             mountPath: /var/www/html
