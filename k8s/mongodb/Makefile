@@ -8,9 +8,7 @@ include ../vendor/marketplace-tools/var.Makefile
 TAG ?= 4.0.1
 $(info ---- TAG = $(TAG))
 
-#temporarry 
-CONTAINER_REGISTRY ?= gcr.io/cloud-marketplace-ops-test
-
+CONTAINER_REGISTRY ?= launcher.gcr.io/google
 
 SOURCE_REGISTRY_SOLUTION_NAME ?= mongodb4
 DESTYNATION_REGISTRY_SOLUTION_NAME ?= mongodb4

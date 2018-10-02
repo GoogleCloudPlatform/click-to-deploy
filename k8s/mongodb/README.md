@@ -1,7 +1,8 @@
 # Overview
 
-MongoDB is a NoSQL document-oriented database that stores JSON-like documents with dynamic schemas,
-simplifying the integration of data in content-driven applications.
+MongoDB is a NoSQL document-oriented database that stores JSON-like documents
+with dynamic schemas, which simplifies the integration of data in content-driven
+applications.
 
 [Learn more](https://www.mongodb.com).
 
@@ -99,7 +100,7 @@ export NAMESPACE=default
 Set the number of replicas for MongoDB:
 
 ```shell
-# Setting a single node in MongoDB cluster means single point of failure.
+# Setting a single node in MongoDB cluster creates a single point of failure.
 # For production environments, consider at least 3 replicas.
 export REPLICAS=3
 ```
@@ -117,8 +118,8 @@ The images above are referenced by
 that you pin each image to an immutable
 [content digest](https://docs.docker.com/registry/spec/api/#content-digests).
 This ensures that the installed application always uses the same images,
-until you are ready to upgrade. To get the digest for the image, use the
-following script:
+until you are ready to upgrade. To get the digest for the images, use the
+following scripts:
 
 ```shell
 for i in "IMAGE_MONGODB"; do
@@ -139,9 +140,10 @@ done
 ```
 
 
-#### Create namespace in your Kubernetes cluster
+#### Create a namespace in your Kubernetes cluster
 
-If you use a different namespace than the `default`, run the command below to create a new namespace:
+If you use a different namespace than the `default`, run the command below to
+create a new namespace:
 
 ```shell
 kubectl create namespace "$NAMESPACE"
@@ -166,8 +168,7 @@ Use `kubectl` to apply the manifest to your Kubernetes cluster:
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
 
-
-#### View the app in the Google Cloud Console
+#### View the app in the GCP Console
 
 To get the Console URL for your app, run the following command:
 
@@ -187,7 +188,7 @@ On one of the MongoDB containers, run the `rs.status()` command.
 ```shell
 kubectl exec "${APP_INSTANCE_NAME}-mongo-0" --namespace "${NAMESPACE}" -c mongo -- mongo --eval "rs.status()"
 ```
-The command will give a output similar to the below:
+If the deployment is successful, the output is similar to the status below:
 
 ```shell
 MongoDB shell version v4.0.1
@@ -239,10 +240,11 @@ MongoDB server version: 4.0.1
 
 ### Connecting to MongoDB (internal access)
 
-If you have installed mongodb-org-shell package, you can connect to the MongoDB service without exposing your cluster
-for public access, using the following options:
+If you have installed the `mongodb-org-shell` package, you can connect to the
+MongoDB service without exposing your cluster for public access, using the
+following steps:
 
-* Use port forwarding to access the service, run the following command:
+* To use port forwarding to access the service, run the following command:
 
      ```shell
      kubectl port-forward "${APP_INSTANCE_NAME}-mongo-0" 27017:27017 --namespace "${NAMESPACE}"
@@ -268,7 +270,8 @@ for public access, using the following options:
 
 ### Scaling the cluster up
 
-By default, the MongoDB app is deployed using 3 replicas. To change the number of replicas, use the following command:
+By default, the MongoDB app is deployed using 3 replicas. To change the number
+of replicas, use the following command:
 
 ```
 kubectl scale statefulsets "$APP_INSTANCE_NAME-mongo" \
@@ -284,7 +287,9 @@ To scale down run the following command:
 ```shell
   kubectl scale statefulsets "$APP_INSTANCE_NAME-mongo" -n "$NAMESPACE" --replicas=[NEW_REPLICAS]
 ```
-Please remember to delete unused POD's storage.
+
+If you scale down your cluster, you must also delete any storage volumes that
+the Pods were using.
 
 For more information about scaling StatefulSets, see the
 [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/#kubectl-scale).
@@ -293,20 +298,20 @@ For more information about scaling StatefulSets, see the
 
 ### Backing up your data
 
-Back up your MongoDB data.
-
-To backup your MongoDB databases just run the backup script [`scripts/backup.sh`](scripts/backup.sh).
+To backup your MongoDB databases, run the backup script
+[`scripts/backup.sh`](scripts/backup.sh), using the following command:
 
 ```shell
  scripts/backup.sh -n "$NAMESPACE" -c mongo -p "$APP_INSTANCE_NAME-mongo" -a backup-mongo
 ```
 
-After you run the script, the backup-mongo.tgz` file contains
-the backup will be on your local machine.
+After you run the script, a `backup-mongo.tgz` file is stored on your local
+machine.
 
 ### Restoring
 
-In the directory that contains your backup files, run the restore script [`scripts/backup.sh`](scripts/backup.sh).
+In the directory that contains your backup files, run the restore script
+[`scripts/backup.sh`](scripts/backup.sh), using the following command:
 
 ```shell
  scripts/restore.sh -n "$NAMESPACE" -c mongo -p "$APP_INSTANCE_NAME-mongo" -a <backup file name>
@@ -315,9 +320,12 @@ In the directory that contains your backup files, run the restore script [`scrip
 # Updating the app
 
 Before updating, we recommend backing up your data.
-Please visit MongoDB release notes page and read manual "Upgrade a Replica Set"
-for your version.
-[MongoDB release notes](https://docs.mongodb.com/manual/release-notes).
+
+For information on updates to MongoDB, see the
+[MongoDB release notes](https://docs.mongodb.com/manual/release-notes). For
+an overview of upgrading, see the **Upgrade a Replica Set** topic for the
+version that you want to upgrade to. For example, if you are upgrading to
+MongoDB 4.0, see [Upgrade a Replica Set to 4.0](https://docs.mongodb.com/manual/release-notes/4.0-upgrade-replica-set/).
 
 ## Update the cluster nodes
 
@@ -343,7 +351,6 @@ After this operation, the StatefulSet has a new image configured for the
 containers. However, because of the OnDelete update strategy on the
 StatefulSet, the pods will not automatically restart, please falow [MongoDB procedure](https://docs.mongodb.com/manual/release-notes).
 
-
 ## Using the Google Cloud Platform Console
 
 1. In the GCP Console, open [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
@@ -365,7 +372,9 @@ export NAMESPACE=default
 
 ### Delete the resources
 
-> **NOTE:** We recommend to use a kubectl version that is the same as the version of your cluster. Using the same versions of kubectl and the cluster helps avoid unforeseen issues.
+> **NOTE:** We recommend using a `kubectl` version that is the same as the
+  version of your cluster. Using the same versions of `kubectl` and the cluster
+  helps avoid unforeseen issues.
 
 To delete the resources, use the expanded manifest file used for the
 installation.
@@ -384,7 +393,7 @@ kubectl delete application,statefulset,service \
   --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
 
-### Delete the persistent volumes of your installation
+### Delete the persistent volumes
 
 By design, the removal of StatefulSets in Kubernetes does not remove
 PersistentVolumeClaims that were attached to their Pods. This prevents your
