@@ -26,6 +26,12 @@ The deployment creates two services:
   cluster with port forwarding or using a LoadBalancer,
 - and service discovery - a headless service for connections between
   the RabbitMQ nodes.
+  
+RabbitMQ K8s application has the following ports configured:
+- ports 5671 and 5672 are enabled for communication from AMQP clients,
+- port 4369 is enabled to allow for peer discovery,
+- port 15672 is enabled for RabbitMQ administration over HTTP API,
+- port 25672 is enabled as distribution port for communication with CLI tools.
 
 This deployment applies configuration of HA policy, which configures mirroring for all RabbitMQ nodes in the cluster and automatically synchronizes with new mirrors joining the cluster. It is enabled as part of the installation, on each node's `postStart` event.
 
