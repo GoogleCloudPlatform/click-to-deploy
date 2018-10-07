@@ -26,8 +26,8 @@ The deployment creates two services:
   cluster with port forwarding or using a LoadBalancer,
 - and service discovery - a headless service for connections between
   the RabbitMQ nodes.
- 
-This deployment includes automated enabling the Highly Available policies. It is enabled as part of the installation, on each node's `postStart` event.
+
+This deployment applies configuration of HA policy, which configures mirroring for all RabbitMQ nodes in the cluster and automatically synchronizes with new mirrors joining the cluster. It is enabled as part of the installation, on each node's `postStart` event.
 
 # Installation
 
