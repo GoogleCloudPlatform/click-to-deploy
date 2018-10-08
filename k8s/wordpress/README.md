@@ -8,6 +8,14 @@ WordPress is web publishing software used to create websites and blogs.
 
 Popular open stacks on Kubernetes packaged by Google.
 
+## Design
+
+![Architecture diagram](resources/wordpress-k8s-app-architecture.png)
+
+### Solution Information
+
+TBD
+
 # Installation
 
 ## Quick install with Google Cloud Marketplace
