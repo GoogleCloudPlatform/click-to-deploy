@@ -14,7 +14,12 @@ Popular open stacks on Kubernetes packaged by Google.
 
 ### Solution Information
 
-TBD
+WordPress solution exposes its interface on port 80.
+
+Separate StatefulSet Kubernetes objects are used to manage instance of WordPress and instance of MySQL database.
+
+WordPress instance connects to MySQL database over 3306 port. WordPress stores information in MySQL in '''wordpress''' database.
+
 
 # Installation
 
