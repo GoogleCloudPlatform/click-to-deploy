@@ -15,8 +15,8 @@ Popular open stacks on Kubernetes packaged by Google.
  
 ### Solution Information
  
-RabbitMQ cluster is deployed within a Kubernetes StatefulSet. The configuration
-is attached with a ConfigMap (which contents is copied to writable location at
+RabbitMQ cluster is deployed within a Kubernetes `StatefulSet`. The configuration
+is attached with a `ConfigMap` (which contents is copied to writable location at
 `/etc/rabbitmq` by an init container). An Erlang cookie required by
 the application is generated dynamically and passed to the deployment with
 a Secret object.
@@ -28,10 +28,10 @@ The deployment creates two services:
   the RabbitMQ nodes.
   
 RabbitMQ K8s application has the following ports configured:
-- ports 5671 and 5672 are enabled for communication from AMQP clients,
-- port 4369 is enabled to allow for peer discovery,
-- port 15672 is enabled for RabbitMQ administration over HTTP API,
-- port 25672 is enabled as distribution port for communication with CLI tools.
+- ports `5671` and `5672` are enabled for communication from AMQP clients,
+- port `4369` is enabled to allow for peer discovery,
+- port `15672` is enabled for RabbitMQ administration over HTTP API,
+- port `25672` is enabled as distribution port for communication with CLI tools.
 
 This deployment applies configuration of HA policy, which configures mirroring for all RabbitMQ nodes in the cluster and automatically synchronizes with new mirrors joining the cluster. It is enabled as part of the installation, on each node's `postStart` event.
 
