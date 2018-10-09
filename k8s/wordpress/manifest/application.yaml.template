@@ -54,8 +54,8 @@ spec:
   - name: WordPress external IP
     type: Reference
     valueFrom:
-      serviceRef:
-        name: $APP_INSTANCE_NAME-wordpress-svc
+      ingressRef:
+        name: $APP_INSTANCE_NAME-wordpress
   selector:
     matchLabels:
       app.kubernetes.io/name: "$APP_INSTANCE_NAME"

@@ -131,13 +131,18 @@ export WORDPRESS_DB_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
 export WPADMINISTRATOR_IP_ADDRESS=<YOUR COMPUTER EXTERNAL IP ADDRESS>
 ```
 
+To find out your external ip address you can ask your network administrator, check it on [whatismyip.com](https://www.whatismyip.com/) or any other public website providing this information, or use a command line tool:
+```
+dig +short myip.opendns.com @resolver3.opendns.com
+```
+
 If you use a different namespace than the `default`, run the command below to create a new namespace:
 
 ```shell
 kubectl create namespace "$NAMESPACE"
 ```
 
-Initially Wordpress installation is open to the world, anyone can create user and password, to avoid taking over the application, access to /wp-admin is restricted to WPADMINISTRATOR_IP_ADDRESS. If you don't set the address, the default will be 127.0.0.1, it means noone will be able to configure Wordpress. To change it, you will need to edit /var/www/html/wp-admin/.htaccess file. To completely remove access control run following command:
+Initially Wordpress installation is open to the world, anyone can create user and password, to avoid taking over the application, access to /wp-admin is restricted to WPADMINISTRATOR_IP_ADDRESS. If you don't set the address, the default will be 127.0.0.1, it means no one will be able to configure Wordpress. To change it, you will need to edit /var/www/html/wp-admin/.htaccess file. To completely remove access control run following command after the application is deployed:
 
 ```shell
 kubectl exec --namespace $NAMESPACE $APP_INSTANCE_NAME-wordpress-0 \
