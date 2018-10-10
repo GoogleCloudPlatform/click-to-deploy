@@ -6,8 +6,9 @@ include ../vendor/marketplace-tools/ubbagent.Makefile
 include ../vendor/marketplace-tools/var.Makefile
 
 
-TAG ?= 9.6-kubernetes
-IMAGE_POSTGRESQL ?= launcher.gcr.io/google/postgresql9:$(TAG)
+TAG ?= 9.6
+SRCTAG ?= 9.6-kubernetes
+IMAGE_POSTGRESQL ?= launcher.gcr.io/google/postgresql9:$(SRCTAG)
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/postgresql/deployer:$(TAG)

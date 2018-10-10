@@ -9,6 +9,32 @@ Message Queuing Protocol (AMQP) to serve a variety of messaging applications.
 
 Popular open stacks on Kubernetes packaged by Google.
 
+## Design
+ 
+![Architecture diagram](resources/rabbitmq-k8s-app-architecture.png)
+ 
+### Solution Information
+ 
+RabbitMQ cluster is deployed within a Kubernetes `StatefulSet`. The configuration
+is attached with a `ConfigMap` (which contents is copied to writable location at
+`/etc/rabbitmq` by an init container). An Erlang cookie required by
+the application is generated dynamically and passed to the deployment with
+a Secret object.
+ 
+The deployment creates two services:
+- client-facing one, designed to be used for client connections to the RabbitMQ
+  cluster with port forwarding or using a LoadBalancer,
+- and service discovery - a headless service for connections between
+  the RabbitMQ nodes.
+  
+RabbitMQ K8s application has the following ports configured:
+- ports `5671` and `5672` are enabled for communication from AMQP clients,
+- port `4369` is enabled to allow for peer discovery,
+- port `15672` is enabled for RabbitMQ administration over HTTP API,
+- port `25672` is enabled as distribution port for communication with CLI tools.
+
+This deployment applies configuration of HA policy, which configures mirroring for all RabbitMQ nodes in the cluster and automatically synchronizes with new mirrors joining the cluster. It is enabled as part of the installation, on each node's `postStart` event.
+
 # Installation
 
 ## Quick install with Google Cloud Marketplace
@@ -169,17 +195,31 @@ the [Kubernetes Engine documentation](https://cloud.google.com/kubernetes-engine
 Use `envsubst` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
-```shell
-awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_RABBITMQ $IMAGE_RABBITMQ_INIT $REPLICAS $RABBITMQ_ERLANG_COOKIE $RABBITMQ_DEFAULT_USER $RABBITMQ_DEFAULT_PASS' \
-  > "${APP_INSTANCE_NAME}_manifest.yaml"
-```
+1. Expand `RBAC` YAML file. You must configure RBAC related stuff to support access nodes information successfully by `rabbitmq_peer_discovery_k8s` plugin.
+
+    ```shell
+    # Define name of service account
+    export RABBITMQ_SERVICE_ACCOUNT=$APP_INSTANCE_NAME-rabbitmq-sa
+    # Expand rbac.yaml.template
+    envsubst '$APP_INSTANCE_NAME' < scripts/rbac.yaml.template > "${APP_INSTANCE_NAME}_rbac.yaml"
+    ```
+
+1. Expand `Application`/`Secret`/`StatefulSet`/`ConfigMap` YAML files.
+
+    ```shell
+    awk 'BEGINFILE {print "---"}{print}' manifest/* \
+      | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_RABBITMQ $IMAGE_RABBITMQ_INIT $REPLICAS $RABBITMQ_ERLANG_COOKIE $RABBITMQ_DEFAULT_USER $RABBITMQ_DEFAULT_PASS $RABBITMQ_SERVICE_ACCOUNT' \
+      > "${APP_INSTANCE_NAME}_manifest.yaml"
+    ```
 
 #### Apply the manifest to your Kubernetes cluster
 
 Use `kubectl` to apply the manifest to your Kubernetes cluster:
 
 ```shell
+# rbac.yaml
+kubectl apply -f "${APP_INSTANCE_NAME}_rbac.yaml" --namespace "${NAMESPACE}"
+# manifest.yaml
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
 
@@ -399,7 +439,10 @@ installation.
 Run `kubectl` on the expanded manifest file:
 
 ```shell
-kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
+# manifest.yaml
+kubectl delete -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
+# rbac.yaml
+kubectl delete -f "${APP_INSTANCE_NAME}_rbac.yaml" --namespace "${NAMESPACE}"
 ```
 
 Otherwise, delete the resources using types and a label:
