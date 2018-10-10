@@ -9,7 +9,7 @@ include ../vendor/marketplace-tools/var.Makefile
 TAG ?= latest
 $(info ---- TAG = $(TAG))
 
-APP_DEPLOYER_IMAGE ?= $(REGISTRY)/nginx/deployer:$(TAG)
+APP_DEPLOYER_IMAGE ?= $(REGISTRY)/sample-app/deployer:$(TAG)
 NAME ?= sample-app
 
 ifdef IMAGE_SAMPLE_APP
@@ -29,33 +29,33 @@ APP_PARAMETERS ?= { \
 APP_TEST_PARAMETERS ?= {}
 
 
-app/build:: .build/nginx/debian9  \
-            .build/nginx/deployer \
-            .build/nginx/nginx
+app/build:: .build/sample-app/debian9  \
+            .build/sample-app/deployer \
+            .build/sample-app/sample-app
 
 
-.build/nginx: | .build
+.build/sample-app: | .build
 	mkdir -p "$@"
 
 
-.build/nginx/debian9: .build/var/REGISTRY \
+.build/sample-app/debian9: .build/var/REGISTRY \
                       .build/var/TAG \
-                      | .build/nginx
+                      | .build/sample-app
 	docker pull launcher.gcr.io/google/debian9
-	docker tag launcher.gcr.io/google/debian9 "$(REGISTRY)/nginx/debian9:$(TAG)"
-	docker push "$(REGISTRY)/nginx/debian9:$(TAG)"
+	docker tag launcher.gcr.io/google/debian9 "$(REGISTRY)/sample-app/debian9:$(TAG)"
+	docker push "$(REGISTRY)/sample-app/debian9:$(TAG)"
 	@touch "$@"
 
 
-.build/nginx/deployer: deployer/* \
+.build/sample-app/deployer: deployer/* \
                        manifest/* \
                        schema.yaml \
                        .build/var/APP_DEPLOYER_IMAGE \
                        .build/var/REGISTRY \
                        .build/var/TAG \
-                       | .build/nginx
+                       | .build/sample-app
 	docker build \
-	    --build-arg REGISTRY="$(REGISTRY)/nginx" \
+	    --build-arg REGISTRY="$(REGISTRY)/sample-app" \
 	    --build-arg TAG="$(TAG)" \
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
 	    -f deployer/Dockerfile \
@@ -64,12 +64,12 @@ app/build:: .build/nginx/debian9  \
 	@touch "$@"
 
 
-.build/nginx/nginx: .build/var/REGISTRY \
+.build/sample-app/sample-app: .build/var/REGISTRY \
                     .build/var/TAG \
-                    | .build/nginx
+                    | .build/sample-app
 	docker pull launcher.gcr.io/google/nginx1:$(TAG)
 	docker tag launcher.gcr.io/google/nginx1:$(TAG) \
-	    "$(REGISTRY)/nginx:$(TAG)"
-	docker push "$(REGISTRY)/nginx:$(TAG)"
+	    "$(REGISTRY)/sample-app:$(TAG)"
+	docker push "$(REGISTRY)/sample-app:$(TAG)"
 	@touch "$@"
 
