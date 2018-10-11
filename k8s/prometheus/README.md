@@ -233,7 +233,7 @@ To expose Grafana with an external IP address, run the following command:
 ```shell
 kubectl patch svc "$APP_INSTANCE_NAME-grafana" \
   --namespace "$NAMESPACE" \
-  -p '{"spec": {"type": "LoadBalancer"}}
+  -p '{"spec": {"type": "LoadBalancer"}}'
 ```
 
 It might take a while for the external IP address to be created.
