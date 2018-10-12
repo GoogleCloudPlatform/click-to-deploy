@@ -173,7 +173,7 @@ To expose Grafana with a publicly available IP address, run the following comman
 ```shell
 kubectl patch svc "${APP_INSTANCE_NAME}-grafana" \
   --namespace "${NAMESPACE}" \
-  -p '{"spec": {"type": "LoadBalancer"}}
+  -p '{"spec": {"type": "LoadBalancer"}}'
 ```
 
 It might take a while for the service to be publicly available. After the
