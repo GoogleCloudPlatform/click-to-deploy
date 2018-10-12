@@ -54,6 +54,7 @@ Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 #### Set up command-line tools
 
 You'll need the following tools in your development environment:
+
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 - [docker](https://docs.docker.com/install/)
@@ -101,7 +102,7 @@ The Application resource is defined by the
 [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps) community. The source code can be found on
 [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
 
-### Install the Application
+#### Install the Application
 
 Navigate to the `influxdb` directory:
 
@@ -224,7 +225,7 @@ You could also use a local proxy to access InfluxDB that is not exposed publicly
 
 ```shell
 kubectl port-forward "${APP_INSTANCE_NAME}-influxdb-0" 8086 --namespace "${NAMESPACE}"
- ```
+```
 
 Now, in your main terminal you can invoke `influx` tool as follows:
 

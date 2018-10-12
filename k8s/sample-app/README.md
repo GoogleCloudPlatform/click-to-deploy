@@ -22,6 +22,7 @@ Get up and running with a few clicks! Install this Sample Application to a Googl
 #### Set up command line tools
 
 You'll need the following tools in your environment:
+
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - [docker](https://docs.docker.com/install/)

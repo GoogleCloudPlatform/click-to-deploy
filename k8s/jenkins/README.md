@@ -22,6 +22,7 @@ Get up and running with a few clicks! Install this Jenkins app to a Google Kuber
 #### Set up command line tools
 
 You'll need the following tools in your environment:
+
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - [docker](https://docs.docker.com/install/)
@@ -71,7 +72,7 @@ The Application resource is defined by the
 [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps) community. The source code can be found on
 [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
 
-### Install the Application
+#### Install the Application
 
 Navigate to the `jenkins` directory:
 
@@ -155,7 +156,7 @@ To view the app, open the URL in your browser.
 
 # Using the app
 
-### Sign in to your new Jenkins instance
+## Sign in to your new Jenkins instance
 
 To sign in to Jenkins, get the Jenkins HTTP/HTTPS address and the Jenkins 
 master pod name:
@@ -177,7 +178,7 @@ To get your Jenkins password, run the following command:
 kubectl -n $NAMESPACE exec $MASTER_POD cat /var/jenkins_home/secrets/initialAdminPassword
 ```
 
-### Follow the on-screen steps
+## Follow the on-screen steps
 
 To set Jenkins, follow these on-screen steps to customize your installation:
 
@@ -243,7 +244,7 @@ URL:
 echo https://$EXTERNAL_IP/backup/launchrestore
 ```
 
-# Updating 
+# Updating
 
 To update your Jenkins installation, delete your Jenkins pod, and install
 a new version from GCP marketplace. Back up your data, and run the following command:

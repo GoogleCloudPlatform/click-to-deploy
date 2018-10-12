@@ -23,6 +23,7 @@ Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 #### Set up command-line tools
 
 You'll need the following tools in your development environment:
+
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 - [docker](https://docs.docker.com/install/)
@@ -77,7 +78,7 @@ The Application resource is defined by the
 community. The source code can be found on
 [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
 
-### Install the Application
+#### Install the Application
 
 Navigate to the `grafana` directory:
 

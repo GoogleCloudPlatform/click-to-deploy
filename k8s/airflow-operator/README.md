@@ -31,6 +31,7 @@ Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 #### Set up command-line tools
 
 You'll need the following tools in your development environment:
+
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 - [docker](https://docs.docker.com/install/)
@@ -52,6 +53,7 @@ Configure `kubectl` to connect to the new cluster:
 ```shell
 gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 ```
+
 Configure `gcloud` as a Docker credential helper:
 
 ```shell
@@ -72,6 +74,7 @@ An Application resource is a collection of individual Kubernetes components,
 such as Services, Deployments, and so on, that you can manage as a group.
 
 To set up your cluster to understand Application resources, run the following command:
+
 ```shell
 kubectl apply -f click-to-deploy/k8s/vendor/marketplace-tools/crd/*
 ```
@@ -83,7 +86,7 @@ The Application resource is defined by the
 community. The source code can be found on
 [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
 
-### Install the Application
+#### Install the Application
 
 Navigate to the `airflow-operator` directory.
 
@@ -174,6 +177,7 @@ To get the Console URL for your app, run the following command:
 ```shell
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
 ```
+
 To view your app, open the URL in your browser.
 
 # Using Airflow Operator
