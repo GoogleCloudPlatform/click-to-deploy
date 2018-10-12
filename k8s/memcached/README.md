@@ -35,11 +35,18 @@ Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 #### Set up command-line tools
 
 You'll need the following tools in your development environment:
+
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 - [docker](https://docs.docker.com/install/)
 - [pip](https://pip.pypa.io/en/stable/installing/)
 - [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+
+Configure `gcloud` as a Docker credential helper:
+
+```shell
+gcloud auth configure-docker
+```
 
 #### Create a Google Kubernetes Engine cluster
 
@@ -84,7 +91,7 @@ The Application resource is defined by the
 community. The source code can be found on
 [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
 
-### Install the Application
+#### Install the Application
 
 Navigate to the `memcached` directory:
 
@@ -98,13 +105,13 @@ Choose an instance name and namespace for the app. You typically use
 [namespaces](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)
 if you have many users spread across multiple teams or projects.
 
-
 ```shell
 export APP_INSTANCE_NAME=memcached-1
 export NAMESPACE=default
 ```
 
 Set the number of replicas:
+
 ```shell
 export REPLICAS=3
 ```
@@ -172,7 +179,7 @@ To view your app, open the URL in your browser.
 
 1. Get the external IP address for the Memcached cluster.
 
-2. Configure your application to use the Memcached cluster as a cache.
+1. Configure your application to use the Memcached cluster as a cache.
    Typically, applications use specialized Memcached clients, such as
    [pymemcache](http://pymemcache.readthedocs.io/en/latest/getting_started.html).
    The clients run a hashing algorithm to select a Memcached server
@@ -201,6 +208,7 @@ To get the IP addresses of your Memcached instances using Python, you can use
 the `kubernetes` module.
 
 To install the `kubernetes` module, run the following command:
+
 ```shell
 pip install kubernetes
 ```

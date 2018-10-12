@@ -22,10 +22,17 @@ Get up and running with a few clicks! Install this PostgreSQL app to a Google Ku
 #### Set up command line tools
 
 You'll need the following tools in your environment:
+
 - [docker](https://docs.docker.com/install/)
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - [openssl](https://www.openssl.org/)
+
+Configure `gcloud` as a Docker credential helper:
+
+```shell
+gcloud auth configure-docker
+```
 
 #### Create a Google Kubernetes Engine cluster
 
@@ -72,7 +79,7 @@ The Application resource is defined by the
 [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps) community. The source code can be found on
 [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
 
-### Install the Application
+#### Install the Application
 
 Navigate to the `postgresql` directory:
 
@@ -197,7 +204,6 @@ kubectl --namespace $NAMESPACE exec -t \
 ```
 
 ## Restoring your data
-
 
 ```shell
 cat postgresql-backup.sql | kubectl --namespace $NAMESPACE exec -i \
