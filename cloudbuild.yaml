@@ -342,6 +342,32 @@ steps:
         --deployer="$$APP_DEPLOYER" \
         --parameters="$$APP_PARAMETERS"
 
+# SampleApp Verification
+
+- id: Build SampleApp
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  waitFor:
+  - Initialized
+  dir: k8s/sample-app
+  args:
+  - -exc
+  - make -j4 app/build
+
+- id: Verify SampleApp
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  waitFor:
+  - Initialized
+  - Build SampleApp
+  env:
+  - APP_DEPLOYER=gcr.io/cloud-marketplace-ops-test/sample-app/deployer:latest
+  - APP_PARAMETERS={}
+  args:
+  - -exc
+  - |
+    /scripts/verify \
+        --deployer="$$APP_DEPLOYER" \
+        --parameters="$$APP_PARAMETERS"
+
 # Wordpress Verification
 
 - id: Build Wordpress
