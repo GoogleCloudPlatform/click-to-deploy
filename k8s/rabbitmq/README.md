@@ -55,6 +55,12 @@ You'll need the following tools in your development environment:
 - [docker](https://docs.docker.com/install/)
 - [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
+Configure `gcloud` as a Docker credential helper:
+
+```shell
+gcloud auth configure-docker
+```
+
 #### Create a Google Kubernetes Engine cluster
 
 Create a new cluster from the command line.
