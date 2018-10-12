@@ -70,7 +70,7 @@ The Application resource is defined by the
 [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps) community. The source code can be found on
 [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
 
-### Install the Application
+#### Install the Application
 
 Navigate to the `sample-app` directory:
 
@@ -138,11 +138,11 @@ To view the app, open the URL in your browser.
 
 # Using the app
 
-### How to use Sample Application
+## How to use Sample Application
 
 How to use Sample App
 
-### Follow the on-screen steps
+## Follow the on-screen steps
 
 To set Sample App, follow these on-screen steps to customize your installation:
 
