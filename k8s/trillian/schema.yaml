@@ -1,0 +1,133 @@
+application_api_version: v1beta1
+properties:
+  NAME:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  NAMESPACE:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  # TODO(RJPercival): One image must be the "primary" image and have the same
+  # name as the product (i.e. "trillian"). The remaining images must have names
+  # nested under that, e.g. "trillian/signer".
+  IMAGE_TRILLIAN_LOGSERVER:
+    type: string
+    default: $REGISTRY/log_server:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  IMAGE_TRILLIAN_LOGSIGNER:
+    type: string
+    default: $REGISTRY/log_signer:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  TRILLIAN_LOGSERVER_REPLICAS:
+    type: integer
+    title: Trillian replicas
+    description: The number of Trillian log servers to run
+    default: 4
+    minimum: 1
+  TRILLIAN_LOGSIGNER_REPLICAS:
+    type: integer
+    title: Trillian replicas
+    description: The number of Trillian log signers to run
+    default: 2
+    minimum: 1
+  IMAGE_ETCD_OPERATOR:
+    type: string
+    default: quay.io/coreos/etcd-operator:v0.9.1
+    x-google-marketplace:
+      type: IMAGE
+  ETCD_CLUSTER_SIZE:
+    type: integer
+    title: Etcd cluster size
+    default: 3
+    minimum: 3
+  ETCD_VERSION:
+    type: string
+    title: Etcd version
+    default: 3.2.13
+  ETCD_SERVICE_ACCOUNT:
+    type: string
+    title: Etcd Service Account
+    description: Service account with privileges required by etcd-operator
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        roles:
+        - type: ClusterRole
+          rulesType: CUSTOM
+          rules:
+          - apiGroups:
+            - etcd.database.coreos.com
+            resources:
+            - etcdclusters
+            - etcdbackups
+            - etcdrestores
+            verbs:
+            - "*"
+          - apiGroups:
+            - apiextensions.k8s.io
+            resources:
+            - customresourcedefinitions
+            verbs:
+            - "*"
+          - apiGroups:
+            - ""
+            resources:
+            - pods
+            - services
+            - endpoints
+            - persistentvolumeclaims
+            - events
+            verbs:
+            - "*"
+          - apiGroups:
+            - apps
+            resources:
+            - deployments
+            verbs:
+            - "*"
+  IMAGE_MYSQL:
+    type: string
+    default: $REGISTRY/db_server:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  MYSQL_ROOT_PASSWORD:
+    type: string
+    title: MySQL root password, used to login as root and create the Trillian database
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 12
+  MYSQL_TRILLIAN_USER:
+    type: string
+    title: MySQL username for Trillian to use
+    default: trillian
+  MYSQL_TRILLIAN_PASSWORD:
+    type: string
+    title: MySQL password for Trillian to use
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 12
+  MYSQL_TRILLIAN_DATABASE:
+    type: string
+    title: MySQL database for Trillian to create and use
+    default: trillian
+required:
+- NAME
+- NAMESPACE
+- IMAGE_TRILLIAN_LOGSERVER
+- IMAGE_TRILLIAN_LOGSIGNER
+- TRILLIAN_LOGSERVER_REPLICAS
+- TRILLIAN_LOGSIGNER_REPLICAS
+- IMAGE_ETCD_OPERATOR
+- ETCD_CLUSTER_SIZE
+- ETCD_VERSION
+- ETCD_SERVICE_ACCOUNT
+- IMAGE_MYSQL
+- MYSQL_ROOT_PASSWORD
+- MYSQL_TRILLIAN_USER
+- MYSQL_TRILLIAN_PASSWORD
+- MYSQL_TRILLIAN_DATABASE

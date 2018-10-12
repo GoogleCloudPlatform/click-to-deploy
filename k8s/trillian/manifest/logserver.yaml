@@ -1,0 +1,108 @@
+apiVersion: v1
+kind: List
+items:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: $NAME-logserver-service
+    labels: &LogServerLabels
+      app.kubernetes.io/name: "$NAME"
+      app.kubernetes.io/component: logserver
+    annotations:
+        cloud.google.com/load-balancer-type: "Internal"
+  spec:
+    ports:
+    - name: grpclb
+      port: 8090
+    - name: metrics
+      port: 8091
+    selector: *LogServerLabels
+    type: LoadBalancer
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: $NAME-logserver-deployment
+    labels: *LogServerLabels
+  spec:
+    replicas: $TRILLIAN_LOGSERVER_REPLICAS
+    selector:
+      matchLabels: *LogServerLabels
+    template:
+      metadata:
+        labels: *LogServerLabels
+      spec:
+        volumes:
+        - name: google-cloud-key
+          secret:
+            secretName: trillian-key
+        restartPolicy: Always
+        containers:
+        - name: trillian-logserver
+          args: [
+          "$(STORAGE_FLAG)",
+          "--storage_system=$(STORAGE_SYSTEM)",
+          "--quota_system=etcd",
+          "--etcd_servers=$NAME-etcd-cluster-client:2379",
+          "--etcd_http_service=$NAME-logserver-http",
+          "--rpc_endpoint=0.0.0.0:8090",
+          "--http_endpoint=0.0.0.0:8091",
+          "--tracing",
+          "--alsologtostderr",
+          ]
+          envFrom:
+          - configMapRef:
+              name: ${NAME}-config
+          - secretRef:
+              name: ${NAME}-secrets
+          env:
+          - name: GOOGLE_APPLICATION_CREDENTIALS
+            value: "/var/secrets/google/key.json"
+          image: $IMAGE_TRILLIAN_LOGSERVER
+          imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: "1.0"
+            requests:
+              cpu: "0.4"
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8091
+            failureThreshold: 3
+            periodSeconds: 30
+            timeoutSeconds: 5
+          ports:
+          - containerPort: 8090
+            name: rpc
+          - containerPort: 8091
+            name: metrics
+          volumeMounts:
+          - name: google-cloud-key
+            mountPath: /var/secrets/google
+        - name: prometheus-to-sd
+          image: $IMAGE_PROMETHEUS_TO_SD
+          ports:
+          - name: profiler
+            containerPort: 6060
+          command:
+          - /monitor
+          - --stackdriver-prefix=custom.googleapis.com
+          - --source=logserver:http://localhost:8091/metrics
+          - --pod-id=$(POD_NAME)
+          - --namespace-id=$(POD_NAMESPACE)
+          - --scrape-interval=5s
+          - --export-interval=60s
+          resources:
+            limits:
+              cpu: 20m
+            requests:
+              cpu: 20m
+          env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace

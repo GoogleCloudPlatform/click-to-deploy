@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: List
+items:
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    name: $NAME-config
+    labels:
+      app.kubernetes.io/name: "$NAME"
+  data:
+    STORAGE_SYSTEM: mysql
+    SIGNER_BATCH_SIZE: "500"
+    SIGNER_INTERVAL: "20ms"
+    SIGNER_NUM_SEQUENCERS: "10"
+    SIGNER_RESIGN_ODDS: "1000"
