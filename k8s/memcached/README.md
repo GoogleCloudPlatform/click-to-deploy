@@ -42,6 +42,12 @@ You'll need the following tools in your development environment:
 - [pip](https://pip.pypa.io/en/stable/installing/)
 - [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
+Configure `gcloud` as a Docker credential helper:
+
+```shell
+gcloud auth configure-docker
+```
+
 #### Create a Google Kubernetes Engine cluster
 
 Create a new cluster from the command line.

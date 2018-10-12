@@ -28,6 +28,12 @@ You'll need the following tools in your environment:
 - [docker](https://docs.docker.com/install/)
 - [openssl](https://www.openssl.org/)
 
+Configure `gcloud` as a Docker credential helper:
+
+```shell
+gcloud auth configure-docker
+```
+
 #### Create a Google Kubernetes Engine cluster
 
 Create a cluster from the command line. If you already have a cluster that
