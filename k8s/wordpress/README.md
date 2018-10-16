@@ -18,9 +18,9 @@ WordPress solution exposes its interface on port 80.
 
 Separate StatefulSet Kubernetes objects are used to manage instance of WordPress and instance of MySQL database.
 
-WordPress instance connects to MySQL database over 3306 port. WordPress stores information in MySQL in ```shell wordpress``` database.
+WordPress instance connects to MySQL database over 3306 port. WordPress stores information in MySQL in `wordpress` database.
 
-WordPress application stores password for MySQL root in the root-password secret and login and password information to access ```shell wordpress``` database in wp-user and wp-password secrets (respectively).
+WordPress application stores password for MySQL root in the root-password secret and login and password information to access `wordpress` database in wp-user and wp-password secrets (respectively).
 
 
 # Installation
