@@ -22,7 +22,7 @@ Single instance of WordPress is deployed as a single Pod via Kubernetes Stateful
 WordPress instance connects to MySQL database over 3306 port. WordPress stores information in MySQL in `wordpress` database.
 Single instance of MySQL is deployed as a Pod via Kubernetes StatefulSet.
 
-WordPress application stores password for MySQL root in the root-password secret and login and password information to access `wordpress` database in wp-user and wp-password secrets (respectively).
+WordPress application stores password for MySQL root in the `root_password` secret and login and password information to access `wordpress` database in `wp_user` and `wp_password` secrets (respectively).
 
 # Installation
 
