@@ -1,0 +1,49 @@
+timeout: 1200s # 20m
+options:
+  machineType: 'N1_HIGHCPU_8'
+steps:
+
+- id: Initialize Git
+  name: gcr.io/cloud-builders/git
+  entrypoint: bash
+  args:
+  - -exc
+  - |
+    # Download Git submodules
+    git submodule init
+    git submodule sync --recursive
+    git submodule update --recursive --init
+
+- id: Get Kubernetes Credentials
+  name: gcr.io/cloud-builders/gcloud
+  args:
+  - container
+  - clusters
+  - get-credentials
+  - '$_CLUSTER_NAME'
+  - --region
+  - '$_CLUSTER_LOCATION'
+  - --project
+  - '$PROJECT_ID'
+
+- id: Verify airflow-operator
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_3695cfc
+  waitFor:
+  - Initialize Git
+  - Get Kubernetes Credentials
+  dir: k8s/airflow-operator
+  entrypoint: bash
+  args:
+  - -exc
+  - |
+    export KUBE_CONFIG=/workspace/.kube
+    mkdir -p $$KUBE_CONFIG
+    cp -r $$HOME/.kube/. $$KUBE_CONFIG
+    cat $$KUBE_CONFIG/config
+
+    export GCLOUD_CONFIG=/workspace/.config/gcloud
+    mkdir -p $$GCLOUD_CONFIG
+    cp -r $$HOME/.config/gcloud/. $$GCLOUD_CONFIG
+    ls -al $$GCLOUD_CONFIG
+
+    make -j4 app/verify
