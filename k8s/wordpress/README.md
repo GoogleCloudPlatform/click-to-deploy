@@ -23,6 +23,7 @@ Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 #### Set up command-line tools
 
 You'll need the following tools in your development environment:
+
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 - [docker](https://docs.docker.com/install/)
@@ -426,6 +427,7 @@ kubectl delete application,statefulset,secret,service \
   --namespace $NAMESPACE \
   --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
+
 ### Delete the persistent volumes of your installation
 
 By design, the removal of StatefulSets in Kubernetes does not remove
@@ -443,3 +445,4 @@ export NAMESPACE=default
 kubectl delete persistentvolumeclaims \
   --namespace $NAMESPACE
   --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
+```
