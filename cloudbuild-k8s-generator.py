@@ -105,7 +105,22 @@ SOLUTION_BUILD_STEP_TEMPLATE = """
 
 
 def main():
-  skiplist = ['vendor']
+  skiplist = [
+    'elastic-gke-logging',
+    'elasticsearch',
+    'grafana',
+    'influxdb',
+    'jenkins',
+    'memcached',
+    'nginx',
+    'postgresql',
+    'prometheus',
+    'rabbitmq',
+    'sample-app',
+    'spark-operator',
+    'vendor',
+    'wordpress',
+  ]
 
   cloudbuild_contents = ''.join(
       [HEADER, INITIALIZE_GIT, GET_KUBERNETES_CREDENTIALS, COPY_CONFIGURATIONS])
@@ -122,9 +137,6 @@ def main():
       solution_build = SOLUTION_BUILD_STEP_TEMPLATE.replace(
           '<SOLUTION>', solution)
       cloudbuild_contents += solution_build
-
-    # TODO(wgrzelak): Remove break.
-    break
 
   with open(CLOUDBUILD_CONFIG, 'w') as cloudbuild_file:
     cloudbuild_file.write(cloudbuild_contents)

@@ -73,3 +73,21 @@ steps:
   - make
   - '-j4'
   - app/verify
+
+- id: Verify cassandra
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_3695cfc
+  waitFor:
+  - Copy Configurations
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # volumes:
+  # - name: kube
+  #   path: /workspace/.kube
+  # - name: gcloud
+  #   path: /workspace/.config/gcloud
+  dir: k8s/cassandra
+  args:
+  - make
+  - '-j4'
+  - app/verify
