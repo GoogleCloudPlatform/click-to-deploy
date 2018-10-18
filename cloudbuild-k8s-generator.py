@@ -51,28 +51,56 @@ GET_KUBERNETES_CREDENTIALS = """
   - '$PROJECT_ID'
 """
 
-SOLUTION_BUILD_STEP_TEMPLATE = """
-- id: Verify <SOLUTION>
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_3695cfc
+COPY_CONFIGURATIONS = """
+- id: Copy Configurations
+  name: gcr.io/google-appengine/debian9
   waitFor:
   - Initialize Git
   - Get Kubernetes Credentials
-  dir: k8s/<SOLUTION>
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # volumes:
+  # - name: kube
+  #   path: /workspace/.kube
+  # - name: gcloud
+  #   path: /workspace/.config/gcloud
   entrypoint: bash
   args:
   - -exc
   - |
-    export KUBE_CONFIG=/workspace/.kube
+    ls -al $$HOME/.kube/
+    # export KUBE_CONFIG=/workspace/.kube
     mkdir -p $$KUBE_CONFIG
     cp -r $$HOME/.kube/. $$KUBE_CONFIG
+    ls -al $$KUBE_CONFIG
     cat $$KUBE_CONFIG/config
 
-    export GCLOUD_CONFIG=/workspace/.config/gcloud
+    ls -al $$HOME/.config/gcloud
+    # export GCLOUD_CONFIG=/workspace/.config/gcloud
     mkdir -p $$GCLOUD_CONFIG
     cp -r $$HOME/.config/gcloud/. $$GCLOUD_CONFIG
     ls -al $$GCLOUD_CONFIG
+"""
 
-    make -j4 app/verify
+SOLUTION_BUILD_STEP_TEMPLATE = """
+- id: Verify <SOLUTION>
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_3695cfc
+  waitFor:
+  - Copy Configurations
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # volumes:
+  # - name: kube
+  #   path: /workspace/.kube
+  # - name: gcloud
+  #   path: /workspace/.config/gcloud
+  dir: k8s/<SOLUTION>
+  args:
+  - make
+  - '-j4'
+  - app/verify
 """
 
 
@@ -80,7 +108,7 @@ def main():
   skiplist = ['vendor']
 
   cloudbuild_contents = ''.join(
-      [HEADER, INITIALIZE_GIT, GET_KUBERNETES_CREDENTIALS])
+      [HEADER, INITIALIZE_GIT, GET_KUBERNETES_CREDENTIALS, COPY_CONFIGURATIONS])
 
   listdir = os.listdir('k8s')
   listdir.sort()
