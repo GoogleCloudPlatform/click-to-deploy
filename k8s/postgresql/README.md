@@ -22,6 +22,7 @@ Get up and running with a few clicks! Install this PostgreSQL app to a Google Ku
 #### Set up command line tools
 
 You'll need the following tools in your environment:
+
 - [docker](https://docs.docker.com/install/)
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
@@ -203,7 +204,6 @@ kubectl --namespace $NAMESPACE exec -t \
 ```
 
 ## Restoring your data
-
 
 ```shell
 cat postgresql-backup.sql | kubectl --namespace $NAMESPACE exec -i \

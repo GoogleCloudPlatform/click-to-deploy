@@ -22,6 +22,7 @@ Get up and running with a few clicks! Install this Sample Application to a Googl
 #### Set up command line tools
 
 You'll need the following tools in your environment:
+
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - [docker](https://docs.docker.com/install/)
@@ -76,7 +77,7 @@ The Application resource is defined by the
 [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps) community. The source code can be found on
 [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
 
-#### Install the Application
+### Install the Application
 
 Navigate to the `sample-app` directory:
 
