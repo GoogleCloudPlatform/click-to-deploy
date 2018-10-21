@@ -8,6 +8,22 @@ WordPress is web publishing software used to create websites and blogs.
 
 Popular open stacks on Kubernetes packaged by Google.
 
+## Design
+
+![Architecture diagram](resources/wordpress-k8s-app-architecture.png)
+
+### Solution Information
+
+WordPress solution exposes its interface on port `80`.
+
+Separate StatefulSet Kubernetes objects are used to manage instance of WordPress and instance of MySQL database.
+Single instance of WordPress is deployed as a single Pod via Kubernetes StatefulSet.
+
+WordPress instance connects to MySQL database over `3306` port. WordPress stores information in MySQL in `wordpress` database.
+Single instance of MySQL is deployed as a Pod via Kubernetes StatefulSet.
+
+WordPress application stores password for MySQL root in the `root_password` secret. Login and password information to access `wordpress` database are stored in `wp_user` and `wp_password` secrets (respectively).
+
 # Installation
 
 ## Quick install with Google Cloud Marketplace
@@ -23,6 +39,7 @@ Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 #### Set up command-line tools
 
 You'll need the following tools in your development environment:
+
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 - [docker](https://docs.docker.com/install/)
@@ -426,6 +443,7 @@ kubectl delete application,statefulset,secret,service \
   --namespace $NAMESPACE \
   --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
+
 ### Delete the persistent volumes of your installation
 
 By design, the removal of StatefulSets in Kubernetes does not remove
@@ -443,3 +461,4 @@ export NAMESPACE=default
 kubectl delete persistentvolumeclaims \
   --namespace $NAMESPACE
   --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
+```

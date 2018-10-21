@@ -10,24 +10,26 @@ Message Queuing Protocol (AMQP) to serve a variety of messaging applications.
 Popular open stacks on Kubernetes packaged by Google.
 
 ## Design
- 
+
 ![Architecture diagram](resources/rabbitmq-k8s-app-architecture.png)
- 
+
 ### Solution Information
- 
+
 RabbitMQ cluster is deployed within a Kubernetes `StatefulSet`. The configuration
 is attached with a `ConfigMap` (which contents is copied to writable location at
 `/etc/rabbitmq` by an init container). An Erlang cookie required by
 the application is generated dynamically and passed to the deployment with
 a Secret object.
- 
+
 The deployment creates two services:
+
 - client-facing one, designed to be used for client connections to the RabbitMQ
   cluster with port forwarding or using a LoadBalancer,
 - and service discovery - a headless service for connections between
   the RabbitMQ nodes.
-  
+
 RabbitMQ K8s application has the following ports configured:
+
 - ports `5671` and `5672` are enabled for communication from AMQP clients,
 - port `4369` is enabled to allow for peer discovery,
 - port `15672` is enabled for RabbitMQ administration over HTTP API,
@@ -50,10 +52,17 @@ Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 #### Set up command-line tools
 
 You'll need the following tools in your development environment:
+
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 - [docker](https://docs.docker.com/install/)
 - [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+
+Configure `gcloud` as a Docker credential helper:
+
+```shell
+gcloud auth configure-docker
+```
 
 #### Create a Google Kubernetes Engine cluster
 

@@ -39,11 +39,18 @@ Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 #### Set up command-line tools
 
 You'll need the following tools in your development environment:
+
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 - [docker](https://docs.docker.com/install/)
 - [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 - [cqlsh](https://pypi.org/project/cqlsh/)
+
+Configure `gcloud` as a Docker credential helper:
+
+```shell
+gcloud auth configure-docker
+```
 
 #### Create a Google Kubernetes Engine cluster
 
@@ -166,7 +173,6 @@ Use `kubectl` to apply the manifest to your Kubernetes cluster:
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
 
-
 #### View the app in the Google Cloud Console
 
 To get the Console URL for your app, run the following command:
@@ -201,9 +207,9 @@ for public access, using the following options:
 * Use port forwarding to access the service. In a separate terminal, run the
   following command:
 
-     ```shell
-     kubectl port-forward "${APP_INSTANCE_NAME}-cassandra-0" 9042:9042 --namespace "${NAMESPACE}"
-     ```
+    ```shell
+    kubectl port-forward "${APP_INSTANCE_NAME}-cassandra-0" 9042:9042 --namespace "${NAMESPACE}"
+    ```
 
     Then, in your main terminal, start `cqlsh`:
 
