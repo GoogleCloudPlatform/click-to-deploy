@@ -62,15 +62,16 @@ PULL_DEV_IMAGE = """
 """
 
 GET_KUBERNETES_CREDENTIALS = """
+# TODO(wgrzelak): Replace cluster-name and cluster-location with variables.
 - id: Get Kubernetes Credentials
   name: gcr.io/cloud-builders/gcloud
   args:
   - container
   - clusters
   - get-credentials
-  - '$_CLUSTER_NAME'
+  - 'limani-integ'
   - --region
-  - '$_CLUSTER_LOCATION'
+  - 'us-central1'
   - --project
   - '$PROJECT_ID'
 """

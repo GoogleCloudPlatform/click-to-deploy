@@ -36,15 +36,16 @@ steps:
     docker pull "gcr.io/cloud-marketplace-tools/k8s/dev:$$TAG"
     docker tag "gcr.io/cloud-marketplace-tools/k8s/dev:$$TAG" "gcr.io/cloud-marketplace-tools/k8s/dev:local"
 
+# TODO(wgrzelak): Replace cluster-name and cluster-location with variables.
 - id: Get Kubernetes Credentials
   name: gcr.io/cloud-builders/gcloud
   args:
   - container
   - clusters
   - get-credentials
-  - '$_CLUSTER_NAME'
+  - 'limani-integ'
   - --region
-  - '$_CLUSTER_LOCATION'
+  - 'us-central1'
   - --project
   - '$PROJECT_ID'
 
