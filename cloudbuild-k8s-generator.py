@@ -113,22 +113,7 @@ SOLUTION_BUILD_STEP_TEMPLATE = """
 
 
 def main():
-  skiplist = [
-      'elastic-gke-logging',
-      'elasticsearch',
-      'grafana',
-      'influxdb',
-      'jenkins',
-      'memcached',
-      'nginx',
-      'postgresql',
-      'prometheus',
-      'rabbitmq',
-      'sample-app',
-      'spark-operator',
-      'vendor',
-      'wordpress',
-  ]
+  skiplist = ['vendor']
 
   cloudbuild_contents = ''.join([
       HEADER, INITIALIZE_GIT, PULL_DEV_IMAGE, GET_KUBERNETES_CREDENTIALS,
