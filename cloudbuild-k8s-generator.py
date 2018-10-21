@@ -123,7 +123,7 @@ SOLUTION_BUILD_STEP_TEMPLATE = """
 
 
 def main():
-  skiplist = ['vendor']
+  skiplist = ['vendor', 'spark-operator']
 
   cloudbuild_contents = ''.join([
       HEADER, INITIALIZE_GIT, PULL_DEV_IMAGE, GET_KUBERNETES_CREDENTIALS,
