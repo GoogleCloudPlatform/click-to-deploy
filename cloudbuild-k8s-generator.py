@@ -37,6 +37,21 @@ INITIALIZE_GIT = """
     git submodule update --recursive --init
 """
 
+PULL_DEV_IMAGE = """
+- id: Pull Dev Image
+  name: gcr.io/cloud-builders/docker
+  waitFor:
+  - Initialize Git
+  dir: k8s/vendor/marketplace-tools
+  entrypoint: bash
+  args:
+  - -exc
+  - |
+    TAG="$$(./scripts/derive_tag.sh)"
+    docker pull "gcr.io/cloud-marketplace-tools/k8s/dev:$$TAG"
+    docker tag "gcr.io/cloud-marketplace-tools/k8s/dev:$$TAG" "gcr.io/cloud-marketplace-tools/k8s/dev:local"
+"""
+
 GET_KUBERNETES_CREDENTIALS = """
 - id: Get Kubernetes Credentials
   name: gcr.io/cloud-builders/gcloud
@@ -55,7 +70,7 @@ COPY_CONFIGURATIONS = """
 - id: Copy Configurations
   name: gcr.io/google-appengine/debian9
   waitFor:
-  - Initialize Git
+  - Pull Dev Image
   - Get Kubernetes Credentials
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
@@ -85,7 +100,7 @@ COPY_CONFIGURATIONS = """
 
 SOLUTION_BUILD_STEP_TEMPLATE = """
 - id: Verify <SOLUTION>
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_3695cfc
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Copy Configurations
   env:
@@ -99,9 +114,8 @@ SOLUTION_BUILD_STEP_TEMPLATE = """
   #   path: /workspace/.config/gcloud
   dir: k8s/<SOLUTION>
   args:
-  - make
-  - '-j4'
-  - app/verify
+  - -exc
+  - make -j4 app/verify
 """
 
 
@@ -124,7 +138,7 @@ def main():
   ]
 
   cloudbuild_contents = ''.join(
-      [HEADER, INITIALIZE_GIT, GET_KUBERNETES_CREDENTIALS, COPY_CONFIGURATIONS])
+      [HEADER, INITIALIZE_GIT, PULL_DEV_IMAGE, GET_KUBERNETES_CREDENTIALS, COPY_CONFIGURATIONS])
 
   listdir = os.listdir('k8s')
   listdir.sort()

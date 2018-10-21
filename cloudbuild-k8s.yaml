@@ -14,6 +14,19 @@ steps:
     git submodule sync --recursive
     git submodule update --recursive --init
 
+- id: Pull Dev Image
+  name: gcr.io/cloud-builders/docker
+  waitFor:
+  - Initialize Git
+  dir: k8s/vendor/marketplace-tools
+  entrypoint: bash
+  args:
+  - -exc
+  - |
+    TAG="$$(./scripts/derive_tag.sh)"
+    docker pull "gcr.io/cloud-marketplace-tools/k8s/dev:$$TAG"
+    docker tag "gcr.io/cloud-marketplace-tools/k8s/dev:$$TAG" "gcr.io/cloud-marketplace-tools/k8s/dev:local"
+
 - id: Get Kubernetes Credentials
   name: gcr.io/cloud-builders/gcloud
   args:
@@ -29,7 +42,7 @@ steps:
 - id: Copy Configurations
   name: gcr.io/google-appengine/debian9
   waitFor:
-  - Initialize Git
+  - Pull Dev Image
   - Get Kubernetes Credentials
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
@@ -57,7 +70,7 @@ steps:
     ls -al $$GCLOUD_CONFIG
 
 - id: Verify airflow-operator
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_3695cfc
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Copy Configurations
   env:
@@ -71,12 +84,11 @@ steps:
   #   path: /workspace/.config/gcloud
   dir: k8s/airflow-operator
   args:
-  - make
-  - '-j4'
-  - app/verify
+  - -exc
+  - make -j4 app/verify
 
 - id: Verify cassandra
-  name: gcr.io/cloud-marketplace-tools/k8s/dev:sha_3695cfc
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Copy Configurations
   env:
@@ -90,6 +102,5 @@ steps:
   #   path: /workspace/.config/gcloud
   dir: k8s/cassandra
   args:
-  - make
-  - '-j4'
-  - app/verify
+  - -exc
+  - make -j4 app/verify
