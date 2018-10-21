@@ -31,6 +31,15 @@ INITIALIZE_GIT = """
   args:
   - -exc
   - |
+    # Cloud Build x GitHub integration uses source archives to fetch
+    # the source, rather than Git source fetching, and as a consequence
+    # does not include the .git/ directory. As a workaround, we clone
+    # the repository and reset it to this build's commit sha.
+    git clone https://github.com/GoogleCloudPlatform/click-to-deploy.git .tmp
+    mv .tmp/.git .git
+    rm -rf .tmp
+    git reset "$COMMIT_SHA"
+
     # Download Git submodules
     git submodule init
     git submodule sync --recursive
