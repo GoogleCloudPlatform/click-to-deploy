@@ -91,6 +91,7 @@ SOLUTION_BUILD_STEP_TEMPLATE = """
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  - 'EXTRA_DOCKER_PARAMS=--link metadata:metadata.google.internal'
   # volumes:
   # - name: kube
   #   path: /workspace/.kube
