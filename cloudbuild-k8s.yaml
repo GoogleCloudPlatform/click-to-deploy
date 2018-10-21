@@ -39,49 +39,38 @@ steps:
   - --project
   - '$PROJECT_ID'
 
-- id: Copy Configurations
+- id: Copy kubectl Credentials
   name: gcr.io/google-appengine/debian9
   waitFor:
-  - Pull Dev Image
   - Get Kubernetes Credentials
-  env:
-  - 'KUBE_CONFIG=/workspace/.kube'
-  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
-  # volumes:
-  # - name: kube
-  #   path: /workspace/.kube
-  # - name: gcloud
-  #   path: /workspace/.config/gcloud
   entrypoint: bash
   args:
   - -exc
   - |
-    ls -al $$HOME/.kube/
-    # export KUBE_CONFIG=/workspace/.kube
-    mkdir -p $$KUBE_CONFIG
-    cp -r $$HOME/.kube/. $$KUBE_CONFIG
-    ls -al $$KUBE_CONFIG
-    cat $$KUBE_CONFIG/config
+    mkdir -p /workspace/.kube/
+    cp -r $$HOME/.kube/ /workspace/
 
-    ls -al $$HOME/.config/gcloud
-    # export GCLOUD_CONFIG=/workspace/.config/gcloud
-    mkdir -p $$GCLOUD_CONFIG
-    cp -r $$HOME/.config/gcloud/. $$GCLOUD_CONFIG
-    ls -al $$GCLOUD_CONFIG
+- id: Copy gcloud Credentials
+  name: gcr.io/google-appengine/debian9
+  waitFor:
+  - Get Kubernetes Credentials
+  entrypoint: bash
+  args:
+  - -exc
+  - |
+    mkdir -p /workspace/.config/gcloud/
+    cp -r $$HOME/.config/gcloud/ /workspace/.config/
 
 - id: Verify airflow-operator
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
-  - Copy Configurations
+  - Copy kubectl Credentials
+  - Copy gcloud Credentials
+  - Pull Dev Image
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
   - 'EXTRA_DOCKER_PARAMS=--link metadata:metadata.google.internal'
-  # volumes:
-  # - name: kube
-  #   path: /workspace/.kube
-  # - name: gcloud
-  #   path: /workspace/.config/gcloud
   dir: k8s/airflow-operator
   args:
   - -exc
@@ -90,16 +79,13 @@ steps:
 - id: Verify cassandra
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
-  - Copy Configurations
+  - Copy kubectl Credentials
+  - Copy gcloud Credentials
+  - Pull Dev Image
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
   - 'EXTRA_DOCKER_PARAMS=--link metadata:metadata.google.internal'
-  # volumes:
-  # - name: kube
-  #   path: /workspace/.kube
-  # - name: gcloud
-  #   path: /workspace/.config/gcloud
   dir: k8s/cassandra
   args:
   - -exc

@@ -66,52 +66,43 @@ GET_KUBERNETES_CREDENTIALS = """
   - '$PROJECT_ID'
 """
 
-COPY_CONFIGURATIONS = """
-- id: Copy Configurations
+COPY_KUBECTL_CREDENTIALS = """
+- id: Copy kubectl Credentials
   name: gcr.io/google-appengine/debian9
   waitFor:
-  - Pull Dev Image
   - Get Kubernetes Credentials
-  env:
-  - 'KUBE_CONFIG=/workspace/.kube'
-  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
-  # volumes:
-  # - name: kube
-  #   path: /workspace/.kube
-  # - name: gcloud
-  #   path: /workspace/.config/gcloud
   entrypoint: bash
   args:
   - -exc
   - |
-    ls -al $$HOME/.kube/
-    # export KUBE_CONFIG=/workspace/.kube
-    mkdir -p $$KUBE_CONFIG
-    cp -r $$HOME/.kube/. $$KUBE_CONFIG
-    ls -al $$KUBE_CONFIG
-    cat $$KUBE_CONFIG/config
+    mkdir -p /workspace/.kube/
+    cp -r $$HOME/.kube/ /workspace/
+"""
 
-    ls -al $$HOME/.config/gcloud
-    # export GCLOUD_CONFIG=/workspace/.config/gcloud
-    mkdir -p $$GCLOUD_CONFIG
-    cp -r $$HOME/.config/gcloud/. $$GCLOUD_CONFIG
-    ls -al $$GCLOUD_CONFIG
+COPY_GCLOUD_CREDENTIALS = """
+- id: Copy gcloud Credentials
+  name: gcr.io/google-appengine/debian9
+  waitFor:
+  - Get Kubernetes Credentials
+  entrypoint: bash
+  args:
+  - -exc
+  - |
+    mkdir -p /workspace/.config/gcloud/
+    cp -r $$HOME/.config/gcloud/ /workspace/.config/
 """
 
 SOLUTION_BUILD_STEP_TEMPLATE = """
 - id: Verify <SOLUTION>
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
-  - Copy Configurations
+  - Copy kubectl Credentials
+  - Copy gcloud Credentials
+  - Pull Dev Image
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
   - 'EXTRA_DOCKER_PARAMS=--link metadata:metadata.google.internal'
-  # volumes:
-  # - name: kube
-  #   path: /workspace/.kube
-  # - name: gcloud
-  #   path: /workspace/.config/gcloud
   dir: k8s/<SOLUTION>
   args:
   - -exc
@@ -121,24 +112,26 @@ SOLUTION_BUILD_STEP_TEMPLATE = """
 
 def main():
   skiplist = [
-    'elastic-gke-logging',
-    'elasticsearch',
-    'grafana',
-    'influxdb',
-    'jenkins',
-    'memcached',
-    'nginx',
-    'postgresql',
-    'prometheus',
-    'rabbitmq',
-    'sample-app',
-    'spark-operator',
-    'vendor',
-    'wordpress',
+      'elastic-gke-logging',
+      'elasticsearch',
+      'grafana',
+      'influxdb',
+      'jenkins',
+      'memcached',
+      'nginx',
+      'postgresql',
+      'prometheus',
+      'rabbitmq',
+      'sample-app',
+      'spark-operator',
+      'vendor',
+      'wordpress',
   ]
 
-  cloudbuild_contents = ''.join(
-      [HEADER, INITIALIZE_GIT, PULL_DEV_IMAGE, GET_KUBERNETES_CREDENTIALS, COPY_CONFIGURATIONS])
+  cloudbuild_contents = ''.join([
+      HEADER, INITIALIZE_GIT, PULL_DEV_IMAGE, GET_KUBERNETES_CREDENTIALS,
+      COPY_KUBECTL_CREDENTIALS, COPY_GCLOUD_CREDENTIALS
+  ])
 
   listdir = os.listdir('k8s')
   listdir.sort()
