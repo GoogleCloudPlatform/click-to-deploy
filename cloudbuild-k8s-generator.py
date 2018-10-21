@@ -16,7 +16,7 @@
 
 import os
 
-CLOUDBUILD_CONFIG = 'cloudbuild-k8s.yaml'
+CLOUDBUILD_CONFIG = 'cloudbuild.yaml'
 
 HEADER = """timeout: 1200s # 20m
 options:
