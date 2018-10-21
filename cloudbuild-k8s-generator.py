@@ -102,7 +102,9 @@ SOLUTION_BUILD_STEP_TEMPLATE = """
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
-  - 'EXTRA_DOCKER_PARAMS=--link metadata:metadata.google.internal'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
   dir: k8s/<SOLUTION>
   args:
   - -exc
