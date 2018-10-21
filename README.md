@@ -33,6 +33,23 @@ git submodule update --recursive --init
 
 This repository uses Cloud Build for continuous integration. The Cloud Build configuration file is located at [`cloudbuild-k8s.yaml`](cloudbuild-k8s.yaml).
 
+## Manually run the build
+
+Cloud Build can be triggered manually by running the following command
+from the root directory of this repository:
+
+```shell
+export GCP_PROJECT_TO_RUN_CLOUD_BUILD=<>
+export GKE_CLUSTER_NAME=<>
+export GKE_CLUSTER_LOCATION=<e.g. us-central1>
+
+gcloud builds submit . \
+  --config cloudbuild-k8s.yaml \
+  --substitutions _CLUSTER_NAME=$GKE_CLUSTER_NAME,_CLUSTER_LOCATION=$GKE_CLUSTER_LOCATION \
+  --project $GCP_PROJECT_TO_RUN_CLOUD_BUILD \
+  --verbosity info
+```
+
 ## Cloud Build configuration generator
 
 To make the `cloudbuild-k8s.yaml` configuration easier to maintain, a generator for its contents was created. To re-generate the file, run the following command:
