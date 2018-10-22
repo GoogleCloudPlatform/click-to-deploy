@@ -123,7 +123,7 @@ SOLUTION_BUILD_STEP_TEMPLATE = """
 
 
 def main():
-  skiplist = ['vendor', 'spark-operator']
+  skiplist = ['spark-operator']
 
   cloudbuild_contents = ''.join([
       HEADER, INITIALIZE_GIT, PULL_DEV_IMAGE, GET_KUBERNETES_CREDENTIALS,
@@ -131,6 +131,7 @@ def main():
   ])
 
   listdir = os.listdir('k8s')
+  listdir.remove('vendor')
   listdir.sort()
 
   for solution in listdir:
