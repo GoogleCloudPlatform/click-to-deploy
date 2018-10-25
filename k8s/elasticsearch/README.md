@@ -190,27 +190,27 @@ following command to get the IP address. You can use the IP address to run
 administrative operations using the REST API:
 
 ```
-SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-elasticsearch-svc \
+export SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-elasticsearch-svc \
   --namespace $NAMESPACE \
   --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
-ELASTIC_URL="http://${SERVICE_IP}:9200"
+export ELASTIC_URL="http://${SERVICE_IP}:9200"
 ```
 
 If you haven't exposed your Elasticsearch service externally, use a local proxy to access the service. In a separate terminal, run the following command:
 
 ```shell
 # select a local port as the proxy
-KUBE_PROXY_PORT=8080
-kubectl proxy -p $KUBE_PROXY_PORT
+export KUBE_PROXY_PORT=8080
+export kubectl proxy -p $KUBE_PROXY_PORT
 ```
 
 In your main terminal, run the following commands:
 
 ```shell
-KUBE_PROXY_PORT=8080
-PROXY_BASE_URL=http://localhost:$KUBE_PROXY_PORT/api/v1/proxy
-ELASTIC_URL=$PROXY_BASE_URL/namespaces/$NAMESPACE/services/$APP_INSTANCE_NAME-elasticsearch-svc:http
+export KUBE_PROXY_PORT=8080
+export PROXY_BASE_URL=http://localhost:$KUBE_PROXY_PORT/api/v1/proxy
+export ELASTIC_URL=$PROXY_BASE_URL/namespaces/$NAMESPACE/services/$APP_INSTANCE_NAME-elasticsearch-svc:http
 ```
 
 In both cases, the `ELASTIC_URL` environment variable points to your
