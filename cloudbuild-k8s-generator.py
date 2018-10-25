@@ -15,6 +15,7 @@
 # limitations under the License.
 
 import os
+import argparse
 
 CLOUDBUILD_CONFIG = 'cloudbuild.yaml'
 
@@ -126,7 +127,25 @@ SOLUTION_BUILD_STEP_TEMPLATE = """
 """
 
 
+def verify_cloudbuild(cloudbuild_contents):
+  if not os.path.isfile(CLOUDBUILD_CONFIG):
+    is_up_to_date = False
+  else:
+    with open(CLOUDBUILD_CONFIG, 'r') as cloudbuild_file:
+      is_up_to_date = cloudbuild_file.read() == cloudbuild_contents
+
+  return is_up_to_date
+
+
 def main():
+  parser = argparse.ArgumentParser()
+  parser.add_argument(
+      '--verify_only',
+      action='store_true',
+      default=False,
+      help='verify %s file' % CLOUDBUILD_CONFIG)
+  args = parser.parse_args()
+
   skiplist = ['spark-operator']
 
   cloudbuild_contents = ''.join([
@@ -148,8 +167,17 @@ def main():
           '<SOLUTION>', solution)
       cloudbuild_contents += solution_build
 
-  with open(CLOUDBUILD_CONFIG, 'w') as cloudbuild_file:
-    cloudbuild_file.write(cloudbuild_contents)
+  if args.verify_only:
+    if verify_cloudbuild(cloudbuild_contents):
+      print('The %s file is up-to-date' % CLOUDBUILD_CONFIG)
+      os.sys.exit(0)
+    else:
+      print('The %s file is not up-to-date. Please re-generate it' %
+            CLOUDBUILD_CONFIG)
+      os.sys.exit(1)
+  else:
+    with open(CLOUDBUILD_CONFIG, 'w') as cloudbuild_file:
+      cloudbuild_file.write(cloudbuild_contents)
 
 
 if __name__ == '__main__':
