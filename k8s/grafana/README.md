@@ -23,6 +23,7 @@ Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 #### Set up command-line tools
 
 You'll need the following tools in your development environment:
+
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 - [docker](https://docs.docker.com/install/)
@@ -173,7 +174,7 @@ To expose Grafana with a publicly available IP address, run the following comman
 ```shell
 kubectl patch svc "${APP_INSTANCE_NAME}-grafana" \
   --namespace "${NAMESPACE}" \
-  -p '{"spec": {"type": "LoadBalancer"}}
+  -p '{"spec": {"type": "LoadBalancer"}}'
 ```
 
 It might take a while for the service to be publicly available. After the

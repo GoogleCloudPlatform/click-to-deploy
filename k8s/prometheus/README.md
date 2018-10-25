@@ -70,6 +70,7 @@ Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 #### Set up command-line tools
 
 You'll need the following tools in your development environment:
+
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 - [docker](https://docs.docker.com/install/)
@@ -199,7 +200,7 @@ expanded manifest file for future updates to the application.
 
 ```shell
 awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_PROMETHEUS $IMAGE_ALERTMANAGER $IMAGE_KUBE_STATE_METRICS $IMAGE_NODE_EXPORTER $IMAGE_PUSHGATEWAY $IMAGE_GRAFANA $IMAGE_PROMETHEUS_INIT $NAMESPACE  $REPLICAS' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_PROMETHEUS $IMAGE_ALERTMANAGER $IMAGE_KUBE_STATE_METRICS $IMAGE_NODE_EXPORTER $IMAGE_PUSHGATEWAY $IMAGE_GRAFANA $IMAGE_PROMETHEUS_INIT $NAMESPACE $PROMETHEUS_REPLICAS' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
@@ -233,7 +234,7 @@ To expose Grafana with an external IP address, run the following command:
 ```shell
 kubectl patch svc "$APP_INSTANCE_NAME-grafana" \
   --namespace "$NAMESPACE" \
-  -p '{"spec": {"type": "LoadBalancer"}}
+  -p '{"spec": {"type": "LoadBalancer"}}'
 ```
 
 It might take a while for the external IP address to be created.
