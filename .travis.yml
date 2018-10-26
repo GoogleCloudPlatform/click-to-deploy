@@ -1,0 +1,2 @@
+language: python
+script: ./cloudbuild-k8s-generator.py --verify_only
