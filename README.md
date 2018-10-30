@@ -59,4 +59,4 @@ To make the `cloudbuild.yaml` configuration easier to maintain, a generator for 
 ./cloudbuild-k8s-generator.py
 ```
 
-As a result, new content will be saved in the `cloudbuild.yaml` file.
+The generator uses Jinja2 templates, install it with `pip install jinja2` command. As a result, new content will be saved in the `cloudbuild.yaml` file.
