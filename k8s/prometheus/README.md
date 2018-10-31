@@ -107,24 +107,6 @@ Clone this repo and the associated tools repo:
 git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 ```
 
-#### Install the Application resource definition
-
-An Application resource is a collection of individual Kubernetes components,
-such as Services, Deployments, and so on, that you can manage as a group.
-
-To set up your cluster to understand Application resources, run the following command:
-
-```shell
-kubectl apply -f click-to-deploy/k8s/vendor/marketplace-tools/crd/*
-```
-
-You need to run this command once.
-
-The Application resource is defined by the
-[Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps)
-community. The source code can be found on
-[github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
-
 ### Install the Application
 
 Navigate to the `prometheus` directory:
@@ -156,8 +138,6 @@ export IMAGE_PROMETHEUS="marketplace.gcr.io/google/prometheus:${TAG}"
 export IMAGE_ALERTMANAGER="marketplace.gcr.io/google/prometheus/alertmanager:${TAG}"
 export IMAGE_KUBE_STATE_METRICS="marketplace.gcr.io/google/prometheus/kubestatemetrics:${TAG}"
 export IMAGE_NODE_EXPORTER="marketplace.gcr.io/google/prometheus/nodeexporter:${TAG}"
-# TODO(khajduczenia): Add pushgateway to Makefile.
-export IMAGE_PUSHGATEWAY="marketplace.gcr.io/google/prometheus/pushgateway:${TAG}"
 export IMAGE_GRAFANA="marketplace.gcr.io/google/prometheus/grafana:${TAG}"
 export IMAGE_PROMETHEUS_INIT="marketplace.gcr.io/google/prometheus/debian9:${TAG}"
 ```
@@ -175,7 +155,6 @@ for i in "IMAGE_PROMETHEUS" \
          "IMAGE_ALERTMANAGER" \
          "IMAGE_KUBE_STATE_METRICS" \
          "IMAGE_NODE_EXPORTER" \
-         "IMAGE_PUSHGATEWAY" \
          "IMAGE_GRAFANA" \
          "IMAGE_PROMETHEUS_INIT"; do
   repo=$(echo ${!i} | cut -d: -f1);
@@ -193,6 +172,21 @@ If you use a different namespace than the `default`, run the command below to cr
 kubectl create namespace "$NAMESPACE"
 ```
 
+#### Create Prometheus service account in your Kubernetes cluster
+Prometheus needs a service account with `cluster-admin` privilege in order to gather data across multiple namespaces. Run below commands to create the service account:
+```shell
+kubectl create serviceaccount --namespace "${NAMESPACE}" prometheus
+kubectl create clusterrolebinding "${NAMESPACE}:prometheus" --clusterrole=cluster-admin --serviceaccount="${NAMESPACE}:prometheus"
+export PROMETHEUS_SERVICE_ACCOUNT=prometheus
+```
+
+#### Create Grafana admin password
+Substitute `PASSWORD` with your preferred password
+
+```shell
+export GRAFANA_GENERATED_PASSWORD=$(echo -n 'PASSWORD' | base64)
+```
+
 #### Expand the manifest template
 
 Use `envsubst` to expand the template. We recommend that you save the
@@ -200,7 +194,7 @@ expanded manifest file for future updates to the application.
 
 ```shell
 awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_PROMETHEUS $IMAGE_ALERTMANAGER $IMAGE_KUBE_STATE_METRICS $IMAGE_NODE_EXPORTER $IMAGE_PUSHGATEWAY $IMAGE_GRAFANA $IMAGE_PROMETHEUS_INIT $NAMESPACE $PROMETHEUS_REPLICAS' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_PROMETHEUS $IMAGE_ALERTMANAGER $IMAGE_KUBE_STATE_METRICS $IMAGE_NODE_EXPORTER $IMAGE_GRAFANA $IMAGE_PROMETHEUS_INIT $NAMESPACE $PROMETHEUS_REPLICAS $PROMETHEUS_SERVICE_ACCOUNT $GRAFANA_GENERATED_PASSWORD' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
@@ -274,3 +268,12 @@ echo "Grafana credentials:"
 echo "- user: ${GRAFANA_USERNAME}"
 echo "- pass: ${GRAFANA_PASSWORD}"
 ```
+
+# Known Issues
+### Prometheus statefulset pods kept restarting (status: OOMKilled)
+
+**Problem:** The pods kept restarting because they got killed by Kubernetes
+
+**Reason:** In some situation, the pods consume more resources than the limit which is set in the manifest
+
+**Solution:** Remove or increase resource usage limitation of Prometheus statefulset in the manifest
