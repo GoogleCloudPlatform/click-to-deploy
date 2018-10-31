@@ -92,8 +92,9 @@ steps:
   - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
   dir: k8s/{{ solution }}
   args:
-  - -exc
-  - make -j4 app/verify
+  - make
+  - -j4
+  - app/verify
 
 {%- endfor %}
 """.strip()
