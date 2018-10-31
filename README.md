@@ -53,10 +53,15 @@ gcloud builds submit . \
 
 ## Cloud Build configuration generator
 
-To make the `cloudbuild.yaml` configuration easier to maintain, a generator for its contents was created. To re-generate the file, run the following command:
+To make the `cloudbuild.yaml` configuration easier to maintain, a generator for
+its contents was created.
 
-```shell
-./cloudbuild-k8s-generator.py
-```
+1.  The generator uses Jinja2 templates, install it using `pip install jinja2`
+    command.
+1.  To regenerate the file, run the following command:
 
-As a result, new content will be saved in the `cloudbuild.yaml` file.
+    ```shell
+    ./cloudbuild-k8s-generator.py
+    ```
+
+1.  As a result, new content will be saved in the `cloudbuild.yaml` file.
