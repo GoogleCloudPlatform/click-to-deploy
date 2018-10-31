@@ -32,6 +32,7 @@ app/build:: .build/airflow-operator/deployer \
                                   manifest/* \
                                   schema.yaml \
                                   .build/var/APP_DEPLOYER_IMAGE \
+                                  .build/var/MARKETPLACE_TOOLS_TAG \
                                   .build/var/REGISTRY \
                                   .build/var/TAG \
                                   | .build/airflow-operator
