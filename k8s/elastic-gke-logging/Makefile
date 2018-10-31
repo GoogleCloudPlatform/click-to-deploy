@@ -1,9 +1,7 @@
-include ../vendor/marketplace-tools/app.Makefile
-include ../vendor/marketplace-tools/crd.Makefile
-include ../vendor/marketplace-tools/gcloud.Makefile
-include ../vendor/marketplace-tools/marketplace.Makefile
-include ../vendor/marketplace-tools/ubbagent.Makefile
-include ../vendor/marketplace-tools/var.Makefile
+include ../app.Makefile
+include ../crd.Makefile
+include ../gcloud.Makefile
+include ../var.Makefile
 
 
 ELASTICSEARCH_KIBANA_VERSION = 6.3
@@ -68,6 +66,7 @@ app/build:: .build/elastic-gke-logging/elasticsearch \
 	docker build \
 	    --build-arg REGISTRY="$(REGISTRY)/elastic-gke-logging" \
 	    --build-arg TAG="$(TAG)" \
+	    --build-arg MARKETPLACE_TOOLS_TAG="$(MARKETPLACE_TOOLS_TAG)" \
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
 	    -f deployer/Dockerfile \
 	    .
