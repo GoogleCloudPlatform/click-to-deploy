@@ -1,4 +1,5 @@
-FROM gcr.io/cloud-marketplace-tools/k8s/deployer_envsubst:v0.6.2
+ARG MARKETPLACE_TOOLS_TAG
+FROM gcr.io/cloud-marketplace-tools/k8s/deployer_envsubst:$MARKETPLACE_TOOLS_TAG
 
 ADD manifest/* /data/manifest/
 ADD schema.yaml /data/
