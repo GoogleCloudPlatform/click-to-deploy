@@ -156,7 +156,7 @@ def main():
       solutions_to_build.append(solution)
 
   cloudbuild_contents = Template(CLOUDBUILD_TEMPLATE).render(
-      solutions=solutions_to_build)
+      solutions=solutions_to_build) + '\n'
 
   if args.verify_only:
     if verify_cloudbuild(cloudbuild_contents):
