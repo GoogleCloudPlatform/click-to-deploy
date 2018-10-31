@@ -1,4 +1,5 @@
 include ../app.Makefile
+include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
