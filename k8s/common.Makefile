@@ -20,7 +20,8 @@ endef
 
 # MARKETPLACE_TOOLS_TAG is the tag of the container images published
 # by marketplace-k8s-app-tools.
-MARKETPLACE_TOOLS_TAG ?= sha_a0248f39dd6663322f2d9c1c9de658e7c332fcea
+tag_from_file := $(shell cat "$(dir $(realpath $(lastword $(MAKEFILE_LIST))))/MARKETPLACE_TOOLS_TAG")
+MARKETPLACE_TOOLS_TAG ?= $(tag_from_file)
 export MARKETPLACE_TOOLS_TAG
 
 $(info ---- MARKETPLACE_TOOLS_TAG = $(MARKETPLACE_TOOLS_TAG))
