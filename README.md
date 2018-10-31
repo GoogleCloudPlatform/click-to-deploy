@@ -1,6 +1,7 @@
 # About
 
-Source for Google Click to Deploy solutions listed on Google Cloud Marketplace.
+Source for Google Click to Deploy solutions listed on
+Google Cloud Marketplace.
 
 # Disclaimer
 
@@ -13,7 +14,8 @@ Please run following commands to receive newest version of used modules.
 
 ## Updating git submodules
 
-You can use make to make sure submodules are populated with proper code.
+You can use make to make sure submodules
+are populated with proper code.
 
 ```shell
 make submodule/init # or make submodule/init-force
@@ -29,13 +31,12 @@ git submodule update --recursive --init
 
 # Cloud Build CI
 
-This repository uses Cloud Build for continuous integration. The Cloud Build
-configuration file is located at [`cloudbuild.yaml`](cloudbuild.yaml).
+This repository uses Cloud Build for continuous integration. The Cloud Build configuration file is located at [`cloudbuild.yaml`](cloudbuild.yaml).
 
 ## Manually run the build
 
-Cloud Build can be triggered manually by running the following command from the
-root directory of this repository:
+Cloud Build can be triggered manually by running the following command
+from the root directory of this repository:
 
 ```shell
 export GCP_PROJECT_TO_RUN_CLOUD_BUILD=<>
