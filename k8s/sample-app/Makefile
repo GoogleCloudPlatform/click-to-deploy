@@ -1,9 +1,7 @@
-include ../vendor/marketplace-tools/app.Makefile
-include ../vendor/marketplace-tools/crd.Makefile
-include ../vendor/marketplace-tools/gcloud.Makefile
-include ../vendor/marketplace-tools/marketplace.Makefile
-include ../vendor/marketplace-tools/ubbagent.Makefile
-include ../vendor/marketplace-tools/var.Makefile
+include ../app.Makefile
+include ../crd.Makefile
+include ../gcloud.Makefile
+include ../var.Makefile
 
 
 TAG ?= latest
@@ -51,12 +49,14 @@ app/build:: .build/sample-app/debian9  \
                        manifest/* \
                        schema.yaml \
                        .build/var/APP_DEPLOYER_IMAGE \
+                       .build/var/MARKETPLACE_TOOLS_TAG \
                        .build/var/REGISTRY \
                        .build/var/TAG \
                        | .build/sample-app
 	docker build \
 	    --build-arg REGISTRY="$(REGISTRY)/sample-app" \
 	    --build-arg TAG="$(TAG)" \
+	    --build-arg MARKETPLACE_TOOLS_TAG="$(MARKETPLACE_TOOLS_TAG)" \
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
 	    -f deployer/Dockerfile \
 	    .
@@ -72,4 +72,3 @@ app/build:: .build/sample-app/debian9  \
 	    "$(REGISTRY)/sample-app:$(TAG)"
 	docker push "$(REGISTRY)/sample-app:$(TAG)"
 	@touch "$@"
-

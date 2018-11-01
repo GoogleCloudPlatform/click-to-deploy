@@ -30,36 +30,14 @@ options:
   machineType: 'N1_HIGHCPU_8'
 steps:
 
-- id: Initialize Git
-  name: gcr.io/cloud-builders/git
-  entrypoint: bash
-  args:
-  - -exc
-  - |
-    # Cloud Build x GitHub integration uses source archives to fetch
-    # the source, rather than Git source fetching, and as a consequence
-    # does not include the .git/ directory. As a workaround, we clone
-    # the repository and reset it to this build's commit sha.
-    git clone https://github.com/GoogleCloudPlatform/click-to-deploy.git .tmp
-    mv .tmp/.git .git
-    rm -rf .tmp
-    git reset "$COMMIT_SHA"
-
-    # Download Git submodules
-    git submodule init
-    git submodule sync --recursive
-    git submodule update --recursive --init
-
 - id: Pull Dev Image
   name: gcr.io/cloud-builders/docker
-  waitFor:
-  - Initialize Git
-  dir: k8s/vendor/marketplace-tools
+  dir: k8s
   entrypoint: bash
   args:
   - -exc
   - |
-    TAG="$$(./scripts/derive_tag.sh)"
+    TAG="$$(cat ./MARKETPLACE_TOOLS_TAG)"
     docker pull "gcr.io/cloud-marketplace-tools/k8s/dev:$$TAG"
     docker tag "gcr.io/cloud-marketplace-tools/k8s/dev:$$TAG" "gcr.io/cloud-marketplace-tools/k8s/dev:local"
 
@@ -114,8 +92,9 @@ steps:
   - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
   dir: k8s/{{ solution }}
   args:
-  - -exc
-  - make -j4 app/verify
+  - make
+  - -j4
+  - app/verify
 
 {%- endfor %}
 """.strip()
@@ -142,8 +121,9 @@ def main():
 
   skiplist = ['spark-operator']
 
-  listdir = os.listdir('k8s')
-  listdir.remove('vendor')
+
+  listdir = [f for f in os.listdir('k8s')
+             if os.path.isdir(os.path.join('k8s', f))]
   listdir.sort()
 
   solutions_to_build = []
