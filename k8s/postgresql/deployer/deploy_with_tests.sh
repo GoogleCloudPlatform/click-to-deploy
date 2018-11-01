@@ -23,11 +23,25 @@ overlay_test_schema.py \
   --dest "/data/schema.yaml"
 rm -f /data-test/schema.yaml
 
-/bin/expand_config.py
-export NAME="$(/bin/print_config.py --param '{"x-google-marketplace": {"type": "NAME"}}')"
-export NAMESPACE="$(/bin/print_config.py --param '{"x-google-marketplace": {"type": "NAMESPACE"}}')"
+NAME="$(/bin/print_config.py \
+    --xtype NAME \
+    --values_mode raw)"
+NAMESPACE="$(/bin/print_config.py \
+    --xtype NAMESPACE \
+    --values_mode raw)"
+export NAME
+export NAMESPACE
 
 echo "Deploying application \"$NAME\" in test mode"
+
+app_uid=$(kubectl get "applications/$NAME" \
+  --namespace="$NAMESPACE" \
+  --output=jsonpath='{.metadata.uid}')
+app_api_version=$(kubectl get "applications/$NAME" \
+  --namespace="$NAMESPACE" \
+  --output=jsonpath='{.apiVersion}')
+
+/bin/expand_config.py --values_mode raw --app_uid "$app_uid"
 
 ## tls
 name=$NAME
@@ -45,16 +59,7 @@ if ! kubectl --namespace ${namespace} get secret | grep -q "^${name}-tls "; then
   rm $file.key
   rm $file.crt
 fi
-## tls
 
-app_uid=$(kubectl get "applications/$NAME" \
-  --namespace="$NAMESPACE" \
-  --output=jsonpath='{.metadata.uid}')
-app_api_version=$(kubectl get "applications/$NAME" \
-  --namespace="$NAMESPACE" \
-  --output=jsonpath='{.apiVersion}')
-
-## tls
 application_uid=$app_uid
 kubectl patch secret ${name}-tls -p \
 '
@@ -100,7 +105,7 @@ patch_assembly_phase.sh --status="Success"
 wait_for_ready.py \
   --name $NAME \
   --namespace $NAMESPACE \
-  --timeout 300
+  --timeout ${WAIT_FOR_READY_TIMEOUT:-300}
 
 tester_manifest="/data/tester.yaml"
 if [[ -e "$tester_manifest" ]]; then
@@ -108,7 +113,8 @@ if [[ -e "$tester_manifest" ]]; then
 
   run_tester.py \
     --namespace $NAMESPACE \
-    --manifest $tester_manifest
+    --manifest $tester_manifest \
+    --timeout ${TESTER_TIMEOUT:-300}
 fi
 
 clean_iam_resources.sh
