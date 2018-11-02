@@ -121,7 +121,6 @@ def main():
 
   skiplist = ['spark-operator']
 
-
   listdir = [f for f in os.listdir('k8s')
              if os.path.isdir(os.path.join('k8s', f))]
   listdir.sort()
