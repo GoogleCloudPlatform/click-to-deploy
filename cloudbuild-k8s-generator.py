@@ -119,7 +119,7 @@ def main():
       help='verify %s file' % CLOUDBUILD_CONFIG)
   args = parser.parse_args()
 
-  skiplist = ['spark-operator']
+  skiplist = []
 
   listdir = [f for f in os.listdir('k8s')
              if os.path.isdir(os.path.join('k8s', f))]
