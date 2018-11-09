@@ -10,6 +10,25 @@ schema-free JSON documents.
 
 Popular open stacks on Kubernetes packaged by Google.
 
+## Design
+
+![Architecture diagram](resources/elasticsearch-architecture.png)
+
+The application offers a vanilla installation of Elasticsearch.
+
+Elasticsearch server is run inside a StatefulSet, with configuration files
+(elasticsearch.yml and log4j2.properties) attached through a ConfigMap.
+
+The Service exposing Elasticsearch is configured by default to serve only
+private connections (by the type of ClusterIP, exposing a private IP only).
+It accepts connections on ports 9200 and 9300.
+
+Elasticsearch requires having an appropriate virtual memory configuration
+on the host operating system, specifically setting a minimum value of 262144
+for `vm.max_map_count`. This application handles this operation through running
+a privileged InitContainer, which assures the proper configuration
+on the hosting node.
+
 # Installation
 
 ## Quick install with Google Cloud Marketplace
