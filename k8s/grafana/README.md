@@ -8,6 +8,36 @@ data collection systems - including Prometheus, InfluxDB, Elasticsearch, MySQL o
 
 Popular open stacks on Kubernetes packaged by Google.
 
+## Design
+
+![Architecture diagram](resources/grafana-architecture.png)
+
+This application offers a vanilla deployment of stateful Grafana installation
+on a Kubernetes cluster.
+
+Administrative user credentials are automatically configured in the application
+through a Kubernetes Secret. Configuration file (/etc/grafana/grafana.ini) is
+defined in a ConfigMap and mounted to Grafana StatefulSet.
+
+By default, the Service exposing Grafana server is of type ClusterIP, which makes
+it accessible only in a private network.
+
+## Configuration
+
+**Fluentd** - it contains a ConfigMap defining a few files for logs locations
+  and formats. It exports logs to Elasticsearch daily indexes, starting with
+  “logstash-\*” prefix.
+
+**Elasticsearch** - forms a cluster with a configurable number of replicas
+  (specified by user before the installation); It uses a dedicated disk
+  (VolumeClaim) for storing data in a stateful manner.
+
+**Kibana** - it stores all the configuration in Elasticsearch index, this is
+  why Kibana itself is installed in a single-replica, “stateless” Deployment.
+  Kibana has initial configuration represented by JSON payloads that are used
+  against Kibana’s REST API to set an index pattern for “logstash-\*” and some
+  useful saved searches.
+
 # Installation
 
 ## Quick install with Google Cloud Marketplace
@@ -187,7 +217,7 @@ SERVICE_IP=$(kubectl get svc ${APP_INSTANCE_NAME}-grafana \
 echo "http://${SERVICE_IP}:3000/"
 ```
 
-## Expose the Graphana service internally, using port forwarding
+## Expose the Grafana service internally, using port forwarding
 
 As an alternative to exposing Grafana publicly, you can use local port
 forwarding. In a background terminal, run the following command:
