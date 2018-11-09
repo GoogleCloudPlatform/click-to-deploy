@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "${APP_INSTANCE_NAME}-tester"
+  labels:
+    app.kubernetes.io/name: "${APP_INSTANCE_NAME}"
+  annotations:
+    marketplace.cloud.google.com/verification: test
+spec:
+  serviceAccountName: ${APP_INSTANCE_NAME}-deployer-sa
+  containers:
+  - name: tester
+    image: "${testerImage}"
+    imagePullPolicy: Always
+    env:
+    - name: NAMESPACE
+      valueFrom:
+        configMapKeyRef:
+          name: ${APP_INSTANCE_NAME}-deployer-config
+          key: NAMESPACE
+    - name: APP_INSTANCE_NAME
+      value: ${APP_INSTANCE_NAME}
+  restartPolicy: Never

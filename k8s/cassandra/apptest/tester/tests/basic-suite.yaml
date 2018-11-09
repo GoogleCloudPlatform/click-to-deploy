@@ -1,0 +1,52 @@
+actions:
+- name: 3 nodes deployed successfully
+  bashTest:
+    script: |-
+      set -x
+      function info {
+        >&2 echo "${@}"
+      }
+
+      function get_desired_number_of_replicas_in_sts {
+        kubectl get sts "${STS_NAME}" \
+          --namespace "${NAMESPACE}" \
+          --output jsonpath='{.spec.replicas}'
+      }
+
+      function get_current_number_of_replicas_in_sts {
+        kubectl get sts "${STS_NAME}" \
+          --namespace "${NAMESPACE}" \
+          --output jsonpath='{.status.readyReplicas}'
+      }
+
+      function wait_for_healthy_sts {
+        info "Waiting for equal desired and current number of replicas"
+        while [[ $(get_current_number_of_replicas_in_sts) -ne $(get_desired_number_of_replicas_in_sts) ]]; do
+          info "Sleeping 10 seconds before rechecking..."
+          sleep 10
+        done
+        info "Statefulset has equal current and desired number of replicas"
+      }
+      STS_NAME="${APP_INSTANCE_NAME}-cassandra"
+      wait_for_healthy_sts
+      kubectl get sts "${STS_NAME}" \
+        --namespace "${NAMESPACE}" \
+        --output jsonpath='{.status.readyReplicas}'
+    expect:
+      statusCode:
+      - equals: 0
+      stdout:
+      - equals: '3'
+      stderr:
+      - equals: ''
+- name: Execute CQL query
+  bashTest:
+    script: |-
+      set -x
+      export CQLSH_HOST=$APP_INSTANCE_NAME-cassandra-0.$APP_INSTANCE_NAME-cassandra-svc.$NAMESPACE.svc.cluster.local
+      cqlsh -e 'SHOW HOST' --cqlversion="3.4.4"
+    expect:
+      stdout:
+      - contains: 'Connected to'
+      statusCode:
+      - equals: 0
