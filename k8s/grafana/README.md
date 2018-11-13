@@ -8,6 +8,20 @@ data collection systems - including Prometheus, InfluxDB, Elasticsearch, MySQL o
 
 Popular open stacks on Kubernetes packaged by Google.
 
+## Design
+
+![Architecture diagram](resources/grafana-architecture.png)
+
+The application offers a vanilla deployment of stateful, single-node
+Grafana installation on a Kubernetes cluster.
+
+Administrative user credentials are automatically configured in the application
+through a Kubernetes Secret. Configuration file (/etc/grafana/grafana.ini) is
+defined in a ConfigMap and mounted to Grafana StatefulSet.
+
+By default, the Service exposing Grafana server is of type ClusterIP, which makes
+it accessible only in a private network. It listens on port 3000.
+
 # Installation
 
 ## Quick install with Google Cloud Marketplace
@@ -187,7 +201,7 @@ SERVICE_IP=$(kubectl get svc ${APP_INSTANCE_NAME}-grafana \
 echo "http://${SERVICE_IP}:3000/"
 ```
 
-## Expose the Graphana service internally, using port forwarding
+## Expose the Grafana service internally, using port forwarding
 
 As an alternative to exposing Grafana publicly, you can use local port
 forwarding. In a background terminal, run the following command:
