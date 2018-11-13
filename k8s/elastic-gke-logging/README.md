@@ -140,12 +140,11 @@ export ELASTICSEARCH_REPLICAS=2
 Configure the container images:
 
 ```shell
-APP_VERSION=6.3
-
-export IMAGE_ELASTICSEARCH="marketplace.gcr.io/google/elastic-gke-logging:$APP_VERSION"
-export IMAGE_KIBANA="marketplace.gcr.io/google/elastic-gke-logging/kibana:$APP_VERSION"
-export IMAGE_FLUENTD="marketplace.gcr.io/google/elastic-gke-logging/fluentd:$APP_VERSION"
-export IMAGE_INIT="marketplace.gcr.io/google/elasticsearch/ubuntu16_04:$APP_VERSION"
+TAG=6.3
+export IMAGE_ELASTICSEARCH="marketplace.gcr.io/google/elastic-gke-logging:${TAG}"
+export IMAGE_KIBANA="marketplace.gcr.io/google/elastic-gke-logging/kibana:${TAG}"
+export IMAGE_FLUENTD="marketplace.gcr.io/google/elastic-gke-logging/fluentd:${TAG}"
+export IMAGE_INIT="marketplace.gcr.io/google/elasticsearch/ubuntu16_04:${TAG}"
 ```
 
 The images above are referenced by
