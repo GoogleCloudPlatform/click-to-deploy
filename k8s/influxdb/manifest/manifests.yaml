@@ -56,11 +56,12 @@ spec:
           initialDelaySeconds: 5
           timeoutSeconds: 2
         volumeMounts:
-         - name: influxdb-data
+         - name: $APP_INSTANCE_NAME-data-pvc
            mountPath: /var/lib/influxdb
   volumeClaimTemplates:
   - metadata:
       name: $APP_INSTANCE_NAME-data-pvc
+      labels: *InfluxDBDeploymentLabels
     spec:
       resources:
         requests:

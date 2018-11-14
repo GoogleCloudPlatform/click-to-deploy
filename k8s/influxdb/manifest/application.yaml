@@ -11,7 +11,7 @@ metadata:
 spec:
   descriptor:
     type: InfluxDB
-    version: '1.5'
+    version: '1.6'
     description: |-
       InfluxDB is an open source database for storing time series data. The source of time series
       data may come from logging and monitoring systems and IoT devices. This is a single instance
@@ -28,13 +28,13 @@ spec:
     - description: 'User Guide: Google Click to Deploy InfluxDB'
       url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/influxdb/README.md
     - description: 'Official documentation for InfluxDB'
-      url: https://docs.influxdata.com/influxdb/v1.5/introduction/getting-started/
+      url: https://docs.influxdata.com/influxdb/v1.6/introduction/getting-started/
     notes: |-
       # Access InfluxDB instance
 
       It is possible to connect to InfluxDB using `influx` tool.
 
-      Please, refer to [InfluxDB Getting Started](https://docs.influxdata.com/influxdb/v1.5/introduction/getting-started/) for more information about `influx` usage and how to upload sample data to your InfluxDB instance.
+      Please, refer to [InfluxDB Getting Started](https://docs.influxdata.com/influxdb/v1.6/introduction/getting-started/) for more information about `influx` usage and how to upload sample data to your InfluxDB instance.
 
       To connect to your InfluxDB instance, please, follow the instructions presented below.
 
