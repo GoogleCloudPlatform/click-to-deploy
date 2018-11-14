@@ -54,9 +54,6 @@ spec:
             timeoutSeconds: 30
           # based on 10 running nodes with 30 pods each
           resources:
-            limits:
-              cpu: 200m
-              memory: 1000Mi
             requests:
               cpu: 200m
               memory: 1000Mi
