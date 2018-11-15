@@ -114,7 +114,7 @@ export NAMESPACE=default
 Configure the container images:
 
 ```shell
-TAG=5.1
+TAG=5.3
 export IMAGE_GRAFANA="marketplace.gcr.io/google/grafana:${TAG}"
 export IMAGE_GRAFANA_INIT="marketplace.gcr.io/google/grafana/debian9:${TAG}"
 ```

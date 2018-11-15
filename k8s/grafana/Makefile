@@ -3,7 +3,7 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
-TAG ?= 5.1
+TAG ?= 5.3
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/grafana/deployer:$(TAG)
