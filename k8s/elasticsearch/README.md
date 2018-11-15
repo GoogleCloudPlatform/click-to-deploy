@@ -126,8 +126,9 @@ export REPLICAS=2
 Configure the container images:
 
 ```shell
-export IMAGE_ELASTICSEARCH="marketplace.gcr.io/google/elasticsearch:latest"
-export IMAGE_INIT="marketplace.gcr.io/google/elasticsearch/ubuntu16_04:latest"
+TAG=6.3
+export IMAGE_ELASTICSEARCH="marketplace.gcr.io/google/elasticsearch:${TAG}"
+export IMAGE_INIT="marketplace.gcr.io/google/elasticsearch/ubuntu16_04:${TAG}"
 ```
 
 The images above are referenced by
