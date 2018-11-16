@@ -132,7 +132,7 @@ app/build:: .build/prometheus/alertmanager \
 .build/prometheus/grafana: .build/var/REGISTRY \
                            .build/var/TAG \
                            | .build/prometheus
-	docker pull launcher.gcr.io/google/grafana5:5.1
-	docker tag launcher.gcr.io/google/grafana5:5.1 "$(REGISTRY)/prometheus/grafana:$(TAG)"
+	docker pull launcher.gcr.io/google/grafana5:5.3
+	docker tag launcher.gcr.io/google/grafana5:5.3 "$(REGISTRY)/prometheus/grafana:$(TAG)"
 	docker push "$(REGISTRY)/prometheus/grafana:$(TAG)"
 	@touch "$@"
