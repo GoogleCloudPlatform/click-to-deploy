@@ -211,7 +211,7 @@ kubectl create namespace "$NAMESPACE"
 
 #### Create service accounts
 
-#### Make sure you are a ClusterAdmin
+##### Make sure you are a ClusterAdmin
 
 Creating custom cluster roles requires being a Cluster Admin. To assign
 the Cluster Admin role to your user account, run the following command:
