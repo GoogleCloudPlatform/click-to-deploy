@@ -8,6 +8,10 @@ For more information on Jenkins, see the [Jenkins website](https://jenkins.io/).
 
 Popular open source software stacks on Kubernetes packaged by Google and made available in Google Cloud Marketplace.
 
+## Design
+
+![Architecture diagram](resources/jenkins-k8s-app-architecture.png)
+
 # Installation
 
 ## Quick install with Google Cloud Marketplace
