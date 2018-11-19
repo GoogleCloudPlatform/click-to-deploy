@@ -8,6 +8,10 @@ For more information on PostgreSQL, see the [PosgreSQL website](https://www.post
 
 Popular open source software stacks on Kubernetes packaged by Google and made available in Google Cloud Marketplace.
 
+## Design
+
+![Architecture diagram](resources/memcached-k8s-app-architecture.png)
+
 # Installation
 
 ## Quick install with Google Cloud Marketplace
