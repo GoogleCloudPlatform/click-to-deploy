@@ -10,7 +10,7 @@ Popular open source software stacks on Kubernetes packaged by Google and made av
 
 ## Design
 
-![Architecture diagram](resources/memcached-k8s-app-architecture.png)
+![Architecture diagram](resources/postgresql-k8s-app-architecture.png)
 
 # Installation
 
