@@ -191,7 +191,7 @@ Generate a random password for Grafana:
 # Install pwgen and base64
 sudo apt-get install -y pwgen base64
 
-# Set the root and Wordpress database passwords
+# Set the Grafana password
 export GRAFANA_GENERATED_PASSWORD="$(pwgen 12 1 | tr -d '\n' | base64)"
 ```
 
