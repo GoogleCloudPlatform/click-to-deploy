@@ -12,6 +12,14 @@ Popular open source software stacks on Kubernetes packaged by Google and made av
 
 ![Architecture diagram](resources/postgresql-k8s-app-architecture.png)
 
+### Solution Information
+
+This solution will install single instance of PostgreSQL server into your Kubernetes cluster.
+
+ReplicaSet Kubernetes object with number of replicas set to one (1) is used to manage PostgreSQL pod within this K8s application. PostgreSQL pod uses Persistent Volume to store data and LoadBalancer Service to expose database port to the external world. Communication between client and server is encrypted. Please configure GCP firewall rules if you need to limit access to the PostgreSQL.
+
+To install the application you will need to set up initial password for postgres user, PostgreSQL volume size and generate or provide TLS key and certificate. All recuired steps are covered furhter in this README.
+
 # Installation
 
 ## Quick install with Google Cloud Marketplace
