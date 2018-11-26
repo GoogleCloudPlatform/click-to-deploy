@@ -60,7 +60,6 @@ items:
           - name: GOOGLE_APPLICATION_CREDENTIALS
             value: "/var/secrets/google/key.json"
           image: $IMAGE_TRILLIAN_LOGSIGNER
-          imagePullPolicy: Always
           resources:
             limits:
               cpu: "1"
