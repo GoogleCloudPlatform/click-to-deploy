@@ -96,6 +96,12 @@ export APP_INSTANCE_NAME=sample-app-1
 export NAMESPACE=default
 ```
 
+Set the sample parameter:
+
+```shell
+export SAMPLE_APP_PARAMETER1=3
+```
+
 Configure the container image:
 
 ```shell
