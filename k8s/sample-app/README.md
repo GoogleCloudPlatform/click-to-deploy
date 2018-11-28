@@ -105,7 +105,7 @@ export SAMPLE_APP_PARAMETER1=3
 Configure the container image:
 
 ```shell
-export IMAGE_SAMPLE_APP="marketplace.gcr.io/google/sample-app:latest"
+export IMAGE_SAMPLE_APP="launcher.gcr.io/google/nginx1:latest"
 ```
 
 The image above is referenced by
