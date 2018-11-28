@@ -56,7 +56,7 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: $APP_INSTANCE_NAME-sample-app-service
+  name: $APP_INSTANCE_NAME-sample-app-svc
   labels: &DeploymentLabels
     app.kubernetes.io/name: $APP_INSTANCE_NAME
     app.kubernetes.io/component: sample-app-instance
