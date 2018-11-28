@@ -27,22 +27,12 @@ APP_PARAMETERS ?= { \
 APP_TEST_PARAMETERS ?= {}
 
 
-app/build:: .build/sample-app/debian9  \
-            .build/sample-app/deployer \
+app/build:: .build/sample-app/deployer \
             .build/sample-app/sample-app
 
 
 .build/sample-app: | .build
 	mkdir -p "$@"
-
-
-.build/sample-app/debian9: .build/var/REGISTRY \
-                      .build/var/TAG \
-                      | .build/sample-app
-	docker pull launcher.gcr.io/google/debian9
-	docker tag launcher.gcr.io/google/debian9 "$(REGISTRY)/sample-app/debian9:$(TAG)"
-	docker push "$(REGISTRY)/sample-app/debian9:$(TAG)"
-	@touch "$@"
 
 
 .build/sample-app/deployer: deployer/* \
