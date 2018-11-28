@@ -18,7 +18,7 @@ This solution will install single instance of PostgreSQL server into your Kubern
 
 ReplicaSet Kubernetes object with number of replicas set to one (1) is used to manage PostgreSQL pod within this K8s application. PostgreSQL pod uses Persistent Volume to store data and LoadBalancer Service to expose database port to the external world. Communication between client and server is encrypted. Please configure GCP firewall rules if you need to limit access to the PostgreSQL.
 
-To install the application you will need to set up initial password for postgres user, PostgreSQL volume size and generate or provide TLS key and certificate. All recquired steps are covered furhter in this README.
+To install the application you will need to set up initial password for postgres user, PostgreSQL volume size and generate or provide TLS key and certificate. All required steps are covered further in this README.
 
 # Installation
 
