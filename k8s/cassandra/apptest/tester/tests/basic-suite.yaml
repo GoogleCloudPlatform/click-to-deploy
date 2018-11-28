@@ -34,11 +34,11 @@ actions:
         --output jsonpath='{.status.readyReplicas}'
     expect:
       statusCode:
-      - equals: 0
+        equals: 0
       stdout:
-      - equals: '3'
+        equals: '3'
       stderr:
-      - equals: ''
+        equals: ''
 - name: Execute CQL query
   bashTest:
     script: |-
@@ -47,6 +47,6 @@ actions:
       cqlsh -e 'SHOW HOST' --cqlversion="3.4.4"
     expect:
       stdout:
-      - contains: 'Connected to'
+        contains: 'Connected to'
       statusCode:
-      - equals: 0
+        equals: 0
