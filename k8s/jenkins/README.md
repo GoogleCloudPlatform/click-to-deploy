@@ -16,9 +16,9 @@ Popular open source software stacks on Kubernetes packaged by Google and made av
 
 This solution will install single instance of Jenkins server into your Kubernetes cluster.
 
-ReplicaSet Kubernetes object with number of replicas set to one (1) is used to manage Jenkins pod within this K8s application. Jenkins pod uses Persistent Volume to store data, LoadBalancer Service to expose Agent Connector port to the cluster and Ingress to expose UI port to external users. Please configure GCP firewall rules if you need to limit access to the Jenkins user interface.
+ReplicaSet Kubernetes object with number of replicas set to one (1) is used to manage Jenkins pod within this K8s application. Jenkins pod uses PersistentVolume to store data, LoadBalancer Service to expose Agent Connector port to the cluster and Ingress to expose UI port to external users. Please configure GCP firewall rules if you need to limit access to the Jenkins user interface.
 
-To install the application you will need to generate or provide TLS key and certificate. All recquired steps are covered furhter in this README.
+To install the application you will need to generate or provide TLS key and certificate. All required steps are covered further in this README.
 
 # Installation
 
@@ -156,7 +156,7 @@ awk 'FNR==1 {print "---"}{print}' manifest/* \
 
 #### Apply the manifest to your Kubernetes cluster
 
-Use `kubectl` to apply the manifest to your Kubernetes cluster. this installation will create:
+Use `kubectl` to apply the manifest to your Kubernetes cluster. This installation will create:
 
 - An Application resource, which collects all the deployment resources into one logical entity
 - A PersistentVolume and PersistentVolumeClaim. Note that the volume isn't be deleted with application. If you delete the installation and recreate it with the same name, the new installation uses the same PersistentVolume. As a result, there is no application initialization and the old configuration is used.
