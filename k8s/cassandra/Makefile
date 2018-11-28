@@ -70,7 +70,7 @@ app/build:: .build/cassandra/cassandra \
 
 .build/cassandra/tester: | .build/cassandra \
                            .build/var/TESTER_IMAGE \
-													 apptest/**/*
+                           apptest/**/*
 	$(call print_target, $@)
 	cd apptest/tester \
 	    && docker build --tag "$(TESTER_IMAGE)" .
