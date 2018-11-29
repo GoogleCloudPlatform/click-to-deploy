@@ -137,6 +137,9 @@ spec:
             secretKeyRef:
               name: $APP_INSTANCE_NAME-mysql-secret
               key: wp_password
+        # A database name used by WordPress.
+        - name: WORDPRESS_DB_NAME
+          value: wordpress
         ports:
         - name: http
           containerPort: 80
