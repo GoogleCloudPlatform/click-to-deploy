@@ -10,7 +10,7 @@ type: Opaque
 data:
   root_password: "${ROOT_DB_PASSWORD}"
   # wordpress in Base64
-  wp_user: d29yZHByZXNz
+  wp_user: d29yZHByZXNz # the decoded value is "wordpress"
   wp_password: "${WORDPRESS_DB_PASSWORD}"
 ---
 apiVersion: apps/v1beta2
@@ -35,18 +35,22 @@ spec:
       - image: $IMAGE_MYSQL
         name: mysql
         env:
+        # A password for root superuser.
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
               name: $APP_INSTANCE_NAME-mysql-secret
               key: root_password
+        # A database name to be created at startup.
         - name: MYSQL_DATABASE
           value: wordpress
+        # A new user to be created at startup.
         - name: MYSQL_USER
           valueFrom:
            secretKeyRef:
              name: $APP_INSTANCE_NAME-mysql-secret
              key: wp_user
+        # A password of the new user created at startup.
         - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -118,13 +122,16 @@ spec:
       - image: $IMAGE_WORDPRESS
         name: wordpress
         env:
+        # A hostname and port of MySQL service.
         - name: WORDPRESS_DB_HOST
           value: $APP_INSTANCE_NAME-mysql-svc
+        # A username used for accessing the database.
         - name: WORDPRESS_DB_USER
           valueFrom:
             secretKeyRef:
               name: $APP_INSTANCE_NAME-mysql-secret
               key: wp_user
+        # A password used for accessing the database.
         - name: WORDPRESS_DB_PASSWORD
           valueFrom:
             secretKeyRef:
