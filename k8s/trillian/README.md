@@ -96,7 +96,7 @@ Create a new cluster from the command line:
 export CLUSTER=trillian-cluster
 export ZONE=us-west1-a
 
-gcloud container clusters create "$CLUSTER" --zone "$ZONE"
+gcloud container clusters create "$CLUSTER" --zone "$ZONE" --enable-autoscaling
 ```
 
 Configure `kubectl` to connect to the new cluster.
