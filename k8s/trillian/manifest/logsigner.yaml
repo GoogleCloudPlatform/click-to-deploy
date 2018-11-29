@@ -30,10 +30,6 @@ items:
       metadata:
         labels: *LogSignerLabels
       spec:
-        volumes:
-        - name: google-cloud-key
-          secret:
-            secretName: trillian-key
         restartPolicy: Always
         containers:
         - name: trillian-logsigner
@@ -56,9 +52,6 @@ items:
               name: ${NAME}-config
           - secretRef:
               name: ${NAME}-secrets
-          env:
-          - name: GOOGLE_APPLICATION_CREDENTIALS
-            value: "/var/secrets/google/key.json"
           image: $IMAGE_TRILLIAN_LOGSIGNER
           resources:
             limits:
@@ -74,28 +67,4 @@ items:
             timeoutSeconds: 5
           ports:
           - containerPort: 8091
-          volumeMounts:
-          - name: google-cloud-key
-            mountPath: /var/secrets/google
-        - name: prometheus-to-sd
-          image: $IMAGE_PROMETHEUS_TO_SD
-          ports:
-          - name: profiler
-            containerPort: 6060
-          command:
-          - /monitor
-          - --stackdriver-prefix=custom.googleapis.com
-          - --source=logsigner:http://localhost:8091/metrics
-          - --pod-id=$(POD_NAME)
-          - --namespace-id=$(POD_NAMESPACE)
-          - --scrape-interval=5s
-          - --export-interval=60s
-          env:
-          - name: POD_NAME
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.name
-          - name: POD_NAMESPACE
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.namespace
+

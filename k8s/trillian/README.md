@@ -49,12 +49,6 @@ Popular open stacks on Kubernetes packaged by Google.
 
 *   **Etcd Cluster** - used to handle rate-limiting/quota and master election.
 
-*   **Prometheus** - used for monitoring Trillian's health. This Trillian
-    installer will automatically forward monitoring data to StackDriver, but you
-    can alternatively
-    [install Prometheus and Grafana](https://pantheon.corp.google.com/marketplace/details/google/prometheus)
-    and use those instead.
-
 ## Configuration
 
 *   The number of Trillian log server and signer replicas is specified by the
