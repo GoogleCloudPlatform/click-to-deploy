@@ -59,8 +59,91 @@ properties:
       serviceAccount:
         roles:
         - type: ClusterRole
-          rulesType: PREDEFINED
-          rulesFromRoleName: cluster-admin
+          rulesType: CUSTOM
+          rules:
+          - apiGroups: [""]
+            resources: ["nodes", "nodes/metrics", "services", "endpoints", "pods"]
+            verbs: ["get", "list", "watch"]
+          - apiGroups: [""]
+            resources: ["configmaps"]
+            verbs: ["get"]
+          - nonResourceURLs: ["/metrics", "/metrics/cadvisor"]
+            verbs: ["get"]
+  KUBE_STATE_METRICS_SERVICE_ACCOUNT:
+    type: string
+    title: Kube State Metrics Service Account
+    description: Service account to assign to main Kube State Metrics Deployment
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        roles:
+        - type: ClusterRole
+          rulesType: CUSTOM
+          rules:
+          - apiGroups: [""]
+            resources:
+            - configmaps
+            - secrets
+            - nodes
+            - pods
+            - services
+            - resourcequotas
+            - replicationcontrollers
+            - limitranges
+            - persistentvolumeclaims
+            - persistentvolumes
+            - namespaces
+            - endpoints
+            verbs: ["list", "watch"]
+          - apiGroups: ["extensions"]
+            resources:
+            - daemonsets
+            - deployments
+            - replicasets
+            verbs: ["list", "watch"]
+          - apiGroups: ["apps"]
+            resources:
+            - statefulsets
+            verbs: ["list", "watch"]
+          - apiGroups: ["batch"]
+            resources:
+            - cronjobs
+            - jobs
+            verbs: ["list", "watch"]
+          - apiGroups: ["autoscaling"]
+            resources:
+            - horizontalpodautoscalers
+            verbs: ["list", "watch"]
+  ALERTMANAGER_SERVICE_ACCOUNT:
+    type: string
+    title: Alertmanager Service Account
+    description: Service account to assign to Alertmanager StatefulSet
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        roles:
+        - type: ClusterRole
+          rulesType: CUSTOM
+  GRAFANA_SERVICE_ACCOUNT:
+    type: string
+    title: Grafana Service Account
+    description: Service account to assign to Grafana StatefulSet
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        roles:
+        - type: ClusterRole
+          rulesType: CUSTOM
+  NODE_EXPORTER_SERVICE_ACCOUNT:
+    type: string
+    title: Node Exporter Service Account
+    description: Service account to assign to Node Exporter DaemonSet
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        roles:
+        - type: ClusterRole
+          rulesType: CUSTOM
 required:
 - APP_INSTANCE_NAME
 - NAMESPACE
@@ -73,3 +156,7 @@ required:
 - IMAGE_GRAFANA
 - IMAGE_PROMETHEUS_INIT
 - PROMETHEUS_SERVICE_ACCOUNT
+- KUBE_STATE_METRICS_SERVICE_ACCOUNT
+- ALERTMANAGER_SERVICE_ACCOUNT
+- GRAFANA_SERVICE_ACCOUNT
+- NODE_EXPORTER_SERVICE_ACCOUNT

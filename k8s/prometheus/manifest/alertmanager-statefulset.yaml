@@ -19,7 +19,7 @@ spec:
     metadata:
       labels: *Labels
     spec:
-      serviceAccountName: $PROMETHEUS_SERVICE_ACCOUNT
+      serviceAccountName: $ALERTMANAGER_SERVICE_ACCOUNT
       containers:
         - name: prometheus-alertmanager
           image: $IMAGE_ALERTMANAGER
