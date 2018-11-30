@@ -100,7 +100,7 @@ export NAMESPACE=default
 Configure the container image:
 
 ```shell
-export IMAGE_JENKINS="marketplace.gcr.io/google/jenkins:2.121"
+export IMAGE_JENKINS="marketplace.gcr.io/google/jenkins:2.138"
 ```
 
 The image above is referenced by
