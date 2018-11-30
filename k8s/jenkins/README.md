@@ -14,9 +14,9 @@ Popular open source software stacks on Kubernetes packaged by Google and made av
 
 ### Solution Information
 
-This solution will install single instance of Jenkins server into your Kubernetes cluster.
+This solution will install a single instance of Jenkins server into your Kubernetes cluster.
 
-ReplicaSet Kubernetes object with number of replicas set to one (1) is used to manage Jenkins pod within this K8s application. Jenkins pod uses PersistentVolume to store data, LoadBalancer Service to expose Agent Connector port to the cluster and Ingress to expose UI port to external users. Please configure GCP firewall rules if you need to limit access to the Jenkins user interface.
+The Jenkins pod is managed by a ReplicaSet with the number of replicas set to one (1). The Jenkins pod uses a PersistentVolume to store data, a LoadBalancer Service to expose the Agent Connector port to the cluster, and Ingress to expose the UI to external users. If you need to limit access to the Jenkins UI, you must configure GCP firewall rules.
 
 To install the application you will need to generate or provide TLS key and certificate. All required steps are covered further in this README.
 
