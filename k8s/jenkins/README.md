@@ -8,6 +8,18 @@ For more information on Jenkins, see the [Jenkins website](https://jenkins.io/).
 
 Popular open source software stacks on Kubernetes packaged by Google and made available in Google Cloud Marketplace.
 
+## Design
+
+![Architecture diagram](resources/jenkins-k8s-app-architecture.png)
+
+### Solution Information
+
+This solution will install a single instance of Jenkins server into your Kubernetes cluster.
+
+The Jenkins pod is managed by a ReplicaSet with the number of replicas set to one (1). The Jenkins pod uses a PersistentVolume to store data, a LoadBalancer Service to expose the Agent Connector port to the cluster, and Ingress to expose the UI to external users. If you need to limit access to the Jenkins UI, you must configure GCP firewall rules.
+
+To install the application you will need to generate or provide TLS key and certificate. All required steps are covered further in this README.
+
 # Installation
 
 ## Quick install with Google Cloud Marketplace
@@ -144,7 +156,13 @@ awk 'FNR==1 {print "---"}{print}' manifest/* \
 
 #### Apply the manifest to your Kubernetes cluster
 
-Use `kubectl` to apply the manifest to your Kubernetes cluster.
+Use `kubectl` to apply the manifest to your Kubernetes cluster. This installation will create:
+
+- An Application resource, which collects all the deployment resources into one logical entity
+- A PersistentVolume and PersistentVolumeClaim. Note that the volume isn't be deleted with application. If you delete the installation and recreate it with the same name, the new installation uses the same PersistentVolume. As a result, there is no application initialization and the old configuration is used.
+- A Deployment
+- Two Services, which expose Jenkins Master UI (8080) and Agents Connector (50000) ports to the cluster
+- An Ingress, which exposes Jenkins Master UI to the external world
 
 ```shell
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
