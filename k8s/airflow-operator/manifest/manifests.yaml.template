@@ -1,18 +1,29 @@
----
-apiVersion: apps/v1beta2
-kind: Deployment
+apiVersion: v1
+kind: Service
 metadata:
   name: airflow-operator
   labels:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
-    app.kubernetes.io/component: airflowoperator-deployment
+    app.kubernetes.io/component: airflow-operator-sts
+spec:
+  selector:
+      app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+  ports:
+  - port: 443
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: airflow-operator
+  labels:
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/component: airflow-operator-sts
 spec:
   replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: "$APP_INSTANCE_NAME"
-  strategy:
-    type: Recreate
+  serviceName: airflow-operator
   template:
     metadata:
       labels:
@@ -21,7 +32,30 @@ spec:
         pending: []
     spec:
       serviceAccountName: $SERVICE_ACCOUNT
+      initContainers:
+      - name: extract-crds
+        image: $IMAGE_AIRFLOWOPERATOR
+        imagePullPolicy: Always
+        command:
+        - sh
+        - -c
+        - "ls; pwd; ls /; cp crds/* /extracted/"
+        volumeMounts:
+        - name: crds
+          mountPath: /extracted
+      - name: inject-crds
+        image: gcr.io/cloud-marketplace-tools/k8s/deployer_envsubst:0.7.0
+        command:
+        - sh
+        - -c
+        - kubectl apply -f /crds/
+        volumeMounts:
+        - name: crds
+          mountPath: /crds
       containers:
       - name: airflowoperator
         image: $IMAGE_AIRFLOWOPERATOR
         imagePullPolicy: Always
+      volumes:
+      - name: crds
+        emptyDir: {}
