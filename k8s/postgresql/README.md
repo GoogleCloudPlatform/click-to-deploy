@@ -8,6 +8,18 @@ For more information on PostgreSQL, see the [PosgreSQL website](https://www.post
 
 Popular open source software stacks on Kubernetes packaged by Google and made available in Google Cloud Marketplace.
 
+## Design
+
+![Architecture diagram](resources/postgresql-k8s-app-architecture.png)
+
+### Solution Information
+
+This solution will install single instance of PostgreSQL server into your Kubernetes cluster.
+
+The PostgreSQL Pod is managed by a ReplicaSet with the number of replicas set to one. The PostgreSQL Pod uses a Persistent Volume to store data, and a LoadBalancer Service to expose the database port externally. Communication between client and server is encrypted. If you need to limit access to the PostgreSQL instance, you must configure GCP firewall rules.
+
+To install the application you will need to set up initial password for postgres user, PostgreSQL volume size and generate or provide TLS key and certificate. All required steps are covered further in this README.
+
 # Installation
 
 ## Quick install with Google Cloud Marketplace
@@ -214,7 +226,7 @@ cat postgresql-backup.sql | kubectl --namespace $NAMESPACE exec -i \
 
 # Updating 
 
-To update your PostgreSQL installation, delete your PostgreSQL pod, and install
+To update your PostgreSQL installation, delete your PostgreSQL Pod, and install
 a new version from GCP marketplace. Back up your data, and run the following command:
 
 ```shell
