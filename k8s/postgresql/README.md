@@ -125,7 +125,7 @@ until you are ready to upgrade. To get the digest for the image, use the
 following script:
 
 ```shell
-docker pull $IMAGE_POSTGRESQL | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_POSTGRESQL\")\"@sha256:\"\$3}"
+IMAGE_POSTGRESQL=$(docker pull $IMAGE_POSTGRESQL | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_POSTGRESQL\")\"@sha256:\"\$3}")
 ```
 
 Create a certificate for PostgreSQL. If you already have a certificate that you
