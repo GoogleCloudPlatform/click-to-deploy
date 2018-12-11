@@ -115,7 +115,8 @@ properties:
       serviceAccount:
         roles:
         - type: ClusterRole
-          rulesType: CUSTOM
+          rulesType: PREDEFINED
+          rulesFromRoleName: cluster-admin
   GRAFANA_SERVICE_ACCOUNT:
     type: string
     title: Grafana Service Account
@@ -125,7 +126,8 @@ properties:
       serviceAccount:
         roles:
         - type: ClusterRole
-          rulesType: CUSTOM
+          rulesType: PREDEFINED
+          rulesFromRoleName: cluster-admin
   NODE_EXPORTER_SERVICE_ACCOUNT:
     type: string
     title: Node Exporter Service Account
@@ -135,7 +137,8 @@ properties:
       serviceAccount:
         roles:
         - type: ClusterRole
-          rulesType: CUSTOM
+          rulesType: PREDEFINED
+          rulesFromRoleName: cluster-admin
 required:
 - APP_INSTANCE_NAME
 - NAMESPACE
