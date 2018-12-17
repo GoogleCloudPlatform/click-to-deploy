@@ -97,7 +97,7 @@ such as Services, Deployments, and so on, that you can manage as a group.
 To set up your cluster to understand Application resources, run the following command:
 
 ```shell
-kubectl apply -f click-to-deploy/k8s/vendor/marketplace-tools/crd/*
+kubectl apply -f "https://raw.githubusercontent.com/GoogleCloudPlatform/marketplace-k8s-app-tools/master/crd/app-crd.yaml"
 ```
 
 You need to run this command once.
@@ -216,7 +216,7 @@ expanded manifest file for future updates to the application.
 1. Expand `Application`/`Secret`/`StatefulSet`/`ConfigMap` YAML files.
 
     ```shell
-    awk 'BEGINFILE {print "---"}{print}' manifest/* \
+    awk 'FNR==1 {print "---"}{print}' manifest/* \
       | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_RABBITMQ $IMAGE_RABBITMQ_INIT $REPLICAS $RABBITMQ_ERLANG_COOKIE $RABBITMQ_DEFAULT_USER $RABBITMQ_DEFAULT_PASS $RABBITMQ_SERVICE_ACCOUNT' \
       > "${APP_INSTANCE_NAME}_manifest.yaml"
     ```

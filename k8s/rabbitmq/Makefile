@@ -1,9 +1,7 @@
-include ../vendor/marketplace-tools/app.Makefile
-include ../vendor/marketplace-tools/crd.Makefile
-include ../vendor/marketplace-tools/gcloud.Makefile
-include ../vendor/marketplace-tools/marketplace.Makefile
-include ../vendor/marketplace-tools/ubbagent.Makefile
-include ../vendor/marketplace-tools/var.Makefile
+include ../app.Makefile
+include ../crd.Makefile
+include ../gcloud.Makefile
+include ../var.Makefile
 
 
 TAG ?= 3.7
@@ -24,12 +22,27 @@ ifdef REPLICAS
   REPLICAS_FIELD = , "REPLICAS": "$(REPLICAS)"
 endif
 
+ifdef RABBITMQ_ERLANG_COOKIE
+  RABBITMQ_ERLANG_COOKIE_FIELD = , "RABBITMQ_ERLANG_COOKIE": "$(RABBITMQ_ERLANG_COOKIE)"
+endif
+
+ifdef RABBITMQ_DEFAULT_USER
+  RABBITMQ_DEFAULT_USER_FIELD = , "RABBITMQ_DEFAULT_USER": "$(RABBITMQ_DEFAULT_USER)"
+endif
+
+ifdef RABBITMQ_DEFAULT_PASS
+  RABBITMQ_DEFAULT_PASS_FIELD = , "RABBITMQ_DEFAULT_PASS": "$(RABBITMQ_DEFAULT_PASS)"
+endif
+
 APP_PARAMETERS ?= { \
   "APP_INSTANCE_NAME": "$(NAME)", \
   "NAMESPACE": "$(NAMESPACE)" \
   $(IMAGE_RABBITMQ_FIELD) \
   $(IMAGE_RABBITMQ_INIT_FIELD) \
   $(REPLICAS_FIELD) \
+  $(RABBITMQ_ERLANG_COOKIE_FIELD) \
+  $(RABBITMQ_DEFAULT_USER_FIELD) \
+  $(RABBITMQ_DEFAULT_PASS_FIELD) \
 }
 APP_TEST_PARAMETERS ?= {}
 
@@ -56,12 +69,14 @@ app/build:: .build/rabbitmq/debian9  \
                           manifest/* \
                           schema.yaml \
                           .build/var/APP_DEPLOYER_IMAGE \
+                          .build/var/MARKETPLACE_TOOLS_TAG \
                           .build/var/REGISTRY \
                           .build/var/TAG \
                           | .build/rabbitmq
 	docker build \
 	    --build-arg REGISTRY="$(REGISTRY)/rabbitmq" \
 	    --build-arg TAG="$(TAG)" \
+	    --build-arg MARKETPLACE_TOOLS_TAG="$(MARKETPLACE_TOOLS_TAG)" \
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
 	    -f deployer/Dockerfile \
 	    .

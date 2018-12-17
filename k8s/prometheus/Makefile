@@ -1,9 +1,7 @@
-include ../vendor/marketplace-tools/app.Makefile
-include ../vendor/marketplace-tools/crd.Makefile
-include ../vendor/marketplace-tools/gcloud.Makefile
-include ../vendor/marketplace-tools/marketplace.Makefile
-include ../vendor/marketplace-tools/ubbagent.Makefile
-include ../vendor/marketplace-tools/var.Makefile
+include ../app.Makefile
+include ../crd.Makefile
+include ../gcloud.Makefile
+include ../var.Makefile
 
 TAG ?= 2.2
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/prometheus/deployer:$(TAG)
@@ -68,12 +66,14 @@ app/build:: .build/prometheus/alertmanager \
                             manifest/* \
                             schema.yaml \
                             .build/var/APP_DEPLOYER_IMAGE \
+                            .build/var/MARKETPLACE_TOOLS_TAG \
                             .build/var/REGISTRY \
                             .build/var/TAG \
                             | .build/prometheus
 	docker build \
 	    --build-arg REGISTRY="$(REGISTRY)/prometheus" \
 	    --build-arg TAG="$(TAG)" \
+	    --build-arg MARKETPLACE_TOOLS_TAG="$(MARKETPLACE_TOOLS_TAG)" \
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
 	    -f deployer/Dockerfile \
 	    .
@@ -132,7 +132,7 @@ app/build:: .build/prometheus/alertmanager \
 .build/prometheus/grafana: .build/var/REGISTRY \
                            .build/var/TAG \
                            | .build/prometheus
-	docker pull launcher.gcr.io/google/grafana5:5.1
-	docker tag launcher.gcr.io/google/grafana5:5.1 "$(REGISTRY)/prometheus/grafana:$(TAG)"
+	docker pull launcher.gcr.io/google/grafana5:5.3
+	docker tag launcher.gcr.io/google/grafana5:5.3 "$(REGISTRY)/prometheus/grafana:$(TAG)"
 	docker push "$(REGISTRY)/prometheus/grafana:$(TAG)"
 	@touch "$@"

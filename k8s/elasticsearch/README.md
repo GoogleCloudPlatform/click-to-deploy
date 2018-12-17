@@ -10,6 +10,25 @@ schema-free JSON documents.
 
 Popular open stacks on Kubernetes packaged by Google.
 
+## Design
+
+![Architecture diagram](resources/elasticsearch-architecture.png)
+
+The application offers a vanilla installation of Elasticsearch.
+
+Elasticsearch server is run inside a StatefulSet, with configuration files
+(elasticsearch.yml and log4j2.properties) attached through a ConfigMap.
+
+The Service exposing Elasticsearch is configured by default to serve only
+private connections (by the type of ClusterIP, exposing a private IP only).
+It accepts connections on ports 9200 and 9300.
+
+Elasticsearch requires having an appropriate virtual memory configuration
+on the host operating system, specifically setting a minimum value of 262144
+for `vm.max_map_count`. This application handles this operation through running
+a privileged InitContainer, which assures the proper configuration
+on the hosting node.
+
 # Installation
 
 ## Quick install with Google Cloud Marketplace
@@ -70,7 +89,7 @@ such as Services, Deployments, and so on, that you can manage as a group.
 To set up your cluster to understand Application resources, run the following command:
 
 ```shell
-kubectl apply -f click-to-deploy/k8s/vendor/marketplace-tools/crd/*
+kubectl apply -f "https://raw.githubusercontent.com/GoogleCloudPlatform/marketplace-k8s-app-tools/master/crd/app-crd.yaml"
 ```
 
 You need to run this command once.
@@ -107,8 +126,9 @@ export REPLICAS=2
 Configure the container images:
 
 ```shell
-export IMAGE_ELASTICSEARCH="marketplace.gcr.io/google/elasticsearch:latest"
-export IMAGE_INIT="marketplace.gcr.io/google/elasticsearch/ubuntu16_04:latest"
+TAG=6.3
+export IMAGE_ELASTICSEARCH="marketplace.gcr.io/google/elasticsearch:${TAG}"
+export IMAGE_INIT="marketplace.gcr.io/google/elasticsearch/ubuntu16_04:${TAG}"
 ```
 
 The images above are referenced by
@@ -142,7 +162,7 @@ Use `envsubst` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-awk 'BEGINFILE {print "---"}{print}' manifest/* \
+awk 'FNR==1 {print "---"}{print}' manifest/* \
   | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_ELASTICSEARCH $IMAGE_INIT $REPLICAS' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```

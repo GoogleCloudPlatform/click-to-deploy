@@ -43,8 +43,11 @@ properties:
       serviceAccount:
         roles:
         - type: ClusterRole
-          rulesType: PREDEFINED
-          rulesFromRoleName: cluster-admin
+          rulesType: CUSTOM
+          rules:
+          - apiGroups: [""]
+            resources: ["pods", "namespaces"]
+            verbs: ["get", "list", "watch"]
 required:
 - APP_INSTANCE_NAME
 - NAMESPACE

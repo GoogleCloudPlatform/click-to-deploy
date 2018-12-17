@@ -1,3 +1,0 @@
-[submodule "k8s/vendor/marketplace-tools"]
-	path = k8s/vendor/marketplace-tools
-	url = https://github.com/GoogleCloudPlatform/marketplace-k8s-app-tools.git

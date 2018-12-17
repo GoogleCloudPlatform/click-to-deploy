@@ -1,4 +1,4 @@
-application_api_version: v1beta1
+applicationApiVersion: v1beta1
 properties:
   APP_INSTANCE_NAME:
     type: string
@@ -25,3 +25,13 @@ required:
 - NAMESPACE
 - IMAGE_CASSANDRA
 - REPLICAS
+x-google-marketplace:
+  clusterConstraints:
+    resources:
+    - replicas: 3
+      requests:
+        cpu: 500m
+        memory: 2.5Gi
+      affinity:
+        simpleNodeAffinity:
+          type: REQUIRE_ONE_NODE_PER_REPLICA

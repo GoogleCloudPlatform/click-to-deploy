@@ -1,2 +1,3 @@
 language: python
+install: pip install jinja2
 script: ./cloudbuild-k8s-generator.py --verify_only

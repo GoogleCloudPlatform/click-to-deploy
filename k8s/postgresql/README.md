@@ -8,6 +8,18 @@ For more information on PostgreSQL, see the [PosgreSQL website](https://www.post
 
 Popular open source software stacks on Kubernetes packaged by Google and made available in Google Cloud Marketplace.
 
+## Design
+
+![Architecture diagram](resources/postgresql-k8s-app-architecture.png)
+
+### Solution Information
+
+This solution will install single instance of PostgreSQL server into your Kubernetes cluster.
+
+The PostgreSQL Pod is managed by a ReplicaSet with the number of replicas set to one. The PostgreSQL Pod uses a Persistent Volume to store data, and a LoadBalancer Service to expose the database port externally. Communication between client and server is encrypted. If you need to limit access to the PostgreSQL instance, you must configure GCP firewall rules.
+
+To install the application you will need to set up initial password for postgres user, PostgreSQL volume size and generate or provide TLS key and certificate. All required steps are covered further in this README.
+
 # Installation
 
 ## Quick install with Google Cloud Marketplace
@@ -70,7 +82,7 @@ such as Services, Deployments, and so on, that you can manage as a group.
 To set up your cluster to understand Application resources, run the following command:
 
 ```shell
-kubectl apply -f click-to-deploy/k8s/vendor/marketplace-tools/crd/*
+kubectl apply -f "https://raw.githubusercontent.com/GoogleCloudPlatform/marketplace-k8s-app-tools/master/crd/app-crd.yaml"
 ```
 
 You need to run this command once for each cluster.
@@ -113,7 +125,7 @@ until you are ready to upgrade. To get the digest for the image, use the
 following script:
 
 ```shell
-docker pull $IMAGE_POSTGRESQL | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_POSTGRESQL\")\"@sha256:\"\$3}"
+IMAGE_POSTGRESQL=$(docker pull $IMAGE_POSTGRESQL | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_POSTGRESQL\")\"@sha256:\"\$3}")
 ```
 
 Create a certificate for PostgreSQL. If you already have a certificate that you
@@ -144,7 +156,7 @@ Use `envsubst` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-awk 'BEGINFILE {print "---"}{print}' manifest/* \
+awk 'FNR==1 {print "---"}{print}' manifest/* \
   | envsubst '$APP_INSTANCE_NAME $IMAGE_POSTGRESQL $NAMESPACE $POSTGRESQL_DB_PASSWORD $POSTGRESQL_VOLUME_SIZE' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
@@ -214,7 +226,7 @@ cat postgresql-backup.sql | kubectl --namespace $NAMESPACE exec -i \
 
 # Updating 
 
-To update your PostgreSQL installation, delete your PostgreSQL pod, and install
+To update your PostgreSQL installation, delete your PostgreSQL Pod, and install
 a new version from GCP marketplace. Back up your data, and run the following command:
 
 ```shell

@@ -68,7 +68,7 @@ such as Services, Deployments, and so on, that you can manage as a group.
 To set up your cluster to understand Application resources, run the following command:
 
 ```shell
-kubectl apply -f click-to-deploy/k8s/vendor/marketplace-tools/crd/*
+kubectl apply -f "https://raw.githubusercontent.com/GoogleCloudPlatform/marketplace-k8s-app-tools/master/crd/app-crd.yaml"
 ```
 
 You need to run this command once for each cluster.
@@ -96,10 +96,16 @@ export APP_INSTANCE_NAME=sample-app-1
 export NAMESPACE=default
 ```
 
+Set the sample parameter:
+
+```shell
+export SAMPLE_APP_PARAMETER1=3
+```
+
 Configure the container image:
 
 ```shell
-export IMAGE_SAMPLE_APP="marketplace.gcr.io/google/sample-app:latest"
+export IMAGE_SAMPLE_APP="marketplace.gcr.io/google/nginx1:latest"
 ```
 
 The image above is referenced by
@@ -111,7 +117,7 @@ until you are ready to upgrade. To get the digest for the image, use the
 following script:
 
 ```shell
-docker pull $IMAGE_SAMPLE_APP | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_SAMPLE_APP\")\"@sha256:\"\$3}"
+export IMAGE_SAMPLE_APP=$(docker pull $IMAGE_SAMPLE_APP | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_SAMPLE_APP\")\"@sha256:\"\$3}")
 ```
 
 #### Expand the manifest template
@@ -120,7 +126,7 @@ Use `envsubst` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-awk 'BEGINFILE {print "---"}{print}' manifest/* \
+awk 'FNR==1 {print "---"}{print}' manifest/* \
   | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_SAMPLE_APP $SAMPLE_APP_PARAMETER1' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```

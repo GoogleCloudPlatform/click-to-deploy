@@ -19,7 +19,7 @@ The application is designed to automatically collect metrics from Kubernetes clu
 in the Prometheus server and present in Grafana.
 
 * **Prometheus StatefulSet** - collects all the configured metrics in pull model (by querying
-  all the configured sources periodically). Each Prometheus Pod stored its data in 
+  all the configured sources periodically). Each Prometheus Pod stored its data in
   a PersistentVolumeClaim.
 
 * **Prometheus Node Exporter DaemonSet** - runs a Pod on each Kubernetes cluster node and collects
@@ -54,6 +54,9 @@ in the Prometheus server and present in Grafana.
 * Grafana StatefulSet - all the pre-configured dashboards of Grafana are stored in a ConfigMap.
   The StatefulSet is currently configured to have just one replica - the configuration does not
   currently allow to scale this number up.
+
+* Each StatefulSet, Deployment and DaemonSet uses its own dedicated service
+  account with permissions set accordingly to its expected functionality.
 
 # Installation
 
@@ -115,7 +118,7 @@ such as Services, Deployments, and so on, that you can manage as a group.
 To set up your cluster to understand Application resources, run the following command:
 
 ```shell
-kubectl apply -f click-to-deploy/k8s/vendor/marketplace-tools/crd/*
+kubectl apply -f "https://raw.githubusercontent.com/GoogleCloudPlatform/marketplace-k8s-app-tools/master/crd/app-crd.yaml"
 ```
 
 You need to run this command once.
@@ -156,8 +159,6 @@ export IMAGE_PROMETHEUS="marketplace.gcr.io/google/prometheus:${TAG}"
 export IMAGE_ALERTMANAGER="marketplace.gcr.io/google/prometheus/alertmanager:${TAG}"
 export IMAGE_KUBE_STATE_METRICS="marketplace.gcr.io/google/prometheus/kubestatemetrics:${TAG}"
 export IMAGE_NODE_EXPORTER="marketplace.gcr.io/google/prometheus/nodeexporter:${TAG}"
-# TODO(khajduczenia): Add pushgateway to Makefile.
-export IMAGE_PUSHGATEWAY="marketplace.gcr.io/google/prometheus/pushgateway:${TAG}"
 export IMAGE_GRAFANA="marketplace.gcr.io/google/prometheus/grafana:${TAG}"
 export IMAGE_PROMETHEUS_INIT="marketplace.gcr.io/google/prometheus/debian9:${TAG}"
 ```
@@ -175,7 +176,6 @@ for i in "IMAGE_PROMETHEUS" \
          "IMAGE_ALERTMANAGER" \
          "IMAGE_KUBE_STATE_METRICS" \
          "IMAGE_NODE_EXPORTER" \
-         "IMAGE_PUSHGATEWAY" \
          "IMAGE_GRAFANA" \
          "IMAGE_PROMETHEUS_INIT"; do
   repo=$(echo ${!i} | cut -d: -f1);
@@ -183,6 +183,22 @@ for i in "IMAGE_PROMETHEUS" \
   export $i="$repo@$digest";
   env | grep $i;
 done
+```
+
+Generate a random password for Grafana:
+
+```shell
+# Install pwgen and base64
+sudo apt-get install -y pwgen base64
+
+# Set the Grafana password
+export GRAFANA_GENERATED_PASSWORD="$(pwgen 12 1 | tr -d '\n' | base64)"
+```
+
+Define the size of Prometheus StatefulSet:
+
+```shell
+export PROMETHEUS_REPLICAS=2
 ```
 
 #### Create namespace in your Kubernetes cluster
@@ -193,14 +209,54 @@ If you use a different namespace than the `default`, run the command below to cr
 kubectl create namespace "$NAMESPACE"
 ```
 
-#### Expand the manifest template
+#### Create service accounts
+
+##### Make sure you are a Cluster Admin
+
+Creating custom cluster roles requires being a Cluster Admin. To assign
+the Cluster Admin role to your user account, run the following command:
+
+```shell
+kubectl create clusterrolebinding cluster-admin-binding \
+  --clusterrole cluster-admin \
+  --user $(gcloud config get-value account)
+```
+
+##### Create dedicated service accounts
+
+Define the service accounts variables:
+
+```shell
+export PROMETHEUS_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-prometheus"
+export KUBE_STATE_METRICS_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-kube-state-metrics"
+export ALERTMANAGER_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-alertmanager"
+export GRAFANA_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-grafana"
+export NODE_EXPORTER_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-node-exporter"
+```
+
+Expand the manifest for service accounts creation:
+
+```shell
+cat resources/service-accounts.yaml \
+  | envsubst '$NAMESPACE $PROMETHEUS_SERVICE_ACCOUNT $KUBE_STATE_METRICS_SERVICE_ACCOUNT $ALERTMANAGER_SERVICE_ACCOUNT $GRAFANA_SERVICE_ACCOUNT $NODE_EXPORTER_SERVICE_ACCOUNT' \
+  > "${APP_INSTANCE_NAME}_sa_manifest.yaml"
+```
+
+Create the accounts on the cluster with `kubectl`:
+
+```shell
+kubectl apply -f "${APP_INSTANCE_NAME}_sa_manifest.yaml" \
+  --namespace "${NAMESPACE}"
+```
+
+#### Expand the application manifest template
 
 Use `envsubst` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-awk 'BEGINFILE {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_PROMETHEUS $IMAGE_ALERTMANAGER $IMAGE_KUBE_STATE_METRICS $IMAGE_NODE_EXPORTER $IMAGE_PUSHGATEWAY $IMAGE_GRAFANA $IMAGE_PROMETHEUS_INIT $NAMESPACE $PROMETHEUS_REPLICAS' \
+awk 'FNR==1 {print "---"}{print}' manifest/* \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_PROMETHEUS $IMAGE_ALERTMANAGER $IMAGE_KUBE_STATE_METRICS $IMAGE_NODE_EXPORTER $IMAGE_GRAFANA $IMAGE_PROMETHEUS_INIT $NAMESPACE $GRAFANA_GENERATED_PASSWORD $PROMETHEUS_REPLICAS $PROMETHEUS_REPLICAS $PROMETHEUS_SERVICE_ACCOUNT $KUBE_STATE_METRICS_SERVICE_ACCOUNT $ALERTMANAGER_SERVICE_ACCOUNT $GRAFANA_SERVICE_ACCOUNT $NODE_EXPORTER_SERVICE_ACCOUNT' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 

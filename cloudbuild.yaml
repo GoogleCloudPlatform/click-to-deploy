@@ -7,36 +7,14 @@ options:
   machineType: 'N1_HIGHCPU_8'
 steps:
 
-- id: Initialize Git
-  name: gcr.io/cloud-builders/git
-  entrypoint: bash
-  args:
-  - -exc
-  - |
-    # Cloud Build x GitHub integration uses source archives to fetch
-    # the source, rather than Git source fetching, and as a consequence
-    # does not include the .git/ directory. As a workaround, we clone
-    # the repository and reset it to this build's commit sha.
-    git clone https://github.com/GoogleCloudPlatform/click-to-deploy.git .tmp
-    mv .tmp/.git .git
-    rm -rf .tmp
-    git reset "$COMMIT_SHA"
-
-    # Download Git submodules
-    git submodule init
-    git submodule sync --recursive
-    git submodule update --recursive --init
-
 - id: Pull Dev Image
   name: gcr.io/cloud-builders/docker
-  waitFor:
-  - Initialize Git
-  dir: k8s/vendor/marketplace-tools
+  dir: k8s
   entrypoint: bash
   args:
   - -exc
   - |
-    TAG="$$(./scripts/derive_tag.sh)"
+    TAG="$$(cat ./MARKETPLACE_TOOLS_TAG)"
     docker pull "gcr.io/cloud-marketplace-tools/k8s/dev:$$TAG"
     docker tag "gcr.io/cloud-marketplace-tools/k8s/dev:$$TAG" "gcr.io/cloud-marketplace-tools/k8s/dev:local"
 
@@ -89,8 +67,9 @@ steps:
   - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
   dir: k8s/airflow-operator
   args:
-  - -exc
-  - make -j4 app/verify
+  - make
+  - -j4
+  - app/verify
 
 - id: Verify cassandra
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
@@ -106,8 +85,9 @@ steps:
   - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
   dir: k8s/cassandra
   args:
-  - -exc
-  - make -j4 app/verify
+  - make
+  - -j4
+  - app/verify
 
 - id: Verify elastic-gke-logging
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
@@ -123,8 +103,9 @@ steps:
   - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
   dir: k8s/elastic-gke-logging
   args:
-  - -exc
-  - make -j4 app/verify
+  - make
+  - -j4
+  - app/verify
 
 - id: Verify elasticsearch
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
@@ -140,8 +121,9 @@ steps:
   - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
   dir: k8s/elasticsearch
   args:
-  - -exc
-  - make -j4 app/verify
+  - make
+  - -j4
+  - app/verify
 
 - id: Verify grafana
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
@@ -157,8 +139,9 @@ steps:
   - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
   dir: k8s/grafana
   args:
-  - -exc
-  - make -j4 app/verify
+  - make
+  - -j4
+  - app/verify
 
 - id: Verify influxdb
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
@@ -174,8 +157,9 @@ steps:
   - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
   dir: k8s/influxdb
   args:
-  - -exc
-  - make -j4 app/verify
+  - make
+  - -j4
+  - app/verify
 
 - id: Verify jenkins
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
@@ -191,8 +175,9 @@ steps:
   - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
   dir: k8s/jenkins
   args:
-  - -exc
-  - make -j4 app/verify
+  - make
+  - -j4
+  - app/verify
 
 - id: Verify memcached
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
@@ -208,8 +193,9 @@ steps:
   - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
   dir: k8s/memcached
   args:
-  - -exc
-  - make -j4 app/verify
+  - make
+  - -j4
+  - app/verify
 
 - id: Verify nginx
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
@@ -225,8 +211,9 @@ steps:
   - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
   dir: k8s/nginx
   args:
-  - -exc
-  - make -j4 app/verify
+  - make
+  - -j4
+  - app/verify
 
 - id: Verify postgresql
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
@@ -242,8 +229,9 @@ steps:
   - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
   dir: k8s/postgresql
   args:
-  - -exc
-  - make -j4 app/verify
+  - make
+  - -j4
+  - app/verify
 
 - id: Verify prometheus
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
@@ -259,8 +247,9 @@ steps:
   - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
   dir: k8s/prometheus
   args:
-  - -exc
-  - make -j4 app/verify
+  - make
+  - -j4
+  - app/verify
 
 - id: Verify rabbitmq
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
@@ -276,8 +265,9 @@ steps:
   - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
   dir: k8s/rabbitmq
   args:
-  - -exc
-  - make -j4 app/verify
+  - make
+  - -j4
+  - app/verify
 
 - id: Verify sample-app
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
@@ -293,8 +283,9 @@ steps:
   - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
   dir: k8s/sample-app
   args:
-  - -exc
-  - make -j4 app/verify
+  - make
+  - -j4
+  - app/verify
 
 - id: Verify wordpress
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
@@ -310,5 +301,6 @@ steps:
   - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
   dir: k8s/wordpress
   args:
-  - -exc
-  - make -j4 app/verify
+  - make
+  - -j4
+  - app/verify

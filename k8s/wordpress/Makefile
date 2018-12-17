@@ -1,9 +1,7 @@
-include ../vendor/marketplace-tools/app.Makefile
-include ../vendor/marketplace-tools/crd.Makefile
-include ../vendor/marketplace-tools/gcloud.Makefile
-include ../vendor/marketplace-tools/marketplace.Makefile
-include ../vendor/marketplace-tools/ubbagent.Makefile
-include ../vendor/marketplace-tools/var.Makefile
+include ../app.Makefile
+include ../crd.Makefile
+include ../gcloud.Makefile
+include ../var.Makefile
 
 
 TAG ?= latest
@@ -11,9 +9,30 @@ $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/wordpress/deployer:$(TAG)
 NAME ?= wordpress-1
+
+ifdef IMAGE_WORDPRESS
+  IMAGE_WORDPRESS_FIELD = , "IMAGE_WORDPRESS": "$(IMAGE_WORDPRESS)"
+endif
+
+ifdef IMAGE_MYSQL
+  IMAGE_MYSQL_FIELD = , "IMAGE_MYSQL": "$(IMAGE_MYSQL)"
+endif
+
+ifdef ROOT_DB_PASSWORD
+  ROOT_DB_PASSWORD_FIELD = , "ROOT_DB_PASSWORD": "$(ROOT_DB_PASSWORD)"
+endif
+
+ifdef WORDPRESS_DB_PASSWORD
+  WORDPRESS_DB_PASSWORD_FIELD = , "WORDPRESS_DB_PASSWORD": "$(WORDPRESS_DB_PASSWORD)"
+endif
+
 APP_PARAMETERS ?= { \
   "APP_INSTANCE_NAME": "$(NAME)", \
   "NAMESPACE": "$(NAMESPACE)" \
+  $(IMAGE_WORDPRESS_FIELD) \
+  $(IMAGE_MYSQL_FIELD) \
+  $(ROOT_DB_PASSWORD_FIELD) \
+  $(WORDPRESS_DB_PASSWORD_FIELD) \
 }
 APP_TEST_PARAMETERS ?= {}
 
@@ -31,12 +50,14 @@ app/build:: .build/wordpress/deployer \
                            manifest/* \
                            schema.yaml \
                            .build/var/APP_DEPLOYER_IMAGE \
+                           .build/var/MARKETPLACE_TOOLS_TAG \
                            .build/var/REGISTRY \
                            .build/var/TAG \
                            | .build/wordpress
 	docker build \
 	    --build-arg REGISTRY="$(REGISTRY)/wordpress" \
 	    --build-arg TAG="$(TAG)" \
+	    --build-arg MARKETPLACE_TOOLS_TAG="$(MARKETPLACE_TOOLS_TAG)" \
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
 	    -f deployer/Dockerfile \
 	    .

@@ -99,7 +99,7 @@ such as Services, Deployments, and so on, that you can manage as a group.
 To set up your cluster to understand Application resources, run the following command:
 
 ```shell
-kubectl apply -f click-to-deploy/k8s/vendor/marketplace-tools/crd/*
+kubectl apply -f "https://raw.githubusercontent.com/GoogleCloudPlatform/marketplace-k8s-app-tools/master/crd/app-crd.yaml"
 ```
 
 You need to run this command once.
@@ -143,7 +143,7 @@ export INFLUXDB_ADMIN_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w
 Configure the container image:
 
 ```shell
-TAG=1.5
+TAG=1.6
 export IMAGE_INFLUXDB="marketplace.gcr.io/google/influxdb:${TAG}"
 ```
 
@@ -176,7 +176,7 @@ Use `envsubst` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-awk 'BEGINFILE {print "---"}{print}' manifest/* \
+awk 'FNR==1 {print "---"}{print}' manifest/* \
   | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_INFLUXDB $INFLUXDB_ADMIN_USER $INFLUXDB_ADMIN_PASSWORD' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
@@ -205,7 +205,7 @@ You connect to InfluxDB  without exposing it to public access, using the
 `influx` tool.
 
 For information about using `influx`, and steps to upload sample data
-to your instance, see the [InfluxDB Getting Started guide](https://docs.influxdata.com/influxdb/v1.5/introduction/getting-started/).
+to your instance, see the [InfluxDB Getting Started guide](https://docs.influxdata.com/influxdb/v1.6/introduction/getting-started/).
 
 #### Connect to InfluxDB via Pod
 
@@ -224,7 +224,7 @@ kubectl exec -it "$APP_INSTANCE_NAME-influxdb-0" --namespace "$NAMESPACE" -- inf
 #### Connect to InfluxDB using `kubectl port-forward` method
 
 This method assumes that you installed `influx` tool on your local machine.
-Please, refer to [InfluxDB installation instructions](https://docs.influxdata.com/influxdb/v1.5/introduction/installation/)
+Please, refer to [InfluxDB installation instructions](https://docs.influxdata.com/influxdb/v1.6/introduction/installation/)
 to learn how to do that.
 
 You could also use a local proxy to access InfluxDB that is not exposed publicly. Run the following command in a separate background terminal:
@@ -276,7 +276,7 @@ If you are interested in multi-instance/enterprise version of InfluxDB, please, 
 
 # Backup and Restore
 
-The following steps are based on the [InfluxDB documentation](https://docs.influxdata.com/influxdb/v1.5/administration/backup_and_restore/).
+The following steps are based on the [InfluxDB documentation](https://docs.influxdata.com/influxdb/v1.6/administration/backup_and_restore/).
 
 For backing up and restoring the database, use the `influxd backup` and `influxd restore` commands respectively.
 

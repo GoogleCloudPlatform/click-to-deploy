@@ -4,8 +4,9 @@
 # This steps are needed to interfere with deployer - add new resource programatically
 # before droping IAM permissions.
 
-/bin/expand_config.py
-name="$(/bin/print_config.py --param '{"x-google-marketplace": {"type": "NAME"}}')"
+name="$(/bin/print_config.py \
+    --xtype NAME \
+    --values_mode raw)"
 
 namespace=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
 if ! kubectl --namespace ${namespace} get secret | grep -q "^${name}-tls "; then
@@ -41,8 +42,12 @@ kubectl patch secret ${name}-tls -p \
 }
 '
 
-NAME="$(/bin/print_config.py --param '{"x-google-marketplace": {"type": "NAME"}}')"
-NAMESPACE="$(/bin/print_config.py --param '{"x-google-marketplace": {"type": "NAMESPACE"}}')"
+NAME="$(/bin/print_config.py \
+    --xtype NAME \
+    --values_mode raw)"
+NAMESPACE="$(/bin/print_config.py \
+    --xtype NAMESPACE \
+    --values_mode raw)"
 export NAME
 export NAMESPACE
 /bin/clean_iam_resources-original.sh
