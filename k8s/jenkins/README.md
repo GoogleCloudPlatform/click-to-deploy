@@ -124,7 +124,7 @@ until you are ready to upgrade. To get the digest for the image, use the
 following script:
 
 ```shell
-docker pull $IMAGE_JENKINS | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_JENKINS\")\"@sha256:\"\$3}"
+export IMAGE_JENKINS=$(docker pull $IMAGE_JENKINS | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_JENKINS\")\"@sha256:\"\$3}")
 ```
 
 Create a certificate for Jenkins. If you already have a certificate that you
