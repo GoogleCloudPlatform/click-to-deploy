@@ -117,7 +117,7 @@ until you are ready to upgrade. To get the digest for the image, use the
 following script:
 
 ```shell
-docker pull $IMAGE_SAMPLE_APP | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_SAMPLE_APP\")\"@sha256:\"\$3}"
+export IMAGE_SAMPLE_APP=$(docker pull $IMAGE_SAMPLE_APP | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_SAMPLE_APP\")\"@sha256:\"\$3}")
 ```
 
 #### Expand the manifest template
