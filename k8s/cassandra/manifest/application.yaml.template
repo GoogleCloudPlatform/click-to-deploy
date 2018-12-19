@@ -66,8 +66,8 @@ spec:
       Run the following command in a separate background terminal:
 
       ```shell
-       kubectl port-forward "${APP_INSTANCE_NAME}-cassandra-0" 9042:9042 --namespace "${NAMESPACE}"
-       ```
+      kubectl port-forward "${APP_INSTANCE_NAME}-cassandra-0" 9042:9042 --namespace "${NAMESPACE}"
+      ```
 
       In you main terminal:
 
