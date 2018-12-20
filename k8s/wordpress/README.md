@@ -155,7 +155,7 @@ If you use a different namespace than the `default`, run the command below to cr
 kubectl create namespace "$NAMESPACE"
 ```
 
-Create a certificate for Wordpress. If you already have a certificate that you
+Create a certificate for WordPress. If you already have a certificate that you
 want to use, copy your certificate and key pair in to the `/tmp/tls.crt` and
 `/tmp/tls.key` files.
 
