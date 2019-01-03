@@ -22,6 +22,9 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 kubectl --namespace ${NAMESPACE} create secret generic ${NAME}-tls \
 	--from-file=/tmp/tls.crt --from-file=/tmp/tls.key
 
+kubectl --namespace ${NAMESPACE} label secret ${NAME}-tls \
+    "app.kubernetes.io/name=${NAME}" "app.kubernetes.io/component=wordpress-tls"
+
 /bin/deploy-original.sh
 
 APPLICATION_UID=$(kubectl get applications/${NAME} --namespace=${NAMESPACE} --output=jsonpath='{.metadata.uid}')

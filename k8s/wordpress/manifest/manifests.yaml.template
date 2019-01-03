@@ -127,12 +127,12 @@ spec:
           - "-c"
           - |
             wpadm=/var/www/html/wp-admin/
-            if [[ -d $wpadm ]]; then
+            if [[ -d ${wpadm} ]]; then
               exit
             fi
-            mkdir -m755 $wpadm
-            chown www-data:www-data $wpadm
-            cat <<EOF > $wpadm/.htaccess
+            mkdir -m755 ${wpadm}
+            chown www-data:www-data ${wpadm}
+            cat <<EOF > ${wpadm}/.htaccess
             <If "%{HTTP_USER_AGENT} =~ /^(kube-probe|GoogleHC)/ && %{HTTP:X-Forwarded-For} =~ /^$/">
               Require all granted
               DirectoryIndex /wp-admin/install.php

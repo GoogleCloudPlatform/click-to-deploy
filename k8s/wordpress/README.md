@@ -155,22 +155,6 @@ If you use a different namespace than the `default`, run the command below to cr
 kubectl create namespace "$NAMESPACE"
 ```
 
-Create a certificate for Wordpress. If you already have a certificate that you
-want to use, copy your certificate and key pair in to the `/tmp/tls.crt` and
-`/tmp/tls.key` files.
-
-```shell
-# create a certificate for wordpress
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-    -keyout /tmp/tls.key \
-    -out /tmp/tls.crt \
-    -subj "/CN=wordpress/O=wordpress"
-
-# create a secret for Kubernetes ingress TLS
-kubectl --namespace $NAMESPACE create secret generic $APP_INSTANCE_NAME-tls \
-    --from-file=/tmp/tls.crt --from-file=/tmp/tls.key
-```
-
 #### Expand the manifest template
 
 Use `envsubst` to expand the template. We recommend that you save the
@@ -199,6 +183,43 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 ```
 
 To view the app, open the URL in your browser.
+
+#### Create TLS certificate for WordPress
+
+Create a certificate for WordPress. If you already have a certificate that you
+want to use, copy your certificate and key pair in to the `/tmp/tls.crt` and
+`/tmp/tls.key` files.
+
+```shell
+# create a certificate for WordPress
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout /tmp/tls.key \
+    -out /tmp/tls.crt \
+    -subj "/CN=wordpress/O=wordpress"
+
+# create a secret for Kubernetes ingress TLS
+kubectl --namespace $NAMESPACE create secret generic $APP_INSTANCE_NAME-tls \
+    --from-file=/tmp/tls.crt --from-file=/tmp/tls.key
+
+kubectl --namespace $NAMESPACE label secret $APP_INSTANCE_NAME-tls \
+    app.kubernetes.io/name=$APP_INSTANCE_NAME app.kubernetes.io/component=wordpress-tls
+
+APPLICATION_UID=$(kubectl get applications/${APP_INSTANCE_NAME} --namespace="$NAMESPACE" --output=jsonpath='{.metadata.uid}')
+
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: Secret
+metadata:
+  name: $APP_INSTANCE_NAME-tls
+  ownerReferences:
+  - apiVersion: app.k8s.io/v1beta1
+    blockOwnerDeletion: true
+    controller: true
+    kind: Application
+    name: $APP_INSTANCE_NAME
+    uid: $APPLICATION_UID
+EOF
+```
 
 ### Expose WordPress service externally
 
