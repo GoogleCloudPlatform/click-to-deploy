@@ -28,7 +28,7 @@ kubectl --namespace ${NAMESPACE} label secret ${NAME}-tls \
 /bin/deploy-original.sh
 
 APPLICATION_UID=$(kubectl get applications/${NAME} --namespace=${NAMESPACE} --output=jsonpath='{.metadata.uid}')
-kubectl patch secret ${NAME}-tls -p \
+kubectl --namespace=${NAMESPACE} patch secret ${NAME}-tls -p \
 '
 {
 	"metadata": {

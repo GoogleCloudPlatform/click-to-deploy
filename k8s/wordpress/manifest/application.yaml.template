@@ -66,7 +66,7 @@ spec:
           servicePort: http
       EOF
 
-      kubectl patch application "$APP_INSTANCE_NAME" --type=json \
+      kubectl --namespace=${NAMESPACE} patch application "$APP_INSTANCE_NAME" --type=json \
         -p='[{"op": "add", "path": "/spec/componentKinds/-", "value":{ "group": "extensions/v1beta1", "kind": "Ingress" } }]'
       ```
 

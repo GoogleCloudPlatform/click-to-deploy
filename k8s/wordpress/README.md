@@ -206,7 +206,7 @@ kubectl --namespace $NAMESPACE label secret $APP_INSTANCE_NAME-tls \
 
 APPLICATION_UID=$(kubectl get applications/${APP_INSTANCE_NAME} --namespace="$NAMESPACE" --output=jsonpath='{.metadata.uid}')
 
-cat <<EOF | kubectl apply -f -
+cat <<EOF | kubectl apply --namespace $NAMESPACE -f -
 apiVersion: v1
 kind: Secret
 metadata:
@@ -256,7 +256,7 @@ spec:
     servicePort: http
 EOF
 
-kubectl patch application "$APP_INSTANCE_NAME" --type=json \
+kubectl patch --namespace $NAMESPACE application "$APP_INSTANCE_NAME" --type=json \
   -p='[{"op": "add", "path": "/spec/componentKinds/-", "value":{ "group": "extensions/v1beta1", "kind": "Ingress" } }]'
 ```
 
