@@ -44,6 +44,7 @@ You'll need the following tools in your development environment:
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 - [docker](https://docs.docker.com/install/)
 - [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+- [openssl](https://www.openssl.org/)
 
 Configure `gcloud` as a Docker credential helper:
 
@@ -183,6 +184,43 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 To view the app, open the URL in your browser.
 
+#### Create TLS certificate for WordPress
+
+Create a certificate for WordPress. If you already have a certificate that you
+want to use, copy your certificate and key pair in to the `/tmp/tls.crt` and
+`/tmp/tls.key` files.
+
+```shell
+# create a certificate for WordPress
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout /tmp/tls.key \
+    -out /tmp/tls.crt \
+    -subj "/CN=wordpress/O=wordpress"
+
+# create a secret for Kubernetes ingress TLS
+kubectl --namespace $NAMESPACE create secret generic $APP_INSTANCE_NAME-tls \
+    --from-file=/tmp/tls.crt --from-file=/tmp/tls.key
+
+kubectl --namespace $NAMESPACE label secret $APP_INSTANCE_NAME-tls \
+    app.kubernetes.io/name=$APP_INSTANCE_NAME app.kubernetes.io/component=wordpress-tls
+
+APPLICATION_UID=$(kubectl get applications/${APP_INSTANCE_NAME} --namespace="$NAMESPACE" --output=jsonpath='{.metadata.uid}')
+
+cat <<EOF | kubectl apply --namespace $NAMESPACE -f -
+apiVersion: v1
+kind: Secret
+metadata:
+  name: $APP_INSTANCE_NAME-tls
+  ownerReferences:
+  - apiVersion: app.k8s.io/v1beta1
+    blockOwnerDeletion: true
+    controller: true
+    kind: Application
+    name: $APP_INSTANCE_NAME
+    uid: $APPLICATION_UID
+EOF
+```
+
 ### Expose WordPress service externally
 
 By default, the application does not have an external IP address. To create
@@ -191,7 +229,35 @@ an external IP address for your WordPress app, run the following command:
 ```
 kubectl patch svc "$APP_INSTANCE_NAME-wordpress-svc" \
   --namespace "$NAMESPACE" \
-  --patch '{"spec": {"type": "LoadBalancer"}}'
+  --patch '{"spec": {"type": "NodePort"}}'
+
+APPLICATION_UID=$(kubectl get applications/${APP_INSTANCE_NAME} --namespace="$NAMESPACE" --output=jsonpath='{.metadata.uid}')
+
+cat <<EOF | kubectl create --namespace "$NAMESPACE" -f -
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: $APP_INSTANCE_NAME-wordpress-ingress
+  labels:
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/component: wordpress-webserver
+  ownerReferences:
+  - apiVersion: app.k8s.io/v1beta1
+    blockOwnerDeletion: true
+    controller: true
+    kind: Application
+    name: $APP_INSTANCE_NAME
+    uid: $APPLICATION_UID
+spec:
+  tls:
+  - secretName: $APP_INSTANCE_NAME-tls
+  backend:
+    serviceName: $APP_INSTANCE_NAME-wordpress-svc
+    servicePort: http
+EOF
+
+kubectl patch --namespace $NAMESPACE application "$APP_INSTANCE_NAME" --type=json \
+  -p='[{"op": "add", "path": "/spec/componentKinds/-", "value":{ "group": "extensions/v1beta1", "kind": "Ingress" } }]'
 ```
 
 It might take some time for the external IP address to be created.
@@ -201,11 +267,11 @@ It might take some time for the external IP address to be created.
 Get the external IP of your WordPress site using the following command:
 
 ```
-SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-wordpress-svc \
+SERVICE_IP=$(kubectl get ingress $APP_INSTANCE_NAME-wordpress-ingress \
   --namespace $NAMESPACE \
   --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
-echo "http://${SERVICE_IP}"
+echo "https://${SERVICE_IP}/"
 ```
 
 The command shows you the URL of your site.
