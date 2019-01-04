@@ -126,8 +126,9 @@ export REPLICAS=2
 Configure the container images:
 
 ```shell
-export IMAGE_ELASTICSEARCH="marketplace.gcr.io/google/elasticsearch:latest"
-export IMAGE_INIT="marketplace.gcr.io/google/elasticsearch/ubuntu16_04:latest"
+TAG=6.3
+export IMAGE_ELASTICSEARCH="marketplace.gcr.io/google/elasticsearch:${TAG}"
+export IMAGE_INIT="marketplace.gcr.io/google/elasticsearch/ubuntu16_04:${TAG}"
 ```
 
 The images above are referenced by
@@ -161,7 +162,7 @@ Use `envsubst` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-awk 'BEGINFILE {print "---"}{print}' manifest/* \
+awk 'FNR==1 {print "---"}{print}' manifest/* \
   | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_ELASTICSEARCH $IMAGE_INIT $REPLICAS' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```

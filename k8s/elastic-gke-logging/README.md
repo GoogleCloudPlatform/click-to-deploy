@@ -140,12 +140,11 @@ export ELASTICSEARCH_REPLICAS=2
 Configure the container images:
 
 ```shell
-APP_VERSION=6.3
-
-export IMAGE_ELASTICSEARCH="marketplace.gcr.io/google/elastic-gke-logging:$APP_VERSION"
-export IMAGE_KIBANA="marketplace.gcr.io/google/elastic-gke-logging/kibana:$APP_VERSION"
-export IMAGE_FLUENTD="marketplace.gcr.io/google/elastic-gke-logging/fluentd:$APP_VERSION"
-export IMAGE_INIT="marketplace.gcr.io/google/elasticsearch/ubuntu16_04:$APP_VERSION"
+TAG=6.3
+export IMAGE_ELASTICSEARCH="marketplace.gcr.io/google/elastic-gke-logging:${TAG}"
+export IMAGE_KIBANA="marketplace.gcr.io/google/elastic-gke-logging/kibana:${TAG}"
+export IMAGE_FLUENTD="marketplace.gcr.io/google/elastic-gke-logging/fluentd:${TAG}"
+export IMAGE_INIT="marketplace.gcr.io/google/elasticsearch/ubuntu16_04:${TAG}"
 ```
 
 The images above are referenced by
@@ -179,7 +178,7 @@ Use `envsubst` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-awk 'BEGINFILE {print "---"}{print}' manifest/* \
+awk 'FNR==1 {print "---"}{print}' manifest/* \
   | envsubst '$APP_INSTANCE_NAME $NAMESPACE \
       $IMAGE_ELASTICSEARCH $IMAGE_KIBANA $IMAGE_FLUENTD $IMAGE_INIT $ELASTICSEARCH_REPLICAS' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"

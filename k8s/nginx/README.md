@@ -168,7 +168,7 @@ Use `envsubst` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-awk 'BEGINFILE {print "---"}{print}' manifest/* \
+awk 'FNR==1 {print "---"}{print}' manifest/* \
   | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_NGINX $IMAGE_NGINX_INIT $REPLICAS' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```

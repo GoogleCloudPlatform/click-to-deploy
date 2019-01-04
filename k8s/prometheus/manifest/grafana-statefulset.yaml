@@ -15,7 +15,7 @@ spec:
     metadata:
       labels: *Labels
     spec:
-      serviceAccountName: $PROMETHEUS_SERVICE_ACCOUNT
+      serviceAccountName: $GRAFANA_SERVICE_ACCOUNT
       initContainers:
           - name: "init-chmod-data"
             image: $IMAGE_PROMETHEUS_INIT

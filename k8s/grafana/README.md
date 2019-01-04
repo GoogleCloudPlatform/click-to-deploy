@@ -8,6 +8,20 @@ data collection systems - including Prometheus, InfluxDB, Elasticsearch, MySQL o
 
 Popular open stacks on Kubernetes packaged by Google.
 
+## Design
+
+![Architecture diagram](resources/grafana-architecture.png)
+
+The application offers a vanilla deployment of stateful, single-node
+Grafana installation on a Kubernetes cluster.
+
+Administrative user credentials are automatically configured in the application
+through a Kubernetes Secret. Configuration file (/etc/grafana/grafana.ini) is
+defined in a ConfigMap and mounted to Grafana StatefulSet.
+
+By default, the Service exposing Grafana server is of type ClusterIP, which makes
+it accessible only in a private network. It listens on port 3000.
+
 # Installation
 
 ## Quick install with Google Cloud Marketplace
@@ -100,7 +114,7 @@ export NAMESPACE=default
 Configure the container images:
 
 ```shell
-TAG=5.1
+TAG=5.3
 export IMAGE_GRAFANA="marketplace.gcr.io/google/grafana:${TAG}"
 export IMAGE_GRAFANA_INIT="marketplace.gcr.io/google/grafana/debian9:${TAG}"
 ```
@@ -137,7 +151,7 @@ Use `envsubst` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-awk 'BEGINFILE {print "---"}{print}' manifest/* \
+awk 'FNR==1 {print "---"}{print}' manifest/* \
   | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_GRAFANA $IMAGE_GRAFANA_INIT' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
@@ -187,7 +201,7 @@ SERVICE_IP=$(kubectl get svc ${APP_INSTANCE_NAME}-grafana \
 echo "http://${SERVICE_IP}:3000/"
 ```
 
-## Expose the Graphana service internally, using port forwarding
+## Expose the Grafana service internally, using port forwarding
 
 As an alternative to exposing Grafana publicly, you can use local port
 forwarding. In a background terminal, run the following command:
