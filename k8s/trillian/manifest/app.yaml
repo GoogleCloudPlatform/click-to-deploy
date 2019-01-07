@@ -44,6 +44,8 @@ spec:
   componentKinds:
   - group: apps/v1
     kind: Deployment
+  - group: etcd.database.coreos.com/v1beta2
+    kind: EtcdCluster
   - group: v1
     kind: ConfigMap
   - group: v1
