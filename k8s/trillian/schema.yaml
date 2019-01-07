@@ -49,6 +49,7 @@ properties:
     type: string
     title: Etcd version
     default: 3.2.13
+    pattern: 3\.\d+\.\d+
   ETCD_SERVICE_ACCOUNT:
     type: string
     title: Etcd Service Account
