@@ -29,7 +29,7 @@ APP_PARAMETERS ?= { \
   $(IMAGE_TRILLIAN_LOGSERVER_FIELD) \
   $(IMAGE_TRILLIAN_LOGSIGNER_FIELD) \
   $(IMAGE_MYSQL_FIELD) \
-  $(IMAGE_ETCD_OPERATOR) \
+  $(IMAGE_ETCD_OPERATOR_FIELD) \
 }
 APP_TEST_PARAMETERS ?= {}
 
@@ -90,4 +90,3 @@ app/build:: .build/trillian/db_server \
 	  "$(REGISTRY)/trillian/log_signer:$(TAG)"
 	docker push "$(REGISTRY)/trillian/log_signer:$(TAG)"
 	@touch "$@"
-
