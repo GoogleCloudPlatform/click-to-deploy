@@ -32,7 +32,7 @@ items:
         containers:
         - name: trillian-etcd-operator
           image: $IMAGE_ETCD_OPERATOR
-          command: ["etcd-operator", "-cluster-wide"]
+          command: ["etcd-operator"]
           env:
           - name: MY_POD_NAMESPACE
             valueFrom:
@@ -47,8 +47,6 @@ items:
   metadata:
     name: "$NAME-etcd-cluster"
     labels: *EtcdLabels
-    annotations:
-      etcd.database.coreos.com/scope: clusterwide
   spec:
     serviceAccountName: $ETCD_SERVICE_ACCOUNT
     size: $ETCD_CLUSTER_SIZE
