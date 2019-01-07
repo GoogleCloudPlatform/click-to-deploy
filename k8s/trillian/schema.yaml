@@ -133,3 +133,12 @@ required:
 - MYSQL_TRILLIAN_USER
 - MYSQL_TRILLIAN_PASSWORD
 - MYSQL_TRILLIAN_DATABASE
+x-google-marketplace:
+  clusterConstraints:
+    resources:
+    - replicas: 3
+      requests:
+        cpu: 1
+      affinity:
+        simpleNodeAffinity:
+          type: REQUIRE_ONE_NODE_PER_REPLICA
