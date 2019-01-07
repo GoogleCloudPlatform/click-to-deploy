@@ -52,10 +52,11 @@ properties:
   ETCD_SERVICE_ACCOUNT:
     type: string
     title: Etcd Service Account
-    description: Service account with privileges required by etcd-operator
+    description: Service account with privileges required by etcd-operator (see https://github.com/coreos/etcd-operator/blob/v0.9.1/doc/user/rbac.md)
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        # Role from https://github.com/coreos/etcd-operator/blob/v0.9.1/example/rbac/cluster-role-template.yaml
         roles:
         - type: ClusterRole
           rulesType: CUSTOM
