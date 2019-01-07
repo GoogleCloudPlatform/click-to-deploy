@@ -23,14 +23,14 @@ properties:
       type: IMAGE
   TRILLIAN_LOGSERVER_REPLICAS:
     type: integer
-    title: Trillian replicas
-    description: The number of Trillian log servers to run
+    title: Trillian log server replicas
+    description: The number of Trillian log servers to run. Increasing this provides greater capacity for serving requests.
     default: 4
     minimum: 1
   TRILLIAN_LOGSIGNER_REPLICAS:
     type: integer
-    title: Trillian replicas
-    description: The number of Trillian log signers to run
+    title: Trillian log signer replicas
+    description: The number of Trillian log signers to run. Increasing this allows for sequencing and signing more logs in parallel.
     default: 2
     minimum: 1
   IMAGE_ETCD_OPERATOR:
@@ -41,6 +41,7 @@ properties:
   ETCD_CLUSTER_SIZE:
     type: integer
     title: Etcd cluster size
+    description: Should be an odd number between 3-7 (https://coreos.com/etcd/docs/3.2.13/faq.html#deployment).
     default: 3
     minimum: 3
   ETCD_VERSION:
