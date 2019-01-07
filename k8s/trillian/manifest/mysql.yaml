@@ -10,7 +10,7 @@ items:
       app.kubernetes.io/component: mysql
   type: Opaque
   stringData:
-    STORAGE_FLAG: --mysql_uri=$MYSQL_TRILLIAN_USER:$MYSQL_TRILLIAN_PASSWORD@tcp(${NAME}-mysql-service:3306)/$MYSQL_TRILLIAN_DATABASE
+    STORAGE_FLAG: --mysql_uri=$MYSQL_TRILLIAN_USER:$MYSQL_TRILLIAN_PASSWORD@tcp($NAME-mysql-service:3306)/$MYSQL_TRILLIAN_DATABASE
 - apiVersion: v1
   kind: Secret
   metadata:
@@ -18,10 +18,10 @@ items:
     labels: *MySQLLabels
   type: Opaque
   stringData:
-    MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
-    MYSQL_USER: "${MYSQL_TRILLIAN_USER}"
-    MYSQL_PASSWORD: "${MYSQL_TRILLIAN_PASSWORD}"
-    MYSQL_DATABASE: "${MYSQL_TRILLIAN_DATABASE}"
+    MYSQL_ROOT_PASSWORD: "$MYSQL_ROOT_PASSWORD"
+    MYSQL_USER: "$MYSQL_TRILLIAN_USER"
+    MYSQL_PASSWORD: "$MYSQL_TRILLIAN_PASSWORD"
+    MYSQL_DATABASE: "$MYSQL_TRILLIAN_DATABASE"
 - apiVersion: v1
   kind: Service
   metadata:

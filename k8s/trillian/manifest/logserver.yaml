@@ -47,9 +47,9 @@ items:
           ]
           envFrom:
           - configMapRef:
-              name: ${NAME}-config
+              name: $NAME-config
           - secretRef:
-              name: ${NAME}-secrets
+              name: $NAME-secrets
           image: $IMAGE_TRILLIAN_LOGSERVER
           resources:
             limits:
@@ -68,4 +68,3 @@ items:
             name: rpc
           - containerPort: 8091
             name: metrics
-

@@ -49,9 +49,9 @@ items:
           ]
           envFrom:
           - configMapRef:
-              name: ${NAME}-config
+              name: $NAME-config
           - secretRef:
-              name: ${NAME}-secrets
+              name: $NAME-secrets
           image: $IMAGE_TRILLIAN_LOGSIGNER
           resources:
             limits:
@@ -67,4 +67,3 @@ items:
             timeoutSeconds: 5
           ports:
           - containerPort: 8091
-
