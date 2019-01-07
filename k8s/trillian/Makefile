@@ -3,7 +3,7 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
-TAG ?= latest
+TAG ?= 1.2.1
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/trillian/deployer:$(TAG)
 NAME ?= trillian-1
 
