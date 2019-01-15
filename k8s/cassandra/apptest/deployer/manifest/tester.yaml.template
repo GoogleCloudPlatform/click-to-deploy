@@ -1,5 +1,5 @@
 apiVersion: v1
-kind: Pod
+kind: Job
 metadata:
   name: "${APP_INSTANCE_NAME}-tester"
   labels:
@@ -7,6 +7,8 @@ metadata:
   annotations:
     marketplace.cloud.google.com/verification: test
 spec:
+# TODO(issue/275): Remove following dependency on internal name
+  activeDeadlineSeconds: 1200
   serviceAccountName: ${APP_INSTANCE_NAME}-deployer-sa
   containers:
   - name: tester
@@ -15,9 +17,8 @@ spec:
     env:
     - name: NAMESPACE
       valueFrom:
-        configMapKeyRef:
-          name: ${APP_INSTANCE_NAME}-deployer-config
-          key: NAMESPACE
+        fieldRef:
+          fieldPath: metadata.namespace
     - name: APP_INSTANCE_NAME
       value: ${APP_INSTANCE_NAME}
   restartPolicy: Never
