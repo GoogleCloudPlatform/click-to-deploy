@@ -1,5 +1,7 @@
 apiVersion: v1
-kind: Job
+# TODO: Migrate to Job after adding support to deployer
+# kind: Job
+kind: Pod
 metadata:
   name: "${APP_INSTANCE_NAME}-tester"
   labels:
@@ -7,8 +9,9 @@ metadata:
   annotations:
     marketplace.cloud.google.com/verification: test
 spec:
+# TODO: Add deadline after migrating to Job
+#  activeDeadlineSeconds: 1200
 # TODO(issue/275): Remove following dependency on internal name
-  activeDeadlineSeconds: 1200
   serviceAccountName: ${APP_INSTANCE_NAME}-deployer-sa
   containers:
   - name: tester
