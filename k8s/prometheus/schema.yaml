@@ -58,7 +58,7 @@ properties:
       type: SERVICE_ACCOUNT
       serviceAccount:
         roles:
-        - type: Role
+        - type: ClusterRole
           rulesType: PREDEFINED
           rulesFromRoleName: cluster-admin
   KUBE_STATE_METRICS_SERVICE_ACCOUNT:
