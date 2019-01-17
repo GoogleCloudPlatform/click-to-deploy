@@ -18,7 +18,7 @@ import os
 import argparse
 from jinja2 import Template
 
-CLOUDBUILD_CONFIG = 'cloudbuild.yaml'
+CLOUDBUILD_CONFIG = 'cloudbuild-k8s.yaml'
 
 CLOUDBUILD_TEMPLATE = """
 # Copyright 2018 Google LLC
