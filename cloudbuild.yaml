@@ -20,7 +20,7 @@ timeout: 1200s # 20m
 options:
   machineType: 'N1_HIGHCPU_8'
 substitutions:
-  _CLUSTER_NAME: limani-integ
+  _CLUSTER_NAME: cluster-1
   _CLUSTER_LOCATION: us-central1
 steps:
 
