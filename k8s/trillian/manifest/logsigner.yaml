@@ -50,7 +50,6 @@ spec:
         "--sequencer_interval=$(SIGNER_INTERVAL)",
         "--num_sequencers=$(SIGNER_NUM_SEQUENCERS)",
         "--batch_size=$(SIGNER_BATCH_SIZE)",
-        "--resign_odds=$(SIGNER_RESIGN_ODDS)",
         "--alsologtostderr",
         ]
         envFrom:
