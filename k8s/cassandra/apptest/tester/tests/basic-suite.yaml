@@ -35,10 +35,6 @@ actions:
     expect:
       statusCode:
         equals: 0
-      stdout:
-        equals: '3'
-      stderr:
-        equals: ''
 - name: Execute CQL query
   bashTest:
     script: |-
