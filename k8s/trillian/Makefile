@@ -5,6 +5,7 @@ include ../var.Makefile
 
 TAG ?= 1.2.1
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/trillian/deployer:$(TAG)
+ETCD_OPERATOR_IMAGE ?= quay.io/coreos/etcd-operator:v0.9.1
 NAME ?= trillian-1
 
 ifdef IMAGE_TRILLIAN_LOGSERVER
@@ -36,6 +37,7 @@ APP_TEST_PARAMETERS ?= {}
 
 app/build:: .build/trillian/db_server \
             .build/trillian/deployer \
+            .build/trillian/etcd_operator \
             .build/trillian/log_server \
             .build/trillian/log_signer
 
@@ -69,6 +71,16 @@ app/build:: .build/trillian/db_server \
 	    -f deployer/Dockerfile \
 	    .
 	docker push "$(APP_DEPLOYER_IMAGE)"
+	@touch "$@"
+
+
+.build/trillian/etcd_operator: .build/var/REGISTRY \
+                               .build/var/TAG \
+                             | .build/trillian
+	docker pull "$(ETCD_OPERATOR_IMAGE)"
+	docker tag "$(ETCD_OPERATOR_IMAGE)" \
+	  "$(REGISTRY)/trillian/etcd_operator:$(TAG)"
+	docker push "$(REGISTRY)/trillian/etcd_operator:$(TAG)"
 	@touch "$@"
 
 

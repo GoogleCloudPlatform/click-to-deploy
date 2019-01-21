@@ -35,7 +35,7 @@ properties:
     minimum: 1
   IMAGE_ETCD_OPERATOR:
     type: string
-    default: quay.io/coreos/etcd-operator:v0.9.1
+    default: $REGISTRY/etcd_operator:$TAG
     x-google-marketplace:
       type: IMAGE
   ETCD_CLUSTER_SIZE:
