@@ -64,4 +64,26 @@ spec:
         envFrom:
         - secretRef:
             name: $NAME-mysql-secrets
+        volumeMounts:
+        - name: $NAME-mysql-storage
+          mountPath: /var/lib/mysql
+          subPath: mysql
       restartPolicy: Always
+      volumes:
+      - name: $NAME-mysql-storage
+        persistentVolumeClaim:
+          claimName: $NAME-mysql-storage-claim
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: $NAME-mysql-storage-claim
+  labels:
+    app.kubernetes.io/name: "$NAME"
+    app.kubernetes.io/component: mysql
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Gi
