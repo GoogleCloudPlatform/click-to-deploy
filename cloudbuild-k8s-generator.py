@@ -42,6 +42,9 @@ CLOUDBUILD_TEMPLATE = """
 timeout: 1800s # 30m
 options:
   machineType: 'N1_HIGHCPU_8'
+substitutions:
+  _CLUSTER_NAME: cluster-1
+  _CLUSTER_LOCATION: us-central1
 steps:
 
 - id: Pull Dev Image
@@ -55,16 +58,15 @@ steps:
     docker pull "gcr.io/cloud-marketplace-tools/k8s/dev:$$TAG"
     docker tag "gcr.io/cloud-marketplace-tools/k8s/dev:$$TAG" "gcr.io/cloud-marketplace-tools/k8s/dev:local"
 
-# TODO(wgrzelak): Replace cluster-name and cluster-location with variables.
 - id: Get Kubernetes Credentials
   name: gcr.io/cloud-builders/gcloud
   args:
   - container
   - clusters
   - get-credentials
-  - 'limani-integ'
+  - '$_CLUSTER_NAME'
   - --region
-  - 'us-central1'
+  - '$_CLUSTER_LOCATION'
   - --project
   - '$PROJECT_ID'
 
