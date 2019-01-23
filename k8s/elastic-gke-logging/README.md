@@ -250,7 +250,7 @@ KUBE_PROXY_PORT=8080
 kubectl proxy -p $KUBE_PROXY_PORT
 ```
 
-In your main terminal, run:
+And then in your main terminal, run:
 
 ```shell
 KUBE_PROXY_PORT=8080
