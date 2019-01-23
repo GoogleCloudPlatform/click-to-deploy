@@ -314,7 +314,7 @@ click **Discover**.
 To get the direct URL for the Discover page, run:
 
 ```shell
-echo "${KIBANA_URL}/discover"
+echo "${KIBANA_URL}/app/kibana#/discover"
 ```
 
 ## Saved searches
