@@ -118,6 +118,30 @@ spec:
     metadata:
       labels: *WordPressDeploymentLabels
     spec:
+      initContainers:
+        - name: allow-health-probe-before-configuration
+          image: $IMAGE_WORDPRESS
+
+          command: 
+          - "/bin/bash"
+          - "-c"
+          - |
+            wpadm=/var/www/html/wp-admin/
+            if [[ -d ${wpadm} ]]; then
+              exit
+            fi
+            mkdir -m755 ${wpadm}
+            chown www-data:www-data ${wpadm}
+            cat <<EOF > ${wpadm}/.htaccess
+            <If "%{HTTP_USER_AGENT} =~ /^(kube-probe|GoogleHC)/ && %{HTTP:X-Forwarded-For} =~ /^$/">
+              Require all granted
+              DirectoryIndex /wp-admin/install.php
+            </If>
+            EOF
+          volumeMounts:
+          - name: $APP_INSTANCE_NAME-wordpress-pvc
+            mountPath: /var/www/html
+            subPath: wp
       containers:
       - image: $IMAGE_WORDPRESS
         name: wordpress
@@ -149,9 +173,13 @@ spec:
           subPath: wp
         readinessProbe:
           httpGet:
-            path: /
+            path: /wp-admin/install.php
             port: 80
           initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 2
+          failureThreshold: 5
         livenessProbe:
           httpGet:
             path: /
