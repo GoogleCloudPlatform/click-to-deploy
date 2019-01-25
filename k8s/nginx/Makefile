@@ -3,7 +3,6 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
-
 TAG ?= 1.15
 $(info ---- TAG = $(TAG))
 
