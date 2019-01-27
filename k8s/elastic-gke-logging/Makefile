@@ -4,6 +4,7 @@ include ../gcloud.Makefile
 include ../var.Makefile
 
 
+
 ELASTICSEARCH_KIBANA_VERSION = 6.3
 FLUENTD_VERSION = 1.2
 
