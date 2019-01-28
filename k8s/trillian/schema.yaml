@@ -42,7 +42,7 @@ properties:
     type: integer
     title: Etcd cluster size
     description: Should be an odd number between 3-7 (https://coreos.com/etcd/docs/3.2.13/faq.html#deployment).
-    default: 3
+    default: 5
     minimum: 3
     maximum: 9
   ETCD_VERSION:
