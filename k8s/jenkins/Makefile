@@ -4,7 +4,7 @@ include ../gcloud.Makefile
 include ../var.Makefile
 
 
-TAG ?= 2.138
+TAG ?= 2.150
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/jenkins/deployer:$(TAG)

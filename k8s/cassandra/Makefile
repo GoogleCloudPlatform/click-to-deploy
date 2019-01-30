@@ -3,7 +3,6 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
-
 TAG ?= 3.11
 $(info ---- TAG = $(TAG))
 
@@ -25,11 +24,16 @@ APP_PARAMETERS ?= { \
   $(REPLICAS_FIELD) \
 }
 
-APP_TEST_PARAMETERS ?= {}
+TESTER_IMAGE ?= $(REGISTRY)/cassandra/tester:$(TAG)
+
+APP_TEST_PARAMETERS ?= { \
+  "testerImage": "$(TESTER_IMAGE)" \
+}
 
 
 app/build:: .build/cassandra/cassandra \
-            .build/cassandra/deployer
+            .build/cassandra/deployer \
+            .build/cassandra/tester
 
 
 .build/cassandra: | .build
@@ -62,4 +66,13 @@ app/build:: .build/cassandra/cassandra \
 	docker tag launcher.gcr.io/google/cassandra3:$(TAG) \
 	    "$(REGISTRY)/cassandra:$(TAG)"
 	docker push "$(REGISTRY)/cassandra:$(TAG)"
+	@touch "$@"
+
+.build/cassandra/tester:   .build/var/TESTER_IMAGE \
+                           $(shell find apptest -type f) \
+                           | .build/cassandra
+	$(call print_target,$@)
+	cd apptest/tester \
+	    && docker build --tag "$(TESTER_IMAGE)" .
+	docker push "$(TESTER_IMAGE)"
 	@touch "$@"
