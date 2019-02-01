@@ -49,6 +49,4 @@ spec:
   - group: v1
     kind: ConfigMap
   - group: v1
-    kind: Secret
-  - group: v1
     kind: Service
