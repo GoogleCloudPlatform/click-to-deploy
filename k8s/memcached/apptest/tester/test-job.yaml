@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+ name: memcached-test
+spec:
+ template:
+   spec:
+     containers:
+     - name: pi
+       image: gcr.io/jprzychodzen-dev/jp-test:latest
+       imagePullPolicy: Always
+     restartPolicy: Never
+ backoffLimit: 1
+
