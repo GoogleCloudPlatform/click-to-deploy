@@ -4,5 +4,5 @@ actions:
     script: |-
       exit 0
     expect:
-      statusCode:
+      exitCode:
         equals: 0
