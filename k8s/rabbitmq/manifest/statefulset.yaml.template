@@ -53,20 +53,15 @@ spec:
         - -euc
         - |
           apt-get update && apt-get install -y curl
-
           cd /usr/lib/rabbitmq/plugins
-
           readonly base_url='https://github.com/deadtrickster/prometheus_rabbitmq_exporter/releases/download/v3.7.2.4'
-
-          get() {
-            curl -LO "$base_url/$1"
-          }
-
-          get accept-0.3.3.ez
-          get prometheus-3.5.1.ez
-          get prometheus_cowboy-0.1.4.ez
-          get prometheus_httpd-2.1.8.ez
-          get prometheus_rabbitmq_exporter-3.7.2.4.ez
+          curl -LO "${base_url}/accept-0.3.3.ez"
+          curl -LO "${base_url}/prometheus-3.5.1.ez"
+          curl -LO "${base_url}/prometheus_cowboy-0.1.4.ez"
+          curl -LO "${base_url}/prometheus_httpd-2.1.8.ez"
+          curl -LO "${base_url}/prometheus_rabbitmq_exporter-3.7.2.4.ez"
+          chmod +rwx .
+          chmod +rwx *
         volumeMounts:
         - name: $APP_INSTANCE_NAME-rabbitmq-3rd-party-plugins-pvc
           mountPath: /usr/lib/rabbitmq/plugins
