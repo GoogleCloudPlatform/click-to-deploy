@@ -33,7 +33,7 @@ actions:
         --namespace "${NAMESPACE}" \
         --output jsonpath='{.status.readyReplicas}'
     expect:
-      statusCode:
+      exitCode:
         equals: 0
 - name: Execute CQL query
   bashTest:
@@ -44,5 +44,5 @@ actions:
     expect:
       stdout:
         contains: 'Connected to'
-      statusCode:
+      exitCode:
         equals: 0

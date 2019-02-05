@@ -35,7 +35,7 @@ APP_TEST_PARAMETERS ?= { \
 app/build:: .build/nginx/debian9  \
             .build/nginx/deployer \
             .build/nginx/nginx \
-						.build/nginx/tester
+            .build/nginx/tester
 
 
 .build/nginx: | .build
