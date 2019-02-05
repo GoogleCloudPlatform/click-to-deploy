@@ -42,14 +42,20 @@ APP_PARAMETERS ?= { \
   $(IMAGE_KIBANA_FIELD) \
   $(IMAGE_FLUENTD_FIELD) \
 }
-APP_TEST_PARAMETERS ?= {}
+
+TESTER_IMAGE ?= $(REGISTRY)/elastic-gke-logging/tester:$(TAG)
+
+APP_TEST_PARAMETERS ?= { \
+  "testerImage": "$(TESTER_IMAGE)" \
+}
 
 
 app/build:: .build/elastic-gke-logging/elasticsearch \
             .build/elastic-gke-logging/kibana \
             .build/elastic-gke-logging/fluentd \
             .build/elastic-gke-logging/deployer \
-            .build/elastic-gke-logging/ubuntu16_04
+            .build/elastic-gke-logging/ubuntu16_04 \
+            .build/elastic-gke-logging/tester
 
 
 .build/elastic-gke-logging: | .build
@@ -112,4 +118,13 @@ app/build:: .build/elastic-gke-logging/elasticsearch \
 	docker tag launcher.gcr.io/google/ubuntu16_04 \
 	    "$(REGISTRY)/elastic-gke-logging/ubuntu16_04:$(TAG)"
 	docker push "$(REGISTRY)/elastic-gke-logging/ubuntu16_04:$(TAG)"
+	@touch "$@"
+
+.build/elastic-gke-logging/tester:   .build/var/TESTER_IMAGE \
+                                     $(shell find apptest -type f) \
+                                     | .build/elastic-gke-logging
+	$(call print_target,$@)
+	cd apptest/tester \
+	    && docker build --tag "$(TESTER_IMAGE)" .
+	docker push "$(TESTER_IMAGE)"
 	@touch "$@"

@@ -34,12 +34,18 @@ APP_PARAMETERS ?= { \
   $(ROOT_DB_PASSWORD_FIELD) \
   $(WORDPRESS_DB_PASSWORD_FIELD) \
 }
-APP_TEST_PARAMETERS ?= {}
+
+TESTER_IMAGE ?= $(REGISTRY)/wordpress/tester:$(TAG)
+
+APP_TEST_PARAMETERS ?= { \
+  "testerImage": "$(TESTER_IMAGE)" \
+}
 
 
 app/build:: .build/wordpress/deployer \
             .build/wordpress/mysql \
-            .build/wordpress/wordpress
+            .build/wordpress/wordpress \
+            .build/wordpress/tester
 
 
 .build/wordpress: | .build
@@ -82,4 +88,13 @@ app/build:: .build/wordpress/deployer \
 	docker tag launcher.gcr.io/google/mysql5 \
 	    "$(REGISTRY)/wordpress/mysql:$(TAG)"
 	docker push "$(REGISTRY)/wordpress/mysql:$(TAG)"
+	@touch "$@"
+
+.build/wordpress/tester: .build/var/TESTER_IMAGE \
+                         $(shell find apptest -type f) \
+                         | .build/wordpress
+	$(call print_target,$@)
+	cd apptest/tester \
+	    && docker build --tag "$(TESTER_IMAGE)" .
+	docker push "$(TESTER_IMAGE)"
 	@touch "$@"
