@@ -1,8 +1,43 @@
 actions:
-- name: dummy test
+- name: Wait until WordPress is ready
   bashTest:
     script: |-
-      exit 0
+      kubectl wait --namespace=${NAMESPACE} --for=condition=Ready --timeout=180s pod/${APP_INSTANCE_NAME}-wordpress-0
     expect:
+      exitCode:
+        equals: 0
+- name: Wait until MySQL is ready
+  bashTest:
+    script: |-
+      kubectl wait --namespace=${NAMESPACE} --for=condition=Ready --timeout=180s pod/${APP_INSTANCE_NAME}-mysql-0
+    expect:
+      exitCode:
+        equals: 0
+- name: Site address should be 200 OK
+  httpTest:
+    url: http://${APP_INSTANCE_NAME}-wordpress-svc.${NAMESPACE}.svc.cluster.local
+    expect:
+      statusCode:
+        equals: 200
+      bodyText:
+        html:
+          title:
+            matches: 'WordPress . Installation'
+- name: Can connect to database (as root user)
+  bashTest:
+    script: |-
+      mysql -h ${APP_INSTANCE_NAME}-mysql-svc.${NAMESPACE}.svc.cluster.local -u root -p"${MYSQL_ROOT_PASSWORD}" -e "SHOW DATABASES"
+    expect:
+      stdout:
+        matches: information_schema
+      exitCode:
+        equals: 0
+- name: Can connect to database (as wordpress user)
+  bashTest:
+    script: |-
+      mysql -h ${APP_INSTANCE_NAME}-mysql-svc.${NAMESPACE}.svc.cluster.local -u "${WORDPRESS_DB_USER}" -p"${WORDPRESS_DB_PASSWORD}" -e "SHOW DATABASES"
+    expect:
+      stdout:
+        matches: ${WORDPRESS_DB_NAME}
       exitCode:
         equals: 0
