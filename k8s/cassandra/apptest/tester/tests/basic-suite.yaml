@@ -3,7 +3,7 @@ actions:
   bashTest:
     script: |-
       set -x
-      function info {
+      function stderr_msg {
         >&2 echo "${@}"
       }
 
@@ -20,9 +20,9 @@ actions:
       }
 
       function wait_for_healthy_sts {
-        info "Waiting for equal desired and current number of replicas"
+        stderr_msg "Waiting for equal desired and current number of replicas"
         while [[ $(get_current_number_of_replicas_in_sts) -ne $(get_desired_number_of_replicas_in_sts) ]]; do
-          info "Sleeping 10 seconds before rechecking..."
+          stderr_msg "Sleeping 10 seconds before rechecking..."
           sleep 10
         done
         info "Statefulset has equal current and desired number of replicas"
@@ -33,16 +33,42 @@ actions:
         --namespace "${NAMESPACE}" \
         --output jsonpath='{.status.readyReplicas}'
     expect:
-      statusCode:
+      exitCode:
         equals: 0
 - name: Execute CQL query
   bashTest:
     script: |-
-      set -x
-      export CQLSH_HOST=$APP_INSTANCE_NAME-cassandra-0.$APP_INSTANCE_NAME-cassandra-svc.$NAMESPACE.svc.cluster.local
-      cqlsh -e 'SHOW HOST' --cqlversion="3.4.4"
+      set -e
+      for i in $(seq 0 2); do
+        export CQLSH_HOST=$APP_INSTANCE_NAME-cassandra-$i.$APP_INSTANCE_NAME-cassandra-svc.$NAMESPACE.svc.cluster.local
+        cqlsh -e 'SHOW HOST' --cqlversion="3.4.4"
+      done
+    expect:
+      exitCode:
+        equals: 0
+- name: Cluster is connected
+  bashTest:
+    script: |-
+      set -e
+      kubectl exec $APP_INSTANCE_NAME-cassandra-0 -- nodetool status | grep "^UN" -c
     expect:
       stdout:
-        contains: 'Connected to'
-      statusCode:
+        equals: "3"
+      exitCode:
+        equals: 0
+- name: Can read/write data between nodes
+  bashTest:
+    script: |-
+      set -e
+        export CQLSH_HOST=$APP_INSTANCE_NAME-cassandra-0.$APP_INSTANCE_NAME-cassandra-svc.$NAMESPACE.svc.cluster.local
+        cqlsh -e "CREATE KEYSPACE demo WITH REPLICATION ={'class':'SimpleStrategy', 'replication_factor' : 2};" --cqlversion="3.4.4" > /dev/null
+        cqlsh -e "CREATE TABLE demo.person ( name varchar PRIMARY KEY );" --cqlversion="3.4.4" > /dev/null
+        cqlsh -e "INSERT INTO demo.person  (name) VALUES ('John');" --cqlversion="3.4.4" > /dev/null
+
+        export CQLSH_HOST=$APP_INSTANCE_NAME-cassandra-1.$APP_INSTANCE_NAME-cassandra-svc.$NAMESPACE.svc.cluster.local
+        cqlsh -e "SELECT * FROM demo.person" --cqlversion="3.4.4"
+    expect:
+      stdout:
+        contains: "John"
+      exitCode:
         equals: 0
