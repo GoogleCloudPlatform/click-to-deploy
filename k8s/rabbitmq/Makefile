@@ -44,12 +44,18 @@ APP_PARAMETERS ?= { \
   $(RABBITMQ_DEFAULT_USER_FIELD) \
   $(RABBITMQ_DEFAULT_PASS_FIELD) \
 }
-APP_TEST_PARAMETERS ?= {}
+
+TESTER_IMAGE ?= $(REGISTRY)/rabbitmq/tester:$(TAG)
+
+APP_TEST_PARAMETERS ?= { \
+  "testerImage": "$(TESTER_IMAGE)" \
+}
 
 
 app/build:: .build/rabbitmq/debian9  \
             .build/rabbitmq/deployer \
-            .build/rabbitmq/rabbitmq
+            .build/rabbitmq/rabbitmq \
+            .build/rabbitmq/tester
 
 
 .build/rabbitmq: | .build
@@ -91,4 +97,13 @@ app/build:: .build/rabbitmq/debian9  \
 	docker tag launcher.gcr.io/google/rabbitmq3:$(TAG) \
 	    "$(REGISTRY)/rabbitmq:$(TAG)"
 	docker push "$(REGISTRY)/rabbitmq:$(TAG)"
+	@touch "$@"
+
+.build/rabbitmq/tester: .build/var/TESTER_IMAGE \
+                        $(shell find apptest -type f) \
+                        | .build/rabbitmq
+	$(call print_target,$@)
+	cd apptest/tester \
+	    && docker build --tag "$(TESTER_IMAGE)" .
+	docker push "$(TESTER_IMAGE)"
 	@touch "$@"
