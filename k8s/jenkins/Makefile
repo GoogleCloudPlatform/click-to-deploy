@@ -19,11 +19,17 @@ APP_PARAMETERS ?= { \
   "NAMESPACE": "$(NAMESPACE)" \
   $(IMAGE_JENKINS_FIELD) \
 }
-APP_TEST_PARAMETERS ?= {}
+
+TESTER_IMAGE ?= $(REGISTRY)/jenkins/tester:$(TAG)
+
+APP_TEST_PARAMETERS ?= { \
+  "testerImage": "$(TESTER_IMAGE)" \
+}
 
 
 app/build:: .build/jenkins/deployer \
-            .build/jenkins/jenkins
+            .build/jenkins/jenkins \
+            .build/jenkins/tester
 
 
 .build/jenkins: | .build
@@ -58,4 +64,14 @@ app/build:: .build/jenkins/deployer \
 	docker tag "launcher.gcr.io/google/jenkins2:$(TAG)" \
 	    "$(REGISTRY)/jenkins:$(TAG)"
 	docker push "$(REGISTRY)/jenkins:$(TAG)"
+	@touch "$@"
+
+
+.build/jenkins/tester: .build/var/TESTER_IMAGE \
+                       $(shell find apptest -type f) \
+                       | .build/jenkins
+	$(call print_target,$@)
+	cd apptest/tester \
+	    && docker build --tag "$(TESTER_IMAGE)" .
+	docker push "$(TESTER_IMAGE)"
 	@touch "$@"

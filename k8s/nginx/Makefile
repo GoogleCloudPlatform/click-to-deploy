@@ -24,12 +24,18 @@ APP_PARAMETERS ?= { \
   $(IMAGE_NGINX_FIELD) \
   $(IMAGE_NGINX_INIT_FIELD) \
 }
-APP_TEST_PARAMETERS ?= {}
+
+TESTER_IMAGE ?= $(REGISTRY)/nginx/tester:$(TAG)
+
+APP_TEST_PARAMETERS ?= { \
+  "testerImage": "$(TESTER_IMAGE)" \
+}
 
 
 app/build:: .build/nginx/debian9  \
             .build/nginx/deployer \
-            .build/nginx/nginx
+            .build/nginx/nginx \
+						.build/nginx/tester
 
 
 .build/nginx: | .build
@@ -71,4 +77,14 @@ app/build:: .build/nginx/debian9  \
 	docker tag launcher.gcr.io/google/nginx1:$(TAG) \
 	    "$(REGISTRY)/nginx:$(TAG)"
 	docker push "$(REGISTRY)/nginx:$(TAG)"
+	@touch "$@"
+
+
+.build/nginx/tester: .build/var/TESTER_IMAGE \
+                     $(shell find apptest -type f) \
+                     | .build/nginx
+	$(call print_target,$@)
+	cd apptest/tester \
+	    && docker build --tag "$(TESTER_IMAGE)" .
+	docker push "$(TESTER_IMAGE)"
 	@touch "$@"

@@ -23,12 +23,18 @@ APP_PARAMETERS ?= { \
   $(IMAGE_GRAFANA_FIELD) \
   $(IMAGE_GRAFANA_INIT_FIELD) \
 }
-APP_TEST_PARAMETERS ?= {}
+
+TESTER_IMAGE ?= $(REGISTRY)/grafana/tester:$(TAG)
+
+APP_TEST_PARAMETERS ?= { \
+  "testerImage": "$(TESTER_IMAGE)" \
+}
 
 
 app/build:: .build/grafana/debian9 \
             .build/grafana/deployer \
-            .build/grafana/grafana
+            .build/grafana/grafana \
+            .build/grafana/tester
 
 
 .build/grafana: | .build
@@ -69,4 +75,14 @@ app/build:: .build/grafana/debian9 \
 	docker pull launcher.gcr.io/google/debian9
 	docker tag launcher.gcr.io/google/debian9 "$(REGISTRY)/grafana/debian9:$(TAG)"
 	docker push "$(REGISTRY)/grafana/debian9:$(TAG)"
+	@touch "$@"
+
+
+.build/grafana/tester: .build/var/TESTER_IMAGE \
+                       $(shell find apptest -type f) \
+                       | .build/grafana
+	$(call print_target,$@)
+	cd apptest/tester \
+	    && docker build --tag "$(TESTER_IMAGE)" .
+	docker push "$(TESTER_IMAGE)"
 	@touch "$@"

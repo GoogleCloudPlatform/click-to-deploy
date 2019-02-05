@@ -12,11 +12,17 @@ APP_PARAMETERS ?= { \
   "APP_INSTANCE_NAME": "$(NAME)", \
   "NAMESPACE": "$(NAMESPACE)" \
 }
-APP_TEST_PARAMETERS ?= {}
+
+TESTER_IMAGE ?= $(REGISTRY)/influxdb/tester:$(TAG)
+
+APP_TEST_PARAMETERS ?= { \
+  "testerImage": "$(TESTER_IMAGE)" \
+}
 
 
 app/build:: .build/influxdb/deployer \
-            .build/influxdb/influxdb
+            .build/influxdb/influxdb \
+            .build/influxdb/tester
 
 
 .build/influxdb: | .build
@@ -49,4 +55,14 @@ app/build:: .build/influxdb/deployer \
 	docker tag launcher.gcr.io/google/influxdb1:$(TAG) \
 	    "$(REGISTRY)/influxdb:$(TAG)"
 	docker push "$(REGISTRY)/influxdb:$(TAG)"
+	@touch "$@"
+
+
+.build/influxdb/tester: .build/var/TESTER_IMAGE \
+                        $(shell find apptest -type f) \
+                        | .build/influxdb
+	$(call print_target,$@)
+	cd apptest/tester \
+	    && docker build --tag "$(TESTER_IMAGE)" .
+	docker push "$(TESTER_IMAGE)"
 	@touch "$@"
