@@ -1,8 +1,217 @@
 actions:
-- name: dummy test
+- name: Wait until all expected nodes are connected to the Elasticsearch cluster
   bashTest:
     script: |-
-      exit 0
+      function get_nodes_count() {
+        local readonly health_url="$1"
+        nodes_count="$(curl -s "${health_url}" | jq '.number_of_nodes')"
+        echo "${nodes_count}"
+      }
+
+      expected_nodes="${REPLICAS}"
+
+      timeout=300
+      health_url="http://${APP_INSTANCE_NAME}-elasticsearch-svc:9200/_cluster/health"
+      timeout_time="$(( $(date +%s) + timeout ))"
+
+      # Wait for all nodes to join the cluster
+      nodes_count="$(get_nodes_count "${health_url}")"
+      while [[ "${nodes_count}" -ne "${expected_nodes}" ]] \
+          && [[ "$(date +%s)" -le "${timeout_time}" ]]; do
+        sleep 3
+        nodes_count="$(get_nodes_count "${health_url}")"
+      done
+
+      if [[ "${nodes_count}" -eq "${expected_nodes}" ]]; then
+        echo "OK - all nodes joined"
+      else
+        echo "FAIL - nodes count: ${nodes_count}"
+      fi
+    expect:
+      stdout:
+        contains: OK - all nodes joined
+
+- name: Wait for green status in the cluster
+  bashTest:
+    script: |-
+      function get_cluster_status() {
+        local readonly health_url="$1"
+        status="$(curl -s "${health_url}" | jq '.status')"
+        echo "${status}"
+      }
+
+      timeout=300
+      health_url="http://${APP_INSTANCE_NAME}-elasticsearch-svc:9200/_cluster/health"
+
+      timeout_time="$(( $(date +%s) + timeout ))"
+
+      # Wait for green status
+      status="$(get_cluster_status "${health_url}")"
+      while [[ "${status}" != '"green"' ]] \
+          && [[ "$(date +%s)" -le "${timeout_time}" ]]; do
+        sleep 3
+        status="$(get_cluster_status "${health_url}")"
+      done
+
+      if [[ "${status}" == '"green"' ]]; then
+        echo "OK - green status"
+      else
+        echo "FAIL - status: ${status}"
+      fi
+    expect:
+      stdout:
+        contains: OK - green status
+
+- name: Wait until GKE logs land in Elasticsearch
+  bashTest:
+    script: |-
+      elastic_url="http://${APP_INSTANCE_NAME}-elasticsearch-svc:9200"
+
+      timeout=300
+      timeout_time="$(( $(date +%s) + timeout ))"
+
+      # Wait for logstash indices being found
+      logstash_indices_count="$(curl -s "${elastic_url}/_cat/indices" | grep -c 'logstash-')"
+      while [[ "${logstash_indices_count}" -eq 0 ]] \
+          && [[ "$(date +%s)" -le "${timeout_time}" ]]; do
+        sleep 3
+        logstash_indices_count="$(curl -s "${elastic_url}/_cat/indices" | grep -c 'logstash-')"
+      done
+
+      if [[ "${logstash_indices_count}" -gt 0 ]]; then
+        echo "OK - logstash index found"
+      else
+        echo "FAIL - no logstash index"
+      fi
+    expect:
+      stdout:
+        contains: OK - logstash index found
+
+- name: Access Kibana UI
+  bashTest:
+    script: |-
+      kibana_url="http://${APP_INSTANCE_NAME}-kibana-svc:5601/app/kibana"
+      curl -s -f "${kibana_url}" > /dev/null
     expect:
       exitCode:
         equals: 0
+
+- name: Saved searches are found
+  bashTest:
+    script: |-
+      kibana_find_url="http://${APP_INSTANCE_NAME}-kibana-svc:5601/api/saved_objects/_find"
+
+      timeout=300
+      timeout_time="$(( $(date +%s) + timeout ))"
+
+      total_searches="$(curl -s "${kibana_find_url}?type=search" | jq '.total')"
+      while [[ "${total_searches}" -eq 0 ]] \
+          && [[ "$(date +%s)" -le "${timeout_time}" ]]; do
+        sleep 3
+        total_searches="$(curl -s "${kibana_find_url}?type=search" | jq '.total')"
+      done
+
+      if [[ "${total_searches}" -gt 0 ]]; then
+        echo "OK - saved searches found"
+      else
+        echo "FAIL - no saved searches found"
+      fi
+    expect:
+      stdout:
+        contains: OK - saved searches found
+
+- name: Saved search "GKE Apps logs" found exactly once
+  bashTest:
+    script: |-
+      kibana_find_url="http://${APP_INSTANCE_NAME}-kibana-svc:5601/api/saved_objects/_find"
+      search_title='"GKE Apps logs"'
+      search_url="${kibana_find_url}?type=search&search_fields=title&search=${search_title// /%20}"
+      total="$(curl -s "${search_url}" | jq '.total')"
+      if [[ ${total} -eq 1 ]]; then
+        echo "OK - ${search_title} search found once"
+      else
+        echo "FAIL - ${search_title} searches found: ${total}"
+      fi
+    expect:
+      stdout:
+        contains: OK - "GKE Apps logs" search found once
+
+- name: Saved search "kubelet logs" found exactly once
+  bashTest:
+    script: |-
+      kibana_find_url="http://${APP_INSTANCE_NAME}-kibana-svc:5601/api/saved_objects/_find"
+      search_title='"kubelet logs"'
+      search_url="${kibana_find_url}?type=search&search_fields=title&search=${search_title// /%20}"
+      total="$(curl -s "${search_url}" | jq '.total')"
+      if [[ ${total} -eq 1 ]]; then
+        echo "OK - ${search_title} search found once"
+      else
+        echo "FAIL - ${search_title} searches found: ${total}"
+      fi
+    expect:
+      stdout:
+        contains: OK - "kubelet logs" search found once
+
+- name: Saved search "kube-proxy logs" found exactly once
+  bashTest:
+    script: |-
+      kibana_find_url="http://${APP_INSTANCE_NAME}-kibana-svc:5601/api/saved_objects/_find"
+      search_title='"kube-proxy logs"'
+      search_url="${kibana_find_url}?type=search&search_fields=title&search=${search_title// /%20}"
+      total="$(curl -s "${search_url}" | jq '.total')"
+      if [[ ${total} -eq 1 ]]; then
+        echo "OK - ${search_title} search found once"
+      else
+        echo "FAIL - ${search_title} searches found: ${total}"
+      fi
+    expect:
+      stdout:
+        contains: OK - "kube-proxy logs" search found once
+
+- name: Saved search "docker logs" found exactly once
+  bashTest:
+    script: |-
+      kibana_find_url="http://${APP_INSTANCE_NAME}-kibana-svc:5601/api/saved_objects/_find"
+      search_title='"docker logs"'
+      search_url="${kibana_find_url}?type=search&search_fields=title&search=${search_title// /%20}"
+      total="$(curl -s "${search_url}" | jq '.total')"
+      if [[ ${total} -eq 1 ]]; then
+        echo "OK - ${search_title} search found once"
+      else
+        echo "FAIL - ${search_title} searches found: ${total}"
+      fi
+    expect:
+      stdout:
+        contains: OK - "docker logs" search found once
+
+- name: Saved search "kernel logs" found exactly once
+  bashTest:
+    script: |-
+      kibana_find_url="http://${APP_INSTANCE_NAME}-kibana-svc:5601/api/saved_objects/_find"
+      search_title='"kernel logs"'
+      search_url="${kibana_find_url}?type=search&search_fields=title&search=${search_title// /%20}"
+      total="$(curl -s "${search_url}" | jq '.total')"
+      if [[ ${total} -eq 1 ]]; then
+        echo "OK - ${search_title} search found once"
+      else
+        echo "FAIL - ${search_title} searches found: ${total}"
+      fi
+    expect:
+      stdout:
+        contains: OK - "kernel logs" search found once
+
+- name: Saved index pattern "logstash-*" found exactly once
+  bashTest:
+    script: |-
+      kibana_find_url="http://${APP_INSTANCE_NAME}-kibana-svc:5601/api/saved_objects/_find"
+      search_title='"logstash-*"'
+      search_url="${kibana_find_url}?type=index-pattern&search_fields=title&search=${search_title}"
+      total="$(curl -s "${search_url}" | jq '.total')"
+      if [[ ${total} -eq 1 ]]; then
+        echo "OK - ${search_title} index pattern found once"
+      else
+        echo "FAIL - ${search_title} index patterns found: ${total}"
+      fi
+    expect:
+      stdout:
+        contains: OK - "logstash-*" index pattern found once
