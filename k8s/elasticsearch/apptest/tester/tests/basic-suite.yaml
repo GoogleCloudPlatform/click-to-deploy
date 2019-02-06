@@ -32,7 +32,7 @@ actions:
   bashTest:
     script: |-
       function get_cluster_status() {
-        curl -s "${HEALTH_URL}" | jq '.status'
+        curl -s "${HEALTH_URL}" | jq -r '.status'
       }
 
       timeout=300
@@ -40,13 +40,13 @@ actions:
 
       # Wait for green status
       status="$(get_cluster_status)"
-      while [[ "${status}" != '"green"' ]] \
+      while [[ "${status}" != 'green' ]] \
           && [[ "$(date +%s)" -le "${timeout_time}" ]]; do
         sleep 3
         status="$(get_cluster_status)"
       done
 
-      if [[ "${status}" == '"green"' ]]; then
+      if [[ "${status}" == 'green' ]]; then
         echo "OK - green status"
       else
         echo "FAIL - status: ${status}"
