@@ -158,8 +158,8 @@ following script:
 ```shell
 repo=$(echo $IMAGE_INFLUXDB | cut -d: -f1);
 digest=$(docker pull $IMAGE_INFLUXDB | sed -n -e 's/Digest: //p');
-export $i="$repo@$digest";
-env | grep $i;
+export IMAGE_INFLUXDB="$repo@$digest";
+env | grep IMAGE_INFLUXDB;
 ```
 
 #### Create namespace in your Kubernetes cluster
