@@ -23,6 +23,7 @@ export EXTERNAL_IP="$(kubectl get service/${APP_INSTANCE_NAME}-nginx-svc \
 
 for test in /tests/*; do
   testspec="$(mktemp XXXXXXXX.yaml)"
+  # TODO(marketplace-testrunner/issues/5): Add --substitutions param to testrunner
   envsubst '${NAMESPACE} ${APP_INSTANCE_NAME} ${EXTERNAL_IP}' < "${test}" > "${testspec}"
   cat "${testspec}"
   testrunner -logtostderr "--test_spec=${testspec}"
