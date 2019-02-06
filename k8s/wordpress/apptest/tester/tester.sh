@@ -19,6 +19,7 @@ shopt -s nullglob
 
 for test in /tests/*; do
   testspec="$(mktemp XXXXXXXX.yaml)"
+  # TODO(marketplace-testrunner/issues/5): Add --substitutions param to testrunner
   envsubst '${APP_INSTANCE_NAME} ${NAMESPACE} ${MYSQL_ROOT_PASSWORD} ${WORDPRESS_DB_USER} ${WORDPRESS_DB_PASSWORD} ${WORDPRESS_DB_NAME}' < "${test}" > "${testspec}"
   cat "${testspec}"
   testrunner -logtostderr "--test_spec=${testspec}"
