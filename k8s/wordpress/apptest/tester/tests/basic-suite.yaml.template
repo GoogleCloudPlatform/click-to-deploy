@@ -23,7 +23,7 @@ actions:
         html:
           title:
             matches: 'WordPress . Installation'
-- name: Can connect to database (as root user)
+- name: Can connect to a database (as root user)
   bashTest:
     script: |-
       mysql -h ${APP_INSTANCE_NAME}-mysql-svc.${NAMESPACE}.svc.cluster.local -u root -p"${MYSQL_ROOT_PASSWORD}" -e "SHOW DATABASES"
@@ -32,7 +32,7 @@ actions:
         matches: information_schema
       exitCode:
         equals: 0
-- name: Can connect to database (as wordpress user)
+- name: Can connect to a database (as wordpress user)
   bashTest:
     script: |-
       mysql -h ${APP_INSTANCE_NAME}-mysql-svc.${NAMESPACE}.svc.cluster.local -u "${WORDPRESS_DB_USER}" -p"${WORDPRESS_DB_PASSWORD}" -e "SHOW DATABASES"
@@ -41,6 +41,21 @@ actions:
         matches: ${WORDPRESS_DB_NAME}
       exitCode:
         equals: 0
- 
-# TODO(wgrzelak): Add a test: Can not connect to database with incorrect credentials
-# TODO(wgrzelak): Add a test: Can not connect to database without credentials
+- name: Can not connect to a database with incorrect credentials
+  bashTest:
+    script: |-
+      mysql -h ${APP_INSTANCE_NAME}-mysql-svc.${NAMESPACE}.svc.cluster.local -u root -p"changeme" -e "SHOW DATABASES"
+    expect:
+      stdout:
+        matches: ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: NO)
+      exitCode:
+        equals: 1
+- name: Can not connect to a database without credentials
+  bashTest:
+    script: |-
+      mysql -h ${APP_INSTANCE_NAME}-mysql-svc.${NAMESPACE}.svc.cluster.local -e "SHOW DATABASES"
+    expect:
+      stdout:
+        exactly: ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: NO)
+      exitCode:
+        equals: 1
