@@ -29,7 +29,7 @@ actions:
       mysql -h ${APP_INSTANCE_NAME}-mysql-svc.${NAMESPACE}.svc.cluster.local -u root -p"${MYSQL_ROOT_PASSWORD}" -e "SHOW DATABASES"
     expect:
       stdout:
-        matches: information_schema
+        contains: information_schema
       exitCode:
         equals: 0
 - name: Can connect to a database (as wordpress user)
@@ -38,7 +38,7 @@ actions:
       mysql -h ${APP_INSTANCE_NAME}-mysql-svc.${NAMESPACE}.svc.cluster.local -u "${WORDPRESS_DB_USER}" -p"${WORDPRESS_DB_PASSWORD}" -e "SHOW DATABASES"
     expect:
       stdout:
-        matches: ${WORDPRESS_DB_NAME}
+        contains: ${WORDPRESS_DB_NAME}
       exitCode:
         equals: 0
 - name: Can not connect to a database with incorrect credentials
@@ -47,7 +47,7 @@ actions:
       mysql -h ${APP_INSTANCE_NAME}-mysql-svc.${NAMESPACE}.svc.cluster.local -u root -p"changeme" -e "SHOW DATABASES"
     expect:
       stdout:
-        matches: 'ERROR 1045 (28000): Access denied for user ''root''@''localhost'' (using password: NO)'
+        contains: 'ERROR 1045 (28000): Access denied for user ''root''@''localhost'' (using password: NO)'
       exitCode:
         equals: 1
 - name: Can not connect to a database without credentials
