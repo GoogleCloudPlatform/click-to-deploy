@@ -17,6 +17,15 @@
 set -xeo pipefail
 shopt -s nullglob
 
+export GRAFANA_USERNAME='admin'
+export GRAFANA_PASSWORD="$(echo "${GRAFANA_GENERATED_PASSWORD}" | base64 -d)"
+
+echo "GRAFANA_GENERATED_PASSWORD: ${GRAFANA_GENERATED_PASSWORD}"
+echo "GRAFANA_PASSWORD: ${GRAFANA_PASSWORD}"
+
+export GRAFANA_URL="http://${GRAFANA_USERNAME}:${GRAFANA_PASSWORD}@${APP_INSTANCE_NAME}-grafana"
+export GRAFANA_SEARCH_API_URL="${GRAFANA_URL}/api/search"
+
 for test in /tests/*; do
   testrunner -logtostderr "--test_spec=${test}"
 done

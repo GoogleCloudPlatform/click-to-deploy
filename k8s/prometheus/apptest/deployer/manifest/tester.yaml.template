@@ -27,4 +27,6 @@ spec:
           fieldPath: metadata.namespace
     - name: APP_INSTANCE_NAME
       value: ${APP_INSTANCE_NAME}
+    - name: GRAFANA_GENERATED_PASSWORD
+      value: ${GRAFANA_GENERATED_PASSWORD}
   restartPolicy: Never
