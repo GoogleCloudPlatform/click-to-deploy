@@ -1,5 +1,5 @@
 actions:
-- name: Wait until all expected nodes are connected to the cluster
+- name: All nodes are connected to the cluster
   bashTest:
     script: |-
       function get_nodes_count() {
@@ -28,7 +28,7 @@ actions:
       stdout:
         contains: OK - all nodes joined
 
-- name: Wait for green status in the cluster
+- name: Cluster reports green status
   bashTest:
     script: |-
       function get_cluster_status() {
@@ -55,7 +55,7 @@ actions:
       stdout:
         contains: OK - green status
 
-- name: Add a document
+- name: New document can be saved
   bashTest:
     script: |-
       curl -s -f -X PUT -H 'Content-Type:application/json' -d '{
@@ -66,7 +66,7 @@ actions:
       exitCode:
         equals: 0
 
-- name: Update the document
+- name: Document can be updated
   bashTest:
     script: |-
       curl -s -f -X POST -H 'Content-Type:application/json' -d '{
@@ -78,7 +78,7 @@ actions:
       exitCode:
         equals: 0
 
-- name: Search for the document
+- name: Existing document can be found
   bashTest:
     script: |-
       # Wait to allow the object to be propagated between all nodes
