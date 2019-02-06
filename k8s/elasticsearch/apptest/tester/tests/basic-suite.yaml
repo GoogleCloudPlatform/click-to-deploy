@@ -90,6 +90,8 @@ actions:
 - name: Search for the document
   bashTest:
     script: |-
+      # Wait to allow the object to be propagated between all nodes
+      sleep 5
       elastic_url="http://${APP_INSTANCE_NAME}-elasticsearch-svc:9200"
       curl -s -f "${elastic_url}/_search?q=jones"
     expect:
