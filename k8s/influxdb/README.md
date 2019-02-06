@@ -156,10 +156,10 @@ until you are ready to upgrade. To get the digest for the image, use the
 following script:
 
 ```shell
-repo=$(echo $IMAGE_INFLUXDB | cut -d: -f1);
-digest=$(docker pull $IMAGE_INFLUXDB | sed -n -e 's/Digest: //p');
-export IMAGE_INFLUXDB="$repo@$digest";
-env | grep IMAGE_INFLUXDB;
+repo=$(echo $IMAGE_INFLUXDB | cut -d: -f1)
+digest=$(docker pull $IMAGE_INFLUXDB | sed -n -e 's/Digest: //p')
+export IMAGE_INFLUXDB="$repo@$digest"
+env | grep IMAGE_INFLUXDB
 ```
 
 #### Create namespace in your Kubernetes cluster
