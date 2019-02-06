@@ -17,6 +17,14 @@
 set -xeo pipefail
 shopt -s nullglob
 
+export EXTERNAL_IP="$(kubectl get service/${APP_INSTANCE_NAME}-nginx-svc \
+  --namespace ${NAMESPACE} \
+  --output jsonpath='{.status.loadBalancer.ingress[0].ip}')"
+
 for test in /tests/*; do
-  testrunner -logtostderr "--test_spec=${test}"
+  testspec="$(mktemp XXXXXXXX.yaml)"
+  # TODO(marketplace-testrunner/issues/5): Add --substitutions param to testrunner
+  envsubst '${NAMESPACE} ${APP_INSTANCE_NAME} ${EXTERNAL_IP}' < "${test}" > "${testspec}"
+  cat "${testspec}"
+  testrunner -logtostderr "--test_spec=${testspec}"
 done
