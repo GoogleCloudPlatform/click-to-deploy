@@ -6,12 +6,6 @@ actions:
     expect:
       exitCode:
         equals: 0
-- name: InfluxDB URL should be 204 No Content
-  httpTest:
-    url: http://${APP_INSTANCE_NAME}-influxdb-svc:8086/ping
-    expect:
-      statusCode:
-        equals: 204
 - name: Can create a database
   bashTest:
     script: |-
@@ -48,3 +42,9 @@ actions:
 #        contains: '{"error":"authorization failed"}'
 #      exitCode:
 #        equals: 0
+- name: Is InfluxDB instance up and running
+  httpTest:
+    url: http://${APP_INSTANCE_NAME}-influxdb-svc:8086/ping
+    expect:
+      statusCode:
+        equals: 204
