@@ -3,23 +3,20 @@ actions:
   bashTest:
     script: |-
       function get_nodes_count() {
-        local readonly health_url="$1"
-        nodes_count="$(curl -s "${health_url}" | jq '.number_of_nodes')"
-        echo "${nodes_count}"
+        curl -s "${HEALTH_URL}" | jq '.number_of_nodes'
       }
 
       expected_nodes="${REPLICAS}"
 
       timeout=300
-      health_url="http://${APP_INSTANCE_NAME}-elasticsearch-svc:9200/_cluster/health"
       timeout_time=$(( $(date +%s) + timeout ))
 
       # Wait for all nodes to join the cluster
-      nodes_count="$(get_nodes_count "${health_url}")"
+      nodes_count="$(get_nodes_count)"
       while [[ "${nodes_count}" -ne "${expected_nodes}" ]] \
           && [[ "$(date +%s)" -le "${timeout_time}" ]]; do
         sleep 3
-        nodes_count="$(get_nodes_count "${health_url}")"
+        nodes_count="$(get_nodes_count)"
       done
 
       if [[ "${nodes_count}" -eq "${expected_nodes}" ]]; then
@@ -35,22 +32,18 @@ actions:
   bashTest:
     script: |-
       function get_cluster_status() {
-        local readonly health_url="$1"
-        status="$(curl -s "${health_url}" | jq '.status')"
-        echo "${status}"
+        curl -s "${HEALTH_URL}" | jq '.status'
       }
 
       timeout=300
-      health_url="http://${APP_INSTANCE_NAME}-elasticsearch-svc:9200/_cluster/health"
-
       timeout_time=$(( $(date +%s) + timeout ))
 
       # Wait for green status
-      status="$(get_cluster_status "${health_url}")"
+      status="$(get_cluster_status)"
       while [[ "${status}" != '"green"' ]] \
           && [[ "$(date +%s)" -le "${timeout_time}" ]]; do
         sleep 3
-        status="$(get_cluster_status "${health_url}")"
+        status="$(get_cluster_status)"
       done
 
       if [[ "${status}" == '"green"' ]]; then
@@ -65,11 +58,10 @@ actions:
 - name: Add a document
   bashTest:
     script: |-
-      elastic_url="http://${APP_INSTANCE_NAME}-elasticsearch-svc:9200"
       curl -s -f -X PUT -H 'Content-Type:application/json' -d '{
         "name": "John",
         "surname": "Smith"
-      }' "${elastic_url}/employees/person/1"
+      }' "${ELASTIC_URL}/employees/person/1"
     expect:
       exitCode:
         equals: 0
@@ -77,12 +69,11 @@ actions:
 - name: Update the document
   bashTest:
     script: |-
-      elastic_url="http://${APP_INSTANCE_NAME}-elasticsearch-svc:9200"
       curl -s -f -X POST -H 'Content-Type:application/json' -d '{
         "doc": {
           "lastname": "Jones"
         }
-      }' "${elastic_url}/employees/person/1/_update"
+      }' "${ELASTIC_URL}/employees/person/1/_update"
     expect:
       exitCode:
         equals: 0
@@ -92,8 +83,7 @@ actions:
     script: |-
       # Wait to allow the object to be propagated between all nodes
       sleep 5
-      elastic_url="http://${APP_INSTANCE_NAME}-elasticsearch-svc:9200"
-      curl -s -f "${elastic_url}/_search?q=jones"
+      curl -s -f "${ELASTIC_URL}/_search?q=jones"
     expect:
       stdout:
         contains: "\"name\":\"John\""
