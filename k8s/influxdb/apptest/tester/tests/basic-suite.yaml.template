@@ -37,6 +37,8 @@ actions:
 #    expect:
 #      stdout:
 #        contains: '{"error":"authorization failed"}'
+#      exitCode:
+#        equals: 0
 #- name: Can not read a database with incorrect credentials
 #  bashTest:
 #    script: |-
@@ -44,3 +46,5 @@ actions:
 #    expect:
 #      stdout:
 #        contains: '{"error":"authorization failed"}'
+#      exitCode:
+#        equals: 0
