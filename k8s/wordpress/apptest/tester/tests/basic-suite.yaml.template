@@ -41,3 +41,6 @@ actions:
         matches: ${WORDPRESS_DB_NAME}
       exitCode:
         equals: 0
+ 
+# TODO(wgrzelak): Add a test: Can not connect to database with incorrect credentials
+# TODO(wgrzelak): Add a test: Can not connect to database without credentials
