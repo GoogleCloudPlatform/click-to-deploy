@@ -1,8 +1,0 @@
-actions:
-- name: dummy test
-  bashTest:
-    script: |-
-      exit 0
-    expect:
-      statusCode:
-        equals: 0
