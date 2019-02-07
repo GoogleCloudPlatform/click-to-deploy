@@ -1,5 +1,5 @@
 actions:
-- name: Grafana listening
+- name: grafana listening
   bashTest:
     script: |-
       #sleep 120
@@ -11,7 +11,7 @@ actions:
     expect:
       stdout:
         contains: 'login'
-- name: Grafana login
+- name: grafana login
   bashTest:
     script: |-
       ADMIN_PASSWORD="$(kubectl get secret "${APP_INSTANCE_NAME}-grafana" \
