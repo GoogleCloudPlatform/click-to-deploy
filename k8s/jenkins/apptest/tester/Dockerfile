@@ -1,6 +1,7 @@
 FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.0
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
     ca-certificates \
     gettext \
     jq \

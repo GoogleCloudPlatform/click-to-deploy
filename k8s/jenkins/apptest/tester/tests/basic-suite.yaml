@@ -1,8 +1,250 @@
 actions:
-- name: dummy test
+- name: Jenkins service login
   bashTest:
     script: |-
-      exit 0
+      SERVICE="${APP_INSTANCE_NAME}-jenkins-ui"
+      IP=''
+      PORT=''
+      PASSWORD=''
+      FAILED=0
+
+      function wait_for_service_ip {
+        IP=$(kubectl get service "${SERVICE}" \
+          --namespace "${NAMESPACE}" \
+          -ojsonpath="{.spec.clusterIP}")
+        if [[ $? -ne 0 ]]; then
+          IP=""
+        fi
+      }
+
+      function wait_for_service_port {
+        PORT=$(kubectl get service "${SERVICE}" \
+          --namespace "${NAMESPACE}" \
+          -ojsonpath="{.spec.ports[0].port}")
+        if [[ $? -ne 0 ]]; then
+          PORT=""
+        fi
+      }
+
+      function get_jenkins_pod {
+        POD=$(kubectl get pod -oname \
+          --namespace "${NAMESPACE}" | \
+          sed -n "/\\/${APP_INSTANCE_NAME}-jenkins-deployment/s.pods\\?/..p")
+        if [[ $? -ne 0 ]]; then
+          POD=""
+        fi
+      }
+
+      function get_jenkins_admin_password {
+        PASSWORD=$(kubectl exec "${POD}" \
+          --namespace "${NAMESPACE}" \
+          cat /var/jenkins_home/secrets/initialAdminPassword)
+        if [[ $? -ne 0 ]]; then
+          PASSWORD=""
+        fi
+      }
+
+      function wait_for_ingress_healthy_state {
+        kubectl describe ingress "${SERVICE}" \
+          --namespace "${NAMESPACE}" | \
+          grep -q 'ingress.kubernetes.io/backends:.*{.*:"HEALTHY"}'
+      }
+
+      echo "Waiting for Service ip address."
+      wait_for_service_ip
+      while [[ "${IP}" == "" ]]; do
+        echo "Not yet -- Service IP"
+        sleep 20
+        wait_for_service_ip
+      done
+
+      echo "Waiting for Service port."
+      wait_for_service_port
+      while [[ "${PORT}" == "" ]]; do
+        echo "Not yet -- Service PORT"
+        sleep 20
+        wait_for_service_port
+      done
+
+      echo "Waiting for Jenkins Pod."
+      get_jenkins_pod
+      while [[ "${POD}" == "" ]]; do
+        echo "Not yet -- POD"
+        sleep 20
+        get_jenkins_pod
+      done
+
+      echo "Waiting for Jenkins Admin Password."
+      get_jenkins_admin_password
+      while [[ "${PASSWORD}" == "" ]]; do
+        echo "Not yet -- PASSWORD"
+        sleep 20
+        get_jenkins_admin_password
+      done
+
+      # test1 -- unathenticated curl on http://
+      if ! curl -s -k "http://${IP}:${PORT}/" | grep -q 'Authentication required'; then
+        if [[ $DEBUG -gt 0 ]]; then
+          echo "Test1: authentication required -- failed"
+          curl -s -k "http://${IP}:${PORT}/" 2>&1
+        fi
+        $((FAILED+=1))
+      fi
+
+      # test2 -- authenticated curl on http:// (wrong credentials)
+      if ! curl -uadmin:Invalid -s -k "http://${IP}:${PORT}/" | grep -q 'Error 401 Invalid password/token'; then
+        if [[ $DEBUG -gt 0 ]]; then
+          echo "Test2: invalid credentials -- failed"
+          curl -uadmin:Invalid -s -k "http://${IP}:${PORT}/" 2>&1
+        fi
+        $((FAILED+=1))
+      fi
+
+      # test3 -- authenticated curl on http:// (correct credentials)
+      if ! curl -u "admin:${PASSWORD}" -s -k "http://${IP}:${PORT}/" | grep -q 'SetupWizard'; then
+        if [[ $DEBUG -gt 0 ]]; then
+          echo "Test3: valid credentials -- failed"
+          curl -uadmin:${PASSWORD} -s -k "http://${IP}:${PORT}/" 2>&1
+        fi
+        $((FAILED+=1))
+      fi
+
+      if [[ "${FAILED}" != 0 ]]; then
+        echo
+        echo "Username: admin"
+        echo "Password: ${PASSWORD}"
+        echo "Address: http://${IP}:${PORT}/"
+        echo
+        exit "${FAILED}"
+      fi
     expect:
-      statusCode:
+      exitCode:
+        equals: 0
+- name: Jenkins ingress login
+  bashTest:
+    script: |-
+      ### 
+      ### WARNING
+      ### 
+      ### Test should use HTTPS protocol but verify doesn't create all
+      ### resources that are created during real deployment.
+      ### In this case it's TLS Secret.
+      ### 
+      ### WARNING
+      ### 
+
+      ### 
+      ### WARNING
+      ### 
+      ### This test will fail once support for Ingress with TLS but without existing TLS Secret is removed.
+      ### There will be no failback to HTTP only Ingress.
+      ### 
+      ### WARNING
+      ### 
+
+      INGRESS="${APP_INSTANCE_NAME}-jenkins-ui"
+      IP=''
+      PASSWORD=''
+      FAILED=0
+
+      function wait_for_ingress_external_ip {
+        IP=$(kubectl get ingress "${INGRESS}" \
+          --namespace "${NAMESPACE}" \
+          -ojsonpath="{.status.loadBalancer.ingress[0].ip}")
+        if [[ $? -ne 0 ]]; then
+          IP=""
+        fi
+      }
+
+      function get_jenkins_pod {
+        POD=$(kubectl get pod -oname \
+          --namespace "${NAMESPACE}" | \
+          sed -n "/\\/${APP_INSTANCE_NAME}-jenkins-deployment/s.pods\\?/..p")
+        if [[ $? -ne 0 ]]; then
+          POD=""
+        fi
+      }
+
+      function get_jenkins_admin_password {
+        PASSWORD=$(kubectl exec "${POD}" \
+          --namespace "${NAMESPACE}" \
+          cat /var/jenkins_home/secrets/initialAdminPassword)
+        if [[ $? -ne 0 ]]; then
+          PASSWORD=""
+        fi
+      }
+
+      function wait_for_ingress_healthy_state {
+        kubectl describe ingress "${INGRESS}" \
+          --namespace "${NAMESPACE}" | \
+          grep -q 'ingress.kubernetes.io/backends:.*{.*:"HEALTHY"}'
+      }
+
+      echo "Waiting for Ingress external ip address."
+      wait_for_ingress_external_ip
+      while [[ "${IP}" == "" ]]; do
+        echo "Not yet -- IP"
+        sleep 20
+        wait_for_ingress_external_ip
+      done
+
+      echo "Waiting for Jenkins Pod."
+      get_jenkins_pod
+      while [[ "${POD}" == "" ]]; do
+        echo "Not yet -- POD"
+        sleep 20
+        get_jenkins_pod
+      done
+
+      echo "Waiting for Jenkins Admin Password."
+      get_jenkins_admin_password
+      while [[ "${PASSWORD}" == "" ]]; do
+        echo "Not yet -- PASSWORD"
+        sleep 20
+        get_jenkins_admin_password
+      done
+
+      echo "Waiting for Ingress HEALTHY state."
+      while ! wait_for_ingress_healthy_state; do
+        echo "Not yet -- HEALTHY"
+        sleep 20
+      done
+
+      # test1 -- unathenticated curl on http://
+      if ! curl -s -k "http://${IP}/" | grep -q 'Authentication required'; then
+        if [[ $DEBUG -gt 0 ]]; then
+          echo "Test1: authentication required -- failed"
+          curl -s -k "http://${IP}/" 2>&1
+        fi
+        $((FAILED+=1))
+      fi
+
+      # test2 -- authenticated curl on http:// (wrong credentials)
+      if ! curl -uadmin:Invalid -s -k "http://${IP}/" | grep -q 'Error 401 Invalid password/token'; then
+        if [[ $DEBUG -gt 0 ]]; then
+          echo "Test2: invalid credentials -- failed"
+          curl -uadmin:Invalid -s -k "http://${IP}/" 2>&1
+        fi
+        $((FAILED+=1))
+      fi
+
+      # test3 -- authenticated curl on http:// (correct credentials)
+      if ! curl -u "admin:${PASSWORD}" -s -k "http://${IP}/" | grep -q 'SetupWizard'; then
+        if [[ $DEBUG -gt 0 ]]; then
+          echo "Test3: valid credentials -- failed"
+          curl -uadmin:${PASSWORD} -s -k "http://${IP}/" 2>&1
+        fi
+        $((FAILED+=1))
+      fi
+
+      if [[ "${FAILED}" != 0 ]]; then
+        echo
+        echo "Username: admin"
+        echo "Password: ${PASSWORD}"
+        echo "Address: http://${IP}/"
+        echo
+        exit "${FAILED}"
+      fi
+    expect:
+      exitCode:
         equals: 0
