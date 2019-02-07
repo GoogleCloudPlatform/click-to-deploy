@@ -27,6 +27,6 @@ spec:
           fieldPath: metadata.namespace
     - name: APP_INSTANCE_NAME
       value: "${APP_INSTANCE_NAME}"
-    - name: REPLICAS
-      value: "${REPLICAS}"
+    - name: ELASTICSEARCH_REPLICAS
+      value: "${ELASTICSEARCH_REPLICAS}"
   restartPolicy: Never

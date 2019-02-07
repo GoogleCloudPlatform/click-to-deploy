@@ -1,14 +1,14 @@
 actions:
-- name: Wait until all expected nodes are connected to the Elasticsearch cluster
+- name: All nodes are connected to the cluster
   bashTest:
     script: |-
       function get_nodes_count() {
         curl -s "${HEALTH_URL}" | jq '.number_of_nodes'
       }
 
-      expected_nodes="${REPLICAS}"
+      expected_nodes="${ELASTICSEARCH_REPLICAS}"
 
-      timeout=300
+      timeout=30
       timeout_time="$(( $(date +%s) + timeout ))"
 
       # Wait for all nodes to join the cluster
@@ -20,13 +20,13 @@ actions:
       if [[ "$(get_nodes_count)" -eq "${expected_nodes}" ]]; then
         echo "OK - all nodes joined"
       else
-        echo "FAIL - nodes count: ${nodes_count}"
+        echo "FAIL - nodes count: $(get_nodes_count)"
       fi
     expect:
       stdout:
         contains: OK - all nodes joined
 
-- name: Wait for green status in the cluster
+- name: Cluster reports green status
   bashTest:
     script: |-
       function get_cluster_status() {
@@ -51,7 +51,7 @@ actions:
       stdout:
         contains: OK - green status
 
-- name: Wait until GKE logs land in Elasticsearch
+- name: GKE logs are found in Elasticsearch
   bashTest:
     script: |-
       function count_logstash_indices() {
@@ -76,7 +76,7 @@ actions:
       stdout:
         contains: OK - logstash index found
 
-- name: Access Kibana UI
+- name: Kibana UI is available
   bashTest:
     script: |-
       curl -s -f "${KIBANA_URL}/app/kibana"
@@ -94,12 +94,12 @@ actions:
       timeout=300
       timeout_time="$(( $(date +%s) + timeout ))"
 
-      while [[ "$(count_searches)" -eq 0 ]] \
+      while [[ "$(count_searches)" -lt 5 ]] \
           && [[ "$(date +%s)" -le "${timeout_time}" ]]; do
         sleep 3
       done
 
-      if [[ "$(count_searches)" -gt 0 ]]; then
+      if [[ "$(count_searches)" -ge 5 ]]; then
         echo "OK - saved searches found"
       else
         echo "FAIL - no saved searches found"
@@ -108,16 +108,15 @@ actions:
       stdout:
         contains: OK - saved searches found
 
-- name: Saved search "GKE Apps logs" found exactly once
+- name: Saved search "GKE Apps logs" is found exactly once
   bashTest:
     script: |-
-      exec 2>&1
       find_saved_kibana_search_count '"GKE Apps logs"'
     expect:
       stdout:
         contains: OK - "GKE Apps logs" search found once
 
-- name: Saved search "kubelet logs" found exactly once
+- name: Saved search "kubelet logs" is found exactly once
   bashTest:
     script: |-
       find_saved_kibana_search_count '"kubelet logs"'
@@ -125,7 +124,7 @@ actions:
       stdout:
         contains: OK - "kubelet logs" search found once
 
-- name: Saved search "kube-proxy logs" found exactly once
+- name: Saved search "kube-proxy logs" is found exactly once
   bashTest:
     script: |-
       find_saved_kibana_search_count '"kube-proxy logs"'
@@ -133,7 +132,7 @@ actions:
       stdout:
         contains: OK - "kube-proxy logs" search found once
 
-- name: Saved search "docker logs" found exactly once
+- name: Saved search "docker logs" is found exactly once
   bashTest:
     script: |-
       find_saved_kibana_search_count '"docker logs"'
@@ -141,7 +140,7 @@ actions:
       stdout:
         contains: OK - "docker logs" search found once
 
-- name: Saved search "kernel logs" found exactly once
+- name: Saved search "kernel logs" is found exactly once
   bashTest:
     script: |-
       find_saved_kibana_search_count '"kernel logs"'
@@ -149,7 +148,7 @@ actions:
       stdout:
         contains: OK - "kernel logs" search found once
 
-- name: Saved index pattern "logstash-*" found exactly once
+- name: Saved index pattern "logstash-*" is found exactly once
   bashTest:
     script: |-
       find_saved_kibana_index_pattern_count '"logstash-*"'
