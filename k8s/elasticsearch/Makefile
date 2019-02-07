@@ -29,13 +29,18 @@ APP_PARAMETERS ?= { \
   $(IMAGE_ELASTICSEARCH_FIELD) \
   $(IMAGE_INIT_FIELD) \
 }
-APP_TEST_PARAMETERS ?= {}
+
+TESTER_IMAGE ?= $(REGISTRY)/elasticsearch/tester:$(TAG)
+
+APP_TEST_PARAMETERS ?= { \
+  "testerImage": "$(TESTER_IMAGE)" \
+}
 
 
 app/build:: .build/elasticsearch/elasticsearch \
             .build/elasticsearch/deployer \
-            .build/elasticsearch/ubuntu16_04
-
+            .build/elasticsearch/ubuntu16_04 \
+            .build/elasticsearch/tester
 
 .build/elasticsearch: | .build
 	mkdir -p "$@"
@@ -77,4 +82,14 @@ app/build:: .build/elasticsearch/elasticsearch \
 	docker tag launcher.gcr.io/google/ubuntu16_04 \
 	    "$(REGISTRY)/elasticsearch/ubuntu16_04:$(TAG)"
 	docker push "$(REGISTRY)/elasticsearch/ubuntu16_04:$(TAG)"
+	@touch "$@"
+
+
+.build/elasticsearch/tester: .build/var/TESTER_IMAGE \
+                             $(shell find apptest -type f) \
+                             | .build/elasticsearch
+	$(call print_target,$@)
+	cd apptest/tester \
+	    && docker build --tag "$(TESTER_IMAGE)" .
+	docker push "$(TESTER_IMAGE)"
 	@touch "$@"

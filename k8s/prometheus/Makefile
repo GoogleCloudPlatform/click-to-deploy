@@ -46,7 +46,12 @@ APP_PARAMETERS ?= { \
   $(IMAGE_PROMETHEUS_INIT_FIELD) \
   $(PROMETHEUS_REPLICAS_FIELD) \
 }
-APP_TEST_PARAMETERS ?= {}
+
+TESTER_IMAGE ?= $(REGISTRY)/prometheus/tester:$(TAG)
+
+APP_TEST_PARAMETERS ?= { \
+  "testerImage": "$(TESTER_IMAGE)" \
+}
 
 
 app/build:: .build/prometheus/alertmanager \
@@ -55,7 +60,8 @@ app/build:: .build/prometheus/alertmanager \
             .build/prometheus/grafana \
             .build/prometheus/kubestatemetrics \
             .build/prometheus/nodeexporter \
-            .build/prometheus/server
+            .build/prometheus/server \
+            .build/prometheus/tester
 
 
 .build/prometheus: | .build
@@ -135,4 +141,13 @@ app/build:: .build/prometheus/alertmanager \
 	docker pull launcher.gcr.io/google/grafana5:5.3
 	docker tag launcher.gcr.io/google/grafana5:5.3 "$(REGISTRY)/prometheus/grafana:$(TAG)"
 	docker push "$(REGISTRY)/prometheus/grafana:$(TAG)"
+	@touch "$@"
+
+.build/prometheus/tester: .build/var/TESTER_IMAGE \
+                          $(shell find apptest -type f) \
+                          | .build/prometheus
+	$(call print_target,$@)
+	cd apptest/tester \
+	    && docker build --tag "$(TESTER_IMAGE)" .
+	docker push "$(TESTER_IMAGE)"
 	@touch "$@"
