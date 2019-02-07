@@ -1,8 +1,141 @@
 actions:
-- name: dummy test
+- name: secure login
   bashTest:
     script: |-
-      exit 0
+      SERVICE="${APP_INSTANCE_NAME}-postgresql-svc"
+      IP=''
+      PGPASSWORD=''
+      FAILED=0
+
+      function wait_for_service_external_ip {
+        IP=$(kubectl get svc "${SERVICE}" \
+          --namespace "${NAMESPACE}" \
+          -ojsonpath="{.status.loadBalancer.ingress[0].ip}")
+        if [[ $? -ne 0 ]]; then
+          IP=""
+        fi
+      }
+
+      function get_postgresql_postgres_password {
+        PGPASSWORD=$(kubectl get secret "${APP_INSTANCE_NAME}-secret" \
+          --namespace "${NAMESPACE}" \
+          --output=jsonpath='{.data.password}' | base64 -d)
+        if [[ $? -ne 0 ]]; then
+          PGPASSWORD=""
+        fi
+      }
+
+      echo "Waiting for Service external ip address."
+      wait_for_service_external_ip
+      while [[ "${IP}" == "" ]]; do
+        echo "Not yet IP"
+        sleep 20
+        wait_for_service_external_ip
+      done
+
+      echo "Waiting for PostgreSQL postgres Password."
+      get_postgresql_postgres_password
+      while [[ "${PGPASSWORD}" == "" ]]; do
+        echo "Not yet PGPASSWORD"
+        sleep 20
+        get_postgresql_postgres_password
+      done
+
+      # test1 -- authenticated connection
+      if ! PGPASSWORD="${PGPASSWORD}" psql sslmode=require -U postgres -h "${IP}" -c '\dt' | grep -q 'No relations found'; then 
+        echo "Test1: secure connection -- failed"
+        $((FAILED+=1))
+      fi
+
+      if [[ "${FAILED}" != 0 ]]; then
+        echo
+        echo "Username: postgres"
+        echo "Password: ${PGPASSWORD}"
+        echo "IP address: ${IP}"
+        echo
+        exit "${FAILED}"
+      fi
     expect:
-      statusCode:
+      exitCode:
+        equals: 0
+- name: db operations
+  bashTest:
+    script: |-
+      SERVICE="${APP_INSTANCE_NAME}-postgresql-svc"
+      IP=''
+      PGPASSWORD=''
+      FAILED=0
+
+      function wait_for_service_external_ip {
+        IP=$(kubectl get svc "${SERVICE}" \
+          --namespace "${NAMESPACE}" \
+          -ojsonpath="{.status.loadBalancer.ingress[0].ip}")
+        if [[ $? -ne 0 ]]; then
+          IP=""
+        fi
+      }
+
+      function get_postgresql_postgres_password {
+        PGPASSWORD=$(kubectl get secret "${APP_INSTANCE_NAME}-secret" \
+          --namespace "${NAMESPACE}" \
+          --output=jsonpath='{.data.password}' | base64 -d)
+        if [[ $? -ne 0 ]]; then
+          PGPASSWORD=""
+        fi
+      }
+
+      echo "Waiting for Service external ip address."
+      wait_for_service_external_ip
+      while [[ "${IP}" == "" ]]; do
+        echo "Not yet IP"
+        sleep 20
+        wait_for_service_external_ip
+      done
+
+      echo "Waiting for PostgreSQL postgres Password."
+      get_postgresql_postgres_password
+      while [[ "${PGPASSWORD}" == "" ]]; do
+        echo "Not yet PGPASSWORD"
+        sleep 20
+        get_postgresql_postgres_password
+      done
+
+      # test1 -- CREATE TABLE
+      PGCOMMAND="CREATE TABLE test(id serial PRIMARY KEY, name VARCHAR (255) NOT NULL);"
+      if ! PGPASSWORD="${PGPASSWORD}" psql sslmode=require -U postgres -h "${IP}" -c "${PGCOMMAND}" | grep -q '^CREATE TABLE$'; then 
+        echo "Test1: CREATE TABLE -- failed"
+        $((FAILED+=1))
+      fi
+
+      # test2 -- INSERT INTO
+      PGCOMMAND="INSERT INTO test (name) VALUES ('test');"
+      if ! PGPASSWORD="${PGPASSWORD}" psql sslmode=require -U postgres -h "${IP}" -c "${PGCOMMAND}" | grep -q '^INSERT 0 1$'; then 
+        echo "Test2: INSERT INTO -- failed"
+        $((FAILED+=1))
+      fi
+
+      # test3 -- SELECT FROM (correct value)
+      PGCOMMAND="SELECT * from test"
+      if ! PGPASSWORD="${PGPASSWORD}" psql sslmode=require -U postgres -h "${IP}" -c "${PGCOMMAND}" | grep -q '^  1 | test$'; then 
+        echo "Test3: SELECT FROM (correct value) -- failed"
+        $((FAILED+=1))
+      fi
+
+      # test4 -- SELECT FROM (incorrect value)
+      PGCOMMAND="SELECT * from test"
+      if PGPASSWORD="${PGPASSWORD}" psql sslmode=require -U postgres -h "${IP}" -c "${PGCOMMAND}" | grep -q '^  1 | value$'; then 
+        echo "Test4: SELECT FROM (incorrect value) -- failed"
+        $((FAILED+=1))
+      fi
+
+      if [[ "${FAILED}" != 0 ]]; then
+        echo
+        echo "Username: postgres"
+        echo "Password: ${PGPASSWORD}"
+        echo "IP address: ${IP}"
+        echo
+        exit "${FAILED}"
+      fi
+    expect:
+      exitCode:
         equals: 0
