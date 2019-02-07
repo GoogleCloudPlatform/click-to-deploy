@@ -250,7 +250,7 @@ KUBE_PROXY_PORT=8080
 kubectl proxy -p $KUBE_PROXY_PORT
 ```
 
-In your main terminal, run:
+And then in your main terminal, run:
 
 ```shell
 KUBE_PROXY_PORT=8080
@@ -314,7 +314,7 @@ click **Discover**.
 To get the direct URL for the Discover page, run:
 
 ```shell
-echo "${KIBANA_URL}/discover"
+echo "${KIBANA_URL}/app/kibana#/discover"
 ```
 
 ## Saved searches
