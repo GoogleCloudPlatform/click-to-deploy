@@ -2,36 +2,16 @@ actions:
 - name: 3 nodes deployed successfully
   bashTest:
     script: |-
-      set -x
-      function stderr_msg {
-        >&2 echo "${@}"
-      }
+       declare -i replicas=$(kubectl get sts "${APP_INSTANCE_NAME}-cassandra" \
+         --namespace "${NAMESPACE}" \
+         --output jsonpath='{.spec.replicas}')
 
-      function get_desired_number_of_replicas_in_sts {
-        kubectl get sts "${STS_NAME}" \
-          --namespace "${NAMESPACE}" \
-          --output jsonpath='{.spec.replicas}'
-      }
-
-      function get_current_number_of_replicas_in_sts {
-        kubectl get sts "${STS_NAME}" \
-          --namespace "${NAMESPACE}" \
-          --output jsonpath='{.status.readyReplicas}'
-      }
-
-      function wait_for_healthy_sts {
-        stderr_msg "Waiting for equal desired and current number of replicas"
-        while [[ $(get_current_number_of_replicas_in_sts) -ne $(get_desired_number_of_replicas_in_sts) ]]; do
-          stderr_msg "Sleeping 10 seconds before rechecking..."
-          sleep 10
-        done
-        info "Statefulset has equal current and desired number of replicas"
-      }
-      STS_NAME="${APP_INSTANCE_NAME}-cassandra"
-      wait_for_healthy_sts
-      kubectl get sts "${STS_NAME}" \
-        --namespace "${NAMESPACE}" \
-        --output jsonpath='{.status.readyReplicas}'
+       for ((pod=0; pod<${replicas}; pod++)); do
+         kubectl wait pod/${APP_INSTANCE_NAME}-cassandra-${pod} \
+           --namespace=${NAMESPACE} \
+           --for=condition=Ready \
+           --timeout=300s
+       done
     expect:
       exitCode:
         equals: 0
