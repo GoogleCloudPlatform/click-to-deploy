@@ -1,5 +1,5 @@
 actions:
-- name: 3 nodes deployed successfully
+- name: All nodes deployed successfully
   bashTest:
     script: |-
        declare -i replicas=$(kubectl get sts "${APP_INSTANCE_NAME}-cassandra" \
@@ -15,6 +15,15 @@ actions:
     expect:
       exitCode:
         equals: 0
+- name: There are exactly 3 nodes in a cluster
+  bashTest:
+    script: |-
+       kubectl get sts "${APP_INSTANCE_NAME}-cassandra" \
+         --namespace "${NAMESPACE}" \
+         --output jsonpath='{.spec.replicas}'
+    expect:
+      stdout:
+        equals: "3"
 - name: Execute CQL query
   bashTest:
     script: |-
