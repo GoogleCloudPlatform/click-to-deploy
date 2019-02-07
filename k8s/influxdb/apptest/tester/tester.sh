@@ -18,5 +18,9 @@ set -xeo pipefail
 shopt -s nullglob
 
 for test in /tests/*; do
-  testrunner -logtostderr "--test_spec=${test}"
+  testspec="$(mktemp XXXXXXXX.yaml)"
+  # TODO(marketplace-testrunner/issues/5): Add --substitutions param to testrunner
+  envsubst '${NAMESPACE} ${APP_INSTANCE_NAME} ${INFLUXDB_ADMIN_USER} ${INFLUXDB_ADMIN_PASSWORD}' < "${test}" > "${testspec}"
+  cat "${testspec}"
+  testrunner -logtostderr "--test_spec=${testspec}"
 done
