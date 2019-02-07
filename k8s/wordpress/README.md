@@ -402,7 +402,7 @@ export NAMESPACE=default
 Set the new image version in an environment variable:
 
 ```shell
-export IMAGE_WORDPRESS=launcher.gcr.io/google/wordpress4-php7-apache:latest
+export IMAGE_WORDPRESS=launcher.gcr.io/google/wordpress5-php7-apache:latest
 ```
 
 Update the StatefulSet definition with the reference to the new image:
