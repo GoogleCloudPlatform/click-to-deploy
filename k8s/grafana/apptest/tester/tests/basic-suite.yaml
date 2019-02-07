@@ -2,7 +2,6 @@ actions:
 - name: grafana listening
   bashTest:
     script: |-
-      #sleep 120
       kubectl wait pod/"${APP_INSTANCE_NAME}-grafana-0" \
           --namespace="${NAMESPACE}" \
           --for=condition=Ready \
