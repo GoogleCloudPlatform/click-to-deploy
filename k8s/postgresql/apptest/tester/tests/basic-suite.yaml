@@ -1,5 +1,5 @@
 actions:
-- name: secure login
+- name: Secure login
   bashTest:
     script: |-
       SERVICE="${APP_INSTANCE_NAME}-postgresql-svc"
@@ -58,7 +58,7 @@ actions:
     expect:
       exitCode:
         equals: 0
-- name: db operations
+- name: Db operations
   bashTest:
     script: |-
       SERVICE="${APP_INSTANCE_NAME}-postgresql-svc"
