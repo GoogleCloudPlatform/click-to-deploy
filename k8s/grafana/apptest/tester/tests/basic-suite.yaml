@@ -1,8 +1,24 @@
 actions:
-- name: dummy test
+- name: Grafana listening
   bashTest:
     script: |-
-      exit 0
+      # will be changed, there is the bug in the application
+      # tracked in issue #367 
+      sleep 120
+      curl http://$APP_INSTANCE_NAME-grafana.$NAMESPACE.svc.cluster.local:3000
     expect:
-      exitCode:
-        equals: 0
+      stdout:
+        contains: 'login'
+- name: Grafana login
+  bashTest:
+    script: |-
+      ADMIN_PASSWORD="$(kubectl get secret "${APP_INSTANCE_NAME}-grafana" \
+         --namespace "${NAMESPACE}" \
+         --output=jsonpath='{.data.admin-password}' | base64 -d)"
+      ADMIN_NAME="$(kubectl get secret "${APP_INSTANCE_NAME}-grafana" \
+         --namespace "${NAMESPACE}" \
+         --output=jsonpath='{.data.admin-user}' | base64 -d)"
+      curl -u $ADMIN_NAME:$ADMIN_PASSWORD http://$APP_INSTANCE_NAME-grafana.$NAMESPACE.svc.cluster.local:3000
+    expect:
+      stdout:
+        contains: 'Grafana'
