@@ -63,15 +63,6 @@ actions:
         fi
       }
 
-      function get_postgresql_postgres_password {
-        PGPASSWORD=$(kubectl get secret "${APP_INSTANCE_NAME}-secret" \
-          --namespace "${NAMESPACE}" \
-          --output=jsonpath='{.data.password}' | base64 -d)
-        if [[ $? -ne 0 ]]; then
-          PGPASSWORD=""
-        fi
-      }
-
       echo "Waiting for Service external ip address."
       wait_for_service_external_ip
       while [[ "${IP}" == "" ]]; do
