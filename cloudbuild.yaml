@@ -49,7 +49,7 @@ steps:
   - --region
   - '$_CLUSTER_LOCATION'
   - --project
-  - '$WOJTEK'
+  - '$PROJECT_ID'
 
 - id: Copy kubectl Credentials
   name: gcr.io/google-appengine/debian9
