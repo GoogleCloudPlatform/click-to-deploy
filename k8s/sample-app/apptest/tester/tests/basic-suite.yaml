@@ -1,8 +1,9 @@
 actions:
-- name: dummy test
+- name: Sample test check port 80
   bashTest:
     script: |-
-      exit 0
+      # Here is a sample test which checks if the Nginx is listening on port 80
+      curl http://$APP_INSTANCE_NAME-sample-app-svc.$NAMESPACE.svc.cluster.local:80
     expect:
-      exitCode:
-        equals: 0
+      stdout:
+        contains: 'Welcome to nginx'
