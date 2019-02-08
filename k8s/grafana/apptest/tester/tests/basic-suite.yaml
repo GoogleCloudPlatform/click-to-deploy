@@ -2,10 +2,7 @@ actions:
 - name: grafana listening
   bashTest:
     script: |-
-      kubectl wait pod/"${APP_INSTANCE_NAME}-grafana-0" \
-          --namespace="${NAMESPACE}" \
-          --for=condition=Ready \
-          --timeout=180s
+      sleep 120
       curl http://$APP_INSTANCE_NAME-grafana.$NAMESPACE.svc.cluster.local:3000
     expect:
       stdout:
