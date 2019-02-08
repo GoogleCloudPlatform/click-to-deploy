@@ -1,10 +1,7 @@
 FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.0
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates \
-    gettext \
-    jq \
-    uuid-runtime \
+    postgresql-client \
     wget \
     && rm -rf /var/lib/apt/lists/*
 
