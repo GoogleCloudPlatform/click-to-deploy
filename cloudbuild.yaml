@@ -33,6 +33,7 @@ steps:
   - |
     echo $_CLUSTER_NAME
     echo $PROJECT_ID
+    echo $WOJTEK
   
     TAG="$$(cat ./MARKETPLACE_TOOLS_TAG)"
     docker pull "gcr.io/cloud-marketplace-tools/k8s/dev:$$TAG"
@@ -48,7 +49,7 @@ steps:
   - --region
   - '$_CLUSTER_LOCATION'
   - --project
-  - '$PROJECT_ID'
+  - '$WOJTEK'
 
 - id: Copy kubectl Credentials
   name: gcr.io/google-appengine/debian9
