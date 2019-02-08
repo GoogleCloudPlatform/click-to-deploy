@@ -1,55 +1,39 @@
 actions:
+
+- name: Wait until Elasticsearch is ready
+  bashTest:
+    script: |-
+      for ((pod=0; pod<${REPLICAS}; pod++)); do
+        kubectl wait pod/${APP_INSTANCE_NAME}-elasticsearch-${pod} \
+          --namespace=${NAMESPACE} \
+          --for=condition=Ready \
+          --timeout=180s
+      done
+    expect:
+      exitCode:
+        equals: 0
+
 - name: All nodes are connected to the cluster
   bashTest:
     script: |-
-      function get_nodes_count() {
-        curl -s "${HEALTH_URL}" | jq '.number_of_nodes'
-      }
-
-      expected_nodes="${ELASTICSEARCH_REPLICAS}"
-
-      timeout=30
-      timeout_time="$(( $(date +%s) + timeout ))"
-
-      # Wait for all nodes to join the cluster
-      while [[ "$(get_nodes_count)" -ne "${expected_nodes}" ]] \
-          && [[ "$(date +%s)" -le "${timeout_time}" ]]; do
-        sleep 3
-      done
-
-      if [[ "$(get_nodes_count)" -eq "${expected_nodes}" ]]; then
-        echo "OK - all nodes joined"
+      nodes="$(curl -XGET "${HEALTH_URL}?wait_for_nodes=${ELASTICSEARCH_REPLICAS}&timeout=300s" \
+        | jq '.number_of_nodes')"
+      if [[ "${nodes}" -eq "${ELASTICSEARCH_REPLICAS}" ]]; then
+        echo "OK - all nodes found"
       else
-        echo "FAIL - nodes count: $(get_nodes_count)"
+        echo "FAIL - found nodes: ${nodes}"
       fi
     expect:
       stdout:
-        contains: OK - all nodes joined
+        equals: OK - all nodes found
 
 - name: Cluster reports green status
   bashTest:
     script: |-
-      function get_cluster_status() {
-        curl -s "${HEALTH_URL}" | jq '.status'
-      }
-
-      timeout=300
-      timeout_time="$(( $(date +%s) + timeout ))"
-
-      # Wait for green status
-      while [[ "$(get_cluster_status)" != '"green"' ]] \
-          && [[ "$(date +%s)" -le "${timeout_time}" ]]; do
-        sleep 3
-      done
-
-      if [[ "$(get_cluster_status)" == '"green"' ]]; then
-        echo "OK - green status"
-      else
-        echo "FAIL - status: ${status}"
-      fi
+      curl -XGET "${HEALTH_URL}?wait_for_status=green&timeout=300s" | jq -r '.status'
     expect:
       stdout:
-        contains: OK - green status
+        equals: 'green'
 
 - name: GKE logs are found in Elasticsearch
   bashTest:
