@@ -31,6 +31,9 @@ steps:
   args:
   - -exc
   - |
+    echo $_CLUSTER_NAME
+    echo $PROJECT_ID
+  
     TAG="$$(cat ./MARKETPLACE_TOOLS_TAG)"
     docker pull "gcr.io/cloud-marketplace-tools/k8s/dev:$$TAG"
     docker tag "gcr.io/cloud-marketplace-tools/k8s/dev:$$TAG" "gcr.io/cloud-marketplace-tools/k8s/dev:local"
