@@ -1,59 +1,33 @@
 actions:
+
+- name: Wait until Elasticsearch is ready
+  bashTest:
+    script: |-
+      for ((pod=0; pod<${REPLICAS}; pod++)); do
+        kubectl wait pod/${APP_INSTANCE_NAME}-elasticsearch-${pod} \
+          --namespace=${NAMESPACE} \
+          --for=condition=Ready \
+          --timeout=180s
+      done
+    expect:
+      exitCode:
+        equals: 0
+
 - name: All nodes are connected to the cluster
   bashTest:
     script: |-
-      function get_nodes_count() {
-        curl -s "${HEALTH_URL}" | jq '.number_of_nodes'
-      }
-
-      expected_nodes="${REPLICAS}"
-
-      timeout=300
-      timeout_time=$(( $(date +%s) + timeout ))
-
-      # Wait for all nodes to join the cluster
-      nodes_count="$(get_nodes_count)"
-      while [[ "${nodes_count}" -ne "${expected_nodes}" ]] \
-          && [[ "$(date +%s)" -le "${timeout_time}" ]]; do
-        sleep 3
-        nodes_count="$(get_nodes_count)"
-      done
-
-      if [[ "${nodes_count}" -eq "${expected_nodes}" ]]; then
-        echo "OK - all nodes joined"
-      else
-        echo "FAIL - nodes count: ${nodes_count}"
-      fi
+      curl -XGET "${HEALTH_URL}?wait_for_nodes=${REPLICAS}&timeout=300s" | jq '.number_of_nodes'
     expect:
       stdout:
-        contains: OK - all nodes joined
+        equals: 2
 
 - name: Cluster reports green status
   bashTest:
     script: |-
-      function get_cluster_status() {
-        curl -s "${HEALTH_URL}" | jq -r '.status'
-      }
-
-      timeout=300
-      timeout_time=$(( $(date +%s) + timeout ))
-
-      # Wait for green status
-      status="$(get_cluster_status)"
-      while [[ "${status}" != 'green' ]] \
-          && [[ "$(date +%s)" -le "${timeout_time}" ]]; do
-        sleep 3
-        status="$(get_cluster_status)"
-      done
-
-      if [[ "${status}" == 'green' ]]; then
-        echo "OK - green status"
-      else
-        echo "FAIL - status: ${status}"
-      fi
+      curl -XGET "${HEALTH_URL}?wait_for_status=green&timeout=300s" | jq -r '.status'
     expect:
       stdout:
-        contains: OK - green status
+        equals: 'green'
 
 - name: New document can be saved
   bashTest:
@@ -61,10 +35,12 @@ actions:
       curl -s -f -X PUT -H 'Content-Type:application/json' -d '{
         "name": "John",
         "surname": "Smith"
-      }' "${ELASTIC_URL}/employees/person/1"
+      }' "${ELASTIC_URL}/employees/person/1" | jq -r '.result'
     expect:
       exitCode:
         equals: 0
+      stdout:
+        equals: 'created'
 
 - name: Document can be updated
   bashTest:
@@ -73,17 +49,19 @@ actions:
         "doc": {
           "lastname": "Jones"
         }
-      }' "${ELASTIC_URL}/employees/person/1/_update"
+      }' "${ELASTIC_URL}/employees/person/1/_update" | jq -r '.result'
     expect:
       exitCode:
         equals: 0
+      stdout:
+        equals: 'updated'
 
 - name: Existing document can be found
   bashTest:
     script: |-
       # Wait to allow the object to be propagated between all nodes
       sleep 5
-      curl -s -f "${ELASTIC_URL}/_search?q=jones"
+      curl -s -f "${ELASTIC_URL}/_search?q=name:John" | jq -r '.hits.hits[]._source.lastname'
     expect:
       stdout:
-        contains: "\"name\":\"John\""
+        equals: 'Jones'
