@@ -7,6 +7,7 @@ makefile_dir := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 include $(makefile_dir)/common.Makefile
 include $(makefile_dir)/var.Makefile
 
+VERIFY_WAIT_TIMEOUT = 600
 
 # Extracts the name property from APP_PARAMETERS.
 define name_parameter
@@ -97,7 +98,6 @@ app/uninstall: .build/var/APP_DEPLOYER_IMAGE \
 	    --namespace='$(call namespace_parameter)' \
 	    --ignore-not-found
 
-
 # Runs the verification pipeline.
 .PHONY: app/verify
 app/verify: app/build \
@@ -110,7 +110,8 @@ app/verify: app/build \
 	.build/app/dev \
 	    /scripts/verify \
 	          --deployer='$(APP_DEPLOYER_IMAGE)' \
-	          --parameters='$(call combined_parameters)'
+	          --parameters='$(call combined_parameters)' \
+	          --wait_timeout="$(VERIFY_WAIT_TIMEOUT)"
 
 
 # Runs diagnostic tool to make sure your environment is properly setup.
