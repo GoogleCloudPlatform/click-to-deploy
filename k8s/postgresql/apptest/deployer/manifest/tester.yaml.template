@@ -27,4 +27,9 @@ spec:
           fieldPath: metadata.namespace
     - name: APP_INSTANCE_NAME
       value: ${APP_INSTANCE_NAME}
+    - name: PGPASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: ${APP_INSTANCE_NAME}-secret
+          key: password
   restartPolicy: Never

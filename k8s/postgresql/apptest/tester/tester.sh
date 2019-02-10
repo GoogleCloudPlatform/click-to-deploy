@@ -17,6 +17,10 @@
 set -xeo pipefail
 shopt -s nullglob
 
+export EXTERNAL_IP="$(kubectl get service/${APP_INSTANCE_NAME}-postgresql-svc \
+  --namespace ${NAMESPACE} \
+  --output jsonpath='{.status.loadBalancer.ingress[0].ip}')"
+
 for test in /tests/*; do
   testrunner -logtostderr "--test_spec=${test}"
 done
