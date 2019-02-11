@@ -37,7 +37,7 @@ actions:
       curl -s -f "${GRAFANA_URL}/?orgId=1"
     expect:
       stdout:
-        contains: <title>Grafana - Home</title>
+        contains: <title>Grafana</title>
 
 - name: Kubernetes Capacity Planning dashboard is available
   bashTest:
