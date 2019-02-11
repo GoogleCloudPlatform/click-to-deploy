@@ -34,10 +34,10 @@ actions:
 - name: Log in successfully to Grafana
   bashTest:
     script: |-
-      curl -s -f "${GRAFANA_URL}"
+      curl -s -f "${GRAFANA_URL}/?orgId=1"
     expect:
-      exitCode:
-        equals: 0
+      stdout:
+        contains: <title>Grafana - Home</title>
 
 - name: Kubernetes Capacity Planning dashboard is available
   bashTest:
