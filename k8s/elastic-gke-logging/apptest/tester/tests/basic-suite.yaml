@@ -7,7 +7,7 @@ actions:
         kubectl wait pod/${APP_INSTANCE_NAME}-elasticsearch-${pod} \
           --namespace=${NAMESPACE} \
           --for=condition=Ready \
-          --timeout=300s
+          --timeout=600s
       done
     expect:
       exitCode:
@@ -19,7 +19,7 @@ actions:
       kubectl wait job/${APP_INSTANCE_NAME}-kibana-init-job \
           --namespace=${NAMESPACE} \
           --for=condition=complete \
-          --timeout=300s
+          --timeout=600s
     expect:
       exitCode:
         equals: 0
