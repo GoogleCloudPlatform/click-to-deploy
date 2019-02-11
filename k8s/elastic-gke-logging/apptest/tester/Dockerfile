@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     jq \
     uuid-runtime \
     wget \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 RUN wget -q -O /bin/kubectl \
