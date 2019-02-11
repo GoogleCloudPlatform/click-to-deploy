@@ -3,7 +3,7 @@ actions:
 - name: Wait until Elasticsearch is ready
   bashTest:
     script: |-
-      for ((pod=0; pod<${REPLICAS}; pod++)); do
+      for ((pod=0; pod<${ELASTICSEARCH_REPLICAS}; pod++)); do
         kubectl wait pod/${APP_INSTANCE_NAME}-elasticsearch-${pod} \
           --namespace=${NAMESPACE} \
           --for=condition=Ready \
