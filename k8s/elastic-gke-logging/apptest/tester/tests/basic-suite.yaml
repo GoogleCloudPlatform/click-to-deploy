@@ -24,6 +24,14 @@ actions:
       exitCode:
         equals: 0
 
+- name: Let Elasticsearch data get replicated across the cluster
+  bashTest:
+    script: |-
+      sleep 30
+    expect:
+      exitCode:
+        equals: 0
+
 - name: All nodes are connected to the cluster
   bashTest:
     script: |-
