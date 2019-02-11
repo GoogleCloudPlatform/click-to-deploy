@@ -11,6 +11,12 @@ actions:
     expect:
       exitCode:
         equals: 0
+- name: Sleep 30s
+  bashTest:
+    script: sleep 30s
+    expect:
+      exitCode:
+        equals: 0
 - name: Site address should be 200 OK
   httpTest:
     url: http://${APP_INSTANCE_NAME}-wordpress-svc
