@@ -17,8 +17,18 @@
 set -xeo pipefail
 shopt -s nullglob
 
+export PROMETHEUS_URL="http://${APP_INSTANCE_NAME}-prometheus:9090"
+
 export GRAFANA_URL="http://${GRAFANA_USERNAME}:${GRAFANA_PASSWORD}@${APP_INSTANCE_NAME}-grafana"
 export GRAFANA_SEARCH_API_URL="${GRAFANA_URL}/api/search"
+
+function search_grafana_dash_db() {
+  local query="$1"
+  # Replace spaces in query with HTML code %20
+  curl -s "${GRAFANA_SEARCH_API_URL}?type=dash-db&query=${query// /%20}"
+}
+
+export -f search_grafana_dash_db
 
 for test in /tests/*; do
   testrunner -logtostderr "--test_spec=${test}"
