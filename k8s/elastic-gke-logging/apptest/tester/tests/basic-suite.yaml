@@ -32,6 +32,27 @@ actions:
       exitCode:
         equals: 0
 
+- name: At least 5 saved searches are found
+  bashTest:
+    script: |-
+      function count_searches() {
+        curl -s "${KIBANA_FIND_URL}?type=search" | jq '.total'
+      }
+      timeout=300
+      timeout_time="$(( $(date +%s) + timeout ))"
+      while [[ "$(count_searches)" -lt 5 ]] \
+          && [[ "$(date +%s)" -le "${timeout_time}" ]]; do
+        sleep 3
+      done
+      if [[ "$(count_searches)" -ge 5 ]]; then
+        echo "OK - saved searches found"
+      else
+        echo "FAIL - no saved searches found"
+      fi
+    expect:
+      stdout:
+        contains: OK - saved searches found
+
 - name: All nodes are connected to the cluster
   bashTest:
     script: |-
