@@ -1,22 +1,4 @@
 actions:
-- name: Wait until WordPress is ready
-  bashTest:
-    script: kubectl wait --namespace=${NAMESPACE} --for=condition=Ready --timeout=180s pod/${APP_INSTANCE_NAME}-wordpress-0
-    expect:
-      exitCode:
-        equals: 0
-- name: Wait until MySQL is ready
-  bashTest:
-    script: kubectl wait --namespace=${NAMESPACE} --for=condition=Ready --timeout=180s pod/${APP_INSTANCE_NAME}-mysql-0
-    expect:
-      exitCode:
-        equals: 0
-- name: Sleep 30s
-  bashTest:
-    script: sleep 30s
-    expect:
-      exitCode:
-        equals: 0
 - name: Site address should be 200 OK
   httpTest:
     url: http://${APP_INSTANCE_NAME}-wordpress-svc
