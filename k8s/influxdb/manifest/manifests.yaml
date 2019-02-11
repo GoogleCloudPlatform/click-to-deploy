@@ -23,6 +23,8 @@ spec:
         imagePullPolicy: Always
         args: ["influxd"]
         env:
+        - name: INFLUXDB_HTTP_AUTH_ENABLED
+          value: 'true'
         - name: INFLUXDB_ADMIN_ENABLED
           value: 'true'
         - name: INFLUXDB_ADMIN_USER

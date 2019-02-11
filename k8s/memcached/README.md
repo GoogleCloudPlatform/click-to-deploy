@@ -132,10 +132,10 @@ until you are ready to upgrade. To get the digest for the image, use the
 following script:
 
 ```shell
-repo=$(echo $IMAGE_MEMCACHED | cut -d: -f1);
-digest=$(docker pull $IMAGE_MEMCACHED | sed -n -e 's/Digest: //p');
-export $i="$repo@$digest";
-env | grep $i;
+repo=$(echo $IMAGE_MEMCACHED | cut -d: -f1)
+digest=$(docker pull $IMAGE_MEMCACHED | sed -n -e 's/Digest: //p')
+export IMAGE_MEMCACHED="$repo@$digest"
+env | grep IMAGE_MEMCACHED
 ```
 
 #### Create namespace in your Kubernetes cluster

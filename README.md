@@ -20,11 +20,10 @@ from the root directory of this repository:
 export GCP_PROJECT_TO_RUN_CLOUD_BUILD=<>
 export GKE_CLUSTER_NAME=<>
 export GKE_CLUSTER_LOCATION=<e.g. us-central1>
-export GIT_COMMIT_SHA=<>
 
 gcloud builds submit . \
   --config cloudbuild.yaml \
-  --substitutions _CLUSTER_NAME=$GKE_CLUSTER_NAME,_CLUSTER_LOCATION=$GKE_CLUSTER_LOCATION,COMMIT_SHA=$GIT_COMMIT_SHA \
+  --substitutions _CLUSTER_NAME=$GKE_CLUSTER_NAME,_CLUSTER_LOCATION=$GKE_CLUSTER_LOCATION \
   --project $GCP_PROJECT_TO_RUN_CLOUD_BUILD \
   --verbosity info
 ```
