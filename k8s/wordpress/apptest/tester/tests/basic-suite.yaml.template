@@ -13,7 +13,7 @@ actions:
         equals: 0
 - name: Site address should be 200 OK
   httpTest:
-    url: http://${APP_INSTANCE_NAME}-wordpress-svc.${NAMESPACE}.svc.cluster.local
+    url: http://${APP_INSTANCE_NAME}-wordpress-svc
     expect:
       statusCode:
         equals: 200
