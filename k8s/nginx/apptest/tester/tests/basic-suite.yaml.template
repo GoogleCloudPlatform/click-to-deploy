@@ -11,8 +11,7 @@ actions:
             exactly: 'Web Server Application'
 - name: Site address (SSL) should be 200 OK
   bashTest:
-    script: |-
-      curl -k "https://${EXTERNAL_IP}"
+    script: curl -k "https://${EXTERNAL_IP}"
     expect:
       stdout:
         contains: 'Web Server Application'
