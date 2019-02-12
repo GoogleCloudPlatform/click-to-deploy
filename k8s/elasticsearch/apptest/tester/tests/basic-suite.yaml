@@ -1,18 +1,5 @@
 actions:
 
-- name: Wait until Elasticsearch is ready
-  bashTest:
-    script: |-
-      for ((pod=0; pod<${REPLICAS}; pod++)); do
-        kubectl wait pod/${APP_INSTANCE_NAME}-elasticsearch-${pod} \
-          --namespace=${NAMESPACE} \
-          --for=condition=Ready \
-          --timeout=180s
-      done
-    expect:
-      exitCode:
-        equals: 0
-
 - name: All nodes are connected to the cluster
   bashTest:
     script: |-
