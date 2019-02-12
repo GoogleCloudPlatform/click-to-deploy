@@ -1,29 +1,5 @@
 actions:
 
-- name: Wait until Elasticsearch is ready
-  bashTest:
-    script: |-
-      for ((pod=0; pod<${ELASTICSEARCH_REPLICAS}; pod++)); do
-        kubectl wait pod/${APP_INSTANCE_NAME}-elasticsearch-${pod} \
-          --namespace=${NAMESPACE} \
-          --for=condition=Ready \
-          --timeout=600s
-      done
-    expect:
-      exitCode:
-        equals: 0
-
-- name: Wait until Kibana init job is completed
-  bashTest:
-    script: |-
-      kubectl wait job/${APP_INSTANCE_NAME}-kibana-init-job \
-          --namespace=${NAMESPACE} \
-          --for=condition=complete \
-          --timeout=600s
-    expect:
-      exitCode:
-        equals: 0
-
 - name: Let Elasticsearch data get replicated across the cluster
   bashTest:
     script: |-
