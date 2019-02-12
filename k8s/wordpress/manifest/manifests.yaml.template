@@ -121,7 +121,6 @@ spec:
       initContainers:
         - name: allow-health-probe-before-configuration
           image: $IMAGE_WORDPRESS
-
           command: 
           - "/bin/bash"
           - "-c"
