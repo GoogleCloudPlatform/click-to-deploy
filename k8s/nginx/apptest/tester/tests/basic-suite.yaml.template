@@ -1,20 +1,4 @@
 actions:
-- name: Wait until NGINX is ready
-  bashTest:
-    script: |-
-      declare -i replicas=$(kubectl get sts "${APP_INSTANCE_NAME}-nginx" \
-        --namespace "${NAMESPACE}" \
-        --output jsonpath='{.spec.replicas}')
-
-      for ((pod=0; pod<${replicas}; pod++)); do
-        kubectl wait pod/${APP_INSTANCE_NAME}-nginx-${pod} \
-          --namespace=${NAMESPACE} \
-          --for=condition=Ready \
-          --timeout=180s
-      done
-    expect:
-      exitCode:
-        equals: 0
 - name: Site address should be 200 OK
   httpTest:
     url: http://${EXTERNAL_IP}
@@ -27,8 +11,7 @@ actions:
             exactly: 'Web Server Application'
 - name: Site address (SSL) should be 200 OK
   bashTest:
-    script: |-
-      curl -k "https://${EXTERNAL_IP}"
+    script: curl -k "https://${EXTERNAL_IP}"
     expect:
       stdout:
         contains: 'Web Server Application'
