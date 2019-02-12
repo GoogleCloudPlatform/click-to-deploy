@@ -1,13 +1,5 @@
 actions:
 
-- name: Let Elasticsearch data get replicated across the cluster
-  bashTest:
-    script: |-
-      sleep 30
-    expect:
-      exitCode:
-        equals: 0
-
 - name: At least 5 saved searches are found
   bashTest:
     script: |-
