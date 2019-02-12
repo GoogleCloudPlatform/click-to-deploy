@@ -1,7 +1,7 @@
 actions:
 - name: Site address should be 200 OK
   httpTest:
-    url: http://${EXTERNAL_IP}
+    url: http://{{ .Env.EXTERNAL_IP }}
     expect:
       statusCode:
         equals: 200
