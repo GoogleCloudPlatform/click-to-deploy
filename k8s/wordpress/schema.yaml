@@ -30,6 +30,19 @@ properties:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 12
+  # A username for WordPress site.
+  WORDPRESS_ADMIN_NAME:
+    type: string
+    title: WordPress admin username
+    description: Username for administrator account of WordPress
+    default: wordpress-admin
+  # A password for WordPress site.
+  WORDPRESS_ADMIN_PASSWORD:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 12
 required:
 - APP_INSTANCE_NAME
 - NAMESPACE
@@ -37,3 +50,4 @@ required:
 - IMAGE_MYSQL
 - ROOT_DB_PASSWORD
 - WORDPRESS_DB_PASSWORD
+- WORDPRESS_ADMIN_PASSWORD
