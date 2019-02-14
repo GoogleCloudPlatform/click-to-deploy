@@ -99,6 +99,18 @@ spec:
     valueFrom:
       serviceRef:
         name: $APP_INSTANCE_NAME-wordpress-svc
+  - name: WordPress username
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: wp-user
+        name: $APP_INSTANCE_NAME-wordpress-secret
+  - name: WordPress password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: wp-password
+        name: $APP_INSTANCE_NAME-wordpress-secret
   selector:
     matchLabels:
       app.kubernetes.io/name: "$APP_INSTANCE_NAME"
