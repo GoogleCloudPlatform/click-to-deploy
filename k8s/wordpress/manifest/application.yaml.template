@@ -48,8 +48,8 @@ spec:
   - name: WordPress external IP
     type: Reference
     valueFrom:
-      serviceRef:
-        name: $APP_INSTANCE_NAME-wordpress-svc
+      ingressRef:
+        name: $APP_INSTANCE_NAME-wordpress-ingress
   - name: WordPress username
     type: Reference
     valueFrom:
