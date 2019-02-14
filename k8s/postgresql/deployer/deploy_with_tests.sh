@@ -55,7 +55,7 @@ if ! kubectl --namespace ${namespace} get secret | grep -q "^${name}-tls "; then
       -subj "/CN=postgresql/O=postgresql"
   
   kubectl --namespace ${namespace} create secret generic ${name}-tls \
-  	--from-file=$file.crt --from-file=$file.key
+      --from-file=$file.crt --from-file=$file.key
   rm $file.key
   rm $file.crt
 fi
