@@ -101,6 +101,11 @@ spec:
               - "/bin/bash"
               - "-euc"
               - |
+                export WORDPRESS_ADMIN_PASSWORD=$(echo $WORDPRESS_ADMIN_PASSWORD | base64 -d)
+
+                echo "$WORDPRESS_ADMIN_NAME" > /var/www/html/wp-user
+                echo "$WORDPRESS_ADMIN_PASSWORD" > /var/www/html/wp-password
+
                 # Please do not remove --fail argument.
 
                 curl --fail --retry 5 --retry-delay 5 --retry-connrefused \
