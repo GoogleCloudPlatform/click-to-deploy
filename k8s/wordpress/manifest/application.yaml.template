@@ -74,3 +74,5 @@ spec:
     kind: Secret
   - group: v1
     kind: Service
+  - group: extensions/v1beta1
+    kind: Ingress
