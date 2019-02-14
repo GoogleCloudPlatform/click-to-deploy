@@ -58,13 +58,13 @@ spec:
         name: wordpress
         env:
         # A WordPress' username
-        - name: WORDPRESS_ADMIN_NAME
+        - name: WP_ADMIN_NAME
           valueFrom:
             secretKeyRef:
               name: $APP_INSTANCE_NAME-wordpress-secret
               key: wp-user
           # A WordPress' password
-        - name: WORDPRESS_ADMIN_PASSWORD
+        - name: WP_ADMIN_PASSWORD
           valueFrom:
             secretKeyRef:
               name: $APP_INSTANCE_NAME-wordpress-secret
@@ -101,20 +101,15 @@ spec:
               - "/bin/bash"
               - "-euc"
               - |
-                export WORDPRESS_ADMIN_PASSWORD=$(echo $WORDPRESS_ADMIN_PASSWORD | base64 -d)
-
-                echo "$WORDPRESS_ADMIN_NAME" > /var/www/html/wp-user
-                echo "$WORDPRESS_ADMIN_PASSWORD" > /var/www/html/wp-password
-
                 # Please do not remove --fail argument.
 
                 curl --fail --retry 5 --retry-delay 5 --retry-connrefused \
                   -X POST "http://localhost/wp-admin/install.php?step=2" \
                   -F "weblog_title=WordPress on Google Kubernetes Engine" \
-                  -F "user_name=${WORDPRESS_ADMIN_NAME}" \
-                  -F "admin_password=${WORDPRESS_ADMIN_PASSWORD}" \
-                  -F "pass1-text=${WORDPRESS_ADMIN_PASSWORD}" \
-                  -F "admin_password2=${WORDPRESS_ADMIN_PASSWORD}" \
+                  -F "user_name=${WP_ADMIN_NAME}" \
+                  -F "admin_password=${WP_ADMIN_PASSWORD}" \
+                  -F "pass1-text=${WP_ADMIN_PASSWORD}" \
+                  -F "admin_password2=${WP_ADMIN_PASSWORD}" \
                   -F "pw_weak=on" \
                   -F "admin_email=noreply@google.com" \
                   -F "blog_public=0" \
