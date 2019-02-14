@@ -157,4 +157,18 @@ spec:
   selector:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app.kubernetes.io/component: wordpress-webserver
-  type: ClusterIP
+  type: NodePort
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: $APP_INSTANCE_NAME-wordpress-ingress
+  labels:
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/component: wordpress-webserver
+spec:
+  tls:
+  - secretName: $APP_INSTANCE_NAME-tls
+  backend:
+    serviceName: $APP_INSTANCE_NAME-wordpress-svc
+    servicePort: http

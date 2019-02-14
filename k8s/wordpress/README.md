@@ -221,47 +221,6 @@ metadata:
 EOF
 ```
 
-### Expose WordPress service externally
-
-By default, the application does not have an external IP address. To create
-an external IP address for your WordPress app, run the following command:
-
-```
-kubectl patch svc "$APP_INSTANCE_NAME-wordpress-svc" \
-  --namespace "$NAMESPACE" \
-  --patch '{"spec": {"type": "NodePort"}}'
-
-APPLICATION_UID=$(kubectl get applications/${APP_INSTANCE_NAME} --namespace="$NAMESPACE" --output=jsonpath='{.metadata.uid}')
-
-cat <<EOF | kubectl create --namespace "$NAMESPACE" -f -
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: $APP_INSTANCE_NAME-wordpress-ingress
-  labels:
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
-    app.kubernetes.io/component: wordpress-webserver
-  ownerReferences:
-  - apiVersion: app.k8s.io/v1beta1
-    blockOwnerDeletion: true
-    controller: true
-    kind: Application
-    name: $APP_INSTANCE_NAME
-    uid: $APPLICATION_UID
-spec:
-  tls:
-  - secretName: $APP_INSTANCE_NAME-tls
-  backend:
-    serviceName: $APP_INSTANCE_NAME-wordpress-svc
-    servicePort: http
-EOF
-
-kubectl patch --namespace $NAMESPACE application "$APP_INSTANCE_NAME" --type=json \
-  -p='[{"op": "add", "path": "/spec/componentKinds/-", "value":{ "group": "extensions/v1beta1", "kind": "Ingress" } }]'
-```
-
-It might take some time for the external IP address to be created.
-
 ### Open your WordPress site
 
 Get the external IP of your WordPress site using the following command:
@@ -276,15 +235,11 @@ echo "https://${SERVICE_IP}/"
 
 The command shows you the URL of your site.
 
-### Set up WordPress
-
-When you open the WordPress main page, an installation wizard starts.
-Follow the steps on the screen to finish setting up WordPress.
-
 # Scaling
 
 This is a single-instance version of WordPress.
 It is not intended to be scaled up with the current configuration.
+
 # Backup and restore
 
 ## Using WordPress plugins
