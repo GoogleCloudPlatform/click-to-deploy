@@ -8,9 +8,9 @@ metadata:
     app.kubernetes.io/component: wordpress-webserver
 type: Opaque
 stringData:
-  wp_user: "${WORDPRESS_ADMIN_NAME}"
+  wp-user: "${WORDPRESS_ADMIN_NAME}"
 data:
-  wp_password: "${WORDPRESS_ADMIN_PASSWORD}"
+  wp-password: "${WORDPRESS_ADMIN_PASSWORD}"
 ---
 apiVersion: apps/v1beta2
 kind: StatefulSet
@@ -62,13 +62,13 @@ spec:
           valueFrom:
             secretKeyRef:
               name: $APP_INSTANCE_NAME-wordpress-secret
-              key: wp_user
+              key: wp-user
           # A WordPress' password
         - name: WORDPRESS_ADMIN_PASSWORD
           valueFrom:
             secretKeyRef:
               name: $APP_INSTANCE_NAME-wordpress-secret
-              key: wp_password
+              key: wp-password
         # A hostname and port of MySQL service.
         - name: WORDPRESS_DB_HOST
           value: $APP_INSTANCE_NAME-mysql-svc
@@ -77,13 +77,13 @@ spec:
           valueFrom:
             secretKeyRef:
               name: $APP_INSTANCE_NAME-mysql-secret
-              key: wp_user
+              key: wp-user
         # A password used for accessing the database.
         - name: WORDPRESS_DB_PASSWORD
           valueFrom:
             secretKeyRef:
               name: $APP_INSTANCE_NAME-mysql-secret
-              key: wp_password
+              key: wp-password
         # A database name used by WordPress.
         - name: WORDPRESS_DB_NAME
           value: wordpress

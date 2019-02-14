@@ -8,10 +8,10 @@ metadata:
     app.kubernetes.io/component: wordpress-mysql
 type: Opaque
 stringData:
-  wp_user: "wordpress"
+  wp-user: "wordpress"
 data:
-  root_password: "${ROOT_DB_PASSWORD}"
-  wp_password: "${WORDPRESS_DB_PASSWORD}"
+  root-password: "${ROOT_DB_PASSWORD}"
+  wp-password: "${WORDPRESS_DB_PASSWORD}"
 ---
 apiVersion: apps/v1beta2
 kind: StatefulSet
@@ -40,7 +40,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: $APP_INSTANCE_NAME-mysql-secret
-              key: root_password
+              key: root-password
         # A database name to be created at startup.
         - name: MYSQL_DATABASE
           value: wordpress
@@ -49,13 +49,13 @@ spec:
           valueFrom:
            secretKeyRef:
              name: $APP_INSTANCE_NAME-mysql-secret
-             key: wp_user
+             key: wp-user
         # A password of the new user created at startup.
         - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:
               name: $APP_INSTANCE_NAME-mysql-secret
-              key: wp_password
+              key: wp-password
         ports:
         - name: mysql
           containerPort: 3306
