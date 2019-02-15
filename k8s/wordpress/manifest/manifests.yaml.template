@@ -136,12 +136,16 @@ spec:
         name: wordpress
         env:
         # A WordPress' username.
+        # The "WP" prefix is used, as "WORDPRESS" is reserved for env variables.
+        # And we don't want to replace var directly in the curl command.
         - name: WP_ADMIN_USERNAME
           valueFrom:
             secretKeyRef:
               name: $APP_INSTANCE_NAME-wordpress-secret
               key: wp-user
-          # A WordPress' password.
+        # A WordPress' password.
+        # The "WP" prefix is used, as "WORDPRESS" is reserved for env variables.
+        # And we don't want to replace var directly in the curl command.
         - name: WP_ADMIN_PASSWORD
           valueFrom:
             secretKeyRef:
