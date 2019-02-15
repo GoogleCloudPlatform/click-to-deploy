@@ -45,11 +45,17 @@ spec:
 
       The command shows you the URL of your site.
   info:
-  - name: WordPress external IP
+  - name: WordPress site address
     type: Reference
     valueFrom:
       ingressRef:
         name: $APP_INSTANCE_NAME-wordpress-ingress
+  - name: WordPress admin address
+    type: Reference
+    valueFrom:
+      ingressRef:
+        name: $APP_INSTANCE_NAME-wordpress-ingress
+        path: /wp-admin
   - name: WordPress username
     type: Reference
     valueFrom:
