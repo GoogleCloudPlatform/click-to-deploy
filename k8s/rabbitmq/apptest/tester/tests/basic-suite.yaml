@@ -1,8 +1,60 @@
 actions:
-- name: dummy test
+- name: RabbitMQ test
   bashTest:
     script: |-
-      exit 0
+      SERVICE="${APP_INSTANCE_NAME}-rabbitmq-svc.${NAMESPACE}.svc.cluster.local"
+      PORT=15672
+      USERNAME=''
+      PASSWORD=''
+      FAILED=0
+      DEBUG=1
+
+      # getting RabbitMQ username
+      echo "Getting RabbitMQ username."
+      USERNAME=$(kubectl get sts -oyaml \
+        --namespace "${NAMESPACE}" "${APP_INSTANCE_NAME}-rabbitmq" | \
+        grep -A1 name:.RABBITMQ_DEFAULT_USER | sed -n '/value: /s/.* //p')
+
+      # getting RabbitMQ user's password
+      echo "Getting RabbitMQ ${USERNAME} password."
+      PASSWORD=$(kubectl get secret "${APP_INSTANCE_NAME}-rabbitmq-secret" \
+        --namespace "${NAMESPACE}" \
+        --output=jsonpath='{.data.rabbitmq-pass}' | base64 -d)
+
+      # test1 -- downloading RabbitMQ CLI tool
+      echo "Downloading RabbitMQ CLI tool."
+      if ! wget -t3 "http://${SERVICE}:${PORT}/cli/rabbitmqadmin"; then
+        if [[ $DEBUG -gt 0 ]]; then
+          echo "Test1: downloading RabbitMQ CLI tool -- failed"
+          wget -t3 "http://${SERVICE}:${PORT}/cli/rabbitmqadmin" 2>&1
+        fi
+        $((FAILED+=1))
+      fi
+      chmod +x rabbitmqadmin
+
+      # test2 -- create queue, write, read
+      echo "Testing Queue operations"
+      QUEUE=testq
+      MESSAGE1='simple message'
+
+      ./rabbitmqadmin -u"${USERNAME}" -p"${PASSWORD}" -H"${SERVICE}" declare queue name="${QUEUE}" durable=false 2>&1
+      echo -n "${MESSAGE1}" | ./rabbitmqadmin -u"${USERNAME}" -p"${PASSWORD}" -H"${SERVICE}" publish routing_key="${QUEUE}"
+      if ! ./rabbitmqadmin -u"${USERNAME}" -p"${PASSWORD}" -H"${SERVICE}" get queue="${QUEUE}" | grep -q "${MESSAGE1}"; then
+        if [[ $DEBUG -gt 0 ]]; then
+          echo "Test2: Queue test -- failed"
+          ./rabbitmqadmin -u"${USERNAME}" -p"${PASSWORD}" -H"${SERVICE}" get queue="${QUEUE}"
+        fi
+        $((FAILED+=1))
+      fi
+
+      if [[ "${FAILED}" != 0 ]]; then
+        echo
+        echo "Username: ${USERNAME}"
+        echo "Password: ${PASSWORD}"
+        echo "Address: http://${SERVICE}:${PORT}/"
+        echo
+        exit "${FAILED}"
+      fi
     expect:
       exitCode:
         equals: 0
