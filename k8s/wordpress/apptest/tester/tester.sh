@@ -18,6 +18,9 @@ set -xeo pipefail
 shopt -s nullglob
 
 # Waits until Ingress is healthy.
+# TODO(wgrzelak): Remove this once
+# https://github.com/GoogleCloudPlatform/marketplace-k8s-app-tools/pull/315 is
+# merged.
 until kubectl get ingress "${APP_INSTANCE_NAME}-wordpress-ingress" \
   --namespace "${NAMESPACE}" \
   --output jsonpath='{.metadata.annotations.ingress\.kubernetes\.io/backends}' \
