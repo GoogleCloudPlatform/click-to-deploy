@@ -140,7 +140,7 @@ Set or generate passwords:
 
 ```shell
 # Install pwgen and base64
-sudo apt-get install -y pwgen base64
+sudo apt-get install -y pwgen cl-base64
 
 # Set the root and WordPress database passwords
 export ROOT_DB_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
