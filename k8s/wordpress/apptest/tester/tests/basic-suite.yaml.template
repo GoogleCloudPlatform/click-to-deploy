@@ -1,6 +1,6 @@
 actions:
 
-- name: Site address should be 200 OK
+- name: Site address should be 200 OK (kubernetes DNS)
   httpTest:
     url: http://${APP_INSTANCE_NAME}-wordpress-svc
     expect:
@@ -11,7 +11,30 @@ actions:
           title:
             equals: 'WordPress on Google Kubernetes Engine – Just another WordPress site'
 
-- name: Admin URL should be 200 OK
+- name: Site address should be 200 OK (external IP)
+  httpTest:
+    url: http://${EXTERNAL_IP}
+    expect:
+      statusCode:
+        equals: 200
+      bodyText:
+        html:
+          title:
+            equals: 'WordPress on Google Kubernetes Engine – Just another WordPress site'
+
+# This test should use finish with exit code 0 instead. However, make app/verify doesn't create all
+# resources that are created during real deployment. In this case it's TLS Secret.
+# If the test start fails, it means that an issue is fixed and we will replace equals code from 1 to 0.
+- name: Site address should be 200 OK (external IP) (TLS)
+  bashTest:
+    script: curl -f -k "https://${EXTERNAL_IP"
+    expect:
+      # stdout:
+      #  contains: 'WordPress on Google Kubernetes Engine – Just another WordPress site'
+      exitCode:
+        equals: 1
+
+- name: Admin URL should be 200 OK (kubernetes DNS)
   httpTest:
     url: http://${APP_INSTANCE_NAME}-wordpress-svc/wp-admin
     expect:

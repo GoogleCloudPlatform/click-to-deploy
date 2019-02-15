@@ -31,7 +31,7 @@ properties:
       generatedPassword:
         length: 12
   # A username for WordPress site.
-  WORDPRESS_ADMIN_NAME:
+  WORDPRESS_ADMIN_USERNAME:
     type: string
     title: WordPress admin username
     description: Username for administrator account of WordPress
@@ -50,5 +50,5 @@ required:
 - IMAGE_MYSQL
 - ROOT_DB_PASSWORD
 - WORDPRESS_DB_PASSWORD
-- WORDPRESS_ADMIN_NAME
+- WORDPRESS_ADMIN_USERNAME
 - WORDPRESS_ADMIN_PASSWORD
