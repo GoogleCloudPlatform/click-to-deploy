@@ -1,5 +1,9 @@
 actions:
 
+# TODO(wgrzelak): Add actions to test authorization with correct credentials,
+# incorrect credentials and without credentials.
+# Example: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/d242d7eaa4fcce804f6a9d03cf569a901a5cf9be/k8s/influxdb/apptest/tester/tests/basic-suite.yaml.template#L18-L33
+
 - name: Site address should be 200 OK (kubernetes DNS)
   httpTest:
     url: http://${APP_INSTANCE_NAME}-wordpress-svc
