@@ -37,8 +37,8 @@ spec:
 
       ```
       SERVICE_IP=$(kubectl get ingress $APP_INSTANCE_NAME-wordpress-ingress \
-      --namespace $NAMESPACE \
-      --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
+        --namespace $NAMESPACE \
+        --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
       echo "https://${SERVICE_IP}/"
       ```
