@@ -28,7 +28,7 @@ actions:
 
 # This test should use finish with exit code 0 instead. However, make app/verify doesn't create all
 # resources that are created during real deployment. In this case it's TLS Secret.
-# If the test start fails, it means that an issue is fixed and we will replace equals code from 1 to 0.
+# If the test fails, it means that an issue is fixed and we should replace equals code from 1 to 0.
 - name: Site address should be 200 OK (external IP) (TLS)
   bashTest:
     script: curl -f -k "https://${EXTERNAL_IP"
