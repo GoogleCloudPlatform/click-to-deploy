@@ -32,8 +32,8 @@ actions:
 - name: All nodes are connected to the cluster
   bashTest:
     script: |-
-    curl -XGET "${HEALTH_URL}?wait_for_nodes=${ELASTICSEARCH_REPLICAS}&timeout=300s" \
-      | jq '.number_of_nodes'
+      curl -XGET "${HEALTH_URL}?wait_for_nodes=${ELASTICSEARCH_REPLICAS}&timeout=300s" \
+        | jq '.number_of_nodes'
     expect:
       stdout:
         equals: {{ .Env.ELASTICSEARCH_REPLICAS }}
