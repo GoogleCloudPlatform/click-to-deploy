@@ -14,7 +14,7 @@ Popular open stacks on Kubernetes packaged by Google.
 
 ### Solution Information
 
-WordPress solution exposes its interface on port `80`.
+WordPress solution exposes its interface on ports `80` and `443` via Ingress resource. TLS certificates are stored in `[APP-INSTANCE-NAME]-tls` Secret resource.
 
 Separate StatefulSet Kubernetes objects are used to manage instance of WordPress and instance of MySQL database.
 Single instance of WordPress is deployed as a single Pod via Kubernetes StatefulSet.
@@ -22,7 +22,14 @@ Single instance of WordPress is deployed as a single Pod via Kubernetes Stateful
 WordPress instance connects to MySQL database over `3306` port. WordPress stores information in MySQL in `wordpress` database.
 Single instance of MySQL is deployed as a Pod via Kubernetes StatefulSet.
 
-WordPress application stores password for MySQL root in the `root-password` secret. Login and password information to access `wordpress` database are stored in `wp-user` and `wp-password` secrets (respectively).
+WordPress application stores credentials for MySQL database in `[APP-INSTANCE-NAME]-mysql-secret` Secret resource.
+
+1. Password for MySQL root in the `root-password` secret.
+1. Login and password information to access `wordpress` database are stored in `wp-user` and `wp-password` secrets (respectively).
+
+Credentials for WordPress site are stoed in `[APP-INSTANCE-NAME]-wordpress-secret` Secret resource.
+
+1. Login and password information to access the administrator panel are stored in `wp-user` and `wp-password` secrets (respectively).
 
 # Installation
 
