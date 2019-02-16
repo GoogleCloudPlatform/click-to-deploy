@@ -24,12 +24,12 @@ Single instance of MySQL is deployed as a Pod via Kubernetes StatefulSet.
 
 WordPress application stores credentials for MySQL database in `[APP-INSTANCE-NAME]-mysql-secret` Secret resource.
 
-1. Password for MySQL root in the `root-password` secret.
-1. Login and password information to access `wordpress` database are stored in `wp-user` and `wp-password` secrets (respectively).
+* Password for MySQL root in the `root-password` secret.
+* Login and password information to access `wordpress` database are stored in `wp-user` and `wp-password` secrets (respectively).
 
 Credentials for WordPress site are stoed in `[APP-INSTANCE-NAME]-wordpress-secret` Secret resource.
 
-1. Login and password information to access the administrator panel are stored in `wp-user` and `wp-password` secrets (respectively).
+* Login and password information to access the administrator panel are stored in `wp-user` and `wp-password` secrets (respectively).
 
 # Installation
 
