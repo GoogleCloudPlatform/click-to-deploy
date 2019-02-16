@@ -27,7 +27,7 @@ WordPress application stores credentials for MySQL database in `[APP-INSTANCE-NA
 * Password for MySQL root in the `root-password` secret.
 * Login and password information to access `wordpress` database are stored in `wp-user` and `wp-password` secrets (respectively).
 
-Credentials for WordPress site are stoed in `[APP-INSTANCE-NAME]-wordpress-secret` Secret resource.
+Credentials for WordPress site are stored in `[APP-INSTANCE-NAME]-wordpress-secret` Secret resource.
 
 * Login and password information to access the administrator panel are stored in `wp-user` and `wp-password` secrets (respectively).
 
