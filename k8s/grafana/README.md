@@ -111,6 +111,13 @@ export APP_INSTANCE_NAME=grafana-1
 export NAMESPACE=default
 ```
 
+Configure password for Grafana administrator account (the value must be
+encoded in base64)
+
+```shell
+export GRAFANA_GENERATED_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1 | tr -d '\n' | base64)
+```
+
 Configure the container images:
 
 ```shell
@@ -152,7 +159,7 @@ expanded manifest file for future updates to the application.
 
 ```shell
 awk 'FNR==1 {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_GRAFANA $IMAGE_GRAFANA_INIT' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_GRAFANA $IMAGE_GRAFANA_INIT $GRAFANA_GENERATED_PASSWORD' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
