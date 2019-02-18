@@ -74,8 +74,8 @@ app/build:: .build/wordpress/deployer \
 .build/wordpress/wordpress: .build/var/REGISTRY \
                             .build/var/TAG \
                             | .build/wordpress
-	docker pull launcher.gcr.io/google/wordpress4-php7-apache:$(TAG)
-	docker tag launcher.gcr.io/google/wordpress4-php7-apache:$(TAG) \
+	docker pull launcher.gcr.io/google/wordpress5-php7-apache:$(TAG)
+	docker tag launcher.gcr.io/google/wordpress5-php7-apache:$(TAG) \
 	    "$(REGISTRY)/wordpress:$(TAG)"
 	docker push "$(REGISTRY)/wordpress:$(TAG)"
 	@touch "$@"

@@ -13,7 +13,7 @@ metadata:
 spec:
   descriptor:
     type: WordPress
-    version: '4.x.x'
+    version: '5.x.x'
     description: >-
       WordPress is web software used to create websites and blogs.
 
