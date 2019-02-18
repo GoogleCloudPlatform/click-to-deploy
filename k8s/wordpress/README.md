@@ -29,7 +29,7 @@ WordPress application stores credentials for MySQL database in `[APP-INSTANCE-NA
 
 Credentials for WordPress site are stored in `[APP-INSTANCE-NAME]-wordpress-secret` Secret resource.
 
-* Login and password information to access the administrator panel are stored in `wp-user` and `wp-password` secrets (respectively).
+* Login, e-mail address and password information to access the administrator panel are stored in `wp-user`, `wp-email` and `wp-password` secrets (respectively).
 
 # Installation
 
@@ -153,8 +153,9 @@ sudo apt-get install -y pwgen cl-base64
 export ROOT_DB_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
 export WORDPRESS_DB_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
 
-# Set username and password for WordPress admin panel
+# Set username, e-mail address and password for WordPress admin panel
 export WORDPRESS_ADMIN_USERNAME=wordpress-admin
+export WORDPRESS_ADMIN_EMAIL=noreply@google.com
 export WORDPRESS_ADMIN_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
 ```
 
@@ -173,7 +174,7 @@ expanded manifest file for future updates to the application.
 
 ```shell
 awk 'FNR==1 {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_WORDPRESS $IMAGE_MYSQL $ROOT_DB_PASSWORD $WORDPRESS_DB_PASSWORD $WORDPRESS_ADMIN_USERNAME $WORDPRESS_ADMIN_PASSWORD' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_WORDPRESS $IMAGE_MYSQL $ROOT_DB_PASSWORD $WORDPRESS_DB_PASSWORD $WORDPRESS_ADMIN_USERNAME $WORDPRESS_ADMIN_EMAIL $WORDPRESS_ADMIN_PASSWORD' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 

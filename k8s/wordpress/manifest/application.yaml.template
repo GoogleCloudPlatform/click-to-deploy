@@ -62,6 +62,12 @@ spec:
       secretKeyRef:
         key: wp-user
         name: $APP_INSTANCE_NAME-wordpress-secret
+  - name: WordPress e-mail address
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: wp-email
+        name: $APP_INSTANCE_NAME-wordpress-secret
   - name: WordPress password
     type: Reference
     valueFrom:
