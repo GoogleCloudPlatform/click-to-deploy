@@ -155,7 +155,7 @@ export WORDPRESS_DB_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
 
 # Set username and password for WordPress admin panel
 export WORDPRESS_ADMIN_USERNAME=wordpress-admin
-export WORDPRESS_ADMIN_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
+export WORDPRESS_ADMIN_PASSWORD="$(pwgen 20 1 | tr -d '\n' | base64)"
 ```
 
 #### Create namespace in your Kubernetes cluster
