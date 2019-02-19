@@ -154,7 +154,7 @@ export ROOT_DB_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
 export WORDPRESS_DB_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
 
 # Set username, e-mail address and password for WordPress admin panel
-export WORDPRESS_ADMIN_USERNAME=wordpress-admin
+export WORDPRESS_ADMIN_USERNAME=admin
 export WORDPRESS_ADMIN_EMAIL=noreply@google.com
 export WORDPRESS_ADMIN_PASSWORD="$(pwgen 20 1 | tr -d '\n' | base64)"
 ```

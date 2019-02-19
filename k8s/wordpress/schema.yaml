@@ -35,7 +35,7 @@ properties:
     type: string
     title: WordPress admin username
     description: Username for administrator account of WordPress.
-    default: wordpress-admin
+    default: admin
   # An e-mail address for WordPress site.
   WORDPRESS_ADMIN_EMAIL:
     type: string
