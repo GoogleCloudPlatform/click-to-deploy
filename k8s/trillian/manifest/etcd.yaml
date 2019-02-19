@@ -62,3 +62,15 @@ spec:
   version: $ETCD_VERSION
   pod:
     busyboxImage: $IMAGE_BUSYBOX
+    affinity:
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+              - key: etcd_cluster
+                operator: In
+                values:
+                - $NAME-etcd-cluster
+          topologyKey: kubernetes.io/hostname
