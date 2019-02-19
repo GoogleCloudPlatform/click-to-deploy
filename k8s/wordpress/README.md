@@ -153,8 +153,7 @@ sudo apt-get install -y pwgen cl-base64
 export ROOT_DB_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
 export WORDPRESS_DB_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
 
-# Set username, e-mail address and password for WordPress admin panel
-export WORDPRESS_ADMIN_USERNAME=admin
+# Set e-mail address and password for WordPress admin panel
 export WORDPRESS_ADMIN_EMAIL=noreply@example.com
 export WORDPRESS_ADMIN_PASSWORD="$(pwgen 20 1 | tr -d '\n' | base64)"
 ```
@@ -174,7 +173,7 @@ expanded manifest file for future updates to the application.
 
 ```shell
 awk 'FNR==1 {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_WORDPRESS $IMAGE_MYSQL $ROOT_DB_PASSWORD $WORDPRESS_DB_PASSWORD $WORDPRESS_ADMIN_USERNAME $WORDPRESS_ADMIN_EMAIL $WORDPRESS_ADMIN_PASSWORD' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_WORDPRESS $IMAGE_MYSQL $ROOT_DB_PASSWORD $WORDPRESS_DB_PASSWORD $WORDPRESS_ADMIN_EMAIL $WORDPRESS_ADMIN_PASSWORD' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
