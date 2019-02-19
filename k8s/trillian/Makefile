@@ -5,6 +5,9 @@ include ../var.Makefile
 
 TAG ?= 1.2.1
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/trillian/deployer:$(TAG)
+# Default Busybox image used by etcd-operator:
+# https://github.com/coreos/etcd-operator/blob/16f0e1b3693483061f2a8252c0e361b06d216424/pkg/util/k8sutil/k8sutil.go#L64
+BUSYBOX_IMAGE ?= busybox:1.28.0-glibc
 ETCD_OPERATOR_IMAGE ?= quay.io/coreos/etcd-operator:v0.9.1
 NAME ?= trillian-1
 
@@ -35,7 +38,8 @@ APP_PARAMETERS ?= { \
 APP_TEST_PARAMETERS ?= {}
 
 
-app/build:: .build/trillian/db_server \
+app/build:: .build/trillian/busybox \
+            .build/trillian/db_server \
             .build/trillian/deployer \
             .build/trillian/etcd_operator \
             .build/trillian/log_server \
@@ -44,6 +48,16 @@ app/build:: .build/trillian/db_server \
 
 .build/trillian: | .build
 	mkdir -p "$@"
+
+
+.build/trillian/busybox: .build/var/REGISTRY \
+                         .build/var/TAG \
+                       | .build/trillian
+	docker pull "$(BUSYBOX_IMAGE)"
+	docker tag "$(BUSYBOX_IMAGE)" \
+	  "$(REGISTRY)/trillian/busybox:$(TAG)"
+	docker push "$(REGISTRY)/trillian/busybox:$(TAG)"
+	@touch "$@"
 
 
 .build/trillian/db_server: .build/var/REGISTRY \

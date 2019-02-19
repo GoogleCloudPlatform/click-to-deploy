@@ -60,3 +60,5 @@ spec:
   serviceAccountName: $ETCD_SERVICE_ACCOUNT
   size: $ETCD_CLUSTER_SIZE
   version: $ETCD_VERSION
+  pod:
+    busyboxImage: $IMAGE_BUSYBOX

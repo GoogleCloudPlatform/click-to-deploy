@@ -38,6 +38,13 @@ properties:
     default: $REGISTRY/etcd_operator:$TAG
     x-google-marketplace:
       type: IMAGE
+  IMAGE_BUSYBOX:
+    type: string
+    title: Docker image to use for Etcd init containers
+    description: Must be a busybox image.
+    default: $REGISTRY/busybox:$TAG
+    x-google-marketplace:
+      type: IMAGE
   ETCD_CLUSTER_SIZE:
     type: integer
     title: Etcd cluster size
@@ -127,6 +134,7 @@ required:
 - TRILLIAN_LOGSERVER_REPLICAS
 - TRILLIAN_LOGSIGNER_REPLICAS
 - IMAGE_ETCD_OPERATOR
+- IMAGE_BUSYBOX
 - ETCD_CLUSTER_SIZE
 - ETCD_VERSION
 - ETCD_SERVICE_ACCOUNT
