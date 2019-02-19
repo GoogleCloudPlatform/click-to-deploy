@@ -35,6 +35,8 @@ properties:
     minimum: 1
   IMAGE_ETCD_OPERATOR:
     type: string
+    title: Docker image to use for etcd-operator
+    description: See https://github.com/coreos/etcd-operator.
     default: $REGISTRY/etcd_operator:$TAG
     x-google-marketplace:
       type: IMAGE
@@ -45,6 +47,15 @@ properties:
     default: $REGISTRY/busybox:$TAG
     x-google-marketplace:
       type: IMAGE
+  ETCD_REPOSITORY:
+    type: string
+    description: Docker repository where Etcd images are stored
+    default: $REGISTRY/etcd
+  ETCD_VERSION:
+    type: string
+    description: The version of Etcd to use. A Docker image for this version must exist in the Etcd repository.
+    default: 3.2.13
+    pattern: 3\.\d+\.\d+
   ETCD_CLUSTER_SIZE:
     type: integer
     title: Etcd cluster size
@@ -52,11 +63,6 @@ properties:
     default: 5
     minimum: 3
     maximum: 9
-  ETCD_VERSION:
-    type: string
-    title: Etcd version
-    default: 3.2.13
-    pattern: 3\.\d+\.\d+
   ETCD_SERVICE_ACCOUNT:
     type: string
     title: Etcd Service Account
@@ -136,6 +142,7 @@ required:
 - IMAGE_ETCD_OPERATOR
 - IMAGE_BUSYBOX
 - ETCD_CLUSTER_SIZE
+- ETCD_REPOSITORY
 - ETCD_VERSION
 - ETCD_SERVICE_ACCOUNT
 - IMAGE_MYSQL

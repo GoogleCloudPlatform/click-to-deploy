@@ -3,13 +3,15 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
+NAME ?= trillian-1
 TAG ?= 1.2.1
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/trillian/deployer:$(TAG)
 # Default Busybox image used by etcd-operator:
 # https://github.com/coreos/etcd-operator/blob/16f0e1b3693483061f2a8252c0e361b06d216424/pkg/util/k8sutil/k8sutil.go#L64
 BUSYBOX_IMAGE ?= busybox:1.28.0-glibc
 ETCD_OPERATOR_IMAGE ?= quay.io/coreos/etcd-operator:v0.9.1
-NAME ?= trillian-1
+ETCD_REPOSITORY ?= quay.io/coreos/etcd
+ETCD_VERSION ?= 3.2.13
 
 ifdef IMAGE_TRILLIAN_LOGSERVER
   IMAGE_TRILLIAN_LOGSERVER_FIELD = , "IMAGE_TRILLIAN_LOGSERVER": "$(IMAGE_TRILLIAN_LOGSERVER)"
@@ -23,8 +25,8 @@ ifdef IMAGE_MYSQL
   IMAGE_MYSQL_FIELD = , "IMAGE_MYSQL": "$(IMAGE_MYSQL)"
 endif
 
-ifdef IMAGE_ETCD_OPERATOR
-  IMAGE_ETCD_OPERATOR_FIELD = , "IMAGE_ETCD_OPERATOR": "$(IMAGE_ETCD_OPERATOR)"
+ifdef ETCD_VERSION
+  ETCD_VERSION_FIELD = , "ETCD_VERSION": "$(ETCD_VERSION)"
 endif
 
 APP_PARAMETERS ?= { \
@@ -33,7 +35,7 @@ APP_PARAMETERS ?= { \
   $(IMAGE_TRILLIAN_LOGSERVER_FIELD) \
   $(IMAGE_TRILLIAN_LOGSIGNER_FIELD) \
   $(IMAGE_MYSQL_FIELD) \
-  $(IMAGE_ETCD_OPERATOR_FIELD) \
+  $(ETCD_VERSION_FIELD) \
 }
 APP_TEST_PARAMETERS ?= {}
 
@@ -42,6 +44,7 @@ app/build:: .build/trillian/busybox \
             .build/trillian/db_server \
             .build/trillian/deployer \
             .build/trillian/etcd_operator \
+            .build/trillian/etcd \
             .build/trillian/log_server \
             .build/trillian/log_signer
 
@@ -95,6 +98,16 @@ app/build:: .build/trillian/busybox \
 	docker tag "$(ETCD_OPERATOR_IMAGE)" \
 	  "$(REGISTRY)/trillian/etcd_operator:$(TAG)"
 	docker push "$(REGISTRY)/trillian/etcd_operator:$(TAG)"
+	@touch "$@"
+
+
+.build/trillian/etcd: .build/var/REGISTRY \
+                      .build/var/TAG \
+                    | .build/trillian
+	docker pull "$(ETCD_REPOSITORY):v$(ETCD_VERSION)"
+	docker tag "$(ETCD_REPOSITORY):v$(ETCD_VERSION)" \
+	  "$(REGISTRY)/trillian/etcd:v$(ETCD_VERSION)"
+	docker push "$(REGISTRY)/trillian/etcd:v$(ETCD_VERSION)"
 	@touch "$@"
 
 
