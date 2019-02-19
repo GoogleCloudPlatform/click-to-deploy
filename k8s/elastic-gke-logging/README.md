@@ -174,12 +174,13 @@ kubectl create namespace "$NAMESPACE"
 
 #### Create Fluentd service account
 
-Create Fluentd service account and role binding
+Create Fluentd service account and role binding:
 
 ```shell
 export FLUENTD_SERVICE_ACCOUNT="$APP_INSTANCE_NAME-fluentdserviceaccount"
-kubectl create serviceaccount --namespace $NAMESPACE $FLUENTD_SERVICE_ACCOUNT
-kubectl create clusterrolebinding $FLUENTD_SERVICE_ACCOUNT-rule --clusterrole=view --serviceaccount=$NAMESPACE:$FLUENTD_SERVICE_ACCOUNT
+kubectl create serviceaccount $FLUENTD_SERVICE_ACCOUNT --namespace $NAMESPACE
+kubectl create clusterrole $FLUENTD_SERVICE_ACCOUNT-role --verb=get,list,watch --resource=pods,namespaces
+kubectl create clusterrolebinding $FLUENTD_SERVICE_ACCOUNT-rule --clusterrole=$FLUENTD_SERVICE_ACCOUNT-role --serviceaccount=$NAMESPACE:$FLUENTD_SERVICE_ACCOUNT
 ```
 
 #### Expand the manifest template
