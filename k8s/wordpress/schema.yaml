@@ -42,6 +42,7 @@ properties:
     title: WordPress admin e-mail address
     description: The e-mail address for administrator account of WordPress.
     default: noreply@google.com
+    pattern: '^[^@]+@[^\.]+\..+$'
   # A password for WordPress site.
   WORDPRESS_ADMIN_PASSWORD:
     type: string
