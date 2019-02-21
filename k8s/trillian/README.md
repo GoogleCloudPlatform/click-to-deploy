@@ -170,10 +170,10 @@ Use local port forwarding to access Trillian's gRPC API from your machine. In a
 terminal, run the following command:
 
 ```shell
-kubectl port-forward --namespace ${NAMESPACE} ${NAME}-trillian-logserver 8090
+kubectl port-forward --namespace ${NAMESPACE} service/${NAME}-logserver-service 8090
 ```
 
-You can access the Trillian API at `localhost:8090`.
+You can then access the Trillian API at `localhost:8090`.
 
 # Scaling the Trillian app
 
