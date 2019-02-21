@@ -1,7 +1,7 @@
 actions:
 - name: Site address should be 200 OK
   httpTest:
-    url: http://${APP_INSTANCE_NAME}-wordpress-svc
+    url: http://{{ .Env.APP_INSTANCE_NAME }}-wordpress-svc
     expect:
       statusCode:
         equals: 200
@@ -22,7 +22,7 @@ actions:
     script: mysql -h ${APP_INSTANCE_NAME}-mysql-svc.${NAMESPACE}.svc.cluster.local -u "${WORDPRESS_DB_USER}" -p"${WORDPRESS_DB_PASSWORD}" -e "SHOW DATABASES"
     expect:
       stdout:
-        contains: ${WORDPRESS_DB_NAME}
+        contains: {{ .Env.WORDPRESS_DB_NAME }}
       exitCode:
         equals: 0
 - name: Can not connect to a database with incorrect credentials
