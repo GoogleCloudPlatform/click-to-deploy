@@ -174,3 +174,145 @@ kubectl port-forward --namespace ${NAMESPACE} ${NAME}-trillian-logserver 8090
 ```
 
 You can access the Trillian API at `localhost:8090`.
+
+# Scaling the Trillian app
+
+## Scaling the servers
+
+By default, the Trillian app is deployed using 4 server replicas. To change the
+number of replicas, use the following commands. Change `$LOGSERVER_REPLICAS` to
+the number of replicas you require. Increasing the number will increase capacity
+for serving requests.
+
+```shell
+LOGSERVER_REPLICAS=4
+
+kubectl scale "deployments/$NAME-logserver-deployment" \
+  --namespace "$NAMESPACE" --replicas=$LOGSERVER_REPLICAS
+```
+
+## Scaling the signers
+
+By default, the Trillian app is deployed using 2 signer replicas. To change the
+number of replicas, use the following commands. Change `$LOGSIGNER_REPLICAS` to
+the number of replicas you require. Increasing the number will increase the
+number of logs that can be signed in parallel.
+
+```shell
+LOGSIGNER_REPLICAS=2
+
+kubectl scale "deployments/$NAME-logsigner-deployment" \
+  --namespace "$NAMESPACE" --replicas=$LOGSIGNER_REPLICAS
+```
+
+## Scaling etcd
+
+Shrinking an etcd cluster is not recommended, but increasing the cluster size is
+safe. This can be achieved by the following command. Change `$ETCD_CLUSTER_SIZE`
+to the desired cluster size.
+
+```shell
+ECTD_CLUSTER_SIZE=5
+
+kubectl patch EtcdCluster "$NAME-etcd-cluster" --type "merge" \
+  --patch "{\"spec\":{\"size\":$ETCD_CLUSTER_SIZE}}"
+```
+
+# Backup and Restore
+
+Backup and restore is not supported for Trillian. Due to the append-only nature
+of logs, backup and restore is a dangerous operation because it could result in
+entries being removed from a log.
+
+# Updating the app
+
+To update the Trillian app, select a new version from the
+[GitHub releases page](https://github.com/google/trillian/releases) and use it
+as the value of `TAG` below. Then re-install the Trillian app. For example, to
+update to version "v1.2.1":
+
+```shell
+export APP_INSTANCE_NAME=trillian-1
+export NAMESPACE=default
+export TAG="v1.2.1"
+
+make -C click-to-deploy/k8s/trillian app/install
+```
+
+# Uninstall the Application
+
+## Using the Google Cloud Platform Console
+
+1.  In the GCP Console, open
+    [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
+
+1.  From the list of applications, click **Trillian**.
+
+1.  On the Application Details page, click **Delete**.
+
+1.  To cleanup the Etcd cluster, run the following command:
+
+    ```shell
+    export APP_INSTANCE_NAME=trillian-1
+    export NAMESPACE=default
+
+    kubectl delete EtcdCluster $APP_INSTANCE_NAME-etcd-cluster --namespace=$NAMESPACE
+    ```
+
+## Using the command line
+
+### Prepare the environment
+
+Set your installation name and Kubernetes namespace:
+
+```shell
+export APP_INSTANCE_NAME=trillian-1
+export NAMESPACE=default
+```
+
+### Delete the resources
+
+> **NOTE:** We recommend to use a kubectl version that is the same as the
+> version of your cluster. Using the same versions of kubectl and the cluster
+> helps avoid unforeseen issues.
+
+To delete the resources, use the expanded manifest file used for the
+installation.
+
+Run `kubectl` on the expanded manifest file:
+
+```shell
+kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
+```
+
+Otherwise, delete the resources using types and a label:
+
+```shell
+kubectl delete application,deployment,service \
+  --namespace $NAMESPACE \
+  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
+```
+
+### Delete the MySQL persistent volume
+
+By design, the removal of the Trillian app does not remove the
+PersistentVolumeClaim used by the MySQL Deployment. This prevents your
+installations from accidentally deleting the database.
+
+To remove the PersistentVolumeClaim with its attached persistent disk, run the
+following `kubectl` command:
+
+```shell
+kubectl delete persistentvolumeclaims \
+  --namespace $NAMESPACE \
+  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
+```
+
+### Delete the GKE cluster
+
+Optionally, if you don't need the deployed application or the GKE cluster,
+delete the cluster using this command:
+
+```
+gcloud container clusters delete "$CLUSTER" --zone "$ZONE"
+```
