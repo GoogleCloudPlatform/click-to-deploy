@@ -14,7 +14,7 @@ Popular open stacks on Kubernetes packaged by Google.
 
 ### Solution Information
 
-WordPress solution exposes its interface on port `80`.
+WordPress solution exposes its interface on ports `80` and `443` via Ingress resource. TLS certificates are stored in `[APP-INSTANCE-NAME]-tls` Secret resource.
 
 Separate StatefulSet Kubernetes objects are used to manage instance of WordPress and instance of MySQL database.
 Single instance of WordPress is deployed as a single Pod via Kubernetes StatefulSet.
@@ -22,7 +22,14 @@ Single instance of WordPress is deployed as a single Pod via Kubernetes Stateful
 WordPress instance connects to MySQL database over `3306` port. WordPress stores information in MySQL in `wordpress` database.
 Single instance of MySQL is deployed as a Pod via Kubernetes StatefulSet.
 
-WordPress application stores password for MySQL root in the `root_password` secret. Login and password information to access `wordpress` database are stored in `wp_user` and `wp_password` secrets (respectively).
+WordPress application stores credentials for MySQL database in `[APP-INSTANCE-NAME]-mysql-secret` Secret resource.
+
+* Password for MySQL root in the `root-password` secret.
+* Login and password information to access `wordpress` database are stored in `wp-user` and `wp-password` secrets (respectively).
+
+Credentials for WordPress site are stored in `[APP-INSTANCE-NAME]-wordpress-secret` Secret resource.
+
+* Login, e-mail address and password information to access the administrator panel are stored in `wp-user`, `wp-email` and `wp-password` secrets (respectively).
 
 # Installation
 
@@ -140,11 +147,15 @@ Set or generate passwords:
 
 ```shell
 # Install pwgen and base64
-sudo apt-get install -y pwgen base64
+sudo apt-get install -y pwgen cl-base64
 
-# Set the root and Wordpress database passwords
+# Set the root and WordPress database passwords
 export ROOT_DB_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
 export WORDPRESS_DB_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
+
+# Set e-mail address and password for WordPress admin panel
+export WORDPRESS_ADMIN_EMAIL=noreply@example.com
+export WORDPRESS_ADMIN_PASSWORD="$(pwgen 20 1 | tr -d '\n' | base64)"
 ```
 
 #### Create namespace in your Kubernetes cluster
@@ -162,7 +173,7 @@ expanded manifest file for future updates to the application.
 
 ```shell
 awk 'FNR==1 {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_WORDPRESS $IMAGE_MYSQL $ROOT_DB_PASSWORD $WORDPRESS_DB_PASSWORD' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_WORDPRESS $IMAGE_MYSQL $ROOT_DB_PASSWORD $WORDPRESS_DB_PASSWORD $WORDPRESS_ADMIN_EMAIL $WORDPRESS_ADMIN_PASSWORD' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
@@ -221,47 +232,6 @@ metadata:
 EOF
 ```
 
-### Expose WordPress service externally
-
-By default, the application does not have an external IP address. To create
-an external IP address for your WordPress app, run the following command:
-
-```
-kubectl patch svc "$APP_INSTANCE_NAME-wordpress-svc" \
-  --namespace "$NAMESPACE" \
-  --patch '{"spec": {"type": "NodePort"}}'
-
-APPLICATION_UID=$(kubectl get applications/${APP_INSTANCE_NAME} --namespace="$NAMESPACE" --output=jsonpath='{.metadata.uid}')
-
-cat <<EOF | kubectl create --namespace "$NAMESPACE" -f -
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: $APP_INSTANCE_NAME-wordpress-ingress
-  labels:
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
-    app.kubernetes.io/component: wordpress-webserver
-  ownerReferences:
-  - apiVersion: app.k8s.io/v1beta1
-    blockOwnerDeletion: true
-    controller: true
-    kind: Application
-    name: $APP_INSTANCE_NAME
-    uid: $APPLICATION_UID
-spec:
-  tls:
-  - secretName: $APP_INSTANCE_NAME-tls
-  backend:
-    serviceName: $APP_INSTANCE_NAME-wordpress-svc
-    servicePort: http
-EOF
-
-kubectl patch --namespace $NAMESPACE application "$APP_INSTANCE_NAME" --type=json \
-  -p='[{"op": "add", "path": "/spec/componentKinds/-", "value":{ "group": "extensions/v1beta1", "kind": "Ingress" } }]'
-```
-
-It might take some time for the external IP address to be created.
-
 ### Open your WordPress site
 
 Get the external IP of your WordPress site using the following command:
@@ -276,15 +246,11 @@ echo "https://${SERVICE_IP}/"
 
 The command shows you the URL of your site.
 
-### Set up WordPress
-
-When you open the WordPress main page, an installation wizard starts.
-Follow the steps on the screen to finish setting up WordPress.
-
 # Scaling
 
 This is a single-instance version of WordPress.
 It is not intended to be scaled up with the current configuration.
+
 # Backup and restore
 
 ## Using WordPress plugins

@@ -1,8 +1,8 @@
 #!/bin/bash -x
 
 # Non-standard deployer entrypoint.
-# This steps are needed to interfere with deployer - add new resource programatically
-# before droping IAM permissions.
+# This steps are needed to interfere with deployer - add new resource programmatically
+# before dropping IAM permissions.
 
 /bin/expand_config.py
 NAME="$(/bin/print_config.py \
@@ -20,7 +20,7 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
     -subj "/CN=wordpress/O=wordpress"
 
 kubectl --namespace ${NAMESPACE} create secret generic ${NAME}-tls \
-	--from-file=/tmp/tls.crt --from-file=/tmp/tls.key
+    --from-file=/tmp/tls.crt --from-file=/tmp/tls.key
 
 kubectl --namespace ${NAMESPACE} label secret ${NAME}-tls \
     "app.kubernetes.io/name=${NAME}" "app.kubernetes.io/component=wordpress-tls"

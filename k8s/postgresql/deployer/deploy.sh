@@ -1,7 +1,7 @@
 #!/bin/bash -x
 
 # Non-standard deployer entrypoint.
-# This steps are needed to interfere with deployer - add new resource programatically
+# This steps are needed to interfere with deployer - add new resource programmatically
 # before droping IAM permissions.
 
 name="$(/bin/print_config.py \
@@ -17,7 +17,7 @@ if ! kubectl --namespace ${namespace} get secret | grep -q "^${name}-tls "; then
       -subj "/CN=postgresql/O=postgresql"
   
   kubectl --namespace ${namespace} create secret generic ${name}-tls \
-  	--from-file=$file.crt --from-file=$file.key
+      --from-file=$file.crt --from-file=$file.key
   rm $file.key
   rm $file.crt
 fi
