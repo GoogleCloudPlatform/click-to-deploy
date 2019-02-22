@@ -209,7 +209,7 @@ Otherwise, run the following command:
         -subj "/CN=wordpress/O=wordpress"
     ```
 
-1. Create a secret for Kubernetes Ingress TLS.
+1. Create a secret for Kubernetes Ingress TLS:
 
     ```shell
     # create a secret for Kubernetes Ingress TLS
