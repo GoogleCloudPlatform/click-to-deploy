@@ -198,8 +198,8 @@ To view the app, open the URL in your browser.
 #### Create TLS certificate for WordPress
 
 1. Create a certificate for WordPress. If you already have a certificate that you want to use,
-copy your certificate and key pair in to the `/tmp/tls.crt`, and `/tmp/tls.key` files.
-And skip to the next step.
+copy your certificate and key pair in to the `/tmp/tls.crt`, and `/tmp/tls.key` files, the skip to the next step.
+Otherwise, run the following command:
 
     ```shell
     # create a certificate for WordPress
