@@ -44,6 +44,12 @@ spec:
       ```
 
       The command shows you the URL of your site.
+
+      # Update TLS certificate for WordPress
+
+      By default the application used self-signed certificate. You can follow
+      [Update TLS certificate for WordPress section](https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/wordpress/README.md#update-tls-certificate-for-wordpress)
+      to update it.
   info:
   - name: WordPress site address
     type: Reference
