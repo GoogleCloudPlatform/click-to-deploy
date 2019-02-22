@@ -1,0 +1,86 @@
+actions:
+
+# TODO(wgrzelak): Add actions to test authorization with correct credentials,
+# incorrect credentials and without credentials.
+# Example: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/d242d7eaa4fcce804f6a9d03cf569a901a5cf9be/k8s/influxdb/apptest/tester/tests/basic-suite.yaml.template#L18-L33
+
+- name: Site address should be 200 OK (service DNS)
+  httpTest:
+    url: http://{{ .Env.APP_INSTANCE_NAME }}-wordpress-svc
+    expect:
+      statusCode:
+        equals: 200
+      bodyText:
+        html:
+          title:
+            equals: 'WordPress on Google Kubernetes Engine – Just another WordPress site'
+
+- name: Site address should be 200 OK (external IP)
+  httpTest:
+    url: http://{{ .Env.EXTERNAL_IP }}
+    expect:
+      statusCode:
+        equals: 200
+      bodyText:
+        html:
+          title:
+            equals: 'WordPress on Google Kubernetes Engine – Just another WordPress site'
+
+# This test should use finish with exit code 0 instead. However, make app/verify doesn't create all
+# resources that are created during real deployment. In this case it's TLS Secret.
+# If the test fails, it means that an issue is fixed and we should replace equals code from 35 to 0.
+- name: Site address should be 200 OK (external IP) (TLS)
+  bashTest:
+    script: curl -f -k "https://${EXTERNAL_IP}"
+    expect:
+      # stdout:
+      #  contains: 'WordPress on Google Kubernetes Engine – Just another WordPress site'
+      exitCode:
+        equals: 35
+
+- name: Admin URL should be 200 OK (service DNS)
+  httpTest:
+    url: http://{{ .Env.APP_INSTANCE_NAME }}-wordpress-svc/wp-admin
+    expect:
+      statusCode:
+        equals: 200
+      bodyText:
+        html:
+          title:
+            equals: 'Log In ‹ WordPress on Google Kubernetes Engine — WordPress'
+
+- name: Can connect to a database (as root user)
+  bashTest:
+    script: mysql -h ${APP_INSTANCE_NAME}-mysql-svc.${NAMESPACE}.svc.cluster.local -u root -p"${MYSQL_ROOT_PASSWORD}" -e "SHOW DATABASES"
+    expect:
+      stdout:
+        contains: information_schema
+      exitCode:
+        equals: 0
+
+- name: Can connect to a database (as wordpress user)
+  bashTest:
+    script: mysql -h ${APP_INSTANCE_NAME}-mysql-svc.${NAMESPACE}.svc.cluster.local -u "${WORDPRESS_DB_USER}" -p"${WORDPRESS_DB_PASSWORD}" -e "SHOW DATABASES"
+    expect:
+      stdout:
+        contains: {{ .Env.WORDPRESS_DB_NAME }}
+      exitCode:
+        equals: 0
+
+- name: Can not connect to a database with incorrect credentials
+  bashTest:
+    script: mysql -h ${APP_INSTANCE_NAME}-mysql-svc.${NAMESPACE}.svc.cluster.local -u root -p"changeme" -e "SHOW DATABASES"
+    expect:
+      stderr:
+        matches: 'ERROR 1045 (28000): Access denied for user ''root''@''.+'' (using password: YES)'
+      exitCode:
+        equals: 1
+
+- name: Can not connect to a database without credentials
+  bashTest:
+    script: mysql -h ${APP_INSTANCE_NAME}-mysql-svc.${NAMESPACE}.svc.cluster.local -e "SHOW DATABASES"
+    expect:
+      stderr:
+        matches: 'ERROR 1045 (28000): Access denied for user ''root''@''.+'' (using password: NO)'
+      exitCode:
+        equals: 1
