@@ -255,6 +255,7 @@ metadata:
     app.kubernetes.io/component: wordpress-webserver
 spec:
   tls:
+  # The $APP_INSTANCE_NAME-tls Secret is created dynamically via deployer.
   - secretName: $APP_INSTANCE_NAME-tls
   backend:
     serviceName: $APP_INSTANCE_NAME-wordpress-svc

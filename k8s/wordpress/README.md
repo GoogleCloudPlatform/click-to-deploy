@@ -197,40 +197,44 @@ To view the app, open the URL in your browser.
 
 #### Create TLS certificate for WordPress
 
-Create a certificate for WordPress. If you already have a certificate that you
-want to use, copy your certificate and key pair in to the `/tmp/tls.crt` and
-`/tmp/tls.key` files.
+1. Create a certificate for WordPress. If you already have a certificate that you want to use,
+copy your certificate and key pair in to the `/tmp/tls.crt`, and `/tmp/tls.key` files, then skip to the next step.
+Otherwise, run the following command:
 
-```shell
-# create a certificate for WordPress
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-    -keyout /tmp/tls.key \
-    -out /tmp/tls.crt \
-    -subj "/CN=wordpress/O=wordpress"
+    ```shell
+    # create a certificate for WordPress
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+        -keyout /tmp/tls.key \
+        -out /tmp/tls.crt \
+        -subj "/CN=wordpress/O=wordpress"
+    ```
 
-# create a secret for Kubernetes ingress TLS
-kubectl --namespace $NAMESPACE create secret generic $APP_INSTANCE_NAME-tls \
-    --from-file=/tmp/tls.crt --from-file=/tmp/tls.key
+1. Create a secret for Kubernetes Ingress TLS:
 
-kubectl --namespace $NAMESPACE label secret $APP_INSTANCE_NAME-tls \
-    app.kubernetes.io/name=$APP_INSTANCE_NAME app.kubernetes.io/component=wordpress-tls
+    ```shell
+    # create a secret for Kubernetes Ingress TLS
+    kubectl --namespace $NAMESPACE create secret tls $APP_INSTANCE_NAME-tls \
+        --cert=/tmp/tls.crt --key=/tmp/tls.key
 
-APPLICATION_UID=$(kubectl get applications/${APP_INSTANCE_NAME} --namespace="$NAMESPACE" --output=jsonpath='{.metadata.uid}')
+    kubectl --namespace $NAMESPACE label secret $APP_INSTANCE_NAME-tls \
+        app.kubernetes.io/name=$APP_INSTANCE_NAME app.kubernetes.io/component=wordpress-tls
 
-cat <<EOF | kubectl apply --namespace $NAMESPACE -f -
-apiVersion: v1
-kind: Secret
-metadata:
-  name: $APP_INSTANCE_NAME-tls
-  ownerReferences:
-  - apiVersion: app.k8s.io/v1beta1
-    blockOwnerDeletion: true
-    controller: true
-    kind: Application
-    name: $APP_INSTANCE_NAME
-    uid: $APPLICATION_UID
-EOF
-```
+    APPLICATION_UID=$(kubectl get applications/${APP_INSTANCE_NAME} --namespace="$NAMESPACE" --output=jsonpath='{.metadata.uid}')
+
+    cat <<EOF | kubectl apply --namespace $NAMESPACE -f -
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: $APP_INSTANCE_NAME-tls
+      ownerReferences:
+      - apiVersion: app.k8s.io/v1beta1
+        blockOwnerDeletion: true
+        controller: true
+        kind: Application
+        name: $APP_INSTANCE_NAME
+        uid: $APPLICATION_UID
+    EOF
+    ```
 
 ### Open your WordPress site
 
@@ -432,6 +436,16 @@ To check the current image used for `mysql` container, run the following command
 kubectl get pod $APP_INSTANCE_NAME-mysql-0 \
   --namespace $NAMESPACE \
   --output jsonpath='{.spec.containers[0].image}'
+```
+
+## Update TLS certificate for WordPress
+
+If you want to update a certificate that the application is used, copy your certificate and key pair
+in to the `/tmp/tls.crt`, and `/tmp/tls.key` files, and execute the following command:
+
+```shell
+kubectl --namespace $NAMESPACE create secret tls $APP_INSTANCE_NAME-tls \
+  --cert=/tmp/tls.crt --key=/tmp/tls.key --dry-run -o yaml | kubectl apply -f -
 ```
 
 # Uninstall the Application
