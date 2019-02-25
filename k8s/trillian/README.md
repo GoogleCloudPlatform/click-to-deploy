@@ -276,16 +276,7 @@ export NAMESPACE=default
 > version of your cluster. Using the same versions of kubectl and the cluster
 > helps avoid unforeseen issues.
 
-To delete the resources, use the expanded manifest file used for the
-installation.
-
-Run `kubectl` on the expanded manifest file:
-
-```shell
-kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
-```
-
-Otherwise, delete the resources using types and a label:
+Delete all resources matching the name you used during installation:
 
 ```shell
 kubectl delete application,deployment,service \
