@@ -149,7 +149,7 @@ run the installer.
 ```shell
 export NAME=trillian-1
 export NAMESPACE=default
-export TAG=1.2.1
+export TAG=v1.2.1
 
 make -C click-to-deploy/k8s/trillian app/install
 ```
