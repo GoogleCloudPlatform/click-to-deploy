@@ -62,7 +62,7 @@ properties:
     description: Should be an odd number between 3-7 (https://coreos.com/etcd/docs/3.2.13/faq.html#deployment).
     default: 5
     minimum: 3
-    maximum: 9
+    maximum: 7
   ETCD_SERVICE_ACCOUNT:
     type: string
     title: Etcd Service Account
