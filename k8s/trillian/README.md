@@ -305,6 +305,17 @@ kubectl delete persistentvolumeclaims \
   --selector "app.kubernetes.io/name=${APP_INSTANCE_NAME}"
 ```
 
+### Delete secrets
+
+Secrets stored in Kubernetes (e.g. database password) are not automatically
+deleted. To delete these, run the following `kubectl` command.
+
+```shell
+kubectl delete secret \
+  --namespace "${NAMESPACE}" \
+  --selector "app.kubernetes.io/name=${APP_INSTANCE_NAME}"
+```
+
 ### Delete the GKE cluster
 
 Optionally, if you don't need the deployed application or the GKE cluster,
