@@ -147,7 +147,7 @@ Next, choose the instance name, namespace and Trillian release tag to use, then
 run the installer.
 
 ```shell
-export NAME=trillian-1
+export APP_INSTANCE_NAME=trillian-1
 export NAMESPACE=default
 export TAG=v1.2.1
 
@@ -159,7 +159,7 @@ make -C click-to-deploy/k8s/trillian app/install
 To get the Console URL for your app, run the following command:
 
 ```shell
-echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${NAME}"
+echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
 ```
 
 To view your app, open the URL in your browser.
@@ -170,7 +170,7 @@ Use local port forwarding to access Trillian's gRPC API from your machine. In a
 terminal, run the following command:
 
 ```shell
-kubectl port-forward --namespace ${NAMESPACE} service/${NAME}-logserver-service 8090
+kubectl port-forward --namespace ${NAMESPACE} service/${APP_INSTANCE_NAME}-logserver-service 8090
 ```
 
 You can then access the Trillian API at `localhost:8090`.
@@ -187,8 +187,8 @@ for serving requests.
 ```shell
 LOGSERVER_REPLICAS=4
 
-kubectl scale "deployments/$NAME-logserver-deployment" \
-  --namespace "$NAMESPACE" --replicas=$LOGSERVER_REPLICAS
+kubectl scale "deployments/${APP_INSTANCE_NAME}-logserver-deployment" \
+  --namespace "${NAMESPACE}" --replicas ${LOGSERVER_REPLICAS}
 ```
 
 ## Scaling the signers
@@ -201,8 +201,8 @@ number of logs that can be signed in parallel.
 ```shell
 LOGSIGNER_REPLICAS=2
 
-kubectl scale "deployments/$NAME-logsigner-deployment" \
-  --namespace "$NAMESPACE" --replicas=$LOGSIGNER_REPLICAS
+kubectl scale "deployments/${APP_INSTANCE_NAME}-logsigner-deployment" \
+  --namespace "$NAMESPACE" --replicas $LOGSIGNER_REPLICAS
 ```
 
 ## Scaling etcd
@@ -214,7 +214,7 @@ to the desired cluster size.
 ```shell
 ECTD_CLUSTER_SIZE=5
 
-kubectl patch EtcdCluster "$NAME-etcd-cluster" --type "merge" \
+kubectl patch EtcdCluster "${APP_INSTANCE_NAME}-etcd-cluster" --type "merge" \
   --patch "{\"spec\":{\"size\":$ETCD_CLUSTER_SIZE}}"
 ```
 
@@ -256,7 +256,7 @@ make -C click-to-deploy/k8s/trillian app/install
     export APP_INSTANCE_NAME=trillian-1
     export NAMESPACE=default
 
-    kubectl delete EtcdCluster $APP_INSTANCE_NAME-etcd-cluster --namespace=$NAMESPACE
+    kubectl delete EtcdCluster "${APP_INSTANCE_NAME}-etcd-cluster" --namespace "$NAMESPACE"
     ```
 
 ## Using the command line
@@ -280,8 +280,8 @@ Delete all resources matching the name you used during installation:
 
 ```shell
 kubectl delete application,deployment,service \
-  --namespace $NAMESPACE \
-  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
+  --namespace "${NAMESPACE}" \
+  --selector "app.kubernetes.io/name=${APP_INSTANCE_NAME}"
 ```
 
 ### Delete the MySQL persistent volume
@@ -295,8 +295,8 @@ following `kubectl` command:
 
 ```shell
 kubectl delete persistentvolumeclaims \
-  --namespace $NAMESPACE \
-  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
+  --namespace "${NAMESPACE}" \
+  --selector "app.kubernetes.io/name=${APP_INSTANCE_NAME}"
 ```
 
 ### Delete the GKE cluster

@@ -1,20 +1,20 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: $NAME-secrets
+  name: $APP_INSTANCE_NAME-secrets
   labels:
-    app.kubernetes.io/name: "$NAME"
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app.kubernetes.io/component: mysql
 type: Opaque
 stringData:
-  STORAGE_FLAG: --mysql_uri=$MYSQL_TRILLIAN_USER:$MYSQL_TRILLIAN_PASSWORD@tcp($NAME-mysql-service:3306)/$MYSQL_TRILLIAN_DATABASE
+  STORAGE_FLAG: --mysql_uri=$MYSQL_TRILLIAN_USER:$MYSQL_TRILLIAN_PASSWORD@tcp($APP_INSTANCE_NAME-mysql-service:3306)/$MYSQL_TRILLIAN_DATABASE
 ---
 apiVersion: v1
 kind: Secret
 metadata:
-  name: $NAME-mysql-secrets
+  name: $APP_INSTANCE_NAME-mysql-secrets
   labels:
-    app.kubernetes.io/name: "$NAME"
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app.kubernetes.io/component: mysql
 type: Opaque
 stringData:
@@ -26,9 +26,9 @@ stringData:
 apiVersion: v1
 kind: Service
 metadata:
-  name: $NAME-mysql-service
+  name: $APP_INSTANCE_NAME-mysql-service
   labels:
-    app.kubernetes.io/name: "$NAME"
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app.kubernetes.io/component: mysql
 spec:
   clusterIP: None
@@ -36,26 +36,26 @@ spec:
   - name: mysql
     port: 3306
   selector:
-    app.kubernetes.io/name: "$NAME"
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app.kubernetes.io/component: mysql
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: $NAME-mysql
+  name: $APP_INSTANCE_NAME-mysql
   labels:
-    app.kubernetes.io/name: "$NAME"
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app.kubernetes.io/component: mysql
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: "$NAME"
+      app.kubernetes.io/name: "$APP_INSTANCE_NAME"
       app.kubernetes.io/component: mysql
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: "$NAME"
+        app.kubernetes.io/name: "$APP_INSTANCE_NAME"
         app.kubernetes.io/component: mysql
     spec:
       containers:
@@ -63,23 +63,23 @@ spec:
         name: mysql
         envFrom:
         - secretRef:
-            name: $NAME-mysql-secrets
+            name: $APP_INSTANCE_NAME-mysql-secrets
         volumeMounts:
-        - name: $NAME-mysql-storage
+        - name: $APP_INSTANCE_NAME-mysql-storage
           mountPath: /var/lib/mysql
           subPath: mysql
       restartPolicy: Always
       volumes:
-      - name: $NAME-mysql-storage
+      - name: $APP_INSTANCE_NAME-mysql-storage
         persistentVolumeClaim:
-          claimName: $NAME-mysql-storage-claim
+          claimName: $APP_INSTANCE_NAME-mysql-storage-claim
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: $NAME-mysql-storage-claim
+  name: $APP_INSTANCE_NAME-mysql-storage-claim
   labels:
-    app.kubernetes.io/name: "$NAME"
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app.kubernetes.io/component: mysql
 spec:
   accessModes:

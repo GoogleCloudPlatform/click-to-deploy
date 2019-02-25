@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: $NAME-logsigner-service
+  name: $APP_INSTANCE_NAME-logsigner-service
   labels:
-    app.kubernetes.io/name: "$NAME"
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app.kubernetes.io/component: logsigner
   annotations:
     cloud.google.com/load-balancer-type: "Internal"
@@ -14,26 +14,26 @@ spec:
     port: 8092
     targetPort: 8091
   selector:
-    app.kubernetes.io/name: "$NAME"
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app.kubernetes.io/component: logsigner
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: $NAME-logsigner-deployment
+  name: $APP_INSTANCE_NAME-logsigner-deployment
   labels:
-    app.kubernetes.io/name: "$NAME"
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app.kubernetes.io/component: logsigner
 spec:
   replicas: $TRILLIAN_LOGSIGNER_REPLICAS
   selector:
     matchLabels:
-      app.kubernetes.io/name: "$NAME"
+      app.kubernetes.io/name: "$APP_INSTANCE_NAME"
       app.kubernetes.io/component: logsigner
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: "$NAME"
+        app.kubernetes.io/name: "$APP_INSTANCE_NAME"
         app.kubernetes.io/component: logsigner
     spec:
       restartPolicy: Always
@@ -42,9 +42,9 @@ spec:
         args: [
         "$(STORAGE_FLAG)",
         "--storage_system=$(STORAGE_SYSTEM)",
-        "--etcd_servers=$NAME-etcd-cluster-client:2379",
+        "--etcd_servers=$APP_INSTANCE_NAME-etcd-cluster-client:2379",
         "--quota_system=etcd",
-        "--etcd_http_service=$NAME-logsigner-http",
+        "--etcd_http_service=$APP_INSTANCE_NAME-logsigner-http",
         "--http_endpoint=0.0.0.0:8091",
         "--sequencer_guard_window=1s",
         "--sequencer_interval=$(SIGNER_INTERVAL)",
@@ -54,9 +54,9 @@ spec:
         ]
         envFrom:
         - configMapRef:
-            name: $NAME-config
+            name: $APP_INSTANCE_NAME-config
         - secretRef:
-            name: $NAME-secrets
+            name: $APP_INSTANCE_NAME-secrets
         image: $IMAGE_TRILLIAN_LOGSIGNER
         resources:
           limits:

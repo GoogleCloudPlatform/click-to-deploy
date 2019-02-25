@@ -1,6 +1,6 @@
 application_api_version: v1beta1
 properties:
-  NAME:
+  APP_INSTANCE_NAME:
     type: string
     x-google-marketplace:
       type: NAME
@@ -133,7 +133,7 @@ properties:
     title: MySQL database for Trillian to create and use
     default: trillian
 required:
-- NAME
+- APP_INSTANCE_NAME
 - NAMESPACE
 - IMAGE_TRILLIAN_LOGSERVER
 - IMAGE_TRILLIAN_LOGSIGNER

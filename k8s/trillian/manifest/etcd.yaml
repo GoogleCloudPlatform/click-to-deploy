@@ -76,5 +76,5 @@ spec:
               - key: etcd_cluster
                 operator: In
                 values:
-                - $NAME-etcd-cluster
+                - $APP_INSTANCE_NAME-etcd-cluster
           topologyKey: kubernetes.io/hostname
