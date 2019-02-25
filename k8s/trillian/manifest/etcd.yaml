@@ -62,6 +62,9 @@ spec:
   repository: $ETCD_REPOSITORY
   version: $ETCD_VERSION
   pod:
+    labels:
+      app.kubernetes.io/name: "$NAME"
+      app.kubernetes.io/component: etcd
     busyboxImage: $IMAGE_BUSYBOX
     affinity:
       podAntiAffinity:
