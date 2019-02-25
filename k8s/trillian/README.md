@@ -234,7 +234,7 @@ update to version "v1.2.1":
 ```shell
 export APP_INSTANCE_NAME=trillian-1
 export NAMESPACE=default
-export TAG="v1.2.1"
+export TAG=v1.2.1
 
 make -C click-to-deploy/k8s/trillian app/install
 ```
