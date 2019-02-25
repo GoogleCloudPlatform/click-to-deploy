@@ -281,9 +281,13 @@ export NAMESPACE=default
 Delete all resources matching the name you used during installation:
 
 ```shell
-kubectl delete application,deployment,service \
+kubectl delete application,deployment,service,EtcdCluster \
   --namespace "${NAMESPACE}" \
   --selector "app.kubernetes.io/name=${APP_INSTANCE_NAME}"
+
+kubectl delete service \
+  --namespace "${NAMESPACE}" \
+  --selector "etcd_cluster=${APP_INSTANCE_NAME}-etcd-cluster"
 ```
 
 ### Delete the MySQL persistent volume
