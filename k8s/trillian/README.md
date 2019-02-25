@@ -144,7 +144,9 @@ kubectl create clusterrolebinding cluster-admin-binding \
 ```
 
 Next, choose the instance name, namespace and Trillian release tag to use, then
-run the installer.
+run the installer. If you are not using the "default" namespace, you may need to
+[create the namespace](https://kubernetes.io/docs/tasks/administer-cluster/namespaces/#creating-a-new-namespace)
+first.
 
 ```shell
 export APP_INSTANCE_NAME=trillian-1
