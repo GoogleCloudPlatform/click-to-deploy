@@ -18,3 +18,4 @@ depends 'mysql'
 depends 'php7'
 depends 'phpmyadmin'
 supports 'debian'
+
