@@ -16,3 +16,4 @@ name 'cassandra'
 depends 'c2d-config'
 depends 'openjdk8'
 supports 'debian'
+
