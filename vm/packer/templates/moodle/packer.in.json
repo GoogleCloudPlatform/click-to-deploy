@@ -1,0 +1,7 @@
+{
+  "license": "c2d-moodle",
+  "source_image_family": "debian-9",
+  "chef": {
+    "run_list": [ "c2d-shared::aptget-update", "c2d-config", "moodle", "stackdriver" ]
+  }
+}
