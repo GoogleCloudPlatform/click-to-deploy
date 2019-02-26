@@ -21,7 +21,7 @@ apt_repository 'ceph' do
   key          'https://download.ceph.com/keys/release.asc'
 end
 
-user node['ceph']['deploymentuser'] do
+user "#{node['ceph']['deploymentuser']}" do
   comment 'Ceph deployment user'
   home    "/home/#{node['ceph']['deploymentuser']}"
   shell   '/bin/bash'
