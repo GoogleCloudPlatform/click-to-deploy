@@ -3,7 +3,7 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
-
+VERIFY_WAIT_TIMEOUT = 1200
 ELASTICSEARCH_KIBANA_VERSION = 6.3
 FLUENTD_VERSION = 1.2
 

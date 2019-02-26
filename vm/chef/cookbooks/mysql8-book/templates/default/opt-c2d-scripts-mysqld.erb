@@ -1,0 +1,45 @@
+#!/bin/bash -eu
+#
+# Copyright 2018 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
+
+set +o errexit
+passroot=$(get_attribute_value "mysql-root-password")
+configname=$(get_attribute_value "mysql-config-name")
+set -o errexit
+
+if [[ ! -n "$passroot" ]]; then
+  passfile=/var/tmp/mysqld-root-password
+  echo 'Generating random root password.'
+  echo "Password is stored in $passfile file."
+  echo 'Please, change it as soon as possible.'
+  touch $passfile
+  chown root:root $passfile
+  chmod 600 $passfile
+  passroot=$(openssl rand -base64 12)
+  echo "$passroot" > $passfile
+  if [[ -n "$configname" ]]; then
+    echo 'Setting runtime variable.'
+    gcloud beta runtime-config configs variables set mysqlPassword "$passroot" --is-text --config-name "$configname"
+  fi
+fi
+
+until mysqladmin ping > /dev/null 2>&1; do
+  sleep 3
+done
+
+mysql --user="root" --execute="ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY '$passroot'"
+

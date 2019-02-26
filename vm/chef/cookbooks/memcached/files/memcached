@@ -1,0 +1,24 @@
+#!/bin/bash -eu
+#
+# Copyright 2018 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+readonly tot_memory_kb="$(awk '/MemTotal/ { print int($2) }' /proc/meminfo)"
+readonly tot_memory_mb="$((tot_memory_kb/1024))"
+readonly memcached_mem_mb="$((2*tot_memory_mb / 3))"
+sed -i "s/^-m[0-9 ]*$/-m ${memcached_mem_mb}/" /etc/memcached.conf
+
+until /usr/share/memcached/scripts/memcached-tool 127.0.0.1:11211 stats | grep -q -e "accepting_conns *1"; do
+  sleep 3
+done

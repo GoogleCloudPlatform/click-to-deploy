@@ -1,0 +1,103 @@
+#!/bin/bash -eu
+#
+# Copyright 2017 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# The script will:
+# - install the management plugin (as master on stats node and agent on other),
+# - configure user account according to passed metadata,
+# - create a queue named 'sample_queue',
+# - make ram and disk nodes join the cluster.
+
+source /opt/c2d/c2d-utils || exit 1
+
+# Wait until the RabbitMQ on the stats node is up.
+# This is done by checking if RabbitMQ web management can serve an HTML page.
+# Retry up to 50 times with exponential backoff up to 6 seconds between retries.
+function wait_for_rabbitmq_stats_node() {
+  # Wait for DNS discovery of the node
+  until ping -c 1 "${stats_node_hostname}" > /dev/null; do
+    echo "Waiting for host: ${stats_node_hostname}" && sleep 2
+  done
+
+  # Wait for service response on port 15672
+  wget -O /dev/null \
+    --waitretry 6 -w 6 -t 50 --retry-connrefused --random-wait \
+    "${stats_node_hostname}:15672"
+}
+
+readonly stats_node_hostname="$(get_attribute_value "STATS_NODE_HOSTNAME")"
+
+readonly is_stats_node="$(get_attribute_value "ISSTATSNODE")"
+readonly is_ram_node="$(get_attribute_value "ISQUEUERAMNODE")"
+readonly is_disk_node="$(get_attribute_value "ISQUEUEDISKNODE")"
+
+readonly rabbitmq_username="$(get_attribute_value "RABBITMQ_USERNAME")"
+readonly rabbitmq_password="$(get_attribute_value "RABBITMQ_PASSWORD")"
+
+# Install the management plugin
+if [[ "${is_stats_node:-0}" -eq 1 ]]; then
+  until rabbitmq-plugins enable rabbitmq_management; do
+    sleep 2
+  done
+else
+  until rabbitmq-plugins enable rabbitmq_management_agent; do
+    sleep 2
+  done
+fi
+
+if [[ "${is_stats_node:-0}" -ne 0 ]]; then
+  until rabbitmqctl start_app; do
+    sleep 2
+  done
+
+  # Guest user should be deleted https://www.rabbitmq.com/access-control.html
+  rabbitmqctl delete_user guest
+  rabbitmqctl add_user "${rabbitmq_username}" "${rabbitmq_password}"
+  rabbitmqctl set_permissions "${rabbitmq_username}" ".*" ".*" ".*"
+  rabbitmqctl set_user_tags "${rabbitmq_username}" administrator
+
+  readonly rabbitmq_admin_cmd="$(find /var/lib/rabbitmq/* -name rabbitmqadmin)"
+  chmod u+x "${rabbitmq_admin_cmd}"
+
+  until "${rabbitmq_admin_cmd}" \
+    --username="${rabbitmq_username}" \
+    --password="${rabbitmq_password}" \
+    declare queue name=sample_queue; do
+    sleep 2
+  done
+fi
+
+# Configure ram and disk nodes
+if [[ "${is_ram_node}" -eq 1 || "${is_disk_node}" -eq 1 ]]; then
+  wait_for_rabbitmq_stats_node
+
+  # Join this node to the stats node cluster, but first sleep
+  # for random 1..20 seconds to avoid having too many nodes
+  # trying to join the cluster in a very short time.
+  sleep "$(( (RANDOM % 20) + 1))s"
+
+  rabbitmqctl stop_app
+  if [[ "${is_ram_node}" -eq 1 ]]; then
+    rabbitmqctl join_cluster --ram "rabbit@${stats_node_hostname}"
+  else
+    rabbitmqctl join_cluster "rabbit@${stats_node_hostname}"
+  fi
+  rabbitmqctl start_app
+fi
+
+# Wait until service is started
+until service rabbitmq-server status; do
+  sleep 2
+done
