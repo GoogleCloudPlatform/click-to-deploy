@@ -3,6 +3,7 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
+VERIFY_WAIT_TIMEOUT = 1800
 
 TAG ?= latest
 $(info ---- TAG = $(TAG))
@@ -26,6 +27,14 @@ ifdef WORDPRESS_DB_PASSWORD
   WORDPRESS_DB_PASSWORD_FIELD = , "WORDPRESS_DB_PASSWORD": "$(WORDPRESS_DB_PASSWORD)"
 endif
 
+ifdef WORDPRESS_ADMIN_EMAIL
+  WORDPRESS_ADMIN_EMAIL_FIELD = , "WORDPRESS_ADMIN_EMAIL": "$(WORDPRESS_ADMIN_EMAIL)"
+endif
+
+ifdef WORDPRESS_ADMIN_PASSWORD
+  WORDPRESS_ADMIN_PASSWORD_FIELD = , "WORDPRESS_ADMIN_PASSWORD": "$(WORDPRESS_ADMIN_PASSWORD)"
+endif
+
 APP_PARAMETERS ?= { \
   "APP_INSTANCE_NAME": "$(NAME)", \
   "NAMESPACE": "$(NAMESPACE)" \
@@ -33,6 +42,8 @@ APP_PARAMETERS ?= { \
   $(IMAGE_MYSQL_FIELD) \
   $(ROOT_DB_PASSWORD_FIELD) \
   $(WORDPRESS_DB_PASSWORD_FIELD) \
+  $(WORDPRESS_ADMIN_EMAIL_FIELD) \
+  $(WORDPRESS_ADMIN_PASSWORD_FIELD) \
 }
 
 TESTER_IMAGE ?= $(REGISTRY)/wordpress/tester:$(TAG)
@@ -74,8 +85,8 @@ app/build:: .build/wordpress/deployer \
 .build/wordpress/wordpress: .build/var/REGISTRY \
                             .build/var/TAG \
                             | .build/wordpress
-	docker pull launcher.gcr.io/google/wordpress4-php7-apache:$(TAG)
-	docker tag launcher.gcr.io/google/wordpress4-php7-apache:$(TAG) \
+	docker pull launcher.gcr.io/google/wordpress5-php7-apache:$(TAG)
+	docker tag launcher.gcr.io/google/wordpress5-php7-apache:$(TAG) \
 	    "$(REGISTRY)/wordpress:$(TAG)"
 	docker push "$(REGISTRY)/wordpress:$(TAG)"
 	@touch "$@"

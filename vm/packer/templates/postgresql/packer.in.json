@@ -1,0 +1,7 @@
+{
+  "license": "c2d-postgresql",
+  "source_image_family": "debian-9",
+  "chef": {
+    "run_list": [ "postgresql::standalone", "stackdriver" ]
+  }
+}

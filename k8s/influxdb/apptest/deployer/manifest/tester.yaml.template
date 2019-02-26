@@ -27,4 +27,14 @@ spec:
           fieldPath: metadata.namespace
     - name: APP_INSTANCE_NAME
       value: ${APP_INSTANCE_NAME}
+    - name: INFLUXDB_ADMIN_USER
+      valueFrom:
+        secretKeyRef:
+          name: ${APP_INSTANCE_NAME}-influxdb-secret
+          key: influxdb-admin
+    - name: INFLUXDB_ADMIN_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: ${APP_INSTANCE_NAME}-influxdb-secret
+          key: influxdb-pass
   restartPolicy: Never

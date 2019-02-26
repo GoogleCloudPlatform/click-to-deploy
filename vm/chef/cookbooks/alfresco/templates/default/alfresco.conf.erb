@@ -1,0 +1,18 @@
+<VirtualHost *:80>
+    ErrorLog "/var/log/apache2/alfresco-error.log"
+    CustomLog "/var/log/apache2/alfresco-access.log" common
+
+    RewriteEngine On
+    RewriteCond %{REQUEST_URI} !^/alfresco*
+    RewriteCond %{REQUEST_URI} !^/share*
+    RewriteRule /(.*)$ /share$0 [R]
+
+    ProxyRequests Off
+    ProxyPreserveHost On
+
+    ProxyPass /alfresco http://localhost:8080/alfresco
+    ProxyPassReverse /alfresco http://localhost:8080/alfresco
+
+    ProxyPass /share http://localhost:8080/share
+    ProxyPassReverse /share http://localhost:8080/share
+</VirtualHost>

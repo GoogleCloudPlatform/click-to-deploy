@@ -1,0 +1,42 @@
+#!/bin/bash -eu
+#
+# Copyright 2018 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
+
+readonly grafana_port=3000
+readonly password="$(get_attribute_value "grafana-admin-password")"
+readonly cert_key="/etc/grafana/c2d-temporary-self-signed-cert.key"
+readonly cert_file="/etc/grafana/c2d-temporary-self-signed-cert.pem"
+
+mv /etc/ssl/private/c2d-temporary-self-signed-cert.key /etc/grafana/
+mv /etc/ssl/certs/c2d-temporary-self-signed-cert.pem /etc/grafana/
+
+chown grafana ${cert_key}
+chown grafana ${cert_file}
+
+sed -i "s/;admin_password = admin/admin_password = ${password}/" /etc/grafana/grafana.ini
+sed -i "s/;http_port = 3000/http_port = ${grafana_port}/" /etc/grafana/grafana.ini
+sed -i "s/;protocol = http/protocol = https/g" /etc/grafana/grafana.ini
+sed -i "s@;cert_file =@cert_file = ${cert_file}@" /etc/grafana/grafana.ini
+sed -i "s@;cert_key =@cert_key = ${cert_key}@" /etc/grafana/grafana.ini
+
+systemctl restart grafana-server
+
+readonly grafana_url="https://localhost:${grafana_port}"
+
+until curl -s -k "${grafana_url}"; do
+  sleep 3
+done
