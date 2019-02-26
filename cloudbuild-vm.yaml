@@ -20,8 +20,6 @@
 # _SOLUTION_NAME - <VM IMAGE TO BE BUILT>
 
 timeout: 1200s # 20m
-options:
-  workerPool: 'cloud-marketplace-ops-test/gcb-workers-pool'
 steps:
 
 - id: Download Service Account Key
