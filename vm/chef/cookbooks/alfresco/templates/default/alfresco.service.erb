@@ -1,0 +1,46 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:          alfresco
+# Required-Start:    $local_fs $remote_fs $network $time $postgresql
+# Required-Stop:     $local_fs $remote_fs $network $time $postgresql
+# Should-Start:      $syslog
+# Should-Stop:       $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Alfresco Community
+### END INIT INFO
+
+RETVAL=0
+
+start () {
+    /opt/alfresco/alfresco.sh start
+    RETVAL=$?
+    if [ -d "/var/lock/subsys" ] && [ "$(id -u)" = "0" ] && [ "${RETVAL}" = "0" ] ; then
+        touch /var/lock/subsys/alfresco
+    fi
+}
+
+stop () {
+    /opt/alfresco/alfresco.sh stop
+    RETVAL=$?
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart)
+    stop
+    start
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart}"
+    exit 1
+    ;;
+esac
+
+exit $RETVAL

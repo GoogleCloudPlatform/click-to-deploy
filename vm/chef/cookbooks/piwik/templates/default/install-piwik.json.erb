@@ -1,0 +1,18 @@
+{
+    "document_root": "/var/www/html",
+    "login": "admin",
+    "password": "<%= node['piwik']['app']['first-password'] %>",
+    "email": "admin@admin.com",
+    "site_name": "Sample Site",
+    "site_url": "http://sample-site.com",
+    "session_save_handler": "dbtable",
+    "geo_provider": "geoip_pecl",
+    "database": {
+        "host": "localhost",
+        "adapter": "Pdo\\Mysql",
+        "username": "<%= node['piwik']['db']['username'] %>",
+        "password": "<%= node['piwik']['db']['password'] %>",
+        "dbname": "<%= node['piwik']['db']['name'] %>",
+        "tables_prefix": ""
+    }
+}

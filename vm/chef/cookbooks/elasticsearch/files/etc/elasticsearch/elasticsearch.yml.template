@@ -1,0 +1,10 @@
+cluster.name: "${es_cluster_name}"
+node.name: "${es_current_node}"
+
+path.data: /var/lib/elasticsearch/data
+network.host: 0.0.0.0
+
+discovery.zen.ping_timeout: 30s
+discovery.zen.fd.ping_timeout: 30s
+
+discovery.zen.minimum_master_nodes: ${es_min_master_nodes}

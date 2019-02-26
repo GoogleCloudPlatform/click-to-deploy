@@ -1,0 +1,52 @@
+#!/bin/bash -eu
+#
+# Copyright 2017 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
+
+wordpress_password=$(get_attribute_value "wordpress-mysql-password")
+declare -r wordpress_password
+
+mysql -u root -e "CREATE USER 'wordpress'@'localhost' IDENTIFIED BY '${wordpress_password}';"
+mysql -u root -e "GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpress'@'localhost' IDENTIFIED BY '${wordpress_password}'";
+mysql -u root -e "FLUSH PRIVILEGES"
+
+sudo -u www-data wp config create \
+--dbname=wordpress \
+--dbuser=wordpress \
+--dbpass="${wordpress_password}" \
+--path=/var/www/html/ \
+--force \
+--extra-php <<PHP
+define('WP_ALLOW_MULTISITE', true);
+PHP
+
+# Run the CLI installer for WordPress
+declare -a args
+args=(--title="WordPress Multisite on Google Compute Engine" \
+--admin_user=admin \
+--admin_password="$(get_attribute_value "wordpress-admin-password")" \
+--admin_email="$(get_attribute_value "wordpress-admin-email")" \
+--path=/var/www/html/ \
+--skip-email)
+
+if has_external_ip; then
+  args+=(--url="$(get_external_ip)")
+else
+  args+=(--url="$(get_internal_ip)")
+fi
+
+sudo -u www-data wp core install "${args[@]}"
+sudo -u www-data wp theme activate twentyseventeen --path=/var/www/html

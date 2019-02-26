@@ -1,0 +1,52 @@
+#!/bin/bash -eu
+#
+# Copyright 2017 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
+
+function apt_retry () {
+  local cmds="apt-get $@"
+  local backoff=10
+  echo "Running cmd: $cmds"
+  while ! ${cmds} 2>&1; do
+    if (( "${backoff}" < 100)); then
+      echo "Error: command failed: ${cmds}"
+      echo "Backoff and retry in $backoff seconds."
+      sleep ${backoff}
+      backoff=$(( backoff * 2 ))
+    else
+      # Fail installation.
+      # Return > 0, so that Launcher communicates the failure to customers.
+      echo "Command failed. Terminating installation."
+      exit 1
+    fi
+  done
+}
+
+readonly installphpMyAdmin="$(get_attribute_value "installphpmyadmin" \
+  | tr '[:upper:]' '[:lower:]')"
+readonly mysql_root_password="$(get_attribute_value "mysql-root-password")"
+
+if [[ "${installphpMyAdmin:-}" == "true" ]]; then
+  echo "phpMyAdmin has been selected to be installed."
+  echo phpmyadmin phpmyadmin/dbconfig-install boolean true | debconf-set-selections
+  echo phpmyadmin phpmyadmin/mysql/admin-pass password "${mysql_root_password}" | debconf-set-selections
+  echo phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2 | debconf-set-selections
+  export DEBIAN_FRONTEND='noninteractive'
+  apt_retry -o Dir::Cache::archives="/opt/c2d/downloads/phpmyadmin" install phpmyadmin -yqq
+elif [[ "${installphpMyAdmin:-}" == "false" ]]; then
+  echo "phpMyAdmin not selected for install."
+  rm -rf /opt/c2d/downloads/phpmyadmin
+fi
