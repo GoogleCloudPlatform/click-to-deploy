@@ -1,0 +1,33 @@
+<VirtualHost *:80>
+  ProxyRequests     Off
+  ProxyPreserveHost On
+  AllowEncodedSlashes NoDecode
+  ProxyPass         / http://localhost:8080/ nocanon
+  ProxyPassReverse  / http://localhost:8080/
+  <Proxy http://localhost:8080/*>
+    Order deny,allow
+    Allow from all
+  </Proxy>
+</VirtualHost>
+
+<IfModule mod_ssl.c>
+<VirtualHost _default_:443>
+
+  SSLEngine On
+  SSLCertificateFile    /etc/ssl/certs/ssl-cert-snakeoil.pem
+  SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
+
+  ProxyRequests     Off
+  ProxyPreserveHost On
+  AllowEncodedSlashes NoDecode
+  ProxyPass         /  http://localhost:8080/ nocanon
+  ProxyPassReverse  /  http://localhost:8080/
+  <Proxy http://localhost:8080/*>
+    Order allow,deny
+    Allow from all
+  </Proxy>
+  RequestHeader set X-Forwarded-Proto "https"
+  RequestHeader set X-Forwarded-Port "443"
+
+</VirtualHost>
+</IfModule>

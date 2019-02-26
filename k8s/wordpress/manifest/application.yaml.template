@@ -31,53 +31,9 @@ spec:
     - description: Getting Started with WordPress
       url: https://codex.wordpress.org/Getting_Started_with_WordPress
     notes: |-
-      # Expose WordPress service
+      # Open your WordPress site
 
-      By default, the application does not have an external IP. Run the
-      following command to expose an external IP:
-
-      ```
-      kubectl patch service/$APP_INSTANCE_NAME-wordpress-svc \
-        --namespace "$NAMESPACE" \
-        --patch '{"spec": {"type": "NodePort"}}'
-
-      APPLICATION_UID=$(kubectl get applications/${APP_INSTANCE_NAME} --namespace="$NAMESPACE" --output=jsonpath='{.metadata.uid}')
-
-      cat <<EOF | kubectl create --namespace "$NAMESPACE" -f -
-      apiVersion: extensions/v1beta1
-      kind: Ingress
-      metadata:
-        name: $APP_INSTANCE_NAME-wordpress-ingress
-        labels:
-          app.kubernetes.io/name: $APP_INSTANCE_NAME
-          app.kubernetes.io/component: wordpress-webserver
-        ownerReferences:
-        - apiVersion: app.k8s.io/v1beta1
-          blockOwnerDeletion: true
-          controller: true
-          kind: Application
-          name: $APP_INSTANCE_NAME
-          uid: $APPLICATION_UID
-      spec:
-        tls:
-        - secretName: $APP_INSTANCE_NAME-tls
-        backend:
-          serviceName: $APP_INSTANCE_NAME-wordpress-svc
-          servicePort: http
-      EOF
-
-      kubectl --namespace=${NAMESPACE} patch application "$APP_INSTANCE_NAME" --type=json \
-        -p='[{"op": "add", "path": "/spec/componentKinds/-", "value":{ "group": "extensions/v1beta1", "kind": "Ingress" } }]'
-      ```
-
-      Warning: Do not leave your WordPress installation in this initial setup
-      state. Other visitors can set up a website on your cluster and use it to serve
-      potentially malicious content.
-
-      # Access WordPress site
-
-      Get the external IP of the WordPress site service and visit
-      the URL printed below in your browser.
+      Get the external IP of your WordPress site using the following command:
 
       ```
       SERVICE_IP=$(kubectl get ingress $APP_INSTANCE_NAME-wordpress-ingress \
@@ -87,18 +43,43 @@ spec:
       echo "https://${SERVICE_IP}/"
       ```
 
-      Note that it might take some time for the external IP to be provisioned.
+      The command shows you the URL of your site.
 
-      # Install WordPress
+      # Update TLS certificate for WordPress
 
-      After accessing the WordPress main page, you will see the installation wizard.
-      Follow the instructions presented on the screen to finish the process.
+      By default the application used self-signed certificate. You can follow
+      [Update TLS certificate for WordPress section](https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/wordpress/README.md#update-tls-certificate-for-wordpress)
+      to update it.
   info:
-  - name: WordPress external IP
+  - name: WordPress site address
     type: Reference
     valueFrom:
-      serviceRef:
-        name: $APP_INSTANCE_NAME-wordpress-svc
+      ingressRef:
+        name: $APP_INSTANCE_NAME-wordpress-ingress
+  - name: WordPress admin address
+    type: Reference
+    valueFrom:
+      ingressRef:
+        name: $APP_INSTANCE_NAME-wordpress-ingress
+        path: /wp-admin
+  - name: WordPress username
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: wp-user
+        name: $APP_INSTANCE_NAME-wordpress-secret
+  - name: WordPress e-mail address
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: wp-email
+        name: $APP_INSTANCE_NAME-wordpress-secret
+  - name: WordPress password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: wp-password
+        name: $APP_INSTANCE_NAME-wordpress-secret
   selector:
     matchLabels:
       app.kubernetes.io/name: "$APP_INSTANCE_NAME"
@@ -111,3 +92,5 @@ spec:
     kind: Secret
   - group: v1
     kind: Service
+  - group: extensions/v1beta1
+    kind: Ingress

@@ -1,0 +1,57 @@
+#!/bin/bash -eu
+#
+# Copyright 2018 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
+
+api_port="$(get_attribute_value "api-port")"
+influx_url="http://localhost:${api_port}/ping"
+
+export INFLUXDB_META_DIR="/var/lib/influxdb/meta"
+export INFLUXDB_DATA_DIR="/var/lib/influxdb/data"
+export INFLUXDB_DATA_WAL_DIR="/var/lib/influxdb/wal"
+export INFLUXDB_HTTP_AUTH_ENABLED=true
+export INFLUXDB_HTTP_BIND_ADDRESS=":${api_port}"
+export INFLUXDB_GRAPHITE_0_BIND_ADDRESS=":$(get_attribute_value "graphite-port")"
+
+if [[ "$(get_attribute_value "enable-graphite")" = True ]]; then
+  export INFLUXDB_GRAPHITE_0_ENABLED=true
+fi
+
+declare -a args=()
+
+if [[ "$(get_attribute_value "enable-https")" = True ]]; then
+  chown root:influxdb /etc/ssl/private
+  chown root:influxdb /etc/ssl/private/c2d-temporary-self-signed-cert.key
+  chmod 650 /etc/ssl/private
+  chmod 640 /etc/ssl/private/c2d-temporary-self-signed-cert.key
+  influx_url="https://localhost:${api_port}/ping"
+  export INFLUXDB_HTTP_HTTPS_ENABLED=true
+  export INFLUXDB_HTTP_HTTPS_CERTIFICATE="/etc/ssl/certs/c2d-temporary-self-signed-cert.pem"
+  export INFLUXDB_HTTP_HTTPS_PRIVATE_KEY="/etc/ssl/private/c2d-temporary-self-signed-cert.key"
+  args+=(-ssl -unsafeSsl)
+fi
+
+influxd config > /etc/influxdb/influxdb.conf
+
+systemctl restart influxdb.service
+
+until curl -s -k "${influx_url}"; do
+  sleep 3
+done
+
+readonly password="$(get_attribute_value "influxdb-admin-password")"
+
+influx "${args[@]}" -port "${api_port}" -execute "CREATE USER admin WITH PASSWORD '${password}' WITH ALL PRIVILEGES"

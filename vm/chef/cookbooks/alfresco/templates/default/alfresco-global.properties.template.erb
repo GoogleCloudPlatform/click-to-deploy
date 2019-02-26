@@ -1,0 +1,73 @@
+###############################
+## Common Alfresco Properties #
+###############################
+
+dir.root=/opt/alfresco/alf_data
+
+alfresco.context=alfresco
+alfresco.host=127.0.0.1
+alfresco.port=8080
+alfresco.protocol=http
+
+share.context=share
+share.host=127.0.0.1
+share.port=8080
+share.protocol=http
+
+### database connection properties ###
+db.driver=org.postgresql.Driver
+db.username=<%= node['alfresco']['db']['username'] %>
+db.password=$POSTGRESQL_ALFRESCO_PASSWORD
+db.name=<%= node['alfresco']['db']['name'] %>
+db.url=jdbc:postgresql://localhost/<%= node['alfresco']['db']['name'] %>
+# Note: your database must also be able to accept at least this many connections.  Please see your database documentation for instructions on how to configure this.
+db.pool.max=275
+db.pool.validate.query=SELECT 1
+
+# The server mode. Set value here
+# UNKNOWN | TEST | BACKUP | PRODUCTION
+system.serverMode=UNKNOWN
+
+### FTP Server Configuration ###
+ftp.port=21
+
+### RMI registry port for JMX ###
+alfresco.rmi.services.port=50500
+
+### External executable locations ###
+ooo.exe=/opt/alfresco/libreoffice/program/soffice.bin
+ooo.enabled=true
+ooo.port=8100
+img.root=/opt/alfresco/common
+img.dyn=${img.root}/lib
+img.exe=${img.root}/bin/convert
+alfresco-pdf-renderer.root=/opt/alfresco/common/alfresco-pdf-renderer
+alfresco-pdf-renderer.exe=${alfresco-pdf-renderer.root}/alfresco-pdf-renderer
+
+jodconverter.enabled=false
+jodconverter.officeHome=/opt/alfresco/libreoffice
+jodconverter.portNumbers=8100
+
+### Initial admin password ###
+alfresco_user_store.adminpassword=209c6174da490caeb422f3fa5a7ae634
+
+### E-mail site invitation setting ###
+notification.email.siteinvite=false
+
+### License location ###
+dir.license.external=/opt/alfresco
+
+### Solr indexing ###
+index.subsystem.name=solr4
+dir.keystore=${dir.root}/keystore
+solr.host=localhost
+solr.port.ssl=8443
+
+### Allow extended ResultSet processing
+security.anyDenyDenies=false
+
+### Smart Folders Config Properties ###
+smart.folders.enabled=false
+
+### Remote JMX (Default: disabled) ###
+alfresco.jmx.connector.enabled=false

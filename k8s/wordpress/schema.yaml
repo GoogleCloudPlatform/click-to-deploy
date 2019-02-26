@@ -30,6 +30,21 @@ properties:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 12
+  # An e-mail address for WordPress site.
+  WORDPRESS_ADMIN_EMAIL:
+    type: string
+    title: WordPress admin e-mail address
+    description: The e-mail address for administrator account of WordPress.
+    default: noreply@example.com
+    # https://www.w3.org/TR/html52/sec-forms.html#email-state-typeemail
+    pattern: ^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$
+  # A password for WordPress site.
+  WORDPRESS_ADMIN_PASSWORD:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 20
 required:
 - APP_INSTANCE_NAME
 - NAMESPACE
@@ -37,3 +52,5 @@ required:
 - IMAGE_MYSQL
 - ROOT_DB_PASSWORD
 - WORDPRESS_DB_PASSWORD
+- WORDPRESS_ADMIN_EMAIL
+- WORDPRESS_ADMIN_PASSWORD
