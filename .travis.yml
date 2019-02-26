@@ -1,3 +1,10 @@
-language: python
-install: pip install jinja2
-script: ./cloudbuild-k8s-generator.py --verify_only
+matrix:
+  include:
+  - language: python
+    install: pip install jinja2
+    script: ./cloudbuild-k8s-generator.py --verify_only
+  - language: ruby
+    install: gem install foodcritic
+    script:
+    - foodcritic --version
+    - foodcritic --cookbook-path=vm/chef/cookbooks --rule-file=vm/chef/.foodcritic --epic-fai=any
