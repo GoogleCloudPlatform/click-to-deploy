@@ -12,9 +12,9 @@ metadata:
   annotations:
     marketplace.cloud.google.com/verification: test
 spec:
-# TODO(click-to-deploy/issues/324): Add deadline after migrating to Job
-#  activeDeadlineSeconds: 1200
-# TODO(click-to-deploy/issues/323): Remove following dependency on internal name
+  # TODO(click-to-deploy/issues/324): Add deadline after migrating to Job
+  # activeDeadlineSeconds: 1200
+  # TODO(click-to-deploy/issues/323): Remove following dependency on internal name
   serviceAccountName: ${APP_INSTANCE_NAME}-deployer-sa
   containers:
   - name: tester
@@ -32,19 +32,19 @@ spec:
       valueFrom:
         secretKeyRef:
           name: ${APP_INSTANCE_NAME}-mysql-secret
-          key: root_password
+          key: root-password
     # A username used for accessing the database.
     - name: WORDPRESS_DB_USER
       valueFrom:
         secretKeyRef:
           name: ${APP_INSTANCE_NAME}-mysql-secret
-          key: wp_user
+          key: wp-user
     # A password used for accessing the database.
     - name: WORDPRESS_DB_PASSWORD
       valueFrom:
         secretKeyRef:
           name: ${APP_INSTANCE_NAME}-mysql-secret
-          key: wp_password
+          key: wp-password
     # A database name used by WordPress.
     - name: WORDPRESS_DB_NAME
       value: wordpress

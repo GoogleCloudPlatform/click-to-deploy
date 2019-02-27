@@ -1,0 +1,10 @@
+# users.auth.php
+# <?php exit()?>
+# Don't modify the lines above
+#
+# Userfile
+#
+# Format:
+#
+# login:passwordhash:Real Name:email:groups,comma,seperated
+<%= node['dokuwiki']['user']['name'] %>:$ADMIN_PASS_HASH:<%= node['dokuwiki']['user']['real_name'] %>:$ADMIN_EMAIL:<%= node['dokuwiki']['user']['groups'] %>

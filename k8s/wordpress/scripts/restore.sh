@@ -63,12 +63,12 @@ done
 
 # Read root database password from secret:
 readonly root_db_password="$(kubectl get secret -n ${namespace} ${app}-mysql-secret \
-  -o jsonpath='{.data.root_password}' \
+  -o jsonpath='{.data.root-password}' \
   | base64 -d)"
 
 # Read wordpress database password from secret:
 readonly wordpress_db_password="$(kubectl get secret -n ${namespace} ${app}-mysql-secret \
-  -o jsonpath='{.data.wp_password}' \
+  -o jsonpath='{.data.wp-password}' \
   | base64 -d)"
 
 echo "Unpacking the provided backup archive..."

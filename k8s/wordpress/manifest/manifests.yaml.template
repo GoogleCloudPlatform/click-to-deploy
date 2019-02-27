@@ -7,11 +7,11 @@ metadata:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app.kubernetes.io/component: wordpress-mysql
 type: Opaque
+stringData:
+  wp-user: "wordpress"
 data:
-  root_password: "${ROOT_DB_PASSWORD}"
-  # wordpress in Base64
-  wp_user: d29yZHByZXNz # the decoded value is "wordpress"
-  wp_password: "${WORDPRESS_DB_PASSWORD}"
+  root-password: "${ROOT_DB_PASSWORD}"
+  wp-password: "${WORDPRESS_DB_PASSWORD}"
 ---
 apiVersion: apps/v1beta2
 kind: StatefulSet
@@ -40,7 +40,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: $APP_INSTANCE_NAME-mysql-secret
-              key: root_password
+              key: root-password
         # A database name to be created at startup.
         - name: MYSQL_DATABASE
           value: wordpress
@@ -49,13 +49,13 @@ spec:
           valueFrom:
            secretKeyRef:
              name: $APP_INSTANCE_NAME-mysql-secret
-             key: wp_user
+             key: wp-user
         # A password of the new user created at startup.
         - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:
               name: $APP_INSTANCE_NAME-mysql-secret
-              key: wp_password
+              key: wp-password
         ports:
         - name: mysql
           containerPort: 3306
@@ -100,6 +100,20 @@ spec:
     app.kubernetes.io/component: wordpress-mysql
   clusterIP: None
 ---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: $APP_INSTANCE_NAME-wordpress-secret
+  labels:
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/component: wordpress-webserver
+type: Opaque
+stringData:
+  wp-user: "admin"
+  wp-email: "${WORDPRESS_ADMIN_EMAIL}"
+data:
+  wp-password: "${WORDPRESS_ADMIN_PASSWORD}"
+---
 apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
@@ -118,33 +132,34 @@ spec:
     metadata:
       labels: *WordPressDeploymentLabels
     spec:
-      initContainers:
-        - name: allow-health-probe-before-configuration
-          image: $IMAGE_WORDPRESS
-          command: 
-          - "/bin/bash"
-          - "-c"
-          - |
-            wpadm=/var/www/html/wp-admin/
-            if [[ -d ${wpadm} ]]; then
-              exit
-            fi
-            mkdir -m755 ${wpadm}
-            chown www-data:www-data ${wpadm}
-            cat <<EOF > ${wpadm}/.htaccess
-            <If "%{HTTP_USER_AGENT} =~ /^(kube-probe|GoogleHC)/ && %{HTTP:X-Forwarded-For} =~ /^$/">
-              Require all granted
-              DirectoryIndex /wp-admin/install.php
-            </If>
-            EOF
-          volumeMounts:
-          - name: $APP_INSTANCE_NAME-wordpress-pvc
-            mountPath: /var/www/html
-            subPath: wp
       containers:
       - image: $IMAGE_WORDPRESS
         name: wordpress
         env:
+        # A WordPress' username.
+        # The "WP" prefix is used, as "WORDPRESS" is reserved for env variables.
+        # And we don't want to replace var directly in the curl command.
+        - name: WP_ADMIN_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: $APP_INSTANCE_NAME-wordpress-secret
+              key: wp-user
+        # A WordPress' e-mail address.
+        # The "WP" prefix is used, as "WORDPRESS" is reserved for env variables.
+        # And we don't want to replace var directly in the curl command.
+        - name: WP_ADMIN_EMAIL
+          valueFrom:
+            secretKeyRef:
+              name: $APP_INSTANCE_NAME-wordpress-secret
+              key: wp-email
+        # A WordPress' password.
+        # The "WP" prefix is used, as "WORDPRESS" is reserved for env variables.
+        # And we don't want to replace var directly in the curl command.
+        - name: WP_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: $APP_INSTANCE_NAME-wordpress-secret
+              key: wp-password
         # A hostname and port of MySQL service.
         - name: WORDPRESS_DB_HOST
           value: $APP_INSTANCE_NAME-mysql-svc
@@ -153,13 +168,13 @@ spec:
           valueFrom:
             secretKeyRef:
               name: $APP_INSTANCE_NAME-mysql-secret
-              key: wp_user
+              key: wp-user
         # A password used for accessing the database.
         - name: WORDPRESS_DB_PASSWORD
           valueFrom:
             secretKeyRef:
               name: $APP_INSTANCE_NAME-mysql-secret
-              key: wp_password
+              key: wp-password
         # A database name used by WordPress.
         - name: WORDPRESS_DB_NAME
           value: wordpress
@@ -170,9 +185,26 @@ spec:
         - name: $APP_INSTANCE_NAME-wordpress-pvc
           mountPath: /var/www/html
           subPath: wp
+        lifecycle:
+          postStart:
+            exec:
+              command:
+              - "/bin/bash"
+              - "-euc"
+              - |
+                # https://codex.wordpress.org/Installing_WordPress#Installing_WordPress
+
+                curl --fail --retry 5 --retry-delay 5 --retry-connrefused \
+                  --data-urlencode "weblog_title=WordPress on Google Kubernetes Engine" \
+                  --data-urlencode "user_name=${WP_ADMIN_USERNAME}" \
+                  --data-urlencode "admin_email=${WP_ADMIN_EMAIL}" \
+                  --data-urlencode "admin_password=${WP_ADMIN_PASSWORD}" \
+                  --data-urlencode "admin_password2=${WP_ADMIN_PASSWORD}" \
+                  --data-urlencode "pw_weak=1" \
+                  "http://localhost/wp-admin/install.php?step=2"
         readinessProbe:
           httpGet:
-            path: /wp-admin/install.php
+            path: /
             port: 80
           initialDelaySeconds: 30
           periodSeconds: 10
@@ -212,4 +244,19 @@ spec:
   selector:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app.kubernetes.io/component: wordpress-webserver
-  type: ClusterIP
+  type: NodePort
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: $APP_INSTANCE_NAME-wordpress-ingress
+  labels:
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/component: wordpress-webserver
+spec:
+  tls:
+  # The $APP_INSTANCE_NAME-tls Secret is created dynamically via deployer.
+  - secretName: $APP_INSTANCE_NAME-tls
+  backend:
+    serviceName: $APP_INSTANCE_NAME-wordpress-svc
+    servicePort: http
