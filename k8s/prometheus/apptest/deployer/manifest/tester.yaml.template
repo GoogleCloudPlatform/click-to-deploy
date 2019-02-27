@@ -12,9 +12,9 @@ metadata:
   annotations:
     marketplace.cloud.google.com/verification: test
 spec:
-# TODO(click-to-deploy/issues/324): Add deadline after migrating to Job
-#  activeDeadlineSeconds: 1200
-# TODO(click-to-deploy/issues/323): Remove following dependency on internal name
+  # TODO(click-to-deploy/issues/324): Add deadline after migrating to Job
+  # activeDeadlineSeconds: 1200
+  # TODO(click-to-deploy/issues/323): Remove following dependency on internal name
   serviceAccountName: ${APP_INSTANCE_NAME}-deployer-sa
   containers:
   - name: tester
