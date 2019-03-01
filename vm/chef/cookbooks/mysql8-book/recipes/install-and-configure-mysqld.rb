@@ -33,10 +33,3 @@ c2d_startup_script 'mysqld' do
   source 'opt-c2d-scripts-mysqld.erb'
   action :template
 end
-
-package 'install_mysql8_book_tools' do
-  package_name node['mysql8-book']['tools']
-  retries 5
-  retry_delay 30
-  action :install
-end

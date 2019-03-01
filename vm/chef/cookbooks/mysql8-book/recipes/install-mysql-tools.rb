@@ -12,8 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# MySQL v8.0 installation and configuration recipe
+# Install MySQL tools
 
-include_recipe 'mysql8-book::configure-apt-repo-version-8.0'
-include_recipe 'mysql8-book::install-and-configure-mysqld'
-include_recipe 'mysql8-book::install-mysql-tools.rb'
+package 'install_mysql8_book_tools' do
+  package_name node['mysql8-book']['tools']
+  retries 5
+  retry_delay 30
+  action :install
+end
