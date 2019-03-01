@@ -46,6 +46,7 @@ steps:
   name: gcr.io/cloud-builders/docker
   waitFor:
   - Download Service Account Key
+  - Pull Imagebuilder Image
   args:
   - run
   - --env=PROJECT=${PROJECT_ID}
