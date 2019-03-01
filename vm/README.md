@@ -193,4 +193,4 @@ For more information, see the
 
 ## Foodcritic
 
-We use [Foodcritic](http://www.foodcritic.io/) to as a lint tool for Chef cookbooks. Disabled rules are included in [`.foodcritic`](chef/.foodcritic) file.
+We use [Foodcritic](http://www.foodcritic.io/) as a lint tool for Chef cookbooks. Disabled rules are included in [`.foodcritic`](chef/.foodcritic) file.
