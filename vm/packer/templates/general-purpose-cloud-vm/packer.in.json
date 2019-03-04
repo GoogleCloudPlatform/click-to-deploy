@@ -1,0 +1,7 @@
+{
+  "license": "c2d-general-purpose-cloud-vm",
+  "source_image_family": "debian-9",
+  "chef": {
+    "run_list": [ "c2d-config", "general-purpose-cloud-vm", "stackdriver" ]
+  }
+}
