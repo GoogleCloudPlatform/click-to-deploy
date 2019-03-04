@@ -57,34 +57,23 @@ cookbook_file '/etc/redis/redis.conf' do
   source 'redis.conf'
 end
 
+# Copy redis unit file
+cookbook_file '/etc/systemd/system/redis-server.service' do
+  source 'redis-server.service'
+end
+
+# Copy redis-sentinel unit file
+cookbook_file '/etc/systemd/system/redis-sentinel.service' do
+  source 'redis-sentinel.service'
+end
+
 # Create empty file for additional configuration that will come after startup
 file '/etc/redis/redis_node.conf'
-
-# Setup redis-server service, don't enable it
-bash 'setup_redis_server_service' do
-  cwd '/usr/src/redis'
-  code <<-EOH
-    cp utils/redis_init_script /etc/init.d/redis-server
-    sed -i 's/${REDISPORT}.conf/redis.conf/g' /etc/init.d/redis-server
-    sed -i 's/redis_${REDISPORT}.pid/redis-server.pid/g' /etc/init.d/redis-server
-EOH
-end
 
 # Copy sentinel configuration template.
 # It will be filled up by the startup script.
 cookbook_file '/etc/redis/sentinel.conf.template' do
   source 'sentinel.conf.template'
-end
-
-# Setup redis-sentinel service, but don't enable it
-bash 'setup_redis_sentinel_service' do
-  cwd '/usr/src/redis'
-  code <<-EOH
-    cp utils/redis_init_script /etc/init.d/redis-sentinel
-    sed -i 's/${REDISPORT}.conf/sentinel.conf/g' /etc/init.d/redis-sentinel
-    sed -i 's/redis_${REDISPORT}.pid/redis-sentinel.pid/g' /etc/init.d/redis-sentinel
-    sed -i 's/$EXEC $CONF/$EXEC $CONF --sentinel/g' /etc/init.d/redis-sentinel
-EOH
 end
 
 # Remove temp dependencies
