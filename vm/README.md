@@ -190,3 +190,7 @@ gcloud alpha builds worker-pools update gcb-workers-pool \
 
 For more information, see the
 [gcloud alpha builds worker-pools commands](https://cloud.google.com/sdk/gcloud/reference/alpha/builds/worker-pools/).
+
+## Foodcritic
+
+We use [Foodcritic](http://www.foodcritic.io/) as a lint tool for Chef cookbooks. Disabled rules are included in [`.foodcritic`](chef/.foodcritic) file.
