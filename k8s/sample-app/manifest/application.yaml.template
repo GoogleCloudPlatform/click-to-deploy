@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
 spec:
   descriptor:
-    type: sample-app
+    type: Sample App
     version: '1.0'
     description: |-
       sample-app is a Sample App
