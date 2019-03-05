@@ -33,17 +33,17 @@ gsutil cp -r gs://publication-teach-yourself-mysql8/* "/${FolderForSamples}/"
 
 coding=$(file /"${FolderForSamples}"/create.txt | sed -n '/UTF-16/p')
 
-mysql -e "create schema $DataBaseName;" -u root -p$MysqlRootPassword
+mysql -u root -p$MysqlRootPassword -e "create schema $DataBaseName;"
 
 if [[ -n "${coding}" ]]; then
    # Convert from utf-16 to utf-8
    iconv -f utf-16 -t utf-8 /"${FolderForSamples}"/create.txt > /"${FolderForSamples}"/create-utf8.txt
-   mysql --database="${DataBaseName}" < "/${FolderForSamples}/create-utf8.txt" -u root -p$MysqlRootPassword
+   mysql -u root -p$MysqlRootPassword --database="${DataBaseName}" < "/${FolderForSamples}/create-utf8.txt"
 else
-   mysql --database="${DataBaseName}" < "/${FolderForSamples}/create.txt" -u root -p$MysqlRootPassword
+   mysql -u root -p$MysqlRootPassword --database="${DataBaseName}" < "/${FolderForSamples}/create.txt"
 fi
 
-mysql --database="${DataBaseName}" < "/${FolderForSamples}/populate.txt" -u root -p$MysqlRootPassword
+mysql -u root -p$MysqlRootPassword --database="${DataBaseName}" < "/${FolderForSamples}/populate.txt"
 
 if [[ "${UserKey}" =~ ^(ssh-rsa) && -n "${UserName}" ]]; then
    adduser --quiet --disabled-password --shell /bin/bash \
