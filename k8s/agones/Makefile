@@ -4,7 +4,6 @@ include ../gcloud.Makefile
 include ../var.Makefile
 
 TAG ?= 0.8.1
-DEMO_RELEASE_TAG ?= release-0.8.0
 NAME ?= agones
 
 
@@ -37,13 +36,6 @@ app/build:: .build/agones/deployer \
 
 .build/agones: | .build
 	mkdir -p "$@"
-
-
-app/upstream-chart: chart/agones-mp/requirements.* \
-                    | .build/agones
-	(helm repo list | grep "https://agones.dev/chart/stable") || \
-	    helm repo add agones "https://agones.dev/chart/stable"
-	helm dependency build chart/agones-mp
 
 
 .build/agones/deployer: deployer/* \
