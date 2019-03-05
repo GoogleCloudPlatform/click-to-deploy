@@ -4,27 +4,27 @@ kind: Secret
 metadata:
   name: $APP_INSTANCE_NAME-mysql-secret
   labels:
-    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: wordpress-mysql
 type: Opaque
 stringData:
   wp-user: "wordpress"
 data:
-  root-password: "${ROOT_DB_PASSWORD}"
-  wp-password: "${WORDPRESS_DB_PASSWORD}"
+  root-password: "{{ .Values.db.rootPassword }}"
+  wp-password: "{{ .Values.db.wordpressPassword }}"
 ---
 apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
   name: $APP_INSTANCE_NAME-mysql
   labels: &MySQLDeploymentLabels
-    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: wordpress-mysql
 spec:
   replicas: 1
   selector:
     matchLabels: *MySQLDeploymentLabels
-  serviceName: $APP_INSTANCE_NAME-mysql-svc
+  serviceName: {{ .Release.Name }}-mysql-svc
   updateStrategy:
     type: RollingUpdate
   template:
@@ -32,14 +32,14 @@ spec:
       labels: *MySQLDeploymentLabels
     spec:
       containers:
-      - image: $IMAGE_MYSQL
+      - image: {{ .Values.db.image }}
         name: mysql
         env:
         # A password for root superuser.
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: $APP_INSTANCE_NAME-mysql-secret
+              name: {{ .Release.Name }}-mysql-secret
               key: root-password
         # A database name to be created at startup.
         - name: MYSQL_DATABASE
@@ -48,19 +48,19 @@ spec:
         - name: MYSQL_USER
           valueFrom:
            secretKeyRef:
-             name: $APP_INSTANCE_NAME-mysql-secret
+             name: {{ .Release.Name }}-mysql-secret
              key: wp-user
         # A password of the new user created at startup.
         - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: $APP_INSTANCE_NAME-mysql-secret
+              name: {{ .Release.Name }}-mysql-secret
               key: wp-password
         ports:
         - name: mysql
           containerPort: 3306
         volumeMounts:
-        - name: $APP_INSTANCE_NAME-mysql-pvc
+        - name: {{ .Release.Name }}-mysql-pvc
           mountPath: /var/lib/mysql
           subPath: data
         readinessProbe:
@@ -73,9 +73,9 @@ spec:
           initialDelaySeconds: 120
   volumeClaimTemplates:
   - metadata:
-      name: $APP_INSTANCE_NAME-mysql-pvc
+      name: {{ .Release.Name }}-mysql-pvc
       labels:
-        app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+        app.kubernetes.io/name: "{{ .Release.Name }}"
         app.kubernetes.io/component: wordpress-server
     spec:
       accessModes: [ "ReadWriteOnce" ]
@@ -89,23 +89,23 @@ kind: Service
 metadata:
   name: $APP_INSTANCE_NAME-mysql-svc
   labels:
-    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: wordpress-mysql
 spec:
   ports:
   - name: mysql
     port: 3306
   selector:
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: wordpress-mysql
   clusterIP: None
 ---
 apiVersion: v1
 kind: Secret
 metadata:
-  name: $APP_INSTANCE_NAME-wordpress-secret
+  name: {{ .Release.Name }}-wordpress-secret
   labels:
-    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: wordpress-webserver
 type: Opaque
 stringData:
@@ -117,13 +117,13 @@ data:
 apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
-  name: $APP_INSTANCE_NAME-wordpress
+  name: {{ .Release.Name }}-wordpress
   labels: &WordPressDeploymentLabels
-    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: wordpress-webserver
 spec:
   replicas: 1
-  serviceName: $APP_INSTANCE_NAME-wordpress-svc
+  serviceName: {{ .Release.Name }}-wordpress-svc
   selector:
     matchLabels: *WordPressDeploymentLabels
   updateStrategy:
@@ -142,7 +142,7 @@ spec:
         - name: WP_ADMIN_USERNAME
           valueFrom:
             secretKeyRef:
-              name: $APP_INSTANCE_NAME-wordpress-secret
+              name: {{ .Release.Name }}-wordpress-secret
               key: wp-user
         # A WordPress' e-mail address.
         # The "WP" prefix is used, as "WORDPRESS" is reserved for env variables.
@@ -150,7 +150,7 @@ spec:
         - name: WP_ADMIN_EMAIL
           valueFrom:
             secretKeyRef:
-              name: $APP_INSTANCE_NAME-wordpress-secret
+              name: {{ .Release.Name }}-wordpress-secret
               key: wp-email
         # A WordPress' password.
         # The "WP" prefix is used, as "WORDPRESS" is reserved for env variables.
@@ -158,22 +158,22 @@ spec:
         - name: WP_ADMIN_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: $APP_INSTANCE_NAME-wordpress-secret
+              name: {{ .Release.Name }}-wordpress-secret
               key: wp-password
         # A hostname and port of MySQL service.
         - name: WORDPRESS_DB_HOST
-          value: $APP_INSTANCE_NAME-mysql-svc
+          value: {{ .Release.Name }}-mysql-svc
         # A username used for accessing the database.
         - name: WORDPRESS_DB_USER
           valueFrom:
             secretKeyRef:
-              name: $APP_INSTANCE_NAME-mysql-secret
+              name: {{ .Release.Name }}-mysql-secret
               key: wp-user
         # A password used for accessing the database.
         - name: WORDPRESS_DB_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: $APP_INSTANCE_NAME-mysql-secret
+              name: {{ .Release.Name }}-mysql-secret
               key: wp-password
         # A database name used by WordPress.
         - name: WORDPRESS_DB_NAME
@@ -182,7 +182,7 @@ spec:
         - name: http
           containerPort: 80
         volumeMounts:
-        - name: $APP_INSTANCE_NAME-wordpress-pvc
+        - name: {{ .Release.Name }}-wordpress-pvc
           mountPath: /var/www/html
           subPath: wp
         lifecycle:
@@ -218,7 +218,7 @@ spec:
           initialDelaySeconds: 120
   volumeClaimTemplates:
   - metadata:
-      name: $APP_INSTANCE_NAME-wordpress-pvc
+      name: {{ .Release.Name }}-wordpress-pvc
       labels:
         app.kubernetes.io/name: "$APP_INSTANCE_NAME"
         app.kubernetes.io/component: wordpress-webserver
