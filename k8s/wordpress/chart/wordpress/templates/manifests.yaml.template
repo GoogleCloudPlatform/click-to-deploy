@@ -65,11 +65,11 @@ spec:
           subPath: data
         readinessProbe:
           exec:
-            command: ["sh", "-c", "exec mysqladmin status -uroot -p{{ .Values.db.rootPassword }}"]
+            command: ["sh", "-c", "exec mysqladmin status -uroot -p$MYSQL_ROOT_PASSWORD"]
           initialDelaySeconds: 15
         livenessProbe:
           exec:
-            command: ["sh", "-c", "exec mysqladmin status -uroot -p{{ .Values.db.rootPassword }}"]
+            command: ["sh", "-c", "exec mysqladmin status -uroot -p$MYSQL_ROOT_PASSWORD"]
           initialDelaySeconds: 120
   volumeClaimTemplates:
   - metadata:
@@ -109,7 +109,7 @@ metadata:
     app.kubernetes.io/component: wordpress-webserver
 type: Opaque
 stringData:
-  wp-user: "admin"
+  wp-user: "{{ .Values.admin.username }}"
   wp-email: "{{ .Values.admin.email }}"
 data:
   wp-password: "{{ .Values.admin.password }}"

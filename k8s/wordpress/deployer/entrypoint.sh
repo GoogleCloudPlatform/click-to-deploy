@@ -20,7 +20,6 @@ set -eox pipefail
 # This steps are needed to interfere with deployer - add new resource programmatically
 # before dropping IAM permissions.
 
-/bin/expand_config.py
 NAME="$(/bin/print_config.py \
     --xtype NAME \
     --values_mode raw)"

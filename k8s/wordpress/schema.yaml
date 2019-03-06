@@ -24,7 +24,7 @@ properties:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 12
-  db.password:
+  db.wordpressPassword:
     type: string
     x-google-marketplace:
       type: GENERATED_PASSWORD
