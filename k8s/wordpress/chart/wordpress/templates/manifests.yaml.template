@@ -195,10 +195,10 @@ spec:
                 # https://codex.wordpress.org/Installing_WordPress#Installing_WordPress
                 curl --fail --retry 5 --retry-delay 5 --retry-connrefused \
                   --data-urlencode "weblog_title=WordPress on Google Kubernetes Engine" \
-                  --data-urlencode "user_name={{ .Values.admin.username }}" \
-                  --data-urlencode "admin_email={{ .Values.admin.email }}" \
-                  --data-urlencode "admin_password={{ .Values.admin.password }}" \
-                  --data-urlencode "admin_password2={{ .Values.admin.password }}" \
+                  --data-urlencode "user_name=${WP_ADMIN_USERNAME}" \
+                  --data-urlencode "admin_email=${WP_ADMIN_EMAIL}" \
+                  --data-urlencode "admin_password=${WP_ADMIN_PASSWORD}" \
+                  --data-urlencode "admin_password2=${WP_ADMIN_PASSWORD}" \
                   --data-urlencode "pw_weak=1" \
                   "http://localhost/wp-admin/install.php?step=2"
         readinessProbe:
