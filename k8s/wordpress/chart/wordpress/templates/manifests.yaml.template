@@ -193,7 +193,6 @@ spec:
               - "-euc"
               - |
                 # https://codex.wordpress.org/Installing_WordPress#Installing_WordPress
-
                 curl --fail --retry 5 --retry-delay 5 --retry-connrefused \
                   --data-urlencode "weblog_title=WordPress on Google Kubernetes Engine" \
                   --data-urlencode "user_name={{ .Values.admin.username }}" \

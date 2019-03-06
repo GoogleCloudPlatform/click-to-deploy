@@ -1,12 +1,12 @@
-wordpressImage: ""
+wordpressImage: null
 
 db:
-  image: ""
-  rootPassword: ""
-  wordpressPassword: ""
+  image: null
+  rootPassword: null
+  wordpressPassword: null
 
 admin:
   username: admin
   email: admin@example.com
-  password: ""
+  password: null
 
