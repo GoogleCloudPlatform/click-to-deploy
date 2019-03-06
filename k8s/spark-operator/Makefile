@@ -4,7 +4,7 @@ include ../gcloud.Makefile
 include ../var.Makefile
 
 
-TAG ?= latest
+TAG ?= alpha
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/spark-operator/deployer:$(TAG)
