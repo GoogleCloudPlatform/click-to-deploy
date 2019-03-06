@@ -133,7 +133,7 @@ spec:
       labels: *WordPressDeploymentLabels
     spec:
       containers:
-      - image: {{ .Values.wordPressImage }}
+      - image: {{ .Values.wordpressImage }}
         name: wordpress
         env:
         # A WordPress' username.
