@@ -9,7 +9,7 @@ RUN cd /tmp && tar -czvf /tmp/wordpress.tar.gz chart
 
 ADD apptest/deployer/wordpress /tmp/test/chart
 RUN cd /tmp/test \
-&& tar -czvf /tmp/test/wordpress.tar.gz chart/
+    && tar -czvf /tmp/test/wordpress.tar.gz chart/
 
 ADD schema.yaml /tmp/schema.yaml
 
