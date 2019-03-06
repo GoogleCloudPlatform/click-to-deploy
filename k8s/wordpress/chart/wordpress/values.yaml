@@ -1,0 +1,12 @@
+wordpressImage: ""
+
+db:
+  image: ""
+  rootPassword: ""
+  wordpressPassword: ""
+
+admin:
+  username: admin
+  email: admin@example.com
+  password: ""
+
