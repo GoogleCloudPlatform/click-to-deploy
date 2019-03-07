@@ -43,7 +43,7 @@ properties:
   metrics.enabled:
     type: boolean
     title: Enable Stackdriver Monitoring
-    description: 'Stackdriver Monitoring provides visibility into the performance, uptime, and overall health of cloud-powered applications. <a href="https://cloud.google.com/monitoring/">Learn more</a>'
+    description: Stackdriver Monitoring provides visibility into the performance, uptime, and overall health of cloud-powered applications
     # TODO(wgrzelak): switch to false before merge.
     default: true
 required:
