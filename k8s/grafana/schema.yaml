@@ -7,7 +7,7 @@ properties:
   namespace:
     type: string
     x-google-marketplace:
-      type: namespace
+      type: NAMESPACE
   grafana.image:
     type: string
     default: $REGISTRY:$TAG
