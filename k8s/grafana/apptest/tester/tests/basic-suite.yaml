@@ -1,4 +1,10 @@
 actions:
+- name: Grafana listening
+  bashTest:
+    script: curl http://$APP_INSTANCE_NAME-grafana.$NAMESPACE.svc.cluster.local:3000
+    expect:
+      stdout:
+        contains: 'Grafana - Home'
 - name: Grafana login
   bashTest:
     script: curl -u $GF_SECURITY_ADMIN_USER:$GF_SECURITY_ADMIN_PASSWORD http://$APP_INSTANCE_NAME-grafana.$NAMESPACE.svc.cluster.local:3000
