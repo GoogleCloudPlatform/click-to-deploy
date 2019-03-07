@@ -27,4 +27,14 @@ spec:
           fieldPath: metadata.namespace
     - name: APP_INSTANCE_NAME
       value: ${APP_INSTANCE_NAME}
+    - name: GF_SECURITY_ADMIN_USER
+      valueFrom:
+        secretKeyRef:
+          name: ${APP_INSTANCE_NAME}-grafana
+          key: admin-user
+    - name: GF_SECURITY_ADMIN_PASSWORD
+      valueFrom:
+        secretKeyRef:
+         name: ${APP_INSTANCE_NAME}-grafana
+         key: admin-password
   restartPolicy: Never
