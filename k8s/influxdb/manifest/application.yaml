@@ -84,3 +84,5 @@ spec:
     kind: Secret
   - group: apps/v1beta2
     kind: StatefulSet
+  - group: v1
+    kind: Pod
