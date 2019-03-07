@@ -85,3 +85,5 @@ spec:
     kind: Service
   - group: v1
     kind: Secret
+  - group: v1
+    kind: Pod
