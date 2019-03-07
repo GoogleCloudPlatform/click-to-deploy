@@ -34,6 +34,7 @@ APP_TEST_PARAMETERS ?= { \
 app/build:: .build/grafana/debian9 \
             .build/grafana/deployer \
             .build/grafana/grafana \
+            .build/grafana/prometheus-to-sd \
             .build/grafana/tester
 
 
@@ -76,6 +77,16 @@ app/build:: .build/grafana/debian9 \
 	docker pull launcher.gcr.io/google/debian9
 	docker tag launcher.gcr.io/google/debian9 "$(REGISTRY)/grafana/debian9:$(TAG)"
 	docker push "$(REGISTRY)/grafana/debian9:$(TAG)"
+	@touch "$@"
+
+
+.build/grafana/prometheus-to-sd: .build/var/REGISTRY \
+                                 .build/var/TAG \
+                                 | .build/grafana
+	docker pull gcr.io/google-containers/prometheus-to-sd:v0.3.2
+	docker tag gcr.io/google-containers/prometheus-to-sd:v0.3.2 \
+	    "$(REGISTRY)/grafana/prometheus-to-sd:$(TAG)"
+	docker push "$(REGISTRY)/grafana/prometheus-to-sd:$(TAG)"
 	@touch "$@"
 
 

@@ -162,6 +162,8 @@ kubectl create namespace "$NAMESPACE"
 Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
+TODO(wgrzelak): Add support for metrics.
+
 ```shell
 helm template chart/grafana \
   --name $APP_INSTANCE_NAME \

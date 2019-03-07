@@ -35,6 +35,17 @@ properties:
         - type: ClusterRole
           rulesType: PREDEFINED
           rulesFromRoleName: cluster-admin
+  metrics.image:
+    type: string
+    default: $REGISTRY/prometheus-to-sd:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  metrics.enabled:
+    type: boolean
+    title: Enable Stackdriver Monitoring
+    description: 'Stackdriver Monitoring provides visibility into the performance, uptime, and overall health of cloud-powered applications. <a href="https://cloud.google.com/monitoring/">Learn more</a>'
+    # TODO(wgrzelak): switch to false before merge.
+    default: true
 required:
 - name
 - namespace
@@ -42,3 +53,5 @@ required:
 - grafana.initImage
 - grafana.password
 - grafana.serviceaccount
+- metrics.image
+- metrics.enabled
