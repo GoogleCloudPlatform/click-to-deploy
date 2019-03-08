@@ -1,19 +1,22 @@
-# PLEASE FIX THIS FILE
-# PLEASE FIX THIS FILE
-# PLEASE FIX THIS FILE
-#{{ .Values.prometheus.serviceAccount }}
-#{{ .Values.alertmanager.serviceAccount }}
-#{{ .Values.grafana.password }}
-#{{ .Values.nodeExporter.serviceAccount }}
-#{{ .Values.alertmanager.image }}
-#{{ .Release.Name }}
-#{{ .Values.kubeStateMetrics.image }}
-#{{ .Values.prometheus.replicas }}
-#{{ .Values.nodeExporter.image }}
-#{{ .Release.Namespace }}
-#{{ .Values.grafana.image }}
-#{{ .Values.testerImage }}
-#{{ .Values.grafana.serviceAccount }}
-#{{ .Values.prometheus.image }}
-#{{ .Values.prometheus.initImage }}
-#{{ .Values.kubeStateMetrics.serviceAccount }}
+prometheus:
+  image: null
+  initImage: null
+  serviceAccount: null
+  replicas: null
+
+alertmanager:
+  image: null
+  serviceAccount: nul
+
+kubeStateMetrics:
+  image: null
+  serviceAccount: nul
+
+nodeExporter:
+  image: null
+  serviceAccount: nul
+
+grafana:
+  image: null
+  serviceAccount: nul
+  password: null
