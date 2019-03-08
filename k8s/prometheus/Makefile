@@ -70,7 +70,7 @@ app/build:: .build/prometheus/alertmanager \
 
 .build/prometheus/deployer: deployer/* \
                             chart/prometheus/* \
-                          chart/prometheus/templates/* \
+                            chart/prometheus/templates/* \
                             schema.yaml \
                             .build/var/APP_DEPLOYER_IMAGE \
                             .build/var/MARKETPLACE_TOOLS_TAG \
