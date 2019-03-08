@@ -177,13 +177,16 @@ kubectl create namespace "$NAMESPACE"
 
 #### Expand the manifest template
 
-Use `envsubst` to expand the template. We recommend that you save the
+Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-awk 'FNR==1 {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_INFLUXDB $INFLUXDB_ADMIN_USER $INFLUXDB_ADMIN_PASSWORD' \
-  > "${APP_INSTANCE_NAME}_manifest.yaml"
+helm template chart/influxdb \
+  --name $APP_INSTANCE_NAME \
+  --namespace $NAMESPACE \
+  --set influxdbImage=$IMAGE_INFLUXDB \
+  --set admin.user=$INFLUXDB_ADMIN_USER \
+  --set admin.password=$INFLUXDB_ADMIN_PASSWORD > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 
 #### Apply the manifest to your Kubernetes cluster
