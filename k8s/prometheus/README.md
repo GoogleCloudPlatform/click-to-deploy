@@ -260,7 +260,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-helm template chart/prometheus
+helm template chart/prometheus \
   --name $APP_INSTANCE_NAME \
   --namespace $NAMESPACE \
   --set prometheus.serviceAccount=$PROMETHEUS_SERVICE_ACCOUNT \
