@@ -165,7 +165,8 @@ export WORDPRESS_ADMIN_PASSWORD="$(pwgen 20 1 | tr -d '\n' | base64)"
 
 #### Create namespace in your Kubernetes cluster
 
-If you use a different namespace than the `default`, run the command below to create a new namespace:
+If you use a different namespace than `default` or the namespace does not exist yet, run
+the command below to create a new namespace:
 
 ```shell
 kubectl create namespace "$NAMESPACE"
@@ -173,13 +174,19 @@ kubectl create namespace "$NAMESPACE"
 
 #### Expand the manifest template
 
-Use `envsubst` to expand the template. We recommend that you save the
+Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-awk 'FNR==1 {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_WORDPRESS $IMAGE_MYSQL $ROOT_DB_PASSWORD $WORDPRESS_DB_PASSWORD $WORDPRESS_ADMIN_EMAIL $WORDPRESS_ADMIN_PASSWORD' \
-  > "${APP_INSTANCE_NAME}_manifest.yaml"
+helm template chart/wordpress \
+  --name="$APP_INSTANCE_NAME" \
+  --namespace="$NAMESPACE" \
+  --set wordpressImage=$IMAGE_WORDPRESS \
+  --set db.image=$IMAGE_MYSQL \
+  --set db.rootPassword=$ROOT_DB_PASSWORD \
+  --set db.wordpressPassword=$WORDPRESS_DB_PASSWORD \
+  --set admin.email=$WORDPRESS_ADMIN_EMAIL \
+  --set admin.password=$WORDPRESS_ADMIN_PASSWORD > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 
 #### Apply the manifest to your Kubernetes cluster
