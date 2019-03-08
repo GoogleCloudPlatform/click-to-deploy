@@ -11,7 +11,7 @@ spec:
   updateStrategy:
     type: RollingUpdate
   serviceName: {{ .Release.Name }}-memcached-svc
-  replicas: {{ .Values.memcached.replicas}}
+  replicas: {{ .Values.memcached.replicas }}
   template:
     metadata:
       labels: *MemcachedDeploymentLabels

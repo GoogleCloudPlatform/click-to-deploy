@@ -32,7 +32,7 @@ app/build:: .build/memcached/deployer \
 
 .build/memcached/deployer: deployer/* \
                            chart/memcached/* \
-                          chart/memcached/templates/* \
+                           chart/memcached/templates/* \
                            schema.yaml \
                            .build/var/APP_DEPLOYER_IMAGE \
                            .build/var/MARKETPLACE_TOOLS_TAG \
