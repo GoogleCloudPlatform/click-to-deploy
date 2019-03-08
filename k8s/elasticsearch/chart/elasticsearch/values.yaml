@@ -1,0 +1,9 @@
+# PLEASE FIX THIS FILE
+# PLEASE FIX THIS FILE
+# PLEASE FIX THIS FILE
+#{{ .Release.Name }}
+#{{ .Values.elasticsearch.initImage }}
+#{{ .Values.elasticsearch.image }}
+#{{ .Values.elasticsearch.replicas }}
+#{{ .Release.Namespace }}
+#{{ .Values.testerImage }}
