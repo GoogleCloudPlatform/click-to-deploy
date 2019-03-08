@@ -190,11 +190,26 @@ kubectl create clusterrolebinding $FLUENTD_SERVICE_ACCOUNT-rule --clusterrole=$F
 
 #### Expand the manifest template
 
-Use `envsubst` to expand the template. We recommend that you save the
+# FIX IT !!!!
+# FIX IT !!!!
+# FIX IT !!!!
+```shell
+helm template chart/elastic-gke-logging
+  --name $APP_INSTANCE_NAME
+  --namespace $NAMESPACE
+  --set elasticsearch.replicas=$ELASTICSEARCH_REPLICAS
+  --set fluentd.serviceAccount=$FLUENTD_SERVICE_ACCOUNT
+  --set initImage=$IMAGE_INIT
+  --set elasticsearch.image=$IMAGE_ELASTICSEARCH
+  --set kibana.image=$IMAGE_KIBANA
+  --set fluentd.image=$IMAGE_FLUENTD
+```
+
+Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-awk 'FNR==1 {print "---"}{print}' manifest/* \
+helm template chart/elastic-gke-logging 'FNR==1 {print "---"}{print}' manifest/* \
   | envsubst '$APP_INSTANCE_NAME $NAMESPACE \
       $IMAGE_ELASTICSEARCH $IMAGE_KIBANA $IMAGE_FLUENTD $IMAGE_INIT $ELASTICSEARCH_REPLICAS $FLUENTD_SERVICE_ACCOUNT' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
