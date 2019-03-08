@@ -42,7 +42,7 @@ app/build:: .build/cassandra/cassandra \
 
 .build/cassandra/deployer: deployer/* \
                            chart/cassandra/* \
-                          chart/cassandra/templates/* \
+                           chart/cassandra/templates/* \
                            schema.yaml \
                            .build/var/APP_DEPLOYER_IMAGE \
                            .build/var/MARKETPLACE_TOOLS_TAG \

@@ -1,8 +1,3 @@
-# PLEASE FIX THIS FILE
-# PLEASE FIX THIS FILE
-# PLEASE FIX THIS FILE
-#{{ .Release.Name }}
-#{{ .Values.cassandra.image }}
-#{{ .Values.cassandra.replicas }}
-#{{ .Release.Namespace }}
-#{{ .Values.testerImage }}
+cassandra:
+  image: null
+  replicas: null
