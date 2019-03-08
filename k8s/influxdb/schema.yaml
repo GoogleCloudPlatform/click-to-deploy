@@ -1,32 +1,32 @@
 application_api_version: v1beta1
 properties:
-  APP_INSTANCE_NAME:
+  name:
     type: string
     x-google-marketplace:
       type: NAME
-  NAMESPACE:
+  namespace:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  IMAGE_INFLUXDB:
+  influxdbImage:
     type: string
     default: $REGISTRY:$TAG
     x-google-marketplace:
       type: IMAGE
-  INFLUXDB_ADMIN_USER:
+  admin.user:
     type: string
     title: InfluxDB admin username
     description: Username for administrator account of InfluxDB database
     default: influxdb-admin
-  INFLUXDB_ADMIN_PASSWORD:
+  admin.password:
     type: string
     x-google-marketplace:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 32
 required:
-- APP_INSTANCE_NAME
-- NAMESPACE
-- IMAGE_INFLUXDB
-- INFLUXDB_ADMIN_USER
-- INFLUXDB_ADMIN_PASSWORD
+- name
+- namespace
+- influxdbImage
+- admin.user
+- admin.password

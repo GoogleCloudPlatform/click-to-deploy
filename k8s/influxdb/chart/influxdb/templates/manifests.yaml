@@ -2,14 +2,14 @@ apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
   labels: &InfluxDBDeploymentLabels
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: influxdb-server
-  name: $APP_INSTANCE_NAME-influxdb
+  name: {{ .Release.Name }}-influxdb
 spec:
   replicas: 1
   selector:
     matchLabels: *InfluxDBDeploymentLabels
-  serviceName: $APP_INSTANCE_NAME-influxdb-svc
+  serviceName: {{ .Release.Name }}-influxdb-svc
   updateStrategy:
     type: RollingUpdate
   template:
@@ -19,7 +19,7 @@ spec:
       terminationGracePeriodSeconds: 180
       containers:
       - name: influxdb
-        image: $IMAGE_INFLUXDB
+        image: {{ .Values.influxdbImage }}
         imagePullPolicy: Always
         args: ["influxd"]
         env:
@@ -30,12 +30,12 @@ spec:
         - name: INFLUXDB_ADMIN_USER
           valueFrom:
             secretKeyRef:
-              name: $APP_INSTANCE_NAME-influxdb-secret
+              name: {{ .Release.Name }}-influxdb-secret
               key: influxdb-admin
         - name: INFLUXDB_ADMIN_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: $APP_INSTANCE_NAME-influxdb-secret
+              name: {{ .Release.Name }}-influxdb-secret
               key: influxdb-pass
         ports:
         - name: influxdb
@@ -58,11 +58,11 @@ spec:
           initialDelaySeconds: 5
           timeoutSeconds: 2
         volumeMounts:
-         - name: $APP_INSTANCE_NAME-data-pvc
+         - name: {{ .Release.Name }}-data-pvc
            mountPath: /var/lib/influxdb
   volumeClaimTemplates:
   - metadata:
-      name: $APP_INSTANCE_NAME-data-pvc
+      name: {{ .Release.Name }}-data-pvc
       labels: *InfluxDBDeploymentLabels
     spec:
       resources:
@@ -75,9 +75,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: $APP_INSTANCE_NAME-influxdb-svc
+  name: {{ .Release.Name }}-influxdb-svc
   labels:
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: influxdb-server
 spec:
   ports:
@@ -85,6 +85,6 @@ spec:
     port: 8086
     protocol: TCP
   selector:
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: influxdb-server
   type: ClusterIP # LoadBalancer

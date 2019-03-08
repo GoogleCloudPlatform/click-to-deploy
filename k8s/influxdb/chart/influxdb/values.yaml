@@ -1,0 +1,5 @@
+influxdbImage: null
+
+admin:
+  user: influxdb-admin
+  password: null
