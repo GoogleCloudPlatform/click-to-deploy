@@ -149,7 +149,7 @@ required:
 - nodeExporter.image
 - prometheus.image
 - grafana.image
-- prometheus.image_INIT
+- prometheus.initImage
 - prometheus.serviceAccount
 - kubeStateMetrics.serviceAccount
 - alertmanager.serviceAccount
