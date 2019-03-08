@@ -6,17 +6,17 @@ prometheus:
 
 alertmanager:
   image: null
-  serviceAccount: nul
+  serviceAccount: null
 
 kubeStateMetrics:
   image: null
-  serviceAccount: nul
+  serviceAccount: null
 
 nodeExporter:
   image: null
-  serviceAccount: nul
+  serviceAccount: null
 
 grafana:
   image: null
-  serviceAccount: nul
+  serviceAccount: null
   password: null
