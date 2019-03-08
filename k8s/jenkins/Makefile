@@ -38,7 +38,7 @@ app/build:: .build/jenkins/deployer \
 
 .build/jenkins/deployer: deployer/* \
                          chart/jenkins/* \
-                          chart/jenkins/templates/* \
+                         chart/jenkins/templates/* \
                          schema.yaml \
                          .build/var/APP_DEPLOYER_IMAGE \
                          .build/var/MARKETPLACE_TOOLS_TAG \

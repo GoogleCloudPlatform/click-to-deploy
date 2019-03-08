@@ -1,7 +1,2 @@
-# PLEASE FIX THIS FILE
-# PLEASE FIX THIS FILE
-# PLEASE FIX THIS FILE
-#{{ .Values.jenkins.image }}
-#{{ .Release.Name }}
-#{{ .Release.Namespace }}
-#{{ .Values.testerImage }}
+jenkins:
+  image: null
