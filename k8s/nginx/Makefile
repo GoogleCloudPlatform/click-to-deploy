@@ -11,16 +11,16 @@ APP_DEPLOYER_IMAGE ?= $(REGISTRY)/nginx/deployer:$(TAG)
 NAME ?= nginx-1
 
 ifdef IMAGE_NGINX
-  IMAGE_NGINX_FIELD = , "IMAGE_NGINX": "$(IMAGE_NGINX)"
+  IMAGE_NGINX_FIELD = , "nginx.image": "$(IMAGE_NGINX)"
 endif
 
 ifdef IMAGE_NGINX_INIT
-  IMAGE_NGINX_INIT_FIELD = , "IMAGE_NGINX_INIT": "$(IMAGE_NGINX_INIT)"
+  IMAGE_NGINX_INIT_FIELD = , "nginx.initImage": "$(IMAGE_NGINX_INIT)"
 endif
 
 APP_PARAMETERS ?= { \
-  "APP_INSTANCE_NAME": "$(NAME)", \
-  "NAMESPACE": "$(NAMESPACE)" \
+  "name": "$(NAME)", \
+  "namespace": "$(NAMESPACE)" \
   $(IMAGE_NGINX_FIELD) \
   $(IMAGE_NGINX_INIT_FIELD) \
 }
@@ -52,7 +52,8 @@ app/build:: .build/nginx/debian9  \
 
 
 .build/nginx/deployer: deployer/* \
-                       manifest/* \
+                       chart/nginx/* \
+                          chart/nginx/templates/* \
                        schema.yaml \
                        .build/var/APP_DEPLOYER_IMAGE \
                        .build/var/MARKETPLACE_TOOLS_TAG \

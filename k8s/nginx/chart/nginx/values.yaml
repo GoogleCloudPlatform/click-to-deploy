@@ -1,0 +1,9 @@
+# PLEASE FIX THIS FILE
+# PLEASE FIX THIS FILE
+# PLEASE FIX THIS FILE
+#{{ .Release.Name }}
+#{{ .Values.nginx.replicas }}
+#{{ .Release.Namespace }}
+#{{ .Values.testerImage }}
+#{{ .Values.nginx.initImage }}
+#{{ .Values.nginx.image }}
