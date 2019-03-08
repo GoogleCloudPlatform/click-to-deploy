@@ -64,7 +64,7 @@ app/build:: .build/elastic-gke-logging/elasticsearch \
 
 .build/elastic-gke-logging/deployer: deployer/* \
                                      chart/elastic-gke-logging/* \
-                          chart/elastic-gke-logging/templates/* \
+                                     chart/elastic-gke-logging/templates/* \
                                      schema.yaml \
                                      .build/var/APP_DEPLOYER_IMAGE \
                                      .build/var/MARKETPLACE_TOOLS_TAG \

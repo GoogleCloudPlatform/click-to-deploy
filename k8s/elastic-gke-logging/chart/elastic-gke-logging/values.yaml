@@ -1,12 +1,14 @@
-# PLEASE FIX THIS FILE
-# PLEASE FIX THIS FILE
-# PLEASE FIX THIS FILE
-#{{ .Values.elasticsearch.replicas }}
-#{{ .Values.fluentd.serviceAccount }}
-#{{ .Release.Name }}
-#{{ .Values.initImage }}
-#{{ .Values.elasticsearch.image }}
-#{{ .Values.kibana.image }}
-#{{ .Values.fluentd.image }}
-#{{ .Release.Namespace }}
-#{{ .Values.testerImage }}
+initImage: null
+
+elasticsearch:
+  image: null
+  replicas: null
+
+fluentd:
+  serviceAccount: null
+
+kibana:
+  image: null
+
+fluentd:
+  image: null
