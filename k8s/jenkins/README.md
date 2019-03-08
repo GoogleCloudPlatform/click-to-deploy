@@ -129,7 +129,7 @@ until you are ready to upgrade. To get the digest for the image, use the
 following script:
 
 ```shell
-export IMAGE_JENKINS=$(docker pull $IMAGE_JENKINS | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_JENKINS\")\"@sha256:\"\$3}")
+export IMAGE_JENKINS=$(docker pull $IMAGE_JENKINS | helm template chart/jenkins -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_JENKINS\")\"@sha256:\"\$3}")
 ```
 
 Create a certificate for Jenkins. If you already have a certificate that you
@@ -150,11 +150,21 @@ kubectl --namespace $NAMESPACE create secret generic $APP_INSTANCE_NAME-tls \
 
 #### Expand the manifest template
 
-Use `envsubst` to expand the template. We recommend that you save the
+# FIX IT !!!!
+# FIX IT !!!!
+# FIX IT !!!!
+```shell
+helm template chart/jenkins
+  --name $APP_INSTANCE_NAME
+  --namespace $NAMESPACE
+  --set jenkins.image=$IMAGE_JENKINS
+```
+
+Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-awk 'FNR==1 {print "---"}{print}' manifest/* \
+helm template chart/jenkins 'FNR==1 {print "---"}{print}' manifest/* \
   | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_JENKINS' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
