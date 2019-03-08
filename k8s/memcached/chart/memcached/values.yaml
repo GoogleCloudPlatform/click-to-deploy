@@ -1,0 +1,8 @@
+# PLEASE FIX THIS FILE
+# PLEASE FIX THIS FILE
+# PLEASE FIX THIS FILE
+#{{ .Release.Name }}
+#{{ .Values.memcached.replicas}}
+#{{ .Release.Namespace }}
+#{{ .Values.testerImage }}
+#{{ .Values.memcached.image }}

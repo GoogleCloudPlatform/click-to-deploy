@@ -10,8 +10,8 @@ $(info ---- TAG = $(TAG))
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/memcached/deployer:$(TAG)
 NAME ?= memcached-1
 APP_PARAMETERS ?= { \
-  "APP_INSTANCE_NAME": "$(NAME)", \
-  "NAMESPACE": "$(NAMESPACE)" \
+  "name": "$(NAME)", \
+  "namespace": "$(NAMESPACE)" \
 }
 
 TESTER_IMAGE ?= $(REGISTRY)/memcached/tester:$(TAG)
@@ -31,7 +31,8 @@ app/build:: .build/memcached/deployer \
 
 
 .build/memcached/deployer: deployer/* \
-                           manifest/* \
+                           chart/memcached/* \
+                          chart/memcached/templates/* \
                            schema.yaml \
                            .build/var/APP_DEPLOYER_IMAGE \
                            .build/var/MARKETPLACE_TOOLS_TAG \

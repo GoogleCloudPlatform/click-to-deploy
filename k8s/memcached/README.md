@@ -153,11 +153,22 @@ kubectl create namespace "$NAMESPACE"
 
 #### Expand the manifest template
 
-Use `envsubst` to expand the template. We recommend that you save the
+# FIX IT !!!!
+# FIX IT !!!!
+# FIX IT !!!!
+```shell
+helm template chart/memcached
+  --name $APP_INSTANCE_NAME
+  --namespace $NAMESPACE
+  --set memcached.replicas}}=$REPLICAS
+  --set memcached.image=$IMAGE_MEMCACHED
+```
+
+Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-awk 'FNR==1 {print "---"}{print}' manifest/* \
+helm template chart/memcached 'FNR==1 {print "---"}{print}' manifest/* \
   | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_MEMCACHED $REPLICAS' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
@@ -310,11 +321,11 @@ Console, or using `kubectl`.
 
 1. Expand the manifest template
 
-    Use `envsubst` to expand the template. We recommend that you save the
+    Use `helm template` to expand the template. We recommend that you save the
     expanded manifest file for future updates to the application.
 
     ```shell
-    awk 'FNR==1 {print "---"}{print}' manifest/* \
+    helm template chart/memcached 'FNR==1 {print "---"}{print}' manifest/* \
       | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_MEMCACHED $REPLICAS' \
       > "${APP_INSTANCE_NAME}_manifest.yaml"
     ```
