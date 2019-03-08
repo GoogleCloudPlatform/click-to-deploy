@@ -1,19 +1,19 @@
 applicationApiVersion: v1beta1
 properties:
-  APP_INSTANCE_NAME:
+  name:
     type: string
     x-google-marketplace:
       type: NAME
-  NAMESPACE:
+  namespace:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  IMAGE_CASSANDRA:
+  cassandra.image:
     type: string
     default: $REGISTRY:$TAG
     x-google-marketplace:
       type: IMAGE
-  REPLICAS:
+  cassandra.replicas:
     type: integer
     title: Replicas
     description: The number of Pod replicas
@@ -21,10 +21,10 @@ properties:
     minimum: 3
     maximum: 11
 required:
-- APP_INSTANCE_NAME
-- NAMESPACE
-- IMAGE_CASSANDRA
-- REPLICAS
+- name
+- namespace
+- cassandra.image
+- cassandra.replicas
 x-google-marketplace:
   clusterConstraints:
     resources:

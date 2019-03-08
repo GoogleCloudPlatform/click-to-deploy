@@ -161,11 +161,22 @@ kubectl create namespace "$NAMESPACE"
 
 #### Expand the manifest template
 
-Use `envsubst` to expand the template. We recommend that you save the
+# FIX IT !!!!
+# FIX IT !!!!
+# FIX IT !!!!
+```shell
+helm template chart/cassandra
+  --name $APP_INSTANCE_NAME
+  --namespace $NAMESPACE
+  --set cassandra.image=$IMAGE_CASSANDRA
+  --set cassandra.replicas=$REPLICAS
+```
+
+Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-awk 'FNR==1 {print "---"}{print}' manifest/* \
+helm template chart/cassandra 'FNR==1 {print "---"}{print}' manifest/* \
   | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_CASSANDRA $REPLICAS' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
