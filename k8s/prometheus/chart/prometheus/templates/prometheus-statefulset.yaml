@@ -1,14 +1,14 @@
 apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
-  name: $APP_INSTANCE_NAME-prometheus
+  name: {{ .Release.Name }}-prometheus
   labels: &Labels
     k8s-app: prometheus
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: prometheus
 spec:
-  serviceName: "$APP_INSTANCE_NAME-prometheus"
-  replicas: $PROMETHEUS_REPLICAS
+  serviceName: "{{ .Release.Name }}-prometheus"
+  replicas: {{ .Values.prometheus.replicas }}
   podManagementPolicy: "Parallel"
   updateStrategy:
     type: "RollingUpdate"
@@ -18,19 +18,19 @@ spec:
     metadata:
       labels: *Labels
     spec:
-      serviceAccountName: $PROMETHEUS_SERVICE_ACCOUNT
+      serviceAccountName: {{ .Values.prometheus.serviceAccount }}
       initContainers:
       - name: "init-chown-data"
-        image: $IMAGE_PROMETHEUS_INIT
+        image: {{ .Values.prometheus.initImage }}
         imagePullPolicy: Always
         command: ["chown", "-R", "65534:65534", "/data"]
         volumeMounts:
-        - name: $APP_INSTANCE_NAME-prometheus-data
+        - name: {{ .Release.Name }}-prometheus-data
           mountPath: /data
           subPath: ""
       containers:
         - name: prometheus-server
-          image: $IMAGE_PROMETHEUS
+          image: {{ .Values.prometheus.image }}
           imagePullPolicy: "IfNotPresent"
           args:
             - --config.file=/etc/config/prometheus.yaml
@@ -60,14 +60,14 @@ spec:
           volumeMounts:
             - name: config-volume
               mountPath: /etc/config
-            - name: $APP_INSTANCE_NAME-prometheus-data
+            - name: {{ .Release.Name }}-prometheus-data
               mountPath: /data
               subPath: ""
       terminationGracePeriodSeconds: 300
       volumes:
         - name: config-volume
           configMap:
-            name: $APP_INSTANCE_NAME-prometheus-config
+            name: {{ .Release.Name }}-prometheus-config
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -80,7 +80,7 @@ spec:
             topologyKey: "kubernetes.io/hostname"
   volumeClaimTemplates:
   - metadata:
-      name: $APP_INSTANCE_NAME-prometheus-data
+      name: {{ .Release.Name }}-prometheus-data
       labels: *Labels
     spec:
       storageClassName: standard

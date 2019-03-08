@@ -8,36 +8,36 @@ APP_DEPLOYER_IMAGE ?= $(REGISTRY)/prometheus/deployer:$(TAG)
 NAME ?= prometheus-1
 
 ifdef IMAGE_PROMETHEUS
-  IMAGE_PROMETHEUS_FIELD = , "IMAGE_PROMETHEUS": "$(IMAGE_PROMETHEUS)"
+  IMAGE_PROMETHEUS_FIELD = , "prometheus.image": "$(IMAGE_PROMETHEUS)"
 endif
 
 ifdef IMAGE_ALERTMANAGER
-  IMAGE_ALERTMANAGER_FIELD = , "IMAGE_ALERTMANAGER": "$(IMAGE_ALERTMANAGER)"
+  IMAGE_ALERTMANAGER_FIELD = , "alertmanager.image": "$(IMAGE_ALERTMANAGER)"
 endif
 
 ifdef IMAGE_NODE_EXPORTER
-  IMAGE_NODE_EXPORTER_FIELD = , "IMAGE_NODE_EXPORTER": "$(IMAGE_NODE_EXPORTER)"
+  IMAGE_NODE_EXPORTER_FIELD = , "nodeExporter.image": "$(IMAGE_NODE_EXPORTER)"
 endif
 
 ifdef IMAGE_KUBE_STATE_METRICS
-  IMAGE_KUBE_STATE_METRICS_FIELD = , "IMAGE_KUBE_STATE_METRICS": "$(IMAGE_KUBE_STATE_METRICS)"
+  IMAGE_KUBE_STATE_METRICS_FIELD = , "kubeStateMetrics.image": "$(IMAGE_KUBE_STATE_METRICS)"
 endif
 
 ifdef IMAGE_GRAFANA
-  IMAGE_GRAFANA_FIELD = , "IMAGE_GRAFANA": "$(IMAGE_GRAFANA)"
+  IMAGE_GRAFANA_FIELD = , "grafana.image": "$(IMAGE_GRAFANA)"
 endif
 
 ifdef IMAGE_PROMETHEUS_INIT
-  IMAGE_PROMETHEUS_INIT_FIELD = , "IMAGE_PROMETHEUS_INIT": "$(IMAGE_PROMETHEUS_INIT)"
+  IMAGE_PROMETHEUS_INIT_FIELD = , "prometheus.initImage": "$(IMAGE_PROMETHEUS_INIT)"
 endif
 
 ifdef PROMETHEUS_REPLICAS
-  PROMETHEUS_REPLICAS_FIELD = , "PROMETHEUS_REPLICAS": "$(PROMETHEUS_REPLICAS)"
+  PROMETHEUS_REPLICAS_FIELD = , "prometheus.replicas": "$(PROMETHEUS_REPLICAS)"
 endif
 
 APP_PARAMETERS ?= { \
-  "APP_INSTANCE_NAME": "$(NAME)", \
-  "NAMESPACE": "$(NAMESPACE)" \
+  "name": "$(NAME)", \
+  "namespace": "$(NAMESPACE)" \
   $(IMAGE_ALERTMANAGER_FIELD) \
   $(IMAGE_KUBE_STATE_METRICS_FIELD) \
   $(IMAGE_NODE_EXPORTER_FIELD) \
@@ -69,7 +69,8 @@ app/build:: .build/prometheus/alertmanager \
 
 
 .build/prometheus/deployer: deployer/* \
-                            manifest/* \
+                            chart/prometheus/* \
+                          chart/prometheus/templates/* \
                             schema.yaml \
                             .build/var/APP_DEPLOYER_IMAGE \
                             .build/var/MARKETPLACE_TOOLS_TAG \

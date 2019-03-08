@@ -4,9 +4,9 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: $APP_INSTANCE_NAME-prometheus-config
+  name: {{ .Release.Name }}-prometheus-config
   labels:
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: prometheus
 data:
   alerts.yaml: "\"groups\": \n- \"name\": \"kubernetes-absent\"\n  \"rules\": \n  -
@@ -286,9 +286,9 @@ data:
     rejected\"\n    \"expr\": |\n      increase(prometheus_target_scrapes_sample_duplicate_timestamp_total{job=\"prometheus\"}[5m])
     > 0\n    \"for\": \"10m\"\n    \"labels\": \n      \"severity\": \"warning\"\n"
   prometheus.yaml: "\"alerting\": \n  \"alertmanagers\": \n  - \"kubernetes_sd_configs\":
-    \n    - \"namespaces\": \n        \"names\": \n        - \"${NAMESPACE}\"\n      \"role\":
+    \n    - \"namespaces\": \n        \"names\": \n        - \"{{ .Release.Namespace }}\"\n      \"role\":
     \"endpoints\"\n    \"path_prefix\": \"/\"\n    \"relabel_configs\": \n    - \"action\":
-    \"keep\"\n      \"regex\": \"${NAMESPACE};alertmanager\"\n      \"source_labels\":
+    \"keep\"\n      \"regex\": \"{{ .Release.Namespace }};alertmanager\"\n      \"source_labels\":
     \n      - \"__meta_kubernetes_namespace\"\n      - \"__meta_kubernetes_service_label_k8s_app\"\n
     \   - \"action\": \"keep\"\n      \"regex\": \"http\"\n      \"source_labels\":
     \n      - \"__meta_kubernetes_endpoint_port_name\"\n    \"scheme\": \"http\"\n
@@ -338,7 +338,7 @@ data:
     \ \"relabel_configs\": \n  - \"action\": \"labelmap\"\n    \"regex\": \"__meta_kubernetes_service_label_(.+)\"\n
     \ - \"action\": \"replace\"\n    \"regex\": \"([^:]+)(?::\\\\d+)?\"\n    \"replacement\":
     \"$1:9093\"\n    \"source_labels\": \n    - \"__address__\"\n    \"target_label\":
-    \"__address__\"\n  - \"action\": \"keep\"\n    \"regex\": \"${NAMESPACE};alertmanager\"\n
+    \"__address__\"\n  - \"action\": \"keep\"\n    \"regex\": \"{{ .Release.Namespace }};alertmanager\"\n
     \   \"source_labels\": \n    - \"__meta_kubernetes_namespace\"\n    - \"__meta_kubernetes_service_label_k8s_app\"\n
     \ - \"action\": \"replace\"\n    \"source_labels\": \n    - \"__meta_kubernetes_namespace\"\n
     \   \"target_label\": \"namespace\"\n  - \"action\": \"replace\"\n    \"source_labels\":
@@ -373,7 +373,7 @@ data:
     \"instance\"\n- \"job_name\": \"kube-state-metrics\"\n  \"kubernetes_sd_configs\":
     \n  - \"role\": \"service\"\n  \"relabel_configs\": \n  - \"action\": \"labelmap\"\n
     \   \"regex\": \"__meta_kubernetes_service_label_(.+)\"\n  - \"action\": \"keep\"\n
-    \   \"regex\": \"${NAMESPACE};kube-state-metrics\"\n    \"source_labels\": \n
+    \   \"regex\": \"{{ .Release.Namespace }};kube-state-metrics\"\n    \"source_labels\": \n
     \   - \"__meta_kubernetes_namespace\"\n    - \"__meta_kubernetes_service_label_k8s_app\"\n-
     \"job_name\": \"kubelet\"\n  \"kubernetes_sd_configs\": \n  - \"role\": \"node\"\n
     \ \"relabel_configs\": \n  - \"action\": \"labelmap\"\n    \"regex\": \"__meta_kubernetes_node_label_(.+)\"\n
@@ -384,7 +384,7 @@ data:
     \   \"regex\": \"__meta_kubernetes_pod_label_(.+)\"\n  - \"action\": \"replace\"\n
     \   \"regex\": \"([^:]+)(?::\\\\d+)?\"\n    \"replacement\": \"$1:9100\"\n    \"source_labels\":
     \n    - \"__address__\"\n    \"target_label\": \"__address__\"\n  - \"action\":
-    \"keep\"\n    \"regex\": \"${NAMESPACE};node-exporter\"\n    \"source_labels\":
+    \"keep\"\n    \"regex\": \"{{ .Release.Namespace }};node-exporter\"\n    \"source_labels\":
     \n    - \"__meta_kubernetes_namespace\"\n    - \"__meta_kubernetes_pod_label_k8s_app\"\n
     \ - \"action\": \"replace\"\n    \"source_labels\": \n    - \"__meta_kubernetes_namespace\"\n
     \   \"target_label\": \"namespace\"\n  - \"action\": \"replace\"\n    \"source_labels\":
@@ -395,7 +395,7 @@ data:
     \   \"regex\": \"__meta_kubernetes_pod_label_(.+)\"\n  - \"action\": \"replace\"\n
     \   \"regex\": \"([^:]+)(?::\\\\d+)?\"\n    \"replacement\": \"$1:9090\"\n    \"source_labels\":
     \n    - \"__address__\"\n    \"target_label\": \"__address__\"\n  - \"action\":
-    \"keep\"\n    \"regex\": \"${NAMESPACE};prometheus\"\n    \"source_labels\": \n
+    \"keep\"\n    \"regex\": \"{{ .Release.Namespace }};prometheus\"\n    \"source_labels\": \n
     \   - \"__meta_kubernetes_namespace\"\n    - \"__meta_kubernetes_pod_label_k8s_app\"\n
     \ - \"action\": \"replace\"\n    \"source_labels\": \n    - \"__meta_kubernetes_namespace\"\n
     \   \"target_label\": \"namespace\"\n  - \"action\": \"replace\"\n    \"source_labels\":
