@@ -48,7 +48,7 @@ app/build:: .build/elasticsearch/elasticsearch \
 
 .build/elasticsearch/deployer: deployer/* \
                                chart/elasticsearch/* \
-                          chart/elasticsearch/templates/* \
+                               chart/elasticsearch/templates/* \
                                schema.yaml \
                                .build/var/APP_DEPLOYER_IMAGE \
                                .build/var/MARKETPLACE_TOOLS_TAG \
