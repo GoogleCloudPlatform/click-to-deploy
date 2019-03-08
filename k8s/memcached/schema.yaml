@@ -24,4 +24,4 @@ required:
 - name
 - namespace
 - memcached.image
-- memcached.replicas}}
+- memcached.replicas
