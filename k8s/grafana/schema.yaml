@@ -44,8 +44,7 @@ properties:
     type: boolean
     title: Enable Stackdriver Monitoring
     description: Stackdriver Monitoring provides visibility into the performance, uptime, and overall health of cloud-powered applications
-    # TODO(wgrzelak): switch to false before merge.
-    default: true
+    default: false
 required:
 - name
 - namespace
