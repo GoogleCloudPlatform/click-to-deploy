@@ -1,0 +1,11 @@
+wordpressImage: null
+
+db:
+  image: null
+  rootPassword: null
+  wordpressPassword: null
+
+admin:
+  username: admin
+  email: admin@example.com
+  password: null
