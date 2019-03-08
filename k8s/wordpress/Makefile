@@ -64,7 +64,8 @@ app/build:: .build/wordpress/deployer \
 
 
 .build/wordpress/deployer: deployer/* \
-                           chart/* \
+                           chart/wordpress/* \
+                           chart/wordpress/templates/* \
                            schema.yaml \
                            .build/var/APP_DEPLOYER_IMAGE \
                            .build/var/MARKETPLACE_TOOLS_TAG \
