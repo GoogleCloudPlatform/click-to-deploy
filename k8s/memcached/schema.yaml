@@ -13,7 +13,7 @@ properties:
     default: $REGISTRY:$TAG
     x-google-marketplace:
       type: IMAGE
-  memcached.replicas}}:
+  memcached.replicas:
     type: integer
     title: Replicas
     description: The number of Pods in the solution
