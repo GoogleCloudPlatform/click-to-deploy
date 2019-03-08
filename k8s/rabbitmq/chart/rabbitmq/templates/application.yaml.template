@@ -1,13 +1,13 @@
 apiVersion: app.k8s.io/v1beta1
 kind: Application
 metadata:
-  name: "$APP_INSTANCE_NAME"
+  name: "{{ .Release.Name }}"
   annotations:
     kubernetes-engine.cloud.google.com/icon: >-
       data:image/png;base64,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
     marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": "rabbitmq", "partner_name": "Google Click to Deploy"}'
   labels:
-    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/name: "{{ .Release.Name }}"
 spec:
   descriptor:
     type: RabbitMQ
@@ -50,16 +50,16 @@ spec:
       node:
 
       ```
-      kubectl exec -it $APP_INSTANCE_NAME-rabbitmq-0 --namespace $NAMESPACE -- rabbitmqctl cluster_status
+      kubectl exec -it {{ .Release.Name }}-rabbitmq-0 --namespace {{ .Release.Namespace }} -- rabbitmqctl cluster_status
       ```
 
       # Authorization
 
-      The default username is `$RABBITMQ_DEFAULT_USER`. Use `kubectl` to get the generated password:
+      The default username is `{{ .Values.rabbitmq.user }}`. Use `kubectl` to get the generated password:
 
       ```shell
-      kubectl get secret/$APP_INSTANCE_NAME-rabbitmq-secret \
-        --namespace $NAMESPACE \
+      kubectl get secret/{{ .Release.Name }}-rabbitmq-secret \
+        --namespace {{ .Release.Namespace }} \
         --output=jsonpath='{.data.rabbitmq-pass}' | base64 --decode
       ```
 
@@ -69,8 +69,8 @@ spec:
       external IP address for the service, run the following command:
 
       ```
-      kubectl patch service/$APP_INSTANCE_NAME-rabbitmq-svc \
-        --namespace $NAMESPACE \
+      kubectl patch service/{{ .Release.Name }}-rabbitmq-svc \
+        --namespace {{ .Release.Namespace }} \
         --patch '{"spec": {"type": "LoadBalancer"}}'
       ```
 
@@ -82,8 +82,8 @@ spec:
       following command to get the external IP of the RabbitMQ service:
 
       ```
-      SERVICE_IP=$(kubectl get service/$APP_INSTANCE_NAME-rabbitmq-svc \
-        --namespace $NAMESPACE \
+      SERVICE_IP=$(kubectl get service/{{ .Release.Name }}-rabbitmq-svc \
+        --namespace {{ .Release.Namespace }} \
         --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
       echo "http://${SERVICE_IP}:15672"
@@ -95,7 +95,7 @@ spec:
       **Option 2:** Use port forwarding:
 
       ```
-      kubectl port-forward svc/$APP_INSTANCE_NAME-rabbitmq-svc --namespace $NAMESPACE 15672
+      kubectl port-forward svc/{{ .Release.Name }}-rabbitmq-svc --namespace {{ .Release.Namespace }} 15672
       ```
 
       To access the RabbitMQ management UI, open [http://127.0.0.1:15672](http://127.0.0.1:15672).
@@ -106,24 +106,24 @@ spec:
     type: Reference
     valueFrom:
       serviceRef:
-        name: $APP_INSTANCE_NAME-rabbitmq-svc
+        name: {{ .Release.Name }}-rabbitmq-svc
   - name: RabbitMQ username
-    value: '$RABBITMQ_DEFAULT_USER'
+    value: '{{ .Values.rabbitmq.user }}'
   - name: RabbitMQ password
     type: Reference
     valueFrom:
       secretKeyRef:
         key: rabbitmq-pass
-        name: $APP_INSTANCE_NAME-rabbitmq-secret
+        name: {{ .Release.Name }}-rabbitmq-secret
   - name: Erlang cookie
     type: Reference
     valueFrom:
       secretKeyRef:
         key: rabbitmq-erlang-cookie
-        name: $APP_INSTANCE_NAME-rabbitmq-secret
+        name: {{ .Release.Name }}-rabbitmq-secret
   selector:
     matchLabels:
-      app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+      app.kubernetes.io/name: "{{ .Release.Name }}"
   componentKinds:
   - group: v1
     kind: ConfigMap

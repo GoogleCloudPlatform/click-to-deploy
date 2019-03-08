@@ -11,32 +11,32 @@ APP_DEPLOYER_IMAGE ?= $(REGISTRY)/rabbitmq/deployer:$(TAG)
 NAME ?= rabbitmq-1
 
 ifdef IMAGE_RABBITMQ
-  IMAGE_RABBITMQ_FIELD = , "IMAGE_RABBITMQ": "$(IMAGE_RABBITMQ)"
+  IMAGE_RABBITMQ_FIELD = , "rabbitmq.image": "$(IMAGE_RABBITMQ)"
 endif
 
 ifdef IMAGE_RABBITMQ_INIT
-  IMAGE_RABBITMQ_INIT_FIELD = , "IMAGE_RABBITMQ_INIT": "$(IMAGE_RABBITMQ_INIT)"
+  IMAGE_RABBITMQ_INIT_FIELD = , "rabbitmq.initImage": "$(IMAGE_RABBITMQ_INIT)"
 endif
 
 ifdef REPLICAS
-  REPLICAS_FIELD = , "REPLICAS": "$(REPLICAS)"
+  REPLICAS_FIELD = , "rabbitmq.replicas": "$(REPLICAS)"
 endif
 
 ifdef RABBITMQ_ERLANG_COOKIE
-  RABBITMQ_ERLANG_COOKIE_FIELD = , "RABBITMQ_ERLANG_COOKIE": "$(RABBITMQ_ERLANG_COOKIE)"
+  RABBITMQ_ERLANG_COOKIE_FIELD = , "rabbitmq.erlangCookie": "$(RABBITMQ_ERLANG_COOKIE)"
 endif
 
 ifdef RABBITMQ_DEFAULT_USER
-  RABBITMQ_DEFAULT_USER_FIELD = , "RABBITMQ_DEFAULT_USER": "$(RABBITMQ_DEFAULT_USER)"
+  RABBITMQ_DEFAULT_USER_FIELD = , "rabbitmq.user": "$(RABBITMQ_DEFAULT_USER)"
 endif
 
 ifdef RABBITMQ_DEFAULT_PASS
-  RABBITMQ_DEFAULT_PASS_FIELD = , "RABBITMQ_DEFAULT_PASS": "$(RABBITMQ_DEFAULT_PASS)"
+  RABBITMQ_DEFAULT_PASS_FIELD = , "rabbitmq.password": "$(RABBITMQ_DEFAULT_PASS)"
 endif
 
 APP_PARAMETERS ?= { \
-  "APP_INSTANCE_NAME": "$(NAME)", \
-  "NAMESPACE": "$(NAMESPACE)" \
+  "name": "$(NAME)", \
+  "namespace": "$(NAMESPACE)" \
   $(IMAGE_RABBITMQ_FIELD) \
   $(IMAGE_RABBITMQ_INIT_FIELD) \
   $(REPLICAS_FIELD) \
@@ -72,7 +72,8 @@ app/build:: .build/rabbitmq/debian9  \
 
 
 .build/rabbitmq/deployer: deployer/* \
-                          manifest/* \
+                          chart/rabbitmq/* \
+                          chart/rabbitmq/templates/* \
                           schema.yaml \
                           .build/var/APP_DEPLOYER_IMAGE \
                           .build/var/MARKETPLACE_TOOLS_TAG \
