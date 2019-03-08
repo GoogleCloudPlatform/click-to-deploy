@@ -27,3 +27,8 @@ COPY --from=build /tmp/jenkins.tar.gz /data/chart/
 COPY --from=build /tmp/test/jenkins.tar.gz /data-test/chart/
 COPY apptest/deployer/schema.yaml /data-test/
 COPY --from=build /tmp/schema.yaml /data/
+
+RUN mv -f /bin/deploy.sh /bin/deploy-original.sh \
+    && cp /bin/clean_iam_resources.sh /bin/clean_iam_resources-original.sh \
+    && echo '#!/bin/bash\nexit' > /bin/clean_iam_resources.sh
+ADD deployer/entrypoint.sh /bin/deploy.sh
