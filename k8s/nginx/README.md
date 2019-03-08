@@ -169,25 +169,16 @@ kubectl create namespace "$NAMESPACE"
 
 #### Expand the manifest template
 
-# FIX IT !!!!
-# FIX IT !!!!
-# FIX IT !!!!
+Use `helm template` to expand the template. We recommend that you save the
+expanded manifest file for future updates to the application.
+
 ```shell
 helm template chart/nginx
   --name $APP_INSTANCE_NAME
   --namespace $NAMESPACE
   --set nginx.replicas=$REPLICAS
   --set nginx.initImage=$IMAGE_NGINX_INIT
-  --set nginx.image=$IMAGE_NGINX
-```
-
-Use `helm template` to expand the template. We recommend that you save the
-expanded manifest file for future updates to the application.
-
-```shell
-helm template chart/nginx 'FNR==1 {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_NGINX $IMAGE_NGINX_INIT $REPLICAS' \
-  > "${APP_INSTANCE_NAME}_manifest.yaml"
+  --set nginx.image=$IMAGE_NGINX > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster

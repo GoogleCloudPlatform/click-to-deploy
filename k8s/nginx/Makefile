@@ -53,7 +53,7 @@ app/build:: .build/nginx/debian9  \
 
 .build/nginx/deployer: deployer/* \
                        chart/nginx/* \
-                          chart/nginx/templates/* \
+                       chart/nginx/templates/* \
                        schema.yaml \
                        .build/var/APP_DEPLOYER_IMAGE \
                        .build/var/MARKETPLACE_TOOLS_TAG \
