@@ -260,9 +260,22 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-helm template chart/prometheus 'FNR==1 {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_PROMETHEUS $IMAGE_ALERTMANAGER $IMAGE_KUBE_STATE_METRICS $IMAGE_NODE_EXPORTER $IMAGE_GRAFANA $IMAGE_PROMETHEUS_INIT $NAMESPACE $GRAFANA_GENERATED_PASSWORD $PROMETHEUS_REPLICAS $PROMETHEUS_REPLICAS $PROMETHEUS_SERVICE_ACCOUNT $KUBE_STATE_METRICS_SERVICE_ACCOUNT $ALERTMANAGER_SERVICE_ACCOUNT $GRAFANA_SERVICE_ACCOUNT $NODE_EXPORTER_SERVICE_ACCOUNT' \
-  > "${APP_INSTANCE_NAME}_manifest.yaml"
+helm template chart/prometheus
+  --name $APP_INSTANCE_NAME \
+  --namespace $NAMESPACE \
+  --set prometheus.serviceAccount=$PROMETHEUS_SERVICE_ACCOUNT \
+  --set alertmanager.serviceAccount=$ALERTMANAGER_SERVICE_ACCOUNT \
+  --set grafana.password=$GRAFANA_GENERATED_PASSWORD \
+  --set nodeExporter.serviceAccount=$NODE_EXPORTER_SERVICE_ACCOUNT \
+  --set alertmanager.image=$IMAGE_ALERTMANAGER \
+  --set kubeStateMetrics.image=$IMAGE_KUBE_STATE_METRICS \
+  --set prometheus.replicas=$PROMETHEUS_REPLICAS \
+  --set nodeExporter.image=$IMAGE_NODE_EXPORTER \
+  --set grafana.image=$IMAGE_GRAFANA \
+  --set grafana.serviceAccount=$GRAFANA_SERVICE_ACCOUNT \
+  --set prometheus.image=$IMAGE_PROMETHEUS \
+  --set prometheus.initImage=$IMAGE_PROMETHEUS_INIT \
+  --set kubeStateMetrics.serviceAccount=$KUBE_STATE_METRICS_SERVICE_ACCOUNT > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 
 #### Apply the manifest to your Kubernetes cluster
