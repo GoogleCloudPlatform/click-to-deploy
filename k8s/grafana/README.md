@@ -117,10 +117,16 @@ export NAMESPACE=default
 ```
 
 Configure password for Grafana administrator account (the value must be
-encoded in base64)
+encoded in base64):
 
 ```shell
 export GRAFANA_GENERATED_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1 | tr -d '\n' | base64)
+```
+
+Enable Stackdriver Metrics Exporter:
+
+```shell
+export GRAFANA_METRICS_EXPORTER_ENABLED=false
 ```
 
 Configure the container images:
@@ -162,15 +168,14 @@ kubectl create namespace "$NAMESPACE"
 Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
-TODO(wgrzelak): Add support for metrics.
-
 ```shell
 helm template chart/grafana \
   --name $APP_INSTANCE_NAME \
   --namespace $NAMESPACE \
   --set grafana.image=$IMAGE_GRAFANA \
   --set grafana.initImage=$IMAGE_GRAFANA_INIT \
-  --set grafana.password=$GRAFANA_GENERATED_PASSWORD > ${APP_INSTANCE_NAME}_manifest.yaml
+  --set grafana.password=$GRAFANA_GENERATED_PASSWORD \
+  --set metrics.enabled=$GRAFANA_METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 
 #### Apply the manifest to your Kubernetes cluster
