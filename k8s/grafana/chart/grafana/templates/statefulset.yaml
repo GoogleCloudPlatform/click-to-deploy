@@ -1,39 +1,39 @@
 apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
-  name: $APP_INSTANCE_NAME-grafana
+  name: {{ .Release.Name }}-grafana
   labels: &GrafanaDeploymentLabels
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: grafana-server
 spec:
   replicas: 1
   selector:
     matchLabels: *GrafanaDeploymentLabels
-  serviceName: $APP_INSTANCE_NAME-grafana
+  serviceName: {{ .Release.Name }}-grafana
   updateStrategy:
     type: RollingUpdate
   template:
     metadata:
       labels: *GrafanaDeploymentLabels
     spec:
-      serviceAccountName: $GRAFANA_SERVICE_ACCOUNT
+      serviceAccountName: {{ .Values.grafana.serviceaccount }}
       initContainers:
         - name: "init-chmod-data"
-          image: $IMAGE_GRAFANA_INIT
+          image: {{ .Values.grafana.initImage }}
           imagePullPolicy: "IfNotPresent"
           command: ["chmod", "777", "/var/lib/grafana"]
           volumeMounts:
-          - name: $APP_INSTANCE_NAME-grafana-data
+          - name: {{ .Release.Name }}-grafana-data
             mountPath: "/var/lib/grafana"
       containers:
         - name: grafana
-          image: $IMAGE_GRAFANA
+          image: {{ .Values.grafana.image }}
           imagePullPolicy: Always
           volumeMounts:
             - name: config
               mountPath: "/etc/grafana/grafana.ini"
               subPath: grafana.ini
-            - name: $APP_INSTANCE_NAME-grafana-data
+            - name: {{ .Release.Name }}-grafana-data
               mountPath: "/var/lib/grafana"
               subPath: grafana-data
           ports:
@@ -44,12 +44,12 @@ spec:
             - name: GF_SECURITY_ADMIN_USER
               valueFrom:
                 secretKeyRef:
-                  name: $APP_INSTANCE_NAME-grafana
+                  name: {{ .Release.Name }}-grafana
                   key: admin-user
             - name: GF_SECURITY_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: $APP_INSTANCE_NAME-grafana
+                  name: {{ .Release.Name }}-grafana
                   key: admin-password
           livenessProbe:
             httpGet:
@@ -73,10 +73,10 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: $APP_INSTANCE_NAME-grafana
+            name: {{ .Release.Name }}-grafana
   volumeClaimTemplates:
   - metadata:
-      name: $APP_INSTANCE_NAME-grafana-data
+      name: {{ .Release.Name }}-grafana-data
     spec:
       storageClassName: standard
       accessModes:
