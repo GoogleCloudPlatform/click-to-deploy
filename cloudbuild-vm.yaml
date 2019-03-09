@@ -27,30 +27,42 @@ steps:
 - id: Download Service Account Key
   name: gcr.io/cloud-builders/gsutil
   args:
-  - 'cp'
-  - '${_SERVICE_ACCOUNT_JSON_GCS}'
-  - 'service-account.json'
+  - cp
+  - ${_SERVICE_ACCOUNT_JSON_GCS}
+  - service-account.json
+
+- id: Pull Imagebuilder Image
+  name: gcr.io/cloud-builders/docker
+  dir: vm
+  entrypoint: bash
+  args:
+  - -exc
+  - |
+    TAG="$$(cat ./IMAGEBUILDER_TAG)"
+    docker pull "gcr.io/cloud-marketplace-tools/vm/imagebuilder:$$TAG"
+    docker tag "gcr.io/cloud-marketplace-tools/vm/imagebuilder:$$TAG" "gcr.io/cloud-marketplace-tools/vm/imagebuilder:local"
 
 - id: Build VM-based Solution
   name: gcr.io/cloud-builders/docker
   waitFor:
   - Download Service Account Key
+  - Pull Imagebuilder Image
   args:
-  - 'run'
-  - '--env=PROJECT=${PROJECT_ID}'
-  - '--env=BUCKET=${_LOGS_BUCKET}'
-  - '--env=KEY_FILE_PATH=/service-account.json'
-  - '--env=CHEF_DIR=/chef'
-  - '--env=PACKER_DIR=/packer/templates'
-  - '--env=TESTS_DIR=/tests'
-  - '--env=SOLUTION_NAME=${_SOLUTION_NAME}'
-  - '--env=RUN_TESTS=true'
-  - '--env=ATTACH_LICENSE=true'
-  - '--env=LICENSE_PROJECT_NAME=click-to-deploy-images'
-  - '--env=USE_INTERNAL_IP=true'
-  - '--env=TESTS_CUSTOM_METADATA=google-c2d-startup-enable=0'
-  - '--volume=/workspace/vm/chef:/chef:ro'
-  - '--volume=/workspace/vm/packer:/packer:ro'
-  - '--volume=/workspace/vm/tests:/tests:ro'
-  - '--volume=/workspace/service-account.json:/service-account.json:ro'
-  - 'gcr.io/cloud-marketplace-tools/vm/imagebuilder:0.1.0'
+  - run
+  - --env=PROJECT=${PROJECT_ID}
+  - --env=BUCKET=${_LOGS_BUCKET}
+  - --env=KEY_FILE_PATH=/service-account.json
+  - --env=CHEF_DIR=/chef
+  - --env=PACKER_DIR=/packer/templates
+  - --env=TESTS_DIR=/tests
+  - --env=SOLUTION_NAME=${_SOLUTION_NAME}
+  - --env=RUN_TESTS=true
+  - --env=ATTACH_LICENSE=true
+  - --env=LICENSE_PROJECT_NAME=click-to-deploy-images
+  - --env=USE_INTERNAL_IP=true
+  - --env=TESTS_CUSTOM_METADATA=google-c2d-startup-enable=0
+  - --volume=/workspace/vm/chef:/chef:ro
+  - --volume=/workspace/vm/packer:/packer:ro
+  - --volume=/workspace/vm/tests:/tests:ro
+  - --volume=/workspace/service-account.json:/service-account.json:ro
+  - gcr.io/cloud-marketplace-tools/vm/imagebuilder:local

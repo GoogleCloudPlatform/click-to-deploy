@@ -70,15 +70,15 @@ envsubst < sentinel.conf.template > sentinel.conf
 rm sentinel.conf.template
 
 echo "Enabling both services: redis-server and redis-sentinel..."
-
-update-rc.d redis-server defaults
-update-rc.d redis-sentinel defaults
+systemctl daemon-reload
+systemctl enable redis-server
+systemctl enable redis-sentinel
 
 echo "Starting redis-server service.."
-service redis-server start
+systemctl start redis-server
 
 echo "Starting redis-sentinel service.."
-service redis-sentinel start
+systemctl start redis-sentinel
 
 # Wait until redis is up and running
 until [[ "$(redis-cli ping)" == "PONG" ]]; do

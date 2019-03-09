@@ -16,4 +16,4 @@
 
 include_recipe 'mysql8-book::configure-apt-repo-version-8.0'
 include_recipe 'mysql8-book::install-and-configure-mysqld'
-
+include_recipe 'mysql8-book::install-mysql-tools'

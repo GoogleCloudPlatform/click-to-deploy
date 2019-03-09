@@ -9,8 +9,8 @@ $(info ---- TAG = $(TAG))
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/influxdb/deployer:$(TAG)
 NAME ?= influxdb-1
 APP_PARAMETERS ?= { \
-  "APP_INSTANCE_NAME": "$(NAME)", \
-  "NAMESPACE": "$(NAMESPACE)" \
+  "name": "$(NAME)", \
+  "namespace": "$(NAMESPACE)" \
 }
 
 TESTER_IMAGE ?= $(REGISTRY)/influxdb/tester:$(TAG)
@@ -30,7 +30,8 @@ app/build:: .build/influxdb/deployer \
 
 
 .build/influxdb/deployer: deployer/* \
-                           manifest/* \
+                           chart/influxdb/* \
+                           chart/influxdb/templates/* \
                            schema.yaml \
                            .build/var/APP_DEPLOYER_IMAGE \
                            .build/var/MARKETPLACE_TOOLS_TAG \

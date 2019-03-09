@@ -38,10 +38,10 @@ describe file('/etc/redis/redis_node.conf') do
   it { should exist }
 end
 
-describe file('/etc/init.d/redis-server') do
+describe file('/etc/systemd/system/redis-server.service') do
   it { should exist }
 end
 
-describe file('/etc/init.d/redis-sentinel') do
+describe file('/etc/systemd/system/redis-sentinel.service') do
   it { should exist }
 end
