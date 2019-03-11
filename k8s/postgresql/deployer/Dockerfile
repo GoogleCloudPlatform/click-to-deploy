@@ -21,8 +21,6 @@ RUN cat /tmp/schema.yaml \
     > /tmp/schema.yaml.new \
     && mv /tmp/schema.yaml.new /tmp/schema.yaml
 
-ADD deployer/deploy_with_tests.sh /bin/deploy_with_tests.sh
-ADD deployer/deploy.sh /bin/deploy.sh
 
 
 FROM gcr.io/cloud-marketplace-tools/k8s/deployer_helm:$MARKETPLACE_TOOLS_TAG
@@ -30,3 +28,10 @@ COPY --from=build /tmp/postgresql.tar.gz /data/chart/
 COPY --from=build /tmp/test/postgresql.tar.gz /data-test/chart/
 COPY apptest/deployer/schema.yaml /data-test/
 COPY --from=build /tmp/schema.yaml /data/
+
+RUN mv -f /bin/deploy.sh /bin/deploy-original.sh \
+    && cp /bin/clean_iam_resources.sh /bin/clean_iam_resources-original.sh \
+    && echo '#!/bin/bash\nexit' > /bin/clean_iam_resources.sh
+
+ADD deployer/deploy_with_tests.sh /bin/deploy_with_tests.sh
+ADD deployer/deploy.sh /bin/deploy.sh

@@ -81,4 +81,3 @@ show-config:
 	    && docker build --tag "$(TESTER_IMAGE)" .
 	docker push "$(TESTER_IMAGE)"
 	@touch "$@"
-# TBD
