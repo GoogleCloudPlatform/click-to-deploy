@@ -1,0 +1,8 @@
+rabbitmq:
+  image: null
+  initImage: null
+  replicas: 3
+  erlangCookie: null
+  user: rabbit
+  password: null
+  serviceAccount: null
