@@ -26,16 +26,12 @@ spec:
       url: https://cloud.google.com/solutions/#click-to-deploy
 
     links:
-    - description: 'Agones Homepage'
-      url: https://agones.dev/
-    - description: 'Agones Documentation'
-      url: https://agones.dev/site/docs/
-    - description: 'Getting Started'
-      url: https://agones.dev/site/docs/getting-started/
+    - description: 'Agones with Click to Deploy'
+      url: https://agones.dev/site/docs/installation/click-to-deploy/
 
     notes: |-
-      Now that you have deployed Agones into your cluster, please follow [these instructions](https://agones.dev/site/docs/getting-started/) to get started with Agones.
-      Please note that you should create your resources inside the namespace that was selected during the installation for click-to-deploy Agones to work.
+      Now that you have deployed Agones into your cluster, please follow [these instructions](https://agones.dev/site/docs/installation/click-to-deploy/) to finalize the Agones installation.
+      Please note that there are some important follow-up steps in the instructions that are required to have a fully working solution.
 
   info:
   - name: Agones Controller
