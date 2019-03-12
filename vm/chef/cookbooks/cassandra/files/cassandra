@@ -1,0 +1,131 @@
+#!/bin/bash -eu
+#
+# Copyright 2017 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# This script runs for about 3-4 minutes - it is time that is required to load
+# Alfresco webapps on Tomcat
+#
+# This script assumes that cassandra has already been installed and that
+# a bare-bones service is running on each of the members of the cluster.
+#
+# The script will:
+#   * Set up a persistent disk for Cassandra:
+#     * Mount the persistent disk
+#     * Move cassandra files to the persistent disk
+#     * Update the cassandra configuration file
+
+source /opt/c2d/c2d-utils || exit 1
+
+function prepare_cassandra_dir() {
+  local -r dir_path="$1"
+  mkdir -p "${dir_path}"
+  chown -R cassandra:cassandra "${dir_path}"
+}
+
+readonly cassandra_cluster_name="$(get_attribute_value "cassandra_cluster_name")"
+readonly instances="$(get_attribute_value "cassandra_node_hostnames")"
+readonly cassandra_internal_ip="$(get_internal_ip)"
+
+# Calculate number of concurrent writes to configure for the service.
+readonly available_processors_count="$(nproc)"
+readonly cassandra_concurrent_writes="$((available_processors_count * 8))"
+
+# Set up the machine-dependent settings.
+readonly cpu_count="$(grep -c "^core id" /proc/cpuinfo)"
+readonly available_memory_gb="$(awk '/MemAvailable/ \
+  { print int($2 / 1024^2 ) }' /proc/meminfo)"
+
+# Heap newsize is set according to:
+# https://docs.datastax.com/en/cassandra/2.1/cassandra/operations/ops_tune_jvm_c.html#opsTuneJVM__tuning-the-java-heap
+readonly java_heap_newsize="$(( cpu_count * 100 ))M"
+
+# Mounted disk parameters.
+readonly cassandra_disk_name="$(hostname)-data"
+readonly cassandra_mount_dir=/cassandra
+
+# Get my and my peers' private IPs.
+cassandra_seeds="127.0.0.1"
+for instance in ${instances}; do
+  until ping -n -c1 "${instance}" > /dev/null 2>&1; do
+    echo "Waiting for host '${instance}' to answer ping..." && sleep 3
+  done
+  ip="$(getent hosts "${instance}" | awk '{print $1}' )"
+  cassandra_seeds="${cassandra_seeds},${ip}"
+done
+declare -r seeds
+
+service cassandra stop
+
+# Prepare new disk to serve as Cassandra store.
+format_and_mount_disk "${cassandra_disk_name}" "${cassandra_mount_dir}"
+
+# Clean the content and link /var/lib/cassandra to newly mounted disk.
+rm -r /var/lib/cassandra
+ln -s "${cassandra_mount_dir}" /var/lib/cassandra
+
+chown cassandra:cassandra /cassandra
+chown -h cassandra:cassandra /var/lib/cassandra
+
+prepare_cassandra_dir "${cassandra_mount_dir}/data" # data dir
+prepare_cassandra_dir "${cassandra_mount_dir}/commitlog" # log dir
+prepare_cassandra_dir "${cassandra_mount_dir}/saved_caches" # saved caches
+prepare_cassandra_dir "${cassandra_mount_dir}/dumps" # heap dump dirs
+
+# export env variables required by config template.
+export cassandra_seeds
+export cassandra_internal_ip
+export cassandra_cluster_name
+export cassandra_concurrent_writes
+export cassandra_mount_dir
+
+# Update the cassandra.yaml file
+readonly conf_file=/etc/cassandra/cassandra.yaml
+readonly conf_template_file=/etc/cassandra/cassandra.yaml.template
+
+mv "${conf_file}" "${conf_file}.orig"
+envsubst '${cassandra_seeds},
+  ${cassandra_internal_ip},
+  ${cassandra_cluster_name},
+  ${cassandra_concurrent_writes}' < "${conf_template_file}" > "${conf_file}"
+rm "${conf_template_file}"
+
+# Update the cassandra-env.sh file.
+readonly env_file=/etc/cassandra/cassandra-env.sh
+readonly env_template_file=/etc/cassandra/cassandra-env.sh.template
+
+mv "${env_file}" "${env_file}.orig"
+envsubst '${cassandra_mount_dir},
+  ${cassandra_internal_ip}' < "${env_template_file}" > "${env_file}"
+rm "${env_template_file}"
+
+# MAX heap size is automatically calculated by Cassandra, but for high-memory
+# instance, it is recommended to set the max_heap_size to 12 gigabytes.
+# https://docs.datastax.com/en/cassandra/2.1/cassandra/operations/ops_tune_jvm_c.html
+if [[ "${available_memory_gb}" -ge 30 ]]; then
+  sed -i "s/#MAX_HEAP_SIZE=\".*\"\$/MAX_HEAP_SIZE=\"12G\"/" "${env_file}"
+  sed -i "s/#HEAP_NEWSIZE=\".*\"\$/HEAP_NEWSIZE=\"${java_heap_newsize}\"/" "${env_file}"
+fi
+
+service cassandra start
+
+# Validate if Cassandra is up and running.
+echo "Checking if Cassandra is up and running..."
+
+until nodetool status | grep UN; do
+  echo "Waiting for the cluster to report all nodes as up and running..."
+  sleep 5
+done
+
+echo "Cassandra install validation complete"

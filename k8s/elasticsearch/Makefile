@@ -11,38 +11,44 @@ APP_DEPLOYER_IMAGE ?= $(REGISTRY)/elasticsearch/deployer:$(TAG)
 NAME ?= elasticsearch-1
 
 ifdef REPLICAS
-  REPLICAS_FIELD = , "REPLICAS": "$(REPLICAS)"
+  REPLICAS_FIELD = , "elasticsearch.replicas": "$(REPLICAS)"
 endif
 
 ifdef IMAGE_ELASTICSEARCH
-  IMAGE_ELASTICSEARCH_FIELD = , "IMAGE_ELASTICSEARCH": "$(IMAGE_ELASTICSEARCH)"
+  IMAGE_ELASTICSEARCH_FIELD = , "elasticsearch.image": "$(IMAGE_ELASTICSEARCH)"
 endif
 
 ifdef IMAGE_INIT
-  IMAGE_INIT_FIELD = , "IMAGE_INIT": "$(IMAGE_INIT)"
+  IMAGE_INIT_FIELD = , "elasticsearch.initImage": "$(IMAGE_INIT)"
 endif
 
 APP_PARAMETERS ?= { \
-  "APP_INSTANCE_NAME": "$(NAME)", \
-  "NAMESPACE": "$(NAMESPACE)" \
+  "name": "$(NAME)", \
+  "namespace": "$(NAMESPACE)" \
   $(REPLICAS_FIELD) \
   $(IMAGE_ELASTICSEARCH_FIELD) \
   $(IMAGE_INIT_FIELD) \
 }
-APP_TEST_PARAMETERS ?= {}
+
+TESTER_IMAGE ?= $(REGISTRY)/elasticsearch/tester:$(TAG)
+
+APP_TEST_PARAMETERS ?= { \
+  "testerImage": "$(TESTER_IMAGE)" \
+}
 
 
 app/build:: .build/elasticsearch/elasticsearch \
             .build/elasticsearch/deployer \
-            .build/elasticsearch/ubuntu16_04
-
+            .build/elasticsearch/ubuntu16_04 \
+            .build/elasticsearch/tester
 
 .build/elasticsearch: | .build
 	mkdir -p "$@"
 
 
 .build/elasticsearch/deployer: deployer/* \
-                               manifest/* \
+                               chart/elasticsearch/* \
+                               chart/elasticsearch/templates/* \
                                schema.yaml \
                                .build/var/APP_DEPLOYER_IMAGE \
                                .build/var/MARKETPLACE_TOOLS_TAG \
@@ -77,4 +83,14 @@ app/build:: .build/elasticsearch/elasticsearch \
 	docker tag launcher.gcr.io/google/ubuntu16_04 \
 	    "$(REGISTRY)/elasticsearch/ubuntu16_04:$(TAG)"
 	docker push "$(REGISTRY)/elasticsearch/ubuntu16_04:$(TAG)"
+	@touch "$@"
+
+
+.build/elasticsearch/tester: .build/var/TESTER_IMAGE \
+                             $(shell find apptest -type f) \
+                             | .build/elasticsearch
+	$(call print_target,$@)
+	cd apptest/tester \
+	    && docker build --tag "$(TESTER_IMAGE)" .
+	docker push "$(TESTER_IMAGE)"
 	@touch "$@"

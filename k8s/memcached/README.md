@@ -30,6 +30,11 @@ Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 
 ## Command line instructions
 
+You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local workstation in the
+further instructions.
+
+[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/GoogleCloudPlatform/click-to-deploy&cloudshell_working_dir=k8s/memcached)
+
 ### Prerequisites
 
 #### Set up command-line tools
@@ -132,10 +137,10 @@ until you are ready to upgrade. To get the digest for the image, use the
 following script:
 
 ```shell
-repo=$(echo $IMAGE_MEMCACHED | cut -d: -f1);
-digest=$(docker pull $IMAGE_MEMCACHED | sed -n -e 's/Digest: //p');
-export $i="$repo@$digest";
-env | grep $i;
+repo=$(echo $IMAGE_MEMCACHED | cut -d: -f1)
+digest=$(docker pull $IMAGE_MEMCACHED | sed -n -e 's/Digest: //p')
+export IMAGE_MEMCACHED="$repo@$digest"
+env | grep IMAGE_MEMCACHED
 ```
 
 #### Create namespace in your Kubernetes cluster

@@ -32,6 +32,11 @@ Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 
 ## Command line instructions
 
+You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local workstation in the
+further instructions.
+
+[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/GoogleCloudPlatform/click-to-deploy&cloudshell_working_dir=k8s/grafana)
+
 ### Prerequisites
 
 #### Set up command-line tools
@@ -111,6 +116,13 @@ export APP_INSTANCE_NAME=grafana-1
 export NAMESPACE=default
 ```
 
+Configure password for Grafana administrator account (the value must be
+encoded in base64)
+
+```shell
+export GRAFANA_GENERATED_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1 | tr -d '\n' | base64)
+```
+
 Configure the container images:
 
 ```shell
@@ -147,13 +159,16 @@ kubectl create namespace "$NAMESPACE"
 
 #### Expand the manifest template
 
-Use `envsubst` to expand the template. We recommend that you save the
+Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-awk 'FNR==1 {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_GRAFANA $IMAGE_GRAFANA_INIT' \
-  > "${APP_INSTANCE_NAME}_manifest.yaml"
+helm template chart/grafana \
+  --name $APP_INSTANCE_NAME \
+  --namespace $NAMESPACE \
+  --set grafana.image=$IMAGE_GRAFANA \
+  --set grafana.initImage=$IMAGE_GRAFANA_INIT \
+  --set grafana.password=$GRAFANA_GENERATED_PASSWORD > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 
 #### Apply the manifest to your Kubernetes cluster

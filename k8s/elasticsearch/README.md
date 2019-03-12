@@ -39,6 +39,11 @@ Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 
 ## Command line instructions
 
+You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local workstation in the
+further instructions.
+
+[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/GoogleCloudPlatform/click-to-deploy&cloudshell_working_dir=k8s/elasticsearch)
+
 ### Prerequisites
 
 #### Set up command-line tools
@@ -158,13 +163,16 @@ kubectl create namespace "$NAMESPACE"
 
 #### Expand the manifest template
 
-Use `envsubst` to expand the template. We recommend that you save the
+Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-awk 'FNR==1 {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_ELASTICSEARCH $IMAGE_INIT $REPLICAS' \
-  > "${APP_INSTANCE_NAME}_manifest.yaml"
+helm template chart/elasticsearch \
+  --name $APP_INSTANCE_NAME \
+  --namespace $NAMESPACE \
+  --set elasticsearch.initImage=$IMAGE_INIT \
+  --set elasticsearch.image=$IMAGE_ELASTICSEARCH \
+  --set elasticsearch.replicas=$REPLICAS > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster

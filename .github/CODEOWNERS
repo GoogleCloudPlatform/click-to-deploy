@@ -1,0 +1,5 @@
+# See https://help.github.com/en/articles/about-code-owners
+# for more info about CODEOWNERS file.
+
+# GCB configuration.
+cloudbuild-vm.yaml  @wgrzelak @khajduczenia @huyhg

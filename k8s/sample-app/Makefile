@@ -24,11 +24,17 @@ APP_PARAMETERS ?= { \
   $(IMAGE_SAMPLE_APP_FIELD) \
   $(SAMPLE_APP_PARAMETER1_FIELD) \
 }
-APP_TEST_PARAMETERS ?= {}
+
+TESTER_IMAGE ?= $(REGISTRY)/sample-app/tester:$(TAG)
+
+APP_TEST_PARAMETERS ?= { \
+  "testerImage": "$(TESTER_IMAGE)" \
+}
 
 
 app/build:: .build/sample-app/deployer \
-            .build/sample-app/sample-app
+            .build/sample-app/sample-app \
+            .build/sample-app/tester
 
 
 .build/sample-app: | .build
@@ -55,10 +61,20 @@ app/build:: .build/sample-app/deployer \
 
 
 .build/sample-app/sample-app: .build/var/REGISTRY \
-                    .build/var/TAG \
-                    | .build/sample-app
+                              .build/var/TAG \
+                              | .build/sample-app
+
 	docker pull launcher.gcr.io/google/nginx1:$(TAG)
 	docker tag launcher.gcr.io/google/nginx1:$(TAG) \
 	    "$(REGISTRY)/sample-app:$(TAG)"
 	docker push "$(REGISTRY)/sample-app:$(TAG)"
+
+
+.build/sample-app/tester: .build/var/TESTER_IMAGE \
+                          $(shell find apptest -type f) \
+                          | .build/sample-app
+	$(call print_target,$@)
+	cd apptest/tester \
+	    && docker build --tag "$(TESTER_IMAGE)" .
+	docker push "$(TESTER_IMAGE)"
 	@touch "$@"

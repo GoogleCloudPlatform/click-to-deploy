@@ -52,6 +52,11 @@ Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 
 ## Command line instructions
 
+You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local workstation in the
+further instructions.
+
+[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/GoogleCloudPlatform/click-to-deploy&cloudshell_working_dir=k8s/elastic-gke-logging)
+
 ### Prerequisites
 
 #### Set up command-line tools
@@ -172,6 +177,17 @@ If you use a different namespace than the `default`, run the command below to cr
 kubectl create namespace "$NAMESPACE"
 ```
 
+#### Create Fluentd service account
+
+Create Fluentd service account and role binding:
+
+```shell
+export FLUENTD_SERVICE_ACCOUNT="$APP_INSTANCE_NAME-fluentdserviceaccount"
+kubectl create serviceaccount $FLUENTD_SERVICE_ACCOUNT --namespace $NAMESPACE
+kubectl create clusterrole $FLUENTD_SERVICE_ACCOUNT-role --verb=get,list,watch --resource=pods,namespaces
+kubectl create clusterrolebinding $FLUENTD_SERVICE_ACCOUNT-rule --clusterrole=$FLUENTD_SERVICE_ACCOUNT-role --serviceaccount=$NAMESPACE:$FLUENTD_SERVICE_ACCOUNT
+```
+
 #### Expand the manifest template
 
 Use `envsubst` to expand the template. We recommend that you save the
@@ -180,7 +196,7 @@ expanded manifest file for future updates to the application.
 ```shell
 awk 'FNR==1 {print "---"}{print}' manifest/* \
   | envsubst '$APP_INSTANCE_NAME $NAMESPACE \
-      $IMAGE_ELASTICSEARCH $IMAGE_KIBANA $IMAGE_FLUENTD $IMAGE_INIT $ELASTICSEARCH_REPLICAS' \
+      $IMAGE_ELASTICSEARCH $IMAGE_KIBANA $IMAGE_FLUENTD $IMAGE_INIT $ELASTICSEARCH_REPLICAS $FLUENTD_SERVICE_ACCOUNT' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
@@ -250,7 +266,7 @@ KUBE_PROXY_PORT=8080
 kubectl proxy -p $KUBE_PROXY_PORT
 ```
 
-In your main terminal, run:
+And then in your main terminal, run:
 
 ```shell
 KUBE_PROXY_PORT=8080
@@ -314,7 +330,7 @@ click **Discover**.
 To get the direct URL for the Discover page, run:
 
 ```shell
-echo "${KIBANA_URL}/discover"
+echo "${KIBANA_URL}/app/kibana#/discover"
 ```
 
 ## Saved searches

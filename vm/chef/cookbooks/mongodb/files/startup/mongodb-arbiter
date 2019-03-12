@@ -1,0 +1,50 @@
+#!/bin/bash -eu
+#
+# Copyright 2017 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# This script assumes that mongodb has already been installed and that
+# a bare-bones, unconfigured, service is running on this instance.
+#
+# The script will:
+#   * Add this instance to the replicaset
+#   * Set the replication key
+#
+# The script here does not explicitly make this instance an arbiter.
+# It is a task of the PRIMARY to add INSTANCES (rs.add()) and
+# ARBITERS (rs.addArb()) to the replicaset.  See mongodb_setup.sh.
+
+source /opt/c2d/c2d-utils || exit 1
+
+readonly is_mongodb_arbiter="$(get_attribute_value "is_mongodb_arbiter")"
+readonly mongodb_replicaset="$(get_attribute_value "mongodb_replicaset_name")"
+
+# Arbiter node configuration - for all other, exit
+if [[ "${is_mongodb_arbiter}" == "False" ]]; then
+  rm /etc/mongod.arb.conf.template
+  exit 0
+fi
+
+service mongod stop
+
+# Export the variable required by the configuration file.
+export mongodb_replicaset
+
+# Fill in the configuration file template.
+cd /etc
+mv mongod.conf mongod.conf.orig
+envsubst < mongod.arb.conf.template > mongod.conf
+rm mongod.arb.conf.template
+
+service mongod start
