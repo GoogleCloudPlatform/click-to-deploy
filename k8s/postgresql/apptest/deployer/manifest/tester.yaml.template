@@ -6,19 +6,19 @@ apiVersion: v1
 # kind: Job
 kind: Pod
 metadata:
-  name: "{{ .Release.Name }}-tester"
+  name: "${APP_INSTANCE_NAME}-tester"
   labels:
-    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/name: "${APP_INSTANCE_NAME}"
   annotations:
     marketplace.cloud.google.com/verification: test
 spec:
   # TODO(click-to-deploy/issues/324): Add deadline after migrating to Job
   # activeDeadlineSeconds: 1200
   # TODO(click-to-deploy/issues/323): Remove following dependency on internal name
-  serviceAccountName: {{ .Release.Name }}-deployer-sa
+  serviceAccountName: ${APP_INSTANCE_NAME}-deployer-sa
   containers:
   - name: tester
-    image: "{{ .Values.testerImage }}"
+    image: "${testerImage}"
     imagePullPolicy: Always
     env:
     - name: NAMESPACE
@@ -26,5 +26,5 @@ spec:
         fieldRef:
           fieldPath: metadata.namespace
     - name: APP_INSTANCE_NAME
-      value: {{ .Release.Name }}
+      value: ${APP_INSTANCE_NAME}
   restartPolicy: Never
