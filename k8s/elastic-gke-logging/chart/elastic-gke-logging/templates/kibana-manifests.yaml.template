@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: $APP_INSTANCE_NAME-kibana-configmap
+  name: {{ .Release.Name }}-kibana-configmap
   labels:
-    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: kibana-server
 data:
   index-logstash.json: |-
@@ -120,9 +120,9 @@ data:
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: $APP_INSTANCE_NAME-kibana
+  name: {{ .Release.Name }}-kibana
   labels: &KibanaDeploymentLabels
-    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: kibana-server
 spec:
   selector:
@@ -134,11 +134,11 @@ spec:
     spec:
       containers:
       - name: kibana
-        image: $IMAGE_KIBANA
+        image: {{ .Values.kibana.image }}
         imagePullPolicy: Always
         env:
         - name: ELASTICSEARCH_URL
-          value: "http://$APP_INSTANCE_NAME-elasticsearch-svc:9200"
+          value: "http://{{ .Release.Name }}-elasticsearch-svc:9200"
         - name: KIBANA_DEFAULTAPPID
           value: "discover"
         ports:
@@ -158,9 +158,9 @@ spec:
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: $APP_INSTANCE_NAME-kibana-init-job
+  name: {{ .Release.Name }}-kibana-init-job
   labels: &KibanaInitJobLabels
-    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: kibana-server-init
 spec:
   template:
@@ -169,11 +169,11 @@ spec:
     spec:
       initContainers:
       - name: kibana-waiter
-        image: $IMAGE_INIT
+        image: {{ .Values.initImage }}
         command: ['/bin/bash', '-c']
         args:
         - |
-          kibana_url="http://${APP_INSTANCE_NAME}-kibana-svc:5601"
+          kibana_url="http://{{ .Release.Name }}-kibana-svc:5601"
           apt-get update && apt-get install -y jq
           echo "Waiting for Kibana..."
           # Wait for Kibana API:
@@ -187,11 +187,11 @@ spec:
           echo "Kibana available."
       containers:
       - name: kibana-init
-        image: $IMAGE_INIT
+        image: {{ .Values.initImage }}
         command: ['/bin/bash', '-c']
         args: 
         - |
-          kibana_url="http://${APP_INSTANCE_NAME}-kibana-svc:5601"
+          kibana_url="http://{{ .Release.Name }}-kibana-svc:5601"
           index_pattern_id="logstash-*"
 
           # Create index pattern to catch 'logstash-*':
@@ -223,21 +223,21 @@ spec:
       volumes:
       - name: config
         configMap:
-          name: $APP_INSTANCE_NAME-kibana-configmap
+          name: {{ .Release.Name }}-kibana-configmap
   backoffLimit: 1
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: $APP_INSTANCE_NAME-kibana-svc
+  name: {{ .Release.Name }}-kibana-svc
   labels:
-    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: kibana-server
 spec:
   ports:
   - name: http
     port: 5601
   selector:
-    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: kibana-server
   type: ClusterIP
