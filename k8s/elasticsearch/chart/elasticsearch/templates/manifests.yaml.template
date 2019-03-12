@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: $APP_INSTANCE_NAME-configmap
+  name: {{ .Release.Name }}-configmap
   labels:
-    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: elasticsearch-server
 data:
   elasticsearch.yml: |
@@ -31,15 +31,15 @@ data:
 apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
-  name: $APP_INSTANCE_NAME-elasticsearch
+  name: {{ .Release.Name }}-elasticsearch
   labels: &ElasticsearchDeploymentLabels
-    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: elasticsearch-server
 spec:
   selector:
     matchLabels: *ElasticsearchDeploymentLabels
-  serviceName: $APP_INSTANCE_NAME-elasticsearch-svc
-  replicas: $REPLICAS
+  serviceName: {{ .Release.Name }}-elasticsearch-svc
+  replicas: {{ .Values.elasticsearch.replicas }}
   updateStrategy:
       # The procedure for updating the Elasticsearch cluster is described at
       # https://www.elastic.co/guide/en/elasticsearch/reference/current/rolling-upgrades.html
@@ -53,7 +53,7 @@ spec:
       # This init container sets the appropriate limits for mmap counts on the hosting node.
       # https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html
       - name: set-max-map-count
-        image: $IMAGE_INIT
+        image: {{ .Values.elasticsearch.initImage }}
         imagePullPolicy: IfNotPresent
         securityContext:
           privileged: true
@@ -63,7 +63,7 @@ spec:
         - 'if [[ "$(sysctl vm.max_map_count --values)" -lt 262144 ]]; then sysctl -w vm.max_map_count=262144; fi'
       containers:
       - name: elasticsearch
-        image: $IMAGE_ELASTICSEARCH
+        image: {{ .Values.elasticsearch.image }}
         imagePullPolicy: Always
         env:
         - name: NODE_NAME
@@ -71,9 +71,9 @@ spec:
             fieldRef:
               fieldPath: metadata.name
         - name: CLUSTER_NAME
-          value: "$APP_INSTANCE_NAME-cluster"
+          value: "{{ .Release.Name }}-cluster"
         - name: DISCOVERY_SERVICE
-          value: "$APP_INSTANCE_NAME-elasticsearch-svc"
+          value: "{{ .Release.Name }}-elasticsearch-svc"
         - name: BACKUP_REPO_PATH
           value: ""
         ports:
@@ -88,7 +88,7 @@ spec:
         - name: configmap
           mountPath: /etc/elasticsearch/log4j2.properties
           subPath: log4j2.properties
-        - name: $APP_INSTANCE_NAME-elasticsearch-pvc
+        - name: {{ .Release.Name }}-elasticsearch-pvc
           mountPath: /usr/share/elasticsearch/data
         readinessProbe:
           httpGet:
@@ -108,12 +108,12 @@ spec:
       volumes:
       - name: configmap
         configMap:
-          name: "$APP_INSTANCE_NAME-configmap"
+          name: "{{ .Release.Name }}-configmap"
   volumeClaimTemplates:
   - metadata:
-      name: $APP_INSTANCE_NAME-elasticsearch-pvc
+      name: {{ .Release.Name }}-elasticsearch-pvc
       labels:
-        app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+        app.kubernetes.io/name: "{{ .Release.Name }}"
         app.kubernetes.io/component: elasticsearch-server
     spec:
       accessModes: [ "ReadWriteOnce" ]
@@ -125,9 +125,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: $APP_INSTANCE_NAME-elasticsearch-svc
+  name: {{ .Release.Name }}-elasticsearch-svc
   labels:
-    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: elasticsearch-server
 spec:
   ports:
@@ -136,6 +136,6 @@ spec:
   - name: tcp-transport
     port: 9300
   selector:
-    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: elasticsearch-server
   type: ClusterIP
