@@ -14,7 +14,7 @@ actions:
     script: curl -u $GF_SECURITY_ADMIN_USER:$GF_SECURITY_ADMIN_PASSWORD http://$APP_INSTANCE_NAME-grafana.$NAMESPACE.svc.cluster.local:3000
     expect:
       stdout:
-        contains: 'Grafana - Home'
+        contains: 'Grafana'
 - name: Is Grafana /metrics HTTP endpoint working
   bashTest:
     script: curl -f "http://$APP_INSTANCE_NAME-grafana:3000/metrics"
