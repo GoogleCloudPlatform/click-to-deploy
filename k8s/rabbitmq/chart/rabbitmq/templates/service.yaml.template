@@ -3,9 +3,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: $APP_INSTANCE_NAME-rabbitmq-svc
+  name: {{ .Release.Name }}-rabbitmq-svc
   labels:
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: rabbitmq-server
 spec:
   ports:
@@ -20,6 +20,6 @@ spec:
   - name: http
     port: 15672
   selector:
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: rabbitmq-server
   type: ClusterIP
