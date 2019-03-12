@@ -11,6 +11,7 @@ metadata:
     app.kubernetes.io/name: "{{ .Release.Name }}"
   annotations:
     marketplace.cloud.google.com/verification: test
+    sidecar.istio.io/inject: "false"
 spec:
   # TODO(click-to-deploy/issues/324): Add deadline after migrating to Job
   # activeDeadlineSeconds: 1200

@@ -6,6 +6,7 @@ metadata:
     app.kubernetes.io/name: "${APP_INSTANCE_NAME}"
   annotations:
     marketplace.cloud.google.com/verification: test
+    sidecar.istio.io/inject: "false"
 spec:
   serviceAccountName: ${SERVICE_ACCOUNT}
   containers:
