@@ -13,11 +13,17 @@ APP_PARAMETERS ?= { \
   "APP_INSTANCE_NAME": "$(NAME)", \
   "NAMESPACE": "$(NAMESPACE)" \
 }
-APP_TEST_PARAMETERS ?= {}
+
+TESTER_IMAGE ?= $(REGISTRY)/memcached/tester:$(TAG)
+
+APP_TEST_PARAMETERS ?= { \
+  "testerImage": "$(TESTER_IMAGE)" \
+}
 
 
 app/build:: .build/memcached/deployer \
-	    .build/memcached/memcached
+            .build/memcached/memcached \
+            .build/memcached/tester
 
 
 .build/memcached: | .build
@@ -50,4 +56,14 @@ app/build:: .build/memcached/deployer \
 	docker tag launcher.gcr.io/google/memcached1:$(TAG) \
 	    "$(REGISTRY)/memcached:$(TAG)"
 	docker push "$(REGISTRY)/memcached:$(TAG)"
+	@touch "$@"
+
+
+.build/memcached/tester: .build/var/TESTER_IMAGE \
+                         $(shell find apptest -type f) \
+                         | .build/memcached
+	$(call print_target,$@)
+	cd apptest/tester \
+	    && docker build --tag "$(TESTER_IMAGE)" .
+	docker push "$(TESTER_IMAGE)"
 	@touch "$@"

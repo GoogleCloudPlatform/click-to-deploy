@@ -1,39 +1,56 @@
 application_api_version: v1beta1
 properties:
-  APP_INSTANCE_NAME:
+  name:
     type: string
     x-google-marketplace:
       type: NAME
-  NAMESPACE:
+  namespace:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  IMAGE_WORDPRESS:
+  wordpressImage:
     type: string
     default: $REGISTRY:$TAG
     x-google-marketplace:
       type: IMAGE
-  IMAGE_MYSQL:
+  db.image:
     type: string
     default: $REGISTRY/mysql:$TAG
     x-google-marketplace:
       type: IMAGE
-  ROOT_DB_PASSWORD:
+  db.rootPassword:
     type: string
     x-google-marketplace:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 12
-  WORDPRESS_DB_PASSWORD:
+  db.wordpressPassword:
     type: string
     x-google-marketplace:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 12
+  # An e-mail address for WordPress site.
+  admin.email:
+    type: string
+    title: WordPress admin e-mail address
+    description: The e-mail address for administrator account of WordPress.
+    default: noreply@example.com
+    # https://www.w3.org/TR/html52/sec-forms.html#email-state-typeemail
+    pattern: ^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$
+  # A password for WordPress site.
+  admin.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 20
 required:
-- APP_INSTANCE_NAME
-- NAMESPACE
-- IMAGE_WORDPRESS
-- IMAGE_MYSQL
-- ROOT_DB_PASSWORD
-- WORDPRESS_DB_PASSWORD
+- name
+- namespace
+- wordpressImage
+- db.image
+- db.rootPassword
+- db.wordpressPassword
+- admin.email
+- admin.password

@@ -3,7 +3,7 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
-
+VERIFY_WAIT_TIMEOUT = 1200
 ELASTICSEARCH_KIBANA_VERSION = 6.3
 FLUENTD_VERSION = 1.2
 
@@ -14,42 +14,48 @@ APP_DEPLOYER_IMAGE ?= $(REGISTRY)/elastic-gke-logging/deployer:$(TAG)
 NAME ?= elastic-gke-logging-1
 
 ifdef ELASTICSEARCH_REPLICAS
-  ELASTICSEARCH_REPLICAS_FIELD = , "ELASTICSEARCH_REPLICAS": "$(ELASTICSEARCH_REPLICAS)"
+  ELASTICSEARCH_REPLICAS_FIELD = , "elasticsearch.replicas": "$(ELASTICSEARCH_REPLICAS)"
 endif
 
 ifdef IMAGE_ELASTICSEARCH
-  IMAGE_ELASTICSEARCH_FIELD = , "IMAGE_ELASTICSEARCH": "$(IMAGE_ELASTICSEARCH)"
+  IMAGE_ELASTICSEARCH_FIELD = , "elasticsearch.image": "$(IMAGE_ELASTICSEARCH)"
 endif
 
 ifdef IMAGE_INIT
-  IMAGE_INIT_FIELD = , "IMAGE_INIT": "$(IMAGE_INIT)"
+  IMAGE_INIT_FIELD = , "initImage": "$(IMAGE_INIT)"
 endif
 
 ifdef IMAGE_KIBANA
-  IMAGE_KIBANA_FIELD = , "IMAGE_KIBANA": "$(IMAGE_KIBANA)"
+  IMAGE_KIBANA_FIELD = , "kibana.image": "$(IMAGE_KIBANA)"
 endif
 
 ifdef IMAGE_FLUENTD
-  IMAGE_FLUENTD_FIELD = , "IMAGE_FLUENTD": "$(IMAGE_FLUENTD)"
+  IMAGE_FLUENTD_FIELD = , "fluentd.image": "$(IMAGE_FLUENTD)"
 endif
 
 APP_PARAMETERS ?= { \
-  "APP_INSTANCE_NAME": "$(NAME)", \
-  "NAMESPACE": "$(NAMESPACE)" \
+  "name": "$(NAME)", \
+  "namespace": "$(NAMESPACE)" \
   $(ELASTICSEARCH_REPLICAS_FIELD) \
   $(IMAGE_ELASTICSEARCH_FIELD) \
   $(IMAGE_INIT_FIELD) \
   $(IMAGE_KIBANA_FIELD) \
   $(IMAGE_FLUENTD_FIELD) \
 }
-APP_TEST_PARAMETERS ?= {}
+
+TESTER_IMAGE ?= $(REGISTRY)/elastic-gke-logging/tester:$(TAG)
+
+APP_TEST_PARAMETERS ?= { \
+  "testerImage": "$(TESTER_IMAGE)" \
+}
 
 
 app/build:: .build/elastic-gke-logging/elasticsearch \
             .build/elastic-gke-logging/kibana \
             .build/elastic-gke-logging/fluentd \
             .build/elastic-gke-logging/deployer \
-            .build/elastic-gke-logging/ubuntu16_04
+            .build/elastic-gke-logging/ubuntu16_04 \
+            .build/elastic-gke-logging/tester
 
 
 .build/elastic-gke-logging: | .build
@@ -57,7 +63,8 @@ app/build:: .build/elastic-gke-logging/elasticsearch \
 
 
 .build/elastic-gke-logging/deployer: deployer/* \
-                                     manifest/* \
+                                     chart/elastic-gke-logging/* \
+                                     chart/elastic-gke-logging/templates/* \
                                      schema.yaml \
                                      .build/var/APP_DEPLOYER_IMAGE \
                                      .build/var/MARKETPLACE_TOOLS_TAG \
@@ -112,4 +119,13 @@ app/build:: .build/elastic-gke-logging/elasticsearch \
 	docker tag launcher.gcr.io/google/ubuntu16_04 \
 	    "$(REGISTRY)/elastic-gke-logging/ubuntu16_04:$(TAG)"
 	docker push "$(REGISTRY)/elastic-gke-logging/ubuntu16_04:$(TAG)"
+	@touch "$@"
+
+.build/elastic-gke-logging/tester:   .build/var/TESTER_IMAGE \
+                                     $(shell find apptest -type f) \
+                                     | .build/elastic-gke-logging
+	$(call print_target,$@)
+	cd apptest/tester \
+	    && docker build --tag "$(TESTER_IMAGE)" .
+	docker push "$(TESTER_IMAGE)"
 	@touch "$@"

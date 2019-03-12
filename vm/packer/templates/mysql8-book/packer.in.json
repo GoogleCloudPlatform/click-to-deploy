@@ -1,0 +1,7 @@
+{
+  "license": "c2d-mysql8",
+  "source_image_family": "debian-9",
+  "chef": {
+    "run_list": [ "c2d-config", "mysql8-book::standalone" ]
+  }
+}

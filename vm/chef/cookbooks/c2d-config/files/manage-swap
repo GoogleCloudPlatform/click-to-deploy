@@ -1,0 +1,60 @@
+#!/bin/bash -eu
+#
+# Copyright 2018 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Script enables swap on VMs with less then 1GB RAM ($memsmall).
+
+swapfile="/.c2d-swap-file"
+swapsize=524288 # 512MB
+
+memsmall=1048576 # 1024MB
+spacelimit=$(($swapsize*3))
+
+memavail=$(free | awk '/^Mem:/ {print $2}')
+spaceavail=$(df -k / | awk 'END {print $4}')
+
+if [[ $# -eq 1 ]]; then
+  if [[ $1 == "disable" ]]; then
+    if swapon -s | grep -q "$swapfile"; then
+      swapoff "$swapfile" && exit 0
+      exit 1
+    fi
+    exit 0
+  fi
+
+  if [[ $1 == "remove" ]]; then
+    if swapon -s | grep -q "$swapfile"; then
+      swapoff "$swapfile" && rm -f "$swapfile"
+    fi
+    sed -i -e "\!^$swapfile !d" /etc/fstab && exit 0
+    exit 1
+  fi
+fi
+
+if [[ "$memavail" -lt "$memsmall" && "$spaceavail" -gt "$spacelimit" ]]; then
+  if ! swapon -s | grep -q $swapfile; then
+    dd if=/dev/zero of="$swapfile" bs=1K count="$swapsize" status=none
+    chmod 0600 "$swapfile"
+    mkswap -L c2dswap "$swapfile"
+    swapon "$swapfile"
+    if ! grep -q "^$swapfile " /etc/fstab; then
+      echo "$swapfile none swap sw 0 0" >> /etc/fstab
+    fi
+  else
+    echo "swapfile: $swapfile already enabled."
+  fi
+else
+  echo "swap not enabled: available memory over $memsmall or not enough free space on disk."
+fi

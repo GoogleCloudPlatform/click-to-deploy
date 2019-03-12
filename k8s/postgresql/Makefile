@@ -15,11 +15,17 @@ APP_PARAMETERS ?= { \
   "APP_INSTANCE_NAME": "$(NAME)", \
   "NAMESPACE": "$(NAMESPACE)" \
 }
-APP_TEST_PARAMETERS ?= {}
+
+TESTER_IMAGE ?= $(REGISTRY)/postgresql/tester:$(TAG)
+
+APP_TEST_PARAMETERS ?= { \
+  "testerImage": "$(TESTER_IMAGE)" \
+}
 
 
 app/build:: .build/postgresql/deployer \
-            .build/postgresql/postgresql
+            .build/postgresql/postgresql \
+            .build/postgresql/tester
 
 
 .build/postgresql: | .build
@@ -64,3 +70,13 @@ show-config:
 	echo "command:";\
 	echo "PGPASSWORD=$$psqlpass psql sslmode=require -U$$psqluser -h $$psqladdr";\
 	echo
+
+
+.build/postgresql/tester: .build/var/TESTER_IMAGE \
+                          $(shell find apptest -type f) \
+                          | .build/postgresql
+	$(call print_target,$@)
+	cd apptest/tester \
+	    && docker build --tag "$(TESTER_IMAGE)" .
+	docker push "$(TESTER_IMAGE)"
+	@touch "$@"
