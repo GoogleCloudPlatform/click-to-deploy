@@ -109,7 +109,7 @@ export NAMESPACE=default
 Configure the container images:
 
 ```shell
-export SPARK_OPERATOR_IMAGE="marketplace.gcr.io/google/spark-operator:latest"
+export SPARK_OPERATOR_IMAGE="marketplace.gcr.io/google/spark-operator:beta"
 ```
 
 The images above are referenced by
@@ -147,7 +147,7 @@ Provision a service account and export its via an environment variable as follow
 ```shell
 kubectl create serviceaccount "${APP_INSTANCE_NAME}-sa" --namespace "${NAMESPACE}"
 kubectl create clusterrolebinding "${NAMESPACE}-${APP_INSTANCE_NAME}-sa-rb" --clusterrole=cluster-admin --serviceaccount="${NAMESPACE}:${APP_INSTANCE_NAME}-sa"
-export serviceAccount="${APP_INSTANCE_NAME}-sa"
+export SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-sa"
 ```
 
 #### Expand the manifest template

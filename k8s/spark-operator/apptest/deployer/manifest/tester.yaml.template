@@ -14,9 +14,8 @@ spec:
     env:
     - name: NAMESPACE
       valueFrom:
-        configMapKeyRef:
-          name: ${APP_INSTANCE_NAME}-deployer-config
-          key: NAMESPACE
+        fieldRef:
+          fieldPath: metadata.namespace
     - name: SERVICEACCOUNT
       valueFrom:
         configMapKeyRef:
