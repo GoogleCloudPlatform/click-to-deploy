@@ -1,0 +1,19 @@
+actions:
+- name: Sample test check port 80
+  bashTest:
+    script: |-
+      # Here is a sample test which checks if the Nginx is listening on port 80
+      curl http://$APP_INSTANCE_NAME-sample-app-svc.$NAMESPACE.svc.cluster.local:80
+    expect:
+      stdout:
+        contains: 'Welcome to nginx'
+- name: Site address should be 200 OK
+  httpTest:
+    url: http://{{ .Env.APP_INSTANCE_NAME }}-sample-app-svc.{{ .Env.NAMESPACE }}.svc.cluster.local
+    expect:
+      statusCode:
+        equals: 200
+      bodyText:
+        html:
+          title:
+            exactly: 'Welcome to nginx!'
