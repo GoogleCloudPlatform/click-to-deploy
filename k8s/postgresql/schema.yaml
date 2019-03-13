@@ -1,33 +1,33 @@
 application_api_version: v1beta1
 properties:
-  APP_INSTANCE_NAME:
+  name:
     type: string
     x-google-marketplace:
       type: NAME
-  NAMESPACE:
+  namespace:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  IMAGE_POSTGRESQL:
+  postgresql.image:
     type: string
     default: $REGISTRY:$TAG
     x-google-marketplace:
       type: IMAGE
-  POSTGRESQL_DB_PASSWORD:
+  postgresql.volumeSize:
+    type: integer
+    title: Volume
+    description: The size of Volume (Gi) in the solution
+    default: 24
+  db.password:
     type: string
     x-google-marketplace:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 12
-  POSTGRESQL_VOLUME_SIZE:
-    type: integer
-    title: Volume
-    description: The size of Volume (Gi) in the solution
-    default: 24
 
 required:
-- APP_INSTANCE_NAME
-- NAMESPACE
-- IMAGE_POSTGRESQL
-- POSTGRESQL_DB_PASSWORD
-- POSTGRESQL_VOLUME_SIZE
+- name
+- namespace
+- postgresql.image
+- postgresql.volumeSize
+- db.password

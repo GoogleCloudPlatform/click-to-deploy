@@ -1,25 +1,24 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "${name}-tester"
+  name: "${APP_INSTANCE_NAME}-tester"
   labels:
-    app.kubernetes.io/name: "${name}"
+    app.kubernetes.io/name: "${APP_INSTANCE_NAME}"
   annotations:
     marketplace.cloud.google.com/verification: test
 spec:
-  serviceAccountName: ${serviceAccount}
+  serviceAccountName: ${SERVICE_ACCOUNT}
   containers:
   - name: tester
     image: "${testerImage}"
     env:
     - name: NAMESPACE
       valueFrom:
-        configMapKeyRef:
-          name: ${name}-deployer-config
-          key: namespace
+        fieldRef:
+          fieldPath: metadata.namespace
     - name: SERVICEACCOUNT
       valueFrom:
         configMapKeyRef:
-          name: ${name}-deployer-config
-          key: serviceAccount
+          name: ${APP_INSTANCE_NAME}-deployer-config
+          key: SERVICE_ACCOUNT
   restartPolicy: Never

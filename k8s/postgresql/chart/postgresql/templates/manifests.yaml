@@ -1,43 +1,43 @@
 kind: ServiceAccount
 apiVersion: v1
 metadata:
-  name: $APP_INSTANCE_NAME-serviceaccount
+  name: {{ .Release.Name }}-serviceaccount
   labels:
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: postgresql-server
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: $APP_INSTANCE_NAME-postgresql-pvc
+  name: {{ .Release.Name }}-postgresql-pvc
   labels:
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: postgresql-server
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: ${POSTGRESQL_VOLUME_SIZE}Gi
+      storage: {{ .Values.postgresql.volumeSize }}Gi
   storageClassName: standard
 ---
 kind: Secret
 apiVersion: v1
 metadata:
-  name: $APP_INSTANCE_NAME-secret
+  name: {{ .Release.Name }}-secret
   labels:
-    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: postgresql-server
 type: Opaque
 data:
-  password: $POSTGRESQL_DB_PASSWORD
+  password: {{ .Values.db.password }}
 ---
 kind: Deployment
 apiVersion: apps/v1beta2
 metadata:
-  name: $APP_INSTANCE_NAME-postgresql-deployment
+  name: {{ .Release.Name }}-postgresql-deployment
   labels: &PostgreSQLDeploymentLabels
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: postgresql-server
 spec:
   replicas: 1
@@ -47,23 +47,23 @@ spec:
     metadata:
       labels: *PostgreSQLDeploymentLabels
     spec:
-      serviceAccount: $APP_INSTANCE_NAME-serviceaccount
+      serviceAccount: {{ .Release.Name }}-serviceaccount
       volumes:
-      - name: $APP_INSTANCE_NAME-postgresql-pvc
+      - name: {{ .Release.Name }}-postgresql-pvc
         persistentVolumeClaim:
-          claimName: $APP_INSTANCE_NAME-postgresql-pvc
+          claimName: {{ .Release.Name }}-postgresql-pvc
       - name: tls-volume
         secret:
-          secretName: $APP_INSTANCE_NAME-tls
+          secretName: {{ .Release.Name }}-tls
       containers:
       - name: postgresql-server
-        image: $IMAGE_POSTGRESQL
+        image: {{ .Values.postgresql.image }}
         imagePullPolicy: Always
         ports:
         - containerPort: 5432
           name: postgres
         volumeMounts:
-        - name: $APP_INSTANCE_NAME-postgresql-pvc
+        - name: {{ .Release.Name }}-postgresql-pvc
           mountPath: /var/lib/postgresql/data
         - name: tls-volume
           mountPath: /var/lib/postgresql/data/tls
@@ -73,21 +73,21 @@ spec:
         - name: "POSTGRES_PASSWORD"
           valueFrom:
             secretKeyRef:
-              name: $APP_INSTANCE_NAME-secret
+              name: {{ .Release.Name }}-secret
               key: password
 ---
 kind: Service
 apiVersion: v1
 metadata:
-  name: $APP_INSTANCE_NAME-postgresql-svc
+  name: {{ .Release.Name }}-postgresql-svc
   labels:
-    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: postgresql-server
 spec:
   ports:
   - name: postgres
     port: 5432
   selector:
-    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: postgresql-server
   type: LoadBalancer
