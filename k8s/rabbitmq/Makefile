@@ -104,7 +104,7 @@ app/build:: .build/rabbitmq/debian9  \
 
 .build/rabbitmq/prometheus-to-sd: .build/var/REGISTRY \
                                   .build/var/TAG \
-                                  | .build/grafana
+                                  | .build/rabbitmq
 	docker pull gcr.io/google-containers/prometheus-to-sd:v0.3.2
 	docker tag gcr.io/google-containers/prometheus-to-sd:v0.3.2 \
 	    "$(REGISTRY)/rabbitmq/prometheus-to-sd:$(TAG)"
