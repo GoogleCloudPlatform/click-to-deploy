@@ -135,6 +135,7 @@ Configure the container images:
 TAG=5.3
 export IMAGE_GRAFANA="marketplace.gcr.io/google/grafana:${TAG}"
 export IMAGE_GRAFANA_INIT="marketplace.gcr.io/google/grafana/debian9:${TAG}"
+export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/grafana/prometheus-to:${TAG}"
 ```
 
 The images above are referenced by
@@ -146,8 +147,7 @@ until you are ready to upgrade. To get the digest for the image, use the
 following script:
 
 ```shell
-for i in "IMAGE_GRAFANA" \
-         "IMAGE_GRAFANA_INIT"; do
+for i in "IMAGE_METRICS_EXPORTER" "IMAGE_GRAFANA_INIT" "IMAGE_METRICS_EXPORTER"; do
   repo=$(echo ${!i} | cut -d: -f1);
   digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
   export $i="$repo@$digest";
@@ -175,6 +175,7 @@ helm template chart/grafana \
   --set grafana.image=$IMAGE_GRAFANA \
   --set grafana.initImage=$IMAGE_GRAFANA_INIT \
   --set grafana.password=$GRAFANA_GENERATED_PASSWORD \
+  --set metrics.image=$IMAGE_METRICS_EXPORTER \
   --set metrics.enabled=$GRAFANA_METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 
