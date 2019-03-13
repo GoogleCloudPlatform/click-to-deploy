@@ -1,0 +1,14 @@
+initImage: null
+
+elasticsearch:
+  image: null
+  replicas: null
+
+fluentd:
+  serviceAccount: null
+
+kibana:
+  image: null
+
+fluentd:
+  image: null

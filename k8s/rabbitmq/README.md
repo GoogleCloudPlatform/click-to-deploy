@@ -206,7 +206,7 @@ the [Kubernetes Engine documentation](https://cloud.google.com/kubernetes-engine
 
 #### Expand the manifest template
 
-Use `envsubst` to expand the template. We recommend that you save the
+Use `envsubst` and `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 1. Expand `RBAC` YAML file. You must configure RBAC related stuff to support access nodes information successfully by `rabbitmq_peer_discovery_k8s` plugin.
@@ -214,6 +214,7 @@ expanded manifest file for future updates to the application.
     ```shell
     # Define name of service account
     export RABBITMQ_SERVICE_ACCOUNT=$APP_INSTANCE_NAME-rabbitmq-sa
+
     # Expand rbac.yaml.template
     envsubst '$APP_INSTANCE_NAME' < scripts/rbac.yaml.template > "${APP_INSTANCE_NAME}_rbac.yaml"
     ```
@@ -221,9 +222,16 @@ expanded manifest file for future updates to the application.
 1. Expand `Application`/`Secret`/`StatefulSet`/`ConfigMap` YAML files.
 
     ```shell
-    awk 'FNR==1 {print "---"}{print}' manifest/* \
-      | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_RABBITMQ $IMAGE_RABBITMQ_INIT $REPLICAS $RABBITMQ_ERLANG_COOKIE $RABBITMQ_DEFAULT_USER $RABBITMQ_DEFAULT_PASS $RABBITMQ_SERVICE_ACCOUNT' \
-      > "${APP_INSTANCE_NAME}_manifest.yaml"
+    helm template chart/rabbitmq \
+      --name $APP_INSTANCE_NAME \
+      --namespace $NAMESPACE \
+      --set rabbitmq.image=$IMAGE_RABBITMQ \
+      --set rabbitmq.initImage=$IMAGE_RABBITMQ_INIT \
+      --set rabbitmq.replicas=$REPLICAS \
+      --set rabbitmq.erlangCookie=$RABBITMQ_ERLANG_COOKIE \
+      --set rabbitmq.user=$RABBITMQ_DEFAULT_USER \
+      --set rabbitmq.password=$RABBITMQ_DEFAULT_PASS \
+      --set rabbitmq.serviceAccount=$RABBITMQ_SERVICE_ACCOUNT > ${APP_INSTANCE_NAME}_manifest.yaml
     ```
 
 #### Apply the manifest to your Kubernetes cluster
