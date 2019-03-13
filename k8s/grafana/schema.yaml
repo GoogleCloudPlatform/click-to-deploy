@@ -42,8 +42,8 @@ properties:
       type: IMAGE
   metrics.enabled:
     type: boolean
-    title: Enable Stackdriver Monitoring
-    description: Stackdriver Monitoring provides visibility into the performance, uptime, and overall health of cloud-powered applications
+    title: Enable Stackdriver Metrics Exporter
+    description: TBD
     default: false
 required:
 - name
