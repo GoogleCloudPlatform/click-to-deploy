@@ -59,6 +59,16 @@ properties:
           - apiGroups: [""]
             resources: ["endpoints"]
             verbs: ["get"]
+  metrics.image:
+    type: string
+    default: $REGISTRY/prometheus-to-sd:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  metrics.enabled:
+    type: boolean
+    title: Enable Stackdriver Monitoring
+    description: Stackdriver Monitoring provides visibility into the performance, uptime, and overall health of cloud-powered applications
+    default: false
 required:
 - name
 - namespace
@@ -69,3 +79,5 @@ required:
 - rabbitmq.user
 - rabbitmq.password
 - rabbitmq.serviceAccount
+- metrics.image
+- metrics.enabled

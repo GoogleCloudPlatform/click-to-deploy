@@ -55,6 +55,7 @@ APP_TEST_PARAMETERS ?= { \
 app/build:: .build/rabbitmq/debian9  \
             .build/rabbitmq/deployer \
             .build/rabbitmq/rabbitmq \
+            .build/rabbitmq/prometheus-to-sd \
             .build/rabbitmq/tester
 
 
@@ -99,6 +100,17 @@ app/build:: .build/rabbitmq/debian9  \
 	    "$(REGISTRY)/rabbitmq:$(TAG)"
 	docker push "$(REGISTRY)/rabbitmq:$(TAG)"
 	@touch "$@"
+
+
+.build/rabbitmq/prometheus-to-sd: .build/var/REGISTRY \
+                                  .build/var/TAG \
+                                  | .build/grafana
+	docker pull gcr.io/google-containers/prometheus-to-sd:v0.3.2
+	docker tag gcr.io/google-containers/prometheus-to-sd:v0.3.2 \
+	    "$(REGISTRY)/rabbitmq/prometheus-to-sd:$(TAG)"
+	docker push "$(REGISTRY)/rabbitmq/prometheus-to-sd:$(TAG)"
+	@touch "$@"
+
 
 .build/rabbitmq/tester: .build/var/TESTER_IMAGE \
                         $(shell find apptest -type f) \
