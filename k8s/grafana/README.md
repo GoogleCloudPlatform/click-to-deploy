@@ -135,7 +135,7 @@ Configure the container images:
 TAG=5.3
 export IMAGE_GRAFANA="marketplace.gcr.io/google/grafana:${TAG}"
 export IMAGE_GRAFANA_INIT="marketplace.gcr.io/google/grafana/debian9:${TAG}"
-export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/grafana/prometheus-to:${TAG}"
+export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/grafana/prometheus-to-sd:${TAG}"
 ```
 
 The images above are referenced by
