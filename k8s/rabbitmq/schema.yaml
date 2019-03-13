@@ -1,49 +1,49 @@
 application_api_version: v1beta1
 properties:
-  APP_INSTANCE_NAME:
+  name:
     type: string
     x-google-marketplace:
       type: NAME
-  NAMESPACE:
+  namespace:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  IMAGE_RABBITMQ:
+  rabbitmq.image:
     type: string
     default: $REGISTRY:$TAG
     x-google-marketplace:
       type: IMAGE
-  IMAGE_RABBITMQ_INIT:
+  rabbitmq.initImage:
     type: string
     default: $REGISTRY/debian9:$TAG
     x-google-marketplace:
       type: IMAGE
-  REPLICAS:
+  rabbitmq.replicas:
     type: integer
     title: Replicas
     description: The number of Pod replicas
     default: 3
     minimum: 1
     maximum: 11
-  RABBITMQ_ERLANG_COOKIE:
+  rabbitmq.erlangCookie:
     type: string
     x-google-marketplace:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 32
-  RABBITMQ_DEFAULT_USER:
+  rabbitmq.user:
     # TODO(wgrzelak): define pattern
     type: string
     title: RabbitMQ username
     description: Username to be used for connecting to RabbitMQ
     default: rabbit
-  RABBITMQ_DEFAULT_PASS:
+  rabbitmq.password:
     type: string
     x-google-marketplace:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 12
-  RABBITMQ_SERVICE_ACCOUNT:
+  rabbitmq.serviceAccount:
     type: string
     title: RabbitMQ service account
     description: >-
@@ -60,12 +60,12 @@ properties:
             resources: ["endpoints"]
             verbs: ["get"]
 required:
-- APP_INSTANCE_NAME
-- NAMESPACE
-- IMAGE_RABBITMQ
-- IMAGE_RABBITMQ_INIT
-- REPLICAS
-- RABBITMQ_ERLANG_COOKIE
-- RABBITMQ_DEFAULT_USER
-- RABBITMQ_DEFAULT_PASS
-- RABBITMQ_SERVICE_ACCOUNT
+- name
+- namespace
+- rabbitmq.image
+- rabbitmq.initImage
+- rabbitmq.replicas
+- rabbitmq.erlangCookie
+- rabbitmq.user
+- rabbitmq.password
+- rabbitmq.serviceAccount
