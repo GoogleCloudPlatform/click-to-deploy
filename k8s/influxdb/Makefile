@@ -61,8 +61,8 @@ app/build:: .build/influxdb/deployer \
 
 
 .build/influxdb/prometheus-to-sd: .build/var/REGISTRY \
-                                 .build/var/TAG \
-                                 | .build/influxdb
+                                  .build/var/TAG \
+                                  | .build/influxdb
 	docker pull gcr.io/google-containers/prometheus-to-sd:v0.5.0
 	docker tag gcr.io/google-containers/prometheus-to-sd:v0.5.0 \
 	    "$(REGISTRY)/influxdb/prometheus-to-sd:$(TAG)"
