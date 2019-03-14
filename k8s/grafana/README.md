@@ -128,7 +128,7 @@ Enable Stackdriver Metrics Exporter:
 > **NOTE:** Your GCP project should have Stackdriver enabled. This feature only works with GKE clusters. For non-GCP clusters, please check with your administrator.
 
 ```shell
-export GRAFANA_METRICS_EXPORTER_ENABLED=false
+export METRICS_EXPORTER_ENABLED=false
 ```
 
 Configure the container images:
@@ -178,7 +178,7 @@ helm template chart/grafana \
   --set grafana.initImage=$IMAGE_GRAFANA_INIT \
   --set grafana.password=$GRAFANA_GENERATED_PASSWORD \
   --set metrics.image=$IMAGE_METRICS_EXPORTER \
-  --set metrics.enabled=$GRAFANA_METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
+  --set metrics.enabled=$METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 
 #### Apply the manifest to your Kubernetes cluster
