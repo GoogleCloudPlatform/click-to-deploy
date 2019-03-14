@@ -42,7 +42,7 @@ properties:
       type: IMAGE
   metrics.enabled:
     type: boolean
-    title: Enable Stackdriver Metrics Exporter (This feature works only with GKE clusters)
+    title: Enable Stackdriver metrics exporter (This feature only works with GKE clusters)
     description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, please check with your administrator
     default: false
 required:
