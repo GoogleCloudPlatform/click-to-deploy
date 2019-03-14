@@ -21,7 +21,7 @@
 
 timeout: 1200s # 20m
 options:
-  workerPool: cloud-marketplace-ops-test/gcb-workers-pool
+  workerPool: ${PROJECT_ID}/gcb-workers-pool
 steps:
 
 - id: Download Service Account Key
