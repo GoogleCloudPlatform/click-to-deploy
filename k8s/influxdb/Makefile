@@ -51,8 +51,8 @@ app/build:: .build/influxdb/deployer \
 
 
 .build/influxdb/influxdb: .build/var/REGISTRY \
-                            .build/var/TAG \
-                            | .build/influxdb
+                          .build/var/TAG \
+                          | .build/influxdb
 	docker pull launcher.gcr.io/google/influxdb1:$(TAG)
 	docker tag launcher.gcr.io/google/influxdb1:$(TAG) \
 	    "$(REGISTRY)/influxdb:$(TAG)"
