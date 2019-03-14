@@ -27,12 +27,12 @@ spec:
           fieldPath: metadata.namespace
     - name: APP_INSTANCE_NAME
       value: {{ .Release.Name }}
-    - name: GF_SECURITY_ADMIN_USER
+    - name: ADMIN_NAME
       valueFrom:
         secretKeyRef:
           name: ${APP_INSTANCE_NAME}-grafana
           key: admin-user
-    - name: GF_SECURITY_ADMIN_PASSWORD
+    - name: ADMIN_PASSWORD
       valueFrom:
         secretKeyRef:
           name: ${APP_INSTANCE_NAME}-grafana
