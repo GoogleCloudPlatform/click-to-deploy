@@ -22,6 +22,7 @@ APP_TEST_PARAMETERS ?= { \
 
 app/build:: .build/influxdb/deployer \
             .build/influxdb/influxdb \
+            .build/grafana/prometheus-to-sd \
             .build/influxdb/tester
 
 
@@ -56,6 +57,16 @@ app/build:: .build/influxdb/deployer \
 	docker tag launcher.gcr.io/google/influxdb1:$(TAG) \
 	    "$(REGISTRY)/influxdb:$(TAG)"
 	docker push "$(REGISTRY)/influxdb:$(TAG)"
+	@touch "$@"
+
+
+.build/grafana/prometheus-to-sd: .build/var/REGISTRY \
+                                 .build/var/TAG \
+                                 | .build/influxdb
+	docker pull gcr.io/google-containers/prometheus-to-sd:v0.5.0
+	docker tag gcr.io/google-containers/prometheus-to-sd:v0.5.0 \
+	    "$(REGISTRY)/grafana/prometheus-to-sd:$(TAG)"
+	docker push "$(REGISTRY)/grafana/prometheus-to-sd:$(TAG)"
 	@touch "$@"
 
 
