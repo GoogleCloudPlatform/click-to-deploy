@@ -4,14 +4,14 @@ include ../gcloud.Makefile
 include ../var.Makefile
 
 
-TAG ?= latest
+TAG ?= beta
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/spark-operator/deployer:$(TAG)
 NAME ?= spark-operator-1
 APP_PARAMETERS ?= { \
-  "name": "$(NAME)", \
-  "namespace": "$(NAMESPACE)" \
+  "APP_INSTANCE_NAME": "$(NAME)", \
+  "NAMESPACE": "$(NAMESPACE)" \
 }
 TESTER_IMAGE ?= $(REGISTRY)/spark-operator/tester:$(TAG)
 APP_TEST_PARAMETERS ?= { \
@@ -60,7 +60,7 @@ app/build:: .build/spark-operator/deployer \
                                       .build/var/TAG \
                                       | .build/spark-operator
 	$(call print_target, $@)
-	docker pull gcr.io/spark-operator/spark-operator:v2.3.0-v1alpha1-latest
-	docker tag gcr.io/spark-operator/spark-operator:v2.3.0-v1alpha1-latest "$(REGISTRY)/spark-operator:$(TAG)"
+	docker pull gcr.io/spark-operator/spark-operator:v2.4.0-v1beta1-latest
+	docker tag gcr.io/spark-operator/spark-operator:v2.4.0-v1beta1-latest "$(REGISTRY)/spark-operator:$(TAG)"
 	docker push "$(REGISTRY)/spark-operator:$(TAG)"
 	@touch "$@"
