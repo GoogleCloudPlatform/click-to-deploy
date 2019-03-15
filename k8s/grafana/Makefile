@@ -4,6 +4,8 @@ include ../gcloud.Makefile
 include ../var.Makefile
 
 TAG ?= 5.3
+METRICS_EXPORTER_TAG ?= v0.5.0
+
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/grafana/deployer:$(TAG)
@@ -83,8 +85,8 @@ app/build:: .build/grafana/debian9 \
 .build/grafana/prometheus-to-sd: .build/var/REGISTRY \
                                  .build/var/TAG \
                                  | .build/grafana
-	docker pull gcr.io/google-containers/prometheus-to-sd:v0.5.0
-	docker tag gcr.io/google-containers/prometheus-to-sd:v0.5.0 \
+	docker pull gcr.io/google-containers/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+	docker tag gcr.io/google-containers/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
 	    "$(REGISTRY)/grafana/prometheus-to-sd:$(TAG)"
 	docker push "$(REGISTRY)/grafana/prometheus-to-sd:$(TAG)"
 	@touch "$@"
