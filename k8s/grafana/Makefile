@@ -85,8 +85,8 @@ app/build:: .build/grafana/debian9 \
 .build/grafana/prometheus-to-sd: .build/var/REGISTRY \
                                  .build/var/TAG \
                                  | .build/grafana
-	docker pull gcr.io/google-containers/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
-	docker tag gcr.io/google-containers/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
+	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
 	    "$(REGISTRY)/grafana/prometheus-to-sd:$(TAG)"
 	docker push "$(REGISTRY)/grafana/prometheus-to-sd:$(TAG)"
 	@touch "$@"
