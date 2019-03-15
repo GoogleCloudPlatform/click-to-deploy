@@ -1,15 +1,15 @@
 apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
-  name: $APP_INSTANCE_NAME-cassandra
+  name: {{ .Release.Name }}-cassandra
   labels: &CassandraDeploymentLabels
-    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: cassandra-server
 spec:
   selector:
     matchLabels: *CassandraDeploymentLabels
-  serviceName: $APP_INSTANCE_NAME-cassandra-svc
-  replicas: $REPLICAS
+  serviceName: {{ .Release.Name }}-cassandra-svc
+  replicas: {{ .Values.cassandra.replicas }}
   updateStrategy:
       type: OnDelete
   template:
@@ -19,13 +19,13 @@ spec:
       terminationGracePeriodSeconds: 180
       containers:
       - name: cassandra
-        image: $IMAGE_CASSANDRA
+        image: {{ .Values.cassandra.image }}
         imagePullPolicy: Always
         env:
         - name: CASSANDRA_CLUSTER_NAME
-          value: $APP_INSTANCE_NAME-cassandra-svc
+          value: {{ .Release.Name }}-cassandra-svc
         - name: CASSANDRA_SEEDS
-          value: $APP_INSTANCE_NAME-cassandra-0.$APP_INSTANCE_NAME-cassandra-svc.$NAMESPACE.svc.cluster.local, $APP_INSTANCE_NAME-cassandra-1.$APP_INSTANCE_NAME-cassandra-svc.$NAMESPACE.svc.cluster.local, $APP_INSTANCE_NAME-cassandra-2.$APP_INSTANCE_NAME-cassandra-svc.$NAMESPACE.svc.cluster.local
+          value: {{ .Release.Name }}-cassandra-0.{{ .Release.Name }}-cassandra-svc.{{ .Release.Namespace }}.svc.cluster.local, {{ .Release.Name }}-cassandra-1.{{ .Release.Name }}-cassandra-svc.{{ .Release.Namespace }}.svc.cluster.local, {{ .Release.Name }}-cassandra-2.{{ .Release.Name }}-cassandra-svc.{{ .Release.Namespace }}.svc.cluster.local
         ports:
         - name: pure-intra
           containerPort: 7000
@@ -42,7 +42,7 @@ spec:
            cpu: 500m
            memory: 2.5Gi
         volumeMounts:
-        - name: $APP_INSTANCE_NAME-cassandra-pvc
+        - name: {{ .Release.Name }}-cassandra-pvc
           mountPath: /var/lib/cassandra
         livenessProbe:
           exec:
@@ -63,7 +63,7 @@ spec:
               - "nodetool drain"
   volumeClaimTemplates:
   - metadata:
-      name: $APP_INSTANCE_NAME-cassandra-pvc
+      name: {{ .Release.Name }}-cassandra-pvc
       labels: *CassandraDeploymentLabels
     spec:
       accessModes: [ "ReadWriteOnce" ]
@@ -75,9 +75,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: $APP_INSTANCE_NAME-cassandra-svc
+  name: {{ .Release.Name }}-cassandra-svc
   labels:
-    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: cassandra-server
 spec:
   ports:
@@ -86,7 +86,7 @@ spec:
   - name: thrift
     port: 9160
   selector:
-    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: cassandra-server
   type: ClusterIP
 # While bootstraping Cassandra, we need to provide a list of IPs or hostnames
