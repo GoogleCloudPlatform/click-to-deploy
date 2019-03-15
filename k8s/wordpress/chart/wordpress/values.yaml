@@ -3,9 +3,16 @@ wordpressImage: null
 db:
   image: null
   rootPassword: null
+  wordpressUser: wordpress
   wordpressPassword: null
 
 admin:
   username: admin
   email: admin@example.com
   password: null
+
+metrics:
+  images:
+    prometheusToSd: k8s.gcr.io/prometheus-to-sd:v0.5.1
+    mysqldExporter: prom/mysqld-exporter
+  enabled: true
