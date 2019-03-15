@@ -4,7 +4,7 @@ include ../gcloud.Makefile
 include ../var.Makefile
 
 TAG ?= 5.3
-METRICS_EXPORTER_TAG ?= v0.5.0
+METRICS_EXPORTER_TAG ?= v0.5.1
 
 $(info ---- TAG = $(TAG))
 
