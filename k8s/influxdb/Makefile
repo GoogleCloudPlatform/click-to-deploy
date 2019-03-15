@@ -4,6 +4,8 @@ include ../gcloud.Makefile
 include ../var.Makefile
 
 TAG ?= 1.7
+METRICS_EXPORTER_TAG ?= v0.5.0
+
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/influxdb/deployer:$(TAG)
@@ -63,8 +65,8 @@ app/build:: .build/influxdb/deployer \
 .build/influxdb/prometheus-to-sd: .build/var/REGISTRY \
                                   .build/var/TAG \
                                   | .build/influxdb
-	docker pull gcr.io/google-containers/prometheus-to-sd:v0.5.0
-	docker tag gcr.io/google-containers/prometheus-to-sd:v0.5.0 \
+	docker pull gcr.io/google-containers/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+	docker tag gcr.io/google-containers/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
 	    "$(REGISTRY)/influxdb/prometheus-to-sd:$(TAG)"
 	docker push "$(REGISTRY)/influxdb/prometheus-to-sd:$(TAG)"
 	@touch "$@"
