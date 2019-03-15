@@ -65,8 +65,8 @@ app/build:: .build/influxdb/deployer \
 .build/influxdb/prometheus-to-sd: .build/var/REGISTRY \
                                   .build/var/TAG \
                                   | .build/influxdb
-	docker pull gcr.io/google-containers/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
-	docker tag gcr.io/google-containers/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
+	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
 	    "$(REGISTRY)/influxdb/prometheus-to-sd:$(TAG)"
 	docker push "$(REGISTRY)/influxdb/prometheus-to-sd:$(TAG)"
 	@touch "$@"
