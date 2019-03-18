@@ -177,6 +177,8 @@ kubectl create namespace "$NAMESPACE"
 Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
+> TODO(wgrzelak): Expand about the metrics.
+
 ```shell
 helm template chart/wordpress \
   --name="$APP_INSTANCE_NAME" \
