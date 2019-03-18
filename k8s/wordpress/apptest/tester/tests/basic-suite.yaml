@@ -84,3 +84,12 @@ actions:
         matches: 'ERROR 1045 (28000): Access denied for user ''root''@''.+'' (using password: NO)'
       exitCode:
         equals: 1
+
+- name: Is MySQL /metrics HTTP endpoint working
+  bashTest:
+    script: curl -f "http://${APP_INSTANCE_NAME}-mysql-svc:9104/metrics"
+    expect:
+      stdout:
+        contains: '# HELP go_gc_duration_seconds A summary of the GC invocation durations.'
+      exitCode:
+        equals: 0

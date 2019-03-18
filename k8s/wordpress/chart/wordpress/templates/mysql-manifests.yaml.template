@@ -80,6 +80,7 @@ spec:
             secretKeyRef:
               name: {{ .Release.Name }}-mysql-secret
               key: root-password
+        # TODO(wgrzelak): Do not use root user.
         - name: DATA_SOURCE_NAME
           value: root:$(MYSQL_ROOT_PASSWORD)@({{ .Release.Name }}-mysql-svc:3306)/wordpress
       {{ end }}
