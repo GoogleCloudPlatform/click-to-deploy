@@ -72,7 +72,7 @@ spec:
             command: ["sh", "-c", "exec mysqladmin status -uroot -p$MYSQL_ROOT_PASSWORD"]
           initialDelaySeconds: 120
       {{ if .Values.metrics.enabled }}
-      - image: {{ .Values.db.exporteImage }}
+      - image: {{ .Values.db.exporterImage }}
         name: mysqld-exporter
         env:
         - name: MYSQL_ROOT_PASSWORD

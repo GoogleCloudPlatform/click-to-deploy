@@ -3,7 +3,7 @@ wordpressImage: null
 db:
   image: null
   # TODO(wgrzelak): Fix it!
-  exporteImage: prom/mysqld-exporter
+  exporterImage: prom/mysqld-exporter
   rootPassword: null
   wordpressUser: wordpress
   wordpressPassword: null
