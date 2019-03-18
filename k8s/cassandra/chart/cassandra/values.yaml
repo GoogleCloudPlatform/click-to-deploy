@@ -1,0 +1,3 @@
+cassandra:
+  image: null
+  replicas: null
