@@ -72,39 +72,39 @@ spec:
             command: ["sh", "-c", "exec mysqladmin status -uroot -p$MYSQL_ROOT_PASSWORD"]
           initialDelaySeconds: 120
       {{ if .Values.metrics.enabled }}
-      - image: {{ .Values.metrics.images.mysqldExporter }}
+      - image: {{ .Values.db.exporteImage }}
         name: mysqld-exporter
         env:
-          - name: MYSQL_ROOT_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: {{ .Release.Name }}-mysql-secret
-                key: root-password
-          - name: DATA_SOURCE_NAME
-            value: root:$(MYSQL_ROOT_PASSWORD)@({{ .Release.Name }}-mysql-svc:3306)/wordpress
-      - image: {{ .Values.metrics.images.prometheusToSd }}
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-mysql-secret
+              key: root-password
+        - name: DATA_SOURCE_NAME
+          value: root:$(MYSQL_ROOT_PASSWORD)@({{ .Release.Name }}-mysql-svc:3306)/wordpress
+      - image: {{ .Values.metrics.image }}
         name: prometheus-to-sd
         ports:
-          - name: profiler
-            containerPort: 6060
+        - name: profiler
+          containerPort: 6060
         command:
-          - /monitor
-          - --stackdriver-prefix=custom.googleapis.com
-          - --source={{ .Release.Name }}:http://{{ .Release.Name }}-mysql-svc:9104/metrics
-          - --pod-id=$(POD_NAME)
-          - --namespace-id=$(POD_NAMESPACE)
-          - --scrape-interval=5s
-          - --export-interval=30s
+        - /monitor
+        - --stackdriver-prefix=custom.googleapis.com
+        - --source={{ .Release.Name }}:http://{{ .Release.Name }}-mysql-svc:9104/metrics
+        - --pod-id=$(POD_NAME)
+        - --namespace-id=$(POD_NAMESPACE)
+        - --scrape-interval=5s
+        - --export-interval=30s
         env:
-          - name: POD_NAME
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.name
-          - name: POD_NAMESPACE
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.namespace
-      {{ end }}
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+    {{ end }}
   volumeClaimTemplates:
   - metadata:
       name: {{ .Release.Name }}-mysql-pvc
