@@ -1,17 +1,17 @@
 apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
-  name: $APP_INSTANCE_NAME-memcached
+  name: {{ .Release.Name }}-memcached
   labels: &MemcachedDeploymentLabels
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: memcached-server
 spec:
   selector:
     matchLabels: *MemcachedDeploymentLabels
   updateStrategy:
     type: RollingUpdate
-  serviceName: $APP_INSTANCE_NAME-memcached-svc
-  replicas: $REPLICAS
+  serviceName: {{ .Release.Name }}-memcached-svc
+  replicas: {{ .Values.memcached.replicas }}
   template:
     metadata:
       labels: *MemcachedDeploymentLabels
@@ -19,7 +19,7 @@ spec:
       terminationGracePeriodSeconds: 180
       containers:
       - name: memcached
-        image: $IMAGE_MEMCACHED
+        image: {{ .Values.memcached.image }}
         imagePullPolicy: Always
         ports:
         - name: memcached
@@ -39,9 +39,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: $APP_INSTANCE_NAME-memcached-svc
+  name: {{ .Release.Name }}-memcached-svc
   labels:
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: memcached-server
 spec:
   clusterIP: None
@@ -50,6 +50,6 @@ spec:
     port: 11211
     protocol: TCP
   selector:
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: memcached-server
   type: ClusterIP # LoadBalancer
