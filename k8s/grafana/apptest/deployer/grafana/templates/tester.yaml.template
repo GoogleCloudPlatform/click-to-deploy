@@ -30,11 +30,11 @@ spec:
     - name: ADMIN_NAME
       valueFrom:
         secretKeyRef:
-          name: ${APP_INSTANCE_NAME}-grafana
+          name: {{ .Release.Name }}-grafana
           key: admin-user
     - name: ADMIN_PASSWORD
       valueFrom:
         secretKeyRef:
-          name: ${APP_INSTANCE_NAME}-grafana
+          name: {{ .Release.Name }}-grafana
           key: admin-password
   restartPolicy: Never
