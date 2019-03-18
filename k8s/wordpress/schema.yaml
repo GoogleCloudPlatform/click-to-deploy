@@ -45,6 +45,16 @@ properties:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 20
+  metrics.image:
+    type: string
+    default: $REGISTRY/prometheus-to-sd:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  metrics.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter (This feature only works with GKE clusters)
+    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, please check with your administrator
+    default: true
 required:
 - name
 - namespace
@@ -54,3 +64,5 @@ required:
 - db.wordpressPassword
 - admin.email
 - admin.password
+- metrics.image
+- metrics.enabled

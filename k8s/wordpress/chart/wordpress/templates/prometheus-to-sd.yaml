@@ -1,0 +1,33 @@
+{{ if .Values.metrics.enabled }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ .Release.Name }}-metrics-exporter
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: wordpress-metrics-exporter
+spec:
+  containers:
+  - name: prometheus-to-sd
+    image: {{ .Values.metrics.image }}
+    ports:
+    - name: profiler
+      containerPort: 6060
+    command:
+    - /monitor
+    - --stackdriver-prefix=custom.googleapis.com
+    - --source={{ .Release.Name }}:http://{{ .Release.Name }}-mysql-svc:9104/metrics
+    - --pod-id=$(POD_NAME)
+    - --namespace-id=$(POD_NAMESPACE)
+    - --scrape-interval=5s
+    - --export-interval=30s
+    env:
+    - name: POD_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.name
+    - name: POD_NAMESPACE
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.namespace
+{{ end }}

@@ -6,6 +6,8 @@ include ../var.Makefile
 VERIFY_WAIT_TIMEOUT = 1800
 
 TAG ?= latest
+METRICS_EXPORTER_TAG ?= v0.5.1
+
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/wordpress/deployer:$(TAG)
@@ -56,6 +58,7 @@ APP_TEST_PARAMETERS ?= { \
 app/build:: .build/wordpress/deployer \
             .build/wordpress/mysql \
             .build/wordpress/wordpress \
+            .build/wordpress/prometheus-to-sd \
             .build/wordpress/tester
 
 
@@ -102,6 +105,17 @@ app/build:: .build/wordpress/deployer \
 	    "$(REGISTRY)/wordpress/mysql:$(TAG)"
 	docker push "$(REGISTRY)/wordpress/mysql:$(TAG)"
 	@touch "$@"
+
+
+.build/wordpress/prometheus-to-sd: .build/var/REGISTRY \
+                                   .build/var/TAG \
+                                   | .build/wordpress
+	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
+	    "$(REGISTRY)/wordpress/prometheus-to-sd:$(TAG)"
+	docker push "$(REGISTRY)/wordpress/prometheus-to-sd:$(TAG)"
+	@touch "$@"
+
 
 .build/wordpress/tester: .build/var/TESTER_IMAGE \
                          $(shell find apptest -type f) \

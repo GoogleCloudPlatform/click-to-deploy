@@ -2,7 +2,8 @@ wordpressImage: null
 
 db:
   image: null
-  exporteImage: null
+  # TODO(wgrzelak): Fix it!
+  exporteImage: prom/mysqld-exporter
   rootPassword: null
   wordpressUser: wordpress
   wordpressPassword: null
