@@ -263,8 +263,8 @@ The application is configured to natively expose its metrics in the
 Metrics can be read on a single HTTP endpoint available at `[APP_BASE_URL]:3000/metrics`,
 where `[APP_BASE_URL]` is the base URL address of the application.
 For example, you can
-[Expose Grafana service internally using port forwarding](#expose-the-grafana-service-internally-using-port-forwarding),
-and then access the metrics by navigating to the [`http://localhost:3000/metrics`](http://localhost:3000/metrics) endpoint.
+[expose Grafana service internally using port forwarding](#expose-the-grafana-service-internally-using-port-forwarding),
+and then access the metrics by navigating to the [http://localhost:3000/metrics](http://localhost:3000/metrics) endpoint.
 
 
 ## Configuring Prometheus to collect the metrics
