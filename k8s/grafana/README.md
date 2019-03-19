@@ -213,7 +213,7 @@ SERVICE_IP=$(kubectl get svc ${APP_INSTANCE_NAME}-grafana \
 echo "http://${SERVICE_IP}:3000/"
 ```
 
-## Expose the Grafana service internally, using port forwarding
+## Expose the Grafana service internally using port forwarding
 
 As an alternative to exposing Grafana publicly, you can use local port
 forwarding. In a background terminal, run the following command:
@@ -245,25 +245,26 @@ echo "- pass: ${GRAFANA_PASSWORD}"
 
 ## Prometheus metrics
 
-The application is configured to natively expose its metrics in
+The application is configured to natively expose its metrics in the
 [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
 Metrics can be read on a single HTTP endpoint available at `[APP_BASE_URL]/metrics`,
-where `[APP_BASE_URL]` is the base URL address of the application,
-like `http://localhost:3000` in case port-forwarding is used to access the application.
+where `[APP_BASE_URL]` is the base URL address of the application.
+For example, if you [expose Grafana service internally using port forwarding](#expose-the-grafana-service-internally-using-port-forwarding),
+then navigate to the `http://localhost:3000/metrics` endpoint to access the metrics.
 
 ## Configuring Prometheus to collect the metrics
 
 Prometheus can be configured to automatically collect the application's metrics.
-Follow [the official documentation](https://prometheus.io/docs/introduction/first_steps/#configuring-prometheus)
+Follow the [Configuring Prometheus documentation](https://prometheus.io/docs/introduction/first_steps/#configuring-prometheus)
 to enable metrics scrapping in your Prometheus server. The detailed specification
 of `<scrape_config>` used to enable the metrics collection can be found
 [here](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config).
 
 ## Exporting metrics to Stackdriver
 
-If the option to export application metrics to Stackdriver was enabled,
-the deployment includes a `prometheus-to-sd` container (Prometheus to Stackdriver exporter;
-[link to repository](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd)).
+If the option to export application metrics to Stackdriver is enabled,
+the deployment includes a [`prometheus-to-sd`](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd)
+(Prometheus to Stackdriver exporter) container.
 Then the metrics will be automatically exported to Stackdriver and visible in
 [Stackdriver Metrics Explorer](https://cloud.google.com/monitoring/charts/metrics-explorer).
 
@@ -272,8 +273,8 @@ Each metric of the application will have a name starting with the application's 
 
 The exporting option might not be available for GKE on-prem clusters.
 
-Note: Please be aware that Stackdriver has [quotas](https://cloud.google.com/monitoring/quotas)
-for the number of custom metrics created in a single project. If the quota is met,
+> Note: Please be aware that Stackdriver has [quotas](https://cloud.google.com/monitoring/quotas)
+for the number of custom metrics created in a single GCP project. If the quota is met,
 additional metrics will not be accepted by Stackdriver, which might cause that some metrics
 from your application might not show up in the Stackdriver's Metrics Explorer.
 
