@@ -1,27 +1,45 @@
 application_api_version: v1beta1
 properties:
-  APP_INSTANCE_NAME:
+  name:
     type: string
     x-google-marketplace:
       type: NAME
-  NAMESPACE:
+  namespace:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  IMAGE_SAMPLE_APP:
+  sonarqube.repository:
     type: string
     default: $REGISTRY:$TAG
     x-google-marketplace:
       type: IMAGE
-  SAMPLE_APP_PARAMETER1:
+  sonarqube.volumeSize:
     type: integer
-    title: Parameter1
-    description: Some number
-    default: 3
-    minimum: 1
-    maximum: 6
+    title: Volume
+    description: The size of Volume (Gi) in the solution
+    default: 24
+  postgresql.db.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 12
+  postgresql.volumeSize:
+    type: integer
+    title: Volume
+    description: The size of Volume (Gi) in the solution
+    default: 24
+  postgresql.image:
+    type: string
+    default: $REGISTRY/postgresql9:$TAG
+    x-google-marketplace:
+      type: IMAGE
+
 required:
-- APP_INSTANCE_NAME
-- NAMESPACE
-- IMAGE_SAMPLE_APP
-- SAMPLE_APP_PARAMETER1
+- name
+- namespace
+- sonarqube.repository
+- sonarqube.volumeSize
+- postgresql.volumeSize
+- postgresql.db.password
+- postgresql.image

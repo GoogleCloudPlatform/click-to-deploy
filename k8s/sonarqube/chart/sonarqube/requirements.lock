@@ -1,6 +1,0 @@
-dependencies:
-- name: postgresql
-  repository: file://../../../postgresql/chart/postgresql
-  version: 1.0.0
-digest: sha256:06873741b81074689eb32c89bb86cea8e57852dea3d8acbe9d0054f92add1b65
-generated: 2019-03-12T11:05:31.791290734+01:00

@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name}}-sonarqube
+  labels: &SonarQubeDeploymentsLables
+      app.kubernetes.io/component: sonarqube
+      app.kubernetes.io/name: "{{ .Release.Name }}"
+spec:
+  replicas: 1
+  selector:
+    matchLabels: *SonarQubeDeploymentsLables
+  template:
+    metadata:
+      labels: *SonarQubeDeploymentsLables
+    spec:
+      containers:
+        - name: {{ .Release.Name}}-sonarqube
+          image: {{ .Values.sonarqube.repository}}
+          env:
+            - name: SONARQUBE_JDBC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: {{.Release.Name}}-secret
+            - name: SONARQUBE_JDBC_URL
+              value: jdbc:postgresql://{{ .Values.postgresql.service.name}}:{{.Values.postgresql.service.Port}}/{{.Values.postgresql.db.name}}
+            - name: SONARQUBE_JDBC_USERNAME
+              value: {{.Values.postgresql.db.user}}
+          ports:
+            - containerPort: {{.Values.sonarqube.service.internalPort}}
+              name: sonar-port

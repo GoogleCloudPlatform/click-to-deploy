@@ -5,52 +5,52 @@ include ../var.Makefile
 
 
 TAG ?= latest
+SRCTAG ?= latest
+IMAGE_SONARQUBE ?= marketplace.gcr.io/google/sonarqube7:$(SRCTAG)
+IMAGE_POSTGRESQL ?= marketplace.gcr.io/google/postgresql9:$(SRCTAG)
+
 $(info ---- TAG = $(TAG))
 
-APP_DEPLOYER_IMAGE ?= $(REGISTRY)/sample-app/deployer:$(TAG)
-NAME ?= sample-app
+APP_DEPLOYER_IMAGE ?= $(REGISTRY)/sonarqube/deployer:$(TAG)
+NAME ?= sonarqube-1
 
-ifdef IMAGE_SAMPLE_APP
-  IMAGE_SAMPLE_APP_FIELD = , "IMAGE_SAMPLE_APP": "$(IMAGE_SAMPLE_APP)"
-endif
-
-ifdef SAMPLE_APP_PARAMETER1
-  SAMPLE_APP_PARAMETER1_FIELD = , "SAMPLE_APP_PARAMETER1": "$(SAMPLE_APP_PARAMETER1)"
-endif
 
 APP_PARAMETERS ?= { \
-  "APP_INSTANCE_NAME": "$(NAME)", \
-  "NAMESPACE": "$(NAMESPACE)" \
-  $(IMAGE_SAMPLE_APP_FIELD) \
-  $(SAMPLE_APP_PARAMETER1_FIELD) \
+  "name": "$(NAME)", \
+  "namespace": "$(NAMESPACE)" \
 }
 
-TESTER_IMAGE ?= $(REGISTRY)/sample-app/tester:$(TAG)
+TESTER_IMAGE ?= $(REGISTRY)/sonarqube/tester:$(TAG)
 
 APP_TEST_PARAMETERS ?= { \
   "testerImage": "$(TESTER_IMAGE)" \
 }
 
 
-app/build:: .build/sample-app/deployer \
-            .build/sample-app/sample-app \
-            .build/sample-app/tester
+app/build:: .build/sonarqube/deployer \
+            .build/sonarqube/sonarqube \
+            .build/sonarqube/postgresql9 \
+            .build/sonarqube/tester
 
 
-.build/sample-app: | .build
+.build/sonarqube: | .build
 	mkdir -p "$@"
 
+#.build/sonarqube/deps:
+#	cp -r ../postgresql/chart/postgresql ./chart/sonarqube/charts/
+#	rm -f ./chart/sonarqube/charts/postgresql/templates/application.yaml
 
-.build/sample-app/deployer: deployer/* \
-                       manifest/* \
-                       schema.yaml \
-                       .build/var/APP_DEPLOYER_IMAGE \
-                       .build/var/MARKETPLACE_TOOLS_TAG \
-                       .build/var/REGISTRY \
-                       .build/var/TAG \
-                       | .build/sample-app
+.build/sonarqube/deployer: deployer/* \
+                           chart/sonarqube/* \
+                           chart/sonarqube/templates/* \
+                           schema.yaml \
+                           .build/var/APP_DEPLOYER_IMAGE \
+                           .build/var/MARKETPLACE_TOOLS_TAG \
+                           .build/var/REGISTRY \
+                           .build/var/TAG \
+                           | .build/sonarqube
 	docker build \
-	    --build-arg REGISTRY="$(REGISTRY)/sample-app" \
+	    --build-arg REGISTRY="$(REGISTRY)/sonarqube" \
 	    --build-arg TAG="$(TAG)" \
 	    --build-arg MARKETPLACE_TOOLS_TAG="$(MARKETPLACE_TOOLS_TAG)" \
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
@@ -59,20 +59,29 @@ app/build:: .build/sample-app/deployer \
 	docker push "$(APP_DEPLOYER_IMAGE)"
 	@touch "$@"
 
-
-.build/sample-app/sample-app: .build/var/REGISTRY \
-                              .build/var/TAG \
-                              | .build/sample-app
-
-	docker pull launcher.gcr.io/google/nginx1:$(TAG)
-	docker tag launcher.gcr.io/google/nginx1:$(TAG) \
-	    "$(REGISTRY)/sample-app:$(TAG)"
-	docker push "$(REGISTRY)/sample-app:$(TAG)"
+.build/sonarqube/sonarqube: .build/var/REGISTRY \
+                            .build/var/TAG \
+                            | .build/sonarqube
+	docker pull $(IMAGE_SONARQUBE)
+	docker tag $(IMAGE_SONARQUBE) "$(REGISTRY)/sonarqube:$(TAG)"
+	docker push "$(REGISTRY)/sonarqube:$(TAG)"
+	@touch "$@"
 
 
-.build/sample-app/tester: .build/var/TESTER_IMAGE \
+.build/sonarqube/postgresql9: .build/var/REGISTRY \
+                            .build/var/TAG \
+                            | .build/sonarqube
+	docker pull $(IMAGE_POSTGRESQL)
+	docker tag $(IMAGE_POSTGRESQL) "$(REGISTRY)/sonarqube/postgresql9:$(TAG)"
+	docker push "$(REGISTRY)/sonarqube/postgresql9:$(TAG)"
+	@touch "$@"
+
+
+
+
+.build/sonarqube/tester: .build/var/TESTER_IMAGE \
                           $(shell find apptest -type f) \
-                          | .build/sample-app
+                          | .build/sonarqube
 	$(call print_target,$@)
 	cd apptest/tester \
 	    && docker build --tag "$(TESTER_IMAGE)" .
