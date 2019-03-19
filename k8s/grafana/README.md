@@ -125,7 +125,7 @@ export GRAFANA_GENERATED_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold
 
 Enable Stackdriver Metrics Exporter:
 
-> **NOTE:** Your GCP project should have Stackdriver enabled. This feature only works with GKE clusters. For non-GCP clusters, please check with your administrator.
+> **NOTE:** Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet.
 
 ```shell
 export METRICS_EXPORTER_ENABLED=false
