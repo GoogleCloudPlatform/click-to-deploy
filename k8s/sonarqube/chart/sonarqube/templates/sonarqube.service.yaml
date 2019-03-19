@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{.Release.Name}}-{{ .Values.sonarqube.service.name}}
+  labels:
+    app.kubernetes.io/component: sonarqube-service
+    app.kubernetes.io/name: {{.Release.Name}}
+spec:
+  ports:
+    - port: {{.Values.sonarqube.service.externalPort}}
+      targetPort: {{.Values.sonarqube.service.internalPort}}
+      name: {{.Values.sonarqube.service.name}}-port
+  selector:
+    app.kubernetes.io/name: "{{.Release.Name}}"
+    app.kubernetes.io/component: sonarqube
+  type: {{.Values.sonarqube.service.type}}

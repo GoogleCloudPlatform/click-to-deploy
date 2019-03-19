@@ -1,5 +1,0 @@
-dependencies:
-  - name: postgresql
-    version: 1.0.0
-    repository: "file://../../../postgresql/chart/postgresql"
-    condition: postgresql.enabled
