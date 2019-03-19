@@ -1,0 +1,145 @@
+#!/bin/bash -eu
+#
+# Copyright 2017 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# The script will:
+#   * Set up a persistent disk for each Elasticsearch node:
+#     * Mount the persistent disk
+#     * Move Elasticsearch files to the persistent disk
+#   * Update the Elasticsearch configuration files
+#   * Bootstrap the node
+#
+
+source /opt/c2d/elasticsearch-utils || exit 1
+
+readonly es_xpack_zip_uri="file:///opt/c2d/downloads/xpack.zip"
+
+readonly es_cluster_name="$(get_attribute_value "es_cluster_name")"
+readonly es_nodes="$(get_attribute_value "es_nodes")"
+readonly es_install_xpack="$(get_attribute_value "es_install_xpack" \
+  | tr '[:upper:]' '[:lower:]')"
+
+readonly es_password="$(get_attribute_value "es_password")"
+readonly kibana_password="$(get_attribute_value "kibana_password")"
+readonly logstash_sys_password="$(get_attribute_value "logstash_sys_password")"
+
+# If X-Pack is installed, it sets a basic security for http connections
+# and configures default username (elastic) and password (changeme).
+# If the installation does not include X-Pack, there is no password set.
+readonly es_default_password="changeme"
+
+readonly es_current_node="$(hostname)"
+readonly es_nodes_count="$(echo "${es_nodes}" | wc -w)"
+readonly es_first_hostname="$(echo "${es_nodes}" | awk '{ print $1 }')"
+readonly es_min_master_nodes="$(( es_nodes_count / 2 + 1 ))"
+
+# Calculate the desired heap size to configure in elasticsearch
+readonly total_memory_kb="$(awk '/MemTotal/ { print int($2) }' /proc/meminfo)"
+readonly total_memory_gb="$((total_memory_kb / 1024 / 1024))"
+readonly es_heap_size_gb="$((total_memory_gb / 2))"
+
+echo "Stopping elasticsearch"
+service elasticsearch stop
+
+# Mount and format the disk
+echo "Mounting and formatting the disk"
+readonly es_mount_dir=/elasticsearch
+readonly es_disk_name="${es_current_node}-data"
+format_and_mount_disk "${es_disk_name}" "${es_mount_dir}"
+
+# Symlink Elasticsearch data directory to datadisk path
+echo "Configuring new data directory"
+rm -r /var/lib/elasticsearch
+ln -s "${es_mount_dir}" /var/lib/elasticsearch
+mkdir "${es_mount_dir}/data"
+mkdir -p "${es_mount_dir}/config/scripts"
+chown -R elasticsearch:elasticsearch "${es_mount_dir}"
+
+# Export variables to be used in configuration files
+export es_cluster_name
+export es_current_node
+export es_heap_size_gb
+export es_min_master_nodes
+
+# Fill in the /etc/elasticsearch/elasticsearch.yml template
+echo "Configuring elasticsearch.yml"
+fill_in_config_template \
+  /etc/elasticsearch \
+  elasticsearch.yml.template \
+  elasticsearch.yml
+
+# Fill in the /etc/default/elasticsearch template
+echo "Configuring /etc/default/elasticsearch"
+fill_in_config_template \
+  /etc/default \
+  elasticsearch.template \
+  elasticsearch
+
+echo "Starting elasticsearch in single-node mode"
+service elasticsearch start
+
+# Install X-Pack in single-node mode
+if [[ "${es_install_xpack:-}" == "true" ]]; then
+  echo "Installing X-Pack"
+  /usr/share/elasticsearch/bin/elasticsearch-plugin install -b "${es_xpack_zip_uri}"
+fi
+
+# Prepare a list of "gossiping" nodes in cluster for unicast.
+es_unicast_hosts="\"${es_first_hostname}\""
+if [[ "${es_nodes_count}" -ge 3 ]]; then
+  # Use first 3 nodes for gossiping.
+  es_unicast_hosts="$(echo "${es_nodes}" \
+    | awk '{ print "\""$1"\", \""$2"\", \""$3"\"" }' )"
+fi
+
+# Configure cluster discovery.
+# This step is performed after potential X-Pack installation and restart
+# in order not to allow for race condition, when all nodes might be in cluster,
+# but some of them before X-Pack installation and restart.
+echo "discovery.zen.ping.unicast.hosts: [ ${es_unicast_hosts} ]" \
+  >> /etc/elasticsearch/elasticsearch.yml
+
+echo "Starting elasticsearch with unicast configuration - cluster formation"
+service elasticsearch restart
+
+systemctl enable elasticsearch
+
+if [[ "${es_install_xpack:-}" == "true" ]]; then
+  # X-Pack creates a simple security mechanism with default user and password.
+  # It is changed to generated one, but calling the operation only once
+  # for the whole cluster - it is propagated to all nodes.
+  if [[ "${es_current_node}" == "${es_first_hostname}" ]]; then
+    echo "First node - waiting for green before changing password"
+    wait_for_green_elastic_cluster "${es_nodes_count}" "${es_default_password}"
+
+    # Change elastic user password.
+    change_user_password \
+      elastic "${es_default_password}" \
+      elastic "${es_password}"
+
+    # Change kibana user password.
+    change_user_password \
+      elastic "${es_password}" \
+      kibana "${kibana_password}"
+
+    # Change logstash_system user password.
+    change_user_password \
+      elastic "${es_password}" \
+      logstash_system "${logstash_sys_password}"
+  fi
+  wait_for_green_elastic_cluster "${es_nodes_count}" "${es_password}"
+else
+  wait_for_green_elastic_cluster "${es_nodes_count}"
+fi

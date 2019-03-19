@@ -11,20 +11,20 @@ APP_DEPLOYER_IMAGE ?= $(REGISTRY)/elasticsearch/deployer:$(TAG)
 NAME ?= elasticsearch-1
 
 ifdef REPLICAS
-  REPLICAS_FIELD = , "REPLICAS": "$(REPLICAS)"
+  REPLICAS_FIELD = , "elasticsearch.replicas": "$(REPLICAS)"
 endif
 
 ifdef IMAGE_ELASTICSEARCH
-  IMAGE_ELASTICSEARCH_FIELD = , "IMAGE_ELASTICSEARCH": "$(IMAGE_ELASTICSEARCH)"
+  IMAGE_ELASTICSEARCH_FIELD = , "elasticsearch.image": "$(IMAGE_ELASTICSEARCH)"
 endif
 
 ifdef IMAGE_INIT
-  IMAGE_INIT_FIELD = , "IMAGE_INIT": "$(IMAGE_INIT)"
+  IMAGE_INIT_FIELD = , "elasticsearch.initImage": "$(IMAGE_INIT)"
 endif
 
 APP_PARAMETERS ?= { \
-  "APP_INSTANCE_NAME": "$(NAME)", \
-  "NAMESPACE": "$(NAMESPACE)" \
+  "name": "$(NAME)", \
+  "namespace": "$(NAMESPACE)" \
   $(REPLICAS_FIELD) \
   $(IMAGE_ELASTICSEARCH_FIELD) \
   $(IMAGE_INIT_FIELD) \
@@ -47,7 +47,8 @@ app/build:: .build/elasticsearch/elasticsearch \
 
 
 .build/elasticsearch/deployer: deployer/* \
-                               manifest/* \
+                               chart/elasticsearch/* \
+                               chart/elasticsearch/templates/* \
                                schema.yaml \
                                .build/var/APP_DEPLOYER_IMAGE \
                                .build/var/MARKETPLACE_TOOLS_TAG \

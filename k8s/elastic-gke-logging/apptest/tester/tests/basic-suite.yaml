@@ -1,29 +1,5 @@
 actions:
 
-- name: Wait until Elasticsearch is ready
-  bashTest:
-    script: |-
-      for ((pod=0; pod<${ELASTICSEARCH_REPLICAS}; pod++)); do
-        kubectl wait pod/${APP_INSTANCE_NAME}-elasticsearch-${pod} \
-          --namespace=${NAMESPACE} \
-          --for=condition=Ready \
-          --timeout=600s
-      done
-    expect:
-      exitCode:
-        equals: 0
-
-- name: Wait until Kibana init job is completed
-  bashTest:
-    script: |-
-      kubectl wait job/${APP_INSTANCE_NAME}-kibana-init-job \
-          --namespace=${NAMESPACE} \
-          --for=condition=complete \
-          --timeout=600s
-    expect:
-      exitCode:
-        equals: 0
-
 - name: Let Elasticsearch data get replicated across the cluster
   bashTest:
     script: |-
@@ -56,16 +32,11 @@ actions:
 - name: All nodes are connected to the cluster
   bashTest:
     script: |-
-      nodes="$(curl -XGET "${HEALTH_URL}?wait_for_nodes=${ELASTICSEARCH_REPLICAS}&timeout=300s" \
-        | jq '.number_of_nodes')"
-      if [[ "${nodes}" -eq "${ELASTICSEARCH_REPLICAS}" ]]; then
-        echo "OK - all nodes found"
-      else
-        echo "FAIL - found nodes: ${nodes}"
-      fi
+      curl -XGET "${HEALTH_URL}?wait_for_nodes=${ELASTICSEARCH_REPLICAS}&timeout=300s" \
+        | jq '.number_of_nodes'
     expect:
       stdout:
-        equals: OK - all nodes found
+        equals: {{ .Env.ELASTICSEARCH_REPLICAS }}
 
 - name: Cluster reports green status
   bashTest:

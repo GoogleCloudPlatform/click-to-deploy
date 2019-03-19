@@ -1,18 +1,29 @@
 ARG MARKETPLACE_TOOLS_TAG
-FROM gcr.io/cloud-marketplace-tools/k8s/deployer_envsubst:$MARKETPLACE_TOOLS_TAG
+FROM launcher.gcr.io/google/debian9 AS build
 
-COPY manifest/* /data/manifest/
-COPY schema.yaml /data/
-COPY apptest/deployer /data-test/
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends gettext
 
-# Provide registry prefix and tag for default values for images.
+ADD chart/elasticsearch /tmp/chart
+RUN cd /tmp && tar -czvf /tmp/elasticsearch.tar.gz chart
+
+ADD apptest/deployer/elasticsearch /tmp/test/chart
+RUN cd /tmp/test \
+    && tar -czvf /tmp/test/elasticsearch.tar.gz chart/
+
+ADD schema.yaml /tmp/schema.yaml
+
 ARG REGISTRY
 ARG TAG
 
-ENV WAIT_FOR_READY_TIMEOUT 600
-ENV TESTER_TIMEOUT 600
-
-RUN cat /data/schema.yaml \
+RUN cat /tmp/schema.yaml \
     | env -i "REGISTRY=$REGISTRY" "TAG=$TAG" envsubst \
-    > /data/schema.yaml.new \
-    && mv /data/schema.yaml.new /data/schema.yaml
+    > /tmp/schema.yaml.new \
+    && mv /tmp/schema.yaml.new /tmp/schema.yaml
+
+
+FROM gcr.io/cloud-marketplace-tools/k8s/deployer_helm:$MARKETPLACE_TOOLS_TAG
+COPY --from=build /tmp/elasticsearch.tar.gz /data/chart/
+COPY --from=build /tmp/test/elasticsearch.tar.gz /data-test/chart/
+COPY apptest/deployer/schema.yaml /data-test/
+COPY --from=build /tmp/schema.yaml /data/

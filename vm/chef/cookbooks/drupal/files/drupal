@@ -1,0 +1,38 @@
+#!/bin/bash -eu
+#
+# Copyright 2017 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
+
+drupal_password="$(get_attribute_value "drupal-db-password")"
+declare -r drupal_password
+
+mysql -u root -e "CREATE USER 'drupal'@'localhost' IDENTIFIED BY '${drupal_password}';"
+mysql -u root -e "GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, CREATE TEMPORARY TABLES ON drupal.* TO 'drupal'@'localhost' IDENTIFIED BY '${drupal_password}';";
+mysql -u root -e "FLUSH PRIVILEGES"
+
+# New setting for trusted hostname configuration
+function trusted_host_patterns() {
+  echo "\$settings['trusted_host_patterns'][] = '$1';  # Added by Google C2D"
+}
+
+trusted_host_patterns "^localhost\$" >> /var/www/html/sites/default/settings.php
+trusted_host_patterns "^127\.0\.0\.1\$" >> /var/www/html/sites/default/settings.php
+if has_external_ip; then
+  echo "# External IP" >> /var/www/html/sites/default/settings.php
+  trusted_host_patterns "^$(get_external_ip | sed 's/\./\\./g')\$" >> /var/www/html/sites/default/settings.php
+fi
+echo "# Internal IP" >> /var/www/html/sites/default/settings.php
+trusted_host_patterns "^$(get_internal_ip | sed 's/\./\\./g')\$" >> /var/www/html/sites/default/settings.php

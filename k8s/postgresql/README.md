@@ -29,6 +29,11 @@ Get up and running with a few clicks! Install this PostgreSQL app to a Google Ku
 
 ## Command line instructions
 
+You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local workstation in the
+further instructions.
+
+[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/GoogleCloudPlatform/click-to-deploy&cloudshell_working_dir=k8s/postgresql)
+
 ### Prerequisites
 
 #### Set up command line tools
@@ -152,13 +157,16 @@ export POSTGRESQL_VOLUME_SIZE=10
 
 #### Expand the manifest template
 
-Use `envsubst` to expand the template. We recommend that you save the
+Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-awk 'FNR==1 {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $IMAGE_POSTGRESQL $NAMESPACE $POSTGRESQL_DB_PASSWORD $POSTGRESQL_VOLUME_SIZE' \
-  > "${APP_INSTANCE_NAME}_manifest.yaml"
+helm template chart/postgresql \
+  --name $APP_INSTANCE_NAME \
+  --namespace $NAMESPACE \
+  --set postgresql.image=$IMAGE_POSTGRESQL \
+  --set postgresql.volumeSize=$POSTGRESQL_VOLUME_SIZE \
+  --set db.password=$POSTGRESQL_DB_PASSWORD > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 
 #### Apply the manifest to your Kubernetes cluster

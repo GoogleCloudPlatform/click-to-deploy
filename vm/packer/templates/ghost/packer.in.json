@@ -1,0 +1,7 @@
+{
+  "license": "c2d-ghost",
+  "source_image_family": "debian-9",
+  "chef": {
+    "run_list": [ "c2d-config", "ghost", "stackdriver" ]
+  }
+}

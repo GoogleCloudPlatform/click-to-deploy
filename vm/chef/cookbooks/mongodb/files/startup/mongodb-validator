@@ -1,0 +1,48 @@
+#!/bin/bash -eu
+#
+# Copyright 2017 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
+
+readonly is_mongodb_arbiter="$(get_attribute_value "is_mongodb_arbiter")"
+
+readonly mongodb_servers="$(get_attribute_value "mongodb_servers")"
+readonly mongodb_arbiters="$(get_attribute_value "mongodb_arbiters")"
+
+# Test if we can connect to MongoDB on this instance.
+until mongo --eval 'printjson(rs.status())'; do
+  echo "Waiting for MongoDB on current node..." && sleep 2
+done
+
+if [[ "${is_mongodb_arbiter}" == "True" ]]; then
+  echo "Arbiter passed validation test."
+  exit 0
+fi
+
+# Count the number of nodes in the cluster.
+readonly nodes_count="$(echo "${mongodb_servers} ${mongodb_arbiters}" | wc -w)"
+
+# The script counts cluster members reported as "healthy".
+readonly nodes_up_js="rs.status() \
+  .members.map(function(o) { return o.health }) \
+  .reduce(function(sum, value) { return sum + value})"
+
+# Wait until cluster reports all requested nodes as healthy
+until [[ "$(mongo --quiet --eval "${nodes_up_js}")" -eq "${nodes_count}" ]]; do
+  echo "Waiting for cluster to report all requested nodes as healthy..."
+  sleep 5
+done
+
+echo "MongoDB cluster is healthy. PASSED minimal testing."

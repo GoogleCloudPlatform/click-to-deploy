@@ -1,0 +1,68 @@
+# Copyright 2018 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# The following variables are required to be provided:
+#
+# PROJECT_ID - <YOUR PROJECT ID>
+# _SERVICE_ACCOUNT_JSON_GCS - gs://<GCS URL TO SERVICE ACCOUNT JSON KEY>
+# _LOGS_BUCKET - <GCS BUCKET TO EXPORT PACKER LOGS>
+# _SOLUTION_NAME - <VM IMAGE TO BE BUILT>
+
+timeout: 1200s # 20m
+options:
+  workerPool: ${PROJECT_ID}/gcb-workers-pool
+steps:
+
+- id: Download Service Account Key
+  name: gcr.io/cloud-builders/gsutil
+  args:
+  - cp
+  - ${_SERVICE_ACCOUNT_JSON_GCS}
+  - service-account.json
+
+- id: Pull Imagebuilder Image
+  name: gcr.io/cloud-builders/docker
+  dir: vm
+  entrypoint: bash
+  args:
+  - -exc
+  - |
+    TAG="$$(cat ./IMAGEBUILDER_TAG)"
+    docker pull "gcr.io/cloud-marketplace-tools/vm/imagebuilder:$$TAG"
+    docker tag "gcr.io/cloud-marketplace-tools/vm/imagebuilder:$$TAG" "gcr.io/cloud-marketplace-tools/vm/imagebuilder:local"
+
+- id: Build VM-based Solution
+  name: gcr.io/cloud-builders/docker
+  waitFor:
+  - Download Service Account Key
+  - Pull Imagebuilder Image
+  args:
+  - run
+  - --env=PROJECT=${PROJECT_ID}
+  - --env=BUCKET=${_LOGS_BUCKET}
+  - --env=KEY_FILE_PATH=/service-account.json
+  - --env=CHEF_DIR=/chef
+  - --env=PACKER_DIR=/packer/templates
+  - --env=TESTS_DIR=/tests
+  - --env=SOLUTION_NAME=${_SOLUTION_NAME}
+  - --env=RUN_TESTS=true
+  - --env=ATTACH_LICENSE=true
+  - --env=LICENSE_PROJECT_NAME=click-to-deploy-images
+  - --env=USE_INTERNAL_IP=true
+  - --env=TESTS_CUSTOM_METADATA=google-c2d-startup-enable=0
+  - --volume=/workspace/vm/chef:/chef:ro
+  - --volume=/workspace/vm/packer:/packer:ro
+  - --volume=/workspace/vm/tests:/tests:ro
+  - --volume=/workspace/service-account.json:/service-account.json:ro
+  - gcr.io/cloud-marketplace-tools/vm/imagebuilder:local

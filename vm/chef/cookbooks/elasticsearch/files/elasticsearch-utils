@@ -1,0 +1,90 @@
+#!/bin/bash -eu
+#
+# Copyright 2017 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
+
+#######################################
+# Waits for reporintg the specified number of nodes and green status
+# on the health endpoint of Elasticsearch.
+# Arguments:
+#  Number of expected nodes to wait for.
+#  Authentication password. Optional.
+# Outputs:
+#  Writes statuses to stdout.
+#######################################
+function wait_for_green_elastic_cluster() {
+  local -r nodes="$1"
+
+  local -r health_url="http://localhost:9200/_cluster/health?format=yaml"
+  local -r nodes_health_url="${health_url}&filter_path=number_of_nodes"
+  local -r status_health_url="${health_url}&filter_path=status"
+
+  # If no password specified, don't leave auth_params empty
+  local -a auth_params=()
+  if [[ "$#" -eq 2 ]]; then
+    local -r password="$2"
+    auth_params=(-u "elastic:${password}")
+  fi
+
+  # Wait for exact number of nodes
+  until curl -s "${auth_params[@]}" "${nodes_health_url}" | grep "${nodes}"; do
+    echo "Waiting for ${nodes} nodes in cluster..."
+    echo "$(curl -s "${auth_params[@]}" "${nodes_health_url}")"
+    sleep 5
+  done
+
+  # Wait for status 'green'
+  until curl -s "${auth_params[@]}" "${status_health_url}" | grep green; do
+    echo "Waiting for green status in cluster.."
+    echo "$(curl -s "${auth_params[@]}" "${status_health_url}")"
+    sleep 3
+  done
+
+  echo "Cluster status:"
+  echo "$(curl -s "${auth_params[@]}" "${health_url}")"
+}
+
+function change_user_password() {
+  local -r auth_user="$1"
+  local -r auth_user_pass="$2"
+
+  local -r user_to_change="$3"
+  local -r new_pass="$4"
+
+  local -r changepass_url="http://localhost:9200/_xpack/security/user/${user_to_change}/_password"
+
+  echo "Changing elasticsearch password"
+  local -r response="$(curl -X POST \
+    -u "${auth_user}:${auth_user_pass}" \
+    -d "{\"password\":\"${new_pass}\"}" \
+    "${changepass_url}")"
+
+  if [[ "${response}" != "{}" ]]; then
+    echo "Password change failed: ${response}"
+    exit 1
+  fi
+}
+
+function fill_in_config_template() {
+  local -r base_dir="$1"
+  local -r template_file="$2"
+  local -r original_file="$3"
+
+  cd "${base_dir}"
+  mv "${original_file}" "${original_file}.orig"
+  envsubst < "${template_file}" > "${original_file}"
+  rm "${template_file}"
+}
