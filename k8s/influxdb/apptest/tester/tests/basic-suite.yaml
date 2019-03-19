@@ -48,6 +48,6 @@ actions:
     script: curl -f "http://${APP_INSTANCE_NAME}-influxdb-svc:8086/metrics"
     expect:
       stdout:
-         contains: '# HELP go_gc_duration_seconds A summary of the GC invocation durations.'
+        contains: '# HELP go_gc_duration_seconds A summary of the GC invocation durations.'
       exitCode:
         equals: 0
