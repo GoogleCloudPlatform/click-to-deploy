@@ -10,16 +10,16 @@ APP_DEPLOYER_IMAGE ?= $(REGISTRY)/grafana/deployer:$(TAG)
 NAME ?= grafana-1
 
 ifdef IMAGE_GRAFANA
-  IMAGE_GRAFANA_FIELD = , "IMAGE_GRAFANA": "$(IMAGE_GRAFANA)"
+  IMAGE_GRAFANA_FIELD = , "grafana.image": "$(IMAGE_GRAFANA)"
 endif
 
 ifdef IMAGE_GRAFANA_INIT
-  IMAGE_GRAFANA_INIT_FIELD = , "IMAGE_GRAFANA_INIT": "$(IMAGE_GRAFANA_INIT)"
+  IMAGE_GRAFANA_INIT_FIELD = , "grafana.initImage": "$(IMAGE_GRAFANA_INIT)"
 endif
 
 APP_PARAMETERS ?= { \
-  "APP_INSTANCE_NAME": "$(NAME)", \
-  "NAMESPACE": "$(NAMESPACE)" \
+  "name": "$(NAME)", \
+  "namespace": "$(NAMESPACE)" \
   $(IMAGE_GRAFANA_FIELD) \
   $(IMAGE_GRAFANA_INIT_FIELD) \
 }
@@ -42,7 +42,8 @@ app/build:: .build/grafana/debian9 \
 
 
 .build/grafana/deployer: deployer/* \
-                         manifest/* \
+                         chart/grafana/* \
+                         chart/grafana/templates/* \
                          schema.yaml \
                          .build/var/APP_DEPLOYER_IMAGE \
                          .build/var/MARKETPLACE_TOOLS_TAG \

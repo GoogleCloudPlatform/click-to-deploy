@@ -1,0 +1,11 @@
+<VirtualHost *:80>
+  ProxyRequests     Off
+  ProxyPreserveHost On
+  AllowEncodedSlashes NoDecode
+  ProxyPass         / http://localhost:8983/ nocanon
+  ProxyPassReverse  / http://localhost:8983/
+  <Proxy http://localhost:8983/*>
+    Order deny,allow
+    Allow from all
+  </Proxy>
+</VirtualHost>
