@@ -145,11 +145,20 @@ encoded in base64)
 export INFLUXDB_ADMIN_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1 | tr -d '\n' | base64)
 ```
 
+Enable Stackdriver Metrics Exporter:
+
+> **NOTE:** Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet.
+
+```shell
+export METRICS_EXPORTER_ENABLED=false
+```
+
 Configure the container image:
 
 ```shell
 TAG=1.7
 export IMAGE_INFLUXDB="marketplace.gcr.io/google/influxdb:${TAG}"
+export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/influxdb/prometheus-to-sd:${TAG}"
 ```
 
 The images above are referenced by
@@ -161,10 +170,12 @@ until you are ready to upgrade. To get the digest for the image, use the
 following script:
 
 ```shell
-repo=$(echo $IMAGE_INFLUXDB | cut -d: -f1)
-digest=$(docker pull $IMAGE_INFLUXDB | sed -n -e 's/Digest: //p')
-export IMAGE_INFLUXDB="$repo@$digest"
-env | grep IMAGE_INFLUXDB
+for i in "IMAGE_INFLUXDB" "IMAGE_METRICS_EXPORTER"; do
+  repo=$(echo ${!i} | cut -d: -f1);
+  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
+  export $i="$repo@$digest";
+  env | grep $i;
+done
 ```
 
 #### Create namespace in your Kubernetes cluster
@@ -186,7 +197,9 @@ helm template chart/influxdb \
   --namespace $NAMESPACE \
   --set influxdbImage=$IMAGE_INFLUXDB \
   --set admin.user=$INFLUXDB_ADMIN_USER \
-  --set admin.password=$INFLUXDB_ADMIN_PASSWORD > ${APP_INSTANCE_NAME}_manifest.yaml
+  --set admin.password=$INFLUXDB_ADMIN_PASSWORD \
+  --set metrics.image=$IMAGE_METRICS_EXPORTER \
+  --set metrics.enabled=$METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 
 #### Apply the manifest to your Kubernetes cluster
