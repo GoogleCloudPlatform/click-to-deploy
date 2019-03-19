@@ -1,0 +1,4 @@
+nginx:
+  image: null
+  initImage: null
+  replicas: null
