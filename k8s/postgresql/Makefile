@@ -12,8 +12,8 @@ $(info ---- TAG = $(TAG))
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/postgresql/deployer:$(TAG)
 NAME ?= postgresql-1
 APP_PARAMETERS ?= { \
-  "APP_INSTANCE_NAME": "$(NAME)", \
-  "NAMESPACE": "$(NAMESPACE)" \
+  "name": "$(NAME)", \
+  "namespace": "$(NAMESPACE)" \
 }
 
 TESTER_IMAGE ?= $(REGISTRY)/postgresql/tester:$(TAG)
@@ -33,7 +33,8 @@ app/build:: .build/postgresql/deployer \
 
 
 .build/postgresql/deployer: deployer/* \
-                           manifest/* \
+                           chart/postgresql/* \
+                           chart/postgresql/templates/* \
                            schema.yaml \
                            .build/var/APP_DEPLOYER_IMAGE \
                            .build/var/MARKETPLACE_TOOLS_TAG \

@@ -1,19 +1,19 @@
 application_api_version: v1beta1
 properties:
-  name:
+  APP_INSTANCE_NAME:
     type: string
     x-google-marketplace:
       type: NAME
-  namespace:
+  NAMESPACE:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  sparkOperatorImage:
+  SPARK_OPERATOR_IMAGE:
     type: string
     default: $REGISTRY:$TAG
     x-google-marketplace:
       type: IMAGE
-  serviceAccount:
+  SERVICE_ACCOUNT:
     type: string
     title: Cluster Admin Service Account
     description: >-
@@ -29,7 +29,7 @@ properties:
           # TODO(liyinan926): Reduce the permission set.
           rulesFromRoleName: cluster-admin
 required:
-- name
-- namespace
-- sparkOperatorImage
-- serviceAccount
+- APP_INSTANCE_NAME
+- NAMESPACE
+- SPARK_OPERATOR_IMAGE
+- SERVICE_ACCOUNT
