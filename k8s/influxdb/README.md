@@ -298,8 +298,8 @@ The application is configured to natively expose its metrics in the
 Metrics can be read on a single HTTP endpoint available at `[APP_BASE_URL]:8086/metrics`,
 where `[APP_BASE_URL]` is the base URL address of the application.
 For example, you can
-[Connect to InfluxDB using `kubectl port-forward` method](#connect-to-influxdb-using-kubectl-port-forward-method),
-and then access the metrics by navigating to the [`http://localhost:8086/metrics`](http://localhost:8086/metrics) endpoint.
+[connect to InfluxDB using `kubectl port-forward` method](#connect-to-influxdb-using-kubectl-port-forward-method),
+and then access the metrics by navigating to the [http://localhost:8086/metrics](http://localhost:8086/metrics) endpoint.
 
 ## Configuring Prometheus to collect the metrics
 
