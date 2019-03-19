@@ -85,6 +85,6 @@ spec:
   - group: apps/v1beta2
     kind: StatefulSet
 {{ if .Values.metrics.enabled }}
-  - group: v1
-    kind: Pod
+  - group: apps/v1beta2
+    kind: Deployment
 {{ end }}
