@@ -2,20 +2,20 @@
 apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
-  name: $APP_INSTANCE_NAME-nginx
+  name: {{ .Release.Name }}-nginx
   labels: &NginxDeploymentLabels
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: nginx-server
 spec:
   selector:
     matchLabels: *NginxDeploymentLabels
   updateStrategy:
     type: RollingUpdate
-  serviceName: $APP_INSTANCE_NAME-nginx-svc
-  replicas: $REPLICAS
+  serviceName: {{ .Release.Name }}-nginx-svc
+  replicas: {{ .Values.nginx.replicas }}
   volumeClaimTemplates:
   - metadata:
-      name: $APP_INSTANCE_NAME-nginx-pvc
+      name: {{ .Release.Name }}-nginx-pvc
       labels: *NginxDeploymentLabels
     spec:
       accessModes: [ "ReadWriteOnce" ]
@@ -31,7 +31,7 @@ spec:
       initContainers:
       # This init container is reponsible for creating default index html file
       - name: initialize-volume
-        image: $IMAGE_NGINX_INIT
+        image: {{ .Values.nginx.initImage }}
         imagePullPolicy: Always
         command:
         - /bin/bash
@@ -52,11 +52,11 @@ spec:
           EOF
           fi
         volumeMounts:
-        - name: $APP_INSTANCE_NAME-nginx-pvc
+        - name: {{ .Release.Name }}-nginx-pvc
           mountPath: /usr/share/nginx/html
       containers:
       - name: nginx
-        image: $IMAGE_NGINX
+        image: {{ .Values.nginx.image }}
         imagePullPolicy: Always
         ports:
         - name: nginx
@@ -76,7 +76,7 @@ spec:
           initialDelaySeconds: 10
           timeoutSeconds: 5
         volumeMounts:
-        - name: $APP_INSTANCE_NAME-nginx-pvc
+        - name: {{ .Release.Name }}-nginx-pvc
           mountPath: /usr/share/nginx/html
         - name: nginx-config
           mountPath: /etc/nginx/conf.d
@@ -87,10 +87,10 @@ spec:
       volumes:
       - name: certs
         secret:
-          secretName: $APP_INSTANCE_NAME-nginx-secret
+          secretName: {{ .Release.Name }}-nginx-secret
       - name: nginx-config
         configMap:
-          name: $APP_INSTANCE_NAME-nginx-configmap
+          name: {{ .Release.Name }}-nginx-configmap
           items:
           - key: nginx-config.conf
             path: nginx-config.conf
@@ -98,9 +98,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: $APP_INSTANCE_NAME-nginx-svc
+  name: {{ .Release.Name }}-nginx-svc
   labels:
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: nginx-server
 spec:
   ports:
@@ -111,6 +111,6 @@ spec:
     port: 443
     protocol: TCP
   selector:
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: nginx-server
   type: LoadBalancer
