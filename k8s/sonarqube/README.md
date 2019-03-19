@@ -1,8 +1,8 @@
 # Overview
 
-Sample Application
+SonarQube
 
-For more information on Sample Application, see the [Sample Application website](https://example.com/).
+For more information on SSonarQube, see the [SonarQube website](https://www.sonarqube.org/).
 
 ## About Google Click to Deploy
 
@@ -13,7 +13,7 @@ Popular open source software stacks on Kubernetes packaged by Google and made av
 ## Quick install with Google Cloud Marketplace
 
 Get up and running with a few clicks! Install this Sample Application to a Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
-[on-screen instructions](https://console.cloud.google.com/marketplace/details/google/sample-app).
+[on-screen instructions](https://console.cloud.google.com/marketplace/details/google/sonarqube).
 
 ## Command line instructions
 
@@ -45,7 +45,7 @@ Create a cluster from the command line. If you already have a cluster that
 you want to use, this step is optional.
 
 ```shell
-export CLUSTER=sample-app-cluster
+export CLUSTER=app-cluster
 export ZONE=us-west1-a
 
 gcloud container clusters create "$CLUSTER" --zone "$ZONE"
@@ -84,10 +84,10 @@ The Application resource is defined by the
 
 ### Install the Application
 
-Navigate to the `sample-app` directory:
+Navigate to the `sonarqube` directory:
 
 ```shell
-cd click-to-deploy/k8s/sample-app
+cd click-to-deploy/k8s/sonarqube
 ```
 
 #### Configure the app with environment variables
@@ -97,20 +97,16 @@ Choose an instance name and
 for the app. In most cases, you can use the `default` namespace.
 
 ```shell
-export APP_INSTANCE_NAME=sample-app-1
+export APP_INSTANCE_NAME=sonarqube-1
 export NAMESPACE=default
 ```
 
-Set the sample parameter:
-
-```shell
-export SAMPLE_APP_PARAMETER1=3
-```
 
 Configure the container image:
 
 ```shell
-export IMAGE_SAMPLE_APP="marketplace.gcr.io/google/nginx1:latest"
+export IMAGE_SONARQUBE="marketplace.gcr.io/google/sonarqube7:latest"
+export IMAGE_POSTGRESQL="marketplace.gcr.io/google/postgresql9:latest"
 ```
 
 The image above is referenced by
@@ -122,20 +118,41 @@ until you are ready to upgrade. To get the digest for the image, use the
 following script:
 
 ```shell
-export IMAGE_SAMPLE_APP=$(docker pull $IMAGE_SAMPLE_APP | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_SAMPLE_APP\")\"@sha256:\"\$3}")
+for i in "IMAGE_SONARQUBE" "IMAGE_POSTGRESQL"; do
+  repo=$(echo ${!i} | cut -d: -f1);
+  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
+  export $i="$repo@$digest";
+  env | grep $i;
+done
 ```
+Set or generate passwords:
+
+```shell
+# Install pwgen and base64
+sudo apt-get install -y pwgen cl-base64
+
+# Set the root and WordPress database passwords
+export DB_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
+
+```
+
+
 
 #### Expand the manifest template
 
-Use `envsubst` to expand the template. We recommend that you save the
+Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-awk 'FNR==1 {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_SAMPLE_APP $SAMPLE_APP_PARAMETER1' \
-  > "${APP_INSTANCE_NAME}_manifest.yaml"
+helm template chart/wordpress \
+  --name="$APP_INSTANCE_NAME" \
+  --namespace="$NAMESPACE" \
+  --set sonarqube.repository=$IMAGE_WORDPRESS \
+  --set sonarqube.volumeSize=20
+  --set postgresql.image=$IMAGE_POSTGRESQL_ \
+  --set postgresql.db.password=$DB_PASSWORD \
+  --set postgresql.volumeSize=20 > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
-
 #### Apply the manifest to your Kubernetes cluster
 
 Use `kubectl` to apply the manifest to your Kubernetes cluster.
@@ -154,11 +171,11 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 To view the app, open the URL in your browser.
 
-# Using the app
+# TODO 
+#Using the app 
 
-## How to use Sample Application
 
-How to use Sample App
+## How to use SonarQube
 
 ## Follow the on-screen steps
 

@@ -14,10 +14,15 @@ $(info ---- TAG = $(TAG))
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/sonarqube/deployer:$(TAG)
 NAME ?= sonarqube-1
 
+ifdef DB_PASSWORD
+  DB_PASSWORD_FIELD = , "postgresql.db.password": "$(DB_PASSWORD)"
+endif
+
 
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
+  $(DB_PASSWORD) \
 }
 
 TESTER_IMAGE ?= $(REGISTRY)/sonarqube/tester:$(TAG)
