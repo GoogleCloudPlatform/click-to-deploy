@@ -262,7 +262,8 @@ of `<scrape_config>` used to enable the metrics collection can be found
 ## Exporting metrics to Stackdriver
 
 If the option to export application metrics to Stackdriver was enabled,
-the deployment includes a `prometheus-to-sd` container (Prometheus to Stackdriver exporter).
+the deployment includes a `prometheus-to-sd` container (Prometheus to Stackdriver exporter;
+[link to repository](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd)).
 Then the metrics will be automatically exported to Stackdriver and visible in
 [Stackdriver Metrics Explorer](https://cloud.google.com/monitoring/charts/metrics-explorer).
 
