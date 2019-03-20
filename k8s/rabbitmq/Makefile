@@ -112,7 +112,7 @@ app/build:: .build/rabbitmq/debian9  \
 .build/rabbitmq/prometheus-to-sd: .build/var/REGISTRY \
                                   .build/var/TAG \
                                   | .build/rabbitmq
-	docker pull gcr.io/google-containers/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 	docker tag gcr.io/google-containers/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
 	    "$(REGISTRY)/rabbitmq/prometheus-to-sd:$(TAG)"
 	docker push "$(REGISTRY)/rabbitmq/prometheus-to-sd:$(TAG)"
