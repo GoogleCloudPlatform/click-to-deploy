@@ -2,11 +2,15 @@ wordpressImage: null
 
 db:
   image: null
-  # TODO(wgrzelak): Fix it!
-  exporterImage: prom/mysqld-exporter
   rootPassword: null
   wordpressUser: wordpress
   wordpressPassword: null
+
+  # The image and credentials for mysqld_exporter component.
+  # TODO(wgrzelak): This image should not be here.
+  exporterImage: prom/mysqld-exporter
+  exporterUser: mysqld_exporter
+  exporterPassword: null
 
 admin:
   username: admin

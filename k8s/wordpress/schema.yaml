@@ -30,6 +30,12 @@ properties:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 12
+  db.exporterPassword:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 12
   # An e-mail address for WordPress site.
   admin.email:
     type: string
