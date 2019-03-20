@@ -84,3 +84,7 @@ spec:
     kind: Secret
   - group: apps/v1beta2
     kind: StatefulSet
+{{ if .Values.metrics.enabled }}
+  - group: apps/v1beta2
+    kind: Deployment
+{{ end }}

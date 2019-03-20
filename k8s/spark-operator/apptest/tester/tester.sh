@@ -16,7 +16,7 @@
 
 set -eo pipefail
 
-export NAME="spark-$(uuidgen)"
+export SPARK_APP_NAME="spark-$(uuidgen)"
 cat spark-pi.yaml.template | envsubst > spark-pi.yaml
 
 cat spark-pi.yaml
@@ -26,23 +26,23 @@ kubectl apply -f spark-pi.yaml
 while true; do
   echo "Retrieving events"
   events=$(kubectl get events -o=json | \
-    jq ".items[] | select(.involvedObject.name==\"$NAME\" and .involvedObject.namespace==\"$NAMESPACE\") | .reason")
+    jq ".items[] | select(.involvedObject.name==\"$SPARK_APP_NAME\" and .involvedObject.namespace==\"$NAMESPACE\") | .reason")
   
   echo $events
 
   echo "Checking events for completed status"
-  completed_status=$(echo $events | grep "SparkExecutorCompleted" || true)
+  completed_status=$(echo $events | grep "SparkApplicationCompleted" || true)
   if [[ -z "$completed_status" ]]; then
-    echo "Delete application $NAME"
-    kubectl delete sparkapplication "$NAME"
+    echo "Delete application $SPARK_APP_NAME"
+    kubectl delete sparkapplication "$SPARK_APP_NAME"
     exit 0
   fi
 
   echo "Checking events for failed status"
-  failed_status=$(echo $events | grep "SparkDriverFailed" || true)
+  failed_status=$(echo $events | grep "SparkApplicationFailed" || true)
   if [[ -z "$failed_status" ]]; then
-    echo "Delete sparkapplication $NAME"
-    kubectl delete sparkapplication "$NAME"
+    echo "Delete sparkapplication $SPARK_APP_NAME"
+    kubectl delete sparkapplication "$SPARK_APP_NAME"
     exit 1
   fi
 

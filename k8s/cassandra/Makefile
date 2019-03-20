@@ -10,16 +10,16 @@ APP_DEPLOYER_IMAGE ?= $(REGISTRY)/cassandra/deployer:$(TAG)
 NAME ?= cassandra-1
 
 ifdef IMAGE_CASSANDRA
-  IMAGE_CASSANDRA_FIELD = , "IMAGE_CASSANDRA": "$(IMAGE_CASSANDRA)"
+  IMAGE_CASSANDRA_FIELD = , "cassandra.image": "$(IMAGE_CASSANDRA)"
 endif
 
 ifdef REPLICAS
-  REPLICAS_FIELD = , "REPLICAS": "$(REPLICAS)"
+  REPLICAS_FIELD = , "cassandra.replicas": "$(REPLICAS)"
 endif
 
 APP_PARAMETERS ?= { \
-  "APP_INSTANCE_NAME": "$(NAME)", \
-  "NAMESPACE": "$(NAMESPACE)" \
+  "name": "$(NAME)", \
+  "namespace": "$(NAMESPACE)" \
   $(IMAGE_CASSANDRA_FIELD) \
   $(REPLICAS_FIELD) \
 }
@@ -41,7 +41,8 @@ app/build:: .build/cassandra/cassandra \
 
 
 .build/cassandra/deployer: deployer/* \
-                           manifest/* \
+                           chart/cassandra/* \
+                           chart/cassandra/templates/* \
                            schema.yaml \
                            .build/var/APP_DEPLOYER_IMAGE \
                            .build/var/MARKETPLACE_TOOLS_TAG \

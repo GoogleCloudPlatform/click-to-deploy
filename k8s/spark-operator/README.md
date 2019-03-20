@@ -102,14 +102,14 @@ Choose an instance name and
 for the app. In most cases, you can use the `default` namespace.
 
 ```shell
-export name=spark-operator-1
-export namespace=default
+export APP_INSTANCE_NAME=spark-operator-1
+export NAMESPACE=default
 ```
 
 Configure the container images:
 
 ```shell
-export sparkOperatorImage="marketplace.gcr.io/google/spark-operator:latest"
+export SPARK_OPERATOR_IMAGE="marketplace.gcr.io/google/spark-operator:beta"
 ```
 
 The images above are referenced by
@@ -121,7 +121,7 @@ until you are ready to upgrade. To get the digest for the image, use the
 following script:
 
 ```shell
-for i in "sparkOperatorImage"; do
+for i in "SPARK_OPERATOR_IMAGE"; do
   repo=$(echo ${!i} | cut -d: -f1);
   digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
   export $i="$repo@$digest";
@@ -134,7 +134,7 @@ done
 If you use a different namespace than the `default`, run the command below to create a new namespace:
 
 ```shell
-kubectl create namespace "${namespace}"
+kubectl create namespace "${NAMESPACE}"
 ```
 
 #### Configure the service account
@@ -145,9 +145,9 @@ permissions to manipulate Kubernetes resources.
 Provision a service account and export its via an environment variable as follows:
 
 ```shell
-kubectl create serviceaccount "${name}-sa" --namespace "${namespace}"
-kubectl create clusterrolebinding "${namespace}-${name}-sa-rb" --clusterrole=cluster-admin --serviceaccount="${namespace}:${name}-sa"
-export serviceAccount="${name}-sa"
+kubectl create serviceaccount "${APP_INSTANCE_NAME}-sa" --namespace "${NAMESPACE}"
+kubectl create clusterrolebinding "${NAMESPACE}-${APP_INSTANCE_NAME}-sa-rb" --clusterrole=cluster-admin --serviceaccount="${NAMESPACE}:${APP_INSTANCE_NAME}-sa"
+export SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-sa"
 ```
 
 #### Expand the manifest template
@@ -157,8 +157,8 @@ expanded manifest file for future updates to the application.
 
 ```shell
 awk 'FNR==1 {print "---"}{print}' manifest/* \
-  | envsubst '$name $namespace $sparkOperatorImage $serviceAccount' \
-  > "${name}_manifest.yaml"
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $SPARK_OPERATOR_IMAGE $SERVICE_ACCOUNT' \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster
@@ -166,7 +166,7 @@ awk 'FNR==1 {print "---"}{print}' manifest/* \
 Use `kubectl` to apply the manifest to your Kubernetes cluster:
 
 ```shell
-kubectl apply -f "${name}_manifest.yaml" --namespace "${namespace}"
+kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
 
 #### View the app in the Google Cloud Console
@@ -174,7 +174,7 @@ kubectl apply -f "${name}_manifest.yaml" --namespace "${namespace}"
 To get the Console URL for your app, run the following command:
 
 ```shell
-echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${namespace}/${name}"
+echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
 ```
 
 To view your app, open the URL in your browser.
