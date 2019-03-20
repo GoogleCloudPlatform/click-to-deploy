@@ -359,7 +359,7 @@ To send and receive messages to RabbitMQ using Python, see the
 The application is configured to expose its metrics through
 [RabbitMQ Prometheus.io exporter plugin](https://github.com/deadtrickster/prometheus_rabbitmq_exporter) 
 in the [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
-More details about the plugin setup can be found in the official documentation of RabbitMQ -
+For more detailed information about the plugin setup, see the official RabbitMQ's [Monitoring with Prometheus documentation](https://www.rabbitmq.com/prometheus.html).
 [Monitoring with Prometheus](https://www.rabbitmq.com/prometheus.html)
 Metrics can be read on a single HTTP endpoint available at `[APP_BASE_URL]/api/metrics`,
 where `[APP_BASE_URL]` is the base URL address of the application.
