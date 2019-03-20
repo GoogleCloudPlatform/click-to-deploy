@@ -4,6 +4,6 @@ actions:
     script: curl -f "http://$APP_INSTANCE_NAME-rabbitmq-svc:15672/api/metrics"
     expect:
       stdout:
-        contains: '# TYPE rabbitmq_consumers gauge.'
+        contains: '# TYPE rabbitmq_consumers gauge'
       exitCode:
         equals: 0
