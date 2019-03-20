@@ -2,10 +2,10 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-wordpress-metrics-exporter
+  name: {{ .Release.Name }}-mysql-metrics-exporter
   labels: &WordPressDeploymentLabels
     app.kubernetes.io/name: {{ .Release.Name }}
-    app.kubernetes.io/component: wordpress-metrics-exporter
+    app.kubernetes.io/component: wordpress-mysql-metrics-exporter
 spec:
   selector:
     matchLabels: *WordPressDeploymentLabels
