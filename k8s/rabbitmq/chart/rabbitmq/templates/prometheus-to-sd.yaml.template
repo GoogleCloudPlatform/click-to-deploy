@@ -38,4 +38,3 @@ spec:
               fieldRef:
                 fieldPath: metadata.namespace
 {{ end }}
-
