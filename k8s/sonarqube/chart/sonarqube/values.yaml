@@ -34,3 +34,7 @@ postgresql:
   service:
     Port: 5432
     name: postgresql-service
+metrics:
+  image: null
+  enabled: false
+

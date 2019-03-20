@@ -161,6 +161,7 @@ Use `kubectl` to apply the manifest to your Kubernetes cluster.
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
 
+
 #### View the app in the Google Cloud Console
 
 To get the Console URL for your app, run the following command:
@@ -169,33 +170,48 @@ To get the Console URL for your app, run the following command:
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
 ```
 
-To view the app, open the URL in your browser.
+#### Reach the webpage
 
-# TODO 
+```shell
+kubectl get svc ${APP_INSTANCE_NAME}
+
+```
+
+result of command will shows you external IP address and port. 
+
 #Using the app 
 
 
-## How to use SonarQube
-
-## Follow the on-screen steps
-
-To set Sample App, follow these on-screen steps to customize your installation:
-
-* Do something
+## How to use SonarQube 
+how to use SonarQube you can find in [official documentation](https://docs.sonarqube.org/latest/setup/get-started-2-minutes/)  
 
 # Scaling
 
-How to scale Sample Application
+This installation is single instance of SonarQube.
 
 # Backup and restore
 
-How to backup and restore Sample Application
+## Backing up PostgreSQL of SonqrQube app
 
-## Backing up Sample Application
+```shell
+kubectl --namespace $NAMESPACE exec -t \
+	$(kubectl -n$NAMESPACE get pod -oname | \
+		sed -n /\\/$APP_INSTANCE_NAME-postgresql-deployment/s.pods\\?/..p) \
+	-- pg_dumpall -c -U postgres > postgresql-backup.sql
+```
 
 ## Restoring your data
 
-# Updating 
+```shell
+cat postgresql-backup.sql | kubectl --namespace $NAMESPACE exec -i \
+	$(kubectl -n$NAMESPACE get pod -oname | \
+		sed -n /\\/$APP_INSTANCE_NAME-postgresql-deployment/s.pods\\?/..p) \
+	-- psql -U postgres
+```
+
+g 
 
 # Logging and Monitoring
+
+
 
