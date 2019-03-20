@@ -363,8 +363,9 @@ For more detailed information about the plugin setup, see the official RabbitMQ'
 [Monitoring with Prometheus](https://www.rabbitmq.com/prometheus.html).
 Metrics can be read on a single HTTP endpoint available at `[APP_BASE_URL]/api/metrics`,
 where `[APP_BASE_URL]` is the base URL address of the application.
-For example, if you [expose RabbitMQ service internally using port forwarding](#access-rabbitmq-service),
-then navigate to the `http://localhost:15672/api/metrics` endpoint to access the metrics.
+For example, you can
+[expose RabbitMQ service internally using port forwarding](#access-rabbitmq-service),
+and then access the metrics by navigating to the [http://localhost:15672/metrics](http://localhost:15672/metrics) endpoint.
 
 ## Configuring Prometheus to collect the metrics
 
