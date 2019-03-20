@@ -4,13 +4,15 @@ include ../gcloud.Makefile
 include ../var.Makefile
 
 TAG ?= 1.7
+METRICS_EXPORTER_TAG ?= v0.5.1
+
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/influxdb/deployer:$(TAG)
 NAME ?= influxdb-1
 APP_PARAMETERS ?= { \
-  "APP_INSTANCE_NAME": "$(NAME)", \
-  "NAMESPACE": "$(NAMESPACE)" \
+  "name": "$(NAME)", \
+  "namespace": "$(NAMESPACE)" \
 }
 
 TESTER_IMAGE ?= $(REGISTRY)/influxdb/tester:$(TAG)
@@ -22,6 +24,7 @@ APP_TEST_PARAMETERS ?= { \
 
 app/build:: .build/influxdb/deployer \
             .build/influxdb/influxdb \
+            .build/influxdb/prometheus-to-sd \
             .build/influxdb/tester
 
 
@@ -30,7 +33,8 @@ app/build:: .build/influxdb/deployer \
 
 
 .build/influxdb/deployer: deployer/* \
-                           manifest/* \
+                           chart/influxdb/* \
+                           chart/influxdb/templates/* \
                            schema.yaml \
                            .build/var/APP_DEPLOYER_IMAGE \
                            .build/var/MARKETPLACE_TOOLS_TAG \
@@ -49,12 +53,22 @@ app/build:: .build/influxdb/deployer \
 
 
 .build/influxdb/influxdb: .build/var/REGISTRY \
-                            .build/var/TAG \
-                            | .build/influxdb
+                          .build/var/TAG \
+                          | .build/influxdb
 	docker pull launcher.gcr.io/google/influxdb1:$(TAG)
 	docker tag launcher.gcr.io/google/influxdb1:$(TAG) \
 	    "$(REGISTRY)/influxdb:$(TAG)"
 	docker push "$(REGISTRY)/influxdb:$(TAG)"
+	@touch "$@"
+
+
+.build/influxdb/prometheus-to-sd: .build/var/REGISTRY \
+                                  .build/var/TAG \
+                                  | .build/influxdb
+	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
+	    "$(REGISTRY)/influxdb/prometheus-to-sd:$(TAG)"
+	docker push "$(REGISTRY)/influxdb/prometheus-to-sd:$(TAG)"
 	@touch "$@"
 
 

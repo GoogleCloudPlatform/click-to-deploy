@@ -1,0 +1,53 @@
+actions:
+
+- name: Can create a database
+  bashTest:
+    script: curl "http://${APP_INSTANCE_NAME}-influxdb-svc:8086/query?u=${INFLUXDB_ADMIN_USER}&p=${INFLUXDB_ADMIN_PASSWORD}" --data-urlencode "q=CREATE DATABASE NOAA_water_database_1"
+    expect:
+      stdout:
+        contains: '{"results":[{"statement_id":0}]}'
+      exitCode:
+        equals: 0
+
+- name: Can read a database
+  bashTest:
+    script: curl "http://${APP_INSTANCE_NAME}-influxdb-svc:8086/query?u=${INFLUXDB_ADMIN_USER}&p=${INFLUXDB_ADMIN_PASSWORD}" --data-urlencode "q=SHOW DATABASES"
+    expect:
+      stdout:
+        contains: 'NOAA_water_database_1'
+      exitCode:
+        equals: 0
+
+- name: Can not create a database with incorrect credentials
+  bashTest:
+    script: curl "http://${APP_INSTANCE_NAME}-influxdb-svc:8086/query?u=root&p=password" --data-urlencode "q=CREATE DATABASE NOAA_water_database_2"
+    expect:
+      stdout:
+        contains: '{"error":"authorization failed"}'
+      exitCode:
+        equals: 0
+
+- name: Can not read a database with incorrect credentials
+  bashTest:
+    script: curl "http://${APP_INSTANCE_NAME}-influxdb-svc:8086/query?u=root&p=password" --data-urlencode "q=SHOW DATABASES"
+    expect:
+      stdout:
+        contains: '{"error":"authorization failed"}'
+      exitCode:
+        equals: 0
+
+- name: Is InfluxDB instance up and running
+  httpTest:
+    url: http://{{ .Env.APP_INSTANCE_NAME }}-influxdb-svc:8086/ping
+    expect:
+      statusCode:
+        equals: 204
+
+- name: Is InfluxDB /metrics HTTP endpoint working
+  bashTest:
+    script: curl -f "http://${APP_INSTANCE_NAME}-influxdb-svc:8086/metrics"
+    expect:
+      stdout:
+        contains: '# HELP go_gc_duration_seconds A summary of the GC invocation durations.'
+      exitCode:
+        equals: 0

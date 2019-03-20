@@ -1,0 +1,7 @@
+daemonize yes
+sentinel monitor master ${master_node} 6379 ${sentinel_quorum}
+sentinel down-after-milliseconds master 60000
+sentinel failover-timeout master 180000
+sentinel parallel-syncs master 1
+
+pidfile /var/run/redis/redis-sentinel.pid

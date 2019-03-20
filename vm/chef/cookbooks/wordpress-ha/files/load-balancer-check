@@ -1,0 +1,37 @@
+#!/bin/bash -eu
+#
+# Copyright 2018 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
+
+function wait_for_service_availability() {
+  local -r rtc_name="$(get_attribute_value "rtc-name")"
+  local -r ip_var_name="$(get_attribute_value "ip-variable-name")"
+
+  local -r ip_var_wait_timeout="$(get_attribute_value "ip-var-wait-timeout")"
+  local -r lb_wait_timeout="$(get_attribute_value "lb-wait-timeout")"
+
+  wait_for_rtc_var "${rtc_name}" "${ip_var_name}" "${ip_var_wait_timeout}"
+  local frontend_ip="$(get_rtc_var_text "${rtc_name}" "${ip_var_name}")"
+  echo "IP variable read: ${frontend_ip}"
+
+  if wait_for_http_success "http://${frontend_ip}/" "${lb_wait_timeout}"; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+wait_for_service_availability

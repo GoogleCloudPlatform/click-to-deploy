@@ -1,0 +1,7 @@
+{
+  "license": "c2d-lamp",
+  "source_image_family": "debian-9",
+  "chef": {
+    "run_list": [ "c2d-config", "lamp", "stackdriver" ]
+  }
+}

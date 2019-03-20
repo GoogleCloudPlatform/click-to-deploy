@@ -4,22 +4,24 @@ include ../gcloud.Makefile
 include ../var.Makefile
 
 TAG ?= 5.3
+METRICS_EXPORTER_TAG ?= v0.5.1
+
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/grafana/deployer:$(TAG)
 NAME ?= grafana-1
 
 ifdef IMAGE_GRAFANA
-  IMAGE_GRAFANA_FIELD = , "IMAGE_GRAFANA": "$(IMAGE_GRAFANA)"
+  IMAGE_GRAFANA_FIELD = , "grafana.image": "$(IMAGE_GRAFANA)"
 endif
 
 ifdef IMAGE_GRAFANA_INIT
-  IMAGE_GRAFANA_INIT_FIELD = , "IMAGE_GRAFANA_INIT": "$(IMAGE_GRAFANA_INIT)"
+  IMAGE_GRAFANA_INIT_FIELD = , "grafana.initImage": "$(IMAGE_GRAFANA_INIT)"
 endif
 
 APP_PARAMETERS ?= { \
-  "APP_INSTANCE_NAME": "$(NAME)", \
-  "NAMESPACE": "$(NAMESPACE)" \
+  "name": "$(NAME)", \
+  "namespace": "$(NAMESPACE)" \
   $(IMAGE_GRAFANA_FIELD) \
   $(IMAGE_GRAFANA_INIT_FIELD) \
 }
@@ -34,6 +36,7 @@ APP_TEST_PARAMETERS ?= { \
 app/build:: .build/grafana/debian9 \
             .build/grafana/deployer \
             .build/grafana/grafana \
+            .build/grafana/prometheus-to-sd \
             .build/grafana/tester
 
 
@@ -42,7 +45,8 @@ app/build:: .build/grafana/debian9 \
 
 
 .build/grafana/deployer: deployer/* \
-                         manifest/* \
+                         chart/grafana/* \
+                         chart/grafana/templates/* \
                          schema.yaml \
                          .build/var/APP_DEPLOYER_IMAGE \
                          .build/var/MARKETPLACE_TOOLS_TAG \
@@ -75,6 +79,16 @@ app/build:: .build/grafana/debian9 \
 	docker pull launcher.gcr.io/google/debian9
 	docker tag launcher.gcr.io/google/debian9 "$(REGISTRY)/grafana/debian9:$(TAG)"
 	docker push "$(REGISTRY)/grafana/debian9:$(TAG)"
+	@touch "$@"
+
+
+.build/grafana/prometheus-to-sd: .build/var/REGISTRY \
+                                 .build/var/TAG \
+                                 | .build/grafana
+	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
+	    "$(REGISTRY)/grafana/prometheus-to-sd:$(TAG)"
+	docker push "$(REGISTRY)/grafana/prometheus-to-sd:$(TAG)"
 	@touch "$@"
 
 

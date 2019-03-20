@@ -1,19 +1,19 @@
 application_api_version: v1beta1
 properties:
-  APP_INSTANCE_NAME:
+  name:
     type: string
     x-google-marketplace:
       type: NAME
-  NAMESPACE:
+  namespace:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  IMAGE_MEMCACHED:
+  memcached.image:
     type: string
     default: $REGISTRY:$TAG
     x-google-marketplace:
       type: IMAGE
-  REPLICAS:
+  memcached.replicas:
     type: integer
     title: Replicas
     description: The number of Pods in the solution
@@ -21,7 +21,7 @@ properties:
     minimum: 1
     maximum: 11
 required:
-- APP_INSTANCE_NAME
-- NAMESPACE
-- IMAGE_MEMCACHED
-- REPLICAS
+- name
+- namespace
+- memcached.image
+- memcached.replicas
