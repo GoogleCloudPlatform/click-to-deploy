@@ -71,7 +71,6 @@ spec:
           exec:
             command: ["sh", "-c", "exec mysqladmin status -uroot -p$MYSQL_ROOT_PASSWORD"]
           initialDelaySeconds: 120
-      {{ if .Values.metrics.enabled }}
       - image: {{ .Values.db.exporterImage }}
         name: mysqld-exporter
         env:
@@ -98,7 +97,6 @@ spec:
           timeoutSeconds: 30
           failureThreshold: 10
           periodSeconds: 10
-      {{ end }}
   volumeClaimTemplates:
   - metadata:
       name: {{ .Release.Name }}-mysql-pvc
