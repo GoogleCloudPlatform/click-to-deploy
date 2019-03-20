@@ -264,6 +264,10 @@ echo "https://${SERVICE_IP}/"
 
 The command shows you the URL of your site.
 
+# Application metrics
+
+> TODO(wgrzelak): TBD
+
 # Scaling
 
 This is a single-instance version of WordPress.
