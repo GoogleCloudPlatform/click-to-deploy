@@ -21,20 +21,20 @@ spec:
         - name: profiler
           containerPort: 6060
         command:
-          - /monitor
-          - --stackdriver-prefix=custom.googleapis.com
-          - --source={{ .Release.Name }}:http://{{ .Release.Name }}-rabbitmq-svc:15672/api/metrics
-          - --pod-id=$(POD_NAME)
-          - --namespace-id=$(POD_NAMESPACE)
-          - --scrape-interval=5s
-          - --export-interval=30s
+        - /monitor
+        - --stackdriver-prefix=custom.googleapis.com
+        - --source={{ .Release.Name }}:http://{{ .Release.Name }}-rabbitmq-svc:15672/api/metrics
+        - --pod-id=$(POD_NAME)
+        - --namespace-id=$(POD_NAMESPACE)
+        - --scrape-interval=5s
+        - --export-interval=30s
         env:
-          - name: POD_NAME
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.name
-          - name: POD_NAMESPACE
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.namespace
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
 {{ end }}
