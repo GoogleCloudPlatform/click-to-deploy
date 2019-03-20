@@ -139,3 +139,7 @@ spec:
     kind: Service
   - group: v1
     kind: ServiceAccount
+{{ if .Values.metrics.enabled }}
+  - group: apps/v1beta2
+    kind: Deployment
+{{ end }}
