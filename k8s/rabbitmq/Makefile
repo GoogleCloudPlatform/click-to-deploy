@@ -5,6 +5,8 @@ include ../var.Makefile
 
 
 TAG ?= 3.7
+METRICS_EXPORTER_TAG ?= v0.5.1
+
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/rabbitmq/deployer:$(TAG)
@@ -105,8 +107,8 @@ app/build:: .build/rabbitmq/debian9  \
 .build/rabbitmq/prometheus-to-sd: .build/var/REGISTRY \
                                   .build/var/TAG \
                                   | .build/rabbitmq
-	docker pull gcr.io/google-containers/prometheus-to-sd:v0.3.2
-	docker tag gcr.io/google-containers/prometheus-to-sd:v0.3.2 \
+	docker pull gcr.io/google-containers/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+	docker tag gcr.io/google-containers/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
 	    "$(REGISTRY)/rabbitmq/prometheus-to-sd:$(TAG)"
 	docker push "$(REGISTRY)/rabbitmq/prometheus-to-sd:$(TAG)"
 	@touch "$@"
