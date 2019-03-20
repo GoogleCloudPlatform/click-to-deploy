@@ -13,6 +13,19 @@ data:
   root-password: "{{ .Values.db.rootPassword }}"
   wp-password: "{{ .Values.db.wordpressPassword }}"
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-mysql-config
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: wordpress-mysql
+data:
+  mysqld_exporter.sql: |
+    CREATE USER 'mysqld_exporter'@'127.0.0.1' IDENTIFIED BY 'StrongPassword' WITH MAX_USER_CONNECTIONS 3;
+    GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'mysqld_exporter'@'127.0.0.1';
+    FLUSH PRIVILEGES;
+---
 apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
@@ -63,6 +76,10 @@ spec:
         - name: {{ .Release.Name }}-mysql-pvc
           mountPath: /var/lib/mysql
           subPath: data
+        - name: config-volume
+          mountPath: /docker-entrypoint-initdb.d
+          # TODO(wgrzelak): Checks what happens when the POD is removed.
+          # subPath: config
         readinessProbe:
           exec:
             command: ["sh", "-c", "exec mysqladmin status -uroot -p$MYSQL_ROOT_PASSWORD"]
@@ -74,14 +91,11 @@ spec:
       - image: {{ .Values.db.exporterImage }}
         name: mysqld-exporter
         env:
-        - name: MYSQL_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Release.Name }}-mysql-secret
-              key: root-password
-        # TODO(wgrzelak): Do not use root user.
+        # TODO(wgrzelak): Generate this password.
+        - name: MYSQLD_EXPORTER_PASSWORD
+          value: 'StrongPassword'
         - name: DATA_SOURCE_NAME
-          value: root:$(MYSQL_ROOT_PASSWORD)@({{ .Release.Name }}-mysql-svc:3306)/wordpress
+          value: mysqld_exporter:$(MYSQLD_EXPORTER_PASSWORD)@(127.0.0.1:3306)/wordpress
         ports:
         - name: exporter
           containerPort: 9104
@@ -97,6 +111,13 @@ spec:
           timeoutSeconds: 30
           failureThreshold: 10
           periodSeconds: 10
+      volumes:
+      - name: config-volume
+        configMap:
+          name: {{ .Release.Name }}-mysql-config
+          items:
+          - key: mysqld_exporter.sql
+            path: mysqld_exporter.sql
   volumeClaimTemplates:
   - metadata:
       name: {{ .Release.Name }}-mysql-pvc

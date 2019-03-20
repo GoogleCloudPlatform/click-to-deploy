@@ -90,6 +90,6 @@ actions:
     script: curl -f "http://${APP_INSTANCE_NAME}-mysql-svc:9104/metrics"
     expect:
       stdout:
-        contains: '# HELP go_gc_duration_seconds A summary of the GC invocation durations.'
+        contains: 'mysql_up 1'
       exitCode:
         equals: 0
