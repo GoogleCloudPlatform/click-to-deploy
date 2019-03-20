@@ -15,7 +15,7 @@ spec:
       labels: *RabbitMQDeploymentLabels
     spec:
       containers:
-      - name: rabbitmq-prometheus-metrics
+      - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}
         ports:
         - name: profiler
