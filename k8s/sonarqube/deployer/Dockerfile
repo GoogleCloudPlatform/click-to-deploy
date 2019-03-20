@@ -30,5 +30,9 @@ COPY --from=build /tmp/test/sonarqube.tar.gz /data-test/chart/
 COPY apptest/deployer/schema.yaml /data-test/
 COPY --from=build /tmp/schema.yaml /data/
 
+RUN mv -f /bin/deploy.sh /bin/deploy-original.sh \
+    && cp /bin/clean_iam_resources.sh /bin/clean_iam_resources-original.sh \
+    && echo '#!/bin/bash\nexit' > /bin/clean_iam_resources.sh
+
 ADD deployer/deploy_with_tests.sh /bin/deploy_with_tests.sh
 ADD deployer/deploy.sh /bin/deploy.sh
