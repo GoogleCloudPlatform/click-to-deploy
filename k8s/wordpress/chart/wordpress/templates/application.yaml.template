@@ -98,5 +98,3 @@ spec:
   - group: apps/v1beta2
     kind: Deployment
   {{ end }}
-  - group: v1
-    kind: ConfigMap

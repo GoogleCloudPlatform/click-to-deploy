@@ -13,19 +13,20 @@ data:
   root-password: "{{ .Values.db.rootPassword }}"
   wp-password: "{{ .Values.db.wordpressPassword }}"
 ---
-# TODO(wgrzelak): Use secret maybe ???
 apiVersion: v1
-kind: ConfigMap
+kind: Secret
 metadata:
-  name: {{ .Release.Name }}-mysql-config
+  name: {{ .Release.Name }}-mysqld-exporter-secret
   labels:
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: wordpress-mysql
-data:
+stringData:
   mysqld_exporter.sql: |
     CREATE USER '{{ .Values.db.exporterUser }}'@'127.0.0.1' IDENTIFIED BY '{{ .Values.db.exporterPassword | b64dec }}' WITH MAX_USER_CONNECTIONS 3;
     GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO '{{ .Values.db.exporterUser }}'@'127.0.0.1';
     FLUSH PRIVILEGES;
+data:
+  mysqld-exporter-pass: {{ .Values.db.exporterPassword }}
 ---
 apiVersion: apps/v1beta2
 kind: StatefulSet
@@ -77,7 +78,7 @@ spec:
         - name: {{ .Release.Name }}-mysql-pvc
           mountPath: /var/lib/mysql
           subPath: data
-        - name: config-volume
+        - name: mysql-config
           mountPath: /docker-entrypoint-initdb.d
           # TODO(wgrzelak): Checks what happens when the POD is removed.
           # subPath: config
@@ -92,9 +93,11 @@ spec:
       - image: {{ .Values.db.exporterImage }}
         name: mysqld-exporter
         env:
-        # TODO(wgrzelak): Generate this password.
         - name: MYSQLD_EXPORTER_PASSWORD
-          value: "{{ .Values.db.exporterPassword | b64dec }}"
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-mysqld-exporter-secret
+              key: mysqld-exporter-pass
         - name: DATA_SOURCE_NAME
           value: {{ .Values.db.exporterUser }}:$(MYSQLD_EXPORTER_PASSWORD)@(127.0.0.1:3306)/wordpress
         ports:
@@ -113,9 +116,9 @@ spec:
           failureThreshold: 10
           periodSeconds: 10
       volumes:
-      - name: config-volume
-        configMap:
-          name: {{ .Release.Name }}-mysql-config
+      - name: mysql-config
+        secret:
+          secretName: {{ .Release.Name }}-mysqld-exporter-secret
           items:
           - key: mysqld_exporter.sql
             path: mysqld_exporter.sql
