@@ -4,3 +4,7 @@ grafana:
   user: admin
   password: null
   serviceaccount: null
+
+metrics:
+  image: null
+  enabled: false
