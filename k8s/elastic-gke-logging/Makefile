@@ -14,28 +14,28 @@ APP_DEPLOYER_IMAGE ?= $(REGISTRY)/elastic-gke-logging/deployer:$(TAG)
 NAME ?= elastic-gke-logging-1
 
 ifdef ELASTICSEARCH_REPLICAS
-  ELASTICSEARCH_REPLICAS_FIELD = , "ELASTICSEARCH_REPLICAS": "$(ELASTICSEARCH_REPLICAS)"
+  ELASTICSEARCH_REPLICAS_FIELD = , "elasticsearch.replicas": "$(ELASTICSEARCH_REPLICAS)"
 endif
 
 ifdef IMAGE_ELASTICSEARCH
-  IMAGE_ELASTICSEARCH_FIELD = , "IMAGE_ELASTICSEARCH": "$(IMAGE_ELASTICSEARCH)"
+  IMAGE_ELASTICSEARCH_FIELD = , "elasticsearch.image": "$(IMAGE_ELASTICSEARCH)"
 endif
 
 ifdef IMAGE_INIT
-  IMAGE_INIT_FIELD = , "IMAGE_INIT": "$(IMAGE_INIT)"
+  IMAGE_INIT_FIELD = , "initImage": "$(IMAGE_INIT)"
 endif
 
 ifdef IMAGE_KIBANA
-  IMAGE_KIBANA_FIELD = , "IMAGE_KIBANA": "$(IMAGE_KIBANA)"
+  IMAGE_KIBANA_FIELD = , "kibana.image": "$(IMAGE_KIBANA)"
 endif
 
 ifdef IMAGE_FLUENTD
-  IMAGE_FLUENTD_FIELD = , "IMAGE_FLUENTD": "$(IMAGE_FLUENTD)"
+  IMAGE_FLUENTD_FIELD = , "fluentd.image": "$(IMAGE_FLUENTD)"
 endif
 
 APP_PARAMETERS ?= { \
-  "APP_INSTANCE_NAME": "$(NAME)", \
-  "NAMESPACE": "$(NAMESPACE)" \
+  "name": "$(NAME)", \
+  "namespace": "$(NAMESPACE)" \
   $(ELASTICSEARCH_REPLICAS_FIELD) \
   $(IMAGE_ELASTICSEARCH_FIELD) \
   $(IMAGE_INIT_FIELD) \
@@ -63,7 +63,8 @@ app/build:: .build/elastic-gke-logging/elasticsearch \
 
 
 .build/elastic-gke-logging/deployer: deployer/* \
-                                     manifest/* \
+                                     chart/elastic-gke-logging/* \
+                                     chart/elastic-gke-logging/templates/* \
                                      schema.yaml \
                                      .build/var/APP_DEPLOYER_IMAGE \
                                      .build/var/MARKETPLACE_TOOLS_TAG \

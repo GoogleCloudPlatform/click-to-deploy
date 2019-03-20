@@ -1,0 +1,3 @@
+memcached:
+  image: null
+  replicas: null

@@ -1,40 +1,40 @@
 application_api_version: v1beta1
 properties:
-  APP_INSTANCE_NAME:
+  name:
     type: string
     x-google-marketplace:
       type: NAME
-  NAMESPACE:
+  namespace:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  IMAGE_ELASTICSEARCH:
+  elasticsearch.image:
     type: string
     default: $REGISTRY:$TAG
     x-google-marketplace:
       type: IMAGE
-  IMAGE_KIBANA:
+  kibana.image:
     type: string
     default: $REGISTRY/kibana:$TAG
     x-google-marketplace:
       type: IMAGE
-  IMAGE_FLUENTD:
+  fluentd.image:
     type: string
     default: $REGISTRY/fluentd:$TAG
     x-google-marketplace:
       type: IMAGE
-  IMAGE_INIT:
+  initImage:
     type: string
     default: $REGISTRY/ubuntu16_04:$TAG
     x-google-marketplace:
       type: IMAGE
-  ELASTICSEARCH_REPLICAS:
+  elasticsearch.replicas:
     type: integer
     title: Elasticsearch replicas
     description: The number of replicas for Elasticsearch StatefulSet
     default: 2
     minimum: 2
-  FLUENTD_SERVICE_ACCOUNT:
+  fluentd.serviceAccount:
     type: string
     title: Fluentd Service Account
     description: Service account to assign to Fluentd StatefulSet
@@ -49,11 +49,11 @@ properties:
             resources: ["pods", "namespaces"]
             verbs: ["get", "list", "watch"]
 required:
-- APP_INSTANCE_NAME
-- NAMESPACE
-- IMAGE_ELASTICSEARCH
-- IMAGE_KIBANA
-- IMAGE_FLUENTD
-- IMAGE_INIT
-- ELASTICSEARCH_REPLICAS
-- FLUENTD_SERVICE_ACCOUNT
+- name
+- namespace
+- elasticsearch.image
+- kibana.image
+- fluentd.image
+- initImage
+- elasticsearch.replicas
+- fluentd.serviceAccount
