@@ -18,6 +18,11 @@ properties:
     title: Volume
     description: The size of Volume (Gi) in the solution
     default: 24
+  exporter.image:
+    type: string
+    default: $REGISTRY/exporter:latest
+    x-google-marketplace:
+      type: IMAGE
   db.password:
     type: string
     x-google-marketplace:
@@ -30,4 +35,5 @@ required:
 - namespace
 - postgresql.image
 - postgresql.volumeSize
+- exporter.image
 - db.password

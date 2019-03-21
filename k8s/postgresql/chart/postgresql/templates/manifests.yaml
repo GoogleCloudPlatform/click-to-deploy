@@ -91,3 +91,50 @@ spec:
     app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: postgresql-server
   type: LoadBalancer
+---
+kind: Deployment
+apiVersion: apps/v1beta2
+metadata:
+  name: {{ .Release.Name }}-postgresql-exporter-deployment
+  labels: &PostgresExporterDeploymentLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: postgres-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels: *PostgresExporterDeploymentLabels
+  template:
+    metadata:
+      labels: *PostgresExporterDeploymentLabels
+    spec:
+      containers:
+      - name: postgresql-exporter
+        image: {{ .Values.exporter.image }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9187
+          name: exporter
+        env:
+        - name: "DATA_SOURCE_URI"
+          value: "{{ .Release.Name }}-postgresql-svc.{{ .Release.Namespace }}.svc.cluster.local:5432/postgres?sslmode=disable"
+        - name: "DATA_SOURCE_USER"
+          value: "postgres"
+        - name: "DATA_SOURCE_PASS"
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-secret
+              key: password
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-postgres-exporter-svc
+  labels: &PostgresExporterDeploymentLabels
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: postgres-exporter
+spec:
+  ports:
+  - name: postgres-exporter
+    port: 9187
+  selector: *PostgresExporterDeploymentLabels
+  type: ClusterIP
