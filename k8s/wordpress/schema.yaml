@@ -60,7 +60,7 @@ properties:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
     description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
-    default: true
+    default: false
 required:
 - name
 - namespace
