@@ -105,8 +105,8 @@ app/build:: .build/wordpress/deployer \
 .build/wordpress/mysql: .build/var/REGISTRY \
                         .build/var/TAG \
                         | .build/wordpress
-	docker pull launcher.gcr.io/google/mysql5
-	docker tag launcher.gcr.io/google/mysql5 \
+	docker pull launcher.gcr.io/google/mysql5:$(TAG)
+	docker tag launcher.gcr.io/google/mysql5:$(TAG) \
 	    "$(REGISTRY)/wordpress/mysql:$(TAG)"
 	docker push "$(REGISTRY)/wordpress/mysql:$(TAG)"
 	@touch "$@"
