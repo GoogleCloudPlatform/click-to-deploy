@@ -63,6 +63,7 @@ APP_TEST_PARAMETERS ?= { \
 app/build:: .build/wordpress/deployer \
             .build/wordpress/mysql \
             .build/wordpress/wordpress \
+            .build/wordpress/mysqld-exporter \
             .build/wordpress/prometheus-to-sd \
             .build/wordpress/tester
 
@@ -109,6 +110,16 @@ app/build:: .build/wordpress/deployer \
 	docker tag launcher.gcr.io/google/mysql5:$(TAG) \
 	    "$(REGISTRY)/wordpress/mysql:$(TAG)"
 	docker push "$(REGISTRY)/wordpress/mysql:$(TAG)"
+	@touch "$@"
+
+
+.build/wordpress/mysqld-exporter: .build/var/REGISTRY \
+                                  .build/var/TAG \
+                                  | .build/wordpress
+	docker pull gcr.io/cloud-marketplace-ops-test/mysql5:exporter
+	docker tag gcr.io/cloud-marketplace-ops-test/mysql5:exporter \
+	    "$(REGISTRY)/wordpress/mysqld-exporter:$(TAG)"
+	docker push "$(REGISTRY)/wordpress/mysqld-exporter:$(TAG)"
 	@touch "$@"
 
 

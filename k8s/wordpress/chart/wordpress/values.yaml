@@ -7,8 +7,7 @@ db:
   wordpressPassword: null
 
   # The image and credentials for mysqld_exporter component.
-  # TODO(wgrzelak): This image should not be here.
-  exporterImage: prom/mysqld-exporter
+  exporterImage: null
   exporterUser: mysqld_exporter
   exporterPassword: null
 
