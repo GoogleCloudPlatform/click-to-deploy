@@ -68,6 +68,7 @@ required:
 - db.image
 - db.rootPassword
 - db.wordpressPassword
+- db.exporterPassword
 - admin.email
 - admin.password
 - metrics.image
