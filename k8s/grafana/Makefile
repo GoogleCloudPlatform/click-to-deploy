@@ -19,11 +19,16 @@ ifdef IMAGE_GRAFANA_INIT
   IMAGE_GRAFANA_INIT_FIELD = , "grafana.initImage": "$(IMAGE_GRAFANA_INIT)"
 endif
 
+ifdef METRICS_EXPORTER_ENABLED
+  METRICS_EXPORTER_ENABLED_FIELD = , "metrics.enabled": "$(METRICS_EXPORTER_ENABLED)"
+endif
+
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
   $(IMAGE_GRAFANA_FIELD) \
   $(IMAGE_GRAFANA_INIT_FIELD) \
+  $(METRICS_EXPORTER_ENABLED_FIELD) \
 }
 
 TESTER_IMAGE ?= $(REGISTRY)/grafana/tester:$(TAG)
