@@ -16,11 +16,8 @@ APP_PARAMETERS ?= { \
 }
 
 TESTER_IMAGE ?= $(REGISTRY)/influxdb/tester:$(TAG)
-
 APP_TEST_PARAMETERS ?= { \
-  "testerImage": "$(TESTER_IMAGE)" \
 }
-
 
 app/build:: .build/influxdb/deployer \
             .build/influxdb/influxdb \

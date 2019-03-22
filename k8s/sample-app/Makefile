@@ -28,7 +28,6 @@ APP_PARAMETERS ?= { \
 TESTER_IMAGE ?= $(REGISTRY)/sample-app/tester:$(TAG)
 
 APP_TEST_PARAMETERS ?= { \
-  "testerImage": "$(TESTER_IMAGE)" \
 }
 
 

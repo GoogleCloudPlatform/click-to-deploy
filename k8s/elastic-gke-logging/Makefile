@@ -46,7 +46,6 @@ APP_PARAMETERS ?= { \
 TESTER_IMAGE ?= $(REGISTRY)/elastic-gke-logging/tester:$(TAG)
 
 APP_TEST_PARAMETERS ?= { \
-  "testerImage": "$(TESTER_IMAGE)" \
 }
 
 

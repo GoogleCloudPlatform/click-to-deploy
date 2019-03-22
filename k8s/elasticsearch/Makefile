@@ -33,7 +33,6 @@ APP_PARAMETERS ?= { \
 TESTER_IMAGE ?= $(REGISTRY)/elasticsearch/tester:$(TAG)
 
 APP_TEST_PARAMETERS ?= { \
-  "testerImage": "$(TESTER_IMAGE)" \
 }
 
 

@@ -49,7 +49,6 @@ APP_PARAMETERS ?= { \
 TESTER_IMAGE ?= $(REGISTRY)/wordpress/tester:$(TAG)
 
 APP_TEST_PARAMETERS ?= { \
-  "testerImage": "$(TESTER_IMAGE)" \
 }
 
 

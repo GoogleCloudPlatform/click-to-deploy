@@ -29,7 +29,6 @@ APP_PARAMETERS ?= { \
 TESTER_IMAGE ?= $(REGISTRY)/grafana/tester:$(TAG)
 
 APP_TEST_PARAMETERS ?= { \
-  "testerImage": "$(TESTER_IMAGE)" \
 }
 
 

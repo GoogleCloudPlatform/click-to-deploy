@@ -14,8 +14,8 @@ APP_PARAMETERS ?= { \
   "NAMESPACE": "$(NAMESPACE)" \
 }
 TESTER_IMAGE ?= $(REGISTRY)/airflow-operator/tester:$(TAG)
+
 APP_TEST_PARAMETERS ?= { \
-  "testerImage": "$(TESTER_IMAGE)" \
 }
 
 
