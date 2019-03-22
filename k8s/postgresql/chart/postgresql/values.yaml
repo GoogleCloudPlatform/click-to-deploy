@@ -5,3 +5,6 @@ exporter:
   image: null
 db:
   password: null
+metrics:
+  image: null
+  enabled: false
