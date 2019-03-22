@@ -30,12 +30,12 @@ properties:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 12
-  db.exporterImage:
+  db.exporter.image:
     type: string
     default: $REGISTRY/mysqld-exporter:$TAG
     x-google-marketplace:
       type: IMAGE
-  db.exporterPassword:
+  db.exporter.password:
     type: string
     x-google-marketplace:
       type: GENERATED_PASSWORD
@@ -73,8 +73,8 @@ required:
 - db.image
 - db.rootPassword
 - db.wordpressPassword
-- db.exporterImage
-- db.exporterPassword
+- db.exporter.image
+- db.exporter.password
 - admin.email
 - admin.password
 - metrics.image

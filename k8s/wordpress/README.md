@@ -201,8 +201,8 @@ helm template chart/wordpress \
   --set db.image=$IMAGE_MYSQL \
   --set db.rootPassword=$ROOT_DB_PASSWORD \
   --set db.wordpressPassword=$WORDPRESS_DB_PASSWORD \
-  --set db.exporterImage=$IMAGE_MYSQL_EXPORTER \
-  --set db.exporterPassword=$EXPORTER_DB_PASSWORD \
+  --set db.exporter.image=$IMAGE_MYSQL_EXPORTER \
+  --set db.exporter.password=$EXPORTER_DB_PASSWORD \
   --set admin.email=$WORDPRESS_ADMIN_EMAIL \
   --set admin.password=$WORDPRESS_ADMIN_PASSWORD \
   --set metrics.image=$IMAGE_METRICS_EXPORTER \

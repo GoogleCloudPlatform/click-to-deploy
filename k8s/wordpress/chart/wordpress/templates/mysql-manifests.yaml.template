@@ -13,6 +13,7 @@ data:
   root-password: "{{ .Values.db.rootPassword }}"
   wp-password: "{{ .Values.db.wordpressPassword }}"
 ---
+{{ if .Values.db.exporter.enabled }}
 apiVersion: v1
 kind: Secret
 metadata:
@@ -22,12 +23,13 @@ metadata:
     app.kubernetes.io/component: wordpress-mysql
 stringData:
   mysqld_exporter.sql: |
-    CREATE USER IF NOT EXISTS '{{ .Values.db.exporterUser }}'@'127.0.0.1' IDENTIFIED BY '{{ .Values.db.exporterPassword | b64dec }}' WITH MAX_USER_CONNECTIONS 3;
+    CREATE USER IF NOT EXISTS '{{ .Values.db.exporter.user }}'@'127.0.0.1' IDENTIFIED BY '{{ .Values.db.exporter.password | b64dec }}' WITH MAX_USER_CONNECTIONS 3;
     # https://dev.mysql.com/doc/refman/5.6/en/grant.html
-    GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO '{{ .Values.db.exporterUser }}'@'127.0.0.1';
+    GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO '{{ .Values.db.exporter.user }}'@'127.0.0.1';
     FLUSH PRIVILEGES;
 data:
-  mysqld-exporter-pass: {{ .Values.db.exporterPassword }}
+  mysqld-exporter-pass: {{ .Values.db.exporter.password }}
+{{ end }}
 ---
 apiVersion: apps/v1beta2
 kind: StatefulSet
@@ -79,9 +81,11 @@ spec:
         - name: {{ .Release.Name }}-mysql-pvc
           mountPath: /var/lib/mysql
           subPath: data
+        {{ if .Values.db.exporter.enabled }}
         - name: mysql-config
           mountPath: /docker-entrypoint-initdb.d
           readOnly: true
+        {{ end }}
         readinessProbe:
           exec:
             command: ["sh", "-c", "exec mysqladmin status -uroot -p$MYSQL_ROOT_PASSWORD"]
@@ -90,7 +94,8 @@ spec:
           exec:
             command: ["sh", "-c", "exec mysqladmin status -uroot -p$MYSQL_ROOT_PASSWORD"]
           initialDelaySeconds: 120
-      - image: {{ .Values.db.exporterImage }}
+      {{ if .Values.db.exporter.enabled }}
+      - image: {{ .Values.db.exporter.image }}
         name: mysqld-exporter
         env:
         - name: MYSQLD_EXPORTER_PASSWORD
@@ -99,7 +104,7 @@ spec:
               name: {{ .Release.Name }}-mysqld-exporter-secret
               key: mysqld-exporter-pass
         - name: DATA_SOURCE_NAME
-          value: {{ .Values.db.exporterUser }}:$(MYSQLD_EXPORTER_PASSWORD)@(127.0.0.1:3306)/wordpress
+          value: {{ .Values.db.exporter.user }}:$(MYSQLD_EXPORTER_PASSWORD)@(127.0.0.1:3306)/wordpress
         ports:
         - name: exporter
           containerPort: 9104
@@ -122,6 +127,7 @@ spec:
           items:
           - key: mysqld_exporter.sql
             path: mysqld_exporter.sql
+      {{ end }}
   volumeClaimTemplates:
   - metadata:
       name: {{ .Release.Name }}-mysql-pvc

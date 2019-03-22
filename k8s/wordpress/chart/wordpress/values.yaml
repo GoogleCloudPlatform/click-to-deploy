@@ -7,9 +7,11 @@ db:
   wordpressPassword: null
 
   # The image and credentials for mysqld_exporter component.
-  exporterImage: null
-  exporterUser: mysqld-exporter
-  exporterPassword: null
+  exporter:
+    image: null
+    user: mysqld-exporter
+    password: null
+    enabled: true
 
 admin:
   username: admin
