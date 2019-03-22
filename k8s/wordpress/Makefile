@@ -116,6 +116,7 @@ app/build:: .build/wordpress/deployer \
 .build/wordpress/mysqld-exporter: .build/var/REGISTRY \
                                   .build/var/TAG \
                                   | .build/wordpress
+	# TODO(wgrzelak): Replace the image with "launcher.gcr.io/google/mysql5:exporter"
 	docker pull gcr.io/cloud-marketplace-ops-test/mysql5:exporter
 	docker tag gcr.io/cloud-marketplace-ops-test/mysql5:exporter \
 	    "$(REGISTRY)/wordpress/mysqld-exporter:$(TAG)"
