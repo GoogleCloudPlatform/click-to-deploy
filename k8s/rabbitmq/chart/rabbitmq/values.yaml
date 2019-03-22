@@ -6,3 +6,7 @@ rabbitmq:
   user: rabbit
   password: null
   serviceAccount: null
+
+metrics:
+  image: null
+  enabled: false

@@ -155,12 +155,23 @@ Set or generate a password. The value must be encoded in base64.
 export RABBITMQ_DEFAULT_PASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1 | tr -d '\n' | base64)
 ```
 
+Enable Stackdriver Metrics Exporter:
+
+> **NOTE:** Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet.
+
+By default the integration is disabled. To enable, change the value to `true`.
+
+```shell
+export METRICS_EXPORTER_ENABLED=false
+```
+
 Configure the container images:
 
 ```shell
 TAG=3.7
 export IMAGE_RABBITMQ=marketplace.gcr.io/google/rabbitmq:${TAG}
 export IMAGE_RABBITMQ_INIT=marketplace.gcr.io/google/rabbitmq/debian9:${TAG}
+export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/rabbitmq/prometheus-to-sd:${TAG}"
 ```
 
 The images above are referenced by
@@ -172,7 +183,7 @@ until you are ready to upgrade. To get the digest for the image, use the
 following script:
 
 ```shell
-for i in "IMAGE_RABBITMQ" "IMAGE_RABBITMQ_INIT"; do
+for i in "IMAGE_METRICS_EXPORTER" "IMAGE_RABBITMQ" "IMAGE_RABBITMQ_INIT"; do
   repo=$(echo ${!i} | cut -d: -f1);
   digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
   export $i="$repo@$digest";
@@ -231,7 +242,9 @@ expanded manifest file for future updates to the application.
       --set rabbitmq.erlangCookie=$RABBITMQ_ERLANG_COOKIE \
       --set rabbitmq.user=$RABBITMQ_DEFAULT_USER \
       --set rabbitmq.password=$RABBITMQ_DEFAULT_PASS \
-      --set rabbitmq.serviceAccount=$RABBITMQ_SERVICE_ACCOUNT > ${APP_INSTANCE_NAME}_manifest.yaml
+      --set rabbitmq.serviceAccount=$RABBITMQ_SERVICE_ACCOUNT \
+      --set metrics.image=$IMAGE_METRICS_EXPORTER \
+      --set metrics.enabled=$METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
     ```
 
 #### Apply the manifest to your Kubernetes cluster
@@ -265,7 +278,7 @@ node:
 kubectl exec -it $APP_INSTANCE_NAME-rabbitmq-0 --namespace $NAMESPACE -- rabbitmqctl cluster_status
 ```
 
-#### Authorization
+#### Authentication
 
 The default username is `rabbit`. Use `kubectl` to get the generated password:
 
@@ -338,6 +351,49 @@ for item in service.status.load_balancer.ingress:
 
 To send and receive messages to RabbitMQ using Python, see the
 [RabbitMQ Tutorial](https://www.rabbitmq.com/tutorials/tutorial-one-python.html).
+
+# Application metrics
+
+## Prometheus metrics
+
+The application is configured to expose its metrics through
+[RabbitMQ Prometheus.io exporter plugin](https://github.com/deadtrickster/prometheus_rabbitmq_exporter) 
+in the [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
+For more detailed information about the plugin setup, see the official RabbitMQ's [Monitoring with Prometheus documentation](https://www.rabbitmq.com/prometheus.html).
+Metrics can be read on a single HTTP endpoint available at `[APP_BASE_URL]/api/metrics`,
+where `[APP_BASE_URL]` is the base URL address of the application.
+For example, you can
+[expose RabbitMQ service internally using port forwarding](#access-rabbitmq-service),
+and then access the metrics by navigating to the [http://localhost:15672/metrics](http://localhost:15672/metrics) endpoint.
+
+## Configuring Prometheus to collect the metrics
+
+Prometheus can be configured to automatically collect the application's metrics.
+Follow the [Configuring Prometheus documentation](https://prometheus.io/docs/introduction/first_steps/#configuring-prometheus)
+to enable metrics scrapping in your Prometheus server. The detailed specification
+of `<scrape_config>` used to enable the metrics collection can be found
+[here](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config).
+
+## Exporting metrics to Stackdriver
+
+If the option to export application metrics to Stackdriver is enabled,
+the deployment includes a [`prometheus-to-sd`](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd)
+(Prometheus to Stackdriver exporter) container.
+Then the metrics will be automatically exported to Stackdriver and visible in
+[Stackdriver Metrics Explorer](https://cloud.google.com/monitoring/charts/metrics-explorer).
+
+Each metric of the application will have a name starting with the application's name
+(matching the variable `APP_INSTANCE_NAME` described above).
+
+The exporting option might not be available for GKE on-prem clusters.
+
+> Note: Please be aware that Stackdriver has [quotas](https://cloud.google.com/monitoring/quotas)
+for the number of custom metrics created in a single GCP project. If the quota is met,
+additional metrics will not be accepted by Stackdriver, which might cause that some metrics
+from your application might not show up in the Stackdriver's Metrics Explorer.
+
+Existing metric descriptors can be removed through
+[Stackdriver's REST API](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors/delete).
 
 # Scaling
 
