@@ -217,7 +217,7 @@ To view the app, open the URL in your browser.
 By default, the application does not have an external IP. To create an external
 IP address, run the following command:
 
-```
+```shell
 kubectl patch svc "$APP_INSTANCE_NAME-elasticsearch-svc" \
   --namespace "$NAMESPACE" \
   --patch '{"spec": {"type": "LoadBalancer"}}'
@@ -231,7 +231,7 @@ If you run your Elasticsearch cluster behind a LoadBalancer service, use the
 following command to get the IP address. You can use the IP address to run
 administrative operations using the REST API:
 
-```
+```shell
 SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-elasticsearch-svc \
   --namespace $NAMESPACE \
   --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
@@ -272,7 +272,7 @@ In the response, you should see a message including Elasticsearch's tagline:
 
 Scale the number of master node replicas by the following command:
 
-```
+```shell
 kubectl scale statefulsets "$APP_INSTANCE_NAME-elasticsearch" \
   --namespace "$NAMESPACE" --replicas=<new-replicas>
 ```
@@ -398,7 +398,7 @@ back up your installation, to eliminate the risk of losing your data.
 
 Start with assigning the new image to your StatefulSet definition:
 
-```
+```shell
 IMAGE_ELASTICSEARCH=[NEW_IMAGE_REFERENCE]
 
 kubectl set image statefulset "${APP_INSTANCE_NAME}-elasticsearch" \
