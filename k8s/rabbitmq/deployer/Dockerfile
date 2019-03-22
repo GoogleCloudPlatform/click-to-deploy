@@ -33,5 +33,5 @@ RUN cat /tmp/apptest/schema.yaml \
 FROM gcr.io/cloud-marketplace-tools/k8s/deployer_helm:$MARKETPLACE_TOOLS_TAG
 COPY --from=build /tmp/rabbitmq.tar.gz /data/chart/
 COPY --from=build /tmp/test/rabbitmq.tar.gz /data-test/chart/
-COPY --from=build /tmp/apptest/deployer/schema.yaml /data-test/
+COPY --from=build /tmp/apptest/schema.yaml /data-test/
 COPY --from=build /tmp/schema.yaml /data/
