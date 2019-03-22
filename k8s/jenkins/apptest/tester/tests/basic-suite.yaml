@@ -1,35 +1,15 @@
 actions:
-- name: Jenkins service login
+- name: Jenkins service login with correct credentials
   bashTest:
     script: |-
-      SERVICE="${APP_INSTANCE_NAME}-jenkins-ui"
-      IP=''
-      PORT=''
-      PASSWORD=''
-
-      IP=$(kubectl get service "${SERVICE}" \
-        --namespace "${NAMESPACE}" \
-        -ojsonpath="{.spec.clusterIP}")
-
-      PORT=$(kubectl get service "${SERVICE}" \
-        --namespace "${NAMESPACE}" \
-        -ojsonpath="{.spec.ports[0].port}")
-
-      POD=$(kubectl get pod -oname \
-        --namespace "${NAMESPACE}" | \
-        sed -n "/\\/${APP_INSTANCE_NAME}-jenkins-deployment/s.pods\\?/..p")
-
-      PASSWORD=$(kubectl exec "${POD}" \
-        --namespace "${NAMESPACE}" \
-        cat /var/jenkins_home/secrets/initialAdminPassword)
-
-      # authenticated curl on http:// (wrong credentials)
+      curl -u "admin:${PASSWORD}" -s -k "http://${IP}:${PORT}/" | grep -q 'SetupWizard'
+    expect:
+      exitCode:
+        equals: 0
+- name: Jenkins service login with incorrect credentials
+  bashTest:
+    script: |-
       if ! curl -uadmin:Invalid -s -k "http://${IP}:${PORT}/" | grep -q 'Error 401 Invalid password/token'; then
-        exit 1
-      fi
-
-      # authenticated curl on http:// (correct credentials)
-      if ! curl -u "admin:${PASSWORD}" -s -k "http://${IP}:${PORT}/" | grep -q 'SetupWizard'; then
         exit 1
       fi
     expect:
