@@ -171,7 +171,7 @@ sudo apt-get install -y pwgen cl-base64
 export ROOT_DB_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
 export WORDPRESS_DB_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
 
-# Set mysqld_exporter user password.
+# Set mysqld-exporter user password.
 export EXPORTER_DB_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
 
 # Set e-mail address and password for WordPress admin panel
