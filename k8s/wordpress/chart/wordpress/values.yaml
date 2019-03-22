@@ -8,7 +8,7 @@ db:
 
   # The image and credentials for mysqld_exporter component.
   exporterImage: null
-  exporterUser: mysqld_exporter
+  exporterUser: mysqld-exporter
   exporterPassword: null
 
 admin:
