@@ -166,9 +166,22 @@ kubectl create namespace "$NAMESPACE"
 Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
+Check if the `helm template` plugin is installed.
+```shell
+helm template --help
+```
+
+If not install it. 
+
+```shell
+helm plugin install https://github.com/technosophos/helm-template
+```
+
+Expand the template.
+
 ```shell
 helm template chart/elasticsearch \
-  --name $APP_INSTANCE_NAME \
+  --release $APP_INSTANCE_NAME \
   --namespace $NAMESPACE \
   --set elasticsearch.initImage=$IMAGE_INIT \
   --set elasticsearch.image=$IMAGE_ELASTICSEARCH \
