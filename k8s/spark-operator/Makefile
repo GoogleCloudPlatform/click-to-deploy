@@ -14,8 +14,7 @@ APP_PARAMETERS ?= { \
   "NAMESPACE": "$(NAMESPACE)" \
 }
 TESTER_IMAGE ?= $(REGISTRY)/spark-operator/tester:$(TAG)
-APP_TEST_PARAMETERS ?= { \
-}
+APP_TEST_PARAMETERS ?= { }
 
 
 app/build:: .build/spark-operator/deployer \

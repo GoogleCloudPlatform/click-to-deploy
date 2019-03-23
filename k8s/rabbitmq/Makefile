@@ -54,8 +54,7 @@ APP_PARAMETERS ?= { \
 
 TESTER_IMAGE ?= $(REGISTRY)/rabbitmq/tester:$(TAG)
 
-APP_TEST_PARAMETERS ?= { \
-}
+APP_TEST_PARAMETERS ?= { }
 
 
 app/build:: .build/rabbitmq/debian9  \

@@ -26,8 +26,7 @@ APP_PARAMETERS ?= { \
 
 TESTER_IMAGE ?= $(REGISTRY)/cassandra/tester:$(TAG)
 
-APP_TEST_PARAMETERS ?= { \
-}
+APP_TEST_PARAMETERS ?= { }
 
 
 app/build:: .build/cassandra/cassandra \

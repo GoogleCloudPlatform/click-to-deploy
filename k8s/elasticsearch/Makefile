@@ -32,8 +32,7 @@ APP_PARAMETERS ?= { \
 
 TESTER_IMAGE ?= $(REGISTRY)/elasticsearch/tester:$(TAG)
 
-APP_TEST_PARAMETERS ?= { \
-}
+APP_TEST_PARAMETERS ?= { }
 
 
 app/build:: .build/elasticsearch/elasticsearch \

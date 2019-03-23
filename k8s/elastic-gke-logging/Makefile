@@ -45,8 +45,7 @@ APP_PARAMETERS ?= { \
 
 TESTER_IMAGE ?= $(REGISTRY)/elastic-gke-logging/tester:$(TAG)
 
-APP_TEST_PARAMETERS ?= { \
-}
+APP_TEST_PARAMETERS ?= { }
 
 
 app/build:: .build/elastic-gke-logging/elasticsearch \

@@ -24,8 +24,7 @@ APP_PARAMETERS ?= { \
 }
 
 
-APP_TEST_PARAMETERS ?= { \
-}
+APP_TEST_PARAMETERS ?= { }
 
 
 app/build:: .build/agones/deployer \
