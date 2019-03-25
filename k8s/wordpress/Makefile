@@ -48,8 +48,6 @@ APP_PARAMETERS ?= { \
 
 TESTER_IMAGE ?= $(REGISTRY)/wordpress/tester:$(TAG)
 
-APP_TEST_PARAMETERS ?= { }
-
 
 app/build:: .build/wordpress/deployer \
             .build/wordpress/mysql \

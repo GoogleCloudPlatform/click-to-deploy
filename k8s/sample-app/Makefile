@@ -27,8 +27,6 @@ APP_PARAMETERS ?= { \
 
 TESTER_IMAGE ?= $(REGISTRY)/sample-app/tester:$(TAG)
 
-APP_TEST_PARAMETERS ?= { }
-
 
 app/build:: .build/sample-app/deployer \
             .build/sample-app/sample-app \

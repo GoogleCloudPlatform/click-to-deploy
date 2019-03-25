@@ -24,9 +24,6 @@ APP_PARAMETERS ?= { \
 }
 
 
-APP_TEST_PARAMETERS ?= { }
-
-
 app/build:: .build/agones/deployer \
             .build/agones/agones-controller \
             .build/agones/agones-sdk \

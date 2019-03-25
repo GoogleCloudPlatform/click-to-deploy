@@ -18,8 +18,6 @@ APP_PARAMETERS ?= { \
 
 TESTER_IMAGE ?= $(REGISTRY)/postgresql/tester:$(TAG)
 
-APP_TEST_PARAMETERS ?= { }
-
 
 app/build:: .build/postgresql/deployer \
             .build/postgresql/postgresql \

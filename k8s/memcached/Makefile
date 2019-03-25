@@ -16,8 +16,6 @@ APP_PARAMETERS ?= { \
 
 TESTER_IMAGE ?= $(REGISTRY)/memcached/tester:$(TAG)
 
-APP_TEST_PARAMETERS ?= { }
-
 
 app/build:: .build/memcached/deployer \
             .build/memcached/memcached \

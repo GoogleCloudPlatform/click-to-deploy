@@ -22,8 +22,6 @@ APP_PARAMETERS ?= { \
 
 TESTER_IMAGE ?= $(REGISTRY)/jenkins/tester:$(TAG)
 
-APP_TEST_PARAMETERS ?= { }
-
 
 app/build:: .build/jenkins/deployer \
             .build/jenkins/jenkins \

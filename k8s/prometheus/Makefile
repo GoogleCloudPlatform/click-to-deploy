@@ -49,8 +49,6 @@ APP_PARAMETERS ?= { \
 
 TESTER_IMAGE ?= $(REGISTRY)/prometheus/tester:$(TAG)
 
-APP_TEST_PARAMETERS ?= { }
-
 
 app/build:: .build/prometheus/alertmanager \
             .build/prometheus/debian9 \
