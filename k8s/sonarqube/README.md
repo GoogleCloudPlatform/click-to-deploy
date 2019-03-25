@@ -2,7 +2,7 @@
 
 SonarQube
 
-For more information on SSonarQube, see the [SonarQube website](https://www.sonarqube.org/).
+For more information on SonarQube, see the [SonarQube website](https://www.sonarqube.org/).
 
 ## About Google Click to Deploy
 
@@ -144,7 +144,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-helm template chart/wordpress \
+helm template chart/sonarqube \
   --name="$APP_INSTANCE_NAME" \
   --namespace="$NAMESPACE" \
   --set sonarqube.repository=$IMAGE_WORDPRESS \
@@ -174,23 +174,22 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 ```shell
 kubectl get svc ${APP_INSTANCE_NAME}
-
 ```
 
-result of command will shows you external IP address and port. 
+Result of command will shows you external IP address and port. 
 
 #Using the app 
 
 
 ## How to use SonarQube 
-how to use SonarQube you can find in [official documentation](https://docs.sonarqube.org/latest/setup/get-started-2-minutes/)  
+How to use SonarQube you can find in [official documentation](https://docs.sonarqube.org/latest/setup/get-started-2-minutes/)  
 
 # Scaling
 
 This installation is single instance of SonarQube.
 
 # Backup and restore
-
+All configuration of Sonarqube stored in database so main point is to backup database.
 ## Backing up PostgreSQL of SonqrQube app
 
 ```shell
@@ -209,9 +208,7 @@ cat postgresql-backup.sql | kubectl --namespace $NAMESPACE exec -i \
 	-- psql -U postgres
 ```
 
-g 
 
 # Logging and Monitoring
-
-
-
+By default logs exports to Stackdrive, more information in [official documentation](https://cloud.google.com/stackdriver/)
+also (optional) all metrics could be exported via Prometheus.

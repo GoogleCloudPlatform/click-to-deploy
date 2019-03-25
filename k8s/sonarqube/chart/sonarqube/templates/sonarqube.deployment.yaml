@@ -29,3 +29,15 @@ spec:
           ports:
             - containerPort: {{.Values.sonarqube.service.internalPort}}
               name: sonar-port
+          volumeMounts:
+          - mountPath: "/opt/sonarqube/data/"
+            name: {{ .Release.Name}}-data
+          - mountPath: "/opt/sonarqube/extensions/"
+            name: {{ .Release.Name}}-exts
+      volumes:
+      - name: {{ .Release.Name}}-data
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name}}-data
+      - name: {{ .Release.Name}}-exts
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name}}-exts
