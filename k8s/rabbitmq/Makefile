@@ -5,6 +5,8 @@ include ../var.Makefile
 
 
 TAG ?= 3.7
+METRICS_EXPORTER_TAG ?= v0.5.1
+
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/rabbitmq/deployer:$(TAG)
@@ -34,6 +36,10 @@ ifdef RABBITMQ_DEFAULT_PASS
   RABBITMQ_DEFAULT_PASS_FIELD = , "rabbitmq.password": "$(RABBITMQ_DEFAULT_PASS)"
 endif
 
+ifdef METRICS_EXPORTER_ENABLED
+  METRICS_EXPORTER_ENABLED_FIELD = , "metrics.enabled": "$(METRICS_EXPORTER_ENABLED)"
+endif
+
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
@@ -43,6 +49,7 @@ APP_PARAMETERS ?= { \
   $(RABBITMQ_ERLANG_COOKIE_FIELD) \
   $(RABBITMQ_DEFAULT_USER_FIELD) \
   $(RABBITMQ_DEFAULT_PASS_FIELD) \
+  $(METRICS_EXPORTER_ENABLED_FIELD) \
 }
 
 TESTER_IMAGE ?= $(REGISTRY)/rabbitmq/tester:$(TAG)
@@ -55,6 +62,7 @@ APP_TEST_PARAMETERS ?= { \
 app/build:: .build/rabbitmq/debian9  \
             .build/rabbitmq/deployer \
             .build/rabbitmq/rabbitmq \
+            .build/rabbitmq/prometheus-to-sd \
             .build/rabbitmq/tester
 
 
@@ -99,6 +107,17 @@ app/build:: .build/rabbitmq/debian9  \
 	    "$(REGISTRY)/rabbitmq:$(TAG)"
 	docker push "$(REGISTRY)/rabbitmq:$(TAG)"
 	@touch "$@"
+
+
+.build/rabbitmq/prometheus-to-sd: .build/var/REGISTRY \
+                                  .build/var/TAG \
+                                  | .build/rabbitmq
+	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
+	    "$(REGISTRY)/rabbitmq/prometheus-to-sd:$(TAG)"
+	docker push "$(REGISTRY)/rabbitmq/prometheus-to-sd:$(TAG)"
+	@touch "$@"
+
 
 .build/rabbitmq/tester: .build/var/TESTER_IMAGE \
                         $(shell find apptest -type f) \
