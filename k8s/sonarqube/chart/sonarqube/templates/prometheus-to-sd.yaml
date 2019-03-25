@@ -24,7 +24,7 @@ spec:
         command:
         - /monitor
         - --stackdriver-prefix=custom.googleapis.com
-        - --source={{ .Release.Name }}:http://{{.Release.Name}}-{{ .Values.sonarqube.service.name}}:9000/metrics
+        - --source={{ .Release.Name }}:http://{{.Release.Name}}-{{ .Values.sonarqube.service.name}}:9000/api/prometheus/metrics
         - --pod-id=$(POD_NAME)
         - --namespace-id=$(POD_NAMESPACE)
         - --scrape-interval=5s
