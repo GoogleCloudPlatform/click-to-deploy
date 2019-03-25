@@ -67,8 +67,8 @@ app/build:: .build/grafana/debian9 \
 .build/grafana/grafana: .build/var/REGISTRY \
                         .build/var/TAG \
                         | .build/grafana
-	docker pull launcher.gcr.io/google/grafana5:$(TAG)
-	docker tag launcher.gcr.io/google/grafana5:$(TAG) "$(REGISTRY)/grafana:$(TAG)"
+	docker pull marketplace.gcr.io/google/grafana5:$(TAG)
+	docker tag marketplace.gcr.io/google/grafana5:$(TAG) "$(REGISTRY)/grafana:$(TAG)"
 	docker push "$(REGISTRY)/grafana:$(TAG)"
 	@touch "$@"
 
@@ -76,8 +76,8 @@ app/build:: .build/grafana/debian9 \
 .build/grafana/debian9: .build/var/REGISTRY \
                         .build/var/TAG \
                         | .build/grafana
-	docker pull launcher.gcr.io/google/debian9
-	docker tag launcher.gcr.io/google/debian9 "$(REGISTRY)/grafana/debian9:$(TAG)"
+	docker pull marketplace.gcr.io/google/debian9
+	docker tag marketplace.gcr.io/google/debian9 "$(REGISTRY)/grafana/debian9:$(TAG)"
 	docker push "$(REGISTRY)/grafana/debian9:$(TAG)"
 	@touch "$@"
 
