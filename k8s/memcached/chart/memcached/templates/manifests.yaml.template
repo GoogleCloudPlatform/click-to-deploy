@@ -21,7 +21,13 @@ spec:
       - name: memcached
         image: {{ .Values.memcached.image }}
         imagePullPolicy: Always
+        env:
+        - name: MEMCACHED_PROMETHEUS_ENABLED
+          value: "true"
         ports:
+        - name: memcached_exporter
+          containerPort: 9150
+          protocol: TCP
         - name: memcached
           containerPort: 11211
           protocol: TCP
@@ -35,6 +41,23 @@ spec:
             port: memcached
           initialDelaySeconds: 5
           timeoutSeconds: 2
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-memcached-prometheus-svc
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: memcached-server
+spec:
+  clusterIP: None
+  ports:
+  - name: memcached-port
+    port: 9150
+    protocol: TCP
+  selector:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: memcached-server
 ---
 apiVersion: v1
 kind: Service
