@@ -1,4 +1,23 @@
-application_api_version: v1beta1
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+
+  publishedVersion: $TAG
+  publishedVersionMetadata:
+    releaseNote: >-
+      Super useful Memcached is it
+    releaseTypes:
+      - BugFix
+    recommended: true
+
+  images:
+    memcached:
+      properties:
+        memcached.image:
+          type: FULL
+          default: $REGISTRY:$TAG
+
 properties:
   name:
     type: string
@@ -8,11 +27,6 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  memcached.image:
-    type: string
-    default: $REGISTRY:$TAG
-    x-google-marketplace:
-      type: IMAGE
   memcached.replicas:
     type: integer
     title: Replicas
@@ -20,8 +34,8 @@ properties:
     default: 3
     minimum: 1
     maximum: 11
+
 required:
 - name
 - namespace
-- memcached.image
 - memcached.replicas
