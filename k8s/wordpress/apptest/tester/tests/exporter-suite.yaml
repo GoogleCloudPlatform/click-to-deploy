@@ -1,9 +1,19 @@
 actions:
+
 - name: Is MySQL /metrics HTTP endpoint working
   bashTest:
     script: curl -f "http://${APP_INSTANCE_NAME}-mysqld-exporter-svc:9104/metrics"
     expect:
       stdout:
         matches: '(?m)^mysql_up 1$'
+      exitCode:
+        equals: 0
+
+- name: Is Apache /metrics HTTP endpoint working
+  bashTest:
+    script: curl -f "http://${APP_INSTANCE_NAME}-apache-exporter-svc:9117/metrics"
+    expect:
+      stdout:
+        matches: '(?m)^apache_up 1$'
       exitCode:
         equals: 0

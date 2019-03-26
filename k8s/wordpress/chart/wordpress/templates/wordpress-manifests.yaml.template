@@ -13,6 +13,33 @@ stringData:
 data:
   wp-password: "{{ .Values.admin.password }}"
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-apache-exporter-configmap
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: wordpress-webserver
+data:
+  apache-exporter.conf: |
+    <Location "/server-status">
+        SetHandler server-status
+        # Require local
+    </Location>
+  .htaccess: |
+    # BEGIN WordPress
+    <IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    RewriteRule ^index\.php$ - [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    # Allow Apache mod_status
+    RewriteCond %{REQUEST_URI} !=/server-status
+    RewriteRule . /index.php [L]
+    </IfModule>
+    # END WordPress
+---
 apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
@@ -84,6 +111,14 @@ spec:
         - name: {{ .Release.Name }}-wordpress-pvc
           mountPath: /var/www/html
           subPath: wp
+#        - name: apache-config
+#          mountPath: /etc/apache2/sites-enabled
+##          subPath: apache-exporter.conf
+#          readOnly: true
+#        - name: apache-config
+#          mountPath: /tmp
+##          subPath: .htaccess
+#          readOnly: true
         lifecycle:
           postStart:
             exec:
@@ -91,6 +126,23 @@ spec:
               - "/bin/bash"
               - "-euc"
               - |
+                # cp /tmp/.htaccess /var/www/html/.htaccess
+
+                cat > /var/www/html/.htaccess <<'_EOF'
+                # BEGIN WordPress
+                <IfModule mod_rewrite.c>
+                RewriteEngine On
+                RewriteBase /
+                RewriteRule ^index\.php$ - [L]
+                RewriteCond %{REQUEST_FILENAME} !-f
+                RewriteCond %{REQUEST_FILENAME} !-d
+                # Allow Apache mod_status
+                RewriteCond %{REQUEST_URI} !=/server-status
+                RewriteRule . /index.php [L]
+                </IfModule>
+                # END WordPress
+                _EOF
+
                 # https://codex.wordpress.org/Installing_WordPress#Installing_WordPress
                 curl --fail --retry 5 --retry-delay 5 --retry-connrefused \
                   --data-urlencode "weblog_title=WordPress on Google Kubernetes Engine" \
@@ -114,6 +166,34 @@ spec:
             path: /
             port: 80
           initialDelaySeconds: 120
+      - image: {{ .Values.apache.exporter.image }}
+        name: apache-exporter
+        args:
+        - --scrape_uri=http://127.0.0.1/server-status?auto
+        ports:
+        - name: exporter
+          containerPort: 9117
+        livenessProbe:
+          httpGet:
+            path: /metrics
+            port: 9117
+        readinessProbe:
+          httpGet:
+            path: /metrics
+            port: 9117
+          initialDelaySeconds: 60
+          timeoutSeconds: 30
+          failureThreshold: 10
+          periodSeconds: 10
+      volumes:
+      - name: apache-config
+        configMap:
+          name: {{ .Release.Name }}-apache-exporter-configmap
+          items:
+#          - key: apache-exporter.conf
+#            path: apache-exporter.conf
+          - key: .htaccess
+            path: .htaccess
   volumeClaimTemplates:
   - metadata:
       name: {{ .Release.Name }}-wordpress-pvc
@@ -143,6 +223,22 @@ spec:
     app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: wordpress-webserver
   type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-apache-exporter-svc
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: wordpress-webserver
+spec:
+  ports:
+  - name: exporter
+    port: 9117
+  selector:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: wordpress-webserver
+  clusterIP: None
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
