@@ -26,6 +26,8 @@ APP_PARAMETERS ?= { \
   $(IMAGE_GRAFANA_INIT_FIELD) \
 }
 
+TESTER_IMAGE ?= $(REGISTRY)/grafana/tester:$(TAG)
+
 
 app/build:: .build/grafana/debian9 \
             .build/grafana/deployer \
