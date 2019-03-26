@@ -69,8 +69,8 @@ app/build:: .build/rabbitmq/debian9  \
 .build/rabbitmq/debian9: .build/var/REGISTRY \
                          .build/var/TAG \
                          | .build/rabbitmq
-	docker pull launcher.gcr.io/google/debian9
-	docker tag launcher.gcr.io/google/debian9 "$(REGISTRY)/rabbitmq/debian9:$(TAG)"
+	docker pull marketplace.gcr.io/google/debian9
+	docker tag marketplace.gcr.io/google/debian9 "$(REGISTRY)/rabbitmq/debian9:$(TAG)"
 	docker push "$(REGISTRY)/rabbitmq/debian9:$(TAG)"
 	@touch "$@"
 
@@ -98,8 +98,8 @@ app/build:: .build/rabbitmq/debian9  \
 .build/rabbitmq/rabbitmq: .build/var/REGISTRY \
                           .build/var/TAG \
                           | .build/rabbitmq
-	docker pull launcher.gcr.io/google/rabbitmq3:$(TAG)
-	docker tag launcher.gcr.io/google/rabbitmq3:$(TAG) \
+	docker pull marketplace.gcr.io/google/rabbitmq3:$(TAG)
+	docker tag marketplace.gcr.io/google/rabbitmq3:$(TAG) \
 	    "$(REGISTRY)/rabbitmq:$(TAG)"
 	docker push "$(REGISTRY)/rabbitmq:$(TAG)"
 	@touch "$@"

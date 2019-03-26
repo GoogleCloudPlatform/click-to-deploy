@@ -60,8 +60,8 @@ app/build:: .build/sample-app/deployer \
                               .build/var/TAG \
                               | .build/sample-app
 
-	docker pull launcher.gcr.io/google/nginx1:$(TAG)
-	docker tag launcher.gcr.io/google/nginx1:$(TAG) \
+	docker pull marketplace.gcr.io/google/nginx1:$(TAG)
+	docker tag marketplace.gcr.io/google/nginx1:$(TAG) \
 	    "$(REGISTRY)/sample-app:$(TAG)"
 	docker push "$(REGISTRY)/sample-app:$(TAG)"
 

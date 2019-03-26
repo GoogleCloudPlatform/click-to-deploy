@@ -86,8 +86,8 @@ app/build:: .build/prometheus/alertmanager \
 .build/prometheus/server: .build/var/REGISTRY \
                           .build/var/TAG \
                           | .build/prometheus
-	docker pull launcher.gcr.io/google/prometheus2:$(TAG)
-	docker tag launcher.gcr.io/google/prometheus2:$(TAG) "$(REGISTRY)/prometheus:$(TAG)"
+	docker pull marketplace.gcr.io/google/prometheus2:$(TAG)
+	docker tag marketplace.gcr.io/google/prometheus2:$(TAG) "$(REGISTRY)/prometheus:$(TAG)"
 	docker push "$(REGISTRY)/prometheus:$(TAG)"
 	@touch "$@"
 
@@ -95,8 +95,8 @@ app/build:: .build/prometheus/alertmanager \
 .build/prometheus/alertmanager: .build/var/REGISTRY \
                                 .build/var/TAG \
                                 | .build/prometheus
-	docker pull launcher.gcr.io/google/prometheus-alertmanager0:0.14
-	docker tag launcher.gcr.io/google/prometheus-alertmanager0:0.14 \
+	docker pull marketplace.gcr.io/google/prometheus-alertmanager0:0.14
+	docker tag marketplace.gcr.io/google/prometheus-alertmanager0:0.14 \
 	  "$(REGISTRY)/prometheus/alertmanager:$(TAG)"
 	docker push "$(REGISTRY)/prometheus/alertmanager:$(TAG)"
 	@touch "$@"
@@ -105,8 +105,8 @@ app/build:: .build/prometheus/alertmanager \
 .build/prometheus/debian9: .build/var/REGISTRY \
                            .build/var/TAG \
                            | .build/prometheus
-	docker pull launcher.gcr.io/google/debian9
-	docker tag launcher.gcr.io/google/debian9 "$(REGISTRY)/prometheus/debian9:$(TAG)"
+	docker pull marketplace.gcr.io/google/debian9
+	docker tag marketplace.gcr.io/google/debian9 "$(REGISTRY)/prometheus/debian9:$(TAG)"
 	docker push "$(REGISTRY)/prometheus/debian9:$(TAG)"
 	@touch "$@"
 
@@ -114,8 +114,8 @@ app/build:: .build/prometheus/alertmanager \
 .build/prometheus/kubestatemetrics: .build/var/REGISTRY \
                                     .build/var/TAG \
                                     | .build/prometheus
-	docker pull launcher.gcr.io/google/kube-state-metrics1:1.3
-	docker tag launcher.gcr.io/google/kube-state-metrics1:1.3 \
+	docker pull marketplace.gcr.io/google/kube-state-metrics1:1.3
+	docker tag marketplace.gcr.io/google/kube-state-metrics1:1.3 \
 	  "$(REGISTRY)/prometheus/kubestatemetrics:$(TAG)"
 	docker push "$(REGISTRY)/prometheus/kubestatemetrics:$(TAG)"
 	@touch "$@"
@@ -124,8 +124,8 @@ app/build:: .build/prometheus/alertmanager \
 .build/prometheus/nodeexporter: .build/var/REGISTRY \
                                 .build/var/TAG \
                                 | .build/prometheus
-	docker pull launcher.gcr.io/google/prometheus-nodeexporter0:0.15
-	docker tag launcher.gcr.io/google/prometheus-nodeexporter0:0.15 \
+	docker pull marketplace.gcr.io/google/prometheus-nodeexporter0:0.15
+	docker tag marketplace.gcr.io/google/prometheus-nodeexporter0:0.15 \
 	  "$(REGISTRY)/prometheus/nodeexporter:$(TAG)"
 	docker push "$(REGISTRY)/prometheus/nodeexporter:$(TAG)"
 	@touch "$@"
@@ -134,8 +134,8 @@ app/build:: .build/prometheus/alertmanager \
 .build/prometheus/grafana: .build/var/REGISTRY \
                            .build/var/TAG \
                            | .build/prometheus
-	docker pull launcher.gcr.io/google/grafana5:5.3
-	docker tag launcher.gcr.io/google/grafana5:5.3 "$(REGISTRY)/prometheus/grafana:$(TAG)"
+	docker pull marketplace.gcr.io/google/grafana5:5.3
+	docker tag marketplace.gcr.io/google/grafana5:5.3 "$(REGISTRY)/prometheus/grafana:$(TAG)"
 	docker push "$(REGISTRY)/prometheus/grafana:$(TAG)"
 	@touch "$@"
 

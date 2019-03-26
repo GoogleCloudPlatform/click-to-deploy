@@ -17,6 +17,28 @@
 set -xeo pipefail
 shopt -s nullglob
 
+SERVICE="${APP_INSTANCE_NAME}-jenkins-ui"
+
+IP=$(kubectl get service "${SERVICE}" \
+  --namespace "${NAMESPACE}" \
+  -ojsonpath="{.spec.clusterIP}")
+
+PORT=$(kubectl get service "${SERVICE}" \
+  --namespace "${NAMESPACE}" \
+  -ojsonpath="{.spec.ports[0].port}")
+
+POD=$(kubectl get pod -oname \
+  --namespace "${NAMESPACE}" | \
+  sed -n "/\\/${APP_INSTANCE_NAME}-jenkins-deployment/s.pods\\?/..p")
+
+PASSWORD=$(kubectl exec "${POD}" \
+  --namespace "${NAMESPACE}" \
+  cat /var/jenkins_home/secrets/initialAdminPassword)
+
+export IP
+export PORT
+export PASSWORD
+
 for test in /tests/*; do
   testrunner -logtostderr "--test_spec=${test}"
 done
