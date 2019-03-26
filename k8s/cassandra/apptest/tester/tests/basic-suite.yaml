@@ -57,3 +57,13 @@ actions:
         contains: 'John'
       exitCode:
         equals: 0
+
+- name: Prometheus metrics are exported
+  bashTest:
+    script: |-
+      for node in $(getent hosts $APP_INSTANCE_NAME-cassandra-svc.$NAMESPACE.svc.cluster.local | awk '{print $1}'); do
+        wget -O - -q "http://$node:9404/metrics" | grep -e '^jmx_scrape_error 0.0$'
+      done
+    expect:
+      stdout:
+        equals: "jmx_scrape_error 0.0\njmx_scrape_error 0.0\njmx_scrape_error 0.0"
