@@ -62,8 +62,8 @@ app/build:: .build/memcached/deployer \
 .build/memcached/memcached: .build/var/REGISTRY \
                             .build/var/TAG \
                             | .build/memcached
-	docker pull launcher.gcr.io/google/memcached1:$(TAG)
-	docker tag launcher.gcr.io/google/memcached1:$(TAG) \
+	docker pull marketplace.gcr.io/google/memcached1:$(TAG)
+	docker tag marketplace.gcr.io/google/memcached1:$(TAG) \
 	    "$(REGISTRY)/memcached:$(TAG)"
 	docker push "$(REGISTRY)/memcached:$(TAG)"
 	@touch "$@"

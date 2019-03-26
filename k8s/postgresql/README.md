@@ -118,7 +118,7 @@ export NAMESPACE=default
 Configure the container image:
 
 ```shell
-export IMAGE_POSTGRESQL=launcher.gcr.io/google/postgresql9:9.6-kubernetes
+export IMAGE_POSTGRESQL=marketplace.gcr.io/google/postgresql9:9.6-kubernetes
 ```
 
 The image above is referenced by
