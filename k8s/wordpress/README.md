@@ -295,7 +295,7 @@ where `[APP_BASE_URL]` is the base URL address of the application.
 For example, to access the metrics locally, invoke the following command:
 
 ```shell
-kubectl port-forward "svc/${APP_INSTANCE_NAME}-mysql-exporter-svc" 9104:9104 --namespace "${NAMESPACE}"
+kubectl port-forward "svc/${APP_INSTANCE_NAME}-mysqld-exporter-svc" 9104:9104 --namespace "${NAMESPACE}"
 ```
 
 Then, navigate to the [http://localhost:9104/metrics](http://localhost:9104/metrics) endpoint.

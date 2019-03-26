@@ -154,7 +154,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Release.Name }}-mysql-exporter-svc
+  name: {{ .Release.Name }}-mysqld-exporter-svc
   labels:
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: wordpress-mysql
