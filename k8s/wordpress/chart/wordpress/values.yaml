@@ -11,7 +11,6 @@ db:
     image: null
     user: mysqld-exporter
     password: null
-    enabled: true
 
 admin:
   username: admin

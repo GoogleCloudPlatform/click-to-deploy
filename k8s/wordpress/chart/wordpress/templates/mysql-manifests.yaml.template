@@ -13,7 +13,6 @@ data:
   root-password: "{{ .Values.db.rootPassword }}"
   wp-password: "{{ .Values.db.wordpressPassword }}"
 ---
-{{ if .Values.db.exporter.enabled }}
 apiVersion: v1
 kind: Secret
 metadata:
@@ -29,7 +28,6 @@ stringData:
     FLUSH PRIVILEGES;
 data:
   mysqld-exporter-pass: {{ .Values.db.exporter.password }}
-{{ end }}
 ---
 apiVersion: apps/v1beta2
 kind: StatefulSet
@@ -81,11 +79,9 @@ spec:
         - name: {{ .Release.Name }}-mysql-pvc
           mountPath: /var/lib/mysql
           subPath: data
-        {{ if .Values.db.exporter.enabled }}
         - name: mysql-config
           mountPath: /docker-entrypoint-initdb.d
           readOnly: true
-        {{ end }}
         readinessProbe:
           exec:
             command: ["sh", "-c", "exec mysqladmin status -uroot -p$MYSQL_ROOT_PASSWORD"]
@@ -94,7 +90,6 @@ spec:
           exec:
             command: ["sh", "-c", "exec mysqladmin status -uroot -p$MYSQL_ROOT_PASSWORD"]
           initialDelaySeconds: 120
-      {{ if .Values.db.exporter.enabled }}
       - image: {{ .Values.db.exporter.image }}
         name: mysqld-exporter
         env:
@@ -127,7 +122,6 @@ spec:
           items:
           - key: mysqld_exporter.sql
             path: mysqld_exporter.sql
-      {{ end }}
   volumeClaimTemplates:
   - metadata:
       name: {{ .Release.Name }}-mysql-pvc
