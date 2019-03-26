@@ -24,6 +24,8 @@ spec:
         env:
         - name: CASSANDRA_CLUSTER_NAME
           value: {{ .Release.Name }}-cassandra-svc
+        - name: CASSANDRA_PROMETHEUS_ENABLED
+          value: "true"
         - name: CASSANDRA_SEEDS
           value: {{ .Release.Name }}-cassandra-0.{{ .Release.Name }}-cassandra-svc.{{ .Release.Namespace }}.svc.cluster.local, {{ .Release.Name }}-cassandra-1.{{ .Release.Name }}-cassandra-svc.{{ .Release.Namespace }}.svc.cluster.local, {{ .Release.Name }}-cassandra-2.{{ .Release.Name }}-cassandra-svc.{{ .Release.Namespace }}.svc.cluster.local
         ports:
@@ -37,6 +39,8 @@ spec:
           containerPort: 9042
         - name: thrift
           containerPort: 9160
+        - name: prometheus
+          containerPort: 9404
         resources:
           requests:
            cpu: 500m
@@ -61,6 +65,30 @@ spec:
               - "/bin/sh"
               - "-c"
               - "nodetool drain"
+      {{ if .Values.metrics.enabled }}
+      - name: prometheus-to-sd
+        image: {{ .Values.metrics.image }}
+        ports:
+        - name: profiler
+          containerPort: 6060
+        command:
+        - /monitor
+        - --stackdriver-prefix=custom.googleapis.com
+        - --source=$(POD_NAME):http://localhost:9404/metrics
+        - --pod-id=$(POD_NAME)
+        - --namespace-id=$(POD_NAMESPACE)
+        - --scrape-interval=5s
+        - --export-interval=30s
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+      {{ end }}
   volumeClaimTemplates:
   - metadata:
       name: {{ .Release.Name }}-cassandra-pvc

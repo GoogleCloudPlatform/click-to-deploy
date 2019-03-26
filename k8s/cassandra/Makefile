@@ -4,6 +4,8 @@ include ../gcloud.Makefile
 include ../var.Makefile
 
 TAG ?= 3.11
+METRICS_EXPORTER_TAG ?= v0.5.1
+
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/cassandra/deployer:$(TAG)
@@ -17,11 +19,16 @@ ifdef REPLICAS
   REPLICAS_FIELD = , "cassandra.replicas": "$(REPLICAS)"
 endif
 
+ifdef METRICS_EXPORTER_ENABLED
+  METRICS_EXPORTER_ENABLED_FIELD = , "metrics.enabled": "$(METRICS_EXPORTER_ENABLED)"
+endif
+
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
   $(IMAGE_CASSANDRA_FIELD) \
   $(REPLICAS_FIELD) \
+  $(METRICS_EXPORTER_ENABLED_FIELD) \
 }
 
 TESTER_IMAGE ?= $(REGISTRY)/cassandra/tester:$(TAG)
@@ -33,6 +40,7 @@ APP_TEST_PARAMETERS ?= { \
 
 app/build:: .build/cassandra/cassandra \
             .build/cassandra/deployer \
+            .build/cassandra/prometheus-to-sd \
             .build/cassandra/tester
 
 
@@ -63,10 +71,19 @@ app/build:: .build/cassandra/cassandra \
 .build/cassandra/cassandra: .build/var/REGISTRY \
                             .build/var/TAG \
                             | .build/cassandra
-	docker pull launcher.gcr.io/google/cassandra3:$(TAG)
-	docker tag launcher.gcr.io/google/cassandra3:$(TAG) \
+	docker pull marketplace.gcr.io/google/cassandra3:$(TAG)
+	docker tag marketplace.gcr.io/google/cassandra3:$(TAG) \
 	    "$(REGISTRY)/cassandra:$(TAG)"
 	docker push "$(REGISTRY)/cassandra:$(TAG)"
+	@touch "$@"
+
+.build/cassandra/prometheus-to-sd: .build/var/REGISTRY \
+                                   .build/var/TAG \
+                                   | .build/cassandra
+	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
+	    "$(REGISTRY)/cassandra/prometheus-to-sd:$(TAG)"
+	docker push "$(REGISTRY)/cassandra/prometheus-to-sd:$(TAG)"
 	@touch "$@"
 
 .build/cassandra/tester:   .build/var/TESTER_IMAGE \
