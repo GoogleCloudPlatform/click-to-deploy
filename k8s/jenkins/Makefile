@@ -4,6 +4,8 @@ include ../gcloud.Makefile
 include ../var.Makefile
 
 
+VERIFY_WAIT_TIMEOUT = 1800
+
 TAG ?= 2.150
 $(info ---- TAG = $(TAG))
 
@@ -60,8 +62,8 @@ app/build:: .build/jenkins/deployer \
                         .build/var/TAG \
                         | .build/jenkins
 
-	docker pull "launcher.gcr.io/google/jenkins2:$(TAG)"
-	docker tag "launcher.gcr.io/google/jenkins2:$(TAG)" \
+	docker pull "marketplace.gcr.io/google/jenkins2:$(TAG)"
+	docker tag "marketplace.gcr.io/google/jenkins2:$(TAG)" \
 	    "$(REGISTRY)/jenkins:$(TAG)"
 	docker push "$(REGISTRY)/jenkins:$(TAG)"
 	@touch "$@"

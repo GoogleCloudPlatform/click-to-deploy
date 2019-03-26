@@ -1,5 +1,5 @@
 ARG MARKETPLACE_TOOLS_TAG
-FROM launcher.gcr.io/google/debian9 AS build
+FROM marketplace.gcr.io/google/debian9 AS build
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends gettext
@@ -15,6 +15,9 @@ ADD schema.yaml /tmp/schema.yaml
 
 ARG REGISTRY
 ARG TAG
+
+ENV WAIT_FOR_READY_TIMEOUT 600
+ENV TESTER_TIMEOUT 600
 
 RUN cat /tmp/schema.yaml \
     | env -i "REGISTRY=$REGISTRY" "TAG=$TAG" envsubst \

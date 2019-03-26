@@ -384,7 +384,7 @@ export NAMESPACE=default
 Set the new image version in an environment variable:
 
 ```shell
-export IMAGE_WORDPRESS=launcher.gcr.io/google/wordpress5-php7-apache:latest
+export IMAGE_WORDPRESS=marketplace.gcr.io/google/wordpress5-php7-apache:latest
 ```
 
 Update the StatefulSet definition with the reference to the new image:
@@ -417,7 +417,7 @@ the Pod is `Running`, and marked as 1/1 in the `READY` column.
 Set the new image version in an environment variable:
 
 ```shell
-export IMAGE_MYSQL=launcher.gcr.io/google/mysql5:5.7
+export IMAGE_MYSQL=marketplace.gcr.io/google/mysql5:5.7
 ```
 
 Update the StatefulSet definition with new image reference:
