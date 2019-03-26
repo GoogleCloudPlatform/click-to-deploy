@@ -150,3 +150,19 @@ spec:
     app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: wordpress-mysql
   clusterIP: None
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-mysql-exporter-svc
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: wordpress-mysql
+spec:
+  ports:
+  - name: exporter
+    port: 9104
+  selector:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: wordpress-mysql
+  clusterIP: None
