@@ -94,3 +94,5 @@ spec:
     kind: Service
   - group: extensions/v1beta1
     kind: Ingress
+  - group: v1
+    kind: ConfigMap
