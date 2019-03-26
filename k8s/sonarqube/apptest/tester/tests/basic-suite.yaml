@@ -8,8 +8,3 @@ actions:
         equals: 200
       stdout:
         contains: 'sonarqube'
-- name: test REST API of metrics
-  command: ['wget', '-O', '-', 'http://localhost:9000/api/prometheus/metrics']
-  expect:
-    stdout:
-      contain: '# HELP sonarqube_vulnerabilities Vulnerabilities'
