@@ -17,3 +17,12 @@ actions:
     expect:
       stdout:
         equals: "STORED\r\nVALUE bar 0 9\r\nsome text\r\nEND\r\nSTORED\r\nVALUE bar 0 9\r\nsome text\r\nEND\r\nSTORED\r\nVALUE bar 0 9\r\nsome text\r\nEND"
+- name: Prometheus metrics are exported
+  bashTest:
+    script: |-
+      for node in $(getent hosts $APP_INSTANCE_NAME-memcached-prometheus-svc.$NAMESPACE.svc.cluster.local | awk '{print $1}'); do
+        wget -O - -q "http://$node:9150/metrics" | grep -e '^memcached_up '
+      done
+    expect:
+      stdout:
+        equals: "memcached_up 1\nmemcached_up 1\nmemcached_up 1"
