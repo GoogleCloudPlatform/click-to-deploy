@@ -1,8 +1,9 @@
 actions:
-- name: dummy test
+- name: Is RabbitMQ api/metrics HTTP endpoint working
   bashTest:
-    script: |-
-      exit 0
+    script: curl -f "http://$APP_INSTANCE_NAME-rabbitmq-svc:15672/api/metrics"
     expect:
+      stdout:
+        contains: '# TYPE rabbitmq_consumers gauge'
       exitCode:
         equals: 0

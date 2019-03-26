@@ -16,7 +16,10 @@ ADD schema.yaml /tmp/schema.yaml
 ARG REGISTRY
 ARG TAG
 
-RUN cat /tmp/schema.yaml \
+ENV WAIT_FOR_READY_TIMEOUT 1800
+ENV TESTER_TIMEOUT 1800
+
+RUN cat /data/schema.yaml \
     | env -i "REGISTRY=$REGISTRY" "TAG=$TAG" envsubst \
     > /tmp/schema.yaml.new \
     && mv /tmp/schema.yaml.new /tmp/schema.yaml
