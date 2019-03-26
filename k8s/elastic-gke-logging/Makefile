@@ -85,8 +85,8 @@ app/build:: .build/elastic-gke-logging/elasticsearch \
 .build/elastic-gke-logging/elasticsearch: .build/var/REGISTRY \
                                           .build/var/TAG \
                                           | .build/elastic-gke-logging
-	docker pull launcher.gcr.io/google/elasticsearch6:$(ELASTICSEARCH_KIBANA_VERSION)
-	docker tag launcher.gcr.io/google/elasticsearch6:$(ELASTICSEARCH_KIBANA_VERSION) \
+	docker pull marketplace.gcr.io/google/elasticsearch6:$(ELASTICSEARCH_KIBANA_VERSION)
+	docker tag marketplace.gcr.io/google/elasticsearch6:$(ELASTICSEARCH_KIBANA_VERSION) \
 	    "$(REGISTRY)/elastic-gke-logging:$(TAG)"
 	docker push "$(REGISTRY)/elastic-gke-logging:$(TAG)"
 	@touch "$@"
@@ -95,8 +95,8 @@ app/build:: .build/elastic-gke-logging/elasticsearch \
 .build/elastic-gke-logging/kibana: .build/var/REGISTRY \
                                    .build/var/TAG \
                                    | .build/elastic-gke-logging
-	docker pull launcher.gcr.io/google/kibana6:$(ELASTICSEARCH_KIBANA_VERSION)
-	docker tag launcher.gcr.io/google/kibana6:$(ELASTICSEARCH_KIBANA_VERSION) \
+	docker pull marketplace.gcr.io/google/kibana6:$(ELASTICSEARCH_KIBANA_VERSION)
+	docker tag marketplace.gcr.io/google/kibana6:$(ELASTICSEARCH_KIBANA_VERSION) \
 	    "$(REGISTRY)/elastic-gke-logging/kibana:$(TAG)"
 	docker push "$(REGISTRY)/elastic-gke-logging/kibana:$(TAG)"
 	@touch "$@"
@@ -105,8 +105,8 @@ app/build:: .build/elastic-gke-logging/elasticsearch \
 .build/elastic-gke-logging/fluentd: .build/var/REGISTRY \
                                     .build/var/TAG \
                                     | .build/elastic-gke-logging
-	docker pull launcher.gcr.io/google/fluentd1:$(FLUENTD_VERSION)
-	docker tag launcher.gcr.io/google/fluentd1:$(FLUENTD_VERSION) \
+	docker pull marketplace.gcr.io/google/fluentd1:$(FLUENTD_VERSION)
+	docker tag marketplace.gcr.io/google/fluentd1:$(FLUENTD_VERSION) \
 	    "$(REGISTRY)/elastic-gke-logging/fluentd:$(TAG)"
 	docker push "$(REGISTRY)/elastic-gke-logging/fluentd:$(TAG)"
 	@touch "$@"
@@ -115,8 +115,8 @@ app/build:: .build/elastic-gke-logging/elasticsearch \
 .build/elastic-gke-logging/ubuntu16_04: .build/var/REGISTRY \
                                         .build/var/TAG \
                                         | .build/elastic-gke-logging
-	docker pull launcher.gcr.io/google/ubuntu16_04
-	docker tag launcher.gcr.io/google/ubuntu16_04 \
+	docker pull marketplace.gcr.io/google/ubuntu16_04
+	docker tag marketplace.gcr.io/google/ubuntu16_04 \
 	    "$(REGISTRY)/elastic-gke-logging/ubuntu16_04:$(TAG)"
 	docker push "$(REGISTRY)/elastic-gke-logging/ubuntu16_04:$(TAG)"
 	@touch "$@"
