@@ -5,9 +5,8 @@ include ../var.Makefile
 
 
 TAG ?= 9.6
-SRCTAG ?= 9.6-kubernetes
 METRICS_EXPORTER_TAG ?= v0.5.1
-IMAGE_POSTGRESQL ?= launcher.gcr.io/google/postgresql9:$(SRCTAG)
+IMAGE_POSTGRESQL ?= marketplace.gcr.io/google/postgresql:$(TAG)
 $(info ---- TAG = $(TAG))
 
 ifdef METRICS_EXPORTER_ENABLED
