@@ -63,8 +63,8 @@ app/build:: .build/cassandra/cassandra \
 .build/cassandra/cassandra: .build/var/REGISTRY \
                             .build/var/TAG \
                             | .build/cassandra
-	docker pull launcher.gcr.io/google/cassandra3:$(TAG)
-	docker tag launcher.gcr.io/google/cassandra3:$(TAG) \
+	docker pull marketplace.gcr.io/google/cassandra3:$(TAG)
+	docker tag marketplace.gcr.io/google/cassandra3:$(TAG) \
 	    "$(REGISTRY)/cassandra:$(TAG)"
 	docker push "$(REGISTRY)/cassandra:$(TAG)"
 	@touch "$@"
