@@ -21,11 +21,6 @@ metadata:
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: wordpress-webserver
 data:
-  apache-exporter.conf: |
-    <Location "/server-status">
-        SetHandler server-status
-        # Require local
-    </Location>
   .htaccess: |
     # BEGIN WordPress
     <IfModule mod_rewrite.c>
@@ -111,14 +106,11 @@ spec:
         - name: {{ .Release.Name }}-wordpress-pvc
           mountPath: /var/www/html
           subPath: wp
-#        - name: apache-config
-#          mountPath: /etc/apache2/sites-enabled
-##          subPath: apache-exporter.conf
-#          readOnly: true
-#        - name: apache-config
-#          mountPath: /tmp
-##          subPath: .htaccess
-#          readOnly: true
+        # .htaccess must be overwritten to allow connection to the /server-status endpoint.
+        - name: apache-config
+          mountPath: /var/www/html/.htaccess
+          subPath: .htaccess
+          readOnly: true
         lifecycle:
           postStart:
             exec:
@@ -126,23 +118,6 @@ spec:
               - "/bin/bash"
               - "-euc"
               - |
-                # cp /tmp/.htaccess /var/www/html/.htaccess
-
-                cat > /var/www/html/.htaccess <<'_EOF'
-                # BEGIN WordPress
-                <IfModule mod_rewrite.c>
-                RewriteEngine On
-                RewriteBase /
-                RewriteRule ^index\.php$ - [L]
-                RewriteCond %{REQUEST_FILENAME} !-f
-                RewriteCond %{REQUEST_FILENAME} !-d
-                # Allow Apache mod_status
-                RewriteCond %{REQUEST_URI} !=/server-status
-                RewriteRule . /index.php [L]
-                </IfModule>
-                # END WordPress
-                _EOF
-
                 # https://codex.wordpress.org/Installing_WordPress#Installing_WordPress
                 curl --fail --retry 5 --retry-delay 5 --retry-connrefused \
                   --data-urlencode "weblog_title=WordPress on Google Kubernetes Engine" \
@@ -190,8 +165,6 @@ spec:
         configMap:
           name: {{ .Release.Name }}-apache-exporter-configmap
           items:
-#          - key: apache-exporter.conf
-#            path: apache-exporter.conf
           - key: .htaccess
             path: .htaccess
   volumeClaimTemplates:
