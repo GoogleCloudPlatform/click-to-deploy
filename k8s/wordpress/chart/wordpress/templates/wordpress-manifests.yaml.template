@@ -16,7 +16,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Release.Name }}-apache-exporter-configmap
+  name: {{ .Release.Name }}-wordpress-config
   labels:
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: wordpress-webserver
@@ -163,7 +163,7 @@ spec:
       volumes:
       - name: apache-config
         configMap:
-          name: {{ .Release.Name }}-apache-exporter-configmap
+          name: {{ .Release.Name }}-wordpress-config
           items:
           - key: .htaccess
             path: .htaccess
