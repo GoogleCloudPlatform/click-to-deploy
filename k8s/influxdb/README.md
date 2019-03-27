@@ -149,6 +149,8 @@ Enable Stackdriver Metrics Exporter:
 
 > **NOTE:** Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet.
 
+By default the integration is disabled. To enable, change the value to `true`.
+
 ```shell
 export METRICS_EXPORTER_ENABLED=false
 ```
@@ -288,6 +290,47 @@ INFLUXDB_IP=$(kubectl get svc $APP_INSTANCE_NAME-influxdb-svc \
 
 echo $INFLUXDB_IP
 ```
+
+# Application metrics
+
+## Prometheus metrics
+
+The application is configured to natively expose its metrics in the
+[Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
+Metrics can be read on a single HTTP endpoint available at `[APP_BASE_URL]:8086/metrics`,
+where `[APP_BASE_URL]` is the base URL address of the application.
+For example, you can
+[connect to InfluxDB using kubectl port-forward method](#connect-to-influxdb-using-kubectl-port-forward-method),
+and then access the metrics by navigating to the [http://localhost:8086/metrics](http://localhost:8086/metrics) endpoint.
+
+## Configuring Prometheus to collect the metrics
+
+Prometheus can be configured to automatically collect the application's metrics.
+Follow the [Configuring Prometheus documentation](https://prometheus.io/docs/introduction/first_steps/#configuring-prometheus)
+to enable metrics scrapping in your Prometheus server. The detailed specification
+of `<scrape_config>` used to enable the metrics collection can be found
+[here](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config).
+
+## Exporting metrics to Stackdriver
+
+If the option to export application metrics to Stackdriver is enabled,
+the deployment includes a [`prometheus-to-sd`](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd)
+(Prometheus to Stackdriver exporter) container.
+Then the metrics will be automatically exported to Stackdriver and visible in
+[Stackdriver Metrics Explorer](https://cloud.google.com/monitoring/charts/metrics-explorer).
+
+Each metric of the application will have a name starting with the application's name
+(matching the variable `APP_INSTANCE_NAME` described above).
+
+The exporting option might not be available for GKE on-prem clusters.
+
+> Note: Please be aware that Stackdriver has [quotas](https://cloud.google.com/monitoring/quotas)
+for the number of custom metrics created in a single GCP project. If the quota is met,
+additional metrics will not be accepted by Stackdriver, which might cause that some metrics
+from your application might not show up in the Stackdriver's Metrics Explorer.
+
+Existing metric descriptors can be removed through
+[Stackdriver's REST API](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors/delete).
 
 # Scaling
 

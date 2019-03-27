@@ -31,6 +31,11 @@ COPY --from=build /tmp/test/jenkins.tar.gz /data-test/chart/
 COPY apptest/deployer/schema.yaml /data-test/
 COPY --from=build /tmp/schema.yaml /data/
 
+RUN cat /data-test/schema.yaml \
+    | env -i "REGISTRY=$REGISTRY" "TAG=$TAG" envsubst \
+    > /data-test/schema.yaml.new \
+    && mv /data-test/schema.yaml.new /data-test/schema.yaml
+
 RUN mv -f /bin/deploy.sh /bin/deploy-original.sh \
     && cp /bin/clean_iam_resources.sh /bin/clean_iam_resources-original.sh \
     && echo '#!/bin/bash\nexit' > /bin/clean_iam_resources.sh
