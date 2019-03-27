@@ -10,15 +10,16 @@ TAG ?= 2.150
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/jenkins/deployer:$(TAG)
+IMAGE_JENKINS ?= $(REGISTRY)/google/jenkins2:$(TAG)
 NAME ?= jenkins-1
 
 ifdef IMAGE_JENKINS
-  IMAGE_JENKINS_FIELD = , "IMAGE_JENKINS": "$(IMAGE_JENKINS)"
+  IMAGE_JENKINS_FIELD = , "jenkins.image": "$(IMAGE_JENKINS)"
 endif
 
 APP_PARAMETERS ?= { \
-  "APP_INSTANCE_NAME": "$(NAME)", \
-  "NAMESPACE": "$(NAMESPACE)" \
+  "name": "$(NAME)", \
+  "namespace": "$(NAMESPACE)" \
   $(IMAGE_JENKINS_FIELD) \
 }
 
@@ -35,7 +36,8 @@ app/build:: .build/jenkins/deployer \
 
 
 .build/jenkins/deployer: deployer/* \
-                         manifest/* \
+                         chart/jenkins/* \
+                         chart/jenkins/templates/* \
                          schema.yaml \
                          .build/var/APP_DEPLOYER_IMAGE \
                          .build/var/MARKETPLACE_TOOLS_TAG \
