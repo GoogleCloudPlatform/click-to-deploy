@@ -6,7 +6,8 @@ include ../var.Makefile
 
 TAG ?= 9.6
 METRICS_EXPORTER_TAG ?= v0.5.1
-IMAGE_POSTGRESQL ?= marketplace.gcr.io/google/postgresql:$(TAG)
+SRCTAG ?= 9.6-kubernetes
+IMAGE_POSTGRESQL ?= marketplace.gcr.io/google/postgresql9:$(SRCTAG)
 $(info ---- TAG = $(TAG))
 
 ifdef METRICS_EXPORTER_ENABLED
@@ -22,10 +23,6 @@ APP_PARAMETERS ?= { \
 }
 
 TESTER_IMAGE ?= $(REGISTRY)/postgresql/tester:$(TAG)
-
-APP_TEST_PARAMETERS ?= { \
-  "testerImage": "$(TESTER_IMAGE)" \
-}
 
 
 app/build:: .build/postgresql/deployer \

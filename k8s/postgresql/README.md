@@ -119,7 +119,7 @@ Configure the container images:
 
 ```shell
 TAG=9.6
-export IMAGE_POSTGRESQL="marketplace.gcr.io/google/postgresql:${TAG}"
+export IMAGE_POSTGRESQL=marketplace.gcr.io/google/postgresql9:9.6-kubernetes
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/postgresql/prometheus-to-sd:${TAG}"
 ```
 

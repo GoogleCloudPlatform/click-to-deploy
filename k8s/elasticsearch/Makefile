@@ -32,10 +32,6 @@ APP_PARAMETERS ?= { \
 
 TESTER_IMAGE ?= $(REGISTRY)/elasticsearch/tester:$(TAG)
 
-APP_TEST_PARAMETERS ?= { \
-  "testerImage": "$(TESTER_IMAGE)" \
-}
-
 
 app/build:: .build/elasticsearch/elasticsearch \
             .build/elasticsearch/deployer \
@@ -69,8 +65,8 @@ app/build:: .build/elasticsearch/elasticsearch \
 .build/elasticsearch/elasticsearch: .build/var/REGISTRY \
                                     .build/var/TAG \
                                     | .build/elasticsearch
-	docker pull launcher.gcr.io/google/elasticsearch6:$(TAG)
-	docker tag launcher.gcr.io/google/elasticsearch6:$(TAG) \
+	docker pull marketplace.gcr.io/google/elasticsearch6:$(TAG)
+	docker tag marketplace.gcr.io/google/elasticsearch6:$(TAG) \
 	    "$(REGISTRY)/elasticsearch:$(TAG)"
 	docker push "$(REGISTRY)/elasticsearch:$(TAG)"
 	@touch "$@"
@@ -79,8 +75,8 @@ app/build:: .build/elasticsearch/elasticsearch \
 .build/elasticsearch/ubuntu16_04: .build/var/REGISTRY \
                                   .build/var/TAG \
                                   | .build/elasticsearch
-	docker pull launcher.gcr.io/google/ubuntu16_04
-	docker tag launcher.gcr.io/google/ubuntu16_04 \
+	docker pull marketplace.gcr.io/google/ubuntu16_04
+	docker tag marketplace.gcr.io/google/ubuntu16_04 \
 	    "$(REGISTRY)/elasticsearch/ubuntu16_04:$(TAG)"
 	docker push "$(REGISTRY)/elasticsearch/ubuntu16_04:$(TAG)"
 	@touch "$@"
