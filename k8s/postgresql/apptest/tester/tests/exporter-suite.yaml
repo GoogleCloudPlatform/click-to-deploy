@@ -4,9 +4,7 @@ actions:
     script: |-
       SERVICE="${APP_INSTANCE_NAME}-postgres-exporter-svc"
       sleep 20
-      if ! wget -O- http://${SERVICE}.${NAMESPACE}.svc.cluster.local:9187/metrics | grep -q 'pg_up 1'; then
-        exit 1
-      fi
+      wget -O- http://${SERVICE}.${NAMESPACE}.svc.cluster.local:9187/metrics
     expect:
-      exitCode:
-        equals: 0
+      stdout:
+        matches: '(?m)^pg_up 1$'
