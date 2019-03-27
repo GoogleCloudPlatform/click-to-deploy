@@ -54,7 +54,7 @@ spec:
       # Scale the cluster
 
       Activate Google Cloud Shell.
-      
+
       Identify the cluster where your application was deployed and run the following command:
       ```shell
       gcloud container clusters get-credentials <your cluster> --zone <zone where your cluster was created>

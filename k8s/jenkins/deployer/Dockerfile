@@ -8,10 +8,19 @@ COPY apptest/deployer /data-test/
 # Provide registry prefix and tag for default values for images.
 ARG REGISTRY
 ARG TAG
+
+ENV WAIT_FOR_READY_TIMEOUT 1800
+ENV TESTER_TIMEOUT 1800
+
 RUN cat /data/schema.yaml \
     | env -i "REGISTRY=$REGISTRY" "TAG=$TAG" envsubst \
     > /data/schema.yaml.new \
     && mv /data/schema.yaml.new /data/schema.yaml
+
+RUN cat /data-test/schema.yaml \
+    | env -i "REGISTRY=$REGISTRY" "TAG=$TAG" envsubst \
+    > /data-test/schema.yaml.new \
+    && mv /data-test/schema.yaml.new /data-test/schema.yaml
 
 RUN mv -f /bin/deploy.sh /bin/deploy-original.sh \
     && cp /bin/clean_iam_resources.sh /bin/clean_iam_resources-original.sh \
