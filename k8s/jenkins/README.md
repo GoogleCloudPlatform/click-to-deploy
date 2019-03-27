@@ -114,10 +114,12 @@ export APP_INSTANCE_NAME=jenkins-1
 export NAMESPACE=default
 ```
 
-Configure the container image:
+Configure the container images:
 
 ```shell
-export IMAGE_JENKINS="marketplace.gcr.io/google/jenkins:2.150"
+TAG=2.150
+export IMAGE_JENKINS="marketplace.gcr.io/google/jenkins:${TAG}"
+export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/jenkins/prometheus-to-sd:${TAG}"
 ```
 
 The image above is referenced by
@@ -157,7 +159,9 @@ expanded manifest file for future updates to the application.
 helm template chart/jenkins \
   --name $APP_INSTANCE_NAME \
   --namespace $NAMESPACE \
-  --set jenkins.image=$IMAGE_JENKINS > "${APP_INSTANCE_NAME}_manifest.yaml"
+  --set jenkins.image=$IMAGE_JENKINS \
+  --set metrics.image=$IMAGE_METRICS_EXPORTER \
+  --set metrics.enabled=$METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 
 #### Apply the manifest to your Kubernetes cluster
