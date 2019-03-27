@@ -11,14 +11,7 @@ actions:
         contains: 'login'
 - name: Grafana login
   bashTest:
-    script: |-
-      ADMIN_PASSWORD="$(kubectl get secret "${APP_INSTANCE_NAME}-grafana" \
-         --namespace "${NAMESPACE}" \
-         --output=jsonpath='{.data.admin-password}' | base64 -d)"
-      ADMIN_NAME="$(kubectl get secret "${APP_INSTANCE_NAME}-grafana" \
-         --namespace "${NAMESPACE}" \
-         --output=jsonpath='{.data.admin-user}' | base64 -d)"
-      curl -u $ADMIN_NAME:$ADMIN_PASSWORD http://$APP_INSTANCE_NAME-grafana.$NAMESPACE.svc.cluster.local:3000
+    script: curl -u $ADMIN_NAME:$ADMIN_PASSWORD http://$APP_INSTANCE_NAME-grafana.$NAMESPACE.svc.cluster.local:3000
     expect:
       stdout:
         contains: 'Grafana'
