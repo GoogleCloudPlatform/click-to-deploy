@@ -12,3 +12,9 @@ RUN cat /data/schema.yaml \
     | env -i "REGISTRY=$REGISTRY" "TAG=$TAG" envsubst \
     > /data/schema.yaml.new \
     && mv /data/schema.yaml.new /data/schema.yaml
+
+RUN cat /data-test/schema.yaml \
+    | env -i "REGISTRY=$REGISTRY" "TAG=$TAG" envsubst \
+    > /data-test/schema.yaml.new \
+    && mv /data-test/schema.yaml.new /data-test/schema.yaml
+
