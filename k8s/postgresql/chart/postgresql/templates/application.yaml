@@ -52,24 +52,22 @@ spec:
     kind: Secret
   - group: v1
     kind: Service
-  - group: v1
-    kind: ServiceAccount
   notes: |-
     # Access PostgreSQL
 
-    Get the external IP of the PostgreSQL service:
+    Forward PostgreSQL port locally:
 
     ```
-    SERVICE_IP=$(kubectl get \
-      --namespace {{ .Release.Namespace }} \
-      svc {{ .Release.Name }}-postgresql-svc \
-      -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+    kubectl port-forward \
+      --namespace "${NAMESPACE}" \
+      "${APP_INSTANCE_NAME}-postgresql-deployment-0" 5432
+    ```
 
+    Connect to the database:
+
+    ```
     export PGPASSWORD=$(kubectl get secret "{{ .Release.Name }}-secret" \
       --output=jsonpath='{.data.password}' | base64 -d)
 
-    psql -U postgres -h $SERVICE_IP
+    psql -U postgres -h 127.0.0.1
     ```
-
-    Note that it might take some time for the external IP to be provisioned.
-

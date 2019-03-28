@@ -16,9 +16,12 @@ Popular open source software stacks on Kubernetes packaged by Google and made av
 
 This solution will install single instance of PostgreSQL server into your Kubernetes cluster.
 
-The PostgreSQL Pod is managed by a ReplicaSet with the number of replicas set to one. The PostgreSQL Pod uses a Persistent Volume to store data, and a LoadBalancer Service to expose the database port externally. Communication between client and server is encrypted. If you need to limit access to the PostgreSQL instance, you must configure GCP firewall rules.
+The PostgreSQL Pod is managed by a ReplicaSet with the number of replicas set to one. The PostgreSQL Pod uses
+a Persistent Volume to store data, and a ClusterIP Service to expose the database port.
+Communication between client and server is encrypted.
 
-To install the application you will need to set up initial password for postgres user, PostgreSQL volume size and generate or provide TLS key and certificate. All required steps are covered further in this README.
+To install the application you will need to set up initial password for postgres user, PostgreSQL volume size
+and generate or provide TLS key and certificate. All required steps are covered further in this README.
 
 # Installation
 
@@ -155,6 +158,25 @@ export POSTGRESQL_DB_PASSWORD=$(openssl rand 9 | openssl base64 -A | openssl bas
 export POSTGRESQL_VOLUME_SIZE=10
 ```
 
+##### Create dedicated service accounts
+
+Define the service accounts variable:
+
+```shell
+export POSTGRESQL_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-postgresql-sa"
+```
+
+Create the service account:
+
+```shell
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: $POSTGRESQL_SERVICE_ACCOUNT
+EOF
+```
+
 #### Expand the manifest template
 
 Use `helm template` to expand the template. We recommend that you save the
@@ -164,6 +186,7 @@ expanded manifest file for future updates to the application.
 helm template chart/postgresql \
   --name $APP_INSTANCE_NAME \
   --namespace $NAMESPACE \
+  --set postgresql.serviceAccount=$POSTGRESQL_SERVICE_ACCOUNT \
   --set postgresql.image=$IMAGE_POSTGRESQL \
   --set postgresql.volumeSize=$POSTGRESQL_VOLUME_SIZE \
   --set db.password=$POSTGRESQL_DB_PASSWORD > ${APP_INSTANCE_NAME}_manifest.yaml
@@ -199,13 +222,20 @@ To view the app, open the URL in your browser.
 
 ### Sign in to your new PostgreSQL database
 
-To sign in to PosgreSQL, get the ip address:
+Forward the port locally:
 
 ```shell
-EXTERNAL_IP=$(kubectl --namespace $NAMESPACE get service $APP_INSTANCE_NAME-postgresql-svc -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+kubectl port-forward \
+  --namespace "${NAMESPACE}" \
+  "${APP_INSTANCE_NAME}-postgresql-deployment-0" 5432
+```
+
+Sign in to PostgreSQL:
+
+```shell
 PGPASSWORD=$(kubectl get secret "${APP_INSTANCE_NAME}-secret" --output=jsonpath='{.data.password}' | openssl base64 -d -A)
 
-echo PGPASSWORD=$PGPASSWORD sslmode=require psql -U postgres -h $EXTERNAL_IP
+echo PGPASSWORD=$PGPASSWORD sslmode=require psql -U postgres -h 127.0.0.1
 ```
 
 # Scaling
