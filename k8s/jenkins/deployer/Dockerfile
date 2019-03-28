@@ -26,6 +26,10 @@ RUN cat /tmp/schema.yaml \
 
 
 FROM gcr.io/cloud-marketplace-tools/k8s/deployer_helm:$MARKETPLACE_TOOLS_TAG
+
+ARG REGISTRY
+ARG TAG
+
 COPY --from=build /tmp/jenkins.tar.gz /data/chart/
 COPY --from=build /tmp/test/jenkins.tar.gz /data-test/chart/
 COPY apptest/deployer/schema.yaml /data-test/
