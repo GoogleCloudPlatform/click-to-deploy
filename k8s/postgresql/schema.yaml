@@ -18,6 +18,11 @@ properties:
     title: Volume
     description: The size of Volume (Gi) in the solution
     default: 24
+  postgresql.serviceAccount:
+    type: string
+    title: PostgreSQL Service Account
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
   db.password:
     type: string
     x-google-marketplace:
@@ -30,4 +35,5 @@ required:
 - namespace
 - postgresql.image
 - postgresql.volumeSize
+- postgresql.serviceAccount
 - db.password
