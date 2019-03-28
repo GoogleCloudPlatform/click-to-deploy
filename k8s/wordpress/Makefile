@@ -102,8 +102,8 @@ app/build:: .build/wordpress/deployer \
 .build/wordpress/mysql: .build/var/REGISTRY \
                         .build/var/TAG \
                         | .build/wordpress
-	docker pull marketplace.gcr.io/google/mysql5
-	docker tag marketplace.gcr.io/google/mysql5 \
+	docker pull marketplace.gcr.io/google/mysql5:$(TAG)
+	docker tag marketplace.gcr.io/google/mysql5:$(TAG) \
 	    "$(REGISTRY)/wordpress/mysql:$(TAG)"
 	docker push "$(REGISTRY)/wordpress/mysql:$(TAG)"
 	@touch "$@"
@@ -112,9 +112,8 @@ app/build:: .build/wordpress/deployer \
 .build/wordpress/mysqld-exporter: .build/var/REGISTRY \
                                   .build/var/TAG \
                                   | .build/wordpress
-	# TODO(wgrzelak): Replace the image with "launcher.gcr.io/google/mysql5:exporter"
-	docker pull gcr.io/cloud-marketplace-ops-test/mysql5:exporter
-	docker tag gcr.io/cloud-marketplace-ops-test/mysql5:exporter \
+	docker pull marketplace.gcr.io/google/mysql5:exporter
+	docker tag marketplace.gcr.io/google/mysql5:exporter \
 	    "$(REGISTRY)/wordpress/mysqld-exporter:$(TAG)"
 	docker push "$(REGISTRY)/wordpress/mysqld-exporter:$(TAG)"
 	@touch "$@"
