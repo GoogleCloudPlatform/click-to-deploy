@@ -16,9 +16,6 @@ ADD schema.yaml /tmp/schema.yaml
 ARG REGISTRY
 ARG TAG
 
-ENV WAIT_FOR_READY_TIMEOUT 1800
-ENV TESTER_TIMEOUT 1800
-
 RUN cat /tmp/schema.yaml \
     | env -i "REGISTRY=$REGISTRY" "TAG=$TAG" envsubst \
     > /tmp/schema.yaml.new \
@@ -29,6 +26,9 @@ FROM gcr.io/cloud-marketplace-tools/k8s/deployer_helm:$MARKETPLACE_TOOLS_TAG
 
 ARG REGISTRY
 ARG TAG
+
+ENV WAIT_FOR_READY_TIMEOUT 1800
+ENV TESTER_TIMEOUT 1800
 
 COPY --from=build /tmp/jenkins.tar.gz /data/chart/
 COPY --from=build /tmp/test/jenkins.tar.gz /data-test/chart/
