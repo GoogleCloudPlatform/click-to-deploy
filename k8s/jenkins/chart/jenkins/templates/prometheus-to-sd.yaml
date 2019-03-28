@@ -23,7 +23,7 @@ spec:
         command:
         - /monitor
         - --stackdriver-prefix=custom.googleapis.com
-        - --source={{ .Release.Name }}:http://{{ .Release.Name }}-jenkins-ui:8080/metrics
+        - --source={{ .Release.Name }}:http://{{ .Release.Name }}-jenkins-ui:8080/prometheus/
         - --pod-id=$(POD_NAME)
         - --namespace-id=$(POD_NAMESPACE)
         - --scrape-interval=5s
