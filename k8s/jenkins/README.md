@@ -150,13 +150,14 @@ kubectl --namespace $NAMESPACE create secret generic $APP_INSTANCE_NAME-tls \
 
 #### Expand the manifest template
 
-Use `envsubst` to expand the template. We recommend that you save the
+Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-awk 'FNR==1 {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_JENKINS' \
-  > "${APP_INSTANCE_NAME}_manifest.yaml"
+helm template chart/jenkins \
+  --name $APP_INSTANCE_NAME \
+  --namespace $NAMESPACE \
+  --set jenkins.image=$IMAGE_JENKINS > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster

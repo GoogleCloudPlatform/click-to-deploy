@@ -1,20 +1,20 @@
 application_api_version: v1beta1
 properties:
-  APP_INSTANCE_NAME:
+  name:
     type: string
     x-google-marketplace:
       type: NAME
-  NAMESPACE:
+  namespace:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  IMAGE_JENKINS:
+  jenkins.image:
     type: string
     default: $REGISTRY:$TAG
     x-google-marketplace:
       type: IMAGE
 
 required:
-- APP_INSTANCE_NAME
-- NAMESPACE
-- IMAGE_JENKINS
+- name
+- namespace
+- jenkins.image
