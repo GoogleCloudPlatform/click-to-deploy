@@ -21,7 +21,6 @@ spec:
       - name: influxdb
         image: {{ .Values.influxdbImage }}
         imagePullPolicy: Always
-        args: ["influxd"]
         env:
         - name: INFLUXDB_HTTP_AUTH_ENABLED
           value: 'true'
