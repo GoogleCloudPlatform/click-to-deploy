@@ -16,9 +16,6 @@ ADD schema.yaml /tmp/schema.yaml
 ARG REGISTRY
 ARG TAG
 
-ENV WAIT_FOR_READY_TIMEOUT 600
-ENV TESTER_TIMEOUT 600
-
 RUN cat /tmp/schema.yaml \
     | env -i "REGISTRY=$REGISTRY" "TAG=$TAG" envsubst \
     > /tmp/schema.yaml.new \
@@ -35,3 +32,6 @@ COPY --from=build /tmp/rabbitmq.tar.gz /data/chart/
 COPY --from=build /tmp/test/rabbitmq.tar.gz /data-test/chart/
 COPY --from=build /tmp/apptest/schema.yaml /data-test/
 COPY --from=build /tmp/schema.yaml /data/
+
+ENV WAIT_FOR_READY_TIMEOUT 600
+ENV TESTER_TIMEOUT 600
