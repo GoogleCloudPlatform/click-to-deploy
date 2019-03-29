@@ -30,6 +30,17 @@ properties:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 12
+  db.exporter.image:
+    type: string
+    default: $REGISTRY/mysqld-exporter:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  db.exporter.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 12
   # An e-mail address for WordPress site.
   admin.email:
     type: string
@@ -45,6 +56,16 @@ properties:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 20
+  metrics.image:
+    type: string
+    default: $REGISTRY/prometheus-to-sd:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  metrics.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
+    default: false
 required:
 - name
 - namespace
@@ -52,5 +73,9 @@ required:
 - db.image
 - db.rootPassword
 - db.wordpressPassword
+- db.exporter.image
+- db.exporter.password
 - admin.email
 - admin.password
+- metrics.image
+- metrics.enabled
