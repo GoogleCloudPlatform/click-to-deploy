@@ -103,8 +103,8 @@ app/build:: .build/wordpress/deployer \
 .build/wordpress/apache-exporter: .build/var/REGISTRY \
                                   .build/var/TAG \
                                   | .build/wordpress
-	docker pull http://marketplace.gcr.io/google/wordpress5-php7-apache:exporter
-	docker tag http://marketplace.gcr.io/google/wordpress5-php7-apache:exporter \
+	docker pull marketplace.gcr.io/google/wordpress5-php7-apache:exporter
+	docker tag marketplace.gcr.io/google/wordpress5-php7-apache:exporter \
 	    "$(REGISTRY)/wordpress/apache-exporter:$(TAG)"
 	docker push "$(REGISTRY)/wordpress/apache-exporter:$(TAG)"
 	@touch "$@"
