@@ -23,7 +23,7 @@ spec:
         command:
         - /monitor
         - --stackdriver-prefix=custom.googleapis.com
-        - --source={{ .Release.Name }}:http://{{ .Release.Name }}-elasticsearch-exporter-svc:9108/metrics
+        - --source={{ .Release.Name }}-elasticsearch:http://{{ .Release.Name }}-elasticsearch-exporter-svc:9108/metrics
         - --pod-id=$(POD_NAME)
         - --namespace-id=$(POD_NAMESPACE)
         - --scrape-interval=5s
