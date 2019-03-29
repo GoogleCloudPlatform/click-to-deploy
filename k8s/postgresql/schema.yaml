@@ -20,7 +20,7 @@ properties:
     default: 24
   exporter.image:
     type: string
-    default: $REGISTRY/exporter:latest
+    default: $REGISTRY/exporter:$TAG
     x-google-marketplace:
       type: IMAGE
   db.password:

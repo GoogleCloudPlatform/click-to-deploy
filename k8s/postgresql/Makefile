@@ -8,6 +8,7 @@ TAG ?= 9.6
 METRICS_EXPORTER_TAG ?= v0.5.1
 SRCTAG ?= 9.6-kubernetes
 IMAGE_POSTGRESQL ?= marketplace.gcr.io/google/postgresql9:$(SRCTAG)
+IMAGE_POSTGRESQL_EXPORTER ?= marketplace.gcr.io/google/postgresql9:exporter
 $(info ---- TAG = $(TAG))
 
 ifdef METRICS_EXPORTER_ENABLED
@@ -26,6 +27,7 @@ TESTER_IMAGE ?= $(REGISTRY)/postgresql/tester:$(TAG)
 
 
 app/build:: .build/postgresql/deployer \
+            .build/postgresql/exporter \
             .build/postgresql/postgresql \
             .build/postgresql/prometheus-to-sd \
             .build/postgresql/tester
@@ -62,6 +64,14 @@ app/build:: .build/postgresql/deployer \
 	docker push "$(REGISTRY)/postgresql:$(TAG)"
 	@touch "$@"
 
+
+.build/postgresql/exporter: .build/var/REGISTRY \
+                            .build/var/TAG \
+                            | .build/postgresql
+	docker pull $(IMAGE_POSTGRESQL_EXPORTER) 
+	docker tag $(IMAGE_POSTGRESQL_EXPORTER) "$(REGISTRY)/postgresql/exporter:$(TAG)"
+	docker push "$(REGISTRY)/postgresql/exporter:$(TAG)"
+	@touch "$@"
 
 .build/postgresql/prometheus-to-sd: .build/var/REGISTRY \
                                   .build/var/TAG \
