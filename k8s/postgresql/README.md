@@ -169,7 +169,7 @@ export POSTGRESQL_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-postgresql-sa"
 Create the service account:
 
 ```shell
-kubectl apply -f - <<EOF
+kubectl create serviceaccount ${POSTGRESQL_SERVICE_ACCOUNT} --namespace ${NAMESPACE}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
