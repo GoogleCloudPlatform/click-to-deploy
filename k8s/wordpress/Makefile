@@ -57,10 +57,10 @@ TESTER_IMAGE ?= $(REGISTRY)/wordpress/tester:$(TAG)
 
 
 app/build:: .build/wordpress/deployer \
-            .build/wordpress/mysql \
             .build/wordpress/wordpress \
-            .build/wordpress/mysqld-exporter \
             .build/wordpress/apache-exporter \
+            .build/wordpress/mysql \
+            .build/wordpress/mysqld-exporter \
             .build/wordpress/prometheus-to-sd \
             .build/wordpress/tester
 
