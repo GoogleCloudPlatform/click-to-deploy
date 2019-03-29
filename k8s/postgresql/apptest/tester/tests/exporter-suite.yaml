@@ -1,0 +1,10 @@
+actions:
+- name: Prometheus metrics availability
+  bashTest:
+    script: |-
+      SERVICE="${APP_INSTANCE_NAME}-postgres-exporter-svc"
+      sleep 20
+      wget -O- http://${SERVICE}.${NAMESPACE}.svc.cluster.local:9187/metrics
+    expect:
+      stdout:
+        matches: '(?m)^pg_up 1$'
