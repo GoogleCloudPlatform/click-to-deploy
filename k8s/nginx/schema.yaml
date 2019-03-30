@@ -24,6 +24,14 @@ properties:
     description: The number of Pods run within NGINX solution
     default: 3
     minimum: 1
+  certificate:
+    type: string
+    x-google-marketplace:
+      type: CERTIFICATE
+      certificate:
+        generatedProperties:
+          base64EncodedKey: cert.base64EncodedKey
+          base64EncodedCrt: cert.base64EncodedCrt
 required:
 - name
 - namespace
