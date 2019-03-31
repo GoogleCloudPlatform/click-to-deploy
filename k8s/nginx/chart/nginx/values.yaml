@@ -4,5 +4,5 @@ nginx:
   replicas: null
 metrics:
   image: null
-  enabled: true
+  enabled: false
 
