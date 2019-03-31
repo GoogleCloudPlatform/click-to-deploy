@@ -62,14 +62,14 @@ spec:
         - name: NGINX_PROMETHEUS_ENABLED
           value: "true"
         ports:
-        - name: prometheus
-          containerPort: 9113
-          protocol: TCP
         - name: nginx
           containerPort: 80
           protocol: TCP
         - name: nginx-https
           containerPort: 443
+          protocol: TCP
+        - name: prometheus
+          containerPort: 9113
           protocol: TCP
         livenessProbe:
           tcpSocket:
