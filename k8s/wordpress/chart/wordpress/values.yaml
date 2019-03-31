@@ -20,3 +20,7 @@ admin:
 metrics:
   image: null
   enabled: false
+
+cert:
+  base64EncodedKey: null
+  base64EncodedCrt: null

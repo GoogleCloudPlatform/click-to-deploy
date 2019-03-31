@@ -13,6 +13,18 @@ stringData:
 data:
   wp-password: "{{ .Values.admin.password }}"
 ---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Release.Name }}-tls
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: wordpress-webserver
+data:
+  tls.key: {{ .Values.cert.base64EncodedKey }}
+  tls.crt: {{ .Values.cert.base64EncodedCrt }}
+type: kubernetes.io/tls
+---
 apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
@@ -153,7 +165,6 @@ metadata:
     app.kubernetes.io/component: wordpress-webserver
 spec:
   tls:
-  # The {{ .Release.Name }}-tls Secret is created dynamically via deployer.
   - secretName: {{ .Release.Name }}-tls
   backend:
     serviceName: {{ .Release.Name }}-wordpress-svc
