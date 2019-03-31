@@ -76,11 +76,40 @@ spec:
           value: "{{ .Release.Name }}-elasticsearch-svc"
         - name: BACKUP_REPO_PATH
           value: ""
+        - name: NGINX_PROMETHEUS_ENABLED
+          value: "true"
         ports:
+        - name: prometheus
+          containerPort: 9108
+          protocol: TCP
         - name: http
           containerPort: 9200
         - name: tcp-transport
           containerPort: 9300
+        {{ if .Values.metrics.enabled }}
+        - name: prometheus-to-sd
+          image: {{ .Values.metrics.image }}
+          ports:
+          - name: profiler
+            containerPort: 6060
+          command:
+          - /monitor
+          - --stackdriver-prefix=custom.googleapis.com
+          - --source=$(POD_NAME):http://localhost:9108/metrics
+          - --pod-id=$(POD_NAME)
+          - --namespace-id=$(POD_NAMESPACE)
+          - --scrape-interval=5s
+          - --export-interval=30s
+          env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+        {{ end }}
         volumeMounts:
         - name: configmap
           mountPath: /etc/elasticsearch/elasticsearch.yml
@@ -121,6 +150,23 @@ spec:
       resources:
         requests:
           storage: 5Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-elasticsearch-prometheus-svc
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: elasticsearch-server
+spec:
+  clusterIP: None
+  ports:
+  - name: prometheus-port
+    port: 9108
+    protocol: TCP
+  selector:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: elasticsearch-server
 ---
 apiVersion: v1
 kind: Service
