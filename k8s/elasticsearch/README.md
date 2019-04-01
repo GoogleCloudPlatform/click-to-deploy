@@ -134,7 +134,7 @@ By default the integration is disabled. To enable, change the
 METRICS_EXPORTER_ENABLED variable value to `true`.
 
  ```shell
-export METRICS_EXPORTER_ENABLED=true
+export METRICS_EXPORTER_ENABLED=false
 ```
 
 Configure the container images:

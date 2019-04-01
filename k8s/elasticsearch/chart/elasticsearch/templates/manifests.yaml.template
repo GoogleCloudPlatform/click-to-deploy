@@ -76,7 +76,7 @@ spec:
           value: "{{ .Release.Name }}-elasticsearch-svc"
         - name: BACKUP_REPO_PATH
           value: ""
-        - name: NGINX_PROMETHEUS_ENABLED
+        - name: ELASTICSEARCH_PROMETHEUS_ENABLED
           value: "true"
         ports:
         - name: prometheus
