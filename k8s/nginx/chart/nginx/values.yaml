@@ -3,4 +3,4 @@ nginx:
   initImage: null
   replicas: null
 ingress:
-  available: false
+  available: true
