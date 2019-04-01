@@ -86,12 +86,12 @@ spec:
             cpu: 100m
             memory: 1536Mi
         ports:
+        - name: exporter
+          containerPort: 9108
         - name: http
           containerPort: 9200
         - name: tcp-transport
           containerPort: 9300
-        - name: exporter
-          containerPort: 9108
         volumeMounts:
         - name: configmap
           mountPath: /etc/elasticsearch/elasticsearch.yml
