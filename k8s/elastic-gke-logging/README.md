@@ -338,7 +338,13 @@ echo $KIBANA_URL
 
 ## Prometheus metrics
 
-> TODO(wgrzelak): TBD.
+The application is configured to expose its metrics through
+[Elasticsearch Exporter](https://github.com/justwatchcom/elasticsearch_exporter)
+in the [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
+For more detailed information about the plugin setup, see the [Elasticsearch Exporter documentation](https://github.com/justwatchcom/elasticsearch_exporter/blob/master/README.md).
+
+Metrics can be read on a single HTTP endpoint available at `[POD_IP]:9108/metrics`,
+where `[POD_IP]` is the IP read from Kubernetes headless service `$APP_INSTANCE_NAME-elasticsearch-exporter-svc`.
 
 ## Configuring Prometheus to collect the metrics
 
