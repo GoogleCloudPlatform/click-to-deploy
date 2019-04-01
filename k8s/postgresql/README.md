@@ -170,11 +170,6 @@ Create the service account:
 
 ```shell
 kubectl create serviceaccount ${POSTGRESQL_SERVICE_ACCOUNT} --namespace ${NAMESPACE}
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: $POSTGRESQL_SERVICE_ACCOUNT
-EOF
 ```
 
 #### Expand the manifest template
