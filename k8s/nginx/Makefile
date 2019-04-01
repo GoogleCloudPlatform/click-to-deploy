@@ -18,11 +18,16 @@ ifdef IMAGE_NGINX_INIT
   IMAGE_NGINX_INIT_FIELD = , "nginx.initImage": "$(IMAGE_NGINX_INIT)"
 endif
 
+ifdef INGRESS_AVAILABLE
+  INGRESS_AVAILABLE_FIELD = , "ingress.available": "$(INGRESS_AVAILABLE)"
+endif
+
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
   $(IMAGE_NGINX_FIELD) \
   $(IMAGE_NGINX_INIT_FIELD) \
+  $(INGRESS_AVAILABLE_FIELD) \
 }
 
 TESTER_IMAGE ?= $(REGISTRY)/nginx/tester:$(TAG)
