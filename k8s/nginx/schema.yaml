@@ -26,7 +26,7 @@ properties:
     minimum: 1
   ingress.available:
     type: boolean
-    default: false
+    default: true
     x-google-marketplace:
       type: INGRESS_AVAILABLE
 required:
