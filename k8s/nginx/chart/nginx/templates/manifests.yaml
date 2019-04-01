@@ -81,6 +81,15 @@ spec:
             port: nginx
           initialDelaySeconds: 10
           timeoutSeconds: 5
+        volumeMounts:
+        - name: {{ .Release.Name }}-nginx-pvc
+          mountPath: /usr/share/nginx/html
+        - name: nginx-config
+          mountPath: /etc/nginx/conf.d
+          readOnly: true
+        - name: certs
+          mountPath: /etc/nginx/certs
+          readOnly: true
       {{ if .Values.metrics.enabled }}
       - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}
@@ -105,15 +114,6 @@ spec:
             fieldRef:
               fieldPath: metadata.namespace
       {{ end }}
-        volumeMounts:
-        - name: {{ .Release.Name }}-nginx-pvc
-          mountPath: /usr/share/nginx/html
-        - name: nginx-config
-          mountPath: /etc/nginx/conf.d
-          readOnly: true
-        - name: certs
-          mountPath: /etc/nginx/certs
-          readOnly: true
       volumes:
       - name: certs
         secret:
