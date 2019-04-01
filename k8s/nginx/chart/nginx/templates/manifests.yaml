@@ -58,9 +58,6 @@ spec:
       - name: nginx
         image: {{ .Values.nginx.image }}
         imagePullPolicy: Always
-        env:
-        - name: NGINX_PROMETHEUS_ENABLED
-          value: "true"
         ports:
         - name: nginx
           containerPort: 80
