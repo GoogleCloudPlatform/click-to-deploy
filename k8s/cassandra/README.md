@@ -130,6 +130,7 @@ export REPLICAS=3
 Enable Stackdriver Metrics Exporter:
 
 > **NOTE:** Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet.
+
 By default the integration is disabled. To enable, change the value to `true`.
 
 ```shell
