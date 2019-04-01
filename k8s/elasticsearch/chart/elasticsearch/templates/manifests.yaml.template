@@ -76,8 +76,6 @@ spec:
           value: "{{ .Release.Name }}-elasticsearch-svc"
         - name: BACKUP_REPO_PATH
           value: ""
-        - name: ELASTICSEARCH_PROMETHEUS_ENABLED
-          value: "true"
         ports:
         - name: prometheus
           containerPort: 9108
