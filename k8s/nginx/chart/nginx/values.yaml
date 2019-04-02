@@ -2,3 +2,7 @@ nginx:
   image: null
   initImage: null
   replicas: null
+metrics:
+  image: null
+  enabled: false
+
