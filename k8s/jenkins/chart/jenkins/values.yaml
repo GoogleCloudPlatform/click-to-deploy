@@ -1,2 +1,5 @@
 jenkins:
   image: null
+metrics:
+  image: null
+  enabled: false
