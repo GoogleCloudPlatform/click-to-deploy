@@ -19,10 +19,17 @@ data:
    server {
       listen 80;
       listen 443 ssl;
+      listen 8080;
       server_name www.my-webserver.com;
       location / {
                index index.html;
                root /usr/share/nginx/html;
+      }
+      location /stub_status {
+      stub_status on;
+      access_log off;
+      allow 127.0.0.1;
+      deny all;
       }
       location = /favicon.ico {
                error_page 404 = @empty;
