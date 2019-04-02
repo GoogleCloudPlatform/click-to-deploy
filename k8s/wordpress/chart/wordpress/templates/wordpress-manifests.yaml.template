@@ -21,6 +21,8 @@ metadata:
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: wordpress-webserver
 data:
+  # .htaccess must be overwritten to allow connection to the /server-status endpoint.
+  # By default, WordPress' .htaccess doesn't allow it.
   .htaccess: |
     # BEGIN WordPress
     <IfModule mod_rewrite.c>
