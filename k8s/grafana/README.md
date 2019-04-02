@@ -1,26 +1,27 @@
 # Overview
 
-Grafana is an open-source platform for data visualization and monitoring. A large number of
-supported data sources makes it a universal visualization tool for many popular open source
-data collection systems - including Prometheus, InfluxDB, Elasticsearch, MySQL or PostgreSQL.
+Grafana is an open source platform for data visualization and monitoring. It
+supports a large number of data sources, making it a visualization tool for
+many popular open source data collection systems, such as Prometheus, InfluxDB,
+Elasticsearch, MySQL, and PostgreSQL.
 
 ## About Google Click to Deploy
 
 Popular open stacks on Kubernetes packaged by Google.
 
-## Design
+## Architecture
+
+This application is a deployment of a stateful, single-node Grafana installation
+on a Kubernetes cluster.
 
 ![Architecture diagram](resources/grafana-architecture.png)
 
-The application offers a vanilla deployment of stateful, single-node
-Grafana installation on a Kubernetes cluster.
-
 Administrative user credentials are automatically configured in the application
-through a Kubernetes Secret. Configuration file (/etc/grafana/grafana.ini) is
-defined in a ConfigMap and mounted to Grafana StatefulSet.
+through a Kubernetes Secret. The configuration file (`/etc/grafana/grafana.ini`)
+is defined in a ConfigMap, and mounted to Grafana StatefulSet.
 
-By default, the Service exposing Grafana server is of type ClusterIP, which makes
-it accessible only in a private network. It listens on port 3000.
+By default, the Service that exposes Grafana server is a ClusterIP, which makes
+the server accessible only in a private network. It listens on port 3000.
 
 # Installation
 
@@ -32,21 +33,24 @@ Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 
 ## Command line instructions
 
-You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local workstation in the
-further instructions.
+You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local
+workstation to complete these steps.
 
-[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/GoogleCloudPlatform/click-to-deploy&cloudshell_working_dir=k8s/grafana)
+[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/GoogleCloudPlatform/click-to-deploy&cloudshell_working_dir=k8s/grafana&cloudshell_open_in_editor=k8s/grafana/README.md)
 
 ### Prerequisites
 
 #### Set up command-line tools
 
-You'll need the following tools in your development environment:
+You'll need the following tools in your development environment. If you are
+using Cloud Shell, `gcloud`, `kubectl`, Docker, and Git are installed in your
+environment by default.
 
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 - [docker](https://docs.docker.com/install/)
 - [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+- [helm](https://helm.sh/)
 
 Configure `gcloud` as a Docker credential helper:
 
@@ -125,9 +129,11 @@ export GRAFANA_GENERATED_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold
 
 Enable Stackdriver Metrics Exporter:
 
-> **NOTE:** Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet.
+> **NOTE:** Your GCP project must have Stackdriver enabled. If you are
+using a non-GCP cluster, you cannot export metrics to Stackdriver.
 
-By default the integration is disabled. To enable, change the value to `true`.
+By default, the application does not export metrics to Stackdriver. To enable
+this option, change the value to `true`.
 
 ```shell
 export METRICS_EXPORTER_ENABLED=false
@@ -161,7 +167,8 @@ done
 
 #### Create namespace in your Kubernetes cluster
 
-If you use a different namespace than the `default`, run the command below to create a new namespace:
+If you use a different namespace than `default`, run the command below to
+create a new namespace:
 
 ```shell
 kubectl create namespace "$NAMESPACE"
@@ -239,7 +246,7 @@ kubectl port-forward --namespace ${NAMESPACE} ${APP_INSTANCE_NAME}-grafana-0 300
 
 With the port forwarded locally, you can access Grafana UI with `http://localhost:3000/`.
 
-## Login to Grafana
+## Sign in to Grafana
 
 Grafana is configured to require authentication. To get your username and
 password, run the following commands:
@@ -262,46 +269,42 @@ echo "- pass: ${GRAFANA_PASSWORD}"
 
 The application is configured to natively expose its metrics in the
 [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
-Metrics can be read on a single HTTP endpoint available at `[APP_BASE_URL]:3000/metrics`,
+You can access the metrics at `[APP_BASE_URL]:3000/metrics`,
 where `[APP_BASE_URL]` is the base URL address of the application.
-For example, you can
+For example, if you
 [expose Grafana service internally using port forwarding](#expose-the-grafana-service-internally-using-port-forwarding),
-and then access the metrics by navigating to the [http://localhost:3000/metrics](http://localhost:3000/metrics) endpoint.
-
+you can access the metrics at the [http://localhost:3000/metrics](http://localhost:3000/metrics) endpoint.
 
 ## Configuring Prometheus to collect the metrics
 
-Prometheus can be configured to automatically collect the application's metrics.
-Follow the [Configuring Prometheus documentation](https://prometheus.io/docs/introduction/first_steps/#configuring-prometheus)
-to enable metrics scrapping in your Prometheus server. The detailed specification
-of `<scrape_config>` used to enable the metrics collection can be found
-[here](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config).
+To configure Prometheus to automatically collect metrics,
+follow the steps in [Configuring Prometheus](https://prometheus.io/docs/introduction/first_steps/#configuring-prometheus).
+You configure the metrics in the [`scrape_configs` section](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config).
 
 ## Exporting metrics to Stackdriver
 
-If the option to export application metrics to Stackdriver is enabled,
-the deployment includes a [`prometheus-to-sd`](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd)
-(Prometheus to Stackdriver exporter) container.
-Then the metrics will be automatically exported to Stackdriver and visible in
+The deployment includes a [Prometheus to Stackdriver (`prometheus-to-sd`)](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd)
+container. If you enabled the option to export metrics to Stackdriver, the
+metrics are automatically exported to Stackdriver and visible in
 [Stackdriver Metrics Explorer](https://cloud.google.com/monitoring/charts/metrics-explorer).
 
-Each metric of the application will have a name starting with the application's name
-(matching the variable `APP_INSTANCE_NAME` described above).
+The name of each metric starts with the application's name, which you define
+in the `APP_INSTANCE_NAME` environment variable.
 
 The exporting option might not be available for GKE on-prem clusters.
 
-> Note: Please be aware that Stackdriver has [quotas](https://cloud.google.com/monitoring/quotas)
-for the number of custom metrics created in a single GCP project. If the quota is met,
-additional metrics will not be accepted by Stackdriver, which might cause that some metrics
-from your application might not show up in the Stackdriver's Metrics Explorer.
+> Note: Stackdriver has [quotas](https://cloud.google.com/monitoring/quotas)
+for the number of custom metrics created in a single GCP project. If the quota
+is met, additional metrics might not show up in the Stackdriver Metrics
+Explorer.
 
 Existing metric descriptors can be removed through
 [Stackdriver's REST API](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors/delete).
 
 # Scaling
 
-This installation of Grafana is not intended to be scaled up. Please use it
-with a single replica.
+This installation of Grafana is not intended to be scaled up. We recommend
+using it with a single replica.
 
 # Backup and restore
 
@@ -362,7 +365,7 @@ kubectl get pods --selector app.kubernetes.io/name=$APP_INSTANCE_NAME \
   --namespace ${NAMESPACE}
 ```
 
-# Uninstall the Application
+# Uninstalling the Application
 
 ## Using the Google Cloud Platform Console
 

@@ -1,0 +1,9 @@
+actions:
+- name: Prometheus metrics availability
+  bashTest:
+    script: |-
+      SERVICE="${APP_INSTANCE_NAME}-jenkins-ui"
+      wget -q -O- http://${SERVICE}.${NAMESPACE}.svc.cluster.local:8080/prometheus/ | grep -s '^jenkins_executor_count_value 2.0$'
+    expect:
+      exitCode:
+        equals: 0
