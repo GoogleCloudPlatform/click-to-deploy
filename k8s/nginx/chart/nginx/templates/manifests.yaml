@@ -65,6 +65,9 @@ spec:
         - name: nginx-https
           containerPort: 443
           protocol: TCP
+        - name: prometheus
+          containerPort: 9113
+          protocol: TCP
         livenessProbe:
           tcpSocket:
             port: nginx
@@ -84,6 +87,30 @@ spec:
         - name: certs
           mountPath: /etc/nginx/certs
           readOnly: true
+      {{ if .Values.metrics.enabled }}
+      - name: prometheus-to-sd
+        image: {{ .Values.metrics.image }}
+        ports:
+        - name: profiler
+          containerPort: 6060
+        command:
+        - /monitor
+        - --stackdriver-prefix=custom.googleapis.com
+        - --source=$(POD_NAME):http://localhost:9113/metrics
+        - --pod-id=$(POD_NAME)
+        - --namespace-id=$(POD_NAMESPACE)
+        - --scrape-interval=5s
+        - --export-interval=30s
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+      {{ end }}
       volumes:
       - name: certs
         secret:
@@ -94,6 +121,23 @@ spec:
           items:
           - key: nginx-config.conf
             path: nginx-config.conf
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-nginx-prometheus-svc
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: nginx-server
+spec:
+  clusterIP: None
+  ports:
+  - name: prometheus-port
+    port: 9113
+    protocol: TCP
+  selector:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: nginx-server
 ---
 apiVersion: v1
 kind: Service
