@@ -2,5 +2,5 @@ nginx:
   image: null
   initImage: null
   replicas: null
-ingress:
+publicIP:
   available: true

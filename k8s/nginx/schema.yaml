@@ -24,7 +24,7 @@ properties:
     description: The number of Pods run within NGINX solution
     default: 3
     minimum: 1
-  ingress.available:
+  publicIP.available:
     type: boolean
     default: true
     x-google-marketplace:

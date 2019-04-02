@@ -113,7 +113,7 @@ spec:
   selector:
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: nginx-server
-  {{ if .Values.ingress.available }}
+  {{ if .Values.publicIP.available }}
   type: LoadBalancer
   {{ else }}
   type: ClusterIP

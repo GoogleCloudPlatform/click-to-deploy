@@ -27,6 +27,6 @@ spec:
           fieldPath: metadata.namespace
     - name: APP_INSTANCE_NAME
       value: {{ .Release.Name }}
-    - name: INGRESS_AVAILABLE
-      value: "{{ .Values.ingress.available }}"
+    - name: PUBLIC_IP_AVAILABLE
+      value: "{{ .Values.publicIP.available }}"
   restartPolicy: Never

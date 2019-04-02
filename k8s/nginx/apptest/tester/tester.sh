@@ -17,7 +17,7 @@
 set -xeo pipefail
 shopt -s nullglob
 
-if [[ "${INGRESS_AVAILABLE}" == "true" ]]; then
+if [[ "${PUBLIC_IP_AVAILABLE}" == "true" ]]; then
   EXTERNAL_IP="$(kubectl get service/${APP_INSTANCE_NAME}-nginx-svc \
     --namespace ${NAMESPACE} \
     --output jsonpath='{.status.loadBalancer.ingress[0].ip}')"
