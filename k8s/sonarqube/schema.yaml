@@ -16,7 +16,7 @@ properties:
   sonarqube.volumeSize:
     type: integer
     title: Volume
-    description: The size of Volume (Gi) in the solution
+    description: The size of Volume SonarQube Data (Gi) in the solution
     default: 24
   postgresql.db.password:
     type: string
@@ -27,7 +27,7 @@ properties:
   postgresql.volumeSize:
     type: integer
     title: Volume
-    description: The size of Volume (Gi) in the solution
+    description: The size of PostgreSQL Volume (Gi) in the solution
     default: 24
   postgresql.image:
     type: string

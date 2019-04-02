@@ -4,7 +4,7 @@ include ../gcloud.Makefile
 include ../var.Makefile
 
 
-TAG ?= latest
+TAG ?= 7.6
 SRCTAG ?= latest
 METRICS_EXPORTER_TAG ?= v0.5.1
 IMAGE_SONARQUBE ?= marketplace.gcr.io/google/sonarqube7:$(SRCTAG)
@@ -66,8 +66,8 @@ app/build:: .build/sonarqube/deployer \
                             .build/var/TAG \
                             | .build/sonarqube
 	docker pull $(IMAGE_SONARQUBE)
-	docker tag $(IMAGE_SONARQUBE) "$(REGISTRY)/sonarqube:$(TAG)"
-	docker push "$(REGISTRY)/sonarqube:$(TAG)"
+	docker tag $(IMAGE_SONARQUBE) "$(REGISTRY)/sonarqube:7.6"
+	docker push "$(REGISTRY)/sonarqube:7.6"
 	@touch "$@"
 
 
