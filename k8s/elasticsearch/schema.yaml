@@ -25,9 +25,21 @@ properties:
     default: 2
     minimum: 1
     maximum: 11
+  metrics.image:
+    type: string
+    default: $REGISTRY/prometheus-to-sd:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  metrics.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
+    default: false
 required:
 - name
 - namespace
 - elasticsearch.image
 - elasticsearch.initImage
 - elasticsearch.replicas
+- metrics.image
+- metrics.enabled
