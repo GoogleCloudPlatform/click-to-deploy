@@ -11,5 +11,4 @@ spec:
   selector:
     app.kubernetes.io/name: "{{.Release.Name}}"
     app.kubernetes.io/component: postgresql-server
-  type: LoadBalancer
 

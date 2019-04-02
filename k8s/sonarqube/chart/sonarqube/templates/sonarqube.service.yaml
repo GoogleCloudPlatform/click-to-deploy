@@ -13,4 +13,3 @@ spec:
   selector:
     app.kubernetes.io/name: "{{.Release.Name}}"
     app.kubernetes.io/component: sonarqube
-  type: {{.Values.sonarqube.service.type}}
