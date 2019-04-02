@@ -165,4 +165,4 @@ spec:
   selector:
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: wordpress-mysql
-  clusterIP: None
+  type: ClusterIP

@@ -213,7 +213,7 @@ spec:
   selector:
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: wordpress-webserver
-  clusterIP: None
+  type: ClusterIP
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
