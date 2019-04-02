@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: $APP_INSTANCE_NAME-jenkins-pvc
+  name: {{ .Release.Name }}-jenkins-pvc
   labels:
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: jenkins-master
 spec:
   accessModes:
@@ -16,9 +16,9 @@ spec:
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: $APP_INSTANCE_NAME-jenkins-deployment
+  name: {{ .Release.Name }}-jenkins-deployment
   labels: &JenkinsDeploymentLabels
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: jenkins-master
 spec:
   replicas: 1
@@ -29,26 +29,26 @@ spec:
       labels: *JenkinsDeploymentLabels
     spec:
       volumes:
-      - name: $APP_INSTANCE_NAME-jenkins-pvc
+      - name: {{ .Release.Name }}-jenkins-pvc
         persistentVolumeClaim:
-          claimName: $APP_INSTANCE_NAME-jenkins-pvc
+          claimName: {{ .Release.Name }}-jenkins-pvc
       initContainers:
         - name: volume-permissions-fix
-          image: $IMAGE_JENKINS
+          image: {{ .Values.jenkins.image }}
           command: ["sh", "-c", "chown 1000:1000 /var/jenkins_home"]
           securityContext:
             runAsUser: 0
           volumeMounts:
-          - name: $APP_INSTANCE_NAME-jenkins-pvc
+          - name: {{ .Release.Name }}-jenkins-pvc
             mountPath: /var/jenkins_home
       containers:
       - name: jenkins-master
-        image: $IMAGE_JENKINS
+        image: {{ .Values.jenkins.image }}
         ports:
         - containerPort: 8080
         - containerPort: 50000
         volumeMounts:
-        - name: $APP_INSTANCE_NAME-jenkins-pvc
+        - name: {{ .Release.Name }}-jenkins-pvc
           mountPath: /var/jenkins_home
         readinessProbe:
           httpGet:
@@ -63,6 +63,8 @@ spec:
           value: ''
         - name: JAVA_OPTS
           value: '-Xmx1800m'
+        - name: INSTALL_PROMETHEUS
+          value: 'true'
         resources:
           limits:
             memory: 2.0Gi
@@ -72,9 +74,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: $APP_INSTANCE_NAME-jenkins-ui
+  name: {{ .Release.Name }}-jenkins-ui
   labels: &JenkinsDeploymentLabels
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: jenkins-master
 spec:
   type: NodePort
@@ -88,9 +90,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: $APP_INSTANCE_NAME-jenkins-agents-connector
+  name: {{ .Release.Name }}-jenkins-agents-connector
   labels: &JenkinsDeploymentLabels
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: jenkins-master
 spec:
   selector: *JenkinsDeploymentLabels
@@ -103,14 +105,14 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: $APP_INSTANCE_NAME-jenkins-ui
+  name: {{ .Release.Name }}-jenkins-ui
   labels:
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: jenkins-master
 spec:
-# Resource Secret $APP_INSTANCE_NAME-tls is created by deployer via entrypoint.sh
+# Resource Secret {{ .Release.Name }}-tls is created by deployer via entrypoint.sh
   tls:
-  - secretName: $APP_INSTANCE_NAME-tls
+  - secretName: {{ .Release.Name }}-tls
   backend:
-    serviceName: $APP_INSTANCE_NAME-jenkins-ui
+    serviceName: {{ .Release.Name }}-jenkins-ui
     servicePort: 8080

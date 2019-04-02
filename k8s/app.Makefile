@@ -23,13 +23,6 @@ $(shell echo '$(APP_PARAMETERS)' \
 endef
 
 
-# Combines APP_PARAMETERS and APP_TEST_PARAMETERS.
-define combined_parameters
-$(shell echo '$(APP_PARAMETERS)' '$(APP_TEST_PARAMETERS)' \
-    | docker run -i --entrypoint=/usr/bin/jq --rm $(APP_DEPLOYER_IMAGE) -s '.[0] * .[1]')
-endef
-
-
 ##### Helper targets #####
 
 
@@ -78,14 +71,13 @@ app/install:: app/build \
 app/install-test:: app/build \
                    .build/var/APP_DEPLOYER_IMAGE \
                    .build/var/APP_PARAMETERS \
-                   .build/var/APP_TEST_PARAMETERS \
                    .build/var/MARKETPLACE_TOOLS_TAG \
 	           | .build/app/dev
 	$(call print_target)
 	.build/app/dev \
 	    /scripts/install \
 	        --deployer='$(APP_DEPLOYER_IMAGE)' \
-	        --parameters='$(call combined_parameters)' \
+	        --parameters='$(APP_PARAMETERS)' \
 	        --entrypoint="/bin/deploy_with_tests.sh"
 
 
@@ -103,14 +95,13 @@ app/uninstall: .build/var/APP_DEPLOYER_IMAGE \
 app/verify: app/build \
             .build/var/APP_DEPLOYER_IMAGE \
             .build/var/APP_PARAMETERS \
-            .build/var/APP_TEST_PARAMETERS \
             .build/var/MARKETPLACE_TOOLS_TAG \
             | .build/app/dev
 	$(call print_target)
 	.build/app/dev \
 	    /scripts/verify \
 	          --deployer='$(APP_DEPLOYER_IMAGE)' \
-	          --parameters='$(call combined_parameters)' \
+	          --parameters='$(APP_PARAMETERS)' \
 	          --wait_timeout="$(VERIFY_WAIT_TIMEOUT)"
 
 

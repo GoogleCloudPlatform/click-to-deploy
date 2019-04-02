@@ -1,6 +1,7 @@
 FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.2
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
     ca-certificates \
     gettext \
     jq \
@@ -13,6 +14,7 @@ RUN wget -q -O /bin/kubectl \
       && chmod 755 /bin/kubectl
 
 COPY tests/basic-suite.yaml /tests/basic-suite.yaml
+COPY tests/exporter-suite.yaml /tests/exporter-suite.yaml
 COPY tester.sh /tester.sh
 
 WORKDIR /
