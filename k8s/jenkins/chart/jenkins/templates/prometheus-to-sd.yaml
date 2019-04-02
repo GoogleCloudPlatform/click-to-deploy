@@ -1,0 +1,40 @@
+{{ if .Values.metrics.enabled }}
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-jenkins-metrics-exporter
+  labels: &JenkinsDeploymentLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: jenkins-metrics-exporter
+spec:
+  selector:
+    matchLabels: *JenkinsDeploymentLabels
+  replicas: 1
+  template:
+    metadata:
+      labels: *JenkinsDeploymentLabels
+    spec:
+      containers:
+      - name: prometheus-to-sd
+        image: {{ .Values.metrics.image }}
+        ports:
+        - name: profiler
+          containerPort: 6060
+        command:
+        - /monitor
+        - --stackdriver-prefix=custom.googleapis.com
+        - --source={{ .Release.Name }}:http://{{ .Release.Name }}-jenkins-ui:8080/prometheus/
+        - --pod-id=$(POD_NAME)
+        - --namespace-id=$(POD_NAMESPACE)
+        - --scrape-interval=5s
+        - --export-interval=30s
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+{{ end }}
