@@ -1,0 +1,33 @@
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: power-user
+  namespace: default
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+---
+kind: Job
+apiVersion: batch/v1
+metadata:
+ name: bla-test
+spec:
+ template:
+   spec:
+     containers:
+     - name: blablaki
+       image: gcr.io/orbitera-dev/postgresql/test:latest
+       imagePullPolicy: Always
+       env:
+        - name: APP_INSTANCE_NAME
+          value: "postmix5"
+        - name: NAMESPACE
+          value: "default"
+     restartPolicy: Never
+ backoffLimit: 1
+
