@@ -134,12 +134,24 @@ export NAMESPACE=default
 export REPLICAS=3
 ```
 
+Enable Stackdriver Metrics Exporter:
+
+ > **NOTE:** Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet.
+
+By default the integration is disabled. To enable, change the
+METRICS_EXPORTER_ENABLED variable value to `true`.
+
+ ```shell
+export METRICS_EXPORTER_ENABLED=false
+```
+
 Configure the container images:
 
 ```shell
 TAG=1.15
 export IMAGE_NGINX="marketplace.gcr.io/google/nginx:${TAG}"
 export IMAGE_NGINX_INIT="marketplace.gcr.io/google/nginx/debian9:${TAG}"
+export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/nginx/prometheus-to-sd:${TAG}"
 ```
 
 The images above are referenced by
@@ -151,7 +163,7 @@ until you are ready to upgrade. To get the digest for the image, use the
 following script:
 
 ```shell
-for i in "IMAGE_NGINX" "IMAGE_NGINX_INIT"; do
+for i in "IMAGE_NGINX" "IMAGE_NGINX_INIT" "IMAGE_METRICS_EXPORTER"; do
   repo=$(echo ${!i} | cut -d: -f1);
   digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
   export $i="$repo@$digest";
@@ -178,7 +190,9 @@ helm template chart/nginx \
   --namespace $NAMESPACE \
   --set nginx.replicas=$REPLICAS \
   --set nginx.initImage=$IMAGE_NGINX_INIT \
-  --set nginx.image=$IMAGE_NGINX > "${APP_INSTANCE_NAME}_manifest.yaml"
+  --set nginx.image=$IMAGE_NGINX \
+  --set metrics.image=$IMAGE_METRICS_EXPORTER \
+  --set metrics.enabled=$METRICS_EXPORTER_ENABLED > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster
@@ -217,6 +231,46 @@ kubectl get svc -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace "$NAMES
 ```
 
 This command shows the internal and external IP address of your NGINX service.
+
+# Application metrics
+
+## Prometheus metrics
+
+The application is configured to expose its metrics through
+[Nginx Exporter](https://github.com/nginxinc/nginx-prometheus-exporter)
+in the [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
+For more detailed information about the plugin setup, see the [Nginx Exporter documentation](https://github.com/nginxinc/nginx-prometheus-exporter/blob/master/README.md).
+Metrics can be read on a single HTTP endpoint available at `[POD_IP]:9113/metrics`,
+where `[POD_IP]` is the IP read from Kubernetes headless service `$APP_INSTANCE_NAME-nginx-prometheus-svc`.
+
+## Configuring Prometheus to collect the metrics
+
+Prometheus can be configured to automatically collect the application's metrics.
+Follow the [Configuring Prometheus documentation](https://prometheus.io/docs/introduction/first_steps/#configuring-prometheus)
+to enable metrics scrapping in your Prometheus server. The detailed specification
+of `<scrape_config>` used to enable the metrics collection can be found
+[here](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config).
+
+## Exporting metrics to Stackdriver
+
+If the option to export application metrics to Stackdriver is enabled,
+the deployment includes a [`prometheus-to-sd`](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd)
+(Prometheus to Stackdriver exporter) container.
+Then the metrics will be automatically exported to Stackdriver and visible in
+[Stackdriver Metrics Explorer](https://cloud.google.com/monitoring/charts/metrics-explorer).
+
+Each metric of the application will have a name starting with the application's name
+(matching the variable `APP_INSTANCE_NAME` described above).
+
+The exporting option might not be available for GKE on-prem clusters.
+
+> Note: Please be aware that Stackdriver has [quotas](https://cloud.google.com/monitoring/quotas)
+for the number of custom metrics created in a single GCP project. If the quota is met,
+additional metrics will not be accepted by Stackdriver, which might cause that some metrics
+from your application might not show up in the Stackdriver's Metrics Explorer.
+ Existing metric descriptors can be removed through
+[Stackdriver's REST API](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors/delete).
+
 
 # Scaling
 

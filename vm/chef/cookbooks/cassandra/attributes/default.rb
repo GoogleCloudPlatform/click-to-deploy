@@ -14,7 +14,7 @@
 
 # Remember to check if repo component update
 # is needed when changing the version.
-default['cassandra']['version'] = '3.11.3'
+default['cassandra']['version'] = '3.11.4'
 
 default['cassandra']['repo']['uri'] = 'http://www.apache.org/dist/cassandra/debian'
 default['cassandra']['repo']['components'] = ['311x', 'main']
