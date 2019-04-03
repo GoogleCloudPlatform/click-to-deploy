@@ -5,10 +5,10 @@ include ../var.Makefile
 
 
 TAG ?= 7.6
-SRCTAG ?= latest
+PGSQL_TAG ?= 9.6-kubernetes
 METRICS_EXPORTER_TAG ?= v0.5.1
-IMAGE_SONARQUBE ?= marketplace.gcr.io/google/sonarqube7:$(SRCTAG)
-IMAGE_POSTGRESQL ?= marketplace.gcr.io/google/postgresql9:$(SRCTAG)
+IMAGE_SONARQUBE ?= marketplace.gcr.io/google/sonarqube7:latest
+IMAGE_POSTGRESQL ?= marketplace.gcr.io/google/postgresql9:$(PGSQL_TAG)
 
 $(info ---- TAG = $(TAG))
 
@@ -43,6 +43,7 @@ app/build:: .build/sonarqube/deployer \
 .build/sonarqube: | .build
 	mkdir -p "$@"
 
+
 .build/sonarqube/deployer: deployer/* \
                            chart/sonarqube/* \
                            chart/sonarqube/templates/* \
@@ -62,12 +63,13 @@ app/build:: .build/sonarqube/deployer \
 	docker push "$(APP_DEPLOYER_IMAGE)"
 	@touch "$@"
 
+
 .build/sonarqube/sonarqube: .build/var/REGISTRY \
                             .build/var/TAG \
                             | .build/sonarqube
 	docker pull $(IMAGE_SONARQUBE)
-	docker tag $(IMAGE_SONARQUBE) "$(REGISTRY)/sonarqube:7.6"
-	docker push "$(REGISTRY)/sonarqube:7.6"
+	docker tag $(IMAGE_SONARQUBE) "$(REGISTRY)/sonarqube:$(TAG)"
+	docker push "$(REGISTRY)/sonarqube:$(TAG)"
 	@touch "$@"
 
 
@@ -79,6 +81,7 @@ app/build:: .build/sonarqube/deployer \
 	docker push "$(REGISTRY)/sonarqube/postgresql9:$(TAG)"
 	@touch "$@"
 
+
 .build/sonarqube/prometheus-to-sd: .build/var/REGISTRY \
                                   .build/var/TAG \
                                   | .build/sonarqube
@@ -89,7 +92,6 @@ app/build:: .build/sonarqube/deployer \
 	@touch "$@"
 
 
-
 .build/sonarqube/tester: .build/var/TESTER_IMAGE \
                           $(shell find apptest -type f) \
                           | .build/sonarqube
@@ -98,3 +100,4 @@ app/build:: .build/sonarqube/deployer \
 	    && docker build --tag "$(TESTER_IMAGE)" .
 	docker push "$(TESTER_IMAGE)"
 	@touch "$@"
+

@@ -1,31 +1,28 @@
-
 replicaCount: 1
 sonarqube:
   repository: marketplace.gcr.io/google/sonarqube7:latest
   pullPolicy: Always
-  volumeSize: 10
+  volumeSize: 5
   service:
     name: sonarqube
     type: LoadBalancer
     externalPort: 9000
     internalPort: 9000
 
-
-
 readinessProbe:
   initialDelaySeconds: 60
   periodSeconds: 30
   failureThreshold: 6
   sonarWebContext: /
+
 livenessProbe:
   initialDelaySeconds: 60
   periodSeconds: 30
   sonarWebContext: /
 
-
 postgresql:
   image: marketplace.gcr.io/google/postgresql9:latest
-  volumeSize: 8
+  volumeSize: 10
   db:
     password: null
     test:
