@@ -1,0 +1,9 @@
+actions:
+- name: Is Elasticsearch /metrics HTTP endpoint working
+  bashTest:
+    script: curl -f "http://${APP_INSTANCE_NAME}-elasticsearch-exporter-svc:9108/metrics"
+    expect:
+      stdout:
+        matches: '(?m)^elasticsearch_cluster_health_up 1$'
+      exitCode:
+        equals: 0
