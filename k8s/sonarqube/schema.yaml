@@ -13,22 +13,12 @@ properties:
     default: $REGISTRY:$TAG
     x-google-marketplace:
       type: IMAGE
-  sonarqube.volumeSize:
-    type: integer
-    title: Volume
-    description: The size of Volume SonarQube Data (Gi) in the solution
-    default: 24
   postgresql.db.password:
     type: string
     x-google-marketplace:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 12
-  postgresql.volumeSize:
-    type: integer
-    title: Volume
-    description: The size of PostgreSQL Volume (Gi) in the solution
-    default: 24
   postgresql.image:
     type: string
     default: $REGISTRY/postgresql9:$TAG
@@ -49,8 +39,6 @@ required:
 - name
 - namespace
 - sonarqube.repository
-- sonarqube.volumeSize
-- postgresql.volumeSize
 - postgresql.db.password
 - postgresql.image
 - metrics.image
