@@ -114,10 +114,12 @@ export APP_INSTANCE_NAME=jenkins-1
 export NAMESPACE=default
 ```
 
-Configure the container image:
+Configure the container images:
 
 ```shell
-export IMAGE_JENKINS="marketplace.gcr.io/google/jenkins:2.150"
+TAG=2.150
+export IMAGE_JENKINS="marketplace.gcr.io/google/jenkins:${TAG}"
+export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/jenkins/prometheus-to-sd:${TAG}"
 ```
 
 The image above is referenced by
@@ -157,7 +159,9 @@ expanded manifest file for future updates to the application.
 helm template chart/jenkins \
   --name $APP_INSTANCE_NAME \
   --namespace $NAMESPACE \
-  --set jenkins.image=$IMAGE_JENKINS > "${APP_INSTANCE_NAME}_manifest.yaml"
+  --set jenkins.image=$IMAGE_JENKINS \
+  --set metrics.image=$IMAGE_METRICS_EXPORTER \
+  --set metrics.enabled=$METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 
 #### Apply the manifest to your Kubernetes cluster
@@ -215,6 +219,45 @@ To set Jenkins, follow these on-screen steps to customize your installation:
 * Install plugins
 * Create the first admin user
 * Optionally, configure the Jenkins URL. You can also change the URL later.
+
+# Application metrics
+
+## Prometheus metrics
+
+The application is configured to expose its metrics through
+[Jenkins Prometheus.io exporter plugin](https://github.com/jenkinsci/prometheus-plugin)
+in the [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
+Metrics can be read on a single HTTP endpoint available at `[APP_BASE_URL]:8080/prometheus/`,
+where `[APP_BASE_URL]` is the base URL address of the application.
+
+## Configuring Prometheus to collect the metrics
+
+Prometheus can be configured to automatically collect the application's metrics.
+Follow the [Configuring Prometheus documentation](https://prometheus.io/docs/introduction/first_steps/#configuring-prometheus)
+to enable metrics scrapping in your Prometheus server. The detailed specification
+of `<scrape_config>` used to enable the metrics collection can be found
+[here](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config).
+
+## Exporting metrics to Stackdriver
+
+If the option to export application metrics to Stackdriver is enabled,
+the deployment includes a [`prometheus-to-sd`](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd)
+(Prometheus to Stackdriver exporter) container.
+Then the metrics will be automatically exported to Stackdriver and visible in
+[Stackdriver Metrics Explorer](https://cloud.google.com/monitoring/charts/metrics-explorer).
+
+Each metric of the application will have a name starting with the application's name
+(matching the variable `APP_INSTANCE_NAME` described above).
+
+The exporting option might not be available for GKE on-prem clusters.
+
+> Note: Please be aware that Stackdriver has [quotas](https://cloud.google.com/monitoring/quotas)
+for the number of custom metrics created in a single GCP project. If the quota is met,
+additional metrics will not be accepted by Stackdriver, which might cause that some metrics
+from your application might not show up in the Stackdriver's Metrics Explorer.
+
+Existing metric descriptors can be removed through
+[Stackdriver's REST API](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors/delete).
 
 # Scaling
 
