@@ -109,7 +109,6 @@ steps:
   dir: k8s/{{ solution }}
   args:
   - make
-  - -j4
   - app/verify
 
 {%- endfor %}

@@ -84,7 +84,6 @@ steps:
   dir: k8s/agones
   args:
   - make
-  - -j4
   - app/verify
 
 - id: Verify airflow-operator
@@ -102,7 +101,6 @@ steps:
   dir: k8s/airflow-operator
   args:
   - make
-  - -j4
   - app/verify
 
 - id: Verify cassandra
@@ -120,7 +118,6 @@ steps:
   dir: k8s/cassandra
   args:
   - make
-  - -j4
   - app/verify
 
 - id: Verify elastic-gke-logging
@@ -138,7 +135,6 @@ steps:
   dir: k8s/elastic-gke-logging
   args:
   - make
-  - -j4
   - app/verify
 
 - id: Verify elasticsearch
@@ -156,7 +152,6 @@ steps:
   dir: k8s/elasticsearch
   args:
   - make
-  - -j4
   - app/verify
 
 - id: Verify grafana
@@ -174,7 +169,6 @@ steps:
   dir: k8s/grafana
   args:
   - make
-  - -j4
   - app/verify
 
 - id: Verify influxdb
@@ -192,7 +186,6 @@ steps:
   dir: k8s/influxdb
   args:
   - make
-  - -j4
   - app/verify
 
 - id: Verify jenkins
@@ -210,7 +203,6 @@ steps:
   dir: k8s/jenkins
   args:
   - make
-  - -j4
   - app/verify
 
 - id: Verify memcached
@@ -228,7 +220,6 @@ steps:
   dir: k8s/memcached
   args:
   - make
-  - -j4
   - app/verify
 
 - id: Verify nginx
@@ -246,7 +237,6 @@ steps:
   dir: k8s/nginx
   args:
   - make
-  - -j4
   - app/verify
 
 - id: Verify postgresql
@@ -264,7 +254,6 @@ steps:
   dir: k8s/postgresql
   args:
   - make
-  - -j4
   - app/verify
 
 - id: Verify prometheus
@@ -282,7 +271,6 @@ steps:
   dir: k8s/prometheus
   args:
   - make
-  - -j4
   - app/verify
 
 - id: Verify rabbitmq
@@ -300,7 +288,6 @@ steps:
   dir: k8s/rabbitmq
   args:
   - make
-  - -j4
   - app/verify
 
 - id: Verify sample-app
@@ -318,7 +305,6 @@ steps:
   dir: k8s/sample-app
   args:
   - make
-  - -j4
   - app/verify
 
 - id: Verify wordpress
@@ -336,5 +322,4 @@ steps:
   dir: k8s/wordpress
   args:
   - make
-  - -j4
   - app/verify
