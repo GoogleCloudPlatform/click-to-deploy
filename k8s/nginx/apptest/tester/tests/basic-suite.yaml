@@ -17,3 +17,12 @@ actions:
         contains: 'Web Server Application'
       exitCode:
         equals: 0
+- name: Prometheus metrics are exported
+  bashTest:
+    script: |-
+      for node in $(getent hosts $APP_INSTANCE_NAME-nginx-prometheus-svc.$NAMESPACE.svc.cluster.local | awk '{print $1}'); do
+        wget -O - -q "http://$node:9113/metrics" | grep -e '^nginx_up '
+      done
+    expect:
+      stdout:
+        equals: "nginx_up 1\nnginx_up 1\nnginx_up 1"

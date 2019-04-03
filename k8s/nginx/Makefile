@@ -5,10 +5,15 @@ include ../var.Makefile
 
 
 TAG ?= 1.15
+METRICS_EXPORTER_TAG ?= v0.5.1
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/nginx/deployer:$(TAG)
 NAME ?= nginx-1
+
+ifdef METRICS_EXPORTER_ENABLED
+  METRICS_EXPORTER_ENABLED_FIELD = , "metrics.enabled": "$(METRICS_EXPORTER_ENABLED)"
+endif
 
 ifdef IMAGE_NGINX
   IMAGE_NGINX_FIELD = , "nginx.image": "$(IMAGE_NGINX)"
@@ -23,6 +28,7 @@ APP_PARAMETERS ?= { \
   "namespace": "$(NAMESPACE)" \
   $(IMAGE_NGINX_FIELD) \
   $(IMAGE_NGINX_INIT_FIELD) \
+  $(METRICS_EXPORTER_ENABLED_FIELD) \
 }
 
 TESTER_IMAGE ?= $(REGISTRY)/nginx/tester:$(TAG)
@@ -31,6 +37,7 @@ TESTER_IMAGE ?= $(REGISTRY)/nginx/tester:$(TAG)
 app/build:: .build/nginx/debian9  \
             .build/nginx/deployer \
             .build/nginx/nginx \
+            .build/nginx/prometheus-to-sd \
             .build/nginx/tester
 
 
@@ -76,6 +83,14 @@ app/build:: .build/nginx/debian9  \
 	docker push "$(REGISTRY)/nginx:$(TAG)"
 	@touch "$@"
 
+.build/nginx/prometheus-to-sd: .build/var/REGISTRY \
+                                   .build/var/TAG \
+                                   | .build/nginx
+	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
+	    "$(REGISTRY)/nginx/prometheus-to-sd:$(TAG)"
+	docker push "$(REGISTRY)/nginx/prometheus-to-sd:$(TAG)"
+	@touch "$@"
 
 .build/nginx/tester: .build/var/TESTER_IMAGE \
                      $(shell find apptest -type f) \
