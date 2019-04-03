@@ -1,0 +1,427 @@
+#!/bin/bash -eu
+#
+# Copyright 2019 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Script to configure local monitoring for the single node file server.
+
+set -e
+set -x
+
+. /opt/c2d/get_metadata.sh
+. /opt/c2d/instance_utils.sh
+
+if (( "$(id -u)" > 0 )); then
+  echo "Please run this script as root."
+  exit 1
+fi
+
+# Only configure monitoring once.
+readonly COMPLETE_FILE=/opt/c2d/monitoring.complete
+if [[ -f "${COMPLETE_FILE}" ]]; then
+  echo "Monitoring configuration already completed."
+  exit 0
+fi
+touch "${COMPLETE_FILE}"
+
+# Redirect all output to the log file.
+readonly LOG_FILE=/opt/c2d/monitoring.log
+exec > >(tee -a "${LOG_FILE}" ) 2>&1
+
+readonly DISABLE_MONITORING="$(get_metadata instance/attributes/DISABLE_MONITORING || true)"
+if [[ -n "${DISABLE_MONITORING}" ]]; then
+  echo "Monitoring disabled."
+  echo "Reboot and validate before reporting deployment success or failure."
+  reboot
+  # Wait for reboot, to avoid starting the next step.
+  sleep 1000
+fi
+
+readonly STORAGE_POOL="$(get_metadata instance/attributes/STORAGE_POOL_NAME)"
+if [[ -z "${STORAGE_POOL}" ]]; then
+  echo "Unable to read STORAGE_POOL_NAME from instance metadata."
+  exit 1
+fi
+
+readonly DEPLOYMENT_NAME=$(get_metadata instance/attributes/DEPLOYMENT_NAME)
+
+if is_primary; then
+  monitoring_host="127.0.0.1"
+else
+  monitoring_host="${DEPLOYMENT_NAME}-primary"
+fi
+
+POSTGRES_SERVICES=(postgresql)
+
+if is_primary; then
+  # Configure Graphite
+  # Generate somewhat safe passwords
+  set +x
+  readonly SECRET_KEY=$(tr -dc "_A-Z-a-z-0-9" < /dev/urandom | head -c32)
+  readonly DB_PASSWORD=$(tr -dc "_A-Z-a-z-0-9" < /dev/urandom | head -c32)
+  readonly ADMIN_PASSWORD="$(get_metadata instance/attributes/ADMIN_PASSWORD)"
+  set -x
+
+  # Configure Postgres, to store monitoring data
+  if is_centos; then
+    /bin/postgresql-setup initdb
+  fi
+
+  for service in "${POSTGRES_SERVICES[@]}"; do
+    service "${service}" start
+    systemctl enable "${service}"
+  done
+
+  if is_debian; then
+    # Postgres 9.6 doesn't start properly on Debian. Work around it.
+    # pg_ctlcluster --force 9.6 main stop
+    pg_ctlcluster --force 9.6 main start
+  fi
+
+  set +x
+  echo "CREATE USER graphite WITH PASSWORD '${DB_PASSWORD}';" \
+    | sudo -u postgres psql
+  echo "CREATE DATABASE graphite WITH OWNER graphite;" | sudo -u postgres psql
+  echo "CREATE USER grafana WITH PASSWORD '${DB_PASSWORD}';" \
+    | sudo -u postgres psql
+  echo "CREATE DATABASE grafana WITH OWNER grafana;" | sudo -u postgres psql
+  set -x
+
+  if is_centos; then
+    # Authenticate local Postgres connection with password.
+    readonly PG_HBA_CONF="/var/lib/pgsql/data/pg_hba.conf"
+    sed -i "s/127.0.0.1\/32            ident/127.0.0.1\/32            md5/" "${PG_HBA_CONF}"
+    service "${service}" restart
+  fi
+
+  # Configure Graphite.
+  if is_centos; then
+    GRAPHITE_SETTINGS="/etc/graphite-web/local_settings.py"
+  fi
+  if is_debian; then
+    GRAPHITE_SETTINGS="/etc/graphite/local_settings.py"
+  fi
+
+  cp "${GRAPHITE_SETTINGS}" "${GRAPHITE_SETTINGS}.orig"
+  set +x
+  sed -i "s/#SECRET_KEY.*/SECRET_KEY = '${SECRET_KEY}'/" "${GRAPHITE_SETTINGS}"
+
+  # Ubuntu and Debian differ
+  sed -i "s/#*USE_REMOTE_USER_AUTHENTICATION.*/USE_REMOTE_USER_AUTHENTICATION = True/" "${GRAPHITE_SETTINGS}"
+
+  # Postgres database connection for Graphite
+  if is_debian; then
+    sed -i "s/'NAME': '.*'/'NAME': 'graphite'/" "${GRAPHITE_SETTINGS}"
+    sed -i "s/'ENGINE': '.*'/'ENGINE': 'django.db.backends.postgresql_psycopg2'/" \
+      "${GRAPHITE_SETTINGS}"
+    sed -i "s/'USER': '.*'/'USER': 'graphite'/"  "${GRAPHITE_SETTINGS}" \
+      "${GRAPHITE_SETTINGS}"
+    sed -i "s/'PASSWORD': '.*'/'PASSWORD': '${DB_PASSWORD}'/" "${GRAPHITE_SETTINGS}"
+    sed -i "s/'HOST': '.*'/'HOST': '127.0.0.1'/"  "${GRAPHITE_SETTINGS}"
+    set -x
+  fi
+
+  if is_centos; then
+    cat >> "${GRAPHITE_SETTINGS}" << EOF
+DATABASES = {
+    'default': {
+        'NAME': 'graphite',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'USER': 'graphite',
+        'PASSWORD': '${DB_PASSWORD}',
+        'HOST': '127.0.0.1',
+        'PORT': ''
+    }
+}
+EOF
+  fi
+
+  # Sync and create the Graphite DB
+  # TODO(leffler): Add superuser?
+  # syncdb command no longer in graphite-web version 1.0.2 (Debian 9).
+  # graphite-manage syncdb --noinput
+
+  # TODO(leffler): Fix this on Centos. What's missing?
+  if is_debian; then
+    cp /etc/default/graphite-carbon /etc/default/graphite-carbon.orig
+    sed -i "s/CARBON_CACHE_ENABLED=false/CARBON_CACHE_ENABLED=true/" \
+      /etc/default/graphite-carbon
+  fi
+
+  cp /etc/carbon/carbon.conf /etc/carbon/carbon.conf.orig
+  sed -i "s/ENABLE_LOGROTATION = False/ENABLE_LOGROTATION = True/" \
+    /etc/carbon/carbon.conf
+
+  cp /etc/carbon/storage-schemas.conf /etc/carbon/storage-schemas.conf.orig
+  cat > /etc/carbon/storage-schemas.conf << EOF
+# Schema definitions for Whisper files. Entries are scanned in order,
+# and first match wins. This file is scanned for changes every 60 seconds.
+#
+#  [name]
+#  pattern = regex
+#  retentions = timePerPoint:timeToStore, timePerPoint:timeToStore, ...
+
+# Carbon's internal metrics. This entry should match what is specified in
+# CARBON_METRIC_PREFIX and CARBON_METRIC_INTERVAL settings
+[carbon]
+pattern = ^carbon\.
+retentions = 60:90d
+
+[collectd]
+pattern = ^collectd\.
+retentions = 10s:1d,1m:7d,10m:1y
+
+[test]
+pattern = ^test\.
+retentions = 10s:10m,1m:1h,10m:1d
+
+[default_1min_for_1day]
+pattern = .*
+retentions = 60s:1d
+EOF
+
+  if is_debian; then
+    # Configure aggregation in Carbon
+    cp /usr/share/doc/graphite-carbon/examples/storage-aggregation.conf.example \
+      /etc/carbon/storage-aggregation.conf
+  fi
+
+  service carbon-cache start
+  systemctl enable carbon-cache
+fi
+
+# Configure CollectD
+if is_debian; then
+  COLLECTD_CONF="/etc/collectd/collectd.conf"
+fi
+if is_centos; then
+  COLLECTD_CONF="/etc/collectd.conf"
+fi
+
+# TODO(leffler): Disable unused plugins
+cp "${COLLECTD_CONF}" "${COLLECTD_CONF}.orig"
+# Use a simple hostname
+sed -i "s/#Hostname \"localhost\"/Hostname \"${HOSTNAME}\"/" \
+  "${COLLECTD_CONF}"
+sed -i "s/FQDNLookup true/FQDNLookup false/" "${COLLECTD_CONF}"
+# Write data to graphite.
+sed -i "s/#LoadPlugin write_graphite/LoadPlugin write_graphite/" \
+  "${COLLECTD_CONF}"
+cat >> "${COLLECTD_CONF}" << EOF
+<Plugin interface>
+       Interface "eth0"
+       IgnoreSelected false
+</Plugin>
+
+<Plugin write_graphite>
+    <Node "${HOSTNAME}">
+        Host "${monitoring_host}"
+        Port "2003"
+        Protocol "tcp"
+        LogSendErrors true
+        Prefix "collectd."
+        StoreRates true
+        AlwaysAppendDS false
+        EscapeCharacter "_"
+    </Node>
+</Plugin>
+EOF
+
+service collectd start
+systemctl enable collectd
+
+if is_primary; then
+  # Configure Apache for Graphite
+  if is_debian; then
+    readonly APACHE2_DIR="/etc/apache2/"
+    readonly APACHE2_SERVICE="apache2"
+    a2dissite 000-default
+    cp /opt/c2d/apache2-graphite.conf "${APACHE2_DIR}/sites-available"
+    a2ensite apache2-graphite
+    # Use port 3001 for Graphite instead of port 80
+    sed -i 's/Listen 80/Listen 3001/' "${APACHE2_DIR}/ports.conf"
+  fi
+  if is_centos; then
+    readonly APACHE2_DIR="/etc/httpd/"
+    readonly APACHE2_SERVICE="httpd"
+    # Use port 3001 for Graphite instead of port 80
+    sed -i 's/Listen 80/Listen 3001/' "${APACHE2_DIR}/conf/httpd.conf"
+    sed -i 's/<VirtualHost *:80>/<VirtualHost *:3001>/' "/etc/httpd/conf.d/graphite-web.conf"
+
+    # Clear default welcome webpage.
+    rm /etc/httpd/conf.d/welcome.conf
+
+    cat > /etc/httpd/conf.d/graphite-web.conf << EOF
+# Graphite Web Basic mod_wsgi vhost
+
+<VirtualHost *:3001>
+    ServerName $(hostname)
+    DocumentRoot "/usr/share/graphite/webapp"
+    ErrorLog /var/log/httpd/graphite-web-error.log
+    CustomLog /var/log/httpd/graphite-web-access.log common
+
+    # Header set Access-Control-Allow-Origin "*"
+    # Header set Access-Control-Allow-Methods "GET, OPTIONS"
+    # Header set Access-Control-Allow-Headers "origin, authorization, accept"
+    # Header set Access-Control-Allow-Credentials true
+
+    WSGIScriptAlias / /usr/share/graphite/graphite-web.wsgi
+    WSGIImportScript /usr/share/graphite/graphite-web.wsgi process-group=%{GLOBAL} application-group=%{GLOBAL}
+
+    <Location "/content/">
+        SetHandler None
+    </Location>
+
+    Alias /media/ "/usr/lib/python2.7/site-packages/django/contrib/admin/media/"
+    <Location "/media/">
+        SetHandler None
+    </Location>
+
+    # Authenticate users.
+    # The admin password is stored in the GCE metadata of the VM.
+    <Location "/">
+        # Accept
+        Satisfy Any
+        # Password auth based access
+        AuthType Basic
+        AuthName "Graphite web interface"
+        AuthBasicProvider file
+        AuthUserFile /etc/httpd/htpassword
+        Require valid-user
+        # IP based access for Grafana data source.
+        Order deny,allow
+        Deny from all
+        Allow from 127.0.0.1
+    </Location>
+
+</VirtualHost>
+EOF
+
+    # Allow DB access from httpd (Graphite) through SELinux.
+    setsebool -P httpd_can_network_connect_db 1
+
+    # Disable SELinux
+    sed -i "s/SELINUX=enforcing/SELINUX=disabled/" "/etc/sysconfig/selinux"
+  fi
+
+  set +x
+  htpasswd -bcd "${APACHE2_DIR}/htpassword" admin "${ADMIN_PASSWORD}"
+  set -x
+
+  service "${APACHE2_SERVICE}" start
+  systemctl enable "${APACHE2_SERVICE}"
+
+  # Configure Grafana.
+  cp /etc/grafana/grafana.ini /etc/grafana/grafana.ini.orig
+  # Use a safer Grafana admin password
+  set +x
+  sed -i "s/.*admin_password = .*/admin_password = ${ADMIN_PASSWORD}/" \
+    /etc/grafana/grafana.ini
+  # Configure Grafana to use Postgres.
+  cat >> /etc/grafana/grafana.ini <<EOF
+################################### Database ###################################
+[database]
+# Either "mysql", "postgres" or "sqlite3", it's your choice
+type = postgres
+host = 127.0.0.1:5432
+name = grafana
+user = grafana
+password = ${DB_PASSWORD}
+EOF
+  set -x
+
+  # Enable Grafana at boot.
+  systemctl enable grafana-server
+
+  # Start, then restart grafana server to trigger database migration to Postgres.
+  service grafana-server start
+  sleep 10
+  service grafana-server restart
+  sleep 10
+
+  # Wait for database tables to be created by the migration process.
+  # This usually takes a few seconds. Wait 30 seconds max.
+  declare -i attempts
+  attempts=0
+  for table in "dashboard" "dashboard_snapshot" "dashboard_tag" "data_source"; do
+    echo "Looking for table ${table} in Postgres:"
+    while sudo -u postgres psql grafana -c "select id from ${table}" 2>&1 \
+      | grep "does not exist"; do
+      attempts+=1
+      if (( "${attempts}" > 10 )); then
+        echo "Database table ${table} not found. Exiting." >> /dev/stderr
+        # This will fail the Launcher installation and notify the user.
+        exit 1
+      fi
+      echo "Waiting for table ${table} to be created"
+      sleep 3
+    done
+  done
+
+  # Configure grafana data_source
+  set +x
+  curl "http://admin:${ADMIN_PASSWORD}@127.0.0.1:3000/api/datasources" \
+      -X POST -H 'Content-Type: application/json;charset=UTF-8' --data-binary \
+      '{"name": "Graphite", "type": "graphite",
+        "access": "proxy", "url": "http://localhost:3001"}'
+
+  # Add grafana dashboards
+  dashboards=( storage system )
+  for dashboard in "${dashboards[@]}"; do
+    dashboard_file="dashboard_${dashboard}.json"
+    curl "http://admin:${ADMIN_PASSWORD}@127.0.0.1:3000/api/dashboards/import" \
+        -X POST -H 'Content-Type: application/json;charset=UTF-8' \
+        --data-binary \
+        "$(python ./generate_dashboard_import.py < ${dashboard_file} )"
+  done
+  set -x
+
+  # On Debian / Ubuntu, start Grafana after Postgres
+  sed -i "s/After=network-online.target/After=postgresql.service/" \
+    /usr/lib/systemd/system/grafana-server.service
+  sed -i "s/Wants=network-online.target/Wants=postgresql.service/" \
+    /usr/lib/systemd/system/grafana-server.service
+
+
+  # Allow connections to Graphite and Grafana
+  iptables -A INPUT -p tcp --dport 3000 -j ACCEPT
+  # Open port 3001 to access Graphite web interface.
+  iptables -A INPUT -p tcp --dport 3001 -j ACCEPT
+  if is_debian; then
+    iptables-save > /etc/iptables/rules.v4
+  fi
+  if is_centos; then
+    service iptables save
+  fi
+fi
+
+# Configure crontab for additional reporting
+cat >> /etc/crontab <<EOF
+# Additional monitoring for single node file server
+*/10 *  * * *   root    /opt/c2d/report_stats.py  | nc -q0 127.0.0.1 2003
+EOF
+
+echo "Monitoring configuration complete."
+
+# Reboot test / dev instances before validation.
+# This is to work around a bug in debian 9, where the daemons don't start
+# correctly when installed, stopped and started.
+# Not required for production deployments.
+readonly DEV_CREATOR=$(get_metadata instance/attributes/DEV_CREATOR)
+if [[ -n "${DEV_CREATOR}" ]]; then
+  echo "Reboot dev/test instance before validation."
+  reboot
+  # Wait for reboot, to avoid starting the next step.
+  sleep 1000
+fi

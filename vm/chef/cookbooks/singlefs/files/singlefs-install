@@ -1,0 +1,297 @@
+#!/bin/bash -eu
+#
+# Copyright 2019 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Script to configure single node file server based on a Debian image.
+#
+# 1. Create storage pool.
+# 2. Configure NFS and Samba.
+# 3. System configuration: firewall, network settings, etc.
+
+set -x
+set -e
+
+. /opt/c2d/get_metadata.sh
+. /opt/c2d/instance_utils.sh
+. /opt/c2d/retry_with_backoff.sh
+
+if (( "$(id -u)" > 0 )); then
+  echo "Please run this script as root."
+  exit 1
+fi
+
+# Trigger installation failure
+fail() {
+  echo "${1}"
+  exit 1
+}
+
+# Only install software once.
+readonly COMPLETE_FILE=/opt/c2d/install.complete
+if [[ -f "${COMPLETE_FILE}" ]]; then
+  echo "Software installation already completed."
+  exit 0
+fi
+touch "${COMPLETE_FILE}"
+
+# Redirect all output to the log file.
+readonly LOG_FILE=/opt/c2d/install.log
+exec > >(tee -a "${LOG_FILE}" ) 2>&1
+
+# Metadata inputs from Launcher / Deployment Manager.
+# Mandatory metadata
+readonly STORAGE_POOL="$(get_metadata instance/attributes/STORAGE_POOL_NAME)"
+readonly ENABLE_NFS="$(get_metadata instance/attributes/ENABLE_NFS)"
+readonly ENABLE_SMB="$(get_metadata instance/attributes/ENABLE_SMB)"
+readonly FILE_SYSTEM="$(get_metadata instance/attributes/FILE_SYSTEM)"
+for variable in STORAGE_POOL ENABLE_NFS ENABLE_SMB FILE_SYSTEM; do
+  eval "value=$(echo \${$variable})"
+  if [[ -z "${value}" ]]; then
+    fail "Required metadata variable '$variable' not set."
+  fi
+done
+
+# Optional metadata
+readonly VIRTUAL_IP="$(get_metadata instance/attributes/VIRTUAL_IP || true)"
+readonly ENABLE_BCACHE="$(get_metadata instance/attributes/ENABLE_BCACHE || true)"
+
+# Debug output.
+for variable in STORAGE_POOL ENABLE_NFS ENABLE_SMB ENABLE_BCACHE FILE_SYSTEM \
+  VIRTUAL_IP; do
+  eval "value=$(echo \${$variable})"
+  echo "${variable} = '${value}'"
+done
+
+readonly ZFS_KERNEL_CONFIG="/etc/modprobe.d/zfs.conf"
+readonly networks=(10.0.0.0/8 127.0.0.1)
+
+# Guess the name of the data disk
+readonly DISK_PREFIX="/dev/disk/by-id/google"
+DATA_DEVICE="${DISK_PREFIX}-${HOSTNAME}-${STORAGE_POOL}"
+readonly METADATA_DISKS="http://metadata.google.internal/computeMetadata/v1/instance/disks"
+readonly LOCAL_SSDS=$(curl "${METADATA_DISKS}/?recursive=true&alt=text" \
+  -H "Metadata-Flavor: Google" 2>&1 | grep type | tail -n +2 | wc -l)
+
+# Figure out the data disk type. The systems drive is the first one.
+data_disk_type="LOCAL-SSD"
+has_pd=$(curl "${METADATA_DISKS}/?recursive=true&alt=text" \
+  -H "Metadata-Flavor: Google" 2>&1 | grep -v 0/ | \
+  grep  -e /device-name -e /type | grep PERSISTENT || true)
+if [[ "${has_pd}" != "" ]]; then
+  data_disk_type="PERSISTENT"
+fi
+
+# Special case for Multiple SSD storage only.
+if [[ "${data_disk_type}" = "LOCAL-SSD" ]]; then
+  if (( "$LOCAL_SSDS" > "1" )); then
+    # Configure striped raid device for maximum performance.
+    mdadm --create /dev/md0 --level=0 "--raid-devices=${LOCAL_SSDS}" /dev/disk/by-id/google-local-ssd-*
+    DATA_DEVICE="/dev/md0"
+  fi
+fi
+
+# Wrapper to address flakiness of internet downloads.
+apt_wrapper(){
+  retry_with_backoff apt "${@}"
+}
+
+# Install and configure ZFS.
+if [[ "${FILE_SYSTEM}" = "zfs" ]]; then
+  export DEBIAN_FRONTEND=noninteractive
+  echo "deb http://ftp.debian.org/debian stretch-backports main contrib" >> /etc/apt/sources.list.d/backports.list
+  apt_wrapper update
+  apt_wrapper install --yes "linux-headers-$(uname -r)"
+  apt_wrapper install --yes -t stretch-backports zfs-dkms
+  modprobe zfs
+
+  readonly memory_bytes=$(grep MemTotal /proc/meminfo | awk '{print $2}')
+  readonly zfs_arc_max=$((memory_bytes * 3 / 4))
+  cat > "${ZFS_KERNEL_CONFIG}" << EOF
+# ZFS kernel parameters tuned for Google Compute Engine.
+# This configuration is intended for a file server. If ram is required for other
+# processes, decrease the arc cache to free up ram. On Linux, ZFS may not free
+# ram quickly enough for other processes.
+
+# Allow 75% of ram to be used as cache
+options zfs zfs_arc_max=${zfs_arc_max}
+
+# Allow streaming read caching on local ssd
+options zfs l2arc_noprefetch=0
+
+# Allow 360MB/s of write to the local ssd cache after boot.
+options zfs l2arc_write_boost=377487360
+
+# Allow 80MB/s of writes to the local ssd cache during normal operation
+options zfs l2arc_write_max=83886080
+
+# Empty write buffer quickly
+options zfs zfs_vdev_async_write_active_min_dirty_percent=5
+options zfs zfs_vdev_async_write_active_max_dirty_percent=10
+EOF
+fi
+
+# Enable iptables on Centos.
+if is_centos; then
+  systemctl disable firewalld
+  systemctl enable iptables
+fi
+
+if [[ -n "${VIRTUAL_IP}" ]]; then
+  # Configure virtual IP interface.
+  cat >> /etc/network/interfaces << EOF
+auto eth0:0
+allow-hotplug eth0:0
+iface eth0:0 inet static
+address ${VIRTUAL_IP}
+netmask 255.255.255.255
+EOF
+
+  # Allow traffic from local networks to the virtual IP.
+  for network in "${networks[@]}"; do
+    iptables -A INPUT -s "${network}" -d "${VIRTUAL_IP}/32" -j ACCEPT
+  done
+fi
+
+# Create file system.
+case "${FILE_SYSTEM}" in
+  zfs)
+    zpool create -f "${STORAGE_POOL}" "${DATA_DEVICE}"
+    if [[ "${data_disk_type}" != "LOCAL-SSD" ]]; then
+      if (( "${LOCAL_SSDS}" > "1" )); then
+        echo "Add local ssds as caching devices"
+        zpool add "${STORAGE_POOL}" cache -f ${DISK_PREFIX}-local-ssd-?
+      fi
+    fi
+    ;;
+  ext4)
+    # Use largest possible ext4 journal for performance.
+    # TODO(leffler): Add logic based on disk size.
+    echo "y" | mkfs.ext4 -J size=1000 -L "${STORAGE_POOL}" "${DATA_DEVICE}"
+    echo "LABEL=${STORAGE_POOL} /${STORAGE_POOL} ext4 defaults 0 0" >> /etc/fstab
+    ;;
+  xfs)
+    mkfs.xfs -L "${STORAGE_POOL}" "${DATA_DEVICE}"
+    echo "LABEL=${STORAGE_POOL} /${STORAGE_POOL} xfs defaults 0 0" >> /etc/fstab
+    ;;
+esac
+
+if [[ "${FILE_SYSTEM}" != "zfs" ]]; then
+  mkdir "/${STORAGE_POOL}"
+  mount "/${STORAGE_POOL}"
+fi
+
+# Relax permissions.
+chmod 777 "/${STORAGE_POOL}"
+
+# Share the filesystem to local GCE network over NFS.
+# TODO(leffler): Add bash logic to find CIDRs of subnetworks.
+if [[ "${FILE_SYSTEM}" = "zfs" ]]; then
+  sharenfs=""
+  for network in "${networks[@]}"; do
+    sharenfs="rw=${network},fsid=100,${sharenfs}"
+  done
+  sharenfs="${sharenfs}insecure"
+  zfs set "sharenfs=${sharenfs}" "${STORAGE_POOL}"
+  # Fix issue related to ZFS exports without /etc/exports.
+  sed -i "s/if \[ -f \/etc\/exports \]/if \[ -f \/etc\/exports \] #/" \
+    /etc/init.d/nfs-kernel-server
+sed -i "s/ZFS_SHARE='no'/ZFS_SHARE='yes'/" /etc/default/zfs
+else
+  for network in "${networks[@]}"; do
+    echo "/${STORAGE_POOL} ${network}(rw,no_subtree_check,fsid=100)" >> /etc/exports
+  done
+fi
+
+if is_centos; then
+  NFS_CONFIG="/etc/sysconfig/nfs"
+  NFS_SERVICES=(nfs-server.service)
+  SAMBA_SERVICES=(smb.service nmb.service)
+fi
+if is_debian; then
+  NFS_CONFIG="/etc/default/nfs-kernel-server"
+  NFS_SERVICES=(nfs-kernel-server)
+  SAMBA_SERVICES=(smbd nmbd)
+  # Fix issue related to ZFS exports without /etc/exports.
+  sed -i "s/if \[ -f \/etc\/exports \]/if \[ -f \/etc\/exports \] #/" \
+    /etc/init.d/nfs-kernel-server
+fi
+
+# Use 16 * (# cores) NFS threads. This provides good performance for both
+# streaming and random IO without overwhelming the CPU with thread scheduling.
+readonly NFS_THREADS=$(($(nproc) * 16 ))
+sed -i "s/#*RPCNFSDCOUNT=.*/RPCNFSDCOUNT=${NFS_THREADS}/" "${NFS_CONFIG}"
+
+# Use a fixed port number for mountd, so that the port does not change
+# during failover.
+sed -i "s/RPCMOUNTDOPTS=\"/RPCMOUNTDOPTS=\"--port 2050 /" "${NFS_CONFIG}"
+
+# Configure NFS.
+if [[ "${ENABLE_NFS}" = "enable:True" ]]; then
+  /etc/init.d/rpcbind start
+  /etc/init.d/nfs-common start
+  for service in "${NFS_SERVICES[@]}"; do
+    systemctl enable "${service}" || fail "Failed to enable service: ${service}"
+    service "${service}" start || echo "Failed to start service: ${service}"
+  done
+fi
+
+# Configure SMB sharing.
+cp /etc/samba/smb.conf /etc/samba/smb.conf.orig
+cat >> /etc/samba/smb.conf << EOF
+# Public share added by click to deploy for testing.
+# Remove this for production work loads.
+[${STORAGE_POOL}]
+   comment = Public share of /${STORAGE_POOL}
+   path = /${STORAGE_POOL}
+   browseable = yes
+   read only = no
+   writable = yes
+   guest ok = yes
+   hosts allow = ${networks[@]}
+   hosts deny = 0.0.0.0/0
+EOF
+
+if [[ "${ENABLE_SMB}" = "enable:True" ]]; then
+  for service in "${SAMBA_SERVICES[@]}"; do
+    systemctl enable "${service}" || fail "Failed to enable service: ${service}"
+    service "${service}" restart || fail "Failed to restart service: ${service}"
+  done
+fi
+
+# Basic firewall configuration
+
+# Allow established sessions.
+iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+
+# Allow ssh from the internet
+iptables -A INPUT -p tcp --dport ssh -j ACCEPT
+
+# Allow internal traffic on the local network, including NFS and SMB.
+for network in "${networks[@]}"; do
+  iptables -A INPUT -s "${network}" -j ACCEPT
+done
+
+# Block everything else
+iptables -P INPUT DROP
+
+# Save firewall rules
+if is_debian; then
+  iptables-save > /etc/iptables/rules.v4
+fi
+if is_centos; then
+  service iptables save
+fi
+
+echo "Software installation complete."

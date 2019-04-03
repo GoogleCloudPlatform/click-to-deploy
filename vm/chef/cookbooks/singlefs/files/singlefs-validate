@@ -1,0 +1,247 @@
+#!/bin/bash -eu
+#
+# Copyright 2019 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Test that the filesystem, and optionally NFS/Samba works correctly.
+
+if (( "$(id -u)" > 0 )); then
+  echo "Please run this script as root."
+  exit 1
+fi
+
+# Don't echo commands to the command line / serial console.
+set +x
+
+# Only validate installation once.
+readonly COMPLETE_FILE=/opt/c2d/validation.complete
+if [[ -f "${COMPLETE_FILE}" ]]; then
+  echo "Software validation already completed."
+  exit 0
+fi
+touch "${COMPLETE_FILE}"
+
+. /opt/c2d/get_metadata.sh
+. /opt/c2d/instance_utils.sh
+
+# Redirect all output to the log file.
+readonly LOG_FILE=/opt/c2d/validation.log
+exec > >(tee -a "${LOG_FILE}" ) 2>&1
+
+set -o nounset
+set -o errexit
+set -o pipefail
+
+FAILED=0
+
+function passed {
+  echo "Passed."
+}
+
+function failed {
+  echo "Failed."
+  FAILED=1
+}
+
+function validate {
+  $(eval $1)
+  if [ $? -eq 0 ] ; then
+    passed
+  else
+    failed
+  fi
+}
+
+function test_file {
+  echo -n "Test that test file doesn't already exist ... "
+  validate "echo Hello > '$1'"
+
+  echo -n "Test that writing a file works ... "
+  validate "echo Hello > '$1'"
+
+  echo -n "Test that reading a file works ... "
+  validate "grep Hello '$1' > /dev/null"
+
+  echo -n "Test that deleting a file works ... "
+  validate "rm '$1' > /dev/null"
+}
+
+function test_nfs {
+  echo -n "Test that NFS server is responding ... "
+  validate "rpcinfo -t 127.0.0.1 100003 3 > /dev/null"
+
+  echo -n "Test that NFS is exported ... "
+  validate "exportfs > /dev/null"
+
+  echo -n "Test that NFS can be mounted ... "
+  validate "mount '$1:/${STORAGE_POOL}' /mnt"
+
+  # Only test file creation/deletion on primary (replicas are read only)
+  if is_primary; then
+    test_file /mnt/nfs_test.txt
+  fi
+
+  echo -n "Test that NFS can be unmounted ... "
+  validate "umount /mnt"
+}
+
+function test_grafana_dashboards {
+  local url="http://admin:${ADMIN_PASSWORD}@127.0.0.1:3000/api/search?query=&starred=false"
+  local dashboards=$(curl -s "${url}")
+  # Expect "Storage" and "System" dashboards.
+  if [[ "${dashboards}" =~ "Storage" ]] && [[ "${dashboards}" =~ "System" ]]; then
+    passed
+  else
+    failed
+  fi
+}
+
+echo -e "Test installation and configuration.\n"
+
+readonly HOST_IP=$(hostname -i)
+readonly ADMIN_PASSWORD="$(get_metadata instance/attributes/ADMIN_PASSWORD)"
+readonly ENABLE_NFS="$(get_metadata instance/attributes/ENABLE_NFS)"
+readonly ENABLE_SMB="$(get_metadata instance/attributes/ENABLE_SMB)"
+readonly FILE_SYSTEM="$(get_metadata instance/attributes/FILE_SYSTEM)"
+readonly STORAGE_POOL="$(get_metadata instance/attributes/STORAGE_POOL_NAME)"
+readonly DISABLE_MONITORING="$(get_metadata instance/attributes/DISABLE_MONITORING || true)"
+readonly VIRTUAL_IP="$(get_metadata instance/attributes/VIRTUAL_IP || true)"
+for variable in STORAGE_POOL ENABLE_NFS ENABLE_SMB FILE_SYSTEM; do
+  eval "value=$(echo \${$variable})"
+  if [[ -z "$value" ]]; then
+    echo "Required metadata variable '$variable' not set. Aborting validation."
+    exit 1
+  fi
+done
+
+echo "File system:"
+case "${FILE_SYSTEM}" in
+  zfs)
+    echo -n "Test that the ZFS kernel module is installed ... "
+    validate "lsmod | grep zfs > /dev/null"
+    ;;
+  btrfs)
+    echo -n "Test that the BtrFS kernel module is installed ... "
+    validate "lsmod | grep btrfs > /dev/null"
+    ;;
+  xfs)
+    echo -n "Test that the XFS kernel module is installed ... "
+    validate "lsmod | grep xfs > /dev/null"
+    ;;
+  ext4)
+    echo "No tests for ext4."
+    ;;
+esac
+
+echo -n "Test that a ${FILE_SYSTEM} file system was created ... "
+case "${FILE_SYSTEM}" in
+  zfs)
+    validate "zpool list | grep -v 'no pools available' > /dev/null"
+    ;;
+  btrfs)
+    validate "btrfs filesystem show '${STORAGE_POOL}' > /dev/null"
+    ;;
+  xfs)
+    validate "findmnt -n -t xfs '/${STORAGE_POOL}' > /dev/null"
+    ;;
+  ext4)
+    validate "findmnt -n -t ext4 '/${STORAGE_POOL}' > /dev/null"
+    ;;
+esac
+
+
+# Test file creation/deletion on primary only.
+if is_primary; then
+  test_file "/${STORAGE_POOL}/basic_test.txt"
+fi
+
+# (Optional) NFS testing.
+if [[ "${ENABLE_NFS}" == "enable:True" ]]; then
+  echo -e "\nNFS:"
+  test_nfs "${HOST_IP}"
+else
+  echo -e "\nNFS disabled. Skipping tests."
+fi
+
+# (Optional) Samba testing.
+if [[ "${ENABLE_SMB}" == "enable:True" ]]; then
+  echo -e "\nSamba:"
+  echo -n "Test that Samba server is running ... "
+  validate "ps aux | grep -v grep | grep smbd  > /dev/null"
+
+  echo -n "Test that Samba can be mounted ... "
+  validate "mount -t cifs '//${HOST_IP}/${STORAGE_POOL}' /mnt -o username=guest"
+
+  # Test file creation/deletion on primary only.
+  if is_primary; then
+    test_file /mnt/smb_test.txt
+  fi
+
+  echo -n "Test that Samba can be unmounted ... "
+  validate "umount /mnt"
+else
+  echo -e "\nSMB disabled. Skipping tests."
+fi
+
+# (Optional) Virtual IP NFS testing.
+if [[ -n "${VIRTUAL_IP}" ]]; then
+  if [[ "${ENABLE_NFS}" == "enable:True" ]]; then
+    echo -e "\nNFS over virtual IP:"
+    test_nfs "${VIRTUAL_IP}"
+  fi
+else
+  echo -e "\nVirtual IP not configured. Skipping tests."
+fi
+
+if is_debian; then
+  APACHE2_SERVICE="apache2"
+fi
+if is_centos; then
+  APACHE2_SERVICE="httpd"
+fi
+
+
+# Test monitoring stack on primary
+if [[ -n "${DISABLE_MONITORING}" ]]; then
+  echo -e "\nMonitoring disabled. Skipping tests."
+else
+  if is_primary; then
+    echo -e "\nMonitoring stack:"
+    echo -n "Test that Apache is running ... "
+    validate "ps aux | grep -v grep | grep '${APACHE2_SERVICE}'  > /dev/null"
+    echo -n "Test that PostgreSQL is running ... "
+    validate "ps aux | grep -v grep | grep postgres  > /dev/null"
+    echo -n "Test that CollectD is running ... "
+    validate "ps aux | grep -v grep | grep collectd  > /dev/null"
+    echo -n "Test that Carbon is running ... "
+    validate "ps aux | grep -v grep | grep carbon-cache  > /dev/null"
+    echo -n "Test that Graphite is running ... "
+    validate "ps aux | grep -v grep | grep graphite  > /dev/null"
+    echo -n "Test that Grafana is running ... "
+    validate "ps aux | grep -v grep | grep grafana-server  > /dev/null"
+    echo -n "Test that Grafana dashboards are working ... "
+    test_grafana_dashboards
+  fi
+  echo -n "Test that disk monitoring is working ... "
+  validate "/opt/c2d/report_stats.py > /dev/null"
+fi
+
+# This return value will cause the deployment to succeed or fail.
+if (( "${FAILED}" == 0 )); then
+  echo -e "\nMinimal install validation: All tests PASSED."
+  exit 0
+else
+  echo -e "\nMinimal install validation: Some tests FAILED."
+  exit 1
+fi
