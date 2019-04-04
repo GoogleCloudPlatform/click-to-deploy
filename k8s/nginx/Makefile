@@ -24,7 +24,7 @@ ifdef IMAGE_NGINX_INIT
 endif
 
 ifdef PUBLIC_IP_AVAILABLE
-  PUBLIC_IP_AVAILABLE_FIELD = , "publicIP.available": "$(PUBLIC_IP_AVAILABLE)"
+  PUBLIC_IP_AVAILABLE_FIELD = , "publicIp.available": "$(PUBLIC_IP_AVAILABLE)"
 endif
 
 APP_PARAMETERS ?= { \

@@ -28,5 +28,5 @@ spec:
     - name: APP_INSTANCE_NAME
       value: {{ .Release.Name }}
     - name: PUBLIC_IP_AVAILABLE
-      value: "{{ .Values.publicIP.available }}"
+      value: "{{ .Values.publicIp.available }}"
   restartPolicy: Never
