@@ -58,8 +58,8 @@ app/build:: .build/postgresql/deployer \
 
 
 .build/postgresql/postgresql: .build/var/REGISTRY \
-                            .build/var/TAG \
-                            | .build/postgresql
+                              .build/var/TAG \
+                              | .build/postgresql
 	docker pull $(IMAGE_POSTGRESQL)
 	docker tag $(IMAGE_POSTGRESQL) "$(REGISTRY)/postgresql:$(TAG)"
 	docker push "$(REGISTRY)/postgresql:$(TAG)"
