@@ -57,8 +57,9 @@ TESTER_IMAGE ?= $(REGISTRY)/wordpress/tester:$(TAG)
 
 
 app/build:: .build/wordpress/deployer \
-            .build/wordpress/mysql \
             .build/wordpress/wordpress \
+            .build/wordpress/apache-exporter \
+            .build/wordpress/mysql \
             .build/wordpress/mysqld-exporter \
             .build/wordpress/prometheus-to-sd \
             .build/wordpress/tester
@@ -96,6 +97,16 @@ app/build:: .build/wordpress/deployer \
 	docker tag marketplace.gcr.io/google/wordpress5-php7-apache:$(TAG) \
 	    "$(REGISTRY)/wordpress:$(TAG)"
 	docker push "$(REGISTRY)/wordpress:$(TAG)"
+	@touch "$@"
+
+
+.build/wordpress/apache-exporter: .build/var/REGISTRY \
+                                  .build/var/TAG \
+                                  | .build/wordpress
+	docker pull marketplace.gcr.io/google/wordpress5-php7-apache:exporter
+	docker tag marketplace.gcr.io/google/wordpress5-php7-apache:exporter \
+	    "$(REGISTRY)/wordpress/apache-exporter:$(TAG)"
+	docker push "$(REGISTRY)/wordpress/apache-exporter:$(TAG)"
 	@touch "$@"
 
 
