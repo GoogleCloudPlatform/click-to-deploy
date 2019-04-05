@@ -5,32 +5,30 @@ include ../var.Makefile
 
 
 TAG ?= 7.6
-PGSQL_TAG ?= 9.6-kubernetes
 METRICS_EXPORTER_TAG ?= v0.5.1
+SRCTAG ?= 9.6-kubernetes
 IMAGE_SONARQUBE ?= marketplace.gcr.io/google/sonarqube7:latest
-IMAGE_POSTGRESQL ?= marketplace.gcr.io/google/postgresql9:$(PGSQL_TAG)
-
+IMAGE_POSTGRESQL ?= marketplace.gcr.io/google/postgresql9:$(SRCTAG)
 $(info ---- TAG = $(TAG))
-
-APP_DEPLOYER_IMAGE ?= $(REGISTRY)/sonarqube/deployer:$(TAG)
-NAME ?= sonarqube-1
 
 ifdef DB_PASSWORD
   DB_PASSWORD_FIELD = , "postgresql.db.password": "$(DB_PASSWORD)"
 endif
 
+ifdef METRICS_EXPORTER_ENABLED
+  METRICS_EXPORTER_ENABLED_FIELD = , "metrics.enabled": "$(METRICS_EXPORTER_ENABLED)"
+endif
 
+APP_DEPLOYER_IMAGE ?= $(REGISTRY)/sonarqube/deployer:$(TAG)
+NAME ?= sonarqube-1
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
   $(DB_PASSWORD) \
+  $(METRICS_EXPORTER_ENABLED_FIELD) \
 }
 
 TESTER_IMAGE ?= $(REGISTRY)/sonarqube/tester:$(TAG)
-
-APP_TEST_PARAMETERS ?= { \
-  "testerImage": "$(TESTER_IMAGE)" \
-}
 
 
 app/build:: .build/sonarqube/deployer \

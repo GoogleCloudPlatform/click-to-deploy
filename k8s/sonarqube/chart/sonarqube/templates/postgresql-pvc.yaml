@@ -12,3 +12,4 @@ spec:
     requests:
       storage: {{ .Values.postgresql.volumeSize }}Gi
   storageClassName: standard
+

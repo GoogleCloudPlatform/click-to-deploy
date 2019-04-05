@@ -9,17 +9,6 @@ sonarqube:
     externalPort: 9000
     internalPort: 9000
 
-readinessProbe:
-  initialDelaySeconds: 60
-  periodSeconds: 30
-  failureThreshold: 6
-  sonarWebContext: /
-
-livenessProbe:
-  initialDelaySeconds: 60
-  periodSeconds: 30
-  sonarWebContext: /
-
 postgresql:
   image: marketplace.gcr.io/google/postgresql9:latest
   volumeSize: 10

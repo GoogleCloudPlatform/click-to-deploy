@@ -20,11 +20,6 @@ spec:
     Google does not offer support for this solution. However, community support is available on
     Additional community support is available on [community forums](https://www.sonarqube.org/community/).
   info:
-  - name: SonarQube IP address
-    type: Reference
-    valueFrom:
-      serviceRef:
-        name: {{.Release.Name}}-{{ .Values.sonarqube.service.name}}
   - name: Temporary password for user postgres
     type: Reference
     valueFrom:
@@ -56,21 +51,4 @@ spec:
   - group: v1
     kind: ServiceAccount
   notes: |-
-    # Access PostgreSQL
-
-    Get the external IP of the PostgreSQL service:
-
-    ```
-    SERVICE_IP=$(kubectl get \
-      --namespace {{ .Release.Namespace }} \
-      svc {{ .Release.Name }}-postgresql-svc \
-      -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-
-    export PGPASSWORD=$(kubectl get secret "{{ .Release.Name }}-secret" \
-      --output=jsonpath='{.data.password}' | base64 -d)
-
-    psql -U postgres -h $SERVICE_IP
-    ```
-
-    Note that it might take some time for the external IP to be provisioned.
 

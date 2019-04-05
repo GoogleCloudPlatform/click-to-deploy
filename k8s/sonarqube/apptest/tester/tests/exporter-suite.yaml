@@ -1,0 +1,6 @@
+actions:
+- name: Prometheus metrics availability
+  command: ['wget', '-O', '-', 'http://localhost:9000/api/prometheus/metrics']
+  expect:
+    stdout:
+      contain: '# HELP sonarqube_vulnerabilities Vulnerabilities'
