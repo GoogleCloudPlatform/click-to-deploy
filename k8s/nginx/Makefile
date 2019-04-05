@@ -23,12 +23,17 @@ ifdef IMAGE_NGINX_INIT
   IMAGE_NGINX_INIT_FIELD = , "nginx.initImage": "$(IMAGE_NGINX_INIT)"
 endif
 
+ifdef PUBLIC_IP_AVAILABLE
+  PUBLIC_IP_AVAILABLE_FIELD = , "publicIp.available": "$(PUBLIC_IP_AVAILABLE)"
+endif
+
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
   $(IMAGE_NGINX_FIELD) \
   $(IMAGE_NGINX_INIT_FIELD) \
   $(METRICS_EXPORTER_ENABLED_FIELD) \
+  $(PUBLIC_IP_AVAILABLE_FIELD) \
 }
 
 TESTER_IMAGE ?= $(REGISTRY)/nginx/tester:$(TAG)
