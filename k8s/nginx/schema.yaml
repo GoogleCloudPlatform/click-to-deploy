@@ -34,6 +34,11 @@ properties:
     title: Enable Stackdriver Metrics Exporter
     description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
     default: false
+  publicIp.available:
+    type: boolean
+    default: true
+    x-google-marketplace:
+      type: INGRESS_AVAILABLE
 required:
 - name
 - namespace
