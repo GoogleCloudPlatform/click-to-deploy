@@ -5,4 +5,5 @@ nginx:
 metrics:
   image: null
   enabled: false
-
+publicIp:
+  available: true
