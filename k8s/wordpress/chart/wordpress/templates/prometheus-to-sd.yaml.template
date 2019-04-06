@@ -24,6 +24,7 @@ spec:
         - /monitor
         - --stackdriver-prefix=custom.googleapis.com
         - --source={{ .Release.Name }}-mysql:http://{{ .Release.Name }}-mysqld-exporter-svc:9104/metrics
+        - --source={{ .Release.Name }}-apache:http://{{ .Release.Name }}-apache-exporter-svc:9117/metrics
         - --pod-id=$(POD_NAME)
         - --namespace-id=$(POD_NAMESPACE)
         - --scrape-interval=5s
