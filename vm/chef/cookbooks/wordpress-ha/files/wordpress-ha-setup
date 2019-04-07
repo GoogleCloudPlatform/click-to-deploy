@@ -101,53 +101,60 @@ echo "${service_account_key}" > /opt/c2d/auth/sa_key.json
 gcloud auth activate-service-account \
   "${service_account}" --key-file /opt/c2d/auth/sa_key.json
 
-echo "C2D: WordPress - create config"
+if gsutil -q stat gs://${gcs_bucket_name}/wp-app/wp-config.php; then
+  echo "C2D: WordPress - pull bucket"
 
-readonly wp_stateless_config="
-// ** WP Stateless settings ** //
-define('WP_STATELESS_MEDIA_MODE', 'stateless');
-define('WP_STATELESS_MEDIA_BODY_REWRITE', true);
-define('WP_STATELESS_MEDIA_BODY_REWRITE_TYPES', 'jpg jpeg png gif pdf');
-define('WP_STATELESS_MEDIA_BUCKET', '${gcs_bucket_name}');
-define('WP_STATELESS_MEDIA_ROOT_DIR', 'wp-media');
-define('WP_STATELESS_MEDIA_JSON_KEY', file_get_contents('/opt/c2d/auth/sa_key.json'));
-define('WP_STATELESS_MEDIA_CACHE_CONTROL', '');
-define('WP_STATELESS_MEDIA_DELETE_REMOTE', true);
-define('WP_STATELESS_MEDIA_CUSTOM_DOMAIN', '');
-define('WP_STATELESS_MEDIA_HASH_FILENAME', true);"
+  /opt/c2d/downloads/gcs-pull-once.sh
+else
 
-sudo -u www-data wp config create \
-  --dbname=wordpress \
-  --dbuser=wordpress \
-  --dbpass="${wordpress_password}" \
-  --dbhost="${database_ip}" \
-  --path=/var/www/html/ \
-  --force \
-  --extra-php <<<"${wp_stateless_config}"
+  echo "C2D: WordPress - create config"
 
-echo "Wait for IP address"
+  readonly wp_stateless_config="
+  // ** WP Stateless settings ** //
+  define('WP_STATELESS_MEDIA_MODE', 'stateless');
+  define('WP_STATELESS_MEDIA_BODY_REWRITE', true);
+  define('WP_STATELESS_MEDIA_BODY_REWRITE_TYPES', 'jpg jpeg png gif pdf');
+  define('WP_STATELESS_MEDIA_BUCKET', '${gcs_bucket_name}');
+  define('WP_STATELESS_MEDIA_ROOT_DIR', 'wp-media');
+  define('WP_STATELESS_MEDIA_JSON_KEY', file_get_contents('/opt/c2d/auth/sa_key.json'));
+  define('WP_STATELESS_MEDIA_CACHE_CONTROL', '');
+  define('WP_STATELESS_MEDIA_DELETE_REMOTE', true);
+  define('WP_STATELESS_MEDIA_CUSTOM_DOMAIN', '');
+  define('WP_STATELESS_MEDIA_HASH_FILENAME', true);"
 
-wait_for_rtc_var "${runtime_config}" "ipaddress"
-readonly ipaddress="$(get_rtc_var_text "${runtime_config}" "ipaddress")"
+  sudo -u www-data wp config create \
+    --dbname=wordpress \
+    --dbuser=wordpress \
+    --dbpass="${wordpress_password}" \
+    --dbhost="${database_ip}" \
+    --path=/var/www/html/ \
+    --force \
+    --extra-php <<<"${wp_stateless_config}"
 
-echo "C2D: WordPress - install core"
+  echo "Wait for IP address"
 
-sudo -u www-data wp core install \
-  --url="${ipaddress}" \
-  --title="WordPress HA on Google Cloud" \
-  --admin_user=admin \
-  --admin_password="${wp_admin_pass}" \
-  --admin_email="${wp_admin_email}" \
-  --path=/var/www/html/ \
-  --skip-email
+  wait_for_rtc_var "${runtime_config}" "ipaddress"
+  readonly ipaddress="$(get_rtc_var_text "${runtime_config}" "ipaddress")"
 
-echo "C2D: WordPress - install WP-Stateless"
+  echo "C2D: WordPress - install core"
 
-mv /opt/c2d/downloads/wp-stateless/ /var/www/html/wp-content/plugins/
-chown -R www-data:www-data /var/www/html/wp-content/plugins/
+  sudo -u www-data wp core install \
+    --url="${ipaddress}" \
+    --title="WordPress HA on Google Cloud" \
+    --admin_user=admin \
+    --admin_password="${wp_admin_pass}" \
+    --admin_email="${wp_admin_email}" \
+    --path=/var/www/html/ \
+    --skip-email
 
-sudo -u www-data wp plugin activate wp-stateless \
-  --path=/var/www/html
+  echo "C2D: WordPress - install WP-Stateless"
+
+  mv /opt/c2d/downloads/wp-stateless/ /var/www/html/wp-content/plugins/
+  chown -R www-data:www-data /var/www/html/wp-content/plugins/
+
+  sudo -u www-data wp plugin activate wp-stateless \
+    --path=/var/www/html
+fi
 
 if [[ "${is_admin_node}" == "true" ]]; then
   # Notify admin waiter about wordpress being installed
