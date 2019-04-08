@@ -40,6 +40,6 @@ if [[ "${ENABLE_PUBLIC_SERVICE_AND_INGRESS}" == true ]]; then
     --output jsonpath='{.status.loadBalancer.ingress[0].ip}')"
 
   for test in /tests/external/*; do
-  testrunner -logtostderr "--test_spec=${test}"
-done
+    testrunner -logtostderr "--test_spec=${test}"
+  done
 fi
