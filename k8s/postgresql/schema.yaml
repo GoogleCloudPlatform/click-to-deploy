@@ -23,12 +23,27 @@ properties:
     title: PostgreSQL Service Account
     x-google-marketplace:
       type: SERVICE_ACCOUNT
+  exporter.image:
+    type: string
+    default: $REGISTRY/exporter:$TAG
+    x-google-marketplace:
+      type: IMAGE
   db.password:
     type: string
     x-google-marketplace:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 12
+  metrics.image:
+    type: string
+    default: $REGISTRY/prometheus-to-sd:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  metrics.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
+    default: false
 
 required:
 - name
@@ -36,4 +51,7 @@ required:
 - postgresql.image
 - postgresql.volumeSize
 - postgresql.serviceAccount
+- exporter.image
 - db.password
+- metrics.image
+- metrics.enabled

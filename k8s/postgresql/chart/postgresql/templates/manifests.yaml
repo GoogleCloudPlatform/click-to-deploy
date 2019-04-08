@@ -67,19 +67,48 @@ spec:
             secretKeyRef:
               name: {{ .Release.Name }}-secret
               key: password
+      - name: postgresql-exporter
+        image: {{ .Values.exporter.image }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9187
+          name: exporter
+        env:
+        - name: "DATA_SOURCE_URI"
+          value: "localhost:5432/postgres?sslmode=disable"
+        - name: "DATA_SOURCE_USER"
+          value: "postgres"
+        - name: "DATA_SOURCE_PASS"
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-secret
+              key: password
 ---
 kind: Service
 apiVersion: v1
 metadata:
   name: {{ .Release.Name }}-postgresql-svc
-  labels:
+  labels: &PostgresSQLDeploymentLabels
     app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: postgresql-server
 spec:
   ports:
   - name: postgres
     port: 5432
-  selector:
+    targetPort: 5432
+  selector: *PostgresSQLDeploymentLabels
+  type: ClusterIP
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-postgres-exporter-svc
+  labels: &PostgresSQLDeploymentLabels
     app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: postgresql-server
+spec:
+  ports:
+  - name: postgres-exporter
+    port: 9187
+  selector: *PostgresSQLDeploymentLabels
   type: ClusterIP

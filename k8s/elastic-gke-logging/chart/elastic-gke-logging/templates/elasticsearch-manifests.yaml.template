@@ -86,6 +86,8 @@ spec:
             cpu: 100m
             memory: 1536Mi
         ports:
+        - name: exporter
+          containerPort: 9108
         - name: http
           containerPort: 9200
         - name: tcp-transport
@@ -118,6 +120,30 @@ spec:
           requests:
             cpu: 100m
             memory: 1536Mi
+      {{ if .Values.metrics.enabled }}
+      - name: prometheus-to-sd
+        image: {{ .Values.metrics.image }}
+        ports:
+        - name: profiler
+          containerPort: 6060
+        command:
+        - /monitor
+        - --stackdriver-prefix=custom.googleapis.com
+        - --source=$(POD_NAME):http://localhost:9108/metrics
+        - --pod-id=$(POD_NAME)
+        - --namespace-id=$(POD_NAMESPACE)
+        - --scrape-interval=5s
+        - --export-interval=30s
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+      {{ end }}
       volumes:
       - name: configmap
         configMap:
@@ -164,6 +190,22 @@ spec:
     app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: elasticsearch-server
   type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-elasticsearch-exporter-svc
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: elasticsearch-server
+spec:
+  ports:
+  - name: exporter
+    port: 9108
+  selector:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: elasticsearch-server
+  clusterIP: None
 ---
 apiVersion: apps/v1beta2
 kind: Deployment

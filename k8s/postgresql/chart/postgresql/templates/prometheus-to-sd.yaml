@@ -2,17 +2,17 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-metrics-exporter
-  labels: &WordPressDeploymentLabels
+  name: {{ .Release.Name }}-postgresql-metrics-exporter
+  labels: &PostgreSQLDeploymentLabels
     app.kubernetes.io/name: {{ .Release.Name }}
-    app.kubernetes.io/component: wordpress-metrics-exporter
+    app.kubernetes.io/component: postgresql-metrics-exporter
 spec:
   selector:
-    matchLabels: *WordPressDeploymentLabels
+    matchLabels: *PostgreSQLDeploymentLabels
   replicas: 1
   template:
     metadata:
-      labels: *WordPressDeploymentLabels
+      labels: *PostgreSQLDeploymentLabels
     spec:
       containers:
       - name: prometheus-to-sd
@@ -23,8 +23,7 @@ spec:
         command:
         - /monitor
         - --stackdriver-prefix=custom.googleapis.com
-        - --source={{ .Release.Name }}-mysql:http://{{ .Release.Name }}-mysqld-exporter-svc:9104/metrics
-        - --source={{ .Release.Name }}-apache:http://{{ .Release.Name }}-apache-exporter-svc:9117/metrics
+        - --source={{ .Release.Name }}:http://{{ .Release.Name }}-postgres-exporter-svc:9187/metrics
         - --pod-id=$(POD_NAME)
         - --namespace-id=$(POD_NAMESPACE)
         - --scrape-interval=5s

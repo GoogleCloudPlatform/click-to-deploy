@@ -118,10 +118,12 @@ export APP_INSTANCE_NAME=postgresql-1
 export NAMESPACE=default
 ```
 
-Configure the container image:
+Configure the container images:
 
 ```shell
+TAG=9.6
 export IMAGE_POSTGRESQL=marketplace.gcr.io/google/postgresql9:9.6-kubernetes
+export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/postgresql/prometheus-to-sd:${TAG}"
 ```
 
 The image above is referenced by
@@ -134,6 +136,7 @@ following script:
 
 ```shell
 IMAGE_POSTGRESQL=$(docker pull $IMAGE_POSTGRESQL | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_POSTGRESQL\")\"@sha256:\"\$3}")
+IMAGE_METRICS_EXPORTER=$(docker pull $IMAGE_METRICS_EXPORTER | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_METRICS_EXPORTER\")\"@sha256:\"\$3}")
 ```
 
 Create a certificate for PostgreSQL. If you already have a certificate that you
@@ -170,6 +173,15 @@ Create the service account:
 
 ```shell
 kubectl create serviceaccount ${POSTGRESQL_SERVICE_ACCOUNT} --namespace ${NAMESPACE}
+
+##### Enable Stackdriver Metrics Exporter:
+
+> **NOTE:** Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet.
+
+By default the integration is disabled. To enable, change the value to `true`.
+
+```shell
+export METRICS_EXPORTER_ENABLED=false
 ```
 
 #### Expand the manifest template
@@ -184,7 +196,9 @@ helm template chart/postgresql \
   --set postgresql.serviceAccount=$POSTGRESQL_SERVICE_ACCOUNT \
   --set postgresql.image=$IMAGE_POSTGRESQL \
   --set postgresql.volumeSize=$POSTGRESQL_VOLUME_SIZE \
-  --set db.password=$POSTGRESQL_DB_PASSWORD > ${APP_INSTANCE_NAME}_manifest.yaml
+  --set db.password=$POSTGRESQL_DB_PASSWORD \
+  --set metrics.image=$IMAGE_METRICS_EXPORTER \
+  --set metrics.enabled=$METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 
 #### Apply the manifest to your Kubernetes cluster
@@ -232,6 +246,46 @@ PGPASSWORD=$(kubectl get secret "${APP_INSTANCE_NAME}-secret" --output=jsonpath=
 
 echo PGPASSWORD=$PGPASSWORD sslmode=require psql -U postgres -h 127.0.0.1
 ```
+
+# Application metrics
+
+## Prometheus metrics
+
+The application is configured to expose its metrics through
+[PostgreSQL Prometheus.io exporter plugin](https://github.com/wrouesnel/postgres_exporter)
+in the [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
+Metrics can be read on a single HTTP endpoint available at `[POSTGRESQL_CLUSTER_IP]:9187/metrics`,
+where `[POSTGRESQL_CLUSTER_IP]` is the IP address of the application on Kubernetes cluster.
+
+## Configuring Prometheus to collect the metrics
+
+Prometheus can be configured to automatically collect the application's metrics.
+Follow the [Configuring Prometheus documentation](https://prometheus.io/docs/introduction/first_steps/#configuring-prometheus)
+to enable metrics scrapping in your Prometheus server. The detailed specification
+of `<scrape_config>` used to enable the metrics collection can be found
+[here](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config).
+
+## Exporting metrics to Stackdriver
+
+If the option to export application metrics to Stackdriver is enabled,
+the deployment includes a [`prometheus-to-sd`](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd)
+(Prometheus to Stackdriver exporter) container.
+Then the metrics will be automatically exported to Stackdriver and visible in
+[Stackdriver Metrics Explorer](https://cloud.google.com/monitoring/charts/metrics-explorer).
+
+Each metric of the application will have a name starting with the application's name
+(matching the variable `APP_INSTANCE_NAME` described above).
+
+The exporting option might not be available for GKE on-prem clusters.
+
+> Note: Please be aware that Stackdriver has [quotas](https://cloud.google.com/monitoring/quotas)
+for the number of custom metrics created in a single GCP project. If the quota is met,
+additional metrics will not be accepted by Stackdriver, which might cause that some metrics
+from your application might not show up in the Stackdriver's Metrics Explorer.
+
+Existing metric descriptors can be removed through
+[Stackdriver's REST API](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors/delete).
+
 
 # Scaling
 
