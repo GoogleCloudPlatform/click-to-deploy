@@ -31,6 +31,21 @@ data:
       --data-urlencode "admin_password2=${WP_ADMIN_PASSWORD}" \
       --data-urlencode "pw_weak=1" \
       "http://localhost/wp-admin/install.php?step=2"
+  # .htaccess must be overwritten to allow connection to the /server-status endpoint.
+  # By default, WordPress' .htaccess doesn't allow it.
+  .htaccess: |
+    # BEGIN WordPress
+    <IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    RewriteRule ^index\.php$ - [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    # Allow Apache mod_status
+    RewriteCond %{REQUEST_URI} !=/server-status
+    RewriteRule . /index.php [L]
+    </IfModule>
+    # END WordPress
 ---
 apiVersion: apps/v1beta2
 kind: StatefulSet
@@ -103,9 +118,13 @@ spec:
         - name: {{ .Release.Name }}-wordpress-pvc
           mountPath: /var/www/html
           subPath: wp
-        - name: configmap
+        - name: config-map
           mountPath: /wp-install.sh
           subPath: wp-install.sh
+        # .htaccess must be overwritten to allow connection to the /server-status endpoint.
+        - name: apache-config
+          mountPath: /var/www/html/.htaccess
+          subPath: .htaccess
           readOnly: true
         lifecycle:
           postStart:
@@ -128,8 +147,33 @@ spec:
             path: /
             port: 80
           initialDelaySeconds: 120
+      - image: {{ .Values.apache.exporter.image }}
+        name: apache-exporter
+        args:
+        - --scrape_uri=http://127.0.0.1/server-status?auto
+        ports:
+        - name: exporter
+          containerPort: 9117
+        livenessProbe:
+          httpGet:
+            path: /metrics
+            port: 9117
+        readinessProbe:
+          httpGet:
+            path: /metrics
+            port: 9117
+          initialDelaySeconds: 60
+          timeoutSeconds: 30
+          failureThreshold: 10
+          periodSeconds: 10
       volumes:
-      - name: configmap
+      - name: apache-config
+        configMap:
+          name: {{ .Release.Name }}-wordpress-config
+          items:
+          - key: .htaccess
+            path: .htaccess
+      - name: config-map
         configMap:
           name: {{ .Release.Name }}-wordpress-config
           items:
@@ -164,6 +208,22 @@ spec:
     app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: wordpress-webserver
   type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-apache-exporter-svc
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: wordpress-webserver
+spec:
+  ports:
+  - name: exporter
+    port: 9117
+  selector:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: wordpress-webserver
+  clusterIP: None
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress

@@ -8,10 +8,26 @@ metadata:
     app.kubernetes.io/component: wordpress-mysql
 type: Opaque
 stringData:
-  wp-user: "wordpress"
+  wp-user: "{{ .Values.db.wordpressUser }}"
 data:
   root-password: "{{ .Values.db.rootPassword }}"
   wp-password: "{{ .Values.db.wordpressPassword }}"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Release.Name }}-mysqld-exporter-secret
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: wordpress-mysql
+stringData:
+  mysqld_exporter.sql: |
+    CREATE USER IF NOT EXISTS '{{ .Values.db.exporter.user }}'@'127.0.0.1' IDENTIFIED BY '{{ .Values.db.exporter.password | b64dec }}' WITH MAX_USER_CONNECTIONS 3;
+    # https://dev.mysql.com/doc/refman/5.6/en/grant.html
+    GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO '{{ .Values.db.exporter.user }}'@'127.0.0.1';
+    FLUSH PRIVILEGES;
+data:
+  mysqld-exporter-pass: {{ .Values.db.exporter.password }}
 ---
 apiVersion: apps/v1beta2
 kind: StatefulSet
@@ -63,6 +79,9 @@ spec:
         - name: {{ .Release.Name }}-mysql-pvc
           mountPath: /var/lib/mysql
           subPath: data
+        - name: mysql-config
+          mountPath: /docker-entrypoint-initdb.d
+          readOnly: true
         readinessProbe:
           exec:
             command: ["sh", "-c", "exec mysqladmin status -uroot -p$MYSQL_ROOT_PASSWORD"]
@@ -71,6 +90,38 @@ spec:
           exec:
             command: ["sh", "-c", "exec mysqladmin status -uroot -p$MYSQL_ROOT_PASSWORD"]
           initialDelaySeconds: 120
+      - image: {{ .Values.db.exporter.image }}
+        name: mysqld-exporter
+        env:
+        - name: MYSQLD_EXPORTER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-mysqld-exporter-secret
+              key: mysqld-exporter-pass
+        - name: DATA_SOURCE_NAME
+          value: {{ .Values.db.exporter.user }}:$(MYSQLD_EXPORTER_PASSWORD)@(127.0.0.1:3306)/
+        ports:
+        - name: exporter
+          containerPort: 9104
+        livenessProbe:
+          httpGet:
+            path: /metrics
+            port: 9104
+        readinessProbe:
+          httpGet:
+            path: /metrics
+            port: 9104
+          initialDelaySeconds: 60
+          timeoutSeconds: 30
+          failureThreshold: 10
+          periodSeconds: 10
+      volumes:
+      - name: mysql-config
+        secret:
+          secretName: {{ .Release.Name }}-mysqld-exporter-secret
+          items:
+          - key: mysqld_exporter.sql
+            path: mysqld_exporter.sql
   volumeClaimTemplates:
   - metadata:
       name: {{ .Release.Name }}-mysql-pvc
@@ -97,5 +148,21 @@ spec:
     port: 3306
   selector:
     app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: wordpress-mysql
+  clusterIP: None
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-mysqld-exporter-svc
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: wordpress-mysql
+spec:
+  ports:
+  - name: exporter
+    port: 9104
+  selector:
+    app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: wordpress-mysql
   clusterIP: None

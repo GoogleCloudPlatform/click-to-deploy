@@ -5,10 +5,15 @@ include ../var.Makefile
 
 
 TAG ?= 1.15
+METRICS_EXPORTER_TAG ?= v0.5.1
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/nginx/deployer:$(TAG)
 NAME ?= nginx-1
+
+ifdef METRICS_EXPORTER_ENABLED
+  METRICS_EXPORTER_ENABLED_FIELD = , "metrics.enabled": "$(METRICS_EXPORTER_ENABLED)"
+endif
 
 ifdef IMAGE_NGINX
   IMAGE_NGINX_FIELD = , "nginx.image": "$(IMAGE_NGINX)"
@@ -18,23 +23,26 @@ ifdef IMAGE_NGINX_INIT
   IMAGE_NGINX_INIT_FIELD = , "nginx.initImage": "$(IMAGE_NGINX_INIT)"
 endif
 
+ifdef PUBLIC_IP_AVAILABLE
+  PUBLIC_IP_AVAILABLE_FIELD = , "publicIp.available": "$(PUBLIC_IP_AVAILABLE)"
+endif
+
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
   $(IMAGE_NGINX_FIELD) \
   $(IMAGE_NGINX_INIT_FIELD) \
+  $(METRICS_EXPORTER_ENABLED_FIELD) \
+  $(PUBLIC_IP_AVAILABLE_FIELD) \
 }
 
 TESTER_IMAGE ?= $(REGISTRY)/nginx/tester:$(TAG)
-
-APP_TEST_PARAMETERS ?= { \
-  "testerImage": "$(TESTER_IMAGE)" \
-}
 
 
 app/build:: .build/nginx/debian9  \
             .build/nginx/deployer \
             .build/nginx/nginx \
+            .build/nginx/prometheus-to-sd \
             .build/nginx/tester
 
 
@@ -45,8 +53,8 @@ app/build:: .build/nginx/debian9  \
 .build/nginx/debian9: .build/var/REGISTRY \
                       .build/var/TAG \
                       | .build/nginx
-	docker pull launcher.gcr.io/google/debian9
-	docker tag launcher.gcr.io/google/debian9 "$(REGISTRY)/nginx/debian9:$(TAG)"
+	docker pull marketplace.gcr.io/google/debian9
+	docker tag marketplace.gcr.io/google/debian9 "$(REGISTRY)/nginx/debian9:$(TAG)"
 	docker push "$(REGISTRY)/nginx/debian9:$(TAG)"
 	@touch "$@"
 
@@ -74,10 +82,20 @@ app/build:: .build/nginx/debian9  \
 .build/nginx/nginx: .build/var/REGISTRY \
                     .build/var/TAG \
                     | .build/nginx
-	docker pull launcher.gcr.io/google/nginx1:$(TAG)
-	docker tag launcher.gcr.io/google/nginx1:$(TAG) \
+	docker pull marketplace.gcr.io/google/nginx1:$(TAG)
+	docker tag marketplace.gcr.io/google/nginx1:$(TAG) \
 	    "$(REGISTRY)/nginx:$(TAG)"
 	docker push "$(REGISTRY)/nginx:$(TAG)"
+	@touch "$@"
+
+
+.build/nginx/prometheus-to-sd: .build/var/REGISTRY \
+                               .build/var/TAG \
+                               | .build/nginx
+	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
+	    "$(REGISTRY)/nginx/prometheus-to-sd:$(TAG)"
+	docker push "$(REGISTRY)/nginx/prometheus-to-sd:$(TAG)"
 	@touch "$@"
 
 

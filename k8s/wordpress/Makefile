@@ -6,6 +6,8 @@ include ../var.Makefile
 VERIFY_WAIT_TIMEOUT = 1800
 
 TAG ?= latest
+METRICS_EXPORTER_TAG ?= v0.5.1
+
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/wordpress/deployer:$(TAG)
@@ -35,6 +37,10 @@ ifdef WORDPRESS_ADMIN_PASSWORD
   WORDPRESS_ADMIN_PASSWORD_FIELD = , "admin.password": "$(WORDPRESS_ADMIN_PASSWORD)"
 endif
 
+ifdef METRICS_EXPORTER_ENABLED
+  METRICS_EXPORTER_ENABLED_FIELD = , "metrics.enabled": "$(METRICS_EXPORTER_ENABLED)"
+endif
+
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
@@ -44,18 +50,18 @@ APP_PARAMETERS ?= { \
   $(WORDPRESS_DB_PASSWORD_FIELD) \
   $(WORDPRESS_ADMIN_EMAIL_FIELD) \
   $(WORDPRESS_ADMIN_PASSWORD_FIELD) \
+  $(METRICS_EXPORTER_ENABLED_FIELD) \
 }
 
 TESTER_IMAGE ?= $(REGISTRY)/wordpress/tester:$(TAG)
 
-APP_TEST_PARAMETERS ?= { \
-  "testerImage": "$(TESTER_IMAGE)" \
-}
-
 
 app/build:: .build/wordpress/deployer \
-            .build/wordpress/mysql \
             .build/wordpress/wordpress \
+            .build/wordpress/apache-exporter \
+            .build/wordpress/mysql \
+            .build/wordpress/mysqld-exporter \
+            .build/wordpress/prometheus-to-sd \
             .build/wordpress/tester
 
 
@@ -87,21 +93,52 @@ app/build:: .build/wordpress/deployer \
 .build/wordpress/wordpress: .build/var/REGISTRY \
                             .build/var/TAG \
                             | .build/wordpress
-	docker pull launcher.gcr.io/google/wordpress5-php7-apache:$(TAG)
-	docker tag launcher.gcr.io/google/wordpress5-php7-apache:$(TAG) \
+	docker pull marketplace.gcr.io/google/wordpress5-php7-apache:$(TAG)
+	docker tag marketplace.gcr.io/google/wordpress5-php7-apache:$(TAG) \
 	    "$(REGISTRY)/wordpress:$(TAG)"
 	docker push "$(REGISTRY)/wordpress:$(TAG)"
+	@touch "$@"
+
+
+.build/wordpress/apache-exporter: .build/var/REGISTRY \
+                                  .build/var/TAG \
+                                  | .build/wordpress
+	docker pull marketplace.gcr.io/google/wordpress5-php7-apache:exporter
+	docker tag marketplace.gcr.io/google/wordpress5-php7-apache:exporter \
+	    "$(REGISTRY)/wordpress/apache-exporter:$(TAG)"
+	docker push "$(REGISTRY)/wordpress/apache-exporter:$(TAG)"
 	@touch "$@"
 
 
 .build/wordpress/mysql: .build/var/REGISTRY \
                         .build/var/TAG \
                         | .build/wordpress
-	docker pull launcher.gcr.io/google/mysql5
-	docker tag launcher.gcr.io/google/mysql5 \
+	docker pull marketplace.gcr.io/google/mysql5:$(TAG)
+	docker tag marketplace.gcr.io/google/mysql5:$(TAG) \
 	    "$(REGISTRY)/wordpress/mysql:$(TAG)"
 	docker push "$(REGISTRY)/wordpress/mysql:$(TAG)"
 	@touch "$@"
+
+
+.build/wordpress/mysqld-exporter: .build/var/REGISTRY \
+                                  .build/var/TAG \
+                                  | .build/wordpress
+	docker pull marketplace.gcr.io/google/mysql5:exporter
+	docker tag marketplace.gcr.io/google/mysql5:exporter \
+	    "$(REGISTRY)/wordpress/mysqld-exporter:$(TAG)"
+	docker push "$(REGISTRY)/wordpress/mysqld-exporter:$(TAG)"
+	@touch "$@"
+
+
+.build/wordpress/prometheus-to-sd: .build/var/REGISTRY \
+                                   .build/var/TAG \
+                                   | .build/wordpress
+	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
+	    "$(REGISTRY)/wordpress/prometheus-to-sd:$(TAG)"
+	docker push "$(REGISTRY)/wordpress/prometheus-to-sd:$(TAG)"
+	@touch "$@"
+
 
 .build/wordpress/tester: .build/var/TESTER_IMAGE \
                          $(shell find apptest -type f) \

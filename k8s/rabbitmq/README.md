@@ -360,11 +360,12 @@ The application is configured to expose its metrics through
 [RabbitMQ Prometheus.io exporter plugin](https://github.com/deadtrickster/prometheus_rabbitmq_exporter) 
 in the [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
 For more detailed information about the plugin setup, see the official RabbitMQ's [Monitoring with Prometheus documentation](https://www.rabbitmq.com/prometheus.html).
-Metrics can be read on a single HTTP endpoint available at `[APP_BASE_URL]/api/metrics`,
+
+Metrics can be read on a single HTTP endpoint available at `[APP_BASE_URL]:15672/api/metrics`,
 where `[APP_BASE_URL]` is the base URL address of the application.
 For example, you can
 [expose RabbitMQ service internally using port forwarding](#access-rabbitmq-service),
-and then access the metrics by navigating to the [http://localhost:15672/metrics](http://localhost:15672/metrics) endpoint.
+and then access the metrics by navigating to the [http://localhost:15672/api/metrics](http://localhost:15672/api/metrics) endpoint.
 
 ## Configuring Prometheus to collect the metrics
 

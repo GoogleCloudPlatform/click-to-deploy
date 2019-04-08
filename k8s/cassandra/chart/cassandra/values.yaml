@@ -1,3 +1,7 @@
 cassandra:
   image: null
   replicas: null
+
+metrics:
+  image: null
+  enabled: false

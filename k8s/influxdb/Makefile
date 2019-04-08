@@ -10,17 +10,18 @@ $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/influxdb/deployer:$(TAG)
 NAME ?= influxdb-1
+
+ifdef METRICS_EXPORTER_ENABLED
+  METRICS_EXPORTER_ENABLED_FIELD = , "metrics.enabled": "$(METRICS_EXPORTER_ENABLED)"
+endif
+
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
+  $(METRICS_EXPORTER_ENABLED_FIELD) \
 }
 
 TESTER_IMAGE ?= $(REGISTRY)/influxdb/tester:$(TAG)
-
-APP_TEST_PARAMETERS ?= { \
-  "testerImage": "$(TESTER_IMAGE)" \
-}
-
 
 app/build:: .build/influxdb/deployer \
             .build/influxdb/influxdb \
@@ -55,8 +56,8 @@ app/build:: .build/influxdb/deployer \
 .build/influxdb/influxdb: .build/var/REGISTRY \
                           .build/var/TAG \
                           | .build/influxdb
-	docker pull launcher.gcr.io/google/influxdb1:$(TAG)
-	docker tag launcher.gcr.io/google/influxdb1:$(TAG) \
+	docker pull marketplace.gcr.io/google/influxdb1:$(TAG)
+	docker tag marketplace.gcr.io/google/influxdb1:$(TAG) \
 	    "$(REGISTRY)/influxdb:$(TAG)"
 	docker push "$(REGISTRY)/influxdb:$(TAG)"
 	@touch "$@"

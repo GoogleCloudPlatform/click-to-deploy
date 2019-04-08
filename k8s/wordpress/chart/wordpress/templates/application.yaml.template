@@ -94,5 +94,9 @@ spec:
     kind: Service
   - group: extensions/v1beta1
     kind: Ingress
+  {{ if .Values.metrics.enabled }}
+  - group: apps/v1beta2
+    kind: Deployment
+  {{ end }}
   - group: v1
     kind: ConfigMap

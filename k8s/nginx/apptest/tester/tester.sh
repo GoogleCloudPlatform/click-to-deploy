@@ -17,9 +17,15 @@
 set -xeo pipefail
 shopt -s nullglob
 
-export EXTERNAL_IP="$(kubectl get service/${APP_INSTANCE_NAME}-nginx-svc \
-  --namespace ${NAMESPACE} \
-  --output jsonpath='{.status.loadBalancer.ingress[0].ip}')"
+if [[ "${PUBLIC_IP_AVAILABLE}" == "true" ]]; then
+  EXTERNAL_IP="$(kubectl get service/${APP_INSTANCE_NAME}-nginx-svc \
+    --namespace ${NAMESPACE} \
+    --output jsonpath='{.status.loadBalancer.ingress[0].ip}')"
+else
+  EXTERNAL_IP="${APP_INSTANCE_NAME}-nginx-svc"
+fi
+
+export EXTERNAL_IP
 
 for test in /tests/*; do
   testrunner -logtostderr "--test_spec=${test}"
