@@ -88,14 +88,16 @@ app/build:: .build/nginx/debian9  \
 	docker push "$(REGISTRY)/nginx:$(TAG)"
 	@touch "$@"
 
+
 .build/nginx/prometheus-to-sd: .build/var/REGISTRY \
-                                   .build/var/TAG \
-                                   | .build/nginx
+                               .build/var/TAG \
+                               | .build/nginx
 	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
 	    "$(REGISTRY)/nginx/prometheus-to-sd:$(TAG)"
 	docker push "$(REGISTRY)/nginx/prometheus-to-sd:$(TAG)"
 	@touch "$@"
+
 
 .build/nginx/tester: .build/var/TESTER_IMAGE \
                      $(shell find apptest -type f) \
