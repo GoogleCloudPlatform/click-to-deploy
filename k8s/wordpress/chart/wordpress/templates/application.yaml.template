@@ -67,11 +67,13 @@ spec:
       Now you can access WordPress UI with [http://localhost:8080](http://localhost:8080).
       {{ end }}
 
+      {{ if .Values.enablePublicServiceAndIngress }}
       # Update TLS certificate for WordPress
 
       By default the application used self-signed certificate. You can follow
       [Update TLS certificate for WordPress section](https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/wordpress/README.md#update-tls-certificate-for-wordpress)
       to update it.
+      {{ end }}
   info:
   {{ if .Values.enablePublicServiceAndIngress }}
   - name: WordPress site address
