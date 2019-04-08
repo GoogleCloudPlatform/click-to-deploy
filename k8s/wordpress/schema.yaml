@@ -61,6 +61,11 @@ properties:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 20
+  enablePublicServiceAndIngress:
+    type: boolean
+    title: Enable public IP access
+    description: Set the WordPress Service type to NodePort and enable Ingress
+    default: false
   metrics.image:
     type: string
     default: $REGISTRY/prometheus-to-sd:$TAG
