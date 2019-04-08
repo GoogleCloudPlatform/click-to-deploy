@@ -90,7 +90,7 @@ spec:
   - name: WordPres site address
     value: http://localhost:8080/
   - name: WordPress admin address
-    value: http://localhost:8080/
+    value: http://localhost:8080/wp-admin
   {{ end }}
   - name: WordPress username
     type: Reference
