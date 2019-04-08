@@ -170,7 +170,7 @@ def main():
         'name': 'public service and ingress',
         'env_vars': [
           'PUBLIC_SERVICE_AND_INGRESS_ENABLED=true'
-         ]
+        ]
       }
     ]
   }
