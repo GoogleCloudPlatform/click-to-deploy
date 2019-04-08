@@ -121,6 +121,7 @@ spec:
         - name: config-map
           mountPath: /wp-install.sh
           subPath: wp-install.sh
+          readOnly: true
         # .htaccess must be overwritten to allow connection to the /server-status endpoint.
         - name: apache-config
           mountPath: /var/www/html/.htaccess
