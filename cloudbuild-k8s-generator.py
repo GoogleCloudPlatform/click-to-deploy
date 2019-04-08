@@ -127,9 +127,9 @@ steps:
   # Use local Docker network named cloudbuild as described here:
   # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
   - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
-{%- for env_var in extra_config['env_vars'] %}
+  {%- for env_var in extra_config['env_vars'] %}
   - '{{ env_var }}'
-{%- endfor %}
+  {%- endfor %}
   dir: k8s/{{ solution }}
   args:
   - make
