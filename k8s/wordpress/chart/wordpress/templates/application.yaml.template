@@ -63,7 +63,7 @@ spec:
         svc/${APP_INSTANCE_NAME}-wordpress-svc 8080:80
       ```
 
-      Now you can access WordPress UI with `http://localhost:8080/`.
+      Now you can access WordPress UI with [http://localhost:8080](http://localhost:8080).
       {{ end }}
 
       # Update TLS certificate for WordPress
