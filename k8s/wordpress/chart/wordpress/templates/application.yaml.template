@@ -48,7 +48,7 @@ spec:
 
       {{ else }}
 
-      WordPress is exposed in a ClusterIP-only service `$APP_INSTANCE_NAME-wordpress-svc`. To connect to
+      WordPress is exposed in a ClusterIP-only service `{{ .Release.Name }}-wordpress-svc`. To connect to
       WordPress UI, you can either expose a public service endpoint or keep it private, but connect
       from you local environment with `kubectl port-forward`.
 
@@ -59,8 +59,8 @@ spec:
 
       ```shell
       kubectl port-forward \
-        --namespace ${NAMESPACE} \
-        svc/${APP_INSTANCE_NAME}-wordpress-svc \
+        --namespace {{ .Release.Namespace }} \
+        svc/{{ .Release.Name }}-wordpress-svc \
         8080:80
       ```
 
@@ -89,7 +89,7 @@ spec:
         path: /wp-admin
   {{ else }}
   - name: Forward WordPress port locally
-    value: kubectl port-forward --namespace ${NAMESPACE} svc/${APP_INSTANCE_NAME}-wordpress-svc 8080:80
+    value: kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-wordpress-svc 8080:80
   - name: WordPres site address
     value: http://localhost:8080/
   - name: WordPress admin address
