@@ -21,7 +21,6 @@ for test in /tests/common/*; do
   testrunner -logtostderr "--test_spec=${test}"
 done
 
-
 if [[ "${ENABLE_PUBLIC_SERVICE_AND_INGRESS}" == true ]]; then
   # Waits until Ingress is healthy.
   # TODO(wgrzelak): Remove this once
