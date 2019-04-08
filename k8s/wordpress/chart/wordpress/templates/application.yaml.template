@@ -60,7 +60,8 @@ spec:
       ```shell
       kubectl port-forward \
         --namespace ${NAMESPACE} \
-        svc/${APP_INSTANCE_NAME}-wordpress-svc 8080:80
+        svc/${APP_INSTANCE_NAME}-wordpress-svc \
+        8080:80
       ```
 
       Now you can access WordPress UI with [http://localhost:8080](http://localhost:8080).
