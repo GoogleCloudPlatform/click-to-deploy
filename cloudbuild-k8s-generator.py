@@ -120,6 +120,7 @@ steps:
   - Copy kubectl Credentials
   - Copy gcloud Credentials
   - Pull Dev Image
+  - Verify {{ solution }}
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
