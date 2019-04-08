@@ -1,0 +1,37 @@
+actions:
+
+- name: Can connect to a database (as root user)
+  bashTest:
+    script: mysql -h ${APP_INSTANCE_NAME}-mysql-svc.${NAMESPACE}.svc.cluster.local -u root -p"${MYSQL_ROOT_PASSWORD}" -e "SHOW DATABASES"
+    expect:
+      stdout:
+        contains: information_schema
+      exitCode:
+        equals: 0
+
+- name: Can connect to a database (as wordpress user)
+  bashTest:
+    script: mysql -h ${APP_INSTANCE_NAME}-mysql-svc.${NAMESPACE}.svc.cluster.local -u "${WORDPRESS_DB_USER}" -p"${WORDPRESS_DB_PASSWORD}" -e "SHOW DATABASES"
+    expect:
+      stdout:
+        contains: {{ .Env.WORDPRESS_DB_NAME }}
+      exitCode:
+        equals: 0
+
+- name: Can not connect to a database with incorrect credentials
+  bashTest:
+    script: mysql -h ${APP_INSTANCE_NAME}-mysql-svc.${NAMESPACE}.svc.cluster.local -u root -p"changeme" -e "SHOW DATABASES"
+    expect:
+      stderr:
+        matches: 'ERROR 1045 (28000): Access denied for user ''root''@''.+'' (using password: YES)'
+      exitCode:
+        equals: 1
+
+- name: Can not connect to a database without credentials
+  bashTest:
+    script: mysql -h ${APP_INSTANCE_NAME}-mysql-svc.${NAMESPACE}.svc.cluster.local -e "SHOW DATABASES"
+    expect:
+      stderr:
+        matches: 'ERROR 1045 (28000): Access denied for user ''root''@''.+'' (using password: NO)'
+      exitCode:
+        equals: 1

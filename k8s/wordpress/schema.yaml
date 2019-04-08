@@ -90,3 +90,4 @@ required:
 - admin.password
 - metrics.image
 - metrics.enabled
+- enablePublicServiceAndIngress
