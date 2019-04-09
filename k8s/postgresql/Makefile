@@ -56,9 +56,10 @@ app/build:: .build/postgresql/deployer \
 	docker push "$(APP_DEPLOYER_IMAGE)"
 	@touch "$@"
 
+
 .build/postgresql/postgresql: .build/var/REGISTRY \
-                            .build/var/TAG \
-                            | .build/postgresql
+                              .build/var/TAG \
+                              | .build/postgresql
 	docker pull $(IMAGE_POSTGRESQL)
 	docker tag $(IMAGE_POSTGRESQL) "$(REGISTRY)/postgresql:$(TAG)"
 	docker push "$(REGISTRY)/postgresql:$(TAG)"
@@ -73,14 +74,16 @@ app/build:: .build/postgresql/deployer \
 	docker push "$(REGISTRY)/postgresql/exporter:$(TAG)"
 	@touch "$@"
 
+
 .build/postgresql/prometheus-to-sd: .build/var/REGISTRY \
-                                  .build/var/TAG \
-                                  | .build/postgresql
+                                    .build/var/TAG \
+                                    | .build/postgresql
 	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
 	    "$(REGISTRY)/postgresql/prometheus-to-sd:$(TAG)"
 	docker push "$(REGISTRY)/postgresql/prometheus-to-sd:$(TAG)"
 	@touch "$@"
+
 
 .build/postgresql/tester: .build/var/TESTER_IMAGE \
                           $(shell find apptest -type f) \

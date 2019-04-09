@@ -123,7 +123,7 @@ export REPLICAS=3
 
 Enable Stackdriver Metrics Exporter:
 
- > **NOTE:** Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet.
+> **NOTE:** Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet.
 
 By default the integration is disabled. To enable, change the value to `true`.
 
@@ -282,6 +282,7 @@ The application is configured to expose its metrics through
 [Memcached Exporter](https://github.com/prometheus/memcached_exporter)
 in the [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
 For more detailed information about the plugin setup, see the [Memcached Exporter documentation](https://github.com/prometheus/memcached_exporter/blob/master/README.md).
+
 Metrics can be read on a single HTTP endpoint available at `[POD_IP]:9150/metrics`,
 where `[POD_IP]` is the IP read from Kubernetes headless service `$APP_INSTANCE_NAME-memcached-prometheus-svc`.
 
