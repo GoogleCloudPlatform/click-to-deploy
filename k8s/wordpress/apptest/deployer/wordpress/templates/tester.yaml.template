@@ -27,6 +27,8 @@ spec:
           fieldPath: metadata.namespace
     - name: APP_INSTANCE_NAME
       value: {{ .Release.Name }}
+    - name: ENABLE_PUBLIC_SERVICE_AND_INGRESS
+      value: {{ .Values.enablePublicServiceAndIngress | quote }}
     # A password for root superuser.
     - name: MYSQL_ROOT_PASSWORD
       valueFrom:
