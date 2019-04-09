@@ -89,8 +89,8 @@ app/build:: .build/elasticsearch/elasticsearch \
 	@touch "$@"
 
 .build/elasticsearch/prometheus-to-sd: .build/var/REGISTRY \
-                                   .build/var/TAG \
-                                   | .build/elasticsearch
+                                       .build/var/TAG \
+                                       | .build/elasticsearch
 	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
 	    "$(REGISTRY)/elasticsearch/prometheus-to-sd:$(TAG)"
