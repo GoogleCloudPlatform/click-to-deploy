@@ -1,0 +1,27 @@
+actions:
+
+# TODO(wgrzelak): Add actions to test authorization with correct credentials,
+# incorrect credentials and without credentials.
+# Example: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/d242d7eaa4fcce804f6a9d03cf569a901a5cf9be/k8s/influxdb/apptest/tester/tests/basic-suite.yaml.template#L18-L33
+
+- name: Site address should be 200 OK (service DNS)
+  httpTest:
+    url: http://{{ .Env.APP_INSTANCE_NAME }}-wordpress-svc
+    expect:
+      statusCode:
+        equals: 200
+      bodyText:
+        html:
+          title:
+            equals: 'WordPress on Google Kubernetes Engine – Just another WordPress site'
+
+- name: Admin URL should be 200 OK (service DNS)
+  httpTest:
+    url: http://{{ .Env.APP_INSTANCE_NAME }}-wordpress-svc/wp-admin
+    expect:
+      statusCode:
+        equals: 200
+      bodyText:
+        html:
+          title:
+            equals: 'Log In ‹ WordPress on Google Kubernetes Engine — WordPress'

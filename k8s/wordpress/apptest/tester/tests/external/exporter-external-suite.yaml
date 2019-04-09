@@ -1,0 +1,12 @@
+actions:
+
+- name: Can not access Apache server-status externally
+  httpTest:
+    url: http://{{ .Env.EXTERNAL_IP }}/server-status
+    expect:
+      statusCode:
+        equals: 403
+      bodyText:
+        html:
+          title:
+            equals: '403 Forbidden'
