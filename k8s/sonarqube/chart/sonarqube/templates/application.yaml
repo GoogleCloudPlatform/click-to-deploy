@@ -51,3 +51,15 @@ spec:
   - group: v1
     kind: ServiceAccount
   notes: |-
+    # Access SonarQube
+
+    SonarQube is exposed in a ClusterIP-only service `{{.Release.Name}}-{{ .Values.sonarqube.service.name}}`. To connect to
+    SonarQube UI, you can either expose a public service endpoint or keep it private, but connect
+    from you local environment with `kubectl port-forward`
+
+    ```
+    kubectl port-forward \
+      --namespace {{ .Release.Namespace }} \
+      svc/{{.Release.Name}}-{{ .Values.sonarqube.service.name}} \
+      9000:9000
+    ```
