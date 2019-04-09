@@ -290,6 +290,7 @@ The application is configured to expose its metrics through
 [JMX Exporter](https://github.com/prometheus/jmx_exporter)
 in the [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
 For more detailed information about the plugin setup, see the [JMX Exporter documentation](https://github.com/prometheus/jmx_exporter/blob/master/README.md).
+
 Metrics can be read on a single HTTP endpoint available at `[POD_IP]:9404/metrics`,
 where `[POD_IP]` is the IP read from Kubernetes headless service `$APP_INSTANCE_NAME-cassandra-svc`.
 

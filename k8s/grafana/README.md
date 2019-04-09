@@ -269,6 +269,7 @@ echo "- pass: ${GRAFANA_PASSWORD}"
 
 The application is configured to natively expose its metrics in the
 [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
+
 You can access the metrics at `[APP_BASE_URL]:3000/metrics`,
 where `[APP_BASE_URL]` is the base URL address of the application.
 For example, if you

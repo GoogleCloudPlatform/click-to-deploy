@@ -21,6 +21,16 @@ metadata:
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: wordpress-webserver
 data:
+  wp-install.sh: |
+    # https://codex.wordpress.org/Installing_WordPress#Installing_WordPress
+    curl --fail --retry 5 --retry-delay 5 --retry-connrefused \
+      --data-urlencode "weblog_title=WordPress on Google Kubernetes Engine" \
+      --data-urlencode "user_name=${WP_ADMIN_USERNAME}" \
+      --data-urlencode "admin_email=${WP_ADMIN_EMAIL}" \
+      --data-urlencode "admin_password=${WP_ADMIN_PASSWORD}" \
+      --data-urlencode "admin_password2=${WP_ADMIN_PASSWORD}" \
+      --data-urlencode "pw_weak=1" \
+      "http://localhost/wp-admin/install.php?step=2"
   # .htaccess must be overwritten to allow connection to the /server-status endpoint.
   # By default, WordPress' .htaccess doesn't allow it.
   .htaccess: |
@@ -108,6 +118,10 @@ spec:
         - name: {{ .Release.Name }}-wordpress-pvc
           mountPath: /var/www/html
           subPath: wp
+        - name: config-map
+          mountPath: /wp-install.sh
+          subPath: wp-install.sh
+          readOnly: true
         # .htaccess must be overwritten to allow connection to the /server-status endpoint.
         - name: apache-config
           mountPath: /var/www/html/.htaccess
@@ -118,17 +132,8 @@ spec:
             exec:
               command:
               - "/bin/bash"
-              - "-euc"
-              - |
-                # https://codex.wordpress.org/Installing_WordPress#Installing_WordPress
-                curl --fail --retry 5 --retry-delay 5 --retry-connrefused \
-                  --data-urlencode "weblog_title=WordPress on Google Kubernetes Engine" \
-                  --data-urlencode "user_name=${WP_ADMIN_USERNAME}" \
-                  --data-urlencode "admin_email=${WP_ADMIN_EMAIL}" \
-                  --data-urlencode "admin_password=${WP_ADMIN_PASSWORD}" \
-                  --data-urlencode "admin_password2=${WP_ADMIN_PASSWORD}" \
-                  --data-urlencode "pw_weak=1" \
-                  "http://localhost/wp-admin/install.php?step=2"
+              - "-eu"
+              - "/wp-install.sh"
         readinessProbe:
           httpGet:
             path: /
@@ -169,6 +174,12 @@ spec:
           items:
           - key: .htaccess
             path: .htaccess
+      - name: config-map
+        configMap:
+          name: {{ .Release.Name }}-wordpress-config
+          items:
+          - key: wp-install.sh
+            path: wp-install.sh
   volumeClaimTemplates:
   - metadata:
       name: {{ .Release.Name }}-wordpress-pvc
@@ -197,7 +208,11 @@ spec:
   selector:
     app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: wordpress-webserver
+  {{ if .Values.enablePublicServiceAndIngress }}
   type: NodePort
+  {{ else }}
+  type: ClusterIP
+  {{ end }}
 ---
 apiVersion: v1
 kind: Service
@@ -214,6 +229,7 @@ spec:
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: wordpress-webserver
   clusterIP: None
+{{ if .Values.enablePublicServiceAndIngress }}
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -229,3 +245,4 @@ spec:
   backend:
     serviceName: {{ .Release.Name }}-wordpress-svc
     servicePort: http
+{{ end }}

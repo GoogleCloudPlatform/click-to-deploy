@@ -10,11 +10,15 @@ Popular open stacks on Kubernetes packaged by Google.
 
 ## Design
 
+> **NOTE:** The following diagram is showing the architecture with the optional public exposure of WordPress based on Ingress and TLS configuration. Please follow the documentation to find options for enabling Ingress. 
+
 ![Architecture diagram](resources/wordpress-k8s-app-architecture.png)
 
 ### Solution Information
 
-WordPress solution exposes its interface on ports `80` and `443` via Ingress resource. TLS certificates are stored in `[APP-INSTANCE-NAME]-tls` Secret resource.
+WordPress by default is exposing a ClusterIP type of Service on port 80. Optionally, when public service exposure
+is enabled, WordPress interface is exposed on ports `80` and `443` via Ingress resource.
+TLS certificates are stored in `[APP-INSTANCE-NAME]-tls` Secret resource.
 
 Separate StatefulSet Kubernetes objects are used to manage instance of WordPress and instance of MySQL database.
 Single instance of WordPress is deployed as a single Pod via Kubernetes StatefulSet.
@@ -124,6 +128,14 @@ export APP_INSTANCE_NAME=wordpress-1
 export NAMESPACE=default
 ```
 
+Enable public Service exposure and Ingress configuration:
+
+By default the public exposure is disabled. To enable, change the value to `true`.
+
+```shell
+export PUBLIC_SERVICE_AND_INGRESS_ENABLED=false
+```
+
 Enable Stackdriver Metrics Exporter:
 
 > **NOTE:** Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet.
@@ -208,6 +220,7 @@ helm template chart/wordpress \
   --set admin.email=$WORDPRESS_ADMIN_EMAIL \
   --set admin.password=$WORDPRESS_ADMIN_PASSWORD \
   --set metrics.image=$IMAGE_METRICS_EXPORTER \
+  --set enablePublicServiceAndIngress=$PUBLIC_SERVICE_AND_INGRESS_ENABLED \
   --set metrics.enabled=$METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 
