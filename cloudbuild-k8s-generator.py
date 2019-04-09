@@ -94,12 +94,31 @@ steps:
 
 {%- for solution in solutions %}
 
+- id: Build {{ solution }}
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  waitFor:
+  - Copy kubectl Credentials
+  - Copy gcloud Credentials
+  - Pull Dev Image
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  dir: k8s/{{ solution }}
+  args:
+  - make
+  - -j4
+  - app/build
+
 - id: Verify {{ solution }}
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Copy kubectl Credentials
   - Copy gcloud Credentials
   - Pull Dev Image
+  - Build {{ solution }}
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
@@ -120,7 +139,7 @@ steps:
   - Copy kubectl Credentials
   - Copy gcloud Credentials
   - Pull Dev Image
-  - Verify {{ solution }}
+  - Build {{ solution }}
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
@@ -168,7 +187,7 @@ def main():
   extra_configs = {
     'wordpress': [
       {
-        'name': 'public service and ingress',
+        'name': 'Public service and ingress',
         'env_vars': [
           'PUBLIC_SERVICE_AND_INGRESS_ENABLED=true'
         ]
