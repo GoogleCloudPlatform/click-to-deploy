@@ -96,10 +96,6 @@ steps:
 
 - id: Build {{ solution }}
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
-  waitFor:
-  - Copy kubectl Credentials
-  - Copy gcloud Credentials
-  - Pull Dev Image
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
@@ -111,6 +107,10 @@ steps:
   - make
   - -j4
   - app/build
+
+{%- endfor %}
+
+{%- for solution in solutions %}
 
 - id: Verify {{ solution }}
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
