@@ -194,10 +194,10 @@ def main():
         ]
       },
       {
-          'name': 'Prometheus metrics',
-          'env_vars': [
-            'METRICS_EXPORTER_ENABLED=true'
-          ]
+        'name': 'Prometheus metrics',
+        'env_vars': [
+          'METRICS_EXPORTER_ENABLED=true'
+        ]
       },
     ]
   }
