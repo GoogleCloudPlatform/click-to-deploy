@@ -173,6 +173,7 @@ Create the service account:
 
 ```shell
 kubectl create serviceaccount ${POSTGRESQL_SERVICE_ACCOUNT} --namespace ${NAMESPACE}
+```
 
 ##### Enable Stackdriver Metrics Exporter:
 
