@@ -34,6 +34,11 @@ properties:
     title: Enable Stackdriver Metrics Exporter
     description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
     default: false
+  postgresql.exporter.image:
+    type: string
+    default: $REGISTRY/postgresql9/exporter:$TAG
+    x-google-marketplace:
+      type: IMAGE
 
 required:
 - name
@@ -43,3 +48,4 @@ required:
 - postgresql.image
 - metrics.image
 - metrics.enabled
+- postgresql.exporter.image

@@ -11,3 +11,17 @@ spec:
   selector:
     app.kubernetes.io/name: "{{.Release.Name}}"
     app.kubernetes.io/component: postgresql-server
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-postgres-exporter-svc
+  labels: &PostgresSQLDeploymentLabels
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: postgresql-server
+spec:
+  ports:
+  - name: postgres-exporter
+    port: 9187
+  selector: *PostgresSQLDeploymentLabels
+  type: ClusterIP

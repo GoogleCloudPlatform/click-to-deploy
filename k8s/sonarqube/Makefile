@@ -9,6 +9,7 @@ METRICS_EXPORTER_TAG ?= v0.5.1
 SRCTAG ?= 9.6-kubernetes
 IMAGE_SONARQUBE ?= marketplace.gcr.io/google/sonarqube7:latest
 IMAGE_POSTGRESQL ?= marketplace.gcr.io/google/postgresql9:$(SRCTAG)
+IMAGE_POSTGRESQL_EXPORTER ?= marketplace.gcr.io/google/postgresql9:exporter
 $(info ---- TAG = $(TAG))
 
 ifdef DB_PASSWORD
@@ -35,6 +36,7 @@ app/build:: .build/sonarqube/deployer \
             .build/sonarqube/sonarqube \
             .build/sonarqube/postgresql9 \
             .build/sonarqube/prometheus-to-sd \
+            .build/sonarqube/postgresql9/exporter \
             .build/sonarqube/tester
 
 
@@ -79,6 +81,13 @@ app/build:: .build/sonarqube/deployer \
 	docker push "$(REGISTRY)/sonarqube/postgresql9:$(TAG)"
 	@touch "$@"
 
+.build/sonarqube/postgresql9/exporter: .build/var/REGISTRY \
+                                       .build/var/TAG \
+                                       | .build/postgresql9
+	docker pull $(IMAGE_POSTGRESQL_EXPORTER)
+	docker tag $(IMAGE_POSTGRESQL_EXPORTER) "$(REGISTRY)/sonarqube/postgresql9/exporter:$(TAG)"
+	docker push "$(REGISTRY)/sonarqube/postgresql9/exporter:$(TAG)"
+	@touch "$@"
 
 .build/sonarqube/prometheus-to-sd: .build/var/REGISTRY \
                                   .build/var/TAG \

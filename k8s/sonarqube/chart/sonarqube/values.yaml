@@ -8,9 +8,10 @@ sonarqube:
     type: LoadBalancer
     externalPort: 9000
     internalPort: 9000
-
 postgresql:
   image: marketplace.gcr.io/google/postgresql9:latest
+  exporter:
+    image: null
   volumeSize: 10
   db:
     password: null
