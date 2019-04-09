@@ -132,7 +132,7 @@ steps:
   - app/verify
 
 {%- for extra_config in extra_configs %}
-{%- if solution in extra_config['name'] %}
+{%- if solution in extra_config['solution'] %}
 
 - id: Verify {{ solution }} ({{ extra_config['desc'] }})
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
@@ -189,17 +189,17 @@ def main():
   # with non-default configurations.
   extra_configs = [
     {
-      'name': 'wordpress',
+      'solution': 'wordpress',
       'desc': 'Public service and ingress',
       'env': [
-          'PUBLIC_SERVICE_AND_INGRESS_ENABLED=true',
+        'PUBLIC_SERVICE_AND_INGRESS_ENABLED=true',
       ]
     },
     {
-      'name': 'wordpress',
+      'solution': 'wordpress',
       'desc': 'Prometheus metrics',
       'env': [
-          'METRICS_EXPORTER_ENABLED=true',
+        'METRICS_EXPORTER_ENABLED=true',
       ]
     }
   ]
