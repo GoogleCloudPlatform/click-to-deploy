@@ -132,7 +132,7 @@ spec:
             exec:
               command:
               - "/bin/bash"
-              - "-eu"
+              - "-u"
               - "/wp-install.sh"
         readinessProbe:
           httpGet:
