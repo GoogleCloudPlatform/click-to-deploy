@@ -131,10 +131,9 @@ steps:
   - -j4
   - app/verify
 
-{%- for extra_config in extra_configs %}
-{%- if solution in extra_config['solution'] %}
+{%- for extra_config in extra_configs[solution] %}
 
-- id: Verify {{ solution }} ({{ extra_config['desc'] }})
+- id: Verify {{ solution }} ({{ extra_config['name'] }})
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Copy kubectl Credentials
@@ -148,8 +147,8 @@ steps:
   # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
   - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
   # Non-default variables.
-  {%- for env in extra_config['env'] %}
-  - '{{ env }}'
+  {%- for env_var in extra_config['env_vars'] %}
+  - '{{ env_var }}'
   {%- endfor %}
   dir: k8s/{{ solution }}
   args:
@@ -157,8 +156,7 @@ steps:
   - -j4
   - app/verify
 
-{%- endif -%}
-{% endfor %}
+{%- endfor %}
 
 {%- endfor %}
 """.strip()
@@ -187,23 +185,22 @@ def main():
 
   # Use extra_configs to run additional deployments
   # with non-default configurations.
-  extra_configs = [
-    {
-      'solution': 'wordpress',
-      'desc': 'Public service and ingress',
-      'env': [
-        'PUBLIC_SERVICE_AND_INGRESS_ENABLED=true',
-      ]
-    },
-    {
-      'solution': 'wordpress',
-      'desc': 'Prometheus metrics',
-      'env': [
-        'METRICS_EXPORTER_ENABLED=true',
-      ]
-    }
-  ]
-
+  extra_configs = {
+    'wordpress': [
+      {
+        'name': 'Public service and ingress',
+        'env_vars': [
+          'PUBLIC_SERVICE_AND_INGRESS_ENABLED=true'
+        ]
+      },
+      {
+          'name': 'Prometheus metrics',
+          'env_vars': [
+              'METRICS_EXPORTER_ENABLED=true'
+          ]
+      },
+    ]
+  }
 
   listdir = [f for f in os.listdir('k8s')
              if os.path.isdir(os.path.join('k8s', f))]
