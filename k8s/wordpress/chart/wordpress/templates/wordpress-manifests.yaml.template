@@ -208,7 +208,11 @@ spec:
   selector:
     app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: wordpress-webserver
+  {{ if .Values.enablePublicServiceAndIngress }}
   type: NodePort
+  {{ else }}
+  type: ClusterIP
+  {{ end }}
 ---
 apiVersion: v1
 kind: Service
@@ -225,6 +229,7 @@ spec:
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: wordpress-webserver
   clusterIP: None
+{{ if .Values.enablePublicServiceAndIngress }}
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -240,3 +245,4 @@ spec:
   backend:
     serviceName: {{ .Release.Name }}-wordpress-svc
     servicePort: http
+{{ end }}
