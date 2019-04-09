@@ -98,4 +98,3 @@ app/build:: .build/sonarqube/deployer \
 	    && docker build --tag "$(TESTER_IMAGE)" .
 	docker push "$(TESTER_IMAGE)"
 	@touch "$@"
-

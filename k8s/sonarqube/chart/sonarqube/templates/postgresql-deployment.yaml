@@ -45,4 +45,3 @@ spec:
           value: {{ .Values.postgresql.db.user}}
         - name: "POSTGRES_DB"
           value: {{.Values.postgresql.db.name}}
-
