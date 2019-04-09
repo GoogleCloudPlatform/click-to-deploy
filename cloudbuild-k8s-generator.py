@@ -131,9 +131,10 @@ steps:
   - -j4
   - app/verify
 
-{%- for extra_config in extra_configs[solution] %}
+{%- for extra_config in extra_configs %}
+{%- if solution in extra_config['name'] %}
 
-- id: Verify {{ solution }} ({{ extra_config['name'] }})
+- id: Verify {{ solution }} ({{ extra_config['desc'] }})
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Copy kubectl Credentials
@@ -146,8 +147,9 @@ steps:
   # Use local Docker network named cloudbuild as described here:
   # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
   - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
-  {%- for env_var in extra_config['env_vars'] %}
-  - '{{ env_var }}'
+  # Non-default variables.
+  {%- for env in extra_config['env'] %}
+  - '{{ env }}'
   {%- endfor %}
   dir: k8s/{{ solution }}
   args:
@@ -155,7 +157,8 @@ steps:
   - -j4
   - app/verify
 
-{%- endfor %}
+{%- endif -%}
+{% endfor %}
 
 {%- endfor %}
 """.strip()
@@ -184,16 +187,23 @@ def main():
 
   # Use extra_configs to run additional deployments
   # with non-default configurations.
-  extra_configs = {
-    'wordpress': [
-      {
-        'name': 'Public service and ingress',
-        'env_vars': [
-          'PUBLIC_SERVICE_AND_INGRESS_ENABLED=true'
-        ]
-      }
-    ]
-  }
+  extra_configs = [
+    {
+      'name': 'wordpress',
+      'desc': 'Public service and ingress',
+      'env': [
+          'PUBLIC_SERVICE_AND_INGRESS_ENABLED=true',
+      ]
+    },
+    {
+      'name': 'wordpress',
+      'desc': 'Prometheus metrics',
+      'env': [
+          'METRICS_EXPORTER_ENABLED=true',
+      ]
+    }
+  ]
+
 
   listdir = [f for f in os.listdir('k8s')
              if os.path.isdir(os.path.join('k8s', f))]
