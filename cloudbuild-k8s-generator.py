@@ -94,12 +94,31 @@ steps:
 
 {%- for solution in solutions %}
 
+- id: Build {{ solution }}
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  dir: k8s/{{ solution }}
+  args:
+  - make
+  - -j4
+  - app/build
+
+{%- endfor %}
+
+{%- for solution in solutions %}
+
 - id: Verify {{ solution }}
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Copy kubectl Credentials
   - Copy gcloud Credentials
   - Pull Dev Image
+  - Build {{ solution }}
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
@@ -111,6 +130,33 @@ steps:
   - make
   - -j4
   - app/verify
+
+{%- for extra_config in extra_configs[solution] %}
+
+- id: Verify {{ solution }} ({{ extra_config['name'] }})
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  waitFor:
+  - Copy kubectl Credentials
+  - Copy gcloud Credentials
+  - Pull Dev Image
+  - Build {{ solution }}
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  # Non-default variables.
+  {%- for env_var in extra_config['env_vars'] %}
+  - '{{ env_var }}'
+  {%- endfor %}
+  dir: k8s/{{ solution }}
+  args:
+  - make
+  - -j4
+  - app/verify
+
+{%- endfor %}
 
 {%- endfor %}
 """.strip()
@@ -137,6 +183,25 @@ def main():
 
   skiplist = ['spark-operator']
 
+  # Use extra_configs to run additional deployments
+  # with non-default configurations.
+  extra_configs = {
+    'wordpress': [
+      {
+        'name': 'Public service and ingress',
+        'env_vars': [
+          'PUBLIC_SERVICE_AND_INGRESS_ENABLED=true'
+        ]
+      },
+      {
+        'name': 'Prometheus metrics',
+        'env_vars': [
+          'METRICS_EXPORTER_ENABLED=true'
+        ]
+      },
+    ]
+  }
+
   listdir = [f for f in os.listdir('k8s')
              if os.path.isdir(os.path.join('k8s', f))]
   listdir.sort()
@@ -151,7 +216,7 @@ def main():
       solutions_to_build.append(solution)
 
   cloudbuild_contents = Template(CLOUDBUILD_TEMPLATE).render(
-      solutions=solutions_to_build) + '\n'
+      solutions=solutions_to_build, extra_configs=extra_configs) + '\n'
 
   if args.verify_only:
     if verify_cloudbuild(cloudbuild_contents):

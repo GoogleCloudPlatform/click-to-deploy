@@ -69,12 +69,223 @@ steps:
     mkdir -p /workspace/.config/gcloud/
     cp -r $$HOME/.config/gcloud/ /workspace/.config/
 
+- id: Build agones
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  dir: k8s/agones
+  args:
+  - make
+  - -j4
+  - app/build
+
+- id: Build airflow-operator
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  dir: k8s/airflow-operator
+  args:
+  - make
+  - -j4
+  - app/build
+
+- id: Build cassandra
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  dir: k8s/cassandra
+  args:
+  - make
+  - -j4
+  - app/build
+
+- id: Build elastic-gke-logging
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  dir: k8s/elastic-gke-logging
+  args:
+  - make
+  - -j4
+  - app/build
+
+- id: Build elasticsearch
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  dir: k8s/elasticsearch
+  args:
+  - make
+  - -j4
+  - app/build
+
+- id: Build grafana
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  dir: k8s/grafana
+  args:
+  - make
+  - -j4
+  - app/build
+
+- id: Build influxdb
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  dir: k8s/influxdb
+  args:
+  - make
+  - -j4
+  - app/build
+
+- id: Build jenkins
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  dir: k8s/jenkins
+  args:
+  - make
+  - -j4
+  - app/build
+
+- id: Build memcached
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  dir: k8s/memcached
+  args:
+  - make
+  - -j4
+  - app/build
+
+- id: Build nginx
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  dir: k8s/nginx
+  args:
+  - make
+  - -j4
+  - app/build
+
+- id: Build postgresql
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  dir: k8s/postgresql
+  args:
+  - make
+  - -j4
+  - app/build
+
+- id: Build prometheus
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  dir: k8s/prometheus
+  args:
+  - make
+  - -j4
+  - app/build
+
+- id: Build rabbitmq
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  dir: k8s/rabbitmq
+  args:
+  - make
+  - -j4
+  - app/build
+
+- id: Build sample-app
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  dir: k8s/sample-app
+  args:
+  - make
+  - -j4
+  - app/build
+
+- id: Build wordpress
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  dir: k8s/wordpress
+  args:
+  - make
+  - -j4
+  - app/build
+
 - id: Verify agones
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Copy kubectl Credentials
   - Copy gcloud Credentials
   - Pull Dev Image
+  - Build agones
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
@@ -93,6 +304,7 @@ steps:
   - Copy kubectl Credentials
   - Copy gcloud Credentials
   - Pull Dev Image
+  - Build airflow-operator
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
@@ -111,6 +323,7 @@ steps:
   - Copy kubectl Credentials
   - Copy gcloud Credentials
   - Pull Dev Image
+  - Build cassandra
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
@@ -129,6 +342,7 @@ steps:
   - Copy kubectl Credentials
   - Copy gcloud Credentials
   - Pull Dev Image
+  - Build elastic-gke-logging
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
@@ -147,6 +361,7 @@ steps:
   - Copy kubectl Credentials
   - Copy gcloud Credentials
   - Pull Dev Image
+  - Build elasticsearch
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
@@ -165,6 +380,7 @@ steps:
   - Copy kubectl Credentials
   - Copy gcloud Credentials
   - Pull Dev Image
+  - Build grafana
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
@@ -183,6 +399,7 @@ steps:
   - Copy kubectl Credentials
   - Copy gcloud Credentials
   - Pull Dev Image
+  - Build influxdb
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
@@ -201,6 +418,7 @@ steps:
   - Copy kubectl Credentials
   - Copy gcloud Credentials
   - Pull Dev Image
+  - Build jenkins
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
@@ -219,6 +437,7 @@ steps:
   - Copy kubectl Credentials
   - Copy gcloud Credentials
   - Pull Dev Image
+  - Build memcached
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
@@ -237,6 +456,7 @@ steps:
   - Copy kubectl Credentials
   - Copy gcloud Credentials
   - Pull Dev Image
+  - Build nginx
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
@@ -255,6 +475,7 @@ steps:
   - Copy kubectl Credentials
   - Copy gcloud Credentials
   - Pull Dev Image
+  - Build postgresql
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
@@ -273,6 +494,7 @@ steps:
   - Copy kubectl Credentials
   - Copy gcloud Credentials
   - Pull Dev Image
+  - Build prometheus
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
@@ -291,6 +513,7 @@ steps:
   - Copy kubectl Credentials
   - Copy gcloud Credentials
   - Pull Dev Image
+  - Build rabbitmq
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
@@ -309,6 +532,7 @@ steps:
   - Copy kubectl Credentials
   - Copy gcloud Credentials
   - Pull Dev Image
+  - Build sample-app
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
@@ -327,12 +551,55 @@ steps:
   - Copy kubectl Credentials
   - Copy gcloud Credentials
   - Pull Dev Image
+  - Build wordpress
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
   # Use local Docker network named cloudbuild as described here:
   # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
   - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  dir: k8s/wordpress
+  args:
+  - make
+  - -j4
+  - app/verify
+
+- id: Verify wordpress (Public service and ingress)
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  waitFor:
+  - Copy kubectl Credentials
+  - Copy gcloud Credentials
+  - Pull Dev Image
+  - Build wordpress
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  # Non-default variables.
+  - 'PUBLIC_SERVICE_AND_INGRESS_ENABLED=true'
+  dir: k8s/wordpress
+  args:
+  - make
+  - -j4
+  - app/verify
+
+- id: Verify wordpress (Prometheus metrics)
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  waitFor:
+  - Copy kubectl Credentials
+  - Copy gcloud Credentials
+  - Pull Dev Image
+  - Build wordpress
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  # Non-default variables.
+  - 'METRICS_EXPORTER_ENABLED=true'
   dir: k8s/wordpress
   args:
   - make
