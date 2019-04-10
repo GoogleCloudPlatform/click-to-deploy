@@ -22,7 +22,7 @@ spec:
         persistentVolumeClaim:
           claimName: {{ .Release.Name }}-postgresql-pvc
       containers:
-      name: postgresql-server
+      - name: postgresql-server
         image: {{ .Values.postgresql.image }}
         imagePullPolicy: Always
         ports:
@@ -46,18 +46,18 @@ spec:
         - name: "POSTGRES_DB"
           value: {{.Values.postgresql.db.name}}
       - name: postgresql-exporter
-          image: {{ .Values.postgresql.exporter.image }}
-          imagePullPolicy: Always
-          ports:
-            - containerPort: 9187
-              name: exporter
-          env:
-            - name: "DATA_SOURCE_URI"
-              value: "localhost:5432/postgres?sslmode=disable"
-            - name: "DATA_SOURCE_USER"
-              value: "postgres"
-            - name: "DATA_SOURCE_PASS"
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Release.Name }}-secret
-                  key: password
+        image: {{ .Values.postgresql.exporter.image }}
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 9187
+            name: exporter
+        env:
+          - name: "DATA_SOURCE_URI"
+            value: "localhost:5432/postgres?sslmode=disable"
+          - name: "DATA_SOURCE_USER"
+            value: "postgres"
+          - name: "DATA_SOURCE_PASS"
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-secret
+                key: password
