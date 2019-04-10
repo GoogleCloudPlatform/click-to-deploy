@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: {{ .Release.Name}}-sonarqube
-          image: {{ .Values.sonarqube.repository}}
+          image: {{ .Values.sonarqube.image}}
           env:
             - name: SONARQUBE_JDBC_PASSWORD
               valueFrom:
