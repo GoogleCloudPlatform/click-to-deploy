@@ -43,6 +43,7 @@ You'll need the following tools in your environment:
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - [docker](https://docs.docker.com/install/)
+- [helm](https://helm.sh/)
 
 Configure `gcloud` as a Docker credential helper:
 
