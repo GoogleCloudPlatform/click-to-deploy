@@ -9,7 +9,7 @@ spec:
   ports:
     - port: {{.Values.sonarqube.service.externalPort}}
       targetPort: {{.Values.sonarqube.service.internalPort}}
-      name: {{.Values.sonarqube.service.name}}-port
+      name: sonarqube-port
   selector:
     app.kubernetes.io/name: "{{.Release.Name}}"
     app.kubernetes.io/component: sonarqube
