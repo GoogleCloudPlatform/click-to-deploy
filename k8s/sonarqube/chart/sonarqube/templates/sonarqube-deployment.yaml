@@ -14,26 +14,26 @@ spec:
       labels: *SonarQubeDeploymentsLables
     spec:
       containers:
-        - name: {{ .Release.Name}}-sonarqube
-          image: {{ .Values.sonarqube.repository}}
+      - name: {{ .Release.Name}}-sonarqube
+        image: {{ .Values.sonarqube.repository}}
           env:
-            - name: SONARQUBE_JDBC_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: password
-                  name: {{.Release.Name}}-secret
-            - name: SONARQUBE_JDBC_URL
-              value: jdbc:postgresql://{{ .Values.postgresql.service.name}}:{{.Values.postgresql.service.Port}}/{{.Values.postgresql.db.name}}
-            - name: SONARQUBE_JDBC_USERNAME
-              value: {{.Values.postgresql.db.user}}
-          ports:
-            - containerPort: {{.Values.sonarqube.service.internalPort}}
-              name: sonar-port
-          volumeMounts:
-          - mountPath: "/opt/sonarqube/data/"
-            name: {{ .Release.Name}}-data
-          - mountPath: "/opt/sonarqube/extensions/"
-            name: {{ .Release.Name}}-exts
+          - name: SONARQUBE_JDBC_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: {{.Release.Name}}-secret
+          - name: SONARQUBE_JDBC_URL
+            value: jdbc:postgresql://{{ .Values.postgresql.service.name}}:{{.Values.postgresql.service.Port}}/{{.Values.postgresql.db.name}}
+          - name: SONARQUBE_JDBC_USERNAME
+            value: {{.Values.postgresql.db.user}}
+        ports:
+          - containerPort: {{.Values.sonarqube.service.internalPort}}
+            name: sonar-port
+        volumeMounts:
+        - mountPath: "/opt/sonarqube/data/"
+          name: {{ .Release.Name}}-data
+        - mountPath: "/opt/sonarqube/extensions/"
+          name: {{ .Release.Name}}-exts
       volumes:
       - name: {{ .Release.Name}}-data
         persistentVolumeClaim:

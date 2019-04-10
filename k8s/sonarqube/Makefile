@@ -36,7 +36,7 @@ app/build:: .build/sonarqube/deployer \
             .build/sonarqube/sonarqube \
             .build/sonarqube/postgresql9 \
             .build/sonarqube/prometheus-to-sd \
-            .build/sonarqube/postgresql9/exporter \
+            .build/sonarqube/exporter \
             .build/sonarqube/tester
 
 
@@ -81,9 +81,9 @@ app/build:: .build/sonarqube/deployer \
 	docker push "$(REGISTRY)/sonarqube/postgresql9:$(TAG)"
 	@touch "$@"
 
-.build/sonarqube/postgresql9/exporter: .build/var/REGISTRY \
+.build/sonarqube/exporter: .build/var/REGISTRY \
                                        .build/var/TAG \
-                                       | .build/postgresql9
+                                       | .build/sonarqube/postgresql9
 	docker pull $(IMAGE_POSTGRESQL_EXPORTER)
 	docker tag $(IMAGE_POSTGRESQL_EXPORTER) "$(REGISTRY)/sonarqube/postgresql9/exporter:$(TAG)"
 	docker push "$(REGISTRY)/sonarqube/postgresql9/exporter:$(TAG)"
