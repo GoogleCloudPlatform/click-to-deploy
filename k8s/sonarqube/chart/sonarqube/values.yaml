@@ -1,24 +1,13 @@
-replicaCount: 1
 sonarqube:
   image: null
-  pullPolicy: Always
-  volumeSize: 5
-  service:
-    externalPort: 9000
-    internalPort: 9000
 postgresql:
   image: null
   exporter:
     image: null
-  volumeSize: 10
   db:
     password: null
-    test:
     name: sonar
     user: sonar
-  service:
-    Port: 5432
-    name: postgresql-service
 metrics:
   image: null
   enabled: false

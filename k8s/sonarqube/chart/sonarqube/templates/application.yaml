@@ -53,13 +53,21 @@ spec:
   notes: |-
     # Access SonarQube
 
-    SonarQube is exposed in a ClusterIP-only service `{{.Release.Name}}-{{ .Values.sonarqube.service.name}}`. To connect to
+    SonarQube is exposed in a ClusterIP-only service `{{.Release.Name}}-sonarqube-svc`. To connect to
     SonarQube UI, you can either expose a public service endpoint or keep it private, but connect
     from you local environment with `kubectl port-forward`
 
     ```
     kubectl port-forward \
       --namespace {{ .Release.Namespace }} \
-      svc/{{.Release.Name}}-{{ .Values.sonarqube.service.name}} \
+      svc/{{.Release.Name}}-sonarqube-svc \
       9000:9000
     ```
+
+    and then you can open in browser sonarqube web console:
+
+    ```
+    xdg-open http://localhost:9000
+    ```
+
+    Default login Admin password Admin. Please change it after first login.

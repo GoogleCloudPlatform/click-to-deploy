@@ -16,6 +16,7 @@ spec:
       containers:
         - name: {{ .Release.Name}}-sonarqube
           image: {{ .Values.sonarqube.image}}
+          imagePullPolicy: Always
           env:
             - name: SONARQUBE_JDBC_PASSWORD
               valueFrom:
@@ -23,11 +24,11 @@ spec:
                   key: password
                   name: {{.Release.Name}}-secret
             - name: SONARQUBE_JDBC_URL
-              value: jdbc:postgresql://{{ .Values.postgresql.service.name}}:{{.Values.postgresql.service.Port}}/{{.Values.postgresql.db.name}}
+              value: jdbc:postgresql://{{ .Release.Name }}-postgresql-service:5432/{{.Values.postgresql.db.name}}
             - name: SONARQUBE_JDBC_USERNAME
               value: {{.Values.postgresql.db.user}}
           ports:
-            - containerPort: {{.Values.sonarqube.service.internalPort}}
+            - containerPort: 9000
               name: sonar-port
           volumeMounts:
           - mountPath: "/opt/sonarqube/data/"

@@ -10,5 +10,5 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: {{ .Values.postgresql.volumeSize }}Gi
+      storage: 10Gi
   storageClassName: standard
