@@ -14,7 +14,7 @@ spec:
     metadata:
       labels: *WordPressDeploymentLabels
     spec:
-      containers:
+          containers:
       - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}
         ports:
