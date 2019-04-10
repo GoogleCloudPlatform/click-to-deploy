@@ -2,7 +2,7 @@ actions:
 
 - name: Site address should be 200 OK (service DNS)
   httpTest:
-    url: http://{{ .Env.APP_INSTANCE_NAME }}-sonarqube:9000
+    url: http://{{ .Env.APP_INSTANCE_NAME }}-sonarqube-svc:9000
     expect:
       statusCode:
         equals: 200

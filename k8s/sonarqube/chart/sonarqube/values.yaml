@@ -1,15 +1,13 @@
 replicaCount: 1
 sonarqube:
-  image: marketplace.gcr.io/google/sonarqube7:latest
+  image: null
   pullPolicy: Always
   volumeSize: 5
   service:
-    name: sonarqube
-    type: LoadBalancer
     externalPort: 9000
     internalPort: 9000
 postgresql:
-  image: marketplace.gcr.io/google/postgresql9:latest
+  image: null
   exporter:
     image: null
   volumeSize: 10
