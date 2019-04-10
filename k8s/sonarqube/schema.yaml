@@ -8,7 +8,7 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  sonarqube.repository:
+  sonarqube.image:
     type: string
     default: $REGISTRY:$TAG
     x-google-marketplace:
@@ -43,7 +43,7 @@ properties:
 required:
 - name
 - namespace
-- sonarqube.repository
+- sonarqube.image
 - postgresql.db.password
 - postgresql.image
 - metrics.image

@@ -1,6 +1,6 @@
 replicaCount: 1
 sonarqube:
-  repository: marketplace.gcr.io/google/sonarqube7:latest
+  image: marketplace.gcr.io/google/sonarqube7:latest
   pullPolicy: Always
   volumeSize: 5
   service:

@@ -22,7 +22,7 @@ spec:
         persistentVolumeClaim:
           claimName: {{ .Release.Name }}-postgresql-pvc
       containers:
-      - name: postgresql-server
+      name: postgresql-server
         image: {{ .Values.postgresql.image }}
         imagePullPolicy: Always
         ports:
