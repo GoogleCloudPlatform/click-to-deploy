@@ -41,6 +41,11 @@ properties:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 12
+  apache.exporter.image:
+    type: string
+    default: $REGISTRY/apache-exporter:$TAG
+    x-google-marketplace:
+      type: IMAGE
   # An e-mail address for WordPress site.
   admin.email:
     type: string
@@ -56,6 +61,11 @@ properties:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 20
+  enablePublicServiceAndIngress:
+    type: boolean
+    title: Enable public IP access
+    description: Set the WordPress Service type to NodePort and enable Ingress
+    default: false
   metrics.image:
     type: string
     default: $REGISTRY/prometheus-to-sd:$TAG
@@ -75,7 +85,9 @@ required:
 - db.wordpressPassword
 - db.exporter.image
 - db.exporter.password
+- apache.exporter.image
 - admin.email
 - admin.password
 - metrics.image
 - metrics.enabled
+- enablePublicServiceAndIngress

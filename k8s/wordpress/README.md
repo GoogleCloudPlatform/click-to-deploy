@@ -10,11 +10,15 @@ Popular open stacks on Kubernetes packaged by Google.
 
 ## Design
 
+> **NOTE:** The following diagram is showing the architecture with the optional public exposure of WordPress based on Ingress and TLS configuration. Please follow the documentation to find options for enabling Ingress. 
+
 ![Architecture diagram](resources/wordpress-k8s-app-architecture.png)
 
 ### Solution Information
 
-WordPress solution exposes its interface on ports `80` and `443` via Ingress resource. TLS certificates are stored in `[APP-INSTANCE-NAME]-tls` Secret resource.
+WordPress by default is exposing a ClusterIP type of Service on port 80. Optionally, when public service exposure
+is enabled, WordPress interface is exposed on ports `80` and `443` via Ingress resource.
+TLS certificates are stored in `[APP-INSTANCE-NAME]-tls` Secret resource.
 
 Separate StatefulSet Kubernetes objects are used to manage instance of WordPress and instance of MySQL database.
 Single instance of WordPress is deployed as a single Pod via Kubernetes StatefulSet.
@@ -57,6 +61,7 @@ You'll need the following tools in your development environment:
 - [docker](https://docs.docker.com/install/)
 - [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 - [openssl](https://www.openssl.org/)
+- [helm](https://helm.sh/)
 
 Configure `gcloud` as a Docker credential helper:
 
@@ -124,6 +129,14 @@ export APP_INSTANCE_NAME=wordpress-1
 export NAMESPACE=default
 ```
 
+Enable public Service exposure and Ingress configuration:
+
+By default the public exposure is disabled. To enable, change the value to `true`.
+
+```shell
+export PUBLIC_SERVICE_AND_INGRESS_ENABLED=false
+```
+
 Enable Stackdriver Metrics Exporter:
 
 > **NOTE:** Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet.
@@ -139,6 +152,7 @@ Configure the container images:
 ```shell
 TAG=latest
 export IMAGE_WORDPRESS="marketplace.gcr.io/google/wordpress:${TAG}"
+export IMAGE_APACHE_EXPORTER="marketplace.gcr.io/google/wordpress/apache-exporter:${TAG}"
 export IMAGE_MYSQL="marketplace.gcr.io/google/wordpress/mysql:${TAG}"
 export IMAGE_MYSQL_EXPORTER="marketplace.gcr.io/google/wordpress/mysqld-exporter:${TAG}"
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/wordpress/prometheus-to-sd:${TAG}"
@@ -153,7 +167,7 @@ until you are ready to upgrade. To get the digest for the image, use the
 following script:
 
 ```shell
-for i in "IMAGE_WORDPRESS" "IMAGE_MYSQL" "IMAGE_MYSQL_EXPORTER" "IMAGE_METRICS_EXPORTER"; do
+for i in "IMAGE_WORDPRESS" "IMAGE_APACHE_EXPORTER" "IMAGE_MYSQL" "IMAGE_MYSQL_EXPORTER" "IMAGE_METRICS_EXPORTER"; do
   repo=$(echo ${!i} | cut -d: -f1);
   digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
   export $i="$repo@$digest";
@@ -203,9 +217,11 @@ helm template chart/wordpress \
   --set db.wordpressPassword=$WORDPRESS_DB_PASSWORD \
   --set db.exporter.image=$IMAGE_MYSQL_EXPORTER \
   --set db.exporter.password=$EXPORTER_DB_PASSWORD \
+  --set apache.exporter.image=$IMAGE_APACHE_EXPORTER \
   --set admin.email=$WORDPRESS_ADMIN_EMAIL \
   --set admin.password=$WORDPRESS_ADMIN_PASSWORD \
   --set metrics.image=$IMAGE_METRICS_EXPORTER \
+  --set enablePublicServiceAndIngress=$PUBLIC_SERVICE_AND_INGRESS_ENABLED \
   --set metrics.enabled=$METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 
@@ -286,19 +302,32 @@ The command shows you the URL of your site.
 
 ## Prometheus metrics
 
-The application can be configured to expose its metrics through
-[MySQL Server Exporter](https://github.com/GoogleCloudPlatform/mysql-docker/tree/master/exporter)
+The application can be configured to expose its metrics through the
+[MySQL Server Exporter](https://github.com/GoogleCloudPlatform/mysql-docker/tree/master/exporter) and
+the [Apache Exporter](https://github.com/GoogleCloudPlatform/wordpress-docker/tree/master/exporter)
 in the [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
-Metrics can be read on a single HTTP endpoint available at `[APP_BASE_URL]:9104/metrics`,
-where `[APP_BASE_URL]` is the base URL address of the application.
 
-For example, to access the metrics locally, invoke the following command:
+1.  Metrics for MySQL can be read on a single HTTP endpoint available at `[MYSQL-SERVICE]:9104/metrics`,
+    where `[MYSQL-SERVICE]` is the [Kubernetes Service](https://kubernetes.io/docs/concepts/services-networking/service/).
 
-```shell
-kubectl port-forward "svc/${APP_INSTANCE_NAME}-mysqld-exporter-svc" 9104:9104 --namespace "${NAMESPACE}"
-```
+    For example, to access the metrics locally, invoke the following command:
 
-Then, navigate to the [http://localhost:9104/metrics](http://localhost:9104/metrics) endpoint.
+    ```shell
+    kubectl port-forward "svc/${APP_INSTANCE_NAME}-mysqld-exporter-svc" 9104 --namespace "${NAMESPACE}"
+    ```
+
+    Then, navigate to the [http://localhost:9104/metrics](http://localhost:9104/metrics) endpoint.
+
+2.  Metrics for Apache HTTP Server can be read on a single HTTP endpoint available at `[APACHE-SERVICE]:9117/metrics`,
+    where `[APACHE-SERVICE]` is the [Kubernetes Service](https://kubernetes.io/docs/concepts/services-networking/service/).
+
+    For example, to access the metrics locally, invoke the following command:
+
+    ```shell
+    kubectl port-forward "svc/${APP_INSTANCE_NAME}-apache-exporter-svc" 9117 --namespace "${NAMESPACE}"
+    ```
+
+    Then, navigate to the [http://localhost:9117/metrics](http://localhost:9117/metrics) endpoint.
 
 ## Configuring Prometheus to collect the metrics
 

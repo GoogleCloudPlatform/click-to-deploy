@@ -44,6 +44,7 @@ You'll need the following tools in your environment:
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - [openssl](https://www.openssl.org/)
+- [helm](https://helm.sh/)
 
 Configure `gcloud` as a Docker credential helper:
 
@@ -119,7 +120,7 @@ Configure the container images:
 
 ```shell
 TAG=9.6
-export IMAGE_POSTGRESQL=marketplace.gcr.io/google/postgresql9:9.6-kubernetes
+export IMAGE_POSTGRESQL="marketplace.gcr.io/google/postgresql:${TAG}"
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/postgresql/prometheus-to-sd:${TAG}"
 ```
 
@@ -230,6 +231,7 @@ echo PGPASSWORD=$PGPASSWORD sslmode=require psql -U postgres -h $EXTERNAL_IP
 The application is configured to expose its metrics through
 [PostgreSQL Prometheus.io exporter plugin](https://github.com/wrouesnel/postgres_exporter)
 in the [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
+
 Metrics can be read on a single HTTP endpoint available at `[POSTGRESQL_CLUSTER_IP]:9187/metrics`,
 where `[POSTGRESQL_CLUSTER_IP]` is the IP address of the application on Kubernetes cluster.
 
@@ -261,7 +263,6 @@ from your application might not show up in the Stackdriver's Metrics Explorer.
 
 Existing metric descriptors can be removed through
 [Stackdriver's REST API](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors/delete).
-
 
 # Scaling
 

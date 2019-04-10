@@ -66,6 +66,7 @@ You'll need the following tools in your development environment:
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 - [docker](https://docs.docker.com/install/)
 - [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+- [helm](https://helm.sh/)
 
 Configure `gcloud` as a Docker credential helper:
 
@@ -136,10 +137,10 @@ export REPLICAS=3
 
 Enable Stackdriver Metrics Exporter:
 
- > **NOTE:** Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet.
+> **NOTE:** Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet.
 
 By default the integration is disabled. To enable, change the
-METRICS_EXPORTER_ENABLED variable value to `true`.
+`METRICS_EXPORTER_ENABLED` variable value to `true`.
 
  ```shell
 export METRICS_EXPORTER_ENABLED=false
@@ -240,6 +241,7 @@ The application is configured to expose its metrics through
 [Nginx Exporter](https://github.com/nginxinc/nginx-prometheus-exporter)
 in the [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
 For more detailed information about the plugin setup, see the [Nginx Exporter documentation](https://github.com/nginxinc/nginx-prometheus-exporter/blob/master/README.md).
+
 Metrics can be read on a single HTTP endpoint available at `[POD_IP]:9113/metrics`,
 where `[POD_IP]` is the IP read from Kubernetes headless service `$APP_INSTANCE_NAME-nginx-prometheus-svc`.
 
@@ -268,7 +270,8 @@ The exporting option might not be available for GKE on-prem clusters.
 for the number of custom metrics created in a single GCP project. If the quota is met,
 additional metrics will not be accepted by Stackdriver, which might cause that some metrics
 from your application might not show up in the Stackdriver's Metrics Explorer.
- Existing metric descriptors can be removed through
+
+Existing metric descriptors can be removed through
 [Stackdriver's REST API](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors/delete).
 
 

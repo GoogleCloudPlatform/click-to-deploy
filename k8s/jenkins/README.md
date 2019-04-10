@@ -43,6 +43,7 @@ You'll need the following tools in your environment:
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - [docker](https://docs.docker.com/install/)
+- [helm](https://helm.sh/)
 
 Configure `gcloud` as a Docker credential helper:
 
@@ -132,6 +133,7 @@ following script:
 
 ```shell
 export IMAGE_JENKINS=$(docker pull $IMAGE_JENKINS | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_JENKINS\")\"@sha256:\"\$3}")
+export IMAGE_METRICS_EXPORTER=$(docker pull $IMAGE_METRICS_EXPORTER | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_METRICS_EXPORTER\")\"@sha256:\"\$3}")
 ```
 
 Create a certificate for Jenkins. If you already have a certificate that you
@@ -148,6 +150,16 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 # create a secret for K8s ingress SSL
 kubectl --namespace $NAMESPACE create secret generic $APP_INSTANCE_NAME-tls \
         --from-file=/tmp/tls.crt --from-file=/tmp/tls.key
+```
+
+Enable Stackdriver Metrics Exporter:
+
+> **NOTE:** Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet.
+
+By default the integration is disabled. To enable, change the value to `true`.
+
+```shell
+export METRICS_EXPORTER_ENABLED=false
 ```
 
 #### Expand the manifest template
@@ -227,6 +239,7 @@ To set Jenkins, follow these on-screen steps to customize your installation:
 The application is configured to expose its metrics through
 [Jenkins Prometheus.io exporter plugin](https://github.com/jenkinsci/prometheus-plugin)
 in the [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
+
 Metrics can be read on a single HTTP endpoint available at `[APP_BASE_URL]:8080/prometheus/`,
 where `[APP_BASE_URL]` is the base URL address of the application.
 

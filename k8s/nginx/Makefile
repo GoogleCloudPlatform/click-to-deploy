@@ -23,12 +23,17 @@ ifdef IMAGE_NGINX_INIT
   IMAGE_NGINX_INIT_FIELD = , "nginx.initImage": "$(IMAGE_NGINX_INIT)"
 endif
 
+ifdef PUBLIC_IP_AVAILABLE
+  PUBLIC_IP_AVAILABLE_FIELD = , "publicIp.available": "$(PUBLIC_IP_AVAILABLE)"
+endif
+
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
   $(IMAGE_NGINX_FIELD) \
   $(IMAGE_NGINX_INIT_FIELD) \
   $(METRICS_EXPORTER_ENABLED_FIELD) \
+  $(PUBLIC_IP_AVAILABLE_FIELD) \
 }
 
 TESTER_IMAGE ?= $(REGISTRY)/nginx/tester:$(TAG)
@@ -83,14 +88,16 @@ app/build:: .build/nginx/debian9  \
 	docker push "$(REGISTRY)/nginx:$(TAG)"
 	@touch "$@"
 
+
 .build/nginx/prometheus-to-sd: .build/var/REGISTRY \
-                                   .build/var/TAG \
-                                   | .build/nginx
+                               .build/var/TAG \
+                               | .build/nginx
 	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
 	    "$(REGISTRY)/nginx/prometheus-to-sd:$(TAG)"
 	docker push "$(REGISTRY)/nginx/prometheus-to-sd:$(TAG)"
 	@touch "$@"
+
 
 .build/nginx/tester: .build/var/TESTER_IMAGE \
                      $(shell find apptest -type f) \

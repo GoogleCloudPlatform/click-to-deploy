@@ -37,6 +37,10 @@ ifdef WORDPRESS_ADMIN_PASSWORD
   WORDPRESS_ADMIN_PASSWORD_FIELD = , "admin.password": "$(WORDPRESS_ADMIN_PASSWORD)"
 endif
 
+ifdef PUBLIC_SERVICE_AND_INGRESS_ENABLED
+  PUBLIC_SERVICE_AND_INGRESS_ENABLED_FIELD = , "enablePublicServiceAndIngress": "$(PUBLIC_SERVICE_AND_INGRESS_ENABLED)"
+endif
+
 ifdef METRICS_EXPORTER_ENABLED
   METRICS_EXPORTER_ENABLED_FIELD = , "metrics.enabled": "$(METRICS_EXPORTER_ENABLED)"
 endif
@@ -50,6 +54,7 @@ APP_PARAMETERS ?= { \
   $(WORDPRESS_DB_PASSWORD_FIELD) \
   $(WORDPRESS_ADMIN_EMAIL_FIELD) \
   $(WORDPRESS_ADMIN_PASSWORD_FIELD) \
+  $(PUBLIC_SERVICE_AND_INGRESS_ENABLED_FIELD) \
   $(METRICS_EXPORTER_ENABLED_FIELD) \
 }
 
@@ -57,8 +62,9 @@ TESTER_IMAGE ?= $(REGISTRY)/wordpress/tester:$(TAG)
 
 
 app/build:: .build/wordpress/deployer \
-            .build/wordpress/mysql \
             .build/wordpress/wordpress \
+            .build/wordpress/apache-exporter \
+            .build/wordpress/mysql \
             .build/wordpress/mysqld-exporter \
             .build/wordpress/prometheus-to-sd \
             .build/wordpress/tester
@@ -96,6 +102,16 @@ app/build:: .build/wordpress/deployer \
 	docker tag marketplace.gcr.io/google/wordpress5-php7-apache:$(TAG) \
 	    "$(REGISTRY)/wordpress:$(TAG)"
 	docker push "$(REGISTRY)/wordpress:$(TAG)"
+	@touch "$@"
+
+
+.build/wordpress/apache-exporter: .build/var/REGISTRY \
+                                  .build/var/TAG \
+                                  | .build/wordpress
+	docker pull marketplace.gcr.io/google/wordpress5-php7-apache:exporter
+	docker tag marketplace.gcr.io/google/wordpress5-php7-apache:exporter \
+	    "$(REGISTRY)/wordpress/apache-exporter:$(TAG)"
+	docker push "$(REGISTRY)/wordpress/apache-exporter:$(TAG)"
 	@touch "$@"
 
 

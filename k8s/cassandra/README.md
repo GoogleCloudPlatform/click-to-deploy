@@ -50,6 +50,7 @@ You'll need the following tools in your development environment:
 - [docker](https://docs.docker.com/install/)
 - [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 - [cqlsh](https://pypi.org/project/cqlsh/)
+- [helm](https://helm.sh/)
 
 Configure `gcloud` as a Docker credential helper:
 
@@ -290,6 +291,7 @@ The application is configured to expose its metrics through
 [JMX Exporter](https://github.com/prometheus/jmx_exporter)
 in the [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
 For more detailed information about the plugin setup, see the [JMX Exporter documentation](https://github.com/prometheus/jmx_exporter/blob/master/README.md).
+
 Metrics can be read on a single HTTP endpoint available at `[POD_IP]:9404/metrics`,
 where `[POD_IP]` is the IP read from Kubernetes headless service `$APP_INSTANCE_NAME-cassandra-svc`.
 
@@ -318,7 +320,8 @@ The exporting option might not be available for GKE on-prem clusters.
 for the number of custom metrics created in a single GCP project. If the quota is met,
 additional metrics will not be accepted by Stackdriver, which might cause that some metrics
 from your application might not show up in the Stackdriver's Metrics Explorer.
- Existing metric descriptors can be removed through
+
+Existing metric descriptors can be removed through
 [Stackdriver's REST API](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors/delete).
 
 # Scaling the Cassandra app
