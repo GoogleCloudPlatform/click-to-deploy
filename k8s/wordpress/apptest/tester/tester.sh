@@ -31,7 +31,7 @@ if [[ "${ENABLE_PUBLIC_SERVICE_AND_INGRESS}" == true ]]; then
     --output jsonpath='{.metadata.annotations.ingress\.kubernetes\.io/backends}' \
     | jq -e '(.[] == "HEALTHY")'
   do
-    sleep 3
+    sleep 60s
   done
 
   export EXTERNAL_IP="$(kubectl get ingress ${APP_INSTANCE_NAME}-wordpress-ingress \
