@@ -6,7 +6,7 @@ include ../var.Makefile
 TAG ?= 7.6
 METRICS_EXPORTER_TAG ?= v0.5.1
 POSTGRESQL_SRCTAG ?= 9.6-kubernetes
-IMAGE_SONARQUBE ?= marketplace.gcr.io/google/sonarqube7:latest
+IMAGE_SONARQUBE ?= marketplace.gcr.io/google/sonarqube7:$(TAG)
 IMAGE_POSTGRESQL ?= marketplace.gcr.io/google/postgresql9:$(POSTGRESQL_SRCTAG)
 IMAGE_POSTGRESQL_EXPORTER ?= marketplace.gcr.io/google/postgresql9:exporter
 $(info ---- TAG = $(TAG))
