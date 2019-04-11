@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name}}-sonarqube
+  labels: &SonarQubeDeploymentsLables
+      app.kubernetes.io/component: sonarqube
+      app.kubernetes.io/name: "{{ .Release.Name }}"
+spec:
+  replicas: 1
+  selector:
+    matchLabels: *SonarQubeDeploymentsLables
+  template:
+    metadata:
+      labels: *SonarQubeDeploymentsLables
+    spec:
+      containers:
+        - name: {{ .Release.Name}}-sonarqube
+          image: {{ .Values.sonarqube.image}}
+          imagePullPolicy: Always
+          env:
+            - name: SONARQUBE_JDBC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: {{.Release.Name}}-secret
+            - name: SONARQUBE_JDBC_URL
+              value: jdbc:postgresql://{{ .Release.Name }}-postgresql-service:5432/{{.Values.postgresql.db.name}}
+            - name: SONARQUBE_JDBC_USERNAME
+              value: {{.Values.postgresql.db.user}}
+          ports:
+            - containerPort: 9000
+              name: sonar-port
+          volumeMounts:
+          - mountPath: "/opt/sonarqube/data/"
+            name: {{ .Release.Name}}-data
+          - mountPath: "/opt/sonarqube/extensions/"
+            name: {{ .Release.Name}}-exts
+      volumes:
+      - name: {{ .Release.Name}}-data
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name}}-data
+      - name: {{ .Release.Name}}-exts
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name}}-exts

@@ -1,3 +1,5 @@
+#!/bin/bash
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,14 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'spec_helper'
+set -xeo pipefail
+shopt -s nullglob
 
-describe command('curl -L -s -o /dev/null -w "%{http_code}" http://localhost/') do
-  its(:stdout) { should match /200/ }
-  its(:exit_status) { should eq 0 }
-end
-
-describe command('curl -L http://localhost/') do
-  its(:stdout) { should match /<title>Solr Admin<\/title>/ }
-  its(:exit_status) { should eq 0 }
-end
+for test in /tests/*; do
+  testrunner -logtostderr "--test_spec=${test}"
+done
