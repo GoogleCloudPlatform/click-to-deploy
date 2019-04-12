@@ -495,7 +495,7 @@ kubectl set image statefulset "$APP_INSTANCE_NAME-rabbitmq" \
   --namespace "$NAMESPACE" rabbitmq=[NEW_IMAGE_REFERENCE]
 ```
 
-where `[NEW_IMAGE_REFERENCE]` is the new image.
+Where `[NEW_IMAGE_REFERENCE]` is the new image.
 
 To check that the Pods in the StatefulSet running the `rabbitmq` container are
 updating, run the following command:
