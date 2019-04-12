@@ -49,7 +49,7 @@ apt_retry () {
   set -e
 }
 
-apt_retry update -qq
+apt_retry update -q
 
 set -o pipefail
 readonly hostname="$(hostname)"
@@ -63,7 +63,8 @@ readonly mysql_root_password="$(get_attribute_value "MYSQL_ROOT_PASSWORD")"
 readonly percona_disk_name="$hostname-data"
 
 # Add Percona Toolkit, if user requests it.
-if [[ "${install_percona_toolkit}" == "true" ]]; then
+install_percona_toolkit="$(get_attribute_value "INSTALL_PERCONA_TOOLKIT")"
+if [[ "${install_percona_toolkit}" == "True" ]]; then
  apt_retry install -y percona-toolkit
 fi
 
