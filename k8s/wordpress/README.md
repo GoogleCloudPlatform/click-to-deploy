@@ -17,7 +17,7 @@ Popular open stacks on Kubernetes packaged by Google.
 ![Architecture diagram](resources/wordpress-k8s-app-architecture.png)
 
 By default, WordPress is exposed using a ClusterIP Service on port 80.
-Optionally, when if you enable the option to expose the service externally, the
+Optionally, if you enable the option to expose the service externally, the
 WordPress interface is exposed on ports `80` and `443` using an Ingress
 resource. The TLS certificates are stored in the `[APP-INSTANCE-NAME]-tls`
 Secret resource.
