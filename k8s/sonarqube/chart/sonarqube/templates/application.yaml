@@ -28,6 +28,8 @@ spec:
         name: {{ .Release.Name }}-secret
   - name: Application Namespace
     value: {{ .Release.Namespace }}
+  - name: Default cretential for web console
+    value: "Login: admin  Password: admin"
   maintainers:
   - name: Google Click to Deploy
     url: https://cloud.google.com/solutions/#click-to-deploy
@@ -63,11 +65,4 @@ spec:
       svc/{{.Release.Name}}-sonarqube-svc \
       9000:9000
     ```
-
-    and then you can open in browser sonarqube web console:
-
-    ```
-    xdg-open http://localhost:9000
-    ```
-
-    Default login Admin password Admin. Please change it after first login.
+    Application will available on localhost port `9000`

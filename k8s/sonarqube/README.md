@@ -12,6 +12,8 @@ Popular open source software stacks on Kubernetes packaged by Google and made av
 
 ## Design
 
+![Architecture diagram](resources/sonarqube-k8s-app-architecture.png)
+
 # Installation
 
 ## Quick install with Google Cloud Marketplace
@@ -39,11 +41,9 @@ You'll need the following tools in your environment:
 - [helm](https://helm.sh/docs/using_helm/#installing-helm)
 
 Configure `gcloud` as a Docker credential helper:
-
 ```shell
 gcloud auth configure-docker
 ```
-
 #### Create a Google Kubernetes Engine cluster
 
 Create a cluster from the command line. If you already have a cluster that
@@ -87,7 +87,7 @@ The Application resource is defined by the
 [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps) community. The source code can be found on
 [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
 
-### Install the Application
+### Install the application
 
 Navigate to the `sonarqube` directory:
 
@@ -99,7 +99,7 @@ cd click-to-deploy/k8s/sonarqube
 
 Choose an instance name and
 [namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)
-for the app. In most cases, you can use the `default` namespace.
+for the application. In most cases, you can use the `default` namespace.
 
 ```shell
 export APP_INSTANCE_NAME=sonarqube-1
@@ -215,14 +215,14 @@ To get the Console URL for your application, run the following command:
 ```shell
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
 ```
-Application does not exposed to external world. To get access to app run the following command:
+Application does not exposed to external world. To get access to SonarQube run the following command:
 ```bash
     kubectl port-forward \
       --namespace $NAMESPACE \
       svc/$APP_INSTANCE_NAME-sonarqube-svc \
       9000:9000
 ```  
-Application will available on `localhost:9000`. All interaction with application goes thru `9000` port. Cli also will be available.    
+SonarQube will available on `localhost:9000`. All interaction with application goes thru `9000` port. Cli also will be available.    
   
 To get access web-page with default credentials:
  
@@ -274,13 +274,13 @@ Existing metric descriptors can be removed through
 
 # Scaling
 
-SonarQube Community edition is a single instance installation.
+SonarQube Community edition doest not support scaling. 
 
 
 # Backup and restore
 Most of data stored in database. This installation used PostgreSQL. There is the way to backup database. 
 ## Backing up PostgreSQL
-
+This shell script will create `postgresql-backup.sql` dump of all DB in PostgreSQL.
 ```shell
 kubectl --namespace $NAMESPACE exec -t \
 	$(kubectl -n$NAMESPACE get pod -oname | \
@@ -289,7 +289,7 @@ kubectl --namespace $NAMESPACE exec -t \
 ```
 
 ## Restoring your PostgreSQL
-
+This shell script will restore dump `postgresql-backup.sql` to PostgreSQL
 ```shell
 cat postgresql-backup.sql | kubectl --namespace $NAMESPACE exec -i \
 	$(kubectl -n$NAMESPACE get pod -oname | \
@@ -297,7 +297,7 @@ cat postgresql-backup.sql | kubectl --namespace $NAMESPACE exec -i \
 	-- psql -U postgres
 ```
 ## Backing up SonarQube conf directory 
-This shell script will backup folder conf to current directory
+This shell script will backup folder conf to current directory of SonarQube
 
 ```shell
 kubectl --namespace $NAMESPACE cp \
@@ -308,11 +308,85 @@ sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/conf/ ./
 
 ## Restoring up SonarQube conf directory
 
-This shell script will place configuration to folder conf 
+This shell script will place configuration to folder conf of SonarQube
 
 ```shell
 kubectl --namespace $NAMESPACE cp ./conf \
 $(kubectl -n$NAMESPACE get pod -oname | \
 sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/conf
 
+```
+
+# Uninstall the Application
+
+## Using the Google Cloud Platform Console
+
+1. In the GCP Console, open [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
+
+1. From the list of applications, click **Sonarqube-1**.
+
+1. On the Application Details page, click **Delete**.
+
+## Using the command line
+
+### Prepare the environment
+
+Set your installation name and Kubernetes namespace:
+
+```shell
+export APP_INSTANCE_NAME=sonarqube-1
+export NAMESPACE=default
+```
+
+### Delete the resources
+
+> **NOTE:** We recommend to use a kubectl version that is the same as the version of your cluster. Using the same versions of kubectl and the cluster helps avoid unforeseen issues.
+
+To delete the resources, use the expanded manifest file used for the
+installation.
+
+
+Run `kubectl` on the expanded manifest file:
+
+```shell
+kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
+```
+
+Otherwise, delete the resources using types and a label:
+
+```shell
+kubectl delete application,statefulset,service \
+  --namespace $NAMESPACE \
+  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
+```
+
+### Delete the persistent volumes of your installation
+
+By design, the removal of StatefulSets in Kubernetes does not remove
+PersistentVolumeClaims that were attached to their Pods. This prevents your
+installations from accidentally deleting stateful data.
+
+To remove the PersistentVolumeClaims with their attached persistent disks, run
+the following `kubectl` commands:
+
+```shell
+for pv in $(kubectl get pvc --namespace $NAMESPACE \
+  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME \
+  --output jsonpath='{.items[*].spec.volumeName}');
+do
+  kubectl delete pv/$pv --namespace $NAMESPACE
+done
+
+kubectl delete persistentvolumeclaims \
+  --namespace $NAMESPACE \
+  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
+```
+
+### Delete the GKE cluster
+
+Optionally, if you don't need the deployed application or the GKE cluster,
+delete the cluster using this command:
+
+```
+gcloud container clusters delete "$CLUSTER" --zone "$ZONE"
 ```
