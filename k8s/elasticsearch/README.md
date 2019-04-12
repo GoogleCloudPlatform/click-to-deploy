@@ -539,4 +539,3 @@ kubectl delete persistentvolumeclaims \
 ```
 
 ```
-```
