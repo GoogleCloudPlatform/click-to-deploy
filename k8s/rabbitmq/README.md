@@ -455,7 +455,7 @@ StatefulSet untouched.
 > mode to replicate data between all nodes before you start the procedure.
 
 To remove a RabbitMQ node permanently and scale down the number of replicas, run
-[scripts/scale-down.sh](scripts/scale-down.sh) with the `--help` argument, or
+the [scripts/scale-down.sh](scripts/scale-down.sh) script with the `--help` argument, or
 manually scale down the cluster using the following steps:
 
 To manually remove a nodes from the cluster, and then Pod from Kubernetes, start
