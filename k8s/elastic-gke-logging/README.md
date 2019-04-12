@@ -428,7 +428,7 @@ For more information about scaling StatefulSets, see the
 # Snapshot and restore
 
 The following steps are based on the Elasticsearch documentation on
-[Snapshot And Restore](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-snapshots.html).
+[Snapshot and Restore](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-snapshots.html).
 
 These steps use NFS storage on top of a StatefulSet in Kubernetes. You could use
 other NFS providers, or one of the repository plugins supported by
