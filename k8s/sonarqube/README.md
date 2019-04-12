@@ -1,12 +1,16 @@
 # Overview
 
-SonarQube
+SonarQube is an open source platform to perform automatic reviews with static analysis of code to detect bugs,
+code smells and security vulnerabilities on 25+ programming languages including Java, C#, JavaScript, TypeScript,
+C/C++, COBOL and more. SonarQube is the only product on the market that supports a leak approach as a practice to code quality.
 
-For more information on SSonarQube, see the [SonarQube website](https://www.sonarqube.org/).
+For more information on SonarQube, see the [SonarQube website](https://www.sonarqube.org/).
 
 ## About Google Click to Deploy
 
 Popular open source software stacks on Kubernetes packaged by Google and made available in Google Cloud Marketplace.
+
+## Design
 
 # Installation
 
@@ -91,7 +95,7 @@ Navigate to the `sonarqube` directory:
 cd click-to-deploy/k8s/sonarqube
 ```
 
-#### Configure the app with environment variables
+#### Configure the application with environment variables
 
 Choose an instance name and
 [namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)
@@ -122,10 +126,12 @@ until you are ready to upgrade. To get the digest for the image, use the
 following script:
 
 ```shell
-IMAGE_SONARQUBE=$(docker pull $IMAGE_SONARQUBE | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_SONARQUBE\")\"@sha256:\"\$3}")
-IMAGE_POSTGRESQL=$(docker pull $IMAGE_POSTGRESQL | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_POSTGRESQL\")\"@sha256:\"\$3}")
-IMAGE_POSTGRESQL_EXPORTER=$(docker pull $IMAGE_POSTGRESQL_EXPORTER | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_POSTGRESQL_EXPORTER\")\"@sha256:\"\$3}")
-IMAGE_METRICS_EXPORTER=$(docker pull $IMAGE_METRICS_EXPORTER | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_METRICS_EXPORTER\")\"@sha256:\"\$3}")
+for i in "IMAGE_SONARQUBE" "IMAGE_POSTGRESQL" "IMAGE_POSTGRESQL_EXPORTER" "IMAGE_METRICS_EXPORTER"; do
+  repo=$(echo ${!i} | cut -d: -f1);
+  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
+  export $i="$repo@$digest";
+  env | grep $i;
+done
 ```
 
 Create a certificate for PostgreSQL. If you already have a certificate that you
@@ -168,11 +174,11 @@ expanded manifest file for future updates to the application.
 helm template chart/wordpress \
   --name="$APP_INSTANCE_NAME" \
   --namespace="$NAMESPACE" \
-  --set sonarqube.repository=$IMAGE_SONARQUBE \
+  --set sonarqube.image=$IMAGE_SONARQUBE \
   --set postgresql.image=$IMAGE_POSTGRESQL \
   --set postgresql.exporter.image=$IMAGE_POSTGRESQL_EXPORTER \
-  --set metrics.image=$METRICS_EXPORTER_ENABLED
-  --set postgresql.db.password=$DB_PASSWORD > ${APP_INSTANCE_NAME}_manifest.yaml
+  --set postgresql.db.password=$DB_PASSWORD  \
+  --set metrics.image=$METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 #### Apply the manifest to your Kubernetes cluster
 
@@ -180,7 +186,7 @@ Use `kubectl` to apply the manifest to your Kubernetes cluster. This installatio
 
 - An Application resource, which collects all the deployment resources into one logical entity
 - A ServiceAccount for the SonarQube and PostgreSQL Pod.
-- A PersistentVolume and PersistentVolumeClaim for SInarQube and PostgreSQL. Note that the volumes isn't be deleted with application. If you delete the installation and recreate it with the same name, the new installation uses the same PersistentVolumes. As a result, there is no new database initialization, and no new password is set.
+- A PersistentVolume and PersistentVolumeClaim for SonarQube and PostgreSQL. Note that the volumes isn't be deleted with application. If you delete the installation and recreate it with the same name, the new installation uses the same PersistentVolumes. As a result, there is no new database initialization, and no new password is set.
 - A Secret with the PostgreSQL initial random password
 - A Deployment with SonarQube and PostgreSQL.
 - A Service, which exposes PostgreSQL and SonarQube to usage in cluster.
@@ -200,11 +206,11 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 To view the app, open the URL in your browser.
 
-# Using the app
+# Using the SonarQube community edition
 
-#### View the app in the Google Cloud Console
+#### View the application in the Google Cloud Console
 
-To get the Console URL for your app, run the following command:
+To get the Console URL for your application, run the following command:
 
 ```shell
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
@@ -216,18 +222,15 @@ Application does not exposed to external world. To get access to app run the fol
       svc/$APP_INSTANCE_NAME-sonarqube-svc \
       9000:9000
 ```  
-App will available on `localhost`.
-```bash
-http://localhost:9000
-```  
-Login to web-page with default credentials:
+Application will available on `localhost:9000`. All interaction with application goes thru `9000` port. Cli also will be available.    
+  
+To get access web-page with default credentials:
  
 ```bash
+http://localhost:9000
 Login: admin
 Password: admin
 ```
-Please change credential after first login.
-
 
 # Application metrics
 
@@ -271,10 +274,11 @@ Existing metric descriptors can be removed through
 
 # Scaling
 
-This installation is single instance of SonarQube.
+SonarQube Community edition is a single instance installation.
 
 
 # Backup and restore
+Most of data stored in database. This installation used PostgreSQL. There is the way to backup database. 
 ## Backing up PostgreSQL
 
 ```shell
@@ -284,7 +288,7 @@ kubectl --namespace $NAMESPACE exec -t \
 	-- pg_dumpall -c -U postgres > postgresql-backup.sql
 ```
 
-## Restoring your data
+## Restoring your PostgreSQL
 
 ```shell
 cat postgresql-backup.sql | kubectl --namespace $NAMESPACE exec -i \
@@ -292,4 +296,23 @@ cat postgresql-backup.sql | kubectl --namespace $NAMESPACE exec -i \
 		sed -n /\\/$APP_INSTANCE_NAME-postgresql-deployment/s.pods\\?/..p) \
 	-- psql -U postgres
 ```
-## Backing up SonarQube property 
+## Backing up SonarQube conf directory 
+This shell script will backup folder conf to current directory
+
+```shell
+kubectl --namespace $NAMESPACE cp \
+$(kubectl -n$NAMESPACE get pod -oname | \
+sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/conf/ ./
+
+```
+
+## Restoring up SonarQube conf directory
+
+This shell script will place configuration to folder conf 
+
+```shell
+kubectl --namespace $NAMESPACE cp ./conf \
+$(kubectl -n$NAMESPACE get pod -oname | \
+sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/conf
+
+```
