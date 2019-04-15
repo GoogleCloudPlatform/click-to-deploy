@@ -27,7 +27,7 @@
 
 source /opt/c2d/c2d-utils || exit 1
 
-# Functions
+#  Functions
 apt_retry () {
   set +e
   local cmds="apt-get $@"
