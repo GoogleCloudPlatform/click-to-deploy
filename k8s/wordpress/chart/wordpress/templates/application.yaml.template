@@ -81,12 +81,14 @@ spec:
     valueFrom:
       ingressRef:
         name: {{ .Release.Name }}-wordpress-ingress
+        protocol: HTTPS
   - name: WordPress admin address
     type: Reference
     valueFrom:
       ingressRef:
         name: {{ .Release.Name }}-wordpress-ingress
         path: /wp-admin
+        protocol: HTTPS
   {{ else }}
   - name: Forward WordPress port locally
     value: kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-wordpress-svc 8080:80

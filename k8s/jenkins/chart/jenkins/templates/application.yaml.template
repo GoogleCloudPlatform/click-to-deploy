@@ -73,6 +73,7 @@ spec:
     valueFrom:
       ingressRef:
         name: {{ .Release.Name }}-jenkins-ui
+        protocol: HTTPS
   selector:
     matchLabels:
       app.kubernetes.io/name: "{{ .Release.Name }}"
