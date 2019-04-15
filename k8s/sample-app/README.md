@@ -2,23 +2,26 @@
 
 Sample Application
 
-For more information on Sample Application, see the [Sample Application website](https://example.com/).
+For more information on Sample Application, see the
+[Sample Application website](https://example.com/).
 
 ## About Google Click to Deploy
 
-Popular open source software stacks on Kubernetes packaged by Google and made available in Google Cloud Marketplace.
+Popular open source software stacks on Kubernetes packaged by Google and made
+available in Google Cloud Marketplace.
 
 # Installation
 
 ## Quick install with Google Cloud Marketplace
 
-Get up and running with a few clicks! Install this Sample Application to a Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
+Get up and running with a few clicks! Install this Sample Application to a
+Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 [on-screen instructions](https://console.cloud.google.com/marketplace/details/google/sample-app).
 
 ## Command line instructions
 
-You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local workstation in the
-further instructions.
+You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local
+workstation in the further instructions.
 
 [![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/GoogleCloudPlatform/click-to-deploy&cloudshell_working_dir=k8s/sample-app)
 
@@ -28,10 +31,10 @@ further instructions.
 
 You'll need the following tools in your environment:
 
-- [gcloud](https://cloud.google.com/sdk/gcloud/)
-- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-- [docker](https://docs.docker.com/install/)
-- [openssl](https://www.openssl.org/)
+-   [gcloud](https://cloud.google.com/sdk/gcloud/)
+-   [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+-   [docker](https://docs.docker.com/install/)
+-   [openssl](https://www.openssl.org/)
 
 Configure `gcloud` as a Docker credential helper:
 
@@ -41,8 +44,8 @@ gcloud auth configure-docker
 
 #### Create a Google Kubernetes Engine cluster
 
-Create a cluster from the command line. If you already have a cluster that
-you want to use, this step is optional.
+Create a cluster from the command line. If you already have a cluster that you
+want to use, this step is optional.
 
 ```shell
 export CLUSTER=sample-app-cluster
@@ -70,7 +73,8 @@ git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 An Application resource is a collection of individual Kubernetes components,
 such as Services, Deployments, and so on, that you can manage as a group.
 
-To set up your cluster to understand Application resources, run the following command:
+To set up your cluster to understand Application resources, run the following
+command:
 
 ```shell
 kubectl apply -f "https://raw.githubusercontent.com/GoogleCloudPlatform/marketplace-k8s-app-tools/master/crd/app-crd.yaml"
@@ -79,7 +83,8 @@ kubectl apply -f "https://raw.githubusercontent.com/GoogleCloudPlatform/marketpl
 You need to run this command once for each cluster.
 
 The Application resource is defined by the
-[Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps) community. The source code can be found on
+[Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps)
+community. The source code can be found on
 [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
 
 ### Install the Application
@@ -117,9 +122,9 @@ The image above is referenced by
 [tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
 that you pin each image to an immutable
 [content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This ensures that the installed application always uses the same images,
-until you are ready to upgrade. To get the digest for the image, use the
-following script:
+This ensures that the installed application always uses the same images, until
+you are ready to upgrade. To get the digest for the image, use the following
+script:
 
 ```shell
 export IMAGE_SAMPLE_APP=$(docker pull $IMAGE_SAMPLE_APP | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_SAMPLE_APP\")\"@sha256:\"\$3}")
@@ -127,8 +132,8 @@ export IMAGE_SAMPLE_APP=$(docker pull $IMAGE_SAMPLE_APP | awk -F: "/^Digest:/ {p
 
 #### Expand the manifest template
 
-Use `envsubst` to expand the template. We recommend that you save the
-expanded manifest file for future updates to the application.
+Use `envsubst` to expand the template. We recommend that you save the expanded
+manifest file for future updates to the application.
 
 ```shell
 awk 'FNR==1 {print "---"}{print}' manifest/* \
@@ -164,7 +169,7 @@ How to use Sample App
 
 To set Sample App, follow these on-screen steps to customize your installation:
 
-* Do something
+*   Do something
 
 # Scaling
 
@@ -178,7 +183,6 @@ How to backup and restore Sample Application
 
 ## Restoring your data
 
-# Updating 
+# Updating
 
 # Logging and Monitoring
-
