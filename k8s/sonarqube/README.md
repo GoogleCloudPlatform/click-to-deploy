@@ -206,7 +206,7 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 To view the app, open the URL in your browser.
 
-# Using the SonarQube community edition
+# Using the SonarQube Community edition
 
 #### View the application in the Google Cloud Console
 
@@ -221,11 +221,10 @@ Application does not exposed to external world. To get access to SonarQube run t
       --namespace $NAMESPACE \
       svc/$APP_INSTANCE_NAME-sonarqube-svc \
       9000:9000
-```  
-SonarQube will available on `localhost:9000`. All interaction with application goes thru `9000` port. Cli also will be available.    
-  
+```
+SonarQube will available on `localhost:9000`. All interaction with application goes thru `9000` port. Cli also will be available.
+
 To get access web-page with default credentials:
- 
 ```bash
 http://localhost:9000
 Login: admin
@@ -278,11 +277,15 @@ SonarQube Community Edition doest not support scaling.
 
 
 # Backup and restore
-Most of data stored in database. This installation used PostgreSQL. There is the way to backup database. 
+Most of data stored in database. This installation used PostgreSQL. There is the way to backup database.
 ## Backing up PostgreSQL
 This shell script will create `postgresql-backup.sql` dump of all DB in PostgreSQL.
 ```shell
-kubectl --namespace $NAMESPACE exec -it $(APP_INSTANCE_NAME)-postgresql-deployment -c postgresql-server -- pg_dumpall -c -U postgres > backup.sql
+kubectl --namespace $NAMESPACE exec -t \
+	$(kubectl -n$NAMESPACE get pod -oname | \
+		sed -n /\\/$APP_INSTANCE_NAME-postgresql-deployment/s.pods\\?/..p) \
+	-c postgresql-server \
+	-- pg_dumpall -c -U postgres > backup.sql
 ```
 
 ## Restoring your PostgreSQL
@@ -295,17 +298,25 @@ echo "GRANT CONNECT ON DATABASE sonar TO PUBLIC;" >> backup.sql
 
 This shell script will restore dump `backup.sql` to PostgreSQL
 ```shell
-cat backup.sql | kubectl exec -i $(APP_INSTANCE_NAM)E-postgresql-deployment -c postgresql-server -- psql -U postgres
+cat backup.sql | kubectl --namespace $NAMESPACE exec -i \
+	$(kubectl -n$NAMESPACE get pod -oname | \
+		sed -n /\\/$APP_INSTANCE_NAME-postgresql-deployment/s.pods\\?/..p) \
+	-c postgresql-server \
+	-- psql -U postgres
 ```
 
 This shell script will delete old state of SonarQube
 ```shell
-kubectl exec -i $APP_INSTANCE_NAME-sonarqube -- bash -c "rm -rf /opt/sonarqube/data/es5/* "
+kubectl --namespace $NAMESPACE exec -i \
+        $(kubectl -n$NAMESPACE get pod -oname | \
+        sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p) \
+        -- bash -c "rm -rf /opt/sonarqube/data/es5/* "
 ```
 
-This shell script will restart SonarQube main pod
+This shell script will delete SonarQube pod and it will be rescheduled
 ```shell
-kubectl delete $APP_INSTANCE_NAME-sonarqube
+kubectl --namespace $NAMESPACE delete pod $(kubectl -n$NAMESPACE get pod -oname | \
+        sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p)
 ```
 
 # Uninstall the Application
@@ -381,3 +392,4 @@ delete the cluster using this command:
 ```
 gcloud container clusters delete "$CLUSTER" --zone "$ZONE"
 ```
+
