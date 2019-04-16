@@ -19,18 +19,19 @@ ifdef IMAGE_GRAFANA_INIT
   IMAGE_GRAFANA_INIT_FIELD = , "grafana.initImage": "$(IMAGE_GRAFANA_INIT)"
 endif
 
+ifdef METRICS_EXPORTER_ENABLED
+  METRICS_EXPORTER_ENABLED_FIELD = , "metrics.enabled": "$(METRICS_EXPORTER_ENABLED)"
+endif
+
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
   $(IMAGE_GRAFANA_FIELD) \
   $(IMAGE_GRAFANA_INIT_FIELD) \
+  $(METRICS_EXPORTER_ENABLED_FIELD) \
 }
 
 TESTER_IMAGE ?= $(REGISTRY)/grafana/tester:$(TAG)
-
-APP_TEST_PARAMETERS ?= { \
-  "testerImage": "$(TESTER_IMAGE)" \
-}
 
 
 app/build:: .build/grafana/debian9 \
@@ -67,8 +68,8 @@ app/build:: .build/grafana/debian9 \
 .build/grafana/grafana: .build/var/REGISTRY \
                         .build/var/TAG \
                         | .build/grafana
-	docker pull launcher.gcr.io/google/grafana5:$(TAG)
-	docker tag launcher.gcr.io/google/grafana5:$(TAG) "$(REGISTRY)/grafana:$(TAG)"
+	docker pull marketplace.gcr.io/google/grafana5:$(TAG)
+	docker tag marketplace.gcr.io/google/grafana5:$(TAG) "$(REGISTRY)/grafana:$(TAG)"
 	docker push "$(REGISTRY)/grafana:$(TAG)"
 	@touch "$@"
 
@@ -76,8 +77,8 @@ app/build:: .build/grafana/debian9 \
 .build/grafana/debian9: .build/var/REGISTRY \
                         .build/var/TAG \
                         | .build/grafana
-	docker pull launcher.gcr.io/google/debian9
-	docker tag launcher.gcr.io/google/debian9 "$(REGISTRY)/grafana/debian9:$(TAG)"
+	docker pull marketplace.gcr.io/google/debian9
+	docker tag marketplace.gcr.io/google/debian9 "$(REGISTRY)/grafana/debian9:$(TAG)"
 	docker push "$(REGISTRY)/grafana/debian9:$(TAG)"
 	@touch "$@"
 

@@ -33,6 +33,7 @@ spec:
     notes: |-
       # Open your WordPress site
 
+      {{ if .Values.enablePublicServiceAndIngress }}
       Get the external IP of your WordPress site using the following command:
 
       ```
@@ -45,12 +46,36 @@ spec:
 
       The command shows you the URL of your site.
 
+      {{ else }}
+
+      WordPress is exposed in a ClusterIP-only service `{{ .Release.Name }}-wordpress-svc`. To connect to
+      WordPress UI, you can either expose a public service endpoint or keep it private, but connect
+      from you local environment with `kubectl port-forward`.
+
+      ## Forward WordPress port in local environment
+
+      You can use port forwarding feature of `kubectl` to forward WordPress's port to your local
+      machine. Run the following command in background:
+
+      ```shell
+      kubectl port-forward \
+        --namespace {{ .Release.Namespace }} \
+        svc/{{ .Release.Name }}-wordpress-svc \
+        8080:80
+      ```
+
+      Now you can access WordPress UI with [http://localhost:8080](http://localhost:8080).
+      {{ end }}
+
+      {{ if .Values.enablePublicServiceAndIngress }}
       # Update TLS certificate for WordPress
 
       By default the application used self-signed certificate. You can follow
       [Update TLS certificate for WordPress section](https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/wordpress/README.md#update-tls-certificate-for-wordpress)
       to update it.
+      {{ end }}
   info:
+  {{ if .Values.enablePublicServiceAndIngress }}
   - name: WordPress site address
     type: Reference
     valueFrom:
@@ -62,6 +87,14 @@ spec:
       ingressRef:
         name: {{ .Release.Name }}-wordpress-ingress
         path: /wp-admin
+  {{ else }}
+  - name: Forward WordPress port locally
+    value: kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-wordpress-svc 8080:80
+  - name: WordPres site address
+    value: http://localhost:8080/
+  - name: WordPress admin address
+    value: http://localhost:8080/wp-admin
+  {{ end }}
   - name: WordPress username
     type: Reference
     valueFrom:
@@ -92,5 +125,13 @@ spec:
     kind: Secret
   - group: v1
     kind: Service
+  {{ if .Values.enablePublicServiceAndIngress }}
   - group: extensions/v1beta1
     kind: Ingress
+  {{ end }}
+  {{ if .Values.metrics.enabled }}
+  - group: apps/v1beta2
+    kind: Deployment
+  {{ end }}
+  - group: v1
+    kind: ConfigMap
