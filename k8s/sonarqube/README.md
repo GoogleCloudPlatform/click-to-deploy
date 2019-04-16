@@ -14,6 +14,15 @@ Popular open source software stacks on Kubernetes packaged by Google and made av
 
 ![Architecture diagram](resources/sonarqube-k8s-app-architecture.png)
 
+
+SonarQube application contains:
+- An Application resource, which collects all the deployment resources into one logical entity
+- A ServiceAccount for the SonarQube and PostgreSQL Pod.
+- A PersistentVolume and PersistentVolumeClaim for SonarQube and PostgreSQL. Note that the volumes isn't be deleted with application. If you delete the installation and recreate it with the same name, the new installation uses the same PersistentVolumes. As a result, there is no new database initialization, and no new password is set.
+- A Secret with the PostgreSQL initial random password
+- A Deployment with SonarQube and PostgreSQL.
+- A Service, which exposes PostgreSQL and SonarQube to usage in cluster
+
 # Installation
 
 ## Quick install with Google Cloud Marketplace
@@ -182,16 +191,7 @@ helm template chart/sonarqube \
 ```
 #### Apply the manifest to your Kubernetes cluster
 
-Use `kubectl` to apply the manifest to your Kubernetes cluster. This installation will create:
-
-- An Application resource, which collects all the deployment resources into one logical entity
-- A ServiceAccount for the SonarQube and PostgreSQL Pod.
-- A PersistentVolume and PersistentVolumeClaim for SonarQube and PostgreSQL. Note that the volumes isn't be deleted with application. If you delete the installation and recreate it with the same name, the new installation uses the same PersistentVolumes. As a result, there is no new database initialization, and no new password is set.
-- A Secret with the PostgreSQL initial random password
-- A Deployment with SonarQube and PostgreSQL.
-- A Service, which exposes PostgreSQL and SonarQube to usage in cluster.
-
-
+Shell command for apply manifest
 ```shell
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
@@ -274,7 +274,7 @@ Existing metric descriptors can be removed through
 
 # Scaling
 
-SonarQube Community edition doest not support scaling. 
+SonarQube Community Edition doest not support scaling.
 
 
 # Backup and restore
