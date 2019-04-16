@@ -111,10 +111,10 @@ Configure the container image:
 
 ```shell
 TAG=9.6
-export IMAGE_SONARQUBE="marketplace.gcr.io/google/sonarqube:${TAG}"
-export IMAGE_POSTGRESQL="marketplace.gcr.io/google//sonarqube/postgresql9:${TAG}"
-export IMAGE_POSTGRESQL_EXPORTER="marketplace.gcr.io/google/postgresql9/exporter:${TAG}"
-export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/sonarqube/prometheus-to-sd:${TAG}"
+export IMAGE_SONARQUBE="marketplace.gcr.io/google/sonarqube7:7.6"
+export IMAGE_POSTGRESQL="marketplace.gcr.io/google/postgresql9:9.6-kubernetes"
+export IMAGE_POSTGRESQL_EXPORTER="marketplace.gcr.io/google/postgresql9:exporter"
+export IMAGE_METRICS_EXPORTER="k8s.gcr.io/prometheus-to-sd:v0.5.1"
 ```
 
 The image above is referenced by
@@ -171,7 +171,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-helm template chart/wordpress \
+helm template chart/sonarqube \
   --name="$APP_INSTANCE_NAME" \
   --namespace="$NAMESPACE" \
   --set sonarqube.image=$IMAGE_SONARQUBE \
@@ -282,39 +282,30 @@ Most of data stored in database. This installation used PostgreSQL. There is the
 ## Backing up PostgreSQL
 This shell script will create `postgresql-backup.sql` dump of all DB in PostgreSQL.
 ```shell
-kubectl --namespace $NAMESPACE exec -t \
-	$(kubectl -n$NAMESPACE get pod -oname | \
-		sed -n /\\/$APP_INSTANCE_NAME-postgresql-deployment/s.pods\\?/..p) \
-	-- pg_dumpall -c -U postgres > postgresql-backup.sql
+kubectl --namespace $NAMESPACE exec -it $(APP_INSTANCE_NAME)-postgresql-deployment -c postgresql-server -- pg_dumpall -c -U postgres > backup.sql
 ```
 
 ## Restoring your PostgreSQL
-This shell script will restore dump `postgresql-backup.sql` to PostgreSQL
+This shell script will prepare dump for restore
 ```shell
-cat postgresql-backup.sql | kubectl --namespace $NAMESPACE exec -i \
-	$(kubectl -n$NAMESPACE get pod -oname | \
-		sed -n /\\/$APP_INSTANCE_NAME-postgresql-deployment/s.pods\\?/..p) \
-	-- psql -U postgres
-```
-## Backing up SonarQube conf directory 
-This shell script will backup folder conf to current directory of SonarQube
-
-```shell
-kubectl --namespace $NAMESPACE cp \
-$(kubectl -n$NAMESPACE get pod -oname | \
-sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/conf/ ./
-
+sed -i '1 i\REVOKE CONNECT ON DATABASE sonar FROM PUBLIC;' backup.sql
+sed -i '1 a select pg_terminate_backend(pid) from pg_stat_activity where datname='sonar';' backup.sql
+echo "GRANT CONNECT ON DATABASE sonar TO PUBLIC;" >> backup.sql
 ```
 
-## Restoring up SonarQube conf directory
-
-This shell script will place configuration to folder conf of SonarQube
-
+This shell script will restore dump `backup.sql` to PostgreSQL
 ```shell
-kubectl --namespace $NAMESPACE cp ./conf \
-$(kubectl -n$NAMESPACE get pod -oname | \
-sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/conf
+cat backup.sql | kubectl exec -i $(APP_INSTANCE_NAM)E-postgresql-deployment -c postgresql-server -- psql -U postgres
+```
 
+This shell script will delete old state of SonarQube
+```shell
+kubectl exec -i $APP_INSTANCE_NAME-sonarqube -- bash -c "rm -rf /opt/sonarqube/data/es5/* "
+```
+
+This shell script will restart SonarQube main pod
+```shell
+kubectl delete $APP_INSTANCE_NAME-sonarqube
 ```
 
 # Uninstall the Application
