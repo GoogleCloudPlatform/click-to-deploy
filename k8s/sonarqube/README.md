@@ -15,10 +15,10 @@ Popular open source software stacks on Kubernetes packaged by Google and made av
 ![Architecture diagram](resources/sonarqube-k8s-app-architecture.png)
 
 
-SonarQube application contains:
+### SonarQube application contains:
 - An Application resource, which collects all the deployment resources into one logical entity
 - A ServiceAccount for the SonarQube and PostgreSQL Pod.
-- A PersistentVolume and PersistentVolumeClaim for SonarQube and PostgreSQL. Note that the volumes isn't be deleted with application. If you delete the installation and recreate it with the same name, the new installation uses the same PersistentVolumes. As a result, there is no new database initialization, and no new password is set.
+- A PersistentVolume and PersistentVolumeClaim for SonarQube and PostgreSQL. Note that the volumes won't be deleted with application. If you delete the installation and recreate it with the same name, the new installation uses the same PersistentVolumes. As a result, there is no new database initialization, and no new password is set.
 - A Secret with the PostgreSQL initial random password
 - A Deployment with SonarQube and PostgreSQL.
 - A Service, which exposes PostgreSQL and SonarQube to usage in cluster
@@ -215,14 +215,14 @@ To get the Console URL for your application, run the following command:
 ```shell
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
 ```
-Application does not exposed to external world. To get access to SonarQube run the following command:
+Application is not exposed to external world. To get access to SonarQube run the following command:
 ```bash
     kubectl port-forward \
       --namespace $NAMESPACE \
       svc/$APP_INSTANCE_NAME-sonarqube-svc \
       9000:9000
 ```
-SonarQube will available on `localhost:9000`. All interaction with application goes thru `9000` port. Cli also will be available.
+SonarQube will be available on `localhost:9000`. All interaction with application goes  through `9000` port. Cli also will be available.
 
 To get access web-page with default credentials:
 ```bash
@@ -277,7 +277,25 @@ SonarQube Community Edition doest not support scaling.
 
 
 # Backup and restore
-Most of data stored in database. This installation used PostgreSQL. There is the way to backup database.
+[From official documentation](https://docs.sonarqube.org/7.6/architecture/architecture-integration/)
+The SonarQube Platform is made of 4 components:
+
+- One SonarQube Server starting 3 main processes:
+
+   - Web Server for developers, managers to browse quality snapshots and configure the SonarQube instance
+   - Search Server based on Elasticsearch to back searches from the UI
+   - Compute Engine Server in charge of processing code analysis reports and saving them in the SonarQube Database
+
+- One SonarQube Database to store:
+
+   - the configuration of the SonarQube instance (security, plugins settings, etc.)
+   - the quality snapshots of projects, views, etc.
+
+- Multiple SonarQube Plugins installed on the server, possibly including language, SCM, integration, authentication, and governance plugins
+
+- One or more SonarScanners running on your Build / Continuous Integration Servers to analyze projects
+
+For our application database the most important place, `plugins` and `data` folders stored on PVC (Persistent Volume Claim).
 ## Backing up PostgreSQL
 This shell script will create `postgresql-backup.sql` dump of all DB in PostgreSQL.
 ```shell
