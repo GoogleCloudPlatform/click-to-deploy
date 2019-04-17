@@ -206,7 +206,7 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 To view the app, open the URL in your browser.
 
-# Using the SonarQube Community edition
+# Using the SonarQube Community Edition
 
 #### View the application in the Google Cloud Console
 
@@ -296,6 +296,18 @@ The SonarQube Platform is made of 4 components:
 - One or more SonarScanners running on your Build / Continuous Integration Servers to analyze projects
 
 For our application database the most important place, `plugins` and `data` folders stored on PVC (Persistent Volume Claim).
+## Backing up plugin and data
+This shell script will create copy of plugins folder in current folder
+```shell
+kubectl --namespace $NAMESPACE cp $(kubectl -n$NAMESPACE get pod -oname | \
+                sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/extensions/ ./
+```
+This shell script will create copy of content from folder `data` in current folder:
+```shell
+kubectl --namespace $NAMESPACE cp $(kubectl -n$NAMESPACE get pod -oname | \
+                sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/data ./
+```
+
 ## Backing up PostgreSQL
 This shell script will create `postgresql-backup.sql` dump of all DB in PostgreSQL.
 ```shell
@@ -322,7 +334,17 @@ cat backup.sql | kubectl --namespace $NAMESPACE exec -i \
 	-c postgresql-server \
 	-- psql -U postgres
 ```
-
+This shell script will copy files from current folder to folder `data` in pod
+sonarqube
+```shell
+kubectl --namespace $NAMESPACE cp ./ $(kubectl -n$NAMESPACE get pod -oname | \
+         sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/data
+```
+This script will restore extension
+```shell
+kubectl --namespace $NAMESPACE cp ./ $(kubectl -n$NAMESPACE get pod -oname | \
+         sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/extensions
+```
 This shell script will delete old state of SonarQube
 ```shell
 kubectl --namespace $NAMESPACE exec -i \
