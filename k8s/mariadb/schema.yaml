@@ -1,0 +1,45 @@
+application_api_version: v1beta1
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  mariadb.image:
+    type: string
+    default: $REGISTRY:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  mariadb.volumeSize:
+    type: integer
+    title: Volume
+    description: The size of Volume (Gi) in the solution
+    default: 32
+  db.replicas:
+    type: integer
+    title: Replicas
+    description: Number of secondary replicas in MariaDB cluster
+    default: 2
+    minimum: 1
+    maximum: 8
+  db.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 32
+  replication.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 32
+required:
+- name
+- namespace
+- mariadb.image
+- db.password
+- replication.password
