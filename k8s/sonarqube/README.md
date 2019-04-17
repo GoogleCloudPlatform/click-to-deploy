@@ -23,6 +23,10 @@ Popular open source software stacks on Kubernetes packaged by Google and made av
 - A Deployment with SonarQube and PostgreSQL.
 - A Service, which exposes PostgreSQL and SonarQube to usage in cluster
 
+PostgreSQL exposing by service with type ClusterIP, which makes it available for SonarQube only in cluster network.
+SonarQube exposing by service with type ClusterIP, which makes it available only in private network, but below described how to connect to SonarQube.
+All data and extensions of SonarQube and PostgreSQL stored on PVC which makes the application more stable.
+
 # Installation
 
 ## Quick install with Google Cloud Marketplace
