@@ -181,7 +181,9 @@ def main():
       help='verify %s file' % CLOUDBUILD_CONFIG)
   args = parser.parse_args()
 
-  skiplist = ['spark-operator']
+  # TODO(PR/346): Spark operator: "make app/verify" fails
+  # TODO(PR/516): SonarQube is flaky
+  skiplist = ['sonarqube', 'spark-operator']
 
   # Use extra_configs to run additional deployments
   # with non-default configurations.
