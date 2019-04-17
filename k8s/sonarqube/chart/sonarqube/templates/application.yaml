@@ -30,7 +30,7 @@ spec:
     value: {{ .Release.Namespace }}
   - name: Default login for web console
     value: "admin"
-  - name Default password for web console
+  - name: Default password for web console
     value: "admin"
   maintainers:
   - name: Google Click to Deploy
