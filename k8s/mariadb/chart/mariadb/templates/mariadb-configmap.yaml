@@ -17,7 +17,6 @@ data:
     ssl-ca=/etc/mysql/mariadb.conf.d/certs-ca/ca.crt
     ssl-cert=/etc/mysql/mariadb.conf.d/certs/tls.crt
     ssl-key=/etc/mysql/mariadb.conf.d/certs/tls.key
-
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -29,6 +28,7 @@ metadata:
 data:
   my.cnf: |-
     [mysqld]
+    # SERVER_ID value is set during pod startup
     server-id=%%SERVER_ID%%
     log-bin=mysql-bin
     datadir=/var/lib/mariadb

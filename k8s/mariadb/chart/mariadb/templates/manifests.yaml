@@ -200,11 +200,11 @@ spec:
                 mysql -uroot -p${MYSQL_ROOT_PASSWORD} -e "STOP SLAVE;"
                 mysql -uroot -p${MYSQL_ROOT_PASSWORD} -e "CHANGE MASTER TO \
                   MASTER_HOST='${HOST}', \
-                  MASTER_PORT={{ .Values.service.port }}, \
+                  MASTER_PORT=${SERVICE_PORT}, \
                   MASTER_USER='${MARIADB_REPLICATION_USER}', \
                   MASTER_PASSWORD='${MARIADB_REPLICATION_PASSWORD}', \
                   MASTER_SSL=1, \
-                  MASTER_CONNECT_RETRY=10; "
+                  MASTER_CONNECT_RETRY=10;"
                 mysql -uroot -p${MYSQL_ROOT_PASSWORD} < ${BACKUP_FILE}
                 mysql -uroot -p${MYSQL_ROOT_PASSWORD} -e "START SLAVE;"
                 rm -f ${BACKUP_FILE}
