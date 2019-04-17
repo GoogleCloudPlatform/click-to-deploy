@@ -27,7 +27,7 @@
 
 source /opt/c2d/c2d-utils || exit 1
 
-# Functions
+##  Functions
 apt_retry () {
   set +e
   local cmds="apt-get $@"
@@ -49,7 +49,7 @@ apt_retry () {
   set -e
 }
 
-apt_retry update -qq
+apt_retry update -q
 
 set -o pipefail
 readonly hostname="$(hostname)"
@@ -58,12 +58,12 @@ service mysql stop
 
 # Grab the incoming options
 readonly cluster_name="$(get_attribute_value "ENV_CLUSTER_NAME")"
-readonly install_percona_toolkit="$(get_attribute_value "INSTALL_PERCONA_TOOLKIT" | awk -F':' '{print $2}' | tr '[:upper:]' '[:lower:]')"
+readonly install_percona_toolkit="$(get_attribute_value "INSTALL_PERCONA_TOOLKIT")"
 readonly mysql_root_password="$(get_attribute_value "MYSQL_ROOT_PASSWORD")"
 readonly percona_disk_name="$hostname-data"
 
 # Add Percona Toolkit, if user requests it.
-if [[ "${install_percona_toolkit}" == "true" ]]; then
+if [[ "${install_percona_toolkit}" == "True" ]]; then
  apt_retry install -y percona-toolkit
 fi
 
