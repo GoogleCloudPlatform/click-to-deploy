@@ -183,7 +183,7 @@ def main():
 
   # TODO(PR/346): Spark operator: "make app/verify" fails
   # TODO(PR/516): SonarQube is flaky
-  skiplist = ['sonarqube', 'spark-operator']
+  skiplist = ['spark-operator']
 
   # Use extra_configs to run additional deployments
   # with non-default configurations.
