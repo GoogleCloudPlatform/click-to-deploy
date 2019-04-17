@@ -18,9 +18,9 @@ create_secret() {
     local -r APP_INSTANCE_NAME="$1"
     local -r NAMESPACE="$2"
 
-    TMP_DIR=$(mktemp -d)
-    PRIMARY_DIR="${TMP_DIR}/primary"
-    SECONDARY_DIR="${TMP_DIR}/secondary"
+    local -r TMP_DIR=$(mktemp -d)
+    local -r PRIMARY_DIR="${TMP_DIR}/primary"
+    local -r SECONDARY_DIR="${TMP_DIR}/secondary"
 
     mkdir -p ${PRIMARY_DIR} ${SECONDARY_DIR}
 
@@ -64,7 +64,7 @@ create_secret() {
 patch_secret() {
     local -r APP_INSTANCE_NAME="$1"
     local -r NAMESPACE="$2"
-    APPLICATION_UID=$(kubectl get applications/${APP_INSTANCE_NAME} --namespace=${NAMESPACE} --output=jsonpath='{.metadata.uid}')
+    local -r APPLICATION_UID=$(kubectl get applications/${APP_INSTANCE_NAME} --namespace=${NAMESPACE} --output=jsonpath='{.metadata.uid}')
 
     for SECRET_NAME in ${APP_INSTANCE_NAME}-tls ${APP_INSTANCE_NAME}-secondary-tls ${APP_INSTANCE_NAME}-ca-tls
     do
