@@ -1,0 +1,15 @@
+mariadb:
+  image: null
+  volumeSize: 32
+
+db:
+  password: password
+  replicas: 2
+
+replication:
+  user: replicator
+  password: password
+  maxConnections: 8
+
+service:
+  port: 3306

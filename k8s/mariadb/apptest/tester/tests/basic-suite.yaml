@@ -1,0 +1,31 @@
+actions:
+- name: Can connect to a database (as root user)
+  bashTest:
+    script: mysql -h ${APP_INSTANCE_NAME}-mariadb.${NAMESPACE}.svc.cluster.local -u root -p"${MYSQL_ROOT_PASSWORD}" -e "SHOW DATABASES"
+    expect:
+      stdout:
+        contains: information_schema
+      exitCode:
+        equals: 0
+- name: Can not connect to a database with incorrect credentials
+  bashTest:
+    script: mysql -h ${APP_INSTANCE_NAME}-mariadb.${NAMESPACE}.svc.cluster.local -u root -p"wrong_pass" -e "SHOW DATABASES"
+    expect:
+      stderr:
+        matches: 'ERROR 1045 (28000): Access denied for user ''root''@''.+'' (using password: YES)'
+      exitCode:
+        equals: 1
+- name: Can create database
+  bashTest:
+    script: mysql -h ${APP_INSTANCE_NAME}-mariadb.${NAMESPACE}.svc.cluster.local -u root -p"${MYSQL_ROOT_PASSWORD}" -e "CREATE DATABASE test_database"
+    expect:
+      exitCode:
+        equals: 0
+- name: Check replication
+  bashTest:
+    script: mysql -h ${APP_INSTANCE_NAME}-mariadb-secondary.${NAMESPACE}.svc.cluster.local -u root -p"${MYSQL_ROOT_PASSWORD}" -e "SHOW DATABASES"
+    expect:
+      stdout:
+        contains: test_database
+      exitCode:
+        equals: 0
