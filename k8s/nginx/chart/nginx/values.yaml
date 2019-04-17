@@ -2,6 +2,6 @@ nginx:
   image: null
   initImage: null
   replicas: null
-cert:
-  base64EncodedKey: null
-  base64EncodedCrt: null
+tls:
+  base64EncodedPrivateKey: null
+  base64EncodedCertificate: null
