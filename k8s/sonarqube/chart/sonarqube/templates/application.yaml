@@ -28,8 +28,10 @@ spec:
         name: {{ .Release.Name }}-secret
   - name: Application Namespace
     value: {{ .Release.Namespace }}
-  - name: Default cretential for web console
-    value: "Login: admin  Password: admin"
+  - name: Default Login for web console
+    value: "admin"
+  - name: Default Password for web console
+    value:"admin"
   maintainers:
   - name: Google Click to Deploy
     url: https://cloud.google.com/solutions/#click-to-deploy
@@ -66,3 +68,4 @@ spec:
       9000:9000
     ```
     Application will available on localhost port `9000`
+
