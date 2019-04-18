@@ -3,6 +3,7 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
+VERIFY_WAIT_TIMEOUT = 1800
 TAG ?= 7.6
 METRICS_EXPORTER_TAG ?= v0.5.1
 POSTGRESQL_SRCTAG ?= 9.6-kubernetes

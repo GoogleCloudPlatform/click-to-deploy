@@ -33,7 +33,8 @@ COPY --from=build /tmp/test/sonarqube.tar.gz /data-test/chart/
 COPY --from=build /tmp/apptest/schema.yaml /data-test/
 COPY --from=build /tmp/schema.yaml /data/
 
-ENV WAIT_FOR_READY_TIMEOUT 600
+ENV WAIT_FOR_READY_TIMEOUT 1800
+ENV TESTER_TIMEOUT 1800
 
 RUN mv -f /bin/deploy.sh /bin/deploy-original.sh \
     && cp /bin/clean_iam_resources.sh /bin/clean_iam_resources-original.sh \
