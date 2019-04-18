@@ -30,7 +30,7 @@ execute 'apt-get update' do
 end
 
 bash 'Download percona-toolkit package' do
-  code <<<-EOH
+  code <<-EOH
     mkdir -p /opt/percona-toolkit
     cd /opt/percona-toolkit
     apt-get download percona-toolkit
