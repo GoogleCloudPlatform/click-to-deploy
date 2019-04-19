@@ -219,7 +219,8 @@ By default, the application is not exposed externally. To get access to SonarQub
 kubectl port-forward --namespace $NAMESPACE svc/$APP_INSTANCE_NAME-sonarqube-svc 9000:9000
 ```
 
-SonarQube will be available on `localhost:9000`. All interaction with application goes  through `9000` port. Cli also will be available.
+
+Then, navigate to the [http://localhost:9000/metrics](http://localhost:9000/metrics) endpoint. Use the username `admin` and password `admin` to login.
 
 To get access web-page with default credentials:
 
