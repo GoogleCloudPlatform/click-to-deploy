@@ -16,17 +16,17 @@ spec:
       initContainers:
       - name: check-db-ready
         image: {{ .Values.postgresql.image }}
-        resources:
-          requests:
-            memory: "2048Mi"
-          limits:
-            memory: "3072Mi"
         command: ['sh', '-c',
           'until pg_isready -h {{ .Release.Name }}-postgresql-service -p 5432;
           do echo waiting for database; sleep 2; done;']
       containers:
         - name: {{ .Release.Name}}-sonarqube
           image: {{ .Values.sonarqube.image}}
+          resources:
+            requests:
+              memory: "2048Mi"
+            limits:
+              memory: "3072Mi"
           imagePullPolicy: Always
           env:
             - name: SONARQUBE_JDBC_PASSWORD
@@ -55,14 +55,9 @@ spec:
             periodSeconds: 30
             failureThreshold: 6
           volumeMounts:
-          - mountPath: "/opt/sonarqube/data/"
-            name: {{ .Release.Name}}-data
           - mountPath: "/opt/sonarqube/extensions/"
-            name: {{ .Release.Name}}-exts
+            name: {{ .Release.Name}}-ext
       volumes:
-      - name: {{ .Release.Name}}-data
+      - name: {{ .Release.Name}}-ext
         persistentVolumeClaim:
-          claimName: {{ .Release.Name}}-data
-      - name: {{ .Release.Name}}-exts
-        persistentVolumeClaim:
-          claimName: {{ .Release.Name}}-exts
+          claimName: {{ .Release.Name}}-ext
