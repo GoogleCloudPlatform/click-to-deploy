@@ -124,7 +124,6 @@ export NAMESPACE=default
 Configure the container image:
 
 ```shell
-TAG=9.6
 export IMAGE_SONARQUBE="marketplace.gcr.io/google/sonarqube7:7.6"
 export IMAGE_POSTGRESQL="marketplace.gcr.io/google/postgresql9:9.6-kubernetes"
 export IMAGE_POSTGRESQL_EXPORTER="marketplace.gcr.io/google/postgresql9:exporter"

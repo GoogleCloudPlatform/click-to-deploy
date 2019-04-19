@@ -67,5 +67,6 @@ spec:
       svc/{{.Release.Name}}-sonarqube-svc \
       9000:9000
     ```
-    Application will available on localhost port `9000`
+
+    Then, navigate to the [http://localhost:9000](http://localhost:9000) endpoint.
 
