@@ -29,9 +29,9 @@ spec:
   - name: Application Namespace
     value: {{ .Release.Namespace }}
   - name: Default login for web console
-    value: "admin"
+    value "admin"
   - name: Default password for web console
-    value: "admin"
+    value "admin"
   maintainers:
   - name: Google Click to Deploy
     url: https://cloud.google.com/solutions/#click-to-deploy
