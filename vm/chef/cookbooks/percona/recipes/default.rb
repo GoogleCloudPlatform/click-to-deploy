@@ -29,6 +29,15 @@ execute 'apt-get update' do
   retry_delay 30
 end
 
+bash 'Download percona-toolkit package' do
+  code <<-EOH
+    mkdir -p /opt/percona-toolkit
+    cd /opt/percona-toolkit
+    apt-get download percona-toolkit
+    cd -
+EOH
+end
+
 bash 'Install Percona packages' do
   code <<-EOH
     DEBIAN_FRONTEND=noninteractive apt-get install -y #{node['percona']['pkg']}
