@@ -14,8 +14,8 @@ Popular open source software stacks on Kubernetes packaged by Google and made av
 
 ![Architecture diagram](resources/sonarqube-k8s-app-architecture.png)
 
-
 ### SonarQube application contains:
+
 - An Application resource, which collects all the deployment resources into one logical entity
 - A ServiceAccount for the SonarQube and PostgreSQL Pod.
 - A PersistentVolume and PersistentVolumeClaim for SonarQube and PostgreSQL. Note that the volumes won't be deleted with application. If you delete the installation and recreate it with the same name, the new installation uses the same PersistentVolumes. As a result, there is no new database initialization, and no new password is set.
@@ -57,6 +57,7 @@ Configure `gcloud` as a Docker credential helper:
 ```shell
 gcloud auth configure-docker
 ```
+
 #### Create a Google Kubernetes Engine cluster
 
 Create a cluster from the command line. If you already have a cluster that
@@ -219,6 +220,7 @@ To get the Console URL for your application, run the following command:
 ```shell
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
 ```
+
 Application is not exposed to external world. To get access to SonarQube run the following command:
 ```bash
     kubectl port-forward \
@@ -226,9 +228,11 @@ Application is not exposed to external world. To get access to SonarQube run the
       svc/$APP_INSTANCE_NAME-sonarqube-svc \
       9000:9000
 ```
+
 SonarQube will be available on `localhost:9000`. All interaction with application goes  through `9000` port. Cli also will be available.
 
 To get access web-page with default credentials:
+
 ```bash
 http://localhost:9000
 Login: admin
@@ -279,8 +283,8 @@ Existing metric descriptors can be removed through
 
 SonarQube Community Edition doest not support scaling.
 
-
 # Backup and restore
+
 [From official documentation](https://docs.sonarqube.org/7.6/architecture/architecture-integration/)
 The SonarQube Platform is made of 4 components:
 
@@ -300,20 +304,26 @@ The SonarQube Platform is made of 4 components:
 - One or more SonarScanners running on your Build / Continuous Integration Servers to analyze projects
 
 For our application database the most important place, `plugins` and `data` folders stored on PVC (Persistent Volume Claim).
+
 ## Backing up plugin and data
+
 This shell script will create copy of plugins folder in current folder
 ```shell
 kubectl --namespace $NAMESPACE cp $(kubectl -n$NAMESPACE get pod -oname | \
                 sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/extensions/ ./
 ```
+
 This shell script will create copy of content from folder `data` in current folder:
+
 ```shell
 kubectl --namespace $NAMESPACE cp $(kubectl -n$NAMESPACE get pod -oname | \
                 sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/data ./
 ```
 
 ## Backing up PostgreSQL
+
 This shell script will create `postgresql-backup.sql` dump of all DB in PostgreSQL.
+
 ```shell
 kubectl --namespace $NAMESPACE exec -t \
 	$(kubectl -n$NAMESPACE get pod -oname | \
@@ -323,7 +333,9 @@ kubectl --namespace $NAMESPACE exec -t \
 ```
 
 ## Restoring your PostgreSQL
+
 This shell script will prepare dump for restore
+
 ```shell
 sed -i '1 i\REVOKE CONNECT ON DATABASE sonar FROM PUBLIC;' backup.sql
 sed -i '1 a select pg_terminate_backend(pid) from pg_stat_activity where datname='sonar';' backup.sql
@@ -331,6 +343,7 @@ echo "GRANT CONNECT ON DATABASE sonar TO PUBLIC;" >> backup.sql
 ```
 
 This shell script will restore dump `backup.sql` to PostgreSQL
+
 ```shell
 cat backup.sql | kubectl --namespace $NAMESPACE exec -i \
 	$(kubectl -n$NAMESPACE get pod -oname | \
@@ -338,18 +351,24 @@ cat backup.sql | kubectl --namespace $NAMESPACE exec -i \
 	-c postgresql-server \
 	-- psql -U postgres
 ```
+
 This shell script will copy files from current folder to folder `data` in pod
 sonarqube
+
 ```shell
 kubectl --namespace $NAMESPACE cp ./ $(kubectl -n$NAMESPACE get pod -oname | \
          sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/data
 ```
+
 This script will restore extension
+
 ```shell
 kubectl --namespace $NAMESPACE cp ./ $(kubectl -n$NAMESPACE get pod -oname | \
          sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/extensions
 ```
+
 This shell script will delete old state of SonarQube
+
 ```shell
 kubectl --namespace $NAMESPACE exec -i \
         $(kubectl -n$NAMESPACE get pod -oname | \
@@ -358,6 +377,7 @@ kubectl --namespace $NAMESPACE exec -i \
 ```
 
 This shell script will delete SonarQube pod and it will be rescheduled
+
 ```shell
 kubectl --namespace $NAMESPACE delete pod $(kubectl -n$NAMESPACE get pod -oname | \
         sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p)
