@@ -228,7 +228,8 @@ Application is not exposed to external world. To get access to SonarQube run the
       9000:9000
 ```
 
-SonarQube will be available on `localhost:9000`. All interaction with application goes  through `9000` port. Cli also will be available.
+
+Then, navigate to the [http://localhost:9000/metrics](http://localhost:9000/metrics) endpoint. Use the username `admin` and password `admin` to login.
 
 To get access web-page with default credentials:
 
