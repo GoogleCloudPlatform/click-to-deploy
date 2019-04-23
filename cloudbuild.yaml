@@ -111,6 +111,34 @@ steps:
   - -j4
   - app/build
 
+- id: Build elastic-gke-logging
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  dir: k8s/elastic-gke-logging
+  args:
+  - make
+  - -j4
+  - app/build
+
+- id: Build elasticsearch
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  dir: k8s/elasticsearch
+  args:
+  - make
+  - -j4
+  - app/build
+
 - id: Build grafana
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   env:
@@ -331,6 +359,44 @@ steps:
   # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
   - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
   dir: k8s/cassandra
+  args:
+  - make
+  - -j4
+  - app/verify
+
+- id: Verify elastic-gke-logging
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  waitFor:
+  - Copy kubectl Credentials
+  - Copy gcloud Credentials
+  - Pull Dev Image
+  - Build elastic-gke-logging
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  dir: k8s/elastic-gke-logging
+  args:
+  - make
+  - -j4
+  - app/verify
+
+- id: Verify elasticsearch
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  waitFor:
+  - Copy kubectl Credentials
+  - Copy gcloud Credentials
+  - Pull Dev Image
+  - Build elasticsearch
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  dir: k8s/elasticsearch
   args:
   - make
   - -j4

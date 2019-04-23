@@ -182,9 +182,7 @@ def main():
   args = parser.parse_args()
 
   # TODO(PR/346): Spark operator: "make app/verify" fails
-  # TODO(ISSUE): elastic-gke-logging: "make app/verify" fails
-  # TODO(ISSUE): elasticsearch: "make app/verify" fails
-  skiplist = ['elastic-gke-logging', 'elasticsearch', 'spark-operator']
+  skiplist = ['spark-operator']
 
   # Use extra_configs to run additional deployments
   # with non-default configurations.
