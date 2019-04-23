@@ -32,9 +32,26 @@ properties:
         generatedProperties:
           base64EncodedPrivateKey: tls.base64EncodedPrivateKey
           base64EncodedCertificate: tls.base64EncodedCertificate
+  metrics.image:
+    type: string
+    default: $REGISTRY/prometheus-to-sd:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  metrics.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
+    default: false
+  publicIp.available:
+    type: boolean
+    default: true
+    x-google-marketplace:
+      type: INGRESS_AVAILABLE
 required:
 - name
 - namespace
 - nginx.image
 - nginx.initImage
 - nginx.replicas
+- metrics.image
+- metrics.enabled

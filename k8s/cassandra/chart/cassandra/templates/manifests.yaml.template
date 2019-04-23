@@ -22,10 +22,12 @@ spec:
         image: {{ .Values.cassandra.image }}
         imagePullPolicy: Always
         env:
+        - name: CASSANDRA_CGROUP_MEMORY_LIMIT
+          value: 'true'
         - name: CASSANDRA_CLUSTER_NAME
           value: {{ .Release.Name }}-cassandra-svc
         - name: CASSANDRA_PROMETHEUS_ENABLED
-          value: "true"
+          value: 'true'
         - name: CASSANDRA_SEEDS
           value: {{ .Release.Name }}-cassandra-0.{{ .Release.Name }}-cassandra-svc.{{ .Release.Namespace }}.svc.cluster.local, {{ .Release.Name }}-cassandra-1.{{ .Release.Name }}-cassandra-svc.{{ .Release.Namespace }}.svc.cluster.local, {{ .Release.Name }}-cassandra-2.{{ .Release.Name }}-cassandra-svc.{{ .Release.Namespace }}.svc.cluster.local
         ports:
@@ -44,7 +46,10 @@ spec:
         resources:
           requests:
            cpu: 500m
-           memory: 2.5Gi
+           memory: 4Gi
+          limits:
+           cpu: 500m
+           memory: 4Gi
         volumeMounts:
         - name: {{ .Release.Name }}-cassandra-pvc
           mountPath: /var/lib/cassandra

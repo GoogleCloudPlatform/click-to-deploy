@@ -12,3 +12,7 @@ kibana:
 
 fluentd:
   image: null
+
+metrics:
+  image: null
+  enabled: false
