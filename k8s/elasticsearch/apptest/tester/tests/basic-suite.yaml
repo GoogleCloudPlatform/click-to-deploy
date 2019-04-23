@@ -55,7 +55,7 @@ actions:
   bashTest:
     script: |-
       for node in $(getent hosts $APP_INSTANCE_NAME-elasticsearch-prometheus-svc.$NAMESPACE.svc.cluster.local | awk '{print $1}'); do
-        wget -O - -q "http://$node:9108/metrics" | grep -e '^elasticsearch_cluster_health_up '
+        wget -O - -q "http://$node:9114/metrics" | grep -e '^elasticsearch_cluster_health_up '
       done
     expect:
       stdout:
