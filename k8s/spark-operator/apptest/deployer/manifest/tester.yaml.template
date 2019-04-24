@@ -11,6 +11,7 @@ spec:
   containers:
   - name: tester
     image: "${testerImage}"
+    imagePullPolicy: Always
     env:
     - name: NAMESPACE
       valueFrom:
