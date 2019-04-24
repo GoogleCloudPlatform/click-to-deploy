@@ -354,7 +354,7 @@ in the
 For more detailed information about setting up the plugin, see the
 [Elasticsearch Exporter documentation](https://github.com/justwatchcom/elasticsearch_exporter/blob/master/README.md).
 
-You can access the metrics for a Pod at `[POD_IP]:9108/metrics`, where
+You can access the metrics for a Pod at `[POD_IP]:9114/metrics`, where
 `[POD_IP]` is the IP address from the Kubernetes headless service
 `$APP_INSTANCE_NAME-elasticsearch-exporter-svc`.
 
