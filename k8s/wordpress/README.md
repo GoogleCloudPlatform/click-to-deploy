@@ -249,22 +249,22 @@ expanded manifest file for future updates to the application.
 
 ```shell
 helm template chart/wordpress \
-  --name="$APP_INSTANCE_NAME" \
-  --namespace="$NAMESPACE" \
-  --set wordpressImage=$IMAGE_WORDPRESS \
-  --set db.image=$IMAGE_MYSQL \
-  --set db.rootPassword=$ROOT_DB_PASSWORD \
-  --set db.wordpressPassword=$WORDPRESS_DB_PASSWORD \
-  --set db.exporter.image=$IMAGE_MYSQL_EXPORTER \
-  --set db.exporter.password=$EXPORTER_DB_PASSWORD \
-  --set apache.exporter.image=$IMAGE_APACHE_EXPORTER \
-  --set admin.email=$WORDPRESS_ADMIN_EMAIL \
-  --set admin.password=$WORDPRESS_ADMIN_PASSWORD \
-  --set metrics.image=$IMAGE_METRICS_EXPORTER \
-  --set enablePublicServiceAndIngress=$PUBLIC_SERVICE_AND_INGRESS_ENABLED \
-  --set metrics.enabled=$METRICS_EXPORTER_ENABLED \
-  --set tls.base64EncodedPrivateKey=$TLS_CERTIFICATE_KEY \
-  --set tls.base64EncodedCertificate=$TLS_CERTIFICATE_CRT \
+  --name "$APP_INSTANCE_NAME" \
+  --namespace "$NAMESPACE" \
+  --set "wordpressImage=$IMAGE_WORDPRESS" \
+  --set "db.image=$IMAGE_MYSQL" \
+  --set "db.rootPassword=$ROOT_DB_PASSWORD" \
+  --set "db.wordpressPassword=$WORDPRESS_DB_PASSWORD" \
+  --set "db.exporter.image=$IMAGE_MYSQL_EXPORTER" \
+  --set "db.exporter.password=$EXPORTER_DB_PASSWORD" \
+  --set "apache.exporter.image=$IMAGE_APACHE_EXPORTER" \
+  --set "admin.email=$WORDPRESS_ADMIN_EMAIL" \
+  --set "admin.password=$WORDPRESS_ADMIN_PASSWORD" \
+  --set "metrics.image=$IMAGE_METRICS_EXPORTER" \
+  --set "enablePublicServiceAndIngress=$PUBLIC_SERVICE_AND_INGRESS_ENABLED" \
+  --set "metrics.enabled=$METRICS_EXPORTER_ENABLED" \
+  --set "tls.base64EncodedPrivateKey=$TLS_CERTIFICATE_KEY" \
+  --set "tls.base64EncodedCertificate=$TLS_CERTIFICATE_CRT" \
   > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 

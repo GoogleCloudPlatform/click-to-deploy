@@ -239,8 +239,10 @@ metadata:
     app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: wordpress-webserver
 data:
-  tls.key: {{ .Values.tls.base64EncodedPrivateKey }}
-  tls.crt: {{ .Values.tls.base64EncodedCertificate }}
+  tls.key: |
+{{ .Values.tls.base64EncodedPrivateKey | indent 4 }}
+  tls.crt: |
+{{ .Values.tls.base64EncodedCertificate | indent 4 }}
 type: kubernetes.io/tls
 ---
 apiVersion: extensions/v1beta1
