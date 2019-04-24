@@ -209,6 +209,30 @@ export WORDPRESS_ADMIN_EMAIL=noreply@example.com
 export WORDPRESS_ADMIN_PASSWORD="$(pwgen 20 1 | tr -d '\n' | base64)"
 ```
 
+#### Create TLS certificate for WordPress
+
+> Note: You can skip this step if you have not set up external access.
+
+1.  If you already have a certificate that you want to use, copy your
+    certificate and key pair to the `/tmp/tls.crt`, and `/tmp/tls.key` files,
+    then skip to the next step.
+
+    To create a new certificate, run the following command:
+
+    ```shell
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+        -keyout /tmp/tls.key \
+        -out /tmp/tls.crt \
+        -subj "/CN=wordpress/O=wordpress"
+    ```
+
+1.  Set `TLS_CERTIFICATE_KEY` and `TLS_CERTIFICATE_CRT` variables:
+
+    ```shell
+    export TLS_CERTIFICATE_KEY="$(cat /tmp/tls.key | base64)"
+    export TLS_CERTIFICATE_CRT="$(cat /tmp/tls.crt | base64)"
+    ```
+
 #### Create namespace in your Kubernetes cluster
 
 If you use a different namespace than `default`, or the namespace does not exist
@@ -238,7 +262,10 @@ helm template chart/wordpress \
   --set admin.password=$WORDPRESS_ADMIN_PASSWORD \
   --set metrics.image=$IMAGE_METRICS_EXPORTER \
   --set enablePublicServiceAndIngress=$PUBLIC_SERVICE_AND_INGRESS_ENABLED \
-  --set metrics.enabled=$METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
+  --set metrics.enabled=$METRICS_EXPORTER_ENABLED \
+  --set tls.base64EncodedPrivateKey=$TLS_CERTIFICATE_KEY \
+  --set tls.base64EncodedCertificate=$TLS_CERTIFICATE_CRT \
+  > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 
 #### Apply the manifest to your Kubernetes cluster
@@ -258,49 +285,6 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 ```
 
 To view the app, open the URL in your browser.
-
-#### Create TLS certificate for WordPress
-
-1.  If you already have a certificate that you want to use, copy your
-    certificate and key pair to the `/tmp/tls.crt`, and `/tmp/tls.key` files,
-    then skip to the next step.
-
-    To create a new certificate, run the following command:
-
-    ```shell
-    # create a certificate for WordPress
-    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-        -keyout /tmp/tls.key \
-        -out /tmp/tls.crt \
-        -subj "/CN=wordpress/O=wordpress"
-    ```
-
-1.  Use the following script to create a Secret for the Kubernetes Ingress TLS:
-
-    ```shell
-    # create a secret for Kubernetes Ingress TLS
-    kubectl --namespace $NAMESPACE create secret tls $APP_INSTANCE_NAME-tls \
-        --cert=/tmp/tls.crt --key=/tmp/tls.key
-
-    kubectl --namespace $NAMESPACE label secret $APP_INSTANCE_NAME-tls \
-        app.kubernetes.io/name=$APP_INSTANCE_NAME app.kubernetes.io/component=wordpress-tls
-
-    APPLICATION_UID=$(kubectl get applications/${APP_INSTANCE_NAME} --namespace="$NAMESPACE" --output=jsonpath='{.metadata.uid}')
-
-    cat <<EOF | kubectl apply --namespace $NAMESPACE -f -
-    apiVersion: v1
-    kind: Secret
-    metadata:
-      name: $APP_INSTANCE_NAME-tls
-      ownerReferences:
-      - apiVersion: app.k8s.io/v1beta1
-        blockOwnerDeletion: true
-        controller: true
-        kind: Application
-        name: $APP_INSTANCE_NAME
-        uid: $APPLICATION_UID
-    EOF
-    ```
 
 ### Open your WordPress site
 
