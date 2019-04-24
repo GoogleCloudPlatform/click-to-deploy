@@ -180,7 +180,7 @@ for i in "IMAGE_NGINX" "IMAGE_NGINX_INIT" "IMAGE_METRICS_EXPORTER"; do
 done
 ```
 
-#### Create TLS certificate for WordPress
+#### Create TLS certificate for Nginx
 
 1.  If you already have a certificate that you want to use, copy your
     certificate and key pair to the `/tmp/tls.crt`, and `/tmp/tls.key` files,
