@@ -17,8 +17,8 @@ Popular open source software stacks on Kubernetes packaged by Google and made av
 This solution will install single instance of PostgreSQL server into your Kubernetes cluster.
 
 The PostgreSQL Pod is managed by a ReplicaSet with the number of replicas set to one. The PostgreSQL Pod uses
-a Persistent Volume to store data, and a ClusterIP Service to expose the database port.
-Communication between client and server is encrypted.
+a Persistent Volume to store data, and a ClusterIP Service to expose the database port (which can be optionally
+exposed publicly with a LoadBalancer type of Service). Communication between client and server is encrypted.
 
 To install the application you will need to set up initial password for postgres user, PostgreSQL volume size
 and generate or provide TLS key and certificate. All required steps are covered further in this README.
