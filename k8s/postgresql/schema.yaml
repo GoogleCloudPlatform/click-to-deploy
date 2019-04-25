@@ -23,6 +23,11 @@ properties:
     title: PostgreSQL Service Account
     x-google-marketplace:
       type: SERVICE_ACCOUNT
+  postgresql.exposePublicService:
+    type: boolean
+    title: Enable public IP access
+    description: Set the PostgreSQL Service type to LoadBalancer
+    default: false
   exporter.image:
     type: string
     default: $REGISTRY/exporter:$TAG

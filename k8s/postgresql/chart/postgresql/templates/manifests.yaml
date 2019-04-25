@@ -121,7 +121,11 @@ spec:
     port: 5432
     targetPort: 5432
   selector: *PostgresSQLDeploymentLabels
+{{ if .Values.postgresql.exposePublicService }}
+  type: LoadBalancer
+{{ else }}
   type: ClusterIP
+{{ end }}
 ---
 kind: Service
 apiVersion: v1

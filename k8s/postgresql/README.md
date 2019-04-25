@@ -155,11 +155,20 @@ kubectl --namespace $NAMESPACE create secret generic $APP_INSTANCE_NAME-tls \
         --from-file=./server.crt --from-file=./server.key
 ```
 
-Generate random password and set PosgreSQL volume size in Gigabytes:
+Generate random password and set PostgreSQL volume size in Gigabytes:
 
 ```shell
 export POSTGRESQL_DB_PASSWORD=$(openssl rand 9 | openssl base64 -A | openssl base64)
 export POSTGRESQL_VOLUME_SIZE=10
+```
+
+Expose the Service externally:
+
+By default, the Service isn't exposed externally. To enable this option, change
+the value to `true`.
+
+```shell
+export EXPOSE_PUBLIC_SERVICE=false
 ```
 
 ##### Create dedicated service accounts
