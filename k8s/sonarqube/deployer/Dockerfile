@@ -34,6 +34,7 @@ COPY --from=build /tmp/apptest/schema.yaml /data-test/
 COPY --from=build /tmp/schema.yaml /data/
 
 ENV WAIT_FOR_READY_TIMEOUT 600
+ENV TESTER_TIMEOUT 600
 
 RUN mv -f /bin/deploy.sh /bin/deploy-original.sh \
     && cp /bin/clean_iam_resources.sh /bin/clean_iam_resources-original.sh \

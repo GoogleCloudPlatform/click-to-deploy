@@ -28,6 +28,24 @@ spec:
         ports:
         - containerPort: 5432
           name: postgres
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - exec pg_isready --host $POD_IP
+          initialDelaySeconds: 60
+          timeoutSeconds: 5
+          failureThreshold: 6
+        readinessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - exec pg_isready --host $POD_IP
+          initialDelaySeconds: 5
+          timeoutSeconds: 3
+          periodSeconds: 5
         volumeMounts:
         - name: {{ .Release.Name }}-postgresql-pvc
           mountPath: /var/lib/postgresql/data
@@ -45,6 +63,10 @@ spec:
           value: {{ .Values.postgresql.db.user}}
         - name: "POSTGRES_DB"
           value: {{.Values.postgresql.db.name}}
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
       - name: postgresql-exporter
         image: {{ .Values.postgresql.exporter.image }}
         imagePullPolicy: Always
