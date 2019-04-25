@@ -21,6 +21,8 @@ properties:
   postgresql.serviceAccount:
     type: string
     title: PostgreSQL Service Account
+    description: >-
+      Service account to assign to PostgreSQL Deployment (with default permissions)
     x-google-marketplace:
       type: SERVICE_ACCOUNT
   postgresql.exposePublicService:
