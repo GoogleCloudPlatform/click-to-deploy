@@ -124,9 +124,10 @@ export NAMESPACE=default
 Configure the container image:
 
 ```shell
-export IMAGE_SONARQUBE="marketplace.gcr.io/google/sonarqube7:7.6"
-export IMAGE_POSTGRESQL="marketplace.gcr.io/google/postgresql9:9.6-kubernetes"
-export IMAGE_POSTGRESQL_EXPORTER="marketplace.gcr.io/google/postgresql9:exporter"
+TAG=7.6
+export IMAGE_SONARQUBE="marketplace.gcr.io/google/sonarqube:$(TAG)"
+export IMAGE_POSTGRESQL="marketplace.gcr.io/google/sonarqube/postgresql9:$(TAG)"
+export IMAGE_POSTGRESQL_EXPORTER="marketplace.gcr.io/google/sonarqube/postgresql9/exporter:$(TAG)"
 export IMAGE_METRICS_EXPORTER="k8s.gcr.io/prometheus-to-sd:v0.5.1"
 ```
 
@@ -220,14 +221,6 @@ kubectl port-forward --namespace $NAMESPACE svc/$APP_INSTANCE_NAME-sonarqube-svc
 ```
 
 Then, navigate to the [http://localhost:9000/metrics](http://localhost:9000/metrics) endpoint. Use the username `admin` and password `admin` to login.
-
-To get access web-page with default credentials:
-
-```bash
-http://localhost:9000
-Login: admin
-Password: admin
-```
 
 # Application metrics
 
