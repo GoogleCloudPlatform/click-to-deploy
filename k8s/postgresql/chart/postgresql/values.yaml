@@ -1,6 +1,7 @@
 postgresql:
   image: null
   volumeSize: null
+  serviceAccount: null
   exposePublicService: false
 exporter:
   image: null
