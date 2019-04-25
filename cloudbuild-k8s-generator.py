@@ -172,7 +172,7 @@ def main():
       '--verify_only',
       action='store_true',
       default=False,
-      help='verify %s directory' % CLOUDBUILD_DIRECTORY)
+      help='verify configs in %s directory' % CLOUDBUILD_DIRECTORY)
   args = parser.parse_args()
 
   skiplist = []
@@ -207,7 +207,7 @@ def main():
     else:
       print('Adding config for solution: ' + solution)
       cloudbuild_contents = Template(CLOUDBUILD_TEMPLATE).render(
-          solution=solution, extra_configs=extra_configs)
+          solution=solution, extra_configs=extra_configs) + '\n'
 
       if args.verify_only:
         if verify_cloudbuild(CLOUDBUILD_CONFIG % solution, cloudbuild_contents):
