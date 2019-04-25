@@ -26,7 +26,7 @@ properties:
       type: IMAGE
   postgresql.exporter.image:
     type: string
-    default: $REGISTRY/postgresql9/exporter:$TAG
+    default: $REGISTRY/postgresql9-exporter:$TAG
     x-google-marketplace:
       type: IMAGE
   metrics.image:

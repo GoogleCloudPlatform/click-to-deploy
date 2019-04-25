@@ -125,10 +125,10 @@ Configure the container image:
 
 ```shell
 TAG=7.6
-export IMAGE_SONARQUBE="marketplace.gcr.io/google/sonarqube:$(TAG)"
-export IMAGE_POSTGRESQL="marketplace.gcr.io/google/sonarqube/postgresql9:$(TAG)"
-export IMAGE_POSTGRESQL_EXPORTER="marketplace.gcr.io/google/sonarqube/postgresql9/exporter:$(TAG)"
-export IMAGE_METRICS_EXPORTER="k8s.gcr.io/prometheus-to-sd:v0.5.1"
+export IMAGE_SONARQUBE="marketplace.gcr.io/google/sonarqube:$TAG"
+export IMAGE_POSTGRESQL="marketplace.gcr.io/google/sonarqube/postgresql9:$TAG"
+export IMAGE_POSTGRESQL_EXPORTER="marketplace.gcr.io/google/sonarqube/postgresql9-exporter:$TAG"
+export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/sonarqube/prometheus-to-sd:$TAG"
 ```
 
 The image above is referenced by
