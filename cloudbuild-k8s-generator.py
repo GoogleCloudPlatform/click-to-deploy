@@ -158,15 +158,12 @@ steps:
 """.strip()
 
 
-def verify_cloudbuild(cloudbuild_contents):
-  if not os.path.isfile(CLOUDBUILD_CONFIG):
-    is_up_to_date = False
-  else:
-    with open(CLOUDBUILD_CONFIG, 'r') as cloudbuild_file:
-      is_up_to_date = cloudbuild_file.read() == cloudbuild_contents
+def verify_cloudbuild(cloudbuild_config, cloudbuild_contents):
+  if not os.path.isfile(cloudbuild_config):
+    return False
 
-  return is_up_to_date
-
+  with open(cloudbuild_config, 'r') as cloudbuild_file:
+    return cloudbuild_file.read() == cloudbuild_contents
 
 def main():
   parser = argparse.ArgumentParser()
@@ -208,24 +205,26 @@ def main():
       print('Adding config for solution: ' + solution)
       cloudbuild_contents = Template(CLOUDBUILD_TEMPLATE).render(
           solution=solution, extra_configs=extra_configs)
-      with open(CLOUDBUILD_CONFIG % solution, 'w') as cloudbuild_file:
-        cloudbuild_file.write(cloudbuild_contents)
+
+      if args.verify_only:
+        if verify_cloudbuild(CLOUDBUILD_CONFIG % solution, cloudbuild_contents):
+          print('The %s file is up-to-date' % CLOUDBUILD_CONFIG % solution)
+        else:
+          print('The %s file is not up-to-date. Please re-generate it' %
+                CLOUDBUILD_CONFIG % solution)
+      else:
+        with open(CLOUDBUILD_CONFIG % solution, 'w') as cloudbuild_file:
+          cloudbuild_file.write(cloudbuild_contents)
 
   for file in os.listdir(CLOUDBUILD_DIRECTORY):
     solution = os.path.splitext(file)[0]
     if file.endswith('.yaml') and (solution not in solutions or
                                    solution in skiplist):
-      os.remove(CLOUDBUILD_CONFIG % solution)
-
-  # if args.verify_only:
-  #   if verify_cloudbuild(cloudbuild_contents):
-  #     print('The %s file is up-to-date' % CLOUDBUILD_CONFIG)
-  #     os.sys.exit(0)
-  #   else:
-  #     print('The %s file is not up-to-date. Please re-generate it' %
-  #           CLOUDBUILD_CONFIG)
-  #     os.sys.exit(1)
-
+      if args.verify_only:
+        print('The %s file is not up-to-date. Please re-generate it' %
+              CLOUDBUILD_CONFIG % solution)
+      else:
+        os.remove(CLOUDBUILD_CONFIG % solution)
 
 if __name__ == '__main__':
   main()
