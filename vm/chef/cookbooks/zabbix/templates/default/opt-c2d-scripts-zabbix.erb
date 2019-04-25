@@ -30,7 +30,7 @@ fi
 if [[ ! -n "$passadmin" ]]; then
   passfile=/var/tmp/zabbix-admin-password
   echo 'Generating random admin password.'
-  echo 'Password is stored in $passfile file.'
+  echo "Password is stored in $passfile file."
   echo 'Please, change it as soon as possible.'
   touch $passfile
   chown root:root $passfile

@@ -146,6 +146,7 @@ steps:
   # Use local Docker network named cloudbuild as described here:
   # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
   - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  # Non-default variables.
   {%- for env_var in extra_config['env_vars'] %}
   - '{{ env_var }}'
   {%- endfor %}
@@ -180,7 +181,7 @@ def main():
       help='verify %s file' % CLOUDBUILD_CONFIG)
   args = parser.parse_args()
 
-  skiplist = ['spark-operator']
+  skiplist = []
 
   # Use extra_configs to run additional deployments
   # with non-default configurations.
@@ -191,7 +192,13 @@ def main():
         'env_vars': [
           'PUBLIC_SERVICE_AND_INGRESS_ENABLED=true'
         ]
-      }
+      },
+      {
+        'name': 'Prometheus metrics',
+        'env_vars': [
+          'METRICS_EXPORTER_ENABLED=true'
+        ]
+      },
     ]
   }
 
