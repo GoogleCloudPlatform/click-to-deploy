@@ -181,8 +181,7 @@ def main():
       help='verify %s file' % CLOUDBUILD_CONFIG)
   args = parser.parse_args()
 
-  # TODO(PR/346): Spark operator: "make app/verify" fails
-  skiplist = ['spark-operator']
+  skiplist = []
 
   # Use extra_configs to run additional deployments
   # with non-default configurations.
