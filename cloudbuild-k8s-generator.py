@@ -18,10 +18,12 @@ import os
 import argparse
 from jinja2 import Template
 
-CLOUDBUILD_CONFIG = 'cloudbuild.yaml'
+KUBERNETES_DIRECTORY = 'k8s'
+CLOUDBUILD_DIRECTORY = os.path.join(KUBERNETES_DIRECTORY, '.cloudbuild')
+CLOUDBUILD_CONFIG = os.path.join(CLOUDBUILD_DIRECTORY, '%s.yaml')
 
 CLOUDBUILD_TEMPLATE = """
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -60,6 +62,8 @@ steps:
 
 - id: Get Kubernetes Credentials
   name: gcr.io/cloud-builders/gcloud
+  waitFor:
+  - -
   args:
   - container
   - clusters
@@ -92,8 +96,6 @@ steps:
     mkdir -p /workspace/.config/gcloud/
     cp -r $$HOME/.config/gcloud/ /workspace/.config/
 
-{%- for solution in solutions %}
-
 - id: Build {{ solution }}
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   env:
@@ -107,10 +109,6 @@ steps:
   - make
   - -j4
   - app/build
-
-{%- endfor %}
-
-{%- for solution in solutions %}
 
 - id: Verify {{ solution }}
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
@@ -157,8 +155,6 @@ steps:
   - app/verify
 
 {%- endfor %}
-
-{%- endfor %}
 """.strip()
 
 
@@ -178,7 +174,7 @@ def main():
       '--verify_only',
       action='store_true',
       default=False,
-      help='verify %s file' % CLOUDBUILD_CONFIG)
+      help='verify "%s" directory' % CLOUDBUILD_DIRECTORY)
   args = parser.parse_args()
 
   skiplist = []
@@ -186,49 +182,50 @@ def main():
   # Use extra_configs to run additional deployments
   # with non-default configurations.
   extra_configs = {
-    'wordpress': [
-      {
-        'name': 'Public service and ingress',
-        'env_vars': [
-          'PUBLIC_SERVICE_AND_INGRESS_ENABLED=true'
-        ]
-      },
-      {
-        'name': 'Prometheus metrics',
-        'env_vars': [
-          'METRICS_EXPORTER_ENABLED=true'
-        ]
-      },
-    ]
+      'wordpress': [
+          {
+              'name': 'Public service and ingress',
+              'env_vars': [
+                  'PUBLIC_SERVICE_AND_INGRESS_ENABLED=true'
+              ]
+          },
+          {
+              'name': 'Prometheus metrics',
+              'env_vars': [
+                  'METRICS_EXPORTER_ENABLED=true'
+              ]
+          },
+      ]
   }
 
-  listdir = [f for f in os.listdir('k8s')
-             if os.path.isdir(os.path.join('k8s', f))]
-  listdir.sort()
+  solutions = [f for f in os.listdir(KUBERNETES_DIRECTORY)
+               if os.path.isdir(os.path.join(KUBERNETES_DIRECTORY, f))]
+  solutions.remove('.cloudbuild')
+  solutions.sort()
 
-  solutions_to_build = []
-
-  for solution in listdir:
+  for solution in solutions:
     if solution in skiplist:
       print('Skipping solution: ' + solution)
     else:
       print('Adding config for solution: ' + solution)
-      solutions_to_build.append(solution)
+      cloudbuild_contents = Template(CLOUDBUILD_TEMPLATE).render(
+          solution=solution, extra_configs=extra_configs)
+      with open(CLOUDBUILD_CONFIG % solution, 'w') as cloudbuild_file:
+        cloudbuild_file.write(cloudbuild_contents)
 
-  cloudbuild_contents = Template(CLOUDBUILD_TEMPLATE).render(
-      solutions=solutions_to_build, extra_configs=extra_configs) + '\n'
+  for file in os.listdir(CLOUDBUILD_DIRECTORY):
+    solution = os.path.splitext(file)[0]
+    if file.endswith('.yaml') and (solution not in solutions or solution in skiplist):
+      os.remove(CLOUDBUILD_CONFIG % solution)
 
-  if args.verify_only:
-    if verify_cloudbuild(cloudbuild_contents):
-      print('The %s file is up-to-date' % CLOUDBUILD_CONFIG)
-      os.sys.exit(0)
-    else:
-      print('The %s file is not up-to-date. Please re-generate it' %
-            CLOUDBUILD_CONFIG)
-      os.sys.exit(1)
-  else:
-    with open(CLOUDBUILD_CONFIG, 'w') as cloudbuild_file:
-      cloudbuild_file.write(cloudbuild_contents)
+  # if args.verify_only:
+  #   if verify_cloudbuild(cloudbuild_contents):
+  #     print('The %s file is up-to-date' % CLOUDBUILD_CONFIG)
+  #     os.sys.exit(0)
+  #   else:
+  #     print('The %s file is not up-to-date. Please re-generate it' %
+  #           CLOUDBUILD_CONFIG)
+  #     os.sys.exit(1)
 
 
 if __name__ == '__main__':
