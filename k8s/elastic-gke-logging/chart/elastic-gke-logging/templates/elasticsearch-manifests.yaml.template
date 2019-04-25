@@ -87,7 +87,7 @@ spec:
             memory: 1536Mi
         ports:
         - name: exporter
-          containerPort: 9108
+          containerPort: 9114
         - name: http
           containerPort: 9200
         - name: tcp-transport
@@ -129,7 +129,7 @@ spec:
         command:
         - /monitor
         - --stackdriver-prefix=custom.googleapis.com
-        - --source=$(POD_NAME):http://localhost:9108/metrics
+        - --source=$(POD_NAME):http://localhost:9114/metrics
         - --pod-id=$(POD_NAME)
         - --namespace-id=$(POD_NAMESPACE)
         - --scrape-interval=5s
@@ -201,7 +201,7 @@ metadata:
 spec:
   ports:
   - name: exporter
-    port: 9108
+    port: 9114
   selector:
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: elasticsearch-server
