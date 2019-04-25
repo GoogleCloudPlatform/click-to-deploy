@@ -207,6 +207,7 @@ helm template chart/postgresql \
   --set postgresql.serviceAccount=$POSTGRESQL_SERVICE_ACCOUNT \
   --set postgresql.image=$IMAGE_POSTGRESQL \
   --set postgresql.volumeSize=$POSTGRESQL_VOLUME_SIZE \
+  --set postgresql.exposePublicService=$EXPOSE_PUBLIC_SERVICE \
   --set db.password=$POSTGRESQL_DB_PASSWORD \
   --set metrics.image=$IMAGE_METRICS_EXPORTER \
   --set metrics.enabled=$METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
