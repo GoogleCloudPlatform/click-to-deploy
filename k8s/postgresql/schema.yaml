@@ -58,6 +58,7 @@ required:
 - postgresql.image
 - postgresql.volumeSize
 - postgresql.serviceAccount
+- postgresql.exposePublicService
 - exporter.image
 - db.password
 - metrics.image
