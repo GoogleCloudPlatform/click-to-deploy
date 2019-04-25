@@ -165,6 +165,7 @@ def verify_cloudbuild(cloudbuild_config, cloudbuild_contents):
   with open(cloudbuild_config, 'r') as cloudbuild_file:
     return cloudbuild_file.read() == cloudbuild_contents
 
+
 def main():
   parser = argparse.ArgumentParser()
   parser.add_argument(
@@ -225,6 +226,7 @@ def main():
               CLOUDBUILD_CONFIG % solution)
       else:
         os.remove(CLOUDBUILD_CONFIG % solution)
+
 
 if __name__ == '__main__':
   main()
