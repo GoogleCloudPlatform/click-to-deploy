@@ -172,7 +172,7 @@ def main():
       '--verify_only',
       action='store_true',
       default=False,
-      help='verify "%s" directory' % CLOUDBUILD_DIRECTORY)
+      help='verify %s directory' % CLOUDBUILD_DIRECTORY)
   args = parser.parse_args()
 
   skiplist = []
@@ -199,6 +199,8 @@ def main():
   solutions.remove('.cloudbuild')
   solutions.sort()
 
+  exit_code = 0
+
   for solution in solutions:
     if solution in skiplist:
       print('Skipping solution: ' + solution)
@@ -213,6 +215,7 @@ def main():
         else:
           print('The %s file is not up-to-date. Please re-generate it' %
                 CLOUDBUILD_CONFIG % solution)
+          exit_code += 1
       else:
         with open(CLOUDBUILD_CONFIG % solution, 'w') as cloudbuild_file:
           cloudbuild_file.write(cloudbuild_contents)
@@ -221,11 +224,15 @@ def main():
     solution = os.path.splitext(file)[0]
     if file.endswith('.yaml') and (solution not in solutions or
                                    solution in skiplist):
+      print('Removing config for solution: ' + solution)
       if args.verify_only:
-        print('The %s file is not up-to-date. Please re-generate it' %
-              CLOUDBUILD_CONFIG % solution)
+        print('The %s file is unused. Please remove it' % CLOUDBUILD_CONFIG %
+              solution)
+        exit_code += 1
       else:
         os.remove(CLOUDBUILD_CONFIG % solution)
+
+  os.sys.exit(exit_code)
 
 
 if __name__ == '__main__':
