@@ -185,21 +185,19 @@ def main():
       'wordpress': [
           {
               'name': 'Public service and ingress',
-              'env_vars': [
-                  'PUBLIC_SERVICE_AND_INGRESS_ENABLED=true'
-              ]
+              'env_vars': ['PUBLIC_SERVICE_AND_INGRESS_ENABLED=true']
           },
           {
               'name': 'Prometheus metrics',
-              'env_vars': [
-                  'METRICS_EXPORTER_ENABLED=true'
-              ]
+              'env_vars': ['METRICS_EXPORTER_ENABLED=true']
           },
       ]
   }
 
-  solutions = [f for f in os.listdir(KUBERNETES_DIRECTORY)
-               if os.path.isdir(os.path.join(KUBERNETES_DIRECTORY, f))]
+  solutions = [
+      f for f in os.listdir(KUBERNETES_DIRECTORY)
+      if os.path.isdir(os.path.join(KUBERNETES_DIRECTORY, f))
+  ]
   solutions.remove('.cloudbuild')
   solutions.sort()
 
@@ -215,7 +213,8 @@ def main():
 
   for file in os.listdir(CLOUDBUILD_DIRECTORY):
     solution = os.path.splitext(file)[0]
-    if file.endswith('.yaml') and (solution not in solutions or solution in skiplist):
+    if file.endswith('.yaml') and (solution not in solutions or
+                                   solution in skiplist):
       os.remove(CLOUDBUILD_CONFIG % solution)
 
   # if args.verify_only:
