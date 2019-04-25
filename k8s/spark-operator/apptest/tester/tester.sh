@@ -32,15 +32,15 @@ while true; do
 
   echo "Checking events for completed status"
   completed_status=$(echo $events | grep "SparkApplicationCompleted" || true)
-  if [[ -z "$completed_status" ]]; then
-    echo "Delete application $SPARK_APP_NAME"
+  if [[ -n "$completed_status" ]]; then
+    echo "Delete sparkapplication $SPARK_APP_NAME"
     kubectl delete sparkapplication "$SPARK_APP_NAME"
     exit 0
   fi
 
   echo "Checking events for failed status"
   failed_status=$(echo $events | grep "SparkApplicationFailed" || true)
-  if [[ -z "$failed_status" ]]; then
+  if [[ -n "$failed_status" ]]; then
     echo "Delete sparkapplication $SPARK_APP_NAME"
     kubectl delete sparkapplication "$SPARK_APP_NAME"
     exit 1
