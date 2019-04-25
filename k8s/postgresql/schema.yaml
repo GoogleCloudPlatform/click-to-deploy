@@ -20,7 +20,7 @@ properties:
     default: 24
   postgresql.serviceAccount:
     type: string
-    title: PostgreSQL Service Account
+    title: PostgreSQL service account
     description: >-
       Service account to assign to PostgreSQL Deployment (with default permissions)
     x-google-marketplace:
