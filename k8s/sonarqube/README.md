@@ -312,7 +312,7 @@ kubectl --namespace $NAMESPACE exec -t \
 	-- pg_dumpall -c -U postgres > backup.sql
 ```
 
-## Restoring your PostgreSQL
+## Restoring
 
 Entering to maintenance mode:
 In order to restore PostgresSQL database there is a need to perform some preliminary steps:
