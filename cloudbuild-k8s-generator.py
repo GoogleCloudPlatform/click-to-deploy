@@ -193,6 +193,7 @@ def main():
         'env_vars': [
           'PUBLIC_SERVICE_AND_INGRESS_ENABLED=true'
         ],
+        # TODO(ISSUE/532): [WordPress] Fix flaky test
         'ignore': True
       },
       {
