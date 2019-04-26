@@ -132,7 +132,7 @@ steps:
   - app/verify
 
 {%- for extra_config in extra_configs[solution] %}
-
+{%- if not extra_config.ignore %}
 - id: Verify {{ solution }} ({{ extra_config['name'] }})
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
@@ -156,6 +156,7 @@ steps:
   - -j4
   - app/verify
 
+{%- endif %}
 {%- endfor %}
 
 {%- endfor %}
@@ -191,7 +192,9 @@ def main():
         'name': 'Public service and ingress',
         'env_vars': [
           'PUBLIC_SERVICE_AND_INGRESS_ENABLED=true'
-        ]
+        ],
+        # TODO(ISSUE/532): [WordPress] Fix flaky test
+        'ignore': True
       },
       {
         'name': 'Prometheus metrics',
