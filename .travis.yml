@@ -1,6 +1,7 @@
 matrix:
   include:
   - language: python
+    install: pip install jinja2
     script: python -m unittest cloudbuild_k8s_generator_test
   - language: python
     install: pip install jinja2
