@@ -29,7 +29,7 @@ its contents was created.
 1.  To regenerate the file, run the following command:
 
     ```shell
-    ./cloudbuild-k8s-generator.py
+    ./cloudbuild_k8s_generator.py
     ```
 
 1.  As a result, new content will be saved in the `cloudbuild.yaml` file.

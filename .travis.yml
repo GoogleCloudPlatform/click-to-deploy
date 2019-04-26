@@ -1,8 +1,10 @@
 matrix:
   include:
   - language: python
+    script: python -m unittest cloudbuild_k8s_generator_test
+  - language: python
     install: pip install jinja2
-    script: ./cloudbuild-k8s-generator.py --verify_only
+    script: ./cloudbuild_k8s_generator.py --verify_only
   - language: ruby
     install: gem install foodcritic
     script:
