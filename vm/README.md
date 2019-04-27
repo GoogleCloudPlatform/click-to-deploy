@@ -28,14 +28,6 @@ This is not an officially supported Google product.
     configures startup and utility scripts, installs useful packages,
     and configures the swap space.
 
-    Run the following command to discover dependencies:
-
-    ```shell
-    docker run --rm -v $PWD/chef:/chef chef/chefdk knife deps --config=/chef/knife.rb /cookbooks/[COOKBOOK_NAME]
-    ```
-
-    Where `[COOKBOOK_NAME]` is the cookbook name. Replace to `*` to discover all cookbooks.
-
 *   [packer](packer) directory:
 
     [Packer](https://www.packer.io/) is a tool for building VM images, based on
