@@ -23,6 +23,14 @@ This is not an officially supported Google product.
     [Alfresco Community Edition](https://console.cloud.google.com/marketplace/details/click-to-deploy-images/alfresco)
     uses the `openjdk8`, `apache` and `postgesql` cookbooks.
 
+    Run the following command to discover dependencies:
+
+    ```shell
+    docker run --rm -v $PWD/chef:/chef chef/chefdk knife deps --config=/chef/knife.rb /cookbooks/[COOKBOOK_NAME] --tree
+    ```
+
+    Where `[COOKBOOK_NAME]` is the cookbook name. Replace to `*` to discover all cookbooks.
+
     The [`c2d-config`](chef/cookbooks/c2d-config) cookbook is
     used by all Click to Deploy Images solutions. It automatically
     configures startup and utility scripts, installs useful packages,
