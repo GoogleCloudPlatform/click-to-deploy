@@ -14,7 +14,8 @@ class GenerateTriggerConfig():
     self._solution = solution
 
   def get_packer_run_list(self):
-    with open(os.path.join(PACKER_DIR, self._solution, 'packer.in.json')) as json_file:
+    with open(os.path.join(PACKER_DIR, self._solution,
+                           'packer.in.json')) as json_file:
       data = json.load(json_file)
       run_list = data['chef']['run_list']
     return [cookbook.split('::')[0] for cookbook in run_list]
@@ -43,13 +44,11 @@ class GenerateTriggerConfig():
 
   def get_included_files(self):
     included_files = [
-        os.path.join(PACKER_DIR, self._solution, '**'),
-        CLOUDBUILD_CONFIG
+        os.path.join(PACKER_DIR, self._solution, '**'), CLOUDBUILD_CONFIG
     ]
 
     if self.should_include_test():
-      included_files.append(
-          os.path.join(TESTS_DIR, self._solution, '**'))
+      included_files.append(os.path.join(TESTS_DIR, self._solution, '**'))
 
     for cookbook in self.get_packer_run_list():
       for dep in self.get_cookbook_deps(cookbook=cookbook):
