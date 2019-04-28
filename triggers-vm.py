@@ -17,32 +17,7 @@ class GenerateTriggerConfig():
   def should_include_test(self):
     return True
 
-  def generate_config(self):
-    trigger = {
-        'description': 'Trigger for VM %s' % self._cookbook,
-        'filename': CLOUDBUILD_CONFIG,
-        'github': {
-            'name': 'click-to-deploy',
-            'owner': 'GoogleCloudPlatform',
-            'pullRequest': {
-                'branch': '.*',
-                'commentControl': 'COMMENTS_ENABLED'
-            }
-        },
-        'includedFiles': [
-            'vm/packer/templates/%s/**' % self._cookbook, CLOUDBUILD_CONFIG
-        ],
-        'substitutions': {
-            '_LOGS_BUCKET': 'XXX',
-            '_SERVICE_ACCOUNT_JSON_GCS': 'gs://XXX/XXX.json',
-            '_SOLUTION_NAME': '%s' % self._cookbook
-        }
-    }
-
-    if self.should_include_test():
-      trigger['includedFiles'].append(
-          os.path.join('vm/tests/solutions/spec', self._cookbook, '**'))
-
+  def get_dependencies(self):
     client = docker.from_env()
     deps = client.containers.run(
         image='chef/chefdk',
@@ -59,10 +34,36 @@ class GenerateTriggerConfig():
             }
         },
         auto_remove=True)
+    return deps.splitlines()
 
-    for dep in deps.splitlines():
+  def generate_config(self):
+    trigger = {
+        'description': 'Trigger for VM %s' % self._cookbook,
+        'filename': CLOUDBUILD_CONFIG,
+        'github': {
+            'name': 'click-to-deploy',
+            'owner': 'GoogleCloudPlatform',
+            'pullRequest': {
+                'branch': '.*',
+                'commentControl': 'COMMENTS_ENABLED'
+            }
+        },
+        'includedFiles': [
+            os.path.join('vm/packer/templates', self._cookbook, '**'), CLOUDBUILD_CONFIG
+        ],
+        'substitutions': {
+            '_SOLUTION_NAME': self._cookbook
+        }
+    }
+
+    if self.should_include_test():
+      trigger['includedFiles'].append(
+          os.path.join('vm/tests/solutions/spec', self._cookbook, '**'))
+
+    for dep in self.get_dependencies():
       trigger['includedFiles'].append(os.path.join('vm/chef', dep, '**'))
 
+    trigger['includedFiles'].sort()
     return trigger
 
 
