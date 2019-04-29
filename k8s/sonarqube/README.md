@@ -347,7 +347,7 @@ cat backup.sql | kubectl --namespace $NAMESPACE exec -i \
   -- psql -U postgres
 ```
 
-Next copy files from current folder to folder `data` in SonarQube application pod:
+Next copy files from current folder to folder `$SONARQUBE_HOME/data` in SonarQube application pod:
 
 ```shell
 kubectl --namespace $NAMESPACE cp ./ $(kubectl -n$NAMESPACE get pod -oname | \
