@@ -18,7 +18,7 @@ set -eox pipefail
 
 # Non-standard deployer entrypoint.
 # This steps are needed to interfere with deployer - add new resource programmatically
-# before droping IAM permissions.
+# before dropping IAM permissions.
 
 name="$(/bin/print_config.py \
     --xtype NAME \
