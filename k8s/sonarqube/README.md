@@ -282,7 +282,7 @@ For our application database the most important place, `plugins` folder stored o
 ## Backing up plugin and data
 
 For backup pluging you have to copy files from folder `$SONARQUBE_HOME/extension`.
-This shell script will create copy of plugins folder in current folder
+This shell script will create copy of plugins folder in current folder:
 
 ```shell
 kubectl --namespace $NAMESPACE cp $(kubectl -n$NAMESPACE get pod -oname | \
