@@ -1,13 +1,14 @@
 matrix:
   include:
   - language: python
+    python: 2.7
     install: pip install jinja2
-    script: python -m unittest cloudbuild_k8s_generator_test
+    env: TARGET=test-python
   - language: python
     install: pip install jinja2
-    script: ./cloudbuild_k8s_generator.py --verify_only
+    env: TARGET=k8s-cloudbuild-verify
   - language: ruby
     install: gem install foodcritic
-    script:
-    - foodcritic --version
-    - foodcritic --cookbook-path=vm/chef/cookbooks --rule-file=vm/chef/.foodcritic --epic-fai=any
+    env: TARGET=vm-lint
+
+script: make "${TARGET}"
