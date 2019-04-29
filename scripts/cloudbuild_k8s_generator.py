@@ -129,7 +129,7 @@ steps:
   - -j4
   - app/verify
 
-{%- for extra_config in extra_configs[solution] %}
+{%- for extra_config in extra_configs %}
 
 - id: Verify {{ solution }} ({{ extra_config['name'] }})
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
@@ -158,12 +158,43 @@ steps:
 """.strip()
 
 
-def verify_cloudbuild(cloudbuild_config, cloudbuild_contents):
-  if not os.path.isfile(cloudbuild_config):
-    return False
+class CloudBuildConfig():
 
-  with open(cloudbuild_config, 'r') as cloudbuild_file:
-    return cloudbuild_file.read() == cloudbuild_contents
+  def __init__(self, solution):
+    self._solution = solution
+
+  @property
+  def extra_configs(self):
+    return []
+
+  @property
+  def path(self):
+    return CLOUDBUILD_CONFIG % self._solution
+
+  @property
+  def template(self):
+    return CLOUDBUILD_TEMPLATE + '\n'
+
+  def exists(self):
+    return os.path.isfile(self.path)
+
+  def generate(self):
+    return Template(self.template).render(
+        solution=self._solution, extra_configs=self.extra_configs)
+
+  def verify(self):
+    if not self.exists():
+      return False
+
+    with open(self.path, 'r') as cloudbuild_file:
+      return cloudbuild_file.read() == self.generate()
+
+  def save(self):
+    with open(self.path, 'w') as cloudbuild_file:
+      cloudbuild_file.write(self.generate())
+
+  def remove(self):
+    return os.remove(self.path)
 
 
 def main():
@@ -192,6 +223,16 @@ def main():
       ]
   }
 
+  # solution = 'wordpress'
+  # cloudbuild = CloudBuildConfig(solution=solution)
+  # cloudbuild.extra_configs = extra_configs.get(solution, [])
+  # print cloudbuild.generate()
+  # print cloudbuild.path
+  # print cloudbuild.verify()
+  # print cloudbuild.save()
+
+  exit_code = 0
+
   solutions = [
       f for f in os.listdir(KUBERNETES_DIRECTORY)
       if os.path.isdir(os.path.join(KUBERNETES_DIRECTORY, f))
@@ -199,41 +240,16 @@ def main():
   solutions.remove('.cloudbuild')
   solutions.sort()
 
-  exit_code = 0
-
   for solution in solutions:
     if solution in skiplist:
       print('Skipping solution: ' + solution)
     else:
       print('Adding config for solution: ' + solution)
-      cloudbuild_contents = Template(CLOUDBUILD_TEMPLATE).render(
-          solution=solution, extra_configs=extra_configs) + '\n'
+      cloudbuild = CloudBuildConfig(solution=solution)
+      cloudbuild.extra_configs = extra_configs.get(solution, [])
+      cloudbuild.save()
 
-      if args.verify_only:
-        if verify_cloudbuild(CLOUDBUILD_CONFIG % solution, cloudbuild_contents):
-          print('The %s file is up-to-date' % CLOUDBUILD_CONFIG % solution)
-        else:
-          print('The %s file is not up-to-date. Please re-generate it' %
-                CLOUDBUILD_CONFIG % solution)
-          exit_code += 1
-      else:
-        with open(CLOUDBUILD_CONFIG % solution, 'w') as cloudbuild_file:
-          cloudbuild_file.write(cloudbuild_contents)
-
-  for file in os.listdir(CLOUDBUILD_DIRECTORY):
-    solution = os.path.splitext(file)[0]
-    if file.endswith('.yaml') and (solution not in solutions or
-                                   solution in skiplist):
-      print('Removing config for solution: ' + solution)
-      if args.verify_only:
-        print('The %s file is unused. Please remove it' % CLOUDBUILD_CONFIG %
-              solution)
-        exit_code += 1
-      else:
-        os.remove(CLOUDBUILD_CONFIG % solution)
-
-  os.sys.exit(exit_code)
-
+  return exit_code
 
 if __name__ == '__main__':
   main()
