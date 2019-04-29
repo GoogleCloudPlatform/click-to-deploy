@@ -163,7 +163,7 @@ kubectl --namespace $NAMESPACE create secret generic $APP_INSTANCE_NAME-tls \
         --from-file=/tmp/server.crt --from-file=/tmp/server.key
 ```
 
-Generate random password for PosgreSQL:
+Generate random password for PostgreSQL:
 
 ```shell
 export POSTGRESQL_DB_PASSWORD=$(openssl rand 9 | openssl base64 -A | openssl base64)
