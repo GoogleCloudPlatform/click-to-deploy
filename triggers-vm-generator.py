@@ -34,7 +34,7 @@ class GenerateTriggerConfig():
                            'packer.in.json')) as json_file:
       data = json.load(json_file)
       run_list = data['chef']['run_list']
-    return [cookbook.split('::')[0] for cookbook in run_list]
+    return [cookbook.split('::', 1)[0] for cookbook in run_list]
 
   def should_include_test(self):
     return True
