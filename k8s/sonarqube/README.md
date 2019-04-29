@@ -289,7 +289,7 @@ kubectl --namespace $NAMESPACE cp $(kubectl -n$NAMESPACE get pod -oname | \
                 sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/extensions/ ./
 ```
 
-This shell script will create copy of content from folder `data` in current folder:
+This shell script will create copy of content from folder `$SONARQUBE_HOME/data` in current folder:
 
 ```shell
 kubectl --namespace $NAMESPACE cp $(kubectl -n$NAMESPACE get pod -oname | \
