@@ -104,6 +104,7 @@ spec:
     valueFrom:
       serviceRef:
         name: {{ .Release.Name }}-nginx-svc
+        protocol: HTTPS
   - name: Application Namespace
     value: {{ .Release.Namespace }}
   - name: Nginx Configuration

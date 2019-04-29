@@ -16,9 +16,12 @@ Popular open source software stacks on Kubernetes packaged by Google and made av
 
 This solution will install single instance of PostgreSQL server into your Kubernetes cluster.
 
-The PostgreSQL Pod is managed by a ReplicaSet with the number of replicas set to one. The PostgreSQL Pod uses a Persistent Volume to store data, and a LoadBalancer Service to expose the database port externally. Communication between client and server is encrypted. If you need to limit access to the PostgreSQL instance, you must configure GCP firewall rules.
+The PostgreSQL Pod is managed by a ReplicaSet with the number of replicas set to one. The PostgreSQL Pod uses
+a Persistent Volume to store data, and a ClusterIP Service to expose the database port (which can be optionally
+exposed publicly with a LoadBalancer type of Service). Communication between client and server is encrypted.
 
-To install the application you will need to set up initial password for postgres user, PostgreSQL volume size and generate or provide TLS key and certificate. All required steps are covered further in this README.
+To install the application you will need to set up initial password for postgres user, PostgreSQL volume size
+and generate or provide TLS key and certificate. All required steps are covered further in this README.
 
 # Installation
 
@@ -44,6 +47,7 @@ You'll need the following tools in your environment:
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - [openssl](https://www.openssl.org/)
+- [helm](https://helm.sh/)
 
 Configure `gcloud` as a Docker credential helper:
 
@@ -119,7 +123,7 @@ Configure the container images:
 
 ```shell
 TAG=9.6
-export IMAGE_POSTGRESQL=marketplace.gcr.io/google/postgresql9:9.6-kubernetes
+export IMAGE_POSTGRESQL="marketplace.gcr.io/google/postgresql:${TAG}"
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/postgresql/prometheus-to-sd:${TAG}"
 ```
 
@@ -151,14 +155,37 @@ kubectl --namespace $NAMESPACE create secret generic $APP_INSTANCE_NAME-tls \
         --from-file=./server.crt --from-file=./server.key
 ```
 
-Generate random password and set PosgreSQL volume size in Gigabytes:
+Generate random password and set PostgreSQL volume size in Gigabytes:
 
 ```shell
 export POSTGRESQL_DB_PASSWORD=$(openssl rand 9 | openssl base64 -A | openssl base64)
 export POSTGRESQL_VOLUME_SIZE=10
 ```
 
-Enable Stackdriver Metrics Exporter:
+Expose the Service externally:
+
+By default, the Service isn't exposed externally. To enable this option, change
+the value to `true`.
+
+```shell
+export EXPOSE_PUBLIC_SERVICE=false
+```
+
+##### Create dedicated service accounts
+
+Define the service accounts variable:
+
+```shell
+export POSTGRESQL_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-postgresql-sa"
+```
+
+Create the service account:
+
+```shell
+kubectl create serviceaccount ${POSTGRESQL_SERVICE_ACCOUNT} --namespace ${NAMESPACE}
+```
+
+##### Enable Stackdriver Metrics Exporter:
 
 > **NOTE:** Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet.
 
@@ -177,8 +204,10 @@ expanded manifest file for future updates to the application.
 helm template chart/postgresql \
   --name $APP_INSTANCE_NAME \
   --namespace $NAMESPACE \
+  --set postgresql.serviceAccount=$POSTGRESQL_SERVICE_ACCOUNT \
   --set postgresql.image=$IMAGE_POSTGRESQL \
   --set postgresql.volumeSize=$POSTGRESQL_VOLUME_SIZE \
+  --set postgresql.exposePublicService=$EXPOSE_PUBLIC_SERVICE \
   --set db.password=$POSTGRESQL_DB_PASSWORD \
   --set metrics.image=$IMAGE_METRICS_EXPORTER \
   --set metrics.enabled=$METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
@@ -214,13 +243,20 @@ To view the app, open the URL in your browser.
 
 ### Sign in to your new PostgreSQL database
 
-To sign in to PosgreSQL, get the ip address:
+Forward the port locally:
 
 ```shell
-EXTERNAL_IP=$(kubectl --namespace $NAMESPACE get service $APP_INSTANCE_NAME-postgresql-svc -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+kubectl port-forward \
+  --namespace "${NAMESPACE}" \
+  "${APP_INSTANCE_NAME}-postgresql-deployment-0" 5432
+```
+
+Sign in to PostgreSQL:
+
+```shell
 PGPASSWORD=$(kubectl get secret "${APP_INSTANCE_NAME}-secret" --output=jsonpath='{.data.password}' | openssl base64 -d -A)
 
-echo PGPASSWORD=$PGPASSWORD sslmode=require psql -U postgres -h $EXTERNAL_IP
+echo PGPASSWORD=$PGPASSWORD sslmode=require psql -U postgres -h 127.0.0.1
 ```
 
 # Application metrics
@@ -230,6 +266,7 @@ echo PGPASSWORD=$PGPASSWORD sslmode=require psql -U postgres -h $EXTERNAL_IP
 The application is configured to expose its metrics through
 [PostgreSQL Prometheus.io exporter plugin](https://github.com/wrouesnel/postgres_exporter)
 in the [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
+
 Metrics can be read on a single HTTP endpoint available at `[POSTGRESQL_CLUSTER_IP]:9187/metrics`,
 where `[POSTGRESQL_CLUSTER_IP]` is the IP address of the application on Kubernetes cluster.
 
@@ -261,7 +298,6 @@ from your application might not show up in the Stackdriver's Metrics Explorer.
 
 Existing metric descriptors can be removed through
 [Stackdriver's REST API](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors/delete).
-
 
 # Scaling
 

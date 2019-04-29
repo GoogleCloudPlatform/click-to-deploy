@@ -1,18 +1,18 @@
 {{ if .Values.metrics.enabled }}
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-metrics-exporter
-  labels: &WordPressDeploymentLabels
+  name: {{ .Release.Name }}-sonarqube-metrics-exporter
+  labels: &SonarqubeDeploymentLabels
     app.kubernetes.io/name: {{ .Release.Name }}
-    app.kubernetes.io/component: wordpress-metrics-exporter
+    app.kubernetes.io/component: sonarqube-metrics-exporter
 spec:
   selector:
-    matchLabels: *WordPressDeploymentLabels
+    matchLabels: *SonarqubeDeploymentLabels
   replicas: 1
   template:
     metadata:
-      labels: *WordPressDeploymentLabels
+      labels: *SonarqubeDeploymentLabels
     spec:
       containers:
       - name: prometheus-to-sd
@@ -23,8 +23,8 @@ spec:
         command:
         - /monitor
         - --stackdriver-prefix=custom.googleapis.com
-        - --source={{ .Release.Name }}-mysql:http://{{ .Release.Name }}-mysqld-exporter-svc:9104/metrics
-        - --source={{ .Release.Name }}-apache:http://{{ .Release.Name }}-apache-exporter-svc:9117/metrics
+        - --source={{ .Release.Name }}:http://{{.Release.Name}}-sonarqube-svc:9000/api/prometheus/metrics
+        - --source={{ .Release.Name }}:http://{{ .Release.Name }}-postgres-exporter-svc:9187/metrics
         - --pod-id=$(POD_NAME)
         - --namespace-id=$(POD_NAMESPACE)
         - --scrape-interval=5s

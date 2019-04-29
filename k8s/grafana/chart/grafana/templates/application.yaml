@@ -11,7 +11,7 @@ metadata:
 spec:
   descriptor:
     type: Grafana
-    version: '5.1'
+    version: '5.3'
     description: |-
       Grafana is an open-source platform for data visualization and monitoring. A large number of
       supported data sources makes it a universal visualization tool for many popular open source
@@ -85,7 +85,7 @@ spec:
     kind: Service
   - group: v1
     kind: Secret
-{{ if .Values.metrics.enabled }}
+  {{ if .Values.metrics.enabled }}
   - group: apps/v1beta2
     kind: Deployment
-{{ end }}
+  {{ end }}
