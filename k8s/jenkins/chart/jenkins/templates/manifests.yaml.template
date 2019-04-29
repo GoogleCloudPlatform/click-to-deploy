@@ -107,7 +107,7 @@ kind: Ingress
 metadata:
   name: {{ .Release.Name }}-jenkins-ui
   annotations:
-    kubernetes.io/ingress.class="f5"
+    kubernetes.io/ingress.class: "f5"
     virtual-server.f5.com/ip: "controller-default"
     virtual-server.f5.com/partition: "k8s"
     virtual-server.f5.com/mode: "tcp"
