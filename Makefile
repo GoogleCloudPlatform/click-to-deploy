@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-test-python:
+python-test:
 	@python --version
 	@python -m unittest discover -s scripts -p "*_test.py"
 

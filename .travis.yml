@@ -3,7 +3,7 @@ matrix:
   - language: python
     python: 2.7
     install: pip install jinja2
-    env: TARGET=test-python
+    env: TARGET=python-test
   - language: python
     install: pip install jinja2
     env: TARGET=k8s-cloudbuild-verify
