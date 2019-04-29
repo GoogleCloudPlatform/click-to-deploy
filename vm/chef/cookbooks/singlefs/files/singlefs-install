@@ -237,17 +237,14 @@ sed -i "s/#*RPCNFSDCOUNT=.*/RPCNFSDCOUNT=${NFS_THREADS}/" "${NFS_CONFIG}"
 # during failover.
 sed -i "s/RPCMOUNTDOPTS=\"/RPCMOUNTDOPTS=\"--port 2050 /" "${NFS_CONFIG}"
 
-# Configure NFS.
+# Enable NFS.
 if [[ "${ENABLE_NFS}" = "enable:True" ]]; then
-  /etc/init.d/rpcbind start
-  /etc/init.d/nfs-common start
   for service in "${NFS_SERVICES[@]}"; do
     systemctl enable "${service}" || fail "Failed to enable service: ${service}"
-    service "${service}" start || echo "Failed to start service: ${service}"
   done
 fi
 
-# Configure SMB sharing.
+# Configure SMB.
 cp /etc/samba/smb.conf /etc/samba/smb.conf.orig
 cat >> /etc/samba/smb.conf << EOF
 # Public share added by click to deploy for testing.
@@ -263,10 +260,10 @@ cat >> /etc/samba/smb.conf << EOF
    hosts deny = 0.0.0.0/0
 EOF
 
+# Enable SMB.
 if [[ "${ENABLE_SMB}" = "enable:True" ]]; then
   for service in "${SAMBA_SERVICES[@]}"; do
     systemctl enable "${service}" || fail "Failed to enable service: ${service}"
-    service "${service}" restart || fail "Failed to restart service: ${service}"
   done
 fi
 
