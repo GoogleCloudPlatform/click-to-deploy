@@ -11,7 +11,7 @@ This is not an officially supported Google product.
 This repository uses Cloud Build for continuous integration. The Cloud Build
 configuration file is located at [`cloudbuild-k8s.yaml`](cloudbuild-k8s.yaml)
 for Kubernetes applications and [`cloudbuild-vm.yaml`](cloudbuild-vm.yaml) for
-[VM applications](README.md#cloud-build-ci).
+[VM applications](vm/README.md#cloud-build-ci).
 
 ## Manually run the build for K8s applications
 
