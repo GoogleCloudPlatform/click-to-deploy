@@ -52,6 +52,7 @@ You'll need the following tools in your environment:
 - [docker](https://docs.docker.com/install/)
 - [openssl](https://www.openssl.org/)
 - [helm](https://helm.sh/docs/using_helm/#installing-helm)
+- [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
 Configure `gcloud` as a Docker credential helper:
 ```shell
@@ -126,8 +127,8 @@ Configure the container image:
 ```shell
 TAG=7.6
 export IMAGE_SONARQUBE="marketplace.gcr.io/google/sonarqube:$TAG"
-export IMAGE_POSTGRESQL="marketplace.gcr.io/google/sonarqube/postgresql9:$TAG"
-export IMAGE_POSTGRESQL_EXPORTER="marketplace.gcr.io/google/sonarqube/postgresql9-exporter:$TAG"
+export IMAGE_POSTGRESQL="marketplace.gcr.io/google/sonarqube/postgresql:$TAG"
+export IMAGE_POSTGRESQL_EXPORTER="marketplace.gcr.io/google/sonarqube/postgresql-exporter:$TAG"
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/sonarqube/prometheus-to-sd:$TAG"
 ```
 
@@ -141,26 +142,26 @@ following script:
 
 ```shell
 for i in "IMAGE_SONARQUBE" "IMAGE_POSTGRESQL" "IMAGE_POSTGRESQL_EXPORTER" "IMAGE_METRICS_EXPORTER"; do
-  repo=$(echo ${!i} | cut -d: -f1);
-  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
-  export $i="$repo@$digest";
-  env | grep $i;
+repo=$(echo ${!i} | cut -d: -f1);
+digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
+export $i="$repo@$digest";
+env | grep $i;
 done
 ```
 
 Create a certificate for PostgreSQL. If you already have a certificate that you
-want to use, copy your certificate and key pair in to the `server.crt` and
-`server.key` files.
+want to use, copy your certificate and key pair in to the `/tmp/server.crt` and
+`/tmp/server.key` files.
 
 ```shell
 # create a certificate for postgresql
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-    -keyout /tmp/server.key \
-    -out /tmp/server.crt \
-    -subj "/CN=postgresql/O=postgresql"
+  -keyout /tmp/server.key \
+  -out /tmp/server.crt \
+  -subj "/CN=postgresql/O=postgresql"
 
 kubectl --namespace $NAMESPACE create secret generic $APP_INSTANCE_NAME-tls \
-        --from-file=/tmp/server.crt --from-file=/tmp/server.key
+      --from-file=/tmp/server.crt --from-file=/tmp/server.key
 ```
 
 Generate random password for PostgreSQL:
@@ -186,13 +187,13 @@ expanded manifest file for future updates to the application.
 
 ```shell
 helm template chart/sonarqube \
-  --name="$APP_INSTANCE_NAME" \
-  --namespace="$NAMESPACE" \
-  --set sonarqube.image=$IMAGE_SONARQUBE \
-  --set postgresql.image=$IMAGE_POSTGRESQL \
-  --set postgresql.exporter.image=$IMAGE_POSTGRESQL_EXPORTER \
-  --set postgresql.db.password=$POSTGRESQL_DB_PASSWORD  \
-  --set metrics.image=$METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
+--name="$APP_INSTANCE_NAME" \
+--namespace="$NAMESPACE" \
+--set sonarqube.image=$IMAGE_SONARQUBE \
+--set postgresql.image=$IMAGE_POSTGRESQL \
+--set postgresql.exporter.image=$IMAGE_POSTGRESQL_EXPORTER \
+--set postgresql.db.password=$POSTGRESQL_DB_PASSWORD \
+--set metrics.image=$METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 #### Apply the manifest to your Kubernetes cluster
 
@@ -220,7 +221,7 @@ By default, the application is not exposed externally. To get access to SonarQub
 kubectl port-forward --namespace $NAMESPACE svc/$APP_INSTANCE_NAME-sonarqube-svc 9000:9000
 ```
 
-Then, navigate to the [http://localhost:9000/metrics](http://localhost:9000/metrics) endpoint. Use the username `admin` and password `admin` to login.
+Then, navigate to the [http://localhost:9000/](http://localhost:9000/) endpoint. Use the username `admin` and password `admin` to login.
 
 # Application metrics
 
@@ -233,6 +234,17 @@ the
 
 You can access the metrics at `[POSTGRESQL_CLUSTER_IP]:9187/metrics`, where
 `[POSTGRESQL_CLUSTER_IP]` is the IP address of the application on Kubernetes
+cluster.
+
+## SonarQube metrics
+
+The application is configured to expose its metrics through
+[Sonarqube Prometheus Exporter](https://github.com/dmeiners88/sonarqube-prometheus-exporter) in
+the
+[Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
+
+You can access the metrics at `[SONARQUBE_CLUSTER_IP]:9000/api/prometheus/metrics`, where
+`[SONARQUBE_CLUSTER_IP]` is the IP address of the application on Kubernetes
 cluster.
 
 ### Configuring Prometheus to collect metrics
@@ -271,12 +283,12 @@ SonarQube Community Edition doest not support scaling.
 
 There are 4 core components that are building SonarQube Platform:
 - SonarQube Server responsible for starting 3 process which include:
-  - A web server allowing to configure SonarQube instance
-  - A search server which is based on Elasticsearch
-  - A compute engine server for analysis and processing
+- A web server allowing to configure SonarQube instance
+- A search server which is based on Elasticsearch
+- A compute engine server for analysis and processing
 - SonarQube Database
 - A set of plugins
-- SonarScanners which are responsible for project analysis - those usually run on build servers
+- SonarQube Scanners which are responsible for project analysis - those usually run on build servers
 For our application database the most important place, `plugins` folder stored on PVC (Persistent Volume Claim).
 
 ## Backing up plugin and data
@@ -286,23 +298,23 @@ This shell script will create copy of plugins folder in current folder:
 
 ```shell
 kubectl --namespace $NAMESPACE cp $(kubectl -n$NAMESPACE get pod -oname | \
-                sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/extensions/ ./
+              sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/extensions/ ./
 ```
 
 This shell script will create copy of content from folder `$SONARQUBE_HOME/data` in current folder:
 
 ```shell
 kubectl --namespace $NAMESPACE cp $(kubectl -n$NAMESPACE get pod -oname | \
-                sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/data ./
+              sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/data ./
 ```
 
-it is not necessary to backup data folder it will be downlnoaded by application
+It is not necessary to backup data folder, it will be downlnoaded by application
 from database.
 
 ## Backing up PostgreSQL
 
-All configuration and data about projects stored in database.
-This shell script will create `postgresql-backup.sql` dump of all DB in PostgreSQL.
+All configuration and data about projects are stored in database.
+This shell script will create `backup.sql` dump of all DB in PostgreSQL.
 
 ```shell
 kubectl --namespace $NAMESPACE exec -t \
@@ -316,7 +328,9 @@ kubectl --namespace $NAMESPACE exec -t \
 
 Entering to maintenance mode:
 In order to restore PostgresSQL database there is a need to perform some preliminary steps:
-The command below will “lock” the database by blocking new incoming connections:
+
+ 1. The command below will “lock” the database by blocking new incoming
+    connections:
 
 ```shell
 kubectl --namespace $NAMESPACE exec -t \
@@ -326,7 +340,7 @@ kubectl --namespace $NAMESPACE exec -t \
   -- psql -U postgres -c "REVOKE CONNECT ON DATABASE sonar FROM PUBLIC;"
 ```
 
-Next in order to ensure data consistency all active connections will be dropped:
+2. Next in order to ensure data consistency all active connections will be dropped:
 
 ```shell
 kubectl --namespace $NAMESPACE exec -t \
@@ -336,7 +350,7 @@ kubectl --namespace $NAMESPACE exec -t \
   -- psql -U postgres -c "select pg_terminate_backend(pid) from pg_stat_activity where datname='sonar';"
 ```
 
-Now you are able to restore data to the database.
+3. Now you are able to restore data to the database.
 Below shell script will restore data from `backup.sql` to PostgreSQL
 
 ```shell
@@ -347,21 +361,21 @@ cat backup.sql | kubectl --namespace $NAMESPACE exec -i \
   -- psql -U postgres
 ```
 
-Next copy files from current folder to folder `$SONARQUBE_HOME/data` in SonarQube application pod:
+4. Next copy files from current folder to folder `$SONARQUBE_HOME/data` in SonarQube application pod:
 
 ```shell
 kubectl --namespace $NAMESPACE cp ./ $(kubectl -n$NAMESPACE get pod -oname | \
   sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/data
 ```
 
-Afterwards copy files from current folder to `extensions` folder in SonarQube application pod
+5. Afterwards copy files from current folder to `$SONARQUBE_HOME/extensions` folder in SonarQube application pod
 
 ```shell
 kubectl --namespace $NAMESPACE cp ./ $(kubectl -n$NAMESPACE get pod -oname | \
   sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/extensions
 ```
 
-Delete all outstanding and unneeded SonarQube application data:
+6. Delete all outstanding and unneeded SonarQube application data:
 
 ```shell
 kubectl --namespace $NAMESPACE exec -i \
@@ -370,7 +384,7 @@ kubectl --namespace $NAMESPACE exec -i \
   -- bash -c "rm -rf /opt/sonarqube/data/es5/* "
 ```
 
-Exit maintenance mode by unlocking schema `sonar` for new incoming connection:
+7. Exit maintenance mode by unlocking schema `sonar` for new incoming connection:
 
 ```shell
 kubectl --namespace $NAMESPACE exec -t \
@@ -380,7 +394,7 @@ kubectl --namespace $NAMESPACE exec -t \
   -- psql -U postgres -c "GRANT CONNECT ON DATABASE sonar TO PUBLIC;"
 ```
 
-Finally restart SonarQube application pod:
+8. Finally restart SonarQube application pod:
 
 ```shell
 kubectl --namespace $NAMESPACE delete pod $(kubectl -n$NAMESPACE get pod -oname | \
@@ -424,7 +438,7 @@ kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 Otherwise, delete the resources using types and a label:
 
 ```shell
-kubectl delete application,deployment,service,pvc \
+kubectl delete application,deployment,service,pvc,secret \
   --namespace $NAMESPACE \
   --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```

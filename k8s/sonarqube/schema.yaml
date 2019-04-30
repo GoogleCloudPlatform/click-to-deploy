@@ -21,12 +21,12 @@ properties:
         length: 12
   postgresql.image:
     type: string
-    default: $REGISTRY/postgresql9:$TAG
+    default: $REGISTRY/postgresql:$TAG
     x-google-marketplace:
       type: IMAGE
   postgresql.exporter.image:
     type: string
-    default: $REGISTRY/postgresql9-exporter:$TAG
+    default: $REGISTRY/postgresql-exporter:$TAG
     x-google-marketplace:
       type: IMAGE
   metrics.image:
