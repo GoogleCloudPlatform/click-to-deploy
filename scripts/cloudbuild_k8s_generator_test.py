@@ -21,13 +21,12 @@ class CloudBuildK8sGeneratorTest(unittest.TestCase):
 
   def test_path(self):
     cloudbuild = cloudbuild_k8s_generator.CloudBuildConfig(solution='wordpress')
-    self.assertEqual(cloudbuild.path, 'k8s/.cloudbuild/wordpress.yaml')
+    cloudbuild.path = '/tmp/wordpress.yaml'
+    self.assertEqual(cloudbuild.path, '/tmp/wordpress.yaml')
 
   def test_exists(self):
     with tempfile.NamedTemporaryFile(delete=True) as f:
       cloudbuild = cloudbuild_k8s_generator.CloudBuildConfig(solution='unknown')
-      self.assertFalse(cloudbuild.exists())
-
       cloudbuild.path = f.name
       self.assertTrue(cloudbuild.exists())
 

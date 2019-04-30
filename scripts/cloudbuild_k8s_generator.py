@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,10 +17,6 @@
 import os
 import argparse
 from jinja2 import Template
-
-KUBERNETES_DIRECTORY = 'k8s'
-CLOUDBUILD_DIRECTORY = os.path.join(KUBERNETES_DIRECTORY, '.cloudbuild')
-CLOUDBUILD_CONFIG = os.path.join(CLOUDBUILD_DIRECTORY, '%s.yaml')
 
 CLOUDBUILD_TEMPLATE = """
 # Copyright 2019 Google LLC
@@ -63,7 +59,7 @@ steps:
 - id: Get Kubernetes Credentials
   name: gcr.io/cloud-builders/gcloud
   waitFor:
-  - -
+  - '-'
   args:
   - container
   - clusters
@@ -169,11 +165,11 @@ class CloudBuildConfig():
 
   @property
   def path(self):
-    return CLOUDBUILD_CONFIG % self._solution
+    return None
 
   @property
   def template(self):
-    return CLOUDBUILD_TEMPLATE + '\n'
+    return CLOUDBUILD_TEMPLATE
 
   def exists(self):
     return os.path.isfile(self.path)
@@ -200,13 +196,21 @@ class CloudBuildConfig():
 def main():
   parser = argparse.ArgumentParser()
   parser.add_argument(
+      '--solution',
+      type=str,
+      required=True,
+      help='solution name')
+  parser.add_argument(
+      '--output',
+      type=str,
+      required=True,
+      help='path to save configuration')
+  parser.add_argument(
       '--verify_only',
       action='store_true',
       default=False,
-      help='verify configs in %s directory' % CLOUDBUILD_DIRECTORY)
+      help='verify configuration')
   args = parser.parse_args()
-
-  skiplist = []
 
   # Use extra_configs to run additional deployments
   # with non-default configurations.
@@ -223,33 +227,23 @@ def main():
       ]
   }
 
-  # solution = 'wordpress'
-  # cloudbuild = CloudBuildConfig(solution=solution)
-  # cloudbuild.extra_configs = extra_configs.get(solution, [])
-  # print cloudbuild.generate()
-  # print cloudbuild.path
-  # print cloudbuild.verify()
-  # print cloudbuild.save()
+  solution = args.solution
+  path = args.output
 
-  exit_code = 0
+  cloudbuild = CloudBuildConfig(solution=solution)
+  cloudbuild.extra_configs = extra_configs.get(solution, [])
+  cloudbuild.path = path
 
-  solutions = [
-      f for f in os.listdir(KUBERNETES_DIRECTORY)
-      if os.path.isdir(os.path.join(KUBERNETES_DIRECTORY, f))
-  ]
-  solutions.remove('.cloudbuild')
-  solutions.sort()
-
-  for solution in solutions:
-    if solution in skiplist:
-      print('Skipping solution: ' + solution)
+  if args.verify_only:
+    if cloudbuild.verify():
+      print('The %s file is up-to-date' % path)
+      os.sys.exit(0)
     else:
-      print('Adding config for solution: ' + solution)
-      cloudbuild = CloudBuildConfig(solution=solution)
-      cloudbuild.extra_configs = extra_configs.get(solution, [])
-      cloudbuild.save()
+      print('The %s file is not up-to-date. Please re-generate it' % path)
+      os.sys.exit(1)
+  else:
+    cloudbuild.save()
 
-  return exit_code
 
 if __name__ == '__main__':
   main()
