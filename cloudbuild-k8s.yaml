@@ -26,7 +26,7 @@ steps:
   name: click-to-deploy
   entrypoint: python
   args:
-  - scripts/cloudbuild_k8s_generator.py
+  - /workspace/scripts/cloudbuild_k8s_generator.py
   - --solution=$_SOLUTION_NAME
   - --output=/workspace/cloudbuild.$_SOLUTION_NAME.yaml
 
