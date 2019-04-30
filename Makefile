@@ -19,9 +19,3 @@ python-test:
 vm-lint:
 	@foodcritic --version
 	@foodcritic --cookbook-path=vm/chef/cookbooks --rule-file=vm/chef/.foodcritic --epic-fai=any
-
-k8s-cloudbuild-generator:
-	@python scripts/cloudbuild_k8s_generator.py
-
-k8s-cloudbuild-verify:
-	@python scripts/cloudbuild_k8s_generator.py --verify_only

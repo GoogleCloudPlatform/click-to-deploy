@@ -4,9 +4,6 @@ matrix:
     python: 2.7
     install: pip install jinja2
     env: TARGET=python-test
-  - language: python
-    install: pip install jinja2
-    env: TARGET=k8s-cloudbuild-verify
   - language: ruby
     install: gem install foodcritic
     env: TARGET=vm-lint
