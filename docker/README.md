@@ -11,7 +11,7 @@ This is not an officially supported Google product.
 
 ## Docker images
 
-The Docker images source code is migrated to the `click-to-deploy` repository.
+The Docker images source code are migrated to the `click-to-deploy` repository.
 As long as the migration is not over, you can find the source code in the
 following GitHub repositories:
 
