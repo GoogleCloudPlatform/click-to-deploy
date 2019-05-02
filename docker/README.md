@@ -2,7 +2,7 @@
 
 ## About
 
-This directory hosts the source code of Google Click to Deploy containers images
+This directory hosts the source code for the Google Click to Deploy container images
 available through Google Cloud Platform Marketplace.
 
 ## Disclaimer
@@ -11,8 +11,8 @@ This is not an officially supported Google product.
 
 ## Docker images
 
-The Docker images source code are migrated to the `click-to-deploy` repository.
-As long as the migration is not over, you can find the source code in the
+The source code for the Docker images is being migrated to this repository.
+While the migration is in progress, you can find the source code for each image in the
 following GitHub repositories:
 
 *   https://github.com/GoogleCloudPlatform/cassandra-docker
