@@ -31,8 +31,10 @@ steps:
 
 - id: Invoke cloudbuild Tool
   name: click-to-deploy
+  entrypoint: bash
   dir: docker/$_SOLUTION_NAME
   args:
+  - -c
   - cloudbuild > cloudbuild.yaml
 
 - id: Test Solution
