@@ -1,0 +1,154 @@
+# Copyright (c) 2017, Google Inc.
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#     * Redistributions of source code must retain the above copyright
+#       notice, this list of conditions and the following disclaimer.
+#     * Redistributions in binary form must reproduce the above copyright
+#       notice, this list of conditions and the following disclaimer in the
+#       documentation and/or other materials provided with the distribution.
+#     * Neither the name of Google Inc. nor the
+#       names of its contributors may be used to endorse or promote products
+#       derived from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL Google Inc. BE LIABLE FOR ANY
+# DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# Used with http://github.com/GoogleCloudPlatform/runtimes-common/tree/master/docgen
+_templates:
+- &Image launcher.gcr.io/google/memcached1
+- &PullCommand gcloud docker -- pull launcher.gcr.io/google/memcached1
+- &ServiceArgs
+  name: memcached
+  image: *Image
+- &BaseServerRun
+  <<: *ServiceArgs
+  exposedPorts:
+  - port: 11211
+- &BaseClientRun
+  name: memcached
+  image: *Image
+  runType: INTERACTIVE_SHELL
+- &BaseExec
+  execType: INTERACTIVE_SHELL
+
+overview:
+  description: |-
+    This image contains an installation Memcached 1.x.
+
+    For more information, see the [Official Image Launcher Page](https://console.cloud.google.com/launcher/details/google/memcached1).
+  dockerfileUrl: https://github.com/GoogleCloudPlatform/memcached-docker/tree/master/1
+  pullCommand: *PullCommand
+
+taskGroups:
+
+- title: Running Memcached
+  tasks:
+  - title: Starting a Memcached instance
+    runtimes: [DOCKER, KUBERNETES]
+    instructions:
+    - run:
+        <<: *BaseServerRun
+
+- title: Memcached CLI
+  tasks:
+  - title: Connecting to a running Memcached container
+    runtimes: [DOCKER]
+    description: |-
+      Memcached does not provide specific client. However, standard tools like telnet are enough to test container. Under Linux it is possible to connect by CLI command. We can invoke `telnet` from host machine, to connect to running Memcached server
+
+      ```shell
+      telnet $MEMCACHED_SERVER_IP 11211
+      ```
+
+      If we try to connect to locally running container, we can invoke
+
+      ```shell
+      telnet localhost 11211
+      ```
+
+      To test if Memcached is working we create a key called MY_TEST_KEY. Run the following command to set a test key.
+
+      ```shell
+      set MY_TEST_KEY 0 60 4
+      pass
+      ```
+
+      Run the following command to verify that the set command above succeeded. This should print out `pass`.
+
+      ```shell
+      get MY_TEST_KEY
+      ```
+
+- title: Memcached CLI
+  tasks:
+  - title: Connecting to a running Memcached container
+    runtimes: [KUBERNETES]
+    description: |-
+      Memcached does not provide specific client. However, standard tools like telnet are enough to test container. Under Linux it is possible to connect by CLI command. We can invoke `telnet` from host machine, to connect to running Memcached server
+
+      ```shell
+      telnet $MEMCACHED_SERVER_IP 11211
+      ```
+
+      If we try to connect to memcached running in Kubernetes cluster, we can invoke
+
+      ```shell
+      export MEMCACHED_ENDPOINT_IP=$(kubectl describe services some-memcached | awk '/LoadBalancer Ingress:/ {print $3}')
+      telnet $MEMCACHED_ENDPOINT_IP 11211
+      ```
+
+      To test if Memcached is working we create a key called MY_TEST_KEY. Run the following command to set a test key.
+
+      ```shell
+      set MY_TEST_KEY 0 60 4
+      pass
+      ```
+
+      Run the following command to verify that the set command above succeeded. This should print out `pass`.
+
+      ```shell
+      get MY_TEST_KEY
+      ```
+
+- title: Configuring Memcached
+  description: |-
+    Memcached is configuring by arguments provided at the start of running a container.
+    Arguments can be checked in
+    [documentation](https://github.com/memcached/memcached/wiki/ConfiguringServer)
+    or by reading help from `-h` argument.
+  tasks:
+  - title: Changing RAM value for item storage
+    runtimes: [KUBERNETES, DOCKER]
+    instructions:
+    - run:
+        <<: *BaseServerRun
+        arguments:
+        - "\'-m 256\'"
+
+portReference:
+  ports:
+  - port: '9150'
+    description: Prometheus plugin port.
+  - port: '11211'
+    description: Memcached port.
+
+environmentVariableReference:
+  variables:
+  - name: MEMCACHED_PROMETHEUS_ENABLED
+    description: >-
+      Specifies if Prometheus metrics should be visible.
+      <br><br>
+      If set to `true`, this variable adds
+      [Memcached Exporter](https://github.com/prometheus/memcached_exporter) as
+      an additional process running in container. Metrics are available under
+      local endpoint http://localhost:9150/metrics.

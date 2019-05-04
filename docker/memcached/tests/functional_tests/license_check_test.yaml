@@ -1,0 +1,66 @@
+# Copyright 2017 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+setup:
+- command: [docker, run, --name, some-memcached-$UNIQUE-id, -d, '$IMAGE']
+
+teardown:
+- command: [docker, rm, -f, some-memcached-$UNIQUE-id]
+
+target: some-memcached-$UNIQUE-id
+tests:
+- name: Licenses are as expected
+  command:
+    - sha512sum
+    - /opt/memcached/COPYING
+    - /opt/memcached/LICENSE.bipbuffer
+    - /opt/memcached_exporter/LICENSE
+    - /opt/memcached_exporter/LICENSE.protobuf.gogo
+    - /opt/memcached_exporter/LICENSE.go-windows-terminal-sequences.konsorten
+    - /opt/memcached_exporter/LICENSE.client_golang.prometheus
+    - /opt/memcached_exporter/LICENSE.client_model.prometheus
+    - /opt/memcached_exporter/LICENSE.common.prometheus
+    - /opt/memcached_exporter/LICENSE.procfs.prometheus
+    - /opt/memcached_exporter/LICENSE.logrus.sirupsen
+    - /opt/memcached_exporter/LICENSE.template.alecthomas
+    - /opt/memcached_exporter/LICENSE.perks.beorn7
+    - /opt/memcached_exporter/LICENSE.gomemcache.grobie
+    - /opt/memcached_exporter/LICENSE.protobuf.golang
+    - /opt/memcached_exporter/LICENSE.golang_protobuf_extensions.matttproud
+    - /opt/memcached_exporter/LICENSE.sys.x
+    - /opt/memcached_exporter/LICENSE.crypto.x
+    - /opt/memcached_exporter/COPYING.units.alecthomas
+    - /opt/memcached_exporter/COPYING.kingpin.v2.alecthomas
+  expect:
+    stdout:
+      matches: |
+        8a20b0b2296624653bc6297db1a4630d25a35362b901e7a07452745327e1adda0f4938ce68afc4ae11817e5544cb79613cf3c90bc72ff552e2d4b26bfa261771  /opt/memcached/COPYING
+        a8014a53f6b69b924ce37d8a0f82c956407f320d83308927f904db0ef2f10d8651929009449d205143f6744494b243bf338dcd4b53fbf98cacbaaae2412f0103  /opt/memcached/LICENSE.bipbuffer
+        46cd9ba0455e2eeddb70b7c793a6476cfbb75fa306c3e3e4f66973cb3e4f3143a358ee6dd3b065d17ba06b2d63c2bc7cab8e1d01ede19a3eaa4fc18ce952cf65  /opt/memcached_exporter/LICENSE
+        ae04e9315f402290909c500d5b1c964a5ad41dcb8f408395f37b94d1cc0879d5dca090e35b2486431fd4a52bddbe2f4a71aa987408bdf65e7354431b7b2f6312  /opt/memcached_exporter/LICENSE.protobuf.gogo
+        9256c6b1b38541d5c8c06a4c8b7f0409e12f08d17fe5d46fd21a4cac99e7040d0d50797fd2950e5f173b9f80ab997239d90601be72975d3d286b02d9b34ea5c1  /opt/memcached_exporter/LICENSE.go-windows-terminal-sequences.konsorten
+        dc6b68d13b8cf959644b935f1192b02c71aa7a5cf653bd43b4480fa89eec8d4d3f16a2278ec8c3b40ab1fdb233b3173a78fd83590d6f739e0c9e8ff56c282557  /opt/memcached_exporter/LICENSE.client_golang.prometheus
+        dc6b68d13b8cf959644b935f1192b02c71aa7a5cf653bd43b4480fa89eec8d4d3f16a2278ec8c3b40ab1fdb233b3173a78fd83590d6f739e0c9e8ff56c282557  /opt/memcached_exporter/LICENSE.client_model.prometheus
+        dc6b68d13b8cf959644b935f1192b02c71aa7a5cf653bd43b4480fa89eec8d4d3f16a2278ec8c3b40ab1fdb233b3173a78fd83590d6f739e0c9e8ff56c282557  /opt/memcached_exporter/LICENSE.common.prometheus
+        dc6b68d13b8cf959644b935f1192b02c71aa7a5cf653bd43b4480fa89eec8d4d3f16a2278ec8c3b40ab1fdb233b3173a78fd83590d6f739e0c9e8ff56c282557  /opt/memcached_exporter/LICENSE.procfs.prometheus
+        d77d69b38af0b61d4ec0cc68842682e17c2bd1cf92f1784a9406f5075fcc4038f17ea99db5813da0582590e7486544c25ee6a09b508e87cf8b3a13291a0e6f63  /opt/memcached_exporter/LICENSE.logrus.sirupsen
+        df64739ed62fc2c441d15387a595211c0090e5694c17f93b7e289d78c2e6e123edd0373ea04f8f4d4ae21a079dc7c71c82f448d7c9e734e88c54607507e13de8  /opt/memcached_exporter/LICENSE.template.alecthomas
+        665218b8d1313227818e14b7fca72fb334b4c1d33755de3dee600412b4beab98c103c67708aa52db7458db23a64470bdfc646f54cc299e6b1eecfa36e86c6d7e  /opt/memcached_exporter/LICENSE.perks.beorn7
+        98f6b79b778f7b0a15415bd750c3a8a097d650511cb4ec8115188e115c47053fe700f578895c097051c9bc3dfb6197c2b13a15de203273e1a3218884f86e90e8  /opt/memcached_exporter/LICENSE.gomemcache.grobie
+        e4c458763cc5f8eaaa6d1e6f6924caa95bdfbe6811d85e4d0bd721acf8d3917ed082621b9de58156b6b86b3f9ceb970a404a03db24a3f59c076fdf5b1992b77e  /opt/memcached_exporter/LICENSE.protobuf.golang
+        389080b6132d3eaae780648d6998390d8cc71908561bce09578e27c542aa1a9f3122e01f640c5b01bee73004c23aa4e9f2066fe5ee0ca2072c2420578b28d71f  /opt/memcached_exporter/LICENSE.golang_protobuf_extensions.matttproud
+        5bbb2d94184f661d95ac3db758b72a9ce25d409b1179264634bf0612f797424b15a3f6e02069442a75561ca5054e4c4111b158b8dce4d545a7348f6392506a35  /opt/memcached_exporter/LICENSE.sys.x
+        5bbb2d94184f661d95ac3db758b72a9ce25d409b1179264634bf0612f797424b15a3f6e02069442a75561ca5054e4c4111b158b8dce4d545a7348f6392506a35  /opt/memcached_exporter/LICENSE.crypto.x
+        6b986d5eb6a82a9f6aebc8bd6e7630a1f8ac8306acf39b805940559dbe08093c8d5b1cad74977bca607d3553293a92e5b47768b940a01dca0d19bc93465d3f90  /opt/memcached_exporter/COPYING.units.alecthomas
+        6b986d5eb6a82a9f6aebc8bd6e7630a1f8ac8306acf39b805940559dbe08093c8d5b1cad74977bca607d3553293a92e5b47768b940a01dca0d19bc93465d3f90  /opt/memcached_exporter/COPYING.kingpin.v2.alecthomas
