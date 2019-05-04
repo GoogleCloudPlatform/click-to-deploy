@@ -26,15 +26,15 @@ steps:
   name: click-to-deploy
   entrypoint: python
   args:
-  - /workspace/scripts/cloudbuild_k8s_generator.py
+  - scripts/cloudbuild_k8s_generator.py
   - --solution=$_SOLUTION_NAME
-  - --output=/workspace/cloudbuild.$_SOLUTION_NAME.yaml
+  - --output=k8s/$_SOLUTION_NAME/cloudbuild.yaml
 
 - id: Test Solution
   name: gcr.io/cloud-builders/gcloud
   args:
   - builds
   - submit
-  - --config=/workspace/cloudbuild.$_SOLUTION_NAME.yaml
+  - --config=k8s/$_SOLUTION_NAME/cloudbuild.yaml
   - --substitutions=_CLUSTER_NAME=$_CLUSTER_NAME,_CLUSTER_LOCATION=$_CLUSTER_LOCATION
   - .
