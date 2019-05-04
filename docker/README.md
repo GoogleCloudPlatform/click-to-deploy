@@ -38,3 +38,19 @@ following GitHub repositories:
 *   https://github.com/GoogleCloudPlatform/redis-docker
 *   https://github.com/GoogleCloudPlatform/sonarqube-docker
 *   https://github.com/GoogleCloudPlatform/wordpress-docker
+
+## Functional tests
+
+https://github.com/GoogleCloudPlatform/runtimes-common/tree/master/functional_tests
+
+## Generate Dockerfile from template
+
+https://github.com/GoogleCloudPlatform/runtimes-common/tree/master/versioning
+
+## Generate Cloud Build configuration
+
+https://github.com/GoogleCloudPlatform/runtimes-common/tree/master/versioning
+
+## Documentation
+
+https://github.com/GoogleCloudPlatform/runtimes-common/tree/master/docgen
