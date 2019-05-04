@@ -22,20 +22,18 @@ steps:
   - --tag=click-to-deploy
   - .
 
-- id: Run dockerfiles Tool
+- id: Invoke dockerfiles Tool
   name: click-to-deploy
   entrypoint: dockerfiles
   dir: docker/$_SOLUTION_NAME
   args:
   - --verify_only
 
-- id: Run cloudbuild Tool
+- id: Invoke cloudbuild Tool
   name: click-to-deploy
-  entrypoint: cloudbuild
   dir: docker/$_SOLUTION_NAME
   args:
-  - '>'
-  - cloudbuild.yaml
+  - cloudbuild > cloudbuild.yaml
 
 - id: Test Solution
   name: gcr.io/cloud-builders/gcloud

@@ -54,3 +54,16 @@ https://github.com/GoogleCloudPlatform/runtimes-common/tree/master/versioning
 ## Documentation
 
 https://github.com/GoogleCloudPlatform/runtimes-common/tree/master/docgen
+
+## Cloud Build CI
+
+This repository uses Cloud Build for continuous integration. The Cloud Build
+configuration file is located at
+[`../cloudbuild-docker.yaml`](../cloudbuild-docker.yaml).
+
+### Manually run the build
+
+```shell
+gcloud builds submit --config=cloudbuild-docker.yaml \
+  --machine-type=n1-highcpu-8 --substitutions=_SOLUTION_NAME=[SOLUTION_NAME] .
+```
