@@ -41,8 +41,8 @@ following GitHub repositories:
 
 ## Functional tests
 
-For more information on how we test the Docker images, see [Docker Container Functional Tests
-](https://github.com/GoogleCloudPlatform/runtimes-common/tree/master/functional_tests).
+For more information on how we test the Docker images, see
+[Docker Container Functional Tests](https://github.com/GoogleCloudPlatform/runtimes-common/tree/master/functional_tests).
 
 ## Generate Dockerfile from template
 
@@ -59,8 +59,6 @@ tool to generate a configuration file to build `Dockerfiles` using
 
 We use [`docgen`](https://github.com/GoogleCloudPlatform/runtimes-common/tree/master/docgen)
 tool for generating Markdown documentation.
-
-https://github.com/GoogleCloudPlatform/runtimes-common/tree/master/docgen
 
 ## Cloud Build CI
 
