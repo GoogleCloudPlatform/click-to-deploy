@@ -19,7 +19,10 @@ steps:
   name: gcr.io/cloud-builders/docker
   args:
   - build
-  - --tag=click-to-deploy
+  - --tag
+  - click-to-deploy
+  - --file
+  - k8s.Dockerfile
   - .
 
 - id: Run Cloud Build K8s Generator
@@ -27,8 +30,10 @@ steps:
   entrypoint: python
   args:
   - scripts/cloudbuild_k8s_generator.py
-  - --solution=$_SOLUTION_NAME
-  - --output=k8s/$_SOLUTION_NAME/cloudbuild.yaml
+  - --solution
+  - $_SOLUTION_NAME
+  - --output
+  - k8s/$_SOLUTION_NAME/cloudbuild.yaml
 
 - id: Test Solution
   name: gcr.io/cloud-builders/gcloud
@@ -36,6 +41,8 @@ steps:
   args:
   - builds
   - submit
-  - --config=cloudbuild.yaml
-  - --substitutions=_CLUSTER_NAME=$_CLUSTER_NAME,_CLUSTER_LOCATION=$_CLUSTER_LOCATION
+  - --config
+  - cloudbuild.yaml
+  - --substitutions
+  - _CLUSTER_NAME=$_CLUSTER_NAME,_CLUSTER_LOCATION=$_CLUSTER_LOCATION
   - .
