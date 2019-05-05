@@ -19,7 +19,10 @@ steps:
   name: gcr.io/cloud-builders/docker
   args:
   - build
-  - --tag=click-to-deploy
+  - --tag
+  - click-to-deploy
+  - --file
+  - docker.Dockerfile
   - .
 
 - id: Invoke dockerfiles Tool
@@ -43,5 +46,6 @@ steps:
   args:
   - builds
   - submit
-  - --config=cloudbuild.yaml
+  - --config
+  - cloudbuild.yaml
   - .
