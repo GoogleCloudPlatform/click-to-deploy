@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO(wgrzelak): Invoke targets into the container.
+
 python-test:
 	@python --version
 	@python -m unittest discover -s scripts -p "*_test.py"
