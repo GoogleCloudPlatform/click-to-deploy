@@ -37,12 +37,11 @@ steps:
 
 - id: Test Solution
   name: gcr.io/cloud-builders/gcloud
-  dir: k8s/$_SOLUTION_NAME
   args:
   - builds
   - submit
   - --config
-  - cloudbuild.yaml
+  - k8s/$_SOLUTION_NAME/cloudbuild.yaml
   - --substitutions
   - _CLUSTER_NAME=$_CLUSTER_NAME,_CLUSTER_LOCATION=$_CLUSTER_LOCATION
   - .
