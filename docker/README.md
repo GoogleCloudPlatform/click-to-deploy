@@ -41,17 +41,24 @@ following GitHub repositories:
 
 ## Functional tests
 
-https://github.com/GoogleCloudPlatform/runtimes-common/tree/master/functional_tests
+For more information on how we test the Docker images, see [Docker Container Functional Tests
+](https://github.com/GoogleCloudPlatform/runtimes-common/tree/master/functional_tests).
 
 ## Generate Dockerfile from template
 
-https://github.com/GoogleCloudPlatform/runtimes-common/tree/master/versioning
+We use [`dockerfile`](https://github.com/GoogleCloudPlatform/runtimes-common/tree/master/versioning)
+tool to generate versionsed `Dockerfiles` from on a common template.
 
 ## Generate Cloud Build configuration
 
-https://github.com/GoogleCloudPlatform/runtimes-common/tree/master/versioning
+We use [`cloudbuild`](https://github.com/GoogleCloudPlatform/runtimes-common/tree/master/versioning)
+tool to generate a configuration file to build `Dockerfiles` using
+[Google Cloud Build](https://cloud.google.com/container-builder/docs/).
 
 ## Documentation
+
+We use [`docgen`](https://github.com/GoogleCloudPlatform/runtimes-common/tree/master/docgen)
+tool for generating Markdown documentation.
 
 https://github.com/GoogleCloudPlatform/runtimes-common/tree/master/docgen
 
@@ -65,5 +72,9 @@ configuration file is located at
 
 ```shell
 gcloud builds submit --config=cloudbuild-docker.yaml \
-  --machine-type=n1-highcpu-8 --substitutions=_SOLUTION_NAME=[SOLUTION_NAME] .
+  --substitutions=_SOLUTION_NAME=[SOLUTION_NAME] .
 ```
+
+Where:
+
+*  `[SOLUTION_NAME]` is the Docker image will be built.
