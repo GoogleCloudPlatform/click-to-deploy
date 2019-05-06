@@ -22,7 +22,7 @@ github:
     commentControl: COMMENTS_ENABLED
 includedFiles:
 - cloudbuild-k8s.yaml
-- Dockerfile
+- k8s.Dockerfile
 - k8s/influxdb/**
 - k8s/*
 substitutions:
