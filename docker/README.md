@@ -69,8 +69,9 @@ configuration file is located at
 ### Manually run the build
 
 ```shell
-gcloud builds submit --config=cloudbuild-docker.yaml \
-  --substitutions=_SOLUTION_NAME=[SOLUTION_NAME] .
+gcloud builds submit . \
+  --config=cloudbuild-docker.yaml \
+  --substitutions=_SOLUTION_NAME=[SOLUTION_NAME]
 ```
 
 Where:
