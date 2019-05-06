@@ -329,77 +329,77 @@ kubectl --namespace $NAMESPACE exec -t \
 Entering to maintenance mode:
 In order to restore PostgresSQL database there is a need to perform some preliminary steps:
 
- 1. The command below will “lock” the database by blocking new incoming
+1. The command below will “lock” the database by blocking new incoming
     connections:
 
-```shell
-kubectl --namespace $NAMESPACE exec -t \
-  $(kubectl -n$NAMESPACE get pod -oname | \
-     sed -n /\\/$APP_INSTANCE_NAME-postgresql-deployment/s.pods\\?/..p) \
-  -c postgresql-server \
-  -- psql -U postgres -c "REVOKE CONNECT ON DATABASE sonar FROM PUBLIC;"
-```
+    ```shell
+    kubectl --namespace $NAMESPACE exec -t \
+      $(kubectl -n$NAMESPACE get pod -oname | \
+         sed -n /\\/$APP_INSTANCE_NAME-postgresql-deployment/s.pods\\?/..p) \
+      -c postgresql-server \
+      -- psql -U postgres -c "REVOKE CONNECT ON DATABASE sonar FROM PUBLIC;"
+    ```
 
-2. Next in order to ensure data consistency all active connections will be dropped:
+1. Next in order to ensure data consistency all active connections will be dropped:
 
-```shell
-kubectl --namespace $NAMESPACE exec -t \
-  $(kubectl -n$NAMESPACE get pod -oname | \
-     sed -n /\\/$APP_INSTANCE_NAME-postgresql-deployment/s.pods\\?/..p) \
-  -c postgresql-server \
-  -- psql -U postgres -c "select pg_terminate_backend(pid) from pg_stat_activity where datname='sonar';"
-```
+    ```shell
+    kubectl --namespace $NAMESPACE exec -t \
+      $(kubectl -n$NAMESPACE get pod -oname | \
+         sed -n /\\/$APP_INSTANCE_NAME-postgresql-deployment/s.pods\\?/..p) \
+      -c postgresql-server \
+      -- psql -U postgres -c "select pg_terminate_backend(pid) from pg_stat_activity where datname='sonar';"
+    ```
 
-3. Now you are able to restore data to the database.
+1. Now you are able to restore data to the database.
 Below shell script will restore data from `backup.sql` to PostgreSQL
 
-```shell
-cat backup.sql | kubectl --namespace $NAMESPACE exec -i \
-  $(kubectl -n$NAMESPACE get pod -oname | \
-    sed -n /\\/$APP_INSTANCE_NAME-postgresql-deployment/s.pods\\?/..p) \
-  -c postgresql-server \
-  -- psql -U postgres
-```
+    ```shell
+    cat backup.sql | kubectl --namespace $NAMESPACE exec -i \
+      $(kubectl -n$NAMESPACE get pod -oname | \
+        sed -n /\\/$APP_INSTANCE_NAME-postgresql-deployment/s.pods\\?/..p) \
+      -c postgresql-server \
+      -- psql -U postgres
+    ```
 
-4. Next copy files from current folder to folder `$SONARQUBE_HOME/data` in SonarQube application pod:
+1. Next copy files from current folder to folder `$SONARQUBE_HOME/data` in SonarQube application pod:
 
-```shell
-kubectl --namespace $NAMESPACE cp ./ $(kubectl -n$NAMESPACE get pod -oname | \
-  sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/data
-```
+    ```shell
+    kubectl --namespace $NAMESPACE cp ./ $(kubectl -n$NAMESPACE get pod -oname | \
+      sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/data
+    ```
 
-5. Afterwards copy files from current folder to `$SONARQUBE_HOME/extensions` folder in SonarQube application pod
+1. Afterwards copy files from current folder to `$SONARQUBE_HOME/extensions` folder in SonarQube application pod
 
-```shell
-kubectl --namespace $NAMESPACE cp ./ $(kubectl -n$NAMESPACE get pod -oname | \
-  sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/extensions
-```
+    ```shell
+    kubectl --namespace $NAMESPACE cp ./ $(kubectl -n$NAMESPACE get pod -oname | \
+      sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/extensions
+    ```
 
-6. Delete all outstanding and unneeded SonarQube application data:
+1. Delete all outstanding and unneeded SonarQube application data:
 
-```shell
-kubectl --namespace $NAMESPACE exec -i \
-  $(kubectl -n$NAMESPACE get pod -oname | \
-    sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p) \
-  -- bash -c "rm -rf /opt/sonarqube/data/es5/* "
-```
+    ```shell
+    kubectl --namespace $NAMESPACE exec -i \
+      $(kubectl -n$NAMESPACE get pod -oname | \
+        sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p) \
+      -- bash -c "rm -rf /opt/sonarqube/data/es5/* "
+    ```
 
-7. Exit maintenance mode by unlocking schema `sonar` for new incoming connection:
+1. Exit maintenance mode by unlocking schema `sonar` for new incoming connection:
 
-```shell
-kubectl --namespace $NAMESPACE exec -t \
-  $(kubectl -n$NAMESPACE get pod -oname | \
-    sed -n /\\/$APP_INSTANCE_NAME-postgresql-deployment/s.pods\\?/..p) \
-  -c postgresql-server \
-  -- psql -U postgres -c "GRANT CONNECT ON DATABASE sonar TO PUBLIC;"
-```
+    ```shell
+    kubectl --namespace $NAMESPACE exec -t \
+      $(kubectl -n$NAMESPACE get pod -oname | \
+        sed -n /\\/$APP_INSTANCE_NAME-postgresql-deployment/s.pods\\?/..p) \
+      -c postgresql-server \
+      -- psql -U postgres -c "GRANT CONNECT ON DATABASE sonar TO PUBLIC;"
+    ```
 
-8. Finally restart SonarQube application pod:
+1. Finally restart SonarQube application pod:
 
-```shell
-kubectl --namespace $NAMESPACE delete pod $(kubectl -n$NAMESPACE get pod -oname | \
-  sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p)
-```
+    ```shell
+    kubectl --namespace $NAMESPACE delete pod $(kubectl -n$NAMESPACE get pod -oname | \
+      sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p)
+    ```
 
 # Uninstall the Application
 
