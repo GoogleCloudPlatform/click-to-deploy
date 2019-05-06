@@ -2,9 +2,10 @@ actions:
 - name: Grafana listening
   bashTest:
     script: |-
-      # will be changed, there is the bug in the application
-      # tracked in issue #367 
-      sleep 120
+      kubectl wait pod/"${APP_INSTANCE_NAME}-grafana-0" \
+        --namespace="${NAMESPACE}" \
+        --for=condition=Ready \
+        --timeout=180s
       curl http://$APP_INSTANCE_NAME-grafana.$NAMESPACE.svc.cluster.local:3000
     expect:
       stdout:
