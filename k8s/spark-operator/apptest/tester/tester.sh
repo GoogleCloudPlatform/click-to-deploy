@@ -17,11 +17,12 @@
 set -eo pipefail
 
 export SPARK_APP_NAME="spark-$(uuidgen)"
-cat spark-pi.yaml.template | envsubst > spark-pi.yaml
+export SPARK_YAML=spark-pi-expanded.yaml
+cat spark-pi.yaml | envsubst > ${SPARK_YAML}
 
-cat spark-pi.yaml
+cat ${SPARK_YAML}
 
-kubectl apply -f spark-pi.yaml
+kubectl apply -f ${SPARK_YAML}
 
 while true; do
   echo "Retrieving events"

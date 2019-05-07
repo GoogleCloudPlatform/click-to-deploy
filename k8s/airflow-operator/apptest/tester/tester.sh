@@ -17,17 +17,20 @@
 set -eo pipefail
 
 export NAME="airflow-$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 8 | head -n 1)"
-cat airflowcluster.yaml.template | envsubst > airflowcluster.yaml
-cat airflowbase.yaml.template | envsubst > airflowbase.yaml
+export BASE_YAML=airflowbase.yaml
+export CLUSTER_YAML=airflowcluster.yaml
 
-cat airflowbase.yaml
-cat airflowcluster.yaml
+cat airflowcluster.yaml | envsubst > ${CLUSTER_YAML}
+cat airflowbase.yaml | envsubst > ${BASE_YAML}
 
-kubectl apply -f airflowbase.yaml
+cat ${BASE_YAML}
+cat ${CLUSTER_YAML}
+
+kubectl apply -f ${BASE_YAML}
 sleep 60
-kubectl apply -f airflowcluster.yaml
+kubectl apply -f ${CLUSTER_YAML}
 sleep 60
-kubectl get -f airflowbase.yaml -o yaml
-kubectl get -f airflowcluster.yaml -o yaml
-kubectl delete -f airflowbase.yaml
-kubectl delete -f airflowcluster.yaml
+kubectl get -f ${BASE_YAML} -o yaml
+kubectl get -f ${CLUSTER_YAML} -o yaml
+kubectl delete -f ${BASE_YAML}
+kubectl delete -f ${CLUSTER_YAML}
