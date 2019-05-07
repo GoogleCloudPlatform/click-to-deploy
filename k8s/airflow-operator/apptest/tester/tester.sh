@@ -17,8 +17,8 @@
 set -eo pipefail
 
 export NAME="airflow-$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 8 | head -n 1)"
-export BASE_YAML=airflowbase.yaml
-export CLUSTER_YAML=airflowcluster.yaml
+export BASE_YAML=airflowbase-expanded.yaml
+export CLUSTER_YAML=airflowcluster-expanded.yaml
 
 cat airflowcluster.yaml | envsubst > ${CLUSTER_YAML}
 cat airflowbase.yaml | envsubst > ${BASE_YAML}
