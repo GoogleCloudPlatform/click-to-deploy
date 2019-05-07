@@ -20,4 +20,4 @@ python-test:
 
 vm-lint:
 	@foodcritic --version
-	@foodcritic --cookbook-path=vm/chef/cookbooks --rule-file=vm/chef/.foodcritic --epic-fai=any
+	@foodcritic --cookbook-path=vm/chef/cookbooks --rule-file=vm/chef/.foodcritic --epic-fail=any
