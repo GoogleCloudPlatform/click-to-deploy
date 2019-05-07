@@ -167,6 +167,26 @@ spec:
           timeoutSeconds: 30
           failureThreshold: 10
           periodSeconds: 10
+      {{ if .Values.metrics.enabled }}
+      - name: prometheus-to-sd
+        image: {{ .Values.metrics.image }}
+        command:
+        - /monitor
+        - --stackdriver-prefix=custom.googleapis.com
+        - --source=apache:http://localhost:9117/metrics
+        - --pod-id=$(POD_NAME)
+        - --namespace-id=$(POD_NAMESPACE)
+        - --monitored-resource-types=k8s
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+      {{ end }}
       volumes:
       - name: apache-config
         configMap:
@@ -231,6 +251,20 @@ spec:
   clusterIP: None
 {{ if .Values.enablePublicServiceAndIngress }}
 ---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Release.Name }}-tls
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: wordpress-webserver
+data:
+  tls.key: |
+{{ .Values.tls.base64EncodedPrivateKey | indent 4 }}
+  tls.crt: |
+{{ .Values.tls.base64EncodedCertificate | indent 4 }}
+type: kubernetes.io/tls
+---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -240,7 +274,6 @@ metadata:
     app.kubernetes.io/component: wordpress-webserver
 spec:
   tls:
-  # The {{ .Release.Name }}-tls Secret is created dynamically via deployer.
   - secretName: {{ .Release.Name }}-tls
   backend:
     serviceName: {{ .Release.Name }}-wordpress-svc
