@@ -354,8 +354,9 @@ container. If you enabled the option to export metrics to Stackdriver, the
 metrics are automatically exported to Stackdriver and visible in
 [Stackdriver Metrics Explorer](https://cloud.google.com/monitoring/charts/metrics-explorer).
 
-The name of each metric starts with the application's name, which you define in
-the `APP_INSTANCE_NAME` environment variable.
+The name of each metric starts with the component's name (`mysql` for MySQL and `apache` for WordPress).
+Metrics are labeled with `app.kubernetes.io/name` consisting of application's name,
+which you define in the `APP_INSTANCE_NAME` environment variable.
 
 The exporting option might not be available for GKE on-prem clusters.
 
