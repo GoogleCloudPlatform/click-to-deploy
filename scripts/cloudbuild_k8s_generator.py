@@ -159,17 +159,9 @@ class CloudBuildConfig():
   def __init__(self, solution):
     self._solution = solution
 
-  @property
-  def extra_configs(self):
-    return []
-
-  @property
-  def path(self):
-    return None
-
-  @property
-  def template(self):
-    return CLOUDBUILD_TEMPLATE
+    self.extra_configs = []
+    self.path = None
+    self.template = CLOUDBUILD_TEMPLATE
 
   def exists(self):
     return os.path.isfile(self.path)
