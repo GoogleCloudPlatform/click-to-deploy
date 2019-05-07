@@ -300,7 +300,7 @@ This shell script will create copy of plugins folder into `ext` folder:
 mkdir ext
 cd ext
 kubectl --namespace $NAMESPACE cp $(kubectl -n$NAMESPACE get pod -oname | \
-              sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/extensions/ ./extension
+              sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/extensions/ ./
 cd ..
 ```
 
@@ -340,6 +340,8 @@ This shell script will show you encrypted password to PostgreSQL
 kubectl get secret $APP_INSTANCE_NAME-secret --namespace $NAMESPACE -o yaml | grep password:
 ```
 
+> **NOTE:** It is important to backup password.
+
 ## Restoring
 
 Entering to maintenance mode:
@@ -353,7 +355,7 @@ In order to restore PostgresSQL database there is a need to perform some prelimi
       $(kubectl -n$NAMESPACE get pod -oname | \
          sed -n /\\/$APP_INSTANCE_NAME-postgresql-deployment/s.pods\\?/..p) \
       -c postgresql-server \
-      -- psql -U postgres -c "REVOKE CONNECT ON DATABASE sonar FROM PUBLIC;"
+      -- psql -U postgres -c "update pg_database set datallowconn = false where datname = 'sonar';"
     ```
 
 1. Next in order to ensure data consistency all active connections will be dropped:
@@ -407,7 +409,7 @@ Below shell script will restore data from `backup.sql` to PostgreSQL
       $(kubectl -n$NAMESPACE get pod -oname | \
         sed -n /\\/$APP_INSTANCE_NAME-postgresql-deployment/s.pods\\?/..p) \
       -c postgresql-server \
-      -- psql -U postgres -c "GRANT CONNECT ON DATABASE sonar TO PUBLIC;"
+      -- psql -U postgres -c "update pg_database set datallowconn = true where datname = 'sonar';"
     ```
 
 1. Patch secret to restore password:
