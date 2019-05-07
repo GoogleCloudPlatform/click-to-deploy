@@ -294,18 +294,24 @@ For our application database the most important place, `plugins` folder stored o
 ## Backing up plugin and data
 
 For backup pluging you have to copy files from folder `$SONARQUBE_HOME/extension`.
-This shell script will create copy of plugins folder in current folder:
+This shell script will create copy of plugins folder into `ext` folder:
 
 ```shell
+mkdir ext
+cd ext
 kubectl --namespace $NAMESPACE cp $(kubectl -n$NAMESPACE get pod -oname | \
-              sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/extensions/ ./
+              sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/extensions/ ./extension
+cd ..
 ```
 
-This shell script will create copy of content from folder `$SONARQUBE_HOME/data` in current folder:
+This shell script will create copy of content from folder `$SONARQUBE_HOME/data` into folder `data`:
 
 ```shell
+mkdir data
+cd data
 kubectl --namespace $NAMESPACE cp $(kubectl -n$NAMESPACE get pod -oname | \
               sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/data ./
+cd ..
 ```
 
 It is not necessary to backup data folder, it will be downlnoaded by application
@@ -317,11 +323,21 @@ All configuration and data about projects are stored in database.
 This shell script will create `backup.sql` dump of all DB in PostgreSQL.
 
 ```shell
+mkdir postgresql
+cd postgresql
 kubectl --namespace $NAMESPACE exec -t \
 	$(kubectl -n$NAMESPACE get pod -oname | \
 		sed -n /\\/$APP_INSTANCE_NAME-postgresql-deployment/s.pods\\?/..p) \
 	-c postgresql-server \
 	-- pg_dumpall -c -U postgres > backup.sql
+cd ..
+```
+
+## Backup Password
+This shell script will show you encrypted password to PostgreSQL
+
+```shell
+kubectl get secret $APP_INSTANCE_NAME-secret --namespace $NAMESPACE -o yaml | grep password:
 ```
 
 ## Restoring
@@ -394,11 +410,20 @@ Below shell script will restore data from `backup.sql` to PostgreSQL
       -- psql -U postgres -c "GRANT CONNECT ON DATABASE sonar TO PUBLIC;"
     ```
 
+1. Patch secret to restore password:
+
+   ```shell
+   kubectl patch secret sonarqube-1-secret -p '{"data": {"password": "$ENCRYPTED_PASS"}}'
+   ```
+
+   where `$ENCRYPTED_PASS` value for secret.
+
 1. Finally restart SonarQube application pod:
 
     ```shell
-    kubectl --namespace $NAMESPACE delete pod $(kubectl -n$NAMESPACE get pod -oname | \
-      sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p)
+    kubectl --namespace $NAMESPACE  exec -i $(kubectl -n$NAMESPACE get pod -oname | \
+      sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p) \
+      -- bash -c "kill -1 1"
     ```
 
 # Uninstall the Application
