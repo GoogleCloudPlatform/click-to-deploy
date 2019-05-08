@@ -225,7 +225,7 @@ Then, navigate to the [http://localhost:9000/](http://localhost:9000/) endpoint.
 
 # Application metrics
 
-## Prometheus metrics
+## PostgreSQL metrics
 
 The application is configured to expose its metrics through
 [PostgreSQL Server Exporter](https://github.com/wrouesnel/postgres_exporter) in
