@@ -12,7 +12,7 @@ Where:
 
 *   `[SOLUTION_NAME]` is the solution name for which you want to create a
     trigger.
-*   `[PROJECT_ID]` is the GCP project ID where you want to a trigger.
+*   `[PROJECT_ID]` is the GCP project ID where the trigger will be created.
 
 For more information, see the
 [gcloud alpha builds triggers](https://cloud.google.com/sdk/gcloud/reference/alpha/builds/triggers/)
