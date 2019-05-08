@@ -6,7 +6,7 @@ __COMMON_MAKEFILE__ := included
 define print_target
   @$(call print_notice,Building $@...)
 endef
-
+# test
 
 define print_notice
   printf "\n\033[93m\033[1m$(1)\033[0m\n"
