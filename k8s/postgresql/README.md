@@ -1,6 +1,6 @@
 # Overview
 
-PostgreSQL is a powerful, open source object-relational database system.
+PostgreSQL is a powerful open source object-relational database system.
 
 For more information on PostgreSQL, see the
 [PosgreSQL website](https://www.postgresql.org/).
@@ -10,24 +10,26 @@ For more information on PostgreSQL, see the
 Popular open source software stacks on Kubernetes packaged by Google and made
 available in Google Cloud Marketplace.
 
-## Design
+## Architecture
 
 ![Architecture diagram](resources/postgresql-k8s-app-architecture.png)
 
-### Solution Information
-
-This solution will install single instance of PostgreSQL server into your
+This solution installs a single instance of PostgreSQL server on your
 Kubernetes cluster.
 
-The PostgreSQL Pod is managed by a ReplicaSet with the number of replicas set to
-one. The PostgreSQL Pod uses a Persistent Volume to store data, and a
+The PostgreSQL Pod is managed by a ReplicaSet, with the number of replicas set
+to one. The PostgreSQL Pod uses a Persistent Volume to store data, and a
 LoadBalancer Service to expose the database port externally. Communication
-between client and server is encrypted. If you need to limit access to the
+between the client and server is encrypted. If you want to limit access to the
 PostgreSQL instance, you must configure GCP firewall rules.
 
-To install the application you will need to set up initial password for postgres
-user, PostgreSQL volume size and generate or provide TLS key and certificate.
-All required steps are covered further in this README.
+To install the application, you must set up the following:
+
+* An initial password for the `postgres` user
+* The PostgreSQL volume size
+* Provide a TLS key and certificate, or generate a new certificate
+
+The steps to set up these options are in the sections below.
 
 # Installation
 
@@ -64,10 +66,10 @@ Configure `gcloud` as a Docker credential helper:
 gcloud auth configure-docker
 ```
 
-#### Create a Google Kubernetes Engine cluster
+#### Create a Google Kubernetes Engine (GKE) cluster
 
-Create a cluster from the command line. If you already have a cluster that you
-want to use, this step is optional.
+Use the following commands to create a cluster from the command line. If you
+already have a cluster that you want to use, skip this step.
 
 ```shell
 export CLUSTER=postgresql-cluster
@@ -123,8 +125,7 @@ cd click-to-deploy/k8s/postgresql
 
 Choose an instance name and
 [namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)
-for the app. Namespace has to exist prior to installation, in most cases, you
-can use the `default` namespace.
+for the app. In most cases, you can use the `default` namespace.
 
 ```shell
 export APP_INSTANCE_NAME=postgresql-1
@@ -139,11 +140,11 @@ export IMAGE_POSTGRESQL="marketplace.gcr.io/google/postgresql:${TAG}"
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/postgresql/prometheus-to-sd:${TAG}"
 ```
 
-The image above is referenced by
+The images above are referenced by
 [tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
 that you pin each image to an immutable
 [content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This ensures that the installed application always uses the same images, until
+This ensures that the installed application always uses the same images until
 you are ready to upgrade. To get the digest for the image, use the following
 script:
 
@@ -167,7 +168,7 @@ kubectl --namespace $NAMESPACE create secret generic $APP_INSTANCE_NAME-tls \
         --from-file=./server.crt --from-file=./server.key
 ```
 
-Generate random password and set PosgreSQL volume size in Gigabytes:
+Generate a random password and set the PosgreSQL volume size in Gigabytes:
 
 ```shell
 export POSTGRESQL_DB_PASSWORD=$(openssl rand 9 | openssl base64 -A | openssl base64)
@@ -205,7 +206,7 @@ helm template chart/postgresql \
 #### Apply the manifest to your Kubernetes cluster
 
 Use `kubectl` to apply the manifest to your Kubernetes cluster. This
-installation will create:
+installation creates:
 
 -   An Application resource, which collects all the deployment resources into
     one logical entity
@@ -237,7 +238,7 @@ To view the app, open the URL in your browser.
 
 ### Sign in to your new PostgreSQL database
 
-To sign in to PosgreSQL, get the IP address:
+To sign in to PosgreSQL, get the external IP address:
 
 ```shell
 EXTERNAL_IP=$(kubectl --namespace $NAMESPACE get service $APP_INSTANCE_NAME-postgresql-svc -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
@@ -261,8 +262,7 @@ cluster.
 
 ### Configuring Prometheus to collect metrics
 
-Prometheus can be configured to automatically collect the application's metrics.
-Follow the steps in
+Prometheus can be configured to automatically collect the application's metrics. Follow the steps in
 [Configuring Prometheus](https://prometheus.io/docs/introduction/first_steps/#configuring-prometheus).
 
 You configure the metrics in the
@@ -295,6 +295,8 @@ This installation is single instance of PostgreSQL.
 
 ## Backing up PostgreSQL
 
+Run this command to back up your database:
+
 ```shell
 kubectl --namespace $NAMESPACE exec -t \
     $(kubectl -n$NAMESPACE get pod -oname | \
@@ -303,6 +305,8 @@ kubectl --namespace $NAMESPACE exec -t \
 ```
 
 ## Restoring your data
+
+Run this command to restore your database from a backup:
 
 ```shell
 cat postgresql-backup.sql | kubectl --namespace $NAMESPACE exec -i \
@@ -313,10 +317,10 @@ cat postgresql-backup.sql | kubectl --namespace $NAMESPACE exec -i \
 
 # Updating
 
-To update your PostgreSQL installation follow the steps below:
+To update your PostgreSQL installation, follow the steps below:
 
 1.  Delete your PostgreSQL Pod.
-1.  Install a new version from GCP marketplace.
+1.  Install a new version from GCP Marketplace.
 1.  Back up your data.
 1.  Run the following command:
 
