@@ -5,7 +5,9 @@ We use Google Cloud Build (GCB) triggers for testing the applications.
 Run the following command to create a trigger for k8s application.
 
 ```shell
-gcloud alpha builds triggers create github --trigger_config k8s/[SOLUTION_NAME].yaml --project [PROJECT_ID]
+gcloud alpha builds triggers create github \
+  --trigger_config k8s/[SOLUTION_NAME].yaml \
+  --project [PROJECT_ID]
 ```
 
 Where:
