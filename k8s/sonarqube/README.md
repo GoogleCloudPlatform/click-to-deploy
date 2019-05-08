@@ -414,7 +414,7 @@ Below shell script will restore data from `postgresql/backup.sql` to PostgreSQL
    kubectl --namespace $NAMESPACE patch secret sonarqube-1-secret -p '{"data": {"password": "'"$ENCODED_PASS"'"}}'
    ```
 
-   where `$ENCODED_PASS` value for secret.
+   where `$ENCODED_PASS` is variable with you password.
 
 1. Finally restart SonarQube application pod:
 
