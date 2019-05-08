@@ -24,6 +24,14 @@ properties:
     description: The number of Pods run within NGINX solution
     default: 3
     minimum: 1
+  certificate:
+    type: string
+    x-google-marketplace:
+      type: TLS_CERTIFICATE
+      tlsCertificate:
+        generatedProperties:
+          base64EncodedPrivateKey: tls.base64EncodedPrivateKey
+          base64EncodedCertificate: tls.base64EncodedCertificate
   metrics.image:
     type: string
     default: $REGISTRY/prometheus-to-sd:$TAG

@@ -180,6 +180,28 @@ for i in "IMAGE_NGINX" "IMAGE_NGINX_INIT" "IMAGE_METRICS_EXPORTER"; do
 done
 ```
 
+#### Create TLS certificate for Nginx
+
+1.  If you already have a certificate that you want to use, copy your
+    certificate and key pair to the `/tmp/tls.crt`, and `/tmp/tls.key` files,
+    then skip to the next step.
+
+    To create a new certificate, run the following command:
+
+    ```shell
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+        -keyout /tmp/tls.key \
+        -out /tmp/tls.crt \
+        -subj "/CN=nginx/O=nginx"
+    ```
+
+1.  Set `TLS_CERTIFICATE_KEY` and `TLS_CERTIFICATE_CRT` variables:
+
+    ```shell
+    export TLS_CERTIFICATE_KEY="$(cat /tmp/tls.key | base64)"
+    export TLS_CERTIFICATE_CRT="$(cat /tmp/tls.crt | base64)"
+    ```
+
 #### Create a namespace in your Kubernetes cluster
 
 If you use a different namespace than `default`, run the command below to create
@@ -196,13 +218,16 @@ expanded manifest file for future updates to the application.
 
 ```shell
 helm template chart/nginx \
-  --name $APP_INSTANCE_NAME \
-  --namespace $NAMESPACE \
-  --set nginx.replicas=$REPLICAS \
-  --set nginx.initImage=$IMAGE_NGINX_INIT \
-  --set nginx.image=$IMAGE_NGINX \
-  --set metrics.image=$IMAGE_METRICS_EXPORTER \
-  --set metrics.enabled=$METRICS_EXPORTER_ENABLED > "${APP_INSTANCE_NAME}_manifest.yaml"
+  --name "$APP_INSTANCE_NAME" \
+  --namespace "$NAMESPACE" \
+  --set "nginx.replicas=$REPLICAS" \
+  --set "nginx.initImage=$IMAGE_NGINX_INIT" \
+  --set "nginx.image=$IMAGE_NGINX" \
+  --set "metrics.image=$IMAGE_METRICS_EXPORTER" \
+  --set "metrics.enabled=$METRICS_EXPORTER_ENABLED" \
+  --set "tls.base64EncodedPrivateKey=$TLS_CERTIFICATE_KEY" \
+  --set "tls.base64EncodedCertificate=$TLS_CERTIFICATE_CRT" \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster

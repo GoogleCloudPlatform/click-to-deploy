@@ -2,9 +2,6 @@ actions:
 - name: Grafana listening
   bashTest:
     script: |-
-      # will be changed, there is the bug in the application
-      # tracked in issue #367 
-      sleep 120
       curl http://$APP_INSTANCE_NAME-grafana.$NAMESPACE.svc.cluster.local:3000
     expect:
       stdout:

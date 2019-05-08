@@ -38,3 +38,42 @@ following GitHub repositories:
 *   https://github.com/GoogleCloudPlatform/redis-docker
 *   https://github.com/GoogleCloudPlatform/sonarqube-docker
 *   https://github.com/GoogleCloudPlatform/wordpress-docker
+
+## Functional tests
+
+For more information on how we test the Docker images, see
+[Docker Container Functional Tests](https://github.com/GoogleCloudPlatform/runtimes-common/tree/master/functional_tests).
+
+## Generate Dockerfile from template
+
+We use [`dockerfile`](https://github.com/GoogleCloudPlatform/runtimes-common/tree/master/versioning)
+tool to generate versionsed `Dockerfiles` from a common template.
+
+## Generate Cloud Build configuration
+
+We use [`cloudbuild`](https://github.com/GoogleCloudPlatform/runtimes-common/tree/master/versioning)
+tool to generate a configuration file to build Docker images using
+[Google Cloud Build](https://cloud.google.com/container-builder/docs/).
+
+## Documentation
+
+We use [`docgen`](https://github.com/GoogleCloudPlatform/runtimes-common/tree/master/docgen)
+tool for generating Markdown documentation.
+
+## Cloud Build CI
+
+This repository uses Cloud Build for continuous integration. The Cloud Build
+configuration file is located at
+[`../cloudbuild-docker.yaml`](../cloudbuild-docker.yaml).
+
+### Manually run the build
+
+```shell
+gcloud builds submit . \
+  --config=cloudbuild-docker.yaml \
+  --substitutions=_SOLUTION_NAME=[SOLUTION_NAME]
+```
+
+Where:
+
+*  `[SOLUTION_NAME]` is the Docker image will be built.
