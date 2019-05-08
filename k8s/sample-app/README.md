@@ -1,3 +1,9 @@
+> Use this file as a template for your application's README. Delete any
+sections that don't apply to your app. Delete this note when you start
+editing.
+
+----
+
 # Overview
 
 Sample Application
@@ -124,7 +130,7 @@ The image above is referenced by
 [tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
 that you pin each image to an immutable
 [content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This ensures that the installed application always uses the same images, until
+This ensures that the installed application always uses the same images until
 you are ready to upgrade. To get the digest for the image, use the following
 script:
 
@@ -167,15 +173,14 @@ To view the app, open the URL in your browser.
 
 How to use Sample App
 
-## Follow the on-screen steps
+## Customize the installation
 
 To set Sample App, follow these on-screen steps to customize your installation:
 
-*   Do something
+> Add steps to customize the application, if applicable. Delete this note when
+you start editing.
 
 # Scaling
-
-How to scale Sample Application
 
 # Backup and restore
 
