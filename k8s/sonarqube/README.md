@@ -380,7 +380,7 @@ Below shell script will restore data from `postgresql/backup.sql` to PostgreSQL
       sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/data
     ```
 
-> **NOTE:** It is optional to restore data folder.
+    > **NOTE:** It is optional to restore data folder.
 
 1. Afterwards copy files from current folder to `$SONARQUBE_HOME/extensions` folder in SonarQube application pod
 
