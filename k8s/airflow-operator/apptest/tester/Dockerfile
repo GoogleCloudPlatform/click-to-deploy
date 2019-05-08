@@ -13,8 +13,8 @@ RUN wget -q -O /bin/kubectl \
         https://storage.googleapis.com/kubernetes-release/release/v1.9.0/bin/linux/amd64/kubectl \
     && chmod 755 /bin/kubectl
 
-COPY airflowbase.yaml /tester/
-COPY airflowcluster.yaml /tester/
+COPY airflowbase.yaml.template /tester/
+COPY airflowcluster.yaml.template /tester/
 COPY tester.sh /tester/
 
 WORKDIR /tester
