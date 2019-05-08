@@ -37,10 +37,7 @@ CLOUDBUILD_OUTPUT = """
 
 timeout: 1800s # 30m
 options:
-  machineType: 'N1_HIGHCPU_8'
-substitutions:
-  _CLUSTER_NAME: cluster-1
-  _CLUSTER_LOCATION: us-central1
+  workerPool: $PROJECT_ID/gcb-workers-pool
 steps:
 
 - id: Pull Dev Image
