@@ -328,6 +328,7 @@ kubectl --namespace $NAMESPACE exec -t \
 ```
 
 ## Backup Password
+
 This shell script will show you base64 encoded password to PostgreSQL
 
 ```shell
@@ -414,7 +415,7 @@ Below shell script will restore data from `postgresql/backup.sql` to PostgreSQL
    kubectl --namespace $NAMESPACE patch secret sonarqube-1-secret -p '{"data": {"password": "'"$ENCODED_PASS"'"}}'
    ```
 
-   where `$ENCODED_PASS` is variable with you password.
+   where `$ENCODED_PASS` is variable with your password.
 
 1. Finally restart SonarQube application pod:
 
