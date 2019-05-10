@@ -163,7 +163,7 @@ follows:
 ```shell
 kubectl create serviceaccount "${APP_INSTANCE_NAME}-sa" --namespace "${NAMESPACE}"
 kubectl create clusterrolebinding "${NAMESPACE}-${APP_INSTANCE_NAME}-sa-rb" --clusterrole=cluster-admin --serviceaccount="${NAMESPACE}:${APP_INSTANCE_NAME}-sa"
-export serviceAccount="${APP_INSTANCE_NAME}-sa"
+export SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-sa"
 ```
 
 #### Expand the manifest template

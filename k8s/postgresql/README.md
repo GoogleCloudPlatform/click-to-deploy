@@ -18,10 +18,10 @@ This solution installs a single instance of PostgreSQL server on your
 Kubernetes cluster.
 
 The PostgreSQL Pod is managed by a ReplicaSet, with the number of replicas set
-to one. The PostgreSQL Pod uses a Persistent Volume to store data, and a
-LoadBalancer Service to expose the database port externally. Communication
-between the client and server is encrypted. If you want to limit access to the
-PostgreSQL instance, you must configure GCP firewall rules.
+to one. The PostgreSQL Pod uses a Persistent Volume to store data, and a ClusterIP
+Service to expose the database port (which can be optionally exposed publicly
+with a LoadBalancer type of Service). Communication between the client and server is
+encrypted.
 
 To install the application, you must set up the following:
 
@@ -175,7 +175,30 @@ export POSTGRESQL_DB_PASSWORD=$(openssl rand 9 | openssl base64 -A | openssl bas
 export POSTGRESQL_VOLUME_SIZE=10
 ```
 
-Enable Stackdriver Metrics Exporter:
+Expose the Service externally:
+
+By default, the Service isn't exposed externally. To enable this option, change
+the value to `true`.
+
+```shell
+export EXPOSE_PUBLIC_SERVICE=false
+```
+
+##### Create dedicated service accounts
+
+Define the service accounts variable:
+
+```shell
+export POSTGRESQL_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-postgresql-sa"
+```
+
+Create the service account:
+
+```shell
+kubectl create serviceaccount ${POSTGRESQL_SERVICE_ACCOUNT} --namespace ${NAMESPACE}
+```
+
+##### Enable Stackdriver Metrics Exporter:
 
 > **NOTE:** Your GCP project must have Stackdriver enabled. If you are using a
 > non-GCP cluster, you cannot export metrics to Stackdriver.
@@ -196,8 +219,10 @@ expanded manifest file for future updates to the application.
 helm template chart/postgresql \
   --name $APP_INSTANCE_NAME \
   --namespace $NAMESPACE \
+  --set postgresql.serviceAccount=$POSTGRESQL_SERVICE_ACCOUNT \
   --set postgresql.image=$IMAGE_POSTGRESQL \
   --set postgresql.volumeSize=$POSTGRESQL_VOLUME_SIZE \
+  --set postgresql.exposePublicService=$EXPOSE_PUBLIC_SERVICE \
   --set db.password=$POSTGRESQL_DB_PASSWORD \
   --set metrics.image=$IMAGE_METRICS_EXPORTER \
   --set metrics.enabled=$METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
@@ -236,15 +261,22 @@ To view the app, open the URL in your browser.
 
 # Using the app
 
-### Sign in to your new PostgreSQL database
+## Sign in to your new PostgreSQL database
 
-To sign in to PosgreSQL, get the external IP address:
+Forward the port locally:
 
 ```shell
-EXTERNAL_IP=$(kubectl --namespace $NAMESPACE get service $APP_INSTANCE_NAME-postgresql-svc -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+kubectl port-forward \
+  --namespace "${NAMESPACE}" \
+  "${APP_INSTANCE_NAME}-postgresql-deployment-0" 5432
+```
+
+Sign in to PostgreSQL:
+
+```shell
 PGPASSWORD=$(kubectl get secret "${APP_INSTANCE_NAME}-secret" --output=jsonpath='{.data.password}' | openssl base64 -d -A)
 
-echo PGPASSWORD=$PGPASSWORD sslmode=require psql -U postgres -h $EXTERNAL_IP
+echo PGPASSWORD=$PGPASSWORD sslmode=require psql -U postgres -h 127.0.0.1
 ```
 
 # Application metrics
@@ -262,7 +294,8 @@ cluster.
 
 ### Configuring Prometheus to collect metrics
 
-Prometheus can be configured to automatically collect the application's metrics. Follow the steps in
+Prometheus can be configured to automatically collect the application's metrics.
+Follow the steps in
 [Configuring Prometheus](https://prometheus.io/docs/introduction/first_steps/#configuring-prometheus).
 
 You configure the metrics in the

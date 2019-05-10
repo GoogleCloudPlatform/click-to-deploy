@@ -43,7 +43,7 @@ spec:
       url: https://www.nginx.com/resources/wiki/start/
     notes: |-
       # Configuring the web content of NGINX server
-      
+
       Follow this instructions to upload web content to your Web Server:
 
       1. Navigate to a folder where directory containing your website is located
@@ -104,6 +104,7 @@ spec:
     valueFrom:
       serviceRef:
         name: {{ .Release.Name }}-nginx-svc
+        protocol: HTTPS
   - name: Application Namespace
     value: {{ .Release.Namespace }}
   - name: Nginx Configuration

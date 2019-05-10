@@ -28,6 +28,10 @@ spec:
         name: {{ .Release.Name }}-secret
   - name: Application Namespace
     value: {{ .Release.Namespace }}
+  - name: Default login for web console
+    value: "admin"
+  - name: Default password for web console
+    value: "admin"
   maintainers:
   - name: Google Click to Deploy
     url: https://cloud.google.com/solutions/#click-to-deploy
@@ -64,10 +68,4 @@ spec:
       9000:9000
     ```
 
-    and then you can open in browser sonarqube web console:
-
-    ```
-    xdg-open http://localhost:9000
-    ```
-
-    Default login Admin password Admin. Please change it after first login.
+    Then, navigate to the [http://localhost:9000](http://localhost:9000) endpoint.

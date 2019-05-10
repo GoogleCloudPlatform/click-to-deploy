@@ -2,6 +2,9 @@ nginx:
   image: null
   initImage: null
   replicas: null
+tls:
+  base64EncodedPrivateKey: null
+  base64EncodedCertificate: null
 metrics:
   image: null
   enabled: false

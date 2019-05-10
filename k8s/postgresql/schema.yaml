@@ -18,6 +18,18 @@ properties:
     title: Volume
     description: The size of Volume (Gi) in the solution
     default: 24
+  postgresql.serviceAccount:
+    type: string
+    title: PostgreSQL service account
+    description: >-
+      Service account to assign to PostgreSQL Deployment (with default permissions)
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+  postgresql.exposePublicService:
+    type: boolean
+    title: Enable public IP access
+    description: Set the PostgreSQL Service type to LoadBalancer
+    default: false
   exporter.image:
     type: string
     default: $REGISTRY/exporter:$TAG
@@ -45,6 +57,8 @@ required:
 - namespace
 - postgresql.image
 - postgresql.volumeSize
+- postgresql.serviceAccount
+- postgresql.exposePublicService
 - exporter.image
 - db.password
 - metrics.image

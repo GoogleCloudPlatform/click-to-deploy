@@ -3,6 +3,7 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
+VERIFY_WAIT_TIMEOUT = 600
 TAG ?= 7.6
 METRICS_EXPORTER_TAG ?= v0.5.1
 POSTGRESQL_SRCTAG ?= 9.6-kubernetes
@@ -76,16 +77,16 @@ app/build:: .build/sonarqube/deployer \
                             .build/var/TAG \
                             | .build/sonarqube
 	docker pull $(IMAGE_POSTGRESQL)
-	docker tag $(IMAGE_POSTGRESQL) "$(REGISTRY)/sonarqube/postgresql9:$(TAG)"
-	docker push "$(REGISTRY)/sonarqube/postgresql9:$(TAG)"
+	docker tag $(IMAGE_POSTGRESQL) "$(REGISTRY)/sonarqube/postgresql:$(TAG)"
+	docker push "$(REGISTRY)/sonarqube/postgresql:$(TAG)"
 	@touch "$@"
 
 .build/sonarqube/exporter: .build/var/REGISTRY \
                                        .build/var/TAG \
                                        | .build/sonarqube/postgresql9
 	docker pull $(IMAGE_POSTGRESQL_EXPORTER)
-	docker tag $(IMAGE_POSTGRESQL_EXPORTER) "$(REGISTRY)/sonarqube/postgresql9/exporter:$(TAG)"
-	docker push "$(REGISTRY)/sonarqube/postgresql9/exporter:$(TAG)"
+	docker tag $(IMAGE_POSTGRESQL_EXPORTER) "$(REGISTRY)/sonarqube/postgresql-exporter:$(TAG)"
+	docker push "$(REGISTRY)/sonarqube/postgresql-exporter:$(TAG)"
 	@touch "$@"
 
 .build/sonarqube/prometheus-to-sd: .build/var/REGISTRY \
