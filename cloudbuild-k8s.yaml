@@ -45,6 +45,8 @@ steps:
   args:
   - builds
   - submit
+  - --timeout
+  - 1800s
   - --config
   - k8s/$_SOLUTION_NAME/cloudbuild.yaml
   - --substitutions
