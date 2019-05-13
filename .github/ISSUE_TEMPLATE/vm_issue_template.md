@@ -1,7 +1,7 @@
 ---
 name: Virtual machines
 about: Report an issue related to the VM application
-labels: kind/vm, unassigned
+labels: kind/vm, to be investigated
 ---
 
 **Category:**

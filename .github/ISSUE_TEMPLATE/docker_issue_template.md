@@ -1,7 +1,7 @@
 ---
 name: Container images
 about: Report an issue related to the Docker image
-labels: kind/docker, unassigned
+labels: kind/docker, to be investigated
 ---
 
 **Category:**
