@@ -1,7 +1,7 @@
 ---
 name: Kubernetes apps
 about: Report an issue related to the Kubernetes application
-labels: kind/k8s, to be investigated
+labels: kind/k8s, needs-triage
 ---
 
 **Category:**
