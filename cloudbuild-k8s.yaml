@@ -41,14 +41,12 @@ steps:
   - k8s/$_SOLUTION_NAME/cloudbuild.yaml
 
 - id: Test Solution
-  name: gcr.io/cloud-builders/gcloud
+  name: click-to-deploy
+  entrypoint: cloud-build-local
   args:
-  - builds
-  - submit
-  - --timeout
-  - 1800s
   - --config
   - k8s/$_SOLUTION_NAME/cloudbuild.yaml
+  - --dryrun=false
   - --substitutions
   - _CLUSTER_NAME=$_CLUSTER_NAME,_CLUSTER_LOCATION=$_CLUSTER_LOCATION
   - .
