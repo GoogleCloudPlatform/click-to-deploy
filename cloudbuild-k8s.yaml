@@ -42,13 +42,43 @@ steps:
 
 - id: Test Solution
   name: gcr.io/cloud-builders/gcloud
+  entrypoint: bash
   args:
-  - builds
-  - submit
-  - --timeout
-  - 1800s
-  - --config
-  - k8s/$_SOLUTION_NAME/cloudbuild.yaml
-  - --substitutions
-  - _CLUSTER_NAME=$_CLUSTER_NAME,_CLUSTER_LOCATION=$_CLUSTER_LOCATION
-  - .
+  - -ceu
+  - |
+    # Run the build in async mode.
+    BUILD_ID=$$(gcloud builds submit . \
+      --config=k8s/$_SOLUTION_NAME/cloudbuild.yaml \
+      --timeout=1800s \
+      --substitutions=_CLUSTER_NAME=$_CLUSTER_NAME,_CLUSTER_LOCATION=$_CLUSTER_LOCATION \
+      --async \
+      --format="value(ID)")
+
+    # Wait until the build will be done.
+    while true; do
+      # Get status of build.
+      build_status=$$(gcloud builds list \
+        --filter="ID:$${BUILD_ID}" \
+        --format="value(STATUS)")
+
+      case "$${build_status}" in
+        SUCCESS)
+          # Success, leave the loop.
+          break
+          ;;
+        WORKING|QUEUED)
+          # Work in progress, wait 60 seconds before next round.
+          sleep 60
+          ;;
+        FAILURE|CANCELLED)
+          # Display logs and exit the program.
+          gcloud builds log "$${BUILD_ID}"
+          exit 1
+          ;;
+        *)
+          echo "Unrecognized status: $${build_status}"
+          gcloud builds log "$${BUILD_ID}"
+          exit 1
+          ;;
+      esac
+    done
