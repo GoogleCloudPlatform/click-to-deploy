@@ -44,7 +44,7 @@ steps:
   name: gcr.io/cloud-builders/gcloud
   entrypoint: bash
   args:
-  - exc
+  - -ceu
   - |
     # Run the build in async mode.
     BUILD_ID=$$(gcloud builds submit . \
