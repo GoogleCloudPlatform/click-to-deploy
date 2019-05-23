@@ -1,12 +1,12 @@
 ---
-name: Kubernetes apps
-about: Report an issue related to the Kubernetes application
-labels: kind/k8s, needs-triage
+name: Container images
+about: Report an issue related to the Docker image
+labels: kind/docker, needs-triage
 ---
 
 **Category:**
 
-Kubernetes apps
+Container images
 
 **Type:**
 
