@@ -77,7 +77,7 @@ app/publish:: app/build \
 	$(call print_target)
 	.build/app/dev \
 	    /scripts/publish \
-	        --deployer='$(APP_DEPLOYER_IMAGE)' \
+	        --deployer_image='$(APP_DEPLOYER_IMAGE)' \
 	        --gcs_repo='$(APP_GCS_PATH)'
 
 
