@@ -140,7 +140,7 @@ app/verify: app/publish \
 .PHONY: app/doctor
 app/doctor: | .build/app/dev
 	$(call print_target)
-	.build/app/dev /scripts/doctor.py
+	.build/app/dev doctor
 
 
 endif
