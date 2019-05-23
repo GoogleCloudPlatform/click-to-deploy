@@ -22,8 +22,13 @@ endif
 
 $(info ---- APP_GCS_PATH = $(APP_GCS_PATH))
 
+ifndef APP_DEPLOYER_IMAGE
+$(error APP_DEPLOYER_IMAGE must be defined)
+endif
 
- ##### Helper functions #####
+$(info ---- APP_DEPLOYER_IMAGE = $(APP_DEPLOYER_IMAGE))
+
+##### Helper functions #####
 
 
 # Extracts the name property from APP_PARAMETERS.
