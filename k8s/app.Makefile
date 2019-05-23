@@ -7,19 +7,7 @@ makefile_dir := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 include $(makefile_dir)/common.Makefile
 include $(makefile_dir)/var.Makefile
 
-
-##### Validations and Information #####
-
-
-ifndef APP_DEPLOYER_IMAGE
-$(error APP_DEPLOYER_IMAGE must be defined)
-endif
-
-$(info ---- APP_DEPLOYER_IMAGE = $(APP_DEPLOYER_IMAGE))
-
-
-##### Helper functions #####
-
+VERIFY_WAIT_TIMEOUT = 600
 
 # Extracts the name property from APP_PARAMETERS.
 define name_parameter
@@ -35,13 +23,6 @@ $(shell echo '$(APP_PARAMETERS)' \
 endef
 
 
-# Combines APP_PARAMETERS and APP_TEST_PARAMETERS.
-define combined_parameters
-$(shell echo '$(APP_PARAMETERS)' '$(APP_TEST_PARAMETERS)' \
-    | docker run -i --entrypoint=/usr/bin/jq --rm $(APP_DEPLOYER_IMAGE) -s '.[0] * .[1]')
-endef
-
-
 ##### Helper targets #####
 
 
@@ -54,10 +35,10 @@ endef
 .PHONY: .build/app/dev
 .build/app/dev: .build/var/MARKETPLACE_TOOLS_TAG \
               | .build/app
-	@docker run \
+	docker run \
 	    "gcr.io/cloud-marketplace-tools/k8s/dev:$(MARKETPLACE_TOOLS_TAG)" \
 	    cat /scripts/dev > "$@"
-	@chmod a+x "$@"
+	chmod a+x "$@"
 
 
 ########### Main  targets ###########
@@ -78,10 +59,11 @@ app/install:: app/build \
               .build/var/MARKETPLACE_TOOLS_TAG \
               | .build/app/dev
 	$(call print_target)
-	.build/app/dev install \
-	    --deployer='$(APP_DEPLOYER_IMAGE)' \
-	    --parameters='$(APP_PARAMETERS)' \
-	    --entrypoint="/bin/deploy.sh"
+	.build/app/dev \
+	    /scripts/install \
+	        --deployer='$(APP_DEPLOYER_IMAGE)' \
+	        --parameters='$(APP_PARAMETERS)' \
+	        --entrypoint="/bin/deploy.sh"
 
 
 # Installs the application into target namespace on the cluster.
@@ -89,14 +71,14 @@ app/install:: app/build \
 app/install-test:: app/build \
                    .build/var/APP_DEPLOYER_IMAGE \
                    .build/var/APP_PARAMETERS \
-                   .build/var/APP_TEST_PARAMETERS \
                    .build/var/MARKETPLACE_TOOLS_TAG \
 	           | .build/app/dev
 	$(call print_target)
-	.build/app/dev install \
-	    --deployer='$(APP_DEPLOYER_IMAGE)' \
-	    --parameters='$(call combined_parameters)' \
-	    --entrypoint="/bin/deploy_with_tests.sh"
+	.build/app/dev \
+	    /scripts/install \
+	        --deployer='$(APP_DEPLOYER_IMAGE)' \
+	        --parameters='$(APP_PARAMETERS)' \
+	        --entrypoint="/bin/deploy_with_tests.sh"
 
 
 # Uninstalls the application from the target namespace on the cluster.
@@ -108,26 +90,25 @@ app/uninstall: .build/var/APP_DEPLOYER_IMAGE \
 	    --namespace='$(call namespace_parameter)' \
 	    --ignore-not-found
 
-
 # Runs the verification pipeline.
 .PHONY: app/verify
 app/verify: app/build \
             .build/var/APP_DEPLOYER_IMAGE \
             .build/var/APP_PARAMETERS \
-            .build/var/APP_TEST_PARAMETERS \
             .build/var/MARKETPLACE_TOOLS_TAG \
             | .build/app/dev
 	$(call print_target)
-	.build/app/dev verify \
-	    --deployer='$(APP_DEPLOYER_IMAGE)' \
-	    --parameters='$(call combined_parameters)'
+	.build/app/dev \
+	    /scripts/verify \
+	          --deployer='$(APP_DEPLOYER_IMAGE)' \
+	          --parameters='$(APP_PARAMETERS)' \
+	          --wait_timeout="$(VERIFY_WAIT_TIMEOUT)"
 
 
 # Runs diagnostic tool to make sure your environment is properly setup.
-.PHONY: app/doctor
 app/doctor: | .build/app/dev
 	$(call print_target)
-	.build/app/dev doctor
+	.build/app/dev /scripts/doctor.py
 
 
 endif
