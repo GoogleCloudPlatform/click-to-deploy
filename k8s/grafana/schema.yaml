@@ -1,4 +1,37 @@
-application_api_version: v1beta1
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+
+  publishedVersion: '5.3.4'
+  publishedVersionMetadata:
+    releaseNote: >-
+      A regular update.
+    releaseTypes:
+    - Feature
+    recommended: true
+
+  managedUpdates:
+    kalmSupported: true
+
+  clusterConstraints:
+    istio:
+      type: OPTIONAL
+
+  images:
+    '':
+      properties:
+        grafana.image:
+          type: FULL
+    debian9:
+      properties:
+        grafana.initImage:
+          type: FULL
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
+
 properties:
   name:
     type: string
@@ -8,16 +41,6 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  grafana.image:
-    type: string
-    default: $REGISTRY:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  grafana.initImage:
-    type: string
-    default: $REGISTRY/debian9:$TAG
-    x-google-marketplace:
-      type: IMAGE
   grafana.password:
     type: string
     x-google-marketplace:
@@ -35,11 +58,6 @@ properties:
         - type: ClusterRole
           rulesType: PREDEFINED
           rulesFromRoleName: cluster-admin
-  metrics.image:
-    type: string
-    default: $REGISTRY/prometheus-to-sd:$TAG
-    x-google-marketplace:
-      type: IMAGE
   metrics.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
@@ -48,9 +66,6 @@ properties:
 required:
 - name
 - namespace
-- grafana.image
-- grafana.initImage
 - grafana.password
 - grafana.serviceaccount
-- metrics.image
 - metrics.enabled
