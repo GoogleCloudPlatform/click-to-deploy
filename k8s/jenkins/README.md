@@ -132,7 +132,6 @@ Configure the container images:
 ```shell
 TAG=2.150
 export IMAGE_JENKINS="marketplace.gcr.io/google/jenkins:${TAG}"
-export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/jenkins/prometheus-to-sd:${TAG}"
 ```
 
 The image above is referenced by
@@ -145,7 +144,6 @@ script:
 
 ```shell
 export IMAGE_JENKINS=$(docker pull $IMAGE_JENKINS | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_JENKINS\")\"@sha256:\"\$3}")
-export IMAGE_METRICS_EXPORTER=$(docker pull $IMAGE_METRICS_EXPORTER | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_METRICS_EXPORTER\")\"@sha256:\"\$3}")
 ```
 
 Create a certificate for Jenkins. If you already have a certificate that you
@@ -164,18 +162,6 @@ kubectl --namespace $NAMESPACE create secret generic $APP_INSTANCE_NAME-tls \
         --from-file=/tmp/tls.crt --from-file=/tmp/tls.key
 ```
 
-Enable Stackdriver Metrics Exporter:
-
-> **NOTE:** Your GCP project must have Stackdriver enabled. If you are using a
-> non-GCP cluster, you cannot export metrics to Stackdriver.
-
-By default, application does not export metrics to Stackdriver. To enable this
-option, change the value to `true`.
-
-```shell
-export METRICS_EXPORTER_ENABLED=false
-```
-
 #### Expand the manifest template
 
 Use `helm template` to expand the template. We recommend that you save the
@@ -185,9 +171,7 @@ expanded manifest file for future updates to the application.
 helm template chart/jenkins \
   --name $APP_INSTANCE_NAME \
   --namespace $NAMESPACE \
-  --set jenkins.image=$IMAGE_JENKINS \
-  --set metrics.image=$IMAGE_METRICS_EXPORTER \
-  --set metrics.enabled=$METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
+  --set jenkins.image=$IMAGE_JENKINS > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 
 #### Apply the manifest to your Kubernetes cluster
@@ -258,11 +242,11 @@ To set Jenkins, follow these on-screen steps to customize your installation:
 ## Prometheus metrics
 
 The application is configured to expose its metrics through
-[Jenkins Prometheus.io exporter plugin](https://github.com/jenkinsci/prometheus-plugin)
+[Jenkins Monitoring plugin](https://wiki.jenkins.io/display/JENKINS/Monitoring)
 in the
 [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
 
-You can access the metrics at at `[APP_BASE_URL]:8080/prometheus/`, where
+You can access the metrics at at `[APP_BASE_URL]:8080/monitoring?format=prometheus`, where
 `[APP_BASE_URL]` is the base URL address of the application.
 
 ### Configuring Prometheus to collect metrics
@@ -273,25 +257,6 @@ Follow the steps in
 
 You configure the metrics in the
 [`scrape_configs` section](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config).
-
-## Exporting metrics to Stackdriver
-
-The deployment includes a
-[Prometheus to Stackdriver (`prometheus-to-sd`)](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd)
-container. If you enabled the option to export metrics to Stackdriver, the
-metrics are automatically exported to Stackdriver and visible in
-[Stackdriver Metrics Explorer](https://cloud.google.com/monitoring/charts/metrics-explorer).
-The name of each metric starts with the application's name, which you define in
-the `APP_INSTANCE_NAME` environment variable.
-
-The exporting option might not be available for GKE on-prem clusters.
-
-> Note: Stackdriver has [quotas](https://cloud.google.com/monitoring/quotas) for
-> the number of custom metrics created in a single GCP project. If the quota is
-> met, additional metrics might not show up in the Stackdriver Metrics Explorer.
-
-You can remove existing metric descriptors using
-[Stackdriver's REST API](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors/delete).
 
 # Scaling
 
