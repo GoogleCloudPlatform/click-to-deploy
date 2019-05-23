@@ -1,4 +1,3 @@
-include ../app.Makefile
 include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
@@ -6,10 +5,16 @@ include ../var.Makefile
 TAG ?= 1.7
 METRICS_EXPORTER_TAG ?= v0.5.1
 
+RELEASE ?= 1.7
+APP_ID ?= influxdb
+
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/influxdb/deployer:$(TAG)
+APP_DEPLOYER_IMAGE_TRACK_TAG ?= $(REGISTRY)/$(APP_ID)/deployer:$(TAG)
+APP_GCS_PATH ?= $(GCS_URL)/$(APP_ID)/$(TAG)
 NAME ?= influxdb-1
+include ../app_v2.Makefile
 
 ifdef METRICS_EXPORTER_ENABLED
   METRICS_EXPORTER_ENABLED_FIELD = , "metrics.enabled": "$(METRICS_EXPORTER_ENABLED)"
@@ -43,13 +48,16 @@ app/build:: .build/influxdb/deployer \
                            .build/var/TAG \
                            | .build/influxdb
 	docker build \
+	    --build-arg RELEASE="$(RELEASE)" \
 	    --build-arg REGISTRY="$(REGISTRY)/influxdb" \
 	    --build-arg TAG="$(TAG)" \
 	    --build-arg MARKETPLACE_TOOLS_TAG="$(MARKETPLACE_TOOLS_TAG)" \
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
 	    -f deployer/Dockerfile \
 	    .
-	docker push "$(APP_DEPLOYER_IMAGE)"
+	docker tag "$(APP_DEPLOYER_IMAGE)" "$(APP_DEPLOYER_IMAGE_TRACK_TAG)"
+	docker push "$(APP_DEPLOYER_IMAGE_TRACK_TAG)"
+        #docker push "$(APP_DEPLOYER_IMAGE)"
 	@touch "$@"
 
 
