@@ -257,6 +257,7 @@ Follow the steps in
 
 You configure the metrics in the
 [`scrape_configs` section](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config).
+Please, remember that you need to configure authentication to access to Jenkins metrics.
 
 # Scaling
 
