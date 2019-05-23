@@ -1,4 +1,3 @@
-include ../app.Makefile
 include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
@@ -11,6 +10,7 @@ METRICS_EXPORTER_TAG ?= v0.5.1
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/wordpress/deployer:$(TAG)
+APP_GCS_PATH ?= $(GCS_URL)/wordpress/$(TAG)
 NAME ?= wordpress-1
 
 ifdef IMAGE_WORDPRESS
@@ -48,8 +48,6 @@ endif
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
-  $(IMAGE_WORDPRESS_FIELD) \
-  $(IMAGE_MYSQL_FIELD) \
   $(ROOT_DB_PASSWORD_FIELD) \
   $(WORDPRESS_DB_PASSWORD_FIELD) \
   $(WORDPRESS_ADMIN_EMAIL_FIELD) \
@@ -60,6 +58,11 @@ APP_PARAMETERS ?= { \
 
 TESTER_IMAGE ?= $(REGISTRY)/wordpress/tester:$(TAG)
 
+# app_v2.Makefile provides the main targets for installing the
+# application.
+# It requires several APP_* variables defined above, and thus
+# must be included after.
+include ../app_v2.Makefile
 
 app/build:: .build/wordpress/deployer \
             .build/wordpress/wordpress \
