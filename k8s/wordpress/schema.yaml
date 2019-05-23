@@ -3,7 +3,7 @@ x-google-marketplace:
 
   applicationApiVersion: v1beta1
 
-  publishedVersion: '0.1.1'
+  publishedVersion: '$TAG'
   publishedVersionMetadata:
     releaseNote: >-
       Initial release.
@@ -17,8 +17,13 @@ x-google-marketplace:
   images:
     '':
       properties:
+        # FULL doesn't work.
         wordpressImage:
           type: FULL
+        imageWordpressRepo:
+          type: REPO_WITH_REGISTRY
+        imageWordpressTag:
+          type: TAG
     mysql:
       properties:
         db.image:
