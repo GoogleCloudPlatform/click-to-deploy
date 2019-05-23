@@ -15,15 +15,10 @@ x-google-marketplace:
     kalmSupported: true
 
   images:
-    '':
+    null:
       properties:
-        # FULL doesn't work.
         wordpressImage:
           type: FULL
-        imageWordpressRepo:
-          type: REPO_WITH_REGISTRY
-        imageWordpressTag:
-          type: TAG
     mysql:
       properties:
         db.image:
