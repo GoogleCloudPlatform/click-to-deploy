@@ -1,4 +1,22 @@
-application_api_version: v1beta1
+x-google-marketplace:
+  schemaVersion: v2
+  applicationApiVersion: v1beta1
+  publishedVersion: '1.7'
+  publishedVersionMetadata:
+    releaseNote: >-
+      Initial release.
+    releaseTypes:
+    - Feature
+    recommended: true
+  managedUpdates:
+    kalmSupported: true
+  images:
+    '':
+      properties:
+        imageInfluxDBRepo:
+          type: REPO_WITH_REGISTRY
+        imageInfluxDBTag:
+          type: TAG    
 properties:
   name:
     type: string
@@ -8,11 +26,6 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  influxdbImage:
-    type: string
-    default: $REGISTRY:$TAG
-    x-google-marketplace:
-      type: IMAGE
   admin.user:
     type: string
     title: InfluxDB admin username
@@ -34,10 +47,10 @@ properties:
     title: Enable Stackdriver Metrics Exporter
     description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
     default: false
+
 required:
 - name
 - namespace
-- influxdbImage
 - admin.user
 - admin.password
 - metrics.image
