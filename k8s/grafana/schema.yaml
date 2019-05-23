@@ -21,8 +21,10 @@ x-google-marketplace:
   images:
     '':
       properties:
-        grafana.image:
-          type: FULL
+        grafana.imageRepo:
+          type: REPO_WITH_REGISTRY
+        grafana.imageTag:
+          type: TAG
     debian9:
       properties:
         grafana.initImage:
