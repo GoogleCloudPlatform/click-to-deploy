@@ -12,7 +12,7 @@ $(info ---- TAG = $(TAG))
 $(info ---- RELEASE = $(RELEASE))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/wordpress/deployer:$(RELEASE)
-APP_GCS_PATH ?= $(GCS_URL)/wordpress/$(RELEASE)
+APP_GCS_PATH ?= $(GCS_URL)/wordpress/$(TAG)
 NAME ?= wordpress-1
 
 ifdef IMAGE_WORDPRESS

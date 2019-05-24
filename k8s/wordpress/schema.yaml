@@ -15,10 +15,12 @@ x-google-marketplace:
     kalmSupported: true
 
   images:
-    null:
+    '':
       properties:
-        wordpressImage:
-          type: FULL
+        wordpress.repo:
+          type: REPO_WITH_REGISTRY
+        wordpress.tag:
+          type: TAG
     mysql:
       properties:
         db.image:

@@ -13,7 +13,7 @@ metadata:
 spec:
   descriptor:
     type: WordPress
-    version: '5.x.x'
+    version: "{{ .Values.wordpress.tag }}"
     description: >-
       WordPress is web software used to create websites and blogs.
 
