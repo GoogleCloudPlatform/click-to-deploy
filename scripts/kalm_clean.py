@@ -22,9 +22,11 @@ yaml.default_flow_style = False
 
 SCHEMA_CONFIG = 'schema.yaml'
 
+
 def main():
-  listdir = [f for f in os.listdir('k8s')
-             if os.path.isdir(os.path.join('k8s', f))]
+  listdir = [
+      f for f in os.listdir('k8s') if os.path.isdir(os.path.join('k8s', f))
+  ]
 
   for solution in listdir:
     schema_file = os.path.join('k8s', solution, SCHEMA_CONFIG)
