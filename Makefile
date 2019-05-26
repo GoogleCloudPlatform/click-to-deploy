@@ -29,3 +29,7 @@ python-test: ## Runs tests for Python scripts
 vm-lint: ## Runs lint for Chef cookbooks
 	@foodcritic --version
 	@foodcritic --cookbook-path=vm/chef/cookbooks --rule-file=vm/chef/.foodcritic --epic-fail=any
+
+.PHONY: kalm-clean
+kalm-clean: ## Cleans schema.yaml
+	@python scripts/kalm_clean.py
