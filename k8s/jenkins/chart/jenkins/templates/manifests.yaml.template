@@ -63,7 +63,7 @@ spec:
           value: ''
         - name: JAVA_OPTS
           value: '-Xmx1800m'
-        - name: INSTALL_PROMETHEUS
+        - name: INSTALL_MONITORING
           value: 'true'
         resources:
           limits:
