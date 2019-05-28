@@ -3,13 +3,13 @@ x-google-marketplace:
 
   applicationApiVersion: v1beta1
 
-  publishedVersion: '$TAG'
+  publishedVersion: "$TAG"
   publishedVersionMetadata:
     releaseNote: >-
-      Initial release.
+      A regular update.
     releaseTypes:
     - Feature
-    recommended: true
+    recommended: false
 
   managedUpdates:
     kalmSupported: true
