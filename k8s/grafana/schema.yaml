@@ -3,27 +3,23 @@ x-google-marketplace:
 
   applicationApiVersion: v1beta1
 
-  publishedVersion: '5.3.4'
+  publishedVersion: "$TAG"
   publishedVersionMetadata:
     releaseNote: >-
       A regular update.
     releaseTypes:
     - Feature
-    recommended: true
+    recommended: false
 
   managedUpdates:
     kalmSupported: true
 
-  clusterConstraints:
-    istio:
-      type: OPTIONAL
-
   images:
     '':
       properties:
-        grafana.imageRepo:
+        grafana.image.repo:
           type: REPO_WITH_REGISTRY
-        grafana.imageTag:
+        grafana.image.tag:
           type: TAG
     debian9:
       properties:

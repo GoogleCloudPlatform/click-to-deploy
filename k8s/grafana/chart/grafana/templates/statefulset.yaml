@@ -19,7 +19,7 @@ spec:
       serviceAccountName: {{ .Values.grafana.serviceaccount }}
       initContainers:
         - name: "init-chmod-data"
-          image: {{ .Values.grafana.initRepo }}:{{ .Values.grafana.imageTag }}
+          image: {{ .Values.grafana.initImage }}
           imagePullPolicy: "IfNotPresent"
           command: ["chmod", "777", "/var/lib/grafana"]
           volumeMounts:
@@ -27,7 +27,7 @@ spec:
             mountPath: "/var/lib/grafana"
       containers:
         - name: grafana
-          image: {{ .Values.grafana.image }}
+          image: "{{ .Values.grafana.image.repo }}:{{ .Values.grafana.image.tag }}"
           imagePullPolicy: Always
           volumeMounts:
             - name: config
