@@ -5,16 +5,17 @@ include ../var.Makefile
 TAG ?= 1.7
 METRICS_EXPORTER_TAG ?= v0.5.1
 
-RELEASE ?= 1.7
+RELEASE ?= 0.1.1
 APP_ID ?= influxdb
 
 $(info ---- TAG = $(TAG))
+$(info ---- RELEASE = $(RELEASE))
 
-APP_DEPLOYER_IMAGE ?= $(REGISTRY)/influxdb/deployer:$(TAG)
+APP_DEPLOYER_IMAGE ?= $(REGISTRY)/$(APP_ID)/deployer:$(RELEASE)
 APP_DEPLOYER_IMAGE_TRACK_TAG ?= $(REGISTRY)/$(APP_ID)/deployer:$(TAG)
 APP_GCS_PATH ?= $(GCS_URL)/$(APP_ID)/$(TAG)
+
 NAME ?= influxdb-1
-include ../app_v2.Makefile
 
 ifdef METRICS_EXPORTER_ENABLED
   METRICS_EXPORTER_ENABLED_FIELD = , "metrics.enabled": "$(METRICS_EXPORTER_ENABLED)"
@@ -27,6 +28,12 @@ APP_PARAMETERS ?= { \
 }
 
 TESTER_IMAGE ?= $(REGISTRY)/influxdb/tester:$(TAG)
+
+# app_v2.Makefile provides the main targets for installing the
+# application.
+# It requires several APP_* variables defined above, and thus
+# must be included after.
+include ../app_v2.Makefile
 
 app/build:: .build/influxdb/deployer \
             .build/influxdb/influxdb \
@@ -43,41 +50,50 @@ app/build:: .build/influxdb/deployer \
                            chart/influxdb/templates/* \
                            schema.yaml \
                            .build/var/APP_DEPLOYER_IMAGE \
+                           .build/var/APP_DEPLOYER_IMAGE_TRACK_TAG \
                            .build/var/MARKETPLACE_TOOLS_TAG \
                            .build/var/REGISTRY \
                            .build/var/TAG \
+                           .build/var/RELEASE \
                            | .build/influxdb
 	docker build \
-	    --build-arg RELEASE="$(RELEASE)" \
 	    --build-arg REGISTRY="$(REGISTRY)/influxdb" \
-	    --build-arg TAG="$(TAG)" \
+	    --build-arg TAG="$(RELEASE)" \
 	    --build-arg MARKETPLACE_TOOLS_TAG="$(MARKETPLACE_TOOLS_TAG)" \
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
 	    -f deployer/Dockerfile \
 	    .
 	docker tag "$(APP_DEPLOYER_IMAGE)" "$(APP_DEPLOYER_IMAGE_TRACK_TAG)"
-	docker push "$(APP_DEPLOYER_IMAGE_TRACK_TAG)"
 	docker push "$(APP_DEPLOYER_IMAGE)"
+	docker push "$(APP_DEPLOYER_IMAGE_TRACK_TAG)"
 	@touch "$@"
 
 
 .build/influxdb/influxdb: .build/var/REGISTRY \
                           .build/var/TAG \
+                          .build/var/RELEASE \
                           | .build/influxdb
 	docker pull marketplace.gcr.io/google/influxdb1:$(TAG)
 	docker tag marketplace.gcr.io/google/influxdb1:$(TAG) \
 	    "$(REGISTRY)/influxdb:$(TAG)"
+	docker tag "$(REGISTRY)/influxdb:$(TAG)" \
+	    "$(REGISTRY)/influxdb:$(RELEASE)"
 	docker push "$(REGISTRY)/influxdb:$(TAG)"
+	docker push "$(REGISTRY)/influxdb:$(RELEASE)"
 	@touch "$@"
 
 
 .build/influxdb/prometheus-to-sd: .build/var/REGISTRY \
                                   .build/var/TAG \
+                                  .build/var/RELEASE \
                                   | .build/influxdb
 	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
 	    "$(REGISTRY)/influxdb/prometheus-to-sd:$(TAG)"
+	docker tag "$(REGISTRY)/influxdb/prometheus-to-sd:$(TAG)" \
+	    "$(REGISTRY)/influxdb/prometheus-to-sd:$(RELEASE)"
 	docker push "$(REGISTRY)/influxdb/prometheus-to-sd:$(TAG)"
+	docker push "$(REGISTRY)/influxdb/prometheus-to-sd:$(RELEASE)"
 	@touch "$@"
 
 

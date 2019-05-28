@@ -1,22 +1,31 @@
 x-google-marketplace:
   schemaVersion: v2
+
   applicationApiVersion: v1beta1
-  publishedVersion: '1.7'
+
+  publishedVersion: "$TAG"
   publishedVersionMetadata:
     releaseNote: >-
-      Initial release.
+      A regular update.
     releaseTypes:
     - Feature
-    recommended: true
+    recommended: false
+
   managedUpdates:
     kalmSupported: true
+
   images:
     '':
       properties:
-        imageInfluxDBRepo:
+        influxdb.image.repo:
           type: REPO_WITH_REGISTRY
-        imageInfluxDBTag:
-          type: TAG    
+        influxdb.image.tag:
+          type: TAG
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
+
 properties:
   name:
     type: string
@@ -37,11 +46,6 @@ properties:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 32
-  metrics.image:
-    type: string
-    default: $REGISTRY/prometheus-to-sd:$TAG
-    x-google-marketplace:
-      type: IMAGE
   metrics.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
@@ -53,5 +57,4 @@ required:
 - namespace
 - admin.user
 - admin.password
-- metrics.image
 - metrics.enabled
