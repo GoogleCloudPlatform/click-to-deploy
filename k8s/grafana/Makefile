@@ -15,12 +15,8 @@ APP_GCS_PATH ?= $(GCS_URL)/grafana/$(TAG)
 
 NAME ?= grafana-1
 
-ifdef IMAGE_GRAFANA
-  IMAGE_GRAFANA_FIELD = , "grafana.image.repo": "$(IMAGE_GRAFANA)"
-endif
-
 ifdef IMAGE_GRAFANA_INIT
-  IMAGE_GRAFANA_INIT_FIELD = , "grafana.image.tag": "$(IMAGE_GRAFANA_INIT)"
+  IMAGE_GRAFANA_INIT_FIELD = , "grafana.initImage": "$(IMAGE_GRAFANA_INIT)"
 endif
 
 ifdef METRICS_EXPORTER_ENABLED
@@ -30,7 +26,6 @@ endif
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
-  $(IMAGE_GRAFANA_FIELD) \
   $(IMAGE_GRAFANA_INIT_FIELD) \
   $(METRICS_EXPORTER_ENABLED_FIELD) \
 }

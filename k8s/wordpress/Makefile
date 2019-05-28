@@ -15,10 +15,6 @@ APP_DEPLOYER_IMAGE ?= $(REGISTRY)/wordpress/deployer:$(RELEASE)
 APP_GCS_PATH ?= $(GCS_URL)/wordpress/$(TAG)
 NAME ?= wordpress-1
 
-ifdef IMAGE_WORDPRESS
-  IMAGE_WORDPRESS_FIELD = , "wordpressImage": "$(IMAGE_WORDPRESS)"
-endif
-
 ifdef IMAGE_MYSQL
   IMAGE_MYSQL_FIELD = , "db.image": "$(IMAGE_MYSQL)"
 endif
@@ -50,6 +46,7 @@ endif
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
+  $(IMAGE_MYSQL_FIELD) \
   $(ROOT_DB_PASSWORD_FIELD) \
   $(WORDPRESS_DB_PASSWORD_FIELD) \
   $(WORDPRESS_ADMIN_EMAIL_FIELD) \
