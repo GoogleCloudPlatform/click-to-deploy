@@ -17,9 +17,9 @@ x-google-marketplace:
   images:
     '':
       properties:
-        wordpress.repo:
+        wordpress.image.repo:
           type: REPO_WITH_REGISTRY
-        wordpress.tag:
+        wordpress.image.tag:
           type: TAG
     mysql:
       properties:
