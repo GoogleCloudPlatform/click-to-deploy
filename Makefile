@@ -14,10 +14,18 @@
 
 # TODO(wgrzelak): Invoke targets into the container.
 
-python-test:
+.DEFAULT_GOAL := help
+
+.PHONY: help
+help: ## Shows help
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
+.PHONY: python-test
+python-test: ## Runs tests for Python scripts
 	@python --version
 	@python -m unittest discover -s scripts -p "*_test.py"
 
-vm-lint:
+.PHONY: vm-lint
+vm-lint: ## Runs lint for Chef cookbooks
 	@foodcritic --version
 	@foodcritic --cookbook-path=vm/chef/cookbooks --rule-file=vm/chef/.foodcritic --epic-fail=any

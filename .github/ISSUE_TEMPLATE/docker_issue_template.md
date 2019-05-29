@@ -1,7 +1,7 @@
 ---
 name: Container images
 about: Report an issue related to the Docker image
-labels: docker
+labels: kind/docker, needs-triage
 ---
 
 **Category:**
