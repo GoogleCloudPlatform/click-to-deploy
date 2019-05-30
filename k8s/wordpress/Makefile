@@ -4,10 +4,10 @@ include ../var.Makefile
 
 VERIFY_WAIT_TIMEOUT = 1800
 
-TAG ?= latest
+TAG ?= 0.1
+RELEASE ?= 0.1.0
 METRICS_EXPORTER_TAG ?= v0.5.1
 
-RELEASE ?= 0.1.0
 APP_ID ?= wordpress-managed-updates
 
 $(info ---- TAG = $(TAG))
@@ -108,8 +108,8 @@ app/build:: .build/wordpress/deployer \
                             .build/var/TAG \
                             .build/var/RELEASE \
                             | .build/wordpress
-	docker pull marketplace.gcr.io/google/wordpress5-php7-apache:$(TAG)
-	docker tag marketplace.gcr.io/google/wordpress5-php7-apache:$(TAG) \
+	docker pull marketplace.gcr.io/google/wordpress5-php7-apache:latest
+	docker tag marketplace.gcr.io/google/wordpress5-php7-apache:latest \
 	    "$(REGISTRY)/$(APP_ID):$(TAG)"
 	docker tag "$(REGISTRY)/$(APP_ID):$(TAG)" "$(REGISTRY)/$(APP_ID):$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID):$(TAG)"
