@@ -4,16 +4,18 @@ include ../var.Makefile
 
 TAG ?= 5.3
 METRICS_EXPORTER_TAG ?= v0.5.1
-RELEASE ?= 5.3.4
+
+RELEASE ?= 0.1.0
+APP_ID ?= grafana-managed-updates
 
 $(info ---- TAG = $(TAG))
 $(info ---- RELEASE = $(RELEASE))
 
-APP_DEPLOYER_IMAGE ?= $(REGISTRY)/grafana/deployer:$(RELEASE)
-APP_DEPLOYER_IMAGE_TRACK_TAG ?= $(REGISTRY)/grafana/deployer:$(TAG)
+APP_DEPLOYER_IMAGE ?= $(REGISTRY)/$(APP_ID)/deployer:$(RELEASE)
+APP_DEPLOYER_IMAGE_TRACK_TAG ?= $(REGISTRY)/$(APP_ID)/deployer:$(TAG)
 APP_GCS_PATH ?= $(GCS_URL)/grafana/$(TAG)
 
-NAME ?= grafana-1
+NAME ?= $(APP_ID)-1
 
 ifdef IMAGE_GRAFANA_INIT
   IMAGE_GRAFANA_INIT_FIELD = , "grafana.initImage": "$(IMAGE_GRAFANA_INIT)"
@@ -30,7 +32,7 @@ APP_PARAMETERS ?= { \
   $(METRICS_EXPORTER_ENABLED_FIELD) \
 }
 
-TESTER_IMAGE ?= $(REGISTRY)/grafana/tester:$(TAG)
+TESTER_IMAGE ?= $(REGISTRY)/$(APP_ID)/tester:$(RELEASE)
 
 # app_v2.Makefile provides the main targets for installing the
 # application.
@@ -61,7 +63,7 @@ app/build:: .build/grafana/debian9 \
                          .build/var/RELEASE \
                          | .build/grafana
 	docker build \
-	    --build-arg REGISTRY="$(REGISTRY)/grafana" \
+	    --build-arg REGISTRY="$(REGISTRY)/$(APP_ID)" \
 	    --build-arg TAG="$(RELEASE)" \
 	    --build-arg MARKETPLACE_TOOLS_TAG="$(MARKETPLACE_TOOLS_TAG)" \
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
@@ -78,10 +80,10 @@ app/build:: .build/grafana/debian9 \
                         .build/var/RELEASE \
                         | .build/grafana
 	docker pull marketplace.gcr.io/google/grafana5:$(TAG)
-	docker tag marketplace.gcr.io/google/grafana5:$(TAG) "$(REGISTRY)/grafana:$(TAG)"
-	docker tag "$(REGISTRY)/grafana:$(TAG)" "$(REGISTRY)/grafana:$(RELEASE)"
-	docker push "$(REGISTRY)/grafana:$(TAG)"
-	docker push "$(REGISTRY)/grafana:$(RELEASE)"
+	docker tag marketplace.gcr.io/google/grafana5:$(TAG) "$(REGISTRY)/$(APP_ID):$(TAG)"
+	docker tag "$(REGISTRY)/$(APP_ID):$(TAG)" "$(REGISTRY)/$(APP_ID):$(RELEASE)"
+	docker push "$(REGISTRY)/$(APP_ID):$(TAG)"
+	docker push "$(REGISTRY)/$(APP_ID):$(RELEASE)"
 	@touch "$@"
 
 
@@ -90,10 +92,10 @@ app/build:: .build/grafana/debian9 \
                         .build/var/RELEASE \
                         | .build/grafana
 	docker pull marketplace.gcr.io/google/debian9
-	docker tag marketplace.gcr.io/google/debian9 "$(REGISTRY)/grafana/debian9:$(TAG)"
-	docker tag "$(REGISTRY)/grafana/debian9:$(TAG)" "$(REGISTRY)/grafana/debian9:$(RELEASE)"
-	docker push "$(REGISTRY)/grafana/debian9:$(TAG)"
-	docker push "$(REGISTRY)/grafana/debian9:$(RELEASE)"
+	docker tag marketplace.gcr.io/google/debian9 "$(REGISTRY)/$(APP_ID)/debian9:$(TAG)"
+	docker tag "$(REGISTRY)/$(APP_ID)/debian9:$(TAG)" "$(REGISTRY)/$(APP_ID)/debian9:$(RELEASE)"
+	docker push "$(REGISTRY)/$(APP_ID)/debian9:$(TAG)"
+	docker push "$(REGISTRY)/$(APP_ID)/debian9:$(RELEASE)"
 	@touch "$@"
 
 
@@ -103,11 +105,11 @@ app/build:: .build/grafana/debian9 \
                                  | .build/grafana
 	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
-	    "$(REGISTRY)/grafana/prometheus-to-sd:$(TAG)"
-	docker tag "$(REGISTRY)/grafana/prometheus-to-sd:$(TAG)" \
-	    "$(REGISTRY)/grafana/prometheus-to-sd:$(RELEASE)"
-	docker push "$(REGISTRY)/grafana/prometheus-to-sd:$(TAG)"
-	docker push "$(REGISTRY)/grafana/prometheus-to-sd:$(RELEASE)"
+	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TAG)"
+	docker tag "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TAG)" \
+	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
+	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TAG)"
+	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
 	@touch "$@"
 
 
