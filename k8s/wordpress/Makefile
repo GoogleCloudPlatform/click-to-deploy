@@ -134,7 +134,7 @@ app/build:: .build/wordpress/deployer \
                         .build/var/TAG \
                         .build/var/RELEASE \
                         | .build/wordpress
-	docker pull marketplace.gcr.io/google/mysql5:latest)
+	docker pull marketplace.gcr.io/google/mysql5:latest
 	docker tag marketplace.gcr.io/google/mysql5:latest \
 	    "$(REGISTRY)/$(APP_ID)/mysql:$(TAG)"
 	docker tag "$(REGISTRY)/$(APP_ID)/mysql:$(TAG)" "$(REGISTRY)/$(APP_ID)/mysql:$(RELEASE)"
