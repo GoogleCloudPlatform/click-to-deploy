@@ -14,6 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Set the $RANDFILE env var to where openssl expects it.
+echo 'setting RANDFILE var value to /root/.rnd'
+export RANDFILE="/root/.rnd"
+
 source /opt/c2d/c2d-utils || exit 1
 
 set +o errexit
