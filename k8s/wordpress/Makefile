@@ -14,7 +14,9 @@ $(info ---- TAG = $(TAG))
 $(info ---- RELEASE = $(RELEASE))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/$(APP_ID)/deployer:$(RELEASE)
+APP_DEPLOYER_IMAGE_TRACK_TAG ?= $(REGISTRY)/$(APP_ID)/deployer:$(TAG)
 APP_GCS_PATH ?= $(GCS_URL)/$(APP_ID)/$(TAG)
+
 NAME ?= $(APP_ID)-1
 
 ifdef IMAGE_MYSQL
@@ -83,12 +85,12 @@ app/build:: .build/wordpress/deployer \
                            chart/wordpress/templates/* \
                            schema.yaml \
                            .build/var/APP_DEPLOYER_IMAGE \
+                           .build/var/APP_DEPLOYER_IMAGE_TRACK_TAG \
                            .build/var/MARKETPLACE_TOOLS_TAG \
                            .build/var/REGISTRY \
                            .build/var/TAG \
                            .build/var/RELEASE \
                            | .build/wordpress
-	echo $(MARKETPLACE_TOOLS_TAG)
 	docker build \
 	    --build-arg REGISTRY="$(REGISTRY)/$(APP_ID)" \
 	    --build-arg TAG="$(RELEASE)" \
@@ -96,7 +98,9 @@ app/build:: .build/wordpress/deployer \
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
 	    -f deployer/Dockerfile \
 	    .
+	docker tag "$(APP_DEPLOYER_IMAGE)" "$(APP_DEPLOYER_IMAGE_TRACK_TAG)"
 	docker push "$(APP_DEPLOYER_IMAGE)"
+	docker push "$(APP_DEPLOYER_IMAGE_TRACK_TAG)"
 	@touch "$@"
 
 
@@ -106,7 +110,9 @@ app/build:: .build/wordpress/deployer \
                             | .build/wordpress
 	docker pull marketplace.gcr.io/google/wordpress5-php7-apache:$(TAG)
 	docker tag marketplace.gcr.io/google/wordpress5-php7-apache:$(TAG) \
-	    "$(REGISTRY)/$(APP_ID):$(RELEASE)"
+	    "$(REGISTRY)/$(APP_ID):$(TAG)"
+	docker tag "$(REGISTRY)/$(APP_ID):$(TAG)" "$(REGISTRY)/$(APP_ID):$(RELEASE)"
+	docker push "$(REGISTRY)/$(APP_ID):$(TAG)"
 	docker push "$(REGISTRY)/$(APP_ID):$(RELEASE)"
 	@touch "$@"
 
@@ -117,7 +123,9 @@ app/build:: .build/wordpress/deployer \
                                   | .build/wordpress
 	docker pull marketplace.gcr.io/google/wordpress5-php7-apache:exporter
 	docker tag marketplace.gcr.io/google/wordpress5-php7-apache:exporter \
-	    "$(REGISTRY)/$(APP_ID)/apache-exporter:$(RELEASE)"
+	    "$(REGISTRY)/$(APP_ID)/apache-exporter:$(TAG)"
+	docker tag "$(REGISTRY)/$(APP_ID)/apache-exporter:$(TAG)" "$(REGISTRY)/$(APP_ID)/apache-exporter:$(RELEASE)"
+	docker push "$(REGISTRY)/$(APP_ID)/apache-exporter:$(TAG)"
 	docker push "$(REGISTRY)/$(APP_ID)/apache-exporter:$(RELEASE)"
 	@touch "$@"
 
@@ -128,7 +136,9 @@ app/build:: .build/wordpress/deployer \
                         | .build/wordpress
 	docker pull marketplace.gcr.io/google/mysql5:$(TAG)
 	docker tag marketplace.gcr.io/google/mysql5:$(TAG) \
-	    "$(REGISTRY)/$(APP_ID)/mysql:$(RELEASE)"
+	    "$(REGISTRY)/$(APP_ID)/mysql:$(TAG)"
+	docker tag "$(REGISTRY)/$(APP_ID)/mysql:$(TAG)" "$(REGISTRY)/$(APP_ID)/mysql:$(RELEASE)"
+	docker push "$(REGISTRY)/$(APP_ID)/mysql:$(TAG)"
 	docker push "$(REGISTRY)/$(APP_ID)/mysql:$(RELEASE)"
 	@touch "$@"
 
@@ -139,7 +149,9 @@ app/build:: .build/wordpress/deployer \
                                   | .build/wordpress
 	docker pull marketplace.gcr.io/google/mysql5:exporter
 	docker tag marketplace.gcr.io/google/mysql5:exporter \
-	    "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(RELEASE)"
+	    "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(TAG)"
+	docker tag "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(TAG)" "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(RELEASE)"
+	docker push "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(TAG)"
 	docker push "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(RELEASE)"
 	@touch "$@"
 
@@ -150,7 +162,9 @@ app/build:: .build/wordpress/deployer \
                                    | .build/wordpress
 	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
-	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
+	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TAG)"
+	docker tag "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TAG)" "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
+	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TAG)"
 	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
 	@touch "$@"
 
