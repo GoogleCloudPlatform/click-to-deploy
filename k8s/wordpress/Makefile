@@ -6,14 +6,16 @@ VERIFY_WAIT_TIMEOUT = 1800
 
 TAG ?= latest
 METRICS_EXPORTER_TAG ?= v0.5.1
-RELEASE ?= 0.1.1
+
+RELEASE ?= 0.1.0
+APP_ID ?= wordpress-managed-updates
 
 $(info ---- TAG = $(TAG))
 $(info ---- RELEASE = $(RELEASE))
 
-APP_DEPLOYER_IMAGE ?= $(REGISTRY)/wordpress/deployer:$(RELEASE)
-APP_GCS_PATH ?= $(GCS_URL)/wordpress/$(TAG)
-NAME ?= wordpress-1
+APP_DEPLOYER_IMAGE ?= $(REGISTRY)/$(APP_ID)/deployer:$(RELEASE)
+APP_GCS_PATH ?= $(GCS_URL)/$(APP_ID)/$(TAG)
+NAME ?= $(APP_ID)-1
 
 ifdef IMAGE_MYSQL
   IMAGE_MYSQL_FIELD = , "db.image": "$(IMAGE_MYSQL)"
@@ -55,7 +57,7 @@ APP_PARAMETERS ?= { \
   $(METRICS_EXPORTER_ENABLED_FIELD) \
 }
 
-TESTER_IMAGE ?= $(REGISTRY)/wordpress/tester:$(TAG)
+TESTER_IMAGE ?= $(REGISTRY)/$(APP_ID)/tester:$(RELEASE)
 
 # app_v2.Makefile provides the main targets for installing the
 # application.
@@ -88,7 +90,7 @@ app/build:: .build/wordpress/deployer \
                            | .build/wordpress
 	echo $(MARKETPLACE_TOOLS_TAG)
 	docker build \
-	    --build-arg REGISTRY="$(REGISTRY)/wordpress" \
+	    --build-arg REGISTRY="$(REGISTRY)/$(APP_ID)" \
 	    --build-arg TAG="$(RELEASE)" \
 	    --build-arg MARKETPLACE_TOOLS_TAG="$(MARKETPLACE_TOOLS_TAG)" \
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
@@ -104,8 +106,8 @@ app/build:: .build/wordpress/deployer \
                             | .build/wordpress
 	docker pull marketplace.gcr.io/google/wordpress5-php7-apache:$(TAG)
 	docker tag marketplace.gcr.io/google/wordpress5-php7-apache:$(TAG) \
-	    "$(REGISTRY)/wordpress:$(RELEASE)"
-	docker push "$(REGISTRY)/wordpress:$(RELEASE)"
+	    "$(REGISTRY)/$(APP_ID):$(RELEASE)"
+	docker push "$(REGISTRY)/$(APP_ID):$(RELEASE)"
 	@touch "$@"
 
 
@@ -115,8 +117,8 @@ app/build:: .build/wordpress/deployer \
                                   | .build/wordpress
 	docker pull marketplace.gcr.io/google/wordpress5-php7-apache:exporter
 	docker tag marketplace.gcr.io/google/wordpress5-php7-apache:exporter \
-	    "$(REGISTRY)/wordpress/apache-exporter:$(RELEASE)"
-	docker push "$(REGISTRY)/wordpress/apache-exporter:$(RELEASE)"
+	    "$(REGISTRY)/$(APP_ID)/apache-exporter:$(RELEASE)"
+	docker push "$(REGISTRY)/$(APP_ID)/apache-exporter:$(RELEASE)"
 	@touch "$@"
 
 
@@ -126,8 +128,8 @@ app/build:: .build/wordpress/deployer \
                         | .build/wordpress
 	docker pull marketplace.gcr.io/google/mysql5:$(TAG)
 	docker tag marketplace.gcr.io/google/mysql5:$(TAG) \
-	    "$(REGISTRY)/wordpress/mysql:$(RELEASE)"
-	docker push "$(REGISTRY)/wordpress/mysql:$(RELEASE)"
+	    "$(REGISTRY)/$(APP_ID)/mysql:$(RELEASE)"
+	docker push "$(REGISTRY)/$(APP_ID)/mysql:$(RELEASE)"
 	@touch "$@"
 
 
@@ -137,8 +139,8 @@ app/build:: .build/wordpress/deployer \
                                   | .build/wordpress
 	docker pull marketplace.gcr.io/google/mysql5:exporter
 	docker tag marketplace.gcr.io/google/mysql5:exporter \
-	    "$(REGISTRY)/wordpress/mysqld-exporter:$(RELEASE)"
-	docker push "$(REGISTRY)/wordpress/mysqld-exporter:$(RELEASE)"
+	    "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(RELEASE)"
+	docker push "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(RELEASE)"
 	@touch "$@"
 
 
@@ -148,8 +150,8 @@ app/build:: .build/wordpress/deployer \
                                    | .build/wordpress
 	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
-	    "$(REGISTRY)/wordpress/prometheus-to-sd:$(RELEASE)"
-	docker push "$(REGISTRY)/wordpress/prometheus-to-sd:$(RELEASE)"
+	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
+	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
 	@touch "$@"
 
 
