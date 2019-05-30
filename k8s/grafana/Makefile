@@ -13,7 +13,7 @@ $(info ---- RELEASE = $(RELEASE))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/$(APP_ID)/deployer:$(RELEASE)
 APP_DEPLOYER_IMAGE_TRACK_TAG ?= $(REGISTRY)/$(APP_ID)/deployer:$(TAG)
-APP_GCS_PATH ?= $(GCS_URL)/grafana/$(TAG)
+APP_GCS_PATH ?= $(GCS_URL)/$(APP_ID)/$(TAG)
 
 NAME ?= $(APP_ID)-1
 
