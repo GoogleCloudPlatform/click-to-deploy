@@ -2,9 +2,10 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
-TAG ?= 5.3
+GRAFANA_TAG ?= 5.3
 METRICS_EXPORTER_TAG ?= v0.5.1
 
+TAG ?= 0.1
 RELEASE ?= 0.1.0
 APP_ID ?= grafana-managed-updates
 
@@ -79,8 +80,8 @@ app/build:: .build/grafana/debian9 \
                         .build/var/TAG \
                         .build/var/RELEASE \
                         | .build/grafana
-	docker pull marketplace.gcr.io/google/grafana5:$(TAG)
-	docker tag marketplace.gcr.io/google/grafana5:$(TAG) "$(REGISTRY)/$(APP_ID):$(TAG)"
+	docker pull marketplace.gcr.io/google/grafana5:$(GRAFANA_TAG)
+	docker tag marketplace.gcr.io/google/grafana5:$(GRAFANA_TAG) "$(REGISTRY)/$(APP_ID):$(TAG)"
 	docker tag "$(REGISTRY)/$(APP_ID):$(TAG)" "$(REGISTRY)/$(APP_ID):$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID):$(TAG)"
 	docker push "$(REGISTRY)/$(APP_ID):$(RELEASE)"
