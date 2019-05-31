@@ -2,9 +2,10 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
-TAG ?= 1.7
+INFLUXDB_TAG ?= 1.7
 METRICS_EXPORTER_TAG ?= v0.5.1
 
+TAG ?= 0.1
 RELEASE ?= 0.1.0
 APP_ID ?= influxdb-managed-updates
 
@@ -73,8 +74,8 @@ app/build:: .build/influxdb/deployer \
                           .build/var/TAG \
                           .build/var/RELEASE \
                           | .build/influxdb
-	docker pull marketplace.gcr.io/google/influxdb1:$(TAG)
-	docker tag marketplace.gcr.io/google/influxdb1:$(TAG) \
+	docker pull marketplace.gcr.io/google/influxdb1:$(INFLUXDB_TAG)
+	docker tag marketplace.gcr.io/google/influxdb1:$(INFLUXDB_TAG) \
 	    "$(REGISTRY)/$(APP_ID):$(TAG)"
 	docker tag "$(REGISTRY)/$(APP_ID):$(TAG)" \
 	    "$(REGISTRY)/$(APP_ID):$(RELEASE)"
