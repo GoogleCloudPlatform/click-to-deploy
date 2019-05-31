@@ -4,10 +4,12 @@ include ../var.Makefile
 
 VERIFY_WAIT_TIMEOUT = 1800
 
-TAG ?= 0.1
-RELEASE ?= 0.1.0
+MYSQL_TAG ?= latest
+WP_TAG ?= latest
 METRICS_EXPORTER_TAG ?= v0.5.1
 
+TAG ?= 0.1
+RELEASE ?= 0.1.0
 APP_ID ?= wordpress-managed-updates
 
 $(info ---- TAG = $(TAG))
@@ -108,8 +110,8 @@ app/build:: .build/wordpress/deployer \
                             .build/var/TAG \
                             .build/var/RELEASE \
                             | .build/wordpress
-	docker pull marketplace.gcr.io/google/wordpress5-php7-apache:latest
-	docker tag marketplace.gcr.io/google/wordpress5-php7-apache:latest \
+	docker pull marketplace.gcr.io/google/wordpress5-php7-apache:$(WP_TAG)
+	docker tag marketplace.gcr.io/google/wordpress5-php7-apache:$(WP_TAG) \
 	    "$(REGISTRY)/$(APP_ID):$(TAG)"
 	docker tag "$(REGISTRY)/$(APP_ID):$(TAG)" "$(REGISTRY)/$(APP_ID):$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID):$(TAG)"
@@ -134,8 +136,8 @@ app/build:: .build/wordpress/deployer \
                         .build/var/TAG \
                         .build/var/RELEASE \
                         | .build/wordpress
-	docker pull marketplace.gcr.io/google/mysql5:latest
-	docker tag marketplace.gcr.io/google/mysql5:latest \
+	docker pull marketplace.gcr.io/google/mysql5:$(MYSQL_TAG)
+	docker tag marketplace.gcr.io/google/mysql5:$(MYSQL_TAG) \
 	    "$(REGISTRY)/$(APP_ID)/mysql:$(TAG)"
 	docker tag "$(REGISTRY)/$(APP_ID)/mysql:$(TAG)" "$(REGISTRY)/$(APP_ID)/mysql:$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID)/mysql:$(TAG)"
