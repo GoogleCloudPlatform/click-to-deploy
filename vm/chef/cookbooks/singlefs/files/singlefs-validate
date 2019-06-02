@@ -107,6 +107,9 @@ function test_grafana_dashboards {
   fi
 }
 
+echo -e "Wait 90s for NFS server to start and exit grace period.\n"
+sleep 90
+
 echo -e "Test installation and configuration.\n"
 
 readonly HOST_IP=$(hostname -i)

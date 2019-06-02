@@ -237,10 +237,12 @@ sed -i "s/#*RPCNFSDCOUNT=.*/RPCNFSDCOUNT=${NFS_THREADS}/" "${NFS_CONFIG}"
 # during failover.
 sed -i "s/RPCMOUNTDOPTS=\"/RPCMOUNTDOPTS=\"--port 2050 /" "${NFS_CONFIG}"
 
-# Enable NFS.
+# Start and enable NFS. Don't fail installation if NFS doesn't return
+# succesfully on start. The validation script checks if NFS started correctly.
 if [[ "${ENABLE_NFS}" = "enable:True" ]]; then
   for service in "${NFS_SERVICES[@]}"; do
     systemctl enable "${service}" || fail "Failed to enable service: ${service}"
+    systemctl start "${service}" || true
   done
 fi
 
@@ -264,6 +266,7 @@ EOF
 if [[ "${ENABLE_SMB}" = "enable:True" ]]; then
   for service in "${SAMBA_SERVICES[@]}"; do
     systemctl enable "${service}" || fail "Failed to enable service: ${service}"
+    systemctl start "${service}" || fail "Failed to start service: ${service}"
   done
 fi
 
