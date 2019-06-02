@@ -137,6 +137,7 @@ Configure the container images:
 ```shell
 TAG=9.6
 export IMAGE_POSTGRESQL="marketplace.gcr.io/google/postgresql:${TAG}"
+export IMAGE_POSTGRESQL_EXPORTER="marketplace.gcr.io/google/postgresql9:exporter"
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/postgresql/prometheus-to-sd:${TAG}"
 ```
 
@@ -150,6 +151,7 @@ script:
 
 ```shell
 IMAGE_POSTGRESQL=$(docker pull $IMAGE_POSTGRESQL | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_POSTGRESQL\")\"@sha256:\"\$3}")
+IMAGE_POSTGRESQL_EXPORTER=$(docker pull $IMAGE_POSTGRESQL_EXPORTER | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_POSTGRESQL_EXPORTER\")\"@sha256:\"\$3}")
 IMAGE_METRICS_EXPORTER=$(docker pull $IMAGE_METRICS_EXPORTER | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_METRICS_EXPORTER\")\"@sha256:\"\$3}")
 ```
 
@@ -224,6 +226,7 @@ helm template chart/postgresql \
   --set postgresql.volumeSize=$POSTGRESQL_VOLUME_SIZE \
   --set postgresql.exposePublicService=$EXPOSE_PUBLIC_SERVICE \
   --set db.password=$POSTGRESQL_DB_PASSWORD \
+  --set exporter.image=$IMAGE_POSTGRESQL_EXPORTER \
   --set metrics.image=$IMAGE_METRICS_EXPORTER \
   --set metrics.enabled=$METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
