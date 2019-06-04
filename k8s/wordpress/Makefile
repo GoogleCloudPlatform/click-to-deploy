@@ -12,7 +12,7 @@ MYSQL_TAG ?= latest
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 TRACK ?= 5.2
-RELEASE ?= 5.2.1
+RELEASE ?= 5.2.1+$(shell date +%s)
 APP_ID ?= wordpress-managed-updates
 
 $(info ---- TRACK = $(TRACK))

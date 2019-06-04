@@ -9,7 +9,7 @@ INFLUXDB_TAG ?= sha256:a41d33e302e917764d10f58dee6e7b89d764045468a30fa9eb31f5cb2
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 TRACK ?= 1.7
-RELEASE ?= 1.7.6
+RELEASE ?= 1.7.6+$(shell date +%s)
 APP_ID ?= influxdb-managed-updates
 
 $(info ---- TRACK = $(TRACK))

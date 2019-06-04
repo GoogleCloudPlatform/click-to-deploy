@@ -9,7 +9,7 @@ GRAFANA_TAG ?= sha256:2d61c53e58b27e59cd77c9899208bfa31a2d12d27822a3cc3ef3622131
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 TRACK ?= 5.3
-RELEASE ?= 5.3.4
+RELEASE ?= 5.3.4+$(shell date +%s)
 APP_ID ?= grafana-managed-updates
 
 $(info ---- TRACK = $(TRACK))
