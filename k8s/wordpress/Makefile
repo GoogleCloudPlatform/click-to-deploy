@@ -4,12 +4,15 @@ include ../var.Makefile
 
 VERIFY_WAIT_TIMEOUT = 1800
 
+# The digest should be updated automatically, or tag <major>.<minor>.<path/build>
+# should be available on GCP Marketplace.
+# Use `.build/wordpress/show-version` target to fill the RELEASE variable.
+WP_TAG ?= sha256:b90654a76e1c42594d9230479de8b436c637ee12937a343661d53c12ad4e7c2c
 MYSQL_TAG ?= latest
-WP_TAG ?= latest
 METRICS_EXPORTER_TAG ?= v0.5.1
 
-TRACK ?= 0.1
-RELEASE ?= 0.1.0
+TRACK ?= 5.2
+RELEASE ?= 5.2.1
 APP_ID ?= wordpress-managed-updates
 
 $(info ---- TRACK = $(TRACK))
@@ -75,11 +78,16 @@ app/build:: .build/wordpress/deployer \
             .build/wordpress/mysql \
             .build/wordpress/mysqld-exporter \
             .build/wordpress/prometheus-to-sd \
-            .build/wordpress/tester
+            .build/wordpress/tester \
+            .build/wordpress/show-version
 
 
 .build/wordpress: | .build
 	mkdir -p "$@"
+
+
+.build/wordpress/show-version:
+	docker run --rm --entrypoint=printenv marketplace.gcr.io/google/wordpress5-php7-apache@$(WP_TAG) WORDPRESS_VERSION
 
 
 .build/wordpress/deployer: deployer/* \
@@ -110,8 +118,8 @@ app/build:: .build/wordpress/deployer \
                             .build/var/TRACK \
                             .build/var/RELEASE \
                             | .build/wordpress
-	docker pull marketplace.gcr.io/google/wordpress5-php7-apache:$(WP_TAG)
-	docker tag marketplace.gcr.io/google/wordpress5-php7-apache:$(WP_TAG) \
+	docker pull marketplace.gcr.io/google/wordpress5-php7-apache@$(WP_TAG)
+	docker tag marketplace.gcr.io/google/wordpress5-php7-apache@$(WP_TAG) \
 	    "$(REGISTRY)/$(APP_ID):$(TRACK)"
 	docker tag "$(REGISTRY)/$(APP_ID):$(TRACK)" "$(REGISTRY)/$(APP_ID):$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID):$(TRACK)"

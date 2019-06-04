@@ -2,11 +2,14 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
-INFLUXDB_TAG ?= 1.7
+# The digest should be updated automatically, or tag <major>.<minor>.<path/build>
+# should be available on GCP Marketplace.
+# Use `.build/influxdb/show-version` target to fill the RELEASE variable.
+INFLUXDB_TAG ?= sha256:a41d33e302e917764d10f58dee6e7b89d764045468a30fa9eb31f5cb2c3bd6a8
 METRICS_EXPORTER_TAG ?= v0.5.1
 
-TRACK ?= 0.1
-RELEASE ?= 0.1.0
+TRACK ?= 1.7
+RELEASE ?= 1.7.6
 APP_ID ?= influxdb-managed-updates
 
 $(info ---- TRACK = $(TRACK))
@@ -36,14 +39,20 @@ TESTER_IMAGE ?= $(REGISTRY)/$(APP_ID)/tester:$(RELEASE)
 # must be included after.
 include ../app_v2.Makefile
 
+
 app/build:: .build/influxdb/deployer \
             .build/influxdb/influxdb \
             .build/influxdb/prometheus-to-sd \
-            .build/influxdb/tester
+            .build/influxdb/tester \
+            .build/influxdb/show-version \
 
 
 .build/influxdb: | .build
 	mkdir -p "$@"
+
+
+.build/influxdb/show-version:
+	docker run --rm marketplace.gcr.io/google/influxdb1@$(INFLUXDB_TAG) influxd version
 
 
 .build/influxdb/deployer: deployer/* \
@@ -74,8 +83,8 @@ app/build:: .build/influxdb/deployer \
                           .build/var/TRACK \
                           .build/var/RELEASE \
                           | .build/influxdb
-	docker pull marketplace.gcr.io/google/influxdb1:$(INFLUXDB_TAG)
-	docker tag marketplace.gcr.io/google/influxdb1:$(INFLUXDB_TAG) \
+	docker pull marketplace.gcr.io/google/influxdb1@$(INFLUXDB_TAG)
+	docker tag marketplace.gcr.io/google/influxdb1@$(INFLUXDB_TAG) \
 	    "$(REGISTRY)/$(APP_ID):$(TRACK)"
 	docker tag "$(REGISTRY)/$(APP_ID):$(TRACK)" \
 	    "$(REGISTRY)/$(APP_ID):$(RELEASE)"

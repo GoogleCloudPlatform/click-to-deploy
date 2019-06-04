@@ -2,11 +2,14 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
-GRAFANA_TAG ?= 5.3
+# The digest should be updated automatically, or tag <major>.<minor>.<path/build>
+# should be available on GCP Marketplace.
+# Use `.build/grafana/show-version` target to fill the RELEASE variable.
+GRAFANA_TAG ?= sha256:2d61c53e58b27e59cd77c9899208bfa31a2d12d27822a3cc3ef362213141a406
 METRICS_EXPORTER_TAG ?= v0.5.1
 
-TRACK ?= 0.1
-RELEASE ?= 0.1.0
+TRACK ?= 5.3
+RELEASE ?= 5.3.4
 APP_ID ?= grafana-managed-updates
 
 $(info ---- TRACK = $(TRACK))
@@ -41,15 +44,21 @@ TESTER_IMAGE ?= $(REGISTRY)/$(APP_ID)/tester:$(RELEASE)
 # must be included after.
 include ../app_v2.Makefile
 
+
 app/build:: .build/grafana/debian9 \
             .build/grafana/deployer \
             .build/grafana/grafana \
             .build/grafana/prometheus-to-sd \
-            .build/grafana/tester
+            .build/grafana/tester \
+            .build/grafana/show-version
 
 
 .build/grafana: | .build
 	mkdir -p "$@"
+
+
+.build/grafana/show-version:
+	docker run --rm --entrypoint=cat marketplace.gcr.io/google/grafana5@$(GRAFANA_TAG) /usr/share/grafana/VERSION
 
 
 .build/grafana/deployer: deployer/* \
@@ -80,8 +89,8 @@ app/build:: .build/grafana/debian9 \
                         .build/var/TRACK \
                         .build/var/RELEASE \
                         | .build/grafana
-	docker pull marketplace.gcr.io/google/grafana5:$(GRAFANA_TAG)
-	docker tag marketplace.gcr.io/google/grafana5:$(GRAFANA_TAG) "$(REGISTRY)/$(APP_ID):$(TRACK)"
+	docker pull marketplace.gcr.io/google/grafana5@$(GRAFANA_TAG)
+	docker tag marketplace.gcr.io/google/grafana5@$(GRAFANA_TAG) "$(REGISTRY)/$(APP_ID):$(TRACK)"
 	docker tag "$(REGISTRY)/$(APP_ID):$(TRACK)" "$(REGISTRY)/$(APP_ID):$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID):$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID):$(RELEASE)"
