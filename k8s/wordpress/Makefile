@@ -18,10 +18,6 @@ APP_ID ?= wordpress-managed-updates
 
 $(info ---- TRACK = $(TRACK))
 $(info ---- RELEASE = $(RELEASE))
-$(shell sleep 2)
-$(info ---- RELEASEx = $(RELEASE))
-
-exit
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/$(APP_ID)/deployer:$(RELEASE)
 APP_DEPLOYER_IMAGE_TRACK_TAG ?= $(REGISTRY)/$(APP_ID)/deployer:$(TRACK)
