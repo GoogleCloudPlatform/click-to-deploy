@@ -8,7 +8,7 @@ include ../var.Makefile
 INFLUXDB_TAG ?= sha256:a41d33e302e917764d10f58dee6e7b89d764045468a30fa9eb31f5cb2c3bd6a8
 METRICS_EXPORTER_TAG ?= v0.5.1
 
-TIMESTAMP ?= $(shell date +%s)
+TIMESTAMP := $(shell date +%s)
 TRACK ?= 1.7
 RELEASE ?= 1.7.6-build.$(TIMESTAMP)
 APP_ID ?= influxdb-managed-updates

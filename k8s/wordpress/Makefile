@@ -11,13 +11,17 @@ WP_TAG ?= sha256:b90654a76e1c42594d9230479de8b436c637ee12937a343661d53c12ad4e7c2
 MYSQL_TAG ?= latest
 METRICS_EXPORTER_TAG ?= v0.5.1
 
-TIMESTAMP ?= $(shell date +%s)
+TIMESTAMP := $(shell date +%s)
 TRACK ?= 5.2
 RELEASE ?= 5.2.1-build.$(TIMESTAMP)
 APP_ID ?= wordpress-managed-updates
 
 $(info ---- TRACK = $(TRACK))
 $(info ---- RELEASE = $(RELEASE))
+$(shell sleep 2)
+$(info ---- RELEASEx = $(RELEASE))
+
+exit
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/$(APP_ID)/deployer:$(RELEASE)
 APP_DEPLOYER_IMAGE_TRACK_TAG ?= $(REGISTRY)/$(APP_ID)/deployer:$(TRACK)
