@@ -5,16 +5,16 @@ include ../var.Makefile
 GRAFANA_TAG ?= 5.3
 METRICS_EXPORTER_TAG ?= v0.5.1
 
-TAG ?= 0.1
+TRACK ?= 0.1
 RELEASE ?= 0.1.0
 APP_ID ?= grafana-managed-updates
 
-$(info ---- TAG = $(TAG))
+$(info ---- TRACK = $(TRACK))
 $(info ---- RELEASE = $(RELEASE))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/$(APP_ID)/deployer:$(RELEASE)
-APP_DEPLOYER_IMAGE_TRACK_TAG ?= $(REGISTRY)/$(APP_ID)/deployer:$(TAG)
-APP_GCS_PATH ?= $(GCS_URL)/$(APP_ID)/$(TAG)
+APP_DEPLOYER_IMAGE_TRACK_TAG ?= $(REGISTRY)/$(APP_ID)/deployer:$(TRACK)
+APP_GCS_PATH ?= $(GCS_URL)/$(APP_ID)/$(TRACK)
 
 NAME ?= $(APP_ID)-1
 
@@ -60,7 +60,7 @@ app/build:: .build/grafana/debian9 \
                          .build/var/APP_DEPLOYER_IMAGE_TRACK_TAG \
                          .build/var/MARKETPLACE_TOOLS_TAG \
                          .build/var/REGISTRY \
-                         .build/var/TAG \
+                         .build/var/TRACK \
                          .build/var/RELEASE \
                          | .build/grafana
 	docker build \
@@ -77,39 +77,39 @@ app/build:: .build/grafana/debian9 \
 
 
 .build/grafana/grafana: .build/var/REGISTRY \
-                        .build/var/TAG \
+                        .build/var/TRACK \
                         .build/var/RELEASE \
                         | .build/grafana
 	docker pull marketplace.gcr.io/google/grafana5:$(GRAFANA_TAG)
-	docker tag marketplace.gcr.io/google/grafana5:$(GRAFANA_TAG) "$(REGISTRY)/$(APP_ID):$(TAG)"
-	docker tag "$(REGISTRY)/$(APP_ID):$(TAG)" "$(REGISTRY)/$(APP_ID):$(RELEASE)"
-	docker push "$(REGISTRY)/$(APP_ID):$(TAG)"
+	docker tag marketplace.gcr.io/google/grafana5:$(GRAFANA_TAG) "$(REGISTRY)/$(APP_ID):$(TRACK)"
+	docker tag "$(REGISTRY)/$(APP_ID):$(TRACK)" "$(REGISTRY)/$(APP_ID):$(RELEASE)"
+	docker push "$(REGISTRY)/$(APP_ID):$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID):$(RELEASE)"
 	@touch "$@"
 
 
 .build/grafana/debian9: .build/var/REGISTRY \
-                        .build/var/TAG \
+                        .build/var/TRACK \
                         .build/var/RELEASE \
                         | .build/grafana
 	docker pull marketplace.gcr.io/google/debian9
-	docker tag marketplace.gcr.io/google/debian9 "$(REGISTRY)/$(APP_ID)/debian9:$(TAG)"
-	docker tag "$(REGISTRY)/$(APP_ID)/debian9:$(TAG)" "$(REGISTRY)/$(APP_ID)/debian9:$(RELEASE)"
-	docker push "$(REGISTRY)/$(APP_ID)/debian9:$(TAG)"
+	docker tag marketplace.gcr.io/google/debian9 "$(REGISTRY)/$(APP_ID)/debian9:$(TRACK)"
+	docker tag "$(REGISTRY)/$(APP_ID)/debian9:$(TRACK)" "$(REGISTRY)/$(APP_ID)/debian9:$(RELEASE)"
+	docker push "$(REGISTRY)/$(APP_ID)/debian9:$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID)/debian9:$(RELEASE)"
 	@touch "$@"
 
 
 .build/grafana/prometheus-to-sd: .build/var/REGISTRY \
-                                 .build/var/TAG \
+                                 .build/var/TRACK \
                                  .build/var/RELEASE \
                                  | .build/grafana
 	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
-	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TAG)"
-	docker tag "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TAG)" \
+	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
+	docker tag "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)" \
 	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
-	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TAG)"
+	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
 	@touch "$@"
 

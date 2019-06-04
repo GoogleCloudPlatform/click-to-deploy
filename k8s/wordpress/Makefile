@@ -8,16 +8,16 @@ MYSQL_TAG ?= latest
 WP_TAG ?= latest
 METRICS_EXPORTER_TAG ?= v0.5.1
 
-TAG ?= 0.1
+TRACK ?= 0.1
 RELEASE ?= 0.1.0
 APP_ID ?= wordpress-managed-updates
 
-$(info ---- TAG = $(TAG))
+$(info ---- TRACK = $(TRACK))
 $(info ---- RELEASE = $(RELEASE))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/$(APP_ID)/deployer:$(RELEASE)
-APP_DEPLOYER_IMAGE_TRACK_TAG ?= $(REGISTRY)/$(APP_ID)/deployer:$(TAG)
-APP_GCS_PATH ?= $(GCS_URL)/$(APP_ID)/$(TAG)
+APP_DEPLOYER_IMAGE_TRACK_TAG ?= $(REGISTRY)/$(APP_ID)/deployer:$(TRACK)
+APP_GCS_PATH ?= $(GCS_URL)/$(APP_ID)/$(TRACK)
 
 NAME ?= $(APP_ID)-1
 
@@ -90,7 +90,7 @@ app/build:: .build/wordpress/deployer \
                            .build/var/APP_DEPLOYER_IMAGE_TRACK_TAG \
                            .build/var/MARKETPLACE_TOOLS_TAG \
                            .build/var/REGISTRY \
-                           .build/var/TAG \
+                           .build/var/TRACK \
                            .build/var/RELEASE \
                            | .build/wordpress
 	docker build \
@@ -107,66 +107,66 @@ app/build:: .build/wordpress/deployer \
 
 
 .build/wordpress/wordpress: .build/var/REGISTRY \
-                            .build/var/TAG \
+                            .build/var/TRACK \
                             .build/var/RELEASE \
                             | .build/wordpress
 	docker pull marketplace.gcr.io/google/wordpress5-php7-apache:$(WP_TAG)
 	docker tag marketplace.gcr.io/google/wordpress5-php7-apache:$(WP_TAG) \
-	    "$(REGISTRY)/$(APP_ID):$(TAG)"
-	docker tag "$(REGISTRY)/$(APP_ID):$(TAG)" "$(REGISTRY)/$(APP_ID):$(RELEASE)"
-	docker push "$(REGISTRY)/$(APP_ID):$(TAG)"
+	    "$(REGISTRY)/$(APP_ID):$(TRACK)"
+	docker tag "$(REGISTRY)/$(APP_ID):$(TRACK)" "$(REGISTRY)/$(APP_ID):$(RELEASE)"
+	docker push "$(REGISTRY)/$(APP_ID):$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID):$(RELEASE)"
 	@touch "$@"
 
 
 .build/wordpress/apache-exporter: .build/var/REGISTRY \
-                                  .build/var/TAG \
+                                  .build/var/TRACK \
                                   .build/var/RELEASE \
                                   | .build/wordpress
 	docker pull marketplace.gcr.io/google/wordpress5-php7-apache:exporter
 	docker tag marketplace.gcr.io/google/wordpress5-php7-apache:exporter \
-	    "$(REGISTRY)/$(APP_ID)/apache-exporter:$(TAG)"
-	docker tag "$(REGISTRY)/$(APP_ID)/apache-exporter:$(TAG)" "$(REGISTRY)/$(APP_ID)/apache-exporter:$(RELEASE)"
-	docker push "$(REGISTRY)/$(APP_ID)/apache-exporter:$(TAG)"
+	    "$(REGISTRY)/$(APP_ID)/apache-exporter:$(TRACK)"
+	docker tag "$(REGISTRY)/$(APP_ID)/apache-exporter:$(TRACK)" "$(REGISTRY)/$(APP_ID)/apache-exporter:$(RELEASE)"
+	docker push "$(REGISTRY)/$(APP_ID)/apache-exporter:$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID)/apache-exporter:$(RELEASE)"
 	@touch "$@"
 
 
 .build/wordpress/mysql: .build/var/REGISTRY \
-                        .build/var/TAG \
+                        .build/var/TRACK \
                         .build/var/RELEASE \
                         | .build/wordpress
 	docker pull marketplace.gcr.io/google/mysql5:$(MYSQL_TAG)
 	docker tag marketplace.gcr.io/google/mysql5:$(MYSQL_TAG) \
-	    "$(REGISTRY)/$(APP_ID)/mysql:$(TAG)"
-	docker tag "$(REGISTRY)/$(APP_ID)/mysql:$(TAG)" "$(REGISTRY)/$(APP_ID)/mysql:$(RELEASE)"
-	docker push "$(REGISTRY)/$(APP_ID)/mysql:$(TAG)"
+	    "$(REGISTRY)/$(APP_ID)/mysql:$(TRACK)"
+	docker tag "$(REGISTRY)/$(APP_ID)/mysql:$(TRACK)" "$(REGISTRY)/$(APP_ID)/mysql:$(RELEASE)"
+	docker push "$(REGISTRY)/$(APP_ID)/mysql:$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID)/mysql:$(RELEASE)"
 	@touch "$@"
 
 
 .build/wordpress/mysqld-exporter: .build/var/REGISTRY \
-                                  .build/var/TAG \
+                                  .build/var/TRACK \
                                    .build/var/RELEASE \
                                   | .build/wordpress
 	docker pull marketplace.gcr.io/google/mysql5:exporter
 	docker tag marketplace.gcr.io/google/mysql5:exporter \
-	    "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(TAG)"
-	docker tag "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(TAG)" "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(RELEASE)"
-	docker push "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(TAG)"
+	    "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(TRACK)"
+	docker tag "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(TRACK)" "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(RELEASE)"
+	docker push "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(RELEASE)"
 	@touch "$@"
 
 
 .build/wordpress/prometheus-to-sd: .build/var/REGISTRY \
-                                   .build/var/TAG \
+                                   .build/var/TRACK \
                                    .build/var/RELEASE \
                                    | .build/wordpress
 	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
-	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TAG)"
-	docker tag "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TAG)" "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
-	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TAG)"
+	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
+	docker tag "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)" "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
+	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
 	@touch "$@"
 
