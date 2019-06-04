@@ -3,7 +3,7 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
-TAG ?= 0.8.1
+TAG ?= 0.10.0
 NAME ?= agones
 
 
@@ -13,6 +13,7 @@ $(info ---- TAG = $(TAG))
 # source repo and destination tags for images
 SOURCE_REGISTRY ?= gcr.io/agones-images
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/agones/deployer:$(TAG)
+TESTER_IMAGE ?= $(REGISTRY)/agones/tester:$(TAG)
 AGONES_CONTROLLER_IMAGE ?= $(REGISTRY)/agones:$(TAG)
 AGONES_SDK_IMAGE ?= $(REGISTRY)/agones/agones-sdk:$(TAG)
 AGONES_PING_IMAGE ?= $(REGISTRY)/agones/agones-ping:$(TAG)
@@ -25,6 +26,7 @@ APP_PARAMETERS ?= { \
 
 
 app/build:: .build/agones/deployer \
+			.build/agones/tester \
             .build/agones/agones-controller \
             .build/agones/agones-sdk \
             .build/agones/agones-ping
@@ -52,6 +54,16 @@ app/build:: .build/agones/deployer \
 	    -f deployer/Dockerfile \
 	    .
 	docker push "$(APP_DEPLOYER_IMAGE)"
+	@touch "$@"
+
+
+.build/agones/tester: .build/var/TESTER_IMAGE \
+                        $(shell find apptest -type f) \
+                        | .build/agones
+	$(call print_target,$@)
+	cd apptest/tester \
+	    && docker build --tag "$(TESTER_IMAGE)" .
+	docker push "$(TESTER_IMAGE)"
 	@touch "$@"
 
 

@@ -63,17 +63,25 @@ app_api_version=$(kubectl get "applications/$NAME" \
 
 # Modify helm values to include CRDs and Webhooks
 sed -i'' 's/registerWebhooks: false/registerWebhooks: true/' /data/extracted/chart/chart/values.yaml
+sed -i'' 's/registerApiService: false/registerApiService: true/' /data/extracted/chart/chart/values.yaml
 sed -i'' 's/install: false/install: true/' /data/extracted/chart/chart/values.yaml
 
 # Regenerate manifest required entries
+# Generate first extensions.yaml since they contain the secret required for the controller.
 helm template "/data/extracted/chart/chart" \
   --name="$NAME" \
   --namespace="$NAMESPACE" \
   --values=<(/bin/print_config.py --output=yaml) \
-  -x "charts/agones/templates/admissionregistration.yaml" \
+  -x "charts/agones/templates/extensions.yaml" \
+  > "/data/stage2-raw.yaml"
+
+helm template "/data/extracted/chart/chart" \
+  --name="$NAME" \
+  --namespace="$NAMESPACE" \
+  --values=<(/bin/print_config.py --output=yaml) \
   -x "charts/agones/templates/controller.yaml" \
   `tar ztf /data/extracted/chart/chart/charts/agones-*.tgz | grep /crds/ | grep -v /_ | awk -F'\n' '{printf "-x charts/"$0" "}'` \
-  > "/data/stage2-raw.yaml"
+  >> "/data/stage2-raw.yaml"
 
 # Re-apply ownership metadata
 /bin/set_ownership.py \

@@ -1,6 +1,6 @@
 dependencies:
 - name: agones
   repository: https://agones.dev/chart/stable
-  version: 0.8.1
-digest: sha256:79adc200f3a5d829a1f3fa36a9632d3ccdf354655698e9f6991340d9d893e46a
-generated: 2019-03-01T16:18:52.30718372-08:00
+  version: 0.10.0
+digest: sha256:5e2790e696c6ec60fd8c2d0056a275d3d8951d34774375fd94a4b7bc5264eb61
+generated: 2019-06-03T13:30:52.131199822-07:00

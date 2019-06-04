@@ -39,7 +39,7 @@ properties:
             resources: ["pods"]
             verbs: ["create", "delete", "list", "watch"]
           - apiGroups: [""]
-            resources: ["nodes"]
+            resources: ["nodes","secrets"]
             verbs: ["list", "watch"]
           - apiGroups: ["apiextensions.k8s.io"]
             resources: ["customresourcedefinitions"]
@@ -54,8 +54,11 @@ properties:
             resources: ["fleets", "fleetallocations", "fleetautoscalers"]
             verbs: ["get", "list", "update", "watch"]
           - apiGroups: ["stable.agones.dev"]
-            resources: ["gameserverallocations"]
-            verbs: ["list", "watch",  "delete"]
+            resources: ["fleets/status",  "fleetautoscalers/status", "gameserversets/status"]
+            verbs: ["update"]
+          - apiGroups: ["multicluster.agones.dev"]
+            resources: ["gameserverallocationpolicies"]
+            verbs: ["create", "delete", "get", "list", "update", "watch"]
 
   agones.agones.serviceaccount.sdk:
     type: string

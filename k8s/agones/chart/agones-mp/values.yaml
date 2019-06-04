@@ -14,3 +14,4 @@ agones:
     createPriorityClass: false
     registerServiceAccounts: false
     registerWebhooks: false
+    registerApiService: false

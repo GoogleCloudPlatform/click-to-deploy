@@ -1,0 +1,9 @@
+actions:
+- name: Agones controller is running
+  bashTest:
+    script: |-
+      kubectl get deployments --namespace="${NAMESPACE}" agones-controller \
+        --output jsonpath="{.status.availableReplicas}"
+    expect:
+      stdout:
+        equals: '1'

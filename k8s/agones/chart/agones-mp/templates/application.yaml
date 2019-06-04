@@ -11,7 +11,7 @@ metadata:
 spec:
   descriptor:
     type: "Agones"
-    versions: '0.8.1'
+    versions: '0.10.0'
 
     description: |-
       Agones is a library for hosting, running and scaling dedicated game servers on Kubernetes.
@@ -27,10 +27,10 @@ spec:
 
     links:
     - description: 'Agones with Click to Deploy'
-      url: https://agones.dev/site/docs/installation/click-to-deploy/
+      url: https://0-10-0.agones.dev/site/docs/installation/click-to-deploy/
 
     notes: |-
-      Now that you have deployed Agones into your cluster, please follow [these instructions](https://agones.dev/site/docs/installation/click-to-deploy/) to finalize the Agones installation.
+      Now that you have deployed Agones into your cluster, please follow [these instructions](https://0-10-0.agones.dev/site/docs/installation/click-to-deploy/) to finalize the Agones installation.
       Please note that there are some important follow-up steps in the instructions that are required to have a fully working solution.
 
   info:
