@@ -76,6 +76,14 @@ properties:
     title: Enable Stackdriver Metrics Exporter
     description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
     default: false
+  certificate:
+    type: string
+    x-google-marketplace:
+      type: TLS_CERTIFICATE
+      tlsCertificate:
+        generatedProperties:
+          base64EncodedPrivateKey: tls.base64EncodedPrivateKey
+          base64EncodedCertificate: tls.base64EncodedCertificate
 required:
 - name
 - namespace
@@ -91,3 +99,4 @@ required:
 - metrics.image
 - metrics.enabled
 - enablePublicServiceAndIngress
+- certificate

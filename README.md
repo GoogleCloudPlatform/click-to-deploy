@@ -1,7 +1,6 @@
 # About
 
-Source for Google Click to Deploy solutions listed on
-Google Cloud Marketplace.
+Source for Google Click to Deploy solutions listed on Google Cloud Marketplace.
 
 # Disclaimer
 
@@ -9,36 +8,43 @@ This is not an officially supported Google product.
 
 # Cloud Build CI
 
-This repository uses Cloud Build for continuous integration. The Cloud Build configuration file is located at [`cloudbuild.yaml`](cloudbuild.yaml).
+This repository uses Cloud Build for continuous integration. Each type of application has its own configuration file.
 
-## Manually run the build
+For detailed information on each configuration, see the following documentations:
 
-Cloud Build can be triggered manually by running the following command
-from the root directory of this repository:
+*   [Docker images](docker/README.md#cloud-build-ci)
+*   [K8s applications](k8s/README.md#cloud-build-ci)
+*   [VM applications](vm/README.md#cloud-build-ci)
+
+## GCB custom worker pools
+
+The Cloud Build configurations use Google Cloud Build (GCB) custom worker pools.
+
+If you want to create a new worker pool, run the following command:
 
 ```shell
-export GCP_PROJECT_TO_RUN_CLOUD_BUILD=<>
-export GKE_CLUSTER_NAME=<>
-export GKE_CLUSTER_LOCATION=<e.g. us-central1>
-
-gcloud builds submit . \
-  --config cloudbuild.yaml \
-  --substitutions _CLUSTER_NAME=$GKE_CLUSTER_NAME,_CLUSTER_LOCATION=$GKE_CLUSTER_LOCATION \
-  --project $GCP_PROJECT_TO_RUN_CLOUD_BUILD \
-  --verbosity info
+gcloud alpha builds worker-pools create gcb-workers-pool \
+  --project=[PROJECT_ID] \
+  --regions=us-central1,us-west1,us-east1,us-east-4 \
+  --worker-count=2 \
+  --worker-machine-type=n1-standard-1 \
+  --worker-tag=gcb-worker \
+  --worker-network-name=default \
+  --worker-network-project=[PROJECT_ID] \
+  --worker-network-subnet=default
 ```
 
-## Cloud Build configuration generator
+Where:
 
-To make the `cloudbuild.yaml` configuration easier to maintain, a generator for
-its contents was created.
+*   `[PROJECT_ID]` is the GCP project ID where you want to create your custom worker pool.
 
-1.  The generator uses Jinja2 templates, install it using `pip install jinja2`
-    command.
-1.  To regenerate the file, run the following command:
+If you want to update the number of workers in an existing pool, run the following command:
 
-    ```shell
-    ./cloudbuild-k8s-generator.py
-    ```
+```shell
+gcloud alpha builds worker-pools update gcb-workers-pool \
+  --project=[PROJECT_ID] \
+  --worker-count=4 \
+```
 
-1.  As a result, new content will be saved in the `cloudbuild.yaml` file.
+For more information, see the
+[gcloud alpha builds worker-pools commands](https://cloud.google.com/sdk/gcloud/reference/alpha/builds/worker-pools/).
