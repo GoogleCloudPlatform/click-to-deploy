@@ -27,7 +27,7 @@ spec:
             mountPath: "/var/lib/grafana"
       containers:
         - name: grafana
-          image: {{ .Values.grafana.image }}
+          image: "{{ .Values.grafana.image.repo }}:{{ .Values.grafana.image.tag }}"
           imagePullPolicy: Always
           volumeMounts:
             - name: config

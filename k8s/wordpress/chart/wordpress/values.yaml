@@ -1,4 +1,7 @@
-wordpressImage: null
+wordpress:
+  image:
+    repo: null
+    tag: null
 
 db:
   image: null

@@ -1,6 +1,10 @@
-ifndef __APP_MAKEFILE__
+#
+# Used with deployer schema v2.
+#
 
-__APP_MAKEFILE__ := included
+ifndef __APP_V2_MAKEFILE__
+
+__APP_V2_MAKEFILE__ := included
 
 
 makefile_dir := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
@@ -8,6 +12,21 @@ include $(makefile_dir)/common.Makefile
 include $(makefile_dir)/var.Makefile
 
 VERIFY_WAIT_TIMEOUT = 600
+
+##### Validations and Information #####
+
+
+ifndef APP_GCS_PATH
+$(error APP_GCS_PATH must be defined)
+endif
+
+$(info ---- APP_GCS_PATH = $(APP_GCS_PATH))
+
+ifndef APP_DEPLOYER_IMAGE
+$(error APP_DEPLOYER_IMAGE must be defined)
+endif
+
+$(info ---- APP_DEPLOYER_IMAGE = $(APP_DEPLOYER_IMAGE))
 
 ##### Helper functions #####
 
@@ -54,9 +73,22 @@ endef
 app/build:: ;
 
 
+.PHONY: app/publish
+app/publish:: app/build \
+              .build/var/APP_DEPLOYER_IMAGE \
+              .build/var/APP_GCS_PATH \
+              .build/var/MARKETPLACE_TOOLS_TAG \
+              | .build/app/dev
+	$(call print_target)
+	.build/app/dev \
+	    /scripts/publish \
+	        --deployer_image='$(APP_DEPLOYER_IMAGE)' \
+	        --gcs_repo='$(APP_GCS_PATH)'
+
+
 # Installs the application into target namespace on the cluster.
 .PHONY: app/install
-app/install:: app/build \
+app/install:: app/publish \
               .build/var/APP_DEPLOYER_IMAGE \
               .build/var/APP_PARAMETERS \
               .build/var/MARKETPLACE_TOOLS_TAG \
@@ -64,14 +96,12 @@ app/install:: app/build \
 	$(call print_target)
 	.build/app/dev \
 	    /scripts/install \
-	        --deployer='$(APP_DEPLOYER_IMAGE)' \
-	        --parameters='$(APP_PARAMETERS)' \
-	        --entrypoint="/bin/deploy.sh"
-
+	        --version_meta_file='$(APP_GCS_PATH)/$(RELEASE).yaml' \
+	        --parameters='$(APP_PARAMETERS)'
 
 # Installs the application into target namespace on the cluster.
 .PHONY: app/install-test
-app/install-test:: app/build \
+app/install-test:: app/publish \
                    .build/var/APP_DEPLOYER_IMAGE \
                    .build/var/APP_PARAMETERS \
                    .build/var/MARKETPLACE_TOOLS_TAG \
@@ -95,7 +125,7 @@ app/uninstall: .build/var/APP_DEPLOYER_IMAGE \
 
 # Runs the verification pipeline.
 .PHONY: app/verify
-app/verify: app/build \
+app/verify: app/publish \
             .build/var/APP_DEPLOYER_IMAGE \
             .build/var/APP_PARAMETERS \
             .build/var/MARKETPLACE_TOOLS_TAG \
@@ -112,7 +142,7 @@ app/verify: app/build \
 .PHONY: app/doctor
 app/doctor: | .build/app/dev
 	$(call print_target)
-	.build/app/dev /scripts/doctor.py
+	.build/app/dev doctor
 
 
 endif
