@@ -2,16 +2,17 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
+APP_ID ?= grafana-managed-updates
+
 # The digest should be updated automatically, or tag <major>.<minor>.<path/build>
 # should be available on GCP Marketplace.
-# Use `.build/grafana/show-version` target to fill the RELEASE variable.
+# Use `.build/grafana/VERSION` target to fill the RELEASE variable.
 GRAFANA_TAG ?= sha256:2d61c53e58b27e59cd77c9899208bfa31a2d12d27822a3cc3ef362213141a406
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 TIMESTAMP := $(shell date +%s)
 TRACK ?= 5.3
 RELEASE ?= 5.3.4-build.$(TIMESTAMP)
-APP_ID ?= grafana-managed-updates
 
 $(info ---- TRACK = $(TRACK))
 $(info ---- RELEASE = $(RELEASE))
@@ -51,14 +52,15 @@ app/build:: .build/grafana/debian9 \
             .build/grafana/grafana \
             .build/grafana/prometheus-to-sd \
             .build/grafana/tester \
-            .build/grafana/show-version
+            .build/grafana/VERSION
 
 
 .build/grafana: | .build
 	mkdir -p "$@"
 
 
-.build/grafana/show-version:
+.PHONY: .build/grafana/VERSION
+.build/grafana/VERSION:
 	docker run --rm --entrypoint=cat marketplace.gcr.io/google/grafana5@$(GRAFANA_TAG) /usr/share/grafana/VERSION
 
 
