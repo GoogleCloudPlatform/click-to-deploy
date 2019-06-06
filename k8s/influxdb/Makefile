@@ -2,7 +2,7 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
-APP_ID ?= wordpress-managed-updates
+APP_ID ?= influxdb-managed-updates
 
 # The digest should be updated automatically, or tag <major>.<minor>.<path/build>
 # should be available on GCP Marketplace.
