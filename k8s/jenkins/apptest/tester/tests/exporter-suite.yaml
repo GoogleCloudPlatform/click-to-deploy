@@ -3,7 +3,7 @@ actions:
   bashTest:
     script: |-
       SERVICE="${APP_INSTANCE_NAME}-jenkins-ui"
-      wget -q -O- http://${SERVICE}.${NAMESPACE}.svc.cluster.local:8080/prometheus/ | grep -s '^jenkins_executor_count_value 2.0$'
+      curl -s -u "admin:${PASSWORD}" http://${SERVICE}.${NAMESPACE}.svc.cluster.local:8080/monitoring?format=prometheus | grep -q ^javamelody_memory_used_bytes
     expect:
       exitCode:
         equals: 0
