@@ -1,4 +1,3 @@
-applicationApiVersion: v1beta1
 properties:
   name:
     type: string
@@ -8,11 +7,6 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  cassandra.image:
-    type: string
-    default: $REGISTRY:$TAG
-    x-google-marketplace:
-      type: IMAGE
   cassandra.replicas:
     type: integer
     title: Replicas
@@ -20,25 +14,18 @@ properties:
     default: 3
     minimum: 3
     maximum: 11
-  metrics.image:
-    type: string
-    default: $REGISTRY/prometheus-to-sd:$TAG
-    x-google-marketplace:
-      type: IMAGE
   metrics.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
-    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
+    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters,
+      export of metrics to Stackdriver is not supported yet
     default: false
 
 required:
 - name
 - namespace
-- cassandra.image
 - cassandra.replicas
-- metrics.image
 - metrics.enabled
-
 x-google-marketplace:
   clusterConstraints:
     resources:
@@ -49,3 +36,22 @@ x-google-marketplace:
       affinity:
         simpleNodeAffinity:
           type: REQUIRE_ONE_NODE_PER_REPLICA
+  publishedVersionMetadata:
+    releaseNote: A regular update.
+    recommended: false
+    releaseTypes:
+    - Feature
+  publishedVersion: $TAG
+  schemaVersion: v2
+  applicationApiVersion: v1beta1
+  images:
+    ? ''
+    : properties:
+        cassandra.image:
+          type: FULL
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
+  managedUpdates:
+    kalmSupported: true

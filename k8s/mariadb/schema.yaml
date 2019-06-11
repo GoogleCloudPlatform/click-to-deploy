@@ -1,4 +1,3 @@
-application_api_version: v1beta1
 properties:
   name:
     type: string
@@ -8,11 +7,6 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  mariadb.image:
-    type: string
-    default: $REGISTRY:$TAG
-    x-google-marketplace:
-      type: IMAGE
   mariadb.volumeSize:
     type: integer
     title: Volume
@@ -40,6 +34,21 @@ properties:
 required:
 - name
 - namespace
-- mariadb.image
 - db.password
 - replication.password
+x-google-marketplace:
+  managedUpdates:
+    kalmSupported: true
+  schemaVersion: v2
+  publishedVersion: $TAG
+  images:
+    ? ''
+    : properties:
+        mariadb.image:
+          type: FULL
+  publishedVersionMetadata:
+    releaseTypes:
+    - Feature
+    recommended: false
+    releaseNote: A regular update.
+  applicationApiVersion: v1beta1

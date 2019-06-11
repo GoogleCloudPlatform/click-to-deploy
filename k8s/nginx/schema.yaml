@@ -1,4 +1,3 @@
-application_api_version: v1beta1
 properties:
   name:
     type: string
@@ -8,16 +7,6 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  nginx.image:
-    type: string
-    default: $REGISTRY:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  nginx.initImage:
-    type: string
-    default: $REGISTRY/debian9:$TAG
-    x-google-marketplace:
-      type: IMAGE
   nginx.replicas:
     type: integer
     title: Replicas
@@ -32,15 +21,11 @@ properties:
         generatedProperties:
           base64EncodedPrivateKey: tls.base64EncodedPrivateKey
           base64EncodedCertificate: tls.base64EncodedCertificate
-  metrics.image:
-    type: string
-    default: $REGISTRY/prometheus-to-sd:$TAG
-    x-google-marketplace:
-      type: IMAGE
   metrics.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
-    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
+    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters,
+      export of metrics to Stackdriver is not supported yet
     default: false
   publicIp.available:
     type: boolean
@@ -50,8 +35,29 @@ properties:
 required:
 - name
 - namespace
-- nginx.image
-- nginx.initImage
 - nginx.replicas
-- metrics.image
 - metrics.enabled
+x-google-marketplace:
+  schemaVersion: v2
+  publishedVersionMetadata:
+    releaseTypes:
+    - Feature
+    recommended: false
+    releaseNote: A regular update.
+  images:
+    ? ''
+    : properties:
+        nginx.image:
+          type: FULL
+    debian9:
+      properties:
+        nginx.initImage:
+          type: FULL
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
+  publishedVersion: $TAG
+  applicationApiVersion: v1beta1
+  managedUpdates:
+    kalmSupported: true

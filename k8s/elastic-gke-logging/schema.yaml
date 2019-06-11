@@ -1,4 +1,3 @@
-application_api_version: v1beta1
 properties:
   name:
     type: string
@@ -8,26 +7,6 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  elasticsearch.image:
-    type: string
-    default: $REGISTRY:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  kibana.image:
-    type: string
-    default: $REGISTRY/kibana:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  fluentd.image:
-    type: string
-    default: $REGISTRY/fluentd:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  initImage:
-    type: string
-    default: $REGISTRY/ubuntu16_04:$TAG
-    x-google-marketplace:
-      type: IMAGE
   elasticsearch.replicas:
     type: integer
     title: Elasticsearch replicas
@@ -45,27 +24,50 @@ properties:
         - type: ClusterRole
           rulesType: CUSTOM
           rules:
-          - apiGroups: [""]
-            resources: ["pods", "namespaces"]
-            verbs: ["get", "list", "watch"]
-  metrics.image:
-    type: string
-    default: $REGISTRY/prometheus-to-sd:$TAG
-    x-google-marketplace:
-      type: IMAGE
+          - apiGroups: ['']
+            resources: [pods, namespaces]
+            verbs: [get, list, watch]
   metrics.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
-    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
+    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters,
+      export of metrics to Stackdriver is not supported yet
     default: false
 required:
 - name
 - namespace
-- elasticsearch.image
-- kibana.image
-- fluentd.image
-- initImage
 - elasticsearch.replicas
 - fluentd.serviceAccount
-- metrics.image
 - metrics.enabled
+x-google-marketplace:
+  applicationApiVersion: v1beta1
+  managedUpdates:
+    kalmSupported: true
+  publishedVersionMetadata:
+    releaseTypes:
+    - Feature
+    recommended: false
+    releaseNote: A regular update.
+  images:
+    ? ''
+    : properties:
+        elasticsearch.image:
+          type: FULL
+    kibana:
+      properties:
+        kibana.image:
+          type: FULL
+    fluentd:
+      properties:
+        fluentd.image:
+          type: FULL
+    ubuntu16_04:
+      properties:
+        initImage:
+          type: FULL
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
+  publishedVersion: $TAG
+  schemaVersion: v2

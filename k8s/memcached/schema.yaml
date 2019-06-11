@@ -1,4 +1,3 @@
-application_api_version: v1beta1
 properties:
   name:
     type: string
@@ -8,11 +7,6 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  memcached.image:
-    type: string
-    default: $REGISTRY:$TAG
-    x-google-marketplace:
-      type: IMAGE
   memcached.replicas:
     type: integer
     title: Replicas
@@ -20,20 +14,34 @@ properties:
     default: 3
     minimum: 1
     maximum: 11
-  metrics.image:
-    type: string
-    default: $REGISTRY/prometheus-to-sd:$TAG
-    x-google-marketplace:
-      type: IMAGE
   metrics.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
-    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
+    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters,
+      export of metrics to Stackdriver is not supported yet
     default: false
 required:
 - name
 - namespace
-- memcached.image
 - memcached.replicas
-- metrics.image
 - metrics.enabled
+x-google-marketplace:
+  publishedVersionMetadata:
+    releaseNote: A regular update.
+    recommended: false
+    releaseTypes:
+    - Feature
+  images:
+    ? ''
+    : properties:
+        memcached.image:
+          type: FULL
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
+  schemaVersion: v2
+  managedUpdates:
+    kalmSupported: true
+  applicationApiVersion: v1beta1
+  publishedVersion: $TAG

@@ -1,4 +1,3 @@
-application_api_version: v1beta1
 properties:
   name:
     type: string
@@ -8,13 +7,22 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  jenkins.image:
-    type: string
-    default: $REGISTRY:$TAG
-    x-google-marketplace:
-      type: IMAGE
-
 required:
 - name
 - namespace
-- jenkins.image
+x-google-marketplace:
+  managedUpdates:
+    kalmSupported: true
+  images:
+    ? ''
+    : properties:
+        jenkins.image:
+          type: FULL
+  publishedVersion: $TAG
+  publishedVersionMetadata:
+    recommended: false
+    releaseTypes:
+    - Feature
+    releaseNote: A regular update.
+  applicationApiVersion: v1beta1
+  schemaVersion: v2

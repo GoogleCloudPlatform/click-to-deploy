@@ -1,4 +1,3 @@
-application_api_version: v1beta1
 properties:
   APP_INSTANCE_NAME:
     type: string
@@ -20,36 +19,6 @@ properties:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 12
-  IMAGE_PROMETHEUS:
-    type: string
-    default: $REGISTRY:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  IMAGE_ALERTMANAGER:
-    type: string
-    default: $REGISTRY/alertmanager:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  IMAGE_KUBE_STATE_METRICS:
-    type: string
-    default: $REGISTRY/kubestatemetrics:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  IMAGE_NODE_EXPORTER:
-    type: string
-    default: $REGISTRY/nodeexporter:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  IMAGE_GRAFANA:
-    type: string
-    default: $REGISTRY/grafana:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  IMAGE_PROMETHEUS_INIT:
-    type: string
-    default: $REGISTRY/debian9:$TAG
-    x-google-marketplace:
-      type: IMAGE
   PROMETHEUS_SERVICE_ACCOUNT:
     type: string
     title: Prometheus Service Account
@@ -72,7 +41,7 @@ properties:
         - type: ClusterRole
           rulesType: CUSTOM
           rules:
-          - apiGroups: [""]
+          - apiGroups: ['']
             resources:
             - configmaps
             - secrets
@@ -86,26 +55,26 @@ properties:
             - persistentvolumes
             - namespaces
             - endpoints
-            verbs: ["list", "watch"]
-          - apiGroups: ["extensions"]
+            verbs: [list, watch]
+          - apiGroups: [extensions]
             resources:
             - daemonsets
             - deployments
             - replicasets
-            verbs: ["list", "watch"]
-          - apiGroups: ["apps"]
+            verbs: [list, watch]
+          - apiGroups: [apps]
             resources:
             - statefulsets
-            verbs: ["list", "watch"]
-          - apiGroups: ["batch"]
+            verbs: [list, watch]
+          - apiGroups: [batch]
             resources:
             - cronjobs
             - jobs
-            verbs: ["list", "watch"]
-          - apiGroups: ["autoscaling"]
+            verbs: [list, watch]
+          - apiGroups: [autoscaling]
             resources:
             - horizontalpodautoscalers
-            verbs: ["list", "watch"]
+            verbs: [list, watch]
   ALERTMANAGER_SERVICE_ACCOUNT:
     type: string
     title: Alertmanager Service Account
@@ -144,14 +113,44 @@ required:
 - NAMESPACE
 - PROMETHEUS_REPLICAS
 - GRAFANA_GENERATED_PASSWORD
-- IMAGE_ALERTMANAGER
-- IMAGE_KUBE_STATE_METRICS
-- IMAGE_NODE_EXPORTER
-- IMAGE_PROMETHEUS
-- IMAGE_GRAFANA
-- IMAGE_PROMETHEUS_INIT
 - PROMETHEUS_SERVICE_ACCOUNT
 - KUBE_STATE_METRICS_SERVICE_ACCOUNT
 - ALERTMANAGER_SERVICE_ACCOUNT
 - GRAFANA_SERVICE_ACCOUNT
 - NODE_EXPORTER_SERVICE_ACCOUNT
+x-google-marketplace:
+  images:
+    ? ''
+    : properties:
+        IMAGE_PROMETHEUS:
+          type: FULL
+    nodeexporter:
+      properties:
+        IMAGE_NODE_EXPORTER:
+          type: FULL
+    grafana:
+      properties:
+        IMAGE_GRAFANA:
+          type: FULL
+    kubestatemetrics:
+      properties:
+        IMAGE_KUBE_STATE_METRICS:
+          type: FULL
+    alertmanager:
+      properties:
+        IMAGE_ALERTMANAGER:
+          type: FULL
+    debian9:
+      properties:
+        IMAGE_PROMETHEUS_INIT:
+          type: FULL
+  managedUpdates:
+    kalmSupported: true
+  applicationApiVersion: v1beta1
+  publishedVersion: $TAG
+  publishedVersionMetadata:
+    releaseNote: A regular update.
+    recommended: false
+    releaseTypes:
+    - Feature
+  schemaVersion: v2
