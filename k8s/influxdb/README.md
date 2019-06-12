@@ -151,15 +151,11 @@ export INFLUXDB_ADMIN_USER=influxdb-admin
 Configure password for InfluxDB administrator account, in some cases base64 encoding causes errors in creating the admin account query, by default base64 encoding is used. To use base64 encoding:
 ```shell
 export BASE64_ENABLED=true
-```
-```shell
 export INFLUXDB_ADMIN_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1 | tr -d '\n' | base64)
 ```
 otherwise to disable base64 encoding
 ```shell
 export BASE64_ENABLED=false
-```
-```shell
 export INFLUXDB_ADMIN_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1 | tr -d '\n')
 ```
 
