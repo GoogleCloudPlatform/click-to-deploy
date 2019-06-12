@@ -148,8 +148,17 @@ Configure the InfluxDB administrator account:
 export INFLUXDB_ADMIN_USER=influxdb-admin
 ```
 
-Configure password for InfluxDB administrator account (base64 encoding now not required)
-
+Configure password for InfluxDB administrator account, in some cases base64 encoding causes errors in creating the admin account query, by default base64 encoding is used. To use base64 encoding:
+```shell
+export BASE64_ENABLED=true
+```
+```shell
+export INFLUXDB_ADMIN_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1 | tr -d '\n' | base64)
+```
+otherwise to disable base64 encoding
+```shell
+export BASE64_ENABLED=false
+```
 ```shell
 export INFLUXDB_ADMIN_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1 | tr -d '\n')
 ```
@@ -212,6 +221,7 @@ helm template chart/influxdb \
   --set influxdbImage=$IMAGE_INFLUXDB \
   --set admin.user=$INFLUXDB_ADMIN_USER \
   --set admin.password=$INFLUXDB_ADMIN_PASSWORD \
+  --set admin.base64Enabled=$BASE64_ENABLED \ #this is optional if $BASE64_ENABLED has not been set, default value = true
   --set metrics.image=$IMAGE_METRICS_EXPORTER \
   --set metrics.enabled=$METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
