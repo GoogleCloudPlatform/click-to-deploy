@@ -3,6 +3,7 @@ influxdbImage: null
 admin:
   user: influxdb-admin
   password: null
+  base64Enabled: true
 
 metrics:
   image: null
