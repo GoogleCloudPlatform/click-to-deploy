@@ -8,3 +8,7 @@ admin:
 metrics:
   image: null
   enabled: false
+  
+pvc:
+  diskSize: 1Gi
+  diskClass: standard
