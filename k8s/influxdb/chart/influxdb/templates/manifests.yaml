@@ -67,10 +67,10 @@ spec:
     spec:
       resources:
         requests:
-          storage: 1Gi
+          storage: {{ .Values.pvc.diskSize }}
       accessModes:
       - ReadWriteOnce
-      storageClassName: standard
+      storageClassName: {{ .Values.pvc.diskClass }}
 ---
 apiVersion: v1
 kind: Service
