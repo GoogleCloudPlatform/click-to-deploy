@@ -11,7 +11,6 @@ VERIFY_WAIT_TIMEOUT = 600
 
 ##### Helper functions #####
 
-
 # Extracts the name property from APP_PARAMETERS.
 define name_parameter
 $(shell echo '$(APP_PARAMETERS)' \
@@ -62,8 +61,7 @@ app/install:: app/build \
               .build/var/MARKETPLACE_TOOLS_TAG \
               | .build/app/dev
 	$(call print_target)
-	.build/app/dev \
-	    /scripts/install \
+	.build/app/dev install \
 	        --deployer='$(APP_DEPLOYER_IMAGE)' \
 	        --parameters='$(APP_PARAMETERS)' \
 	        --entrypoint="/bin/deploy.sh"
@@ -77,8 +75,7 @@ app/install-test:: app/build \
                    .build/var/MARKETPLACE_TOOLS_TAG \
 	           | .build/app/dev
 	$(call print_target)
-	.build/app/dev \
-	    /scripts/install \
+	.build/app/dev install \
 	        --deployer='$(APP_DEPLOYER_IMAGE)' \
 	        --parameters='$(APP_PARAMETERS)' \
 	        --entrypoint="/bin/deploy_with_tests.sh"
@@ -93,6 +90,7 @@ app/uninstall: .build/var/APP_DEPLOYER_IMAGE \
 	    --namespace='$(call namespace_parameter)' \
 	    --ignore-not-found
 
+
 # Runs the verification pipeline.
 .PHONY: app/verify
 app/verify: app/build \
@@ -101,8 +99,7 @@ app/verify: app/build \
             .build/var/MARKETPLACE_TOOLS_TAG \
             | .build/app/dev
 	$(call print_target)
-	.build/app/dev \
-	    /scripts/verify \
+	.build/app/dev verify \
 	          --deployer='$(APP_DEPLOYER_IMAGE)' \
 	          --parameters='$(APP_PARAMETERS)' \
 	          --wait_timeout="$(VERIFY_WAIT_TIMEOUT)"
@@ -112,7 +109,7 @@ app/verify: app/build \
 .PHONY: app/doctor
 app/doctor: | .build/app/dev
 	$(call print_target)
-	.build/app/dev /scripts/doctor.py
+	.build/app/dev doctor
 
 
 endif
