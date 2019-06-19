@@ -70,7 +70,8 @@ app/build:: .build/nginx/debian9  \
 
 
 .build/nginx/debian9: .build/var/REGISTRY \
-                      .build/var/TAG \
+                      .build/var/TRACK \
+                      .build/var/RELEASE \
                       | .build/nginx
 	docker pull marketplace.gcr.io/google/debian9
 	docker tag marketplace.gcr.io/google/debian9 "$(REGISTRY)/$(APP_ID)/debian9:$(TRACK)"
