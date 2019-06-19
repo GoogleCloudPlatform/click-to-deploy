@@ -7,12 +7,12 @@ APP_ID ?= elasticsearch-managed-updates
 # The digest should be updated automatically, or tag <major>.<minor>.<path/build>
 # should be available on GCP Marketplace.
 # Use `.build/elasticsearch/VERSION` target to fill the RELEASE variable.
-ELASTICSEARCH_TAG ?= sha256:72926e7230e48391121e650ed6f68c2e0656e8a678ad3c9c21231671866131cb
+ELASTICSEARCH_TAG ?= sha256:b040840b3dde56c44396710f7e52d00eeec56db4b0d9476369eceb20f9575672
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 TIMESTAMP := $(shell date +%s)
 TRACK ?= 6.3
-RELEASE ?= 6.5.4-build.$(TIMESTAMP)
+RELEASE ?= 6.3.2-build.$(TIMESTAMP)
 
 $(info ---- TRACK = $(TRACK))
 $(info ---- RELEASE = $(RELEASE))
