@@ -71,6 +71,31 @@ spec:
         - name: replication-config
           mountPath: /docker-entrypoint-initdb.d
           readOnly: true
+      - image: {{ .Values.db.exporter.image }}
+        name: mysqld-exporter
+        env:
+        - name: MYSQLD_EXPORTER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-mysqld-exporter-secret
+              key: mysqld-exporter-pass
+        - name: DATA_SOURCE_NAME
+          value: {{ .Values.db.exporter.user }}:$(MYSQLD_EXPORTER_PASSWORD)@(127.0.0.1:3306)/
+        ports:
+        - name: exporter
+          containerPort: 9104
+        livenessProbe:
+          httpGet:
+            path: /metrics
+            port: 9104
+        readinessProbe:
+          httpGet:
+            path: /metrics
+            port: 9104
+          initialDelaySeconds: 60
+          timeoutSeconds: 30
+          failureThreshold: 10
+          periodSeconds: 10
       volumes:
         - name: configmap
           configMap:
@@ -87,6 +112,12 @@ spec:
             items:
             - key: mariadb-replication.sql
               path: mariadb-replication.sql
+        - name: mysql-config
+          secret:
+            secretName: {{ .Release.Name }}-mysqld-exporter-secret
+            items:
+            - key: mysqld_exporter.sql
+              path: mysqld_exporter.sql
   volumeClaimTemplates:
   - metadata:
       name: {{ .Release.Name }}-data-pvc
