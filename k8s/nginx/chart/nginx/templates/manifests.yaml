@@ -56,7 +56,7 @@ spec:
           mountPath: /usr/share/nginx/html
       containers:
       - name: nginx
-        image: {{ .Values.nginx.image }}
+        image: "{{ .Values.nginx.image.repo }}:{{ .Values.nginx.image.tag }}"
         imagePullPolicy: Always
         ports:
         - name: nginx

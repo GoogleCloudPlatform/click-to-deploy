@@ -19,7 +19,7 @@ spec:
       terminationGracePeriodSeconds: 180
       containers:
       - name: cassandra
-        image: {{ .Values.cassandra.image }}
+        image: "{{ .Values.cassandra.image.repo }}:{{ .Values.cassandra.image.tag }}"
         imagePullPolicy: Always
         env:
         - name: CASSANDRA_CGROUP_MEMORY_LIMIT
