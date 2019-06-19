@@ -1,14 +1,5 @@
 x-google-marketplace:
-
-  clusterConstraints:
-    resources:
-      - replicas: 3
-        requests:
-          cpu: 500m
-          memory: 4Gi
-        affinity:
-          simpleNodeAffinity:
-            type: REQUIRE_ONE_NODE_PER_REPLICA
+  schemaVersion: v2
 
   applicationApiVersion: v1beta1
 
@@ -34,6 +25,16 @@ x-google-marketplace:
       properties:
         metrics.image:
           type: FULL
+
+  clusterConstraints:
+    resources:
+      - replicas: 3
+        requests:
+          cpu: 500m
+          memory: 4Gi
+        affinity:
+          simpleNodeAffinity:
+            type: REQUIRE_ONE_NODE_PER_REPLICA
 
 properties:
   name:
