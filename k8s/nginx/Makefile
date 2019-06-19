@@ -75,7 +75,10 @@ app/build:: .build/nginx/debian9  \
                       | .build/nginx
 	docker pull marketplace.gcr.io/google/debian9
 	docker tag marketplace.gcr.io/google/debian9 "$(REGISTRY)/$(APP_ID)/debian9:$(TRACK)"
+	docker tag "$(REGISTRY)/$(APP_ID)/debian9:$(TRACK)" \
+	    "$(REGISTRY)/$(APP_ID)/debian9:$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID)/debian9:$(TRACK)"
+	docker push "$(REGISTRY)/$(APP_ID)/debian9:$(RELEASE)"
 	@touch "$@"
 
 
