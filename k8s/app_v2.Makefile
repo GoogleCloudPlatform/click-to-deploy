@@ -80,8 +80,7 @@ app/publish:: app/build \
               .build/var/MARKETPLACE_TOOLS_TAG \
               | .build/app/dev
 	$(call print_target)
-	.build/app/dev \
-	    /scripts/publish \
+	.build/app/dev publish \
 	        --deployer_image='$(APP_DEPLOYER_IMAGE)' \
 	        --gcs_repo='$(APP_GCS_PATH)'
 
@@ -94,8 +93,7 @@ app/install:: app/publish \
               .build/var/MARKETPLACE_TOOLS_TAG \
               | .build/app/dev
 	$(call print_target)
-	.build/app/dev \
-	    /scripts/install \
+	.build/app/dev install \
 	        --version_meta_file='$(APP_GCS_PATH)/$(RELEASE).yaml' \
 	        --parameters='$(APP_PARAMETERS)'
 
@@ -107,8 +105,7 @@ app/install-test:: app/publish \
                    .build/var/MARKETPLACE_TOOLS_TAG \
 	           | .build/app/dev
 	$(call print_target)
-	.build/app/dev \
-	    /scripts/install \
+	.build/app/dev install \
 	        --deployer='$(APP_DEPLOYER_IMAGE)' \
 	        --parameters='$(APP_PARAMETERS)' \
 	        --entrypoint="/bin/deploy_with_tests.sh"
@@ -123,6 +120,7 @@ app/uninstall: .build/var/APP_DEPLOYER_IMAGE \
 	    --namespace='$(call namespace_parameter)' \
 	    --ignore-not-found
 
+
 # Runs the verification pipeline.
 .PHONY: app/verify
 app/verify: app/publish \
@@ -131,8 +129,7 @@ app/verify: app/publish \
             .build/var/MARKETPLACE_TOOLS_TAG \
             | .build/app/dev
 	$(call print_target)
-	.build/app/dev \
-	    /scripts/verify \
+	.build/app/dev verify \
 	          --deployer='$(APP_DEPLOYER_IMAGE)' \
 	          --parameters='$(APP_PARAMETERS)' \
 	          --wait_timeout="$(VERIFY_WAIT_TIMEOUT)"
