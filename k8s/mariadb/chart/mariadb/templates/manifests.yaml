@@ -69,15 +69,15 @@ spec:
         - name: tls-ca-volume
           mountPath: /etc/mysql/mariadb.conf.d/certs-ca
         - name: replication-config
-          mountPath: /docker-entrypoint-initdb.d
+          mountPath: /docker-entrypoint-initdb.d/
           readOnly: true
-      - image: {{ .Values.db.exporter.image }}
-        name: mysqld-exporter
+      - name: mysqld-exporter
+        image: {{ .Values.db.exporter.image }}
         env:
         - name: MYSQLD_EXPORTER_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: {{ .Release.Name }}-mysqld-exporter-secret
+              name: {{ .Release.Name }}-mariadb
               key: mysqld-exporter-pass
         - name: DATA_SOURCE_NAME
           value: {{ .Values.db.exporter.user }}:$(MYSQLD_EXPORTER_PASSWORD)@(127.0.0.1:3306)/
@@ -112,10 +112,6 @@ spec:
             items:
             - key: mariadb-replication.sql
               path: mariadb-replication.sql
-        - name: mysql-config
-          secret:
-            secretName: {{ .Release.Name }}-mysqld-exporter-secret
-            items:
             - key: mysqld_exporter.sql
               path: mysqld_exporter.sql
   volumeClaimTemplates:

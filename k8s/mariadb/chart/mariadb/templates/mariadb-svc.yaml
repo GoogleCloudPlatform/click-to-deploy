@@ -35,11 +35,10 @@ metadata:
   name: {{ .Release.Name }}-mysqld-exporter-svc
   labels: &MariaDBDeploymentLabels
     app.kubernetes.io/name: {{ .Release.Name }}
-    app.kubernetes.io/component: mariadb
+    app.kubernetes.io/component: mariadb-server
 spec:
   ports:
   - name: exporter
     port: 9104
-  selector:
   selector: *MariaDBDeploymentLabels
   clusterIP: None
