@@ -136,7 +136,3 @@ spec:
     kind: Secret
   - group: v1
     kind: ConfigMap
-  {{ if .Values.metrics.enabled }}
-  - group: apps/v1beta2
-    kind: Deployment
-  {{ end }}
