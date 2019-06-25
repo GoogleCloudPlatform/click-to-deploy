@@ -88,6 +88,19 @@ steps:
     mkdir -p /workspace/.config/gcloud/
     cp -r $$HOME/.config/gcloud/ /workspace/.config/
 
+- id: Run diagnostic tool
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  dir: k8s/{{ solution }}
+  args:
+  - make
+  - app/doctor
+
 - id: Build {{ solution }}
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   env:

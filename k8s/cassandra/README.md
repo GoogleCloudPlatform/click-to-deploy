@@ -265,7 +265,7 @@ If you want to expose your Cassandra cluster using an external IP address, first
 To configure Cassandra as an external service, run the following command:
 
 ```shell
-envsubst '${APP_INSTANCE_NAME}' < scripts/external.yaml.template > scripts/external.yaml
+envsubst '${APP_INSTANCE_NAME}' < scripts/external.yaml > scripts/external.yaml
 kubectl apply -f scripts/external.yaml --namespace "${NAMESPACE}"
 ```
 
