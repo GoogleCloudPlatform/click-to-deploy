@@ -79,12 +79,10 @@ spec:
       app.kubernetes.io/name: "{{ .Release.Name }}"
   componentKinds:
   - group: v1
-    kind: PersistentVolumeClaim
-  - group: v1
     kind: Secret
   - group: v1
     kind: Service
   - group: apps/v1beta2
-    kind: Deployment
+    kind: StatefulSet
   - group: extensions/v1beta1
     kind: Ingress

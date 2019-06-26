@@ -17,7 +17,7 @@ available in Google Cloud Marketplace.
 This solution installs a single instance of Jenkins Server into your Kubernetes
 cluster.
 
-The Jenkins Pod is managed by a ReplicaSet with the number of replicas set to
+The Jenkins Pod is managed by a StatefulSet with the number of replicas set to
 one (1). The Jenkins Pod uses a PersistentVolume to store data, a LoadBalancer
 Service to expose the Agent Connector port to the cluster, and an Ingress to
 expose the UI to external users. If you need to limit access to the Jenkins UI,
