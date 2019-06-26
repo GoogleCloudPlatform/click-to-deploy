@@ -14,13 +14,13 @@ kind: StatefulSet
 metadata:
   name: {{ .Release.Name }}-postgresql
   labels: &PostgreSQLDeploymentLabels
-    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: postgresql-server
 spec:
+  replicas: 1
   selector:
     matchLabels: *PostgreSQLDeploymentLabels
   serviceName: {{ .Release.Name }}-postgresql-svc
-  replicas: 1
   template:
     metadata:
       labels: *PostgreSQLDeploymentLabels
@@ -30,21 +30,21 @@ spec:
         image: {{ .Values.postgresql.image }}
         imagePullPolicy: Always
         ports:
-          - containerPort: 5432
-            name: postgres
+        - containerPort: 5432
+          name: postgres
         volumeMounts:
-          - name: {{ .Release.Name }}-postgresql-pvc
-            mountPath: /var/lib/postgresql/data
-          - name: tls-volume
-            mountPath: /var/lib/postgresql/data/tls
+        - name: {{ .Release.Name }}-postgresql-pvc
+          mountPath: /var/lib/postgresql/data
+        - name: tls-volume
+          mountPath: /var/lib/postgresql/data/tls
         env:
-          - name: "PGDATA"
-            value: "/var/lib/postgresql/data/pgdata"
-          - name: "POSTGRES_PASSWORD"
-            valueFrom:
-              secretKeyRef:
-                name: {{ .Release.Name }}-secret
-                key: password
+        - name: "PGDATA"
+          value: "/var/lib/postgresql/data/pgdata"
+        - name: "POSTGRES_PASSWORD"
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-secret
+              key: password
       - name: prometheus-exporter
         image: {{ .Values.exporter.image }}
         imagePullPolicy: Always
@@ -68,13 +68,13 @@ spec:
         - name: profiler
           containerPort: 6060
         command:
-          - /monitor
-          - --stackdriver-prefix=custom.googleapis.com
-          - --source={{ .Release.Name }}:http://localhost:9187/metrics
-          - --pod-id=$(POD_NAME)
-          - --namespace-id=$(POD_NAMESPACE)
-          - --scrape-interval=5s
-          - --export-interval=30s
+        - /monitor
+        - --stackdriver-prefix=custom.googleapis.com
+        - --source={{ .Release.Name }}:http://localhost:9187/metrics
+        - --pod-id=$(POD_NAME)
+        - --namespace-id=$(POD_NAMESPACE)
+        - --scrape-interval=5s
+        - --export-interval=30s
         env:
         - name: POD_NAME
           valueFrom:
