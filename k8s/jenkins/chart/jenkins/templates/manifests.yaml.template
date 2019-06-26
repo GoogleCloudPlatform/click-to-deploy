@@ -3,7 +3,7 @@ kind: StatefulSet
 metadata:
   name: {{ .Release.Name }}-jenkins
   labels: &JenkinsDeploymentLabels
-    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: jenkins-master
 spec:
   replicas: 1
