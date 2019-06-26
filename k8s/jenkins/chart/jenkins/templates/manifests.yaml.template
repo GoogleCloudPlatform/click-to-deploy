@@ -51,7 +51,7 @@ spec:
           limits:
             memory: 2.0Gi
           requests:
-              memory: 2.0Gi
+            memory: 2.0Gi
   volumeClaimTemplates:
   - metadata:
       name: {{ .Release.Name }}-jenkins-pvc
