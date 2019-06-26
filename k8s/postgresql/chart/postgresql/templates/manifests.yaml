@@ -25,6 +25,11 @@ spec:
     metadata:
       labels: *PostgreSQLDeploymentLabels
     spec:
+      serviceAccount: {{ .Values.postgresql.serviceAccount }}
+      volumes:
+      - name: tls-volume
+        secret:
+          secretName: {{ .Release.Name }}-tls
       containers:
       - name: postgresql-server
         image: {{ .Values.postgresql.image }}
@@ -85,10 +90,6 @@ spec:
             fieldRef:
               fieldPath: metadata.namespace
       {{ end }}
-      volumes:
-      - name: tls-volume
-        secret:
-          secretName: {{ .Release.Name }}-tls
   volumeClaimTemplates:
   - metadata:
       name: {{ .Release.Name }}-postgresql-pvc
