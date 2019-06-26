@@ -17,7 +17,7 @@ available in Google Cloud Marketplace.
 This solution installs a single instance of PostgreSQL server on your
 Kubernetes cluster.
 
-The PostgreSQL Pod is managed by a ReplicaSet, with the number of replicas set
+The PostgreSQL Pod is managed by a StatefulSet, with the number of replicas set
 to one. The PostgreSQL Pod uses a Persistent Volume to store data, and a ClusterIP
 Service to expose the database port (which can be optionally exposed publicly
 with a LoadBalancer type of Service). Communication between the client and server is
