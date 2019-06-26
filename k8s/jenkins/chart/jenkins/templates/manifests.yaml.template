@@ -14,16 +14,15 @@ spec:
     metadata:
       labels: *JenkinsDeploymentLabels
     spec:
-      terminationGracePeriodSeconds: 180
       initContainers:
-      - name: volume-permissions-fix
-        image: {{ .Values.jenkins.image }}
-        command: ["sh", "-c", "chown 1000:1000 /var/jenkins_home"]
-        securityContext:
-          runAsUser: 0
-        volumeMounts:
-        - name: {{ .Release.Name }}-jenkins-pvc
-          mountPath: /var/jenkins_home
+        - name: volume-permissions-fix
+          image: {{ .Values.jenkins.image }}
+          command: ["sh", "-c", "chown 1000:1000 /var/jenkins_home"]
+          securityContext:
+            runAsUser: 0
+          volumeMounts:
+          - name: {{ .Release.Name }}-jenkins-pvc
+            mountPath: /var/jenkins_home
       containers:
       - name: jenkins-master
         image: {{ .Values.jenkins.image }}
