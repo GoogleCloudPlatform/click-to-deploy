@@ -90,6 +90,10 @@ steps:
 
 - id: Run diagnostic tool
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  waitFor:
+  - Copy kubectl Credentials
+  - Copy gcloud Credentials
+  - Pull Dev Image
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
@@ -103,6 +107,8 @@ steps:
 
 - id: Build {{ solution }}
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  waitFor:
+  - Run diagnostic tool
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
@@ -118,9 +124,6 @@ steps:
 - id: Verify {{ solution }}
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
-  - Copy kubectl Credentials
-  - Copy gcloud Credentials
-  - Pull Dev Image
   - Build {{ solution }}
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
@@ -139,9 +142,6 @@ steps:
 - id: Verify {{ solution }} ({{ extra_config['name'] }})
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
-  - Copy kubectl Credentials
-  - Copy gcloud Credentials
-  - Pull Dev Image
   - Build {{ solution }}
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
