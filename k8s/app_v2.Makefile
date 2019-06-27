@@ -59,7 +59,8 @@ endef
               | .build/app
 	@docker run \
 	    "gcr.io/cloud-marketplace-tools/k8s/dev:$(MARKETPLACE_TOOLS_TAG)" \
-	    cat /scripts/dev > "$@"
+	    cat /scripts/dev > "/tmp/dev"
+	@mv "/tmp/dev" "$@"
 	@chmod a+x "$@"
 
 
