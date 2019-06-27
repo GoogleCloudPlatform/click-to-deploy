@@ -18,9 +18,9 @@ Popular open source software stacks on Kubernetes packaged by Google and made av
 
 - An Application resource, which collects all the deployment resources into one logical entity
 - A ServiceAccount for the SonarQube and PostgreSQL Pod.
-- A PersistentVolume and PersistentVolumeClaim for SonarQube and PostgreSQL. Note that the volumes won't be deleted with application. If you delete the installation and recreate it with the same name, the new installation uses the same PersistentVolumes. As a result, there is no new database initialization, and no new password is set.
 - A Secret with the PostgreSQL initial random password
-- A Deployment with SonarQube and PostgreSQL.
+- A StatefulSet with SonarQube and PostgreSQL.
+- A PersistentVolume and PersistentVolumeClaim for SonarQube and PostgreSQL. Note that the volumes won't be deleted with application. If you delete the installation and recreate it with the same name, the new installation uses the same PersistentVolumes. As a result, there is no new database initialization, and no new password is set.
 - A Service, which exposes PostgreSQL and SonarQube to usage in cluster
 
 PostgreSQL exposing by service with type ClusterIP, which makes it available for SonarQube only in cluster network.
@@ -88,7 +88,7 @@ git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 #### Install the Application resource definition
 
 An Application resource is a collection of individual Kubernetes components,
-such as Services, Deployments, and so on, that you can manage as a group.
+such as Services, StatefulSets, and so on, that you can manage as a group.
 
 To set up your cluster to understand Application resources, run the following command:
 
@@ -322,7 +322,7 @@ This shell script will create `postgresql/backup.sql` dump of all DB in PostgreS
 mkdir postgresql
 kubectl --namespace $NAMESPACE exec -t \
 	$(kubectl -n$NAMESPACE get pod -oname | \
-		sed -n /\\/$APP_INSTANCE_NAME-postgresql-deployment/s.pods\\?/..p) \
+		sed -n /\\/$APP_INSTANCE_NAME-postgresql/s.pods\\?/..p) \
 	-c postgresql-server \
 	-- pg_dumpall -c -U postgres > postgresql/backup.sql
 ```
@@ -348,7 +348,7 @@ In order to restore PostgresSQL database there is a need to perform some prelimi
     ```shell
     kubectl --namespace $NAMESPACE exec -t \
       $(kubectl -n$NAMESPACE get pod -oname | \
-         sed -n /\\/$APP_INSTANCE_NAME-postgresql-deployment/s.pods\\?/..p) \
+         sed -n /\\/$APP_INSTANCE_NAME-postgresql/s.pods\\?/..p) \
       -c postgresql-server \
       -- psql -U postgres -c "update pg_database set datallowconn = false where datname = 'sonar';"
     ```
@@ -358,7 +358,7 @@ In order to restore PostgresSQL database there is a need to perform some prelimi
     ```shell
     kubectl --namespace $NAMESPACE exec -t \
       $(kubectl -n$NAMESPACE get pod -oname | \
-         sed -n /\\/$APP_INSTANCE_NAME-postgresql-deployment/s.pods\\?/..p) \
+         sed -n /\\/$APP_INSTANCE_NAME-postgresql/s.pods\\?/..p) \
       -c postgresql-server \
       -- psql -U postgres -c "select pg_terminate_backend(pid) from pg_stat_activity where datname='sonar';"
     ```
@@ -369,7 +369,7 @@ Below shell script will restore data from `postgresql/backup.sql` to PostgreSQL
     ```shell
     cat postgresql/backup.sql | kubectl --namespace $NAMESPACE exec -i \
       $(kubectl -n$NAMESPACE get pod -oname | \
-        sed -n /\\/$APP_INSTANCE_NAME-postgresql-deployment/s.pods\\?/..p) \
+        sed -n /\\/$APP_INSTANCE_NAME-postgresql/s.pods\\?/..p) \
       -c postgresql-server \
       -- psql -U postgres
     ```
@@ -404,7 +404,7 @@ Below shell script will restore data from `postgresql/backup.sql` to PostgreSQL
     ```shell
     kubectl --namespace $NAMESPACE exec -t \
       $(kubectl -n$NAMESPACE get pod -oname | \
-        sed -n /\\/$APP_INSTANCE_NAME-postgresql-deployment/s.pods\\?/..p) \
+        sed -n /\\/$APP_INSTANCE_NAME-postgresql/s.pods\\?/..p) \
       -c postgresql-server \
       -- psql -U postgres -c "update pg_database set datallowconn = true where datname = 'sonar';"
     ```
@@ -462,7 +462,7 @@ kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 Otherwise, delete the resources using types and a label:
 
 ```shell
-kubectl delete application,deployment,service,pvc,secret \
+kubectl delete application,statefulset,service,pvc,secret \
   --namespace $NAMESPACE \
   --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
 ```
