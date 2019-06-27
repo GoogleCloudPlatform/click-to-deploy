@@ -88,7 +88,7 @@ git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 #### Install the Application resource definition
 
 An Application resource is a collection of individual Kubernetes components,
-such as Services, StatefulSets, and so on, that you can manage as a group.
+such as Services, Deployments, and so on, that you can manage as a group.
 
 To set up your cluster to understand Application resources, run the following command:
 
