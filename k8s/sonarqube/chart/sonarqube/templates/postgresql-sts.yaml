@@ -84,6 +84,30 @@ spec:
               secretKeyRef:
                 name: {{ .Release.Name }}-secret
                 key: password
+      {{ if .Values.metrics.enabled }}
+      - name: prometheus-to-sd
+        image: {{ .Values.metrics.image }}
+        ports:
+          - name: profiler
+            containerPort: 6060
+        command:
+          - /monitor
+          - --stackdriver-prefix=custom.googleapis.com
+          - --source={{ .Release.Name }}:http://localhost:9187/metrics
+          - --pod-id=$(POD_NAME)
+          - --namespace-id=$(POD_NAMESPACE)
+          - --scrape-interval=5s
+          - --export-interval=30s
+        env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+      {{ end }}
   volumeClaimTemplates:
   - metadata:
       name: {{ .Release.Name }}-postgresql-pvc
