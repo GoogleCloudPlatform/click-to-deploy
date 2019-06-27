@@ -101,6 +101,10 @@ steps:
 
 - id: Build wordpress
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  waitFor:
+  - Copy kubectl Credentials
+  - Copy gcloud Credentials
+  - Pull Dev Image
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
@@ -116,9 +120,6 @@ steps:
 - id: Verify wordpress
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
-  - Copy kubectl Credentials
-  - Copy gcloud Credentials
-  - Pull Dev Image
   - Build wordpress
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
@@ -134,13 +135,20 @@ steps:
 """.strip()
 
 CLOUDBUILD_OUTPUT_WITH_EXTRA_CONFIG = ''.join([CLOUDBUILD_OUTPUT, '\n', """
+# There is a delay needed to prevent the error: "Text file busy".
+- id: Delay (Public service and ingress)
+  name: gcr.io/google-appengine/debian9
+  waitFor:
+  - Build wordpress
+  entrypoint: sleep
+  args:
+  - 10s
+
 - id: Verify wordpress (Public service and ingress)
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
-  - Copy kubectl Credentials
-  - Copy gcloud Credentials
-  - Pull Dev Image
   - Build wordpress
+  - Delay (Public service and ingress)
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
