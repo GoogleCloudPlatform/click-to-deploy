@@ -137,15 +137,6 @@ steps:
 
 {%- for extra_config in extra_configs %}
 
-# There is a delay needed to prevent the error: "Text file busy".
-- id: Delay ({{ extra_config['name'] }})
-  name: gcr.io/google-appengine/debian9
-  waitFor:
-  - Build {{ solution }}
-  entrypoint: sleep
-  args:
-  - {{ loop.index * 10 }}s
-
 - id: Verify {{ solution }} ({{ extra_config['name'] }})
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
