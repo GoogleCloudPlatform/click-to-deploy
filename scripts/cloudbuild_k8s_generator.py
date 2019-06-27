@@ -141,7 +141,6 @@ steps:
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Build {{ solution }}
-  - Delay ({{ extra_config['name'] }})
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
