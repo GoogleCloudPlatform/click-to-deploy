@@ -139,7 +139,6 @@ CLOUDBUILD_OUTPUT_WITH_EXTRA_CONFIG = ''.join([CLOUDBUILD_OUTPUT, '\n', """
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
   - Build wordpress
-  - Delay (Public service and ingress)
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
