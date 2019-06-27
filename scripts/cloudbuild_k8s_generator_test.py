@@ -135,15 +135,6 @@ steps:
 """.strip()
 
 CLOUDBUILD_OUTPUT_WITH_EXTRA_CONFIG = ''.join([CLOUDBUILD_OUTPUT, '\n', """
-# There is a delay needed to prevent the error: "Text file busy".
-- id: Delay (Public service and ingress)
-  name: gcr.io/google-appengine/debian9
-  waitFor:
-  - Build wordpress
-  entrypoint: sleep
-  args:
-  - 10s
-
 - id: Verify wordpress (Public service and ingress)
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
