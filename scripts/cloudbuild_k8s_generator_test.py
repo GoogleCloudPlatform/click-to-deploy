@@ -88,6 +88,10 @@ steps:
 
 - id: Run diagnostic tool
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  waitFor:
+  - Copy kubectl Credentials
+  - Copy gcloud Credentials
+  - Pull Dev Image
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
@@ -102,9 +106,7 @@ steps:
 - id: Build wordpress
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
-  - Copy kubectl Credentials
-  - Copy gcloud Credentials
-  - Pull Dev Image
+  - Run diagnostic tool
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
