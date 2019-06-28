@@ -82,8 +82,7 @@ spec:
             - --source=grafana:http://localhost:3000/metrics
             - --pod-id=$(POD_NAME)
             - --namespace-id=$(POD_NAMESPACE)
-            - --scrape-interval=5s
-            - --export-interval=30s
+            - --monitored-resource-types=k8s
           env:
             - name: POD_NAME
               valueFrom:
