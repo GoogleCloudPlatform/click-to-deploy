@@ -54,7 +54,7 @@ spec:
 
       ```shell
       kubectl -n{{ .Release.Namespace }} exec \
-        $(kubectl -n{{ .Release.Namespace }} get pod -oname | sed -n /\\/{{ .Release.Name }}-jenkins-deployment/s.pods\\?/..p) \
+        $(kubectl -n{{ .Release.Namespace }} get pod -oname | sed -n /\\/{{ .Release.Name }}-jenkins/s.pods\\?/..p) \
         cat /var/jenkins_home/secrets/initialAdminPassword
       ```
 

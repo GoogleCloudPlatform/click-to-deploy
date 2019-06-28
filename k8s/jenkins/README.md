@@ -186,7 +186,7 @@ installation creates:
     with the same name, the new installation uses the same PersistentVolume. As
     a result, there is no application initialization and the old configuration
     is used.
--   A Deployment
+-   A StatefulSet
 -   Two Services, which expose Jenkins Master UI (8080) and Agents Connector
     (50000) ports to the cluster
 -   An Ingress, which exposes Jenkins Master UI externally
@@ -215,7 +215,7 @@ Pod name:
 ```shell
 EXTERNAL_IP=$(kubectl -n$NAMESPACE get ingress -l "app.kubernetes.io/name=$APP_INSTANCE_NAME" \
   -ojsonpath="{.items[0].status.loadBalancer.ingress[0].ip}")
-MASTER_POD=$(kubectl -n$NAMESPACE get pod -oname | sed -n /\\/$APP_INSTANCE_NAME-jenkins-deployment/s.pods\\?/..p)
+MASTER_POD=$(kubectl -n$NAMESPACE get pod -oname | sed -n /\\/$APP_INSTANCE_NAME-jenkins/s.pods\\?/..p)
 
 echo https://$EXTERNAL_IP/
 ```
