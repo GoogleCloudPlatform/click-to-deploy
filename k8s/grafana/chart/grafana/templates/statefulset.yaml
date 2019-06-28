@@ -79,7 +79,7 @@ spec:
           command:
             - /monitor
             - --stackdriver-prefix=custom.googleapis.com
-            - --source={{ .Release.Name }}:http://localhost:3000/metrics
+            - --source=grafana:http://localhost:3000/metrics
             - --pod-id=$(POD_NAME)
             - --namespace-id=$(POD_NAMESPACE)
             - --scrape-interval=5s
