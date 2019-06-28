@@ -52,14 +52,17 @@ endef
 	mkdir -p "$@"
 
 
-# Always update the dev script to make sure it's up to date.
+# (1) Always update the dev script to make sure it's up to date.
 # There isn't currently a way to detect if the dev container has changed.
+# (2) The mpdev script is first copied to the / tmp directory and
+# then moved to the target path due to the "Text file busy" error.
 .PHONY: .build/app/dev
 .build/app/dev: .build/var/MARKETPLACE_TOOLS_TAG \
               | .build/app
 	@docker run \
 	    "gcr.io/cloud-marketplace-tools/k8s/dev:$(MARKETPLACE_TOOLS_TAG)" \
-	    cat /scripts/dev > "$@"
+	    cat /scripts/dev > "/tmp/dev"
+	@mv "/tmp/dev" "$@"
 	@chmod a+x "$@"
 
 
