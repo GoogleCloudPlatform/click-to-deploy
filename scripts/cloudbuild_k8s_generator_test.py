@@ -88,6 +88,10 @@ steps:
 
 - id: Run diagnostic tool
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  waitFor:
+  - Copy kubectl Credentials
+  - Copy gcloud Credentials
+  - Pull Dev Image
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
@@ -101,6 +105,8 @@ steps:
 
 - id: Build wordpress
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  waitFor:
+  - Run diagnostic tool
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
@@ -116,9 +122,6 @@ steps:
 - id: Verify wordpress
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
-  - Copy kubectl Credentials
-  - Copy gcloud Credentials
-  - Pull Dev Image
   - Build wordpress
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
@@ -137,9 +140,6 @@ CLOUDBUILD_OUTPUT_WITH_EXTRA_CONFIG = ''.join([CLOUDBUILD_OUTPUT, '\n', """
 - id: Verify wordpress (Public service and ingress)
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
-  - Copy kubectl Credentials
-  - Copy gcloud Credentials
-  - Pull Dev Image
   - Build wordpress
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
