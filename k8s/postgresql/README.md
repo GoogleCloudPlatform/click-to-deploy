@@ -153,21 +153,6 @@ IMAGE_POSTGRESQL=$(docker pull $IMAGE_POSTGRESQL | awk -F: "/^Digest:/ {print ge
 IMAGE_METRICS_EXPORTER=$(docker pull $IMAGE_METRICS_EXPORTER | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_METRICS_EXPORTER\")\"@sha256:\"\$3}")
 ```
 
-Create a certificate for PostgreSQL. If you already have a certificate that you
-want to use, copy your certificate and key pair in to the `server.crt` and
-`server.key` files.
-
-```shell
-# create a certificate for postgresql
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-    -keyout server.key \
-    -out server.crt \
-    -subj "/CN=postgresql/O=postgresql"
-
-kubectl --namespace $NAMESPACE create secret generic $APP_INSTANCE_NAME-tls \
-        --from-file=./server.crt --from-file=./server.key
-```
-
 Generate a random password and set the PosgreSQL volume size in Gigabytes:
 
 ```shell
@@ -183,6 +168,29 @@ the value to `true`.
 ```shell
 export EXPOSE_PUBLIC_SERVICE=false
 ```
+
+#### Create TLS certificate for WordPress
+
+ > Note: You can skip this step if you have not set up external access.
+ 1.  If you already have a certificate that you want to use, copy your
+    certificate and key pair to the `/tmp/tls.crt`, and `/tmp/tls.key` files,
+    then skip to the next step.
+
+     To create a new certificate, run the following command:
+
+     ```shell
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+        -keyout /tmp/tls.key \
+        -out /tmp/tls.crt \
+        -subj "/CN=postgresql/O=postgresql"
+    ```
+
+ 1.  Set `TLS_CERTIFICATE_KEY` and `TLS_CERTIFICATE_CRT` variables:
+
+     ```shell
+    export TLS_CERTIFICATE_KEY="$(cat /tmp/tls.key | base64)"
+    export TLS_CERTIFICATE_CRT="$(cat /tmp/tls.crt | base64)"
+    ```
 
 ##### Create dedicated service accounts
 
@@ -225,7 +233,10 @@ helm template chart/postgresql \
   --set postgresql.exposePublicService=$EXPOSE_PUBLIC_SERVICE \
   --set db.password=$POSTGRESQL_DB_PASSWORD \
   --set metrics.image=$IMAGE_METRICS_EXPORTER \
-  --set metrics.enabled=$METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
+  --set metrics.enabled=$METRICS_EXPORTER_ENABLED \
+  --set "tls.base64EncodedPrivateKey=$TLS_CERTIFICATE_KEY" \
+  --set "tls.base64EncodedCertificate=$TLS_CERTIFICATE_CRT" \
+    > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 
 #### Apply the manifest to your Kubernetes cluster

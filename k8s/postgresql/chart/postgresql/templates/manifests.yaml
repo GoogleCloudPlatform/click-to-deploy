@@ -9,6 +9,20 @@ type: Opaque
 data:
   password: {{ .Values.db.password }}
 ---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Release.Name }}-tls
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: postgresql-server
+data:
+  tls.key: |
+  {{ .Values.tls.base64EncodedPrivateKey | indent 4 }}
+tls.crt: |
+  {{ .Values.tls.base64EncodedCertificate | indent 4 }}
+type: kubernetes.io/tls
+---
 apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
