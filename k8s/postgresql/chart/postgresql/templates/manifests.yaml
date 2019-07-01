@@ -18,9 +18,9 @@ metadata:
     app.kubernetes.io/component: postgresql-server
 data:
   tls.key: |
-  {{ .Values.tls.base64EncodedPrivateKey | indent 4 }}
-tls.crt: |
-  {{ .Values.tls.base64EncodedCertificate | indent 4 }}
+{{ .Values.tls.base64EncodedPrivateKey | indent 4 }}
+  tls.crt: |
+{{ .Values.tls.base64EncodedCertificate | indent 4 }}
 type: kubernetes.io/tls
 ---
 apiVersion: apps/v1beta2
