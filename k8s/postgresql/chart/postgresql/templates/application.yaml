@@ -9,8 +9,8 @@ metadata:
   labels:
     app.kubernetes.io/name: "{{ .Release.Name }}"
 spec:
-  type: PostgreSQL
-  version: '9.6.10'
+  type: PostgreSQL (Managed Updates)
+  version: "{{ .Values.postgresql.image.tag }}"
   description: |-
     PostgreSQL is an open source object-relational database with an emphasis on extensibility and standards-compliance.
 
