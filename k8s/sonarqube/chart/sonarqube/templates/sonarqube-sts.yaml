@@ -67,11 +67,10 @@ spec:
           command:
             - /monitor
             - --stackdriver-prefix=custom.googleapis.com
-            - --source={{ .Release.Name }}:http://localhost:9000/api/prometheus/metrics
+            - --source=sonarqube:http://localhost:9000/api/prometheus/metrics
             - --pod-id=$(POD_NAME)
             - --namespace-id=$(POD_NAMESPACE)
-            - --scrape-interval=5s
-            - --export-interval=30s
+            - --monitored-resource-types=k8s
           env:
             - name: POD_NAME
               valueFrom:
