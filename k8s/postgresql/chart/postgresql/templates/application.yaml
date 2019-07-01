@@ -47,6 +47,8 @@ spec:
   - group: apps/v1beta2
     kind: StatefulSet
   - group: v1
+    kind: PersistentVolumeClaim
+  - group: v1
     kind: Secret
   - group: v1
     kind: Service

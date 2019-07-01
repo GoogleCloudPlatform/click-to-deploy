@@ -13,17 +13,17 @@ apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
   name: {{ .Release.Name }}-postgresql
-  labels: &PostgrSQLLabels
+  labels: &PostgreSQLLabels
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: postgresql-server
 spec:
   replicas: 1
   selector:
-    matchLabels: *PostgrSQLLabels
+    matchLabels: *PostgreSQLLabels
   serviceName: {{ .Release.Name }}-postgresql-svc
   template:
     metadata:
-      labels: *PostgrSQLLabels
+      labels: *PostgreSQLLabels
     spec:
       serviceAccount: {{ .Values.postgresql.serviceAccount }}
       volumes:
@@ -92,7 +92,7 @@ spec:
   volumeClaimTemplates:
   - metadata:
       name: {{ .Release.Name }}-postgresql-pvc
-      labels: *PostgrSQLLabels
+      labels: *PostgreSQLLabels
     spec:
       accessModes:
       - ReadWriteOnce
@@ -105,7 +105,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: {{ .Release.Name }}-postgresql-svc
-  labels: &PostgrSQLLabels
+  labels: &PostgreSQLLabels
     app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: postgresql-server
 spec:
@@ -113,7 +113,7 @@ spec:
   - name: postgres
     port: 5432
     targetPort: 5432
-  selector: *PostgrSQLLabels
+  selector: *PostgreSQLLabels
 {{ if .Values.postgresql.exposePublicService }}
   type: LoadBalancer
 {{ else }}
@@ -124,12 +124,12 @@ kind: Service
 apiVersion: v1
 metadata:
   name: {{ .Release.Name }}-postgres-exporter-svc
-  labels: &PostgrSQLLabels
+  labels: &PostgreSQLLabels
     app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: postgresql-server
 spec:
   ports:
   - name: prometheus-exporter
     port: 9187
-  selector: *PostgrSQLLabels
+  selector: *PostgreSQLLabels
   type: ClusterIP
