@@ -119,8 +119,8 @@ app/build:: .build/elastic-gke-logging/elasticsearch \
 .build/elastic-gke-logging/ubuntu16_04: .build/var/REGISTRY \
                                         .build/var/TAG \
                                         | .build/elastic-gke-logging
-	docker pull marketplace.gcr.io/google/ubuntu16_04
-	docker tag marketplace.gcr.io/google/ubuntu16_04 \
+	docker pull marketplace.gcr.io/google/ubuntu1604
+	docker tag marketplace.gcr.io/google/ubuntu1604 \
 	    "$(REGISTRY)/elastic-gke-logging/ubuntu16_04:$(TAG)"
 	docker push "$(REGISTRY)/elastic-gke-logging/ubuntu16_04:$(TAG)"
 	@touch "$@"
