@@ -2,11 +2,12 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
+APP_ID ?= wordpress-managed-updates
 VERIFY_WAIT_TIMEOUT = 1800
 
 # The digest should be updated automatically, or tag <major>.<minor>.<path/build>
 # should be available on GCP Marketplace.
-# Use `.build/wordpress/show-version` target to fill the RELEASE variable.
+# Use `.build/wordpress/VERSION` target to fill the RELEASE variable.
 WP_TAG ?= sha256:b90654a76e1c42594d9230479de8b436c637ee12937a343661d53c12ad4e7c2c
 MYSQL_TAG ?= latest
 METRICS_EXPORTER_TAG ?= v0.5.1
@@ -14,7 +15,6 @@ METRICS_EXPORTER_TAG ?= v0.5.1
 TIMESTAMP := $(shell date +%s)
 TRACK ?= 5.2
 RELEASE ?= 5.2.1-build.$(TIMESTAMP)
-APP_ID ?= wordpress-managed-updates
 
 $(info ---- TRACK = $(TRACK))
 $(info ---- RELEASE = $(RELEASE))
@@ -80,14 +80,15 @@ app/build:: .build/wordpress/deployer \
             .build/wordpress/mysqld-exporter \
             .build/wordpress/prometheus-to-sd \
             .build/wordpress/tester \
-            .build/wordpress/show-version
+            .build/wordpress/VERSION
 
 
 .build/wordpress: | .build
 	mkdir -p "$@"
 
 
-.build/wordpress/show-version:
+.PHONY: .build/wordpress/VERSION
+.build/wordpress/VERSION:
 	docker run --rm --entrypoint=printenv marketplace.gcr.io/google/wordpress5-php7-apache@$(WP_TAG) WORDPRESS_VERSION
 
 

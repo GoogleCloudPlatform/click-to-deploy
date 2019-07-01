@@ -28,7 +28,7 @@ spec:
                 matchLabels: *MariaDBDeploymentLabels
       containers:
       - name: mariadb
-        image: {{ .Values.mariadb.image }}
+        image: "{{ .Values.mariadb.image.repo }}:{{ .Values.mariadb.image.tag }}"
         imagePullPolicy: Always
         env:
         - name: MYSQL_ROOT_PASSWORD
@@ -128,7 +128,7 @@ spec:
                 matchLabels: *MariaDBDeploymentLabels
       initContainers:
       - name: mariadb-init
-        image: {{ .Values.mariadb.image }}
+        image: "{{ .Values.mariadb.image.repo }}:{{ .Values.mariadb.image.tag }}"
         imagePullPolicy: Always
         env:
         - name: MYSQL_ROOT_PASSWORD
@@ -154,7 +154,7 @@ spec:
           mountPath: /mnt/configmap
       containers:
       - name: mariadb
-        image: {{ .Values.mariadb.image }}
+        image: "{{ .Values.mariadb.image.repo }}:{{ .Values.mariadb.image.tag }}"
         imagePullPolicy: Always
         env:
         - name: MARIADB_MASTER_ROOT_USER
