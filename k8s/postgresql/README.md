@@ -17,7 +17,7 @@ available in Google Cloud Marketplace.
 This solution installs a single instance of PostgreSQL server on your
 Kubernetes cluster.
 
-The PostgreSQL Pod is managed by a ReplicaSet, with the number of replicas set
+The PostgreSQL Pod is managed by a StatefulSet, with the number of replicas set
 to one. The PostgreSQL Pod uses a Persistent Volume to store data, and a ClusterIP
 Service to expose the database port (which can be optionally exposed publicly
 with a LoadBalancer type of Service). Communication between the client and server is
@@ -242,7 +242,7 @@ installation creates:
     a result, there is no new database initialization, and no new password is
     set.
 -   A Secret with the PostgreSQL initial random password
--   A Deployment
+-   A StatefulSet
 -   A Service, which exposes PostgreSQL server to the external world
 
 ```shell
@@ -268,7 +268,7 @@ Forward the port locally:
 ```shell
 kubectl port-forward \
   --namespace "${NAMESPACE}" \
-  "${APP_INSTANCE_NAME}-postgresql-deployment-0" 5432
+  "${APP_INSTANCE_NAME}-postgresql-0" 5432
 ```
 
 Sign in to PostgreSQL:
@@ -333,7 +333,7 @@ Run this command to back up your database:
 ```shell
 kubectl --namespace $NAMESPACE exec -t \
     $(kubectl -n$NAMESPACE get pod -oname | \
-        sed -n /\\/$APP_INSTANCE_NAME-postgresql-deployment/s.pods\\?/..p) \
+        sed -n /\\/$APP_INSTANCE_NAME-postgresql/s.pods\\?/..p) \
     -- pg_dumpall -c -U postgres > postgresql-backup.sql
 ```
 
@@ -344,7 +344,7 @@ Run this command to restore your database from a backup:
 ```shell
 cat postgresql-backup.sql | kubectl --namespace $NAMESPACE exec -i \
     $(kubectl -n$NAMESPACE get pod -oname | \
-        sed -n /\\/$APP_INSTANCE_NAME-postgresql-deployment/s.pods\\?/..p) \
+        sed -n /\\/$APP_INSTANCE_NAME-postgresql/s.pods\\?/..p) \
     -- psql -U postgres
 ```
 
@@ -361,7 +361,7 @@ To update your PostgreSQL installation, follow the steps below:
     # back up your data before running
 
     kubectl -n $NAMESPACE delete pod $(kubectl -n$NAMESPACE get pod -oname | \
-        sed -n /\\/$APP_INSTANCE_NAME-postgresql-deployment/s.pods\\?/..p)
+        sed -n /\\/$APP_INSTANCE_NAME-postgresql/s.pods\\?/..p)
     ```
 
 # Deleting your PostgreSQL installation
