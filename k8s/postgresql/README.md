@@ -169,7 +169,7 @@ the value to `true`.
 export EXPOSE_PUBLIC_SERVICE=false
 ```
 
-#### Create TLS certificate for WordPress
+#### Create TLS certificate for PostgreSQL
 
  > Note: You can skip this step if you have not set up external access.
  1.  If you already have a certificate that you want to use, copy your
