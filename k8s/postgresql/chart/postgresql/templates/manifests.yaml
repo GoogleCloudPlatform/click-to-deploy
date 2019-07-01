@@ -1,18 +1,3 @@
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: {{ .Release.Name }}-postgresql-pvc
-  labels:
-    app.kubernetes.io/name: {{ .Release.Name }}
-    app.kubernetes.io/component: postgresql-server
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: {{ .Values.postgresql.volumeSize }}Gi
-  storageClassName: standard
----
 kind: Secret
 apiVersion: v1
 metadata:
@@ -24,26 +9,24 @@ type: Opaque
 data:
   password: {{ .Values.db.password }}
 ---
-kind: Deployment
 apiVersion: apps/v1beta2
+kind: StatefulSet
 metadata:
-  name: {{ .Release.Name }}-postgresql-deployment
-  labels: &PostgreSQLDeploymentLabels
+  name: {{ .Release.Name }}-postgresql
+  labels: &PostgreSQLLabels
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: postgresql-server
 spec:
   replicas: 1
   selector:
-    matchLabels: *PostgreSQLDeploymentLabels
+    matchLabels: *PostgreSQLLabels
+  serviceName: {{ .Release.Name }}-postgresql-svc
   template:
     metadata:
-      labels: *PostgreSQLDeploymentLabels
+      labels: *PostgreSQLLabels
     spec:
       serviceAccount: {{ .Values.postgresql.serviceAccount }}
       volumes:
-      - name: {{ .Release.Name }}-postgresql-pvc
-        persistentVolumeClaim:
-          claimName: {{ .Release.Name }}-postgresql-pvc
       - name: tls-volume
         secret:
           secretName: {{ .Release.Name }}-tls
@@ -92,11 +75,10 @@ spec:
         command:
         - /monitor
         - --stackdriver-prefix=custom.googleapis.com
-        - --source={{ .Release.Name }}:http://localhost:9187/metrics
+        - --source=postgresql:http://localhost:9187/metrics
         - --pod-id=$(POD_NAME)
         - --namespace-id=$(POD_NAMESPACE)
-        - --scrape-interval=5s
-        - --export-interval=30s
+        - --monitored-resource-types=k8s
         env:
         - name: POD_NAME
           valueFrom:
@@ -107,12 +89,23 @@ spec:
             fieldRef:
               fieldPath: metadata.namespace
       {{ end }}
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Release.Name }}-postgresql-pvc
+      labels: *PostgreSQLLabels
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      storageClassName: standard
+      resources:
+        requests:
+          storage: {{ .Values.postgresql.volumeSize }}Gi
 ---
 kind: Service
 apiVersion: v1
 metadata:
   name: {{ .Release.Name }}-postgresql-svc
-  labels: &PostgresSQLDeploymentLabels
+  labels: &PostgreSQLLabels
     app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: postgresql-server
 spec:
@@ -120,7 +113,7 @@ spec:
   - name: postgres
     port: 5432
     targetPort: 5432
-  selector: *PostgresSQLDeploymentLabels
+  selector: *PostgreSQLLabels
 {{ if .Values.postgresql.exposePublicService }}
   type: LoadBalancer
 {{ else }}
@@ -131,12 +124,12 @@ kind: Service
 apiVersion: v1
 metadata:
   name: {{ .Release.Name }}-postgres-exporter-svc
-  labels: &PostgresSQLDeploymentLabels
+  labels: &PostgreSQLLabels
     app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: postgresql-server
 spec:
   ports:
   - name: prometheus-exporter
     port: 9187
-  selector: *PostgresSQLDeploymentLabels
+  selector: *PostgreSQLLabels
   type: ClusterIP
