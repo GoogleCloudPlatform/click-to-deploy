@@ -228,13 +228,13 @@ expanded manifest file for future updates to the application.
 helm template chart/postgresql \
   --name $APP_INSTANCE_NAME \
   --namespace $NAMESPACE \
-  --set postgresql.serviceAccount=$POSTGRESQL_SERVICE_ACCOUNT \
-  --set postgresql.image=$IMAGE_POSTGRESQL \
-  --set postgresql.volumeSize=$POSTGRESQL_VOLUME_SIZE \
-  --set postgresql.exposePublicService=$EXPOSE_PUBLIC_SERVICE \
-  --set db.password=$POSTGRESQL_DB_PASSWORD \
-  --set metrics.image=$IMAGE_METRICS_EXPORTER \
-  --set metrics.enabled=$METRICS_EXPORTER_ENABLED \
+  --set "postgresql.serviceAccount=$POSTGRESQL_SERVICE_ACCOUNT" \
+  --set "postgresql.image=$IMAGE_POSTGRESQL" \
+  --set "postgresql.volumeSize=$POSTGRESQL_VOLUME_SIZE" \
+  --set "postgresql.exposePublicService=$EXPOSE_PUBLIC_SERVICE" \
+  --set "db.password=$POSTGRESQL_DB_PASSWORD" \
+  --set "metrics.image=$IMAGE_METRICS_EXPORTER" \
+  --set "metrics.enabled=$METRICS_EXPORTER_ENABLED" \
   --set "tls.base64EncodedPrivateKey=$TLS_CERTIFICATE_KEY" \
   --set "tls.base64EncodedCertificate=$TLS_CERTIFICATE_CRT" \
     > ${APP_INSTANCE_NAME}_manifest.yaml
