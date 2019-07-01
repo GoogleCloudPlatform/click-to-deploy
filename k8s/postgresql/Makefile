@@ -18,8 +18,10 @@ RELEASE ?= 9.6.10-build.$(TIMESTAMP)
 $(info ---- TRACK = $(TRACK))
 $(info ---- RELEASE = $(RELEASE))
 
-IMAGE_POSTGRESQL ?= marketplace.gcr.io/google/postgresql9:$(POSTGRESQL_TAG)
+IMAGE_POSTGRESQL ?= marketplace.gcr.io/google/postgresql9@$(POSTGRESQL_TAG)
 IMAGE_POSTGRESQL_EXPORTER ?= marketplace.gcr.io/google/postgresql9:exporter
+IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+
 $(info ---- TAG = $(TAG))
 
 ifdef METRICS_EXPORTER_ENABLED
@@ -51,7 +53,7 @@ app/build:: .build/postgresql/deployer \
             .build/postgresql/postgresql \
             .build/postgresql/prometheus-to-sd \
             .build/postgresql/tester \
-            .build/postgresql/VERSIONS
+            .build/postgresql/VERSION
 
 
 .build/postgresql: | .build
@@ -105,7 +107,7 @@ app/build:: .build/postgresql/deployer \
                             | .build/postgresql
 	docker pull $(IMAGE_POSTGRESQL_EXPORTER) 
 	docker tag $(IMAGE_POSTGRESQL_EXPORTER) "$(REGISTRY)/$(APP_ID)/exporter:$(TRACK)"
-	docker tag $(IMAGE_POSTGRESQL_EXPORTER) "$(REGISTRY)/$(APP_ID)/exporter:$(RELEASE)"
+	docker tag "$(REGISTRY)/$(APP_ID)/exporter:$(TRACK)" "$(REGISTRY)/$(APP_ID)/exporter:$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID)/exporter:$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID)/exporter:$(RELEASE)"
 	@touch "$@"
@@ -115,9 +117,8 @@ app/build:: .build/postgresql/deployer \
                                     .build/var/TRACK \
                                     .build/var/RELEASE \
                                     | .build/postgresql
-	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
-	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
-	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
+	docker pull $(IMAGE_PROMETHEUS_TO_SD)
+	docker tag $(IMAGE_PROMETHEUS_TO_SD) "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
 	docker tag "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)" \
       "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
