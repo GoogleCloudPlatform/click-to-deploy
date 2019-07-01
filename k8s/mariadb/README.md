@@ -115,11 +115,25 @@ export APP_INSTANCE_NAME=mariadb-1
 export NAMESPACE=default
 ```
 
+Enable Stackdriver Metrics Exporter:
+
+> **NOTE:** Your GCP project must have Stackdriver enabled. If you are using a
+> non-GCP cluster, you cannot export metrics to Stackdriver.
+
+By default, the application does not export metrics to Stackdriver. To enable
+this option, change the value to `true`.
+
+```shell
+export METRICS_EXPORTER_ENABLED=false
+```
+
 Configure the container image:
 
 ```shell
 TAG=10.3
 export IMAGE_MARIADB="marketplace.gcr.io/google/mariadb:${TAG}"
+export IMAGE_MYSQL_EXPORTER="marketplace.gcr.io/google/mariadb/mysqld-exporter:${TAG}"
+export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/mariadb/prometheus-to-sd:${TAG}"
 ```
 
 The images above are referenced by
@@ -131,10 +145,12 @@ until you are ready to upgrade. To get the digest for the image, use the
 following script:
 
 ```shell
-repo=$(echo $IMAGE_MARIADB | cut -d: -f1)
-digest=$(docker pull $IMAGE_MARIADB | sed -n -e 's/Digest: //p')
-export IMAGE_MARIADB="$repo@$digest"
-env | grep IMAGE_MARIADB
+for i in "IMAGE_MARIADB" "IMAGE_MYSQL_EXPORTER" "IMAGE_METRICS_EXPORTER"; do
+  repo=$(echo ${!i} | cut -d: -f1);
+  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
+  export $i="$repo@$digest";
+  echo ${!i};
+done
 ```
 
 Set the number of replicas for MariaDB:
@@ -148,6 +164,9 @@ Configure the MariaDB users credentials (passwords must be encoded in base64):
 ```shell
 export MARIADB_ROOT_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1 | tr -d '\n' | base64)
 export MARIADB_REPLICA_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1 | tr -d '\n' | base64)
+
+# Set mysqld-exporter user password.
+export EXPORTER_DB_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1 | tr -d '\n' | base64)"
 ```
 
 #### Create namespace in your Kubernetes cluster
@@ -233,6 +252,10 @@ helm template chart/mariadb \
   --set db.volumeSize=8 \
   --set db.password=$MARIADB_ROOT_PASSWORD \
   --set replication.password=$MARIADB_REPLICA_PASSWORD \
+  --set db.exporter.image=$IMAGE_MYSQL_EXPORTER \
+  --set db.exporter.password=$EXPORTER_DB_PASSWORD \
+  --set metrics.image=$IMAGE_METRICS_EXPORTER \
+  --set metrics.enabled=$METRICS_EXPORTER_ENABLED \
   --set db.replicas=$REPLICAS > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
@@ -328,6 +351,59 @@ kubectl port-forward svc/$APP_INSTANCE_NAME-mariadb --namespace $NAMESPACE 3306
 # or
 kubectl port-forward svc/$APP_INSTANCE_NAME-mariadb-secondary --namespace $NAMESPACE 3306
 ```
+
+# Application metrics
+
+## Prometheus metrics
+
+The application can be configured to expose its metrics through the
+[MySQL Server Exporter](https://github.com/GoogleCloudPlatform/mysql-docker/tree/master/exporter)
+in the
+[Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
+For more detailed information about setting up the plugin, see the
+[Mysqld Exporter documentation](https://github.com/prometheus/mysqld_exporter/blob/master/README.md).
+
+You can access the MySQL metrics at `[MYSQL-SERVICE]:9104/metrics`, where `[MYSQL-SERVICE]` is the
+[Kubernetes Headless Service](https://kubernetes.io/docs/concepts/services-networking/service/#headless-services).
+
+For example, to access the metrics locally, run the following command:
+
+```shell
+kubectl port-forward "svc/${APP_INSTANCE_NAME}-mysqld-exporter-svc" 9104 --namespace "${NAMESPACE}"
+```
+
+Then, navigate to the
+[http://localhost:9104/metrics](http://localhost:9104/metrics) endpoint.
+
+
+### Configuring Prometheus to collect the metrics
+
+Prometheus can be configured to automatically collect the application's metrics.
+Follow the steps in
+[Configuring Prometheus](https://prometheus.io/docs/introduction/first_steps/#configuring-prometheus).
+
+You configure the metrics in the
+[`scrape_configs` section](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config).
+
+## Exporting metrics to Stackdriver
+
+Primary instance pod includes a
+[Prometheus to Stackdriver (`prometheus-to-sd`)](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd)
+container. If you enabled the option to export metrics to Stackdriver, the
+metrics are automatically exported to Stackdriver and visible in
+[Stackdriver Metrics Explorer](https://cloud.google.com/monitoring/charts/metrics-explorer).
+
+Metrics are labeled with `app.kubernetes.io/name` consisting of application's name,
+which you define in the `APP_INSTANCE_NAME` environment variable.
+
+The exporting option might not be available for GKE on-prem clusters.
+
+> Note: Stackdriver has [quotas](https://cloud.google.com/monitoring/quotas) for
+> the number of custom metrics created in a single GCP project. If the quota is
+> met, additional metrics might not show up in the Stackdriver Metrics Explorer.
+
+You can remove existing metric descriptors using
+[Stackdriver's REST API](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors/delete).
 
 # Scaling
 

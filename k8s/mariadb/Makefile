@@ -8,6 +8,7 @@ APP_ID ?= mariadb-managed-updates
 # should be available on GCP Marketplace.
 # Use `.build/mariadb/VERSION` target to fill the RELEASE variable.
 MARIADB_TAG ?= sha256:edc02d0c232098d9882eed8cacfdde63deb7be631894a9323d9471990890b3df
+METRICS_EXPORTER_TAG ?= v0.5.1
 
 TIMESTAMP := $(shell date +%s)
 TRACK ?= 10.3
@@ -22,9 +23,14 @@ APP_GCS_PATH ?= $(GCS_URL)/$(APP_ID)/$(TRACK)
 
 NAME ?= $(APP_ID)-1
 
+ifdef METRICS_EXPORTER_ENABLED
+  METRICS_EXPORTER_ENABLED_FIELD = , "metrics.enabled": "$(METRICS_EXPORTER_ENABLED)"
+endif
+
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
+  $(METRICS_EXPORTER_ENABLED_FIELD) \
 }
 
 TESTER_IMAGE ?= $(REGISTRY)/$(APP_ID)/tester:$(RELEASE)
@@ -37,8 +43,10 @@ include ../app_v2.Makefile
 
 app/build:: .build/mariadb/deployer \
             .build/mariadb/mariadb \
-            .build/mariadb/tester \
-            .build/mariadb/VERSION
+            .build/mariadb/VERSION \
+            .build/mariadb/mysqld-exporter \
+            .build/mariadb/prometheus-to-sd \
+            .build/mariadb/tester
 
 
 .build/mariadb: | .build
@@ -80,7 +88,6 @@ app/build:: .build/mariadb/deployer \
                         .build/var/TRACK \
                         .build/var/RELEASE \
                         | .build/mariadb
-
 	docker pull marketplace.gcr.io/google/mariadb10@$(MARIADB_TAG)
 	docker tag marketplace.gcr.io/google/mariadb10@$(MARIADB_TAG) \
 	    "$(REGISTRY)/$(APP_ID):$(TRACK)"
@@ -88,6 +95,33 @@ app/build:: .build/mariadb/deployer \
 	docker push "$(REGISTRY)/$(APP_ID):$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID):$(RELEASE)"
 	@touch "$@"
+
+
+.build/mariadb/mysqld-exporter:  .build/var/REGISTRY \
+                                 .build/var/TRACK \
+                                 .build/var/RELEASE \
+                                 | .build/mariadb
+	docker pull marketplace.gcr.io/google/mysql5:exporter
+	docker tag marketplace.gcr.io/google/mysql5:exporter \
+	    "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(TRACK)"
+	docker tag "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(TRACK)" "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(RELEASE)"
+	docker push "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(TRACK)"
+	docker push "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(RELEASE)"
+	@touch "$@"
+
+
+.build/mariadb/prometheus-to-sd:  .build/var/REGISTRY \
+                                  .build/var/TRACK \
+                                  .build/var/RELEASE \
+                                  | .build/mariadb
+	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
+	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
+	docker tag "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)" "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
+	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
+	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
+	@touch "$@"
+
 
 .build/mariadb/tester: .build/var/TESTER_IMAGE \
                        $(shell find apptest -type f) \

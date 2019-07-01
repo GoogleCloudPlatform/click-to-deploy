@@ -110,8 +110,8 @@ app/build:: .build/elasticsearch/elasticsearch \
                                   .build/var/TRACK \
                                   .build/var/RELEASE \
                                   | .build/elasticsearch
-	docker pull marketplace.gcr.io/google/ubuntu16_04
-	docker tag marketplace.gcr.io/google/ubuntu16_04 \
+	docker pull marketplace.gcr.io/google/ubuntu1604
+	docker tag marketplace.gcr.io/google/ubuntu1604 \
 	    "$(REGISTRY)/$(APP_ID)/ubuntu16_04:$(TRACK)"
 	docker tag "$(REGISTRY)/$(APP_ID)/ubuntu16_04:$(TRACK)" \
 	    "$(REGISTRY)/$(APP_ID)/ubuntu16_04:$(RELEASE)"

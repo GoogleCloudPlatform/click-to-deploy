@@ -63,7 +63,7 @@ to generate Markdown documentation.
 ## Cloud Build CI
 
 This repository uses Cloud Build for continuous integration. The Cloud Build
-configuration file is located at
+configuration file for Docker images is located at
 [`../cloudbuild-docker.yaml`](../cloudbuild-docker.yaml).
 
 ### Manually run the build
