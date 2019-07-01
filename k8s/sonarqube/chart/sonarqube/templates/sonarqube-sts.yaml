@@ -1,17 +1,18 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ .Release.Name}}-sonarqube
-  labels: &SonarQubeDeploymentsLables
-      app.kubernetes.io/component: sonarqube
-      app.kubernetes.io/name: "{{ .Release.Name }}"
+  labels: &SonarQubeLabels
+    app.kubernetes.io/component: sonarqube
+    app.kubernetes.io/name: "{{ .Release.Name }}"
 spec:
   replicas: 1
   selector:
-    matchLabels: *SonarQubeDeploymentsLables
+    matchLabels: *SonarQubeLabels
+  serviceName: {{ .Release.Name }}-sonarqube-svc
   template:
     metadata:
-      labels: *SonarQubeDeploymentsLables
+      labels: *SonarQubeLabels
     spec:
       initContainers:
       - name: check-db-ready
@@ -61,3 +62,14 @@ spec:
       - name: {{ .Release.Name}}-ext
         persistentVolumeClaim:
           claimName: {{ .Release.Name}}-ext
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Release.Name}}-ext
+      labels: *SonarQubeLabels
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      storageClassName: standard
+      resources:
+        requests:
+          storage: 10Gi

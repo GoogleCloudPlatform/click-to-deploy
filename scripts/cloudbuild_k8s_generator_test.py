@@ -86,8 +86,27 @@ steps:
     mkdir -p /workspace/.config/gcloud/
     cp -r $$HOME/.config/gcloud/ /workspace/.config/
 
+- id: Run diagnostic tool
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  waitFor:
+  - Copy kubectl Credentials
+  - Copy gcloud Credentials
+  - Pull Dev Image
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  dir: k8s/wordpress
+  args:
+  - make
+  - app/doctor
+
 - id: Build wordpress
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  waitFor:
+  - Run diagnostic tool
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
@@ -103,9 +122,6 @@ steps:
 - id: Verify wordpress
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
-  - Copy kubectl Credentials
-  - Copy gcloud Credentials
-  - Pull Dev Image
   - Build wordpress
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
@@ -124,9 +140,6 @@ CLOUDBUILD_OUTPUT_WITH_EXTRA_CONFIG = ''.join([CLOUDBUILD_OUTPUT, '\n', """
 - id: Verify wordpress (Public service and ingress)
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
-  - Copy kubectl Credentials
-  - Copy gcloud Credentials
-  - Pull Dev Image
   - Build wordpress
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
