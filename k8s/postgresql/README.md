@@ -171,23 +171,24 @@ export EXPOSE_PUBLIC_SERVICE=false
 
 #### Create TLS certificate for PostgreSQL
 
- > Note: You can skip this step if you have not set up external access.
- 1.  If you already have a certificate that you want to use, copy your
+> Note: You can skip this step if you have not set up external access.
+ 
+1.  If you already have a certificate that you want to use, copy your
     certificate and key pair to the `/tmp/tls.crt`, and `/tmp/tls.key` files,
     then skip to the next step.
 
-     To create a new certificate, run the following command:
+    To create a new certificate, run the following command:
 
-     ```shell
+    ```shell
     openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
         -keyout /tmp/tls.key \
         -out /tmp/tls.crt \
         -subj "/CN=postgresql/O=postgresql"
     ```
 
- 1.  Set `TLS_CERTIFICATE_KEY` and `TLS_CERTIFICATE_CRT` variables:
+1.  Set `TLS_CERTIFICATE_KEY` and `TLS_CERTIFICATE_CRT` variables:
 
-     ```shell
+    ```shell
     export TLS_CERTIFICATE_KEY="$(cat /tmp/tls.key | base64)"
     export TLS_CERTIFICATE_CRT="$(cat /tmp/tls.crt | base64)"
     ```
