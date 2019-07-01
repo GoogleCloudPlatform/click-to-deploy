@@ -169,7 +169,7 @@ the value to `true`.
 export EXPOSE_PUBLIC_SERVICE=false
 ```
 
-#### Create TLS certificate for PostgreSQL
+##### Create TLS certificate for PostgreSQL
 
 > Note: You can skip this step if you have not set up external access.
  
