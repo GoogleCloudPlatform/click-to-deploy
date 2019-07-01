@@ -35,8 +35,3 @@ COPY --from=build /tmp/schema.yaml /data/
 
 ENV WAIT_FOR_READY_TIMEOUT 1800
 ENV TESTER_TIMEOUT 1800
-
-RUN mv -f /bin/deploy.sh /bin/deploy-original.sh \
-    && cp /bin/clean_iam_resources.sh /bin/clean_iam_resources-original.sh \
-    && echo '#!/bin/bash\nexit' > /bin/clean_iam_resources.sh
-ADD deployer/entrypoint.sh /bin/deploy.sh

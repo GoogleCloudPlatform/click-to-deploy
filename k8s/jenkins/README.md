@@ -146,21 +146,29 @@ script:
 export IMAGE_JENKINS=$(docker pull $IMAGE_JENKINS | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_JENKINS\")\"@sha256:\"\$3}")
 ```
 
-Create a certificate for Jenkins. If you already have a certificate that you
-want to use, copy your certificate and key pair in to the `/tmp/tls.crt` and
-`/tmp/tls.key` files.
+#### Create TLS certificate for Jenkins
 
-```shell
-# create a certificate for jenkins
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-    -keyout /tmp/tls.key \
-    -out /tmp/tls.crt \
-    -subj "/CN=jenkins/O=jenkins"
+> Note: You can skip this step if you have not set up external access.
 
-# create a secret for K8s ingress SSL
-kubectl --namespace $NAMESPACE create secret generic $APP_INSTANCE_NAME-tls \
-        --from-file=/tmp/tls.crt --from-file=/tmp/tls.key
-```
+1.  If you already have a certificate that you want to use, copy your
+    certificate and key pair to the `/tmp/tls.crt`, and `/tmp/tls.key` files,
+    then skip to the next step.
+
+    To create a new certificate, run the following command:
+
+    ```shell
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+        -keyout /tmp/tls.key \
+        -out /tmp/tls.crt \
+        -subj "/CN=jenkins/O=jenkins"
+    ```
+
+1.  Set `TLS_CERTIFICATE_KEY` and `TLS_CERTIFICATE_CRT` variables:
+
+    ```shell
+    export TLS_CERTIFICATE_KEY="$(cat /tmp/tls.key | base64)"
+    export TLS_CERTIFICATE_CRT="$(cat /tmp/tls.crt | base64)"
+    ```
 
 #### Expand the manifest template
 
@@ -171,7 +179,10 @@ expanded manifest file for future updates to the application.
 helm template chart/jenkins \
   --name $APP_INSTANCE_NAME \
   --namespace $NAMESPACE \
-  --set jenkins.image=$IMAGE_JENKINS > ${APP_INSTANCE_NAME}_manifest.yaml
+  --set "jenkins.image=$IMAGE_JENKINS" \
+  --set "tls.base64EncodedPrivateKey=$TLS_CERTIFICATE_KEY" \
+  --set "tls.base64EncodedCertificate=$TLS_CERTIFICATE_CRT" \
+    > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 
 #### Apply the manifest to your Kubernetes cluster
