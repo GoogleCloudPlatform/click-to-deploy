@@ -82,8 +82,8 @@ app/build:: .build/elasticsearch/elasticsearch \
 .build/elasticsearch/ubuntu16_04: .build/var/REGISTRY \
                                   .build/var/TAG \
                                   | .build/elasticsearch
-	docker pull marketplace.gcr.io/google/ubuntu16_04
-	docker tag marketplace.gcr.io/google/ubuntu16_04 \
+	docker pull marketplace.gcr.io/google/ubuntu1604
+	docker tag marketplace.gcr.io/google/ubuntu1604 \
 	    "$(REGISTRY)/elasticsearch/ubuntu16_04:$(TAG)"
 	docker push "$(REGISTRY)/elasticsearch/ubuntu16_04:$(TAG)"
 	@touch "$@"
