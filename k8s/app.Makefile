@@ -2,7 +2,6 @@ ifndef __APP_MAKEFILE__
 
 __APP_MAKEFILE__ := included
 
-
 makefile_dir := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 include $(makefile_dir)/common.Makefile
 include $(makefile_dir)/var.Makefile
