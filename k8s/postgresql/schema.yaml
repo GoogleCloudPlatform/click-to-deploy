@@ -1,4 +1,35 @@
-application_api_version: v1beta1
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      A regular update.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+    managedUpdates:
+      kalmSupported: true
+
+    images:
+      '':
+        properties:
+          postgresql.image.repo:
+            type: REPO_WITH_REGISTRY
+          postgresql.image.tag:
+            type: TAG
+      exporter:
+        properties:
+          exporter.image:
+            type: FULL
+      prometheus-to-sd:
+        properties:
+          postgresql.image:
+            type: FULL
+
 properties:
   name:
     type: string
@@ -8,11 +39,6 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  postgresql.image:
-    type: string
-    default: $REGISTRY:$TAG
-    x-google-marketplace:
-      type: IMAGE
   postgresql.volumeSize:
     type: integer
     title: Volume
@@ -30,26 +56,17 @@ properties:
     title: Enable public IP access
     description: Set the PostgreSQL Service type to LoadBalancer
     default: false
-  exporter.image:
-    type: string
-    default: $REGISTRY/exporter:$TAG
-    x-google-marketplace:
-      type: IMAGE
   db.password:
     type: string
     x-google-marketplace:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 12
-  metrics.image:
-    type: string
-    default: $REGISTRY/prometheus-to-sd:$TAG
-    x-google-marketplace:
-      type: IMAGE
   metrics.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
-    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
+    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters,
+      export of metrics to Stackdriver is not supported yet
     default: false
 
 required:
