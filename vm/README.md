@@ -129,7 +129,7 @@ and
 ## Cloud Build CI
 
 This repository uses Cloud Build for continuous integration. The Cloud Build
-configuration file is located at
+configuration file for VM apps is located at
 [`../cloudbuild-vm.yaml`](../cloudbuild-vm.yaml).
 
 ### Manually run the build
@@ -153,43 +153,8 @@ gcloud builds submit . \
 
 1.  The service account JSON key is downloaded from the GCS bucket to
     Cloud Build's workspace.
-
 1.  After the above step is executed successfully, the `imagebuilder` container runs and builds
     the VM image defined in the `$_SOLUTION_NAME` variable.
-
-### GCB custom worker pools
-
-To allow connection via an internal IP. The Cloud Build configuration uses
-Google Cloud Build (GCB) custom worker pools.
-
-If you want to create a new worker pool, run the following command:
-
-```shell
-gcloud alpha builds worker-pools create gcb-workers-pool \
-  --project=[PROJECT_ID] \
-  --regions=us-central1,us-west1,us-east1,us-east-4 \
-  --worker-count=2 \
-  --worker-machine-type=n1-standard-1 \
-  --worker-tag=gcb-worker \
-  --worker-network-name=default \
-  --worker-network-project=[PROJECT_ID] \
-  --worker-network-subnet=default
-```
-
-Where:
-
-*  `[PROJECT_ID]` is the GCP project ID where you want to create your custom worker pool.
-
-If you want to update the number of workers in an existing pool, run the following command:
-
-```shell
-gcloud alpha builds worker-pools update gcb-workers-pool \
-  --project=[PROJECT_ID] \
-  --worker-count=4 \
-```
-
-For more information, see the
-[gcloud alpha builds worker-pools commands](https://cloud.google.com/sdk/gcloud/reference/alpha/builds/worker-pools/).
 
 ## Foodcritic
 
