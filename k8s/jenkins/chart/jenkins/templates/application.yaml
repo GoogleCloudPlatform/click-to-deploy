@@ -79,6 +79,8 @@ spec:
       app.kubernetes.io/name: "{{ .Release.Name }}"
   componentKinds:
   - group: v1
+    kind: PersistentVolumeClaim
+  - group: v1
     kind: Secret
   - group: v1
     kind: Service
