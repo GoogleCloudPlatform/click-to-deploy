@@ -22,6 +22,10 @@ APP_GCS_PATH ?= $(GCS_URL)/$(APP_ID)/$(TRACK)
 
 NAME ?= $(APP_ID)-1
 
+ifdef METRICS_EXPORTER_ENABLED
+  METRICS_EXPORTER_ENABLED_FIELD = , "metrics.enabled": "$(METRICS_EXPORTER_ENABLED)"
+endif
+
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
@@ -37,6 +41,8 @@ include ../app_v2.Makefile
 
 app/build:: .build/mariadb/deployer \
             .build/mariadb/mariadb \
+            .build/mariadb/mysqld-exporter \
+            .build/mariadb/prometheus-to-sd \
             .build/mariadb/tester \
             .build/mariadb/VERSION
 
@@ -87,6 +93,25 @@ app/build:: .build/mariadb/deployer \
 	docker tag "$(REGISTRY)/$(APP_ID):$(TRACK)" "$(REGISTRY)/$(APP_ID):$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID):$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID):$(RELEASE)"
+	@touch "$@"
+
+.build/mariadb/mysqld-exporter: .build/var/REGISTRY \
+                                .build/var/TAG \
+                                | .build/mariadb
+	docker pull marketplace.gcr.io/google/mysql5:exporter
+	docker tag marketplace.gcr.io/google/mysql5:exporter \
+	    "$(REGISTRY)/mariadb/mysqld-exporter:$(TAG)"
+	docker push "$(REGISTRY)/mariadb/mysqld-exporter:$(TAG)"
+	@touch "$@"
+
+
+.build/mariadb/prometheus-to-sd: .build/var/REGISTRY \
+                                 .build/var/TAG \
+                                 | .build/mariadb
+	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
+	    "$(REGISTRY)/mariadb/prometheus-to-sd:$(TAG)"
+	docker push "$(REGISTRY)/mariadb/prometheus-to-sd:$(TAG)"
 	@touch "$@"
 
 .build/mariadb/tester: .build/var/TESTER_IMAGE \

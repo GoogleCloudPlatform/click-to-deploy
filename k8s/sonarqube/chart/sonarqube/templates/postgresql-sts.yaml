@@ -1,17 +1,18 @@
-kind: Deployment
+kind: StatefulSet
 apiVersion: apps/v1
 metadata:
-  name: {{ .Release.Name }}-postgresql-deployment
-  labels: &PostgreSQLDeploymentLabels
+  name: {{ .Release.Name }}-postgresql
+  labels: &PostgreSQLLabels
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: postgresql-server
 spec:
   replicas: 1
   selector:
-    matchLabels: *PostgreSQLDeploymentLabels
+    matchLabels: *PostgreSQLLabels
+  serviceName: {{ .Release.Name }}-postgresql-service
   template:
     metadata:
-      labels: *PostgreSQLDeploymentLabels
+      labels: *PostgreSQLLabels
     spec:
       serviceAccountName: {{ .Release.Name }}-serviceaccount
       volumes:
@@ -83,3 +84,14 @@ spec:
               secretKeyRef:
                 name: {{ .Release.Name }}-secret
                 key: password
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Release.Name }}-postgresql-pvc
+      labels: *PostgreSQLLabels
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      storageClassName: standard
+      resources:
+        requests:
+          storage: 10Gi

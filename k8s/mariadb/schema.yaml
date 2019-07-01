@@ -21,6 +21,10 @@ x-google-marketplace:
           type: REPO_WITH_REGISTRY
         mariadb.image.tag:
           type: TAG
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
 
 properties:
   name:
@@ -49,15 +53,36 @@ properties:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 32
+  db.exporter.image:
+    type: string
+    default: $REGISTRY/mysqld-exporter:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  db.exporter.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 12
   replication.password:
     type: string
     x-google-marketplace:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 32
+  metrics.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters,
+      export of metrics to Stackdriver is not supported yet
+    default: false
 
 required:
 - name
 - namespace
 - db.password
+- db.exporter.image
+- db.exporter.password
 - replication.password
+- metrics.image
+- metrics.enabled
