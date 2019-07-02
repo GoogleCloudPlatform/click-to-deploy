@@ -182,7 +182,7 @@ helm template chart/jenkins \
   --set "jenkins.image=$IMAGE_JENKINS" \
   --set "tls.base64EncodedPrivateKey=$TLS_CERTIFICATE_KEY" \
   --set "tls.base64EncodedCertificate=$TLS_CERTIFICATE_CRT" \
-    > ${APP_INSTANCE_NAME}_manifest.yaml
+  > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 
 #### Apply the manifest to your Kubernetes cluster
