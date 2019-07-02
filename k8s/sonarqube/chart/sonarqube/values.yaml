@@ -11,3 +11,6 @@ postgresql:
 metrics:
   image: null
   enabled: false
+tls:
+  base64EncodedPrivateKey: null
+  base64EncodedCertificate: null
