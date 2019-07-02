@@ -66,8 +66,6 @@ spec:
           mountPath: /etc/mysql/mariadb.conf.d
         - name: tls-volume
           mountPath: /etc/mysql/mariadb.conf.d/certs
-        - name: tls-ca-volume
-          mountPath: /etc/mysql/mariadb.conf.d/certs-ca
         - name: replication-config
           mountPath: /docker-entrypoint-initdb.d/
           readOnly: true
@@ -120,12 +118,6 @@ spec:
         - name: configmap
           configMap:
             name: {{ .Release.Name }}-mariadb
-        - name: tls-volume
-          secret:
-            secretName: {{ .Release.Name }}-tls
-        - name: tls-ca-volume
-          secret:
-            secretName: {{ .Release.Name }}-ca-tls
         - name: replication-config
           secret:
             secretName: {{ .Release.Name }}-mariadb
@@ -134,6 +126,16 @@ spec:
               path: mariadb-replication.sql
             - key: mysqld_exporter.sql
               path: mysqld_exporter.sql
+        - name: tls-volume
+          secret:
+            secretName: {{ .Release.Name }}-tls-xxx
+            items:
+            - key: tls.key
+              path: tls.key
+            - key: tls.crt
+              path: tls.crt
+            - key: ca.crt
+              path: ca.crt
   volumeClaimTemplates:
   - metadata:
       name: {{ .Release.Name }}-data-pvc
@@ -275,8 +277,6 @@ spec:
           mountPath: /etc/mysql/mariadb.conf.d
         - name: tls-volume
           mountPath: /etc/mysql/mariadb.conf.d/certs
-        - name: tls-ca-volume
-          mountPath: /etc/mysql/mariadb.conf.d/certs-ca
       volumes:
         - name: conf
           emptyDir: {}
@@ -285,10 +285,14 @@ spec:
             name: {{ .Release.Name }}-mariadb-secondary
         - name: tls-volume
           secret:
-            secretName: {{ .Release.Name }}-secondary-tls
-        - name: tls-ca-volume
-          secret:
-            secretName: {{ .Release.Name }}-ca-tls
+            secretName: {{ .Release.Name }}-tls-xxx
+            items:
+            - key: tls.key
+              path: tls.key
+            - key: tls.crt
+              path: tls.crt
+            - key: ca.crt
+              path: ca.crt
   volumeClaimTemplates:
   - metadata:
       name: {{ .Release.Name }}-data-pvc
