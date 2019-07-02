@@ -25,9 +25,5 @@ service:
   port: 3306
 
 tls:
-  primary:
-    base64EncodedPrivateKey: null
-    base64EncodedCertificate: null
-  secondary:
-    base64EncodedPrivateKey: null
-    base64EncodedCertificate: null
+  base64EncodedPrivateKey: null
+  base64EncodedCertificate: null

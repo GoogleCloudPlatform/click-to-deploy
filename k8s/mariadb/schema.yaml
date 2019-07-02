@@ -64,16 +64,8 @@ properties:
       type: TLS_CERTIFICATE
       tlsCertificate:
         generatedProperties:
-          base64EncodedPrivateKey: tls.primary.base64EncodedPrivateKey
-          base64EncodedCertificate: tls.primary.base64EncodedCertificate
-  certificate-secondary:
-    type: string
-    x-google-marketplace:
-      type: TLS_CERTIFICATE
-      tlsCertificate:
-        generatedProperties:
-          base64EncodedPrivateKey: tls.secondary.base64EncodedPrivateKey
-          base64EncodedCertificate: tls.secondary.base64EncodedCertificate
+          base64EncodedPrivateKey: tls.base64EncodedPrivateKey
+          base64EncodedCertificate: tls.base64EncodedCertificate
 required:
 - name
 - namespace
@@ -85,4 +77,3 @@ required:
 - metrics.image
 - metrics.enabled
 - certificate
-- certificate-secondary

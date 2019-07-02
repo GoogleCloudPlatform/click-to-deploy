@@ -118,6 +118,9 @@ spec:
         - name: configmap
           configMap:
             name: {{ .Release.Name }}-mariadb
+        - name: tls-volume
+          secret:
+            secretName: {{ .Release.Name }}-tls
         - name: replication-config
           secret:
             secretName: {{ .Release.Name }}-mariadb
@@ -126,16 +129,6 @@ spec:
               path: mariadb-replication.sql
             - key: mysqld_exporter.sql
               path: mysqld_exporter.sql
-        - name: tls-volume
-          secret:
-            secretName: {{ .Release.Name }}-tls-xxx
-            items:
-            - key: tls.key
-              path: tls.key
-            - key: tls.crt
-              path: tls.crt
-            - key: ca.crt
-              path: ca.crt
   volumeClaimTemplates:
   - metadata:
       name: {{ .Release.Name }}-data-pvc
@@ -285,14 +278,7 @@ spec:
             name: {{ .Release.Name }}-mariadb-secondary
         - name: tls-volume
           secret:
-            secretName: {{ .Release.Name }}-tls-xxx
-            items:
-            - key: tls.key
-              path: tls.key
-            - key: tls.crt
-              path: tls.crt
-            - key: ca.crt
-              path: ca.crt
+            secretName: {{ .Release.Name }}-tls
   volumeClaimTemplates:
   - metadata:
       name: {{ .Release.Name }}-data-pvc
