@@ -126,8 +126,8 @@ app/build:: .build/rabbitmq/debian9  \
                           .build/var/TRACK \
                           .build/var/RELEASE \
                           | .build/rabbitmq
-	docker pull marketplace.gcr.io/google/rabbitmq3:$(RABBITMQ_TAG)
-	docker tag marketplace.gcr.io/google/rabbitmq3:$(RABBITMQ_TAG) \
+	docker pull marketplace.gcr.io/google/rabbitmq3@$(RABBITMQ_TAG)
+	docker tag marketplace.gcr.io/google/rabbitmq3@$(RABBITMQ_TAG) \
 	    "$(REGISTRY)/$(APP_ID):$(TRACK)"
 	docker tag "$(REGISTRY)/$(APP_ID):$(TRACK)" "$(REGISTRY)/$(APP_ID):$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID):$(TRACK)"
