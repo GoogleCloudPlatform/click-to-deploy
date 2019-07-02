@@ -136,9 +136,9 @@ app/build:: .build/rabbitmq/debian9  \
 
 
 .build/rabbitmq/prometheus-to-sd: .build/var/REGISTRY \
-                                   .build/var/TRACK \
-                                   .build/var/RELEASE \
-                                   | .build/rabbitmq
+                                  .build/var/TRACK \
+                                  .build/var/RELEASE \
+                                  | .build/rabbitmq
 	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
 	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
