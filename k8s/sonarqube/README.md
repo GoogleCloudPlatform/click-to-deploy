@@ -165,7 +165,7 @@ By default the integration is disabled. To enable, change the value to `true`.
 export METRICS_EXPORTER_ENABLED=false
 ```
 
-#### Create TLS certificate for WordPress
+#### Create TLS certificate for PostgreSQL
 
 > Note: You can skip this step if you have not set up external access.
 
@@ -205,7 +205,7 @@ helm template chart/sonarqube \
 --set "metrics.image=$METRICS_EXPORTER_ENABLED" \
 --set "tls.base64EncodedPrivateKey=$TLS_CERTIFICATE_KEY" \
 --set "tls.base64EncodedCertificate=$TLS_CERTIFICATE_CRT" \
-    > ${APP_INSTANCE_NAME}_manifest.yaml
+> ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 
 #### Apply the manifest to your Kubernetes cluster
