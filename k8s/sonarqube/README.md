@@ -149,21 +149,6 @@ env | grep $i;
 done
 ```
 
-Create a certificate for PostgreSQL. If you already have a certificate that you
-want to use, copy your certificate and key pair in to the `/tmp/server.crt` and
-`/tmp/server.key` files.
-
-```shell
-# create a certificate for postgresql
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-  -keyout /tmp/server.key \
-  -out /tmp/server.crt \
-  -subj "/CN=postgresql/O=postgresql"
-
-kubectl --namespace $NAMESPACE create secret generic $APP_INSTANCE_NAME-tls \
-      --from-file=/tmp/server.crt --from-file=/tmp/server.key
-```
-
 Generate random password for PostgreSQL:
 
 ```shell
@@ -180,6 +165,30 @@ By default the integration is disabled. To enable, change the value to `true`.
 export METRICS_EXPORTER_ENABLED=false
 ```
 
+#### Create TLS certificate for PostgreSQL
+
+> Note: You can skip this step if you have not set up external access.
+
+1.  If you already have a certificate that you want to use, copy your
+    certificate and key pair to the `/tmp/tls.crt`, and `/tmp/tls.key` files,
+    then skip to the next step.
+
+    To create a new certificate, run the following command:
+
+    ```shell
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+        -keyout /tmp/tls.key \
+        -out /tmp/tls.crt \
+        -subj "/CN=postgresql/O=postgresql"
+    ```
+
+1.  Set `TLS_CERTIFICATE_KEY` and `TLS_CERTIFICATE_CRT` variables:
+
+    ```shell
+    export TLS_CERTIFICATE_KEY="$(cat /tmp/tls.key | base64)"
+    export TLS_CERTIFICATE_CRT="$(cat /tmp/tls.crt | base64)"
+    ```
+
 #### Expand the manifest template
 
 Use `helm template` to expand the template. We recommend that you save the
@@ -189,12 +198,16 @@ expanded manifest file for future updates to the application.
 helm template chart/sonarqube \
 --name="$APP_INSTANCE_NAME" \
 --namespace="$NAMESPACE" \
---set sonarqube.image=$IMAGE_SONARQUBE \
---set postgresql.image=$IMAGE_POSTGRESQL \
---set postgresql.exporter.image=$IMAGE_POSTGRESQL_EXPORTER \
---set postgresql.db.password=$POSTGRESQL_DB_PASSWORD \
---set metrics.image=$METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
+--set "sonarqube.image=$IMAGE_SONARQUBE" \
+--set "postgresql.image=$IMAGE_POSTGRESQL" \
+--set "postgresql.exporter.image=$IMAGE_POSTGRESQL_EXPORTER" \
+--set "postgresql.db.password=$POSTGRESQL_DB_PASSWORD" \
+--set "metrics.image=$METRICS_EXPORTER_ENABLED" \
+--set "tls.base64EncodedPrivateKey=$TLS_CERTIFICATE_KEY" \
+--set "tls.base64EncodedCertificate=$TLS_CERTIFICATE_CRT" \
+> ${APP_INSTANCE_NAME}_manifest.yaml
 ```
+
 #### Apply the manifest to your Kubernetes cluster
 
 Use `kubectl` to apply the manifest to your Kubernetes cluster:
