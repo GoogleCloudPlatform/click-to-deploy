@@ -8,5 +8,7 @@ rabbitmq:
   serviceAccount: null
 
 metrics:
-  image: null
+  image:
+    repo: null
+    tag: null
   enabled: false
