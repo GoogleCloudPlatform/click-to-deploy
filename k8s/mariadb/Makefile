@@ -104,7 +104,8 @@ app/build:: .build/mariadb/deployer \
 	docker pull marketplace.gcr.io/google/mysql5:exporter
 	docker tag marketplace.gcr.io/google/mysql5:exporter \
 	    "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(TRACK)"
-	docker tag "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(TRACK)" "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(RELEASE)"
+	docker tag "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(TRACK)" \
+	    "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(RELEASE)"
 	@touch "$@"
@@ -117,7 +118,8 @@ app/build:: .build/mariadb/deployer \
 	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
 	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
-	docker tag "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)" "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
+	docker tag "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)" \
+	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
 	@touch "$@"
