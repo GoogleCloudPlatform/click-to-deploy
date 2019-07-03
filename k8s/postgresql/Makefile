@@ -1,4 +1,3 @@
-include ../app.Makefile
 include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
@@ -7,7 +6,7 @@ APP_ID ?= postgresql-managed-updates
 
 # The digest should be updated automatically, or tag <major>.<minor>.<path/build>
 # should be available on GCP Marketplace.
-# Use `.build/cassandra/VERSION` target to fill the RELEASE variable.
+# Use `.build/postgresql/VERSION` target to fill the RELEASE variable.
 POSTGRESQL_TAG ?= sha256:9aa2e8b294818b834ecf5bb83ce84bb5741038aef81650d0a6c0ddea0a0df897
 METRICS_EXPORTER_TAG ?= v0.5.1
 
@@ -18,20 +17,6 @@ RELEASE ?= 9.6.10-build.$(TIMESTAMP)
 $(info ---- TRACK = $(TRACK))
 $(info ---- RELEASE = $(RELEASE))
 
-IMAGE_POSTGRESQL ?= marketplace.gcr.io/google/postgresql9@$(POSTGRESQL_TAG)
-IMAGE_POSTGRESQL_EXPORTER ?= marketplace.gcr.io/google/postgresql9:exporter
-IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
-
-$(info ---- TAG = $(TAG))
-
-ifdef METRICS_EXPORTER_ENABLED
-  METRICS_EXPORTER_ENABLED_FIELD = , "metrics.enabled": "$(METRICS_EXPORTER_ENABLED)"
-endif
-
-ifdef EXPOSE_PUBLIC_SERVICE
-  EXPOSE_PUBLIC_SERVICE_FIELD = , "postgresql.exposePublicService": "$(EXPOSE_PUBLIC_SERVICE)"
-endif
-
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/$(APP_ID)/deployer:$(RELEASE)
 APP_DEPLOYER_IMAGE_TRACK_TAG ?= $(REGISTRY)/$(APP_ID)/deployer:$(TRACK)
 APP_GCS_PATH ?= $(GCS_URL)/$(APP_ID)/$(TRACK)
@@ -41,16 +26,19 @@ NAME ?= $(APP_ID)-1
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
-  $(METRICS_EXPORTER_ENABLED_FIELD) \
-  $(EXPOSE_PUBLIC_SERVICE_FIELD) \
 }
 
 TESTER_IMAGE ?= $(REGISTRY)/$(APP_ID)/tester:$(RELEASE)
 
+# app_v2.Makefile provides the main targets for installing the
+# application.
+# It requires several APP_* variables defined above, and thus
+# must be included after.
+include ../app_v2.Makefile
 
 app/build:: .build/postgresql/deployer \
-            .build/postgresql/exporter \
             .build/postgresql/postgresql \
+            .build/postgresql/exporter \
             .build/postgresql/prometheus-to-sd \
             .build/postgresql/tester \
             .build/postgresql/VERSION
@@ -93,8 +81,9 @@ app/build:: .build/postgresql/deployer \
                               .build/var/TRACK \
                               .build/var/RELEASE \
                               | .build/postgresql
-	docker pull $(IMAGE_POSTGRESQL)
-	docker tag $(IMAGE_POSTGRESQL) "$(REGISTRY)/$(APP_ID):$(TRACK)"
+	docker pull marketplace.gcr.io/google/postgresql9@$(POSTGRESQL_TAG)
+	docker tag marketplace.gcr.io/google/postgresql9@$(POSTGRESQL_TAG) \
+	    "$(REGISTRY)/$(APP_ID):$(TRACK)"
 	docker tag "$(REGISTRY)/$(APP_ID):$(TRACK)" "$(REGISTRY)/$(APP_ID):$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID):$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID):$(RELEASE)"
@@ -105,8 +94,9 @@ app/build:: .build/postgresql/deployer \
                             .build/var/TRACK \
                             .build/var/RELEASE \
                             | .build/postgresql
-	docker pull $(IMAGE_POSTGRESQL_EXPORTER) 
-	docker tag $(IMAGE_POSTGRESQL_EXPORTER) "$(REGISTRY)/$(APP_ID)/exporter:$(TRACK)"
+	docker pull marketplace.gcr.io/google/postgresql9:exporter
+	docker tag marketplace.gcr.io/google/postgresql9:exporter \
+	    "$(REGISTRY)/$(APP_ID)/exporter:$(TRACK)"
 	docker tag "$(REGISTRY)/$(APP_ID)/exporter:$(TRACK)" "$(REGISTRY)/$(APP_ID)/exporter:$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID)/exporter:$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID)/exporter:$(RELEASE)"
@@ -117,18 +107,18 @@ app/build:: .build/postgresql/deployer \
                                     .build/var/TRACK \
                                     .build/var/RELEASE \
                                     | .build/postgresql
-	docker pull $(IMAGE_PROMETHEUS_TO_SD)
-	docker tag $(IMAGE_PROMETHEUS_TO_SD) "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
-	docker tag "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)" \
-      "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
+	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
+	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
+	docker tag "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)" "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
 	@touch "$@"
 
 
 .build/postgresql/tester: .build/var/TESTER_IMAGE \
-                          $(shell find apptest -type f) \
-                          | .build/postgresql
+                           $(shell find apptest -type f) \
+                           | .build/postgresql
 	$(call print_target,$@)
 	cd apptest/tester \
 	    && docker build --tag "$(TESTER_IMAGE)" .
