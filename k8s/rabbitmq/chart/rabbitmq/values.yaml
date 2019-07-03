@@ -10,4 +10,5 @@ rabbitmq:
   serviceAccount: null
 
 metrics:
+  image: null
   enabled: false
