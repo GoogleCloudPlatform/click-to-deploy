@@ -10,7 +10,7 @@ VERIFY_WAIT_TIMEOUT = 1200
 # Use `.build/elastic-gke-logging/VERSION` target to fill the RELEASE variable.
 ELASTICSEARCH_TAG ?= sha256:b6714c74389da49ab142bbc3ea2b9db64f046f1c0cffd59e1537183fc33d9561
 KIBANA_TAG ?= 6.3
-FLUENTD_VERSION ?= 1.2
+FLUENTD_TAG ?= 1.2
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 TIMESTAMP := $(shell date +%s)
@@ -137,8 +137,8 @@ app/build:: .build/elastic-gke-logging/deployer \
                                    .build/var/TRACK \
                                    .build/var/RELEASE \
                                    | .build/elastic-gke-logging
-	docker pull marketplace.gcr.io/google/fluentd1:$(FLUENTD_VERSION)
-	docker tag marketplace.gcr.io/google/fluentd1:$(FLUENTD_VERSION) \
+	docker pull marketplace.gcr.io/google/fluentd1:$(FLUENTD_TAG)
+	docker tag marketplace.gcr.io/google/fluentd1:$(FLUENTD_TAG) \
 	    "$(REGISTRY)/$(APP_ID)/fluentd:$(TRACK)"
 	docker tag "$(REGISTRY)/$(APP_ID)/fluentd:$(TRACK)" "$(REGISTRY)/$(APP_ID)/fluentd:$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID)/fluentd:$(TRACK)"
