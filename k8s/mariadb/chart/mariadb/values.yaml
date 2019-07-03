@@ -25,3 +25,7 @@ metrics:
 
 service:
   port: 3306
+
+tls:
+  base64EncodedPrivateKey: null
+  base64EncodedCertificate: null

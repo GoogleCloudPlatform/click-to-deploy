@@ -9,16 +9,40 @@ metadata:
   labels:
     app.kubernetes.io/name: "{{ .Release.Name }}"
 spec:
-  type: SonarQube
-  version: '7.6'
-  description: |-
-    SonarQube is an open source platform to perform automatic reviews with static analysis of code to detect bugs,
-    code smells and security vulnerabilities on 25+ programming languages including Java, C#, JavaScript, TypeScript,
-    C/C++, COBOL and more. SonarQube is the only product on the market that supports a leak approach as a practice to code quality.
+  descriptor:
+    type: SonarQube
+    version: '7.6'
+    description: |-
+      SonarQube is an open source platform to perform automatic reviews with static analysis of code to detect bugs,
+      code smells and security vulnerabilities on 25+ programming languages including Java, C#, JavaScript, TypeScript,
+      C/C++, COBOL and more. SonarQube is the only product on the market that supports a leak approach as a practice to code quality.
 
-    # Support
-    Google does not offer support for this solution. However, community support is available on
-    Additional community support is available on [community forums](https://www.sonarqube.org/community/).
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      Additional community support is available on [community forums](https://www.sonarqube.org/community/).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy SonarQube'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/sonarqube/README.md
+    - description: 'SonarQube: Getting Started'
+      url: https://docs.sonarqube.org/latest/setup/get-started-2-minutes/
+    notes: |-
+      # Access SonarQube
+
+      SonarQube is exposed in a ClusterIP-only service `{{.Release.Name}}-sonarqube-svc`. To connect to
+      SonarQube UI, you can either expose a public service endpoint or keep it private, but connect
+      from you local environment with `kubectl port-forward`
+
+      ```
+      kubectl port-forward \
+        --namespace {{ .Release.Namespace }} \
+        svc/{{.Release.Name}}-sonarqube-svc \
+        9000:9000
+      ```
+
+      Then, navigate to the [http://localhost:9000](http://localhost:9000) endpoint.
   info:
   - name: Temporary password for user postgres
     type: Reference
@@ -32,14 +56,6 @@ spec:
     value: "admin"
   - name: Default password for web console
     value: "admin"
-  maintainers:
-  - name: Google Click to Deploy
-    url: https://cloud.google.com/solutions/#click-to-deploy
-  links:
-  - description: 'User Guide: Google Click to Deploy SonarQube'
-    url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/sonarqube/README.md
-  - description: 'SonarQube: Getting Started'
-    url: https://docs.sonarqube.org/latest/setup/get-started-2-minutes/
   selector:
     matchLabels:
       app.kubernetes.io/name: "{{ .Release.Name }}"
@@ -56,18 +72,3 @@ spec:
     kind: Service
   - group: v1
     kind: ServiceAccount
-  notes: |-
-    # Access SonarQube
-
-    SonarQube is exposed in a ClusterIP-only service `{{.Release.Name}}-sonarqube-svc`. To connect to
-    SonarQube UI, you can either expose a public service endpoint or keep it private, but connect
-    from you local environment with `kubectl port-forward`
-
-    ```
-    kubectl port-forward \
-      --namespace {{ .Release.Namespace }} \
-      svc/{{.Release.Name}}-sonarqube-svc \
-      9000:9000
-    ```
-
-    Then, navigate to the [http://localhost:9000](http://localhost:9000) endpoint.
