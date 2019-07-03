@@ -134,9 +134,9 @@ app/build:: .build/elastic-gke-logging/deployer \
 
 
 .build/elastic-gke-logging/fluentd: .build/var/REGISTRY \
-                                   .build/var/TRACK \
-                                   .build/var/RELEASE \
-                                   | .build/elastic-gke-logging
+                                    .build/var/TRACK \
+                                    .build/var/RELEASE \
+                                    | .build/elastic-gke-logging
 	docker pull marketplace.gcr.io/google/fluentd1:$(FLUENTD_TAG)
 	docker tag marketplace.gcr.io/google/fluentd1:$(FLUENTD_TAG) \
 	    "$(REGISTRY)/$(APP_ID)/fluentd:$(TRACK)"
