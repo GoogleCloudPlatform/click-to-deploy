@@ -17,7 +17,7 @@ available in Google Cloud Marketplace.
 This solution installs a single instance of PostgreSQL server on your
 Kubernetes cluster.
 
-The PostgreSQL Pod is managed by a ReplicaSet, with the number of replicas set
+The PostgreSQL Pod is managed by a StatefulSet, with the number of replicas set
 to one. The PostgreSQL Pod uses a Persistent Volume to store data, and a ClusterIP
 Service to expose the database port (which can be optionally exposed publicly
 with a LoadBalancer type of Service). Communication between the client and server is
@@ -153,21 +153,6 @@ IMAGE_POSTGRESQL=$(docker pull $IMAGE_POSTGRESQL | awk -F: "/^Digest:/ {print ge
 IMAGE_METRICS_EXPORTER=$(docker pull $IMAGE_METRICS_EXPORTER | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_METRICS_EXPORTER\")\"@sha256:\"\$3}")
 ```
 
-Create a certificate for PostgreSQL. If you already have a certificate that you
-want to use, copy your certificate and key pair in to the `server.crt` and
-`server.key` files.
-
-```shell
-# create a certificate for postgresql
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-    -keyout server.key \
-    -out server.crt \
-    -subj "/CN=postgresql/O=postgresql"
-
-kubectl --namespace $NAMESPACE create secret generic $APP_INSTANCE_NAME-tls \
-        --from-file=./server.crt --from-file=./server.key
-```
-
 Generate a random password and set the PosgreSQL volume size in Gigabytes:
 
 ```shell
@@ -183,6 +168,30 @@ the value to `true`.
 ```shell
 export EXPOSE_PUBLIC_SERVICE=false
 ```
+
+##### Create TLS certificate for PostgreSQL
+
+> Note: You can skip this step if you have not set up external access.
+ 
+1.  If you already have a certificate that you want to use, copy your
+    certificate and key pair to the `/tmp/tls.crt`, and `/tmp/tls.key` files,
+    then skip to the next step.
+
+    To create a new certificate, run the following command:
+
+    ```shell
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+        -keyout /tmp/tls.key \
+        -out /tmp/tls.crt \
+        -subj "/CN=postgresql/O=postgresql"
+    ```
+
+1.  Set `TLS_CERTIFICATE_KEY` and `TLS_CERTIFICATE_CRT` variables:
+
+    ```shell
+    export TLS_CERTIFICATE_KEY="$(cat /tmp/tls.key | base64)"
+    export TLS_CERTIFICATE_CRT="$(cat /tmp/tls.crt | base64)"
+    ```
 
 ##### Create dedicated service accounts
 
@@ -219,13 +228,16 @@ expanded manifest file for future updates to the application.
 helm template chart/postgresql \
   --name $APP_INSTANCE_NAME \
   --namespace $NAMESPACE \
-  --set postgresql.serviceAccount=$POSTGRESQL_SERVICE_ACCOUNT \
-  --set postgresql.image=$IMAGE_POSTGRESQL \
-  --set postgresql.volumeSize=$POSTGRESQL_VOLUME_SIZE \
-  --set postgresql.exposePublicService=$EXPOSE_PUBLIC_SERVICE \
-  --set db.password=$POSTGRESQL_DB_PASSWORD \
-  --set metrics.image=$IMAGE_METRICS_EXPORTER \
-  --set metrics.enabled=$METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
+  --set "postgresql.serviceAccount=$POSTGRESQL_SERVICE_ACCOUNT" \
+  --set "postgresql.image=$IMAGE_POSTGRESQL" \
+  --set "postgresql.volumeSize=$POSTGRESQL_VOLUME_SIZE" \
+  --set "postgresql.exposePublicService=$EXPOSE_PUBLIC_SERVICE" \
+  --set "db.password=$POSTGRESQL_DB_PASSWORD" \
+  --set "metrics.image=$IMAGE_METRICS_EXPORTER" \
+  --set "metrics.enabled=$METRICS_EXPORTER_ENABLED" \
+  --set "tls.base64EncodedPrivateKey=$TLS_CERTIFICATE_KEY" \
+  --set "tls.base64EncodedCertificate=$TLS_CERTIFICATE_CRT" \
+    > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 
 #### Apply the manifest to your Kubernetes cluster
@@ -242,7 +254,7 @@ installation creates:
     a result, there is no new database initialization, and no new password is
     set.
 -   A Secret with the PostgreSQL initial random password
--   A Deployment
+-   A StatefulSet
 -   A Service, which exposes PostgreSQL server to the external world
 
 ```shell
@@ -268,7 +280,7 @@ Forward the port locally:
 ```shell
 kubectl port-forward \
   --namespace "${NAMESPACE}" \
-  "${APP_INSTANCE_NAME}-postgresql-deployment-0" 5432
+  "${APP_INSTANCE_NAME}-postgresql-0" 5432
 ```
 
 Sign in to PostgreSQL:
@@ -333,7 +345,7 @@ Run this command to back up your database:
 ```shell
 kubectl --namespace $NAMESPACE exec -t \
     $(kubectl -n$NAMESPACE get pod -oname | \
-        sed -n /\\/$APP_INSTANCE_NAME-postgresql-deployment/s.pods\\?/..p) \
+        sed -n /\\/$APP_INSTANCE_NAME-postgresql/s.pods\\?/..p) \
     -- pg_dumpall -c -U postgres > postgresql-backup.sql
 ```
 
@@ -344,7 +356,7 @@ Run this command to restore your database from a backup:
 ```shell
 cat postgresql-backup.sql | kubectl --namespace $NAMESPACE exec -i \
     $(kubectl -n$NAMESPACE get pod -oname | \
-        sed -n /\\/$APP_INSTANCE_NAME-postgresql-deployment/s.pods\\?/..p) \
+        sed -n /\\/$APP_INSTANCE_NAME-postgresql/s.pods\\?/..p) \
     -- psql -U postgres
 ```
 
@@ -361,7 +373,7 @@ To update your PostgreSQL installation, follow the steps below:
     # back up your data before running
 
     kubectl -n $NAMESPACE delete pod $(kubectl -n$NAMESPACE get pod -oname | \
-        sed -n /\\/$APP_INSTANCE_NAME-postgresql-deployment/s.pods\\?/..p)
+        sed -n /\\/$APP_INSTANCE_NAME-postgresql/s.pods\\?/..p)
     ```
 
 # Deleting your PostgreSQL installation

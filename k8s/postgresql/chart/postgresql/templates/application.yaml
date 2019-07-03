@@ -45,7 +45,7 @@ spec:
       app.kubernetes.io/name: "{{ .Release.Name }}"
   componentKinds:
   - group: apps/v1beta2
-    kind: Deployment
+    kind: StatefulSet
   - group: v1
     kind: PersistentVolumeClaim
   - group: v1
@@ -60,7 +60,7 @@ spec:
     ```
     kubectl port-forward \
       --namespace "${NAMESPACE}" \
-      "${APP_INSTANCE_NAME}-postgresql-deployment-0" 5432
+      "${APP_INSTANCE_NAME}-postgresql-0" 5432
     ```
 
     Connect to the database:
