@@ -17,8 +17,10 @@ x-google-marketplace:
   images:
     '':
       properties:
-        jenkins.image:
-          type: FULL
+        jenkins.image.repo:
+          type: REPO_WITH_REGISTRY
+        jenkins.image.tag:
+          type: TAG
 
 properties:
   name:
