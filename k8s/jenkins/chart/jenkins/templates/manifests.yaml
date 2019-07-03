@@ -95,6 +95,20 @@ spec:
       targetPort: 50000
       name: agents-connector
 ---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Release.Name }}-tls
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: jenkins-master
+data:
+  tls.key: |
+{{ .Values.tls.base64EncodedPrivateKey | indent 4 }}
+  tls.crt: |
+{{ .Values.tls.base64EncodedCertificate | indent 4 }}
+type: kubernetes.io/tls
+---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -103,7 +117,6 @@ metadata:
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: jenkins-master
 spec:
-# Resource Secret {{ .Release.Name }}-tls is created by deployer via entrypoint.sh
   tls:
   - secretName: {{ .Release.Name }}-tls
   backend:
