@@ -32,3 +32,6 @@ COPY --from=build /tmp/mariadb.tar.gz /data/chart/
 COPY --from=build /tmp/test/mariadb.tar.gz /data-test/chart/
 COPY --from=build /tmp/apptest/schema.yaml /data-test/
 COPY --from=build /tmp/schema.yaml /data/
+
+ENV WAIT_FOR_READY_TIMEOUT 1800
+ENV TESTER_TIMEOUT 1800

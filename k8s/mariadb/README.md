@@ -179,7 +179,8 @@ kubectl create namespace "$NAMESPACE"
 
 #### Create TLS certificates
 
-In order to secure connections between the primary and secondary instances for replication you need to provide a certificates, private keys and CA certificate to verify the certificate for the server. Certificates should be delivered via Kubernetes Secrets.
+In order to secure connections between the primary and secondary instances for replication you need to provide
+a certificate and private key. Certificates should be delivered via Kubernetes Secrets.
 
 1.  If you already have a certificate that you want to use, copy your
     certificate and key pair to the `/tmp/tls.crt`, and `/tmp/tls.key` files,
@@ -194,11 +195,11 @@ In order to secure connections between the primary and secondary instances for r
         -subj "/CN=mariadb/O=mariadb"
     ```
 
- 1. Set `TLS_CRT` and `TLS_KEY` variables:
+ 1. Set `TLS_CERTIFICATE_CRT` and `TLS_CERTIFICATE_KEY` variables:
 
     ```shell
-    export TLS_KEY="$(cat /tmp/tls.key | base64)"
-    export TLS_CRT="$(cat /tmp/tls.crt | base64)"
+    export TLS_CERTIFICATE_KEY="$(cat /tmp/tls.key | base64)"
+    export TLS_CERTIFICATE_CRT="$(cat /tmp/tls.crt | base64)"
     ```
 
 #### Expand the manifest template
@@ -218,8 +219,8 @@ helm template chart/mariadb \
   --set "db.exporter.password=$EXPORTER_DB_PASSWORD" \
   --set "metrics.image=$IMAGE_METRICS_EXPORTER" \
   --set "metrics.enabled=$METRICS_EXPORTER_ENABLED" \
-  --set "tls.base64EncodedPrivateKey=$TLS_KEY" \
-  --set "tls.base64EncodedCertificate=$TLS_CRT" \
+  --set "tls.base64EncodedPrivateKey=$TLS_CERTIFICATE_KEY" \
+  --set "tls.base64EncodedCertificate=$TLS_CERTIFICATE_CRT" \
   --set "db.replicas=$REPLICAS" > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
