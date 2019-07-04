@@ -17,7 +17,7 @@ available in Google Cloud Marketplace.
 This solution installs a single instance of Jenkins Server into your Kubernetes
 cluster.
 
-The Jenkins Pod is managed by a ReplicaSet with the number of replicas set to
+The Jenkins Pod is managed by a StatefulSet with the number of replicas set to
 one (1). The Jenkins Pod uses a PersistentVolume to store data, a LoadBalancer
 Service to expose the Agent Connector port to the cluster, and an Ingress to
 expose the UI to external users. If you need to limit access to the Jenkins UI,
@@ -197,7 +197,7 @@ installation creates:
     with the same name, the new installation uses the same PersistentVolume. As
     a result, there is no application initialization and the old configuration
     is used.
--   A Deployment
+-   A StatefulSet
 -   Two Services, which expose Jenkins Master UI (8080) and Agents Connector
     (50000) ports to the cluster
 -   An Ingress, which exposes Jenkins Master UI externally
@@ -226,7 +226,7 @@ Pod name:
 ```shell
 EXTERNAL_IP=$(kubectl -n$NAMESPACE get ingress -l "app.kubernetes.io/name=$APP_INSTANCE_NAME" \
   -ojsonpath="{.items[0].status.loadBalancer.ingress[0].ip}")
-MASTER_POD=$(kubectl -n$NAMESPACE get pod -oname | sed -n /\\/$APP_INSTANCE_NAME-jenkins-deployment/s.pods\\?/..p)
+MASTER_POD=$(kubectl -n$NAMESPACE get pod -oname | sed -n /\\/$APP_INSTANCE_NAME-jenkins/s.pods\\?/..p)
 
 echo https://$EXTERNAL_IP/
 ```

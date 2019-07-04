@@ -179,65 +179,28 @@ kubectl create namespace "$NAMESPACE"
 
 #### Create TLS certificates
 
-In order to secure connections between the primary and secondary instances for replication you need to provide a certificates, private keys and CA certificate to verify the certificate for the server. Certificates should be delivered via Kubernetes Secrets.
+In order to secure connections between the primary and secondary instances for replication you need to provide
+a certificate and private key. Certificates should be delivered via Kubernetes Secrets.
 
-##### Create certificates
+1.  If you already have a certificate that you want to use, copy your
+    certificate and key pair to the `/tmp/tls.crt`, and `/tmp/tls.key` files,
+    then skip to the next step.
 
-If you already have certificates, copy them to the following location and go to the [Create secrets](#create-secrets) step:
+    To create a new certificate, run the following command:
 
-```
-/tmp/certs/
-    ca.crt
-    primary/tls.crt
-    primary/tls.key
-    secondary/tls.crt
-    secondary/tls.key
-```
+    ```shell
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+        -keyout /tmp/tls.key \
+        -out /tmp/tls.crt \
+        -subj "/CN=mariadb/O=mariadb"
+    ```
 
-Instructions on how to create certificates for primary and secondary instances:
+ 1. Set `TLS_CERTIFICATE_CRT` and `TLS_CERTIFICATE_KEY` variables:
 
-```shell
-mkdir -p /tmp/certs/primary /tmp/certs/secondary
-cd /tmp/certs
-
-# creating Certificate Authority Files
-openssl genrsa 2048 > ca.key
-openssl req -new -x509 -nodes -days 365 -key ca.key -out ca.crt -subj "/CN=ca-mariadb/O=mariadb"
-
-# creating certificate for primary server
-openssl req -newkey rsa:2048 -days 365 -nodes -keyout primary/tls.key -out primary/tls.csr -subj "/CN=mariadb/O=mariadb"
-openssl rsa -in primary/tls.key -out primary/tls.key
-openssl x509 -req -in primary/tls.csr -days 365 \
-      -CA ca.crt -CAkey ca.key -set_serial 01 \
-      -out primary/tls.crt
-
-# creating certificate for secondary servers
-openssl req -newkey rsa:2048 -days 365 -nodes -keyout secondary/tls.key -out secondary/tls.csr -subj "/CN=mariadb/O=mariadb"
-openssl rsa -in secondary/tls.key -out secondary/tls.key
-openssl x509 -req -in secondary/tls.csr -days 365 \
-      -CA ca.crt -CAkey ca.key -set_serial 02 \
-      -out secondary/tls.crt
-
-# verify certificates
-openssl verify -CAfile ca.crt primary/tls.crt secondary/tls.crt
-cd -
-```
-
-##### Create secrets
-
-```shell
-# create secrets
-kubectl --namespace $NAMESPACE create secret tls $APP_INSTANCE_NAME-tls --cert=/tmp/certs/primary/tls.crt --key=/tmp/certs/primary/tls.key
-kubectl --namespace $NAMESPACE create secret tls $APP_INSTANCE_NAME-secondary-tls --cert=/tmp/certs/secondary/tls.crt --key=/tmp/certs/secondary/tls.key
-kubectl --namespace $NAMESPACE create secret generic $APP_INSTANCE_NAME-ca-tls --from-file=/tmp/certs/ca.crt
-
-# label secrets
-for SECRET_NAME in $APP_INSTANCE_NAME-tls $APP_INSTANCE_NAME-secondary-tls $APP_INSTANCE_NAME-ca-tls
-do
-    kubectl --namespace $NAMESPACE label secret $SECRET_NAME \
-        app.kubernetes.io/name=$APP_INSTANCE_NAME app.kubernetes.io/component=mariadb-tls
-done
-```
+    ```shell
+    export TLS_CERTIFICATE_KEY="$(cat /tmp/tls.key | base64)"
+    export TLS_CERTIFICATE_CRT="$(cat /tmp/tls.crt | base64)"
+    ```
 
 #### Expand the manifest template
 
@@ -246,17 +209,19 @@ expanded manifest file for future updates to the application.
 
 ```shell
 helm template chart/mariadb \
-  --name $APP_INSTANCE_NAME \
-  --namespace $NAMESPACE \
-  --set mariadb.image=$IMAGE_MARIADB \
-  --set db.volumeSize=8 \
-  --set db.password=$MARIADB_ROOT_PASSWORD \
-  --set replication.password=$MARIADB_REPLICA_PASSWORD \
-  --set db.exporter.image=$IMAGE_MYSQL_EXPORTER \
-  --set db.exporter.password=$EXPORTER_DB_PASSWORD \
-  --set metrics.image=$IMAGE_METRICS_EXPORTER \
-  --set metrics.enabled=$METRICS_EXPORTER_ENABLED \
-  --set db.replicas=$REPLICAS > "${APP_INSTANCE_NAME}_manifest.yaml"
+  --name "$APP_INSTANCE_NAME" \
+  --namespace "$NAMESPACE" \
+  --set "mariadb.image=$IMAGE_MARIADB" \
+  --set "db.volumeSize=8" \
+  --set "db.password=$MARIADB_ROOT_PASSWORD" \
+  --set "replication.password=$MARIADB_REPLICA_PASSWORD" \
+  --set "db.exporter.image=$IMAGE_MYSQL_EXPORTER" \
+  --set "db.exporter.password=$EXPORTER_DB_PASSWORD" \
+  --set "metrics.image=$IMAGE_METRICS_EXPORTER" \
+  --set "metrics.enabled=$METRICS_EXPORTER_ENABLED" \
+  --set "tls.base64EncodedPrivateKey=$TLS_CERTIFICATE_KEY" \
+  --set "tls.base64EncodedCertificate=$TLS_CERTIFICATE_CRT" \
+  --set "db.replicas=$REPLICAS" > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster
