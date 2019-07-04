@@ -120,6 +120,7 @@ spec:
                 # By default, RabbitMQ does not have Highly Available policies enabled,
                 # using the following command to enable it.
                 rabbitmqctl set_policy ha-all "." '{"ha-mode":"all", "ha-sync-mode":"automatic"}' --apply-to all --priority 0
+      {{ if .Values.metrics.enabled }}
       - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}
         ports:
@@ -141,6 +142,7 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.namespace
+      {{ end }}
       volumes:
       - name: configmap
         configMap:
