@@ -1,4 +1,35 @@
-application_api_version: v1beta1
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      A regular update.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  managedUpdates:
+    kalmSupported: false
+
+  images:
+    '':
+      properties:
+        rabbitmq.image.repo:
+          type: REPO_WITH_REGISTRY
+        rabbitmq.image.tag:
+          type: TAG
+    debian9:
+      properties:
+        rabbitmq.initImage:
+          type: FULL
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
+
 properties:
   name:
     type: string
@@ -8,16 +39,6 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  rabbitmq.image:
-    type: string
-    default: $REGISTRY:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  rabbitmq.initImage:
-    type: string
-    default: $REGISTRY/debian9:$TAG
-    x-google-marketplace:
-      type: IMAGE
   rabbitmq.replicas:
     type: integer
     title: Replicas
@@ -59,25 +80,18 @@ properties:
           - apiGroups: [""]
             resources: ["endpoints"]
             verbs: ["get"]
-  metrics.image:
-    type: string
-    default: $REGISTRY/prometheus-to-sd:$TAG
-    x-google-marketplace:
-      type: IMAGE
   metrics.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
     description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
     default: false
+
 required:
 - name
 - namespace
-- rabbitmq.image
-- rabbitmq.initImage
 - rabbitmq.replicas
 - rabbitmq.erlangCookie
 - rabbitmq.user
 - rabbitmq.password
 - rabbitmq.serviceAccount
-- metrics.image
 - metrics.enabled

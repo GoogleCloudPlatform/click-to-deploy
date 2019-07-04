@@ -46,7 +46,7 @@ spec:
           mountPath: /var/lib/rabbitmq
       containers:
       - name: rabbitmq
-        image: {{ .Values.rabbitmq.image }}
+        image: "{{ .Values.rabbitmq.image.repo }}:{{ .Values.rabbitmq.image.tag }}"
         imagePullPolicy: Always
         env:
         - name: MY_POD_NAME

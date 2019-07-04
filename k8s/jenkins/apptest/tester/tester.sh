@@ -29,7 +29,7 @@ PORT=$(kubectl get service "${SERVICE}" \
 
 POD=$(kubectl get pod -oname \
   --namespace "${NAMESPACE}" | \
-  sed -n "/\\/${APP_INSTANCE_NAME}-jenkins-deployment/s.pods\\?/..p")
+  sed -n "/\\/${APP_INSTANCE_NAME}-jenkins/s.pods\\?/..p")
 
 PASSWORD=$(kubectl exec "${POD}" \
   --namespace "${NAMESPACE}" \
