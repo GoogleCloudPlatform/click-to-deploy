@@ -66,8 +66,6 @@ spec:
           mountPath: /etc/mysql/mariadb.conf.d
         - name: tls-volume
           mountPath: /etc/mysql/mariadb.conf.d/certs
-        - name: tls-ca-volume
-          mountPath: /etc/mysql/mariadb.conf.d/certs-ca
         - name: replication-config
           mountPath: /docker-entrypoint-initdb.d/
           readOnly: true
@@ -123,9 +121,6 @@ spec:
         - name: tls-volume
           secret:
             secretName: {{ .Release.Name }}-tls
-        - name: tls-ca-volume
-          secret:
-            secretName: {{ .Release.Name }}-ca-tls
         - name: replication-config
           secret:
             secretName: {{ .Release.Name }}-mariadb
@@ -275,8 +270,6 @@ spec:
           mountPath: /etc/mysql/mariadb.conf.d
         - name: tls-volume
           mountPath: /etc/mysql/mariadb.conf.d/certs
-        - name: tls-ca-volume
-          mountPath: /etc/mysql/mariadb.conf.d/certs-ca
       volumes:
         - name: conf
           emptyDir: {}
@@ -285,10 +278,7 @@ spec:
             name: {{ .Release.Name }}-mariadb-secondary
         - name: tls-volume
           secret:
-            secretName: {{ .Release.Name }}-secondary-tls
-        - name: tls-ca-volume
-          secret:
-            secretName: {{ .Release.Name }}-ca-tls
+            secretName: {{ .Release.Name }}-tls
   volumeClaimTemplates:
   - metadata:
       name: {{ .Release.Name }}-data-pvc
