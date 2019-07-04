@@ -6,7 +6,7 @@ metadata:
   namespace: "{{ .Release.Namespace }}"
   annotations:
     kubernetes-engine.cloud.google.com/icon: >-
-      data:image/png;base64, {{ .Files.Get "logo.png" | b64enc }}
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
     marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": "memcached", "partner_name": "Google Click to Deploy"}'
   labels:
     app.kubernetes.io/name: "{{ .Release.Name }}"
