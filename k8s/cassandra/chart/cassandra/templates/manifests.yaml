@@ -37,6 +37,7 @@ spec:
           containerPort: 7001
         - name: jmx
           containerPort: 7199
+          containerPort: 7199
         - name: cql
           containerPort: 9042
         - name: thrift
@@ -79,11 +80,10 @@ spec:
         command:
         - /monitor
         - --stackdriver-prefix=custom.googleapis.com
-        - --source=$(POD_NAME):http://localhost:9404/metrics
+        - --source=cassandra:http://localhost:9404/metrics
         - --pod-id=$(POD_NAME)
         - --namespace-id=$(POD_NAMESPACE)
-        - --scrape-interval=5s
-        - --export-interval=30s
+        - --monitored-resource-types=k8s
         env:
         - name: POD_NAME
           valueFrom:
