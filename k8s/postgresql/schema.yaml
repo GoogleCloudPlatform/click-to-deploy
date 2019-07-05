@@ -76,6 +76,7 @@ properties:
         generatedProperties:
           base64EncodedPrivateKey: tls.base64EncodedPrivateKey
           base64EncodedCertificate: tls.base64EncodedCertificate
+
 required:
 - name
 - namespace
