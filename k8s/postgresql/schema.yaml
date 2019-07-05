@@ -27,7 +27,7 @@ x-google-marketplace:
           type: FULL
     prometheus-to-sd:
       properties:
-        postgresql.image:
+        metrics.image:
           type: FULL
 
 properties:
