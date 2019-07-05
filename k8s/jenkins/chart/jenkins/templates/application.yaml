@@ -11,8 +11,8 @@ metadata:
     app.kubernetes.io/name: "{{ .Release.Name }}"
 spec:
   descriptor:
-    version: '2.150'
-    type: Jenkins
+    version: "{{ .Values.jenkins.image.tag }}"
+    type: Jenkins (Managed Updates)
     description: |-
       Jenkins is an open source automation server.
 
@@ -54,7 +54,7 @@ spec:
 
       ```shell
       kubectl -n{{ .Release.Namespace }} exec \
-        $(kubectl -n{{ .Release.Namespace }} get pod -oname | sed -n /\\/{{ .Release.Name }}-jenkins-deployment/s.pods\\?/..p) \
+        $(kubectl -n{{ .Release.Namespace }} get pod -oname | sed -n /\\/{{ .Release.Name }}-jenkins/s.pods\\?/..p) \
         cat /var/jenkins_home/secrets/initialAdminPassword
       ```
 
@@ -85,6 +85,6 @@ spec:
   - group: v1
     kind: Service
   - group: apps/v1beta2
-    kind: Deployment
+    kind: StatefulSet
   - group: extensions/v1beta1
     kind: Ingress
