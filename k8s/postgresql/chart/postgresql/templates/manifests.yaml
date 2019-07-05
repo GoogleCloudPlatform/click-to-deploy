@@ -45,7 +45,7 @@ spec:
           secretName: {{ .Release.Name }}-tls
       containers:
       - name: postgresql-server
-        image: {{ .Values.postgresql.image.repo }}:{{ .Values.postgresql.image.tag }}"
+        image: "{{ .Values.postgresql.image.repo }}:{{ .Values.postgresql.image.tag }}"
         imagePullPolicy: Always
         ports:
         - containerPort: 5432
