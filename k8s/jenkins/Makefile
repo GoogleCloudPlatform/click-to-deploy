@@ -3,15 +3,14 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
-
 VERIFY_WAIT_TIMEOUT = 1800
 
 TAG ?= 2.150
 METRICS_EXPORTER_TAG ?= v0.5.1
+
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/jenkins/deployer:$(TAG)
-IMAGE_JENKINS ?= $(REGISTRY)/jenkins:$(TAG)
 NAME ?= jenkins-1
 
 ifdef IMAGE_JENKINS
@@ -34,7 +33,6 @@ TESTER_IMAGE ?= $(REGISTRY)/jenkins/tester:$(TAG)
 
 app/build:: .build/jenkins/deployer \
             .build/jenkins/jenkins \
-            .build/jenkins/prometheus-to-sd \
             .build/jenkins/tester
 
 
@@ -58,7 +56,6 @@ app/build:: .build/jenkins/deployer \
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
 	    -f deployer/Dockerfile \
 	    .
-
 	docker push "$(APP_DEPLOYER_IMAGE)"
 	@touch "$@"
 
@@ -66,21 +63,12 @@ app/build:: .build/jenkins/deployer \
 .build/jenkins/jenkins: .build/var/REGISTRY \
                         .build/var/TAG \
                         | .build/jenkins
-
-	docker pull "marketplace.gcr.io/google/jenkins2:$(TAG)"
-	docker tag "marketplace.gcr.io/google/jenkins2:$(TAG)" \
+	docker pull marketplace.gcr.io/google/jenkins2:$(TAG)
+	docker tag marketplace.gcr.io/google/jenkins2:$(TAG) \
 	    "$(REGISTRY)/jenkins:$(TAG)"
 	docker push "$(REGISTRY)/jenkins:$(TAG)"
 	@touch "$@"
 
-.build/jenkins/prometheus-to-sd: .build/var/REGISTRY \
-                                  .build/var/TAG \
-                                  | .build/jenkins
-	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
-	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
-	    "$(REGISTRY)/jenkins/prometheus-to-sd:$(TAG)"
-	docker push "$(REGISTRY)/jenkins/prometheus-to-sd:$(TAG)"
-	@touch "$@"
 
 .build/jenkins/tester: .build/var/TESTER_IMAGE \
                        $(shell find apptest -type f) \
