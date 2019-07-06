@@ -73,7 +73,6 @@ app/build:: .build/sonarqube/deployer \
                             | .build/sonarqube
 	docker pull $(IMAGE_SONARQUBE)
 	docker tag $(IMAGE_SONARQUBE) "$(REGISTRY)/sonarqube:$(TAG)"
-	    "$(REGISTRY)/sonarqube:$(TAG)"
 	docker push "$(REGISTRY)/sonarqube:$(TAG)"
 	@touch "$@"
 
