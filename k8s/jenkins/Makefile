@@ -6,7 +6,6 @@ include ../var.Makefile
 VERIFY_WAIT_TIMEOUT = 1800
 
 TAG ?= 2.150
-METRICS_EXPORTER_TAG ?= v0.5.1
 
 $(info ---- TAG = $(TAG))
 
