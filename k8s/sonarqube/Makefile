@@ -71,8 +71,8 @@ app/build:: .build/sonarqube/deployer \
 .build/sonarqube/sonarqube: .build/var/REGISTRY \
                             .build/var/TAG \
                             | .build/sonarqube
-	docker pull marketplace.gcr.io/google/sonarqube7@$(SONAR_TAG)
-	docker tag marketplace.gcr.io/google/sonarqube7@$(SONAR_TAG) \
+	docker pull $(IMAGE_SONARQUBE)
+	docker tag $(IMAGE_SONARQUBE) "$(REGISTRY)/sonarqube:$(TAG)"
 	    "$(REGISTRY)/sonarqube:$(TAG)"
 	docker push "$(REGISTRY)/sonarqube:$(TAG)"
 	@touch "$@"
