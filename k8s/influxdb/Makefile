@@ -41,12 +41,11 @@ TESTER_IMAGE ?= $(REGISTRY)/$(APP_ID)/tester:$(RELEASE)
 # must be included after.
 include ../app_v2.Makefile
 
-
 app/build:: .build/influxdb/deployer \
             .build/influxdb/influxdb \
             .build/influxdb/prometheus-to-sd \
             .build/influxdb/tester \
-            .build/influxdb/VERSION \
+            .build/influxdb/VERSION
 
 
 .build/influxdb: | .build
@@ -55,20 +54,21 @@ app/build:: .build/influxdb/deployer \
 
 .PHONY: .build/influxdb/VERSION
 .build/influxdb/VERSION:
-	docker run --rm marketplace.gcr.io/google/influxdb1@$(INFLUXDB_TAG) influxd version
+	exit 1
+	# docker run --rm --entrypoint=printenv marketplace.gcr.io/google/wordpress5-php7-apache:latest WORDPRESS_VERSION
 
 
 .build/influxdb/deployer: deployer/* \
-                           chart/influxdb/* \
-                           chart/influxdb/templates/* \
-                           schema.yaml \
-                           .build/var/APP_DEPLOYER_IMAGE \
-                           .build/var/APP_DEPLOYER_IMAGE_TRACK_TAG \
-                           .build/var/MARKETPLACE_TOOLS_TAG \
-                           .build/var/REGISTRY \
-                           .build/var/TRACK \
-                           .build/var/RELEASE \
-                           | .build/influxdb
+                          chart/influxdb/* \
+                          chart/influxdb/templates/* \
+                          schema.yaml \
+                          .build/var/APP_DEPLOYER_IMAGE \
+                          .build/var/APP_DEPLOYER_IMAGE_TRACK_TAG \
+                          .build/var/MARKETPLACE_TOOLS_TAG \
+                          .build/var/REGISTRY \
+                          .build/var/TRACK \
+                          .build/var/RELEASE \
+                          | .build/influxdb
 	docker build \
 	    --build-arg REGISTRY="$(REGISTRY)/$(APP_ID)" \
 	    --build-arg TAG="$(RELEASE)" \
@@ -89,8 +89,7 @@ app/build:: .build/influxdb/deployer \
 	docker pull marketplace.gcr.io/google/influxdb1@$(INFLUXDB_TAG)
 	docker tag marketplace.gcr.io/google/influxdb1@$(INFLUXDB_TAG) \
 	    "$(REGISTRY)/$(APP_ID):$(TRACK)"
-	docker tag "$(REGISTRY)/$(APP_ID):$(TRACK)" \
-	    "$(REGISTRY)/$(APP_ID):$(RELEASE)"
+	docker tag "$(REGISTRY)/$(APP_ID):$(TRACK)" "$(REGISTRY)/$(APP_ID):$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID):$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID):$(RELEASE)"
 	@touch "$@"
@@ -103,8 +102,7 @@ app/build:: .build/influxdb/deployer \
 	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
 	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
-	docker tag "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)" \
-	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
+	docker tag "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)" "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
 	@touch "$@"

@@ -51,9 +51,8 @@ TESTER_IMAGE ?= $(REGISTRY)/$(APP_ID)/tester:$(RELEASE)
 # must be included after.
 include ../app_v2.Makefile
 
-
-app/build:: .build/elasticsearch/elasticsearch \
-            .build/elasticsearch/deployer \
+app/build:: .build/elasticsearch/deployer \
+            .build/elasticsearch/elasticsearch \
             .build/elasticsearch/ubuntu16_04 \
             .build/elasticsearch/prometheus-to-sd \
             .build/elasticsearch/tester \
@@ -110,11 +109,10 @@ app/build:: .build/elasticsearch/elasticsearch \
                                   .build/var/TRACK \
                                   .build/var/RELEASE \
                                   | .build/elasticsearch
-	docker pull marketplace.gcr.io/google/ubuntu1604
-	docker tag marketplace.gcr.io/google/ubuntu1604 \
+	docker pull marketplace.gcr.io/google/ubuntu1604:latest
+	docker tag marketplace.gcr.io/google/ubuntu1604:latest \
 	    "$(REGISTRY)/$(APP_ID)/ubuntu16_04:$(TRACK)"
-	docker tag "$(REGISTRY)/$(APP_ID)/ubuntu16_04:$(TRACK)" \
-	    "$(REGISTRY)/$(APP_ID)/ubuntu16_04:$(RELEASE)"
+	docker tag "$(REGISTRY)/$(APP_ID)/ubuntu16_04:$(TRACK)" "$(REGISTRY)/$(APP_ID)/ubuntu16_04:$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID)/ubuntu16_04:$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID)/ubuntu16_04:$(RELEASE)"
 	@touch "$@"
@@ -127,8 +125,7 @@ app/build:: .build/elasticsearch/elasticsearch \
 	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
 	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
-	docker tag "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)" \
-	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
+	docker tag "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)" "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
 	@touch "$@"

@@ -47,9 +47,8 @@ TESTER_IMAGE ?= $(REGISTRY)/$(APP_ID)/tester:$(RELEASE)
 # must be included after.
 include ../app_v2.Makefile
 
-
-app/build:: .build/cassandra/cassandra \
-            .build/cassandra/deployer \
+app/build:: .build/cassandra/deployer \
+            .build/cassandra/cassandra \
             .build/cassandra/prometheus-to-sd \
             .build/cassandra/tester \
             .build/cassandra/VERSION
@@ -108,16 +107,15 @@ app/build:: .build/cassandra/cassandra \
 	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
 	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
-	docker tag "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)" \
-	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
+	docker tag "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)" "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
 	@touch "$@"
 
 
-.build/cassandra/tester:   .build/var/TESTER_IMAGE \
-                           $(shell find apptest -type f) \
-                           | .build/cassandra
+.build/cassandra/tester: .build/var/TESTER_IMAGE \
+                         $(shell find apptest -type f) \
+                         | .build/cassandra
 	$(call print_target,$@)
 	cd apptest/tester \
 	    && docker build --tag "$(TESTER_IMAGE)" .

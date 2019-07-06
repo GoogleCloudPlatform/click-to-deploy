@@ -51,10 +51,9 @@ TESTER_IMAGE ?= $(REGISTRY)/$(APP_ID)/tester:$(RELEASE)
 # must be included after.
 include ../app_v2.Makefile
 
-
-app/build:: .build/nginx/debian9  \
-            .build/nginx/deployer \
+app/build:: .build/nginx/deployer \
             .build/nginx/nginx \
+            .build/nginx/debian9 \
             .build/nginx/prometheus-to-sd \
             .build/nginx/tester \
             .build/nginx/VERSION
@@ -67,19 +66,6 @@ app/build:: .build/nginx/debian9  \
 .PHONY: .build/nginx/VERSION
 .build/nginx/VERSION:
 	docker run --rm --entrypoint=printenv marketplace.gcr.io/google/nginx1@$(NGINX_TAG) NGINX_VERSION | awk -F* '{ print $$1 }'
-
-
-.build/nginx/debian9: .build/var/REGISTRY \
-                      .build/var/TRACK \
-                      .build/var/RELEASE \
-                      | .build/nginx
-	docker pull marketplace.gcr.io/google/debian9
-	docker tag marketplace.gcr.io/google/debian9 "$(REGISTRY)/$(APP_ID)/debian9:$(TRACK)"
-	docker tag "$(REGISTRY)/$(APP_ID)/debian9:$(TRACK)" \
-	    "$(REGISTRY)/$(APP_ID)/debian9:$(RELEASE)"
-	docker push "$(REGISTRY)/$(APP_ID)/debian9:$(TRACK)"
-	docker push "$(REGISTRY)/$(APP_ID)/debian9:$(RELEASE)"
-	@touch "$@"
 
 
 .build/nginx/deployer: deployer/* \
@@ -119,6 +105,19 @@ app/build:: .build/nginx/debian9  \
 	@touch "$@"
 
 
+.build/nginx/debian9: .build/var/REGISTRY \
+                      .build/var/TRACK \
+                      .build/var/RELEASE \
+                      | .build/nginx
+	docker pull marketplace.gcr.io/google/debian9:latest
+	docker tag marketplace.gcr.io/google/debian9:latest \
+	    "$(REGISTRY)/$(APP_ID)/debian9:$(TRACK)"
+	docker tag "$(REGISTRY)/$(APP_ID)/debian9:$(TRACK)" "$(REGISTRY)/$(APP_ID)/debian9:$(RELEASE)"
+	docker push "$(REGISTRY)/$(APP_ID)/debian9:$(TRACK)"
+	docker push "$(REGISTRY)/$(APP_ID)/debian9:$(RELEASE)"
+	@touch "$@"
+
+
 .build/nginx/prometheus-to-sd: .build/var/REGISTRY \
                                .build/var/TRACK \
                                .build/var/RELEASE \
@@ -126,8 +125,7 @@ app/build:: .build/nginx/debian9  \
 	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
 	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
-	docker tag "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)" \
-	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
+	docker tag "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)" "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
 	@touch "$@"

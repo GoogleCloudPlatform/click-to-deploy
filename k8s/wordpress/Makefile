@@ -157,7 +157,7 @@ app/build:: .build/wordpress/deployer \
 
 .build/wordpress/mysqld-exporter: .build/var/REGISTRY \
                                   .build/var/TRACK \
-                                   .build/var/RELEASE \
+                                  .build/var/RELEASE \
                                   | .build/wordpress
 	docker pull marketplace.gcr.io/google/mysql5:exporter
 	docker tag marketplace.gcr.io/google/mysql5:exporter \
