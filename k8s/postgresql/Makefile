@@ -60,8 +60,7 @@ app/build:: .build/postgresql/deployer \
 
 .PHONY: .build/postgresql/VERSION
 .build/postgresql/VERSION:
-	exit 1
-	# docker run --rm --entrypoint=printenv marketplace.gcr.io/google/wordpress5-php7-apache:latest WORDPRESS_VERSION
+	docker run --rm marketplace.gcr.io/google/postgresql9@$(POSTGRESQL_TAG) postgres -V 2>/dev/null | tail -n 1 | awk '{print $$NF}'
 
 
 .build/postgresql/deployer: deployer/* \

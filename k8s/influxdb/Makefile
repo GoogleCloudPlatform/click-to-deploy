@@ -54,8 +54,7 @@ app/build:: .build/influxdb/deployer \
 
 .PHONY: .build/influxdb/VERSION
 .build/influxdb/VERSION:
-	exit 1
-	# docker run --rm --entrypoint=printenv marketplace.gcr.io/google/wordpress5-php7-apache:latest WORDPRESS_VERSION
+	docker run --rm marketplace.gcr.io/google/influxdb1@$(INFLUXDB_TAG) influxd version
 
 
 .build/influxdb/deployer: deployer/* \
