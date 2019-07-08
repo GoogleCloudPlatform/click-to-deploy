@@ -97,7 +97,8 @@ app/build:: .build/sonarqube/deployer \
 	docker pull marketplace.gcr.io/google/sonarqube7@$(SONAR_TAG)
 	docker tag marketplace.gcr.io/google/sonarqube7@$(SONAR_TAG) \
 	    "$(REGISTRY)/$(APP_ID):$(TRACK)"
-	docker tag "$(REGISTRY)/$(APP_ID):$(TRACK)" "$(REGISTRY)/$(APP_ID):$(RELEASE)"
+	docker tag "$(REGISTRY)/$(APP_ID):$(TRACK)" \
+	    "$(REGISTRY)/$(APP_ID):$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID):$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID):$(RELEASE)"
 	@touch "$@"
@@ -110,7 +111,8 @@ app/build:: .build/sonarqube/deployer \
 	docker pull marketplace.gcr.io/google/postgresql9:$(POSTGRESQL_TAG)
 	docker tag marketplace.gcr.io/google/postgresql9:$(POSTGRESQL_TAG) \
 	    "$(REGISTRY)/$(APP_ID)/postgresql:$(TRACK)"
-	docker tag "$(REGISTRY)/$(APP_ID)/postgresql:$(TRACK)" "$(REGISTRY)/$(APP_ID)/postgresql:$(RELEASE)"
+	docker tag "$(REGISTRY)/$(APP_ID)/postgresql:$(TRACK)" \
+	    "$(REGISTRY)/$(APP_ID)/postgresql:$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID)/postgresql:$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID)/postgresql:$(RELEASE)"
 	@touch "$@"
@@ -123,7 +125,8 @@ app/build:: .build/sonarqube/deployer \
 	docker pull marketplace.gcr.io/google/postgresql9:exporter
 	docker tag marketplace.gcr.io/google/postgresql9:exporter \
 	    "$(REGISTRY)/$(APP_ID)/postgresql-exporter:$(TRACK)"
-	docker tag "$(REGISTRY)/$(APP_ID)/postgresql-exporter:$(TRACK)" "$(REGISTRY)/$(APP_ID)/postgresql-exporter:$(RELEASE)"
+	docker tag "$(REGISTRY)/$(APP_ID)/postgresql-exporter:$(TRACK)" \
+	    "$(REGISTRY)/$(APP_ID)/postgresql-exporter:$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID)/postgresql-exporter:$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID)/postgresql-exporter:$(RELEASE)"
 	@touch "$@"
@@ -136,7 +139,8 @@ app/build:: .build/sonarqube/deployer \
 	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
 	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
-	docker tag "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)" "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
+	docker tag "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)" \
+	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
 	@touch "$@"
