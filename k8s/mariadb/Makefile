@@ -3,7 +3,6 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
-
 SOLUTION_ID ?= mariadb10
 TAG ?= 10.3
 METRICS_EXPORTER_TAG ?= v0.5.1
@@ -11,7 +10,7 @@ METRICS_EXPORTER_TAG ?= v0.5.1
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/mariadb/deployer:$(TAG)
-NAME ?= mariadb
+NAME ?= mariadb-1
 
 ifdef IMAGE_MARIADB
   IMAGE_MARIADB_FIELD = , "mariadb.image": "$(IMAGE_MARIADB)"
@@ -29,6 +28,7 @@ APP_PARAMETERS ?= { \
 }
 
 TESTER_IMAGE ?= $(REGISTRY)/mariadb/tester:$(TAG)
+
 
 app/build:: .build/mariadb/deployer \
             .build/mariadb/mariadb \
@@ -64,12 +64,12 @@ app/build:: .build/mariadb/deployer \
 .build/mariadb/mariadb: .build/var/REGISTRY \
                         .build/var/TAG \
                         | .build/mariadb
-
 	docker pull marketplace.gcr.io/google/$(SOLUTION_ID):$(TAG)
 	docker tag marketplace.gcr.io/google/$(SOLUTION_ID):$(TAG) \
 	    "$(REGISTRY)/mariadb:$(TAG)"
 	docker push "$(REGISTRY)/mariadb:$(TAG)"
 	@touch "$@"
+
 
 .build/mariadb/mysqld-exporter: .build/var/REGISTRY \
                                 .build/var/TAG \
@@ -89,6 +89,7 @@ app/build:: .build/mariadb/deployer \
 	    "$(REGISTRY)/mariadb/prometheus-to-sd:$(TAG)"
 	docker push "$(REGISTRY)/mariadb/prometheus-to-sd:$(TAG)"
 	@touch "$@"
+
 
 .build/mariadb/tester: .build/var/TESTER_IMAGE \
                        $(shell find apptest -type f) \

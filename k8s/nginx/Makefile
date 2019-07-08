@@ -3,9 +3,9 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
-
 TAG ?= 1.15
 METRICS_EXPORTER_TAG ?= v0.5.1
+
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/nginx/deployer:$(TAG)
@@ -39,24 +39,15 @@ APP_PARAMETERS ?= { \
 TESTER_IMAGE ?= $(REGISTRY)/nginx/tester:$(TAG)
 
 
-app/build:: .build/nginx/debian9  \
-            .build/nginx/deployer \
+app/build:: .build/nginx/deployer \
             .build/nginx/nginx \
+            .build/nginx/debian9 \
             .build/nginx/prometheus-to-sd \
             .build/nginx/tester
 
 
 .build/nginx: | .build
 	mkdir -p "$@"
-
-
-.build/nginx/debian9: .build/var/REGISTRY \
-                      .build/var/TAG \
-                      | .build/nginx
-	docker pull marketplace.gcr.io/google/debian9
-	docker tag marketplace.gcr.io/google/debian9 "$(REGISTRY)/nginx/debian9:$(TAG)"
-	docker push "$(REGISTRY)/nginx/debian9:$(TAG)"
-	@touch "$@"
 
 
 .build/nginx/deployer: deployer/* \
@@ -86,6 +77,16 @@ app/build:: .build/nginx/debian9  \
 	docker tag marketplace.gcr.io/google/nginx1:$(TAG) \
 	    "$(REGISTRY)/nginx:$(TAG)"
 	docker push "$(REGISTRY)/nginx:$(TAG)"
+	@touch "$@"
+
+
+.build/nginx/debian9: .build/var/REGISTRY \
+                      .build/var/TAG \
+                      | .build/nginx
+	docker pull marketplace.gcr.io/google/debian9:latest
+	docker tag marketplace.gcr.io/google/debian9:latest \
+	    "$(REGISTRY)/nginx/debian9:$(TAG)"
+	docker push "$(REGISTRY)/nginx/debian9:$(TAG)"
 	@touch "$@"
 
 

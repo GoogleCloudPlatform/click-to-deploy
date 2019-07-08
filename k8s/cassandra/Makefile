@@ -36,8 +36,8 @@ APP_PARAMETERS ?= { \
 TESTER_IMAGE ?= $(REGISTRY)/cassandra/tester:$(TAG)
 
 
-app/build:: .build/cassandra/cassandra \
-            .build/cassandra/deployer \
+app/build:: .build/cassandra/deployer \
+            .build/cassandra/cassandra \
             .build/cassandra/prometheus-to-sd \
             .build/cassandra/tester
 
@@ -84,9 +84,10 @@ app/build:: .build/cassandra/cassandra \
 	docker push "$(REGISTRY)/cassandra/prometheus-to-sd:$(TAG)"
 	@touch "$@"
 
-.build/cassandra/tester:   .build/var/TESTER_IMAGE \
-                           $(shell find apptest -type f) \
-                           | .build/cassandra
+
+.build/cassandra/tester: .build/var/TESTER_IMAGE \
+                         $(shell find apptest -type f) \
+                         | .build/cassandra
 	$(call print_target,$@)
 	cd apptest/tester \
 	    && docker build --tag "$(TESTER_IMAGE)" .

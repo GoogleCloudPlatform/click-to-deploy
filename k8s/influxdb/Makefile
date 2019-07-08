@@ -23,6 +23,7 @@ APP_PARAMETERS ?= { \
 
 TESTER_IMAGE ?= $(REGISTRY)/influxdb/tester:$(TAG)
 
+
 app/build:: .build/influxdb/deployer \
             .build/influxdb/influxdb \
             .build/influxdb/prometheus-to-sd \
@@ -34,14 +35,14 @@ app/build:: .build/influxdb/deployer \
 
 
 .build/influxdb/deployer: deployer/* \
-                           chart/influxdb/* \
-                           chart/influxdb/templates/* \
-                           schema.yaml \
-                           .build/var/APP_DEPLOYER_IMAGE \
-                           .build/var/MARKETPLACE_TOOLS_TAG \
-                           .build/var/REGISTRY \
-                           .build/var/TAG \
-                           | .build/influxdb
+                          chart/influxdb/* \
+                          chart/influxdb/templates/* \
+                          schema.yaml \
+                          .build/var/APP_DEPLOYER_IMAGE \
+                          .build/var/MARKETPLACE_TOOLS_TAG \
+                          .build/var/REGISTRY \
+                          .build/var/TAG \
+                          | .build/influxdb
 	docker build \
 	    --build-arg REGISTRY="$(REGISTRY)/influxdb" \
 	    --build-arg TAG="$(TAG)" \
