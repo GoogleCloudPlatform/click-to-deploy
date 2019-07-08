@@ -46,10 +46,9 @@ TESTER_IMAGE ?= $(REGISTRY)/$(APP_ID)/tester:$(RELEASE)
 # must be included after.
 include ../app_v2.Makefile
 
-
-app/build:: .build/grafana/debian9 \
-            .build/grafana/deployer \
+app/build:: .build/grafana/deployer \
             .build/grafana/grafana \
+            .build/grafana/debian9 \
             .build/grafana/prometheus-to-sd \
             .build/grafana/tester \
             .build/grafana/VERSION
@@ -93,7 +92,8 @@ app/build:: .build/grafana/debian9 \
                         .build/var/RELEASE \
                         | .build/grafana
 	docker pull marketplace.gcr.io/google/grafana5@$(GRAFANA_TAG)
-	docker tag marketplace.gcr.io/google/grafana5@$(GRAFANA_TAG) "$(REGISTRY)/$(APP_ID):$(TRACK)"
+	docker tag marketplace.gcr.io/google/grafana5@$(GRAFANA_TAG) \
+	    "$(REGISTRY)/$(APP_ID):$(TRACK)"
 	docker tag "$(REGISTRY)/$(APP_ID):$(TRACK)" "$(REGISTRY)/$(APP_ID):$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID):$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID):$(RELEASE)"
@@ -104,8 +104,9 @@ app/build:: .build/grafana/debian9 \
                         .build/var/TRACK \
                         .build/var/RELEASE \
                         | .build/grafana
-	docker pull marketplace.gcr.io/google/debian9
-	docker tag marketplace.gcr.io/google/debian9 "$(REGISTRY)/$(APP_ID)/debian9:$(TRACK)"
+	docker pull marketplace.gcr.io/google/debian9:latest
+	docker tag marketplace.gcr.io/google/debian9:latest \
+	    "$(REGISTRY)/$(APP_ID)/debian9:$(TRACK)"
 	docker tag "$(REGISTRY)/$(APP_ID)/debian9:$(TRACK)" "$(REGISTRY)/$(APP_ID)/debian9:$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID)/debian9:$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID)/debian9:$(RELEASE)"
@@ -119,8 +120,7 @@ app/build:: .build/grafana/debian9 \
 	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
 	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
-	docker tag "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)" \
-	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
+	docker tag "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)" "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
 	@touch "$@"

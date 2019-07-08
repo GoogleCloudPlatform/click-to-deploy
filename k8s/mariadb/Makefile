@@ -43,10 +43,10 @@ include ../app_v2.Makefile
 
 app/build:: .build/mariadb/deployer \
             .build/mariadb/mariadb \
-            .build/mariadb/VERSION \
             .build/mariadb/mysqld-exporter \
             .build/mariadb/prometheus-to-sd \
-            .build/mariadb/tester
+            .build/mariadb/tester \
+            .build/mariadb/VERSION
 
 
 .build/mariadb: | .build
@@ -97,29 +97,27 @@ app/build:: .build/mariadb/deployer \
 	@touch "$@"
 
 
-.build/mariadb/mysqld-exporter:  .build/var/REGISTRY \
-                                 .build/var/TRACK \
-                                 .build/var/RELEASE \
-                                 | .build/mariadb
+.build/mariadb/mysqld-exporter: .build/var/REGISTRY \
+                                .build/var/TRACK \
+                                .build/var/RELEASE \
+                                | .build/mariadb
 	docker pull marketplace.gcr.io/google/mysql5:exporter
 	docker tag marketplace.gcr.io/google/mysql5:exporter \
 	    "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(TRACK)"
-	docker tag "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(TRACK)" \
-	    "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(RELEASE)"
+	docker tag "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(TRACK)" "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(RELEASE)"
 	@touch "$@"
 
 
-.build/mariadb/prometheus-to-sd:  .build/var/REGISTRY \
-                                  .build/var/TRACK \
-                                  .build/var/RELEASE \
-                                  | .build/mariadb
+.build/mariadb/prometheus-to-sd: .build/var/REGISTRY \
+                                 .build/var/TRACK \
+                                 .build/var/RELEASE \
+                                 | .build/mariadb
 	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
 	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
-	docker tag "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)" \
-	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
+	docker tag "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)" "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
 	@touch "$@"

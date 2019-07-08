@@ -9,7 +9,6 @@ VERIFY_WAIT_TIMEOUT = 1800
 # should be available on GCP Marketplace.
 # Use `.build/jenkins/VERSION` target to fill the RELEASE variable.
 JENKINS_TAG ?= sha256:57037c8bcdb148890ca3faa4b66dc5a6487ac64d8383f210444e731eefe4a2ea
-METRICS_EXPORTER_TAG ?= v0.5.1
 
 TIMESTAMP := $(shell date +%s)
 TRACK ?= 2.176

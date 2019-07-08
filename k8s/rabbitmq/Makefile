@@ -66,10 +66,9 @@ TESTER_IMAGE ?= $(REGISTRY)/$(APP_ID)/tester:$(RELEASE)
 # must be included after.
 include ../app_v2.Makefile
 
-
-app/build:: .build/rabbitmq/debian9  \
-            .build/rabbitmq/deployer \
+app/build:: .build/rabbitmq/deployer \
             .build/rabbitmq/rabbitmq \
+            .build/rabbitmq/debian9 \
             .build/rabbitmq/prometheus-to-sd \
             .build/rabbitmq/tester \
             .build/rabbitmq/VERSION
@@ -82,20 +81,6 @@ app/build:: .build/rabbitmq/debian9  \
 .PHONY: .build/rabbitmq/VERSION
 .build/rabbitmq/VERSION:
 	docker run --rm --entrypoint=printenv marketplace.gcr.io/google/rabbitmq3@$(RABBITMQ_TAG) RABBITMQ_VERSION
-
-
-.build/rabbitmq/debian9: .build/var/REGISTRY \
-                         .build/var/TRACK \
-                         .build/var/RELEASE \
-                         | .build/rabbitmq
-	docker pull marketplace.gcr.io/google/debian9
-	docker tag marketplace.gcr.io/google/debian9 \
-	    "$(REGISTRY)/$(APP_ID)/debian9:$(TRACK)"
-	docker tag "$(REGISTRY)/$(APP_ID)/debian9:$(TRACK)" \
-	    "$(REGISTRY)/$(APP_ID)/debian9:$(RELEASE)"
-	docker push "$(REGISTRY)/$(APP_ID)/debian9:$(TRACK)"
-	docker push "$(REGISTRY)/$(APP_ID)/debian9:$(RELEASE)"
-	@touch "$@"
 
 
 .build/rabbitmq/deployer: deployer/* \
@@ -132,6 +117,19 @@ app/build:: .build/rabbitmq/debian9  \
 	docker tag "$(REGISTRY)/$(APP_ID):$(TRACK)" "$(REGISTRY)/$(APP_ID):$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID):$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID):$(RELEASE)"
+	@touch "$@"
+
+
+.build/rabbitmq/debian9: .build/var/REGISTRY \
+                         .build/var/TRACK \
+                         .build/var/RELEASE \
+                         | .build/rabbitmq
+	docker pull marketplace.gcr.io/google/debian9:latest
+	docker tag marketplace.gcr.io/google/debian9:latest \
+	    "$(REGISTRY)/$(APP_ID)/debian9:$(TRACK)"
+	docker tag "$(REGISTRY)/$(APP_ID)/debian9:$(TRACK)" "$(REGISTRY)/$(APP_ID)/debian9:$(RELEASE)"
+	docker push "$(REGISTRY)/$(APP_ID)/debian9:$(TRACK)"
+	docker push "$(REGISTRY)/$(APP_ID)/debian9:$(RELEASE)"
 	@touch "$@"
 
 

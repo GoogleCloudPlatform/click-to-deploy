@@ -64,16 +64,16 @@ app/build:: .build/postgresql/deployer \
 
 
 .build/postgresql/deployer: deployer/* \
-                           chart/postgresql/* \
-                           chart/postgresql/templates/* \
-                           schema.yaml \
-                           .build/var/APP_DEPLOYER_IMAGE \
-                           .build/var/APP_DEPLOYER_IMAGE_TRACK_TAG \
-                           .build/var/MARKETPLACE_TOOLS_TAG \
-                           .build/var/REGISTRY \
-                           .build/var/TRACK \
-                           .build/var/RELEASE \
-                           | .build/postgresql
+                            chart/postgresql/* \
+                            chart/postgresql/templates/* \
+                            schema.yaml \
+                            .build/var/APP_DEPLOYER_IMAGE \
+                            .build/var/APP_DEPLOYER_IMAGE_TRACK_TAG \
+                            .build/var/MARKETPLACE_TOOLS_TAG \
+                            .build/var/REGISTRY \
+                            .build/var/TRACK \
+                            .build/var/RELEASE \
+                            | .build/postgresql
 	docker build \
 	    --build-arg REGISTRY="$(REGISTRY)/$(APP_ID)" \
 	    --build-arg TAG="$(RELEASE)" \
@@ -127,8 +127,8 @@ app/build:: .build/postgresql/deployer \
 
 
 .build/postgresql/tester: .build/var/TESTER_IMAGE \
-                           $(shell find apptest -type f) \
-                           | .build/postgresql
+                          $(shell find apptest -type f) \
+                          | .build/postgresql
 	$(call print_target,$@)
 	cd apptest/tester \
 	    && docker build --tag "$(TESTER_IMAGE)" .
