@@ -1,17 +1,18 @@
-kind: Deployment
+kind: StatefulSet
 apiVersion: apps/v1
 metadata:
-  name: {{ .Release.Name }}-postgresql-deployment
-  labels: &PostgreSQLDeploymentLabels
+  name: {{ .Release.Name }}-postgresql
+  labels: &PostgreSQLLabels
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: postgresql-server
 spec:
   replicas: 1
   selector:
-    matchLabels: *PostgreSQLDeploymentLabels
+    matchLabels: *PostgreSQLLabels
+  serviceName: {{ .Release.Name }}-postgresql-service
   template:
     metadata:
-      labels: *PostgreSQLDeploymentLabels
+      labels: *PostgreSQLLabels
     spec:
       serviceAccountName: {{ .Release.Name }}-serviceaccount
       volumes:
@@ -83,3 +84,37 @@ spec:
               secretKeyRef:
                 name: {{ .Release.Name }}-secret
                 key: password
+      {{ if .Values.metrics.enabled }}
+      - name: prometheus-to-sd
+        image: {{ .Values.metrics.image }}
+        ports:
+          - name: profiler
+            containerPort: 6060
+        command:
+          - /monitor
+          - --stackdriver-prefix=custom.googleapis.com
+          - --source=postgresql:http://localhost:9187/metrics
+          - --pod-id=$(POD_NAME)
+          - --namespace-id=$(POD_NAMESPACE)
+          - --monitored-resource-types=k8s
+        env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+      {{ end }}
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Release.Name }}-postgresql-pvc
+      labels: *PostgreSQLLabels
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      storageClassName: standard
+      resources:
+        requests:
+          storage: 10Gi

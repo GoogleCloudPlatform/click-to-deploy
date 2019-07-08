@@ -3,7 +3,6 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
-
 TAG ?= 1.5
 METRICS_EXPORTER_TAG ?= v0.5.1
 
