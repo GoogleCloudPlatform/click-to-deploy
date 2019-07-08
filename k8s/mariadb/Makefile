@@ -10,7 +10,7 @@ METRICS_EXPORTER_TAG ?= v0.5.1
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/mariadb/deployer:$(TAG)
-NAME ?= mariadb
+NAME ?= mariadb-1
 
 ifdef IMAGE_MARIADB
   IMAGE_MARIADB_FIELD = , "mariadb.image": "$(IMAGE_MARIADB)"
