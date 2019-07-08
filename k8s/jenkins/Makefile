@@ -87,7 +87,8 @@ app/build:: .build/jenkins/deployer \
 	docker pull marketplace.gcr.io/google/jenkins2@$(JENKINS_TAG)
 	docker tag marketplace.gcr.io/google/jenkins2@$(JENKINS_TAG) \
 	    "$(REGISTRY)/$(APP_ID):$(TRACK)"
-	docker tag "$(REGISTRY)/$(APP_ID):$(TRACK)" "$(REGISTRY)/$(APP_ID):$(RELEASE)"
+	docker tag "$(REGISTRY)/$(APP_ID):$(TRACK)" \
+	    "$(REGISTRY)/$(APP_ID):$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID):$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID):$(RELEASE)"
 	@touch "$@"

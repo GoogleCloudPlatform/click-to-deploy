@@ -99,7 +99,8 @@ app/build:: .build/nginx/deployer \
 	docker pull marketplace.gcr.io/google/nginx1@$(NGINX_TAG)
 	docker tag marketplace.gcr.io/google/nginx1@$(NGINX_TAG) \
 	    "$(REGISTRY)/$(APP_ID):$(TRACK)"
-	docker tag "$(REGISTRY)/$(APP_ID):$(TRACK)" "$(REGISTRY)/$(APP_ID):$(RELEASE)"
+	docker tag "$(REGISTRY)/$(APP_ID):$(TRACK)" \
+	    "$(REGISTRY)/$(APP_ID):$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID):$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID):$(RELEASE)"
 	@touch "$@"
@@ -112,7 +113,8 @@ app/build:: .build/nginx/deployer \
 	docker pull marketplace.gcr.io/google/debian9:latest
 	docker tag marketplace.gcr.io/google/debian9:latest \
 	    "$(REGISTRY)/$(APP_ID)/debian9:$(TRACK)"
-	docker tag "$(REGISTRY)/$(APP_ID)/debian9:$(TRACK)" "$(REGISTRY)/$(APP_ID)/debian9:$(RELEASE)"
+	docker tag "$(REGISTRY)/$(APP_ID)/debian9:$(TRACK)" \
+	    "$(REGISTRY)/$(APP_ID)/debian9:$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID)/debian9:$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID)/debian9:$(RELEASE)"
 	@touch "$@"
@@ -125,7 +127,8 @@ app/build:: .build/nginx/deployer \
 	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
 	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
-	docker tag "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)" "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
+	docker tag "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)" \
+	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
 	@touch "$@"

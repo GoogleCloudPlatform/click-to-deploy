@@ -94,7 +94,8 @@ app/build:: .build/cassandra/deployer \
 	docker pull marketplace.gcr.io/google/cassandra3@$(CASSANDRA_TAG)
 	docker tag marketplace.gcr.io/google/cassandra3@$(CASSANDRA_TAG) \
 	    "$(REGISTRY)/$(APP_ID):$(TRACK)"
-	docker tag "$(REGISTRY)/$(APP_ID):$(TRACK)" "$(REGISTRY)/$(APP_ID):$(RELEASE)"
+	docker tag "$(REGISTRY)/$(APP_ID):$(TRACK)" \
+	    "$(REGISTRY)/$(APP_ID):$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID):$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID):$(RELEASE)"
 	@touch "$@"
@@ -107,7 +108,8 @@ app/build:: .build/cassandra/deployer \
 	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
 	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
-	docker tag "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)" "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
+	docker tag "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)" \
+	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
 	@touch "$@"
