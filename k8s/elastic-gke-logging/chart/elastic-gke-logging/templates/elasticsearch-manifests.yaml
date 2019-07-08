@@ -129,11 +129,10 @@ spec:
         command:
         - /monitor
         - --stackdriver-prefix=custom.googleapis.com
-        - --source=$(POD_NAME):http://localhost:9114/metrics
+        - --source=elasticsearch:http://localhost:9114/metrics
         - --pod-id=$(POD_NAME)
         - --namespace-id=$(POD_NAMESPACE)
-        - --scrape-interval=5s
-        - --export-interval=30s
+        - --monitored-resource-types=k8s
         env:
         - name: POD_NAME
           valueFrom:
