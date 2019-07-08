@@ -83,7 +83,6 @@ app/build:: .build/wordpress/deployer \
                            .build/var/REGISTRY \
                            .build/var/TAG \
                            | .build/wordpress
-	echo $(MARKETPLACE_TOOLS_TAG)
 	docker build \
 	    --build-arg REGISTRY="$(REGISTRY)/wordpress" \
 	    --build-arg TAG="$(TAG)" \
