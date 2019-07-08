@@ -4,11 +4,9 @@ include ../gcloud.Makefile
 include ../var.Makefile
 
 TAG ?= 0.8.1
-NAME ?= agones
-
+NAME ?= agones-1
 
 $(info ---- TAG = $(TAG))
-
 
 # source repo and destination tags for images
 SOURCE_REGISTRY ?= gcr.io/agones-images
@@ -17,12 +15,10 @@ AGONES_CONTROLLER_IMAGE ?= $(REGISTRY)/agones:$(TAG)
 AGONES_SDK_IMAGE ?= $(REGISTRY)/agones/agones-sdk:$(TAG)
 AGONES_PING_IMAGE ?= $(REGISTRY)/agones/agones-ping:$(TAG)
 
-
 APP_PARAMETERS ?= { \
     "APP_INSTANCE_NAME": "$(NAME)", \
     "NAMESPACE": "$(NAMESPACE)" \
 }
-
 
 app/build:: .build/agones/deployer \
             .build/agones/agones-controller \
