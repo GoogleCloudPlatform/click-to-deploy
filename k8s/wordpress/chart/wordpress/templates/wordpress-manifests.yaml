@@ -23,7 +23,9 @@ metadata:
 data:
   wp-install.sh: |
     # https://codex.wordpress.org/Installing_WordPress#Installing_WordPress
-    curl --fail --retry 10 --retry-delay 5 --retry-connrefused --ipv4 \
+    # wait for connection
+    timeout 60 bash -c 'until echo > /dev/tcp/localhost/80; do sleep 2; done'
+    curl --fail --retry 5 --retry-delay 5 --retry-connrefused \
       --data-urlencode "weblog_title=WordPress on Google Kubernetes Engine" \
       --data-urlencode "user_name=${WP_ADMIN_USERNAME}" \
       --data-urlencode "admin_email=${WP_ADMIN_EMAIL}" \
