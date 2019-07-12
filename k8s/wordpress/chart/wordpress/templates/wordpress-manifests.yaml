@@ -24,7 +24,7 @@ data:
   wp-install.sh: |
     # https://codex.wordpress.org/Installing_WordPress#Installing_WordPress
     # wait for connection
-    timeout 60 bash -c 'until echo > /dev/tcp/localhost/80; do sleep 2; done'
+    timeout 120 bash -c 'until echo > /dev/tcp/localhost/80; do sleep 2; done'
     curl --fail --retry 5 --retry-delay 5 --retry-connrefused \
       --data-urlencode "weblog_title=WordPress on Google Kubernetes Engine" \
       --data-urlencode "user_name=${WP_ADMIN_USERNAME}" \

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-timeout: 1800s # 30m
+timeout: 2400s # 40m
 options:
   workerPool: $PROJECT_ID/gcb-workers-pool
 substitutions:
@@ -46,7 +46,7 @@ steps:
   - builds
   - submit
   - --timeout
-  - 1800s
+  - 2400s
   - --config
   - k8s/$_SOLUTION_NAME/cloudbuild.yaml
   - --substitutions

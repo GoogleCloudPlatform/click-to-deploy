@@ -3,7 +3,7 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
-VERIFY_WAIT_TIMEOUT = 3000
+VERIFY_WAIT_TIMEOUT = 1800
 
 TAG ?= latest
 METRICS_EXPORTER_TAG ?= v0.5.1
