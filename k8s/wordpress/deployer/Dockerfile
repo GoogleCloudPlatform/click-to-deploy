@@ -33,5 +33,5 @@ COPY --from=build /tmp/test/wordpress.tar.gz /data-test/chart/
 COPY --from=build /tmp/apptest/schema.yaml /data-test/
 COPY --from=build /tmp/schema.yaml /data/
 
-ENV WAIT_FOR_READY_TIMEOUT 1800
-ENV TESTER_TIMEOUT 1800
+ENV WAIT_FOR_READY_TIMEOUT 3000
+ENV TESTER_TIMEOUT 3000
