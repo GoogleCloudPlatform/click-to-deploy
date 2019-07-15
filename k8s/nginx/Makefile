@@ -10,9 +10,9 @@ APP_ID ?= nginx-managed-updates
 NGINX_TAG ?= sha256:9de3c4073abb456b8f08d283b886cddf23031f6f8e5db1dc4dcfdf5a19580e5b
 METRICS_EXPORTER_TAG ?= v0.5.1
 
-TIMESTAMP := $(shell date +%s)
+BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 TRACK ?= 1.15
-RELEASE ?= 1.15.12-build.$(TIMESTAMP)
+RELEASE ?= 1.15.12-$(BUILD_ID)
 
 $(info ---- TRACK = $(TRACK))
 $(info ---- RELEASE = $(RELEASE))

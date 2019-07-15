@@ -10,9 +10,9 @@ VERIFY_WAIT_TIMEOUT = 1800
 # Use `.build/jenkins/VERSION` target to fill the RELEASE variable.
 JENKINS_TAG ?= sha256:57037c8bcdb148890ca3faa4b66dc5a6487ac64d8383f210444e731eefe4a2ea
 
-TIMESTAMP := $(shell date +%s)
+BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 TRACK ?= 2.176
-RELEASE ?= 2.176.1-build.$(TIMESTAMP)
+RELEASE ?= 2.176.1-$(BUILD_ID)
 
 $(info ---- TRACK = $(TRACK))
 $(info ---- RELEASE = $(RELEASE))

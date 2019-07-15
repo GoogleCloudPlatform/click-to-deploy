@@ -12,9 +12,9 @@ SONAR_TAG ?= sha256:4a6886e3db2f93764a7a641f214ae52b2ca9ac5563c772f6f67206584abb
 POSTGRESQL_TAG ?= 9.6-kubernetes
 METRICS_EXPORTER_TAG ?= v0.5.1
 
-TIMESTAMP := $(shell date +%s)
+BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 TRACK ?= 7.7
-RELEASE ?= 7.7.0-build.$(TIMESTAMP)
+RELEASE ?= 7.7.0-$(BUILD_ID)
 
 $(info ---- TRACK = $(TRACK))
 $(info ---- RELEASE = $(RELEASE))

@@ -10,9 +10,9 @@ APP_ID ?= postgresql-managed-updates
 POSTGRESQL_TAG ?= sha256:9aa2e8b294818b834ecf5bb83ce84bb5741038aef81650d0a6c0ddea0a0df897
 METRICS_EXPORTER_TAG ?= v0.5.1
 
-TIMESTAMP := $(shell date +%s)
+BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 TRACK ?= 9.6
-RELEASE ?= 9.6.10-build.$(TIMESTAMP)
+RELEASE ?= 9.6.10-$(BUILD_ID)
 
 $(info ---- TRACK = $(TRACK))
 $(info ---- RELEASE = $(RELEASE))

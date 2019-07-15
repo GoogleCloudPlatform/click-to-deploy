@@ -10,9 +10,9 @@ APP_ID ?= elasticsearch-managed-updates
 ELASTICSEARCH_TAG ?= sha256:b040840b3dde56c44396710f7e52d00eeec56db4b0d9476369eceb20f9575672
 METRICS_EXPORTER_TAG ?= v0.5.1
 
-TIMESTAMP := $(shell date +%s)
+BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 TRACK ?= 6.3
-RELEASE ?= 6.3.2-build.$(TIMESTAMP)
+RELEASE ?= 6.3.2-$(BUILD_ID)
 
 $(info ---- TRACK = $(TRACK))
 $(info ---- RELEASE = $(RELEASE))

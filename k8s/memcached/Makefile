@@ -10,9 +10,9 @@ APP_ID ?= memcached-managed-updates
 MEMCACHED_TAG ?= sha256:aa0e9c7a68848cb9b226640f426a53cd4a2a8d4c98991fc87cfbfb0ac9725f8f
 METRICS_EXPORTER_TAG ?= v0.5.1
 
-TIMESTAMP := $(shell date +%s)
+BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 TRACK ?= 1.5
-RELEASE ?= 1.5.16-build.$(TIMESTAMP)
+RELEASE ?= 1.5.16-$(BUILD_ID)
 
 $(info ---- TRACK = $(TRACK))
 $(info ---- RELEASE = $(RELEASE))
