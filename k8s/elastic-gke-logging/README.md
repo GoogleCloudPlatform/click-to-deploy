@@ -575,7 +575,7 @@ updates one replica at a time.
 
 ## Update Kibana
 
-After successfully updating Elasticsearch, update the Kibana StatefulSet with
+After successfully updating Elasticsearch, update the Kibana Deployment with
 the new image:
 
 ```shell
