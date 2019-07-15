@@ -14,7 +14,7 @@ METRICS_EXPORTER_TAG ?= v0.5.1
 
 TIMESTAMP := $(shell date +%s)
 TRACK ?= 7.7
-RELEASE ?= 7.7.0-build.$(TIMESTAMP)
+RELEASE ?= 7.7.0-$(TIMESTAMP)
 
 $(info ---- TRACK = $(TRACK))
 $(info ---- RELEASE = $(RELEASE))
