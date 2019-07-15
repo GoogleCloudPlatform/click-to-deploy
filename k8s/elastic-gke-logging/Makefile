@@ -13,9 +13,9 @@ KIBANA_TAG ?= 6.3
 FLUENTD_TAG ?= 1.2
 METRICS_EXPORTER_TAG ?= v0.5.1
 
-TIMESTAMP := $(shell date +%s)
+BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 TRACK ?= 6.3
-RELEASE ?= 6.3.2-$(TIMESTAMP)
+RELEASE ?= 6.3.2-$(BUILD_ID)
 
 $(info ---- TRACK = $(TRACK))
 $(info ---- RELEASE = $(RELEASE))

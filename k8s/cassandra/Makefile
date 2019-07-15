@@ -11,9 +11,9 @@ VERIFY_WAIT_TIMEOUT = 1800
 CASSANDRA_TAG ?= sha256:9123711bcc4fbbcae52d02013b1e8a87e4596d0cc933782ad74dd850d4ecf6e1
 METRICS_EXPORTER_TAG ?= v0.5.1
 
-TIMESTAMP := $(shell date +%s)
+BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 TRACK ?= 3.11
-RELEASE ?= 3.11.4-$(TIMESTAMP)
+RELEASE ?= 3.11.4-$(BUILD_ID)
 
 $(info ---- TRACK = $(TRACK))
 $(info ---- RELEASE = $(RELEASE))

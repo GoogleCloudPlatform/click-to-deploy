@@ -12,9 +12,9 @@ WP_TAG ?= sha256:b90654a76e1c42594d9230479de8b436c637ee12937a343661d53c12ad4e7c2
 MYSQL_TAG ?= latest
 METRICS_EXPORTER_TAG ?= v0.5.1
 
-TIMESTAMP := $(shell date +%s)
+BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 TRACK ?= 5.2
-RELEASE ?= 5.2.1-$(TIMESTAMP)
+RELEASE ?= 5.2.1-$(BUILD_ID)
 
 $(info ---- TRACK = $(TRACK))
 $(info ---- RELEASE = $(RELEASE))

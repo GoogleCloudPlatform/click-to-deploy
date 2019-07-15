@@ -10,9 +10,9 @@ APP_ID ?= mariadb-managed-updates
 MARIADB_TAG ?= sha256:edc02d0c232098d9882eed8cacfdde63deb7be631894a9323d9471990890b3df
 METRICS_EXPORTER_TAG ?= v0.5.1
 
-TIMESTAMP := $(shell date +%s)
+BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 TRACK ?= 10.3
-RELEASE ?= 10.3.15-$(TIMESTAMP)
+RELEASE ?= 10.3.15-$(BUILD_ID)
 
 $(info ---- TRACK = $(TRACK))
 $(info ---- RELEASE = $(RELEASE))

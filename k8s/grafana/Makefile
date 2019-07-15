@@ -10,9 +10,9 @@ APP_ID ?= grafana-managed-updates
 GRAFANA_TAG ?= sha256:2d61c53e58b27e59cd77c9899208bfa31a2d12d27822a3cc3ef362213141a406
 METRICS_EXPORTER_TAG ?= v0.5.1
 
-TIMESTAMP := $(shell date +%s)
+BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 TRACK ?= 5.3
-RELEASE ?= 5.3.4-$(TIMESTAMP)
+RELEASE ?= 5.3.4-$(BUILD_ID)
 
 $(info ---- TRACK = $(TRACK))
 $(info ---- RELEASE = $(RELEASE))

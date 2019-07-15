@@ -10,9 +10,9 @@ APP_ID ?= rabbitmq-managed-updates
 RABBITMQ_TAG ?= sha256:b93db2c98986ec1d985218ffc512292aa0f9c0059016b727817d4ec10c692c49
 METRICS_EXPORTER_TAG ?= v0.5.1
 
-TIMESTAMP := $(shell date +%s)
+BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 TRACK ?= 3.7
-RELEASE ?= 3.7.13-$(TIMESTAMP)
+RELEASE ?= 3.7.13-$(BUILD_ID)
 
 $(info ---- TRACK = $(TRACK))
 $(info ---- RELEASE = $(RELEASE))
