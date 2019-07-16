@@ -67,7 +67,7 @@ readonly percona_toolkit_path='/opt/percona-toolkit'
 if [[ "${install_percona_toolkit}" == "True" ]]; then
  percona_toolkit_file=$(ls $percona_toolkit_path | grep 'percona-toolkit')
  if [[ -n "${percona_toolkit_file}" ]]; then
-   dpkg -i "${percona_toolkit_path}/${percona_toolkit_file}"
+   dpkg -i "${percona_toolkit_path}/*"
    rm -rf "${percona_toolkit_path}"
  else
    apt_retry install -y percona-toolkit
