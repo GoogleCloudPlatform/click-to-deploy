@@ -58,21 +58,18 @@ service mysql stop
 
 # Grab the incoming options
 readonly cluster_name="$(get_attribute_value "ENV_CLUSTER_NAME")"
-readonly install_percona_toolkit="$(get_attribute_value "INSTALL_PERCONA_TOOLKIT")"
+readonly install_percona_toolkit="$(get_attribute_value "INSTALL_PERCONA_TOOLKIT") | tr '[:upper:]' '[:lower:]'"
 readonly mysql_root_password="$(get_attribute_value "MYSQL_ROOT_PASSWORD")"
 readonly percona_disk_name="$hostname-data"
-readonly percona_toolkit_path='/opt/percona-toolkit'
 
 # Add Percona Toolkit, if user requests it.
-if [[ "${install_percona_toolkit}" == "True" ]]; then
- percona_toolkit_file=$(ls $percona_toolkit_path | grep 'percona-toolkit')
- if [[ -n "${percona_toolkit_file}" ]]; then
-   ls -l
-   apt_retry -o Dir::Cache::archives="$percona_toolkit_path" install percona-toolkit -yqq
-   rm -rf "${percona_toolkit_path}"
- else
-   apt_retry install -y percona-toolkit
- fi
+if [[ "${install_percona_toolkit:-}" == "true" ]]; then
+ echo "percona-toolkit has been selected to be installed."
+ export DEBIAN_FRONTEND='noninteractive'
+ apt_retry -o Dir::Cache::archives="/opt/c2d/downloads/percona-toolkit" install percona-toolkit -yqq
+ elif [[ "${install_percona_toolkit:-}" == "false" ]]; then
+  echo "percona-toolkit not selected for install."
+  rm -rf /opt/c2d/downloads/percona-toolkit
 fi
 
 # Wait for the external disk to be created and then mount and format
