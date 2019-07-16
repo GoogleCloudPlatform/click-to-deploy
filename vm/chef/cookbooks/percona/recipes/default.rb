@@ -33,7 +33,7 @@ bash 'Download percona-toolkit package' do
   code <<-EOH
     mkdir -p /opt/percona-toolkit
     cd /opt/percona-toolkit
-    apt-get --download-only -o Dir::Cache::archives="/opt/percona-toolkit" install -yqq percona-toolkit
+    apt-get -d -o Dir::Cache::archives="/opt/percona-toolkit" install percona-toolkit -y
     cd -
 EOH
 end
