@@ -31,9 +31,9 @@ end
 
 bash 'Download percona-toolkit package and dependencies' do
   code <<-EOH
-    mkdir -p /opt/percona-toolkit
+    mkdir -p /opt/c2d/downloads/percona-toolkit
     cd /opt/percona-toolkit
-    apt-get -d -o Dir::Cache::archives="/opt/percona-toolkit" install percona-toolkit -y
+    apt-get -d -o Dir::Cache::archives="/opt/c2d/downloads/percona-toolkit" install percona-toolkit -y
     ls -la
     cd -
 EOH
