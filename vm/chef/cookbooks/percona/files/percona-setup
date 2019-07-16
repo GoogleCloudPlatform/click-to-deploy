@@ -28,8 +28,7 @@
 source /opt/c2d/c2d-utils || exit 1
 
 ##  Functions
-apt_retry () {
-  set +e
+function apt_retry () {
   local cmds="apt-get $@"
   local backoff=10
   echo "Running cmd: $cmds"
@@ -46,10 +45,7 @@ apt_retry () {
       exit 1
     fi
   done
-  set -e
 }
-
-apt_retry update -q
 
 set -o pipefail
 readonly hostname="$(hostname)"
@@ -63,11 +59,11 @@ readonly mysql_root_password="$(get_attribute_value "MYSQL_ROOT_PASSWORD")"
 readonly percona_disk_name="$hostname-data"
 
 # Add Percona Toolkit, if user requests it.
-if [[ "${install_percona_toolkit:-}" == "true" ]]; then
+if [[ "${install_percona_toolkit:-}" == "True" ]]; then
  echo "percona-toolkit has been selected to be installed."
  export DEBIAN_FRONTEND='noninteractive'
- apt_retry -o Dir::Cache::archives="/opt/c2d/downloads/percona-toolkit" install percona-toolkit -yqq
- elif [[ "${install_percona_toolkit:-}" == "false" ]]; then
+ apt_retry -o Dir::Cache::archives="/opt/c2d/downloads/percona-toolkit" install percona-toolkit -y
+ elif [[ "${install_percona_toolkit:-}" == "False" ]]; then
   echo "percona-toolkit not selected for install."
   rm -rf /opt/c2d/downloads/percona-toolkit
 fi
