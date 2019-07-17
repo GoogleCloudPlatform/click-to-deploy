@@ -30,19 +30,19 @@ source /opt/c2d/c2d-utils || exit 1
 ##  Functions
 apt_retry () {
   set +e
-  local cmds="apt-get $@"
+  local cmds="apt-get $@" >> /dev/stdout
   local backoff=10
   echo "Running cmd: $cmds"
   while ! ${cmds} 2>&1; do
     if (( "${backoff}" < 100)); then
-      echo "Error: command failed: ${cmds}"
-      echo "Backoff and retry in $backoff seconds."
+      echo "Error: command failed: ${cmds}" >> /dev/stderr
+      echo "Backoff and retry in $backoff seconds." >> /dev/stderr
       sleep ${backoff}
       backoff=$(( backoff * 2 ))
     else
       # Fail installation.
       # Return > 0, so that Launcher communicates the failure to customers.
-      echo "Command failed. Terminating installation."
+      echo "Command failed. Terminating installation." >> /dev/stderr
       exit 1
     fi
   done
