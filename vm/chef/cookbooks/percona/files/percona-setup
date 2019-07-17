@@ -32,17 +32,17 @@ apt_retry () {
   set +e
   local cmds="apt-get $@"
   local backoff=10
-  echo "Running cmd: $cmds" >> /dev/stdout
+  echo "Running cmd: $cmds"
   while ! ${cmds} 2>&1; do
     if (( "${backoff}" < 100)); then
-      echo "Error: command failed: ${cmds}" >> /dev/stderr
-      echo "Backoff and retry in $backoff seconds." >> /dev/stderr
+      echo "Error: command failed: ${cmds}"
+      echo "Backoff and retry in $backoff seconds."
       sleep ${backoff}
       backoff=$(( backoff * 2 ))
     else
       # Fail installation.
       # Return > 0, so that Launcher communicates the failure to customers.
-      echo "Command failed. Terminating installation." >> /dev/stderr
+      echo "Command failed. Terminating installation."
       exit 1
     fi
   done
@@ -61,13 +61,13 @@ readonly cluster_name="$(get_attribute_value "ENV_CLUSTER_NAME")"
 readonly install_percona_toolkit="$(get_attribute_value "INSTALL_PERCONA_TOOLKIT")"
 readonly mysql_root_password="$(get_attribute_value "MYSQL_ROOT_PASSWORD")"
 readonly percona_disk_name="$hostname-data"
-readonly percona_toolkit_path='/opt/percona-toolkit'
+readonly percona_toolkit_path='/opt/c2d/downloads/percona-toolkit'
 
 # Add Percona Toolkit, if user requests it.
 if [[ "${install_percona_toolkit}" == "True" ]]; then
  percona_toolkit_file=$(ls $percona_toolkit_path | grep 'percona-toolkit')
  if [[ -n "${percona_toolkit_file}" ]]; then
-   dpkg -i "${percona_toolkit_path}/${percona_toolkit_file}"
+   apt_retry -o Dir::Cache::archives="${percona_toolkit_path}" install percona-toolkit -y
    rm -rf "${percona_toolkit_path}"
  else
    apt_retry install -y percona-toolkit
