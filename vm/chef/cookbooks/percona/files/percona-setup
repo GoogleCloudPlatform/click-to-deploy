@@ -30,9 +30,9 @@ source /opt/c2d/c2d-utils || exit 1
 ##  Functions
 apt_retry () {
   set +e
-  local cmds="apt-get $@" >> /dev/stdout
+  local cmds="apt-get $@"
   local backoff=10
-  echo "Running cmd: $cmds"
+  echo "Running cmd: $cmds" >> /dev/stdout
   while ! ${cmds} 2>&1; do
     if (( "${backoff}" < 100)); then
       echo "Error: command failed: ${cmds}" >> /dev/stderr
