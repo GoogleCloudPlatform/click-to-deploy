@@ -28,3 +28,17 @@ spec:
     protocol: TCP
   selector: *MariaDBDeploymentLabels
   type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-mysqld-exporter-svc
+  labels: &MariaDBDeploymentLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: mariadb-server
+spec:
+  ports:
+  - name: exporter
+    port: 9104
+  selector: *MariaDBDeploymentLabels
+  clusterIP: None

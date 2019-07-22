@@ -1,0 +1,90 @@
+---
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "{{ .Release.Name }}"
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": "jenkins", "partner_name": "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+spec:
+  descriptor:
+    version: '2.150'
+    type: Jenkins
+    description: |-
+      Jenkins is an open source automation server.
+
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/jenkins/).
+      Additional community support is available on [community forums](https://groups.google.com/forum/#!forum/jenkinsci-usershttps://groups.google.com/forum/#!forum/jenkinsci-users).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy Jenkins'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/jenkins/README.md
+    - description: 'Jenkins User Documentation'
+      url: https://jenkins.io/doc/
+    notes: |-
+      # Prerequisites
+
+      You'll need the following tools in your environment:
+
+      *  [gcloud](https://cloud.google.com/sdk/gcloud/)
+      *  [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+      *  [sed](https://www.gnu.org/software/sed/)
+
+      # Optional step, only if gcloud and kubectl are not configured yet.
+
+      First you need to configure gcloud, refer to [gcloud Quickstart](https://cloud.google.com/sdk/gcloud/) and
+      set kubectl to use specific cluster, refer to [container get-credentials](https://cloud.google.com/sdk/gcloud/reference/container/clusters/get-credentials)
+
+      # Access Jenkins instance.
+
+      Identify HTTPS endpoint.
+
+      ```shell
+      echo https://$(kubectl -n{{ .Release.Namespace }} get ingress -l "app.kubernetes.io/name={{ .Release.Name }}" -ojsonpath="{.items[0].status.loadBalancer.ingress[0].ip}")/
+      ```
+
+      For HTTPS you have to accept a certificate (we created a temporary one for you). Now you need a password.
+
+      ```shell
+      kubectl -n{{ .Release.Namespace }} exec \
+        $(kubectl -n{{ .Release.Namespace }} get pod -oname | sed -n /\\/{{ .Release.Name }}-jenkins/s.pods\\?/..p) \
+        cat /var/jenkins_home/secrets/initialAdminPassword
+      ```
+
+      # To fully configure Jenkins instance follow on screen instructions.
+
+      *  install plugins
+      *  create first admin user
+      *  set jenkins URL (default is ok and you can change it later)
+      *  start using your fresh Jenkins installation
+
+
+      # For further information refer to [Jenkins website](https://jenkins.io/) or [this project GitHub page](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/k8s/jenkins).
+  info:
+  - name: Jenkins HTTP address
+    type: Reference
+    valueFrom:
+      ingressRef:
+        name: {{ .Release.Name }}-jenkins-ui
+        protocol: HTTPS
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "{{ .Release.Name }}"
+  componentKinds:
+  - group: v1
+    kind: PersistentVolumeClaim
+  - group: v1
+    kind: Secret
+  - group: v1
+    kind: Service
+  - group: apps/v1beta2
+    kind: StatefulSet
+  - group: extensions/v1beta1
+    kind: Ingress

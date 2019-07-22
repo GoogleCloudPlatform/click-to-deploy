@@ -1,0 +1,78 @@
+---
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "{{ .Release.Name }}"
+  namespace: "{{ .Release.Namespace }}"
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": "memcached", "partner_name": "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+spec:
+  descriptor:
+    type: Memcached
+    version: '1.5'
+    description: |-
+      Memcached is an open source in-memory, key-value store.
+
+      Key features of this solution include high performance and ease of distribution.
+
+      Although Memcached is intended to be use with dynamic web applications, it can be used as
+      a caching system for a number of databases.
+
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/memcached/).
+      Additional community support is available on [community forums](https://groups.google.com/forum/#!forum/memcached).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy Memcached'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/memcached/README.md
+    - description: 'Memcached: Getting Started'
+      url: https://github.com/GoogleCloudPlatform/memcached-docker/blob/master/1/README.md
+    notes: |-
+      # Access Memcached instances
+
+      Activate Google Cloud Shell or use other environment where you have kubectl configured in appropriate way.
+
+      Identify the cluster where your application was deployed and run the following command:
+      ```shell
+      gcloud container clusters get-credentials <your cluster> --zone <zone where your cluster was created>
+      ```
+      You can get this information from Kubernetes Engine->Clusters tab.
+
+      Run the following command to discover IP addresses of Memcached instances using kubectl:
+
+      ```shell
+      kubectl get pods -o wide -l app.kubernetes.io/name={{ .Release.Name }} --namespace "{{ .Release.Namespace }}"
+      ```
+
+      # Scale the cluster
+
+      Activate Google Cloud Shell.
+
+      Identify the cluster where your application was deployed and run the following command:
+      ```shell
+      gcloud container clusters get-credentials <your cluster> --zone <zone where your cluster was created>
+      ```
+      You can get this information from Kubernetes Engine->Clusters tab.
+
+      To scale the cluster, use either a GKE UI (use the Scale option in the
+      StatefulSet details screen) or the following command:
+
+      ```
+      kubectl scale statefulsets "{{ .Release.Name }}-memcached" \
+        --namespace "{{ .Release.Namespace }}" --replicas=<new-replicas>
+      ```
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "{{ .Release.Name }}"
+  componentKinds:
+  - group: v1
+    kind: Service
+  - group: apps/v1beta2
+    kind: StatefulSet

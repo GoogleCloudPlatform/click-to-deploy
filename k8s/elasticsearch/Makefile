@@ -3,9 +3,9 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
-
 TAG ?= 6.3
 METRICS_EXPORTER_TAG ?= v0.5.1
+
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/elasticsearch/deployer:$(TAG)
@@ -39,11 +39,12 @@ APP_PARAMETERS ?= { \
 TESTER_IMAGE ?= $(REGISTRY)/elasticsearch/tester:$(TAG)
 
 
-app/build:: .build/elasticsearch/elasticsearch \
-            .build/elasticsearch/deployer \
+app/build:: .build/elasticsearch/deployer \
+            .build/elasticsearch/elasticsearch \
             .build/elasticsearch/ubuntu16_04 \
             .build/elasticsearch/prometheus-to-sd \
             .build/elasticsearch/tester
+
 
 .build/elasticsearch: | .build
 	mkdir -p "$@"
@@ -82,11 +83,12 @@ app/build:: .build/elasticsearch/elasticsearch \
 .build/elasticsearch/ubuntu16_04: .build/var/REGISTRY \
                                   .build/var/TAG \
                                   | .build/elasticsearch
-	docker pull marketplace.gcr.io/google/ubuntu16_04
-	docker tag marketplace.gcr.io/google/ubuntu16_04 \
+	docker pull marketplace.gcr.io/google/ubuntu1604:latest
+	docker tag marketplace.gcr.io/google/ubuntu1604:latest \
 	    "$(REGISTRY)/elasticsearch/ubuntu16_04:$(TAG)"
 	docker push "$(REGISTRY)/elasticsearch/ubuntu16_04:$(TAG)"
 	@touch "$@"
+
 
 .build/elasticsearch/prometheus-to-sd: .build/var/REGISTRY \
                                        .build/var/TAG \
@@ -96,6 +98,7 @@ app/build:: .build/elasticsearch/elasticsearch \
 	    "$(REGISTRY)/elasticsearch/prometheus-to-sd:$(TAG)"
 	docker push "$(REGISTRY)/elasticsearch/prometheus-to-sd:$(TAG)"
 	@touch "$@"
+
 
 .build/elasticsearch/tester: .build/var/TESTER_IMAGE \
                              $(shell find apptest -type f) \

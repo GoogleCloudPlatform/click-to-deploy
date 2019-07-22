@@ -115,11 +115,25 @@ export APP_INSTANCE_NAME=mariadb-1
 export NAMESPACE=default
 ```
 
+Enable Stackdriver Metrics Exporter:
+
+> **NOTE:** Your GCP project must have Stackdriver enabled. If you are using a
+> non-GCP cluster, you cannot export metrics to Stackdriver.
+
+By default, the application does not export metrics to Stackdriver. To enable
+this option, change the value to `true`.
+
+```shell
+export METRICS_EXPORTER_ENABLED=false
+```
+
 Configure the container image:
 
 ```shell
 TAG=10.3
 export IMAGE_MARIADB="marketplace.gcr.io/google/mariadb:${TAG}"
+export IMAGE_MYSQL_EXPORTER="marketplace.gcr.io/google/mariadb/mysqld-exporter:${TAG}"
+export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/mariadb/prometheus-to-sd:${TAG}"
 ```
 
 The images above are referenced by
@@ -131,10 +145,12 @@ until you are ready to upgrade. To get the digest for the image, use the
 following script:
 
 ```shell
-repo=$(echo $IMAGE_MARIADB | cut -d: -f1)
-digest=$(docker pull $IMAGE_MARIADB | sed -n -e 's/Digest: //p')
-export IMAGE_MARIADB="$repo@$digest"
-env | grep IMAGE_MARIADB
+for i in "IMAGE_MARIADB" "IMAGE_MYSQL_EXPORTER" "IMAGE_METRICS_EXPORTER"; do
+  repo=$(echo ${!i} | cut -d: -f1);
+  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
+  export $i="$repo@$digest";
+  echo ${!i};
+done
 ```
 
 Set the number of replicas for MariaDB:
@@ -148,6 +164,9 @@ Configure the MariaDB users credentials (passwords must be encoded in base64):
 ```shell
 export MARIADB_ROOT_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1 | tr -d '\n' | base64)
 export MARIADB_REPLICA_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1 | tr -d '\n' | base64)
+
+# Set mysqld-exporter user password.
+export EXPORTER_DB_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1 | tr -d '\n' | base64)"
 ```
 
 #### Create namespace in your Kubernetes cluster
@@ -160,65 +179,28 @@ kubectl create namespace "$NAMESPACE"
 
 #### Create TLS certificates
 
-In order to secure connections between the primary and secondary instances for replication you need to provide a certificates, private keys and CA certificate to verify the certificate for the server. Certificates should be delivered via Kubernetes Secrets.
+In order to secure connections between the primary and secondary instances for replication you need to provide
+a certificate and private key. Certificates should be delivered via Kubernetes Secrets.
 
-##### Create certificates
+1.  If you already have a certificate that you want to use, copy your
+    certificate and key pair to the `/tmp/tls.crt`, and `/tmp/tls.key` files,
+    then skip to the next step.
 
-If you already have certificates, copy them to the following location and go to the [Create secrets](#create-secrets) step:
+    To create a new certificate, run the following command:
 
-```
-/tmp/certs/
-    ca.crt
-    primary/tls.crt
-    primary/tls.key
-    secondary/tls.crt
-    secondary/tls.key
-```
+    ```shell
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+        -keyout /tmp/tls.key \
+        -out /tmp/tls.crt \
+        -subj "/CN=mariadb/O=mariadb"
+    ```
 
-Instructions on how to create certificates for primary and secondary instances:
+ 1. Set `TLS_CERTIFICATE_CRT` and `TLS_CERTIFICATE_KEY` variables:
 
-```shell
-mkdir -p /tmp/certs/primary /tmp/certs/secondary
-cd /tmp/certs
-
-# creating Certificate Authority Files
-openssl genrsa 2048 > ca.key
-openssl req -new -x509 -nodes -days 365 -key ca.key -out ca.crt -subj "/CN=ca-mariadb/O=mariadb"
-
-# creating certificate for primary server
-openssl req -newkey rsa:2048 -days 365 -nodes -keyout primary/tls.key -out primary/tls.csr -subj "/CN=mariadb/O=mariadb"
-openssl rsa -in primary/tls.key -out primary/tls.key
-openssl x509 -req -in primary/tls.csr -days 365 \
-      -CA ca.crt -CAkey ca.key -set_serial 01 \
-      -out primary/tls.crt
-
-# creating certificate for secondary servers
-openssl req -newkey rsa:2048 -days 365 -nodes -keyout secondary/tls.key -out secondary/tls.csr -subj "/CN=mariadb/O=mariadb"
-openssl rsa -in secondary/tls.key -out secondary/tls.key
-openssl x509 -req -in secondary/tls.csr -days 365 \
-      -CA ca.crt -CAkey ca.key -set_serial 02 \
-      -out secondary/tls.crt
-
-# verify certificates
-openssl verify -CAfile ca.crt primary/tls.crt secondary/tls.crt
-cd -
-```
-
-##### Create secrets
-
-```shell
-# create secrets
-kubectl --namespace $NAMESPACE create secret tls $APP_INSTANCE_NAME-tls --cert=/tmp/certs/primary/tls.crt --key=/tmp/certs/primary/tls.key
-kubectl --namespace $NAMESPACE create secret tls $APP_INSTANCE_NAME-secondary-tls --cert=/tmp/certs/secondary/tls.crt --key=/tmp/certs/secondary/tls.key
-kubectl --namespace $NAMESPACE create secret generic $APP_INSTANCE_NAME-ca-tls --from-file=/tmp/certs/ca.crt
-
-# label secrets
-for SECRET_NAME in $APP_INSTANCE_NAME-tls $APP_INSTANCE_NAME-secondary-tls $APP_INSTANCE_NAME-ca-tls
-do
-    kubectl --namespace $NAMESPACE label secret $SECRET_NAME \
-        app.kubernetes.io/name=$APP_INSTANCE_NAME app.kubernetes.io/component=mariadb-tls
-done
-```
+    ```shell
+    export TLS_CERTIFICATE_KEY="$(cat /tmp/tls.key | base64)"
+    export TLS_CERTIFICATE_CRT="$(cat /tmp/tls.crt | base64)"
+    ```
 
 #### Expand the manifest template
 
@@ -227,13 +209,19 @@ expanded manifest file for future updates to the application.
 
 ```shell
 helm template chart/mariadb \
-  --name $APP_INSTANCE_NAME \
-  --namespace $NAMESPACE \
-  --set mariadb.image=$IMAGE_MARIADB \
-  --set db.volumeSize=8 \
-  --set db.password=$MARIADB_ROOT_PASSWORD \
-  --set replication.password=$MARIADB_REPLICA_PASSWORD \
-  --set db.replicas=$REPLICAS > "${APP_INSTANCE_NAME}_manifest.yaml"
+  --name "$APP_INSTANCE_NAME" \
+  --namespace "$NAMESPACE" \
+  --set "mariadb.image=$IMAGE_MARIADB" \
+  --set "db.volumeSize=8" \
+  --set "db.password=$MARIADB_ROOT_PASSWORD" \
+  --set "replication.password=$MARIADB_REPLICA_PASSWORD" \
+  --set "db.exporter.image=$IMAGE_MYSQL_EXPORTER" \
+  --set "db.exporter.password=$EXPORTER_DB_PASSWORD" \
+  --set "metrics.image=$IMAGE_METRICS_EXPORTER" \
+  --set "metrics.enabled=$METRICS_EXPORTER_ENABLED" \
+  --set "tls.base64EncodedPrivateKey=$TLS_CERTIFICATE_KEY" \
+  --set "tls.base64EncodedCertificate=$TLS_CERTIFICATE_CRT" \
+  --set "db.replicas=$REPLICAS" > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster
@@ -328,6 +316,59 @@ kubectl port-forward svc/$APP_INSTANCE_NAME-mariadb --namespace $NAMESPACE 3306
 # or
 kubectl port-forward svc/$APP_INSTANCE_NAME-mariadb-secondary --namespace $NAMESPACE 3306
 ```
+
+# Application metrics
+
+## Prometheus metrics
+
+The application can be configured to expose its metrics through the
+[MySQL Server Exporter](https://github.com/GoogleCloudPlatform/mysql-docker/tree/master/exporter)
+in the
+[Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
+For more detailed information about setting up the plugin, see the
+[Mysqld Exporter documentation](https://github.com/prometheus/mysqld_exporter/blob/master/README.md).
+
+You can access the MySQL metrics at `[MYSQL-SERVICE]:9104/metrics`, where `[MYSQL-SERVICE]` is the
+[Kubernetes Headless Service](https://kubernetes.io/docs/concepts/services-networking/service/#headless-services).
+
+For example, to access the metrics locally, run the following command:
+
+```shell
+kubectl port-forward "svc/${APP_INSTANCE_NAME}-mysqld-exporter-svc" 9104 --namespace "${NAMESPACE}"
+```
+
+Then, navigate to the
+[http://localhost:9104/metrics](http://localhost:9104/metrics) endpoint.
+
+
+### Configuring Prometheus to collect the metrics
+
+Prometheus can be configured to automatically collect the application's metrics.
+Follow the steps in
+[Configuring Prometheus](https://prometheus.io/docs/introduction/first_steps/#configuring-prometheus).
+
+You configure the metrics in the
+[`scrape_configs` section](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config).
+
+## Exporting metrics to Stackdriver
+
+Primary instance pod includes a
+[Prometheus to Stackdriver (`prometheus-to-sd`)](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd)
+container. If you enabled the option to export metrics to Stackdriver, the
+metrics are automatically exported to Stackdriver and visible in
+[Stackdriver Metrics Explorer](https://cloud.google.com/monitoring/charts/metrics-explorer).
+
+Metrics are labeled with `app.kubernetes.io/name` consisting of application's name,
+which you define in the `APP_INSTANCE_NAME` environment variable.
+
+The exporting option might not be available for GKE on-prem clusters.
+
+> Note: Stackdriver has [quotas](https://cloud.google.com/monitoring/quotas) for
+> the number of custom metrics created in a single GCP project. If the quota is
+> met, additional metrics might not show up in the Stackdriver Metrics Explorer.
+
+You can remove existing metric descriptors using
+[Stackdriver's REST API](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors/delete).
 
 # Scaling
 
