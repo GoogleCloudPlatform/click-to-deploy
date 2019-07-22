@@ -1,6 +1,8 @@
 postgresql:
   image: null
   volumeSize: null
+  serviceAccount: null
+  exposePublicService: false
 exporter:
   image: null
 db:
@@ -8,3 +10,6 @@ db:
 metrics:
   image: null
   enabled: false
+tls:
+  base64EncodedPrivateKey: null
+  base64EncodedCertificate: null

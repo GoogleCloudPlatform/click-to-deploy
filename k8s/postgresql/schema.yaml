@@ -18,6 +18,18 @@ properties:
     title: Volume
     description: The size of Volume (Gi) in the solution
     default: 24
+  postgresql.serviceAccount:
+    type: string
+    title: PostgreSQL service account
+    description: >-
+      Service account to assign to PostgreSQL StatefulSet (with default permissions)
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+  postgresql.exposePublicService:
+    type: boolean
+    title: Enable public IP access
+    description: Set the PostgreSQL Service type to LoadBalancer
+    default: false
   exporter.image:
     type: string
     default: $REGISTRY/exporter:$TAG
@@ -39,13 +51,23 @@ properties:
     title: Enable Stackdriver Metrics Exporter
     description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
     default: false
-
+  certificate:
+    type: string
+    x-google-marketplace:
+      type: TLS_CERTIFICATE
+      tlsCertificate:
+        generatedProperties:
+          base64EncodedPrivateKey: tls.base64EncodedPrivateKey
+          base64EncodedCertificate: tls.base64EncodedCertificate
 required:
 - name
 - namespace
 - postgresql.image
 - postgresql.volumeSize
+- postgresql.serviceAccount
+- postgresql.exposePublicService
 - exporter.image
 - db.password
 - metrics.image
 - metrics.enabled
+- certificate

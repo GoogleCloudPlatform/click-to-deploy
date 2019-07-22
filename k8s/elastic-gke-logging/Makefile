@@ -4,10 +4,10 @@ include ../gcloud.Makefile
 include ../var.Makefile
 
 VERIFY_WAIT_TIMEOUT = 1200
-ELASTICSEARCH_KIBANA_VERSION = 6.3
-FLUENTD_VERSION = 1.2
+ELASTICSEARCH_KIBANA_TAG ?= 6.3
+FLUENTD_TAG ?= 1.2
 
-TAG ?= $(ELASTICSEARCH_KIBANA_VERSION)
+TAG ?= $(ELASTICSEARCH_KIBANA_TAG)
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 $(info ---- TAG = $(TAG))
@@ -53,10 +53,10 @@ APP_PARAMETERS ?= { \
 TESTER_IMAGE ?= $(REGISTRY)/elastic-gke-logging/tester:$(TAG)
 
 
-app/build:: .build/elastic-gke-logging/elasticsearch \
+app/build:: .build/elastic-gke-logging/deployer \
+            .build/elastic-gke-logging/elasticsearch \
             .build/elastic-gke-logging/kibana \
             .build/elastic-gke-logging/fluentd \
-            .build/elastic-gke-logging/deployer \
             .build/elastic-gke-logging/ubuntu16_04 \
             .build/elastic-gke-logging/prometheus-to-sd \
             .build/elastic-gke-logging/tester
@@ -89,8 +89,8 @@ app/build:: .build/elastic-gke-logging/elasticsearch \
 .build/elastic-gke-logging/elasticsearch: .build/var/REGISTRY \
                                           .build/var/TAG \
                                           | .build/elastic-gke-logging
-	docker pull marketplace.gcr.io/google/elasticsearch6:$(ELASTICSEARCH_KIBANA_VERSION)
-	docker tag marketplace.gcr.io/google/elasticsearch6:$(ELASTICSEARCH_KIBANA_VERSION) \
+	docker pull marketplace.gcr.io/google/elasticsearch6:$(ELASTICSEARCH_KIBANA_TAG)
+	docker tag marketplace.gcr.io/google/elasticsearch6:$(ELASTICSEARCH_KIBANA_TAG) \
 	    "$(REGISTRY)/elastic-gke-logging:$(TAG)"
 	docker push "$(REGISTRY)/elastic-gke-logging:$(TAG)"
 	@touch "$@"
@@ -99,8 +99,8 @@ app/build:: .build/elastic-gke-logging/elasticsearch \
 .build/elastic-gke-logging/kibana: .build/var/REGISTRY \
                                    .build/var/TAG \
                                    | .build/elastic-gke-logging
-	docker pull marketplace.gcr.io/google/kibana6:$(ELASTICSEARCH_KIBANA_VERSION)
-	docker tag marketplace.gcr.io/google/kibana6:$(ELASTICSEARCH_KIBANA_VERSION) \
+	docker pull marketplace.gcr.io/google/kibana6:$(ELASTICSEARCH_KIBANA_TAG)
+	docker tag marketplace.gcr.io/google/kibana6:$(ELASTICSEARCH_KIBANA_TAG) \
 	    "$(REGISTRY)/elastic-gke-logging/kibana:$(TAG)"
 	docker push "$(REGISTRY)/elastic-gke-logging/kibana:$(TAG)"
 	@touch "$@"
@@ -109,8 +109,8 @@ app/build:: .build/elastic-gke-logging/elasticsearch \
 .build/elastic-gke-logging/fluentd: .build/var/REGISTRY \
                                     .build/var/TAG \
                                     | .build/elastic-gke-logging
-	docker pull marketplace.gcr.io/google/fluentd1:$(FLUENTD_VERSION)
-	docker tag marketplace.gcr.io/google/fluentd1:$(FLUENTD_VERSION) \
+	docker pull marketplace.gcr.io/google/fluentd1:$(FLUENTD_TAG)
+	docker tag marketplace.gcr.io/google/fluentd1:$(FLUENTD_TAG) \
 	    "$(REGISTRY)/elastic-gke-logging/fluentd:$(TAG)"
 	docker push "$(REGISTRY)/elastic-gke-logging/fluentd:$(TAG)"
 	@touch "$@"
@@ -119,8 +119,8 @@ app/build:: .build/elastic-gke-logging/elasticsearch \
 .build/elastic-gke-logging/ubuntu16_04: .build/var/REGISTRY \
                                         .build/var/TAG \
                                         | .build/elastic-gke-logging
-	docker pull marketplace.gcr.io/google/ubuntu16_04
-	docker tag marketplace.gcr.io/google/ubuntu16_04 \
+	docker pull marketplace.gcr.io/google/ubuntu1604:latest
+	docker tag marketplace.gcr.io/google/ubuntu1604:latest \
 	    "$(REGISTRY)/elastic-gke-logging/ubuntu16_04:$(TAG)"
 	docker push "$(REGISTRY)/elastic-gke-logging/ubuntu16_04:$(TAG)"
 	@touch "$@"

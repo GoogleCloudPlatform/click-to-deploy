@@ -3,7 +3,6 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
-
 TAG ?= 3.7
 METRICS_EXPORTER_TAG ?= v0.5.1
 
@@ -55,24 +54,15 @@ APP_PARAMETERS ?= { \
 TESTER_IMAGE ?= $(REGISTRY)/rabbitmq/tester:$(TAG)
 
 
-app/build:: .build/rabbitmq/debian9  \
-            .build/rabbitmq/deployer \
+app/build:: .build/rabbitmq/deployer \
             .build/rabbitmq/rabbitmq \
+            .build/rabbitmq/debian9 \
             .build/rabbitmq/prometheus-to-sd \
             .build/rabbitmq/tester
 
 
 .build/rabbitmq: | .build
 	mkdir -p "$@"
-
-
-.build/rabbitmq/debian9: .build/var/REGISTRY \
-                         .build/var/TAG \
-                         | .build/rabbitmq
-	docker pull marketplace.gcr.io/google/debian9
-	docker tag marketplace.gcr.io/google/debian9 "$(REGISTRY)/rabbitmq/debian9:$(TAG)"
-	docker push "$(REGISTRY)/rabbitmq/debian9:$(TAG)"
-	@touch "$@"
 
 
 .build/rabbitmq/deployer: deployer/* \
@@ -102,6 +92,16 @@ app/build:: .build/rabbitmq/debian9  \
 	docker tag marketplace.gcr.io/google/rabbitmq3:$(TAG) \
 	    "$(REGISTRY)/rabbitmq:$(TAG)"
 	docker push "$(REGISTRY)/rabbitmq:$(TAG)"
+	@touch "$@"
+
+
+.build/rabbitmq/debian9: .build/var/REGISTRY \
+                         .build/var/TAG \
+                         | .build/rabbitmq
+	docker pull marketplace.gcr.io/google/debian9:latest
+	docker tag marketplace.gcr.io/google/debian9:latest \
+	    "$(REGISTRY)/rabbitmq/debian9:$(TAG)"
+	docker push "$(REGISTRY)/rabbitmq/debian9:$(TAG)"
 	@touch "$@"
 
 

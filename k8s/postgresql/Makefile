@@ -3,32 +3,39 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
-
 TAG ?= 9.6
 METRICS_EXPORTER_TAG ?= v0.5.1
+
 SRCTAG ?= 9.6-kubernetes
 IMAGE_POSTGRESQL ?= marketplace.gcr.io/google/postgresql9:$(SRCTAG)
 IMAGE_POSTGRESQL_EXPORTER ?= marketplace.gcr.io/google/postgresql9:exporter
+
 $(info ---- TAG = $(TAG))
 
 ifdef METRICS_EXPORTER_ENABLED
   METRICS_EXPORTER_ENABLED_FIELD = , "metrics.enabled": "$(METRICS_EXPORTER_ENABLED)"
 endif
 
+ifdef EXPOSE_PUBLIC_SERVICE
+  EXPOSE_PUBLIC_SERVICE_FIELD = , "postgresql.exposePublicService": "$(EXPOSE_PUBLIC_SERVICE)"
+endif
+
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/postgresql/deployer:$(TAG)
 NAME ?= postgresql-1
+
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
   $(METRICS_EXPORTER_ENABLED_FIELD) \
+  $(EXPOSE_PUBLIC_SERVICE_FIELD) \
 }
 
 TESTER_IMAGE ?= $(REGISTRY)/postgresql/tester:$(TAG)
 
 
 app/build:: .build/postgresql/deployer \
-            .build/postgresql/exporter \
             .build/postgresql/postgresql \
+            .build/postgresql/exporter \
             .build/postgresql/prometheus-to-sd \
             .build/postgresql/tester
 
@@ -38,14 +45,14 @@ app/build:: .build/postgresql/deployer \
 
 
 .build/postgresql/deployer: deployer/* \
-                           chart/postgresql/* \
-                           chart/postgresql/templates/* \
-                           schema.yaml \
-                           .build/var/APP_DEPLOYER_IMAGE \
-                           .build/var/MARKETPLACE_TOOLS_TAG \
-                           .build/var/REGISTRY \
-                           .build/var/TAG \
-                           | .build/postgresql
+                            chart/postgresql/* \
+                            chart/postgresql/templates/* \
+                            schema.yaml \
+                            .build/var/APP_DEPLOYER_IMAGE \
+                            .build/var/MARKETPLACE_TOOLS_TAG \
+                            .build/var/REGISTRY \
+                            .build/var/TAG \
+                            | .build/postgresql
 	docker build \
 	    --build-arg REGISTRY="$(REGISTRY)/postgresql" \
 	    --build-arg TAG="$(TAG)" \
@@ -69,7 +76,7 @@ app/build:: .build/postgresql/deployer \
 .build/postgresql/exporter: .build/var/REGISTRY \
                             .build/var/TAG \
                             | .build/postgresql
-	docker pull $(IMAGE_POSTGRESQL_EXPORTER) 
+	docker pull $(IMAGE_POSTGRESQL_EXPORTER)
 	docker tag $(IMAGE_POSTGRESQL_EXPORTER) "$(REGISTRY)/postgresql/exporter:$(TAG)"
 	docker push "$(REGISTRY)/postgresql/exporter:$(TAG)"
 	@touch "$@"

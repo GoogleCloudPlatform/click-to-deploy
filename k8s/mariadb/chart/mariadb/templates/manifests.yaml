@@ -66,11 +66,54 @@ spec:
           mountPath: /etc/mysql/mariadb.conf.d
         - name: tls-volume
           mountPath: /etc/mysql/mariadb.conf.d/certs
-        - name: tls-ca-volume
-          mountPath: /etc/mysql/mariadb.conf.d/certs-ca
         - name: replication-config
-          mountPath: /docker-entrypoint-initdb.d
+          mountPath: /docker-entrypoint-initdb.d/
           readOnly: true
+      - name: mysqld-exporter
+        image: {{ .Values.db.exporter.image }}
+        env:
+        - name: MYSQLD_EXPORTER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-mariadb
+              key: mysqld-exporter-pass
+        - name: DATA_SOURCE_NAME
+          value: {{ .Values.db.exporter.user }}:$(MYSQLD_EXPORTER_PASSWORD)@(127.0.0.1:3306)/
+        ports:
+        - name: exporter
+          containerPort: 9104
+        livenessProbe:
+          httpGet:
+            path: /metrics
+            port: 9104
+        readinessProbe:
+          httpGet:
+            path: /metrics
+            port: 9104
+          initialDelaySeconds: 60
+          timeoutSeconds: 30
+          failureThreshold: 10
+          periodSeconds: 10
+      {{ if .Values.metrics.enabled }}
+      - name: prometheus-to-sd
+        image: {{ .Values.metrics.image }}
+        command:
+        - /monitor
+        - --stackdriver-prefix=custom.googleapis.com
+        - --source=mariadb:http://localhost:9104/metrics
+        - --pod-id=$(POD_NAME)
+        - --namespace-id=$(POD_NAMESPACE)
+        - --monitored-resource-types=k8s
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+      {{ end }}
       volumes:
         - name: configmap
           configMap:
@@ -78,15 +121,14 @@ spec:
         - name: tls-volume
           secret:
             secretName: {{ .Release.Name }}-tls
-        - name: tls-ca-volume
-          secret:
-            secretName: {{ .Release.Name }}-ca-tls
         - name: replication-config
           secret:
             secretName: {{ .Release.Name }}-mariadb
             items:
             - key: mariadb-replication.sql
               path: mariadb-replication.sql
+            - key: mysqld_exporter.sql
+              path: mysqld_exporter.sql
   volumeClaimTemplates:
   - metadata:
       name: {{ .Release.Name }}-data-pvc
@@ -228,8 +270,6 @@ spec:
           mountPath: /etc/mysql/mariadb.conf.d
         - name: tls-volume
           mountPath: /etc/mysql/mariadb.conf.d/certs
-        - name: tls-ca-volume
-          mountPath: /etc/mysql/mariadb.conf.d/certs-ca
       volumes:
         - name: conf
           emptyDir: {}
@@ -238,10 +278,7 @@ spec:
             name: {{ .Release.Name }}-mariadb-secondary
         - name: tls-volume
           secret:
-            secretName: {{ .Release.Name }}-secondary-tls
-        - name: tls-ca-volume
-          secret:
-            secretName: {{ .Release.Name }}-ca-tls
+            secretName: {{ .Release.Name }}-tls
   volumeClaimTemplates:
   - metadata:
       name: {{ .Release.Name }}-data-pvc
