@@ -31,5 +31,5 @@ vm-lint: ## Runs lint for Chef cookbooks
 	@foodcritic --cookbook-path=vm/chef/cookbooks --rule-file=vm/chef/.foodcritic --epic-fail=any
 
 .PHONY: vm-generate-triggers
-vm-generate-triggers: ## Generates GCB triggers for VM
+vm-generate-triggers: ## Generates and displays GCB triggers for VM
 	@python scripts/triggers_vm_generator.py
