@@ -17,6 +17,7 @@
 import argparse
 import json
 import logging
+import multiprocessing.pool
 import os
 import subprocess
 import sys
@@ -107,6 +108,27 @@ class VmTriggerConfig(object):
     return trigger
 
 
+class CreateThreadPoolAndWait(object):
+  """Creates thread pool and wait for all jobs to finish.
+
+  For example:
+
+  with CreateThreadPoolAndWait() as pool:
+    result1=pool.apply_async(func1)
+    result2=pool.apply_async(func2)
+  """
+
+  def __init__(self):
+    self._pool = multiprocessing.pool.ThreadPool()
+
+  def __enter__(self):
+    return self._pool
+
+  def __exit__(self, exc_type, exc_val, exc_tb):
+    self._pool.close()
+    self._pool.join()
+
+
 def invoke_shell(args):
   """Invokes a shell command."""
   logging.debug('Executing command: %s', args)
@@ -138,24 +160,26 @@ def get_solutions_list():
   return listdir
 
 
+def generate_config(solution, knife_binary):
+  trigger = VmTriggerConfig(solution=solution, knife_binary=knife_binary)
+  return trigger.generate_config()
+
+
 def main():
   parser = argparse.ArgumentParser()
   parser.add_argument(
       '--knife_binary', type=str, default='knife', help='knife-solo binary')
   args = parser.parse_args()
 
-  ## DEBUG
-  command = [args.knife_binary, 'deps']
-  deps, exit_code = invoke_shell(command)
-  assert exit_code == 0, exit_code
-  ## DEBUG
-
   listdir = get_solutions_list()
-  triggers = []
 
-  for solution in listdir:
-    trigger = VmTriggerConfig(solution=solution, knife_binary=args.knife_binary)
-    triggers.append(trigger.generate_config())
+  with CreateThreadPoolAndWait() as pool:
+    triggers_results = [
+        pool.apply_async(generate_config, (solution, args.knife_binary))
+        for solution in listdir
+    ]
+
+  triggers = [result.get() for result in triggers_results]
 
   print(yaml.dump_all(triggers, default_flow_style=False))
 
