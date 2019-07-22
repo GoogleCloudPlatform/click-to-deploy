@@ -135,7 +135,6 @@ apiVersion: apps/v1beta2
 kind: DaemonSet
 metadata:
   name: {{ .Release.Name }}-fluentd-es
-  #namespace: kube-system
   labels: &FluentdLabels
     app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: fluentd-es-logging
