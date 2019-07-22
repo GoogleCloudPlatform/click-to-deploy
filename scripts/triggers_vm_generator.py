@@ -120,8 +120,8 @@ class CreateThreadPoolAndWait(object):
     result2=pool.apply_async(func2)
   """
 
-  def __init__(self):
-    self._pool = multiprocessing.pool.ThreadPool()
+  def __init__(self, processes):
+    self._pool = multiprocessing.pool.ThreadPool(processes)
 
   def __enter__(self):
     return self._pool
@@ -182,7 +182,7 @@ def main():
 
   listdir = get_solutions_list()
 
-  with CreateThreadPoolAndWait() as pool:
+  with CreateThreadPoolAndWait(processes=5) as pool:
     triggers_results = [
         pool.apply_async(generate_config, (solution, args.knife_binary))
         for solution in listdir
