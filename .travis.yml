@@ -8,6 +8,8 @@ matrix:
     install: gem install foodcritic
     env: TARGET=vm-lint
   - language: ruby
+    rvm:
+    - 2.6
     install: gem install knife-solo
     env: TARGET=vm-generate-triggers
 
