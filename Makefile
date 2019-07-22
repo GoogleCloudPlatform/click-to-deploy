@@ -29,3 +29,7 @@ python-test: ## Runs tests for Python scripts
 vm-lint: ## Runs lint for Chef cookbooks
 	@foodcritic --version
 	@foodcritic --cookbook-path=vm/chef/cookbooks --rule-file=vm/chef/.foodcritic --epic-fail=any
+
+.PHONY: vm-generate-triggers
+vm-generate-triggers: ## Generates and displays GCB triggers for VM
+	@python scripts/triggers_vm_generator.py
