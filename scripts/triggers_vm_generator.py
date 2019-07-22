@@ -109,7 +109,7 @@ class VmTriggerConfig(object):
 
 def invoke_shell(args):
   """Invokes a shell command."""
-  logging.debug(args)
+  logging.debug('Executing command: %s', args)
   child = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
   output, _ = child.communicate()
   exit_code = child.returncode
