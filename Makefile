@@ -32,4 +32,5 @@ vm-lint: ## Runs lint for Chef cookbooks
 
 .PHONY: vm-generate-triggers
 vm-generate-triggers: ## Generates and displays GCB triggers for VM
+	knife deps --config-option cookbook_path=vm/chef/cookbooks /cookbooks/wordpress-ha
 	@python scripts/triggers_vm_generator.py
