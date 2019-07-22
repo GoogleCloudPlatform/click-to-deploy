@@ -118,7 +118,7 @@ def get_cookbook_deps(cookbook, knife_binary):
   command = [
       knife_binary, 'deps', '--config-option',
       'cookbook_path=%s' % COOKBOOKS_DIR,
-      os.path.join(COOKBOOKS_DIR, cookbook)
+      os.path.join('/cookbooks', cookbook)
   ]
   deps, exit_code = invoke_shell(command)
   assert exit_code == 0, deps
