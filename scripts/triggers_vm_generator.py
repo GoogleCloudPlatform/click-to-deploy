@@ -74,7 +74,7 @@ class VmTriggerConfig(object):
     for cookbook in self.packer_run_list:
       for dep in get_cookbook_deps(
           cookbook=cookbook, knife_binary=self._knife_binary):
-        included_files.append(os.path.join('vm/chef', dep, '**'))
+        included_files.append(os.path.join(COOKBOOKS_DIR, dep, '**'))
 
     included_files = self._remove_duplicates(included_files)
     return included_files
@@ -154,6 +154,7 @@ def get_cookbook_deps(cookbook, knife_binary):
   deps, exit_code = invoke_shell(command)
   assert exit_code == 0, exit_code
   deps = deps.splitlines()
+  deps =  [x.replace('/cookbooks/', '') for x in deps]
 
   _COOKBOOKS[cookbook] = deps
   return deps
