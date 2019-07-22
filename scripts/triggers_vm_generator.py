@@ -143,6 +143,7 @@ def invoke_shell(args):
 def get_cookbook_deps(cookbook, knife_binary):
   """Returns cookbooks dependencies."""
   if cookbook in _COOKBOOKS:
+    # do not check cookbook twice
     return _COOKBOOKS[cookbook]
 
   command = [
