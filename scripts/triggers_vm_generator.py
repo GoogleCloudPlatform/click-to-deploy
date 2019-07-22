@@ -144,6 +144,12 @@ def main():
       '--knife_binary', type=str, default='knife', help='knife-solo binary')
   args = parser.parse_args()
 
+  ## DEBUG
+  command = [args.knife_binary, 'deps']
+  deps, exit_code = invoke_shell(command)
+  assert exit_code == 0, exit_code
+  ## DEBUG
+
   listdir = get_solutions_list()
   triggers = []
 
