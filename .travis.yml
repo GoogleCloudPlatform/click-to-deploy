@@ -12,7 +12,7 @@ matrix:
   #   - 2.5
   #   install: gem install knife-solo
   #   env: TARGET=vm-generate-triggers
-  # - language: generic
+  - language: generic
     dist: xenial
     before_install:
     - wget https://packages.chef.io/files/stable/chefdk/4.2.0/ubuntu/16.04/chefdk_4.2.0-1_amd64.deb
