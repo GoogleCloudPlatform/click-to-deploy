@@ -56,6 +56,7 @@ class VmTriggerConfigTest(unittest.TestCase):
         solution='wordpress', knife_binary='/bin/bash')
 
   def test_packer_run_list(self):
+    # TODO(wgrzelak): Implement unittest.
     pass
 
   def test_should_include_test(self):
@@ -69,6 +70,7 @@ class VmTriggerConfigTest(unittest.TestCase):
                      self.trigger.tests_dir)
 
   def test_included_files(self):
+    # TODO(wgrzelak): Implement unittest.
     pass
 
   def test_remove_duplicates(self):
@@ -76,6 +78,7 @@ class VmTriggerConfigTest(unittest.TestCase):
                      self.trigger._remove_duplicates(['a', 'a', 'b']))
 
   def test_generate_config(self):
+    # TODO(wgrzelak): Implement unittest.
     pass
 
 
