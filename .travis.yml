@@ -10,7 +10,7 @@ matrix:
   - language: ruby
     rvm:
     - 2.5
-    install: gem install knife-solo
+    before_install: gem install knife-solo
     env: TARGET=vm-generate-triggers
 
 script: make "${TARGET}"
