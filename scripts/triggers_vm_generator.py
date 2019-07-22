@@ -16,8 +16,10 @@
 
 import argparse
 import json
+import logging
 import os
 import subprocess
+import sys
 import yaml
 
 CLOUDBUILD_CONFIG_FILE = 'cloudbuild-vm.yaml'
@@ -107,6 +109,7 @@ class VmTriggerConfig(object):
 
 def invoke_shell(args):
   """Invokes a shell command."""
+  logging.debug(args)
   child = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
   output, _ = child.communicate()
   exit_code = child.returncode
@@ -152,4 +155,5 @@ def main():
 
 
 if __name__ == '__main__':
+  logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
   os.sys.exit(main())

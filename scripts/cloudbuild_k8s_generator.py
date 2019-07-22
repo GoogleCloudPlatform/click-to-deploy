@@ -214,15 +214,9 @@ class CloudBuildConfig(object):
 def main():
   parser = argparse.ArgumentParser()
   parser.add_argument(
-      '--solution',
-      type=str,
-      required=True,
-      help='solution name')
+      '--solution', type=str, required=True, help='solution name')
   parser.add_argument(
-      '--output',
-      type=str,
-      required=True,
-      help='path to save configuration')
+      '--output', type=str, required=True, help='path to save configuration')
   parser.add_argument(
       '--verify_only',
       action='store_true',
