@@ -153,8 +153,7 @@ def get_cookbook_deps(cookbook, knife_binary):
   ]
   deps, exit_code = invoke_shell(command)
   assert exit_code == 0, exit_code
-  deps = deps.splitlines()
-  deps = [x.replace('/cookbooks/', '') for x in deps]
+  deps = [x.replace('/cookbooks/', '') for x in deps.splitlines()]
 
   _COOKBOOKS[cookbook] = deps
   return deps
