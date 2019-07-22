@@ -178,7 +178,8 @@ steps:
 """.strip()
 
 
-class CloudBuildConfig():
+class CloudBuildConfig(object):
+  """Generates Cloud Build config for K8s app."""
 
   def __init__(self, solution):
     self._solution = solution
@@ -187,6 +188,7 @@ class CloudBuildConfig():
     self.path = None
     self.template = CLOUDBUILD_TEMPLATE
 
+  @property
   def exists(self):
     return os.path.isfile(self.path)
 
@@ -195,7 +197,7 @@ class CloudBuildConfig():
         solution=self._solution, extra_configs=self.extra_configs)
 
   def verify(self):
-    if not self.exists():
+    if not self.exists:
       return False
 
     with open(self.path, 'r') as cloudbuild_file:
@@ -253,13 +255,13 @@ def main():
   if args.verify_only:
     if cloudbuild.verify():
       print('The %s file is up-to-date' % path)
-      os.sys.exit(0)
+      return 0
     else:
       print('The %s file is not up-to-date. Please re-generate it' % path)
-      os.sys.exit(1)
+      return 1
   else:
     cloudbuild.save()
 
 
 if __name__ == '__main__':
-  main()
+  os.sys.exit(main())
