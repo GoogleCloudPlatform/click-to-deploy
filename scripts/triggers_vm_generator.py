@@ -124,7 +124,7 @@ def get_cookbook_deps(cookbook, knife_binary):
       os.path.join('/cookbooks', cookbook)
   ]
   deps, exit_code = invoke_shell(command)
-  assert exit_code == 0, deps
+  assert exit_code == 0, exit_code
   return deps.splitlines()
 
 
