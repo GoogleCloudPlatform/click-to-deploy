@@ -28,6 +28,8 @@ COOKBOOKS_DIR = 'vm/chef/cookbooks'
 PACKER_DIR = 'vm/packer/templates'
 TESTS_DIR = 'vm/tests/solutions/spec'
 
+_COOKBOOKS = {}
+
 
 class VmTriggerConfig(object):
   """Generates GCB trigger for VM solution."""
@@ -74,10 +76,10 @@ class VmTriggerConfig(object):
           cookbook=cookbook, knife_binary=self._knife_binary):
         included_files.append(os.path.join('vm/chef', dep, '**'))
 
-    included_files = self.remove_duplicates(included_files)
+    included_files = self._remove_duplicates(included_files)
     return included_files
 
-  def remove_duplicates(self, included_files):
+  def _remove_duplicates(self, included_files):
     """Removes duplicates from a List."""
     final_list = []
     for num in included_files:
@@ -140,6 +142,9 @@ def invoke_shell(args):
 
 def get_cookbook_deps(cookbook, knife_binary):
   """Returns cookbooks dependencies."""
+  if cookbook in _COOKBOOKS:
+    return _COOKBOOKS[cookbook]
+
   command = [
       knife_binary, 'deps', '--config-option',
       'cookbook_path=%s' % COOKBOOKS_DIR,
@@ -147,7 +152,10 @@ def get_cookbook_deps(cookbook, knife_binary):
   ]
   deps, exit_code = invoke_shell(command)
   assert exit_code == 0, exit_code
-  return deps.splitlines()
+  deps = deps.splitlines()
+
+  _COOKBOOKS[cookbook] = deps
+  return deps
 
 
 def get_solutions_list():
