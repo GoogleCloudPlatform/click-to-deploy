@@ -9,7 +9,7 @@ matrix:
     env: TARGET=vm-lint
   - language: ruby
     rvm:
-    - 2.6
+    - 2.5
     install: gem install knife-solo
     env: TARGET=vm-generate-triggers
 
