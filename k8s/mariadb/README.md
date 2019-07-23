@@ -1,6 +1,6 @@
 # Overview
 
-MariaDB is one of the most popular database servers in the world. MariaDB is developed as open source software and as a relational database it provides an SQL interface for accessing data.
+MariaDB is an open source relational database. It is a fork of MySQL.
 
 For more information on MariaDB, see the [MariaDB official website](https://mariadb.org/).
 
@@ -8,23 +8,21 @@ For more information on MariaDB, see the [MariaDB official website](https://mari
 
 Popular open stacks on Kubernetes packaged by Google.
 
-## Design
+## Architecture
 
 ![Architecture diagram](resources/mariadb-k8s-app-architecture.png)
 
-The application offers stateful multi instance MariaDB installation on a Kubernetes cluster with one primary instance.
+This Kubernetes application is a stateful multi-instance MariaDB installation with one primary instance.
 
-Application consists of two StatefulSets, primary with read/write access, secondary is read only.
-While primary instance can be only one, user can specify number of secondary instances. Default value is 2.
+The application includes two StatefulSets: a primary with read/write access, and a secondary with read-only access. You must have only one primary instance,
+but can specify the number of secondary instances. By default, the application
+has two secondary instances.
 
-Administrative user credentials are automatically generated and configured in the application
-through a Kubernetes Secret. Configuration files (`/etc/mysql/mariadb.conf.d/`) are
-defined in a ConfigMap and mounted to MariaDB StatefulSet.
+The credentials for the administrator account are automatically generated and configured in the application through a Kubernetes Secret. The configuration files for the application (in `/etc/mysql/mariadb.conf.d/`) are defined in a ConfigMap and mounted to the MariaDB StatefulSet.
 
-By default, the Services exposing MariaDB server are of type ClusterIP, which makes
-it accessible only in a private network on port 3306.
+By default, the Services exposing MariaDB server are of type ClusterIP, which makes the Service accessible in a private network on port 3306.
 
-This application is pre-configured with an SSL certificate. Please replace it with your valid SSL certificate.
+This application is pre-configured with an SSL certificate. Before you make the app available to users, you must replace the pre-configured certificate with a valid certificate of your own.
 
 # Installation
 
@@ -40,7 +38,7 @@ Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 
 #### Set up command-line tools
 
-You'll need the following tools in your development environment:
+You'll need the following tools in your development environment. If you are using Cloud Shell, these tools are installed in your environment.
 
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
@@ -54,7 +52,7 @@ Configure `gcloud` as a Docker credential helper:
 gcloud auth configure-docker
 ```
 
-#### Create a Google Kubernetes Engine cluster
+#### Create a Google Kubernetes Engine (GKE) cluster
 
 Create a new cluster from the command line:
 
@@ -96,7 +94,7 @@ The Application resource is defined by the
 [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps) community. The source code can be found on
 [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
 
-### Install the Application
+### Install MariaDB
 
 Navigate to the `mariadb` directory:
 
@@ -104,7 +102,7 @@ Navigate to the `mariadb` directory:
 cd click-to-deploy/k8s/mariadb
 ```
 
-#### Configure the app with environment variables
+#### Configure the environment variables
 
 Choose an instance name and
 [namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)
@@ -115,7 +113,7 @@ export APP_INSTANCE_NAME=mariadb-1
 export NAMESPACE=default
 ```
 
-Enable Stackdriver Metrics Exporter:
+(Optional) Enable Stackdriver Metrics Exporter:
 
 > **NOTE:** Your GCP project must have Stackdriver enabled. If you are using a
 > non-GCP cluster, you cannot export metrics to Stackdriver.
@@ -159,7 +157,7 @@ Set the number of replicas for MariaDB:
 export REPLICAS=2
 ```
 
-Configure the MariaDB users credentials (passwords must be encoded in base64):
+Configure the MariaDB user's credentials (passwords must be encoded in base64):
 
 ```shell
 export MARIADB_ROOT_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1 | tr -d '\n' | base64)
@@ -179,8 +177,7 @@ kubectl create namespace "$NAMESPACE"
 
 #### Create TLS certificates
 
-In order to secure connections between the primary and secondary instances for replication you need to provide
-a certificate and private key. Certificates should be delivered via Kubernetes Secrets.
+To secure the connections between the primary and secondary instances, you must provide a certificate and private key, and apply them using Kubernetes Secrets.
 
 1.  If you already have a certificate that you want to use, copy your
     certificate and key pair to the `/tmp/tls.crt`, and `/tmp/tls.key` files,
@@ -195,7 +192,7 @@ a certificate and private key. Certificates should be delivered via Kubernetes S
         -subj "/CN=mariadb/O=mariadb"
     ```
 
- 1. Set `TLS_CERTIFICATE_CRT` and `TLS_CERTIFICATE_KEY` variables:
+ 1. Set the `TLS_CERTIFICATE_CRT` and `TLS_CERTIFICATE_KEY` variables:
 
     ```shell
     export TLS_CERTIFICATE_KEY="$(cat /tmp/tls.key | base64)"
@@ -232,7 +229,7 @@ Use `kubectl` to apply the manifest to your Kubernetes cluster:
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
 
-#### View the app in the Google Cloud Console
+#### View the app in the Google Cloud Platform Console
 
 To get the Console URL for your app, run the following command:
 
@@ -242,20 +239,21 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 To view the app, open the URL in your browser.
 
-### Access MariaDB (internally)
+### Access MariaDB within the network
 
 You can connect to MariaDB without exposing it to public access, using the
-`mysql` command line interface.
+`mysql` command line interface. You can connect directly to the MariaDB Pod,
+or use a client Pod.
 
-#### Connect to MariaDB via Pod
+#### Connect directly to the MariaDB Pod
 
-To do this, please identify MariaDB's Pod using the following command:
+Identify the MariaDB Pod using the following command:
 
 ```shell
 kubectl get pods -o wide -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace "$NAMESPACE"
 ```
 
-Now, you can access MariaDB
+Access MariaDB using the following command:
 
 ```shell
 # kubectl exec -it <pod name> --namespace "$NAMESPACE" -- mysql -h  $APP_INSTANCE_NAME-mariadb -p<admin password>)
@@ -263,17 +261,17 @@ Now, you can access MariaDB
 kubectl exec -it "$APP_INSTANCE_NAME-mariadb-0" --namespace "$NAMESPACE" -- mysql -h $APP_INSTANCE_NAME-mariadb -p$(echo ${MARIADB_ROOT_PASSWORD} | base64 -d)
 ```
 
-#### Connect to MariaDB using client pod
+#### Connect to MariaDB using a client Pod
 
-You could also connect to MariaDB server using client pod based on same MariaDB docker image:
+You can connect to the MariaDB server using a client Pod that is based on the same MariaDB Docker image, using the following command:
 
 ```shell
 kubectl run -it --rm --image=$IMAGE_MARIADB --restart=Never mariadb-client -- mysql -h $APP_INSTANCE_NAME-mariadb.$NAMESPACE.svc.cluster.local -p$(echo ${MARIADB_ROOT_PASSWORD} | base64 -d)
 ```
 
-### Access MariaDB (externally)
+### Access MariaDB through an external IP address
 
-By default, the application does not have an external IP. To create an external IP address, run the following command:
+By default, the application does not have an external IP address. To create an external IP address, run the following command:
 
 ```
 kubectl patch svc "$APP_INSTANCE_NAME-mariadb" "$APP_INSTANCE_NAME-mariadb-secondary" \
@@ -283,9 +281,9 @@ kubectl patch svc "$APP_INSTANCE_NAME-mariadb" "$APP_INSTANCE_NAME-mariadb-secon
 
 > **NOTE:** It might take some time for the external IP to be provisioned.
 
-### Access MariaDB service
+### Access the MariaDB service
 
-**Option 1:** If you run your MariaDB cluster behind a LoadBalancer, you can get the external IP of MariaDB primary instance using the following command:
+**Option 1:** If you run your MariaDB cluster behind a LoadBalancer, you can get the external IP of the MariaDB primary instance using the following command:
 
 ```shell
 PRIMARY_IP=$(kubectl get svc $APP_INSTANCE_NAME-mariadb \
@@ -337,8 +335,8 @@ For example, to access the metrics locally, run the following command:
 kubectl port-forward "svc/${APP_INSTANCE_NAME}-mysqld-exporter-svc" 9104 --namespace "${NAMESPACE}"
 ```
 
-Then, navigate to the
-[http://localhost:9104/metrics](http://localhost:9104/metrics) endpoint.
+Then, navigate to
+[http://localhost:9104/metrics](http://localhost:9104/metrics).
 
 
 ### Configuring Prometheus to collect the metrics
@@ -372,7 +370,7 @@ You can remove existing metric descriptors using
 
 # Scaling
 
-## Scaling the cluster up
+## Scaling the cluster up or down
 
 By default, the MariaDB application is deployed using 2 replicas.
 To change the number of replicas, use the following command:
@@ -382,15 +380,18 @@ kubectl scale statefulsets "$APP_INSTANCE_NAME-mariadb-secondary" \
   --namespace "$NAMESPACE" --replicas=$REPLICAS
 ```
 
-Where `REPLICAS` is desired number of replicas.
+Where `REPLICAS` is the number of replicas you want.
 
-In case of scaling down this option reduces the number of replicas without disconnecting nodes from the cluster. Scaling down will also leave `persistentvolumeclaims` of your StatefulSet untouched.
+Use the same command to reduce the number of replicas without disconnecting nodes from the cluster. When you reduce the number of replicas, the
+`PersistentVolumeClaims` in your StatefulSet remain unmodified.
 
 # Backup and Restore
 
 The following steps are based on the [MariaDB documentation](https://mariadb.com/kb/en/library/backing-up-and-restoring-databases/).
 
-## Backup MariaDB data to your local computer
+## Backup MariaDB data to your local workstation
+
+You must ensure that your primary Pod has enough disk space to temporarily store the database backup file.
 
 ```shell
 # navigate to the mariadb/scripts directory
@@ -400,14 +401,12 @@ cd click-to-deploy/k8s/mariadb/scripts
 ./backup.sh --app_instance_name $APP_INSTANCE_NAME --namespace $NAMESPACE
 ```
 
-The backup is stored in `all-databases-<timestamp>.sql` file in current directory on your local computer
+The backup is stored in `all-databases-<timestamp>.sql` file in current directory on your local workstation
 unless output path specified with `--output (-o)` option.
 
-> **NOTE:** Primary pod should have enough empty space to temporary store backup file which will be downloaded to your local machine afterwards.
+## Restore MariaDB data on a running MariaDB instance
 
-## Restore MariaDB data on running MariaDB instance
-
-In order to restore database you need to shut down all secondary instances:
+To restore the database, you must shut down all secondary instances:
 
 ```shell
 # navigate to the mariadb/scripts directory
@@ -417,22 +416,22 @@ cd click-to-deploy/k8s/mariadb/scripts
 kubectl scale statefulsets "$APP_INSTANCE_NAME-mariadb-secondary" --namespace "$NAMESPACE" --replicas=0
 ```
 
-Wait for secondary StatefulSet to scale down to 0 and then run [restore.sh](scripts/restore.sh) script, passing backup file location, the name of your MariaDB instance and namespace as an argument:
+Wait for the secondary StatefulSet to scale down to 0, then run the [restore.sh](scripts/restore.sh) script:
 
 ```shell
 # run the restore.sh script, passing backup file location and the name of your MariaDB instance as an argument
 # ./restore.sh --file [backup_file] --app_instance_name [app_name] --namespace [namespace]
 ./restore.sh --file all-databases-2019-01-01.sql --app_instance_name $APP_INSTANCE_NAME --namespace $NAMESPACE
 
-# scale up secondary StatefulSet
+# scale up the secondary StatefulSet
 kubectl scale statefulsets "$APP_INSTANCE_NAME-mariadb-secondary" --namespace "$NAMESPACE" --replicas=<target number>
 ```
 
-> **NOTE:** Keep in mind that users `root` and `replicator` are reserved to ensure communication and replication between MariaDB instances. Passwords for this user accounts are set to values generated during installation and provided via Secret. In case you want to restore from backup created on other installation passwords for these users won't be restored.
+> **NOTE:** The `root` and `replicator` users are reserved for communication and replication between MariaDB instances. The passwords for these accounts are set to values generated during installation, and provided in a Secret. If you want to restore data from a backup that you created in another installation, the passwords for these users aren't restored.
 
 # Upgrading the app
 
-Before upgrading, we recommend that you prepare a backup of your MariaDB database, using the [backup step](#backup-mariadb-data-to-your-local-computer). For additional information about upgrades, see the [MariaDB documentation](https://mariadb.com/kb/en/library/upgrading/).
+Before upgrading, we recommend that you back up your MariaDB database, using the [backup step](#backup-mariadb-data-to-your-local-workstation). For additional information about upgrades, see the [MariaDB documentation](https://mariadb.com/kb/en/library/upgrading/).
 
 The MariaDB StatefulSet is configured to roll out updates automatically. Start the update by patching the StatefulSet with a new image reference:
 
@@ -474,7 +473,7 @@ export NAMESPACE=default
 
 ### Delete the resources
 
-> **NOTE:** We recommend to use a kubectl version that is the same as the version of your cluster. Using the same versions of kubectl and the cluster helps avoid unforeseen issues.
+> **NOTE:** We recommend using a `kubectl` version that is the same as the version of your cluster. Using the same versions of `kubectl` and the cluster helps avoid unforeseen issues.
 
 To delete the resources, use the expanded manifest file used for the
 installation.
