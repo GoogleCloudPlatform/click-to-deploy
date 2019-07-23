@@ -72,9 +72,10 @@ class VmTriggerConfig(object):
       included_files.append(os.path.join(self.tests_dir, '**'))
 
     for cookbook in self.packer_run_list:
-      for dep in get_cookbook_deps(
-          cookbook=cookbook, knife_binary=self._knife_binary):
-        included_files.append(os.path.join(COOKBOOKS_DIR, dep, '**'))
+      included_files.extend([
+          os.path.join(COOKBOOKS_DIR, dep, '**') for dep in get_cookbook_deps(
+              cookbook=cookbook, knife_binary=self._knife_binary)
+      ])
 
     included_files = self._remove_duplicates(included_files)
     return included_files
@@ -87,9 +88,8 @@ class VmTriggerConfig(object):
         final_list.append(num)
     return final_list
 
-  def generate_config(self):
+  def generate_config(self, included_files):
     """Generates GCB trigger config."""
-    included_files = self.included_files
     included_files.sort()
     trigger = {
         'description': 'Trigger for VM %s' % self._solution,
@@ -153,7 +153,7 @@ def get_cookbook_deps(cookbook, knife_binary):
   ]
   deps, exit_code = invoke_shell(command)
   assert exit_code == 0, exit_code
-  deps = [x.replace('/cookbooks/', '') for x in deps.splitlines()]
+  deps = [dep.replace('/cookbooks/', '') for dep in deps.splitlines()]
 
   _COOKBOOKS[cookbook] = deps
   return deps
@@ -171,7 +171,8 @@ def get_solutions_list():
 
 def generate_config(solution, knife_binary):
   trigger = VmTriggerConfig(solution=solution, knife_binary=knife_binary)
-  return trigger.generate_config()
+  included_files = trigger.included_files
+  return trigger.generate_config(included_files)
 
 
 def main():

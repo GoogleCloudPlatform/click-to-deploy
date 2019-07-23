@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import mock
+import os
+import tempfile
 import time
 import triggers_vm_generator
 import unittest
@@ -55,9 +58,28 @@ class VmTriggerConfigTest(unittest.TestCase):
     self.trigger = triggers_vm_generator.VmTriggerConfig(
         solution='wordpress', knife_binary='/bin/bash')
 
-  def test_packer_run_list(self):
-    # TODO(wgrzelak): Implement unittest.
-    pass
+  @mock.patch(
+      'triggers_vm_generator.VmTriggerConfig.packer_dir',
+      new_callable=mock.PropertyMock)
+  def test_packer_run_list(self, packer_dir):
+    temp_dir = tempfile.mkdtemp()
+    packer_dir.return_value = temp_dir
+
+    self.assertEqual(temp_dir, self.trigger.packer_dir)
+
+    packer = """{
+  "license": "c2d-ceph",
+  "source_image_family": "debian-9",
+  "chef": {
+    "run_list": [ "ceph::data-node", "c2d-config", "alfresco", "stackdriver" ]
+  }
+}"""
+
+    with open(os.path.join(temp_dir, 'packer.in.json'), 'w') as f:
+      f.write(packer)
+      f.flush()
+      self.assertEqual(['ceph', 'c2d-config', 'alfresco', 'stackdriver'],
+                       self.trigger.packer_run_list)
 
   def test_should_include_test(self):
     self.assertTrue(self.trigger.should_include_test)
@@ -78,8 +100,33 @@ class VmTriggerConfigTest(unittest.TestCase):
                      self.trigger._remove_duplicates(['a', 'a', 'b']))
 
   def test_generate_config(self):
-    # TODO(wgrzelak): Implement unittest.
-    pass
+    include_files = [
+        'cloudbuild-vm.yaml',
+        'vm/chef/cookbooks/apache2/**',
+        'vm/chef/cookbooks/c2d-config/**',
+        'vm/chef/cookbooks/mysql/**',
+        'vm/chef/cookbooks/php7/**',
+        'vm/chef/cookbooks/wordpress-ha/**',
+        'vm/packer/templates/zabbix/**',
+        'vm/tests/solutions/spec/zabbix/*',
+    ]
+    trigger = {
+        'description': 'Trigger for VM wordpress',
+        'filename': 'cloudbuild-vm.yaml',
+        'github': {
+            'name': 'click-to-deploy',
+            'owner': 'GoogleCloudPlatform',
+            'pullRequest': {
+                'branch': '.*',
+                'commentControl': 'COMMENTS_ENABLED'
+            }
+        },
+        'includedFiles': include_files,
+        'substitutions': {
+            '_SOLUTION_NAME': 'wordpress'
+        }
+    }
+    self.assertEqual(trigger, self.trigger.generate_config(include_files))
 
 
 if __name__ == '__main__':
