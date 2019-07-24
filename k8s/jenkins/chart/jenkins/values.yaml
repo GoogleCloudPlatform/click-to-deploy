@@ -1,0 +1,6 @@
+jenkins:
+  image: null
+
+tls:
+  base64EncodedPrivateKey: null
+  base64EncodedCertificate: null

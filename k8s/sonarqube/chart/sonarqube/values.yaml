@@ -1,0 +1,16 @@
+sonarqube:
+  image: null
+postgresql:
+  image: null
+  exporter:
+    image: null
+  db:
+    password: null
+    name: sonar
+    user: sonar
+metrics:
+  image: null
+  enabled: false
+tls:
+  base64EncodedPrivateKey: null
+  base64EncodedCertificate: null

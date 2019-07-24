@@ -1,0 +1,109 @@
+apiVersion: apps/v1beta2
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-grafana
+  labels: &GrafanaDeploymentLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: grafana-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels: *GrafanaDeploymentLabels
+  serviceName: {{ .Release.Name }}-grafana
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels: *GrafanaDeploymentLabels
+    spec:
+      serviceAccountName: {{ .Values.grafana.serviceaccount }}
+      initContainers:
+        - name: "init-chmod-data"
+          image: {{ .Values.grafana.initImage }}
+          imagePullPolicy: "IfNotPresent"
+          command: ["chmod", "777", "/var/lib/grafana"]
+          volumeMounts:
+          - name: {{ .Release.Name }}-grafana-data
+            mountPath: "/var/lib/grafana"
+      containers:
+        - name: grafana
+          image: {{ .Values.grafana.image }}
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: config
+              mountPath: "/etc/grafana/grafana.ini"
+              subPath: grafana.ini
+            - name: {{ .Release.Name }}-grafana-data
+              mountPath: "/var/lib/grafana"
+              subPath: grafana-data
+          ports:
+            - name: grafana
+              containerPort: 3000
+              protocol: TCP
+          env:
+            - name: GF_SECURITY_ADMIN_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-grafana
+                  key: admin-user
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-grafana
+                  key: admin-password
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 60
+            timeoutSeconds: 30
+            failureThreshold: 10
+            periodSeconds: 10
+          resources:
+            limits:
+              cpu: 50m
+              memory: 100Mi
+            requests:
+              cpu: 50m
+              memory: 100Mi
+        {{ if .Values.metrics.enabled }}
+        - name: prometheus-to-sd
+          image: {{ .Values.metrics.image }}
+          ports:
+            - name: profiler
+              containerPort: 6060
+          command:
+            - /monitor
+            - --stackdriver-prefix=custom.googleapis.com
+            - --source=grafana:http://localhost:3000/metrics
+            - --pod-id=$(POD_NAME)
+            - --namespace-id=$(POD_NAMESPACE)
+            - --monitored-resource-types=k8s
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+        {{ end }}
+      volumes:
+        - name: config
+          configMap:
+            name: {{ .Release.Name }}-grafana
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Release.Name }}-grafana-data
+    spec:
+      storageClassName: standard
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: "2Gi"

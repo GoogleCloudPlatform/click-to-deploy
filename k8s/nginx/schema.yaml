@@ -1,32 +1,57 @@
 application_api_version: v1beta1
 properties:
-  APP_INSTANCE_NAME:
+  name:
     type: string
     x-google-marketplace:
       type: NAME
-  NAMESPACE:
+  namespace:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  IMAGE_NGINX:
+  nginx.image:
     type: string
     default: $REGISTRY:$TAG
     x-google-marketplace:
       type: IMAGE
-  IMAGE_NGINX_INIT:
+  nginx.initImage:
     type: string
     default: $REGISTRY/debian9:$TAG
     x-google-marketplace:
       type: IMAGE
-  REPLICAS:
+  nginx.replicas:
     type: integer
     title: Replicas
     description: The number of Pods run within NGINX solution
     default: 3
     minimum: 1
+  certificate:
+    type: string
+    x-google-marketplace:
+      type: TLS_CERTIFICATE
+      tlsCertificate:
+        generatedProperties:
+          base64EncodedPrivateKey: tls.base64EncodedPrivateKey
+          base64EncodedCertificate: tls.base64EncodedCertificate
+  metrics.image:
+    type: string
+    default: $REGISTRY/prometheus-to-sd:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  metrics.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
+    default: false
+  publicIp.available:
+    type: boolean
+    default: true
+    x-google-marketplace:
+      type: INGRESS_AVAILABLE
 required:
-- APP_INSTANCE_NAME
-- NAMESPACE
-- IMAGE_NGINX
-- IMAGE_NGINX_INIT
-- REPLICAS
+- name
+- namespace
+- nginx.image
+- nginx.initImage
+- nginx.replicas
+- metrics.image
+- metrics.enabled

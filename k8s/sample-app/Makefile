@@ -3,12 +3,12 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
-
 TAG ?= latest
+
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/sample-app/deployer:$(TAG)
-NAME ?= sample-app
+NAME ?= sample-app-1
 
 ifdef IMAGE_SAMPLE_APP
   IMAGE_SAMPLE_APP_FIELD = , "IMAGE_SAMPLE_APP": "$(IMAGE_SAMPLE_APP)"
@@ -24,25 +24,17 @@ APP_PARAMETERS ?= { \
   $(IMAGE_SAMPLE_APP_FIELD) \
   $(SAMPLE_APP_PARAMETER1_FIELD) \
 }
-APP_TEST_PARAMETERS ?= {}
+
+TESTER_IMAGE ?= $(REGISTRY)/sample-app/tester:$(TAG)
 
 
-app/build:: .build/sample-app/debian9  \
-            .build/sample-app/deployer \
-            .build/sample-app/sample-app
+app/build:: .build/sample-app/deployer \
+            .build/sample-app/sample-app \
+            .build/sample-app/tester
 
 
 .build/sample-app: | .build
 	mkdir -p "$@"
-
-
-.build/sample-app/debian9: .build/var/REGISTRY \
-                      .build/var/TAG \
-                      | .build/sample-app
-	docker pull launcher.gcr.io/google/debian9
-	docker tag launcher.gcr.io/google/debian9 "$(REGISTRY)/sample-app/debian9:$(TAG)"
-	docker push "$(REGISTRY)/sample-app/debian9:$(TAG)"
-	@touch "$@"
 
 
 .build/sample-app/deployer: deployer/* \
@@ -65,10 +57,20 @@ app/build:: .build/sample-app/debian9  \
 
 
 .build/sample-app/sample-app: .build/var/REGISTRY \
-                    .build/var/TAG \
-                    | .build/sample-app
-	docker pull launcher.gcr.io/google/nginx1:$(TAG)
-	docker tag launcher.gcr.io/google/nginx1:$(TAG) \
+                              .build/var/TAG \
+                              | .build/sample-app
+
+	docker pull marketplace.gcr.io/google/nginx1:$(TAG)
+	docker tag marketplace.gcr.io/google/nginx1:$(TAG) \
 	    "$(REGISTRY)/sample-app:$(TAG)"
 	docker push "$(REGISTRY)/sample-app:$(TAG)"
+
+
+.build/sample-app/tester: .build/var/TESTER_IMAGE \
+                          $(shell find apptest -type f) \
+                          | .build/sample-app
+	$(call print_target,$@)
+	cd apptest/tester \
+	    && docker build --tag "$(TESTER_IMAGE)" .
+	docker push "$(TESTER_IMAGE)"
 	@touch "$@"

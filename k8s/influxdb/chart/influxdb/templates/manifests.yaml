@@ -1,0 +1,113 @@
+apiVersion: apps/v1beta2
+kind: StatefulSet
+metadata:
+  labels: &InfluxDBDeploymentLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: influxdb-server
+  name: {{ .Release.Name }}-influxdb
+spec:
+  replicas: 1
+  selector:
+    matchLabels: *InfluxDBDeploymentLabels
+  serviceName: {{ .Release.Name }}-influxdb-svc
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels: *InfluxDBDeploymentLabels
+    spec:
+      terminationGracePeriodSeconds: 180
+      containers:
+      - name: influxdb
+        image: {{ .Values.influxdbImage }}
+        imagePullPolicy: Always
+        args: ["influxd"]
+        env:
+        - name: INFLUXDB_HTTP_AUTH_ENABLED
+          value: 'true'
+        - name: INFLUXDB_ADMIN_ENABLED
+          value: 'true'
+        - name: INFLUXDB_ADMIN_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-influxdb-secret
+              key: influxdb-admin
+        - name: INFLUXDB_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-influxdb-secret
+              key: influxdb-pass
+        ports:
+        - name: influxdb
+          containerPort: 8086
+          protocol: TCP
+        - name: influx-admin
+          containerPort: 8088
+          protocol: TCP
+        - name: influx-graphite
+          containerPort: 2003
+          protocol: TCP
+        livenessProbe:
+          tcpSocket:
+            port: influxdb
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: influxdb
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+        volumeMounts:
+         - name: {{ .Release.Name }}-data-pvc
+           mountPath: /var/lib/influxdb
+      {{ if .Values.metrics.enabled }}
+      - name: prometheus-to-sd
+        image: {{ .Values.metrics.image }}
+        ports:
+          - name: profiler
+            containerPort: 6060
+        command:
+          - /monitor
+          - --stackdriver-prefix=custom.googleapis.com
+          - --source=influxdb:http://localhost:8086/metrics
+          - --pod-id=$(POD_NAME)
+          - --namespace-id=$(POD_NAMESPACE)
+          - --monitored-resource-types=k8s
+        env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+      {{ end }}
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Release.Name }}-data-pvc
+      labels: *InfluxDBDeploymentLabels
+    spec:
+      resources:
+        requests:
+          storage: 1Gi
+      accessModes:
+      - ReadWriteOnce
+      storageClassName: standard
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-influxdb-svc
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: influxdb-server
+spec:
+  ports:
+  - name: influxdb
+    port: 8086
+    protocol: TCP
+  selector:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: influxdb-server
+  type: ClusterIP # LoadBalancer

@@ -1,0 +1,28 @@
+actions:
+- name: First node works as expected
+  bashTest:
+    script: |-
+      printf "set bar 0 60 9\r\nsome text\r\nget bar\r\nquit\r\n" | \
+        netcat -q 1 $APP_INSTANCE_NAME-memcached-0.$APP_INSTANCE_NAME-memcached-svc.$NAMESPACE.svc.cluster.local 11211
+    expect:
+      stdout:
+        equals: "STORED\r\nVALUE bar 0 9\r\nsome text\r\nEND"
+- name: All nodes work as expected
+  bashTest:
+    script: |-
+      for node in $(getent hosts $APP_INSTANCE_NAME-memcached-svc.$NAMESPACE.svc.cluster.local | awk '{print $1}'); do
+        printf "set bar 0 60 9\r\nsome text\r\nget bar\r\nquit\r\n" | \
+          netcat -q 1 $node 11211
+      done
+    expect:
+      stdout:
+        equals: "STORED\r\nVALUE bar 0 9\r\nsome text\r\nEND\r\nSTORED\r\nVALUE bar 0 9\r\nsome text\r\nEND\r\nSTORED\r\nVALUE bar 0 9\r\nsome text\r\nEND"
+- name: Prometheus metrics are exported
+  bashTest:
+    script: |-
+      for node in $(getent hosts $APP_INSTANCE_NAME-memcached-prometheus-svc.$NAMESPACE.svc.cluster.local | awk '{print $1}'); do
+        wget -O - -q "http://$node:9150/metrics" | grep -e '^memcached_up '
+      done
+    expect:
+      stdout:
+        equals: "memcached_up 1\nmemcached_up 1\nmemcached_up 1"

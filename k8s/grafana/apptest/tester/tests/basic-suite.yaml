@@ -1,0 +1,22 @@
+actions:
+- name: Grafana listening
+  bashTest:
+    script: |-
+      curl http://$APP_INSTANCE_NAME-grafana.$NAMESPACE.svc.cluster.local:3000
+    expect:
+      stdout:
+        contains: 'login'
+- name: Grafana login
+  bashTest:
+    script: curl -u $ADMIN_NAME:$ADMIN_PASSWORD http://$APP_INSTANCE_NAME-grafana.$NAMESPACE.svc.cluster.local:3000
+    expect:
+      stdout:
+        contains: 'Grafana'
+- name: Is Grafana /metrics HTTP endpoint working
+  bashTest:
+    script: curl -f "http://$APP_INSTANCE_NAME-grafana:3000/metrics"
+    expect:
+      stdout:
+        contains: '# HELP go_gc_duration_seconds A summary of the GC invocation durations.'
+      exitCode:
+        equals: 0

@@ -3,20 +3,18 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
-
 TAG ?= alpha
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/airflow-operator/deployer:$(TAG)
 NAME ?= airflow-operator-1
+
 APP_PARAMETERS ?= { \
   "APP_INSTANCE_NAME": "$(NAME)", \
   "NAMESPACE": "$(NAMESPACE)" \
 }
+
 TESTER_IMAGE ?= $(REGISTRY)/airflow-operator/tester:$(TAG)
-APP_TEST_PARAMETERS ?= { \
-  "testerImage": "$(TESTER_IMAGE)" \
-}
 
 
 app/build:: .build/airflow-operator/deployer \

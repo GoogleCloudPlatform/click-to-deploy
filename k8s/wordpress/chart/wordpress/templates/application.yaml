@@ -1,0 +1,137 @@
+---
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "{{ .Release.Name }}"
+  namespace: "{{ .Release.Namespace }}"
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": "wordpress", "partner_name": "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+spec:
+  descriptor:
+    type: WordPress
+    version: '5.x.x'
+    description: >-
+      WordPress is web software used to create websites and blogs.
+
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/wordpress/).
+      Additional community support is available on
+      [community forums](https://en.forums.wordpress.com).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy WordPress'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/wordpress/README.md
+    - description: Getting Started with WordPress
+      url: https://codex.wordpress.org/Getting_Started_with_WordPress
+    notes: |-
+      {{ if .Values.enablePublicServiceAndIngress }}
+
+      # Open your WordPress site
+
+      Get the external IP of your WordPress site using the following command:
+
+      ```
+      SERVICE_IP=$(kubectl get ingress {{ .Release.Name }}-wordpress-ingress \
+        --namespace {{ .Release.Namespace }} \
+        --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+      echo "https://${SERVICE_IP}/"
+      ```
+
+      The command shows you the URL of your site.
+
+      # Update TLS certificate for WordPress
+
+      By default the application used self-signed certificate. You can follow
+      [Update TLS certificate for WordPress section](https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/wordpress/README.md#update-tls-certificate-for-wordpress)
+      to update it.
+
+      {{ else }}
+
+      # Open your WordPress site
+
+      WordPress is exposed in a ClusterIP-only service `{{ .Release.Name }}-wordpress-svc`. To connect to
+      WordPress UI, you can either expose a public service endpoint or keep it private, but connect
+      from you local environment with `kubectl port-forward`.
+
+      ## Forward WordPress port in local environment
+
+      You can use port forwarding feature of `kubectl` to forward WordPress's port to your local
+      machine. Run the following command in background:
+
+      ```shell
+      kubectl port-forward \
+        --namespace {{ .Release.Namespace }} \
+        svc/{{ .Release.Name }}-wordpress-svc \
+        8080:80
+      ```
+
+      Now you can access WordPress UI with [http://localhost:8080](http://localhost:8080).
+
+      {{ end }}
+  info:
+  {{ if .Values.enablePublicServiceAndIngress }}
+  - name: WordPress site address
+    type: Reference
+    valueFrom:
+      ingressRef:
+        name: {{ .Release.Name }}-wordpress-ingress
+        protocol: HTTPS
+  - name: WordPress admin address
+    type: Reference
+    valueFrom:
+      ingressRef:
+        name: {{ .Release.Name }}-wordpress-ingress
+        path: /wp-admin
+        protocol: HTTPS
+  {{ else }}
+  - name: Forward WordPress port locally
+    value: kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-wordpress-svc 8080:80
+  - name: WordPress site address
+    value: http://localhost:8080/
+  - name: WordPress admin address
+    value: http://localhost:8080/wp-admin
+  {{ end }}
+  - name: WordPress username
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: wp-user
+        name: {{ .Release.Name }}-wordpress-secret
+  - name: WordPress e-mail address
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: wp-email
+        name: {{ .Release.Name }}-wordpress-secret
+  - name: WordPress password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: wp-password
+        name: {{ .Release.Name }}-wordpress-secret
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "{{ .Release.Name }}"
+  componentKinds:
+  - group: v1
+    kind: PersistentVolumeClaim
+  - group: apps/v1beta2
+    kind: StatefulSet
+  - group: v1
+    kind: Secret
+  - group: v1
+    kind: Service
+  {{ if .Values.enablePublicServiceAndIngress }}
+  - group: extensions/v1beta1
+    kind: Ingress
+  {{ end }}
+  - group: v1
+    kind: ConfigMap

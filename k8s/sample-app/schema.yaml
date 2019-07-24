@@ -19,7 +19,7 @@ properties:
     description: Some number
     default: 3
     minimum: 1
-    minimum: 6
+    maximum: 6
 required:
 - APP_INSTANCE_NAME
 - NAMESPACE

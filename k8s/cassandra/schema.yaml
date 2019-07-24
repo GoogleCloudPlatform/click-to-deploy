@@ -1,27 +1,51 @@
-application_api_version: v1beta1
+applicationApiVersion: v1beta1
 properties:
-  APP_INSTANCE_NAME:
+  name:
     type: string
     x-google-marketplace:
       type: NAME
-  NAMESPACE:
+  namespace:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  IMAGE_CASSANDRA:
+  cassandra.image:
     type: string
     default: $REGISTRY:$TAG
     x-google-marketplace:
       type: IMAGE
-  REPLICAS:
+  cassandra.replicas:
     type: integer
     title: Replicas
     description: The number of Pod replicas
     default: 3
     minimum: 3
     maximum: 11
+  metrics.image:
+    type: string
+    default: $REGISTRY/prometheus-to-sd:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  metrics.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
+    default: false
+
 required:
-- APP_INSTANCE_NAME
-- NAMESPACE
-- IMAGE_CASSANDRA
-- REPLICAS
+- name
+- namespace
+- cassandra.image
+- cassandra.replicas
+- metrics.image
+- metrics.enabled
+
+x-google-marketplace:
+  clusterConstraints:
+    resources:
+    - replicas: 3
+      requests:
+        cpu: 500m
+        memory: 4Gi
+      affinity:
+        simpleNodeAffinity:
+          type: REQUIRE_ONE_NODE_PER_REPLICA

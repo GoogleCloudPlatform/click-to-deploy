@@ -58,8 +58,8 @@ readonly patch_manifest_file="/tmp/backup-sts-patch-expanded.yaml"
 echo "Expanding patch manifest for Elasticsearch StatefulSet..."
 export APP_INSTANCE_NAME="${app}"
 export BACKUP_CLAIM_NAME="${backup_claim}"
-cat scripts/backup-sts-patch.yaml.template \
-  | envsubst '$APP_INSTANCE_NAME' \
+cat scripts/backup-sts-patch.yaml \
+  | envsubst '$APP_INSTANCE_NAME $BACKUP_CLAIM_NAME' \
   > "${patch_manifest_file}"
 
 echo "Patching Stateful Set..."

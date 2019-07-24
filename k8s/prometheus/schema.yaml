@@ -59,16 +59,8 @@ properties:
       serviceAccount:
         roles:
         - type: ClusterRole
-          rulesType: CUSTOM
-          rules:
-          - apiGroups: [""]
-            resources: ["nodes", "nodes/metrics", "services", "endpoints", "pods"]
-            verbs: ["get", "list", "watch"]
-          - apiGroups: [""]
-            resources: ["configmaps"]
-            verbs: ["get"]
-          - nonResourceURLs: ["/metrics", "/metrics/cadvisor"]
-            verbs: ["get"]
+          rulesType: PREDEFINED
+          rulesFromRoleName: cluster-admin
   KUBE_STATE_METRICS_SERVICE_ACCOUNT:
     type: string
     title: Kube State Metrics Service Account
@@ -94,13 +86,13 @@ properties:
             - persistentvolumes
             - namespaces
             - endpoints
-            verbs: ["list", "watch"]
+            verbs: ["list", "watch", "get"]
           - apiGroups: ["extensions"]
             resources:
             - daemonsets
             - deployments
             - replicasets
-            verbs: ["list", "watch"]
+            verbs: ["list", "watch", "get", "update"]
           - apiGroups: ["apps"]
             resources:
             - statefulsets
@@ -123,7 +115,8 @@ properties:
       serviceAccount:
         roles:
         - type: ClusterRole
-          rulesType: CUSTOM
+          rulesType: PREDEFINED
+          rulesFromRoleName: cluster-admin
   GRAFANA_SERVICE_ACCOUNT:
     type: string
     title: Grafana Service Account
@@ -133,7 +126,8 @@ properties:
       serviceAccount:
         roles:
         - type: ClusterRole
-          rulesType: CUSTOM
+          rulesType: PREDEFINED
+          rulesFromRoleName: cluster-admin
   NODE_EXPORTER_SERVICE_ACCOUNT:
     type: string
     title: Node Exporter Service Account
@@ -143,7 +137,8 @@ properties:
       serviceAccount:
         roles:
         - type: ClusterRole
-          rulesType: CUSTOM
+          rulesType: PREDEFINED
+          rulesFromRoleName: cluster-admin
 required:
 - APP_INSTANCE_NAME
 - NAMESPACE

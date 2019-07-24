@@ -1,0 +1,15 @@
+actions:
+- name: Prometheus metrics SonarQube availability
+  command: ['wget', '-O', '-', 'http://localhost:9000/api/prometheus/metrics']
+  expect:
+    stdout:
+      contains: '# HELP sonarqube_vulnerabilities Vulnerabilities'
+- name: Prometheus metrics PostgreSQL availability
+  bashTest:
+    script: |-
+      SERVICE="${APP_INSTANCE_NAME}-postgres-exporter-svc"
+      sleep 20
+      wget -O- http://${SERVICE}.${NAMESPACE}.svc.cluster.local:9187/metrics
+    expect:
+      stdout:
+        matches: '(?m)^pg_up 1$'

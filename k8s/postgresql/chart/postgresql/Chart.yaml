@@ -1,0 +1,10 @@
+apiVersion: v1
+name: postgresql
+version: 1.0.0
+description: An object-relational database system
+keywords:
+  - database
+  - postgresql
+home: https://github.com/GoogleCloudPlatform/click-to-deploy
+sources:
+  - https://github.com/GoogleCloudPlatform/click-to-deploy

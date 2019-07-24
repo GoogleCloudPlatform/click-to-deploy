@@ -1,0 +1,87 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: {{ .Release.Name }}
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": "grafana", "partner_name": "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+spec:
+  descriptor:
+    type: Grafana
+    version: '5.3'
+    description: |-
+      Grafana is an open-source platform for data visualization and monitoring. A large number of
+      supported data sources makes it a universal visualization tool for many popular open source
+      data collection systems - including Prometheus, InfluxDB, Elasticsearch, MySQL or PostgreSQL.
+
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/grafana/).
+      Additional support is available on [community forums](https://community.grafana.com/).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy Grafana'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/grafana/README.md
+    - description: 'Grafana documentation'
+      url: https://docs.grafana.org/
+    notes: |-
+      # Access Grafana UI
+
+      Grafana is exposed in a ClusterP-only service `{{ .Release.Name }}-grafana`. To connect to
+      Grafana UI, you can either expose a public service endpoint or keep it private, but connect
+      from you local environment with `kubectl port-forward`.
+
+      ## Forward Grafana port in local environment
+
+      You can use port forwarding feature of `kubectl` to forward Grafana's port to your local
+      machine. Run the following command in background:
+
+      ```shell
+      kubectl port-forward --namespace {{ .Release.Namespace }} {{ .Release.Name }}-grafana-0 3000
+      ```
+
+      Now you can access Grafana UI with `http://localhost:3000/`.
+
+      ## Login to Grafana
+
+      Grafana is configured to require authentication. You can find username and password in the
+      'Prometheus & Grafana info' section on the left. They are stored in
+      `{{ .Release.Name }}-grafana` secret.
+  info:
+  - name: Forward Grafana port locally
+    value: kubectl port-forward --namespace {{ .Release.Namespace }} {{ .Release.Name }}-grafana-0 3000
+  - name: Grafana UI URL
+    value: http://localhost:3000/
+  - name: Grafana username
+    type: Reference
+    valueFrom:
+      type: SecretKeyRef
+      secretKeyRef:
+        name: {{ .Release.Name }}-grafana
+        key: admin-user
+  - name: Grafana password
+    type: Reference
+    valueFrom:
+      type: SecretKeyRef
+      secretKeyRef:
+        name: {{ .Release.Name }}-grafana
+        key: admin-password
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Release.Name }}
+  componentKinds:
+  - group: v1
+    kind: ConfigMap
+  - group: v1
+    kind: PersistentVolumeClaim
+  - group: apps/v1beta2
+    kind: StatefulSet
+  - group: v1
+    kind: Service
+  - group: v1
+    kind: Secret

@@ -1,0 +1,86 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "{{ .Release.Name }}"
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": "influxdb", "partner_name": "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+spec:
+  descriptor:
+    type: InfluxDB
+    version: '1.7'
+    description: |-
+      InfluxDB is an open source database for storing time series data. The source of time series
+      data may come from logging and monitoring systems and IoT devices. This is a single instance
+      version of InfluxDB.
+
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/influxdb/).
+      Additional community support is available on [community forums](http://community.influxdata.com).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy InfluxDB'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/influxdb/README.md
+    - description: 'Official documentation for InfluxDB'
+      url: https://docs.influxdata.com/influxdb/v1.7/introduction/getting-started/
+    notes: |-
+      # Access InfluxDB instance
+
+      It is possible to connect to InfluxDB using `influx` tool.
+
+      Please, refer to [InfluxDB Getting Started](https://docs.influxdata.com/influxdb/v1.7/introduction/getting-started/) for more information about `influx` usage and how to upload sample data to your InfluxDB instance.
+
+      To connect to your InfluxDB instance, please, follow the instructions presented below.
+
+      Identify InfluxDB's Pod using the following command:
+      ```shell
+      kubectl get pods -o wide -l app.kubernetes.io/name={{ .Release.Name }} --namespace "{{ .Release.Namespace }}"
+      ```
+
+      Now, you can access InfluxDB using `influx` tool
+      ```shell
+      kubectl exec -it "{{ .Release.Name }}-influxdb-0" --namespace "{{ .Release.Namespace }}" -- influx -host localhost -port 8086 -username <admin username> -password <admin password>
+      ```
+
+      NOTE: Influx Admin username and password are available in the section InfluxDB Info.
+
+      # Scaling InfluxDB solution
+
+      This is a free version of InfluxDB that doesn't offer a clustered version of InfluxDB.
+      If you are interested in clustered version of InfluxDB, please, take a look on
+      [Enterprise version of InfluxDB](https://www.influxdata.com/)
+  info:
+  - name: InfluxDB URL (internal)
+    value: http://{{ .Release.Name }}-influxdb-svc:8086/
+  - name: Application Namespace
+    value: {{ .Release.Namespace }}
+  - name: InfluxDB admin username
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: influxdb-admin
+        name: {{ .Release.Name }}-influxdb-secret
+  - name: InfluxDB admin password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: influxdb-pass
+        name: {{ .Release.Name }}-influxdb-secret
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "{{ .Release.Name }}"
+  componentKinds:
+  - group: v1
+    kind: PersistentVolumeClaim
+  - group: v1
+    kind: Service
+  - group: v1
+    kind: Secret
+  - group: apps/v1beta2
+    kind: StatefulSet

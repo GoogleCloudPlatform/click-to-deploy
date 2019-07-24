@@ -73,7 +73,7 @@ done
 
 # Read wordpress database password from secret:
 readonly wordpress_db_password="$(kubectl get secret -n ${namespace} ${app}-mysql-secret \
-  -o jsonpath='{.data.wp_password}' \
+  -o jsonpath='{.data.wp-password}' \
   | base64 -d)"
 
 # Run in background:

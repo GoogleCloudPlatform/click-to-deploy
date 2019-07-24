@@ -1,0 +1,32 @@
+wordpressImage: null
+
+db:
+  image: null
+  rootPassword: null
+  wordpressUser: wordpress
+  wordpressPassword: null
+
+  # The image and credentials for mysqld_exporter component.
+  exporter:
+    image: null
+    user: mysqld-exporter
+    password: null
+
+enablePublicServiceAndIngress: false
+
+apache:
+  exporter:
+    image: null
+
+admin:
+  username: admin
+  email: admin@example.com
+  password: null
+
+metrics:
+  image: null
+  enabled: false
+
+tls:
+  base64EncodedPrivateKey: null
+  base64EncodedCertificate: null

@@ -1,0 +1,146 @@
+#!/bin/bash -eu
+#
+# Copyright 2017 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# This script assumes that mongodb has already been installed and that
+# a bare-bones service is running on each of the members of the cluster.
+#
+# The script will:
+#   * Set up a persistent disk for MongoDB:
+#     * Mount the persistent disk
+#     * Move mongo files to the persistent disk
+#     * Update the mongo configuration file
+#   * Set up a REPLICASET_NAME for MongoDB:
+#     * Update configuration
+#     * Connect to mongo and add all instances of the cluster
+
+source /opt/c2d/c2d-utils || exit 1
+
+readonly is_mongodb_server="$(get_attribute_value "is_mongodb_server")"
+
+readonly mongodb_replicaset="$(get_attribute_value "mongodb_replicaset_name")"
+
+readonly mongodb_instances="$(get_attribute_value "mongodb_servers")"
+readonly mongodb_arbiters="$(get_attribute_value "mongodb_arbiters")"
+
+readonly mongodb_admin_pass="$(get_attribute_value "mongodb_admin_password")"
+
+# First instance in the list will be the mongodb_primary_instance
+readonly mongodb_primary_instance="$(echo "${mongodb_instances}" \
+  | awk '{ print $1 }')"
+
+readonly mongodb_disk_name="$(hostname)-data"
+readonly mongodb_mount_dir="/mnt/mongodb"
+readonly mongodb_data_dir="${mongodb_mount_dir}/db"
+
+# Server node configuration - for other nodes exit
+if [[ "${is_mongodb_server}" == "False" ]]; then
+  rm /etc/mongod.serv.conf.template
+  exit 0
+fi
+
+# Stop mongodb.
+service mongod stop
+
+# Mount and format the attached disk.
+# MongoDB recommends to use XFS filesystem for WiredTiger engine.
+format_and_mount_disk "${mongodb_disk_name}" "${mongodb_mount_dir}" xfs
+
+mkdir -p "${mongodb_data_dir}"
+chown -R mongodb:mongodb "${mongodb_mount_dir}"
+rm -r /var/lib/mongodb
+
+# Increase max open files.
+echo "ulimit -n 64000" >> /etc/default/mongodb
+
+# Export the variables required by the configuration file.
+export mongodb_data_dir
+export mongodb_replicaset
+
+cd /etc
+mv mongod.conf mongod.conf.orig
+envsubst < mongod.serv.conf.template > mongod.conf
+rm mongod.serv.conf.template
+
+# Restart mongodb.
+service mongod start
+
+# Configure the replica set - add all of the instances.
+if [[ "$(hostname)" != "${mongodb_primary_instance}" ]]; then
+  echo "Not primary. Exiting"
+  exit 0
+fi
+
+echo "I am the primary - wait for mongo to start and then configure"
+
+# Poll to make sure mongo is ready.
+until mongo < /dev/null; do
+  echo "Waiting for mongo to configure replica set..." && sleep 3
+done
+
+echo "Configuring the replica set..."
+
+# Configure the cluster with js script.
+mongo << EOF2
+rs.initiate();
+rs.conf();
+
+var hosts;
+var instances = "${mongodb_instances}".trim();
+var arbiters = "${mongodb_arbiters}".trim();
+var MAX_ADD_RETRIES = 60;
+
+hosts = (instances.length == 0) ? [] : instances.split(/ +/);
+for (var i = 0; i < hosts.length; i++) {
+  var host = hosts[i];
+  print("Adding host: " + host);
+  if (host == "${mongodb_primary_instance}") {
+    continue;
+  }
+  for (var j=0; j < MAX_ADD_RETRIES; j++) {
+    res = rs.add(host);
+    if (!res.ok) {
+     printjson(res);
+     print("Sleeping for 2 seconds...");
+     sleep(2000);
+     continue;
+    } else {
+      break;
+    }
+  }
+}
+
+hosts = (arbiters.length == 0) ? [] : arbiters.split(/ +/);
+for (var i = 0; i < hosts.length; i++) {
+  var host = hosts[i];
+  print("Adding arbiter: " + host);
+  if (host == "${mongodb_primary_instance}") {
+    continue;
+  }
+  for (var j=0; j < MAX_ADD_RETRIES; j++) {
+    res = rs.addArb(host);
+    if (!res.ok) {
+      printjson(res);
+      print("Sleeping for 2 seconds...");
+      sleep(2000);
+      continue;
+    } else {
+      break;
+    }
+  }
+}
+
+rs.status();
+EOF2

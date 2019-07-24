@@ -1,0 +1,69 @@
+actions:
+
+- name: There are exactly 3 nodes in a cluster
+  bashTest:
+    script: |-
+      kubectl get sts "${APP_INSTANCE_NAME}-cassandra" \
+        --namespace "${NAMESPACE}" \
+        --output jsonpath="{.spec.replicas}"
+    expect:
+      stdout:
+        equals: '3'
+
+- name: Execute CQL query
+  bashTest:
+    script: |-
+      set -e
+      DOMAIN="${APP_INSTANCE_NAME}-cassandra-svc.${NAMESPACE}.svc.cluster.local"
+      declare -i replicas=$(kubectl get sts "${APP_INSTANCE_NAME}-cassandra" \
+        --namespace "${NAMESPACE}" \
+        --output jsonpath="{.spec.replicas}")
+
+      for ((pod=0; pod<${replicas}; pod++)); do
+        export CQLSH_HOST="${APP_INSTANCE_NAME}-cassandra-${pod}.${DOMAIN}"
+        cqlsh -e "SHOW HOST" --cqlversion="3.4.4"
+      done
+    expect:
+      exitCode:
+        equals: 0
+
+- name: Cluster is connected
+  bashTest:
+    script: |-
+      set -e
+      kubectl exec "${APP_INSTANCE_NAME}-cassandra-0" -- nodetool status | \
+        grep "^UN" -c
+    expect:
+      stdout:
+        equals: '3'
+      exitCode:
+        equals: 0
+
+- name: Can read/write data between nodes
+  bashTest:
+    script: |-
+      set -e
+      DOMAIN="${APP_INSTANCE_NAME}-cassandra-svc.${NAMESPACE}.svc.cluster.local"
+
+      export CQLSH_HOST="${APP_INSTANCE_NAME}-cassandra-0.${DOMAIN}"
+      cqlsh -e "CREATE KEYSPACE demo WITH REPLICATION ={ 'class' : 'SimpleStrategy', 'replication_factor' : 2 };" --cqlversion="3.4.4" > /dev/null
+      cqlsh -e "CREATE TABLE demo.person ( name varchar PRIMARY KEY );" --cqlversion="3.4.4" > /dev/null
+      cqlsh -e "INSERT INTO demo.person  ( name ) VALUES ( 'John' );" --cqlversion="3.4.4" > /dev/null
+
+      export CQLSH_HOST="${APP_INSTANCE_NAME}-cassandra-1.${DOMAIN}"
+      cqlsh -e "SELECT * FROM demo.person" --cqlversion="3.4.4"
+    expect:
+      stdout:
+        contains: 'John'
+      exitCode:
+        equals: 0
+
+- name: Prometheus metrics are exported
+  bashTest:
+    script: |-
+      for node in $(getent hosts $APP_INSTANCE_NAME-cassandra-svc.$NAMESPACE.svc.cluster.local | awk '{print $1}'); do
+        wget -O - -q "http://$node:9404/metrics" | grep -e '^jmx_scrape_error 0.0$'
+      done
+    expect:
+      stdout:
+        equals: "jmx_scrape_error 0.0\njmx_scrape_error 0.0\njmx_scrape_error 0.0"

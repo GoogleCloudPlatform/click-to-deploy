@@ -1,0 +1,161 @@
+#!/bin/bash -eu
+#
+# Copyright 2017 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# This script assumes that Percona Cluster has already been installed and that
+# a bare-bones service is running on each of the members of the cluster.
+#
+# The script will:
+#   * Set up a persistent disk for each Percona node:
+#     * Mount the persistent disk
+#     * Move Percona files to the persistent disk
+#   * Update the Percona configuration files
+#   * Bootstrap each node
+#
+
+source /opt/c2d/c2d-utils || exit 1
+
+##  Functions
+apt_retry () {
+  set +e
+  local cmds="apt-get $@"
+  local backoff=10
+  echo "Running cmd: $cmds" >> /dev/stdout
+  while ! ${cmds} 2>&1; do
+    if (( "${backoff}" < 100)); then
+      echo "Error: command failed: ${cmds}" >> /dev/stderr
+      echo "Backoff and retry in $backoff seconds." >> /dev/stderr
+      sleep ${backoff}
+      backoff=$(( backoff * 2 ))
+    else
+      # Fail installation.
+      # Return > 0, so that Launcher communicates the failure to customers.
+      echo "Command failed. Terminating installation." >> /dev/stderr
+      exit 1
+    fi
+  done
+  set -e
+}
+
+apt_retry update -q
+
+set -o pipefail
+readonly hostname="$(hostname)"
+
+service mysql stop
+
+# Grab the incoming options
+readonly cluster_name="$(get_attribute_value "ENV_CLUSTER_NAME")"
+readonly install_percona_toolkit="$(get_attribute_value "INSTALL_PERCONA_TOOLKIT")"
+readonly mysql_root_password="$(get_attribute_value "MYSQL_ROOT_PASSWORD")"
+readonly percona_disk_name="$hostname-data"
+readonly percona_toolkit_path='/opt/c2d/downloads/percona-toolkit'
+
+# Add Percona Toolkit, if user requests it.
+if [[ "${install_percona_toolkit}" == "True" ]]; then
+ percona_toolkit_file=$(ls $percona_toolkit_path | grep 'percona-toolkit')
+ if [[ -n "${percona_toolkit_file}" ]]; then
+   apt_retry -o Dir::Cache::archives="${percona_toolkit_path}" install percona-toolkit -y
+   rm -rf "${percona_toolkit_path}"
+ else
+   apt_retry install -y percona-toolkit
+ fi
+fi
+
+# Wait for the external disk to be created and then mount and format
+readonly percona_mount_dir=/data
+readonly mysql_dir=${percona_mount_dir}/mysql
+readonly saved_changes_dir=${percona_mount_dir}/saved_caches
+readonly heap_dump_dir=${percona_mount_dir}/dumps
+
+if [[ -e "${mysql_dir}" ]]; then
+  echo "${mysql_dir} already exists. Percona setup not needed.  Exiting."
+  exit 0
+fi
+
+format_and_mount_disk "${percona_disk_name}" "${percona_mount_dir}"
+
+# Symlink MySQL data directory to datadisk path
+mkdir -p ${mysql_dir}
+mv /var/lib/mysql/* ${mysql_dir}
+rm -r /var/lib/mysql
+ln -s ${mysql_dir} /var/lib/mysql
+chown -R mysql:mysql ${mysql_dir}
+
+readonly conf=/etc/mysql/percona-xtradb-cluster.conf.d/mysqld.cnf
+readonly wconf=/etc/mysql/percona-xtradb-cluster.conf.d/wsrep.cnf
+
+# Set innodb buffer pool to 70% of RAM
+readonly innodb_buffer_pool_size=$(awk '/MemTotal/ {print int ($2 / 1048576 * .7) }' /proc/meminfo)
+echo "innodb-buffer-pool-size=${innodb_buffer_pool_size}G" >> ${conf}
+
+readonly internal_ip="$(get_internal_ip)"
+cat >> "${wconf}" << WSCONF
+wsrep_node_name="${hostname}"
+wsrep_sst_auth=sstuser:sstuser
+wsrep_cluster_name="${cluster_name}"
+wsrep_node_address="${internal_ip}"
+WSCONF
+
+# Get the list of Percona nodes
+readonly cluster_hostname_list="$(get_attribute_value "ENV_PERCONA_NODE_HOSTNAMES" | tr '|' ' ')"
+echo "Percona instances: ${cluster_hostname_list}"
+
+readonly cluster_hostname_list_comma="$(/bin/sed -r 's/\s+/,/g' <<< "${cluster_hostname_list}")"
+
+# Bootstrap the cluster
+# Set time the primary will wait after starting, before we add its peers
+readonly primary_node_post_delay=60s
+# Set time the secondary nodes will wait before starting and joining the cluster
+readonly secondary_node_pre_start_delay=30s
+node_id=0
+
+# Emits a timestamped message to the logs
+emit_msg() {
+  echo "$(date +"%I:%M:%S")" "${@}"
+}
+readonly -f emit_msg
+
+# Loop through nodes in the cluster, set the first one, node 0, as the primary
+for node in ${cluster_hostname_list}; do
+
+  if [[ $node == "${hostname}" ]]; then
+
+    if [[ ${node_id} == 0 ]]; then
+      # Bootstrap primary node
+      emit_msg "I am the primary node."
+
+      echo "wsrep_cluster_address=gcomm://${cluster_hostname_list_comma}" >> ${wconf}
+      emit_msg "Starting node ${node_id} ..."
+      service mysql restart-bootstrap
+      sleep ${primary_node_post_delay}
+      # Change root password for master and it will propagate to rest of the cluster
+      echo "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('${mysql_root_password}');
+        FLUSH PRIVILEGES;" | mysql --user=root
+
+    else
+      # Bootstrap secondary nodes
+      echo "wsrep_cluster_address=\"gcomm://${cluster_hostname_list_comma}\"" >> ${wconf}
+      sleep ${secondary_node_pre_start_delay}
+
+      emit_msg "Starting node ${node_id} ..."
+      service mysql restart
+    fi
+
+    emit_msg "Node ${node_id} is now running."
+  fi
+
+  (( node_id += 1 ))
+done

@@ -1,0 +1,62 @@
+#!/bin/bash -eu
+#
+# Copyright 2019 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
+
+# It is okay if the below variables are empty.
+set +u
+
+FolderForSamples='MySQL8-book-files'
+UserKey="$(get_attribute_value 'user-key')"
+UserName="$(get_attribute_value 'user-name')"
+DataBaseName='book'
+MysqlRootPassword="$(get_attribute_value 'mysql-root-password')"
+
+# Directory for MySQL example scripts
+mkdir "/${FolderForSamples}"
+
+# Download MySQL example scripts
+gsutil cp -r gs://publication-teach-yourself-mysql8/* "/${FolderForSamples}/"
+
+coding=$(file /"${FolderForSamples}"/create.txt | sed -n '/UTF-16/p')
+
+mysql -u root -p$MysqlRootPassword -e "create schema $DataBaseName;"
+
+if [[ -n "${coding}" ]]; then
+   # Convert from utf-16 to utf-8
+   iconv -f utf-16 -t utf-8 /"${FolderForSamples}"/create.txt > /"${FolderForSamples}"/create-utf8.txt
+   mysql -u root -p$MysqlRootPassword --database="${DataBaseName}" < "/${FolderForSamples}/create-utf8.txt"
+else
+   mysql -u root -p$MysqlRootPassword --database="${DataBaseName}" < "/${FolderForSamples}/create.txt"
+fi
+
+mysql -u root -p$MysqlRootPassword --database="${DataBaseName}" < "/${FolderForSamples}/populate.txt"
+
+if [[ "${UserKey}" =~ ^(ssh-rsa) && -n "${UserName}" ]]; then
+   adduser --quiet --disabled-password --shell /bin/bash \
+     --home "/home/${UserName}" \
+     --gecos "${UserName}" \
+     "${UserName}"
+   adduser "${UserName}" 'google-sudoers'
+   mkdir "/home/${UserName}/.ssh"
+   echo "${UserKey}" >> "/home/${UserName}/.ssh/authorized_keys"
+   chown -R "${UserName}":"${UserName}" "/${FolderForSamples}"
+   chown -R "${UserName}":"${UserName}" "/home/${UserName}/.ssh/"
+   chmod 600 "/home/${UserName}/.ssh/authorized_keys"
+   chmod 700 "/home/${UserName}/.ssh"
+else
+   echo "Not found additional RSA keys."
+fi
