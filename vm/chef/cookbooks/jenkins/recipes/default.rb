@@ -92,8 +92,8 @@ end
 node['jenkins']['plugins'].each do |plugin|
   bash 'install plugin' do
     code <<-EOH
-      curl -L -o --silent http://updates.jenkins-ci.org/latest/#{pkg}.hpi /var/lib/jenkins/plugins/#{pkg}.jpi
-      chown jenkins:jenkins /var/lib/jenkins/plugins/#{pkg}.jpi
+      curl -L -o --silent http://updates.jenkins-ci.org/latest/#{plugin}.hpi /var/lib/jenkins/plugins/#{plugin}.jpi
+      chown jenkins:jenkins /var/lib/jenkins/plugins/#{plugin}.jpi
     EOH
   end
 end
