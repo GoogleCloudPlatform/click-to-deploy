@@ -383,7 +383,7 @@ Before you restore the PostgreSQL database, we recommend closing all incoming co
       -- psql -U postgres
     ```
 
-1. (Optional) Use the following command to copy data files from your local folder to `$SONARQUBE_HOME/data` in the SonarQube Pod:
+1. Use the following command to copy data files from your local folder to `$SONARQUBE_HOME/data` in the SonarQube Pod:
 
     ```shell
     kubectl --namespace $NAMESPACE cp data $(kubectl -n$NAMESPACE get pod -oname | \
