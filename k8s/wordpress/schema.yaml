@@ -100,3 +100,4 @@ required:
 - metrics.enabled
 - enablePublicServiceAndIngress
 - certificate
+
