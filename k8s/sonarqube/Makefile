@@ -3,12 +3,16 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
+VERIFY_WAIT_TIMEOUT = 600
+
 TAG ?= 7.6
 METRICS_EXPORTER_TAG ?= v0.5.1
+
 POSTGRESQL_SRCTAG ?= 9.6-kubernetes
 IMAGE_SONARQUBE ?= marketplace.gcr.io/google/sonarqube7:$(TAG)
 IMAGE_POSTGRESQL ?= marketplace.gcr.io/google/postgresql9:$(POSTGRESQL_SRCTAG)
 IMAGE_POSTGRESQL_EXPORTER ?= marketplace.gcr.io/google/postgresql9:exporter
+
 $(info ---- TAG = $(TAG))
 
 ifdef DB_PASSWORD
@@ -21,6 +25,7 @@ endif
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/sonarqube/deployer:$(TAG)
 NAME ?= sonarqube-1
+
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
@@ -33,9 +38,9 @@ TESTER_IMAGE ?= $(REGISTRY)/sonarqube/tester:$(TAG)
 
 app/build:: .build/sonarqube/deployer \
             .build/sonarqube/sonarqube \
-            .build/sonarqube/postgresql9 \
+            .build/sonarqube/postgresql \
+            .build/sonarqube/postgresql-exporter \
             .build/sonarqube/prometheus-to-sd \
-            .build/sonarqube/exporter \
             .build/sonarqube/tester
 
 
@@ -72,25 +77,27 @@ app/build:: .build/sonarqube/deployer \
 	@touch "$@"
 
 
-.build/sonarqube/postgresql9: .build/var/REGISTRY \
-                            .build/var/TAG \
-                            | .build/sonarqube
+.build/sonarqube/postgresql: .build/var/REGISTRY \
+                             .build/var/TAG \
+                             | .build/sonarqube
 	docker pull $(IMAGE_POSTGRESQL)
-	docker tag $(IMAGE_POSTGRESQL) "$(REGISTRY)/sonarqube/postgresql9:$(TAG)"
-	docker push "$(REGISTRY)/sonarqube/postgresql9:$(TAG)"
+	docker tag $(IMAGE_POSTGRESQL) "$(REGISTRY)/sonarqube/postgresql:$(TAG)"
+	docker push "$(REGISTRY)/sonarqube/postgresql:$(TAG)"
 	@touch "$@"
 
-.build/sonarqube/exporter: .build/var/REGISTRY \
-                                       .build/var/TAG \
-                                       | .build/sonarqube/postgresql9
+
+.build/sonarqube/postgresql-exporter: .build/var/REGISTRY \
+                                      .build/var/TAG \
+                                      | .build/sonarqube
 	docker pull $(IMAGE_POSTGRESQL_EXPORTER)
-	docker tag $(IMAGE_POSTGRESQL_EXPORTER) "$(REGISTRY)/sonarqube/postgresql9/exporter:$(TAG)"
-	docker push "$(REGISTRY)/sonarqube/postgresql9/exporter:$(TAG)"
+	docker tag $(IMAGE_POSTGRESQL_EXPORTER) "$(REGISTRY)/sonarqube/postgresql-exporter:$(TAG)"
+	docker push "$(REGISTRY)/sonarqube/postgresql-exporter:$(TAG)"
 	@touch "$@"
+
 
 .build/sonarqube/prometheus-to-sd: .build/var/REGISTRY \
-                                  .build/var/TAG \
-                                  | .build/sonarqube
+                                   .build/var/TAG \
+                                   | .build/sonarqube
 	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
 	    "$(REGISTRY)/sonarqube/prometheus-to-sd:$(TAG)"
@@ -99,8 +106,8 @@ app/build:: .build/sonarqube/deployer \
 
 
 .build/sonarqube/tester: .build/var/TESTER_IMAGE \
-                          $(shell find apptest -type f) \
-                          | .build/sonarqube
+                         $(shell find apptest -type f) \
+                         | .build/sonarqube
 	$(call print_target,$@)
 	cd apptest/tester \
 	    && docker build --tag "$(TESTER_IMAGE)" .

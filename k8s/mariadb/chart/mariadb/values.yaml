@@ -1,0 +1,29 @@
+mariadb:
+  image: null
+  volumeSize: 32
+
+db:
+  password: password
+  replicas: 2
+
+  # The image and credentials for mysqld_exporter component.
+  exporter:
+    image: null
+    user: mysqld-exporter
+    password: null
+
+replication:
+  user: replicator
+  password: password
+  maxConnections: 8
+
+metrics:
+  image: null
+  enabled: false
+
+service:
+  port: 3306
+
+tls:
+  base64EncodedPrivateKey: null
+  base64EncodedCertificate: null

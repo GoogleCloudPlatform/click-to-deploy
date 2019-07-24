@@ -1,7 +1,10 @@
+<!--- /gcbrun -->
+
 **Category:**
 
 - [ ] Virtual machines
 - [ ] Kubernetes apps
+- [ ] Container images
 
 ---
 

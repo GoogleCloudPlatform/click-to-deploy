@@ -21,12 +21,12 @@ properties:
         length: 12
   postgresql.image:
     type: string
-    default: $REGISTRY/postgresql9:$TAG
+    default: $REGISTRY/postgresql:$TAG
     x-google-marketplace:
       type: IMAGE
   postgresql.exporter.image:
     type: string
-    default: $REGISTRY/postgresql9/exporter:$TAG
+    default: $REGISTRY/postgresql-exporter:$TAG
     x-google-marketplace:
       type: IMAGE
   metrics.image:
@@ -39,6 +39,14 @@ properties:
     title: Enable Stackdriver Metrics Exporter
     description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
     default: false
+  certificate:
+    type: string
+    x-google-marketplace:
+      type: TLS_CERTIFICATE
+      tlsCertificate:
+        generatedProperties:
+          base64EncodedPrivateKey: tls.base64EncodedPrivateKey
+          base64EncodedCertificate: tls.base64EncodedCertificate
 
 required:
 - name
@@ -49,3 +57,4 @@ required:
 - postgresql.exporter.image
 - metrics.image
 - metrics.enabled
+- certificate

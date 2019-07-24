@@ -56,7 +56,7 @@ Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local
 workstation to complete the following steps.
 
-[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/GoogleCloudPlatform/click-to-deploy&cloudshell_working_dir=k8s/elastic-gke-logging)
+[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/GoogleCloudPlatform/click-to-deploy&cloudshell_open_in_editor=README.md&cloudshell_working_dir=k8s/elastic-gke-logging)
 
 ### Prerequisites
 
@@ -354,7 +354,7 @@ in the
 For more detailed information about setting up the plugin, see the
 [Elasticsearch Exporter documentation](https://github.com/justwatchcom/elasticsearch_exporter/blob/master/README.md).
 
-You can access the metrics for a Pod at `[POD_IP]:9108/metrics`, where
+You can access the metrics for a Pod at `[POD_IP]:9114/metrics`, where
 `[POD_IP]` is the IP address from the Kubernetes headless service
 `$APP_INSTANCE_NAME-elasticsearch-exporter-svc`.
 
@@ -575,7 +575,7 @@ updates one replica at a time.
 
 ## Update Kibana
 
-After successfully updating Elasticsearch, update the Kibana StatefulSet with
+After successfully updating Elasticsearch, update the Kibana Deployment with
 the new image:
 
 ```shell
