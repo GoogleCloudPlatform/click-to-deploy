@@ -54,3 +54,4 @@ required:
 - grafana.serviceaccount
 - metrics.image
 - metrics.enabled
+
