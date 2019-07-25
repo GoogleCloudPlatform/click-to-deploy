@@ -1,5 +1,5 @@
 ARG MARKETPLACE_TOOLS_TAG
-FROM launcher.gcr.io/google/debian9 AS build
+FROM marketplace.gcr.io/google/debian9 AS build
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends gettext
@@ -13,7 +13,6 @@ RUN cd /tmp/test \
 
 ADD schema.yaml /tmp/schema.yaml
 
-# Provide registry prefix and tag for default values for images.
 ARG REGISTRY
 ARG TAG
 
@@ -34,10 +33,5 @@ COPY --from=build /tmp/test/mariadb.tar.gz /data-test/chart/
 COPY --from=build /tmp/apptest/schema.yaml /data-test/
 COPY --from=build /tmp/schema.yaml /data/
 
-RUN mv -f /bin/deploy.sh /bin/deploy-original.sh \
-    && cp /bin/clean_iam_resources.sh /bin/clean_iam_resources-original.sh \
-    && echo '#!/bin/bash\nexit' > /bin/clean_iam_resources.sh
-
-ADD deployer/common.sh /bin/common.sh
-ADD deployer/deploy_with_tests.sh /bin/deploy_with_tests.sh
-ADD deployer/deploy.sh /bin/deploy.sh
+ENV WAIT_FOR_READY_TIMEOUT 1800
+ENV TESTER_TIMEOUT 1800

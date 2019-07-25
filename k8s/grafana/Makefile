@@ -34,9 +34,9 @@ APP_PARAMETERS ?= { \
 TESTER_IMAGE ?= $(REGISTRY)/grafana/tester:$(TAG)
 
 
-app/build:: .build/grafana/debian9 \
-            .build/grafana/deployer \
+app/build:: .build/grafana/deployer \
             .build/grafana/grafana \
+            .build/grafana/debian9 \
             .build/grafana/prometheus-to-sd \
             .build/grafana/tester
 
@@ -69,7 +69,8 @@ app/build:: .build/grafana/debian9 \
                         .build/var/TAG \
                         | .build/grafana
 	docker pull marketplace.gcr.io/google/grafana5:$(TAG)
-	docker tag marketplace.gcr.io/google/grafana5:$(TAG) "$(REGISTRY)/grafana:$(TAG)"
+	docker tag marketplace.gcr.io/google/grafana5:$(TAG) \
+	    "$(REGISTRY)/grafana:$(TAG)"
 	docker push "$(REGISTRY)/grafana:$(TAG)"
 	@touch "$@"
 
@@ -77,8 +78,9 @@ app/build:: .build/grafana/debian9 \
 .build/grafana/debian9: .build/var/REGISTRY \
                         .build/var/TAG \
                         | .build/grafana
-	docker pull marketplace.gcr.io/google/debian9
-	docker tag marketplace.gcr.io/google/debian9 "$(REGISTRY)/grafana/debian9:$(TAG)"
+	docker pull marketplace.gcr.io/google/debian9:latest
+	docker tag marketplace.gcr.io/google/debian9:latest \
+	    "$(REGISTRY)/grafana/debian9:$(TAG)"
 	docker push "$(REGISTRY)/grafana/debian9:$(TAG)"
 	@touch "$@"
 

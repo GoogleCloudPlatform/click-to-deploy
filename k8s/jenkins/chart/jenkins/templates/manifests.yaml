@@ -1,37 +1,19 @@
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: {{ .Release.Name }}-jenkins-pvc
-  labels:
-    app.kubernetes.io/name: {{ .Release.Name }}
-    app.kubernetes.io/component: jenkins-master
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 8Gi
-  storageClassName: standard
----
 apiVersion: apps/v1beta2
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: {{ .Release.Name }}-jenkins-deployment
-  labels: &JenkinsDeploymentLabels
+  name: {{ .Release.Name }}-jenkins
+  labels: &JenkinsLabels
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: jenkins-master
 spec:
   replicas: 1
   selector:
-    matchLabels: *JenkinsDeploymentLabels
+    matchLabels: *JenkinsLabels
+  serviceName: {{ .Release.Name }}-jenkins-ui
   template:
     metadata:
-      labels: *JenkinsDeploymentLabels
+      labels: *JenkinsLabels
     spec:
-      volumes:
-      - name: {{ .Release.Name }}-jenkins-pvc
-        persistentVolumeClaim:
-          claimName: {{ .Release.Name }}-jenkins-pvc
       initContainers:
         - name: volume-permissions-fix
           image: {{ .Values.jenkins.image }}
@@ -70,17 +52,28 @@ spec:
             memory: 2.0Gi
           requests:
             memory: 2.0Gi
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Release.Name }}-jenkins-pvc
+      labels: *JenkinsLabels
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      storageClassName: standard
+      resources:
+        requests:
+          storage: 8Gi
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Release.Name }}-jenkins-ui
-  labels: &JenkinsDeploymentLabels
+  labels: &JenkinsLabels
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: jenkins-master
 spec:
   type: NodePort
-  selector: *JenkinsDeploymentLabels
+  selector: *JenkinsLabels
   ports:
     - protocol: TCP
       port: 8080
@@ -91,16 +84,30 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Release.Name }}-jenkins-agents-connector
-  labels: &JenkinsDeploymentLabels
+  labels: &JenkinsLabels
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: jenkins-master
 spec:
-  selector: *JenkinsDeploymentLabels
+  selector: *JenkinsLabels
   ports:
     - protocol: TCP
       port: 50000
       targetPort: 50000
       name: agents-connector
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Release.Name }}-tls
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: jenkins-master
+data:
+  tls.key: |
+{{ .Values.tls.base64EncodedPrivateKey | indent 4 }}
+  tls.crt: |
+{{ .Values.tls.base64EncodedCertificate | indent 4 }}
+type: kubernetes.io/tls
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -110,7 +117,6 @@ metadata:
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: jenkins-master
 spec:
-# Resource Secret {{ .Release.Name }}-tls is created by deployer via entrypoint.sh
   tls:
   - secretName: {{ .Release.Name }}-tls
   backend:
