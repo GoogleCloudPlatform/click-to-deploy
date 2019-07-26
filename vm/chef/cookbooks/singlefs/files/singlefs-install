@@ -21,11 +21,10 @@
 # 3. System configuration: firewall, network settings, etc.
 
 set -x
-set -e
 
-. /opt/c2d/get_metadata.sh
-. /opt/c2d/instance_utils.sh
-. /opt/c2d/retry_with_backoff.sh
+source /opt/c2d/get_metadata.sh || exit 1
+source /opt/c2d/instance_utils.sh || exit 1
+source /opt/c2d/retry_with_backoff.sh || exit 1
 
 if (( "$(id -u)" > 0 )); then
   echo "Please run this script as root."

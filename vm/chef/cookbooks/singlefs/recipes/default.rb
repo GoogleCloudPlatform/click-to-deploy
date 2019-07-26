@@ -1,11 +1,24 @@
+# Copyright 2019 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 include_recipe 'c2d-config'
 
 # Grafana dependencies and repositories on Debian 9
 
-execute 'update1' do
-  command 'apt-get update'
-end
+execute 'apt-get update'
 
+# TODO(wgrzelak): Remove stretch-backports.
 execute 'grafana_dependencies' do
   command 'apt-get -t stretch-backports install python-whisper'
 end
@@ -20,9 +33,7 @@ end
 
 # Install all packages
 
-execute 'update2' do
-  command 'apt-get update'
-end
+execute 'apt-get update'
 
 package 'install_packages' do
   package_name node['singlefs']['packages']
@@ -107,7 +118,7 @@ cookbook_file '/opt/c2d/singlefs_util.py' do
   action :create
 end
 
-# Disable all services. They are enabled after c2d configuration.
+# Disable all services. They are enabled after C2D configuration.
 
 service 'apache2' do
   action [ :disable, :stop ]

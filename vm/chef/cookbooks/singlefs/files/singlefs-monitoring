@@ -16,11 +16,10 @@
 
 # Script to configure local monitoring for the single node file server.
 
-set -e
 set -x
 
-. /opt/c2d/get_metadata.sh
-. /opt/c2d/instance_utils.sh
+source /opt/c2d/get_metadata.sh || exit 1
+source /opt/c2d/instance_utils.sh || exit 1
 
 if (( "$(id -u)" > 0 )); then
   echo "Please run this script as root."
@@ -383,7 +382,7 @@ EOF
     curl "http://admin:${ADMIN_PASSWORD}@127.0.0.1:3000/api/dashboards/import" \
         -X POST -H 'Content-Type: application/json;charset=UTF-8' \
         --data-binary \
-        "$(python ./generate_dashboard_import.py < ${dashboard_file} )"
+        "$(python /opt/c2d/generate_dashboard_import.py < ${dashboard_file})"
   done
   set -x
 
