@@ -48,12 +48,11 @@ bash 'install ghost' do
   user 'root'
   cwd node['ghost']['app']['install_dir']
   code <<-EOH
-    ghost install "${version}" --no-prompt --no-setup --no-stack
+    ghost install --no-prompt --no-setup --no-stack
     ghost config --no-prompt --url=http://localhost:2368 --db=mysql --dbhost=localhost --dbuser="${dbuser}" --dbname="${dbname}"
     ghost setup linux-user --no-prompt
 EOH
   environment ({
-    'version'  => node['ghost']['app']['version'],
     'dbuser'   => node['ghost']['db']['user'],
     'dbname'   => node['ghost']['db']['name']
   })
