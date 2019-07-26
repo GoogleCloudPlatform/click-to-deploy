@@ -104,6 +104,7 @@ function test_grafana_dashboards {
   fi
 }
 
+# TODO: Find a better solution than sleep.
 echo -e "Wait 90s for NFS server to start and exit grace period.\n"
 sleep 90
 
