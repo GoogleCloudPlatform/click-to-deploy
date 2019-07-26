@@ -21,9 +21,6 @@ if (( "$(id -u)" > 0 )); then
   exit 1
 fi
 
-# Don't echo commands to the command line / serial console.
-set +x
-
 # Only validate installation once.
 readonly COMPLETE_FILE=/opt/c2d/validation.complete
 if [[ -f "${COMPLETE_FILE}" ]]; then
@@ -32,8 +29,8 @@ if [[ -f "${COMPLETE_FILE}" ]]; then
 fi
 touch "${COMPLETE_FILE}"
 
-. /opt/c2d/get_metadata.sh
-. /opt/c2d/instance_utils.sh
+source /opt/c2d/get_metadata.sh || exit 1
+source /opt/c2d/instance_utils.sh || exit 1
 
 # Redirect all output to the log file.
 readonly LOG_FILE=/opt/c2d/validation.log
