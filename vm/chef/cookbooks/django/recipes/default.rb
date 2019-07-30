@@ -23,5 +23,4 @@ bash 'install django via pip3' do
   code <<-EOH
     pip3 install django
 EOH
-  environment ({'version' => node['django']['version']})
 end
