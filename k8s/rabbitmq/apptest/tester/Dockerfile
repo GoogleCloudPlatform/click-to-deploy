@@ -4,8 +4,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     curl \
     gettext \
-    jq \
-    uuid-runtime \
+    python \
     wget \
     && rm -rf /var/lib/apt/lists/*
 
