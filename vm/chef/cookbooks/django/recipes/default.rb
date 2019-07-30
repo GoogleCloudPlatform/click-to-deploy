@@ -18,10 +18,10 @@ end
 
 package node['django']['packages']
 
-bash 'install django via pip' do
+bash 'install django via pip3' do
   user 'root'
   code <<-EOH
-    pip install django==$version
+    pip3 install django
 EOH
   environment ({'version' => node['django']['version']})
 end
