@@ -30,7 +30,7 @@ following GitHub repositories:
 *   https://github.com/GoogleCloudPlatform/nfs-server-docker
 *   https://github.com/GoogleCloudPlatform/nginx-docker
 *   https://github.com/GoogleCloudPlatform/postgresql-docker
-*   https://github.com/GoogleCloudPlatform/prometheus
+*   https://github.com/GoogleCloudPlatform/prometheus-docker
 *   https://github.com/GoogleCloudPlatform/prometheus-alertmanager-docker
 *   https://github.com/GoogleCloudPlatform/prometheus-nodeexporter-docker
 *   https://github.com/GoogleCloudPlatform/prometheus-pushgateway-docker

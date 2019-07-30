@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['percona']['version'] = '0.1-7'
+default['percona']['version'] = 'latest'
 default['percona']['debian']['codename'] = 'stretch'
 default['percona']['pkg'] = 'lsof psmisc socat libaio1 libdbd-mysql-perl \
   libdbi-perl netcat-openbsd perl-base percona-xtradb-cluster-5.7 \
