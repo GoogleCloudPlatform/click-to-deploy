@@ -29,12 +29,10 @@ execute 'apt-get update' do
   retry_delay 30
 end
 
-bash 'Download percona-toolkit package' do
+bash 'Download percona-toolkit package and dependencies' do
   code <<-EOH
-    mkdir -p /opt/percona-toolkit
-    cd /opt/percona-toolkit
-    apt-get download percona-toolkit
-    cd -
+    mkdir -p /opt/c2d/downloads/percona-toolkit
+    apt-get -d -o Dir::Cache::archives="/opt/c2d/downloads/percona-toolkit" install percona-toolkit -y
 EOH
 end
 
