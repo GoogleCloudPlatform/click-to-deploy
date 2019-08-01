@@ -16,6 +16,6 @@ require 'spec_helper'
 
 describe command('curl -L http://localhost/') do
   its(:stdout) { should match /name="login_form"/ }
-  its(:stdout) { should match /<title>.*Piwik<\/title>/ }
+  its(:stdout) { should match /<title>Sign in - Matomo<\/title>/ }
   its(:exit_status) { should eq 0 }
 end
