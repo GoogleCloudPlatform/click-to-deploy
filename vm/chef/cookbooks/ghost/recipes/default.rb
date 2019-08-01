@@ -40,6 +40,13 @@ user 'user for ghost app' do
   action :create
 end
 
+group "add ghostuser sudo" do
+  group_name 'sudo'
+  members node['ghost']['app']['user']
+  action :modify
+  append true
+end
+
 directory node['ghost']['app']['install_dir'] do
   owner node['ghost']['app']['user']
   group node['ghost']['app']['user']
