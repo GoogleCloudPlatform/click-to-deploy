@@ -13,5 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name 'php7_3'
+name 'php73'
 supports 'debian'
