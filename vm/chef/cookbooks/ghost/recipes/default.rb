@@ -37,7 +37,7 @@ end
 
 user 'user for ghost app' do
   username node['ghost']['app']['user']
-  gid node[ghost]['app']['user']
+  gid node['ghost']['app']['user']
   action :create
 end
 
