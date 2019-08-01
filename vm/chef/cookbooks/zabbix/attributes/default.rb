@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-default['zabbix']['version'] = '3.4'
-default['zabbix']['release'] = '3.4-1'
+default['zabbix']['version'] = '4.2'
+default['zabbix']['release'] = '4.2-1'
 default['zabbix']['packages'] = %w(mailutils php-pgsql zabbix-server-pgsql zabbix-proxy-pgsql zabbix-frontend-php)
 
