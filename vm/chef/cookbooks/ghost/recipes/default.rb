@@ -35,17 +35,23 @@ execute 'install ghost-cli' do
   command "npm install -g ghost-cli@#{node['ghost']['cli']['version']}"
 end
 
+user 'user for ghost app' do
+  username node[ghost]['app']['user']
+  gid node[ghost]['app']['user']
+  action :create
+end
+
 directory node['ghost']['app']['install_dir'] do
-  owner 'root'
-  group 'root'
-  mode '0755'
+  owner node[ghost]['app']['user']
+  group node[ghost]['app']['user']
+  mode '0775'
   action :create
   recursive true
 end
 
 # Using Ghost-CLI programatically: https://docs.ghost.org/v1/docs/using-ghost-cli-programatically
 bash 'install ghost' do
-  user 'root'
+  user node[ghost]['app']['user']
   cwd node['ghost']['app']['install_dir']
   code <<-EOH
     ghost install --no-prompt --no-setup --no-stack
