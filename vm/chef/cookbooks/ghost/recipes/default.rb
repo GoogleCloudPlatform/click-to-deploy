@@ -42,6 +42,7 @@ end
 
 sudo 'give ghostuser sudo' do
   user node['ghost']['app']['user']
+end
 
 directory node['ghost']['app']['install_dir'] do
   owner node['ghost']['app']['user']
