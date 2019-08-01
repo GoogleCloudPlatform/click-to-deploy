@@ -12,10 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['piwik']['gpg']['url'] = 'https://debian.piwik.org/repository.gpg'
-default['piwik']['gpg']['sha256'] = '0d7c880f6c838bba2d02817dcacfc97fc538b1ebcdb41c3106595265c0d371d4'
-
-default['piwik']['version'] = '3.2.1'
+default['piwik']['version'] = 'latest'
 
 default['piwik']['db']['username'] = 'piwikuser'
 default['piwik']['db']['password'] = 'piwikpw'

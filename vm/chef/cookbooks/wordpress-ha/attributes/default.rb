@@ -13,7 +13,7 @@
 # limitations under the License.
 
 default['wordpress-ha']['user'] = 'www-data'
-default['wordpress-ha']['version'] = '4.9.4'
+default['wordpress-ha']['version'] = 'latest'
 default['wordpress-ha']['cli']['url'] = 'https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar'
 default['wordpress-ha']['temp_packages'] = ['unzip']
-default['wordpress-ha']['wp-stateless']['version'] = '2.1.3'
+default['wordpress-ha']['wp-stateless']['version'] = '2.2.7'
