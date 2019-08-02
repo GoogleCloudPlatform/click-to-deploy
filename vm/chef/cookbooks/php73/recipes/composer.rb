@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'php7::module_cgi'
-include_recipe 'php7::module_curl'
-include_recipe 'php7::module_gd'
-include_recipe 'php7::module_intl'
-include_recipe 'php7::module_mbstring'
-include_recipe 'php7::module_xml'
-include_recipe 'php7::module_xsl'
-include_recipe 'php7::module_zip'
+include_recipe 'php73::module_cgi'
+include_recipe 'php73::module_curl'
+include_recipe 'php73::module_gd'
+include_recipe 'php73::module_intl'
+include_recipe 'php73::module_mbstring'
+include_recipe 'php73::module_xml'
+include_recipe 'php73::module_xsl'
+include_recipe 'php73::module_zip'
