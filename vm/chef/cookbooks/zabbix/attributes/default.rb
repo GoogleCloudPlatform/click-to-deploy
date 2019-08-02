@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 default['zabbix']['version'] = '4.2'
 default['zabbix']['release'] = '4.2-1'
 default['zabbix']['packages'] = %w(mailutils php-pgsql zabbix-server-pgsql zabbix-proxy-pgsql zabbix-frontend-php)
-
