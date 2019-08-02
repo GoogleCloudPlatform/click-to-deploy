@@ -15,5 +15,4 @@
 # Reference: https://docs.djangoproject.com/en/1.11/releases/
 # Reference: https://www.djangoproject.com/download/
 
-default['django']['packages'] = ['python-pip']
-default['django']['version'] = '1.11.16'
+default['django']['packages'] = ['python3-pip']
