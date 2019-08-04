@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['php73']['packages'] = ['php7.3-fpm', 'php7.3-common', 'php7.3']
+default['php73']['packages'] = ['php7.3-fpm', 'php7.3']
 
 # Default modules to install
-default['php73']['modules'] = %w(cgi gd curl json)
+default['php73']['modules'] = %w(common cgi gd curl json)
