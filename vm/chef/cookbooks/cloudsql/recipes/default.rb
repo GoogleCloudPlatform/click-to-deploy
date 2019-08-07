@@ -38,8 +38,13 @@ cookbook_file '/lib/systemd/system/cloudsql-proxy.service' do
   source 'cloudsql-proxy.service'
   owner 'root'
   group 'root'
-  mode 0644
+  mode 06444
   action :create
+end
+
+user 'cloudsqluser' do
+  action :create
+  comment 'Used to start cloudsql serivce'
 end
 
 service 'cloudsql-proxy' do
