@@ -84,6 +84,10 @@ properties:
         generatedProperties:
           base64EncodedPrivateKey: tls.base64EncodedPrivateKey
           base64EncodedCertificate: tls.base64EncodedCertificate
+  cloudsql.projectId:
+    type: string
+    title: GCP Project ID
+    default: orbitera-dev
 required:
 - name
 - namespace
@@ -100,3 +104,4 @@ required:
 - metrics.enabled
 - enablePublicServiceAndIngress
 - certificate
+- cloudsql.projectId

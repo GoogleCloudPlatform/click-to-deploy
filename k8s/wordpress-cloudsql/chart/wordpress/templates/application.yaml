@@ -31,6 +31,15 @@ spec:
     - description: Getting Started with WordPress
       url: https://codex.wordpress.org/Getting_Started_with_WordPress
     notes: |-
+      # Prerequisites
+
+      Copy a Kubernetes Secret from `cnrm-system` namespace to your namespace.
+
+      ```shell
+      kubectl get secret gcp-key --namespace=cnrm-system --export -o yaml \
+        | kubectl apply --namespace={{ .Release.Namespace }} -f -
+      ```
+
       {{ if .Values.enablePublicServiceAndIngress }}
 
       # Open your WordPress site
@@ -76,6 +85,7 @@ spec:
       Now you can access WordPress UI with [http://localhost:8080](http://localhost:8080).
 
       {{ end }}
+
   info:
   {{ if .Values.enablePublicServiceAndIngress }}
   - name: WordPress site address
@@ -117,6 +127,20 @@ spec:
       secretKeyRef:
         key: wp-password
         name: {{ .Release.Name }}-wordpress-secret
+  - name: Forward Cloud SQL port locally
+    value: kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-cloudsql-svc 3306
+  - name: MySQL username
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: wp-user
+        name: {{ .Release.Name }}-cloudsql-secret
+  - name: MySQL password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: wp-password
+        name: {{ .Release.Name }}-cloudsql-secret
   selector:
     matchLabels:
       app.kubernetes.io/name: "{{ .Release.Name }}"
@@ -135,3 +159,14 @@ spec:
   {{ end }}
   - group: v1
     kind: ConfigMap
+  # cloudsql.yaml
+  - group: apps/v1beta2
+    kind: Deployment
+  - group: sql.cnrm.cloud.google.com/v1alpha3
+    kind: SQLInstance
+  - group: sql.cnrm.cloud.google.com/v1alpha3
+    kind: SQLDatabase
+  - group: sql.cnrm.cloud.google.com/v1alpha3
+    kind: SQLUser
+  # - group: v1
+  #   kind: Namespace

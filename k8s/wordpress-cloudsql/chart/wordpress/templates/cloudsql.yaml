@@ -1,0 +1,125 @@
+# TODO(wgrzelak): Add a K8s Secret with a service account.
+# kubectl create secret generic gcp-key --from-file key.json --namespace "{{ .Release.Namespace }}"
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: wordpress-cloudsql
+  annotations:
+    cnrm.cloud.google.com/project-id: {{ .Values.cloudsql.projectId }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Release.Name }}-cloudsql-secret
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: wordpress-cloudsql
+type: Opaque
+stringData:
+  wp-user: "{{ .Values.db.wordpressUser }}"
+data:
+  wp-password: "{{ .Values.db.wordpressPassword }}"
+---
+apiVersion: sql.cnrm.cloud.google.com/v1alpha3
+kind: SQLInstance
+metadata:
+  name: {{ .Release.Name }}-cloudsql
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: wordpress-cloudsql
+spec:
+  databaseVersion: MYSQL_5_7
+  region: us-central1
+  settings:
+    tier: db-n1-standard-1
+---
+apiVersion: sql.cnrm.cloud.google.com/v1alpha3
+kind: SQLDatabase
+metadata:
+  name: wordpress
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: wordpress-cloudsql
+spec:
+  charset: utf8
+  instanceRef:
+    name: {{ .Release.Name }}-cloudsql
+---
+apiVersion: sql.cnrm.cloud.google.com/v1alpha3
+kind: SQLUser
+metadata:
+  name: "{{ .Values.db.wordpressUser }}"
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: wordpress-cloudsql
+spec:
+  instanceRef:
+    name: {{ .Release.Name }}-cloudsql
+  # TODO(wgrzelak): Define a host.
+  host: "%"
+  # TODO(wgrzelak): Read a password directly from K8s Secret.
+  password: "{{ .Values.db.wordpressPassword | b64dec }}"
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-cloudsql-proxy
+  labels: &CloudSqlDeploymentLabels
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: wordpress-cloudsql
+spec:
+  replicas: 1
+  selector:
+    matchLabels: *CloudSqlDeploymentLabels
+  template:
+    metadata:
+      labels: *CloudSqlDeploymentLabels
+    spec:
+      containers:
+      - name: cloudsql-proxy
+        image: gcr.io/cloudsql-docker/gce-proxy:1.14
+        ports:
+        - name: mysql
+          containerPort: 3306
+        livenessProbe:
+          exec:
+            command: ["nc", "-z", "127.0.0.1", "3306"]
+        # https://github.com/GoogleCloudPlatform/cloudsql-proxy
+        command:
+        - /cloud_sql_proxy
+        # TODO(wgrzelak): cloud_sql_proxy should listen on localhost only.
+        - -instances=$(PROJECT_ID):us-central1:$(INSTANCE_CONNECTION_NAME)=tcp:0.0.0.0:3306
+        env:
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /var/secrets/google/key.json
+        - name: PROJECT_ID
+          value: {{ .Values.cloudsql.projectId }}
+        - name: INSTANCE_CONNECTION_NAME
+          value: {{ .Release.Name }}-cloudsql
+        volumeMounts:
+        - name: google-cloud-key
+          mountPath: /var/secrets/google
+      volumes:
+      - name: google-cloud-key
+        secret:
+          secretName: gcp-key
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-cloudsql-svc
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: wordpress-cloudsql
+spec:
+  ports:
+  - name: mysql
+    port: 3306
+  selector:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: wordpress-cloudsql
+  clusterIP: None
