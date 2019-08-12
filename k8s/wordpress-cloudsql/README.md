@@ -4,6 +4,7 @@
 
 1.  Complete [Prerequisites](https://github.com/GoogleCloudPlatform/k8s-config-connector#prerequisites) 
     from the Getting Started with Config Connector document.
+1.  (Optional) Change default GCP project in `schema.yaml`.
 1.  Run `make app/install` command.
 1.  Copy a GCP service account to your namespace.
     
