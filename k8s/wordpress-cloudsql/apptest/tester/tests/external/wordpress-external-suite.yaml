@@ -1,0 +1,21 @@
+actions:
+
+- name: Site address should be 200 OK (external IP)
+  httpTest:
+    url: http://{{ .Env.EXTERNAL_IP }}
+    expect:
+      statusCode:
+        equals: 200
+      bodyText:
+        html:
+          title:
+            equals: 'WordPress on Google Kubernetes Engine – Just another WordPress site'
+
+- name: Site address should be 200 OK (external IP) (TLS)
+  bashTest:
+    script: curl -f -k "https://${EXTERNAL_IP}"
+    expect:
+      stdout:
+        contains: 'WordPress on Google Kubernetes Engine &#8211; Just another WordPress site'
+      exitCode:
+        equals: 0

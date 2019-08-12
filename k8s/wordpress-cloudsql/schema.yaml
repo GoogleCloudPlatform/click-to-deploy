@@ -1,0 +1,102 @@
+application_api_version: v1beta1
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  wordpressImage:
+    type: string
+    default: $REGISTRY:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  db.image:
+    type: string
+    default: $REGISTRY/mysql:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  db.rootPassword:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 12
+  db.wordpressPassword:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 12
+  db.exporter.image:
+    type: string
+    default: $REGISTRY/mysqld-exporter:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  db.exporter.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 12
+  apache.exporter.image:
+    type: string
+    default: $REGISTRY/apache-exporter:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  # An e-mail address for WordPress site.
+  admin.email:
+    type: string
+    title: WordPress admin e-mail address
+    description: The e-mail address for administrator account of WordPress.
+    default: noreply@example.com
+    # https://www.w3.org/TR/html52/sec-forms.html#email-state-typeemail
+    pattern: ^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$
+  # A password for WordPress site.
+  admin.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 20
+  enablePublicServiceAndIngress:
+    type: boolean
+    title: Enable public IP access
+    description: Set the WordPress Service type to NodePort and enable Ingress
+    default: false
+  metrics.image:
+    type: string
+    default: $REGISTRY/prometheus-to-sd:$TAG
+    x-google-marketplace:
+      type: IMAGE
+  metrics.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
+    default: false
+  certificate:
+    type: string
+    x-google-marketplace:
+      type: TLS_CERTIFICATE
+      tlsCertificate:
+        generatedProperties:
+          base64EncodedPrivateKey: tls.base64EncodedPrivateKey
+          base64EncodedCertificate: tls.base64EncodedCertificate
+required:
+- name
+- namespace
+- wordpressImage
+- db.image
+- db.rootPassword
+- db.wordpressPassword
+- db.exporter.image
+- db.exporter.password
+- apache.exporter.image
+- admin.email
+- admin.password
+- metrics.image
+- metrics.enabled
+- enablePublicServiceAndIngress
+- certificate
