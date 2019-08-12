@@ -10,8 +10,8 @@ METRICS_EXPORTER_TAG ?= v0.5.1
 
 $(info ---- TAG = $(TAG))
 
-APP_DEPLOYER_IMAGE ?= $(REGISTRY)/wordpress/deployer:$(TAG)
-NAME ?= wordpress-1
+APP_DEPLOYER_IMAGE ?= $(REGISTRY)/wordpress-cloudsql/deployer:$(TAG)
+NAME ?= wordpress-cloudsql-1
 
 ifdef IMAGE_WORDPRESS
   IMAGE_WORDPRESS_FIELD = , "wordpressImage": "$(IMAGE_WORDPRESS)"
@@ -58,33 +58,33 @@ APP_PARAMETERS ?= { \
   $(METRICS_EXPORTER_ENABLED_FIELD) \
 }
 
-TESTER_IMAGE ?= $(REGISTRY)/wordpress/tester:$(TAG)
+TESTER_IMAGE ?= $(REGISTRY)/wordpress-cloudsql/tester:$(TAG)
 
 
-app/build:: .build/wordpress/deployer \
-            .build/wordpress/wordpress \
-            .build/wordpress/apache-exporter \
-            .build/wordpress/mysql \
-            .build/wordpress/mysqld-exporter \
-            .build/wordpress/prometheus-to-sd \
-            .build/wordpress/tester
+app/build:: .build/wordpress-cloudsql/deployer \
+            .build/wordpress-cloudsql/wordpress \
+            .build/wordpress-cloudsql/apache-exporter \
+            .build/wordpress-cloudsql/mysql \
+            .build/wordpress-cloudsql/mysqld-exporter \
+            .build/wordpress-cloudsql/prometheus-to-sd \
+            .build/wordpress-cloudsql/tester
 
 
-.build/wordpress: | .build
+.build/wordpress-cloudsql: | .build
 	mkdir -p "$@"
 
 
-.build/wordpress/deployer: deployer/* \
-                           chart/wordpress/* \
-                           chart/wordpress/templates/* \
-                           schema.yaml \
-                           .build/var/APP_DEPLOYER_IMAGE \
-                           .build/var/MARKETPLACE_TOOLS_TAG \
-                           .build/var/REGISTRY \
-                           .build/var/TAG \
-                           | .build/wordpress
+.build/wordpress-cloudsql/deployer: deployer/* \
+                                    chart/wordpress/* \
+                                    chart/wordpress/templates/* \
+                                    schema.yaml \
+                                    .build/var/APP_DEPLOYER_IMAGE \
+                                    .build/var/MARKETPLACE_TOOLS_TAG \
+                                    .build/var/REGISTRY \
+                                    .build/var/TAG \
+                                    | .build/wordpress-cloudsql
 	docker build \
-	    --build-arg REGISTRY="$(REGISTRY)/wordpress" \
+	    --build-arg REGISTRY="$(REGISTRY)/wordpress-cloudsql" \
 	    --build-arg TAG="$(TAG)" \
 	    --build-arg MARKETPLACE_TOOLS_TAG="$(MARKETPLACE_TOOLS_TAG)" \
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
@@ -94,59 +94,59 @@ app/build:: .build/wordpress/deployer \
 	@touch "$@"
 
 
-.build/wordpress/wordpress: .build/var/REGISTRY \
-                            .build/var/TAG \
-                            | .build/wordpress
+.build/wordpress-cloudsql/wordpress: .build/var/REGISTRY \
+                                     .build/var/TAG \
+                                     | .build/wordpress-cloudsql
 	docker pull marketplace.gcr.io/google/wordpress5-php7-apache:$(TAG)
 	docker tag marketplace.gcr.io/google/wordpress5-php7-apache:$(TAG) \
-	    "$(REGISTRY)/wordpress:$(TAG)"
-	docker push "$(REGISTRY)/wordpress:$(TAG)"
+	    "$(REGISTRY)/wordpress-cloudsql:$(TAG)"
+	docker push "$(REGISTRY)/wordpress-cloudsql:$(TAG)"
 	@touch "$@"
 
 
-.build/wordpress/apache-exporter: .build/var/REGISTRY \
-                                  .build/var/TAG \
-                                  | .build/wordpress
+.build/wordpress-cloudsql/apache-exporter: .build/var/REGISTRY \
+                                           .build/var/TAG \
+                                           | .build/wordpress-cloudsql
 	docker pull marketplace.gcr.io/google/wordpress5-php7-apache:exporter
 	docker tag marketplace.gcr.io/google/wordpress5-php7-apache:exporter \
-	    "$(REGISTRY)/wordpress/apache-exporter:$(TAG)"
-	docker push "$(REGISTRY)/wordpress/apache-exporter:$(TAG)"
+	    "$(REGISTRY)/wordpress-cloudsql/apache-exporter:$(TAG)"
+	docker push "$(REGISTRY)/wordpress-cloudsql/apache-exporter:$(TAG)"
 	@touch "$@"
 
 
-.build/wordpress/mysql: .build/var/REGISTRY \
-                        .build/var/TAG \
-                        | .build/wordpress
+.build/wordpress-cloudsql/mysql: .build/var/REGISTRY \
+                                 .build/var/TAG \
+                                 | .build/wordpress-cloudsql
 	docker pull marketplace.gcr.io/google/mysql5:$(TAG)
 	docker tag marketplace.gcr.io/google/mysql5:$(TAG) \
-	    "$(REGISTRY)/wordpress/mysql:$(TAG)"
-	docker push "$(REGISTRY)/wordpress/mysql:$(TAG)"
+	    "$(REGISTRY)/wordpress-cloudsql/mysql:$(TAG)"
+	docker push "$(REGISTRY)/wordpress-cloudsql/mysql:$(TAG)"
 	@touch "$@"
 
 
-.build/wordpress/mysqld-exporter: .build/var/REGISTRY \
-                                  .build/var/TAG \
-                                  | .build/wordpress
+.build/wordpress-cloudsql/mysqld-exporter: .build/var/REGISTRY \
+                                           .build/var/TAG \
+                                           | .build/wordpress-cloudsql
 	docker pull marketplace.gcr.io/google/mysql5:exporter
 	docker tag marketplace.gcr.io/google/mysql5:exporter \
-	    "$(REGISTRY)/wordpress/mysqld-exporter:$(TAG)"
-	docker push "$(REGISTRY)/wordpress/mysqld-exporter:$(TAG)"
+	    "$(REGISTRY)/wordpress-cloudsql/mysqld-exporter:$(TAG)"
+	docker push "$(REGISTRY)/wordpress-cloudsql/mysqld-exporter:$(TAG)"
 	@touch "$@"
 
 
-.build/wordpress/prometheus-to-sd: .build/var/REGISTRY \
-                                   .build/var/TAG \
-                                   | .build/wordpress
+.build/wordpress-cloudsql/prometheus-to-sd: .build/var/REGISTRY \
+                                            .build/var/TAG \
+                                            | .build/wordpress-cloudsql
 	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
-	    "$(REGISTRY)/wordpress/prometheus-to-sd:$(TAG)"
-	docker push "$(REGISTRY)/wordpress/prometheus-to-sd:$(TAG)"
+	    "$(REGISTRY)/wordpress-cloudsql/prometheus-to-sd:$(TAG)"
+	docker push "$(REGISTRY)/wordpress-cloudsql/prometheus-to-sd:$(TAG)"
 	@touch "$@"
 
 
-.build/wordpress/tester: .build/var/TESTER_IMAGE \
-                         $(shell find apptest -type f) \
-                         | .build/wordpress
+.build/wordpress-cloudsql/tester: .build/var/TESTER_IMAGE \
+                                   $(shell find apptest -type f) \
+                                   | .build/wordpress-cloudsql
 	$(call print_target,$@)
 	cd apptest/tester \
 	    && docker build --tag "$(TESTER_IMAGE)" .
