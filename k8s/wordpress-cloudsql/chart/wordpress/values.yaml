@@ -35,4 +35,4 @@ tls:
   base64EncodedCertificate: null
 
 cloudsql:
-  projectId: null
+  GcpProjectId: null

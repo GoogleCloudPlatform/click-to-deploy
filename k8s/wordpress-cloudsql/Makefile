@@ -45,6 +45,10 @@ ifdef METRICS_EXPORTER_ENABLED
   METRICS_EXPORTER_ENABLED_FIELD = , "metrics.enabled": "$(METRICS_EXPORTER_ENABLED)"
 endif
 
+ifdef GCP_PROJECT_ID
+  GCP_PROJECT_ID_FIELD = , "cloudsql.GcpProjectId": "$(GCP_PROJECT_ID)"
+endif
+
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
@@ -56,6 +60,7 @@ APP_PARAMETERS ?= { \
   $(WORDPRESS_ADMIN_PASSWORD_FIELD) \
   $(PUBLIC_SERVICE_AND_INGRESS_ENABLED_FIELD) \
   $(METRICS_EXPORTER_ENABLED_FIELD) \
+  $(GCP_PROJECT_ID_FIELD) \
 }
 
 TESTER_IMAGE ?= $(REGISTRY)/wordpress-cloudsql/tester:$(TAG)

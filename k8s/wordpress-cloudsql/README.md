@@ -4,7 +4,12 @@
 
 1.  Complete [Prerequisites](https://github.com/GoogleCloudPlatform/k8s-config-connector#prerequisites) 
     from the Getting Started with Config Connector document.
-1.  (Optional) Change default GCP project in `schema.yaml`.
+1.  Set your GCP project:
+
+    ```shell
+    export GCP_PROJECT_ID=[PROJECT_ID]
+    ```
+
 1.  Run `make app/install` command.
 1.  Copy a GCP service account to your namespace.
     
@@ -16,6 +21,7 @@
     Where:
     
     * `[NAMESPACE` is your namespace name.
+
 1.  Wait until a Cloud SQL instance is ready and enjoy it!
 
 
