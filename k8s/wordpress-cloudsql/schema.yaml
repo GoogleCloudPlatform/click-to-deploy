@@ -15,27 +15,10 @@ properties:
       type: IMAGE
   db.image:
     type: string
-    default: $REGISTRY/mysql:$TAG
+    default: $REGISTRY/cloudsql-proxy:$TAG
     x-google-marketplace:
       type: IMAGE
-  db.rootPassword:
-    type: string
-    x-google-marketplace:
-      type: GENERATED_PASSWORD
-      generatedPassword:
-        length: 12
   db.wordpressPassword:
-    type: string
-    x-google-marketplace:
-      type: GENERATED_PASSWORD
-      generatedPassword:
-        length: 12
-  db.exporter.image:
-    type: string
-    default: $REGISTRY/mysqld-exporter:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  db.exporter.password:
     type: string
     x-google-marketplace:
       type: GENERATED_PASSWORD
@@ -84,7 +67,7 @@ properties:
         generatedProperties:
           base64EncodedPrivateKey: tls.base64EncodedPrivateKey
           base64EncodedCertificate: tls.base64EncodedCertificate
-  cloudsql.GcpProjectId:
+  gcpProjectId:
     type: string
     title: GCP Project ID
     description: A GCP project ID in which the Cloud SQL instance will be created
@@ -93,15 +76,12 @@ required:
 - namespace
 - wordpressImage
 - db.image
-- db.rootPassword
 - db.wordpressPassword
-- db.exporter.image
-- db.exporter.password
 - apache.exporter.image
 - admin.email
 - admin.password
+- enablePublicServiceAndIngress
 - metrics.image
 - metrics.enabled
-- enablePublicServiceAndIngress
 - certificate
-- cloudsql.GcpProjectId
+- gcpProjectId

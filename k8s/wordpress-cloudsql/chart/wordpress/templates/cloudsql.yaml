@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: wordpress-cloudsql
   annotations:
-    cnrm.cloud.google.com/project-id: {{ .Values.cloudsql.GcpProjectId }}
+    cnrm.cloud.google.com/project-id: {{ .Values.gcpProjectId }}
 ---
 apiVersion: v1
 kind: Secret
@@ -81,7 +81,7 @@ spec:
     spec:
       containers:
       - name: cloudsql-proxy
-        image: gcr.io/cloudsql-docker/gce-proxy:1.14
+        image: {{ .Values.db.image }}
         ports:
         - name: mysql
           containerPort: 3306
@@ -97,7 +97,7 @@ spec:
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: /var/secrets/google/key.json
         - name: PROJECT_ID
-          value: {{ .Values.cloudsql.GcpProjectId }}
+          value: {{ .Values.gcpProjectId }}
         - name: INSTANCE_CONNECTION_NAME
           value: {{ .Release.Name }}-cloudsql
         volumeMounts:

@@ -1,19 +1,9 @@
 wordpressImage: null
 
 db:
-  # TODO(wgrzelak): Replace with a Cloud SQL image.
   image: null
-  # TODO(wgrzelak): A root password should be probably removed.
-  rootPassword: null
   wordpressUser: wordpress
   wordpressPassword: null
-
-  # TODO(wgrzelak): A DB exporter should be removed.
-  # The image and credentials for mysqld_exporter component.
-  exporter:
-    image: null
-    user: mysqld-exporter
-    password: null
 
 enablePublicServiceAndIngress: false
 
@@ -34,5 +24,4 @@ tls:
   base64EncodedPrivateKey: null
   base64EncodedCertificate: null
 
-cloudsql:
-  GcpProjectId: null
+gcpProjectId: null

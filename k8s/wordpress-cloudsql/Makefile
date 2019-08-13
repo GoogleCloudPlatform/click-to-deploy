@@ -7,6 +7,7 @@ VERIFY_WAIT_TIMEOUT = 1800
 
 TAG ?= latest
 METRICS_EXPORTER_TAG ?= v0.5.1
+CLOUDSQL_PROXY_TAG ?= 1.14
 
 $(info ---- TAG = $(TAG))
 
@@ -15,14 +16,6 @@ NAME ?= wordpress-cloudsql-1
 
 ifdef IMAGE_WORDPRESS
   IMAGE_WORDPRESS_FIELD = , "wordpressImage": "$(IMAGE_WORDPRESS)"
-endif
-
-ifdef IMAGE_MYSQL
-  IMAGE_MYSQL_FIELD = , "db.image": "$(IMAGE_MYSQL)"
-endif
-
-ifdef ROOT_DB_PASSWORD
-  ROOT_DB_PASSWORD_FIELD = , "db.rootPassword": "$(ROOT_DB_PASSWORD)"
 endif
 
 ifdef WORDPRESS_DB_PASSWORD
@@ -46,15 +39,13 @@ ifdef METRICS_EXPORTER_ENABLED
 endif
 
 ifdef GCP_PROJECT_ID
-  GCP_PROJECT_ID_FIELD = , "cloudsql.GcpProjectId": "$(GCP_PROJECT_ID)"
+  GCP_PROJECT_ID_FIELD = , "gcpProjectId": "$(GCP_PROJECT_ID)"
 endif
 
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
   $(IMAGE_WORDPRESS_FIELD) \
-  $(IMAGE_MYSQL_FIELD) \
-  $(ROOT_DB_PASSWORD_FIELD) \
   $(WORDPRESS_DB_PASSWORD_FIELD) \
   $(WORDPRESS_ADMIN_EMAIL_FIELD) \
   $(WORDPRESS_ADMIN_PASSWORD_FIELD) \
@@ -69,8 +60,7 @@ TESTER_IMAGE ?= $(REGISTRY)/wordpress-cloudsql/tester:$(TAG)
 app/build:: .build/wordpress-cloudsql/deployer \
             .build/wordpress-cloudsql/wordpress \
             .build/wordpress-cloudsql/apache-exporter \
-            .build/wordpress-cloudsql/mysql \
-            .build/wordpress-cloudsql/mysqld-exporter \
+            .build/wordpress-cloudsql/cloudsql-proxy \
             .build/wordpress-cloudsql/prometheus-to-sd \
             .build/wordpress-cloudsql/tester
 
@@ -119,23 +109,13 @@ app/build:: .build/wordpress-cloudsql/deployer \
 	@touch "$@"
 
 
-.build/wordpress-cloudsql/mysql: .build/var/REGISTRY \
-                                 .build/var/TAG \
-                                 | .build/wordpress-cloudsql
-	docker pull marketplace.gcr.io/google/mysql5:$(TAG)
-	docker tag marketplace.gcr.io/google/mysql5:$(TAG) \
-	    "$(REGISTRY)/wordpress-cloudsql/mysql:$(TAG)"
-	docker push "$(REGISTRY)/wordpress-cloudsql/mysql:$(TAG)"
-	@touch "$@"
-
-
-.build/wordpress-cloudsql/mysqld-exporter: .build/var/REGISTRY \
-                                           .build/var/TAG \
-                                           | .build/wordpress-cloudsql
-	docker pull marketplace.gcr.io/google/mysql5:exporter
-	docker tag marketplace.gcr.io/google/mysql5:exporter \
-	    "$(REGISTRY)/wordpress-cloudsql/mysqld-exporter:$(TAG)"
-	docker push "$(REGISTRY)/wordpress-cloudsql/mysqld-exporter:$(TAG)"
+.build/wordpress-cloudsql/cloudsql-proxy: .build/var/REGISTRY \
+                                          .build/var/TAG \
+                                          | .build/wordpress-cloudsql
+	docker pull gcr.io/cloudsql-docker/gce-proxy:$(CLOUDSQL_PROXY_TAG)
+	docker tag gcr.io/cloudsql-docker/gce-proxy:$(CLOUDSQL_PROXY_TAG) \
+	    "$(REGISTRY)/wordpress-cloudsql/cloudsql-proxy:$(TAG)"
+	docker push "$(REGISTRY)/wordpress-cloudsql/cloudsql-proxy:$(TAG)"
 	@touch "$@"
 
 
