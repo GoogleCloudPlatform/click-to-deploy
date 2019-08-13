@@ -82,12 +82,6 @@ if is_primary; then
     systemctl enable "${service}"
   done
 
-  if is_debian; then
-    # Postgres 9.6 doesn't start properly on Debian. Work around it.
-    # pg_ctlcluster --force 9.6 main stop
-    pg_ctlcluster --force 9.6 main start
-  fi
-
   set +x
   echo "CREATE USER graphite WITH PASSWORD '${DB_PASSWORD}';" \
     | sudo -u postgres psql
@@ -147,9 +141,11 @@ EOF
   fi
 
   # Sync and create the Graphite DB
-  # TODO(leffler): Add superuser?
-  # syncdb command no longer in graphite-web version 1.0.2 (Debian 9).
-  # graphite-manage syncdb --noinput
+  graphite-manage migrate --noinput
+  graphite-manage migrate --run-syncdb --noinput
+
+  # Fix permissions on log files.
+  chown _graphite:_graphite /var/log/graphite/*
 
   # TODO(leffler): Fix this on Centos. What's missing?
   if is_debian; then
