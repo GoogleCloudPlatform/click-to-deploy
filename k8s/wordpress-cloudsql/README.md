@@ -28,4 +28,5 @@
 ## TODO
 
 1.  Fix `make app/verify` command.
-2.  Address TODO comments.
+1.  Address TODO comments.
+1.  Rename chart to `wordpress-cloudsql`.

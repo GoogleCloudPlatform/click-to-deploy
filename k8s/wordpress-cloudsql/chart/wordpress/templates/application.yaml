@@ -12,7 +12,7 @@ metadata:
     app.kubernetes.io/name: "{{ .Release.Name }}"
 spec:
   descriptor:
-    type: WordPress
+    type: WordPress with Cloud SQL
     version: '5.x.x'
     description: >-
       WordPress is web software used to create websites and blogs.
@@ -26,8 +26,8 @@ spec:
     - name: Google Click to Deploy
       url: https://cloud.google.com/solutions/#click-to-deploy
     links:
-    - description: 'User Guide: Google Click to Deploy WordPress'
-      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/wordpress/README.md
+    - description: 'User Guide: Google Click to Deploy WordPress with Cloud SQL'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/wgrzelak/wordpress-cloudsql/k8s/wordpress-cloudsql/README.md
     - description: Getting Started with WordPress
       url: https://codex.wordpress.org/Getting_Started_with_WordPress
     notes: |-
@@ -85,7 +85,6 @@ spec:
       Now you can access WordPress UI with [http://localhost:8080](http://localhost:8080).
 
       {{ end }}
-
   info:
   {{ if .Values.enablePublicServiceAndIngress }}
   - name: WordPress site address
