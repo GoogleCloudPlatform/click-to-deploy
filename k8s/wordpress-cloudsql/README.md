@@ -24,7 +24,6 @@
 
 1.  Wait until a Cloud SQL instance is ready and enjoy it!
 
-
 ## TODO
 
 1.  Fix `make app/verify` command.
