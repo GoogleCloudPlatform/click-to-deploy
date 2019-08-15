@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,9 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-package 'libapache2-mod-php5'
-
-execute 'enable php5-cgi' do
-  command 'a2enconf php5-cgi'
-  only_if { node['php'] }
-end
+package 'php7.3-readline'
