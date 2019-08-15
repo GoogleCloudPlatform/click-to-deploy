@@ -44,7 +44,7 @@ end
 
 user 'cloudsqluser' do
   action :create
-  comment 'Used to start cloudsql serivce'
+  comment 'Used to start cloudsql-proxy serivce'
 end
 
 service 'cloudsql-proxy' do
