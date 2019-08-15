@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,4 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-package 'php5-cgi'
+include_recipe 'php73::module_cgi'
+include_recipe 'php73::module_curl'
+include_recipe 'php73::module_gd'
+include_recipe 'php73::module_intl'
+include_recipe 'php73::module_mbstring'
+include_recipe 'php73::module_xml'
+include_recipe 'php73::module_xsl'
+include_recipe 'php73::module_zip'
