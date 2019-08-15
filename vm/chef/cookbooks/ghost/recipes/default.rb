@@ -40,8 +40,11 @@ user 'user for ghost app' do
   action :create
 end
 
-sudo 'give ghostuser sudo' do
-  user node['ghost']['app']['user']
+group "create ghostappuser sudo" do
+  group_name 'sudo'
+  members node['ghost']['app']['user']
+  action :modify
+  append true
 end
 
 directory node['ghost']['app']['install_dir'] do
@@ -57,9 +60,9 @@ bash 'install ghost' do
   user node['ghost']['app']['user']
   cwd node['ghost']['app']['install_dir']
   code <<-EOH
-    ghost install --no-prompt --no-setup --no-stack
-    ghost config --no-prompt --url=http://localhost:2368 --db=mysql --dbhost=localhost --dbuser="${dbuser}" --dbname="${dbname}"
-    ghost setup linux-user --no-prompt
+    sudo ghost install --no-prompt --no-setup --no-stack
+    sudo ghost config --no-prompt --url=http://localhost:2368 --db=mysql --dbhost=localhost --dbuser="${dbuser}" --dbname="${dbname}"
+    sudo ghost setup linux-user --no-prompt
 EOH
   environment ({
     'dbuser'   => node['ghost']['db']['user'],
