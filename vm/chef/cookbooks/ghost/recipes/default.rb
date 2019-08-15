@@ -37,6 +37,7 @@ end
 
 user 'user for ghost app' do
   username node['ghost']['app']['user']
+  system true
   action :create
 end
 
@@ -45,6 +46,10 @@ group "create ghostappuser sudo" do
   members node['ghost']['app']['user']
   action :modify
   append true
+end
+
+execute 'add ghostappuser to sudoers file' do
+  command "echo #{node['ghost']['app']['user']} ALL=(ALL) NOPASSWD: ALL >> /etc/sudoers"
 end
 
 directory node['ghost']['app']['install_dir'] do
