@@ -3,7 +3,7 @@
 WARNING: **DO NOT** include the `stackdriver` cookbook directly in other
 cookbooks, but instead of that it should be included in a Packer template's
 `run_list` attribute. To ensure that the Stackdriver agent is installed only in
-the end solution..
+the end solution.
 
 Usage of Stackdriver [Logging](https://cloud.google.com/logging/) and
 [Monitoring](https://cloud.google.com/monitoring/) is not free and we would like
