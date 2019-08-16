@@ -65,7 +65,7 @@ bash 'install ghost' do
   user node['ghost']['app']['user']
   cwd node['ghost']['app']['install_dir']
   code <<-EOH
-    sudo ghost install --no-prompt --no-setup --no-stack
+    ghost install --no-prompt --no-setup --no-stack
     sudo ghost config --no-prompt --url=http://localhost:2368 --db=mysql --dbhost=localhost --dbuser="${dbuser}" --dbname="${dbname}"
     sudo ghost setup linux-user --no-prompt
 EOH
