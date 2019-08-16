@@ -31,10 +31,6 @@ execute 'create db' do
   command "mysql -u root -e 'CREATE DATABASE #{node['ghost']['db']['name']};'"
 end
 
-execute 'install ghost-cli' do
-  command "npm install -g ghost-cli@#{node['ghost']['cli']['version']}"
-end
-
 user 'user for ghost app' do
   username node['ghost']['app']['user']
   system true
@@ -52,6 +48,11 @@ execute 'add ghostappuser to sudoers file' do
   command "echo #{node['ghost']['app']['user']} ALL='(ALL)' NOPASSWD: ALL >> /etc/sudoers"
 end
 
+execute 'install ghost-cli' do
+  user node['ghost']['app']['user']
+  command "sudo npm install -g ghost-cli@#{node['ghost']['cli']['version']}"
+end
+
 directory node['ghost']['app']['install_dir'] do
   owner node['ghost']['app']['user']
   group node['ghost']['app']['user']
@@ -66,8 +67,8 @@ bash 'install ghost' do
   cwd node['ghost']['app']['install_dir']
   code <<-EOH
     ghost install --no-prompt --no-setup --no-stack
-    sudo ghost config --no-prompt --url=http://localhost:2368 --db=mysql --dbhost=localhost --dbuser="${dbuser}" --dbname="${dbname}"
-    sudo ghost setup linux-user --no-prompt
+    ghost config --no-prompt --url=http://localhost:2368 --db=mysql --dbhost=localhost --dbuser="${dbuser}" --dbname="${dbname}"
+    ghost setup linux-user --no-prompt
 EOH
   environment ({
     'dbuser'   => node['ghost']['db']['user'],
