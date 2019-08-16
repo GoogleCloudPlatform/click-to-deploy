@@ -49,7 +49,7 @@ group "create ghostappuser sudo" do
 end
 
 execute 'add ghostappuser to sudoers file' do
-  command "echo #{node['ghost']['app']['user']} ALL=\(ALL\) NOPASSWD: ALL >> /etc/sudoers"
+  command "echo #{node['ghost']['app']['user']} ALL='(ALL)' NOPASSWD: ALL >> /etc/sudoers"
 end
 
 directory node['ghost']['app']['install_dir'] do
