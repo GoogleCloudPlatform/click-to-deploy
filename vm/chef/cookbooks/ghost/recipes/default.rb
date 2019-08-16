@@ -31,6 +31,23 @@ execute 'create db' do
   command "mysql -u root -e 'CREATE DATABASE #{node['ghost']['db']['name']};'"
 end
 
+execute 'install_yarn_repo_key' do
+  command 'wget -q -O - https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -'
+end
+
+execute 'add_yarn_repo' do
+  command 'echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list'
+end
+
+execute 'update' do
+  command 'apt-get update'
+end
+
+package 'install_yarn' do
+  package_name 'yarn'
+  action :install
+end
+
 user 'user for ghost app' do
   username node['ghost']['app']['user']
   system true
