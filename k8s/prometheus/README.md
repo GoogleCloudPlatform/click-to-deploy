@@ -347,3 +347,16 @@ echo "Grafana credentials:"
 echo "- user: ${GRAFANA_USERNAME}"
 echo "- pass: ${GRAFANA_PASSWORD}"
 ```
+
+# Troubleshooting
+
+If you run into the following error when applying the manifest against your kubernetes cluster:
+
+```
+no matches for kind "Application" in version "app.k8s.io/v1beta1"
+```
+
+you likely need to install the Application CRD before continuing by running the following command.
+```
+kubectl apply -f "https://raw.githubusercontent.com/GoogleCloudPlatform/marketplace-k8s-app-tools/master/crd/app-crd.yaml"
+```
