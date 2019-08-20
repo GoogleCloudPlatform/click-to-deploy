@@ -1,0 +1,49 @@
+application_api_version: v1beta1
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  deployerImage:
+    type: string
+    x-google-marketplace:
+      type: DEPLOYER_IMAGE
+  imageGatekeeper:
+    type: string
+    default: $REGISTRY:$TAG
+    x-google-marketplace:
+      type: IMAGE
+      image:
+        generatedProperties:
+          splitByColon:
+            before: imageGatekeeperRepo
+            after: imageGatekeeperTag
+#  imageInit:
+#    type: string
+#    default: $REGISTRY/init:$TAG
+#    x-google-marketplace:
+#      type: IMAGE
+  auditInterval:
+    title: Audit interval (seconds)
+    type: integer
+    default: 30
+    minimum: 1
+    maximum: 3600
+#  reportingSecret:
+#    type: string
+#    x-google-marketplace:
+#      type: REPORTING_SECRET
+#  istioEnabled:
+#    type: boolean
+#    x-google-marketplace:
+#      type: ISTIO_ENABLED
+required:
+- deployerImage
+- imageGatekeeper
+form:
+- widget: help
+  description: Gatekeeper
