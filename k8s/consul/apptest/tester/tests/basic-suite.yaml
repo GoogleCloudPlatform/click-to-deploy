@@ -1,0 +1,25 @@
+actions:
+- name: Consul have a leader of cluster
+  bashTest:
+    script: curl ${APP_INSTANCE_NAME}-consul-ui.${NAMESPACE}.svc/v1/status/leader
+    expect:
+      stdout:
+        match: '.+:8300'
+      exitCode:
+        equals: 0
+- name: Try to store key to Consul
+  bashTest:
+    script: curl -v --request PUT --data 'Value_to_store' ${APP_INSTANCE_NAME}-consul-ui.${NAMESPACE}.svc/v1/kv/my-key
+    expect:
+      stderr:
+        matches: 'HTTP/1.1 200 OK'
+      exitCode:
+        equals: 0
+- name: Try to get value of key from Consul
+  bashTest:
+    script: curl ${APP_INSTANCE_NAME}-consul-ui.${NAMESPACE}.svc/v1/kv/my-key?raw
+    expect:
+      stdout:
+        matches: 'Value_to_store'
+      exitCode:
+        equals: 0

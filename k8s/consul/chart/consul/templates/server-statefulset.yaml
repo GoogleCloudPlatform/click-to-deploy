@@ -1,0 +1,163 @@
+---
+# StatefulSet to run the actual Consul server cluster.
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-consul-server
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: consul-server
+spec:
+  serviceName: {{ .Release.Name }}-consul-server
+  podManagementPolicy: Parallel
+  replicas: {{ .Values.server.replicas }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Release.Name }}
+      app.kubernetes.io/component: consul-server
+      hasDNS: "true"
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ .Release.Name }}
+        app.kubernetes.io/component: consul-server
+        hasDNS: "true"
+      annotations:
+        {{- if .Values.server.prometheus_exporter.enabled -}}
+        {{/*
+        Example of connfiguration for autodiscovery pods for prometheus:
+        https://github.com/prometheus/prometheus/blob/release-2.10/documentation/examples/prometheus-kubernetes.yml#L131
+        */}}
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '9017'
+        {{- end }}
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: consul
+                  release: "{{ .Release.Name }}"
+                  component: server
+              topologyKey: kubernetes.io/hostname
+      terminationGracePeriodSeconds: 10
+      serviceAccountName: {{ .Values.server.ServiceAccount }}
+      securityContext:
+        fsGroup: 1000
+      volumes:
+        - name: config
+          configMap:
+            name: {{ .Release.Name }}-consul-server-config
+      containers:
+        - name: consul
+          image: {{ .Values.global.image | quote }}
+          env:
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            {{- include "consul.gossipEncryption.env" . | nindent 12 }}
+          resources:
+            {{- toYaml .Values.server.resources | trim | nindent 12 }}
+          command:
+            - "/bin/sh"
+            - "-ec"
+            - |
+              CONSUL_FULLNAME="{{ .Release.Name }}-consul"
+
+              exec /bin/consul agent \
+                -advertise="${POD_IP}" \
+                -bind=0.0.0.0 \
+                -bootstrap-expect={{ .Values.server.replicas }} \
+                -client=0.0.0.0 \
+                -config-dir=/consul/config \
+                -datacenter={{ .Values.global.datacenter }} \
+                -data-dir=/consul/data \
+                -domain={{ .Values.global.domain }} \
+                {{- include "consul.gossipEncryption.cmd" . | nindent 16 -}}
+                -hcl="connect { enabled = true }" \
+                -ui \
+                {{- range $index := until (.Values.server.replicas | int) }}
+                -retry-join=${CONSUL_FULLNAME}-server-{{ $index }}.${CONSUL_FULLNAME}-server.${NAMESPACE}.svc \
+                {{- end }}
+                -server
+          volumeMounts:
+            - name: {{ .Release.Name }}-consul-data
+              mountPath: /consul/data
+            - name: config
+              mountPath: /consul/config
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                - /bin/sh
+                - -c
+                - consul leave
+          ports:
+            - containerPort: 8500
+              name: http
+            - containerPort: 8301
+              name: serflan
+            - containerPort: 8302
+              name: serfwan
+            - containerPort: 8300
+              name: server
+            - containerPort: 8600
+              name: dns-tcp
+              protocol: "TCP"
+            - containerPort: 8600
+              name: dns-udp
+              protocol: "UDP"
+          readinessProbe:
+            exec:
+              command:
+                - "/bin/sh"
+                - "-ec"
+                - |
+                  curl http://127.0.0.1:8500/v1/status/leader 2>/dev/null | \
+                       grep -E '".+"'
+            failureThreshold: 2
+            initialDelaySeconds: 5
+            periodSeconds: 3
+            successThreshold: 1
+            timeoutSeconds: 5
+        {{- if .Values.server.prometheus_exporter.enabled }}
+        - name: prometheus-exporter-sidecar
+          image: {{ .Values.server.prometheus_exporter.image | quote }}
+          ports:
+            - name: exporter
+              containerPort: 9017
+          args: ["--consul.allow_stale"]
+        - name: prometheus-to-sd
+          image: {{ .Values.server.prometheus_to_sd.image }}
+          command:
+            - /monitor
+            - --stackdriver-prefix=custom.googleapis.com
+            - --source=consul:http://localhost:9017/metrics
+            - --pod-id=$(POD_NAME)
+            - --namespace-id=$(POD_NAMESPACE)
+            - --monitored-resource-types=k8s
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+        {{- end }}
+  volumeClaimTemplates:
+    - metadata:
+        name: {{ .Release.Name }}-consul-data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: {{ .Values.server.storage }}
