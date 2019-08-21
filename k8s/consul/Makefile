@@ -9,8 +9,8 @@ SOURCE_REGISTRY ?= marketplace.gcr.io/google
 # The digest should be updated automatically, or tag <major>.<minor>.<path/build>
 # should be available on GCP Marketplace.
 # Use `.build/consul/VERSION` target to fill the RELEASE variable.
-CONSUL_TAG ?= sha256:87d5efa7f6fa282a1c3c86ab12bf3928da8f779729ca3658170f1c907e522091
-CONSUL_EXPORTER_TAG ?= sha256:e8ed2508dc84252243a5fbed256fc8bfa4dadf13b04a08d681f6b469e16cd646
+CONSUL_TAG ?= sha256:225fa1caac9e6a10ea126d20cef26a50b2e7dc4be0bfda37ba0f1bcd3b412019
+CONSUL_EXPORTER_TAG ?= sha256:1db79fa556f3c6cd23ef382d041b8473a7d947fdcaf36533994df52cb97d50ec
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
