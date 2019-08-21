@@ -1,0 +1,156 @@
+# Variables to populate static cluster
+{{- $replicaCount := int .Values.replicas }}
+{{- $clientPort := int .Values.service.port }}
+{{- $peerPort := int .Values.service.peerPort }}
+{{- $releaseNamespace := .Release.Namespace }}
+{{- $releaseName := .Release.Name }}
+{{- $etcdHeadlessServiceName := printf "%s-%s" $releaseName "etcd-headless" }}
+{{- $dnsBase := .Values.service.dnsBase }}
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-etcd-config
+  labels:
+    release: "{{ .Release.Name }}"
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+data:
+  setup.sh: |
+           set -o errexit
+           set -o pipefail
+           set -o nounset
+
+           # Constants
+           HOSTNAME="$(hostname -s)"
+           AUTH_OPTIONS="--user root:${ETCD_ROOT_PASSWORD}"
+           export PEER_URLS="https://${HOSTNAME}.{{ $etcdHeadlessServiceName }}.{{ $releaseNamespace }}.{{ $dnsBase }}:{{ $peerPort }}"
+           export ETCDCTL_ENDPOINTS="{{range $i, $e := until $replicaCount }}{{ if $i }},{{ end }}http://{{ $releaseName }}-etcd-{{ $e }}.{{ $etcdHeadlessServiceName }}.{{ $releaseNamespace }}.{{ $dnsBase }}:{{ $clientPort }}{{ end }}"
+
+           # Functions
+
+           ## Auth option is necessary for rejoined members
+           wait_for_members_auth() {
+               while ! etcdctl ${AUTH_OPTIONS} member list >/dev/null 2>&1; do sleep 1; done
+           }
+
+           wait_for_members() {
+               while ! etcdctl member list >/dev/null 2>&1; do sleep 1; done
+           }
+
+           get_member_id() {
+               etcdctl ${AUTH_OPTIONS} member list | grep "${HOSTNAME}" | cut -d , -f 1
+           }
+
+           kill_etcd_and_wait_for_termination() {
+               kill "${ETCD_PID}"
+               while kill -0 "${ETCD_PID}"; do sleep 1; done
+           }
+
+           ## Store member id for later member replacement.
+           ## This function is expected to be run in background.
+           store_member_id() {
+               wait_for_members_auth
+               get_member_id > "${ETCD_DATA_DIR}/member_id"
+               # This function is running in background and exit won't affect to whole deployment
+               exit 0
+           }
+
+           configure_rbac() {
+               # When there's more than one replica, we can assume the 1st member
+               # to be created as "{{ $releaseName }}-etcd-0" since a statefulset is used.
+               # Authentication and root user credentials will be applicable for all members in cluster
+               if [[ -n "${ETCD_ROOT_PASSWORD:-}" ]] && [[ "${HOSTNAME}" == "{{ $releaseName }}-etcd-0" ]]; then
+                   echo "==> Configuring RBAC authentication!"
+                   etcd > /dev/null 2>&1 &
+                   ETCD_PID=$!
+                   wait_for_members
+                   echo "${ETCD_ROOT_PASSWORD}" | etcdctl user add root --interactive=false
+                   etcdctl auth enable
+                   kill_etcd_and_wait_for_termination
+               fi
+           }
+
+           # Cleanup ${ETCD_DATA_DIR} directory
+           cleanup_datadir() {
+               rm -rf ${ETCD_DATA_DIR}/*
+           }
+
+           check_member_removal_from_cluster() {
+               local removal_log_file="$(dirname "${ETCD_DATA_DIR}")/member_removal.log"
+               local expected_log="^Member [a-z0-9]+ removed from cluster [a-z0-9]+$"
+
+               (grep -E "${expected_log}" "${removal_log_file}" > /dev/null) \
+                 || [[ ! -d "${ETCD_DATA_DIR}/member/snap" ]] \
+                 || [[ ! -f "${ETCD_DATA_DIR}/member_id" ]]
+           }
+
+           remove_member_removal_log() {
+               local removal_log_file="$(dirname "${ETCD_DATA_DIR}")/member_removal.log"
+               if [[ -f ${removal_log_file} ]]; then
+                 rm ${removal_log_file}
+               fi
+           }
+
+           # Function for adding new member to existing cluster
+           add_new_member_and_store_new_envs() {
+               echo "==> Adding new member to existing cluster..."
+               etcdctl ${AUTH_OPTIONS} member add "$HOSTNAME" \
+                 --peer-urls="${PEER_URLS}" | \
+                 grep "^ETCD_" > "${ETCD_DATA_DIR}/new_member_envs"
+           }
+
+           # Function for updating member in existing cluster
+           update_member() {
+               echo "==> Updating member in existing cluster..."
+               etcdctl ${AUTH_OPTIONS} member update "$(cat "${ETCD_DATA_DIR}/member_id")" \
+                 --peer-urls="${PEER_URLS}"
+           }
+
+           # Function for loading environment variables for new member
+           load_env_vars() {
+               echo "==> Loading env vars of existing cluster..."
+               sed -ie 's/^/export /' "${ETCD_DATA_DIR}/new_member_envs"
+               source "${ETCD_DATA_DIR}/new_member_envs"
+           }
+
+           ## Main function to initialize member and start etcd server
+           main() {
+               if [[ ! -d "${ETCD_DATA_DIR}" ]]; then
+                   echo "==> Creating data dir..."
+                   mkdir -p "${ETCD_DATA_DIR}"
+                   echo "==> There is no data at all. Initializing a new member of the cluster..."
+                   # store_member_id() runs in background and no needed to wait until it finishes
+                   store_member_id &
+                   configure_rbac
+               else
+                   echo "==> Detected data from previous deployments..."
+                   if check_member_removal_from_cluster; then
+                     cleanup_datadir
+                     remove_member_removal_log
+                     add_new_member_and_store_new_envs
+                     load_env_vars
+                     # store_member_id() runs in background and no needed to wait until it finishes
+                     store_member_id &
+                   else
+                     remove_member_removal_log
+                     update_member
+                   fi
+               fi
+               exec etcd
+           }
+
+           # Running main() function
+           main
+
+  pre-stop.sh: |
+           set -o errexit
+           set -o pipefail
+           set -o nounset
+
+           # Constants
+           HOSTNAME="$(hostname -s)"
+           AUTH_OPTIONS="--user root:${ETCD_ROOT_PASSWORD}"
+           export ETCDCTL_ENDPOINTS="{{range $i, $e := until $replicaCount }}{{ if $i }},{{ end }}http://{{ $releaseName }}-etcd-{{ $e }}.{{ $etcdHeadlessServiceName }}.{{ $releaseNamespace }}.{{ $dnsBase }}:{{ $clientPort }}{{ end }}"
+           etcdctl ${AUTH_OPTIONS} member remove \
+             --debug=true "$(cat "${ETCD_DATA_DIR}/member_id")" > \
+             "$(dirname "${ETCD_DATA_DIR}")/member_removal.log" 2>&1

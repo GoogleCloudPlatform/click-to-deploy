@@ -1,0 +1,115 @@
+---
+# DaemonSet to run the Consul clients on every node.
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ .Release.Name }}-consul
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: consul-client
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Release.Name }}
+      app.kubernetes.io/component: consul-client
+      hasDNS: "true"
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ .Release.Name }}
+        app.kubernetes.io/component: consul-client
+        hasDNS: "true"
+    spec:
+      terminationGracePeriodSeconds: 10
+      serviceAccountName: {{ .Values.client.ServiceAccount }}
+      # Consul agents require a directory for data, even clients. The data
+      # is okay to be wiped though if the Pod is removed, so just use an
+      # emptyDir volume.
+      volumes:
+        - name: data
+          emptyDir: {}
+        - name: config
+          configMap:
+            name: {{ .Release.Name }}-consul-client-config
+      containers:
+        - name: consul
+          image: {{ .Values.global.image | quote }}
+          env:
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: NODE
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            {{- include "consul.gossipEncryption.env" . | nindent 12 }}
+          resources:
+            {{- toYaml .Values.server.resources | trim | nindent 12 }}
+          command:
+            - "/bin/sh"
+            - "-ec"
+            - |
+              CONSUL_FULLNAME="{{ .Release.Name }}-consul"
+
+              exec /bin/consul agent \
+                -node="${NODE}" \
+                -advertise="${POD_IP}" \
+                -bind=0.0.0.0 \
+                -client=0.0.0.0 \
+                -config-dir=/consul/config \
+                -datacenter={{ .Values.global.datacenter }} \
+                -data-dir=/consul/data \
+                {{- if (and .Values.global.gossipEncryption.secretName .Values.global.gossipEncryption.secretKey) }}
+                -encrypt="${GOSSIP_KEY}" \
+                {{- end }}
+                {{- if .Values.global.gossipEncryption.CreateSecretWithKey }}
+                -encrypt="${GOSSIP_KEY}" \
+                {{- end }}
+                -retry-join="provider=k8s \
+                             label_selector=\"app.kubernetes.io/component=consul-server,app.kubernetes.io/name={{ .Release.Name }}\" \
+                             namespace=\"${NAMESPACE}\"" \
+                -domain={{ .Values.global.domain }}
+          volumeMounts:
+            - name: data
+              mountPath: /consul/data
+            - name: config
+              mountPath: /consul/config
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                - /bin/sh
+                - -c
+                - consul leave
+          ports:
+            - containerPort: 8500
+              hostPort: 8500
+              name: http
+            - containerPort: 8502
+              hostPort: 8502
+              name: grpc
+            - containerPort: 8301
+              name: serflan
+            - containerPort: 8302
+              name: serfwan
+            - containerPort: 8300
+              name: server
+            - containerPort: 8600
+              name: dns-tcp
+              protocol: "TCP"
+            - containerPort: 8600
+              name: dns-udp
+              protocol: "UDP"
+          readinessProbe:
+            exec:
+              command:
+                - "/bin/sh"
+                - "-ec"
+                - |
+                  curl http://127.0.0.1:8500/v1/status/leader 2>/dev/null | \
+                       grep -E '".+"'
