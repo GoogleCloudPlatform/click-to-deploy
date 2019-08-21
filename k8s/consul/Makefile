@@ -99,8 +99,8 @@ app/build:: .build/consul/deployer \
                                .build/var/TRACK \
                                .build/var/RELEASE \
                                | .build/consul
-	docker pull $(SOURCE_REGISTRY)/consul1/exporter@$(CONSUL_EXPORTER_TAG)
-	docker tag $(SOURCE_REGISTRY)/consul1/exporter@$(CONSUL_EXPORTER_TAG) \
+	docker pull $(SOURCE_REGISTRY)/consul1@$(CONSUL_EXPORTER_TAG)
+	docker tag $(SOURCE_REGISTRY)/consul1@$(CONSUL_EXPORTER_TAG) \
 	    "$(REGISTRY)/$(APP_ID)/consul-exporter:$(TRACK)"
 	docker tag "$(REGISTRY)/$(APP_ID)/consul-exporter:$(TRACK)" \
 	    "$(REGISTRY)/$(APP_ID)/consul-exporter:$(RELEASE)"
