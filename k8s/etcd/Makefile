@@ -3,17 +3,16 @@ include ../gcloud.Makefile
 include ../var.Makefile
 
 APP_ID ?= etcd
+SOURCE_REGISTRY ?= marketplace.gcr.io/google
 
 ifndef SOURCE_IMAGE
   $(info ---- SOURCE_REGISTRY = $(SOURCE_REGISTRY))
 endif
 
-SOURCE_REGISTRY ?= marketplace.gcr.io/google
-
 # The digest should be updated automatically, or tag <major>.<minor>.<path/build>
 # should be available on GCP Marketplace.
 # Use `.build/etcd/VERSION` target to fill the RELEASE variable.
-ETCD_TAG ?= sha256:cf0c2abe13962976e11768df443ab2142c14efc503390e16eac19e50246286ac
+ETCD_TAG ?= sha256:fa54bc0e71f1f3a1fd3a0c8d9b66cd959ef9292bdd3a829d48de58a9a87e8989
 METRICS_EXPORTER_TAG ?= v0.5.1
 SOURCE_IMAGE ?= $(SOURCE_REGISTRY)/etcd3@$(ETCD_TAG)
 
