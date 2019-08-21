@@ -1,0 +1,13 @@
+actions:
+
+- name: Set message='hello, world' on first node, and get those values from all members
+  bashTest:
+    script: |-
+      kubectl exec -it ${APP_INSTANCE_NAME}-etcd-0 -- etcdctl --user root:${ETCD_ROOT_PASSWORD} put message 'hello, world' > /dev/null 2>&1
+      if [ $? -eq 0 ]; then
+        for i in {0..2}; do
+          kubectl exec -it ${APP_INSTANCE_NAME}-etcd-$i -- etcdctl --user root:${ETCD_ROOT_PASSWORD} get message |grep -w 'hello, world'; done | wc -l
+      fi
+    expect:
+      stdout:
+        equals: 3

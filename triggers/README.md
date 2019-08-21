@@ -7,7 +7,7 @@ We use Google Cloud Build (GCB) triggers to test the applications.
 
     ```shell
     gcloud alpha builds triggers create github \
-      --trigger_config k8s/[APP_NAME].yaml \
+      --trigger-config k8s/[APP_NAME].yaml \
       --project [PROJECT_ID]
     ```
 
