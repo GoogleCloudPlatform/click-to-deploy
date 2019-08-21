@@ -16,36 +16,36 @@
 
 source /opt/c2d/c2d-utils || exit 1
 
-mysql_piwik_db_name="<%= node['piwik']['db']['name'] %>"
-mysql_piwik_username="<%= node['piwik']['db']['username'] %>"
-mysql_piwik_first_password="<%= node['piwik']['db']['password'] %>"
+mysql_matomo_db_name="<%= node['matomo']['db']['name'] %>"
+mysql_matomo_username="<%= node['matomo']['db']['username'] %>"
+mysql_matomo_first_password="<%= node['matomo']['db']['password'] %>"
 
-declare -r mysql_piwik_db_name
-declare -r mysql_piwik_username
-declare -r mysql_piwik_first_password
+declare -r mysql_matomo_db_name
+declare -r mysql_matomo_username
+declare -r mysql_matomo_first_password
 
-mysql_piwik_new_password="$(get_attribute_value "mysql-piwikuser-password")"
-piwik_admin_email="$(get_attribute_value "piwik-admin-email")"
-piwik_admin_password="$(get_attribute_value "piwik-admin-password")"
+mysql_matomo_new_password="$(get_attribute_value "mysql-matomouser-password")"
+matomo_admin_email="$(get_attribute_value "matomo-admin-email")"
+matomo_admin_password="$(get_attribute_value "matomo-admin-password")"
 
-declare -r mysql_piwik_new_password
-declare -r piwik_admin_email
-declare -r piwik_admin_password
+declare -r mysql_matomo_new_password
+declare -r matomo_admin_email
+declare -r matomo_admin_password
 
 # Change the MySQL user password
-mysqladmin -u "${mysql_piwik_username}" \
-  -p"${mysql_piwik_first_password}" \
-  password "${mysql_piwik_new_password}"
+mysqladmin -u "${mysql_matomo_username}" \
+  -p"${mysql_matomo_first_password}" \
+  password "${mysql_matomo_new_password}"
 
-sed -i "s/${mysql_piwik_first_password}/${mysql_piwik_new_password}/" \
+sed -i "s/${mysql_matomo_first_password}/${mysql_matomo_new_password}/" \
   /var/www/html/config/config.ini.php
 
-# Calculate the admin's password hash in the way that Piwik
+# Calculate the admin's password hash in the way that Matomo
 # recognizes it correctly
-piwik_admin_password_hash="$( php -r "echo password_hash(md5('${piwik_admin_password}'), PASSWORD_DEFAULT);" )"
-declare -r piwik_admin_password_hash
+matomo_admin_password_hash="$( php -r "echo password_hash(md5('${matomo_admin_password}'), PASSWORD_DEFAULT);" )"
+declare -r matomo_admin_password_hash
 
-mysql -u "${mysql_piwik_username}" \
-  -p"${mysql_piwik_new_password}" \
-  -D "${mysql_piwik_db_name}" \
-  -e "UPDATE user SET password = '${piwik_admin_password_hash}', email = '${piwik_admin_email}' WHERE login = 'admin'"
+mysql -u "${mysql_matomo_username}" \
+  -p"${mysql_matomo_new_password}" \
+  -D "${mysql_matomo_db_name}" \
+  -e "UPDATE user SET password = '${matomo_admin_password_hash}', email = '${matomo_admin_email}' WHERE login = 'admin'"
