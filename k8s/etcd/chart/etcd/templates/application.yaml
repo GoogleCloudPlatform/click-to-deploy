@@ -46,22 +46,27 @@ spec:
 
       Forward etcd service client port to your machine.
       ```shell
-      kubectl port-forward svc/{{ .Release.Name }}-etcd --namespace {{ .Release.Namespace }} 2379
+      kubectl port-forward svc/{{ .Release.Name }}-etcd \
+        --namespace {{ .Release.Namespace }} 2379
       ```
 
       Then run below commands in other terminal:
       ```shell
       # Get etcd root user password
-      ETCD_ROOT_PASSWORD=$(kubectl get secret --namespace {{ .Release.Namespace }} {{ .Release.Name }}-etcd -o jsonpath="{.data.etcd-root-password}" | base64 --decode)
+      ETCD_ROOT_PASSWORD=$(kubectl get secret \
+        --namespace {{ .Release.Namespace }} {{ .Release.Name }}-etcd \
+        -o jsonpath="{.data.etcd-root-password}" | base64 --decode)
 
       # Interact with etcd
       export ETCDCTL_API=3
 
       ## Put sample value using credentials
-      etcdctl --user root:${ETCD_ROOT_PASSWORD} --endpoints=http://localhost:2379 put foo bar
+      etcdctl --user root:${ETCD_ROOT_PASSWORD} \
+        --endpoints=http://localhost:2379 put foo bar
 
       ## Get value
-      etcdctl --user root:${ETCD_ROOT_PASSWORD} --endpoints=http://localhost:2379 get foo
+      etcdctl --user root:${ETCD_ROOT_PASSWORD} \
+        --endpoints=http://localhost:2379 get foo
       ```
   info:
   - name: etcd
