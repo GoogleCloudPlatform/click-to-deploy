@@ -42,7 +42,7 @@ spec:
       For information on getting the credentials for a cluster, read the [Google Kubernetes Engine documentation](https://cloud.google.com/kubernetes-engine/docs/quickstart#get_authentication_credentials_for_the_cluster).
 
       Make sure that all components are in `ready` status.
-      To connect to etcd service from your machine, install latest release of etcd binaries. For installation of etcd binaries, visit [official etcd documentation](https://github.com/etcd-io/etcd/releases).
+      To connect to etcd service from your machine, install latest release of etcd binaries. For installation of etcd binaries, visit [official etcd documentation](https://github.com/etcd-io/etcd/releases/tag/v{{ (split "-" .Values.image.tag )._0 }}).
 
       Forward etcd service client port to your machine.
       ```shell

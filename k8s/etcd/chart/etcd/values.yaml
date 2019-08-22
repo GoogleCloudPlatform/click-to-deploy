@@ -9,3 +9,5 @@ service:
   peerPort: 2380
 persistence:
   storageClass: null
+metrics:
+  enabled: false
