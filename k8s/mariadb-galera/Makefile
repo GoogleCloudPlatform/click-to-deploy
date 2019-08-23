@@ -14,7 +14,7 @@ PEER_FINDER_TAG ?= latest
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 TRACK ?= 10.3
-RELEASE ?= 10.3.16-$(BUILD_ID)
+RELEASE ?= 10.3.17-$(BUILD_ID)
 
 $(info ---- TRACK = $(TRACK))
 $(info ---- RELEASE = $(RELEASE))
