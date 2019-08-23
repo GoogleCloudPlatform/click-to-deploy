@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-galera-cfg
+  labels: &MariaDBDeploymentLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: mariadb-server
+data:
+  galera.cnf: |
+    [galera]
+    user=mysql
+    bind-address=0.0.0.0
+    default_storage_engine=InnoDB
+    binlog_format=ROW
+    innodb_autoinc_lock_mode=2
+    innodb_flush_log_at_trx_commit=0
+    query_cache_size=0
+    query_cache_type=0
+    # MariaDB Galera settings
+    wsrep_on=ON
+    wsrep_provider=/usr/lib/galera/libgalera_smm.so
+    wsrep_sst_method=rsync
+    # Cluster settings (automatically updated by the on-start.sh script)
+    wsrep_cluster_address=gcomm://
+    wsrep_cluster_name={{ .Release.Name }}-galera
+    wsrep_node_address=127.0.0.1
+
+  mariadb.cnf: |
+    [mysqld]
+    port={{ .Values.service.port }}
+    ignore_db_dirs=lost+found
+    innodb_log_file_size=50M
+
+    ssl-ca=/etc/mysql/mariadb.conf.d/certs/ca.crt
+    ssl-cert=/etc/mysql/mariadb.conf.d/certs/tls.crt
+    ssl-key=/etc/mysql/mariadb.conf.d/certs/tls.key
+
+  on-start.sh: |
+    {{- tpl (.Files.Get "config/on-start.sh") . | nindent 4 }}
+
+  galera-recovery.sh: |
+    {{- tpl (.Files.Get "config/galera-recovery.sh") . | nindent 4 }}
