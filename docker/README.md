@@ -16,7 +16,9 @@ While the migration is in progress, you can find the source code for each image 
 following GitHub repositories:
 
 *   https://github.com/GoogleCloudPlatform/cassandra-docker
+*   https://github.com/GoogleCloudPlatform/consul-docker
 *   https://github.com/GoogleCloudPlatform/elasticsearch-docker
+*   https://github.com/GoogleCloudPlatform/etcd-docker
 *   https://github.com/GoogleCloudPlatform/fluentd-docker
 *   https://github.com/GoogleCloudPlatform/grafana-docker
 *   https://github.com/GoogleCloudPlatform/influxdb-docker
