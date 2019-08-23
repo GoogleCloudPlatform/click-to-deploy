@@ -8,7 +8,7 @@ VERIFY_WAIT_TIMEOUT = 1800
 # The digest should be updated automatically, or tag <major>.<minor>.<path/build>
 # should be available on GCP Marketplace.
 # Use `.build/mariadb-galera/VERSION` target to fill the RELEASE variable.
-MARIADB_TAG ?= sha256:95b6d3af1d82bb56ed89970a641db4d08cb1fb30c1ae698060429d334db205ce
+MARIADB_TAG ?= sha256:a732af2cfccacefbfdc563a46366546af559fa0c81b33c08cc08ccb95fbce3de
 METRICS_EXPORTER_TAG ?= v0.5.1
 PEER_FINDER_TAG ?= latest
 
