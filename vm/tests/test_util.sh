@@ -17,7 +17,7 @@
 # This file is the first file which has to be included at the beginning of a test script.
 # Example:
 #
-# source "$(dirname "${0}")/test_util.sh"
+# soursce "$(dirname "${0}")/test_util.sh"
 
 set -eu
 
