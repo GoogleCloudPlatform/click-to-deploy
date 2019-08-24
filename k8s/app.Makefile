@@ -8,7 +8,7 @@ include $(makefile_dir)/common.Makefile
 include $(makefile_dir)/var.Makefile
 
 VERIFY_WAIT_TIMEOUT = 600
-
+## test
 ##### Helper functions #####
 
 # Extracts the name property from APP_PARAMETERS.
