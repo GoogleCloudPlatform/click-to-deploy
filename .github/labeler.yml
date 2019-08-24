@@ -1,0 +1,10 @@
+needs-triage:
+- '**'
+kind/docker:
+- 'docker/**'
+kind/k8s:
+- 'k8s/**'
+kind/vm:
+- 'vm/**'
+documentation:
+- '**/*.md'
