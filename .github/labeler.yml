@@ -2,10 +2,14 @@ needs-triage:
 - '**'
 kind/docker:
 - 'docker/**'
+- 'cloudbuild-docker.yaml'
 kind/k8s:
 - 'k8s/**'
 - 'triggers/k8s/**'
+- 'cloudbuild-k8s.yaml'
+- 'k8s.Dockerfile'
 kind/vm:
 - 'vm/**'
+- 'cloudbuild-vm.yaml'
 documentation:
 - '**/*.md'
