@@ -3,6 +3,7 @@ needs-triage:
 kind/docker:
 - 'docker/**'
 - 'cloudbuild-docker.yaml'
+- 'docker.Dockerfile'
 kind/k8s:
 - 'k8s/**'
 - 'triggers/k8s/**'
