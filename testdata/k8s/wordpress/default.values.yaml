@@ -1,0 +1,24 @@
+wordpressImage: marketplace.gcr.io/google/wordpress:latest
+
+db:
+  image: marketplace.gcr.io/google/wordpress/mysql:latest
+  rootPassword: ZXdld2FoY2gxT29qYWk2Ug==
+  wordpressUser: wordpress
+  wordpressPassword: Z2VpYmFoYmVpNHR1YmVTaA==
+
+  exporter:
+    image: marketplace.gcr.io/google/wordpress/mysqld-exporter:latest
+    user: mysqld-exporter
+    password: b29xdTdlb0doaWU1U2hvaA==
+
+apache:
+  exporter:
+    image: marketplace.gcr.io/google/wordpress/apache-exporter:latest
+
+admin:
+  username: admin
+  email: noreply@example.com
+  password: amFpN3hhZWxhZTVqb29kMkplZWQ=
+
+metrics:
+  image: marketplace.gcr.io/google/wordpress/prometheus-to-sd:latest

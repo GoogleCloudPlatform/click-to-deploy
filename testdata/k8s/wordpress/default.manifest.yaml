@@ -1,0 +1,509 @@
+---
+# Source: wordpress/templates/mysql-manifests.yaml
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: release-name-mysql-secret
+  labels:
+    app.kubernetes.io/name: "release-name"
+    app.kubernetes.io/component: wordpress-mysql
+type: Opaque
+stringData:
+  wp-user: "wordpress"
+data:
+  root-password: "ZXdld2FoY2gxT29qYWk2Ug=="
+  wp-password: "Z2VpYmFoYmVpNHR1YmVTaA=="
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: release-name-mysqld-exporter-secret
+  labels:
+    app.kubernetes.io/name: release-name
+    app.kubernetes.io/component: wordpress-mysql
+stringData:
+  mysqld_exporter.sql: |
+    CREATE USER IF NOT EXISTS 'mysqld-exporter'@'127.0.0.1' IDENTIFIED BY 'ooqu7eoGhie5Shoh' WITH MAX_USER_CONNECTIONS 3;
+    # https://dev.mysql.com/doc/refman/5.6/en/grant.html
+    GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'mysqld-exporter'@'127.0.0.1';
+    FLUSH PRIVILEGES;
+data:
+  mysqld-exporter-pass: b29xdTdlb0doaWU1U2hvaA==
+---
+apiVersion: apps/v1beta2
+kind: StatefulSet
+metadata:
+  name: release-name-mysql
+  labels: &MySQLDeploymentLabels
+    app.kubernetes.io/name: "release-name"
+    app.kubernetes.io/component: wordpress-mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels: *MySQLDeploymentLabels
+  serviceName: release-name-mysql-svc
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels: *MySQLDeploymentLabels
+    spec:
+      containers:
+      - image: marketplace.gcr.io/google/wordpress/mysql:latest
+        name: mysql
+        env:
+        # A password for root superuser.
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: release-name-mysql-secret
+              key: root-password
+        # A database name to be created at startup.
+        - name: MYSQL_DATABASE
+          value: wordpress
+        # A new user to be created at startup.
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: release-name-mysql-secret
+              key: wp-user
+        # A password of the new user created at startup.
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: release-name-mysql-secret
+              key: wp-password
+        ports:
+        - name: mysql
+          containerPort: 3306
+        volumeMounts:
+        - name: release-name-mysql-pvc
+          mountPath: /var/lib/mysql
+          subPath: data
+        - name: mysql-config
+          mountPath: /docker-entrypoint-initdb.d
+          readOnly: true
+        readinessProbe:
+          exec:
+            command: ["sh", "-c", "exec mysqladmin status -uroot -p$MYSQL_ROOT_PASSWORD"]
+          initialDelaySeconds: 15
+        livenessProbe:
+          exec:
+            command: ["sh", "-c", "exec mysqladmin status -uroot -p$MYSQL_ROOT_PASSWORD"]
+          initialDelaySeconds: 120
+      - image: marketplace.gcr.io/google/wordpress/mysqld-exporter:latest
+        name: mysqld-exporter
+        env:
+        - name: MYSQLD_EXPORTER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: release-name-mysqld-exporter-secret
+              key: mysqld-exporter-pass
+        - name: DATA_SOURCE_NAME
+          value: mysqld-exporter:$(MYSQLD_EXPORTER_PASSWORD)@(127.0.0.1:3306)/
+        ports:
+        - name: exporter
+          containerPort: 9104
+        livenessProbe:
+          httpGet:
+            path: /metrics
+            port: 9104
+        readinessProbe:
+          httpGet:
+            path: /metrics
+            port: 9104
+          initialDelaySeconds: 60
+          timeoutSeconds: 30
+          failureThreshold: 10
+          periodSeconds: 10
+      
+      volumes:
+      - name: mysql-config
+        secret:
+          secretName: release-name-mysqld-exporter-secret
+          items:
+          - key: mysqld_exporter.sql
+            path: mysqld_exporter.sql
+  volumeClaimTemplates:
+  - metadata:
+      name: release-name-mysql-pvc
+      labels:
+        app.kubernetes.io/name: "release-name"
+        app.kubernetes.io/component: wordpress-server
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: standard
+      resources:
+        requests:
+          storage: 5Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: release-name-mysql-svc
+  labels:
+    app.kubernetes.io/name: "release-name"
+    app.kubernetes.io/component: wordpress-mysql
+spec:
+  ports:
+  - name: mysql
+    port: 3306
+  selector:
+    app.kubernetes.io/name: "release-name"
+    app.kubernetes.io/component: wordpress-mysql
+  clusterIP: None
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: release-name-mysqld-exporter-svc
+  labels:
+    app.kubernetes.io/name: release-name
+    app.kubernetes.io/component: wordpress-mysql
+spec:
+  ports:
+  - name: exporter
+    port: 9104
+  selector:
+    app.kubernetes.io/name: release-name
+    app.kubernetes.io/component: wordpress-mysql
+  clusterIP: None
+
+---
+# Source: wordpress/templates/wordpress-manifests.yaml
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: release-name-wordpress-secret
+  labels:
+    app.kubernetes.io/name: "release-name"
+    app.kubernetes.io/component: wordpress-webserver
+type: Opaque
+stringData:
+  wp-user: "admin"
+  wp-email: "noreply@example.com"
+data:
+  wp-password: "amFpN3hhZWxhZTVqb29kMkplZWQ="
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: release-name-wordpress-config
+  labels:
+    app.kubernetes.io/name: release-name
+    app.kubernetes.io/component: wordpress-webserver
+data:
+  wp-install.sh: |
+    # https://codex.wordpress.org/Installing_WordPress#Installing_WordPress
+    # wait for connection
+    timeout 60 bash -c 'until echo > /dev/tcp/localhost/80; do sleep 2; done'
+    curl --fail --retry 5 --retry-delay 5 --retry-connrefused \
+      --data-urlencode "weblog_title=WordPress on Google Kubernetes Engine" \
+      --data-urlencode "user_name=${WP_ADMIN_USERNAME}" \
+      --data-urlencode "admin_email=${WP_ADMIN_EMAIL}" \
+      --data-urlencode "admin_password=${WP_ADMIN_PASSWORD}" \
+      --data-urlencode "admin_password2=${WP_ADMIN_PASSWORD}" \
+      --data-urlencode "pw_weak=1" \
+      "http://localhost/wp-admin/install.php?step=2"
+  # .htaccess must be overwritten to allow connection to the /server-status endpoint.
+  # By default, WordPress' .htaccess doesn't allow it.
+  .htaccess: |
+    # BEGIN WordPress
+    <IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    RewriteRule ^index\.php$ - [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    # Allow Apache mod_status
+    RewriteCond %{REQUEST_URI} !=/server-status
+    RewriteRule . /index.php [L]
+    </IfModule>
+    # END WordPress
+---
+apiVersion: apps/v1beta2
+kind: StatefulSet
+metadata:
+  name: release-name-wordpress
+  labels: &WordPressDeploymentLabels
+    app.kubernetes.io/name: "release-name"
+    app.kubernetes.io/component: wordpress-webserver
+spec:
+  replicas: 1
+  serviceName: release-name-wordpress-svc
+  selector:
+    matchLabels: *WordPressDeploymentLabels
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels: *WordPressDeploymentLabels
+    spec:
+      containers:
+      - image: marketplace.gcr.io/google/wordpress:latest
+        name: wordpress
+        env:
+        # A WordPress' username.
+        # The "WP" prefix is used, as "WORDPRESS" is reserved for env variables.
+        # And we don't want to replace var directly in the curl command.
+        - name: WP_ADMIN_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: release-name-wordpress-secret
+              key: wp-user
+        # A WordPress' e-mail address.
+        # The "WP" prefix is used, as "WORDPRESS" is reserved for env variables.
+        # And we don't want to replace var directly in the curl command.
+        - name: WP_ADMIN_EMAIL
+          valueFrom:
+            secretKeyRef:
+              name: release-name-wordpress-secret
+              key: wp-email
+        # A WordPress' password.
+        # The "WP" prefix is used, as "WORDPRESS" is reserved for env variables.
+        # And we don't want to replace var directly in the curl command.
+        - name: WP_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: release-name-wordpress-secret
+              key: wp-password
+        # A hostname and port of MySQL service.
+        - name: WORDPRESS_DB_HOST
+          value: release-name-mysql-svc
+        # A username used for accessing the database.
+        - name: WORDPRESS_DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: release-name-mysql-secret
+              key: wp-user
+        # A password used for accessing the database.
+        - name: WORDPRESS_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: release-name-mysql-secret
+              key: wp-password
+        # A database name used by WordPress.
+        - name: WORDPRESS_DB_NAME
+          value: wordpress
+        ports:
+        - name: http
+          containerPort: 80
+        volumeMounts:
+        - name: release-name-wordpress-pvc
+          mountPath: /var/www/html
+          subPath: wp
+        - name: config-map
+          mountPath: /wp-install.sh
+          subPath: wp-install.sh
+          readOnly: true
+        # .htaccess must be overwritten to allow connection to the /server-status endpoint.
+        - name: apache-config
+          mountPath: /var/www/html/.htaccess
+          subPath: .htaccess
+          readOnly: true
+        lifecycle:
+          postStart:
+            exec:
+              command:
+              - "/bin/bash"
+              - "-eu"
+              - "/wp-install.sh"
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 2
+          failureThreshold: 5
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 120
+      - image: marketplace.gcr.io/google/wordpress/apache-exporter:latest
+        name: apache-exporter
+        args:
+        - --scrape_uri=http://127.0.0.1/server-status?auto
+        ports:
+        - name: exporter
+          containerPort: 9117
+        livenessProbe:
+          httpGet:
+            path: /metrics
+            port: 9117
+        readinessProbe:
+          httpGet:
+            path: /metrics
+            port: 9117
+          initialDelaySeconds: 60
+          timeoutSeconds: 30
+          failureThreshold: 10
+          periodSeconds: 10
+      
+      volumes:
+      - name: apache-config
+        configMap:
+          name: release-name-wordpress-config
+          items:
+          - key: .htaccess
+            path: .htaccess
+      - name: config-map
+        configMap:
+          name: release-name-wordpress-config
+          items:
+          - key: wp-install.sh
+            path: wp-install.sh
+  volumeClaimTemplates:
+  - metadata:
+      name: release-name-wordpress-pvc
+      labels:
+        app.kubernetes.io/name: "release-name"
+        app.kubernetes.io/component: wordpress-webserver
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: standard
+      resources:
+        requests:
+          storage: 5Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: release-name-wordpress-svc
+  labels:
+    app.kubernetes.io/name: "release-name"
+    app.kubernetes.io/component: wordpress-webserver
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+  selector:
+    app.kubernetes.io/name: "release-name"
+    app.kubernetes.io/component: wordpress-webserver
+  
+  type: ClusterIP
+  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: release-name-apache-exporter-svc
+  labels:
+    app.kubernetes.io/name: release-name
+    app.kubernetes.io/component: wordpress-webserver
+spec:
+  ports:
+  - name: exporter
+    port: 9117
+  selector:
+    app.kubernetes.io/name: release-name
+    app.kubernetes.io/component: wordpress-webserver
+  clusterIP: None
+
+
+---
+# Source: wordpress/templates/application.yaml
+---
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "release-name"
+  namespace: "default"
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,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
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": "wordpress", "partner_name": "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: "release-name"
+spec:
+  descriptor:
+    type: WordPress
+    version: '5.x.x'
+    description: >-
+      WordPress is web software used to create websites and blogs.
+
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/wordpress/).
+      Additional community support is available on
+      [community forums](https://en.forums.wordpress.com).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy WordPress'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/wordpress/README.md
+    - description: Getting Started with WordPress
+      url: https://codex.wordpress.org/Getting_Started_with_WordPress
+    notes: |-
+      
+
+      # Open your WordPress site
+
+      WordPress is exposed in a ClusterIP-only service `release-name-wordpress-svc`. To connect to
+      WordPress UI, you can either expose a public service endpoint or keep it private, but connect
+      from you local environment with `kubectl port-forward`.
+
+      ## Forward WordPress port in local environment
+
+      You can use port forwarding feature of `kubectl` to forward WordPress's port to your local
+      machine. Run the following command in background:
+
+      ```shell
+      kubectl port-forward \
+        --namespace default \
+        svc/release-name-wordpress-svc \
+        8080:80
+      ```
+
+      Now you can access WordPress UI with [http://localhost:8080](http://localhost:8080).
+
+      
+  info:
+  
+  - name: Forward WordPress port locally
+    value: kubectl port-forward --namespace default svc/release-name-wordpress-svc 8080:80
+  - name: WordPress site address
+    value: http://localhost:8080/
+  - name: WordPress admin address
+    value: http://localhost:8080/wp-admin
+  
+  - name: WordPress username
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: wp-user
+        name: release-name-wordpress-secret
+  - name: WordPress e-mail address
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: wp-email
+        name: release-name-wordpress-secret
+  - name: WordPress password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: wp-password
+        name: release-name-wordpress-secret
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "release-name"
+  componentKinds:
+  - group: v1
+    kind: PersistentVolumeClaim
+  - group: apps/v1beta2
+    kind: StatefulSet
+  - group: v1
+    kind: Secret
+  - group: v1
+    kind: Service
+  
+  - group: v1
+    kind: ConfigMap
+
