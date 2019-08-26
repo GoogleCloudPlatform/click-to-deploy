@@ -1,4 +1,4 @@
-TAG ?= latest
+TAG ?= 3.0
 REGISTRY ?= gcr.io/gatekeeper-marketplace
 
 # Convenience makefiles.
