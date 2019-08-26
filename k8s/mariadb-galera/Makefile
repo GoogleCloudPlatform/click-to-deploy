@@ -26,10 +26,10 @@ SOURCE_REGISTRY ?= marketplace.gcr.io/google
 # ===== end to move =====
 
 # Images
-IMAGE_MARIADB ?= $(SOURCE_REGISTRY)/mariadb10@$(MARIADB_TAG)
-IMAGE_MARIADB_EXPORTER ?= $(SOURCE_REGISTRY)/mysql5:exporter
-IMAGE_PEER_FINDER ?= $(SOURCE_REGISTRY)/peer-finder0:$(PEER_FINDER_TAG)
-IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+image-$(APP_ID) ?= $(SOURCE_REGISTRY)/mariadb10@$(MARIADB_TAG)
+image-mysqld-exporter ?= $(SOURCE_REGISTRY)/mysql5:exporter
+image-peer-finder ?= $(SOURCE_REGISTRY)/peer-finder0:$(PEER_FINDER_TAG)
+image-prometheus-to-sd ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 # Additional variables
 ifdef METRICS_EXPORTER_ENABLED
@@ -53,11 +53,13 @@ APP_PARAMETERS ?= { \
 # must be included after.
 include ../app_v2.Makefile
 
+.PHONY: images
+TARGETS := $(APP_ID) mysqld-exporter prometheus-to-sd peer-finder
+
+images: $(TARGETS)
+
 app/build:: .build/$(APP_ID)/deployer \
-            .build/$(APP_ID)/$(APP_ID) \
-            .build/$(APP_ID)/mysqld-exporter \
-            .build/$(APP_ID)/prometheus-to-sd \
-            .build/$(APP_ID)/peer-finder \
+            images \
             .build/$(APP_ID)/tester \
             .build/$(APP_ID)/VERSION
 
@@ -96,59 +98,15 @@ app/build:: .build/$(APP_ID)/deployer \
 	@touch "$@"
 
 
-.build/$(APP_ID)/$(APP_ID): .build/var/REGISTRY \
-                                      .build/var/TRACK \
-                                      .build/var/RELEASE \
-                                      | .build/$(APP_ID)
-	docker pull $(IMAGE_MARIADB)
-	docker tag $(IMAGE_MARIADB) "$(REGISTRY)/$(APP_ID):$(TRACK)"
-	docker tag "$(REGISTRY)/$(APP_ID):$(TRACK)" \
-	    "$(REGISTRY)/$(APP_ID):$(RELEASE)"
-	docker push "$(REGISTRY)/$(APP_ID):$(TRACK)"
-	docker push "$(REGISTRY)/$(APP_ID):$(RELEASE)"
-	@touch "$@"
-
-
-.build/$(APP_ID)/mysqld-exporter: .build/var/REGISTRY \
-                                       .build/var/TRACK \
-                                       .build/var/RELEASE \
-                                       | .build/$(APP_ID)
-	docker pull $(IMAGE_MARIADB_EXPORTER)
-	docker tag $(IMAGE_MARIADB_EXPORTER) \
-	    "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(TRACK)"
-	docker tag "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(TRACK)" \
-	    "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(RELEASE)"
-	docker push "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(TRACK)"
-	docker push "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(RELEASE)"
-	@touch "$@"
-
-
-.build/$(APP_ID)/prometheus-to-sd: .build/var/REGISTRY \
-                                        .build/var/TRACK \
-                                        .build/var/RELEASE \
-                                        | .build/$(APP_ID)
-	docker pull $(IMAGE_PROMETHEUS_TO_SD)
-	docker tag $(IMAGE_PROMETHEUS_TO_SD) \
-	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
-	docker tag "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)" \
-	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
-	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
-	docker push "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(RELEASE)"
-	@touch "$@"
-
-
-.build/$(APP_ID)/peer-finder: .build/var/REGISTRY \
-                                   .build/var/TRACK \
-                                   .build/var/RELEASE \
-                                   | .build/$(APP_ID)
-	docker pull $(IMAGE_PEER_FINDER)
-	docker tag $(IMAGE_PEER_FINDER) \
-	    "$(REGISTRY)/$(APP_ID)/peer-finder:$(TRACK)"
-	docker tag "$(REGISTRY)/$(APP_ID)/peer-finder:$(TRACK)" \
-	    "$(REGISTRY)/$(APP_ID)/peer-finder:$(RELEASE)"
-	docker push "$(REGISTRY)/$(APP_ID)/peer-finder:$(TRACK)"
-	docker push "$(REGISTRY)/$(APP_ID)/peer-finder:$(RELEASE)"
-	@touch "$@"
+$(TARGETS): .build/var/REGISTRY \
+            .build/var/TRACK \
+            .build/var/RELEASE \
+            | .build/$(APP_ID)
+	docker pull $(image-$@)
+	docker tag $(image-$@) "$(REGISTRY)/$@:$(TRACK)"
+	docker tag $(image-$@) "$(REGISTRY)/$@:$(RELEASE)"
+	docker push "$(REGISTRY)/$@:$(TRACK)"
+	docker push "$(REGISTRY)/$@:$(RELEASE)"
 
 
 .build/$(APP_ID)/tester: .build/var/TESTER_IMAGE \
