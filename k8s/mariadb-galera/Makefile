@@ -16,32 +16,36 @@ BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 TRACK ?= 10.3
 RELEASE ?= 10.3.17-$(BUILD_ID)
 
-$(info ---- TRACK = $(TRACK))
-$(info ---- RELEASE = $(RELEASE))
-
+# ===== to move =====
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/$(APP_ID)/deployer:$(RELEASE)
 APP_DEPLOYER_IMAGE_TRACK_TAG ?= $(REGISTRY)/$(APP_ID)/deployer:$(TRACK)
+TESTER_IMAGE ?= $(REGISTRY)/$(APP_ID)/tester:$(RELEASE)
 APP_GCS_PATH ?= $(GCS_URL)/$(APP_ID)/$(TRACK)
 
-NAME ?= $(APP_ID)-1
-
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
+# ===== end to move =====
+
+# Images
 IMAGE_MARIADB ?= $(SOURCE_REGISTRY)/mariadb10@$(MARIADB_TAG)
 IMAGE_MARIADB_EXPORTER ?= $(SOURCE_REGISTRY)/mysql5:exporter
 IMAGE_PEER_FINDER ?= $(SOURCE_REGISTRY)/peer-finder0:$(PEER_FINDER_TAG)
 IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
+# Additional variables
 ifdef METRICS_EXPORTER_ENABLED
   METRICS_EXPORTER_ENABLED_FIELD = , "prometheusToSd.enabled": $(METRICS_EXPORTER_ENABLED)
 endif
 
+$(info ---- TRACK = $(TRACK))
+$(info ---- RELEASE = $(RELEASE))
+$(info ---- APP IMAGE = $(IMAGE_MARIADB))
+
+NAME ?= $(APP_ID)-1
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
   $(METRICS_EXPORTER_ENABLED_FIELD) \
 }
-
-TESTER_IMAGE ?= $(REGISTRY)/$(APP_ID)/tester:$(RELEASE)
 
 # app_v2.Makefile provides the main targets for installing the
 # application.
@@ -49,28 +53,28 @@ TESTER_IMAGE ?= $(REGISTRY)/$(APP_ID)/tester:$(RELEASE)
 # must be included after.
 include ../app_v2.Makefile
 
-app/build:: .build/mariadb-galera/deployer \
-            .build/mariadb-galera/mariadb-galera \
-            .build/mariadb-galera/mysqld-exporter \
-            .build/mariadb-galera/prometheus-to-sd \
-            .build/mariadb-galera/peer-finder \
-            .build/mariadb-galera/tester \
-            .build/mariadb-galera/VERSION
+app/build:: .build/$(APP_ID)/deployer \
+            .build/$(APP_ID)/$(APP_ID) \
+            .build/$(APP_ID)/mysqld-exporter \
+            .build/$(APP_ID)/prometheus-to-sd \
+            .build/$(APP_ID)/peer-finder \
+            .build/$(APP_ID)/tester \
+            .build/$(APP_ID)/VERSION
 
 
-.build/mariadb-galera: | .build
+.build/$(APP_ID): | .build
 	mkdir -p "$@"
 
 
-.PHONY: .build/mariadb-galera/VERSION
-.build/mariadb-galera/VERSION:
+.PHONY: .build/$(APP_ID)/VERSION
+.build/$(APP_ID)/VERSION:
 	docker run --rm --entrypoint=printenv $(IMAGE_MARIADB) MARIADB_VERSION \
 	    | awk -F'[+:]' '{ print $$2 }'
 
 
-.build/mariadb-galera/deployer: deployer/* \
-                                chart/mariadb-galera/* \
-                                chart/mariadb-galera/templates/* \
+.build/$(APP_ID)/deployer: deployer/* \
+                                chart/$(APP_ID)/* \
+                                chart/$(APP_ID)/templates/* \
                                 schema.yaml \
                                 .build/var/APP_DEPLOYER_IMAGE \
                                 .build/var/APP_DEPLOYER_IMAGE_TRACK_TAG \
@@ -78,7 +82,7 @@ app/build:: .build/mariadb-galera/deployer \
                                 .build/var/REGISTRY \
                                 .build/var/TRACK \
                                 .build/var/RELEASE \
-                                | .build/mariadb-galera
+                                | .build/$(APP_ID)
 	docker build \
 	    --build-arg REGISTRY="$(REGISTRY)/$(APP_ID)" \
 	    --build-arg TAG="$(RELEASE)" \
@@ -92,10 +96,10 @@ app/build:: .build/mariadb-galera/deployer \
 	@touch "$@"
 
 
-.build/mariadb-galera/mariadb-galera: .build/var/REGISTRY \
+.build/$(APP_ID)/$(APP_ID): .build/var/REGISTRY \
                                       .build/var/TRACK \
                                       .build/var/RELEASE \
-                                      | .build/mariadb-galera
+                                      | .build/$(APP_ID)
 	docker pull $(IMAGE_MARIADB)
 	docker tag $(IMAGE_MARIADB) "$(REGISTRY)/$(APP_ID):$(TRACK)"
 	docker tag "$(REGISTRY)/$(APP_ID):$(TRACK)" \
@@ -105,10 +109,10 @@ app/build:: .build/mariadb-galera/deployer \
 	@touch "$@"
 
 
-.build/mariadb-galera/mysqld-exporter: .build/var/REGISTRY \
+.build/$(APP_ID)/mysqld-exporter: .build/var/REGISTRY \
                                        .build/var/TRACK \
                                        .build/var/RELEASE \
-                                       | .build/mariadb-galera
+                                       | .build/$(APP_ID)
 	docker pull $(IMAGE_MARIADB_EXPORTER)
 	docker tag $(IMAGE_MARIADB_EXPORTER) \
 	    "$(REGISTRY)/$(APP_ID)/mysqld-exporter:$(TRACK)"
@@ -119,10 +123,10 @@ app/build:: .build/mariadb-galera/deployer \
 	@touch "$@"
 
 
-.build/mariadb-galera/prometheus-to-sd: .build/var/REGISTRY \
+.build/$(APP_ID)/prometheus-to-sd: .build/var/REGISTRY \
                                         .build/var/TRACK \
                                         .build/var/RELEASE \
-                                        | .build/mariadb-galera
+                                        | .build/$(APP_ID)
 	docker pull $(IMAGE_PROMETHEUS_TO_SD)
 	docker tag $(IMAGE_PROMETHEUS_TO_SD) \
 	    "$(REGISTRY)/$(APP_ID)/prometheus-to-sd:$(TRACK)"
@@ -133,10 +137,10 @@ app/build:: .build/mariadb-galera/deployer \
 	@touch "$@"
 
 
-.build/mariadb-galera/peer-finder: .build/var/REGISTRY \
+.build/$(APP_ID)/peer-finder: .build/var/REGISTRY \
                                    .build/var/TRACK \
                                    .build/var/RELEASE \
-                                   | .build/mariadb-galera
+                                   | .build/$(APP_ID)
 	docker pull $(IMAGE_PEER_FINDER)
 	docker tag $(IMAGE_PEER_FINDER) \
 	    "$(REGISTRY)/$(APP_ID)/peer-finder:$(TRACK)"
@@ -147,9 +151,9 @@ app/build:: .build/mariadb-galera/deployer \
 	@touch "$@"
 
 
-.build/mariadb-galera/tester: .build/var/TESTER_IMAGE \
+.build/$(APP_ID)/tester: .build/var/TESTER_IMAGE \
                               $(shell find apptest -type f) \
-                              | .build/mariadb-galera
+                              | .build/$(APP_ID)
 	$(call print_target,$@)
 	cd apptest/tester \
 	    && docker build --tag "$(TESTER_IMAGE)" .
