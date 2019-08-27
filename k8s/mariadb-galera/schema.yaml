@@ -70,6 +70,7 @@ properties:
     title: Replicas
     description: Number of replicas in MariaDB cluster
     default: 3
+    minimum: 1
   db.rootPassword:
     type: string
     x-google-marketplace:
