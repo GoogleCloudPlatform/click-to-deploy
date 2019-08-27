@@ -50,6 +50,9 @@ x-google-marketplace:
 properties:
   name:
     type: string
+    # limits length of app name due to galera limitation
+    # of wsrep_cluster_name and wsrep_cluster_address fields length
+    maxLength: 26
     x-google-marketplace:
       type: NAME
   namespace:
@@ -61,7 +64,7 @@ properties:
     title: Volume size
     description: Volume size per instance
     default: '32Gi'
-    pattern: '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
   db.replicas:
     type: integer
     title: Replicas
