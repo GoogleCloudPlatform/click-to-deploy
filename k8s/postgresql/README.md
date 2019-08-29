@@ -283,15 +283,15 @@ Forward the port locally:
 ```shell
 kubectl port-forward \
   --namespace "${NAMESPACE}" \
-  "${APP_INSTANCE_NAME}-postgresql-0" 5432
+  "${APP_INSTANCE_NAME}-postgresql-0" 15432:5432
 ```
 
 Sign in to PostgreSQL:
 
 ```shell
-PGPASSWORD=$(kubectl get secret "${APP_INSTANCE_NAME}-secret" --output=jsonpath='{.data.password}' | openssl base64 -d -A)
+PGPASSWORD=$(kubectl get secret "${APP_INSTANCE_NAME}-secret" --output=jsonpath='{.data.password}' --namespace "${NAMESPACE}" | openssl base64 -d -A)
 
-echo PGPASSWORD=$PGPASSWORD sslmode=require psql -U postgres -h 127.0.0.1
+PGPASSWORD=$PGPASSWORD sslmode=require psql -U postgres -h 127.0.0.1 -p 15432
 ```
 
 # Application metrics
