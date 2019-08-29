@@ -15,15 +15,18 @@
 description: Trigger for K8s elastic-gke-logging
 filename: cloudbuild-k8s.yaml
 github:
+  installationId: '261964'
   name: click-to-deploy
   owner: GoogleCloudPlatform
   pullRequest:
     branch: .*
     commentControl: COMMENTS_ENABLED
+id: 9e3fcca4-095f-49fc-b0ed-9eab6cc6063f
 includedFiles:
 - cloudbuild-k8s.yaml
 - k8s.Dockerfile
 - k8s/elastic-gke-logging/**
 - k8s/*
+name: 9e3fcca4-095f-49fc-b0ed-9eab6cc6063f
 substitutions:
   _SOLUTION_NAME: elastic-gke-logging

@@ -1,13 +1,25 @@
-# Create a build trigger for a GitHub repository
+# Cloud Build triggers for a GitHub repository
 
 We use Google Cloud Build (GCB) triggers to test the applications.
 
-*   Run the following command to create a trigger for your Kubernetes
+For more information, see the
+[`gcloud alpha builds triggers`](https://cloud.google.com/sdk/gcloud/reference/alpha/builds/triggers/)
+commands.
+
+## Create or update a trigger
+
+*   Run the following command to create or update a trigger for your Kubernetes
     application:
 
+    > **NOTE**: To update the trigger, the configuration file must contain the
+    > trigger ID or the name of the existing trigger, otherwise a new trigger
+    > will be created.
+
+    > **IMPORTANT**: Mark new created triggers as required in repository settings.
+
     ```shell
-    gcloud alpha builds triggers create github \
-      --trigger-config k8s/[APP_NAME].yaml \
+    gcloud alpha builds triggers import \
+      --source k8s/[APP_NAME].yaml \
       --project [PROJECT_ID]
     ```
 
@@ -17,6 +29,27 @@ We use Google Cloud Build (GCB) triggers to test the applications.
         trigger.
     *   `[PROJECT_ID]` is the GCP project ID where the trigger will be created.
 
+## Export an existing trigger
+
+*   Run the following command to export an existing trigger to file for your
+    Kubernetes application:
+
+    ```shell
+    gcloud alpha builds triggers export [TRIGGER] \
+      --destination k8s/[APP_NAME].yaml \
+      --project [PROJECT_ID]
+    ```
+
+    Where:
+
+    *   `[TRIGGER]` is an ID of the trigger or fully qualified identifier for
+        the trigger.
+    *   `[APP_NAME]` is the application name for which you want to export the
+        configuration.
+    *   `[PROJECT_ID]` is the GCP project ID where the trigger will be exported.
+
+## Get details about an existing trigger
+
 *   Run the following command to get details of an existing trigger:
 
     ```shell
@@ -24,7 +57,3 @@ We use Google Cloud Build (GCB) triggers to test the applications.
       --filter="filename:cloudbuild-k8s.yaml AND substitutions._SOLUTION_NAME:[APP_NAME]" \
       --project [PROJECT_ID]
     ```
-
-For more information, see the
-[`gcloud alpha builds triggers`](https://cloud.google.com/sdk/gcloud/reference/alpha/builds/triggers/)
-commands.

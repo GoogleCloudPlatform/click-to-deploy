@@ -15,15 +15,18 @@
 description: Trigger for K8s agones
 filename: cloudbuild-k8s.yaml
 github:
+  installationId: '261964'
   name: click-to-deploy
   owner: GoogleCloudPlatform
   pullRequest:
     branch: .*
     commentControl: COMMENTS_ENABLED
+id: ad2a6264-408f-4988-bf7b-2b329e8d8a8a
 includedFiles:
 - cloudbuild-k8s.yaml
 - k8s.Dockerfile
 - k8s/agones/**
 - k8s/*
+name: ad2a6264-408f-4988-bf7b-2b329e8d8a8a
 substitutions:
   _SOLUTION_NAME: agones
