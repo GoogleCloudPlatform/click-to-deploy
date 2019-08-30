@@ -53,12 +53,13 @@ APP_PARAMETERS ?= { \
 # must be included after.
 include ../app_v2.Makefile
 
-.PHONY: images
-TARGETS := $(APP_ID) mysqld-exporter prometheus-to-sd peer-finder
+.PHONY: images $(APP_ID)
+TARGETS := mysqld-exporter prometheus-to-sd peer-finder
 
 images: $(TARGETS)
 
 app/build:: .build/$(APP_ID)/deployer \
+            $(APP_ID) \
             images \
             .build/$(APP_ID)/tester \
             .build/$(APP_ID)/VERSION
@@ -75,33 +76,33 @@ app/build:: .build/$(APP_ID)/deployer \
 
 
 .build/$(APP_ID)/deployer: deployer/* \
-                                chart/$(APP_ID)/* \
-                                chart/$(APP_ID)/templates/* \
-                                schema.yaml \
-                                .build/var/APP_DEPLOYER_IMAGE \
-                                .build/var/APP_DEPLOYER_IMAGE_TRACK_TAG \
-                                .build/var/MARKETPLACE_TOOLS_TAG \
-                                .build/var/REGISTRY \
-                                .build/var/TRACK \
-                                .build/var/RELEASE \
-                                | .build/$(APP_ID)
+                           chart/$(APP_ID)/* \
+                           chart/$(APP_ID)/templates/* \
+                           schema.yaml \
+                           .build/var/APP_DEPLOYER_IMAGE \
+                           .build/var/APP_DEPLOYER_IMAGE_TRACK_TAG \
+                           .build/var/MARKETPLACE_TOOLS_TAG \
+                           .build/var/REGISTRY \
+                           .build/var/TRACK \
+                           .build/var/RELEASE \
+                           | .build/$(APP_ID)
 	docker build \
-	    --build-arg REGISTRY="$(REGISTRY)/$(APP_ID)" \
-	    --build-arg TAG="$(RELEASE)" \
-	    --build-arg MARKETPLACE_TOOLS_TAG="$(MARKETPLACE_TOOLS_TAG)" \
-	    --tag "$(APP_DEPLOYER_IMAGE)" \
-	    -f deployer/Dockerfile \
-	    .
+		--build-arg REGISTRY="$(REGISTRY)/$(APP_ID)" \
+		--build-arg TAG="$(RELEASE)" \
+		--build-arg MARKETPLACE_TOOLS_TAG="$(MARKETPLACE_TOOLS_TAG)" \
+		--tag "$(APP_DEPLOYER_IMAGE)" \
+		-f deployer/Dockerfile \
+		.
 	docker tag "$(APP_DEPLOYER_IMAGE)" "$(APP_DEPLOYER_IMAGE_TRACK_TAG)"
 	docker push "$(APP_DEPLOYER_IMAGE)"
 	docker push "$(APP_DEPLOYER_IMAGE_TRACK_TAG)"
 	@touch "$@"
 
 
-$(TARGETS): .build/var/REGISTRY \
-            .build/var/TRACK \
-            .build/var/RELEASE \
-            | .build/$(APP_ID)
+$(APP_ID): .build/var/REGISTRY \
+           .build/var/TRACK \
+           .build/var/RELEASE \
+           | .build/$(APP_ID)
 	docker pull $(image-$@)
 	docker tag $(image-$@) "$(REGISTRY)/$@:$(TRACK)"
 	docker tag $(image-$@) "$(REGISTRY)/$@:$(RELEASE)"
@@ -109,11 +110,22 @@ $(TARGETS): .build/var/REGISTRY \
 	docker push "$(REGISTRY)/$@:$(RELEASE)"
 
 
+$(TARGETS): .build/var/REGISTRY \
+            .build/var/TRACK \
+            .build/var/RELEASE \
+            | .build/$(APP_ID)
+	docker pull $(image-$@)
+	docker tag $(image-$@) "$(REGISTRY)/$(APP_ID)/$@:$(TRACK)"
+	docker tag $(image-$@) "$(REGISTRY)/$(APP_ID)/$@:$(RELEASE)"
+	docker push "$(REGISTRY)/$(APP_ID)/$@:$(TRACK)"
+	docker push "$(REGISTRY)/$(APP_ID)/$@:$(RELEASE)"
+
+
 .build/$(APP_ID)/tester: .build/var/TESTER_IMAGE \
                               $(shell find apptest -type f) \
                               | .build/$(APP_ID)
 	$(call print_target,$@)
 	cd apptest/tester \
-	    && docker build --tag "$(TESTER_IMAGE)" .
+		&& docker build --tag "$(TESTER_IMAGE)" .
 	docker push "$(TESTER_IMAGE)"
 	@touch "$@"
