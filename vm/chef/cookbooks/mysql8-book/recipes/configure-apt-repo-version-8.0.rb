@@ -25,4 +25,3 @@ bash 'configure mysql-apt-config v8.0' do
   apt-get update
 EOH
 end
-

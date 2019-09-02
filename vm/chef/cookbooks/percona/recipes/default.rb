@@ -95,7 +95,7 @@ EOF
 EOH
 end
 
-service "mysql" do
+service 'mysql' do
   action :stop
 end
 
