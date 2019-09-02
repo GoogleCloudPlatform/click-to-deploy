@@ -159,3 +159,7 @@ gcloud builds submit . \
 ## Foodcritic
 
 We use [Foodcritic](http://www.foodcritic.io/) as a lint tool for Chef cookbooks. Disabled rules are included in [`.foodcritic`](chef/.foodcritic) file.
+
+## Cookstyle
+
+We use [Cookstyle](https://github.com/chef/cookstyle) as a lint tool for Chef cookbooks. Disabled rules are included in [`.rubocop.yml`](chef/.rubocop.yml) file.
