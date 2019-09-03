@@ -91,7 +91,7 @@ app/build:: $(APP_ID) \
             .build/$(APP_ID)/VERSION
 
 
-.build/images: $(TARGETS)
+.build/images: $(TARGET_IMAGES)
 
 
 .build/$(APP_ID): | .build
@@ -134,7 +134,7 @@ $(APP_ID): .build/var/REGISTRY \
 	docker push "$(REGISTRY)/$@:$(RELEASE)"
 
 
-$(TARGETS): .build/var/REGISTRY \
+$(TARGET_IMAGES): .build/var/REGISTRY \
             .build/var/TRACK \
             .build/var/RELEASE \
             | .build/$(APP_ID)

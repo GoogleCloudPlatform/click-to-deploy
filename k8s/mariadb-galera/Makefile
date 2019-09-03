@@ -16,10 +16,10 @@ BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 TRACK ?= 10.3
 RELEASE ?= 10.3.17-$(BUILD_ID)
 
-TARGETS := mysqld-exporter prometheus-to-sd peer-finder
+# List of images used in application
+TARGET_IMAGES := mysqld-exporter prometheus-to-sd peer-finder
 
-
-# Images
+# Image names should correspond with TARGET_IMAGES list
 image-$(APP_ID) ?= $(SOURCE_REGISTRY)/mariadb10@$(MARIADB_TAG)
 image-mysqld-exporter ?= $(SOURCE_REGISTRY)/mysql5:exporter
 image-peer-finder ?= $(SOURCE_REGISTRY)/peer-finder0:$(PEER_FINDER_TAG)
