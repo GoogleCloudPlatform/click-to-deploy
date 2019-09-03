@@ -30,7 +30,6 @@ BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)
 
 
-
 # Additional variables
 ifdef METRICS_EXPORTER_ENABLED
   METRICS_EXPORTER_ENABLED_FIELD = , "prometheusToSd.enabled": $(METRICS_EXPORTER_ENABLED)
@@ -47,7 +46,7 @@ APP_PARAMETERS ?= { \
 # application.
 # It requires several APP_* variables defined above, and thus
 # must be included after.
-include ../app_v2.Makefile
+include ../app_v2_2.Makefile
 
 .PHONY: .build/$(APP_ID)/VERSION
 .build/$(APP_ID)/VERSION:
