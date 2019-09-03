@@ -1,4 +1,4 @@
-# Get first argv as image to resovl full path of image with sha256 hash sum
+# Get first argv as image to resolve full path of image with sha256 hash sum
 get_sha256 = $(shell docker pull $1 2>&1 > /dev/null \
 && docker inspect --format='{{ index .RepoDigests 0 }}' $1)
 
