@@ -91,7 +91,7 @@ app/build:: $(APP_ID) \
             .build/$(APP_ID)/VERSION
 
 
-.build/images: $(TARGETS)
+.build/images: $(TARGET_IMAGES)
 
 
 .build/$(APP_ID): | .build
@@ -134,7 +134,7 @@ $(APP_ID): .build/var/REGISTRY \
 	docker push "$(REGISTRY)/$@:$(RELEASE)"
 
 
-$(TARGETS): .build/var/REGISTRY \
+$(TARGET_IMAGES): .build/var/REGISTRY \
             .build/var/TRACK \
             .build/var/RELEASE \
             | .build/$(APP_ID)
@@ -156,6 +156,12 @@ $(TARGETS): .build/var/REGISTRY \
 
 
 ########### Main  targets ###########
+
+
+.PHONY: .build/$(APP_ID)/VERSION
+.build/$(APP_ID)/VERSION:
+	[[ "$(C2D_CONTAINER_RELEASE)" =~ ^$(TRACK)\..* ]] || \
+	( echo "C2D_RELEASE don't starts with TRACK or matchs TRACK exactly"; exit 1 )
 
 
 # Builds the application containers and push them to the registry.

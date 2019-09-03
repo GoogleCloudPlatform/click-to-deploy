@@ -11,11 +11,11 @@ VERIFY_WAIT_TIMEOUT = 1800
 # Use `.build/mariadb-galera/VERSION` target to fill the RELEASE variable.
 
 TRACK ?= 10.3
-
 METRICS_EXPORTER_TAG ?= v0.5.1
 PEER_FINDER_TAG ?= latest
 
-TARGETS := mysqld-exporter prometheus-to-sd peer-finder
+# List of images used in application
+TARGET_IMAGES := mysqld-exporter prometheus-to-sd peer-finder
 
 # Images
 image-$(APP_ID) ?= $(call get_sha256,$(SOURCE_REGISTRY)/mariadb10:$(TRACK))
@@ -23,7 +23,9 @@ image-mysqld-exporter ?= $(call get_sha256,$(SOURCE_REGISTRY)/mysql5:exporter)
 image-peer-finder ?= $(call get_sha256,$(SOURCE_REGISTRY)/peer-finder0:$(PEER_FINDER_TAG))
 image-prometheus-to-sd ?= $(call get_sha256,k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG))
 
-C2D_CONTAINER_RELEASE ?= $(call get_var_from_container,$(image-$(APP_ID)),MARIADB_VERSION)
+# TODO(kalinichenka): fix after container provides this variable
+# C2D_CONTAINER_RELEASE ?= $(call get_var_from_container,$(image-$(APP_ID)),MARIADB_VERSION)
+C2D_CONTAINER_RELEASE ?= 10.3.17
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)
@@ -46,8 +48,3 @@ APP_PARAMETERS ?= { \
 # It requires several APP_* variables defined above, and thus
 # must be included after.
 include ../app_v2_1.Makefile
-
-.PHONY: .build/$(APP_ID)/VERSION
-.build/$(APP_ID)/VERSION:
-	[[ "$(C2D_CONTAINER_RELEASE)" =~ ^$(TRACK)\..* ]] || \
-	( echo "C2D_RELEASE don't starts with TRACK or matchs TRACK exactly"; exit 1 )

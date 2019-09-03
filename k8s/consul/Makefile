@@ -43,8 +43,3 @@ APP_PARAMETERS ?= { \
 # It requires several APP_* variables defined above, and thus
 # must be included after.
 include ../app_v2_1.Makefile
-
-.PHONY: .build/$(APP_ID)/VERSION
-.build/$(APP_ID)/VERSION:
-	[[ "$(C2D_CONTAINER_RELEASE)" =~ ^$(TRACK)\..* ]] || \
-	( echo "C2D_RELEASE don't starts with TRACK or matchs TRACK exactly"; exit 1 )
