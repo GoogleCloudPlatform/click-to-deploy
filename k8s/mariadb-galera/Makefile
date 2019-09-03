@@ -25,7 +25,6 @@ image-mysqld-exporter ?= $(SOURCE_REGISTRY)/mysql5:exporter
 image-peer-finder ?= $(SOURCE_REGISTRY)/peer-finder0:$(PEER_FINDER_TAG)
 image-prometheus-to-sd ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
-
 # Additional variables
 ifdef METRICS_EXPORTER_ENABLED
   METRICS_EXPORTER_ENABLED_FIELD = , "prometheusToSd.enabled": $(METRICS_EXPORTER_ENABLED)
@@ -42,7 +41,7 @@ APP_PARAMETERS ?= { \
 # application.
 # It requires several APP_* variables defined above, and thus
 # must be included after.
-include ../app_v2.Makefile
+include ../app_v2_2.Makefile
 
 .PHONY: .build/$(APP_ID)/VERSION
 .build/$(APP_ID)/VERSION:
