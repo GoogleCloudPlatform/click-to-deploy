@@ -17,15 +17,13 @@ PEER_FINDER_TAG ?= latest
 
 TARGETS := mysqld-exporter prometheus-to-sd peer-finder
 
-$(info ---- $(shell make -v))
-
 # Images
 image-$(APP_ID) ?= $(call get_sha256,$(SOURCE_REGISTRY)/mariadb10:$(TRACK))
 image-mysqld-exporter ?= $(call get_sha256,$(SOURCE_REGISTRY)/mysql5:exporter)
 image-peer-finder ?= $(call get_sha256,$(SOURCE_REGISTRY)/peer-finder0:$(PEER_FINDER_TAG))
 image-prometheus-to-sd ?= $(call get_sha256,k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG))
 
-C2D_CONTAINER_RELEASE ?= $(call get_var_from_container,$(image-$(APP_ID)) ,MARIADB_VERSION)
+C2D_CONTAINER_RELEASE ?= $(call get_var_from_container,$(image-$(APP_ID)),MARIADB_VERSION)
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)
