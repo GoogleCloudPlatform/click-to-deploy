@@ -20,5 +20,5 @@ default['ceph']['datanodepackages'] = %w(ceph ceph-osd ceph-mds ceph-mon radosgw
 
 default['ceph']['config-dir'] = "#{node['c2d-config']['config-dir']}/#{node['ceph']['deploymentuser']}"
 
-default['ceph']['rsync-dir-name'] = "data-node-config"
+default['ceph']['rsync-dir-name'] = 'data-node-config'
 default['ceph']['rsync-dir'] = "#{node['ceph']['config-dir']}/#{node['ceph']['rsync-dir-name']}"

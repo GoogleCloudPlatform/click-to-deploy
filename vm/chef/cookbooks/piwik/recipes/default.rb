@@ -27,7 +27,7 @@ include_recipe 'mysql'
 
 remote_file 'download_matomo' do
   path '/tmp/matomo.tar.gz'
-  source "https://builds.matomo.org/matomo.tar.gz"
+  source 'https://builds.matomo.org/matomo.tar.gz'
   owner 'root'
   group 'root'
   mode '0640'
@@ -56,10 +56,10 @@ bash 'prepare_database_configuration' do
     mysql -u root -e "FLUSH PRIVILEGES"
 EOH
   flags '-eu'
-  environment ({
-    'user'   => node['matomo']['db']['username'],
-    'pass'   => node['matomo']['db']['password'],
-    'dbname' => node['matomo']['db']['name']
+  environment({
+    'user' => node['matomo']['db']['username'],
+    'pass' => node['matomo']['db']['password'],
+    'dbname' => node['matomo']['db']['name'],
   })
 end
 
