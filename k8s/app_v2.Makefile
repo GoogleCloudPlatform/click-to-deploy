@@ -84,14 +84,14 @@ endef
 	@chmod a+x "$@"
 
 
-.PHONY: images $(APP_ID)
-images: $(TARGETS)
-
-app/build:: .build/$(APP_ID)/deployer \
-            $(APP_ID) \
-            images \
+app/build:: $(APP_ID) \
+            .build/$(APP_ID)/deployer \
+            .build/images \
             .build/$(APP_ID)/tester \
             .build/$(APP_ID)/VERSION
+
+
+.build/images: $(TARGETS)
 
 
 .build/$(APP_ID): | .build
@@ -122,6 +122,7 @@ app/build:: .build/$(APP_ID)/deployer \
 	@touch "$@"
 
 
+.PHONY: $(APP_ID)
 $(APP_ID): .build/var/REGISTRY \
            .build/var/TRACK \
            .build/var/RELEASE \
