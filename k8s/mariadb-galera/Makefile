@@ -17,6 +17,7 @@ PEER_FINDER_TAG ?= latest
 
 TARGETS := mysqld-exporter prometheus-to-sd peer-finder
 
+$(info ---- $(shell make -v))
 
 # Images
 image-$(APP_ID) ?= $(call get_sha256,$(SOURCE_REGISTRY)/mariadb10:$(TRACK))
