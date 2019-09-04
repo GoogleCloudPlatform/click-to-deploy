@@ -17,7 +17,7 @@ PEER_FINDER_TAG ?= latest
 # List of images used in application
 TARGET_IMAGES := mysqld-exporter prometheus-to-sd peer-finder
 
-# Images
+# Image names should correspond with TARGET_IMAGES list
 image-$(APP_ID) ?= $(call get_sha256,$(SOURCE_REGISTRY)/mariadb10:$(TRACK))
 image-mysqld-exporter ?= $(call get_sha256,$(SOURCE_REGISTRY)/mysql5:exporter)
 image-peer-finder ?= $(call get_sha256,$(SOURCE_REGISTRY)/peer-finder0:$(PEER_FINDER_TAG))

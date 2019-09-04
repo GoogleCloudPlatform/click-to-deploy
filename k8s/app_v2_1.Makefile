@@ -160,7 +160,7 @@ $(TARGET_IMAGES): .build/var/REGISTRY \
 
 .PHONY: .build/$(APP_ID)/VERSION
 .build/$(APP_ID)/VERSION:
-	[[ "$(C2D_CONTAINER_RELEASE)" =~ ^$(TRACK)\..* ]] || \
+	echo "$(C2D_CONTAINER_RELEASE)" | grep -G "$(TRACK).*"  || \
 	( echo "C2D_RELEASE don't starts with TRACK or matchs TRACK exactly"; exit 1 )
 
 
