@@ -43,4 +43,4 @@ APP_PARAMETERS ?= { \
 # application.
 # It requires several APP_* variables defined above, and thus
 # must be included after.
-include ../app_v2_1.Makefile
+include ../app_v2.Makefile
