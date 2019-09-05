@@ -4,9 +4,10 @@ matrix:
     python: 2.7
     install: pip install jinja2 pyyaml
     env: TARGET=python-test
-  - language: ruby
-    install: gem install foodcritic
+  - language: generic
     env: TARGET=vm-lint
+    services:
+    - docker
   - language: generic
     dist: xenial
     before_install:

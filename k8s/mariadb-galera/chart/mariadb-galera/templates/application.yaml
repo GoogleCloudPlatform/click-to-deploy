@@ -56,14 +56,9 @@ spec:
       Use port forwarding:
 
       ```shell
-      kubectl port-forward svc/$APP_INSTANCE_NAME-galera-svc --namespace $NAMESPACE 3306
+      kubectl port-forward svc/{{ .Release.Name }}-galera-svc --namespace {{ .Release.Namespace }} 3306
       ```
   info:
-  - name: MariaDB Galera Cluster
-    type: Reference
-    valueFrom:
-      serviceRef:
-        name: {{ .Release.Name }}-galera-svc
   - name: MariaDB root password
     type: Reference
     valueFrom:

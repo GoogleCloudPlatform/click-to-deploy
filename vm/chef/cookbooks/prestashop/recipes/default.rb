@@ -36,7 +36,7 @@ execute 'create prestashop database' do
 end
 
 # Download prestashop & verify its checksum
-remote_file "/tmp/prestashop.zip" do
+remote_file '/tmp/prestashop.zip' do
   source "https://download.prestashop.com/download/releases/prestashop_#{node['prestashop']['version']}.zip"
   action :create
 end

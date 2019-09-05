@@ -14,4 +14,3 @@
 
 name 'memcached'
 supports 'debian'
-
