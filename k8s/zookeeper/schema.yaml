@@ -13,6 +13,7 @@ x-google-marketplace:
 
     kalmSupported: false
   images:
+
     '':
       properties:
         zookeeper.image.name:
