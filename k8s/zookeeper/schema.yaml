@@ -31,6 +31,7 @@ x-google-marketplace:
         exporter.image.tag:
           type: TAG
   clusterConstraints:
+
     resources:
       - replicas: 3
         requests:
