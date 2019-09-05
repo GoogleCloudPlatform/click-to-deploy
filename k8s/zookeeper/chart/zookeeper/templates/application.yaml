@@ -35,6 +35,7 @@ spec:
       Where:
       * `[CLUSTER_NAME]` is the name of the cluster for this application
       * `[CLUSTER_ZONE]` is the zone, in which the cluster is operating
+
       Please read [here](https://cloud.google.com/kubernetes-engine/docs/quickstart#get_authentication_credentials_for_the_cluster) for more information.
 
       # Get access to ZooKeeper CLI
