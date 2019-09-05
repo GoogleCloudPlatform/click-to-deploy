@@ -38,6 +38,7 @@ spec:
       Please read [here](https://cloud.google.com/kubernetes-engine/docs/quickstart#get_authentication_credentials_for_the_cluster) for more information.
 
       # Get access to ZooKeeper CLI
+
       ```shell
       kubectl exec -it --namespace {{ .Release.Namespace }} {{ .Release.Name }}-zk-0 -- zkCli.sh -server localhost:2181
       ```
