@@ -4,6 +4,8 @@ Apache Cassandra is a database management system that replicates large amounts
 of data across many servers, avoiding a single point of failure and reducing
 latency.
 
+
+
 [Learn more](https://cassandra.apache.org/).
 
 ## About Google Click to Deploy
