@@ -22,7 +22,7 @@ github:
     commentControl: COMMENTS_ENABLED
 id: 1cd5f696-359b-4569-9f4a-ec601ba88196
 includedFiles:
-- docker/*
-- k8s/*
-- vm/*
+- docker/**
+- k8s/**
+- vm/**
 name: Triggers-Check
