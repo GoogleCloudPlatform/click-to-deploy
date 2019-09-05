@@ -35,7 +35,7 @@ function trigger_exist {
 }
 
 function main {
-  declare -i failure_cnt=0
+  local -i failure_cnt=0
 
   for solution in ${DIRECTORY_NAME}/*; do
     if [[ -d ${solution} ]]; then
@@ -56,6 +56,7 @@ function main {
     fi
   done
 
+  echo "DONE!"
   return ${failure_cnt}
 }
 
