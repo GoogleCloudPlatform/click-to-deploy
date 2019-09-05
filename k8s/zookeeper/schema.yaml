@@ -1,7 +1,7 @@
 x-google-marketplace:
   schemaVersion: v2
-  applicationApiVersion: v1beta1
 
+  applicationApiVersion: v1beta1
   publishedVersion: "$TAG"
   publishedVersionMetadata:
     releaseNote: >-
@@ -9,11 +9,11 @@ x-google-marketplace:
     releaseTypes:
       - Feature
     recommended: false
+
   managedUpdates:
-
     kalmSupported: false
-  images:
 
+  images:
     '':
       properties:
         zookeeper.image.name:
@@ -30,8 +30,8 @@ x-google-marketplace:
           type: REPO_WITH_REGISTRY
         exporter.image.tag:
           type: TAG
-  clusterConstraints:
 
+  clusterConstraints:
     resources:
       - replicas: 3
         requests:
