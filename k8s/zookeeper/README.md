@@ -53,6 +53,7 @@ You'll need the following tools in your environment:
 - [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
 Configure `gcloud` as a Docker credential helper:
+
 ```shell
 gcloud auth configure-docker
 ```
