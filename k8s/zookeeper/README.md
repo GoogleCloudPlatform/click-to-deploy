@@ -129,7 +129,7 @@ IMAGE_ZOOKEEPER_REPO=marketplace.gcr.io/google/zookeeper
 
 export IMAGE_ZOOKEEPER=${IMAGE_ZOOKEEPER_REPO}:${TAG}
 export IMAGE_ZOOKEEPER_EXPORTER=${IMAGE_ZOOKEEPER_REPO}/exporter:${TAG}
-export IMAGE_METRICS_EXPORTER="${IMAGE_ZOOKEEPER_REPO}/prometheus-to-sd:${TAG}"
+export IMAGE_METRICS_EXPORTER=${IMAGE_ZOOKEEPER_REPO}/prometheus-to-sd:${TAG}
 ```
 
 The image above is referenced by
