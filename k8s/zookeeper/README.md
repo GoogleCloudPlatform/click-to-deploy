@@ -125,7 +125,7 @@ Configure the container image:
 
 ```shell
 TAG=3.4
-IMAGE_ZOOKEEPER_REPO="marketplace.gcr.io/google/zookeeper"
+IMAGE_ZOOKEEPER_REPO=marketplace.gcr.io/google/zookeeper
 
 export IMAGE_ZOOKEEPER=${IMAGE_ZOOKEEPER_REPO}:${TAG}
 export IMAGE_ZOOKEEPER_EXPORTER=${IMAGE_ZOOKEEPER_REPO}/exporter:${TAG}
