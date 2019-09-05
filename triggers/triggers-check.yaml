@@ -25,4 +25,5 @@ includedFiles:
 - docker/**
 - k8s/**
 - vm/**
+- scripts/triggers_check.sh
 name: Triggers-Check
