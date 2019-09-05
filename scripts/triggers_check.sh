@@ -56,6 +56,7 @@ function main {
     fi
   done
 
+  echo "DONE!"
   return ${failure_cnt}
 }
 
