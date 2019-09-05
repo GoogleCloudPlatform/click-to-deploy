@@ -176,7 +176,6 @@ export ZOOKEEPER_PURGE_INTERVAL=24
 export ZOOKEEPER_HEAP_SIZE=1000M
 ```
 
-
 Enable Stackdriver Metrics Exporter:
 
 > **NOTE:** Your GCP project should have Stackdriver enabled. For non-GCP clusters, exporting metrics to Stackdriver is not supported yet.
