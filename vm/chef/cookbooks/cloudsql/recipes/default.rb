@@ -42,6 +42,11 @@ cookbook_file '/lib/systemd/system/cloudsql-proxy.service' do
   action :create
 end
 
+user 'cloudsqluser' do
+  action :create
+  comment 'Used to start cloudsql-proxy serivce'
+end
+
 service 'cloudsql-proxy' do
   action :enable
 end

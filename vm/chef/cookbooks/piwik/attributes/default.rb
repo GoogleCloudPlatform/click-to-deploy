@@ -12,10 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['piwik']['version'] = 'latest'
+default['matomo']['db']['username'] = 'matomouser'
+default['matomo']['db']['password'] = 'matomopw'
+default['matomo']['db']['name'] = 'matomo'
 
-default['piwik']['db']['username'] = 'piwikuser'
-default['piwik']['db']['password'] = 'piwikpw'
-default['piwik']['db']['name'] = 'piwik'
-
-default['piwik']['app']['first-password'] = `openssl rand -base64 12 | fold -w 12 | head -n1 | tr -d '\r\n'`
+default['matomo']['app']['first-password'] = `openssl rand -base64 12 | fold -w 12 | head -n1 | tr -d '\r\n'`

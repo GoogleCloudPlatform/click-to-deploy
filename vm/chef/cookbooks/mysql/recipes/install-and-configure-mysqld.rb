@@ -21,7 +21,7 @@ end
 
 template '/etc/mysql/mysql.conf.d/mysqld.cnf' do
   source 'mysqld.cnf.erb'
-  variables( :bind_address => node['mysql']['bind_address'] )
+  variables(:bind_address => node['mysql']['bind_address'])
 end
 
 c2d_startup_script 'mysql'

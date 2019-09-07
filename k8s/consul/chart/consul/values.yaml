@@ -1,0 +1,61 @@
+global:
+  image: "null"
+  # Domain to register the Consul DNS server to listen for.
+  domain: consul
+  # Datacenter is the name of the datacenter that the agents should register
+  # as. This shouldn't be changed once the Consul cluster is up and running
+  # since Consul doesn't support an automatic way to change this value
+  # currently: https://github.com/hashicorp/consul/issues/1858
+  datacenter: dc1
+  # Gossip encryption key. To enable gossip encryption, provide the name of
+  # a Kubernetes secret that contains a gossip key. You can create a gossip
+  # key with the "consul keygen" command.
+  # See https://www.consul.io/docs/commands/keygen.html
+  gossipEncryption:
+    # Automaticly create Secret and set it in configuration.
+    # The key must be 16-bytes, Base64 encoded.
+    # As a convenience, Consul provides the consul keygen command to
+    # generate a cryptographically suitable key: 'consul keygen'
+    CreateSecretWithKey: null
+
+server:
+  replicas: 3
+  storage: 10Gi
+  disruptionBudget:
+    # maxUnavailable will default to (n/2)-1 where n is the number of
+    # replicas. If you'd like a custom value, you can specify an override here.
+    maxUnavailable: null
+  ServiceAccount: "null"
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    #
+    # limits:
+    #  cpu: 500m
+    #  memory: 200Mi
+    # requests:
+    #  cpu: 500m
+    #  memory: 200Mi
+  prometheus_exporter:
+    enabled: true
+    image: "null"
+  prometheus_to_sd:
+    image: "null"
+
+client:
+  ServiceAccount: "null"
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    #
+    # limits:
+    #  cpu: 500m
+    #  memory: 200Mi
+    # requests:
+    #  cpu: 500m
+    #  memory: 200Mi
+    #

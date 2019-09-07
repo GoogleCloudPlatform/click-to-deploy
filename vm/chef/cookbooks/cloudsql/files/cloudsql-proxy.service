@@ -19,6 +19,6 @@ Type=simple
 WorkingDirectory=/opt/c2d/downloads
 ExecStart=/opt/c2d/downloads/cloudsql-proxy
 StandardOutput=journal
-User=root
+User=cloudsqluser
 [Install]
 WantedBy=multi-user.target

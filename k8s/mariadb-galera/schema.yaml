@@ -1,0 +1,108 @@
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      A regular update.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  managedUpdates:
+    kalmSupported: false
+
+  images:
+    '':
+      properties:
+        mariadb.image.repo:
+          type: REPO_WITH_REGISTRY
+        mariadb.image.tag:
+          type: TAG
+    mysqld-exporter:
+      properties:
+        db.exporter.image:
+          type: FULL
+    prometheus-to-sd:
+      properties:
+        prometheusToSd.image:
+          type: FULL
+    peer-finder:
+      properties:
+        peerFinder.image:
+          type: FULL
+
+  clusterConstraints:
+    resources:
+    - replicas: 3
+      requests:
+        cpu: 500m
+        memory: 1Gi
+      affinity:
+        simpleNodeAffinity:
+          type: REQUIRE_ONE_NODE_PER_REPLICA
+          minimumNodeCount: 3
+    istio:
+      type: UNSUPPORTED
+
+properties:
+  name:
+    type: string
+    # limits length of app name due to galera limitation
+    # of wsrep_cluster_name and wsrep_cluster_address fields length
+    maxLength: 26
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  mariadb.volumeSize:
+    type: string
+    title: Volume size
+    description: Volume size per instance
+    default: '32Gi'
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  db.replicas:
+    type: integer
+    title: Replicas
+    description: Number of replicas in MariaDB cluster
+    default: 3
+    minimum: 1
+  db.rootPassword:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 32
+  certificate:
+    type: string
+    x-google-marketplace:
+      type: TLS_CERTIFICATE
+      tlsCertificate:
+        generatedProperties:
+          base64EncodedPrivateKey: tls.base64EncodedPrivateKey
+          base64EncodedCertificate: tls.base64EncodedCertificate
+  db.exporter.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 12
+  prometheusToSd.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
+    default: false
+
+required:
+- name
+- namespace
+- mariadb.volumeSize
+- db.replicas
+- db.rootPassword
+- db.exporter.password
+- certificate
+- prometheusToSd.enabled

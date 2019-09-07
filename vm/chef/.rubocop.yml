@@ -1,0 +1,21 @@
+Chef/CommentFormat:
+  Enabled: false
+
+Chef/TmpPath:
+  Enabled: false
+
+Chef/FileMode:
+  Enabled: false
+
+Style/BracesAroundHashParameters:
+  Enabled: false
+
+# TODO(wgrzelak): Fix code and remove the rule.
+Chef/NamePropertyIsRequired:
+  Enabled: false
+
+Style/WordArray:
+  Enabled: false
+
+Style/HashSyntax:
+  Enabled: false
