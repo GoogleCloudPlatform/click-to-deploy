@@ -1,19 +1,18 @@
 TAG ?= 3.0
-REGISTRY ?= gcr.io/gatekeeper-marketplace
+SOURCE_REGISTRY ?= gcr.io/gatekeeper-marketplace
 
 # Convenience makefiles.
 include ../gcloud.Makefile
 include ../var.Makefile
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/gatekeeper/deployer:$(TAG)
-GATEKEEPER_IMAGE ?= $(REGISTRY)/gatekeeper:$(TAG)
+GATEKEEPER_IMAGE ?= $(SOURCE_REGISTRY)/gatekeeper:$(TAG)
 NAME ?= gatekeeper
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)", \
   "imageGatekeeper": "$(GATEKEEPER_IMAGE)" \
 }
-#  "reportingSecret": "$(REPORTING_SECRET)" \
 
 TESTER_IMAGE ?= $(REGISTRY)/gatekeeper/deployer/tester:$(TAG)
 APP_TEST_PARAMETERS ?= { \
@@ -30,11 +29,22 @@ include ../app.Makefile
 # Extend the target as defined in app.Makefile to
 # include real dependencies.
 app/build:: .build/gatekeeper/deployer \
-            #.build/gatekeeper/init \
             .build/gatekeeper/tester \
-            #.build/gatekeeper/ubbagent \
             .build/gatekeeper/gatekeeper
 
+.build/app: | .build
+	mkdir -p "$@"
+
+
+# Overwriting parent to change gcr path -- remove when done using staging
+.PHONY: .build/app/dev
+.build/app/dev: .build/var/MARKETPLACE_TOOLS_TAG \
+              | .build/app
+	@docker run \
+	    "gcr.io/cloud-marketplace-staging/marketplace-k8s-app-tools/k8s/dev:$(MARKETPLACE_TOOLS_TAG)" \
+	    cat /scripts/dev > "/tmp/dev"
+	@mv "/tmp/dev" "$@"
+	@chmod a+x "$@"
 
 .build/gatekeeper: | .build
 	mkdir -p "$@"
@@ -69,7 +79,6 @@ app/build:: .build/gatekeeper/deployer \
 	docker push "$(TESTER_IMAGE)"
 	@touch "$@"
 
-# TODO we should figure out a centralized build process for the deployer and gatekeeper
 # Do nothing here
 .build/gatekeeper/gatekeeper: .build/var/REGISTRY \
                               .build/var/TAG \
@@ -82,7 +91,7 @@ licenses:
 	$(call print_target, $@)
 	rm -rf .build/licenses
 	mkdir -p .build/licenses
-	cp ../LICENSE .build/licenses/.
+	cp ../../LICENSE .build/licenses/.
 	echo >> .build/licenses/LICENSE
 	echo '-----' >> .build/licenses/LICENSE
 	echo >> .build/licenses/LICENSE

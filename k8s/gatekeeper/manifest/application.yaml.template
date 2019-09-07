@@ -6,17 +6,16 @@ metadata:
   name: ${name}
   namespace: ${namespace}
   annotations:
-    marketplace.cloud.google.com/deploy-info: '{partner_id: "click-to-deploy-containers", product_id: "opa-gatekeeper", partner_name: "Gatekeeper"}'
+    marketplace.cloud.google.com/deploy-info: '{partner_id: "click-to-deploy-containers", product_id: "gatekeeper", partner_name: "Gatekeeper"}'
   labels:
     app.kubernetes.io/name: ${name}
 spec:
   descriptor:
     type: Gatekeeper
-    # TODO switch to using beta version when published
     # TODO gather version from gatekeeper repo in unified build process
-    version: '3.0.4-alpha.1'
+    version: '3.0.4-beta.1'
     description: |-
-      OPA Gatekeeper
+      Gatekeeper
     maintainers:
     - name: The OPA Authors
       url: https://www.github.com/open-policy-agent/gatekeeper
