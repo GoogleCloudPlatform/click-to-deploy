@@ -29,6 +29,7 @@ properties:
 #      type: IMAGE
   auditInterval:
     title: Audit interval (seconds)
+    description: Your Gatekeeper instance will perform an ongoing self-audit at the given interval (in seconds).
     type: integer
     default: 30
     minimum: 1
