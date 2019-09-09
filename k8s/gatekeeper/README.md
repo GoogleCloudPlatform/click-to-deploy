@@ -185,10 +185,9 @@ TODO
 
 # Uninstall the Application
 
+<!--
 ## Using the Google Cloud Platform Console
 
-TODO
-<!--
 1.  In the GCP Console, open
     [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
 

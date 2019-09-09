@@ -1,4 +1,31 @@
-application_api_version: v1beta1
+x-google-marketplace:
+  schemaVersion: v2
+  applicationApiVersion: v1beta1
+  publishedVersion: '3.0.4-beta.1'
+  publishedVersionMetadata:
+    releaseNote: >-
+      Beta release.
+    releaseTypes:
+      - Beta
+    recommended: false
+  managedUpdates:
+    kalmSupported: false
+  images:
+    '':
+      properties:
+        imageRepo:
+          type: REPO_WITH_REGISTRY
+        imageTag:
+          type: TAG
+  deployerServiceAccount:
+    roles:
+      - type: ClusterRole        # This is a cluster-wide ClusterRole
+        rulesType: CUSTOM        # We specify our own custom RBAC roles
+        rules:
+          - apiGroups: ['apiextensions.k8s.io', 'rbac.authorization.k8s.io']
+            resources: ['customresourcedefinitions', 'clusterroles', 'clusterrolebindings']
+            verbs: ['*']
+
 properties:
   name:
     type: string
