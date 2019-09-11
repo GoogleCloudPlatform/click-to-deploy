@@ -11,13 +11,14 @@ TRACK ?= 1.4
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 # List of images used in application
-TARGETS := consul-exporter prometheus-to-sd
+TARGET_IMAGES := consul-exporter prometheus-to-sd
 
-# Image names should correspond with TARGET_IMAGES list
+# Image variable names should correspond with TARGET_IMAGES list
 image-$(APP_ID) ?= $(call get_sha256,$(SOURCE_REGISTRY)/consul1:$(TRACK))
 image-consul-exporter ?= $(call get_sha256,$(SOURCE_REGISTRY)/consul1:exporter)
 image-prometheus-to-sd ?= $(call get_sha256,k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG))
 
+#TODO(aav66): replace with C2D_RELEASE variable after container is updated
 C2D_CONTAINER_RELEASE ?= $(call get_var_from_container,$(image-$(APP_ID)),CONSUL_VERSION)
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
@@ -39,8 +40,6 @@ APP_PARAMETERS ?= { \
 }
 
 
-# app_v2.Makefile provides the main targets for installing the
-# application.
-# It requires several APP_* variables defined above, and thus
-# must be included after.
+# c2d_deployer.Makefile provides the main targets for installing the application.
+# It requires several APP_* variables defined above, and thus must be included after.
 include ../c2d_deployer.Makefile

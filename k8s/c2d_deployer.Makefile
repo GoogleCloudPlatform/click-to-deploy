@@ -9,8 +9,6 @@ __C2D_DEPLOYER_MAKEFILE__:= included
 include ../app_v2.Makefile
 
 
-SOURCE_REGISTRY ?= marketplace.gcr.io/google
-
 ##### Helper targets #####
 
 app/build:: $(APP_ID) \
@@ -75,8 +73,8 @@ $(TARGET_IMAGES): .build/var/REGISTRY \
 
 
 .build/$(APP_ID)/tester: .build/var/TESTER_IMAGE \
-                              $(shell find apptest -type f) \
-                              | .build/$(APP_ID)
+                         $(shell find apptest -type f) \
+                         | .build/$(APP_ID)
 	$(call print_target,$@)
 	cd apptest/tester \
 		&& docker build --tag "$(TESTER_IMAGE)" .
@@ -89,7 +87,7 @@ $(TARGET_IMAGES): .build/var/REGISTRY \
 
 .PHONY: .build/$(APP_ID)/VERSION
 .build/$(APP_ID)/VERSION:
-	echo "$(C2D_CONTAINER_RELEASE)" | grep -G "^$(TRACK).*$$"  || \
+	echo "$(C2D_CONTAINER_RELEASE)" | grep -G "^$(TRACK).*$$" || \
 	( echo "C2D_RELEASE doesn't start with TRACK or doesn't match TRACK exactly"; exit 1 )
 
 
