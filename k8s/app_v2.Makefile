@@ -14,13 +14,6 @@ include $(makefile_dir)/var.Makefile
 VERIFY_WAIT_TIMEOUT = 600
 
 
-##### Common variables #####
-APP_DEPLOYER_IMAGE ?= $(REGISTRY)/$(APP_ID)/deployer:$(RELEASE)
-APP_DEPLOYER_IMAGE_TRACK_TAG ?= $(REGISTRY)/$(APP_ID)/deployer:$(TRACK)
-TESTER_IMAGE ?= $(REGISTRY)/$(APP_ID)/tester:$(RELEASE)
-APP_GCS_PATH ?= $(GCS_URL)/$(APP_ID)/$(TRACK)
-
-
 ##### Validations and Information #####
 
 ifndef APP_ID
@@ -46,8 +39,15 @@ $(info ---- RELEASE = $(RELEASE))
 $(info ---- APP IMAGE = $(image-$(APP_ID)))
 
 
-##### Helper functions #####
+##### Common variables #####
 
+APP_DEPLOYER_IMAGE ?= $(REGISTRY)/$(APP_ID)/deployer:$(RELEASE)
+APP_DEPLOYER_IMAGE_TRACK_TAG ?= $(REGISTRY)/$(APP_ID)/deployer:$(TRACK)
+TESTER_IMAGE ?= $(REGISTRY)/$(APP_ID)/tester:$(RELEASE)
+APP_GCS_PATH ?= $(GCS_URL)/$(APP_ID)/$(TRACK)
+
+
+##### Helper functions #####
 
 # Extracts the name property from APP_PARAMETERS.
 define name_parameter

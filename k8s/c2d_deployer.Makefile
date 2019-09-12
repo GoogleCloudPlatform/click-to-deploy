@@ -87,7 +87,7 @@ $(TARGET_IMAGES): .build/var/REGISTRY \
 
 .PHONY: .build/$(APP_ID)/VERSION
 .build/$(APP_ID)/VERSION:
-	echo "$(C2D_CONTAINER_RELEASE)" | grep -G "^$(TRACK).[0-9]+$$" \
+	echo "$(C2D_CONTAINER_RELEASE)" | grep -qE "^$(TRACK).[0-9]+$$" || \
 	( echo "C2D_RELEASE doesn't start with TRACK or doesn't match TRACK exactly"; exit 1 )
 
 
