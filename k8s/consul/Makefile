@@ -18,7 +18,7 @@ TARGET_IMAGES := consul-exporter prometheus-to-sd
 
 # Image variable names should correspond with TARGET_IMAGES list
 image-$(APP_ID) := $(call get_sha256,$(SOURCE_REGISTRY)/consul1:$(TRACK))
-image-consul-exporter :=  $(call get_sha256,$(SOURCE_REGISTRY)/consul1/exporter:$(CONSUL_EXPORTER_TAG))
+image-consul-exporter :=  $(call get_sha256,$(SOURCE_REGISTRY)/consul1:$(CONSUL_EXPORTER_TAG))
 image-prometheus-to-sd :=  $(call get_sha256,k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG))
 
 C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(APP_ID)))

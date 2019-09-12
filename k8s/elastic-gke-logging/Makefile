@@ -53,7 +53,6 @@ ifdef METRICS_EXPORTER_ENABLED
   METRICS_EXPORTER_ENABLED_FIELD = , "metrics.enabled": $(METRICS_EXPORTER_ENABLED)
 endif
 
-
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \

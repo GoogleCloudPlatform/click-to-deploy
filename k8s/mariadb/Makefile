@@ -26,6 +26,7 @@ BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)
 
 NAME ?= $(APP_ID)-1
+
 ifdef METRICS_EXPORTER_ENABLED
   METRICS_EXPORTER_ENABLED_FIELD = , "metrics.enabled": $(METRICS_EXPORTER_ENABLED)
 endif
