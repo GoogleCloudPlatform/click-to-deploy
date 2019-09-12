@@ -24,14 +24,6 @@ C2D_CONTAINER_RELEASE := $(call get_var_from_container,$(image-$(APP_ID)),CONSUL
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)
 
-$(info ---- TRACK = $(TRACK))
-$(info ---- RELEASE = $(RELEASE))
-$(info ---- SOURCE_REGISTRY = $(SOURCE_REGISTRY))
-
-APP_DEPLOYER_IMAGE ?= $(REGISTRY)/$(APP_ID)/deployer:$(RELEASE)
-APP_DEPLOYER_IMAGE_TRACK_TAG ?= $(REGISTRY)/$(APP_ID)/deployer:$(TRACK)
-APP_GCS_PATH ?= $(GCS_URL)/$(APP_ID)/$(TRACK)
-
 NAME ?= $(APP_ID)-1
 
 APP_PARAMETERS ?= { \
