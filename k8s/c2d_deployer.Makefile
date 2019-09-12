@@ -6,16 +6,29 @@ ifndef __C2D_DEPLOYER_MAKEFILE__
 
 __C2D_DEPLOYER_MAKEFILE__:= included
 
+##### Common variables #####
+
+APP_DEPLOYER_IMAGE ?= $(REGISTRY)/$(APP_ID)/deployer:$(RELEASE)
+APP_DEPLOYER_IMAGE_TRACK_TAG ?= $(REGISTRY)/$(APP_ID)/deployer:$(TRACK)
+TESTER_IMAGE ?= $(REGISTRY)/$(APP_ID)/tester:$(RELEASE)
+APP_GCS_PATH ?= $(GCS_URL)/$(APP_ID)/$(TRACK)
+
+
 include ../app_v2.Makefile
+
+
+$(info ---- TRACK = $(TRACK))
+$(info ---- RELEASE = $(RELEASE))
+$(info ---- APP IMAGE = $(image-$(APP_ID)))
 
 
 ##### Helper targets #####
 
-app/build:: $(APP_ID) \
+app/build:: .build/$(APP_ID)/VERSION \
+            $(APP_ID) \
             .build/$(APP_ID)/deployer \
             .build/images \
-            .build/$(APP_ID)/tester \
-            .build/$(APP_ID)/VERSION
+            .build/$(APP_ID)/tester
 
 
 .build/images: $(TARGET_IMAGES)

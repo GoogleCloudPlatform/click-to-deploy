@@ -17,10 +17,10 @@ PEER_FINDER_TAG ?= latest
 TARGET_IMAGES := mysqld-exporter prometheus-to-sd peer-finder
 
 # Image variable names should correspond with TARGET_IMAGES list
-image-$(APP_ID) ?= $(call get_sha256,$(SOURCE_REGISTRY)/mariadb10:$(TRACK))
-image-mysqld-exporter ?= $(call get_sha256,$(SOURCE_REGISTRY)/mysql5:exporter)
-image-peer-finder ?= $(call get_sha256,$(SOURCE_REGISTRY)/peer-finder0:$(PEER_FINDER_TAG))
-image-prometheus-to-sd ?= $(call get_sha256,k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG))
+image-$(APP_ID) := $(call get_sha256,$(SOURCE_REGISTRY)/mariadb10:$(TRACK))
+image-mysqld-exporter := $(call get_sha256,$(SOURCE_REGISTRY)/mysql5:exporter)
+image-peer-finder := $(call get_sha256,$(SOURCE_REGISTRY)/peer-finder0:$(PEER_FINDER_TAG))
+image-prometheus-to-sd := $(call get_sha256,k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG))
 
 
 #TODO(kalinichenka): replace with C2D_RELEASE variable after container is updated

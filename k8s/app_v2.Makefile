@@ -14,20 +14,13 @@ include $(makefile_dir)/var.Makefile
 VERIFY_WAIT_TIMEOUT = 600
 
 
-##### App solutions ID #####
+##### App solution ID #####
 
 ifndef APP_ID
 $(error APP_ID must be defined)
 endif
 
 $(info ---- APP_ID = $(APP_ID))
-
-##### Common variables #####
-
-APP_DEPLOYER_IMAGE ?= $(REGISTRY)/$(APP_ID)/deployer:$(RELEASE)
-APP_DEPLOYER_IMAGE_TRACK_TAG ?= $(REGISTRY)/$(APP_ID)/deployer:$(TRACK)
-TESTER_IMAGE ?= $(REGISTRY)/$(APP_ID)/tester:$(RELEASE)
-APP_GCS_PATH ?= $(GCS_URL)/$(APP_ID)/$(TRACK)
 
 
 ##### Validations and Information #####
@@ -43,10 +36,6 @@ $(error APP_DEPLOYER_IMAGE must be defined)
 endif
 
 $(info ---- APP_DEPLOYER_IMAGE = $(APP_DEPLOYER_IMAGE))
-
-$(info ---- TRACK = $(TRACK))
-$(info ---- RELEASE = $(RELEASE))
-$(info ---- APP IMAGE = $(image-$(APP_ID)))
 
 
 ##### Helper functions #####
