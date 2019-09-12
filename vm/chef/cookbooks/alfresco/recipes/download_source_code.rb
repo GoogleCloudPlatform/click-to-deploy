@@ -45,15 +45,15 @@ bash 'download_source_code' do
     wget "${jid3lib_url}" --directory-prefix jid3lib
     wget "${libwmf_url}" --directory-prefix libwmf
 EOH
-  environment ({
-    'alfresco_url'     => node['alfresco']['src']['urls']['alfresco_svn'],
-    'gytheio_url'      => node['alfresco']['src']['urls']['gytheio_git'],
-    'hibernate_url'    => node['alfresco']['src']['urls']['hibernate_wget'],
-    'java_geom_url'    => node['alfresco']['src']['urls']['java_geom_wget'],
-    'jid3lib_url'      => node['alfresco']['src']['urls']['jid3lib_wget'],
-    'jmagick_url'      => node['alfresco']['src']['urls']['jmagick_git'],
+  environment({
+    'alfresco_url' => node['alfresco']['src']['urls']['alfresco_svn'],
+    'gytheio_url' => node['alfresco']['src']['urls']['gytheio_git'],
+    'hibernate_url' => node['alfresco']['src']['urls']['hibernate_wget'],
+    'java_geom_url' => node['alfresco']['src']['urls']['java_geom_wget'],
+    'jid3lib_url' => node['alfresco']['src']['urls']['jid3lib_wget'],
+    'jmagick_url' => node['alfresco']['src']['urls']['jmagick_git'],
     'jodconverter_url' => node['alfresco']['src']['urls']['jodconverter_git'],
-    'libwmf_url'       => node['alfresco']['src']['urls']['libwmf_wget']
+    'libwmf_url' => node['alfresco']['src']['urls']['libwmf_wget'],
   })
 end
 

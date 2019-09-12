@@ -1,8 +1,7 @@
 # Overview
 
-SonarQube is an open source platform to perform automatic reviews with static analysis of code to detect bugs,
-code smells and security vulnerabilities on 25+ programming languages including Java, C#, JavaScript, TypeScript,
-C/C++, COBOL and more. SonarQube is the only product on the market that supports a leak approach as a practice to code quality.
+SonarQube is an open source platform that automates code reviews to detect bugs,
+code smells and security vulnerabilities on 25+ programming languages including Java, C#, JavaScript, TypeScript, C/C++, COBOL and more.
 
 For more information on SonarQube, see the [SonarQube website](https://www.sonarqube.org/).
 
@@ -14,30 +13,29 @@ Popular open source software stacks on Kubernetes packaged by Google and made av
 
 ![Architecture diagram](resources/sonarqube-k8s-app-architecture.png)
 
-### SonarQube application contains:
+The SonarQube application contains:
 
 - An Application resource, which collects all the deployment resources into one logical entity
 - A ServiceAccount for the SonarQube and PostgreSQL Pod.
 - A Secret with the PostgreSQL initial random password
 - A StatefulSet with SonarQube and PostgreSQL.
-- A PersistentVolume and PersistentVolumeClaim for SonarQube and PostgreSQL. Note that the volumes won't be deleted with application. If you delete the installation and recreate it with the same name, the new installation uses the same PersistentVolumes. As a result, there is no new database initialization, and no new password is set.
+- A PersistentVolume and PersistentVolumeClaim for SonarQube and PostgreSQL. Note that these resources won't be deleted when you delete the application. If you delete the installation and recreate it with the same name, the new installation uses the same PersistentVolumes. As a result, there is no new database initialization, and no new password is set.
 - A Service, which exposes PostgreSQL and SonarQube to usage in cluster
 
-PostgreSQL exposing by service with type ClusterIP, which makes it available for SonarQube only in cluster network.
-SonarQube exposing by service with type ClusterIP, which makes it available only in private network, but below described how to connect to SonarQube.
-All data and extensions of SonarQube and PostgreSQL stored on PVC which makes the application more stable.
+PostgreSQL exposes a clusterIP that makes it available for SonarQube within the cluster network.
+SonarQube exposes a clusterIP that makes it available within the network. The steps to connect to your SonarQube application are described later in this readme.
+All the data and extensions of SonarQube and PostgreSQL are stored on the PersistentVolumeClaim.
 
 # Installation
 
 ## Quick install with Google Cloud Marketplace
 
-Get up and running with a few clicks! Install this Sample Application to a Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
+Get up and running with a few clicks! Install this SonarQube application to a Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 [on-screen instructions](https://console.cloud.google.com/marketplace/details/google/sonarqube).
 
 ## Command line instructions
 
-You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local workstation in the
-further instructions.
+You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local workstation to complete these steps.
 
 [![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/GoogleCloudPlatform/click-to-deploy&cloudshell_working_dir=k8s/sonarqube)
 
@@ -45,7 +43,7 @@ further instructions.
 
 #### Set up command line tools
 
-You'll need the following tools in your environment:
+You'll need the following tools in your environment. If you are using Cloud Shell, these tools are installed in your environment by default.
 
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
@@ -120,7 +118,6 @@ for the application. In most cases, you can use the `default` namespace.
 export APP_INSTANCE_NAME=sonarqube-1
 export NAMESPACE=default
 ```
-
 
 Configure the container image:
 
@@ -226,7 +223,7 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 To view the app, open the URL in your browser.
 
-# Using the SonarQube Community Edition
+# Using SonarQube Community Edition
 
 By default, the application is not exposed externally. To get access to SonarQube, run the following command:
 
@@ -234,7 +231,7 @@ By default, the application is not exposed externally. To get access to SonarQub
 kubectl port-forward --namespace $NAMESPACE svc/$APP_INSTANCE_NAME-sonarqube-svc 9000:9000
 ```
 
-Then, navigate to the [http://localhost:9000/](http://localhost:9000/) endpoint. Use the username `admin` and password `admin` to login.
+Then, open [http://localhost:9000/](http://localhost:9000/). Use the username `admin` and password `admin` to sign in to SonarQube.
 
 # Application metrics
 
@@ -251,7 +248,7 @@ cluster.
 
 ## SonarQube metrics
 
-The application is configured to expose its metrics through
+The application is configured to expose its metrics through the
 [Sonarqube Prometheus Exporter](https://github.com/dmeiners88/sonarqube-prometheus-exporter) in
 the
 [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
@@ -279,7 +276,7 @@ metrics are automatically exported to Stackdriver and visible in
 The name of each metric starts with the application's name, which you define in
 the `APP_INSTANCE_NAME` environment variable.
 
-The exporting option might not be available for GKE on-prem clusters.
+The export option might not be available for GKE On-prem clusters.
 
 > Note: Stackdriver has [quotas](https://cloud.google.com/monitoring/quotas) for
 > the number of custom metrics created in a single GCP project. If the quota is
@@ -294,20 +291,21 @@ SonarQube Community Edition doest not support scaling.
 
 # Backup and restore
 
-There are 4 core components that are building SonarQube Platform:
-- SonarQube Server responsible for starting 3 process which include:
-- A web server allowing to configure SonarQube instance
-- A search server which is based on Elasticsearch
-- A compute engine server for analysis and processing
-- SonarQube Database
+There are 4 core components in the SonarQube platform:
+- SonarQube Server, which starts these processes:
+  - A web server to configure SonarQube instance
+  - A search server based on Elasticsearch
+  - A compute server for analysis and processing
+- The SonarQube database
 - A set of plugins
-- SonarQube Scanners which are responsible for project analysis - those usually run on build servers
-For our application database the most important place, `plugins` folder stored on PVC (Persistent Volume Claim).
+- SonarQube Scanners, which are responsible for project analysis. These usually run on build servers
+
+To back up the application, you must back up the database. The `plugins` folder is stored on the PersistentVolumeClaim.
 
 ## Backing up plugin and data
 
-For backup pluging you have to copy files from folder `$SONARQUBE_HOME/extension`.
-This shell script will create copy of plugins folder into `extensions` folder:
+To back up the plugins, copy the files from `$SONARQUBE_HOME/extension`.
+Use the following script to copy the plugins folder to a local `extensions` folder:
 
 ```shell
 mkdir extensions
@@ -315,7 +313,7 @@ kubectl --namespace $NAMESPACE cp $(kubectl -n$NAMESPACE get pod -oname | \
               sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/extensions extensions
 ```
 
-This shell script will create copy of content from folder `$SONARQUBE_HOME/data` into folder `data`:
+Use this script to copy `$SONARQUBE_HOME/data` into a local folder called `data`:
 
 ```shell
 mkdir data
@@ -323,13 +321,13 @@ kubectl --namespace $NAMESPACE cp $(kubectl -n$NAMESPACE get pod -oname | \
               sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/data data
 ```
 
-It is not necessary to backup data folder, it will be downlnoaded by application
+It is not necessary to backup data folder, it will be downloaded by application
 from database.
 
 ## Backing up PostgreSQL
 
-All configuration and data about projects are stored in database.
-This shell script will create `postgresql/backup.sql` dump of all DB in PostgreSQL.
+Your SonarQube configuration and project data is stored in the PostgreSQL database.
+The following script creates a `postgresql/backup.sql` file with the contents of the database.
 
 ```shell
 mkdir postgresql
@@ -340,23 +338,21 @@ kubectl --namespace $NAMESPACE exec -t \
 	-- pg_dumpall -c -U postgres > postgresql/backup.sql
 ```
 
-## Backup Password
+## Backup your database password
 
-This shell script will show you base64 encoded password to PostgreSQL
+Use this command to see a base64-encoded version of your PostgreSQL password:
 
 ```shell
 kubectl get secret $APP_INSTANCE_NAME-secret --namespace $NAMESPACE -o yaml | grep password:
 ```
 
-> **NOTE:** It is important to backup password.
+## Restoring the database
 
-## Restoring
+### Enter maintenance mode
 
-Entering to maintenance mode:
-In order to restore PostgresSQL database there is a need to perform some preliminary steps:
+Before you restore the PostgreSQL database, we recommend closing all incoming connections to the database.
 
-1. The command below will “lock” the database by blocking new incoming
-    connections:
+1. The following command blocks incoming database connections:
 
     ```shell
     kubectl --namespace $NAMESPACE exec -t \
@@ -366,7 +362,7 @@ In order to restore PostgresSQL database there is a need to perform some prelimi
       -- psql -U postgres -c "update pg_database set datallowconn = false where datname = 'sonar';"
     ```
 
-1. Next in order to ensure data consistency all active connections will be dropped:
+1. To ensure data consistency, use this command to drop all active connections:
 
     ```shell
     kubectl --namespace $NAMESPACE exec -t \
@@ -375,9 +371,9 @@ In order to restore PostgresSQL database there is a need to perform some prelimi
       -c postgresql-server \
       -- psql -U postgres -c "select pg_terminate_backend(pid) from pg_stat_activity where datname='sonar';"
     ```
+### Restore the database
 
-1. Now you are able to restore data to the database.
-Below shell script will restore data from `postgresql/backup.sql` to PostgreSQL
+1. Use this command to restore your data from `postgresql/backup.sql`:
 
     ```shell
     cat postgresql/backup.sql | kubectl --namespace $NAMESPACE exec -i \
@@ -387,23 +383,21 @@ Below shell script will restore data from `postgresql/backup.sql` to PostgreSQL
       -- psql -U postgres
     ```
 
-1. Next copy files from current folder to folder `$SONARQUBE_HOME/data` in SonarQube application pod:
+1. Use the following command to copy data files from your local folder to `$SONARQUBE_HOME/data` in the SonarQube Pod:
 
     ```shell
     kubectl --namespace $NAMESPACE cp data $(kubectl -n$NAMESPACE get pod -oname | \
       sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/data
     ```
 
-    > **NOTE:** It is optional to restore data folder.
-
-1. Afterwards copy files from current folder to `$SONARQUBE_HOME/extensions` folder in SonarQube application pod
+1. Use the following command to copy the contents of your local `extensions` folder to `$SONARQUBE_HOME/extensions` folder in the SonarQube Pod:
 
     ```shell
     kubectl --namespace $NAMESPACE cp extensions $(kubectl -n$NAMESPACE get pod -oname | \
       sed -n /\\/$APP_INSTANCE_NAME-sonarqube/s.pods\\?/..p):/opt/sonarqube/extensions
     ```
 
-1. Delete all outstanding and unneeded SonarQube application data:
+1. Delete the unneeded SonarQube application data:
 
     ```shell
     kubectl --namespace $NAMESPACE exec -i \
@@ -412,7 +406,7 @@ Below shell script will restore data from `postgresql/backup.sql` to PostgreSQL
       -- bash -c "rm -rf /opt/sonarqube/data/es5/* "
     ```
 
-1. Exit maintenance mode by unlocking schema `sonar` for new incoming connection:
+1. Enable incoming connections for the `sonar` database schema:
 
     ```shell
     kubectl --namespace $NAMESPACE exec -t \
@@ -422,15 +416,15 @@ Below shell script will restore data from `postgresql/backup.sql` to PostgreSQL
       -- psql -U postgres -c "update pg_database set datallowconn = true where datname = 'sonar';"
     ```
 
-1. Patch secret to restore password:
+1. Patch a Secret to restore your database password:
 
    ```shell
    kubectl --namespace $NAMESPACE patch secret sonarqube-1-secret -p '{"data": {"password": "'"$ENCODED_PASS"'"}}'
    ```
 
-   where `$ENCODED_PASS` is variable with your password.
+   where `$ENCODED_PASS` is variable with the base64-encoded password that you backed up.
 
-1. Finally restart SonarQube application pod:
+1. Finally, restart the SonarQube Pod:
 
     ```shell
     kubectl --namespace $NAMESPACE  exec -i $(kubectl -n$NAMESPACE get pod -oname | \
@@ -438,7 +432,7 @@ Below shell script will restore data from `postgresql/backup.sql` to PostgreSQL
       -- bash -c "kill -1 1"
     ```
 
-# Uninstall the Application
+# Uninstalling the Application
 
 ## Using the Google Cloud Platform Console
 
@@ -461,7 +455,7 @@ export NAMESPACE=default
 
 ### Delete the resources
 
-> **NOTE:** We recommend to use a kubectl version that is the same as the version of your cluster. Using the same versions of kubectl and the cluster helps avoid unforeseen issues.
+> **NOTE:** We recommend to use a `kubectl` version that is the same as the version of your cluster. Using the same versions of `kubectl` and the cluster helps avoid unforeseen issues.
 
 To delete the resources, use the expanded manifest file used for the
 installation.

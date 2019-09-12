@@ -54,7 +54,7 @@ find var vendor pub/static pub/media app/etc -type d -exec chmod g+ws {} \;
 chown -R :$user .
 chmod u+x bin/magento
 EOH
-  environment ({'user' => node['magento']['user']})
+  environment({ 'user' => node['magento']['user'] })
 end
 
 execute 'configure php' do

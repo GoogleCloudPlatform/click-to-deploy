@@ -1,0 +1,57 @@
+actions:
+
+- name: Check replication status
+  bashTest:
+    script: |-
+      for i in {0..2}; do
+          mysql -h ${APP_INSTANCE_NAME}-galera-${i}.${APP_INSTANCE_NAME}-galera-svc.${NAMESPACE}.svc.cluster.local \
+            -u root -p"${MYSQL_ROOT_PASSWORD}" \
+            -e "SHOW STATUS LIKE 'wsrep%';" \
+            | grep wsrep_local_state_comment;
+      done
+    expect:
+      stdout:
+        matches: '(wsrep_local_state_comment\s*Synced\n?){3}'
+      exitCode:
+        equals: 0
+
+- name: Can create database
+  bashTest:
+    script: |-
+      mysql -h ${APP_INSTANCE_NAME}-galera-svc.${NAMESPACE}.svc.cluster.local -u root -p"${MYSQL_ROOT_PASSWORD}" <<-EOSQL
+        CREATE DATABASE IF NOT EXISTS test_database;
+        USE test_database;
+        CREATE TABLE IF NOT EXISTS test_table(x CHAR(10));
+        INSERT INTO test_table VALUES ('test value');
+        SELECT * FROM test_table;
+      EOSQL
+    expect:
+      stdout:
+        contains: 'test value'
+      exitCode:
+        equals: 0
+
+- name: Check replication
+  bashTest:
+    script: |-
+      for i in {0..2}; do
+        mysql -h ${APP_INSTANCE_NAME}-galera-${i}.${APP_INSTANCE_NAME}-galera-svc.${NAMESPACE}.svc.cluster.local \
+          -u root -p"${MYSQL_ROOT_PASSWORD}" test_database \
+          -e "SELECT * FROM test_table;" \
+          | grep "test value"
+      done
+    expect:
+      stdout:
+        matches: '(test value\n?){3}'
+      exitCode:
+        equals: 0
+
+- name: Cleanup database
+  bashTest:
+    script: |-
+      mysql -h ${APP_INSTANCE_NAME}-galera-svc.${NAMESPACE}.svc.cluster.local \
+        -u root -p"${MYSQL_ROOT_PASSWORD}" \
+        -e "DROP DATABASE test_database"
+    expect:
+      exitCode:
+        equals: 0

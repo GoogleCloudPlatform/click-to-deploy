@@ -1,0 +1,127 @@
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      A regular update.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  managedUpdates:
+    kalmSupported: false
+
+  images:
+    '':
+      properties:
+        zookeeper.image.name:
+          type: REPO_WITH_REGISTRY
+        zookeeper.image.tag:
+          type: TAG
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
+    exporter:
+      properties:
+        exporter.image.name:
+          type: REPO_WITH_REGISTRY
+        exporter.image.tag:
+          type: TAG
+
+  clusterConstraints:
+    resources:
+      - replicas: 3
+        requests:
+          cpu: 500m
+          memory: 1Gi
+        affinity:
+          simpleNodeAffinity:
+            type: REQUIRE_ONE_NODE_PER_REPLICA
+            minimumNodeCount: 3
+
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  exporter.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, the export of metrics to Stackdriver is not supported yet
+    default: false
+  zookeeper.zkReplicas:
+    type: integer
+    title: ZooKeeper replicas
+    description: Amount of ZooKeeper Pods in cluster
+    default: 3
+  zookeeper.volumeSize:
+    type: string
+    title: Volume size
+    description: Volume size for ZooKeeper Pods in cluster
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i$'
+    default: '10Gi'
+  zookeeper.zkTicktime:
+    type: integer
+    title: ZooKeeper tickTime
+    description: Sets the length of a tick in milliseconds
+    default: 2000
+    minimum: 2
+  zookeeper.zkMaxClientCnxns:
+    type: integer
+    title: ZooKeeper maxClientCnxns
+    description: The maximum allowed number of client connections for a ZooKeeper
+      server.
+    default: 60
+    minimum: 3
+  zookeeper.zkAutopurgeSnapRetainCount:
+    type: integer
+    title: ZooKeeper autopurge.snapRetainCount
+    description: ZooKeeper auto purge feature retains the autopurge.snapRetainCount
+      most recent snapshots and the corresponding transaction logs in the dataDir
+      and dataLogDir respectively and deletes the rest
+    default: 3
+    minimum: 1
+  zookeeper.zkPurgeInterval:
+    type: integer
+    title: ZooKeeper autopurge.purgeInterval
+    description: The time interval in hours for which the purge task has to be triggered
+    default: 24
+  zookeeper.memoryRequest:
+    type: string
+    title: Request memory for ZooKeeper
+    description: Memory for ZooKeeper Pod
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i$'
+    default: '1250Mi'
+  zookeeper.zkHeapSize:
+    type: string
+    title: Heap memory for ZooKeeper
+    description: ZooKeeper heap size
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[KMGT]$'
+    default: '1000M'
+  zookeeper.cpuRequest:
+    type: string
+    title: Request CPU for ZooKeeper
+    description: CPU for ZooKeeper Pod
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?m$'
+    default: '300m'
+
+required:
+- name
+- namespace
+- exporter.enabled
+- zookeeper.zkReplicas
+- zookeeper.zkTicktime
+- zookeeper.zkMaxClientCnxns
+- zookeeper.zkAutopurgeSnapRetainCount
+- zookeeper.zkPurgeInterval
+- zookeeper.memoryRequest
+- zookeeper.zkHeapSize
+- zookeeper.cpuRequest
+- zookeeper.volumeSize
