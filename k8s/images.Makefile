@@ -7,5 +7,4 @@ get_var_from_container = $(shell docker pull $1 2>&1 > /dev/null \
 && docker run --rm --entrypoint=printenv $1 $2)
 
 # Get first argv as image and try to get C2D_RELEASE from container
-get_c2d_release = $(shell docker pull $1 2>&1 > /dev/null \
-&& docker run --rm --entrypoint=printenv $1 C2D_RELEASE)
+get_c2d_release = $(call get_var_from_container, $1, C2D_RELEASE)
