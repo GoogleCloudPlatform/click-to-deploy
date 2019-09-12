@@ -72,7 +72,7 @@ end
 
 # Remove all AGPL licensed packages installed automatically by Redmine.
 package node['redmine']['agpl_packages'] do
- action :remove
- retries 10
- retry_delay 60
+  action :remove
+  retries 10
+  retry_delay 60
 end

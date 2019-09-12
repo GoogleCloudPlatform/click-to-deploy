@@ -25,18 +25,18 @@ include_recipe 'php7::module_mbstring'
 include_recipe 'php7::module_mysql'
 include_recipe 'mysql'
 
-remote_file 'download_piwik' do
-  path '/tmp/piwik.tar.gz'
-  source "https://builds.piwik.org/piwik-#{node['piwik']['version']}.tar.gz"
+remote_file 'download_matomo' do
+  path '/tmp/matomo.tar.gz'
+  source 'https://builds.matomo.org/matomo.tar.gz'
   owner 'root'
   group 'root'
   mode '0640'
   action :create
 end
 
-execute 'untar_piwik_tar ' do
+execute 'untar_matomo_tar ' do
   cwd '/tmp'
-  command 'tar xzf piwik.tar.gz -C /var/www/html --strip-components 1'
+  command 'tar xzf matomo.tar.gz -C /var/www/html --strip-components 1'
 end
 
 # Remove ExampleUI plugin having icons with license telling that they are free
@@ -56,21 +56,21 @@ bash 'prepare_database_configuration' do
     mysql -u root -e "FLUSH PRIVILEGES"
 EOH
   flags '-eu'
-  environment ({
-    'user'   => node['piwik']['db']['username'],
-    'pass'   => node['piwik']['db']['password'],
-    'dbname' => node['piwik']['db']['name']
+  environment({
+    'user' => node['matomo']['db']['username'],
+    'pass' => node['matomo']['db']['password'],
+    'dbname' => node['matomo']['db']['name'],
   })
 end
 
-# Preapare Piwik's installation script
-directory '/tmp/piwik' do
+# Preapare Matomo's installation script
+directory '/tmp/matomo' do
   action :create
 end
 
 # This script is borrowed from: https://github.com/nebev/piwik-cli-setup (MIT)
 template 'prepare_piwik_installation_script' do
-  path '/tmp/piwik/install.php'
+  path '/tmp/matomo/install.php'
   source 'install-piwik.php.erb'
   owner 'root'
   group 'root'
@@ -80,7 +80,7 @@ end
 # This configuration file is based
 # on: https://github.com/nebev/piwik-cli-setup (MIT)
 template 'prepare_piwik_installation_script_config' do
-  path '/tmp/piwik/install.json'
+  path '/tmp/matomo/install.json'
   source 'install-piwik.json.erb'
   owner 'root'
   group 'root'
@@ -92,7 +92,7 @@ end
 bash 'configure_piwik_for_first_use' do
   user 'root'
   code <<-EOH
-    php /tmp/piwik/install.php
+    php /tmp/matomo/install.php
     rm -Rf /var/www/html/plugins/Morpheus/icons/submodules
     chown -R www-data:www-data /var/www/html
     chmod -R 0755 /var/www/html/tmp/assets

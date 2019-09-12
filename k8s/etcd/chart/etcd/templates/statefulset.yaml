@@ -1,0 +1,160 @@
+apiVersion: apps/v1beta2
+kind: StatefulSet
+metadata:
+  name: "{{ .Release.Name }}-etcd"
+  labels: &EtcdDeploymentLabels
+    release: "{{ .Release.Name }}"
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+spec:
+  selector:
+    matchLabels: *EtcdDeploymentLabels
+  serviceName: {{ .Release.Name }}-etcd-headless
+  podManagementPolicy: OrderedReady
+  replicas: {{ .Values.replicas }}
+  template:
+    metadata:
+      name: "{{ .Release.Name }}-etcd"
+      labels: *EtcdDeploymentLabels
+    spec:
+      containers:
+      # Variables to populate static cluster
+      {{- $replicaCount := int .Values.replicas }}
+      {{- $peerPort := int .Values.service.peerPort }}
+      {{- $releaseNamespace := .Release.Namespace }}
+      {{- $releaseName := .Release.Name }}
+      {{- $releaseFullname := printf "%s-%s" $releaseName "etcd" }}
+      {{- $etcdHeadlessServiceName := printf "%s-%s" $releaseFullname "headless" }}
+      {{- $dnsBase := .Values.service.dnsBase }}
+      - name: "etcd"
+        image: "{{ .Values.image.repo }}:{{ .Values.image.tag }}"
+        imagePullPolicy: IfNotPresent
+        command:
+         - "/bin/bash"
+         - "-eu"
+         - "/setup.sh"
+        env:
+        - name: MY_POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: MY_POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: ETCD_NAME
+          value: "$(MY_POD_NAME)"
+        - name: ETCD_DATA_DIR
+          value: "/var/run/etcd/data"
+        - name: ETCD_ADVERTISE_CLIENT_URLS
+          value: "http://$(MY_POD_NAME).{{ $etcdHeadlessServiceName }}.{{ $releaseNamespace }}.{{ $dnsBase }}:{{ .Values.service.port }}"
+        - name: ETCD_LISTEN_CLIENT_URLS
+          value: "http://0.0.0.0:{{ .Values.service.port }}"
+        - name: ETCD_INITIAL_ADVERTISE_PEER_URLS
+          value: "https://$(MY_POD_NAME).{{ $etcdHeadlessServiceName }}.{{ $releaseNamespace }}.{{ $dnsBase }}:{{ .Values.service.peerPort }}"
+        - name: ETCD_LISTEN_PEER_URLS
+          value: "https://0.0.0.0:{{ .Values.service.peerPort }}"
+        - name: ETCDCTL_API
+          value: "3"
+        ## Clustering configuration
+        {{- if gt $replicaCount 1 }}
+        - name: ETCD_INITIAL_CLUSTER_TOKEN
+          value: "etcd-cluster-k8s"
+        - name: ETCD_INITIAL_CLUSTER_STATE
+          value: "new"
+        - name: ETCD_INITIAL_CLUSTER
+          value: {{range $i, $e := until $replicaCount }}{{ $releaseName }}-etcd-{{ $e }}=https://{{ $releaseName }}-etcd-{{ $e }}.{{ $etcdHeadlessServiceName }}.{{ $releaseNamespace }}.{{ $dnsBase }}:{{ $peerPort }},{{ end }}
+        {{- end }}
+        ## RBAC authentication
+        - name: ALLOW_NONE_AUTHENTICATION
+          value: "no"
+        - name: ETCD_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-etcd
+              key: etcd-root-password
+        ## Peer-to-peer communication
+        - name: ETCD_PEER_AUTO_TLS
+          value: "true"
+        ports:
+        - name: client
+          containerPort: {{ .Values.service.port }}
+        - name: peer
+          containerPort: {{ .Values.service.peerPort }}
+        lifecycle:
+          preStop:
+            exec:
+              command:
+                - "/bin/bash"
+                - "-eu"
+                - "/pre-stop.sh"
+        livenessProbe:
+          tcpSocket:
+            port: client
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 2
+        readinessProbe:
+          tcpSocket:
+            port: client
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 6
+        volumeMounts:
+        - name: setup-config
+          mountPath: /setup.sh
+          subPath: setup.sh
+          readOnly: true
+        - name: prestop-config
+          mountPath: /pre-stop.sh
+          subPath: pre-stop.sh
+          readOnly: true
+        - name: data
+          mountPath: /var/run/etcd
+      {{ if .Values.metrics.enabled }}
+      - name: prometheus-to-sd
+        image: {{ .Values.metrics.image }}
+        command:
+        - /monitor
+        - --stackdriver-prefix=custom.googleapis.com
+        - --source=etcd:http://localhost:2379/metrics
+        - --pod-id=$(POD_NAME)
+        - --namespace-id=$(POD_NAMESPACE)
+        - --monitored-resource-types=k8s
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+      {{ end }}
+      volumes:
+      - name: setup-config
+        configMap:
+          name: {{ .Release.Name }}-etcd-config
+          items:
+          - key: setup.sh
+            path: setup.sh
+      - name: prestop-config
+        configMap:
+          name: {{ .Release.Name }}-etcd-config
+          items:
+          - key: pre-stop.sh
+            path: pre-stop.sh
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+        labels: *EtcdDeploymentLabels
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: "{{ .Values.persistence.size}}"
+        storageClassName: "{{ .Values.persistence.storageClass }}"

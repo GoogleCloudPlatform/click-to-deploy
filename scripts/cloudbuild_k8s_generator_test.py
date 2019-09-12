@@ -185,7 +185,7 @@ class CloudBuildK8sGeneratorTest(unittest.TestCase):
     with tempfile.NamedTemporaryFile(delete=True) as f:
       cloudbuild = cloudbuild_k8s_generator.CloudBuildConfig(solution='unknown')
       cloudbuild.path = f.name
-      self.assertTrue(cloudbuild.exists())
+      self.assertTrue(cloudbuild.exists)
 
   def test_verify(self):
     cloudbuild_config = """
@@ -306,7 +306,7 @@ class CloudBuildK8sGeneratorTest(unittest.TestCase):
           solution='wordpress')
       cloudbuild.path = f.name
       cloudbuild.remove()
-      self.assertFalse(cloudbuild.exists())
+      self.assertFalse(cloudbuild.exists)
 
 
 if __name__ == '__main__':
