@@ -22,14 +22,12 @@ image-mysqld-exporter := $(call get_sha256,$(SOURCE_REGISTRY)/mysql5:exporter)
 image-peer-finder := $(call get_sha256,$(SOURCE_REGISTRY)/peer-finder0:$(PEER_FINDER_TAG))
 image-prometheus-to-sd := $(call get_sha256,k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG))
 
-
-#TODO(kalinichenka): replace with C2D_RELEASE variable after container is updated
-# C2D_CONTAINER_RELEASE ?= $(call get_var_from_container,$(image-$(APP_ID)),MARIADB_VERSION)
+# TODO(kalinichenka): Replace with C2D_RELEASE variable after container is updated.
+# C2D_CONTAINER_RELEASE := $(call get_var_from_container,$(image-$(APP_ID)),MARIADB_VERSION)
 C2D_CONTAINER_RELEASE ?= 10.3.17
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)
-
 
 # Additional variables
 ifdef METRICS_EXPORTER_ENABLED
