@@ -16,6 +16,12 @@ VERIFY_WAIT_TIMEOUT = 600
 
 ##### App solution ID #####
 
+ifndef APP_NAME
+$(error APP_NAME must be defined)
+endif
+
+$(info ---- APP_NAME = $(APP_NAME))
+
 ifndef APP_ID
 $(error APP_ID must be defined)
 endif
