@@ -22,7 +22,7 @@ TARGET_IMAGES := apache-exporter mysql mysqld-exporter prometheus-to-sd
 # Image variable names should correspond with TARGET_IMAGES list
 WP_TAG := sha256:477f43a01e1edf44c3f578976855ce5ad24da78fac401dd387f0e7461c187e74
 image-$(APP_NAME) := gcr.io/cloud-marketplace/google/wordpress5-php7-apache@$(WP_TAG)
-# TODO(kalinichenka): replace with 
+# TODO(kalinichenka): replace with proper TRACK
 #image-$(APP_NAME) := $(call get_sha256,$(SOURCE_REGISTRY)/wordpress5-php7-apache:$(TRACK))
 
 image-apache-exporter :=  $(call get_sha256,$(SOURCE_REGISTRY)/wordpress5-php7-apache:exporter)
