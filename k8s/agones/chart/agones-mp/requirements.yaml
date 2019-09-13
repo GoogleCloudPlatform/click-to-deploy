@@ -1,4 +1,0 @@
-dependencies:
-- name: agones
-  version: 0.8.1
-  repository: https://agones.dev/chart/stable
