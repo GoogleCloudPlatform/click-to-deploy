@@ -21,7 +21,9 @@ image-$(APP_NAME) := $(call get_sha256,marketplace.gcr.io/google/postgresql9:$(T
 image-exporter :=  $(call get_sha256,marketplace.gcr.io/google/postgresql9:exporter)
 image-prometheus-to-sd :=  $(call get_sha256,k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG))
 
-C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(APP_NAME)))
+# TODO(kalinichenka): Replace with C2D_RELEASE variable after container is updated.
+# C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(APP_NAME)))
+C2D_CONTAINER_RELEASE ?= 9.6.15
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)

@@ -2,7 +2,8 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
-APP_ID ?= zookeeper
+APP_NAME ?= zookeeper
+APP_ID ?= $(APP_NAME)
 WAIT_FOR_READY_TIMEOUT = 600
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google

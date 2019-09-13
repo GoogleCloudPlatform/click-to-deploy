@@ -3,7 +3,8 @@ include ../gcloud.Makefile
 include ../var.Makefile
 include ../images.Makefile
 
-APP_ID ?= mariadb-galera
+APP_NAME ?= mariadb-galera
+APP_ID ?= $(APP_NAME)-managed-updates
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 
@@ -23,7 +24,7 @@ image-peer-finder := $(call get_sha256,$(SOURCE_REGISTRY)/peer-finder0:$(PEER_FI
 image-prometheus-to-sd := $(call get_sha256,k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG))
 
 # TODO(kalinichenka): Replace with C2D_RELEASE variable after container is updated.
-# C2D_CONTAINER_RELEASE := $(call get_var_from_container,$(image-$(APP_NAME)),MARIADB_VERSION)
+# C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(APP_NAME)))
 C2D_CONTAINER_RELEASE ?= 10.3.17
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
