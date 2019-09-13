@@ -7,7 +7,7 @@ APP_ID ?= nginx-managed-updates
 # The digest should be updated automatically, or tag <major>.<minor>.<path/build>
 # should be available on GCP Marketplace.
 # Use `.build/nginx/VERSION` target to fill the RELEASE variable.
-NGINX_TAG ?= sha256:9de3c4073abb456b8f08d283b886cddf23031f6f8e5db1dc4dcfdf5a19580e5b
+NGINX_TAG ?= sha256:c797f96cf1529764cf8674a757d4f85e20f410912380ed446f3f032f5edb29a3
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)

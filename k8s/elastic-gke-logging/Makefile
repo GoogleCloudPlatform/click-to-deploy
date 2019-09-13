@@ -8,7 +8,7 @@ VERIFY_WAIT_TIMEOUT = 1200
 # The digest should be updated automatically, or tag <major>.<minor>.<path/build>
 # should be available on GCP Marketplace.
 # Use `.build/elastic-gke-logging/VERSION` target to fill the RELEASE variable.
-ELASTICSEARCH_TAG ?= sha256:b6714c74389da49ab142bbc3ea2b9db64f046f1c0cffd59e1537183fc33d9561
+ELASTICSEARCH_TAG ?= sha256:077358140de4b64030d37fbd02d5217b5953dff5bc08bf2352dd5ae90b536978
 KIBANA_TAG ?= 6.3
 FLUENTD_TAG ?= 1.2
 METRICS_EXPORTER_TAG ?= v0.5.1

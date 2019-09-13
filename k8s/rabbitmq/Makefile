@@ -7,7 +7,7 @@ APP_ID ?= rabbitmq-managed-updates
 # The digest should be updated automatically, or tag <major>.<minor>.<path/build>
 # should be available on GCP Marketplace.
 # Use `.build/rabbitmq/VERSION` target to fill the RELEASE variable.
-RABBITMQ_TAG ?= sha256:b93db2c98986ec1d985218ffc512292aa0f9c0059016b727817d4ec10c692c49
+RABBITMQ_TAG ?= sha256:3f6b4c00696132d63f1d4845354c7499fb669713afd4fb9561af109f2ad561b6
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)

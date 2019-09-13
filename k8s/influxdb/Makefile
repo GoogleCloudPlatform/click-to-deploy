@@ -7,12 +7,12 @@ APP_ID ?= influxdb-managed-updates
 # The digest should be updated automatically, or tag <major>.<minor>.<path/build>
 # should be available on GCP Marketplace.
 # Use `.build/influxdb/VERSION` target to fill the RELEASE variable.
-INFLUXDB_TAG ?= sha256:a41d33e302e917764d10f58dee6e7b89d764045468a30fa9eb31f5cb2c3bd6a8
+INFLUXDB_TAG ?= sha256:ddacedb0bc277d2359eef41a7f0ae3f29918876974815a5197ddd44377ffb12a
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 TRACK ?= 1.7
-RELEASE ?= 1.7.6-$(BUILD_ID)
+RELEASE ?= 1.7.7-$(BUILD_ID)
 
 $(info ---- TRACK = $(TRACK))
 $(info ---- RELEASE = $(RELEASE))

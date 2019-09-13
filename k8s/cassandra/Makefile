@@ -8,7 +8,7 @@ VERIFY_WAIT_TIMEOUT = 1800
 # The digest should be updated automatically, or tag <major>.<minor>.<path/build>
 # should be available on GCP Marketplace.
 # Use `.build/cassandra/VERSION` target to fill the RELEASE variable.
-CASSANDRA_TAG ?= sha256:9123711bcc4fbbcae52d02013b1e8a87e4596d0cc933782ad74dd850d4ecf6e1
+CASSANDRA_TAG ?= sha256:38f4a15b2c6ee559c30d167becbfb2ba8e6ccd476c36a2154a88e12824a7fcf0
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
