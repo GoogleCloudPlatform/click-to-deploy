@@ -2,7 +2,8 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
-APP_ID ?= etcd
+APP_NAME ?= etcd
+APP_ID ?= $(APP_NAME)
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 
 ifndef SOURCE_IMAGE

@@ -20,7 +20,11 @@ METRICS_EXPORTER_TAG ?= v0.5.1
 TARGET_IMAGES := apache-exporter mysql mysqld-exporter prometheus-to-sd
 
 # Image variable names should correspond with TARGET_IMAGES list
-image-$(APP_NAME) := $(call get_sha256,marketplace.gcr.io/google/wordpress5-php7-apache:$(TRACK))
+WP_TAG := sha256:477f43a01e1edf44c3f578976855ce5ad24da78fac401dd387f0e7461c187e74
+image-$(APP_NAME) := gcr.io/cloud-marketplace/google/wordpress5-php7-apache@$(WP_TAG)
+# TODO(kalinichenka): replace with 
+#image-$(APP_NAME) := $(call get_sha256,marketplace.gcr.io/google/wordpress5-php7-apache:$(TRACK))
+
 image-apache-exporter :=  $(call get_sha256,marketplace.gcr.io/google/wordpress5-php7-apache:exporter)
 image-mysql :=  $(call get_sha256,marketplace.gcr.io/google/mysql5:$(MYSQL_TAG))
 image-mysqld-exporter :=  $(call get_sha256,marketplace.gcr.io/google/mysql5:exporter)
