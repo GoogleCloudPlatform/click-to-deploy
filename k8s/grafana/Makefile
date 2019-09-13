@@ -17,8 +17,8 @@ METRICS_EXPORTER_TAG ?= v0.5.1
 TARGET_IMAGES := debian9 prometheus-to-sd
 
 # Image variable names should correspond with TARGET_IMAGES list
-image-$(APP_NAME) := $(call get_sha256,marketplace.gcr.io/google/grafana5:$(TRACK))
-image-debian9 :=  $(call get_sha256,marketplace.gcr.io/google/debian9:latest)
+image-$(APP_NAME) := $(call get_sha256,$(SOURCE_REGISTRY)/grafana5:$(TRACK))
+image-debian9 :=  $(call get_sha256,$(SOURCE_REGISTRY)/debian9:latest)
 image-prometheus-to-sd :=  $(call get_sha256,k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG))
 
 C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(APP_NAME)))

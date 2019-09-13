@@ -23,11 +23,11 @@ TARGET_IMAGES := apache-exporter mysql mysqld-exporter prometheus-to-sd
 WP_TAG := sha256:477f43a01e1edf44c3f578976855ce5ad24da78fac401dd387f0e7461c187e74
 image-$(APP_NAME) := gcr.io/cloud-marketplace/google/wordpress5-php7-apache@$(WP_TAG)
 # TODO(kalinichenka): replace with 
-#image-$(APP_NAME) := $(call get_sha256,marketplace.gcr.io/google/wordpress5-php7-apache:$(TRACK))
+#image-$(APP_NAME) := $(call get_sha256,$(SOURCE_REGISTRY)/wordpress5-php7-apache:$(TRACK))
 
-image-apache-exporter :=  $(call get_sha256,marketplace.gcr.io/google/wordpress5-php7-apache:exporter)
-image-mysql :=  $(call get_sha256,marketplace.gcr.io/google/mysql5:$(MYSQL_TAG))
-image-mysqld-exporter :=  $(call get_sha256,marketplace.gcr.io/google/mysql5:exporter)
+image-apache-exporter :=  $(call get_sha256,$(SOURCE_REGISTRY)/wordpress5-php7-apache:exporter)
+image-mysql :=  $(call get_sha256,$(SOURCE_REGISTRY)/mysql5:$(MYSQL_TAG))
+image-mysqld-exporter :=  $(call get_sha256,$(SOURCE_REGISTRY)/mysql5:exporter)
 image-prometheus-to-sd :=  $(call get_sha256,k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG))
 
 C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(APP_NAME)))

@@ -17,8 +17,8 @@ METRICS_EXPORTER_TAG ?= v0.5.1
 TARGET_IMAGES := exporter prometheus-to-sd
 
 # Image variable names should correspond with TARGET_IMAGES list
-image-$(APP_NAME) := $(call get_sha256,marketplace.gcr.io/google/postgresql9:$(TRACK))
-image-exporter :=  $(call get_sha256,marketplace.gcr.io/google/postgresql9:exporter)
+image-$(APP_NAME) := $(call get_sha256,$(SOURCE_REGISTRY)/postgresql9:$(TRACK))
+image-exporter :=  $(call get_sha256,$(SOURCE_REGISTRY)/postgresql9:exporter)
 image-prometheus-to-sd :=  $(call get_sha256,k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG))
 
 # TODO(kalinichenka): Replace with C2D_RELEASE variable after container is updated.

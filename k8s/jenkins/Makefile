@@ -18,7 +18,7 @@ TRACK ?= 2.176
 TARGET_IMAGES :=
 
 # Image variable names should correspond with TARGET_IMAGES list
-image-$(APP_NAME) := $(call get_sha256,marketplace.gcr.io/google/jenkins2:$(TRACK))
+image-$(APP_NAME) := $(call get_sha256,$(SOURCE_REGISTRY)/jenkins2:$(TRACK))
 
 C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(APP_NAME)))
 
