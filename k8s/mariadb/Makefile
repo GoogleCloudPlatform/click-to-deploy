@@ -3,7 +3,8 @@ include ../gcloud.Makefile
 include ../var.Makefile
 include ../images.Makefile
 
-APP_ID ?= mariadb-managed-updates
+APP_NAME ?= mariadb
+APP_ID ?= $(APP_NAME)-managed-updates
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 
@@ -16,11 +17,11 @@ METRICS_EXPORTER_TAG ?= v0.5.1
 TARGET_IMAGES := mysqld-exporter prometheus-to-sd
 
 # Image variable names should correspond with TARGET_IMAGES list
-image-$(APP_ID) := $(call get_sha256,marketplace.gcr.io/google/mariadb10:$(TRACK))
+image-$(APP_NAME) := $(call get_sha256,marketplace.gcr.io/google/mariadb10:$(TRACK))
 image-mysqld-exporter :=  $(call get_sha256,marketplace.gcr.io/google/mysql5:exporter)
 image-prometheus-to-sd :=  $(call get_sha256,k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG))
 
-C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(APP_ID)))
+C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(APP_NAME)))
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)

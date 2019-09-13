@@ -26,6 +26,7 @@ C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(APP_NAME)))
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)
 
+
 NAME ?= $(APP_ID)-1
 
 ifdef IMAGE_GRAFANA_INIT

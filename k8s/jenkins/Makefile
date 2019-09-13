@@ -3,7 +3,8 @@ include ../gcloud.Makefile
 include ../var.Makefile
 include ../images.Makefile
 
-APP_ID ?= jenkins-managed-updates
+APP_NAME ?= jenkins
+APP_ID ?= $(APP_NAME)-managed-updates
 VERIFY_WAIT_TIMEOUT = 1800
 
 
@@ -17,9 +18,9 @@ TRACK ?= 2.176
 TARGET_IMAGES :=
 
 # Image variable names should correspond with TARGET_IMAGES list
-image-$(APP_ID) := $(call get_sha256,marketplace.gcr.io/google/jenkins2:$(TRACK))
+image-$(APP_NAME) := $(call get_sha256,marketplace.gcr.io/google/jenkins2:$(TRACK))
 
-C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(APP_ID)))
+C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(APP_NAME)))
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)
