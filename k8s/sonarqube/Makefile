@@ -8,7 +8,7 @@ VERIFY_WAIT_TIMEOUT = 600
 # The digest should be updated automatically, or tag <major>.<minor>.<path/build>
 # should be available on GCP Marketplace.
 # Use `.build/sonarqube/VERSION` target to fill the RELEASE variable.
-SONAR_TAG ?= sha256:f737cf1955425a5864d93c3b482e7bfb7834ac90171b97a776f34e2b0041f5ce
+SONAR_TAG ?= sha256:4a6886e3db2f93764a7a641f214ae52b2ca9ac5563c772f6f67206584abb0d53
 POSTGRESQL_TAG ?= 9.6-kubernetes
 METRICS_EXPORTER_TAG ?= v0.5.1
 
