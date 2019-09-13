@@ -6,6 +6,21 @@ ifndef __C2D_DEPLOYER_MAKEFILE__
 
 __C2D_DEPLOYER_MAKEFILE__:= included
 
+##### App solution ID #####
+
+ifndef APP_NAME
+$(error APP_NAME must be defined)
+endif
+
+$(info ---- APP_NAME = $(APP_NAME))
+
+ifndef APP_ID
+$(error APP_ID must be defined)
+endif
+
+$(info ---- APP_ID = $(APP_ID))
+
+
 ##### Common variables #####
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/$(APP_ID)/deployer:$(RELEASE)
