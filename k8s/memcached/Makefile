@@ -7,7 +7,7 @@ APP_ID ?= memcached-managed-updates
 # The digest should be updated automatically, or tag <major>.<minor>.<path/build>
 # should be available on GCP Marketplace.
 # Use `.build/memcached/VERSION` target to fill the RELEASE variable.
-MEMCACHED_TAG ?= sha256:aa0e9c7a68848cb9b226640f426a53cd4a2a8d4c98991fc87cfbfb0ac9725f8f
+MEMCACHED_TAG ?= sha256:a81eb58ec89cef45e167060f4621b0694f2658ee0944c96f67ba950cab5cda1e
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)

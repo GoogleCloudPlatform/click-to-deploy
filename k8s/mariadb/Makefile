@@ -7,12 +7,12 @@ APP_ID ?= mariadb-managed-updates
 # The digest should be updated automatically, or tag <major>.<minor>.<path/build>
 # should be available on GCP Marketplace.
 # Use `.build/mariadb/VERSION` target to fill the RELEASE variable.
-MARIADB_TAG ?= sha256:edc02d0c232098d9882eed8cacfdde63deb7be631894a9323d9471990890b3df
+MARIADB_TAG ?= sha256:0e3b4b07db1b583cea157671b43c83f3c84204c40ae0c91cdda2ad520f326f15
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 TRACK ?= 10.3
-RELEASE ?= 10.3.15-$(BUILD_ID)
+RELEASE ?= 10.3.17-$(BUILD_ID)
 
 $(info ---- TRACK = $(TRACK))
 $(info ---- RELEASE = $(RELEASE))

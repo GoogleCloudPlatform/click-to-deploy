@@ -8,13 +8,13 @@ VERIFY_WAIT_TIMEOUT = 1800
 # The digest should be updated automatically, or tag <major>.<minor>.<path/build>
 # should be available on GCP Marketplace.
 # Use `.build/wordpress/VERSION` target to fill the RELEASE variable.
-WP_TAG ?= sha256:b90654a76e1c42594d9230479de8b436c637ee12937a343661d53c12ad4e7c2c
+WP_TAG ?= sha256:477f43a01e1edf44c3f578976855ce5ad24da78fac401dd387f0e7461c187e74
 MYSQL_TAG ?= latest
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 TRACK ?= 5.2
-RELEASE ?= 5.2.1-$(BUILD_ID)
+RELEASE ?= 5.2.2-$(BUILD_ID)
 
 $(info ---- TRACK = $(TRACK))
 $(info ---- RELEASE = $(RELEASE))

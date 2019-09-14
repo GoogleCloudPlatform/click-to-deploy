@@ -7,12 +7,12 @@ APP_ID ?= postgresql-managed-updates
 # The digest should be updated automatically, or tag <major>.<minor>.<path/build>
 # should be available on GCP Marketplace.
 # Use `.build/postgresql/VERSION` target to fill the RELEASE variable.
-POSTGRESQL_TAG ?= sha256:9aa2e8b294818b834ecf5bb83ce84bb5741038aef81650d0a6c0ddea0a0df897
+POSTGRESQL_TAG ?= sha256:5d35b38ae12baf2f1dfd99bbe6d235a7d226a1d9fdaed2c47755b97117ae007a
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 TRACK ?= 9.6
-RELEASE ?= 9.6.10-$(BUILD_ID)
+RELEASE ?= 9.6.15-$(BUILD_ID)
 
 $(info ---- TRACK = $(TRACK))
 $(info ---- RELEASE = $(RELEASE))

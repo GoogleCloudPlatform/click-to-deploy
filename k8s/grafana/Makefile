@@ -7,7 +7,7 @@ APP_ID ?= grafana-managed-updates
 # The digest should be updated automatically, or tag <major>.<minor>.<path/build>
 # should be available on GCP Marketplace.
 # Use `.build/grafana/VERSION` target to fill the RELEASE variable.
-GRAFANA_TAG ?= sha256:2d61c53e58b27e59cd77c9899208bfa31a2d12d27822a3cc3ef362213141a406
+GRAFANA_TAG ?= sha256:987e44b3425d4e80061b7a33ace1bc3a9575f033e017e5b3f48144b39d228811
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
