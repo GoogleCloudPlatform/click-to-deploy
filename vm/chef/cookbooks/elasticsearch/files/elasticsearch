@@ -22,7 +22,7 @@
 #   * Bootstrap the node
 #
 
-source /opt/c2d/elasticsearch-utils || exit
+source /opt/c2d/elasticsearch-utils || exit 1
 
 readonly es_cluster_name="$(get_attribute_value "es_cluster_name")"
 readonly es_nodes="$(get_attribute_value "es_nodes")"
