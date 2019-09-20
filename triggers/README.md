@@ -11,11 +11,12 @@ commands.
 *   Run the following command to create or update a trigger for your Kubernetes
     application:
 
-    > **NOTE**: To update the trigger, the configuration file must contain the
-    > trigger ID or the name of the existing trigger, otherwise a new trigger
-    > will be created.
+    > **NOTE**: You can only update an existing trigger if its
+    > configuration file contains either that trigger's name or trigger
+    > ID. If neither are present within the configuration file, a new
+    > trigger will be created.
 
-    > **IMPORTANT**: Mark new created triggers as required in repository settings.
+    > **IMPORTANT**: Mark newly created triggers as required in repository settings.
 
     ```shell
     gcloud alpha builds triggers import \
