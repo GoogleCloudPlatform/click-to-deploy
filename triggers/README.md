@@ -49,7 +49,7 @@ commands.
     *   `[PROJECT_ID]` is the GCP project ID of the project where the trigger will
         be exported.
 
-## Get details about an existing trigger
+## Get the details of an existing trigger
 
 *   Run the following command to get details of an existing trigger:
 
