@@ -1,22 +1,4 @@
-x-google-marketplace:
-  schemaVersion: v2
-  applicationApiVersion: v1beta1
-  publishedVersion: '3.0.4-beta.1'
-  publishedVersionMetadata:
-    releaseNote: >-
-      Beta release.
-    releaseTypes:
-      - Beta
-    recommended: false
-  managedUpdates:
-    kalmSupported: false
-  images:
-    '':
-      properties:
-        imageRepo:
-          type: REPO_WITH_REGISTRY
-        imageTag:
-          type: TAG
+application_api_version: v1beta1
 properties:
   name:
     type: string
@@ -50,6 +32,3 @@ properties:
 required:
 - deployerImage
 - imageGatekeeper
-form:
-- widget: help
-  description: Gatekeeper

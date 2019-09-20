@@ -79,12 +79,12 @@ app/build:: .build/gatekeeper/deployer \
 	docker push "$(TESTER_IMAGE)"
 	@touch "$@"
 
-# Do nothing here
 .build/gatekeeper/gatekeeper: .build/var/REGISTRY \
                               .build/var/TAG \
                             | .build/gatekeeper
 	$(call print_target, $@)
-
+	docker push "$(GATEKEEPER_IMAGE)"
+	@touch "$@"
 
 # concatenate all licenses together
 licenses:
