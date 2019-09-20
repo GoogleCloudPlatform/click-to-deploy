@@ -68,7 +68,7 @@ spec:
       labels: *WordPressDeploymentLabels
     spec:
       containers:
-      - image: {{ .Values.wordpressImage }}
+      - image: "{{ .Values.wordpress.image.repo }}:{{ .Values.wordpress.image.tag }}"
         name: wordpress
         env:
         # A WordPress' username.

@@ -22,7 +22,7 @@ spec:
           do echo waiting for database; sleep 2; done;']
       containers:
         - name: {{ .Release.Name}}-sonarqube
-          image: {{ .Values.sonarqube.image}}
+          image: "{{ .Values.sonarqube.image.repo }}:{{ .Values.sonarqube.image.tag }}"
           resources:
             requests:
               memory: "2048Mi"
