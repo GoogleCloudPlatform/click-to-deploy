@@ -43,7 +43,7 @@ commands.
 
     Where:
 
-    *   `[TRIGGER]` is the trigger's ID or fully qualified identifier.
+    *   `[TRIGGER]` is a trigger's ID or fully qualified identifier.
     *   `[APP_NAME]` is the name of the application whose configuration you want to
         export.
     *   `[PROJECT_ID]` is the GCP project ID of the project where the trigger will
