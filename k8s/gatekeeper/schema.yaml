@@ -17,15 +17,6 @@ x-google-marketplace:
           type: REPO_WITH_REGISTRY
         imageTag:
           type: TAG
-  deployerServiceAccount:
-    roles:
-      - type: ClusterRole        # This is a cluster-wide ClusterRole
-        rulesType: CUSTOM        # We specify our own custom RBAC roles
-        rules:
-          - apiGroups: ['apiextensions.k8s.io', 'rbac.authorization.k8s.io']
-            resources: ['customresourcedefinitions', 'clusterroles', 'clusterrolebindings']
-            verbs: ['*']
-
 properties:
   name:
     type: string
@@ -49,11 +40,6 @@ properties:
           splitByColon:
             before: imageGatekeeperRepo
             after: imageGatekeeperTag
-#  imageInit:
-#    type: string
-#    default: $REGISTRY/init:$TAG
-#    x-google-marketplace:
-#      type: IMAGE
   auditInterval:
     title: Audit interval (seconds)
     description: Your Gatekeeper instance will perform an ongoing self-audit at the given interval (in seconds).
@@ -61,14 +47,6 @@ properties:
     default: 30
     minimum: 1
     maximum: 3600
-#  reportingSecret:
-#    type: string
-#    x-google-marketplace:
-#      type: REPORTING_SECRET
-#  istioEnabled:
-#    type: boolean
-#    x-google-marketplace:
-#      type: ISTIO_ENABLED
 required:
 - deployerImage
 - imageGatekeeper
