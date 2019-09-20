@@ -28,11 +28,11 @@ commands.
 
     *   `[APP_NAME]` is the application name for which you want to create a
         trigger.
-    *   `[PROJECT_ID]` is the GCP project ID where the trigger will be created.
+    *   `[PROJECT_ID]` is the GCP project ID of the project where the trigger will be created.
 
 ## Export an existing trigger
 
-*   Run the following command to export an existing trigger to file for your
+*   Run the following command to export an existing trigger to a file for your
     Kubernetes application:
 
     ```shell
@@ -43,11 +43,11 @@ commands.
 
     Where:
 
-    *   `[TRIGGER]` is an ID of the trigger or fully qualified identifier for
-        the trigger.
-    *   `[APP_NAME]` is the application name for which you want to export the
-        configuration.
-    *   `[PROJECT_ID]` is the GCP project ID where the trigger will be exported.
+    *   `[TRIGGER]` is the trigger's ID or fully qualified identifier.
+    *   `[APP_NAME]` is the name of the application whose configuration you want to
+        export.
+    *   `[PROJECT_ID]` is the GCP project ID of the project where the trigger will
+        be exported.
 
 ## Get details about an existing trigger
 
