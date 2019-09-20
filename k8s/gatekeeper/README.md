@@ -1,20 +1,20 @@
 # Overview
 
-Gatekeeper is a customizable admission webhook for Kubernetes that enforces policies executed by the [Open Policy Agent](https://www.openpolicyagent.org).
+Gatekeeper is a customizable admission webhook for Kubernetes that enforces policies executed by the [Open Policy Agent](https://www.openpolicyagent.org). 
 
+Please be aware that Gatekeeper is in beta status. In addition, this installation guide relies on staging deployer images.
 
 ## About Google Click to Deploy
 
 Popular open stacks on Kubernetes packaged by Google.
 
 # Installation
-<!--
+
 ## Quick install with Google Cloud Marketplace
 
-Get up and running with a few clicks! Install this Elasticsearch app to a Google
+Get up and running with a few clicks! Install this Gatekeeper app to a Google
 Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 [on-screen instructions](https://console.cloud.google.com/marketplace/details/google/gatekeeper).
--->
 
 ## Command line instructions
 
@@ -95,6 +95,7 @@ cd click-to-deploy/k8s/gatekeeper
 ```
 
 #### Set up staging parameters
+
 ```shell
 export MARKETPLACE_TOOLS_TAG=unreleased-pr396
 export MARKETPLACE_TOOLS_IMAGE=gcr.io/cloud-marketplace-staging/marketplace-k8s-app-tools/k8s/dev
@@ -175,17 +176,8 @@ To view the app, open the URL in your browser.
 
 Gatekeeper is a single-instance application; it is not intended to be scaled up.
 
-# Snapshot and restore
-
-TODO
-
-# Updating the app
-
-TODO
-
 # Uninstall the Application
 
-<!--
 ## Using the Google Cloud Platform Console
 
 1.  In the GCP Console, open
@@ -194,7 +186,6 @@ TODO
 1.  From the list of applications, click **Gatekeeper**.
 
 1.  On the Application Details page, click **Delete**.
--->
 
 ## Using the command line
 
