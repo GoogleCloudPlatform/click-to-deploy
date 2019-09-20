@@ -44,9 +44,9 @@ bash 'configure moodle' do
 
     mysql -u root -e "CREATE DATABASE $defdb"
 EOH
-  environment ({
-    'user'    => node['moodle']['user'],
-    'defdb'   => node['moodle']['db']['name'],
+  environment({
+    'user' => node['moodle']['user'],
+    'defdb' => node['moodle']['db']['name'],
   })
 end
 

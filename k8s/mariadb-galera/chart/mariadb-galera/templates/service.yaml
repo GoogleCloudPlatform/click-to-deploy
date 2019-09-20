@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-galera-svc
+  labels: &MariaDBDeploymentLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: mariadb-server
+  annotations:
+    # this option is needed to publish all endpoints before any peers
+    # are started. peer-finder should be able to detect these endpoints
+    # in order to set up cluster addresses in galera config properly.
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+spec:
+  ports:
+  - name: mysql
+    port: {{ .Values.service.port }}
+  clusterIP: None
+  selector: *MariaDBDeploymentLabels
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-mysqld-exporter-svc
+  labels: &MariaDBDeploymentLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: mariadb-server
+spec:
+  ports:
+  - name: exporter
+    port: 9104
+  selector: *MariaDBDeploymentLabels
+  clusterIP: None

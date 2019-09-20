@@ -116,9 +116,9 @@ export NAMESPACE=default
 Configure the container image:
 
 ```shell
-TAG=1.4.4
+TAG=1.4
 export IMAGE_CONSUL="marketplace.gcr.io/google/consul:${TAG}"
-export IMAGE_CONSUL_EXPOTER="marketplace.gcr.io/google/consul/exporter:${TAG}"
+export IMAGE_CONSUL_EXPORTER="marketplace.gcr.io/google/consul/consul-exporter:${TAG}"
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/consul/prometheus-to-sd:${TAG}"
 ```
 
@@ -230,7 +230,7 @@ helm template chart/consul \
   --name ${APP_INSTANCE_NAME} \
   $( [[ -n "${NAMESPACE}" ]] && printf '%s=%s' '--namespace' ${NAMESPACE} ) \
   --set global.image=${IMAGE_CONSUL} \
-  --set server.prometheus_exporter.image=${IMAGE_CONSUL_EXPOTER} \
+  --set server.prometheus_exporter.image=${IMAGE_CONSUL_EXPORTER} \
   --set server.prometheus_to_sd.image=${IMAGE_METRICS_EXPORTER} \
   --set global.domain=${CONSUL_DOMAIN} \
   --set global.datacenter=${CONSUL_DATACENTER} \

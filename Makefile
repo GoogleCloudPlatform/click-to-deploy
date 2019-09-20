@@ -27,8 +27,17 @@ python-test: ## Runs tests for Python scripts
 
 .PHONY: vm-lint
 vm-lint: ## Runs lint for Chef cookbooks
-	@foodcritic --version
-	@foodcritic --cookbook-path=vm/chef/cookbooks --rule-file=vm/chef/.foodcritic --epic-fail=any
+	@docker pull chef/chefdk
+	# cookstyle print version
+	@docker run --rm -it --entrypoint cookstyle -v $(PWD)/vm/chef:/chef:ro chef/chefdk --version
+	# cookstyle on cookbooks
+	@docker run --rm -it --entrypoint cookstyle -v $(PWD)/vm/chef:/chef:ro chef/chefdk /chef/cookbooks
+	# cookstyle on tests
+	@docker run --rm -it --entrypoint cookstyle -v $(PWD)/vm/tests:/tests:ro chef/chefdk /tests/solutions
+	# foodcritic print version
+	@docker run --rm -it --entrypoint foodcritic -v $(PWD)/vm/chef:/chef:ro chef/chefdk --version
+	# foodcritic on cookbooks
+	@docker run --rm -it --entrypoint foodcritic -v $(PWD)/vm/chef:/chef:ro chef/chefdk --cookbook-path=/chef/cookbooks --rule-file=/chef/.foodcritic --epic-fail=any
 
 .PHONY: vm-generate-triggers
 vm-generate-triggers: ## Generates and displays GCB triggers for VM

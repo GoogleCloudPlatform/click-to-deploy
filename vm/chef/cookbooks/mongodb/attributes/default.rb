@@ -13,7 +13,7 @@
 # limitations under the License.
 
 default['mongodb']['debian']['codename'] = 'stretch'
-default['mongodb']['version'] = '4.0.0'
+default['mongodb']['version'] = '4.2.0'
 default['mongodb']['release'] =
   default['mongodb']['version'].split('.').take(2).join('.')
 

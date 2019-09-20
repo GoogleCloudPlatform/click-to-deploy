@@ -1,0 +1,29 @@
+mariadb:
+  image:
+    repo: null
+    tag: null
+  volumeSize: '32Gi'
+
+db:
+  rootPassword: null
+  replicas: 3
+
+  # The image and credentials for mysqld_exporter component.
+  exporter:
+    image: null
+    user: mysqld-exporter
+    password: null
+
+peerFinder:
+  image: null
+
+prometheusToSd:
+  image: null
+  enabled: false
+
+service:
+  port: 3306
+
+tls:
+  base64EncodedPrivateKey: null
+  base64EncodedCertificate: null
