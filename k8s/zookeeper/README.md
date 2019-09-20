@@ -198,8 +198,8 @@ helm template chart/zookeeper \
 --namespace "${NAMESPACE}" \
 --set metrics.enabled=${METRICS_EXPORTER_ENABLED} \
 --set metrics.image=${IMAGE_METRICS_EXPORTER} \
---set exporter.image.name=${IMAGE_ZOOKEEPER_REPO} \
---set exporter.image.tag=${TAG_EXPORTER} \
+--set exporter.image.name=${IMAGE_ZOOKEEPER_REPO}/exporter \
+--set exporter.image.tag=${TAG} \
 --set zookeeper.image.name=${IMAGE_ZOOKEEPER_REPO} \
 --set zookeeper.image.tag=${TAG} \
 --set zookeeper.zkReplicas=${ZOOKEEPER_REPLICAS} \
