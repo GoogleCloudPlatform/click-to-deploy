@@ -1,6 +1,6 @@
 # Cloud Build triggers for a GitHub repository
 
-We use Google Cloud Build (GCB) triggers to test the applications.
+We use Google Cloud Build (GCB) triggers to test applications.
 
 For more information, see the
 [`gcloud alpha builds triggers`](https://cloud.google.com/sdk/gcloud/reference/alpha/builds/triggers/)
