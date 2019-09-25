@@ -49,6 +49,9 @@ app/build:: .build/gatekeeper/deployer \
 .build/gatekeeper: | .build
 	mkdir -p "$@"
 
+.build/app: | .build
+	mkdir -p "$@"
+
 # Overwriting parent to change gcr path -- remove when done using staging
 .PHONY: .build/app/dev
 .build/app/dev: .build/var/MARKETPLACE_TOOLS_TAG \
