@@ -10,10 +10,11 @@ APP_ID ?= gatekeeper
 # TODO: change the source reference
 GATEKEEPER_IMAGE ?= $(SOURCE_REGISTRY)/$(APP_ID):$(TAG)
 NAME ?= gatekeeper
+AUDIT_INTERVAL ?= 60
 APP_PARAMETERS ?= { \
 	"name": "$(NAME)", \
 	"namespace": "$(NAMESPACE)", \
-	"auditInterval": $(AUDIT_INTERVAL)" \
+	"auditInterval": "$(AUDIT_INTERVAL)" \
 }
 
 TESTER_IMAGE ?= $(REGISTRY)/gatekeeper/deployer/tester:$(TAG)
