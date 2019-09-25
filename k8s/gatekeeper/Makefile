@@ -7,7 +7,6 @@ include ../gcloud.Makefile
 include ../var.Makefile
 
 APP_ID ?= gatekeeper
-# TODO: change the source reference
 GATEKEEPER_IMAGE ?= $(SOURCE_REGISTRY)/$(APP_ID):$(TAG)
 NAME ?= gatekeeper
 AUDIT_INTERVAL ?= 60
@@ -101,12 +100,7 @@ app/build:: .build/gatekeeper/deployer \
                                 .build/var/TAG \
                               | .build/gatekeeper
 	$(call print_target, $@)
-	@touch "$@"
-	docker pull $(GATEKEEPER_IMAGE)
-	docker tag $(GATEKEEPER_IMAGE) "$(REGISTRY)/$(APP_ID):$(TRACK)"
-	docker tag "$(REGISTRY)/$(APP_ID):$(TRACK)" "$(REGISTRY)/$(APP_ID):$(RELEASE)"
-	docker push "$(REGISTRY)/$(APP_ID):$(TRACK)"
-	docker push "$(REGISTRY)/$(APP_ID):$(RELEASE)"
+	# The main image is assumed to be already placed in the right location
 	@touch "$@"
 
 
