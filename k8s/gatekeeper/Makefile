@@ -49,6 +49,17 @@ app/build:: .build/gatekeeper/deployer \
 .build/gatekeeper: | .build
 	mkdir -p "$@"
 
+# Overwriting parent to change gcr path -- remove when done using staging
+.PHONY: .build/app/dev
+.build/app/dev: .build/var/MARKETPLACE_TOOLS_TAG \
+							| .build/app
+	@docker run \
+        "gcr.io/cloud-marketplace-staging/marketplace-k8s-app-tools/k8s/dev:unreleased-pr396" \
+        cat /scripts/dev > "/tmp/dev"
+	@mv "/tmp/dev" "$@"
+	@chmod a+x "$@"
+
+
 .build/gatekeeper/deployer: deployer/* \
                             chart/gatekeeper/* \
                             chart/gatekeeper/templates/* \
