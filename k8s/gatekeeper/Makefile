@@ -1,25 +1,11 @@
-TAG ?= 3.0
-SOURCE_REGISTRY ?= gcr.io/gatekeeper-marketplace
-
 # Convenience makefiles.
 include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
 APP_ID ?= gatekeeper
-GATEKEEPER_IMAGE ?= $(SOURCE_REGISTRY)/$(APP_ID):$(TAG)
+SOURCE_REGISTRY ?= gcr.io/gatekeeper-marketplace
 NAME ?= gatekeeper
-AUDIT_INTERVAL ?= 60
-APP_PARAMETERS ?= { \
-	"name": "$(NAME)", \
-	"namespace": "$(NAMESPACE)", \
-	"auditInterval": "$(AUDIT_INTERVAL)" \
-}
-
-TESTER_IMAGE ?= $(REGISTRY)/gatekeeper/deployer/tester:$(TAG)
-APP_TEST_PARAMETERS ?= { \
-	"imageTester": "$(TESTER_IMAGE)" \
-}
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 TRACK ?= 3.0
@@ -27,6 +13,20 @@ RELEASE ?= 3.0.4-beta.1-$(BUILD_ID)
 
 $(info ---- TRACK = $(TRACK))
 $(info ---- RELEASE = $(RELEASE))
+
+GATEKEEPER_IMAGE ?= $(SOURCE_REGISTRY)/$(APP_ID):$(TRACK)
+AUDIT_INTERVAL ?= 60
+APP_PARAMETERS ?= { \
+	"name": "$(NAME)", \
+	"namespace": "$(NAMESPACE)", \
+	"auditInterval": "$(AUDIT_INTERVAL)" \
+}
+
+TESTER_IMAGE ?= $(REGISTRY)/gatekeeper/deployer/tester:$(TRACK)
+APP_TEST_PARAMETERS ?= { \
+	"imageTester": "$(TESTER_IMAGE)" \
+}
+
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/$(APP_ID)/deployer:$(RELEASE)
 APP_DEPLOYER_IMAGE_TRACK_TAG ?= $(REGISTRY)/$(APP_ID)/deployer:$(TRACK)
@@ -69,7 +69,6 @@ app/build:: .build/gatekeeper/deployer \
                             .build/var/APP_DEPLOYER_IMAGE_TRACK_TAG \
                             .build/var/MARKETPLACE_TOOLS_TAG \
                             .build/var/REGISTRY \
-                            .build/var/TAG \
                             .build/var/TRACK \
                             .build/var/RELEASE \
                             licenses \
@@ -77,7 +76,7 @@ app/build:: .build/gatekeeper/deployer \
 	$(call print_target, $@)
 	docker build \
 			--build-arg REGISTRY="$(REGISTRY)/gatekeeper" \
-			--build-arg TAG="$(TAG)" \
+			--build-arg TAG="$(RELEASE)" \
 			--build-arg MARKETPLACE_TOOLS_TAG="$(MARKETPLACE_TOOLS_TAG)" \
 			--tag "$(APP_DEPLOYER_IMAGE)" \
 			-f deployer/Dockerfile \
@@ -89,7 +88,9 @@ app/build:: .build/gatekeeper/deployer \
 	@touch "$@"
 
 
-.build/gatekeeper/tester: .build/var/TESTER_IMAGE
+.build/gatekeeper/tester: .build/var/TESTER_IMAGE \
+                    $(shell find apptest -type f) \
+                    | .build/gatekeeper
 	$(call print_target, $@)
 	docker pull cosmintitei/bash-curl
 	docker tag cosmintitei/bash-curl "$(TESTER_IMAGE)"
@@ -97,7 +98,6 @@ app/build:: .build/gatekeeper/deployer \
 	@touch "$@"
 
 .build/gatekeeper/gatekeeper: .build/var/REGISTRY \
-                                .build/var/TAG \
                               | .build/gatekeeper
 	$(call print_target, $@)
 	# The main image is assumed to be already placed in the right location
