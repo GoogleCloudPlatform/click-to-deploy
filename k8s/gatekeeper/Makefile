@@ -21,8 +21,7 @@ APP_TEST_PARAMETERS ?= { \
 	"imageTester": "$(TESTER_IMAGE)" \
 }
 
-BUILD_ID := kh-1
-#BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
+BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 TRACK ?= 3.0
 RELEASE ?= 3.0.4-beta.1-$(BUILD_ID)
 
