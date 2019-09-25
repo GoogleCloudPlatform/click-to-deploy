@@ -1,15 +1,15 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "${name}-tester"
+  name: "{{ .Release.Name }}-tester"
   labels:
-    app.kubernetes.io/name: ${name}
+    app.kubernetes.io/name: {{ .Release.Name }}
   annotations:
     marketplace.cloud.google.com/verification: test
 spec:
   containers:
   - name: tester
-    image: "${imageTester}"
+    image: "{{ .Values.testerImage }}"
     volumeMounts:
     - name: config-volume
       mountPath: /tester
@@ -19,26 +19,14 @@ spec:
   volumes:
   - name: config-volume
     configMap:
-      name: "${name}-test"
+      name: "{{ .Release.Name }}-test"
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: "${name}-test"
+  name: "{{ .Release.Name }}-test"
   labels:
     app.kubernetes.io/name: gatekeeper
   annotations:
     marketplace.cloud.google.com/verification: test
-data:
-  run.sh: |-
-    set -x
-    endpoint="https://gatekeeper-controller-manager-service.${namespace}/v1/admit"
-    echo GET $endpoint
-    curl -k $endpoint | tee /dev/stderr | grep '"allowed":false'
-    has_response=$?
-    if [[ ${has_response} != 0 ]]; then
-      echo FAILURE
-      exit 1
-    else
-      echo SUCCESS
-    fi
+

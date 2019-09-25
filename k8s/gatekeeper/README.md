@@ -111,9 +111,14 @@ chmod +x "$BIN_FILE"
 
 Please use the following for the instance name and [namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) for the app.
 
-```
+```shell
 export APP_INSTANCE_NAME=gatekeeper
 export NAMESPACE=gatekeeper-system
+```
+
+Define the audit interval, in seconds. The default value is 60.
+```shell
+export AUDIT_INTERVAL=60
 ```
 
 Configure the container image:
@@ -147,6 +152,26 @@ Run the command below to create the new namespace:
 kubectl create namespace "$NAMESPACE"
 ```
 
+#### Expand the manifest template
+
+Use `helm template` to expand the template. We recommend that you save the
+expanded manifest file for future updates to the application.
+
+```shell
+helm template chart/gatekeeper \
+  --name $APP_INSTANCE_NAME \
+  --namespace $NAMESPACE \
+  --set gatekeeper.image=$IMAGE_GATEKEEPER  > "${APP_INSTANCE_NAME}_manifest.yaml"
+```
+
+#### Apply the manifest to your Kubernetes cluster
+
+Use `kubectl` to apply the manifest to your Kubernetes cluster:
+
+```shell
+kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
+```
+<!---
 #### Build the deployer ####
 
 Run the command below to build the deployer:
@@ -161,6 +186,7 @@ Run the command below to build Gatekeeper:
 ```shell
 make app/install
 ```
+--->
 
 #### View the app in the Google Cloud Console
 

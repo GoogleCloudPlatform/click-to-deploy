@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Namespace
 metadata:
   labels:
-    app.kubernetes.io/name: ${name}
+    app.kubernetes.io/name: {{ .Release.Name }}
     control-plane: controller-manager
     controller-tools.k8s.io: "1.0"
 ---
@@ -11,7 +11,7 @@ kind: CustomResourceDefinition
 metadata:
   creationTimestamp: null
   labels:
-    app.kubernetes.io/name: ${name}
+    app.kubernetes.io/name: {{ .Release.Name }}
     controller-tools.k8s.io: "1.0"
   name: configs.config.gatekeeper.sh
 spec:
@@ -120,7 +120,7 @@ kind: CustomResourceDefinition
 metadata:
   creationTimestamp: null
   labels:
-    app.kubernetes.io/name: ${name}
+    app.kubernetes.io/name: {{ .Release.Name }}
     controller-tools.k8s.io: "1.0"
   name: constrainttemplates.templates.gatekeeper.sh
 spec:
@@ -216,7 +216,7 @@ kind: ClusterRole
 metadata:
   creationTimestamp: null
   labels:
-    app.kubernetes.io/name: ${name}
+    app.kubernetes.io/name: {{ .Release.Name }}
   name: gatekeeper-manager-role
 rules:
 - apiGroups:
@@ -368,7 +368,7 @@ kind: ClusterRoleBinding
 metadata:
   creationTimestamp: null
   labels:
-    app.kubernetes.io/name: ${name}
+    app.kubernetes.io/name: {{ .Release.Name }}
   name: gatekeeper-manager-rolebinding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -382,14 +382,14 @@ apiVersion: v1
 kind: Secret
 metadata:
   labels:
-    app.kubernetes.io/name: ${name}
+    app.kubernetes.io/name: {{ .Release.Name }}
   name: gatekeeper-webhook-server-secret
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app.kubernetes.io/name: ${name}
+    app.kubernetes.io/name: {{ .Release.Name }}
     control-plane: controller-manager
     controller-tools.k8s.io: "1.0"
   name: gatekeeper-controller-manager-service
@@ -404,7 +404,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   labels:
-    app.kubernetes.io/name: ${name}
+    app.kubernetes.io/name: {{ .Release.Name }}
     control-plane: controller-manager
     controller-tools.k8s.io: "1.0"
   name: gatekeeper-controller-manager
@@ -422,7 +422,7 @@ spec:
     spec:
       containers:
       - args:
-        - --auditInterval=${auditInterval}
+        - --auditInterval={{ .Values.auditInterval }}
         command:
         - /root/manager
         env:
@@ -437,7 +437,7 @@ spec:
               fieldPath: metadata.name
         - name: SECRET_NAME
           value: gatekeeper-webhook-server-secret
-        image: ${imageGatekeeperRepo}:${imageGatekeeperTag}
+        image: {{ .Values.imageGatekeeperRepo }}:{{ .Values.imageGatekeeperTag }}
         imagePullPolicy: Always
         name: manager
         ports:

@@ -1,0 +1,8 @@
+gatekeeper:
+  imageGatekeeperRepo: null
+  imageGatekeeperTag: null
+  auditInterval: null
+
+metrics:
+  image: null
+  enabled: false
