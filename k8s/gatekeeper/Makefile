@@ -46,9 +46,6 @@ app/build:: .build/gatekeeper/deployer \
 			.build/gatekeeper/tester \
 			.build/gatekeeper/gatekeeper
 
-.build/gatekeeper: | .build
-	mkdir -p "$@"
-
 .build/app: | .build
 	mkdir -p "$@"
 
@@ -62,6 +59,8 @@ app/build:: .build/gatekeeper/deployer \
 	@mv "/tmp/dev" "$@"
 	@chmod a+x "$@"
 
+.build/gatekeeper: | .build
+	mkdir -p "$@"
 
 .build/gatekeeper/deployer: deployer/* \
                             chart/gatekeeper/* \
