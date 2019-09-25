@@ -2,16 +2,17 @@ TAG ?= 3.0
 SOURCE_REGISTRY ?= gcr.io/gatekeeper-marketplace
 
 # Convenience makefiles.
+include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
 APP_ID ?= gatekeeper
+# TODO: change the source reference
 GATEKEEPER_IMAGE ?= $(SOURCE_REGISTRY)/$(APP_ID):$(TAG)
 NAME ?= gatekeeper
 APP_PARAMETERS ?= { \
 	"name": "$(NAME)", \
 	"namespace": "$(NAMESPACE)", \
-	"imageGatekeeper": "$(GATEKEEPER_IMAGE)" \
 	"auditInterval": $(AUDIT_INTERVAL)" \
 }
 
@@ -20,7 +21,8 @@ APP_TEST_PARAMETERS ?= { \
 	"imageTester": "$(TESTER_IMAGE)" \
 }
 
-BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
+BUILD_ID := kh-1
+#BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 TRACK ?= 3.0
 RELEASE ?= 3.0.4-beta.1-$(BUILD_ID)
 
@@ -41,41 +43,25 @@ include ../app_v2.Makefile
 # Extend the target as defined in app.Makefile to
 # include real dependencies.
 app/build:: .build/gatekeeper/deployer \
-						 .build/gatekeeper/tester \
-						.build/gatekeeper/gatekeeper
-
-.build/app: | .build
-	mkdir -p "$@"
-
-
-# Overwriting parent to change gcr path -- remove when done using staging
-.PHONY: .build/app/dev
-.build/app/dev: .build/var/MARKETPLACE_TOOLS_TAG \
-							| .build/app
-	@docker run \
-			"gcr.io/cloud-marketplace-staging/marketplace-k8s-app-tools/k8s/dev:$(MARKETPLACE_TOOLS_TAG)" \
-			cat /scripts/dev > "/tmp/dev"
-	@mv "/tmp/dev" "$@"
-	@chmod a+x "$@"
+			.build/gatekeeper/tester \
+			.build/gatekeeper/gatekeeper
 
 .build/gatekeeper: | .build
 	mkdir -p "$@"
 
 .build/gatekeeper/deployer: deployer/* \
-														chart/gatekeeper/* \
-														chart/gatekeeper/templates/* \
-														schema.yaml \
-														.build/var/APP_DEPLOYER_IMAGE \
-														.build/var/APP_DEPLOYER_IMAGE_TRACK_TAG \
-														.build/var/MARKETPLACE_TOOLS_TAG \
-														.build/var/REGISTRY \
-														.build/var/TAG \
-														.build/var/TRACK \
-														.build/var/RELEASE \
-														licenses \
-													| .build/gatekeeper
-
-
+                            chart/gatekeeper/* \
+                            chart/gatekeeper/templates/* \
+                            schema.yaml \
+                            .build/var/APP_DEPLOYER_IMAGE \
+                            .build/var/APP_DEPLOYER_IMAGE_TRACK_TAG \
+                            .build/var/MARKETPLACE_TOOLS_TAG \
+                            .build/var/REGISTRY \
+                            .build/var/TAG \
+                            .build/var/TRACK \
+                            .build/var/RELEASE \
+                            licenses \
+                            | .build/gatekeeper
 	$(call print_target, $@)
 	docker build \
 			--build-arg REGISTRY="$(REGISTRY)/gatekeeper" \
@@ -99,11 +85,17 @@ app/build:: .build/gatekeeper/deployer \
 	@touch "$@"
 
 .build/gatekeeper/gatekeeper: .build/var/REGISTRY \
-															.build/var/TAG \
-														| .build/gatekeeper
+                                .build/var/TAG \
+                              | .build/gatekeeper
 	$(call print_target, $@)
-	docker push "$(GATEKEEPER_IMAGE)"
 	@touch "$@"
+	docker pull $(GATEKEEPER_IMAGE)
+	docker tag $(GATEKEEPER_IMAGE) "$(REGISTRY)/$(APP_ID):$(TRACK)"
+	docker tag "$(REGISTRY)/$(APP_ID):$(TRACK)" "$(REGISTRY)/$(APP_ID):$(RELEASE)"
+	docker push "$(REGISTRY)/$(APP_ID):$(TRACK)"
+	docker push "$(REGISTRY)/$(APP_ID):$(RELEASE)"
+	@touch "$@"
+
 
 # concatenate all licenses together
 licenses:
