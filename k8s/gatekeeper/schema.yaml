@@ -1,7 +1,7 @@
 x-google-marketplace:
   schemaVersion: v2
   applicationApiVersion: v1beta1
-  publishedVersion: '3.0.4-beta.1'
+  publishedVersion: "$TAG"
   publishedVersionMetadata:
     releaseNote: >-
       Beta release.
