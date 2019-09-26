@@ -11,8 +11,13 @@ spec:
     type: Gatekeeper
     # TODO gather version from gatekeeper repo in unified build process
     version: '3.0.4-beta.1'
+    {{ if ne .Release.Namespace "gatekeeper-system" }}
     description: |-
-      Gatekeeper
+      "Warning: Gatekeeper must be run under the namespace \"gatekeeper-system\" for proper operation. Please delete this instance and restart with the correct namespace."
+    {{ else }}
+    description: |-
+      Gatekeeper is a customizable admission webhook for Kubernetes that enforces policies executed by the Open Policy Agent.
+    {{ end }}
     maintainers:
     - name: The OPA Authors
       url: https://www.github.com/open-policy-agent/gatekeeper
