@@ -1,6 +1,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
+  name: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: {{ .Release.Name }}
     control-plane: controller-manager
@@ -377,6 +378,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: default
+  namespace: default
 ---
 apiVersion: v1
 kind: Secret
@@ -437,7 +439,7 @@ spec:
               fieldPath: metadata.name
         - name: SECRET_NAME
           value: gatekeeper-webhook-server-secret
-        image: {{ .Values.imageGatekeeperRepo }}:{{ .Values.imageGatekeeperTag }}
+        image: {{ .Values.gatekeeper.imageGatekeeperRepo }}:{{ .Values.gatekeeper.imageGatekeeperTag }}
         imagePullPolicy: Always
         name: manager
         ports:
