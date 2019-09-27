@@ -19,7 +19,7 @@ AUDIT_INTERVAL ?= 60
 APP_PARAMETERS ?= { \
 	"name": "$(NAME)", \
 	"namespace": "$(NAMESPACE)", \
-	"auditInterval": "$(AUDIT_INTERVAL)" \
+	"gatekeeper.auditInterval": "$(AUDIT_INTERVAL)" \
 }
 
 TESTER_IMAGE ?= $(REGISTRY)/gatekeeper/deployer/tester:$(TRACK)

@@ -13,9 +13,9 @@ x-google-marketplace:
   images:
     '':
       properties:
-        imageRepo:
+        gatekeeper.imageGatekeeperRepo:
           type: REPO_WITH_REGISTRY
-        imageTag:
+        gatekeeper.imageGatekeeperTag:
           type: TAG
   deployerServiceAccount:
     roles:
@@ -34,21 +34,7 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  deployerImage:
-    type: string
-    x-google-marketplace:
-      type: DEPLOYER_IMAGE
-  imageGatekeeper:
-    type: string
-    default: $REGISTRY:$TAG
-    x-google-marketplace:
-      type: IMAGE
-      image:
-        generatedProperties:
-          splitByColon:
-            before: imageGatekeeperRepo
-            after: imageGatekeeperTag
-  auditInterval:
+  gatekeeper.auditInterval:
     title: Audit interval (seconds)
     description: Your Gatekeeper instance will perform an ongoing self-audit at the given interval (in seconds).
     type: integer
