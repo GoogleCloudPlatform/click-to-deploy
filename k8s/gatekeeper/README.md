@@ -161,7 +161,9 @@ expanded manifest file for future updates to the application.
 helm template chart/gatekeeper \
   --name $APP_INSTANCE_NAME \
   --namespace $NAMESPACE \
-  --set gatekeeper.image=$IMAGE_GATEKEEPER  > "${APP_INSTANCE_NAME}_manifest.yaml"
+  --set gatekeeper.imageGatekeeperRepo=gcr.io/gatekeeper-marketplace/gatekeeper \
+  --set gatekeeper.imageGatekeeperTag=$TAG \
+  --set gatekeeper.auditInterval=$AUDIT_INTERVAL > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster
@@ -171,22 +173,6 @@ Use `kubectl` to apply the manifest to your Kubernetes cluster:
 ```shell
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
-<!---
-#### Build the deployer ####
-
-Run the command below to build the deployer:
-
-```shell
-make app/build
-```
-
-#### Install Gatekeeper ####
-
-Run the command below to build Gatekeeper:
-```shell
-make app/install
-```
---->
 
 #### View the app in the Google Cloud Console
 

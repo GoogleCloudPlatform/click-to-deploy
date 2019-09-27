@@ -378,7 +378,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: default
-  namespace: default
+  namespace: {{ .Release.Namespace }}
 ---
 apiVersion: v1
 kind: Secret
@@ -424,7 +424,7 @@ spec:
     spec:
       containers:
       - args:
-        - --auditInterval={{ .Values.auditInterval }}
+        - --auditInterval={{ .Values.gatekeeper.auditInterval }}
         command:
         - /root/manager
         env:
