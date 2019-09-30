@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,13 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['ceph']['version'] = 'nautilus'
-default['ceph']['deploymentuser'] = 'cephdep'
+require 'spec_helper'
 
-default['ceph']['adminnodepackages'] = %w(ceph-deploy rsync)
-default['ceph']['datanodepackages'] = %w(ceph ceph-osd ceph-mds ceph-mon radosgw rsync)
-
-default['ceph']['config-dir'] = "#{node['c2d-config']['config-dir']}/#{node['ceph']['deploymentuser']}"
-
-default['ceph']['rsync-dir-name'] = 'data-node-config'
-default['ceph']['rsync-dir'] = "#{node['ceph']['config-dir']}/#{node['ceph']['rsync-dir-name']}"
+describe user('haproxy') do
+  it { should exist }
+  it { should belong_to_group 'haproxy' }
+end

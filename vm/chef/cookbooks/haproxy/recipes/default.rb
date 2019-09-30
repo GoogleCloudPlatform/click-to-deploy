@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,13 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['ceph']['version'] = 'nautilus'
-default['ceph']['deploymentuser'] = 'cephdep'
+package 'install packages' do
+  package_name node['haproxy']['packages']
+  action :install
+end
 
-default['ceph']['adminnodepackages'] = %w(ceph-deploy rsync)
-default['ceph']['datanodepackages'] = %w(ceph ceph-osd ceph-mds ceph-mon radosgw rsync)
+template '/etc/haproxy/haproxy.cfg' do
+  source 'haproxy.cfg.erb'
+  owner 'root'
+  group 'root'
+  mode 0644
+  notifies :start, 'service[haproxy]'
+end
 
-default['ceph']['config-dir'] = "#{node['c2d-config']['config-dir']}/#{node['ceph']['deploymentuser']}"
-
-default['ceph']['rsync-dir-name'] = 'data-node-config'
-default['ceph']['rsync-dir'] = "#{node['ceph']['config-dir']}/#{node['ceph']['rsync-dir-name']}"
+service 'haproxy' do
+  action :start
+end
