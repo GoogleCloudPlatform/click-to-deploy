@@ -41,3 +41,8 @@ properties:
     default: 60
     minimum: 1
     maximum: 3600
+
+required:
+- name
+- namespace
+- gatekeeper.auditInterval
