@@ -327,15 +327,16 @@ The following steps are based on the [MariaDB documentation](https://mariadb.com
 In order to backup MariaDB data you have to run following command:
 
 ```shell
-BKP_NAME="all-databases-$(date +%Y-%m-%d).sql"
+BKP_NAME="all-databases-$(date +%Y-%m-%d).sql.gz"
 BKP_DIR=/var/mariadb/backup
 POD_NAME=${APP_INSTANCE_NAME}-galera-0
 
 # Backup database
 kubectl -n ${NAMESPACE} exec -it ${POD_NAME} -c mariadb -- sh -c "mkdir -p ${BKP_DIR} && \
-    mysqldump --all-databases --add-drop-table --single-transaction --ignore-table=mysql.user \
+  mysqldump --all-databases --triggers --routines --events \
+    --add-drop-table --single-transaction --ignore-table=mysql.user \
     -uroot -p\${MYSQL_ROOT_PASSWORD} \
-    > ${BKP_DIR}/${BKP_NAME}"
+    | gzip > ${BKP_DIR}/${BKP_NAME}"
 
 # Copy backup file to local workstation and cleanup Pod
 kubectl cp ${NAMESPACE}/${POD_NAME}:${BKP_DIR}/${BKP_NAME} ${BKP_NAME}
@@ -355,22 +356,23 @@ In that case you will not be able to restore it on Click to Deploy MariaDB Galer
 In order ot restore MariaDB data you have to specify backup file location:
 
 ```shell
-BKP_FILE="[/path/to/backup_file].sql"
+BKP_FILE="[/path/to/backup_file].sql.gz"
 ```
 
 Then run following commands to restore data:
 ```shell
 POD_NAME=${APP_INSTANCE_NAME}-galera-0
 BKP_DIR=/var/mariadb/backup
+BKP_PATH=${BKP_DIR}/${BKP_FILE}
 
 # restore all databases from provided backup
-kubectl -n ${NAMESPACE} exec -it ${POD} -c mariadb -- sh -c "mkdir -p ${BKP_DIR}"
-kubectl cp ${FILE} ${NAMESPACE}/${POD}:${BKP_FILE}
-kubectl -n ${NAMESPACE} exec -it ${POD} -c mariadb -- bash -c "mysql -uroot -p\${MYSQL_ROOT_PASSWORD} -e \"
-        source ${BKP_FILE}; \" "
+kubectl -n ${NAMESPACE} exec -it ${POD_NAME} -c mariadb -- sh -c "mkdir -p ${BKP_DIR}"
+kubectl cp ${BKP_FILE} ${NAMESPACE}/${POD_NAME}:${BKP_PATH}
+kubectl -n ${NAMESPACE} exec -it ${POD_NAME} -c mariadb -- bash -c "gunzip < ${BKP_PATH} |
+    mysql -uroot -p\${MYSQL_ROOT_PASSWORD}"
 
 # cleanup
-kubectl -n ${NAMESPACE} exec -it ${POD} -c mariadb -- sh -c "rm -f ${BKP_FILE}"
+kubectl -n ${NAMESPACE} exec -it ${POD_NAME} -c mariadb -- sh -c "rm -f ${BKP_PATH}"
 ```
 
 # Upgrading the app
