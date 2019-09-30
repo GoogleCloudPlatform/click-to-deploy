@@ -174,6 +174,7 @@ export ZOOKEEPER_CLIENT_MAX_CNXNX=60
 export ZOOKEEPER_AUTO_PURGE_SNAP_RETAIN_COUNT=3
 export ZOOKEEPER_PURGE_INTERVAL=24
 export ZOOKEEPER_HEAP_SIZE=1000M
+export ZOOKEEPER_VOLUME_SIZE=10Gi
 ```
 
 Enable Stackdriver Metrics Exporter:
@@ -193,12 +194,12 @@ expanded manifest file for future updates to the application.
 
 ```shell
 helm template chart/zookeeper \
---name "${$APP_INSTANCE_NAME}" \
---namespace "${$NAMESPACE}" \
+--name "${APP_INSTANCE_NAME}" \
+--namespace "${NAMESPACE}" \
 --set metrics.enabled=${METRICS_EXPORTER_ENABLED} \
 --set metrics.image=${IMAGE_METRICS_EXPORTER} \
---set exporter.image.name=${IMAGE_ZOOKEEPER_REPO} \
---set exporter.image.tag=${TAG_EXPORTER} \
+--set exporter.image.name=${IMAGE_ZOOKEEPER_REPO}/exporter \
+--set exporter.image.tag=${TAG} \
 --set zookeeper.image.name=${IMAGE_ZOOKEEPER_REPO} \
 --set zookeeper.image.tag=${TAG} \
 --set zookeeper.zkReplicas=${ZOOKEEPER_REPLICAS} \
@@ -208,7 +209,8 @@ helm template chart/zookeeper \
 --set zookeeper.zkPurgeInterval=${ZOOKEEPER_PURGE_INTERVAL} \
 --set zookeeper.memoryRequest=${ZOOKEEPER_MEMORY_REQUEST} \
 --set zookeeper.cpuRequest=${ZOOKEEPER_CPU_REQUEST} \
---set zookeeper.zkHeapSize=${ZOOKEEPER_HEAP_SIZE} > ${APP_INSTANCE_NAME}_manifest.yaml
+--set zookeeper.zkHeapSize=${ZOOKEEPER_HEAP_SIZE} \
+--set zookeeper.volumeSize=${ZOOKEEPER_VOLUME_SIZE} > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 #### Apply the manifest to your Kubernetes cluster
 

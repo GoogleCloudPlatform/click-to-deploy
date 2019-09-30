@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,12 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['mongodb']['debian']['codename'] = 'stretch'
-default['mongodb']['version'] = '4.2.0'
-default['mongodb']['release'] =
-  default['mongodb']['version'].split('.').take(2).join('.')
+require 'spec_helper'
 
-default['mongodb']['package'] = 'mongodb-org'
-default['mongodb']['source_package'] = 'mongodb'
-default['mongodb']['temp_packages'] = ['dirmngr', 'dpkg-dev']
-default['mongodb']['permanent_packages'] = ['xfsprogs']
+describe 'C2D startup config' do
+  describe service('google-c2d-startup.service') do
+    it { should be_enabled }
+  end
+
+  describe file('/var/lock/google_vm_config.lock') do
+    it { should_not exist }
+  end
+end
+
+describe 'C2D startup scripts should exists' do
+  describe file('/opt/c2d/scripts/00-manage-swap') do
+    it { should exist }
+  end
+end
