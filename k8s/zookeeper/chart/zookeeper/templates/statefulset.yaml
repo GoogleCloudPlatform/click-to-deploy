@@ -72,7 +72,6 @@ spec:
         volumeMounts:
         - name: datadir
           mountPath: /opt/zookeeper/data
-
       - name: exporer
         imagePullPolicy: Always
         image: "{{ .Values.exporter.image.name }}:{{ .Values.exporter.image.tag }}"
