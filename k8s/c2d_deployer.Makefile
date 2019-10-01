@@ -46,7 +46,7 @@ app/build:: .build/$(CHART_NAME)/VERSION \
             .build/$(CHART_NAME)/tester
 
 
-.build/images: $(TARGET_IMAGES)
+.build/images: $(ADDITIONAL_IMAGES)
 
 
 .build/$(CHART_NAME): | .build
@@ -89,7 +89,7 @@ $(CHART_NAME): .build/var/REGISTRY \
 	docker push "$(REGISTRY)/$(APP_ID):$(RELEASE)"
 
 
-$(TARGET_IMAGES): .build/var/REGISTRY \
+$(ADDITIONAL_IMAGES): .build/var/REGISTRY \
                   .build/var/TRACK \
                   .build/var/RELEASE \
                   | .build/$(CHART_NAME)
