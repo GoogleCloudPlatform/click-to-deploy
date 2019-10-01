@@ -54,16 +54,16 @@ app/build:: .build/$(CHART_NAME)/VERSION \
 
 
 .build/$(CHART_NAME)/deployer: deployer/* \
-                           chart/$(CHART_NAME)/* \
-                           chart/$(CHART_NAME)/templates/* \
-                           schema.yaml \
-                           .build/var/APP_DEPLOYER_IMAGE \
-                           .build/var/APP_DEPLOYER_IMAGE_TRACK_TAG \
-                           .build/var/MARKETPLACE_TOOLS_TAG \
-                           .build/var/REGISTRY \
-                           .build/var/TRACK \
-                           .build/var/RELEASE \
-                           | .build/$(CHART_NAME)
+                               chart/$(CHART_NAME)/* \
+                               chart/$(CHART_NAME)/templates/* \
+                               schema.yaml \
+                               .build/var/APP_DEPLOYER_IMAGE \
+                               .build/var/APP_DEPLOYER_IMAGE_TRACK_TAG \
+                               .build/var/MARKETPLACE_TOOLS_TAG \
+                               .build/var/REGISTRY \
+                               .build/var/TRACK \
+                               .build/var/RELEASE \
+                               | .build/$(CHART_NAME)
 	docker build \
 		--build-arg REGISTRY="$(REGISTRY)/$(APP_ID)" \
 		--build-arg TAG="$(RELEASE)" \
@@ -79,9 +79,9 @@ app/build:: .build/$(CHART_NAME)/VERSION \
 
 .PHONY: $(CHART_NAME)
 $(CHART_NAME): .build/var/REGISTRY \
-           .build/var/TRACK \
-           .build/var/RELEASE \
-           | .build/$(CHART_NAME)
+               .build/var/TRACK \
+               .build/var/RELEASE \
+               | .build/$(CHART_NAME)
 	docker pull $(image-$@)
 	docker tag $(image-$@) "$(REGISTRY)/$(APP_ID):$(TRACK)"
 	docker tag $(image-$@) "$(REGISTRY)/$(APP_ID):$(RELEASE)"
@@ -90,9 +90,9 @@ $(CHART_NAME): .build/var/REGISTRY \
 
 
 $(ADDITIONAL_IMAGES): .build/var/REGISTRY \
-                  .build/var/TRACK \
-                  .build/var/RELEASE \
-                  | .build/$(CHART_NAME)
+                      .build/var/TRACK \
+                      .build/var/RELEASE \
+                      | .build/$(CHART_NAME)
 	docker pull $(image-$@)
 	docker tag $(image-$@) "$(REGISTRY)/$(APP_ID)/$@:$(TRACK)"
 	docker tag $(image-$@) "$(REGISTRY)/$(APP_ID)/$@:$(RELEASE)"
@@ -101,8 +101,8 @@ $(ADDITIONAL_IMAGES): .build/var/REGISTRY \
 
 
 .build/$(CHART_NAME)/tester: .build/var/TESTER_IMAGE \
-                         $(shell find apptest -type f) \
-                         | .build/$(CHART_NAME)
+                             $(shell find apptest -type f) \
+                             | .build/$(CHART_NAME)
 	$(call print_target,$@)
 	cd apptest/tester \
 		&& docker build --tag "$(TESTER_IMAGE)" .
