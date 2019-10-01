@@ -13,7 +13,7 @@ spec:
     type: Consul
     version: "{{ (split ":" ( default .Values.global.image .Values.server.image ))._1 }}"
     description: |-
-      Consul is a distributed service mesh to connect, secure, and configure services across any runtime platform and public or private cloud.
+      Consul is a distributed service mesh to connect, secure, and configure services, across any runtime platform and public or private cloud.
 
       # Support
       Google does not offer support for this solution. However, community support is available on
@@ -34,25 +34,25 @@ spec:
       gcloud container clusters get-credentials [CLUSTER_NAME] --zone [CLUSTER_ZONE]
       ```
       where:
-      * `[CLUSTER_NAME]` is the name of the cluster for this application
-      * `[CLUSTER_ZONE]` is the zone, in which the cluster is operating
+      * `[CLUSTER_NAME]` is the name of this application's cluster
+      * `[CLUSTER_ZONE]` is the zone in which that cluster is operating
 
-      Please read [here](https://cloud.google.com/kubernetes-engine/docs/quickstart#get_authentication_credentials_for_the_cluster) for more information.
+      Read more about authentication credentials [here](https://cloud.google.com/kubernetes-engine/docs/quickstart#get_authentication_credentials_for_the_cluster) for more information.
 
-      # Get access Consul UI
+      # Get access to the Consul UI
 
-      Run command to start port forwarding:
+      Run the following command to start port forwarding:
 
       ```shell
       kubectl port-forward svc/{{ .Release.Name }}-consul-ui --namespace {{ .Values.namespace }} 8500:80
       ```
 
-      Access Consul UI under the following link: [http://localhost:8500](http://localhost:8500)
+      Then, access the Consul UI by using the following link: [http://localhost:8500](http://localhost:8500)
 
-      # Get access Consul API at every kubernetes node localy
+      # Get access to the Consul API at every Kubernetes node, localy
 
-      By default Consul clients run on every Kubernetes node in cluster.
-      To access Consul client port you can connect directly to HOST_IP:8500
+      By default, Consul clients run on every Kubernetes node in cluster.
+      To access the Consul client port, you can connect directly to HOST_IP:8500
 
       Value of hostIP can be provided as environment in container:
 
