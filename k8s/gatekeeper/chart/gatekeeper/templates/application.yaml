@@ -9,8 +9,7 @@ metadata:
 spec:
   descriptor:
     type: Gatekeeper
-    # TODO gather version from gatekeeper repo in unified build process
-    version: '3.0.4-beta.1'
+    version: "{{ .Values.gatekeeper.imageGatekeeperTag }}"
     {{ if ne .Release.Namespace "gatekeeper-system" }}
     description: |-
       "Warning: Gatekeeper must be run under the namespace \"gatekeeper-system\" for proper operation. Please delete this instance and restart with the correct namespace."
@@ -28,7 +27,7 @@ spec:
       # Setup instructions in README.md
   selector:
     matchLabels:
-      app.kubernetes.io/name: gatekeeper
+      app.kubernetes.io/name: {{ .Release.Name }}
   componentKinds:
     - group: v1
       kind:  Namespace
