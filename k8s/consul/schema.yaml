@@ -77,7 +77,7 @@ properties:
     type: boolean
     default: false
     title: Prometheus exporter sidecar
-    description: Prometheus exporter to export metrics to Stackdriver.
+    description: Prometheus exporter to export metrics to Stackdriver
   server.ServiceAccount:
     type : string
     title: Service account used by Consul server
@@ -93,7 +93,7 @@ properties:
               verbs: ["list"]
   client.ServiceAccount:
     type: string
-    title: Service account used by Consul client
+    title: Service account used by the Consul client
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
@@ -113,49 +113,49 @@ properties:
     type: string
     default: null
     title: CPU limit for each server instance
-    description: By default not set. If you'd like a custom value, you can specify an override here.
+    description: Not set by default. If you'd like a custom value, you can specify an override here.
     pattern: '^([+-]?[0-9.]+)([m]?)$'
   server.resources.limits.memory:
     type: string
     default: null
     title: Memory limit for each server instance
-    description: By default not set. If you'd like a custom value, you can specify an override here.
+    description: Not set by default. If you'd like a custom value, you can specify an override here.
     pattern: '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
   server.resources.requests.cpu:
     type: string
     default: null
     title: CPU requests for each server instance
-    description: By default not set. If you'd like a custom value, you can specify an override here.
+    description: Not set by default. If you'd like a custom value, you can specify an override here.
     pattern: '^([+-]?[0-9.]+)([m]?)$'
   server.resources.requests.memory:
     type: string
     default: null
     title: Memory requests for each server instance
-    description: By default not set. If you'd like a custom value, you can specify an override here.
+    description: Not set by default. If you'd like a custom value, you can specify an override here.
     pattern: '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
   client.resources.limits.cpu:
     type: string
     default: null
     title: CPU limit for each client instance
-    description: By default not set. If you'd like a custom value, you can specify an override here.
+    description: Not set by default. If you'd like a custom value, you can specify an override here.
     pattern: '^([+-]?[0-9.]+)([m]?)$'
   client.resources.limits.memory:
     type: string
     default: null
     title: Memory limit for each client instance
-    description: By default not set. If you'd like a custom value, you can specify an override here.
+    description: Not set by default. If you'd like a custom value, you can specify an override here.
     pattern: '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
   client.resources.requests.cpu:
     type: string
     default: null
     title: CPU requests for each client instance
-    description: By default not set. If you'd like a custom value, you can specify an override here.
+    description: Not set by default. If you'd like a custom value, you can specify an override here.
     pattern: '^([+-]?[0-9.]+)([m]?)$'
   client.resources.requests.memory:
     type: string
     default: null
     title: Memory requests for each client instance
-    description: By default not set. If you'd like a custom value, you can specify an override here.
+    description: Not set by default. If you'd like a custom value, you can specify an override here.
     pattern: '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
 required:
 - name
