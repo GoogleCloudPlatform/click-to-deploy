@@ -19,7 +19,7 @@ spec:
       terminationGracePeriodSeconds: 180
       containers:
       - name: memcached
-        image: {{ .Values.memcached.image }}
+        image: "{{ .Values.memcached.image.repo }}:{{ .Values.memcached.image.tag }}"
         imagePullPolicy: Always
         env:
         - name: MEMCACHED_PROMETHEUS_ENABLED

@@ -1,5 +1,7 @@
 nginx:
-  image: null
+  image:
+    repo: null
+    tag: null
   initImage: null
   replicas: null
 tls:
