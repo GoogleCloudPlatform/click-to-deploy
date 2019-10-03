@@ -16,7 +16,9 @@ While the migration is in progress, you can find the source code for each image 
 following GitHub repositories:
 
 *   https://github.com/GoogleCloudPlatform/cassandra-docker
+*   https://github.com/GoogleCloudPlatform/consul-docker
 *   https://github.com/GoogleCloudPlatform/elasticsearch-docker
+*   https://github.com/GoogleCloudPlatform/etcd-docker
 *   https://github.com/GoogleCloudPlatform/fluentd-docker
 *   https://github.com/GoogleCloudPlatform/grafana-docker
 *   https://github.com/GoogleCloudPlatform/influxdb-docker
@@ -30,7 +32,7 @@ following GitHub repositories:
 *   https://github.com/GoogleCloudPlatform/nfs-server-docker
 *   https://github.com/GoogleCloudPlatform/nginx-docker
 *   https://github.com/GoogleCloudPlatform/postgresql-docker
-*   https://github.com/GoogleCloudPlatform/prometheus
+*   https://github.com/GoogleCloudPlatform/prometheus-docker
 *   https://github.com/GoogleCloudPlatform/prometheus-alertmanager-docker
 *   https://github.com/GoogleCloudPlatform/prometheus-nodeexporter-docker
 *   https://github.com/GoogleCloudPlatform/prometheus-pushgateway-docker

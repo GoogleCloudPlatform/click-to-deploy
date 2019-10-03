@@ -1,0 +1,41 @@
+actions:
+
+- name: List users without credentials
+  bashTest:
+    script: |-
+      kubectl exec -it ${APP_INSTANCE_NAME}-etcd-0 -- etcdctl user list
+    expect:
+      exitCode:
+        equals: 1
+
+- name: List users with correct root credentials on 1st member
+  bashTest:
+    script: |-
+      kubectl exec -it ${APP_INSTANCE_NAME}-etcd-0 -- etcdctl --user root:${ETCD_ROOT_PASSWORD} user list > /dev/null 2>&1
+    expect:
+      exitCode:
+        equals: 0
+
+- name: List users with correct root credentials on 2nd member
+  bashTest:
+    script: |-
+      kubectl exec -it ${APP_INSTANCE_NAME}-etcd-1 -- etcdctl --user root:${ETCD_ROOT_PASSWORD} user list > /dev/null 2>&1
+    expect:
+      exitCode:
+        equals: 0
+
+- name: List users with incorrect credentials on 1st member
+  bashTest:
+    script: |-
+      kubectl exec -it ${APP_INSTANCE_NAME}-etcd-0 -- etcdctl --user root:somePasswd user list
+    expect:
+      exitCode:
+        equals: 2
+
+- name: List users with incorrect credentials on 2nd member
+  bashTest:
+    script: |-
+      kubectl exec -it ${APP_INSTANCE_NAME}-etcd-1 -- etcdctl --user root:somePasswd user list
+    expect:
+      exitCode:
+        equals: 2

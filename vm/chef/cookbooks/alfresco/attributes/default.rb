@@ -17,7 +17,7 @@ default['alfresco']['install']['sha256'] = '099d2f26c593e58fe640e714e561d317b8ad
 
 default['alfresco']['db']['username'] = 'alfresco'
 default['alfresco']['db']['password'] = 'alfresco'
-default['alfresco']['db']['name']  = 'alfresco'
+default['alfresco']['db']['name'] = 'alfresco'
 
 default['alfresco']['src']['temp_packages'] = ['subversion', 'git']
 
@@ -33,5 +33,5 @@ default['alfresco']['src']['urls'] = {
   'hibernate_wget' => 'https://downloads.sourceforge.net/project/hibernate/hibernate3/3.2.6.ga/hibernate-3.2.6.ga.tar.gz',
   'java_geom_wget' => 'https://downloads.sourceforge.net/project/geom-java/javaGeom/javaGeom-0.11.2/javaGeom-0.11.2-src.zip',
   'jid3lib_wget' => 'https://downloads.sourceforge.net/project/javamusictag/jid3lib/beta-dev6/jid3lib-0.5.4.tar.gz',
-  'libwmf_wget' => 'https://sourceforge.net/projects/wvware/files/libwmf/0.2.8.4/libwmf-0.2.8.4.tar.gz'
+  'libwmf_wget' => 'https://sourceforge.net/projects/wvware/files/libwmf/0.2.8.4/libwmf-0.2.8.4.tar.gz',
 }

@@ -135,4 +135,3 @@ c2d_startup_script 'nagios' do
   source 'opt-c2d-scripts-nagios.erb'
   action :template
 end
-

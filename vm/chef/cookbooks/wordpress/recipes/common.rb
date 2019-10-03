@@ -46,18 +46,18 @@ execute 'download wordpress' do
       --path=/var/www/html \
       --allow-root
 EOH
-  environment ({'version' => node['wordpress']['version']})
+  environment({ 'version' => node['wordpress']['version'] })
   live_stream true
 end
 
 execute 'chown wordpress home' do
   command 'chown -R ${user}:${user} /var/www/html'
-  environment ({'user' => node['wordpress']['user']})
+  environment({ 'user' => node['wordpress']['user'] })
 end
 
 execute 'create wordpress database' do
   command 'mysql -u root -e "CREATE DATABASE ${dbname}"'
-  environment ({'dbname' => node['wordpress']['db']['name']})
+  environment({ 'dbname' => node['wordpress']['db']['name'] })
 end
 
 execute 'a2enmods' do

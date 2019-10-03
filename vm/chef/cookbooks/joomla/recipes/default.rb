@@ -50,8 +50,8 @@ chown -R $user:$user /var/www/html/
 
 mysql -u root -e "CREATE DATABASE $defdb"
 EOH
-  environment ({
-    'user'  => node['joomla']['user'],
+  environment({
+    'user' => node['joomla']['user'],
     'defdb' => node['joomla']['db']['name'],
   })
 end

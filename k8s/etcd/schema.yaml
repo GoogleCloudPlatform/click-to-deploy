@@ -1,0 +1,93 @@
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      A regular update.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  managedUpdates:
+    kalmSupported: false
+
+  images:
+    '':
+      properties:
+        image.repo:
+          type: REPO_WITH_REGISTRY
+        image.tag:
+          type: TAG
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
+
+  clusterConstraints:
+    resources:
+    - replicas: 3
+      requests:
+        cpu: 500m
+        memory: 1Gi
+      affinity:
+        simpleNodeAffinity:
+          type: REQUIRE_ONE_NODE_PER_REPLICA
+          minimumNodeCount: 3
+    istio:
+      type: UNSUPPORTED
+
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  replicas:
+    type: integer
+    title: Replicas
+    description: The number of Pod replicas
+    default: 3
+    enum:
+      - '3'
+      - '5'
+  persistence.storageClass:
+    type: string
+    title: StorageClass
+    description: You can choose existing storageclass or create new one. Newly created StorageClass provisioner will be "pd-ssd".
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  persistence.size:
+    type: string
+    title: Storage size for persistent volumes
+    default: "1Gi"
+    description: etcd storage size per instance
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  auth.rbac.rootPassword:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 10
+        includeSymbols: False
+        base64: False
+  metrics.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters,
+      export of metrics to Stackdriver is not supported yet
+    default: false
+
+required:
+- name
+- namespace
+- replicas
+- metrics.enabled
+- persistence.size

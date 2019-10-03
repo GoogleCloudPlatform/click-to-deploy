@@ -1,0 +1,11 @@
+image:
+  repo: null
+  tag: null
+replicas: 3
+service:
+  dnsBase: svc.cluster.local
+  type: ClusterIP
+  port: 2379
+  peerPort: 2380
+persistence:
+  storageClass: null

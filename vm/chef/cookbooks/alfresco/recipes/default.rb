@@ -41,10 +41,10 @@ bash 'configure_database' do
     psql -c "CREATE USER $user WITH PASSWORD '$pass';"
     psql -c "CREATE DATABASE $dbname OWNER $user ENCODING 'UTF8';"
 EOH
-  environment ({
-    'user'   => node['alfresco']['db']['username'],
-    'pass'   => node['alfresco']['db']['password'],
-    'dbname' => node['alfresco']['db']['name']
+  environment({
+    'user' => node['alfresco']['db']['username'],
+    'pass' => node['alfresco']['db']['password'],
+    'dbname' => node['alfresco']['db']['name'],
   })
 end
 
@@ -57,9 +57,9 @@ bash 'download_and_check_alfresco' do
     echo "$alfresco_sha256 /tmp/alfresco.bin" | sha256sum -c
     chmod u+x /tmp/alfresco.bin
 EOH
-  environment ({
+  environment({
     'alfresco_install_url' => node['alfresco']['install']['url'],
-    'alfresco_sha256' => node['alfresco']['install']['sha256']
+    'alfresco_sha256' => node['alfresco']['install']['sha256'],
   })
 end
 

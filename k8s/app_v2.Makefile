@@ -119,8 +119,8 @@ app/install-test:: app/publish \
 app/uninstall: .build/var/APP_DEPLOYER_IMAGE \
                .build/var/APP_PARAMETERS
 	$(call print_target)
-	kubectl delete 'application/$(call name_parameter)' \
-	    --namespace='$(call namespace_parameter)' \
+	kubectl delete 'application/$(NAME)' \
+	    --namespace='$(NAMESPACE)' \
 	    --ignore-not-found
 
 

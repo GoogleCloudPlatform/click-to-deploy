@@ -52,10 +52,10 @@ bash 'install ghost' do
     ghost config --no-prompt --url=http://localhost:2368 --db=mysql --dbhost=localhost --dbuser="${dbuser}" --dbname="${dbname}"
     ghost setup linux-user --no-prompt
 EOH
-  environment ({
-    'version'  => node['ghost']['app']['version'],
-    'dbuser'   => node['ghost']['db']['user'],
-    'dbname'   => node['ghost']['db']['name']
+  environment({
+    'version' => node['ghost']['app']['version'],
+    'dbuser' => node['ghost']['db']['user'],
+    'dbname' => node['ghost']['db']['name'],
   })
 end
 
