@@ -12,18 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-description: Trigger for K8s agones
-filename: cloudbuild-k8s.yaml
-github:
-  name: click-to-deploy
-  owner: GoogleCloudPlatform
-  pullRequest:
-    branch: .*
-    commentControl: COMMENTS_ENABLED
-includedFiles:
-- cloudbuild-k8s.yaml
-- k8s.Dockerfile
-- k8s/agones/**
-- k8s/*
-substitutions:
-  _SOLUTION_NAME: agones
+default['haproxy']['packages'] = ['haproxy']
