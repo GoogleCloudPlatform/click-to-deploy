@@ -10,7 +10,7 @@ commands.
 
 The following sections are concerned to Kubernetes apps.
 
-### Create a trigger
+### Create a new trigger
 
 1.  Make a copy of an existing config file:
 
