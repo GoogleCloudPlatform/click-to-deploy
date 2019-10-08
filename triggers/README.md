@@ -12,7 +12,7 @@ The following sections are concerned to Kubernetes apps.
 
 ### Create a trigger
 
-1.  Make a copy of an existing file:
+1.  Make a copy of an existing config file:
 
     ```shell
     cp k8s/mariadb-galera.yaml "k8s/$APP_NAME.yaml"
@@ -21,7 +21,7 @@ The following sections are concerned to Kubernetes apps.
     sed -i '/^id/d' "k8s/$APP_NAME.yaml"
     ```
 
-1.  Open the config and verify that everything looks correct:
+1.  Open the config file and verify that everything looks correct:
 
     ```shell
     cat "k8s/$APP_NAME.yaml"
