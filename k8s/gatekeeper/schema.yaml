@@ -32,7 +32,7 @@ properties:
       type: NAME
   namespace:
     type: string
-    default: "gatekeeper-system"
+    default: gatekeeper-system
     x-google-marketplace:
       type: NAMESPACE
   gatekeeper.auditInterval:
