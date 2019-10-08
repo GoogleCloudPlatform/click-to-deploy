@@ -30,8 +30,6 @@ The following sections are concerned to Kubernetes apps.
 1.  Run the following command to create a trigger for your Kubernetes
     application:
 
-    > **IMPORTANT**: Mark newly created triggers as required in repository settings.
-
     ```shell
     gcloud alpha builds triggers create github \
       --trigger-config k8s/$APP_NAME.yaml \
@@ -43,6 +41,8 @@ The following sections are concerned to Kubernetes apps.
     *   `$APP_NAME` is the application name for which you want to create a
         trigger.
     *   `$PROJECT_ID` is the GCP project ID of the project where the trigger will be created.
+    
+1.  Mark the newly created trigger as required in the GitHub repository settings. For more information, see the [enabling required status checks](https://help.github.com/en/articles/enabling-required-status-checks) documentation.
 
 ### Update an existing trigger
 
