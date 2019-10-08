@@ -44,6 +44,8 @@ The following sections are concerned to Kubernetes apps.
     
 1.  Mark the newly created trigger as required in the GitHub repository settings. For more information, see the [enabling required status checks](https://help.github.com/en/articles/enabling-required-status-checks) documentation.
 
+    > **NOTE**: The trigger must to be initially triggered before it is available in the list.
+
 ### Update an existing trigger
 
 1.  Run the following command to update a trigger for your Kubernetes
