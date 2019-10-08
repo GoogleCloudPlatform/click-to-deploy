@@ -62,7 +62,7 @@ The following sections are concerned to Kubernetes apps.
 
     Where:
 
-    *   `$APP_NAME` is the application name for which you want to create a
+    *   `$APP_NAME` is the application name for which you want to update the
         trigger.
     *   `$PROJECT_ID` is the GCP project ID of the project where the trigger will be created.
 
