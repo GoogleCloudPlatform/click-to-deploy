@@ -20,10 +20,12 @@ github:
   pullRequest:
     branch: .*
     commentControl: COMMENTS_ENABLED
+id: 5b0db490-4cc3-411c-a550-26b7c55457cf
 includedFiles:
 - cloudbuild-k8s.yaml
 - k8s.Dockerfile
 - k8s/consul/**
 - k8s/*
+name: Trigger-for-K8s-consul
 substitutions:
   _SOLUTION_NAME: consul
