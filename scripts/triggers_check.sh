@@ -59,8 +59,8 @@ function main {
   done
 
   echo "*************************************************************"
-  echo "Done with results: ${failure_cnt} failure(s)."
-  echo "For more information, see https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/triggers/README.md"
+  echo "* Done with results: ${failure_cnt} failure(s)."
+  echo "* For more information, see https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/triggers/README.md"
   echo "*************************************************************"
   
   return ${failure_cnt}
