@@ -15,15 +15,18 @@
 description: Trigger for K8s cassandra
 filename: cloudbuild-k8s.yaml
 github:
+  installationId: '261964'
   name: click-to-deploy
   owner: GoogleCloudPlatform
   pullRequest:
     branch: .*
     commentControl: COMMENTS_ENABLED
+id: 2309e7e9-b39c-4b64-a618-9faadb816b9d
 includedFiles:
 - cloudbuild-k8s.yaml
 - k8s.Dockerfile
 - k8s/cassandra/**
 - k8s/*
+name: 2309e7e9-b39c-4b64-a618-9faadb816b9d
 substitutions:
   _SOLUTION_NAME: cassandra
