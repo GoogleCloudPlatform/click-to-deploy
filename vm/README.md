@@ -79,7 +79,7 @@ docker pull gcr.io/cloud-marketplace-tools/vm/imagebuilder:0.1.2
 
 The container uses a GCP service account JSON key to access the GCP project,
 create VM instances, and save the VM image. For information
-about creating and managing service account in GCP, see the GCP documentation
+about creating and managing service accounts in GCP, see the GCP documentation
 for
 [Creating and managing service accounts](https://cloud.google.com/iam/docs/creating-managing-service-accounts)
 and
