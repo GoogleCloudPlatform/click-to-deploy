@@ -12,7 +12,7 @@ Popular open source software stacks on Kubernetes packaged by Google and made av
 
 ## Design
 
-![Architecture diagram](resources/zookeper-k8s-app-architecture.png)
+![Architecture diagram](resources/zookeeper-k8s-app-architecture.png)
 
 ### ZooKeeper application contains:
 
