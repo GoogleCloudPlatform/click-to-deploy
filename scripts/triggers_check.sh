@@ -57,6 +57,7 @@ function main {
   done
 
   echo "DONE!"
+  echo "For more information, see https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/triggers/README.md"
   return ${failure_cnt}
 }
 
