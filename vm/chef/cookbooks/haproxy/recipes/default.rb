@@ -12,21 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-description: Trigger for K8s prometheus
-filename: cloudbuild-k8s.yaml
-github:
-  installationId: '261964'
-  name: click-to-deploy
-  owner: GoogleCloudPlatform
-  pullRequest:
-    branch: .*
-    commentControl: COMMENTS_ENABLED
-id: 3ae7123a-8f5a-4d70-ab40-532843a4f4b5
-includedFiles:
-- cloudbuild-k8s.yaml
-- k8s.Dockerfile
-- k8s/prometheus/**
-- k8s/*
-name: 3ae7123a-8f5a-4d70-ab40-532843a4f4b5
-substitutions:
-  _SOLUTION_NAME: prometheus
+package 'install packages' do
+  package_name node['haproxy']['packages']
+  action :install
+end
+
+template '/etc/haproxy/haproxy.cfg' do
+  source 'haproxy.cfg.erb'
+  owner 'root'
+  group 'root'
+  mode 0644
+  notifies :start, 'service[haproxy]'
+end
+
+service 'haproxy' do
+  action :start
+end

@@ -15,15 +15,18 @@
 description: Trigger for K8s grafana
 filename: cloudbuild-k8s.yaml
 github:
+  installationId: '261964'
   name: click-to-deploy
   owner: GoogleCloudPlatform
   pullRequest:
     branch: .*
     commentControl: COMMENTS_ENABLED
+id: ded04bd3-7425-409f-8d89-458fd305b79d
 includedFiles:
 - cloudbuild-k8s.yaml
 - k8s.Dockerfile
 - k8s/grafana/**
 - k8s/*
+name: ded04bd3-7425-409f-8d89-458fd305b79d
 substitutions:
   _SOLUTION_NAME: grafana
