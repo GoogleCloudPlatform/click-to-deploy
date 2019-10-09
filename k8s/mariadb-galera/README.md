@@ -349,11 +349,11 @@ The backup is stored in `all-databases-<timestamp>.sql` file in current director
 If you wish to create full backup of all databases, you have to run `mysqldump` without `--ignore-table` option.
 In that case you will not be able to restore it on Click to Deploy MariaDB Galera Cluster installation.
 >
-> To find out more check official [Galera documentation](https://galeracluster.com/library/kb/trouble/user-changes.html).
+> To find out more, check official [Galera documentation](https://galeracluster.com/library/kb/trouble/user-changes.html).
 
 ## Restore MariaDB data on a running MariaDB instance
 
-In order ot restore MariaDB data you have to specify backup file location:
+In order to restore MariaDB data you have to specify backup file location:
 
 ```shell
 BKP_FILE="[/path/to/backup_file].sql.gz"
