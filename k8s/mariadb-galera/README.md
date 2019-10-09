@@ -320,15 +320,60 @@ Use the same command to reduce the number of replicas without disconnecting node
 
 # Backup and Restore
 
-The following steps are based on the [MariaDB documentation](https://mariadb.com/kb/en/library/backing-up-and-restoring-databases/).
+The following steps are based on the [MariaDB documentation](https://mariadb.com/kb/en/library/mysqldump/).
 
 ## Backup MariaDB data to your local workstation
 
-<!--TODO: Provide backup info-->
+In order to backup MariaDB data you have to run following command:
+
+```shell
+BKP_NAME="all-databases-$(date +%Y-%m-%d).sql.gz"
+BKP_DIR=/var/mariadb/backup
+POD_NAME=${APP_INSTANCE_NAME}-galera-0
+
+# Backup database
+kubectl -n ${NAMESPACE} exec -it ${POD_NAME} -c mariadb -- sh -c "mkdir -p ${BKP_DIR} && \
+  mysqldump --all-databases --triggers --routines --events \
+    --add-drop-table --single-transaction --ignore-table=mysql.user \
+    -uroot -p\${MYSQL_ROOT_PASSWORD} \
+    | gzip > ${BKP_DIR}/${BKP_NAME}"
+
+# Copy backup file to local workstation and cleanup Pod
+kubectl cp ${NAMESPACE}/${POD_NAME}:${BKP_DIR}/${BKP_NAME} ${BKP_NAME}
+kubectl -n ${NAMESPACE} exec -it ${POD_NAME} -c mariadb -- sh -c "rm -f ${BKP_DIR}/${BKP_NAME}"
+```
+
+The backup is stored in `all-databases-<timestamp>.sql` file in current directory on your local workstation.
+
+> **WARNING**: Due to Galera cluster limitation `mysql.user` table is excluded from backup.
+If you wish to create full backup of all databases, you have to run `mysqldump` without `--ignore-table` option.
+In that case you will not be able to restore it on Click to Deploy MariaDB Galera Cluster installation.
+>
+> To find out more, check official [Galera documentation](https://galeracluster.com/library/kb/trouble/user-changes.html).
 
 ## Restore MariaDB data on a running MariaDB instance
 
-<!--TODO: Provide restore info-->
+In order to restore MariaDB data you have to specify backup file location:
+
+```shell
+BKP_FILE="[/path/to/backup_file].sql.gz"
+```
+
+Then run following commands to restore data:
+```shell
+POD_NAME=${APP_INSTANCE_NAME}-galera-0
+BKP_DIR=/var/mariadb/backup
+BKP_PATH=${BKP_DIR}/${BKP_FILE}
+
+# restore all databases from provided backup
+kubectl -n ${NAMESPACE} exec -it ${POD_NAME} -c mariadb -- sh -c "mkdir -p ${BKP_DIR}"
+kubectl cp ${BKP_FILE} ${NAMESPACE}/${POD_NAME}:${BKP_PATH}
+kubectl -n ${NAMESPACE} exec -it ${POD_NAME} -c mariadb -- bash -c "gunzip < ${BKP_PATH} |
+    mysql -uroot -p\${MYSQL_ROOT_PASSWORD}"
+
+# cleanup
+kubectl -n ${NAMESPACE} exec -it ${POD_NAME} -c mariadb -- sh -c "rm -f ${BKP_PATH}"
+```
 
 # Upgrading the app
 

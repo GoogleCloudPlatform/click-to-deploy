@@ -15,15 +15,18 @@
 description: Trigger for K8s spark-operator
 filename: cloudbuild-k8s.yaml
 github:
+  installationId: '261964'
   name: click-to-deploy
   owner: GoogleCloudPlatform
   pullRequest:
     branch: .*
     commentControl: COMMENTS_ENABLED
+id: 2bbc7130-ee2f-47b4-93aa-aa3fae5bf577
 includedFiles:
 - cloudbuild-k8s.yaml
 - k8s.Dockerfile
 - k8s/spark-operator/**
 - k8s/*
+name: 2bbc7130-ee2f-47b4-93aa-aa3fae5bf577
 substitutions:
   _SOLUTION_NAME: spark-operator

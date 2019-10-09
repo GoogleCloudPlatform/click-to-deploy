@@ -15,15 +15,18 @@
 description: Trigger for K8s airflow-operator
 filename: cloudbuild-k8s.yaml
 github:
+  installationId: '261964'
   name: click-to-deploy
   owner: GoogleCloudPlatform
   pullRequest:
     branch: .*
     commentControl: COMMENTS_ENABLED
+id: e84b1610-5061-49af-b8e0-62665d2369c5
 includedFiles:
 - cloudbuild-k8s.yaml
 - k8s.Dockerfile
 - k8s/airflow-operator/**
 - k8s/*
+name: e84b1610-5061-49af-b8e0-62665d2369c5
 substitutions:
   _SOLUTION_NAME: airflow-operator

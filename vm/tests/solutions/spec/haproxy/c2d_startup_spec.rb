@@ -12,21 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-description: Trigger for K8s prometheus
-filename: cloudbuild-k8s.yaml
-github:
-  installationId: '261964'
-  name: click-to-deploy
-  owner: GoogleCloudPlatform
-  pullRequest:
-    branch: .*
-    commentControl: COMMENTS_ENABLED
-id: 3ae7123a-8f5a-4d70-ab40-532843a4f4b5
-includedFiles:
-- cloudbuild-k8s.yaml
-- k8s.Dockerfile
-- k8s/prometheus/**
-- k8s/*
-name: 3ae7123a-8f5a-4d70-ab40-532843a4f4b5
-substitutions:
-  _SOLUTION_NAME: prometheus
+require 'spec_helper'
+
+describe 'C2D startup config' do
+  describe service('google-c2d-startup.service') do
+    it { should be_enabled }
+  end
+
+  describe file('/var/lock/google_vm_config.lock') do
+    it { should_not exist }
+  end
+end
+
+describe 'C2D startup scripts should exists' do
+  describe file('/opt/c2d/scripts/00-manage-swap') do
+    it { should exist }
+  end
+end
