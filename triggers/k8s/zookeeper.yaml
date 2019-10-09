@@ -20,10 +20,12 @@ github:
   pullRequest:
     branch: .*
     commentControl: COMMENTS_ENABLED
+id: a897ba31-bdfa-4455-8027-ba8429470033
 includedFiles:
 - cloudbuild-k8s.yaml
 - k8s.Dockerfile
 - k8s/zookeeper/**
 - k8s/*
+name: Trigger-for-K8s-zookeeper
 substitutions:
   _SOLUTION_NAME: zookeeper

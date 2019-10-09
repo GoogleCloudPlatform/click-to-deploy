@@ -15,15 +15,18 @@
 description: Trigger for K8s sample-app
 filename: cloudbuild-k8s.yaml
 github:
+  installationId: '261964'
   name: click-to-deploy
   owner: GoogleCloudPlatform
   pullRequest:
     branch: .*
     commentControl: COMMENTS_ENABLED
+id: 93973567-ac6f-4368-9e46-99273d32f37b
 includedFiles:
 - cloudbuild-k8s.yaml
 - k8s.Dockerfile
 - k8s/sample-app/**
 - k8s/*
+name: 93973567-ac6f-4368-9e46-99273d32f37b
 substitutions:
   _SOLUTION_NAME: sample-app
