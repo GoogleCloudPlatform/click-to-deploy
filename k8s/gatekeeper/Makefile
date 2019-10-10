@@ -31,6 +31,13 @@ APP_DEPLOYER_IMAGE ?= $(REGISTRY)/$(APP_ID)/deployer:$(RELEASE)
 APP_DEPLOYER_IMAGE_TRACK_TAG ?= $(REGISTRY)/$(APP_ID)/deployer:$(TRACK)
 APP_GCS_PATH ?= $(GCS_URL)/$(APP_ID)/$(TRACK)
 
+# Overwriting tools images. Remove when done using staging.
+MARKETPLACE_TOOLS_IMAGE := gcr.io/cloud-marketplace-staging/marketplace-k8s-app-tools/k8s/dev
+export MARKETPLACE_TOOLS_IMAGE
+
+MARKETPLACE_TOOLS_TAG := unreleased-pr396
+export MARKETPLACE_TOOLS_TAG
+
 # app_v2.Makefile provides the main targets for installing the
 # application.
 # It requires several APP_* variables defined above, and thus
@@ -43,19 +50,6 @@ include ../app_v2.Makefile
 app/build:: .build/gatekeeper/deployer \
 			.build/gatekeeper/tester \
 			.build/gatekeeper/gatekeeper
-
-.build/app: | .build
-	mkdir -p "$@"
-
-# Overwriting parent to change gcr path -- remove when done using staging
-.PHONY: .build/app/dev
-.build/app/dev: .build/var/MARKETPLACE_TOOLS_TAG \
-							| .build/app
-	@docker run \
-        "gcr.io/cloud-marketplace-staging/marketplace-k8s-app-tools/k8s/dev:unreleased-pr396" \
-        cat /scripts/dev > "/tmp/dev"
-	@mv "/tmp/dev" "$@"
-	@chmod a+x "$@"
 
 .build/gatekeeper: | .build
 	mkdir -p "$@"
