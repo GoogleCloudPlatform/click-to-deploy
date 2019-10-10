@@ -27,6 +27,9 @@ APP_TEST_PARAMETERS ?= { \
 }
 
 
+APP_IMAGE ?= $(REGISTRY)/$(APP_ID):$(RELEASE)
+APP_IMAGE_TRACK_TAG ?= $(REGISTRY)/$(APP_ID):$(TRACK)
+
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/$(APP_ID)/deployer:$(RELEASE)
 APP_DEPLOYER_IMAGE_TRACK_TAG ?= $(REGISTRY)/$(APP_ID)/deployer:$(TRACK)
 APP_GCS_PATH ?= $(GCS_URL)/$(APP_ID)/$(TRACK)
@@ -53,6 +56,20 @@ app/build:: .build/gatekeeper/deployer \
 
 .build/gatekeeper: | .build
 	mkdir -p "$@"
+
+
+.build/gatekeeper/gatekeeper: .build/var/REGISTRY \
+                              | .build/gatekeeper
+	$(call print_target, $@)
+	docker pull gcr.io/gatekeeper-marketplace/gatekeeper:$(TRACK)
+	docker tag gcr.io/gatekeeper-marketplace/gatekeeper:$(TRACK) \
+	    "$(APP_IMAGE)"
+	docker tag gcr.io/gatekeeper-marketplace/gatekeeper:$(TRACK) \
+	    "$(APP_IMAGE_TRACK_TAG)"
+	docker push "$(APP_IMAGE)"
+	docker push "$(APP_IMAGE_TRACK_TAG)"
+	@touch "$@"
+
 
 .build/gatekeeper/deployer: deployer/* \
                             chart/gatekeeper/* \
@@ -88,12 +105,6 @@ app/build:: .build/gatekeeper/deployer \
 	docker pull cosmintitei/bash-curl
 	docker tag cosmintitei/bash-curl "$(TESTER_IMAGE)"
 	docker push "$(TESTER_IMAGE)"
-	@touch "$@"
-
-.build/gatekeeper/gatekeeper: .build/var/REGISTRY \
-                              | .build/gatekeeper
-	$(call print_target, $@)
-	# The main image is assumed to be already placed in the right location
 	@touch "$@"
 
 
