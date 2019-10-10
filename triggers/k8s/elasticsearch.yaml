@@ -15,15 +15,18 @@
 description: Trigger for K8s elasticsearch
 filename: cloudbuild-k8s.yaml
 github:
+  installationId: '261964'
   name: click-to-deploy
   owner: GoogleCloudPlatform
   pullRequest:
     branch: .*
     commentControl: COMMENTS_ENABLED
+id: 91534c89-fc24-4a32-a260-c0ff95359476
 includedFiles:
 - cloudbuild-k8s.yaml
 - k8s.Dockerfile
 - k8s/elasticsearch/**
 - k8s/*
+name: 91534c89-fc24-4a32-a260-c0ff95359476
 substitutions:
   _SOLUTION_NAME: elasticsearch

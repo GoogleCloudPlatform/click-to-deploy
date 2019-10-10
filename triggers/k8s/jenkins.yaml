@@ -15,15 +15,18 @@
 description: Trigger for K8s jenkins
 filename: cloudbuild-k8s.yaml
 github:
+  installationId: '261964'
   name: click-to-deploy
   owner: GoogleCloudPlatform
   pullRequest:
     branch: .*
     commentControl: COMMENTS_ENABLED
+id: 1b48cc75-132c-4c63-9788-b09099ff9cbe
 includedFiles:
 - cloudbuild-k8s.yaml
 - k8s.Dockerfile
 - k8s/jenkins/**
 - k8s/*
+name: 1b48cc75-132c-4c63-9788-b09099ff9cbe
 substitutions:
   _SOLUTION_NAME: jenkins

@@ -20,10 +20,12 @@ github:
   pullRequest:
     branch: .*
     commentControl: COMMENTS_ENABLED
+id: 12b8398d-9d41-4709-bc14-f4180083854d
 includedFiles:
 - cloudbuild-k8s.yaml
 - k8s.Dockerfile
 - k8s/etcd/**
 - k8s/*
+name: Trigger-for-K8s-etcd
 substitutions:
   _SOLUTION_NAME: etcd
