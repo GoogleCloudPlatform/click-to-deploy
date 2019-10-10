@@ -18,8 +18,7 @@ GATEKEEPER_IMAGE ?= $(SOURCE_REGISTRY)/$(APP_ID):$(TRACK)
 AUDIT_INTERVAL ?= 60
 APP_PARAMETERS ?= { \
 	"name": "$(NAME)", \
-	"namespace": "$(NAMESPACE)", \
-	"gatekeeper.auditInterval": "$(AUDIT_INTERVAL)" \
+	"namespace": "$(NAMESPACE)" \
 }
 
 TESTER_IMAGE ?= $(REGISTRY)/gatekeeper/deployer/tester:$(TRACK)
