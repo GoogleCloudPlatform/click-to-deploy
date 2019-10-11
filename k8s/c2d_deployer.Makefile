@@ -6,7 +6,8 @@ ifndef __C2D_DEPLOYER_MAKEFILE__
 
 __C2D_DEPLOYER_MAKEFILE__:= included
 
-##### App solution ID #####
+##### Check required variables #####
+
 
 ifndef CHART_NAME
 $(error CHART_NAME must be defined)
@@ -20,12 +21,18 @@ endif
 
 $(info ---- APP_ID = $(APP_ID))
 
+ifndef image-$(CHART_NAME)
+$(error image-$(CHART_NAME) must be defined)
+endif
+
+$(info ---- image-$(CHART_NAME) = $(image-$(CHART_NAME)))
+
 
 ##### Common variables #####
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/$(APP_ID)/deployer:$(RELEASE)
 APP_DEPLOYER_IMAGE_TRACK_TAG ?= $(REGISTRY)/$(APP_ID)/deployer:$(TRACK)
-TESTER_IMAGE ?= $(REGISTRY)/$(APP_ID)/tester:$(RELEASE)
+APP_TESTER_IMAGE ?= $(REGISTRY)/$(APP_ID)/tester:$(RELEASE)
 APP_GCS_PATH ?= $(GCS_URL)/$(APP_ID)/$(TRACK)
 
 
@@ -34,7 +41,6 @@ include ../app_v2.Makefile
 
 $(info ---- TRACK = $(TRACK))
 $(info ---- RELEASE = $(RELEASE))
-$(info ---- APP IMAGE = $(image-$(CHART_NAME)))
 
 
 ##### Helper targets #####
@@ -57,6 +63,7 @@ $(info ---- APP IMAGE = $(image-$(CHART_NAME)))
                                .build/var/TRACK \
                                .build/var/RELEASE \
                                | .build/$(CHART_NAME)
+	$(call print_target,$@)
 	docker build \
 		--build-arg REGISTRY="$(REGISTRY)/$(APP_ID)" \
 		--build-arg TAG="$(RELEASE)" \
@@ -70,11 +77,11 @@ $(info ---- APP IMAGE = $(image-$(CHART_NAME)))
 	@touch "$@"
 
 
-.PHONY: $(CHART_NAME)
 $(CHART_NAME): .build/var/REGISTRY \
                .build/var/TRACK \
                .build/var/RELEASE \
                | .build/$(CHART_NAME)
+	$(call print_target,$@)
 	docker pull $(image-$@)
 	docker tag $(image-$@) "$(REGISTRY)/$(APP_ID):$(TRACK)"
 	docker tag $(image-$@) "$(REGISTRY)/$(APP_ID):$(RELEASE)"
@@ -86,6 +93,7 @@ $(ADDITIONAL_IMAGES): .build/var/REGISTRY \
                       .build/var/TRACK \
                       .build/var/RELEASE \
                       | .build/$(CHART_NAME)
+	$(call print_target,$@)
 	docker pull $(image-$@)
 	docker tag $(image-$@) "$(REGISTRY)/$(APP_ID)/$@:$(TRACK)"
 	docker tag $(image-$@) "$(REGISTRY)/$(APP_ID)/$@:$(RELEASE)"
@@ -93,13 +101,13 @@ $(ADDITIONAL_IMAGES): .build/var/REGISTRY \
 	docker push "$(REGISTRY)/$(APP_ID)/$@:$(RELEASE)"
 
 
-.build/$(CHART_NAME)/tester: .build/var/TESTER_IMAGE \
+.build/$(CHART_NAME)/tester: .build/var/APP_TESTER_IMAGE \
                              $(shell find apptest -type f) \
                              | .build/$(CHART_NAME)
 	$(call print_target,$@)
 	cd apptest/tester \
-		&& docker build --tag "$(TESTER_IMAGE)" .
-	docker push "$(TESTER_IMAGE)"
+		&& docker build --tag "$(APP_TESTER_IMAGE)" .
+	docker push "$(APP_TESTER_IMAGE)"
 	@touch "$@"
 
 
@@ -108,6 +116,7 @@ $(ADDITIONAL_IMAGES): .build/var/REGISTRY \
 
 .PHONY: .build/$(CHART_NAME)/VERSION
 .build/$(CHART_NAME)/VERSION:
+	$(call print_target,$@)
 	echo "$(C2D_CONTAINER_RELEASE)" | grep -qE "^$(TRACK).[0-9]+$$" || \
 	( echo "C2D_RELEASE doesn't start with TRACK or doesn't match TRACK exactly"; exit 1 )
 
