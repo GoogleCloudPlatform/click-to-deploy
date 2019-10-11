@@ -51,8 +51,8 @@ APP_PARAMETERS ?= { \
 
 
 app/build:: .build/$(CHART_NAME)/VERSION \
-            $(CHART_NAME) \
-            .build/images \
+            .build/$(CHART_NAME)/$(CHART_NAME) \
+            .build/$(CHART_NAME)/images \
             .build/$(CHART_NAME)/deployer \
             .build/$(CHART_NAME)/tester
 

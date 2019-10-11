@@ -45,9 +45,6 @@ $(info ---- RELEASE = $(RELEASE))
 
 ##### Helper targets #####
 
-.build/images: $(ADDITIONAL_IMAGES)
-
-
 .build/$(CHART_NAME): | .build
 	mkdir -p "$@"
 
@@ -77,28 +74,37 @@ $(info ---- RELEASE = $(RELEASE))
 	@touch "$@"
 
 
-$(CHART_NAME): .build/var/REGISTRY \
+.build/$(CHART_NAME)/$(CHART_NAME): .build/var/REGISTRY \
                .build/var/TRACK \
                .build/var/RELEASE \
                | .build/$(CHART_NAME)
 	$(call print_target,$@)
-	docker pull $(image-$@)
-	docker tag $(image-$@) "$(REGISTRY)/$(APP_ID):$(TRACK)"
-	docker tag $(image-$@) "$(REGISTRY)/$(APP_ID):$(RELEASE)"
+	docker pull $(image-$(CHART_NAME))
+	docker tag $(image-$(CHART_NAME)) "$(REGISTRY)/$(APP_ID):$(TRACK)"
+	docker tag $(image-$(CHART_NAME)) "$(REGISTRY)/$(APP_ID):$(RELEASE)"
 	docker push "$(REGISTRY)/$(APP_ID):$(TRACK)"
 	docker push "$(REGISTRY)/$(APP_ID):$(RELEASE)"
+	@touch "$@"
 
 
-$(ADDITIONAL_IMAGES): .build/var/REGISTRY \
+# map every element of ADDITIONAL_IMAGES list
+# from [image-name] to .build/$(CHART_NAME)/[image-name] format
+IMAGE_TARGETS_LIST = $(patsubst %,.build/$(CHART_NAME)/%,$(ADDITIONAL_IMAGES))
+.build/$(CHART_NAME)/images: $(IMAGE_TARGETS_LIST)
+
+# extract image name from rule with .build/$(CHART_NAME)/%
+# and use % match as $* in recipe
+$(IMAGE_TARGETS_LIST): .build/$(CHART_NAME)/%: .build/var/REGISTRY \
                       .build/var/TRACK \
                       .build/var/RELEASE \
                       | .build/$(CHART_NAME)
-	$(call print_target,$@)
-	docker pull $(image-$@)
-	docker tag $(image-$@) "$(REGISTRY)/$(APP_ID)/$@:$(TRACK)"
-	docker tag $(image-$@) "$(REGISTRY)/$(APP_ID)/$@:$(RELEASE)"
-	docker push "$(REGISTRY)/$(APP_ID)/$@:$(TRACK)"
-	docker push "$(REGISTRY)/$(APP_ID)/$@:$(RELEASE)"
+	$(call print_target,$*)
+	docker pull $(image-$*)
+	docker tag $(image-$*) "$(REGISTRY)/$(APP_ID)/$*:$(TRACK)"
+	docker tag $(image-$*) "$(REGISTRY)/$(APP_ID)/$*:$(RELEASE)"
+	docker push "$(REGISTRY)/$(APP_ID)/$*:$(TRACK)"
+	docker push "$(REGISTRY)/$(APP_ID)/$*:$(RELEASE)"
+	@touch "$@"
 
 
 .build/$(CHART_NAME)/tester: .build/var/APP_TESTER_IMAGE \
