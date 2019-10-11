@@ -6,33 +6,49 @@ include ../images.Makefile
 CHART_NAME ?= consul
 APP_ID ?= $(CHART_NAME)
 
-SOURCE_REGISTRY ?= marketplace.gcr.io/google
-
 TRACK ?= 1.4
 CONSUL_EXPORTER_TAG ?= exporter
 METRICS_EXPORTER_TAG ?= v0.5.1
 
-# List of images used in application
-ADDITIONAL_IMAGES := consul-exporter prometheus-to-sd
+SOURCE_REGISTRY ?= marketplace.gcr.io/google
+IMAGE_CONSUL ?= $(SOURCE_REGISTRY)/consul1:$(TRACK)
+IMAGE_CONSUL_EXPORTER ?= $(SOURCE_REGISTRY)/consul1:$(CONSUL_EXPORTER_TAG)
+IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+
 
 # Main image
-image-$(CHART_NAME) ?= $(call get_sha256,$(SOURCE_REGISTRY)/consul1:$(TRACK))
+image-$(CHART_NAME) ?= $(call get_sha256, $(IMAGE_CONSUL))
 
+# List of images used in application
+ADDITIONAL_IMAGES := consul-exporter prometheus-to-sd
 # Additional images variable names should correspond with ADDITIONAL_IMAGES list
-image-consul-exporter ?=  $(call get_sha256,$(SOURCE_REGISTRY)/consul1:$(CONSUL_EXPORTER_TAG))
-image-prometheus-to-sd ?=  $(call get_sha256,k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG))
+image-consul-exporter ?=  $(call get_sha256, $(IMAGE_CONSUL_EXPORTER))
+image-prometheus-to-sd ?=  $(call get_sha256, $(IMAGE_PROMETHEUS_TO_SD))
 
 C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)
 
+# Additional variables
+ifdef METRICS_EXPORTER_ENABLED
+  METRICS_EXPORTER_ENABLED_FIELD = , "prometheusToSd.enabled": $(METRICS_EXPORTER_ENABLED)
+endif
+
 NAME ?= $(APP_ID)-1
 
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
+  $(METRICS_EXPORTER_ENABLED_FIELD) \
 }
+
+
+app/build:: .build/$(CHART_NAME)/VERSION \
+            .build/$(CHART_NAME)/$(CHART_NAME) \
+            .build/$(CHART_NAME)/images \
+            .build/$(CHART_NAME)/deployer \
+            .build/$(CHART_NAME)/tester
 
 # c2d_deployer.Makefile provides the main targets for installing the application.
 # It requires several APP_* variables defined above, and thus must be included after.
