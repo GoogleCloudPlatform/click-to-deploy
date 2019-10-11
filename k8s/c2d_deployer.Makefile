@@ -39,13 +39,6 @@ $(info ---- APP IMAGE = $(image-$(CHART_NAME)))
 
 ##### Helper targets #####
 
-app/build:: .build/$(CHART_NAME)/VERSION \
-            $(CHART_NAME) \
-            .build/$(CHART_NAME)/deployer \
-            .build/images \
-            .build/$(CHART_NAME)/tester
-
-
 .build/images: $(ADDITIONAL_IMAGES)
 
 
