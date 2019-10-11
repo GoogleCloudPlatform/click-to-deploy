@@ -75,9 +75,9 @@ $(info ---- RELEASE = $(RELEASE))
 
 
 .build/$(CHART_NAME)/$(CHART_NAME): .build/var/REGISTRY \
-               .build/var/TRACK \
-               .build/var/RELEASE \
-               | .build/$(CHART_NAME)
+                                    .build/var/TRACK \
+                                    .build/var/RELEASE \
+                                    | .build/$(CHART_NAME)
 	$(call print_target,$@)
 	docker pull $(image-$(CHART_NAME))
 	docker tag $(image-$(CHART_NAME)) "$(REGISTRY)/$(APP_ID):$(TRACK)"
@@ -95,9 +95,9 @@ IMAGE_TARGETS_LIST = $(patsubst %,.build/$(CHART_NAME)/%,$(ADDITIONAL_IMAGES))
 # extract image name from rule with .build/$(CHART_NAME)/%
 # and use % match as $* in recipe
 $(IMAGE_TARGETS_LIST): .build/$(CHART_NAME)/%: .build/var/REGISTRY \
-                      .build/var/TRACK \
-                      .build/var/RELEASE \
-                      | .build/$(CHART_NAME)
+                                               .build/var/TRACK \
+                                               .build/var/RELEASE \
+                                               | .build/$(CHART_NAME)
 	$(call print_target,$*)
 	docker pull $(image-$*)
 	docker tag $(image-$*) "$(REGISTRY)/$(APP_ID)/$*:$(TRACK)"
