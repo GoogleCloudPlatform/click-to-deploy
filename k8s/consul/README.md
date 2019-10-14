@@ -346,11 +346,11 @@ kubectl port-forward svc/${APP_INSTANCE_NAME}-consul-ui --namespace ${NAMESPACE}
 By default, the Consul Server application is deployed using 3 replicas.
 
 To change the number of replicas:
-1. [Back up](#backup-consul-data-to-your-local-computer) your Consul data
+1. [Back up](#backup-consul-data-to-your-local-environment) your Consul data
 2. [Uninstall](#uninstall-the-application) the Consul Application
-3. [Delete PersistentVolumes volumes](#delete-the-persistent-volumes-of-your-installation#)
+3. [Delete PersistentVolumes volumes](#delete-the-persistent-volumes-of-your-installation)
 4. Retry the installation instructions, but this time with new number of replicas.
-5. [Restore your data](#restore-consul-data-on-running-Consul)
+5. [Restore your data](#restore-consul-data-on-a-running-cluster)
 
 > **NOTE:** Scaling via `kubectl scale` is not supported.
 
@@ -375,7 +375,7 @@ curl http://127.0.0.1:8500/v1/snapshot -o snapshot.tgz
 
 ## Restore Consul data on a running cluster
 
-Prepare port-forwarding similarly to how you prepared for the [backup step](#backup-consul-data-to-your-local-computer).
+Prepare port-forwarding similarly to how you prepared for the [backup step](#backup-consul-data-to-your-local-environment).
 To push your snapshot to the Consul server, run the following command:
 
 ```shell
@@ -384,7 +384,7 @@ curl --request PUT --data-binary @snapshot.tgz http://127.0.0.1:8500/v1/snapshot
 
 # Upgrading the app
 
-Before upgrading, we recommend that you [prepare a backup](#backup-consul-data-to-your-local-computer) of your
+Before upgrading, we recommend that you [prepare a backup](#backup-consul-data-to-your-local-environment) of your
 Consul database.
 For additional information about upgrades, see the [Consul documentation](https://www.consul.io/api/snapshot.html).
 
@@ -396,7 +396,7 @@ kubectl set image statefulset ${APP_INSTANCE_NAME}-consul-server --namespace ${N
   "consul=[NEW_IMAGE_REFERENCE]"
 ```
 
-In this case, `[NEW_IMAGE_REFERENCE]` should be the reference to tbe new Docker image that you want to use.
+In this case, `[NEW_IMAGE_REFERENCE]` should be the reference to the new Docker image that you want to use.
 
 To check the status of Pods in the StatefulSet, and the progress of
 the new image, run the following command:
