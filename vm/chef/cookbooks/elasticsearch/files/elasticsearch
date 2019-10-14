@@ -24,15 +24,20 @@
 
 source /opt/c2d/elasticsearch-utils || exit 1
 
+readonly es_xpack_zip_uri="file:///opt/c2d/downloads/xpack.zip"
+
 readonly es_cluster_name="$(get_attribute_value "es_cluster_name")"
 readonly es_nodes="$(get_attribute_value "es_nodes")"
+readonly es_install_xpack="$(get_attribute_value "es_install_xpack" \
+  | tr '[:upper:]' '[:lower:]')"
 
 readonly es_password="$(get_attribute_value "es_password")"
 readonly kibana_password="$(get_attribute_value "kibana_password")"
 readonly logstash_sys_password="$(get_attribute_value "logstash_sys_password")"
 
-# Sets a basic security for http connections
+# If X-Pack is installed, it sets a basic security for http connections
 # and configures default username (elastic) and password (changeme).
+# If the installation does not include X-Pack, there is no password set.
 readonly es_default_password="changeme"
 
 readonly es_current_node="$(hostname)"
@@ -85,6 +90,12 @@ fill_in_config_template \
 echo "Starting elasticsearch in single-node mode"
 service elasticsearch start
 
+# Install X-Pack in single-node mode
+if [[ "${es_install_xpack:-}" == "true" ]]; then
+  echo "Installing X-Pack"
+  /usr/share/elasticsearch/bin/elasticsearch-plugin install -b "${es_xpack_zip_uri}"
+fi
+
 # Prepare a list of "gossiping" nodes in cluster for unicast.
 es_unicast_hosts="\"${es_first_hostname}\""
 if [[ "${es_nodes_count}" -ge 3 ]]; then
@@ -105,25 +116,30 @@ service elasticsearch restart
 
 systemctl enable elasticsearch
 
-# X-Pack creates a simple security mechanism with default user and password.
-# It is changed to generated one, but calling the operation only once
-# for the whole cluster - it is propagated to all nodes.
-if [[ "${es_current_node}" == "${es_first_hostname}" ]]; then
-  echo "First node - waiting for green before changing password"
-  wait_for_green_elastic_cluster "${es_nodes_count}" "${es_default_password}"
-  # Change elastic user password.
-  change_user_password \
-    elastic "${es_default_password}" \
-    elastic "${es_password}"
+if [[ "${es_install_xpack:-}" == "true" ]]; then
+  # X-Pack creates a simple security mechanism with default user and password.
+  # It is changed to generated one, but calling the operation only once
+  # for the whole cluster - it is propagated to all nodes.
+  if [[ "${es_current_node}" == "${es_first_hostname}" ]]; then
+    echo "First node - waiting for green before changing password"
+    wait_for_green_elastic_cluster "${es_nodes_count}" "${es_default_password}"
 
-  # Change kibana user password.
-  change_user_password \
-    elastic "${es_password}" \
-    kibana "${kibana_password}"
+    # Change elastic user password.
+    change_user_password \
+      elastic "${es_default_password}" \
+      elastic "${es_password}"
 
-  # Change logstash_system user password.
-  change_user_password \
-    elastic "${es_password}" \
-    logstash_system "${logstash_sys_password}"
+    # Change kibana user password.
+    change_user_password \
+      elastic "${es_password}" \
+      kibana "${kibana_password}"
+
+    # Change logstash_system user password.
+    change_user_password \
+      elastic "${es_password}" \
+      logstash_system "${logstash_sys_password}"
+  fi
+  wait_for_green_elastic_cluster "${es_nodes_count}" "${es_password}"
+else
+  wait_for_green_elastic_cluster "${es_nodes_count}"
 fi
-wait_for_green_elastic_cluster "${es_nodes_count}" "${es_password}"
