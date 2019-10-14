@@ -320,7 +320,7 @@ spec:
 
 By default, the application does not have an external IP address. To create one, run the following command:
 
-> **NOTE:** This command exposes Consul externally, without any authentication
+> **WARNING:** This command exposes Consul externally, without any authentication
 > or encryption enabled. Using such a configuration in
 > production environments is not recommended.
 
