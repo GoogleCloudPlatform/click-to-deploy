@@ -20,18 +20,16 @@ IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 
 # Main image
-image-$(CHART_NAME) := $(call get_sha256, $(IMAGE_MARIADB_GALERA))
+image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_MARIADB_GALERA))
 
 # List of images used in application
 ADDITIONAL_IMAGES := mysqld-exporter prometheus-to-sd peer-finder
 # Image variable names should correspond with ADDITIONAL_IMAGES list
-image-mysqld-exporter := $(call get_sha256, $(IMAGE_MYSQLD_EXPORTER))
-image-peer-finder := $(call get_sha256, $(IMAGE_PEER_FINDER))
-image-prometheus-to-sd := $(call get_sha256, $(IMAGE_PROMETHEUS_TO_SD))
+image-mysqld-exporter := $(call get_sha256,$(IMAGE_MYSQLD_EXPORTER))
+image-peer-finder := $(call get_sha256,$(IMAGE_PEER_FINDER))
+image-prometheus-to-sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))
 
-# TODO(kalinichenka): Replace with C2D_RELEASE variable after container is updated.
-# C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
-C2D_CONTAINER_RELEASE ?= 10.3.18
+C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)

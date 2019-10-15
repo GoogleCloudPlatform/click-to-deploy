@@ -3,7 +3,7 @@ include ../gcloud.Makefile
 include ../var.Makefile
 include ../images.Makefile
 
-CHART_NAME ?= consul
+CHART_NAME := consul
 APP_ID ?= $(CHART_NAME)
 
 TRACK ?= 1.4
@@ -17,13 +17,13 @@ IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 
 # Main image
-image-$(CHART_NAME) := $(call get_sha256, $(IMAGE_CONSUL))
+image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_CONSUL))
 
 # List of images used in application
 ADDITIONAL_IMAGES := consul-exporter prometheus-to-sd
 # Additional images variable names should correspond with ADDITIONAL_IMAGES list
-image-consul-exporter :=  $(call get_sha256, $(IMAGE_CONSUL_EXPORTER))
-image-prometheus-to-sd :=  $(call get_sha256, $(IMAGE_PROMETHEUS_TO_SD))
+image-consul-exporter := $(call get_sha256,$(IMAGE_CONSUL_EXPORTER))
+image-prometheus-to-sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))
 
 C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
 
