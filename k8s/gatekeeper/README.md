@@ -101,9 +101,8 @@ export MARKETPLACE_TOOLS_TAG=unreleased-pr396
 export MARKETPLACE_TOOLS_IMAGE=gcr.io/cloud-marketplace-staging/marketplace-k8s-app-tools/k8s/dev
 
 BIN_FILE="$HOME/bin/mpdev"
-docker run \
-  gcr.io/cloud-marketplace-tools/k8s/dev \
-  cat /scripts/dev > "$BIN_FILE"
+docker run "$(MARKETPLACE_TOOLS_IMAGE):$(MARKETPLACE_TOOLS_TAG)"
+cat /scripts/dev > "$BIN_FILE"
 chmod +x "$BIN_FILE"
 ```
 
