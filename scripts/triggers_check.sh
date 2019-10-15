@@ -32,6 +32,8 @@ function trigger_exist {
   gcloud alpha builds triggers list --project="${PROJECT}" --format json \
     | jq -e --arg filename "${CLOUDBUILD_NAME}" --arg solution "${solution}" \
     '.[] | select(.filename == $filename) | select(.substitutions._SOLUTION_NAME == $solution)'
+    
+   return $?
 }
 
 function main {
@@ -56,7 +58,11 @@ function main {
     fi
   done
 
-  echo "DONE!"
+  echo "*************************************************************"
+  echo "* Done with results: ${failure_cnt} failure(s)."
+  echo "* For more information, see https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/triggers/README.md"
+  echo "*************************************************************"
+  
   return ${failure_cnt}
 }
 
