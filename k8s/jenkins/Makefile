@@ -8,11 +8,11 @@ VERIFY_WAIT_TIMEOUT = 1800
 # The digest should be updated automatically, or tag <major>.<minor>.<path/build>
 # should be available on GCP Marketplace.
 # Use `.build/jenkins/VERSION` target to fill the RELEASE variable.
-JENKINS_TAG ?= sha256:87f38f32fd9bed856934144bed9bfd16d4a624c5a1504e808bf1532de564c571
+JENKINS_TAG ?= sha256:6631d302fb85c33732e3b5fba19c695885f354f8355cdc382c31229670aa2faf
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
-TRACK ?= 2.176
-RELEASE ?= 2.176.3-$(BUILD_ID)
+TRACK ?= 2.190
+RELEASE ?= 2.190.1-$(BUILD_ID)
 
 $(info ---- TRACK = $(TRACK))
 $(info ---- RELEASE = $(RELEASE))
