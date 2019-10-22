@@ -307,7 +307,7 @@ You configure the metrics in the
 
 ## Exporting metrics to Stackdriver
 
-Application includes an option to inject a [Prometheus to Stackdriver (`prometheus-to-sd`)](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd) sidecar to each etcd pod to export `/metrics` to Stackdriver.
+Application includes an option to inject a [Prometheus to Stackdriver (`prometheus-to-sd`)](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd) sidecar to each etcd Pod to export `/metrics` to Stackdriver.
 If you enabled the option (`export METRICS_EXPORTER_ENABLED=true`) for exporting metrics to Stackdriver, the
 metrics are automatically exported to Stackdriver, and visible in [Stackdriver Metrics Explorer](https://cloud.google.com/monitoring/charts/metrics-explorer).
 
