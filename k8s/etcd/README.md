@@ -239,7 +239,8 @@ kubectl exec -it "${APP_INSTANCE_NAME}-etcd-0" --namespace "${NAMESPACE}" -- etc
 ```
 
 #### Interact with etcd service using port-forwarding
-To connect to etcd service from your machine, install the latest release of the [etcd binaries](https://github.com/etcd-io/etcd/releases).
+
+To connect to the etcd service from your machine, install the latest release of the [etcd binaries](https://github.com/etcd-io/etcd/releases).
 
 Forward the etcd service client port to your machine by using the following command:
 ```shell
