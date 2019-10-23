@@ -27,7 +27,7 @@ Access to the etcd service is authenticated by default.
 
 ## Quick install with Google Cloud Marketplace
 
-Get up and running in just a few clicks! Install this etcd app to a Google Kubernetes Engine cluster in Google Cloud Marketplace by following these
+Get up and running with a few clicks! Install this etcd app to a Google Kubernetes Engine cluster in Google Cloud Marketplace by following these
 [on-screen instructions](https://console.cloud.google.com/marketplace/details/google/etcd).
 
 ## Command line instructions
