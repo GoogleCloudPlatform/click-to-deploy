@@ -54,7 +54,7 @@ properties:
   exporter.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
-    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, the export of metrics to Stackdriver is not supported yet
+    description: Your GCP project must have Stackdriver enabled. For non-GCP clusters, the export of metrics to Stackdriver is not supported
     default: false
   zookeeper.zkReplicas:
     type: integer
@@ -77,26 +77,26 @@ properties:
     type: integer
     title: ZooKeeper maxClientCnxns
     description: The maximum allowed number of client connections for a ZooKeeper
-      server.
+      server
     default: 60
     minimum: 3
   zookeeper.zkAutopurgeSnapRetainCount:
     type: integer
     title: ZooKeeper autopurge.snapRetainCount
-    description: ZooKeeper auto purge feature retains the autopurge.snapRetainCount
-      most recent snapshots and the corresponding transaction logs in the dataDir
-      and dataLogDir respectively and deletes the rest
+    description: The ZooKeeper auto purge feature retains the autopurge.snapRetainCount
+      most recent snapshots and the corresponding transaction logs in dataDir
+      and dataLogDir, respectively, and deletes the rest
     default: 3
     minimum: 1
   zookeeper.zkPurgeInterval:
     type: integer
     title: ZooKeeper autopurge.purgeInterval
-    description: The time interval in hours for which the purge task has to be triggered
+    description: The time interval in hours before the purge task is automatically triggered
     default: 24
   zookeeper.memoryRequest:
     type: string
     title: Request memory for ZooKeeper
-    description: Memory for ZooKeeper Pod
+    description: Memory for a ZooKeeper Pod
     pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i$'
     default: '1250Mi'
   zookeeper.zkHeapSize:
@@ -108,7 +108,7 @@ properties:
   zookeeper.cpuRequest:
     type: string
     title: Request CPU for ZooKeeper
-    description: CPU for ZooKeeper Pod
+    description: CPU for a ZooKeeper Pod
     pattern: '^[1-9][0-9]*(\.[0-9]+)?m$'
     default: '300m'
 
