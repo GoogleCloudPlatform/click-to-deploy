@@ -48,12 +48,9 @@ APP_PARAMETERS ?= { \
 }
 
 
-app/build:: .build/$(CHART_NAME)/VERSION \
-            .build/$(CHART_NAME)/$(CHART_NAME) \
-            .build/$(CHART_NAME)/images \
-            .build/$(CHART_NAME)/deployer \
-            .build/$(CHART_NAME)/tester
-
 # c2d_deployer.Makefile provides the main targets for installing the application.
 # It requires several APP_* variables defined above, and thus must be included after.
 include ../c2d_deployer.Makefile
+
+# Build tester image
+app/build:: .build/$(CHART_NAME)/tester

@@ -49,6 +49,12 @@ $(info ---- RELEASE = $(RELEASE))
 	mkdir -p "$@"
 
 
+app/build:: .build/$(CHART_NAME)/VERSION \
+            .build/$(CHART_NAME)/$(CHART_NAME) \
+            .build/$(CHART_NAME)/images \
+            .build/$(CHART_NAME)/deployer
+
+
 .build/$(CHART_NAME)/deployer: deployer/* \
                                chart/$(CHART_NAME)/* \
                                chart/$(CHART_NAME)/templates/* \
