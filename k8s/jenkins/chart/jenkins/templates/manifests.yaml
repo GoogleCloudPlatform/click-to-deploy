@@ -47,6 +47,8 @@ spec:
           value: '-Xmx1800m'
         - name: INSTALL_MONITORING
           value: 'true'
+        - name: INSTALL_PROMETHEUS
+          value: 'true'
         resources:
           limits:
             memory: 2.0Gi
