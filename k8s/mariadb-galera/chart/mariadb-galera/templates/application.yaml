@@ -15,7 +15,7 @@ spec:
     description: |-
       MariaDB is an open source relational database. It is a fork of MySQL.
 
-      MariaDB Galera Cluster is a synchronous multi-master cluster for MariaDB. Solution features synchronous replication, multi-master topology, read and write to any cluster node, automatic membership control, failed nodes drop from the cluster, automatic node joining, true parallel replication etc.
+      MariaDB Galera Cluster is a synchronous multi-master cluster for MariaDB. It enables synchronous replication, multi-master topology, the ability to read and write to any cluster node, automatic membership control, the ability to drop failed nodes from the cluster, automatic node joining, true parallel replication, and more.
 
       # Support
       Google does not offer support for this solution. However, community support is available on
@@ -37,9 +37,9 @@ spec:
       ```
       where:
       * `[CLUSTER_NAME]` is the name of the cluster for this application
-      * `[CLUSTER_ZONE]` is the zone, in which the cluster is operating
+      * `[CLUSTER_ZONE]` is the zone in which the cluster is operating
 
-      Please read the [get authentication credentials for the cluster](https://cloud.google.com/kubernetes-engine/docs/quickstart#get_authentication_credentials_for_the_cluster) instruction for more information.
+      Please read the [get authentication credentials for the cluster](https://cloud.google.com/kubernetes-engine/docs/quickstart#get_authentication_credentials_for_the_cluster) instructions for more information.
 
       # Get the status of the cluster
 

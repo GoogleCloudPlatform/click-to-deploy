@@ -2,23 +2,23 @@
 
 MariaDB is an open source relational database. It is a fork of MySQL.
 
-MariaDB Galera Cluster is a synchronous multi-master cluster for MariaDB. Solution features synchronous replication, multi-master topology, read and write to any cluster node, automatic membership control, failed nodes drop from the cluster, automatic node joining, true parallel replication etc.
+MariaDB Galera Cluster is a synchronous multi-master cluster for MariaDB. It enables synchronous replication, multi-master topology, the ability to read and write to any cluster node, automatic membership control, the ability to drop failed nodes from the cluster, automatic node joining, true parallel replication, and more.
 
 For more information on MariaDB, see the [MariaDB official website](https://mariadb.org/).
 
 ## About Google Click to Deploy
 
-Popular open stacks on Kubernetes packaged by Google.
+Popular open stacks on Kubernetes, packaged by Google.
 
 ## Architecture
 
 ![Architecture diagram](resources/mariadb-galera-k8s-app-architecture.png)
 
-The application offers stateful multi instance MariaDB with Galera installation on a Kubernetes cluster.
+The application offers stateful multi-instance MariaDB with Galera installation on a Kubernetes cluster.
 
 MariaDB server runs in a StatefulSet with 3 replicas by default. The credentials for the administrator account are automatically generated and configured in the application through a Kubernetes Secret. The configuration files for the application (`/etc/mysql/mariadb.conf.d/`) are defined in a ConfigMap and mounted to the MariaDB StatefulSet.
 
-By default, the Services exposing MariaDB server are of type ClusterIP, which makes it accessible only in a private network on port 3306.
+By default, the Services exposing the MariaDB server are of type ClusterIP, which makes it accessible only in a private network on port 3306.
 
 This application is pre-configured with an SSL certificate for internal communication between replicas. Before you make the app available to users, you must replace the pre-configured certificate with a valid certificate of your own.
 
@@ -34,7 +34,7 @@ Get up and running with a few clicks! Install this MariaDB app to a Google Kuber
 
 #### Set up command-line tools
 
-You'll need the following tools in your development environment. If you are using Cloud Shell, these tools are installed in your environment.
+You'll need the following tools in your development environment. If you are using Cloud Shell, `gcloud`, `kubectl`, Docker, and Git are installed in your environment by default.
 
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
@@ -59,7 +59,7 @@ export ZONE=us-west1-a
 gcloud container clusters create "$CLUSTER" --zone "$ZONE"
 ```
 
-Configure `kubectl` to connect to the new cluster.
+Configure `kubectl` to connect to the new cluster:
 
 ```shell
 gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
@@ -108,7 +108,7 @@ export NAMESPACE=default
 
 > **NOTE:** Your GCP project must have Stackdriver enabled. If you are using a non-GCP cluster, you cannot export metrics to Stackdriver.
 
-By default, application does not export metrics to Stackdriver. To enable this option, change the value to `true`.
+By default, the application does not export metrics to Stackdriver. To enable this option, change the value to `true`.
 
 ```shell
 export METRICS_EXPORTER_ENABLED=false
@@ -225,7 +225,7 @@ To view the app, open the URL in your browser.
 
 ### Access MariaDB Galera Cluster within the network
 
-You can connect to MariaDB without exposing it to public access, using the `mysql` command line interface. You can connect directly to the MariaDB Pod, or use a client Pod.
+You can connect to MariaDB without exposing it to public access, by using the `mysql` command line interface. You can connect directly to the MariaDB Pod, or use a client Pod.
 
 #### Connect directly to the MariaDB Pod
 
@@ -243,7 +243,7 @@ kubectl exec -it "$APP_INSTANCE_NAME-galera-0" --namespace "$NAMESPACE" -- mysql
 
 #### Connect to MariaDB using a client Pod
 
-You can connect to the MariaDB server using a client Pod that is based on the same MariaDB Docker image, using the following command:
+You can connect to the MariaDB server by using a client Pod that is based on the same MariaDB Docker image, by using the following command:
 
 ```shell
 kubectl run -it --rm --image=$IMAGE_MARIADB --restart=Never mariadb-client -- mysql -h $APP_INSTANCE_NAME-galera-svc.$NAMESPACE.svc.cluster.local -p$(echo ${MARIADB_ROOT_PASSWORD} | base64 -d)
@@ -314,7 +314,7 @@ REPLICAS=5
 kubectl scale statefulsets "$APP_INSTANCE_NAME-galera" --namespace "$NAMESPACE" --replicas=$REPLICAS
 ```
 
-Where `REPLICAS` is the number of replicas you want.
+where `REPLICAS` is the number of replicas you want.
 
 Use the same command to reduce the number of replicas without disconnecting nodes from the cluster. When you reduce the number of replicas, the `PersistentVolumeClaims` in your StatefulSet remain unmodified.
 
@@ -324,7 +324,7 @@ The following steps are based on the [MariaDB documentation](https://mariadb.com
 
 ## Backup MariaDB data to your local workstation
 
-In order to backup MariaDB data you have to run following command:
+To back up your MariaDB data, run the following command:
 
 ```shell
 BKP_NAME="all-databases-$(date +%Y-%m-%d).sql.gz"
@@ -343,9 +343,9 @@ kubectl cp ${NAMESPACE}/${POD_NAME}:${BKP_DIR}/${BKP_NAME} ${BKP_NAME}
 kubectl -n ${NAMESPACE} exec -it ${POD_NAME} -c mariadb -- sh -c "rm -f ${BKP_DIR}/${BKP_NAME}"
 ```
 
-The backup is stored in `all-databases-<timestamp>.sql` file in current directory on your local workstation.
+The backup will be stored in an `all-databases-<timestamp>.sql` file in the current directory of your local workstation.
 
-> **WARNING**: Due to Galera cluster limitation `mysql.user` table is excluded from backup.
+> **WARNING**: Due to Galera cluster limitations, the `mysql.user` table is excluded from the backup.
 If you wish to create full backup of all databases, you have to run `mysqldump` without `--ignore-table` option.
 In that case you will not be able to restore it on Click to Deploy MariaDB Galera Cluster installation.
 >
@@ -353,13 +353,13 @@ In that case you will not be able to restore it on Click to Deploy MariaDB Galer
 
 ## Restore MariaDB data on a running MariaDB instance
 
-In order to restore MariaDB data you have to specify backup file location:
+In order to restore MariaDB data, you must specify the location of the backup file:
 
 ```shell
 BKP_FILE="[/path/to/backup_file].sql.gz"
 ```
 
-Then run following commands to restore data:
+Next, run the following commands to restore data from the specified backup:
 ```shell
 POD_NAME=${APP_INSTANCE_NAME}-galera-0
 BKP_DIR=/var/mariadb/backup
@@ -386,7 +386,7 @@ IMAGE_MARIADB=[NEW_IMAGE_REFERENCE]
 kubectl set image statefulset ${APP_INSTANCE_NAME}-galera --namespace ${NAMESPACE} "mariadb=${IMAGE_MARIADB}"
 ```
 
-Where `[NEW_IMAGE_REFERENCE]` is the Docker image reference of the new image that you want to use.
+where `[NEW_IMAGE_REFERENCE]` is the Docker image reference of the new image that you want to use.
 
 To check the status of Pods in the StatefulSet, and the progress of
 the new image, run the following command:
@@ -401,7 +401,7 @@ kubectl get pods --selector app.kubernetes.io/name=${APP_INSTANCE_NAME} --namesp
 
 1. In the GCP Console, open [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
 
-1. From the list of applications choose your application installation.
+1. From the list of applications, choose your application installation.
 
 1. On the Application Details page, click **Delete**.
 
@@ -428,7 +428,7 @@ Run `kubectl` on the expanded manifest file:
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 ```
 
-Otherwise, delete the resources using types and a label:
+If you don't have the expanded manifest, delete the resources using types and a label:
 
 ```shell
 kubectl delete application \
