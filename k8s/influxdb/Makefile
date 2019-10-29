@@ -22,7 +22,7 @@ image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_INFLUXDB))
 ADDITIONAL_IMAGES := prometheus-to-sd
 
 # Additional images variable names should correspond with ADDITIONAL_IMAGES list
-image_prometheus_to_sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))
+image-prometheus-to-sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))
 
 C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
 

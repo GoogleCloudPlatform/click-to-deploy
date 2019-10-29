@@ -8,8 +8,8 @@ APP_ID ?= $(CHART_NAME)-managed-updates
 
 TRACK ?= 1.4
 
-METRICS_EXPORTER_TAG ?= v0.5.1
 CONSUL_EXPORTER_TAG ?= exporter
+METRICS_EXPORTER_TAG ?= v0.5.1
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 IMAGE_CONSUL ?= $(SOURCE_REGISTRY)/consul1:$(TRACK)
