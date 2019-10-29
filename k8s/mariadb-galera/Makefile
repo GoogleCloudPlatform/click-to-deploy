@@ -24,7 +24,8 @@ image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_MARIADB))
 
 # List of images used in application
 ADDITIONAL_IMAGES := mysqld-exporter prometheus-to-sd peer-finder
-# Image variable names should correspond with ADDITIONAL_IMAGES list
+
+# Additional images variable names should correspond with ADDITIONAL_IMAGES list
 image-mysqld-exporter := $(call get_sha256,$(IMAGE_MYSQLD_EXPORTER))
 image-peer-finder := $(call get_sha256,$(IMAGE_PEER_FINDER))
 image-prometheus-to-sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))

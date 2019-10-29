@@ -11,7 +11,7 @@ TRACK ?= 3.3
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
-IMAGE_ETCD ?= $(SOURCE_REGISTRY)/etcd3@$(TRACK)
+IMAGE_ETCD ?= $(SOURCE_REGISTRY)/etcd3:$(TRACK)
 IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 
