@@ -36,10 +36,6 @@ ifdef REPLICAS
   REPLICAS_FIELD = , "elasticsearch.replicas": "$(REPLICAS)"
 endif
 
-ifdef IMAGE_INIT
-  IMAGE_INIT_FIELD = , "elasticsearch.initImage": "$(IMAGE_INIT)"
-endif
-
 ifdef METRICS_EXPORTER_ENABLED
   METRICS_EXPORTER_ENABLED_FIELD = , "metrics.enabled": $(METRICS_EXPORTER_ENABLED)
 endif
@@ -48,7 +44,6 @@ APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
   $(REPLICAS_FIELD) \
-  $(IMAGE_INIT_FIELD) \
   $(METRICS_EXPORTER_ENABLED_FIELD) \
 }
 

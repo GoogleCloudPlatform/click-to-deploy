@@ -40,10 +40,6 @@ RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)
 NAME ?= $(APP_ID)-1
 
 # Additional variables
-ifdef IMAGE_MYSQL
-  IMAGE_MYSQL_FIELD = , "db.image": "$(IMAGE_MYSQL)"
-endif
-
 ifdef ROOT_DB_PASSWORD
   ROOT_DB_PASSWORD_FIELD = , "db.rootPassword": "$(ROOT_DB_PASSWORD)"
 endif
@@ -71,7 +67,6 @@ endif
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
-  $(IMAGE_MYSQL_FIELD) \
   $(ROOT_DB_PASSWORD_FIELD) \
   $(WORDPRESS_DB_PASSWORD_FIELD) \
   $(WORDPRESS_ADMIN_EMAIL_FIELD) \

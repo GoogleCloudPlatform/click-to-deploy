@@ -44,18 +44,6 @@ ifdef ELASTICSEARCH_REPLICAS
   ELASTICSEARCH_REPLICAS_FIELD = , "elasticsearch.replicas": "$(ELASTICSEARCH_REPLICAS)"
 endif
 
-ifdef IMAGE_INIT
-  IMAGE_INIT_FIELD = , "initImage": "$(IMAGE_INIT)"
-endif
-
-ifdef IMAGE_KIBANA
-  IMAGE_KIBANA_FIELD = , "kibana.image": "$(IMAGE_KIBANA)"
-endif
-
-ifdef IMAGE_FLUENTD
-  IMAGE_FLUENTD_FIELD = , "fluentd.image": "$(IMAGE_FLUENTD)"
-endif
-
 ifdef METRICS_EXPORTER_ENABLED
   METRICS_EXPORTER_ENABLED_FIELD = , "metrics.enabled": $(METRICS_EXPORTER_ENABLED)
 endif
@@ -64,9 +52,6 @@ APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
   $(ELASTICSEARCH_REPLICAS_FIELD) \
-  $(IMAGE_INIT_FIELD) \
-  $(IMAGE_KIBANA_FIELD) \
-  $(IMAGE_FLUENTD_FIELD) \
   $(METRICS_EXPORTER_ENABLED_FIELD) \
 }
 
