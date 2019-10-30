@@ -94,18 +94,6 @@ Navigate to the `gatekeeper` directory:
 cd click-to-deploy/k8s/gatekeeper
 ```
 
-#### Set up staging parameters
-
-```shell
-export MARKETPLACE_TOOLS_TAG=unreleased-pr396
-export MARKETPLACE_TOOLS_IMAGE=gcr.io/cloud-marketplace-staging/marketplace-k8s-app-tools/k8s/dev
-
-BIN_FILE="$HOME/bin/mpdev"
-docker run "$(MARKETPLACE_TOOLS_IMAGE):$(MARKETPLACE_TOOLS_TAG)"
-cat /scripts/dev > "$BIN_FILE"
-chmod +x "$BIN_FILE"
-```
-
 #### Configure the app with environment variables
 
 Please use the following for the instance name and [namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) for the app.
