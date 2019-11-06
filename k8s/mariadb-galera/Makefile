@@ -4,7 +4,7 @@ include ../var.Makefile
 include ../images.Makefile
 
 CHART_NAME := mariadb-galera
-APP_ID ?= $(CHART_NAME)
+APP_ID ?= $(CHART_NAME)-managed-updates
 
 VERIFY_WAIT_TIMEOUT = 1800
 
