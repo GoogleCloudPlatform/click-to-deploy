@@ -14,15 +14,6 @@ include $(makefile_dir)/var.Makefile
 VERIFY_WAIT_TIMEOUT = 600
 
 
-##### App solution ID #####
-
-ifndef APP_ID
-$(error APP_ID must be defined)
-endif
-
-$(info ---- APP_ID = $(APP_ID))
-
-
 ##### Validations and Information #####
 
 ifndef APP_GCS_PATH
