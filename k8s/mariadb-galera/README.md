@@ -2,9 +2,9 @@
 
 MariaDB is an open source relational database. It is a fork of MySQL.
 
-MariaDB Galera Cluster is a synchronous multi-master cluster for MariaDB. It enables synchronous replication, multi-master topology, the ability to read and write to any cluster node, automatic membership control, the ability to drop failed nodes from the cluster, automatic node joining, true parallel replication, and more.
+MariaDB Galera Cluster is a synchronous multi-master cluster for MariaDB. It enables true parallel replication, multi-master topology, the ability to read and write to any cluster node, or to drop failed nodes from the cluster, automatic membership control and node joining, and more.
 
-For more information on MariaDB, see the [MariaDB official website](https://mariadb.org/).
+For more information on MariaDB, refer to the [MariaDB official website](https://mariadb.org/).
 
 ## About Google Click to Deploy
 
@@ -14,11 +14,11 @@ Popular open stacks on Kubernetes, packaged by Google.
 
 ![Architecture diagram](resources/mariadb-galera-k8s-app-architecture.png)
 
-The application offers stateful multi-instance MariaDB with Galera installation on a Kubernetes cluster.
+The app offers a stateful multi-instance installation of MariaDB with Galera on a Kubernetes cluster.
 
-MariaDB server runs in a StatefulSet with 3 replicas by default. The credentials for the administrator account are automatically generated and configured in the application through a Kubernetes Secret. The configuration files for the application (`/etc/mysql/mariadb.conf.d/`) are defined in a ConfigMap and mounted to the MariaDB StatefulSet.
+MariaDB server runs in a StatefulSet with 3 replicas by default. The credentials for the administrator account are automatically generated and configured in the app, through a Kubernetes Secret. The configuration files for the app (`/etc/mysql/mariadb.conf.d/`) are defined in a ConfigMap, and mounted to the MariaDB StatefulSet.
 
-By default, the Services exposing the MariaDB server are of type ClusterIP, which makes it accessible only in a private network on port 3306.
+By default, the Services exposing the MariaDB server are of type ClusterIP, which makes the server accessible only in a private network, on port 3306.
 
 This application is pre-configured with an SSL certificate for internal communication between replicas. Before you make the app available to users, you must replace the pre-configured certificate with a valid certificate of your own.
 
@@ -30,11 +30,11 @@ Get up and running with a few clicks! Install this MariaDB app to a Google Kuber
 
 ## Command line instructions
 
-### Prerequisites
+### Before you begin
 
 #### Set up command-line tools
 
-You'll need the following tools in your development environment. If you are using Cloud Shell, `gcloud`, `kubectl`, Docker, and Git are installed in your environment by default.
+You'll need the following tools in your development environment. If you are using Cloud Shell, then `gcloud`, `kubectl`, Docker, and Git are installed in your environment by default.
 
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
@@ -67,7 +67,7 @@ gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 
 #### Clone this repo
 
-Clone this repo and the associated tools repo:
+Clone this repo, and the associated tools repo:
 
 ```shell
 git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
@@ -83,11 +83,9 @@ To set up your cluster to understand Application resources, run the following co
 kubectl apply -f "https://raw.githubusercontent.com/GoogleCloudPlatform/marketplace-k8s-app-tools/master/crd/app-crd.yaml"
 ```
 
-You need to run this command once.
-
 The Application resource is defined by the [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps) community. The source code can be found on [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
 
-### Install MariaDB Galera Cluster
+### Install the MariaDB Galera cluster
 
 Navigate to the `mariadb-galera` directory:
 
@@ -104,7 +102,7 @@ export APP_INSTANCE_NAME=mariadb-galera-1
 export NAMESPACE=default
 ```
 
-(Optional) Enable Stackdriver Metrics Exporter:
+#### (Optional) Enable Stackdriver Metrics Exporter:
 
 > **NOTE:** Your GCP project must have Stackdriver enabled. If you are using a non-GCP cluster, you cannot export metrics to Stackdriver.
 
