@@ -152,7 +152,10 @@ done
 
 Define the amount of replicas for ZooKeeper:
 
-> **NOTE:** This number should be odd for typical configurations of ZooKeeper.
+> **NOTE:** You should use an odd number, to ensure that ZooKeeper is always
+able to easily establish a majority. Even numbers of replicas are allowed,
+but not advised. An even number of replicas means that more peers will be
+required to establish a quorum.
 
 ```shell
 export ZOOKEEPER_REPLICAS=3
