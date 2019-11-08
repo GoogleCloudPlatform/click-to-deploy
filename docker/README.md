@@ -23,8 +23,10 @@ following GitHub repositories:
 *   https://github.com/GoogleCloudPlatform/grafana-docker
 *   https://github.com/GoogleCloudPlatform/influxdb-docker
 *   https://github.com/GoogleCloudPlatform/jenkins-docker
+*   https://github.com/GoogleCloudPlatform/joomla-docker
 *   https://github.com/GoogleCloudPlatform/kibana-docker
 *   https://github.com/GoogleCloudPlatform/kube-state-metrics-docker
+*   https://github.com/GoogleCloudPlatform/magento-docker
 *   https://github.com/GoogleCloudPlatform/mariadb-docker
 *   https://github.com/GoogleCloudPlatform/memcached-docker
 *   https://github.com/GoogleCloudPlatform/mongodb-docker
@@ -32,8 +34,8 @@ following GitHub repositories:
 *   https://github.com/GoogleCloudPlatform/nfs-server-docker
 *   https://github.com/GoogleCloudPlatform/nginx-docker
 *   https://github.com/GoogleCloudPlatform/postgresql-docker
-*   https://github.com/GoogleCloudPlatform/prometheus-docker
 *   https://github.com/GoogleCloudPlatform/prometheus-alertmanager-docker
+*   https://github.com/GoogleCloudPlatform/prometheus-docker
 *   https://github.com/GoogleCloudPlatform/prometheus-nodeexporter-docker
 *   https://github.com/GoogleCloudPlatform/prometheus-pushgateway-docker
 *   https://github.com/GoogleCloudPlatform/rabbitmq-docker
