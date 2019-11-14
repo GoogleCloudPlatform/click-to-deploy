@@ -87,7 +87,7 @@ To set up your cluster to understand Application resources, run the following co
 kubectl apply -f "https://raw.githubusercontent.com/GoogleCloudPlatform/marketplace-k8s-app-tools/master/crd/app-crd.yaml"
 ```
 
-The Application resource is defined by the [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps) community. The source code can be found on [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
+The Application resource is defined by the [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps) community. You can find the source code on [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
 
 ### Install the MariaDB Galera cluster
 
