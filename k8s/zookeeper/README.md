@@ -1,14 +1,14 @@
 # Overview
 
 ZooKeeper is a high-performance coordination service for distributed applications. It exposes common services - such as naming,
-configuration management, synchronization, and group services - via a simple interface, so that you don't have to write them from scratch.
- You can use it off-the-shelf to implement consensus, group management, leader election, and presence protocols. You can also build on it to meet your own specific needs.
+configuration management, synchronization, and group services - through a simple interface, so that you don't have to write them from scratch.
+ You can use it off-the-shelf to implement consensus, group management, leader election, and presence protocols. You can also build on it to fit your own specific needs.
 
 For more information about ZooKeeper, visit the [ZooKeeper website](https://zookeeper.apache.org/doc/r3.4.14/).
 
 ## About Google Click to Deploy
 
-Popular open source software stacks on Kubernetes, packaged by Google.
+Popular open stacks on Kubernetes, packaged by Google.
 
 ## Architecture
 
@@ -16,13 +16,13 @@ Popular open source software stacks on Kubernetes, packaged by Google.
 
 The ZooKeeper app contains:
 
-- An Application resource, which groups all of the deployment resources into one logical entity
-- A PodDisruptionBudget for the ZooKeeper StatefulSet
-- A PersistentVolume and PersistentVolumeClaim for each ZooKeeper Pod
-- A StatefulSet with Application
-- The Services `zk-client`, which exposes an endpoint for clients of ZooKeeper, and `zk-internal`, for master election and replications
+- an Application resource, which groups all of the deployment resources into one logical entity
+- a PodDisruptionBudget for the ZooKeeper StatefulSet
+- a PersistentVolume and PersistentVolumeClaim for each ZooKeeper Pod
+- a StatefulSet with Application
+- the Services `zk-client`, which exposes an endpoint for clients of ZooKeeper, and `zk-internal`, for master election and replications
 
-By default, ZooKeeper is exposed by a Service of type ClusterIP, which makes it available only within the cluster network.
+By default, ZooKeeper is exposed by a Service of type ClusterIP, which means that it is only available within a cluster network.
 All data is stored on PVC, which makes the app more stable.
 
 # Installation
@@ -46,7 +46,7 @@ You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local wor
 
 #### Set up command line tools
 
-You'll need the following tools in your development environment.  If you are using Cloud Shell, then `gcloud`, `kubectl`, Docker, and Git are installed in your environment by default.
+You'll need the following tools in your development environment. If you are using Cloud Shell, then `gcloud`, `kubectl`, Docker, and Git are installed in your environment by default.
 
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
@@ -114,7 +114,7 @@ cd click-to-deploy/k8s/zookeeper
 
 #### Configure the environment variables
 
-Choose an instance name and
+Choose the instance name and
 [namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)
 for the app. In most cases, you can use the `default` namespace.
 
@@ -170,14 +170,14 @@ required to establish a quorum.
 export ZOOKEEPER_REPLICAS=3
 ```
 
-Request amount of memory and CPU for each ZooKeeper Pod:
+Request the amount of memory and CPU for each ZooKeeper Pod:
 
 ```shell
 export ZOOKEEPER_MEMORY_REQUEST=1250Mi
 export ZOOKEEPER_CPU_REQUEST=300m
 ```
 
-Define basic parameters of ZooKeeper:
+Define Zookeeper's basic parameters:
 
 > **NOTE:** Detailed explanation of variables you can find in [ZooKeeper Administrator's Guide](https://zookeeper.apache.org/doc/r3.4.14/zookeeperAdmin.html).
 
@@ -233,7 +233,7 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 To view the app, open the URL in your browser.
 
-# Using the ZooKeeper
+# Using ZooKeeper
 
 By default, the application is not exposed externally. To get access to ZooKeeper CLI, run the following command:
 
@@ -284,7 +284,7 @@ You can remove existing metric descriptors using
 
 # Scaling
 
-ZooKeeper does not support auto-scaling for application, it can be reinstalled with bigger amount of nodes.
+ZooKeeper does not support auto-scaling, but it can be reinstalled with a larger amount of nodes.
 
 # Backup and restore
 
