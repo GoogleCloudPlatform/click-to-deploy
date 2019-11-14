@@ -4,7 +4,7 @@ MariaDB is an open source relational database. It is a fork of MySQL.
 
 MariaDB Galera Cluster is a synchronous multi-master cluster for MariaDB. It enables true parallel replication, multi-master topology, the ability to read and write to any cluster node, or to drop failed nodes from the cluster, automatic membership control and node joining, and more.
 
-For more information on MariaDB, refer to the [MariaDB official website](https://mariadb.org/).
+For more information on MariaDB, visit the [MariaDB official website](https://mariadb.org/).
 
 ## About Google Click to Deploy
 
