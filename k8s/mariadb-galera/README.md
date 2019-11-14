@@ -36,7 +36,7 @@ Get up and running with a few clicks! Install this MariaDB app to a Google Kuber
 
 ### Set up your environment
 
-#### Set up command-line tools
+#### Set up command line tools
 
 You'll need the following tools in your development environment. If you are using Cloud Shell, then `gcloud`, `kubectl`, Docker, and Git are installed in your environment by default.
 
