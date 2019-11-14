@@ -179,7 +179,7 @@ export ZOOKEEPER_CPU_REQUEST=300m
 
 Define Zookeeper's basic parameters:
 
-> **NOTE:** Detailed explanation of variables you can find in [ZooKeeper Administrator's Guide](https://zookeeper.apache.org/doc/r3.4.14/zookeeperAdmin.html).
+> **NOTE:** You can find a detailed explanation of possible variables in the [ZooKeeper Administrator's Guide](https://zookeeper.apache.org/doc/r3.4.14/zookeeperAdmin.html).
 
 ```shell
 export ZOOKEEPER_TICKTIME=2000
@@ -223,9 +223,9 @@ Use `kubectl` to apply the manifest to your Kubernetes cluster:
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
 
-#### View the app in the Google Cloud Console
+#### View the app in the Google Cloud Platform Console
 
-To get the GCP Console URL for your app, run the following command:
+To get the Console URL for your app, run the following command:
 
 ```shell
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
@@ -251,13 +251,13 @@ the
 [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
 
 You can access the metrics at `[ZOOKEEPER_CLUSTER_IP]:9141/metrics`, where
-`[ZOOKEEPER_CLUSTER_IP]` is the IP address of Pod on Kubernetes
+`[ZOOKEEPER_CLUSTER_IP]` is the IP address of Pod on the Kubernetes
 cluster.
 
 ### Configuring Prometheus to collect metrics
 
-Prometheus can be configured to automatically collect the application's metrics.
-Follow the steps in
+Prometheus can be configured to automatically collect the app's metrics.
+To set this up, follow the steps in
 [Configuring Prometheus](https://prometheus.io/docs/introduction/first_steps/#configuring-prometheus).
 
 You configure the metrics in the
@@ -270,16 +270,16 @@ The deployment includes a
 container. If you enabled the option to export metrics to Stackdriver, the
 metrics are automatically exported to Stackdriver and visible in
 [Stackdriver Metrics Explorer](https://cloud.google.com/monitoring/charts/metrics-explorer).
-The name of each metric starts with the application's name, which you define in
-the `APP_INSTANCE_NAME` environment variable.
 
-The exporting option might not be available for GKE on-prem clusters.
+Metrics are labeled with `app.kubernetes.io/name`, which uses the app's name as defined in the `APP_INSTANCE_NAME` environment variable.
+
+The export option may not be available for GKE on-prem clusters.
 
 > Note: Stackdriver has [quotas](https://cloud.google.com/monitoring/quotas) for
 > the number of custom metrics created in a single GCP project. If the quota is
 > met, additional metrics might not show up in the Stackdriver Metrics Explorer.
 
-You can remove existing metric descriptors using
+You can remove existing metric descriptors by using
 [Stackdriver's REST API](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors/delete).
 
 # Scaling
@@ -288,7 +288,7 @@ ZooKeeper does not support auto-scaling, but it can be reinstalled with a larger
 
 # Backup and restore
 
-For information on backing up your ZooKeeper data, see the [ZooKeeper documentation](https://zookeeper.apache.org/doc/r3.4.14/zookeeperAdmin.html#sc_dataFileManagement).
+For information on backing up your ZooKeeper data, visit the [ZooKeeper documentation](https://zookeeper.apache.org/doc/r3.4.14/zookeeperAdmin.html#sc_dataFileManagement).
 
 # Uninstall the Application
 
@@ -313,10 +313,9 @@ export NAMESPACE=default
 
 ### Delete the resources
 
-> **NOTE:** We recommend to use a kubectl version that is the same as the version of your cluster. Using the same versions of kubectl and the cluster helps avoid unforeseen issues.
+> **NOTE:** We recommend to use a kubectl version that is the same as the version of your cluster. Using the same version for `kubectl` and the cluster helps prevent unforeseen issues.
 
-To delete the resources, use the expanded manifest file used for the
-installation.
+To delete the resources, use the expanded manifest file that was used for the installation.
 
 Run `kubectl` on the expanded manifest file:
 
@@ -324,7 +323,7 @@ Run `kubectl` on the expanded manifest file:
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 ```
 
-Otherwise, delete the resources using types and a label:
+If you don't have the expanded manifest file, delete the resources by using types and a label:
 
 ```shell
 kubectl delete application,deployment,service,pvc,secret \
@@ -334,7 +333,7 @@ kubectl delete application,deployment,service,pvc,secret \
 
 ### Delete the persistent volumes of your installation
 
-By design, the removal of StatefulSets in Kubernetes does not remove
+By design, removing StatefulSets in Kubernetes does not remove any
 PersistentVolumeClaims that were attached to their Pods. This prevents your
 installations from accidentally deleting stateful data.
 
@@ -356,8 +355,8 @@ kubectl delete persistentvolumeclaims \
 
 ### Delete the GKE cluster
 
-Optionally, if you don't need the deployed application or the GKE cluster,
-delete the cluster using this command:
+Optionally, if you don't need the deployed app or the GKE cluster,
+you can delete the cluster by using this command:
 
 ```shell
 gcloud container clusters delete "$CLUSTER" --zone "$ZONE"
