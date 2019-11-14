@@ -106,7 +106,7 @@ export APP_INSTANCE_NAME=mariadb-galera-1
 export NAMESPACE=default
 ```
 
-By default, the application does not export metrics to Stackdriver. To enable this option, change the value to `true`.
+By default, the app does not export metrics to Stackdriver. To enable this option, change the value to `true`.
 
 ```shell
 export METRICS_EXPORTER_ENABLED=false
@@ -125,7 +125,7 @@ export IMAGE_METRICS_EXPORTER="${IMAGE_REPO}/prometheus-to-sd:${TAG}"
 export IMAGE_PEER_FINDER="${IMAGE_REPO}/peer-finder:${TAG}"
 ```
 
-The images above are referenced by [tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend that you pin each image to an immutable [content digest](https://docs.docker.com/registry/spec/api/#content-digests). This ensures that the installed application always uses the same images, until you are ready to upgrade. To get the digest for the image, use the following script:
+The image above is referenced by [tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend that you pin each image to an immutable [content digest](https://docs.docker.com/registry/spec/api/#content-digests). This ensures that the installed app always uses the same image, until you are ready to upgrade. To get the digest for the image, use the following script:
 
 ```shell
 for i in "IMAGE_MARIADB" "IMAGE_MYSQL_EXPORTER" "IMAGE_METRICS_EXPORTER" "IMAGE_PEER_FINDER"; do
@@ -261,7 +261,7 @@ kubectl port-forward svc/$APP_INSTANCE_NAME-galera-svc --namespace $NAMESPACE 33
 
 ## Prometheus metrics
 
-The application can be configured to expose its metrics through the
+The app can be configured to expose its metrics through the
 [MySQL Server Exporter](https://github.com/GoogleCloudPlatform/mysql-docker/tree/master/exporter)
 in the
 [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
@@ -282,7 +282,7 @@ Then, navigate to [http://localhost:9104/metrics](http://localhost:9104/metrics)
 
 ### Configuring Prometheus to collect the metrics
 
-Prometheus can be configured to automatically collect the application's metrics.
+Prometheus can be configured to automatically collect the app's metrics.
 To set this up, follow the steps in
 [Configuring Prometheus](https://prometheus.io/docs/introduction/first_steps/#configuring-prometheus).
 
@@ -318,7 +318,7 @@ where `REPLICAS` is the number of replicas you want.
 
 To reduce the number of replicas without disconnecting nodes from the cluster, use the same command. The `PersistentVolumeClaims` in your StatefulSet are not modified when you reduce the number of replicas.
 
-# Backup and Restore
+# Backup and restore
 
 The following steps are based on the [MariaDB documentation](https://mariadb.com/kb/en/library/mysqldump/).
 
@@ -458,7 +458,7 @@ kubectl delete persistentvolumeclaims \
 
 ### Delete the GKE cluster
 
-Optionally, if you don't need the deployed application or the GKE cluster,
+Optionally, if you don't need the deployed app or the GKE cluster,
 you can delete the cluster by using this command:
 
 ```shell
