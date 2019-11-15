@@ -1,0 +1,33 @@
+joomla:
+  image:
+    repo: null
+    tag: null
+  user: admin
+  password: null
+  volumeSize: 5
+
+db:
+  image: null
+  rootPassword: null
+  joomlaUser: joomla
+  joomlaPassword: null
+
+  # The image and credentials for mysqld_exporter component.
+  exporter:
+    image: null
+    user: mysqld-exporter
+    password: null
+
+enablePublicServiceAndIngress: false
+
+apache:
+  exporter:
+    image: null
+
+metrics:
+  image: null
+  enabled: false
+
+tls:
+  base64EncodedPrivateKey: null
+  base64EncodedCertificate: null
