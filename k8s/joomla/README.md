@@ -167,7 +167,7 @@ Configure the container images:
 
 ```shell
 TAG=3.9
-export IMAGE_JOOMLA="marketplace.gcr.io/google/joomla:${TAG}"
+export IMAGE_JOOMLA="marketplace.gcr.io/google/joomla"
 export IMAGE_APACHE_EXPORTER="marketplace.gcr.io/google/joomla/apache-exporter:${TAG}"
 export IMAGE_MARIADB="marketplace.gcr.io/google/joomla/mariadb:${TAG}"
 export IMAGE_MYSQL_EXPORTER="marketplace.gcr.io/google/joomla/mysqld-exporter:${TAG}"
@@ -183,7 +183,7 @@ you are ready to upgrade. To get the digest for the image, use the following
 script:
 
 ```shell
-for i in "IMAGE_JOOMLA" "IMAGE_APACHE_EXPORTER" "IMAGE_MARIADB" "IMAGE_MYSQL_EXPORTER" "IMAGE_METRICS_EXPORTER"; do
+for i in "IMAGE_APACHE_EXPORTER" "IMAGE_MARIADB" "IMAGE_MYSQL_EXPORTER" "IMAGE_METRICS_EXPORTER"; do
   repo=$(echo ${!i} | cut -d: -f1);
   digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
   export $i="$repo@$digest";
