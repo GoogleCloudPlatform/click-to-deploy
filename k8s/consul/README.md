@@ -1,43 +1,47 @@
 # Overview
 
-Consul is a distributed high availability solution, based on the Raft consensus algorithm, which provides service and
-node discovery, health checks, and support for storage of distributed key values. It offers users many different ways to
+Consul is a distributed, high-availability solution, based on the Raft consensus algorithm, which provides service and
+node discovery, health checks, and support for storing distributed key values. It offers users many different ways to
 manage infrastructure, ensure content consistency, and gather information about nodes.
 
-For more information on Consul, see the [Consul official website](https://www.consul.io/).
+For more information on Consul, visit the [Consul official website](https://www.consul.io/).
 
 ## About Google Click to Deploy
 
-Popular open stacks on Kubernetes packaged by Google.
+Popular open stacks on Kubernetes, packaged by Google.
 
 ## Design
 
 ![Architecture diagram](resources/consul-k8s-app-architecture.png)
 
-This application offers a stateful multi-instance installation of Consul on a Kubernetes cluster.
+This app offers a stateful, multi-instance installation of Consul on a Kubernetes cluster.
 
-The application uses StatefulSet for Consul servers, and DaemonSet for Consul clients, for each Kubernetes cluster node.
+Each of the app's Kubernetes cluster nodes uses StatefulSet, for Consul servers, and DaemonSet, for Consul clients.
 Users can specify the number of Consul server instances used, but the default - and recommended - number of Consul server
 instances is 3.
 
-The application also has optional support for:
+The app also has optional support for:
 * gossip encryption between Consul servers and clients
 * using Prometheus exporter to export metrics to Stackdriver
 
 # Installation
 
+## Before you begin
+
+If you are new to selling software on GCP Marketplace, [sign up to become a partner](https://cloud.google.com/marketplace/sell/).
+
 ## Quick install with Google Cloud Marketplace
 
 Get up and running with just a few clicks! Install this Consul app to a Google Kubernetes Engine cluster by following the
-[on-screen instructions](https://console.cloud.google.com/marketplace/details/google/consul) within Google Cloud Marketpalce.
+[on-screen instructions](https://console.cloud.google.com/marketplace/details/google/consul).
 
 ## Command line instructions
 
-### Prerequisites
+### Set up your environment
 
-#### Set up command-line tools
+#### Set up command line tools
 
-You'll need the following tools in your development environment:
+You'll need the following tools in your development environment. If you are using Cloud Shell, then `gcloud`, `kubectl`, Docker, and Git are installed in your environment by default.
 
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
@@ -62,7 +66,7 @@ export ZONE=us-west1-a
 gcloud container clusters create "${CLUSTER}" --zone "${ZONE}"
 ```
 
-Configure `kubectl` to connect to the new cluster.
+Configure `kubectl` to connect to the cluster:
 
 ```shell
 gcloud container clusters get-credentials "${CLUSTER}" --zone "${ZONE}"
@@ -87,11 +91,11 @@ To set up your cluster to understand Application resources, run the following co
 kubectl apply -f "https://raw.githubusercontent.com/GoogleCloudPlatform/marketplace-k8s-app-tools/master/crd/app-crd.yaml"
 ```
 
-You need to run this command once.
+You need to run this command once for each cluster.
 
 The Application resource is defined by the
-[Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps) community.
-The source code can be found on [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
+[Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps) community. You can find the source code at
+[github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
 
 ### Install the Application
 
@@ -101,9 +105,9 @@ Navigate to the `consul` directory:
 cd click-to-deploy/k8s/consul
 ```
 
-#### Configure the app with environment variables
+#### Configure the environment variables
 
-Choose an instance name and
+Choose the instance name and
 [namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)
 for the app. In most cases, you can use the `default` namespace.
 
@@ -111,6 +115,14 @@ for the app. In most cases, you can use the `default` namespace.
 export APP_INSTANCE_NAME=consul-1
 export NAMESPACE=default
 ```
+
+By default, the app does not export metrics to Stackdriver. To enable this option, change the value to `true`.
+
+```shell
+export METRICS_EXPORTER_ENABLED=false
+```
+
+> **NOTE:** Your GCP project must have Stackdriver enabled to export metrics to Stackdriver. If you are using a non-GCP cluster, you cannot export metrics to Stackdriver.
 
 Configure the container image:
 
@@ -121,11 +133,11 @@ export IMAGE_CONSUL_EXPORTER="marketplace.gcr.io/google/consul/consul-exporter:$
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/consul/prometheus-to-sd:${TAG}"
 ```
 
-The images above are referenced by
+The image above is referenced by
 [tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
 that you pin each image to an immutable
 [content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This ensures that the installed application always uses the same images,
+This ensures that the installed app always uses the same image,
 until you are ready to upgrade. To get the digest for the image, use the
 following script:
 
@@ -138,8 +150,8 @@ echo ${!i};
 done
 ```
 
-Optionally, you can set the number of replicas for Consul.
-There must be at least 1 replica, but the default and recommended number of replicas is 3.
+You can choose to specify the number of replicas for Consul.
+There must be at least 1 replica, but the default - and recommended - number of replicas is 3.
 
 ```shell
 export REPLICAS=3
@@ -164,7 +176,7 @@ If you want a gossip encryption key for Consul, create and configure it now:
 export CONSUL_GOSSIP_KEY=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1 | tr -d '\n' | base64)
 ```
 
-The following inputs are all optional. They enable you to set resource limits and requests for your Consul client and server.
+The following inputs are all optional. They enable you to set resource limits and requests for your Consul client and server:
 
 ```shell
 export SERVER_RESOURCES_LIMITS_CPU=200m
@@ -178,7 +190,7 @@ export CLIENT_RESOURCES_REQUESTS_CPU=100m
 export CLIENT_RESOURCES_REQUESTS_MEMORY=150Mi
 ```
 
-You can also choose to define the storage capacity of your server; this is 10Gi by default.
+You can also choose to define the storage capacity of your server; by default, this is 10Gi.
 ```shell
 export SERVER_STORAGE=10Gi
 ```
@@ -273,24 +285,25 @@ You can connect to Consul without exposing it to public access, by using the
 
 #### Connect to Consul via Pod
 
-To do this, please identify Consul's Pod by using the following command:
+Use the following command to identify Consul's Pod:
 
 ```shell
 kubectl get pods -o wide -l app.kubernetes.io/name=${APP_INSTANCE_NAME},app.kubernetes.io/component=consul-client --namespace "${NAMESPACE}"
 ```
 
-Now you can access the Consul tool. For example, to get Consul's version info:
+Now you can access the Consul tool. For example, you can use the following command
+to get Consul's version info:
 
 ```shell
 kubectl exec -it <pod name> --namespace "${NAMESPACE}" -- consul version
 ```
 
-### Access Consul client directly in cluster
+### Access the Consul client directly within a cluster
 
-By default, the Consul client runs on every Kubernetes node in a cluster. To access the Consul client port, you can
-connect directly to host IP:8500
+By default, the Consul client runs on every Kubernetes node in a cluster. Connect directly to host IP:8500 to
+access the Consul client port.
 
-Example of pod:
+Example of Pod:
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -346,11 +359,11 @@ kubectl port-forward svc/${APP_INSTANCE_NAME}-consul-ui --namespace ${NAMESPACE}
 By default, the Consul Server application is deployed using 3 replicas.
 
 To change the number of replicas:
-1. [Back up](#backup-consul-data-to-your-local-environment) your Consul data
-2. [Uninstall](#uninstall-the-application) the Consul Application
-3. [Delete PersistentVolumes volumes](#delete-the-persistent-volumes-of-your-installation)
+1. [Back up](#backup-consul-data-to-your-local-environment) your Consul data.
+2. [Uninstall](#uninstall-the-application) the Consul Application.
+3. [Delete PersistentVolumes volumes](#delete-the-persistent-volumes-of-your-installation).
 4. Retry the installation instructions, but this time with new number of replicas.
-5. [Restore your data](#restore-consul-data-on-a-running-cluster)
+5. [Restore your data](#restore-consul-data-on-a-running-cluster).
 
 > **NOTE:** Scaling via `kubectl scale` is not supported.
 
