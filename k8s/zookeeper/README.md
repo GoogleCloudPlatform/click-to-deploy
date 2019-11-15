@@ -1,28 +1,29 @@
 # Overview
 
 ZooKeeper is a high-performance coordination service for distributed applications. It exposes common services - such as naming,
-configuration management, synchronization, and group services - in a simple interface so you don't have to write them from scratch.
- You can use it off-the-shelf to implement consensus, group management, leader election, and presence protocols. Moreover you can also build on it for your own specific needs.
+configuration management, synchronization, and group services - through a simple interface, so that you don't have to write them from scratch.
+ You can use it off-the-shelf to implement consensus, group management, leader election, and presence protocols. You can also build on it to fit your own specific needs.
 
 For more information about ZooKeeper, see the [ZooKeeper website](https://zookeeper.apache.org/doc/r3.4.14/).
 
 ## About Google Click to Deploy
 
-Popular open source software stacks on Kubernetes packaged by Google and made available in Google Cloud Marketplace.
+Popular open stacks on Kubernetes, packaged by Google.
 
 ## Design
 
 ![Architecture diagram](resources/zookeeper-k8s-app-architecture.png)
 
-### ZooKeeper application contains:
+### Application contents
 
-- An Application resource, which collects all the deployment resources into one logical entity.
-- A PodDisruptionBudget for the ZooKeeper StatefulSet.
-- A PersistentVolume and PersistentVolumeClaim for each Pod ZooKeeper.
-- A StatefulSet with Application.
-- A Services, `zk-client` which exposes endpoint for clients of ZooKeeper, `zk-internal` for master election and replications.
+- an Application resource, which collects all of the deployment resources into one logical entity
+- a PodDisruptionBudget for the ZooKeeper StatefulSet
+- a PersistentVolume and PersistentVolumeClaim for each Pod ZooKeeper
+- a StatefulSet with Application
+- the services `zk-client`, which exposes endpoints for clients of ZooKeeper, and `zk-internal`, for master elections and replications
 
-ZooKeeper exposing by service with type ClusterIP, which makes it available  only in cluster network.
+ZooKeeper is exposed by a service of type ClusterIP, which means that it is only available within a cluster network.
+
 All data is stored on PVC, which makes the application more stable.
 
 # Installation
@@ -43,7 +44,7 @@ further instructions.
 
 #### Set up command line tools
 
-You'll need the following tools in your environment:
+You'll need the following tools in your development environment. If you are using Cloud Shell, `gcloud`, `kubectl`, Docker, and Git are installed in your environment by default.
 
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
@@ -60,7 +61,7 @@ gcloud auth configure-docker
 
 #### Create a Google Kubernetes Engine cluster
 
-Create a cluster from the command line. If you already have a cluster that
+Create a new cluster from the command line. If you already have a cluster that
 you want to use, this step is optional.
 
 ```shell
@@ -111,9 +112,9 @@ cd click-to-deploy/k8s/zookeeper
 
 #### Configure the application with environment variables
 
-Choose an instance name and
+Choose the instance name and
 [namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)
-for the application. In most cases, you can use the `default` namespace.
+for the app. In most cases, you can use the `default` namespace.
 
 ```shell
 export APP_INSTANCE_NAME=zookeeper
@@ -149,22 +150,25 @@ for i in "IMAGE_ZOOKEEPER" "IMAGE_ZOOKEEPER_EXPORTER" "IMAGE_METRICS_EXPORTER" ;
 done
 ```
 
-Define amount of replicas for ZooKeeper:
+Define the amount of replicas for ZooKeeper:
 
-> **NOTE:** This number should be odd for normal work of ZooKeeper.
+> **NOTE:** You should use an odd number, to ensure that ZooKeeper is always
+able to easily establish a majority. Even numbers of replicas are allowed,
+but not advised. An even number of replicas means that more peers will be
+required to establish a quorum.
 
 ```shell
 export ZOOKEEPER_REPLICAS=3
 ```
 
-Request amount of memory and CPU for each ZooKeeper Pod:
+Request the amount of memory and CPU for each ZooKeeper Pod:
 
 ```shell
 export ZOOKEEPER_MEMORY_REQUEST=1250Mi
 export ZOOKEEPER_CPU_REQUEST=300m
 ```
 
-Define basic parameters of ZooKeeper:
+Define Zookeeper's basic parameters:
 
 > **NOTE:** Detailed explanation of variables you can find in [ZooKeeper Administrator's Guide](https://zookeeper.apache.org/doc/r3.4.14/zookeeperAdmin.html).
 
@@ -179,9 +183,9 @@ export ZOOKEEPER_VOLUME_SIZE=10Gi
 
 Enable Stackdriver Metrics Exporter:
 
-> **NOTE:** Your GCP project should have Stackdriver enabled. For non-GCP clusters, exporting metrics to Stackdriver is not supported yet.
+> **NOTE:** Your GCP project must have Stackdriver enabled. If you are using a non-GCP cluster, you cannot export metrics to Stackdriver.
 
-By default the integration is disabled. To enable it, change the value to `true`.
+By default, the application does not export metrics to Stackdriver. To enable this option, change the value to `true`.
 
 ```shell
 export METRICS_EXPORTER_ENABLED=false
@@ -230,7 +234,7 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 To view the app, open the URL in your browser.
 
-# Using the ZooKeeper
+# Using ZooKeeper
 
 By default, the application is not exposed externally. To get access to ZooKeeper CLI, run the following command:
 
@@ -281,7 +285,7 @@ You can remove existing metric descriptors using
 
 # Scaling
 
-ZooKeeper does not support auto-scaling for application, it can be reinstalled with bigger amount of nodes.
+ZooKeeper does not support auto-scaling, but it can be reinstalled with a larger amount of nodes.
 
 # Backup and restore
 
