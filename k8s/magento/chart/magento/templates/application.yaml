@@ -33,6 +33,10 @@ spec:
       url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/magento/README.md
     - description: Getting Started with Magento
       url: https://docs.magento.com/m2/ce/user_guide/getting-started.html
+    - description: Configure Magento to use Elasticsearch
+      url: https://devdocs.magento.com/guides/v2.3/config-guide/elasticsearch/configure-magento.html
+    - description: Configure Redis for session storage
+      url: https://devdocs.magento.com/guides/v2.3/config-guide/redis/redis-session.html
     notes: |-
       {{- if .Values.enablePublicServiceAndIngress }}
       # Open your Magento site
@@ -48,8 +52,8 @@ spec:
       The command shows you the URL of your site.
 
       # Update TLS certificate for Magento
-      By default the application used self-signed certificate. You can follow
-      [Update TLS certificate for Magento section](https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/magento/README.md#update-tls-certificate-for-magento)
+      By default the application is using self-signed certificate. You can follow
+      [Update TLS certificate for Magento section](https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/magento/README.md#create-tls-certificate-for-magento)
       to update it.
       {{- else }}
 
@@ -93,23 +97,23 @@ spec:
   - name: Magento - Admin address (local only)
     value: http://localhost:8080/admin
   {{- end }}
-  - name: Magento - Administrator username
+  - name: Magento - admin username
     type: Reference
     valueFrom:
       secretKeyRef:
         key: magento-user
         name: {{ .Release.Name }}-magento-secret
-  - name: Magento - Administrator e-mail address
+  - name: Magento - admin e-mail address
     type: Reference
     valueFrom:
       secretKeyRef:
-        key: magento-email
+        key: magento-admin-email
         name: {{ .Release.Name }}-magento-secret
-  - name: Magento - Administrator password
+  - name: Magento - admin user password
     type: Reference
     valueFrom:
       secretKeyRef:
-        key: magento-password
+        key: magento-admin-password
         name: {{ .Release.Name }}-magento-secret
   - name: MySQL - root user password
     type: Reference
@@ -123,7 +127,7 @@ spec:
       secretKeyRef:
         key: magento-password
         name: {{ .Release.Name }}-mysql-secret
-  - name: Redis - Server password
+  - name: Redis - server password
     type: Reference
     valueFrom:
       secretKeyRef:
