@@ -12,9 +12,9 @@ endif
 # The digest should be updated automatically, or tag <major>.<minor>.<path/build>
 # should be available on GCP Marketplace.
 # Use `.build/joomla/VERSION` target to fill the RELEASE variable.
-JOOMLA_TAG ?= sha256:fa54bc0e71f1f3a1fd3a0c8d9b66cd959ef9292bdd3a829d48de58a9a87e8989
+JOOMLA_TAG ?= sha256:921078c410a33a4d22adf6517dd2eaf8d5b90ebedbf900fd1f7059a558f37952
 METRICS_EXPORTER_TAG ?= v0.5.1
-SOURCE_IMAGE ?= $(SOURCE_REGISTRY)/joomla3@$(joomla_TAG)
+SOURCE_IMAGE ?= $(SOURCE_REGISTRY)/joomla3-php7-apache@$(joomla_TAG)
 
 IMAGE_APACHE_EXPORTER ?= $(SOURCE_REGISTRY)/wordpress/apache-exporter:latest
 MARIADB_IMAGE ?= $(SOURCE_REGISTRY)/mariadb10:latest
