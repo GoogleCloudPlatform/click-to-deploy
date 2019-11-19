@@ -54,7 +54,7 @@ properties:
   exporter.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
-    description: Your GCP project must have Stackdriver enabled. For non-GCP clusters, the export of metrics to Stackdriver is not supported
+    description: Your GCP project must have Stackdriver enabled. Non-GCP clusters cannot export metrics to Stackdriver.
     default: false
   zookeeper.zkReplicas:
     type: integer
