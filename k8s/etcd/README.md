@@ -354,7 +354,7 @@ kubectl cp ${APP_INSTANCE_NAME}-etcd-0:etcd-snapshot.db .
 ```
 
 ### Upgrading
-> **NOTE:** Before upgrading, we recommend that you [back up your etcd cluster database]().
+> **NOTE:** Before upgrading, we recommend that you back up your etcd cluster database.
 > For required compatibilities between etcd versions and additional information about upgrades, see the [official etcd documentation](https://github.com/etcd-io/etcd/blob/master/Documentation/upgrades/upgrading-etcd.md).
 
 The etcd StatefulSet is configured to roll out updates automatically.
