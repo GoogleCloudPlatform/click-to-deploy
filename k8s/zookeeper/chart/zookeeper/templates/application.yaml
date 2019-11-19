@@ -1,0 +1,69 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "{{ .Release.Name }}"
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }} {{/* Get logo.png from the root of chart */}}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": "zookeeper", "partner_name": "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+spec:
+  descriptor:
+    type: ZooKeeper
+    version: {{ .Values.zookeeper.image.tag | quote }}
+    description: |-
+      ZooKeeper is a high-performance coordination service for distributed applications. It exposes common
+      services - such as naming, configuration management, synchronization, and group services - through a
+      simple interface, so that you don't have to write them from scratch.
+      
+      You can use it off-the-shelf to implement consensus, group management, leader election, and presence
+      protocols. You can also build on it to fit your own specific needs.
+      
+      # Support
+      Google does not offer support for this solution. However, community support is available on [StackOverflow](https://stackoverflow.com/questions/tagged/apache-zookeeper).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy ZooKeeper'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/zookeeper/README.md
+    - description: 'ZooKeeper: Getting Started'
+      url: https://zookeeper.apache.org/doc/r3.4.14/zookeeperStarted.html
+    notes: |-
+      # Get authentication credentials for the cluster
+
+      ```shell
+      gcloud container clusters get-credentials [CLUSTER_NAME] --zone [CLUSTER_ZONE]
+      ```
+
+      where:
+      * `[CLUSTER_NAME]` is the name of the cluster for this app
+      * `[CLUSTER_ZONE]` is the zone in which the cluster is operating
+
+      For more information, read the [instructions for getting authentication credentials for the cluster](https://cloud.google.com/kubernetes-engine/docs/quickstart#get_authentication_credentials_for_the_cluster).
+
+      # Get access to ZooKeeper CLI
+
+      ```shell
+      kubectl exec -it --namespace {{ .Release.Namespace }} {{ .Release.Name }}-zk-0 -- zkCli.sh -server localhost:2181
+      ```
+  info:
+  - name: Application Name
+    value: {{ .Release.Name }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "{{ .Release.Name }}"
+  componentKinds:
+  - group: apps/v1
+    kind: StatefulSet
+  - group: v1
+    kind: PersistentVolumeClaim
+  - group: policy/v1beta1
+    kind: PodDisruptionBudget
+  - group: v1
+    kind: Secret
+  - group: v1
+    kind: Service
+  - group: v1
+    kind: ServiceAccount

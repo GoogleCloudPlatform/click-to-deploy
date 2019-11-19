@@ -13,8 +13,8 @@ include $(makefile_dir)/var.Makefile
 
 VERIFY_WAIT_TIMEOUT = 600
 
-##### Validations and Information #####
 
+##### Validations and Information #####
 
 ifndef APP_GCS_PATH
 $(error APP_GCS_PATH must be defined)
@@ -28,8 +28,8 @@ endif
 
 $(info ---- APP_DEPLOYER_IMAGE = $(APP_DEPLOYER_IMAGE))
 
-##### Helper functions #####
 
+##### Helper functions #####
 
 # Extracts the name property from APP_PARAMETERS.
 define name_parameter
@@ -119,8 +119,8 @@ app/install-test:: app/publish \
 app/uninstall: .build/var/APP_DEPLOYER_IMAGE \
                .build/var/APP_PARAMETERS
 	$(call print_target)
-	kubectl delete 'application/$(call name_parameter)' \
-	    --namespace='$(call namespace_parameter)' \
+	kubectl delete 'application/$(NAME)' \
+	    --namespace='$(NAMESPACE)' \
 	    --ignore-not-found
 
 

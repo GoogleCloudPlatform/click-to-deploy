@@ -20,7 +20,6 @@ package 'install_memcached' do
   retry_delay 30
 end
 
-
 bash 'modify /etc/memcached.conf' do
   user 'root'
   code <<-EOH
