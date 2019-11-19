@@ -22,7 +22,7 @@ IMAGE_MYSQL_EXPORTER ?= $(SOURCE_REGISTRY)/wordpress/mysqld-exporter:latest
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 TRACK ?= 3.9
-RELEASE ?= 3.9.11-$(BUILD_ID)
+RELEASE ?= 3.9.13-$(BUILD_ID)
 
 VERIFY_WAIT_TIMEOUT = 1800
 
