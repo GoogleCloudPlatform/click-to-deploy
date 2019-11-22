@@ -20,6 +20,16 @@ spec:
         command: ['sh', '-c',
           'until pg_isready -h {{ .Release.Name }}-postgresql-service -p 5432;
           do echo waiting for database; sleep 2; done;']
+      - name: increase-max-map-count
+        image: gcr.io/google-appengine/debian9
+        command:
+        - /bin/bash
+        - -c
+        - |
+          echo "262144" > /proc/sys/vm/max_map_count
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          privileged: true
       containers:
         - name: {{ .Release.Name}}-sonarqube
           image: {{ .Values.sonarqube.image}}
