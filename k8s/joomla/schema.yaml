@@ -1,0 +1,114 @@
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      Initial release.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  managedUpdates:
+    kalmSupported: false
+
+  images:
+    '':
+      properties:
+        joomla.image.repo:
+          type: REPO_WITH_REGISTRY
+        joomla.image.tag:
+          type: TAG
+    mariadb:
+      properties:
+        db.image:
+          type: FULL
+    apache-exporter:
+      properties:
+        apache.exporter.image:
+          type: FULL
+    mysqld-exporter:
+      properties:
+        db.exporter.image:
+          type: FULL
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
+
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+
+  joomla.volumeSize:
+    type: integer
+    title: Storage size for Joomla!
+    description: The Joomla! storage size for persistent volume (GB)
+    default: 6
+
+  joomla.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 16
+        includeSymbols: False
+        base64: True
+  db.rootPassword:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 16
+        includeSymbols: False
+        base64: True
+  db.joomlaPassword:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 16
+        includeSymbols: False
+        base64: True
+  db.exporter.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 16
+        includeSymbols: False
+        base64: True
+
+  enablePublicServiceAndIngress:
+    type: boolean
+    title: Enable public IP access
+    description: Set the Joomla! Service type to NodePort and enable Ingress
+    default: false
+  metrics.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
+    default: false
+  certificate:
+    type: string
+    x-google-marketplace:
+      type: TLS_CERTIFICATE
+      tlsCertificate:
+        generatedProperties:
+          base64EncodedPrivateKey: tls.base64EncodedPrivateKey
+          base64EncodedCertificate: tls.base64EncodedCertificate
+
+required:
+- name
+- namespace
+- joomla.volumeSize
+- enablePublicServiceAndIngress
+- metrics.enabled
