@@ -21,7 +21,7 @@ spec:
           'until pg_isready -h {{ .Release.Name }}-postgresql-service -p 5432;
           do echo waiting for database; sleep 2; done;']
       - name: increase-max-map-count
-        image: gcr.io/google-appengine/debian9
+        image: {{ .Values.deployer.image }}
         command:
         - /bin/bash
         - -c
