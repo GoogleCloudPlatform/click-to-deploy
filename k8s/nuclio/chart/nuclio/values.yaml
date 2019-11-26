@@ -1,0 +1,18 @@
+dashboard:
+  replicas: 1
+  serviceAccountName: null
+  image:
+    repository: null
+    tag: null
+
+controller:
+  serviceAccountName: null
+  image:
+    repository: null
+    tag: null
+
+registry:
+  pushPullUrl: null
+
+deployerHelm:
+  image: null
