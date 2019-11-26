@@ -1,0 +1,73 @@
+actions:
+- name: Nuctl smoke test
+  bashTest:
+    script: /usr/bin/nuctl version
+    expect:
+      exitCode:
+        equals: 0
+- name: Test nuclio build
+  bashTest:
+    script: |
+      REGISTRY_IP=$(host registry-service.${NAMESPACE}.svc.cluster.local | cut -d" " -f 4);
+      nuctl build hello-world \
+            --path /helloworld.py \
+            --registry ${REGISTRY_IP}:5000 \
+            --namespace ${NAMESPACE}
+    expect:
+      exitCode:
+        equals: 0
+- name: Test nuclio deploy
+  bashTest:
+    script: |
+      export NAMESPACE;
+      timeout --preserve-status 180 bash -c '
+      REGISTRY_IP=$(host registry-service.${NAMESPACE}.svc.cluster.local | cut -d" " -f 4);
+      nuctl deploy hello-world-${NAMESPACE} \
+            --run-image ${REGISTRY_IP}:5000/nuclio/processor-hello-world:latest \
+            --runtime python:3.6 \
+            --handler helloworld:handler \
+            --namespace ${NAMESPACE} \
+            --platform kube \
+            --readiness-timeout 90'
+    expect:
+      exitCode:
+        equals: 0
+- name: Try to get IP of nuclio service
+  bashTest:
+    script: |
+      export NAMESPACE;
+      timeout 120 bash -c '
+        until (host hello-world-${NAMESPACE}.${NAMESPACE}.svc.cluster.local \
+              | grep "has address");
+          do sleep 2;
+        done'
+    expect:
+      exitCode:
+        equals: 0
+- name: Try to connect to nuclio service
+  bashTest:
+    script: |
+      export NAMESPACE;
+      timeout 120 bash -c '
+        until nc -vzw 5 hello-world-${NAMESPACE}.${NAMESPACE}.svc.cluster.local 8080;
+          do sleep 2;
+        done'
+    expect:
+      exitCode:
+        equals: 0
+- name: Try to use nuclio service
+  bashTest:
+    script: |
+      curl --retry 3 --retry-connrefused --retry-max-time 60 \
+           hello-world-${NAMESPACE}.${NAMESPACE}.svc.cluster.local:8080
+    expect:
+      stdout:
+        matches: 'Hello, from nuclio'
+      exitCode:
+        equals: 0
+- name: Delete test nuclio deploy
+  bashTest:
+    script: nuctl delete function hello-world-${NAMESPACE} --namespace ${NAMESPACE}
+    expect:
+      exitCode:
+        equals: 0
