@@ -34,7 +34,7 @@ x-google-marketplace:
           type: REQUIRE_ONE_NODE_PER_REPLICA
           minimumNodeCount: 1
     istio:
-      type: SUPPORTED
+      type: OPTIONAL
 properties:
   name:
     type: string
