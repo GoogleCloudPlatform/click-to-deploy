@@ -1,0 +1,41 @@
+actions:
+
+- name: Check MySQL /metrics HTTP endpoint
+  bashTest:
+    script: curl -f "http://${APP_INSTANCE_NAME}-mysqld-exporter-svc:9104/metrics"
+    expect:
+      stdout:
+        matches: '(?m)^mysql_up 1$'
+      exitCode:
+        equals: 0
+
+# Some of metrics are exposed even if the exporter doesn't have access to the MySQL server statistics.
+# This test verify that access is granted.
+- name: MySQL Exporter can collect MySQL server metrics
+  bashTest:
+    script: curl -f "http://${APP_INSTANCE_NAME}-mysqld-exporter-svc:9104/metrics"
+    expect:
+      stdout:
+        matches: '(?m)^# TYPE mysql_version_info gauge$'
+      exitCode:
+        equals: 0
+
+- name: Check Apache /metrics endpoint
+  bashTest:
+    script: curl -f "http://${APP_INSTANCE_NAME}-apache-exporter-svc:9117/metrics"
+    expect:
+      stdout:
+        matches: '(?m)^apache_up 1$'
+      exitCode:
+        equals: 0
+
+# Some of metrics are exposed even if the exporter doesn't have access to the server statistics.
+# This test verify that access is granted.
+- name: Apache Exporter can collect Apache server metrics
+  bashTest:
+    script: curl -f "http://${APP_INSTANCE_NAME}-apache-exporter-svc:9117/metrics"
+    expect:
+      stdout:
+        matches: '(?m)^# TYPE apache_cpuload gauge$'
+      exitCode:
+        equals: 0
