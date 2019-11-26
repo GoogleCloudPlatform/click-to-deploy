@@ -108,5 +108,3 @@ required:
 - name
 - namespace
 - dashboard.replicas
-- registry.pushPullUrl
-- registry.secretName
