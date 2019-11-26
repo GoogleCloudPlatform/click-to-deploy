@@ -54,7 +54,7 @@ properties:
     type: string
     default: null
     title: Registry push and pull URL
-    description: This URL will be used for storing images which have been built by Nuclio. In case you are using GCR registry, be careful, because login URL is different from the push/pull URL, example: gcr.io/[PROJECT_ID]/nuclio-images
+    description: "This URL will be used for storing images which have been built by Nuclio. In case you are using GCR registry, be careful, because login URL is different from the push/pull URL, example: gcr.io/[PROJECT_ID]/nuclio-images"
   registry.secretName:
     type: string
     default: null
