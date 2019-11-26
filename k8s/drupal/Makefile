@@ -14,7 +14,7 @@ METRICS_EXPORTER_TAG ?= v0.5.1
 VERIFY_WAIT_TIMEOUT = 1800
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
-IMAGE_DRUPAL ?= $(SOURCE_REGISTRY)/drupal8:$(TRACK)
+IMAGE_DRUPAL ?= $(SOURCE_REGISTRY)/drupal8-php7-apache:$(TRACK)
 IMAGE_MARIADB ?= $(SOURCE_REGISTRY)/mariadb10:latest
 IMAGE_APACHE_EXPORTER ?= $(SOURCE_REGISTRY)/wordpress/apache-exporter:latest
 IMAGE_MYSQL_EXPORTER ?= $(SOURCE_REGISTRY)/wordpress/mysqld-exporter:latest
