@@ -1,0 +1,34 @@
+drupal:
+  image:
+    repo: null
+    tag: null
+  user: admin
+  email: noreply@example.com
+  password: null
+  volumeSize: 8Gi
+
+db:
+  image: null
+  rootPassword: null
+  drupalUser: drupal
+  drupalPassword: null
+
+  # The image and credentials for mysqld_exporter component.
+  exporter:
+    image: null
+    user: mysqld-exporter
+    password: null
+
+enablePublicServiceAndIngress: false
+
+apache:
+  exporter:
+    image: null
+
+metrics:
+  image: null
+  enabled: false
+
+tls:
+  base64EncodedPrivateKey: null
+  base64EncodedCertificate: null
