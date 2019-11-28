@@ -2,11 +2,11 @@
 
 Joomla! is content management software used to create websites and blogs.
 
-For more information see the Joomla! [official website](https://joomla.org/).
+For more information, visit the Joomla! [official website](https://joomla.org/).
 
 ## About Google Click to Deploy
 
-Popular open stacks on Kubernetes packaged by Google.
+Popular open stacks on Kubernetes, packaged by Google.
 
 ## Architecture
 
@@ -33,15 +33,15 @@ as a Pod, using a Kubernetes StatefulSet.
 MariaDB credentials are stored in the `[APP_INSTANCE_NAME]-mariadb-secret`
 Secret resource.
 
-*   The password for the MariaDB `root` user is stored in the `root-password` secret.
-*   The username and password to access the `joomla` database are stored in
-    `joomla-user` and `joomla-password` secrets respectively.
+*   The password for the MariaDB `root` user is stored in the `root-password` Secret.
+*   The username and password required to access the `joomla` database are stored in
+    the `joomla-user` and `joomla-password` Secrets, respectively.
 
 The credentials for Joomla! are stored in the
 `[APP_INSTANCE_NAME]-joomla-secret` Secret resource.
 
-*   The username and password to access the administrator panel
-    are stored in `joomla-user` and `joomla-password` secrets respectively.
+*   The username and password required to access the administrator panel
+    are stored in the `joomla-user` and `joomla-password` Secrets, respectively.
 
 # Installation
 
@@ -121,7 +121,7 @@ You need to run this command once.
 
 The Application resource is defined by the
 [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps)
-community. The source code can be found on
+community. Its source code can be found at
 [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
 
 ### Install the Application
@@ -142,22 +142,22 @@ export APP_INSTANCE_NAME=joomla-1
 export NAMESPACE=default
 ```
 
-Expose the Service externally and configure Ingress:
-
-By default, the Service isn't exposed externally. To enable this option, change
-the value to `true`.
+Expose the Service externally, and configure Ingress:
 
 ```shell
 export PUBLIC_SERVICE_AND_INGRESS_ENABLED=false
 ```
+
+By default, the Service isn't exposed externally. To enable this option, change
+the value to `true`.
 
 Enable Stackdriver Metrics Exporter:
 
 > **NOTE:** Your GCP project must have Stackdriver enabled. If you are using a
 > non-GCP cluster, you cannot export metrics to Stackdriver.
 
-By default, the application does not export metrics to Stackdriver. To enable
-this option, change the value to `true`.
+By default, the app does not export metrics to Stackdriver. To enable this
+option, change the value to `true`.
 
 ```shell
 export METRICS_ENABLED=false
@@ -285,7 +285,7 @@ To view the app, open the URL in your browser.
 
 ### Open your Joomla! site
 
-Get the external IP of your Joomla! site using the following command:
+To get the external IP of your Joomla! site, use the following command:
 
 ```shell
 SERVICE_IP=$(kubectl get ingress $APP_INSTANCE_NAME-joomla-ingress \
@@ -301,7 +301,7 @@ The output shows you the URL of your site.
 
 ## Prometheus metrics
 
-The application can be configured to expose its metrics through the
+The app can be configured to expose its metrics through the
 [MySQL Server Exporter](https://github.com/GoogleCloudPlatform/mysql-docker/tree/master/exporter)
 and the
 [Apache Exporter](https://github.com/GoogleCloudPlatform/joomla-docker/tree/master/exporter)
@@ -351,38 +351,41 @@ container. If you enabled the option to export metrics to Stackdriver, the
 metrics are automatically exported to Stackdriver and visible in
 [Stackdriver Metrics Explorer](https://cloud.google.com/monitoring/charts/metrics-explorer).
 
-The name of each metric starts with the component's name (`mariadb` for MariaDB and `apache-joomla` for joomla).
-Metrics are labeled with `app.kubernetes.io/name` consisting of application's name,
-which you define in the `APP_INSTANCE_NAME` environment variable.
+The name of each metric starts with the component's name (`mariadb` for MariaDB and
+`apache-joomla` for joomla). Metrics are labeled with `app.kubernetes.io/name`,
+which includes the app's name, which you define in the `APP_INSTANCE_NAME` environment
+variable.
 
-The exporting option might not be available for GKE on-prem clusters.
+The export option may not be available for GKE on-prem clusters.
 
 > Note: Stackdriver has [quotas](https://cloud.google.com/monitoring/quotas) for
 > the number of custom metrics created in a single GCP project. If the quota is
 > met, additional metrics might not show up in the Stackdriver Metrics Explorer.
 
-You can remove existing metric descriptors using
+You can remove existing metric descriptors by using
 [Stackdriver's REST API](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors/delete).
 
 # Scaling
 
-This is a single-instance version of Joomla!. It is not intended to be scaled
-up with the current configuration.
+This is a single-instance version of Joomla!. Its current configuration is not
+intended to be scaled up.
 
 # Backup and restore
 
 ## Using Joomla! extension
 
-The [official documentation](https://docs.joomla.org/Backup_Basics_for_a_Joomla!_Web_Site) recommeds to use Akeeba Backup as a common backup and restore method.
+The [official documentation](https://docs.joomla.org/Backup_Basics_for_a_Joomla!_Web_Site)
+recommends that you use Akeeba Backup to backup and restore.
 
 ## Backup from the server
 
 Backing up data directly from the server gives you full control over the
-schedule and scope of backup, but is recommended for advanced users.
+schedule and scope of your backups, but it's recommended for advanced users.
 
-The steps below are for backing up the Joomla! database and all installation
-files, including media content, themes and plugins. We recommend that you store
-the data outside your cluster, for example, in cloud-based storage.
+The steps below describe how to back up the Joomla! database and all
+installation files, including media content, themes, and plugins. We
+recommend that you store the data outside your cluster - for example, in
+cloud-based storage.
 
 ### Set up your local environment
 
@@ -396,7 +399,7 @@ export NAMESPACE=default
 ### Establish the MariaDB connection
 
 To backup and restore the Joomla! database, you must connect to the MariaDB host and port.
-Using a separate terminal, create a local proxy using the following `kubectl`
+In a separate terminal, create a local proxy by using the following `kubectl`
 command:
 
 ```shell
@@ -406,13 +409,13 @@ kubectl port-forward "svc/${APP_INSTANCE_NAME}-mariadb-svc" 3306 --namespace "${
 ### Create the backup
 
 To create the backup, you need the `mariadb-client` package. To install the
-package, on Debian-based distributions, run:
+package, on Debian-based distributions, run the following command:
 
 ```shell
 sudo apt-get install mariadb-client
 ```
 
-To create the backup, run the following command:
+To create the backup, run this command:
 
 ```shell
 backup_time="$(date +%Y%m%d-%H%M%S)"
@@ -425,8 +428,8 @@ scripts/backup.sh --app $APP_INSTANCE_NAME --namespace $NAMESPACE \
 
 ### Secure your backup files
 
-We recommend that you store your backup files outside your Kubernetes cluster,
-for instance in a Google Cloud Storage bucket. Read the
+We recommend that you store your backup files outside of your Kubernetes cluster,
+such as in a Google Cloud Storage bucket. Read the
 [Cloud Storage documentation](https://cloud.google.com/storage/docs/creating-buckets)
 to learn more about creating buckets, setting permissions, and uploading files.
 
@@ -436,9 +439,10 @@ Before restoring, configure your local environment with the `APP_INSTANCE_NAME`
 and `NAMESPACE` environment variables for your Joomla! cluster, and create a
 MySQL connection.
 
-### Restore Joomla! database and files from backup
+### Restore the Joomla! database and files from a backup
 
-Run the script:
+To restore the Joomla! database and files from a backup, run the following
+script:
 
 ```shell
 # Required: --app, --namespace and --backup-file.
@@ -447,20 +451,23 @@ scripts/restore.sh --app $APP_INSTANCE_NAME --namespace $NAMESPACE \
   --mysql-host 127.0.0.1 --mysql-port 3306
 ```
 
-The script first creates a backup of the current database and file system, and
-then restores the database and file system from the backup file that you
-selected.
+The script first creates a backup of the current database and file system,
+and then restores the database and file system from a backup file that you
+select.
 
-# Upgrade the Application
+# Upgrade the app
 
 ## Prepare the environment
 
-To update Joomla! please follow the [official documentation](https://docs.joomla.org/J3.x:Updating_from_an_existing_version)
+For detailed instructions on how to update Joomla!, visit the
+[official documentation](https://docs.joomla.org/J3.x:Updating_from_an_existing_version).
 
-Steps bellow explain the upgrade procedure the docker images only (apache, debian, mariadb). It won't upgrade your Joomla! version.
+The steps below explain how to upgrade the Docker images only (Apache,
+Debian, MariaDB). They do not describe how to upgrade your Joomla!
+version.
 
-Before upgrading, we recommend that you backup your Joomla! application
-using the [backup step](#create-the-backup).
+Before upgrading, we recommend that you backup your Joomla! app, as
+described in the [backup step](#create-the-backup).
 
 > Note that during the upgrade, your Joomla! site will be unavailable.
 
@@ -473,30 +480,30 @@ export NAMESPACE=default
 
 ## Upgrade Joomla!
 
-Start with assigning a new image to your StatefulSet definition:
+Start by assigning a new image to your StatefulSet definition:
 
 ```shell
 kubectl set image statefulset "$APP_INSTANCE_NAME-joomla" \
   --namespace "$NAMESPACE" joomla=[NEW_IMAGE_REFERENCE]
 ```
 
-Where `[NEW_IMAGE_REFERENCE]` is the new image.
+where `[NEW_IMAGE_REFERENCE]` is the new image.
 
-To check that the Pods in the StatefulSet running the `joomla` container are
-updating, run the following command:
+To check that the Pods in the StatefulSet which are running the
+`joomla` container are updating, run the following command:
 
 ```shell
 kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace "$NAMESPACE" -w
 ```
 
-The StatefulSet controller terminates each Pod, and waits for it to transition
-to `Running` and `Ready` prior to updating the next Pod.
+The StatefulSet controller terminates each Pod, and waits for it to
+transition to `Running` and `Ready` before updating the next Pod.
 
-The final state of the Pods should be `Running` and marked as `1/1` in **READY**
-column.
+The final state of the Pods should be: `Running`, and with a value
+of `1/1` in their **READY** column.
 
-To verify the current image used for a `joomla` container, run the following
-command:
+To verify which is the current image being used for a `joomla`
+container, run the following command:
 
 ```shell
 kubectl get statefulsets "$APP_INSTANCE_NAME-joomla" \
@@ -506,27 +513,28 @@ kubectl get statefulsets "$APP_INSTANCE_NAME-joomla" \
 
 ## Upgrade MariaDB
 
-The upgrade process is the same - just replace `joomla` with `mariadb`.
+The upgrade process is the same as the Joomla! upgrade process - just
+replace `joomla` with `mariadb`.
 
 ## Update TLS certificate for Joomla!
 
-If you want to update the certificate that the application uses, copy the new
-certificate and key pair in to the `/tmp/tls.crt`, and `/tmp/tls.key` files, and
-execute the following command:
+If you want to update the certificate that the app uses, copy the new
+certificate and key pair in to the `/tmp/tls.crt` and `/tmp/tls.key`
+files. Then, execute the following command:
 
 ```shell
 kubectl --namespace $NAMESPACE create secret tls $APP_INSTANCE_NAME-tls \
   --cert=/tmp/tls.crt --key=/tmp/tls.key --dry-run -o yaml | kubectl apply -f -
 ```
 
-# Uninstall the Application
+# Uninstall the app
 
-## Using the Google Cloud Platform Console
+## Using the Google Cloud Console
 
-1.  In the GCP Console, open
+1.  In the Cloud Console, open
     [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
 
-2.  From the list of applications, click **Joomla!**.
+2.  From the list of apps, click **Joomla!**.
 
 3.  On the Application Details page, click **Delete**.
 
@@ -544,8 +552,8 @@ export NAMESPACE=default
 ### Delete the resources
 
 > **NOTE:** We recommend using a `kubectl` version that is the same as the
-> version of your cluster. Using the same versions of `kubectl` and the cluster
-> helps avoid unforeseen issues.
+> version of your cluster. Using the same version for `kubectl` and the
+> cluster helps to avoid unforeseen issues.
 
 To delete the resources, use the expanded manifest file used for the
 installation.
@@ -556,7 +564,8 @@ Run `kubectl` on the expanded manifest file:
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 ```
 
-If you don't have the expanded manifest, delete the resources using types and a label:
+If you don't have the expanded manifest, delete the resources by using types
+and a label:
 
 ```shell
 kubectl delete application,statefulset,secret,service \
@@ -574,7 +583,7 @@ To remove the PersistentVolumeClaims with their attached persistent disks, run
 the following `kubectl` commands:
 
 ```shell
-# specify the variables values matching your installation:
+# specify the variable values matching your installation:
 export APP_INSTANCE_NAME=joomla-1
 export NAMESPACE=default
 
