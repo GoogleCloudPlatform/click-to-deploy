@@ -17,9 +17,9 @@ x-google-marketplace:
   images:
     '':
       properties:
-        joomla.image.repo:
+        drupal.image.repo:
           type: REPO_WITH_REGISTRY
-        joomla.image.tag:
+        drupal.image.tag:
           type: TAG
     mariadb:
       properties:
@@ -48,54 +48,55 @@ properties:
     x-google-marketplace:
       type: NAMESPACE
 
-  joomla.volumeSize:
-    type: integer
-    title: Storage size for Joomla!
-    description: The storage size (GB) for the Joomla! persistent volume
-    default: 6
+  drupal.volumeSize:
+    type: string
+    title: Storage size for persistent volumes
+    default: "8Gi"
+    description: Drupal storage size
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
 
-  joomla.password:
+  drupal.password:
     type: string
     x-google-marketplace:
       type: GENERATED_PASSWORD
       generatedPassword:
-        length: 16
+        length: 10
         includeSymbols: False
-        base64: True
+        base64: False
   db.rootPassword:
     type: string
     x-google-marketplace:
       type: GENERATED_PASSWORD
       generatedPassword:
-        length: 16
+        length: 10
         includeSymbols: False
-        base64: True
-  db.joomlaPassword:
+        base64: False
+  db.drupalPassword:
     type: string
     x-google-marketplace:
       type: GENERATED_PASSWORD
       generatedPassword:
-        length: 16
+        length: 10
         includeSymbols: False
-        base64: True
+        base64: False
   db.exporter.password:
     type: string
     x-google-marketplace:
       type: GENERATED_PASSWORD
       generatedPassword:
-        length: 16
+        length: 10
         includeSymbols: False
-        base64: True
+        base64: False
 
   enablePublicServiceAndIngress:
     type: boolean
     title: Enable public IP access
-    description: Set the Joomla! Service type to NodePort and enable Ingress
+    description: Set the Drupal Service type to NodePort and enable Ingress
     default: false
   metrics.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
-    description: Your project must have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not yet supported.
+    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
     default: false
   certificate:
     type: string
@@ -109,6 +110,6 @@ properties:
 required:
 - name
 - namespace
-- joomla.volumeSize
+- drupal.volumeSize
 - enablePublicServiceAndIngress
 - metrics.enabled

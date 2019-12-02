@@ -1,0 +1,83 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "{{ .Release.Name }}"
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64, {{ .Files.Get "logo.png" | b64enc }} {{/* Get logo.png from the root of chart */}}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": {{ .Chart.Name | quote }}, "partner_name": "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+spec:
+  descriptor:
+    type: Nuclio
+    version: {{ .Values.controller.image.tag | quote }}
+    description: |-
+      Nuclio is a new "serverless" project, derived from Iguazio's elastic data
+      life-cycle management service for high-performance events and data processing.
+
+      Nuclio allows to write a source code of functions defined in a platform-specific
+      convention (including the triggers configuration or stateful data definition).
+      Nuclio manages the conversion of the source code into container images (stored
+      in a configurable Docker registry - for this application Google Container
+      Registry) and deploying their workloads to a Kubernetes cluster.
+
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/nuclio/).
+      Additional community support is available on [community forums](https://nuclio.io/#!/community).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy Nuclio'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/nuclio/README.md
+    - description: 'Official documentation for Nuclio'
+      url: https://nuclio.io/docs/
+    notes: |-
+      # Get access to the Nuclio Dashboard
+
+      Run the following command to start port forwarding:
+      ```shell
+      kubectl --namespace {{ .Release.Namespace }} port-forward \
+          service/{{ .Release.Name }}-dashboard 8070:8070
+      ```
+
+      # Get access to the Nuclio using `nuctl`
+
+      `nuctl` provided by nuclio authors and can be downloaded from the [official github release page](https://github.com/nuclio/nuclio/releases)
+
+      `nuctl` will be used the same credentials as is for access kubernetes cluster using kubectl.
+
+      Example for usage `nuctl` for list nuclio functions
+
+      ```shelll
+      nuctl --namespace {{ .Release.Namespace }} get function
+      ```
+
+  info:
+  - name: Nuclio Dashboard Service
+    type: Reference
+    valueFrom:
+      serviceRef:
+        name: {{ template "nuclio.dashboardName" . }}
+  - name: Nuclio Dashboard URL for port forwarding
+    value: http://localhost:8070/
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "{{ .Release.Name }}"
+  componentKinds:
+  - group: apps/v1beta1
+    kind: Deployment
+  - group: v1
+    kind: Service
+  - group: v1
+    kind: ConfigMap
+  - group: v1
+    kind: ServiceAccount
+  - group: v1
+    kind: Job
+  - group: v1
+    kind: Pod
+  - group: v1
+    kind: Secret
