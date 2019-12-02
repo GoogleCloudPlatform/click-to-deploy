@@ -70,6 +70,7 @@ app/build:: .build/$(CHART_NAME)/VERSION \
 	docker build \
 		--build-arg REGISTRY="$(REGISTRY)/$(APP_ID)" \
 		--build-arg TAG="$(RELEASE)" \
+		--build-arg CHART_NAME="$(CHART_NAME)" \
 		--build-arg MARKETPLACE_TOOLS_TAG="$(MARKETPLACE_TOOLS_TAG)" \
 		--tag "$(APP_DEPLOYER_IMAGE)" \
 		-f deployer/Dockerfile \
