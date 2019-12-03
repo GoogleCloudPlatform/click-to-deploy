@@ -1,12 +1,11 @@
 # Overview
 
 etcd is a distributed key-value store designed for distributed systems.
-It offers a gRPC API and automatic TLS encryption (with optional client certificate authentication).
+It offers a gRPC API, automatic TLS encryption, and optional client certificate authentication.
 
 etcd uses the Raft consensus algorithm for highly available data replication.
-
-It serves as the backbone of many distributed systems, providing a reliable way for storing data across a cluster of servers.
-It works on a variety of operating systems including here Linux, BSD and OS X.
+It provides a reliable way to store data across a cluster of servers, and it serves as the backbone of many distributed systems.
+It works on a variety of operating systems, including Linux, BSD, and OS X.
 
 For more information about etcd, please refer to the [etcd official repository](https://github.com/etcd-io/etcd) and [Official website](https://etcd.io/).
 
@@ -18,9 +17,9 @@ Popular open stacks on Kubernetes packaged by Google.
 
 ![Architecture diagram](resources/etcd-k8s-app-architecture.png)
 
-A Kubernetes StatefulSet manages all etcd Pods in this application. Each
-Pod runs a single instance of etcd. Each instance of etcd communicates each other with peer port 2380. Connection between cluster members is automatically encrypted with TLS certificates.
-TLS certificates are created and used by each instance of etcd when starting cluster service.
+A Kubernetes StatefulSet manages all of the etcd Pods in this application. Each Pod runs a single instance of etcd, and each instance of etcd communicates with the others by using peer port 2380. Connections between cluster members are automatically encrypted with TLS certificates.
+
+Each instance of etcd generates its own TLS certificate at the time that cluster service is started.
 
 Access to the etcd service is authenticated by default.
 
@@ -28,8 +27,7 @@ Access to the etcd service is authenticated by default.
 
 ## Quick install with Google Cloud Marketplace
 
-Get up and running with a few clicks! Install this etcd app to a
-Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
+Get up and running with a few clicks! Install this etcd app to a Google Kubernetes Engine cluster in Google Cloud Marketplace by following these
 [on-screen instructions](https://console.cloud.google.com/marketplace/details/google/etcd).
 
 ## Command line instructions
@@ -63,7 +61,7 @@ export ZONE=us-west1-a
 gcloud container clusters create "${CLUSTER}" --zone "${ZONE}"
 ```
 
-Configure `kubectl` to connect to the new cluster.
+Configure `kubectl` to connect to the new cluster:
 
 ```shell
 gcloud container clusters get-credentials "${CLUSTER}" --zone "${ZONE}"
@@ -71,7 +69,7 @@ gcloud container clusters get-credentials "${CLUSTER}" --zone "${ZONE}"
 
 #### Clone this repo
 
-Clone this repo and the associated tools repo:
+Clone this repo, as well as the associated tools repo:
 
 ```shell
 git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
@@ -139,7 +137,7 @@ The images above are referenced by
 that you pin each image to an immutable
 [content digest](https://docs.docker.com/registry/spec/api/#content-digests).
 This ensures that the installed application always uses the same images,
-until you are ready to upgrade. To get the digest for the image, use the
+until you are ready to upgrade. To get the digest of an image, use the
 following script:
 
 ```shell
@@ -151,10 +149,12 @@ for i in "IMAGE_ETCD" "IMAGE_METRICS_EXPORTER"; do
 done
 ```
 
-You can set your existing StorageClass name or use existing "default" StorageClass for persistence disk provisioning for etcd servers.
-Set StorageClass name for persistence disk and its size. Default disk size is "1Gi".
-> Note: For etcd "ssd" type storage is recommended, as it uses local disk to store and get key/value.
-> To create a StorageClass for dynamic provisioning of SSD persistent volumes, you can check this [official documentation](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/ssd-pd).
+For the persistent disk provisioning of the etcd servers, you will need to:
+
+ * Set the StorageClass name. You can select your existing StorageClass name, or use the "default" StorageClass, for persistent disk provisioning for etcd servers.
+ * Set the persistent disk's size. The default disk size is "1Gi".
+> Note: "ssd" type storage is recommended for etcd, as it uses local disk to store and retrieve keys and values.
+> To create a StorageClass for dynamic provisioning of SSD persistent volumes, check out [this documentation](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/ssd-pd) for more detailed instructions.
 ```shell
 export ETCD_STORAGE_CLASS="ssd-storageclass" # If you don't set this value, default StorageClass will be used
 export PERSISTENT_DISK_SIZE="1Gi"
@@ -219,17 +219,17 @@ To view the app, open the URL in your browser.
 
 ### Access etcd (internally)
 
-You can connect to etcd without exposing it to public access, using the `etcdctl` command line interface.
+You can connect to etcd without exposing it to public access by using the `etcdctl` command line interface.
 
 #### Connect to etcd via Pod
 
-To do this, please identify etcd's pods using the following command:
+To do this, please identify etcd's Pods by using the following command:
 
 ```shell
 kubectl get pods -o wide -l app.kubernetes.io/name=${APP_INSTANCE_NAME} --namespace "${NAMESPACE}"
 ```
 
-Now, you can access etcd and list users
+You can then access etcd, and list its users:
 
 ```shell
 # Get etcd root user password from secret object
@@ -239,13 +239,14 @@ kubectl exec -it "${APP_INSTANCE_NAME}-etcd-0" --namespace "${NAMESPACE}" -- etc
 ```
 
 #### Interact with etcd service using port-forwarding
-To connect to etcd service from your machine, install latest release of etcd binaries. For installation of etcd binaries, visit [official etcd documentation](https://github.com/etcd-io/etcd/releases).
 
-Forward etcd service client port to your machine using below command:
+To connect to the etcd service from your machine, install the latest release of the [etcd binaries](https://github.com/etcd-io/etcd/releases).
+
+Forward the etcd service client port to your machine by using the following command:
 ```shell
 kubectl port-forward svc/${APP_INSTANCE_NAME}-etcd --namespace "${NAMESPACE}" 2379
 ```
-Then run below commands in other terminal:
+Then, in another terminal window, run the following commands:
 ```shell
 # Get etcd root user password
 ETCD_ROOT_PASSWORD=$(kubectl get secret --namespace "${NAMESPACE}" ${APP_INSTANCE_NAME}-etcd -o jsonpath="{.data.etcd-root-password}" | base64 --decode)
@@ -271,8 +272,8 @@ kubectl patch svc "${APP_INSTANCE_NAME}-etcd" \
 ```
 > **NOTE:** It might take some time for the external IP to be provisioned.
 
-#### Connect to etcd service through external ip address
-If you run your etcd cluster behind a LoadBalancer, you can get the external IP of etcd service using the following command:
+#### Connect to etcd service through external IP address
+If you run your etcd cluster behind a LoadBalancer, you can get the external IP of the etcd service by using the following command:
 ```shell
 EXTERNAL_IP=$(kubectl get svc ${APP_INSTANCE_NAME}-etcd \
   --namespace ${NAMESPACE} \
@@ -288,7 +289,7 @@ ETCDCTL_API=3 etcdctl --user root:${ETCD_ROOT_PASSWORD} --endpoints=http://${EXT
 # Application metrics
 Each etcd server exports metrics under the `/metrics` path on its client port.
 
-For example, to access the metrics locally via `curl`, run the following commands:
+For example, you can access the metrics locally via `curl` by running the following commands:
 ```shell
 # Forward client port to local workstation
 kubectl port-forward "svc/${APP_INSTANCE_NAME}-etcd" 2379 --namespace "${NAMESPACE}"
@@ -298,8 +299,8 @@ curl -L http://localhost:2379/metrics | grep -v debugging # ignore unstable debu
 ```
 ### Configuring Prometheus to collect the metrics
 
-Prometheus can be configured to automatically collect the application's metrics.
-Follow the steps in
+Prometheus can be configured to automatically collect your application's metrics.
+To set this up, follow the steps in
 [Configuring Prometheus](https://prometheus.io/docs/introduction/first_steps/#configuring-prometheus).
 
 You configure the metrics in the
@@ -307,12 +308,11 @@ You configure the metrics in the
 
 ## Exporting metrics to Stackdriver
 
-Application includes an option to inject [Prometheus to Stackdriver (`prometheus-to-sd`)](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd) sidecar to each etcd pod to export `/metrics` to Stackdriver.
+Application includes an option to inject a [Prometheus to Stackdriver (`prometheus-to-sd`)](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd) sidecar to each etcd Pod to export `/metrics` to Stackdriver.
 If you enabled the option (`export METRICS_EXPORTER_ENABLED=true`) for exporting metrics to Stackdriver, the
-metrics are automatically exported to Stackdriver and visible in [Stackdriver Metrics Explorer](https://cloud.google.com/monitoring/charts/metrics-explorer).
+metrics are automatically exported to Stackdriver, and visible in [Stackdriver Metrics Explorer](https://cloud.google.com/monitoring/charts/metrics-explorer).
 
-Metrics are labeled with `app.kubernetes.io/name` consisting of application's name,
-which you define in the `APP_INSTANCE_NAME` environment variable.
+Metrics are labeled as `app.kubernetes.io/name`, with `name` substituted for the name of your application, as defined in the `APP_INSTANCE_NAME` environment variable.
 
 The exporting option might not be available for GKE on-prem clusters.
 
@@ -320,26 +320,25 @@ The exporting option might not be available for GKE on-prem clusters.
 > the number of custom metrics created in a single GCP project. If the quota is
 > met, additional metrics might not show up in the Stackdriver Metrics Explorer.
 
-You can remove existing metric descriptors using
+You can remove existing metric descriptors by using
 [Stackdriver's REST API](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors/delete).
 
 ### Scaling
 #### Scaling the cluster up or down
-> **NOTE:** etcd cluster is not recommended to be scaled up or down. Recommended number of replicas for etcd cluster is 3 or 5.
+> **NOTE:** etcd clusters are not recommended to be scaled up or down. The recommended number of replicas for an etcd cluster is 3 or 5.
 > A reasonable scaling is to upgrade a 3-member cluster to 5-member cluster.
-> More information can be found on [Official Kubernetes Documentation](https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/#scaling-up-etcd-clusters).
+> More information can be found in the [official Kubernetes Documentation](https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/#scaling-up-etcd-clusters).
 
-By default etcd cluster is deployed with 3 replicas. To change the number of replicas, use the following command.
+By default, etcd cluster is deployed with 3 replicas. To change the number of replicas, use the following command, where `REPLICAS` is desired number of replicas:
 
 ```shell
 export REPLICAS=5
 kubectl scale statefulsets "${APP_INSTANCE_NAME}-etcd" \
   --namespace "${NAMESPACE}" --replicas=$REPLICAS
 ```
-Where `REPLICAS` is desired number of replicas.
 
-In case of scaling down this option reduces the number of replicas without disconnecting nodes from the cluster.
-Scaling down will also leave `persistentvolumeclaims` of your StatefulSet untouched.
+In the case of scaling down, this option reduces the number of replicas without disconnecting nodes from the cluster.
+Scaling down will also leave the `persistentvolumeclaims` of your StatefulSet untouched.
 
 
 ### Backup
@@ -355,11 +354,11 @@ kubectl cp ${APP_INSTANCE_NAME}-etcd-0:etcd-snapshot.db .
 ```
 
 ### Upgrading
-> **NOTE:** Before upgrading, we recommend that you back up your etcd cluster database, using the [backup step]().
+> **NOTE:** Before upgrading, we recommend that you back up your etcd cluster database.
 > For required compatibilities between etcd versions and additional information about upgrades, see the [official etcd documentation](https://github.com/etcd-io/etcd/blob/master/Documentation/upgrades/upgrading-etcd.md).
 
 The etcd StatefulSet is configured to roll out updates automatically.
-Start the update by patching the StatefulSet with a new image reference:
+To start an update, patch the StatefulSet with a new image reference:
 ```shell
 kubectl set image statefulset ${APP_INSTANCE_NAME}-etcd --namespace ${NAMESPACE} \
   "etcd=[NEW_IMAGE_REFERENCE]"
@@ -380,7 +379,7 @@ kubectl get pods --selector app.kubernetes.io/name=${APP_INSTANCE_NAME} \
 
 1. In the GCP Console, open [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
 
-1. From the list of applications, click **etcd**.
+1. Click on **etcd** in the list of applications.
 
 1. On the Application Details page, click **Delete**.
 
@@ -397,7 +396,7 @@ export NAMESPACE=default
 
 ### Delete the resources
 
-> **NOTE:** We recommend to use a kubectl version that is the same as the version of your cluster. Using the same versions of kubectl and the cluster helps avoid unforeseen issues.
+> **NOTE:** We recommend that you use a kubectl version that is the same as the version of your cluster. Using the same versions of kubectl and the cluster helps avoid unforeseen issues.
 
 To delete the resources, use the expanded manifest file used for the
 installation.
@@ -418,7 +417,7 @@ kubectl delete application \
 
 ### Delete the persistent volumes of your installation
 
-By design, the removal of StatefulSets in Kubernetes does not remove
+By design, the removal of StatefulSets in Kubernetes does not remove any
 PersistentVolumeClaims that were attached to their Pods. This prevents your
 installations from accidentally deleting stateful data.
 
@@ -438,7 +437,7 @@ kubectl delete persistentvolumeclaims \
 ### Delete the GKE cluster
 
 Optionally, if you don't need the deployed application or the GKE cluster,
-delete the cluster using this command:
+you can use this command to delete the cluster:
 
 ```shell
 gcloud container clusters delete "${CLUSTER}" --zone "${ZONE}"
