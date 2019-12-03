@@ -1,16 +1,16 @@
 # Overview
 
-Drupal is content management software used to create websites.
+Drupal is content management software that is used to create websites.
 
-For more information see the Drupal [official website](https://www.drupal.org/).
+For more information, visit the Drupal [official website](https://www.drupal.org/).
 
 ## About Google Click to Deploy
 
-Popular open stacks on Kubernetes packaged by Google.
+Popular open stacks on Kubernetes, packaged by Google.
 
 ## Architecture
 
-> **NOTE:** The following diagram shows the architecture with the application
+> **NOTE:** The following diagram shows the architecture with the app
 > (optionally) exposed externally, using an Ingress and TLS configuration. The
 > steps to enable the Ingress resource are in the sections below.
 
@@ -34,14 +34,14 @@ MariaDB credentials are stored in the `[APP_INSTANCE_NAME]-mariadb-secret`
 Secret resource.
 
 *   The password for the MariaDB `root` user is stored in the `root-password` secret.
-*   The username and password to access the `drupal` database are stored in
-    `drupal-user` and `drupal-password` secrets respectively.
+*   The username and password required to access the `drupal` database are stored in
+    the `drupal-user` and `drupal-password` Secrets, respectively.
 
 The credentials for Drupal are stored in the
 `[APP_INSTANCE_NAME]-drupal-secret` Secret resource.
 
 *   The username and password to access the administrator panel
-    are stored in `drupal-user` and `drupal-password` secrets respectively.
+    are stored in the `drupal-user` and `drupal-password` Secrets, respectively.
 
 # Installation
 
@@ -63,7 +63,7 @@ workstation to follow the steps below.
 #### Set up command-line tools
 
 You'll need the following tools in your development environment. If you are
-using Cloud Shell, `gcloud`, `kubectl`, Docker, and Git are installed in your
+using Cloud Shell, then `gcloud`, `kubectl`, Docker, and Git are installed in your
 environment by default.
 
 * [gcloud](https://cloud.google.com/sdk/gcloud/)
@@ -99,7 +99,7 @@ gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 
 #### Clone this repo
 
-Clone this repo and the associated tools repo:
+Clone this repo, and the associated tools repo:
 
 ```shell
 git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
@@ -121,10 +121,10 @@ You need to run this command once.
 
 The Application resource is defined by the
 [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps)
-community. The source code can be found on
+community. The source code can be found at
 [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
 
-### Install the Application
+### Install the app
 
 Navigate to the `drupal` directory:
 
@@ -142,21 +142,21 @@ export APP_INSTANCE_NAME=drupal-1
 export NAMESPACE=default
 ```
 
-Expose the Service externally and configure Ingress:
-
-By default, the Service isn't exposed externally. To enable this option, change
-the value to `true`.
+Expose the Service externally, and configure Ingress:
 
 ```shell
 export PUBLIC_SERVICE_AND_INGRESS_ENABLED=false
 ```
+
+By default, the Service isn't exposed externally. To enable this option, change
+the value to `true`.
 
 Enable Stackdriver Metrics Exporter:
 
 > **NOTE:** Your GCP project must have Stackdriver enabled. If you are using a
 > non-GCP cluster, you cannot export metrics to Stackdriver.
 
-By default, the application does not export metrics to Stackdriver. To enable
+By default, the app does not export metrics to Stackdriver. To enable
 this option, change the value to `true`.
 
 ```shell
@@ -178,8 +178,8 @@ The images above are referenced by
 [tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
 that you pin each image to an immutable
 [content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This ensures that the installed application always uses the same images, until
-you are ready to upgrade. To get the digest for the image, use the following
+This ensures that the installed app always uses the same images, until
+you are ready to upgrade. To get the digest for an image, use the following
 script:
 
 ```shell
@@ -210,7 +210,7 @@ export DRUPAL_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 10 | he
 > Note: You can skip this step if you have not set up external access.
 
 1.  If you already have a certificate that you want to use, copy your
-    certificate and key pair to the `/tmp/tls.crt`, and `/tmp/tls.key` files,
+    certificate and key pair to the `/tmp/tls.crt` and `/tmp/tls.key` files,
     then skip to the next step.
 
     To create a new certificate, run the following command:
@@ -222,7 +222,7 @@ export DRUPAL_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 10 | he
         -subj "/CN=drupal/O=drupal"
     ```
 
-2.  Set `TLS_CERTIFICATE_KEY` and `TLS_CERTIFICATE_CRT` variables:
+2.  Set the `TLS_CERTIFICATE_KEY` and `TLS_CERTIFICATE_CRT` variables:
 
     ```shell
     export TLS_CERTIFICATE_KEY="$(cat /tmp/tls.key | base64)"
@@ -241,7 +241,7 @@ kubectl create namespace "$NAMESPACE"
 #### Expand the manifest template
 
 Use `helm template` to expand the template. We recommend that you save the
-expanded manifest file for future updates to the application.
+expanded manifest file for future updates to the app.
 
 ```shell
 helm template chart/drupal \
@@ -275,7 +275,7 @@ kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 
 #### View the app in the Google Cloud Console
 
-To get the GCP Console URL for your app, run the following command:
+To get the Cloud Console URL for your app, run the following command:
 
 ```shell
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}?project=${PROJECT_ID}"
@@ -306,11 +306,11 @@ echo "https://${SERVICE_IP}/"
 
 The output shows you the URL of your site.
 
-# Application metrics
+# App metrics
 
 ## Prometheus metrics
 
-The application can be configured to expose its metrics through the
+The app can be configured to expose its metrics through the
 [MySQL Server Exporter](https://github.com/GoogleCloudPlatform/mysql-docker/tree/master/exporter)
 and the
 [Apache Exporter](https://github.com/GoogleCloudPlatform/drupal-docker/tree/master/exporter)
@@ -345,8 +345,8 @@ in the
 
 ### Configuring Prometheus to collect the metrics
 
-Prometheus can be configured to automatically collect the application's metrics.
-Follow the steps in
+Prometheus can be configured to automatically collect the app's metrics.
+To set this up, follow the steps in
 [Configuring Prometheus](https://prometheus.io/docs/introduction/first_steps/#configuring-prometheus).
 
 You configure the metrics in the
@@ -360,11 +360,11 @@ container. If you enabled the option to export metrics to Stackdriver, the
 metrics are automatically exported to Stackdriver and visible in
 [Stackdriver Metrics Explorer](https://cloud.google.com/monitoring/charts/metrics-explorer).
 
-The name of each metric starts with the component's name (`mariadb` for MariaDB and `apache-drupal` for drupal).
-Metrics are labeled with `app.kubernetes.io/name` consisting of application's name,
-which you define in the `APP_INSTANCE_NAME` environment variable.
+The name of each metric starts with the component's name (`mariadb` for MariaDB and `apache-drupal` for Drupal).
+Metrics are labeled with `app.kubernetes.io/name`, which inclues the app's name,
+as defined in the `APP_INSTANCE_NAME` environment variable.
 
-The exporting option might not be available for GKE on-prem clusters.
+The export option may not be available for GKE on-prem clusters.
 
 > Note: Stackdriver has [quotas](https://cloud.google.com/monitoring/quotas) for
 > the number of custom metrics created in a single GCP project. If the quota is
@@ -376,24 +376,24 @@ You can remove existing metric descriptors using
 # Scaling
 
 This is a single-instance version of Drupal. It is not intended to be scaled
-up with the current configuration.
+up with its current configuration.
 
 # Backup and restore
 
-## Using Drupal module
+## Using the Drupal module
 
 Drupal provides a dedicated module called the [Backup and Migrate module](https://www.drupal.org/project/backup_migrate).
 
-# Upgrade the Application
+# Upgrade the app
 
 ## Prepare the environment
 
-To update Drupal please follow the [official documentation](https://www.drupal.org/docs/8/update)
+To update Drupal, please visit the [official documentation](https://www.drupal.org/docs/8/update)
 
-Steps below explain the upgrade procedure for the docker images only (apache, Debian, MariaDB).
-It won't upgrade your Drupal version.
+The steps below describe the upgrade procedure for the Docker images only (Apache, Debian, MariaDB).
+They do not describe how to upgrade your Drupal version.
 
-Before upgrading, we recommend that you backup your Drupal application
+Before upgrading, we recommend that you backup your Drupal app
 using the [backup step](#create-the-backup).
 
 > Note that during the upgrade, your Drupal site will be unavailable.
@@ -407,14 +407,14 @@ export NAMESPACE=default
 
 ## Upgrade Drupal
 
-Start with assigning a new image to your StatefulSet definition:
+Start by assigning a new image to your StatefulSet definition:
 
 ```shell
 kubectl set image statefulset "$APP_INSTANCE_NAME-drupal" \
   --namespace "$NAMESPACE" drupal=[NEW_IMAGE_REFERENCE]
 ```
 
-Where `[NEW_IMAGE_REFERENCE]` is the new image.
+where `[NEW_IMAGE_REFERENCE]` is the new image.
 
 To check that the Pods in the StatefulSet running the `drupal` container are
 updating, run the following command:
@@ -424,10 +424,10 @@ kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace "$NAME
 ```
 
 The StatefulSet controller terminates each Pod, and waits for it to transition
-to `Running` and `Ready` prior to updating the next Pod.
+to `Running` and `Ready` before updating the next Pod.
 
-The final state of the Pods should be `Running` and marked as `1/1` in **READY**
-column.
+The final state of the Pods should be `Running`, with a value of `1/1` in the
+**READY** column.
 
 To verify the current image used for a `drupal` container, run the following
 command:
@@ -440,12 +440,13 @@ kubectl get statefulsets "$APP_INSTANCE_NAME-drupal" \
 
 ## Upgrade MariaDB
 
-The upgrade process is the same - just replace `drupal` with `mariadb`.
+The upgrade process is the same as the process for updating Drupal - just
+replace `drupal` with `mariadb`.
 
 ## Update TLS certificate for Drupal
 
-If you want to update the certificate that the application uses, copy the new
-certificate and key pair in to the `/tmp/tls.crt`, and `/tmp/tls.key` files, and
+If you want to update the certificate that the app uses, copy the new
+certificate and key pair in to the `/tmp/tls.crt` and `/tmp/tls.key` files, and
 execute the following command:
 
 ```shell
@@ -453,14 +454,14 @@ kubectl --namespace $NAMESPACE create secret tls $APP_INSTANCE_NAME-tls \
   --cert=/tmp/tls.crt --key=/tmp/tls.key --dry-run -o yaml | kubectl apply -f -
 ```
 
-# Uninstall the Application
+# Uninstall the app
 
 ## Using the Google Cloud Platform Console
 
-1.  In the GCP Console, open
+1.  In the Cloud Console, open
     [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
 
-2.  From the list of applications, click **Drupal**.
+2.  From the list of apps, click **Drupal**.
 
 3.  On the Application Details page, click **Delete**.
 
@@ -478,8 +479,8 @@ export NAMESPACE=default
 ### Delete the resources
 
 > **NOTE:** We recommend using a `kubectl` version that is the same as the
-> version of your cluster. Using the same versions of `kubectl` and the cluster
-> helps avoid unforeseen issues.
+> version of your cluster. Using the same version for `kubectl` and the cluster
+> helps to avoid unforeseen issues.
 
 To delete the resources, use the expanded manifest file used for the
 installation.
@@ -490,7 +491,7 @@ Run `kubectl` on the expanded manifest file:
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 ```
 
-If you don't have the expanded manifest, delete the resources using types and a label:
+If you don't have the expanded manifest, delete the resources by using types and a label:
 
 ```shell
 kubectl delete application --namespace $NAMESPACE \
