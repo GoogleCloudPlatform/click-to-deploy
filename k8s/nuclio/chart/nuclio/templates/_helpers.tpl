@@ -34,7 +34,7 @@
     until kubectl get crd nucliofunctionevents.nuclio.io \
                           nucliofunctions.nuclio.io \
                           nuclioprojects.nuclio.io;
-      do echo "Wainting for Nuclio CRDs created"; sleep 5;
+      do echo "Waiting for Nuclio CRDs created"; sleep 5;
     done
   name: wait-for-crds-created
   image: {{ .Values.deployerHelm.image }}

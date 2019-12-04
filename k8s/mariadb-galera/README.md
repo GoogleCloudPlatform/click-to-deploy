@@ -2,9 +2,9 @@
 
 MariaDB is an open source relational database. It is a fork of MySQL.
 
-MariaDB Galera Cluster is a synchronous multi-master cluster for MariaDB. It enables synchronous replication, multi-master topology, the ability to read and write to any cluster node, automatic membership control, the ability to drop failed nodes from the cluster, automatic node joining, true parallel replication, and more.
+MariaDB Galera Cluster is a synchronous multi-master cluster for MariaDB. It enables true parallel replication, multi-master topology, the ability to read and write to any cluster node, or to drop failed nodes from the cluster, automatic membership control and node joining, and more.
 
-For more information on MariaDB, see the [MariaDB official website](https://mariadb.org/).
+For more information on MariaDB, visit the [MariaDB official website](https://mariadb.org/).
 
 ## About Google Click to Deploy
 
@@ -14,15 +14,19 @@ Popular open stacks on Kubernetes, packaged by Google.
 
 ![Architecture diagram](resources/mariadb-galera-k8s-app-architecture.png)
 
-The application offers stateful multi-instance MariaDB with Galera installation on a Kubernetes cluster.
+This app offers a stateful multi-instance installation of MariaDB with Galera on a Kubernetes cluster.
 
-MariaDB server runs in a StatefulSet with 3 replicas by default. The credentials for the administrator account are automatically generated and configured in the application through a Kubernetes Secret. The configuration files for the application (`/etc/mysql/mariadb.conf.d/`) are defined in a ConfigMap and mounted to the MariaDB StatefulSet.
+The MariaDB server runs in a StatefulSet with 3 replicas by default. The credentials for the administrator account are automatically generated and configured in the app, through a Kubernetes Secret. The configuration files for the app (`/etc/mysql/mariadb.conf.d/`) are defined in a ConfigMap, and mounted to the MariaDB StatefulSet.
 
-By default, the Services exposing the MariaDB server are of type ClusterIP, which makes it accessible only in a private network on port 3306.
+By default, the Services exposing the MariaDB server are of type ClusterIP, which makes the server accessible only in a private network on port 3306.
 
-This application is pre-configured with an SSL certificate for internal communication between replicas. Before you make the app available to users, you must replace the pre-configured certificate with a valid certificate of your own.
+This app is pre-configured with an SSL certificate for internal communication between replicas. Before you make the app available to users, you must replace the pre-configured certificate with a valid certificate of your own.
 
 # Installation
+
+## Before you begin
+
+If you are new to selling software on GCP Marketplace, [sign up to become a partner](https://cloud.google.com/marketplace/sell/).
 
 ## Quick install with Google Cloud Marketplace
 
@@ -30,11 +34,11 @@ Get up and running with a few clicks! Install this MariaDB app to a Google Kuber
 
 ## Command line instructions
 
-### Prerequisites
+### Set up your environment
 
-#### Set up command-line tools
+#### Set up command line tools
 
-You'll need the following tools in your development environment. If you are using Cloud Shell, `gcloud`, `kubectl`, Docker, and Git are installed in your environment by default.
+You'll need the following tools in your development environment. If you are using Cloud Shell, then `gcloud`, `kubectl`, Docker, and Git are installed in your environment by default.
 
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
@@ -67,7 +71,7 @@ gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 
 #### Clone this repo
 
-Clone this repo and the associated tools repo:
+Clone this repo, and the associated tools repo:
 
 ```shell
 git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
@@ -83,11 +87,9 @@ To set up your cluster to understand Application resources, run the following co
 kubectl apply -f "https://raw.githubusercontent.com/GoogleCloudPlatform/marketplace-k8s-app-tools/master/crd/app-crd.yaml"
 ```
 
-You need to run this command once.
+The Application resource is defined by the [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps) community. You can find the source code on [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
 
-The Application resource is defined by the [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps) community. The source code can be found on [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
-
-### Install MariaDB Galera Cluster
+### Install the MariaDB Galera cluster
 
 Navigate to the `mariadb-galera` directory:
 
@@ -104,15 +106,13 @@ export APP_INSTANCE_NAME=mariadb-galera-1
 export NAMESPACE=default
 ```
 
-(Optional) Enable Stackdriver Metrics Exporter:
-
-> **NOTE:** Your GCP project must have Stackdriver enabled. If you are using a non-GCP cluster, you cannot export metrics to Stackdriver.
-
-By default, the application does not export metrics to Stackdriver. To enable this option, change the value to `true`.
+By default, the app does not export metrics to Stackdriver. To enable this option, change the value to `true`.
 
 ```shell
 export METRICS_EXPORTER_ENABLED=false
 ```
+
+> **NOTE:** Your GCP project must have Stackdriver enabled to export metrics to Stackdriver. If you are using a non-GCP cluster, you cannot export metrics to Stackdriver.
 
 Configure the container image:
 
@@ -125,7 +125,7 @@ export IMAGE_METRICS_EXPORTER="${IMAGE_REPO}/prometheus-to-sd:${TAG}"
 export IMAGE_PEER_FINDER="${IMAGE_REPO}/peer-finder:${TAG}"
 ```
 
-The images above are referenced by [tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend that you pin each image to an immutable [content digest](https://docs.docker.com/registry/spec/api/#content-digests).  This ensures that the installed application always uses the same images, until you are ready to upgrade. To get the digest for the image, use the following script:
+The image above is referenced by [tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend that you pin each image to an immutable [content digest](https://docs.docker.com/registry/spec/api/#content-digests). This ensures that the installed app always uses the same image, until you are ready to upgrade. To get the digest for the image, use the following script:
 
 ```shell
 for i in "IMAGE_MARIADB" "IMAGE_MYSQL_EXPORTER" "IMAGE_METRICS_EXPORTER" "IMAGE_PEER_FINDER"; do
@@ -261,7 +261,7 @@ kubectl port-forward svc/$APP_INSTANCE_NAME-galera-svc --namespace $NAMESPACE 33
 
 ## Prometheus metrics
 
-The application can be configured to expose its metrics through the
+The app can be configured to expose its metrics through the
 [MySQL Server Exporter](https://github.com/GoogleCloudPlatform/mysql-docker/tree/master/exporter)
 in the
 [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
@@ -282,8 +282,8 @@ Then, navigate to [http://localhost:9104/metrics](http://localhost:9104/metrics)
 
 ### Configuring Prometheus to collect the metrics
 
-Prometheus can be configured to automatically collect the application's metrics.
-Follow the steps in
+Prometheus can be configured to automatically collect the app's metrics.
+To set this up, follow the steps in
 [Configuring Prometheus](https://prometheus.io/docs/introduction/first_steps/#configuring-prometheus).
 
 You configure the metrics in the
@@ -293,13 +293,13 @@ You configure the metrics in the
 
 The deployment includes a [Prometheus to Stackdriver (`prometheus-to-sd`)](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd) container. If you enabled the option to export metrics to Stackdriver, the metrics are automatically exported to Stackdriver and visible in [Stackdriver Metrics Explorer](https://cloud.google.com/monitoring/charts/metrics-explorer).
 
-Metrics are labeled with `app.kubernetes.io/name` consisting of application's name, which you define in the `APP_INSTANCE_NAME` environment variable.
+Metrics are labeled with `app.kubernetes.io/name`, which uses the app's name as defined in the `APP_INSTANCE_NAME` environment variable.
 
-The exporting option might not be available for GKE on-prem clusters.
+The export option may not be available for GKE on-prem clusters.
 
 > Note: Stackdriver has [quotas](https://cloud.google.com/monitoring/quotas) for the number of custom metrics created in a single GCP project. If the quota is met, additional metrics might not show up in the Stackdriver Metrics Explorer.
 
-You can remove existing metric descriptors using
+You can remove existing metric descriptors by using
 [Stackdriver's REST API](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors/delete).
 
 # Scaling
@@ -316,9 +316,9 @@ kubectl scale statefulsets "$APP_INSTANCE_NAME-galera" --namespace "$NAMESPACE" 
 
 where `REPLICAS` is the number of replicas you want.
 
-Use the same command to reduce the number of replicas without disconnecting nodes from the cluster. When you reduce the number of replicas, the `PersistentVolumeClaims` in your StatefulSet remain unmodified.
+To reduce the number of replicas without disconnecting nodes from the cluster, use the same command. The `PersistentVolumeClaims` in your StatefulSet are not modified when you reduce the number of replicas.
 
-# Backup and Restore
+# Backup and restore
 
 The following steps are based on the [MariaDB documentation](https://mariadb.com/kb/en/library/mysqldump/).
 
@@ -346,8 +346,8 @@ kubectl -n ${NAMESPACE} exec -it ${POD_NAME} -c mariadb -- sh -c "rm -f ${BKP_DI
 The backup will be stored in an `all-databases-<timestamp>.sql` file in the current directory of your local workstation.
 
 > **WARNING**: Due to Galera cluster limitations, the `mysql.user` table is excluded from the backup.
-If you wish to create full backup of all databases, you have to run `mysqldump` without `--ignore-table` option.
-In that case you will not be able to restore it on Click to Deploy MariaDB Galera Cluster installation.
+If you wish to create full backup of all databases, you have to run `mysqldump` without the `--ignore-table` option.
+In that case, you will not be able to restore it upon installation of Click to Deploy MariaDB Galera Cluster.
 >
 > To find out more, check official [Galera documentation](https://galeracluster.com/library/kb/trouble/user-changes.html).
 
@@ -359,7 +359,8 @@ In order to restore MariaDB data, you must specify the location of the backup fi
 BKP_FILE="[/path/to/backup_file].sql.gz"
 ```
 
-Next, run the following commands to restore data from the specified backup:
+Next, to restore data from the specified backup, run the following commands:
+
 ```shell
 POD_NAME=${APP_INSTANCE_NAME}-galera-0
 BKP_DIR=/var/mariadb/backup
@@ -375,11 +376,11 @@ kubectl -n ${NAMESPACE} exec -it ${POD_NAME} -c mariadb -- bash -c "gunzip < ${B
 kubectl -n ${NAMESPACE} exec -it ${POD_NAME} -c mariadb -- sh -c "rm -f ${BKP_PATH}"
 ```
 
-# Upgrading the app
+# Upgrade the app
 
-Before upgrading, we recommend that you back up your MariaDB database, using the [backup step](#backup-mariadb-data-to-your-local-workstation). For additional information about upgrades, see the [MariaDB documentation](https://mariadb.com/kb/en/library/upgrading/).
+Before you upgrade, we recommend that you back up your MariaDB database, by following the [backup step](#backup-mariadb-data-to-your-local-workstation). For additional information about upgrades, visit the [MariaDB documentation](https://mariadb.com/kb/en/library/upgrading/).
 
-The MariaDB StatefulSet is configured to roll out updates automatically. Start the update by patching the StatefulSet with a new image reference:
+The MariaDB StatefulSet is configured to automatically roll out updates as it receives them. To start this update process, patch the StatefulSet with a new image reference:
 
 ```shell
 IMAGE_MARIADB=[NEW_IMAGE_REFERENCE]
@@ -401,7 +402,7 @@ kubectl get pods --selector app.kubernetes.io/name=${APP_INSTANCE_NAME} --namesp
 
 1. In the GCP Console, open [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
 
-1. From the list of applications, choose your application installation.
+1. From the list of apps, choose your app installation.
 
 1. On the Application Details page, click **Delete**.
 
@@ -418,9 +419,9 @@ export NAMESPACE=default
 
 ### Delete the resources
 
-> **NOTE:** We recommend using a `kubectl` version that is the same as the version of your cluster. Using the same versions of `kubectl` and the cluster helps avoid unforeseen issues.
+> **NOTE:** We recommend using a `kubectl` version that is the same as the version of your cluster. Using the same version for `kubectl` and the cluster helps prevent unforeseen issues.
 
-To delete the resources, use the expanded manifest file used for the installation.
+To delete the resources, use the expanded manifest file that was used for the installation.
 
 Run `kubectl` on the expanded manifest file:
 
@@ -428,7 +429,7 @@ Run `kubectl` on the expanded manifest file:
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 ```
 
-If you don't have the expanded manifest, delete the resources using types and a label:
+If you don't have the expanded manifest file, delete the resources by using types and a label:
 
 ```shell
 kubectl delete application \
@@ -438,7 +439,7 @@ kubectl delete application \
 
 ### Delete the persistent volumes of your installation
 
-By design, the removal of StatefulSets in Kubernetes does not remove
+By design, removing StatefulSets in Kubernetes does not remove any
 PersistentVolumeClaims that were attached to their Pods. This prevents your
 installations from accidentally deleting stateful data.
 
@@ -457,8 +458,8 @@ kubectl delete persistentvolumeclaims \
 
 ### Delete the GKE cluster
 
-Optionally, if you don't need the deployed application or the GKE cluster,
-delete the cluster using this command:
+Optionally, if you don't need the deployed app or the GKE cluster,
+you can delete the cluster by using this command:
 
 ```shell
 gcloud container clusters delete "$CLUSTER" --zone "$ZONE"
