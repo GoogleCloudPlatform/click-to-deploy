@@ -171,15 +171,15 @@ Set or generate passwords:
 
 ```shell
 # Set the root and MediaWiki database passwords
-export ROOT_DB_PASSWORD="root"
-export MEDIAWIKI_DB_PASSWORD="dbpassword"
+export ROOT_DB_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 10 | head -n 1 | tr -d '\n')${RANDOM}"
+export MEDIAWIKI_DB_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 10 | head -n 1 | tr -d '\n')${RANDOM}"
 
 # Set mysqld-exporter user password.
 export EXPORTER_DB_PASSWORD="exporter"
 
 # Set password for MediaWiki admin panel
 export MEDIAWIKI_ADMIN_USERNAME="admin"
-export MEDIAWIKI_ADMIN_PASSWORD="mediawiki123"
+export MEDIAWIKI_ADMIN_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 10 | head -n 1 | tr -d '\n')${RANDOM}"
 ```
 
 #### Create TLS certificate for MediaWiki
