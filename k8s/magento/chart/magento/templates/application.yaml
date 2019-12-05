@@ -16,7 +16,7 @@ spec:
     version: "{{ .Values.magento.image.tag }}"
     description: >-
       Magento is an extensible and modular e-commerce platform. It enables catalog management, CMS,
-      different payment methods, layout control, flexible pricing system and more.
+      payment methods, layout control, a flexible pricing system, and more.
 
       # Support
       Google does not offer support for this solution. However, community support is available on
@@ -31,7 +31,7 @@ spec:
     links:
     - description: 'User Guide: Google Click to Deploy Magento'
       url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/magento/README.md
-    - description: Getting Started with Magento
+    - description: Getting started with Magento
       url: https://docs.magento.com/m2/ce/user_guide/getting-started.html
     - description: Configure Magento to use Elasticsearch
       url: https://devdocs.magento.com/guides/v2.3/config-guide/elasticsearch/configure-magento.html
@@ -40,7 +40,7 @@ spec:
     notes: |-
       {{- if .Values.enablePublicServiceAndIngress }}
       # Open your Magento site
-      Get the external IP of your Magento site using the following command:
+      Get the external IP of your Magento site by using the following command:
 
       ```
       SERVICE_IP=$(kubectl get ingress {{ .Release.Name }}-magento-ingress \
@@ -52,19 +52,19 @@ spec:
       The command shows you the URL of your site.
 
       # Update TLS certificate for Magento
-      By default the application is using self-signed certificate. You can follow
-      [Update TLS certificate for Magento section](https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/magento/README.md#create-tls-certificate-for-magento)
+      By default, the app uses a self-signed certificate. You can follow the steps at
+      [Update TLS certificate for Magento](https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/magento/README.md#create-tls-certificate-for-magento)
       to update it.
       {{- else }}
 
       # Open your Magento site
-      Magento is exposed in a ClusterIP-only service `{{ .Release.Name }}-magento-svc`.
-      To connect to Magento UI, you can either expose a public service endpoint or keep it private,
+      Magento is exposed in a ClusterIP-only service, `{{ .Release.Name }}-magento-svc`.
+      To connect to Magento UI, you can either expose a public service endpoint, or keep it private,
       but connect from you local environment with `kubectl port-forward`.
 
       ## Forward Magento port in local environment
-      You can use port forwarding feature of `kubectl` to forward Magento's port to your local
-      machine. Run the following command in background:
+      You can use the port forwarding feature of `kubectl` to forward Magento's port to your local
+      machine. Run the following command in the background:
 
       ```shell
       kubectl port-forward \
@@ -72,7 +72,7 @@ spec:
         svc/{{ .Release.Name }}-magento-svc \
         8080:80
       ```
-      Now you can access Magento UI with [http://localhost:8080](http://localhost:8080).
+      Now you can access the Magento UI with [http://localhost:8080](http://localhost:8080).
       {{- end }}
   info:
   {{- if .Values.enablePublicServiceAndIngress }}
