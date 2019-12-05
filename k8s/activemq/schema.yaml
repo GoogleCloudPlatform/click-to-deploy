@@ -21,10 +21,6 @@ x-google-marketplace:
           type: REPO_WITH_REGISTRY
         image.tag:
           type: TAG
-    prometheus-to-sd:
-      properties:
-        metrics.image:
-          type: FULL
 
 properties:
   name:
