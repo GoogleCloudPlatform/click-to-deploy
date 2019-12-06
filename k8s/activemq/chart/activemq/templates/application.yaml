@@ -46,7 +46,7 @@ spec:
       ```shell
       # Get admin user credentials of web console
       ACTIVEMQ_ADMIN_PASSWORD=$(kubectl get secret --namespace \
-        {{ .Release.Namespace }} {{ .Release.Name }}-activemq \
+        {{ .Release.Namespace }} {{ .Release.Name }}-activemq-secret \
         -o jsonpath="{.data.console-password}" | base64 --decode)
 
       echo "username: admin"

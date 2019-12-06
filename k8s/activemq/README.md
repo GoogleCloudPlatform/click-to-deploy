@@ -182,7 +182,7 @@ Deployed service of ActiveMQ is ClusterIP type, so you can reach to web console 
 ```shell
 # Get admin user credentials of web console
 ACTIVEMQ_ADMIN_PASSWORD=$(kubectl get secret --namespace \
-  ${NAMESPACE} ${APP_INSTANCE_NAME}-activemq \
+  ${NAMESPACE} ${APP_INSTANCE_NAME}-activemq-secret \
   -o jsonpath="{.data.console-password}" | base64 --decode)
 
 echo "username: admin"
