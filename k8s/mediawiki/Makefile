@@ -13,7 +13,7 @@ METRICS_EXPORTER_TAG ?= v0.5.1
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 
-IMAGE_MEDIAWIKI ?= $(SOURCE_REGISTRY)/mediawiki1-php7-apache2:$(TRACK)
+IMAGE_MEDIAWIKI ?= $(SOURCE_REGISTRY)/mediawiki1-php7-apache:$(TRACK)
 IMAGE_APACHE_EXPORTER ?= $(SOURCE_REGISTRY)/wordpress/apache-exporter:latest
 IMAGE_MYSQL ?= $(SOURCE_REGISTRY)/mariadb10:latest
 IMAGE_MYSQL_EXPORTER ?= $(SOURCE_REGISTRY)/mysql5:$(EXPORTER_TAG)
