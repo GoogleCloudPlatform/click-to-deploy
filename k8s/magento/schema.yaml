@@ -98,7 +98,7 @@ properties:
   db.name:
     type: string
     title: Magento database name
-    description: Magento database name which will be created in MySQL Server
+    description: Magento database name, which will be created in MySQL Server
     default: magento
   # db.magentoPassword is the database user's password for the user magento.
   db.magentoPassword:
@@ -144,8 +144,8 @@ properties:
   metrics.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
-    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters,
-      export of metrics to Stackdriver is not supported yet
+    description: Your GCP project must have Stackdriver enabled. For non-GCP clusters,
+      the export of metrics to Stackdriver is not yet supported.
     default: false
   certificate:
     type: string

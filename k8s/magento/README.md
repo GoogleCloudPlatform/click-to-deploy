@@ -1,16 +1,18 @@
 # Overview
 
-Magento is an extensible and modular e-commerce platform. It enables catalog management, CMS, different payment methods, layout control, flexible pricing system and more.
+Magento is an extensible and modular e-commerce platform. It enables catalog management, CMS, payment methods, layout control, a flexible pricing system, and more.
 
-The platform is developed on top of open-source technologies, as PHP as main back-end language. Extensions, static assets and file uploads are stored in local disks. Caching and session data are stored in a persistent Redis.
+The platform is developed on top of open-source technologies, with PHP as the main back-end language.
 
-Catalog data is stored in persistent MySQL database and might be moved to Elasticsearch through [administration panel](https://devdocs.magento.com/guides/v2.3/config-guide/elasticsearch/configure-magento.html). An Elasticsearch deployment can be [launched through Google Cloud Marketplace](https://console.cloud.google.com/marketplace/details/google/elasticsearch).
+Extensions, static assets, and file uploads are stored in local disks. Caching and session data are stored in a persistent Redis, and catalog data is stored in a persistent MySQL database.
 
-Magento has an extensive Marketplace with several themes and plugins which can be paid or free. Check out the [official Marketplace site](https://marketplace.magento.com).
+Magento can optionally be [deployed with Elasticsearch](https://devdocs.magento.com/guides/v2.3/config-guide/elasticsearch/configure-magento.html). You can launch Elasticsearch deployments [through Google Cloud Marketplace](https://console.cloud.google.com/marketplace/details/google/elasticsearch).
 
-In addition to that, Magento has a [secured REST API](https://devdocs.magento.com/guides/v2.3/rest/bk-rest.html) where you can upload and integrate your inventory with any custom solution.
+Magento has an extensive Marketplace with several themes and plugins, which can be paid or free. For more details, visit [the official Marketplace site](https://marketplace.magento.com).
 
-For more information on Magento Commerce, browse the [product page on Magento official website](https://magento.com/products/magento-commerce).
+Magento also has a [secured REST API](https://devdocs.magento.com/guides/v2.3/rest/bk-rest.html) which enables you to upload and integrate your inventory with any custom solution.
+
+For more information on Magento Commerce, visit its [product page](https://magento.com/products/magento-commerce) at the official Magento website.
 
 ## About Google Click to Deploy
 
@@ -18,44 +20,44 @@ Popular open stacks on Kubernetes, packaged by Google.
 
 ## Architecture
 
-> **NOTE:** The following diagram shows the architecture with the application
+> **NOTE:** The following diagram shows the architecture with the app
 > (optionally) exposed externally, using an Ingress and TLS configuration. The
 > steps to enable the Ingress resource are in the sections below.
 
 ![Architecture diagram](resources/magento-k8s-app-architecture.png)
 
 By default, Ingress is disabled and Magento is exposed using a ClusterIP Service on port `80`.
-You can enable the option to expose the service externally. In that case Magento interface is exposed through the ports `80` and `443` using an Ingress resource. The TLS certificates are stored in the `[APP_INSTANCE_NAME]-tls` Secret resource.
+You can enable the option to expose the service externally. In that case, Magento's interface is exposed through the ports `80` and `443` using an Ingress resource. The TLS certificates are stored in the `[APP_INSTANCE_NAME]-tls` Secret resource.
 
-Separate StatefulSet Kubernetes objects are used to manage the Magento, MySQL and Redis instances.
+Separate StatefulSet Kubernetes objects are used to manage the Magento, MySQL, and Redis instances.
 
 ### Magento Workloads
 
-Magento single-replica StatefulSet runs [Magento website](https://www.magento.com) through a [magento-docker](https://github.com/GoogleCloudPlatform/magento-docker) container installation. The credentials for the administrator account are automatically generated and configured in the application through a Kubernetes Secret.
+The Magento single-replica StatefulSet runs the [Magento website](https://www.magento.com) on a [magento-docker](https://github.com/GoogleCloudPlatform/magento-docker) container installation. The credentials for the administrator account are automatically generated, and configured in the app through a Kubernetes Secret.
 
 A Persistent Volume Claim is used for storing persistent configuration data and static assets.
 
-This workfload also offers an embedded [NGINX Prometheus Metrics Exporter](https://github.com/GoogleCloudPlatform/nginx-docker/tree/master/exporter).
+This workload also offers an embedded [NGINX Prometheus Metrics Exporter](https://github.com/GoogleCloudPlatform/nginx-docker/tree/master/exporter).
 
 
 ### Redis Workloads
 
-Redis single-replica StatefulSet runs a [Redis Server](https://redis.io) application through a [redis-docker](https://github.com/GoogleCloudPlatform/redis-docker) container installation. The credentials for `root` account are automatically generated and configured in the application through the Secret resource `[APP_INSTANCE_NAME]-redis-secret`.
+The Redis single-replica StatefulSet runs a [Redis Server](https://redis.io) app on a [redis-docker](https://github.com/GoogleCloudPlatform/redis-docker) container installation. The credentials for the `root` account are automatically generated, and configured in the app through the Secret resource `[APP_INSTANCE_NAME]-redis-secret`.
 
-By default, the Services exposing the Magento application are of type ClusterIP, which makes it accessible only in a private cluster network on port `6379`.
+By default, the Services exposing the Magento app are of type ClusterIP, which means it is accessible only in a private cluster network on port `6379`.
 
-A Persistent Volume Claim is used for storing transient data such as user-session and caching data.
+A Persistent Volume Claim is used for storing transient data, such as user-session and caching data.
 
-The [save behaviour](https://redis.io/topics/persistence#snapshotting) may be set using `[APP_INSTANCE_NAME]-redis-config` ConfigMap resource.
+The [save behaviour](https://redis.io/topics/persistence#snapshotting) may be configured by using the `[APP_INSTANCE_NAME]-redis-config` ConfigMap resource.
 
-This workfload also offers an embedded [Redis Prometheus Metrics Exporter](https://github.com/GoogleCloudPlatform/redis-docker/tree/master/exporter).
+This workload also offers an embedded [Redis Prometheus Metrics Exporter](https://github.com/GoogleCloudPlatform/redis-docker/tree/master/exporter).
 
 
 ### MySQL Workloads
 
-MySQL single-replica StatefulSet runs a [MySQL Server](https://www.mysql.com) application through a [mysql-docker](https://github.com/GoogleCloudPlatform/mysql-docker) container installation. The credentials for `root` account are automatically generated and configured in the application through the Secret resource `[APP_INSTANCE_NAME]-mysql-secret`.
+The MySQL single-replica StatefulSet runs a [MySQL Server](https://www.mysql.com) app on a [mysql-docker](https://github.com/GoogleCloudPlatform/mysql-docker) container installation. The credentials for the `root` account are automatically generated, and configured in the app through the Secret resource `[APP_INSTANCE_NAME]-mysql-secret`.
 
-By default, the Services exposing the Magento application are of type ClusterIP, which makes it accessible only in a private network on port `3306`.
+By default, the Services exposing the Magento app are of type ClusterIP, which means it is accessible only in a private network on port `3306`.
 
 A Persistent Volume Claim is used for storing all the e-commerce data and catalog.
 
@@ -71,9 +73,9 @@ Get up and running with a few clicks! Install this Magento app to a Google Kuber
 
 ### Prerequisites
 
-#### Set up command-line tools
+#### Set up command line tools
 
-You'll need the following tools in your development environment. If you are using Cloud Shell, `gcloud`, `kubectl`, Docker, and Git are installed in your environment by default.
+You'll need the following tools in your development environment. If you're using Cloud Shell, `gcloud`, `kubectl`, Docker, and Git are installed in your environment by default.
 
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
@@ -127,7 +129,7 @@ You need to run this command once.
 
 The Application resource is defined by the [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps) community. The source code can be found on [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
 
-### Install the Application
+### Install the app
 
 Navigate to the `magento` directory:
 
@@ -157,7 +159,7 @@ export PUBLIC_SERVICE_AND_INGRESS_ENABLED=false
 > **NOTE:** Your GCP project must have Stackdriver enabled. If you are using a
 > non-GCP cluster, you cannot export metrics to Stackdriver.
 
-By default, the application does not export metrics to Stackdriver. To enable this option, change the value to `true`.
+By default, the app does not export metrics to Stackdriver. To enable this option, change the value to `true`.
 
 ```shell
 export METRICS_EXPORTER_ENABLED=false
@@ -178,7 +180,7 @@ export IMAGE_REDIS_EXPORTER="${IMAGE_REPO}/redis-exporter:${TAG}"
 export IMAGE_METRICS_EXPORTER="${IMAGE_REPO}/prometheus-to-sd:${TAG}"
 ```
 
-The images above are referenced by [tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend that you pin each image to an immutable [content digest](https://docs.docker.com/registry/spec/api/#content-digests). This ensures that the installed application always uses the same images, until you are ready to upgrade. To get the digest for the image, use the following script:
+The images above are referenced by [tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend that you pin each image to an immutable [content digest](https://docs.docker.com/registry/spec/api/#content-digests). This ensures that the installed app always uses the same images, until you are ready to upgrade. To get the digest for the image, use the following script:
 
 ```shell
 IMAGES=(
@@ -221,7 +223,7 @@ export REDIS_PASSWORD="redis_password"
 
 > Note: You can skip this step if you have disabled external access.
 
-1.  If you already have a certificate that you want to use, copy your certificate and key pair to the `/tmp/tls.crt`, and `/tmp/tls.key` files, then skip to the next step.
+1.  If you already have a certificate that you want to use, copy your certificate and key pair to the `/tmp/tls.crt` and `/tmp/tls.key` files, respectively, then skip to the next step.
 
     To create a new certificate, run the following command:
 
@@ -250,7 +252,7 @@ kubectl create namespace "${NAMESPACE}"
 #### Expand the manifest template
 
 Use `helm template` to expand the template. We recommend that you save the
-expanded manifest file for future updates to the application.
+expanded manifest file for future updates to your app.
 
 ```shell
 helm template chart/magento \
@@ -286,7 +288,7 @@ kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 
 #### View the app in the Google Cloud Console
 
-To get the Console URL for your app, run the following command:
+To get the Cloud Console URL for your app, run the following command:
 
 ```shell
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
@@ -296,7 +298,7 @@ To view the app, open the URL in your browser.
 
 ### Open your Magento website
 
-Get the external IP of your Magento website using the following command:
+To get the external IP of your Magento website, use the following command:
 
 ```shell
 SERVICE_IP=$(kubectl get ingress "${APP_INSTANCE_NAME}-magento-ingress" \
@@ -309,15 +311,15 @@ echo "https://${SERVICE_IP}/"
 The command shows you the URL of your site.
 
 
-# Application metrics
+# App metrics
 
 ## Prometheus metrics
 
-The application can be configured to expose its metrics through the [MySQL Server Exporter](https://github.com/GoogleCloudPlatform/mysql-docker/tree/master/exporter), [NGINX Exporter](https://github.com/GoogleCloudPlatform/nginx-docker/tree/master/exporter) and [Redis Exporter](https://github.com/GoogleCloudPlatform/redis-docker/tree/master/exporter) in the [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
+The app can be configured to expose its metrics through the [MySQL Server Exporter](https://github.com/GoogleCloudPlatform/mysql-docker/tree/master/exporter), [NGINX Exporter](https://github.com/GoogleCloudPlatform/nginx-docker/tree/master/exporter), and [Redis Exporter](https://github.com/GoogleCloudPlatform/redis-docker/tree/master/exporter), in the [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
 
 1.  You can access the NGINX metrics at `[NGINX-SERVICE]:9113/metrics`, where `[NGINX-SERVICE]` is the [Kubernetes Service](https://kubernetes.io/docs/concepts/services-networking/service/) `${APP_INSTANCE_NAME}-magento-svc`.
 
-2.  You can acccess the Redis metrics at `[REDIS-SERVICE]:9121/metrics`, where `[REDIS-SERVICE]` is the
+2.  You can access the Redis metrics at `[REDIS-SERVICE]:9121/metrics`, where `[REDIS-SERVICE]` is the
     [Kubernetes Service](https://kubernetes.io/docs/concepts/services-networking/service/) `${APP_INSTANCE_NAME}-redis-svc`.
 
 3.  You can access the MySQL metrics at `[MYSQL-SERVICE]:9104/metrics`, where `[MYSQL-SERVICE]` is the
@@ -325,36 +327,36 @@ The application can be configured to expose its metrics through the [MySQL Serve
 
 ### Configuring Prometheus to collect the metrics
 
-Prometheus can be configured to automatically collect the application's metrics. Follow the steps in [Configuring Prometheus](https://prometheus.io/docs/introduction/first_steps/#configuring-prometheus).
+Prometheus can be configured to automatically collect the app's metrics. Follow the steps in [Configuring Prometheus](https://prometheus.io/docs/introduction/first_steps/#configuring-prometheus).
 
 You configure the metrics in the [`scrape_configs` section](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config).
 
 ## Exporting metrics to Stackdriver
 
-The deployment includes a [Prometheus to Stackdriver (`prometheus-to-sd`)](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd) container. If you enabled the option to export metrics to Stackdriver, the metrics are automatically exported to Stackdriver and visible in [Stackdriver Metrics Explorer](https://cloud.google.com/monitoring/charts/metrics-explorer).
+The deployment includes a [Prometheus to Stackdriver (`prometheus-to-sd`)](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd) container. If you enabled the option to export metrics to Stackdriver, the metrics are exported to Stackdriver automatically, and visible in [Stackdriver Metrics Explorer](https://cloud.google.com/monitoring/charts/metrics-explorer).
 
-The name of each metric starts with the component's name (`redis` for Redis Server, `mysql` for MariaDB and `nginx-magento` for Magento).
-Metrics are labeled with `app.kubernetes.io/name` consisting of application's name, which you define in the `APP_INSTANCE_NAME` environment variable.
+The name of each metric starts with the component's name (`redis` for Redis Server, `mysql` for MariaDB, and `nginx-magento` for Magento).
+Metrics are labeled with `app.kubernetes.io/name`, which includes the app's name as defined in the `APP_INSTANCE_NAME` environment variable.
 
-The exporting option might not be available for GKE on-prem clusters.
+The export option may not be available for GKE on-prem clusters.
 
 > Note: Stackdriver has [quotas](https://cloud.google.com/monitoring/quotas) for
 > the number of custom metrics created in a single GCP project. If the quota is
 > met, additional metrics might not show up in the Stackdriver Metrics Explorer.
 
-You can remove existing metric descriptors using [Stackdriver's REST API](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors/delete).
+To remove existing metric descriptors, use [Stackdriver's REST API](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors/delete).
 
 # Scaling
 
-This is a single-instance version of Magento. It is not intended to be scaled up with the current configuration.
+This is a single-instance version of Magento. It is not intended to be scaled up in its current configuration.
 
-# Backup and Restore
+# Backup and restore
 
-The following steps are based on scripts embedded in [magento-docker](https://www.github.com/GoogleCloudPlatform/magento-docker) container which enables the developer to easily use Magento CLI commands described in [Magento Documentation](https://devdocs.magento.com/guides/v2.3/install-gde/install/cli/install-cli-backup.html).
+The following steps are based on scripts embedded in the [magento-docker](https://www.github.com/GoogleCloudPlatform/magento-docker) container, which enables you to easily use the Magento CLI commands described in the [Magento documentation](https://devdocs.magento.com/guides/v2.3/install-gde/install/cli/install-cli-backup.html).
 
 ## Backup Magento data to your local workstation
 
-The commands below will back up all your data in `backups/{{TIMESTAMP}}` folder on the working directory. It will create three different files. As follows:
+The commands below will back up all of your data in a `backups/{{TIMESTAMP}}` folder on the working directory. It will create three different files, as follows:
 
 | File type |              Filename              |
 |:---------:|:----------------------------------:|
@@ -403,7 +405,7 @@ ls -la "$(pwd)/${LOCAL_BACKUP_DESTINATION}"
 
 In order to restore Magento data, you must specify the `MAGENTO_BACKUP_ID`.
 
-`MAGENTO_BACKUP_ID` is a timestamp which preffixs all created files. The script above also creates a folder with the `BACKUP_ID` as folder names.
+`MAGENTO_BACKUP_ID` is a timestamp which prefixes all created files. The script above also creates a folder with the `BACKUP_ID` as its name.
 
 In order to check which backups you have available, just run:
 
@@ -411,14 +413,14 @@ In order to check which backups you have available, just run:
 ls -la backups/
 ```
 
-To get the latest backup available run:
+To get the latest backup available, run:
 
 ```shell
 MAGENTO_BACKUP_ID=$(ls -ld backups/*/ | nl | awk '{if ($1 == "1") print $10}' | tr -d 'backups,/')
 ```
 
 
-Next, run the following commands to restore data from the specified backup:
+Next, run the following commands to restore data from a specified backup:
 ```shell
 
 
@@ -443,29 +445,27 @@ kubectl --namespace "${NAMESPACE}" exec -it "${POD_NAME}" --container magento --
 
 # Upgrading the app
 
-Before upgrading, we recommend that you back up all your Magento data, using the [backup step](#backup-magento-data-to-your-local-workstation). For additional information about upgrades, see the [Magento documentation](https://devdocs.magento.com/guides/v2.3/comp-mgr/cli/cli-upgrade.html).
+Before upgrading, we recommend that you [back up all of your Magento data](#backup-magento-data-to-your-local-workstation). For additional information about upgrading, visit the [Magento documentation](https://devdocs.magento.com/guides/v2.3/comp-mgr/cli/cli-upgrade.html).
 
-The [magento-docker](https://www.github.com/GoogleCloudPlatform/magento-docker) running in Magento StatefulSet is embedded with an upgrade script.
-
-Start the upgrade running the following command:
+The [magento-docker](https://www.github.com/GoogleCloudPlatform/magento-docker) container running in the Magento StatefulSet is embedded with an upgrade script. To start the upgrade script, run the following command:
 
 ```shell
 kubectl --namespace "${NAMESPACE}" exec -it "${POD_NAME}" --container magento -- upgrade_magento.sh
 ```
 
-To check Magento version, run the command below:
+To check the version of Magento, run the command below:
 
 ```shell
 kubectl --namespace "${NAMESPACE}" exec -it "${POD_NAME}" --container magento -- /app/bin/magento -V
 ```
 
-# Uninstall the Application
+# Uninstall the app
 
-## Using the Google Cloud Platform Console
+## Using the Google Cloud Console
 
-1. In the GCP Console, open [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
+1. In the Cloud Console, open [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
 
-1. From the list of applications, click **Magento**.
+1. From the list of apps, select **Magento**.
 
 1. On the Application Details page, click **Delete**.
 
@@ -493,7 +493,7 @@ Run `kubectl` on the expanded manifest file:
 kubectl delete -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
 
-Otherwise, delete the resources using types and a label:
+Alternately, you can delete the resources by using types and a label:
 
 ```shell
 kubectl delete application \
@@ -503,9 +503,9 @@ kubectl delete application \
 
 ### Delete the persistent volumes of your installation
 
-By design, the removal of StatefulSets in Kubernetes does not remove PersistentVolumeClaims that were attached to their Pods. This prevents your installations from accidentally deleting stateful data.
+By design, the removal of StatefulSets in Kubernetes does not remove the PersistentVolumeClaims that were attached to their Pods. This prevents your installations from accidentally deleting stateful data.
 
-To remove the PersistentVolumeClaims with their attached persistent disks, run the following `kubectl` commands:
+To remove the PersistentVolumeClaims along with their attached persistent disks, run the following `kubectl` commands:
 
 ```shell
 # specify the variables values matching your installation:
@@ -519,7 +519,7 @@ kubectl delete persistentvolumeclaims \
 
 ### Delete the GKE cluster
 
-Optionally, if you don't need the deployed application or the GKE cluster, delete the cluster using this command:
+Optionally, if you no longer need the deployed app or the GKE cluster to which it is deployed, you can delete the cluster by running the following command:
 
 ```shell
 gcloud container clusters delete "${CLUSTER}" --zone "${ZONE}"
