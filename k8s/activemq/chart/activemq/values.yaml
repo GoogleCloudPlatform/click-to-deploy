@@ -1,0 +1,9 @@
+image:
+  repo: null
+  tag: null
+  pullPolicy: IfNotPresent
+persistence:
+  storageClass: null
+  size: 5Gi
+consolePassword: null
+enableBashDebug: false

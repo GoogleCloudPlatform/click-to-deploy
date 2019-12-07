@@ -1,0 +1,18 @@
+FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.2
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    jq \
+    mysql-client \
+    redis-server \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY tests/ /tests/
+COPY tester.sh /tester.sh
+
+RUN curl -o /bin/kubectl \
+    https://storage.googleapis.com/kubernetes-release/release/v1.13.0/bin/linux/amd64/kubectl \
+    && chmod +x /bin/kubectl
+
+WORKDIR /
+ENTRYPOINT ["/tester.sh"]
