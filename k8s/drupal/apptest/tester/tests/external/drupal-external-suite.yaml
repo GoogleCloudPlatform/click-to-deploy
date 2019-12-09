@@ -1,0 +1,21 @@
+actions:
+
+- name: Site address should be 200 OK (external IP)
+  httpTest:
+    url: http://{{ .Env.EXTERNAL_IP }}
+    expect:
+      statusCode:
+        equals: 200
+      bodyText:
+        html:
+          title:
+            equals: 'Welcome to Drupal_Site | Drupal_Site'
+
+- name: Site address should be 200 OK (external IP) (TLS)
+  bashTest:
+    script: curl -f -k "https://${EXTERNAL_IP}"
+    expect:
+      stdout:
+        contains: 'Welcome to Drupal_Site | Drupal_Site'
+      exitCode:
+        equals: 0

@@ -1,0 +1,53 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-joomla-svc
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: joomla-webserver
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+  selector:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: joomla-webserver
+  {{ if .Values.enablePublicServiceAndIngress }}
+  type: NodePort
+  {{ else }}
+  type: ClusterIP
+  {{ end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-apache-exporter-svc
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: joomla-webserver
+spec:
+  ports:
+  - name: exporter
+    port: 9117
+  selector:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: joomla-webserver
+  type: ClusterIP
+{{ if .Values.enablePublicServiceAndIngress }}
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-joomla-ingress
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: joomla-webserver
+spec:
+  tls:
+  - secretName: {{ .Release.Name }}-tls
+  backend:
+    serviceName: {{ .Release.Name }}-joomla-svc
+    servicePort: http
+{{ end }}
