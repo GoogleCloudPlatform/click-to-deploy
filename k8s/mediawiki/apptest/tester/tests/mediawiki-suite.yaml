@@ -1,0 +1,19 @@
+actions:
+
+- name: Site address should be 200 OK (service DNS)
+  httpTest:
+    url: http://{{ .Env.APP_INSTANCE_NAME }}-mediawiki-svc/index.php/Main_Page
+    expect:
+      statusCode:
+        equals: 200
+      bodyText:
+        html:
+          body:
+            matches: 'MediaWiki has been installed.'
+
+- name: External Server status request should fail
+  httpTest:
+    url: http://{{ .Env.APP_INSTANCE_NAME }}-mediawiki-svc/server-status?auto
+    expect:
+      statusCode:
+        equals: 403

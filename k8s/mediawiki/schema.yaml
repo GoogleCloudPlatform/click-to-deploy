@@ -1,0 +1,154 @@
+x-google-marketplace:
+  schemaVersion: v2
+  applicationApiVersion: v1beta1
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      A regular update.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  managedUpdates:
+    kalmSupported: false
+
+  images:
+    '':
+      properties:
+        mediawiki.image.repo:
+          type: REPO_WITH_REGISTRY
+        mediawiki.image.tag:
+          type: TAG
+    apache-exporter:
+      properties:
+        apache.exporter.image:
+          type: FULL
+    mysql:
+      properties:
+        db.image:
+          type: FULL
+    mysql-exporter:
+      properties:
+        db.exporter.image:
+          type: FULL
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
+
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  # Mediawiki related settings
+  mediawiki.volumeSize:
+    type: string
+    title: Storage size for MediaWiki persistent volumes
+    default: "6Gi"
+    description: MediaWiki storage size per instance
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+
+  mediawiki.admin.username:
+    type: string
+    title: mediawiki admin username
+    description: Administrator username who will be able to manage the wiki.
+    default: admin
+
+  mediawiki.admin.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 10
+        includeSymbols: False
+        base64: False
+
+  # MySQL related settings
+  # db.mediawikiPassword is the database user's password for the user mediawiki.
+  db.name:
+    type: string
+    title: Mediawiki database name
+    description: Mediawiki database name which will be created in MySQL/MariaDB Server
+    default: mediawiki
+
+  # db.mediawikiUsername is the database username for mediawiki database
+  db.mediawikiUsername:
+    type: string
+    title: Mediawiki username
+    description: Mediawiki database name which will be created in MySQL/MariaDB Server
+    default: mediawiki
+
+  # db.mediawikiPassword is the database user's password for the user mediawiki.
+  db.mediawikiPassword:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 10
+        includeSymbols: False
+        base64: False
+
+  # db.rootPassword is the database user's password for the user root.
+  db.rootPassword:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 10
+        includeSymbols: False
+        base64: False
+
+  # db.exporter.password is the database user's password for the user exporter.
+  db.exporter.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 10
+        includeSymbols: False
+        base64: False
+
+  db.volumeSize:
+    type: string
+    title: Storage size for MediaWiki database persistent volumes
+    default: "6Gi"
+    description: MediaWiki Database storage size per instance
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+
+
+  enablePublicServiceAndIngress:
+    type: boolean
+    title: Enable public IP access
+    description: Set the mediawiki Service type to NodePort and enable Ingress
+    default: false
+  metrics.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters,
+      export of metrics to Stackdriver is not supported yet
+    default: false
+  certificate:
+    type: string
+    x-google-marketplace:
+      type: TLS_CERTIFICATE
+      tlsCertificate:
+        generatedProperties:
+          base64EncodedPrivateKey: tls.base64EncodedPrivateKey
+          base64EncodedCertificate: tls.base64EncodedCertificate
+
+required:
+- name
+- namespace
+- mediawiki.volumeSize
+- mediawiki.admin.password
+- db.mediawikiPassword
+- db.rootPassword
+- db.exporter.password
+- db.volumeSize
+- enablePublicServiceAndIngress
+- metrics.enabled
