@@ -13,14 +13,14 @@ spec:
     type: Nuclio
     version: {{ .Values.controller.image.tag | quote }}
     description: |-
-      Nuclio is a new "serverless" project, derived from Iguazio's elastic data
-      life-cycle management service for high-performance events and data processing.
+      Nuclio is a new serverless project, derived from Iguazio's elastic data life
+      cycle management service for high-performance events and data processing.
 
-      Nuclio allows to write a source code of functions defined in a platform-specific
-      convention (including the triggers configuration or stateful data definition).
-      Nuclio manages the conversion of the source code into container images (stored
-      in a configurable Docker registry - for this application Google Container
-      Registry) and deploying their workloads to a Kubernetes cluster.
+      Nuclio lets you write source code defining functions in platform-specific
+      conventions (including the triggers configuration and stateful data definition).
+      Nuclio converts the source code into container images, stores them in a
+      configurable Docker registry (for this app, Container Registry), and then
+      deploys their workloads to a Kubernetes cluster.
 
       # Support
       Google does not offer support for this solution. However, community support is available on
@@ -38,20 +38,21 @@ spec:
       # Get access to the Nuclio Dashboard
 
       Run the following command to start port forwarding:
+      
       ```shell
       kubectl --namespace {{ .Release.Namespace }} port-forward \
           service/{{ .Release.Name }}-dashboard 8070:8070
       ```
 
-      # Get access to the Nuclio using `nuctl`
+      # Get access to Nuclio by using `nuctl`
 
-      `nuctl` provided by nuclio authors and can be downloaded from the [official github release page](https://github.com/nuclio/nuclio/releases)
+      `nuctl` is provided by the authors of Nuclio, and can be downloaded from the [official GitHub release page](https://github.com/nuclio/nuclio/releases).
 
-      `nuctl` will be used the same credentials as is for access kubernetes cluster using kubectl.
+      `nuctl` will use the same credentials as those needed to access a Kubernetes\cluster using kubectl.
 
-      Example for usage `nuctl` for list nuclio functions
+      The following is an example of how to use `nuctl` to list Nuclio functions:
 
-      ```shelll
+      ```shell
       nuctl --namespace {{ .Release.Namespace }} get function
       ```
 
