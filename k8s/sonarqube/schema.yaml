@@ -49,6 +49,10 @@ properties:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 12
+  deployer.image:
+    type: string
+    x-google-marketplace:
+      type: DEPLOYER_IMAGE
   metrics.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter

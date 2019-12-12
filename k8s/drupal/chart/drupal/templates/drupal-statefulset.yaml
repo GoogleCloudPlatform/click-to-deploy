@@ -1,0 +1,132 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-drupal
+  labels: &DrupalDeploymentLabels
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: drupal-webserver
+spec:
+  replicas: 1
+  serviceName: {{ .Release.Name }}-drupal-svc
+  selector:
+    matchLabels: *DrupalDeploymentLabels
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels: *DrupalDeploymentLabels
+    spec:
+      containers:
+      - image: {{ .Values.drupal.image.repo }}:{{ .Values.drupal.image.tag }}
+        name: drupal
+        env:
+        - name: AUTO_INSTALL
+          value: 'yes'
+        # A Drupal's username.
+        - name: DRUPAL_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-drupal-secret
+              key: drupal-user
+        # A Drupal's password.
+        - name: DRUPAL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-drupal-secret
+              key: drupal-password
+        - name: DRUPAL_EMAIL
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-drupal-secret
+              key: drupal-email
+        # A hostname of MySQL service.
+        - name: DRUPAL_DB_HOST
+          value: {{ .Release.Name }}-mariadb-svc
+        # A username used for accessing the database.
+        - name: DRUPAL_DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-mariadb-secret
+              key: drupal-user
+        # A password used for accessing the database.
+        - name: DRUPAL_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-mariadb-secret
+              key: drupal-password
+        # A database name used by Drupal.
+        - name: DRUPAL_DB_NAME
+          value: drupal
+        ports:
+        - name: http
+          containerPort: 80
+        volumeMounts:
+        - name: {{ .Release.Name }}-drupal-pvc
+          mountPath: /var/www/html
+          subPath: html
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 240
+          periodSeconds: 30
+          timeoutSeconds: 5
+          successThreshold: 2
+          failureThreshold: 5
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 240
+      - image: {{ .Values.apache.exporter.image }}
+        name: apache-exporter
+        args:
+        - --scrape_uri=http://127.0.0.1/server-status?auto
+        ports:
+        - name: exporter
+          containerPort: 9117
+        livenessProbe:
+          httpGet:
+            path: /metrics
+            port: 9117
+        readinessProbe:
+          httpGet:
+            path: /metrics
+            port: 9117
+          initialDelaySeconds: 60
+          timeoutSeconds: 30
+          failureThreshold: 10
+          periodSeconds: 10
+      {{ if .Values.metrics.enabled }}
+      - name: prometheus-to-sd
+        image: {{ .Values.metrics.image }}
+        command:
+        - /monitor
+        - --stackdriver-prefix=custom.googleapis.com
+        - --source=apache-drupal:http://localhost:9117/metrics
+        - --pod-id=$(POD_NAME)
+        - --namespace-id=$(POD_NAMESPACE)
+        - --monitored-resource-types=k8s
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+      {{ end }}
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Release.Name }}-drupal-pvc
+      labels:
+        app.kubernetes.io/name: "{{ .Release.Name }}"
+        app.kubernetes.io/component: drupal-webserver
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: standard
+      resources:
+        requests:
+          storage: {{ .Values.drupal.volumeSize }}

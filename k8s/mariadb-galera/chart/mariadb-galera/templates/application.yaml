@@ -15,12 +15,12 @@ spec:
     description: |-
       MariaDB is an open source relational database. It is a fork of MySQL.
 
-      MariaDB Galera Cluster is a synchronous multi-master cluster for MariaDB. Solution features synchronous replication, multi-master topology, read and write to any cluster node, automatic membership control, failed nodes drop from the cluster, automatic node joining, true parallel replication etc.
+      MariaDB Galera Cluster is a synchronous multi-master cluster for MariaDB. It enables true parallel replication, multi-master topology, the ability to read and write to any cluster node, or to drop failed nodes from the cluster, automatic membership control and node joining, and more.
 
       # Support
       Google does not offer support for this solution. However, community support is available on
       [Stack Overflow](https://stackoverflow.com/questions/tagged/mariadb/).
-      Additional community support is available on [community forums](https://mariadb.com/kb/en/library/community/).
+      Additional community support is available on the [community forums](https://mariadb.com/kb/en/library/community/).
     maintainers:
     - name: Google Click to Deploy
       url: https://cloud.google.com/solutions/#click-to-deploy
@@ -36,14 +36,14 @@ spec:
       gcloud container clusters get-credentials [CLUSTER_NAME] --zone [CLUSTER_ZONE]
       ```
       where:
-      * `[CLUSTER_NAME]` is the name of the cluster for this application
-      * `[CLUSTER_ZONE]` is the zone, in which the cluster is operating
+      * `[CLUSTER_NAME]` is the name of the cluster for this app
+      * `[CLUSTER_ZONE]` is the zone in which the cluster is operating
 
-      Please read the [get authentication credentials for the cluster](https://cloud.google.com/kubernetes-engine/docs/quickstart#get_authentication_credentials_for_the_cluster) instruction for more information.
+      For more information, read the [instructions for getting authentication credentials for the cluster](https://cloud.google.com/kubernetes-engine/docs/quickstart#get_authentication_credentials_for_the_cluster).
 
       # Get the status of the cluster
 
-      By default, the application does not have an external IP address. To get the
+      By default, the app does not have an external IP address. To get the
       status of the cluster, use `kubectl` to execute `mysqladmin` on one of the MariaDB nodes:
 
       ```
