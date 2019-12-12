@@ -7,7 +7,7 @@ CHART_NAME := wordpress
 APP_ID ?= $(CHART_NAME)-managed-updates
 VERIFY_WAIT_TIMEOUT = 1800
 
-TRACK ?= 5.2
+TRACK ?= 5.3
 
 WORDPRESS_TAG ?= latest
 MYSQL_TAG ?= latest
