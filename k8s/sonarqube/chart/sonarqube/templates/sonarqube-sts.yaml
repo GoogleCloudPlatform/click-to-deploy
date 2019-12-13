@@ -34,7 +34,7 @@ spec:
           privileged: true
       containers:
         - name: {{ .Release.Name}}-sonarqube
-          image: {{ .Values.sonarqube.image}}
+          image: "{{ .Values.sonarqube.image.repo }}:{{ .Values.sonarqube.image.tag }}"
           resources:
             requests:
               memory: "2048Mi"

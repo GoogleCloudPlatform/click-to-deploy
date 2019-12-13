@@ -11,7 +11,7 @@ metadata:
 spec:
   descriptor:
     type: MariaDB
-    version: '10.3'
+    version: "{{ .Values.mariadb.image.tag }}"
     description: |-
       MariaDB is an open source relational database system, and one of the most popular database servers in the world. It is a fork of MySQL.
       # Support

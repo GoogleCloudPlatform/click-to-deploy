@@ -13,7 +13,7 @@ metadata:
 spec:
   descriptor:
     type: Memcached
-    version: '1.5'
+    version: "{{ .Values.memcached.image.tag }}"
     description: |-
       Memcached is an open source in-memory, key-value store.
 
