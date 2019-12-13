@@ -1,0 +1,31 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: sample
+  labels:
+    prometheus: sample
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+  annotations:
+    marketplace.cloud.google.com/verification: test
+spec:
+  replicas: 1
+  serviceAccountName: {{ .Values.operator.serviceAccountName }}
+  securityContext: {}
+  serviceMonitorSelector: {}
+  ruleSelector: {}
+---
+
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: sample-app
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+  annotations:
+    marketplace.cloud.google.com/verification: test
+spec:
+  selector:
+    matchLabels:
+      operated-prometheus: "true"
+  endpoints:
+  - port: web
