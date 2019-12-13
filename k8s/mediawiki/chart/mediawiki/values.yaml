@@ -1,0 +1,36 @@
+mediawiki:
+  image:
+    repo: null
+    tag: null
+  admin:
+    username: admin
+    password: null
+  volumeSize: 5Gi
+
+db:
+  image: null
+  rootPassword: null
+  mediawikiUsername: mediawiki
+  mediawikiPassword: null
+  name: mediawiki-db
+  volumeSize: 7Gi
+
+  # The image and credentials for mysqld_exporter component.
+  exporter:
+    image: null
+    username: mysqld-exporter
+    password: null
+
+enablePublicServiceAndIngress: false
+
+apache:
+  exporter:
+    image: null
+
+metrics:
+  image: null
+  enabled: false
+
+tls:
+  base64EncodedPrivateKey: null
+  base64EncodedCertificate: null

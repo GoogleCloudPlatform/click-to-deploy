@@ -70,6 +70,7 @@ app/build:: .build/$(CHART_NAME)/VERSION \
 	docker build \
 		--build-arg REGISTRY="$(REGISTRY)/$(APP_ID)" \
 		--build-arg TAG="$(RELEASE)" \
+		--build-arg CHART_NAME="$(CHART_NAME)" \
 		--build-arg MARKETPLACE_TOOLS_TAG="$(MARKETPLACE_TOOLS_TAG)" \
 		--tag "$(APP_DEPLOYER_IMAGE)" \
 		-f deployer/Dockerfile \
@@ -129,7 +130,7 @@ $(IMAGE_TARGETS_LIST): .build/$(CHART_NAME)/%: .build/var/REGISTRY \
 .PHONY: .build/$(CHART_NAME)/VERSION
 .build/$(CHART_NAME)/VERSION:
 	$(call print_target,$@)
-	echo "$(C2D_CONTAINER_RELEASE)" | grep -qE "^$(TRACK).[0-9]+$$" || \
+	@echo "$(C2D_CONTAINER_RELEASE)" | grep -qE "^$(TRACK).[0-9]+$$" || \
 	( echo "C2D_RELEASE doesn't start with TRACK or doesn't match TRACK exactly"; exit 1 )
 
 

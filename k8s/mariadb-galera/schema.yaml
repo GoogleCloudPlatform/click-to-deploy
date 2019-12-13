@@ -94,7 +94,7 @@ properties:
   prometheusToSd.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
-    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
+    description: Your GCP project must have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not currently supported.
     default: false
 
 required:

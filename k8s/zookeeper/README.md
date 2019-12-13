@@ -1,49 +1,52 @@
 # Overview
 
 ZooKeeper is a high-performance coordination service for distributed applications. It exposes common services - such as naming,
-configuration management, synchronization, and group services - in a simple interface so you don't have to write them from scratch.
- You can use it off-the-shelf to implement consensus, group management, leader election, and presence protocols. Moreover you can also build on it for your own specific needs.
+configuration management, synchronization, and group services - through a simple interface, so that you don't have to write them from scratch.
+ You can use it off-the-shelf to implement consensus, group management, leader election, and presence protocols. You can also build on it to fit your own specific needs.
 
-For more information about ZooKeeper, see the [ZooKeeper website](https://zookeeper.apache.org/doc/r3.4.14/).
+For more information about ZooKeeper, visit the [ZooKeeper website](https://zookeeper.apache.org/doc/r3.4.14/).
 
 ## About Google Click to Deploy
 
-Popular open source software stacks on Kubernetes packaged by Google and made available in Google Cloud Marketplace.
+Popular open stacks on Kubernetes, packaged by Google.
 
-## Design
+## Architecture
 
 ![Architecture diagram](resources/zookeeper-k8s-app-architecture.png)
 
-### ZooKeeper application contains:
+The ZooKeeper app contains:
 
-- An Application resource, which collects all the deployment resources into one logical entity.
-- A PodDisruptionBudget for the ZooKeeper StatefulSet.
-- A PersistentVolume and PersistentVolumeClaim for each Pod ZooKeeper.
-- A StatefulSet with Application.
-- A Services, `zk-client` which exposes endpoint for clients of ZooKeeper, `zk-internal` for master election and replications.
+- an Application resource, which groups all of the deployment resources into one logical entity
+- a PodDisruptionBudget for the ZooKeeper StatefulSet
+- a PersistentVolume and PersistentVolumeClaim for each ZooKeeper Pod
+- a StatefulSet with Application
+- the Services `zk-client`, which exposes an endpoint for clients of ZooKeeper, and `zk-internal`, for master election and replications
 
-ZooKeeper exposing by service with type ClusterIP, which makes it available  only in cluster network.
-All data is stored on PVC, which makes the application more stable.
+By default, ZooKeeper is exposed by a Service of type ClusterIP, which means that it is only available within a cluster network.
+All data is stored on PVC, which makes the app more stable.
 
 # Installation
 
+## Before you begin
+
+If you are new to selling software on GCP Marketplace, [sign up to become a partner](https://cloud.google.com/marketplace/sell/).
+
 ## Quick install with Google Cloud Marketplace
 
-Get up and running with a few clicks! Install this Sample Application to a Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
+Get up and running with a few clicks! Install this ZooKeeper app to a Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 [on-screen instructions](https://console.cloud.google.com/marketplace/details/google/zookeeper).
 
 ## Command line instructions
 
-You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local workstation in the
-further instructions.
+You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local workstation to follow these instructions.
 
 [![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/GoogleCloudPlatform/click-to-deploy&cloudshell_working_dir=k8s/zookeeper)
 
-### Prerequisites
+### Set up your environment
 
 #### Set up command line tools
 
-You'll need the following tools in your environment:
+You'll need the following tools in your development environment. If you are using Cloud Shell, then `gcloud`, `kubectl`, Docker, and Git are installed in your environment by default.
 
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
@@ -60,7 +63,7 @@ gcloud auth configure-docker
 
 #### Create a Google Kubernetes Engine cluster
 
-Create a cluster from the command line. If you already have a cluster that
+Create a new cluster from the command line. If you already have a cluster that
 you want to use, this step is optional.
 
 ```shell
@@ -70,7 +73,7 @@ export ZONE=us-west1-a
 gcloud container clusters create "$CLUSTER" --zone "$ZONE"
 ```
 
-#### Configure kubectl to connect to the cluster
+Configure `kubectl` to connect to the cluster:
 
 ```shell
 gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
@@ -78,7 +81,7 @@ gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 
 #### Clone this repo
 
-Clone this repo and the associated tools repo:
+Clone this repo, and the associated tools repo:
 
 ```shell
 git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
@@ -98,10 +101,10 @@ kubectl apply -f "https://raw.githubusercontent.com/GoogleCloudPlatform/marketpl
 You need to run this command once for each cluster.
 
 The Application resource is defined by the
-[Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps) community. The source code can be found on
+[Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps) community. You can find the source code at
 [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
 
-### Install the application
+### Install the app
 
 Navigate to the `zookeeper` directory:
 
@@ -109,17 +112,24 @@ Navigate to the `zookeeper` directory:
 cd click-to-deploy/k8s/zookeeper
 ```
 
-#### Configure the application with environment variables
+#### Configure the environment variables
 
-Choose an instance name and
+Choose the instance name and
 [namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)
-for the application. In most cases, you can use the `default` namespace.
+for the app. In most cases, you can use the `default` namespace.
 
 ```shell
 export APP_INSTANCE_NAME=zookeeper
 export NAMESPACE=default
 ```
 
+By default, the app does not export metrics to Stackdriver. To enable this option, change the value to `true`.
+
+```shell
+export METRICS_EXPORTER_ENABLED=false
+```
+
+> **NOTE:** Your GCP project must have Stackdriver enabled to export metrics to Stackdriver. If you are using a non-GCP cluster, you cannot export metrics to Stackdriver.
 
 Configure the container image:
 
@@ -136,7 +146,7 @@ The image above is referenced by
 [tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
 that you pin each image to an immutable
 [content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This ensures that the installed application always uses the same images,
+This ensures that the installed app always uses the same image,
 until you are ready to upgrade. To get the digest for the image, use the
 following script:
 
@@ -149,24 +159,27 @@ for i in "IMAGE_ZOOKEEPER" "IMAGE_ZOOKEEPER_EXPORTER" "IMAGE_METRICS_EXPORTER" ;
 done
 ```
 
-Define amount of replicas for ZooKeeper:
+Set the number of replicas for ZooKeeper:
 
-> **NOTE:** This number should be odd for normal work of ZooKeeper.
+> **NOTE:** You should use an odd number, to ensure that ZooKeeper is always
+able to easily establish a majority. Even numbers of replicas are allowed,
+but not advised. An even number of replicas means that more peers will be
+required to establish a quorum.
 
 ```shell
 export ZOOKEEPER_REPLICAS=3
 ```
 
-Request amount of memory and CPU for each ZooKeeper Pod:
+Request the amount of memory and CPU for each ZooKeeper Pod:
 
 ```shell
 export ZOOKEEPER_MEMORY_REQUEST=1250Mi
 export ZOOKEEPER_CPU_REQUEST=300m
 ```
 
-Define basic parameters of ZooKeeper:
+Define Zookeeper's basic parameters:
 
-> **NOTE:** Detailed explanation of variables you can find in [ZooKeeper Administrator's Guide](https://zookeeper.apache.org/doc/r3.4.14/zookeeperAdmin.html).
+> **NOTE:** You can find a detailed explanation of possible variables in the [ZooKeeper Administrator's Guide](https://zookeeper.apache.org/doc/r3.4.14/zookeeperAdmin.html).
 
 ```shell
 export ZOOKEEPER_TICKTIME=2000
@@ -175,16 +188,6 @@ export ZOOKEEPER_AUTO_PURGE_SNAP_RETAIN_COUNT=3
 export ZOOKEEPER_PURGE_INTERVAL=24
 export ZOOKEEPER_HEAP_SIZE=1000M
 export ZOOKEEPER_VOLUME_SIZE=10Gi
-```
-
-Enable Stackdriver Metrics Exporter:
-
-> **NOTE:** Your GCP project should have Stackdriver enabled. For non-GCP clusters, exporting metrics to Stackdriver is not supported yet.
-
-By default the integration is disabled. To enable it, change the value to `true`.
-
-```shell
-export METRICS_EXPORTER_ENABLED=false
 ```
 
 #### Expand the manifest template
@@ -220,9 +223,9 @@ Use `kubectl` to apply the manifest to your Kubernetes cluster:
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
 
-#### View the app in the Google Cloud Console
+#### View the app in the Google Cloud Platform Console
 
-To get the GCP Console URL for your app, run the following command:
+To get the Console URL for your app, run the following command:
 
 ```shell
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
@@ -230,7 +233,7 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 To view the app, open the URL in your browser.
 
-# Using the ZooKeeper
+# Using ZooKeeper
 
 By default, the application is not exposed externally. To get access to ZooKeeper CLI, run the following command:
 
@@ -248,13 +251,13 @@ the
 [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
 
 You can access the metrics at `[ZOOKEEPER_CLUSTER_IP]:9141/metrics`, where
-`[ZOOKEEPER_CLUSTER_IP]` is the IP address of Pod on Kubernetes
+`[ZOOKEEPER_CLUSTER_IP]` is the IP address of Pod on the Kubernetes
 cluster.
 
 ### Configuring Prometheus to collect metrics
 
-Prometheus can be configured to automatically collect the application's metrics.
-Follow the steps in
+Prometheus can be configured to automatically collect the app's metrics.
+To set this up, follow the steps in
 [Configuring Prometheus](https://prometheus.io/docs/introduction/first_steps/#configuring-prometheus).
 
 You configure the metrics in the
@@ -267,25 +270,25 @@ The deployment includes a
 container. If you enabled the option to export metrics to Stackdriver, the
 metrics are automatically exported to Stackdriver and visible in
 [Stackdriver Metrics Explorer](https://cloud.google.com/monitoring/charts/metrics-explorer).
-The name of each metric starts with the application's name, which you define in
-the `APP_INSTANCE_NAME` environment variable.
 
-The exporting option might not be available for GKE on-prem clusters.
+Metrics are labeled with `app.kubernetes.io/name`, which uses the app's name as defined in the `APP_INSTANCE_NAME` environment variable.
+
+The export option may not be available for GKE on-prem clusters.
 
 > Note: Stackdriver has [quotas](https://cloud.google.com/monitoring/quotas) for
 > the number of custom metrics created in a single GCP project. If the quota is
 > met, additional metrics might not show up in the Stackdriver Metrics Explorer.
 
-You can remove existing metric descriptors using
+You can remove existing metric descriptors by using
 [Stackdriver's REST API](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors/delete).
 
 # Scaling
 
-ZooKeeper does not support auto-scaling for application, it can be reinstalled with bigger amount of nodes.
+ZooKeeper does not support auto-scaling, but it can be reinstalled with a larger amount of nodes.
 
 # Backup and restore
 
-For information on backing up your ZooKeeper data, see the [ZooKeeper documentation](https://zookeeper.apache.org/doc/r3.4.14/zookeeperAdmin.html#sc_dataFileManagement).
+For information on backing up your ZooKeeper data, visit the [ZooKeeper documentation](https://zookeeper.apache.org/doc/r3.4.14/zookeeperAdmin.html#sc_dataFileManagement).
 
 # Uninstall the Application
 
@@ -310,10 +313,9 @@ export NAMESPACE=default
 
 ### Delete the resources
 
-> **NOTE:** We recommend to use a kubectl version that is the same as the version of your cluster. Using the same versions of kubectl and the cluster helps avoid unforeseen issues.
+> **NOTE:** We recommend to use a kubectl version that is the same as the version of your cluster. Using the same version for `kubectl` and the cluster helps prevent unforeseen issues.
 
-To delete the resources, use the expanded manifest file used for the
-installation.
+To delete the resources, use the expanded manifest file that was used for the installation.
 
 Run `kubectl` on the expanded manifest file:
 
@@ -321,7 +323,7 @@ Run `kubectl` on the expanded manifest file:
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 ```
 
-Otherwise, delete the resources using types and a label:
+If you don't have the expanded manifest file, delete the resources by using types and a label:
 
 ```shell
 kubectl delete application,deployment,service,pvc,secret \
@@ -331,7 +333,7 @@ kubectl delete application,deployment,service,pvc,secret \
 
 ### Delete the persistent volumes of your installation
 
-By design, the removal of StatefulSets in Kubernetes does not remove
+By design, removing StatefulSets in Kubernetes does not remove any
 PersistentVolumeClaims that were attached to their Pods. This prevents your
 installations from accidentally deleting stateful data.
 
@@ -353,8 +355,8 @@ kubectl delete persistentvolumeclaims \
 
 ### Delete the GKE cluster
 
-Optionally, if you don't need the deployed application or the GKE cluster,
-delete the cluster using this command:
+Optionally, if you don't need the deployed app or the GKE cluster,
+you can delete the cluster by using this command:
 
 ```shell
 gcloud container clusters delete "$CLUSTER" --zone "$ZONE"

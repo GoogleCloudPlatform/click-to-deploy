@@ -4,7 +4,7 @@ include ../var.Makefile
 include ../images.Makefile
 
 CHART_NAME := zookeeper
-APP_ID ?= $(CHART_NAME)-managed-updates
+APP_ID ?= $(CHART_NAME)
 WAIT_FOR_READY_TIMEOUT = 600
 
 TRACK ?= 3.4
