@@ -4,7 +4,7 @@ include ../var.Makefile
 include ../images.Makefile
 
 CHART_NAME := memcached
-APP_ID ?= $(CHART_NAME)-managed-updates
+APP_ID ?= $(CHART_NAME)
 
 TRACK ?= 1.5
 

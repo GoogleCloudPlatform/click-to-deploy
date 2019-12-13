@@ -4,7 +4,7 @@ include ../var.Makefile
 include ../images.Makefile
 
 CHART_NAME := nginx
-APP_ID ?= $(CHART_NAME)-managed-updates
+APP_ID ?= $(CHART_NAME)
 
 TRACK ?= 1.15
 

@@ -2,7 +2,7 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
-APP_ID ?= sonarqube-managed-updates
+APP_ID ?= sonarqube
 VERIFY_WAIT_TIMEOUT = 600
 
 # The digest should be updated automatically, or tag <major>.<minor>.<path/build>

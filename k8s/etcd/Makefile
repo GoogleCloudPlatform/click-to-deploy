@@ -4,7 +4,7 @@ include ../var.Makefile
 include ../images.Makefile
 
 CHART_NAME := etcd
-APP_ID ?= $(CHART_NAME)-managed-updates
+APP_ID ?= $(CHART_NAME)
 
 TRACK ?= 3.3
 
