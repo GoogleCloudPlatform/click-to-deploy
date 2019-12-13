@@ -10,8 +10,7 @@ SOURCE_REGISTRY ?= marketplace.gcr.io/google
 
 TRACK ?= 1.15
 
-#IMAGE_MAIN ?= $(SOURCE_REGISTRY)/jaeger-operator1:$(TRACK)
-IMAGE_MAIN ?= gcr.io/orbitera-dev/jaeger-operator1:$(TRACK) #TMP TODO: remove 
+IMAGE_MAIN ?= $(SOURCE_REGISTRY)/jaeger-operator1:$(TRACK)
 IMAGE_DEPLOYER_HELM ?= gcr.io/cloud-marketplace-tools/k8s/deployer_helm:$(MARKETPLACE_TOOLS_TAG)
 
 
