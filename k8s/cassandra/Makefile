@@ -1,95 +1,56 @@
-include ../app.Makefile
 include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
+include ../images.Makefile
 
+CHART_NAME := cassandra
+APP_ID ?= $(CHART_NAME)
 VERIFY_WAIT_TIMEOUT = 1800
 
-TAG ?= 3.11
+TRACK ?= 3.11
+
 METRICS_EXPORTER_TAG ?= v0.5.1
 
-$(info ---- TAG = $(TAG))
+SOURCE_REGISTRY ?= marketplace.gcr.io/google
+IMAGE_CASSANDRA ?= $(SOURCE_REGISTRY)/cassandra3:$(TRACK)
+IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
-APP_DEPLOYER_IMAGE ?= $(REGISTRY)/cassandra/deployer:$(TAG)
-NAME ?= cassandra-1
 
-ifdef IMAGE_CASSANDRA
-  IMAGE_CASSANDRA_FIELD = , "cassandra.image": "$(IMAGE_CASSANDRA)"
-endif
+# Main image
+image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_CASSANDRA))
 
+# List of images used in application
+ADDITIONAL_IMAGES := prometheus-to-sd
+
+# Additional images variable names should correspond with ADDITIONAL_IMAGES list
+image-prometheus-to-sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))
+
+C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
+
+BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
+RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)
+NAME ?= $(APP_ID)-1
+
+# Additional variables
 ifdef REPLICAS
   REPLICAS_FIELD = , "cassandra.replicas": "$(REPLICAS)"
 endif
 
 ifdef METRICS_EXPORTER_ENABLED
-  METRICS_EXPORTER_ENABLED_FIELD = , "metrics.enabled": "$(METRICS_EXPORTER_ENABLED)"
+  METRICS_EXPORTER_ENABLED_FIELD = , "metrics.enabled": $(METRICS_EXPORTER_ENABLED)
 endif
 
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
-  $(IMAGE_CASSANDRA_FIELD) \
   $(REPLICAS_FIELD) \
   $(METRICS_EXPORTER_ENABLED_FIELD) \
 }
 
-TESTER_IMAGE ?= $(REGISTRY)/cassandra/tester:$(TAG)
+# c2d_deployer.Makefile provides the main targets for installing the application.
+# It requires several APP_* variables defined above, and thus must be included after.
+include ../c2d_deployer.Makefile
 
 
-app/build:: .build/cassandra/deployer \
-            .build/cassandra/cassandra \
-            .build/cassandra/prometheus-to-sd \
-            .build/cassandra/tester
-
-
-.build/cassandra: | .build
-	mkdir -p "$@"
-
-
-.build/cassandra/deployer: deployer/* \
-                           chart/cassandra/* \
-                           chart/cassandra/templates/* \
-                           schema.yaml \
-                           .build/var/APP_DEPLOYER_IMAGE \
-                           .build/var/MARKETPLACE_TOOLS_TAG \
-                           .build/var/REGISTRY \
-                           .build/var/TAG \
-                           | .build/cassandra
-	docker build \
-	    --build-arg REGISTRY="$(REGISTRY)/cassandra" \
-	    --build-arg TAG="$(TAG)" \
-	    --build-arg MARKETPLACE_TOOLS_TAG="$(MARKETPLACE_TOOLS_TAG)" \
-	    --tag "$(APP_DEPLOYER_IMAGE)" \
-	    -f deployer/Dockerfile \
-	    .
-	docker push "$(APP_DEPLOYER_IMAGE)"
-	@touch "$@"
-
-
-.build/cassandra/cassandra: .build/var/REGISTRY \
-                            .build/var/TAG \
-                            | .build/cassandra
-	docker pull marketplace.gcr.io/google/cassandra3:$(TAG)
-	docker tag marketplace.gcr.io/google/cassandra3:$(TAG) \
-	    "$(REGISTRY)/cassandra:$(TAG)"
-	docker push "$(REGISTRY)/cassandra:$(TAG)"
-	@touch "$@"
-
-.build/cassandra/prometheus-to-sd: .build/var/REGISTRY \
-                                   .build/var/TAG \
-                                   | .build/cassandra
-	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
-	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
-	    "$(REGISTRY)/cassandra/prometheus-to-sd:$(TAG)"
-	docker push "$(REGISTRY)/cassandra/prometheus-to-sd:$(TAG)"
-	@touch "$@"
-
-
-.build/cassandra/tester: .build/var/TESTER_IMAGE \
-                         $(shell find apptest -type f) \
-                         | .build/cassandra
-	$(call print_target,$@)
-	cd apptest/tester \
-	    && docker build --tag "$(TESTER_IMAGE)" .
-	docker push "$(TESTER_IMAGE)"
-	@touch "$@"
+# Build tester image
+app/build:: .build/$(CHART_NAME)/tester

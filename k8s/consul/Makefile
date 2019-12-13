@@ -4,9 +4,10 @@ include ../var.Makefile
 include ../images.Makefile
 
 CHART_NAME := consul
-APP_ID ?= $(CHART_NAME)
+APP_ID ?= $(CHART_NAME)-managed-updates
 
 TRACK ?= 1.4
+
 CONSUL_EXPORTER_TAG ?= exporter
 METRICS_EXPORTER_TAG ?= v0.5.1
 
@@ -21,6 +22,7 @@ image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_CONSUL))
 
 # List of images used in application
 ADDITIONAL_IMAGES := consul-exporter prometheus-to-sd
+
 # Additional images variable names should correspond with ADDITIONAL_IMAGES list
 image-consul-exporter := $(call get_sha256,$(IMAGE_CONSUL_EXPORTER))
 image-prometheus-to-sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))
@@ -29,13 +31,13 @@ C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)
+NAME ?= $(APP_ID)-1
 
 # Additional variables
 ifdef METRICS_EXPORTER_ENABLED
   METRICS_EXPORTER_ENABLED_FIELD = , "prometheusToSd.enabled": $(METRICS_EXPORTER_ENABLED)
 endif
 
-NAME ?= $(APP_ID)-1
 
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \

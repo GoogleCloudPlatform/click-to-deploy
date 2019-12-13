@@ -1,5 +1,7 @@
 jenkins:
-  image: null
+  image:
+    repo: null
+    tag: null
 
 tls:
   base64EncodedPrivateKey: null
