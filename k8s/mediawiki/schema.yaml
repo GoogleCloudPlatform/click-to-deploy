@@ -55,7 +55,7 @@ properties:
 
   mediawiki.admin.username:
     type: string
-    title: mediawiki admin username
+    title: MediaWiki admin username
     description: Administrator username who will be able to manage the wiki.
     default: admin
 
@@ -72,15 +72,15 @@ properties:
   # db.mediawikiPassword is the database user's password for the user mediawiki.
   db.name:
     type: string
-    title: Mediawiki database name
-    description: Mediawiki database name which will be created in MySQL/MariaDB Server
+    title: MediaWiki database name
+    description: MediaWiki database name which will be created in MySQL/MariaDB Server
     default: mediawiki
 
   # db.mediawikiUsername is the database username for mediawiki database
   db.mediawikiUsername:
     type: string
-    title: Mediawiki username
-    description: Mediawiki database name which will be created in MySQL/MariaDB Server
+    title: MediaWiki username
+    description: MediaWiki database name which will be created in MySQL/MariaDB Server
     default: mediawiki
 
   # db.mediawikiPassword is the database user's password for the user mediawiki.
@@ -124,7 +124,7 @@ properties:
   enablePublicServiceAndIngress:
     type: boolean
     title: Enable public IP access
-    description: Set the mediawiki Service type to NodePort and enable Ingress
+    description: Set the MediaWiki Service type to NodePort and enable Ingress
     default: false
   metrics.enabled:
     type: boolean
