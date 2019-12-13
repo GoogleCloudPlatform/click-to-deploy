@@ -1,4 +1,7 @@
-influxdbImage: null
+influxdb:
+  image:
+    repo: null
+    tag: null
 
 admin:
   user: influxdb-admin

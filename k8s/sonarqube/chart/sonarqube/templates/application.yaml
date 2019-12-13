@@ -11,7 +11,7 @@ metadata:
 spec:
   descriptor:
     type: SonarQube
-    version: '7.6'
+    version: "{{ .Values.sonarqube.image.tag }}"
     description: |-
       SonarQube is an open source platform to perform automatic reviews with static analysis of code to detect bugs,
       code smells and security vulnerabilities on 25+ programming languages including Java, C#, JavaScript, TypeScript,
