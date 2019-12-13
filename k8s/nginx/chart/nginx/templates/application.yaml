@@ -11,7 +11,7 @@ metadata:
 spec:
   descriptor:
     type: NGINX
-    version: '1.15'
+    version: "{{ .Values.nginx.image.tag }}"
     description: |-
       NGINX is open-source software for web serving, reverse proxying,
       caching, load balancing, and media streaming.
