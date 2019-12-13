@@ -12,7 +12,7 @@ metadata:
 spec:
   descriptor:
     version: "{{ .Values.jenkins.image.tag }}"
-    type: Jenkins (Managed Updates)
+    type: Jenkins
     description: |-
       Jenkins is an open source automation server.
 

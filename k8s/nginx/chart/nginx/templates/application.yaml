@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/name: "{{ .Release.Name }}"
 spec:
   descriptor:
-    type: NGINX (Managed Updates)
+    type: NGINX
     version: "{{ .Values.nginx.image.tag }}"
     description: |-
       NGINX is open-source software for web serving, reverse proxying,
