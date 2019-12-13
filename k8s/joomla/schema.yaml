@@ -51,7 +51,7 @@ properties:
   joomla.volumeSize:
     type: integer
     title: Storage size for Joomla!
-    description: The Joomla! storage size for persistent volume (GB)
+    description: The storage size (GB) for the Joomla! persistent volume
     default: 6
 
   joomla.password:
@@ -95,7 +95,7 @@ properties:
   metrics.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
-    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
+    description: Your project must have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not yet supported.
     default: false
   certificate:
     type: string

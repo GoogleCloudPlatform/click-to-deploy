@@ -1,0 +1,134 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: {{ .Release.Name }}
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": {{ .Chart.Name | quote }}, "partner_name": "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+spec:
+  descriptor:
+    type: Drupal
+    version: "{{ .Values.drupal.image.tag }}"
+    description: |-
+      Drupal is content management system used to create websites.
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/drupal/).
+      Additional support is available on [community forums](https://www.drupal.org/forum).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy Drupal'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/drupal/README.md
+    - description: 'Drupal documentation'
+      url: https://www.drupal.org/documentation
+    notes: |-
+      # Get authentication credentials for the cluster
+
+      ```shell
+      gcloud container clusters get-credentials [CLUSTER_NAME] --zone [CLUSTER_ZONE]
+      ```
+      where:
+      * `[CLUSTER_NAME]` is the name of the cluster for this application
+      * `[CLUSTER_ZONE]` is the zone, in which the cluster is operating
+
+      Please read [here](https://cloud.google.com/kubernetes-engine/docs/quickstart#get_authentication_credentials_for_the_cluster) for more information.
+      {{ if .Values.enablePublicServiceAndIngress }}
+
+      # Open your Drupal site
+
+      Get the external IP of your Drupal site using the following command:
+      ```
+      SERVICE_IP=$(kubectl get ingress {{ .Release.Name }}-drupal-ingress \
+        --namespace {{ .Release.Namespace }} \
+        --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
+      echo "https://${SERVICE_IP}/"
+      ```
+      The command shows you the URL of your site.
+
+      # Update TLS certificate for Drupal
+
+      By default the application uses self-signed certificate. You can follow
+      [Update TLS certificate for Drupal section](https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/drupal/README.md#update-tls-certificate-for-drupal)
+      to update it.
+      {{ else }}
+
+      # Open your Drupal site
+
+      Drupal is exposed in a ClusterIP-only service `{{ .Release.Name }}-drupal-svc`. To connect to
+      Drupal UI, you can either expose a public service endpoint or keep it private, but connect
+      from you local environment with `kubectl port-forward`.
+
+      ## Forward Drupal port in local environment
+
+      You can use port forwarding feature of `kubectl` to forward Drupal's port to your local
+      machine. Run the following command in background:
+      ```shell
+      kubectl port-forward \
+        --namespace {{ .Release.Namespace }} \
+        svc/{{ .Release.Name }}-drupal-svc \
+        8080:80
+      ```
+      Now you can access Drupal UI with [http://localhost:8080](http://localhost:8080).
+      {{ end }}
+  info:
+  {{ if .Values.enablePublicServiceAndIngress }}
+  - name: Drupal site address
+    type: Reference
+    valueFrom:
+      ingressRef:
+        name: {{ .Release.Name }}-drupal-ingress
+        protocol: HTTPS
+  - name: Drupal admin address
+    type: Reference
+    valueFrom:
+      ingressRef:
+        name: {{ .Release.Name }}-drupal-ingress
+        path: /user/login/
+        protocol: HTTPS
+  {{ else }}
+  - name: Forward Drupal port locally
+    value: kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-drupal-svc 8080:80
+  - name: Drupal site address
+    value: http://localhost:8080/
+  - name: Drupal admin address
+    value: http://localhost:8080/user/login/
+  {{ end }}
+  - name: Drupal username
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: drupal-user
+        name: {{ .Release.Name }}-drupal-secret
+  - name: Drupal password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: drupal-password
+        name: {{ .Release.Name }}-drupal-secret
+  - name: Drupal user e-mail
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: drupal-email
+        name: {{ .Release.Name }}-drupal-secret
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Release.Name }}
+  componentKinds:
+  - group: v1
+    kind: Secret
+  - group: v1
+    kind: Service
+  {{ if .Values.enablePublicServiceAndIngress }}
+  - group: extensions/v1beta1
+    kind: Ingress
+  {{ end }}
+  - group: apps/v1
+    kind: StatefulSet
+  - group: v1
+    kind: PersistentVolumeClaim

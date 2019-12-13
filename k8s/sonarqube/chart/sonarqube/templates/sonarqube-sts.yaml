@@ -20,6 +20,18 @@ spec:
         command: ['sh', '-c',
           'until pg_isready -h {{ .Release.Name }}-postgresql-service -p 5432;
           do echo waiting for database; sleep 2; done;']
+      # https://docs.sonarqube.org/latest/requirements/requirements/#header-6
+      # According to the documentation, vm.max_map_count should be greater or equal to 262144
+      - name: increase-max-map-count
+        image: {{ .Values.deployer.image }}
+        command:
+        - /bin/bash
+        - -c
+        - |
+          echo "262144" > /proc/sys/vm/max_map_count
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          privileged: true
       containers:
         - name: {{ .Release.Name}}-sonarqube
           image: {{ .Values.sonarqube.image}}

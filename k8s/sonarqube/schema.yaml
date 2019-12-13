@@ -29,6 +29,10 @@ properties:
     default: $REGISTRY/postgresql-exporter:$TAG
     x-google-marketplace:
       type: IMAGE
+  deployer.image:
+    type: string
+    x-google-marketplace:
+      type: DEPLOYER_IMAGE
   metrics.image:
     type: string
     default: $REGISTRY/prometheus-to-sd:$TAG
