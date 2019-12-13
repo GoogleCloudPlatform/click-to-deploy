@@ -23,6 +23,9 @@ actions:
       kind: Jaeger
       metadata:
         name: example
+      spec:
+        ingress:
+          enabled: false
       EOF
     expect:
       exitCode:
