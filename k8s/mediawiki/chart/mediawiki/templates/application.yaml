@@ -124,7 +124,7 @@ spec:
     kind: Secret
   - group: v1
     kind: Service
-  {{- if not .Values.enablePublicServiceAndIngress }}
+  {{- if .Values.enablePublicServiceAndIngress }}
   - group: extensions/v1beta1
     kind: Ingress
   {{- end }}
