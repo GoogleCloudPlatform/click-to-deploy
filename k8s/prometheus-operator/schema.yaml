@@ -132,8 +132,6 @@ properties:
               resources:
               - ingresses
               verbs: ["get", "list", "watch"]
-            - nonResourceURLs: ["/metrics"]
-              verbs: ["get"]
   deployerHelm.image:
     type: string
     x-google-marketplace:
