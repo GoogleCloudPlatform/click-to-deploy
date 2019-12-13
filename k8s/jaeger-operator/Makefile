@@ -3,6 +3,8 @@ include ../gcloud.Makefile
 include ../var.Makefile
 include ../images.Makefile
 
+VERIFY_WAIT_TIMEOUT = 1200
+
 CHART_NAME := jaeger-operator
 APP_ID ?= $(CHART_NAME)
 
