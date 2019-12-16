@@ -27,9 +27,9 @@ spec:
       url: https://cloud.google.com/solutions/#click-to-deploy
     notes: |-
       {{ if .Values.enablePublicServiceAndIngress -}}
-      # Open your Mediawiki site
+      # Open your MediaWiki site
 
-      Get the external IP of your Mediawiki site using the following command:
+      Get the external IP of your MediaWiki site using the following command:
 
       ```
       SERVICE_IP=$(kubectl get ingress {{ .Release.Name }}-mediawiki-ingress \
@@ -41,22 +41,22 @@ spec:
 
       The command shows you the URL of your site.
 
-      # Update TLS certificate for Mediawiki
+      # Update TLS certificate for MediaWiki
 
       By default the application used self-signed certificate. You can follow
-      [Update TLS certificate for Mediawiki section](https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/Mediawiki/README.md#update-tls-certificate-for-Mediawiki)
+      [Update TLS certificate for MediaWiki section](https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/MediaWiki/README.md#update-tls-certificate-for-MediaWiki)
       to update it.
 
       {{- else -}}
-      # Open your Mediawiki site
+      # Open your MediaWiki site
 
-      Mediawiki is exposed in a ClusterIP-only service `{{ .Release.Name }}-mediawiki-svc`. To connect to
-      Mediawiki UI, you can either expose a public service endpoint or keep it private, but connect
+      MediaWiki is exposed in a ClusterIP-only service `{{ .Release.Name }}-mediawiki-svc`. To connect to
+      MediaWiki UI, you can either expose a public service endpoint or keep it private, but connect
       from you local environment with `kubectl port-forward`.
 
-      ## Forward Mediawiki port in local environment
+      ## Forward MediaWiki port in local environment
 
-      You can use port forwarding feature of `kubectl` to forward Mediawiki's port to your local
+      You can use port forwarding feature of `kubectl` to forward MediaWiki's port to your local
       machine. Run the following command in background:
 
       ```shell
@@ -66,24 +66,24 @@ spec:
         8080:80
       ```
 
-      Now you can access Mediawiki UI with [http://localhost:8080](http://localhost:8080).
+      Now you can access MediaWiki UI with [http://localhost:8080](http://localhost:8080).
       {{- end }}
   info:
   {{ if .Values.enablePublicServiceAndIngress -}}
-  - name: Mediawiki site address
+  - name: MediaWiki site address
     type: Reference
     valueFrom:
       ingressRef:
         name: {{ .Release.Name }}-mediawiki-ingress
         protocol: HTTPS
-  - name: Mediawiki login address
+  - name: MediaWiki login address
     type: Reference
     valueFrom:
       ingressRef:
         name: {{ .Release.Name }}-mediawiki-ingress
         path: "/index.php?title=Special:UserLogin"
         protocol: HTTPS
-  - name: Mediawiki special pages
+  - name: MediaWiki special pages
     type: Reference
     valueFrom:
       ingressRef:
@@ -91,22 +91,22 @@ spec:
         path: "/index.php/Special:SpecialPages"
         protocol: HTTPS
   {{- else -}}
-  - name: Forward Mediawiki port locally
+  - name: Forward MediaWiki port locally
     value: kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-mediawiki-svc 8080:80
-  - name: Mediawiki site address (local only
+  - name: MediaWiki site address (local only
     value: "http://localhost:8080/"
-  - name: Mediawiki login address (local only
+  - name: MediaWiki login address (local only
     value: "http://localhost:8080/index.php?title=Special:UserLogin"
-  - name: Mediawiki special pages (local only
+  - name: MediaWiki special pages (local only
     value: "http://localhost:8080/index.php/Special:SpecialPages"
   {{- end }}
-  - name: Mediawiki username
+  - name: MediaWiki username
     type: Reference
     valueFrom:
       secretKeyRef:
         key: mediawiki-user
         name: {{ .Release.Name }}-mediawiki-secret
-  - name: Mediawiki password
+  - name: MediaWiki password
     type: Reference
     valueFrom:
       secretKeyRef:

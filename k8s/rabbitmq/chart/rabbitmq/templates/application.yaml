@@ -11,7 +11,7 @@ metadata:
 spec:
   descriptor:
     type: RabbitMQ
-    version: '3.7'
+    version: "{{ .Values.rabbitmq.image.tag }}"
     description: |-
       RabbitMQ is an open source messaging system that implements the Advanced Message Queueing Protocol to serve a variety of messaging applications.
 

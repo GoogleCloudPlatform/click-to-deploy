@@ -1,19 +1,40 @@
-include ../app.Makefile
 include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
+include ../images.Makefile
 
-TAG ?= 1.5
+CHART_NAME := memcached
+APP_ID ?= $(CHART_NAME)
+
+TRACK ?= 1.5
+
 METRICS_EXPORTER_TAG ?= v0.5.1
 
-$(info ---- TAG = $(TAG))
+SOURCE_REGISTRY ?= marketplace.gcr.io/google
+IMAGE_MEMCACHED ?= $(SOURCE_REGISTRY)/memcached1:$(TRACK)
+IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
-APP_DEPLOYER_IMAGE ?= $(REGISTRY)/memcached/deployer:$(TAG)
-NAME ?= memcached-1
 
+# Main image
+image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_MEMCACHED))
+
+# List of images used in application
+ADDITIONAL_IMAGES := prometheus-to-sd
+
+# Additional images variable names should correspond with ADDITIONAL_IMAGES list
+image-prometheus-to-sd :=  $(call get_sha256,k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG))
+
+C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
+
+BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
+RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)
+NAME ?= $(APP_ID)-1
+
+# Additional variables
 ifdef METRICS_EXPORTER_ENABLED
-  METRICS_EXPORTER_ENABLED_FIELD = , "metrics.enabled": "$(METRICS_EXPORTER_ENABLED)"
+  METRICS_EXPORTER_ENABLED_FIELD = , "metrics.enabled": $(METRICS_EXPORTER_ENABLED)
 endif
+
 
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
@@ -21,64 +42,10 @@ APP_PARAMETERS ?= { \
   $(METRICS_EXPORTER_ENABLED_FIELD) \
 }
 
-TESTER_IMAGE ?= $(REGISTRY)/memcached/tester:$(TAG)
+# c2d_deployer.Makefile provides the main targets for installing the application.
+# It requires several APP_* variables defined above, and thus must be included after.
+include ../c2d_deployer.Makefile
 
 
-app/build:: .build/memcached/deployer \
-            .build/memcached/memcached \
-            .build/memcached/prometheus-to-sd \
-            .build/memcached/tester
-
-
-.build/memcached: | .build
-	mkdir -p "$@"
-
-
-.build/memcached/deployer: deployer/* \
-                           chart/memcached/* \
-                           chart/memcached/templates/* \
-                           schema.yaml \
-                           .build/var/APP_DEPLOYER_IMAGE \
-                           .build/var/MARKETPLACE_TOOLS_TAG \
-                           .build/var/REGISTRY \
-                           .build/var/TAG \
-                           | .build/memcached
-	docker build \
-	    --build-arg REGISTRY="$(REGISTRY)/memcached" \
-	    --build-arg TAG="$(TAG)" \
-	    --build-arg MARKETPLACE_TOOLS_TAG="$(MARKETPLACE_TOOLS_TAG)" \
-	    --tag "$(APP_DEPLOYER_IMAGE)" \
-	    -f deployer/Dockerfile \
-	    .
-	docker push "$(APP_DEPLOYER_IMAGE)"
-	@touch "$@"
-
-
-.build/memcached/memcached: .build/var/REGISTRY \
-                            .build/var/TAG \
-                            | .build/memcached
-	docker pull marketplace.gcr.io/google/memcached1:$(TAG)
-	docker tag marketplace.gcr.io/google/memcached1:$(TAG) \
-	    "$(REGISTRY)/memcached:$(TAG)"
-	docker push "$(REGISTRY)/memcached:$(TAG)"
-	@touch "$@"
-
-
-.build/memcached/prometheus-to-sd: .build/var/REGISTRY \
-                                   .build/var/TAG \
-                                   | .build/memcached
-	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
-	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
-	    "$(REGISTRY)/memcached/prometheus-to-sd:$(TAG)"
-	docker push "$(REGISTRY)/memcached/prometheus-to-sd:$(TAG)"
-	@touch "$@"
-
-
-.build/memcached/tester: .build/var/TESTER_IMAGE \
-                         $(shell find apptest -type f) \
-                         | .build/memcached
-	$(call print_target,$@)
-	cd apptest/tester \
-	    && docker build --tag "$(TESTER_IMAGE)" .
-	docker push "$(TESTER_IMAGE)"
-	@touch "$@"
+# Build tester image
+app/build:: .build/$(CHART_NAME)/tester

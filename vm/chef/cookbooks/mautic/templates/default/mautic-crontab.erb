@@ -1,0 +1,13 @@
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+8,23,38,52 * * * *     www-data   php /var/www/html/app/console mautic:segments:update > /var/log/cron.pipe 2>&1
+       */5 * * * *     www-data   php /var/www/html/app/console mautic:import > /var/log/cron.pipe 2>&1
+5,20,35,50 * * * *     www-data   php /var/www/html/app/console mautic:campaigns:rebuild > /var/log/cron.pipe 2>&1
+2,17,32,47 * * * *     www-data   php /var/www/html/app/console mautic:campaigns:trigger > /var/log/cron.pipe 2>&1
+
+## Uncomment the line below if you selected queue emails during the installation process.
+# 0,15,30,45 * * * *     www-data   php /var/www/html/app/console mautic:messages:send > /var/log/cron.pipe 2>&1
+
+## download geoip db on start if it does not exist
+# @reboot                www-data   [[ "$(ls -A /var/www/html/app/cache/ip_data 2>/dev/null)" ]] || php /var/www/html/app/console mautic:iplookup:download > /var/log/cron.pipe 2>&1
