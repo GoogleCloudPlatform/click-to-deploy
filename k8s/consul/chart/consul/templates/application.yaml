@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/name: "{{ .Release.Name }}"
 spec:
   descriptor:
-    type: Consul
+    type: Consul (Managed Updates)
     version: "{{ (split ":" ( default .Values.global.image .Values.server.image ))._1 }}"
     description: |-
       Consul is a distributed service mesh to connect, secure, and configure services, across any runtime platform and public or private cloud.
