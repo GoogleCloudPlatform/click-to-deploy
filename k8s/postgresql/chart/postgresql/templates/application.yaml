@@ -11,7 +11,7 @@ metadata:
 spec:
   descriptor:
     type: PostgreSQL
-    version: '9.6.10'
+    version: "{{ .Values.postgresql.image.tag }}"
     description: |-
       PostgreSQL is an open source object-relational database with an emphasis on extensibility and standards-compliance.
 
