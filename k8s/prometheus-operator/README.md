@@ -1,18 +1,18 @@
 # Overview
 
-Prometheus Operator provides a management tool to install and operate instances of Prometheus, a monitoring and alerting tool.
+Prometheus Operator is a management tool for installing and operating instances of Prometheus, a monitoring and alerting toolkit.
 
 For more information, visit the [Prometheus official website](https://prometheus.io/docs/introduction/overview/).
 
 ## About Google Click to Deploy
 
-Popular open stacks on Kubernetes packaged by Google.
+Popular open stacks on Kubernetes, packaged by Google.
 
 ## Architecture
 
 ![Architecture diagram](resources/prometheus-operator-k8s-app-architecture.png)
 
-The application offers a Prometheus Operator deployment on a Kubernetes cluster.
+The app offers a Prometheus Operator deployment on a Kubernetes cluster.
 
 # Installation
 
@@ -22,14 +22,14 @@ Get up and running with a few clicks! Install this Prometheus operator app to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 [on-screen instructions](https://console.cloud.google.com/marketplace/details/google/prometheus-operator).
 
-## Command line instructions
+## Command-line instructions
 
 ### Prerequisites
 
 #### Set up command-line tools
 
 You'll need the following tools in your development environment. If you are
-using Cloud Shell, `gcloud`, `kubectl`, Docker, and Git are installed in your
+using Cloud Shell, then `gcloud`, `kubectl`, Docker, and Git are installed in your
 environment by default.
 
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
@@ -46,7 +46,7 @@ gcloud auth configure-docker
 
 #### Create a Google Kubernetes Engine (GKE) cluster
 
-Create a new cluster from the command line:
+Create a new cluster from the command-line:
 
 ```shell
 export CLUSTER=prometheus-operator-cluster
@@ -63,7 +63,7 @@ gcloud container clusters get-credentials "${CLUSTER}" --zone "${ZONE}"
 
 #### Clone this repo
 
-Clone this repo and the associated tools repo:
+Clone this repo and its associated tools repo:
 
 ```shell
 git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
@@ -86,7 +86,7 @@ The Application resource is defined by the
 [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps) community.
 The source code can be found on [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
 
-### Install the Application
+### Install the app
 
 Navigate to the `prometheus-operator` directory:
 
@@ -112,9 +112,9 @@ export TAG=0.34
 export IMAGE_OPERATOR="marketplace.gcr.io/google/prometheus-operator"
 ```
 
-#### Create namespace in your Kubernetes cluster
+#### Create a namespace in your Kubernetes cluster
 
-If you use a different namespace than the `default`, run the command below to create a new namespace:
+If you plan to use a different namespace than the `default`, run the command below to create a new namespace:
 
 ```shell
 kubectl create namespace "${NAMESPACE}"
@@ -148,7 +148,7 @@ kubectl apply -f "${APP_INSTANCE_NAME}_sa_manifest.yaml" \
 #### Expand the manifest template
 
 Use `helm template` to expand the template. We recommend that you save the
-expanded manifest file for future updates to the application.
+expanded manifest file for future updates to the app.
 
 ```shell
 helm template chart/prometheus-operator \
@@ -205,14 +205,15 @@ kubectl apply --namespace "${NAMESPACE}" -f \
 05-prometheus.yaml
 ```
 
-You can find additional configuration options on [official documentation
-page](https://github.com/coreos/prometheus-operator/blob/master/Documentation/user-guides/getting-started.md)
+You can find additional configuration options in the
+[official Prometheus documentation](https://github.com/coreos/prometheus-operator/blob/master/Documentation/user-guides/getting-started.md).
 
 ### Get access to the sample Prometheus Dashboard
 
-Prometheus query interface will be available at [http://localhost:9090/](http://localhost:9090/)
+The Prometheus query interface will be available at [http://localhost:9090/](http://localhost:9090/).
 
 Run the following command to start port forwarding:
+
 ```shell
 kubectl --namespace "${NAMESPACE}" port-forward \
     service/prometheus-operated  9090:9090
@@ -220,13 +221,13 @@ kubectl --namespace "${NAMESPACE}" port-forward \
 
 # Scaling
 
-Scaling is not supported for Prometheus operator.
+Scaling is not supported for Prometheus Operator.
 
-# Backup and Restore
+# Back up and restore
 
-## Backup Prometheus configuration data to your local environment
+## Back up Prometheus configuration data to your local environment
 
-Backup Prometheus resources using the following command:
+To back up Prometheus resources, use the following command:
 
 ```shell
 export NAMESPACE=default
@@ -239,7 +240,7 @@ kubectl --namespace "${NAMESPACE}" get crd \
    --output=yaml > backup_file.yaml
 ```
 
-## Restore Prometheus configuration from local environment
+## Restore Prometheus configuration data from your local environment
 
 ```shell
 kubectl --namespace "${NAMESPACE}" apply -f backup_file.yaml
@@ -247,15 +248,17 @@ kubectl --namespace "${NAMESPACE}" apply -f backup_file.yaml
 
 # Upgrading the app
 
-The Prometheus operator Deployments is configured to roll out updates automatically.
-Start the update by patching the Deployment with a new image reference:
+The Prometheus Operator deployment is configured to roll out updates
+automatically. To start an update, patch the deployment with a new
+image reference:
 
 ```shell
 kubectl set image deployment ${APP_INSTANCE_NAME}-prometheus-operator --namespace ${NAMESPACE} \
   "prometheus-operator=[NEW_OPERATOR_IMAGE_REFERENCE]"
 ```
 
-Where `[NEW_OPERATOR_IMAGE_REFERENCE]` are the Docker image references of the new images that you want to use.
+where `[NEW_OPERATOR_IMAGE_REFERENCE]` is the Docker image reference
+of the new image that you want to use.
 
 To check the status of Pods in the StatefulSet, and the progress of
 the new image, run the following command:
@@ -265,16 +268,17 @@ kubectl get pods --selector app.kubernetes.io/name=${APP_INSTANCE_NAME} \
   --namespace ${NAMESPACE}
 ```
 
-# Uninstall the Application
+# Uninstall the app
 
-## Using the Google Cloud Platform Console
+## Using the Google Cloud Console
 
-1. In the GCP Console, open [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
-1. From the list of applications, click **Prometheus**.
+1. In the Cloud Console, open [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
+
+1. From the list of apps, click **Prometheus**.
 
 1. On the Application Details page, click **Delete**.
 
-## Using the command line
+## Using the command-line
 
 ### Prepare the environment
 
@@ -287,8 +291,9 @@ export NAMESPACE=default
 
 ### Delete the resources
 
-> **NOTE:** We recommend to use a kubectl version that is the same as the version of your cluster.
-Using the same versions of kubectl and the cluster helps avoid unforeseen issues.
+> **NOTE:** We recommend that you use a kubectl version that is the same as the
+version of your cluster. Using the same versions of kubectl and the cluster helps
+to avoid unforeseen issues.
 
 To delete the resources, use the expanded manifest file used for the
 installation.
@@ -299,7 +304,7 @@ Run `kubectl` on the expanded manifest file:
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace ${NAMESPACE}
 ```
 
-Otherwise, delete the resources using types and a label:
+Otherwise, delete the resources by using types and a label:
 
 ```shell
 kubectl delete application \
@@ -307,12 +312,13 @@ kubectl delete application \
   --selector app.kubernetes.io/name=${APP_INSTANCE_NAME}
 ```
 
-> **NOTE:** It will delete only the prometheus-operator application. All prometheus-operator managed resources will be available.
+> **NOTE:** This will only delete the `prometheus-operator` app. All
+`prometheus-operator`-managed resources will remain available.
 
 ### Delete the GKE cluster
 
-Optionally, if you don't need the deployed application or the GKE cluster,
-delete the cluster using this command:
+Optionally, if you don't need the deployed app or the GKE cluster, use this
+command to delete the cluster:
 
 ```shell
 gcloud container clusters delete "${CLUSTER}" --zone "${ZONE}"
