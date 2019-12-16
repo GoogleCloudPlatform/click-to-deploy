@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/name: "{{ .Release.Name }}"
 spec:
   descriptor:
-    type: etcd
+    type: etcd (Managed Updates)
     version: "{{ .Values.image.tag }}"
     description: |-
       etcd is a distributed key-value store, designed for distributed systems.
