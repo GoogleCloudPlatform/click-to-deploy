@@ -71,3 +71,18 @@ actions:
     expect:
       exitCode:
         equals: 0
+- name: Delete test Jaeger
+  bashTest:
+    script: |
+      kubectl delete --namespace ${NAMESPACE} -f - <<EOF
+      apiVersion: jaegertracing.io/v1
+      kind: Jaeger
+      metadata:
+        name: example
+      spec:
+        ingress:
+          enabled: false
+      EOF
+    expect:
+      exitCode:
+        equals: 0
