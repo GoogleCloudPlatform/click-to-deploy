@@ -2,6 +2,9 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
+# TODO(GoogleCloudPlatform/click-to-deploy/issues/846): Migrate SonarQube to
+# the new version of Makefile.
+
 APP_ID ?= sonarqube
 VERIFY_WAIT_TIMEOUT = 600
 
