@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,6 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'php7'
+require 'spec_helper'
 
-include_recipe 'composer::composer-only'
+describe port(22) do
+  it { should be_listening.on('0.0.0.0') }
+end
+
+describe port(80) do
+  it { should be_listening.on('0.0.0.0') }
+end
+
+describe port(3306) do
+  it { should be_listening.on('127.0.0.1') }
+  it { should_not be_listening.on('0.0.0.0') }
+end

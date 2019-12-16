@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'php7'
-
-include_recipe 'composer::composer-only'
+bash 'Assign IPv4 only' do
+  user 'root'
+  code <<-EOH
+    sed -i 's/^Listen 80/Listen 0.0.0.0:80/' /etc/apache2/ports.conf
+  EOH
+end
