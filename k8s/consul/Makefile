@@ -3,34 +3,52 @@ include ../gcloud.Makefile
 include ../var.Makefile
 include ../images.Makefile
 
-APP_ID ?= consul
-
-SOURCE_REGISTRY ?= marketplace.gcr.io/google
+CHART_NAME := consul
+APP_ID ?= $(CHART_NAME)
 
 TRACK ?= 1.4
+
+CONSUL_EXPORTER_TAG ?= exporter
 METRICS_EXPORTER_TAG ?= v0.5.1
 
+SOURCE_REGISTRY ?= marketplace.gcr.io/google
+IMAGE_CONSUL ?= $(SOURCE_REGISTRY)/consul1:$(TRACK)
+IMAGE_CONSUL_EXPORTER ?= $(SOURCE_REGISTRY)/consul1:$(CONSUL_EXPORTER_TAG)
+IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+
+
+# Main image
+image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_CONSUL))
+
 # List of images used in application
-TARGET_IMAGES := consul-exporter prometheus-to-sd
+ADDITIONAL_IMAGES := consul-exporter prometheus-to-sd
 
-# Image variable names should correspond with TARGET_IMAGES list
-image-$(APP_ID) := $(call get_sha256,$(SOURCE_REGISTRY)/consul1:$(TRACK))
-image-consul-exporter := $(call get_sha256,$(SOURCE_REGISTRY)/consul1:exporter)
-image-prometheus-to-sd := $(call get_sha256,k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG))
+# Additional images variable names should correspond with ADDITIONAL_IMAGES list
+image-consul-exporter := $(call get_sha256,$(IMAGE_CONSUL_EXPORTER))
+image-prometheus-to-sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))
 
-# TODO(aav66): Replace with C2D_RELEASE variable after container is updated.
-C2D_CONTAINER_RELEASE := $(call get_var_from_container,$(image-$(APP_ID)),CONSUL_VERSION)
+C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)
-
 NAME ?= $(APP_ID)-1
+
+# Additional variables
+ifdef METRICS_EXPORTER_ENABLED
+  METRICS_EXPORTER_ENABLED_FIELD = , "prometheusToSd.enabled": $(METRICS_EXPORTER_ENABLED)
+endif
+
 
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
+  $(METRICS_EXPORTER_ENABLED_FIELD) \
 }
 
 # c2d_deployer.Makefile provides the main targets for installing the application.
 # It requires several APP_* variables defined above, and thus must be included after.
 include ../c2d_deployer.Makefile
+
+
+# Build tester image
+app/build:: .build/$(CHART_NAME)/tester

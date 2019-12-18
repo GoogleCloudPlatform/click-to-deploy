@@ -1,5 +1,7 @@
 sonarqube:
-  image: null
+  image:
+    repo: null
+    tag: null
 postgresql:
   image: null
   exporter:
@@ -14,3 +16,5 @@ metrics:
 tls:
   base64EncodedPrivateKey: null
   base64EncodedCertificate: null
+deployer:
+  image: null

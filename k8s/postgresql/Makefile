@@ -1,27 +1,52 @@
-include ../app.Makefile
 include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
+include ../images.Makefile
 
-TAG ?= 9.6
+CHART_NAME := postgresql
+APP_ID ?= $(CHART_NAME)
+
+TRACK ?= 9.6
+
+# TODO(GoogleCloudPlatform/click-to-deploy/issues/845): Delete and use TRACK
+# after C2D_RELEASE variable is added to container
+# Please note that PostgreSQL should use "9.6-kubernetes" tag.
+POSTGRESQL_TAG ?= sha256:42678ad4f7982447ad8ff2bf343b055ce4732c3e68391007ebdcbcc1ecbc0236
 METRICS_EXPORTER_TAG ?= v0.5.1
 
-SRCTAG ?= 9.6-kubernetes
-IMAGE_POSTGRESQL ?= marketplace.gcr.io/google/postgresql9:$(SRCTAG)
-IMAGE_POSTGRESQL_EXPORTER ?= marketplace.gcr.io/google/postgresql9:exporter
+SOURCE_REGISTRY ?= marketplace.gcr.io/google
+IMAGE_POSTGRESQL ?= $(SOURCE_REGISTRY)/postgresql9@$(POSTGRESQL_TAG)
+IMAGE_EXPORTER ?= $(SOURCE_REGISTRY)/postgresql9:exporter
+IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
-$(info ---- TAG = $(TAG))
 
+# Main image
+image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_POSTGRESQL))
+
+# List of images used in application
+ADDITIONAL_IMAGES := exporter prometheus-to-sd
+
+# Additional images variable names should correspond with ADDITIONAL_IMAGES list
+image-exporter := $(call get_sha256,$(IMAGE_EXPORTER))
+image-prometheus-to-sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))
+
+# TODO(GoogleCloudPlatform/click-to-deploy/issues/845): Use following after
+# C2D_RELEASE variable is added to container instead of fixed version.
+# C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
+C2D_CONTAINER_RELEASE ?= 9.6.15
+
+BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
+RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)
+NAME ?= $(APP_ID)-1
+
+# Additional variables
 ifdef METRICS_EXPORTER_ENABLED
-  METRICS_EXPORTER_ENABLED_FIELD = , "metrics.enabled": "$(METRICS_EXPORTER_ENABLED)"
+  METRICS_EXPORTER_ENABLED_FIELD = , "metrics.enabled": $(METRICS_EXPORTER_ENABLED)
 endif
 
 ifdef EXPOSE_PUBLIC_SERVICE
   EXPOSE_PUBLIC_SERVICE_FIELD = , "postgresql.exposePublicService": "$(EXPOSE_PUBLIC_SERVICE)"
 endif
-
-APP_DEPLOYER_IMAGE ?= $(REGISTRY)/postgresql/deployer:$(TAG)
-NAME ?= postgresql-1
 
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
@@ -30,87 +55,10 @@ APP_PARAMETERS ?= { \
   $(EXPOSE_PUBLIC_SERVICE_FIELD) \
 }
 
-TESTER_IMAGE ?= $(REGISTRY)/postgresql/tester:$(TAG)
+# c2d_deployer.Makefile provides the main targets for installing the application.
+# It requires several APP_* variables defined above, and thus must be included after.
+include ../c2d_deployer.Makefile
 
 
-app/build:: .build/postgresql/deployer \
-            .build/postgresql/postgresql \
-            .build/postgresql/exporter \
-            .build/postgresql/prometheus-to-sd \
-            .build/postgresql/tester
-
-
-.build/postgresql: | .build
-	mkdir -p "$@"
-
-
-.build/postgresql/deployer: deployer/* \
-                            chart/postgresql/* \
-                            chart/postgresql/templates/* \
-                            schema.yaml \
-                            .build/var/APP_DEPLOYER_IMAGE \
-                            .build/var/MARKETPLACE_TOOLS_TAG \
-                            .build/var/REGISTRY \
-                            .build/var/TAG \
-                            | .build/postgresql
-	docker build \
-	    --build-arg REGISTRY="$(REGISTRY)/postgresql" \
-	    --build-arg TAG="$(TAG)" \
-	    --build-arg MARKETPLACE_TOOLS_TAG="$(MARKETPLACE_TOOLS_TAG)" \
-	    --tag "$(APP_DEPLOYER_IMAGE)" \
-	    -f deployer/Dockerfile \
-	    .
-	docker push "$(APP_DEPLOYER_IMAGE)"
-	@touch "$@"
-
-
-.build/postgresql/postgresql: .build/var/REGISTRY \
-                              .build/var/TAG \
-                              | .build/postgresql
-	docker pull $(IMAGE_POSTGRESQL)
-	docker tag $(IMAGE_POSTGRESQL) "$(REGISTRY)/postgresql:$(TAG)"
-	docker push "$(REGISTRY)/postgresql:$(TAG)"
-	@touch "$@"
-
-
-.build/postgresql/exporter: .build/var/REGISTRY \
-                            .build/var/TAG \
-                            | .build/postgresql
-	docker pull $(IMAGE_POSTGRESQL_EXPORTER)
-	docker tag $(IMAGE_POSTGRESQL_EXPORTER) "$(REGISTRY)/postgresql/exporter:$(TAG)"
-	docker push "$(REGISTRY)/postgresql/exporter:$(TAG)"
-	@touch "$@"
-
-
-.build/postgresql/prometheus-to-sd: .build/var/REGISTRY \
-                                    .build/var/TAG \
-                                    | .build/postgresql
-	docker pull k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
-	docker tag k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG) \
-	    "$(REGISTRY)/postgresql/prometheus-to-sd:$(TAG)"
-	docker push "$(REGISTRY)/postgresql/prometheus-to-sd:$(TAG)"
-	@touch "$@"
-
-
-.build/postgresql/tester: .build/var/TESTER_IMAGE \
-                          $(shell find apptest -type f) \
-                          | .build/postgresql
-	$(call print_target,$@)
-	cd apptest/tester \
-	    && docker build --tag "$(TESTER_IMAGE)" .
-	docker push "$(TESTER_IMAGE)"
-	@touch "$@"
-
-
-show-config:
-	@psqlpass=$$(kubectl get secret/$(NAME)-secret -ojsonpath={.data.password} | base64 -d);\
-	psqladdr=$$(kubectl get services/$(NAME)-postgresql-svc | awk '/^$(NAME)-postgresql/ {print $$4}');\
-	psqluser=postgres;\
-	echo;\
-	echo -en "username: $$psqluser\n";\
-	echo -en "password: $$psqlpass\n";\
-	echo -en "address:  $$psqladdr\n";\
-	echo;\
-	echo "command:";\
-	echo "PGPASSWORD=$$psqlpass psql sslmode=require -U$$psqluser -h $$psqladdr";\
-	echo
+# Build tester image
+app/build:: .build/$(CHART_NAME)/tester

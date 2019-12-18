@@ -13,7 +13,7 @@ metadata:
 spec:
   descriptor:
     type: Elasticsearch
-    version: '6.3'
+    version: "{{ .Values.elasticsearch.image.tag }}"
     description: |-
       Elasticsearch is an open-source search engine that provides a distributed, multitenant-capable
       full-text search engine with an HTTP web interface and schema-free JSON documents.

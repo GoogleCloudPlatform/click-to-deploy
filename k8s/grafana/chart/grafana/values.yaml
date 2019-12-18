@@ -1,5 +1,7 @@
 grafana:
-  image: null
+  image:
+    repo: null
+    tag: null
   initImage: null
   user: admin
   password: null

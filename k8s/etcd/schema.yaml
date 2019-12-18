@@ -12,7 +12,7 @@ x-google-marketplace:
     recommended: false
 
   managedUpdates:
-    kalmSupported: false
+    kalmSupported: true
 
   images:
     '':
@@ -59,7 +59,7 @@ properties:
   persistence.storageClass:
     type: string
     title: StorageClass
-    description: You can choose existing storageclass or create new one. Newly created StorageClass provisioner will be "pd-ssd".
+    description: You can choose an existing StorageClass or create a new one. Newly created StorageClass provisioner will be "pd-ssd".
     x-google-marketplace:
       type: STORAGE_CLASS
       storageClass:
@@ -81,8 +81,8 @@ properties:
   metrics.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
-    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters,
-      export of metrics to Stackdriver is not supported yet
+    description: Your GCP project must have Stackdriver enabled. For non-GCP clusters,
+      export of metrics to Stackdriver is not currently supported.
     default: false
 
 required:

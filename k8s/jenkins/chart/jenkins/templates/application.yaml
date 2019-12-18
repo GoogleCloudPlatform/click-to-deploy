@@ -11,7 +11,7 @@ metadata:
     app.kubernetes.io/name: "{{ .Release.Name }}"
 spec:
   descriptor:
-    version: '2.150'
+    version: "{{ .Values.jenkins.image.tag }}"
     type: Jenkins
     description: |-
       Jenkins is an open source automation server.

@@ -1,0 +1,22 @@
+actions:
+- name: Site address should be 200 OK (service DNS)
+  httpTest:
+    url: http://{{ .Env.APP_INSTANCE_NAME }}-magento-svc
+    expect:
+      statusCode:
+        equals: 200
+      bodyText:
+        html:
+          body:
+            matches: 'CMS homepage content goes here.'
+
+- name: Test stub status
+  httpTest:
+    url: http://{{ .Env.APP_INSTANCE_NAME }}-magento-svc:8080/stub_status
+    expect:
+      statusCode:
+        equals: 200
+      bodyText:
+        html:
+          body:
+            matches: 'Active connections'
