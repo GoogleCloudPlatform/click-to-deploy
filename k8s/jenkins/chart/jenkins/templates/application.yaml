@@ -35,7 +35,7 @@ spec:
       *  [gcloud](https://cloud.google.com/sdk/gcloud/)
         *  If gcloud has not been configured yet, then configure gcloud by following the [gcloud Quickstart](https://cloud.google.com/sdk/gcloud/).
       *  [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-        *  Set kubectl to a specific cluster by following the steps at [container get-credentials](https://cloud.google.com/sdk/gcloud/).
+        *  Set kubectl to a specific cluster by following the steps at [container get-credentials](https://cloud.google.com/sdk/gcloud/reference/container/clusters/get-credentials).
       *  [sed](https://www.gnu.org/software/sed/)
 
       # Accessing your Jenkins instance
