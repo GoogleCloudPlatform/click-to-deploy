@@ -30,30 +30,35 @@ spec:
       url: https://jenkins.io/doc/
     notes: |-
       # Prerequisites
+      
       You'll need the following tools in your environment:
 
-      *  [gcloud](https://cloud.google.com/sdk/gcloud/)
-        *  If gcloud has not been configured yet, then configure gcloud by following the [gcloud Quickstart](https://cloud.google.com/sdk/gcloud/).
-      *  [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-        *  Set kubectl to a specific cluster by following the steps at [container get-credentials](https://cloud.google.com/sdk/gcloud/reference/container/clusters/get-credentials).
+      *  [gcloud](https://cloud.google.com/sdk/gcloud/): if gcloud has not been configured yet, then configure gcloud by following the [gcloud Quickstart](https://cloud.google.com/sdk/gcloud/).
+      *  [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/): set `kubectl` to a specific cluster by following the steps at [container get-credentials](https://cloud.google.com/sdk/gcloud/reference/container/clusters/get-credentials).
       *  [sed](https://www.gnu.org/software/sed/)
 
       # Accessing your Jenkins instance
-      Identify the HTTPS endpoint:
 
-      ```shell
-      echo https://$(kubectl -n{{ .Release.Namespace }} get ingress -l "app.kubernetes.io/name={{ .Release.Name }}" -ojsonpath="{.items[0].status.loadBalancer.ingress[0].ip}")/
-      ```
+      > NOTE: For HTTPS, you must accept a temporary TLS certificate.
 
-      For HTTPS, you must accept a certificate (we have created a temporary one for you). You will also need a password:
+      1. Read a temporary password:
 
-      ```shell
-      kubectl -n{{ .Release.Namespace }} exec \
-        $(kubectl -n{{ .Release.Namespace }} get pod -oname | sed -n /\\/{{ .Release.Name }}-jenkins/s.pods\\?/..p) \
-        cat /var/jenkins_home/secrets/initialAdminPassword
-      ```
+          ```shell
+          kubectl -n{{ .Release.Namespace }} exec \
+          $(kubectl -n{{ .Release.Namespace }} get pod -oname | sed -n /\\/{{ .Release.Name }}-jenkins/s.pods\\?/..p) \
+          cat /var/jenkins_home/secrets/initialAdminPassword
+          ```
+
+      1. Identify the HTTPS endpoint:
+
+          ```shell
+          echo https://$(kubectl -n{{ .Release.Namespace }} get ingress -l "app.kubernetes.io/name={{ .Release.Name }}" -ojsonpath="{.items[0].status.loadBalancer.ingress[0].ip}")/
+          ```
+
+      1.  Navigate to the endpoint.
 
       # Configuring your Jenkins instance
+
       Follow the on-screen instructions to fully configure your Jenkins instance:
 
       *  Install plugins
