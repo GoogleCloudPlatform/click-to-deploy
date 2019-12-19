@@ -1,0 +1,148 @@
+x-google-marketplace:
+  schemaVersion: v2
+  applicationApiVersion: v1beta1
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      A regular update.
+    releaseTypes:
+      - Feature
+    recommended: false
+  managedUpdates:
+    kalmSupported: false
+  images:
+    '':
+      properties:
+        operator.image.repository:
+          type: REPO_WITH_REGISTRY
+        operator.image.tag:
+          type: TAG
+  clusterConstraints:
+    resources:
+    - replicas: 1
+      requests:
+        cpu: 100m
+        memory: 500Mi
+      affinity:
+        simple NodeAffinity:
+          type: REQUIRE_ONE_NODE_PER_REPLICA
+          minimumNodeCount: 1
+    istio:
+      type: UNSUPPORTED
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  operator.serviceAccountName:
+    type: string
+    title: Service account used by Jaeger Operator
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        roles:
+        - type: ClusterRole
+          rulesType: CUSTOM
+          rules:
+            - apiGroups: ["apiextensions.k8s.io"]
+              resources: ["customresourcedefinitions"]
+              verbs: ["get","list"]
+            - apiGroups:
+              - ""
+              resources:
+                - pods
+                - services
+                - endpoints
+                - persistentvolumeclaims
+                - events
+                - configmaps
+                - secrets
+                - serviceaccounts
+              verbs:
+                - '*'
+            - apiGroups:
+              - apps
+              resources:
+              - deployments
+              - daemonsets
+              - replicasets
+              - statefulsets
+              verbs:
+              - '*'
+            - apiGroups:
+              - monitoring.coreos.com
+              resources:
+              - servicemonitors
+              verbs:
+              - get
+              - create
+            - apiGroups:
+              - extensions
+              resources:
+              - replicasets
+              - deployments
+              - daemonsets
+              - statefulsets
+              - ingresses
+              verbs:
+                - '*'
+            - apiGroups:
+              - batch
+              resources:
+              - jobs
+              - cronjobs
+              verbs:
+              - '*'
+            - apiGroups:
+              - jaegertracing.io
+              resources:
+              - '*'
+              verbs:
+              - '*'
+            - apiGroups:
+              - rbac.authorization.k8s.io
+              resources:
+              - clusterrolebindings
+              verbs:
+              - '*'
+            - apiGroups:
+              - apps
+              - extensions
+              resourceNames:
+              - jaeger-operator
+              resources:
+              - deployments/finalizers
+              verbs:
+              - update
+            - apiGroups:
+              - kafka.strimzi.io
+              resources:
+              - kafkas
+              - kafkausers
+              verbs:
+              - '*'
+  CDRJobServiceAccount:
+    type: string
+    title: Service account used by CRDs deployer
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        roles:
+        - type: ClusterRole
+          rulesType: CUSTOM
+          rules:
+            - apiGroups: ["apiextensions.k8s.io"]
+              resources: ["customresourcedefinitions"]
+              verbs: ["get","list","create"]
+  deployerHelm.image:
+    type: string
+    x-google-marketplace:
+      type: DEPLOYER_IMAGE
+
+required:
+- name
+- namespace

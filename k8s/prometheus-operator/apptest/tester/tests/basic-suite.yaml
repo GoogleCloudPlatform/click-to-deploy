@@ -1,0 +1,52 @@
+actions:
+- name: Try to get IP of Prometheus query service
+  bashTest:
+    script: |
+      export NAMESPACE;
+      timeout 120 bash -c '
+        until (host prometheus-operated.${NAMESPACE}.svc.cluster.local \
+              | grep "has address");
+          do sleep 2;
+        done'
+    expect:
+      exitCode:
+        equals: 0
+- name: Try to connect to Prometheus query service
+  bashTest:
+    script: |
+      export NAMESPACE;
+      timeout 120 bash -c '
+        until nc -vzw 5 prometheus-operated.${NAMESPACE}.svc.cluster.local 9090;
+          do sleep 2;
+        done'
+    expect:
+      exitCode:
+        equals: 0
+- name: Waiting for first data
+  bashTest:
+    script: |
+      sleep 30
+    expect:
+      exitCode:
+        equals: 0
+- name: Try to make test request to Prometheus query service - /targets
+  bashTest:
+    script: |
+      curl --retry 3 --retry-connrefused --retry-max-time 60 -sG \
+        --data-urlencode 'match_target={job="prometheus-operated"}' \
+        prometheus-operated.${NAMESPACE}.svc.cluster.local:9090/api/v1/targets/metadata \
+        | jq .status | grep "success"
+    expect:
+      exitCode:
+        equals: 0
+- name: Try to make test request to Prometheus query service - /series
+  bashTest:
+    script: |
+      curl --retry 3 --retry-connrefused --retry-max-time 60 -sG \
+        --data-urlencode 'match[]=up' \
+        --data-urlencode 'match[]=process_start_time_seconds{job="prometheus-operated"}' \
+        prometheus-operated.${NAMESPACE}.svc.cluster.local:9090/api/v1/series \
+        | jq .status | grep "success"
+    expect:
+      exitCode:
+        equals: 0
