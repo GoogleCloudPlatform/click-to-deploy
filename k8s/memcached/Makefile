@@ -22,11 +22,7 @@ image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_MEMCACHED))
 ADDITIONAL_IMAGES := prometheus-to-sd
 
 # Additional images variable names should correspond with ADDITIONAL_IMAGES list
-<<<<<<< HEAD
-image-prometheus-to-sd :=  $(call get_sha256,k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG))
-=======
 image-prometheus-to-sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))
->>>>>>> master
 
 C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
 
