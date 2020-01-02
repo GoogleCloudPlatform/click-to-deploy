@@ -26,246 +26,161 @@ further instructions.
 
 [![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/GoogleCloudPlatform/click-to-deploy&cloudshell_open_in_editor=README.md&cloudshell_working_dir=k8s/flink-operator)
 
-### Dependencies
+### Prerequisites
 
-The following dependencies are required to build the Flink Operator binary and
-run unit tests:
+#### Set up command line tools
 
-* [Go v1.12+](https://golang.org/)
-* [Kubebuilder v2+](https://github.com/kubernetes-sigs/kubebuilder)
+You'll need the following tools in your development environment:
 
-But you don't have to install them on your local machine, because this project
-includes a [builder Docker image](../Dockerfile.builder) with the dependencies
-installed. Build and unit test can happen inside of the builder container. This
-is the recommended way for local development.
+- [gcloud](https://cloud.google.com/sdk/gcloud/)
+- [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
+- [docker](https://docs.docker.com/install/)
+- [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
-But to create the Flink Operator Docker image and deploy it to a Kubernetes
-cluster, the following dependencies are required on you local machine:
+Configure `gcloud` as a Docker credential helper:
 
-* [Docker](https://www.docker.com/)
-* [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-* [Kustomize v3.1+](https://github.com/kubernetes-sigs/kustomize)
-
-### Local build and test
-
-To build the Flink Operator binary and run unit tests, run
-
-#### In Docker (recommended)
-
-```bash
-make test-in-docker
+```shell
+gcloud auth configure-docker
 ```
 
-#### Non-Docker (not recommended)
+#### Create a Google Kubernetes Engine cluster
 
-```bash
-make test
+Create a new cluster from the command line:
+
+```shell
+export CLUSTER=flink-operator-cluster
+export ZONE=us-west1-a
+
+gcloud container clusters create "$CLUSTER" --zone "$ZONE"
 ```
 
-### Build and push docker image
+Configure `kubectl` to connect to the new cluster:
 
-Build a Docker image for the Flink Operator and then push it to an image
-registry with
-
-```bash
-make operator-image push-operator-image IMG=<tag>
+```shell
+gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 ```
 
-Depending on which image registry you want to use, choose a tag accordingly,
-e.g., if you are using [Google Container Registry](https://cloud.google.com/container-registry/docs/)
-you want to use a tag like `gcr.io/<project>/flink-operator:latest`.
+#### Clone this repo
 
-After building the image, it automatically saves the image tag in
-`config/default/manager_image_patch.yaml`, so that when you deploy the Flink
-operator later, it knows what image to use.
+Clone this repo and the associated tools repo:
 
-### Deploy the operator to a running Kubernetes cluster
-
-Assume you have built and pushed the Flink Operator image, then you need to have
-a running Kubernetes cluster. Verify the cluster info with
-
-```bash
-kubectl cluster-info
+```shell
+git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 ```
 
-Deploy the Flink Custom Resource Definitions and the Flink Operator to the
-cluster with
+#### Install the Application resource definition
 
-```bash
-make deploy
+An Application resource is a collection of individual Kubernetes components,
+such as Services, Deployments, and so on, that you can manage as a group.
+
+To set up your cluster to understand Application resources, run the following command:
+
+```shell
+kubectl apply -f "https://raw.githubusercontent.com/GoogleCloudPlatform/marketplace-k8s-app-tools/master/crd/app-crd.yaml"
 ```
 
-After that, you can verify CRD `flinkclusters.flinkoperator.k8s.io` has been
-created with
+You need to run this command once.
 
-```bash
-kubectl get crds | grep flinkclusters.flinkoperator.k8s.io
+The Application resource is defined by the
+[Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps)
+community. The source code can be found on
+[github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
+
+### Install the Application
+
+Navigate to the `flink-operator` directory:
+
+```shell
+cd click-to-deploy/k8s/flink-operator
 ```
 
-You can also view the details of the CRD with
+#### Configure the app with environment variables
 
-```bash
-kubectl describe crds/flinkclusters.flinkoperator.k8s.io
+Choose an instance name and
+[namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)
+for the app. In most cases, you can use the `default` namespace.
+
+```shell
+export APP_INSTANCE_NAME=flink-operator-1
+export NAMESPACE=default
 ```
 
-The operator runs as a Kubernetes Deployment, you can find out the deployment
-with
+Configure the container images:
 
-```bash
-kubectl get deployments -n flink-operator-system
+```shell
+export FLINK_OPERATOR_IMAGE="marketplace.gcr.io/google/flink-operator:beta"
 ```
 
-or verify the operator pod is up and running.
+The images above are referenced by
+[tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
+that you pin each image to an immutable
+[content digest](https://docs.docker.com/registry/spec/api/#content-digests).
+This ensures that the installed application always uses the same images,
+until you are ready to upgrade. To get the digest for the image, use the
+following script:
 
-```bash
-kubectl get pods -n flink-operator-system
+```shell
+for i in "FLINK_OPERATOR_IMAGE"; do
+  repo=$(echo ${!i} | cut -d: -f1);
+  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
+  export $i="$repo@$digest";
+  env | grep $i;
+done
 ```
 
-You can also check the operator logs with
+#### Create namespace in your Kubernetes cluster
 
-```bash
-kubectl logs -n flink-operator-system -l app=flink-operator --all-containers
+If you use a different namespace than the `default`, run the command below to create a new namespace:
+
+```shell
+kubectl create namespace "${NAMESPACE}"
 ```
 
-### Create a sample Flink cluster
+#### Configure the service account
 
-After deploying the Flink CRDs and the Flink Operator to a Kubernetes cluster,
-the operator serves as a control plane for Flink. In other words, previously the
-cluster only understands the language of Kubernetes, now it understands the
-language of Flink. You can then create custom resources representing Flink
-session clusters or job clusters, the operator will detect the custom resources
-automatically, then create the actual clusters optionally run jobs, and update
-status in the custom resources.
+The operator needs a service account in the target namespace with cluster wide
+permissions to manipulate Kubernetes resources.
 
-Create a [sample Flink session cluster](../config/samples/flinkoperator_v1alpha1_flinksessioncluster.yaml)
-custom resource with
+Provision a service account and export its via an environment variable as follows:
 
-```bash
-kubectl apply -f config/samples/flinkoperator_v1alpha1_flinksessioncluster.yaml
+```shell
+kubectl create serviceaccount "${APP_INSTANCE_NAME}-sa" --namespace "${NAMESPACE}"
+kubectl create clusterrolebinding "${NAMESPACE}-${APP_INSTANCE_NAME}-sa-rb" --clusterrole=cluster-admin --serviceaccount="${NAMESPACE}:${APP_INSTANCE_NAME}-sa"
+export SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-sa"
 ```
 
-and a [sample Flink job cluster](../config/samples/flinkoperator_v1alpha1_flinkjobcluster.yaml)
-custom resource with
+#### Expand the manifest template
 
-```bash
-kubectl apply -f config/samples/flinkoperator_v1alpha1_flinkjobcluster.yaml
+Use `envsubst` to expand the template. We recommend that you save the
+expanded manifest file for future updates to the application.
+
+```shell
+awk 'FNR==1 {print "---"}{print}' manifest/* \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $FLINK_OPERATOR_IMAGE $SERVICE_ACCOUNT' \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
-### Submit a job
+#### Apply the manifest to your Kubernetes cluster
 
-There are several ways to submit jobs to a session cluster.
+Use `kubectl` to apply the manifest to your Kubernetes cluster:
 
-1) **Flink web UI**
-
-You can submit jobs through the Flink web UI. See instructions in the
-Monitoring section on how to setup a proxy to the Flink Web UI.
-
-2) **From within the cluster**
-
-You can submit jobs through a client Pod in the same cluster, for example:
-
-```bash
-kubectl run my-job-submitter --image=flink:1.8.1 --generator=run-pod/v1 -- \
-    /opt/flink/bin/flink run -m flinksessioncluster-sample-jobmanager:8081 \
-    /opt/flink/examples/batch/WordCount.jar --input /opt/flink/README.txt
+```shell
+kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
 
-3) **From outside the cluster**
+#### View the app in the Google Cloud Console
 
-If you have configured the access scope of JobManager as `External` or `VPC`,
-you can submit jobs from a machine which is in the scope, for example:
+To get the Console URL for your app, run the following command:
 
-```bash
-flink run -m <jobmanager-service-ip>:8081 \
-    examples/batch/WordCount.jar --input /opt/flink/README.txt
+```shell
+echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
 ```
 
-Or if the access scope is `Cluster` which is the default, you can use port
-forwarding to establish a tunnel from a machine which has access to the
-Kubernetes API service (typically your local machine) to the JobManager service
-first, for example:
+To view your app, open the URL in your browser.
 
-```bash
-kubectl port-forward service/flinksessioncluster-sample-jobmanager 8081:8081
-```
 
-then submit jobs through the tunnel, for example:
+### Deploy your Flink Applications
 
-```bash
-flink run -m localhost:8081 \
-    examples/batch/WordCount.jar --input ./README.txt
-```
-
-### Monitoring
-
-#### Operator
-
-You can check the operator logs with
-
-```bash
-kubectl logs -n flink-operator-system -l app=flink-operator --all-containers -f --tail=1000
-```
-
-#### Flink cluster
-
-After deploying a Flink cluster with the operator, you can find the cluster
-custom resource with
-
-```bash
-kubectl get flinkclusters
-```
-
-check the cluster status with
-
-```bash
-kubectl describe flinkclusters <CLUSTER-NAME>
-```
-
-#### Flink job
-
-In a job cluster, the job is automatically submitted by the operator you can
-check the Flink job status and logs with
-
-```bash
-kubectl describe jobs <CLUSTER-NAME>-job
-kubectl logs jobs/<CLUSTER-NAME>-job -f --tail=1000
-```
-
-In a session cluster, depending on how you submit the job, you can check the
-job status and logs accordingly.
-
-#### Flink web UI, REST API and CLI
-
-You can also access the Flink web UI, [REST API](https://ci.apache.org/projects/flink/flink-docs-stable/monitoring/rest_api.html)
-and [CLI](https://ci.apache.org/projects/flink/flink-docs-stable/ops/cli.html) by first creating a port forward from you
-local machine to the JobManager service UI port (8081 by default).
-
-```bash
-kubectl port-forward svc/[FLINK_CLUSTER_NAME]-jobmanager 8081:8081
-```
-
-then access the web UI with your browser through the following URL:
-
-```bash
-http://localhost:8081
-```
-
-call the Flink REST API, e.g., list jobs:
-
-```bash
-curl http://localhost:8081/jobs
-```
-
-run the Flink CLI, e.g. list jobs:
-
-```bash
-flink list -m localhost:8081
-```
-
-### Undeploy the operator
-
-Undeploy the operator and CRDs from the Kubernetes cluster with
-
-```
-make undeploy
-```
+Follow these
+[examples](https://github.com/GoogleCloudPlatform/flink-on-k8s-operator/blob/master/docs/developer_guide.md#submit-a-job)
+to deploy your Flink jobs.
