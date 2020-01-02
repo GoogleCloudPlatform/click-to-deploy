@@ -1,0 +1,74 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spark-operator
+  labels:
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/component: sparkoperator-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+      initializers:
+        pending: []
+    spec:
+      serviceAccountName: $SERVICE_ACCOUNT
+      volumes:
+      - name: webhook-certs
+        secret:
+          secretName: spark-webhook-certs
+      containers:
+      - name: sparkoperator
+        image: $SPARK_OPERATOR_IMAGE
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: webhook-certs
+          mountPath: /etc/webhook-certs
+        ports:
+        - containerPort: 8080
+        args:
+        - -logtostderr
+        - -enable-webhook=true
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: sparkoperator-init
+  labels:
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+spec:
+  backoffLimit: 3
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    spec:
+      serviceAccountName: $SERVICE_ACCOUNT
+      restartPolicy: Never
+      containers:
+      - name: main
+        image: $SPARK_OPERATOR_IMAGE
+        imagePullPolicy: Always
+        command: ["/usr/bin/gencerts.sh", "-p", "-n", "$NAMESPACE"]
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: spark-webhook
+  labels:
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+spec:
+  ports:
+    - port: 443
+      targetPort: 8080
+      name: webhook
+  selector:
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
