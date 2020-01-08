@@ -101,14 +101,14 @@ Choose an instance name and
 for the app. In most cases, you can use the `default` namespace.
 
 ```shell
-export APP_INSTANCE_NAME=flink-operator-1
-export NAMESPACE=default
+export APP_INSTANCE_NAME=flink-operator
+export NAMESPACE=flink-operator-system
 ```
 
 Configure the container images:
 
 ```shell
-export FLINK_OPERATOR_IMAGE="marketplace.gcr.io/google/flink-operator:beta"
+export FLINK_OPERATOR_IMAGE="gcr.io/flink-operator/flink-operator:v1alpha1"
 ```
 
 The images above are referenced by
@@ -156,11 +156,17 @@ expanded manifest file for future updates to the application.
 
 ```shell
 awk 'FNR==1 {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $FLINK_OPERATOR_IMAGE $SERVICE_ACCOUNT' \
+  | envsubst '$NAMESPACE $FLINK_OPERATOR_IMAGE' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster
+
+Install cert manager before deploy the operator:
+
+```shell
+bash scripts/deploy_cert_manager.sh
+```
 
 Use `kubectl` to apply the manifest to your Kubernetes cluster:
 
