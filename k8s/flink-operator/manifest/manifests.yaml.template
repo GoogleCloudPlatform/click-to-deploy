@@ -351,7 +351,7 @@ spec:
           defaultMode: 420
           secretName: webhook-server-cert
 ---
-apiVersion: certmanager.k8s.io/v1beta1
+apiVersion: certmanager.k8s.io/v1alpha1
 kind: Certificate
 metadata:
   name: flink-operator-serving-cert
@@ -365,7 +365,7 @@ spec:
     name: flink-operator-selfsigned-issuer
   secretName: webhook-server-cert
 ---
-apiVersion: certmanager.k8s.io/v1beta1
+apiVersion: certmanager.k8s.io/v1alpha1
 kind: Issuer
 metadata:
   name: flink-operator-selfsigned-issuer

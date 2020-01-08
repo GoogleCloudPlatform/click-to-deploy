@@ -108,7 +108,7 @@ export NAMESPACE=flink-operator-system
 Configure the container images:
 
 ```shell
-export FLINK_OPERATOR_IMAGE="gcr.io/flink-operator/flink-operator:v1alpha1"
+export FLINK_OPERATOR_IMAGE="gcr.io/flink-operator/flink-operator:v1beta1"
 ```
 
 The images above are referenced by
@@ -156,7 +156,7 @@ expanded manifest file for future updates to the application.
 
 ```shell
 awk 'FNR==1 {print "---"}{print}' manifest/* \
-  | envsubst '$NAMESPACE $FLINK_OPERATOR_IMAGE' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $FLINK_OPERATOR_IMAGE' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
