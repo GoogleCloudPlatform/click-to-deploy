@@ -1,5 +1,8 @@
 jenkins:
-  image: null
-metrics:
-  image: null
-  enabled: false
+  image:
+    repo: null
+    tag: null
+
+tls:
+  base64EncodedPrivateKey: null
+  base64EncodedCertificate: null

@@ -31,7 +31,7 @@ include_recipe 'php7::module_mysql'
 include_recipe 'php7::module_xml'
 
 remote_file '/tmp/drupal.tar.gz' do
-  source "https://www.drupal.org/download-latest/tar.gz"
+  source 'https://www.drupal.org/download-latest/tar.gz'
   action :create
 end
 
@@ -56,9 +56,9 @@ chown -R $user .
 # create db
 mysql -u root -e "CREATE DATABASE $defdb CHARACTER SET utf8 COLLATE utf8_general_ci";
 EOH
-  environment ({
+  environment({
     'user' => node['drupal']['user'],
-    'defdb' => node['drupal']['db']['name']
+    'defdb' => node['drupal']['db']['name'],
   })
 end
 

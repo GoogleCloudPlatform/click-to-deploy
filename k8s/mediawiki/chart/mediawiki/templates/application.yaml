@@ -1,0 +1,132 @@
+---
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "{{ .Release.Name }}"
+  namespace: "{{ .Release.Namespace }}"
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": {{ .Chart.Name | quote }}, "partner_name": "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+spec:
+  descriptor:
+    type: MediaWiki
+    version: "{{ .Values.mediawiki.image.tag }}"
+    description: >-
+      MediaWiki is a collaboration and documentation platform brought to you by a vibrant community
+
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/mediawiki/).
+      Additional support channels are available on
+      [MediaWiki communications page](https://www.mediawiki.org/wiki/Communication).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    notes: |-
+      {{ if .Values.enablePublicServiceAndIngress -}}
+      # Open your MediaWiki site
+
+      Get the external IP of your MediaWiki site using the following command:
+
+      ```
+      SERVICE_IP=$(kubectl get ingress {{ .Release.Name }}-mediawiki-ingress \
+        --namespace {{ .Release.Namespace }} \
+        --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+      echo "https://${SERVICE_IP}/"
+      ```
+
+      The command shows you the URL of your site.
+
+      # Update TLS certificate for MediaWiki
+
+      By default the application used self-signed certificate. You can follow
+      [Update TLS certificate for MediaWiki section](https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/MediaWiki/README.md#update-tls-certificate-for-MediaWiki)
+      to update it.
+
+      {{- else -}}
+      # Open your MediaWiki site
+
+      MediaWiki is exposed in a ClusterIP-only service `{{ .Release.Name }}-mediawiki-svc`. To connect to
+      MediaWiki UI, you can either expose a public service endpoint or keep it private, but connect
+      from you local environment with `kubectl port-forward`.
+
+      ## Forward MediaWiki port in local environment
+
+      You can use port forwarding feature of `kubectl` to forward MediaWiki's port to your local
+      machine. Run the following command in background:
+
+      ```shell
+      kubectl port-forward \
+        --namespace {{ .Release.Namespace }} \
+        svc/{{ .Release.Name }}-mediawiki-svc \
+        8080:80
+      ```
+
+      Now you can access MediaWiki UI with [http://localhost:8080](http://localhost:8080).
+      {{- end }}
+  info:
+  {{ if .Values.enablePublicServiceAndIngress -}}
+  - name: MediaWiki site address
+    type: Reference
+    valueFrom:
+      ingressRef:
+        name: {{ .Release.Name }}-mediawiki-ingress
+        protocol: HTTPS
+  - name: MediaWiki login address
+    type: Reference
+    valueFrom:
+      ingressRef:
+        name: {{ .Release.Name }}-mediawiki-ingress
+        path: "/index.php?title=Special:UserLogin"
+        protocol: HTTPS
+  - name: MediaWiki special pages
+    type: Reference
+    valueFrom:
+      ingressRef:
+        name: {{ .Release.Name }}-mediawiki-ingress
+        path: "/index.php/Special:SpecialPages"
+        protocol: HTTPS
+  {{- else -}}
+  - name: Forward MediaWiki port locally
+    value: kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-mediawiki-svc 8080:80
+  - name: MediaWiki site address (local only
+    value: "http://localhost:8080/"
+  - name: MediaWiki login address (local only
+    value: "http://localhost:8080/index.php?title=Special:UserLogin"
+  - name: MediaWiki special pages (local only
+    value: "http://localhost:8080/index.php/Special:SpecialPages"
+  {{- end }}
+  - name: MediaWiki username
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: mediawiki-user
+        name: {{ .Release.Name }}-mediawiki-secret
+  - name: MediaWiki password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: mediawiki-password
+        name: {{ .Release.Name }}-mediawiki-secret
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "{{ .Release.Name }}"
+  componentKinds:
+  - group: v1
+    kind: PersistentVolumeClaim
+  - group: apps/v1beta2
+    kind: StatefulSet
+  - group: v1
+    kind: Secret
+  - group: v1
+    kind: Service
+  {{- if .Values.enablePublicServiceAndIngress }}
+  - group: extensions/v1beta1
+    kind: Ingress
+  {{- end }}
+  - group: v1
+    kind: ConfigMap

@@ -1,14 +1,20 @@
 # Overview
 
-Airflow Operator is a custom Kubernetes operator that makes it easy to deploy and manage Apache Airflow on Kubernetes. Apache Airflow is a platform to programmatically author, schedule and monitor workflows. Using the Airflow Operator, an Airflow cluster is split into 2 parts represented by AirflowBase and AirflowCluster [custom resources](https://kubernetes.io/docs/tasks/access-kubernetes-api/extend-api-custom-resource-definitions/).
+Airflow Operator is a custom Kubernetes operator that makes it easy to deploy
+and manage Apache Airflow on Kubernetes. Apache Airflow is a platform to
+programmatically author, schedule, and monitor workflows. Using the Airflow
+Operator, an Airflow cluster is split into 2 parts, represented by the
+AirflowBase and AirflowCluster
+[custom resources](https://kubernetes.io/docs/tasks/access-kubernetes-api/extend-api-custom-resource-definitions/).
 
 The Airflow Operator performs these jobs:
 
-1. Creates and manages the necessary Kubernetes resources for an Airflow deployment.
-2. Updates the corresponding Kubernetes resources when the AirflowBase or AirflowCluster specification changes.
-3. Restores managed Kubernetes resources that are deleted.
-4. Supports creation of different kinds of Airflow schedulers
-5. Supports mulitple AirflowClusters per AirflowBase
+1.  Creates and manages the Kubernetes resources for an Airflow deployment.
+2.  Updates the corresponding Kubernetes resources when the AirflowBase or
+    AirflowCluster specification changes.
+3.  Restores managed Kubernetes resources that are deleted.
+4.  Supports creation of different kinds of Airflow schedulers.
+5.  Supports multiple AirflowClusters per AirflowBase.
 
 Learn more about the [Airflow](https://airflow.apache.org/).
 
@@ -20,27 +26,29 @@ Popular open stacks on Kubernetes packaged by Google.
 
 ## Quick install with Google Cloud Marketplace
 
-Get up and running with a few clicks! Install Airflow Operator app to a
-Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
+Get up and running with a few clicks! Install Airflow Operator app to a Google
+Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 [on-screen instructions](https://console.cloud.google.com/marketplace/details/google/airflow-operator).
 
 ## Command line instructions
 
-You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local workstation in the
-further instructions.
+You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local
+workstation to follow the steps below.
 
-[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/GoogleCloudPlatform/click-to-deploy&cloudshell_working_dir=k8s/airflow-operator)
+[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/GoogleCloudPlatform/click-to-deploy&cloudshell_open_in_editor=README.md&cloudshell_working_dir=k8s/airflow-operator)
 
 ### Prerequisites
 
 #### Set up command-line tools
 
-You'll need the following tools in your development environment:
+You'll need the following tools in your development environment. If you are
+using Cloud Shell, `gcloud`, `kubectl`, Docker and Git are installed on your
+environment by default.
 
-- [gcloud](https://cloud.google.com/sdk/gcloud/)
-- [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
-- [docker](https://docs.docker.com/install/)
-- [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+-   [gcloud](https://cloud.google.com/sdk/gcloud/)
+-   [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
+-   [docker](https://docs.docker.com/install/)
+-   [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
 #### Create a Google Kubernetes Engine cluster
 
@@ -78,7 +86,8 @@ git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 An Application resource is a collection of individual Kubernetes components,
 such as Services, Deployments, and so on, that you can manage as a group.
 
-To set up your cluster to understand Application resources, run the following command:
+To set up your cluster to understand Application resources, run the following
+command:
 
 ```shell
 kubectl apply -f "https://raw.githubusercontent.com/GoogleCloudPlatform/marketplace-k8s-app-tools/master/crd/app-crd.yaml"
@@ -121,9 +130,9 @@ The images above are referenced by
 [tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
 that you pin each image to an immutable
 [content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This ensures that the installed application always uses the same images,
-until you are ready to upgrade. To get the digest for the image, use the
-following script:
+This ensures that the installed application always uses the same images, until
+you are ready to upgrade. To get the digest for the image, use the following
+script:
 
 ```shell
 for i in "IMAGE_AIRFLOWOPERATOR"; do
@@ -136,7 +145,8 @@ done
 
 #### Create namespace in your Kubernetes cluster
 
-If you use a different namespace than the `default`, run the command below to create a new namespace:
+If you use a different namespace than the `default`, run the command below to
+create a new namespace:
 
 ```shell
 kubectl create namespace "$NAMESPACE"
@@ -147,18 +157,19 @@ kubectl create namespace "$NAMESPACE"
 The operator needs a service account in the target namespace with cluster wide
 permissions to manipulate Kubernetes resources.
 
-Provision a service account and export its via an environment variable as follows:
+Provision a service account and export its via an environment variable as
+follows:
 
 ```shell
 kubectl create serviceaccount "${APP_INSTANCE_NAME}-sa" --namespace "${NAMESPACE}"
 kubectl create clusterrolebinding "${NAMESPACE}-${APP_INSTANCE_NAME}-sa-rb" --clusterrole=cluster-admin --serviceaccount="${NAMESPACE}:${APP_INSTANCE_NAME}-sa"
-export serviceAccount="${APP_INSTANCE_NAME}-sa"
+export SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-sa"
 ```
 
 #### Expand the manifest template
 
-Use `envsubst` to expand the template. We recommend that you save the
-expanded manifest file for future updates to the application.
+Use `envsubst` to expand the template. We recommend that you save the expanded
+manifest file for future updates to the application.
 
 ```shell
 awk 'FNR==1 {print "---"}{print}' manifest/* \
@@ -187,7 +198,8 @@ To view your app, open the URL in your browser.
 
 # Using Airflow Operator
 
-To deploy an Airflow cluster, we need to create the AirflowBase resource first followed by AirflowCluster resource.
+To deploy an Airflow cluster, we need to create the AirflowBase resource first
+followed by AirflowCluster resource.
 
 ```
 # create AirflowBase resource first
@@ -242,11 +254,12 @@ $ kubectl port-forward mc-cluster-airflowui-0 8080:8080
 
 ## Using the Google Cloud Platform Console
 
-1. In the GCP Console, open [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
+1.  In the GCP Console, open
+    [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
 
-1. From the list of applications, click **Airflow Operator**.
+1.  From the list of applications, click **Airflow Operator**.
 
-1. On the Application Details page, click **Delete**.
+1.  On the Application Details page, click **Delete**.
 
 ## Using the command line
 
@@ -261,7 +274,9 @@ export NAMESPACE=default
 
 ### Delete the resources
 
-> **NOTE:** We recommend to use a kubectl version that is the same as the version of your cluster. Using the same versions of kubectl and the cluster helps avoid unforeseen issues.
+> **NOTE:** We recommend to use a kubectl version that is the same as the
+> version of your cluster. Using the same versions of kubectl and the cluster
+> helps avoid unforeseen issues.
 
 To delete the resources, use the expanded manifest file used for the
 installation.

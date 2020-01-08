@@ -25,4 +25,3 @@ bash 'configure mysql-apt-config v5.7' do
   apt-get update
 EOH
 end
-

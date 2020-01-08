@@ -1,0 +1,41 @@
+magento:
+  image:
+    repo: null
+    tag: null
+  admin:
+    username: admin
+    password: null
+    email: null
+  volumeSize: "10Gi"
+
+db:
+  image: null
+  magentoUser: magento
+  magentoPassword: null
+  rootPassword: null
+  name: magento
+  exporter:
+    image: null
+    username: exporter
+    password: null
+  volumeSize: "8Gi"
+
+redis:
+  image: null
+  password: null
+  exporter:
+    image: null
+  volumeSize: "5Gi"
+
+nginx:
+  exporter:
+    image: null
+
+tls:
+  base64EncodedPrivateKey: null
+  base64EncodedCertificate: null
+
+metrics:
+  enabled: true
+
+enablePublicServiceAndIngress: false

@@ -1,5 +1,7 @@
 cassandra:
-  image: null
+  image:
+    repo: null
+    tag: null
   replicas: null
 
 metrics:

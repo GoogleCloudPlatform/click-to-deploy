@@ -1,0 +1,88 @@
+actions:
+- name: kubectl smoke test
+  bashTest:
+    script: kubectl version
+    expect:
+      exitCode:
+        equals: 0
+- name: Waiting for Jaegers CRDs created
+  bashTest:
+    script: |
+      timeout 120 bash -c '
+      until kubectl get crd jaegers.jaegertracing.io;
+            do echo "Waiting for Jaegers CRDs created"; sleep 5;
+      done'
+    expect:
+      exitCode:
+        equals: 0
+- name: Deploy test Jaeger
+  bashTest:
+    script: |
+      kubectl apply --namespace ${NAMESPACE} -f - <<EOF
+      apiVersion: jaegertracing.io/v1
+      kind: Jaeger
+      metadata:
+        name: example
+      spec:
+        ingress:
+          enabled: false
+      EOF
+    expect:
+      exitCode:
+        equals: 0
+- name: Try to get IP of Jaeger query service
+  bashTest:
+    script: |
+      export NAMESPACE;
+      timeout 120 bash -c '
+        until (host example-query.${NAMESPACE}.svc.cluster.local \
+              | grep "has address");
+          do sleep 2;
+        done'
+    expect:
+      exitCode:
+        equals: 0
+- name: Try to connect to Jaeger query service
+  bashTest:
+    script: |
+      export NAMESPACE;
+      timeout 120 bash -c '
+        until nc -vzw 5 example-query.${NAMESPACE}.svc.cluster.local 16686;
+          do sleep 2;
+        done'
+    expect:
+      exitCode:
+        equals: 0
+- name: Try to make test request to Jaeger query service
+  bashTest:
+    script: |
+      curl --retry 3 --retry-connrefused --retry-max-time 60 \
+        example-query.${NAMESPACE}.svc.cluster.local:16686/api/services?foo=bar
+    expect:
+      exitCode:
+        equals: 0
+- name: Trying to find previous request from Jaeger query service
+  bashTest:
+    script: |
+      sleep 10; \
+      curl --retry 3 --retry-connrefused --retry-max-time 60 \
+        "example-query.${NAMESPACE}.svc.cluster.local:16686/api/traces?service=jaeger-query&tags=%7B%22http.url%22%3A%22%2Fapi%2Fservices%3Ffoo%3Dbar%22%7D" \
+        | jq .data[0] | grep "api/services?foo=bar"
+    expect:
+      exitCode:
+        equals: 0
+- name: Delete test Jaeger
+  bashTest:
+    script: |
+      kubectl delete --namespace ${NAMESPACE} -f - <<EOF
+      apiVersion: jaegertracing.io/v1
+      kind: Jaeger
+      metadata:
+        name: example
+      spec:
+        ingress:
+          enabled: false
+      EOF
+    expect:
+      exitCode:
+        equals: 0

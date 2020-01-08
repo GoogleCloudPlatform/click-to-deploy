@@ -27,7 +27,7 @@ spec:
             mountPath: "/var/lib/grafana"
       containers:
         - name: grafana
-          image: {{ .Values.grafana.image }}
+          image: "{{ .Values.grafana.image.repo }}:{{ .Values.grafana.image.tag }}"
           imagePullPolicy: Always
           volumeMounts:
             - name: config
@@ -70,6 +70,29 @@ spec:
             requests:
               cpu: 50m
               memory: 100Mi
+        {{ if .Values.metrics.enabled }}
+        - name: prometheus-to-sd
+          image: {{ .Values.metrics.image }}
+          ports:
+            - name: profiler
+              containerPort: 6060
+          command:
+            - /monitor
+            - --stackdriver-prefix=custom.googleapis.com
+            - --source=grafana:http://localhost:3000/metrics
+            - --pod-id=$(POD_NAME)
+            - --namespace-id=$(POD_NAMESPACE)
+            - --monitored-resource-types=k8s
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+        {{ end }}
       volumes:
         - name: config
           configMap:

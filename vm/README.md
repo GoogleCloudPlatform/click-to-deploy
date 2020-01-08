@@ -74,12 +74,12 @@ To pull the `imagebuilder` container image, run the following `docker`
 command:
 
 ```shell
-docker pull gcr.io/cloud-marketplace-tools/vm/imagebuilder:0.1.0
+docker pull gcr.io/cloud-marketplace-tools/vm/imagebuilder:0.1.2
 ```
 
 The container uses a GCP service account JSON key to access the GCP project,
 create VM instances, and save the VM image. For information
-about creating and managing service account in GCP, see the GCP documentation
+about creating and managing service accounts in GCP, see the GCP documentation
 for
 [Creating and managing service accounts](https://cloud.google.com/iam/docs/creating-managing-service-accounts)
 and
@@ -118,7 +118,7 @@ docker run \
   -e "ATTACH_LICENSE=true" \
   -e "LICENSE_PROJECT_NAME=click-to-deploy-images" \
   -e "TESTS_CUSTOM_METADATA=google-c2d-startup-enable=0" \
-  gcr.io/cloud-marketplace-tools/vm/imagebuilder:0.1.0
+  gcr.io/cloud-marketplace-tools/vm/imagebuilder:0.1.2
 ```
 
 For more configuration options, see
@@ -129,7 +129,7 @@ and
 ## Cloud Build CI
 
 This repository uses Cloud Build for continuous integration. The Cloud Build
-configuration file is located at
+configuration file for VM apps is located at
 [`../cloudbuild-vm.yaml`](../cloudbuild-vm.yaml).
 
 ### Manually run the build
@@ -153,44 +153,13 @@ gcloud builds submit . \
 
 1.  The service account JSON key is downloaded from the GCS bucket to
     Cloud Build's workspace.
-
 1.  After the above step is executed successfully, the `imagebuilder` container runs and builds
     the VM image defined in the `$_SOLUTION_NAME` variable.
-
-### GCB custom worker pools
-
-To allow connection via an internal IP. The Cloud Build configuration uses
-Google Cloud Build (GCB) custom worker pools.
-
-If you want to create a new worker pool, run the following command:
-
-```shell
-gcloud alpha builds worker-pools create gcb-workers-pool \
-  --project=[PROJECT_ID] \
-  --regions=us-central1,us-west1,us-east1,us-east-4 \
-  --worker-count=2 \
-  --worker-machine-type=n1-standard-1 \
-  --worker-tag=gcb-worker \
-  --worker-network-name=default \
-  --worker-network-project=[PROJECT_ID] \
-  --worker-network-subnet=default
-```
-
-Where:
-
-*  `[PROJECT_ID]` is the GCP project ID where you want to create your custom worker pool.
-
-If you want to update the number of workers in an existing pool, run the following command:
-
-```shell
-gcloud alpha builds worker-pools update gcb-workers-pool \
-  --project=[PROJECT_ID] \
-  --worker-count=4 \
-```
-
-For more information, see the
-[gcloud alpha builds worker-pools commands](https://cloud.google.com/sdk/gcloud/reference/alpha/builds/worker-pools/).
 
 ## Foodcritic
 
 We use [Foodcritic](http://www.foodcritic.io/) as a lint tool for Chef cookbooks. Disabled rules are included in [`.foodcritic`](chef/.foodcritic) file.
+
+## Cookstyle
+
+We use [Cookstyle](https://github.com/chef/cookstyle) as a lint tool for Chef cookbooks. Disabled rules are included in [`.rubocop.yml`](chef/.rubocop.yml) file.

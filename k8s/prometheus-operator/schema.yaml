@@ -1,0 +1,142 @@
+x-google-marketplace:
+  schemaVersion: v2
+  applicationApiVersion: v1beta1
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      A regular update.
+    releaseTypes:
+      - Feature
+    recommended: false
+  managedUpdates:
+    kalmSupported: false
+  images:
+    '':
+      properties:
+        operator.image.repository:
+          type: REPO_WITH_REGISTRY
+        operator.image.tag:
+          type: TAG
+  clusterConstraints:
+    resources:
+    - replicas: 1
+      requests:
+        cpu: 600m
+        memory: 2000Mi
+      affinity:
+        simple NodeAffinity:
+          type: REQUIRE_ONE_NODE_PER_REPLICA
+          minimumNodeCount: 1
+    istio:
+      type: UNSUPPORTED
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  operator.serviceAccountName:
+    type: string
+    title: Service account used by Prometheus Operator
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        roles:
+        - type: ClusterRole
+          rulesType: CUSTOM
+          rules:
+            # Origin https://github.com/coreos/prometheus-operator/blob/master/bundle.yaml
+            - apiGroups:
+              - apiextensions.k8s.io
+              resources:
+              - customresourcedefinitions
+              verbs:
+              - '*'
+            - apiGroups:
+              - monitoring.coreos.com
+              resources:
+              - alertmanagers
+              - prometheuses
+              - prometheuses/finalizers
+              - alertmanagers/finalizers
+              - servicemonitors
+              - podmonitors
+              - prometheusrules
+              verbs:
+              - '*'
+            - apiGroups:
+              - apps
+              resources:
+              - statefulsets
+              verbs:
+              - '*'
+            - apiGroups:
+              - ""
+              resources:
+              - configmaps
+              - secrets
+              verbs:
+              - '*'
+            - apiGroups:
+              - ""
+              resources:
+              - pods
+              verbs:
+              - list
+              - delete
+            - apiGroups:
+              - ""
+              resources:
+              - services
+              - services/finalizers
+              - endpoints
+              verbs:
+              - get
+              - create
+              - update
+              - delete
+            - apiGroups:
+              - ""
+              resources:
+              - nodes
+              verbs:
+              - list
+              - watch
+            - apiGroups:
+              - ""
+              resources:
+              - namespaces
+              verbs:
+              - get
+              - list
+              - watch
+            # Permisions above need for run integration test and can be used for depoly sample instance.
+            # TODO: Discus about it.
+            - apiGroups: [""]
+              resources:
+              - nodes
+              - nodes/proxy
+              - services
+              - endpoints
+              - pods
+              verbs: ["get", "list", "watch"]
+            - apiGroups: [""]
+              resources:
+              - configmaps
+              verbs: ["get"]
+            - apiGroups:
+              - extensions
+              resources:
+              - ingresses
+              verbs: ["get", "list", "watch"]
+  deployerHelm.image:
+    type: string
+    x-google-marketplace:
+      type: DEPLOYER_IMAGE
+
+required:
+- name
+- namespace

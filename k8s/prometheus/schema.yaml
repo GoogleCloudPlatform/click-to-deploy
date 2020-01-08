@@ -86,13 +86,13 @@ properties:
             - persistentvolumes
             - namespaces
             - endpoints
-            verbs: ["list", "watch"]
+            verbs: ["list", "watch", "get"]
           - apiGroups: ["extensions"]
             resources:
             - daemonsets
             - deployments
             - replicasets
-            verbs: ["list", "watch"]
+            verbs: ["list", "watch", "get", "update"]
           - apiGroups: ["apps"]
             resources:
             - statefulsets

@@ -1,4 +1,7 @@
-wordpressImage: null
+wordpress:
+  image:
+    repo: null
+    tag: null
 
 db:
   image: null
@@ -12,6 +15,8 @@ db:
     user: mysqld-exporter
     password: null
 
+enablePublicServiceAndIngress: false
+
 apache:
   exporter:
     image: null
@@ -24,3 +29,7 @@ admin:
 metrics:
   image: null
   enabled: false
+
+tls:
+  base64EncodedPrivateKey: null
+  base64EncodedCertificate: null

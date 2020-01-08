@@ -14,11 +14,4 @@
 
 include_recipe 'php7'
 
-bash 'install composer' do
-  user 'root'
-  cwd '/tmp'
-  code <<-EOH
-    curl -sS https://getcomposer.org/installer | php
-    mv composer.phar /usr/local/bin/composer
-EOH
-end
+include_recipe 'composer::composer-only'

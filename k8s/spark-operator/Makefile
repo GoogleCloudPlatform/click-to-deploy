@@ -3,16 +3,17 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
-
 TAG ?= beta
 $(info ---- TAG = $(TAG))
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/spark-operator/deployer:$(TAG)
 NAME ?= spark-operator-1
+
 APP_PARAMETERS ?= { \
   "APP_INSTANCE_NAME": "$(NAME)", \
   "NAMESPACE": "$(NAMESPACE)" \
 }
+
 TESTER_IMAGE ?= $(REGISTRY)/spark-operator/tester:$(TAG)
 
 
