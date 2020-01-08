@@ -56,7 +56,7 @@ execute 'download wordpress' do
       --path=/var/www/html \
       --allow-root
 EOH
-  environment ({'version' => node['wordpress-ha']['version']})
+  environment({ 'version' => node['wordpress-ha']['version'] })
   live_stream true
 end
 
@@ -75,7 +75,7 @@ end
 
 execute 'chown wordpress home' do
   command 'chown -R ${user}:${user} /var/www/html'
-  environment ({'user' => node['wordpress-ha']['user']})
+  environment({ 'user' => node['wordpress-ha']['user'] })
 end
 
 execute 'a2enmods' do

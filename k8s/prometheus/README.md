@@ -1,9 +1,9 @@
 # Overview
 
-Prometheus is a monitoring toolkit. In this application it collects the metrics from a Kubernetes
-cluster to which the application is deployed and presents them in pre-configured dashboard of
-Grafana. Additionally, it allows to configure the alerting rules served automatically by Prometheus
-Alert Manager.
+Prometheus is a monitoring toolkit. In this configuration, Prometheus collects
+the metrics from the Kubernetes cluster to which the application is deployed,
+and presents them in pre-configured Grafana dashboard. Additionally, you can
+configure the alerts using Prometheus Alert Manager.
 
 [Learn more](https://prometheus.io/).
 
@@ -11,78 +11,85 @@ Alert Manager.
 
 Popular open stacks on Kubernetes packaged by Google.
 
-## Design
+## Architecture
 
 ![Architecture diagram](resources/prometheus-grafana-architecture.png)
 
-The application is designed to automatically collect metrics from Kubernetes cluster, collect them
-in the Prometheus server and present in Grafana.
+The application is designed to automatically collect metrics from Kubernetes
+cluster, collect them in the Prometheus server and present in Grafana. The
+application consists of the following components:
 
-* **Prometheus StatefulSet** - collects all the configured metrics in pull model (by querying
-  all the configured sources periodically). Each Prometheus Pod stored its data in
-  a PersistentVolumeClaim.
+*   **Prometheus StatefulSet** - collects all the configured metrics by querying
+    all the configured sources periodically. Each Prometheus Pod stores its data
+    in a PersistentVolumeClaim.
 
-* **Prometheus Node Exporter DaemonSet** - runs a Pod on each Kubernetes cluster node and collects
-  node's metrics related to hardware and the operating system - by monitoring the host filesystem
-  at `/proc` and `/sys`. The metrics are exposed on port 9100 of Node Exporter's Pods.
+*   **Prometheus Node Exporter DaemonSet** - runs a Pod on each Kubernetes
+    cluster node and collects metrics for the node's hardware and operating
+    system by monitoring the host filesystem at `/proc` and `/sys`. The metrics
+    are exposed on port 9100 of the Node Exporter's Pods.
 
-* **Kube State Metrics Deployment** - listens to the Kubernetes API server and produces metrics
-  related to resources (deployments, nodes, pods, etc.). It exposes the metrics on HTTP endpoint
-  `/metrics` on port 8080. Prometheus server consumes the metrics.
+*   **Kube State Metrics Deployment** - listens to the Kubernetes API server and
+    produces metrics related to resources (Deployments, Nodes, Pods, etc.). It
+    exposes the metrics at `/metrics` on port 8080. Prometheus server consumes
+    the metrics.
 
-* **Prometheus Alert Manager** - receives the alerts raised by the Prometheus server and handles
-  them accordingly to its configuration, specified in a ConfigMap.
+*   **Prometheus Alert Manager** - receives the alerts raised by the Prometheus
+    server and handles them accordingly to its configuration, specified in a
+    ConfigMap.
 
-* **Grafana StatefulSet** - provides a user interface for querying Prometheus about the metrics
-  and visualizes the metrics in pre-configured dashboards.
+*   **Grafana StatefulSet** - provides a user interface for querying Prometheus
+    about the metrics and visualizes the metrics in pre-configured dashboards.
 
-## Configuration
+### Configuration
 
-* Prometheus server is deployed to a custom-size stateful set with the number of replicas specified
-  by the user before installation. The configuration for Prometheus jobs, rules and alerts is
-  stored in a ConfigMap.
+*   Prometheus server is deployed to a StatefulSet, and you can configure the
+    number of replicas before installing. The configuration for Prometheus jobs,
+    rules and alerts is stored in a ConfigMap.
 
-* Kube State Metrics comes with a default-size deployment of one replica, but it includes
-  a resizer addon monitoring the actual resources necessary to maintain the operations and
-  dynamically rescaling the deployment.
+*   Kube State Metrics comes with a default-deployment of one replica, and
+    includes a resizer add-on that monitors the resources necessary to maintain
+    operations, and dynamically re-scales the deployment.
 
-* Prometheus Alert Manager - the application comes with a very simple configuration, including only
-  the default receiver and simple grouping rules. To customize the configuration, edit the ConfigMap
-  and recreate the Pods. Alert Manager StatefulSet is currently configured to spin up 2 replicas -
-  if you are going to change it, adjust the `--mesh.peer` arguments of Alert Manager containers.
+*   Prometheus Alert Manager comes with a basic configuration, including only
+    the default receiver and basic grouping rules. To customize the
+    configuration, edit the ConfigMap and recreate the Pods. The Alert Manager
+    StatefulSet is configured to spin up 2 replicas - if you need to change the
+    number of replicas, edit the `--mesh.peer` arguments of Alert Manager
+    containers.
 
-* Grafana StatefulSet - all the pre-configured dashboards of Grafana are stored in a ConfigMap.
-  The StatefulSet is currently configured to have just one replica - the configuration does not
-  currently allow to scale this number up.
+*   In the Grafana StatefulSet, the pre-configured dashboards of Grafana are
+    stored in a ConfigMap. The StatefulSet is currently configured to have one
+    replica, and does not scale up.
 
-* Each StatefulSet, Deployment and DaemonSet uses its own dedicated service
-  account with permissions set accordingly to its expected functionality.
+*   Each StatefulSet, Deployment and DaemonSet uses its own dedicated Service
+    Account with permissions appropriate for its functionality.
 
 # Installation
 
 ## Quick install with Google Cloud Marketplace
 
-Get up and running with a few clicks! Install this Prometheus app to a
-Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
+Get up and running with a few clicks! Install this Prometheus app to a Google
+Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 [on-screen instructions](https://console.cloud.google.com/marketplace/details/google/prometheus).
 
 ## Command line instructions
 
-You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local workstation in the
-further instructions.
+You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local
+workstation to complete these steps.
 
-[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/GoogleCloudPlatform/click-to-deploy&cloudshell_working_dir=k8s/prometheus)
+[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/GoogleCloudPlatform/click-to-deploy&cloudshell_open_in_editor=README.md&cloudshell_working_dir=k8s/prometheus)
 
 ### Prerequisites
 
 #### Set up command-line tools
 
-You'll need the following tools in your development environment:
+You'll need the following tools in your development environment. If you are
+using Cloud Shell, these tools are installed in your environment by default.
 
-- [gcloud](https://cloud.google.com/sdk/gcloud/)
-- [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
-- [docker](https://docs.docker.com/install/)
-- [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+-   [gcloud](https://cloud.google.com/sdk/gcloud/)
+-   [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
+-   [docker](https://docs.docker.com/install/)
+-   [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
 Configure `gcloud` as a Docker credential helper:
 
@@ -120,7 +127,8 @@ git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 An Application resource is a collection of individual Kubernetes components,
 such as Services, Deployments, and so on, that you can manage as a group.
 
-To set up your cluster to understand Application resources, run the following command:
+To set up your cluster to understand Application resources, run the following
+command:
 
 ```shell
 kubectl apply -f "https://raw.githubusercontent.com/GoogleCloudPlatform/marketplace-k8s-app-tools/master/crd/app-crd.yaml"
@@ -172,9 +180,9 @@ The images above are referenced by
 [tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
 that you pin each image to an immutable
 [content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This ensures that the installed application always uses the same images,
-until you are ready to upgrade. To get the digest for the image, use the
-following script:
+This ensures that the installed application always uses the same images, until
+you are ready to upgrade. To get the digest for the image, use the following
+script:
 
 ```shell
 for i in "IMAGE_PROMETHEUS" \
@@ -200,26 +208,27 @@ sudo apt-get install -y pwgen base64
 export GRAFANA_GENERATED_PASSWORD="$(pwgen 12 1 | tr -d '\n' | base64)"
 ```
 
-Define the size of Prometheus StatefulSet:
+Define the size of the Prometheus StatefulSet:
 
 ```shell
 export PROMETHEUS_REPLICAS=2
 ```
 
-#### Create namespace in your Kubernetes cluster
+#### Create a namespace in your Kubernetes cluster
 
-If you use a different namespace than the `default`, run the command below to create a new namespace:
+If you use a different namespace than `default`, run the command below to create
+a new namespace:
 
 ```shell
 kubectl create namespace "$NAMESPACE"
 ```
 
-#### Create service accounts
+#### Create the Service Accounts
 
 ##### Make sure you are a Cluster Admin
 
-Creating custom cluster roles requires being a Cluster Admin. To assign
-the Cluster Admin role to your user account, run the following command:
+Creating custom cluster roles requires being a Cluster Admin. To assign the
+Cluster Admin role to your user account, run the following command:
 
 ```shell
 kubectl create clusterrolebinding cluster-admin-binding \
@@ -227,9 +236,9 @@ kubectl create clusterrolebinding cluster-admin-binding \
   --user $(gcloud config get-value account)
 ```
 
-##### Create dedicated service accounts
+##### Create dedicated Service Accounts
 
-Define the service accounts variables:
+Define the environment variables:
 
 ```shell
 export PROMETHEUS_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-prometheus"
@@ -239,7 +248,7 @@ export GRAFANA_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-grafana"
 export NODE_EXPORTER_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-node-exporter"
 ```
 
-Expand the manifest for service accounts creation:
+Expand the manifest to create Service Accounts:
 
 ```shell
 cat resources/service-accounts.yaml \
@@ -256,8 +265,8 @@ kubectl apply -f "${APP_INSTANCE_NAME}_sa_manifest.yaml" \
 
 #### Expand the application manifest template
 
-Use `envsubst` to expand the template. We recommend that you save the
-expanded manifest file for future updates to the application.
+Use `envsubst` to expand the template. We recommend that you save the expanded
+manifest file for future updates to the application.
 
 ```shell
 awk 'FNR==1 {print "---"}{print}' manifest/* \
@@ -273,9 +282,9 @@ Use `kubectl` to apply the manifest to your Kubernetes cluster:
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
 
-#### View the app in the Google Cloud Console
+#### View the app in the Google Cloud Platform Console
 
-To get the Console URL for your app, run the following command:
+To get the GCP Console URL for your app, run the following command:
 
 ```shell
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
@@ -285,12 +294,14 @@ To view your app, open the URL in your browser.
 
 # Access the Grafana UI
 
-Grafana is exposed as a ClusterIP-only Service, `$APP_INSTANCE_NAME-grafana`.
-To connect to the Grafana UI, you can either expose a public service endpoint, or keep it private and connect from you local environment with `kubectl port-forward`.
+Grafana is exposed as a ClusterIP-only Service, `$APP_INSTANCE_NAME-grafana`. To
+connect to the Grafana UI, you can either expose a public Service endpoint, or
+keep it private and connect from your local environment using `kubectl
+port-forward`.
 
-## Expose Grafana service externally
+## Expose the Grafana service externally
 
-To expose Grafana with an external IP address, run the following command:
+To create an external IP address for Grafana, run the following command:
 
 ```shell
 kubectl patch svc "$APP_INSTANCE_NAME-grafana" \
@@ -309,10 +320,10 @@ SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-grafana \
 echo "http://${SERVICE_IP}/"
 ```
 
-## Forward Grafana port in local environment
+## Using local port forwarding for Grafana
 
-As an alternative to exposing Grafana publicly, use local port forwarding.
-In a terminal, run the following command:
+As an alternative to exposing Grafana publicly, use local port forwarding. In a
+terminal, run the following command:
 
 ```shell
 kubectl port-forward --namespace ${NAMESPACE} ${APP_INSTANCE_NAME}-grafana-0 3000
@@ -320,9 +331,10 @@ kubectl port-forward --namespace ${NAMESPACE} ${APP_INSTANCE_NAME}-grafana-0 300
 
 You can access the Grafana UI at `http://localhost:3000/`.
 
-## Login to Grafana
+## Sign in to Grafana
 
-Grafana requires authentication. To check your username and password, run the following commands:
+Grafana requires authentication. To check your username and password, run the
+following commands:
 
 ```shell
 GRAFANA_USERNAME="$(kubectl get secret $APP_INSTANCE_NAME-grafana \

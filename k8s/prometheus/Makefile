@@ -4,6 +4,9 @@ include ../gcloud.Makefile
 include ../var.Makefile
 
 TAG ?= 2.2
+
+$(info ---- TAG = $(TAG))
+
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/prometheus/deployer:$(TAG)
 NAME ?= prometheus-1
 
@@ -138,6 +141,7 @@ app/build:: .build/prometheus/alertmanager \
 	docker tag marketplace.gcr.io/google/grafana5:5.3 "$(REGISTRY)/prometheus/grafana:$(TAG)"
 	docker push "$(REGISTRY)/prometheus/grafana:$(TAG)"
 	@touch "$@"
+
 
 .build/prometheus/tester: .build/var/TESTER_IMAGE \
                           $(shell find apptest -type f) \

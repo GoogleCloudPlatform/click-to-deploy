@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'php7::apt' if node['platform_version'].include? '8.'
-
 package 'install packages' do
   package_name node['php7']['packages']
   action :install

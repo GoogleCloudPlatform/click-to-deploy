@@ -1,0 +1,76 @@
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      A regular update.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  managedUpdates:
+    kalmSupported: true
+
+  images:
+    '':
+      properties:
+        sonarqube.image.repo:
+          type: REPO_WITH_REGISTRY
+        sonarqube.image.tag:
+          type: TAG
+    postgresql-exporter:
+      properties:
+        postgresql.exporter.image:
+          type: FULL
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
+    postgresql:
+      properties:
+        postgresql.image:
+          type: FULL
+
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  postgresql.db.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 12
+  deployer.image:
+    type: string
+    x-google-marketplace:
+      type: DEPLOYER_IMAGE
+  metrics.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters,
+      export of metrics to Stackdriver is not supported yet
+    default: false
+  certificate:
+    type: string
+    x-google-marketplace:
+      type: TLS_CERTIFICATE
+      tlsCertificate:
+        generatedProperties:
+          base64EncodedPrivateKey: tls.base64EncodedPrivateKey
+          base64EncodedCertificate: tls.base64EncodedCertificate
+
+required:
+- name
+- namespace
+- postgresql.db.password
+- metrics.enabled
+- certificate

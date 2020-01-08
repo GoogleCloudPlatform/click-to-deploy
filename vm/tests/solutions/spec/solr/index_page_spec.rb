@@ -15,11 +15,11 @@
 require 'spec_helper'
 
 describe command('curl -L -s -o /dev/null -w "%{http_code}" http://localhost/') do
-  its(:stdout) { should match /401/ }
+  its(:stdout) { should match /200/ }
   its(:exit_status) { should eq 0 }
 end
 
 describe command('curl -L http://localhost/') do
-  its(:stdout) { should match /Problem accessing \/solr\// }
+  its(:stdout) { should match /<title>Solr Admin<\/title>/ }
   its(:exit_status) { should eq 0 }
 end

@@ -1,0 +1,54 @@
+# Copyright 2019 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+timeout: 1800s # 30m
+options:
+  workerPool: $PROJECT_ID/gcb-workers-pool
+substitutions:
+  _CLUSTER_NAME: marketplace-testing
+  _CLUSTER_LOCATION: us-central1
+steps:
+
+- id: Build C2D Docker Image
+  name: gcr.io/cloud-builders/docker
+  args:
+  - build
+  - --tag
+  - click-to-deploy
+  - --file
+  - k8s.Dockerfile
+  - .
+
+- id: Run Cloud Build K8s Generator
+  name: click-to-deploy
+  entrypoint: python
+  args:
+  - scripts/cloudbuild_k8s_generator.py
+  - --solution
+  - $_SOLUTION_NAME
+  - --output
+  - k8s/$_SOLUTION_NAME/cloudbuild.yaml
+
+- id: Test Solution
+  name: gcr.io/cloud-builders/gcloud
+  args:
+  - builds
+  - submit
+  - --timeout
+  - 1800s
+  - --config
+  - k8s/$_SOLUTION_NAME/cloudbuild.yaml
+  - --substitutions
+  - _CLUSTER_NAME=$_CLUSTER_NAME,_CLUSTER_LOCATION=$_CLUSTER_LOCATION
+  - .

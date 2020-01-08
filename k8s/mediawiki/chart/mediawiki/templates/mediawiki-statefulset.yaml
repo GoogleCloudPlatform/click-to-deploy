@@ -1,0 +1,128 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-mediawiki
+  labels: &MediawikiDeploymentLabels
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: mediawiki-webserver
+spec:
+  replicas: 1
+  serviceName: {{ .Release.Name }}-mediawiki-svc
+  selector:
+    matchLabels: *MediawikiDeploymentLabels
+  template:
+    metadata:
+      labels: *MediawikiDeploymentLabels
+    spec:
+      containers:
+      - image: "{{ .Values.mediawiki.image.repo }}:{{ .Values.mediawiki.image.tag }}"
+        name: mediawiki
+        env:
+        # Database type
+        - name: MEDIAWIKI_DBTYPE
+          value: "mysql"
+        # A password for MediaWiki Administration tools
+        - name: MEDIAWIKI_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-mediawiki-secret
+              key: mediawiki-password
+        - name: MEDIAWIKI_DBNAME
+          value: "{{ .Values.db.name }}"
+        - name: MEDIAWIKI_DB_HOST
+          value: "{{ .Release.Name }}-mysql-svc.{{ .Release.Namespace }}.svc"
+        - name: MEDIAWIKI_DB_PORT
+          value: "3306"
+        - name: MEDIAWIKI_DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-mediawiki-secret
+              key: mediawiki-db-user
+        - name: MEDIAWIKI_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-mediawiki-secret
+              key: mediawiki-db-password
+        ports:
+        - name: http
+          containerPort: 80
+        volumeMounts:
+        - name: {{ .Release.Name }}-mediawiki-pvc
+          mountPath: /var/www/html
+        - name: mediawiki-custom-config
+          mountPath: /mediawiki-config/custom_settings.php
+          subPath: custom_settings.php
+          readOnly: true
+        readinessProbe:
+          httpGet:
+            path: /index.php/Special:Version
+            port: 80
+          initialDelaySeconds: 90
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 2
+          failureThreshold: 5
+        livenessProbe:
+          httpGet:
+            path: /index.php/Special:Version
+            port: 80
+          initialDelaySeconds: 90
+      - image: {{ .Values.apache.exporter.image }}
+        name: apache-exporter
+        args:
+        - "--scrape_uri=http://127.0.0.1/server-status?auto"
+        ports:
+        - name: exporter
+          containerPort: 9117
+        livenessProbe:
+          httpGet:
+            path: /metrics
+            port: 9117
+        readinessProbe:
+          httpGet:
+            path: /metrics
+            port: 9117
+          initialDelaySeconds: 60
+          timeoutSeconds: 30
+          failureThreshold: 10
+          periodSeconds: 10
+      {{- if .Values.metrics.enabled }}
+      - name: prometheus-to-sd
+        image: {{ .Values.metrics.image }}
+        command:
+        - /monitor
+        - --stackdriver-prefix=custom.googleapis.com
+        - --source=apache:http://localhost:9117/metrics
+        - --pod-id=$(POD_NAME)
+        - --namespace-id=$(POD_NAMESPACE)
+        - --monitored-resource-types=k8s
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+      {{- end }}
+      volumes:
+      - name: mediawiki-custom-config
+        configMap:
+          name: {{ .Release.Name }}-mediawiki-config
+          items:
+          - key: custom_settings.php
+            path: custom_settings.php
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Release.Name }}-mediawiki-pvc
+      labels:
+        app.kubernetes.io/name: "{{ .Release.Name }}"
+        app.kubernetes.io/component: mediawiki-webserver
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: standard
+      resources:
+        requests:
+          storage: "{{ .Values.mediawiki.volumeSize }}"

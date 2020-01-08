@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/version: v{{ .Values.operator.image.tag }}
+  name: {{ template "prometheus_operator.DeploymentName" . }}
+spec:
+  replicas: 1 {{- /* Should be only one replica. */}}
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: controller
+      app.kubernetes.io/name: "{{ .Release.Name }}"
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: controller
+        app.kubernetes.io/name: "{{ .Release.Name }}"
+        app.kubernetes.io/version: v{{ .Values.operator.image.tag }}
+    spec:
+      containers:
+      - args:
+        - --kubelet-service=kube-system/kubelet
+        - --logtostderr=true
+        image: {{ .Values.operator.image.repository }}:{{ .Values.operator.image.tag }}
+        name: prometheus-operator
+        ports:
+        - containerPort: 8080
+          name: http
+        resources:
+          limits:
+            cpu: 200m
+            memory: 200Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+      nodeSelector:
+        beta.kubernetes.io/os: linux
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+      serviceAccountName: {{ .Values.operator.serviceAccountName }}

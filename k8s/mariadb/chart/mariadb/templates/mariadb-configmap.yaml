@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-mariadb
+  labels: &MariaDBDeploymentLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: mariadb-server
+data:
+  my.cnf: |-
+    [mysqld]
+    server-id=1
+    log-bin=mysql-bin
+    datadir=/var/lib/mariadb
+    port={{ .Values.service.port }}
+    ignore_db_dirs=lost+found
+
+    ssl-ca=/etc/mysql/mariadb.conf.d/certs/ca.crt
+    ssl-cert=/etc/mysql/mariadb.conf.d/certs/tls.crt
+    ssl-key=/etc/mysql/mariadb.conf.d/certs/tls.key
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-mariadb-secondary
+  labels: &MariaDBDeploymentLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: mariadb-server-secondary
+data:
+  my.cnf: |-
+    [mysqld]
+    # SERVER_ID value is set during pod startup
+    server-id=%%SERVER_ID%%
+    log-bin=mysql-bin
+    datadir=/var/lib/mariadb
+    port={{ .Values.service.port }}
+    read-only=1
+    ignore_db_dirs=lost+found
+    ssl-ca=/etc/mysql/mariadb.conf.d/certs/ca.crt
+    ssl-cert=/etc/mysql/mariadb.conf.d/certs/tls.crt
+    ssl-key=/etc/mysql/mariadb.conf.d/certs/tls.key
+
+    [client]
+    ssl-ca=/etc/mysql/mariadb.conf.d/certs/ca.crt
+    ssl-cert=/etc/mysql/mariadb.conf.d/certs/tls.crt
+    ssl-key=/etc/mysql/mariadb.conf.d/certs/tls.key

@@ -1,10 +1,18 @@
 matrix:
   include:
   - language: python
-    install: pip install jinja2
-    script: ./cloudbuild-k8s-generator.py --verify_only
-  - language: ruby
-    install: gem install foodcritic
-    script:
-    - foodcritic --version
-    - foodcritic --cookbook-path=vm/chef/cookbooks --rule-file=vm/chef/.foodcritic --epic-fai=any
+    python: 2.7
+    install: pip install jinja2 pyyaml
+    env: TARGET=python-test
+  - language: generic
+    env: TARGET=vm-lint
+    services:
+    - docker
+  - language: generic
+    dist: xenial
+    before_install:
+    - wget https://packages.chef.io/files/stable/chefdk/4.2.0/ubuntu/16.04/chefdk_4.2.0-1_amd64.deb
+    - sudo dpkg -i chefdk_4.2.0-1_amd64.deb
+    env: TARGET=vm-generate-triggers
+
+script: make "${TARGET}"

@@ -1,0 +1,165 @@
+x-google-marketplace:
+  schemaVersion: v2
+  applicationApiVersion: v1beta1
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      A regular update.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  managedUpdates:
+    kalmSupported: true
+  images:
+    '':
+      properties:
+        global.image:
+          type: FULL
+    consul-exporter:
+      properties:
+        server.prometheus_exporter.image:
+          type: FULL
+    prometheus-to-sd:
+      properties:
+        server.prometheus_to_sd.image:
+          type: FULL
+  clusterConstraints:
+    resources:
+    - replicas: 3
+      requests:
+        cpu: 100m
+        memory: 100Mi
+      affinity:
+        simple NodeAffinity:
+          type:  REQUIRE_ONE_NODE_PER_REPLICA
+          minimumNodeCount: 3
+    istio:
+      type: UNSUPPORTED
+application_api_version: v1beta1
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  global.gossipEncryption.CreateSecretWithKey:
+     type: string
+     default: null
+     x-google-marketplace:
+       type: GENERATED_PASSWORD
+       generatedPassword:
+         length: 16
+         base64: True
+  global.datacenter:
+    type: string
+    title: Datacenter name
+    default: datacenter
+  global.domain:
+    type: string
+    title: Domain name
+    default: localdomain
+  server.replicas:
+    type: integer
+    title: Replicas
+    description: Number of replicas in Consul cluster
+    default: 3
+    minimum: 1
+  server.storage:
+    type: string
+    default: '10Gi'
+    title: Consul storage
+    description: Consul storage per server instance
+    pattern: '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+  server.prometheus_exporter.enabled:
+    type: boolean
+    default: false
+    title: Prometheus exporter sidecar
+    description: Prometheus exporter to export metrics to Stackdriver
+  server.ServiceAccount:
+    type : string
+    title: Service account used by Consul server
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        roles:
+        - type: ClusterRole
+          rulesType: CUSTOM
+          rules:
+            - apiGroups: [""]
+              resources: ["pods"]
+              verbs: ["list"]
+  client.ServiceAccount:
+    type: string
+    title: Service account used by the Consul client
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        roles:
+        - type: ClusterRole
+          rulesType: CUSTOM
+          rules:
+            - apiGroups: [""]
+              resources: ["pods"]
+              verbs: ["list"]
+  server.disruptionBudget.maxUnavailable:
+    type: string
+    default: null
+    title: MaxUnavailable server instances
+    description: maxUnavailable will default to (n/2)-1 where n is the number of replicas. If you'd like a custom value, you can specify an override here.
+  server.resources.limits.cpu:
+    type: string
+    default: null
+    title: CPU limit for each server instance
+    description: Not set by default. If you'd like a custom value, you can specify an override here.
+    pattern: '^([+-]?[0-9.]+)([m]?)$'
+  server.resources.limits.memory:
+    type: string
+    default: null
+    title: Memory limit for each server instance
+    description: Not set by default. If you'd like a custom value, you can specify an override here.
+    pattern: '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+  server.resources.requests.cpu:
+    type: string
+    default: null
+    title: CPU requests for each server instance
+    description: Not set by default. If you'd like a custom value, you can specify an override here.
+    pattern: '^([+-]?[0-9.]+)([m]?)$'
+  server.resources.requests.memory:
+    type: string
+    default: null
+    title: Memory requests for each server instance
+    description: Not set by default. If you'd like a custom value, you can specify an override here.
+    pattern: '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+  client.resources.limits.cpu:
+    type: string
+    default: null
+    title: CPU limit for each client instance
+    description: Not set by default. If you'd like a custom value, you can specify an override here.
+    pattern: '^([+-]?[0-9.]+)([m]?)$'
+  client.resources.limits.memory:
+    type: string
+    default: null
+    title: Memory limit for each client instance
+    description: Not set by default. If you'd like a custom value, you can specify an override here.
+    pattern: '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+  client.resources.requests.cpu:
+    type: string
+    default: null
+    title: CPU requests for each client instance
+    description: Not set by default. If you'd like a custom value, you can specify an override here.
+    pattern: '^([+-]?[0-9.]+)([m]?)$'
+  client.resources.requests.memory:
+    type: string
+    default: null
+    title: Memory requests for each client instance
+    description: Not set by default. If you'd like a custom value, you can specify an override here.
+    pattern: '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+required:
+- name
+- namespace
+- global.datacenter
+- global.domain
