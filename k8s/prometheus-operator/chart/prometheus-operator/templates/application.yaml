@@ -13,8 +13,8 @@ spec:
     type: "Prometheus Operator"
     version: {{ .Values.operator.image.tag | quote }}
     description: |-
-      Prometheus Operator it is an implementation of Kubernetes Operator which provides installation
-      of Prometheus monitoring system and time series database.
+      Prometheus Operator is an implementation of Kubernetes Operator which provides installation
+      of the Prometheus monitoring system and time series database.
 
       # Support
       Google does not offer support for this solution. However, community support is available on
@@ -40,7 +40,7 @@ spec:
       cd click-to-deploy/k8s/prometheus-operator/resources/sample
       ```
 
-      Run the following command to deploy a sample Prometheus instance:
+      To deploy a sample Prometheus instance, run the following command:
       ```shell
       kubectl apply --namespace "${NAMESPACE}" -f \
       01-prometheus-cluster-role.yaml,\
@@ -50,7 +50,7 @@ spec:
       05-prometheus.yaml
       ```
 
-      You can find additional documentation for configuration options at [official site](https://github.com/coreos/prometheus-operator/blob/master/Documentation/user-guides/getting-started.md)
+      You can find additional documentation of configuration options at the [official site](https://github.com/coreos/prometheus-operator/blob/master/Documentation/user-guides/getting-started.md)
 
       # Get access to the sample Prometheus Dashboard
       Forward the Prometheus Dashboard service port to your machine:
@@ -59,7 +59,7 @@ spec:
           service/prometheus-operated 9090:9090
       ```
 
-      Then visit the dashboard at [http://localhost:9090/](http://localhost:9090/) on your web browser.
+      To access the dashboard, visit [http://localhost:9090/](http://localhost:9090/) from your web browser.
 
   selector:
     matchLabels:
