@@ -106,7 +106,6 @@ if gsutil -q stat gs://${gcs_bucket_name}/wp-app/wp-config.php; then
 
   /opt/c2d/downloads/gcs-pull-once.sh
 else
-
   echo "C2D: WordPress - create config"
 
   readonly wp_stateless_config="
