@@ -113,8 +113,8 @@ properties:
               - get
               - list
               - watch
-            # Permisions above need for run integration test and can be used for depoly sample instance.
-            # TODO: Discus about it.
+            # The permissions above are needed to run integration tests, and can be used for deploying a sample instance.
+            # TODO: Discuss them further.
             - apiGroups: [""]
               resources:
               - nodes
