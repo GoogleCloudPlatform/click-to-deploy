@@ -9,14 +9,11 @@ WAIT_FOR_READY_TIMEOUT = 600
 
 TRACK ?= 3.4
 
-ZK_TAG ?= sha256:707f3645bc82f95337ccb156d5f5c1acb46353714bbf5d348cff3daf9cb29318
 ZK_EXPORTER_TAG ?= exporter
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
-# TODO(GoogleCloudPlatform/click-to-deploy/issues/845): Delete and use TRACK
-# after C2D_RELEASE variable is added to container
-IMAGE_ZOOKEEPER ?= $(SOURCE_REGISTRY)/zookeeper3@$(ZK_TAG)
+IMAGE_ZOOKEEPER ?= $(SOURCE_REGISTRY)/zookeeper3:$(TRACK)
 IMAGE_EXPORTER ?= $(SOURCE_REGISTRY)/zookeeper3:$(ZK_EXPORTER_TAG)
 IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
@@ -31,10 +28,7 @@ ADDITIONAL_IMAGES := exporter prometheus-to-sd
 image-exporter := $(call get_sha256,$(IMAGE_EXPORTER))
 image-prometheus-to-sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))
 
-# TODO(GoogleCloudPlatform/click-to-deploy/issues/845): Use following after
-# C2D_RELEASE variable is added to container instead of fixed version.
-# C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
-C2D_CONTAINER_RELEASE ?= 3.4.14
+C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)
