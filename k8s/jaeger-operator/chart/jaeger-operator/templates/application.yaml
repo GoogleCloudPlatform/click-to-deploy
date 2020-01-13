@@ -13,7 +13,7 @@ spec:
     type: "Jaeger Operator"
     version: {{ .Values.operator.image.tag | quote }}
     description: |-
-      Jaeger Operator it is an implementation of Kubernetes Operator which provide installation of Jaeger tracing tool.
+      Jaeger Operator is an implementation of Kubernetes Operator that provides an installation of the Jaeger tracing tool.
 
       # Support
       Google does not offer support for this solution. However, community support is available on
@@ -38,19 +38,19 @@ spec:
         name: example
       EOF
       ```
-      Optionaly you can deploy Jaeger instance to another namespace.
+      Optionally, you can deploy the Jaeger instance to another namespace.
 
-      Documentation about additional configuration options you can find following link:
+      For information about additional configuration options, visit the following link:
       https://www.jaegertracing.io/docs/1.15/operator/#configuring-the-custom-resource
 
-      # Get detailed information about examle Jaeger deployment
+      # Get detailed information about example Jaeger deployment
       Run the following command:
-      ```shelll
+      ```shell
       kubectl get Jaeger example --namespace {{ .Release.Namespace }} -o yaml
       ```
 
       # Get access to the example Jaeger Dashboard
-      Run the following command to start port forwarding:
+      To start port forwarding, run the following command:
       ```shell
       kubectl --namespace {{ .Release.Namespace }} port-forward \
           service/example-query  16686:16686
