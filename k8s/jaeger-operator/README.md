@@ -1,39 +1,42 @@
 # Overview
 
-Jaeger operator provides a deployment instance of Jaeger tracing tool, designed
-for microservices-based distributed systems.
+Jaeger Operator provides a deployable instance of the Jaeger tracing tool,
+designed for microservices-based distributed systems.
 
-For more information, visit the [Jaeger official website](https://www.jaegertracing.io/docs/1.15/operator/).
+For more information, visit the
+[Jaeger official website](https://www.jaegertracing.io/docs/1.15/operator/).
 
 ## About Google Click to Deploy
 
-Popular open stacks on Kubernetes packaged by Google.
+Popular open stacks on Kubernetes, packaged by Google.
 
 ## Architecture
 
 ![Architecture diagram](resources/jaeger-operator-k8s-app-architecture.png)
 
-The application offers Jaeger operator CRDs and deployments of Jaeger operator on a Kubernetes cluster.
+The app offers Jaeger Operator custom resource definitions (CRDs) and
+deployments of Jaeger Operator on a Kubernetes cluster.
 
-Installation requires access to a Docker registry to build and deploy Jaeger applications.
+Installation requires access to a Docker registry to build and deploy Jaeger
+apps.
 
 # Installation
 
 ## Quick install with Google Cloud Marketplace
 
-Get up and running with a few clicks! Install this Jaeger operator app to a
+Get up and running with a few clicks! Install this Jaeger Operator app to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 [on-screen instructions](https://console.cloud.google.com/marketplace/details/google/jaeger-operator).
 
-## Command line instructions
+## Command-line instructions
 
 ### Prerequisites
 
 #### Set up command-line tools
 
 You'll need the following tools in your development environment. If you are
-using Cloud Shell, `gcloud`, `kubectl`, Docker, and Git are installed in your
-environment by default.
+using Cloud Shell, then `gcloud`, `kubectl`, Docker, and Git are installed in
+your environment by default.
 
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
@@ -58,7 +61,7 @@ export ZONE=us-west1-a
 gcloud container clusters create "${CLUSTER}" --zone "${ZONE}"
 ```
 
-Configure `kubectl` to connect to the new cluster.
+Configure `kubectl` to connect to the new cluster:
 
 ```shell
 gcloud container clusters get-credentials "${CLUSTER}" --zone "${ZONE}"
@@ -66,7 +69,7 @@ gcloud container clusters get-credentials "${CLUSTER}" --zone "${ZONE}"
 
 #### Clone this repo
 
-Clone this repo and the associated tools repo:
+Clone this repo and its associated tools repo:
 
 ```shell
 git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
@@ -89,7 +92,7 @@ The Application resource is defined by the
 [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps) community.
 The source code can be found on [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
 
-### Install the Application
+### Install the app
 
 Navigate to the `jaeger-operator` directory:
 
@@ -153,7 +156,7 @@ kubectl apply -f "${APP_INSTANCE_NAME}_sa_manifest.yaml" \
 #### Expand the manifest template
 
 Use `helm template` to expand the template. We recommend that you save the
-expanded manifest file for future updates to the application.
+expanded manifest file for future updates to the app.
 
 ```shell
 helm template chart/jaeger-operator \
@@ -199,22 +202,26 @@ metadata:
 EOF
 ```
 
-Optionally you can deploy Jaeger instance to another namespace.
+Optionally, you can deploy the Jaeger instance to another namespace.
 
-You can find additional configuration options on [official documentation page](https://www.jaegertracing.io/docs/1.15/operator/#configuring-the-custom-resource)
+You can find additional configuration options at the
+[official Jaeger documentation page](https://www.jaegertracing.io/docs/1.15/operator/#configuring-the-custom-resource).
 
-### Get detailed information about example Jaeger deployment
+### Get detailed information about the sample Jaeger deployment
+
 Run the following command:
 
 ```shelll
 kubectl get Jaeger example --namespace "${NAMESPACE}" -o yaml
 ```
 
-### Get access to the example Jaeger Dashboard
+### Get access to the sample Jaeger Dashboard
 
-Jaeger query interface will be available at [http://localhost:16686/](http://localhost:16686/)
+The Jaeger query interface will be available at
+[http://localhost:16686/](http://localhost:16686/)
 
-Run the following command to start port forwarding:
+To start port forwarding, run the following command:
+
 ```shell
 kubectl --namespace "${NAMESPACE}" port-forward \
     service/example-query  16686:16686
@@ -222,13 +229,13 @@ kubectl --namespace "${NAMESPACE}" port-forward \
 
 # Scaling up or down
 
-Scaling is not supported for Jaeger operator.
+Scaling is not supported for Jaeger Operator.
 
-# Backup and Restore
+# Back up and restore
 
-## Backup Jaeger configuration data to your local environment
+## Back up Jaeger configuration data to your local environment
 
-Backup Jaeger resources using the following command:
+To back up Jaeger resources, use the following command:
 
 ```shell
 export NAMESPACE=default
@@ -237,7 +244,7 @@ kubectl --namespace "${NAMESPACE}" get crd \
    --output=yaml > backup_file.yaml
 ```
 
-## Restore Jaeger configuration from local environment
+## Restore Jaeger configuration data from your local environment
 
 ```shell
 kubectl --namespace "${NAMESPACE}" apply -f backup_file.yaml
@@ -245,15 +252,17 @@ kubectl --namespace "${NAMESPACE}" apply -f backup_file.yaml
 
 # Upgrading the app
 
-The Jaeger operator Deployments is configured to roll out updates automatically.
-Start the update by patching the Deployment with a new image reference:
+The Jaeger Operator deployment is configured to roll out updates
+automatically. To start an update, patch the deployment with a new
+image reference:
 
 ```shell
 kubectl set image deployment ${APP_INSTANCE_NAME}-jaeger-operator --namespace ${NAMESPACE} \
   "jaeger-operator=[NEW_OPERATOR_IMAGE_REFERENCE]"
 ```
 
-Where `[NEW_OPERATOR_IMAGE_REFERENCE]` are the Docker image references of the new images that you want to use.
+where `[NEW_OPERATOR_IMAGE_REFERENCE]` is the Docker image reference of
+the new images that you want to use.
 
 To check the status of Pods in the StatefulSet, and the progress of
 the new image, run the following command:
@@ -263,16 +272,17 @@ kubectl get pods --selector app.kubernetes.io/name=${APP_INSTANCE_NAME} \
   --namespace ${NAMESPACE}
 ```
 
-# Uninstall the Application
+# Uninstall the app
 
-## Using the Google Cloud Platform Console
+## Using the Google Cloud Console
 
-1. In the GCP Console, open [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
-1. From the list of applications, click **Jaeger**.
+1. In the Cloud Console, open [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
+
+1. From the list of apps, click **Jaeger**.
 
 1. On the Application Details page, click **Delete**.
 
-## Using the command line
+## Using the command-line
 
 ### Prepare the environment
 
@@ -285,8 +295,9 @@ export NAMESPACE=default
 
 ### Delete the resources
 
-> **NOTE:** We recommend to use a kubectl version that is the same as the version of your cluster.
-Using the same versions of kubectl and the cluster helps avoid unforeseen issues.
+> **NOTE:** We recommend that you use a `kubectl` version that
+is the same version as that of your cluster. Using the same versions
+of `kubectl` and the cluster helps to avoid unforeseen issues.
 
 To delete the resources, use the expanded manifest file used for the
 installation.
@@ -297,7 +308,7 @@ Run `kubectl` on the expanded manifest file:
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace ${NAMESPACE}
 ```
 
-Otherwise, delete the resources using types and a label:
+Otherwise, delete the resources by using types and a label:
 
 ```shell
 kubectl delete application \
@@ -305,12 +316,13 @@ kubectl delete application \
   --selector app.kubernetes.io/name=${APP_INSTANCE_NAME}
 ```
 
-> **NOTE:** It will delete only the jaeger-operator application. All jaeger-operator managed resources will be available.
+> **NOTE:** This will delete only the `jaeger-operator` app. All
+`jaeger-operator`-managed resources will remain available.
 
 ### Delete the GKE cluster
 
-Optionally, if you don't need the deployed application or the GKE cluster,
-delete the cluster using this command:
+Optionally, if you don't need the deployed app or the GKE cluster,
+delete the cluster by using this command:
 
 ```shell
 gcloud container clusters delete "${CLUSTER}" --zone "${ZONE}"
