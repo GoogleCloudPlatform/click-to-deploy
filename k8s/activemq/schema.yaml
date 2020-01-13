@@ -12,7 +12,7 @@ x-google-marketplace:
     recommended: false
 
   managedUpdates:
-    kalmSupported: false
+    kalmSupported: true
 
   images:
     '':
@@ -21,6 +21,10 @@ x-google-marketplace:
           type: REPO_WITH_REGISTRY
         image.tag:
           type: TAG
+
+  clusterConstraints:
+    istio:
+      type: OPTIONAL
 
 properties:
   name:
