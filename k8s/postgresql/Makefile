@@ -8,15 +8,13 @@ APP_ID ?= $(CHART_NAME)
 
 TRACK ?= 9.6
 
-# TODO(GoogleCloudPlatform/click-to-deploy/issues/845): Delete and use TRACK
-# after C2D_RELEASE variable is added to container
-# Please note that PostgreSQL should use "9.6-kubernetes" tag.
-POSTGRESQL_TAG ?= sha256:42678ad4f7982447ad8ff2bf343b055ce4732c3e68391007ebdcbcc1ecbc0236
+POSTGRESQL_TAG ?= $(TRACK)-kubernetes
+POSTGRESQL_EXPORTER_TAG ?= exporter
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
-IMAGE_POSTGRESQL ?= $(SOURCE_REGISTRY)/postgresql9@$(POSTGRESQL_TAG)
-IMAGE_EXPORTER ?= $(SOURCE_REGISTRY)/postgresql9:exporter
+IMAGE_POSTGRESQL ?= $(SOURCE_REGISTRY)/postgresql9:$(POSTGRESQL_TAG)
+IMAGE_EXPORTER ?= $(SOURCE_REGISTRY)/postgresql9:$(POSTGRESQL_EXPORTER_TAG)
 IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 
@@ -30,10 +28,7 @@ ADDITIONAL_IMAGES := exporter prometheus-to-sd
 image-exporter := $(call get_sha256,$(IMAGE_EXPORTER))
 image-prometheus-to-sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))
 
-# TODO(GoogleCloudPlatform/click-to-deploy/issues/845): Use following after
-# C2D_RELEASE variable is added to container instead of fixed version.
-# C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
-C2D_CONTAINER_RELEASE ?= 9.6.15
+C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)
