@@ -1,45 +1,47 @@
 # Overview
 
-Nuclio is a new "serverless" project, derived from Iguazio's elastic data
-life-cycle management service for high-performance events and data processing.
+Nuclio is a new serverless project, derived from Iguazio's elastic data
+life cycle management service for high-performance events and data processing.
 
-Nuclio allows to write a source code of functions defined in a platform-specific
-convention (including the triggers configuration or stateful data definition).
-Nuclio manages the conversion of the source code into container images (stored
-in a configurable Docker registry - for this application Google Container
-Registry) and deploying their workloads to a Kubernetes cluster.
+Nuclio lets you write source code defining functions in platform-specific
+conventions (including the triggers configuration and stateful data definition).
+Nuclio converts the source code into container images, stores them in a
+configurable Docker registry (for this app, Container Registry), and then
+deploys their workloads to a Kubernetes cluster.
 
 For more information on Nuclio, see the [Nuclio official website](https://www.nuclio.io/).
 
 ## About Google Click to Deploy
 
-Popular open stacks on Kubernetes packaged by Google.
+Popular open stacks on Kubernetes, packaged by Google.
 
 ## Architecture
 
 ![Architecture diagram](resources/nuclio-k8s-app-architecture.png)
 
-The application offers Nuclio CRDs and deployments of Nuclio controller and dashboard on a Kubernetes cluster.
+The app offers Nuclio custom resource definitions (CRDs) and deployments of
+the Nuclio controller and dashboard on a Kubernetes cluster.
 
-Installation requires access to a Docker registry to build and deploy Nuclio applications.
+To install Nuclio, you must have access to a Docker registry for building and
+deploying Nuclio apps.
 
 # Installation
 
 ## Quick install with Google Cloud Marketplace
 
 Get up and running with a few clicks! Install this Nuclio app to a
-Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
+Google Kubernetes Engine cluster by using Google Cloud Marketplace. Follow the
 [on-screen instructions](https://console.cloud.google.com/marketplace/details/google/nuclio).
 
 ## Command line instructions
 
 ### Prerequisites
 
-#### Set up command-line tools
+#### Set up command line tools
 
 You'll need the following tools in your development environment. If you are
-using Cloud Shell, `gcloud`, `kubectl`, Docker, and Git are installed in your
-environment by default.
+using Cloud Shell, then `gcloud`, `kubectl`, Docker, and Git are installed in
+your environment by default.
 
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
@@ -53,40 +55,44 @@ Configure `gcloud` as a Docker credential helper:
 gcloud auth configure-docker
 ```
 
-#### Create Service Account to access GCP Registry
+#### Create a service account to access Container Registry
 
-To provide access to GCP Registry, you must create service account for Nuclio
-application.
+To provide access to Container Registry, you must create a service account for
+the Nuclio app.
 
-1. Open [GCP Console](https://console.cloud.google.com/) in your browser.
-1. Open **IAM & admin** in the navigation menu from the sidebar and then click **Service accounts**.
-1. Press **+ CREATE SERVICE ACCOUNT**
+1. Open [Cloud Console](https://console.cloud.google.com/) in your browser.
+1. Select **IAM & admin** from the navigation menu sidebar and then click on
+   **Service accounts**.
+1. Click on **+ CREATE SERVICE ACCOUNT**.
     1. Provide the name for a new service account.
-    Before saving a new account, please take a note of the generated "Service
-    account ID", similar to `[SA_NAME]@[PROJECT_ID].iam.gserviceaccount.com`. It
-    will be needed on next steps.
-    1. Click **Done** to proceed to the next step.
-1. Click **Continue** to skip "Grant this service account access to project"
-step without changes.
-1. On "Grant users access to this service account" step you must create and
-   download a secret key.
-1. Click **CREATE KEY** and choose to use JSON key type.
+       Before saving a new account, please take a note of the generated
+       "Service account ID", which will look something like
+       `[SA_NAME]@[PROJECT_ID].iam.gserviceaccount.com`. It will be needed
+       throughout the following steps.
+    1. Click **Done** to proceed.
+1. Click **Continue** to skip the "Grant this service account access to
+   project" step without making any changes.
+1. To complete the "Grant users access to this service account" step, you must
+   create and download a secret key.
+1. Click **CREATE KEY** and choose to use JSON as the key type.
     1. Click **CREATE**.
-    1. JSON Key will be automatically downloaded. Store key file in secure place.
-    It will be required for further configuration steps.
+    1. Your JSON key will download automatically. Store the key file in a
+       secure place.
+       It will be required for further configuration steps.
 
-Setup permissions for the created service account:
+Set up permissions for the created service account:
 
-1. Open **Storage** in the navigation menu.
-1. Find a bucket which is used as the Docker registry similar to
-`artifacts.[PROJECT_ID].appspot.com`. Open by clicking on it.
+1. From the navigation menu, select **Storage**.
+1. Find a bucket which is used as the Docker registry, and which has a name
+   similar to `artifacts.[PROJECT_ID].appspot.com`. Click on it to open it.
 1. Switch to the **Permissions** tab.
 1. Click **Add members**.
-    1. Add new member by Service account ID which was noted at previous steps.
-    1. Choose **Storage** -> **Storage Admin** to add new role for Service account.
-    1. Click **SAVE** to save new role
+    1. Add new members by their service account IDs, as created and saved in the
+       previous steps.
+    1. Choose **Storage** -> **Storage Admin** to add a new role for a service account.
+    1. Click **SAVE** to save the new role.
 
-To create a Kubernetes Secret resource, please follow the [instructions](#create-secret-resource-for-gcp-docker-registry)
+To create a Kubernetes Secret resource, follow [these instructions](#create-secret-resource-for-gcp-docker-registry).
 
 #### Create a Google Kubernetes Engine (GKE) cluster
 
@@ -107,7 +113,7 @@ gcloud container clusters get-credentials "${CLUSTER}" --zone "${ZONE}"
 
 #### Clone this repo
 
-Clone this repo and the associated tools repo:
+Clone this repo and its associated tools repo:
 
 ```shell
 git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
@@ -124,13 +130,13 @@ To set up your cluster to understand Application resources, run the following co
 kubectl apply -f "https://raw.githubusercontent.com/GoogleCloudPlatform/marketplace-k8s-app-tools/master/crd/app-crd.yaml"
 ```
 
-You need to run this command once.
+You must run this command at least once.
 
 The Application resource is defined by the
 [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps) community.
-The source code can be found on [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
+The source code can be found at [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
 
-### Install the Application
+### Install the app
 
 Navigate to the `nuclio` directory:
 
@@ -157,23 +163,24 @@ export IMAGE_CONTROLLER="marketplace.gcr.io/google/nuclio"
 export IMAGE_DASHBOARD="marketplace.gcr.io/google/nuclio/dashboard"
 ```
 
-In case you are using the GCR Docker registry, you should define push/pull URL, which is different from login URL.
+If you are using the Container Registry Docker registry, you should define the push/pull
+URL, which is different from the login URL.
 
-For use Docker registry from current project:
+To use the Docker registry from your current project, enter the following command:
 
 ```shell
 export PUSH_PULL_URL="gcr.io/$(gcloud config get-value project)/${APP_INSTANCE_NAME}-images"
 ```
 
-Optionally you can define another registry secret name.
-By default it is ${APP_INSTANCE_NAME}-registry-credentials
+You also have the option of defining another registry Secret name.
+By default, it is `${APP_INSTANCE_NAME}-registry-credentials`.
 
 ```shell
 export REGISTRY_SECRET="docker-credentials"
 ```
 
-Optionally you can set the number of replicas for Nuclio dashboard:
-Default and recommended value is 1.
+You can also specify the number of replicas for the Nuclio dashboard.
+The default - and recommended - value for this is 1.
 
 ```shell
 export DASHBOARD_REPLICAS=1
@@ -181,19 +188,24 @@ export DASHBOARD_REPLICAS=1
 
 #### Create namespace in your Kubernetes cluster
 
-If you use a different namespace than the `default`, run the command below to create a new namespace:
+If you use a different namespace than the `default`, run the command
+below to create a new namespace:
 
 ```shell
 kubectl create namespace "${NAMESPACE}"
 ```
 
-#### Create Secret resource for GCP Docker registry
+#### Create a Secret resource for the Container Registry Docker registry
 
-This step will require key which you can create following [instructions](#create-service-account-to-access-gcp-registry)
+This step will require a key, which you can create following
+[these instructions](#create-service-account-to-access-gcp-registry).
 
-If you use a different namespace than the `default`, please create it following the [instructions](#create-namespace-in-your-kubernetes-cluster)
+If you are using a different namespace from the `default`, please create
+it by following
+[these instructions](#create-namespace-in-your-kubernetes-cluster).
 
-To create Secret resource which contains credentials for the GCP Docker registry, modify and run the following command.
+To create a Secret resource which contains credentials for the Container
+Registry Docker registry, modify and run the following command:
 
 ```shell
 export KEY_JSON=[PATH_TO_KEY]
@@ -203,11 +215,16 @@ kubectl --namespace "${NAMESPACE}" create secret docker-registry ${APP_INSTANCE_
         --docker-password="$(cat ${KEY_JSON})" \
         --docker-email=email@example.com
 ```
-where `PATH_TO_KEY` is path to key created in previous step.
 
-In case you decide to use private Docker registry you can create this Secret using the [official Kubernetes instructions](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/).
+where `PATH_TO_KEY` is the path to the key created in
+[the previous step](#create-secret-resource-for-the-container-registry-docker-registry).
 
-##### Create dedicated Service Accounts
+If you're using a private Docker registry, you can create this Secret by
+following
+[these steps](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/)
+from the official Kubernetes documentation.
+
+##### Create dedicated Service accounts
 
 Define the environment variables:
 
@@ -217,7 +234,7 @@ export CONTROLLER_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-nuclio-controller"
 export CRD_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-nuclio-crd-creator-job"
 ```
 
-Expand the manifest to create Service Accounts:
+Expand the manifest to create Service accounts:
 
 ```shell
 cat resources/service-accounts.yaml \
@@ -239,7 +256,7 @@ kubectl apply -f "${APP_INSTANCE_NAME}_sa_manifest.yaml" \
 #### Expand the manifest template
 
 Use `helm template` to expand the template. We recommend that you save the
-expanded manifest file for future updates to the application.
+expanded manifest file for future updates to the app.
 
 ```shell
 helm template chart/nuclio \
@@ -269,7 +286,7 @@ kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 
 #### View the app in the Google Cloud Console
 
-To get the Console URL for your app, run the following command:
+To get the Cloud Console URL for your app, run the following command:
 
 ```shell
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
@@ -277,8 +294,10 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 To view the app, open the URL in your browser.
 
-### Access Nuclio dashboard service (locally)
-Nuclio dashboard will be available at [http://localhost:8070/](http://localhost:8070/)
+### Access the Nuclio dashboard service (locally)
+
+The Nuclio dashboard will be available at
+[http://localhost:8070/](http://localhost:8070/).
 
 ```shell
 kubectl --namespace "${NAMESPACE}" port-forward service/${APP_INSTANCE_NAME}-dashboard 8070:8070
@@ -288,7 +307,7 @@ kubectl --namespace "${NAMESPACE}" port-forward service/${APP_INSTANCE_NAME}-das
 
 ### Nuclio controller
 
-Scaling is not supported for Nuclio controller.
+Scaling is not supported for the Nuclio controller.
 
 ### Nuclio dashboard
 
@@ -299,11 +318,11 @@ kubectl scale deployment "${APP_INSTANCE_NAME}-dashboard" \
   --namespace "${NAMESPACE}" --replicas=<new-replicas>
 ```
 
-# Backup and Restore
+# Backup and restore
 
-## Backup Nuclio configuration data to your local environment
+## Back up Nuclio configuration data to your local environment
 
-Backup Nuclio resources using the following command:
+To back up Nuclio resources, use the following command:
 
 ```shell
 export NAMESPACE=default
@@ -314,7 +333,7 @@ kubectl --namespace "${NAMESPACE}" get crd \
    --output=yaml > backup_file.yaml
 ```
 
-## Restore Nuclio configuration
+## Restore Nuclio configuration data
 
 ```shell
 kubectl --namespace "${NAMESPACE}" apply -f backup_file.yaml
@@ -322,7 +341,9 @@ kubectl --namespace "${NAMESPACE}" apply -f backup_file.yaml
 
 # Upgrading the app
 
-The Nuclio Deployments is configured to roll out updates automatically. Start the update by patching the Deployment with a new image reference:
+The Nuclio deployment is configured to roll out updates
+automatically. To start an update, patch the deployment with
+a new image reference:
 
 ```shell
 kubectl set image deployment ${APP_INSTANCE_NAME}-dashboard --namespace ${NAMESPACE} \
@@ -331,22 +352,26 @@ kubectl set image deployment ${APP_INSTANCE_NAME}-controller --namespace ${NAMES
   "nuclio=[NEW_CONTROLLER_IMAGE_REFERENCE]"
 ```
 
-Where `[NEW_DASHBOARD_IMAGE_REFERENCE]` and `[NEW_CONTROLLER_IMAGE_REFERENCE]` are the Docker image references of the new images that you want to use.
+where `[NEW_DASHBOARD_IMAGE_REFERENCE]` and
+`[NEW_CONTROLLER_IMAGE_REFERENCE]` are the Docker image
+references of the new images that you want to use.
 
-To check the status of Pods in the StatefulSet, and the progress of
-the new image, run the following command:
+To check the status of Pods in the StatefulSet, and the progress
+of the new image, run the following command:
 
 ```shell
 kubectl get pods --selector app.kubernetes.io/name=${APP_INSTANCE_NAME} \
   --namespace ${NAMESPACE}
 ```
 
-# Uninstall the Application
+# Uninstall the app
 
-## Using the Google Cloud Platform Console
+## Using the Google Cloud Console
 
-1. In the GCP Console, open [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
-1. From the list of applications, click **Nuclio**.
+1. In the Cloud Console, open
+   [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
+
+1. From the list of apps, select **Nuclio**.
 
 1. On the Application Details page, click **Delete**.
 
@@ -363,11 +388,13 @@ export NAMESPACE=default
 
 ### Delete the resources
 
-> **NOTE:** We recommend to use a kubectl version that is the same as the version of your cluster.
-Using the same versions of kubectl and the cluster helps avoid unforeseen issues.
+> **NOTE:** We recommend that you use a kubectl version that
+is the same as the version of your cluster. Using the same
+versions for kubectl and the cluster helps to avoid unforeseen
+issues.
 
-To delete the resources, use the expanded manifest file used for the
-installation.
+To delete the resources, use the expanded manifest file used
+for the installation.
 
 Run `kubectl` on the expanded manifest file:
 
@@ -375,7 +402,7 @@ Run `kubectl` on the expanded manifest file:
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace ${NAMESPACE}
 ```
 
-Otherwise, delete the resources using types and a label:
+Otherwise, delete the resources by using types and a label:
 
 ```shell
 kubectl delete application \
@@ -383,14 +410,13 @@ kubectl delete application \
   --selector app.kubernetes.io/name=${APP_INSTANCE_NAME}
 ```
 
-> **NOTE:** It will delete only the nuclio application. All nuclio managed resources will be available.
+> **NOTE:** This will delete only the Nuclio app itself. All Nuclio-managed resources will remain available.
 
 ### Delete the GKE cluster
 
-Optionally, if you don't need the deployed application or the GKE cluster,
-delete the cluster using this command:
+Optionally, if you don't need the deployed app or the GKE
+cluster, delete the cluster by using this command:
 
 ```shell
 gcloud container clusters delete "${CLUSTER}" --zone "${ZONE}"
 ```
-
