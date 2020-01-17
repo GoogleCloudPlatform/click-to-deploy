@@ -30,9 +30,5 @@
 
 source /opt/c2d/downloads/gcs-pull-lib.sh || exit 1
 
-# Main process:
 unlock_pull_process
-while [[ true ]]; do
-  pull_if_changed
-  sleep 10
-done
+gsutil -m rsync -R -p -d "${remote_app_dir}" "${local_app_dir}"
