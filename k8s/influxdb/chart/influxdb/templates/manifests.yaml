@@ -22,6 +22,10 @@ spec:
         image: "{{ .Values.influxdb.image.repo }}:{{ .Values.influxdb.image.tag }}"
         imagePullPolicy: Always
         args: ["influxd"]
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
         env:
         - name: INFLUXDB_HTTP_AUTH_ENABLED
           value: 'true'

@@ -156,5 +156,7 @@ spec:
           - ReadWriteOnce
         resources:
           requests:
+            cpu: 100m
+            memory: 100Mi
             storage: "{{ .Values.persistence.size}}"
         storageClassName: "{{ .Values.persistence.storageClass }}"
