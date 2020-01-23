@@ -26,6 +26,10 @@ spec:
       {{- $etcdHeadlessServiceName := printf "%s-%s" $releaseFullname "headless" }}
       {{- $dnsBase := .Values.service.dnsBase }}
       - name: "etcd"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
         image: "{{ .Values.image.repo }}:{{ .Values.image.tag }}"
         imagePullPolicy: IfNotPresent
         command:
@@ -156,5 +160,7 @@ spec:
           - ReadWriteOnce
         resources:
           requests:
+            cpu: 100m
+            memory: 100Mi
             storage: "{{ .Values.persistence.size}}"
         storageClassName: "{{ .Values.persistence.storageClass }}"

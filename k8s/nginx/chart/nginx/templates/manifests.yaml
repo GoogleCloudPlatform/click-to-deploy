@@ -22,6 +22,8 @@ spec:
       storageClassName: standard
       resources:
         requests:
+          cpu: 10m
+          memory: 10Mi
           storage: 1Gi
   template:
     metadata:

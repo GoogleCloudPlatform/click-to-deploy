@@ -198,6 +198,10 @@ spec:
       - name: mariadb
         image: "{{ .Values.mariadb.image.repo }}:{{ .Values.mariadb.image.tag }}"
         imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
         env:
         - name: MARIADB_MASTER_ROOT_USER
           value: "root"

@@ -52,6 +52,7 @@ spec:
             memory: 2.0Gi
           requests:
             memory: 2.0Gi
+            cpu: 100m
   volumeClaimTemplates:
   - metadata:
       name: {{ .Release.Name }}-jenkins-pvc

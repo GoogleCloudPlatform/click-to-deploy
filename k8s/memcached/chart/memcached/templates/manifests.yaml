@@ -21,6 +21,10 @@ spec:
       - name: memcached
         image: "{{ .Values.memcached.image.repo }}:{{ .Values.memcached.image.tag }}"
         imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
         env:
         - name: MEMCACHED_PROMETHEUS_ENABLED
           value: "true"

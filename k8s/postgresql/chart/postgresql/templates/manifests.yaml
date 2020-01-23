@@ -112,6 +112,8 @@ spec:
       storageClassName: standard
       resources:
         requests:
+          cpu: 100m
+          memory: 100Mi
           storage: {{ .Values.postgresql.volumeSize }}Gi
 ---
 kind: Service
