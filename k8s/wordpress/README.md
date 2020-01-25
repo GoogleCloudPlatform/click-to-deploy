@@ -167,7 +167,9 @@ Configure the container images:
 
 ```shell
 TAG=latest
-export IMAGE_WORDPRESS="marketplace.gcr.io/google/wordpress:${TAG}"
+export IMAGE_WORDPRESS_REPO="marketplace.gcr.io/google/wordpress"
+export IMAGE_WORDPRESS_TAG="${TAG}"
+export IMAGE_WORDPRESS="${IMAGE_WORDPRESS_REPO}:${IMAGE_WORDPRESS_TAG}"
 export IMAGE_APACHE_EXPORTER="marketplace.gcr.io/google/wordpress/apache-exporter:${TAG}"
 export IMAGE_MYSQL="marketplace.gcr.io/google/wordpress/mysql:${TAG}"
 export IMAGE_MYSQL_EXPORTER="marketplace.gcr.io/google/wordpress/mysqld-exporter:${TAG}"
@@ -251,7 +253,8 @@ expanded manifest file for future updates to the application.
 helm template chart/wordpress \
   --name "$APP_INSTANCE_NAME" \
   --namespace "$NAMESPACE" \
-  --set "wordpressImage=$IMAGE_WORDPRESS" \
+  --set "wordpress.image.repo=$IMAGE_WORDPRESS_REPO" \
+  --set "wordpress.image.tag=$IMAGE_WORDPRESS_TAG" \
   --set "db.image=$IMAGE_MYSQL" \
   --set "db.rootPassword=$ROOT_DB_PASSWORD" \
   --set "db.wordpressPassword=$WORDPRESS_DB_PASSWORD" \
