@@ -36,6 +36,10 @@ spec:
       serviceAccountName: {{ .Values.controller.serviceAccountName }}
       containers:
       - name: {{ template "nuclio.controllerName" . }}
+        resources:
+          requests:
+            cpu: 20m
+            memory: 20Mi
         image: {{ .Values.controller.image.repository }}:{{ .Values.controller.image.tag }}
         env:
         - name: NUCLIO_CONTROLLER_IMAGE_PULL_SECRETS

@@ -37,6 +37,10 @@ spec:
       containers:
       - name: {{ template "nuclio.dashboardName" . }}
         image: {{ .Values.dashboard.image.repository }}:{{ .Values.dashboard.image.tag }}
+        resources:
+          requests:
+            cpu: 20m
+            memory: 50Mi
         ports:
         - containerPort: 8070
         volumeMounts:

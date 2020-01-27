@@ -20,6 +20,10 @@ spec:
       containers:
       - image: {{ .Values.db.image }}
         name: mariadb
+        resources:
+          requests:
+            cpu: 35m
+            memory: 150Mi
         env:
         # A password for root superuser.
         - name: MYSQL_ROOT_PASSWORD

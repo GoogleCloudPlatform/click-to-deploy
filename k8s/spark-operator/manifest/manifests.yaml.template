@@ -29,6 +29,10 @@ spec:
       - name: sparkoperator
         image: $SPARK_OPERATOR_IMAGE
         imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 50m
+            memory: 50m
         volumeMounts:
         - name: webhook-certs
           mountPath: /etc/webhook-certs

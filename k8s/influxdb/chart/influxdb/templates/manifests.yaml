@@ -24,8 +24,8 @@ spec:
         args: ["influxd"]
         resources:
           requests:
-            cpu: 100m
-            memory: 100Mi
+            cpu: 20m
+            memory: 200Mi
         env:
         - name: INFLUXDB_HTTP_AUTH_ENABLED
           value: 'true'

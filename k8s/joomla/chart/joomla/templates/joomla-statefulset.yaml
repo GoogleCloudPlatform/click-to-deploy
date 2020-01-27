@@ -22,7 +22,7 @@ spec:
         name: joomla
         resources:
           requests:
-            cpu: 100m
+            cpu: 20m
             memory: 100Mi
         env:
         - name: AUTO_INSTALL

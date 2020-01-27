@@ -1,7 +1,7 @@
 apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
-  name: {{ .Release.Name }}-cassandra
+  name: {{ .Release.Name }}-cassandrarequest
   labels: &CassandraDeploymentLabels
     app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: cassandra-server
