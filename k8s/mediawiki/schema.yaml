@@ -56,7 +56,7 @@ properties:
   mediawiki.admin.username:
     type: string
     title: MediaWiki admin username
-    description: Administrator username who will be able to manage the wiki.
+    description: Administrator username who will be able to manage the wiki
     default: admin
 
   mediawiki.admin.password:
@@ -129,8 +129,8 @@ properties:
   metrics.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
-    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters,
-      export of metrics to Stackdriver is not supported yet
+    description: Your Google Cloud project should have Stackdriver Monitoring enabled. For non-Google Cloud clusters,
+      export of metrics to Stackdriver Monitoring is not supported at this time.
     default: false
   certificate:
     type: string
