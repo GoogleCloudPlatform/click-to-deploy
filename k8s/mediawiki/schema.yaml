@@ -69,7 +69,7 @@ properties:
         base64: False
 
   # MySQL related settings
-  # db.mediawikiPassword is the database user's password for the user mediawiki.
+  # db.name is the name of the mediawiki database.
   db.name:
     type: string
     title: MediaWiki database name
