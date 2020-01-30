@@ -15,12 +15,12 @@ spec:
     type: MediaWiki
     version: "{{ .Values.mediawiki.image.tag }}"
     description: >-
-      MediaWiki is a collaboration and documentation platform brought to you by a vibrant community
+      MediaWiki is a collaboration and documentation platform, brought to you by a vibrant community.
 
       # Support
       Google does not offer support for this solution. However, community support is available on
       [Stack Overflow](https://stackoverflow.com/questions/tagged/mediawiki/).
-      Additional support channels are available on
+      Additional support channels are available on the
       [MediaWiki communications page](https://www.mediawiki.org/wiki/Communication).
     maintainers:
     - name: Google Click to Deploy
@@ -29,7 +29,7 @@ spec:
       {{ if .Values.enablePublicServiceAndIngress -}}
       # Open your MediaWiki site
 
-      Get the external IP of your MediaWiki site using the following command:
+      To get the external IP of your MediaWiki site, use the following command:
 
       ```
       SERVICE_IP=$(kubectl get ingress {{ .Release.Name }}-mediawiki-ingress \
@@ -41,23 +41,23 @@ spec:
 
       The command shows you the URL of your site.
 
-      # Update TLS certificate for MediaWiki
+      # Update the TLS certificate for MediaWiki
 
-      By default the application used self-signed certificate. You can follow
-      [Update TLS certificate for MediaWiki section](https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/MediaWiki/README.md#update-tls-certificate-for-MediaWiki)
+      By default, the app uses a self-signed certificate. You can follow the steps in the MediaWiki section of
+      [Update TLS certificate](https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/MediaWiki/README.md#update-tls-certificate-for-MediaWiki)
       to update it.
 
       {{- else -}}
       # Open your MediaWiki site
 
-      MediaWiki is exposed in a ClusterIP-only service `{{ .Release.Name }}-mediawiki-svc`. To connect to
-      MediaWiki UI, you can either expose a public service endpoint or keep it private, but connect
-      from you local environment with `kubectl port-forward`.
+      MediaWiki is exposed by the ClusterIP-only service `{{ .Release.Name }}-mediawiki-svc`. To connect to the
+      MediaWiki UI, you can either expose a public service endpoint, or keep it private, but connect
+      from your local environment with `kubectl port-forward`.
 
-      ## Forward MediaWiki port in local environment
+      ## Forward the MediaWiki port in your local environment
 
-      You can use port forwarding feature of `kubectl` to forward MediaWiki's port to your local
-      machine. Run the following command in background:
+      To use `kubectl`'s port forwarding feature to forward MediaWiki's port to your local
+      machine, run the following command in the background:
 
       ```shell
       kubectl port-forward \
@@ -66,7 +66,7 @@ spec:
         8080:80
       ```
 
-      Now you can access MediaWiki UI with [http://localhost:8080](http://localhost:8080).
+      Now you can access the MediaWiki UI with [http://localhost:8080](http://localhost:8080).
       {{- end }}
   info:
   {{ if .Values.enablePublicServiceAndIngress -}}
