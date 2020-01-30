@@ -151,12 +151,12 @@ done
 
 For the persistent disk provisioning of the etcd servers, you will need to:
 
- * Set the StorageClass name. You can select your existing StorageClass name, or use the "default" StorageClass, for persistent disk provisioning for etcd servers.
+ * Set the StorageClass name. You should select your existing StorageClass name for persistent disk provisioning for etcd servers.
  * Set the persistent disk's size. The default disk size is "1Gi".
 > Note: "ssd" type storage is recommended for etcd, as it uses local disk to store and retrieve keys and values.
 > To create a StorageClass for dynamic provisioning of SSD persistent volumes, check out [this documentation](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/ssd-pd) for more detailed instructions.
 ```shell
-export ETCD_STORAGE_CLASS="ssd-storageclass" # If you don't set this value, default StorageClass will be used
+export ETCD_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
 export PERSISTENT_DISK_SIZE="1Gi"
 ```
 
