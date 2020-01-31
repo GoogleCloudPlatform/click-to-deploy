@@ -181,9 +181,12 @@ Configure the container images:
 
 ```shell
 TAG=3.7
-export IMAGE_RABBITMQ=marketplace.gcr.io/google/rabbitmq:${TAG}
-export IMAGE_RABBITMQ_INIT=marketplace.gcr.io/google/rabbitmq/debian9:${TAG}
-export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/rabbitmq/prometheus-to-sd:${TAG}"
+export IMAGE_RABBITMQ="marketplace.gcr.io/google/rabbitmq"
+export IMAGE_RABBITMQ_TAG=$TAG
+export IMAGE_RABBITMQ_INIT="marketplace.gcr.io/google/rabbitmq/debian9"
+export IMAGE_RABBITMQ_INIT_TAG=$TAG
+export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/rabbitmq/prometheus-to-sd"
+export IMAGE_METRICS_EXPORTER_TAG=$TAG
 ```
 
 The images above are referenced by
@@ -196,10 +199,11 @@ script:
 
 ```shell
 for i in "IMAGE_METRICS_EXPORTER" "IMAGE_RABBITMQ" "IMAGE_RABBITMQ_INIT"; do
-  repo=$(echo ${!i} | cut -d: -f1);
-  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
-  export $i="$repo@$digest";
-  env | grep $i;
+  tag_var_name="$i"_TAG
+  digest=$(docker pull ${!i}:${!tag_var_name}| sed -n -e 's/Digest: //p');
+  export $tag_var_name=$digest;
+  echo "$i: ${!i}"
+  echo "$tag_var_name: ${!tag_var_name}"
 done
 ```
 
@@ -251,17 +255,18 @@ save the expanded manifest file for future updates to the application.
     files.
 
     ```shell
-    helm template chart/rabbitmq \
-      --name $APP_INSTANCE_NAME \
+    helm template $APP_INSTANCE_NAME chart/rabbitmq \
       --namespace $NAMESPACE \
-      --set rabbitmq.image=$IMAGE_RABBITMQ \
-      --set rabbitmq.initImage=$IMAGE_RABBITMQ_INIT \
+      --set name=$APP_INSTANCE_NAME \
+      --set rabbitmq.image.repo=$IMAGE_RABBITMQ \
+      --set rabbitmq.image.tag=$IMAGE_RABBITMQ_TAG \
+      --set rabbitmq.initImage=$IMAGE_RABBITMQ_INIT:$IMAGE_RABBITMQ_INIT_TAG \
       --set rabbitmq.replicas=$REPLICAS \
       --set rabbitmq.erlangCookie=$RABBITMQ_ERLANG_COOKIE \
       --set rabbitmq.user=$RABBITMQ_DEFAULT_USER \
       --set rabbitmq.password=$RABBITMQ_DEFAULT_PASS \
       --set rabbitmq.serviceAccount=$RABBITMQ_SERVICE_ACCOUNT \
-      --set metrics.image=$IMAGE_METRICS_EXPORTER \
+      --set metrics.image=$IMAGE_METRICS_EXPORTER:$IMAGE_METRICS_EXPORTER_TAG \
       --set metrics.enabled=$METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
     ```
 
