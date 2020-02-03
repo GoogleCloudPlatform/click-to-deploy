@@ -32,6 +32,10 @@ spec:
          - "/bin/bash"
          - "-eu"
          - "/setup.sh"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
         env:
         - name: MY_POD_IP
           valueFrom:

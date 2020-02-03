@@ -26,6 +26,10 @@ spec:
       - name: postgresql-server
         image: {{ .Values.postgresql.image }}
         imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
         ports:
         - containerPort: 5432
           name: postgres
