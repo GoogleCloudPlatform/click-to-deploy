@@ -13,6 +13,8 @@ spec:
     matchLabels: *Labels
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: 'true'
       labels: *Labels
     spec:
       serviceAccountName: $GRAFANA_SERVICE_ACCOUNT
