@@ -36,6 +36,7 @@ tls:
   base64EncodedCertificate: null
 
 metrics:
-  enabled: true
+  exporter:
+    enabled: true
 
 enablePublicServiceAndIngress: false
