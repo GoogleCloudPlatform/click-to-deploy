@@ -18,12 +18,13 @@ x-google-marketplace:
           type: FULL
     consul-exporter:
       properties:
-        metrics.image:
+        server.prometheus_exporter.image:
           type: FULL
     prometheus-to-sd:
       properties:
-        server.prometheus_to_sd.image:
+        metrics.image:
           type: FULL
+
   clusterConstraints:
     resources:
     - replicas: 3
@@ -76,9 +77,10 @@ properties:
     pattern: '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
   metrics.exporter.enabled:
     type: boolean
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters,
+      export of metrics to Stackdriver is not supported yet
     default: false
-    title: Prometheus exporter sidecar
-    description: Prometheus exporter to export metrics to Stackdriver
   server.ServiceAccount:
     type : string
     title: Service account used by Consul server

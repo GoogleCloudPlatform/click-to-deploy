@@ -227,8 +227,8 @@ helm template chart/consul \
   --name ${APP_INSTANCE_NAME} \
   $( [[ -n "${NAMESPACE}" ]] && printf '%s=%s' '--namespace' ${NAMESPACE} ) \
   --set global.image=${IMAGE_CONSUL} \
-  --set metrics.image=${IMAGE_CONSUL_EXPORTER} \
-  --set server.prometheus_to_sd.image=${IMAGE_METRICS_EXPORTER} \
+  --set server.prometheus_exporter.image=${IMAGE_CONSUL_EXPORTER} \
+  --set metrics.image=${IMAGE_METRICS_EXPORTER} \
   --set global.domain=${CONSUL_DOMAIN} \
   --set global.datacenter=${CONSUL_DATACENTER} \
   --set server.ServiceAccount=${CONSUL_SERVER_SERVICE_ACCOUNT} \

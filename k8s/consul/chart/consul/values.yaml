@@ -38,7 +38,8 @@ server:
     # requests:
     #  cpu: 500m
     #  memory: 200Mi
-  prometheus_to_sd:
+  prometheus_exporter:
+    enabled: true
     image: "null"
 
 client:
@@ -56,6 +57,7 @@ client:
     #  cpu: 500m
     #  memory: 200Mi
     #
+
 
 metrics:
   image: null
