@@ -148,26 +148,9 @@ Configure the container images:
 
 ```shell
 TAG=6.3
-export IMAGE_ELASTICSEARCH="marketplace.gcr.io/google/elasticsearch:${TAG}"
+export IMAGE_ELASTICSEARCH="marketplace.gcr.io/google/elasticsearch"
 export IMAGE_INIT="marketplace.gcr.io/google/elasticsearch/ubuntu16_04:${TAG}"
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/elasticsearch/prometheus-to-sd:${TAG}"
-```
-
-The images above are referenced by
-[tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
-that you pin each image to an immutable
-[content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This ensures that the installed application always uses the same images, until
-you are ready to upgrade. To get the digest for the image, use the following
-script:
-
-```shell
-for i in "IMAGE_ELASTICSEARCH" "IMAGE_INIT" "IMAGE_METRICS_EXPORTER"; do
-  repo=$(echo ${!i} | cut -d: -f1);
-  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
-  export $i="$repo@$digest";
-  env | grep $i;
-done
 ```
 
 #### Create namespace in your Kubernetes cluster
@@ -185,13 +168,13 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-helm template chart/elasticsearch \
-  --name $APP_INSTANCE_NAME \
+helm template chart/elasticsearch   --name $APP_INSTANCE_NAME \
   --namespace $NAMESPACE \
   --set elasticsearch.initImage=$IMAGE_INIT \
-  --set elasticsearch.image=$IMAGE_ELASTICSEARCH \
-  --set elasticsearch.replicas=$REPLICAS \
-  --set metrics.image=$IMAGE_METRICS_EXPORTER \
+  --set elasticsearch.image.repo=$IMAGE_ELASTICSEARCH \
+  --set elasticsearch.image.tag=$TAG \
+  --set elasticsearch.replicas=$REPLICAS   \
+  --set metrics.image=$IMAGE_METRICS_EXPORTER   \
   --set metrics.enabled=$METRICS_EXPORTER_ENABLED > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
