@@ -18,7 +18,7 @@ x-google-marketplace:
           type: FULL
     consul-exporter:
       properties:
-        server.prometheus_exporter.image:
+        metrics.image:
           type: FULL
     prometheus-to-sd:
       properties:
@@ -74,7 +74,7 @@ properties:
     title: Consul storage
     description: Consul storage per server instance
     pattern: '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
-  server.prometheus_exporter.enabled:
+  metrics.exporter.enabled:
     type: boolean
     default: false
     title: Prometheus exporter sidecar

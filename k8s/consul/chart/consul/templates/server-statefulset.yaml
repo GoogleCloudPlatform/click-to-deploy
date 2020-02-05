@@ -23,7 +23,7 @@ spec:
         app.kubernetes.io/component: consul-server
         hasDNS: "true"
       annotations:
-        {{- if .Values.server.prometheus_exporter.enabled -}}
+        {{- if .Values.metrics.exporter.enabled -}}
         {{/*
         Example of connfiguration for autodiscovery pods for prometheus:
         https://github.com/prometheus/prometheus/blob/release-2.10/documentation/examples/prometheus-kubernetes.yml#L131
@@ -126,9 +126,9 @@ spec:
             periodSeconds: 3
             successThreshold: 1
             timeoutSeconds: 5
-        {{- if .Values.server.prometheus_exporter.enabled }}
+        {{- if .Values.metrics.exporter.enabled }}
         - name: prometheus-exporter-sidecar
-          image: {{ .Values.server.prometheus_exporter.image | quote }}
+          image: {{ .Values.metrics.image | quote }}
           ports:
             - name: exporter
               containerPort: 9017

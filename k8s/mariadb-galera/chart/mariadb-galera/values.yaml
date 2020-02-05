@@ -17,9 +17,10 @@ db:
 peerFinder:
   image: null
 
-prometheusToSd:
+metrics:
   image: null
-  enabled: false
+  exporter:
+    enabled: false
 
 service:
   port: 3306

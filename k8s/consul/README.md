@@ -227,7 +227,7 @@ helm template chart/consul \
   --name ${APP_INSTANCE_NAME} \
   $( [[ -n "${NAMESPACE}" ]] && printf '%s=%s' '--namespace' ${NAMESPACE} ) \
   --set global.image=${IMAGE_CONSUL} \
-  --set server.prometheus_exporter.image=${IMAGE_CONSUL_EXPORTER} \
+  --set metrics.image=${IMAGE_CONSUL_EXPORTER} \
   --set server.prometheus_to_sd.image=${IMAGE_METRICS_EXPORTER} \
   --set global.domain=${CONSUL_DOMAIN} \
   --set global.datacenter=${CONSUL_DATACENTER} \
@@ -235,7 +235,7 @@ helm template chart/consul \
   --set client.ServiceAccount=${CONSUL_CLIENT_SERVICE_ACCOUNT} \
   $( [[ -n "${SERVER_STORAGE}" ]] && echo "--set server.storage=${SERVER_STORAGE}" ) \
   --set global.gossipEncryption.CreateSecretWithKey=${CONSUL_GOSSIP_KEY:-null} \
-  --set server.prometheus_exporter.enabled=${PROMETHEUS_EXPORTER:-false} \
+  --set metrics.exporter.enabled=${METRICS_EXPORTER_ENABLED:-false} \
   $( [[ -n "${REPLICAS}" ]] && echo "--set server.replicas=${REPLICAS}" ) \
   $( [[ -n "${SERVER_RESOURCES_LIMITS_CPU}" ]] && echo "--set server.resources.limits.cpu=${SERVER_RESOURCES_LIMITS_CPU}" ) \
   $( [[ -n "${SERVER_RESOURCES_LIMITS_MEMORY}" ]] && echo "--set server.resources.limits.memory=${SERVER_RESOURCES_LIMITS_MEMORY}" ) \
