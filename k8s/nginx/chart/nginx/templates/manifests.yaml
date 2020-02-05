@@ -87,7 +87,7 @@ spec:
         - name: certs
           mountPath: /etc/nginx/certs
           readOnly: true
-      {{ if .Values.metrics.enabled }}
+      {{ if .Values.metrics.exporter.enabled }}
       - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}
         ports:

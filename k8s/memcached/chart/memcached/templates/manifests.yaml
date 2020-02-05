@@ -41,7 +41,7 @@ spec:
             port: memcached
           initialDelaySeconds: 5
           timeoutSeconds: 2
-      {{ if .Values.metrics.enabled }}
+      {{ if .Values.metrics.exporter.enabled }}
       - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}
         ports:

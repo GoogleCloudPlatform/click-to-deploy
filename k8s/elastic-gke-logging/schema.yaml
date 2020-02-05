@@ -67,7 +67,7 @@ properties:
           - apiGroups: [""]
             resources: ["pods", "namespaces"]
             verbs: ["get", "list", "watch"]
-  metrics.enabled:
+  metrics.exporter.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
     description: Your GCP project should have Stackdriver enabled. For non-GCP clusters,
@@ -79,4 +79,4 @@ required:
 - namespace
 - elasticsearch.replicas
 - fluentd.serviceAccount
-- metrics.enabled
+- metrics.exporter.enabled

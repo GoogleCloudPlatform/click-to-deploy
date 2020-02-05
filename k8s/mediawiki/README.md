@@ -267,7 +267,7 @@ helm template chart/mediawiki \
     --set "enablePublicServiceAndIngress=${PUBLIC_SERVICE_AND_INGRESS_ENABLED}" \
     --set "tls.base64EncodedPrivateKey=${TLS_CERTIFICATE_KEY}" \
     --set "tls.base64EncodedCertificate=${TLS_CERTIFICATE_CRT}" \
-    --set "metrics.enabled=${METRICS_EXPORTER_ENABLED}" \
+    --set "metrics.exporter.enabled=${METRICS_EXPORTER_ENABLED}" \
     --set "metrics.image=${IMAGE_METRICS_EXPORTER}" \
     > ${APP_INSTANCE_NAME}_manifest.yaml
 ```

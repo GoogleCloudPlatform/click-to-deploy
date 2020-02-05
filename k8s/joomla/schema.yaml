@@ -92,7 +92,7 @@ properties:
     title: Enable public IP access
     description: Set the Joomla! Service type to NodePort and enable Ingress
     default: false
-  metrics.enabled:
+  metrics.exporter.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
     description: Your project must have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not yet supported.
@@ -111,4 +111,4 @@ required:
 - namespace
 - joomla.volumeSize
 - enablePublicServiceAndIngress
-- metrics.enabled
+- metrics.exporter.enabled

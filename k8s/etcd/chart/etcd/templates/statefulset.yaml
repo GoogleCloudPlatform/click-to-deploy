@@ -114,7 +114,7 @@ spec:
           readOnly: true
         - name: data
           mountPath: /var/run/etcd
-      {{ if .Values.metrics.enabled }}
+      {{ if .Values.metrics.exporter.enabled }}
       - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}
         command:

@@ -56,7 +56,7 @@ properties:
         - type: ClusterRole
           rulesType: PREDEFINED
           rulesFromRoleName: cluster-admin
-  metrics.enabled:
+  metrics.exporter.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
     description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
@@ -67,4 +67,4 @@ required:
 - namespace
 - grafana.password
 - grafana.serviceaccount
-- metrics.enabled
+- metrics.exporter.enabled

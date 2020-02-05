@@ -53,7 +53,7 @@ properties:
     type: string
     x-google-marketplace:
       type: DEPLOYER_IMAGE
-  metrics.enabled:
+  metrics.exporter.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
     description: Your GCP project should have Stackdriver enabled. For non-GCP clusters,
@@ -72,5 +72,5 @@ required:
 - name
 - namespace
 - postgresql.db.password
-- metrics.enabled
+- metrics.exporter.enabled
 - certificate
