@@ -37,6 +37,6 @@ tls:
 
 metrics:
   exporter:
-    enabled: true
+    enabled: false
 
 enablePublicServiceAndIngress: false
