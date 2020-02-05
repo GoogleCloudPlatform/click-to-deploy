@@ -66,7 +66,7 @@ spec:
         resources:
           requests:
             cpu: 100m
-            memory: 100Mi
+            memory: 1Gi
         env:
         - name: MYSQL_INITDB_SKIP_TZINFO
           value: "true"

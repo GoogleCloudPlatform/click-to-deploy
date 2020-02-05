@@ -14,6 +14,17 @@ x-google-marketplace:
   managedUpdates:
     kalmSupported: true
 
+  clusterConstraints:
+    resources:
+    - replicas: 1
+      requests:
+        cpu: 100m
+        memory: 100Mi
+    - replicas: 1
+        requests:
+          cpu: 100m
+          memory: 2048Mi
+
   images:
     '':
       properties:
