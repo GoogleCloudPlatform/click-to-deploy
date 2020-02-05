@@ -21,9 +21,9 @@ x-google-marketplace:
         cpu: 100m
         memory: 100Mi
     - replicas: 1
-        requests:
-          cpu: 100m
-          memory: 2048Mi
+      requests:
+        cpu: 100m
+        memory: 2048Mi
 
   images:
     '':
