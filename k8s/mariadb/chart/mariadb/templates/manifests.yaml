@@ -30,6 +30,10 @@ spec:
       - name: mariadb
         image: "{{ .Values.mariadb.image.repo }}:{{ .Values.mariadb.image.tag }}"
         imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
         env:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:

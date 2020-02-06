@@ -23,6 +23,11 @@ x-google-marketplace:
           type: TAG
 
   clusterConstraints:
+    resources:
+      - replicas: 1
+        requests:
+          cpu: 10m
+          memory: 130Mi
     istio:
       type: OPTIONAL
 

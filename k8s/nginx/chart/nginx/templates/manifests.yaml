@@ -58,6 +58,10 @@ spec:
       - name: nginx
         image: "{{ .Values.nginx.image.repo }}:{{ .Values.nginx.image.tag }}"
         imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
         ports:
         - name: nginx
           containerPort: 80

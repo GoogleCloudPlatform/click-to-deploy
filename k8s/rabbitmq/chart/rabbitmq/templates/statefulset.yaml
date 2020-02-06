@@ -48,6 +48,10 @@ spec:
       - name: rabbitmq
         image: "{{ .Values.rabbitmq.image.repo }}:{{ .Values.rabbitmq.image.tag }}"
         imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
         env:
         - name: MY_POD_NAME
           valueFrom:
