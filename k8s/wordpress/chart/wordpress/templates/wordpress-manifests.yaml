@@ -70,6 +70,10 @@ spec:
       containers:
       - image: "{{ .Values.wordpress.image.repo }}:{{ .Values.wordpress.image.tag }}"
         name: wordpress
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
         env:
         # A WordPress' username.
         # The "WP" prefix is used, as "WORDPRESS" is reserved for env variables.

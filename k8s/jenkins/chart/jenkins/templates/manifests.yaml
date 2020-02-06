@@ -51,6 +51,7 @@ spec:
           limits:
             memory: 2.0Gi
           requests:
+            cpu: 100m
             memory: 2.0Gi
   volumeClaimTemplates:
   - metadata:

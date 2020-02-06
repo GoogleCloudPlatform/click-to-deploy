@@ -22,6 +22,10 @@ spec:
       - image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         name: activemq
+        resources:
+          requests:
+            memory: 130Mi
+            cpu: 10m
         env:
         - name: ACTIVEMQ_ADMIN_PASSWORD
           valueFrom:
