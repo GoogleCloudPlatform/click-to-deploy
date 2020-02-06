@@ -37,6 +37,7 @@ spec:
           image: "{{ .Values.sonarqube.image.repo }}:{{ .Values.sonarqube.image.tag }}"
           resources:
             requests:
+              cpu: 100m
               memory: "2048Mi"
             limits:
               memory: "3072Mi"

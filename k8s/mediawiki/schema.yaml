@@ -12,6 +12,12 @@ x-google-marketplace:
   managedUpdates:
     kalmSupported: false
 
+  clusterConstraints:
+    resources:
+    - requests:
+        cpu: 100m
+        memory: 100Mi
+
   images:
     '':
       properties:

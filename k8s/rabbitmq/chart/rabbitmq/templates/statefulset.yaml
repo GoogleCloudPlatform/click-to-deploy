@@ -48,6 +48,10 @@ spec:
       - name: rabbitmq
         image: "{{ .Values.rabbitmq.image.repo }}:{{ .Values.rabbitmq.image.tag }}"
         imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
         env:
         - name: MY_POD_NAME
           valueFrom:
@@ -132,7 +136,7 @@ spec:
         - --source=rabbitmq:http://localhost:15672/api/metrics
         - --pod-id=$(POD_NAME)
         - --namespace-id=$(POD_NAMESPACE)
-        - --monitored-resource-types=k8s
+        - --monitored-resource-type-prefix=k8s_
         env:
           - name: POD_NAME
             valueFrom:

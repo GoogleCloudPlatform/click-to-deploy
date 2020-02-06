@@ -20,6 +20,10 @@ spec:
       containers:
       - image: {{ .Values.drupal.image.repo }}:{{ .Values.drupal.image.tag }}
         name: drupal
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
         env:
         - name: AUTO_INSTALL
           value: 'yes'

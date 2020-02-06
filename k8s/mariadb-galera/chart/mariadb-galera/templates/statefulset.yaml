@@ -63,6 +63,10 @@ spec:
           name: replication
         - containerPort: 4568
           name: ist
+        resources:
+          requests:
+            cpu: 100m
+            memory: 1Gi
         env:
         - name: MYSQL_INITDB_SKIP_TZINFO
           value: "true"
