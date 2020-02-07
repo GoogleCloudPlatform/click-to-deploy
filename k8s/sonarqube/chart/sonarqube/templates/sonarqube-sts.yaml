@@ -71,7 +71,7 @@ spec:
           volumeMounts:
           - mountPath: "/opt/sonarqube/extensions/"
             name: {{ .Release.Name}}-ext
-        {{ if .Values.metrics.enabled }}
+        {{ if .Values.metrics.exporter.enabled }}
         - name: prometheus-to-sd
           image: {{ .Values.metrics.image }}
           ports:

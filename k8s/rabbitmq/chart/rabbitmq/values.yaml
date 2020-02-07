@@ -11,4 +11,5 @@ rabbitmq:
 
 metrics:
   image: null
-  enabled: false
+  exporter:
+    enabled: false

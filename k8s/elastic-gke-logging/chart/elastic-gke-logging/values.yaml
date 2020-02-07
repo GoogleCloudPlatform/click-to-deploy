@@ -17,4 +17,5 @@ fluentd:
 
 metrics:
   image: null
-  enabled: false
+  exporter:
+    enabled: false

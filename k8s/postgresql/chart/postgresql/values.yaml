@@ -11,7 +11,8 @@ db:
   password: null
 metrics:
   image: null
-  enabled: false
+  exporter:
+    enabled: false
 tls:
   base64EncodedPrivateKey: null
   base64EncodedCertificate: null

@@ -32,7 +32,7 @@ NAME ?= $(APP_ID)-1
 
 # Additional variables
 ifdef METRICS_EXPORTER_ENABLED
-  METRICS_EXPORTER_ENABLED_FIELD = , "metrics.enabled": $(METRICS_EXPORTER_ENABLED)
+  METRICS_EXPORTER_ENABLED_FIELD = , "metrics.exporter.enabled": $(METRICS_EXPORTER_ENABLED)
 endif
 
 ifdef REPLICAS
