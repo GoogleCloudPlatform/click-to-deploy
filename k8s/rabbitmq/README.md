@@ -254,7 +254,7 @@ save the expanded manifest file for future updates to the application.
     helm template chart/rabbitmq \
       --name $APP_INSTANCE_NAME \
       --namespace $NAMESPACE \
-      --set rabbitmq.image=$IMAGE_RABBITMQ \
+      --set rabbitmq.image.repo=$IMAGE_RABBITMQ \
       --set rabbitmq.initImage=$IMAGE_RABBITMQ_INIT \
       --set rabbitmq.replicas=$REPLICAS \
       --set rabbitmq.erlangCookie=$RABBITMQ_ERLANG_COOKIE \
