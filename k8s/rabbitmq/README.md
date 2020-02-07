@@ -180,10 +180,10 @@ export METRICS_EXPORTER_ENABLED=false
 Configure the container images:
 
 ```shell
-TAG=3.7
-export IMAGE_RABBITMQ=marketplace.gcr.io/google/rabbitmq:${TAG}
-export IMAGE_RABBITMQ_INIT=marketplace.gcr.io/google/rabbitmq/debian9:${TAG}
-export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/rabbitmq/prometheus-to-sd:${TAG}"
+export IMAGE_TAG=3.7
+export IMAGE_RABBITMQ_REPO=marketplace.gcr.io/google/rabbitmq
+export IMAGE_RABBITMQ_INIT=marketplace.gcr.io/google/rabbitmq/debian9:${IMAGE_TAG}
+export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/rabbitmq/prometheus-to-sd:${IMAGE_TAG}"
 ```
 
 The images above are referenced by
@@ -254,7 +254,8 @@ save the expanded manifest file for future updates to the application.
     helm template chart/rabbitmq \
       --name $APP_INSTANCE_NAME \
       --namespace $NAMESPACE \
-      --set rabbitmq.image.repo=$IMAGE_RABBITMQ \
+      --set rabbitmq.image.tag=$IMAGE_TAG \
+      --set rabbitmq.image.repo=$IMAGE_RABBITMQ_REPO \
       --set rabbitmq.initImage=$IMAGE_RABBITMQ_INIT \
       --set rabbitmq.replicas=$REPLICAS \
       --set rabbitmq.erlangCookie=$RABBITMQ_ERLANG_COOKIE \
