@@ -196,8 +196,8 @@ helm template chart/mariadb-galera \
   --set "db.rootPassword=$MARIADB_ROOT_PASSWORD" \
   --set "db.exporter.image=$IMAGE_MYSQL_EXPORTER" \
   --set "db.exporter.password=$EXPORTER_DB_PASSWORD" \
-  --set "prometheusToSd.image=$IMAGE_METRICS_EXPORTER" \
-  --set "prometheusToSd.enabled=$METRICS_EXPORTER_ENABLED" \
+  --set "metrics.image=$IMAGE_METRICS_EXPORTER" \
+  --set "metrics.exporter.enabled=$METRICS_EXPORTER_ENABLED" \
   --set "peerFinder.image=$IMAGE_PEER_FINDER" \
   --set "tls.base64EncodedPrivateKey=$TLS_CERTIFICATE_KEY" \
   --set "tls.base64EncodedCertificate=$TLS_CERTIFICATE_CRT" \

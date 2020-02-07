@@ -70,7 +70,7 @@ spec:
               - "/bin/sh"
               - "-c"
               - "nodetool drain"
-      {{ if .Values.metrics.enabled }}
+      {{ if .Values.metrics.exporter.enabled }}
       - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}
         ports:

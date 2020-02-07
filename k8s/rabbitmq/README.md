@@ -262,7 +262,7 @@ save the expanded manifest file for future updates to the application.
       --set rabbitmq.password=$RABBITMQ_DEFAULT_PASS \
       --set rabbitmq.serviceAccount=$RABBITMQ_SERVICE_ACCOUNT \
       --set metrics.image=$IMAGE_METRICS_EXPORTER \
-      --set metrics.enabled=$METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
+      --set metrics.exporter.enabled=$METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
     ```
 
 #### Apply the manifest to your Kubernetes cluster

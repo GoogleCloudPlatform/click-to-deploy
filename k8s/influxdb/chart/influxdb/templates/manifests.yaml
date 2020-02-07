@@ -64,7 +64,7 @@ spec:
         volumeMounts:
          - name: {{ .Release.Name }}-data-pvc
            mountPath: /var/lib/influxdb
-      {{ if .Values.metrics.enabled }}
+      {{ if .Values.metrics.exporter.enabled }}
       - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}
         ports:

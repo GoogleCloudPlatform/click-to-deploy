@@ -120,7 +120,7 @@ spec:
           requests:
             cpu: 100m
             memory: 1536Mi
-      {{ if .Values.metrics.enabled }}
+      {{ if .Values.metrics.exporter.enabled }}
       - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}
         ports:

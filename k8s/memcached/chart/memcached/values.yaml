@@ -6,4 +6,5 @@ memcached:
 
 metrics:
   image: null
-  enabled: false
+  exporter:
+    enabled: false
