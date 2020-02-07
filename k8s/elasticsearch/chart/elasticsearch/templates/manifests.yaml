@@ -28,7 +28,7 @@ data:
     rootLogger.level = info
     rootLogger.appenderRef.console.ref = console
 ---
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ .Release.Name }}-elasticsearch

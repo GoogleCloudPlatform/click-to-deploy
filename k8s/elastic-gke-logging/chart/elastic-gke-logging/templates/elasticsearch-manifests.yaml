@@ -28,7 +28,7 @@ data:
     rootLogger.level = info
     rootLogger.appenderRef.console.ref = console
 ---
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ .Release.Name }}-elasticsearch
@@ -206,7 +206,7 @@ spec:
     app.kubernetes.io/component: elasticsearch-server
   clusterIP: None
 ---
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Release.Name }}-kibana
