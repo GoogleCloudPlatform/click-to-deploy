@@ -20,6 +20,10 @@ spec:
       containers:
       - image: {{ .Values.db.image }}
         name: mysql
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
         env:
         # A password for root superuser.
         - name: MYSQL_ROOT_PASSWORD
@@ -85,7 +89,7 @@ spec:
           timeoutSeconds: 30
           failureThreshold: 10
           periodSeconds: 10
-      {{- if .Values.metrics.enabled }}
+      {{- if .Values.metrics.exporter.enabled }}
       - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}
         command:

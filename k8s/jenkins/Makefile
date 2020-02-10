@@ -1,79 +1,45 @@
-include ../app.Makefile
 include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
+include ../images.Makefile
 
+CHART_NAME := jenkins
+APP_ID ?= $(CHART_NAME)
 VERIFY_WAIT_TIMEOUT = 1800
 
-TAG ?= 2.190
+TRACK ?= 2.190
 
-$(info ---- TAG = $(TAG))
+SOURCE_REGISTRY ?= marketplace.gcr.io/google
+IMAGE_JENKINS = $(SOURCE_REGISTRY)/jenkins2:$(TRACK)
 
-APP_DEPLOYER_IMAGE ?= $(REGISTRY)/jenkins/deployer:$(TAG)
-NAME ?= jenkins-1
+# Main image
+image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_JENKINS))
 
-ifdef IMAGE_JENKINS
-  IMAGE_JENKINS_FIELD = , "jenkins.image": "$(IMAGE_JENKINS)"
-endif
+# List of images used in application
+ADDITIONAL_IMAGES :=
 
+C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
+
+BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
+RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)
+NAME ?= $(APP_ID)-1
+
+# Additional variables
 ifdef METRICS_EXPORTER_ENABLED
-  METRICS_EXPORTER_ENABLED_FIELD = , "metrics.enabled": "$(METRICS_EXPORTER_ENABLED)"
+  METRICS_EXPORTER_ENABLED_FIELD = , "metrics.exporter.enabled": $(METRICS_EXPORTER_ENABLED)
 endif
+
 
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
-  $(IMAGE_JENKINS_FIELD) \
   $(METRICS_EXPORTER_ENABLED_FIELD) \
 }
 
-TESTER_IMAGE ?= $(REGISTRY)/jenkins/tester:$(TAG)
+# c2d_deployer.Makefile provides the main targets for installing the application.
+# It requires several APP_* variables defined above, and thus must be included after.
+include ../c2d_deployer.Makefile
 
 
-app/build:: .build/jenkins/deployer \
-            .build/jenkins/jenkins \
-            .build/jenkins/tester
-
-
-.build/jenkins: | .build
-	mkdir -p "$@"
-
-
-.build/jenkins/deployer: deployer/* \
-                         chart/jenkins/* \
-                         chart/jenkins/templates/* \
-                         schema.yaml \
-                         .build/var/APP_DEPLOYER_IMAGE \
-                         .build/var/MARKETPLACE_TOOLS_TAG \
-                         .build/var/REGISTRY \
-                         .build/var/TAG \
-                         | .build/jenkins
-	docker build \
-	    --build-arg REGISTRY="$(REGISTRY)/jenkins" \
-	    --build-arg TAG="$(TAG)" \
-	    --build-arg MARKETPLACE_TOOLS_TAG="$(MARKETPLACE_TOOLS_TAG)" \
-	    --tag "$(APP_DEPLOYER_IMAGE)" \
-	    -f deployer/Dockerfile \
-	    .
-	docker push "$(APP_DEPLOYER_IMAGE)"
-	@touch "$@"
-
-
-.build/jenkins/jenkins: .build/var/REGISTRY \
-                        .build/var/TAG \
-                        | .build/jenkins
-	docker pull marketplace.gcr.io/google/jenkins2:$(TAG)
-	docker tag marketplace.gcr.io/google/jenkins2:$(TAG) \
-	    "$(REGISTRY)/jenkins:$(TAG)"
-	docker push "$(REGISTRY)/jenkins:$(TAG)"
-	@touch "$@"
-
-
-.build/jenkins/tester: .build/var/TESTER_IMAGE \
-                       $(shell find apptest -type f) \
-                       | .build/jenkins
-	$(call print_target,$@)
-	cd apptest/tester \
-	    && docker build --tag "$(TESTER_IMAGE)" .
-	docker push "$(TESTER_IMAGE)"
-	@touch "$@"
+# Build tester image
+app/build:: .build/$(CHART_NAME)/tester

@@ -1,0 +1,75 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "{{ .Release.Name }}"
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64, {{ .Files.Get "logo.png" | b64enc }} {{/* Get logo.png from the root of chart */}}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": {{ .Chart.Name | quote }}, "partner_name": "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+spec:
+  descriptor:
+    type: "Prometheus Operator"
+    version: {{ .Values.operator.image.tag | quote }}
+    description: |-
+      Prometheus Operator is an implementation of Kubernetes Operator which provides installation
+      of the Prometheus monitoring system and time series database.
+
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/prometheus-operator/).
+      Additional community support is available on [github](https://github.com/coreos/prometheus-operator/issues).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy Prometheus Operator'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/{{ .Chart.Name }}/README.md
+    - description: 'Official documentation for Prometheus Operator'
+      url: https://github.com/coreos/prometheus-operator
+    notes: |-
+      # Deploy an instance of Prometheus
+      Clone this repo:
+      ```shell
+      git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
+      ```
+
+      Navigate to the `prometheus-operator` directory:
+      ```shell
+      cd click-to-deploy/k8s/prometheus-operator/resources/sample
+      ```
+
+      To deploy a sample Prometheus instance, run the following command:
+      ```shell
+      kubectl apply --namespace "${NAMESPACE}" -f \
+      01-prometheus-cluster-role.yaml,\
+      02-prometheus-service-account.yaml,\
+      03-prometheus-cluster-role-binding.yaml,\
+      04-kubelet-service-monitor.yaml,\
+      05-prometheus.yaml
+      ```
+
+      You can find additional documentation of configuration options at the [official site](https://github.com/coreos/prometheus-operator/blob/master/Documentation/user-guides/getting-started.md)
+
+      # Get access to the sample Prometheus Dashboard
+      Forward the Prometheus Dashboard service port to your machine:
+      ```shell
+      kubectl --namespace {{ .Release.Namespace }} port-forward \
+          service/prometheus-operated 9090:9090
+      ```
+
+      To access the dashboard, visit [http://localhost:9090/](http://localhost:9090/) from your web browser.
+
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "{{ .Release.Name }}"
+  componentKinds:
+  - group: apps/v1
+    kind: Deployment
+  - group: v1
+    kind: ServiceAccount
+  - group: v1
+    kind: Service
+  - group: v1
+    kind: Pod

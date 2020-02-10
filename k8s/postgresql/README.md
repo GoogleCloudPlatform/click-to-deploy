@@ -236,7 +236,7 @@ helm template chart/postgresql \
   --set "postgresql.exposePublicService=$EXPOSE_PUBLIC_SERVICE" \
   --set "db.password=$POSTGRESQL_DB_PASSWORD" \
   --set "metrics.image=$IMAGE_METRICS_EXPORTER" \
-  --set "metrics.enabled=$METRICS_EXPORTER_ENABLED" \
+  --set "metrics.exporter.enabled=$METRICS_EXPORTER_ENABLED" \
   --set "exporter.image=$IMAGE_POSTGRESQL_EXPORTER" \
   --set "tls.base64EncodedPrivateKey=$TLS_CERTIFICATE_KEY" \
   --set "tls.base64EncodedCertificate=$TLS_CERTIFICATE_CRT" \

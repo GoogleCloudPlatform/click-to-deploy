@@ -1,4 +1,33 @@
-application_api_version: v1beta1
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      A regular update.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  managedUpdates:
+    kalmSupported: true
+
+  clusterConstraints:
+    resources:
+    - requests:
+        cpu: 100m
+        memory: 2.0Gi
+
+  images:
+    '':
+      properties:
+        jenkins.image.repo:
+          type: REPO_WITH_REGISTRY
+        jenkins.image.tag:
+          type: TAG
+
 properties:
   name:
     type: string
@@ -8,11 +37,6 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  jenkins.image:
-    type: string
-    default: $REGISTRY:$TAG
-    x-google-marketplace:
-      type: IMAGE
   certificate:
     type: string
     x-google-marketplace:
@@ -25,5 +49,4 @@ properties:
 required:
 - name
 - namespace
-- jenkins.image
 - certificate

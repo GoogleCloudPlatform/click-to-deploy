@@ -1,8 +1,8 @@
 # Overview
 
-Apache ActiveMQ is an open source, multi-protocol, Java-based messaging server.
+Apache ActiveMQ is an open source and multi-protocol Java-based messaging server.
 
-For more information, visit the Activemq [official website](https://activemq.apache.org/).
+For more information, visit the ActiveMQ [official website](https://activemq.apache.org/).
 
 ## About Google Click to Deploy
 
@@ -18,11 +18,11 @@ Popular open stacks on Kubernetes, packaged by Google.
 
 ## Quick install with Google Cloud Marketplace
 
-Get up and running with a few clicks! Install this Activemq app to a Google
-Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
+Get up and running with a few clicks! To install this ActiveMQ app to a Google
+Kubernetes Engine cluster using Google Cloud Marketplace, follow the
 [on-screen instructions](https://console.cloud.google.com/marketplace/details/google/activemq).
 
-## Command line instructions
+## Command-line instructions
 
 You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local
 workstation to follow the steps below.
@@ -120,17 +120,23 @@ export TAG=5.15.10
 export IMAGE_ACTIVEMQ="marketplace.gcr.io/google/activemq5"
 ```
 
-Set or generate password for activemq console:
+Set or generate password for ActiveMQ console:
 
 ```shell
 export ACTIVEMQ_ADMIN_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 10 | head -n 1 | tr -d '\n')
 ```
 
-Set storageclass for persistent volume of embedded KahaDB of activemq:
+Set the storage class for the persistent volume of ActiveMQ's embedded KahaDB:
 
+ * Set the StorageClass name. You can select your existing StorageClass name for persistent disk of ActiveMQ broker.
+ * Set the persistent disk's size. The default disk size is "5Gi".
+> Note: "ssd" type storage is recommended for ActiveMQ, as it uses local disk to store and retrieve keys and values.
+> To create a StorageClass for dynamic provisioning of SSD persistent volumes, check out [this documentation](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/ssd-pd) for more detailed instructions.
 ```shell
-export STORAGE_CLASS="standard"
-```
+export ETCD_STORAGE_CLASS="ssd-storageclass" # If you don't set this value, default StorageClass will be used.
+export STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
+export PERSISTENT_DISK_SIZE="5Gi"
+```	```
 
 #### Create namespace in your Kubernetes cluster
 
@@ -144,7 +150,7 @@ kubectl create namespace "${NAMESPACE}"
 #### Expand the manifest template
 
 Use `helm template` to expand the template. We recommend that you save the
-expanded manifest file for future updates to the app.
+expanded manifest file for future updates to your app.
 
 ```shell
 helm template chart/activemq \
@@ -153,6 +159,7 @@ helm template chart/activemq \
   --set "image.repo=${IMAGE_ACTIVEMQ}" \
   --set "image.tag=${TAG}" \
   --set "persistence.storageClass=${STORAGE_CLASS}" \
+  --set "persistence.size=${PERSISTENT_DISK_SIZE}" \
   --set "consolePassword=${ACTIVEMQ_ADMIN_PASSWORD}" \
   > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
@@ -177,7 +184,7 @@ To view the app, open the URL in your browser.
 
 ### Access to ActiveMQ web console
 
-Deployed service of ActiveMQ is ClusterIP type, so you can reach to web console within a kubernetes cluster by port-forwarding. To achieve this run below commands:
+The deployed service of ActiveMQ is ClusterIP type, so you can reach to web console within a Kubernetes cluster by port-forwarding. To achieve this run below commands:
 
 ```shell
 # Get admin user credentials of web console
@@ -192,11 +199,12 @@ echo "password: ${ACTIVEMQ_ADMIN_PASSWORD}"
 kubectl port-forward svc/${APP_INSTANCE_NAME}-activemq --namespace ${NAMESPACE} 8161
 ```
 
-Then visit [http://localhost:8161/admin](http://localhost:8161/admin) on your web browser and login with `admin` user credentials.
+Then visit [http://localhost:8161/admin](http://localhost:8161/admin) on
+your web browser and login with `admin` user credentials.
 
 # Scaling
 
-This is a single-instance version of Activemq. It is not intended to be scaled
+This is a single-instance version of ActiveMQ. It is not intended to be scaled
 up with its current configuration.
 
 # Upgrade the app
@@ -226,20 +234,20 @@ kubectl set image deployment "${APP_INSTANCE_NAME}-activemq" \
 
 where `[NEW_IMAGE_REFERENCE]` is the new image.
 
-To check that the Pods in the Deployment running the `activemq` container are
+To check that the Pods in the deployment running the `activemq` container are
 updating, run the following command:
 
 ```shell
 kubectl get pods -l app.kubernetes.io/name=${APP_INSTANCE_NAME} --namespace "${NAMESPACE}" -w
 ```
 
-The Deployment terminates each Pod, and waits for it to transition
-to `Running` and `Ready`.
+The deployment terminates each Pod, and then waits for it to transition
+to `Running` and then `Ready`.
 
 The final state of the Pods should be `Running`, with a value of `1/1` in the
 **READY** column.
 
-To verify the current image used for a `activemq` container, run the following
+To verify the current image used for an `activemq` container, run the following
 command:
 
 ```shell
@@ -250,7 +258,7 @@ kubectl get deployment "${APP_INSTANCE_NAME}-activemq" \
 
 # Uninstall the app
 
-## Using the Google Cloud Platform Console
+## Using the Google Cloud Console
 
 1.  In the Cloud Console, open
     [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
@@ -259,7 +267,7 @@ kubectl get deployment "${APP_INSTANCE_NAME}-activemq" \
 
 3.  On the Application Details page, click **Delete**.
 
-## Using the command line
+## Using the command-line
 
 ### Prepare the environment
 
@@ -276,26 +284,29 @@ export NAMESPACE=default
 > version of your cluster. Using the same version for `kubectl` and the cluster
 > helps to avoid unforeseen issues.
 
-#### Delete deployment with generated manifest file
+#### Delete the deployment with the generated manifest file
 
 Run `kubectl` on the expanded manifest file:
-> **WARNING:** This will delete also your `persistentVolumeClaim`
-> of ActiveMQ which means you will lose all your data
+> **WARNING:** This will also delete your `persistentVolumeClaim`
+> for ActiveMQ, which means that you will lose all of your ActiveMQ data.
 
 ```shell
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace ${NAMESPACE}
 ```
 
-#### Delete deployment by deleting application resource
+#### Delete the deployment by deleting the application resource
 
-If you don't have the expanded manifest, delete the resources by using types and a label:
+If you don't have the expanded manifest file, delete the resources by using types
+and a label:
 
 ```shell
 kubectl delete application --namespace ${NAMESPACE} \
   --selector app.kubernetes.io/name=${APP_INSTANCE_NAME}
 ```
 
-Deletion of `application` resource will delete all resources of your deployment except `persistenVolumeClaim`. To remove the PersistentVolumeClaims with their attached persistent disks, run the following `kubectl` command:
+Deleting the `application` resource will delete all of your deployment's resources,
+except for `persistenVolumeClaim`. To remove the PersistentVolumeClaims with their
+attached persistent disks, run the following `kubectl` command:
 
 ```shell
 kubectl delete persistentvolumeclaims \

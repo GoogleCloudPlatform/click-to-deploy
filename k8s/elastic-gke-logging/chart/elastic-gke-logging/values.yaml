@@ -1,7 +1,9 @@
 initImage: null
 
 elasticsearch:
-  image: null
+  image:
+    repo: null
+    tag: null
   replicas: null
 
 fluentd:
@@ -15,4 +17,5 @@ fluentd:
 
 metrics:
   image: null
-  enabled: false
+  exporter:
+    enabled: false

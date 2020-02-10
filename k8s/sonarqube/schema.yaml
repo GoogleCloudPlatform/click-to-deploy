@@ -1,4 +1,50 @@
-application_api_version: v1beta1
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      A regular update.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  managedUpdates:
+    kalmSupported: true
+
+  clusterConstraints:
+    resources:
+    - replicas: 1
+      requests:
+        cpu: 100m
+        memory: 100Mi
+    - replicas: 1
+      requests:
+        cpu: 100m
+        memory: 2048Mi
+
+  images:
+    '':
+      properties:
+        sonarqube.image.repo:
+          type: REPO_WITH_REGISTRY
+        sonarqube.image.tag:
+          type: TAG
+    postgresql-exporter:
+      properties:
+        postgresql.exporter.image:
+          type: FULL
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
+    postgresql:
+      properties:
+        postgresql.image:
+          type: FULL
+
 properties:
   name:
     type: string
@@ -8,40 +54,21 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  sonarqube.image:
-    type: string
-    default: $REGISTRY:$TAG
-    x-google-marketplace:
-      type: IMAGE
   postgresql.db.password:
     type: string
     x-google-marketplace:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 12
-  postgresql.image:
-    type: string
-    default: $REGISTRY/postgresql:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  postgresql.exporter.image:
-    type: string
-    default: $REGISTRY/postgresql-exporter:$TAG
-    x-google-marketplace:
-      type: IMAGE
   deployer.image:
     type: string
     x-google-marketplace:
       type: DEPLOYER_IMAGE
-  metrics.image:
-    type: string
-    default: $REGISTRY/prometheus-to-sd:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  metrics.enabled:
+  metrics.exporter.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
-    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
+    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters,
+      export of metrics to Stackdriver is not supported yet
     default: false
   certificate:
     type: string
@@ -55,10 +82,6 @@ properties:
 required:
 - name
 - namespace
-- sonarqube.image
 - postgresql.db.password
-- postgresql.image
-- postgresql.exporter.image
-- metrics.image
-- metrics.enabled
+- metrics.exporter.enabled
 - certificate

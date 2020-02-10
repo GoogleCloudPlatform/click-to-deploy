@@ -32,6 +32,10 @@ spec:
          - "/bin/bash"
          - "-eu"
          - "/setup.sh"
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1Gi
         env:
         - name: MY_POD_IP
           valueFrom:
@@ -114,7 +118,7 @@ spec:
           readOnly: true
         - name: data
           mountPath: /var/run/etcd
-      {{ if .Values.metrics.enabled }}
+      {{ if .Values.metrics.exporter.enabled }}
       - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}
         command:

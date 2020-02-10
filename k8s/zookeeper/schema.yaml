@@ -11,7 +11,7 @@ x-google-marketplace:
     recommended: false
 
   managedUpdates:
-    kalmSupported: false
+    kalmSupported: true
 
   images:
     '':
@@ -51,7 +51,7 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  exporter.enabled:
+  metrics.exporter.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
     description: Your GCP project must have Stackdriver enabled. Non-GCP clusters cannot export metrics to Stackdriver.
@@ -115,7 +115,7 @@ properties:
 required:
 - name
 - namespace
-- exporter.enabled
+- metrics.exporter.enabled
 - zookeeper.zkReplicas
 - zookeeper.zkTicktime
 - zookeeper.zkMaxClientCnxns

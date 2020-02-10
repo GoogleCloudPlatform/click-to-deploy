@@ -9,7 +9,7 @@ x-google-marketplace:
       - Feature
     recommended: false
   managedUpdates:
-    kalmSupported: false
+    kalmSupported: true
   images:
     '':
       properties:
@@ -47,22 +47,22 @@ properties:
   dashboard.replicas:
     type: integer
     title: Dashboard replicas
-    description: Number of replicas of Nuclio dashboard
+    description: Number of replicas of the Nuclio dashboard
     default: 1
     minimum: 1
   registry.pushPullUrl:
     type: string
     default: null
     title: Registry push and pull URL
-    description: "This URL will be used for storing images which have been built by Nuclio. In case you are using GCR registry, be careful, because login URL is different from the push/pull URL, example: gcr.io/[PROJECT_ID]/nuclio-images"
+    description: "This URL will be used for storing images which have been built by Nuclio. If you are using Container Registry, note that the login URL is different from the push/pull URL. For example: gcr.io/[PROJECT_ID]/nuclio-images"
   registry.secretName:
     type: string
     default: null
     title: Docker credentials secret name
-    description: Name of Secret which contains login credentials for Docker registry. Please follow the README to create it.
+    description: Name of the Secret which contains login credentials for the Docker registry. To create this, follow the steps in the README.
   dashboard.serviceAccountName:
     type: string
-    title: Service account used by Nuclio Dashboard
+    title: Service account used by the Nuclio dashboard
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:

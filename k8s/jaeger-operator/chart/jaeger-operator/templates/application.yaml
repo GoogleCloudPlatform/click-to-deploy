@@ -1,0 +1,75 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "{{ .Release.Name }}"
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64, {{ .Files.Get "logo.png" | b64enc }} {{/* Get logo.png from the root of chart */}}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": {{ .Chart.Name | quote }}, "partner_name": "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+spec:
+  descriptor:
+    type: "Jaeger Operator"
+    version: {{ .Values.operator.image.tag | quote }}
+    description: |-
+      Jaeger Operator is an implementation of Kubernetes Operator that provides an installation of the Jaeger tracing tool.
+
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/jaeger-operator/).
+      Additional community support is available on [github](https://github.com/jaegertracing/jaeger-operator/issues).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy Jaeger Operator'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/{{ .Chart.Name }}/README.md
+    - description: 'Official documentation for Jaeger Operator'
+      url: https://www.jaegertracing.io/docs/1.15/operator/
+    notes: |-
+      # Deploy an instance of Jaeger
+      Run the following command to deploy a Jaeger instance:
+      ```shell
+      kubectl apply --namespace {{ .Release.Namespace }} -f - <<EOF
+      apiVersion: jaegertracing.io/v1
+      kind: Jaeger
+      metadata:
+        name: example
+      EOF
+      ```
+      Optionally, you can deploy the Jaeger instance to another namespace.
+
+      For information about additional configuration options, visit the following link:
+      https://www.jaegertracing.io/docs/1.15/operator/#configuring-the-custom-resource
+
+      # Get detailed information about example Jaeger deployment
+      Run the following command:
+      ```shell
+      kubectl get Jaeger example --namespace {{ .Release.Namespace }} -o yaml
+      ```
+
+      # Get access to the example Jaeger Dashboard
+      To start port forwarding, run the following command:
+      ```shell
+      kubectl --namespace {{ .Release.Namespace }} port-forward \
+          service/example-query  16686:16686
+      ```
+
+  info:
+  - name: Jaeger Dashboard URL for port forwarding
+    value: http://localhost:16686/
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "{{ .Release.Name }}"
+  componentKinds:
+  - group: apps/v1
+    kind: Deployment
+  - group: v1
+    kind: ConfigMap
+  - group: v1
+    kind: ServiceAccount
+  - group: v1
+    kind: Job
+  - group: v1
+    kind: Pod

@@ -1,7 +1,10 @@
 memcached:
-  image: null
+  image:
+    repo: null
+    tag: null
   replicas: null
 
 metrics:
   image: null
-  enabled: false
+  exporter:
+    enabled: false

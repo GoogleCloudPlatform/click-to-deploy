@@ -1,4 +1,42 @@
-application_api_version: v1beta1
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      A regular update.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  managedUpdates:
+    kalmSupported: true
+
+  clusterConstraints:
+    resources:
+    - replicas: 1
+      requests:
+        cpu: 100m
+        memory: 100Mi
+
+  images:
+    '':
+      properties:
+        mariadb.image.repo:
+          type: REPO_WITH_REGISTRY
+        mariadb.image.tag:
+          type: TAG
+    mysqld-exporter:
+      properties:
+        db.exporter.image:
+          type: FULL
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
+
 properties:
   name:
     type: string
@@ -8,11 +46,6 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  mariadb.image:
-    type: string
-    default: $REGISTRY:$TAG
-    x-google-marketplace:
-      type: IMAGE
   mariadb.volumeSize:
     type: integer
     title: Volume
@@ -31,11 +64,6 @@ properties:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 32
-  db.exporter.image:
-    type: string
-    default: $REGISTRY/mysqld-exporter:$TAG
-    x-google-marketplace:
-      type: IMAGE
   db.exporter.password:
     type: string
     x-google-marketplace:
@@ -48,12 +76,7 @@ properties:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 32
-  metrics.image:
-    type: string
-    default: $REGISTRY/prometheus-to-sd:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  metrics.enabled:
+  metrics.exporter.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
     description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
@@ -66,14 +89,12 @@ properties:
         generatedProperties:
           base64EncodedPrivateKey: tls.base64EncodedPrivateKey
           base64EncodedCertificate: tls.base64EncodedCertificate
+
 required:
 - name
 - namespace
-- mariadb.image
 - db.password
-- db.exporter.image
 - db.exporter.password
 - replication.password
-- metrics.image
-- metrics.enabled
+- metrics.exporter.enabled
 - certificate

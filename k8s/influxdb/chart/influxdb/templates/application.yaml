@@ -11,7 +11,7 @@ metadata:
 spec:
   descriptor:
     type: InfluxDB
-    version: '1.7'
+    version: "{{ .Values.influxdb.image.tag }}"
     description: |-
       InfluxDB is an open source database for storing time series data. The source of time series
       data may come from logging and monitoring systems and IoT devices. This is a single instance

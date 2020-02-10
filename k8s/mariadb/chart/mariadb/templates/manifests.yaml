@@ -28,8 +28,12 @@ spec:
                 matchLabels: *MariaDBDeploymentLabels
       containers:
       - name: mariadb
-        image: {{ .Values.mariadb.image }}
+        image: "{{ .Values.mariadb.image.repo }}:{{ .Values.mariadb.image.tag }}"
         imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
         env:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
@@ -94,7 +98,7 @@ spec:
           timeoutSeconds: 30
           failureThreshold: 10
           periodSeconds: 10
-      {{ if .Values.metrics.enabled }}
+      {{ if .Values.metrics.exporter.enabled }}
       - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}
         command:
@@ -170,7 +174,7 @@ spec:
                 matchLabels: *MariaDBDeploymentLabels
       initContainers:
       - name: mariadb-init
-        image: {{ .Values.mariadb.image }}
+        image: "{{ .Values.mariadb.image.repo }}:{{ .Values.mariadb.image.tag }}"
         imagePullPolicy: Always
         env:
         - name: MYSQL_ROOT_PASSWORD
@@ -196,7 +200,7 @@ spec:
           mountPath: /mnt/configmap
       containers:
       - name: mariadb
-        image: {{ .Values.mariadb.image }}
+        image: "{{ .Values.mariadb.image.repo }}:{{ .Values.mariadb.image.tag }}"
         imagePullPolicy: Always
         env:
         - name: MARIADB_MASTER_ROOT_USER

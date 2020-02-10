@@ -214,7 +214,7 @@ helm template chart/influxdb \
   --set admin.user=$INFLUXDB_ADMIN_USER \
   --set admin.password=$INFLUXDB_ADMIN_PASSWORD \
   --set metrics.image=$IMAGE_METRICS_EXPORTER \
-  --set metrics.enabled=$METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
+  --set metrics.exporter.enabled=$METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 
 #### Apply the manifest to your Kubernetes cluster

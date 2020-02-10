@@ -16,7 +16,7 @@ spec:
     spec:
       initContainers:
         - name: volume-permissions-fix
-          image: {{ .Values.jenkins.image }}
+          image: "{{ .Values.jenkins.image.repo }}:{{ .Values.jenkins.image.tag }}"
           command: ["sh", "-c", "chown 1000:1000 /var/jenkins_home"]
           securityContext:
             runAsUser: 0
@@ -25,7 +25,7 @@ spec:
             mountPath: /var/jenkins_home
       containers:
       - name: jenkins-master
-        image: {{ .Values.jenkins.image }}
+        image: "{{ .Values.jenkins.image.repo }}:{{ .Values.jenkins.image.tag }}"
         ports:
         - containerPort: 8080
         - containerPort: 50000
@@ -51,6 +51,7 @@ spec:
           limits:
             memory: 2.0Gi
           requests:
+            cpu: 100m
             memory: 2.0Gi
   volumeClaimTemplates:
   - metadata:

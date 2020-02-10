@@ -63,7 +63,7 @@ spec:
         - 'if [[ "$(sysctl vm.max_map_count --values)" -lt 262144 ]]; then sysctl -w vm.max_map_count=262144; fi'
       containers:
       - name: elasticsearch
-        image: {{ .Values.elasticsearch.image }}
+        image: "{{ .Values.elasticsearch.image.repo }}:{{ .Values.elasticsearch.image.tag }}"
         imagePullPolicy: Always
         env:
         - name: NODE_NAME
@@ -108,7 +108,7 @@ spec:
         resources:
           requests:
             memory: "2Gi"
-      {{ if .Values.metrics.enabled }}
+      {{ if .Values.metrics.exporter.enabled }}
       - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}
         ports:

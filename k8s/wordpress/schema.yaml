@@ -1,4 +1,50 @@
-application_api_version: v1beta1
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      A regular update.
+    releaseTypes:
+    - Feature
+    recommended: false
+
+  managedUpdates:
+    kalmSupported: true
+
+  clusterConstraints:
+    resources:
+    - replicas: 1
+      requests:
+        cpu: 100m
+        memory: 100Mi
+
+  images:
+    '':
+      properties:
+        wordpress.image.repo:
+          type: REPO_WITH_REGISTRY
+        wordpress.image.tag:
+          type: TAG
+    mysql:
+      properties:
+        db.image:
+          type: FULL
+    mysqld-exporter:
+      properties:
+        db.exporter.image:
+          type: FULL
+    apache-exporter:
+      properties:
+        apache.exporter.image:
+          type: FULL
+    prometheus-to-sd:
+      properties:
+         metrics.image:
+          type: FULL
+
 properties:
   name:
     type: string
@@ -8,16 +54,6 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  wordpressImage:
-    type: string
-    default: $REGISTRY:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  db.image:
-    type: string
-    default: $REGISTRY/mysql:$TAG
-    x-google-marketplace:
-      type: IMAGE
   db.rootPassword:
     type: string
     x-google-marketplace:
@@ -30,22 +66,12 @@ properties:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 12
-  db.exporter.image:
-    type: string
-    default: $REGISTRY/mysqld-exporter:$TAG
-    x-google-marketplace:
-      type: IMAGE
   db.exporter.password:
     type: string
     x-google-marketplace:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 12
-  apache.exporter.image:
-    type: string
-    default: $REGISTRY/apache-exporter:$TAG
-    x-google-marketplace:
-      type: IMAGE
   # An e-mail address for WordPress site.
   admin.email:
     type: string
@@ -66,12 +92,7 @@ properties:
     title: Enable public IP access
     description: Set the WordPress Service type to NodePort and enable Ingress
     default: false
-  metrics.image:
-    type: string
-    default: $REGISTRY/prometheus-to-sd:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  metrics.enabled:
+  metrics.exporter.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
     description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
@@ -84,19 +105,15 @@ properties:
         generatedProperties:
           base64EncodedPrivateKey: tls.base64EncodedPrivateKey
           base64EncodedCertificate: tls.base64EncodedCertificate
+
 required:
 - name
 - namespace
-- wordpressImage
-- db.image
 - db.rootPassword
 - db.wordpressPassword
-- db.exporter.image
 - db.exporter.password
-- apache.exporter.image
 - admin.email
 - admin.password
-- metrics.image
-- metrics.enabled
+- metrics.exporter.enabled
 - enablePublicServiceAndIngress
 - certificate

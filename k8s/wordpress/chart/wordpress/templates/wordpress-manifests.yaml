@@ -68,8 +68,12 @@ spec:
       labels: *WordPressDeploymentLabels
     spec:
       containers:
-      - image: {{ .Values.wordpressImage }}
+      - image: "{{ .Values.wordpress.image.repo }}:{{ .Values.wordpress.image.tag }}"
         name: wordpress
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
         env:
         # A WordPress' username.
         # The "WP" prefix is used, as "WORDPRESS" is reserved for env variables.
@@ -169,7 +173,7 @@ spec:
           timeoutSeconds: 30
           failureThreshold: 10
           periodSeconds: 10
-      {{ if .Values.metrics.enabled }}
+      {{ if .Values.metrics.exporter.enabled }}
       - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}
         command:

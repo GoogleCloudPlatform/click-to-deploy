@@ -41,8 +41,6 @@ server:
   prometheus_exporter:
     enabled: true
     image: "null"
-  prometheus_to_sd:
-    image: "null"
 
 client:
   ServiceAccount: "null"
@@ -59,3 +57,9 @@ client:
     #  cpu: 500m
     #  memory: 200Mi
     #
+
+
+metrics:
+  image: null
+  exporter:
+    enabled: false

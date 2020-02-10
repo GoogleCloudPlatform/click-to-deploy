@@ -12,6 +12,12 @@ x-google-marketplace:
   managedUpdates:
     kalmSupported: false
 
+  clusterConstraints:
+    resources:
+    - requests:
+        cpu: 100m
+        memory: 100Mi
+
   images:
     '':
       properties:
@@ -55,8 +61,8 @@ properties:
 
   mediawiki.admin.username:
     type: string
-    title: mediawiki admin username
-    description: Administrator username who will be able to manage the wiki.
+    title: MediaWiki admin username
+    description: Administrator username who will be able to manage the wiki
     default: admin
 
   mediawiki.admin.password:
@@ -69,18 +75,18 @@ properties:
         base64: False
 
   # MySQL related settings
-  # db.mediawikiPassword is the database user's password for the user mediawiki.
+  # db.name is the name of the mediawiki database.
   db.name:
     type: string
-    title: Mediawiki database name
-    description: Mediawiki database name which will be created in MySQL/MariaDB Server
+    title: MediaWiki database name
+    description: MediaWiki database name which will be created in MySQL/MariaDB Server
     default: mediawiki
 
   # db.mediawikiUsername is the database username for mediawiki database
   db.mediawikiUsername:
     type: string
-    title: Mediawiki username
-    description: Mediawiki database name which will be created in MySQL/MariaDB Server
+    title: MediaWiki username
+    description: MediaWiki database name which will be created in MySQL/MariaDB Server
     default: mediawiki
 
   # db.mediawikiPassword is the database user's password for the user mediawiki.
@@ -124,13 +130,13 @@ properties:
   enablePublicServiceAndIngress:
     type: boolean
     title: Enable public IP access
-    description: Set the mediawiki Service type to NodePort and enable Ingress
+    description: Set the MediaWiki Service type to NodePort and enable Ingress
     default: false
-  metrics.enabled:
+  metrics.exporter.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
-    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters,
-      export of metrics to Stackdriver is not supported yet
+    description: Your Google Cloud project should have Stackdriver Monitoring enabled. For non-Google Cloud clusters,
+      export of metrics to Stackdriver Monitoring is not supported at this time.
     default: false
   certificate:
     type: string
@@ -151,4 +157,4 @@ required:
 - db.exporter.password
 - db.volumeSize
 - enablePublicServiceAndIngress
-- metrics.enabled
+- metrics.exporter.enabled

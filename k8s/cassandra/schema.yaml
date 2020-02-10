@@ -1,4 +1,41 @@
-applicationApiVersion: v1beta1
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      A regular update.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  managedUpdates:
+    kalmSupported: false
+
+  images:
+    '':
+      properties:
+        cassandra.image.repo:
+          type: REPO_WITH_REGISTRY
+        cassandra.image.tag:
+          type: TAG
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
+
+  clusterConstraints:
+    resources:
+      - replicas: 3
+        requests:
+          cpu: 500m
+          memory: 4Gi
+        affinity:
+          simpleNodeAffinity:
+            type: REQUIRE_ONE_NODE_PER_REPLICA
+
 properties:
   name:
     type: string
@@ -8,11 +45,6 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  cassandra.image:
-    type: string
-    default: $REGISTRY:$TAG
-    x-google-marketplace:
-      type: IMAGE
   cassandra.replicas:
     type: integer
     title: Replicas
@@ -20,32 +52,15 @@ properties:
     default: 3
     minimum: 3
     maximum: 11
-  metrics.image:
-    type: string
-    default: $REGISTRY/prometheus-to-sd:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  metrics.enabled:
+  metrics.exporter.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
-    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
+    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters,
+      export of metrics to Stackdriver is not supported yet
     default: false
 
 required:
 - name
 - namespace
-- cassandra.image
 - cassandra.replicas
-- metrics.image
-- metrics.enabled
-
-x-google-marketplace:
-  clusterConstraints:
-    resources:
-    - replicas: 3
-      requests:
-        cpu: 500m
-        memory: 4Gi
-      affinity:
-        simpleNodeAffinity:
-          type: REQUIRE_ONE_NODE_PER_REPLICA
+- metrics.exporter.enabled

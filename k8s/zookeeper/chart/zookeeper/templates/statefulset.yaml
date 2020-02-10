@@ -78,7 +78,7 @@ spec:
         ports:
         - containerPort: {{ .Values.exporter.port }}
           name: metrics
-      {{ if .Values.metrics.enabled }}
+      {{ if .Values.metrics.exporter.enabled }}
       - name: prometeus-to-sd
         imagePullPolicy: Always
         image: {{ .Values.metrics.image }}

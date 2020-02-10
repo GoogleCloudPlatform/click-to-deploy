@@ -1,4 +1,35 @@
-application_api_version: v1beta1
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      A regular update.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  managedUpdates:
+    kalmSupported: false
+
+  images:
+    '':
+      properties:
+        elasticsearch.image.repo:
+          type: REPO_WITH_REGISTRY
+        elasticsearch.image.tag:
+          type: TAG
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
+    ubuntu16_04:
+      properties:
+        elasticsearch.initImage:
+          type: FULL
+
 properties:
   name:
     type: string
@@ -8,16 +39,6 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  elasticsearch.image:
-    type: string
-    default: $REGISTRY:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  elasticsearch.initImage:
-    type: string
-    default: $REGISTRY/ubuntu16_04:$TAG
-    x-google-marketplace:
-      type: IMAGE
   elasticsearch.replicas:
     type: integer
     title: Replicas
@@ -25,21 +46,15 @@ properties:
     default: 2
     minimum: 1
     maximum: 11
-  metrics.image:
-    type: string
-    default: $REGISTRY/prometheus-to-sd:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  metrics.enabled:
+  metrics.exporter.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
-    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
+    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters,
+      export of metrics to Stackdriver is not supported yet
     default: false
+
 required:
 - name
 - namespace
-- elasticsearch.image
-- elasticsearch.initImage
 - elasticsearch.replicas
-- metrics.image
-- metrics.enabled
+- metrics.exporter.enabled

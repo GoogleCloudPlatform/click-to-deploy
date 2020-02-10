@@ -45,8 +45,12 @@ spec:
           secretName: {{ .Release.Name }}-tls
       containers:
       - name: postgresql-server
-        image: {{ .Values.postgresql.image }}
+        image: "{{ .Values.postgresql.image.repo }}:{{ .Values.postgresql.image.tag }}"
         imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
         ports:
         - containerPort: 5432
           name: postgres
@@ -79,7 +83,7 @@ spec:
             secretKeyRef:
               name: {{ .Release.Name }}-secret
               key: password
-      {{ if .Values.metrics.enabled }}
+      {{ if .Values.metrics.exporter.enabled }}
       - name: stackdriver-exporter
         image: {{ .Values.metrics.image }}
         ports:

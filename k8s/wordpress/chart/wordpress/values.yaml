@@ -1,4 +1,7 @@
-wordpressImage: null
+wordpress:
+  image:
+    repo: null
+    tag: null
 
 db:
   image: null
@@ -25,7 +28,8 @@ admin:
 
 metrics:
   image: null
-  enabled: false
+  exporter:
+    enabled: false
 
 tls:
   base64EncodedPrivateKey: null

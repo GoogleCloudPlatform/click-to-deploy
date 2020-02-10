@@ -1,4 +1,7 @@
-influxdbImage: null
+influxdb:
+  image:
+    repo: null
+    tag: null
 
 admin:
   user: influxdb-admin
@@ -6,4 +9,5 @@ admin:
 
 metrics:
   image: null
-  enabled: false
+  exporter:
+    enabled: false

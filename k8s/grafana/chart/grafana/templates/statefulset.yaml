@@ -27,7 +27,7 @@ spec:
             mountPath: "/var/lib/grafana"
       containers:
         - name: grafana
-          image: {{ .Values.grafana.image }}
+          image: "{{ .Values.grafana.image.repo }}:{{ .Values.grafana.image.tag }}"
           imagePullPolicy: Always
           volumeMounts:
             - name: config
@@ -70,7 +70,7 @@ spec:
             requests:
               cpu: 50m
               memory: 100Mi
-        {{ if .Values.metrics.enabled }}
+        {{ if .Values.metrics.exporter.enabled }}
         - name: prometheus-to-sd
           image: {{ .Values.metrics.image }}
           ports:

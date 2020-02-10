@@ -12,7 +12,7 @@ x-google-marketplace:
     recommended: false
 
   managedUpdates:
-    kalmSupported: false
+    kalmSupported: true
 
   images:
     '':
@@ -141,7 +141,7 @@ properties:
     title: Enable public IP access
     description: Set the Magento Service type to NodePort and enable Ingress
     default: false
-  metrics.enabled:
+  metrics.exporter.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
     description: Your GCP project must have Stackdriver enabled. For non-GCP clusters,
@@ -167,5 +167,5 @@ required:
 - db.exporter.password
 - redis.password
 - enablePublicServiceAndIngress
-- metrics.enabled
+- metrics.exporter.enabled
 - certificate

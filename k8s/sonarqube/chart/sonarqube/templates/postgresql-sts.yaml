@@ -26,6 +26,10 @@ spec:
       - name: postgresql-server
         image: {{ .Values.postgresql.image }}
         imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
         ports:
         - containerPort: 5432
           name: postgres
@@ -84,7 +88,7 @@ spec:
               secretKeyRef:
                 name: {{ .Release.Name }}-secret
                 key: password
-      {{ if .Values.metrics.enabled }}
+      {{ if .Values.metrics.exporter.enabled }}
       - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}
         ports:

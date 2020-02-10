@@ -34,9 +34,10 @@ spec:
           privileged: true
       containers:
         - name: {{ .Release.Name}}-sonarqube
-          image: {{ .Values.sonarqube.image}}
+          image: "{{ .Values.sonarqube.image.repo }}:{{ .Values.sonarqube.image.tag }}"
           resources:
             requests:
+              cpu: 100m
               memory: "2048Mi"
             limits:
               memory: "3072Mi"
@@ -70,7 +71,7 @@ spec:
           volumeMounts:
           - mountPath: "/opt/sonarqube/extensions/"
             name: {{ .Release.Name}}-ext
-        {{ if .Values.metrics.enabled }}
+        {{ if .Values.metrics.exporter.enabled }}
         - name: prometheus-to-sd
           image: {{ .Values.metrics.image }}
           ports:

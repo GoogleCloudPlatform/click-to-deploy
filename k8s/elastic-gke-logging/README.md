@@ -223,7 +223,7 @@ helm template chart/elastic-gke-logging \
   --set kibana.image=$IMAGE_KIBANA \
   --set fluentd.image=$IMAGE_FLUENTD \
   --set metrics.image=$IMAGE_METRICS_EXPORTER \
-  --set metrics.enabled=$METRICS_EXPORTER_ENABLED > "${APP_INSTANCE_NAME}_manifest.yaml"
+  --set metrics.exporter.enabled=$METRICS_EXPORTER_ENABLED > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster

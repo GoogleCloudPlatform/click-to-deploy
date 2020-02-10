@@ -1,52 +1,67 @@
 # Overview
 
-MediaWiki is a collaboration and documentation tool which provides more than 300 languages and approximately 2000 extensions. Its key features are localization and extensibility. The platform is also the foundation of all Wikipedia websites.
+MediaWiki is a collaboration and documentation tool that is highly extensible, with
+approximately 2000 available extensions, and that excels at localization, with
+support for over 300 languages. The MediaWiki platform also serves as the foundation
+of all Wikipedia websites.
 
-The platform is developed on top of open-source technologies. Developed using PHP, it can use as SQLite, MySQL or PostgreSQL as data source. It offers also a built-in cache system using a RDBMS or memcached.
+The platform is built on top of open-source technologies. Developed using PHP, it can
+accept SQLite, MySQL, or PostgreSQL source data, and it also offers a built-in cache
+system, using a relational database management system (RDBMS) or Memcached.
 
-MediaWiki has also a complete HTTP API which enables the user to create or search content dynamically and a vast array of configuration parameters.
+MediaWiki has also a complete HTTP API, which enables the user to create or search for
+content dynamically, and a vast array of configuration parameters.
 
-For more information see the MediaWiki [official website](https://mediawiki.org/).
+For more information, visit the [official MediaWiki website](https://mediawiki.org/).
 
 ## About Google Click to Deploy
 
-Popular open stacks on Kubernetes packaged by Google.
+Popular open stacks on Kubernetes, packaged by Google.
 
 ## Architecture
 
-> **NOTE:** The following diagram shows the architecture with the application
-> (optionally) exposed externally, using an Ingress and TLS configuration. The
-> steps to enable the Ingress resource are in the sections below.
+> **NOTE:** The following diagram shows the architecture with the app (optionally)
+> exposed externally, using an Ingress and TLS configuration. The steps to enable
+> the Ingress resource are in the sections below.
 
 ![Architecture diagram](resources/mediawiki-k8s-app-architecture.png)
 
-By default, MediaWiki is exposed using a ClusterIP Service on port 80. Optionally, if you enable the option to expose the service externally, the MediaWiki interface is exposed to ports `80` and `443` using an Ingress resource. The TLS certificates are stored in the `[APP_INSTANCE_NAME]-tls` Secret resource.
+By default, MediaWiki is exposed using a ClusterIP Service on port 80. Optionally,
+if you enable the option to expose the service externally, the MediaWiki interface is
+exposed to ports `80` and `443` using an Ingress resource. The TLS certificates are
+stored in the `[APP_INSTANCE_NAME]-tls` Secret resource.
 
-Separate StatefulSet Kubernetes objects are used to manage the MediaWiki and MariaDB instances. A single instance of MediaWiki is deployed as a single Pod, using a Kubernetes StatefulSet.
+Separate StatefulSet Kubernetes objects are used to manage the MediaWiki and MariaDB
+instances. A single instance of MediaWiki is deployed as a single Pod, using a Kubernetes
+StatefulSet.
 
-The MediaWiki instance connects to MariaDB over port `3306`. MediaWiki stores information in the `mediawiki` database. A single instance of MariaDB is deployed as a Pod, using a Kubernetes StatefulSet.
+The MediaWiki instance connects to MariaDB over port `3306`. MediaWiki stores information
+in the `mediawiki` database.
 
 MariaDB credentials are stored in the `[APP_INSTANCE_NAME]-mysql-secret` Secret resource.
 
 *   The password for the MariaDB `root` user is stored in the `root-password` secret.
-*   The username and password to access the `mediawiki` database are stored in
-    `mediawiki-username` and `mediawiki-password` secrets respectively.
+*   The username and password to access the `mediawiki` database are stored in the
+    `mediawiki-username` and `mediawiki-password` secrets, respectively.
 
-The credentials for MediaWiki are stored in the
-`[APP_INSTANCE_NAME]-mediawiki-secret` Secret resource.
+The credentials for MediaWiki are stored in the `[APP_INSTANCE_NAME]-mediawiki-secret`
+Secret resource.
 
-*   The username and password to access the administrator panel
-    are stored in `mediawiki-username` and `mediawiki-password` secrets respectively.
+*   The username and password to access the administrator panel are stored in the
+    `mediawiki-username` and `mediawiki-password` secrets, respectively.
 
 # Installation
 
 ## Quick install with Google Cloud Marketplace
 
-Get up and running with a few clicks! Install this MediaWiki app to a Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the [on-screen instructions](https://console.cloud.google.com/marketplace/details/google/mediawiki).
+Get up and running with a few clicks! Install this MediaWiki app to a Google Kubernetes
+Engine cluster by using Google Cloud Marketplace. Follow the
+[on-screen instructions](https://console.cloud.google.com/marketplace/details/google/mediawiki).
 
-## Command line instructions
+## Command-line instructions
 
-You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local workstation to follow the steps below.
+You can use [Cloud Shell](https://cloud.google.com/shell/) or a local workstation to
+follow the steps below.
 
 [![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/GoogleCloudPlatform/click-to-deploy&cloudshell_open_in_editor=README.md&cloudshell_working_dir=k8s/mediawiki)
 
@@ -54,7 +69,9 @@ You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local wor
 
 #### Set up command-line tools
 
-You'll need the following tools in your development environment. If you are using Cloud Shell, `gcloud`, `kubectl`, Docker, and Git are installed in your environment by default.
+You'll need the following tools in your development environment. If you are using
+Cloud Shell, then `gcloud`, `kubectl`, Docker, and Git are installed in your
+environment by default.
 
 * [gcloud](https://cloud.google.com/sdk/gcloud/)
 * [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
@@ -97,9 +114,11 @@ git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 
 #### Install the Application resource definition
 
-An Application resource is a collection of individual Kubernetes components, such as Services, StatefulSets, and so on, that you can manage as a group.
+An Application resource is a collection of individual Kubernetes components, such
+as Services, StatefulSets, and so on, that you can manage as a group.
 
-To set up your cluster to understand Application resources, run the following command:
+To set up your cluster to understand Application resources, run the following
+command:
 
 ```shell
 kubectl apply -f "https://raw.githubusercontent.com/GoogleCloudPlatform/marketplace-k8s-app-tools/master/crd/app-crd.yaml"
@@ -107,9 +126,12 @@ kubectl apply -f "https://raw.githubusercontent.com/GoogleCloudPlatform/marketpl
 
 You need to run this command once.
 
-The Application resource is defined by the [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps) community. The source code can be found on [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
+The Application resource is defined by the
+[Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps)
+community. The source code can be found on
+[github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
 
-### Install the Application
+### Install the app
 
 Navigate to the `mediawiki` directory:
 
@@ -119,27 +141,29 @@ cd click-to-deploy/k8s/mediawiki
 
 #### Configure the app with environment variables
 
-Choose the instance name and namespace for the app. For most cases, you can use the `default` namespace.
+Choose the instance name and namespace for the app. In most cases, you can use
+the `default` namespace.
 
 ```shell
 export APP_INSTANCE_NAME=mediawiki-1
 export NAMESPACE=default
 ```
 
-Expose the Service externally and configure Ingress:
-
-By default, the Service is not exposed externally. To enable this option, change the value to `true`.
+Expose the Service externally, and configure Ingress. By default, the Service
+is not exposed externally. To enable this option, change the value to `true`.
 
 ```shell
 export PUBLIC_SERVICE_AND_INGRESS_ENABLED=false
 ```
 
-Enable Stackdriver Metrics Exporter:
+Enable Stackdriver Monitoring:
 
-> **NOTE:** Your GCP project must have Stackdriver enabled. If you are using a
-> non-GCP cluster, you cannot export metrics to Stackdriver.
+> **NOTE:** Your Google Cloud project must have Stackdriver Monitoring
+> enabled. If you are using a non-GCP cluster, you cannot export metrics to
+> Stackdriver Monitoring.
 
-By default, the application does not export metrics to Stackdriver. To enable this option, change the value to `true`.
+By default, the app does not export metrics to Stackdriver Monitoring. To
+enable this option, change the value to `true`.
 
 ```shell
 export METRICS_ENABLED=false
@@ -156,7 +180,13 @@ export IMAGE_MYSQL_EXPORTER="marketplace.gcr.io/google/mediawiki/mysqld-exporter
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/mediawiki/prometheus-to-sd:${TAG}"
 ```
 
-The images above are referenced by [tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend that you pin each image to an immutable [content digest](https://docs.docker.com/registry/spec/api/#content-digests). This ensures that the installed application always uses the same images, until you are ready to upgrade. To get the digest for the image, use the following script:
+The images above are referenced by
+[tag](https://docs.docker.com/engine/reference/commandline/tag). We
+recommend that you pin each image to an immutable
+[content digest](https://docs.docker.com/registry/spec/api/#content-digests).
+This ensures that the installed app always uses the same images, until you
+are ready to upgrade. To get the digest for am image, use the following
+script:
 
 ```shell
 for i in "IMAGE_APACHE_EXPORTER" "IMAGE_MARIADB" "IMAGE_MYSQL_EXPORTER" "IMAGE_METRICS_EXPORTER"; do
@@ -184,9 +214,11 @@ export MEDIAWIKI_ADMIN_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold 
 
 #### Create TLS certificate for MediaWiki
 
-> Note: You can skip this step if you have not set up external access.
+> Note: If you have not set up external access, then you can skip this step.
 
-1.  If you already have a certificate that you want to use, copy your certificate and key pair to the `/tmp/tls.crt`, and `/tmp/tls.key` files, then skip to the next step.
+1.  If you already have a certificate that you want to use, copy your
+    certificate and key pair to the `/tmp/tls.crt` and `/tmp/tls.key` files,
+    then skip to the next step.
 
     To create a new certificate, run the following command:
 
@@ -206,7 +238,8 @@ export MEDIAWIKI_ADMIN_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold 
 
 #### Create namespace in your Kubernetes cluster
 
-If you use a different namespace than `default`, or the namespace does not exist yet, run the command below to create a new namespace:
+If you use a different namespace than `default`, or the namespace does not
+exist yet, run the command below to create a new namespace:
 
 ```shell
 kubectl create namespace "$NAMESPACE"
@@ -214,7 +247,8 @@ kubectl create namespace "$NAMESPACE"
 
 #### Expand the manifest template
 
-Use `helm template` to expand the template. We recommend that you save the expanded manifest file for future updates to the application.
+Use `helm template` to expand the template. We recommend that you save the
+expanded manifest file for future updates to your app.
 
 ```shell
 helm template chart/mediawiki \
@@ -233,22 +267,22 @@ helm template chart/mediawiki \
     --set "enablePublicServiceAndIngress=${PUBLIC_SERVICE_AND_INGRESS_ENABLED}" \
     --set "tls.base64EncodedPrivateKey=${TLS_CERTIFICATE_KEY}" \
     --set "tls.base64EncodedCertificate=${TLS_CERTIFICATE_CRT}" \
-    --set "metrics.enabled=${METRICS_EXPORTER_ENABLED}" \
+    --set "metrics.exporter.enabled=${METRICS_EXPORTER_ENABLED}" \
     --set "metrics.image=${IMAGE_METRICS_EXPORTER}" \
     > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 
 #### Apply the manifest to your Kubernetes cluster
 
-Use `kubectl` to apply the manifest to your Kubernetes cluster:
+To apply the manifest to your Kubernetes cluster, use `kubectl`:
 
 ```shell
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
 
-#### View the app in the Google Cloud Console
+#### View the app in the Cloud Console
 
-To get the GCP Console URL for your app, run the following command:
+To get the Cloud Console URL for your app, run the following command:
 
 ```shell
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}?project=${PROJECT_ID}"
@@ -258,7 +292,7 @@ To view the app, open the URL in your browser.
 
 ### Open your MediaWiki site
 
-Get the external IP of your MediaWiki site using the following command:
+To get the external IP of your MediaWiki site, use the following command:
 
 ```shell
 SERVICE_IP=$(kubectl get ingress $APP_INSTANCE_NAME-mediawiki-ingress \
@@ -270,71 +304,103 @@ echo "https://${SERVICE_IP}/"
 
 The output shows you the URL of your site.
 
-# Application metrics
+# App metrics
 
 ## Prometheus metrics
 
-The application can be configured to expose its metrics through the [MySQL Server Exporter](https://github.com/GoogleCloudPlatform/mysql-docker/tree/master/exporter) and the [Apache Exporter](https://github.com/GoogleCloudPlatform/mediawiki-docker/tree/master/exporter)
-in the [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
+The app can be configured to expose its metrics through the
+[MySQL Server Exporter](https://github.com/GoogleCloudPlatform/mysql-docker/tree/master/exporter)
+and the
+[Apache Exporter](https://github.com/GoogleCloudPlatform/mediawiki-docker/tree/master/exporter)
+in the
+[Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
 
-1.  You can access the MariaDB metrics at `[MARIADB-SERVICE]:9104/metrics`, where
-    `[MARIADB-SERVICE]` is the [Kubernetes Service](https://kubernetes.io/docs/concepts/services-networking/service/).
+1.  You can access the MariaDB metrics at `[MARIADB-SERVICE]:9104/metrics`,
+    where `[MARIADB-SERVICE]` is the
+    [Kubernetes Service](https://kubernetes.io/docs/concepts/services-networking/service/).
 
-    For example, to access the metrics locally, run the following command:
+    For example, to access the metrics locally, run the following
+    command:
 
     ```shell
     kubectl port-forward "svc/${APP_INSTANCE_NAME}-mysqld-exporter-svc" 9104 --namespace "${NAMESPACE}"
     ```
 
-    Then, navigate to the [http://localhost:9104/metrics](http://localhost:9104/metrics) endpoint.
+    Then, navigate to the
+    [http://localhost:9104/metrics](http://localhost:9104/metrics)
+    endpoint.
 
-2.  You can acccess the metrics for the Apache HTTP server at `[APACHE-SERVICE]:9117/metrics`, where `[APACHE-SERVICE]` is the [Kubernetes Service](https://kubernetes.io/docs/concepts/services-networking/service/).
+2.  You can acccess the metrics for the Apache HTTP server at
+    `[APACHE-SERVICE]:9117/metrics`, where `[APACHE-SERVICE]` is the
+    [Kubernetes Service](https://kubernetes.io/docs/concepts/services-networking/service/).
 
-    For example, to access the metrics locally, run the following command:
+    For example, to access the metrics locally, run the following
+    command:
 
     ```shell
     kubectl port-forward "svc/${APP_INSTANCE_NAME}-apache-exporter-svc" 9117 --namespace "${NAMESPACE}"
     ```
 
-    Then, navigate to the [http://localhost:9117/metrics](http://localhost:9117/metrics) endpoint.
+    Then, navigate to the
+    [http://localhost:9117/metrics](http://localhost:9117/metrics)
+    endpoint.
 
 ### Configuring Prometheus to collect the metrics
 
-Prometheus can be configured to automatically collect the application's metrics.
-Follow the steps in [Configuring Prometheus](https://prometheus.io/docs/introduction/first_steps/#configuring-prometheus).
+Prometheus can be configured to automatically collect the app's metrics.
+To set this up, follow the steps in
+[Configuring Prometheus](https://prometheus.io/docs/introduction/first_steps/#configuring-prometheus).
 
-You configure the metrics in the [`scrape_configs` section](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config).
+You configure the metrics in the
+[`scrape_configs` section](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config).
 
-## Exporting metrics to Stackdriver
+## Exporting metrics to Stackdriver Monitoring
 
-The deployment includes a [Prometheus to Stackdriver (`prometheus-to-sd`)](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd) container. If you enabled the option to export metrics to Stackdriver, the metrics are automatically exported to Stackdriver and visible in [Stackdriver Metrics Explorer](https://cloud.google.com/monitoring/charts/metrics-explorer).
+The deployment includes a
+[Prometheus to Stackdriver (`prometheus-to-sd`)](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd)
+container. If you enabled the option to export metrics to Stackdriver
+Monitoring, the metrics are automatically exported to Stackdriver
+Monitoring, and are visible in
+[Stackdriver Metrics Explorer](https://cloud.google.com/monitoring/charts/metrics-explorer).
 
-The name of each metric starts with the component's name (`mariadb` for MariaDB and `apache-mediawiki` for mediawiki).
-Metrics are labeled with `app.kubernetes.io/name` consisting of application's name, which you define in the `APP_INSTANCE_NAME` environment variable.
+The name of each metric starts with the component's name (`mariadb` for
+MariaDB, and `apache-mediawiki` for MediaWiki). Metrics are labeled with
+`app.kubernetes.io/name`, with `name` representing the app's name as it
+is defined in the `APP_INSTANCE_NAME` environment variable.
 
-The exporting option might not be available for GKE on-prem clusters.
+The exporting option might not be available for GKE On-Prem clusters.
 
-> Note: Stackdriver has [quotas](https://cloud.google.com/monitoring/quotas) for
-> the number of custom metrics created in a single GCP project. If the quota is
-> met, additional metrics might not show up in the Stackdriver Metrics Explorer.
+> Note: Stackdriver Monitoring has
+> [quotas](https://cloud.google.com/monitoring/quotas) for the number of
+> custom metrics created in a single Google Cloud project. If the quota
+> is met, then additional metrics might not show up in the Metrics
+> Explorer.
 
-You can remove existing metric descriptors using [Stackdriver's REST API](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors/delete).
+You can remove existing metric descriptors by using
+[Stackdriver's REST API](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors/delete).
 
 # Scaling
 
-This is a single-instance version of MediaWiki. It is not intended to be scaled up with the current configuration.
+This is a single-instance version of MediaWiki. It is not intended to be
+scaled up with its current configuration.
 
-# Backup and restore
+# Back up and restore
 
-## Using MediaWiki extension
+## Using the MediaWiki extension
 
-The [official documentation](https://docs.mediawiki.org/Backup_Basics_for_a_MediaWiki_Web_Site) recommeds to use Akeeba Backup as a common backup and restore method.
+The
+[official documentation](https://docs.mediawiki.org/Backup_Basics_for_a_MediaWiki_Web_Site)
+recommends that you use Akeeba Backup as a common back up and restore method.
 
-## Backup from the server
+## Back up from the server
 
-Backing up data directly from the server gives you full control over the schedule and scope of backup, but is recommended for advanced users.
+Backing up data directly from the server gives you full control over the
+schedule and scope of the backup, but is recommended for advanced users.
 
-The steps below are for backing up the MediaWiki database and all installation files, including media content, themes and plugins. We recommend that you store the data outside your cluster, for example, in cloud-based storage.
+The steps below are for backing up the MediaWiki database and all
+installation files, including media content, themes and plugins. We
+recommend that you store the data outside your cluster, such as in
+cloud-based storage.
 
 ### Set up your local environment
 
@@ -347,7 +413,9 @@ export NAMESPACE=default
 
 ### Establish the MariaDB connection
 
-To backup and restore the MediaWiki database, you must connect to the MariaDB host and port. Using a separate terminal, create a local proxy using the following `kubectl` command:
+To backup and restore the MediaWiki database, you must connect to the
+MariaDB host and port. Using a separate terminal, create a local proxy by
+using the following `kubectl` command:
 
 ```shell
 kubectl port-forward "svc/${APP_INSTANCE_NAME}-mysql-svc" 3306 --namespace "${NAMESPACE}"
@@ -355,7 +423,8 @@ kubectl port-forward "svc/${APP_INSTANCE_NAME}-mysql-svc" 3306 --namespace "${NA
 
 ### Create the backup
 
-To create the backup, you need the `mariadb-client` package. To install the package, on Debian-based distributions, run:
+To create the backup, you need the `mariadb-client` package. To install the
+package, on Debian-based distributions, run:
 
 ```shell
 sudo apt-get install mariadb-client
@@ -374,13 +443,19 @@ scripts/backup.sh --app $APP_INSTANCE_NAME --namespace $NAMESPACE \
 
 ### Secure your backup files
 
-We recommend that you store your backup files outside your Kubernetes cluster, for instance in a Google Cloud Storage bucket. Read the [Cloud Storage documentation](https://cloud.google.com/storage/docs/creating-buckets) to learn more about creating buckets, setting permissions, and uploading files.
+We recommend that you store your backup files outside of your Kubernetes
+cluster, such as in a Cloud Storage bucket. Read the
+[Cloud Storage documentation](https://cloud.google.com/storage/docs/creating-buckets)
+to learn more about creating buckets, setting permissions, and uploading
+files.
 
 ## Restoring your data
 
-Before restoring, configure your local environment with the `APP_INSTANCE_NAME` and `NAMESPACE` environment variables for your MediaWiki cluster, and create a MySQL connection.
+Before restoring, configure your local environment with the
+`APP_INSTANCE_NAME` and `NAMESPACE` environment variables for your MediaWiki
+cluster, and create a MySQL connection.
 
-### Restore MediaWiki database and files from backup
+### Restore the MediaWiki database and files from your backup
 
 Run the script:
 
@@ -391,20 +466,26 @@ scripts/restore.sh --app $APP_INSTANCE_NAME --namespace $NAMESPACE \
   --mysql-host 127.0.0.1 --mysql-port 3306
 ```
 
-The script first creates a backup of the current database and file system, and then restores the database and file system from the backup file that you selected.
+The script first creates a backup of the current database and file
+system, and then restores the database and file system from the backup
+file that you selected.
 
-# Upgrade the Application
+# Update the app
 
 ## Prepare the environment
 
-To update MediaWiki please follow the [official documentation](https://www.mediawiki.org/wiki/Manual:Upgrading)
+To update MediaWiki, please follow the steps in the
+[official documentation](https://www.mediawiki.org/wiki/Manual:Upgrading)
 
-Steps bellow explain the upgrade procedure the docker images only (apache, debian, mariadb). It won't upgrade your MediaWiki version.
+The steps below explain how to update the `docker` images only
+(`apache`, `debian`, `mariadb`). Following these steps alone will not
+update your MediaWiki version.
 
-Before upgrading, we recommend that you backup your MediaWiki application
-using the [backup step](#create-the-backup).
+Before updating, we recommend that you back up your MediaWiki app by
+performing the [back up step](#create-the-backup).
 
-> Note that during the upgrade, your MediaWiki site will be unavailable.
+> Note: Your MediaWiki site will be unavailable for the duration of the
+> update.
 
 Set your environment variables to match the installation properties:
 
@@ -413,32 +494,32 @@ export APP_INSTANCE_NAME=mediawiki-1
 export NAMESPACE=default
 ```
 
-## Upgrade MediaWiki
+## Update MediaWiki
 
-Start with assigning a new image to your StatefulSet definition:
+Start by assigning a new image to your StatefulSet definition:
 
 ```shell
 kubectl set image statefulset "$APP_INSTANCE_NAME-mediawiki" \
   --namespace "$NAMESPACE" mediawiki=[NEW_IMAGE_REFERENCE]
 ```
 
-Where `[NEW_IMAGE_REFERENCE]` is the new image.
+where `[NEW_IMAGE_REFERENCE]` is the new image.
 
-To check that the Pods in the StatefulSet running the `mediawiki` container are
-updating, run the following command:
+To check that the Pods in the StatefulSet running the `mediawiki` container
+are updating, run the following command:
 
 ```shell
 kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace "$NAMESPACE" -w
 ```
 
 The StatefulSet controller terminates each Pod, and waits for it to transition
-to `Running` and `Ready` prior to updating the next Pod.
+to `Running` and `Ready` before updating the next Pod.
 
-The final state of the Pods should be `Running` and marked as `1/1` in **READY**
-column.
+The final state of the Pods should be `Running`, and marked as `1/1` in the
+**READY** column.
 
-To verify the current image used for a `mediawiki` container, run the following
-command:
+To verify the current image that is being used for a `mediawiki` container,
+run the following command:
 
 ```shell
 kubectl get statefulsets "$APP_INSTANCE_NAME-mediawiki" \
@@ -446,31 +527,34 @@ kubectl get statefulsets "$APP_INSTANCE_NAME-mediawiki" \
   --output jsonpath='{.spec.template.spec.containers[0].image}'
 ```
 
-## Upgrade MariaDB
+## Update MariaDB
 
-The upgrade process is the same - just replace `mediawiki` with `mysql`.
+The process for updating MariaDB is the same as the process for updating
+MediaWiki, but with `mediawiki` replacing `mysql` wherever it appears.
 
-## Update TLS certificate for MediaWiki
+## Update the TLS certificate for MediaWiki
 
-If you want to update the certificate that the application uses, copy the new certificate and key pair in to the `/tmp/tls.crt`, and `/tmp/tls.key` files, and execute the following command:
+If you want to update the certificate that the app uses, copy the new
+certificate and key pair to the `/tmp/tls.crt`, and `/tmp/tls.key` files,
+and then execute the following command:
 
 ```shell
 kubectl --namespace $NAMESPACE create secret tls $APP_INSTANCE_NAME-tls \
   --cert=/tmp/tls.crt --key=/tmp/tls.key --dry-run -o yaml | kubectl apply -f -
 ```
 
-# Uninstall the Application
+# Uninstall the app
 
-## Using the Google Cloud Platform Console
+## Using the Cloud Console
 
-1.  In the GCP Console, open
+1.  In the Cloud Console, open
     [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
 
-2.  From the list of applications, click **MediaWiki**.
+2.  From the list of apps, click **MediaWiki**.
 
 3.  On the Application Details page, click **Delete**.
 
-## Using the command line
+## Using the command-line
 
 ### Prepare the environment
 
@@ -485,7 +569,7 @@ export NAMESPACE=default
 
 > **NOTE:** We recommend using a `kubectl` version that is the same as the
 > version of your cluster. Using the same versions of `kubectl` and the cluster
-> helps avoid unforeseen issues.
+> helps to avoid unforeseen issues.
 
 To delete the resources, use the expanded manifest file used for the installation.
 
@@ -495,7 +579,8 @@ Run `kubectl` on the expanded manifest file:
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 ```
 
-If you don't have the expanded manifest, delete the resources using types and a label:
+If you don't have the expanded manifest, delete the resources by using types and
+a label:
 
 ```shell
 kubectl delete application,statefulset,secret,service \
@@ -505,9 +590,12 @@ kubectl delete application,statefulset,secret,service \
 
 ### Delete the PersistentVolumeClaims
 
-By design, the removal of StatefulSets in Kubernetes does not remove PersistentVolumeClaims that were attached to their Pods. This prevents your installations from accidentally deleting stateful data.
+By design, the removal of StatefulSets in Kubernetes does not remove
+PersistentVolumeClaims that were attached to their Pods. This prevents your
+installations from accidentally deleting stateful data.
 
-To remove the PersistentVolumeClaims with their attached persistent disks, run the following `kubectl` commands:
+To remove the PersistentVolumeClaims with their attached persistent disks, run
+the following `kubectl` commands:
 
 ```shell
 # specify the variables values matching your installation:

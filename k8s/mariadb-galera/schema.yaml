@@ -12,7 +12,7 @@ x-google-marketplace:
     recommended: false
 
   managedUpdates:
-    kalmSupported: false
+    kalmSupported: true
 
   images:
     '':
@@ -27,7 +27,7 @@ x-google-marketplace:
           type: FULL
     prometheus-to-sd:
       properties:
-        prometheusToSd.image:
+        metrics.image:
           type: FULL
     peer-finder:
       properties:
@@ -91,7 +91,7 @@ properties:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 12
-  prometheusToSd.enabled:
+  metrics.exporter.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
     description: Your GCP project must have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not currently supported.
@@ -105,4 +105,4 @@ required:
 - db.rootPassword
 - db.exporter.password
 - certificate
-- prometheusToSd.enabled
+- metrics.exporter.enabled
