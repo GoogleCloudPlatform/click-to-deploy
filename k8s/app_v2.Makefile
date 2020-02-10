@@ -28,8 +28,6 @@ endif
 
 $(info ---- APP_DEPLOYER_IMAGE = $(APP_DEPLOYER_IMAGE))
 
-MARKETPLACE_TOOLS_IMAGE ?= gcr.io/cloud-marketplace-tools/k8s/dev
-
 ##### Helper functions #####
 
 # Extracts the name property from APP_PARAMETERS.
@@ -58,11 +56,10 @@ endef
 # (2) The mpdev script is first copied to the / tmp directory and
 # then moved to the target path due to the "Text file busy" error.
 .PHONY: .build/app/dev
-.build/app/dev: .build/var/MARKETPLACE_TOOLS_IMAGE \
-                .build/var/MARKETPLACE_TOOLS_TAG \
+.build/app/dev: .build/var/MARKETPLACE_TOOLS_TAG \
               | .build/app
 	@docker run \
-	    "$(MARKETPLACE_TOOLS_IMAGE):$(MARKETPLACE_TOOLS_TAG)" \
+	    "gcr.io/cloud-marketplace-tools/k8s/dev:$(MARKETPLACE_TOOLS_TAG)" \
 	    cat /scripts/dev > "/tmp/dev"
 	@mv "/tmp/dev" "$@"
 	@chmod a+x "$@"
