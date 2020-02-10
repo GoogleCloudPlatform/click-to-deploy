@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: $APP_INSTANCE_NAME-webhook-configmap
+  labels:
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/component: webhook-configmap
+data:
+  webook.yaml: |-
+    apiVersion: admissionregistration.k8s.io/v1beta1
+    kind: MutatingWebhookConfiguration
+    metadata:
+      creationTimestamp: null
+      name: flink-operator-mutating-webhook-configuration
+    webhooks:
+    - clientConfig:
+        caBundle: $CA_PEM_B64
+        service:
+          name: $APP_INSTANCE_NAME-flink-operator-webhook
+          namespace: $NAMESPACE
+          path: /mutate-flinkoperator-k8s-io-v1beta1-flinkcluster
+      failurePolicy: Fail
+      name: mflinkcluster.flinkoperator.k8s.io
+      rules:
+      - apiGroups:
+        - flinkoperator.k8s.io
+        apiVersions:
+        - v1beta1
+        operations:
+        - CREATE
+        - UPDATE
+        resources:
+        - flinkclusters
+    ---
+    apiVersion: admissionregistration.k8s.io/v1beta1
+    kind: ValidatingWebhookConfiguration
+    metadata:
+      creationTimestamp: null
+      name: flink-operator-validating-webhook-configuration
+    webhooks:
+    - clientConfig:
+        caBundle: $CA_PEM_B64
+        service:
+          name: $APP_INSTANCE_NAME-flink-operator-webhook
+          namespace: $NAMESPACE
+          path: /validate-flinkoperator-k8s-io-v1beta1-flinkcluster
+      failurePolicy: Fail
+      name: vflinkcluster.flinkoperator.k8s.io
+      rules:
+      - apiGroups:
+        - flinkoperator.k8s.io
+        apiVersions:
+        - v1beta1
+        operations:
+        - CREATE
+        - UPDATE
+        resources:
+        - flinkclusters
