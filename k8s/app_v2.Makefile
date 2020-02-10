@@ -28,6 +28,7 @@ endif
 
 $(info ---- APP_DEPLOYER_IMAGE = $(APP_DEPLOYER_IMAGE))
 
+
 ##### Helper functions #####
 
 # Extracts the name property from APP_PARAMETERS.
