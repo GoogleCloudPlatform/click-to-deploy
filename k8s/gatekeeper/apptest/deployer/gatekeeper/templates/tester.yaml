@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ .Release.Name }}-tester"
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+  annotations:
+    marketplace.cloud.google.com/verification: test
+spec:
+  containers:
+  - name: tester
+    image: "{{ .Values.testerImage }}"
+    volumeMounts:
+    - name: config-volume
+      mountPath: /tester
+    command: ["bash"]
+    args: ["/tester/run.sh"]
+  restartPolicy: Never
+  volumes:
+  - name: config-volume
+    configMap:
+      name: "{{ .Release.Name }}-test"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ .Release.Name }}-test"
+  labels:
+    app.kubernetes.io/name: gatekeeper
+  annotations:
+    marketplace.cloud.google.com/verification: test
+

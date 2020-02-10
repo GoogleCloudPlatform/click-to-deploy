@@ -94,7 +94,7 @@ spec:
           failureThreshold: 10
           periodSeconds: 10
       # Prometheus to Stackdriver Container
-      {{- if .Values.metrics.enabled }}
+      {{- if .Values.metrics.exporter.enabled }}
       - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}
         command:

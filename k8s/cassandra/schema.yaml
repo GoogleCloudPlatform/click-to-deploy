@@ -52,7 +52,7 @@ properties:
     default: 3
     minimum: 3
     maximum: 11
-  metrics.enabled:
+  metrics.exporter.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
     description: Your GCP project should have Stackdriver enabled. For non-GCP clusters,
@@ -63,4 +63,4 @@ required:
 - name
 - namespace
 - cassandra.replicas
-- metrics.enabled
+- metrics.exporter.enabled

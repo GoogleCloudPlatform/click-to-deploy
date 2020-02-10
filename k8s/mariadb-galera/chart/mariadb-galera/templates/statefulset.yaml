@@ -129,9 +129,9 @@ spec:
           timeoutSeconds: 30
           failureThreshold: 10
           periodSeconds: 10
-      {{ if .Values.prometheusToSd.enabled }}
+      {{ if .Values.metrics.exporter.enabled }}
       - name: prometheus-to-sd
-        image: {{ .Values.prometheusToSd.image }}
+        image: {{ .Values.metrics.image }}
         command:
         - /monitor
         - --stackdriver-prefix=custom.googleapis.com

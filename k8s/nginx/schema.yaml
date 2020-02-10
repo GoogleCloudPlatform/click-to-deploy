@@ -60,7 +60,7 @@ properties:
         generatedProperties:
           base64EncodedPrivateKey: tls.base64EncodedPrivateKey
           base64EncodedCertificate: tls.base64EncodedCertificate
-  metrics.enabled:
+  metrics.exporter.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
     description: Your GCP project should have Stackdriver enabled. For non-GCP clusters,
@@ -76,4 +76,4 @@ required:
 - name
 - namespace
 - nginx.replicas
-- metrics.enabled
+- metrics.exporter.enabled

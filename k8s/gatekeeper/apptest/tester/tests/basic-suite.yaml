@@ -1,0 +1,19 @@
+actions:
+
+- name: Gatekeeper is running
+  bashTest:
+    script: |-
+      set -x
+      endpoint="https://gatekeeper-controller-manager-service.gatekeeper-system/v1/admit"
+      echo GET $endpoint
+      curl -k $endpoint | tee /dev/stderr | grep '"allowed":false'
+      has_response=$?
+      if [[ ${has_response} != 0 ]]; then
+      echo FAILURE
+      exit 1
+      else
+      echo SUCCESS
+      fi
+    expect:
+      exitCode:
+        equals: 0

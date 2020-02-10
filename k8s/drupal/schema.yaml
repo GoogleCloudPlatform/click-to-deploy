@@ -104,7 +104,7 @@ properties:
     title: Enable public IP access
     description: Set the Drupal Service type to NodePort and enable Ingress
     default: false
-  metrics.enabled:
+  metrics.exporter.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
     description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
@@ -123,4 +123,4 @@ required:
 - namespace
 - drupal.volumeSize
 - enablePublicServiceAndIngress
-- metrics.enabled
+- metrics.exporter.enabled
