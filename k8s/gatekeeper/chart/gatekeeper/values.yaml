@@ -1,0 +1,4 @@
+gatekeeper:
+  imageGatekeeperRepo: null
+  imageGatekeeperTag: null
+  auditInterval: 60
