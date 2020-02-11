@@ -23,7 +23,8 @@ default['jenkins']['plugins'] = %w(ace-editor antisamy-markup-formatter ant apac
                                    google-api-client-plugin google-cloud-backup google-cloud-health-check
                                    google-container-registry-auth google-deployment-manager google-git-notes-publisher
                                    google-login google-metadata-plugin google-oauth-plugin google-play-android-publisher
-                                   google-source-plugin google-storage-plugin git-client github-api github-branch-source
+                                   google-source-plugin google-compute-engine-plugin google-kubernetes-engine-plugin
+                                   google-storage-plugin git-client github-api github-branch-source
                                    github github-organization-folder git git-server gradle handlebars icon-shim
                                    instant-messaging jackson2-api jclouds-jenkins jquery jquery-detached jsch junit kubernete
                                    kubernetes-credentials ldap mailer mapdb-api matrix-auth matrix-project momentjs
