@@ -74,5 +74,5 @@ spec:
   componentKinds:
   - group: v1
     kind: Service
-  - group: apps/v1beta2
+  - group: apps/v1
     kind: StatefulSet
