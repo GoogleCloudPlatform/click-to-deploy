@@ -72,7 +72,7 @@ data:
     \       !=\n      kube_statefulset_status_replicas{job=\"kube-state-metrics\"}\n
     \   \"for\": \"15m\"\n    \"labels\": \n      \"severity\": \"critical\"\n  -
     \"alert\": \"KubeStatefulSetGenerationMismatch\"\n    \"annotations\": \n      \"message\":
-    \"StatefulSet {{ $labels.namespace }}/{{ labels.statefulset }} generation mismatch\"\n
+    \"StatefulSet {{ $labels.namespace }}/{{ $labels.statefulset }} generation mismatch\"\n
     \     \"runbook_url\": \"https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubestatefulsetgenerationmismatch\"\n
     \   \"expr\": |\n      kube_statefulset_status_observed_generation{job=\"kube-state-metrics\"}\n
     \       !=\n      kube_statefulset_metadata_generation{job=\"kube-state-metrics\"}\n
