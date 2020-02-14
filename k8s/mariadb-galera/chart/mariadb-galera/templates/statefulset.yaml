@@ -63,6 +63,10 @@ spec:
           name: replication
         - containerPort: 4568
           name: ist
+        resources:
+          requests:
+            cpu: 100m
+            memory: 1Gi
         env:
         - name: MYSQL_INITDB_SKIP_TZINFO
           value: "true"
@@ -125,9 +129,9 @@ spec:
           timeoutSeconds: 30
           failureThreshold: 10
           periodSeconds: 10
-      {{ if .Values.prometheusToSd.enabled }}
+      {{ if .Values.metrics.exporter.enabled }}
       - name: prometheus-to-sd
-        image: {{ .Values.prometheusToSd.image }}
+        image: {{ .Values.metrics.image }}
         command:
         - /monitor
         - --stackdriver-prefix=custom.googleapis.com

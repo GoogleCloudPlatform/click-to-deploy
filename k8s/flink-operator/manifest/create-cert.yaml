@@ -1,0 +1,42 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+  name: $APP_INSTANCE_NAME-cert-job
+  labels:
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/component: cert-job
+spec:
+  ttlSecondsAfterFinished: 300
+  backoffLimit: 0
+  completions: 1
+  parallelism: 1
+  template:
+    spec:
+      containers:
+      - command:
+        - "/bin/bash"
+        - "-ec"
+        - |
+          for cert in /cert_to_create/*;
+            do
+              bash $cert;
+          done
+        image: $DEPLOYER_IMAGE
+        imagePullPolicy: Always
+        name: create-cert
+        volumeMounts:
+        - name: cert-configmap
+          mountPath: "/cert_to_create/"
+        - name: webhook-configmap
+          mountPath: "/webhook_to_create/"
+      dnsPolicy: ClusterFirst
+      restartPolicy: Never
+      serviceAccountName: $SERVICE_ACCOUNT
+      volumes:
+      - name: cert-configmap
+        configMap:
+          name: $APP_INSTANCE_NAME-cert-configmap
+      - name: webhook-configmap
+        configMap:
+          name: $APP_INSTANCE_NAME-webhook-configmap

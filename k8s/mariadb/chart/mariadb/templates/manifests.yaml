@@ -30,6 +30,10 @@ spec:
       - name: mariadb
         image: "{{ .Values.mariadb.image.repo }}:{{ .Values.mariadb.image.tag }}"
         imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
         env:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
@@ -94,7 +98,7 @@ spec:
           timeoutSeconds: 30
           failureThreshold: 10
           periodSeconds: 10
-      {{ if .Values.metrics.enabled }}
+      {{ if .Values.metrics.exporter.enabled }}
       - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}
         command:

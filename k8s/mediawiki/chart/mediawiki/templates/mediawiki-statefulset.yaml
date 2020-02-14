@@ -18,6 +18,10 @@ spec:
       containers:
       - image: "{{ .Values.mediawiki.image.repo }}:{{ .Values.mediawiki.image.tag }}"
         name: mediawiki
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
         env:
         # Database type
         - name: MEDIAWIKI_DBTYPE
@@ -87,7 +91,7 @@ spec:
           timeoutSeconds: 30
           failureThreshold: 10
           periodSeconds: 10
-      {{- if .Values.metrics.enabled }}
+      {{- if .Values.metrics.exporter.enabled }}
       - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}
         command:

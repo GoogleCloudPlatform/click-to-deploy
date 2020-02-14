@@ -14,6 +14,12 @@ x-google-marketplace:
   managedUpdates:
     kalmSupported: true
 
+  clusterConstraints:
+    resources:
+    - requests:
+        cpu: 100m
+        memory: 100Mi
+
   images:
     '':
       properties:
@@ -46,7 +52,7 @@ properties:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 32
-  metrics.enabled:
+  metrics.exporter.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
     description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
@@ -57,4 +63,4 @@ required:
 - namespace
 - admin.user
 - admin.password
-- metrics.enabled
+- metrics.exporter.enabled

@@ -14,6 +14,13 @@ x-google-marketplace:
   managedUpdates:
     kalmSupported: true
 
+  clusterConstraints:
+    resources:
+    - replicas: 1
+      requests:
+        cpu: 100m
+        memory: 100Mi
+
   images:
     '':
       properties:
@@ -80,7 +87,7 @@ properties:
           - apiGroups: [""]
             resources: ["endpoints"]
             verbs: ["get"]
-  metrics.enabled:
+  metrics.exporter.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
     description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
@@ -94,4 +101,4 @@ required:
 - rabbitmq.user
 - rabbitmq.password
 - rabbitmq.serviceAccount
-- metrics.enabled
+- metrics.exporter.enabled

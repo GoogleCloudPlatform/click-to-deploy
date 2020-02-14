@@ -12,6 +12,12 @@ x-google-marketplace:
   managedUpdates:
     kalmSupported: false
 
+  clusterConstraints:
+    resources:
+    - requests:
+        cpu: 100m
+        memory: 100Mi
+
   images:
     '':
       properties:
@@ -126,7 +132,7 @@ properties:
     title: Enable public IP access
     description: Set the MediaWiki Service type to NodePort and enable Ingress
     default: false
-  metrics.enabled:
+  metrics.exporter.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
     description: Your Google Cloud project should have Stackdriver Monitoring enabled. For non-Google Cloud clusters,
@@ -151,4 +157,4 @@ required:
 - db.exporter.password
 - db.volumeSize
 - enablePublicServiceAndIngress
-- metrics.enabled
+- metrics.exporter.enabled

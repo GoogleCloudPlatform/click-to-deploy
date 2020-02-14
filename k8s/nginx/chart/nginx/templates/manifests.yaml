@@ -58,6 +58,10 @@ spec:
       - name: nginx
         image: "{{ .Values.nginx.image.repo }}:{{ .Values.nginx.image.tag }}"
         imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
         ports:
         - name: nginx
           containerPort: 80
@@ -87,7 +91,7 @@ spec:
         - name: certs
           mountPath: /etc/nginx/certs
           readOnly: true
-      {{ if .Values.metrics.enabled }}
+      {{ if .Values.metrics.exporter.enabled }}
       - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}
         ports:

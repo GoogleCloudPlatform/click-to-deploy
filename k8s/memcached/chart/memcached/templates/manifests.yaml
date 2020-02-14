@@ -21,6 +21,10 @@ spec:
       - name: memcached
         image: "{{ .Values.memcached.image.repo }}:{{ .Values.memcached.image.tag }}"
         imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
         env:
         - name: MEMCACHED_PROMETHEUS_ENABLED
           value: "true"
@@ -41,7 +45,7 @@ spec:
             port: memcached
           initialDelaySeconds: 5
           timeoutSeconds: 2
-      {{ if .Values.metrics.enabled }}
+      {{ if .Values.metrics.exporter.enabled }}
       - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}
         ports:

@@ -20,6 +20,10 @@ spec:
       containers:
       - image: {{ .Values.drupal.image.repo }}:{{ .Values.drupal.image.tag }}
         name: drupal
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
         env:
         - name: AUTO_INSTALL
           value: 'yes'
@@ -98,7 +102,7 @@ spec:
           timeoutSeconds: 30
           failureThreshold: 10
           periodSeconds: 10
-      {{ if .Values.metrics.enabled }}
+      {{ if .Values.metrics.exporter.enabled }}
       - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}
         command:

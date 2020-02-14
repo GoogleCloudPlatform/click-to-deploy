@@ -28,7 +28,8 @@ admin:
 
 metrics:
   image: null
-  enabled: false
+  exporter:
+    enabled: false
 
 tls:
   base64EncodedPrivateKey: null

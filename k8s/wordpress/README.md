@@ -262,7 +262,7 @@ helm template chart/wordpress \
   --set "admin.password=$WORDPRESS_ADMIN_PASSWORD" \
   --set "metrics.image=$IMAGE_METRICS_EXPORTER" \
   --set "enablePublicServiceAndIngress=$PUBLIC_SERVICE_AND_INGRESS_ENABLED" \
-  --set "metrics.enabled=$METRICS_EXPORTER_ENABLED" \
+  --set "metrics.exporter.enabled=$METRICS_EXPORTER_ENABLED" \
   --set "tls.base64EncodedPrivateKey=$TLS_CERTIFICATE_KEY" \
   --set "tls.base64EncodedCertificate=$TLS_CERTIFICATE_CRT" \
   > ${APP_INSTANCE_NAME}_manifest.yaml

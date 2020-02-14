@@ -224,7 +224,7 @@ helm template chart/nginx \
   --set "nginx.initImage=$IMAGE_NGINX_INIT" \
   --set "nginx.image=$IMAGE_NGINX" \
   --set "metrics.image=$IMAGE_METRICS_EXPORTER" \
-  --set "metrics.enabled=$METRICS_EXPORTER_ENABLED" \
+  --set "metrics.exporter.enabled=$METRICS_EXPORTER_ENABLED" \
   --set "tls.base64EncodedPrivateKey=$TLS_CERTIFICATE_KEY" \
   --set "tls.base64EncodedCertificate=$TLS_CERTIFICATE_CRT" \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
