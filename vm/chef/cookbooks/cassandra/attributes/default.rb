@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 # Remember to check if repo component update
 # is needed when changing the version.
-default['cassandra']['version'] = '3.11.4'
+default['cassandra']['version'] = '3.11.5'
 
 default['cassandra']['repo']['uri'] = 'http://www.apache.org/dist/cassandra/debian'
 default['cassandra']['repo']['components'] = ['311x', 'main']
