@@ -83,7 +83,7 @@ spec:
             secretKeyRef:
               name: {{ .Release.Name }}-secret
               key: password
-      {{ if .Values.metrics.enabled }}
+      {{ if .Values.metrics.exporter.enabled }}
       - name: stackdriver-exporter
         image: {{ .Values.metrics.image }}
         ports:

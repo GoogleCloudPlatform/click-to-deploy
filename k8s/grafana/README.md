@@ -188,7 +188,7 @@ helm template chart/grafana \
   --set grafana.initImage=$IMAGE_GRAFANA_INIT \
   --set grafana.password=$GRAFANA_GENERATED_PASSWORD \
   --set metrics.image=$IMAGE_METRICS_EXPORTER \
-  --set metrics.enabled=$METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
+  --set metrics.exporter.enabled=$METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 
 #### Apply the manifest to your Kubernetes cluster

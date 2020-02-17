@@ -274,7 +274,7 @@ helm template chart/magento \
     --set "magento.admin.email=${MAGENTO_ADMIN_EMAIL}" \
     --set "tls.base64EncodedPrivateKey=${TLS_CERTIFICATE_KEY}" \
     --set "tls.base64EncodedCertificate=${TLS_CERTIFICATE_CRT}" \
-    --set "metrics.enabled=${METRICS_EXPORTER_ENABLED}" \
+    --set "metrics.exporter.enabled=${METRICS_EXPORTER_ENABLED}" \
     > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 

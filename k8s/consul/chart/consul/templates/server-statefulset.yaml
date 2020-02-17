@@ -126,9 +126,9 @@ spec:
             periodSeconds: 3
             successThreshold: 1
             timeoutSeconds: 5
-        {{- if .Values.server.prometheus_exporter.enabled }}
-        - name: prometheus-exporter-sidecar
-          image: {{ .Values.server.prometheus_exporter.image | quote }}
+        {{ if .Values.metrics.exporter.enabled }}
+        - name: prometheus-to-sd
+          image: {{ .Values.metrics.image }}
           ports:
             - name: exporter
               containerPort: 9017

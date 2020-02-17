@@ -6,4 +6,5 @@ cassandra:
 
 metrics:
   image: null
-  enabled: false
+  exporter:
+    enabled: false

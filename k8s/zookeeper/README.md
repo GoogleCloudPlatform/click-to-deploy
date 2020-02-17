@@ -199,7 +199,7 @@ expanded manifest file for future updates to the application.
 helm template chart/zookeeper \
 --name "${APP_INSTANCE_NAME}" \
 --namespace "${NAMESPACE}" \
---set metrics.enabled=${METRICS_EXPORTER_ENABLED} \
+--set metrics.exporter.enabled=${METRICS_EXPORTER_ENABLED} \
 --set metrics.image=${IMAGE_METRICS_EXPORTER} \
 --set exporter.image.name=${IMAGE_ZOOKEEPER_REPO}/exporter \
 --set exporter.image.tag=${TAG} \

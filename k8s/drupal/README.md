@@ -257,11 +257,11 @@ helm template chart/drupal \
   --set "db.exporter.password=${EXPORTER_DB_PASSWORD}" \
   --set "apache.exporter.image=${IMAGE_APACHE_EXPORTER}" \
   --set "metrics.image=${IMAGE_METRICS_EXPORTER}" \
-  --set "metrics.enabled=${METRICS_ENABLED}" \
+  --set "metrics.exporter.enabled=${METRICS_ENABLED}" \
   --set "enablePublicServiceAndIngress=${PUBLIC_SERVICE_AND_INGRESS_ENABLED}" \
   --set "tls.base64EncodedPrivateKey=${TLS_CERTIFICATE_KEY}" \
   --set "tls.base64EncodedCertificate=${TLS_CERTIFICATE_CRT}" \
-  --set "metrics.enabled=${METRICS_EXPORTER_ENABLED}" \
+  --set "metrics.exporter.enabled=${METRICS_EXPORTER_ENABLED}" \
   > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 
