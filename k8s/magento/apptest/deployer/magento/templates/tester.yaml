@@ -48,5 +48,5 @@ spec:
       valueFrom:
         secretKeyRef:
           name: {{ .Release.Name }}-redis-secret
-          value: password
+          key: password
   restartPolicy: Never

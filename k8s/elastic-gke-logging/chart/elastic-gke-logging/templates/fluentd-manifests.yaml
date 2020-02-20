@@ -131,7 +131,7 @@ data:
       </buffer>
     </match>
 ---
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: {{ .Release.Name }}-fluentd-es

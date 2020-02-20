@@ -1,0 +1,37 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+  name: $APP_INSTANCE_NAME-crd-job
+  labels:
+    app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+    app.kubernetes.io/component: crd-job
+spec:
+  ttlSecondsAfterFinished: 300
+  backoffLimit: 0
+  completions: 1
+  parallelism: 1
+  template:
+    spec:
+      containers:
+      - command:
+        - "/bin/bash"
+        - "-ec"
+        - |
+          for crd in /crd_to_create/*;
+            do
+              cat $crd | gunzip -c - | kubectl apply -f -;
+          done
+        image: $DEPLOYER_IMAGE
+        imagePullPolicy: Always
+        name: crd-create
+        volumeMounts:
+        - name: crd-configmap
+          mountPath: "/crd_to_create/"
+      dnsPolicy: ClusterFirst
+      restartPolicy: Never
+      serviceAccountName: $CRD_SERVICE_ACCOUNT
+      volumes:
+      - name: crd-configmap
+        configMap:
+          name: $APP_INSTANCE_NAME-crd-configmap
