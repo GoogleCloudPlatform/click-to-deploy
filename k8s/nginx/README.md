@@ -147,11 +147,21 @@ Enable Stackdriver Metrics Exporter:
 > **NOTE:** Your GCP project must have Stackdriver enabled. If you are using a
 > non-GCP cluster, you cannot export metrics to Stackdriver.
 
-By default, application does not export metrics to Stackdriver. To enable this
-option, change the value to `true`.
+By default, application export metrics to Stackdriver as free metrics. To disable
+this option, change the value to `false`.
 
 ```shell
-export METRICS_EXPORTER_ENABLED=false
+export CURATED_METRICS_EXPORTER_ENABLED=false
+```
+
+To keep backward compatibility for existing user, we still allow users to
+export metrics as custom metrics. To enable this option, change the value to
+`true`.
+
+We encourage users migrate to the free metrics as it saves cost for the users.
+
+```shell
+export METRICS_EXPORTER_ENABLED=true
 ```
 
 Configure the container images:

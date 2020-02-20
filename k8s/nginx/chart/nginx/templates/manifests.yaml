@@ -91,6 +91,7 @@ spec:
         - name: certs
           mountPath: /etc/nginx/certs
           readOnly: true
+      {{ if .Values.metrics.curatedExporter.enabled }}
       - name: prometheus-to-sd-curated
         image: {{ .Values.metrics.image }}
         ports:
@@ -109,6 +110,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
+      {{ end }}
       {{ if .Values.metrics.exporter.enabled }}
       - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}

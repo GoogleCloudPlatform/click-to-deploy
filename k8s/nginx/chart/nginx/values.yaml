@@ -9,6 +9,8 @@ tls:
   base64EncodedCertificate: null
 metrics:
   image: null
+  curatedExporter:
+    enabled: true
   exporter:
     enabled: false
 publicIp:
