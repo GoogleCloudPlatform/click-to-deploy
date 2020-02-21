@@ -147,9 +147,9 @@ Enable Stackdriver Metrics Exporter:
 > **NOTE:** Your GCP project must have Stackdriver enabled. If you are using a
 > non-GCP cluster, you cannot export metrics to Stackdriver.
 
-By default, application export metrics to Stackdriver as curated, free metrics.
-To disable this option, change the value of `CURATED_METRICS_EXPORTER_ENABLED`
-to `false`.
+By default, application export metrics to Stackdriver as free curated metrics.
+The metrics prefix would be `kubernetes.io/nginx/`. To disable this option,
+change the value of `CURATED_METRICS_EXPORTER_ENABLED` to `false`.
 
 To keep backward compatibility, users can still export metrics as custom metrics.
 To enable this option, change the value of `METRICS_EXPORTER_ENABLED` to `true`.
