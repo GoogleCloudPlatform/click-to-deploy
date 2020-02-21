@@ -99,7 +99,7 @@ spec:
           containerPort: 6060
         command:
         - /monitor
-        - --stackdriver-prefix=kubernetes.io/nginx
+        - --stackdriver-prefix=kubernetes.io
         - --source=nginx:http://localhost:9113/metrics?customResourceType=k8s_container&customLabels[project_id]&customLabels[location]&customLabels[cluster_name]&customLabels[namespace_name]=$(POD_NAMESPACE)&customLabels[pod_name]=$(POD_NAME)&customLabels[container_name]=nginx
         env:
         - name: POD_NAME
