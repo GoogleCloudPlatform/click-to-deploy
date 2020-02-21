@@ -147,21 +147,18 @@ Enable Stackdriver Metrics Exporter:
 > **NOTE:** Your GCP project must have Stackdriver enabled. If you are using a
 > non-GCP cluster, you cannot export metrics to Stackdriver.
 
-By default, application export metrics to Stackdriver as free metrics. To disable
-this option, change the value to `false`.
+By default, application export metrics to Stackdriver as curated, free metrics.
+To disable this option, change the value of `CURATED_METRICS_EXPORTER_ENABLED`
+to `false`.
 
-```shell
-export CURATED_METRICS_EXPORTER_ENABLED=false
-```
-
-To keep backward compatibility for existing user, we still allow users to
-export metrics as custom metrics. To enable this option, change the value to
-`true`.
+To keep backward compatibility, users can still export metrics as custom metrics.
+To enable this option, change the value of `METRICS_EXPORTER_ENABLED` to `true`.
 
 We encourage users migrate to the free metrics as it saves cost for the users.
 
 ```shell
-export METRICS_EXPORTER_ENABLED=true
+export CURATED_METRICS_EXPORTER_ENABLED=true
+export METRICS_EXPORTER_ENABLED=false
 ```
 
 Configure the container images:
@@ -234,6 +231,7 @@ helm template chart/nginx \
   --set "nginx.initImage=$IMAGE_NGINX_INIT" \
   --set "nginx.image=$IMAGE_NGINX" \
   --set "metrics.image=$IMAGE_METRICS_EXPORTER" \
+  --set "metrics.curatedExporter.enabled=$CURATED_METRICS_EXPORTER_ENABLED" \
   --set "metrics.exporter.enabled=$METRICS_EXPORTER_ENABLED" \
   --set "tls.base64EncodedPrivateKey=$TLS_CERTIFICATE_KEY" \
   --set "tls.base64EncodedCertificate=$TLS_CERTIFICATE_CRT" \
