@@ -1,0 +1,29 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-config
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: hazelcast
+data:
+  hazelcast.xml: |-
+    <?xml version="1.0" encoding="UTF-8"?>
+    <hazelcast xsi:schemaLocation="http://www.hazelcast.com/schema/config hazelcast-config-{{ .Values.hazelcast.image.tag }}.xsd"
+                   xmlns="http://www.hazelcast.com/schema/config"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <management-center enabled="true">${hazelcast.mancenter.url}</management-center>
+      <properties>
+        <property name="hazelcast.discovery.enabled">true</property>
+      </properties>
+      <network>
+        <join>
+          <multicast enabled="false"/>
+          <tcp-ip enabled="false" />
+          <discovery-strategies>
+            <discovery-strategy enabled="true" class="com.hazelcast.kubernetes.HazelcastKubernetesDiscoveryStrategy">
+            </discovery-strategy>
+          </discovery-strategies>
+        </join>
+      </network>
+    </hazelcast>
