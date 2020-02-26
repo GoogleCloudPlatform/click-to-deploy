@@ -1,0 +1,8 @@
+apiVersion: networking.gke.io/v1beta1
+kind: ManagedCertificate
+metadata:
+  name: example-certificate1
+spec:
+  domains:
+    #TODO: Insert variable for host information
+    - {{.Values.certificate.hostname}}

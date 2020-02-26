@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  selector:
+    matchLabels:
+      run: web
+  template:
+    metadata:
+      labels:
+        run: web
+    spec:
+      containers:
+        #TODO: Insert variable for dynamic image URL
+      - image: gcr.io/abc-aditum-kubernetes/hassaankube:latest
+        imagePullPolicy: Always
+        name: web
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        livenessProbe:
+          failureThreshold: 4
+          httpGet:
+            path: /liveness_check
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 600
+          timeoutSeconds: 5
+        readinessProbe:
+          failureThreshold: 30
+          httpGet:
+            path: /readiness_check
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 600
+          periodSeconds: 5
+
