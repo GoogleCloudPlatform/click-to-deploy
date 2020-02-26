@@ -1,0 +1,30 @@
+# TODO(marketplace-k8s-app-tools/issues/302): Remove this after native
+# Testrunner support is added to deployer
+apiVersion: v1
+# TODO(click-to-deploy/issues/324): Migrate to Job after adding support to
+# deployer
+# kind: Job
+kind: Pod
+metadata:
+  name: "${APP_INSTANCE_NAME}-tester"
+  labels:
+    app.kubernetes.io/name: "${APP_INSTANCE_NAME}"
+  annotations:
+    marketplace.cloud.google.com/verification: test
+spec:
+  # TODO(click-to-deploy/issues/324): Add deadline after migrating to Job
+  # activeDeadlineSeconds: 1200
+  # TODO(click-to-deploy/issues/323): Remove following dependency on internal name
+  serviceAccountName: ${APP_INSTANCE_NAME}-deployer-sa
+  containers:
+  - name: tester
+    image: "${testerImage}"
+    imagePullPolicy: Always
+    env:
+    - name: NAMESPACE
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.namespace
+    - name: APP_INSTANCE_NAME
+      value: ${APP_INSTANCE_NAME}
+  restartPolicy: Never
