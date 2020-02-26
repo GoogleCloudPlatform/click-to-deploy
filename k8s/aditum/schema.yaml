@@ -1,0 +1,78 @@
+x-google-marketplace:
+  applicationApiVersion: v1beta1
+  # IMPORTANT: These IDs must match your listing ID in Marketplace.
+  schemaVersion: v2
+  partnerId: click-to-deploy-containers
+  solutionId: aditum
+  # The release version is required in the schema and MUST match the
+  # release tag on the the deployer.
+  publishedVersion: '0.1.1'
+  publishedVersionMetadata:
+    releaseNote: >-
+      A regular update.
+    # releaseTypes list is optional.
+    # "Security" should only be used if this is an important update to patch
+    # an existing vulnerability, as such updates will display more prominently for users.
+    releaseTypes:
+    - Feature
+    # If "recommended" is "true", users using older releases are encouraged
+    # to update as soon as possible. This is useful if, for example, this release
+    # fixes a critical issue.
+    recommended: true
+
+  # This MUST be specified to indicate that the deployer supports managed updates.
+  # Note that this could be left out or kalmSupported set to false, in
+  # which case the deployer uses schema v2 but does not support updates.
+  managedUpdates:
+    kalmSupported: true
+  ## Image Values
+  images:
+    '':  # Primary image has no name.
+      properties:
+        aditum.image.repo:
+          type: REPO_WITH_REGISTRY
+        aditum.image.tag:
+          type: TAG
+    init:
+      properties:
+        imageInitFull:
+          type: FULL
+        imageInitRegistry:
+          type: REGISTRY
+        imageInitRepo:
+          type: REPO_WITHOUT_REGISTRY
+        imageInitTag:
+          type: TAG
+  ## Cluster Constraints
+  clusterConstraints:
+    gcp:
+      nodes:
+        requiredOauthScopes:
+        - https://www.googleapis.com/auth/cloud-platform
+        - https://www.googleapis.com/auth/devstorage.read_only
+
+
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  oAuth.clientID:
+    type: string
+    title: OAuth Client ID
+  oAuth.clientSecret:
+    type: string
+    title: OAuth Client Secret
+  certificate.hostname:
+    type: string
+    title: Application Ingress Host
+required:
+- name
+- namespace
+- oAuth.clientSecret
+- oAuth.clientID
+- certificate.hostname

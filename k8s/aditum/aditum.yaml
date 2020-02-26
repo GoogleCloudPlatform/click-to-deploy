@@ -1,0 +1,104 @@
+---
+# Source: aditum/templates/oauthSecret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: oauth-secret
+type: Opaque
+data:
+  client_id: MTA2MTcwNTIyNjU3MC1rYms4dnY5ODlwZHJycmtzbDlrZTg5dmZ1ZTdjdG5xNS5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbQ==
+  client_secret: YS1BcFBCcU52Rkdac1NuNFJmVWg0enYy
+---
+# Source: aditum/templates/web-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  namespace: default
+  annotations:
+    beta.cloud.google.com/backend-config: '{"default": "config-default"}'
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    run: web
+  type: NodePort
+---
+# Source: aditum/templates/web-deployment.yaml
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: web
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      run: web
+  template:
+    metadata:
+      labels:
+        run: web
+    spec:
+      containers:
+        #TODO: Insert variable for dynamic image URL
+      - image: gcr.io/abc-aditum-kubernetes/hassaankube:latest
+        imagePullPolicy: Always
+        name: web
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        livenessProbe:
+          failureThreshold: 4
+          httpGet:
+            path: /liveness_check
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 600
+          timeoutSeconds: 5
+        readinessProbe:
+          failureThreshold: 30
+          httpGet:
+            path: /readiness_check
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 600
+          periodSeconds: 5
+---
+# Source: aditum/templates/basic-ingress.yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: basic-ingress
+  annotations:
+    #TODO: Insert variable here for static IP
+    #TODO: How do we dynamically create the static IP?
+    kubernetes.io/ingress.global-static-ip-name: 34.96.126.22
+    networking.gke.io/managed-certificates: example-certificate1
+spec:
+  backend:
+    serviceName: web
+    servicePort: 8080
+---
+# Source: aditum/templates/backend-config.yaml
+apiVersion: cloud.google.com/v1beta1
+kind: BackendConfig
+metadata:
+  name: config-default
+  namespace: default
+spec:
+  iap:
+    enabled: true
+    oauthclientCredentials:
+      secretName: oauth-secret
+---
+# Source: aditum/templates/certificate.yaml
+apiVersion: networking.gke.io/v1beta1
+kind: ManagedCertificate
+metadata:
+  name: example-certificate1
+spec:
+  domains:
+    #TODO: Insert variable for host information
+    - aditumkube.1bot2.info
