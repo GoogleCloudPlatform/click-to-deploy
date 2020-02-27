@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "cert_manager.WebHookConfigMap" . }}
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: webhook-configmap
+data:
+  {{- $root := . -}}
+  {{- range $path, $bytes := .Files.Glob "files/webhook/*.yaml" }}
+  {{ base $path }}: |-
+  {{- tpl ($root.Files.Get $path) $root | nindent 4}}
+  {{- end -}}

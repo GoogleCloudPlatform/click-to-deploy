@@ -1,0 +1,17 @@
+{{- $root := . -}}
+{{- $release := .Release.Name -}}
+{{- $name := default .Chart.Name .Values.nameOverride -}}
+{{- range $path, $bytes := .Files.Glob "files/crd/*.yaml" }}
+{{- $file := printf (base ($path)) }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ printf "%s-%s-crd-%s" $release $name $file | trunc 63 | trimSuffix "-" | trimSuffix "." }}
+  labels:
+    app.kubernetes.io/name: {{ printf "%s" $release }}
+    app.kubernetes.io/component: crd-configmap
+data:
+  {{ base $path }}: |-
+    {{- $root.Files.Get $path | nindent 4 }}
+{{- end -}}
