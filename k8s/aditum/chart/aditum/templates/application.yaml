@@ -6,7 +6,7 @@ metadata:
   labels:
     app.kubernetes.io/name: "{{ .Release.Name }}"
   annotations:
-    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy", "product_id": "aditum", "partner_name": "Click To Deploy"}'
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": "aditum", "partner_name": "Click To Deploy"}'
 spec:
   descriptor:
     type: aditum
@@ -15,5 +15,16 @@ spec:
     matchLabels:
       app.kubernetes.io/name: "{{ .Release.Name }}"
   componentKinds:
-  - group: batch/v1
-    kind: Job
+  - group: cloud.google.com/v1beta1
+    kind: BackendConfig
+  - group: extensions/v1beta1
+    kind: Ingress
+  - group: networking.gke.io/v1beta1
+    kind: ManagedCertificate
+  - group: v1
+    kind: Secret
+  - group: extensions/v1beta1
+    kind: Deployment
+  - group: v1
+    kind: Service
+
