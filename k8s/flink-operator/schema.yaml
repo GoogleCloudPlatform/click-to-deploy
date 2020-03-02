@@ -159,7 +159,7 @@ properties:
               - create
   CRD_SERVICE_ACCOUNT:
     type: string
-    title: Service account used by CRDs deployer
+    title: Service account used by CRD deployer
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
