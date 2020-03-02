@@ -14,7 +14,7 @@ spec:
     type: Flink Operator
     version: $IMAGE_TAG
     description: |-
-      Flink Operator enables specifying and running Apache Flink applications idiomatically on Kubernetes.
+      Flink Operator enables specifying and running Apache Flink apps idiomatically on Kubernetes.
 
       # Support
       Google does not offer support for this solution. However, community support is available on [Official Community](https://flink.apache.org/community.html) and [Stack Overflow](https://stackoverflow.com/questions/tagged/apache-flink/).
@@ -27,11 +27,10 @@ spec:
       url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/flink-operator/README.md
     - description: Quick start with Flink Operator
       url: https://github.com/GoogleCloudPlatform/flink-on-k8s-operator/blob/master/docs/developer_guide.md
-    - description: Apache Flink documentations
+    - description: Apache Flink documentation
       url: https://ci.apache.org/projects/flink/flink-docs-master/
     notes: |-
-      Follow these [examples](https://github.com/GoogleCloudPlatform/flink-on-k8s-operator/blob/master/docs/developer_guide.md#create-a-sample-flink-cluster)
-      to deploy your Flink jobs.
+      To deploy your Flink jobs, follow [these examples](https://github.com/GoogleCloudPlatform/flink-on-k8s-operator/blob/master/docs/developer_guide.md#create-a-sample-flink-cluster).
   componentKinds:
   - group: apps/v1
     kind: Deployment
