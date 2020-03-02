@@ -44,7 +44,7 @@ properties:
     description: >-
       Name of a service account in the target namespace that
       has cluster-admin permissions. This is needed for the operator
-      to create Spark CRD and jobs.
+      to create Flink CRD and jobs.
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
