@@ -1,34 +1,35 @@
 # Overview
 
-Apache Flink is a framework and distributed processing engine for stateful computations over unbounded and bounded data streams.
+Apache Flink is a framework and distributed processing engine for stateful
+computations over unbounded and bounded data streams.
 
-Flink Operator is a Kubernetes CRD operator for specifying and running Apache
-Flink applications idiomatically on Kubernetes.
+Flink Operator is a Kubernetes Custom Resource Definition (CRD) operator for
+specifying and running Apache Flink apps idiomatically on Kubernetes.
 
-Learn more about the [Flink Operator](https://github.com/GoogleCloudPlatform/flink-on-k8s-operator)
+Learn more about [Flink Operator](https://github.com/GoogleCloudPlatform/flink-on-k8s-operator).
 
 ## About Google Click to Deploy
 
-Popular open stacks on Kubernetes packaged by Google.
+Popular open stacks on Kubernetes, packaged by Google.
 
 # Installation
 
 ## Quick install with Google Cloud Marketplace
 
-Get up and running with a few clicks! Install Flink Operator app to a
-Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
+Get up and running with a few clicks! Use Google Cloud Marketplace to install
+the Flink Operator app to a Google Kubernetes Engine cluster. Follow the
 [on-screen instructions](https://console.cloud.google.com/marketplace/details/google/flink-operator).
 
-## Command line instructions
+## Command-line instructions
 
-You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local workstation in the
-further instructions.
+You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local
+workstation for the following instructions.
 
 [![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/GoogleCloudPlatform/click-to-deploy&cloudshell_open_in_editor=README.md&cloudshell_working_dir=k8s/flink-operator)
 
 ### Prerequisites
 
-#### Set up command line tools
+#### Set up command-line tools
 
 You'll need the following tools in your development environment:
 
@@ -45,7 +46,7 @@ gcloud auth configure-docker
 
 #### Create a Google Kubernetes Engine cluster
 
-Create a new cluster from the command line:
+Create a new cluster from the command-line:
 
 ```shell
 export CLUSTER=flink-operator-cluster
@@ -62,7 +63,7 @@ gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 
 #### Clone this repo
 
-Clone this repo and the associated tools repo:
+Clone this repo and its associated tools repo:
 
 ```shell
 git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
@@ -73,7 +74,8 @@ git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 An Application resource is a collection of individual Kubernetes components,
 such as Services, Deployments, and so on, that you can manage as a group.
 
-To set up your cluster to understand Application resources, run the following command:
+To set up your cluster to understand Application resources, run the following
+command:
 
 ```shell
 kubectl apply -f "https://raw.githubusercontent.com/GoogleCloudPlatform/marketplace-k8s-app-tools/master/crd/app-crd.yaml"
@@ -86,7 +88,7 @@ The Application resource is defined by the
 community. The source code can be found on
 [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
 
-### Install the Application
+### Install the app
 
 Navigate to the `flink-operator` directory:
 
@@ -117,9 +119,8 @@ The images above are referenced by
 [tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
 that you pin each image to an immutable
 [content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This ensures that the installed application always uses the same images,
-until you are ready to upgrade. To get the digest for the image, use the
-following script:
+This ensures that the installed app always uses the same images, until you are
+ready to upgrade. To get the digest for an image, use the following script:
 
 ```shell
 for i in "FLINK_OPERATOR_IMAGE"; do
@@ -132,7 +133,8 @@ done
 
 #### Create namespace in your Kubernetes cluster
 
-If you use a different namespace than the `default`, run the command below to create a new namespace:
+If you want to use a namespace other than `default`, create the new namespace by
+running the command below:
 
 ```shell
 kubectl create namespace "${NAMESPACE}"
@@ -140,17 +142,19 @@ kubectl create namespace "${NAMESPACE}"
 
 #### Configure the service account
 
-The operator needs a service account in the target namespace with cluster wide
-permissions to manipulate Kubernetes resources.
+For the operator to be able to manipulate Kubernetes resources, there must be a
+service account in the target namespace with cluster-wide permissions to
+manipulate Kubernetes resources.
 
-Provision a service account and export its via an environment variable as follows:
+To provision a service account and export it via an environment variable, run the
+following command:
 
 ```shell
 export SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-sa"
 export CRD_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-crd-creator-job"
 ```
 
-Expand the manifest to create Service Accounts:
+To create service accounts, expand the manifest:
 
 ```shell
 cat resources/service-accounts.yaml \
@@ -162,7 +166,7 @@ cat resources/service-accounts.yaml \
     > "${APP_INSTANCE_NAME}_sa_manifest.yaml"
 ```
 
-Create the accounts on the cluster with `kubectl`:
+You can create the accounts on the cluster with `kubectl`:
 
 ```shell
 kubectl apply -f "${APP_INSTANCE_NAME}_sa_manifest.yaml" \
@@ -172,7 +176,7 @@ kubectl apply -f "${APP_INSTANCE_NAME}_sa_manifest.yaml" \
 #### Expand the manifest template
 
 Use `envsubst` to expand the template. We recommend that you save the
-expanded manifest file for future updates to the application.
+expanded manifest file for future updates to the app.
 
 ```shell
 awk 'FNR==1 {print "---"}{print}' manifest/* \
@@ -182,15 +186,15 @@ awk 'FNR==1 {print "---"}{print}' manifest/* \
 
 #### Apply the manifest to your Kubernetes cluster
 
-Use `kubectl` to apply the manifest to your Kubernetes cluster:
+To apply the manifest to your Kubernetes cluster, use `kubectl`:
 
 ```shell
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
 
-#### View the app in the Google Cloud Console
+#### View your app in the Google Cloud Console
 
-To get the Console URL for your app, run the following command:
+To get the Cloud Console URL for your app, run the following command:
 
 ```shell
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
@@ -198,8 +202,7 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 To view your app, open the URL in your browser.
 
-
-### Deploy your Flink Applications
+### Deploy your Flink apps
 
 Follow these
 [examples](https://github.com/GoogleCloudPlatform/flink-on-k8s-operator/blob/master/docs/user_guide.md#submit-a-job)
@@ -220,5 +223,8 @@ kubectl --namespace "${NAMESPACE}" get crd \
 
 ## Restore Flink configuration data from your local environment
 
+To restore Flink resources from your local environment, use the following command:
+
 ```shell
 kubectl --namespace "${NAMESPACE}" apply -f backup_file.yaml
+```
