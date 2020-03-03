@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         #TODO: Insert variable for dynamic image URL
-      - image: gcr.io/abc-aditum-kubernetes/hassaankube:latest
+      - image: gcr.io/aditum-marketplace-dev/aditum:latest
         imagePullPolicy: Always
         name: web
         ports:
