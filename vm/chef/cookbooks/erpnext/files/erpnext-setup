@@ -44,6 +44,6 @@ rm -f "${INITIAL_PASSWORD_FILE}"
 supervisorctl restart all
 
 # Wait until ready.
-until curl "https://localhost:80"; do
+until curl "http://localhost:80"; do
   sleep 3
 done
