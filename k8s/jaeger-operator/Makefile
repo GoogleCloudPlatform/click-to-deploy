@@ -13,18 +13,14 @@ SOURCE_REGISTRY ?= marketplace.gcr.io/google
 TRACK ?= 1.15
 
 IMAGE_MAIN ?= $(SOURCE_REGISTRY)/jaeger-operator1:$(TRACK)
-IMAGE_DEPLOYER_HELM ?= gcr.io/cloud-marketplace-tools/k8s/deployer_helm:$(MARKETPLACE_TOOLS_TAG)
-
 
 # Main image
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_MAIN))
 
 # List of images used in application
-ADDITIONAL_IMAGES := deployer-helm
 
 # Additional images variable names should correspond with ADDITIONAL_IMAGES list
 # Should be dynamically to use $(MARKETPLACE_TOOLS_TAG)
-image-deployer-helm ?= $(call get_sha256,$(IMAGE_DEPLOYER_HELM))
 
 C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
 
