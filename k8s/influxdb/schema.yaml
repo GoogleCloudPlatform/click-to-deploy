@@ -52,6 +52,7 @@ properties:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 32
+        base64: false
   metrics.exporter.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
