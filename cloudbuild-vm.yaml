@@ -19,7 +19,7 @@
 # _LOGS_BUCKET - <GCS BUCKET TO EXPORT PACKER LOGS>
 # _SOLUTION_NAME - <VM IMAGE TO BE BUILT>
 
-timeout: 1200s # 20m
+timeout: 1800s # 30m
 options:
   workerPool: ${PROJECT_ID}/gcb-workers-pool
 steps:
