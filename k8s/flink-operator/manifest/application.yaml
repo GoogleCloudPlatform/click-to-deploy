@@ -30,7 +30,7 @@ spec:
     - description: Apache Flink documentation
       url: https://ci.apache.org/projects/flink/flink-docs-master/
     notes: |-
-      To deploy your Flink jobs, follow [these examples](https://github.com/GoogleCloudPlatform/flink-on-k8s-operator/blob/master/docs/developer_guide.md#create-a-sample-flink-cluster).
+      To deploy your Flink jobs, follow [these examples](https://github.com/GoogleCloudPlatform/flink-on-k8s-operator/blob/master/docs/user_guide.md#create-a-sample-flink-cluster).
   componentKinds:
   - group: apps/v1
     kind: Deployment
