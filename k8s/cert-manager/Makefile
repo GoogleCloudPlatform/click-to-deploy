@@ -14,18 +14,16 @@ TRACK ?= 0.13
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 IMAGE_MAIN ?= $(SOURCE_REGISTRY)/cert-manager0:$(TRACK)
-IMAGE_DEPLOYER_HELM ?= gcr.io/cloud-marketplace-tools/k8s/deployer_helm:$(MARKETPLACE_TOOLS_TAG)
 IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 # Main image
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_MAIN))
 
 # List of images used in application
-ADDITIONAL_IMAGES := deployer-helm prometheus-to-sd
+ADDITIONAL_IMAGES := prometheus-to-sd
 
 # Additional images variable names should correspond with ADDITIONAL_IMAGES list
 # Should be dynamically to use $(MARKETPLACE_TOOLS_TAG)
-image-deployer-helm ?= $(call get_sha256,$(IMAGE_DEPLOYER_HELM))
 image-prometheus-to-sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))
 
 C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
