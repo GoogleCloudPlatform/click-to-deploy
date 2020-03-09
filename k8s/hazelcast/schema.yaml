@@ -27,6 +27,10 @@ x-google-marketplace:
           type: REPO_WITH_REGISTRY
         mancenter.image.tag:
           type: TAG
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
 
   clusterConstraints:
     istio:

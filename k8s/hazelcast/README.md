@@ -22,13 +22,12 @@ By default, Hazelcast is exposed internally using a ClusterIP Service on port
 5701. The Hazelcast Management Center is exposed internally on port 8080.
 
 Separate StatefulSet Kubernetes objects are used to manage the Hazelcast and
-Management Center instances. By default, 3 Hazelcast replicas are deployed from
-a Statesulset instance. Management Center is deployed as a single instance
+Management Center workloads. By default, 3 Hazelcast replicas are deployed as a part of a StatefulSet. Management Center is deployed as a single instance
 also through a StatefulSet.
 
-The Hazelcast instance connects to Management Center over port `8080`.
+The Hazelcast instances connect to Management Center over port `8080`.
 
-Hazelcast credentials are set at first access to Management Center.
+Hazelcast credentials are set during the first access to Management Center.
 
 # Installation
 
@@ -127,7 +126,7 @@ By default, the application does not export metrics to Stackdriver. To enable
 this option, change the value to `true`.
 
 ```shell
-export METRICS_EXPORTER_ENABLED=true
+export METRICS_EXPORTER_ENABLED=false
 ```
 
 Configure the container image:
@@ -135,25 +134,9 @@ Configure the container image:
 ```shell
 TAG=3.12
 export IMAGE_REGISTRY="marketplace.gcr.io/google"
-export IMAGE_HAZELCAST="${IMAGE_REGISTRY}/hazelcast3:${TAG}"
-export IMAGE_HAZELCASTMC="${IMAGE_REGISTRY}/hazelcast-mc3:${TAG}"
-export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/hazelcast/prometheus-to-sd:${TAG}"
-```
-
-The images above are referenced by [tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend that you pin each image to an immutable
-[content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-
-This ensures that the installed application always uses the same images, until
-you are ready to upgrade. To get the digest of an image, use the following
-script:
-
-```shell
-for i in "IMAGE_HAZELCAST" "IMAGE_HAZELCASTMC" "IMAGE_METRICS_EXPORTER"; do
-  repo=$(echo ${!i} | cut -d: -f1);
-  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
-  export $i="$repo@$digest";
-  echo ${!i};
-done
+export IMAGE_HAZELCAST="${IMAGE_REGISTRY}/hazelcast3"
+export IMAGE_HAZELCASTMC="${IMAGE_REGISTRY}/hazelcast-mc3"
+export IMAGE_METRICS_EXPORTER="${IMAGE_REGISTRY}/hazelcast/prometheus-to-sd"
 ```
 
 For the persistent disk provisioning of the Hazelcast servers, you will need to:
@@ -206,8 +189,9 @@ helm template chart/hazelcast \
   --set "mancenter.image.tag=${TAG}" \
   --set "mancenter.persistence.storageClass=${HAZELCAST_STORAGE_CLASS}" \
   --set "mancenter.persistence.size=${PERSISTENT_DISK_SIZE}" \
-  --set "metrics.image=${IMAGE_METRICS_EXPORTER}" \
-  --set "metrics.exporter.enabled=${METRICS_EXPORTER_ENABLED}" > "${APP_INSTANCE_NAME}_manifest.yaml"
+  --set "metrics.image=${IMAGE_METRICS_EXPORTER}:${TAG}" \
+  --set "metrics.exporter.enabled=${METRICS_EXPORTER_ENABLED}" \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster
@@ -245,7 +229,7 @@ You can then check the cluster member's status:
 
 ```shell
 # List cluster members
-kubectl exec -it "${APP_INSTANCE_NAME}-hazelcast-0" --namespace "${NAMESPACE}" -- curl -v -X GET "http://localhost:5701/hazelcast/rest/cluster"
+kubectl exec -it "${APP_INSTANCE_NAME}-hazelcast-0" --namespace "${NAMESPACE}" -- curl -v "http://localhost:5701/hazelcast/rest/cluster"
 ```
 
 The return will be similar to the following:
@@ -271,7 +255,7 @@ API for /maps resource.
 A POST request creates the map and the data:
 
 ```shell
-# Create an item where key = foo and value = bar
+# Create an item where key is 'foo' and value is 'bar'
 kubectl exec -it "${APP_INSTANCE_NAME}-hazelcast-0" --namespace "${NAMESPACE}" -- curl -v -X POST -d "bar" "http://localhost:5701/hazelcast/rest/maps/mapName/foo"
 ```
 
@@ -284,9 +268,9 @@ The return should be similar to the following:
 
 Retrieve the data from all the replicas after some seconds:
 ```shell
-kubectl exec -it "${APP_INSTANCE_NAME}-hazelcast-0" --namespace "${NAMESPACE}" -- curl -v -X GET "http://localhost:5701/hazelcast/rest/maps/mapName/foo"
-kubectl exec -it "${APP_INSTANCE_NAME}-hazelcast-1" --namespace "${NAMESPACE}" -- curl -v -X GET "http://localhost:5701/hazelcast/rest/maps/mapName/foo"
-kubectl exec -it "${APP_INSTANCE_NAME}-hazelcast-2" --namespace "${NAMESPACE}" -- curl -v -X GET "http://localhost:5701/hazelcast/rest/maps/mapName/foo"
+kubectl exec -it "${APP_INSTANCE_NAME}-hazelcast-0" --namespace "${NAMESPACE}" -- curl -v "http://localhost:5701/hazelcast/rest/maps/mapName/foo"
+kubectl exec -it "${APP_INSTANCE_NAME}-hazelcast-1" --namespace "${NAMESPACE}" -- curl -v "http://localhost:5701/hazelcast/rest/maps/mapName/foo"
+kubectl exec -it "${APP_INSTANCE_NAME}-hazelcast-2" --namespace "${NAMESPACE}" -- curl -v "http://localhost:5701/hazelcast/rest/maps/mapName/foo"
 ```
 
 All the results should be similar to the following:
@@ -306,7 +290,8 @@ kubectl port-forward svc/${APP_INSTANCE_NAME}-mancenter-svc --namespace "${NAMES
 ```
 Then, in a browser window navigate to: http://localhost:5050/hazelcast-mancenter.
 
-Before the first access you should define your root password.
+Before the first access you should define your `root` credentials. More information on
+[Management Center Getting Started page](https://docs.hazelcast.org/docs/management-center/3.8.3/manual/html/Getting_Started.html).
 
 
 ### Access Hazelcast (externally)
@@ -315,24 +300,26 @@ By default, the application does not have an external IP. To create an external
 IP address, run the following command:
 
 ```shell
-kubectl patch svc "${APP_INSTANCE_NAME}-hazelcast" \
+kubectl patch svc "${APP_INSTANCE_NAME}-svc" \
   --namespace "${NAMESPACE}" \
   --patch '{"spec": {"type": "LoadBalancer"}}'
 ```
 > **NOTE:** It might take some time for the external IP to be provisioned.
 
 # Application metrics
+
 Each Hazelcast server exports metrics under the `/` path on `8080` port.
 
 For example, you can access the metrics locally via `curl` by running the
 following commands:
 ```shell
 # Forward client port to local workstation
-kubectl port-forward "svc/${APP_INSTANCE_NAME}-hazelcast" 8080 --namespace "${NAMESPACE}"
+kubectl port-forward "svc/${APP_INSTANCE_NAME}-svc" 8080 --namespace "${NAMESPACE}"
 
 # Fetch metrics locally through different terminal
 curl -L http://localhost:8080/
 ```
+
 ### Configuring Prometheus to collect the metrics
 
 Prometheus can be configured to automatically collect your application's metrics.
@@ -361,12 +348,15 @@ The exporting option might not be available for GKE on-prem clusters.
 You can remove existing metric descriptors by using [Stackdriver's REST API](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors/delete).
 
 ### Scaling
+
 #### Scaling the cluster up or down
-> **NOTE:** Hazelcast clusters are easily able to be scaled up or down. The
-> recommended minimum number of replicas for a Hazelcast Cluster is 3.
-> A Hazelcast Open Source Cluster without a valid license key is not able to
-> scale for more than 3 replicas.
-> More information can be found in the [official Hazelcast Documentation](https://hazelcast.com/blog/how-to-scale-hazelcast-imdg-on-kubernetes/).
+
+Hazelcast clusters can easily be scaled up or down
+
+> **NOTE:** A valid license key is required to scale Hazelcast Open Source Cluster
+> to more than 3 replicas.
+> More information can be found in the
+> [official Hazelcast Documentation](https://hazelcast.com/blog/how-to-scale-hazelcast-imdg-on-kubernetes/).
 
 By default, Hazelcast cluster is deployed with 3 replicas. To change the number
 of replicas, use the following command, where `REPLICAS` is desired number of
@@ -374,35 +364,13 @@ replicas:
 
 ```shell
 export REPLICAS=2
-kubectl scale statefulsets "${APP_INSTANCE_NAME}-etcd" \
+kubectl scale statefulsets "${APP_INSTANCE_NAME}-hazelcast" \
   --namespace "${NAMESPACE}" --replicas=$REPLICAS
 ```
 
 In the case of scaling down, this option reduces the number of replicas
 disconnecting nodes from the cluster.
-Scaling down will also leave the `persistentvolumeclaims` of your StatefulSet untouched.
-
-
-### Back up
-#### Back up Hazelcast cluster data to other nodes
-
-The Hazelcast backup should be configured by entity map [according this configuration reference](https://docs.hazelcast.org/docs/3.3-RC3/manual/html/map-backups.html).
-
-Once you have created your map. You can edit ConfigMap resource, adding a
-`<map>` node to `hazelcast.xml`:
-
-```shell
-kubectl edit configmap "${APP_INSTANCE_NAME}-config`
-```
-
-Add the node below replacing `foo` by your map name:
-
-```xml
-<map name="foo">
-  <backup-count>1</backup-count>
-</map>
-```
-
+Scaling down will also leave the `PersistentVolumeClaims` of your StatefulSet untouched.
 
 ### Upgrading
 
@@ -423,17 +391,18 @@ kubectl get pods --selector app.kubernetes.io/name=${APP_INSTANCE_NAME} \
   --namespace ${NAMESPACE}
 ```
 
-# Uninstall the Application
+# Uninstall the app
 
-## Using the Google Cloud Platform Console
+## Using the Google Cloud Console
 
-1. In the GCP Console, open [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
+1.  In the Cloud Console, open
+    [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
 
-1. Click on **Hazelcast** in the app list.
+2.  From the list of apps, click **Hazelcast**.
 
-1. On the Application Details page, click **Delete**.
+3.  On the Application Details page, click **Delete**.
 
-## Using the command line
+## Using the command-line
 
 ### Prepare the environment
 
@@ -446,42 +415,37 @@ export NAMESPACE=default
 
 ### Delete the resources
 
-> **NOTE:** We recommend that you use a kubectl version that is the same
-> as the version of your cluster. Using the same versions of kubectl and the
-> cluster helps avoid unforeseen issues.
+> **NOTE:** We recommend using a `kubectl` version that is the same as the
+> version of your cluster. Using the same version for `kubectl` and the cluster
+> helps to avoid unforeseen issues.
 
-To delete the resources, use the expanded manifest file used for the
-installation.
+#### Delete the deployment with the generated manifest file
 
 Run `kubectl` on the expanded manifest file:
+> **WARNING:** This will also delete your `PersistentVolumeClaims`
+> for Hazelcast, which means that you will lose all of your Hazelcast data.
 
 ```shell
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace ${NAMESPACE}
 ```
 
-Otherwise, delete the resources by using types and a label:
+#### Delete the deployment by deleting the application resource
+
+If you don't have the expanded manifest file, delete the resources by using types
+and a label:
 
 ```shell
-kubectl delete application \
+kubectl delete application,statefulset,secret,service \
   --namespace ${NAMESPACE} \
   --selector app.kubernetes.io/name=${APP_INSTANCE_NAME}
 ```
 
-### Delete the persistent volumes of your installation
-
-By design, the removal of StatefulSets in Kubernetes does not remove any
-PersistentVolumeClaims that were attached to their Pods. This prevents your
-installations from accidentally deleting stateful data.
-
-To remove the PersistentVolumeClaims with their attached persistent disks, run
-the following `kubectl` commands:
+Deleting the `Application` resource will delete all of your deployment's resources,
+except for `PersistentVolumeClaim`. To remove the PersistentVolumeClaims with their
+attached persistent disks, run the following `kubectl` command:
 
 ```shell
-# specify the variables values matching your installation:
-export APP_INSTANCE_NAME=hazelcast-1
-export NAMESPACE=default
-
-kubectl delete pvc \
+kubectl delete persistentvolumeclaims \
   --namespace ${NAMESPACE} \
   --selector app.kubernetes.io/name=${APP_INSTANCE_NAME}
 ```
@@ -489,7 +453,7 @@ kubectl delete pvc \
 ### Delete the GKE cluster
 
 Optionally, if you don't need the deployed app or the GKE cluster,
-you can use this command to delete the cluster:
+delete the cluster by using this command:
 
 ```shell
 gcloud container clusters delete "${CLUSTER}" --zone "${ZONE}"

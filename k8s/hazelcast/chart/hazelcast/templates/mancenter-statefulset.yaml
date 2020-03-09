@@ -62,7 +62,7 @@ spec:
               key: license-key
               optional: true
         - name: JAVA_OPTS
-          value: "{{- if .Values.mancenter.licenseKey -}}-Dhazelcast.mc.license=$(MC_LICENSE_KEY){{- end -}} -Dhazelcast.mc.healthCheck.enable=true{{ .Values.mancenter.javaOpts }}"
+          value: "{{- if .Values.mancenter.licenseKey -}}-Dhazelcast.mc.license=$(MC_LICENSE_KEY){{- end -}} -Dhazelcast.mc.healthCheck.enable=true -Dhazelcast.mc.rest.enabled=true {{ .Values.mancenter.javaOpts }}"
         securityContext:
           runAsNonRoot: true
           runAsUser: 65534

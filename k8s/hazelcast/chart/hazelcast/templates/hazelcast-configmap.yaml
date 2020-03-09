@@ -17,11 +17,21 @@ data:
         <property name="hazelcast.discovery.enabled">true</property>
       </properties>
       <network>
+
+        <rest-api enabled="true">
+            <endpoint-group name="HEALTH_CHECK" enabled="true"/>
+            <endpoint-group name="CLUSTER_READ" enabled="true"/>
+            <endpoint-group name="DATA" enabled="true"/>
+        </rest-api>
+
         <join>
           <multicast enabled="false"/>
           <tcp-ip enabled="false" />
           <discovery-strategies>
             <discovery-strategy enabled="true" class="com.hazelcast.kubernetes.HazelcastKubernetesDiscoveryStrategy">
+              <properties>
+                <property name="namespace">{{ .Release.Namespace }}</property>
+              </properties>
             </discovery-strategy>
           </discovery-strategies>
         </join>

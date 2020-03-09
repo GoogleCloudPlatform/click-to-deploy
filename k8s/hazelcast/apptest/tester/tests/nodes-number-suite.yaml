@@ -1,0 +1,19 @@
+actions:
+
+- name: Check if there are exactly 3 replicas set in a StatefulSet
+  bashTest:
+    script: |-
+      kubectl get sts "{{ .Env.APP_INSTANCE_NAME }}-hazelcast" \
+        --namespace "{{ .Env.NAMESPACE }}" \
+        --output jsonpath="{.spec.replicas}"
+    expect:
+      stdout:
+        equals: '3'
+
+- name: Check if there are 3 healthy nodes
+  bashTest:
+    script: |-
+      kubectl exec -it "{{ .Env.APP_INSTANCE_NAME }}-hazelcast-0" -n "{{ .Env.NAMESPACE }}" -- curl -s http://localhost:5701/hazelcast/health/cluster-size
+    expect:
+      stdout:
+        equals: 3
