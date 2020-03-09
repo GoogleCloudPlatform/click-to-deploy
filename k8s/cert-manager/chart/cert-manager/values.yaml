@@ -1,0 +1,22 @@
+controller:
+  replicas: 1
+  serviceAccountName: null
+  image:
+    repository: null
+    tag: null
+
+webhook:
+  replicas: 1
+  serviceAccountName: null
+
+cainjector:
+  replicas: 1
+  serviceAccountName: null
+
+deployer:
+  image: null
+
+metrics:
+  image: null
+  exporter:
+    enabled: false

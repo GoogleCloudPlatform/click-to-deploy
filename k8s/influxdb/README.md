@@ -152,7 +152,7 @@ Configure password for InfluxDB administrator account (the value must be encoded
 in base64)
 
 ```shell
-export INFLUXDB_ADMIN_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1 | tr -d '\n' | base64)
+export INFLUXDB_ADMIN_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1 | tr -d '\n')
 ```
 
 Enable Stackdriver Metrics Exporter:
