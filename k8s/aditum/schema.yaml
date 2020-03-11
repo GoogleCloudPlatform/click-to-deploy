@@ -33,16 +33,6 @@ x-google-marketplace:
           type: REPO_WITH_REGISTRY
         aditum.image.tag:
           type: TAG
-    init:
-      properties:
-        imageInitFull:
-          type: FULL
-        imageInitRegistry:
-          type: REGISTRY
-        imageInitRepo:
-          type: REPO_WITHOUT_REGISTRY
-        imageInitTag:
-          type: TAG
   ## Cluster Constraints
   clusterConstraints:
     gcp:
