@@ -12,7 +12,11 @@ Popular open stacks on Kubernetes, packaged by Google.
 
 ![Architecture diagram](resources/activemq-k8s-app-architecture.png)
 
-# TODO Architecture overview
+A Kubernetes Deployment manages ActiveMQ 5 single broker. 
+This deployment is based on default ActiveMQ 5 broker which has no authentication enabled for the subscribers.
+As a Database, it uses embedded KahaDB with persistent volume which is 5Gi by default in this deployment. 
+
+Access to the ActiveMQ service is authenticated and credentials are stored in Kubernetes Secret resource.
 
 # Installation
 
