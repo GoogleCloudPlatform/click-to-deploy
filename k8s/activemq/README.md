@@ -137,10 +137,9 @@ Set the storage class for the persistent volume of ActiveMQ's embedded KahaDB:
 > Note: "ssd" type storage is recommended for ActiveMQ, as it uses local disk to store and retrieve keys and values.
 > To create a StorageClass for dynamic provisioning of SSD persistent volumes, check out [this documentation](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/ssd-pd) for more detailed instructions.
 ```shell
-export ETCD_STORAGE_CLASS="ssd-storageclass" # If you don't set this value, default StorageClass will be used.
 export STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
 export PERSISTENT_DISK_SIZE="5Gi"
-```	```
+```
 
 #### Create namespace in your Kubernetes cluster
 
