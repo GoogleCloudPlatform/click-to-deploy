@@ -45,7 +45,7 @@ spec:
           secretName: {{ .Release.Name }}-tls
       containers:
       - name: postgresql-server
-        image: "{{ tpl .Values.postgresql.image.full . }}"
+        image: "{{ .Values.postgresql.image.repo }}:{{ .Values.postgresql.image.tag }}"
         imagePullPolicy: Always
         resources:
           requests:

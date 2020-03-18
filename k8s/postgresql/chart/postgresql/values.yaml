@@ -2,7 +2,6 @@ postgresql:
   image:
     repo: null
     tag: null
-    full: "{{ .Values.postgresql.image.repo }}:{{ .Values.postgresql.image.tag }}"
   volumeSize: null
   serviceAccount: null
   exposePublicService: false
