@@ -135,25 +135,28 @@ export NAMESPACE=default
 Configure the container images:
 
 ```shell
-TAG=9.6
-export IMAGE_POSTGRESQL="marketplace.gcr.io/google/postgresql:${TAG}"
-export IMAGE_POSTGRESQL_EXPORTER="marketplace.gcr.io/google/postgresql9:exporter"
-export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/postgresql/prometheus-to-sd:${TAG}"
+export IMAGE_POSTGRESQL="marketplace.gcr.io/google/postgresql"
+export IMAGE_POSTGRESQL_EXPORTER="marketplace.gcr.io/google/postgresql/exporter"
+export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/postgresql/prometheus-to-sd"
 ```
 
-The images above are referenced by
-[tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
-that you pin each image to an immutable
-[content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This ensures that the installed application always uses the same images until
-you are ready to upgrade. To get the digest for the image, use the following
-script:
+Set up the image tag:
+
+It is advised to use stable image reference which you can find on
+[Marketplace Container Registry](https://marketplace.gcr.io/google/postgresql).
+Example:
 
 ```shell
-IMAGE_POSTGRESQL=$(docker pull $IMAGE_POSTGRESQL | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_POSTGRESQL\")\"@sha256:\"\$3}")
-IMAGE_POSTGRESQL_EXPORTER=$(docker pull $IMAGE_POSTGRESQL_EXPORTER | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_POSTGRESQL_EXPORTER\")\"@sha256:\"\$3}")
-IMAGE_METRICS_EXPORTER=$(docker pull $IMAGE_METRICS_EXPORTER | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_METRICS_EXPORTER\")\"@sha256:\"\$3}")
+export TAG="9.6.17-20200311-092102"
 ```
+
+Alternatively you can use short tag which points to the latest image for selected version.
+> Warning: this tag is not stable and referenced image might change over time.
+
+```shell
+export TAG="9.6"
+```
+
 
 Generate a random password and set the PosgreSQL volume size in Gigabytes:
 
@@ -231,13 +234,14 @@ helm template chart/postgresql \
   --name $APP_INSTANCE_NAME \
   --namespace $NAMESPACE \
   --set "postgresql.serviceAccount=$POSTGRESQL_SERVICE_ACCOUNT" \
-  --set "postgresql.image=$IMAGE_POSTGRESQL" \
+  --set "postgresql.image.repo=$IMAGE_POSTGRESQL" \
+  --set "postgresql.image.tag=$TAG" \
   --set "postgresql.volumeSize=$POSTGRESQL_VOLUME_SIZE" \
   --set "postgresql.exposePublicService=$EXPOSE_PUBLIC_SERVICE" \
   --set "db.password=$POSTGRESQL_DB_PASSWORD" \
-  --set "metrics.image=$IMAGE_METRICS_EXPORTER" \
+  --set "metrics.image=$IMAGE_METRICS_EXPORTER:$TAG" \
   --set "metrics.exporter.enabled=$METRICS_EXPORTER_ENABLED" \
-  --set "exporter.image=$IMAGE_POSTGRESQL_EXPORTER" \
+  --set "exporter.image=$IMAGE_POSTGRESQL_EXPORTER:$TAG" \
   --set "tls.base64EncodedPrivateKey=$TLS_CERTIFICATE_KEY" \
   --set "tls.base64EncodedCertificate=$TLS_CERTIFICATE_CRT" \
     > ${APP_INSTANCE_NAME}_manifest.yaml
