@@ -1,0 +1,31 @@
+hazelcast:
+  image:
+    repo: null
+    tag: null
+  javaOpts: ""
+  persistence:
+    size: 10Gi
+    storageClass: null
+  serviceAccount: null
+  replicas: 3
+  resources:
+    memory: 256Mi
+    cpu: 100m
+
+mancenter:
+  image:
+    repo: null
+    tag: null
+  persistence:
+    size: 10Gi
+    storageClass: null
+  licenseKey: null
+  javaOpts: ""
+  resources:
+    memory: 512Mi
+    cpu: 200m
+
+metrics:
+  image: null
+  exporter:
+    enabled: false

@@ -60,6 +60,12 @@ properties:
         generatedProperties:
           base64EncodedPrivateKey: tls.base64EncodedPrivateKey
           base64EncodedCertificate: tls.base64EncodedCertificate
+  metrics.curatedExporter.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter For Free Curated Metrics
+    description: Your GCP project should have Stackdriver enabled. Disable if you use
+      non-GCP clusters, because export of metrics to Stackdriver is not supported yet.
+    default: true
   metrics.exporter.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter

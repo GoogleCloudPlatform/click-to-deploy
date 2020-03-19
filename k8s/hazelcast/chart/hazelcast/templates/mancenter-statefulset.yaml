@@ -1,0 +1,80 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-mancenter
+  labels: &MancenterDeploymentLabels
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: "hazelcast-mancenter"
+spec:
+  serviceName: "{{ .Release.Name }}-mancenter-svc"
+  replicas: 1
+  selector:
+    matchLabels: *MancenterDeploymentLabels
+  template:
+    metadata:
+      labels: *MancenterDeploymentLabels
+    spec:
+      hostNetwork: false
+      hostPID: false
+      hostIPC: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        fsGroup: 65534
+      containers:
+      - name: hazelcast-mancenter
+        image: "{{ .Values.mancenter.image.repo }}:{{ .Values.mancenter.image.tag }}"
+        imagePullPolicy: "Always"
+        ports:
+        - name: mancenter
+          containerPort: 8080
+        resources:
+          requests:
+            memory: {{ .Values.mancenter.resources.memory }}
+            cpu: {{ .Values.mancenter.resources.cpu }}
+        livenessProbe:
+          httpGet:
+            path: /hazelcast-mancenter/health
+            port: 8080
+          initialDelaySeconds: 300
+          periodSeconds: 10
+          timeoutSeconds: 10
+          successThreshold: 1
+          failureThreshold: 10
+        readinessProbe:
+          httpGet:
+            path: /hazelcast-mancenter/health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 10
+          successThreshold: 1
+          failureThreshold: 10
+        volumeMounts:
+        - name: mancenter-storage
+          mountPath: /data
+        env:
+        - name: MC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-mancenter-secret"
+              key: license-key
+              optional: true
+        - name: JAVA_OPTS
+          value: "{{- if .Values.mancenter.licenseKey -}}-Dhazelcast.mc.license=$(MC_LICENSE_KEY){{- end -}} -Dhazelcast.mc.healthCheck.enable=true -Dhazelcast.mc.rest.enabled=true {{ .Values.mancenter.javaOpts }}"
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 65534
+          privileged: false
+          readOnlyRootFilesystem: false
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+      securityContext:
+        fsGroup: 65534
+      volumes:
+      - name: mancenter-storage
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-mancenter-pvc

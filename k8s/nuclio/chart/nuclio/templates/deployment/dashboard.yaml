@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ template "nuclio.dashboardName" . }}
@@ -22,6 +22,13 @@ metadata:
     app.kubernetes.io/component: dashboard
 spec:
   replicas: {{ .Values.dashboard.replicas }}
+  selector:
+    matchLabels:
+        app.kubernetes.io/name: {{ .Release.Name }}
+        app.kubernetes.io/component: dashboard
+        nuclio.io/app: dashboard
+        nuclio.io/name: {{ template "nuclio.dashboardName" . }}
+        nuclio.io/class: service
   template:
     metadata:
       labels:

@@ -82,5 +82,5 @@ spec:
     kind: Service
   - group: v1
     kind: Secret
-  - group: apps/v1beta2
+  - group: apps/v1
     kind: StatefulSet

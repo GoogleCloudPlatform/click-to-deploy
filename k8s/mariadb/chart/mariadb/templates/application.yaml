@@ -127,7 +127,7 @@ spec:
     matchLabels:
       app.kubernetes.io/name: "{{ .Release.Name }}"
   componentKinds:
-  - group: apps/v1beta2
+  - group: apps/v1
     kind: StatefulSet
   - group: v1
     kind: PersistentVolumeClaim

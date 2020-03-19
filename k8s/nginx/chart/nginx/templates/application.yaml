@@ -129,7 +129,7 @@ spec:
     kind: ConfigMap
   - group: v1
     kind: PersistentVolumeClaim
-  - group: apps/v1beta2
+  - group: apps/v1
     kind: StatefulSet
   - group: v1
     kind: Secret
