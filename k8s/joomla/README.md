@@ -163,32 +163,33 @@ option, change the value to `true`.
 export METRICS_ENABLED=false
 ```
 
+Set up the image tag:
+
+It is advised to use stable image reference which you can find on
+[Marketplace Container Registry](https://marketplace.gcr.io/google/joomla).
+Example:
+
+```shell
+export TAG="3.9.15-20200311-092327"
+```
+
+Alternatively you can use short tag which points to the latest image for selected version.
+> Warning: this tag is not stable and referenced image might change over time.
+
+```shell
+export TAG="3.9"
+```
+
 Configure the container images:
 
 ```shell
-TAG=3.9
-export IMAGE_JOOMLA="marketplace.gcr.io/google/joomla"
-export IMAGE_APACHE_EXPORTER="marketplace.gcr.io/google/joomla/apache-exporter:${TAG}"
-export IMAGE_MARIADB="marketplace.gcr.io/google/joomla/mariadb:${TAG}"
-export IMAGE_MYSQL_EXPORTER="marketplace.gcr.io/google/joomla/mysqld-exporter:${TAG}"
-export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/joomla/prometheus-to-sd:${TAG}"
-```
+export SOURCE_REPO="marketplace.gcr.io/google"
+export IMAGE_JOOMLA="${SOURCE_REPO}/joomla"
 
-The images above are referenced by
-[tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
-that you pin each image to an immutable
-[content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This ensures that the installed application always uses the same images, until
-you are ready to upgrade. To get the digest for the image, use the following
-script:
-
-```shell
-for i in "IMAGE_APACHE_EXPORTER" "IMAGE_MARIADB" "IMAGE_MYSQL_EXPORTER" "IMAGE_METRICS_EXPORTER"; do
-  repo=$(echo ${!i} | cut -d: -f1);
-  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
-  export $i="$repo@$digest";
-  echo ${!i};
-done
+export IMAGE_APACHE_EXPORTER="${SOURCE_REPO}/apache-exporter:${TAG}"
+export IMAGE_MARIADB="${SOURCE_REPO}/mariadb:${TAG}"
+export IMAGE_MYSQL_EXPORTER="${SOURCE_REPO}/mysqld-exporter:${TAG}"
+export IMAGE_METRICS_EXPORTER="${SOURCE_REPO}/prometheus-to-sd:${TAG}"
 ```
 
 Set or generate passwords:

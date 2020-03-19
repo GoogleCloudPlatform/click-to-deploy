@@ -123,30 +123,28 @@ this option, change the value to `true`.
 export METRICS_EXPORTER_ENABLED=true
 ```
 
+Set up the image tag:
+
+It is advised to use stable image reference which you can find on
+[Marketplace Container Registry](https://marketplace.gcr.io/google/etcd).
+Example:
+
+```shell
+export TAG="3.3.13-20200311-092532"
+```
+
+Alternatively you can use short tag which points to the latest image for selected version.
+> Warning: this tag is not stable and referenced image might change over time.
+
+```shell
+export TAG="3.3"
+```
+
 Configure the container image:
 
 ```shell
-TAG=3.3
-export IMAGE_ETCD_REPO="marketplace.gcr.io/google/etcd3"
-export IMAGE_ETCD=${IMAGE_ETCD_REPO}:${TAG}
+export IMAGE_ETCD="marketplace.gcr.io/google/etcd"
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/etcd/prometheus-to-sd:${TAG}"
-```
-
-The images above are referenced by
-[tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
-that you pin each image to an immutable
-[content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This ensures that the installed application always uses the same images,
-until you are ready to upgrade. To get the digest of an image, use the
-following script:
-
-```shell
-for i in "IMAGE_ETCD" "IMAGE_METRICS_EXPORTER"; do
-  repo=$(echo ${!i} | cut -d: -f1);
-  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
-  export $i="$repo@$digest";
-  echo ${!i};
-done
 ```
 
 For the persistent disk provisioning of the etcd servers, you will need to:
@@ -189,14 +187,15 @@ expanded manifest file for future updates to the application.
 helm template chart/etcd \
   --name "${APP_INSTANCE_NAME}" \
   --namespace "${NAMESPACE}" \
-  --set "image.repo=${IMAGE_ETCD_REPO}" \
+  --set "image.repo=${IMAGE_ETCD}" \
   --set "image.tag=${TAG}" \
   --set "persistence.storageClass=${ETCD_STORAGE_CLASS}" \
   --set "persistence.size=${PERSISTENT_DISK_SIZE}" \
   --set "metrics.image=${IMAGE_METRICS_EXPORTER}" \
   --set "metrics.exporter.enabled=${METRICS_EXPORTER_ENABLED}" \
   --set "auth.rbac.rootPassword=${ETCD_ROOT_PASSWORD}" \
-  --set "replicas=${REPLICAS}" > "${APP_INSTANCE_NAME}_manifest.yaml"
+  --set "replicas=${REPLICAS}" \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster

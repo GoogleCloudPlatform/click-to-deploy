@@ -127,10 +127,26 @@ this option, change the value to `true`.
 export METRICS_EXPORTER_ENABLED=true
 ```
 
+Set up the image tag:
+
+It is advised to use stable image reference which you can find on
+[Marketplace Container Registry](https://marketplace.gcr.io/google/cert-manager).
+Example:
+
+```shell
+export TAG="0.13.0-20200311-092536"
+```
+
+Alternatively you can use short tag which points to the latest image for selected version.
+> Warning: this tag is not stable and referenced image might change over time.
+
+```shell
+export TAG="0.13"
+```
+
 Configure the container image:
 
 ```shell
-export TAG=0.13
 export IMAGE_CONTROLLER="marketplace.gcr.io/google/cert-manager"
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/cert-manager/prometheus-to-sd:${TAG}"
 ```

@@ -165,38 +165,36 @@ By default, the app does not export metrics to Stackdriver. To enable this optio
 export METRICS_EXPORTER_ENABLED=false
 ```
 
+Set up the image tag:
+
+It is advised to use stable image reference which you can find on
+[Marketplace Container Registry](https://marketplace.gcr.io/google/magento).
+Example:
+
+```shell
+export TAG="2.3.2-20200311-092754"
+```
+
+Alternatively you can use short tag which points to the latest image for selected version.
+> Warning: this tag is not stable and referenced image might change over time.
+
+```shell
+export TAG="2.3"
+```
+
 Configure the container image:
 
 ```shell
-TAG=2.3
-IMAGE_REPO="marketplace.gcr.io/google/magento"
+export IMAGE_REGISTRY="marketplace.gcr.io/google"
 
-export IMAGE_MYSQL="${IMAGE_REPO}/mysql:${TAG}"
-export IMAGE_REDIS="${IMAGE_REPO}/redis:${TAG}"
+export IMAGE_MAGENTO="${IMAGE_REGISTRY}/magento"
+export IMAGE_MYSQL="${IMAGE_REGISTRY}/magento/mysql:${TAG}"
+export IMAGE_REDIS="${IMAGE_REGISTRY}/magento/redis:${TAG}"
 
-export IMAGE_NGINX_EXPORTER="${IMAGE_REPO}/nginx-exporter:${TAG}"
-export IMAGE_MYSQL_EXPORTER="${IMAGE_REPO}/mysql-exporter:${TAG}"
-export IMAGE_REDIS_EXPORTER="${IMAGE_REPO}/redis-exporter:${TAG}"
-export IMAGE_METRICS_EXPORTER="${IMAGE_REPO}/prometheus-to-sd:${TAG}"
-```
-
-The images above are referenced by [tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend that you pin each image to an immutable [content digest](https://docs.docker.com/registry/spec/api/#content-digests). This ensures that the installed app always uses the same images, until you are ready to upgrade. To get the digest for the image, use the following script:
-
-```shell
-IMAGES=(
-    "IMAGE_MYSQL"
-    "IMAGE_REDIS"
-    "IMAGE_NGINX_EXPORTER"
-    "IMAGE_MYSQL_EXPORTER"
-    "IMAGE_REDIS_EXPORTER"
-    "IMAGE_METRICS_EXPORTER"
-)
-for i in "${IMAGES[@]}" ; do
-  repo=$(echo ${!i} | cut -d: -f1);
-  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
-  export $i="$repo@$digest";
-  echo ${!i};
-done
+export IMAGE_NGINX_EXPORTER="${IMAGE_REGISTRY}/magento/nginx-exporter:${TAG}"
+export IMAGE_MYSQL_EXPORTER="${IMAGE_REGISTRY}/magento/mysql-exporter:${TAG}"
+export IMAGE_REDIS_EXPORTER="${IMAGE_REGISTRY}/magento/redis-exporter:${TAG}"
+export IMAGE_METRICS_EXPORTER="${IMAGE_REGISTRY}/magento/prometheus-to-sd:${TAG}"
 ```
 
 Set or generate the passwords:
@@ -258,8 +256,8 @@ expanded manifest file for future updates to your app.
 helm template chart/magento \
     --name "${APP_INSTANCE_NAME}" \
     --namespace "${NAMESPACE}" \
+    --set "magento.image.repo=${IMAGE_MAGENTO}" \
     --set "magento.image.tag=${TAG}" \
-    --set "magento.image.repo=${IMAGE_REPO}" \
     --set "redis.image=${IMAGE_REDIS}" \
     --set "db.image=${IMAGE_MYSQL}" \
     --set "redis.exporter.image=${IMAGE_REDIS_EXPORTER}" \

@@ -111,10 +111,26 @@ export APP_INSTANCE_NAME=jaeger-operator-1
 export NAMESPACE=default
 ```
 
+Set up the image tag:
+
+It is advised to use stable image reference which you can find on
+[Marketplace Container Registry](https://marketplace.gcr.io/google/jaeger-operator).
+Example:
+
+```shell
+export TAG="1.15.1-20200213-132947"
+```
+
+Alternatively you can use short tag which points to the latest image for selected version.
+> Warning: this tag is not stable and referenced image might change over time.
+
+```shell
+export TAG="1.15"
+```
+
 Configure the container image:
 
 ```shell
-export TAG=1.15
 export IMAGE_OPERATOR="marketplace.gcr.io/google/jaeger-operator"
 ```
 

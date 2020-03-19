@@ -132,14 +132,6 @@ export APP_INSTANCE_NAME=postgresql-1
 export NAMESPACE=default
 ```
 
-Configure the container images:
-
-```shell
-export IMAGE_POSTGRESQL="marketplace.gcr.io/google/postgresql"
-export IMAGE_POSTGRESQL_EXPORTER="marketplace.gcr.io/google/postgresql/exporter"
-export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/postgresql/prometheus-to-sd"
-```
-
 Set up the image tag:
 
 It is advised to use stable image reference which you can find on
@@ -157,6 +149,13 @@ Alternatively you can use short tag which points to the latest image for selecte
 export TAG="9.6"
 ```
 
+Configure the container images:
+
+```shell
+export IMAGE_POSTGRESQL="marketplace.gcr.io/google/postgresql"
+export IMAGE_POSTGRESQL_EXPORTER="marketplace.gcr.io/google/postgresql/exporter:${TAG}"
+export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/postgresql/prometheus-to-sd:${TAG}"
+```
 
 Generate a random password and set the PosgreSQL volume size in Gigabytes:
 
@@ -239,9 +238,9 @@ helm template chart/postgresql \
   --set "postgresql.volumeSize=$POSTGRESQL_VOLUME_SIZE" \
   --set "postgresql.exposePublicService=$EXPOSE_PUBLIC_SERVICE" \
   --set "db.password=$POSTGRESQL_DB_PASSWORD" \
-  --set "metrics.image=$IMAGE_METRICS_EXPORTER:$TAG" \
+  --set "metrics.image=$IMAGE_METRICS_EXPORTER" \
   --set "metrics.exporter.enabled=$METRICS_EXPORTER_ENABLED" \
-  --set "exporter.image=$IMAGE_POSTGRESQL_EXPORTER:$TAG" \
+  --set "exporter.image=$IMAGE_POSTGRESQL_EXPORTER" \
   --set "tls.base64EncodedPrivateKey=$TLS_CERTIFICATE_KEY" \
   --set "tls.base64EncodedCertificate=$TLS_CERTIFICATE_CRT" \
     > ${APP_INSTANCE_NAME}_manifest.yaml
