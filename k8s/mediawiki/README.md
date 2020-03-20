@@ -198,23 +198,6 @@ export IMAGE_MYSQL_EXPORTER="${IMAGE_REGISTRY}/mediawiki/mysqld-exporter:${TAG}"
 export IMAGE_METRICS_EXPORTER="${IMAGE_REGISTRY}/mediawiki/prometheus-to-sd:${TAG}"
 ```
 
-The images above are referenced by
-[tag](https://docs.docker.com/engine/reference/commandline/tag). We
-recommend that you pin each image to an immutable
-[content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This ensures that the installed app always uses the same images, until you
-are ready to upgrade. To get the digest for am image, use the following
-script:
-
-```shell
-for i in "IMAGE_APACHE_EXPORTER" "IMAGE_MARIADB" "IMAGE_MYSQL_EXPORTER" "IMAGE_METRICS_EXPORTER"; do
-  repo=$(echo ${!i} | cut -d: -f1);
-  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
-  export $i="$repo@$digest";
-  echo ${!i};
-done
-```
-
 Set or generate passwords:
 
 ```shell
@@ -272,22 +255,22 @@ expanded manifest file for future updates to your app.
 helm template chart/mediawiki \
     --name "${APP_INSTANCE_NAME}" \
     --namespace "${NAMESPACE}" \
-    --set "mediawiki.image.repo=${IMAGE_MEDIAWIKI}" \
-    --set "mediawiki.image.tag=${TAG}" \
-    --set "mediawiki.admin.username=${MEDIAWIKI_ADMIN_USERNAME}" \
-    --set "mediawiki.admin.password=${MEDIAWIKI_ADMIN_PASSWORD}" \
-    --set "db.image=${IMAGE_MARIADB}" \
-    --set "db.rootPassword=${ROOT_DB_PASSWORD}" \
-    --set "db.mediawikiPassword=${MEDIAWIKI_DB_PASSWORD}" \
-    --set "db.exporter.image=${IMAGE_MYSQL_EXPORTER}" \
-    --set "db.exporter.password=${EXPORTER_DB_PASSWORD}" \
-    --set "apache.exporter.image=${IMAGE_APACHE_EXPORTER}" \
-    --set "enablePublicServiceAndIngress=${PUBLIC_SERVICE_AND_INGRESS_ENABLED}" \
-    --set "tls.base64EncodedPrivateKey=${TLS_CERTIFICATE_KEY}" \
-    --set "tls.base64EncodedCertificate=${TLS_CERTIFICATE_CRT}" \
-    --set "metrics.exporter.enabled=${METRICS_EXPORTER_ENABLED}" \
-    --set "metrics.image=${IMAGE_METRICS_EXPORTER}" \
-    > ${APP_INSTANCE_NAME}_manifest.yaml
+    --set mediawiki.image.repo="${IMAGE_MEDIAWIKI}" \
+    --set mediawiki.image.tag="${TAG}" \
+    --set mediawiki.admin.username="${MEDIAWIKI_ADMIN_USERNAME}" \
+    --set mediawiki.admin.password="${MEDIAWIKI_ADMIN_PASSWORD}" \
+    --set db.image="${IMAGE_MARIADB}" \
+    --set db.rootPassword="${ROOT_DB_PASSWORD}" \
+    --set db.mediawikiPassword="${MEDIAWIKI_DB_PASSWORD}" \
+    --set db.exporter.image="${IMAGE_MYSQL_EXPORTER}" \
+    --set db.exporter.password="${EXPORTER_DB_PASSWORD}" \
+    --set apache.exporter.image="${IMAGE_APACHE_EXPORTER}" \
+    --set enablePublicServiceAndIngress="${PUBLIC_SERVICE_AND_INGRESS_ENABLED}" \
+    --set tls.base64EncodedPrivateKey="${TLS_CERTIFICATE_KEY}" \
+    --set tls.base64EncodedCertificate="${TLS_CERTIFICATE_CRT}" \
+    --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED}" \
+    --set metrics.image="${IMAGE_METRICS_EXPORTER}" \
+    > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster

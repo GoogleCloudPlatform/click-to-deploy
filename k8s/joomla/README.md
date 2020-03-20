@@ -183,13 +183,13 @@ export TAG="3.9"
 Configure the container images:
 
 ```shell
-export SOURCE_REPO="marketplace.gcr.io/google"
-export IMAGE_JOOMLA="${SOURCE_REPO}/joomla"
+export IMAGE_REGISTRY="marketplace.gcr.io/google"
+export IMAGE_JOOMLA="${IMAGE_REGISTRY}/joomla"
 
-export IMAGE_APACHE_EXPORTER="${SOURCE_REPO}/apache-exporter:${TAG}"
-export IMAGE_MARIADB="${SOURCE_REPO}/mariadb:${TAG}"
-export IMAGE_MYSQL_EXPORTER="${SOURCE_REPO}/mysqld-exporter:${TAG}"
-export IMAGE_METRICS_EXPORTER="${SOURCE_REPO}/prometheus-to-sd:${TAG}"
+export IMAGE_APACHE_EXPORTER="${IMAGE_REGISTRY}/apache-exporter:${TAG}"
+export IMAGE_MARIADB="${IMAGE_REGISTRY}/mariadb:${TAG}"
+export IMAGE_MYSQL_EXPORTER="${IMAGE_REGISTRY}/mysqld-exporter:${TAG}"
+export IMAGE_METRICS_EXPORTER="${IMAGE_REGISTRY}/prometheus-to-sd:${TAG}"
 ```
 
 Set or generate passwords:
@@ -248,22 +248,22 @@ expanded manifest file for future updates to the application.
 helm template chart/joomla \
   --name "${APP_INSTANCE_NAME}" \
   --namespace "${NAMESPACE}" \
-  --set "joomla.image.repo=${IMAGE_JOOMLA}" \
-  --set "joomla.image.tag=${TAG}" \
-  --set "joomla.password=${JOOMLA_PASSWORD}" \
-  --set "db.image=${IMAGE_MARIADB}" \
-  --set "db.rootPassword=${ROOT_DB_PASSWORD}" \
-  --set "db.joomlaPassword=${JOOMLA_DB_PASSWORD}" \
-  --set "db.exporter.image=${IMAGE_MYSQL_EXPORTER}" \
-  --set "db.exporter.password=${EXPORTER_DB_PASSWORD}" \
-  --set "apache.exporter.image=${IMAGE_APACHE_EXPORTER}" \
-  --set "metrics.image=${IMAGE_METRICS_EXPORTER}" \
-  --set "metrics.exporter.enabled=${METRICS_ENABLED}" \
-  --set "enablePublicServiceAndIngress=${PUBLIC_SERVICE_AND_INGRESS_ENABLED}" \
-  --set "tls.base64EncodedPrivateKey=${TLS_CERTIFICATE_KEY}" \
-  --set "tls.base64EncodedCertificate=${TLS_CERTIFICATE_CRT}" \
-  --set "metrics.exporter.enabled=${METRICS_EXPORTER_ENABLED}" \
-  > ${APP_INSTANCE_NAME}_manifest.yaml
+  --set joomla.image.repo="${IMAGE_JOOMLA}" \
+  --set joomla.image.tag="${TAG}" \
+  --set joomla.password="${JOOMLA_PASSWORD}" \
+  --set db.image="${IMAGE_MARIADB}" \
+  --set db.rootPassword="${ROOT_DB_PASSWORD}" \
+  --set db.joomlaPassword="${JOOMLA_DB_PASSWORD}" \
+  --set db.exporter.image="${IMAGE_MYSQL_EXPORTER}" \
+  --set db.exporter.password="${EXPORTER_DB_PASSWORD}" \
+  --set apache.exporter.image="${IMAGE_APACHE_EXPORTER}" \
+  --set metrics.image="${IMAGE_METRICS_EXPORTER}" \
+  --set metrics.exporter.enabled="${METRICS_ENABLED}" \
+  --set enablePublicServiceAndIngress="${PUBLIC_SERVICE_AND_INGRESS_ENABLED}" \
+  --set tls.base64EncodedPrivateKey="${TLS_CERTIFICATE_KEY}" \
+  --set tls.base64EncodedCertificate="${TLS_CERTIFICATE_CRT}" \
+  --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED}" \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster

@@ -172,12 +172,12 @@ expanded manifest file for future updates to your app.
 helm template chart/activemq \
   --name "${APP_INSTANCE_NAME}" \
   --namespace "${NAMESPACE}" \
-  --set "image.repo=${IMAGE_ACTIVEMQ}" \
-  --set "image.tag=${TAG}" \
-  --set "persistence.storageClass=${STORAGE_CLASS}" \
-  --set "persistence.size=${PERSISTENT_DISK_SIZE}" \
-  --set "consolePassword=${ACTIVEMQ_ADMIN_PASSWORD}" \
-  > ${APP_INSTANCE_NAME}_manifest.yaml
+  --set image.repo="${IMAGE_ACTIVEMQ}" \
+  --set image.tag="${TAG}" \
+  --set persistence.storageClass="${STORAGE_CLASS}" \
+  --set persistence.size="${PERSISTENT_DISK_SIZE}" \
+  --set consolePassword="${ACTIVEMQ_ADMIN_PASSWORD}" \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster

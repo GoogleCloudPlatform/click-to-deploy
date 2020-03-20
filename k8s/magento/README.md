@@ -254,25 +254,25 @@ expanded manifest file for future updates to your app.
 
 ```shell
 helm template chart/magento \
-    --name ${APP_INSTANCE_NAME} \
-    --namespace ${NAMESPACE} \
-    --set magento.image.repo=${IMAGE_MAGENTO} \
-    --set magento.image.tag=${TAG} \
-    --set redis.image=${IMAGE_REDIS} \
-    --set db.image=${IMAGE_MYSQL} \
-    --set redis.exporter.image=${IMAGE_REDIS_EXPORTER} \
-    --set nginx.exporter.image=${IMAGE_NGINX_EXPORTER} \
-    --set db.exporter.image=${IMAGE_MYSQL_EXPORTER} \
-    --set metrics.image=${IMAGE_METRICS_EXPORTER} \
-    --set magento.admin.password=${MAGENTO_ADMIN_PASSWORD} \
-    --set db.rootPassword=${DB_ROOT_PASSWORD} \
-    --set db.magentoPassword=${MAGENTO_DB_PASSWORD} \
-    --set db.exporter.password=${DB_EXPORTER_PASSWORD} \
-    --set redis.password=${REDIS_PASSWORD} \
-    --set magento.admin.email=${MAGENTO_ADMIN_EMAIL} \
-    --set tls.base64EncodedPrivateKey=${TLS_CERTIFICATE_KEY} \
-    --set tls.base64EncodedCertificate=${TLS_CERTIFICATE_CRT} \
-    --set metrics.exporter.enabled=${METRICS_EXPORTER_ENABLED} \
+    --name "${APP_INSTANCE_NAME}" \
+    --namespace "${NAMESPACE}" \
+    --set magento.image.repo="${IMAGE_MAGENTO}" \
+    --set magento.image.tag="${TAG}" \
+    --set redis.image="${IMAGE_REDIS}" \
+    --set db.image="${IMAGE_MYSQL}" \
+    --set redis.exporter.image="${IMAGE_REDIS_EXPORTER}" \
+    --set nginx.exporter.image="${IMAGE_NGINX_EXPORTER}" \
+    --set db.exporter.image="${IMAGE_MYSQL_EXPORTER}" \
+    --set metrics.image="${IMAGE_METRICS_EXPORTER}" \
+    --set magento.admin.password="${MAGENTO_ADMIN_PASSWORD}" \
+    --set db.rootPassword="${DB_ROOT_PASSWORD}" \
+    --set db.magentoPassword="${MAGENTO_DB_PASSWORD}" \
+    --set db.exporter.password="${DB_EXPORTER_PASSWORD}" \
+    --set redis.password="${REDIS_PASSWORD}" \
+    --set magento.admin.email="${MAGENTO_ADMIN_EMAIL}" \
+    --set tls.base64EncodedPrivateKey="${TLS_CERTIFICATE_KEY}" \
+    --set tls.base64EncodedCertificate="${TLS_CERTIFICATE_CRT}" \
+    --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED}" \
     > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 

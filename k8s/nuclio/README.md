@@ -277,7 +277,7 @@ expanded manifest file for future updates to the app.
 ```shell
 helm template chart/nuclio \
   --name ${APP_INSTANCE_NAME} \
-  --namespace=${NAMESPACE}" \
+  --namespace ${NAMESPACE} \
   --set controller.image.repository=${IMAGE_CONTROLLER} \
   --set controller.image.tag=${TAG} \
   --set dashboard.image.repository=${IMAGE_DASHBOARD} \

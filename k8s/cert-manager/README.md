@@ -207,7 +207,7 @@ expanded manifest file for future updates to the app.
 ```shell
 helm template chart/cert-manager \
   --name ${APP_INSTANCE_NAME} \
-  --namespace="${NAMESPACE}" \
+  --namespace ${NAMESPACE} \
   --set controller.image.repo=${IMAGE_CONTROLLER} \
   --set controller.image.tag=${TAG} \
   --set controller.serviceAccountName=${CONTROLLER_SERVICE_ACCOUNT} \

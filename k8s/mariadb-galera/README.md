@@ -140,6 +140,7 @@ export IMAGE_MARIADB="${IMAGE_REGISTRY}/mariadb-galera"
 export IMAGE_MYSQL_EXPORTER="${IMAGE_REGISTRY}/mariadb-galera/mysqld-exporter:${TAG}"
 export IMAGE_METRICS_EXPORTER="${IMAGE_REGISTRY}/mariadb-galera/prometheus-to-sd:${TAG}"
 export IMAGE_PEER_FINDER="${IMAGE_REGISTRY}/mariadb-galera/peer-finder:${TAG}"
+```
 
 Set the number of replicas for MariaDB Galera Cluster:
 

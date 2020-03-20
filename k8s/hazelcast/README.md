@@ -152,7 +152,7 @@ Configure the container image:
 export IMAGE_REGISTRY="marketplace.gcr.io/google"
 export IMAGE_HAZELCAST="${IMAGE_REGISTRY}/hazelcast3"
 export IMAGE_HAZELCASTMC="${IMAGE_REGISTRY}/hazelcast-mc3"
-export IMAGE_METRICS_EXPORTER="${IMAGE_REGISTRY}/hazelcast/prometheus-to-sd"
+export IMAGE_METRICS_EXPORTER="${IMAGE_REGISTRY}/hazelcast/prometheus-to-sd:${TAG}"
 ```
 
 For the persistent disk provisioning of the Hazelcast servers, you will need to:
@@ -205,7 +205,7 @@ helm template chart/hazelcast \
   --set "mancenter.image.tag=${TAG}" \
   --set "mancenter.persistence.storageClass=${HAZELCAST_STORAGE_CLASS}" \
   --set "mancenter.persistence.size=${PERSISTENT_DISK_SIZE}" \
-  --set "metrics.image=${IMAGE_METRICS_EXPORTER}:${TAG}" \
+  --set "metrics.image=${IMAGE_METRICS_EXPORTER}" \
   --set "metrics.exporter.enabled=${METRICS_EXPORTER_ENABLED}" \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```

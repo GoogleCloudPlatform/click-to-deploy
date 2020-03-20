@@ -180,13 +180,13 @@ expanded manifest file for future updates to the application.
 
 ```shell
 helm template chart/memcached \
-  --name $APP_INSTANCE_NAME \
-  --namespace $NAMESPACE \
-  --set memcached.replicas=$REPLICAS \
-  --set memcached.image.repo=$IMAGE_MEMCACHED \
-  --set memcached.image.tag=$TAG\
-  --set metrics.image=$IMAGE_METRICS_EXPORTER \
-  --set metrics.exporter.enabled=$METRICS_EXPORTER_ENABLED \
+  --name "$APP_INSTANCE_NAME" \
+  --namespace "$NAMESPACE" \
+  --set memcached.replicas="$REPLICAS" \
+  --set memcached.image.repo="$IMAGE_MEMCACHED" \
+  --set memcached.image.tag="$TAG" \
+  --set metrics.image="$IMAGE_METRICS_EXPORTER" \
+  --set metrics.exporter.enabled="$METRICS_EXPORTER_ENABLED" \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
@@ -398,10 +398,14 @@ Console, or using the command line.
 
     ```shell
     helm template chart/memcached \
-     --name $APP_INSTANCE_NAME \
-     --namespace $NAMESPACE \
-     --set memcached.replicas=$REPLICAS \
-     --set memcached.image=$IMAGE_MEMCACHED > "${APP_INSTANCE_NAME}_manifest.yaml"
+      --name "$APP_INSTANCE_NAME" \
+      --namespace "$NAMESPACE" \
+      --set memcached.replicas="$REPLICAS" \
+      --set memcached.image.repo="$IMAGE_MEMCACHED" \
+      --set memcached.image.tag="$TAG" \
+      --set metrics.image="$IMAGE_METRICS_EXPORTER" \
+      --set metrics.exporter.enabled="$METRICS_EXPORTER_ENABLED" \
+      > "${APP_INSTANCE_NAME}_manifest.yaml"
     ```
 
 1.  Run the `delete` command

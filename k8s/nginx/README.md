@@ -226,15 +226,15 @@ expanded manifest file for future updates to the application.
 helm template chart/nginx \
   --name "$APP_INSTANCE_NAME" \
   --namespace "$NAMESPACE" \
-  --set "nginx.replicas=$REPLICAS" \
-  --set "nginx.initImage=$IMAGE_NGINX_INIT" \
-  --set "nginx.image.repo=$IMAGE_NGINX" \
-  --set "nginx.image.tag=$TAG" \
-  --set "metrics.image=$IMAGE_METRICS_EXPORTER" \
-  --set "metrics.curatedExporter.enabled=$CURATED_METRICS_EXPORTER_ENABLED" \
-  --set "metrics.exporter.enabled=$METRICS_EXPORTER_ENABLED" \
-  --set "tls.base64EncodedPrivateKey=$TLS_CERTIFICATE_KEY" \
-  --set "tls.base64EncodedCertificate=$TLS_CERTIFICATE_CRT" \
+  --set nginx.replicas="$REPLICAS" \
+  --set nginx.initImage="$IMAGE_NGINX_INIT" \
+  --set nginx.image.repo="$IMAGE_NGINX" \
+  --set nginx.image.tag="$TAG" \
+  --set metrics.image="$IMAGE_METRICS_EXPORTER" \
+  --set metrics.curatedExporter.enabled="$CURATED_METRICS_EXPORTER_ENABLED" \
+  --set metrics.exporter.enabled="$METRICS_EXPORTER_ENABLED" \
+  --set tls.base64EncodedPrivateKey="$TLS_CERTIFICATE_KEY" \
+  --set tls.base64EncodedCertificate="$TLS_CERTIFICATE_CRT" \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
