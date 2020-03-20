@@ -3,11 +3,8 @@ kind: Ingress
 metadata:
   name: basic-ingress
   annotations:
-    #TODO: Insert variable here for static IP
-    #TODO: How do we dynamically create the static IP?
-    kubernetes.io/ingress.global-static-ip-name: 34.96.126.22
     networking.gke.io/managed-certificates: example-certificate1
 spec:
   backend:
     serviceName: web
-    servicePort: 8080
+    servicePort: 80

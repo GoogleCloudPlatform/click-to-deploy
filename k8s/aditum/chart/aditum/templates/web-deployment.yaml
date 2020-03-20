@@ -11,9 +11,10 @@ spec:
       labels:
         run: web
     spec:
+      serviceAccountName: {{ .Values.controller.serviceAccount }}
       containers:
         #TODO: Insert variable for dynamic image URL
-      - image: gcr.io/aditum-marketplace-dev/aditum:latest
+      - image: "{{ .Values.aditum.image.repo }}:latest"
         imagePullPolicy: Always
         name: web
         ports:
