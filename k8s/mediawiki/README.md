@@ -169,15 +169,33 @@ enable this option, change the value to `true`.
 export METRICS_ENABLED=false
 ```
 
+Set up the image tag:
+
+It is advised to use stable image reference which you can find on
+[Marketplace Container Registry](https://marketplace.gcr.io/google/mediawiki).
+Example:
+
+```shell
+export TAG="1.33.1-20200311-092321"
+```
+
+Alternatively you can use short tag which points to the latest image for selected version.
+> Warning: this tag is not stable and referenced image might change over time.
+
+```shell
+export TAG="1.33"
+```
+
 Configure the container images:
 
 ```shell
-TAG=1.33
-export IMAGE_MEDIAWIKI="marketplace.gcr.io/google/mediawiki"
-export IMAGE_APACHE_EXPORTER="marketplace.gcr.io/google/mediawiki/apache-exporter:${TAG}"
-export IMAGE_MARIADB="marketplace.gcr.io/google/mediawiki/mariadb:${TAG}"
-export IMAGE_MYSQL_EXPORTER="marketplace.gcr.io/google/mediawiki/mysqld-exporter:${TAG}"
-export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/mediawiki/prometheus-to-sd:${TAG}"
+export IMAGE_REGISTRY="marketplace.gcr.io/google"
+
+export IMAGE_MEDIAWIKI="${IMAGE_REGISTRY}/mediawiki"
+export IMAGE_APACHE_EXPORTER="${IMAGE_REGISTRY}/mediawiki/apache-exporter:${TAG}"
+export IMAGE_MARIADB="${IMAGE_REGISTRY}/mediawiki/mariadb:${TAG}"
+export IMAGE_MYSQL_EXPORTER="${IMAGE_REGISTRY}/mediawiki/mysqld-exporter:${TAG}"
+export IMAGE_METRICS_EXPORTER="${IMAGE_REGISTRY}/mediawiki/prometheus-to-sd:${TAG}"
 ```
 
 The images above are referenced by

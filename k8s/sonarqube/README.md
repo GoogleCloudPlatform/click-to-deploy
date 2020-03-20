@@ -119,31 +119,30 @@ export APP_INSTANCE_NAME=sonarqube-1
 export NAMESPACE=default
 ```
 
-Configure the container image:
+Set up the image tag:
+
+It is advised to use stable image reference which you can find on
+[Marketplace Container Registry](https://marketplace.gcr.io/google/sonarqube).
+Example:
 
 ```shell
-TAG=7.6
-export IMAGE_SONARQUBE="marketplace.gcr.io/google/sonarqube:$TAG"
+export TAG="7.7.0-20200311-092324"
+```
+
+Alternatively you can use short tag which points to the latest image for selected version.
+> Warning: this tag is not stable and referenced image might change over time.
+
+```shell
+export TAG="7.7"
+```
+
+Configure the container images:
+
+```shell
+export IMAGE_SONARQUBE="marketplace.gcr.io/google/sonarqube"
 export IMAGE_POSTGRESQL="marketplace.gcr.io/google/sonarqube/postgresql:$TAG"
 export IMAGE_POSTGRESQL_EXPORTER="marketplace.gcr.io/google/sonarqube/postgresql-exporter:$TAG"
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/sonarqube/prometheus-to-sd:$TAG"
-```
-
-The image above is referenced by
-[tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
-that you pin each image to an immutable
-[content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This ensures that the installed application always uses the same images,
-until you are ready to upgrade. To get the digest for the image, use the
-following script:
-
-```shell
-for i in "IMAGE_SONARQUBE" "IMAGE_POSTGRESQL" "IMAGE_POSTGRESQL_EXPORTER" "IMAGE_METRICS_EXPORTER"; do
-repo=$(echo ${!i} | cut -d: -f1);
-digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
-export $i="$repo@$digest";
-env | grep $i;
-done
 ```
 
 Generate random password for PostgreSQL:
@@ -195,7 +194,8 @@ expanded manifest file for future updates to the application.
 helm template chart/sonarqube \
 --name="$APP_INSTANCE_NAME" \
 --namespace="$NAMESPACE" \
---set "sonarqube.image=$IMAGE_SONARQUBE" \
+--set "sonarqube.image.repo=$IMAGE_SONARQUBE" \
+--set "sonarqube.image.tag=$IMAGE_SONARQUBE" \
 --set "postgresql.image=$IMAGE_POSTGRESQL" \
 --set "postgresql.exporter.image=$IMAGE_POSTGRESQL_EXPORTER" \
 --set "postgresql.db.password=$POSTGRESQL_DB_PASSWORD" \

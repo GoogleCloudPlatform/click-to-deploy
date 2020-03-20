@@ -105,10 +105,26 @@ export APP_INSTANCE_NAME=prometheus-operator-1
 export NAMESPACE=default
 ```
 
+Set up the image tag:
+
+It is advised to use stable image reference which you can find on
+[Marketplace Container Registry](https://marketplace.gcr.io/google/prometheus-operator).
+Example:
+
+```shell
+export TAG="0.34.0-20200213-133013"
+```
+
+Alternatively you can use short tag which points to the latest image for selected version.
+> Warning: this tag is not stable and referenced image might change over time.
+
+```shell
+export TAG="0.34"
+```
+
 Configure the container image:
 
 ```shell
-export TAG=0.34
 export IMAGE_OPERATOR="marketplace.gcr.io/google/prometheus-operator"
 ```
 
@@ -154,7 +170,7 @@ expanded manifest file for future updates to the app.
 helm template chart/prometheus-operator \
   --name ${APP_INSTANCE_NAME} \
   --namespace="${NAMESPACE}" \
-  --set operator.image.repository=${IMAGE_OPERATOR} \
+  --set operator.image.repo=${IMAGE_OPERATOR} \
   --set operator.image.tag=${TAG} \
   --set deployerHelm.image="gcr.io/cloud-marketplace-tools/k8s/deployer_helm:0.8.0" \
   --set operator.serviceAccountName=${OPERATOR_SERVICE_ACCOUNT} \

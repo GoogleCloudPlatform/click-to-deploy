@@ -161,30 +161,29 @@ export CURATED_METRICS_EXPORTER_ENABLED=true
 export METRICS_EXPORTER_ENABLED=false
 ```
 
+Set up the image tag:
+
+It is advised to use stable image reference which you can find on
+[Marketplace Container Registry](https://marketplace.gcr.io/google/nginx).
+Example:
+
+```shell
+export TAG="1.15.12-20200311-092353"
+```
+
+Alternatively you can use short tag which points to the latest image for selected version.
+> Warning: this tag is not stable and referenced image might change over time.
+
+```shell
+export TAG="1.15"
+```
+
 Configure the container images:
 
 ```shell
-TAG=1.15
-export IMAGE_NGINX="marketplace.gcr.io/google/nginx:${TAG}"
+export IMAGE_NGINX="marketplace.gcr.io/google/nginx"
 export IMAGE_NGINX_INIT="marketplace.gcr.io/google/nginx/debian9:${TAG}"
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/nginx/prometheus-to-sd:${TAG}"
-```
-
-The images above are referenced by
-[tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
-that you pin each image to an immutable
-[content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This ensures that the installed application always uses the same images, until
-you are ready to upgrade. To get the digest for the image, use the following
-script:
-
-```shell
-for i in "IMAGE_NGINX" "IMAGE_NGINX_INIT" "IMAGE_METRICS_EXPORTER"; do
-  repo=$(echo ${!i} | cut -d: -f1);
-  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
-  export $i="$repo@$digest";
-  env | grep $i;
-done
 ```
 
 #### Create TLS certificate for Nginx
@@ -229,7 +228,8 @@ helm template chart/nginx \
   --namespace "$NAMESPACE" \
   --set "nginx.replicas=$REPLICAS" \
   --set "nginx.initImage=$IMAGE_NGINX_INIT" \
-  --set "nginx.image=$IMAGE_NGINX" \
+  --set "nginx.image.repo=$IMAGE_NGINX" \
+  --set "nginx.image.tag=$TAG" \
   --set "metrics.image=$IMAGE_METRICS_EXPORTER" \
   --set "metrics.curatedExporter.enabled=$CURATED_METRICS_EXPORTER_ENABLED" \
   --set "metrics.exporter.enabled=$METRICS_EXPORTER_ENABLED" \
