@@ -19,6 +19,9 @@ service:
 
 certificate:
   hostname: null
+
+controller:
+  serviceAccount: null
 # replicaCount: 1
 
 # image:
