@@ -251,19 +251,19 @@ save the expanded manifest file for future updates to the application.
 
     ```shell
     helm template chart/rabbitmq \
-      --name $APP_INSTANCE_NAME \
-      --namespace $NAMESPACE \
-      --set rabbitmq.image.repo=$IMAGE_RABBITMQ \
-      --set rabbitmq.image.tag=$TAG \
-      --set rabbitmq.initImage=$IMAGE_RABBITMQ_INIT \
-      --set rabbitmq.replicas=$REPLICAS \
-      --set rabbitmq.erlangCookie=$RABBITMQ_ERLANG_COOKIE \
-      --set rabbitmq.user=$RABBITMQ_DEFAULT_USER \
-      --set rabbitmq.password=$RABBITMQ_DEFAULT_PASS \
-      --set rabbitmq.serviceAccount=$RABBITMQ_SERVICE_ACCOUNT \
-      --set metrics.image=$IMAGE_METRICS_EXPORTER \
-      --set metrics.exporter.enabled=$METRICS_EXPORTER_ENABLED \
-      > ${APP_INSTANCE_NAME}_manifest.yaml
+      --name "$APP_INSTANCE_NAME" \
+      --namespace "$NAMESPACE" \
+      --set rabbitmq.image.repo="$IMAGE_RABBITMQ" \
+      --set rabbitmq.image.tag="$TAG" \
+      --set rabbitmq.initImage="$IMAGE_RABBITMQ_INIT" \
+      --set rabbitmq.replicas="$REPLICAS" \
+      --set rabbitmq.erlangCookie="$RABBITMQ_ERLANG_COOKIE" \
+      --set rabbitmq.user="$RABBITMQ_DEFAULT_USER" \
+      --set rabbitmq.password="$RABBITMQ_DEFAULT_PASS" \
+      --set rabbitmq.serviceAccount="$RABBITMQ_SERVICE_ACCOUNT" \
+      --set metrics.image="$IMAGE_METRICS_EXPORTER" \
+      --set metrics.exporter.enabled="$METRICS_EXPORTER_ENABLED" \
+      > "${APP_INSTANCE_NAME}_manifest.yaml"
     ```
 
 #### Apply the manifest to your Kubernetes cluster

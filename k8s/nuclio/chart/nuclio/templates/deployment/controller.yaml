@@ -43,7 +43,7 @@ spec:
       serviceAccountName: {{ .Values.controller.serviceAccountName }}
       containers:
       - name: {{ template "nuclio.controllerName" . }}
-        image: {{ .Values.controller.image.repository }}:{{ .Values.controller.image.tag }}
+        image: {{ .Values.controller.image.repo }}:{{ .Values.controller.image.tag }}
         env:
         - name: NUCLIO_CONTROLLER_IMAGE_PULL_SECRETS
           value: {{ template "nuclio.registryCredentialsName" . }}

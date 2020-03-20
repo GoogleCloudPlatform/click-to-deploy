@@ -230,20 +230,20 @@ expanded manifest file for future updates to the application.
 
 ```shell
 helm template chart/postgresql \
-  --name $APP_INSTANCE_NAME \
-  --namespace $NAMESPACE \
-  --set "postgresql.serviceAccount=$POSTGRESQL_SERVICE_ACCOUNT" \
-  --set "postgresql.image.repo=$IMAGE_POSTGRESQL" \
-  --set "postgresql.image.tag=$TAG" \
-  --set "postgresql.volumeSize=$POSTGRESQL_VOLUME_SIZE" \
-  --set "postgresql.exposePublicService=$EXPOSE_PUBLIC_SERVICE" \
-  --set "db.password=$POSTGRESQL_DB_PASSWORD" \
-  --set "metrics.image=$IMAGE_METRICS_EXPORTER" \
-  --set "metrics.exporter.enabled=$METRICS_EXPORTER_ENABLED" \
-  --set "exporter.image=$IMAGE_POSTGRESQL_EXPORTER" \
-  --set "tls.base64EncodedPrivateKey=$TLS_CERTIFICATE_KEY" \
-  --set "tls.base64EncodedCertificate=$TLS_CERTIFICATE_CRT" \
-    > ${APP_INSTANCE_NAME}_manifest.yaml
+  --name "$APP_INSTANCE_NAME" \
+  --namespace "$NAMESPACE" \
+  --set postgresql.serviceAccount="$POSTGRESQL_SERVICE_ACCOUNT" \
+  --set postgresql.image.repo="$IMAGE_POSTGRESQL" \
+  --set postgresql.image.tag="$TAG" \
+  --set postgresql.volumeSize="$POSTGRESQL_VOLUME_SIZE" \
+  --set postgresql.exposePublicService="$EXPOSE_PUBLIC_SERVICE" \
+  --set db.password="$POSTGRESQL_DB_PASSWORD" \
+  --set metrics.image="$IMAGE_METRICS_EXPORTER" \
+  --set metrics.exporter.enabled="$METRICS_EXPORTER_ENABLED" \
+  --set exporter.image="$IMAGE_POSTGRESQL_EXPORTER" \
+  --set tls.base64EncodedPrivateKey="$TLS_CERTIFICATE_KEY" \
+  --set tls.base64EncodedCertificate="$TLS_CERTIFICATE_CRT" \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster

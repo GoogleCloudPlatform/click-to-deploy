@@ -223,8 +223,8 @@ expanded manifest file for future updates to the application.
 
 ```shell
 helm template chart/consul \
-  --name ${APP_INSTANCE_NAME} \
-  $( [[ -n "${NAMESPACE}" ]] && printf '%s=%s' '--namespace' ${NAMESPACE} ) \
+  --name "${APP_INSTANCE_NAME}" \
+  --namespace "$NAMESPACE" \
   --set global.image=${IMAGE_CONSUL} \
   --set server.prometheus_exporter.image=${IMAGE_CONSUL_EXPORTER} \
   --set metrics.image=${IMAGE_METRICS_EXPORTER} \

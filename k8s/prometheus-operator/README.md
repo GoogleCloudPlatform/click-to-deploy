@@ -168,13 +168,13 @@ expanded manifest file for future updates to the app.
 
 ```shell
 helm template chart/prometheus-operator \
-  --name ${APP_INSTANCE_NAME} \
-  --namespace="${NAMESPACE}" \
-  --set operator.image.repo=${IMAGE_OPERATOR} \
-  --set operator.image.tag=${TAG} \
+  --name "${APP_INSTANCE_NAME}" \
+  --namespace "${NAMESPACE}" \
+  --set operator.image.repo="${IMAGE_OPERATOR}" \
+  --set operator.image.tag="${TAG}" \
   --set deployerHelm.image="gcr.io/cloud-marketplace-tools/k8s/deployer_helm:0.8.0" \
-  --set operator.serviceAccountName=${OPERATOR_SERVICE_ACCOUNT} \
-  > ${APP_INSTANCE_NAME}_manifest.yaml
+  --set operator.serviceAccountName="${OPERATOR_SERVICE_ACCOUNT}" \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster

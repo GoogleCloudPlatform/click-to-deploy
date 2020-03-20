@@ -213,17 +213,17 @@ expanded manifest file for future updates to the application.
 
 ```shell
 helm template chart/elastic-gke-logging \
-  --name $APP_INSTANCE_NAME \
-  --namespace $NAMESPACE \
-  --set elasticsearch.replicas=$ELASTICSEARCH_REPLICAS \
-  --set fluentd.serviceAccount=$FLUENTD_SERVICE_ACCOUNT \
-  --set initImage=$IMAGE_INIT \
-  --set elasticsearch.image.repo=$IMAGE_ELASTICSEARCH \
-  --set elasticsearch.image.tag=$TAG\
-  --set kibana.image=$IMAGE_KIBANA \
-  --set fluentd.image=$IMAGE_FLUENTD \
-  --set metrics.image=$IMAGE_METRICS_EXPORTER \
-  --set metrics.exporter.enabled=$METRICS_EXPORTER_ENABLED \
+  --name "$APP_INSTANCE_NAME" \
+  --namespace "$NAMESPACE" \
+  --set elasticsearch.replicas="$ELASTICSEARCH_REPLICAS" \
+  --set fluentd.serviceAccount="$FLUENTD_SERVICE_ACCOUNT" \
+  --set initImage="$IMAGE_INIT" \
+  --set elasticsearch.image.repo="$IMAGE_ELASTICSEARCH" \
+  --set elasticsearch.image.tag="$TAG" \
+  --set kibana.image="$IMAGE_KIBANA" \
+  --set fluentd.image="$IMAGE_FLUENTD" \
+  --set metrics.image="$IMAGE_METRICS_EXPORTER" \
+  --set metrics.exporter.enabled="$METRICS_EXPORTER_ENABLED" \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 

@@ -246,22 +246,22 @@ expanded manifest file for future updates to the app.
 helm template chart/drupal \
   --name "${APP_INSTANCE_NAME}" \
   --namespace "${NAMESPACE}" \
-  --set "drupal.image.repo=${IMAGE_DRUPAL}" \
-  --set "drupal.image.tag=${TAG}" \
-  --set "drupal.password=${DRUPAL_PASSWORD}" \
-  --set "db.image=${IMAGE_MARIADB}" \
-  --set "db.rootPassword=${ROOT_DB_PASSWORD}" \
-  --set "db.drupalPassword=${DRUPAL_DB_PASSWORD}" \
-  --set "db.exporter.image=${IMAGE_MYSQL_EXPORTER}" \
-  --set "db.exporter.password=${EXPORTER_DB_PASSWORD}" \
-  --set "apache.exporter.image=${IMAGE_APACHE_EXPORTER}" \
-  --set "metrics.image=${IMAGE_METRICS_EXPORTER}" \
-  --set "metrics.exporter.enabled=${METRICS_ENABLED}" \
-  --set "enablePublicServiceAndIngress=${PUBLIC_SERVICE_AND_INGRESS_ENABLED}" \
-  --set "tls.base64EncodedPrivateKey=${TLS_CERTIFICATE_KEY}" \
-  --set "tls.base64EncodedCertificate=${TLS_CERTIFICATE_CRT}" \
-  --set "metrics.exporter.enabled=${METRICS_EXPORTER_ENABLED}" \
-  > ${APP_INSTANCE_NAME}_manifest.yaml
+  --set drupal.image.repo="${IMAGE_DRUPAL}" \
+  --set drupal.image.tag="${TAG}" \
+  --set drupal.password="${DRUPAL_PASSWORD}" \
+  --set db.image="${IMAGE_MARIADB}" \
+  --set db.rootPassword="${ROOT_DB_PASSWORD}" \
+  --set db.drupalPassword="${DRUPAL_DB_PASSWORD}" \
+  --set db.exporter.image="${IMAGE_MYSQL_EXPORTER}" \
+  --set db.exporter.password="${EXPORTER_DB_PASSWORD}" \
+  --set apache.exporter.image="${IMAGE_APACHE_EXPORTER}" \
+  --set metrics.image="${IMAGE_METRICS_EXPORTER}" \
+  --set metrics.exporter.enabled="${METRICS_ENABLED}" \
+  --set enablePublicServiceAndIngress="${PUBLIC_SERVICE_AND_INGRESS_ENABLED}" \
+  --set tls.base64EncodedPrivateKey="${TLS_CERTIFICATE_KEY}" \
+  --set tls.base64EncodedCertificate="${TLS_CERTIFICATE_CRT}" \
+  --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED}" \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster

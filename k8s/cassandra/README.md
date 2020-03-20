@@ -186,13 +186,13 @@ expanded manifest file for future updates to the application.
 
 ```shell
 helm template chart/cassandra \
-  --name ${APP_INSTANCE_NAME} \
-  --namespace ${NAMESPACE} \
-  --set cassandra.image.repo=${IMAGE_CASSANDRA} \
-  --set cassandra.image.tag=${TAG} \
-  --set cassandra.replicas=${REPLICAS} \
-  --set metrics.image=${IMAGE_METRICS_EXPORTER} \
-  --set metrics.exporter.enabled=${METRICS_EXPORTER_ENABLED} \
+  --name "${APP_INSTANCE_NAME}" \
+  --namespace "${NAMESPACE}" \
+  --set cassandra.image.repo="${IMAGE_CASSANDRA}" \
+  --set cassandra.image.tag="${TAG}" \
+  --set cassandra.replicas="${REPLICAS}" \
+  --set metrics.image="${IMAGE_METRICS_EXPORTER}" \
+  --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED}" \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 

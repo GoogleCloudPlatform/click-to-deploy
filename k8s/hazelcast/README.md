@@ -196,17 +196,17 @@ expanded manifest file for future updates to the application.
 helm template chart/hazelcast \
   --name "${APP_INSTANCE_NAME}" \
   --namespace "${NAMESPACE}" \
-  --set "hazelcast.image.repo=${IMAGE_HAZELCAST}" \
-  --set "hazelcast.image.tag=${TAG}" \
-  --set "hazelcast.persistence.storageClass=${HAZELCAST_STORAGE_CLASS}" \
-  --set "hazelcast.persistence.size=${PERSISTENT_DISK_SIZE}" \
-  --set "hazelcast.serviceAccount=${HAZELCAST_SERVICE_ACCOUNT}" \
-  --set "mancenter.image.repo=${IMAGE_HAZELCASTMC}" \
-  --set "mancenter.image.tag=${TAG}" \
-  --set "mancenter.persistence.storageClass=${HAZELCAST_STORAGE_CLASS}" \
-  --set "mancenter.persistence.size=${PERSISTENT_DISK_SIZE}" \
-  --set "metrics.image=${IMAGE_METRICS_EXPORTER}" \
-  --set "metrics.exporter.enabled=${METRICS_EXPORTER_ENABLED}" \
+  --set hazelcast.image.repo="${IMAGE_HAZELCAST}" \
+  --set hazelcast.image.tag="${TAG}" \
+  --set hazelcast.persistence.storageClass="${HAZELCAST_STORAGE_CLASS}" \
+  --set hazelcast.persistence.size="${PERSISTENT_DISK_SIZE}" \
+  --set hazelcast.serviceAccount="${HAZELCAST_SERVICE_ACCOUNT}" \
+  --set mancenter.image.repo="${IMAGE_HAZELCASTMC}" \
+  --set mancenter.image.tag="${TAG}" \
+  --set mancenter.persistence.storageClass="${HAZELCAST_STORAGE_CLASS}" \
+  --set mancenter.persistence.size="${PERSISTENT_DISK_SIZE}" \
+  --set metrics.image="${IMAGE_METRICS_EXPORTER}" \
+  --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED}" \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 

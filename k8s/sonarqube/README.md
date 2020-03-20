@@ -192,17 +192,18 @@ expanded manifest file for future updates to the application.
 
 ```shell
 helm template chart/sonarqube \
---name="$APP_INSTANCE_NAME" \
---namespace="$NAMESPACE" \
---set "sonarqube.image.repo=$IMAGE_SONARQUBE" \
---set "sonarqube.image.tag=$IMAGE_SONARQUBE" \
---set "postgresql.image=$IMAGE_POSTGRESQL" \
---set "postgresql.exporter.image=$IMAGE_POSTGRESQL_EXPORTER" \
---set "postgresql.db.password=$POSTGRESQL_DB_PASSWORD" \
---set "metrics.image=$METRICS_EXPORTER_ENABLED" \
---set "tls.base64EncodedPrivateKey=$TLS_CERTIFICATE_KEY" \
---set "tls.base64EncodedCertificate=$TLS_CERTIFICATE_CRT" \
-> ${APP_INSTANCE_NAME}_manifest.yaml
+  --name "$APP_INSTANCE_NAME" \
+  --namespace "$NAMESPACE" \
+  --set sonarqube.image.repo="$IMAGE_SONARQUBE" \
+  --set sonarqube.image.tag="$TAG" \
+  --set postgresql.image="$IMAGE_POSTGRESQL" \
+  --set postgresql.exporter.image="$IMAGE_POSTGRESQL_EXPORTER" \
+  --set postgresql.db.password="$POSTGRESQL_DB_PASSWORD" \
+  --set metrics.image="$IMAGE_METRICS_EXPORTER" \
+  --set metrics.exporter.enabled="$METRICS_EXPORTER_ENABLED" \
+  --set tls.base64EncodedPrivateKey="$TLS_CERTIFICATE_KEY" \
+  --set tls.base64EncodedCertificate="$TLS_CERTIFICATE_CRT" \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster

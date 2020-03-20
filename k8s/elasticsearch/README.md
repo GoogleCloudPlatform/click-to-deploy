@@ -185,14 +185,14 @@ expanded manifest file for future updates to the application.
 
 ```shell
 helm template chart/elasticsearch \
-  --name $APP_INSTANCE_NAME \
-  --namespace $NAMESPACE \
-  --set elasticsearch.initImage=$IMAGE_INIT \
-  --set elasticsearch.image.repo=$IMAGE_ELASTICSEARCH \
-  --set elasticsearch.image.tag=$TAG\
-  --set elasticsearch.replicas=$REPLICAS \
-  --set metrics.image=$IMAGE_METRICS_EXPORTER \
-  --set metrics.exporter.enabled=$METRICS_EXPORTER_ENABLED \
+  --name "$APP_INSTANCE_NAME" \
+  --namespace "$NAMESPACE" \
+  --set elasticsearch.initImage="$IMAGE_INIT" \
+  --set elasticsearch.image.repo="$IMAGE_ELASTICSEARCH" \
+  --set elasticsearch.image.tag="$TAG" \
+  --set elasticsearch.replicas="$REPLICAS" \
+  --set metrics.image="$IMAGE_METRICS_EXPORTER" \
+  --set metrics.exporter.enabled="$METRICS_EXPORTER_ENABLED" \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 

@@ -278,9 +278,9 @@ expanded manifest file for future updates to the app.
 helm template chart/nuclio \
   --name ${APP_INSTANCE_NAME} \
   --namespace ${NAMESPACE} \
-  --set controller.image.repository=${IMAGE_CONTROLLER} \
+  --set controller.image.repo=${IMAGE_CONTROLLER} \
   --set controller.image.tag=${TAG} \
-  --set dashboard.image.repository=${IMAGE_DASHBOARD} \
+  --set dashboard.image.repo=${IMAGE_DASHBOARD} \
   --set dashboard.image.tag=${TAG} \
   --set deployerHelm.image="gcr.io/cloud-marketplace-tools/k8s/deployer_helm:0.8.0" \
   $( [[ -n "${PUSH_PULL_URL}" ]] && echo "--set registry.pushPullUrl=${PUSH_PULL_URL}" ) \

@@ -155,7 +155,7 @@ export IMAGE_REGISTRY="marketplace.gcr.io/google"
 
 export IMAGE_ZOOKEEPER="${IMAGE_REGISTRY}/zookeeper"
 export IMAGE_ZOOKEEPER_EXPORTER="${IMAGE_REGISTRY}/zookeeper/exporter"
-export IMAGE_METRICS_EXPORTER="${IMAGE_REGISTRY}/zookeeper}/prometheus-to-sd:${TAG}"
+export IMAGE_METRICS_EXPORTER="${IMAGE_REGISTRY}/zookeeper/prometheus-to-sd:${TAG}"
 ```
 
 Set the number of replicas for ZooKeeper:
@@ -196,23 +196,24 @@ expanded manifest file for future updates to the application.
 
 ```shell
 helm template chart/zookeeper \
---name "${APP_INSTANCE_NAME}" \
---namespace "${NAMESPACE}" \
---set zookeeper.image.name=${IMAGE_ZOOKEEPER} \
---set zookeeper.image.tag=${TAG} \
---set exporter.image=${IMAGE_ZOOKEEPER_EXPORTER} \
---set exporter.tag=${TAG} \
---set metrics.image=${IMAGE_METRICS_EXPORTER} \
---set metrics.exporter.enabled=${METRICS_EXPORTER_ENABLED} \
---set zookeeper.zkReplicas=${ZOOKEEPER_REPLICAS} \
---set zookeeper.zkTicktime=${ZOOKEEPER_TICKTIME} \
---set zookeeper.zkMaxClientCnxns=${ZOOKEEPER_CLIENT_MAX_CNXNX} \
---set zookeeper.zkAutopurgeSnapRetainCount=${ZOOKEEPER_AUTO_PURGE_SNAP_RETAIN_COUNT} \
---set zookeeper.zkPurgeInterval=${ZOOKEEPER_PURGE_INTERVAL} \
---set zookeeper.memoryRequest=${ZOOKEEPER_MEMORY_REQUEST} \
---set zookeeper.cpuRequest=${ZOOKEEPER_CPU_REQUEST} \
---set zookeeper.zkHeapSize=${ZOOKEEPER_HEAP_SIZE} \
---set zookeeper.volumeSize=${ZOOKEEPER_VOLUME_SIZE} > ${APP_INSTANCE_NAME}_manifest.yaml
+  --name "${APP_INSTANCE_NAME}" \
+  --namespace "${NAMESPACE}" \
+  --set zookeeper.image.name="${IMAGE_ZOOKEEPER}" \
+  --set zookeeper.image.tag="${TAG}" \
+  --set exporter.image="${IMAGE_ZOOKEEPER_EXPORTER}" \
+  --set exporter.tag="${TAG}" \
+  --set metrics.image="${IMAGE_METRICS_EXPORTER}" \
+  --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED}" \
+  --set zookeeper.zkReplicas="${ZOOKEEPER_REPLICAS}" \
+  --set zookeeper.zkTicktime="${ZOOKEEPER_TICKTIME}" \
+  --set zookeeper.zkMaxClientCnxns="${ZOOKEEPER_CLIENT_MAX_CNXNX}" \
+  --set zookeeper.zkAutopurgeSnapRetainCount="${ZOOKEEPER_AUTO_PURGE_SNAP_RETAIN_COUNT}" \
+  --set zookeeper.zkPurgeInterval="${ZOOKEEPER_PURGE_INTERVAL}" \
+  --set zookeeper.memoryRequest="${ZOOKEEPER_MEMORY_REQUEST}" \
+  --set zookeeper.cpuRequest="${ZOOKEEPER_CPU_REQUEST}" \
+  --set zookeeper.zkHeapSize="${ZOOKEEPER_HEAP_SIZE}" \
+  --set zookeeper.volumeSize="${ZOOKEEPER_VOLUME_SIZE}" \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 #### Apply the manifest to your Kubernetes cluster
 

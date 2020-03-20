@@ -187,14 +187,14 @@ expanded manifest file for future updates to the application.
 helm template chart/etcd \
   --name "${APP_INSTANCE_NAME}" \
   --namespace "${NAMESPACE}" \
-  --set "image.repo=${IMAGE_ETCD}" \
-  --set "image.tag=${TAG}" \
-  --set "persistence.storageClass=${ETCD_STORAGE_CLASS}" \
-  --set "persistence.size=${PERSISTENT_DISK_SIZE}" \
-  --set "metrics.image=${IMAGE_METRICS_EXPORTER}" \
-  --set "metrics.exporter.enabled=${METRICS_EXPORTER_ENABLED}" \
-  --set "auth.rbac.rootPassword=${ETCD_ROOT_PASSWORD}" \
-  --set "replicas=${REPLICAS}" \
+  --set image.repo="${IMAGE_ETCD}" \
+  --set image.tag="${TAG}" \
+  --set persistence.storageClass="${ETCD_STORAGE_CLASS}" \
+  --set persistence.size="${PERSISTENT_DISK_SIZE}" \
+  --set metrics.image="${IMAGE_METRICS_EXPORTER}" \
+  --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED}" \
+  --set auth.rbac.rootPassword="${ETCD_ROOT_PASSWORD}" \
+  --set replicas="${REPLICAS}" \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
