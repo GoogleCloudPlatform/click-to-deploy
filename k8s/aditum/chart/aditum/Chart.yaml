@@ -2,21 +2,11 @@ apiVersion: v1
 appVersion: 0.1.1
 name: addy
 description: Aditum rocks bro.
-engine: gotpl
-home: http://www.google.com/
-icon: https://bitnami.com/assets/stacks/wordpress/img/wordpress-stack-220x234.png
 keywords:
 - aditum
-- cms
-- blog
-- http
-- web
-- application
-- php
+- security
+- audit
 maintainers:
 - email: hassaan@google.com
   name: Aditum
 name: aditum
-sources:
-- https://github.com/bitnami/bitnami-docker-wordpress
-version: 8.1.2

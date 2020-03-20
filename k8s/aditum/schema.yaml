@@ -54,12 +54,35 @@ properties:
   oAuth.clientID:
     type: string
     title: OAuth Client ID
+    x-google-marketplace:
+      type: STRING
+      string:
+        generatedProperties:
+          base64Encoded: clientIDEncoded
   oAuth.clientSecret:
     type: string
     title: OAuth Client Secret
+    x-google-marketplace:
+      type: STRING
+      string:
+        generatedProperties:
+          base64Encoded: clientSecretEncoded
   certificate.hostname:
     type: string
     title: Application Ingress Host
+  controller.serviceAccount:
+    type: string
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        roles:
+        - type: ClusterRole
+          rulesType: PREDEFINED
+          rulesFromRoleName: edit
+        - type: ClusterRole
+          rulesType: PREDEFINED
+          rulesFromRoleName: view  
+
 required:
 - name
 - namespace
