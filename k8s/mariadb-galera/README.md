@@ -196,18 +196,18 @@ expanded manifest file for future updates to the application.
 helm template chart/mariadb-galera \
   --name "$APP_INSTANCE_NAME" \
   --namespace "$NAMESPACE" \
-  --set mariadb.image.repo=$IMAGE_MARIADB \
-  --set mariadb.image.tag=$TAG \
+  --set mariadb.image.repo="$IMAGE_MARIADB" \
+  --set mariadb.image.tag="$TAG" \
   --set mariadb.volumeSize=8 \
-  --set db.rootPassword=$MARIADB_ROOT_PASSWORD \
-  --set db.exporter.image=$IMAGE_MYSQL_EXPORTER \
-  --set db.exporter.password=$EXPORTER_DB_PASSWORD \
-  --set metrics.image=$IMAGE_METRICS_EXPORTER \
-  --set metrics.exporter.enabled=$METRICS_EXPORTER_ENABLED \
-  --set peerFinder.image=$IMAGE_PEER_FINDER \
-  --set tls.base64EncodedPrivateKey=$TLS_CERTIFICATE_KEY \
-  --set tls.base64EncodedCertificate=$TLS_CERTIFICATE_CRT \
-  --set db.replicas=$REPLICAS \
+  --set db.rootPassword="$MARIADB_ROOT_PASSWORD" \
+  --set db.exporter.image="$IMAGE_MYSQL_EXPORTER" \
+  --set db.exporter.password="$EXPORTER_DB_PASSWORD" \
+  --set metrics.image="$IMAGE_METRICS_EXPORTER" \
+  --set metrics.exporter.enabled="$METRICS_EXPORTER_ENABLED" \
+  --set peerFinder.image="$IMAGE_PEER_FINDER" \
+  --set tls.base64EncodedPrivateKey="$TLS_CERTIFICATE_KEY" \
+  --set tls.base64EncodedCertificate="$TLS_CERTIFICATE_CRT" \
+  --set db.replicas="$REPLICAS" \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
