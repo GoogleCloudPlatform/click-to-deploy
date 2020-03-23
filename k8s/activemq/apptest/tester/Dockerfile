@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 RUN set -x && \
-    wget http://archive.apache.org/dist/activemq/5.15.12/apache-activemq-5.15.12-bin.tar.gz \
+    wget https://archive.apache.org/dist/activemq/5.15.12/apache-activemq-5.15.12-bin.tar.gz \
     && tar -xvzf apache-activemq-5.15.12-bin.tar.gz \
     && cp -r apache-activemq-5.15.12 /opt/activemq
 
