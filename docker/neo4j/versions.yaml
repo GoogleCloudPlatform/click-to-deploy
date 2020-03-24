@@ -17,13 +17,13 @@ _variables:
 versions:
   # Neo4j 4.x
   - dir: '4/debian9/4.0'
-    repo: 'neo4j-ce4'
+    repo: 'neo4j4'
     tags:
     - '4.0.2-debian9'
-    - '4.0.2'
     - '4.0-debian9'
-    - '4.0'
     - '4-debian9'
+    - '4.0.2'
+    - '4.0'
     - '4'
     - 'latest'
     from: *from9
