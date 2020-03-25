@@ -111,10 +111,26 @@ export APP_INSTANCE_NAME=jaeger-operator-1
 export NAMESPACE=default
 ```
 
+Set up the image tag:
+
+It is advised to use stable image reference which you can find on
+[Marketplace Container Registry](https://marketplace.gcr.io/google/jaeger-operator).
+Example:
+
+```shell
+export TAG="1.15.1-20200213-132947"
+```
+
+Alternatively you can use short tag which points to the latest image for selected version.
+> Warning: this tag is not stable and referenced image might change over time.
+
+```shell
+export TAG="1.15"
+```
+
 Configure the container image:
 
 ```shell
-export TAG=1.15
 export IMAGE_OPERATOR="marketplace.gcr.io/google/jaeger-operator"
 ```
 
@@ -160,14 +176,14 @@ expanded manifest file for future updates to the app.
 
 ```shell
 helm template chart/jaeger-operator \
-  --name ${APP_INSTANCE_NAME} \
-  --namespace="${NAMESPACE}" \
-  --set operator.image.repository=${IMAGE_OPERATOR} \
-  --set operator.image.tag=${TAG} \
+  --name "${APP_INSTANCE_NAME}" \
+  --namespace "${NAMESPACE}" \
+  --set operator.image.repository="${IMAGE_OPERATOR}" \
+  --set operator.image.tag="${TAG}" \
   --set deployerHelm.image="gcr.io/cloud-marketplace-tools/k8s/deployer_helm:0.8.0" \
-  --set operator.serviceAccountName=${OPERATOR_SERVICE_ACCOUNT} \
-  --set CDRJobServiceAccount=${CRD_SERVICE_ACCOUNT} \
-  > ${APP_INSTANCE_NAME}_manifest.yaml
+  --set operator.serviceAccountName="${OPERATOR_SERVICE_ACCOUNT}" \
+  --set CDRJobServiceAccount="${CRD_SERVICE_ACCOUNT}" \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster

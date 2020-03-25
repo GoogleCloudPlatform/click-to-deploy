@@ -117,11 +117,27 @@ export APP_INSTANCE_NAME=activemq-1
 export NAMESPACE=default
 ```
 
+Set up the image tag:
+
+It is advised to use stable image reference which you can find on
+[Marketplace Container Registry](https://marketplace.gcr.io/google/activemq).
+Example:
+
+```shell
+export TAG="5.15.11-20200311-092341"
+```
+
+Alternatively you can use short tag which points to the latest image for selected version.
+> Warning: this tag is not stable and referenced image might change over time.
+
+```shell
+export TAG="5.15"
+```
+
 Configure the container images:
 
 ```shell
-export TAG=5.15.10
-export IMAGE_ACTIVEMQ="marketplace.gcr.io/google/activemq5"
+export IMAGE_ACTIVEMQ="marketplace.gcr.io/google/activemq"
 ```
 
 Set or generate password for ActiveMQ console:
@@ -159,12 +175,12 @@ expanded manifest file for future updates to your app.
 helm template chart/activemq \
   --name "${APP_INSTANCE_NAME}" \
   --namespace "${NAMESPACE}" \
-  --set "image.repo=${IMAGE_ACTIVEMQ}" \
-  --set "image.tag=${TAG}" \
-  --set "persistence.storageClass=${STORAGE_CLASS}" \
-  --set "persistence.size=${PERSISTENT_DISK_SIZE}" \
-  --set "consolePassword=${ACTIVEMQ_ADMIN_PASSWORD}" \
-  > ${APP_INSTANCE_NAME}_manifest.yaml
+  --set image.repo="${IMAGE_ACTIVEMQ}" \
+  --set image.tag="${TAG}" \
+  --set persistence.storageClass="${STORAGE_CLASS}" \
+  --set persistence.size="${PERSISTENT_DISK_SIZE}" \
+  --set consolePassword="${ACTIVEMQ_ADMIN_PASSWORD}" \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster

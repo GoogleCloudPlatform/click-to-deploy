@@ -127,10 +127,26 @@ this option, change the value to `true`.
 export METRICS_EXPORTER_ENABLED=true
 ```
 
+Set up the image tag:
+
+It is advised to use stable image reference which you can find on
+[Marketplace Container Registry](https://marketplace.gcr.io/google/cert-manager).
+Example:
+
+```shell
+export TAG="0.13.0-20200311-092536"
+```
+
+Alternatively you can use short tag which points to the latest image for selected version.
+> Warning: this tag is not stable and referenced image might change over time.
+
+```shell
+export TAG="0.13"
+```
+
 Configure the container image:
 
 ```shell
-export TAG=0.13
 export IMAGE_CONTROLLER="marketplace.gcr.io/google/cert-manager"
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/cert-manager/prometheus-to-sd:${TAG}"
 ```
@@ -190,20 +206,20 @@ expanded manifest file for future updates to the app.
 
 ```shell
 helm template chart/cert-manager \
-  --name ${APP_INSTANCE_NAME} \
-  --namespace="${NAMESPACE}" \
-  --set controller.image.repo=${IMAGE_CONTROLLER} \
-  --set controller.image.tag=${TAG} \
-  --set controller.serviceAccountName=${CONTROLLER_SERVICE_ACCOUNT} \
-  --set controller.replicas=${CONTROLLER_REPLICAS:-1} \
+  --name "${APP_INSTANCE_NAME}" \
+  --namespace "${NAMESPACE}" \
+  --set controller.image.repo="${IMAGE_CONTROLLER}" \
+  --set controller.image.tag="${TAG}" \
+  --set controller.serviceAccountName="${CONTROLLER_SERVICE_ACCOUNT}" \
+  --set controller.replicas="${CONTROLLER_REPLICAS:-1}" \
   --set deployer.image="gcr.io/cloud-marketplace-tools/k8s/deployer_helm:0.8.0" \
-  --set CDRJobServiceAccount=${CRD_SERVICE_ACCOUNT} \
-  --set webhook.serviceAccountName=${WEBHOOK_SERVICE_ACCOUNT} \
-  --set webhook.replicas=${WEBHOOK_REPLICAS:-1} \
-  --set cainjector.serviceAccountName=${CAINJECTOR_SERVICE_ACCOUNT} \
-  --set cainjector.replicas=${CAINJECTOR_REPLICAS:-1} \
-  --set metrics.exporter.enabled=${METRICS_EXPORTER_ENABLED:-false} \
-  > ${APP_INSTANCE_NAME}_manifest.yaml
+  --set CDRJobServiceAccount="${CRD_SERVICE_ACCOUNT}" \
+  --set webhook.serviceAccountName="${WEBHOOK_SERVICE_ACCOUNT}" \
+  --set webhook.replicas="${WEBHOOK_REPLICAS:-1}" \
+  --set cainjector.serviceAccountName="${CAINJECTOR_SERVICE_ACCOUNT}" \
+  --set cainjector.replicas="${CAINJECTOR_REPLICAS:-1}" \
+  --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED:-false}" \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster
