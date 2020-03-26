@@ -6,7 +6,7 @@ x-google-marketplace:
   solutionId: aditum
   # The release version is required in the schema and MUST match the
   # release tag on the the deployer.
-  publishedVersion: '0.1.1'
+  publishedVersion: '0.1.2'
   publishedVersionMetadata:
     releaseNote: >-
       A regular update.
@@ -58,7 +58,7 @@ properties:
       type: STRING
       string:
         generatedProperties:
-          base64Encoded: clientIDEncoded
+          base64Encoded: oAuth.clientIDEncoded
   oAuth.clientSecret:
     type: string
     title: OAuth Client Secret
@@ -66,10 +66,10 @@ properties:
       type: STRING
       string:
         generatedProperties:
-          base64Encoded: clientSecretEncoded
+          base64Encoded: oAuth.clientSecretEncoded
   certificate.hostname:
     type: string
-    title: Application Ingress Host
+    title: Application Ingress Host Address
   controller.serviceAccount:
     type: string
     x-google-marketplace:
@@ -82,10 +82,13 @@ properties:
         - type: ClusterRole
           rulesType: PREDEFINED
           rulesFromRoleName: view  
-
+  setupAttributes.initialEmail:
+    type: string
+    title: Initial User Email
 required:
 - name
 - namespace
 - oAuth.clientSecret
 - oAuth.clientID
 - certificate.hostname
+- setupAttributes.initialEmail

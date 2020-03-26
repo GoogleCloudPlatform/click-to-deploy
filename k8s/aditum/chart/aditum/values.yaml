@@ -9,6 +9,8 @@ aditum:
 oAuth:
   clientID: null
   clientSecret: null
+  clientIDEncoded: null
+  clientSecretEncoded: null
 
 updateStrategy:
   type: RollingUpdate
@@ -22,6 +24,9 @@ certificate:
 
 controller:
   serviceAccount: null
+
+setupAttributes:
+  initialEmail: null
 # replicaCount: 1
 
 # image:

@@ -36,4 +36,7 @@ spec:
             scheme: HTTP
           initialDelaySeconds: 600
           periodSeconds: 5
+        env:
+        - name: INITIAL_EMAIL
+          value: {{ .Values.setupAttributes.initialEmail }}
 
