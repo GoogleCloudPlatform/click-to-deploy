@@ -1,0 +1,71 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}
+  labels: &Neo4jDeploymentLabels
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: "neo4j-ce"
+spec:
+  serviceName: "{{ .Release.Name }}-neo4j-svc"
+  replicas: 1
+  selector:
+    matchLabels: *Neo4jDeploymentLabels
+  template:
+    metadata:
+      labels: *Neo4jDeploymentLabels
+    spec:
+      containers:
+      - name: neo4j-ce
+        image: "{{ .Values.neo4j.image.repo }}:{{ .Values.neo4j.image.tag }}"
+        ports:
+        - name: browser
+          containerPort: 7474
+        - name: bolt
+          containerPort: 7687
+        resources:
+          requests:
+            memory: {{ .Values.neo4j.resources.memory }}
+            cpu: {{ .Values.neo4j.resources.cpu }}
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 7474
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 10
+          successThreshold: 1
+          failureThreshold: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 7474
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 10
+          successThreshold: 1
+          failureThreshold: 10
+        volumeMounts:
+        - name: neo4j-storage
+          mountPath: /var/lib/neo4j/data
+        env:
+        - name: ROOT_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-neo4j-secret"
+              key: username
+        - name: ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-neo4j-secret"
+              key: password
+        - name: NEO4J_AUTH
+          value: $(ROOT_USERNAME)/$(ROOT_PASSWORD)
+        - name: NEO4J_dbms_connector_bolt_listen__address
+          value: 0.0.0.0:7687
+        - name: NEO4J_dbms_connector_http_listen__address
+          value: 0.0.0.0:7474
+      volumes:
+      - name: neo4j-storage
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-neo4j-pvc
