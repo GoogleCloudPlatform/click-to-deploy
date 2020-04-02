@@ -2,13 +2,13 @@ dashboard:
   replicas: 1
   serviceAccountName: null
   image:
-    repository: null
+    repo: null
     tag: null
 
 controller:
   serviceAccountName: null
   image:
-    repository: null
+    repo: null
     tag: null
 
 registry:

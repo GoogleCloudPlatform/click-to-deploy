@@ -13,7 +13,7 @@ x-google-marketplace:
   images:
     '':
       properties:
-        operator.image.repository:
+        operator.image.repo:
           type: REPO_WITH_REGISTRY
         operator.image.tag:
           type: TAG

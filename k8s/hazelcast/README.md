@@ -129,14 +129,30 @@ this option, change the value to `true`.
 export METRICS_EXPORTER_ENABLED=false
 ```
 
+Set up the image tag:
+
+It is advised to use stable image reference which you can find on
+[Marketplace Container Registry](https://marketplace.gcr.io/google/hazelcast).
+Example:
+
+```shell
+export TAG="3.12.4-20200312-164607"
+```
+
+Alternatively you can use short tag which points to the latest image for selected version.
+> Warning: this tag is not stable and referenced image might change over time.
+
+```shell
+export TAG="3.12"
+```
+
 Configure the container image:
 
 ```shell
-TAG=3.12
 export IMAGE_REGISTRY="marketplace.gcr.io/google"
 export IMAGE_HAZELCAST="${IMAGE_REGISTRY}/hazelcast3"
 export IMAGE_HAZELCASTMC="${IMAGE_REGISTRY}/hazelcast-mc3"
-export IMAGE_METRICS_EXPORTER="${IMAGE_REGISTRY}/hazelcast/prometheus-to-sd"
+export IMAGE_METRICS_EXPORTER="${IMAGE_REGISTRY}/hazelcast/prometheus-to-sd:${TAG}"
 ```
 
 For the persistent disk provisioning of the Hazelcast servers, you will need to:
@@ -180,17 +196,17 @@ expanded manifest file for future updates to the application.
 helm template chart/hazelcast \
   --name "${APP_INSTANCE_NAME}" \
   --namespace "${NAMESPACE}" \
-  --set "hazelcast.image.repo=${IMAGE_HAZELCAST}" \
-  --set "hazelcast.image.tag=${TAG}" \
-  --set "hazelcast.persistence.storageClass=${HAZELCAST_STORAGE_CLASS}" \
-  --set "hazelcast.persistence.size=${PERSISTENT_DISK_SIZE}" \
-  --set "hazelcast.serviceAccount=${HAZELCAST_SERVICE_ACCOUNT}" \
-  --set "mancenter.image.repo=${IMAGE_HAZELCASTMC}" \
-  --set "mancenter.image.tag=${TAG}" \
-  --set "mancenter.persistence.storageClass=${HAZELCAST_STORAGE_CLASS}" \
-  --set "mancenter.persistence.size=${PERSISTENT_DISK_SIZE}" \
-  --set "metrics.image=${IMAGE_METRICS_EXPORTER}:${TAG}" \
-  --set "metrics.exporter.enabled=${METRICS_EXPORTER_ENABLED}" \
+  --set hazelcast.image.repo="${IMAGE_HAZELCAST}" \
+  --set hazelcast.image.tag="${TAG}" \
+  --set hazelcast.persistence.storageClass="${HAZELCAST_STORAGE_CLASS}" \
+  --set hazelcast.persistence.size="${PERSISTENT_DISK_SIZE}" \
+  --set hazelcast.serviceAccount="${HAZELCAST_SERVICE_ACCOUNT}" \
+  --set mancenter.image.repo="${IMAGE_HAZELCASTMC}" \
+  --set mancenter.image.tag="${TAG}" \
+  --set mancenter.persistence.storageClass="${HAZELCAST_STORAGE_CLASS}" \
+  --set mancenter.persistence.size="${PERSISTENT_DISK_SIZE}" \
+  --set metrics.image="${IMAGE_METRICS_EXPORTER}" \
+  --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED}" \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
