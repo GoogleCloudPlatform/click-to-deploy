@@ -13,8 +13,8 @@ spec:
     type: Hazelcast
     version: "{{ .Values.hazelcast.image.tag }}"
     description: |-
-      Hazelcast IMDG (In-Memory Data Grid) is an in-memory data store based on Java which offers caching solutions
-      ensuring that data is in the right place when it’s needed for optimal performance.
+      Hazelcast IMDG (In-Memory Data Grid) is an in-memory data store, based on Java, which offers caching solutions
+      to ensure that data is in the right place, when it’s needed, for optimal performance.
 
       # Support
       Google does not offer support for this solution. However, community support is available on
@@ -40,18 +40,18 @@ spec:
       gcloud container clusters get-credentials [CLUSTER_NAME] --zone [CLUSTER_ZONE]
       ```
       where:
-      * `[CLUSTER_NAME]` is the name of the cluster for this application
+      * `[CLUSTER_NAME]` is the name of the cluster for this app
       * `[CLUSTER_ZONE]` is the zone in which the cluster is operating
 
       For information on getting the credentials for a cluster, read the [Google Kubernetes Engine documentation](https://cloud.google.com/kubernetes-engine/docs/quickstart#get_authentication_credentials_for_the_cluster).
       Make sure that all components are in `ready` status.
-      To connect to the Hazelcast service from your machine, you should use curl or other HTTP client.
+      To connect to the Hazelcast service from your machine, you should use `curl`, or another HTTP client.
 
-      Forward the Hazelcast service client port to your machine:
+      Forward the Hazelcast service's client port to your machine:
       ```shell
       kubectl port-forward svc/{{ .Release.Name }}-svc --namespace {{ .Release.Namespace }} 5701
       ```
-      Then run the below commands in a new terminal window:
+      Then, in a new terminal window, run the following commands:
       ```shell
 
       ## Put some value
@@ -60,6 +60,7 @@ spec:
 
       ## Get value
       curl 'http://localhost:5701/hazelcast/rest/maps/mapName/mykey'
+      ```
 
   info:
   - name: hazelcast
@@ -67,9 +68,9 @@ spec:
     valueFrom:
       serviceRef:
         name: "{{ .Release.Name }}-svc"
-  - name: Forward Mancenter port locally
+  - name: Forward ManCenter port locally
     value: kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-mancenter-svc 8080:8080
-  - name: Hazelcast Mancenter address (local only)
+  - name: Hazelcast ManCenter address (local only)
     value: http://localhost:8080/hazelcast-mancenter
   selector:
     matchLabels:
