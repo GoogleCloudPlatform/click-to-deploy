@@ -13,9 +13,9 @@ spec:
     type: "Cert Manager"
     version: {{ .Values.controller.image.tag | quote }}
     description: |-
-      Cert Manager provides native k8s automation for creation and manages TLS certificates.
-      Solution supports functionality for making self signed certificates, using your own CA, and using external services like Let’s Encrypt, HashiCorp Vault, and Venafi.
-      Also the solution takes care of validity, up to date, and attempts to renew certificates before they expire.
+      Cert Manager provides native Kubernetes automation for creating and managing TLS certificates.
+      It has support for making self-signed certificates, using your own Certificate Authority (CA), and using external services such as Let’s Encrypt, HashiCorp Vault, and Venafi.
+      It also takes care of checking that certificates are valid and up-to-date, and attempts to renew certificates before they expire.
 
       # Support
       Google does not offer support for this solution. However, community support is available on
@@ -32,7 +32,7 @@ spec:
     notes: |-
       # Deploy an Issuer and Cert request for self-signed certificate
 
-      Run the following command to deploy an Issuer instance:
+      To deploy an Issuer instance, run the following command:
 
       ```shell
       kubectl apply --namespace {{ .Release.Namespace }} -f - <<EOF
@@ -45,7 +45,7 @@ spec:
       EOF
       ```
 
-      Run the following command for requesting certificate:
+      To request a certificate, run the following command:
 
       ```shell
       kubectl apply --namespace {{ .Release.Namespace }} -f - <<EOF
