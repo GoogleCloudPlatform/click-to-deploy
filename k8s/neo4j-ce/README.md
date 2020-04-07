@@ -119,7 +119,7 @@ Configure the container image:
 ```shell
 TAG=4.0
 export IMAGE_REGISTRY="marketplace.gcr.io/google"
-export IMAGE_NEO4J_CE="${IMAGE_REGISTRY}/neo4j-ce4"
+export IMAGE_NEO4J_CE="${IMAGE_REGISTRY}/neo4j4"
 ```
 
 For the persistent disk provisioning of the Neo4j Community Edition servers, you will need to:
@@ -344,7 +344,7 @@ kubectl scale statefulsets "${APP_INSTANCE_NAME}" --namespace "${NAMESPACE}" --r
 
 ```
 
-## Restore Magento data on a running Magento instance
+## Restore Neo4j data from your local workstation
 
 In order to restore Neo4j data, you must specify the backup file name in `LOCAL_FILE` variable.
 
