@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Make sure that there is a trigger for each existing solution
 set -eu pipefail
 
 shopt -s nullglob
@@ -21,20 +22,20 @@ shopt -s nullglob
 missing_var=""
 # Ensure all required env vars are supplied.
 for var in DIRECTORY_NAME CLOUDBUILD_NAME PROJECT; do
-  if ! [[ -v "$var" ]]; then
-    echo "$var env variable is required"
+  if ! [[ -v "${var}" ]]; then
+    echo "${var} env variable is required"
     missing_var=true
   fi
 done
 
-if [[ -n "$missing_var" ]]; then
+if [[ -n "${missing_var}" ]]; then
   exit 1
 fi
 
 function trigger_exist {
   local -r solution=$1
 
-  echo "$triggers" | jq -e --arg filename "${CLOUDBUILD_NAME}" --arg solution "${solution}" \
+  echo "${triggers}" | jq -e --arg filename "${CLOUDBUILD_NAME}" --arg solution "${solution}" \
       '.[] | select(.filename == $filename) | select(.substitutions._SOLUTION_NAME == $solution)'
   return $?
 }
