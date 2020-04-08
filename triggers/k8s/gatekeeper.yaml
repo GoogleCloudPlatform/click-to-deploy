@@ -21,9 +21,10 @@ github:
     branch: .*
     commentControl: COMMENTS_ENABLED
 includedFiles:
-  - cloudbuild-k8s.yaml
-  - k8s.Dockerfile
-  - k8s/gatekeeper/**
-  - k8s/*
+- cloudbuild-k8s.yaml
+- k8s.Dockerfile
+- k8s/gatekeeper/**
+- k8s/*
+name: Trigger-for-K8s-flink-operator
 substitutions:
   _SOLUTION_NAME: gatekeeper

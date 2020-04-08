@@ -20,7 +20,6 @@ github:
   pullRequest:
     branch: .*
     commentControl: COMMENTS_ENABLED
-id: 99f8f5f5-6002-48a6-9429-5956b8386633
 includedFiles:
 - cloudbuild-k8s.yaml
 - k8s.Dockerfile

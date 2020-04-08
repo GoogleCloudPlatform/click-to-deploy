@@ -21,12 +21,11 @@ github:
   pullRequest:
     branch: .*
     commentControl: COMMENTS_ENABLED
-id: e84b1610-5061-49af-b8e0-62665d2369c5
 includedFiles:
 - cloudbuild-k8s.yaml
 - k8s.Dockerfile
 - k8s/airflow-operator/**
 - k8s/*
-name: e84b1610-5061-49af-b8e0-62665d2369c5
+name: Trigger-for-K8s-airflow-operator
 substitutions:
   _SOLUTION_NAME: airflow-operator

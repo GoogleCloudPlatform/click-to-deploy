@@ -21,12 +21,11 @@ github:
   pullRequest:
     branch: .*
     commentControl: COMMENTS_ENABLED
-id: ad2f15de-552e-4b47-b310-e589b932aca1
 includedFiles:
 - cloudbuild-k8s.yaml
 - k8s.Dockerfile
 - k8s/wordpress/**
 - k8s/*
-name: ad2f15de-552e-4b47-b310-e589b932aca1
+name: Trigger-for-K8s-wordpress
 substitutions:
   _SOLUTION_NAME: wordpress

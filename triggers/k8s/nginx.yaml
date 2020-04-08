@@ -21,12 +21,11 @@ github:
   pullRequest:
     branch: .*
     commentControl: COMMENTS_ENABLED
-id: 9283c1ef-4642-459b-b09a-d4b62f7611bc
 includedFiles:
 - cloudbuild-k8s.yaml
 - k8s.Dockerfile
 - k8s/nginx/**
 - k8s/*
-name: 9283c1ef-4642-459b-b09a-d4b62f7611bc
+name: Trigger-for-K8s-nginx
 substitutions:
   _SOLUTION_NAME: nginx

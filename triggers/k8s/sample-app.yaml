@@ -21,12 +21,11 @@ github:
   pullRequest:
     branch: .*
     commentControl: COMMENTS_ENABLED
-id: 93973567-ac6f-4368-9e46-99273d32f37b
 includedFiles:
 - cloudbuild-k8s.yaml
 - k8s.Dockerfile
 - k8s/sample-app/**
 - k8s/*
-name: 93973567-ac6f-4368-9e46-99273d32f37b
+name: Trigger-for-K8s-sample-app
 substitutions:
   _SOLUTION_NAME: sample-app

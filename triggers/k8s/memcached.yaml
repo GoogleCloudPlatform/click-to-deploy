@@ -21,12 +21,11 @@ github:
   pullRequest:
     branch: .*
     commentControl: COMMENTS_ENABLED
-id: 0435e2cb-4983-4823-af0a-e397e0a66e4e
 includedFiles:
 - cloudbuild-k8s.yaml
 - k8s.Dockerfile
 - k8s/memcached/**
 - k8s/*
-name: 0435e2cb-4983-4823-af0a-e397e0a66e4e
+name: Trigger-for-K8s-memcached
 substitutions:
   _SOLUTION_NAME: memcached
