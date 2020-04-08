@@ -14,31 +14,35 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -eu
+set -eu pipefail
 
 shopt -s nullglob
 
+missing_var=""
 # Ensure all required env vars are supplied.
 for var in DIRECTORY_NAME CLOUDBUILD_NAME PROJECT; do
-  if ! [[ -v "${var}" ]]; then
-    echo "${var} env variable is required"
-    exit 1
+  if ! [[ -v "$var" ]]; then
+    echo "$var env variable is required"
+    missing_var=true
   fi
 done
+
+if [[ -n "$missing_var" ]]; then
+  exit 1
+fi
 
 function trigger_exist {
   local -r solution=$1
 
-  gcloud alpha builds triggers list --project="${PROJECT}" --format json \
-    | jq -e --arg filename "${CLOUDBUILD_NAME}" --arg solution "${solution}" \
-    '.[] | select(.filename == $filename) | select(.substitutions._SOLUTION_NAME == $solution)'
-    
-   return $?
+  echo "$triggers" | jq -e --arg filename "${CLOUDBUILD_NAME}" --arg solution "${solution}" \
+      '.[] | select(.filename == $filename) | select(.substitutions._SOLUTION_NAME == $solution)'
+  return $?
 }
 
 function main {
   local -i failure_cnt=0
 
+  triggers="$(gcloud alpha builds triggers list --project="${PROJECT}" --format json)"
   for solution in ${DIRECTORY_NAME}/*; do
     if [[ -d ${solution} ]]; then
       solution="${solution%/}"     # strip trailing slash
