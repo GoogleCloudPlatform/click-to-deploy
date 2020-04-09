@@ -81,7 +81,6 @@ def main():
   trigger_by_solution = {}
 
   for t in triggers:
-    # print(yaml.dump(t))
     try:
       if 'includedFiles' not in t:
         continue
