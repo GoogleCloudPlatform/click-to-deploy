@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,11 +20,12 @@ github:
   pullRequest:
     branch: .*
     commentControl: COMMENTS_ENABLED
+id: db00a29d-b65c-44c6-8d56-a73f9019e20d
 includedFiles:
 - cloudbuild-k8s.yaml
 - k8s.Dockerfile
 - k8s/joomla/**
 - k8s/*
-name: Trigger-for-K8s-joomla
+name: Trigger-for-K8s-Joomla
 substitutions:
   _SOLUTION_NAME: joomla

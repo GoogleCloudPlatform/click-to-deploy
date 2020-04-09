@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,11 +20,12 @@ github:
   pullRequest:
     branch: .*
     commentControl: COMMENTS_ENABLED
+id: b3604063-6985-4688-a1df-111c297b5aaa
 includedFiles:
 - cloudbuild-k8s.yaml
 - k8s.Dockerfile
 - k8s/drupal/**
 - k8s/*
-name: Trigger-for-K8s-drupal
+name: Trigger-for-K8s-Drupal
 substitutions:
   _SOLUTION_NAME: drupal

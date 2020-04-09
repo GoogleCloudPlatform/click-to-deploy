@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-description: Trigger for K8s Gatekeeper
+description: Trigger for K8s gatekeeper
 filename: cloudbuild-k8s.yaml
 github:
   name: click-to-deploy
@@ -20,11 +20,12 @@ github:
   pullRequest:
     branch: .*
     commentControl: COMMENTS_ENABLED
+id: 6af6e0f5-2afc-4e69-9d47-3ee68a3d3ca5
 includedFiles:
 - cloudbuild-k8s.yaml
 - k8s.Dockerfile
 - k8s/gatekeeper/**
 - k8s/*
-name: Trigger-for-K8s-flink-operator
+name: Trigger-for-K8s-gatekeeper
 substitutions:
   _SOLUTION_NAME: gatekeeper

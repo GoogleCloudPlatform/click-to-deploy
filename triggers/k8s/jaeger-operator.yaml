@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ github:
   pullRequest:
     branch: .*
     commentControl: COMMENTS_ENABLED
+id: e44cb6a5-b945-4359-9ed6-1c682f89fbcf
 includedFiles:
 - cloudbuild-k8s.yaml
 - k8s.Dockerfile

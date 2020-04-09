@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,11 +20,12 @@ github:
   pullRequest:
     branch: .*
     commentControl: COMMENTS_ENABLED
+id: b99ca28c-3e25-4d00-aed7-d85c144ba6f0
 includedFiles:
 - cloudbuild-k8s.yaml
 - k8s.Dockerfile
 - k8s/magento/**
 - k8s/*
-name: Trigger-for-K8s-magento
+name: Trigger-for-K8s-Magento
 substitutions:
   _SOLUTION_NAME: magento
