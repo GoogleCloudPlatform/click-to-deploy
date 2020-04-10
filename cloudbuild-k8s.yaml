@@ -98,4 +98,13 @@ steps:
   entrypoint: bash
   args:
   - -exc
-  - make -j4 app/verify
+  - |
+    set -eo pipefail
+    # Export the environment variables passed as json key/value map
+    # Example, --substitutions _EXTRA_VARS='{\"key1\": \"value1\", \"key2\":\"value2\"}' results in:
+    #   export key1=value1
+    #   export key2=value2
+    for extra_var in $(echo $_EXTRA_VARS | jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]" ); do
+      export $$extra_var
+    done
+    make -j4 app/verify
