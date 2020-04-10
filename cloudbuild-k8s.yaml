@@ -76,7 +76,7 @@ steps:
   - -exc
   - make app/doctor
 
-- id: Build $_SOLUTION_NAME
+- id: Build Solution
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
@@ -88,7 +88,7 @@ steps:
   - -exc
   - make -j4 app/build
 
-- id: Verify $_SOLUTION_NAME
+- id: Verify Solution
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
