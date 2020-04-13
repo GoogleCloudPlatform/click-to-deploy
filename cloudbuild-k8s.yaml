@@ -23,6 +23,7 @@ options:
 substitutions:
   _CLUSTER_NAME: marketplace-testing
   _CLUSTER_LOCATION: us-central1
+  _VERIFY_ENV_VARS: '{}'
 steps:
 
 - id: Pull Dev Image
@@ -101,10 +102,10 @@ steps:
   - |
     set -eo pipefail
     # Export the environment variables passed as json key/value map
-    # Example, --substitutions _EXTRA_VARS='{\"key1\": \"value1\", \"key2\":\"value2\"}' results in:
+    # Example, --substitutions _VERIFY_ENV_VARS='{\"key1\": \"value1\", \"key2\":\"value2\"}' results in:
     #   export key1=value1
     #   export key2=value2
-    for extra_var in $(echo $_EXTRA_VARS | jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]" ); do
+    for extra_var in $(echo $_VERIFY_ENV_VARS | jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]" ); do
       export $$extra_var
     done
     make -j4 app/verify
