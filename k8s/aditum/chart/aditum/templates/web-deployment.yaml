@@ -14,7 +14,7 @@ spec:
       serviceAccountName: {{ .Values.controller.serviceAccount }}
       containers:
         #TODO: Insert variable for dynamic image URL
-      - image: image: "{{ .Values.aditum.image.repo }}:latest"
+      - image: "{{ .Values.aditum.image.repo }}:{{ .Values.aditum.image.tag }}"
         imagePullPolicy: Always
         name: web
         ports:
@@ -39,4 +39,6 @@ spec:
         env:
         - name: INITIAL_EMAIL
           value: {{ .Values.setupAttributes.initialEmail }}
+        - name: GKE_INSTANCE
+          value: "k8"
 
