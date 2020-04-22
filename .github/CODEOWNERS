@@ -7,3 +7,5 @@
 
 # GCB configuration.
 cloudbuild-vm.yaml  @wgrzelak @khajduczenia @huyhg
+
+/docker/ @GoogleCloudPlatform/c2d-contributors

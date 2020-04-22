@@ -1,0 +1,46 @@
+#!/bin/bash -eu
+#
+# Copyright 2020 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
+
+postgres_sonar_db="$(get_attribute_value "sonar_db_pass")"
+sonar_pass="$(get_attribute_value "sonar_password")"
+
+# Creating postgres DB for sonar.
+sudo -u postgres psql <<EOF
+CREATE USER sonar WITH ENCRYPTED PASSWORD '${postgres_sonar_db}';
+CREATE DATABASE sonar OWNER sonar;
+GRANT ALL PRIVILEGES ON DATABASE sonar TO sonar;
+\q
+EOF
+
+# Configure SonarQube to run as a sonar user.
+sed -i -e 's@#RUN_AS_USER=@RUN_AS_USER=sonar@g' /opt/sonarqube/bin/linux-x86-64/sonar.sh
+# Sonarqube default configuration file edits.
+sed -i -e 's@#sonar.jdbc.username=@sonar.jdbc.username=sonar@g' /opt/sonarqube/conf/sonar.properties
+sed -i -e 's@#sonar.jdbc.password=@sonar.jdbc.password='${postgres_sonar_db}'@g' /opt/sonarqube/conf/sonar.properties
+sed -i -e 's@#sonar.jdbc.url=jdbc:postgresql://localhost/sonarqube?currentSchema=my_schema@sonar.jdbc.url=jdbc:postgresql://localhost/sonar@g' /opt/sonarqube/conf/sonar.properties
+sed -i -e 's@#sonar.web.javaAdditionalOpts=@sonar.web.javaAdditionalOpts=-server@g' /opt/sonarqube/conf/sonar.properties
+sed -i -e 's@#sonar.web.host=0.0.0.0@sonar.web.host=0.0.0.0@g' /opt/sonarqube/conf/sonar.properties
+
+passwd sonar <<EOF
+$sonar_pass
+$sonar_pass
+EOF
+
+# Enabling Sonarqube.
+systemctl start sonar
+systemctl enable sonar

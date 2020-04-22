@@ -23,7 +23,7 @@ spec:
       - args:
         - --kubelet-service=kube-system/kubelet
         - --logtostderr=true
-        image: {{ .Values.operator.image.repository }}:{{ .Values.operator.image.tag }}
+        image: {{ .Values.operator.image.repo }}:{{ .Values.operator.image.tag }}
         name: prometheus-operator
         ports:
         - containerPort: 8080

@@ -17,9 +17,8 @@ zookeeper:
   memoryRequest: null
 
 exporter:
-  image:
-    name : null
-    tag: null
+  image: null
+  tag: null
   port: 9141
 
 metrics:

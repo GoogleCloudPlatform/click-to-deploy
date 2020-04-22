@@ -165,38 +165,36 @@ By default, the app does not export metrics to Stackdriver. To enable this optio
 export METRICS_EXPORTER_ENABLED=false
 ```
 
-Configure the container image:
+Set up the image tag:
+
+It is advised to use stable image reference which you can find on
+[Marketplace Container Registry](https://marketplace.gcr.io/google/magento).
+Example:
 
 ```shell
-TAG=2.3
-IMAGE_REPO="marketplace.gcr.io/google/magento"
-
-export IMAGE_MYSQL="${IMAGE_REPO}/mysql:${TAG}"
-export IMAGE_REDIS="${IMAGE_REPO}/redis:${TAG}"
-
-export IMAGE_NGINX_EXPORTER="${IMAGE_REPO}/nginx-exporter:${TAG}"
-export IMAGE_MYSQL_EXPORTER="${IMAGE_REPO}/mysql-exporter:${TAG}"
-export IMAGE_REDIS_EXPORTER="${IMAGE_REPO}/redis-exporter:${TAG}"
-export IMAGE_METRICS_EXPORTER="${IMAGE_REPO}/prometheus-to-sd:${TAG}"
+export TAG="2.3.2-20200311-092754"
 ```
 
-The images above are referenced by [tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend that you pin each image to an immutable [content digest](https://docs.docker.com/registry/spec/api/#content-digests). This ensures that the installed app always uses the same images, until you are ready to upgrade. To get the digest for the image, use the following script:
+Alternatively you can use short tag which points to the latest image for selected version.
+> Warning: this tag is not stable and referenced image might change over time.
 
 ```shell
-IMAGES=(
-    "IMAGE_MYSQL"
-    "IMAGE_REDIS"
-    "IMAGE_NGINX_EXPORTER"
-    "IMAGE_MYSQL_EXPORTER"
-    "IMAGE_REDIS_EXPORTER"
-    "IMAGE_METRICS_EXPORTER"
-)
-for i in "${IMAGES[@]}" ; do
-  repo=$(echo ${!i} | cut -d: -f1);
-  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
-  export $i="$repo@$digest";
-  echo ${!i};
-done
+export TAG="2.3"
+```
+
+Configure the container images:
+
+```shell
+export IMAGE_REGISTRY="marketplace.gcr.io/google"
+
+export IMAGE_MAGENTO="${IMAGE_REGISTRY}/magento"
+export IMAGE_MYSQL="${IMAGE_REGISTRY}/magento/mysql:${TAG}"
+export IMAGE_REDIS="${IMAGE_REGISTRY}/magento/redis:${TAG}"
+
+export IMAGE_NGINX_EXPORTER="${IMAGE_REGISTRY}/magento/nginx-exporter:${TAG}"
+export IMAGE_MYSQL_EXPORTER="${IMAGE_REGISTRY}/magento/mysql-exporter:${TAG}"
+export IMAGE_REDIS_EXPORTER="${IMAGE_REGISTRY}/magento/redis-exporter:${TAG}"
+export IMAGE_METRICS_EXPORTER="${IMAGE_REGISTRY}/magento/prometheus-to-sd:${TAG}"
 ```
 
 Set or generate the passwords:
@@ -258,24 +256,24 @@ expanded manifest file for future updates to your app.
 helm template chart/magento \
     --name "${APP_INSTANCE_NAME}" \
     --namespace "${NAMESPACE}" \
-    --set "magento.image.tag=${TAG}" \
-    --set "magento.image.repo=${IMAGE_REPO}" \
-    --set "redis.image=${IMAGE_REDIS}" \
-    --set "db.image=${IMAGE_MYSQL}" \
-    --set "redis.exporter.image=${IMAGE_REDIS_EXPORTER}" \
-    --set "nginx.exporter.image=${IMAGE_NGINX_EXPORTER}" \
-    --set "db.exporter.image=${IMAGE_MYSQL_EXPORTER}" \
-    --set "metrics.image=${IMAGE_METRICS_EXPORTER}" \
-    --set "magento.admin.password=${MAGENTO_ADMIN_PASSWORD}" \
-    --set "db.rootPassword=${DB_ROOT_PASSWORD}" \
-    --set "db.magentoPassword=${MAGENTO_DB_PASSWORD}" \
-    --set "db.exporter.password=${DB_EXPORTER_PASSWORD}" \
-    --set "redis.password=${REDIS_PASSWORD}" \
-    --set "magento.admin.email=${MAGENTO_ADMIN_EMAIL}" \
-    --set "tls.base64EncodedPrivateKey=${TLS_CERTIFICATE_KEY}" \
-    --set "tls.base64EncodedCertificate=${TLS_CERTIFICATE_CRT}" \
-    --set "metrics.exporter.enabled=${METRICS_EXPORTER_ENABLED}" \
-    > ${APP_INSTANCE_NAME}_manifest.yaml
+    --set magento.image.repo="${IMAGE_MAGENTO}" \
+    --set magento.image.tag="${TAG}" \
+    --set redis.image="${IMAGE_REDIS}" \
+    --set db.image="${IMAGE_MYSQL}" \
+    --set redis.exporter.image="${IMAGE_REDIS_EXPORTER}" \
+    --set nginx.exporter.image="${IMAGE_NGINX_EXPORTER}" \
+    --set db.exporter.image="${IMAGE_MYSQL_EXPORTER}" \
+    --set metrics.image="${IMAGE_METRICS_EXPORTER}" \
+    --set magento.admin.password="${MAGENTO_ADMIN_PASSWORD}" \
+    --set db.rootPassword="${DB_ROOT_PASSWORD}" \
+    --set db.magentoPassword="${MAGENTO_DB_PASSWORD}" \
+    --set db.exporter.password="${DB_EXPORTER_PASSWORD}" \
+    --set redis.password="${REDIS_PASSWORD}" \
+    --set magento.admin.email="${MAGENTO_ADMIN_EMAIL}" \
+    --set tls.base64EncodedPrivateKey="${TLS_CERTIFICATE_KEY}" \
+    --set tls.base64EncodedCertificate="${TLS_CERTIFICATE_CRT}" \
+    --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED}" \
+    > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster
