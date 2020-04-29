@@ -261,9 +261,9 @@ $ kubectl port-forward mc-cluster-airflowui-0 8080:8080
 1.  In the GCP Console, open
     [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
 
-2.  From the list of applications, click **Airflow Operator**.
+1.  From the list of applications, click **Airflow Operator**.
 
-3.  On the Application Details page, click **Delete**.
+1.  On the Application Details page, click **Delete**.
 
 ## Using the command line
 
