@@ -37,6 +37,7 @@ You'll need the following tools in your development environment:
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 - [docker](https://docs.docker.com/install/)
 - [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+- [envsubst](https://command-not-found.com/envsubst)
 
 Configure `gcloud` as a Docker credential helper:
 
@@ -157,10 +158,6 @@ export CRD_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-crd-creator-job"
 To create service accounts, expand the manifest:
 
 ```shell
-# Install envsubst
-apt-get install -y gettext-base
-
-# Expand the manifest
 cat resources/service-accounts.yaml \
   | envsubst '${APP_INSTANCE_NAME} \
               ${NAMESPACE} \

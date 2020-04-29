@@ -55,6 +55,7 @@ environment by default.
 -   [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 -   [cqlsh](https://pypi.org/project/cqlsh/)
 -   [helm](https://helm.sh/)
+-   [envsubst](https://command-not-found.com/envsubst)
 
 Configure `gcloud` as a Docker credential helper:
 
@@ -267,10 +268,6 @@ If you want to expose your Cassandra cluster using an external IP address, first
 To configure Cassandra as an external service, run the following command:
 
 ```shell
-# Install envsubst
-apt-get install -y gettext-base
-
-# Expand the manifest
 envsubst '${APP_INSTANCE_NAME}' < scripts/external.yaml > scripts/external.yaml
 kubectl apply -f scripts/external.yaml --namespace "${NAMESPACE}"
 ```

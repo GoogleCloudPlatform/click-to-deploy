@@ -48,6 +48,7 @@ your environment by default.
 - [docker](https://docs.docker.com/install/)
 - [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 - [helm](https://helm.sh/)
+- [envsubst](https://command-not-found.com/envsubst)
 
 Configure `gcloud` as a Docker credential helper:
 
@@ -253,10 +254,6 @@ export CRD_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-nuclio-crd-creator-job"
 Expand the manifest to create Service accounts:
 
 ```shell
-# Install envsubst
-apt-get install -y gettext-base
-
-# Expand the manifest
 cat resources/service-accounts.yaml \
   | envsubst '${APP_INSTANCE_NAME} \
               ${NAMESPACE} \

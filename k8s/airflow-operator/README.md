@@ -49,6 +49,7 @@ environment by default.
 -   [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 -   [docker](https://docs.docker.com/install/)
 -   [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+-   [envsubst](https://command-not-found.com/envsubst)
 
 #### Create a Google Kubernetes Engine cluster
 
@@ -172,10 +173,6 @@ Use `envsubst` to expand the template. We recommend that you save the expanded
 manifest file for future updates to the application.
 
 ```shell
-# Install envsubst
-apt-get install -y gettext-base
-
-# Expand the manifest
 awk 'FNR==1 {print "---"}{print}' manifest/* \
   | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_AIRFLOWOPERATOR
   $SERVICE_ACCOUNT' \

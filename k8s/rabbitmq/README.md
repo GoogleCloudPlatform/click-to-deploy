@@ -69,6 +69,7 @@ environment by default.
 -   [docker](https://docs.docker.com/install/)
 -   [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 -   [helm](https://helm.sh/)
+-   [envsubst](https://command-not-found.com/envsubst)
 
 Configure `gcloud` as a Docker credential helper:
 
@@ -242,14 +243,11 @@ save the expanded manifest file for future updates to the application.
     # Define name of service account
     export RABBITMQ_SERVICE_ACCOUNT=$APP_INSTANCE_NAME-rabbitmq-sa
 
-    # Install envsubst
-    apt-get install -y gettext-base
-
     # Expand rbac.yaml
     envsubst '$APP_INSTANCE_NAME' < scripts/rbac.yaml > "${APP_INSTANCE_NAME}_rbac.yaml"
     ```
 
-1.  Expand the `Application`, `Secret`, `StatefulSet`, and `ConfigMap` YAML
+2.  Expand the `Application`, `Secret`, `StatefulSet`, and `ConfigMap` YAML
     files.
 
     ```shell
