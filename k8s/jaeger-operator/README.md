@@ -154,6 +154,10 @@ export CRD_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-crd-creator-job"
 Expand the manifest to create Service Accounts:
 
 ```shell
+# Install envsubst
+apt-get install -y gettext-base
+
+# Expand the manifest
 cat resources/service-accounts.yaml \
   | envsubst '${APP_INSTANCE_NAME} \
               ${NAMESPACE} \

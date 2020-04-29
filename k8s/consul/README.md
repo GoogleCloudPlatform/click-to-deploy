@@ -202,6 +202,10 @@ export CONSUL_SERVER_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-consul-server"
 Expand the manifest to create Service Accounts:
 
 ```shell
+# Install envsubst
+apt-get install -y gettext-base
+
+# Expand the manifest
 cat resources/service-accounts.yaml \
   | envsubst '${APP_INSTANCE_NAME} \
               ${CONSUL_CLIENT_SERVICE_ACCOUNT} \

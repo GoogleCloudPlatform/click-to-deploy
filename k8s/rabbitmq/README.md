@@ -242,6 +242,9 @@ save the expanded manifest file for future updates to the application.
     # Define name of service account
     export RABBITMQ_SERVICE_ACCOUNT=$APP_INSTANCE_NAME-rabbitmq-sa
 
+    # Install envsubst
+    apt-get install -y gettext-base
+
     # Expand rbac.yaml
     envsubst '$APP_INSTANCE_NAME' < scripts/rbac.yaml > "${APP_INSTANCE_NAME}_rbac.yaml"
     ```

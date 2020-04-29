@@ -172,6 +172,10 @@ Use `envsubst` to expand the template. We recommend that you save the expanded
 manifest file for future updates to the application.
 
 ```shell
+# Install envsubst
+apt-get install -y gettext-base
+
+# Expand the manifest
 awk 'FNR==1 {print "---"}{print}' manifest/* \
   | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_AIRFLOWOPERATOR
   $SERVICE_ACCOUNT' \
@@ -257,9 +261,9 @@ $ kubectl port-forward mc-cluster-airflowui-0 8080:8080
 1.  In the GCP Console, open
     [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
 
-1.  From the list of applications, click **Airflow Operator**.
+2.  From the list of applications, click **Airflow Operator**.
 
-1.  On the Application Details page, click **Delete**.
+3.  On the Application Details page, click **Delete**.
 
 ## Using the command line
 
