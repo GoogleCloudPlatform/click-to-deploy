@@ -247,7 +247,7 @@ save the expanded manifest file for future updates to the application.
     envsubst '$APP_INSTANCE_NAME' < scripts/rbac.yaml > "${APP_INSTANCE_NAME}_rbac.yaml"
     ```
 
-2.  Expand the `Application`, `Secret`, `StatefulSet`, and `ConfigMap` YAML
+1.  Expand the `Application`, `Secret`, `StatefulSet`, and `ConfigMap` YAML
     files.
 
     ```shell

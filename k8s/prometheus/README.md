@@ -252,10 +252,6 @@ export NODE_EXPORTER_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-node-exporter"
 Expand the manifest to create Service Accounts:
 
 ```shell
-# Install envsubst
-apt-get install -y gettext-base
-
-# Expand the manifest
 cat resources/service-accounts.yaml \
   | envsubst '$NAMESPACE $PROMETHEUS_SERVICE_ACCOUNT $KUBE_STATE_METRICS_SERVICE_ACCOUNT $ALERTMANAGER_SERVICE_ACCOUNT $GRAFANA_SERVICE_ACCOUNT $NODE_EXPORTER_SERVICE_ACCOUNT' \
   > "${APP_INSTANCE_NAME}_sa_manifest.yaml"
