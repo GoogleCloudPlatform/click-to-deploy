@@ -6,7 +6,7 @@ x-google-marketplace:
   solutionId: aditum
   # The release version is required in the schema and MUST match the
   # release tag on the the deployer.
-  publishedVersion: '0.1.2'
+  publishedVersion: "$TAG"
   publishedVersionMetadata:
     releaseNote: >-
       A regular update.
