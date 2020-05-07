@@ -1,3 +1,4 @@
+
 # Overview
 
 OrientDB is an open source NoSQL database management system written in Java.
@@ -289,6 +290,9 @@ Next steps to backup database:
 kubectl -n ${NAMESPACE} scale statefulset \
 	${APP_INSTANCE_NAME}-orientdb --replicas=0
 
+# Check if pods are stopped. There should be no output.
+kubectl -n ${NAMESPACE} get pods -l app.kubernetes.io/name=${APP_INSTANCE_NAME}
+
 ## 2. Create Backup job:
 
 kubectl apply -f ${APP_INSTANCE_NAME}-backup-${DATABASE}-job.yaml
@@ -310,12 +314,14 @@ kubectl -n ${NAMESPACE} exec -it \
 ```
 ## OrientDB 3.0.x Database Restore
 
+OrientDB does not support merging during restores. If you need to merge the old data with new writes, use [`EXPORT DATABASE`](http://orientdb.com/docs/3.0.x/console/Console-Command-Export.html) and [`IMPORT DATABASE`](http://orientdb.com/docs/3.0.x/console/Console-Command-Export.html) commands, instead.
+Read more about [OrientDB 3.0.x Backup and Restore procedure](http://orientdb.com/docs/3.0.x/admin/Backup-and-Restore.html)
 
 #### Create restore job:
 
 This restore job will restore only single database which you define.
 
-> **NOTE**: *Restore file should exist inside `/orientdb/backup` directory of first node `${APP_INSTANCE_NAME}-orientdb-0` of OrientDB cluster and also database you want to restore should be created before.
+> **NOTE**: *Restore file should exist inside `/orientdb/backup` directory of first node `${APP_INSTANCE_NAME}-orientdb-0` of OrientDB cluster and also database you want to restore should exist and it should be a new database.
 Steps are also included in scripts so you can just run and follow instructions in output.*
 
 ```shell
@@ -352,7 +358,7 @@ kubectl -n ${NAMESPACE} exec -it \
 ```
 Next steps to restore database:
 
-> Make sure you that database you want to restore already created in this OrientDB cluster.
+> Make sure you that database you want to restore already created in this OrientDB cluster and it is a new database.
 
 ```shell
 ## 1. Scale down StatefulSet to 0
@@ -360,6 +366,9 @@ Next steps to restore database:
 
 kubectl -n ${NAMESPACE} scale statefulset \
 	${APP_INSTANCE_NAME}-orientdb --replicas=0
+
+# Check if pods are stopped. There should be no output.
+kubectl -n ${NAMESPACE} get pods -l app.kubernetes.io/name=${APP_INSTANCE_NAME}
 
 ## 2. Create Restore job:
 
@@ -428,8 +437,6 @@ export NAMESPACE=default
 #### Delete the deployment with the generated manifest file
 
 Run `kubectl` on the expanded manifest file:
-> **WARNING:** This will also delete your `persistentVolumeClaim`
-> for ActiveMQ, which means that you will lose all of your ActiveMQ data.
 
 ```shell
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace ${NAMESPACE}
@@ -456,4 +463,3 @@ kubectl delete persistentvolumeclaims \
   --namespace ${NAMESPACE} \
   --selector app.kubernetes.io/name=${APP_INSTANCE_NAME}
 ```
-
