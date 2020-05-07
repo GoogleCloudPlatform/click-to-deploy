@@ -1,0 +1,73 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+# this file except in compliance with the License. You may obtain a copy of the
+# License at
+
+# http://www.apache.org/licenses/LICENSE-2.0
+
+# Unless required by applicable law or agreed to in writing, software distributed
+# under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+# CONDITIONS OF ANY KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations under the License.
+
+setup:
+- command: [docker, run, -ti, --name, some-neo4j-$UNIQUE, -d, -p, '7474:7477', -p, '7689:7689', -e, "NEO4J_AUTH=neo4j/admin123", $IMAGE]
+- command: [docker, exec, some-neo4j-$UNIQUE, apt, update]
+- command: [docker, exec, some-neo4j-$UNIQUE, apt, -y, install, curl]
+- command: [sleep, 10s]
+
+teardown:
+- command: [docker, stop, some-neo4j-$UNIQUE]
+- command: [docker, rm, some-neo4j-$UNIQUE]
+
+target: some-neo4j-$UNIQUE
+tests:
+- name: Test Neo4j Root API
+  command: [curl, -I, 'http://localhost:7474']
+  expect:
+    stdout:
+      matches: 'HTTP/1.1 200 OK'
+
+# It is not possible to sign-in, due page not working properly
+# when Javascript is disabled.
+- name: Test Neo4j Browser homepage
+  command: [curl, -L, 'http://localhost:7474/browser']
+  expect:
+    stdout:
+      matches: 'Neo4j Browser'
+
+# Tests using cypher-shell
+- name: Insert data via CLI
+  command: [cypher-shell, -u, neo4j, -p, admin123, -d, neo4j, '--', 'CREATE(n:Person { name: "John Doe", title: "Developer" })']
+
+- name: Get data via CLI
+  command: [cypher-shell, -u, neo4j, -p, admin123, -d, neo4j, '--', 'MATCH(n:Person) RETURN (n)']
+  expect:
+    stdout:
+      matches: 'John Doe'
+
+- name: Remove data via CLI
+  command: [cypher-shell, -u, neo4j, -p, admin123, -d, neo4j, '--', 'MATCH(n:Person) DELETE (n)']
+
+# Tests via API
+- name: Insert data via API
+  command: [curl, -X, POST, -u, 'neo4j:admin123', -d, '{"statements": [{"statement": "CREATE(n:Person { name: \"Jane Doe\" })" }]}', -H, 'Content-Type: application/json', -v, 'http://localhost:7474/db/neo4j/tx']
+  expect:
+    stdout:
+      matches: '/tx/1/commit'
+
+- name: Commit transaction via API
+  command: [curl, -I, -X, POST, -u, 'neo4j:admin123', -H, 'Content-Type: application/json', -v, 'http://localhost:7474/db/neo4j/tx/1/commit']
+  expect:
+    stdout:
+      matches: '200 OK'
+
+- name: Get data via API
+  command: [curl, -X, POST, -u, 'neo4j:admin123', -d, '{"statements": [{"statement": "MATCH(n:Person) RETURN (n)" }]}', -H, 'Content-Type: application/json', -v, 'http://localhost:7474/db/neo4j/tx']
+  expect:
+    stdout:
+      matches: 'Jane Doe'
+
+- name: Remove data via API
+  command: [curl, -X, POST, -u, 'neo4j:admin123', -d, '{"statements": [{"statement": "MATCH(n:Person) DELETE (n)" }]}', -H, 'Content-Type: application/json', -v, 'http://localhost:7474/db/neo4j/tx']
