@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "redis-ha.fullname" . }}-haproxy
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    component: {{ template "redis-ha.fullname" . }}-haproxy
+spec:
+  type: ClusterIP
+  ports:
+  - name: haproxy
+    port: 6379
+    protocol: TCP
+    targetPort: redis
+  - name: haproxy-readonly
+    port: 6380
+    protocol: TCP
+    targetPort: 6380
+  - name: exporter-port
+    port: 9101
+    protocol: TCP
+    targetPort: metrics-port
+  selector:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app: {{ template "redis-ha.name" . }}-haproxy
