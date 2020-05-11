@@ -14,7 +14,7 @@ TRACK ?= 5.0
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 IMAGE_MAIN ?= $(SOURCE_REGISTRY)/redis5:$(TRACK)
-IMAGE_HAPROXY = $(SOURCE_REGISTRY)/haproxy:2.0.14
+IMAGE_HAPROXY = $(SOURCE_REGISTRY)/haproxy2:2
 IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 IMAGE_REDIS_EXPORTER = gcr.io/cloud-marketplace/google/redis5:exporter
