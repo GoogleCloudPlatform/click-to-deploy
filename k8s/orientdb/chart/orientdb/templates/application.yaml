@@ -44,9 +44,9 @@ spec:
 
       Get OrientDB root user credentials from application page in console or you can print it by running below commands:
         ```shell
-        # Get admin user credentials of web console
+        # Get root user credentials of web console
         ORIENTDB_ROOT_PASSWORD=$(kubectl get secret --namespace \
-          {{ .Release.Namespace }} {{ .Release.Name }}-activemq-secret \
+          {{ .Release.Namespace }} {{ .Release.Name }}-orientdb-secret \
           -o jsonpath="{.data.root-password}" | base64 --decode)
 
         echo "username: root"
