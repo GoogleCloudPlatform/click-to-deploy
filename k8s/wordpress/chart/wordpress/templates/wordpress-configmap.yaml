@@ -1,0 +1,36 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-wordpress-config
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: wordpress-webserver
+data:
+  wp-install.sh: |
+    # https://codex.wordpress.org/Installing_WordPress#Installing_WordPress
+    # wait for connection
+    timeout 60 bash -c 'until echo > /dev/tcp/localhost/80; do sleep 2; done'
+    curl --fail --retry 5 --retry-delay 5 --retry-connrefused \
+      --data-urlencode "weblog_title=WordPress on Google Kubernetes Engine" \
+      --data-urlencode "user_name=${WP_ADMIN_USERNAME}" \
+      --data-urlencode "admin_email=${WP_ADMIN_EMAIL}" \
+      --data-urlencode "admin_password=${WP_ADMIN_PASSWORD}" \
+      --data-urlencode "admin_password2=${WP_ADMIN_PASSWORD}" \
+      --data-urlencode "pw_weak=1" \
+      "http://localhost/wp-admin/install.php?step=2"
+  # .htaccess must be overwritten to allow connection to the /server-status endpoint.
+  # By default, WordPress' .htaccess doesn't allow it.
+  .htaccess: |
+    # BEGIN WordPress
+    <IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    RewriteRule ^index\.php$ - [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    # Allow Apache mod_status
+    RewriteCond %{REQUEST_URI} !=/server-status
+    RewriteRule . /index.php [L]
+    </IfModule>
+    # END WordPress
