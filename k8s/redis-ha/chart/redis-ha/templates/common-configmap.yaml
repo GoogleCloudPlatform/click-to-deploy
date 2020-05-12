@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "redis-ha.fullname" . }}-configmap
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: redis-ha-configmap
+data:
+  {{- $root := . -}}
+  {{- range $path, $bytes := .Files.Glob "files/configs/*" }}
+  {{ base $path }}: |
+  {{- tpl ($root.Files.Get $path) $root | nindent 4}}
+  {{- end -}}
