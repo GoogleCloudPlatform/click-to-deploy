@@ -1,0 +1,105 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ${APP_INSTANCE_NAME}-backup-job
+  namespace: ${NAMESPACE}
+spec:
+  template:
+    spec:
+        containers:
+        - name: orientdb-backup
+          image: marketplace.gcr.io/google/orientdb3:3.0
+          imagePullPolicy: IfNotPresent
+          env:
+          - name: ORIENTDB_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: ${APP_INSTANCE_NAME}-orientdb-secret
+                key: root-password
+          - name: ORIENTDB_ADMIN_PASSWORD
+            value: admin
+          - name: ORIENTDB_ADMIN_NAME
+            value: admin
+            # Set DB=all to take backup for all databases
+            # Or set single database name like "DB=demoDB"
+          - name: DB
+            value: ${DATABASE}
+          - name: ORIENTDB_NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          volumeMounts:
+          - name: storage
+            mountPath: /orientdb/databases
+          - name: backup
+            mountPath: /orientdb/backup
+          command:
+          - bash
+          - -ec
+          - |
+            export TIMESTAMP=$(date '+%Y-%m-%d_%H-%M')
+
+            start_orientdb() {
+              dserver.sh >/dev/null 2>&1 &
+            }
+
+            wait_for_orientdb(){
+              sleep 10
+            }
+
+            get_database_list() {
+              # get list of available databases
+              console.sh "connect remote:localhost root ${ORIENTDB_ROOT_PASSWORD};list databases" |\
+                grep ^* | cut -d ' ' -f 2 > /tmp/backup_databases
+            }
+
+            backup_single_database() {
+              local database=$1
+              backup.sh plocal:${ORIENTDB_HOME}/databases/${database} \
+              "${ORIENTDB_ADMIN_NAME}" "${ORIENTDB_ADMIN_PASSWORD}" \
+              /orientdb/backup/${database}-${TIMESTAMP}.zip
+            }
+
+            list_backup_dir_content() {
+              echo -e "\n*******************************"
+              echo -e "List of backups in /orientdb/backup directory"
+              ls /orientdb/backup/*.zip
+            }
+
+            backup_all_databases() {
+              for database in $(cat /tmp/backup_databases); do
+                backup_single_database $database
+              done
+            }
+
+            main () {
+              if [[ ${DB} == "all" ]]; then
+                start_orientdb
+                ORIENTDB_PID=$!
+                wait_for_orientdb
+                get_database_list
+                # Kill server to backup
+                kill "${ORIENTDB_PID}"
+                backup_all_databases
+                list_backup_dir_content
+              elif [[ ! -z ${DB} ]]; then
+                backup_single_database ${DB}
+                list_backup_dir_content
+              else
+                echo "Please set DB variable!"
+                exit 1
+              fi
+              }
+
+              # Run main function
+              main
+          resources: {}
+        volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: storage-${APP_INSTANCE_NAME}-orientdb-0
+        - name: backup
+          persistentVolumeClaim:
+            claimName: backup-${APP_INSTANCE_NAME}-orientdb-0
+        restartPolicy: Never
+  backoffLimit: 1

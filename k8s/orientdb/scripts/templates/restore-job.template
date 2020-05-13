@@ -1,0 +1,60 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ${APP_INSTANCE_NAME}-restore-job
+spec:
+  template:
+    spec:
+        containers:
+        - name: orientdb-backup
+          image: marketplace.gcr.io/google/orientdb3:3.0
+          imagePullPolicy: IfNotPresent
+          env:
+          - name: ORIENTDB_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: ${APP_INSTANCE_NAME}-orientdb-secret
+                key: root-password
+          - name: ORIENTDB_ADMIN_PASSWORD
+            value: admin
+          - name: ORIENTDB_ADMIN_NAME
+            value: admin
+            # Database name to be restored
+          - name: DB
+            value: ${DATABASE}
+            # Backup file to be used for restore
+          - name: RESTORE_DB_FILE
+            value: ${RESTORE_FILE}
+          - name: ORIENTDB_NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          volumeMounts:
+          - name: storage
+            mountPath: /orientdb/databases
+          - name: backup
+            mountPath: /orientdb/backup
+          command:
+          - bash
+          - -ec
+          - |
+            if [[ ! -z ${DB} ]] && \
+               [[ ! -z ${RESTORE_DB_FILE} ]] && \
+               [[ -f /orientdb/backup/${RESTORE_DB_FILE} ]]; then
+                console.sh "connect plocal:${ORIENTDB_HOME}/databases/${DB} \
+                  ${ORIENTDB_ADMIN_NAME} ${ORIENTDB_ADMIN_PASSWORD};
+                  restore database /orientdb/backup/${RESTORE_DB_FILE}"
+            else
+              echo "Please set DB and RESTORE_DB_FILE variable and make sure RESTORE_DB_FILE exists!"
+              exit 1
+            fi
+          resources: {}
+        volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: storage-${APP_INSTANCE_NAME}-orientdb-0
+        - name: backup
+          persistentVolumeClaim:
+            claimName: backup-${APP_INSTANCE_NAME}-orientdb-0
+        restartPolicy: Never
+  backoffLimit: 4
