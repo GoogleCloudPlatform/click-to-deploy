@@ -170,7 +170,7 @@ It is advised to use stable image reference which you can find on
 Example:
 
 ```shell
-export TAG="5.3.0-20200311-092527"
+export TAG="5.3.2-20200410-18135"
 ```
 
 Alternatively you can use short tag which points to the latest image for selected version.
@@ -190,22 +190,36 @@ export IMAGE_MYSQL_EXPORTER="marketplace.gcr.io/google/wordpress/mysqld-exporter
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/wordpress/prometheus-to-sd:${TAG}"
 ```
 
+For the persistent disk provisioning of the Wordpress StatefulSets, you will need to:
+
+ * Set the StorageClass name. Check your available options using the command below:
+   * ```kubectl get storageclass```
+   * Or check how to create a new StorageClass in [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
+
+ * Set the persistent disk's size. The default disk size is "5Gi".
+
+```shell
+export DEFAULT_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
+export PERSISTENT_DISK_SIZE="5Gi"
+```
+
+
 Set or generate passwords:
 
 ```shell
-# Install pwgen and base64
-sudo apt-get install -y pwgen cl-base64
+# Set alias for password generation
+alias generate_pwd="cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 1 | tr -d '\n'"
 
 # Set the root and WordPress database passwords
-export ROOT_DB_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
-export WORDPRESS_DB_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
+export ROOT_DB_PASSWORD="$(generate_pwd)"
+export WORDPRESS_DB_PASSWORD="$(generate_pwd)"
 
 # Set mysqld-exporter user password.
-export EXPORTER_DB_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
+export EXPORTER_DB_PASSWORD="$(generate_pwd)"
 
 # Set e-mail address and password for WordPress admin panel
 export WORDPRESS_ADMIN_EMAIL=noreply@example.com
-export WORDPRESS_ADMIN_PASSWORD="$(pwgen 20 1 | tr -d '\n' | base64)"
+export WORDPRESS_ADMIN_PASSWORD="$(generate_pwd)"
 ```
 
 #### Create TLS certificate for WordPress
@@ -225,7 +239,7 @@ export WORDPRESS_ADMIN_PASSWORD="$(pwgen 20 1 | tr -d '\n' | base64)"
         -subj "/CN=wordpress/O=wordpress"
     ```
 
-1.  Set `TLS_CERTIFICATE_KEY` and `TLS_CERTIFICATE_CRT` variables:
+2.  Set `TLS_CERTIFICATE_KEY` and `TLS_CERTIFICATE_CRT` variables:
 
     ```shell
     export TLS_CERTIFICATE_KEY="$(cat /tmp/tls.key | base64)"
@@ -252,8 +266,12 @@ helm template chart/wordpress \
   --namespace "$NAMESPACE" \
   --set wordpress.image.repo="$IMAGE_WORDPRESS" \
   --set wordpress.image.tag="$TAG" \
+  --set wordpress.persistence.storageClass="$DEFAULT_STORAGE_CLASS" \
+  --set wordpress.persistence.size="$PERSISTENT_DISK_SIZE" \
   --set db.image="$IMAGE_MYSQL" \
   --set db.rootPassword="$ROOT_DB_PASSWORD" \
+  --set db.persistence.storageClass="$DEFAULT_STORAGE_CLASS" \
+  --set db.persistence.size="$PERSISTENT_DISK_SIZE" \
   --set db.wordpressPassword="$WORDPRESS_DB_PASSWORD" \
   --set db.exporter.image="$IMAGE_MYSQL_EXPORTER" \
   --set db.exporter.password="$EXPORTER_DB_PASSWORD" \

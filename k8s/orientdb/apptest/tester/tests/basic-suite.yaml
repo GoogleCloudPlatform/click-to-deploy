@@ -1,0 +1,70 @@
+actions:
+
+- name: Try to get IP of OrientDB service
+  bashTest:
+    script: |
+      timeout 120 bash -c '
+        until (host "${APP_SERVICE}" | grep "has address");
+          do sleep 2;
+        done'
+    expect:
+      exitCode:
+        equals: 0
+
+- name: Try to connect to OrientDB Studio service
+  bashTest:
+    script: |
+      timeout 120 bash -c '
+        until nc -vzw 5 "${APP_SERVICE}" 2480;
+          do sleep 2;
+        done'
+    expect:
+      exitCode:
+        equals: 0
+
+- name: There are exactly 3 nodes in a cluster
+  bashTest:
+    script: |-
+      kubectl get sts "${APP_INSTANCE_NAME}-orientdb" \
+        --namespace "${NAMESPACE}" \
+        --output jsonpath="{.spec.replicas}"
+    expect:
+      stdout:
+        equals: '3'
+
+- name: Create "demoDB" orientdb database with correct credentials on first node
+  bashTest:
+    script: |-
+      kubectl exec -it ${APP_INSTANCE_NAME}-orientdb-0 \
+        --namespace "${NAMESPACE}" \
+        -- bash -c "console.sh 'create database remote:localhost/demoDB ${ORIENTDB_USER} ${ORIENTDB_ROOT_PASSWORD} PLOCAL'"
+    expect:
+      stdout:
+        matches: 'Current database is: remote:localhost/demoDB'
+      exitCode:
+        equals: 0
+
+- name: Try to list databases with incorrect credentials on one node
+  bashTest:
+    script: |-
+      kubectl exec -it ${APP_INSTANCE_NAME}-orientdb-0 \
+        --namespace "${NAMESPACE}" \
+        -- bash -c "console.sh 'connect remote:localhost ${ORIENTDB_USER} some-wrong-password;list databases'"
+    expect:
+      exitCode:
+        equals: 1
+
+- name: List databases on each of 3 nodes and get "demoDB"
+  bashTest:
+    script: |-
+      for i in {0..2}; do
+        kubectl exec -it ${APP_INSTANCE_NAME}-orientdb-$i \
+          --namespace "${NAMESPACE}" \
+          -- bash -c "console.sh 'connect remote:localhost ${ORIENTDB_USER} ${ORIENTDB_ROOT_PASSWORD};list databases'" \
+           | grep -w 'demoDB';
+      done | wc -l
+    expect:
+      stdout:
+        equals: 3
+      exitCode:
+        equals: 0

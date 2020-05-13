@@ -25,15 +25,6 @@ steps:
   - docker.Dockerfile
   - .
 
-# TODO(GoogleCloudPlatform/click-to-deploy/issues/542): Remove this step when the source code will be in place.
-- id: Download Docker Source
-  name: gcr.io/cloud-builders/git
-  dir: docker
-  args:
-  - clone
-  - https://github.com/GoogleCloudPlatform/$_SOLUTION_NAME-docker
-  - $_SOLUTION_NAME
-
 - id: Invoke dockerfiles Tool
   name: click-to-deploy
   entrypoint: dockerfiles

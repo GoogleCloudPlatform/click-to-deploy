@@ -90,6 +90,7 @@ using Cloud Shell, these tools are installed in your environment by default.
 -   [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 -   [docker](https://docs.docker.com/install/)
 -   [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+-   [envsubst](https://command-not-found.com/envsubst)
 
 Configure `gcloud` as a Docker credential helper:
 

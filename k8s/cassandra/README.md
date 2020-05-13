@@ -55,6 +55,7 @@ environment by default.
 -   [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 -   [cqlsh](https://pypi.org/project/cqlsh/)
 -   [helm](https://helm.sh/)
+-   [envsubst](https://command-not-found.com/envsubst)
 
 Configure `gcloud` as a Docker credential helper:
 

@@ -1,0 +1,35 @@
+{{- $fullName := include "redis-ha.fullname" . }}
+{{- $namespace := .Release.Namespace -}}
+{{- $replicas := int (toString .Values.redis.replicas) }}
+{{- $root := . }}
+{{- range $i := until $replicas }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $fullName }}-announce-{{ $i }}
+  labels:
+    app.kubernetes.io/name: "{{ $root.Release.Name }}"
+  annotations:
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+spec:
+  publishNotReadyAddresses: true
+  type: ClusterIP
+  ports:
+  - name: server
+    port: 6379
+    protocol: TCP
+    targetPort: redis
+  - name: sentinel
+    port: 26379
+    protocol: TCP
+    targetPort: sentinel
+  - name: exporter
+    port: 9101
+    protocol: TCP
+    targetPort: exporter-port
+  selector:
+    app.kubernetes.io/name: "{{ $root.Release.Name }}"
+    app: {{ include "redis-ha.name" $root }}
+    "statefulset.kubernetes.io/pod-name": {{ $fullName }}-server-{{ $i }}
+{{- end }}
