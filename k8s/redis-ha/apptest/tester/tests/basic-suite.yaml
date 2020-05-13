@@ -1,0 +1,52 @@
+actions:
+- name: kubectl smoke test
+  bashTest:
+    script: redis-cli --version
+    expect:
+      exitCode:
+        equals: 0
+- name: Try to get IP of redis service
+  bashTest:
+    script: |
+      export NAMESPACE;
+      export REDIS_SERVICE;
+      timeout 120 bash -c '
+        until (host ${REDIS_SERVICE}-haproxy.${NAMESPACE}.svc.cluster.local \
+              | grep "has address");
+          do sleep 2;
+        done'
+    expect:
+      exitCode:
+        equals: 0
+- name: Try to store key with wrong auth key
+  bashTest:
+    script: redis-cli -a wrong_auth -h ${REDIS_SERVICE}-haproxy.${NAMESPACE}.svc.cluster.local get test
+    expect:
+      stdout:
+        matches: "NOAUTH Authentication required"
+- name: Try to store key with auth key
+  bashTest:
+    script: redis-cli -a $AUTH -h ${REDIS_SERVICE}-haproxy.${NAMESPACE}.svc.cluster.local set test test_text
+    expect:
+      stdout:
+        matches: "OK"
+- name: Try to get key with auth key from read only replica port
+  bashTest:
+    script: redis-cli -a $AUTH -h ${REDIS_SERVICE}-haproxy.${NAMESPACE}.svc.cluster.local -p 6380 get test
+    expect:
+      stdout:
+        matches: "test_text"
+
+- name: Try to get Redis metrics
+  bashTest:
+    script: curl http://${REDIS_SERVICE}.${NAMESPACE}.svc.cluster.local:9121/metrics
+    expect:
+      stdout:
+        matches: '(?m)^redis_up 1$'
+
+- name: Try to get Haproxy metrics
+  bashTest:
+    script: curl http://${REDIS_SERVICE}-haproxy.${NAMESPACE}.svc.cluster.local:9101/metrics
+    expect:
+      stdout:
+        matches: '(?m)^haproxy_process_nbproc 1$'

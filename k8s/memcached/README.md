@@ -140,29 +140,28 @@ option, change the value to `true`.
 export METRICS_EXPORTER_ENABLED=false
 ```
 
+Set up the image tag:
+
+It is advised to use stable image reference which you can find on
+[Marketplace Container Registry](https://marketplace.gcr.io/google/memcached).
+Example:
+
+```shell
+export TAG="1.5.22-20200311-091944"
+```
+
+Alternatively you can use short tag which points to the latest image for selected version.
+> Warning: this tag is not stable and referenced image might change over time.
+
+```shell
+export TAG="1.5"
+```
+
 Configure the container image:
 
 ```shell
-TAG=1.5
-export IMAGE_MEMCACHED="marketplace.gcr.io/google/memcached:${TAG}"
+export IMAGE_MEMCACHED="marketplace.gcr.io/google/memcached"
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/memcached/prometheus-to-sd:${TAG}"
-```
-
-The images above are referenced by
-[tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
-that you pin each image to an immutable
-[content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This ensures that the installed application always uses the same images, until
-you are ready to upgrade. To get the digest for the image, use the following
-script:
-
-```shell
-for i in "IMAGE_METRICS_EXPORTER" "IMAGE_MEMCACHED"; do
-  repo=$(echo ${!i} | cut -d: -f1);
-  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
-  export $i="$repo@$digest";
-  env | grep $i;
-done
 ```
 
 #### Create a namespace in your Kubernetes cluster
@@ -181,12 +180,14 @@ expanded manifest file for future updates to the application.
 
 ```shell
 helm template chart/memcached \
-  --name $APP_INSTANCE_NAME \
-  --namespace $NAMESPACE \
-  --set memcached.replicas=$REPLICAS \
-  --set memcached.image=$IMAGE_MEMCACHED \
-  --set metrics.image=$IMAGE_METRICS_EXPORTER \
-  --set metrics.exporter.enabled=$METRICS_EXPORTER_ENABLED > "${APP_INSTANCE_NAME}_manifest.yaml"
+  --name "$APP_INSTANCE_NAME" \
+  --namespace "$NAMESPACE" \
+  --set memcached.replicas="$REPLICAS" \
+  --set memcached.image.repo="$IMAGE_MEMCACHED" \
+  --set memcached.image.tag="$TAG" \
+  --set metrics.image="$IMAGE_METRICS_EXPORTER" \
+  --set metrics.exporter.enabled="$METRICS_EXPORTER_ENABLED" \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster
@@ -397,10 +398,14 @@ Console, or using the command line.
 
     ```shell
     helm template chart/memcached \
-     --name $APP_INSTANCE_NAME \
-     --namespace $NAMESPACE \
-     --set memcached.replicas=$REPLICAS \
-     --set memcached.image=$IMAGE_MEMCACHED > "${APP_INSTANCE_NAME}_manifest.yaml"
+      --name "$APP_INSTANCE_NAME" \
+      --namespace "$NAMESPACE" \
+      --set memcached.replicas="$REPLICAS" \
+      --set memcached.image.repo="$IMAGE_MEMCACHED" \
+      --set memcached.image.tag="$TAG" \
+      --set metrics.image="$IMAGE_METRICS_EXPORTER" \
+      --set metrics.exporter.enabled="$METRICS_EXPORTER_ENABLED" \
+      > "${APP_INSTANCE_NAME}_manifest.yaml"
     ```
 
 1.  Run the `delete` command

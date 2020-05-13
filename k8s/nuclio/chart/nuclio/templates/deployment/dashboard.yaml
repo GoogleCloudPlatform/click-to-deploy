@@ -43,7 +43,7 @@ spec:
       serviceAccountName: {{ .Values.dashboard.serviceAccountName }}
       containers:
       - name: {{ template "nuclio.dashboardName" . }}
-        image: {{ .Values.dashboard.image.repository }}:{{ .Values.dashboard.image.tag }}
+        image: {{ .Values.dashboard.image.repo }}:{{ .Values.dashboard.image.tag }}
         ports:
         - containerPort: 8070
         volumeMounts:

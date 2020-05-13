@@ -1,0 +1,12 @@
+neo4j:
+  image:
+    repo: null
+    tag: null
+  persistence:
+    storageClass: null
+    size: 10Gi
+  resources:
+    cpu: 300m
+    memory: 512Mi
+  username: neo4j
+  password: null

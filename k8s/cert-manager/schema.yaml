@@ -45,13 +45,13 @@ properties:
   controller.replicas:
     type: integer
     title: Controller replicas
-    description: Number of replicas of the Cert Manager Controller
+    description: Number of replicas of the Cert Manager controller
     default: 1
     minimum: 1
   webhook.replicas:
     type: integer
     title: WebHook replicas
-    description: Number of replicas of the Cert Manager WebHook
+    description: Number of replicas of the Cert Manager webhook
     default: 1
     minimum: 1
   cainjector.replicas:
@@ -259,9 +259,9 @@ properties:
       type: DEPLOYER_IMAGE
   metrics.exporter.enabled:
     type: boolean
-    title: Enable Stackdriver Metrics Exporter
-    description: Your GCP project must have Stackdriver enabled. For non-GCP clusters,
-      export of metrics to Stackdriver is not currently supported.
+    title: Enable Cloud Monitoring for metrics
+    description: Your Google Cloud Marketplace project must have Cloud Monitoring enabled. For non-Google Cloud clusters,
+      export of metrics to Cloud Monitoring is not currently supported.
     default: false
 
 required:

@@ -1,0 +1,74 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "{{ .Release.Name }}"
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": {{ .Chart.Name | quote }}, "partner_name": "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+spec:
+  descriptor:
+    type: "Redis HA"
+    version: {{ .Values.redis.image.tag | quote }}
+    description: |-
+      Redis is a database which provides in-memory data store, caching, and message
+      broker.
+
+      Solution provides high availability of the Redis Cluster which runs with Sentinel
+      and HAProxy in front of Redis cluster for best user experience.
+
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/redis/).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy Redis HA'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/{{ .Chart.Name }}/README.md
+    - description: 'Official documentation for Redis'
+      url: https://redis.io/documentation
+    - description: 'Official documentation for Redis Sentinel'
+      url: https://redis.io/topics/sentinel
+    notes: |-
+      #### Access Redis master over port-forwarding to the local environment:
+
+      ```shell
+      kubectl port-forward svc/{{ .Release.Name }}-redis-ha-haproxy --namespace {{ .Release.Namespace }} 6379
+      ```
+
+      #### For access Redis on read-only mode:
+
+      ```shell
+      kubectl port-forward svc/{{ .Release.Name }}-redis-ha-haproxy --namespace {{ .Release.Namespace }} 6380
+      ```
+  info:
+  - name: Redis password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: auth
+        name: "{{ .Release.Name }}"
+  - name: Redis HA Service
+    type: Reference
+    valueFrom:
+      serviceRef:
+        name: "{{ .Release.Name }}-haproxy"
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "{{ .Release.Name }}"
+  componentKinds:
+  - group: apps/v1
+    kind: Deployment
+  - group: v1
+    kind: ConfigMap
+  - group: v1
+    kind: Secret
+  - group: v1
+    kind: Service
+  - group: v1
+    kind: StatefulSet
+  - group: v1
+    kind: PersistentVolumeClaim

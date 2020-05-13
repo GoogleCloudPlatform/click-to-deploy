@@ -147,32 +147,32 @@ Cloud Monitoring, then you must enable Monitoring for your project.
 If the cluster you are using is not deployed via Google Cloud, you
 can not export its metrics to Monitoring.
 
-Configure the container image:
+Set up the image tag:
+
+It is advised to use stable image reference which you can find on
+[Marketplace Container Registry](https://marketplace.gcr.io/google/mariadb-galera).
+Example:
 
 ```shell
-TAG=10.3
-IMAGE_REPO="marketplace.gcr.io/google/mariadb-galera"
-export IMAGE_MARIADB="${IMAGE_REPO}:${TAG}"
-export IMAGE_MYSQL_EXPORTER="${IMAGE_REPO}/mysqld-exporter:${TAG}"
-export IMAGE_METRICS_EXPORTER="${IMAGE_REPO}/prometheus-to-sd:${TAG}"
-export IMAGE_PEER_FINDER="${IMAGE_REPO}/peer-finder:${TAG}"
+export TAG="10.3.22-20200311-092534"
 ```
 
-The image above is referenced by its
-[tag](https://docs.docker.com/engine/reference/commandline/tag). We
-recommend that you pin each image to an immutable
-[content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This ensures that the installed app always uses the same image, until
-you are ready to upgrade. To get the digest for the image, use the
-following script:
+Alternatively you can use short tag which points to the latest image for selected version.
+> Warning: this tag is not stable and referenced image might change over time.
 
 ```shell
-for i in "IMAGE_MARIADB" "IMAGE_MYSQL_EXPORTER" "IMAGE_METRICS_EXPORTER" "IMAGE_PEER_FINDER"; do
-  repo=$(echo ${!i} | cut -d: -f1);
-  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
-  export $i="$repo@$digest";
-  echo ${!i};
-done
+export TAG="10.3"
+```
+
+Configure the container images:
+
+```shell
+IMAGE_REGISTRY="marketplace.gcr.io/google"
+
+export IMAGE_MARIADB="${IMAGE_REGISTRY}/mariadb-galera"
+export IMAGE_MYSQL_EXPORTER="${IMAGE_REGISTRY}/mariadb-galera/mysqld-exporter:${TAG}"
+export IMAGE_METRICS_EXPORTER="${IMAGE_REGISTRY}/mariadb-galera/prometheus-to-sd:${TAG}"
+export IMAGE_PEER_FINDER="${IMAGE_REGISTRY}/mariadb-galera/peer-finder:${TAG}"
 ```
 
 Specify the number of replicas for your MariaDB Galera cluster:
@@ -235,18 +235,18 @@ the expanded manifest file for future updates to your app.
 helm template chart/mariadb-galera \
   --name "$APP_INSTANCE_NAME" \
   --namespace "$NAMESPACE" \
-  --set "mariadb.image.repo=$IMAGE_REPO" \
-  --set "mariadb.image.tag=$TAG" \
-  --set "mariadb.volumeSize=8" \
-  --set "db.rootPassword=$MARIADB_ROOT_PASSWORD" \
-  --set "db.exporter.image=$IMAGE_MYSQL_EXPORTER" \
-  --set "db.exporter.password=$EXPORTER_DB_PASSWORD" \
-  --set "metrics.image=$IMAGE_METRICS_EXPORTER" \
-  --set "metrics.exporter.enabled=$METRICS_EXPORTER_ENABLED" \
-  --set "peerFinder.image=$IMAGE_PEER_FINDER" \
-  --set "tls.base64EncodedPrivateKey=$TLS_CERTIFICATE_KEY" \
-  --set "tls.base64EncodedCertificate=$TLS_CERTIFICATE_CRT" \
-  --set "db.replicas=$REPLICAS" \
+  --set mariadb.image.repo="$IMAGE_MARIADB" \
+  --set mariadb.image.tag="$TAG" \
+  --set mariadb.volumeSize=8 \
+  --set db.rootPassword="$MARIADB_ROOT_PASSWORD" \
+  --set db.exporter.image="$IMAGE_MYSQL_EXPORTER" \
+  --set db.exporter.password="$EXPORTER_DB_PASSWORD" \
+  --set metrics.image="$IMAGE_METRICS_EXPORTER" \
+  --set metrics.exporter.enabled="$METRICS_EXPORTER_ENABLED" \
+  --set peerFinder.image="$IMAGE_PEER_FINDER" \
+  --set tls.base64EncodedPrivateKey="$TLS_CERTIFICATE_KEY" \
+  --set tls.base64EncodedCertificate="$TLS_CERTIFICATE_CRT" \
+  --set db.replicas="$REPLICAS" \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 

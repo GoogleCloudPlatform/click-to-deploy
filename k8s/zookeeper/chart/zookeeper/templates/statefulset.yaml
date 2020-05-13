@@ -74,7 +74,7 @@ spec:
           mountPath: /opt/zookeeper/data
       - name: exporer
         imagePullPolicy: Always
-        image: "{{ .Values.exporter.image.name }}:{{ .Values.exporter.image.tag }}"
+        image: "{{ .Values.exporter.image }}:{{ .Values.exporter.tag }}"
         ports:
         - containerPort: {{ .Values.exporter.port }}
           name: metrics
