@@ -6,12 +6,12 @@ include ../images.Makefile
 CHART_NAME := orientdb
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 2.2
+TRACK ?= 3.0
 
 VERIFY_WAIT_TIMEOUT = 1800
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
-IMAGE_ORIENTDB ?= $(SOURCE_REGISTRY)/orientdb2:$(TRACK)
+IMAGE_ORIENTDB ?= $(SOURCE_REGISTRY)/orientdb3:$(TRACK)
 
 # Main image
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_ORIENTDB))
