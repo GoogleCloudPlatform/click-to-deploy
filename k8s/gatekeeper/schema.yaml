@@ -37,6 +37,8 @@ x-google-marketplace:
             - 'namespaces'
             verbs:
             - 'list'
+            - 'update'
+            - 'patch'
       - type: ClusterRole  # For creating/granting gatekeeper-manager-role
         rulesType: CUSTOM
         rules:
