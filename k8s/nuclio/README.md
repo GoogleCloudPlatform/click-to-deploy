@@ -48,6 +48,7 @@ your environment by default.
 - [docker](https://docs.docker.com/install/)
 - [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 - [helm](https://helm.sh/)
+- [envsubst](https://command-not-found.com/envsubst)
 
 Configure `gcloud` as a Docker credential helper:
 
@@ -155,10 +156,26 @@ export APP_INSTANCE_NAME=nuclio-1
 export NAMESPACE=default
 ```
 
-Configure the container image:
+Set up the image tag:
+
+It is advised to use stable image reference which you can find on
+[Marketplace Container Registry](https://marketplace.gcr.io/google/nuclio).
+Example:
 
 ```shell
-export TAG=1.1
+export TAG="1.1.33-20200306-110059"
+```
+
+Alternatively you can use short tag which points to the latest image for selected version.
+> Warning: this tag is not stable and referenced image might change over time.
+
+```shell
+export TAG="1.1"
+```
+
+Configure the container images:
+
+```shell
 export IMAGE_CONTROLLER="marketplace.gcr.io/google/nuclio"
 export IMAGE_DASHBOARD="marketplace.gcr.io/google/nuclio/dashboard"
 ```
@@ -261,10 +278,10 @@ expanded manifest file for future updates to the app.
 ```shell
 helm template chart/nuclio \
   --name ${APP_INSTANCE_NAME} \
-  --namespace=${NAMESPACE}" \
-  --set controller.image.repository=${IMAGE_CONTROLLER} \
+  --namespace ${NAMESPACE} \
+  --set controller.image.repo=${IMAGE_CONTROLLER} \
   --set controller.image.tag=${TAG} \
-  --set dashboard.image.repository=${IMAGE_DASHBOARD} \
+  --set dashboard.image.repo=${IMAGE_DASHBOARD} \
   --set dashboard.image.tag=${TAG} \
   --set deployerHelm.image="gcr.io/cloud-marketplace-tools/k8s/deployer_helm:0.8.0" \
   $( [[ -n "${PUSH_PULL_URL}" ]] && echo "--set registry.pushPullUrl=${PUSH_PULL_URL}" ) \

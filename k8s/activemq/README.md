@@ -14,7 +14,11 @@ Popular open stacks on Kubernetes, packaged by Google.
 
 ![Architecture diagram](resources/activemq-k8s-app-architecture.png)
 
-# TODO Architecture overview
+A Kubernetes Deployment manages ActiveMQ 5 single broker. 
+This deployment is based on default ActiveMQ 5 broker which has no authentication enabled for the subscribers.
+As a Database, it uses embedded KahaDB with persistent volume which is 5Gi by default in this deployment. 
+
+Access to the ActiveMQ service is authenticated and credentials are stored in Kubernetes Secret resource.
 
 TODO
 
@@ -125,11 +129,27 @@ export APP_INSTANCE_NAME=activemq-1
 export NAMESPACE=default
 ```
 
+Set up the image tag:
+
+It is advised to use stable image reference which you can find on
+[Marketplace Container Registry](https://marketplace.gcr.io/google/activemq).
+Example:
+
+```shell
+export TAG="5.15.11-20200311-092341"
+```
+
+Alternatively you can use short tag which points to the latest image for selected version.
+> Warning: this tag is not stable and referenced image might change over time.
+
+```shell
+export TAG="5.15"
+```
+
 Configure the container images:
 
 ```shell
-export TAG=5.15.10
-export IMAGE_ACTIVEMQ="marketplace.gcr.io/google/activemq5"
+export IMAGE_ACTIVEMQ="marketplace.gcr.io/google/activemq"
 ```
 
 Set or generate the password for the ActiveMQ console:
@@ -144,9 +164,9 @@ Set the storage class for the persistent volume of ActiveMQ's embedded KahaDB:
  * Set the persistent disk's size. The default disk size is "5Gi".
 > Note: "ssd" type storage is recommended for ActiveMQ, as it uses local disk to store and retrieve keys and values.
 > To create a StorageClass for dynamic provisioning of SSD persistent volumes, check out [this documentation](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/ssd-pd) for more detailed instructions.
+
 ```shell
-export ETCD_STORAGE_CLASS="ssd-storageclass" # If you don't specify this value, the default value for StorageClass will be used.
-export STORAGE_CLASS="standard" # Provide your StorageClass name, if not "standard"
+export STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
 export PERSISTENT_DISK_SIZE="5Gi"
 ```
 
@@ -168,12 +188,12 @@ the expanded manifest file for future updates to your app.
 helm template chart/activemq \
   --name "${APP_INSTANCE_NAME}" \
   --namespace "${NAMESPACE}" \
-  --set "image.repo=${IMAGE_ACTIVEMQ}" \
-  --set "image.tag=${TAG}" \
-  --set "persistence.storageClass=${STORAGE_CLASS}" \
-  --set "persistence.size=${PERSISTENT_DISK_SIZE}" \
-  --set "consolePassword=${ACTIVEMQ_ADMIN_PASSWORD}" \
-  > ${APP_INSTANCE_NAME}_manifest.yaml
+  --set image.repo="${IMAGE_ACTIVEMQ}" \
+  --set image.tag="${TAG}" \
+  --set persistence.storageClass="${STORAGE_CLASS}" \
+  --set persistence.size="${PERSISTENT_DISK_SIZE}" \
+  --set consolePassword="${ACTIVEMQ_ADMIN_PASSWORD}" \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster

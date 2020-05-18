@@ -2,12 +2,19 @@ wordpress:
   image:
     repo: null
     tag: null
+  persistence:
+    size: "5Gi"
+    storageClass: null
 
 db:
   image: null
   rootPassword: null
   wordpressUser: wordpress
   wordpressPassword: null
+
+  persistence:
+    size: "5Gi"
+    storageClass: null
 
   # The image and credentials for mysqld_exporter component.
   exporter:

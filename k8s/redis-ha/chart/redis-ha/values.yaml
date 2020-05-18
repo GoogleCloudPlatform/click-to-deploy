@@ -1,0 +1,23 @@
+redis:
+  replicas: 3
+  masterGroupName: mymaster
+  persistence:
+    size: null
+  password: null
+  image:
+    repo: null
+    tag: null
+  exporter:
+    enabled: null
+    image: null
+
+haproxy:
+  replicas: 3
+  image: null
+
+enableAuth: true
+
+metrics:
+  image: null
+  exporter:
+    enabled: false

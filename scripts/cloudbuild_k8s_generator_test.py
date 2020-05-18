@@ -50,47 +50,24 @@ steps:
     docker pull "gcr.io/cloud-marketplace-tools/k8s/dev:$$TAG"
     docker tag "gcr.io/cloud-marketplace-tools/k8s/dev:$$TAG" "gcr.io/cloud-marketplace-tools/k8s/dev:local"
 
-- id: Get Kubernetes Credentials
+- id: Initialize Credentials
   name: gcr.io/cloud-builders/gcloud
   waitFor:
   - '-'
-  args:
-  - container
-  - clusters
-  - get-credentials
-  - '$_CLUSTER_NAME'
-  - --region
-  - '$_CLUSTER_LOCATION'
-  - --project
-  - '$PROJECT_ID'
-
-- id: Copy kubectl Credentials
-  name: gcr.io/google-appengine/debian9
-  waitFor:
-  - Get Kubernetes Credentials
   entrypoint: bash
   args:
   - -exc
   - |
+    gcloud container clusters get-credentials '${_CLUSTER_NAME}' --zone '${_CLUSTER_LOCATION}' --project '$PROJECT_ID'
     mkdir -p /workspace/.kube/
     cp -r $$HOME/.kube/ /workspace/
-
-- id: Copy gcloud Credentials
-  name: gcr.io/google-appengine/debian9
-  waitFor:
-  - Get Kubernetes Credentials
-  entrypoint: bash
-  args:
-  - -exc
-  - |
     mkdir -p /workspace/.config/gcloud/
     cp -r $$HOME/.config/gcloud/ /workspace/.config/
 
 - id: Install CRDs
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
   waitFor:
-  - Copy kubectl Credentials
-  - Copy gcloud Credentials
+  - Initialize Credentials
   - Pull Dev Image
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
@@ -99,9 +76,12 @@ steps:
   # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
   - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
   dir: k8s/wordpress
+  entrypoint: bash
   args:
-  - make
-  - crd/install
+  - -exc
+  - |
+    gcloud container clusters get-credentials '${_CLUSTER_NAME}' --zone '${_CLUSTER_LOCATION}' --project '$PROJECT_ID'
+    make crd/install
 
 - id: Run diagnostic tool
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local

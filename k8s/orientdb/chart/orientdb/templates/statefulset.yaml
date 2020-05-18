@@ -1,0 +1,112 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-orientdb
+  labels: &OrientdbDeploymentLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: orientdb
+spec:
+  replicas: {{ .Values.orientdb.replicas }}
+  selector:
+    matchLabels: *OrientdbDeploymentLabels
+  serviceName: {{ .Release.Name }}-orientdb-headless
+  template:
+    metadata:
+      labels: *OrientdbDeploymentLabels
+    spec:
+      terminationGracePeriodSeconds: 10
+      initContainers:
+        # orientdb-server-config.xml is an executable file while kubernetes mounts
+        # configmaps as read-only (since 1.94). This is a workaround to mount it as
+        # configmap first and then copy it over to its final location
+      - name: "fix-orientdb-server-config"
+        image: {{ .Values.deployer.image }}
+        imagePullPolicy: IfNotPresent
+        command: [ "sh", "-c", "cp  /configmap/* /config" ]
+        volumeMounts:
+        - name: orientdb-configmap-vol
+          mountPath: /configmap
+        - name: orientdb-config-vol
+          mountPath: /config
+      containers:
+      - name: orientdb
+        image: "{{ .Values.orientdb.image.repo }}:{{ .Values.orientdb.image.tag }}"
+        imagePullPolicy: {{ .Values.orientdb.image.pullPolicy }}
+        ports:
+          - containerPort: 2480
+            name: http
+          - containerPort: 2434
+            name: hazelcast
+          - containerPort: 2424
+            name: binary
+          - containerPort: 8182
+            name: gremlin
+        env:
+          - name: ORIENTDB_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-orientdb-secret
+                key: root-password
+          - name: ORIENTDB_NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          {{- if .Values.jvm.memory }}
+          - name: ORIENTDB_OPTS_MEMORY
+            value: {{ .Values.jvm.memory | quote }}
+          {{- end }}
+          {{- if .Values.jvm.options }}
+          - name: JAVA_OPTS_SCRIPT
+            value: {{ .Values.jvm.options | quote }}
+          {{- end }}
+          {{- if .Values.jvm.settings }}
+          - name: ORIENTDB_SETTINGS
+            value: {{ .Values.jvm.settings | quote }}
+          {{- end }}
+        volumeMounts:
+          - name: orientdb-config-vol
+            mountPath: /orientdb/config/hazelcast.xml
+            subPath: hazelcast.xml
+          - name: orientdb-config-vol
+            mountPath: /orientdb/config/default-distributed-db-config.json
+            subPath: default-distributed-db-config.json
+          - name: storage
+            mountPath: /orientdb/databases
+          - name: backup
+            mountPath: /orientdb/backup
+        readinessProbe:
+          tcpSocket:
+            port: http
+        livenessProbe:
+          tcpSocket:
+            port: http
+        command: ["dserver.sh"]
+        resources: {}
+      volumes:
+        - name: orientdb-configmap-vol
+          configMap:
+            name: {{ .Release.Name }}-orientdb-configmap
+        - name: orientdb-config-vol
+          emptyDir: {}
+  volumeClaimTemplates:
+  - metadata:
+      name: storage
+      labels: *OrientdbDeploymentLabels
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: {{ .Values.orientdb.persistence.storage.size }}
+      storageClassName: "{{ .Values.orientdb.persistence.storageClass }}"
+  - metadata:
+      name: backup
+      labels: *OrientdbDeploymentLabels
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: {{ .Values.orientdb.persistence.backup.size }}
+      storageClassName: "{{ .Values.orientdb.persistence.storageClass }}"
+

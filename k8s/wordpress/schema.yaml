@@ -60,18 +60,54 @@ properties:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 12
+        base64: False
   db.wordpressPassword:
     type: string
     x-google-marketplace:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 12
+        base64: False
   db.exporter.password:
     type: string
     x-google-marketplace:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 12
+        base64: False
+
+  # Persistence parameters for Wordpress Application
+  wordpress.persistence.storageClass:
+    type: string
+    title: StorageClass for WordPress Application
+    description: You can choose an existing StorageClass or create a new one. Newly created StorageClass provisioner will be "pd-ssd".
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  wordpress.persistence.size:
+    type: string
+    title: Storage size for persistent volumes in WordPress Application
+    default: "5Gi"
+    description: WordPress storage size per instance
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+
+  # Persistence parameters for MySQL
+  db.persistence.storageClass:
+    type: string
+    title: StorageClass for MySQL Application
+    description: You can choose an existing StorageClass or create a new one. Newly created StorageClass provisioner will be "pd-ssd".
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  db.persistence.size:
+    type: string
+    title: Storage size for persistent volumes in MySQL Application
+    default: "5Gi"
+    description: MySQL storage size per instance
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+
   # An e-mail address for WordPress site.
   admin.email:
     type: string
@@ -87,6 +123,7 @@ properties:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 20
+        base64: False
   enablePublicServiceAndIngress:
     type: boolean
     title: Enable public IP access

@@ -1,0 +1,31 @@
+actions:
+
+- name: Check if API available
+  bashTest:
+    script: |
+      curl "http://{{ .Env.APP_SERVICE }}:7474"
+    expect:
+      stdout:
+        matches: 'neo4j_version'
+      exitCode:
+        equals: 0
+
+- name: Create a node via API
+  bashTest:
+    script: |
+      curl -X POST -u '{{ .Env.ROOT_USERNAME }}:{{ .Env.ROOT_PASSWORD }}' -d '{"statements":[{"statement":"CREATE(n:Person { name:\"John Doe\"} )"}]}' -H 'Content-Type:application/json' 'http://{{ .Env.APP_SERVICE }}:7474/db/neo4j/tx'
+    expect:
+      stdout:
+        matches: 'results'
+      exitCode:
+        equals: 0
+
+- name: Get nodes via API
+  bashTest:
+    script: |
+      curl -X POST -u '{{ .Env.ROOT_USERNAME }}:{{ .Env.ROOT_PASSWORD }}' -d '{"statements":[{"statement":"MATCH(n:Person) RETURN n"}]}' -H 'Content-Type:application/json' 'http://{{ .Env.APP_SERVICE }}:7474/db/neo4j/tx'
+    expect:
+      stdout:
+        matches: 'John Doe'
+      exitCode:
+        equals: 0

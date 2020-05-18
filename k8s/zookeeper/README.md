@@ -131,32 +131,31 @@ export METRICS_EXPORTER_ENABLED=false
 
 > **NOTE:** Your GCP project must have Stackdriver enabled to export metrics to Stackdriver. If you are using a non-GCP cluster, you cannot export metrics to Stackdriver.
 
-Configure the container image:
+Set up the image tag:
+
+It is advised to use stable image reference which you can find on
+[Marketplace Container Registry](https://marketplace.gcr.io/google/zookeeper).
+Example:
 
 ```shell
-TAG=3.4
-IMAGE_ZOOKEEPER_REPO=marketplace.gcr.io/google/zookeeper
-
-export IMAGE_ZOOKEEPER=${IMAGE_ZOOKEEPER_REPO}:${TAG}
-export IMAGE_ZOOKEEPER_EXPORTER=${IMAGE_ZOOKEEPER_REPO}/exporter:${TAG}
-export IMAGE_METRICS_EXPORTER=${IMAGE_ZOOKEEPER_REPO}/prometheus-to-sd:${TAG}
+export TAG="3.4.14-20200311-092523"
 ```
 
-The image above is referenced by
-[tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
-that you pin each image to an immutable
-[content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This ensures that the installed app always uses the same image,
-until you are ready to upgrade. To get the digest for the image, use the
-following script:
+Alternatively you can use short tag which points to the latest image for selected version.
+> Warning: this tag is not stable and referenced image might change over time.
 
 ```shell
-for i in "IMAGE_ZOOKEEPER" "IMAGE_ZOOKEEPER_EXPORTER" "IMAGE_METRICS_EXPORTER" ; do
-  repo=$(echo ${!i} | cut -d: -f1);
-  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
-  export $i="$repo@$digest";
-  env | grep $i;
-done
+export TAG="3.4"
+```
+
+Configure the container images:
+
+```shell
+export IMAGE_REGISTRY="marketplace.gcr.io/google"
+
+export IMAGE_ZOOKEEPER="${IMAGE_REGISTRY}/zookeeper"
+export IMAGE_ZOOKEEPER_EXPORTER="${IMAGE_REGISTRY}/zookeeper/exporter"
+export IMAGE_METRICS_EXPORTER="${IMAGE_REGISTRY}/zookeeper/prometheus-to-sd:${TAG}"
 ```
 
 Set the number of replicas for ZooKeeper:
@@ -197,23 +196,24 @@ expanded manifest file for future updates to the application.
 
 ```shell
 helm template chart/zookeeper \
---name "${APP_INSTANCE_NAME}" \
---namespace "${NAMESPACE}" \
---set metrics.exporter.enabled=${METRICS_EXPORTER_ENABLED} \
---set metrics.image=${IMAGE_METRICS_EXPORTER} \
---set exporter.image.name=${IMAGE_ZOOKEEPER_REPO}/exporter \
---set exporter.image.tag=${TAG} \
---set zookeeper.image.name=${IMAGE_ZOOKEEPER_REPO} \
---set zookeeper.image.tag=${TAG} \
---set zookeeper.zkReplicas=${ZOOKEEPER_REPLICAS} \
---set zookeeper.zkTicktime=${ZOOKEEPER_TICKTIME} \
---set zookeeper.zkMaxClientCnxns=${ZOOKEEPER_CLIENT_MAX_CNXNX} \
---set zookeeper.zkAutopurgeSnapRetainCount=${ZOOKEEPER_AUTO_PURGE_SNAP_RETAIN_COUNT} \
---set zookeeper.zkPurgeInterval=${ZOOKEEPER_PURGE_INTERVAL} \
---set zookeeper.memoryRequest=${ZOOKEEPER_MEMORY_REQUEST} \
---set zookeeper.cpuRequest=${ZOOKEEPER_CPU_REQUEST} \
---set zookeeper.zkHeapSize=${ZOOKEEPER_HEAP_SIZE} \
---set zookeeper.volumeSize=${ZOOKEEPER_VOLUME_SIZE} > ${APP_INSTANCE_NAME}_manifest.yaml
+  --name "${APP_INSTANCE_NAME}" \
+  --namespace "${NAMESPACE}" \
+  --set zookeeper.image.name="${IMAGE_ZOOKEEPER}" \
+  --set zookeeper.image.tag="${TAG}" \
+  --set exporter.image="${IMAGE_ZOOKEEPER_EXPORTER}" \
+  --set exporter.tag="${TAG}" \
+  --set metrics.image="${IMAGE_METRICS_EXPORTER}" \
+  --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED}" \
+  --set zookeeper.zkReplicas="${ZOOKEEPER_REPLICAS}" \
+  --set zookeeper.zkTicktime="${ZOOKEEPER_TICKTIME}" \
+  --set zookeeper.zkMaxClientCnxns="${ZOOKEEPER_CLIENT_MAX_CNXNX}" \
+  --set zookeeper.zkAutopurgeSnapRetainCount="${ZOOKEEPER_AUTO_PURGE_SNAP_RETAIN_COUNT}" \
+  --set zookeeper.zkPurgeInterval="${ZOOKEEPER_PURGE_INTERVAL}" \
+  --set zookeeper.memoryRequest="${ZOOKEEPER_MEMORY_REQUEST}" \
+  --set zookeeper.cpuRequest="${ZOOKEEPER_CPU_REQUEST}" \
+  --set zookeeper.zkHeapSize="${ZOOKEEPER_HEAP_SIZE}" \
+  --set zookeeper.volumeSize="${ZOOKEEPER_VOLUME_SIZE}" \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 #### Apply the manifest to your Kubernetes cluster
 
