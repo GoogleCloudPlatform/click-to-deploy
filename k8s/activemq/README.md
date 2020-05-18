@@ -20,8 +20,6 @@ As a Database, it uses embedded KahaDB with persistent volume which is 5Gi by de
 
 Access to the ActiveMQ service is authenticated and credentials are stored in Kubernetes Secret resource.
 
-TODO
-
 # Installation
 
 ## Before you begin
