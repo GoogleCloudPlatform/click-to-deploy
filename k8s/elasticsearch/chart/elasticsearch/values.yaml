@@ -4,6 +4,9 @@ elasticsearch:
     tag: null
   initImage: null
   replicas: null
+  persistence:
+    storageClass: null
+    size: 5Gi
 metrics:
   image: null
   exporter:
