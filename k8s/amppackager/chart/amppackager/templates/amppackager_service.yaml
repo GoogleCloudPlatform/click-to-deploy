@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-service
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: amppackager-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: {{ .Release.Name }}-consumer
+  ports:
+  - protocol: TCP
+    port: {{ .Values.service.port }} 
+    targetPort: 8080
+ # Uncomment the next 2 lines if you want to limit the ip addresses that can access this
+ # service. Replace the IP address with the IP you desire to have access to the load balancer.
+ # See:
+ #  https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/
+ #  https://mxtoolbox.com/subnetcalculator.aspx
+ #  https://www.digitalocean.com/community/tutorials/understanding-ip-addresses-subnets-and-cidr-notation-for-networking
+  loadBalancerSourceRanges:
+  - {{ .Values.service.loadBalancerSourceRanges }} 
