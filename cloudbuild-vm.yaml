@@ -59,7 +59,7 @@ steps:
   - --env=RUN_TESTS=true
   - --env=ATTACH_LICENSE=true
   - --env=LICENSE_PROJECT_NAME=click-to-deploy-images
-  - --env=USE_INTERNAL_IP=true
+  - --env=USE_INTERNAL_IP=trtretretrue
   - --env=TESTS_CUSTOM_METADATA=google-c2d-startup-enable=0
   - --volume=/workspace/vm/chef:/chef:ro
   - --volume=/workspace/vm/packer:/packer:ro
