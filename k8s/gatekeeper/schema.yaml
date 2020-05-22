@@ -27,7 +27,7 @@ x-google-marketplace:
             verbs: ['*']
           - apiGroups: ['']
             resources: ['namespaces']
-            verbs: ['list']
+            verbs: ['list', 'get']
 properties:
   name:
     type: string
