@@ -134,6 +134,19 @@ Set the number of replicas for Cassandra:
 export REPLICAS=3
 ```
 
+For the persistent disk provisioning of the Cassandra StatefulSets, you will need to:
+
+ * Set the StorageClass name. Check your available options using the command below:
+   * ```kubectl get storageclass```
+   * Or check how to create a new StorageClass in [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
+
+ * Set the persistent disk's size. The default disk size is "5Gi".
+
+```shell
+export DEFAULT_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
+export PERSISTENT_DISK_SIZE="5Gi"
+```
+
 Enable Stackdriver Metrics Exporter:
 
 > **NOTE:** Your GCP project must have Stackdriver enabled. If you are using a
@@ -192,6 +205,8 @@ helm template chart/cassandra \
   --set cassandra.image.repo="${IMAGE_CASSANDRA}" \
   --set cassandra.image.tag="${TAG}" \
   --set cassandra.replicas="${REPLICAS}" \
+  --set cassandra.persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \
+  --set cassandra.persistence.size="${PERSISTENT_DISK_SIZE}" \
   --set metrics.image="${IMAGE_METRICS_EXPORTER}" \
   --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED}" \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
