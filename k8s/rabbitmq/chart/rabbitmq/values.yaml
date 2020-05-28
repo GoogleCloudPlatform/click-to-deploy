@@ -8,6 +8,9 @@ rabbitmq:
   user: rabbit
   password: null
   serviceAccount: null
+  persistence:
+    storageClass: null
+    size: 5Gi
 
 metrics:
   image: null
