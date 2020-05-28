@@ -1,0 +1,41 @@
+actions:
+- name: GitLab Health Check
+  bashTest:
+    script: |-
+      kubectl exec -it ${APP_INSTANCE_NAME}-gitlab-0 -- bash -c \
+        'curl localhost/-/health'
+    expect:
+      stdout:
+        equals: 'GitLab OK'
+
+- name: GitLab Readiness Check
+  bashTest:
+    script: |-
+      kubectl exec -it ${APP_INSTANCE_NAME}-gitlab-0 -- bash -c \
+        'curl localhost/-/readiness?all=1'
+    expect:
+      stdout:
+        matches: '"master_check":\[{"status":"ok"}\]'
+      stdout:
+        matches: '"db_check":\[{"status":"ok"}\]'
+      stdout:
+        matches: '"redis_check":\[{"status":"ok"}\]'
+      stdout:
+        matches: '"db_check":\[{"status":"ok"}\]'
+      stdout:
+        matches: '"cache_check":\[{"status":"ok"}\]'
+      stdout:
+        matches: '"queues_check":\[{"status":"ok"}\]'
+      stdout:
+        matches: '"shared_state_check":\[{"status":"ok"}\]'
+      stdout:
+        matches: '"gitaly_check":\[{"status":"ok".*}\]'
+
+- name: GitLab Liveness Check
+  bashTest:
+    script: |-
+      kubectl exec -it ${APP_INSTANCE_NAME}-gitlab-0 -- bash -c \
+        'curl -s localhost/-/liveness'
+    expect:
+      stdout:
+        matches: '{"status":"ok"}'
