@@ -1,0 +1,22 @@
+actions:
+
+# Redis Exporter Tests
+- name: Is Redis /metrics HTTP endpoint working
+  bashTest:
+    script: curl -f "http://${APP_INSTANCE_NAME}-redis-exporter-svc:9121/metrics"
+    expect:
+      stdout:
+        matches: '(?m)^redis_up 1$'
+      exitCode:
+        equals: 0
+
+# Some of metrics are exposed even if the exporter doesn't have access to the Redis server statistics.
+# This test verify that access is granted.
+- name: Can Redis Exporter connect to the Redis server
+  bashTest:
+    script: curl -f "http://${APP_INSTANCE_NAME}-redis-exporter-svc:9121/metrics"
+    expect:
+      stdout:
+        matches: '(?m)^# TYPE process_cpu_seconds_total counter$'
+      exitCode:
+        equals: 0
