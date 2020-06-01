@@ -1,14 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: web
+  name: cg-service
+  namespace: "{{ .Release.Namespace }}"
   annotations:
-    beta.cloud.google.com/backend-config: '{"default": "config-default"}'
+    beta.cloud.google.com/backend-config: '{"default": "cg-config"}'
 spec:
   ports:
   - port: 80
     protocol: TCP
     targetPort: 8080
   selector:
-    run: web
+    run: cg-app
   type: NodePort

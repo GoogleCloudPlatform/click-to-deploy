@@ -1,7 +1,7 @@
 apiVersion: v1
-appVersion: 0.1.2
-name: addy
-description: Aditum rocks bro.
+Version: 1.0
+name: Aditum
+description: Aditum GKE deployer.
 keywords:
 - aditum
 - security

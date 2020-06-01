@@ -6,10 +6,10 @@ x-google-marketplace:
   solutionId: aditum
   # The release version is required in the schema and MUST match the
   # release tag on the the deployer.
-  publishedVersion: "$TAG"
+  publishedVersion: 1.0
   publishedVersionMetadata:
     releaseNote: >-
-      A regular update.
+      First release of Aditum.
     # releaseTypes list is optional.
     # "Security" should only be used if this is an important update to patch
     # an existing vulnerability, as such updates will display more prominently for users.
@@ -70,6 +70,9 @@ properties:
   certificate.hostname:
     type: string
     title: Application Ingress Host Address
+  deployment.staticIP:
+    type: string
+    title: Static Address NAME
   controller.serviceAccount:
     type: string
     x-google-marketplace:
@@ -81,7 +84,7 @@ properties:
           rulesFromRoleName: edit
         - type: ClusterRole
           rulesType: PREDEFINED
-          rulesFromRoleName: view  
+          rulesFromRoleName: view
   setupAttributes.initialEmail:
     type: string
     title: Initial User Email
@@ -91,4 +94,5 @@ required:
 - oAuth.clientSecret
 - oAuth.clientID
 - certificate.hostname
+- deployment.staticIP
 - setupAttributes.initialEmail
