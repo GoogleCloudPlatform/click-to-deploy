@@ -148,11 +148,11 @@ For the persistent disk provisioning of the NGINX StatefulSets, you will need to
    * ```kubectl get storageclass```
    * Or check how to create a new StorageClass in [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
 
- * Set the persistent disk's size. The default disk size is "5Gi".
+ * Set the persistent disk's size. The default disk size is "1Gi".
 
 ```shell
 export DEFAULT_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
-export PERSISTENT_DISK_SIZE="5Gi"
+export PERSISTENT_DISK_SIZE="1Gi"
 ```
 
 Enable Stackdriver Metrics Exporter:
