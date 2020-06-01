@@ -1,0 +1,25 @@
+# Daily email reminder
+# Remove this for external customer.
+# Chime is not externally available yet.
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: cron-reminder
+  namespace: "{{ .Release.Namespace }}"
+spec:
+  schedule: "0 11 * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: reports
+            image: buildpack-deps:curl
+            args:
+            - /bin/sh
+            - -ec
+            - curl -v -H "x-goog-aditum-cron:true" web:80/sendReminder
+          restartPolicy: Never

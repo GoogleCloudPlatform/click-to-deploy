@@ -1,22 +1,23 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: web
+  name: cg-deployment
+  namespace: "{{ .Release.Namespace }}"
 spec:
   selector:
     matchLabels:
-      run: web
+      run: cg-app
   template:
     metadata:
       labels:
-        run: web
+        run: cg-app
     spec:
       serviceAccountName: {{ .Values.controller.serviceAccount }}
       containers:
         #TODO: Insert variable for dynamic image URL
       - image: "{{ .Values.aditum.image.repo }}:{{ .Values.aditum.image.tag }}"
         imagePullPolicy: Always
-        name: web
+        name: cg-app
         ports:
         - containerPort: 8080
           protocol: TCP
@@ -41,4 +42,3 @@ spec:
           value: {{ .Values.setupAttributes.initialEmail }}
         - name: GKE_INSTANCE
           value: "k8"
-
