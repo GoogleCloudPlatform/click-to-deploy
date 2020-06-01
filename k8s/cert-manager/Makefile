@@ -35,7 +35,8 @@ APP_PARAMETERS ?= { \
   "namespace": "$(NAMESPACE)" \
 }
 
-# c2d_deployer.Makefile provides the main targets for installing the application.  It requires several APP_* variables defined above, and thus must be included after.
+# c2d_deployer.Makefile provides the main targets for installing the application.
+# It requires several APP_* variables defined above, and thus must be included after.
 include ../c2d_deployer.Makefile
 
 
