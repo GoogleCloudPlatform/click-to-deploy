@@ -95,7 +95,7 @@ properties:
 required:
 - name
 - namespace
-- postgresql.volumeSize
+- postgresql.persistence.size
 - postgresql.serviceAccount
 - postgresql.exposePublicService
 - db.password
