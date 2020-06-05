@@ -8,7 +8,6 @@ magento:
     email: null
   persistence:
     size: 10Gi
-    storageClass: null
 
 db:
   image: null
@@ -22,7 +21,6 @@ db:
     password: null
   persistence:
     size: 8Gi
-    storageClass: null
 
 redis:
   image: null
@@ -31,7 +29,6 @@ redis:
     image: null
   persistence:
     size: 5Gi
-    storageClass: null
 
 nginx:
   exporter:
@@ -45,4 +42,8 @@ metrics:
   exporter:
     enabled: false
 
+persistence:
+  storageClass: null
+
 enablePublicServiceAndIngress: false
+
