@@ -6,7 +6,9 @@ magento:
     username: admin
     password: null
     email: null
-  volumeSize: "10Gi"
+  persistence:
+    size: 10Gi
+    storageClass: null
 
 db:
   image: null
@@ -18,14 +20,18 @@ db:
     image: null
     username: exporter
     password: null
-  volumeSize: "8Gi"
+  persistence:
+    size: 8Gi
+    storageClass: null
 
 redis:
   image: null
   password: null
   exporter:
     image: null
-  volumeSize: "5Gi"
+  persistence:
+    size: 5Gi
+    storageClass: null
 
 nginx:
   exporter:
