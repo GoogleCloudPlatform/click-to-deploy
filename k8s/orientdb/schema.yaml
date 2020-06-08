@@ -11,9 +11,6 @@ x-google-marketplace:
       - Feature
     recommended: false
 
-  managedUpdates:
-    kalmSupported: false
-
   images:
     '':
       properties:

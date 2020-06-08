@@ -142,6 +142,19 @@ export NAMESPACE=default
 export REPLICAS=3
 ```
 
+For the persistent disk provisioning of the NGINX StatefulSets, you will need to:
+
+ * Set the StorageClass name. Check your available options using the command below:
+   * ```kubectl get storageclass```
+   * Or check how to create a new StorageClass in [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
+
+ * Set the persistent disk's size. The default disk size is "1Gi".
+
+```shell
+export DEFAULT_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
+export PERSISTENT_DISK_SIZE="1Gi"
+```
+
 Enable Stackdriver Metrics Exporter:
 
 > **NOTE:** Your GCP project must have Stackdriver enabled. If you are using a
@@ -168,7 +181,7 @@ It is advised to use stable image reference which you can find on
 Example:
 
 ```shell
-export TAG="1.15.12-20200311-092353"
+export TAG="<BUILD_ID>"
 ```
 
 Alternatively you can use short tag which points to the latest image for selected version.
@@ -230,6 +243,8 @@ helm template chart/nginx \
   --set nginx.initImage="$IMAGE_NGINX_INIT" \
   --set nginx.image.repo="$IMAGE_NGINX" \
   --set nginx.image.tag="$TAG" \
+  --set nginx.persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \
+  --set nginx.persistence.size="${PERSISTENT_DISK_SIZE}" \
   --set metrics.image="$IMAGE_METRICS_EXPORTER" \
   --set metrics.curatedExporter.enabled="$CURATED_METRICS_EXPORTER_ENABLED" \
   --set metrics.exporter.enabled="$METRICS_EXPORTER_ENABLED" \
