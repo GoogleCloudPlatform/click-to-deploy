@@ -1,0 +1,21 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-gitlab-svc
+  labels: &GitLabLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: gitlab-server
+spec:
+  ports:
+  - name: ssh
+    port: {{ .Values.gitlab.sshPort | int }}
+    targetPort: ssh
+  - name: http
+    port: {{ .Values.gitlab.httpPort | int }}
+    targetPort: http
+  - name: https
+    port: {{ .Values.gitlab.httpsPort | int }}
+    targetPort: https
+  selector: *GitLabLabels
+  type: {{ .Values.gitlab.serviceType }}

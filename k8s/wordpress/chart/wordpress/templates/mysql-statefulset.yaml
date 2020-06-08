@@ -69,7 +69,7 @@ spec:
               name: {{ .Release.Name }}-mysqld-exporter-secret
               key: mysqld-exporter-pass
         - name: DATA_SOURCE_NAME
-          value: {{ .Values.db.exporter.user }}:$(MYSQLD_EXPORTER_PASSWORD)@(127.0.0.1:3306)/
+          value: "{{ .Values.db.exporter.user }}:{{ .Values.db.exporter.password }}@(127.0.0.1:3306)/"
         ports:
         - name: exporter
           containerPort: 9104
