@@ -11,9 +11,6 @@ x-google-marketplace:
     - Feature
     recommended: false
 
-  managedUpdates:
-    kalmSupported: true
-
   clusterConstraints:
     resources:
     - replicas: 1
@@ -60,18 +57,21 @@ properties:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 12
+        base64: False
   db.wordpressPassword:
     type: string
     x-google-marketplace:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 12
+        base64: False
   db.exporter.password:
     type: string
     x-google-marketplace:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 12
+        base64: False
 
   # Persistence parameters for Wordpress Application
   wordpress.persistence.storageClass:
@@ -120,6 +120,7 @@ properties:
       type: GENERATED_PASSWORD
       generatedPassword:
         length: 20
+        base64: False
   enablePublicServiceAndIngress:
     type: boolean
     title: Enable public IP access

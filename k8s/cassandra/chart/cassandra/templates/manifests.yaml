@@ -99,10 +99,10 @@ spec:
       labels: *CassandraDeploymentLabels
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: standard
+      storageClassName: {{ .Values.cassandra.persistence.storageClass }}
       resources:
         requests:
-          storage: 5Gi
+          storage: {{ .Values.cassandra.persistence.size }}
 ---
 apiVersion: v1
 kind: Service

@@ -1,0 +1,110 @@
+## Configuration values for the GitLab server.
+gitlab:
+  image:
+    repo: null
+    tag: null
+
+  serviceAccountName: null
+
+  rootPassword: null
+
+  ## For minikube, set this to NodePort, elsewhere use LoadBalancer
+  ## ref: http://kubernetes.io/docs/user-guide/services/#publishing-services---service-types
+  ##
+  serviceType: LoadBalancer
+
+  ## Configure external service ports
+  sshPort: 22
+  httpPort: 80
+  httpsPort: 443
+
+  ## Configure resource requests and limits
+  resources:
+    ## GitLab requires a good deal of resources. We have split out Postgres and
+    ## redis, which helps some. Refer to the guidelines for larger installs.
+    ## ref: https://docs.gitlab.com/ee/install/requirements.html#hardware-requirements
+    requests:
+      memory: 8Gi
+      cpu: 500m
+    limits:
+      memory: 8Gi
+      cpu: 2
+
+  persistence:
+    ## This volume is used to store git data and other project files.
+    ## ref: https://docs.gitlab.com/omnibus/settings/configuration.html#storing-git-data-in-an-alternative-directory
+    data:
+      size: 8Gi
+
+    ## This volume persists generated configuration files, keys, and certs.
+    etc:
+      size: 1Gi
+
+    ## This volume persists generated logs.
+    logs:
+      size: 2Gi
+
+  ## The URL (with protocol) that your users will use to reach the install.
+  ## ref: https://docs.gitlab.com/omnibus/settings/configuration.html#configuring-the-external-url-for-gitlab
+  ##
+  # externalUrl: http://gitlab.example.com/
+
+  # Domain name of GitLab installation
+  # domainName: gitlab.example.com
+
+  ## SSL configuration options:
+  ## [Default]     Combined with GitLab domain name - the Let's Encrypt certificate is generated
+  ## [Default]     If domain name is not provided - SSL is disabled
+  ## [Self-signed] Custom self-signed certificates will be generated and installed on GitLab instance
+  ##
+  sslConfiguration: "Default"
+
+## Configuration values for the Redis server.
+redis:
+  image: null
+
+  exporter:
+    image: null
+
+  password: null
+
+  resources:
+    requests:
+      memory: 1Gi
+
+  persistence:
+    size: 8Gi
+
+
+## Configuration values for the PostgreSQL server.
+postgresql:
+  image: null
+
+  exporter:
+    image: null
+
+  cpu: 1000m
+  memory: 1Gi
+
+  user: gitlab
+  password: null
+  postgresDatabase: gitlab
+
+  persistence:
+    size: 8Gi
+
+tls:
+  base64EncodedPrivateKey: null
+  base64EncodedCertificate: null
+
+persistence:
+  storageClass: standard
+  accessMode: ReadWriteOnce
+
+metrics:
+  image: null
+  exporter:
+    enabled: false
+
+deployer:
+  image: null

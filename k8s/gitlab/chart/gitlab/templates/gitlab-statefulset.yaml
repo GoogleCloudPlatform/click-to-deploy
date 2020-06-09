@@ -1,0 +1,242 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-gitlab
+  labels: &GitlabDeploymentLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: gitlab-server
+spec:
+  replicas: 1
+  serviceName: {{ .Release.Name }}-gitlab-svc
+  selector:
+    matchLabels: *GitlabDeploymentLabels
+  template:
+    metadata:
+      labels: *GitlabDeploymentLabels
+    spec:
+      serviceAccountName: {{ .Values.gitlab.serviceAccountName }}
+      {{- if eq (lower .Values.gitlab.sslConfiguration) "self-signed" }}
+      initContainers:
+      - name: permissions
+        image: {{ .Values.deployer.image }}
+        command:
+        - sh
+        - '-cx'
+        - |
+          mkdir -p /etc/gitlab/ssl
+          chmod -R 755 /etc/gitlab/ssl
+          cp /tls-secret/* /etc/gitlab/ssl/
+
+          cp /tls-secret/* /etc/gitlab/trusted-certs/
+          chmod -R 755 /etc/gitlab/trusted-certs
+        volumeMounts:
+        - name: tls
+          mountPath: /tls-secret/
+        - name: trusted-certs
+          mountPath: /etc/gitlab/trusted-certs
+        - name: ssl
+          mountPath: /etc/gitlab/ssl
+      {{- end }}
+      containers:
+      - name: gitlab
+        image: "{{ .Values.gitlab.image.repo }}:{{ .Values.gitlab.image.tag }}"
+        imagePullPolicy: IfNotPresent
+        env:
+        ## General GitLab Configs
+        ##
+        # This is a free-form env var that GitLab Omnibus uses to configure
+        # everything. We're passing this in from a configmap and pulling some
+        # of the values from the env vars defined below. This is done to
+        # avoid leaving secrets visible in kubectl.
+        - name: GITLAB_OMNIBUS_CONFIG
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Release.Name }}-gitlab-config
+              key: gitlab_omnibus_config
+        - name: GITLAB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-gitlab-secret
+              key: gitlab-root-password
+        - name: EXTERNAL_URL
+          {{- if .Values.gitlab.externalUrl }}
+          value: "{{ .Values.gitlab.externalUrl }}"
+          {{- else if .Values.gitlab.domainName }}
+          value: "https://{{ .Values.gitlab.domainName }}"
+          {{- else }}
+          value: ""
+          {{- end }}
+        ## DB configuration
+        ##
+        - name: DB_HOST
+          value: {{ .Release.Name }}-postgresql-svc
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-postgresql-secret
+              key: db-user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-postgresql-secret
+              key: db-password
+        - name: DB_DATABASE
+          value: {{ .Values.postgresql.postgresDatabase | quote }}
+        ## Redis configuration
+        ##
+        - name: REDIS_HOST
+          value: {{ .Release.Name }}-redis-svc
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-redis-secret
+              key: redis-password
+        command:
+        - bash
+        - "-c"
+        - |
+          KUBE_TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+          ENDPOINT="${KUBERNETES_SERVICE_HOST}:${KUBERNETES_PORT_443_TCP_PORT}"
+
+          if [[ -z ${EXTERNAL_URL} ]]; then
+              # If external URL is not provided
+              # wait for GitLab service EXTERNAL_IP to be provisioned
+              echo "Waiting for GitLab svc EXTERNAL_IP to be provisioned"
+
+              export EXTERNAL_IP="null"
+              until [[ ${EXTERNAL_IP} != "null" ]]; do
+                EXTERNAL_IP=$(curl -sSk -H "Authorization: Bearer ${KUBE_TOKEN}" \
+                  https://${ENDPOINT}/api/v1/namespaces/{{ .Release.Namespace }}/services/{{ .Release.Name }}-gitlab-svc \
+                  | jq -r '.status.loadBalancer.ingress[0].ip')
+                sleep 2
+              done
+
+              # Reconfigure gitlab instance with provided external url
+              {{- if eq (lower .Values.gitlab.sslConfiguration) "self-signed" }}
+              export EXTERNAL_URL="https://${EXTERNAL_IP}"
+              {{- else }}
+              export EXTERNAL_URL="http://${EXTERNAL_IP}"
+              {{- end }}
+          fi
+
+          # Main wrapper which configures and starts gitlab services
+          /assets/wrapper
+        ports:
+        - name: ssh
+          containerPort: 22
+        - name: http
+          containerPort: 80
+        - name: https
+          containerPort: 443
+        - name: exporter
+          containerPort: 9090
+        livenessProbe:
+          httpGet:
+            path: /help
+            port: http
+          # This pod takes a very long time to start up. Be cautious when
+          # lowering this value to avoid Pod death during startup.
+          initialDelaySeconds: 300
+          timeoutSeconds: 1
+          periodSeconds: 10
+          successThreshold: 1
+          failureThreshold: 10
+        readinessProbe:
+          httpGet:
+            path: /help
+            port: http
+          initialDelaySeconds: 30
+          timeoutSeconds: 1
+          periodSeconds: 10
+          successThreshold: 1
+          failureThreshold: 3
+        volumeMounts:
+        - name: data
+          mountPath: /var/opt/gitlab
+        - name: etc
+          mountPath: /etc/gitlab
+        - name: logs
+          mountPath: /var/log/gitlab
+        {{- if eq (lower .Values.gitlab.sslConfiguration) "self-signed" }}
+        - name: trusted-certs
+          mountPath: /etc/gitlab/trusted-certs
+        - name: ssl
+          mountPath: /etc/gitlab/ssl
+        {{- end }}
+        {{- if .Values.gitlab.license }}
+        - name: license
+          mountPath: /etc/gitlab/Gitlab.gitlab-license
+          subPath: Gitlab.gitlab-license
+        {{- end }}
+        resources:
+        {{- toYaml .Values.gitlab.resources | nindent 10 -}}
+      {{- if .Values.metrics.exporter.enabled }}
+      - name: stackdriver-exporter
+        image: {{ .Values.metrics.image }}
+        ports:
+        - name: profiler
+          containerPort: 6060
+        command:
+        - /monitor
+        - --stackdriver-prefix=custom.googleapis.com
+        - --source=gitlab:http://localhost:9090/metrics
+        - --pod-id=$(POD_NAME)
+        - --namespace-id=$(POD_NAMESPACE)
+        - --monitored-resource-types=k8s
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+      {{- end }}
+      volumes:
+      {{- if .Values.gitlab.license }}
+      - name: license
+        configMap:
+          name: {{ .Release.Name }}-gitlab-config
+      {{- end }}
+      {{- if eq (lower .Values.gitlab.sslConfiguration) "self-signed" }}
+      - name: tls
+        secret:
+          secretName: {{ .Release.Name }}-gitlab-tls
+      - name: trusted-certs
+        emptyDir: {}
+      - name: ssl
+        emptyDir: {}
+      {{- end }}
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+      labels: *GitlabDeploymentLabels
+    spec:
+      accessModes:
+      - {{ .Values.persistence.accessMode }}
+      resources:
+        requests:
+          storage: {{ .Values.gitlab.persistence.data.size | quote }}
+      storageClassName: {{ .Values.persistence.storageClass }}
+  - metadata:
+      name: etc
+      labels: *GitlabDeploymentLabels
+    spec:
+      accessModes:
+      - {{ .Values.persistence.accessMode }}
+      resources:
+        requests:
+          storage: {{ .Values.gitlab.persistence.etc.size | quote }}
+      storageClassName: {{ .Values.persistence.storageClass }}
+  - metadata:
+      name: logs
+      labels: *GitlabDeploymentLabels
+    spec:
+      accessModes:
+      - {{ .Values.persistence.accessMode }}
+      resources:
+        requests:
+          storage: {{ .Values.gitlab.persistence.logs.size | quote }}
+      storageClassName: {{ .Values.persistence.storageClass }}

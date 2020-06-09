@@ -1,0 +1,122 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: {{ .Release.Name }}
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": {{ .Chart.Name | quote }}, "partner_name": "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+spec:
+  descriptor:
+    type: GitLab
+    version: "{{ .Values.gitlab.image.tag }}"
+    description: |-
+      GitLab is a DevOps tool for the entire software development and operations lifecycle.
+      It offers backlog and planning tools, source code management, built-in continuous
+      integration pipelines (CI/CD), packages and artifacts management, issue-tracking
+      and monitoring tools.
+
+      By default, if the application is deployed without a valid License all features from Community Edition
+      are enabled.
+
+      In order to enable the Enterprise Edition Features, you can check the available license
+      at [GitLab pricing page](https://about.gitlab.com/pricing/)
+
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/gitlab/).
+
+      Additional community support is available on
+      [GitLab Communtiy Forum](https://forum.gitlab.com/).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy GitLab'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/gitlab/README.md
+    - description: 'GitLab documentation'
+      url: https://docs.gitlab.com
+    notes: |-
+      # Open your GitLab site
+
+      Get the external IP of your GitLab site using the following command:
+
+      ```
+      SERVICE_IP=$(kubectl get svc \
+        {{ .Release.Name }}-gitlab-svc \
+        --namespace {{ .Release.Namespace }} \
+        --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
+      echo "https://${SERVICE_IP}/"
+      ```
+
+      # License Management
+
+      {{ if .Values.gitlab.externalUrl -}}
+      If you wish to use the Enterprise features you can refer to the
+      [License Administration page]({{ .Values.gitlab.externalUrl }}/admin/license)
+      and upload your license or start a trial.
+      {{ else if .Values.gitlab.domainName -}}
+      If you wish to use the Enterprise features you can refer to the
+      [License Administration page](http://{{ .Values.gitlab.domainName}}/admin/license)
+      and upload your license or start a trial.
+      {{- else -}}
+      If you wish to use the Enterprise features you can upload your license or start a trial at the URL generated in script below:
+      ```
+      echo "https://${SERVICE_IP}/admin/license"
+      ```
+      {{- end }}
+  info:
+  {{- if .Values.gitlab.externalUrl }}
+  - name: GitLab site URL
+    value: {{ .Values.gitlab.externalUrl | quote }}
+  {{- else if .Values.gitlab.domainName }}
+  - name: GitLab site URL
+    value: "http://{{ .Values.gitlab.domainName }}"
+  {{- end }}
+  - name: GitLab site address
+    type: Reference
+    valueFrom:
+      serviceRef:
+        name: "{{ .Release.Name }}-gitlab-svc"
+  - name: GitLab root username
+    value: "root"
+  - name: GitLab root password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: gitlab-root-password
+        name: "{{ .Release.Name }}-gitlab-secret"
+  - name: PostgreSQL username
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: db-user
+        name: "{{ .Release.Name }}-postgresql-secret"
+  - name: PostgreSQL password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: db-password
+        name: "{{ .Release.Name }}-postgresql-secret"
+  - name: Redis password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: redis-password
+        name: "{{ .Release.Name }}-redis-secret"
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Release.Name }}
+  componentKinds:
+  - group: v1
+    kind: ConfigMap
+  - group: v1
+    kind: Secret
+  - group: v1
+    kind: Service
+  - group: apps/v1
+    kind: StatefulSet
+  - group: v1
+    kind: PersistentVolumeClaim
