@@ -71,7 +71,7 @@ properties:
   joomla.persistence.size:
     type: string
     title: Storage size for Joomla!
-    default: "6Gi"
+    default: "5Gi"
     description: The storage size (GB) for the Joomla! persistent volume
     pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
 
@@ -83,7 +83,7 @@ properties:
         length: 16
         includeSymbols: False
         base64: True
-  db.size:
+  db.persistence.size:
     type: string
     title: Storage size for persistent volumes
     default: "5Gi"
@@ -128,7 +128,7 @@ properties:
 required:
 - name
 - namespace
-- db.size
+- db.persistence.size
 - joomla.persistence.size
 - enablePublicServiceAndIngress
 - metrics.exporter.enabled

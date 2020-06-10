@@ -13,7 +13,8 @@ db:
   rootPassword: null
   joomlaUser: joomla
   joomlaPassword: null
-  size: 5Gi
+  persistence:
+    size: 5Gi
 
   # The image and credentials for mysqld_exporter component.
   exporter:

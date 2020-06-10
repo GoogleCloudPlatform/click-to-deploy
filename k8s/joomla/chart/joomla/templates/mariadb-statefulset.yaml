@@ -127,4 +127,4 @@ spec:
       storageClassName: {{ .Values.joomla.persistence.storageclass }}
       resources:
         requests:
-          storage: {{ .Values.db.size }}
+          storage: {{ .Values.db.persistence.size }}
