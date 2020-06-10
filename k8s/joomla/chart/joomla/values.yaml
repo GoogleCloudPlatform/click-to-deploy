@@ -4,13 +4,17 @@ joomla:
     tag: null
   user: admin
   password: null
-  volumeSize: 5
+  persistence:
+    storageClass: null
+    size: 5Gi
 
 db:
   image: null
   rootPassword: null
   joomlaUser: joomla
   joomlaPassword: null
+  persistence:
+    size: 5Gi
 
   # The image and credentials for mysqld_exporter component.
   exporter:
