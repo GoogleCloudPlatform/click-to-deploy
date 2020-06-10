@@ -23,7 +23,7 @@ certificate:
   hostname: null
 
 controller:
-  serviceAccount: null
+  serviceAccount: default
 
 setupAttributes:
   initialEmail: null
