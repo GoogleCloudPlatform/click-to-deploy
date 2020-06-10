@@ -22,12 +22,169 @@ x-google-marketplace:
       - type: ClusterRole        # This is a cluster-wide ClusterRole
         rulesType: CUSTOM        # We specify our own custom RBAC roles
         rules:
-          - apiGroups: ['apiextensions.k8s.io', 'rbac.authorization.k8s.io']
-            resources: ['customresourcedefinitions', 'clusterroles', 'clusterrolebindings']
-            verbs: ['*']
-          - apiGroups: ['']
-            resources: ['namespaces']
-            verbs: ['list']
+          - apiGroups:
+            - 'apiextensions.k8s.io'
+            - 'rbac.authorization.k8s.io'
+            resources:
+            - 'customresourcedefinitions'
+            - 'clusterroles'
+            - 'clusterrolebindings'
+            verbs:
+            - '*'
+          - apiGroups:
+            - ''
+            resources:
+            - 'namespaces'
+            verbs:
+            - 'list'
+            - 'update'
+            - 'patch'
+      - type: ClusterRole  # For creating/granting gatekeeper-manager-role
+        rulesType: CUSTOM
+        rules:
+        - apiGroups:
+          - '*'
+          resources:
+          - '*'
+          verbs:
+          - get
+          - list
+          - watch
+          - update
+          - patch
+        - apiGroups:
+          - config.gatekeeper.sh
+          resources:
+          - configs
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        - apiGroups:
+          - config.gatekeeper.sh
+          resources:
+          - configs/status
+          verbs:
+          - get
+          - update
+          - patch
+        - apiGroups:
+          - constraints.gatekeeper.sh
+          resources:
+          - '*'
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        - apiGroups:
+          - apiextensions.k8s.io
+          resources:
+          - customresourcedefinitions
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        - apiGroups:
+          - templates.gatekeeper.sh
+          resources:
+          - constrainttemplates
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        - apiGroups:
+          - templates.gatekeeper.sh
+          resources:
+          - constrainttemplates/status
+          verbs:
+          - get
+          - update
+          - patch
+        - apiGroups:
+          - constraints.gatekeeper.sh
+          resources:
+          - '*'
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        - apiGroups:
+          - '*'
+          resources:
+          - '*'
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        - apiGroups:
+          - admissionregistration.k8s.io
+          resources:
+          - mutatingwebhookconfigurations
+          - validatingwebhookconfigurations
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        - apiGroups:
+          - ""
+          resources:
+          - secrets
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        - apiGroups:
+          - ""
+          resources:
+          - services
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
 properties:
   name:
     type: string
