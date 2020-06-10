@@ -15,5 +15,5 @@
 name 'wordpress-ha'
 depends 'apache2'
 depends 'mysql'
-depends 'php7'
+depends 'php74'
 supports 'debian'
