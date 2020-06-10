@@ -1,2 +1,1 @@
-FROM gcr.io/cloud-marketplace-tools/k8s/deployer_helm/onbuild
-
+FROM gcr.io/ruela-test/k8s/deployer_helm/onbuild:latest

@@ -5,11 +5,11 @@ x-google-marketplace:
   partnerId: click-to-deploy-containers
   solutionId: aditum
   # The release version is required in the schema and MUST match the
-  # release tag on the the deployer.
-  publishedVersion: 1.0
+  # release tag on the the deployer. Must be in x.x.x format!
+  publishedVersion: 1.0.0
   publishedVersionMetadata:
     releaseNote: >-
-      First release of Aditum.
+      First release of Custom Governance.
     # releaseTypes list is optional.
     # "Security" should only be used if this is an important update to patch
     # an existing vulnerability, as such updates will display more prominently for users.
@@ -69,12 +69,13 @@ properties:
           base64Encoded: oAuth.clientSecretEncoded
   certificate.hostname:
     type: string
-    title: Application Ingress Host Address
+    title: Application Host Address
   deployment.staticIP:
     type: string
-    title: Static Address NAME
+    title: Static Address Name
   controller.serviceAccount:
     type: string
+    title: Kubernetes Service Account
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:

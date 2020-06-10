@@ -10,7 +10,7 @@ metadata:
 spec:
   descriptor:
     type: aditum
-    version: "{{ .Values.aditum.image.tag }}"
+    version: 1.0.0
   selector:
     matchLabels:
       app.kubernetes.io/name: "{{ .Release.Name }}"
@@ -27,4 +27,3 @@ spec:
     kind: Deployment
   - group: v1
     kind: Service
-
