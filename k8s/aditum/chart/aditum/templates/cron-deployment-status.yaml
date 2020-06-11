@@ -20,4 +20,4 @@ spec:
             - /bin/sh
             - -ec
             - curl -v -H "x-goog-aditum-cron:true" cg-service:80/batchJob/updateAditumDeploymentStatus
-          restartPolicy: Never
+          restartPolicy: OnFailure
