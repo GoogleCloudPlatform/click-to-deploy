@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,8 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name 'wordpress-ha'
-depends 'apache2'
-depends 'mysql'
-depends 'php74'
-supports 'debian'
+include_recipe 'php74::module_cgi'
+include_recipe 'php74::module_curl'
+include_recipe 'php74::module_gd'
+include_recipe 'php74::module_intl'
+include_recipe 'php74::module_mbstring'
+include_recipe 'php74::module_xml'
+include_recipe 'php74::module_xsl'
+include_recipe 'php74::module_zip'
