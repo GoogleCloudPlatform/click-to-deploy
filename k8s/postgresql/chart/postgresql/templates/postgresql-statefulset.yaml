@@ -1,26 +1,3 @@
-kind: Secret
-apiVersion: v1
-metadata:
-  name: {{ .Release.Name }}-secret
-  labels:
-    app.kubernetes.io/name: "{{ .Release.Name }}"
-    app.kubernetes.io/component: postgresql-server
-type: Opaque
-data:
-  password: {{ .Values.db.password }}
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: {{ .Release.Name }}-tls
-  labels:
-    app.kubernetes.io/name: "{{ .Release.Name }}"
-    app.kubernetes.io/component: postgresql-server
-data:
-  server.key: |
-{{ .Values.tls.base64EncodedPrivateKey | indent 4 }}
-  server.crt: |
-{{ .Values.tls.base64EncodedCertificate | indent 4 }}
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -113,40 +90,7 @@ spec:
     spec:
       accessModes:
       - ReadWriteOnce
-      storageClassName: standard
+      storageClassName: {{ .Values.postgresql.persistence.storageClass }}
       resources:
         requests:
-          storage: {{ .Values.postgresql.volumeSize }}Gi
----
-kind: Service
-apiVersion: v1
-metadata:
-  name: {{ .Release.Name }}-postgresql-svc
-  labels: &PostgreSQLLabels
-    app.kubernetes.io/name: "{{ .Release.Name }}"
-    app.kubernetes.io/component: postgresql-server
-spec:
-  ports:
-  - name: postgres
-    port: 5432
-    targetPort: 5432
-  selector: *PostgreSQLLabels
-{{ if .Values.postgresql.exposePublicService }}
-  type: LoadBalancer
-{{ else }}
-  type: ClusterIP
-{{ end }}
----
-kind: Service
-apiVersion: v1
-metadata:
-  name: {{ .Release.Name }}-postgres-exporter-svc
-  labels: &PostgreSQLLabels
-    app.kubernetes.io/name: "{{ .Release.Name }}"
-    app.kubernetes.io/component: postgresql-server
-spec:
-  ports:
-  - name: prometheus-exporter
-    port: 9187
-  selector: *PostgreSQLLabels
-  type: ClusterIP
+          storage: {{ .Values.postgresql.persistence.size }}
