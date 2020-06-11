@@ -10,7 +10,7 @@ metadata:
 spec:
   descriptor:
     type: aditum
-    version: 1.0.0
+    version: 1.0.1
   selector:
     matchLabels:
       app.kubernetes.io/name: "{{ .Release.Name }}"

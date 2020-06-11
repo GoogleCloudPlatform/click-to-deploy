@@ -6,7 +6,7 @@ x-google-marketplace:
   solutionId: aditum
   # The release version is required in the schema and MUST match the
   # release tag on the the deployer. Must be in x.x.x format!
-  publishedVersion: 1.0.0
+  publishedVersion: 1.0.1
   publishedVersionMetadata:
     releaseNote: >-
       First release of Custom Governance.
@@ -54,6 +54,7 @@ properties:
   oAuth.clientID:
     type: string
     title: OAuth Client ID
+    description: The OAuth client ID you created as part of the prerequisites
     x-google-marketplace:
       type: STRING
       string:
@@ -62,6 +63,7 @@ properties:
   oAuth.clientSecret:
     type: string
     title: OAuth Client Secret
+    description: The OAuth client secret you created as part of the prerequisites
     x-google-marketplace:
       type: STRING
       string:
@@ -70,12 +72,15 @@ properties:
   certificate.hostname:
     type: string
     title: Application Host Address
+    description: The host name that will point to the static IP address
   deployment.staticIP:
     type: string
     title: Static Address Name
+    description: The name assigned to a static address resource that was created as part of the prerequisites
   controller.serviceAccount:
     type: string
     title: Kubernetes Service Account
+    description: Created using edit and read roles to allow read access to the Kubernetes Secrets
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
@@ -89,6 +94,7 @@ properties:
   setupAttributes.initialEmail:
     type: string
     title: Initial User Email
+    description:  User that will be deploying/setting up Custom Governance
 required:
 - name
 - namespace

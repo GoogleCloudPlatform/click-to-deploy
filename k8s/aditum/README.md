@@ -32,20 +32,21 @@ Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 ### GKE Cluster:
 
 
-    **You can use the Marketplace UI to create a cluster with the correct requirements for you**
+**You can use the Marketplace UI to create a cluster with the correct requirements for you**
 
 
-    Click “Create a new cluster” on the deployment configuration page
+Click “Create a new cluster” on the deployment configuration page
 
 
-    If you wish to create a cluster manually:
+If you wish to create a cluster manually:
 
 
 
-    *   The Cloud Platform scope allows your cluster to communicate with Google Cloud Platform services.
-    *   The scope can be set through Nodepool Security. While creating a new cluster through the UI- Click on Node Pools > Security > Set access for each API > Set Cloud Platform to enabled
-    *   You can also create a cluster with the scope through the [gcloud command-line tool](https://cloud.google.com/sdk/gcloud)
-        *   `gcloud container clusters create [YOUR-CLUSTER-NAME] --scopes=https://www.googleapis.com/auth/cloud-platform --region=[YOUR-REGION]`
+  *   The Cloud Platform scope allows your cluster to communicate with Google Cloud Platform services.
+  *   The scope can be set through Nodepool Security. While creating a new cluster through the UI- Click on Node Pools > Security > Set access for each API > Set Cloud Platform to enabled
+  *   You can also create a cluster with the scope through the [gcloud command-line tool](https://cloud.google.com/sdk/gcloud):
+
+        `gcloud container clusters create [YOUR-CLUSTER-NAME] --scopes=https://www.googleapis.com/auth/cloud-platform --region=[YOUR-REGION]`
 
 
 ### Setup OAuth Credentials for IAP (Identity Aware Proxy)
@@ -115,7 +116,20 @@ Click “Deploy” when you are ready. Deployment will take a couple of minutes 
 
 ## Post Deployment
 
-Once deployment is complete you can visit your host to start the Custom Governance post-deployment process. Custom Governance will walk you through the steps to deploy the necessary resources and permissions required.
+### Configure Identity Aware Proxy (IAP)
+
+After Marketplace Deployment has completed successfully you will need to configure
+IAP and add any users that will require access to Custom Governance.
+
+*   From the Cloud Console visit [Menu > Security > Identity-Aware-Proxy](https://cloud.google.com/security/iap)
+*   Enable IAP if it is not already enabled
+*   Review any Errors and Warning as well as review the firewalls
+*   Via Cloud Console you can add users to IAP approved list. Visit
+    [Menu > IAM & Admin > IAM](https://cloud.google.com/iam-admin/iam) and add
+    the *IAP-secured Web App User* role to users you wish to grant access to
+
+
+Once deployment is complete you can visit your host address to start the Custom Governance post-deployment process. Custom Governance will walk you through the steps to deploy the necessary resources and permissions required.
 
 
 ## Troubleshooting
@@ -123,7 +137,10 @@ Once deployment is complete you can visit your host to start the Custom Governan
 
 ### “This site can't provide a secure connection”
 
-The site is not loading your Managed Certificate yet. Make sure you are accessing Cloud Governance by the hostname, not the Load Balancer IP. Wait a few minutes for the Managed Certificate and Load Balancer to become ready. The Managed Certificate relies on your DNS to propagate the A record before it can provision correctly.
+The site is not loading your Managed Certificate yet. Make sure you are accessing Cloud Governance by the hostname, not the Load Balancer IP. Wait a few minutes for the Managed Certificate and Load Balancer to become ready. The Managed Certificate relies on your DNS to propagate the A record before it can provision correctly. Certificate provisioning can take up to an hour or even longer. You can check the status of your certificate through kubectl:
+
+    gcloud container clusters get-credentials <cluster name>
+    kubectl describe managedcertificate managed-certificate -n <namespace>
 
 
 ###  “Connection Closed”
