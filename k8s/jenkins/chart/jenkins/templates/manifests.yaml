@@ -60,10 +60,10 @@ spec:
     spec:
       accessModes:
       - ReadWriteOnce
-      storageClassName: standard
+      storageClassName: {{ .Values.jenkins.persistence.storageClass }}
       resources:
         requests:
-          storage: 8Gi
+          storage: {{ .Values.jenkins.persistence.size }}
 ---
 apiVersion: v1
 kind: Service
