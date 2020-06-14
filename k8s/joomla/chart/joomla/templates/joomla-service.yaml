@@ -37,7 +37,7 @@ spec:
   type: ClusterIP
 {{ if .Values.enablePublicServiceAndIngress }}
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: {{ .Release.Name }}-joomla-ingress
