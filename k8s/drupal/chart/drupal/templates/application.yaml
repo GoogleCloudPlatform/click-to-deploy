@@ -125,7 +125,7 @@ spec:
   - group: v1
     kind: Service
   {{ if .Values.enablePublicServiceAndIngress }}
-  - group: extensions/v1beta1
+  - group: networking.k8s.io
     kind: Ingress
   {{ end }}
   - group: apps/v1

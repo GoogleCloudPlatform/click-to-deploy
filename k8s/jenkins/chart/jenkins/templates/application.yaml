@@ -86,5 +86,5 @@ spec:
     kind: Service
   - group: apps/v1
     kind: StatefulSet
-  - group: extensions/v1beta1
+  - group: networking.k8s.io
     kind: Ingress
