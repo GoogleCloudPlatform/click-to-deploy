@@ -1,8 +1,3 @@
-> Use this file as a template for your application's README. Delete any
-sections that don't apply to your app. Delete this note when you start
-editing.
-
-----
 # Custom Governance Installation
 
 These instructions are for installing Custom Governance through the Google Cloud Platform (GCP) Marketplace UI.

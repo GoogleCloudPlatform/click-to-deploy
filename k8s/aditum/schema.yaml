@@ -54,7 +54,7 @@ properties:
   oAuth.clientID:
     type: string
     title: OAuth Client ID
-    description: The OAuth client ID you created as part of the prerequisites
+    description: Prerequisite: Please refer to the Installation Guide to create your OAuth Client ID
     x-google-marketplace:
       type: STRING
       string:
@@ -63,7 +63,7 @@ properties:
   oAuth.clientSecret:
     type: string
     title: OAuth Client Secret
-    description: The OAuth client secret you created as part of the prerequisites
+    description: Prerequisite: Please refer to the Installation Guide to create your OAuth Client Secret
     x-google-marketplace:
       type: STRING
       string:
@@ -71,16 +71,16 @@ properties:
           base64Encoded: oAuth.clientSecretEncoded
   certificate.hostname:
     type: string
-    title: Application Host Address
-    description: The host name that will point to the static IP address
+    title: Domain Name
+    description: The domain name that will point to the static IP address. Read the Installation Guide for more information
   deployment.staticIP:
     type: string
     title: Static Address Name
-    description: The name assigned to a static address resource that was created as part of the prerequisites
+    description: Prerequisite: Please refer to the Installation Guide to create your Static IP Address. Note: This is the name of the static address, not the IP address that is assigned
   controller.serviceAccount:
     type: string
     title: Kubernetes Service Account
-    description: Created using edit and read roles to allow read access to the Kubernetes Secrets
+    description: A new service account will be created using cluster edit and read roles to allow access to the Kubernetes Secrets
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
@@ -94,7 +94,7 @@ properties:
   setupAttributes.initialEmail:
     type: string
     title: Initial User Email
-    description:  User that will be deploying/setting up Custom Governance
+    description:  The email address of the user that will be deploying/setting up Custom Governance
 required:
 - name
 - namespace

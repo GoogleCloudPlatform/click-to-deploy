@@ -6,11 +6,16 @@ metadata:
   labels:
     app.kubernetes.io/name: "{{ .Release.Name }}"
   annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
     marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": "aditum", "partner_name": "Click To Deploy"}'
 spec:
   descriptor:
-    type: aditum
-    version: 1.0.2
+    type: Custom Governance
+    version: "{{ .Values.aditum.image.tag }}"
+  info:
+    - name: Custom Governance site URL
+      value: "https://{{ .Values.certificate.hostname }}"
   selector:
     matchLabels:
       app.kubernetes.io/name: "{{ .Release.Name }}"
