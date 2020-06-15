@@ -15,10 +15,10 @@
 include_recipe 'apache2::mod-rewrite'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
-include_recipe 'php7'
-include_recipe 'php7::composer'
-include_recipe 'php7::module_libapache2'
-include_recipe 'php7::module_mysql'
+include_recipe 'php74'
+include_recipe 'php74::composer'
+include_recipe 'php74::module_libapache2'
+include_recipe 'php74::module_mysql'
 include_recipe 'mysql'
 include_recipe 'composer'
 
@@ -73,6 +73,6 @@ execute 'enable proxy_fcgi' do
   command 'a2enmod proxy_fcgi setenvif'
 end
 
-execute 'enable php7.0-fpm' do
-  command 'a2enconf php7.0-fpm'
+execute 'enable php7.4-fpm' do
+  command 'a2enconf php7.4-fpm'
 end

@@ -17,9 +17,9 @@ default['mautic']['packages'] = [
     'libxmlrpc-epi0',
     'libxslt1.1',
     'libzip4',
-    'php7.2-bcmath',
-    'php7.2-gmp',
-    'php7.2-imap',
+    'php7.4-bcmath',
+    'php7.4-gmp',
+    'php7.4-imap',
 ]
 
 default['mautic']['version'] = '2.15.3'
