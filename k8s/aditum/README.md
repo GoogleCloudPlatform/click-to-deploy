@@ -313,11 +313,7 @@ Configure the container image:
 
 ```shell
 export TAG=1.0
-export IMAGE_CG="marketplace.gcr.io/aditum-marketplace-dev/cloud-governance"
-```
-
-```shell
-export IMAGE_SAMPLE_APP=$(docker pull $IMAGE_SAMPLE_APP | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_SAMPLE_APP\")\"@sha256:\"\$3}")
+export IMAGE_CG="marketplace.gcr.io/aditum-marketplace-dev/custom-governance"
 ```
 
 #### Create namespace in your Kubernetes cluster
