@@ -1,0 +1,11 @@
+properties:
+  testerImage:
+    type: string
+    default: $REGISTRY/tester:$TAG
+    x-google-property:
+      type: IMAGE
+  image.initImage:
+    type: string
+    default: $REGISTRY/amppackager_init:$TAG
+    x-google-property:
+      type: IMAGE
