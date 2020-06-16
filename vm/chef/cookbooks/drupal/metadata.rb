@@ -15,5 +15,5 @@
 name 'drupal'
 depends 'apache2'
 depends 'mysql'
-depends 'php74'
+depends 'php7'
 supports 'debian'
