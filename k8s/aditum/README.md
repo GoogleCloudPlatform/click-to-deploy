@@ -14,7 +14,7 @@ Get up and running with a few clicks! Install Custom Governance to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 [on-screen instructions](https://console.cloud.google.com/marketplace/details/aditum-marketplace-dev/custom-governance).
 
-## Prerequisites
+## Start Here: Installation Prerequisites
 
 
 ### Enable [Cloud Resource Manager](https://console.cloud.google.com/apis/api/cloudresourcemanager.googleapis.com)
@@ -27,10 +27,16 @@ Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 ### GKE Cluster:
 
 
-**You can use the Marketplace UI to create a cluster with the correct requirements for you**
+**You can use the Marketplace UI to create a cluster with the correct requirements for you:**
+
+![Cluster Selection](./images/cluster_select.png)
 
 
-Click “Create a new cluster” on the deployment configuration page
+![Cluster Creation](./images/cluster_creation.png)
+
+* Click “Create a new cluster” on the deployment configuration page.
+* **Make sure to enable "Allow access to the following Cloud APIs".** This is required
+for the Cluster to be able to network with GCP services.
 
 
 If you wish to create a cluster manually:
@@ -54,6 +60,10 @@ You will need to pass OAuth Credentials to Marketplace UI to properly configure 
 
 *   [Configuring OAuth Consent Screen](https://cloud.google.com/iap/docs/enabling-kubernetes-howto#oauth-configure)
 *   [Creating OAuth Credentials](https://cloud.google.com/iap/docs/enabling-kubernetes-howto#oauth-credentials)
+  * Ensure you have set the OAuth authorized redirect URIs:
+      * Required URI: https://iap.googleapis.com/v1/oauth/clientIds/CLIENT_ID:handleRedirect
+      * Where CLIENT_ID is your OAuth Client ID
+
 
 Once you have created your OAuth Credentials you will need the following to pass into Marketplace UI:
 
@@ -89,8 +99,14 @@ If you utilize Cloud DNS you can follow [these instructions for creating a new r
 
 ## Installation Process
 
-Once you have completed the prerequisites you can proceed to deploying through Marketplace UI
+Before deploying through Marketplace please [create a project](https://cloud.google.com/resource-manager/docs/creating-managing-projects#before_you_begin)
+ where Custom Governance can be deployed.
 
+Visit the Marketplace listing for [Custom Governance](https://console.cloud.google.com/marketplace/details/aditum-marketplace-dev/custom-governance) for information on Custom Governance.
+
+When you are ready to deploy click on the “Configure” button, it will take you to the Deployment Configuration UI:
+
+![Deployment Configuration](./images/deployment_configuration.png)
 
 Here you will fill in the information we created in the Prerequisites section:
 
@@ -100,10 +116,10 @@ Here you will fill in the information we created in the Prerequisites section:
 *   Namespace: You can use the default namespace or create a new one in the dropdown
 *   App Instance Name: Name of your application instance.
 *   OAuth Client ID and OAuth Client Secret: Fill in the OAuth Client ID and OAuth Client Secret that you created in the [OAuth section](#bookmark=id.6dytd4218vwe)
-*   Application Host Address: the domain name that you pointed to the static IP address through the A record
-*   Static Address Name: the name assigned to a static address resource that was created in the prerequisites section you can retrieve the static address name:
+*   Domain Name: the domain name that you pointed to the static IP address through the A record
+*   Static Address Name: the name assigned to a static address resource that was created in the prerequisites section. Retrieve the static address name:
     *   [Listing static IP addresses](https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address#list_ip)
-*   Kubernetes Service Account: created using edit and read roles to allow read access to the Kubernetes Secrets
+*   Kubernetes Service Account: If you select "Create a new service account" a new Kubernetes service account will be created using cluster edit and read roles to allow access to the Kubernetes Secrets
 *   Initial User Email: will be the user email address that will be deploying/setting up Custom Governance. Custom Governance will check for this email address even after the user has passed through IAP.
 
 Click “Deploy” when you are ready. Deployment will take a couple of minutes or longer. Even after deployment is successful the cg-ingress may take longer to become ready. This is completely normal.
@@ -123,7 +139,9 @@ IAP and add any users that will require access to Custom Governance.
     [Menu > IAM & Admin > IAM](https://cloud.google.com/iam-admin/iam) and add
     the *IAP-secured Web App User* role to users you wish to grant access to
 
+![IAM IAP Setup](./images/IAM_IAP_user.png)
 
+### Finish Deployment
 Once deployment is complete you can visit your host address to start the Custom Governance post-deployment process. Custom Governance will walk you through the steps to deploy the necessary resources and permissions required.
 
 
@@ -158,7 +176,7 @@ If going to the hostname results in a “Connection Closed” error, the DNS was
 
 ### “Internal Server Error”
 
-If you get an “Internal Server Error” try checking the logs to see what the issue is. You may have not configured the OAuth Credentials properly. You can check the pod logs through Cloud Console or through kubectl:
+If you get an “Internal Server Error” try checking the logs to see what the issue is. You may have not configured the OAuth Credentials properly. You can check the pod logs through Cloud Console or [through kubectl](https://www.google.com/url?q=https://cloud.google.com/kubernetes-engine/docs/quickstart):
 
 
 ```

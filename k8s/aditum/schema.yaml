@@ -54,7 +54,7 @@ properties:
   oAuth.clientID:
     type: string
     title: OAuth Client ID
-    description: Prerequisite: Please refer to the Installation Guide to create your OAuth Client ID
+    description: Please refer to the Installation Guide to create your OAuth Client ID
     x-google-marketplace:
       type: STRING
       string:
@@ -63,7 +63,7 @@ properties:
   oAuth.clientSecret:
     type: string
     title: OAuth Client Secret
-    description: Prerequisite: Please refer to the Installation Guide to create your OAuth Client Secret
+    description: Please refer to the Installation Guide to create your OAuth Client Secret
     x-google-marketplace:
       type: STRING
       string:
@@ -76,7 +76,7 @@ properties:
   deployment.staticIP:
     type: string
     title: Static Address Name
-    description: Prerequisite: Please refer to the Installation Guide to create your Static IP Address. Note: This is the name of the static address, not the IP address that is assigned
+    description: Please refer to the Installation Guide to create your Static IP Address. This is the name of the static address, not the IP address that is assigned
   controller.serviceAccount:
     type: string
     title: Kubernetes Service Account
