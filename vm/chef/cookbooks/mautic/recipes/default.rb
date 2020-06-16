@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'php74'
-include_recipe 'php74::composer'
-include_recipe 'php74::module_libapache2'
-include_recipe 'php74::module_mysql'
-include_recipe 'php74::module_xmlrpc'
+include_recipe 'php73'
+include_recipe 'php73::composer'
+include_recipe 'php73::module_libapache2'
+include_recipe 'php73::module_mysql'
+include_recipe 'php73::module_xmlrpc'
 include_recipe 'composer::composer-only'
 
 include_recipe 'git'
