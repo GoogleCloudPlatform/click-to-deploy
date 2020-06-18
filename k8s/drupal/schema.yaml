@@ -67,7 +67,7 @@ properties:
     type: string
     title: Storage size for Drupal.
     default: "8Gi"
-    description: The storage size Jenkins persistent volume
+    description: The storage size for Drupal persistent volume
     pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
   drupal.password:
     type: string
