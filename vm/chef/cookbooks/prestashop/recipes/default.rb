@@ -21,11 +21,11 @@ include_recipe 'apache2::mod-rewrite'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 include_recipe 'mysql'
-include_recipe 'php7'
-include_recipe 'php7::module_libapache2'
-include_recipe 'php7::module_mysql'
-include_recipe 'php7::module_simplexml'
-include_recipe 'php7::module_zip'
+include_recipe 'php74'
+include_recipe 'php74::module_libapache2'
+include_recipe 'php74::module_mysql'
+include_recipe 'php74::module_simplexml'
+include_recipe 'php74::module_zip'
 
 package node['prestashop']['temp_packages'] do
   action :install
