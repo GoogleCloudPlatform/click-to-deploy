@@ -357,8 +357,10 @@ Use your GitLab root password generated earlier to sign-in.
 
 Below steps are based on [Official GitLab Backup/Restore documentation](https://docs.gitlab.com/ee/raketasks/backup_restore.html#back-up-gitlab) .
 
-APP_INSTANCE=gitlab-1
+```
+APP_INSTANCE_NAME=gitlab-1
 NAMESPACE=default
+```
 
 Run Backup command:
 ```
@@ -373,10 +375,12 @@ kubectl --namespace ${NAMESPACE} exec -it \
   "ls /var/opt/gitlab/backups/"
 ```
 
-Copy name of backup file and copy to local workstation:
+Copy backup file to local workstation:
 ```
+BACKUP_TAR="place-your-backup-file-here"
+
 kubectl --namespace ${NAMESPACE} cp \
-  ${APP_INSTANCE_NAME}-gitlab-0:/var/opt/gitlab/backups/<STAMP>_gitlab_backup.tar .
+  ${APP_INSTANCE_NAME}-gitlab-0:/var/opt/gitlab/backups/${BACKUP_TAR} .
 ```
 
 > GitLab does not back up any configuration files, SSL certificates, or
@@ -417,12 +421,14 @@ root-password-base64.txt   	#File contains encoded root password.
 
 Export mandatory variables.
 ```
-APP_INSTANCE=gitlab-1
+APP_INSTANCE_NAME=gitlab-1
 NAMESPACE=default
 ```
 Copy Gitlab Backup tar file to running gitlab instance.
 ```
-kubectl --namespace ${NAMESPACE} cp <STAMP>_gitlab_backup.tar \
+BACKUP_TAR="place-your-backup-file-here"
+
+kubectl --namespace ${NAMESPACE} cp ${BACKUP_TAR} \
   ${APP_INSTANCE_NAME}-gitlab-0:/var/opt/gitlab/backups/
 ```
 
@@ -450,12 +456,12 @@ done
 If you deployed with other root password than previous, you should restore it as well.
 ```
 # COPY encoded old password
-cat root-password-base64.txt
+OLD_PASS=$(cat root-password-base64.txt)
 
 # Patch secret resource with encoded root password
 kubectl --namespace $NAMESPACE patch secret \
-  $APP_INSTANCE_NAME-gitlab-secret -p \
-  '{"data":{"gitlab-root-password": "<CONTENT OF root-password-base64.txt>"}}'
+  $APP_INSTANCE_NAME-gitlab-secret \
+  --patch='{"data":{"gitlab-root-password": "'${OLD_PASS}'"}}'
 ```
 
 # Scaling
