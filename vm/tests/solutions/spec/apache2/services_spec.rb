@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name 'mautic'
-depends 'apache2'
-depends 'composer'
-depends 'git'
-depends 'mysql'
-depends 'php73'
-depends 'c2d-config'
-supports 'debian'
+require 'spec_helper'
+
+describe service('apache2'), :if => os[:family] == 'debian' do
+  it { should be_enabled }
+  it { should be_running }
+end
