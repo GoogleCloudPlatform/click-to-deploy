@@ -121,6 +121,19 @@ export APP_INSTANCE_NAME=grafana-1
 export NAMESPACE=default
 ```
 
+For the persistent disk provisioning of the Grafana StatefulSets, you will need to:
+
+ * Set the StorageClass name. Check your available options using the command below:
+   * ```kubectl get storageclass```
+   * Or check how to create a new StorageClass in [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
+
+ * Set the persistent disk's size. The default disk size is "2Gi".
+
+```shell
+export GRAFANA_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
+export PERSISTENT_DISK_SIZE="2Gi"
+```
+
 Configure password for Grafana administrator account (the value must be encoded
 in base64):
 
@@ -185,6 +198,8 @@ helm template chart/grafana \
   --name $APP_INSTANCE_NAME \
   --namespace $NAMESPACE \
   --set grafana.image=$IMAGE_GRAFANA \
+  --set grafana.persistence.storageClass=$GRAFANA_STORAGE_CLASS \
+  --set grafana.persistence.size=$PERSISTENT_DISK_SIZE \
   --set grafana.initImage=$IMAGE_GRAFANA_INIT \
   --set grafana.password=$GRAFANA_GENERATED_PASSWORD \
   --set metrics.image=$IMAGE_METRICS_EXPORTER \
