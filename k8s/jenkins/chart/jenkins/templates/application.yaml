@@ -52,7 +52,7 @@ spec:
       1. Identify the HTTPS endpoint:
 
           ```shell
-          echo https://$(kubectl -n {{ .Release.Namespace }} get ingress -l "app.kubernetes.io/name={{ .Release.Name }}" -ojsonpath="{.items[0].status.loadBalancer.ingress[0].ip}")/
+          echo https://$(kubectl -n {{ .Release.Namespace }} get ingress -l "app.kubernetes.io/name={{ .Release.Name }}" -o jsonpath="{.items[0].status.loadBalancer.ingress[0].ip}")/
           ```
 
       1.  Navigate to the endpoint.
