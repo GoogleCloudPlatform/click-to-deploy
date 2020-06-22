@@ -6,6 +6,9 @@ grafana:
   user: admin
   password: null
   serviceaccount: null
+  persistence:
+    storageClass: null
+    size: 2Gi
 
 metrics:
   image: null
