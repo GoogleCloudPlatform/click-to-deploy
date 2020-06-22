@@ -14,7 +14,7 @@ postgresql:
     name: sonar
     user: sonar
   persistence:
-    size: null
+    size: 10Gi
 metrics:
   image: null
   exporter:
