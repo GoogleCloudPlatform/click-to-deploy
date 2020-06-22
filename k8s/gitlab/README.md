@@ -353,6 +353,112 @@ echo "http://${SERVICE_IP}/"
 
 Use your GitLab root password generated earlier to sign-in.
 
+# Backup
+
+Below steps are based on [Official GitLab Backup/Restore documentation](https://docs.gitlab.com/ee/raketasks/backup_restore.html#back-up-gitlab) .
+
+```
+APP_INSTANCE_NAME=gitlab-1
+NAMESPACE=default
+```
+
+Run Backup command:
+```
+kubectl --namespace ${NAMESPACE} exec -it \
+  "${APP_INSTANCE_NAME}-gitlab-0" -- bash -c "gitlab-backup create"
+```
+
+You can see created backup files from output of backup command or via running:
+```
+kubectl --namespace ${NAMESPACE} exec -it \
+  "${APP_INSTANCE_NAME}-gitlab-0" -- bash -c \
+  "ls /var/opt/gitlab/backups/"
+```
+
+Copy backup file to local workstation:
+```
+BACKUP_TAR="<STAMP>_gitlab_backup.tar"
+
+kubectl --namespace ${NAMESPACE} cp \
+  ${APP_INSTANCE_NAME}-gitlab-0:/var/opt/gitlab/backups/${BACKUP_TAR} ${BACKUP_TAR}
+```
+
+> GitLab does not back up any configuration files, SSL certificates, or
+> system files.  You are highly advised to read about storing
+> configuration files:
+> https://docs.gitlab.com/ee/raketasks/backup_restore.html#storing-configuration-files
+
+Copy secret files manually:
+```
+for secret in "gitlab-secrets.json" "gitlab.rb"; do
+  kubectl --namespace ${NAMESPACE} cp ${APP_INSTANCE_NAME}-gitlab-0:/etc/gitlab/$secret $secret
+done
+```
+
+Save your root password of this database to local workstation.
+
+```
+kubectl --namespace ${NAMESPACE} get secret \
+  ${APP_INSTANCE_NAME}-gitlab-secret \
+  -ojsonpath='{.data.gitlab-root-password}' > root-password-base64.txt
+```
+
+# Restore
+For Gitlab Restore Prerequisites visit [here](https://docs.gitlab.com/ee/raketasks/backup_restore.html#restore-prerequisites).
+
+Below steps are based on [Official GitLab Backup/Restore documentation](https://docs.gitlab.com/ee/raketasks/backup_restore.html#restore-for-omnibus-gitlab-installations).
+
+We assume you have below files in local workstation if you followed backup procedure in this document.
+
+- `<STAMP>_gitlab_backup.tar` - Gitlab Backup tar file
+- `gitlab.rb` and `gitlab-secrets.json` - Database encryption key related secret files. For more information visit https://docs.gitlab.com/ee/raketasks/backup_restore.html#storing-configuration-files
+- `root-password-base64.txt` - File contains encoded root password.
+
+Export mandatory variables.
+```
+APP_INSTANCE_NAME=gitlab-1
+NAMESPACE=default
+```
+Copy Gitlab Backup tar file to running gitlab instance.
+```
+BACKUP_TAR="<STAMP>_gitlab_backup.tar"
+
+kubectl --namespace ${NAMESPACE} cp ${BACKUP_TAR} \
+  ${APP_INSTANCE_NAME}-gitlab-0:/var/opt/gitlab/backups/
+```
+
+Change ownership of file to `git` user.
+```
+kubectl --namespace ${NAMESPACE} exec -it \
+  "${APP_INSTANCE_NAME}-gitlab-0" -- bash -c \
+  "chown git:git /var/opt/gitlab/backups/*"
+```
+
+Run Restore command and follow the output:
+```
+kubectl --namespace ${NAMESPACE} exec -it \
+  "${APP_INSTANCE_NAME}-gitlab-0" -- bash -c \
+  "gitlab-backup restore"
+```
+
+Copy Database encryption key related secret files to instance. We assume they are in your current directory.
+```
+for secret in "gitlab-secrets.json" "gitlab.rb"; do
+  kubectl --namespace ${NAMESPACE} cp $secret ${APP_INSTANCE_NAME}-gitlab-0:/etc/gitlab/
+done
+```
+
+If you deployed with other root password than previous, you should restore it as well.
+```
+# COPY encoded old password
+OLD_PASS=$(cat root-password-base64.txt)
+
+# Patch secret resource with encoded root password
+kubectl --namespace $NAMESPACE patch secret \
+  $APP_INSTANCE_NAME-gitlab-secret \
+  --patch='{"data":{"gitlab-root-password": "'${OLD_PASS}'"}}'
+```
+
 # Scaling
 
 This is a single-instance version of GitLab. It is not intended to
