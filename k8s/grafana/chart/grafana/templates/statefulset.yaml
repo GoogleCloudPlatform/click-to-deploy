@@ -101,9 +101,9 @@ spec:
   - metadata:
       name: {{ .Release.Name }}-grafana-data
     spec:
-      storageClassName: standard
+      storageClassName: {{ .Values.grafana.persistence.storageClass }}
       accessModes:
         - ReadWriteOnce
       resources:
         requests:
-          storage: "2Gi"
+          storage: {{ .Values.grafana.persistence.size }}

@@ -130,7 +130,7 @@ spec:
         app.kubernetes.io/component: drupal-webserver
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: standard
+      storageClassName: {{ .Values.drupal.persistence.storageClass }}
       resources:
         requests:
-          storage: {{ .Values.drupal.volumeSize }}
+          storage: {{ .Values.drupal.persistence.size }}
