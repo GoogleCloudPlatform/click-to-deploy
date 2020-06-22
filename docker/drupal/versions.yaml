@@ -1,0 +1,47 @@
+# Copyright 2019 Google LLC
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+_variables:
+  from: &from gcr.io/cloud-marketplace-ops/php7-apache:7.3-debian9
+  drupal: &drupal
+    version: '8.7.11'
+    md5: 'f281eb14d8aabf0c3e78dd519ca4b640'
+  composer: &composer
+    # Package doesn't contain SHA384
+    # I use version instead of it
+    # TODO: Change it when the issue is resolved
+    # https://github.com/GoogleCloudPlatform/runtimes-common/issues/798
+    version: 'a5c698ffe4b8e849a443b120cd5ba38043260d5c4023dbf93e1558871f1f07f58274fc6f4c93bcfd858c6bd0775cd8d1'
+  tags: &tags
+  - '8.7.11-debian9'
+  - '8.7.11'
+  - '8.7-debian9'
+  - '8.7'
+  - '8-debian9'
+  - '8'
+  - 'latest'
+
+versions:
+
+  # Drupal 8 with PHP 7.3-apache on Debian 9
+  - dir: '8/php7/debian9/apache'
+    repo: 'drupal8-php7-apache'
+    templateSubDir: debian9
+    tags: *tags
+    from: *from
+    packages:
+      drupal: *drupal
+      composer: *composer
