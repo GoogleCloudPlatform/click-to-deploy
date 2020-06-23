@@ -40,6 +40,9 @@ x-google-marketplace:
         requiredOauthScopes:
         - https://www.googleapis.com/auth/cloud-platform
         - https://www.googleapis.com/auth/devstorage.read_only
+      requests:
+          cpu: 4000m
+          memory: 15Gi
 
 
 properties:
