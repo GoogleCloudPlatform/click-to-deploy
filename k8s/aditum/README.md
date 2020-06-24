@@ -38,6 +38,7 @@ Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 * **Make sure to enable "Allow access to the following Cloud APIs".** This is required
 for the Cluster to be able to network with GCP services.
 
+**Recommended machine type for optimal performance: [n1-standard-4](https://cloud.google.com/compute/docs/machine-types)**
 
 If you wish to create a cluster manually:
 
@@ -140,23 +141,6 @@ IAP and add any users that will require access to Custom Governance.
     the *IAP-secured Web App User* role to users you wish to grant access to
 
 ![IAM IAP Setup](./images/IAM_IAP_user.png)
-
-### Create App Engine application
-The application uses Cloud Dataflow and requires an App Engine application to be created. From the Cloud Console visit [Menu > App Engine](https://cloud.google.com//appengine/start) to get started
-
-1. Click *Create Application*
-
-	![Step 1 to create App Engine application](./images/app_engine_step1.png)
-  
-1. Select us-central as the region
-
-	![Step 2 to create App Engine application](./images/app_engine_step2.png)
-
-1. Select *Python* as the language and *Flexible* as the environment. Click *Next* to
-finish creating the app.
-
-	![Step 3 to create App Engine application](./images/app_engine_step3.png)
-
 
 ### Finish Deployment
 Once deployment is complete you can visit your host address to start the Custom Governance post-deployment process. Custom Governance will walk you through the steps to deploy the necessary resources and permissions required.
