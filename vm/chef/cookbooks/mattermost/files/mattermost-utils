@@ -1,0 +1,97 @@
+#######################################
+# Creates a user for Mattermost application in MYSQL database.
+# Arguments:
+#   MySQL Hostname.
+#   MySQL Database Name.
+#   MySQL Username to be created.
+#   MySQL Password for username created.
+#######################################
+function create_db_user() {
+  local db_host="$1"
+  local db_name="$2"
+  local db_user="$3"
+  local db_pwd="$4"
+
+  echo >&2 "Creating database user..."
+  mysql -u root -e "CREATE USER '${db_user}'@'${db_host}' IDENTIFIED BY '${db_pwd}';"
+  mysql -u root -e "GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, CREATE TEMPORARY TABLES ON ${db_name}.* TO '${db_user}'@'${db_host}' IDENTIFIED BY '${db_pwd}';";
+  mysql -u root -e "FLUSH PRIVILEGES"
+}
+
+#######################################
+# Updates Mattermost configuration
+# Arguments:
+#   Data Source Name for connection between Mattermost and MySQL
+#   Mattermost Website Name
+#######################################
+function update_config() {
+  local -r dsn="$1"
+  local -r site_name="$2"
+  local -r driver="mysql"
+  local config_path=/opt/mattermost/config/config.json
+
+  echo >&2 "Updating Mattermost configuration..."
+  local config_contents="$(cat "${config_path}" \
+    | jq '.TeamSettings.SiteName = "'"${site_name}"'"' \
+    | jq '.SqlSettings.DriverName = "'"${driver}"'"' \
+    | jq -r '.SqlSettings.DataSource = "'"${dsn}"'"')"
+
+  echo "${config_contents}" > "${config_path}"
+}
+
+#######################################
+# Generate a certificate using Let's Encrypt
+# Arguments:
+#   Domain name for the certificate
+#   Email to be registered in Let's Encrypt
+#######################################
+function generate_certificate() {
+  domain_name="$1"
+  email="$2"
+
+  echo >&2 "Generating certificate..."
+  /opt/certbot/letsencrypt-auto certonly \
+    -d "${domain_name}" \
+    --standalone \
+    --non-interactive \
+    --agree-tos \
+    --email "${email}" \
+    --verbose
+}
+
+#######################################
+# Set nginx configurations for https ot http
+# Arguments:
+#   Domain name for the certificate
+#   Email to be registered in Let's Encrypt
+#######################################
+function setup_nginx() {
+  local domain_name="$1"
+  local email="$2"
+  local -r nginx_config="/etc/nginx/sites-available/mattermost"
+
+  # If a domain name is provided, generate certificate and configure
+  # HTTPS for nginx. Otherwise, applies all hosts with HTTP configuration.
+  if [[ "${domain_name}" == "" ]] || [[ "${domain_name}" == "localhost" ]]; then
+    # Copy template for all hosts configuration with HTTP
+    cp /opt/mattermost-nginx-localhost.conf "${nginx_config}"
+  else
+    echo >&2 "Stopping nginx..."
+    systemctl stop nginx
+
+    echo >&2 "Generating certificate..."
+    generate_certificate "${domain_name}" "${email}"
+
+    # Applying domain name to template for HTTPS configuration with domain name
+    export DOMAIN_NAME="$1"
+    envsubst "\$DOMAIN_NAME" < /opt/mattermost-nginx-domain.conf > "${nginx_config}"
+  fi
+
+  # Applies mattermost nginx config
+  rm -f /etc/nginx/sites-enabled/default
+  ln -s "${nginx_config}" /etc/nginx/sites-enabled/mattermost
+
+  echo >&2 "Restarting nginx..."
+  # Restart nginx configuration
+  systemctl restart nginx
+}
