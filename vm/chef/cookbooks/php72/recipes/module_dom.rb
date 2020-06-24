@@ -12,8 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name 'prestashop'
-depends 'apache2'
-depends 'mysql'
-depends 'php72'
-supports 'debian'
+package 'php7.2-dom'
