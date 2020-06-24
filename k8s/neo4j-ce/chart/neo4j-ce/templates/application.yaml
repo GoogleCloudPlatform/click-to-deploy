@@ -13,17 +13,17 @@ spec:
     type: Neo4j
     version: "{{ .Values.neo4j.image.tag }}"
     description: |-
-      Neo4j Community Edition is an open source graph database management system written in Java.
-      It provides a web dashboard for managing data and users. Service is accessible through HTTP REST API or binary bolt protocol.
+      Neo4j Community Edition is an open source graph database management system, written in Java.
+      It provides a web dashboard for managing data and users. You can access its service by using an HTTP REST API or the Bolt binary protocol.
 
-      The Community Edition is ideal for learning or small projects, not production scale.
-      Solution does not support clustering, sharding data or advanced indexes.
+      The Community Edition is not production-ready. It is ideal for learning or small projects.
+      It does not support clustering, sharding data, or advanced indexes.
 
       # Support
       Google does not offer support for this solution. However, community support is available on
       [Stack Overflow](https://stackoverflow.com/questions/tagged/neo4j/).
 
-      Additional support is available on [Official Community Website](https://community.neo4j.com).
+      Additional support is available on the [official Neo4j Community website](https://community.neo4j.com).
     maintainers:
     - name: Google Click to Deploy
       url: https://cloud.google.com/solutions/#click-to-deploy
@@ -38,14 +38,12 @@ spec:
       url: https://github.com/neo4j-examples
 
     notes: |-
-      Neo4j Community is exposed in a ClusterIP-only service, `{{ .Release.Name }}-neo4j-svc`.
-      To connect to Neo4j Browser, you can connect from you local environment with `kubectl port-forward`.
+      Neo4j Community Edition is exposed through a ClusterIP-only service, `{{ .Release.Name }}-neo4j-svc`.
+      You can connect to the Neo4j Browser from your local environment by using `kubectl port-forward`.
 
+      You can forward Neo4j's ports to your local machine by using the port forwarding feature of `kubectl`.
 
-      You can use the port forwarding feature of `kubectl` to forward Neo4j's ports to your local
-      machine.
-
-      Run the following command in the background to expose Neo4j Browser port:
+      To expose the Neo4j Browser port, run the following command in the background:
 
       ```shell
       kubectl port-forward \
@@ -54,7 +52,7 @@ spec:
         7474:7474 &
       ```
 
-      And this one for exposing Neo4j's Bolt port:
+      To expose the Neo4j Bolt port, run the following command:
 
       ```shell
       kubectl port-forward \
@@ -63,7 +61,7 @@ spec:
         7687:7687 &
       ```
 
-      Now you can access the Neo4j Browser with [http://localhost:7474](http://localhost:7474).
+      After that, you can access the Neo4j Browser at [http://localhost:7474](http://localhost:7474).
 
   info:
   - name: Neo4j Service
