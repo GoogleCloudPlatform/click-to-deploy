@@ -6,7 +6,7 @@ x-google-marketplace:
   solutionId: aditum
   # The release version is required in the schema and MUST match the
   # release tag on the the deployer. Must be in x.x.x format!
-  publishedVersion: 1.0.4
+  publishedVersion: 1.0.5
   publishedVersionMetadata:
     releaseNote: >-
       First release of Custom Governance.
@@ -35,14 +35,19 @@ x-google-marketplace:
           type: TAG
   ## Cluster Constraints
   clusterConstraints:
+    resources:
+    - replicas: 1
+      requests:
+        cpu: 4
+        memory: 15Gi
+      affinity:
+        simpleNodeAffinity:
+          type: REQUIRE_ONE_NODE_PER_REPLICA
     gcp:
       nodes:
         requiredOauthScopes:
         - https://www.googleapis.com/auth/cloud-platform
         - https://www.googleapis.com/auth/devstorage.read_only
-      requests:
-          cpu: 4000m
-          memory: 15Gi
 
 
 properties:
@@ -74,11 +79,11 @@ properties:
           base64Encoded: oAuth.clientSecretEncoded
   certificate.hostname:
     type: string
-    title: Domain Name
+    title: Domain Name to serve Custom Governance
     description: The domain name that will point to the static IP address. Read the Installation Guide for more information
   deployment.staticIP:
     type: string
-    title: Static Address Name
+    title: Name of Global Static IP Address
     description: Please refer to the Installation Guide to create your Static IP Address. This is the name of the static address, not the IP address that is assigned
   controller.serviceAccount:
     type: string

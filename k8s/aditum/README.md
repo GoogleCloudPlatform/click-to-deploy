@@ -62,6 +62,7 @@ You will need to pass OAuth Credentials to Marketplace UI to properly configure 
 *   [Configuring OAuth Consent Screen](https://cloud.google.com/iap/docs/enabling-kubernetes-howto#oauth-configure)
 *   [Creating OAuth Credentials](https://cloud.google.com/iap/docs/enabling-kubernetes-howto#oauth-credentials)
   * Ensure you have set the OAuth authorized redirect URIs:
+      * **URI will be added AFTER creating the OAuth Credentials as the Client ID will not be available before then**
       * Required URI: https://iap.googleapis.com/v1/oauth/clientIds/CLIENT_ID:handleRedirect
       * Where CLIENT_ID is your OAuth Client ID
 
@@ -79,10 +80,10 @@ Once you have created your OAuth Credentials you will need the following to pass
 Follow the instructions to reserve a static IP address:
 
 
-
+*   **You MUST choose Global as the IP address type**
 *   [Reserving a static IP address](https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address)
 *   The name for the static address will need to be passed into the Marketplace UI, note is down
-*   You MUST choose Global as the IP address type
+
 
 
 ### DNS A Record
@@ -120,7 +121,8 @@ Here you will fill in the information we created in the Prerequisites section:
 *   Domain Name: the domain name that you pointed to the static IP address through the A record
 *   Static Address Name: the name assigned to a static address resource that was created in the prerequisites section. Retrieve the static address name:
     *   [Listing static IP addresses](https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address#list_ip)
-*   Kubernetes Service Account: If you select "Create a new service account" a new Kubernetes service account will be created using cluster edit and read roles to allow access to the Kubernetes Secrets
+*   Kubernetes Service Account: Please select *Create a new service account*
+  *   A new Kubernetes service account will be created using cluster edit and read roles to allow access to the Kubernetes Secrets
 *   Initial User Email: will be the user email address that will be deploying/setting up Custom Governance. Custom Governance will check for this email address even after the user has passed through IAP.
 
 Click “Deploy” when you are ready. Deployment will take a couple of minutes or longer. Even after deployment is successful the cg-ingress may take longer to become ready. This is completely normal.
@@ -133,12 +135,13 @@ Click “Deploy” when you are ready. Deployment will take a couple of minutes 
 After Marketplace Deployment has completed successfully you will need to configure
 IAP and add any users that will require access to Custom Governance.
 
-*   From the Cloud Console visit [Menu > Security > Identity-Aware-Proxy](https://cloud.google.com/security/iap)
+*   From the Cloud Console visit [Menu > Security > Identity-Aware-Proxy](https://cloud.google.com/iap)
 *   Enable IAP if it is not already enabled
 *   Review any Errors and Warning as well as review the firewalls
 *   Via Cloud Console you can add users to IAP approved list. Visit
     [Menu > IAM & Admin > IAM](https://cloud.google.com/iam-admin/iam) and add
     the *IAP-secured Web App User* role to users you wish to grant access to
+    * Project Owner will need to be added to IAP approved list as well
 
 ![IAM IAP Setup](./images/IAM_IAP_user.png)
 
@@ -148,6 +151,15 @@ Once deployment is complete you can visit your host address to start the Custom 
 
 ## Troubleshooting
 
+### "Some components have errors"
+
+You may see this error in Cloud Console after the application is deployed if the components are not ready. It can take up to half an hour or longer for the Ingress and Deployment to become ready depending on your DNS TTL.
+
+This warning may be accompanied by others:
+*   Ingress: "All backend services are in UNHEALTHY state"
+*   Deployment: "Does not have minimum availability"
+
+Please allow some time for these warnings to resolve.
 
 ### “This site can't provide a secure connection”
 
