@@ -11,9 +11,6 @@ x-google-marketplace:
       - Feature
     recommended: false
 
-  managedUpdates:
-    kalmSupported: false
-
   clusterConstraints:
     resources:
     - replicas: 1
@@ -55,12 +52,6 @@ properties:
     x-google-marketplace:
       type: NAMESPACE
 
-  joomla.volumeSize:
-    type: integer
-    title: Storage size for Joomla!
-    description: The storage size (GB) for the Joomla! persistent volume
-    default: 6
-
   joomla.password:
     type: string
     x-google-marketplace:
@@ -69,6 +60,21 @@ properties:
         length: 16
         includeSymbols: False
         base64: True
+  joomla.persistence.storageClass:
+    type: string
+    title: StorageClass
+    description: You can choose an existing StorageClass or create a new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  joomla.persistence.size:
+    type: string
+    title: Storage size for Joomla!
+    default: "5Gi"
+    description: The storage size (GB) for the Joomla! persistent volume
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+
   db.rootPassword:
     type: string
     x-google-marketplace:
@@ -77,6 +83,12 @@ properties:
         length: 16
         includeSymbols: False
         base64: True
+  db.persistence.size:
+    type: string
+    title: Storage size for persistent volumes
+    default: "5Gi"
+    description: Database storage size
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
   db.joomlaPassword:
     type: string
     x-google-marketplace:
@@ -116,6 +128,7 @@ properties:
 required:
 - name
 - namespace
-- joomla.volumeSize
+- db.persistence.size
+- joomla.persistence.size
 - enablePublicServiceAndIngress
 - metrics.exporter.enabled

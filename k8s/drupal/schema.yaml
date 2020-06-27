@@ -11,9 +11,6 @@ x-google-marketplace:
       - Feature
     recommended: false
 
-  managedUpdates:
-    kalmSupported: false
-
   clusterConstraints:
     resources:
       - replicas: 1
@@ -58,14 +55,20 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-
-  drupal.volumeSize:
+  drupal.persistence.storageClass:
     type: string
-    title: Storage size for persistent volumes
+    title: StorageClass
+    description: You can choose an existing StorageClass or create a new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  drupal.persistence.size:
+    type: string
+    title: Storage size for Drupal.
     default: "8Gi"
-    description: Drupal storage size
+    description: The storage size for Drupal persistent volume
     pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
-
   drupal.password:
     type: string
     x-google-marketplace:
@@ -121,6 +124,6 @@ properties:
 required:
 - name
 - namespace
-- drupal.volumeSize
+- drupal.persistence.size
 - enablePublicServiceAndIngress
 - metrics.exporter.enabled

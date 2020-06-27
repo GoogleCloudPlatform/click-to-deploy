@@ -11,9 +11,6 @@ x-google-marketplace:
       - Feature
     recommended: false
 
-  managedUpdates:
-    kalmSupported: true
-
   images:
     '':
       properties:
@@ -68,10 +65,21 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
+
+  # Common storageClass for Magento, Redis and MySQL PVCs
+  persistence.storageClass:
+    type: string
+    title: StorageClass
+    description: You can choose an existing StorageClass or create a new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+
   # Magento related settings
   # magento.volumesize is volume size of the harddisk where magento files/media
   # will be stored.
-  magento.volumeSize:
+  magento.persistence.size:
     type: string
     title: Storage size for Magento persistent volumes
     default: "6Gi"
@@ -159,7 +167,7 @@ properties:
 required:
 - name
 - namespace
-- magento.volumeSize
+- magento.persistence.size
 - magento.admin.email
 - magento.admin.password
 - db.magentoPassword

@@ -19,10 +19,10 @@ spec:
       labels: *NginxDeploymentLabels
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: standard
+      storageClassName: {{ .Values.nginx.persistence.storageClass }}
       resources:
         requests:
-          storage: 1Gi
+          storage: {{ .Values.nginx.persistence.size }}
   template:
     metadata:
       labels: *NginxDeploymentLabels
@@ -141,44 +141,3 @@ spec:
           items:
           - key: nginx-config.conf
             path: nginx-config.conf
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ .Release.Name }}-nginx-prometheus-svc
-  labels:
-    app.kubernetes.io/name: {{ .Release.Name }}
-    app.kubernetes.io/component: nginx-server
-spec:
-  clusterIP: None
-  ports:
-  - name: prometheus-port
-    port: 9113
-    protocol: TCP
-  selector:
-    app.kubernetes.io/name: {{ .Release.Name }}
-    app.kubernetes.io/component: nginx-server
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ .Release.Name }}-nginx-svc
-  labels:
-    app.kubernetes.io/name: {{ .Release.Name }}
-    app.kubernetes.io/component: nginx-server
-spec:
-  ports:
-  - name: nginx-http-port
-    port: 80
-    protocol: TCP
-  - name: nginx-https-port
-    port: 443
-    protocol: TCP
-  selector:
-    app.kubernetes.io/name: {{ .Release.Name }}
-    app.kubernetes.io/component: nginx-server
-  {{ if .Values.publicIp.available }}
-  type: LoadBalancer
-  {{ else }}
-  type: ClusterIP
-  {{ end }}
