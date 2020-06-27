@@ -23,7 +23,7 @@ APP_PARAMETERS ?= { \
 
 TESTER_IMAGE ?= $(REGISTRY)/gatekeeper/deployer/tester:$(TRACK)
 APP_TEST_PARAMETERS ?= { \
-	"imageTester": "$(TESTER_IMAGE)" \
+	"testerImage": "$(TESTER_IMAGE)" \
 }
 
 
