@@ -1,0 +1,91 @@
+x-google-marketplace:
+  schemaVersion: v2
+  applicationApiVersion: v1beta1
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      A regular update.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  images:
+    '':
+      properties:
+        redis.image.repo:
+          type: REPO_WITH_REGISTRY
+        redis.image.tag:
+          type: TAG
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
+    redis-exporter:
+      properties:
+        redis.exporter.image:
+          type: FULL
+    haproxy:
+      properties:
+        haproxy.image:
+          type: FULL
+  clusterConstraints:
+    resources:
+    - replicas: 1
+      requests:
+        cpu: 100m
+        memory: 300Mi
+      affinity:
+        simple NodeAffinity:
+          type: REQUIRE_ONE_NODE_PER_REPLICA
+          minimumNodeCount: 1
+    istio:
+      type: UNSUPPORTED
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  redis.replicas:
+    type: integer
+    title: Redis replicas
+    description: Number of replicas of the Redis
+    default: 3
+    minimum: 3
+  redis.persistence.size:
+    type: string
+    title: Redis Storage size for persistent volumes
+    default: "10Gi"
+    description: Redis storage size
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  redis.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 128
+        includeSymbols: False
+        base64: False
+  haproxy.replicas:
+    type: integer
+    title: Redis replicas
+    description: Number of replicas of the HAProxy
+    default: 3
+    minimum: 1
+  metrics.exporter.enabled:
+    type: boolean
+    title: Enable Cloud Monitoring for metrics
+    description: Your Google Cloud Marketplace project must have Cloud Monitoring enabled. For non-Google Cloud clusters, export of metrics to Cloud Monitoring is not currently supported.
+    default: false
+
+required:
+- name
+- namespace
+- redis.replicas
+- redis.persistence.size
+- redis.password
+- haproxy.replicas
+- metrics.exporter.enabled

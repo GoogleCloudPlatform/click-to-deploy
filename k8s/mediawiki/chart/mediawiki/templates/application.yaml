@@ -118,14 +118,14 @@ spec:
   componentKinds:
   - group: v1
     kind: PersistentVolumeClaim
-  - group: apps/v1beta2
+  - group: apps/v1
     kind: StatefulSet
   - group: v1
     kind: Secret
   - group: v1
     kind: Service
   {{- if .Values.enablePublicServiceAndIngress }}
-  - group: extensions/v1beta1
+  - group: networking.k8s.io
     kind: Ingress
   {{- end }}
   - group: v1

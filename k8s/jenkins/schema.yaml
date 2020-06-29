@@ -11,9 +11,6 @@ x-google-marketplace:
       - Feature
     recommended: false
 
-  managedUpdates:
-    kalmSupported: true
-
   clusterConstraints:
     resources:
     - requests:
@@ -37,6 +34,20 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
+  jenkins.persistence.storageClass:
+    type: string
+    title: StorageClass
+    description: You can choose an existing StorageClass or create a new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  jenkins.persistence.size:
+    type: string
+    title: Storage size for Jenkins.
+    default: "8Gi"
+    description: The storage size Jenkins persistent volume
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
   certificate:
     type: string
     x-google-marketplace:

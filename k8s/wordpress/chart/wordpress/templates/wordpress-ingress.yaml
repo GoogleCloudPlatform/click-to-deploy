@@ -1,0 +1,16 @@
+{{ if .Values.enablePublicServiceAndIngress }}
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-wordpress-ingress
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: wordpress-webserver
+spec:
+  tls:
+  - secretName: {{ .Release.Name }}-tls
+  backend:
+    serviceName: {{ .Release.Name }}-wordpress-svc
+    servicePort: http
+{{ end }}

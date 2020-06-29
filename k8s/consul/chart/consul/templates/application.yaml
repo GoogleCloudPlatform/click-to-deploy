@@ -74,9 +74,9 @@ spec:
     matchLabels:
       app.kubernetes.io/name: "{{ .Release.Name }}"
   componentKinds:
-  - group: apps/v1beta2
+  - group: apps/v1
     kind: StatefulSet
-  - group: apps/v1beta2
+  - group: apps/v1
     kind: DaemonSet
   - group: v1
     kind: Service

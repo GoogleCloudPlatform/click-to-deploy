@@ -69,6 +69,7 @@ environment by default.
 -   [docker](https://docs.docker.com/install/)
 -   [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 -   [helm](https://helm.sh/)
+-   [envsubst](https://command-not-found.com/envsubst)
 
 Configure `gcloud` as a Docker credential helper:
 
@@ -145,6 +146,19 @@ Set the number of replicas:
 export REPLICAS=3
 ```
 
+For the persistent disk provisioning of the RabbitMQ StatefulSets, you will need to:
+
+ * Set the StorageClass name. Check your available options using the command below:
+   * ```kubectl get storageclass```
+   * Or check how to create a new StorageClass in [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
+
+ * Set the persistent disk's size. The default disk size is "5Gi".
+
+```shell
+export RABBITMQ_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
+export RABBITMQ_PERSISTENT_DISK_SIZE="5Gi"
+```
+
 Set or generate the
 [Erlang cookie](https://www.rabbitmq.com/clustering.html#erlang-cookie). The
 cookie must be encoded in base64.
@@ -177,30 +191,29 @@ option, change the value to `true`.
 export METRICS_EXPORTER_ENABLED=false
 ```
 
+Set up the image tag:
+
+It is advised to use stable image reference which you can find on
+[Marketplace Container Registry](https://marketplace.gcr.io/google/rabbitmq).
+Example:
+
+```shell
+export TAG="3.7.24-20200311-092515"
+```
+
+Alternatively you can use short tag which points to the latest image for selected version.
+> Warning: this tag is not stable and referenced image might change over time.
+
+```shell
+export TAG="3.7"
+```
+
 Configure the container images:
 
 ```shell
-TAG=3.7
-export IMAGE_RABBITMQ=marketplace.gcr.io/google/rabbitmq:${TAG}
+export IMAGE_RABBITMQ=marketplace.gcr.io/google/rabbitmq
 export IMAGE_RABBITMQ_INIT=marketplace.gcr.io/google/rabbitmq/debian9:${TAG}
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/rabbitmq/prometheus-to-sd:${TAG}"
-```
-
-The images above are referenced by
-[tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
-that you pin each image to an immutable
-[content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This ensures that the installed application always uses the same images, until
-you are ready to upgrade. To get the digest for the image, use the following
-script:
-
-```shell
-for i in "IMAGE_METRICS_EXPORTER" "IMAGE_RABBITMQ" "IMAGE_RABBITMQ_INIT"; do
-  repo=$(echo ${!i} | cut -d: -f1);
-  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
-  export $i="$repo@$digest";
-  env | grep $i;
-done
 ```
 
 #### Create a namespace in your Kubernetes cluster
@@ -252,17 +265,21 @@ save the expanded manifest file for future updates to the application.
 
     ```shell
     helm template chart/rabbitmq \
-      --name $APP_INSTANCE_NAME \
-      --namespace $NAMESPACE \
-      --set rabbitmq.image=$IMAGE_RABBITMQ \
-      --set rabbitmq.initImage=$IMAGE_RABBITMQ_INIT \
-      --set rabbitmq.replicas=$REPLICAS \
-      --set rabbitmq.erlangCookie=$RABBITMQ_ERLANG_COOKIE \
-      --set rabbitmq.user=$RABBITMQ_DEFAULT_USER \
-      --set rabbitmq.password=$RABBITMQ_DEFAULT_PASS \
-      --set rabbitmq.serviceAccount=$RABBITMQ_SERVICE_ACCOUNT \
-      --set metrics.image=$IMAGE_METRICS_EXPORTER \
-      --set metrics.exporter.enabled=$METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
+      --name "$APP_INSTANCE_NAME" \
+      --namespace "$NAMESPACE" \
+      --set rabbitmq.image.repo="$IMAGE_RABBITMQ" \
+      --set rabbitmq.image.tag="$TAG" \
+      --set rabbitmq.initImage="$IMAGE_RABBITMQ_INIT" \
+      --set rabbitmq.replicas="$REPLICAS" \
+      --set rabbitmq.persistence.storageClass="$RABBITMQ_STORAGE_CLASS" \
+      --set rabbitmq.persistence.size="$RABBITMQ_PERSISTENT_DISK_SIZE" \
+      --set rabbitmq.erlangCookie="$RABBITMQ_ERLANG_COOKIE" \
+      --set rabbitmq.user="$RABBITMQ_DEFAULT_USER" \
+      --set rabbitmq.password="$RABBITMQ_DEFAULT_PASS" \
+      --set rabbitmq.serviceAccount="$RABBITMQ_SERVICE_ACCOUNT" \
+      --set metrics.image="$IMAGE_METRICS_EXPORTER" \
+      --set metrics.exporter.enabled="$METRICS_EXPORTER_ENABLED" \
+      > "${APP_INSTANCE_NAME}_manifest.yaml"
     ```
 
 #### Apply the manifest to your Kubernetes cluster

@@ -87,9 +87,9 @@ spec:
   componentKinds:
   - group: v1
     kind: ConfigMap
-  - group: extensions/v1beta1
+  - group: apps/v1
     kind: DaemonSet
-  - group: apps/v1beta2
+  - group: apps/v1
     kind: Deployment
   - group: v1
     kind: PersistentVolumeClaim
@@ -97,5 +97,5 @@ spec:
     kind: Secret
   - group: v1
     kind: Service
-  - group: apps/v1beta2
+  - group: apps/v1
     kind: StatefulSet

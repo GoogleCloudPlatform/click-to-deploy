@@ -142,42 +142,61 @@ export NAMESPACE=default
 export REPLICAS=3
 ```
 
+For the persistent disk provisioning of the NGINX StatefulSets, you will need to:
+
+ * Set the StorageClass name. Check your available options using the command below:
+   * ```kubectl get storageclass```
+   * Or check how to create a new StorageClass in [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
+
+ * Set the persistent disk's size. The default disk size is "1Gi".
+
+```shell
+export DEFAULT_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
+export PERSISTENT_DISK_SIZE="1Gi"
+```
+
 Enable Stackdriver Metrics Exporter:
 
 > **NOTE:** Your GCP project must have Stackdriver enabled. If you are using a
 > non-GCP cluster, you cannot export metrics to Stackdriver.
 
-By default, application does not export metrics to Stackdriver. To enable this
-option, change the value to `true`.
+By default, application export metrics to Stackdriver as free curated metrics.
+The metrics prefix would be `kubernetes.io/nginx/`. To disable this option,
+change the value of `CURATED_METRICS_EXPORTER_ENABLED` to `false`.
+
+To keep backward compatibility, users can still export metrics as custom metrics.
+To enable this option, change the value of `METRICS_EXPORTER_ENABLED` to `true`.
+
+We encourage users migrate to the free metrics as it saves cost for the users.
 
 ```shell
+export CURATED_METRICS_EXPORTER_ENABLED=true
 export METRICS_EXPORTER_ENABLED=false
+```
+
+Set up the image tag:
+
+It is advised to use stable image reference which you can find on
+[Marketplace Container Registry](https://marketplace.gcr.io/google/nginx).
+Example:
+
+```shell
+export TAG="<BUILD_ID>"
+```
+
+Alternatively you can use short tag which points to the latest image for selected version.
+> Warning: this tag is not stable and referenced image might change over time.
+
+```shell
+export TAG="1.15"
 ```
 
 Configure the container images:
 
 ```shell
-TAG=1.15
-export IMAGE_NGINX="marketplace.gcr.io/google/nginx:${TAG}"
+export IMAGE_NGINX="marketplace.gcr.io/google/nginx"
 export IMAGE_NGINX_INIT="marketplace.gcr.io/google/nginx/debian9:${TAG}"
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/nginx/prometheus-to-sd:${TAG}"
-```
-
-The images above are referenced by
-[tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
-that you pin each image to an immutable
-[content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This ensures that the installed application always uses the same images, until
-you are ready to upgrade. To get the digest for the image, use the following
-script:
-
-```shell
-for i in "IMAGE_NGINX" "IMAGE_NGINX_INIT" "IMAGE_METRICS_EXPORTER"; do
-  repo=$(echo ${!i} | cut -d: -f1);
-  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
-  export $i="$repo@$digest";
-  env | grep $i;
-done
 ```
 
 #### Create TLS certificate for Nginx
@@ -220,13 +239,17 @@ expanded manifest file for future updates to the application.
 helm template chart/nginx \
   --name "$APP_INSTANCE_NAME" \
   --namespace "$NAMESPACE" \
-  --set "nginx.replicas=$REPLICAS" \
-  --set "nginx.initImage=$IMAGE_NGINX_INIT" \
-  --set "nginx.image=$IMAGE_NGINX" \
-  --set "metrics.image=$IMAGE_METRICS_EXPORTER" \
-  --set "metrics.exporter.enabled=$METRICS_EXPORTER_ENABLED" \
-  --set "tls.base64EncodedPrivateKey=$TLS_CERTIFICATE_KEY" \
-  --set "tls.base64EncodedCertificate=$TLS_CERTIFICATE_CRT" \
+  --set nginx.replicas="$REPLICAS" \
+  --set nginx.initImage="$IMAGE_NGINX_INIT" \
+  --set nginx.image.repo="$IMAGE_NGINX" \
+  --set nginx.image.tag="$TAG" \
+  --set nginx.persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \
+  --set nginx.persistence.size="${PERSISTENT_DISK_SIZE}" \
+  --set metrics.image="$IMAGE_METRICS_EXPORTER" \
+  --set metrics.curatedExporter.enabled="$CURATED_METRICS_EXPORTER_ENABLED" \
+  --set metrics.exporter.enabled="$METRICS_EXPORTER_ENABLED" \
+  --set tls.base64EncodedPrivateKey="$TLS_CERTIFICATE_KEY" \
+  --set tls.base64EncodedCertificate="$TLS_CERTIFICATE_CRT" \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 

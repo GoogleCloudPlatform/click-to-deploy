@@ -1,0 +1,180 @@
+x-google-marketplace:
+  schemaVersion: v2
+  applicationApiVersion: v1beta1
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      A regular update.
+    releaseTypes:
+      - Feature
+    recommended: false
+  managedUpdates:
+    kalmSupported: false
+  images:
+    '':
+      properties:
+        FLINK_OPERATOR_IMAGE:
+          type: FULL
+        IMAGE_TAG:
+          type: TAG
+  clusterConstraints:
+    resources:
+    - replicas: 1
+      requests:
+        cpu: 100m
+        memory: 500Mi
+      affinity:
+        simple NodeAffinity:
+          type: REQUIRE_ONE_NODE_PER_REPLICA
+          minimumNodeCount: 1
+    istio:
+      type: UNSUPPORTED
+properties:
+  APP_INSTANCE_NAME:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  NAMESPACE:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  SERVICE_ACCOUNT:
+    type: string
+    title: Cluster Admin Service Account
+    description: >-
+      Name of a service account in the target namespace that
+      has cluster-admin permissions. This is needed for the operator
+      to create Flink CRD and jobs.
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        roles:
+        - type: ClusterRole
+          rulesType: CUSTOM
+          rules:
+            - apiGroups: ["apiextensions.k8s.io"]
+              resources: ["customresourcedefinitions"]
+              verbs:
+                - '*'
+            - apiGroups:
+              - ""
+              resources:
+                - pods
+                - services
+                - endpoints
+                - persistentvolumeclaims
+                - events
+                - configmaps
+                - secrets
+                - serviceaccounts
+                - namespaces
+              verbs:
+                - '*'
+            - apiGroups:
+              - apps
+              resources:
+              - deployments
+              - daemonsets
+              - replicasets
+              - statefulsets
+              verbs:
+              - '*'
+            - apiGroups:
+              - extensions
+              resources:
+              - replicasets
+              - deployments
+              - daemonsets
+              - statefulsets
+              - ingresses
+              verbs:
+                - '*'
+            - apiGroups:
+              - batch
+              resources:
+              - jobs
+              - cronjobs
+              verbs:
+              - '*'
+            - apiGroups:
+              - flinkoperator.k8s.io
+              resources:
+              - '*'
+              verbs:
+              - '*'
+            - apiGroups:
+              - rbac.authorization.k8s.io
+              resources:
+              - clusterrolebindings
+              verbs:
+              - '*'
+            - apiGroups:
+              - rbac.authorization.k8s.io
+              resources:
+              - clusterroles
+              verbs:
+              - '*'
+            - apiGroups:
+              - rbac.authorization.k8s.io
+              resources:
+              - rolebindings
+              verbs:
+              - '*'
+            - apiGroups:
+              - admissionregistration.k8s.io
+              resources:
+              - validatingwebhookconfigurations
+              verbs:
+              - '*'
+            - apiGroups:
+              - admissionregistration.k8s.io
+              resources:
+              - mutatingwebhookconfigurations
+              verbs:
+              - '*'
+            - apiGroups:
+              - apiregistration.k8s.io
+              resources:
+              - apiservices
+              verbs:
+              - '*'
+            - apiGroups:
+              - certificates.k8s.io
+              resources:
+              - certificatesigningrequests
+              - certificatesigningrequests/approval
+              verbs:
+              - create
+              - delete
+              - get
+              - list
+              - watch
+              - update
+            - apiGroups:
+              - authentication.k8s.io
+              resources:
+              - tokenreviews
+              - subjectaccessreviews
+              verbs:
+              - create
+  CRD_SERVICE_ACCOUNT:
+    type: string
+    title: Service account used by CRD deployer
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        roles:
+        - type: ClusterRole
+          rulesType: CUSTOM
+          rules:
+            - apiGroups: ["apiextensions.k8s.io", "admissionregistration.k8s.io"]
+              resources: ["customresourcedefinitions", "validatingwebhookconfigurations", "mutatingwebhookconfigurations"]
+              verbs: ["get","list","create", "update","patch"]
+  DEPLOYER_IMAGE:
+    type: string
+    x-google-marketplace:
+      type: DEPLOYER_IMAGE
+required:
+- APP_INSTANCE_NAME
+- NAMESPACE
+- SERVICE_ACCOUNT

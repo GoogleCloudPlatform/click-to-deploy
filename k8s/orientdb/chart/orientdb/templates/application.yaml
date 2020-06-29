@@ -1,0 +1,91 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: {{ .Release.Name }}
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": {{ .Chart.Name | quote }}, "partner_name": "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+spec:
+  descriptor:
+    type: OrientDB
+    version: "{{ .Values.orientdb.image.tag }}"
+    description: |-
+      OrientDB is an open source NoSQL database management system, written in Java.
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/orientdb/).
+      Additional support is available on [community forums](https://orientdb.com/community).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy OrientDB'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/orientdb/README.md
+    - description: 'OrientDB documentation'
+      url: http://www.orientdb.com/docs/last/index.html
+    notes: |-
+      # Get authentication credentials for the cluster:
+
+      ```shell
+      gcloud container clusters get-credentials [CLUSTER_NAME] --zone [CLUSTER_ZONE]
+      ```
+      where:
+      * `[CLUSTER_NAME]` is the name of the cluster for this app
+      * `[CLUSTER_ZONE]` is the zone in which the cluster is operating
+
+      For more information about authentication credentials, visit [Get authorization credentials for the cluster](https://cloud.google.com/kubernetes-engine/docs/quickstart#get_authentication_credentials_for_the_cluster) in the [GKE quickstart](https://cloud.google.com/kubernetes-engine/docs/quickstart).
+
+      Make sure that all components are in `ready` status.
+
+      The deployed service of OrientDB is of type ClusterIP, so you can reach OrientDB Studio UI from within a Kubernetes cluster.
+
+      You can get OrientDB root user credentials from the app's page in Cloud Console, or print them by running the following commands:
+        ```shell
+        # Get root user credentials of web console
+        ORIENTDB_ROOT_PASSWORD=$(kubectl get secret --namespace \
+          {{ .Release.Namespace }} {{ .Release.Name }}-orientdb-secret \
+          -o jsonpath="{.data.root-password}" | base64 --decode)
+
+        echo "username: root"
+        echo "password: ${ORIENTDB_ROOT_PASSWORD}"
+        ```
+
+        Forward OrientDB Studio service port to your machine:
+        ```shell
+        kubectl port-forward svc/{{ .Release.Name }}-orientdb \
+          --namespace {{ .Release.Namespace }} 2480
+        ```
+        Visit [http://localhost:2480](http://localhost:2480) on your web browser.
+        During your first login, you will have to create a database with `root` credentials.
+
+  info:
+  - name: orientdb
+    type: Reference
+    valueFrom:
+      serviceRef:
+        name: "{{ .Release.Name }}-orientdb-svc"
+  - name: OrientDB Studio username
+    value: root
+  - name: OrientDB Studio password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: root-password
+        name: "{{ .Release.Name }}-orientdb-secret"
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Release.Name }}
+  componentKinds:
+  - group: v1
+    kind: Secret
+  - group: v1
+    kind: ConfigMap
+  - group: v1
+    kind: Service
+  - group: apps/v1
+    kind: StatefulSet
+  - group: v1
+    kind: PersistentVolumeClaim

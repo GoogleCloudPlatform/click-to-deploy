@@ -8,12 +8,11 @@ x-google-marketplace:
     releaseTypes:
       - Feature
     recommended: false
-  managedUpdates:
-    kalmSupported: false
+
   images:
     '':
       properties:
-        operator.image.repository:
+        operator.image.repo:
           type: REPO_WITH_REGISTRY
         operator.image.tag:
           type: TAG

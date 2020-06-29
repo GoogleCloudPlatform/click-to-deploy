@@ -1,0 +1,101 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: {{ .Release.Name }}
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": {{ .Chart.Name | quote }}, "partner_name": "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+spec:
+  descriptor:
+    type: Neo4j
+    version: "{{ .Values.neo4j.image.tag }}"
+    description: |-
+      Neo4j Community Edition is an open source graph database management system, written in Java.
+      It provides a web dashboard for managing data and users. You can access its service by using an HTTP REST API or the Bolt binary protocol.
+
+      The Community Edition is not production-ready. It is ideal for learning or small projects.
+      It does not support clustering, sharding data, or advanced indexes.
+
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/neo4j/).
+
+      Additional support is available on the [official Neo4j Community website](https://community.neo4j.com).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy Neo4j Community'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/neo4j-ce/README.md
+    - description: 'Getting started with Neo4j'
+      url: https://neo4j.com/developer/get-started/
+    - description: Neo4j 4.x Reference Manual
+      url: https://neo4j.com/docs/
+    - description: Neo4j Code Samples Repository
+      url: https://github.com/neo4j-examples
+
+    notes: |-
+      Neo4j Community Edition is exposed through a ClusterIP-only service, `{{ .Release.Name }}-neo4j-svc`.
+      You can connect to the Neo4j Browser from your local environment by using `kubectl port-forward`.
+
+      You can forward Neo4j's ports to your local machine by using the port forwarding feature of `kubectl`.
+
+      To expose the Neo4j Browser port, run the following command in the background:
+
+      ```shell
+      kubectl port-forward \
+        --namespace {{ .Release.Namespace }} \
+        svc/{{ .Release.Name }}-neo4j-svc \
+        7474:7474 &
+      ```
+
+      To expose the Neo4j Bolt port, run the following command:
+
+      ```shell
+      kubectl port-forward \
+        --namespace {{ .Release.Namespace }} \
+        svc/{{ .Release.Name }}-neo4j-svc \
+        7687:7687 &
+      ```
+
+      After that, you can access the Neo4j Browser at [http://localhost:7474](http://localhost:7474).
+
+  info:
+  - name: Neo4j Service
+    type: Reference
+    valueFrom:
+      serviceRef:
+        name: "{{ .Release.Name }}-neo4j-svc"
+  - name: Forward Neo4j Browser port locally
+    value: kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-neo4j-svc 7474:7474
+  - name: Forward Neo4j Service port locally
+    value: kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-neo4j-svc 7687:7687
+  - name: Neo4j Browser (local only)
+    value: http://localhost:7474/browser/
+  - name: Root Username
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: username
+        name: {{ .Release.Name }}-neo4j-secret
+  - name: Root Password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: password
+        name: {{ .Release.Name }}-neo4j-secret
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Release.Name }}
+  componentKinds:
+  - group: v1
+    kind: Secret
+  - group: v1
+    kind: Service
+  - group: apps/v1
+    kind: StatefulSet
+  - group: v1
+    kind: PersistentVolumeClaim

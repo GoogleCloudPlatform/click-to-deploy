@@ -5,6 +5,9 @@ elasticsearch:
     repo: null
     tag: null
   replicas: null
+  persistence:
+    storageClass: null
+    size: 20Gi
 
 fluentd:
   serviceAccount: null

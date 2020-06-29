@@ -163,50 +163,63 @@ this option, change the value to `true`.
 export METRICS_EXPORTER_ENABLED=false
 ```
 
+Set up the image tag:
+
+It is advised to use stable image reference which you can find on
+[Marketplace Container Registry](https://marketplace.gcr.io/google/wordpress).
+Example:
+
+```shell
+export TAG="5.3.2-20200410-18135"
+```
+
+Alternatively you can use short tag which points to the latest image for selected version.
+> Warning: this tag is not stable and referenced image might change over time.
+
+```shell
+export TAG="5.3"
+```
+
 Configure the container images:
 
 ```shell
-TAG=latest
-export IMAGE_WORDPRESS="marketplace.gcr.io/google/wordpress:${TAG}"
+export IMAGE_WORDPRESS="marketplace.gcr.io/google/wordpress"
 export IMAGE_APACHE_EXPORTER="marketplace.gcr.io/google/wordpress/apache-exporter:${TAG}"
 export IMAGE_MYSQL="marketplace.gcr.io/google/wordpress/mysql:${TAG}"
 export IMAGE_MYSQL_EXPORTER="marketplace.gcr.io/google/wordpress/mysqld-exporter:${TAG}"
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/wordpress/prometheus-to-sd:${TAG}"
 ```
 
-The images above are referenced by
-[tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
-that you pin each image to an immutable
-[content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This ensures that the installed application always uses the same images, until
-you are ready to upgrade. To get the digest for the image, use the following
-script:
+For the persistent disk provisioning of the Wordpress StatefulSets, you will need to:
+
+ * Set the StorageClass name. Check your available options using the command below:
+   * ```kubectl get storageclass```
+   * Or check how to create a new StorageClass in [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
+
+ * Set the persistent disk's size. The default disk size is "5Gi".
 
 ```shell
-for i in "IMAGE_WORDPRESS" "IMAGE_APACHE_EXPORTER" "IMAGE_MYSQL" "IMAGE_MYSQL_EXPORTER" "IMAGE_METRICS_EXPORTER"; do
-  repo=$(echo ${!i} | cut -d: -f1);
-  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
-  export $i="$repo@$digest";
-  env | grep $i;
-done
+export DEFAULT_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
+export PERSISTENT_DISK_SIZE="5Gi"
 ```
+
 
 Set or generate passwords:
 
 ```shell
-# Install pwgen and base64
-sudo apt-get install -y pwgen cl-base64
+# Set alias for password generation
+alias generate_pwd="cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 1 | tr -d '\n'"
 
 # Set the root and WordPress database passwords
-export ROOT_DB_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
-export WORDPRESS_DB_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
+export ROOT_DB_PASSWORD="$(generate_pwd)"
+export WORDPRESS_DB_PASSWORD="$(generate_pwd)"
 
 # Set mysqld-exporter user password.
-export EXPORTER_DB_PASSWORD="$(pwgen 16 1 | tr -d '\n' | base64)"
+export EXPORTER_DB_PASSWORD="$(generate_pwd)"
 
 # Set e-mail address and password for WordPress admin panel
 export WORDPRESS_ADMIN_EMAIL=noreply@example.com
-export WORDPRESS_ADMIN_PASSWORD="$(pwgen 20 1 | tr -d '\n' | base64)"
+export WORDPRESS_ADMIN_PASSWORD="$(generate_pwd)"
 ```
 
 #### Create TLS certificate for WordPress
@@ -226,7 +239,7 @@ export WORDPRESS_ADMIN_PASSWORD="$(pwgen 20 1 | tr -d '\n' | base64)"
         -subj "/CN=wordpress/O=wordpress"
     ```
 
-1.  Set `TLS_CERTIFICATE_KEY` and `TLS_CERTIFICATE_CRT` variables:
+2.  Set `TLS_CERTIFICATE_KEY` and `TLS_CERTIFICATE_CRT` variables:
 
     ```shell
     export TLS_CERTIFICATE_KEY="$(cat /tmp/tls.key | base64)"
@@ -251,21 +264,26 @@ expanded manifest file for future updates to the application.
 helm template chart/wordpress \
   --name "$APP_INSTANCE_NAME" \
   --namespace "$NAMESPACE" \
-  --set "wordpressImage=$IMAGE_WORDPRESS" \
-  --set "db.image=$IMAGE_MYSQL" \
-  --set "db.rootPassword=$ROOT_DB_PASSWORD" \
-  --set "db.wordpressPassword=$WORDPRESS_DB_PASSWORD" \
-  --set "db.exporter.image=$IMAGE_MYSQL_EXPORTER" \
-  --set "db.exporter.password=$EXPORTER_DB_PASSWORD" \
-  --set "apache.exporter.image=$IMAGE_APACHE_EXPORTER" \
-  --set "admin.email=$WORDPRESS_ADMIN_EMAIL" \
-  --set "admin.password=$WORDPRESS_ADMIN_PASSWORD" \
-  --set "metrics.image=$IMAGE_METRICS_EXPORTER" \
-  --set "enablePublicServiceAndIngress=$PUBLIC_SERVICE_AND_INGRESS_ENABLED" \
-  --set "metrics.exporter.enabled=$METRICS_EXPORTER_ENABLED" \
-  --set "tls.base64EncodedPrivateKey=$TLS_CERTIFICATE_KEY" \
-  --set "tls.base64EncodedCertificate=$TLS_CERTIFICATE_CRT" \
-  > ${APP_INSTANCE_NAME}_manifest.yaml
+  --set wordpress.image.repo="$IMAGE_WORDPRESS" \
+  --set wordpress.image.tag="$TAG" \
+  --set wordpress.persistence.storageClass="$DEFAULT_STORAGE_CLASS" \
+  --set wordpress.persistence.size="$PERSISTENT_DISK_SIZE" \
+  --set db.image="$IMAGE_MYSQL" \
+  --set db.rootPassword="$ROOT_DB_PASSWORD" \
+  --set db.persistence.storageClass="$DEFAULT_STORAGE_CLASS" \
+  --set db.persistence.size="$PERSISTENT_DISK_SIZE" \
+  --set db.wordpressPassword="$WORDPRESS_DB_PASSWORD" \
+  --set db.exporter.image="$IMAGE_MYSQL_EXPORTER" \
+  --set db.exporter.password="$EXPORTER_DB_PASSWORD" \
+  --set apache.exporter.image="$IMAGE_APACHE_EXPORTER" \
+  --set admin.email="$WORDPRESS_ADMIN_EMAIL" \
+  --set admin.password="$WORDPRESS_ADMIN_PASSWORD" \
+  --set metrics.image="$IMAGE_METRICS_EXPORTER" \
+  --set enablePublicServiceAndIngress="$PUBLIC_SERVICE_AND_INGRESS_ENABLED" \
+  --set metrics.exporter.enabled="$METRICS_EXPORTER_ENABLED" \
+  --set tls.base64EncodedPrivateKey="$TLS_CERTIFICATE_KEY" \
+  --set tls.base64EncodedCertificate="$TLS_CERTIFICATE_CRT" \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster

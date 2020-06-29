@@ -1,6 +1,6 @@
 ---
 kind: StatefulSet
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 metadata:
   name: {{ .Release.Name }}-mariadb
   labels: &MariaDBDeploymentLabels
@@ -140,13 +140,13 @@ spec:
     spec:
       resources:
         requests:
-          storage: {{ .Values.mariadb.volumeSize }}Gi
+          storage: {{ .Values.mariadb.persistence.size }}
       accessModes:
       - ReadWriteOnce
-      storageClassName: standard
+      storageClassName: {{ .Values.mariadb.persistence.storageClass }}
 ---
 kind: StatefulSet
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 metadata:
   name: {{ .Release.Name }}-mariadb-secondary
   labels: &MariaDBDeploymentLabels
@@ -290,7 +290,7 @@ spec:
     spec:
       resources:
         requests:
-          storage: {{ .Values.mariadb.volumeSize }}Gi
+          storage: {{ .Values.mariadb.persistence.size }}
       accessModes:
       - ReadWriteOnce
-      storageClassName: standard
+      storageClassName: {{ .Values.mariadb.persistence.storageClass }}

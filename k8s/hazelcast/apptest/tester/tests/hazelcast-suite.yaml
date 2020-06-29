@@ -1,0 +1,46 @@
+actions:
+
+- name: Create key-value pair
+  bashTest:
+    script: |-
+      timeout 120 bash -c '
+        until (curl -X POST -d 'bar' 'http://{{ .Env.APP_INSTANCE_NAME }}-svc:5701/hazelcast/rest/maps/mapName/foo'); do
+          echo Trying to set bar...
+          sleep 2;
+        done'
+    expect:
+      exitCode:
+        equals: 0
+
+- name: Get key-value pair
+  bashTest:
+    script: |-
+      timeout 120 bash -c '
+        until (curl -s -X GET 'http://{{ .Env.APP_INSTANCE_NAME }}-svc:5701/hazelcast/rest/maps/mapName/foo' | grep 'bar'); do
+          echo Trying to get bar...
+          sleep 2;
+        done'
+    expect:
+      exitCode:
+        equals: 0
+
+- name: Test metrics
+  bashTest:
+    script: |-
+      curl -v GET 'http://{{ .Env.APP_INSTANCE_NAME }}-svc:8080/'
+    expect:
+      stdout:
+        contains: 'process_start_time_seconds'
+
+- name: Create key-value pair in a node and get from the others
+  bashTest:
+    script: |-
+      kubectl exec -it "{{ .Env.APP_INSTANCE_NAME }}-hazelcast-0" -n "{{ .Env.NAMESPACE }}" -- curl -X POST -d 'hello' 'http://localhost:5701/hazelcast/rest/maps/mapName/message'
+      sleep 30
+      kubectl exec -it "{{ .Env.APP_INSTANCE_NAME }}-hazelcast-0" -n "{{ .Env.NAMESPACE }}" -- curl 'http://localhost:5701/hazelcast/rest/maps/mapName/message' | grep hello
+      kubectl exec -it "{{ .Env.APP_INSTANCE_NAME }}-hazelcast-1" -n "{{ .Env.NAMESPACE }}" -- curl 'http://localhost:5701/hazelcast/rest/maps/mapName/message' | grep hello
+      kubectl exec -it "{{ .Env.APP_INSTANCE_NAME }}-hazelcast-2" -n "{{ .Env.NAMESPACE }}" -- curl 'http://localhost:5701/hazelcast/rest/maps/mapName/message' | grep hello
+
+    expect:
+      exitCode:
+        equals: 0

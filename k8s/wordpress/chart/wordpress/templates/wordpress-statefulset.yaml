@@ -1,0 +1,170 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-wordpress
+  labels: &WordPressDeploymentLabels
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: wordpress-webserver
+spec:
+  replicas: 1
+  serviceName: {{ .Release.Name }}-wordpress-svc
+  selector:
+    matchLabels: *WordPressDeploymentLabels
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels: *WordPressDeploymentLabels
+    spec:
+      containers:
+      - image: "{{ .Values.wordpress.image.repo }}:{{ .Values.wordpress.image.tag }}"
+        name: wordpress
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        env:
+        # A WordPress' username.
+        # The "WP" prefix is used, as "WORDPRESS" is reserved for env variables.
+        # And we don't want to replace var directly in the curl command.
+        - name: WP_ADMIN_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-wordpress-secret
+              key: wp-user
+        # A WordPress' e-mail address.
+        # The "WP" prefix is used, as "WORDPRESS" is reserved for env variables.
+        # And we don't want to replace var directly in the curl command.
+        - name: WP_ADMIN_EMAIL
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-wordpress-secret
+              key: wp-email
+        # A WordPress' password.
+        # The "WP" prefix is used, as "WORDPRESS" is reserved for env variables.
+        # And we don't want to replace var directly in the curl command.
+        - name: WP_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-wordpress-secret
+              key: wp-password
+        # A hostname and port of MySQL service.
+        - name: WORDPRESS_DB_HOST
+          value: {{ .Release.Name }}-mysql-svc
+        # A username used for accessing the database.
+        - name: WORDPRESS_DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-mysql-secret
+              key: wp-user
+        # A password used for accessing the database.
+        - name: WORDPRESS_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-mysql-secret
+              key: wp-password
+        # A database name used by WordPress.
+        - name: WORDPRESS_DB_NAME
+          value: wordpress
+        ports:
+        - name: http
+          containerPort: 80
+        volumeMounts:
+        - name: {{ .Release.Name }}-wordpress-pvc
+          mountPath: /var/www/html
+          subPath: wp
+        - name: config-map
+          mountPath: /wp-install.sh
+          subPath: wp-install.sh
+          readOnly: true
+        # .htaccess must be overwritten to allow connection to the /server-status endpoint.
+        - name: apache-config
+          mountPath: /var/www/html/.htaccess
+          subPath: .htaccess
+          readOnly: true
+        lifecycle:
+          postStart:
+            exec:
+              command:
+              - "/bin/bash"
+              - "-eu"
+              - "/wp-install.sh"
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 2
+          failureThreshold: 5
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 120
+      - image: {{ .Values.apache.exporter.image }}
+        name: apache-exporter
+        args:
+        - --scrape_uri=http://127.0.0.1/server-status?auto
+        ports:
+        - name: exporter
+          containerPort: 9117
+        livenessProbe:
+          httpGet:
+            path: /metrics
+            port: 9117
+        readinessProbe:
+          httpGet:
+            path: /metrics
+            port: 9117
+          initialDelaySeconds: 60
+          timeoutSeconds: 30
+          failureThreshold: 10
+          periodSeconds: 10
+      {{- if .Values.metrics.exporter.enabled }}
+      - name: prometheus-to-sd
+        image: {{ .Values.metrics.image }}
+        command:
+        - /monitor
+        - --stackdriver-prefix=custom.googleapis.com
+        - --source=apache:http://localhost:9117/metrics
+        - --pod-id=$(POD_NAME)
+        - --namespace-id=$(POD_NAMESPACE)
+        - --monitored-resource-types=k8s
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+      {{- end }}
+      volumes:
+      - name: apache-config
+        configMap:
+          name: {{ .Release.Name }}-wordpress-config
+          items:
+          - key: .htaccess
+            path: .htaccess
+      - name: config-map
+        configMap:
+          name: {{ .Release.Name }}-wordpress-config
+          items:
+          - key: wp-install.sh
+            path: wp-install.sh
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Release.Name }}-wordpress-pvc
+      labels:
+        app.kubernetes.io/name: "{{ .Release.Name }}"
+        app.kubernetes.io/component: wordpress-webserver
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "{{ .Values.wordpress.persistence.storageClass }}"
+      resources:
+        requests:
+          storage: "{{ .Values.wordpress.persistence.size }}"

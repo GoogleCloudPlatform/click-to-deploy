@@ -1,0 +1,37 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-apache-exporter-svc
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: wordpress-webserver
+spec:
+  ports:
+  - name: exporter
+    port: 9117
+  selector:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: wordpress-webserver
+  clusterIP: None
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-wordpress-svc
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: wordpress-webserver
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+  selector:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: wordpress-webserver
+  {{- if .Values.enablePublicServiceAndIngress }}
+  type: NodePort
+  {{- else }}
+  type: ClusterIP
+  {{- end }}

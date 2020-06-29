@@ -147,6 +147,19 @@ Specify the number of replicas for the Elasticsearch server:
 export ELASTICSEARCH_REPLICAS=2
 ```
 
+For the persistent disk provisioning of the Elasticsearch StatefulSets, you will need to:
+
+ * Set the StorageClass name. Check your available options using the command below:
+   * ```kubectl get storageclass```
+   * Or check how to create a new StorageClass in [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
+
+ * Set the persistent disk's size. The default disk size is "20Gi".
+
+```shell
+export ELASTICSEARCH_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
+export ELASTICSEARCH_PERSISTENT_DISK_SIZE="20Gi"
+```
+
 Enable Stackdriver Metrics Exporter:
 
 > **NOTE:** Your GCP project must have Stackdriver enabled. If you are using a
@@ -159,32 +172,31 @@ option, change the value to `true`.
 export METRICS_EXPORTER_ENABLED=false
 ```
 
+Set up the image tag:
+
+It is advised to use stable image reference which you can find on
+[Marketplace Container Registry](https://marketplace.gcr.io/google/elastic-gke-logging).
+Example:
+
+```shell
+export TAG="6.3.2-20200311-092725"
+```
+
+Alternatively you can use short tag which points to the latest image for selected version.
+> Warning: this tag is not stable and referenced image might change over time.
+
+```shell
+export TAG="6.3"
+```
+
 Configure the container images:
 
 ```shell
-TAG=6.3
-export IMAGE_ELASTICSEARCH="marketplace.gcr.io/google/elastic-gke-logging:${TAG}"
+export IMAGE_ELASTICSEARCH="marketplace.gcr.io/google/elastic-gke-logging"
 export IMAGE_KIBANA="marketplace.gcr.io/google/elastic-gke-logging/kibana:${TAG}"
 export IMAGE_FLUENTD="marketplace.gcr.io/google/elastic-gke-logging/fluentd:${TAG}"
 export IMAGE_INIT="marketplace.gcr.io/google/elastic-gke-logging/ubuntu16_04:${TAG}"
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/elastic-gke-logging/prometheus-to-sd:${TAG}"
-```
-
-The images above are referenced by
-[tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
-that you pin each image to an immutable
-[content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This ensures that the installed application always uses the same images, until
-you are ready to upgrade. To get the digest for the image, use the following
-script:
-
-```shell
-for i in IMAGE_ELASTICSEARCH IMAGE_KIBANA IMAGE_FLUENTD IMAGE_INIT IMAGE_METRICS_EXPORTER; do
-  repo=$(echo ${!i} | cut -d: -f1);
-  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
-  export $i="$repo@$digest";
-  env | grep $i;
-done
 ```
 
 #### Create a namespace in your Kubernetes cluster
@@ -214,16 +226,20 @@ expanded manifest file for future updates to the application.
 
 ```shell
 helm template chart/elastic-gke-logging \
-  --name $APP_INSTANCE_NAME \
-  --namespace $NAMESPACE \
-  --set elasticsearch.replicas=$ELASTICSEARCH_REPLICAS \
-  --set fluentd.serviceAccount=$FLUENTD_SERVICE_ACCOUNT \
-  --set initImage=$IMAGE_INIT \
-  --set elasticsearch.image=$IMAGE_ELASTICSEARCH \
-  --set kibana.image=$IMAGE_KIBANA \
-  --set fluentd.image=$IMAGE_FLUENTD \
-  --set metrics.image=$IMAGE_METRICS_EXPORTER \
-  --set metrics.exporter.enabled=$METRICS_EXPORTER_ENABLED > "${APP_INSTANCE_NAME}_manifest.yaml"
+  --name "$APP_INSTANCE_NAME" \
+  --namespace "$NAMESPACE" \
+  --set elasticsearch.replicas="$ELASTICSEARCH_REPLICAS" \
+  --set fluentd.serviceAccount="$FLUENTD_SERVICE_ACCOUNT" \
+  --set initImage="$IMAGE_INIT" \
+  --set elasticsearch.image.repo="$IMAGE_ELASTICSEARCH" \
+  --set elasticsearch.image.tag="$TAG" \
+  --set elasticsearch.persistence.storageClass="$ELASTICSEARCH_STORAGE_CLASS" \
+  --set elasticsearch.persistence.size="$ELASTICSEARCH_PERSISTENT_DISK_SIZE" \
+  --set kibana.image="$IMAGE_KIBANA" \
+  --set fluentd.image="$IMAGE_FLUENTD" \
+  --set metrics.image="$IMAGE_METRICS_EXPORTER" \
+  --set metrics.exporter.enabled="$METRICS_EXPORTER_ENABLED" \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster

@@ -1,0 +1,31 @@
+actions:
+
+- name: Bad authentication via CLI
+  bashTest:
+    script: |
+      cypher-shell -a "${APP_SERVICE}:7687" -u "bad-user" -p "bad-pass" -d "neo4j" -- 'CREATE (n:Person {name:"John Doe"}) RETURN n'
+    expect:
+      stderr:
+        matches: 'The client is unauthorized due to authentication failure'
+      exitCode:
+        equals: 1
+
+- name: Create a node via CLI
+  bashTest:
+    script: |
+      cypher-shell -a "${APP_SERVICE}:7687" -u "${ROOT_USERNAME}" -p "${ROOT_PASSWORD}" -d "neo4j" -- 'CREATE (n:Person {name:"John Doe"}) RETURN n'
+    expect:
+      stdout:
+        matches: 'John Doe'
+      exitCode:
+        equals: 0
+
+- name: Get nodes via CLI
+  bashTest:
+    script: |
+      cypher-shell -a "${APP_SERVICE}:7687" -u "${ROOT_USERNAME}" -p "${ROOT_PASSWORD}" -d "neo4j" -- 'MATCH(n:Person) RETURN (n)'
+    expect:
+      stdout:
+        matches: 'John Doe'
+      exitCode:
+        equals: 0

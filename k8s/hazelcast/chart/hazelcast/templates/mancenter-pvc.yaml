@@ -1,0 +1,14 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-mancenter-pvc
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: "hazelcast-mancenter"
+spec:
+  accessModes: [ "ReadWriteOnce" ]
+  resources:
+    requests:
+      storage: "{{ .Values.mancenter.persistence.size }}"
+  storageClassName: "{{ .Values.mancenter.persistence.storageClass }}"

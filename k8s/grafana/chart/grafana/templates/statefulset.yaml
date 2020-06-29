@@ -1,4 +1,4 @@
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ .Release.Name }}-grafana
@@ -101,9 +101,9 @@ spec:
   - metadata:
       name: {{ .Release.Name }}-grafana-data
     spec:
-      storageClassName: standard
+      storageClassName: {{ .Values.grafana.persistence.storageClass }}
       accessModes:
         - ReadWriteOnce
       resources:
         requests:
-          storage: "2Gi"
+          storage: {{ .Values.grafana.persistence.size }}

@@ -90,6 +90,7 @@ using Cloud Shell, these tools are installed in your environment by default.
 -   [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 -   [docker](https://docs.docker.com/install/)
 -   [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+-   [envsubst](https://command-not-found.com/envsubst)
 
 Configure `gcloud` as a Docker credential helper:
 
@@ -214,6 +215,15 @@ Define the size of the Prometheus StatefulSet:
 export PROMETHEUS_REPLICAS=2
 ```
 
+Set the StorageClass name. Check your available options using the command below:
+   * ```kubectl get storageclass```
+   * Or check how to create a new StorageClass in [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
+
+
+```shell
+export STORAGE_CLASS="standard"
+```
+
 #### Create a namespace in your Kubernetes cluster
 
 If you use a different namespace than `default`, run the command below to create
@@ -270,7 +280,7 @@ manifest file for future updates to the application.
 
 ```shell
 awk 'FNR==1 {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_PROMETHEUS $IMAGE_ALERTMANAGER $IMAGE_KUBE_STATE_METRICS $IMAGE_NODE_EXPORTER $IMAGE_GRAFANA $IMAGE_PROMETHEUS_INIT $NAMESPACE $GRAFANA_GENERATED_PASSWORD $PROMETHEUS_REPLICAS $PROMETHEUS_REPLICAS $PROMETHEUS_SERVICE_ACCOUNT $KUBE_STATE_METRICS_SERVICE_ACCOUNT $ALERTMANAGER_SERVICE_ACCOUNT $GRAFANA_SERVICE_ACCOUNT $NODE_EXPORTER_SERVICE_ACCOUNT' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $STORAGE_CLASS $IMAGE_PROMETHEUS $IMAGE_ALERTMANAGER $IMAGE_KUBE_STATE_METRICS $IMAGE_NODE_EXPORTER $IMAGE_GRAFANA $IMAGE_PROMETHEUS_INIT $NAMESPACE $GRAFANA_GENERATED_PASSWORD $PROMETHEUS_REPLICAS $PROMETHEUS_REPLICAS $PROMETHEUS_SERVICE_ACCOUNT $KUBE_STATE_METRICS_SERVICE_ACCOUNT $ALERTMANAGER_SERVICE_ACCOUNT $GRAFANA_SERVICE_ACCOUNT $NODE_EXPORTER_SERVICE_ACCOUNT' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 

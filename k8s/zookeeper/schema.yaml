@@ -10,9 +10,6 @@ x-google-marketplace:
       - Feature
     recommended: false
 
-  managedUpdates:
-    kalmSupported: true
-
   images:
     '':
       properties:
@@ -26,9 +23,9 @@ x-google-marketplace:
           type: FULL
     exporter:
       properties:
-        exporter.image.name:
+        exporter.image:
           type: REPO_WITH_REGISTRY
-        exporter.image.tag:
+        exporter.tag:
           type: TAG
 
   clusterConstraints:

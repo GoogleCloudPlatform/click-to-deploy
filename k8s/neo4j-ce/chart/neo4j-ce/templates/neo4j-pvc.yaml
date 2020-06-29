@@ -1,0 +1,14 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-neo4j-pvc
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: "neo4j-mancenter"
+spec:
+  accessModes: [ "ReadWriteOnce" ]
+  resources:
+    requests:
+      storage: "{{ .Values.neo4j.persistence.size }}"
+  storageClassName: "{{ .Values.neo4j.persistence.storageClass }}"

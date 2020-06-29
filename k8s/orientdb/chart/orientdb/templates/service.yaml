@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-orientdb-headless
+  labels: &OrientdbDeploymentLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: orientdb
+spec:
+  type: ClusterIP
+  ports:
+    - port: 2480
+      targetPort: http
+      name: http
+    - port: 2434
+      targetPort: hazelcast
+      name: hazelcast
+    - port: 2424
+      targetPort: binary
+      name: binary
+    - port: 8182
+      targetPort: gremlin
+      name: gremlin
+  clusterIP: None
+  selector: *OrientdbDeploymentLabels
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-orientdb-svc
+  labels: &OrientdbDeploymentLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: orientdb
+spec:
+  type: ClusterIP
+  ports:
+    - port: 2480
+      targetPort: http
+      name: http
+    - port: 2434
+      targetPort: hazelcast
+      name: hazelcast
+    - port: 2424
+      targetPort: binary
+      name: binary
+    - port: 8182
+      targetPort: gremlin
+      name: gremlin
+  selector: *OrientdbDeploymentLabels

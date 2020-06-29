@@ -1,0 +1,79 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "{{ .Release.Name }}"
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo/logo.png" | b64enc }}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": {{ .Chart.Name | quote }}, "partner_name": "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+spec:
+  descriptor:
+    type: "Cert Manager"
+    version: {{ .Values.controller.image.tag | quote }}
+    description: |-
+      Cert Manager provides native Kubernetes automation for creating and managing TLS certificates.
+      It has support for making self-signed certificates, using your own Certificate Authority (CA), and using external services such as Let’s Encrypt, HashiCorp Vault, and Venafi.
+      It also takes care of checking that certificates are valid and up-to-date, and attempts to renew certificates before they expire.
+
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/cert-manager/).
+      Additional community support is available on [github](https://github.com/jetstack/cert-manager/issues).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy Cert Manager'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/{{ .Chart.Name }}/README.md
+    - description: 'Official documentation for Cert Manager'
+      url: https://cert-manager.io/docs/
+    notes: |-
+      # Deploy an Issuer and Cert request for self-signed certificate
+
+      To deploy an Issuer instance, run the following command:
+
+      ```shell
+      kubectl apply --namespace {{ .Release.Namespace }} -f - <<EOF
+      apiVersion: cert-manager.io/v1alpha2
+      kind: Issuer
+      metadata:
+        name: test-selfsigned
+      spec:
+        selfSigned: {}
+      EOF
+      ```
+
+      To request a certificate, run the following command:
+
+      ```shell
+      kubectl apply --namespace {{ .Release.Namespace }} -f - <<EOF
+      apiVersion: cert-manager.io/v1alpha2
+      kind: Certificate
+      metadata:
+        name: selfsigned-cert
+      spec:
+        dnsNames:
+          - example.com
+        secretName: selfsigned-cert-tls
+        issuerRef:
+          name: test-selfsigned
+      EOF
+      ```
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "{{ .Release.Name }}"
+  componentKinds:
+  - group: apps/v1
+    kind: Deployment
+  - group: v1
+    kind: ConfigMap
+  - group: v1
+    kind: ServiceAccount
+  - group: v1
+    kind: Job
+  - group: v1
+    kind: Pod
+  - group: v1
+    kind: Service

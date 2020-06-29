@@ -1,0 +1,125 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-hazelcast
+  labels: &HazelcastDeploymentLabels
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: hazelcast
+  annotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: '8080'
+spec:
+  serviceName: {{ .Release.Name }}-svc
+  replicas: {{ .Values.hazelcast.replicas }}
+  selector:
+    matchLabels: *HazelcastDeploymentLabels
+  template:
+    metadata:
+      labels: *HazelcastDeploymentLabels
+    spec:
+      terminationGracePeriodSeconds: 600
+      hostNetwork: false
+      hostPID: false
+      hostIPC: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        fsGroup: 65534
+      containers:
+      - name: hazelcast
+        image: "{{ .Values.hazelcast.image.repo }}:{{ .Values.hazelcast.image.tag }}"
+        ports:
+        - name: hazelcast
+          containerPort: 5701
+          hostPort: 5701
+        - name: metrics
+          containerPort: 8080
+        resources:
+          requests:
+            memory: {{ .Values.hazelcast.resources.memory }}
+            cpu: {{ .Values.hazelcast.resources.cpu }}
+        livenessProbe:
+          httpGet:
+            path: /hazelcast/health/node-state
+            port: 5701
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 10
+          successThreshold: 1
+          failureThreshold: 10
+        readinessProbe:
+          httpGet:
+            path: /hazelcast/health/node-state
+            port: 5701
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 10
+          successThreshold: 1
+          failureThreshold: 10
+        volumeMounts:
+        - name: {{ .Release.Name }}-pvc
+          mountPath: /custom_folder
+        - name: hazelcast-config-storage
+          mountPath: /data/hazelcast
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: DEBUG_DOCKER_ENTRYPOINT
+          value: "false"
+        - name: PROMETHEUS_PORT
+          value: "8080"
+        - name: JAVA_OPTS
+          value: "-Dhazelcast.config=/data/hazelcast/hazelcast.xml -DserviceName={{ .Release.Name }}-svc -Dnamespace={{ .Release.Namespace }} -Dhazelcast.mancenter.enabled=true -Dhazelcast.mancenter.url=http://{{ .Release.Name }}-mancenter-svc.{{ .Release.Namespace }}.svc:8080/hazelcast-mancenter -Dhazelcast.shutdownhook.policy=GRACEFUL -Dhazelcast.shutdownhook.enabled=true -Dhazelcast.graceful.shutdown.max.wait=600 -Dhazelcast.jmx=true {{ .Values.hazelcast.javaOpts }}"
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 65534
+          privileged: false
+          readOnlyRootFilesystem: false
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+      # Prometheus to Stackdriver Container
+      {{- if .Values.metrics.exporter.enabled }}
+      - name: prometheus-to-sd
+        image: {{ .Values.metrics.image }}
+        command:
+        - /monitor
+        - --stackdriver-prefix=custom.googleapis.com
+        - --source=hazelcast:http://localhost:8080/metrics
+        - --pod-id=$(POD_NAME)
+        - --namespace-id=$(POD_NAMESPACE)
+        - --monitored-resource-types=k8s
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        resources:
+          requests:
+            cpu: "100m"
+      {{- end }}
+      volumes:
+      - name: hazelcast-config-storage
+        configMap:
+          name: {{ .Release.Name }}-config
+      serviceAccountName: "{{ .Values.hazelcast.serviceAccount }}"
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Release.Name }}-pvc
+      labels:
+        app.kubernetes.io/name: "{{ .Release.Name }}"
+        app.kubernetes.io/component: hazelcast
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "{{ .Values.hazelcast.persistence.storageClass }}"
+      resources:
+        requests:
+          storage: "{{ .Values.hazelcast.persistence.size }}"

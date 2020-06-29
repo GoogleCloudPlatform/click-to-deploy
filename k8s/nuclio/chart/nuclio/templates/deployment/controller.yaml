@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ template "nuclio.controllerName" . }}
@@ -22,6 +22,13 @@ metadata:
     app.kubernetes.io/component: controller
 spec:
   replicas: 1 # Should be only one replica
+  selector:
+    matchLabels:
+        app.kubernetes.io/name: {{ .Release.Name }}
+        app.kubernetes.io/component: controller
+        nuclio.io/app: controller
+        nuclio.io/class: service
+        nuclio.io/name: {{ template "nuclio.controllerName" . }}
   template:
     metadata:
       labels:
@@ -36,7 +43,7 @@ spec:
       serviceAccountName: {{ .Values.controller.serviceAccountName }}
       containers:
       - name: {{ template "nuclio.controllerName" . }}
-        image: {{ .Values.controller.image.repository }}:{{ .Values.controller.image.tag }}
+        image: {{ .Values.controller.image.repo }}:{{ .Values.controller.image.tag }}
         env:
         - name: NUCLIO_CONTROLLER_IMAGE_PULL_SECRETS
           value: {{ template "nuclio.registryCredentialsName" . }}

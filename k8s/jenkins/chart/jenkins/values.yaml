@@ -2,6 +2,9 @@ jenkins:
   image:
     repo: null
     tag: null
+  persistence:
+    storageClass: null
+    size: 8Gi
 
 tls:
   base64EncodedPrivateKey: null

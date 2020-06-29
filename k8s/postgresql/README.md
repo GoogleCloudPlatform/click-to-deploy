@@ -132,34 +132,48 @@ export APP_INSTANCE_NAME=postgresql-1
 export NAMESPACE=default
 ```
 
+For the persistent disk provisioning of the PostgreSQL StatefulSets, you will need to:
+
+ * Set the StorageClass name. Check your available options using the command below:
+   * ```kubectl get storageclass```
+   * Or check how to create a new StorageClass in [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
+
+ * Set the persistent disk's size. The default disk size is "10Gi".
+
+```shell
+export DEFAULT_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
+export PERSISTENT_DISK_SIZE="10Gi"
+```
+
+Set up the image tag:
+
+It is advised to use stable image reference which you can find on
+[Marketplace Container Registry](https://marketplace.gcr.io/google/postgresql).
+Example:
+
+```shell
+export TAG="<BUILD_ID>"
+```
+
+Alternatively you can use short tag which points to the latest image for selected version.
+> Warning: this tag is not stable and referenced image might change over time.
+
+```shell
+export TAG="9.6"
+```
+
 Configure the container images:
 
 ```shell
-TAG=9.6
-export IMAGE_POSTGRESQL="marketplace.gcr.io/google/postgresql:${TAG}"
-export IMAGE_POSTGRESQL_EXPORTER="marketplace.gcr.io/google/postgresql9:exporter"
+export IMAGE_POSTGRESQL="marketplace.gcr.io/google/postgresql"
+export IMAGE_POSTGRESQL_EXPORTER="marketplace.gcr.io/google/postgresql/exporter:${TAG}"
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/postgresql/prometheus-to-sd:${TAG}"
 ```
 
-The images above are referenced by
-[tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
-that you pin each image to an immutable
-[content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This ensures that the installed application always uses the same images until
-you are ready to upgrade. To get the digest for the image, use the following
-script:
+Generate a random password:
 
 ```shell
-IMAGE_POSTGRESQL=$(docker pull $IMAGE_POSTGRESQL | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_POSTGRESQL\")\"@sha256:\"\$3}")
-IMAGE_POSTGRESQL_EXPORTER=$(docker pull $IMAGE_POSTGRESQL_EXPORTER | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_POSTGRESQL_EXPORTER\")\"@sha256:\"\$3}")
-IMAGE_METRICS_EXPORTER=$(docker pull $IMAGE_METRICS_EXPORTER | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_METRICS_EXPORTER\")\"@sha256:\"\$3}")
-```
-
-Generate a random password and set the PosgreSQL volume size in Gigabytes:
-
-```shell
-export POSTGRESQL_DB_PASSWORD=$(openssl rand 9 | openssl base64 -A | openssl base64)
-export POSTGRESQL_VOLUME_SIZE=10
+export POSTGRESQL_DB_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 1 | tr -d '\n')"
 ```
 
 Expose the Service externally:
@@ -174,7 +188,7 @@ export EXPOSE_PUBLIC_SERVICE=false
 ##### Create TLS certificate for PostgreSQL
 
 > Note: You can skip this step if you have not set up external access.
- 
+
 1.  If you already have a certificate that you want to use, copy your
     certificate and key pair to the `/tmp/tls.crt`, and `/tmp/tls.key` files,
     then skip to the next step.
@@ -228,19 +242,21 @@ expanded manifest file for future updates to the application.
 
 ```shell
 helm template chart/postgresql \
-  --name $APP_INSTANCE_NAME \
-  --namespace $NAMESPACE \
-  --set "postgresql.serviceAccount=$POSTGRESQL_SERVICE_ACCOUNT" \
-  --set "postgresql.image=$IMAGE_POSTGRESQL" \
-  --set "postgresql.volumeSize=$POSTGRESQL_VOLUME_SIZE" \
-  --set "postgresql.exposePublicService=$EXPOSE_PUBLIC_SERVICE" \
-  --set "db.password=$POSTGRESQL_DB_PASSWORD" \
-  --set "metrics.image=$IMAGE_METRICS_EXPORTER" \
-  --set "metrics.exporter.enabled=$METRICS_EXPORTER_ENABLED" \
-  --set "exporter.image=$IMAGE_POSTGRESQL_EXPORTER" \
-  --set "tls.base64EncodedPrivateKey=$TLS_CERTIFICATE_KEY" \
-  --set "tls.base64EncodedCertificate=$TLS_CERTIFICATE_CRT" \
-    > ${APP_INSTANCE_NAME}_manifest.yaml
+  --name "$APP_INSTANCE_NAME" \
+  --namespace "$NAMESPACE" \
+  --set postgresql.serviceAccount="$POSTGRESQL_SERVICE_ACCOUNT" \
+  --set postgresql.image.repo="$IMAGE_POSTGRESQL" \
+  --set postgresql.image.tag="$TAG" \
+  --set postgresql.exposePublicService="$EXPOSE_PUBLIC_SERVICE" \
+  --set postgresql.persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \
+  --set postgresql.persistence.size="${PERSISTENT_DISK_SIZE}" \
+  --set db.password="$POSTGRESQL_DB_PASSWORD" \
+  --set metrics.image="$IMAGE_METRICS_EXPORTER" \
+  --set metrics.exporter.enabled="$METRICS_EXPORTER_ENABLED" \
+  --set exporter.image="$IMAGE_POSTGRESQL_EXPORTER" \
+  --set tls.base64EncodedPrivateKey="$TLS_CERTIFICATE_KEY" \
+  --set tls.base64EncodedCertificate="$TLS_CERTIFICATE_CRT" \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster

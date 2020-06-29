@@ -1,5 +1,5 @@
 ---
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ .Release.Name }}-magento
@@ -154,7 +154,7 @@ spec:
         app.kubernetes.io/component: magento-webserver
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: standard
+      storageClassName: {{ .Values.persistence.storageClass | quote }}
       resources:
         requests:
-          storage: {{ .Values.magento.volumeSize | quote }}
+          storage: {{ .Values.magento.persistence.size | quote }}

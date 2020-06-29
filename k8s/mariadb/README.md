@@ -125,36 +125,48 @@ this option, change the value to `true`.
 export METRICS_EXPORTER_ENABLED=false
 ```
 
+Set up the image tag:
+
+It is advised to use stable image reference which you can find on
+[Marketplace Container Registry](https://marketplace.gcr.io/google/mariadb).
+Example:
+
+```shell
+export TAG="10.3.22-20200311-092325"
+```
+
+Alternatively you can use short tag which points to the latest image for selected version.
+> Warning: this tag is not stable and referenced image might change over time.
+
+```shell
+export TAG="10.3"
+```
+
 Configure the container image:
 
 ```shell
-TAG=10.3
-export IMAGE_MARIADB="marketplace.gcr.io/google/mariadb:${TAG}"
+export IMAGE_MARIADB="marketplace.gcr.io/google/mariadb"
 export IMAGE_MYSQL_EXPORTER="marketplace.gcr.io/google/mariadb/mysqld-exporter:${TAG}"
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/mariadb/prometheus-to-sd:${TAG}"
-```
-
-The images above are referenced by
-[tag](https://docs.docker.com/engine/reference/commandline/tag). We recommend
-that you pin each image to an immutable
-[content digest](https://docs.docker.com/registry/spec/api/#content-digests).
-This ensures that the installed application always uses the same images,
-until you are ready to upgrade. To get the digest for the image, use the
-following script:
-
-```shell
-for i in "IMAGE_MARIADB" "IMAGE_MYSQL_EXPORTER" "IMAGE_METRICS_EXPORTER"; do
-  repo=$(echo ${!i} | cut -d: -f1);
-  digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
-  export $i="$repo@$digest";
-  echo ${!i};
-done
 ```
 
 Set the number of replicas for MariaDB:
 
 ```shell
 export REPLICAS=2
+```
+
+For the persistent disk provisioning of the MariaDB StatefulSets, you will need to:
+
+ * Set the StorageClass name. Check your available options using the command below:
+   * ```kubectl get storageclass```
+   * Or check how to create a new StorageClass in [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
+
+ * Set the persistent disk's size. The default disk size is "32Gi".
+
+```shell
+export MARIADB_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
+export MARIADB_PERSISTENT_DISK_SIZE="32Gi"
 ```
 
 Configure the MariaDB user's credentials (passwords must be encoded in base64):
@@ -208,17 +220,20 @@ expanded manifest file for future updates to the application.
 helm template chart/mariadb \
   --name "$APP_INSTANCE_NAME" \
   --namespace "$NAMESPACE" \
-  --set "mariadb.image=$IMAGE_MARIADB" \
-  --set "db.volumeSize=8" \
-  --set "db.password=$MARIADB_ROOT_PASSWORD" \
-  --set "replication.password=$MARIADB_REPLICA_PASSWORD" \
-  --set "db.exporter.image=$IMAGE_MYSQL_EXPORTER" \
-  --set "db.exporter.password=$EXPORTER_DB_PASSWORD" \
-  --set "metrics.image=$IMAGE_METRICS_EXPORTER" \
-  --set "metrics.exporter.enabled=$METRICS_EXPORTER_ENABLED" \
-  --set "tls.base64EncodedPrivateKey=$TLS_CERTIFICATE_KEY" \
-  --set "tls.base64EncodedCertificate=$TLS_CERTIFICATE_CRT" \
-  --set "db.replicas=$REPLICAS" > "${APP_INSTANCE_NAME}_manifest.yaml"
+  --set mariadb.image.repo="$IMAGE_MARIADB" \
+  --set mariadb.image.tag="$TAG" \
+  --set mariadb.persistence.storageClass="$MARIADB_STORAGE_CLASS" \
+  --set mariadb.persistence.size="$MARIADB_PERSISTENT_DISK_SIZE" \
+  --set db.password="$MARIADB_ROOT_PASSWORD" \
+  --set replication.password="$MARIADB_REPLICA_PASSWORD" \
+  --set db.exporter.image="$IMAGE_MYSQL_EXPORTER" \
+  --set db.exporter.password="$EXPORTER_DB_PASSWORD" \
+  --set metrics.image="$IMAGE_METRICS_EXPORTER" \
+  --set metrics.exporter.enabled="$METRICS_EXPORTER_ENABLED" \
+  --set tls.base64EncodedPrivateKey="$TLS_CERTIFICATE_KEY" \
+  --set tls.base64EncodedCertificate="$TLS_CERTIFICATE_CRT" \
+  --set db.replicas="$REPLICAS" \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster

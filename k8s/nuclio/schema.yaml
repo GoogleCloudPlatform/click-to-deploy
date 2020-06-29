@@ -8,18 +8,17 @@ x-google-marketplace:
     releaseTypes:
       - Feature
     recommended: false
-  managedUpdates:
-    kalmSupported: true
+
   images:
     '':
       properties:
-        controller.image.repository:
+        controller.image.repo:
           type: REPO_WITH_REGISTRY
         controller.image.tag:
           type: TAG
     dashboard:
       properties:
-        dashboard.image.repository:
+        dashboard.image.repo:
           type: REPO_WITH_REGISTRY
         dashboard.image.tag:
           type: TAG

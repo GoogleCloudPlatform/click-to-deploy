@@ -1,0 +1,58 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: $APP_INSTANCE_NAME-cert-configmap
+  labels:
+    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/component: cert-configmap
+data:
+  cert.sh: |-
+    set -euxo pipefail
+
+    service="$APP_INSTANCE_NAME-flink-operator-webhook"
+    secret="$APP_INSTANCE_NAME-webhook-cert"
+    namespace="$NAMESPACE"
+
+    csrName="${service}.${namespace}"
+    tmpdir="$(mktemp -d)"
+    echo "Creating certs in tmpdir ${tmpdir} "
+
+    cat <<EOF >> "${tmpdir}/csr.conf"
+    [req]
+    req_extensions = v3_req
+    distinguished_name = req_distinguished_name
+    [req_distinguished_name]
+    [ v3_req ]
+    basicConstraints = CA:FALSE
+    keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+    extendedKeyUsage = serverAuth
+    subjectAltName = @alt_names
+    [alt_names]
+    DNS.1 = ${service}
+    DNS.2 = ${service}.${namespace}
+    DNS.3 = ${service}.${namespace}.svc
+    EOF
+    openssl req -nodes -new -x509 -keyout ca.key -out ca.crt -subj "/CN=Admission Controller Webhook CA"
+    openssl genrsa -out ${tmpdir}/server-key.pem 2048
+    openssl req -new -key ${tmpdir}/server-key.pem -subj "/CN=${service}.${namespace}.svc" -config ${tmpdir}/csr.conf \
+        | openssl x509 -req -CA ca.crt -CAkey ca.key -CAcreateserial -out ${tmpdir}/server-cert.pem
+    serverCert="$(openssl base64 -A -in ${tmpdir}/server-cert.pem)"
+    if [[ -z ${serverCert} ]]; then
+        echo "ERROR: The signed certificate did not appear." >&2
+        exit 1
+    fi
+    export CA_PEM_B64="$(echo ${serverCert})"
+
+    # create the secret with CA cert and server cert/key
+    kubectl create secret generic ${secret} \
+            --from-file=tls.key=${tmpdir}/server-key.pem \
+            --from-file=tls.crt=${tmpdir}/server-cert.pem \
+            --dry-run -o yaml |
+        kubectl -n ${namespace} apply -f -
+
+    for webhook in /webhook_to_create/*;
+    do
+      echo $(cat $webhook | envsubst '${CA_PEM_B64}');
+      cat $webhook | envsubst '${CA_PEM_B64}' | kubectl apply -f -
+    done

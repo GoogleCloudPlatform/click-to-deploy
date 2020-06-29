@@ -1,5 +1,5 @@
 operator:
   serviceAccountName: null
   image:
-    repository: null
+    repo: null
     tag: null

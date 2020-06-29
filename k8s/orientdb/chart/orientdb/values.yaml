@@ -1,0 +1,22 @@
+orientdb:
+  replicas: null
+  rootPassword: null
+  image:
+    repo: null
+    tag: null
+    pullPolicy: IfNotPresent
+  persistence:
+    storageClass: null
+    storage:
+      size: 10Gi
+    backup:
+      size: 2Gi
+
+jvm: {}
+# Optional jvm settings:
+#  memory: "-Xms800m -Xmx800m"
+#  options: "-Djna.nosys=true -XX:+HeapDumpOnOutOfMemoryError -Djava.awt.headless=true -Dfile.encoding=UTF8 -Drhino.opt.level=9"
+#  settings: "-Dstorage.diskCache.bufferSize=7200"
+
+deployer:
+  image: null
