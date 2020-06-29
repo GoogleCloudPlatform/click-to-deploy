@@ -11,9 +11,6 @@ x-google-marketplace:
     - Feature
     recommended: false
 
-  managedUpdates:
-    kalmSupported: true
-
   images:
     '':
       properties:
@@ -56,6 +53,21 @@ properties:
         - type: ClusterRole
           rulesType: PREDEFINED
           rulesFromRoleName: cluster-admin
+  grafana.persistence.storageClass:
+    type: string
+    title: StorageClass
+    description: You can choose an existing StorageClass or create a new one. Newly created StorageClass provisioner will be "pd-ssd".
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  grafana.persistence.size:
+    type: string
+    title: Grafana application storage size
+    description: Storage size for Grafana persistent volume
+    default: '2Gi'
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+
   metrics.exporter.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter

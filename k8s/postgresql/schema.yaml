@@ -11,9 +11,6 @@ x-google-marketplace:
       - Feature
     recommended: false
 
-  managedUpdates:
-    kalmSupported: true
-
   clusterConstraints:
     resources:
     - replicas: 1
@@ -46,11 +43,6 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  postgresql.volumeSize:
-    type: integer
-    title: Volume
-    description: The size of Volume (Gi) in the solution
-    default: 24
   postgresql.serviceAccount:
     type: string
     title: PostgreSQL service account
@@ -58,6 +50,20 @@ properties:
       Service account to assign to PostgreSQL StatefulSet (with default permissions)
     x-google-marketplace:
       type: SERVICE_ACCOUNT
+  postgresql.persistence.storageClass:
+    type: string
+    title: StorageClass
+    description: You can choose an existing StorageClass or create a new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  postgresql.persistence.size:
+    type: string
+    title: Storage size for persistent volumes
+    default: "5Gi"
+    description: PostgreSQL storage size
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
   postgresql.exposePublicService:
     type: boolean
     title: Enable public IP access
@@ -86,7 +92,7 @@ properties:
 required:
 - name
 - namespace
-- postgresql.volumeSize
+- postgresql.persistence.size
 - postgresql.serviceAccount
 - postgresql.exposePublicService
 - db.password

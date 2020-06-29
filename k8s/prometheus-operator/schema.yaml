@@ -8,8 +8,7 @@ x-google-marketplace:
     releaseTypes:
       - Feature
     recommended: false
-  managedUpdates:
-    kalmSupported: false
+
   images:
     '':
       properties:
