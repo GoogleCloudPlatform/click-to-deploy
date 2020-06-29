@@ -18,15 +18,6 @@
 # Download phpmyadmin and dependencies to /opt/c2d/downloads/phpmyadmin
 # This allows us to install the package even after an apt-get clean
 
-# bash 'download phpmyadmin.deb and dependencies' do
-#   cwd '/opt/c2d/downloads'
-#   code <<-EOF
-#     mkdir -p /opt/c2d/downloads/phpmyadmin
-#     apt-get -d -o Dir::Cache::archives="/opt/c2d/downloads/phpmyadmin" \
-#     install phpmyadmin -y
-# EOF
-# end
-
 execute 'Update Sources' do
   command 'apt-get update'
 end

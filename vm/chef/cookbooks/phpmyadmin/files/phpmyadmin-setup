@@ -12,20 +12,19 @@
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
-# # limitations under the License.
+# limitations under the License.
 
 source /opt/c2d/c2d-utils || exit 1
 
 readonly installphpMyAdmin="$(get_attribute_value "installphpmyadmin" \
   | tr '[:upper:]' '[:lower:]')"
-readonly mysql_root_password="$(get_attribute_value "mysql-root-password")"
 
 if [[ "${installphpMyAdmin:-}" == "true" ]]; then
   echo "phpMyAdmin has been selected to be installed."
   setup_folder="/opt/c2d/downloads/phpmyadmin"
 
   # Set up blowfish_secret parameter
-  secret="$(openssl rand -base64 64 | fold -w 64 | head -n1 | tr -d '\r\n' | tr -dc '[:alnum:]\n\r' | tr '[:upper:]' '[:lower:]')"
+  ssecret="$(openssl rand -base64 64 | fold -w 64 | head -n1 | tr -d '\r\n' | tr -dc '[:alnum:]\n\r' | tr '[:upper:]' '[:lower:]')"
   cat "${setup_folder}/config.sample.inc.php" \
     | sed "s/\['blowfish_secret'\] = ''; /\['blowfish_secret'\] = '$secret'; /g" \
     > "${setup_folder}/config.inc.php"
