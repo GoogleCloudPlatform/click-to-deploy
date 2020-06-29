@@ -59,11 +59,11 @@ You will need to pass OAuth Credentials to Marketplace UI to properly configure 
 
 
 
-*   [Configuring OAuth Consent Screen](https://cloud.google.com/iap/docs/enabling-kubernetes-howto#oauth-configure)
+[Configuring OAuth Consent Screen](https://cloud.google.com/iap/docs/enabling-kubernetes-howto#oauth-configure)
   * Selecting External will allow accounts outside of your organization to access Custom Governance
   * Selecting Internal will allow accounts only inside your organization to access Custom Governance
 
-*   [Creating OAuth Credentials](https://cloud.google.com/iap/docs/enabling-kubernetes-howto#oauth-credentials)
+[Creating OAuth Credentials](https://cloud.google.com/iap/docs/enabling-kubernetes-howto#oauth-credentials)
   1.  Via Cloud Console visit [Menu > API & Services > Credentials](https://console.cloud.google.com/apis/credentials)
   1.  Click *Create Credentials* and select *OAuth client ID*
   1.  Select *Web application* as the Application type
