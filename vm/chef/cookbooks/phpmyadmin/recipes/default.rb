@@ -17,13 +17,33 @@
 
 # Download phpmyadmin and dependencies to /opt/c2d/downloads/phpmyadmin
 # This allows us to install the package even after an apt-get clean
-bash 'download phpmyadmin.deb and dependencies' do
-  cwd '/opt/c2d/downloads'
-  code <<-EOF
-    mkdir -p /opt/c2d/downloads/phpmyadmin
-    apt-get -d -o Dir::Cache::archives="/opt/c2d/downloads/phpmyadmin" \
-    install phpmyadmin -y
-EOF
+
+execute 'Update Sources' do
+  command 'apt-get update'
+end
+
+package 'Install Packages' do
+  package_name node['phpmyadmin']['packages']
+  action :install
+end
+
+remote_file '/tmp/phpmyadmin.zip' do
+  version = node['phpmyadmin']['version']
+  source "https://files.phpmyadmin.net/phpMyAdmin/#{version}/phpMyAdmin-#{version}-all-languages.zip"
+  checksum node['phpmyadmin']['sha256']
+  action :create
+end
+
+bash 'Extract phpMyAdmin' do
+  version = node['phpmyadmin']['version']
+  user 'root'
+  cwd '/tmp'
+  code <<-EOH
+    unzip /tmp/phpmyadmin.zip \
+      -d /tmp/phpmyadmin \
+    && mv /tmp/phpmyadmin/phpMyAdmin-#{version}-all-languages/ /opt/c2d/downloads/phpmyadmin \
+    && rm -f /tmp/phpmyadmin.zip
+EOH
 end
 
 c2d_startup_script 'phpmyadmin-setup'
