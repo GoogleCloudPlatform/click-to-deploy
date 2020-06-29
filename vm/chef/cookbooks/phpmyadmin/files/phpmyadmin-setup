@@ -24,7 +24,7 @@ if [[ "${installphpMyAdmin:-}" == "true" ]]; then
   setup_folder="/opt/c2d/downloads/phpmyadmin"
 
   # Set up blowfish_secret parameter
-  secret="$(openssl rand -base64 64 | fold -w 64 | head -n1 | tr -d '\r\n' | tr -dc '[:alnum:]\n\r' | tr '[:upper:]' '[:lower:]')"
+  secret="$(openssl rand -base64 32 | fold -w 32 | head -n1 | tr -d '\r\n' | tr -dc '[:alnum:]\n\r' | tr '[:upper:]' '[:lower:]')"
   cat "${setup_folder}/config.sample.inc.php" \
     | sed "s/\['blowfish_secret'\] = ''; /\['blowfish_secret'\] = '$secret'; /g" \
     > "${setup_folder}/config.inc.php"
