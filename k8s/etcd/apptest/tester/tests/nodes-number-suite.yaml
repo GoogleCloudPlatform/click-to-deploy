@@ -10,10 +10,12 @@ actions:
       stdout:
         equals: '3'
 
-- name: Check if there are 3 healthy nodes
+- name: Check if there are 3 members in etcd cluster
   bashTest:
     script: |-
-      kubectl exec -it ${APP_INSTANCE_NAME}-etcd-0 -- etcdctl --user root:${ETCD_ROOT_PASSWORD} endpoint health --cluster | grep 'is healthy'| wc -l
+      kubectl exec -it ${APP_INSTANCE_NAME}-etcd-0 \
+        --namespace "${NAMESPACE}" \
+        -- etcdctl --user root:${ETCD_ROOT_PASSWORD} endpoint status --cluster | wc -l
     expect:
       stdout:
         equals: 3
