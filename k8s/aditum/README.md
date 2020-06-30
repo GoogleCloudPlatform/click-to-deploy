@@ -70,10 +70,10 @@ You will need to pass OAuth Credentials to Marketplace UI to properly configure 
     ![OAuth Step 1](./images/oauth_step1.png)
   1.  Create the OAuth Credentials by clicking *Create*
   1. Copy the Client ID from the OAuth confirmation modal
-    ![OAuth Step 2](/images/oauth_step2.png)
+    ![OAuth Step 2](./images/oauth_step2.png)
   1. Dismiss the modal and select the OAuth 2.0 Client ID that was just created
   1. Add a Authorized redirect URI that incorporates the client ID that you copied over
-    ![OAuth Step 3](/images/oauth_step3.png)
+    ![OAuth Step 3](./images/oauth_step3.png)
 
       * Required URI: https://iap.googleapis.com/v1/oauth/clientIds/CLIENT_ID:handleRedirect
       * Where CLIENT_ID is your OAuth Client ID
