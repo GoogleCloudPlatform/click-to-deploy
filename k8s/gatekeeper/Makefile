@@ -38,7 +38,7 @@ APP_GCS_PATH ?= $(GCS_URL)/$(APP_ID)/$(TRACK)
 
 IMAGE_MAIN ?= $(SOURCE_REGISTRY)/gatekeeper:$(TRACK)
 # Main image
-image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_MAIN))
+image-$(CHART_NAME) ?= $(call get_sha256,$(IMAGE_MAIN))
 
 # app_v2.Makefile provides the main targets for installing the application.
 # It requires several APP_* variables defined above, and thus must be included after.
