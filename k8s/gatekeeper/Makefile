@@ -3,9 +3,10 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
-APP_ID ?= gatekeeper
+CHART_NAME := gatekeeper
+APP_ID ?= $(CHART_NAME)
 SOURCE_REGISTRY ?= gcr.io/gatekeeper-marketplace
-NAME ?= gatekeeper
+NAME ?= $(CHART_NAME)
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 TRACK ?= 3.0
@@ -21,7 +22,7 @@ APP_PARAMETERS ?= { \
 	"namespace": "$(NAMESPACE)" \
 }
 
-TESTER_IMAGE ?= $(REGISTRY)/gatekeeper/deployer/tester:$(TRACK)
+TESTER_IMAGE ?= $(REGISTRY)/$(APP_ID)/deployer/tester:$(TRACK)
 APP_TEST_PARAMETERS ?= { \
 	"testerImage": "$(TESTER_IMAGE)" \
 }
