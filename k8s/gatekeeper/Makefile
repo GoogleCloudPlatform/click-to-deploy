@@ -34,62 +34,21 @@ APP_DEPLOYER_IMAGE ?= $(REGISTRY)/$(APP_ID)/deployer:$(RELEASE)
 APP_DEPLOYER_IMAGE_TRACK_TAG ?= $(REGISTRY)/$(APP_ID)/deployer:$(TRACK)
 APP_GCS_PATH ?= $(GCS_URL)/$(APP_ID)/$(TRACK)
 
+# app_v2.Makefile provides the main targets for installing the application.
+# It requires several APP_* variables defined above, and thus must be included after.
+include ../c2d_deployer.Makefile
+
+# Build tester image
+app/build:: .build/$(CHART_NAME)/tester
+
 # app_v2.Makefile provides the main targets for installing the
 # application.
 # It requires several APP_* variables defined above, and thus
 # must be included after.
 include ../app_v2.Makefile
 
-
-# Extend the target as defined in app.Makefile to
-# include real dependencies.
-app/build:: .build/gatekeeper/deployer \
-			.build/gatekeeper/tester \
-			.build/gatekeeper/gatekeeper
-
-.build/gatekeeper: | .build
-	mkdir -p "$@"
-
-
-.build/gatekeeper/gatekeeper: .build/var/REGISTRY \
-                              | .build/gatekeeper
-	$(call print_target, $@)
-	docker pull gcr.io/gatekeeper-marketplace/gatekeeper:$(TRACK)
-	docker tag gcr.io/gatekeeper-marketplace/gatekeeper:$(TRACK) \
-	    "$(APP_IMAGE)"
-	docker tag gcr.io/gatekeeper-marketplace/gatekeeper:$(TRACK) \
-	    "$(APP_IMAGE_TRACK_TAG)"
-	docker push "$(APP_IMAGE)"
-	docker push "$(APP_IMAGE_TRACK_TAG)"
-	@touch "$@"
-
-
-.build/gatekeeper/deployer: deployer/* \
-                            chart/gatekeeper/* \
-                            chart/gatekeeper/templates/* \
-                            schema.yaml \
-                            .build/var/APP_DEPLOYER_IMAGE \
-                            .build/var/APP_DEPLOYER_IMAGE_TRACK_TAG \
-                            .build/var/MARKETPLACE_TOOLS_TAG \
-                            .build/var/REGISTRY \
-                            .build/var/TRACK \
-                            .build/var/RELEASE \
-                            licenses \
-                            | .build/gatekeeper
-	$(call print_target, $@)
-	docker build \
-			--build-arg REGISTRY="$(REGISTRY)/gatekeeper" \
-			--build-arg TAG="$(RELEASE)" \
-			--build-arg MARKETPLACE_TOOLS_TAG="$(MARKETPLACE_TOOLS_TAG)" \
-			--tag "$(APP_DEPLOYER_IMAGE)" \
-			-f deployer/Dockerfile \
-			.
-
-	docker tag "$(APP_DEPLOYER_IMAGE)" "$(APP_DEPLOYER_IMAGE_TRACK_TAG)"
-	docker push "$(APP_DEPLOYER_IMAGE)"
-	docker push "$(APP_DEPLOYER_IMAGE_TRACK_TAG)"
-	@touch "$@"
-
+# Build tester image
+app/build:: .build/$(CHART_NAME)/tester
 
 .build/gatekeeper/tester: .build/var/TESTER_IMAGE \
                     $(shell find apptest -type f) \
@@ -99,7 +58,6 @@ app/build:: .build/gatekeeper/deployer \
 	docker tag cosmintitei/bash-curl "$(TESTER_IMAGE)"
 	docker push "$(TESTER_IMAGE)"
 	@touch "$@"
-
 
 # concatenate all licenses together
 licenses:
