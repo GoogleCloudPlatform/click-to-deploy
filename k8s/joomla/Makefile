@@ -31,7 +31,7 @@ ADDITIONAL_IMAGES := mariadb apache-exporter prometheus-to-sd mysqld-exporter
 image-mariadb := $(call get_sha256,$(IMAGE_MARIADB))
 image-apache-exporter := $(call get_sha256,$(IMAGE_APACHE_EXPORTER))
 image-prometheus-to-sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))
-image-mysqld-exporter := $(call get_sha256,$(IMAGE_MYSQL_EXPORTER))
+image-mysqld-exporter := $(call get_sha256,$(IMAGE_MYSQLD_EXPORTER))
 
 C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
 
