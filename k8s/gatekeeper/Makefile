@@ -41,15 +41,6 @@ include ../c2d_deployer.Makefile
 # Build tester image
 app/build:: .build/$(CHART_NAME)/tester
 
-# app_v2.Makefile provides the main targets for installing the
-# application.
-# It requires several APP_* variables defined above, and thus
-# must be included after.
-include ../app_v2.Makefile
-
-# Build tester image
-app/build:: .build/$(CHART_NAME)/tester
-
 .build/gatekeeper/tester: .build/var/TESTER_IMAGE \
                     $(shell find apptest -type f) \
                     | .build/gatekeeper
