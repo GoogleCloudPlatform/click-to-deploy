@@ -194,7 +194,7 @@ export IMAGE_REGISTRY="marketplace.gcr.io/google"
 export IMAGE_MEDIAWIKI="${IMAGE_REGISTRY}/mediawiki"
 export IMAGE_APACHE_EXPORTER="${IMAGE_REGISTRY}/mediawiki/apache-exporter:${TAG}"
 export IMAGE_MARIADB="${IMAGE_REGISTRY}/mediawiki/mariadb:${TAG}"
-export IMAGE_MYSQL_EXPORTER="${IMAGE_REGISTRY}/mediawiki/mysqld-exporter:${TAG}"
+export IMAGE_MYSQL_EXPORTER="${IMAGE_REGISTRY}/mediawiki/mysql-exporter:${TAG}"
 export IMAGE_METRICS_EXPORTER="${IMAGE_REGISTRY}/mediawiki/prometheus-to-sd:${TAG}"
 ```
 
