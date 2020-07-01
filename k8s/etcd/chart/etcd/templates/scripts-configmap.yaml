@@ -65,6 +65,7 @@ data:
                    ETCD_PID=$!
                    wait_for_members
                    echo "${ETCD_ROOT_PASSWORD}" | etcdctl user add root --interactive=false
+                   etcdctl user grant-role root root
                    etcdctl auth enable
                    kill_etcd_and_wait_for_termination
                fi
