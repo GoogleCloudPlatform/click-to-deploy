@@ -173,7 +173,7 @@ spec:
     spec:
       resources:
         requests:
-          storage: {{ .Values.mariadb.volumeSize }}
+          storage: {{ .Values.mariadb.persistence.size }}
       accessModes:
       - ReadWriteOnce
-      storageClassName: standard
+      storageClassName: {{ .Values.mariadb.persistence.storageClass }}

@@ -181,6 +181,19 @@ Specify the number of replicas for your MariaDB Galera cluster:
 export REPLICAS=3
 ```
 
+For the persistent disk provisioning of the MariaDB Galera StatefulSets, you will need to:
+
+ * Set the StorageClass name. Check your available options using the command below:
+   * ```kubectl get storageclass```
+   * Or check how to create a new StorageClass in [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
+
+ * Set the persistent disk's size. The default disk size is "32Gi".
+
+```shell
+export STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
+export PERSISTENT_DISK_SIZE="32Gi"
+```
+
 Configure the MariaDB user's credentials (passwords must be encoded
 in base64):
 
@@ -237,7 +250,8 @@ helm template chart/mariadb-galera \
   --namespace "$NAMESPACE" \
   --set mariadb.image.repo="$IMAGE_MARIADB" \
   --set mariadb.image.tag="$TAG" \
-  --set mariadb.volumeSize=8 \
+  --set mariadb.persistence.size="$PERSISTENT_DISK_SIZE" \
+  --set mariadb.persistence.storageClass="$STORAGE_CLASS" \
   --set db.rootPassword="$MARIADB_ROOT_PASSWORD" \
   --set db.exporter.image="$IMAGE_MYSQL_EXPORTER" \
   --set db.exporter.password="$EXPORTER_DB_PASSWORD" \
