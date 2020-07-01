@@ -126,7 +126,7 @@ spec:
         app.kubernetes.io/component: mediawiki-webserver
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: standard
+      storageClassName: {{ .Values.mediawiki.persistence.storageClass }}
       resources:
         requests:
-          storage: "{{ .Values.mediawiki.volumeSize }}"
+          storage: "{{ .Values.mediawiki.persistence.size }}"

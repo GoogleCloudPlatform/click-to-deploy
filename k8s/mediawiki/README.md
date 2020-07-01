@@ -149,6 +149,21 @@ export APP_INSTANCE_NAME=mediawiki-1
 export NAMESPACE=default
 ```
 
+For the persistent disk provisioning of the Mediawiki StatefulSets, you will need to:
+
+ * Set the StorageClass name. Check your available options using the command below:
+   * ```kubectl get storageclass```
+   * Or check how to create a new StorageClass in [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
+
+ * Set the persistent disk's size. The default disk size for db is "7Gi" and for Mediawiki is "5Gi"
+
+```shell
+export STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
+export MEDIAWIKI_PERSISTENT_DISK_SIZE="5Gi"
+export DB_PERSISTENT_DISK_SIZE="7Gi"
+```
+
+
 Expose the Service externally, and configure Ingress. By default, the Service
 is not exposed externally. To enable this option, change the value to `true`.
 
@@ -259,9 +274,12 @@ helm template chart/mediawiki \
     --set mediawiki.image.tag="${TAG}" \
     --set mediawiki.admin.username="${MEDIAWIKI_ADMIN_USERNAME}" \
     --set mediawiki.admin.password="${MEDIAWIKI_ADMIN_PASSWORD}" \
+    --set mediawiki.persistence.storageClass="${STORAGE_CLASS}" \
+    --set mediawiki.persistence.size="${MEDIAWIKI_PERSISTENT_DISK_SIZE}" \
     --set db.image="${IMAGE_MARIADB}" \
     --set db.rootPassword="${ROOT_DB_PASSWORD}" \
     --set db.mediawikiPassword="${MEDIAWIKI_DB_PASSWORD}" \
+    --set db.persistence.size="${DB_PERSISTENT_DISK_SIZE}" \
     --set db.exporter.image="${IMAGE_MYSQL_EXPORTER}" \
     --set db.exporter.password="${EXPORTER_DB_PASSWORD}" \
     --set apache.exporter.image="${IMAGE_APACHE_EXPORTER}" \

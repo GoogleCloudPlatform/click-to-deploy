@@ -5,7 +5,9 @@ mediawiki:
   admin:
     username: admin
     password: null
-  volumeSize: 5Gi
+  persistence:
+    storageClass: null
+    size: 5Gi
 
 db:
   image: null
@@ -13,7 +15,8 @@ db:
   mediawikiUsername: mediawiki
   mediawikiPassword: null
   name: mediawiki-db
-  volumeSize: 7Gi
+  persistence:
+    size: 7Gi
 
   # The image and credentials for mysqld_exporter component.
   exporter:
