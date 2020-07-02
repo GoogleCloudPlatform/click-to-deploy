@@ -107,6 +107,7 @@ spec:
       name: datadir
     spec:
       accessModes: [ "ReadWriteOnce" ]
+      storageClassName: {{ .Values.zookeeper.persistence.storageClass }}
       resources:
         requests:
-          storage: {{ .Values.zookeeper.volumeSize }}
+          storage: {{ .Values.zookeeper.persistence.size }}
