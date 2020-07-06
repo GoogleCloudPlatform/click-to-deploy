@@ -160,4 +160,5 @@ spec:
           - ReadWriteOnce
         resources:
           requests:
-            storage: {{ .Values.server.storage }}
+            storage: {{ .Values.server.persistence.size }}
+        storageClassName: {{ .Values.server.persistence.storageClass }}

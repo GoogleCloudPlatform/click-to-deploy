@@ -67,12 +67,20 @@ properties:
     description: Number of replicas in Consul cluster
     default: 3
     minimum: 1
-  server.storage:
+  server.persistence.size:
     type: string
-    default: '10Gi'
     title: Consul storage
+    default: "10Gi"
     description: Consul storage per server instance
     pattern: '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+  server.persistence.storageClass:
+    type: string
+    title: StorageClass
+    description: You can choose an existing StorageClass or create a new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
   metrics.exporter.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
