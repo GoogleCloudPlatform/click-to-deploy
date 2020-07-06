@@ -46,8 +46,6 @@ steps:
   args:
   - builds
   - submit
-  - --timeout
-  - 1800s
   - --config
   - cloudbuild.yaml
   - .
