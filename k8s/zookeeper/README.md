@@ -129,7 +129,7 @@ For the persistent disk provisioning of the ZooKeeper application StatefulSet, y
    * ```kubectl get storageclass```
    * Or check how to create a new StorageClass in [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
 
- * Set the persistent disk's size. The default disk size is "8Gi for Drupal and 5Gi for MariaDB".
+ * Set the persistent disk's size. The default disk size is "10Gi" for ZooKeeper.
 
 ```shell
 export DEFAULT_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
