@@ -26,7 +26,7 @@ ENV MEDIAWIKI_VERSION {{ $mediawiki.Version }}
 ENV MEDIAWIKI_SHA512 {{ $mediawiki.Sha512 }}
 
 ENV COMPOSER_VERSION {{ $composer.Version }}
-ENV COMPOSER_SHA256 {{ $composer.Gpg }}
+ENV COMPOSER_SHA256 {{ $composer.Sha256 }}
 
 ENV MEDIAWIKI_HOSTNAME localhost
 ENV MEDIAWIKI_SITENAME my_first_wiki
