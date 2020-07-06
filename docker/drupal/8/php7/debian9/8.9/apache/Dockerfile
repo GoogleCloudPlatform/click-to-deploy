@@ -1,4 +1,4 @@
-FROM gcr.io/cloud-marketplace-ops/php7-apache:7.3-debian9
+FROM marketplace.gcr.io/google/php7-apache2:7.3
 
 RUN set -ex; \
 	savedAptMark="$(apt-mark showmanual)"; \
@@ -55,9 +55,9 @@ RUN a2enmod rewrite expires
 WORKDIR /usr/src/drupal
 
 # https://www.drupal.org/node/3060/release
-ENV DRUPAL_VERSION 8.7.11
-ENV C2D_RELEASE 8.7.11
-ENV DRUPAL_MD5 f281eb14d8aabf0c3e78dd519ca4b640
+ENV DRUPAL_VERSION 8.9.1
+ENV C2D_RELEASE 8.9.1
+ENV DRUPAL_MD5 9b4d1052c6d23b671aadc499cc961085
 
 # Download package and extract to web volume
 RUN set -eux; \
@@ -66,15 +66,18 @@ RUN set -eux; \
 	tar -xz --strip-components=1 -f drupal.tar.gz; \
 	rm drupal.tar.gz
 
-ENV COMPOSER_SHA384 a5c698ffe4b8e849a443b120cd5ba38043260d5c4023dbf93e1558871f1f07f58274fc6f4c93bcfd858c6bd0775cd8d1
+ENV COMPOSER_VERSION 1.9.1
+ENV COMPOSER_SHA256 1f210b9037fcf82670d75892dfc44400f13fe9ada7af9e787f93e50e3b764111
+
+# Install composer binary and install drush
 RUN set -eux; \
 	apt-get update && apt-get install -y --no-install-recommends git unzip; \
-	curl -fSL "https://getcomposer.org/installer" -o composer-setup.php; \
-	echo "${COMPOSER_SHA384} composer-setup.php" | sha384sum -c -; \
-	php composer-setup.php --quiet; \
-	php composer.phar require drush/drush; \
+	curl -o composer.phar "https://getcomposer.org/download/${COMPOSER_VERSION}/composer.phar"; \
+	echo "${COMPOSER_SHA256} composer.phar" | sha256sum -c - ; \
+	chmod +x composer.phar; \
+	php -d memory_limit=2G ./composer.phar require drush/drush; \
 	cp LICENSE.txt vendor/drush/drush/src/; \
-	rm composer-setup.php; \
+	rm -f composer.phar; \
 	rm -rf /var/lib/apt/lists/*
 
 WORKDIR /var/www/html

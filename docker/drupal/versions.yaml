@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,34 +14,59 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-_variables:
-  from: &from gcr.io/cloud-marketplace-ops/php7-apache:7.3-debian9
-  drupal: &drupal
-    version: '8.7.11'
-    md5: 'f281eb14d8aabf0c3e78dd519ca4b640'
-  composer: &composer
-    # Package doesn't contain SHA384
-    # I use version instead of it
-    # TODO: Change it when the issue is resolved
-    # https://github.com/GoogleCloudPlatform/runtimes-common/issues/798
-    version: 'a5c698ffe4b8e849a443b120cd5ba38043260d5c4023dbf93e1558871f1f07f58274fc6f4c93bcfd858c6bd0775cd8d1'
-  tags: &tags
-  - '8.7.11-debian9'
-  - '8.7.11'
-  - '8.7-debian9'
-  - '8.7'
-  - '8-debian9'
-  - '8'
-  - 'latest'
 
+cloudbuild:
+  enable_parallel: false
 versions:
+- dir: 9/php7/debian9/9.0/apache
+  from: marketplace.gcr.io/google/php7-apache2:7.3
+  packages:
+    composer:
+      gpg: 1f210b9037fcf82670d75892dfc44400f13fe9ada7af9e787f93e50e3b764111
+      version: 1.9.1
+    drupal:
+      md5: 18470946d20909e4762c143ff6684372
+      version: 9.0.1
+  repo: drupal9-php7-apache
+  tags:
+  - 9.0.1-debian9
+  - 9.0-debian9
+  - 9-debian9
+  - 9.0.1
+  - '9.0'
+  - '9'
+  - latest
+- dir: 8/php7/debian9/8.9/apache
+  from: marketplace.gcr.io/google/php7-apache2:7.3
+  packages:
+    composer:
+      gpg: 1f210b9037fcf82670d75892dfc44400f13fe9ada7af9e787f93e50e3b764111
+      version: 1.9.1
+    drupal:
+      md5: 9b4d1052c6d23b671aadc499cc961085
+      version: 8.9.1
+  repo: drupal8-php7-apache
+  tags:
+  - 8.9.1-debian9
+  - 8.9-debian9
+  - 8-debian9
+  - 8.9.1
+  - '8.9'
+  - '8'
+  - latest
+- dir: 8/php7/debian9/8.8/apache
+  from: marketplace.gcr.io/google/php7-apache2:7.3
+  packages:
+    composer:
+      gpg: 1f210b9037fcf82670d75892dfc44400f13fe9ada7af9e787f93e50e3b764111
+      version: 1.9.1
+    drupal:
+      md5: c8265f0228ca0306de7b2755e4731a3d
+      version: 8.8.8
+  repo: drupal8-php7-apache
+  tags:
+  - 8.8.8-debian9
+  - 8.8-debian9
+  - 8.8.8
+  - '8.8'
 
-  # Drupal 8 with PHP 7.3-apache on Debian 9
-  - dir: '8/php7/debian9/apache'
-    repo: 'drupal8-php7-apache'
-    templateSubDir: debian9
-    tags: *tags
-    from: *from
-    packages:
-      drupal: *drupal
-      composer: *composer
