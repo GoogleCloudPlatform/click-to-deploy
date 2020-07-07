@@ -113,6 +113,19 @@ export APP_INSTANCE_NAME=consul-1
 export NAMESPACE=default
 ```
 
+For the persistent disk provisioning of the Consul StatefulSets, you will need to:
+
+ * Set the StorageClass name. Check your available options using the command below:
+   * ```kubectl get storageclass```
+   * Or check how to create a new StorageClass in [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
+
+ * Set the persistent disk's size. The default disk size is "10Gi".
+
+```shell
+export STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
+export PERSISTENT_DISK_SIZE="10Gi"
+
+
 Set up the image tag:
 
 It is advised to use stable image reference which you can find on
@@ -120,7 +133,7 @@ It is advised to use stable image reference which you can find on
 Example:
 
 ```shell
-export TAG="1.4.5-20200311-091931"
+export TAG="<BUILD_ID>"
 ```
 
 Alternatively you can use short tag which points to the latest image for selected version.
@@ -222,6 +235,7 @@ kubectl apply -f "${APP_INSTANCE_NAME}_sa_manifest.yaml" \
 Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
+
 ```shell
 helm template chart/consul \
   --name "${APP_INSTANCE_NAME}" \
@@ -231,6 +245,8 @@ helm template chart/consul \
   --set metrics.image=${IMAGE_METRICS_EXPORTER} \
   --set global.domain=${CONSUL_DOMAIN} \
   --set global.datacenter=${CONSUL_DATACENTER} \
+  --set server.persistence.storageClass=${STORAGE_CLASS} \
+  --set server.persistence.size=${PERSISTENT_DISK_SIZE} \
   --set server.ServiceAccount=${CONSUL_SERVER_SERVICE_ACCOUNT} \
   --set client.ServiceAccount=${CONSUL_CLIENT_SERVICE_ACCOUNT} \
   $( [[ -n "${SERVER_STORAGE}" ]] && echo "--set server.storage=${SERVER_STORAGE}" ) \

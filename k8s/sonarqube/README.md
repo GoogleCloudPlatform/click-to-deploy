@@ -119,6 +119,21 @@ export APP_INSTANCE_NAME=sonarqube-1
 export NAMESPACE=default
 ```
 
+For the persistent disk provisioning of the Sonarqube application StatefulSets, you will need to:
+
+ * Set the StorageClass name. Check your available options using the command below:
+   * ```kubectl get storageclass```
+   * Or check how to create a new StorageClass in [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
+
+ * Set the persistent disk's size. The default disk size is "10Gi".
+
+```shell
+export DEFAULT_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
+export SONARQUBE_PERSISTENT_DISK_SIZE="10Gi"
+export DB_PERSISTENT_DISK_SIZE="10Gi"
+```
+
+
 Set up the image tag:
 
 It is advised to use stable image reference which you can find on
@@ -126,7 +141,7 @@ It is advised to use stable image reference which you can find on
 Example:
 
 ```shell
-export TAG="7.7.0-20200311-092324"
+export TAG="<BUILD_ID>"
 ```
 
 Alternatively you can use short tag which points to the latest image for selected version.
@@ -178,7 +193,7 @@ export METRICS_EXPORTER_ENABLED=false
         -subj "/CN=postgresql/O=postgresql"
     ```
 
-1.  Set `TLS_CERTIFICATE_KEY` and `TLS_CERTIFICATE_CRT` variables:
+2.  Set `TLS_CERTIFICATE_KEY` and `TLS_CERTIFICATE_CRT` variables:
 
     ```shell
     export TLS_CERTIFICATE_KEY="$(cat /tmp/tls.key | base64)"
@@ -190,15 +205,22 @@ export METRICS_EXPORTER_ENABLED=false
 Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
+export DEFAULT_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
+export SONARQUBE_PERSISTENT_DISK_SIZE="10Gi"
+export DB_PERSISTENT_DISK_SIZE="10Gi"
+
 ```shell
 helm template chart/sonarqube \
   --name "$APP_INSTANCE_NAME" \
   --namespace "$NAMESPACE" \
   --set sonarqube.image.repo="$IMAGE_SONARQUBE" \
   --set sonarqube.image.tag="$TAG" \
+  --set sonarqube.persistence.size="$SONARQUBE_PERSISTENT_DISK_SIZE" \
+  --set sonarqube.persistence.storageClass="$DEFAULT_STORAGE_CLASS" \
   --set postgresql.image="$IMAGE_POSTGRESQL" \
   --set postgresql.exporter.image="$IMAGE_POSTGRESQL_EXPORTER" \
   --set postgresql.db.password="$POSTGRESQL_DB_PASSWORD" \
+  --set postgresql.persistence.size="$DB_PERSISTENT_DISK_SIZE" \
   --set metrics.image="$IMAGE_METRICS_EXPORTER" \
   --set metrics.exporter.enabled="$METRICS_EXPORTER_ENABLED" \
   --set tls.base64EncodedPrivateKey="$TLS_CERTIFICATE_KEY" \

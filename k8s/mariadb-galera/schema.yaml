@@ -56,7 +56,15 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  mariadb.volumeSize:
+  mariadb.persistence.storageClass:
+    type: string
+    title: StorageClass
+    description: You can choose an existing StorageClass or create new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  mariadb.persistence.size:
     type: string
     title: Volume size
     description: Volume size per instance
@@ -97,7 +105,7 @@ properties:
 required:
 - name
 - namespace
-- mariadb.volumeSize
+- mariadb.persistence.size
 - db.replicas
 - db.rootPassword
 - db.exporter.password
