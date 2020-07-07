@@ -11,7 +11,9 @@ zookeeper:
   clientPort: 2181
   electionsPort: 3888
   serverPort: 2888
-  volumeSize: null
+  persistence:
+    size: '10Gi'
+    storageClass: null
   maxUnavaliblePod: 2
   cpuRequest: null
   memoryRequest: null
