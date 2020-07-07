@@ -1,0 +1,62 @@
+#!/bin/bash -eu
+#
+# Copyright 2020 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
+
+# Getting deployment variables if not exist
+readonly discourse_user_email="${discourse_user_email:-$(get_attribute_value "discourse-user-email")}"
+readonly discourse_user_password="${discourse_user_password:-$(get_attribute_value "discourse-user-password")}"
+readonly discourse_db_password="${discourse_db_password:-$(get_attribute_value "discourse-db-password")}"
+discourse_hostname="${discourse_hostname:-$(get_attribute_value "discourse-hostname")}"
+
+# Enforce to use IP instead Discourse hostname if not specified
+if [ -z ${discourse_hostname} ]; then
+  if has_external_ip; then
+    discourse_hostname="$(get_external_ip)"
+  else
+    discourse_hostname=="$(get_internal_ip)"
+  fi
+fi
+
+# Updating Discourse hostname
+sed -i "s/^hostname =.*/hostname = ${discourse_hostname}/g" /var/www/discourse/config/discourse_defaults.conf
+sed -i "s/server_name .*/server_name ${discourse_hostname};/g" /etc/nginx/conf.d/discourse.conf
+
+# Updating Discourse DB password
+sed -i "s/db_password =.*/db_password = ${discourse_db_password}/g" /var/www/discourse/config/discourse_defaults.conf
+su postgres -c "psql -c \"ALTER USER discourse WITH ENCRYPTED PASSWORD '${discourse_db_password}';\""
+
+# Tempory disable error handling for suppress errors from ruby
+set +u
+# Creating Discourse admin user
+export RAILS_ENV=production
+source /usr/local/rvm/scripts/rvm
+cd /var/www/discourse
+expect -c "\
+  spawn bundle exec rake admin:create
+  expect "Email:*"
+  send "$discourse_user_email\\r"
+  expect \"Password:\"
+  send "$discourse_user_password\\r"
+  expect \"Repeat password*\"
+  send "$discourse_user_password\\r"
+  expect \"Do you want to grant Admin privileges to this account\"
+  send "Y\\r"
+  expect EOF" | grep "Your account now has Admin privileges"
+
+# Applying changes
+systemctl is-active nginx && systemctl restart nginx
+systemctl is-active puma && systemctl restart puma || (sleep 10 && systemctl restart puma)
