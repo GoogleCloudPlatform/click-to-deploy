@@ -16,22 +16,19 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-FROM {{ .From }}
+FROM marketplace.gcr.io/google/php7-apache2:7.3
 
-{{- $mediawiki := index .Packages "mediawiki" }}
-{{- $composer := index .Packages "composer" }}
+ENV MEDIAWIKI_MAJOR_VERSION 1.34
+ENV MEDIAWIKI_VERSION 1.34.2
+ENV MEDIAWIKI_SHA512 ea95b46b746c0c180b5cb3b8a2263a2f94207eadbb1638c2113e97b1503c3f0a4d82a2107ce4cabca4790512b81564bda49defe30ac0fdb9bddf3230d6201f8b
 
-ENV MEDIAWIKI_MAJOR_VERSION {{ $mediawiki.Major }}
-ENV MEDIAWIKI_VERSION {{ $mediawiki.Version }}
-ENV MEDIAWIKI_SHA512 {{ $mediawiki.Sha512 }}
-
-ENV COMPOSER_VERSION {{ $composer.Version }}
-ENV COMPOSER_SHA256 {{ $composer.Gpg }}
+ENV COMPOSER_VERSION 1.10.8
+ENV COMPOSER_SHA256 4c40737f5d5f36d04f8b2df37171c6a1ff520efcadcb8626cc7c30bd4c5178e5
 
 ENV MEDIAWIKI_HOSTNAME localhost
 ENV MEDIAWIKI_SITENAME my_first_wiki
 
-ENV C2D_RELEASE {{ $mediawiki.Version }}
+ENV C2D_RELEASE 1.34.2
 
 # System dependencies
 RUN apt-get update; \
