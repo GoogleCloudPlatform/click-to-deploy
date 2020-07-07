@@ -15,8 +15,7 @@
 default['jenkins']['packages'] = %w(jenkins git groovy subversion)
 
 # Default plugins to install
-default['jenkins']['plugins'] = %w(
-                                   ace-editor
+default['jenkins']['plugins'] = %w(ace-editor
                                    antisamy-markup-formatter
                                    ant
                                    apache-httpcomponents-client-4-api
@@ -24,8 +23,8 @@ default['jenkins']['plugins'] = %w(
                                    bouncycastle-api
                                    branch-api
                                    build-timeout
-                                   chrome-frame-plugin
                                    cloudbees-folder
+                                   cloud-stats
                                    command-launcher
                                    credentials-binding
                                    credentials
@@ -37,7 +36,6 @@ default['jenkins']['plugins'] = %w(
                                    email-ext
                                    external-monitor-job
                                    gcal
-                                   gcm-notification
                                    googleanalytics
                                    google-analytics-usage-reporter
                                    google-api-client-plugin
@@ -65,19 +63,24 @@ default['jenkins']['plugins'] = %w(
                                    instant-messaging
                                    jackson2-api
                                    jclouds-jenkins
+                                   jdk-tool
                                    jquery
                                    jquery-detached
                                    jsch
                                    junit
                                    kubernetes
+                                   kubernetes-client-api
                                    kubernetes-credentials
                                    ldap
+                                   lockable-resources
                                    mailer
                                    mapdb-api
                                    matrix-auth
                                    matrix-project
+                                   maven-plugin
                                    momentjs
                                    oauth-credentials
+                                   okhttp-api
                                    pam-auth
                                    pipeline-build-step
                                    pipeline-github-lib
@@ -85,7 +88,6 @@ default['jenkins']['plugins'] = %w(
                                    pipeline-input-step
                                    pipeline-milestone-step
                                    pipeline-model-api
-                                   pipeline-model-declarative-agent
                                    pipeline-model-definition
                                    pipeline-model-extensions
                                    pipeline-rest-api
@@ -96,12 +98,14 @@ default['jenkins']['plugins'] = %w(
                                    resource-disposer
                                    scm-api
                                    script-security
+                                   snakeyaml-api
                                    ssh-credentials
                                    ssh-slaves
                                    structs
                                    subversion
                                    timestamper
                                    token-macro
+                                   trilead-api
                                    variant
                                    windows-slaves
                                    workflow-aggregator
