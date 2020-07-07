@@ -14,4 +14,3 @@
 
 name 'rvm'
 supports 'debian'
-
