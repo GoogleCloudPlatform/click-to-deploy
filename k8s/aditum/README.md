@@ -14,6 +14,10 @@ Get up and running with a few clicks! Install Custom Governance to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 [on-screen instructions](https://console.cloud.google.com/marketplace/details/aditum-marketplace-dev/custom-governance).
 
+## Before you get started
+
+As of early summer 2020 the Custom Governance product is in Early Access stage. We are taking a limited number of new customers. To try out Custom Governance, [please fill out this intake form.](https://docs.google.com/forms/d/1ulI20NPs-S5-pAAZDSlZl4nAOhg5GRERtyoAr0XM6lg/viewform?edit_requested=true) 
+
 ## Start Here: Installation Prerequisites
 
 
@@ -153,7 +157,7 @@ IAP and add any users that will require access to Custom Governance.
 *   Via Cloud Console you can add users to IAP approved list. Visit
     [Menu > IAM & Admin > IAM](https://cloud.google.com/iam-admin/iam) and add
     the *IAP-secured Web App User* role to users you wish to grant access to
-    * Project Owner will need to be added to IAP approved list as well
+    * **Project Owner will need to be added to IAP approved list as well**
 
 ![IAM IAP Setup](./images/IAM_IAP_user.png)
 
