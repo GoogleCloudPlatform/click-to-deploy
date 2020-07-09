@@ -95,6 +95,10 @@ cookbook_file '/lib/systemd/system/mattermost.service' do
   action :create
 end
 
+service 'mattermost.service' do
+  action [ :enable, :stop ]
+end
+
 ['domain', 'localhost'].each do |file|
   cookbook_file "/opt/mattermost-nginx-#{file}.conf" do
     source "mattermost-nginx-#{file}.conf"

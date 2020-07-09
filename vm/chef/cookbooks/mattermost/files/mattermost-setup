@@ -17,27 +17,28 @@
 source /opt/c2d/c2d-utils || exit 1
 source /opt/mattermost-utils || exit 1
 
-# Get all settings from metadata
-readonly metadata_db_host="$(get_attribute_value "mattermost-database-host")"
-readonly metadata_db_name="$(get_attribute_value "mattermost-database-name")"
-readonly metadata_db_user="$(get_attribute_value "mattermost-database-user")"
-readonly metadata_db_pwd="$(get_attribute_value "mattermost-database-pwd")"
-readonly metadata_sitename="$(get_attribute_value "mattermost-sitename")"
-readonly metadata_domain="$(get_attribute_value "mattermost-site")"
-readonly metadata_email="$(get_attribute_value "mattermost-email")"
+# Default values
+readonly default_db_host="localhost"
+readonly default_db_name="mattermost"
+readonly default_db_user="mattermost"
+readonly default_domain="localhost"
+
+# Get settings from metadata
+readonly metadata_db_pwd="${metadata_db_pwd:-$(get_attribute_value "mattermost-database-pwd")}"
+readonly metadata_sitename="${metadata_sitename:-$(get_attribute_value "mattermost-sitename")}"
 
 # Create user in MySQL database
 create_db_user \
-  "${metadata_db_host}" "${metadata_db_name}" "${metadata_db_user}" "${metadata_db_pwd}"
+  "${default_db_host}" "${default_db_name}" "${default_db_user}" "${metadata_db_pwd}"
 
 # Build Data Source config
-database_dsn="${metadata_db_user}:${metadata_db_pwd}@tcp(${metadata_db_host}:3306)/${metadata_db_name}?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s"
+database_dsn="${default_db_user}:${metadata_db_pwd}@tcp(${default_db_host}:3306)/${default_db_name}?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s"
 
 # Update DSN and Sitename
 update_config "${database_dsn}" "${metadata_sitename}"
 
 # Setup nginx
-setup_nginx "${metadata_domain}" "${metadata_email}"
+setup_nginx "${default_domain}"
 
-# Start mattermost
+# Start Mattermost
 systemctl start mattermost

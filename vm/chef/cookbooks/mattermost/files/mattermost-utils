@@ -1,3 +1,19 @@
+#!/bin/bash -eu
+#
+# Copyright 2020 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 #######################################
 # Creates a user for Mattermost application in MYSQL database.
 # Arguments:
@@ -66,30 +82,31 @@ function generate_certificate() {
 #   Email to be registered in Let's Encrypt
 #######################################
 function setup_nginx() {
-  local domain_name="$1"
-  local email="$2"
+  export DOMAIN_NAME="$1"
+  local email="${2:-""}"
   local -r nginx_config="/etc/nginx/sites-available/mattermost"
 
   # If a domain name is provided, generate certificate and configure
   # HTTPS for nginx. Otherwise, applies all hosts with HTTP configuration.
-  if [[ "${domain_name}" == "" ]] || [[ "${domain_name}" == "localhost" ]]; then
+  if [[ "${DOMAIN_NAME}" == "" ]] || [[ "${DOMAIN_NAME}" == "localhost" ]]; then
+    echo >&2 "Configuring nginx with localhost strategy..."
     # Copy template for all hosts configuration with HTTP
-    cp /opt/mattermost-nginx-localhost.conf "${nginx_config}"
+    cp -f /opt/mattermost-nginx-localhost.conf "${nginx_config}"
   else
+    echo >&2 "Configuring nginx with a domain strategy for ${DOMAIN_NAME}..."
     echo >&2 "Stopping nginx..."
     systemctl stop nginx
 
     echo >&2 "Generating certificate..."
-    generate_certificate "${domain_name}" "${email}"
+    generate_certificate "${DOMAIN_NAME}" "${email}"
 
     # Applying domain name to template for HTTPS configuration with domain name
-    export DOMAIN_NAME="$1"
     envsubst "\$DOMAIN_NAME" < /opt/mattermost-nginx-domain.conf > "${nginx_config}"
   fi
 
   # Applies mattermost nginx config
   rm -f /etc/nginx/sites-enabled/default
-  ln -s "${nginx_config}" /etc/nginx/sites-enabled/mattermost
+  ln -sf "${nginx_config}" /etc/nginx/sites-enabled/mattermost
 
   echo >&2 "Restarting nginx..."
   # Restart nginx configuration
