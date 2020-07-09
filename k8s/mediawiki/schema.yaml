@@ -49,12 +49,20 @@ properties:
     x-google-marketplace:
       type: NAMESPACE
   # Mediawiki related settings
-  mediawiki.volumeSize:
+  mediawiki.persistence.size:
     type: string
     title: Storage size for MediaWiki persistent volumes
     default: "6Gi"
     description: MediaWiki storage size per instance
     pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  mediawiki.persistence.storageClass:
+    type: string
+    title: StorageClass
+    description: You can choose an existing StorageClass or create new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
 
   mediawiki.admin.username:
     type: string
@@ -116,7 +124,7 @@ properties:
         includeSymbols: False
         base64: False
 
-  db.volumeSize:
+  db.persistence.size:
     type: string
     title: Storage size for MediaWiki database persistent volumes
     default: "6Gi"
@@ -147,11 +155,11 @@ properties:
 required:
 - name
 - namespace
-- mediawiki.volumeSize
+- mediawiki.persistence.size
 - mediawiki.admin.password
 - db.mediawikiPassword
 - db.rootPassword
 - db.exporter.password
-- db.volumeSize
+- db.persistence.size
 - enablePublicServiceAndIngress
 - metrics.exporter.enabled
