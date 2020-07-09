@@ -16,7 +16,7 @@ Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 
 ## Before you get started
 
-As of early summer 2020 the Custom Governance product is in Early Access stage. We are taking a limited number of new customers. To try out Custom Governance, [please fill out this intake form.](https://docs.google.com/forms/d/1ulI20NPs-S5-pAAZDSlZl4nAOhg5GRERtyoAr0XM6lg/viewform?edit_requested=true) 
+As of early summer 2020 the Custom Governance product is in Early Access stage. We are taking a limited number of new customers. To try out Custom Governance, [please fill out this intake form.](https://docs.google.com/forms/d/1ulI20NPs-S5-pAAZDSlZl4nAOhg5GRERtyoAr0XM6lg/viewform?edit_requested=true)
 
 ## Start Here: Installation Prerequisites
 
@@ -151,11 +151,11 @@ Click “Deploy” when you are ready. Deployment will take a couple of minutes 
 After Marketplace Deployment has completed successfully you will need to configure
 IAP and add any users that will require access to Custom Governance.
 
-*   From the Cloud Console visit [Menu > Security > Identity-Aware-Proxy](https://cloud.google.com/iap)
+*   From the Cloud Console visit [Menu > Security > Identity-Aware-Proxy](https://console.cloud.google.com/security/iap)
 *   Enable IAP if it is not already enabled
 *   Review any Errors and Warning as well as review the firewalls
 *   Via Cloud Console you can add users to IAP approved list. Visit
-    [Menu > IAM & Admin > IAM](https://cloud.google.com/iam-admin/iam) and add
+    [Menu > IAM & Admin > IAM](https://console.cloud.google.com/iam-admin/iam) and add
     the *IAP-secured Web App User* role to users you wish to grant access to
     * **Project Owner will need to be added to IAP approved list as well**
 
