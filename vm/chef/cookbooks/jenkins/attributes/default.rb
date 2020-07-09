@@ -42,7 +42,6 @@ default['jenkins']['plugins'] = %w(ace-editor
                                    google-cloud-backup
                                    google-cloud-health-check
                                    google-container-registry-auth
-                                   google-deployment-manager
                                    google-git-notes-publisher
                                    google-login
                                    google-metadata-plugin
