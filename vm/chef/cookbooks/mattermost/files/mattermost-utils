@@ -47,10 +47,13 @@ function update_config() {
   local config_path=/opt/mattermost/config/config.json
 
   echo >&2 "Updating Mattermost configuration..."
-  local config_contents="$(cat "${config_path}" \
-    | jq '.TeamSettings.SiteName = "'"${site_name}"'"' \
-    | jq '.SqlSettings.DriverName = "'"${driver}"'"' \
-    | jq -r '.SqlSettings.DataSource = "'"${dsn}"'"')"
+  local config_contents="$(jq -r \
+    --arg driver "${driver}" \
+    --arg dsn "${dsn}" \
+    --arg site_name "${site_name}"  \
+    '.TeamSettings.SiteName = $site_name
+      | .SqlSettings.DriverName = $driver
+      | .SqlSettings.DataSource = $dsn' "${config_path}")"
 
   echo "${config_contents}" > "${config_path}"
 }
@@ -62,8 +65,8 @@ function update_config() {
 #   Email to be registered in Let's Encrypt
 #######################################
 function generate_certificate() {
-  domain_name="$1"
-  email="$2"
+  local -r domain_name="$1"
+  local -r email="$2"
 
   echo >&2 "Generating certificate..."
   /opt/certbot/letsencrypt-auto certonly \
