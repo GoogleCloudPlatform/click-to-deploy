@@ -123,6 +123,19 @@ export APP_INSTANCE_NAME=zookeeper
 export NAMESPACE=default
 ```
 
+For the persistent disk provisioning of the ZooKeeper application StatefulSet, you will need to:
+
+ * Set the StorageClass name. Check your available options using the command below:
+   * ```kubectl get storageclass```
+   * Or check how to create a new StorageClass in [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
+
+ * Set the persistent disk's size. The default disk size is "10Gi" for ZooKeeper.
+
+```shell
+export DEFAULT_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
+export PERSISTENT_DISK_SIZE="10Gi"
+```
+
 By default, the app does not export metrics to Stackdriver. To enable this option, change the value to `true`.
 
 ```shell
@@ -186,7 +199,6 @@ export ZOOKEEPER_CLIENT_MAX_CNXNX=60
 export ZOOKEEPER_AUTO_PURGE_SNAP_RETAIN_COUNT=3
 export ZOOKEEPER_PURGE_INTERVAL=24
 export ZOOKEEPER_HEAP_SIZE=1000M
-export ZOOKEEPER_VOLUME_SIZE=10Gi
 ```
 
 #### Expand the manifest template
@@ -212,7 +224,8 @@ helm template chart/zookeeper \
   --set zookeeper.memoryRequest="${ZOOKEEPER_MEMORY_REQUEST}" \
   --set zookeeper.cpuRequest="${ZOOKEEPER_CPU_REQUEST}" \
   --set zookeeper.zkHeapSize="${ZOOKEEPER_HEAP_SIZE}" \
-  --set zookeeper.volumeSize="${ZOOKEEPER_VOLUME_SIZE}" \
+  --set zookeeper.persistence.size="${PERSISTENT_DISK_SIZE}" \
+  --set zookeeper.persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 #### Apply the manifest to your Kubernetes cluster

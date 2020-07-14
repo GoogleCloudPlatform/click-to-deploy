@@ -8,7 +8,7 @@ APP_ID ?= $(CHART_NAME)
 
 TRACK ?= 3.9
 
-JOOMLA_EXPORTER_TAG ?= exporter
+EXPORTER_TAG ?= exporter
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 VERIFY_WAIT_TIMEOUT = 1800
@@ -16,8 +16,8 @@ VERIFY_WAIT_TIMEOUT = 1800
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 IMAGE_JOOMLA ?= $(SOURCE_REGISTRY)/joomla3-php7-apache:$(TRACK)
 IMAGE_MARIADB ?= $(SOURCE_REGISTRY)/mariadb10:latest
-IMAGE_APACHE_EXPORTER ?= $(SOURCE_REGISTRY)/wordpress/apache-exporter:latest
-IMAGE_MYSQL_EXPORTER ?= $(SOURCE_REGISTRY)/wordpress/mysqld-exporter:latest
+IMAGE_APACHE_EXPORTER ?= $(SOURCE_REGISTRY)/wordpress5-php7-apache:$(EXPORTER_TAG)
+IMAGE_MYSQLD_EXPORTER ?= $(SOURCE_REGISTRY)/mysql5:$(EXPORTER_TAG)
 IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 
@@ -31,7 +31,7 @@ ADDITIONAL_IMAGES := mariadb apache-exporter prometheus-to-sd mysqld-exporter
 image-mariadb := $(call get_sha256,$(IMAGE_MARIADB))
 image-apache-exporter := $(call get_sha256,$(IMAGE_APACHE_EXPORTER))
 image-prometheus-to-sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))
-image-mysqld-exporter := $(call get_sha256,$(IMAGE_MYSQL_EXPORTER))
+image-mysqld-exporter := $(call get_sha256,$(IMAGE_MYSQLD_EXPORTER))
 
 C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
 
