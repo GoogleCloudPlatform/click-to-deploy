@@ -1,63 +1,76 @@
-# Custom Governance Installation
+# Overview
 
-These instructions are for installing Custom Governance through the Google Cloud Platform (GCP) Marketplace UI.
+Custom Governance (CG) is a customizable customer-managed governance platform which lets you coordinate the unique set of rules which make your business work as a native part of your cloud environment.
 
-Custom Governance installed through Marketplace is a Kubernetes application on a Google Kubernetes Engine (GKE) cluster.
+[Learn more.](https://console.cloud.google.com/marketplace/details/aditum-marketplace-dev/custom-governance)
+
+## About Google Click to Deploy
+
+Popular open stacks on Kubernetes, packaged by Google.
 
 ## Questions
 
 Questions about Custom Governance? Go [here](https://docs.google.com/document/d/1o1x8wVrmNwWscnMDtXeTHBjK8cwBCvA6cidoSU0bEzM/edit#heading=h.huk25sxgebcs)
 
+# Installation
+
+## Before you get started
+
+As of early summer 2020 the Custom Governance product is in Early Access stage. We are taking a limited number of new customers. To try out Custom Governance, [please fill out this intake form.](https://docs.google.com/forms/d/1ulI20NPs-S5-pAAZDSlZl4nAOhg5GRERtyoAr0XM6lg/viewform?edit_requested=true)
+
 ## Quick install with Google Cloud Marketplace
 
 Get up and running with a few clicks! Install Custom Governance to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
-[on-screen instructions](https://console.cloud.google.com/marketplace/details/aditum-marketplace-dev/custom-governance).
+[on-screen steps](https://console.cloud.google.com/marketplace/details/aditum-marketplace-dev/custom-governance).
 
-## Start Here: Installation Prerequisites
+Below are detailed instructions for installing Custom Governance through the Google Cloud Platform (GCP) Marketplace UI. Currently we don't provide a command-line
+instruction to install Custom Governance.
 
+Custom Governance installed through Marketplace is a Kubernetes application on a Google Kubernetes Engine (GKE) cluster.
 
-### Enable [Cloud Resource Manager](https://console.cloud.google.com/apis/api/cloudresourcemanager.googleapis.com)
+### Installation Process
 
+1. [Create a project](https://cloud.google.com/resource-manager/docs/creating-managing-projects#before_you_begin)
+ where Custom Governance can be deployed.
 
+1. Enable [Cloud Resource Manager](https://console.cloud.google.com/apis/api/cloudresourcemanager.googleapis.com).
+   *   CRM (Cloud Resource Manager) is used by Custom Governance to read Google Cloud Platform resource metadata. It is required for Custom Governance to run.
+1. Visit the Marketplace listing for [Custom Governance](https://console.cloud.google.com/marketplace/details/aditum-marketplace-dev/custom-governance) for information on Custom Governance. We will start installation on this page.
+   *   When you are ready to deploy click on the “Configure” button, it will take you to the Deployment Configuration UI:
 
-*   CRM (Cloud Resource Manager) is used by Custom Governance to read Google Cloud Platform resource metadata. It is required for Custom Governance to run.
+        ![Deployment Configuration](./images/deployment_configuration.png)
+   
+   Please follow the below instructions to finish installation.
+   1. Create a cluster. The cluster list will list only clusters that meet the requirements, you can create a new cluster that meets the requirements by clicking “Create a new cluster”. If you want to create the cluster manually, click [here](#Create-a-GKE-Cluster-Manually) for instruction.
+      * **Make sure to enable "Allow access to the following Cloud APIs".** This is required
+      for the Cluster to be able to network with GCP services.
+   2. Set up Namespace. You can use the default namespace or create a new one in the dropdown.
+   3. Set up App instance name. This is the name of your application instance.
+   4. Set up OAuth Client ID and OAuth Client Secret. Please follow the [OAuth section](#Setup-OAuth-Credentials-for-IAP-Identity-Aware-Proxy) and fill in the OAuth Client ID and OAuth Client Secret that you created there.
+   5. Set up Domain Name to serve Custom Governance and Name of Global Static IP Address. Please follow the instructions here on [how to create a static ip](#Reserve-Static-External-IP-Address) and fill in the name of that ip address. After a static ip is reserved, please follow [DNS A Record](#DNS-A-Record). The Domain name which needs to be filled in here refers to the name that you pointed to the static IP address through the A record.
+   6. Set up Kubernete Service Account. Please select *Create a new service account*
+        *   A new Kubernetes service account will be created using cluster edit and read roles to allow access to the Kubernetes Secrets
+   7. Set up Initial User Email: This will be the user email address that will be deploying/setting up Custom Governance. Custom Governance will check for this email address even after the user has passed through IAP.
+   8. Click “Deploy” when you are ready. Deployment will take a couple of minutes or longer. Even after deployment is successful the cg-ingress may take longer to become ready. This is completely normal.
 
+### Detailed Instructions
 
-### GKE Cluster:
+#### Create a GKE Cluster Manually:
 
+  * You can create a cluster with the scope through the [gcloud command-line tool](https://cloud.google.com/sdk/gcloud). You can run this command in the Cloud Shell:
 
-**You can use the Marketplace UI to create a cluster with the correct requirements for you:**
+    `gcloud container clusters create [YOUR-CLUSTER-NAME] --scopes=https://www.googleapis.com/auth/cloud-platform --region=[YOUR-REGION]`
 
-![Cluster Selection](./images/cluster_select.png)
+  * Or you can create a cluster through [Kubernetes Engine UI](https://console.cloud.google.com/kubernetes) if you wish to customize more on the cluster settings.
+    *  **Recommended machine type for optimal performance: [n1-standard-4](https://cloud.google.com/compute/docs/machine-types)**
+    *   **The scope can be set through Nodepool Security. Click on Node Pools > Security > Set access for each API > Set Cloud Platform to enable**
 
-
-![Cluster Creation](./images/cluster_creation.png)
-
-* Click “Create a new cluster” on the deployment configuration page.
-* **Make sure to enable "Allow access to the following Cloud APIs".** This is required
-for the Cluster to be able to network with GCP services.
-
-**Recommended machine type for optimal performance: [n1-standard-4](https://cloud.google.com/compute/docs/machine-types)**
-
-If you wish to create a cluster manually:
-
-
-
-  *   The Cloud Platform scope allows your cluster to communicate with Google Cloud Platform services.
-  *   The scope can be set through Nodepool Security. While creating a new cluster through the UI- Click on Node Pools > Security > Set access for each API > Set Cloud Platform to enabled
-  *   You can also create a cluster with the scope through the [gcloud command-line tool](https://cloud.google.com/sdk/gcloud):
-
-        `gcloud container clusters create [YOUR-CLUSTER-NAME] --scopes=https://www.googleapis.com/auth/cloud-platform --region=[YOUR-REGION]`
-
-
-### Setup OAuth Credentials for IAP (Identity Aware Proxy)
+#### Setup OAuth Credentials for IAP (Identity Aware Proxy)
 
 Learn more about IAP [here](https://cloud.google.com/iap)
 
 You will need to pass OAuth Credentials to Marketplace UI to properly configure IAP. Follow the instructions to create OAuth Credentials:
-
-
 
 [Configuring OAuth Consent Screen](https://cloud.google.com/iap/docs/enabling-kubernetes-howto#oauth-configure)
   * Selecting External will allow accounts outside of your organization to access Custom Governance
@@ -65,14 +78,14 @@ You will need to pass OAuth Credentials to Marketplace UI to properly configure 
 
 [Creating OAuth Credentials](https://cloud.google.com/iap/docs/enabling-kubernetes-howto#oauth-credentials)
   1.  Via Cloud Console visit [Menu > API & Services > Credentials](https://console.cloud.google.com/apis/credentials)
-  1.  Click *Create Credentials* and select *OAuth client ID*
-  1.  Select *Web application* as the Application type
+  2.  Click *Create Credentials* and select *OAuth client ID*
+  3.  Select *Web application* as the Application type
     ![OAuth Step 1](./images/oauth_step1.png)
-  1.  Create the OAuth Credentials by clicking *Create*
-  1. Copy the Client ID from the OAuth confirmation modal
+  4.  Create the OAuth Credentials by clicking *Create*
+  5. Copy the Client ID from the OAuth confirmation modal
     ![OAuth Step 2](./images/oauth_step2.png)
-  1. Dismiss the modal and select the OAuth 2.0 Client ID that was just created
-  1. Add a Authorized redirect URI that incorporates the client ID that you copied over
+  6. Dismiss the modal and select the OAuth 2.0 Client ID that was just created
+  7. Add a Authorized redirect URI that incorporates the client ID that you copied over
     ![OAuth Step 3](./images/oauth_step3.png)
 
       * Required URI: https://iap.googleapis.com/v1/oauth/clientIds/CLIENT_ID:handleRedirect
@@ -81,64 +94,33 @@ You will need to pass OAuth Credentials to Marketplace UI to properly configure 
 
 Once you have created your OAuth Credentials you will need the following to pass into Marketplace UI:
 
-
-
 *   OAuth client ID
 *   OAuth client secret
 
-
 ### Reserve Static External IP Address
 
-Follow the instructions to reserve a static IP address:
+*   You can reservce static external IP address through the [gcloud command-line tool](https://cloud.google.com/sdk/gcloud). You can run this command in the Cloud Shell. Those two commands will reserve a static ip and expose the id address to be used for DNS A Reord setup:
 
+    `gcloud compute addresses create [STATIC-ADDRESS-NAME] --global`
 
-*   **You MUST choose Global as the IP address type**
-*   [Reserving a static IP address](https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address)
-*   The name for the static address will need to be passed into the Marketplace UI, note is down
-
+*   Or you can reserve static external IP address through [cloud console UI](https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address).
+    *   **You MUST choose Global as the IP address type**
+    *   The name for the static address will need to be passed into the Marketplace UI, note is down
 
 
 ### DNS A Record
 
-The [managed certificate](https://cloud.google.com/kubernetes-engine/docs/how-to/managed-certs) used by IAP requires hostname DNS verification.  Follow these instructions to retrieve your assigned IP address:
+*    Run the following gcloud command to retrieve your assigned IP address:
+    
+      `gcloud compute addresses describe [STATIC-ADDRESS-NAME] --global`
 
+*   Or retrieve the IP through [cloud console UI](https://console.cloud.google.com/networking/addresses/list). Find your STATIC-ADDRESS-NAME and the External Address is the IP address.
 
+The [managed certificate](https://cloud.google.com/kubernetes-engine/docs/how-to/managed-certs) used by IAP requires hostname DNS verification.  
 
-*   [Listing static IP addresses](https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address#list_ip)
-
-You will need to create an A record with the assigned IP address in your DNS settings. These DNS settings are usually handled by your host provider. Set the TTL to the minimum amount to allow for quick propagation.
+Then you will need to **create an A record with the assigned IP address in your DNS settings**. These DNS settings are usually handled by your host provider. Set the TTL to the minimum amount to allow for quick propagation.
 
 If you utilize Cloud DNS you can follow [these instructions for creating a new record](https://cloud.google.com/dns/docs/quickstart#create_a_new_record)
-
-
-## Installation Process
-
-Before deploying through Marketplace please [create a project](https://cloud.google.com/resource-manager/docs/creating-managing-projects#before_you_begin)
- where Custom Governance can be deployed.
-
-Visit the Marketplace listing for [Custom Governance](https://console.cloud.google.com/marketplace/details/aditum-marketplace-dev/custom-governance) for information on Custom Governance.
-
-When you are ready to deploy click on the “Configure” button, it will take you to the Deployment Configuration UI:
-
-![Deployment Configuration](./images/deployment_configuration.png)
-
-Here you will fill in the information we created in the Prerequisites section:
-
-
-
-*   Cluster: The cluster list will list only clusters that meet the requirements, you can create a new cluster that meets the requirements by clicking “Create a new cluster”
-*   Namespace: You can use the default namespace or create a new one in the dropdown
-*   App Instance Name: Name of your application instance.
-*   OAuth Client ID and OAuth Client Secret: Fill in the OAuth Client ID and OAuth Client Secret that you created in the [OAuth section](#bookmark=id.6dytd4218vwe)
-*   Domain Name: the domain name that you pointed to the static IP address through the A record
-*   Static Address Name: the name assigned to a static address resource that was created in the prerequisites section. Retrieve the static address name:
-    *   [Listing static IP addresses](https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address#list_ip)
-*   Kubernetes Service Account: Please select *Create a new service account*
-  *   A new Kubernetes service account will be created using cluster edit and read roles to allow access to the Kubernetes Secrets
-*   Initial User Email: will be the user email address that will be deploying/setting up Custom Governance. Custom Governance will check for this email address even after the user has passed through IAP.
-
-Click “Deploy” when you are ready. Deployment will take a couple of minutes or longer. Even after deployment is successful the cg-ingress may take longer to become ready. This is completely normal.
-
 
 ## Post Deployment
 
@@ -147,13 +129,13 @@ Click “Deploy” when you are ready. Deployment will take a couple of minutes 
 After Marketplace Deployment has completed successfully you will need to configure
 IAP and add any users that will require access to Custom Governance.
 
-*   From the Cloud Console visit [Menu > Security > Identity-Aware-Proxy](https://cloud.google.com/iap)
+*   From the Cloud Console visit [Menu > Security > Identity-Aware-Proxy](https://console.cloud.google.com/security/iap)
 *   Enable IAP if it is not already enabled
 *   Review any Errors and Warning as well as review the firewalls
 *   Via Cloud Console you can add users to IAP approved list. Visit
-    [Menu > IAM & Admin > IAM](https://cloud.google.com/iam-admin/iam) and add
+    [Menu > IAM & Admin > IAM](https://console.cloud.google.com/iam-admin/iam) and add
     the *IAP-secured Web App User* role to users you wish to grant access to
-    * Project Owner will need to be added to IAP approved list as well
+    * **Project Owner will need to be added to IAP approved list as well**
 
 ![IAM IAP Setup](./images/IAM_IAP_user.png)
 
