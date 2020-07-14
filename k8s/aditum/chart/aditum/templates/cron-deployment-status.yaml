@@ -15,7 +15,7 @@ spec:
         spec:
           containers:
           - name: reports
-            image: gcr.io/abc-aditum-producer-prod/buildpack-deps:curl
+            image: buildpack-deps:curl
             args:
             - /bin/sh
             - -ec
