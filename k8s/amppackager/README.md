@@ -32,10 +32,11 @@ Popular open stacks on Kubernetes packaged by Google.
 
 ![Architecture diagram](resources/amppackager-k8s-app-architecture.png)
 
-This application uses 2 instances of the AMP Packager that has a load balancer
-service in front that routes requests to the instances. Each AMP Packager Pod is
-associated with an NFS Server as its PersistentVolume which is created as a
-standard persistent disk defined by Google Kubernetes Engine.
+This application uses 2 replicas of the AMP Packager with a load balancer
+service in front that routes requests to the instances. The number of replicas
+is configurable.  All AMP Packager Pods are associated with an NFS Server as 
+their PersistentVolume which is created as a standard persistent disk defined by
+Google Kubernetes Engine.
 
 This application exposes one endpoint: HTTPS on (configurable) port 6000.
 
@@ -47,10 +48,10 @@ certificate.
 
 If you want to use this application in a production environment, you must:
 
-*   Configure it to use your [Digicert ACME account][] to obtain your
+*   Configure it to use your [DigiCert ACME account][] to obtain your
 certificate.
 
-[Digicert ACME Account]:https://docs.digicert.com/manage-certificates/certificate-profile-options/get-your-signed-http-exchange-certificate/.
+[DigiCert ACME Account]:https://docs.digicert.com/manage-certificates/certificate-profile-options/get-your-signed-http-exchange-certificate/.
 
 # Installation
 
@@ -231,7 +232,8 @@ In the GCP Console, do the following:
 1.  Open the
     [Kubernetes Engine Services](https://console.cloud.google.com/kubernetes/discovery)
     page.
-1.  Identify the AMP Packager solution using its name (typically `amppackager-service`)
+1.  Identify the AMP Packager solution using its name (typically `amppackager-service`,
+    unless you decide to name your instance some other name).
 1.  From the Endpoints column, note the IP addresses for ports 6000.
 
 If you are using the command line, run the following command:
@@ -242,6 +244,10 @@ kubectl get svc -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace "$NAMES
 
 This command shows the internal and external IP address of your AMP Packager
 service.
+
+You can follow [AMP Packager Productionizing][Production] for further steps.
+
+[Production]:https://github.com/ampproject/amppackager#productionizing
 
 # Scaling
 
