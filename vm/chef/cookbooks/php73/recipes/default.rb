@@ -12,6 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+apt_repository 'php' do
+  uri 'https://packages.sury.org/php/'
+  distribution 'stretch'
+  key 'https://packages.sury.org/php/apt.gpg'
+  components ['main']
+end
+
 package 'install packages' do
   package_name node['php73']['packages']
   action :install

@@ -1,0 +1,183 @@
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      A regular update.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  images:
+    '':
+      properties:
+        gitlab.image.repo:
+          type: REPO_WITH_REGISTRY
+        gitlab.image.tag:
+          type: TAG
+    postgresql:
+      properties:
+        postgresql.image:
+          type: FULL
+    postgresql-exporter:
+      properties:
+        postgresql.exporter.image:
+          type: FULL
+    redis:
+      properties:
+        redis.image:
+          type: FULL
+    redis-exporter:
+      properties:
+        redis.exporter.image:
+          type: FULL
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
+
+  clusterConstraints:
+    resources:
+    - replicas: 1
+      requests:
+        cpu: 2
+        memory: 8Gi
+
+properties:
+  # Values provided by user
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  gitlab.domainName:
+    type: string
+    title: GitLab instance domain name
+    description: If domain name is not set GitLab instance will be configured with automatically provided external IP.
+    pattern: '^(([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$'
+  gitlab.sslConfiguration:
+    type: string
+    title: SSL configuration options
+    description: |
+      [Default] If GitLab domain is set the Let's Encrypt certificate is generated, otherwise SSL is disabled.
+      [Self-signed] Custom self-signed certificates will be generated and installed on GitLab instance.
+    default: 'Default'
+    enum:
+    - 'Default'
+    - 'Self-signed'
+  persistence.storageClass:
+    type: string
+    title: StorageClass
+    description: You can choose an existing StorageClass or create a new one. Newly created StorageClass provisioner will be "pd-ssd".
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  gitlab.persistence.data.size:
+    type: string
+    title: GitLab application data storage size
+    description: Storage size for GitLab data persistent volume
+    default: '8Gi'
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  gitlab.persistence.etc.size:
+    type: string
+    title: GitLab configuration files storage size
+    description: Storage size for GitLab etc persistent volume
+    default: '1Gi'
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  gitlab.persistence.logs.size:
+    type: string
+    title: GitLab logs storage size
+    description: Storage size for GitLab logs persistent volume
+    default: '2Gi'
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  postgresql.persistence.size:
+    type: string
+    title: PostgreSQL storage size
+    description: Storage size for PostgreSQL persistent volume
+    default: '8Gi'
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  redis.persistence.size:
+    type: string
+    title: Redis storage size
+    description: Storage size for Redis persistent volume
+    default: '4Gi'
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  gitlab.license:
+    type: string
+    title: GitLab license
+    description: GitLab license
+  metrics.exporter.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project must have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not currently supported.
+    default: false
+
+  # Generated values
+  deployer.image:
+    type: string
+    x-google-marketplace:
+      type: DEPLOYER_IMAGE
+  gitlab.serviceAccountName:
+    type: string
+    title: Service account used by GitLab instance
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        roles:
+        - type: ClusterRole
+          rulesType: CUSTOM
+          rules:
+          - apiGroups: [""]
+            resources: ["nodes","pods","services"]
+            verbs: ["get", "list", "watch"]
+  gitlab.rootPassword:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 32
+  redis.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 32
+  postgresql.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 32
+  certificate:
+    type: string
+    x-google-marketplace:
+      type: TLS_CERTIFICATE
+      tlsCertificate:
+        generatedProperties:
+          base64EncodedPrivateKey: tls.base64EncodedPrivateKey
+          base64EncodedCertificate: tls.base64EncodedCertificate
+
+required:
+- name
+- namespace
+- gitlab.sslConfiguration
+- persistence.storageClass
+- gitlab.persistence.data.size
+- gitlab.persistence.etc.size
+- gitlab.persistence.logs.size
+- postgresql.persistence.size
+- redis.persistence.size
+- metrics.exporter.enabled
+- deployer.image
+- gitlab.serviceAccountName
+- gitlab.rootPassword
+- redis.password
+- postgresql.password
+- certificate

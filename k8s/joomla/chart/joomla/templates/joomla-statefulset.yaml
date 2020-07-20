@@ -125,7 +125,7 @@ spec:
         app.kubernetes.io/component: joomla-webserver
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: standard
+      storageClassName: {{ .Values.joomla.persistence.storageClass }}
       resources:
         requests:
-          storage: {{ .Values.joomla.volumeSize }}Gi
+          storage: {{ .Values.joomla.persistence.size }}

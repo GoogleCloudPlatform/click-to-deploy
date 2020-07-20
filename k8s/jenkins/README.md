@@ -127,11 +127,25 @@ export APP_INSTANCE_NAME=jenkins-1
 export NAMESPACE=default
 ```
 
+For the persistent disk provisioning of the Jenkins application StatefulSets, you will need to:
+
+ * Set the StorageClass name. Check your available options using the command below:
+   * ```kubectl get storageclass```
+   * Or check how to create a new StorageClass in [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
+
+ * Set the persistent disk's size. The default disk size is "8Gi".
+
+```shell
+export JENKINS_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
+export JENKINS_PERSISTENT_DISK_SIZE="8Gi"
+```
+
 Configure the container images:
 
 ```shell
-TAG=2.150
-export IMAGE_JENKINS="marketplace.gcr.io/google/jenkins:${TAG}"
+export IMAGE_JENKINS_TAG=2.190
+export IMAGE_JENKINS_REPO="marketplace.gcr.io/google/jenkins"
+export IMAGE_JENKINS="${IMAGE_JENKINS_REPO}:${IMAGE_JENKINS_TAG}"
 ```
 
 The image above is referenced by
@@ -179,7 +193,10 @@ expanded manifest file for future updates to your app.
 helm template chart/jenkins \
   --name $APP_INSTANCE_NAME \
   --namespace $NAMESPACE \
-  --set "jenkins.image=$IMAGE_JENKINS" \
+  --set "jenkins.image.repo=$IMAGE_JENKINS_REPO" \
+  --set "jenkins.image.tag=$IMAGE_JENKINS_TAG" \
+  --set "jenkins.persistence.storageClass=$JENKINS_STORAGE_CLASS" \
+  --set "jenkins.persistence.size=$JENKINS_PERSISTENT_DISK_SIZE" \
   --set "tls.base64EncodedPrivateKey=$TLS_CERTIFICATE_KEY" \
   --set "tls.base64EncodedCertificate=$TLS_CERTIFICATE_CRT" \
   > ${APP_INSTANCE_NAME}_manifest.yaml

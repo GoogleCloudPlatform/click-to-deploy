@@ -147,6 +147,19 @@ Specify the number of replicas for the Elasticsearch server:
 export ELASTICSEARCH_REPLICAS=2
 ```
 
+For the persistent disk provisioning of the Elasticsearch StatefulSets, you will need to:
+
+ * Set the StorageClass name. Check your available options using the command below:
+   * ```kubectl get storageclass```
+   * Or check how to create a new StorageClass in [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
+
+ * Set the persistent disk's size. The default disk size is "20Gi".
+
+```shell
+export ELASTICSEARCH_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
+export ELASTICSEARCH_PERSISTENT_DISK_SIZE="20Gi"
+```
+
 Enable Stackdriver Metrics Exporter:
 
 > **NOTE:** Your GCP project must have Stackdriver enabled. If you are using a
@@ -220,6 +233,8 @@ helm template chart/elastic-gke-logging \
   --set initImage="$IMAGE_INIT" \
   --set elasticsearch.image.repo="$IMAGE_ELASTICSEARCH" \
   --set elasticsearch.image.tag="$TAG" \
+  --set elasticsearch.persistence.storageClass="$ELASTICSEARCH_STORAGE_CLASS" \
+  --set elasticsearch.persistence.size="$ELASTICSEARCH_PERSISTENT_DISK_SIZE" \
   --set kibana.image="$IMAGE_KIBANA" \
   --set fluentd.image="$IMAGE_FLUENTD" \
   --set metrics.image="$IMAGE_METRICS_EXPORTER" \

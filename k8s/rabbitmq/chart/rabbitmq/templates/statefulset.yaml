@@ -165,7 +165,7 @@ spec:
     spec:
       accessModes:
       - ReadWriteOnce
-      storageClassName: standard
+      storageClassName: {{ .Values.rabbitmq.persistence.storageClass }}
       resources:
         requests:
-          storage: 5Gi
+          storage: {{ .Values.rabbitmq.persistence.size }}

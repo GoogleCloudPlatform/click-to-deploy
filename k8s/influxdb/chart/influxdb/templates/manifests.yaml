@@ -94,10 +94,10 @@ spec:
     spec:
       resources:
         requests:
-          storage: 1Gi
+          storage: {{ .Values.influxdb.persistence.size }}
       accessModes:
       - ReadWriteOnce
-      storageClassName: standard
+      storageClassName: {{ .Values.influxdb.persistence.storageClass }}
 ---
 apiVersion: v1
 kind: Service

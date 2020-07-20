@@ -156,6 +156,19 @@ Set the number of replicas for MariaDB:
 export REPLICAS=2
 ```
 
+For the persistent disk provisioning of the MariaDB StatefulSets, you will need to:
+
+ * Set the StorageClass name. Check your available options using the command below:
+   * ```kubectl get storageclass```
+   * Or check how to create a new StorageClass in [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
+
+ * Set the persistent disk's size. The default disk size is "32Gi".
+
+```shell
+export MARIADB_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
+export MARIADB_PERSISTENT_DISK_SIZE="32Gi"
+```
+
 Configure the MariaDB user's credentials (passwords must be encoded in base64):
 
 ```shell
@@ -209,7 +222,8 @@ helm template chart/mariadb \
   --namespace "$NAMESPACE" \
   --set mariadb.image.repo="$IMAGE_MARIADB" \
   --set mariadb.image.tag="$TAG" \
-  --set db.volumeSize=8 \
+  --set mariadb.persistence.storageClass="$MARIADB_STORAGE_CLASS" \
+  --set mariadb.persistence.size="$MARIADB_PERSISTENT_DISK_SIZE" \
   --set db.password="$MARIADB_ROOT_PASSWORD" \
   --set replication.password="$MARIADB_REPLICA_PASSWORD" \
   --set db.exporter.image="$IMAGE_MYSQL_EXPORTER" \

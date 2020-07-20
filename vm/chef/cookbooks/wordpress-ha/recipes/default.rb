@@ -16,10 +16,11 @@ include_recipe 'apache2'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 include_recipe 'mysql::configure-apt-repo-version-5.7'
-include_recipe 'php7'
-include_recipe 'php7::module_libapache2'
-include_recipe 'php7::module_mysql'
-include_recipe 'php7::module_xml'
+include_recipe 'php74'
+include_recipe 'php74::module_libapache2'
+include_recipe 'php74::module_mbstring'
+include_recipe 'php74::module_mysql'
+include_recipe 'php74::module_xml'
 
 apt_update 'update' do
   action :update
@@ -83,7 +84,7 @@ execute 'a2enmods' do
 end
 
 execute 'a2enconfs' do
-  command 'a2enconf php7.0-fpm'
+  command 'a2enconf php7.4-fpm'
 end
 
 template '/etc/apache2/sites-available/wordpress.conf' do
