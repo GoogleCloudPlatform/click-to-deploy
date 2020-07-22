@@ -157,9 +157,9 @@ Configure the container images:
 
 ```shell
 TAG=5.3
-export IMAGE_GRAFANA="marketplace.gcr.io/google/grafana:${TAG}"
-export IMAGE_GRAFANA_INIT="marketplace.gcr.io/google/grafana/debian9:${TAG}"
-export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/grafana/prometheus-to-sd:${TAG}"
+export IMAGE_GRAFANA="marketplace.gcr.io/google/grafana"
+export IMAGE_GRAFANA_INIT="${IMAGE_GRAFANA}/debian9:${TAG}"
+export IMAGE_METRICS_EXPORTER="${IMAGE_GRAFANA}/prometheus-to-sd:${TAG}"
 ```
 
 The images above are referenced by
@@ -188,6 +188,18 @@ a new namespace:
 kubectl create namespace "$NAMESPACE"
 ```
 
+#### Create the Grafana Service Account
+
+To create the Grafana Service Account and ClusterRoleBinding:
+
+```shell
+export GRAFANA_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-serviceaccount"
+kubectl create serviceaccount "${GRAFANA_SERVICE_ACCOUNT}" --namespace "${NAMESPACE}"
+kubectl create clusterrolebinding "${GRAFANA_SERVICE_ACCOUNT}-rule" \
+  --clusterrole="cluster-admin" \
+  --serviceaccount="${NAMESPACE}:${GRAFANA_SERVICE_ACCOUNT}"
+```
+
 #### Expand the manifest template
 
 Use `helm template` to expand the template. We recommend that you save the
@@ -197,10 +209,12 @@ expanded manifest file for future updates to the application.
 helm template chart/grafana \
   --name $APP_INSTANCE_NAME \
   --namespace $NAMESPACE \
-  --set grafana.image=$IMAGE_GRAFANA \
+  --set grafana.image.repo=$IMAGE_GRAFANA \
+  --set grafana.image.tag=$TAG \
   --set grafana.persistence.storageClass=$GRAFANA_STORAGE_CLASS \
   --set grafana.persistence.size=$PERSISTENT_DISK_SIZE \
   --set grafana.initImage=$IMAGE_GRAFANA_INIT \
+  --set grafana.serviceaccount="$GRAFANA_SERVICE_ACCOUNT" \
   --set grafana.password=$GRAFANA_GENERATED_PASSWORD \
   --set metrics.image=$IMAGE_METRICS_EXPORTER \
   --set metrics.exporter.enabled=$METRICS_EXPORTER_ENABLED > ${APP_INSTANCE_NAME}_manifest.yaml
