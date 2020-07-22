@@ -106,7 +106,7 @@ systemctl start cloudsql-proxy
 
 ## WordPress High Availability with Multisite feature enabled
 
-You can also install WordPress HA with Multiste feature enabled like in screenshot below.
+You can also install WordPress HA with Multisite feature enabled like in screenshot below.
 
 ![Architecture diagram](images/multisite-feature-screenshot.png)
 
