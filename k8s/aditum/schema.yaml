@@ -88,17 +88,15 @@ properties:
   controller.serviceAccount:
     type: string
     title: Kubernetes Service Account
-    description: A new service account will be created using cluster edit and read roles to allow access to the Kubernetes Secrets
+    description: A new service account will be created using cluster edit role within the namespace to allow access to the Kubernetes Secrets
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: Reads the OAuth Client Secret and creates app resources post-deployment.
         roles:
-        - type: ClusterRole
+        - type: Role
           rulesType: PREDEFINED
           rulesFromRoleName: edit
-        - type: ClusterRole
-          rulesType: PREDEFINED
-          rulesFromRoleName: view
   setupAttributes.initialEmail:
     type: string
     title: Initial User Email
