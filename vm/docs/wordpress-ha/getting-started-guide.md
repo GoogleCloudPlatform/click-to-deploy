@@ -103,3 +103,14 @@ If you needed to manually start the service for any reason, you can do so with t
 ```shell
 systemctl start cloudsql-proxy
 ```
+
+## WordPress High Availability with Multisite feature enabled
+
+You can also install WordPress HA with Multisite feature enabled like in screenshot below.
+
+![Architecture diagram](images/multisite-feature-screenshot.png)
+
+When Multisite feature is enabled with installation of WordPress HA, it will add `define('WP_ALLOW_MULTISITE', true);` to `wp-config.php`
+and will disable all plugins to enable installing of network for Multisite sites.
+
+To complete installation please visit [Create a Network for sites](https://wordpress.org/support/article/create-a-network/#step-3-installing-a-network) and continue from Step 3.
