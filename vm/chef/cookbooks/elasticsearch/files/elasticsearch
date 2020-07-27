@@ -24,12 +24,8 @@
 
 source /opt/c2d/elasticsearch-utils || exit 1
 
-readonly es_xpack_zip_uri="file:///opt/c2d/downloads/xpack.zip"
-
 readonly es_cluster_name="$(get_attribute_value "es_cluster_name")"
 readonly es_nodes="$(get_attribute_value "es_nodes")"
-readonly es_install_xpack="$(get_attribute_value "es_install_xpack" \
-  | tr '[:upper:]' '[:lower:]')"
 
 readonly es_password="$(get_attribute_value "es_password")"
 readonly kibana_password="$(get_attribute_value "kibana_password")"
@@ -87,14 +83,11 @@ fill_in_config_template \
   elasticsearch.template \
   elasticsearch
 
+echo "Create logs folder"
+mkdir -p /usr/share/elasticsearch/logs
+
 echo "Starting elasticsearch in single-node mode"
 service elasticsearch start
-
-# Install X-Pack in single-node mode
-if [[ "${es_install_xpack:-}" == "true" ]]; then
-  echo "Installing X-Pack"
-  /usr/share/elasticsearch/bin/elasticsearch-plugin install -b "${es_xpack_zip_uri}"
-fi
 
 # Prepare a list of "gossiping" nodes in cluster for unicast.
 es_unicast_hosts="\"${es_first_hostname}\""
@@ -105,10 +98,8 @@ if [[ "${es_nodes_count}" -ge 3 ]]; then
 fi
 
 # Configure cluster discovery.
-# This step is performed after potential X-Pack installation and restart
-# in order not to allow for race condition, when all nodes might be in cluster,
-# but some of them before X-Pack installation and restart.
-echo "discovery.zen.ping.unicast.hosts: [ ${es_unicast_hosts} ]" \
+sed -i 's\discovery.type: single-node\\g' /etc/elasticsearch/elasticsearch.yml
+echo "discovery.seed_hosts: [ ${es_unicast_hosts} ]" \
   >> /etc/elasticsearch/elasticsearch.yml
 
 echo "Starting elasticsearch with unicast configuration - cluster formation"
@@ -116,30 +107,4 @@ service elasticsearch restart
 
 systemctl enable elasticsearch
 
-if [[ "${es_install_xpack:-}" == "true" ]]; then
-  # X-Pack creates a simple security mechanism with default user and password.
-  # It is changed to generated one, but calling the operation only once
-  # for the whole cluster - it is propagated to all nodes.
-  if [[ "${es_current_node}" == "${es_first_hostname}" ]]; then
-    echo "First node - waiting for green before changing password"
-    wait_for_green_elastic_cluster "${es_nodes_count}" "${es_default_password}"
-
-    # Change elastic user password.
-    change_user_password \
-      elastic "${es_default_password}" \
-      elastic "${es_password}"
-
-    # Change kibana user password.
-    change_user_password \
-      elastic "${es_password}" \
-      kibana "${kibana_password}"
-
-    # Change logstash_system user password.
-    change_user_password \
-      elastic "${es_password}" \
-      logstash_system "${logstash_sys_password}"
-  fi
-  wait_for_green_elastic_cluster "${es_nodes_count}" "${es_password}"
-else
-  wait_for_green_elastic_cluster "${es_nodes_count}"
-fi
+wait_for_green_elastic_cluster "${es_nodes_count}"

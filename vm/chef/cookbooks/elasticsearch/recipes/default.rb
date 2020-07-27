@@ -66,15 +66,6 @@ cookbook_file '/opt/c2d/elasticsearch-utils' do
   action :create
 end
 
-# Dowload X-Pack for Elasticsearch
-remote_file '/opt/c2d/downloads/xpack.zip' do
-  source node['elasticsearch']['x-pack']['download_url']
-  mode '0644'
-  action :create
-  retries 5
-  retry_delay 30
-end
-
 # Download elasticsearch source files
 remote_file '/usr/src/elasticsearch_src.tar.gz' do
   source "https://github.com/elastic/elasticsearch/archive/v#{node['elasticsearch']['version']}.tar.gz"
