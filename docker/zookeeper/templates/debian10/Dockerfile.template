@@ -17,14 +17,14 @@ ENV ZOO_CONF_DIR=/conf \
     ZOO_STANDALONE_ENABLED=true \
     ZOO_ADMINSERVER_ENABLED=true
 
-# Add a user with an explicit UID/GID and create necessary directories
+# Add a user with an explicit UID/GID and create necessary directories.
 RUN set -eux; \
     groupadd -r zookeeper --gid=1000; \
     useradd -r -g zookeeper --uid=1000 zookeeper; \
     mkdir -p "${ZOO_DATA_LOG_DIR}" "${ZOO_DATA_DIR}" "${ZOO_CONF_DIR}" "${ZOO_LOG_DIR}"; \
     chown zookeeper:zookeeper "${ZOO_DATA_LOG_DIR}" "${ZOO_DATA_DIR}" "${ZOO_CONF_DIR}" "${ZOO_LOG_DIR}"
 
-# Install required packges
+# Install required packages.
 RUN set -eux; \
     apt-get update; \
     DEBIAN_FRONTEND=noninteractive \
@@ -46,7 +46,7 @@ ARG DISTRO_NAME="apache-zookeeper-${ZK_VERSION}-bin"
 
 ENV C2D_RELEASE="${ZK_VERSION}"
 
-# Download Apache Zookeeper, verify its PGP signature, untar and clean up
+# Download Apache Zookeeper, verify its PGP signature, untar and clean up.
 RUN set -eux; \
     ddist() { \
         local f="${1}"; shift; \
