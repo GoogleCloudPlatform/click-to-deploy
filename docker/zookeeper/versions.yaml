@@ -16,6 +16,25 @@ _variables:
   from: &from gcr.io/google-appengine/openjdk
 
 versions:
+  # ZooKeeper image
+  - dir: '3/debian10/3.5'
+    repo: 'zookeeper3'
+    templateSubDir: debian10
+    tags:
+      - '3.5.8-debian10'
+      - '3.5.8'
+      - '3.5-debian10'
+      - '3.5'
+      - '3-debian10'
+      - '3'
+      - 'latest'
+    from: marketplace.gcr.io/google/debian10
+    packages:
+      zookeeper:
+        version: '3.5.8'
+        gpg: '52A7EA3EECAE05B0A8306471790761798F6E35FC'
+    excludeTests:
+    - tests/functional_tests/exporter_test.yaml
 
   # ZooKeeper image
   - dir: '3/debian9/3.4'
@@ -26,9 +45,6 @@ versions:
       - '3.4.14'
       - '3.4-debian9'
       - '3.4'
-      - '3-debian9'
-      - '3'
-      - 'latest'
     from: *from
     packages:
       zookeeper:

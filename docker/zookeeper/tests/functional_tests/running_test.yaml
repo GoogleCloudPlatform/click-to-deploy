@@ -23,8 +23,7 @@ teardown:
 target: zk-$UNIQUE-id
 tests:
 - name: Can connect to ZooKeeper
-  command: [/opt/zookeeper/bin/zkCli.sh, ls, /zookeeper]
+  command: [zkCli.sh, ls, /zookeeper]
   expect:
     stdout:
       matches: quota
-
