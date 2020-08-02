@@ -62,7 +62,6 @@ chown -R elasticsearch:elasticsearch "${es_mount_dir}"
 # Export variables to be used in configuration files
 export es_cluster_name
 export es_current_node
-export es_current_node_ip
 export es_heap_size_gb
 export es_min_master_nodes
 
