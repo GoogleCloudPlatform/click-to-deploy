@@ -19,12 +19,13 @@ substitutions:
   _CLUSTER_NAME: marketplace-testing
   _CLUSTER_LOCATION: us-central1
 steps:
-  - id: Build C2D Docker Image
-    name: gcr.io/cloud-builders/docker
-    args:
-    - build
-    - --tag
-    - click-to-deploy
-    - --file
-    - k8s.Dockerfile
-    - .
+
+- id: Build C2D Docker Image
+  name: gcr.io/cloud-builders/docker
+  args:
+  - build
+  - --tag
+  - click-to-deploy
+  - --file
+  - k8s.Dockerfile
+  - .
