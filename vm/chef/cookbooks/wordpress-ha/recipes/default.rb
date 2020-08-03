@@ -120,6 +120,22 @@ cookbook_file '/opt/c2d/downloads/gcs-pull.sh' do
   action :create
 end
 
+cookbook_file '/opt/c2d/downloads/gcs-pull-once.sh' do
+  source 'gcs-pull-once.sh'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
+cookbook_file '/opt/c2d/downloads/gcs-pull-lib.sh' do
+  source 'gcs-pull-lib.sh'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
 # The sync service will be enabled and started in a startup script, since we
 # need to delete one of the push/pull scripts, and rename the one we keep to
 # /opt/c2d/downloads/gcs-sync based on what role the VM will be playing
