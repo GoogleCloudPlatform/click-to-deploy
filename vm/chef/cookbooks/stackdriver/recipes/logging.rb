@@ -15,10 +15,19 @@
 # Reference: https://cloud.google.com/logging/docs/agent/installation#joint-install
 
 # Download Stackdriver Logging agent
-remote_file '/tmp/install-logging-agent.sh' do
-  source 'https://dl.google.com/cloudagents/install-logging-agent.sh'
+remote_file '/tmp/add-logging-agent-repo.sh' do
+  source 'https://dl.google.com/cloudagents/add-logging-agent-repo.sh'
   action :create
 end
 
-# Install Stackdriver Logging agent
-execute 'bash /tmp/install-logging-agent.sh'
+# Add the agent's package repository
+execute 'bash /tmp/add-logging-agent-repo.sh'
+
+execute 'Update Sources' do
+  command 'apt-get update'
+end
+
+package 'Install Packages' do
+  package_name ['google-fluentd', 'google-fluentd-catch-all-config']
+  action :install
+end
