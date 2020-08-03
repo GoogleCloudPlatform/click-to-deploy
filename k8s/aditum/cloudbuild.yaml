@@ -12,19 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-description: Trigger for K8s aditum
-filename: k8s/aditum/cloudbuild.yaml
-github:
-  name: click-to-deploy
-  owner: GoogleCloudPlatform
-  pullRequest:
-    branch: .*
-    commentControl: COMMENTS_ENABLED
-includedFiles:
-- cloudbuild-k8s.yaml
-- k8s.Dockerfile
-- k8s/aditum/**
-- k8s/*
-name: Trigger-for-K8s-aditum
+timeout: 1800s # 30m
+options:
+  workerPool: $PROJECT_ID/gcb-workers-pool
 substitutions:
-  _SOLUTION_NAME: aditum
+  _CLUSTER_NAME: marketplace-testing
+  _CLUSTER_LOCATION: us-central1
+steps:
