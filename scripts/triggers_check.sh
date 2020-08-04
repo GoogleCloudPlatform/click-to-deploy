@@ -31,7 +31,7 @@ function trigger_exist {
 
   gcloud alpha builds triggers list --project="${PROJECT}" --format json \
     | jq -e --arg filename "${CLOUDBUILD_NAME}" --arg solution "${solution}" \
-    '.[] | select(.filename == $filename) | select(.substitutions._SOLUTION_NAME == $solution)'
+    '.[] | select(.substitutions._SOLUTION_NAME == $solution)'
     
    return $?
 }
