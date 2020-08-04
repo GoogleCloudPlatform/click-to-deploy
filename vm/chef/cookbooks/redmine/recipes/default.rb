@@ -18,61 +18,211 @@ include_recipe 'apache2'
 include_recipe 'apache2::mod-passenger'
 include_recipe 'apache2::security-config'
 include_recipe 'mysql'
+include_recipe 'rvm'
 
-# Configure redmine package (preventing interactive dialogs to show up):
-bash 'configure_apache_site' do
+execute 'Update Sources' do
+  command 'apt-get update'
+end
+
+package 'Install Packages' do
+  package_name node['redmine']['packages']
+  action :install
+end
+
+user node['redmine']['user'] do
+  action :create
+  home "/home/#{node['redmine']['user']}"
+  password node['redmine']['password']
+  shell '/bin/bash'
+  manage_home true
+end
+
+bash 'Grant sudo to redmine user' do
   user 'root'
+  cwd '/tmp'
   code <<-EOH
-debconf-set-selections <<< "redmine redmine/instances/default/database-type select mysql"
-debconf-set-selections <<< "redmine redmine/instances/default/dbconfig-install boolean true"
-debconf-set-selections <<< "redmine redmine/instances/default/db/app-user string redmineuser"
-debconf-set-selections <<< "redmine redmine/instances/default/mysql/app-user string redmineuser"
-debconf-set-selections <<< "redmine redmine/instances/default/mysql/app-pass password"
-debconf-set-selections <<< "redmine redmine/instances/default/mysql/admin-user string root"
-debconf-set-selections <<< "redmine redmine/instances/default/mysql/admin-pass password"
+    usermod -aG sudo redmine
 EOH
 end
 
-# Install redmine-related packages:
-package 'install_redmine_packages' do
-  package_name node['redmine']['packages']
-  action :install
-  retries 10
-  retry_delay 60
+directory '/opt/redmine' do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  recursive true
+  action :create
+end
+
+bash 'Download Redmine' do
+  user 'root'
+  cwd '/tmp'
+  code <<-EOH
+    curl -ks -o /tmp/redmine.tar.gz "https://www.redmine.org/releases/redmine-#{node['redmine']['version']}.tar.gz"
+EOH
+end
+
+bash 'Extract Redmine' do
+  user 'root'
+  cwd '/tmp'
+  code <<-EOH
+    tar --extract \
+        --file redmine.tar.gz \
+        --directory /opt/redmine \
+        --strip-components 1 \
+    && chown -R redmine:redmine /opt/redmine \
+    && rm -f redmine.tar.gz
+EOH
+end
+
+bash 'Configure MySQL database' do
+  user 'root'
+  code <<-EOH
+# Create database
+mysql -u root -e "create database $defdb character set utf8mb4;";
+
+# Create user with temp credentials
+mysql -u root -e "create user $defuser@localhost identified by 'temp';";
+
+# Grant all privileges to redmine user
+mysql -u root -e "grant all privileges on $defdb.* to $defuser@localhost;";
+EOH
+  environment({
+    'defdb' => node['redmine']['db']['name'],
+    'defuser' => node['redmine']['db']['user'],
+  })
+end
+
+# Copy Redmine's database connection configuration template
+cookbook_file '/opt/redmine/config/database.yml' do
+  source 'database.yml'
+  owner 'redmine'
+  group 'redmine'
+  mode 0640
+  action :create
+end
+
+template 'Set Redmine Apache configuration' do
+  path '/etc/apache2/sites-available/redmine.conf'
+  source 'apache-redmine.conf.erb'
+  owner 'root'
+  group 'root'
+  mode '0664'
+end
+
+bash 'Install Ruby version required for Redmine' do
+  cwd '/opt/redmine'
+  user 'root'
+  environment({
+    'rubyVersion' => node['redmine']['ruby']['version']
+  })
+  code <<-EOH
+    source /usr/local/rvm/scripts/rvm
+    rvm install $rubyVersion
+EOH
+end
+
+# bash 'Redmine Bundle Install' do
+#   cwd '/opt/redmine'
+#   user 'root'
+#   environment({
+#     'rubyVersion' => node['redmine']['ruby']['version']
+#   })
+#   code <<-EOH
+#     su redmine -c '\
+#       cd /opt/redmine
+#       source /usr/local/rvm/scripts/rvm
+#       rvm use $rubyVersion --default
+#       bundle config set path vendor/cache
+#       bundle install'
+# EOH
+# end
+
+bash 'Redmine Bundle Install' do
+  cwd '/opt/redmine'
+  user 'redmine'
+  environment({
+    'rubyVersion' => node['redmine']['ruby']['version']
+  })
+  code <<-EOH
+    source /usr/local/rvm/scripts/rvm
+    rvm use $rubyVersion --default
+    bundle install --path vendor/bundle
+EOH
+end
+
+bash 'Configure Redmine' do
+  user 'redmine'
+  cwd '/opt/redmine'
+  environment({
+    'rubyVersion' => node['redmine']['ruby']['version']
+  })
+  code <<-EOH
+    source /usr/local/rvm/scripts/rvm
+    rvm use $rubyVersion --default
+
+    # Define default properties
+    export RAILS_ENV="production"
+    export REDMINE_LANG="en"
+
+    # Generate token for cookie signing
+    bundle exec rake generate_secret_token
+
+    # Create database
+    bundle exec rake db:migrate
+
+    # Seed initial data
+    bundle exec rake redmine:load_default_data
+EOH
 end
 
 # Configure Redmine site in Apache and enable it with Apache's passenger module
-bash 'configure_apache_site' do
+bash 'Configure Apache Website' do
   user 'root'
+  environment({
+    'user' => node['redmine']['user']
+  })
   code <<-EOH
-cp /usr/share/doc/redmine/examples/apache2-passenger-host.conf /etc/apache2/sites-available/redmine.conf
+# Run Apache as redmine user
+sed -i "s/www-data/$user/g" /etc/apache2/envvars
+
+# Disable default website
 a2dissite 000-default.conf
+
+# Enable Redmine website
 a2ensite redmine.conf
 EOH
 end
 
-service 'reload_apache2' do
-  service_name 'apache2'
-  action [ :reload ]
+bash 'Configure permissions' do
+  user 'root'
+  cwd '/opt/redmine'
+  environment({
+    'user' => node['redmine']['user']
+  })
+  code <<-EOH
+ln -s /opt/redmine /var/www/html \
+  && chmod -R 775 ./* \
+  && chown -R $user:$user ./* \
+  && chown -R nobody:nogroup files log tmp public/plugin_assets \
+  && chmod -R 775 files log tmp public/plugin_assets
+EOH
 end
 
-# Copy Redmine's database connection configuration template:
-template '/usr/share/redmine/database.yml.template' do
-  source 'database.yml.erb'
-  owner 'root'
-  group 'www-data'
-  mode '0640'
-end
+# # Reload Apache in order to apply the configurations
+# service 'reload_apache2' do
+#   service_name 'apache2'
+#   action [ :reload ]
+# end
+
+# # Remove all AGPL licensed packages installed automatically by Redmine.
+# package node['redmine']['agpl_packages'] do
+#   action :remove
+#   retries 10
+#   retry_delay 60
+# end
 
 # Copy post-deploy configuration script (to override and configure instance's specific passwords):
 c2d_startup_script 'redmine' do
   source 'redmine-startup'
   action :cookbook_file
-end
-
-# Remove all AGPL licensed packages installed automatically by Redmine.
-package node['redmine']['agpl_packages'] do
-  action :remove
-  retries 10
-  retry_delay 60
 end
