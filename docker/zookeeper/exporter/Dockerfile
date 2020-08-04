@@ -1,7 +1,7 @@
-FROM gcr.io/google-appengine/debian9:latest as exporter-builder
+FROM gcr.io/google-appengine/debian10:latest as exporter-builder
 
-ENV EXPORTER_VERSION 1.0.2
-ENV EXPORTER_SHA256 e814444e9bc0c7b8a8fd01edb131ce2ae74704257fc62a4430156bb2656450cb
+ENV EXPORTER_VERSION 1.1.0
+ENV EXPORTER_SHA256 c7446aa33d3505fc8b4a92327c89a543f217ebb246c76880ea796f2893d40418
 
 RUN set -eu \
     # Installing utilities
@@ -12,7 +12,7 @@ RUN set -eu \
     && echo "${EXPORTER_SHA256} /zookeeper_exporter" | sha256sum -c \
     && chmod +x /zookeeper_exporter
 
-FROM gcr.io/google-appengine/debian9:latest
+FROM gcr.io/google-appengine/debian10:latest
 
 RUN set -eu \
     # Installing utilities
