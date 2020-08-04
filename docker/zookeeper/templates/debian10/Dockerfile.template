@@ -1,6 +1,6 @@
-FROM {{ .From }}
-
 {{- $zookeeper := index .Packages "zookeeper" }}
+
+FROM {{ .From }}
 
 ARG ZK_VERSION={{ $zookeeper.Version }}
 

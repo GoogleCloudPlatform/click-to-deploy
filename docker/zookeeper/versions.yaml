@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,9 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-_variables:
-  from: &from gcr.io/google-appengine/openjdk
 
 versions:
   # ZooKeeper image
@@ -45,7 +42,7 @@ versions:
       - '3.4.14'
       - '3.4-debian9'
       - '3.4'
-    from: *from
+    from: gcr.io/google-appengine/openjdk
     packages:
       zookeeper:
         version: '3.4.14'
