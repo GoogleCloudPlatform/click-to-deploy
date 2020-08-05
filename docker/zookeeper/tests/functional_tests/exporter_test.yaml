@@ -14,7 +14,7 @@
 
 setup:
 - command: [docker, network, create, -d, bridge, testbridge-$UNIQUE-id]
-- command: [docker, run, -d, -h, zk-1, --net, testbridge-$UNIQUE-id, --name, zk-$UNIQUE-id, 'marketplace.gcr.io/google/zookeeper3:latest']
+- command: [docker, run, -d, -e, ZOO_4LW_COMMANDS_WHITELIST=mntr, -h, zk-1, --net, testbridge-$UNIQUE-id, --name, zk-$UNIQUE-id, 'marketplace.gcr.io/google/zookeeper3:latest']
 - command: [sleep, 10s]
 - command: [docker, run, --net, testbridge-$UNIQUE-id, --name, exporter-$UNIQUE-id, -d, '$IMAGE', -zookeeper ,'zk-$UNIQUE-id:2181']
 - command: [sleep, 5s]
@@ -32,5 +32,5 @@ tests:
   - http://localhost:9141/metrics
   expect:
     stdout:
-      matches: '(?m)^zk_up 1$'
+      matches: 'zk_up 1'
 

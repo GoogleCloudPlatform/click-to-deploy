@@ -47,6 +47,8 @@ RUN set -eu \
     && ln -s /opt/zookeeper/$ZK_DIST.jar /usr/share/zookeeper/ \
     && ln -s /opt/zookeeper/lib/* /usr/share/zookeeper
 
+ENV PATH="${PATH}:${ZK_BIN}"
+
 EXPOSE 2181
 
 ENTRYPOINT ["zkGenConfig.sh"]
