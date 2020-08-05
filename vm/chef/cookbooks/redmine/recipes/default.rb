@@ -20,8 +20,8 @@ include_recipe 'apache2::security-config'
 include_recipe 'mysql'
 include_recipe 'rvm'
 
-execute 'Update Sources' do
-  command 'apt-get update'
+apt_update 'update' do
+  action :update
 end
 
 package 'Install Packages' do
@@ -121,27 +121,11 @@ bash 'Install Ruby version required for Redmine' do
 EOH
 end
 
-# bash 'Redmine Bundle Install' do
-#   cwd '/opt/redmine'
-#   user 'root'
-#   environment({
-#     'rubyVersion' => node['redmine']['ruby']['version']
-#   })
-#   code <<-EOH
-#     su redmine -c '\
-#       cd /opt/redmine
-#       source /usr/local/rvm/scripts/rvm
-#       rvm use $rubyVersion --default
-#       bundle config set path vendor/cache
-#       bundle install'
-# EOH
-# end
-
 bash 'Redmine Bundle Install' do
   cwd '/opt/redmine'
   user 'redmine'
   environment({
-    'rubyVersion' => node['redmine']['ruby']['version']
+    'rubyVersion' => node['redmine']['ruby']['version'],
   })
   code <<-EOH
     source /usr/local/rvm/scripts/rvm
@@ -154,7 +138,7 @@ bash 'Configure Redmine' do
   user 'redmine'
   cwd '/opt/redmine'
   environment({
-    'rubyVersion' => node['redmine']['ruby']['version']
+    'rubyVersion' => node['redmine']['ruby']['version'],
   })
   code <<-EOH
     source /usr/local/rvm/scripts/rvm
@@ -179,7 +163,7 @@ end
 bash 'Configure Apache Website' do
   user 'root'
   environment({
-    'user' => node['redmine']['user']
+    'user' => node['redmine']['user'],
   })
   code <<-EOH
 # Run Apache as redmine user
@@ -197,7 +181,7 @@ bash 'Configure permissions' do
   user 'root'
   cwd '/opt/redmine'
   environment({
-    'user' => node['redmine']['user']
+    'user' => node['redmine']['user'],
   })
   code <<-EOH
 ln -s /opt/redmine /var/www/html \
@@ -208,18 +192,18 @@ ln -s /opt/redmine /var/www/html \
 EOH
 end
 
-# # Reload Apache in order to apply the configurations
-# service 'reload_apache2' do
-#   service_name 'apache2'
-#   action [ :reload ]
-# end
+# Reload Apache in order to apply the configurations
+service 'reload_apache2' do
+  service_name 'apache2'
+  action [ :reload ]
+end
 
-# # Remove all AGPL licensed packages installed automatically by Redmine.
-# package node['redmine']['agpl_packages'] do
-#   action :remove
-#   retries 10
-#   retry_delay 60
-# end
+# Remove all AGPL licensed packages installed automatically by Redmine.
+package node['redmine']['agpl_packages'] do
+  action :remove
+  retries 10
+  retry_delay 60
+end
 
 # Copy post-deploy configuration script (to override and configure instance's specific passwords):
 c2d_startup_script 'redmine' do
