@@ -1,0 +1,111 @@
+x-google-marketplace:
+  applicationApiVersion: v1beta1
+  # IMPORTANT: These IDs must match your listing ID in Marketplace.
+  schemaVersion: v2
+  partnerId: click-to-deploy-containers
+  solutionId: aditum
+  # The release version is required in the schema and MUST match the
+  # release tag on the the deployer. Must be in x.x.x format!
+  publishedVersion: 1.0.7
+  publishedVersionMetadata:
+    releaseNote: >-
+      First release of Custom Governance.
+    # releaseTypes list is optional.
+    # "Security" should only be used if this is an important update to patch
+    # an existing vulnerability, as such updates will display more prominently for users.
+    releaseTypes:
+    - Feature
+    # If "recommended" is "true", users using older releases are encouraged
+    # to update as soon as possible. This is useful if, for example, this release
+    # fixes a critical issue.
+    recommended: true
+
+  # This MUST be specified to indicate that the deployer supports managed updates.
+  # Note that this could be left out or kalmSupported set to false, in
+  # which case the deployer uses schema v2 but does not support updates.
+  managedUpdates:
+    kalmSupported: true
+  ## Image Values
+  images:
+    '':  # Primary image has no name.
+      properties:
+        aditum.image.repo:
+          type: REPO_WITH_REGISTRY
+        aditum.image.tag:
+          type: TAG
+  ## Cluster Constraints
+  clusterConstraints:
+    resources:
+    - replicas: 1
+      requests:
+        cpu: 4000m
+        memory: 15Gi
+      affinity:
+        simpleNodeAffinity:
+          type: REQUIRE_ONE_NODE_PER_REPLICA
+    gcp:
+      nodes:
+        requiredOauthScopes:
+        - https://www.googleapis.com/auth/cloud-platform
+        - https://www.googleapis.com/auth/devstorage.read_only
+
+
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  oAuth.clientID:
+    type: string
+    title: OAuth Client ID
+    description: Please refer to the Installation Guide to create your OAuth Client ID
+    x-google-marketplace:
+      type: STRING
+      string:
+        generatedProperties:
+          base64Encoded: oAuth.clientIDEncoded
+  oAuth.clientSecret:
+    type: string
+    title: OAuth Client Secret
+    description: Please refer to the Installation Guide to create your OAuth Client Secret
+    x-google-marketplace:
+      type: STRING
+      string:
+        generatedProperties:
+          base64Encoded: oAuth.clientSecretEncoded
+  certificate.hostname:
+    type: string
+    title: Domain Name to serve Custom Governance
+    description: The domain name that will point to the static IP address. Read the Installation Guide for more information
+  deployment.staticIP:
+    type: string
+    title: Name of Global Static IP Address
+    description: Please refer to the Installation Guide to create your Static IP Address. This is the name of the static address, not the IP address that is assigned
+  controller.serviceAccount:
+    type: string
+    title: Kubernetes Service Account
+    description: A new service account will be created using cluster edit role within the namespace to allow access to the Kubernetes Secrets
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        description: Reads the OAuth Client Secret and creates app resources post-deployment.
+        roles:
+        - type: Role
+          rulesType: PREDEFINED
+          rulesFromRoleName: edit
+  setupAttributes.initialEmail:
+    type: string
+    title: Initial User Email
+    description:  The email address of the user that will be deploying/setting up Custom Governance
+required:
+- name
+- namespace
+- oAuth.clientSecret
+- oAuth.clientID
+- certificate.hostname
+- deployment.staticIP
+- setupAttributes.initialEmail
