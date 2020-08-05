@@ -1,4 +1,4 @@
-{{- $zookeeper := index .Packages "zookeeper" }}
+{{- $zookeeper := index .Packages "zookeeper" -}}
 
 FROM {{ .From }}
 

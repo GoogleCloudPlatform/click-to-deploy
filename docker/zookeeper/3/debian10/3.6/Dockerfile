@@ -1,5 +1,3 @@
-
-
 FROM marketplace.gcr.io/google/debian10
 
 ARG ZK_VERSION=3.6.1
