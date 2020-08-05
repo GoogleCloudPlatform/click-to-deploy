@@ -32,22 +32,24 @@ end
 user node['redmine']['user'] do
   action :create
   home "/home/#{node['redmine']['user']}"
-  password node['redmine']['password']
-  shell '/bin/bash'
+  shell '/sbin/nologin'
   manage_home true
 end
 
 bash 'Grant sudo to redmine user' do
   user 'root'
   cwd '/tmp'
+  environment({
+    'user' => node['redmine']['user'],
+  })
   code <<-EOH
-    usermod -aG sudo redmine
+    usermod -aG sudo $user
 EOH
 end
 
 directory '/opt/redmine' do
-  owner 'root'
-  group 'root'
+  owner node['redmine']['user']
+  group node['redmine']['user']
   mode '0755'
   recursive true
   action :create
@@ -64,12 +66,15 @@ end
 bash 'Extract Redmine' do
   user 'root'
   cwd '/tmp'
+  environment({
+    'user' => node['redmine']['user'],
+  })
   code <<-EOH
     tar --extract \
         --file redmine.tar.gz \
         --directory /opt/redmine \
         --strip-components 1 \
-    && chown -R redmine:redmine /opt/redmine \
+    && chown -R $user:$user /opt/redmine \
     && rm -f redmine.tar.gz
 EOH
 end
@@ -95,8 +100,8 @@ end
 # Copy Redmine's database connection configuration template
 cookbook_file '/opt/redmine/config/database.yml' do
   source 'database.yml'
-  owner 'redmine'
-  group 'redmine'
+  owner node['redmine']['user']
+  group node['redmine']['user']
   mode 0640
   action :create
 end
@@ -135,7 +140,7 @@ EOH
 end
 
 bash 'Configure Redmine' do
-  user 'redmine'
+  user node['redmine']['user']
   cwd '/opt/redmine'
   environment({
     'rubyVersion' => node['redmine']['ruby']['version'],

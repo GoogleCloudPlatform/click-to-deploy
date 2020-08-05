@@ -31,8 +31,6 @@ default['redmine']['ruby']['version'] = '2.6.5'
 
 # OS Settings
 default['redmine']['user'] = 'redmine'
-# default['redmine']['password'] = `openssl rand -base64 12 | fold -w 12 | head -n1 | tr -d '\r\n'`
-default['redmine']['password'] = 'redmine'
 
 # DB Settings
 default['redmine']['db']['user'] = 'redmineuser'
