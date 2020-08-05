@@ -118,7 +118,7 @@ bash 'Install Ruby version required for Redmine' do
   cwd '/opt/redmine'
   user 'root'
   environment({
-    'rubyVersion' => node['redmine']['ruby']['version']
+    'rubyVersion' => node['redmine']['ruby']['version'],
   })
   code <<-EOH
     source /usr/local/rvm/scripts/rvm
