@@ -31,7 +31,6 @@ end
 
 user node['redmine']['user'] do
   action :create
-  home "/home/#{node['redmine']['user']}"
   shell '/sbin/nologin'
   manage_home true
 end
