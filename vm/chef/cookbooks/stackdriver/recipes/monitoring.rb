@@ -12,13 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# Reference: https://cloud.google.com/monitoring/agent/install-agent#linux-install
+# Reference: https://cloud.google.com/monitoring/agent/installation
 
 # Download Stackdriver Monitoring agent
-remote_file '/tmp/install-monitoring-agent.sh' do
-  source 'https://dl.google.com/cloudagents/install-monitoring-agent.sh'
+remote_file '/tmp/add-monitoring-agent-repo.sh' do
+  source 'https://dl.google.com/cloudagents/add-monitoring-agent-repo.sh'
   action :create
 end
 
-# Install Stackdriver Monitoring agent
-execute 'bash /tmp/install-monitoring-agent.sh'
+# Add the agent's package repository
+execute 'bash /tmp/add-monitoring-agent-repo.sh'
+
+execute 'Update Sources' do
+  command 'apt-get update'
+end
+
+package 'Install Packages' do
+  package_name ['stackdriver-agent']
+  action :install
+end
