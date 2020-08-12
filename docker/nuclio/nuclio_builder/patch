@@ -46,7 +46,7 @@ index 8aafcb34..a03193bb 100644
 +
  CMD [ "controller" ]
 diff --git a/cmd/dashboard/docker/Dockerfile b/cmd/dashboard/docker/Dockerfile
-index 1dadc9c7..38ceb707 100644
+index 1dadc9c7..60a8d0a1 100644
 --- a/cmd/dashboard/docker/Dockerfile
 +++ b/cmd/dashboard/docker/Dockerfile
 @@ -48,18 +48,21 @@ RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build \
@@ -74,12 +74,15 @@ index 1dadc9c7..38ceb707 100644
  
  # copy runners
  COPY cmd/dashboard/docker/runners /runners
-@@ -77,4 +80,7 @@ COPY --from=build-static /home/nuclio/dashboard/src/dist /etc/nginx/static/
+@@ -77,4 +80,10 @@ COPY --from=build-static /home/nuclio/dashboard/src/dist /etc/nginx/static/
  # copy dashboard binary from build binary stage
  COPY --from=build-binary /nuclio/dashboard /usr/local/bin
  
 +# License
 +COPY --from=build-binary /nuclio/LICENSE /usr/share/nuclio/LICENSE
++
++# Remove entrypoint from parent image
++ENTRYPOINT []
 +
  CMD ["sh",  "-c", "./runner.sh"]
 diff --git a/hack/docker/build/builder/Dockerfile b/hack/docker/build/builder/Dockerfile
