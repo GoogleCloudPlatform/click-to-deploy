@@ -39,7 +39,7 @@ Custom Governance installed through Marketplace is a Kubernetes application on a
    *   When you are ready to deploy click on the “Configure” button, it will take you to the Deployment Configuration UI:
 
         ![Deployment Configuration](./images/deployment_configuration.png)
-   
+
    Please follow the below instructions to finish installation.
    1. **Create a cluster.** The cluster list will list only clusters that meet the requirements, you can create a new cluster that meets the requirements by clicking “Create a new cluster”. If you want to create the cluster manually, click [here](#Create-a-GKE-Cluster-Manually) for instruction.
       * **Make sure to enable "Allow access to the following Cloud APIs".** This is required
@@ -49,7 +49,7 @@ Custom Governance installed through Marketplace is a Kubernetes application on a
    4. **Set up OAuth Client ID and OAuth Client Secret.** Please follow the [OAuth section](#Setup-OAuth-Credentials-for-IAP-Identity-Aware-Proxy) and fill in the OAuth Client ID and OAuth Client Secret that you created there.
    5. **Set up Name of Global Static IP Address.** Please follow the instructions here on [how to create a static ip](#Reserve-Static-External-IP-Address) and fill in the name of that ip address, e.g. cg-app-ip.
    6. **Set up Domain Name to serve Custom Governance and Name of Global Static IP Address.** After a static ip is reserved, please follow [DNS A Record](#DNS-A-Record). The Domain name which needs to be filled in here refers to the name that you pointed to the static IP address through the A record. e.g. cg.example.com.
-   7. **Set up Kubernete Service Account. Please select *Create a new service account***
+   7. **Set up Kubernetes Service Account. Please select *Create a new service account***
         *   A new Kubernetes service account will be created using cluster edit and read roles to allow access to the Kubernetes Secrets
    8. **Set up Initial User Email.** This will be the user email address that will be deploying/setting up Custom Governance. Custom Governance will check for this email address even after the user has passed through IAP.
    9. **Click “Deploy” when you are ready.** Deployment usually will take around ten minutes or longer. Even after deployment is successful the cg-ingress may take longer to become ready. This is completely normal. When you find cg-ingress is ready on [cloud console](https://console.cloud.google.com/kubernetes/discovery), it means that the deployment succeeds! You can jump to our [Post Deployment Section](#Post-Deployment) once it's ready. We still have a few steps before you can explore Custom Governance.
@@ -65,7 +65,7 @@ Custom Governance installed through Marketplace is a Kubernetes application on a
   * **Or** you can create a cluster through [Kubernetes Engine UI](https://console.cloud.google.com/kubernetes) if you wish to customize more on the cluster settings.
     *  **Recommended machine type for optimal performance: [n1-standard-8](https://cloud.google.com/compute/docs/machine-types)**
     *   **The scope can be set through Nodepool Security. Click on Node Pools > Security > Set access for each API > Set Cloud Platform to enable**
-  
+
   * [Click here to continue with the rest installation steps](#Installation-Process)
 #### Setup OAuth Credentials for IAP (Identity Aware Proxy)
 
@@ -120,7 +120,7 @@ Once you have created your OAuth Credentials you will need the following to pass
 ### DNS A Record
 
 *    Run the following gcloud command to retrieve your assigned IP address. If you specified a different IP name in the previous step, please replace **cg-app-ip** with your customized name:
-    
+
       `gcloud compute addresses describe cg-app-ip --global`
 
 *   **Or** retrieve the IP through [cloud console UI](https://console.cloud.google.com/networking/addresses/list). Find the **cg-app-ip** (or your customized name if different) and the External Address is the IP address.
@@ -252,10 +252,10 @@ Create a cluster from the command line. If you already have a cluster that you
 want to use, this step is optional.
 
 ```shell
-export CLUSTER=sample-app-cluster
+export CLUSTER=cg-cluster
 export ZONE=us-west1-a
 
-gcloud container clusters create "$CLUSTER" --zone "$ZONE"
+gcloud container clusters create "$CLUSTER" --scopes=https://www.googleapis.com/auth/cloud-platform --zone "$ZONE"
 ```
 
 #### Configure kubectl to connect to the cluster
@@ -293,13 +293,22 @@ community. The source code can be found on
 
 ### Install the Application
 
+#### Complete resource prerequisites
+Before starting the CLI install you will need the following parameters:
+* OAuth Client ID
+* OAuth Client Secret
+* DNS Host Name
+* Static IP Name
+* Initial Email
+
+To learn how to create these parameters go through the [installation process above](#installation-process)
+
+#### Configure the app with environment variables
 Navigate to the `aditum` directory:
 
 ```shell
 cd click-to-deploy/k8s/aditum
 ```
-
-#### Configure the app with environment variables
 
 Choose an instance name and
 [namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)
@@ -310,11 +319,11 @@ export APP_INSTANCE_NAME=cg-app-1
 export NAMESPACE=default
 ```
 
-Set the app parameter:
+Set the app parameters:
 
 ```shell
-export OAUTH_CLIENT_ID=echo -n 'CLIENTID' | base64
-export OAUTH_CLIENT_SECRET= echo -n 'CLIENTSECRET' | base64
+export OAUTH_CLIENT_ID=`echo -n '<YOUR CLIENT ID>' | base64 --wrap=0`
+export OAUTH_CLIENT_SECRET=`echo -n '<YOUR CLIENT SECRET>' | base64 --wrap=0`
 export CERTIFICATE_HOSTNAME=<YOUR HOST NAME>
 export INITIAL_EMAIL=<YOUR INITIAL_EMAIL>
 export STATIC_NAME=<YOUR STATIC ADDRESS NAME>
@@ -344,8 +353,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to your app.
 
 ```shell
-helm template chart/aditum \
-  --name "${APP_INSTANCE_NAME}" \
+helm template ${APP_INSTANCE_NAME} chart/aditum  \
   --namespace "${NAMESPACE}" \
   --set "aditum.image.repo=${IMAGE_CG}" \
   --set "aditum.image.tag=${TAG}" \
