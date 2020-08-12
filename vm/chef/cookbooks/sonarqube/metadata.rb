@@ -17,3 +17,4 @@ depends 'apache2'
 depends 'postgresql'
 depends 'c2d-config'
 supports 'debian'
+
