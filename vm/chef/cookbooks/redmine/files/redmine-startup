@@ -26,13 +26,13 @@ declare -r redmine_admin_password
 # Update Redmine's dedicated user password.
 mysql -u root -e "SET PASSWORD FOR 'redmineuser'@'localhost' = PASSWORD('${mysql_redmineuser_password}')"
 
-cd /usr/share/redmine
+cd /opt/redmine
 
 # Replace auto-generated password for Redmine's MySQL user:
-export MYSQL_REDMINEUSER_PASSWORD=${mysql_redmineuser_password}
-envsubst < database.yml.template > instances/default/config/database.yml
-rm database.yml.template
-unset MYSQL_REDMINEUSER_PASSWORD
+sed -i "s/password: temp/password: ${mysql_redmineuser_password}/g" config/database.yml
+
+export RAILS_ENV=production
+source /usr/local/rvm/scripts/rvm
 
 # Replace default password for Redmine admin user:
 rails runner "user = User.find_by_login('admin') ; user.password, user.password_confirmation = '${redmine_admin_password}'; user.save!" -e production

@@ -1,0 +1,36 @@
+# Copyright 2019 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+setup:
+- command: [docker, network, create, -d, bridge, testbridge-$UNIQUE-id]
+- command: [docker, run, -d, -e, ZOO_4LW_COMMANDS_WHITELIST=mntr, -h, zk-1, --net, testbridge-$UNIQUE-id, --name, zk-$UNIQUE-id, 'marketplace.gcr.io/google/zookeeper3:latest']
+- command: [sleep, 10s]
+- command: [docker, run, --net, testbridge-$UNIQUE-id, --name, exporter-$UNIQUE-id, -d, '$IMAGE', -zookeeper ,'zk-$UNIQUE-id:2181']
+- command: [sleep, 5s]
+
+teardown:
+- command: [docker, stop, exporter-$UNIQUE-id, zk-$UNIQUE-id]
+- command: [docker, rm, exporter-$UNIQUE-id, zk-$UNIQUE-id]
+- command: [docker, network, rm, testbridge-$UNIQUE-id]
+
+target: exporter-$UNIQUE-id
+tests:
+- name: Exporter can export data from ZooKeeper
+  command:
+  - curl
+  - http://localhost:9141/metrics
+  expect:
+    stdout:
+      matches: 'zk_up 1'
+
