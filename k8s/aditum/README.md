@@ -346,6 +346,17 @@ yet, run the command below to create a new namespace:
 ```shell
 kubectl create namespace "${NAMESPACE}"
 ```
+#### Configure the service account
+
+The application needs a service account in the target namespace with cluster wide permissions to access Kubernetes resources such as Kubernetes Secrets.
+
+Provision a service account and export the name into a variable:
+
+```shell
+kubectl create serviceaccount "${APP_INSTANCE_NAME}-sa" --namespace "${NAMESPACE}"
+kubectl create clusterrolebinding "${NAMESPACE}-${APP_INSTANCE_NAME}-sa-rb" --clusterrole=cluster-admin --serviceaccount="${NAMESPACE}:${APP_INSTANCE_NAME}-sa"
+export SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-sa"
+```
 
 #### Expand the manifest template
 
@@ -362,6 +373,7 @@ helm template ${APP_INSTANCE_NAME} chart/aditum  \
   --set "certificate.hostname=${CERTIFICATE_HOSTNAME}" \
   --set "setupAttributes.initialEmail=${INITIAL_EMAIL}" \
   --set "deployment.staticIP=${STATIC_NAME}" \
+  --set "controller.serviceAccount=${SERVICE_ACCOUNT}" \
   > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 
