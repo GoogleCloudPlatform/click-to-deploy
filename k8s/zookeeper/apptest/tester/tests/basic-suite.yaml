@@ -1,7 +1,7 @@
 actions:
 - name: Connection check
   bashTest:
-    script: /opt/zookeeper/bin/zkCli.sh -server {{ .Env.APP_INSTANCE_NAME }}-zk-client:2181 ls /
+    script: /opt/zookeeper/bin/zkCli.sh -server $APP_INSTANCE_NAME-zk-client:2181 ls /
     expect:
       stdout:
         contains: zookeeper
@@ -9,15 +9,15 @@ actions:
         equals: 0
 - name: Create item check
   bashTest:
-    script: /opt/zookeeper/bin/zkCli.sh -server {{ .Env.APP_INSTANCE_NAME }}-zk-client:2181 create /test-data /test-value
+    script: /opt/zookeeper/bin/zkCli.sh -server $APP_INSTANCE_NAME-zk-client:2181 create /test-data /test-value
     expect:
-      stdout:
+      stderr:
         contains: test-data
       exitCode:
         equals: 0
 - name: Get item snuffy
   bashTest:
-    script: /opt/zookeeper/bin/zkCli.sh -server {{ .Env.APP_INSTANCE_NAME }}-zk-client:2181 get /test-data
+    script: /opt/zookeeper/bin/zkCli.sh -server $APP_INSTANCE_NAME-zk-client:2181 get /test-data
     expect:
       stdout:
         contains: test-value
