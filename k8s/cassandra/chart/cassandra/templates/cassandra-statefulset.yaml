@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -9,6 +10,7 @@ spec:
   selector:
     matchLabels: *CassandraDeploymentLabels
   serviceName: {{ .Release.Name }}-cassandra-svc
+  podManagementPolicy: "Parallel"
   replicas: {{ .Values.cassandra.replicas }}
   updateStrategy:
       type: OnDelete
@@ -103,25 +105,3 @@ spec:
       resources:
         requests:
           storage: {{ .Values.cassandra.persistence.size }}
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ .Release.Name }}-cassandra-svc
-  labels:
-    app.kubernetes.io/name: "{{ .Release.Name }}"
-    app.kubernetes.io/component: cassandra-server
-spec:
-  ports:
-  - name: cql
-    port: 9042
-  - name: thrift
-    port: 9160
-  selector:
-    app.kubernetes.io/name: "{{ .Release.Name }}"
-    app.kubernetes.io/component: cassandra-server
-  type: ClusterIP
-# While bootstraping Cassandra, we need to provide a list of IPs or hostnames
-# to connect. Setting clusterIP to None enables connection between Cassandra
-# nodes directly.
-  clusterIP: None

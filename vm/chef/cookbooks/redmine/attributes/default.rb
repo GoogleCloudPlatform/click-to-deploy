@@ -12,5 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['redmine']['packages'] = %w(redmine-mysql)
-default['redmine']['agpl_packages'] = %w(ghostscript libgs9 libgs9-common libjbig2dec0)
+default['redmine']['packages'] = [
+  'build-essential',
+  'libmysqlclient-dev',
+  'ruby-bundler',
+  'ruby-dev',
+  'zlib1g-dev',
+  'libapache2-mod-passenger',
+]
+default['redmine']['agpl_packages'] = [
+  'ghostscript',
+  'libgs9',
+  'libgs9-common',
+  'libjbig2dec0',
+]
+default['redmine']['version'] = '4.1.1'
+default['redmine']['ruby']['version'] = '2.6.5'
+
+# OS Settings
+default['redmine']['user'] = 'redmine'
+
+# DB Settings
+default['redmine']['db']['user'] = 'redmineuser'
+default['redmine']['db']['name'] = 'redmine'
