@@ -400,10 +400,14 @@ Insert the parameters you configured as part of the prerequisites.
 2. Generate a base64 version of your OAuth Client Secret with this command:
 
   ```echo -n '<YOUR OAUTH CLIENT SECRET>' | base64 --wrap=0```
+
 3. Static IP Name: This is the name of the Static IP you created. For example: cg-app-ip
+
 4. Your certificate hostname is the full DNS address where Custom Governance will be hosted. For example: cg.example.com
+
 5. Service Account: This is the name of the service account you created. For example: cg-app-1-sa
     * You can get this with ```echo $SERVICE_ACCOUNT```
+
 6. Initial Email: This will be the user email address that will be deploying/setting up Custom Governance. Custom Governance will check for this email address even after the user has passed through IAP.
 
 
