@@ -69,9 +69,23 @@ The `n1-standard-4` machine type is a good choice that covers the minimum requir
 
 #### Create a GKE Cluster With Custom Service Account:
 
-You can create a custom Google service account with the least privilege to operate your clusters
+##### You can create a custom Google service account for your cluster:
 
-  Follow the [instructions here](https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster#use_least_privilege_sa)
+1. From the Cloud Console visit [Menu > IAM & Admin > Service Accounts](https://console.cloud.google.com/iam-admin/serviceaccounts)
+![Service Account 1](./images/service-account-1.png)
+1. Click `Create Service Account` and give the service account a name
+![Service Account 2](./images/service-account-2.png)
+1. Chose the "Editor" role for the service account. The service account will be used to configure Custom Governance.
+![Service Account 3](./images/service-account-3.png)
+1. Provide users with permission to utilize and administer the service account
+![Service Account 4](./images/service-account-4.png)
+
+##### Creating a cluster with the custom service account:
+1. From the Cloud Console visit [Menu > Kubernetes Engine > Clusters](https://console.cloud.google.com/kubernetes/list)
+![Custom Service Account 1](./images/custom-sa-cluster-1.png)
+1. Click into the pool (default-pool) -> Security. Select the custom service account you created earlier.
+![Custom Service Account 3](./images/custom-sa-cluster-3.png)
+1. Click `Create` to create your cluster with your custom SA!
 
 #### Create a GKE Cluster Through CLI:
 
@@ -260,7 +274,7 @@ environment by default.
 -   [gcloud](https://cloud.google.com/sdk/gcloud/)
 -   [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 -   [docker](https://docs.docker.com/install/)
--   [openssl](https://www.openssl.org/)
+-   [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
 Configure `gcloud` as a Docker credential helper:
 
@@ -282,8 +296,8 @@ gcloud auth configure-docker
   * [OAuth Client ID](#Setup-OAuth-Credentials-for-IAP-Identity-Aware-Proxy)
   * [OAuth Client Secret](#Setup-OAuth-Credentials-for-IAP-Identity-Aware-Proxy)
   * [Static IP Name](#Reserve-Static-External-IP-Address)
-  * [DNS Host Name](#DNS-A-Record)
-  * Initial Email: This will be the user email address that will be deploying/setting up Custom Governance. Custom Governance will check for this email address even after the user has passed through IAP.
+  * [Setup your DNS A Record and Hostname](#DNS-A-Record)
+  * Initial Email: This will be the **user email address** that will be deploying/setting up Custom Governance. Custom Governance will check for this email address even after the user has passed through IAP.
 
 To learn how to create these parameters go through the [installation process above](#installation-process)
 
@@ -369,9 +383,9 @@ kubectl create serviceaccount "${APP_INSTANCE_NAME}-sa" --namespace "${NAMESPACE
 kubectl create clusterrolebinding "${NAMESPACE}-${APP_INSTANCE_NAME}-sa-rb" --clusterrole=cluster-admin --serviceaccount="${NAMESPACE}:${APP_INSTANCE_NAME}-sa"
 export SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-sa"
 ```
-#### Add the application parameters to `cli_values_template.yaml`
+#### Add the application parameters to [`cli_values_template.yaml`](cli_values_template.yaml)
 
-Open `cli_values_template.yaml` inside the `aditum` directory:
+Open [`cli_values_template.yaml`](cli_values_template.yaml) inside the `aditum` directory:
 
 ```shell
 vim cli_values_template.yaml
@@ -385,13 +399,12 @@ Insert the parameters you configured as part of the prerequisites.
 
 2. Generate a base64 version of your OAuth Client Secret with this command:
 
-    ```echo -n '<YOUR OAUTH CLIENT SECRET>' | base64 --wrap=0```
-
-3. Your certificate hostname is the full DNS address where Custom Governance will be hosted. For example: cg.example.com
-4. Initial Email: This will be the user email address that will be deploying/setting up Custom Governance. Custom Governance will check for this email address even after the user has passed through IAP.
-5. Static IP Name: This is the name of the Static IP you created. For example: cg-app-ip
-6. Service Account: This is the name of the service account you created. For example: cg-app-1-sa
+  ```echo -n '<YOUR OAUTH CLIENT SECRET>' | base64 --wrap=0```
+3. Static IP Name: This is the name of the Static IP you created. For example: cg-app-ip
+4. Your certificate hostname is the full DNS address where Custom Governance will be hosted. For example: cg.example.com
+5. Service Account: This is the name of the service account you created. For example: cg-app-1-sa
     * You can get this with ```echo $SERVICE_ACCOUNT```
+6. Initial Email: This will be the user email address that will be deploying/setting up Custom Governance. Custom Governance will check for this email address even after the user has passed through IAP.
 
 
 #### Expand the manifest template
