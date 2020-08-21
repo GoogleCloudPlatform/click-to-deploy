@@ -42,7 +42,8 @@ Custom Governance installed through Marketplace is a Kubernetes application on a
         ![Deployment Configuration](./images/deployment_configuration.png)
 
    Please follow the below instructions to finish installation.
-   1. **Create a cluster.** The cluster list will list only clusters that meet the requirements, you can create a new cluster that meets the requirements by clicking “Create a new cluster”. If you want to create the a custom cluster, or specify a custom service account, click [here](#Create-a-GKE-Cluster-Through-CLI) for instructions.
+   1. **Create a cluster.** The cluster list will list only clusters that meet the requirements, you can create a new cluster that meets the requirements by clicking “Create a new cluster”.
+      * If you want to create a custom cluster, or specify a custom service account, click [here for instructions and to learn about minimum requirements.](#Minimum-Requirements-for-GKE-Cluster).
       * **Make sure to enable "Allow access to the following Cloud APIs".** This is required
       for the Cluster to be able to network with GCP services.
    2. **Set up Namespace.** You can use the default namespace or create a new one in the dropdown.
@@ -56,6 +57,15 @@ Custom Governance installed through Marketplace is a Kubernetes application on a
    9. **Click “Deploy” when you are ready.** Deployment usually will take around ten minutes or longer. Even after deployment is successful the cg-ingress may take longer to become ready. This is completely normal. When you find cg-ingress is ready on [cloud console](https://console.cloud.google.com/kubernetes/discovery), it means that the deployment succeeds! You can jump to our [Post Deployment Section](#Post-Deployment) once it's ready. We still have a few steps before you can explore Custom Governance.
 
 ### Detailed Instructions
+
+#### Minimum Requirements for GKE Cluster:
+
+We have minimum requirements for GKE clusters running Custom Governance. At a minimum we require:
+
+  * 4 vCPUs
+  * 15GB memory
+
+The `n1-standard-4` machine type is a good choice that covers the minimum requirements.
 
 #### Create a GKE Cluster With Custom Service Account:
 
