@@ -373,15 +373,14 @@ Insert the parameters you configured as part of the prerequisites.
 
   ```echo -n '<YOUR OAUTH CLIENT ID>' | base64 --wrap=0```
 
-1. Generate a base64 version of your OAuth Client Secret with this command:
+2. Generate a base64 version of your OAuth Client Secret with this command:
 
     ```echo -n '<YOUR OAUTH CLIENT SECRET>' | base64 --wrap=0```
 
-1. Your certificate hostname is the full DNS address where Custom Governance will be hosted.
-For example: cg.example.com
-1. Initial Email: This will be the user email address that will be deploying/setting up Custom Governance. Custom Governance will check for this email address even after the user has passed through IAP.
-1. Static IP Name: This is the name of the Static IP you created. For example: cg-app-ip
-1. Service Account: This is the name of the service account you created. For example: cg-app-1-sa
+3. Your certificate hostname is the full DNS address where Custom Governance will be hosted. For example: cg.example.com
+4. Initial Email: This will be the user email address that will be deploying/setting up Custom Governance. Custom Governance will check for this email address even after the user has passed through IAP.
+5. Static IP Name: This is the name of the Static IP you created. For example: cg-app-ip
+6. Service Account: This is the name of the service account you created. For example: cg-app-1-sa
     * You can get this with ```echo $SERVICE_ACCOUNT```
 
 
@@ -392,7 +391,7 @@ Replace the values.yaml template with your template:
 
   ```mv chart/aditum/values.yaml values_template.yaml```
 
-1. Copy your value template into the chart:
+2. Copy your value template into the chart:
 
   ```cp cli_value_template.yaml chart/aditum/values.yaml```
 
