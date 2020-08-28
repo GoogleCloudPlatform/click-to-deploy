@@ -1,0 +1,3 @@
+elasticsearch.hosts: ["${es_host}:${es_port}"]
+elasticsearch.username: "${es_username}"
+elasticsearch.password: "${es_password}"
