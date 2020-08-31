@@ -69,7 +69,7 @@ Below are detailed instructions for installing Custom Governance through the Goo
 
 Custom Governance installed through Marketplace is a Kubernetes application on a Google Kubernetes Engine (GKE) cluster.
 
-**Due to security reasons, we only support running Custom Governance in Google Chrome. Custom Governance may not be loading properly in all other browsers.**
+**Due to security reasons, we only support running Custom Governance in Google Chrome or Safari. Custom Governance may not be loading properly in all other browsers.**
 
 ### Marketplace UI Deployment Details
 
@@ -333,9 +333,12 @@ The `n1-standard-4` machine type is a good choice that covers the minimum requir
 1. Click into the pool (default-pool) -> Security. Select the custom service account you created earlier.
 ![Custom Service Account 3](./images/custom-sa-cluster-3.png)
 1. Click `Create` to create your cluster with your custom SA!
-1. **After this cluster is created, connect to this cluster and add cluster-admin role binding to this custom SA**. Please run the following command to grand your service account with cluster-admin role where NAMESPACE's value by default is `default` and SERVICE_ACCOUNT is your custom SA:
+1. **After this cluster is created, connect to this cluster and add cluster-admin role binding to this custom SA**. Please run the following command to grant your service account with cluster-admin role.
+NAMESPACE is your kubernetest namespace in which you plan to install Custom Governance. Please make sure you use the same namespace that you will select in Marketplace Configuration UI, which by default is `default` and SERVICE_ACCOUNT is your custom SA:
   
     `kubectl create clusterrolebinding "${NAMESPACE}-${SERVICE_ACCOUNT}-rb" --clusterrole=cluster-admin --serviceaccount="${NAMESPACE}:${SERVICE_ACCOUNT}"`
+1. **Grant your Compute Engine default Service account with Dataflow worker and Storage Admin in IAM**. This is essential for running dataflow rego rule scanners in Custom Governance.
+
 ### Create a GKE Cluster Through CLI
 
   * You can create a cluster with the scope through the [gcloud command-line tool](https://cloud.google.com/sdk/gcloud). You can run this command in the Cloud Shell to create a cluster with the **basic** requirements:
@@ -359,10 +362,10 @@ You will need to pass OAuth Credentials to Marketplace UI to properly configure 
        1.  Via Cloud Console visit [Menu > API & Services > OAuth consent screen](https://console.cloud.google.com/apis/credentials/consent), select user type and click create.
             * Selecting External will allow accounts outside of your organization to access Custom Governance
             * Selecting Internal will allow accounts only inside your organization to access Custom Governance. **We recommend to choose Internal as the user type.**
-       2.  Fill in the *App name*, *User support email* under App information, and *Email addresses* under Developer contact information. Then click save and continue.
+       1.  Fill in the *App name*, *User support email* under App information, and *Email addresses* under Developer contact information. Then click save and continue.
             * *App name* is the Application name you want to display on the user consent screen. You can name it as Custom Governance.
             * For *User support email* and *Email address*, you can fill in with your own email address.
-       3.  Continue clicking **SAVE AND CONTINUE** Button for the rest and it's done!
+       1.  Continue clicking **SAVE AND CONTINUE** Button for the rest and it's done!
 
    2. Creating OAuth Credentials. Below are detailed steps on how to create the OAuth Credentials.
        1.  Via Cloud Console visit [Menu > API & Services > Credentials](https://console.cloud.google.com/apis/credentials)
