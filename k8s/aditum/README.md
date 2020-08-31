@@ -1,45 +1,45 @@
 ## Table of Contents
-- [Installation](#installation)
-  - [Before you get started](#before-you-get-started)
-  - [Quick install with Google Cloud Marketplace](#quick-install-with-google-cloud-marketplace)
-    - [Marketplace UI Deployment Details](#marketplace-ui-deployment-details)
-  - [Command line deployment](#command-line-deployment)
-    - [Prerequisites](#prerequisites)
-      - [Set up command line tools](#set-up-command-line-tools)
-      - [Enable required APIs](#enable-required-apis)
-      - [Complete resource prerequisites](#complete-resource-prerequisites)
-      - [Create a Google Kubernetes Engine cluster](#create-a-google-kubernetes-engine-cluster)
-      - [Configure kubectl to connect to the cluster](#configure-kubectl-to-connect-to-the-cluster)
-      - [Clone this repo](#clone-this-repo)
-      - [Install the Application resource definition](#install-the-application-resource-definition)
-    - [Install the Application](#install-the-application)
-      - [Configure the app with environment variables](#configure-the-app-with-environment-variables)
-      - [Create namespace in your Kubernetes cluster](#create-namespace-in-your-kubernetes-cluster)
-      - [Configure the service account](#configure-the-service-account)
-      - [Add the application parameters to `cli_values_template.yaml`](#add-the-application-parameters-to-cli_values_templateyaml)
-      - [Expand the manifest template](#expand-the-manifest-template)
-      - [Apply the manifest to your Kubernetes cluster](#apply-the-manifest-to-your-kubernetes-cluster)
-      - [Post Deployment](#post-deployment)
-      - [View the app in the Google Cloud Console](#view-the-app-in-the-google-cloud-console)
-  - [Detailed Instructions](#detailed-instructions)
-    - [Minimum Requirements for GKE Cluster:](#minimum-requirements-for-gke-cluster)
-    - [Create a GKE Cluster With Custom Service Account](#create-a-gke-cluster-with-custom-service-account)
-      - [Creating a custom service account for your GKE cluster](#creating-a-custom-service-account-for-your-gke-cluster)
-      - [Configuring the GKE cluster to run as a custom service account](#configuring-the-gke-cluster-to-run-as-a-custom-service-account)
-    - [Create a GKE Cluster Through CLI](#create-a-gke-cluster-through-cli)
-    - [Setup OAuth Credentials for IAP (Identity Aware Proxy)](#setup-oauth-credentials-for-iap-identity-aware-proxy)
-    - [Reserve Static External IP Address](#reserve-static-external-ip-address)
-    - [Configure DNS A Record](#configure-dns-a-record)
-  - [Post Deployment](#post-deployment-1)
-    - [Configure Identity-Aware Proxy (IAP)](#configure-identity-aware-proxy-iap)
-    - [Finish Deployment](#finish-deployment)
-  - [Troubleshooting](#troubleshooting)
-    - ["You don't have access"](#you-dont-have-access)
-    - ["Some components have errors"](#some-components-have-errors)
-    - [“This site can't provide a secure connection”](#this-site-cant-provide-a-secure-connection)
-    - [“Connection Closed”](#connection-closed)
-    - [“Internal Server Error”](#internal-server-error)
-    - [“Error: redirect_uri_mismatch”](#error-redirect_uri_mismatch)
+- [Installation](#Installation)
+  - [Before you get started](#Before-you-get-started)
+  - [Quick install with Google Cloud Marketplace](#Quick-install-with-Google-Cloud-Marketplace)
+    - [Marketplace UI Deployment Details](#Marketplace-UI-Deployment-Details)
+  - [Command line deployment](#Command-line-deployment)
+    - [Prerequisites](#Prerequisites)
+      - [Set up command line tools](#Set-up-command-line-tools)
+      - [Enable required APIs](#Enable-required-APIs)
+      - [Complete resource prerequisites](#Complete-resource-prerequisites)
+      - [Create a Google Kubernetes Engine cluster](#Create-a-Google-Kubernetes-Engine-cluster)
+      - [Configure kubectl to connect to the cluster](#Configure-kubectl-to-connect-to-the-cluster)
+      - [Clone this repo](#Clone-this-repo)
+      - [Install the Application resource definition](#Install-the-Application-resource-definition)
+    - [Install the Application](#Install-the-Application)
+      - [Configure the app with environment variables](#Configure-the-app-with-environment-variables)
+      - [Create namespace in your Kubernetes cluster](#Create-namespace-in-your-Kubernetes-cluster)
+      - [Configure the service account](#Configure-the-service-account)
+      - [Add the application parameters to `cli_values_template.yaml`](#Add-the-application-parameters-to-clivaluestemplateyaml)
+      - [Expand the manifest template](#Expand-the-manifest-template)
+      - [Apply the manifest to your Kubernetes cluster](#Apply-the-manifest-to-your-Kubernetes-cluster)
+      - [Post Deployment](#Post-Deployment)
+      - [View the app in the Google Cloud Console](#View-the-app-in-the-Google-Cloud-Console)
+  - [Detailed Instructions](#Detailed-Instructions)
+    - [Minimum Requirements for GKE Cluster:](#Minimum-Requirements-for-GKE-Cluster)
+    - [Create a GKE Cluster With Custom Service Account](#Create-a-GKE-Cluster-With-Custom-Service-Account)
+      - [Creating a custom service account for your GKE cluster](#Creating-a-custom-service-account-for-your-GKE-cluster)
+      - [Configuring the GKE cluster to run as a custom service account](#Configuring-the-GKE-cluster-to-run-as-a-custom-service-account)
+    - [Create a GKE Cluster Through CLI](#Create-a-GKE-Cluster-Through-CLI)
+    - [Setup OAuth Credentials for IAP (Identity Aware Proxy)](#Setup-OAuth-Credentials-for-IAP-Identity-Aware-Proxy)
+    - [Reserve Static External IP Address](#Reserve-Static-External-IP-Address)
+    - [Configure DNS A Record](#Configure-DNS-A-Record)
+  - [Post Deployment](#Post-Deployment-1)
+    - [Configure Identity-Aware Proxy (IAP)](#Configure-Identity-Aware-Proxy-IAP)
+    - [Finish Deployment](#Finish-Deployment)
+  - [Troubleshooting](#Troubleshooting)
+    - ["You don't have access"](#%22You-dont-have-access%22)
+    - ["Some components have errors"](#%22Some-components-have-errors%22)
+    - [“This site can't provide a secure connection”](#This-site-cant-provide-a-secure-connection)
+    - [“Connection Closed”](#Connection-Closed)
+    - [“Internal Server Error”](#Internal-Server-Error)
+    - [“Error: redirect_uri_mismatch”](#Error-redirecturimismatch)
 
 Custom Governance (CG) is a customizable customer-managed governance platform which lets you coordinate the unique set of rules which make your business work as a native part of your cloud environment.
 
@@ -68,6 +68,8 @@ Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 Below are detailed instructions for installing Custom Governance through the Google Cloud Platform (GCP) Marketplace UI.
 
 Custom Governance installed through Marketplace is a Kubernetes application on a Google Kubernetes Engine (GKE) cluster.
+
+**Due to security reasons, we only support running Custom Governance in Google Chrome. Custom Governance may not be loading properly in all other browsers.**
 
 ### Marketplace UI Deployment Details
 
@@ -331,7 +333,9 @@ The `n1-standard-4` machine type is a good choice that covers the minimum requir
 1. Click into the pool (default-pool) -> Security. Select the custom service account you created earlier.
 ![Custom Service Account 3](./images/custom-sa-cluster-3.png)
 1. Click `Create` to create your cluster with your custom SA!
-
+1. **After this cluster is created, connect to this cluster and add cluster-admin role binding to this custom SA**. Please run the following command to grand your service account with cluster-admin role where NAMESPACE's value by default is `default` and SERVICE_ACCOUNT is your custom SA:
+  
+    `kubectl create clusterrolebinding "${NAMESPACE}-${SERVICE_ACCOUNT}-rb" --clusterrole=cluster-admin --serviceaccount="${NAMESPACE}:${SERVICE_ACCOUNT}"`
 ### Create a GKE Cluster Through CLI
 
   * You can create a cluster with the scope through the [gcloud command-line tool](https://cloud.google.com/sdk/gcloud). You can run this command in the Cloud Shell to create a cluster with the **basic** requirements:
@@ -355,10 +359,10 @@ You will need to pass OAuth Credentials to Marketplace UI to properly configure 
        1.  Via Cloud Console visit [Menu > API & Services > OAuth consent screen](https://console.cloud.google.com/apis/credentials/consent), select user type and click create.
             * Selecting External will allow accounts outside of your organization to access Custom Governance
             * Selecting Internal will allow accounts only inside your organization to access Custom Governance. **We recommend to choose Internal as the user type.**
-       1.  Fill in the *App name*, *User support email* under App information, and *Email addresses* under Developer contact information. Then click save and continue.
+       2.  Fill in the *App name*, *User support email* under App information, and *Email addresses* under Developer contact information. Then click save and continue.
             * *App name* is the Application name you want to display on the user consent screen. You can name it as Custom Governance.
             * For *User support email* and *Email address*, you can fill in with your own email address.
-       1.  Continue clicking **SAVE AND CONTINUE** Button for the rest and it's done!
+       3.  Continue clicking **SAVE AND CONTINUE** Button for the rest and it's done!
 
    2. Creating OAuth Credentials. Below are detailed steps on how to create the OAuth Credentials.
        1.  Via Cloud Console visit [Menu > API & Services > Credentials](https://console.cloud.google.com/apis/credentials)
@@ -388,9 +392,9 @@ Once you have created your OAuth Credentials you will need the following to pass
 
     `gcloud compute addresses create { NAME } --global`
 
-    For example **cg-app-id**:
+    For example **cg-app-ip**:
 
-    `gcloud compute addresses create cg-app-id --global`
+    `gcloud compute addresses create cg-app-ip --global`
 
 *   **Or** you can reserve static external IP address through [cloud console UI](https://console.cloud.google.com/networking/addresses/add).
     *   **You MUST choose Global as the IP address type**
