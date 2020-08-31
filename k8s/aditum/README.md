@@ -301,8 +301,8 @@ To view the app, open the URL in your browser.
 
 We have minimum requirements for GKE clusters running Custom Governance [following GCP Best practices](https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances#best_practices):
 
-  1. We require a service account with the `editor` IAM role in order to allow Custom Governance to deploy successfully. 
-     * If you are deploying via [CLI installation](#Command-Line-Deployment) you will need to add the `Kubernetes Engine Admin` IAM role as well. 
+  1. We require a service account with the `editor` IAM role in order to allow Custom Governance to deploy successfully.
+     * If you are deploying via [CLI installation](#Command-Line-Deployment) you will need to add the `Kubernetes Engine Admin` IAM role as well.
      * By default the Compute Engine service account is used. If you would like to create a custom service account [click here](#Create-a-GKE-Cluster-With-Custom-Service-Account).
   2. [Configure the instance to run as that service account](#configuring-the-gke-cluster-to-run-as-a-custom-service-account).
   3. Ensure the instance has the `cloud-platform` scope to allow access to Google Cloud APIs. [Learn how to create a cluster with the scope here.](https://www.googleapis.com/auth/cloud-platform)
@@ -511,4 +511,3 @@ Add to your OAuth authorized redirect URIs:
 
 
 Where CLIENT_ID is your OAuth Client ID
-
