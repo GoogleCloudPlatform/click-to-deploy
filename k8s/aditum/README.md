@@ -334,9 +334,9 @@ The `n1-standard-4` machine type is a good choice that covers the minimum requir
 ![Custom Service Account 3](./images/custom-sa-cluster-3.png)
 1. Click `Create` to create your cluster with your custom SA!
 1. **After this cluster is created, connect to this cluster and add cluster-admin role binding to this custom SA**. Please run the following command to grant your service account with cluster-admin role.
-NAMESPACE is your kubernetest namespace in which you plan to install Custom Governance. Please make sure you use the same namespace that you will select in Marketplace Configuration UI, which by default is `default` and SERVICE_ACCOUNT is your custom SA:
+NAMESPACE is your kubernetest namespace in which you plan to install Custom Governance. Please make sure you use the same namespace that you will select in Marketplace Configuration UI, which by default is `default` and SERVICE_ACCOUNT_NAME is your custom SA prefix. For example, if your custom SA is cg-custom-sa@project_id.iam.gserviceaccount.com, SERVICE_ACCOUNT_NAME is cg-custom-sa:
   
-    `kubectl create clusterrolebinding "${NAMESPACE}-${SERVICE_ACCOUNT}-rb" --clusterrole=cluster-admin --serviceaccount="${NAMESPACE}:${SERVICE_ACCOUNT}"`
+    `kubectl create clusterrolebinding "${NAMESPACE}-${SERVICE_ACCOUNT_NAME}-rb" --clusterrole=cluster-admin --serviceaccount="${NAMESPACE}:${SERVICE_ACCOUNT_NAME}"`
 1. **Grant your Compute Engine default Service account with Dataflow worker and Storage Admin in IAM**. This is essential for running dataflow rego rule scanners in Custom Governance.
 
 ### Create a GKE Cluster Through CLI
