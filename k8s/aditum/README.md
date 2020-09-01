@@ -337,7 +337,7 @@ The `n1-standard-4` machine type is a good choice that covers the minimum requir
 NAMESPACE is your kubernetest namespace in which you plan to install Custom Governance. Please make sure you use the same namespace that you will select in Marketplace Configuration UI, which by default is `default` and SERVICE_ACCOUNT_NAME is your custom SA prefix. For example, if your custom SA is cg-custom-sa@project_id.iam.gserviceaccount.com, SERVICE_ACCOUNT_NAME is cg-custom-sa:
   
     `kubectl create clusterrolebinding "${NAMESPACE}-${SERVICE_ACCOUNT_NAME}-rb" --clusterrole=cluster-admin --serviceaccount="${NAMESPACE}:${SERVICE_ACCOUNT_NAME}"`
-1. **Grant your Compute Engine default Service account with Dataflow worker and Storage Admin in IAM**. This is essential for running dataflow rego rule scanners in Custom Governance.
+1. **Grant your Compute Engine default Service account with Dataflow worker and Storage Admin in IAM**. Note that Compute Engine default Service account will be created automatically and there will be a short latency. This is essential for running dataflow rego rule scanners in Custom Governance.
 
 ### Create a GKE Cluster Through CLI
 
