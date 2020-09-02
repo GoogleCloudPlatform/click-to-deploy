@@ -15,8 +15,9 @@ RUN set -eu \
 RUN set -eu \
     && wget -q -O /bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v1.12.0/bin/linux/amd64/kubectl \
     && chmod 755 /bin/kubectl \
-    && wget -q -O /opt/zookeeper-3.4.14.tar.gz https://www-eu.apache.org/dist/zookeeper/zookeeper-3.4.14/zookeeper-3.4.14.tar.gz \
-    && tar -xvf /opt/zookeeper-3.4.14.tar.gz
+    && wget -q -O /opt/zookeeper-3.6.1.tar.gz https://downloads.apache.org/zookeeper/zookeeper-3.6.1/apache-zookeeper-3.6.1-bin.tar.gz \
+    && tar -xvf /opt/zookeeper-3.6.1.tar.gz -C /opt \
+    && mv /opt/apache-zookeeper-3.6.1-bin /opt/zookeeper
 
 COPY tests/basic-suite.yaml /tests/basic-suite.yaml
 COPY tester.sh /tester.sh
