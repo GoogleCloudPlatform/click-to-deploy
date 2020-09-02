@@ -53,7 +53,7 @@ for node in ${cluster_hostname_list}; do
 
       systemctl start mariadb
       # Waiting for start
-      sleep 15
+      until mysqladmin ping; do sleep 1; done
       # Create replication users
       for minion in ${cluster_hostname_list}; do
         if [[ $minion != "${hostname}" ]]; then
@@ -75,7 +75,7 @@ for node in ${cluster_hostname_list}; do
 
       systemctl start mariadb
       # Waiting for start
-      sleep 15
+      until mysqladmin ping; do sleep 1; done
       # Change root password
       mysql --user=root -e "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('${mysql_root_password}'); FLUSH PRIVILEGES;"
       # Enable replication
