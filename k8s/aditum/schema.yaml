@@ -6,7 +6,7 @@ x-google-marketplace:
   solutionId: aditum
   # The release version is required in the schema and MUST match the
   # release tag on the the deployer. Must be in x.x.x format!
-  publishedVersion: 1.0.8
+  publishedVersion: 1.1.0
   publishedVersionMetadata:
     releaseNote: >-
       First release of Custom Governance.
