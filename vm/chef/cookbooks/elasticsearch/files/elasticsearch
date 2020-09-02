@@ -90,12 +90,12 @@ if [[ "${es_nodes_count}" -gt 1 ]]; then
 fi
 
 # Configure cluster discovery.
-sed -i 's\discovery.type: single-node\\g' "${es_config_file}"
-echo "discovery.seed_hosts: [ ${es_seed_hosts} ]" \
-  >> "${es_config_file}"
-
 if [[ "${es_nodes_count}" -gt 1 ]]; then
   echo "Cluster-mode selected with ${es_nodes_count} nodes."
+
+  sed -i 's\discovery.type: single-node\\g' "${es_config_file}"
+  echo "discovery.seed_hosts: [ ${es_seed_hosts} ]" \
+    >> "${es_config_file}"
 
   echo "cluster.initial_master_nodes: [ \"${es_first_hostname}\" ]" \
     >> "${es_config_file}"
