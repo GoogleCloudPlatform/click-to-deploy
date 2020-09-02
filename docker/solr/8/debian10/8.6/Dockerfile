@@ -88,14 +88,14 @@ RUN set -ex; \
   rm "/opt/solr-$SOLR_VERSION.tgz"*; \
   rm -Rf /opt/solr/docs/ /opt/solr/dist/{solr-core-$SOLR_VERSION.jar,solr-solrj-$SOLR_VERSION.jar,solrj-lib,solr-test-framework-$SOLR_VERSION.jar,test-framework}; \
   mkdir -p /opt/solr/server/solr/lib /docker-entrypoint-initdb.d /opt/docker-solr; \
-  chown -R 0:0 "/opt/solr-$SOLR_VERSION"; \
+  chown -R $SOLR_USER:$SOLR_GROUP "/opt/solr-$SOLR_VERSION"; \
   find "/opt/solr-$SOLR_VERSION" -type d -print0 | xargs -0 chmod 0755; \
   find "/opt/solr-$SOLR_VERSION" -type f -print0 | xargs -0 chmod 0644; \
   chmod -R 0755 "/opt/solr-$SOLR_VERSION/bin" "/opt/solr-$SOLR_VERSION/contrib/prometheus-exporter/bin/solr-exporter" /opt/solr-$SOLR_VERSION/server/scripts/cloud-scripts; \
   cp /opt/solr/bin/solr.in.sh /etc/default/solr.in.sh; \
   mv /opt/solr/bin/solr.in.sh /opt/solr/bin/solr.in.sh.orig; \
   mv /opt/solr/bin/solr.in.cmd /opt/solr/bin/solr.in.cmd.orig; \
-  chown root:0 /etc/default/solr.in.sh; \
+  chown $SOLR_USER:$SOLR_GROUP /etc/default/solr.in.sh; \
   chmod 0664 /etc/default/solr.in.sh; \
   mkdir -p /var/solr/data /var/solr/logs; \
   (cd /opt/solr/server/solr; cp solr.xml zoo.cfg /var/solr/data/); \
