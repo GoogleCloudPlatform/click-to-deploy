@@ -1,4 +1,6 @@
-# Copyright 2019 Google LLC
+#!/bin/bash
+#
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,15 +14,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 setup:
-- command: [docker, run, -d, -h, zk-1, --name, zk-$UNIQUE-id, '$IMAGE']
+- command: [docker, run, -d, -p, 8983:8983, --name, solr-$UNIQUE-id, '$IMAGE']
 - command: [sleep, 5s]
 
 teardown:
-- command: [docker, stop, zk-$UNIQUE-id]
-- command: [docker, rm, zk-$UNIQUE-id]
+- command: [docker, stop, solr-$UNIQUE-id]
+- command: [docker, rm, solr-$UNIQUE-id]
 
-target: zk-$UNIQUE-id
+target: solr-$UNIQUE-id
 tests:
 - name: Can connect to ZooKeeper
   command: [zkCli.sh, ls, /zookeeper]

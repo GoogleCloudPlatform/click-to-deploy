@@ -104,7 +104,7 @@ RUN set -ex; \
   find /var/solr -type f -print0 | xargs -0 chmod 0660; \
   sed -i -e "s/\"\$(whoami)\" == \"root\"/\$(id -u) == 0/" /opt/solr/bin/solr; \
   sed -i -e 's/lsof -PniTCP:/lsof -t -PniTCP:/' /opt/solr/bin/solr; \
-  chown -R "$SOLR_USER:0" /opt/solr-$SOLR_VERSION /docker-entrypoint-initdb.d /opt/docker-solr; \
+  chown -R "0:0" /opt/solr-$SOLR_VERSION /docker-entrypoint-initdb.d /opt/docker-solr; \
   chown -R "$SOLR_USER:0" /var/solr; \
   { command -v gpgconf; gpgconf --kill all || :; }; \
   rm -r "$GNUPGHOME"
