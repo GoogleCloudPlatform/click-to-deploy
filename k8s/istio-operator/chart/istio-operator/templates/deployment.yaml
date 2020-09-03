@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: '{{ .Release.Name }}'
+  name: istio-operator
+  namespace: '{{ .Values.operatorNamespace }}'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: istio-operator
+  template:
+    metadata:
+      labels:
+        name: istio-operator
+    spec:
+      containers:
+      - command:
+        - operator
+        - server
+        env:
+        - name: WATCH_NAMESPACE
+          value: '{{ .Values.istioNamespace }}'
+        - name: LEADER_ELECTION_NAMESPACE
+          value: '{{ .Values.operatorNamespace }}'
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: OPERATOR_NAME
+          value: '{{ .Values.operatorNamespace}}'
+        - name: WAIT_FOR_RESOURCES_TIMEOUT
+          value: 300s
+        - name: REVISION
+          value: ""
+        image: '{{ .Values.imageLocation }}'
+        imagePullPolicy: IfNotPresent
+        name: istio-operator
+        resources:
+          limits:
+            cpu: 200m
+            memory: 256Mi
+          requests:
+            cpu: 50m
+            memory: 128Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsGroup: 1337
+          runAsNonRoot: true
+          runAsUser: 1337
+      serviceAccountName: '{{ .Values.serviceAccountName }}'

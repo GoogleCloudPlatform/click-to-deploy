@@ -1,0 +1,3 @@
+operatorNamespace: '{{ .Values.operatorNamespace }}'
+istioNamespace: '{{ .Values.istioNamespace }}'
+serviceAccountName: '{{ .Values.serviceAccountName }}'

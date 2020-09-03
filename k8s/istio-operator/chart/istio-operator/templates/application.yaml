@@ -1,0 +1,65 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "{{ .Release.Name }}"
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+  annotations:
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers",
+      "product_id": {{ .Chart.Name | quote }}, "partner_name": "Google Click to Deploy"}'
+spec:
+  descriptor:
+    type: "Istio Operator"
+    version: "1.7.0"
+    description: |-
+      Istio Operator is an implementation of Kubernetes Operator that provides installations of Istio control planes.
+      # Support
+      Google does not offer support for this solution. However, community support is available. See
+      [the Istio community page](https://istio.io/latest/about/community/join/) for details.
+
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy Istio Operator'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/istio-operator/README.md
+    - description: 'Official documentation for Istio Operator'
+      url: https://istio.io/latest/docs/setup/install/standalone-operator
+    notes: |-
+      # Deploy an instance of Istio
+      Run the following command to deploy a default Istio instance (replace
+      $ISTIO_NAMESPACE with the namespace you choose as a parameter):
+
+      ```shell
+      kubectl apply -f - <<EOF
+      apiVersion: install.istio.io/v1alpha1
+      kind: IstioOperator
+      metadata:
+        namespace: $ISTIO_NAMESPACE
+        name: example-istiocontrolplane
+      spec:
+        profile: default
+      EOF
+      ```
+
+      Optionally, you can deploy the Istio instance to another namespace.
+
+      You can find additional information on different Istio profiles at the [official
+      Istio profile
+      page](https://istio.io/latest/docs/setup/additional-setup/config-profiles/). To
+      see all of the features that Istio offers, you might consider installing the "demo"
+      profile and using the [Istio example Bookinfo
+      Application](https://istio.io/latest/docs/examples/bookinfo/) to explore.
+
+      You can find other additional configuration options at the
+      [official Istio documentation
+      page](https://istio.io/latest/docs/setup/install/standalone-operator/).
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "{{ .Release.Name }}"
+  componentKinds:
+  - group: apps/v1
+    kind: Deployment
+  - group: v1
+    kind: Service
