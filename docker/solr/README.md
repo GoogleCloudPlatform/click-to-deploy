@@ -1,6 +1,6 @@
-# zookeeper-docker
+# solr-docker
 
-Container solution for ZooKeeper.
+Container solution for Apache Solr.
 Learn more about Apache Solr in [official documentation](https://zookeeper.apache.org/).
 
 ## Upstream
