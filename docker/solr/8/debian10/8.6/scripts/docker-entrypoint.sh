@@ -14,14 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Enable bash debug if DEBUG_DOCKER_ENTRYPOINT exists.
-if [[ "${DEBUG_DOCKER_ENTRYPOINT}" = "true" ]]; then
-    echo "!!! WARNING: DEBUG_DOCKER_ENTRYPOINT is enabled!"
-    echo "!!! WARNING: Use only for debugging. Do not use in production!"
-    set -x
-    env
-fi
-
 set -e
 
 # Clear some variables that we don't want runtime
