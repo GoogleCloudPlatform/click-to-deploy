@@ -7,7 +7,7 @@ ARG SOLR_VERSION={{ $solr.Version }}
 ARG SOLR_SHA512={{ $solr.Sha512 }}
 ARG SOLR_KEYS={{ $template.solrkeys }}
 
-C2D_RELEASE={{ $solr.Version }}
+ENV C2D_RELEASE={{ $solr.Version }}
 
 RUN set -ex; \
   apt-get update; \
