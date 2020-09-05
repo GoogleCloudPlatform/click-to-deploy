@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+  name: {{ template "istio_operator.CRDsJob" . }}
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: crd-job
+spec:
+  ttlSecondsAfterFinished: 300
+  backoffLimit: 0
+  completions: 1
+  parallelism: 1
+  template:
+    spec:
+      containers:
+      - command:
+        - "/bin/bash"
+        - "-ec"
+        - |
+          echo 'kubectl apply -f /crd-to-create';
+          kubectl apply -f /crd_to_create && echo 'Succeeded';
+          if [[ "$?" -ne 0 ]]; then
+            exit 1;
+          fi
+        image: {{ .Values.deployerHelm.image }}
+        imagePullPolicy: Always
+        name: crd-create
+        volumeMounts:
+        - name: crd-configmap
+          mountPath: /crd_to_create/
+      dnsPolicy: ClusterFirst
+      restartPolicy: Never
+      serviceAccountName: '{{ .Values.serviceAccountName }}'
+      volumes:
+      - name: crd-configmap
+        configMap:
+          name: {{ template "istio_operator.CRDsConfigMap" . }}

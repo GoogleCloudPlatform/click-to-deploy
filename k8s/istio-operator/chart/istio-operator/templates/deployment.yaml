@@ -54,4 +54,15 @@ spec:
           runAsGroup: 1337
           runAsNonRoot: true
           runAsUser: 1337
+      initContainers:
+      - command:
+        - /bin/bash
+        - -ec
+        - |
+          timeout 120 bash -c '
+          until kubectl get crd istiooperators.install.istio.io;
+            do echo "Waiting for Istio CRD to be created"; sleep 5;
+          done'
+        image: '{{ .Values.deployerHelm.image }}'
+        name: wait-for-crds-created
       serviceAccountName: '{{ .Values.serviceAccountName }}'

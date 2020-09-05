@@ -18,18 +18,17 @@ x-google-marketplace:
   clusterConstraints:
     k8sVersion: "1.16 - 1.18"
     resources:
-      - requests:
-          cpu: 4
-        replicas: 4
-        affinity:
-          simpleNodeAffinity:
-            type: REQUIRE_ONE_NODE_PER_REPLICA
+    - requests:
+        cpu: 4
+      replicas: 4
+      affinity:
+        simpleNodeAffinity:
+          type: REQUIRE_ONE_NODE_PER_REPLICA
     istio:
       type: UNSUPPORTED
   deployerServiceAccount:
     description: >
-      Creates the Istio CRDs, designated namespace, as well as starts the istio-operator
-      controller.
+      Creates the designated namespace, as well as starts the istio-operator controller.
     roles:
     - type: ClusterRole
       rulesType: CUSTOM
@@ -63,8 +62,8 @@ properties:
       type: SERVICE_ACCOUNT
       serviceAccount:
         description: >
-          Monitors the istioNamespace for IstioOperator CRs and creates, updates,
-          or configures
+          Installs CRDs and operator, and runs controller that monitors the
+          istioNamespace for IstioOperator CRs. Creates, updates, and configures
           control planes as necessary.
         roles:
         - type: ClusterRole
@@ -176,6 +175,10 @@ properties:
             - serviceaccounts
             verbs:
             - '*'
+  deployerHelm.image:
+    type: string
+    x-google-marketplace:
+      type: DEPLOYER_IMAGE
 required:
 - name
 - operatorNamespace
