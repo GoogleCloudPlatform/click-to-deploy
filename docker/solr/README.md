@@ -1,7 +1,7 @@
 # solr-docker
 
 Container solution for Apache Solr.
-Learn more about Apache Solr in [official documentation](https://zookeeper.apache.org/).
+Learn more about Apache Solr in [official documentation](https://lucene.apache.org/solr/).
 
 ## Upstream
 
