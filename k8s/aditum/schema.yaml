@@ -6,7 +6,7 @@ x-google-marketplace:
   solutionId: aditum
   # The release version is required in the schema and MUST match the
   # release tag on the the deployer. Must be in x.x.x format!
-  publishedVersion: 1.0.7
+  publishedVersion: 1.1.0
   publishedVersionMetadata:
     releaseNote: >-
       First release of Custom Governance.
@@ -77,14 +77,14 @@ properties:
       string:
         generatedProperties:
           base64Encoded: oAuth.clientSecretEncoded
-  certificate.hostname:
-    type: string
-    title: Domain Name to serve Custom Governance
-    description: The domain name that will point to the static IP address. Read the Installation Guide for more information
   deployment.staticIP:
     type: string
-    title: Name of Global Static IP Address
-    description: Please refer to the Installation Guide to create your Static IP Address. This is the name of the static address, not the IP address that is assigned
+    title: Name of Global Static IP Address, e.g. static-ip-name
+    description: Please refer to the Installation Guide to create your Static IP Address. This is the NAME of the static address, NOT the IP address that is assigned
+  certificate.hostname:
+    type: string
+    title: Full Domain Name to serve Custom Governance, e.g. cg.example.com
+    description: The full domain name that will point to the static IP address. Read the Installation Guide for more information
   controller.serviceAccount:
     type: string
     title: Kubernetes Service Account
@@ -99,7 +99,7 @@ properties:
           rulesFromRoleName: edit
   setupAttributes.initialEmail:
     type: string
-    title: Initial User Email
+    title: Initial End User Email e.g. user@example.com
     description:  The email address of the user that will be deploying/setting up Custom Governance
 required:
 - name

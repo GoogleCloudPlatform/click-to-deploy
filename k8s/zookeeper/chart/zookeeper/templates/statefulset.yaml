@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: zookeeper
 spec:
-  serviceName: {{ .Release.Name }}-zk-internal
+  serviceName: {{ .Release.Name }}-zk-headless
   replicas: {{ .Values.zookeeper.zkReplicas }}
   selector:
     matchLabels: *ZookeeperDeploymentLabels
@@ -26,7 +26,7 @@ spec:
                     - zookeeper
               topologyKey: "kubernetes.io/hostname"
       containers:
-      - name: node
+      - name: zookeeper
         imagePullPolicy: Always
         image: "{{ .Values.zookeeper.image.name }}:{{ .Values.zookeeper.image.tag }}"
         resources:
@@ -41,6 +41,14 @@ spec:
         - containerPort: {{ .Values.zookeeper.electionsPort }}
           name: leader-election
         env:
+        - name: JMXAUTH
+          value: "false"
+        - name: JMXDISABLE
+          value: "false"
+        - name: JMXPORT
+          value: "1099"
+        - name: JMXSSL
+          value: "false"
         - name : ZK_REPLICAS
           value: {{ .Values.zookeeper.zkReplicas | quote }}
         - name : ZK_HEAP_SIZE
@@ -59,20 +67,34 @@ spec:
           value: {{ .Values.zookeeper.serverPort | quote }}
         - name: ZK_ELECTION_PORT
           value: {{ .Values.zookeeper.electionsPort | quote }}
+        - name: ZOO_4LW_COMMANDS_WHITELIST
+          value: "*"
         readinessProbe:
           exec:
             command:
-            - "zkOk.sh"
+            - /bin/bash
+            - -ec
+            - |
+              echo ruok | nc 127.0.0.1 ${1:-2181}
           initialDelaySeconds: 10
           timeoutSeconds: 5
         livenessProbe:
           exec:
             command:
-            - "zkOk.sh"
+            - /bin/bash
+            - -ec
+            - |
+              zkServer.sh status
+        command:
+        - /bin/bash
+        - -ec
+        - /config-scripts/start.sh
         volumeMounts:
+        - name: config
+          mountPath: /config-scripts
         - name: datadir
           mountPath: /opt/zookeeper/data
-      - name: exporer
+      - name: exporter
         imagePullPolicy: Always
         image: "{{ .Values.exporter.image }}:{{ .Values.exporter.tag }}"
         ports:
@@ -102,6 +124,11 @@ spec:
       securityContext:
         runAsUser: 1000
         fsGroup: 1000
+      volumes:
+        - name: config
+          configMap:
+            name: {{ .Release.Name }}-config
+            defaultMode: 0555
   volumeClaimTemplates:
   - metadata:
       name: datadir
