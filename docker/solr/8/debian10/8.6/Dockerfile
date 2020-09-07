@@ -37,21 +37,22 @@ RUN set -ex; \
   mkdir -p "$GNUPGHOME"; \
   chmod 700 "$GNUPGHOME"; \
   echo "disable-ipv6" >> "$GNUPGHOME/dirmngr.conf"; \
-  for key in $SOLR_KEYS; do \
-    found=''; \
-    for server in \
-      ha.pool.sks-keyservers.net \
-      hkp://keyserver.ubuntu.com:80 \
-      hkp://p80.pool.sks-keyservers.net:80 \
-      pgp.mit.edu \
-    ; do \
-      echo "  trying $server for $key"; \
-      gpg --batch --keyserver "$server" --keyserver-options timeout=10 --recv-keys "$key" && found=yes && break; \
-      gpg --batch --keyserver "$server" --keyserver-options timeout=10 --recv-keys "$key" && found=yes && break; \
-    done; \
-    test -z "$found" && echo >&2 "error: failed to fetch $key from several disparate servers -- network issues?" && exit 1; \
-  done; \
-  exit 0
+  found='' && \
+	for server in \
+		pool.sks-keyservers.net \
+		na.pool.sks-keyservers.net \
+		eu.pool.sks-keyservers.net \
+		oc.pool.sks-keyservers.net \
+		ha.pool.sks-keyservers.net \
+		hkp://p80.pool.sks-keyservers.net:80 \
+		hkp://keyserver.ubuntu.com:80 \
+		pgp.mit.edu \
+	; do \
+		gpg --no-tty --keyserver $server --recv-keys $SOLR_KEYS \
+			&& found=yes && break; \
+	done; \
+	test -n "$found" \
+  && exit 0
 
 RUN set -ex; \
   export GNUPGHOME="/tmp/gnupg_home"; \
