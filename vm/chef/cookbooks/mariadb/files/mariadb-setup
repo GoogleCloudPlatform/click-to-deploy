@@ -40,7 +40,6 @@ readonly -f emit_msg
 
 # Loop through nodes in the cluster, set the first one, node 0, as the primary
 for node in ${cluster_hostname_list}; do
-  echo $node
   if [[ $node == "${hostname}" ]]; then
 
     if [[ ${server_id} == 1 ]]; then
