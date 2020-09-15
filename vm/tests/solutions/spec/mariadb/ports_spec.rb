@@ -11,23 +11,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
-apt_repository 'mariadb_repository' do
-  uri node['mariadb']['repo']['uri']
-  components node['mariadb']['repo']['components']
-  keyserver node['mariadb']['repo']['keyserver']
-  distribution false
-  trusted true
-  deb_src true
+require 'spec_helper'
+
+describe port(22) do
+  it { should be_listening }
 end
 
-apt_update 'update' do
-    action :update
+describe port(3306) do
+  it { should be_listening }
 end
-
-package 'mariadb-server' do
-  version node['mariadb']['version']
-end
-
-c2d_startup_script 'mariadb-setup'

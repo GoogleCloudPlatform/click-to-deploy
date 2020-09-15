@@ -11,23 +11,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
-apt_repository 'mariadb_repository' do
-  uri node['mariadb']['repo']['uri']
-  components node['mariadb']['repo']['components']
-  keyserver node['mariadb']['repo']['keyserver']
-  distribution false
-  trusted true
-  deb_src true
+require 'spec_helper'
+
+# example output
+# mysqld --version
+# mysqld  Ver 10.5.5-MariaDB-1:10.5.5+maria~buster-log for debian-linux-gnu on x86_64 (mariadb.org binary distribution)
+
+describe command('mysqld --version') do
+  its(:stdout) { should match /mysqld  Ver 10\.5\..* for debian-linux-gnu on x86_64 .mariadb.org binary distribution./ }
 end
-
-apt_update 'update' do
-    action :update
-end
-
-package 'mariadb-server' do
-  version node['mariadb']['version']
-end
-
-c2d_startup_script 'mariadb-setup'

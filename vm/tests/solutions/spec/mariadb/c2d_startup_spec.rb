@@ -11,23 +11,26 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
-apt_repository 'mariadb_repository' do
-  uri node['mariadb']['repo']['uri']
-  components node['mariadb']['repo']['components']
-  keyserver node['mariadb']['repo']['keyserver']
-  distribution false
-  trusted true
-  deb_src true
+require 'spec_helper'
+
+describe 'C2D startup config' do
+  describe service('google-c2d-startup.service') do
+    it { should be_enabled }
+  end
+
+  describe file('/var/lock/google_vm_config.lock') do
+    it { should_not exist }
+  end
 end
 
-apt_update 'update' do
-    action :update
-end
+describe 'C2D startup scripts should exists' do
+  describe file('/opt/c2d/scripts/00-manage-swap') do
+    it { should exist }
+  end
 
-package 'mariadb-server' do
-  version node['mariadb']['version']
-end
+  describe file('/opt/c2d/scripts/01-mariadb-setup') do
+    it { should exist }
+  end
 
-c2d_startup_script 'mariadb-setup'
+end
