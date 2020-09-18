@@ -46,30 +46,32 @@ function wait_for_port() {
 #######################################
 function wait_for_green_elastic_cluster() {
   local -r hostname="$1"
-  local -r nodes="$2"
+  local -r protocol="$2"
+  local -r nodes="$3"
 
-  local -r health_url="http://${hostname}:9200/_cluster/health?format=yaml"
+
+  local -r health_url="${protocol}://${hostname}:9200/_cluster/health?format=yaml"
   local -r nodes_health_url="${health_url}&filter_path=number_of_nodes"
   local -r status_health_url="${health_url}&filter_path=status"
 
   # If no password specified, don't leave auth_params empty
   local -a auth_params=()
-  if [[ "$#" -eq 3 ]]; then
-    local -r password="$3"
+  if [[ "$#" -eq 4 ]]; then
+    local -r password="$4"
     auth_params=(-u "elastic:${password}")
   fi
 
   # Wait for exact number of nodes
-  until curl -s "${auth_params[@]}" "${nodes_health_url}" | grep "${nodes}"; do
+  until curl -k -s "${auth_params[@]}" "${nodes_health_url}" | grep "${nodes}"; do
     echo "Waiting for ${nodes} nodes in cluster..."
-    echo "$(curl -s "${auth_params[@]}" "${nodes_health_url}")"
+    echo "$(curl -k -s "${auth_params[@]}" "${nodes_health_url}")"
     sleep 5
   done
 
   # Wait for status 'green'
-  until curl -s "${auth_params[@]}" "${status_health_url}" | grep green; do
+  until curl -k -s "${auth_params[@]}" "${status_health_url}" | grep green; do
     echo "Waiting for green status in cluster.."
-    echo "$(curl -s "${auth_params[@]}" "${status_health_url}")"
+    echo "$(curl -k -s "${auth_params[@]}" "${status_health_url}")"
     sleep 3
   done
 
@@ -94,15 +96,26 @@ function change_user_password() {
 
   local -r user_to_change="$4"
   local -r new_pass="$5"
+  local -r protocol="$6"
 
-  local -r changepass_url="http://${hostname}:9200/_xpack/security/user/${user_to_change}/_password"
+  local -r changepass_url="${protocol}://${hostname}:9200/_xpack/security/user/${user_to_change}/_password"
+  local response=""
 
   echo "Changing elasticsearch password"
-  local -r response="$(curl -X POST \
-    -u "${auth_user}:${auth_user_pass}" \
-    -d "{\"password\":\"${new_pass}\"}" \
-    -H "Content-Type: application/json" \
-    "${changepass_url}")"
+
+  if [[ "${protocol}" == "http" ]]; then
+    response="$(curl -X POST \
+      -u "${auth_user}:${auth_user_pass}" \
+      -d "{\"password\":\"${new_pass}\"}" \
+      -H "Content-Type: application/json" \
+      "${changepass_url}")"
+  else
+    response="$(curl -k -X POST \
+      -u "${auth_user}:${auth_user_pass}" \
+      -d "{\"password\":\"${new_pass}\"}" \
+      -H "Content-Type: application/json" \
+      "${changepass_url}")"
+  fi
 
   if [[ "${response}" != "{}" ]]; then
     echo "Password change failed: ${response}"
@@ -136,7 +149,9 @@ function fill_in_config_template() {
 # https://www.elastic.co/guide/en/elasticsearch/reference/current/built-in-users.html
 #######################################
 function autogenerate_passwords() {
-  /usr/share/elasticsearch/bin/elasticsearch-setup-passwords auto -b \
+  local protocol="$1"
+
+  /usr/share/elasticsearch/bin/elasticsearch-setup-passwords auto -b -u "${protocol}://localhost:9200" \
     | grep "PASSWORD" > "${es_pwd_file}"
 }
 
@@ -177,4 +192,41 @@ function build_seed_hosts() {
     es_nodes_json+="\"${node}\" "
   done
   echo "${es_nodes_json}" | sed 's/ /,/g'
+}
+
+#######################################
+# Generate instance.yaml to be used on elasticsearch-certutil
+# Arguments:
+#  String with nodes separated by spaces.
+# Outputs:
+#  YAML content to be used on elasticsearch-certutil
+#######################################
+function generate_certutil_config() {
+  local -r nodes=( $(echo "$1") )
+  local -r current_project="$(get_project_id)"
+  local node_idx=0
+
+  printf "instances:\n"
+  for node in "${nodes[@]}"; do
+    printf -- "- name: node${node_idx}\n"
+    printf -- "  dns: [\"${node}.c.${current_project}.internal\"]\n"
+    node_idx=$((node_idx+1))
+  done
+}
+
+
+#######################################
+# Apply security settings to elasticsearch config file
+# Arguments:
+#  Elasticsearch configuration filepath
+#  Node index
+# Outputs:
+#  YAML content to be used on elasticsearch-certutil
+#######################################
+function apply_secure_config() {
+  export current_node_idx="$2"
+  local config_file="$1"
+  local patch_file="/opt/c2d/patch-ssl"
+  local https_config="$(cat ${patch_file} | envsubst)"
+  echo "${https_config}" >> "${config_file}"
 }
