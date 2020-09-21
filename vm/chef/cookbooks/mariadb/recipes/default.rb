@@ -23,7 +23,7 @@ apt_repository 'mariadb_repository' do
 end
 
 apt_update 'update' do
-    action :update
+  action :update
 end
 
 package 'mariadb-server' do
