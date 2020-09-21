@@ -2,9 +2,10 @@
 - [Installation](#Installation)
   - [Before you get started](#Before-you-get-started)
   - [Quick install with Google Cloud Marketplace](#Quick-install-with-Google-Cloud-Marketplace)
+  - [Prerequisites](#Prerequisites)
     - [Marketplace UI Deployment Details](#Marketplace-UI-Deployment-Details)
   - [Command line deployment](#Command-line-deployment)
-    - [Prerequisites](#Prerequisites)
+    - [Prerequisites](#Prerequisites-1)
       - [Set up command line tools](#Set-up-command-line-tools)
       - [Enable required APIs](#Enable-required-APIs)
       - [Complete resource prerequisites](#Complete-resource-prerequisites)
@@ -70,6 +71,12 @@ Below are detailed instructions for installing Custom Governance through the Goo
 Custom Governance installed through Marketplace is a Kubernetes application on a Google Kubernetes Engine (GKE) cluster.
 
 **Due to security reasons, we only support running Custom Governance in Google Chrome or Safari. Custom Governance may not be loading properly in all other browsers.**
+
+## Prerequisites
+The person performing the onboarding needs to be able to grant the following IAM roles to a service account:
+* **Project Editor**
+* **Storage Admin**
+* **Service Account Token Creator**
 
 ### Marketplace UI Deployment Details
 
@@ -322,7 +329,7 @@ The `n1-standard-4` machine type is a good choice that covers the minimum requir
 ![Service Account 1](./images/service-account-1.png)
 1. Click `Create Service Account` and give the service account a name (e.g. cg-custom-sa)
 ![Service Account 2](./images/service-account-2.png)
-1. Chose the `Editor` role for the service account. The service account will be used to run Custom Governance.
+1. Chose the `Editor`, `Storage Admin`, and `Service Account Token Creator` role for the service account. The service account will be used to run Custom Governance.
 ![Service Account 3](./images/service-account-3.png)
 1. Provide users with permission to utilize and administer the service account
 ![Service Account 4](./images/service-account-4.png)
@@ -337,7 +344,6 @@ The `n1-standard-4` machine type is a good choice that covers the minimum requir
 NAMESPACE is your kubernetest namespace in which you plan to install Custom Governance. Please make sure you use the same namespace that you will select in Marketplace Configuration UI, which by default is `default` and SERVICE_ACCOUNT_NAME is your custom SA prefix. For example, if your custom SA is cg-custom-sa@project_id.iam.gserviceaccount.com, SERVICE_ACCOUNT_NAME is cg-custom-sa:
   
     `kubectl create clusterrolebinding "${NAMESPACE}-${SERVICE_ACCOUNT_NAME}-rb" --clusterrole=cluster-admin --serviceaccount="${NAMESPACE}:${SERVICE_ACCOUNT_NAME}"`
-1. **Grant your Compute Engine default Service account with Dataflow worker and Storage Admin in IAM**. Note that Compute Engine default Service account will be created automatically and there will be a short latency. This is essential for running dataflow rego rule scanners in Custom Governance.
 
 ### Create a GKE Cluster Through CLI
 
@@ -362,10 +368,10 @@ You will need to pass OAuth Credentials to Marketplace UI to properly configure 
        1.  Via Cloud Console visit [Menu > API & Services > OAuth consent screen](https://console.cloud.google.com/apis/credentials/consent), select user type and click create.
             * Selecting External will allow accounts outside of your organization to access Custom Governance
             * Selecting Internal will allow accounts only inside your organization to access Custom Governance. **We recommend to choose Internal as the user type.**
-       1.  Fill in the *App name*, *User support email* under App information, and *Email addresses* under Developer contact information. Then click save and continue.
+       2.  Fill in the *App name*, *User support email* under App information, and *Email addresses* under Developer contact information. Then click save and continue.
             * *App name* is the Application name you want to display on the user consent screen. You can name it as Custom Governance.
             * For *User support email* and *Email address*, you can fill in with your own email address.
-       1.  Continue clicking **SAVE AND CONTINUE** Button for the rest and it's done!
+       3.  Continue clicking **SAVE AND CONTINUE** Button for the rest and it's done!
 
    2. Creating OAuth Credentials. Below are detailed steps on how to create the OAuth Credentials.
        1.  Via Cloud Console visit [Menu > API & Services > Credentials](https://console.cloud.google.com/apis/credentials)
