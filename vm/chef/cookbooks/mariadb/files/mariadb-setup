@@ -1,0 +1,101 @@
+#!/bin/bash -eu
+#
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+source /opt/c2d/c2d-utils || exit 1
+
+set -o pipefail
+
+readonly hostname="$(hostname)"
+readonly mysql_root_password="$(get_attribute_value "MYSQL_ROOT_PASSWORD")"
+readonly mysql_replication_password="$(get_attribute_value "MYSQL_REPLICATION_PASSWORD")"
+
+readonly root_from_anywhere="$(get_attribute_value "MYSQL_ROOT_ANYWHARE_ALLOW")"
+
+# Get the list of MariaDB nodes
+readonly cluster_hostname_list="$(get_attribute_value "ENV_MARIADB_NODE_HOSTNAMES" | tr '|' ' ')"
+echo "MariaDB instances: ${cluster_hostname_list}"
+
+# Bootstrap the cluster
+server_id=1
+
+# Emits a timestamped message to the logs
+emit_msg() {
+  echo "$(date +"%I:%M:%S")" "${@}"
+}
+readonly -f emit_msg
+
+# Loop through nodes in the cluster, set the first one, node 0, as the primary
+for node in ${cluster_hostname_list}; do
+  if [[ $node == "${hostname}" ]]; then
+
+    if [[ ${server_id} == 1 ]]; then
+      # Bootstrap primary node
+      systemctl stop mariadb
+      # Enable networking
+      sed -i "s/.*bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/mariadb.conf.d/50-server.cnf
+      # Set server id and enable binlog
+      echo -e "[mysqld]\nserver-id=${server_id}\nlog_bin=/var/log/mysql/mysql-bin.log\nexpire_logs_days=10\nmax_binlog_size=1000M" > /etc/mysql/conf.d/replication.cnf
+
+      systemctl start mariadb
+      # Waiting for start
+      until mysqladmin ping; do sleep 1; done
+      # Create replication users
+      for minion in ${cluster_hostname_list}; do
+        if [[ $minion != "${hostname}" ]]; then
+          host=$(getent hosts "${minion}" | awk {'print $2'})
+          mysql --user=root -e "CREATE USER 'replication_user'@'${host}' IDENTIFIED BY '${mysql_replication_password}';"
+          mysql --user=root -e "GRANT REPLICATION SLAVE ON *.* TO 'replication_user'@'${host}';"
+        fi
+      done
+      # Change root password
+      mysql --user=root -e "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('${mysql_root_password}'); FLUSH PRIVILEGES;"
+      # Create root user with possibility authorization from anywhere
+      if [[ $root_from_anywhere == "True" ]]; then
+        mysql --user=root -e "CREATE USER 'root'@'%' IDENTIFIED BY '${mysql_root_password}';"
+        mysql --user=root -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION";
+      fi
+
+    else
+      # Bootstrap secondary nodes
+      systemctl stop mariadb
+      # Enable networking
+      sed -i "s/.*bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/mariadb.conf.d/50-server.cnf
+      # Set server id
+      echo -e "[mysqld]\nserver-id=${server_id}" > /etc/mysql/conf.d/serverid.cnf
+
+      systemctl start mariadb
+      # Waiting for start
+      until mysqladmin ping; do sleep 1; done
+      # Change root password
+      mysql --user=root -e "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('${mysql_root_password}'); FLUSH PRIVILEGES;"
+
+      # Create root user with possibility authorization from anywhere
+      if [[ $root_from_anywhere == "True" ]]; then
+        mysql --user=root -e "CREATE USER 'root'@'%' IDENTIFIED BY '${mysql_root_password}';"
+        mysql --user=root -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION";
+      fi
+
+     # Enable replication
+      mysql --user=root -e "CHANGE MASTER TO master_host='$(echo "${cluster_hostname_list}" | cut -f 1 -d ' ')', master_port=3306, master_user='replication_user', master_password='${mysql_replication_password}', master_use_gtid=current_pos; START SLAVE;"
+
+    fi
+
+    emit_msg "Node ${server_id} is now running."
+  fi
+
+  (( server_id += 1 ))
+done
