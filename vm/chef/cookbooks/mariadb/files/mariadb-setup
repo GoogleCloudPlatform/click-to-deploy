@@ -22,7 +22,7 @@ readonly hostname="$(hostname)"
 readonly mysql_root_password="$(get_attribute_value "MYSQL_ROOT_PASSWORD")"
 readonly mysql_replication_password="$(get_attribute_value "MYSQL_REPLICATION_PASSWORD")"
 
-readonly root_from_anywhere="$(get_attribute_value "MYSQL_ROOT_ANYWHARE_ALLOW")"
+readonly root_from_anywhere="$(get_attribute_value "MYSQL_ROOT_ANYWHERE_ALLOW")"
 
 # Get the list of MariaDB nodes
 readonly cluster_hostname_list="$(get_attribute_value "ENV_MARIADB_NODE_HOSTNAMES" | tr '|' ' ')"
