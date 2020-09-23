@@ -168,7 +168,7 @@ export PROMETHEUS_REPLICAS=2
 Configure the container images:
 
 ```shell
-TAG=2.2
+TAG=2.11
 export IMAGE_PROMETHEUS="marketplace.gcr.io/google/prometheus:${TAG}"
 export IMAGE_ALERTMANAGER="marketplace.gcr.io/google/prometheus/alertmanager:${TAG}"
 export IMAGE_KUBE_STATE_METRICS="marketplace.gcr.io/google/prometheus/kubestatemetrics:${TAG}"
