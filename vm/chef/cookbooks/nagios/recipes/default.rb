@@ -17,7 +17,9 @@ include_recipe 'apache2::default'
 include_recipe 'apache2::mod-rewrite'
 include_recipe 'apache2::rm-index'
 
-execute 'apt-get update'
+apt_update do
+  action :update
+end
 
 package 'install packages core' do
   package_name node['nagios']['packages']['core']

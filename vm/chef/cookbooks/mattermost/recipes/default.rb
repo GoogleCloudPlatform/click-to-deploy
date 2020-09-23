@@ -15,8 +15,8 @@
 include_recipe 'mysql'
 include_recipe 'git'
 
-execute 'Update Sources' do
-  command 'apt-get update'
+apt_update do
+  action :update
 end
 
 package 'Install Packages' do

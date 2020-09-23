@@ -28,7 +28,9 @@ apt_repository 'add_elastic_co_repo' do
   trusted true
 end
 
-execute 'apt-get update'
+apt_update do
+  action :update
+end
 
 # Install elasticsearch
 package 'elasticsearch' do
