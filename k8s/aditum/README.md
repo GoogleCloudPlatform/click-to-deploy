@@ -3,8 +3,8 @@
   - [Before you get started](#Before-you-get-started)
   - [Quick install with Google Cloud Marketplace](#Quick-install-with-Google-Cloud-Marketplace)
   - [Prerequisites](#Prerequisites)
-    - [Marketplace UI Deployment Details](#Marketplace-UI-Deployment-Details)
-  - [Command line deployment](#Command-line-deployment)
+  - [Option1: Marketplace UI Deployment Details](#Option1-Marketplace-UI-Deployment-Details)
+  - [Option2: Command line deployment](#Option2-Command-line-deployment)
     - [Prerequisites](#Prerequisites-1)
       - [Set up command line tools](#Set-up-command-line-tools)
       - [Enable required APIs](#Enable-required-APIs)
@@ -80,7 +80,7 @@ The person performing the onboarding needs to be able to grant the following IAM
 * **Service Account Token Creator**
 
 The person will also need to:
-* Have access to a VM/desktop/laptop that can create and ssh to a private GKE cluster if you wish to install Custom Governance in private cluster.
+* Have access to a VM/desktop/laptop that can create a private GKE cluster and ssh if using command line installation if you wish to install Custom Governance in private cluster.
 * Have the ability to configure the following resource during the installation process:
   * GKE cluster
   * IAP
@@ -89,7 +89,7 @@ The person will also need to:
   * **Cloud Asset Owner** role granting to the resources to be monitored
 
 
-### Marketplace UI Deployment Details
+## Option1: Marketplace UI Deployment Details
 
 1. [Create a project](https://cloud.google.com/resource-manager/docs/creating-managing-projects#before_you_begin)
  where Custom Governance can be deployed.
@@ -116,7 +116,7 @@ The person will also need to:
    8. **Set up Initial User Email.** This will be the user email address that will be deploying/setting up Custom Governance. Custom Governance will check for this email address even after the user has passed through IAP.
    9.  **Click “Deploy” when you are ready.** Deployment usually will take around ten minutes or longer. Even after deployment is successful the cg-ingress may take longer to become ready. This is completely normal. When you find cg-ingress is ready on [cloud console](https://console.cloud.google.com/kubernetes/discovery), it means that the deployment succeeds! You can jump to our [Post Deployment Section](#Post-Deployment) once it's ready. We still have a few steps before you can explore Custom Governance.
 
-## Command line deployment
+## Option2: Command line deployment
 
 You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local
 workstation to follow the steps below.
