@@ -75,8 +75,19 @@ Custom Governance installed through Marketplace is a Kubernetes application on a
 ## Prerequisites
 The person performing the onboarding needs to be able to grant the following IAM roles to a service account:
 * **Project Editor**
+* **Dataflow Worker**
 * **Storage Admin**
 * **Service Account Token Creator**
+
+The person will also need to:
+* Have access to a VM/desktop/laptop that can create and ssh to a private GKE cluster if you wish to install Custom Governance in private cluster.
+* Have the ability to configure the following resource during the installation process:
+  * GKE cluster
+  * IAP
+  * Global static IP
+  * DNS A record configuration
+  * **Cloud Asset Owner** role granting to the resources to be monitored
+
 
 ### Marketplace UI Deployment Details
 
@@ -329,7 +340,7 @@ The `n1-standard-4` machine type is a good choice that covers the minimum requir
 ![Service Account 1](./images/service-account-1.png)
 1. Click `Create Service Account` and give the service account a name (e.g. cg-custom-sa)
 ![Service Account 2](./images/service-account-2.png)
-1. Chose the `Editor`, `Storage Admin`, and `Service Account Token Creator` role for the service account. The service account will be used to run Custom Governance.
+1. Chose the `Editor`, `Storage Admin`, `Dataflow Worker` and `Service Account Token Creator` role for the service account. The service account will be used to run Custom Governance.
 ![Service Account 3](./images/service-account-3.png)
 1. Provide users with permission to utilize and administer the service account
 ![Service Account 4](./images/service-account-4.png)
