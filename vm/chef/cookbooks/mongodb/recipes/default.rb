@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-execute 'apt-get update'
+apt_update do
+  action :update
+end
 
 package 'install_temp_package' do
   package_name node['mongodb']['temp_packages']

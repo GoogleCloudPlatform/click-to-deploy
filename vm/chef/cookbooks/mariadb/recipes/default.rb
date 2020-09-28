@@ -31,7 +31,7 @@ package 'mariadb-server' do
 end
 
 service 'mysql' do
-    action [ :enable ]
+  action [ :enable ]
 end
 
 c2d_startup_script 'mariadb-setup'
