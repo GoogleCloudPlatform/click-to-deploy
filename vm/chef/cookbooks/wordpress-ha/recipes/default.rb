@@ -22,7 +22,7 @@ include_recipe 'php74::module_mbstring'
 include_recipe 'php74::module_mysql'
 include_recipe 'php74::module_xml'
 
-apt_update 'update' do
+apt_update do
   action :update
 end
 

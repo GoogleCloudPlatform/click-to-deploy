@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2020 Google LLC
+# Copyright 2020 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
 source /opt/c2d/c2d-utils || exit 1
 
@@ -23,7 +22,7 @@ readonly hostname="$(hostname)"
 readonly mysql_root_password="$(get_attribute_value "MYSQL_ROOT_PASSWORD")"
 readonly mysql_replication_password="$(get_attribute_value "MYSQL_REPLICATION_PASSWORD")"
 
-readonly root_from_anywhere="$(get_attribute_value "MYSQL_ROOT_ANYWHARE_ALLOW")"
+readonly root_from_anywhere="$(get_attribute_value "MYSQL_ROOT_ANYWHERE_ALLOW")"
 
 # Get the list of MariaDB nodes
 readonly cluster_hostname_list="$(get_attribute_value "ENV_MARIADB_NODE_HOSTNAMES" | tr '|' ' ')"

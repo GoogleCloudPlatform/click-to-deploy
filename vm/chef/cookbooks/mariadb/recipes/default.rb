@@ -30,4 +30,8 @@ package 'mariadb-server' do
   version node['mariadb']['version']
 end
 
+service 'mysql' do
+  action [ :enable ]
+end
+
 c2d_startup_script 'mariadb-setup'
