@@ -1,0 +1,48 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+# this file except in compliance with the License. You may obtain a copy of the
+# License at
+
+# http://www.apache.org/licenses/LICENSE-2.0
+
+# Unless required by applicable law or agreed to in writing, software distributed
+# under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+# CONDITIONS OF ANY KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations under the License.
+
+_variables:
+  from10: &from10 'gcr.io/cloud-marketplace/google/debian10'
+
+versions:
+  # amppackager 1.0.1
+  - dir: '1/debian10/1.0.1'
+    repo: 'amppackager'
+    tags:
+    - '1.0.1-debian10'
+    - '1.0.1'
+    - '1.0'
+    - '1.0-debian10'
+    - '1-debian10'
+    - '1'
+    - 'latest'
+    from: *from10
+    packages:
+      amppackager:
+        version: 1.0.1
+        sha256: 735a4bea3ba058bff48709d484ad143046402f95971c4eb6d0ad8403e4a85632
+  # amppackager 1.0.0
+  - dir: '1/debian10/1.0'
+    repo: 'amppackager'
+    tags:
+    - '1.0.0-debian10'
+    - '1.0.0'
+    from: *from10
+    packages:
+      amppackager:
+        version: 1.0.0
+        sha256: 735a4bea3ba058bff48709d484ad143046402f95971c4eb6d0ad8403e4a85632
+
+# Enable parallel build.
+cloudbuild:
+  enable_parallel: false
