@@ -42,6 +42,7 @@ x-google-marketplace:
          metrics.image:
           type: FULL
 
+# An arbitrary change to trigger integration tests
 properties:
   name:
     type: string
