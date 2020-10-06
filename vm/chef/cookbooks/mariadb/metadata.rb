@@ -12,21 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'c2d-config::create-self-signed-certificate'
-
-apt_repository 'grafana' do
-  uri node['grafana']['repo']['uri']
-  components node['grafana']['repo']['components']
-  distribution false
-  key node['grafana']['repo']['key']
-end
-
-apt_update 'update' do
-  action :update
-  retries 5
-  retry_delay 30
-end
-
-package 'grafana'
-
-c2d_startup_script 'grafana'
+name 'mariadb'
+supports 'debian'

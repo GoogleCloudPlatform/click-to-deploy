@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,21 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'c2d-config::create-self-signed-certificate'
+require 'spec_helper'
 
-apt_repository 'grafana' do
-  uri node['grafana']['repo']['uri']
-  components node['grafana']['repo']['components']
-  distribution false
-  key node['grafana']['repo']['key']
+# example output
+# mysqld --version
+# mysqld  Ver 10.5.5-MariaDB-1:10.5.5+maria~buster-log for debian-linux-gnu on x86_64 (mariadb.org binary distribution)
+
+describe command('mysqld --version') do
+  its(:stdout) { should match /mysqld  Ver 10\.5\..* for debian-linux-gnu on x86_64 .mariadb.org binary distribution./ }
 end
-
-apt_update 'update' do
-  action :update
-  retries 5
-  retry_delay 30
-end
-
-package 'grafana'
-
-c2d_startup_script 'grafana'

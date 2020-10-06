@@ -18,31 +18,31 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 1/debian9/1.34
+- dir: 1/debian9/1.35
   from: marketplace.gcr.io/google/php7-apache2:7.3
   packages:
     composer:
-      sha256: 8f16aa77b1236ed40855d8d141c0a939d108a939c8e73f9f32eadd3f05f181b9
-      version: 1.10.10
+      sha256: 5ca7445cfd48dd27c5a84aa005a47b4d9fd91132313830609875df3a6973708f
+      version: 1.10.13
     mediawiki:
-      major: '1.34'
-      sha512: ea95b46b746c0c180b5cb3b8a2263a2f94207eadbb1638c2113e97b1503c3f0a4d82a2107ce4cabca4790512b81564bda49defe30ac0fdb9bddf3230d6201f8b
-      version: 1.34.2
+      major: '1.35'
+      sha512: 0d3d5b464abc2fdea2aa798bdf7fc53d5269852d9ed3f787710528505bbccfed2796b0e2459f5776929f3f0f207a145ae4a8f13e3040322e22d59481a71cfcde
+      version: 1.35.0
   repo: mediawiki1-php7-apache
   tags:
-  - 1.34.2-debian9
-  - 1.34-debian9
+  - 1.35.0-debian9
+  - 1.35-debian9
   - 1-debian9
-  - 1.34.2
-  - '1.34'
+  - 1.35.0
+  - '1.35'
   - '1'
   - latest
 - dir: 1/debian9/1.33
   from: marketplace.gcr.io/google/php7-apache2:7.3
   packages:
     composer:
-      sha256: 8f16aa77b1236ed40855d8d141c0a939d108a939c8e73f9f32eadd3f05f181b9
-      version: 1.10.10
+      sha256: 5ca7445cfd48dd27c5a84aa005a47b4d9fd91132313830609875df3a6973708f
+      version: 1.10.13
     mediawiki:
       major: '1.33'
       sha512: e37280b4c14bfdae3480b8f99672da5c93761f4f80019104d5df24affe0c8447881c6ff85f32d16381ee74a3ce7a083f4dda2e0a24bd6687fbf0b41f11f0564f

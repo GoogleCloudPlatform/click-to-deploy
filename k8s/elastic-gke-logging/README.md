@@ -464,10 +464,10 @@ run [`scripts/create-backup-infra.sh`](scripts/create-backup-infra.sh):
 
 ```shell
 scripts/create-backup-infra.sh \
-  --app elasticsearch-1 \
+  --app elastic-gke-logging-1 \
   --namespace default \
   --disk-size 10Gi \
-  --backup-claim elasticsearch-1-backup
+  --backup-claim elastic-gke-logging-1-backup
 ```
 
 ### Patch the Elasticsearch StatefulSet to mount a backup disk
@@ -478,9 +478,9 @@ run the patch and automatically perform a rolling update on the StatefulSet, run
 
 ```shell
 scripts/patch-sts-for-backup.sh \
-  --app elasticsearch-1 \
+  --app elastic-gke-logging-1 \
   --namespace default \
-  --backup-claim elasticsearch-1-backup
+  --backup-claim elastic-gke-logging-1-backup
 ```
 
 ### Register the snapshot repository in the Elasticsearch cluster
