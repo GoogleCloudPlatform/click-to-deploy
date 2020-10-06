@@ -76,7 +76,7 @@ function wait_for_green_elastic_cluster() {
   done
 
   echo "Cluster status:"
-  echo "$(curl -s "${auth_params[@]}" "${health_url}")"
+  echo "$(curl -k -s "${auth_params[@]}" "${health_url}")"
 }
 
 #######################################
