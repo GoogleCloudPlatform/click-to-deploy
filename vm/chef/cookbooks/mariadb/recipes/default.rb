@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,22 +11,27 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
-include_recipe 'c2d-config::create-self-signed-certificate'
-
-apt_repository 'grafana' do
-  uri node['grafana']['repo']['uri']
-  components node['grafana']['repo']['components']
+apt_repository 'mariadb_repository' do
+  uri node['mariadb']['repo']['uri']
+  components node['mariadb']['repo']['components']
+  keyserver node['mariadb']['repo']['keyserver']
   distribution false
-  key node['grafana']['repo']['key']
+  trusted true
+  deb_src true
 end
 
 apt_update 'update' do
   action :update
-  retries 5
-  retry_delay 30
 end
 
-package 'grafana'
+package 'mariadb-server' do
+  version node['mariadb']['version']
+end
 
-c2d_startup_script 'grafana'
+service 'mysql' do
+  action [ :enable ]
+end
+
+c2d_startup_script 'mariadb-setup'
