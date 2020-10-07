@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.FROM gcr.io/cloud-marketplace/google/debian10
 
-ARG AMPPACKAGER_VERSION=1.0.0
-
 # Use an official Go runtime as a parent image
 FROM golang:1.13 as builder
 
@@ -72,7 +70,7 @@ ENV PATH=$PATH:.
 # manually synced with C2D_RELEASE in the other Docker images for AMP Packager
 # Deployer currently in https://github.com/banaag/click-to-deploy but will move
 # to https://github.com/GoogleCloudPlatform/click-to-deploy.
-ENV C2D_RELEASE="${AMPPACKAGER_VERSION}"
+ENV C2D_RELEASE=1.0.0
 
 COPY docker-entrypoint.sh /
 
