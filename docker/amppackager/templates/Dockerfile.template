@@ -16,8 +16,6 @@
 
 FROM {{ .From }}
 
-ARG AMPPACKAGER_VERSION={{ $amppackager.Version }}
-
 # Use an official Go runtime as a parent image
 FROM golang:1.13 as builder
 
@@ -76,7 +74,7 @@ ENV PATH=$PATH:.
 # manually synced with C2D_RELEASE in the other Docker images for AMP Packager
 # Deployer currently in https://github.com/banaag/click-to-deploy but will move
 # to https://github.com/GoogleCloudPlatform/click-to-deploy.
-ENV C2D_RELEASE="${AMPPACKAGER_VERSION}"
+ENV C2D_RELEASE={{ $amppackager.Version }}
 
 COPY docker-entrypoint.sh /
 
