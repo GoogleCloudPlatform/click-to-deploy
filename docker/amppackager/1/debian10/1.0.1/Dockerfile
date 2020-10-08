@@ -10,9 +10,7 @@
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
-# limitations under the License.FROM gcr.io/cloud-marketplace/google/debian10
-
-# Use an official Go runtime as a parent image
+# limitations under the License.# Use an official Go runtime as a parent image
 FROM golang:1.13 as builder
 
 ENV GO111MODULE=on
@@ -39,16 +37,11 @@ WORKDIR /data/amppackager/cmd/amppkg
 # Reduce binary size by omitting dwarf information (-ldflags '-w')
 RUN CGO_ENABLED=0 GOOS=linux go build -a -tags netgo -ldflags '-w' -o /go/bin/amppkg
 
-FROM gcr.io/cloud-marketplace/google/debian10 as certs
+FROM gcr.io/cloud-marketplace/google/debian10 
 
 RUN update-ca-certificates
 
-# Use debian10 image in marketplace.
-FROM gcr.io/cloud-marketplace/google/debian10
-
-# Copy the certs from certs image.
 ENV PATH=/bin
-COPY --from=certs /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 
 # Copy the AMP packager binary into our app dir inside the container.
 COPY --from=builder /go/bin/amppkg .

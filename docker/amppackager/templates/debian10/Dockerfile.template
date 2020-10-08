@@ -14,8 +14,6 @@
 
 {{- $amppackager := index .Packages "amppackager" -}}
 
-FROM {{ .From }}
-
 # Use an official Go runtime as a parent image
 FROM golang:1.13 as builder
 
@@ -43,16 +41,11 @@ WORKDIR /data/amppackager/cmd/amppkg
 # Reduce binary size by omitting dwarf information (-ldflags '-w')
 RUN CGO_ENABLED=0 GOOS=linux go build -a -tags netgo -ldflags '-w' -o /go/bin/amppkg
 
-FROM gcr.io/cloud-marketplace/google/debian10 as certs
+FROM {{ .From }} 
 
 RUN update-ca-certificates
 
-# Use debian10 image in marketplace.
-FROM gcr.io/cloud-marketplace/google/debian10
-
-# Copy the certs from certs image.
 ENV PATH=/bin
-COPY --from=certs /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 
 # Copy the AMP packager binary into our app dir inside the container.
 COPY --from=builder /go/bin/amppkg .

@@ -18,25 +18,27 @@ versions:
   # amppackager 1.0.2
   - dir: '1/debian10/1.0.2'
     repo: 'amppackager'
+    templateSubDir: debian10
     tags:
-    - '1.0.2-debian10'
-    - '1.0.2'
-    - '1.0'
-    - '1.0-debian10'
-    - '1-debian10'
-    - '1'
-    - 'latest'
+      - '1.0.2-debian10'
+      - '1.0.2'
+      - '1.0'
+      - '1.0-debian10'
+      - '1-debian10'
+      - '1'
+      - 'latest'
     from: *from10
     packages:
       amppackager:
-        version: 1.0.1
+        version: 1.0.2
         sha256: 735a4bea3ba058bff48709d484ad143046402f95971c4eb6d0ad8403e4a85632
   # amppackager 1.0.1
   - dir: '1/debian10/1.0.1'
     repo: 'amppackager'
+    templateSubDir: debian10
     tags:
-    - '1.0.1-debian10'
-    - '1.0.1'
+      - '1.0.1-debian10'
+      - '1.0.1'
     from: *from10
     packages:
       amppackager:
@@ -45,14 +47,29 @@ versions:
   # amppackager 1.0.0
   - dir: '1/debian10/1.0'
     repo: 'amppackager'
+    templateSubDir: debian10
     tags:
-    - '1.0.0-debian10'
-    - '1.0.0'
+      - '1.0.0-debian10'
+      - '1.0.0'
     from: *from10
     packages:
       amppackager:
         version: 1.0.0
         sha256: 735a4bea3ba058bff48709d484ad143046402f95971c4eb6d0ad8403e4a85632
+
+  # Init container for amppackager 1.0.0
+  - dir: 'init'
+    repo: 'amppackager'
+    templateSubDir: init
+    tags:
+      - 'init-1.0.0'
+      - 'init-1'
+      - 'init'
+    from: *from10
+    packages:
+      amppackager_init:
+        version: 1.0.0
+        sha256: 4909d66e480b1092c07e01441f3fbfa1e51b9e3f27efdbed30fe4655675297d0
 
 # Enable parallel build.
 cloudbuild:
