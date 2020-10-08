@@ -15,7 +15,8 @@
 # Packages wishes contains list of packages with we want to have on all images
 # installed by default.
 
-execute 'apt-get update' do
+apt_update 'update' do
+  action :update
   retries 5
   retry_delay 30
 end

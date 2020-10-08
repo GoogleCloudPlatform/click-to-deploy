@@ -22,8 +22,11 @@ remote_file '/usr/src/redis.tar.gz' do
   action :create
 end
 
+apt_update do
+  action :update
+end
+
 # Install dependencies
-execute 'apt-get update'
 package 'install_dependencies' do
   package_name node['redis']['packages']['all_dependencies']
   action :install

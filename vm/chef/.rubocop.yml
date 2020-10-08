@@ -1,17 +1,17 @@
-Chef/CommentFormat:
+ChefStyle/CommentFormat:
   Enabled: false
 
-Chef/TmpPath:
+ChefCorrectness/TmpPath:
   Enabled: false
 
-Chef/FileMode:
+ChefStyle/FileMode:
   Enabled: false
 
 Style/BracesAroundHashParameters:
   Enabled: false
 
 # TODO(wgrzelak): Fix code and remove the rule.
-Chef/NamePropertyIsRequired:
+ChefRedundantCode/NamePropertyIsRequired:
   Enabled: false
 
 Style/WordArray:

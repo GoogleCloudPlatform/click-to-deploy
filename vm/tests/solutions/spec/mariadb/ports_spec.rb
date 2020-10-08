@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,21 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'c2d-config::create-self-signed-certificate'
+require 'spec_helper'
 
-apt_repository 'grafana' do
-  uri node['grafana']['repo']['uri']
-  components node['grafana']['repo']['components']
-  distribution false
-  key node['grafana']['repo']['key']
+describe port(22) do
+  it { should be_listening }
 end
 
-apt_update 'update' do
-  action :update
-  retries 5
-  retry_delay 30
+describe port(3306) do
+  it { should be_listening }
 end
-
-package 'grafana'
-
-c2d_startup_script 'grafana'
