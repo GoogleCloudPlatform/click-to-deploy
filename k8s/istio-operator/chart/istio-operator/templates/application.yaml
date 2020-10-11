@@ -14,7 +14,7 @@ metadata:
 spec:
   descriptor:
     type: "Istio Operator"
-    version: "1.7.0"
+    version: "1.7.3"
     description: |-
       Istio Operator is an implementation of Kubernetes Operator that provides installations of Istio control planes.
       # Support

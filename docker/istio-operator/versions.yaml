@@ -1,0 +1,31 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+cloudbuild:
+  enable_parallel: false
+versions:
+- dir: 1/debian10/1.7
+  from: marketplace.gcr.io/google/debian10
+  packages:
+    istioOperator:
+      sha1: 9686754643d0939c1f4dd0ee20443c51183f3589
+      version: '1.7.3'
+  tags:
+  - 1.7.3-debian10
+  - 1.7-debian10
+  - '1.7.3'
+  - '1.7'
+  - '1'
+  - latest

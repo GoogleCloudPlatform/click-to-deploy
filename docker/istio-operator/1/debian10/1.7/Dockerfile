@@ -1,0 +1,55 @@
+FROM marketplace.gcr.io/google/debian10
+ENV DEBIAN_FRONTEND=noninteractive
+
+# hadolint ignore=DL3005,DL3008
+RUN apt-get update && \
+  apt-get install --no-install-recommends -y \
+  ca-certificates \
+  curl \
+  git \
+  iptables \
+  iproute2 \
+  iputils-ping \
+  knot-dnsutils \
+  make \
+  netcat \
+  tcpdump \
+  conntrack \
+  bsdmainutils \
+  net-tools \
+  lsof \
+  sudo \
+  && update-ca-certificates \
+  && apt-get upgrade -y \
+  && apt-get clean \
+  && rm -rf  /var/log/*log /var/lib/apt/lists/* /var/log/apt/* /var/lib/dpkg/*-old /var/cache/debconf/*-old
+
+ENV C2D_RELEASE=1.7.3
+ENV WORKSPACE=/workspace
+WORKDIR $WORKSPACE
+
+RUN curl -L https://golang.org/dl/go1.15.2.linux-amd64.tar.gz | tar xz
+ENV GOBINARY=$WORKSPACE/go/bin/go
+
+# Sudoers used to allow tcpdump and other debug utilities.
+RUN useradd -m --uid 1337 istio-proxy && \
+  echo "istio-proxy ALL=NOPASSWD: ALL" >> /etc/sudoers
+
+ENV C2D_ISTIO_COMMIT_HASH=9686754643d0939c1f4dd0ee20443c51183f3589
+RUN git clone --depth 1 --branch 1.7.3 https://github.com/istio/istio
+RUN cd istio && \
+    [[ $(git rev-parse HEAD) == $C2D_ISTIO_COMMIT_HASH ]] || exit 1
+ENV BUILD_WITH_CONTAINER=0
+RUN cd istio && make operator
+
+RUN mv istio/out/linux_amd64/operator /usr/local/bin/operator
+RUN mkdir -p /var/lib/istio
+RUN mv istio/manifests /var/lib/istio/manifests
+RUN rm -r istio
+
+USER 1337:1337
+
+ENV WATCH_NAMESPACE="default" \
+    LEADER_ELECTION_NAMESPACE="istio-operator"
+
+ENTRYPOINT ["/usr/local/bin/operator", "server"]
