@@ -1,0 +1,30 @@
+solr:
+  # Specify the initial script file name here to be executed before starting Solr
+  # The file is located relative to the solr chart root folder
+  initScript: ""
+
+  # Solr image settings
+  image:
+    # repository: solr
+    repo: null
+    tag: null
+
+metrics:
+  image: null
+  exporter:
+    enabled: false
+
+persistence:
+  storageClass: null
+  solr:
+    storageSize: "10Gi"
+  zookeeper:
+    storageSize: "5Gi"
+
+zookeeper:
+  image: null
+    # repo: marketplace.gcr.io/google/zookeeper3
+    # tag: 3.6
+
+deployer:
+  image: null

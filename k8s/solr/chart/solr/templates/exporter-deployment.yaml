@@ -1,0 +1,80 @@
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: {{ .Release.Name }}-exporter
+  labels: &SolrDeploymentLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: solr-exporter
+spec:
+  type: "ClusterIP"
+  ports:
+    - port: 9983
+      name: "solr-client"
+  selector: *SolrDeploymentLabels
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: solr-1-exporter
+  labels: &SolrDeploymentLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: solr-exporter
+spec:
+  selector:
+    matchLabels: *SolrDeploymentLabels
+  replicas: 1
+  strategy:
+        {}
+  template:
+    metadata:
+      labels: *SolrDeploymentLabels
+    spec:
+      affinity:
+        null
+      containers:
+        - name: exporter
+          image: "gcr.io/ccm-ops-test-adhoc/solr8:8.6.1"
+          imagePullPolicy: IfNotPresent
+          resources:
+            {}
+          ports:
+            - containerPort: 8983
+              name: solr-client
+          command:
+            - "/opt/solr/contrib/prometheus-exporter/bin/solr-exporter"
+            - "-p"
+            - "9983"
+            - "-z"
+            - "solr-1-zookeeper-headless:2181"
+            - "-n"
+            - "7"
+            - "-f"
+            - "/opt/solr/contrib/prometheus-exporter/conf/solr-exporter-config.xml"
+          livenessProbe:
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            httpGet:
+              path: "/metrics"
+              port: 9983
+          readinessProbe:
+            initialDelaySeconds: 15
+            periodSeconds: 5
+            httpGet:
+              path: "/metrics"
+              port: 9983
+      initContainers:
+        - name: solr-init
+          image: "gcr.io/ccm-ops-test-adhoc/solr8:8.6.1"
+          imagePullPolicy: IfNotPresent
+          command:
+            - 'sh'
+            - '-c'
+            - |
+              PROTOCOL="http://"
+              COUNTER=0;
+              while [  $COUNTER -lt 30 ]; do
+                curl -k -s --connect-timeout 10 "${PROTOCOL}{{ .Release.Name }}-svc:8983/solr/admin/info/system" && exit 0
+                sleep 2
+              done;
+              echo "Did NOT see a Running Solr instance after 60 secs!";
+              exit 1;

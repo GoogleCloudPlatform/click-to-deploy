@@ -1,0 +1,125 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}
+  labels: &SolrDeploymentLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: solr-server
+spec:
+  selector:
+    matchLabels: *SolrDeploymentLabels
+  serviceName: {{ .Release.Name }}-headless
+  replicas: 3
+  updateStrategy:
+        type: RollingUpdate
+  template:
+    metadata:
+      labels: *SolrDeploymentLabels
+    spec:
+      securityContext:
+        fsGroup: 8983
+        runAsUser: 8983
+      affinity:
+        null
+      tolerations:
+        null
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: solr-xml
+          configMap:
+            name: {{ .Release.Name }}-config-map
+            items:
+              - key: solr.xml
+                path: solr.xml
+      initContainers:
+        - name: check-zk
+          image: {{ .Values.deployer.image }}
+          command:
+            - 'bash'
+            - '-c'
+            - |
+              COUNTER=0;
+              while [  $COUNTER -lt 120 ]; do
+                addr=$(nslookup -type=a {{ .Release.Name }}-zk-client | grep "Address:" | awk 'NR>1 {print $2}')
+                if [ ! -z "$addr" ]; then
+                  while read -r line; do
+                    echo $line;
+                    mode=$(echo srvr | nc $line 2181 | grep "Mode");
+                    echo $mode;
+                    if [ "$mode" = "Mode: leader" ] || [ "$mode" = "Mode: standalone" ]; then
+                      echo "Found a leader!";
+                      exit 0;
+                    fi;
+                  done <<EOF
+              $addr
+              EOF
+                fi;
+                let COUNTER=COUNTER+1;
+                sleep 2;
+              done;
+              echo "Did NOT see a ZK leader after 240 secs!";
+              exit 1;
+        - name: cp-solr-xml
+          image: {{ .Values.deployer.image }}
+          command: ['bash', '-c', 'cp /tmp/solr.xml /tmp-config/solr.xml']
+          volumeMounts:
+            - name: solr-xml
+              mountPath: /tmp
+            - name: homedir
+              mountPath: /tmp-config
+      containers:
+        - name: solr
+          image: "{{ .Values.solr.image.repo }}:{{ .Values.solr.image.tag }}"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8983
+              name: solr-client
+          env:
+            - name: "SOLR_JAVA_MEM"
+              value: "-Xms2g -Xmx3g"
+            - name: "SOLR_HOME"
+              value: "/opt/solr/server/home"
+            - name: "SOLR_PORT"
+              value: "8983"
+            - name: "POD_HOSTNAME"
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: "SOLR_HOST"
+              value: "$(POD_HOSTNAME).{{ .Release.Name }}-headless.{{ .Release.Namespace }}"
+            - name: "ZK_HOST"
+              value: "{{ .Release.Name }}-zk-client:2181"
+            - name: "SOLR_LOG_LEVEL"
+              value: "INFO"
+            - name: SOLR_USER
+              value: solr
+            - name: SOLR_PASSWORD
+              value: solr
+
+          livenessProbe:
+            initialDelaySeconds: 45
+            periodSeconds: 10
+            httpGet:
+              scheme: "HTTP"
+              path: /solr/admin/info/system
+              port: 8983
+          readinessProbe:
+            initialDelaySeconds: 15
+            periodSeconds: 5
+            httpGet:
+              scheme: "HTTP"
+              path: /solr/admin/info/system
+              port: 8983
+          volumeMounts:
+            - name: homedir
+              mountPath: /opt/solr/server/home
+
+  volumeClaimTemplates:
+    - metadata:
+        name: homedir
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: {{ .Values.persistence.storageClass }}
+        resources:
+          requests:
+            storage: {{ .Values.persistence.solr.storageSize }}
