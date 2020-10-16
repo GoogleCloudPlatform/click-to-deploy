@@ -1,9 +1,0 @@
-# Source: solr/templates/solr-xml-configmap.yaml
----
-# Source: solr/charts/zookeeper/templates/service-headless.yaml
----
-# Source: solr/charts/zookeeper/templates/service.yaml
----
-# Source: solr/templates/exporter-deployment.yaml
----
-# Source: solr/charts/zookeeper/templates/statefulset.yaml
