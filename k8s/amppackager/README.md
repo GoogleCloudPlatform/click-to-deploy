@@ -95,8 +95,8 @@ Create a new cluster from the command line:
 ```shell
 export CLUSTER=amppackager-cluster
 export ZONE=us-west1-a
-
-gcloud container clusters create "$CLUSTER" --zone "$ZONE"
+export NUM_NODES=10 # The min value of NUM_NODES should be number of REPLICAS + 1. A larger number is acceptable.
+gcloud container clusters create "$CLUSTER" --zone "$ZONE" --num-nodes="$NUM_NODES" --enable-ip-alias --metadata disable-legacy-endpoints=true
 ```
 
 Configure `kubectl` to connect to the new cluster.
@@ -157,21 +157,31 @@ It is advised to use stable image reference which you can find on
 Example:
 
 ```shell
-export TAG="1.15.12-20200311-092353"
+export TAG="1.0.2-20201016-235926"
 ```
 
 Alternatively you can use short tag which points to the latest image for selected version.
 > Warning: this tag is not stable and referenced image might change over time.
 
 ```shell
-export TAG="1.15"
+export TAG="1.0"
 ```
 
 Configure the container images:
 
 ```shell
-export IMAGE_NGINX="marketplace.gcr.io/google/amppackager"
-export IMAGE_NGINX_INIT="marketplace.gcr.io/google/amppackager_init:${TAG}"
+export IMAGE_AMPPACKAGER="marketplace.gcr.io/google/amppackager"
+export IMAGE_AMPPACKAGER_INIT="marketplace.gcr.io/google/amppackager/init"
+```
+
+Set the storage class for the persistent volume of AMP Packager. 
+
+Set the StorageClass name. You can select your existing StorageClass name for the persistent disk of the AMP Packager.
+Set the persistent disk's size. The default disk size is "10Gi".
+
+```shell
+export STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
+export PERSISTENT_DISK_SIZE="10Gi"
 ```
 
 #### Create a namespace in your Kubernetes cluster
@@ -193,7 +203,12 @@ helm template chart/amppackager \
   --name "$APP_INSTANCE_NAME" \
   --namespace "$NAMESPACE" \
   --set replicaCount="$REPLICAS" \
-  --set image.initImage="$IMAGE_AMPPACKAGER_INIT" \
+  --set image.repo="$IMAGE_AMPPACKAGER" \
+  --set image.tag="$TAG" \
+  --set init.repo="$IMAGE_AMPPACKAGER_INIT" \
+  --set init.tag"$TAG" \
+  --set packager.persistence.storageClass="$STORAGE_CLASS" \
+  --set packager.persistence.size="$PERSISTENT_DISK_SIZE" \
   --set packager.domain="$AMPPACKAGER_DOMAIN" \
   --set packager.country="$AMPPACKAGER_COUNTRY" \
   --set packager.locality="$AMPPACKAGER_LOCALITY" \

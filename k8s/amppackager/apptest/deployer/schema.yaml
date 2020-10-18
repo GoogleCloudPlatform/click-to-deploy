@@ -4,8 +4,24 @@ properties:
     default: $REGISTRY/tester:$TAG
     x-google-property:
       type: IMAGE
-  image.initImage:
+  packager.inProduction:
+    type: boolean
+    default: false
+  packager.state:
     type: string
-    default: $REGISTRY/amppackager_init:$TAG
-    x-google-property:
-      type: IMAGE
+    default: 'CA'
+  packager.locality:
+    type: string
+    default: 'San Jose'
+  packager.organization:
+    type: string
+    default: 'My Organization'
+  acme.emailAddress:
+    type: string
+    default: "user@example.com"
+  acme.directoryUrl:
+    type: string
+    default: "acmeUrl"
+  service.loadBalancerSourceRanges:
+    type: string
+    default: '127.0.0.1/32'

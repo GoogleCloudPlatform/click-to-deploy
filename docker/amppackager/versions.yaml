@@ -59,12 +59,12 @@ versions:
 
   # Init container for amppackager 1.0.0
   - dir: 'init'
-    repo: 'amppackager'
+    repo: 'amppackager/init'
     templateSubDir: init
     tags:
-      - 'init-1.0.0'
-      - 'init-1'
-      - 'init'
+      - '1.0.0'
+      - '1.0'
+      - '1'
     from: *from10
     packages:
       amppackager_init:

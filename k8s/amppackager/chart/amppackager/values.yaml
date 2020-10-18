@@ -4,6 +4,14 @@
 
 replicaCount: 2
 
+image:
+  repo: null
+  tag: null
+
+init:
+  repo: null
+  tag: null
+
 packager:
   certFileName: null
   csrFileName: null
@@ -18,13 +26,6 @@ acme:
   emailAddress: null
   directoryUrl: null
 
-image:
-  initImage: null
-  pullPolicy: IfNotPresent
-  repo: null
-  # Overrides the image tag whose default is the chart version.
-  tag: null
-
 service:
   port: 60000
-  loadBalancerSourceRanges: null
+  loadBalancerSourceRanges: '127.0.0.1/32'

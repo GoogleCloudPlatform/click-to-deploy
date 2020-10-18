@@ -26,6 +26,8 @@ WORKDIR /data
 
 COPY deploy.sh ./deploy.sh
 
+RUN ["chmod", "+x", "./deploy.sh"]
+
 COPY san_template.cnf ./san_template.cnf
 
 COPY *.toml ./

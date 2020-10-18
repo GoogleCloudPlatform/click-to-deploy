@@ -1,14 +1,2 @@
 # TODO(banaag): add more tests here as necessary.
 actions:
-# Verifies that amppackager configuration does not allow connection outside the localhost
-# to the /healthz endpoint.
-- name: Can not access /healthz endpoint externally
-  httpTest:
-    url: http://{{ .Env.EXTERNAL_IP }}/healthz
-    expect:
-      statusCode:
-        equals: 403
-      bodyText:
-        html:
-          title:
-            equals: '403 Forbidden'

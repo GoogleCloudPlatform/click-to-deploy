@@ -1,4 +1,4 @@
-apiVersion: apps/v1 
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Release.Name }}-nfs-server
@@ -17,9 +17,10 @@ spec:
     spec:
       initContainers:
       - name: config
-        image: gcr.io/amp-packager-on-gcloud-test/allan_test
-        command: [ 
-          '/bin/bash', '-c', 
+        image: "{{ .Values.init.repo }}:{{ .Values.init.tag }}" 
+        imagePullPolicy: Always
+        command: [
+          '/bin/bash', '-c',
           './deploy.sh /exports {{ .Values.replicaCount }} {{ .Values.packager.domain }}
           "{{ .Values.packager.country }}" "{{ .Values.packager.state }}"
           "{{ .Values.packager.locality }}" "{{ .Values.packager.organization }}"
@@ -29,7 +30,7 @@ spec:
         ]
         volumeMounts:
         - mountPath: /exports
-          name: nfs-renewer-pvc
+          name: {{ .Release.Name }}-nfs-server-pvc
       containers:
       - name: {{ .Release.Name }}-nfs-server
         image: gcr.io/google_containers/volume-nfs:0.8
@@ -44,9 +45,8 @@ spec:
           privileged: true
         volumeMounts:
           - mountPath: /exports
-            name: nfs-renewer-pvc
+            name: {{ .Release.Name }}-nfs-server-pvc
       volumes:
-        - name: nfs-renewer-pvc
-          gcePersistentDisk:
-            pdName: {{ .Release.Name }}-nfs-disk
-            fsType: ext4
+        - name: {{ .Release.Name }}-nfs-server-pvc
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-nfs-server-pvc

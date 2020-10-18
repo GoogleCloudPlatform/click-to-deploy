@@ -6,18 +6,24 @@ include ../images.Makefile
 CHART_NAME := amppackager
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 0.0
+TRACK ?= 1.0
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 IMAGE_AMPPACKAGER ?= $(SOURCE_REGISTRY)/amppackager:$(TRACK)
-IMAGE_INIT_CONTAINER? = $(SOURCE_REGISTRY)/amppackagerinit:$(TRACK)
+IMAGE_INIT_CONTAINER ?= $(SOURCE_REGISTRY)/amppackager/init:$(TRACK)
 
 $(info ---- IMAGE_AMPPACKAGER = $(IMAGE_AMPPACKAGER))
+$(info ---- IMAGE_AMPPACKAGER_INIT = $(IMAGE_INIT_CONTAINER))
 
 # Main image
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_AMPPACKAGER))
-
 $(info ---- image-$(CHART_NAME) = $(image-$(CHART_NAME)))
+
+# List of images used in application
+ADDITIONAL_IMAGES := init
+
+# Additional images variable names should correspond with ADDITIONAL_IMAGES list
+image-init := $(call get_sha256,$(IMAGE_INIT_CONTAINER))
 
 C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
 $(info ---- C2D_CONTAINER_RELEASE = "$(C2D_CONTAINER_RELEASE)")
@@ -59,20 +65,15 @@ ifdef SERVICE_LOAD_BALANCER_SOURCE_RANGES
   SERVICE_LOAD_BALANCER_SOURCE_RANGES_FIELD= , "service.loadBalancerSourceRanges": $(SERVICE_LOAD_BALANCER_SOURCE_RANGES)
 endif
 
-ifdef IMAGE_INIT
-  IMAGE_INIT_FIELD = , "image.initImage": "$(IMAGE_INIT)"
-endif
-
 
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
-  $(IMAGE_INIT_FIELD) \
   $(PACKAGER_DOMAIN_FIELD) \
   $(PACKAGER_COUNTRY_FIELD) \
   $(PACKAGER_STATE_FIELD) \
   $(PACKAGER_LOCALITY_FIELD) \
-  $(PACKAGER_ORGANIZATIONi_FIELD) \
+  $(PACKAGER_ORGANIZATION_FIELD) \
   $(ACME_EMAIL_ADDRESS_FIELD) \
   $(ACME_DIRECTORY_URL_FIELD) \
   $(SERVICE_LOAD_BALANCER_SOURCE_RANGES_FIELD) \

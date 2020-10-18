@@ -17,7 +17,12 @@ spec:
         app: {{ .Release.Name }}-cert-renewer-pd
     spec:
       containers:
-      - image: "{{ .Values.image.repo }}_renewer:{{ .Values.image.tag }}"
+      - image: "{{ .Values.image.repo }}:{{ .Values.image.tag }}"
+        {{- if .Values.packager.inProduction }}
+        command: [
+          'amppkg', '-autorenewcert', '-config=/renewer/amppkg_renewer.toml'
+        ]
+        {{- end }}
         name: {{ .Release.Name }}-cert-renewer-container
         imagePullPolicy: Always
         name: amppackager
@@ -30,8 +35,8 @@ spec:
       volumes:
       - name: nfs-volume-renewer
         persistentVolumeClaim:
-          claimName: nfs-renewer-pvc
+          claimName: {{ .Release.Name }}-nfs-renewer-pvc
       - name: nfs-volume-consumer
         persistentVolumeClaim:
-           claimName: nfs-consumer-pvc
+           claimName: {{ .Release.Name }}-nfs-consumer-pvc
 

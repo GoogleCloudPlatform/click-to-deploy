@@ -1,3 +1,4 @@
+#!/bin/sh
 # This shell script is used by the docker init container used in the
 # click-to-deploy deployer for AMP Packager.
 

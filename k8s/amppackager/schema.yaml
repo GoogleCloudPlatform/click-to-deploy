@@ -25,10 +25,34 @@ x-google-marketplace:
           type: REPO_WITH_REGISTRY
         image.tag:
           type: TAG
-    debian9:
+    init:
       properties:
-        image.initImage:
-          type: FULL
+        init.repo:
+          type: REPO_WITH_REGISTRY
+        init.tag:
+          type: TAG
+
+  deployerServiceAccount:
+    description:
+      Creates app resources including persistentvolumes.
+    roles:
+      - type: ClusterRole  # For getting persistentvolumes
+        rulesType: CUSTOM
+        rules:
+        - apiGroups:
+          - '*'
+          resources:
+          - 'persistentvolumes'
+          - 'clusterroles'
+          - 'clusterrolebindings'
+          verbs:
+          - get
+          - list
+          - create
+          - watch
+          - update
+          - patch
+
 properties:
   name:
     type: string
@@ -44,6 +68,24 @@ properties:
     description: The number of amppackager consumers run within cluster.
     default: 2
     minimum: 1
+  packager.inProduction:
+    type: boolean
+    description: Is the packager being used in production. Override for tests.
+    default: true
+  packager.persistence.storageClass:
+    type: string
+    title: StorageClass
+    description: You can choose existing StorageClass or create new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  packager.persistence.size:
+    type: string
+    title: Storage size for persistent volumes
+    default: "10Gi"
+    description: AMP Packager persistent disk storage size
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
   packager.certFileName:
     type: string
     title: Signed Exchange Certificate Filename
@@ -78,7 +120,7 @@ properties:
     type: string
     title: Locality
     description: The locality used by the Certificate Signing Request used by amppackager.
-    default: null 
+    default: null
   packager.organization:
     type: string
     title: Organization
@@ -93,17 +135,17 @@ properties:
     type: string
     title: ACME Directory URL
     description: The directory URL for the ACME account used by amppackager.
-    default: null 
+    default: null
   service.port:
     type: int
     title: AMP Packager Service port
     description: The port used by the amppackager service.
     default: 60000
   service.loadBalancerSourceRanges:
-    type: string 
-    title: AMP Packager Load Balancer Source Range 
+    type: string
+    title: AMP Packager Load Balancer Source Range
     description: The port used by the amppackager service.
-    default: null 
+    default: null
 required:
 - name
 - namespace
