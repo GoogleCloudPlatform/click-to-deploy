@@ -111,7 +111,7 @@ export NAMESPACE=flink-operator-system
 Configure the container images:
 
 ```shell
-TAG=v1beta1
+TAG=v1beta1-4
 export FLINK_OPERATOR_IMAGE="gcr.io/flink-operator/flink-operator:${TAG}"
 export DEPLOYER_IMAGE="gcr.io/cloud-marketplace-tools/k8s/deployer_helm:0.8.0"
 ```

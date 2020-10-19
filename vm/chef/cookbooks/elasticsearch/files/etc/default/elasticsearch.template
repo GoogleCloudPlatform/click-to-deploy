@@ -63,3 +63,6 @@ MAX_LOCKED_MEMORY=unlimited
 # When using Systemd, this setting is ignored and the 'vm.max_map_count'
 # property is set at boot time in /usr/lib/sysctl.d/elasticsearch.conf
 MAX_MAP_COUNT=262144
+
+# Enable Elasticsearch to be ran as a daemon. Required for Elasticsearch 7.x
+START_DAEMON=true

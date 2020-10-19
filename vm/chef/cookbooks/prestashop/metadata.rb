@@ -15,5 +15,5 @@
 name 'prestashop'
 depends 'apache2'
 depends 'mysql'
-depends 'php7'
+depends 'php72'
 supports 'debian'

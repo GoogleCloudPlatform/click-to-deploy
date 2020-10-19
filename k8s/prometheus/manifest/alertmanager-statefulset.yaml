@@ -81,7 +81,7 @@ spec:
   - metadata:
       name: $APP_INSTANCE_NAME-alertmanager-data
     spec:
-      storageClassName: standard
+      storageClassName: $STORAGE_CLASS
       accessModes:
         - ReadWriteOnce
       resources:

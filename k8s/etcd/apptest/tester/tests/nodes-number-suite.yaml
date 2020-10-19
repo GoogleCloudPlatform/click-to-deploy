@@ -13,7 +13,9 @@ actions:
 - name: Check if there are 3 healthy nodes
   bashTest:
     script: |-
-      kubectl exec -it ${APP_INSTANCE_NAME}-etcd-0 -- etcdctl --user root:${ETCD_ROOT_PASSWORD} endpoint health --cluster | grep 'is healthy'| wc -l
+      kubectl exec ${APP_INSTANCE_NAME}-etcd-0 -- \
+        etcdctl --user root:${ETCD_ROOT_PASSWORD} endpoint health --cluster 2>&1 \
+        | grep -c 'is healthy'
     expect:
       stdout:
-        equals: 3
+        equals: '3'

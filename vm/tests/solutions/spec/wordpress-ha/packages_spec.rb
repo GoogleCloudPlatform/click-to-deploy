@@ -27,22 +27,22 @@ describe package('apache2') do
   it { should be_installed }
 end
 
-describe package('libapache2-mod-php7.0') do
+describe package('libapache2-mod-php7.4') do
   it { should be_installed }
 end
 
-describe package('php7.0-fpm') do
+describe package('php7.4-fpm') do
   it { should be_installed }
 end
 
-describe package('php7.0-xml') do
+describe package('php7.4-xml') do
   it { should be_installed }
 end
 
-describe package('php7.0-mysql') do
+describe package('php7.4-mysql') do
   it { should be_installed }
 end
 
-describe package('php7.0-mysql') do
+describe package('php7.4-mysql') do
   it { should be_installed }
 end

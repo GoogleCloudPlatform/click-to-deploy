@@ -146,6 +146,20 @@ export APP_INSTANCE_NAME=magento-1
 export NAMESPACE=default
 ```
 
+For the persistent disk provisioning of the Magento StatefulSets, you will need to:
+
+ * Set the StorageClass name. Check your available options using the command below:
+   * ```kubectl get storageclass```
+   * Or check how to create a new StorageClass in [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
+
+ * Set the persistent disk's size. The default disk size for Magento is "10Gi".
+
+```shell
+export DEFAULT_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
+export PERSISTENT_DISK_SIZE="10Gi"
+```
+
+
 (Optional) Expose the Service externally and configure Ingress:
 
 By default, the Service is not exposed externally. To enable this option, change the value to true.
@@ -172,7 +186,7 @@ It is advised to use stable image reference which you can find on
 Example:
 
 ```shell
-export TAG="2.3.2-20200311-092754"
+export TAG="<BUILD_ID>"
 ```
 
 Alternatively you can use short tag which points to the latest image for selected version.
@@ -256,22 +270,24 @@ expanded manifest file for future updates to your app.
 helm template chart/magento \
     --name "${APP_INSTANCE_NAME}" \
     --namespace "${NAMESPACE}" \
+    --set persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \
     --set magento.image.repo="${IMAGE_MAGENTO}" \
     --set magento.image.tag="${TAG}" \
-    --set redis.image="${IMAGE_REDIS}" \
-    --set db.image="${IMAGE_MYSQL}" \
-    --set redis.exporter.image="${IMAGE_REDIS_EXPORTER}" \
-    --set nginx.exporter.image="${IMAGE_NGINX_EXPORTER}" \
-    --set db.exporter.image="${IMAGE_MYSQL_EXPORTER}" \
-    --set metrics.image="${IMAGE_METRICS_EXPORTER}" \
+    --set magento.admin.email="${MAGENTO_ADMIN_EMAIL}" \
     --set magento.admin.password="${MAGENTO_ADMIN_PASSWORD}" \
+    --set magento.persistence.size="${PERSISTENT_DISK_SIZE}" \
+    --set db.image="${IMAGE_MYSQL}" \
     --set db.rootPassword="${DB_ROOT_PASSWORD}" \
     --set db.magentoPassword="${MAGENTO_DB_PASSWORD}" \
     --set db.exporter.password="${DB_EXPORTER_PASSWORD}" \
+    --set db.exporter.image="${IMAGE_MYSQL_EXPORTER}" \
+    --set redis.image="${IMAGE_REDIS}" \
     --set redis.password="${REDIS_PASSWORD}" \
-    --set magento.admin.email="${MAGENTO_ADMIN_EMAIL}" \
+    --set redis.exporter.image="${IMAGE_REDIS_EXPORTER}" \
+    --set nginx.exporter.image="${IMAGE_NGINX_EXPORTER}" \
     --set tls.base64EncodedPrivateKey="${TLS_CERTIFICATE_KEY}" \
     --set tls.base64EncodedCertificate="${TLS_CERTIFICATE_CRT}" \
+    --set metrics.image="${IMAGE_METRICS_EXPORTER}" \
     --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED}" \
     > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```

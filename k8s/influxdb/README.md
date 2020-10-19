@@ -142,6 +142,19 @@ export APP_INSTANCE_NAME=influxdb-1
 export NAMESPACE=default
 ```
 
+For the persistent disk provisioning of the InfluxDB StatefulSets, you will need to:
+
+ * Set the StorageClass name. Check your available options using the command below:
+   * ```kubectl get storageclass```
+   * Or check how to create a new StorageClass in [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
+
+ * Set the persistent disk's size. The default disk size is "1Gi".
+
+```shell
+export INFLUXDB_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
+export PERSISTENT_DISK_SIZE="1Gi"
+```
+
 Configure the InfluxDB administrator account:
 
 ```shell
@@ -170,8 +183,8 @@ export METRICS_EXPORTER_ENABLED=false
 Configure the container image:
 
 ```shell
-TAG=1.7
-export IMAGE_INFLUXDB="marketplace.gcr.io/google/influxdb:${TAG}"
+export TAG=1.7
+export IMAGE_INFLUXDB="marketplace.gcr.io/google/influxdb"
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/influxdb/prometheus-to-sd:${TAG}"
 ```
 
@@ -210,7 +223,10 @@ expanded manifest file for future updates to the application.
 helm template chart/influxdb \
   --name $APP_INSTANCE_NAME \
   --namespace $NAMESPACE \
-  --set influxdbImage=$IMAGE_INFLUXDB \
+  --set influxdb.image.repo=$IMAGE_INFLUXDB \
+  --set influxdb.image.tag=$TAG \
+  --set influxdb.persistence.storageClass=$INFLUXDB_STORAGE_CLASS \
+  --set influxdb.persistence.size=$PERSISTENT_DISK_SIZE \
   --set admin.user=$INFLUXDB_ADMIN_USER \
   --set admin.password=$INFLUXDB_ADMIN_PASSWORD \
   --set metrics.image=$IMAGE_METRICS_EXPORTER \

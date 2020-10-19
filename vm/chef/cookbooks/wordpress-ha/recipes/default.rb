@@ -16,12 +16,13 @@ include_recipe 'apache2'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 include_recipe 'mysql::configure-apt-repo-version-5.7'
-include_recipe 'php7'
-include_recipe 'php7::module_libapache2'
-include_recipe 'php7::module_mysql'
-include_recipe 'php7::module_xml'
+include_recipe 'php74'
+include_recipe 'php74::module_libapache2'
+include_recipe 'php74::module_mbstring'
+include_recipe 'php74::module_mysql'
+include_recipe 'php74::module_xml'
 
-apt_update 'update' do
+apt_update do
   action :update
 end
 
@@ -83,7 +84,7 @@ execute 'a2enmods' do
 end
 
 execute 'a2enconfs' do
-  command 'a2enconf php7.0-fpm'
+  command 'a2enconf php7.4-fpm'
 end
 
 template '/etc/apache2/sites-available/wordpress.conf' do
@@ -113,6 +114,22 @@ end
 
 cookbook_file '/opt/c2d/downloads/gcs-pull.sh' do
   source 'gcs-pull.sh'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
+cookbook_file '/opt/c2d/downloads/gcs-pull-once.sh' do
+  source 'gcs-pull-once.sh'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
+cookbook_file '/opt/c2d/downloads/gcs-pull-lib.sh' do
+  source 'gcs-pull-lib.sh'
   owner 'root'
   group 'root'
   mode '0755'

@@ -2,6 +2,9 @@ sonarqube:
   image:
     repo: null
     tag: null
+  persistence:
+    size: 10Gi
+    storageClass: null
 postgresql:
   image: null
   exporter:
@@ -10,6 +13,8 @@ postgresql:
     password: null
     name: sonar
     user: sonar
+  persistence:
+    size: 10Gi
 metrics:
   image: null
   exporter:

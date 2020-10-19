@@ -13,7 +13,7 @@ spec:
     type: OrientDB
     version: "{{ .Values.orientdb.image.tag }}"
     description: |-
-      OrientDB is an open source NoSQL database management system written in Java.
+      OrientDB is an open source NoSQL database management system, written in Java.
       # Support
       Google does not offer support for this solution. However, community support is available on
       [Stack Overflow](https://stackoverflow.com/questions/tagged/orientdb/).
@@ -27,22 +27,22 @@ spec:
     - description: 'OrientDB documentation'
       url: http://www.orientdb.com/docs/last/index.html
     notes: |-
-      # Get authentication credentials for the cluster
+      # Get authentication credentials for the cluster:
 
       ```shell
       gcloud container clusters get-credentials [CLUSTER_NAME] --zone [CLUSTER_ZONE]
       ```
       where:
-      * `[CLUSTER_NAME]` is the name of the cluster for this application
-      * `[CLUSTER_ZONE]` is the zone, in which the cluster is operating
+      * `[CLUSTER_NAME]` is the name of the cluster for this app
+      * `[CLUSTER_ZONE]` is the zone in which the cluster is operating
 
-      Please read [here](https://cloud.google.com/kubernetes-engine/docs/quickstart#get_authentication_credentials_for_the_cluster) for more information.
+      For more information about authentication credentials, visit [Get authorization credentials for the cluster](https://cloud.google.com/kubernetes-engine/docs/quickstart#get_authentication_credentials_for_the_cluster) in the [GKE quickstart](https://cloud.google.com/kubernetes-engine/docs/quickstart).
 
       Make sure that all components are in `ready` status.
 
-      Deployed service of OrientDB is ClusterIP type, so you can reach to OrientDB Studio UI within a kubernetes cluster.
+      The deployed service of OrientDB is of type ClusterIP, so you can reach OrientDB Studio UI from within a Kubernetes cluster.
 
-      Get OrientDB root user credentials from application page in console or you can print it by running below commands:
+      You can get OrientDB root user credentials from the app's page in Cloud Console, or print them by running the following commands:
         ```shell
         # Get root user credentials of web console
         ORIENTDB_ROOT_PASSWORD=$(kubectl get secret --namespace \
@@ -53,13 +53,13 @@ spec:
         echo "password: ${ORIENTDB_ROOT_PASSWORD}"
         ```
 
-        Forward OrientDB Studio service port to your machine.
+        Forward OrientDB Studio service port to your machine:
         ```shell
         kubectl port-forward svc/{{ .Release.Name }}-orientdb \
           --namespace {{ .Release.Namespace }} 2480
         ```
-        Then visit [http://localhost:2480](http://localhost:2480) on your web browser.
-        During first login you will have to create database with `root` credentials.
+        Visit [http://localhost:2480](http://localhost:2480) on your web browser.
+        During your first login, you will have to create a database with `root` credentials.
 
   info:
   - name: orientdb

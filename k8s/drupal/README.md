@@ -142,6 +142,20 @@ export APP_INSTANCE_NAME=drupal-1
 export NAMESPACE=default
 ```
 
+For the persistent disk provisioning of the Drupal application StatefulSets, you will need to:
+
+ * Set the StorageClass name. Check your available options using the command below:
+   * ```kubectl get storageclass```
+   * Or check how to create a new StorageClass in [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
+
+ * Set the persistent disk's size. The default disk size is "8Gi for Drupal and 5Gi for MariaDB".
+
+```shell
+export DEFAULT_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
+export DRUPAL_PERSISTENT_DISK_SIZE="8Gi"
+export DB_PERSISTENT_DISK_SIZE="5Gi"
+```
+
 Expose the Service externally, and configure Ingress:
 
 ```shell
@@ -193,15 +207,18 @@ export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/drupal/prometheus-to-sd
 Set or generate passwords:
 
 ```shell
+# Set alias for password generation
+alias generate_pwd="cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 10 | head -n 1 | tr -d '\n'"
+
 # Set the root and Drupal database passwords
-export ROOT_DB_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 10 | head -n 1 | tr -d '\n')
-export DRUPAL_DB_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 10 | head -n 1 | tr -d '\n')
+export ROOT_DB_PASSWORD="$(generate_pwd)"
+export DRUPAL_DB_PASSWORD=$(generate_pwd)
 
 # Set mysqld-exporter user password.
-export EXPORTER_DB_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 10 | head -n 1 | tr -d '\n')
+export EXPORTER_DB_PASSWORD=$(generate_pwd)
 
 # Set password for Drupal admin panel
-export DRUPAL_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 10 | head -n 1 | tr -d '\n')
+export DRUPAL_PASSWORD=$(generate_pwd)
 ```
 
 #### Create TLS certificate for Drupal
@@ -249,9 +266,12 @@ helm template chart/drupal \
   --set drupal.image.repo="${IMAGE_DRUPAL}" \
   --set drupal.image.tag="${TAG}" \
   --set drupal.password="${DRUPAL_PASSWORD}" \
+  --set drupal.persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \
+  --set drupal.persistence.size="${DRUPAL_PERSISTENT_DISK_SIZE}" \
   --set db.image="${IMAGE_MARIADB}" \
   --set db.rootPassword="${ROOT_DB_PASSWORD}" \
   --set db.drupalPassword="${DRUPAL_DB_PASSWORD}" \
+  --set db.persistence.size="${DB_PERSISTENT_DISK_SIZE}" \
   --set db.exporter.image="${IMAGE_MYSQL_EXPORTER}" \
   --set db.exporter.password="${EXPORTER_DB_PASSWORD}" \
   --set apache.exporter.image="${IMAGE_APACHE_EXPORTER}" \

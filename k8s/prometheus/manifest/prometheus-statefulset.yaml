@@ -83,7 +83,7 @@ spec:
       name: $APP_INSTANCE_NAME-prometheus-data
       labels: *Labels
     spec:
-      storageClassName: standard
+      storageClassName: $STORAGE_CLASS
       accessModes:
         - ReadWriteOnce
       resources:

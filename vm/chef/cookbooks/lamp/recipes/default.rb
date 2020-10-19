@@ -16,9 +16,9 @@ include_recipe 'apache2'
 include_recipe 'apache2::security-config'
 include_recipe 'apache2::mod-rewrite'
 include_recipe 'mysql::root-password-setup'
-include_recipe 'php7'
-include_recipe 'php7::module_libapache2'
-include_recipe 'php7::module_mysql'
+include_recipe 'php74'
+include_recipe 'php74::module_libapache2'
+include_recipe 'php74::module_mysql'
 include_recipe 'phpmyadmin'
 
 cookbook_file '/etc/apache2/sites-available/lamp-server.conf' do

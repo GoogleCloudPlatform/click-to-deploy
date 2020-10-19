@@ -1,9 +1,10 @@
 
 # Overview
 
-OrientDB is an open source NoSQL database management system written in Java.
+OrientDB is an open source NoSQL database management system, written in Java.
 
-This solution supports both [OrientDB 2.2.x](http://orientdb.com/docs/2.2.x/) and [OrientDB 3.0.x](http://orientdb.com/docs/3.0.x/) track versions.
+This solution supports both [2.2.x](http://orientdb.com/docs/2.2.x/)
+and [3.0.x](http://orientdb.com/docs/3.0.x/) versions of OrientDB.
 
 For more information, visit the OrientDB [official website](https://orientdb.com//).
 
@@ -15,20 +16,25 @@ Popular open stacks on Kubernetes, packaged by Google.
 
 ![Architecture diagram](resources/OrientDB-k8s-app-architecture.jpeg)
 
-This solution follows [Orientdb Distributed Architecture](https://orientdb.com/docs/3.0.x/distributed/Distributed-Architecture.html#distributed-architecture) for replication and HA.
+For replication and high availability (HA), this solution follows the patterns
+described in the
+[Orientdb distributed architecture](https://orientdb.com/docs/3.0.x/distributed/Distributed-Architecture.html#distributed-architecture)
+page.
 
-A Kubernetes StatefulSet manages all of the OrientDB pods in this application. By default 3 servers of OrientDB will run in seperate pods and will discover each other via hazelcast tcp/ip discovery protocol. OrientDB uses an internal binary protocol for replication. Each pod will get 1 PVC for Storage and 1 PVC for Backup.
+A Kubernetes StatefulSet manages all of the OrientDB pods in this app. By default,
+the app runs 3 OrientDB servers in separate pods, and they discover each other
+by following the Hazelcast Transmission Control Protocol/Internet Protocol (TCP/IP)
+discovery protocol. For replication, OrientDB uses an internal binary protocol.
+Each pod gets 1 PersistentVolumeClaim (PVC) for Storage, and 1 PVC for Backup.
 
 Access to the OrientDB Studio service is authenticated by default.
 
-
-
 # Installation
 
-## Quick install with Google Cloud Marketplace
+## Installing with Google Cloud Marketplace
 
 Get up and running with a few clicks! To install this OrientDB app to a Google
-Kubernetes Engine cluster using Google Cloud Marketplace, follow the
+Kubernetes Engine (GKE) cluster by using Google Cloud Marketplace, follow the
 [on-screen instructions](https://console.cloud.google.com/marketplace/details/google/orientdb).
 
 ## Command-line instructions
@@ -40,7 +46,7 @@ workstation to follow the steps below.
 
 ### Prerequisites
 
-#### Set up command-line tools
+#### Setting up command-line tools
 
 You'll need the following tools in your development environment. If you are
 using Cloud Shell, then `gcloud`, `kubectl`, Docker, and Git are installed in your
@@ -59,7 +65,7 @@ Configure `gcloud` as a Docker credential helper:
 gcloud auth configure-docker
 ```
 
-#### Create a Google Kubernetes Engine (GKE) cluster
+#### Creating a Google Kubernetes Engine (GKE) cluster
 
 Create a new cluster from the command line:
 
@@ -77,7 +83,7 @@ Configure `kubectl` to connect to the new cluster:
 gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 ```
 
-#### Clone this repo
+#### Cloning this repo
 
 Clone this repo, and the associated tools repo:
 
@@ -85,7 +91,7 @@ Clone this repo, and the associated tools repo:
 git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 ```
 
-#### Install the Application resource definition
+#### Installing the Application resource definition
 
 An Application resource is a collection of individual Kubernetes components,
 such as Services, StatefulSets, and so on, that you can manage as a group.
@@ -99,12 +105,12 @@ kubectl apply -f "https://raw.githubusercontent.com/GoogleCloudPlatform/marketpl
 
 You need to run this command once.
 
-The Application resource is defined by the
+The
 [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps)
-community. The source code can be found at
+community defines the Application resource. You can find the source code at
 [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
 
-### Install the app
+### Installing the app
 
 Navigate to the `orientdb` directory:
 
@@ -112,10 +118,10 @@ Navigate to the `orientdb` directory:
 cd click-to-deploy/k8s/orientdb
 ```
 
-#### Configure the app with environment variables
+#### Configuring the app with environment variables
 
-Choose the instance name and namespace for the app. For most cases, you can use
-the `default` namespace.
+Choose the instance name and namespace for the app. For most cases, you can
+use the `default` namespace.
 
 ```shell
 export APP_INSTANCE_NAME=orientdb-1
@@ -132,7 +138,7 @@ export TAG=2.2
 export TAG=3.0
 ```
 
-Configure container images:
+Configure the container images:
 
 ```shell
 export IMAGE_ORIENTDB="marketplace.gcr.io/google/orientdb"
@@ -140,41 +146,51 @@ export IMAGE_DEPLOYER="gcr.io/cloud-marketplace-tools/k8s/deployer_helm:0.8.0"
 ```
 
 Set the number of replicas for OrientDB:
+
 ```shell
 export REPLICAS=3
 ```
 
-Set or generate root password for OrientDB Studio UI:
+Set or generate the root password for OrientDB Studio UI:
 
 ```shell
 export ORIENTDB_ROOT_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 10 | head -n 1 | tr -d '\n')
 ```
 
-Set the storage class for the persistent volume of OrientDB's main storage and backup storage:
+Set the storage class for the persistent volume of OrientDB's main storage and
+backup storage:
 
- * Set the StorageClass name. You can select your existing StorageClass name for persistent disk of OrientDB storage.
- * Set the persistent disk's size for main storage. The default disk size is "5Gi".
- * Set the persistent disk's size for backup storage. The default disk size is "2Gi".
-> Note: "ssd" type storage is recommended for OrientDB, as it uses local disk to store and retrieve keys and values.
-> To create a StorageClass for dynamic provisioning of SSD persistent volumes, check out [this documentation](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/ssd-pd) for more detailed instructions.
+ * Set the StorageClass name. You can select your existing StorageClass name for
+   the persistent disk of OrientDB's storage.
+ * Set the persistent disk's size for main storage. The default disk size is
+   `5Gi`.
+ * Set the persistent disk's size for backup storage. The default disk size
+   is `2Gi`.
+
+> Note: We recomend that you use `ssd` type storage for OrientDB, as it uses
+> local disk to store and retrieve keys and values. To create a StorageClass
+> for dynamic provisioning of SSD persistent volumes, refer to
+> [Using SSD persistent disks](https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/ssd-pd)
+> for more detailed instructions.
+
 ```shell
 export STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
 export PERSISTENT_STORAGE_SIZE="5Gi"
 export PERSISTENT_BACKUP_SIZE="2Gi"
 ```
 
-#### Create namespace in your Kubernetes cluster
+#### Creating a namespace in your Kubernetes cluster
 
-If you use a different namespace than `default`, or the namespace does not exist
-yet, run the command below to create a new namespace:
+If you use a different namespace than `default`, or if the namespace does
+not exist yet, create a new namespace:
 
 ```shell
 kubectl create namespace "${NAMESPACE}"
 ```
 
-#### Expand the manifest template
+#### Expanding the manifest template
 
-Use `helm template` to expand the template. We recommend that you save the
+To expand the template, use `helm template`. We recommend that you save the
 expanded manifest file for future updates to your app.
 
 ```shell
@@ -192,15 +208,15 @@ helm template chart/orientdb \
   > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 
-#### Apply the manifest to your Kubernetes cluster
+#### Applying the manifest to your Kubernetes cluster
 
-Use `kubectl` to apply the manifest to your Kubernetes cluster:
+To apply the manifest to your Kubernetes cluster, use `kubectl`:
 
 ```shell
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
 
-#### View the app in the Google Cloud Console
+#### Viewing the app in the Google Cloud Console
 
 To get the Cloud Console URL for your app, run the following command:
 
@@ -210,9 +226,11 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 To view the app, open the URL in your browser.
 
-### Access to OrientDB Studio web console
+### Accessing the OrientDB Studio web console
 
-The deployed service of OrientDB is ClusterIP type, so you can reach to OrientDB Studio UI within a Kubernetes cluster by port-forwarding. To achieve this run below commands:
+The deployed service of OrientDB is of type ClusterIP, so you can reach the
+OrientDB Studio UI within a Kubernetes cluster by port-forwarding. To accomplish
+this, run the following commands:
 
 ```shell
 # Get root user credentials of OrientDB Studio UI
@@ -227,17 +245,18 @@ echo "password: ${ORIENTDB_ROOT_PASSWORD}"
 kubectl port-forward svc/${APP_INSTANCE_NAME}-orientdb-svc --namespace ${NAMESPACE} 2480
 ```
 
-Then visit [http://localhost:2480](http://localhost:2480) on
-your web browser.
-During first login you will have to create database with `root` credentials.
+After running the commands, visit [http://localhost:2480](http://localhost:2480)
+from a web browser. During your first login, you will have to create a
+database with `root` credentials.
 
 # Scaling
 
 ## Scaling the cluster up or down
 
-By default, the OrientDB Distributed cluster starts with 3 replicas.
+By default, the OrientDB distributed cluster starts with 3 replicas.
 
-To change the number of replicas, use the following command, where `REPLICAS` is desired number of replicas:
+To change the number of replicas, use the following command, where `REPLICAS`
+is your desired number of replicas:
 
 ```
 export REPLICAS=4
@@ -245,20 +264,24 @@ kubectl scale statefulsets "${APP_INSTANCE_NAME}-orientdb" \
   --namespace "${NAMESPACE}" --replicas="${REPLICAS}"
 ```
 
-In the case of scaling down, this option reduces the number of replicas without disconnecting nodes from the cluster.
-Scaling down will also leave the `persistentvolumeclaims` of your StatefulSet untouched.
+When this option is used to scale down a cluster, it reduces the number of
+replicas without disconnecting nodes from the cluster. Scaling down also does
+not affect the `persistentvolumeclaims` of your StatefulSet.
 
-# Backup and Restore
+# Backing up and restoring
 
-## OrientDB 3.0.x Database Backup
+## Backing up an OrientDB 3.0.x database
 
-The following steps are based on the [OrientDB 3.0.x Backup and Restore procedure](http://orientdb.com/docs/3.0.x/admin/Backup-and-Restore.html)
+The following steps are based on the
+[OrientDB 3.0.x back up and restore procedure](http://orientdb.com/docs/3.0.x/admin/Backup-and-Restore.html)
 
-#### Create backup job:
+### Creating a backup job
 
-This backup job will create a backup for all available databases or for a single database if you define.
+This backup job creates a backup for all available databases, or for a
+single database that you define.
 
-> **NOTE**: *Backup file will be stored inside `/orientdb/backup` directory of first node `${APP_INSTANCE_NAME}-orientdb-0` of OrientDB cluster.*
+> Note: The backup file is stored inside the `/orientdb/backup` directory of
+> the first node `${APP_INSTANCE_NAME}-orientdb-0` of the OrientDB cluster.
 
 ```shell
 # navigate to the orientdb/scripts directory
@@ -275,17 +298,21 @@ export NAMESPACE=default
 export DATABASE=all
 ```
 
-Create backup job manifest file with `./create_backup_manifest.sh` script
+To create the manifest file for the backup job, use the
+`./create_backup_manifest.sh` script:
+
 ```shell
 ./create_backup_manifest.sh
 ```
->**Note**: *Following steps are also included in scripts, so you can just run and follow instructions in output.*
 
-Next steps to backup database:
+> Note: The following steps are included in scripts, so you can choose to run
+> them and follow the instructions in the output as you go.
+
+To continue backing up your database:
 
 ```shell
 ## 1. Scale down StatefulSet to 0
-## WARNING: It will stop all running database nodes.
+## WARNING: This will stop all running database nodes.
 
 kubectl -n ${NAMESPACE} scale statefulset \
 	${APP_INSTANCE_NAME}-orientdb --replicas=0
@@ -293,7 +320,7 @@ kubectl -n ${NAMESPACE} scale statefulset \
 # Check if pods are stopped. There should be no output.
 kubectl -n ${NAMESPACE} get pods -l app.kubernetes.io/name=${APP_INSTANCE_NAME}
 
-## 2. Create Backup job:
+## 2. Create backup job:
 
 kubectl apply -f ${APP_INSTANCE_NAME}-backup-${DATABASE}-job.yaml
 
@@ -302,37 +329,50 @@ kubectl apply -f ${APP_INSTANCE_NAME}-backup-${DATABASE}-job.yaml
 kubectl -n ${NAMESPACE} get pods \
 	-l job-name=${APP_INSTANCE_NAME}-backup-job
 
-## 4. After completion scale back OrientDB StatefulSet back to same replica size
+## 4. After completion, scale OrientDB StatefulSet back to the same replica size:
 
 kubectl -n ${NAMESPACE} scale statefulset \
 	${APP_INSTANCE_NAME}-orientdb --replicas=3
 
-## 5. To see all available backup files on first node, run:
+## 5. To see all available backup files on the first node, run:
 
 kubectl -n ${NAMESPACE} exec -it \
 	${APP_INSTANCE_NAME}-orientdb-0 -- bash -c 'ls /orientdb/backup/'
 ```
-## OrientDB 3.0.x Database Restore
+## Restoring an OrientDB 3.0.x database
 
-OrientDB does not support merging during restores. If you need to merge the old data with new writes, use [`EXPORT DATABASE`](http://orientdb.com/docs/3.0.x/console/Console-Command-Export.html) and [`IMPORT DATABASE`](http://orientdb.com/docs/3.0.x/console/Console-Command-Export.html) commands, instead.
-Read more about [OrientDB 3.0.x Backup and Restore procedure](http://orientdb.com/docs/3.0.x/admin/Backup-and-Restore.html)
+OrientDB does not support merging during restores. If you want to merge the old
+data with new writes, use the
+[`EXPORT DATABASE`](http://orientdb.com/docs/3.0.x/console/Console-Command-Export.html)
+and
+[`IMPORT DATABASE`](http://orientdb.com/docs/3.0.x/console/Console-Command-Export.html)
+commands.
 
-#### Create restore job:
+For more information about backing up and restoring OrientDB 3.0.x databases,
+refer to the
+[OrientDB 3.0.x backup and restore procedure](http://orientdb.com/docs/3.0.x/admin/Backup-and-Restore.html)
+documentation.
 
-This restore job will restore only single database which you define.
+### Creating the restore job:
 
-> **NOTE**: *Restore file should exist inside `/orientdb/backup` directory of first node `${APP_INSTANCE_NAME}-orientdb-0` of OrientDB cluster and also database you want to restore should exist and it should be a new database.
-Steps are also included in scripts so you can just run and follow instructions in output.*
+This restore job restores only a single database that you define.
+
+The restore file must exist inside the `/orientdb/backup` directory of the first
+node `${APP_INSTANCE_NAME}-orientdb-0` of the OrientDB cluster, and the database
+you want to restore must exist as a new, empty database.
+
+> Note: The following steps are included in scripts, so you can choose to run
+> them and follow the instructions in the output as you go.
 
 ```shell
-# navigate to the orientdb/scripts directory
+# Navigate to the orientdb/scripts directory
 cd click-to-deploy/k8s/orientdb/scripts
 
 # Set mandatory variables like below:
 export APP_INSTANCE_NAME=orientdb-1
 export DATABASE=yourDB
 
-# export RESTORE_FILE variable which should exist inside '/orientdb/backup' directory of first node of cluster and should contain full name of backup file.
+# Export the RESTORE_FILE variable, which should exist inside the '/orientdb/backup' directory of the first node of the cluster and should contain the full name of your backup file.
 # To list available backup files, run:
 kubectl -n ${NAMESPACE} exec -it ${APP_INSTANCE_NAME}-orientdb-0 -- bash -c 'ls /orientdb/backup/'
 
@@ -342,27 +382,36 @@ export RESTORE_FILE=${DATABASE}-XYZ.zip
 export NAMESPACE=default
 ```
 
-Create restore job manifest file with `./create_restore_manifest.sh` script
+To create the manifest file for your restore job, use the
+`./create_restore_manifest.sh` script:
+
 ```shell
 ./create_restore_manifest.sh
 ```
-Before starting restore procedure if you have local backup file on your workstation, then you need to copy your backup file to `/orientdb/backup` directory of `${APP_INSTANCE_NAME}-orientdb-0` node:
+
+If you have a local backup file on your workstation, then before starting the
+procedure to restore, you must copy your backup file to the `/orientdb/backup`
+directory of the `${APP_INSTANCE_NAME}-orientdb-0` node:
 
 ```shell
 kubectl -n ${NAMESPACE} cp ${RESTORE_FILE} ${APP_INSTANCE_NAME}-orientdb-0:/orientdb/backup
 ```
-To list available backup files in first node, run:
+
+To list available backup files in first node, run the following command:
+
 ```shell
 kubectl -n ${NAMESPACE} exec -it \
 	${APP_INSTANCE_NAME}-orientdb-0 -- bash -c 'ls /orientdb/backup/'
 ```
-Next steps to restore database:
 
-> Make sure you that database you want to restore already created in this OrientDB cluster and it is a new database.
+To continue restoring your database, follow these steps:
+
+> Note: The following steps are included in scripts, so you can choose to run
+> them and follow the instructions in the output as you go.
 
 ```shell
-## 1. Scale down StatefulSet to 0
-## WARNING: It will stop all running database nodes.
+## 1. Scale down StatefulSet to 0:
+## WARNING: This will stop all running database nodes.
 
 kubectl -n ${NAMESPACE} scale statefulset \
 	${APP_INSTANCE_NAME}-orientdb --replicas=0
@@ -370,16 +419,16 @@ kubectl -n ${NAMESPACE} scale statefulset \
 # Check if pods are stopped. There should be no output.
 kubectl -n ${NAMESPACE} get pods -l app.kubernetes.io/name=${APP_INSTANCE_NAME}
 
-## 2. Create Restore job:
+## 2. Create the restore job:
 
 kubectl apply -f ${APP_INSTANCE_NAME}-restore-${DATABASE}-job.yaml
 
-## 3. Check if job status is Completed:
+## 3. Check if the job status is Completed:
 
 kubectl -n ${NAMESPACE} get pods \
 	-l job-name=${APP_INSTANCE_NAME}-restore-job
 
-## 4. After completion scale back OrientDB StatefulSet back to same replica size
+## 4. After completion, scale the OrientDB StatefulSet back to thr same replica size:
 
 kubectl -n ${NAMESPACE} scale statefulset \
 	${APP_INSTANCE_NAME}-orientdb --replicas=3
@@ -387,26 +436,31 @@ kubectl -n ${NAMESPACE} scale statefulset \
 
 # Upgrading the app
 
-Before upgrading, we recommend that you back up your all OrientDB databases, using the [backup step](#backup-and-restore). For additional information about upgrades, see the [OrientDB Upgrade documentation]([https://orientdb.com/docs/last/Upgrade.html](https://orientdb.com/docs/last/Upgrade.html)).
+Before you upgrade the app, we recommend that you back up all of your
+OrientDB databases by following the steps in
+[Backing up and restoring](#backup-and-restore). For more information about
+upgrading, visit the
+[OrientDB Upgrading documentation](https://orientdb.com/docs/last/Upgrade.html).
 
-The OrientDB StatefulSet is configured to roll out updates automatically. Start the update by patching the StatefulSet with a new image reference:
+The OrientDB StatefulSet is configured to roll out updates automatically. To
+start the update, patch the StatefulSet with a new image reference, where
+`[NEW_IMAGE_REFERENCE]` is the Docker image reference of the new image that you
+want to use:
 
 ```shell
 kubectl set image statefulset ${APP_INSTANCE_NAME}-orientdb --namespace ${NAMESPACE} \
   "orientdb=[NEW_IMAGE_REFERENCE]"
 ```
 
-Where `[NEW_IMAGE_REFERENCE]` is the Docker image reference of the new image that you want to use.
-
-To check the status of Pods in the StatefulSet, and the progress of
-the new image, run the following command:
+To check the status of Pods in the StatefulSet, and the progress of the
+new image, run the following command:
 
 ```shell
 kubectl get pods --selector app.kubernetes.io/name=${APP_INSTANCE_NAME} \
   --namespace ${NAMESPACE}
 ```
 
-# Uninstall the app
+# Uninstalling the app
 
 ## Using the Google Cloud Console
 
@@ -415,11 +469,11 @@ kubectl get pods --selector app.kubernetes.io/name=${APP_INSTANCE_NAME} \
 
 2.  From the list of apps, click **OrientDB**.
 
-3.  On the Application Details page, click **Delete**.
+3.  From the **Application Details** page, click **Delete**.
 
-## Using the command-line
+## Using the command line
 
-### Prepare the environment
+### Preparing your environment
 
 Set your installation name and Kubernetes namespace:
 
@@ -428,13 +482,13 @@ export APP_INSTANCE_NAME=orientdb-1
 export NAMESPACE=default
 ```
 
-### Delete the resources
+### Deleting the resources
 
-> **NOTE:** We recommend using a `kubectl` version that is the same as the
-> version of your cluster. Using the same version for `kubectl` and the cluster
+> Note: We recommend using the version of `kubectl` that is the same as the
+> version for your cluster. Using the same version for `kubectl` and the cluster
 > helps to avoid unforeseen issues.
 
-#### Delete the deployment with the generated manifest file
+#### Deleting the deployment with the generated manifest file
 
 Run `kubectl` on the expanded manifest file:
 
@@ -442,9 +496,9 @@ Run `kubectl` on the expanded manifest file:
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace ${NAMESPACE}
 ```
 
-#### Delete the deployment by deleting the Application resource
+#### Deleting the deployment by deleting the Application resource
 
-If you don't have the expanded manifest file, delete the
+If you don't have the expanded manifest file, you can delete the
 resources by using types and a label:
 
 ```shell
@@ -453,10 +507,9 @@ kubectl delete application,statefulset,secret,service \
   --selector app.kubernetes.io/name=${APP_INSTANCE_NAME}
 ```
 
-Deleting the `Application` resource will delete all of your
-deployment's resources, except for `PersistentVolumeClaim`. To
-remove the `PersistentVolumeClaim`s with their attached persistent
-disks, run the following `kubectl` command:
+Deleting the `Application` resource deletes all of your deployment's resources,
+except for `PersistentVolumeClaim`. To remove the `PersistentVolumeClaim`s
+with their attached persistent disks, run the following `kubectl` command:
 
 ```shell
 kubectl delete persistentvolumeclaims \

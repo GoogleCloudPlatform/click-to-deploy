@@ -142,6 +142,20 @@ export APP_INSTANCE_NAME=joomla-1
 export NAMESPACE=default
 ```
 
+For the persistent disk provisioning of the Joomla! application StatefulSets, you will need to:
+
+ * Set the StorageClass name. Check your available options using the command below:
+   * ```kubectl get storageclass```
+   * Or check how to create a new StorageClass in [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
+
+ * Set the persistent disk's size. The default disk size is "5Gi".
+
+```shell
+export DEFAULT_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
+export JOOMLA_PERSISTENT_DISK_SIZE="5Gi"
+export DB_PERSISTENT_DISK_SIZE="5Gi"
+```
+
 Expose the Service externally, and configure Ingress:
 
 ```shell
@@ -251,6 +265,9 @@ helm template chart/joomla \
   --set joomla.image.repo="${IMAGE_JOOMLA}" \
   --set joomla.image.tag="${TAG}" \
   --set joomla.password="${JOOMLA_PASSWORD}" \
+  --set joomla.persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \
+  --set joomla.persistence.size="${JOOMLA_PERSISTENT_DISK_SIZE}" \
+  --set db.persistence.size="${DB_PERSISTENT_DISK_SIZE}" \
   --set db.image="${IMAGE_MARIADB}" \
   --set db.rootPassword="${ROOT_DB_PASSWORD}" \
   --set db.joomlaPassword="${JOOMLA_DB_PASSWORD}" \

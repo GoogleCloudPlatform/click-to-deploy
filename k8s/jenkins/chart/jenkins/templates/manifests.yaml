@@ -60,10 +60,10 @@ spec:
     spec:
       accessModes:
       - ReadWriteOnce
-      storageClassName: standard
+      storageClassName: {{ .Values.jenkins.persistence.storageClass }}
       resources:
         requests:
-          storage: 8Gi
+          storage: {{ .Values.jenkins.persistence.size }}
 ---
 apiVersion: v1
 kind: Service
@@ -110,7 +110,7 @@ data:
 {{ .Values.tls.base64EncodedCertificate | indent 4 }}
 type: kubernetes.io/tls
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: {{ .Release.Name }}-jenkins-ui

@@ -2,7 +2,9 @@ mariadb:
   image:
     repo: null
     tag: null
-  volumeSize: '32Gi'
+  persistence:
+    size: '32Gi'
+    storageClass: null
 
 db:
   rootPassword: null

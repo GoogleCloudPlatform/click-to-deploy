@@ -1,0 +1,46 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+cloudbuild:
+  enable_parallel: false
+versions:
+- dir: 5/debian9/5.16
+  from: gcr.io/google-appengine/openjdk
+  packages:
+    activemq:
+      sha512: 999928176e57b0805e8a53834e7f4eb648baf271a0c60de31ebd95fa63f2b089aa41c2ef7353790835e2e8cc39c4b778f535b38e6dc0c67a79c3c1da335c4a0a
+      version: 5.16.0
+  repo: activemq5
+  tags:
+  - 5.16.0-debian9
+  - 5.16-debian9
+  - 5-debian9
+  - 5.16.0
+  - '5.16'
+  - '5'
+  - latest
+- dir: 5/debian9/5.15
+  from: gcr.io/google-appengine/openjdk
+  packages:
+    activemq:
+      sha512: 4a237fe2d3cdfbc1b5b45c92a5aab0d009acbfe5383c188b9691100e2e47de0548a1c24e0d8382a88c4600cd2b8792ce75e9be7d88de55f86b0bde7c9a92c285
+      version: 5.15.13
+  repo: activemq5
+  tags:
+  - 5.15.13-debian9
+  - 5.15-debian9
+  - 5.15.13
+  - '5.15'
+

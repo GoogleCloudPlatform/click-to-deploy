@@ -22,8 +22,8 @@ execute 'install repo key' do
   command 'wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -'
 end
 
-execute 'update' do
-  command 'apt-get update'
+apt_update do
+  action :update
 end
 
 package 'install packages' do

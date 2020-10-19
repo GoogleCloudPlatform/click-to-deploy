@@ -4,6 +4,9 @@ nginx:
     tag: null
   initImage: null
   replicas: null
+  persistence:
+    storageClass: null
+    size: 1Gi
 tls:
   base64EncodedPrivateKey: null
   base64EncodedCertificate: null

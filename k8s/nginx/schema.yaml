@@ -11,9 +11,6 @@ x-google-marketplace:
       - Feature
     recommended: false
 
-  managedUpdates:
-    kalmSupported: true
-
   clusterConstraints:
     resources:
     - replicas: 1
@@ -52,6 +49,20 @@ properties:
     description: The number of Pods run within NGINX solution
     default: 3
     minimum: 1
+  nginx.persistence.storageClass:
+    type: string
+    title: StorageClass
+    description: You can choose an existing StorageClass or create a new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  nginx.persistence.size:
+    type: string
+    title: Storage size for persistent volumes
+    default: "5Gi"
+    description: NGINX storage size
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
   certificate:
     type: string
     x-google-marketplace:

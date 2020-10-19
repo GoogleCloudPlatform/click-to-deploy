@@ -140,10 +140,10 @@ spec:
     spec:
       resources:
         requests:
-          storage: {{ .Values.mariadb.volumeSize }}Gi
+          storage: {{ .Values.mariadb.persistence.size }}
       accessModes:
       - ReadWriteOnce
-      storageClassName: standard
+      storageClassName: {{ .Values.mariadb.persistence.storageClass }}
 ---
 kind: StatefulSet
 apiVersion: apps/v1
@@ -290,7 +290,7 @@ spec:
     spec:
       resources:
         requests:
-          storage: {{ .Values.mariadb.volumeSize }}Gi
+          storage: {{ .Values.mariadb.persistence.size }}
       accessModes:
       - ReadWriteOnce
-      storageClassName: standard
+      storageClassName: {{ .Values.mariadb.persistence.storageClass }}

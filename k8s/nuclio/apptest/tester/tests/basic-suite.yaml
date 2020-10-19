@@ -37,7 +37,7 @@ actions:
     script: |
       export NAMESPACE;
       timeout 120 bash -c '
-        until (host hello-world-${NAMESPACE}.${NAMESPACE}.svc.cluster.local \
+        until (host nuclio-hello-world-${NAMESPACE}.${NAMESPACE}.svc.cluster.local \
               | grep "has address");
           do sleep 2;
         done'
@@ -49,7 +49,7 @@ actions:
     script: |
       export NAMESPACE;
       timeout 120 bash -c '
-        until nc -vzw 5 hello-world-${NAMESPACE}.${NAMESPACE}.svc.cluster.local 8080;
+        until nc -vzw 5 nuclio-hello-world-${NAMESPACE}.${NAMESPACE}.svc.cluster.local 8080;
           do sleep 2;
         done'
     expect:
@@ -59,7 +59,7 @@ actions:
   bashTest:
     script: |
       curl --retry 3 --retry-connrefused --retry-max-time 60 \
-           hello-world-${NAMESPACE}.${NAMESPACE}.svc.cluster.local:8080
+           nuclio-hello-world-${NAMESPACE}.${NAMESPACE}.svc.cluster.local:8080
     expect:
       stdout:
         matches: 'Hello, from nuclio'

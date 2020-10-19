@@ -147,6 +147,19 @@ Specify the number of replicas for the Elasticsearch server:
 export ELASTICSEARCH_REPLICAS=2
 ```
 
+For the persistent disk provisioning of the Elasticsearch StatefulSets, you will need to:
+
+ * Set the StorageClass name. Check your available options using the command below:
+   * ```kubectl get storageclass```
+   * Or check how to create a new StorageClass in [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
+
+ * Set the persistent disk's size. The default disk size is "20Gi".
+
+```shell
+export ELASTICSEARCH_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
+export ELASTICSEARCH_PERSISTENT_DISK_SIZE="20Gi"
+```
+
 Enable Stackdriver Metrics Exporter:
 
 > **NOTE:** Your GCP project must have Stackdriver enabled. If you are using a
@@ -220,6 +233,8 @@ helm template chart/elastic-gke-logging \
   --set initImage="$IMAGE_INIT" \
   --set elasticsearch.image.repo="$IMAGE_ELASTICSEARCH" \
   --set elasticsearch.image.tag="$TAG" \
+  --set elasticsearch.persistence.storageClass="$ELASTICSEARCH_STORAGE_CLASS" \
+  --set elasticsearch.persistence.size="$ELASTICSEARCH_PERSISTENT_DISK_SIZE" \
   --set kibana.image="$IMAGE_KIBANA" \
   --set fluentd.image="$IMAGE_FLUENTD" \
   --set metrics.image="$IMAGE_METRICS_EXPORTER" \
@@ -449,10 +464,10 @@ run [`scripts/create-backup-infra.sh`](scripts/create-backup-infra.sh):
 
 ```shell
 scripts/create-backup-infra.sh \
-  --app elasticsearch-1 \
+  --app elastic-gke-logging-1 \
   --namespace default \
   --disk-size 10Gi \
-  --backup-claim elasticsearch-1-backup
+  --backup-claim elastic-gke-logging-1-backup
 ```
 
 ### Patch the Elasticsearch StatefulSet to mount a backup disk
@@ -463,9 +478,9 @@ run the patch and automatically perform a rolling update on the StatefulSet, run
 
 ```shell
 scripts/patch-sts-for-backup.sh \
-  --app elasticsearch-1 \
+  --app elastic-gke-logging-1 \
   --namespace default \
-  --backup-claim elasticsearch-1-backup
+  --backup-claim elastic-gke-logging-1-backup
 ```
 
 ### Register the snapshot repository in the Elasticsearch cluster

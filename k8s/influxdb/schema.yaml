@@ -11,9 +11,6 @@ x-google-marketplace:
     - Feature
     recommended: false
 
-  managedUpdates:
-    kalmSupported: true
-
   clusterConstraints:
     resources:
     - requests:
@@ -41,6 +38,20 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
+  influxdb.persistence.storageClass:
+    type: string
+    title: StorageClass
+    description: You can choose an existing StorageClass or create a new one. Newly created StorageClass provisioner will be "pd-ssd".
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  influxdb.persistence.size:
+    type: string
+    title: InfluxDB application storage size
+    description: Storage size for InfluxDB data persistent volume
+    default: '1Gi'
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
   admin.user:
     type: string
     title: InfluxDB admin username

@@ -146,6 +146,19 @@ Set the number of replicas:
 export REPLICAS=3
 ```
 
+For the persistent disk provisioning of the RabbitMQ StatefulSets, you will need to:
+
+ * Set the StorageClass name. Check your available options using the command below:
+   * ```kubectl get storageclass```
+   * Or check how to create a new StorageClass in [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
+
+ * Set the persistent disk's size. The default disk size is "5Gi".
+
+```shell
+export RABBITMQ_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
+export RABBITMQ_PERSISTENT_DISK_SIZE="5Gi"
+```
+
 Set or generate the
 [Erlang cookie](https://www.rabbitmq.com/clustering.html#erlang-cookie). The
 cookie must be encoded in base64.
@@ -258,6 +271,8 @@ save the expanded manifest file for future updates to the application.
       --set rabbitmq.image.tag="$TAG" \
       --set rabbitmq.initImage="$IMAGE_RABBITMQ_INIT" \
       --set rabbitmq.replicas="$REPLICAS" \
+      --set rabbitmq.persistence.storageClass="$RABBITMQ_STORAGE_CLASS" \
+      --set rabbitmq.persistence.size="$RABBITMQ_PERSISTENT_DISK_SIZE" \
       --set rabbitmq.erlangCookie="$RABBITMQ_ERLANG_COOKIE" \
       --set rabbitmq.user="$RABBITMQ_DEFAULT_USER" \
       --set rabbitmq.password="$RABBITMQ_DEFAULT_PASS" \

@@ -143,10 +143,10 @@ spec:
         app.kubernetes.io/component: elasticsearch-server
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: standard
+      storageClassName: {{ .Values.elasticsearch.persistence.storageClass }}
       resources:
         requests:
-          storage: 5Gi
+          storage: {{ .Values.elasticsearch.persistence.size }}
 ---
 apiVersion: v1
 kind: Service

@@ -2,7 +2,9 @@ postgresql:
   image:
     repo: null
     tag: null
-  volumeSize: null
+  persistence:
+    size: '10Gi'
+    storageClass: null
   serviceAccount: null
   exposePublicService: false
 exporter:

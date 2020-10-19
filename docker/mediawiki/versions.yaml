@@ -1,0 +1,56 @@
+# Copyright 2020 Google LLC
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+
+cloudbuild:
+  enable_parallel: false
+versions:
+- dir: 1/debian9/1.35
+  from: marketplace.gcr.io/google/php7-apache2:7.3
+  packages:
+    composer:
+      sha256: 5ca7445cfd48dd27c5a84aa005a47b4d9fd91132313830609875df3a6973708f
+      version: 1.10.13
+    mediawiki:
+      major: '1.35'
+      sha512: 0d3d5b464abc2fdea2aa798bdf7fc53d5269852d9ed3f787710528505bbccfed2796b0e2459f5776929f3f0f207a145ae4a8f13e3040322e22d59481a71cfcde
+      version: 1.35.0
+  repo: mediawiki1-php7-apache
+  tags:
+  - 1.35.0-debian9
+  - 1.35-debian9
+  - 1-debian9
+  - 1.35.0
+  - '1.35'
+  - '1'
+  - latest
+- dir: 1/debian9/1.33
+  from: marketplace.gcr.io/google/php7-apache2:7.3
+  packages:
+    composer:
+      sha256: 5ca7445cfd48dd27c5a84aa005a47b4d9fd91132313830609875df3a6973708f
+      version: 1.10.13
+    mediawiki:
+      major: '1.33'
+      sha512: e37280b4c14bfdae3480b8f99672da5c93761f4f80019104d5df24affe0c8447881c6ff85f32d16381ee74a3ce7a083f4dda2e0a24bd6687fbf0b41f11f0564f
+      version: 1.33.4
+  repo: mediawiki1-php7-apache
+  tags:
+  - 1.33.4-debian9
+  - 1.33-debian9
+  - 1.33.4
+  - '1.33'
+

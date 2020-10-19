@@ -1,0 +1,48 @@
+# Copyright 2019 Google LLC.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+setup:
+- command: [docker, run, --env, ACTIVEMQ_ADMIN_PASSWORD=some-passwd, --name, some-activemq-$UNIQUE-id, -d, '$IMAGE']
+teardown:
+- command: [docker, stop, some-activemq-$UNIQUE-id]
+- command: [docker, rm, some-activemq-$UNIQUE-id]
+
+target: some-activemq-$UNIQUE-id
+tests:
+- name: Start activemq
+  command: ['bin/activemq', 'start']
+  expect:
+    stdout:
+      matches: 'pidfile created'
+
+- name: Produce "TestMessage" message
+  command: ['bin/activemq', 'producer', '--messageCount', '1', '--message', '"TestMessage"']
+  expect:
+    stdout:
+      matches: 'producer-1 Produced: 1 messages'
+
+- name: Consume "TestMessage" message
+  command: ['bin/activemq', 'consumer', '--messageCount', '1']
+  expect:
+    stdout:
+      matches: 'consumer-1 Received TestMessage'
+
+- name: Connect web console with correct credentials
+  command:
+    - sh
+    - -c
+    - wget --user admin --password some-passwd http://localhost:8161/admin -O /dev/null
+  expect:
+    stderr:
+      matches: 'HTTP request sent, awaiting response... 200 OK'

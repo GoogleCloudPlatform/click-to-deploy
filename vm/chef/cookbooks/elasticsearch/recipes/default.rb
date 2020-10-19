@@ -28,7 +28,9 @@ apt_repository 'add_elastic_co_repo' do
   trusted true
 end
 
-execute 'apt-get update'
+apt_update do
+  action :update
+end
 
 # Install elasticsearch
 package 'elasticsearch' do
@@ -64,15 +66,6 @@ cookbook_file '/opt/c2d/elasticsearch-utils' do
   group 'root'
   mode 0644
   action :create
-end
-
-# Dowload X-Pack for Elasticsearch
-remote_file '/opt/c2d/downloads/xpack.zip' do
-  source node['elasticsearch']['x-pack']['download_url']
-  mode '0644'
-  action :create
-  retries 5
-  retry_delay 30
 end
 
 # Download elasticsearch source files

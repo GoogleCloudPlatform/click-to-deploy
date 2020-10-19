@@ -129,7 +129,7 @@ spec:
         app.kubernetes.io/component: magento-mysql
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: standard
+      storageClassName: {{ .Values.persistence.storageClass }}
       resources:
         requests:
-          storage: {{ .Values.db.volumeSize }}
+          storage: {{ .Values.db.persistence.size }}

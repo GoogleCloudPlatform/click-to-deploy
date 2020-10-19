@@ -11,9 +11,6 @@ x-google-marketplace:
       - Feature
     recommended: false
 
-  managedUpdates:
-    kalmSupported: true
-
   clusterConstraints:
     resources:
     - replicas: 1
@@ -87,6 +84,21 @@ properties:
           - apiGroups: [""]
             resources: ["endpoints"]
             verbs: ["get"]
+  rabbitmq.persistence.storageClass:
+    type: string
+    title: StorageClass
+    description: You can choose an existing StorageClass or create a new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  rabbitmq.persistence.size:
+    type: string
+    title: Storage size for persistent volumes
+    default: "5Gi"
+    description: RabbitMQ storage size
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+
   metrics.exporter.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter

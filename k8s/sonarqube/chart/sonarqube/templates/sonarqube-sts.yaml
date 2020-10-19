@@ -105,7 +105,7 @@ spec:
     spec:
       accessModes:
       - ReadWriteOnce
-      storageClassName: standard
+      storageClassName: {{.Values.sonarqube.persistence.storageClass }}
       resources:
         requests:
-          storage: 10Gi
+          storage: {{ .Values.sonarqube.persistence.size }}

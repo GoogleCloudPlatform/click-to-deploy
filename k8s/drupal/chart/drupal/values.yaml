@@ -5,7 +5,9 @@ drupal:
   user: admin
   email: noreply@example.com
   password: null
-  volumeSize: 8Gi
+  persistence:
+    size: 8Gi
+    storageClass: null
 
 db:
   image: null
@@ -18,6 +20,9 @@ db:
     image: null
     user: mysqld-exporter
     password: null
+
+  persistence:
+    size: 5Gi
 
 enablePublicServiceAndIngress: false
 

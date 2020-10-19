@@ -26,12 +26,12 @@ for var in DIRECTORY_NAME CLOUDBUILD_NAME PROJECT; do
   fi
 done
 
-function trigger_exist {
+function trigger_active {
   local -r solution=$1
 
   gcloud alpha builds triggers list --project="${PROJECT}" --format json \
     | jq -e --arg filename "${CLOUDBUILD_NAME}" --arg solution "${solution}" \
-    '.[] | select(.filename == $filename) | select(.substitutions._SOLUTION_NAME == $solution)'
+    '.[] | select(.substitutions._SOLUTION_NAME == $solution and .disabled != true)'
     
    return $?
 }
@@ -45,7 +45,7 @@ function main {
       solution="${solution##*/}"   # strip path and leading slash
 
       set +e
-      trigger_exist "${solution}"
+      trigger_active "${solution}"
       local -i status_code=$?
       set -e
 

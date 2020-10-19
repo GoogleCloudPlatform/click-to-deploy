@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'php72'
-include_recipe 'php72::composer'
-include_recipe 'php72::module_libapache2'
-include_recipe 'php72::module_mysql'
-include_recipe 'php72::module_xmlrpc'
+include_recipe 'php73'
+include_recipe 'php73::composer'
+include_recipe 'php73::module_libapache2'
+include_recipe 'php73::module_mysql'
+include_recipe 'php73::module_xmlrpc'
 include_recipe 'composer::composer-only'
 
 include_recipe 'git'
@@ -35,11 +35,11 @@ end
 bash 'php configuration' do
   user 'root'
   code <<-EOH
-    sed -i 's/^memory_limit = 128M/memory_limit = 512M/' /etc/php/7.2/apache2/php.ini
-    sed -i 's/^short_open_tag = Off/short_open_tag = On/' /etc/php/7.2/apache2/php.ini
-    sed -i 's/^upload_max_filesize = 2M/upload_max_filesize = 128M/' /etc/php/7.2/apache2/php.ini
-    sed -i 's/^max_execution_time = 30/max_execution_time = 300/' /etc/php/7.2/apache2/php.ini
-    sed -i 's/^;date.timezone =/date.timezone = UTC/' /etc/php/7.2/apache2/php.ini
+    sed -i 's/^memory_limit = 128M/memory_limit = 512M/' /etc/php/7.3/apache2/php.ini
+    sed -i 's/^short_open_tag = Off/short_open_tag = On/' /etc/php/7.3/apache2/php.ini
+    sed -i 's/^upload_max_filesize = 2M/upload_max_filesize = 128M/' /etc/php/7.3/apache2/php.ini
+    sed -i 's/^max_execution_time = 30/max_execution_time = 300/' /etc/php/7.3/apache2/php.ini
+    sed -i 's/^;date.timezone =/date.timezone = UTC/' /etc/php/7.3/apache2/php.ini
     phpenmod imap
   EOH
 end

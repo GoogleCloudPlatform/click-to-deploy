@@ -138,6 +138,17 @@ script:
 export IMAGE_SAMPLE_APP=$(docker pull $IMAGE_SAMPLE_APP | awk -F: "/^Digest:/ {print gensub(\":.*$\", \"\", 1, \"$IMAGE_SAMPLE_APP\")\"@sha256:\"\$3}")
 ```
 
+For the persistent disk used by the sample-app deployment, you will need to:
+
+ * Set the StorageClass name. Check your available options using the command below:
+   * ```kubectl get storageclass```
+   * Or check how to create a new StorageClass in [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
+
+
+```shell
+export STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
+```
+
 #### Expand the manifest template
 
 Use `envsubst` to expand the template. We recommend that you save the expanded
@@ -145,7 +156,7 @@ manifest file for future updates to the application.
 
 ```shell
 awk 'FNR==1 {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_SAMPLE_APP $SAMPLE_APP_PARAMETER1' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $IMAGE_SAMPLE_APP $SAMPLE_APP_PARAMETER1 $STORAGE_CLASS' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 

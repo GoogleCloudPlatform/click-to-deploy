@@ -1,0 +1,11 @@
+actions:
+- name: GitLab /metrics HTTP endpoint test
+  bashTest:
+    script: |-
+      kubectl exec -it ${APP_INSTANCE_NAME}-gitlab-0 -- bash -c \
+        'curl localhost:9090/metrics'
+    expect:
+      stdout:
+        matches: '(?m)^# TYPE process_cpu_seconds_total counter$'
+      exitCode:
+        equals: 0

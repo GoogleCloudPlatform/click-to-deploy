@@ -20,7 +20,10 @@ global:
 
 server:
   replicas: 3
-  storage: 10Gi
+  persistence:
+    size: 10Gi
+    storageClass: null
+
   disruptionBudget:
     # maxUnavailable will default to (n/2)-1 where n is the number of
     # replicas. If you'd like a custom value, you can specify an override here.

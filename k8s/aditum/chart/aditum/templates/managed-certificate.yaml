@@ -1,0 +1,8 @@
+apiVersion: networking.gke.io/v1beta1
+kind: ManagedCertificate
+metadata:
+  name: cg-certificate
+  namespace: "{{ .Release.Namespace }}"
+spec:
+  domains:
+    - {{.Values.certificate.hostname}}

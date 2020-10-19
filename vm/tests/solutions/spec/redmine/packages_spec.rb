@@ -14,7 +14,7 @@
 
 require 'spec_helper'
 
-describe package('redmine-mysql') do
+describe package('ruby-dev') do
   it { should be_installed }
 end
 

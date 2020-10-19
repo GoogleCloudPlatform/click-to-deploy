@@ -44,15 +44,15 @@ spec:
       1. Read a temporary password:
 
           ```shell
-          kubectl -n{{ .Release.Namespace }} exec \
-          $(kubectl -n{{ .Release.Namespace }} get pod -oname | sed -n /\\/{{ .Release.Name }}-jenkins/s.pods\\?/..p) \
-          cat /var/jenkins_home/secrets/initialAdminPassword
+          kubectl -n {{ .Release.Namespace }} exec \
+          $(kubectl -n {{ .Release.Namespace }} get pod -o name | sed -n /\\/{{ .Release.Name }}-jenkins/s.pods\\?/..p) \
+          -- cat /var/jenkins_home/secrets/initialAdminPassword
           ```
 
       1. Identify the HTTPS endpoint:
 
           ```shell
-          echo https://$(kubectl -n{{ .Release.Namespace }} get ingress -l "app.kubernetes.io/name={{ .Release.Name }}" -ojsonpath="{.items[0].status.loadBalancer.ingress[0].ip}")/
+          echo https://$(kubectl -n {{ .Release.Namespace }} get ingress -l "app.kubernetes.io/name={{ .Release.Name }}" -o jsonpath="{.items[0].status.loadBalancer.ingress[0].ip}")/
           ```
 
       1.  Navigate to the endpoint.
@@ -86,5 +86,5 @@ spec:
     kind: Service
   - group: apps/v1
     kind: StatefulSet
-  - group: extensions/v1beta1
+  - group: networking.k8s.io
     kind: Ingress

@@ -15,10 +15,9 @@
 include_recipe 'apache2'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
-include_recipe 'php7'
-include_recipe 'php7::module_libapache2'
-include_recipe 'php7::module_mcrypt'
-include_recipe 'php7::module_xml'
+include_recipe 'php73'
+include_recipe 'php73::module_libapache2'
+include_recipe 'php73::module_xml'
 
 # Restart Apache2 to have php modules enabled and active.
 service 'apache2' do
