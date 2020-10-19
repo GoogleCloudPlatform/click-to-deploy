@@ -1,0 +1,30 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-configmap
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: elasticsearch-server
+data:
+  elasticsearch.yml: |
+    cluster.name: "${CLUSTER_NAME}"
+    node.name: "${NODE_NAME}"
+
+    path.data: /usr/share/elasticsearch/data
+    path.repo: ["${BACKUP_REPO_PATH}"]
+
+    network.host: 0.0.0.0
+
+    discovery.zen.minimum_master_nodes: 2
+    discovery.zen.ping.unicast.hosts: ${DISCOVERY_SERVICE}
+  log4j2.properties: |
+    status = error
+
+    appender.console.type = Console
+    appender.console.name = console
+    appender.console.layout.type = PatternLayout
+    appender.console.layout.pattern = [%d{ISO8601}][%-5p][%-25c{1.}] %marker%m%n
+
+    rootLogger.level = info
+    rootLogger.appenderRef.console.ref = console

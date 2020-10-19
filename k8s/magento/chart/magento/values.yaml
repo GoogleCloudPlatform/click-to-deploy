@@ -30,6 +30,16 @@ redis:
   persistence:
     size: 5Gi
 
+elasticsearch:
+  image:
+    repo: null
+    tag: null
+  initImage: null
+  replicas: null
+  persistence:
+    storageClass: null
+    size: 5Gi
+
 nginx:
   exporter:
     image: null
