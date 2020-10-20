@@ -34,7 +34,7 @@ elasticsearch:
   image:
     repo: null
     tag: null
-  initImage: null
+  initImage: marketplace.gcr.io/google/ubuntu1604:latest
   replicas: null
   persistence:
     storageClass: null

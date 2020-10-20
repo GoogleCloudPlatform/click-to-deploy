@@ -15,9 +15,6 @@ data:
     path.repo: ["${BACKUP_REPO_PATH}"]
 
     network.host: 0.0.0.0
-
-    discovery.zen.minimum_master_nodes: 2
-    discovery.zen.ping.unicast.hosts: ${DISCOVERY_SERVICE}
   log4j2.properties: |
     status = error
 
