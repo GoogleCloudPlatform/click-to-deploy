@@ -37,14 +37,8 @@ spec:
         image: "{{ .Values.elasticsearch.image }}"
         imagePullPolicy: Always
         env:
-        - name: NODE_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
-        - name: CLUSTER_NAME
-          value: "{{ .Release.Name }}-cluster"
-        - name: DISCOVERY_SERVICE
-          value: "{{ .Release.Name }}-elasticsearch-svc"
+        - name: ES_JAVA_OPS
+          value: "-Xms1g -Xmx1g"
         - name: BACKUP_REPO_PATH
           value: ""
         ports:
@@ -65,17 +59,18 @@ spec:
         - name: {{ .Release.Name }}-elasticsearch-pvc
           mountPath: /usr/share/elasticsearch/data
         readinessProbe:
+          exec:
           httpGet:
-            path: /_cluster/health?local=true
+            path: /
             port: 9200
-          initialDelaySeconds: 5
+          initialDelaySeconds: 30
         livenessProbe:
           exec:
             command:
             - /usr/bin/pgrep
             - -x
             - "java"
-          initialDelaySeconds: 5
+          initialDelaySeconds: 30
         resources:
           requests:
             memory: "2Gi"

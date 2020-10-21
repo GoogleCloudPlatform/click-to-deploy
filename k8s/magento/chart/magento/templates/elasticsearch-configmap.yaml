@@ -8,12 +8,9 @@ metadata:
     app.kubernetes.io/component: elasticsearch-server
 data:
   elasticsearch.yml: |
-    cluster.name: "${CLUSTER_NAME}"
-    node.name: "${NODE_NAME}"
-
+    discovery.type: single-node
     path.data: /usr/share/elasticsearch/data
     path.repo: ["${BACKUP_REPO_PATH}"]
-
     network.host: 0.0.0.0
   log4j2.properties: |
     status = error
