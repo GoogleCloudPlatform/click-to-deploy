@@ -6,7 +6,7 @@ include ../images.Makefile
 CHART_NAME := magento
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 2.3
+TRACK ?= 2.4
 MYSQL_TAG ?= 5.7
 REDIS_TAG ?= 5.0
 ELASTICSEARCH_TAG ?= 7.8
