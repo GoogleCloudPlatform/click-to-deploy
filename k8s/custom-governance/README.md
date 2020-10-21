@@ -44,7 +44,7 @@
 
 Custom Governance (CG) is a customizable customer-managed governance platform which lets you coordinate the unique set of rules which make your business work as a native part of your cloud environment.
 
-[Learn more.](https://console.cloud.google.com/marketplace/details/aditum-marketplace-dev/custom-governance)
+[Learn more.](https://console.cloud.google.com/marketplace/details/custom-governance/custom-governance)
 
 ## About Google Click to Deploy
 
@@ -64,7 +64,7 @@ As of early summer 2020 the Custom Governance product is in Early Access stage. 
 
 Get up and running with a few clicks! Install Custom Governance to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
-[on-screen steps](https://console.cloud.google.com/marketplace/details/aditum-marketplace-dev/custom-governance).
+[on-screen steps](https://console.cloud.google.com/marketplace/details/custom-governance/custom-governance).
 
 Below are detailed instructions for installing Custom Governance through the Google Cloud Platform (GCP) Marketplace UI.
 
@@ -97,7 +97,7 @@ The person will also need to:
 
 1. Enable [Cloud Resource Manager](https://console.cloud.google.com/apis/api/cloudresourcemanager.googleapis.com).
    *   CRM (Cloud Resource Manager) is used by Custom Governance to read Google Cloud Platform resource metadata. It is required for Custom Governance to run.
-1. Visit the Marketplace listing for [Custom Governance](https://console.cloud.google.com/marketplace/details/aditum-marketplace-dev/custom-governance) for information on Custom Governance. We will start installation on this page.
+1. Visit the Marketplace listing for [Custom Governance](https://console.cloud.google.com/marketplace/details/custom-governance/custom-governance) for information on Custom Governance. We will start installation on this page.
    *   When you are ready to deploy click on the “Configure” button, it will take you to the Deployment Configuration UI:
 
         ![Deployment Configuration](./images/deployment_configuration.png)
@@ -209,10 +209,10 @@ community. The source code can be found on
 ### Install the Application
 
 #### Configure the app with environment variables
-Navigate to the `aditum` directory:
+Navigate to the `custom-governance` directory:
 
 ```shell
-cd click-to-deploy/k8s/aditum
+cd click-to-deploy/k8s/custom-governance
 ```
 
 Choose an instance name and
@@ -245,7 +245,7 @@ export SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-sa"
 ```
 #### Add the application parameters to [`cli_values_template.yaml`](cli_values_template.yaml)
 
-Open [`cli_values_template.yaml`](cli_values_template.yaml) inside the `aditum` directory:
+Open [`cli_values_template.yaml`](cli_values_template.yaml) inside the `custom-governance` directory:
 
 ```shell
 vim cli_values_template.yaml
@@ -276,17 +276,17 @@ Insert the parameters you configured as part of the prerequisites.
 Replace the values.yaml template with your template:
 1. Rename the current values template
 
-  ```mv chart/aditum/values.yaml values_template.yaml```
+  ```mv chart/custom-governance/values.yaml values_template.yaml```
 
 2. Copy your value template into the chart:
 
-  ```cp cli_value_template.yaml chart/aditum/values.yaml```
+  ```cp cli_value_template.yaml chart/custom-governance/values.yaml```
 
 Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to your app.
 
 ```shell
-helm template ${APP_INSTANCE_NAME} chart/aditum > ${APP_INSTANCE_NAME}_manifest.yaml
+helm template ${APP_INSTANCE_NAME} chart/custom-governance > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 
 #### Apply the manifest to your Kubernetes cluster
@@ -353,7 +353,7 @@ The `n1-standard-4` machine type is a good choice that covers the minimum requir
 1. Click `Create` to create your cluster with your custom SA!
 1. **After this cluster is created, connect to this cluster and add cluster-admin role binding to this custom SA**. Please run the following command to grant your service account with cluster-admin role.
 NAMESPACE is your kubernetest namespace in which you plan to install Custom Governance. Please make sure you use the same namespace that you will select in Marketplace Configuration UI, which by default is `default` and SERVICE_ACCOUNT_NAME is your custom SA prefix. For example, if your custom SA is cg-custom-sa@project_id.iam.gserviceaccount.com, SERVICE_ACCOUNT_NAME is cg-custom-sa:
-  
+
     `kubectl create clusterrolebinding "${NAMESPACE}-${SERVICE_ACCOUNT_NAME}-rb" --clusterrole=cluster-admin --serviceaccount="${NAMESPACE}:${SERVICE_ACCOUNT_NAME}"`
 
 ### Create a GKE Cluster Through CLI

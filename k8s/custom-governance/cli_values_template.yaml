@@ -1,6 +1,6 @@
 # # This is a YAML-formatted file.
 # # Declare variables to be passed into your templates.
-aditum:
+cg:
   image:
     # Container registry repo where the application image is hosted.
     # Typically you do not need to modify this.

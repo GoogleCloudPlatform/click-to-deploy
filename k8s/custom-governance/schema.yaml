@@ -29,9 +29,9 @@ x-google-marketplace:
   images:
     '':  # Primary image has no name.
       properties:
-        aditum.image.repo:
+        cg.image.repo:
           type: REPO_WITH_REGISTRY
-        aditum.image.tag:
+        cg.image.tag:
           type: TAG
   ## Cluster Constraints
   clusterConstraints:
