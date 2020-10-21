@@ -34,7 +34,7 @@ spec:
         - 'if [[ "$(sysctl vm.max_map_count --values)" -lt 262144 ]]; then sysctl -w vm.max_map_count=262144; fi'
       containers:
       - name: elasticsearch
-        image: "{{ .Values.elasticsearch.image.repo }}:{{ .Values.elasticsearch.image.tag }}"
+        image: "{{ .Values.elasticsearch.image }}"
         imagePullPolicy: Always
         env:
         - name: NODE_NAME

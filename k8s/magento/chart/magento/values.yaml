@@ -31,9 +31,7 @@ redis:
     size: 5Gi
 
 elasticsearch:
-  image:
-    repo: null
-    tag: null
+  image: null
   initImage: marketplace.gcr.io/google/ubuntu1604:latest
   replicas: null
   persistence:
