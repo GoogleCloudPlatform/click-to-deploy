@@ -33,9 +33,7 @@ redis:
 elasticsearch:
   image: null
   initImage: marketplace.gcr.io/google/ubuntu1604:latest
-  replicas: null
   persistence:
-    storageClass: null
     size: 5Gi
 
 nginx:
