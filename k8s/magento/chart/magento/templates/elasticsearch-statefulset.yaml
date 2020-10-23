@@ -1,0 +1,115 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-elasticsearch
+  labels: &ElasticsearchDeploymentLabels
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: elasticsearch-server
+spec:
+  selector:
+    matchLabels: *ElasticsearchDeploymentLabels
+  serviceName: {{ .Release.Name }}-elasticsearch-svc
+  replicas: 1
+  updateStrategy:
+      # The procedure for updating the Elasticsearch cluster is described at
+      # https://www.elastic.co/guide/en/elasticsearch/reference/current/rolling-upgrades.html
+      type: OnDelete
+  template:
+    metadata:
+      labels: *ElasticsearchDeploymentLabels
+    spec:
+      terminationGracePeriodSeconds: 180
+      initContainers:
+      # This init container sets the appropriate limits for mmap counts on the hosting node.
+      # https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html
+      - name: set-max-map-count
+        image: {{ .Values.elasticsearch.initImage }}
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          privileged: true
+        command:
+        - /bin/bash
+        - -c
+        - 'if [[ "$(sysctl vm.max_map_count --values)" -lt 262144 ]]; then sysctl -w vm.max_map_count=262144; fi'
+      containers:
+      - name: elasticsearch
+        image: "{{ .Values.elasticsearch.image }}"
+        imagePullPolicy: Always
+        env:
+        - name: ES_JAVA_OPS
+          value: "-Xms1g -Xmx1g"
+        - name: BACKUP_REPO_PATH
+          value: ""
+        ports:
+        - name: prometheus
+          containerPort: 9114
+          protocol: TCP
+        - name: http
+          containerPort: 9200
+        - name: tcp-transport
+          containerPort: 9300
+        volumeMounts:
+        - name: configmap
+          mountPath: /etc/elasticsearch/elasticsearch.yml
+          subPath: elasticsearch.yml
+        - name: configmap
+          mountPath: /etc/elasticsearch/log4j2.properties
+          subPath: log4j2.properties
+        - name: {{ .Release.Name }}-elasticsearch-pvc
+          mountPath: /usr/share/elasticsearch/data
+        readinessProbe:
+          exec:
+          httpGet:
+            path: /
+            port: 9200
+          initialDelaySeconds: 30
+        livenessProbe:
+          exec:
+            command:
+            - /usr/bin/pgrep
+            - -x
+            - "java"
+          initialDelaySeconds: 30
+        resources:
+          requests:
+            memory: "2Gi"
+      {{ if .Values.metrics.exporter.enabled }}
+      - name: prometheus-to-sd
+        image: {{ .Values.metrics.image }}
+        ports:
+        - name: profiler
+          containerPort: 6060
+        command:
+        - /monitor
+        - --stackdriver-prefix=custom.googleapis.com
+        - --source=elasticsearch:http://localhost:9114/metrics
+        - --pod-id=$(POD_NAME)
+        - --namespace-id=$(POD_NAMESPACE)
+        - --monitored-resource-types=k8s
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+      {{ end }}
+      volumes:
+      - name: configmap
+        configMap:
+          name: "{{ .Release.Name }}-configmap"
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Release.Name }}-elasticsearch-pvc
+      labels:
+        app.kubernetes.io/name: "{{ .Release.Name }}"
+        app.kubernetes.io/component: elasticsearch-server
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: {{ .Values.persistence.storageClass }}
+      resources:
+        requests:
+          storage: {{ .Values.elasticsearch.persistence.size }}
