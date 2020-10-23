@@ -1,11 +1,10 @@
-#!/usr/bin/env bash
-# Copyright 2016 The Kubernetes Authors.
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#      http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,11 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# The zkMetrics script can be used to retrieve metrics from the ZooKeeper
-# process and print them to stdout. A recurring Kubernetes job can be used
-# to collect these metrics and provide them to a collector.
+require 'spec_helper'
 
-set -eu
+describe port(22) do
+  it { should be_listening }
+end
 
-ZK_CLIENT_PORT=${ZK_CLIENT_PORT:-2181}
-echo mntr | nc localhost $ZK_CLIENT_PORT >& 1
+describe port(3306) do
+  it { should be_listening }
+end

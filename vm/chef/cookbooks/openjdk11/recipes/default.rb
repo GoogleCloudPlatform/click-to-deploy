@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-execute 'update' do
-  command 'apt-get update'
+apt_update do
+  action :update
 end
 
 package 'install packages' do # ~FC009

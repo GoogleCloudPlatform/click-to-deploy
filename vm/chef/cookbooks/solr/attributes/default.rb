@@ -12,5 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['solr']['version'] = '8.6.0'
+default['solr']['version'] = '8.6.2'
 default['solr']['packages'] = ['lsof']
