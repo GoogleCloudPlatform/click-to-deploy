@@ -1,0 +1,35 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-elasticsearch-prometheus-svc
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: elasticsearch-server
+spec:
+  clusterIP: None
+  ports:
+  - name: prometheus-port
+    port: 9114
+    protocol: TCP
+  selector:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: elasticsearch-server
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-elasticsearch-svc
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: elasticsearch-server
+spec:
+  ports:
+  - name: http
+    port: 9200
+  - name: tcp-transport
+    port: 9300
+  selector:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: elasticsearch-server
+  type: ClusterIP
