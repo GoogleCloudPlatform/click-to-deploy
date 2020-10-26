@@ -17,7 +17,7 @@ _variables:
 versions:
   # amppackager 1.0.2
   - dir: '1/debian10/1.0.2'
-    repo: 'amppackager'
+    repo: 'amppackager1'
     templateSubDir: debian10
     tags:
       - '1.0.2-debian10'
@@ -34,7 +34,7 @@ versions:
         sha256: 735a4bea3ba058bff48709d484ad143046402f95971c4eb6d0ad8403e4a85632
   # amppackager 1.0.1
   - dir: '1/debian10/1.0.1'
-    repo: 'amppackager'
+    repo: 'amppackager1'
     templateSubDir: debian10
     tags:
       - '1.0.1-debian10'
@@ -46,7 +46,7 @@ versions:
         sha256: 735a4bea3ba058bff48709d484ad143046402f95971c4eb6d0ad8403e4a85632
   # amppackager 1.0.0
   - dir: '1/debian10/1.0'
-    repo: 'amppackager'
+    repo: 'amppackager1'
     templateSubDir: debian10
     tags:
       - '1.0.0-debian10'
@@ -59,7 +59,7 @@ versions:
 
   # Init container for amppackager 1.0.0
   - dir: 'init'
-    repo: 'amppackager/init'
+    repo: 'amppackager1/init'
     templateSubDir: init
     tags:
       - '1.0.0'

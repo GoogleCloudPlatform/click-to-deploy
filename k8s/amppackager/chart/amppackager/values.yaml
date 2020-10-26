@@ -27,5 +27,5 @@ acme:
   directoryUrl: null
 
 service:
-  port: 60000
+  port: 6000
   loadBalancerSourceRanges: '127.0.0.1/32'

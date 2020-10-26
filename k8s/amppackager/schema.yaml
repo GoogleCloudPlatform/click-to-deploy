@@ -105,7 +105,7 @@ properties:
     type: string
     title: Domain
     description: The filename for the private key used by amppackager.
-    default: "amppkg.privkey"
+    default: "your-domain-url.com"
   packager.country:
     type: string
     title: Country
@@ -140,11 +140,11 @@ properties:
     type: int
     title: AMP Packager Service port
     description: The port used by the amppackager service.
-    default: 60000
+    default: 6000
   service.loadBalancerSourceRanges:
     type: string
     title: AMP Packager Load Balancer Source Range
-    description: The port used by the amppackager service.
+    description: Load balance source range used by amppackager service.
     default: null
 required:
 - name
@@ -155,4 +155,5 @@ required:
 - packager.organization
 - acme.emailAddress
 - acme.directoryUrl
+- service.port
 - service.loadBalancerSourceRanges
