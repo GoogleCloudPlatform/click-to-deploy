@@ -104,7 +104,7 @@ properties:
   packager.domain:
     type: string
     title: Domain
-    description: The filename for the private key used by amppackager.
+    description: The domain used by amppackager.
     default: "your-domain-url.com"
   packager.country:
     type: string
