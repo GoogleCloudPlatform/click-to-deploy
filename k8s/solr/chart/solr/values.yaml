@@ -1,11 +1,9 @@
 solr:
-  # Specify the initial script file name here to be executed before starting Solr
-  # The file is located relative to the solr chart root folder
-  initScript: ""
-
-  # Solr image settings
+  development: false
+  solrPassword: null
+  zkAdminPassword: null
+  zkReadOnlyPassword: null
   image:
-    # repository: solr
     repo: null
     tag: null
 
@@ -23,8 +21,6 @@ persistence:
 
 zookeeper:
   image: null
-    # repo: marketplace.gcr.io/google/zookeeper3
-    # tag: 3.6
 
 deployer:
   image: null

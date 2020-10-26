@@ -42,6 +42,27 @@ spec:
   info:
   - name: Application Name
     value: {{ .Release.Name }}
+  - name: SolrCloud service
+    type: Reference
+    valueFrom:
+      serviceRef:
+        name: "{{ .Release.Name }}-svc"
+  {{- if not .Values.solr.development }}
+  - name: SolrCloud User
+    value: solr
+  - name: SolrCloud Password
+    secretKeyRef:
+      key: solr-password
+      name: "{{ .Release.Name }}-solr-secret"
+  - name: ZooKeeper "admin-user" Password
+    secretKeyRef:
+      key: zk-admin-password
+      name: "{{ .Release.Name }}-solr-secret"
+  - name: ZooKeeper "readonly-user" Password
+    secretKeyRef:
+      key: zk-readonly-password
+      name: "{{ .Release.Name }}-solr-secret"
+  {{- end }}
   selector:
     matchLabels:
       app.kubernetes.io/name: "{{ .Release.Name }}"
@@ -60,3 +81,5 @@ spec:
     kind: Service
   - group: v1
     kind: ServiceAccount
+  - group: batch/v1
+    kind: Job

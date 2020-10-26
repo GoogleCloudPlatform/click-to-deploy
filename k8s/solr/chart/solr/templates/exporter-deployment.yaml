@@ -15,7 +15,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: solr-1-exporter
+  name: {{ .Release.Name }}-exporter
   labels: &SolrDeploymentLabels
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: solr-exporter
@@ -23,8 +23,9 @@ spec:
   selector:
     matchLabels: *SolrDeploymentLabels
   replicas: 1
+  revisionHistoryLimit: 1
   strategy:
-        {}
+    type: Recreate
   template:
     metadata:
       labels: *SolrDeploymentLabels
@@ -33,8 +34,20 @@ spec:
         null
       containers:
         - name: exporter
-          image: "gcr.io/ccm-ops-test-adhoc/solr8:8.6.1"
+          image: "{{ .Values.solr.image.repo }}:{{ .Values.solr.image.tag }}"
           imagePullPolicy: IfNotPresent
+          {{- if not .Values.solr.development }}
+          env:
+            - name: ZK_READONLY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-solr-secret
+                  key: zk-readonly-password
+            - name: SOLR_ZK_READONLY_CREDS
+              value: "-DzkACLProvider=org.apache.solr.common.cloud.VMParamsAllAndReadonlyDigestZkACLProvider -DzkCredentialsProvider=org.apache.solr.common.cloud.VMParamsSingleSetCredentialsDigestZkCredentialsProvider -DzkDigestUsername=readonly-user -DzkDigestPassword=$(ZK_READONLY_PASSWORD)"
+            - name: JAVA_OPTS
+              value: "$(SOLR_ZK_READONLY_CREDS)"
+          {{- end }}
           resources:
             {}
           ports:
@@ -44,8 +57,10 @@ spec:
             - "/opt/solr/contrib/prometheus-exporter/bin/solr-exporter"
             - "-p"
             - "9983"
+            {{- if not .Values.solr.development }}
             - "-z"
-            - "solr-1-zookeeper-headless:2181"
+            - "{{ .Release.Name }}-zk-client:2181"
+            {{- end }}
             - "-n"
             - "7"
             - "-f"
@@ -64,7 +79,7 @@ spec:
               port: 9983
       initContainers:
         - name: solr-init
-          image: "gcr.io/ccm-ops-test-adhoc/solr8:8.6.1"
+          image: "{{ .Values.solr.image.repo }}:{{ .Values.solr.image.tag }}"
           imagePullPolicy: IfNotPresent
           command:
             - 'sh'

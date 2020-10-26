@@ -9,7 +9,11 @@ spec:
   selector:
     matchLabels: *SolrDeploymentLabels
   serviceName: {{ .Release.Name }}-headless
+  {{- if not .Values.solr.development }}
   replicas: 3
+  {{- else }}
+  replicas: 1
+  {{- end }}
   updateStrategy:
         type: RollingUpdate
   template:
@@ -19,10 +23,6 @@ spec:
       securityContext:
         fsGroup: 8983
         runAsUser: 8983
-      affinity:
-        null
-      tolerations:
-        null
       terminationGracePeriodSeconds: 30
       volumes:
         - name: solr-xml
@@ -32,6 +32,7 @@ spec:
               - key: solr.xml
                 path: solr.xml
       initContainers:
+        {{- if not .Values.solr.development }}
         - name: check-zk
           image: {{ .Values.deployer.image }}
           command:
@@ -59,6 +60,7 @@ spec:
               done;
               echo "Did NOT see a ZK leader after 240 secs!";
               exit 1;
+        {{- end }}
         - name: cp-solr-xml
           image: {{ .Values.deployer.image }}
           command: ['bash', '-c', 'cp /tmp/solr.xml /tmp-config/solr.xml']
@@ -87,28 +89,50 @@ spec:
                   fieldPath: metadata.name
             - name: "SOLR_HOST"
               value: "$(POD_HOSTNAME).{{ .Release.Name }}-headless.{{ .Release.Namespace }}"
-            - name: "ZK_HOST"
-              value: "{{ .Release.Name }}-zk-client:2181"
             - name: "SOLR_LOG_LEVEL"
               value: "INFO"
+            {{- if not .Values.solr.development }}
+            - name: "ZK_HOST"
+              value: "{{ .Release.Name }}-zk-headless:2181"
             - name: SOLR_USER
               value: solr
             - name: SOLR_PASSWORD
-              value: solr
-
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-solr-secret
+                  key: solr-password
+            - name: SOLR_AUTH_TYPE
+              value: basic
+            - name: SOLR_AUTHENTICATION_OPTS
+              value: "-Dbasicauth=$(SOLR_USER):$(SOLR_PASSWORD)"
+            - name: ZK_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-solr-secret
+                  key: zk-admin-password
+            - name: ZK_READONLY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-solr-secret
+                  key: zk-readonly-password
+            - name: SOLR_ZK_CREDS_AND_ACLS
+              value: "-DzkACLProvider=org.apache.solr.common.cloud.VMParamsAllAndReadonlyDigestZkACLProvider -DzkCredentialsProvider=org.apache.solr.common.cloud.VMParamsSingleSetCredentialsDigestZkCredentialsProvider -DzkDigestUsername=admin-user -DzkDigestPassword=$(ZK_ADMIN_PASSWORD) -DzkDigestReadonlyUsername=readonly-user -DzkDigestReadonlyPassword=$(ZK_READONLY_PASSWORD)"
+            - name: SOLR_OPTS
+              value: "$(SOLR_ZK_CREDS_AND_ACLS)"
+            {{- end }}
           livenessProbe:
             initialDelaySeconds: 45
             periodSeconds: 10
             httpGet:
               scheme: "HTTP"
-              path: /solr/admin/info/system
+              path: /solr
               port: 8983
           readinessProbe:
             initialDelaySeconds: 15
             periodSeconds: 5
             httpGet:
               scheme: "HTTP"
-              path: /solr/admin/info/system
+              path: /solr
               port: 8983
           volumeMounts:
             - name: homedir

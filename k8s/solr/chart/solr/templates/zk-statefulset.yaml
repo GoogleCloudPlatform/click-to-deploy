@@ -1,3 +1,4 @@
+{{- if not .Values.solr.development }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -69,6 +70,8 @@ spec:
           value: "3888"
         - name: ZOO_4LW_COMMANDS_WHITELIST
           value: "*"
+        - name: ZK_DATA_DIR
+          value: /data
         readinessProbe:
           exec:
             command:
@@ -93,7 +96,7 @@ spec:
         - name: config
           mountPath: /config-scripts
         - name: datadir
-          mountPath: /opt/zookeeper/data
+          mountPath: /opt/zookeeper
       securityContext:
         runAsUser: 1000
         fsGroup: 1000
@@ -111,3 +114,4 @@ spec:
       resources:
         requests:
           storage: {{ .Values.persistence.zookeeper.storageSize }}
+{{- end }}
