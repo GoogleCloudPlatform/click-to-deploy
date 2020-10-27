@@ -16,6 +16,12 @@
 
 source /opt/c2d/c2d-utils || exit 1
 
+#######################################
+# Checks if a host and port are opened
+# Arguments:
+#   Host name
+#   Port number
+#######################################
 function await_for_host_and_port() {
   local -r HOST="$1"
   local -r PORT="$2"
@@ -25,6 +31,13 @@ function await_for_host_and_port() {
   fi
 }
 
+#######################################
+# Generate a config file based on a template using environment variables.
+# Arguments:
+#  Directory where template and config files are located.
+#  Template filename.
+#  Generated filename
+#######################################
 function fill_in_config_template() {
   local -r base_dir="$1"
   local -r template_file="$2"
@@ -36,6 +49,16 @@ function fill_in_config_template() {
   rm "${template_file}.orig"
 }
 
+#######################################
+# Check if user can connect to Elasticsearch API
+# Arguments:
+#  Elasticsearch host
+#  Elasticsearch protocol
+#  Elasticsearch user
+#  Elasticsearch password
+# Outputs:
+#  String as '1' if user can connect or '0' if not
+#######################################
 function check_password() {
   local -r hostname="$1"
   local -r protocol="$2"
@@ -58,6 +81,16 @@ function check_password() {
   fi
 }
 
+#######################################
+# Creates an user at Elasticsearch with kibana_admin role.
+# Arguments:
+#  Elasticsearch host
+#  Elasticsearch protocol
+#  Elasticsearch user to authenticate
+#  Elasticsearch password to authenticate
+#  Elasticsearch user to be created
+#  Elasticsearch password of the new user
+#######################################
 function create_user() {
   local -r hostname="$1"
   local -r protocol="$2"
@@ -91,6 +124,16 @@ function create_user() {
   fi
 }
 
+#######################################
+# Try to create an user with provided credentials
+# Arguments:
+#  Elasticsearch host
+#  Elasticsearch protocol
+#  Elasticsearch user to authenticate
+#  Elasticsearch password to authenticate
+#  Elasticsearch user to be created
+#  Elasticsearch password of the new user
+#######################################
 function try_to_create_user() {
   local -r hostname="$1"
   local -r protocol="$2"
