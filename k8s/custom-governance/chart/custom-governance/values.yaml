@@ -1,7 +1,7 @@
 # # Default values for addy.
 # # This is a YAML-formatted file.
 # # Declare variables to be passed into your templates.
-aditum:
+cg:
   image:
     repo: null
     tag: null
@@ -14,10 +14,6 @@ oAuth:
 
 updateStrategy:
   type: RollingUpdate
-
-service:
-  type: NodePort
-  port: 8080
 
 certificate:
   hostname: null

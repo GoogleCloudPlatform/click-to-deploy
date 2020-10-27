@@ -12,7 +12,7 @@ metadata:
 spec:
   descriptor:
     type: Custom Governance
-    version: "{{ .Values.aditum.image.tag }}"
+    version: "{{ .Values.cg.image.tag }}"
   info:
     - name: Custom Governance site URL
       value: "https://{{ .Values.certificate.hostname }}"

@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-description: Trigger for K8s aditum
-filename: k8s/aditum/cloudbuild-k8s.yaml
+description: Trigger for K8s custom-governance
+filename: k8s/custom-governance/cloudbuild-k8s.yaml
 github:
   name: click-to-deploy
   owner: GoogleCloudPlatform
@@ -21,10 +21,10 @@ github:
     branch: .*
     commentControl: COMMENTS_ENABLED
 includedFiles:
-- k8s/aditum/cloudbuild-k8s.yaml
+- k8s/custom-governance/cloudbuild-k8s.yaml
 - k8s.Dockerfile
-- k8s/aditum/**
+- k8s/custom-governance/**
 - k8s/*
-name: Trigger-for-K8s-aditum
+name: Trigger-for-K8s-custom-governance
 substitutions:
-  _SOLUTION_NAME: aditum
+  _SOLUTION_NAME: custom-governance
