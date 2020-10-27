@@ -12,12 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['kibana']['version'] = '7.8.0'
+default['kibana']['version'] = '7.9.2'
 
 default['kibana']['release'] =
   default['kibana']['version'].split('.')[0]
 
 default['kibana']['repository_url'] =
   "https://artifacts.elastic.co/packages/#{default['kibana']['release']}.x/apt"
-default['logstash']['keyserver_url'] =
+default['kibana']['keyserver_url'] =
   'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
+
+default['kibana']['packages'] = ['apt-transport-https', 'jq']

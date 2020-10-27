@@ -19,7 +19,8 @@ apt_update 'update' do
 end
 
 # Install the package required to apt-get update with elasticsearch repo
-package 'apt-transport-https' do
+package 'Install Packages' do
+  package_name node['kibana']['packages']
   action :install
 end
 
@@ -58,6 +59,15 @@ cookbook_file '/etc/kibana/kibana.yml.template' do
   owner 'root'
   group 'root'
   mode '0640'
+end
+
+# Patch for including ssl feature for elasticsearch
+cookbook_file '/opt/c2d/patch-ssl' do
+  source 'patch-ssl'
+  owner 'root'
+  group 'root'
+  mode 0664
+  action :create
 end
 
 # Copy startup script

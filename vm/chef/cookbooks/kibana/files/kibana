@@ -17,19 +17,40 @@
 source /opt/c2d/kibana-utils || exit 1
 
 # Export variables to be used in configuration files
+# Elasticsearch settings
+# Host and Port are used to connect
 export es_host="$(get_attribute_value "es_host")"
 export es_port="$(get_attribute_value "es_port")"
 export es_username="$(get_attribute_value "es_username")"
 export es_password="$(get_attribute_value "es_password")"
+export es_protocol="$(get_attribute_value "es_protocol")"
+readonly es_use_https="$(get_attribute_value "es_use_https" \
+  | tr '[:upper:]' '[:lower:]')"
 
+# Kibana settins
 readonly kibana_template="/etc/kibana/kibana.yaml.template"
+export kibana_username="$(get_attribute_value "kibana_username")"
+export kibana_password="$(get_attribute_value "kibana_password")"
+export kibana_admin_user="kibana_admin"
+export kibana_admin_password="$(get_attribute_value "kibana_admin_password")"
+
+export is_elkstack="$(get_attribute_value "is_elkstack")"
+
+# Set protocol as https if configuration is enabled
+if [[ -z "${es_protocol}" ]]; then
+  es_protocol="http"
+  if [[ "${es_use_https:-"false"}" == "true" ]]; then
+    es_protocol="https"
+  fi
+fi
 
 echo "Awaiting for Elasticsearch server to be up..."
 await_for_host_and_port "${es_host}" "${es_port}"
 
 echo "Setting up Kibana..."
 
-if [[ -z "${es_username}" ]]; then
+# Disable authentication if Elasticsearch username is not provided.
+if [[ -z "${kibana_username}" ]]; then
   echo "Disable authentication"
   readonly line_number="$(cat -n "${kibana_template}" | grep "username" | awk '{ print $1 }')"
   readonly template_contents="$(cat "${kibana_template}" | sed "${line_number}d" | sed "${line_number}d")"
@@ -37,11 +58,48 @@ if [[ -z "${es_username}" ]]; then
 fi
 
 echo "Configuring kibana.yml..."
-rm -f /etc/kibana/kibana.yml
-fill_in_config_template \
-  /etc/kibana/ \
-  kibana.yml.template \
-  kibana.yml
+  rm -f /etc/kibana/kibana.yml
+  fill_in_config_template \
+    /etc/kibana/ \
+    kibana.yml.template \
+    kibana.yml
+
+# If is ELK
+if [[ "${is_elkstack:-"false"}" == "true" ]]; then
+  # Create kibana_admin user
+  try_to_create_user "${es_host}" "${es_protocol}" \
+    "${es_username}" "${es_password}" \
+    "${kibana_admin_user}" "${kibana_admin_password}"
+
+  export es_certshare_host="${es_host}"
+
+  # Apply SSL settings if enabled
+  if [[ "${es_use_https}" == "true" ]]; then
+    # Download certificates
+    echo "Awaiting for certificate config server be up..."
+    await_for_host_and_port "${es_certshare_host}" "8000"
+
+    cert_folder="/etc/kibana/config/certs"
+    mkdir -p "${cert_folder}"
+
+    echo "Download certificates from config server..."
+    curl -s -o "${cert_folder}/ca.crt" "http://${es_certshare_host}:8000/ca/ca.crt"
+    curl -s -o "${cert_folder}/ca.key" "http://${es_certshare_host}:8000/ca/ca.key"
+    curl -s -o "${cert_folder}/kibana.crt" \
+      "http://${es_certshare_host}:8000/kibana/kibana.crt"
+    curl -s -o "${cert_folder}/kibana.key" \
+      "http://${es_certshare_host}:8000/kibana/kibana.key"
+
+    # Apply settings
+    readonly config_file="/etc/kibana/kibana.yml"
+    readonly patch_file="/opt/c2d/patch-ssl"
+    readonly https_config="$(cat ${patch_file} | envsubst)"
+    echo "${https_config}" >> "${config_file}"
+  fi
+else
+  # Standalone solution
+  echo "elasticsearch.ssl.verificationMode: certificate" >> "/etc/kibana/kibana.yml"
+fi
 
 # Enable and start Logstash service
 systemctl enable kibana
