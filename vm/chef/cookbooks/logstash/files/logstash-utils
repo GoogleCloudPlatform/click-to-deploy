@@ -1,0 +1,54 @@
+#!/bin/bash -eu
+#
+# Copyright 2020 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
+
+function await_for_host_and_port() {
+  local -r HOST="$1"
+  local -r PORT="$2"
+  timeout --preserve-status 300 bash -c "until echo > /dev/tcp/${HOST}/${PORT}; do sleep 2; done"
+  if [[ "$?" -ne 0 ]]; then
+      exit 1
+  fi
+}
+
+function fill_in_config_template() {
+  local -r base_dir="$1"
+  local -r template_file="$2"
+  local -r output_file="$3"
+
+  cd "${base_dir}"
+  mv "${template_file}" "${template_file}.orig"
+  envsubst < "${template_file}.orig" > "${output_file}"
+  rm "${template_file}.orig"
+}
+
+function download_certificate() {
+  local -r es_certshare_host="$1"
+  local -r cert_name="ca"
+  local -r cert_folder="/etc/logstash/config/certs"
+
+  # Download certificates
+  echo "Awaiting for certificate config server be up..."
+  await_for_host_and_port "${es_certshare_host}" "8000"
+
+  # Create directory where cert will be stored
+  mkdir -p "${cert_folder}"
+
+  echo "Download certificates from config server..."
+  curl -s -o "${cert_folder}/${cert_name}.crt" \
+    "http://${es_certshare_host}:8000/ca/ca.crt"
+}
