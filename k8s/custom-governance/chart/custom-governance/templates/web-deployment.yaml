@@ -15,7 +15,7 @@ spec:
       serviceAccountName: {{ .Values.controller.serviceAccount }}
       containers:
         #TODO: Insert variable for dynamic image URL
-      - image: "{{ .Values.aditum.image.repo }}:{{ .Values.aditum.image.tag }}"
+      - image: "{{ .Values.cg.image.repo }}:{{ .Values.cg.image.tag }}"
         imagePullPolicy: Always
         name: cg-app
         ports:
