@@ -75,7 +75,7 @@ Questions about Custom Governance? Go [here](https://docs.google.com/document/d/
 
 ## Before you get started
 
-As of early summer 2020 the Custom Governance product is in Early Access stage. We are taking a limited number of new customers. To try out Custom Governance, [please fill out this intake form.](https://docs.google.com/forms/d/1ulI20NPs-S5-pAAZDSlZl4nAOhg5GRERtyoAr0XM6lg/viewform?edit_requested=true)
+As of early fall 2020 the Custom Governance product is in Early Access stage. We are taking a limited number of new customers. To try out Custom Governance, [please fill out this intake form.](https://docs.google.com/forms/d/1ulI20NPs-S5-pAAZDSlZl4nAOhg5GRERtyoAr0XM6lg/viewform?edit_requested=true)
 
 ## Quick install with Google Cloud Marketplace
 
@@ -459,10 +459,10 @@ community. The source code can be found on
 ### Install the Application
 
 #### Configure the app with environment variables
-Navigate to the `aditum` directory:
+Navigate to the `custom-governance` directory:
 
 ```shell
-cd click-to-deploy/k8s/aditum
+cd click-to-deploy/k8s/custom-governance
 ```
 
 Choose an instance name and
@@ -495,7 +495,7 @@ export SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-sa"
 ```
 #### Add the application parameters to [`cli_values_template.yaml`](cli_values_template.yaml)
 
-Open [`cli_values_template.yaml`](cli_values_template.yaml) inside the `aditum` directory:
+Open [`cli_values_template.yaml`](cli_values_template.yaml) inside the `custom-governance` directory:
 
 ```shell
 vim cli_values_template.yaml
@@ -526,17 +526,17 @@ Insert the parameters you configured as part of the prerequisites.
 Replace the values.yaml template with your template:
 1. Rename the current values template
 
-  ```mv chart/aditum/values.yaml values_template.yaml```
+  ```mv chart/custom-governance/values.yaml values_template.yaml```
 
 2. Copy your value template into the chart:
 
-  ```cp cli_value_template.yaml chart/aditum/values.yaml```
+  ```cp cli_value_template.yaml chart/custom-governance/values.yaml```
 
 Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to your app.
 
 ```shell
-helm template ${APP_INSTANCE_NAME} chart/aditum > ${APP_INSTANCE_NAME}_manifest.yaml
+helm template ${APP_INSTANCE_NAME} chart/custom-governance > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 
 #### Apply the manifest to your Kubernetes cluster
