@@ -20,8 +20,17 @@ properties:
     default: 3
     minimum: 1
     maximum: 6
+  STORAGE_CLASS:
+    type: string
+    title: StorageClass
+    description: You can choose an existing StorageClass or create a new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
 required:
 - APP_INSTANCE_NAME
 - NAMESPACE
 - IMAGE_SAMPLE_APP
 - SAMPLE_APP_PARAMETER1
+- STORAGE_CLASS

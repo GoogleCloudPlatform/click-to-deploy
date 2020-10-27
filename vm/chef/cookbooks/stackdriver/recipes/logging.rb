@@ -23,8 +23,8 @@ end
 # Add the agent's package repository
 execute 'bash /tmp/add-logging-agent-repo.sh'
 
-execute 'Update Sources' do
-  command 'apt-get update'
+apt_update do
+  action :update
 end
 
 package 'Install Packages' do

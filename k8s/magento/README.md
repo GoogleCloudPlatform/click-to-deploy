@@ -57,11 +57,21 @@ This workload also offers an embedded [Redis Prometheus Metrics Exporter](https:
 
 The MySQL single-replica StatefulSet runs a [MySQL Server](https://www.mysql.com) app on a [mysql-docker](https://github.com/GoogleCloudPlatform/mysql-docker) container installation. The credentials for the `root` account are automatically generated, and configured in the app through the Secret resource `[APP_INSTANCE_NAME]-mysql-secret`.
 
-By default, the Services exposing the Magento app are of type ClusterIP, which means it is accessible only in a private network on port `3306`.
+By default, the Services exposing MySQL are of type ClusterIP, which means it is accessible only in a private network on port `3306`.
 
-A Persistent Volume Claim is used for storing all the e-commerce data and catalog.
+A Persistent Volume Claim is used for storing all the e-commerce data.
 
 This workfload also offers an embedded [MySQL Prometheus Metrics Exporter](https://github.com/GoogleCloudPlatform/mysql-docker/tree/master/exporter).
+
+### Elasticsearch Workloads
+
+The Elasticsearch StatefulSet runs an [Elasticsearch Server](https://www.elastic.co/elasticsearch/) on an [elasticsearch-docker](https://github.com/GoogleCloudPlatform/elasticsearch-docker) container installation.
+
+By default, the Services exposing Elasticsearch are of type ClusterIP, which means it is accessible only in a private network on port `9200`.
+
+A Persistent Volume Claim is used for storing all the e-commerce catalog.
+
+This workfload also offers an embedded [Elasticsearch Prometheus Metrics Exporter](https://github.com/justwatchcom/elasticsearch_exporter).
 
 # Installation
 
@@ -193,7 +203,7 @@ Alternatively you can use short tag which points to the latest image for selecte
 > Warning: this tag is not stable and referenced image might change over time.
 
 ```shell
-export TAG="2.3"
+export TAG="2.4"
 ```
 
 Configure the container images:
@@ -204,6 +214,7 @@ export IMAGE_REGISTRY="marketplace.gcr.io/google"
 export IMAGE_MAGENTO="${IMAGE_REGISTRY}/magento"
 export IMAGE_MYSQL="${IMAGE_REGISTRY}/magento/mysql:${TAG}"
 export IMAGE_REDIS="${IMAGE_REGISTRY}/magento/redis:${TAG}"
+export IMAGE_ELASTICSEARCH="${IMAGE_REGISTRY}/magento/elasticsearch:${TAG}"
 
 export IMAGE_NGINX_EXPORTER="${IMAGE_REGISTRY}/magento/nginx-exporter:${TAG}"
 export IMAGE_MYSQL_EXPORTER="${IMAGE_REGISTRY}/magento/mysql-exporter:${TAG}"
@@ -284,6 +295,7 @@ helm template chart/magento \
     --set redis.image="${IMAGE_REDIS}" \
     --set redis.password="${REDIS_PASSWORD}" \
     --set redis.exporter.image="${IMAGE_REDIS_EXPORTER}" \
+    --set elasticsearch.image="${IMAGE_ELASTICSEARCH}" \
     --set nginx.exporter.image="${IMAGE_NGINX_EXPORTER}" \
     --set tls.base64EncodedPrivateKey="${TLS_CERTIFICATE_KEY}" \
     --set tls.base64EncodedCertificate="${TLS_CERTIFICATE_CRT}" \
