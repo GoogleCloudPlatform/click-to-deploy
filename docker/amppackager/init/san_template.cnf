@@ -1,0 +1,13 @@
+[ req ]
+distinguished_name = req_distinguished_name
+req_extensions     = req_ext
+[ req_distinguished_name ]
+countryName                = $(AMP_PACKAGER_COUNTRY)
+stateOrProvinceName        = $(AMP_PACKAGER_STATE)
+localityName               = $(AMP_PACKAGER_LOCALITY)
+organizationName           = $(AMP_PACKAGER_ORGANIZATION)
+commonName                 = $(AMP_PACKAGER_DOMAIN)
+[ req_ext ]
+subjectAltName = @alt_names
+[alt_names]
+DNS.1   = $(AMP_PACKAGER_DOMAIN)
