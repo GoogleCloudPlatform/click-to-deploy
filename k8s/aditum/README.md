@@ -96,7 +96,7 @@ Custom Governance installed through Marketplace is a Kubernetes application on a
    7. **Set up Kubernetes Service Account. Please select *Create a new service account***
         *   A new Kubernetes service account will be created using cluster edit and read roles to allow access to the Kubernetes Secrets
    8. **Set up Initial User Email.** This will be the user email address that will be deploying/setting up Custom Governance. Custom Governance will check for this email address even after the user has passed through IAP.
-   9.  **Click “Deploy” when you are ready.** Deployment usually will take around ten minutes or longer. Even after deployment is successful the cg-ingress may take longer to become ready. This is completely normal. When you find cg-ingress is ready on [cloud console](https://console.cloud.google.com/kubernetes/discovery), it means that the deployment succeeds! You can jump to our [Post Deployment Section](#Post-Deployment) once it's ready. We still have a few steps before you can explore Custom Governance.
+   9.  **Click “Deploy” when you are ready.** Deployment usually will take around ten minutes or longer. Even after deployment is successful the cg-ingress may take longer to become ready. This is completely normal. When you find cg-ingress is ready on [cloud console](https://console.cloud.google.com/kubernetes/discovery), it means that the deployment succeeds! You can jump to our [Post Deployment Section](#Post-Deployment-1) once it's ready. We still have a few steps before you can explore Custom Governance.
 
 ## Command line deployment
 
@@ -283,7 +283,7 @@ kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 In order to access your newly deployed Custom Governance instance you must completed
 IAP setup.
 
-Follow the instructions in [the Post Deployment section](#Post-Deployment)
+Follow the instructions in [the Post Deployment section](#Post-Deployment-1)
 
 #### View the app in the Google Cloud Console
 
