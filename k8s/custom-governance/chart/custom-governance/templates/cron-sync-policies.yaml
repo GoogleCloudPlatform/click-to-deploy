@@ -1,8 +1,8 @@
-# Daily backend data update job
+# Daily policy details cache update
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: cron-create-report
+  name: cron-sync-policies
   namespace: "{{ .Release.Namespace }}"
 spec:
   schedule: "0 0 * * *"
@@ -19,5 +19,5 @@ spec:
             args:
             - /bin/sh
             - -ec
-            - curl -v -H "x-goog-aditum-cron:true" cg-service:80/caiReports/create
+            - curl -v -H "x-goog-cg-cron:true" cg-service:80/compliance/ruleConfig/syncPoliciesFromGcsToSpanner/
           restartPolicy: Never
