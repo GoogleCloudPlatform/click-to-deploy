@@ -532,6 +532,7 @@ Replace the values.yaml template with your template:
 
   ```cp cli_value_template.yaml chart/custom-governance/values.yaml```
 
+
 Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to your app.
 
