@@ -22,6 +22,7 @@ versions:
       - '12.9.4'
       - '12.9'
       - '12'
+      - 'latest'
     from: marketplace.gcr.io/google/debian9
     packages:
       gitlab:
