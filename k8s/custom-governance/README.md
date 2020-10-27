@@ -2,16 +2,10 @@
 - [Installation](#Installation)
   - [Before you get started](#Before-you-get-started)
   - [Quick install with Google Cloud Marketplace](#Quick-install-with-Google-Cloud-Marketplace)
-<<<<<<< HEAD:k8s/custom-governance/README.md
   - [Prerequisites](#Prerequisites)
   - [Option1: Marketplace UI Deployment Details](#Option1-Marketplace-UI-Deployment-Details)
   - [Option2: Command line deployment](#Option2-Command-line-deployment)
     - [Prerequisites](#Prerequisites-1)
-=======
-    - [Marketplace UI Deployment Details](#Marketplace-UI-Deployment-Details)
-  - [Command line deployment](#Command-line-deployment)
-    - [Prerequisites](#Prerequisites)
->>>>>>> master:k8s/aditum/README.md
       - [Set up command line tools](#Set-up-command-line-tools)
       - [Enable required APIs](#Enable-required-APIs)
       - [Complete resource prerequisites](#Complete-resource-prerequisites)
@@ -34,10 +28,27 @@
       - [Creating a custom service account for your GKE cluster](#Creating-a-custom-service-account-for-your-GKE-cluster)
       - [Configuring the GKE cluster to run as a custom service account](#Configuring-the-GKE-cluster-to-run-as-a-custom-service-account)
     - [Create a GKE Cluster Through CLI](#Create-a-GKE-Cluster-Through-CLI)
+      - [Enable required APIs](#Enable-required-APIs-1)
+      - [Complete resource prerequisites](#Complete-resource-prerequisites-1)
+      - [Create a Google Kubernetes Engine cluster](#Create-a-Google-Kubernetes-Engine-cluster-1)
+      - [Configure kubectl to connect to the cluster](#Configure-kubectl-to-connect-to-the-cluster-1)
+      - [Clone this repo](#Clone-this-repo-1)
+      - [Install the Application resource definition](#Install-the-Application-resource-definition-1)
+    - [Install the Application](#Install-the-Application-1)
+      - [Configure the app with environment variables](#Configure-the-app-with-environment-variables-1)
+      - [Create namespace in your Kubernetes cluster](#Create-namespace-in-your-Kubernetes-cluster-1)
+      - [Configure the service account](#Configure-the-service-account-1)
+      - [Add the application parameters to `cli_values_template.yaml`](#Add-the-application-parameters-to-clivaluestemplateyaml-1)
+      - [Expand the manifest template](#Expand-the-manifest-template-1)
+      - [Apply the manifest to your Kubernetes cluster](#Apply-the-manifest-to-your-Kubernetes-cluster-1)
+      - [Post Deployment](#Post-Deployment-1)
+      - [View the app in the Google Cloud Console](#View-the-app-in-the-Google-Cloud-Console-1)
+  - [Detailed Instructions](#Detailed-Instructions-1)
+    - [Minimum Requirements for GKE Cluster:](#Minimum-Requirements-for-GKE-Cluster-1)
     - [Setup OAuth Credentials for IAP (Identity Aware Proxy)](#Setup-OAuth-Credentials-for-IAP-Identity-Aware-Proxy)
     - [Reserve Static External IP Address](#Reserve-Static-External-IP-Address)
     - [Configure DNS A Record](#Configure-DNS-A-Record)
-  - [Post Deployment](#Post-Deployment-1)
+  - [Post Deployment](#Post-Deployment-2)
     - [Configure Identity-Aware Proxy (IAP)](#Configure-Identity-Aware-Proxy-IAP)
     - [Finish Deployment](#Finish-Deployment)
   - [Troubleshooting](#Troubleshooting)
@@ -78,7 +89,6 @@ Custom Governance installed through Marketplace is a Kubernetes application on a
 
 **Due to security reasons, we only support running Custom Governance in Google Chrome or Safari. Custom Governance may not be loading properly in all other browsers.**
 
-<<<<<<< HEAD:k8s/custom-governance/README.md
 ## Prerequisites
 The person performing the onboarding needs to be able to grant the following IAM roles to a service account:
 * **Project Editor**
@@ -97,9 +107,6 @@ The person will also need to:
 
 
 ## Option1: Marketplace UI Deployment Details
-=======
-### Marketplace UI Deployment Details
->>>>>>> master:k8s/aditum/README.md
 
 1. [Create a project](https://cloud.google.com/resource-manager/docs/creating-managing-projects#before_you_begin)
  where Custom Governance can be deployed.
@@ -126,7 +133,6 @@ The person will also need to:
    8. **Set up Initial User Email.** This will be the user email address that will be deploying/setting up Custom Governance. Custom Governance will check for this email address even after the user has passed through IAP.
    9.  **Click “Deploy” when you are ready.** Deployment usually will take around ten minutes or longer. Even after deployment is successful the cg-ingress may take longer to become ready. This is completely normal. When you find cg-ingress is ready on [cloud console](https://console.cloud.google.com/kubernetes/discovery), it means that the deployment succeeds! You can jump to our [Post Deployment Section](#Post-Deployment) once it's ready. We still have a few steps before you can explore Custom Governance.
 
-<<<<<<< HEAD:k8s/custom-governance/README.md
 ## Option2: Command line deployment
 
 You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local
@@ -370,18 +376,6 @@ NAMESPACE is your kubernetest namespace in which you plan to install Custom Gove
 ### Create a GKE Cluster Through CLI
 
   * You can create a cluster with the scope through the [gcloud command-line tool](https://cloud.google.com/sdk/gcloud). You can run this command in the Cloud Shell to create a cluster with the **basic** requirements:
-=======
-## Command line deployment
-
-You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local
-workstation to follow the steps below.
-
-[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/GoogleCloudPlatform/click-to-deploy&cloudshell_open_in_editor=README.md&cloudshell_working_dir=k8s/sample-app)
-
-### Prerequisites
-
-#### Set up command line tools
->>>>>>> master:k8s/aditum/README.md
 
 You'll need the following tools in your development environment. If you are
 using Cloud Shell, `gcloud`, `kubectl`, Docker, and Git are installed in your
@@ -575,53 +569,6 @@ To view the app, open the URL in your browser.
 
 We have minimum requirements for GKE clusters running Custom Governance [following GCP Best practices](https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances#best_practices):
 
-<<<<<<< HEAD:k8s/custom-governance/README.md
-=======
-  1. We require a service account with the `editor` IAM role in order to allow Custom Governance to deploy successfully.
-     * If you are deploying via [CLI installation](#Command-Line-Deployment) you will need to add the `Kubernetes Engine Admin` IAM role as well.
-     * By default the Compute Engine service account is used. If you would like to create a custom service account [click here](#Create-a-GKE-Cluster-With-Custom-Service-Account).
-  2. [Configure the instance to run as that service account](#configuring-the-gke-cluster-to-run-as-a-custom-service-account).
-  3. Ensure the instance has the `cloud-platform` scope to allow access to Google Cloud APIs. [Learn how to create a cluster with the scope here.](https://www.googleapis.com/auth/cloud-platform)
-
-In addition we recommend these minimum specifications for the cluster:
-
-  * 4 vCPUs
-  * 15GB memory
-
-The `n1-standard-4` machine type is a good choice that covers the minimum requirements.
-
-### Create a GKE Cluster With Custom Service Account
-
-#### Creating a custom service account for your GKE cluster
-
-1. From the Cloud Console visit [Menu > IAM & Admin > Service Accounts](https://console.cloud.google.com/iam-admin/serviceaccounts)
-![Service Account 1](./images/service-account-1.png)
-1. Click `Create Service Account` and give the service account a name (e.g. cg-custom-sa)
-![Service Account 2](./images/service-account-2.png)
-1. Chose the `Editor` role for the service account. The service account will be used to run Custom Governance.
-![Service Account 3](./images/service-account-3.png)
-1. Provide users with permission to utilize and administer the service account
-![Service Account 4](./images/service-account-4.png)
-
-#### Configuring the GKE cluster to run as a custom service account
-1. From the Cloud Console visit [Menu > Kubernetes Engine > Clusters](https://console.cloud.google.com/kubernetes/list)
-![Custom Service Account 1](./images/custom-sa-cluster-1.png)
-1. Click into the pool (default-pool) -> Security. Select the custom service account you created earlier.
-![Custom Service Account 3](./images/custom-sa-cluster-3.png)
-1. Click `Create` to create your cluster with your custom SA!
-1. **After this cluster is created, connect to this cluster and add cluster-admin role binding to this custom SA**. Please run the following command to grant your service account with cluster-admin role.
-NAMESPACE is your kubernetest namespace in which you plan to install Custom Governance. Please make sure you use the same namespace that you will select in Marketplace Configuration UI, which by default is `default` and SERVICE_ACCOUNT_NAME is your custom SA prefix. For example, if your custom SA is cg-custom-sa@project_id.iam.gserviceaccount.com, SERVICE_ACCOUNT_NAME is cg-custom-sa:
-  
-    `kubectl create clusterrolebinding "${NAMESPACE}-${SERVICE_ACCOUNT_NAME}-rb" --clusterrole=cluster-admin --serviceaccount="${NAMESPACE}:${SERVICE_ACCOUNT_NAME}"`
-1. **Grant your Compute Engine default Service account with Dataflow worker and Storage Admin in IAM**. Note that Compute Engine default Service account will be created automatically and there will be a short latency. This is essential for running dataflow rego rule scanners in Custom Governance.
-
-### Create a GKE Cluster Through CLI
-
-  * You can create a cluster with the scope through the [gcloud command-line tool](https://cloud.google.com/sdk/gcloud). You can run this command in the Cloud Shell to create a cluster with the **basic** requirements:
-
-    `gcloud container clusters create [YOUR-CLUSTER-NAME] --scopes=https://www.googleapis.com/auth/cloud-platform --region=[YOUR-REGION]`
-
->>>>>>> master:k8s/aditum/README.md
   * You can also create a cluster through the [Kubernetes Engine UI](https://console.cloud.google.com/kubernetes) if you wish to customize more on the cluster settings.
     *  [Please see the basic requirements for a GKE cluster running Custom Governance here.](#minimum-requirements-for-gke-cluster)
     *   **The scope can be set through Nodepool Security. Click on Node Pools > Security > Set access for each API > Set Cloud Platform to enable.**
