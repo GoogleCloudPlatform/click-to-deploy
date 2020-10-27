@@ -16,6 +16,12 @@
 
 source /opt/c2d/c2d-utils || exit 1
 
+#######################################
+# Checks if a host and port are opened
+# Arguments:
+#   Host name
+#   Port number
+#######################################
 function await_for_host_and_port() {
   local -r HOST="$1"
   local -r PORT="$2"
@@ -25,6 +31,13 @@ function await_for_host_and_port() {
   fi
 }
 
+#######################################
+# Generate a config file based on a template using environment variables.
+# Arguments:
+#  Directory where template and config files are located.
+#  Template filename.
+#  Generated filename
+#######################################
 function fill_in_config_template() {
   local -r base_dir="$1"
   local -r template_file="$2"
@@ -36,6 +49,13 @@ function fill_in_config_template() {
   rm "${template_file}.orig"
 }
 
+#######################################
+# Get a pregenerated password according username requested.
+# Arguments:
+#  Elasticsearch username.
+# Outputs:
+#  Password requested
+#######################################
 function download_certificate() {
   local -r es_certshare_host="$1"
   local -r cert_name="ca"
