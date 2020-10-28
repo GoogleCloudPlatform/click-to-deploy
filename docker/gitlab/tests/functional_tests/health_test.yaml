@@ -1,0 +1,66 @@
+# Copyright 2020 Google LLC.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+setup:
+- command:
+  - docker
+  - run
+  - '--env'
+  - |
+    GITLAB_OMNIBUS_CONFIG="
+    external_url 'http://localhost/'
+    nginx['listen_port'] = 80"
+  - '--name'
+  - gitlab-$UNIQUE-id
+  - '-d'
+  - '$IMAGE'
+- command: [sleep, 420s]
+
+teardown:
+- command: [docker, stop, gitlab-$UNIQUE-id]
+- command: [docker, rm, gitlab-$UNIQUE-id]
+
+target: gitlab-$UNIQUE-id
+tests:
+- name: GitLab Health Check
+  command: ['curl', '-s', 'http://localhost/-/health']
+  expect:
+    stdout:
+      equals: 'GitLab OK'
+
+- name: GitLab Readiness Check
+  command: ['curl', '-s', 'http://localhost/-/readiness?all=1']
+  expect:
+    stdout:
+      matches: '"master_check":\[{"status":"ok"}\]'
+    stdout:
+      matches: '"db_check":\[{"status":"ok"}\]'
+    stdout:
+      matches: '"redis_check":\[{"status":"ok"}\]'
+    stdout:
+      matches: '"db_check":\[{"status":"ok"}\]'
+    stdout:
+      matches: '"cache_check":\[{"status":"ok"}\]'
+    stdout:
+      matches: '"queues_check":\[{"status":"ok"}\]'
+    stdout:
+      matches: '"shared_state_check":\[{"status":"ok"}\]'
+    stdout:
+      matches: '"gitaly_check":\[{"status":"ok".*}\]'
+
+- name: GitLab Liveness Check
+  command: ['curl', '-s', 'http://localhost/-/liveness']
+  expect:
+    stdout:
+      matches: '{"status":"ok"}'
