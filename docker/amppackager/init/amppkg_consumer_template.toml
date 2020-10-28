@@ -1,0 +1,9 @@
+CertFile = '/consumer/$(AMP_PACKAGER_CERT_FILENAME)'
+NewCertFile = '/consumer/new.cert'
+KeyFile = '/consumer/$(AMP_PACKAGER_PRIV_KEY_FILENAME)'
+OCSPCache = '/consumer/amppkg-ocsp'
+
+[[URLSet]]
+  [URLSet.Sign]
+   Domain = "$(AMP_PACKAGER_DOMAIN)"
+
