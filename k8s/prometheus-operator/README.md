@@ -22,6 +22,10 @@ Get up and running with a few clicks! Install this Prometheus operator app to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 [on-screen instructions](https://console.cloud.google.com/marketplace/details/google/prometheus-operator).
 
+### If you have an on-prem cluster rather than GKE cluster
+You will also need to login 
+[login instructions](https://cloud.google.com/anthos/multicluster-management/console/logging-in)
+
 ## Command-line instructions
 
 ### Prerequisites
@@ -45,7 +49,7 @@ Configure `gcloud` as a Docker credential helper:
 gcloud auth configure-docker
 ```
 
-#### Create a Google Kubernetes Engine (GKE) cluster
+#### Create a Google Kubernetes Engine (GKE) cluster (you can skip this step if using an on-prem cluster)
 
 Create a new cluster from the command-line:
 
@@ -61,6 +65,7 @@ Configure `kubectl` to connect to the new cluster.
 ```shell
 gcloud container clusters get-credentials "${CLUSTER}" --zone "${ZONE}"
 ```
+
 
 #### Clone this repo
 
@@ -86,6 +91,8 @@ You need to run this command once.
 The Application resource is defined by the
 [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps) community.
 The source code can be found on [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
+
+
 
 ### Install the app
 
@@ -127,6 +134,28 @@ Configure the container image:
 
 ```shell
 export IMAGE_OPERATOR="marketplace.gcr.io/google/prometheus-operator"
+```
+
+#### If using GKE on-prem
+Test Google Container Registry (GCR) accessibility,
+```
+kubectl -n "${NAMESPACE}" run test-image --image="marketplace.gcr.io/google/ubuntu:latest" -- sleep 60000 1>/dev/null && kubectl -n "${NAMESPACE}" get pod test-image -o=go-template='{{$output := "Failed to pull image from GCR"}}{{range .status.containerStatuses}}{{if eq .ready true}}{{$output = (print "Successfully pulled image from GCR. ")}}{{end}}{{end}}{{printf $output}}{{"\n"}}' && kubectl -n "${NAMESPACE}" delete pod test-image 1>/dev/null
+```
+If you do not see commmand outputs the message
+> Successfully pulled image from GCR.
+
+
+, create a gcloud service account and download the json key file. 
+
+[Authenticating service account](https://cloud.google.com/container-registry/docs/advanced-authentication#json-key)
+
+After downloading the json key file, create a secret with the key and patch it to the default service account. 
+
+(Before running the following command, you may want to backup `~/.docker/config.json` first, if you are using other private container registry.)
+```shell
+cat $PATH_TO_YOUR_JSON_KEY | docker login -u _json_key --password-stdin https://marketplace.gcr.io
+kubectl create secret generic gcr-cred -n "${NAMESPACE}" --from-file=.dockerconfigjson="${HOME}/.docker/config.json" --type=kubernetes.io/dockerconfigjson
+kubectl -n "${NAMESPACE}" patch serviceaccount default  -p '{"imagePullSecrets": [{"name":"gcr-cred"}]}'
 ```
 
 #### Create a namespace in your Kubernetes cluster
