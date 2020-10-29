@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-cert-consumer-deployment
+  labels:
+    app: {{ .Release.Name }}-consumer
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: amppackager-consumer
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-consumer
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-consumer
+    spec:
+      containers:
+      - image: "{{ .Values.image.repo }}:{{ .Values.image.tag }}"
+        {{- if .Values.packager.inProduction }}
+        command: [
+          'amppkg', '-config=/consumer/amppkg_consumer.toml'
+        ]
+        {{- end }}
+        imagePullPolicy: IfNotPresent
+        name: {{ .Release.Name }}-cert-consumer-pd
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        imagePullPolicy: Always
+        volumeMounts:
+          # name should match from volumes section
+          - name: nfs-volume-renewer
+            mountPath: "/renewer"
+          - name: nfs-volume-consumer
+            mountPath: "/consumer"
+      dnsPolicy: Default
+      volumes:
+      - name: nfs-volume-renewer
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-nfs-renewer-pvc
+      - name: nfs-volume-consumer
+        persistentVolumeClaim:
+           claimName: {{ .Release.Name }}-nfs-consumer-pvc
