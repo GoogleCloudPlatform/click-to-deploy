@@ -29,7 +29,7 @@ case "${DEBIAN_VERSION}" in
     echo "e12f5739f81b08c470f20890304bf53e /root/.bashrc" >> "${ROOT_MD5}"
     echo "54328f6b27a45c51986ed436f3f609bf /root/.profile" >> "${ROOT_MD5}"
   ;;
-  9*)
+  9*|10*)
     echo "e12f5739f81b08c470f20890304bf53e /root/.bashrc" >> "${ROOT_MD5}"
     echo "46438b614dcb2175148fa7e0bdc604a4 /root/.profile" >> "${ROOT_MD5}"
   ;;
