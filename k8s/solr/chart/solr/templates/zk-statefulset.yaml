@@ -1,4 +1,4 @@
-{{- if not .Values.solr.development }}
+{{- if not .Values.solr.standalone }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:

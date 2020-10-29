@@ -59,11 +59,11 @@ properties:
       type: STORAGE_CLASS
       storageClass:
         type: SSD
-  solr.development:
+  solr.standalone:
     type: boolean
     title: Solr Standalone mode
-    description: Solr Standalone mode is mainly for developers who wants to test and develop Solr service. This option will avoid to deploy external ZooKeeper essemble and no any authentication will be applied to the services.
-    default: true
+    description: Solr Standalone mode is mainly for developers who wants to test and develop Solr service. This option will not deploy external ZooKeeper essemble and no any authentication will be applied to the services.
+    default: false
 
   persistence.solr.storage.size:
     type: string

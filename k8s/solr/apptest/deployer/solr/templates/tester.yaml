@@ -27,4 +27,12 @@ spec:
           fieldPath: metadata.namespace
     - name: APP_INSTANCE_NAME
       value: {{ .Release.Name }}
+    - name: SOLR_USER
+      value: solr
+    - name: SOLR_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: {{ .Release.Name }}-solr-secret
+          key: solr-password
+
   restartPolicy: Never

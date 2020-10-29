@@ -1,4 +1,4 @@
-{{- if not .Values.solr.development }}
+{{- if not .Values.solr.standalone }}
 apiVersion: batch/v1
 kind: Job
 metadata:

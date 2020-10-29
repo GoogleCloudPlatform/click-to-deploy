@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/name: "{{ .Release.Name }}"
 spec:
   descriptor:
-    type: ZooKeeper
+    type: SolrCloud
     version: {{ .Values.solr.image.tag | quote }}
     description: |- #TODO
 
@@ -22,8 +22,8 @@ spec:
     links:
     - description: 'User Guide: Google Click to Deploy SolrCloud'
       url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/zookeeper/README.md
-    - description: 'ZooKeeper: Getting Started'
-      url: https://zookeeper.apache.org/doc/r3.4.14/zookeeperStarted.html
+    # - description: 'SolrCloud: Getting Started'
+    #   url: https://lucenete.apache.org/solr/8.6.1
     notes: |-
       # Get authentication credentials for the cluster
 
@@ -47,21 +47,27 @@ spec:
     valueFrom:
       serviceRef:
         name: "{{ .Release.Name }}-svc"
-  {{- if not .Values.solr.development }}
+  {{- if not .Values.solr.standalone }}
   - name: SolrCloud User
     value: solr
   - name: SolrCloud Password
-    secretKeyRef:
-      key: solr-password
-      name: "{{ .Release.Name }}-solr-secret"
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: solr-password
+        name: "{{ .Release.Name }}-solr-secret"
   - name: ZooKeeper "admin-user" Password
-    secretKeyRef:
-      key: zk-admin-password
-      name: "{{ .Release.Name }}-solr-secret"
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+          key: zk-admin-password
+          name: "{{ .Release.Name }}-solr-secret"
   - name: ZooKeeper "readonly-user" Password
-    secretKeyRef:
-      key: zk-readonly-password
-      name: "{{ .Release.Name }}-solr-secret"
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: zk-readonly-password
+        name: "{{ .Release.Name }}-solr-secret"
   {{- end }}
   selector:
     matchLabels:

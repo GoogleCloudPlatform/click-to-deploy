@@ -9,7 +9,7 @@ spec:
   selector:
     matchLabels: *SolrDeploymentLabels
   serviceName: {{ .Release.Name }}-headless
-  {{- if not .Values.solr.development }}
+  {{- if not .Values.solr.standalone }}
   replicas: 3
   {{- else }}
   replicas: 1
@@ -32,7 +32,7 @@ spec:
               - key: solr.xml
                 path: solr.xml
       initContainers:
-        {{- if not .Values.solr.development }}
+        {{- if not .Values.solr.standalone }}
         - name: check-zk
           image: {{ .Values.deployer.image }}
           command:
@@ -91,7 +91,7 @@ spec:
               value: "$(POD_HOSTNAME).{{ .Release.Name }}-headless.{{ .Release.Namespace }}"
             - name: "SOLR_LOG_LEVEL"
               value: "INFO"
-            {{- if not .Values.solr.development }}
+            {{- if not .Values.solr.standalone }}
             - name: "ZK_HOST"
               value: "{{ .Release.Name }}-zk-headless:2181"
             - name: SOLR_USER
