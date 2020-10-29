@@ -22,8 +22,8 @@ versions:
   from: marketplace.gcr.io/google/php7-apache2:7.3
   packages:
     composer:
-      sha256: 5ca7445cfd48dd27c5a84aa005a47b4d9fd91132313830609875df3a6973708f
-      version: 1.10.13
+      sha256: a69df12e86a0a18fbedfc91a33d5f9acc5cf939576e0258326074fc1b2ee1aea
+      version: 1.10.15
     mediawiki:
       major: '1.35'
       sha512: 0d3d5b464abc2fdea2aa798bdf7fc53d5269852d9ed3f787710528505bbccfed2796b0e2459f5776929f3f0f207a145ae4a8f13e3040322e22d59481a71cfcde
@@ -41,8 +41,8 @@ versions:
   from: marketplace.gcr.io/google/php7-apache2:7.3
   packages:
     composer:
-      sha256: 5ca7445cfd48dd27c5a84aa005a47b4d9fd91132313830609875df3a6973708f
-      version: 1.10.13
+      sha256: a69df12e86a0a18fbedfc91a33d5f9acc5cf939576e0258326074fc1b2ee1aea
+      version: 1.10.15
     mediawiki:
       major: '1.33'
       sha512: e37280b4c14bfdae3480b8f99672da5c93761f4f80019104d5df24affe0c8447881c6ff85f32d16381ee74a3ce7a083f4dda2e0a24bd6687fbf0b41f11f0564f
