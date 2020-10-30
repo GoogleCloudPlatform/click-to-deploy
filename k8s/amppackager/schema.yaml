@@ -137,10 +137,10 @@ properties:
     description: The directory URL for the ACME account used by amppackager.
     default: null
   service.port:
-    type: int
+    type: integer
     title: AMP Packager Service port
     description: The port used by the amppackager service.
-    default: 6000
+    default: 60000
   service.loadBalancerSourceRanges:
     type: string
     title: AMP Packager Load Balancer Source Range
