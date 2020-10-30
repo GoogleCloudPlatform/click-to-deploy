@@ -143,11 +143,8 @@ If you do not see commmand outputs the message
 > Successfully pulled image from GCR.
 
 
-, create a gcloud service account and download the json key file. 
-
-[Authenticating service account](https://cloud.google.com/container-registry/docs/advanced-authentication#json-key)
-
-After downloading the json key file, create a secret with the key and patch it to the default service account. 
+Create a secret with the key used for [gcp.whitelistedServiceAccountKeyPath](
+https://cloud.google.com/anthos/gke/docs/on-prem/how-to/admin-workstation#gcpwhitelistedserviceaccountkeypath) when you set up on-prem Admin Workstation, and patch it to the default service account. 
 
 (Before running the following command, you may want to backup `~/.docker/config.json` first, if you are using other private container registry.)
 ```shell
