@@ -49,7 +49,8 @@ Configure `gcloud` as a Docker credential helper:
 gcloud auth configure-docker
 ```
 
-#### Create a Google Kubernetes Engine (GKE) cluster (you can skip this step if using an on-prem cluster)
+#### Create a Google Kubernetes Engine (GKE) cluster
+(Or you can use your existing GKE on-prem cluster instead)
 
 Create a new cluster from the command-line:
 
@@ -65,7 +66,6 @@ Configure `kubectl` to connect to the new cluster.
 ```shell
 gcloud container clusters get-credentials "${CLUSTER}" --zone "${ZONE}"
 ```
-
 
 #### Clone this repo
 
@@ -91,7 +91,6 @@ You need to run this command once.
 The Application resource is defined by the
 [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps) community.
 The source code can be found on [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
-
 
 
 ### Install the app
