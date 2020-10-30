@@ -92,7 +92,6 @@ The Application resource is defined by the
 [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps) community.
 The source code can be found on [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
 
-
 ### Install the app
 
 Navigate to the `prometheus-operator` directory:
