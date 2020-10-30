@@ -1,4 +1,4 @@
-{{- if .Values.metrics.exporter.enabled }}
+{{- if .Values.metrics.enabled }}
 apiVersion: "v1"
 kind: "Service"
 metadata:
@@ -86,7 +86,7 @@ spec:
           volumeMounts:
             - name: solr-exporter-secret
               mountPath: /tmp/exporter-config
-        {{- if .Values.metrics.exporter.toStackdriver }}
+        {{- if .Values.metrics.exporter.enabled }}
         - name: prometheus-to-sd
           image: {{ .Values.metrics.image }}
           command:

@@ -18,9 +18,9 @@ solr:
 
 metrics:
   image: null
+  enabled: true
   exporter:
     enabled: false
-    toStackdriver: true
 
 persistence:
   storageClass: null
