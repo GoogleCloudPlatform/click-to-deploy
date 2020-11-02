@@ -11,7 +11,7 @@ spec:
   resources:
     requests:
       storage: 8Gi
-  storageClassName: standard
+  storageClassName: $STORAGE_CLASS
 ---
 kind: Deployment
 apiVersion: apps/v1

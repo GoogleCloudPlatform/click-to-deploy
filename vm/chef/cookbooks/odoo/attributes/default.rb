@@ -41,9 +41,9 @@ default['odoo']['pip-packages'] = 'vobject qrcode pyldap num2words'
 # The 13.0 version requires python 3.6+ and xlwt pip-package
 
 default['odoo']['version'] = '12.0'
-default['odoo']['release'] = '20191014'
-default['odoo']['sha256'] = 'ca158eab44bf85ad0e2b946fd58634e7c223b5659e652916380a900177ecfb86'
-default['odoo']['src']['sha256'] = '899b0cb1050a6efac2b227163adba45c7627075a0a07bc3b04b082e8bc9ffef0'
+default['odoo']['release'] = '20200922'
+default['odoo']['sha256'] = 'd84d1385822a034755cd3bfe01c917dc96c2db6b4a357dea2ec3b9c7d1e4bc91'
+default['odoo']['src']['sha256'] = '7418008825f02b5b0dfcd4b16d5b73b97bdb0f670bfb21809e8b3372fb1ac924'
 
 default['odoo']['wkhtmltopdf']['version'] = '0.12.5'
 default['odoo']['wkhtmltopdf']['release'] = '0.12.5-1'

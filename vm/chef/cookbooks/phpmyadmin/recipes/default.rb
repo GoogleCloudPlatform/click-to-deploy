@@ -18,8 +18,8 @@
 # Download phpmyadmin and dependencies to /opt/c2d/downloads/phpmyadmin
 # This allows us to install the package even after an apt-get clean
 
-execute 'Update Sources' do
-  command 'apt-get update'
+apt_update do
+  action :update
 end
 
 package 'Install Packages' do

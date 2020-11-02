@@ -1,0 +1,25 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "{{ .Release.Name }}"
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo/logo.png" | b64enc }}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": {{ .Chart.Name | quote }}, "partner_name": "Google Click to Deploy"}'
+spec:
+  descriptor:
+    type: AMP Packager
+    version: {{ .Values.image.tag | quote }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "{{ .Release.Name }}"
+  addOwnerRef: true
+  componentKinds:
+  - group: ''
+    kind: PersistentVolumeClaim
+  - group: ''
+    kind: Service
+  - group: apps
+    kind: Deployment
