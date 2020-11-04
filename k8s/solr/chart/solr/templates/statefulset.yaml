@@ -1,14 +1,14 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ .Release.Name }}-solr
   labels: &SolrDeploymentLabels
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: solr-server
 spec:
   selector:
     matchLabels: *SolrDeploymentLabels
-  serviceName: {{ .Release.Name }}-headless
+  serviceName: {{ .Release.Name }}-solr-headless
   {{- if not .Values.solr.standalone }}
   replicas: 3
   {{- else }}
@@ -27,7 +27,7 @@ spec:
       volumes:
         - name: solr-xml
           configMap:
-            name: {{ .Release.Name }}-config-map
+            name: {{ .Release.Name }}-solr-config-map
             items:
               - key: solr.xml
                 path: solr.xml
@@ -88,7 +88,7 @@ spec:
                 fieldRef:
                   fieldPath: metadata.name
             - name: "SOLR_HOST"
-              value: "$(POD_HOSTNAME).{{ .Release.Name }}-headless.{{ .Release.Namespace }}"
+              value: "$(POD_HOSTNAME).{{ .Release.Name }}-solr-headless.{{ .Release.Namespace }}"
             - name: "SOLR_LOG_LEVEL"
               value: "INFO"
             {{- if not .Values.solr.standalone }}

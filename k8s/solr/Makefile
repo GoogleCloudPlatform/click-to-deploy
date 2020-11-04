@@ -38,10 +38,15 @@ ifdef METRICS_EXPORTER_ENABLED
   METRICS_EXPORTER_ENABLED_FIELD = , "metrics.exporter.enabled": $(METRICS_EXPORTER_ENABLED)
 endif
 
+ifdef STANDALONE_MODE_ENABLED
+  STANDALONE_MODE_ENABLED_FIELD = , "solr.standalone": $(STANDALONE_MODE_ENABLED)
+endif
+
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
   $(METRICS_EXPORTER_ENABLED_FIELD) \
+  $(STANDALONE_MODE_ENABLED_FIELD) \
 }
 
 # c2d_deployer.Makefile provides the main targets for installing the application.

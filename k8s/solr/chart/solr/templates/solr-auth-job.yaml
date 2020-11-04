@@ -61,7 +61,7 @@ spec:
               PROTOCOL="http://"
               COUNTER=0;
               while [  $COUNTER -lt 30 ]; do
-                curl -k -s --connect-timeout 10 "${PROTOCOL}{{ .Release.Name }}-svc:8983/solr/admin/info/system" && exit 0
+                curl -k -s --connect-timeout 10 "${PROTOCOL}{{ .Release.Name }}-solr-svc:8983/solr/admin/info/system" && exit 0
                 sleep 2
               done;
               echo "Did NOT see a Running Solr instance after 60 secs!";

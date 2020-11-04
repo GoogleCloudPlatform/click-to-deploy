@@ -1,7 +1,7 @@
 apiVersion: "v1"
 kind: "ConfigMap"
 metadata:
-  name: "{{ .Release.Name }}-config-map"
+  name: "{{ .Release.Name }}-solr-config-map"
   labels: &SolrDeploymentLabels
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: solr-server
