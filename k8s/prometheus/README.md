@@ -159,12 +159,6 @@ export APP_INSTANCE_NAME=prometheus-1
 export NAMESPACE=default
 ```
 
-Specify the number of replicas for the Prometheus cluster:
-
-```shell
-export PROMETHEUS_REPLICAS=2
-```
-
 Configure the container images:
 
 ```shell
