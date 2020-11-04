@@ -38,8 +38,6 @@ steps:
   args:
   - -exc
   - |
-    pwd
-    ls -la
     TAG="$$(cat ./IMAGEBUILDER_TAG)"
     docker pull "gcr.io/cloud-marketplace-tools/vm/imagebuilder:$$TAG"
     docker tag "gcr.io/cloud-marketplace-tools/vm/imagebuilder:$$TAG" "gcr.io/cloud-marketplace-tools/vm/imagebuilder:local"
