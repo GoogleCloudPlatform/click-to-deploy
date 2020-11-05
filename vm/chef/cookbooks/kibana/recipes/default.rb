@@ -70,5 +70,9 @@ cookbook_file '/opt/c2d/patch-ssl' do
   action :create
 end
 
+service 'kibana' do
+  action [ :enable ]
+end
+
 # Copy startup script
 c2d_startup_script 'kibana'
