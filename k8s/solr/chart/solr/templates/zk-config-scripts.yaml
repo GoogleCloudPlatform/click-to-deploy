@@ -1,4 +1,4 @@
----
+{{- if not .Values.solr.standalone }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -100,3 +100,4 @@ data:
 
                 set -x
                 exec java -cp "$CLASSPATH" $JVMFLAGS $MAIN $ZK_CONFIG_FILE
+{{- end }}

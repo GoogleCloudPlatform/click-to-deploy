@@ -2,6 +2,7 @@ solr:
   image:
     repo: null
     tag: null
+  replicas: 3
   # if set "true", solr will be deployed as standalone mode with
   # single instance without external zookeeper and no any authentication.
   # Don't set true for production deployment

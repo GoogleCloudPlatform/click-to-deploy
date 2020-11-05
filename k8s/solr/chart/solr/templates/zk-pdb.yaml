@@ -1,3 +1,4 @@
+{{- if not .Values.solr.standalone }}
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
@@ -11,3 +12,4 @@ spec:
       app.kubernetes.io/name: {{ .Release.Name }}
       app.kubernetes.io/component: zookeeper
   maxUnavailable: 2
+{{- end }}

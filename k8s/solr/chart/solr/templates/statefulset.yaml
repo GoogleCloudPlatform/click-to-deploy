@@ -10,7 +10,7 @@ spec:
     matchLabels: *SolrDeploymentLabels
   serviceName: {{ .Release.Name }}-solr-headless
   {{- if not .Values.solr.standalone }}
-  replicas: 3
+  replicas: {{ .Values.solr.replicas }}
   {{- else }}
   replicas: 1
   {{- end }}

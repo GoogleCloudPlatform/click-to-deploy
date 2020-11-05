@@ -33,10 +33,12 @@ spec:
     spec:
       affinity:
         null
+      {{- if not .Values.solr.standalone }}
       volumes:
       - name: solr-exporter-secret
         secret:
           secretName: {{ .Release.Name }}-solr-exporter-secret
+      {{- end }}
 
       containers:
         - name: exporter
@@ -83,9 +85,11 @@ spec:
             httpGet:
               path: "/metrics"
               port: 9983
+          {{- if not .Values.solr.standalone }}
           volumeMounts:
             - name: solr-exporter-secret
               mountPath: /tmp/exporter-config
+          {{- end }}
         {{- if .Values.metrics.exporter.enabled }}
         - name: prometheus-to-sd
           image: {{ .Values.metrics.image }}
