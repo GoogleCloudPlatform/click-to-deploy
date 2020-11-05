@@ -67,5 +67,9 @@ end
   end
 end
 
+service 'logstash' do
+  action [ :enable ]
+end
+
 # Copy startup script
 c2d_startup_script 'logstash'
