@@ -14,6 +14,6 @@
 
 require 'spec_helper'
 
-describe port(22) do
+describe port(9600) do
   it { should be_listening }
 end
