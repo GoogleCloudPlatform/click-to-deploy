@@ -113,4 +113,3 @@ required:
 - namespace
 - persistence.solr.storage.size
 - persistence.zookeeper.storage.size
-

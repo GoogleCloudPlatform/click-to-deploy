@@ -3,7 +3,9 @@ actions:
   bashTest:
     script: |
             curl "http://${APP_INSTANCE_NAME}-exporter:9983/metrics" 2> /dev/null \
-              | grep 'solr_collections_live_nodes' |grep -v "^#" | awk '{print $2}'
+              | grep 'solr_collections_live_nodes' \
+              | grep -v "^#" \
+              | awk '{print $2}'
     expect:
       stdout:
         matches: "3.0"

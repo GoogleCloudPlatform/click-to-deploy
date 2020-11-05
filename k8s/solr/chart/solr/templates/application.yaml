@@ -21,7 +21,7 @@ spec:
     - name: Google Click to Deploy
       url: https://cloud.google.com/solutions/#click-to-deploy
     links:
-    - description: 'User Guide: Google Click to Deploy SolrCloud'
+    - description: 'User Guide: Google Click to Deploy {{ template "solrMode" . }}'
       url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/solr/README.md
     {{- if not .Values.solr.standalone }}
     - description: 'SolrCloud: Getting Started'
@@ -70,11 +70,9 @@ spec:
       kubectl port-forward svc/{{ .Release.Name }}-solr-svc \
         --namespace {{ .Release.Namespace }} 8983
       ```
-      
+
       Then visit [http://localhost:8983/solr](http://localhost:8983/solr) on your web browser and login with `solr` user credentials if necessary.
   info:
-  - name: Application Name
-    value: {{ .Release.Name }}
   - name: {{ template "solrMode" . }} service
     type: Reference
     valueFrom:
