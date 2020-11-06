@@ -335,7 +335,7 @@ kubectl get pods --selector app.kubernetes.io/name=${APP_INSTANCE_NAME} \
 It is also possible to deploy this Solr application as a standalone mode for testing purposes.
 > Warning: This should not be used for production!
 
-With Standalone mode enabled, instead of external ZooKeeper ensemble embedded ZooKeeper will be used and Solr will be my_collectiondeployed with single replica only.
+With Standalone mode enabled, instead of external ZooKeeper ensemble embedded ZooKeeper is used and Solr is deployed with single replica only.
 Also no any authentication will be applied to the solution to make it easier for testing.
 
 To deploy Solr as a standalone mode, run following commands:
