@@ -1,0 +1,69 @@
+{{- if not .Values.solr.standalone }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+  name: {{ .Release.Name }}-solr-auth-job
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: solr-server
+spec:
+  backoffLimit: 0
+  completions: 1
+  parallelism: 1
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: solr-auth-enabler
+        image: "{{ .Values.solr.image.repo }}:{{ .Values.solr.image.tag }}"
+        imagePullPolicy: IfNotPresent
+        command:
+        - 'sh'
+        - '-c'
+        - |
+            solr auth enable -z ${ZK_HOST} -credentials ${SOLR_USER}:${SOLR_PASSWORD} -blockUnknown true
+        env:
+          - name: "SOLR_HOME"
+            value: "/opt/solr/server/home"
+          - name: "ZK_HOST"
+            value: "{{ .Release.Name }}-zk-headless:2181"
+          - name: SOLR_USER
+            value: solr
+          - name: SOLR_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-solr-secret
+                key: solr-password
+          - name: ZK_ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-solr-secret
+                key: zk-admin-password
+          - name: ZK_READONLY_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-solr-secret
+                key: zk-readonly-password
+          - name: SOLR_ZK_CREDS_AND_ACLS
+            value: "-DzkACLProvider=org.apache.solr.common.cloud.VMParamsAllAndReadonlyDigestZkACLProvider -DzkCredentialsProvider=org.apache.solr.common.cloud.VMParamsSingleSetCredentialsDigestZkCredentialsProvider -DzkDigestUsername=admin-user -DzkDigestPassword=$(ZK_ADMIN_PASSWORD) -DzkDigestReadonlyUsername=readonly-user -DzkDigestReadonlyPassword=$(ZK_READONLY_PASSWORD)"
+          - name: SOLR_OPTS
+            value: "$(SOLR_ZK_CREDS_AND_ACLS)"
+
+      initContainers:
+        - name: solr-init
+          image: "{{ .Values.solr.image.repo }}:{{ .Values.solr.image.tag }}"
+          imagePullPolicy: IfNotPresent
+          command:
+            - 'sh'
+            - '-c'
+            - |
+              PROTOCOL="http://"
+              COUNTER=0;
+              while [  $COUNTER -lt 30 ]; do
+                curl -k -s --connect-timeout 10 "${PROTOCOL}{{ .Release.Name }}-solr-svc:8983/solr/admin/info/system" && exit 0
+                sleep 2
+              done;
+              echo "Did NOT see a Running Solr instance after 60 secs!";
+              exit 1;
+{{- end }}
