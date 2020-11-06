@@ -3,27 +3,28 @@ include ../gcloud.Makefile
 include ../var.Makefile
 include ../images.Makefile
 
-CHART_NAME := grafana
+CHART_NAME := solr
 APP_ID ?= $(CHART_NAME)
+WAIT_FOR_READY_TIMEOUT = 600
 
-TRACK ?= 7.3
+TRACK ?= 8.6
+ZK_TAG ?= 3.6
 
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
-IMAGE_GRAFANA ?= $(SOURCE_REGISTRY)/grafana7:$(TRACK)
-IMAGE_DEBIAN9 ?= $(SOURCE_REGISTRY)/debian9:latest
+IMAGE_SOLR ?= $(SOURCE_REGISTRY)/solr8:$(TRACK)
 IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
-
+IMAGE_ZOOKEEPER ?= $(SOURCE_REGISTRY)/zookeeper3:$(ZK_TAG)
 
 # Main image
-image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_GRAFANA))
+image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_SOLR))
 
 # List of images used in application
-ADDITIONAL_IMAGES := debian9 prometheus-to-sd
+ADDITIONAL_IMAGES := zookeeper prometheus-to-sd
 
 # Additional images variable names should correspond with ADDITIONAL_IMAGES list
-image-debian9 := $(call get_sha256,$(IMAGE_DEBIAN9))
+image-zookeeper := $(call get_sha256,$(IMAGE_ZOOKEEPER))
 image-prometheus-to-sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))
 
 C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
@@ -33,19 +34,19 @@ RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)
 NAME ?= $(APP_ID)-1
 
 # Additional variables
-ifdef IMAGE_GRAFANA_INIT
-  IMAGE_GRAFANA_INIT_FIELD = , "grafana.initImage": "$(IMAGE_GRAFANA_INIT)"
-endif
-
 ifdef METRICS_EXPORTER_ENABLED
   METRICS_EXPORTER_ENABLED_FIELD = , "metrics.exporter.enabled": $(METRICS_EXPORTER_ENABLED)
+endif
+
+ifdef STANDALONE_MODE_ENABLED
+  STANDALONE_MODE_ENABLED_FIELD = , "solr.standalone": $(STANDALONE_MODE_ENABLED)
 endif
 
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
-  $(IMAGE_GRAFANA_INIT_FIELD) \
   $(METRICS_EXPORTER_ENABLED_FIELD) \
+  $(STANDALONE_MODE_ENABLED_FIELD) \
 }
 
 # c2d_deployer.Makefile provides the main targets for installing the application.
