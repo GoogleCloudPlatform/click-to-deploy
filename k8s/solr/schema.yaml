@@ -62,7 +62,7 @@ properties:
   solr.standalone:
     type: boolean
     title: Solr Standalone mode
-    description: Solr Standalone mode is mainly for developers who wants to test and develop Solr service. This option will not deploy external ZooKeeper essemble and no any authentication will be applied to the services.
+    description: Solr Standalone mode is mainly for development and testing purposes. If this option is enabled external ZooKeeper ensemble will not be deployed and authentication will be disabled for the Solr services.
     default: false
 
   persistence.solr.storage.size:

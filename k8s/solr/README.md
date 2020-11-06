@@ -12,9 +12,9 @@ Popular open stacks on Kubernetes, packaged by Google.
 
 ![Architecture diagram](resources/apache-solr-k8s-app-architecture.png)
 
-This solution is focused on SolrCloud mode which will use ZooKeeper as external repository. By default 3 replicas of Solr nodes and 3 replicas of ZooKeeper nodes will be deployed. For more information about Solrcloud visit [official documentation](https://lucene.apache.org/solr/guide/8_6/solrcloud.html).
+This solution is focused on SolrCloud mode which uses ZooKeeper as a external repository. By default 3 replicas of SolrCloud nodes and 3 replicas of ZooKeeper nodes are deployed. For more information about SolrCloud visit [official documentation](https://lucene.apache.org/solr/guide/8_6/solrcloud.html).
 
-[Basic authentication plugin](https://lucene.apache.org/solr/guide/8_6/basic-authentication-plugin.html) will be enabled for SolrCloud by job resource during post deployment.
+[Basic authentication plugin](https://lucene.apache.org/solr/guide/8_6/basic-authentication-plugin.html) is enabled for SolrCloud by Job resource during post deployment.
 
 [ZooKeeper Access Control](https://lucene.apache.org/solr/guide/8_6/zookeeper-access-control.html) also applied to protect SolrCloud contents in ZooKeeper.
 
@@ -137,24 +137,27 @@ export ZK_TAG=3.6
 Configure the container images:
 
 ```shell
-export IMAGE_SOLR="marketplace.gcr.io/google/solr8"
-export IMAGE_ZOOKEEPER="marketplace.gcr.io/google/zookeeper3"
+export IMAGE_SOLR="marketplace.gcr.io/google/solr"
+export IMAGE_ZOOKEEPER="marketplace.gcr.io/google/solr/zookeeper:${TAG}"
 export IMAGE_DEPLOYER="marketplace.gcr.io/google/solr/deployer:${TAG}"
 ```
 
 Set or generate the passwords:
 
 ```shell
+# Set alias for password generation
+alias generate_pwd="cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 1 | tr -d '\n'"
+
 # SolrCloud UI console
 export SOLR_USER="solr"
-export SOLR_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 10 | head -n 1 | tr -d '\n')
+export SOLR_PASSWORD="$(generate_pwd)"
 
 # ZooKeeper ACL credentials
 export ZK_READONLY_USER="readonly-user"
-export ZK_READONLY_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 10 | head -n 1 | tr -d '\n')
+export ZK_READONLY_PASSWORD="$(generate_pwd)"
 
 export ZK_ADMIN_USER="admin-user"
-export ZK_ADMIN_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 10 | head -n 1 | tr -d '\n')
+export ZK_ADMIN_PASSWORD="$(generate_pwd)"
 ```
 
 Set the storage class for the persistent volume of SolrCloud nodes and ZooKeeper nodes:
@@ -190,7 +193,7 @@ helm template "${APP_INSTANCE_NAME}" \
   --namespace "${NAMESPACE}" \
   --set solr.image.repo="${IMAGE_SOLR}" \
   --set solr.image.tag="${TAG}" \
-  --set zookeeper.image="${IMAGE_ZOOKEEPER}:${ZK_TAG}" \
+  --set zookeeper.image="${IMAGE_ZOOKEEPER}" \
   --set deployer.image="${IMAGE_DEPLOYER}" \
   --set persistence.storageClass="${STORAGE_CLASS}" \
   --set persistence.solr.storageSize="${PERSISTENT_SOLR_SIZE}" \
@@ -240,26 +243,30 @@ from a web browser. Login with `solr` credentials.
 # Check Cluster status
 curl --user ${SOLR_USER}:${SOLR_PASSWORD} "http://localhost:8983/solr/admin/collections?action=CLUSTERSTATUS"
 
-# Create a "my_collection" with 3 shards (1 shard per replica)
-curl --user ${SOLR_USER}:${SOLR_PASSWORD} "http://localhost:8983/solr/admin/collections?action=CREATE&name=my_collection&numShards=3"
+# Create a collection with 3 shards (1 shard per replica)
+COLLECTION="my_collection"
+
+curl --user ${SOLR_USER}:${SOLR_PASSWORD} "http://localhost:8983/solr/admin/collections?action=CREATE&name=${COLLECTION}&numShards=3"
 ```
 
 ### Interacting with SolrCloud via `solr` control script
 
-For example if you have collection created you can check healtcheck by help of solr control script.
+For example if you have collection created you can check healtcheck by help of Solr control script.
 > Visit [Solr Control Script Reference](https://lucene.apache.org/solr/guide/8_6/solr-control-script-reference.html) for more command options
 
 ```shell
 # Use your collection name instead of "my_collection"
-kubectl -n ${NAMESPACE} exec -it ${APP_INSTANCE_NAME}-solr-0 -- bash -c "solr healthcheck -c my_collection"
+COLLECTION="my_collection"
+
+kubectl -n ${NAMESPACE} exec -it ${APP_INSTANCE_NAME}-solr-0 -- bash -c "solr healthcheck -c ${COLLECTION}"
 ```
 
 ## Authentication and Security
-During post deployment of this SolrCloud solution, Solr basic authentication is enabled by job resource. This action creates `security.json` and uploads it to ZooKeeper.
+During post deployment of this SolrCloud solution, Solr basic authentication is enabled by Job resource. This action creates `security.json` and uploads it to ZooKeeper.
 
 To protect this configuration files in ZooKeeper, ZooKeeper ACL with "admin-user" and "readonly-user" is configured and used by Solr instances.
 
-Those java parameters should be passed to external clients which want to connect to secure SolrCloud. You can check this parameters by running below commands:
+Those Java parameters should be passed to external clients which want to connect to secure SolrCloud. You can check this parameters by running below commands:
 ```shell
 # Java option for basic auth
 kubectl -n ${NAMESPACE} exec -it ${APP_INSTANCE_NAME}-solr-0 -- bash -c "echo SOLR_AUTH_TYPE=\$SOLR_AUTH_TYPE SOLR_AUTHENTICATION_OPTS=\$SOLR_AUTHENTICATION_OPTS"
@@ -269,7 +276,7 @@ kubectl -n ${NAMESPACE} exec -it ${APP_INSTANCE_NAME}-solr-0 -- bash -c "echo SO
 ```
 
 # Monitoring
-Solr image includes a Prometheus exporter to collect metrics and other data. In this solution seperate deployment and service used to access metrics. Exporter Deployment uses same solr image, connects to main SolrCloud and ZooKeeper service, authenticates and exports metrics at 9983 port for `/metrics` endpoint.
+Solr image includes a Prometheus exporter to collect metrics and other data. In this solution seperate deployment and service used to access metrics. Exporter Deployment uses same Solr image, connects to main SolrCloud and ZooKeeper service, authenticates and exports metrics at 9983 port for `/metrics` endpoint.
 
 > Visit [Monitoring Solr with Prometheus and Grafana documentation](https://lucene.apache.org/solr/guide/8_6/monitoring-solr-with-prometheus-and-grafana.html) for more information.
 
@@ -328,7 +335,7 @@ kubectl get pods --selector app.kubernetes.io/name=${APP_INSTANCE_NAME} \
 It is also possible to deploy this Solr application as a standalone mode for testing purposes.
 > Warning: This should not be used for production!
 
-With Standalone mode enabled, instead of external ZooKeeper ensemble embedded ZooKeeper will be used and Solr will be deployed with single replica only.
+With Standalone mode enabled, instead of external ZooKeeper ensemble embedded ZooKeeper will be used and Solr will be my_collectiondeployed with single replica only.
 Also no any authentication will be applied to the solution to make it easier for testing.
 
 To deploy Solr as a standalone mode, run following commands:
@@ -337,6 +344,7 @@ To deploy Solr as a standalone mode, run following commands:
 APP_INSTANCE_NAME=solr-standalone
 NAMESPACE=default
 STANDALONE_MODE_ENABLED=true
+TAG="8.6"
 IMAGE_SOLR="marketplace.gcr.io/google/solr8"
 IMAGE_DEPLOYER="marketplace.gcr.io/google/solr/deployer:${TAG}"
 STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
