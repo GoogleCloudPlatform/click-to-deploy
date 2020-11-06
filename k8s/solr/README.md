@@ -409,7 +409,7 @@ If you don't have the expanded manifest file, you can delete the
 resources by using types and a label:
 
 ```shell
-kubectl delete application,statefulset,secret,service \
+kubectl delete application,statefulset,secret,service,deployment,pdb,cm,jobs \
   --namespace ${NAMESPACE} \
   --selector app.kubernetes.io/name=${APP_INSTANCE_NAME}
 ```
