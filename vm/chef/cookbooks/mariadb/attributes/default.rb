@@ -14,7 +14,7 @@
 
 # Remember to check if repo component update
 # is needed when changing the version.
-default['mariadb']['version'] = '1:10.5.5+maria~stretch'
+default['mariadb']['version'] = '1:10.5.*+maria~stretch'
 
 default['mariadb']['repo']['uri'] = 'http://mirror.mva-n.net/mariadb/repo/10.5/debian'
 default['mariadb']['repo']['components'] = ['stretch', 'main']
