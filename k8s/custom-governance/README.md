@@ -3,6 +3,7 @@
   - [Before you get started](#Before-you-get-started)
   - [Quick install with Google Cloud Marketplace](#Quick-install-with-Google-Cloud-Marketplace)
   - [Prerequisites](#Prerequisites)
+    - [**IMPORTANT**](#IMPORTANT)
   - [Option1: Marketplace UI Deployment Details](#Option1-Marketplace-UI-Deployment-Details)
   - [Option2: Command line deployment](#Option2-Command-line-deployment)
     - [Prerequisites](#Prerequisites-1)
@@ -75,7 +76,7 @@ Questions about Custom Governance? Go [here](https://docs.google.com/document/d/
 
 ## Before you get started
 
-As of early fall 2020 the Custom Governance product is in Early Access stage. We are taking a limited number of new customers. To try out Custom Governance, [please fill out this intake form.](https://docs.google.com/forms/d/1ulI20NPs-S5-pAAZDSlZl4nAOhg5GRERtyoAr0XM6lg/viewform?edit_requested=true)
+As of fall 2020 the Custom Governance product is in Early Access stage. We are taking a limited number of new customers. To try out Custom Governance, [please fill out this intake form.](https://docs.google.com/forms/d/1ulI20NPs-S5-pAAZDSlZl4nAOhg5GRERtyoAr0XM6lg/viewform?edit_requested=true)
 
 ## Quick install with Google Cloud Marketplace
 
@@ -105,6 +106,11 @@ The person will also need to:
   * DNS A record configuration
   * **Cloud Asset Owner** role granting to the resources to be monitored
 
+### **IMPORTANT**
+We will cover these steps with detail in the installation part below, but it's good to have them in mind because they are pretty important for a successful installation.
+  * **Make sure you enable [Cloud Resource Manager](https://console.cloud.google.com/apis/api/cloudresourcemanager.googleapis.com) API after you create the project where Custom Governance can be deployed.**
+  * **When creating a new cluster, please make sure Cloud Platform scope is enabled.**
+  * **Remember to set up redirect URI after Client ID is created.**
 
 ## Option1: Marketplace UI Deployment Details
 
