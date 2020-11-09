@@ -1,0 +1,55 @@
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+  # The published version is required and MUST match the tag
+  # of the deployer image
+  publishedVersion: '1.0'
+  publishedVersionMetadata:
+    releaseNote: >-
+      A first release.
+  # The images property will be filled in during part 2
+  images: 
+    '':
+      properties:
+        voucherImage:
+          type: FULL
+
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  serviceAccount:
+    type: string
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      description: The kubernetes service account name with which Voucher will run
+  kmsResourceId:
+    type: string
+    title: KMS Resource ID
+  projectId:
+    type: string
+    title: GCP project ID
+  enableServerAuth:
+    type: boolean
+    title: Require Username/Password for Server Authentication
+    default: false
+  username: 
+    type: string
+    title: Username (required if server uthentication is enabled)
+  passHash: 
+    type: string
+    title: Bcrypt-hashed password (required if server uthentication is enabled)
+
+required:
+- name
+- namespace
+- serviceAccount
+- kmsResourceId
+- projectId
+- enableServerAuth

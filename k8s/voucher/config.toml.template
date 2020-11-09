@@ -1,0 +1,29 @@
+dryrun = false
+scanner = "metadata"
+failon = "high"
+metadata_client = "containeranalysis"
+image_project = "<PROJECT_ID>"
+binauth_project = "<PROJECT_ID>"
+signer = "kms"
+
+[checks]
+diy      = false
+nobody   = false
+provenance = false
+snakeoil = true
+
+[server]
+port = 8080
+require_auth = <AUTH>
+username = "<USERNAME>"
+password = "<PASSHASH>"
+
+[statsd]
+addr = "localhost:8125"
+sample_rate = 0.1
+tags = []
+
+[[kms_keys]]
+check = "snakeoil"
+path = "<KMS_KEY_NAME>"
+algo = "SHA512"

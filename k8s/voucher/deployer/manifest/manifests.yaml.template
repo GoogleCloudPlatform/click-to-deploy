@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: $name-server
+spec:
+  selector:
+    matchLabels:
+      run: $name-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: $name-app
+    spec:
+      containers:
+      - name: voucher-server
+        image: $voucherImage
+        args:
+          - -project=$projectId
+          - -auth=$enableServerAuth
+          - -username=$username
+          - -passhash=$passHash
+          - -kms=$kmsResourceId
+      serviceAccount: $serviceAccount
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $name-service
+  labels:
+    run: $name-app
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+  selector:
+    run: $name-app

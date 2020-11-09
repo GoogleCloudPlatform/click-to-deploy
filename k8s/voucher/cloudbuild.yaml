@@ -1,0 +1,5 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'build', '-f', 'marketplace/Dockerfile', '-t', 'gcr.io/$PROJECT_ID/voucher:1.0', '.' ]
+images:
+- 'gcr.io/$PROJECT_ID/voucher:1.0'
