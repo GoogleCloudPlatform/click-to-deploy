@@ -43,14 +43,14 @@ versions:
       gpg: 1f210b9037fcf82670d75892dfc44400f13fe9ada7af9e787f93e50e3b764111
       version: 1.9.1
     drupal:
-      md5: 6d300dbeb0aaae986c1b523df4f772aa
-      version: 8.9.7
+      md5: 9ea519013a62e2fddc38ef3bf637b6f6
+      version: 8.9.8
   repo: drupal8-php7-apache
   tags:
-  - 8.9.7-debian9
+  - 8.9.8-debian9
   - 8.9-debian9
   - 8-debian9
-  - 8.9.7
+  - 8.9.8
   - '8.9'
   - '8'
   - latest

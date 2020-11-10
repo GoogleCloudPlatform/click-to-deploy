@@ -1,0 +1,37 @@
+solr:
+  image:
+    repo: null
+    tag: null
+  replicas: 3
+  # if set "true", solr will be deployed as standalone mode with
+  # single instance without external zookeeper and no any authentication.
+  # Don't set true for production deployment
+  standalone: false
+
+  # Solr password for user "solr"
+  solrPassword: null
+
+  # ZooKeeper ACL admin password for username "admin-user"
+  zkAdminPassword: null
+
+  # ZooKeeper ACL readonly password for username "readonly-user"
+  zkReadOnlyPassword: null
+
+metrics:
+  image: null
+  enabled: true
+  exporter:
+    enabled: false
+
+persistence:
+  storageClass: null
+  solr:
+    storageSize: "10Gi"
+  zookeeper:
+    storageSize: "5Gi"
+
+zookeeper:
+  image: null
+
+deployer:
+  image: null
