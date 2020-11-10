@@ -134,7 +134,8 @@ Configure the container image:
 export IMAGE_OPERATOR="marketplace.gcr.io/google/prometheus-operator"
 ```
 
-#### This solution can also be used in [GKE On-Prem](https://cloud.google.com/anthos/gke/docs/on-prem/1.5) clusters.
+#### If using GKE on-prem
+This solution can also be used in [GKE On-Prem](https://cloud.google.com/anthos/gke/docs/on-prem/1.5) clusters.
 Test Google Container Registry (GCR) accessibility,
 ```
 kubectl -n "${NAMESPACE}" run test-image --image="marketplace.gcr.io/google/ubuntu:latest" -- sleep infinity 1>/dev/null && kubectl -n "${NAMESPACE}" get pod test-image -o=go-template='{{$output := "Failed to pull image from GCR"}}{{range .status.containerStatuses}}{{if eq .ready true}}{{$output = (print "Successfully pulled image from GCR. ")}}{{end}}{{end}}{{printf $output}}{{"\n"}}' && kubectl -n "${NAMESPACE}" delete pod test-image 1>/dev/null
