@@ -134,16 +134,16 @@ Configure the container image:
 export IMAGE_OPERATOR="marketplace.gcr.io/google/prometheus-operator"
 ```
 
-#### If using GKE on-prem
+#### This solution can also be used in [GKE On-Prem](https://cloud.google.com/anthos/gke/docs/on-prem/1.5) clusters.
 Test Google Container Registry (GCR) accessibility,
 ```
-kubectl -n "${NAMESPACE}" run test-image --image="marketplace.gcr.io/google/ubuntu:latest" -- sleep 60000 1>/dev/null && kubectl -n "${NAMESPACE}" get pod test-image -o=go-template='{{$output := "Failed to pull image from GCR"}}{{range .status.containerStatuses}}{{if eq .ready true}}{{$output = (print "Successfully pulled image from GCR. ")}}{{end}}{{end}}{{printf $output}}{{"\n"}}' && kubectl -n "${NAMESPACE}" delete pod test-image 1>/dev/null
+kubectl -n "${NAMESPACE}" run test-image --image="marketplace.gcr.io/google/ubuntu:latest" -- sleep infinity 1>/dev/null && kubectl -n "${NAMESPACE}" get pod test-image -o=go-template='{{$output := "Failed to pull image from GCR"}}{{range .status.containerStatuses}}{{if eq .ready true}}{{$output = (print "Successfully pulled image from GCR. ")}}{{end}}{{end}}{{printf $output}}{{"\n"}}' && kubectl -n "${NAMESPACE}" delete pod test-image 1>/dev/null
 ```
 If you do not see commmand outputs the message
 > Successfully pulled image from GCR.
 
 
-Create a secret with the key used for [gcp.whitelistedServiceAccountKeyPath](
+, then create a secret with the key used for [gcp.whitelistedServiceAccountKeyPath](
 https://cloud.google.com/anthos/gke/docs/on-prem/how-to/admin-workstation#gcpwhitelistedserviceaccountkeypath) when you set up on-prem Admin Workstation, and patch it to the default service account. 
 
 (Before running the following command, you may want to backup `~/.docker/config.json` first, if you are using other private container registry.)
