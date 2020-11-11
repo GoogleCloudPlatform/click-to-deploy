@@ -15,6 +15,7 @@ spec:
       containers:
       - name: voucher-server
         image: $voucherImage
+        imagePullPolicy: Always
         args:
           - -project=$projectId
           - -auth=$enableServerAuth

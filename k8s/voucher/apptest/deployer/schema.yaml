@@ -1,0 +1,10 @@
+properties:
+  testerImage:
+    type: string
+    default: $REGISTRY/tester:$TAG
+  kmsResourceId:
+    type: string
+    default: projects/test-project/locations/global/keyRings/test-key-ring/cryptoKeys/test-key/cryptoKeyVersions/1
+  projectId:
+    type: string
+    default: test-project
