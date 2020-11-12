@@ -18,5 +18,5 @@ spec:
   # The group is determined from the apiVersion: $GROUP_NAME/$VERSION
   - group: apps
     kind: Deployment
-  - group: ''
+  - group: v1
     kind: Service

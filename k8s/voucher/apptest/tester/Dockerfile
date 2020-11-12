@@ -1,4 +1,6 @@
-FROM radial/busyboxplus:curl
+FROM alpine:3.8
+
+RUN apk --no-cache add curl
 
 COPY tester.sh /tester.sh
 
