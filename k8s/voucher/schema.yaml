@@ -4,7 +4,7 @@ x-google-marketplace:
   applicationApiVersion: v1beta1
   # The published version is required and MUST match the tag
   # of the deployer image
-  publishedVersion: '1.0.0'
+  publishedVersion: "$TAG"
   publishedVersionMetadata:
     releaseNote: >-
       A first release of Voucher.

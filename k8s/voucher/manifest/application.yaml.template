@@ -4,7 +4,7 @@ metadata:
   name: "$name"
   namespace: "$namespace"
   annotations:
-    marketplace.cloud.google.com/deploy-info: '{"partner_id": "partner", "product_id": "Voucher", "partner_name": "Google"}'
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": "voucher", "partner_name": "Google Click to Deploy"}'
   labels:
     app.kubernetes.io/name: "$name"
 spec:
