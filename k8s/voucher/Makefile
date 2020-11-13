@@ -50,7 +50,7 @@ app/build:: .build/voucher/deployer \
                           .build/var/TAG \
                           | .build/voucher
 	docker pull gcr.io/binauthz-public/voucher:$(SERVER_VERSION)
-	docker tag gcr.io/binauthz-public/voucher:$(SERVER_VERSION)) "$(REGISTRY)/voucher:$(SERVER_VERSION)"
+	docker tag gcr.io/binauthz-public/voucher:$(SERVER_VERSION) "$(REGISTRY)/voucher:$(SERVER_VERSION)"
 	docker push "$(REGISTRY)/voucher:$(SERVER_VERSION)"
 	@touch "$@"
 
