@@ -4,6 +4,7 @@ include ../gcloud.Makefile
 include ../var.Makefile
 
 TAG ?= 1.0
+SERVER_VERSION ?= 1.0.0
 
 $(info ---- TAG = $(TAG))
 
@@ -11,8 +12,8 @@ APP_DEPLOYER_IMAGE ?= $(REGISTRY)/voucher/deployer:$(TAG)
 NAME ?= voucher-1
 
 APP_PARAMETERS ?= { \
-  "APP_INSTANCE_NAME": "$(NAME)", \
-  "NAMESPACE": "$(NAMESPACE)" \
+  "name": "$(NAME)", \
+  "namespace": "$(NAMESPACE)" \
 }
 
 TESTER_IMAGE ?= $(REGISTRY)/voucher/tester:$(TAG)
@@ -48,9 +49,9 @@ app/build:: .build/voucher/deployer \
 .build/voucher/server: .build/var/REGISTRY \
                           .build/var/TAG \
                           | .build/voucher
-	docker pull gcr.io/binauthz-public/voucher:$(TAG)
-	docker tag gcr.io/binauthz-public/voucher:$(TAG) "$(REGISTRY)/voucher:$(TAG)"
-	docker push "$(REGISTRY)/voucher:$(TAG)"
+	docker pull gcr.io/binauthz-public/voucher:$(SERVER_VERSION)
+	docker tag gcr.io/binauthz-public/voucher:$(SERVER_VERSION)) "$(REGISTRY)/voucher:$(SERVER_VERSION)"
+	docker push "$(REGISTRY)/voucher:$(SERVER_VERSION)"
 	@touch "$@"
 
 
