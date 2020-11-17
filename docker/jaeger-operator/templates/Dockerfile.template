@@ -1,0 +1,57 @@
+{{- $jaeger_operator := index .Packages "jaeger-operator" -}}
+{{- $golang := index .Packages "golang" -}}
+
+# Clone git repo
+FROM alpine/git:1.0.7 as git
+
+ENV JAEGER_OPERATOR_VERSION=v{{ $jaeger_operator.Version }}
+
+RUN git clone https://github.com/jaegertracing/jaeger-operator.git /src/jaeger-operator/ \
+    && cd /src/jaeger-operator/ \
+    && git checkout ${JAEGER_OPERATOR_VERSION}
+
+
+FROM golang:{{ $golang.Version }} as builder
+
+ENV LD_FLAGS="-X github.com/jaegertracing/jaeger-operator/pkg/version.version=v{{ $jaeger_operator.Version }} \
+              -X github.com/jaegertracing/jaeger-operator/pkg/version.buildDate=${VERSION_DATE} \
+              -X github.com/jaegertracing/jaeger-operator/pkg/version.defaultJaeger={{ $jaeger_operator.Version }}"
+
+COPY --from=git /src/jaeger-operator /go/src/github.com/jaegertracing/jaeger-operator
+
+WORKDIR /go/src/github.com/jaegertracing/jaeger-operator
+
+ENV GO111MODULE=on
+
+RUN go get -u github.com/kardianos/govendor \
+    && govendor license +vendor > NOTICES \
+    && GOOS=linux GOARCH=amd64 CGO_ENABLED=0 \
+       go build -o jaeger-operator -ldflags "${LD_FLAGS} \
+       -X github.com/jaegertracing/jaeger-operator/pkg/version.buildDate=$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+
+
+# Result Image
+FROM {{ .From }}
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+            openssl \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV OPERATOR=/usr/local/bin/jaeger-operator \
+    USER_UID=1001 \
+    USER_NAME=jaeger-operator
+
+ENV C2D_RELEASE={{ $jaeger_operator.Version }}
+
+COPY --from=git /src/jaeger-operator/scripts/* /scripts/
+
+# Binaries
+COPY --from=builder /go/src/github.com/jaegertracing/jaeger-operator/jaeger-operator ${OPERATOR}
+
+# License and Notices
+COPY --from=builder /go/src/github.com/jaegertracing/jaeger-operator/NOTICES /usr/share/jaeger-operator/NOTICES
+COPY --from=builder /go/src/github.com/jaegertracing/jaeger-operator/LICENSE /usr/share/jaeger-operator/LICENSE
+
+ENTRYPOINT ["/usr/local/bin/jaeger-operator"]
+
+USER ${USER_UID}
