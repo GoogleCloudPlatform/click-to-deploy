@@ -16,7 +16,7 @@ spec:
       app.kubernetes.io/name: "$name"
   componentKinds:
   # The group is determined from the apiVersion: $GROUP_NAME/$VERSION
-  - group: apps/v1
+  - group: apps
     kind: Deployment
-  - group: core/v1
+  - group: ''
     kind: Service
