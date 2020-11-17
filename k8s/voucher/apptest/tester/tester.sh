@@ -1,3 +1,5 @@
+#!/bin/sh
+#
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,10 +14,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Remember to check if repo component update
-# is needed when changing the version.
-default['mariadb']['version'] = '1:10.5.*+maria~stretch'
-
-default['mariadb']['repo']['uri'] = 'http://mirror.mva-n.net/mariadb/repo/10.5/debian'
-default['mariadb']['repo']['components'] = ['stretch', 'main']
-default['mariadb']['repo']['keyserver'] = 'https://mariadb.org/mariadb_release_signing_key.asc'
+curl -X POST ${APP_INSTANCE_NAME}-service/snakeoil
