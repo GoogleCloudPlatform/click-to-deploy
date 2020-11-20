@@ -18,56 +18,70 @@ source /opt/c2d/mariadb-utils || exit 1
 
 set -o pipefail
 
-readonly hostname="$(hostname)"
+declare -r master_node="mariadb-vm-0"
+readonly current_hostname="$(hostname)"
 readonly mysql_database="$(get_attribute_value "MYSQL_DATABASE")"
 readonly mysql_root_password="$(get_attribute_value "MYSQL_ROOT_PASSWORD")"
 readonly mysql_replication_password="$(get_attribute_value "MYSQL_REPLICATION_PASSWORD")"
 readonly root_from_anywhere="$(get_attribute_value "MYSQL_ROOT_ANYWHERE_ALLOW")"
-readonly master_node="mariadb-vm-0"
 
-# This will convert "deployment.c.project.instance to mariadb-vm-index"
-readonly short_hostname="mariadb-vm-$(echo ${hostname} \
-                      | grep -o -P "mariadb-vm-(\d*)" \
-                      | cut -d '-' -f 3)"
+# Convert "deployment.c.project.instance to mariadb-vm-index
+# example: mariadb-vm-0
+readonly short_hostname="mariadb-vm-$(echo ${current_hostname} \
+                                    | grep -o -P "mariadb-vm-(\d*)" \
+                                    | cut -d '-' -f 3)"
 
-# This will get the instance id (zero-index based)
+# Get the instance id (zero-index based)
 readonly instance_id="$(echo ${short_hostname} | cut -f 3 -d '-')"
 
 # Get the list of MariaDB nodes
-readonly cluster_hostname_list="$(get_attribute_value "ENV_MARIADB_NODE_HOSTNAMES" | tr '|' ' ')"
+readonly cluster_nodes="$(get_attribute_value "ENV_MARIADB_NODE_HOSTNAMES" | tr '|' ' ')"
+readonly replica_nodes="$(echo "${cluster_nodes}" \
+                        | grep -o -P "mariadb-vm-\d*" \
+                        | sed "s/${master_node}\s*//g")"
 
-# This will increment 1 to instance_id as MariaDB requires a 1 index based id
+# Increment 1 to instance_id as MariaDB requires a 1 index based id
 export SERVER_ID="$((instance_id + 1))"
 export DATABASE_NAME="${mysql_database}"
-export MASTER_NODE_IP="$(host ${master_node} \
-                        | awk -F 'has address' '{ print $2 }'s
-                        | tr -d ' ')"
 
 emit_msg "Starting MariaDB Configuration..."
-emit_msg "MariaDB instances: ${cluster_hostname_list}"
+emit_msg "MariaDB instances: ${cluster_nodes}"
 emit_msg "----------------------------------"
 
 emit_msg "Adding VMs short hostnames..."
-add_short_hostnames "${cluster_hostname_list}"
+add_short_hostnames "${cluster_nodes}"
 
-for node in ${cluster_hostname_list}; do
-    # Stop node
-    systemctl stop mariadb
+export MASTER_NODE_IP="$(getent hosts ${master_node} \
+                       | awk '{ print $1 }')"
+emit_msg "Master Node IP: ${MASTER_NODE_IP}"
 
-    # Bind service to all available addresses
-    bind_to_all_addresses
+emit_msg "Stopping MariaDB..."
+systemctl stop mariadb
 
-    # Change current hostname in order to avoid MariaDB using the full name
-    hostname "${short_hostname}"
+# Bind service to all available addresses
+bind_to_all_addresses
 
-    # If script running on master node
-    if [[ ${master_node} == "${short_hostname}" ]]; then
-      setup_master
-    else
-      setup_replicas
-    fi
+# Change current hostname in order to avoid MariaDB using the full name
+hostname "${short_hostname}"
 
-    emit_msg "Node ${SERVER_ID} is now running."
+emit_msg "Setting up MariaDB..."
+if [[ ${master_node} == "${short_hostname}" ]]; then
+  emit_msg "Node is a master."
+  setup_master \
+    "${replica_nodes}" \
+    "${mysql_root_password}" \
+    "${mysql_replication_password}" \
+    "${root_from_anywhere}"
+else
+  emit_msg "Node is a replica."
+  setup_replica \
+    "${mysql_root_password}" \
+    "${mysql_replication_password}" \
+    "${root_from_anywhere}"
+fi
+emit_msg "Setup completed."
 
-  (( SERVER_ID += 1 ))
-done
+emit_msg "----------------------------------"
+emit_msg "Node ${SERVER_ID} is now running."
+emit_msg "Hostname: ${short_hostname}"
+emit_msg "----------------------------------"

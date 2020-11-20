@@ -32,13 +32,23 @@ end
 
 ['pam-ssh', 'ssh', 'replication'].each do |file|
   cookbook_file "/opt/c2d/patch-#{file}" do
-    source 'patch-ssl'
+    source "patch-#{file}"
     owner 'root'
     group 'root'
     mode 0664
     action :create
   end
-do
+end
+
+['setup', 'utils'].each do |file|
+  cookbook_file "/opt/c2d/mariadb-#{file}" do
+    source "mariadb-#{file}"
+    owner 'root'
+    group 'root'
+    mode 0755
+    action :create
+  end
+end
 
 service 'mysql' do
   action [ :enable ]
