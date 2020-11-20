@@ -76,7 +76,7 @@ Questions about Custom Governance? Go [here](https://docs.google.com/document/d/
 
 ## Before you get started
 
-As of fall 2020 the Custom Governance product is in Beta stagew with allowlisting. We are taking a limited number of new customers. To try out Custom Governance, [**please fill out this intake form to be allowlisted.**](https://docs.google.com/forms/d/1ulI20NPs-S5-pAAZDSlZl4nAOhg5GRERtyoAr0XM6lg/viewform?edit_requested=true)
+As of fall 2020 the Custom Governance product is in Beta stage with allowlisting. We are taking a limited number of new customers. To try out Custom Governance, [**please fill out this intake form to be allowlisted.**](https://docs.google.com/forms/d/1ulI20NPs-S5-pAAZDSlZl4nAOhg5GRERtyoAr0XM6lg/viewform?edit_requested=true)
 
 ## Quick install with Google Cloud Marketplace
 
