@@ -26,10 +26,10 @@ export es_protocol="$(get_attribute_value "es_protocol")"
 readonly es_use_https="$(get_attribute_value "es_use_https" \
   | tr '[:upper:]' '[:lower:]')"
 
-# Kibana settins
+# Kibana settings
 readonly kibana_template="/etc/kibana/kibana.yaml.template"
-export kibana_username="$(get_attribute_value "kibana_username")"
-export kibana_password="$(get_attribute_value "kibana_password")"
+export kibana_username="kibana_system"
+export kibana_password="$(get_attribute_value "kibana_sys_password")"
 export kibana_admin_user="kibana_admin"
 export kibana_admin_password="$(get_attribute_value "kibana_admin_password")"
 
@@ -42,6 +42,8 @@ if [[ -z "${es_protocol}" ]]; then
     es_protocol="https"
   fi
 fi
+
+systemctl stop kibana
 
 echo "Awaiting for Elasticsearch server to be up..."
 await_for_host_and_port "${es_host}" "${es_port}"
@@ -101,5 +103,4 @@ else
 fi
 
 # Enable and start Logstash service
-systemctl enable kibana
 systemctl start kibana
