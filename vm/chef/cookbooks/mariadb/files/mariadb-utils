@@ -2,18 +2,9 @@
 
 source /opt/c2d/c2d-utils || exit 1
 
-declare -r replication_user="replication"
 declare -r backup_folder="/tmp/transfer"
 declare -r backup_filename="${backup_folder}/all-databases.sql"
-
-#######################################
-# Prints a formatted message to standard output.
-# Arguments:
-#  Message string.
-#######################################
-function emit_msg() {
-  echo "$(date +"%I:%M:%S")" "${@}"
-}
+declare -r ssh_backup_folder="/tmp/ssh_backup"
 
 #######################################
 # Run a command on local MariaDB server using root user.
@@ -37,19 +28,10 @@ function add_short_hostnames() {
   local target_host=""
 
   for node in ${nodes}; do
-    # target_ip="$(host ${node} | awk -F 'has address' '{ print $2 }' | tr -d ' ')"
     target_ip="$(getent hosts ${node} | awk '{ print $1 }')"
     target_host="$(echo ${node} | grep -o -P "mariadb-vm-(\d*)")"
     echo "${target_ip} ${target_host}" >> /etc/hosts
   done
-}
-
-#######################################
-# Configure MariaDB to bind service to all available addresses
-#######################################
-function bind_to_all_addresses() {
-  sed -i "s/.*bind-address.*/bind-address = 0.0.0.0/" \
-    /etc/mysql/mariadb.conf.d/50-server.cnf
 }
 
 #######################################
@@ -74,11 +56,11 @@ function create_replication_users() {
   local -r replication_password="$2"
   local replica_ip=""
 
-  emit_msg "Creating replication users in MariaDB..."
+  echo "Creating replication users in MariaDB..."
 
   for replica in ${replicas[@]}; do
     replica_ip="$(getent hosts "${replica}" | awk '{ print $1 }')"
-    emit_msg "Creating replication user for node ${replica} on ip ${replica_ip}..."
+    echo "Creating replication user for node ${replica} on ip ${replica_ip}..."
 
     # Create user for replication granting access only from replicas hosts
     run_query "
@@ -89,7 +71,7 @@ function create_replication_users() {
       GRANT REPLICATION SLAVE ON *.*
       TO '${replication_user}'@'${replica_ip}';"
 
-      emit_msg "Replication user created."
+      echo "Replication user created."
   done
 }
 
@@ -138,11 +120,12 @@ function await_for_replicas_ssh() {
   local -r replicas="$1"
 
   for replica in ${replicas[@]}; do
-    emit_msg "Checking SSH on ${replica}..."
-    until ssh -o StrictHostKeyChecking=no ${replication_user}@${replica} -- cat /dev/null; do
-      sleep 1
-    done
-    emit_msg "Connected to ${replica} SSH with success."
+    echo "Checking SSH on ${replica}..."
+    timeout --preserve-status 600 bash -c "
+      until ssh -o StrictHostKeyChecking=no ${replication_user}@${replica} -- cat /dev/null; do
+        sleep 1
+      done"
+    echo "Connected to ${replica} SSH with success."
   done
 }
 
@@ -154,7 +137,7 @@ function await_for_replicas_ssh() {
 function send_backup_to_replicas() {
   local -r replicas="$1"
 
-  emit_msg "Sending backup to replicas..."
+  echo "Sending backup to replicas..."
   for replica in ${replicas[@]}; do
     echo "Sending backup to ${replica}..."
     scp -o StrictHostKeyChecking=no "${backup_filename}" \
@@ -181,7 +164,7 @@ function setup_master() {
 
   # Start and await service to be up
   systemctl start mariadb
-  until mysqladmin ping; do sleep 1; done
+  timeout --preserve-status 600 bash -c "until mysqladmin ping; do sleep 1; done"
 
   create_replication_users "${replicas}" "${replication_password}"
   set_root_user "${root_password}" "${enable_root_anywhere}"
@@ -200,9 +183,17 @@ function apply_replica_replication_config() {
   local -r config_file="/etc/mysql/conf.d/serverid.cnf"
 
   printf '%s\n' \
-    "[mysqld]"   \
-    "server-id=${SERVER_ID}"   \
+    "[mysqld]" \
+    "server-id=${SERVER_ID}" \
     "replicate-do-db=${DATABASE_NAME}" > "${config_file}"
+}
+
+#######################################
+# Configure MariaDB to bind service to all available addresses
+#######################################
+function bind_to_all_addresses() {
+  sed -i "s/.*bind-address.*/bind-address = 0.0.0.0/" \
+    /etc/mysql/mariadb.conf.d/50-server.cnf
 }
 
 #######################################
@@ -213,11 +204,30 @@ function apply_replica_replication_config() {
 function await_for_node() {
   local node="$1"
 
-  emit_msg "Checking if master node is up..."
-  timeout --preserve-status 300 bash -c "until echo > /dev/tcp/${node}/3306; do sleep 2; done"
+  echo "Checking if master node is up..."
+  timeout --preserve-status 600 bash -c "until echo > /dev/tcp/${node}/3306; do sleep 2; done"
   if [[ "$?" -ne 0 ]]; then
       exit 1
   fi
+}
+
+#######################################
+# Backup sshd_config and pam config.
+#######################################
+function backup_current_ssh_config() {
+  mkdir -p "${ssh_backup_folder}"
+  cp -f /etc/pam.d/sshd "${ssh_backup_folder}/pamd_sshd"
+  cp -f /etc/ssh/sshd_config "${ssh_backup_folder}/sshd_config"
+}
+
+#######################################
+# Restore sshd_config and pam config.
+#######################################
+function restore_default_ssh_config() {
+  cp -f "${ssh_backup_folder}/pamd_sshd" /etc/pam.d/sshd
+  cp -f "${ssh_backup_folder}/sshd_config" /etc/ssh/sshd_config
+  systemctl restart ssh
+  rm -rf "${ssh_backup_folder}"
 }
 
 #######################################
@@ -225,24 +235,32 @@ function await_for_node() {
 # and only from internal master node IP.
 #######################################
 function enable_ssh_on_replica() {
+    echo "Backing up current ssh configuration..."
+    backup_current_ssh_config
+
+    echo "Creating ${replication_user} user and transfer folder..."
     # Add replication user and tmp folder
     adduser --disabled-password --gecos "" -u 2001 ${replication_user} \
       && create_tmp_folder
 
+    echo "Removing user password..."
     # Remove password
     sed -i -re "s/^${replication_user}:[^:]+:/${replication_user}::/" \
       /etc/passwd /etc/shadow
 
+    echo "Configure pam.d..."
     # Configure pam.d
     sed -i '/@include common-auth/r patch-pam-ssh' /etc/pam.d/sshd
     sed -i '/@include common-auth/d' /etc/pam.d/sshd
 
+    echo "Configure sshd..."
     # Configure sshd_config
-    sed -i-re 's/^PasswordAuthentication no$/# PasswordAuthentication no/g' \
+    sed -i -re 's/^PasswordAuthentication no$/# PasswordAuthentication no/g' \
         /etc/ssh/sshd_config
     patch="$(cat patch-ssh | envsubst "\$MASTER_NODE_IP")"
     echo "${patch}" >> /etc/ssh/sshd_config
 
+    echo "Restarting sshd..."
     systemctl restart ssh
 }
 
@@ -250,19 +268,12 @@ function enable_ssh_on_replica() {
 # Await until backup file is available locally.
 #######################################
 function await_for_backup_file() {
-  local file_count=0
-
-  while [[ "${file_count}" -eq 0 ]]; do
-    emit_msg "Checking if backup has been transfered."
-    file_count="$(find "${backup_folder}" -maxdepth 1 -not -type d | wc -l)"
-    emit_msg "${file_count} backups in the folder."
-
-    if [[ "${file_count}" -eq 0 ]]; then
-        emit_msg "Backup not found. Awaiting before checking again..."
-    fi
-    sleep 3
-  done
-  emit_msg "Backup has been found."
+  echo "Checking if backup has been received..."
+  timeout --preserve-status 600 bash -c "
+      until cat ${backup_filename}; do
+        sleep 1
+      done"
+  echo "Backup received."
 }
 
 #######################################
@@ -278,7 +289,7 @@ function create_tmp_folder() {
 # Restore replicated database to a local setup.
 #######################################
 function restore_database() {
-  emit_msg "Restoring database..."
+  echo "Restoring database..."
   mysql < "${backup_filename}"
 }
 
@@ -300,7 +311,7 @@ function setup_replica() {
 
   # Start and await service to be up
   systemctl start mariadb
-  until mysqladmin ping; do sleep 1; done
+  timeout --preserve-status 600 bash -c "until mysqladmin ping; do sleep 1; done"
 
   set_root_user "${root_password}" "${enable_root_anywhere}"
 
@@ -320,4 +331,6 @@ function setup_replica() {
       master_password='${replication_password}',
       master_use_gtid=current_pos;
     START SLAVE;"
+
+  restore_default_ssh_config
 }

@@ -19,6 +19,7 @@ source /opt/c2d/mariadb-utils || exit 1
 set -o pipefail
 
 declare -r master_node="mariadb-vm-0"
+declare -r replication_user="replication"
 readonly current_hostname="$(hostname)"
 readonly mysql_database="$(get_attribute_value "MYSQL_DATABASE")"
 readonly mysql_root_password="$(get_attribute_value "MYSQL_ROOT_PASSWORD")"
@@ -27,9 +28,7 @@ readonly root_from_anywhere="$(get_attribute_value "MYSQL_ROOT_ANYWHERE_ALLOW")"
 
 # Convert "deployment.c.project.instance to mariadb-vm-index
 # example: mariadb-vm-0
-readonly short_hostname="mariadb-vm-$(echo ${current_hostname} \
-                                    | grep -o -P "mariadb-vm-(\d*)" \
-                                    | cut -d '-' -f 3)"
+readonly short_hostname="$(echo ${current_hostname} | grep -o -P "mariadb-vm-\d+$")"
 
 # Get the instance id (zero-index based)
 readonly instance_id="$(echo ${short_hostname} | cut -f 3 -d '-')"
@@ -44,18 +43,18 @@ readonly replica_nodes="$(echo "${cluster_nodes}" \
 export SERVER_ID="$((instance_id + 1))"
 export DATABASE_NAME="${mysql_database}"
 
-emit_msg "Starting MariaDB Configuration..."
-emit_msg "MariaDB instances: ${cluster_nodes}"
-emit_msg "----------------------------------"
+echo "Starting MariaDB Configuration..."
+echo "MariaDB instances: ${cluster_nodes}"
+echo "----------------------------------"
 
-emit_msg "Adding VMs short hostnames..."
+echo "Adding VMs short hostnames..."
 add_short_hostnames "${cluster_nodes}"
 
 export MASTER_NODE_IP="$(getent hosts ${master_node} \
                        | awk '{ print $1 }')"
-emit_msg "Master Node IP: ${MASTER_NODE_IP}"
+echo "Master Node IP: ${MASTER_NODE_IP}"
 
-emit_msg "Stopping MariaDB..."
+echo "Stopping MariaDB..."
 systemctl stop mariadb
 
 # Bind service to all available addresses
@@ -64,24 +63,24 @@ bind_to_all_addresses
 # Change current hostname in order to avoid MariaDB using the full name
 hostname "${short_hostname}"
 
-emit_msg "Setting up MariaDB..."
+echo "Setting up MariaDB..."
 if [[ ${master_node} == "${short_hostname}" ]]; then
-  emit_msg "Node is a master."
+  echo "Node is a master."
   setup_master \
     "${replica_nodes}" \
     "${mysql_root_password}" \
     "${mysql_replication_password}" \
     "${root_from_anywhere}"
 else
-  emit_msg "Node is a replica."
+  echo "Node is a replica."
   setup_replica \
     "${mysql_root_password}" \
     "${mysql_replication_password}" \
     "${root_from_anywhere}"
 fi
-emit_msg "Setup completed."
+echo "Setup completed."
 
-emit_msg "----------------------------------"
-emit_msg "Node ${SERVER_ID} is now running."
-emit_msg "Hostname: ${short_hostname}"
-emit_msg "----------------------------------"
+echo "----------------------------------"
+echo "Node ${SERVER_ID} is now running."
+echo "Hostname: ${short_hostname}"
+echo "----------------------------------"
