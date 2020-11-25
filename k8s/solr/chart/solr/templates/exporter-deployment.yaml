@@ -1,0 +1,130 @@
+{{- if .Values.metrics.enabled }}
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: {{ .Release.Name }}-solr-exporter
+  labels: &SolrDeploymentLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: solr-exporter
+spec:
+  type: "ClusterIP"
+  ports:
+    - port: 9983
+      name: "solr-client"
+  selector: *SolrDeploymentLabels
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-solr-exporter
+  labels: &SolrDeploymentLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: solr-exporter
+spec:
+  selector:
+    matchLabels: *SolrDeploymentLabels
+  replicas: 1
+  revisionHistoryLimit: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels: *SolrDeploymentLabels
+    spec:
+      affinity:
+        null
+      {{- if not .Values.solr.standalone }}
+      volumes:
+      - name: solr-exporter-secret
+        secret:
+          secretName: {{ .Release.Name }}-solr-exporter-secret
+      {{- end }}
+
+      containers:
+        - name: exporter
+          image: "{{ .Values.solr.image.repo }}:{{ .Values.solr.image.tag }}"
+          imagePullPolicy: IfNotPresent
+          {{- if not .Values.solr.standalone }}
+          env:
+            - name: ZK_READONLY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-solr-secret
+                  key: zk-readonly-password
+            - name: SOLR_ZK_READONLY_CREDS
+              value: "-Dsolr.httpclient.builder.factory=org.apache.solr.client.solrj.impl.PreemptiveBasicAuthClientBuilderFactory -Dsolr.httpclient.config=/tmp/exporter-config/basicauth.properties -DzkACLProvider=org.apache.solr.common.cloud.VMParamsAllAndReadonlyDigestZkACLProvider -DzkCredentialsProvider=org.apache.solr.common.cloud.VMParamsSingleSetCredentialsDigestZkCredentialsProvider -DzkDigestUsername=readonly-user -DzkDigestPassword=$(ZK_READONLY_PASSWORD)"
+            - name: JAVA_OPTS
+              value: "$(SOLR_ZK_READONLY_CREDS)"
+          {{- end }}
+          resources:
+            {}
+          ports:
+            - containerPort: 8983
+              name: solr-client
+          command:
+            - "/opt/solr/contrib/prometheus-exporter/bin/solr-exporter"
+            - "-p"
+            - "9983"
+            {{- if not .Values.solr.standalone }}
+            - "-z"
+            - "{{ .Release.Name }}-zk-client:2181"
+            {{- end }}
+            - "-n"
+            - "7"
+            - "-f"
+            - "/opt/solr/contrib/prometheus-exporter/conf/solr-exporter-config.xml"
+          livenessProbe:
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            httpGet:
+              path: "/metrics"
+              port: 9983
+          readinessProbe:
+            initialDelaySeconds: 15
+            periodSeconds: 5
+            httpGet:
+              path: "/metrics"
+              port: 9983
+          {{- if not .Values.solr.standalone }}
+          volumeMounts:
+            - name: solr-exporter-secret
+              mountPath: /tmp/exporter-config
+          {{- end }}
+        {{- if .Values.metrics.exporter.enabled }}
+        - name: prometheus-to-sd
+          image: {{ .Values.metrics.image }}
+          command:
+          - /monitor
+          - --stackdriver-prefix=custom.googleapis.com
+          - --source=solr:http://localhost:9983/metrics
+          - --pod-id=$(POD_NAME)
+          - --namespace-id=$(POD_NAMESPACE)
+          - --monitored-resource-types=k8s
+          env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+        {{- end }}
+
+      initContainers:
+        - name: solr-init
+          image: "{{ .Values.solr.image.repo }}:{{ .Values.solr.image.tag }}"
+          imagePullPolicy: IfNotPresent
+          command:
+            - 'sh'
+            - '-c'
+            - |
+              PROTOCOL="http://"
+              COUNTER=0;
+              while [  $COUNTER -lt 30 ]; do
+                curl -k -s --connect-timeout 10 "${PROTOCOL}{{ .Release.Name }}-solr-svc:8983/solr/admin/info/system" && exit 0
+                sleep 2
+              done;
+              echo "Did NOT see a Running Solr instance after 60 secs!";
+              exit 1;
+{{- end }}
