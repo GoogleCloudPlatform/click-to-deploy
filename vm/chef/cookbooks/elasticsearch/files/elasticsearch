@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2020 Google Inc.
+# Copyright 2020 Google LLC.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ readonly es_use_https="$(get_attribute_value "es_use_https" \
   | tr '[:upper:]' '[:lower:]')"
 
 readonly es_password="$(get_attribute_value "es_password")"
-readonly kibana_password="$(get_attribute_value "kibana_password")"
+readonly kibana_sys_password="$(get_attribute_value "kibana_sys_password")"
 readonly logstash_sys_password="$(get_attribute_value "logstash_sys_password")"
 
 readonly es_tmp_certs_folder="/tmp/certs"
@@ -178,10 +178,10 @@ if [[ "${es_current_node}" == "${es_first_hostname}" ]]; then
     elastic "${es_password}" \
     "${es_protocol}"
 
-  # Change kibana user password.
+  # Change kibana_system user password.
   change_user_password "${es_current_node}" \
     elastic "${es_password}" \
-    kibana_system "${kibana_password}" \
+    kibana_system "${kibana_sys_password}" \
     "${es_protocol}"
 
   # Change logstash_system user password.
