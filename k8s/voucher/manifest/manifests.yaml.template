@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: $name-server
+  labels:
+    app.kubernetes.io/name: "$name"
+    app.kubernetes.io/component: voucher-deployment
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "$name"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: "$name"
+    spec:
+      containers:
+      - name: voucher-server
+        image: $voucherImage
+        imagePullPolicy: Always
+        args:
+          - -project=$projectId
+          - -auth=$enableServerAuth
+          - -username=$username
+          - -passhash=$passHash
+          - -kms=$kmsResourceId
+      serviceAccount: $serviceAccount
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $name-service
+  labels:
+    app.kubernetes.io/name: "$name"
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+  selector:
+    app.kubernetes.io/name: "$name"
