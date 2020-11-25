@@ -28,6 +28,8 @@ readonly es_use_https="$(get_attribute_value "es_use_https" \
 readonly logstash_config_folder="/etc/logstash/conf.d"
 readonly logstash_template="${logstash_config_folder}/syslog.conf.template"
 
+systemctl stop logstash
+
 # If image is being used by ELK Stack, configure Elasticsearch pipeline
 if [[ "${is_elkstack:-"false"}" == "true" ]]; then
   # Set protocol as https if configuration is enabled
@@ -63,11 +65,16 @@ if [[ "${is_elkstack:-"false"}" == "true" ]]; then
     echo "${template_contents}" > "${logstash_template}"
   fi
 
+  echo "Bind to all addresses..."
+  echo "http.host: 0.0.0.0" >> /etc/logstash/logstash.yml
+
   echo "Configuring syslog pipeline..."
   fill_in_config_template \
     /etc/logstash/conf.d/ \
     syslog.conf.template \
     syslog.conf
+
+  echo "http.host: 0.0.0.0" >> /etc/logstash/logstash.yml
 fi
 
 # Enable and start Logstash service
