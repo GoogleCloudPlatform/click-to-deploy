@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['kibana']['version'] = '7.9.2'
+default['kibana']['version'] = '7.10.0'
 
 default['kibana']['release'] =
   default['kibana']['version'].split('.')[0]
