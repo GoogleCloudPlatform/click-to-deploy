@@ -67,6 +67,21 @@ end
   end
 end
 
+# Download jruby source-code
+#
+remote_file '/tmp/jruby-src.tar.gz' do
+  source "https://github.com/jruby/jruby/archive/#{node['jruby']['version']}.tar.gz"
+  action :create
+end
+
+bash 'Extract JRuby source-code' do
+  cwd '/usr/share/logstash/vendor/jruby'
+  code <<-EOH
+    mkdir -p src/ && \
+      tar -xf /tmp/jruby-src.tar.gz -C ./src --strip-components 1
+EOH
+end
+
 service 'logstash' do
   action [ :enable ]
 end

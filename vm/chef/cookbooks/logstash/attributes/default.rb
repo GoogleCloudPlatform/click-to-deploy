@@ -21,3 +21,5 @@ default['logstash']['repository_url'] =
   "https://artifacts.elastic.co/packages/#{default['logstash']['release']}.x/apt"
 default['logstash']['keyserver_url'] =
   'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
+
+default['jruby']['version'] = '9.2.13.0'
