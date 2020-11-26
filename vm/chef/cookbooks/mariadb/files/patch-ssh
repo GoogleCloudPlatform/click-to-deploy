@@ -1,0 +1,2 @@
+Match User replication Address ${MASTER_NODE_IP}
+	PermitEmptyPasswords yes
