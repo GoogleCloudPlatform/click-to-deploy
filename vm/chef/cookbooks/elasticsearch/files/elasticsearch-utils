@@ -57,25 +57,22 @@ function wait_for_green_elastic_cluster() {
   local -a auth_params=()
   if [[ "$#" -eq 4 ]]; then
     local -r password="$4"
-    auth_params=(-u "elastic:${password}")
+    auth_params=(-u "${es_default_username}:${password}")
   fi
 
   # Wait for exact number of nodes
   until curl -k -s "${auth_params[@]}" "${nodes_health_url}" | grep "${nodes}"; do
     echo "Waiting for ${nodes} nodes in cluster..."
-    echo "$(curl -k -s "${auth_params[@]}" "${nodes_health_url}")"
     sleep 5
   done
 
   # Wait for status 'green'
   until curl -k -s "${auth_params[@]}" "${status_health_url}" | grep green; do
     echo "Waiting for green status in cluster.."
-    echo "$(curl -k -s "${auth_params[@]}" "${status_health_url}")"
     sleep 3
   done
 
-  echo "Cluster status:"
-  echo "$(curl -k -s "${auth_params[@]}" "${health_url}")"
+  echo "Cluster ready."
 }
 
 #######################################
@@ -89,32 +86,22 @@ function wait_for_green_elastic_cluster() {
 #######################################
 function change_user_password() {
   local -r hostname="$1"
-
-  local -r auth_user="$2"
-  local -r auth_user_pass="$3"
-
-  local -r user_to_change="$4"
-  local -r new_pass="$5"
-  local -r protocol="$6"
+  local -r protocol="$2"
+  local -r auth_user="$3"
+  local -r auth_user_pass="$4"
+  local -r user_to_change="$5"
+  local -r new_pass="$6"
 
   local -r changepass_url="${protocol}://${hostname}:9200/_security/user/${user_to_change}/_password"
   local response=""
 
-  echo "Changing elasticsearch password"
+  echo "Changing elasticsearch password..."
 
-  if [[ "${protocol}" == "http" ]]; then
-    response="$(curl -X POST \
-      -u "${auth_user}:${auth_user_pass}" \
-      -d "{\"password\":\"${new_pass}\"}" \
-      -H "Content-Type: application/json" \
-      "${changepass_url}")"
-  else
-    response="$(curl -k -X POST \
-      -u "${auth_user}:${auth_user_pass}" \
-      -d "{\"password\":\"${new_pass}\"}" \
-      -H "Content-Type: application/json" \
-      "${changepass_url}")"
-  fi
+  response="$(curl -k -X POST \
+    -u "${auth_user}:${auth_user_pass}" \
+    -d "{\"password\":\"${new_pass}\"}" \
+    -H "Content-Type: application/json" \
+    "${changepass_url}")"
 
   if [[ "${response}" != "{}" ]]; then
     echo "Password change failed: ${response}"

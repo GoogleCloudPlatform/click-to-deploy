@@ -34,6 +34,9 @@ readonly es_use_https="$(get_attribute_value "es_use_https" \
 readonly es_password="$(get_attribute_value "es_password")"
 readonly kibana_sys_password="$(get_attribute_value "kibana_sys_password")"
 readonly logstash_sys_password="$(get_attribute_value "logstash_sys_password")"
+readonly es_default_username="elastic"
+readonly kibana_sys_username="kibana_system"
+readonly logstash_sys_username="logstash_system"
 
 readonly es_tmp_certs_folder="/tmp/certs"
 readonly es_cert_folder="/etc/elasticsearch/certs"
@@ -48,12 +51,6 @@ readonly es_min_master_nodes="$(( es_nodes_count / 2 + 1 ))"
 readonly total_memory_kb="$(awk '/MemTotal/ { print int($2) }' /proc/meminfo)"
 readonly total_memory_gb="$((total_memory_kb / 1024 / 1024))"
 readonly es_heap_size_gb="$((total_memory_gb / 2))"
-
-# Set protocol as https if configuration is enabled
-es_protocol="http"
-if [[ "${es_use_https:-"false"}" == "true" ]]; then
-  es_protocol="https"
-fi
 
 echo "Stopping elasticsearch"
 service elasticsearch stop
@@ -122,6 +119,13 @@ else
 fi
 
 # Install and configure self-signed certificates if option is selected
+
+# Set protocol as https if configuration is enabled
+es_protocol="http"
+if [[ "${es_use_https:-"false"}" == "true" ]]; then
+  es_protocol="https"
+fi
+
 if [[ "${es_use_https:-"false"}" == "true" ]]; then
   echo "Generating certificates..."
 
@@ -173,26 +177,24 @@ if [[ "${es_current_node}" == "${es_first_hostname}" ]]; then
 
   # Update passwords according deployment manager variables.
   # Change elastic user password.
-  change_user_password "${es_current_node}" \
-    elastic "${es_default_password}" \
-    elastic "${es_password}" \
-    "${es_protocol}"
+  change_user_password "${es_current_node}" "${es_protocol}" \
+    "${es_default_username}" "${es_default_password}" \
+    "${es_default_username}" "${es_password}"
 
   # Change kibana_system user password.
-  change_user_password "${es_current_node}" \
-    elastic "${es_password}" \
-    kibana_system "${kibana_sys_password}" \
-    "${es_protocol}"
+  change_user_password "${es_current_node}" "${es_protocol}" \
+    "${es_default_username}" "${es_password}" \
+    "${kibana_sys_username}" "${kibana_sys_password}"
 
   # Change logstash_system user password.
-  change_user_password "${es_current_node}" \
-    elastic "${es_password}" \
-    logstash_system "${logstash_sys_password}" \
-    "${es_protocol}"
+  change_user_password "${es_current_node}" "${es_protocol}" \
+    "${es_default_username}" "${es_password}" \
+    "${logstash_sys_password}" "${logstash_sys_password}"
 
   # Remove passwords file
   remove_pwd_file
 fi
 
 # Await until all nodes are green
-wait_for_green_elastic_cluster "${es_current_node}" "${es_protocol}" "${es_nodes_count}" "${es_password}"
+wait_for_green_elastic_cluster "${es_current_node}" "${es_protocol}" \
+  "${es_nodes_count}" "${es_password}"
