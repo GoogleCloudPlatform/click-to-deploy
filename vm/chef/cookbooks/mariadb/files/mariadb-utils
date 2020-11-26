@@ -5,6 +5,7 @@ source /opt/c2d/c2d-utils || exit 1
 declare -r backup_folder="/tmp/transfer"
 declare -r backup_filename="${backup_folder}/all-databases.sql"
 declare -r ssh_backup_folder="/tmp/ssh_backup"
+declare -r max_timeout=600
 
 #######################################
 # Run a command on local MariaDB server using root user.
@@ -39,7 +40,7 @@ function add_short_hostnames() {
 #######################################
 function apply_master_replication_config() {
   local -r config_file="/etc/mysql/conf.d/replication.cnf"
-  local -r patch="$(cat patch-replication \
+  local -r patch="$(cat patch-master-replication \
                   | envsubst "\$SERVER_ID \$DATABASE_NAME")"
   echo "${patch}" >> "${config_file}"
 }
@@ -121,7 +122,7 @@ function await_for_replicas_ssh() {
 
   for replica in ${replicas[@]}; do
     echo "Checking SSH on ${replica}..."
-    timeout --preserve-status 600 bash -c "
+    timeout --preserve-status "${max_timeout}" bash -c "
       until ssh -o StrictHostKeyChecking=no ${replication_user}@${replica} -- cat /dev/null; do
         sleep 1
       done"
@@ -164,7 +165,8 @@ function setup_master() {
 
   # Start and await service to be up
   systemctl start mariadb
-  timeout --preserve-status 600 bash -c "until mysqladmin ping; do sleep 1; done"
+  timeout --preserve-status "${max_timeout}" bash -c "
+    until mysqladmin ping; do sleep 1; done"
 
   create_replication_users "${replicas}" "${replication_password}"
   set_root_user "${root_password}" "${enable_root_anywhere}"
@@ -180,12 +182,10 @@ function setup_master() {
 # Applies the replica configuration to a local MariaDB setup.
 #######################################
 function apply_replica_replication_config() {
-  local -r config_file="/etc/mysql/conf.d/serverid.cnf"
-
-  printf '%s\n' \
-    "[mysqld]" \
-    "server-id=${SERVER_ID}" \
-    "replicate-do-db=${DATABASE_NAME}" > "${config_file}"
+  local -r config_file="/etc/mysql/conf.d/replication.cnf"
+  local -r patch="$(cat patch-replica-replication \
+                  | envsubst "\$SERVER_ID \$DATABASE_NAME")"
+  echo "${patch}" > "${config_file}"
 }
 
 #######################################
@@ -205,7 +205,9 @@ function await_for_node() {
   local node="$1"
 
   echo "Checking if master node is up..."
-  timeout --preserve-status 600 bash -c "until echo > /dev/tcp/${node}/3306; do sleep 2; done"
+  timeout --preserve-status "${max_timeout}" bash -c "
+    until echo > /dev/tcp/${node}/3306; do sleep 2; done"
+
   if [[ "$?" -ne 0 ]]; then
       exit 1
   fi
@@ -269,10 +271,10 @@ function enable_ssh_on_replica() {
 #######################################
 function await_for_backup_file() {
   echo "Checking if backup has been received..."
-  timeout --preserve-status 600 bash -c "
-      until cat ${backup_filename}; do
-        sleep 1
-      done"
+  timeout --preserve-status "${max_timeout}" bash -c "
+    until cat ${backup_filename}; do
+      sleep 1
+    done"
   echo "Backup received."
 }
 
@@ -311,7 +313,8 @@ function setup_replica() {
 
   # Start and await service to be up
   systemctl start mariadb
-  timeout --preserve-status 600 bash -c "until mysqladmin ping; do sleep 1; done"
+  timeout --preserve-status "${max_timeout}" bash -c "
+    until mysqladmin ping; do sleep 1; done"
 
   set_root_user "${root_password}" "${enable_root_anywhere}"
 
