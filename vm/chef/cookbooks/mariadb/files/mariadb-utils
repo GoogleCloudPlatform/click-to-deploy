@@ -1,0 +1,339 @@
+#!/bin/bash
+
+source /opt/c2d/c2d-utils || exit 1
+
+declare -r backup_folder="/tmp/transfer"
+declare -r backup_filename="${backup_folder}/all-databases.sql"
+declare -r ssh_backup_folder="/tmp/ssh_backup"
+declare -r max_timeout=600
+
+#######################################
+# Run a command on local MariaDB server using root user.
+# Arguments:
+#  A MariaDB/MySQL command.
+#######################################
+function run_query() {
+  local -r command="$1"
+  mysql --user=root -e "${command}"
+}
+
+#######################################
+# Add short hostnames to /etc/hosts in order to
+# avoid error using long hostnames.
+# Arguments:
+#  Message string.
+#######################################
+function add_short_hostnames() {
+  local -r nodes="$1"
+  local target_ip=""
+  local target_host=""
+
+  for node in ${nodes}; do
+    target_ip="$(getent hosts ${node} | awk '{ print $1 }')"
+    target_host="$(echo ${node} | grep -o -P "mariadb-vm-(\d*)")"
+    echo "${target_ip} ${target_host}" >> /etc/hosts
+  done
+}
+
+#######################################
+# Applies the master configuration to a local MariaDB setup.
+#######################################
+function apply_master_replication_config() {
+  local -r config_file="/etc/mysql/conf.d/replication.cnf"
+  local -r patch="$(cat patch-master-replication \
+                  | envsubst "\$SERVER_ID \$DATABASE_NAME")"
+  echo "${patch}" >> "${config_file}"
+}
+
+#######################################
+# Create replication users at master node so
+# replicas can connect to master.
+# Arguments:
+#  Replicas list separated by spaces
+#  Replication user password
+#######################################
+function create_replication_users() {
+  local -r replicas="$1"
+  local -r replication_password="$2"
+  local replica_ip=""
+
+  echo "Creating replication users in MariaDB..."
+
+  for replica in ${replicas[@]}; do
+    replica_ip="$(getent hosts "${replica}" | awk '{ print $1 }')"
+    echo "Creating replication user for node ${replica} on ip ${replica_ip}..."
+
+    # Create user for replication granting access only from replicas hosts
+    run_query "
+      CREATE USER '${replication_user}'@'${replica_ip}'
+      IDENTIFIED BY '${replication_password}';"
+
+    run_query "
+      GRANT REPLICATION SLAVE ON *.*
+      TO '${replication_user}'@'${replica_ip}';"
+
+      echo "Replication user created."
+  done
+}
+
+#######################################
+# Configure root user authorization.
+# Arguments:
+#   Root user password.
+#   Enable root access from any host or not.
+#######################################
+function set_root_user() {
+  local -r root_password="$1"
+  local -r enable_root_anywhere="$2"
+
+  echo "Set root privileges..."
+  echo "Enable root from anywhere: ${enable_root_anywhere}"
+
+  # Set root password
+  run_query "
+    SET PASSWORD FOR 'root'@'localhost' = PASSWORD('${root_password}');
+    FLUSH PRIVILEGES;"
+
+  # Grant privilege to root user connect from anywhere
+  if [[ "${enable_root_anywhere}" == "True" ]]; then
+    run_query "CREATE USER 'root'@'%' IDENTIFIED BY '${root_password}';"
+    run_query "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION";
+  fi
+}
+
+#######################################
+# Create backup from all available databases
+# and replication information.
+#######################################
+function create_backup() {
+  run_query "CREATE DATABASE ${DATABASE_NAME};"
+  mkdir -p "${backup_folder}"
+  mysqldump --all-databases --user root --master-data > "${backup_filename}"
+}
+
+#######################################
+# Await for replicas set up ssh access
+# to the replication user
+# Arguments:
+#  Replicas list separated by spaces.
+#######################################
+function await_for_replicas_ssh() {
+  local -r replicas="$1"
+
+  for replica in ${replicas[@]}; do
+    echo "Checking SSH on ${replica}..."
+    timeout --preserve-status "${max_timeout}" bash -c "
+      until ssh -o StrictHostKeyChecking=no ${replication_user}@${replica} -- cat /dev/null; do
+        sleep 1
+      done"
+    echo "Connected to ${replica} SSH with success."
+  done
+}
+
+#######################################
+# Send backup via SSH to all replicas available
+# Arguments:
+#  Replicas list separated by spaces.
+#######################################
+function send_backup_to_replicas() {
+  local -r replicas="$1"
+
+  echo "Sending backup to replicas..."
+  for replica in ${replicas[@]}; do
+    echo "Sending backup to ${replica}..."
+    scp -o StrictHostKeyChecking=no "${backup_filename}" \
+      "${replication_user}@${replica}:${backup_folder}"
+    echo "Backup sent to ${replica}."
+  done
+}
+
+#######################################
+# Setup a master MariaDB node.
+# Arguments:
+#   Replicas list separated by spaces.
+#   root user password.
+#   replication user password.
+#   Enable root access from any host or not.
+#######################################
+function setup_master() {
+  local -r replicas="$1"
+  local -r root_password="$2"
+  local -r replication_password="$3"
+  local -r enable_root_anywhere="$4"
+
+  apply_master_replication_config
+
+  # Start and await service to be up
+  systemctl start mariadb
+  timeout --preserve-status "${max_timeout}" bash -c "
+    until mysqladmin ping; do sleep 1; done"
+
+  create_replication_users "${replicas}" "${replication_password}"
+  set_root_user "${root_password}" "${enable_root_anywhere}"
+
+  create_backup
+  await_for_replicas_ssh "${replicas}"
+  send_backup_to_replicas "${replicas}"
+
+  run_query "UNLOCK TABLES;"
+}
+
+#######################################
+# Applies the replica configuration to a local MariaDB setup.
+#######################################
+function apply_replica_replication_config() {
+  local -r config_file="/etc/mysql/conf.d/replication.cnf"
+  local -r patch="$(cat patch-replica-replication \
+                  | envsubst "\$SERVER_ID \$DATABASE_NAME")"
+  echo "${patch}" > "${config_file}"
+}
+
+#######################################
+# Configure MariaDB to bind service to all available addresses
+#######################################
+function bind_to_all_addresses() {
+  sed -i "s/.*bind-address.*/bind-address = 0.0.0.0/" \
+    /etc/mysql/mariadb.conf.d/50-server.cnf
+}
+
+#######################################
+# Await if MariaDB service is up at specific node.
+# Arguments:
+#  Node hostname or IP.
+#######################################
+function await_for_node() {
+  local node="$1"
+
+  echo "Checking if master node is up..."
+  timeout --preserve-status "${max_timeout}" bash -c "
+    until echo > /dev/tcp/${node}/3306; do sleep 2; done"
+
+  if [[ "$?" -ne 0 ]]; then
+      exit 1
+  fi
+}
+
+#######################################
+# Backup sshd_config and pam config.
+#######################################
+function backup_current_ssh_config() {
+  mkdir -p "${ssh_backup_folder}"
+  cp -f /etc/pam.d/sshd "${ssh_backup_folder}/pamd_sshd"
+  cp -f /etc/ssh/sshd_config "${ssh_backup_folder}/sshd_config"
+}
+
+#######################################
+# Restore sshd_config and pam config.
+#######################################
+function restore_default_ssh_config() {
+  cp -f "${ssh_backup_folder}/pamd_sshd" /etc/pam.d/sshd
+  cp -f "${ssh_backup_folder}/sshd_config" /etc/ssh/sshd_config
+  systemctl restart ssh
+  rm -rf "${ssh_backup_folder}"
+}
+
+#######################################
+# Enable SSH access to replication user without password
+# and only from internal master node IP.
+#######################################
+function enable_ssh_on_replica() {
+    echo "Backing up current ssh configuration..."
+    backup_current_ssh_config
+
+    echo "Creating ${replication_user} user and transfer folder..."
+    # Add replication user and tmp folder
+    adduser --disabled-password --gecos "" -u 2001 ${replication_user} \
+      && create_tmp_folder
+
+    echo "Removing user password..."
+    # Remove password
+    sed -i -re "s/^${replication_user}:[^:]+:/${replication_user}::/" \
+      /etc/passwd /etc/shadow
+
+    echo "Configure pam.d..."
+    # Configure pam.d
+    sed -i '/@include common-auth/r patch-pam-ssh' /etc/pam.d/sshd
+    sed -i '/@include common-auth/d' /etc/pam.d/sshd
+
+    echo "Configure sshd..."
+    # Configure sshd_config
+    sed -i -re 's/^PasswordAuthentication no$/# PasswordAuthentication no/g' \
+        /etc/ssh/sshd_config
+    patch="$(cat patch-ssh | envsubst "\$MASTER_NODE_IP")"
+    echo "${patch}" >> /etc/ssh/sshd_config
+
+    echo "Restarting sshd..."
+    systemctl restart ssh
+}
+
+#######################################
+# Await until backup file is available locally.
+#######################################
+function await_for_backup_file() {
+  echo "Checking if backup has been received..."
+  timeout --preserve-status "${max_timeout}" bash -c "
+    until cat ${backup_filename}; do
+      sleep 1
+    done"
+  echo "Backup received."
+}
+
+#######################################
+# Create temporary folder for receiving backup file
+# and grant permission to the replication user.
+#######################################
+function create_tmp_folder() {
+  mkdir -p "${backup_folder}/" \
+    && chown -R "${replication_user}:${replication_user}" "${backup_folder}/"
+}
+
+#######################################
+# Restore replicated database to a local setup.
+#######################################
+function restore_database() {
+  echo "Restoring database..."
+  mysql < "${backup_filename}"
+}
+
+#######################################
+# Set up a replica MariaDB node.
+# Arguments:
+#   Root user password.
+#   Replication user password.
+#   Enable root access from any host or not.
+#######################################
+function setup_replica() {
+  local -r root_password="$1"
+  local -r replication_password="$2"
+  local -r enable_root_anywhere="$3"
+
+  apply_replica_replication_config
+
+  enable_ssh_on_replica
+
+  # Start and await service to be up
+  systemctl start mariadb
+  timeout --preserve-status "${max_timeout}" bash -c "
+    until mysqladmin ping; do sleep 1; done"
+
+  set_root_user "${root_password}" "${enable_root_anywhere}"
+
+  await_for_backup_file
+  restore_database
+
+  # Check if master node is up
+  await_for_node "${master_node}"
+
+  # Enable replication on master node
+  run_query "
+    STOP SLAVE;
+    CHANGE MASTER TO
+      master_host='${master_node}',
+      master_port=3306,
+      master_user='${replication_user}',
+      master_password='${replication_password}',
+      master_use_gtid=current_pos;
+    START SLAVE;"
+
+  restore_default_ssh_config
+}
