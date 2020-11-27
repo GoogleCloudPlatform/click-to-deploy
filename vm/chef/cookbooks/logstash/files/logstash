@@ -27,22 +27,18 @@ readonly es_use_https="$(get_attribute_value "es_use_https" \
 
 readonly logstash_config_folder="/etc/logstash/conf.d"
 readonly logstash_template="${logstash_config_folder}/syslog.conf.template"
+export es_protocol="http"
 
 systemctl stop logstash
 
 # If image is being used by ELK Stack, configure Elasticsearch pipeline
 if [[ "${is_elkstack:-"false"}" == "true" ]]; then
-  # Set protocol as https if configuration is enabled
-  export es_protocol="http"
-  if [[ "${es_use_https:-"false"}" == "true" ]]; then
-    es_protocol="https"
-  fi
-
   echo "Awaiting for Elasticsearch server to be up..."
   await_for_host_and_port "${es_host}" "${es_port}"
 
   # If HTTPS option is selected, download certificates
   if [[ "${es_use_https:-"false"}" == "true" ]]; then
+    es_protocol="https"
     echo "HTTPS option is selected."
     echo "Downloading certificate..."
     download_certificate "${es_host}"
@@ -56,25 +52,17 @@ if [[ "${is_elkstack:-"false"}" == "true" ]]; then
 
   if [[ -z "${es_username}" ]]; then
     echo "Disable authentication"
-    readonly line_number="$(cat -n "${logstash_template}" \
-      | grep "user =>" \
-      | awk '{ print $1 }')"
-    readonly template_contents="$(cat "${logstash_template}" \
-      | sed "${line_number}d" \
-      | sed "${line_number}d")"
-    echo "${template_contents}" > "${logstash_template}"
+    sed -i '/user =>/d' "${logstash_template}"
+    sed -i '/password =>/d'  "${logstash_template}"
   fi
 
   echo "Bind to all addresses..."
   echo "http.host: 0.0.0.0" >> /etc/logstash/logstash.yml
 
   echo "Configuring syslog pipeline..."
-  fill_in_config_template \
-    /etc/logstash/conf.d/ \
-    syslog.conf.template \
-    syslog.conf
-
-  echo "http.host: 0.0.0.0" >> /etc/logstash/logstash.yml
+  envsubst '\$es_protocol \$es_host \$es_port \$es_username \$es_password' \
+      < "${logstash_template}" \
+      > "${logstash_config_folder}/syslog.conf"
 fi
 
 # Enable and start Logstash service

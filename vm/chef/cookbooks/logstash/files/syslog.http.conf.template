@@ -8,7 +8,7 @@ input {
 output {
   elasticsearch {
     index => "syslog-demo"
-    hosts => ["${es_protocol}://{es_host}:${es_port}"]
+    hosts => ["${es_protocol}://${es_host}:${es_port}"]
     user => "${es_username}"
     password => "${es_password}"
   }

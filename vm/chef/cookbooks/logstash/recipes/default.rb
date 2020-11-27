@@ -57,10 +57,10 @@ cookbook_file '/opt/c2d/logstash-utils' do
   action :create
 end
 
-['http', 'https'].each do |file|
+['http', 'https'].each do |protocol|
   # Copy configuration templates
-  cookbook_file "/etc/logstash/conf.d/syslog.#{file}.conf.template" do
-    source "syslog.#{file}.conf.template"
+  cookbook_file "/etc/logstash/conf.d/syslog.#{protocol}.conf.template" do
+    source "syslog.#{protocol}.conf.template"
     owner 'root'
     group 'root'
     mode '0640'

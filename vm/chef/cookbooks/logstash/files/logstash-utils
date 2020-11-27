@@ -32,24 +32,6 @@ function await_for_host_and_port() {
 }
 
 #######################################
-# Generate a config file based on a template using environment variables.
-# Arguments:
-#  Directory where template and config files are located.
-#  Template filename.
-#  Generated filename
-#######################################
-function fill_in_config_template() {
-  local -r base_dir="$1"
-  local -r template_file="$2"
-  local -r output_file="$3"
-
-  cd "${base_dir}"
-  mv "${template_file}" "${template_file}.orig"
-  envsubst < "${template_file}.orig" > "${output_file}"
-  rm "${template_file}.orig"
-}
-
-#######################################
 # Get a pregenerated password according username requested.
 # Arguments:
 #  Elasticsearch username.
