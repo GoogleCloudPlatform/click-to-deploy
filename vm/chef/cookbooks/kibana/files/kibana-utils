@@ -32,133 +32,63 @@ function await_for_host_and_port() {
 }
 
 #######################################
-# Generate a config file based on a template using environment variables.
-# Arguments:
-#  Directory where template and config files are located.
-#  Template filename.
-#  Generated filename
-#######################################
-function fill_in_config_template() {
-  local -r base_dir="$1"
-  local -r template_file="$2"
-  local -r output_file="$3"
-
-  cd "${base_dir}"
-  mv "${template_file}" "${template_file}.orig"
-  envsubst < "${template_file}.orig" > "${output_file}"
-  rm "${template_file}.orig"
-}
-
-#######################################
 # Check if user can connect to Elasticsearch API
 # Arguments:
-#  Elasticsearch host
 #  Elasticsearch protocol
+#  Elasticsearch hostname
 #  Elasticsearch user
 #  Elasticsearch password
 # Outputs:
 #  String as '1' if user can connect or '0' if not
 #######################################
-function check_password() {
-  local -r hostname="$1"
-  local -r protocol="$2"
+function await_elasticsearch_credentials() {
+  local -r protocol="$1"
+  local -r hostname="$2"
   local -r auth_user="$3"
   local -r auth_user_pass="$4"
   local -r endpoint="${protocol}://${hostname}:9200"
+  local response=""
 
-  if [[ "${protocol}" == "http" ]]; then
-    response="$(curl -s -u "${auth_user}:${auth_user_pass}" \
-      "${endpoint}" | jq -r '.status')"
-  else
+  while [[ "${response}" != "200" ]]; do
     response="$(curl -s -k -u "${auth_user}:${auth_user_pass}" \
       "${endpoint}" | jq -r '.status')"
-  fi
-
-  if [[ "${response}" == "401" ]]; then
-    echo "1"
-  else
-    echo "0"
-  fi
+  done
 }
 
 #######################################
-# Creates an user at Elasticsearch with kibana_admin role.
+# Creates an user with provided credentials
 # Arguments:
-#  Elasticsearch host
 #  Elasticsearch protocol
+#  Elasticsearch host
 #  Elasticsearch user to authenticate
 #  Elasticsearch password to authenticate
 #  Elasticsearch user to be created
 #  Elasticsearch password of the new user
 #######################################
 function create_user() {
-  local -r hostname="$1"
-  local -r protocol="$2"
+  local -r protocol="$1"
+  local -r hostname="$2"
   local -r auth_user="$3"
   local -r auth_user_pass="$4"
   local -r user_to_create="$5"
   local -r new_pass="$6"
-
   local -r endpoint="${protocol}://${hostname}:9200/_security/user/${user_to_create}"
-  local response=""
 
-  echo "Creating elasticsearch user"
 
-  if [[ "${protocol}" == "http" ]]; then
-    response="$(curl -X POST \
-      -u "${auth_user}:${auth_user_pass}" \
-      -d "{\"password\":\"${new_pass}\", \"roles\": [\"kibana_admin\"] }" \
-      -H "Content-Type: application/json" \
-      "${endpoint}")"
-  else
-    response="$(curl -k -X POST \
-      -u "${auth_user}:${auth_user_pass}" \
-      -d "{\"password\":\"${new_pass}\", \"roles\": [\"kibana_admin\"] }" \
-      -H "Content-Type: application/json" \
-      "${endpoint}")"
-  fi
+  echo "Awaiting for Elasticsearch credentials to be set..."
+  await_elasticsearch_credentials \
+    "${protocol}" "${hostname}" \
+    "${auth_user}" "${auth_user_pass}"
+
+  echo "Credentials set. Creating user ${user_to_create}..."
+  local response="$(curl -k -X POST \
+                    -u "${auth_user}:${auth_user_pass}" \
+                    -d "{\"password\":\"${new_pass}\", \"roles\": [\"kibana_admin\"] }" \
+                    -H "Content-Type: application/json" \
+                    "${endpoint}")"
 
   if [[ "${response}" != '{"created":true}' ]]; then
     echo "User creation failed: ${response}"
     exit 1
   fi
-}
-
-#######################################
-# Try to create an user with provided credentials
-# Arguments:
-#  Elasticsearch host
-#  Elasticsearch protocol
-#  Elasticsearch user to authenticate
-#  Elasticsearch password to authenticate
-#  Elasticsearch user to be created
-#  Elasticsearch password of the new user
-#######################################
-function try_to_create_user() {
-  local -r hostname="$1"
-  local -r protocol="$2"
-  local -r auth_user="$3"
-  local -r auth_user_pass="$4"
-  local -r user_to_create="$5"
-  local -r new_pass="$6"
-
-  local check_exit_code=1
-
-  until [[ "${check_exit_code}" == "0" ]]; do
-    sleep 3
-
-    echo "Checking current password..."
-    check_exit_code="$(check_password "${hostname}" "${protocol}" \
-      "${auth_user}" "${auth_user_pass}")"
-
-    if [[ "${check_exit_code}" == "0" ]]; then
-      echo "ES Connection successful."
-      echo "Creating user..."
-      create_user "${hostname}" "${protocol}" \
-        "${auth_user}" "${auth_user_pass}" \
-        "${user_to_create}" "${new_pass}"
-    else
-      echo "ES Invalid credentials"
-    fi
-  done
 }

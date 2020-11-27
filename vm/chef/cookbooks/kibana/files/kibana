@@ -27,6 +27,7 @@ readonly es_use_https="$(get_attribute_value "es_use_https" \
   | tr '[:upper:]' '[:lower:]')"
 
 # Kibana settings
+readonly kibana_config="/etc/kibana/kibana.yml"
 readonly kibana_template="/etc/kibana/kibana.yaml.template"
 export kibana_username="kibana_system"
 export kibana_password="$(get_attribute_value "kibana_sys_password")"
@@ -53,22 +54,19 @@ echo "Setting up Kibana..."
 # Disable authentication if Elasticsearch username is not provided.
 if [[ -z "${kibana_username}" ]]; then
   echo "Disable authentication"
-  readonly line_number="$(cat -n "${kibana_template}" | grep "username" | awk '{ print $1 }')"
-  readonly template_contents="$(cat "${kibana_template}" | sed "${line_number}d" | sed "${line_number}d")"
-  echo "${template_contents}" > "${kibana_template}"
+  sed -i -re '/elasticsearch.(username|password)/d' "${kibana_template}"
 fi
 
 echo "Configuring kibana.yml..."
-  rm -f /etc/kibana/kibana.yml
-  fill_in_config_template \
-    /etc/kibana/ \
-    kibana.yml.template \
-    kibana.yml
+  rm -f "${kibana_config}"
+  envsubst '\$es_protocol \$es_host \$es_port \$kibana_username \$kibana_password' \
+    < "${kibana_config}.template" \
+    > "${kibana_config}"
 
 # If is ELK solution
 if [[ "${is_elkstack:-"false"}" == "true" ]]; then
   # Create kibana_admin user
-  try_to_create_user "${es_host}" "${es_protocol}" \
+  create_user "${es_protocol}" "${es_host}" \
     "${es_username}" "${es_password}" \
     "${kibana_admin_user}" "${kibana_admin_password}"
 
@@ -92,14 +90,12 @@ if [[ "${is_elkstack:-"false"}" == "true" ]]; then
       "http://${es_certshare_host}:8000/kibana/kibana.key"
 
     # Apply settings
-    readonly config_file="/etc/kibana/kibana.yml"
     readonly patch_file="/opt/c2d/patch-ssl"
-    readonly https_config="$(cat ${patch_file} | envsubst)"
-    echo "${https_config}" >> "${config_file}"
+    envsubst < "${patch_file}" >> "${kibana_config}"
   fi
 else
   # Standalone solution
-  echo "elasticsearch.ssl.verificationMode: certificate" >> "/etc/kibana/kibana.yml"
+  echo "elasticsearch.ssl.verificationMode: certificate" >> "${kibana_config}"
 fi
 
 # Enable and start Logstash service
