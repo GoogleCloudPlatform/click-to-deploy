@@ -51,7 +51,7 @@ if [[ ! -f "${ZOO_CONF_DIR}/zoo.cfg" ]]; then
       ZOO_SERVERS="server.1=localhost:2888:3888;2181"
     fi
 
-    for server in "${ZOO_SERVERS}"; do
+    for server in ${ZOO_SERVERS}; do
         echo "${server}" >> "${CONFIG}"
     done
 

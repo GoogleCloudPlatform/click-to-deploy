@@ -1,0 +1,38 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+versions:
+  # Solr image
+  - dir: '8/debian10/8.6'
+    repo: 'solr8'
+    templateSubDir: debian10
+    tags:
+      - '8.6.1-debian10'
+      - '8.6.1'
+      - '8.6-debian10'
+      - '8.6'
+      - '8-debian10'
+      - '8'
+      - 'latest'
+    from: marketplace.gcr.io/google/debian10
+    packages:
+      solr:
+        version: '8.6.1'
+        sha512: 'c4af7bfc3a67306aafd98a100c1411beee9b59ed6cb30a2ed86d495a3c2bb48d2a4453422d9b5b8eef49268cc17c4f9a8793152054f6a6aa2c2ec48039407cc6'
+    templateArgs:
+      solrkeys: '50E3EE1C91C7E0CB4DFB007B369424FC98F3F6EC'
+
+cloudbuild:
+  enable_parallel: false
+

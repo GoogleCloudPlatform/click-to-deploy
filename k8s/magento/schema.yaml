@@ -34,6 +34,10 @@ x-google-marketplace:
       properties:
         redis.image:
           type: FULL
+    elasticsearch:
+      properties:
+        elasticsearch.image:
+          type: FULL
     redis-exporter:
       properties:
         redis.exporter.image:

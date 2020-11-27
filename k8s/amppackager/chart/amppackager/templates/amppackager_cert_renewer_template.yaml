@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-cert-renewer-pd
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: amppackager-cert-renewer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-cert-renewer-pd
+  template:
+    metadata:
+      name: {{ .Release.Name }}-cert-renewer-pd
+      labels:
+        app: {{ .Release.Name }}-cert-renewer-pd
+    spec:
+      containers:
+      - image: "{{ .Values.image.repo }}:{{ .Values.image.tag }}"
+        {{- if .Values.packager.inProduction }}
+        command: [
+          'amppkg', '-autorenewcert', '-config=/renewer/amppkg_renewer.toml'
+        ]
+        {{- end }}
+        name: {{ .Release.Name }}-cert-renewer-container
+        imagePullPolicy: Always
+        name: amppackager
+        volumeMounts:
+          # name should match from volumes section
+          - name: nfs-volume-renewer
+            mountPath: "/renewer"
+          - name: nfs-volume-consumer
+            mountPath: "/consumer"
+      volumes:
+      - name: nfs-volume-renewer
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-nfs-renewer-pvc
+      - name: nfs-volume-consumer
+        persistentVolumeClaim:
+           claimName: {{ .Release.Name }}-nfs-consumer-pvc
+

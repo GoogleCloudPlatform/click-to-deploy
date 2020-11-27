@@ -1,0 +1,11 @@
+apiVersion: "policy/v1beta1"
+kind: "PodDisruptionBudget"
+metadata:
+  name: "{{ .Release.Name }}-solr-pdb"
+  labels: &SolrDeploymentLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: solr-server
+spec:
+  selector:
+    matchLabels: *SolrDeploymentLabels
+  maxUnavailable: 1

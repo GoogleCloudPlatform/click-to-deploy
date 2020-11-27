@@ -1,0 +1,159 @@
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      A regular update.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  clusterConstraints:
+    resources:
+    - replicas: 1
+      requests:
+        cpu: 100m
+        memory: 100Mi
+
+  images:
+    '':
+      properties:
+        image.repo:
+          type: REPO_WITH_REGISTRY
+        image.tag:
+          type: TAG
+    init:
+      properties:
+        init.repo:
+          type: REPO_WITH_REGISTRY
+        init.tag:
+          type: TAG
+
+  deployerServiceAccount:
+    description:
+      Creates app resources including persistentvolumes.
+    roles:
+      - type: ClusterRole  # For getting persistentvolumes
+        rulesType: CUSTOM
+        rules:
+        - apiGroups:
+          - '*'
+          resources:
+          - 'persistentvolumes'
+          - 'clusterroles'
+          - 'clusterrolebindings'
+          verbs:
+          - get
+          - list
+          - create
+          - watch
+          - update
+          - patch
+
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  replicaCount:
+    type: integer
+    title: Replica Count
+    description: The number of amppackager consumers run within cluster.
+    default: 2
+    minimum: 1
+  packager.inProduction:
+    type: boolean
+    description: Is the packager being used in production. Override for tests.
+    default: true
+  packager.persistence.storageClass:
+    type: string
+    title: StorageClass
+    description: You can choose existing StorageClass or create new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  packager.persistence.size:
+    type: string
+    title: Storage size for persistent volumes
+    default: "10Gi"
+    description: AMP Packager persistent disk storage size
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  packager.certFileName:
+    type: string
+    title: Signed Exchange Certificate Filename
+    description: The filename for the Signed Exchange certificate used by amppackager.
+    default: "amppkg.cert"
+  packager.csrFileName:
+    type: string
+    title: Certificate Signing Request Filename
+    description: The filename for the Certificate Signing Request used by amppackager.
+    default: "amppkg.csr"
+  packager.privKeyFileName:
+    type: string
+    title: Private Key Filename
+    description: The filename for the private key used by amppackager.
+    default: "amppkg.privkey"
+  packager.domain:
+    type: string
+    title: Domain
+    description: The domain used by amppackager.
+    default: "your-domain-url.com"
+  packager.country:
+    type: string
+    title: Country
+    description: The country used by the Certificate Signing Request used by amppackager.
+    default: "US"
+  packager.state:
+    type: string
+    title: State
+    description: The state used by the Certificate Signing Request used by amppackager.
+    default: null
+  packager.locality:
+    type: string
+    title: Locality
+    description: The locality used by the Certificate Signing Request used by amppackager.
+    default: null
+  packager.organization:
+    type: string
+    title: Organization
+    description: The organization used by the Certificate Signing Request used by amppackager.
+    default: null
+  acme.emailAddress:
+    type: string
+    title: ACME Account Email Address
+    description: The email address for the ACME account used by amppackager.
+    default: null
+  acme.directoryUrl:
+    type: string
+    title: ACME Directory URL
+    description: The directory URL for the ACME account used by amppackager.
+    default: null
+  service.port:
+    type: integer
+    title: AMP Packager Service port
+    description: The port used by the amppackager service.
+    default: 60000
+  service.loadBalancerSourceRanges:
+    type: string
+    title: AMP Packager Load Balancer Source Range
+    description: Load balance source range used by amppackager service.
+    default: null
+required:
+- name
+- namespace
+- packager.domain
+- packager.country
+- packager.locality
+- packager.organization
+- acme.emailAddress
+- acme.directoryUrl
+- service.port
+- service.loadBalancerSourceRanges
