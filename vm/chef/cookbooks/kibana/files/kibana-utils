@@ -51,7 +51,9 @@ function await_elasticsearch_credentials() {
   local retry=1
   local max_retries=10
 
-  while [[ "${retry}" -le "${max_retries}" && "${response}" != "200" ]]; do
+  # Check if user can connect to Elasticsearch API
+  # When an error occurs node status is returned
+  while [[ "${retry}" -le "${max_retries}" && "${response}" != "null" ]]; do
     response="$(curl -s -k -u "${auth_user}:${auth_user_pass}" \
       "${endpoint}" | jq -r '.status')"
 
@@ -59,7 +61,7 @@ function await_elasticsearch_credentials() {
     sleep 6
   done
 
-  if [[ "${retry}" -eq 4 ]]; then
+  if [[ "${response}" != "null" ]]; then
     echo "Elasticsearch password not properly set."
     exit 1
   fi
