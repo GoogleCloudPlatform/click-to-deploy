@@ -80,9 +80,6 @@ cookbook_file '/opt/c2d/patch-ssl' do
   action :create
 end
 
-# Copy startup script
-c2d_startup_script 'elasticsearch'
-
 # Copy the utils file for elasticsearch startup
 cookbook_file '/opt/c2d/elasticsearch-utils' do
   source 'elasticsearch-utils'
@@ -100,3 +97,6 @@ remote_file '/usr/src/elasticsearch_src.tar.gz' do
   retries 5
   retry_delay 30
 end
+
+# Copy startup script
+c2d_startup_script 'elasticsearch'

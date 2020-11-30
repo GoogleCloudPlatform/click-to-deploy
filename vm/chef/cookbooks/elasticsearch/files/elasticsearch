@@ -46,6 +46,7 @@ readonly es_current_node_idx="$(hostname | awk -F '-' '{ print $NF }')"
 readonly es_nodes_count="$(echo "${es_nodes}" | wc -w)"
 readonly es_first_hostname="$(echo "${es_nodes}" | awk '{ print $1 }')"
 readonly es_min_master_nodes="$(( es_nodes_count / 2 + 1 ))"
+readonly es_protocol="http"
 
 # Calculate the desired heap size to configure in elasticsearch
 readonly total_memory_kb="$(awk '/MemTotal/ { print int($2) }' /proc/meminfo)"
@@ -119,14 +120,8 @@ else
 fi
 
 # Install and configure self-signed certificates if option is selected
-
-# Set protocol as https if configuration is enabled
-es_protocol="http"
 if [[ "${es_use_https:-"false"}" == "true" ]]; then
   es_protocol="https"
-fi
-
-if [[ "${es_use_https:-"false"}" == "true" ]]; then
   echo "Generating certificates..."
 
   # If its first node, generate and share the certificate to other nodes.
@@ -196,5 +191,5 @@ if [[ "${es_current_node}" == "${es_first_hostname}" ]]; then
 fi
 
 # Await until all nodes are green
-wait_for_green_elastic_cluster "${es_current_node}" "${es_protocol}" \
+wait_for_green_elastic_cluster "${es_protocol}" "${es_current_node}" \
   "${es_nodes_count}" "${es_password}"

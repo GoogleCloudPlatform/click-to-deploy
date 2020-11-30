@@ -45,8 +45,8 @@ function wait_for_port() {
 #  Writes statuses to stdout.
 #######################################
 function wait_for_green_elastic_cluster() {
-  local -r hostname="$1"
-  local -r protocol="$2"
+  local -r protocol="$1"
+  local -r hostname="$2"
   local -r nodes="$3"
 
   local -r health_url="${protocol}://${hostname}:9200/_cluster/health?format=yaml"
