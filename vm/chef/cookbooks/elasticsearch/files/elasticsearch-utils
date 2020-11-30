@@ -95,7 +95,7 @@ function change_user_password() {
   local -r changepass_url="${protocol}://${hostname}:9200/_security/user/${user_to_change}/_password"
   local response=""
 
-  echo "Changing elasticsearch password..."
+  echo "Changing ${user_to_change} password..."
 
   response="$(curl -k -X POST \
     -u "${auth_user}:${auth_user_pass}" \
