@@ -48,11 +48,21 @@ function await_elasticsearch_credentials() {
   local -r auth_user_pass="$4"
   local -r endpoint="${protocol}://${hostname}:9200"
   local response=""
+  local retry=1
+  local max_retries=10
 
-  while [[ "${response}" != "200" ]]; do
+  while [[ "${retry}" -le "${max_retries}" && "${response}" != "200" ]]; do
     response="$(curl -s -k -u "${auth_user}:${auth_user_pass}" \
       "${endpoint}" | jq -r '.status')"
+
+    retry="$((retry+1))"
+    sleep 6
   done
+
+  if [[ "${retry}" -eq 4 ]]; then
+    echo "Elasticsearch password not properly set."
+    exit 1
+  fi
 }
 
 #######################################
