@@ -12,14 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['elasticsearch']['version'] = '7.10.0'
+default['logstash']['version'] = '7.8.1'
 
-default['elasticsearch']['release'] =
-  default['elasticsearch']['version'].split('.')[0]
+default['logstash']['release'] =
+  default['logstash']['version'].split('.')[0]
 
-default['elasticsearch']['repository_url'] =
-  "https://artifacts.elastic.co/packages/#{default['elasticsearch']['release']}.x/apt"
-default['elasticsearch']['keyserver_url'] =
+default['logstash']['repository_url'] =
+  "https://artifacts.elastic.co/packages/#{default['logstash']['release']}.x/apt"
+default['logstash']['keyserver_url'] =
   'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
 
-default['elasticsearch']['packages'] = ['apt-transport-https', 'unzip']
+default['jruby']['version'] = '9.2.13.0'

@@ -1,0 +1,6 @@
+[Unit]
+Description=ELK Certshare Service
+
+[Service]
+WorkingDirectory=/tmp/certs/files
+ExecStart=/usr/bin/python3 -m http.server
