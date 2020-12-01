@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2017 Google Inc.
+# Copyright 2020 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,8 +36,8 @@ function wait_for_port() {
 }
 
 #######################################
-# Waits for reporintg the specified number of nodes and green status
-# on the health endpoint of Elasticsearch.
+# Waits for readiness on the specified number of nodes
+# and green status on the Elasticsearch health endpoint.
 # Arguments:
 #  Number of expected nodes to wait for.
 #  Authentication password. Optional.
@@ -45,36 +45,34 @@ function wait_for_port() {
 #  Writes statuses to stdout.
 #######################################
 function wait_for_green_elastic_cluster() {
-  local -r hostname="$1"
-  local -r nodes="$2"
+  local -r protocol="$1"
+  local -r hostname="$2"
+  local -r nodes="$3"
 
-  local -r health_url="http://${hostname}:9200/_cluster/health?format=yaml"
+  local -r health_url="${protocol}://${hostname}:9200/_cluster/health?format=yaml"
   local -r nodes_health_url="${health_url}&filter_path=number_of_nodes"
   local -r status_health_url="${health_url}&filter_path=status"
 
   # If no password specified, don't leave auth_params empty
   local -a auth_params=()
-  if [[ "$#" -eq 3 ]]; then
-    local -r password="$3"
-    auth_params=(-u "elastic:${password}")
+  if [[ "$#" -eq 4 ]]; then
+    local -r password="$4"
+    auth_params=(-u "${es_default_username}:${password}")
   fi
 
   # Wait for exact number of nodes
-  until curl -s "${auth_params[@]}" "${nodes_health_url}" | grep "${nodes}"; do
+  until curl -k -s "${auth_params[@]}" "${nodes_health_url}" | grep "${nodes}"; do
     echo "Waiting for ${nodes} nodes in cluster..."
-    echo "$(curl -s "${auth_params[@]}" "${nodes_health_url}")"
     sleep 5
   done
 
   # Wait for status 'green'
-  until curl -s "${auth_params[@]}" "${status_health_url}" | grep green; do
+  until curl -k -s "${auth_params[@]}" "${status_health_url}" | grep green; do
     echo "Waiting for green status in cluster.."
-    echo "$(curl -s "${auth_params[@]}" "${status_health_url}")"
     sleep 3
   done
 
-  echo "Cluster status:"
-  echo "$(curl -s "${auth_params[@]}" "${health_url}")"
+  echo "Cluster ready."
 }
 
 #######################################
@@ -88,17 +86,18 @@ function wait_for_green_elastic_cluster() {
 #######################################
 function change_user_password() {
   local -r hostname="$1"
+  local -r protocol="$2"
+  local -r auth_user="$3"
+  local -r auth_user_pass="$4"
+  local -r user_to_change="$5"
+  local -r new_pass="$6"
 
-  local -r auth_user="$2"
-  local -r auth_user_pass="$3"
+  local -r changepass_url="${protocol}://${hostname}:9200/_security/user/${user_to_change}/_password"
+  local response=""
 
-  local -r user_to_change="$4"
-  local -r new_pass="$5"
+  echo "Changing ${user_to_change} password..."
 
-  local -r changepass_url="http://${hostname}:9200/_xpack/security/user/${user_to_change}/_password"
-
-  echo "Changing elasticsearch password"
-  local -r response="$(curl -X POST \
+  response="$(curl -k -X POST \
     -u "${auth_user}:${auth_user_pass}" \
     -d "{\"password\":\"${new_pass}\"}" \
     -H "Content-Type: application/json" \
@@ -136,7 +135,9 @@ function fill_in_config_template() {
 # https://www.elastic.co/guide/en/elasticsearch/reference/current/built-in-users.html
 #######################################
 function autogenerate_passwords() {
-  /usr/share/elasticsearch/bin/elasticsearch-setup-passwords auto -b \
+  local protocol="$1"
+
+  /usr/share/elasticsearch/bin/elasticsearch-setup-passwords auto -b -u "${protocol}://localhost:9200" \
     | grep "PASSWORD" > "${es_pwd_file}"
 }
 
@@ -177,4 +178,144 @@ function build_seed_hosts() {
     es_nodes_json+="\"${node}\" "
   done
   echo "${es_nodes_json}" | sed 's/ /,/g'
+}
+
+#######################################
+# Generate instance.yaml to be used on elasticsearch-certutil
+# https://www.elastic.co/guide/en/elasticsearch/reference/current/certutil.html#certutil-silent
+# Arguments:
+#  Elasticsearch nodes as a string separated by spaces.
+#  Logstash instance name
+#  Kibana instance name
+# Outputs:
+#  YAML content to be used on elasticsearch-certutil
+#######################################
+function generate_certutil_config() {
+  local -r nodes=( $(echo "$1") )
+  local -r logstash_node="$2"
+  local -r kibana_node="$3"
+  local -r current_project="$(get_project_id)"
+  local node_idx=0
+
+  printf "instances:\n"
+  for node in "${nodes[@]}"; do
+    printf -- "- name: node${node_idx}\n"
+    printf -- "  dns: [\"${node}.c.${current_project}.internal\"]\n"
+    node_idx=$((node_idx+1))
+  done
+
+  if [[ ! -z "${logstash_node}" ]]; then
+    printf -- "- name: logstash\n"
+    printf -- "  dns: [\"${logstash_node}.c.${current_project}.internal\"]\n"
+  fi
+
+  if [[ ! -z "${kibana_node}" ]]; then
+    printf -- "- name: kibana\n"
+    printf -- "  dns: [\"${kibana_node}.c.${current_project}.internal\"]\n"
+  fi
+}
+
+#######################################
+# Apply SSL settings to the Elasticsearch config file
+# Arguments:
+#  Elasticsearch configuration filepath
+#  Node index
+#######################################
+function apply_secure_config() {
+  local config_file="$1"
+  export current_node_idx="$2"
+
+  local patch_file="/opt/c2d/patch-ssl"
+  local https_config="$(cat ${patch_file} | envsubst)"
+  echo "${https_config}" >> "${config_file}"
+}
+
+#######################################
+# Generate certificates using elasticsearch-certutil utility
+# Arguments:
+#  Temporary folder where certificates will be generated
+#  Elasticsearch nodes as a string separated by spaces
+#  Logstash instance name
+#  Kibana instance name
+#######################################
+function generate_certificates() {
+  local -r tmp_certs_folder="$1"
+  local -r elasticsearch_nodes="$2"
+  local -r logstash_node="$3"
+  local -r kibana_node="$4"
+
+  # Configure folder
+  echo "Creating tmp certificates folder..."
+  mkdir -p "${tmp_certs_folder}"
+
+  echo "Generating certificates configuration..."
+  # Generate config for elasticsearch-certutil
+  generate_certutil_config "${elasticsearch_nodes}" "${logstash_node}" "${kibana_node}" \
+    > "${tmp_certs_folder}/instance.yaml"
+
+  echo "Generating certificates using elasticsearch-certutil..."
+  # Generate certificates
+  /usr/share/elasticsearch/bin/elasticsearch-certutil cert \
+    --keep-ca-key \
+    --pem \
+    --in "${tmp_certs_folder}/instance.yaml" \
+    --out "${tmp_certs_folder}/certs.zip"
+
+  echo "Extracting certificates created..."
+  # Unzip certificates to files folder
+  unzip "${tmp_certs_folder}/certs.zip" -d "${tmp_certs_folder}/files"
+  echo "Certificates created successfully."
+}
+
+#######################################
+# Copies certificate from temporary folder to
+# the Elasticsearch folder
+# Arguments:
+#  Folder where all certificates are stored
+#  Master node index
+#######################################
+function apply_certificate_master_node() {
+  local -r tmp_certs_folder="$1"
+  local -r cert_folder="$2"
+  local -r current_node_idx="$3"
+
+  mkdir -p "${cert_folder}"
+  cp ${tmp_certs_folder}/files/ca/*.* ${cert_folder}
+  cp ${tmp_certs_folder}/files/node${current_node_idx}/*.* ${cert_folder}
+}
+
+#######################################
+# Download a certificate from Certshare Service
+# Arguments:
+#  Target folder path where certificate should be saved
+#  Certshare Service Host
+#  Certificate name
+#######################################
+function download_certificate() {
+  local -r cert_folder="$1"
+  local -r certshare_host="$2"
+  local -r cert_name="$3"
+
+  for ext in crt key; do
+    curl -s -o "${cert_folder}/${cert_name}.${ext}" \
+      "http://${certshare_host}:8000/${cert_name}/${cert_name}.${ext}"
+  done
+}
+
+#######################################
+# Download certificates required for a specific
+# Elasticsearch node
+# Arguments:
+#  Target folder path where certificate should be saved
+#  Certshare Service Host
+#  Node index
+#######################################
+function download_certificates() {
+  local -r cert_folder="$1"
+  local -r certshare_host="$2"
+  local -r node_idx="$3"
+
+  mkdir -p "${cert_folder}"
+  download_certificate "${cert_folder}" "${certshare_host}" "ca"
+  download_certificate "${cert_folder}" "${certshare_host}" "node${node_idx}"
 }
