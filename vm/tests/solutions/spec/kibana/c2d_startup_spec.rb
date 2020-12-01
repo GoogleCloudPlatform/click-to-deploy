@@ -12,14 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['elasticsearch']['version'] = '7.10.0'
+require 'spec_helper'
 
-default['elasticsearch']['release'] =
-  default['elasticsearch']['version'].split('.')[0]
+describe 'C2D startup config' do
+  describe service('google-c2d-startup.service') do
+    it { should be_enabled }
+  end
 
-default['elasticsearch']['repository_url'] =
-  "https://artifacts.elastic.co/packages/#{default['elasticsearch']['release']}.x/apt"
-default['elasticsearch']['keyserver_url'] =
-  'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
+  describe file('/var/lock/google_vm_config.lock') do
+    it { should_not exist }
+  end
+end
 
-default['elasticsearch']['packages'] = ['apt-transport-https', 'unzip']
+describe 'C2D startup scripts should exists' do
+  describe file('/opt/c2d/scripts/00-manage-swap') do
+    it { should exist }
+  end
+
+  describe file('/opt/c2d/scripts/01-kibana') do
+    it { should exist }
+  end
+end

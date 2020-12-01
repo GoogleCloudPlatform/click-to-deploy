@@ -1,0 +1,102 @@
+#!/bin/bash -eu
+#
+# Copyright 2020 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/kibana-utils || exit 1
+
+# Export variables to be used in configuration files
+# Elasticsearch settings
+export es_host="$(get_attribute_value "es_host")"
+export es_port="$(get_attribute_value "es_port")"
+export es_username="$(get_attribute_value "es_username")"
+export es_password="$(get_attribute_value "es_password")"
+export es_protocol="$(get_attribute_value "es_protocol")"
+readonly es_use_https="$(get_attribute_value "es_use_https" \
+  | tr '[:upper:]' '[:lower:]')"
+
+# Kibana settings
+readonly kibana_config="/etc/kibana/kibana.yml"
+readonly kibana_template="/etc/kibana/kibana.yaml.template"
+export kibana_username="kibana_system"
+export kibana_password="$(get_attribute_value "kibana_sys_password")"
+export kibana_admin_user="kibana_admin"
+export kibana_admin_password="$(get_attribute_value "kibana_admin_password")"
+
+export is_elkstack="$(get_attribute_value "is_elkstack")"
+
+# Set protocol as https if configuration is enabled
+if [[ -z "${es_protocol}" ]]; then
+  es_protocol="http"
+  if [[ "${es_use_https:-"false"}" == "true" ]]; then
+    es_protocol="https"
+  fi
+fi
+
+systemctl stop kibana
+
+echo "Awaiting for Elasticsearch server to be up..."
+await_for_host_and_port "${es_host}" "${es_port}"
+
+echo "Setting up Kibana..."
+
+# Disable authentication if Elasticsearch username is not provided.
+if [[ -z "${kibana_username}" ]]; then
+  echo "Disable authentication"
+  sed -i -re '/elasticsearch.(username|password)/d' "${kibana_template}"
+fi
+
+echo "Configuring kibana.yml..."
+  rm -f "${kibana_config}"
+  envsubst '\$es_protocol \$es_host \$es_port \$kibana_username \$kibana_password' \
+    < "${kibana_config}.template" \
+    > "${kibana_config}"
+
+# If is ELK solution
+if [[ "${is_elkstack:-"false"}" == "true" ]]; then
+  # Create kibana_admin user
+  create_user "${es_protocol}" "${es_host}" \
+    "${es_username}" "${es_password}" \
+    "${kibana_admin_user}" "${kibana_admin_password}"
+
+  export es_certshare_host="${es_host}"
+
+  # Apply SSL settings if enabled
+  if [[ "${es_use_https}" == "true" ]]; then
+    # Download certificates
+    echo "Awaiting for certificate config server be up..."
+    await_for_host_and_port "${es_certshare_host}" "8000"
+
+    cert_folder="/etc/kibana/config/certs"
+    mkdir -p "${cert_folder}"
+
+    echo "Download certificates from config server..."
+    curl -s -o "${cert_folder}/ca.crt" "http://${es_certshare_host}:8000/ca/ca.crt"
+    curl -s -o "${cert_folder}/ca.key" "http://${es_certshare_host}:8000/ca/ca.key"
+    curl -s -o "${cert_folder}/kibana.crt" \
+      "http://${es_certshare_host}:8000/kibana/kibana.crt"
+    curl -s -o "${cert_folder}/kibana.key" \
+      "http://${es_certshare_host}:8000/kibana/kibana.key"
+
+    # Apply settings
+    readonly patch_file="/opt/c2d/patch-ssl"
+    envsubst < "${patch_file}" >> "${kibana_config}"
+  fi
+else
+  # Standalone solution
+  echo "elasticsearch.ssl.verificationMode: certificate" >> "${kibana_config}"
+fi
+
+# Enable and start Logstash service
+systemctl start kibana

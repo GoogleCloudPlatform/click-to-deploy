@@ -12,14 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['elasticsearch']['version'] = '7.10.0'
+require 'spec_helper'
 
-default['elasticsearch']['release'] =
-  default['elasticsearch']['version'].split('.')[0]
-
-default['elasticsearch']['repository_url'] =
-  "https://artifacts.elastic.co/packages/#{default['elasticsearch']['release']}.x/apt"
-default['elasticsearch']['keyserver_url'] =
-  'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
-
-default['elasticsearch']['packages'] = ['apt-transport-https', 'unzip']
+describe port(22) do
+  it { should be_listening }
+end
