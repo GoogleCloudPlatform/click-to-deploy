@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import mock
 import os
 import tempfile
 import time
 import triggers_vm_generator
 import unittest
+import unittest.mock
 
 
 class CreateThreadPoolAndWaitTest(unittest.TestCase):
