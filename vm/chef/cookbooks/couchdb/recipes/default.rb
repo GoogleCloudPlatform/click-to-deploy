@@ -41,4 +41,8 @@ bash 'preparing user environment and install' do
 EOH
 end
 
+service 'couchdb' do
+  action [ :enable ]
+end
+
 c2d_startup_script 'couchdb'
