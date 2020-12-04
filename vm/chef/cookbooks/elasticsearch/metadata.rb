@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,5 +13,6 @@
 # limitations under the License.
 
 name 'elasticsearch'
-depends 'openjdk8'
+depends 'c2d-config'
+depends 'openjdk11'
 supports 'debian'

@@ -30,6 +30,12 @@ redis:
   persistence:
     size: 5Gi
 
+elasticsearch:
+  image: null
+  initImage: marketplace.gcr.io/google/ubuntu1604:latest
+  persistence:
+    size: 5Gi
+
 nginx:
   exporter:
     image: null

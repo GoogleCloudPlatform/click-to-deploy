@@ -137,7 +137,7 @@ def invoke_shell(args):
   child = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
   output, _ = child.communicate()
   exit_code = child.returncode
-  return output, exit_code
+  return output.decode('utf-8'), exit_code
 
 
 def get_cookbook_deps(cookbook, knife_binary):

@@ -16,7 +16,6 @@ include_recipe 'c2d-config::default'
 
 apt_repository 'ceph' do
   uri          "https://download.ceph.com/debian-#{node['ceph']['version']}"
-  distribution node['lsb']['codename']
   components   ['main']
   key          'https://download.ceph.com/keys/release.asc'
 end

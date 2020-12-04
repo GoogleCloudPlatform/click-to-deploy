@@ -1,0 +1,86 @@
+#!/bin/bash -eu
+#
+# Copyright 2020 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/mariadb-utils || exit 1
+
+set -o pipefail
+
+declare -r master_node="mariadb-vm-0"
+declare -r replication_user="replication"
+readonly current_hostname="$(hostname)"
+readonly mysql_database="$(get_attribute_value "MYSQL_DATABASE")"
+readonly mysql_root_password="$(get_attribute_value "MYSQL_ROOT_PASSWORD")"
+readonly mysql_replication_password="$(get_attribute_value "MYSQL_REPLICATION_PASSWORD")"
+readonly root_from_anywhere="$(get_attribute_value "MYSQL_ROOT_ANYWHERE_ALLOW")"
+
+# Convert "deployment.c.project.instance to mariadb-vm-index
+# example: mariadb-vm-0
+readonly short_hostname="$(echo ${current_hostname} | grep -o -P "mariadb-vm-\d+$")"
+
+# Get the instance id (zero-index based)
+readonly instance_id="$(echo ${short_hostname} | cut -f 3 -d '-')"
+
+# Get the list of MariaDB nodes
+readonly cluster_nodes="$(get_attribute_value "ENV_MARIADB_NODE_HOSTNAMES" | tr '|' ' ')"
+readonly replica_nodes="$(echo "${cluster_nodes}" \
+                        | grep -o -P "mariadb-vm-\d*" \
+                        | sed "s/${master_node}\s*//g")"
+
+# Increment 1 to instance_id as MariaDB requires a 1 index based id
+export SERVER_ID="$((instance_id + 1))"
+export DATABASE_NAME="${mysql_database}"
+
+echo "Starting MariaDB Configuration..."
+echo "MariaDB instances: ${cluster_nodes}"
+echo "----------------------------------"
+
+echo "Adding VMs short hostnames..."
+add_short_hostnames "${cluster_nodes}"
+
+export MASTER_NODE_IP="$(getent hosts ${master_node} \
+                       | awk '{ print $1 }')"
+echo "Master Node IP: ${MASTER_NODE_IP}"
+
+echo "Stopping MariaDB..."
+systemctl stop mariadb
+
+# Bind service to all available addresses
+bind_to_all_addresses
+
+# Change current hostname in order to avoid MariaDB using the full name
+hostname "${short_hostname}"
+
+echo "Setting up MariaDB..."
+if [[ ${master_node} == "${short_hostname}" ]]; then
+  echo "Node is a master."
+  setup_master \
+    "${replica_nodes}" \
+    "${mysql_root_password}" \
+    "${mysql_replication_password}" \
+    "${root_from_anywhere}"
+else
+  echo "Node is a replica."
+  setup_replica \
+    "${mysql_root_password}" \
+    "${mysql_replication_password}" \
+    "${root_from_anywhere}"
+fi
+echo "Setup completed."
+
+echo "----------------------------------"
+echo "Node ${SERVER_ID} is now running."
+echo "Hostname: ${short_hostname}"
+echo "----------------------------------"

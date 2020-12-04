@@ -26,8 +26,8 @@ execute 'add_jenkins_repo' do
   command 'echo "deb http://pkg.jenkins.io/debian-stable binary/" >> /etc/apt/sources.list'
 end
 
-execute 'update' do
-  command 'apt-get update'
+apt_update do
+  action :update
 end
 
 package 'install_packages' do

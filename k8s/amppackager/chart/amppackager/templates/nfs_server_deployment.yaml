@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-nfs-server
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: amppackager-nfs-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: nfs-server
+  template:
+    metadata:
+      labels:
+        role: nfs-server
+    spec:
+      initContainers:
+      - name: config
+        image: "{{ .Values.init.repo }}:{{ .Values.init.tag }}" 
+        imagePullPolicy: Always
+        command: [
+          '/bin/bash', '-c',
+          './deploy.sh /exports {{ .Values.replicaCount }} {{ .Values.packager.domain }}
+          "{{ .Values.packager.country }}" "{{ .Values.packager.state }}"
+          "{{ .Values.packager.locality }}" "{{ .Values.packager.organization }}"
+          {{ .Values.packager.certFileName }} {{ .Values.packager.csrFileName }}
+          {{ .Values.packager.privKeyFileName }}
+          {{ .Values.acme.emailAddress }} {{ .Values.acme.directoryUrl }}'
+        ]
+        volumeMounts:
+        - mountPath: /exports
+          name: {{ .Release.Name }}-nfs-server-pvc
+      containers:
+      - name: {{ .Release.Name }}-nfs-server
+        image: gcr.io/google_containers/volume-nfs:0.8
+        ports:
+          - name: nfs
+            containerPort: 2049
+          - name: mountd
+            containerPort: 20048
+          - name: rpcbind
+            containerPort: 111
+        securityContext:
+          privileged: true
+        volumeMounts:
+          - mountPath: /exports
+            name: {{ .Release.Name }}-nfs-server-pvc
+      volumes:
+        - name: {{ .Release.Name }}-nfs-server-pvc
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-nfs-server-pvc

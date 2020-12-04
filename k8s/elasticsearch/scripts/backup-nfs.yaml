@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: $APP_INSTANCE_NAME-elasticsearch-nfs-backup-server
+  name: $APP_INSTANCE_NAME-nfs-backup-server
   labels: &ElasticsearchNfsDeploymentLabels
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app.kubernetes.io/component: elasticsearch-backup-server
@@ -38,10 +38,9 @@ spec:
         app.kubernetes.io/component: elasticsearch-backup-server
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: standard
       resources:
         requests:
-          storage: 5Gi
+          storage: $BACKUP_DISK_SIZE
 ---
 apiVersion: v1
 kind: Service
