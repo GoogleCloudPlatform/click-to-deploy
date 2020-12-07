@@ -29,15 +29,15 @@ python-test: ## Runs tests for Python scripts
 vm-lint: ## Runs lint for Chef cookbooks
 	@docker pull chef/chefdk
 	# cookstyle print version
-	@docker run --rm -it --entrypoint cookstyle -v $(PWD)/vm/chef:/chef:ro chef/chefdk --version
+	@docker run --rm --entrypoint cookstyle -v $(PWD)/vm/chef:/chef:ro chef/chefdk --version
 	# cookstyle on cookbooks
-	@docker run --rm -it --entrypoint cookstyle -v $(PWD)/vm/chef:/chef:ro chef/chefdk /chef/cookbooks
+	@docker run --rm --entrypoint cookstyle -v $(PWD)/vm/chef:/chef:ro chef/chefdk /chef/cookbooks
 	# cookstyle on tests
-	@docker run --rm -it --entrypoint cookstyle -v $(PWD)/vm/tests:/tests:ro chef/chefdk /tests/solutions
+	@docker run --rm --entrypoint cookstyle -v $(PWD)/vm/tests:/tests:ro chef/chefdk /tests/solutions
 	# foodcritic print version
-	@docker run --rm -it --entrypoint foodcritic -v $(PWD)/vm/chef:/chef:ro chef/chefdk --version
+	@docker run --rm --entrypoint foodcritic -v $(PWD)/vm/chef:/chef:ro chef/chefdk --version
 	# foodcritic on cookbooks
-	@docker run --rm -it --entrypoint foodcritic -v $(PWD)/vm/chef:/chef:ro chef/chefdk --cookbook-path=/chef/cookbooks --rule-file=/chef/.foodcritic --epic-fail=any
+	@docker run --rm --entrypoint foodcritic -v $(PWD)/vm/chef:/chef:ro chef/chefdk --cookbook-path=/chef/cookbooks --rule-file=/chef/.foodcritic --epic-fail=any
 
 .PHONY: vm-generate-triggers
 vm-generate-triggers: ## Generates and displays GCB triggers for VM

@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,6 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['couchdb21']['debian']['codename'] = 'stretch'
-default['couchdb21']['password'] = 'admTmpP@ssw0rd'
-default['couchdb21']['version'] = '2.3.0*'
+default['couchdb']['debian']['codename'] = 'buster'
+default['couchdb']['password'] = 'admTmpP@ssw0rd'

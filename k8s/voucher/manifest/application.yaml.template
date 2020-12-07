@@ -1,0 +1,22 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "$name"
+  namespace: "$namespace"
+  annotations:
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": "voucher", "partner_name": "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: "$name"
+spec:
+  descriptor:
+    type: voucher
+    version: '1.0.0'
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "$name"
+  componentKinds:
+  # The group is determined from the apiVersion: $GROUP_NAME/$VERSION
+  - group: apps
+    kind: Deployment
+  - group: ''
+    kind: Service

@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2017 Google Inc.
+# Copyright 2020 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,4 +25,4 @@ sed -i 's/;bind_address.*/bind_address = 0.0.0.0/' $INI_FILE
 sed -i 's/;WWW-Authenticate = Basic realm="administrator"/WWW-Authenticate = Basic realm="administrator"/' $INI_FILE
 sed -i '/bind_address = 0.0.0.0/a require_valid_user = true' $INI_FILE
 
-service couchdb restart
+service couchdb start

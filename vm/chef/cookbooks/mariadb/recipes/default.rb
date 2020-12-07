@@ -30,6 +30,26 @@ package 'mariadb-server' do
   version node['mariadb']['version']
 end
 
+['pam-ssh', 'ssh', 'master-replication', 'replica-replication'].each do |file|
+  cookbook_file "/opt/c2d/patch-#{file}" do
+    source "patch-#{file}"
+    owner 'root'
+    group 'root'
+    mode 0664
+    action :create
+  end
+end
+
+['setup', 'utils'].each do |file|
+  cookbook_file "/opt/c2d/mariadb-#{file}" do
+    source "mariadb-#{file}"
+    owner 'root'
+    group 'root'
+    mode 0755
+    action :create
+  end
+end
+
 service 'mysql' do
   action [ :enable ]
 end
