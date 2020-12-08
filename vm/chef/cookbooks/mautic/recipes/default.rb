@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ include_recipe 'php73::composer'
 include_recipe 'php73::module_libapache2'
 include_recipe 'php73::module_mysql'
 include_recipe 'php73::module_xmlrpc'
-include_recipe 'composer::composer-only'
+include_recipe 'composer::composer1'
 
 include_recipe 'git'
 include_recipe 'mysql'

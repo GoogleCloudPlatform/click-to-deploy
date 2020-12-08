@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,16 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['mautic']['packages'] = [
-    'libicu64',
-    'libxmlrpc-epi0',
-    'libxslt1.1',
-    'libzip4',
-    'php7.3-bcmath',
-    'php7.3-gmp',
-    'php7.3-imap',
-]
-
-default['mautic']['version'] = '3.2'
-default['mautic']['user'] = 'www-data'
-default['mautic']['db']['name'] = 'mautic'
+bash 'install composer' do
+  user 'root'
+  code 'curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=1.10.19'
+end
