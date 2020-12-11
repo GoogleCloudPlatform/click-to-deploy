@@ -68,6 +68,10 @@ if [[ ${AUTO_INSTALL} = 'yes' ]]; then
   fi
 fi
 
+# Await for MySQL server be up
+timeout --preserve-status 300 bash -c "
+  until echo > /dev/tcp/${DRUPAL_DB_HOST}/3306; do sleep 2; done"
+
 # Ensure the MySQL Database is created
 php /makedb.php "${DRUPAL_DB_HOST}" "${DRUPAL_DB_USER}" "${DRUPAL_DB_PASSWORD}" "${DRUPAL_DB_NAME}"
 
