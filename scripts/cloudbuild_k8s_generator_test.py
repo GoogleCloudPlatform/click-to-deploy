@@ -180,7 +180,7 @@ class CloudBuildK8sGeneratorTest(unittest.TestCase):
       name: gcr.io/cloud-builders/docker
       dir: k8s
     """
-    with tempfile.NamedTemporaryFile(delete=True) as f:
+    with tempfile.NamedTemporaryFile(delete=True, mode='w') as f:
       f.write(cloudbuild_config)
       f.flush()
 
@@ -278,7 +278,7 @@ class CloudBuildK8sGeneratorTest(unittest.TestCase):
       cloudbuild.template = cloudbuild_config
       cloudbuild.path = f.name
       cloudbuild.save()
-      self.assertEqual(f.read(), cloudbuild_config)
+      self.assertEqual(f.read(), str.encode(cloudbuild_config))
 
   def test_remove(self):
     with tempfile.NamedTemporaryFile(delete=False) as f:

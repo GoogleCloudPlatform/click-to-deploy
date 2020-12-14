@@ -1,0 +1,19 @@
+input {
+  file {
+    path => ["/var/log/*.log", "/var/log/messages", "/var/log/syslog"]
+    type => "syslog"
+  }
+}
+
+output {
+  elasticsearch {
+    index => "syslog-demo"
+    hosts => ["${es_protocol}://${es_host}:${es_port}"]
+    user => "${es_username}"
+    password => "${es_password}"
+    ssl => true
+    ssl_certificate_verification => false
+    cacert => "/etc/logstash/config/certs/ca.crt"
+  }
+  stdout { codec => rubydebug }
+}

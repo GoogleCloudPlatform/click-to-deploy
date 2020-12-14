@@ -1,0 +1,8 @@
+server.ssl.enabled: true
+server.ssl.certificate: /etc/kibana/config/certs/kibana.crt
+server.ssl.key: /etc/kibana/config/certs/kibana.key
+server.ssl.certificateAuthorities: [ "/etc/kibana/config/certs/ca.crt" ]
+server.ssl.clientAuthentication: optional
+
+elasticsearch.ssl.certificateAuthorities: [ "/etc/kibana/config/certs/ca.crt" ]
+elasticsearch.ssl.verificationMode: certificate
