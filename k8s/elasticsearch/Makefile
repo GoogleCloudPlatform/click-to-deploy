@@ -6,7 +6,7 @@ include ../images.Makefile
 CHART_NAME := elasticsearch
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 6.8
+TRACK ?= 7.10
 
 METRICS_EXPORTER_TAG ?= v0.5.1
 
