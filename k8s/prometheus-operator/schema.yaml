@@ -39,7 +39,8 @@ properties:
       type: NAMESPACE
   operator.serviceAccountName:
     type: string
-    title: Service account used by Prometheus Operator
+    title: Prometheus Operator Service Account
+    description: Service account used by Prometheus Operator Deployment
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:

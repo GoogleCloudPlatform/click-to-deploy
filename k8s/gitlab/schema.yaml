@@ -126,7 +126,8 @@ properties:
       type: DEPLOYER_IMAGE
   gitlab.serviceAccountName:
     type: string
-    title: Service account used by GitLab instance
+    title: GitLab Service Account
+    description: Service account used by main GitLab StatefulSet
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:

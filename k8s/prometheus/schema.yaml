@@ -53,7 +53,7 @@ properties:
   PROMETHEUS_SERVICE_ACCOUNT:
     type: string
     title: Prometheus Service Account
-    description: Service account to assign to main Prometheus StatefulSet
+    description: Service account used by main Prometheus StatefulSet
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
@@ -64,7 +64,7 @@ properties:
   KUBE_STATE_METRICS_SERVICE_ACCOUNT:
     type: string
     title: Kube State Metrics Service Account
-    description: Service account to assign to main Kube State Metrics Deployment
+    description: Service account used by main Kube State Metrics Deployment
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
@@ -109,7 +109,7 @@ properties:
   ALERTMANAGER_SERVICE_ACCOUNT:
     type: string
     title: Alertmanager Service Account
-    description: Service account to assign to Alertmanager StatefulSet
+    description: Service account used by Alertmanager StatefulSet
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
@@ -120,7 +120,7 @@ properties:
   GRAFANA_SERVICE_ACCOUNT:
     type: string
     title: Grafana Service Account
-    description: Service account to assign to Grafana StatefulSet
+    description: Service account used by Grafana StatefulSet
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
@@ -131,7 +131,7 @@ properties:
   NODE_EXPORTER_SERVICE_ACCOUNT:
     type: string
     title: Node Exporter Service Account
-    description: Service account to assign to Node Exporter DaemonSet
+    description: Service account used by Node Exporter DaemonSet
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:

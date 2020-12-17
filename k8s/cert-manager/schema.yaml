@@ -61,7 +61,8 @@ properties:
     minimum: 1
   controller.serviceAccountName:
     type: string
-    title: Service account used by cert-manager Controller
+    title: Controller Service Account
+    description: Service account used by cert-manager Controller Deployment
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
@@ -185,7 +186,8 @@ properties:
               verbs: ["get", "create", "update", "patch"]
   webhook.serviceAccountName:
     type: string
-    title: Service account used by cert-manager Web hook
+    title: Webhook Service Account
+    description: Service account used by cert-manager Webhook Deployment
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
@@ -204,7 +206,8 @@ properties:
               - create
   cainjector.serviceAccountName:
     type: string
-    title: Service account used by cert-manager CA Injector
+    title: CA Injector Service Account
+    description: Service account used by cert-manager CA Injector Deployment
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
@@ -235,7 +238,8 @@ properties:
               verbs: ["get", "create", "update", "patch"]
   CDRJobServiceAccount:
     type: string
-    title: Service account used by CRDs deployer
+    title: CRD deployer Service Account
+    description: Service account used by cert-manager CRD deployer Job
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:

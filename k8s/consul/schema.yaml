@@ -89,7 +89,8 @@ properties:
     default: false
   server.ServiceAccount:
     type : string
-    title: Service account used by Consul server
+    title: Consul Server Service Account
+    description: Service account used by Consul Server StatefulSet
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
@@ -102,7 +103,8 @@ properties:
               verbs: ["list"]
   client.ServiceAccount:
     type: string
-    title: Service account used by the Consul client
+    title: Consul Client Service Account
+    description: Service account used by Consul Client StatefulSet
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:

@@ -47,7 +47,7 @@ properties:
     type: string
     title: PostgreSQL service account
     description: >-
-      Service account to assign to PostgreSQL StatefulSet (with default permissions)
+      Service account used by PostgreSQL StatefulSet (with default permissions)
     x-google-marketplace:
       type: SERVICE_ACCOUNT
   postgresql.persistence.storageClass:

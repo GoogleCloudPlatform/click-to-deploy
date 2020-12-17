@@ -39,7 +39,8 @@ properties:
       type: NAMESPACE
   operator.serviceAccountName:
     type: string
-    title: Service account used by Jaeger Operator
+    title: Jaeger Operator Service Account
+    description: Service account used by Jaeger Operator Deployment
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
@@ -126,7 +127,8 @@ properties:
               - '*'
   CDRJobServiceAccount:
     type: string
-    title: Service account used by CRDs deployer
+    title: CRD deployer Service Account
+    description: Service account used by Jaeger Operator CRD deployer Job
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
