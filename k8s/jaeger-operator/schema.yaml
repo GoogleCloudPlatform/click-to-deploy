@@ -40,10 +40,10 @@ properties:
   operator.serviceAccountName:
     type: string
     title: Jaeger Operator Service Account
-    description: Service account used by Jaeger Operator Deployment
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: Service account used by Jaeger Operator Deployment
         roles:
         - type: ClusterRole
           rulesType: CUSTOM
@@ -128,10 +128,10 @@ properties:
   CDRJobServiceAccount:
     type: string
     title: CRD deployer Service Account
-    description: Service account used by Jaeger Operator CRD deployer Job
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: Service account used by Jaeger Operator CRD deployer Job
         roles:
         - type: ClusterRole
           rulesType: CUSTOM

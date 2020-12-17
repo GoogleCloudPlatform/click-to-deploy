@@ -127,10 +127,10 @@ properties:
   gitlab.serviceAccountName:
     type: string
     title: GitLab Service Account
-    description: Service account used by main GitLab StatefulSet
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: Service account used by main GitLab StatefulSet
         roles:
         - type: ClusterRole
           rulesType: CUSTOM

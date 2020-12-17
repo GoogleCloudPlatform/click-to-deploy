@@ -62,10 +62,10 @@ properties:
   dashboard.serviceAccountName:
     type: string
     title: Nuclio Dashboard Service Account
-    description: Service account used by Nuclio Dashboard StatefulSet
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: Service account used by Nuclio Dashboard StatefulSet
         roles:
         - type: ClusterRole
           rulesType: CUSTOM
@@ -79,10 +79,10 @@ properties:
   controller.serviceAccountName:
     type: string
     title: Nuclio Controller Service Account
-    description: Service account used by Nuclio Controller StatefulSet
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: Service account used by Nuclio Controller StatefulSet
         roles:
         - type: ClusterRole
           rulesType: PREDEFINED
@@ -90,10 +90,10 @@ properties:
   CDRJobServiceAccount:
     type: string
     title: CRD deployer Service Account
-    description: Service account used by Nuclio CRD deployer Job
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: Service account used by Nuclio CRD deployer Job
         roles:
         - type: ClusterRole
           rulesType: CUSTOM

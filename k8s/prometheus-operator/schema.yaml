@@ -40,10 +40,10 @@ properties:
   operator.serviceAccountName:
     type: string
     title: Prometheus Operator Service Account
-    description: Service account used by Prometheus Operator Deployment
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: Service account used by Prometheus Operator Deployment
         roles:
         - type: ClusterRole
           rulesType: CUSTOM

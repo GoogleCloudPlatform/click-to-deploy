@@ -62,10 +62,10 @@ properties:
   controller.serviceAccountName:
     type: string
     title: Controller Service Account
-    description: Service account used by cert-manager Controller Deployment
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: Service account used by cert-manager Controller Deployment
         roles:
         - type: ClusterRole
           rulesType: CUSTOM
@@ -187,10 +187,10 @@ properties:
   webhook.serviceAccountName:
     type: string
     title: Webhook Service Account
-    description: Service account used by cert-manager Webhook Deployment
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: Service account used by cert-manager Webhook Deployment
         roles:
         - type: ClusterRole
           rulesType: CUSTOM
@@ -207,10 +207,10 @@ properties:
   cainjector.serviceAccountName:
     type: string
     title: CA Injector Service Account
-    description: Service account used by cert-manager CA Injector Deployment
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: Service account used by cert-manager CA Injector Deployment
         roles:
         - type: ClusterRole
           rulesType: CUSTOM
@@ -239,10 +239,10 @@ properties:
   CDRJobServiceAccount:
     type: string
     title: CRD deployer Service Account
-    description: Service account used by cert-manager CRD deployer Job
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: Service account used by cert-manager CRD deployer Job
         roles:
         - type: ClusterRole
           rulesType: CUSTOM

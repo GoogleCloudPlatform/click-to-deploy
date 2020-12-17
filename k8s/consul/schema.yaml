@@ -90,10 +90,10 @@ properties:
   server.ServiceAccount:
     type : string
     title: Consul Server Service Account
-    description: Service account used by Consul Server StatefulSet
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: Service account used by Consul Server StatefulSet
         roles:
         - type: ClusterRole
           rulesType: CUSTOM
@@ -104,10 +104,10 @@ properties:
   client.ServiceAccount:
     type: string
     title: Consul Client Service Account
-    description: Service account used by Consul Client StatefulSet
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: Service account used by Consul Client StatefulSet
         roles:
         - type: ClusterRole
           rulesType: CUSTOM
