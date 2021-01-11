@@ -61,10 +61,11 @@ properties:
     minimum: 1
   controller.serviceAccountName:
     type: string
-    title: Service account used by cert-manager Controller
+    title: Controller Service Account
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: Service account used by cert-manager Controller Deployment
         roles:
         - type: ClusterRole
           rulesType: CUSTOM
@@ -185,10 +186,11 @@ properties:
               verbs: ["get", "create", "update", "patch"]
   webhook.serviceAccountName:
     type: string
-    title: Service account used by cert-manager Web hook
+    title: Webhook Service Account
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: Service account used by cert-manager Webhook Deployment
         roles:
         - type: ClusterRole
           rulesType: CUSTOM
@@ -204,10 +206,11 @@ properties:
               - create
   cainjector.serviceAccountName:
     type: string
-    title: Service account used by cert-manager CA Injector
+    title: CA Injector Service Account
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: Service account used by cert-manager CA Injector Deployment
         roles:
         - type: ClusterRole
           rulesType: CUSTOM
@@ -235,10 +238,11 @@ properties:
               verbs: ["get", "create", "update", "patch"]
   CDRJobServiceAccount:
     type: string
-    title: Service account used by CRDs deployer
+    title: CRD deployer Service Account
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: Service account used by cert-manager CRD deployer Job
         roles:
         - type: ClusterRole
           rulesType: CUSTOM

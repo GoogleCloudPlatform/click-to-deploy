@@ -4,7 +4,7 @@ metadata:
   name: "{{ .Release.Name }}"
   annotations:
     kubernetes-engine.cloud.google.com/icon: >-
-      data:image/png;base64, {{ .Files.Get "logo.png" | b64enc }} {{/* Get logo.png from the root of chart */}}
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
     marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": {{ .Chart.Name | quote }}, "partner_name": "Google Click to Deploy"}'
   labels:
     app.kubernetes.io/name: "{{ .Release.Name }}"
@@ -38,7 +38,7 @@ spec:
       # Get access to the Nuclio Dashboard
 
       Run the following command to start port forwarding:
-      
+
       ```shell
       kubectl --namespace {{ .Release.Namespace }} port-forward \
           service/{{ .Release.Name }}-dashboard 8070:8070
