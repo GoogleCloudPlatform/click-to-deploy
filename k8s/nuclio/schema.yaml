@@ -61,10 +61,11 @@ properties:
     description: Name of the Secret which contains login credentials for the Docker registry. To create this, follow the steps in the README.
   dashboard.serviceAccountName:
     type: string
-    title: Service account used by the Nuclio dashboard
+    title: Nuclio Dashboard Service Account
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: Service account used by Nuclio Dashboard StatefulSet
         roles:
         - type: ClusterRole
           rulesType: CUSTOM
@@ -77,20 +78,22 @@ properties:
                verbs: ["get", "list"]
   controller.serviceAccountName:
     type: string
-    title: Service account used by Nuclio Controller
+    title: Nuclio Controller Service Account
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: Service account used by Nuclio Controller StatefulSet
         roles:
         - type: ClusterRole
           rulesType: PREDEFINED
           rulesFromRoleName: cluster-admin
   CDRJobServiceAccount:
     type: string
-    title: Service account used by CRDs deployer
+    title: CRD deployer Service Account
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: Service account used by Nuclio CRD deployer Job
         roles:
         - type: ClusterRole
           rulesType: CUSTOM

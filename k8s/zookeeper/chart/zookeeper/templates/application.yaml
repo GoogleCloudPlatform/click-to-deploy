@@ -4,7 +4,7 @@ metadata:
   name: "{{ .Release.Name }}"
   annotations:
     kubernetes-engine.cloud.google.com/icon: >-
-      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }} {{/* Get logo.png from the root of chart */}}
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
     marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": "zookeeper", "partner_name": "Google Click to Deploy"}'
   labels:
     app.kubernetes.io/name: "{{ .Release.Name }}"
@@ -16,10 +16,10 @@ spec:
       ZooKeeper is a high-performance coordination service for distributed applications. It exposes common
       services - such as naming, configuration management, synchronization, and group services - through a
       simple interface, so that you don't have to write them from scratch.
-      
+
       You can use it off-the-shelf to implement consensus, group management, leader election, and presence
       protocols. You can also build on it to fit your own specific needs.
-      
+
       # Support
       Google does not offer support for this solution. However, community support is available on [StackOverflow](https://stackoverflow.com/questions/tagged/apache-zookeeper).
     maintainers:
