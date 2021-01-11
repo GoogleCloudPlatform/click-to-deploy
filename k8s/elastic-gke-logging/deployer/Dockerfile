@@ -32,3 +32,5 @@ COPY --from=build /tmp/elastic-gke-logging.tar.gz /data/chart/
 COPY --from=build /tmp/test/elastic-gke-logging.tar.gz /data-test/chart/
 COPY --from=build /tmp/apptest/schema.yaml /data-test/
 COPY --from=build /tmp/schema.yaml /data/
+
+ENV WAIT_FOR_READY_TIMEOUT 900
