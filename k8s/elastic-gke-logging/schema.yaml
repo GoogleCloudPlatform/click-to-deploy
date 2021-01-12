@@ -68,10 +68,10 @@ properties:
   fluentd.serviceAccount:
     type: string
     title: Fluentd Service Account
-    description: Service account to assign to Fluentd StatefulSet
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: Service account used by Fluentd StatefulSet
         roles:
         - type: ClusterRole
           rulesType: CUSTOM

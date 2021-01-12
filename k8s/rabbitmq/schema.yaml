@@ -71,12 +71,12 @@ properties:
   rabbitmq.serviceAccount:
     type: string
     title: RabbitMQ service account
-    description: >-
-      Service account to assign to RabbitMQ StatefulSet.
-      It should have ability to query endpoints in the same namespace
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: >-
+          Service account used by RabbitMQ StatefulSet.
+          It should have ability to query endpoints in the same namespace
         roles:
         - type: Role
           rulesType: CUSTOM
