@@ -94,7 +94,7 @@ data:
         hostname ${ENV["HOSTNAME"]}
       </record>
     </filter>
-    
+
     <filter **>
       @type prometheus
       <metric>
@@ -115,7 +115,7 @@ data:
       include_tag_key true
       host {{ .Release.Name }}-elasticsearch-svc
       port 9200
-       logstash_format true
+      logstash_format true
       <buffer>
         @type file
         path /var/log/fluentd-buffers/kubernetes.system.buffer
