@@ -24,7 +24,7 @@
       - [Post Deployment](#post-deployment)
       - [View the app in the Google Cloud Console](#view-the-app-in-the-google-cloud-console)
   - [Detailed Instructions](#detailed-instructions)
-    - [Minimum Requirements for GKE Cluster:](#minimum-requirements-for-gke-cluster)
+    - [Minimum Requirements for GKE Cluster](#minimum-requirements-for-gke-cluster)
     - [Create a GKE Cluster With Custom Service Account](#create-a-gke-cluster-with-custom-service-account)
       - [Creating a custom service account for your GKE cluster](#creating-a-custom-service-account-for-your-gke-cluster)
       - [Configuring the GKE cluster to use custom service account](#configuring-the-gke-cluster-to-use-custom-service-account)
@@ -77,6 +77,7 @@ The person performing the onboarding needs to be able to grant the following IAM
 * **Project Editor**
 * **Dataflow Worker**
 * **Storage Admin**
+* **Service Account Token Creator**
 
 The person will also need to:
 * Have access to a VM/desktop/laptop that can create a private GKE cluster and ssh if using command line installation if you wish to install Custom Governance in private cluster.
@@ -109,11 +110,11 @@ We will cover these steps with detail in the installation part below, but it's g
 
    Please follow the below instructions to finish installation.
    1. **Create a GKE cluster.** The cluster list will contain only clusters that meet the basic requirements to run Custom Governance, you can either
-      *   (Recommended) Create a cluster with a custom service account to meet additional organizational requirements, click [here for instructions and to learn about minimum requirements.](#Minimum-Requirements-for-GKE-Cluster).
+      *   (Recommended) Create a cluster with a custom service account to meet additional organizational requirements and a kubernetes service account, click [here for instructions and to learn about minimum requirements.](#Minimum-Requirements-for-GKE-Cluster).
       *   (Not Recommended) Create a cluster that meets the basic requirements by clicking “Create Cluster” button. 
       **Please make sure to enable "Allow access to the following Cloud APIs".** This is required for the Cluster to be able to network with GCP services. Note that in this way Custom Governance will be running on default GCE service account.
       
-      After the cluster is created, you can continue the following steps.
+      After the cluster is created, you can continue with next steps.
    1. **Set up Namespace.** You can use the default namespace or select the new namespace you just created.
    1. **Set up App instance name.** This is the name of your application instance, e.g. custom-governance.
    1. **Set up OAuth Client ID and OAuth Client Secret.** Please follow the [OAuth section](#Setup-OAuth-Credentials-for-IAP-Identity-Aware-Proxy) and fill in the OAuth Client ID and OAuth Client Secret that you created there.
@@ -168,12 +169,10 @@ gcloud auth configure-docker
   * [Setup your DNS A Record and Hostname](#Configure-DNS-A-Record)
   * Initial Email: This will be the **user email address** that will be deploying/setting up Custom Governance. Custom Governance will check for this email address even after the user has passed through IAP.
 
-To learn how to create these parameters go through the [installation process above](#marketplace-ui-deployment-details)
-
 #### Create a Google Kubernetes Engine cluster
 
 Create a cluster from the command line. If you already have a cluster that you
-want to use, this step is optional.
+want to use, this step is optional. You can also refer here for [instructions](#create-a-gke-cluster-with-custom-service-account) on how to create a GKE cluster with custom service account but ignore steps regarding the namespace and kubernetes service account because those will be covered in the following steps.
 
 ```shell
 export CLUSTER=cg-cluster
@@ -249,7 +248,7 @@ Provision a service account and export the name into a variable:
 
 ```shell
 kubectl create serviceaccount "${APP_INSTANCE_NAME}-sa" --namespace "${NAMESPACE}"
-kubectl create clusterrolebinding "${NAMESPACE}-${APP_INSTANCE_NAME}-sa-rb" --clusterrole=cluster-admin --serviceaccount="${NAMESPACE}:${APP_INSTANCE_NAME}-sa"
+kubectl create clusterrolebinding "${NAMESPACE}-${APP_INSTANCE_NAME}-sa-rb" --clusterrole=edit --serviceaccount="${NAMESPACE}:${APP_INSTANCE_NAME}-sa"
 export SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-sa"
 ```
 #### Add the application parameters to [`cli_values_template.yaml`](cli_values_template.yaml)
@@ -264,11 +263,15 @@ Insert the parameters you configured as part of the prerequisites.
 
 1. Generate a base64 version of your OAuth Client ID with this command:
 
-  ```echo -n '<YOUR OAUTH CLIENT ID>' | base64```
+  ```shell
+  echo -n '<YOUR OAUTH CLIENT ID>' | base64
+  ```
 
 2. Generate a base64 version of your OAuth Client Secret with this command:
 
-  ```echo -n '<YOUR OAUTH CLIENT SECRET>' | base64```
+  ```shell
+  echo -n '<YOUR OAUTH CLIENT SECRET>' | base64
+  ```
 
 3. Static IP Name: This is the name of the Static IP you created. For example: cg-app-ip
 
@@ -285,11 +288,15 @@ Insert the parameters you configured as part of the prerequisites.
 Replace the values.yaml template with your template:
 1. Rename the current values template
 
-  ```mv chart/custom-governance/values.yaml values_template.yaml```
+  ```shell
+  mv chart/custom-governance/values.yaml values_template.yaml
+  ```
 
 2. Copy your value template into the chart:
 
-  ```cp cli_values_template.yaml chart/custom-governance/values.yaml```
+  ```shell
+  cp cli_values_template.yaml chart/custom-governance/values.yaml
+  ```
 
 Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to your app.
@@ -324,7 +331,7 @@ To view the app, open the URL in your browser.
 
 ## Detailed Instructions
 
-### Minimum Requirements for GKE Cluster:
+### Minimum Requirements for GKE Cluster
 
 We have minimum requirements for GKE clusters running Custom Governance [following GCP Best practices](https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances#best_practices):
 
@@ -349,7 +356,7 @@ The `n1-standard-4` machine type is a good choice that covers the minimum requir
 ![Service Account 1](./images/service-account-1.png)
 1. Click `Create Service Account` and give the service account a name (e.g. cg-custom-sa)
 ![Service Account 2](./images/service-account-2.png)
-1. Chose the `Editor`, `Storage Admin`, and `Dataflow Worker` role for the service account. The service account will be used to run Custom Governance.
+1. Chose the `Editor`, `Storage Admin`, `Dataflow Worker` and `Service Account Token Creator` role for the service account. The service account will be used to run Custom Governance.
 ![Service Account 3](./images/service-account-3.png)
 1. Provide users with permission to utilize and administer the service account
 ![Service Account 4](./images/service-account-4.png)
@@ -359,22 +366,22 @@ The `n1-standard-4` machine type is a good choice that covers the minimum requir
 ![Custom Service Account 1](./images/custom-sa-cluster-1.png)
 1. Click into the pool (default-pool) -> Security. Select the custom service account you created earlier.
 ![Custom Service Account 3](./images/custom-sa-cluster-3.png)
-1. Click `Create` to create your cluster with your custom SA!
-1. Wait until your cluster is created before proceeding to the next step
+1. Click `Create` to create your cluster with your custom SA.
+1. Wait until your cluster is created before proceeding to next steps.
 1. **Configure kubectl to connect to the cluster**
     ```shell
     gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
     ```
 1. **Create namespace in your Kubernetes cluster.**
-   NAMESPACE is your kubernetest namespace in which you plan to install Custom Governance. In most cases, you can use the `default` namespace and ignore this step. If you decide to create a new namepace, please make sure you use the same namespace that you will select in Marketplace Configuration UI.
+   NAMESPACE is your kubernete namespace in which you plan to install Custom Governance. In most cases, you can use the `default` namespace and ignore this step. If you decide to create a new namepace, please make sure you use the same namespace that you will select in Marketplace Configuration UI.
     ```shell
     kubectl create namespace "${NAMESPACE}"
     ```
-1. **Configure the kubernete service account.**
+1. **Configure the kubernetes service account.**
    The application needs a service account in the target namespace with cluster wide permissions to access Kubernetes resources such as Kubernetes Secrets. Run the following command to provision a service account and a cluster rolebinding. Please make sure you keep a note on the name of the service account you created. You need to select this service account in the Marketplace Configuration UI.
    ```shell
    kubectl create serviceaccount "${APP_INSTANCE_NAME}-sa" --namespace "${NAMESPACE}"
-   kubectl create clusterrolebinding "${NAMESPACE}-${APP_INSTANCE_NAME}-sa-rb" --clusterrole=cluster-admin --serviceaccount="${NAMESPACE}:${APP_INSTANCE_NAME}-sa"
+   kubectl create clusterrolebinding "${NAMESPACE}-${APP_INSTANCE_NAME}-sa-rb" --clusterrole=edit --serviceaccount="${NAMESPACE}:${APP_INSTANCE_NAME}-sa"
    ```
 
 ### Setup OAuth Credentials for IAP (Identity Aware Proxy)
