@@ -172,13 +172,16 @@ gcloud auth configure-docker
 #### Create a Google Kubernetes Engine cluster
 
 Create a cluster from the command line. If you already have a cluster that you
-want to use, this step is optional. You can also refer here for [instructions](#create-a-gke-cluster-with-custom-service-account) on how to create a GKE cluster with custom service account but ignore steps regarding the namespace and kubernetes service account because those will be covered in the following steps.
+want to use, this step is optional. You can also refer here for [instructions](#create-a-gke-cluster-with-custom-service-account) on how to create a GKE cluster with custom service account with UI but ignore steps regarding the namespace and kubernetes service account because those will be covered in the following steps. Flags are optional for the command.
+More custom flags are available [here](https://cloud.google.com/sdk/gcloud/reference/container/clusters/create).
 
 ```shell
 export CLUSTER=cg-cluster
 export ZONE=us-west1-a
+export MACHINE_TYPE="YOUR PREFERED MACHINE TYPE"
+export SERVICE_ACCOUNT="YOUR CUSTOM SERVICE ACCOUNT"
 
-gcloud container clusters create "$CLUSTER" --scopes=https://www.googleapis.com/auth/cloud-platform --zone "$ZONE"
+gcloud container clusters create "$CLUSTER" --scopes=https://www.googleapis.com/auth/cloud-platform --zone "$ZONE" [--machine-type="$MACHINE_TYPE"] [--service-account="$SERVICE_ACCOUNT"]
 ```
 
 #### Configure kubectl to connect to the cluster
