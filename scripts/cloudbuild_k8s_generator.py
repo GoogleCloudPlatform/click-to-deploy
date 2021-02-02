@@ -38,7 +38,7 @@ CLOUDBUILD_TEMPLATE = """
 ##################################################################################
 
 options:
-  workerPool: $PROJECT_ID/gcb-workers-pool-e2
+  workerPool: projects/${PROJECT_ID}/locations/us-central1/workerPools/gcb-workers-pool-e2
 steps:
 
 - id: Pull Dev Image
