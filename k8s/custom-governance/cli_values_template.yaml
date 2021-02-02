@@ -4,7 +4,7 @@ cg:
   image:
     # Container registry repo where the application image is hosted.
     # Typically you do not need to modify this.
-    repo: gcr.io/aditum-marketplace-dev/custom-governance
+    repo: gcr.io/cloud-marketplace/custom-governance/custom-governance
     # Container tag
     tag: 1.3.2
 # Required. Generate a new OAuth credential for IAP.
