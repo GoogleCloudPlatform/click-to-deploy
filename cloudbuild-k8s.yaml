@@ -14,7 +14,7 @@
 
 timeout: 1800s # 30m
 options:
-  workerPool: ${PROJECT_ID}/gcb-workers-pool
+  workerPool: ${PROJECT_ID}/gcb-workers-pool-e2
 substitutions:
   _CLUSTER_NAME: marketplace-testing
   _CLUSTER_LOCATION: us-central1
