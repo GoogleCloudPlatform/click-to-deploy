@@ -21,7 +21,7 @@
 
 timeout: 1800s # 30m
 options:
-  workerPool: ${PROJECT_ID}/gcb-workers-pool
+  workerPool: projects/${PROJECT_ID}/locations/us-central1/workerPools/gcb-workers-pool-e2
 steps:
 
 - id: Download Service Account Key
