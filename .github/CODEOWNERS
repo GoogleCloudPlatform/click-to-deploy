@@ -6,6 +6,6 @@
 *                   @GoogleCloudPlatform/launcher-operations
 
 # GCB configuration.
-cloudbuild-vm.yaml  @wgrzelak @khajduczenia @huyhg
+cloudbuild-vm.yaml  @GoogleCloudPlatform/launcher-operations
 
 /docker/ @GoogleCloudPlatform/c2d-contributors
