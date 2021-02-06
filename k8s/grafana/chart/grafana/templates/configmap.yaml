@@ -7,13 +7,13 @@ metadata:
     app.kubernetes.io/component: grafana-server
 data:
   grafana.ini: |
-    paths:
-      data: /var/lib/grafana/data
-      logs: /var/log/grafana
-      plugins: /var/lib/grafana/plugins
-    analytics:
-      check_for_updates: true
-    log:
-      mode: console
-    grafana_net:
-      url: https://grafana.net
+    [analytics]
+    check_for_updates = true
+    [grafana_net]
+    url = https://grafana.net
+    [log]
+    mode = console
+    [paths]
+    data = /var/lib/grafana/data
+    logs = /var/log/grafana
+    plugins = /var/lib/grafana/plugins
