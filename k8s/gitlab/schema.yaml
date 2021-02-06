@@ -130,6 +130,7 @@ properties:
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: Service account used by main GitLab StatefulSet
         roles:
         - type: ClusterRole
           rulesType: CUSTOM

@@ -14,9 +14,9 @@ actions:
         contains: 'Grafana'
 - name: Is Grafana /metrics HTTP endpoint working
   bashTest:
-    script: curl -f "http://$APP_INSTANCE_NAME-grafana:3000/metrics"
+    script: curl -f "http://$APP_INSTANCE_NAME-grafana:3000/metrics" | grep go_gc_duration
     expect:
       stdout:
-        contains: '# HELP go_gc_duration_seconds A summary of the GC invocation durations.'
+        contains: '# TYPE go_gc_duration_seconds summary'
       exitCode:
         equals: 0
