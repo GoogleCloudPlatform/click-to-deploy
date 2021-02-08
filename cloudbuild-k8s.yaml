@@ -14,41 +14,116 @@
 
 timeout: 1800s # 30m
 options:
-  workerPool: ${PROJECT_ID}/gcb-workers-pool
+  workerPool: projects/${PROJECT_ID}/locations/us-central1/workerPools/gcb-workers-pool-e2
 substitutions:
   _CLUSTER_NAME: marketplace-testing
   _CLUSTER_LOCATION: us-central1
+
 steps:
-
-- id: Build C2D Docker Image
+- id: Pull Dev Image
   name: gcr.io/cloud-builders/docker
+  dir: k8s
+  entrypoint: bash
   args:
-  - build
-  - --tag
-  - click-to-deploy
-  - --file
-  - k8s.Dockerfile
-  - .
+  - -exc
+  - |
+    TAG="$$(cat ./MARKETPLACE_TOOLS_TAG)"
+    docker pull "gcr.io/cloud-marketplace-tools/k8s/dev:$$TAG"
+    docker tag "gcr.io/cloud-marketplace-tools/k8s/dev:$$TAG" "gcr.io/cloud-marketplace-tools/k8s/dev:local"
 
-- id: Run Cloud Build K8s Generator
-  name: click-to-deploy
-  entrypoint: python
-  args:
-  - scripts/cloudbuild_k8s_generator.py
-  - --solution
-  - ${_SOLUTION_NAME}
-  - --output
-  - k8s/${_SOLUTION_NAME}/cloudbuild.yaml
-
-- id: Test Solution
+- id: Initialize Credentials
   name: gcr.io/cloud-builders/gcloud
+  waitFor:
+  - '-'
+  entrypoint: bash
   args:
-  - builds
-  - submit
-  - --timeout
-  - 1800s
-  - --config
-  - k8s/${_SOLUTION_NAME}/cloudbuild.yaml
-  - --substitutions
-  - _CLUSTER_NAME=${_CLUSTER_NAME},_CLUSTER_LOCATION=${_CLUSTER_LOCATION}
-  - .
+  - -exc
+  - |
+    gcloud container clusters get-credentials '${_CLUSTER_NAME}' --zone '${_CLUSTER_LOCATION}' --project '$PROJECT_ID'
+    mkdir -p /workspace/.kube/
+    cp -r $$HOME/.kube/ /workspace/
+    mkdir -p /workspace/.config/gcloud/
+    cp -r $$HOME/.config/gcloud/ /workspace/.config/
+
+- id: Install CRDs
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  waitFor:
+  - Initialize Credentials
+  - Pull Dev Image
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  dir: k8s/${_SOLUTION_NAME}
+  entrypoint: bash
+  args:
+  - -exc
+  - |
+    gcloud container clusters get-credentials '${_CLUSTER_NAME}' --zone '${_CLUSTER_LOCATION}' --project '$PROJECT_ID'
+    make crd/install
+
+- id: Run diagnostic tool
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  waitFor:
+  - Install CRDs
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  dir: k8s/${_SOLUTION_NAME}
+  args:
+  - make
+  - app/doctor
+
+- id: Build Solution
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  waitFor:
+  - Run diagnostic tool
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  dir: k8s/${_SOLUTION_NAME}
+  args:
+  - make
+  - -j4
+  - app/build
+
+- id: Verify Solution
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  waitFor:
+  - Build Solution
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  dir: k8s/${_SOLUTION_NAME}
+  args:
+  - make
+  - -j4
+  - app/verify
+
+- id: Verify Solution Extra Configs
+  name: gcr.io/cloud-marketplace-tools/k8s/dev:local
+  waitFor:
+  - Build Solution
+  env:
+  - 'KUBE_CONFIG=/workspace/.kube'
+  - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  # Use local Docker network named cloudbuild as described here:
+  # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
+  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  dir: k8s/${_SOLUTION_NAME}
+  entrypoint: bash
+  args:
+  - -exc
+  - |
+    bash <(jq -r --arg solution ${_SOLUTION_NAME} '.[$solution] | .[]? | "\(.env_vars | join(" ")) make -j4 app/verify"' ../../scripts/extra_configs.json)
