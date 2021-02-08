@@ -58,13 +58,29 @@ bash 'Extract Discourse source code' do
 EOH
 end
 
+bash 'Install Ruby version required for Discourse' do
+  cwd '/tmp/'
+  user 'root'
+  environment({
+    'rubyVersion' => node['discourse']['ruby']['version'],
+  })
+  code <<-EOH
+    source /usr/local/rvm/scripts/rvm
+    rvm install $rubyVersion
+EOH
+end
+
 bash 'Discourse Bundle Install' do
   cwd '/tmp/'
   user 'root'
+  environment({
+    'rubyVersion' => node['discourse']['ruby']['version'],
+  })
   code <<-EOH
     PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin su discourse -c '\
       cd /var/www/discourse
       source /usr/local/rvm/scripts/rvm
+      rvm use $rubyVersion --default
       bundle install --deployment --jobs 4 --without test development
       mkdir -p /home/discourse/discourse/tmp/sockets \
                /home/discourse/discourse/tmp/pids \
@@ -98,11 +114,15 @@ end
 bash 'Discourse DB Migrate and precompile assets precompile' do
   cwd '/tmp/'
   user 'root'
+  environment({
+    'rubyVersion' => node['discourse']['ruby']['version'],
+  })
   code <<-EOH
     /etc/init.d/redis-server start
     PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin su discourse -c '\
       cd /var/www/discourse
       source /usr/local/rvm/scripts/rvm
+      rvm use $rubyVersion --default
       export RAILS_ENV=production
       bundle exec rake db:migrate
       bundle exec rake assets:precompile'
