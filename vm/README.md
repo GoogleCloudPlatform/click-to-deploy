@@ -74,7 +74,7 @@ To pull the `imagebuilder` container image, run the following `docker`
 command:
 
 ```shell
-docker pull gcr.io/cloud-marketplace-tools/vm/imagebuilder:0.1.5
+docker pull gcr.io/cloud-marketplace-tools/vm/imagebuilder:0.1.6
 ```
 
 The container uses a GCP service account JSON key to access the GCP project,
