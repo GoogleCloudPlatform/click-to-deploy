@@ -86,7 +86,7 @@ properties:
         roles:
         - type: ClusterRole
           rulesType: PREDEFINED
-          rulesFromRoleName: cluster-admin
+          rulesFromRoleName: viewer # see what happens! cluster-admin
   CDRJobServiceAccount:
     type: string
     title: CRD deployer Service Account
