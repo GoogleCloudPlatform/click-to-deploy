@@ -11,3 +11,4 @@ spec:
     - name: service
       port: 3000
   selector: *GrafanaDeploymentLabels
+

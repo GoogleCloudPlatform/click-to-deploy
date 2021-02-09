@@ -115,3 +115,4 @@ function pull_if_changed() {
     echo "GCS sync: no updates available - skip..."
   fi
 }
+

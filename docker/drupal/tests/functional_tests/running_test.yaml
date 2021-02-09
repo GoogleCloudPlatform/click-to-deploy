@@ -70,3 +70,4 @@ tests:
   expect:
     stdout:
       matches: 'Apache Status'
+

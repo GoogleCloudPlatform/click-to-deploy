@@ -47,3 +47,4 @@ spec:
       targetPort: gremlin
       name: gremlin
   selector: *OrientdbDeploymentLabels
+

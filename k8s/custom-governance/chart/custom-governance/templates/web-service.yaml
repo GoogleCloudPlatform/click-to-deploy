@@ -13,3 +13,4 @@ spec:
   selector:
     run: cg-app
   type: NodePort
+

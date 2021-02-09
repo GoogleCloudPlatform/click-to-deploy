@@ -22,3 +22,4 @@ default['c2d-config']['common-packages'] = [
 
 default['c2d-config']['base-dir'] = '/opt/c2d'
 default['c2d-config']['config-dir'] = "#{node['c2d-config']['base-dir']}/etc"
+

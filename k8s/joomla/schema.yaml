@@ -132,3 +132,4 @@ required:
 - joomla.persistence.size
 - enablePublicServiceAndIngress
 - metrics.exporter.enabled
+

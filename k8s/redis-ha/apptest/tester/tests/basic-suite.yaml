@@ -50,3 +50,4 @@ actions:
     expect:
       stdout:
         matches: '(?m)^haproxy_process_nbproc 1$'
+

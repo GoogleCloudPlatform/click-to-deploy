@@ -45,3 +45,4 @@ describe 'C2D startup scripts should exists' do
     it { should exist }
   end
 end
+

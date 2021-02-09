@@ -19,3 +19,4 @@ package 'libapache2-mod-passenger' do
 end
 
 execute 'a2enmod passenger'
+

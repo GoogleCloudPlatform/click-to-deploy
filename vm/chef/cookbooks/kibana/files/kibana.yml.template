@@ -3,3 +3,4 @@ status.allowAnonymous: true
 elasticsearch.hosts: ["${es_protocol}://${es_host}:${es_port}"]
 elasticsearch.username: "${kibana_username}"
 elasticsearch.password: "${kibana_password}"
+

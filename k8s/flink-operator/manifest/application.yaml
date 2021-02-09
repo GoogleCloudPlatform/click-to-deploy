@@ -43,3 +43,4 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: "$APP_INSTANCE_NAME"
+

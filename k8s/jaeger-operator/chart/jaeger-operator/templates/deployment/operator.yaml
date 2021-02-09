@@ -41,3 +41,4 @@ spec:
                   fieldPath: metadata.namespace
             - name: OPERATOR_NAME
               value: "{{ template "jaeger_operator.DeploymentName" . }}"
+

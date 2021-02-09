@@ -29,3 +29,4 @@ includedFiles:
 name: Trigger-for-K8s-zookeeper
 substitutions:
   _SOLUTION_NAME: zookeeper
+

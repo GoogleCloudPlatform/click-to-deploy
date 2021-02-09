@@ -39,3 +39,11 @@ describe 'Not Installed Stackdriver Monitoring' do
     it { should_not be_running }
   end
 end
+
+
+
+
+
+
+
+

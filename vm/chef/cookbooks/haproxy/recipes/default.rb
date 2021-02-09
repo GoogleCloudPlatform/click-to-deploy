@@ -28,3 +28,4 @@ end
 service 'haproxy' do
   action :start
 end
+

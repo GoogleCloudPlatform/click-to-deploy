@@ -51,3 +51,4 @@ spec:
     serviceName: {{ .Release.Name }}-drupal-svc
     servicePort: http
 {{ end }}
+

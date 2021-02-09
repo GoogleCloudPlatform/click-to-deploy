@@ -17,3 +17,4 @@
 until mysqladmin ping --user=root > /dev/null 2>&1; do
   sleep 3
 done
+

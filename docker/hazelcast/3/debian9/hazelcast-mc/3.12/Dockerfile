@@ -87,3 +87,4 @@ EXPOSE ${MC_HEALTH_CHECK_PORT}
 
 # Start Management Center
 CMD ["bash", "/mc-start.sh"]
+

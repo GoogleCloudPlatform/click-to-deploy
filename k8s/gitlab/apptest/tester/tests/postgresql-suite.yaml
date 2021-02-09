@@ -33,3 +33,4 @@ actions:
     expect:
       stdout:
         equals: 'DROP TABLE'
+

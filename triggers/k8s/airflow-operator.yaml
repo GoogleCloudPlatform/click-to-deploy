@@ -30,3 +30,4 @@ includedFiles:
 name: e84b1610-5061-49af-b8e0-62665d2369c5
 substitutions:
   _SOLUTION_NAME: airflow-operator
+

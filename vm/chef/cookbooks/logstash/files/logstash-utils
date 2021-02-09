@@ -54,3 +54,4 @@ function download_certificate() {
   curl -s -o "${cert_folder}/${cert_name}.crt" \
     "http://${es_certshare_host}:8000/ca/ca.crt"
 }
+

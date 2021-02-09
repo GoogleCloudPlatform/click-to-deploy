@@ -16,3 +16,4 @@ default['php74']['packages'] = ['php7.4-fpm', 'php7.4-common', 'php7.4']
 
 # Default modules to install
 default['php74']['modules'] = %w(cgi gd curl json)
+

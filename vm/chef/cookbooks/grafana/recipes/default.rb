@@ -30,3 +30,4 @@ end
 package 'grafana'
 
 c2d_startup_script 'grafana'
+

@@ -19,3 +19,4 @@
   name: wait-for-crds-created
   image: {{ .Values.deployerHelm.image }}
 {{- end -}}
+

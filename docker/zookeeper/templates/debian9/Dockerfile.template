@@ -56,3 +56,4 @@ EXPOSE 2181
 ENTRYPOINT ["zkGenConfig.sh"]
 
 CMD ["sh", "-c", "zkServer.sh start-foreground"]
+

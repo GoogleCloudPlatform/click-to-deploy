@@ -65,3 +65,4 @@ required:
 - namespace
 - persistence.size
 - consolePassword
+

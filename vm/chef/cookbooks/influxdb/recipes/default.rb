@@ -23,3 +23,4 @@ end
 package 'influxdb'
 
 c2d_startup_script 'influxdb'
+

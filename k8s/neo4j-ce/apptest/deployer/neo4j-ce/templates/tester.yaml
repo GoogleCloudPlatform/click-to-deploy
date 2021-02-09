@@ -41,3 +41,4 @@ spec:
           name: {{ .Release.Name }}-neo4j-secret
           key: password
   restartPolicy: Never
+

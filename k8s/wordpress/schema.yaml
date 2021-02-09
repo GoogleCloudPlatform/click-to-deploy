@@ -151,3 +151,4 @@ required:
 - metrics.exporter.enabled
 - enablePublicServiceAndIngress
 - certificate
+

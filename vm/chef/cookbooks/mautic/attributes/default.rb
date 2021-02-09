@@ -25,3 +25,4 @@ default['mautic']['packages'] = [
 default['mautic']['version'] = '3.0'
 default['mautic']['user'] = 'www-data'
 default['mautic']['db']['name'] = 'mautic'
+

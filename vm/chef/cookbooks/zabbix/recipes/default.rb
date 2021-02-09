@@ -114,3 +114,4 @@ c2d_startup_script 'zabbix' do
   source 'opt-c2d-scripts-zabbix.erb'
   action :template
 end
+

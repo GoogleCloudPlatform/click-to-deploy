@@ -62,3 +62,4 @@ app/build:: .build/spark-operator/deployer \
 	docker tag gcr.io/spark-operator/spark-operator:v2.4.0-v1beta1-latest "$(REGISTRY)/spark-operator:$(TAG)"
 	docker push "$(REGISTRY)/spark-operator:$(TAG)"
 	@touch "$@"
+

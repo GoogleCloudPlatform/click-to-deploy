@@ -82,3 +82,4 @@ gcloud builds submit . \
 Where:
 
 *  `[SOLUTION_NAME]` is the Docker image that is built.
+

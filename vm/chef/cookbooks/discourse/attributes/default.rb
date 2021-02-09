@@ -40,3 +40,4 @@ default['discourse']['packages'] = [
   'zlib1g',
   'zlib1g-dev',
 ]
+

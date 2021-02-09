@@ -1,3 +1,4 @@
 apiVersion: v1
 name: SolrCloud
 version: 1.0.0
+

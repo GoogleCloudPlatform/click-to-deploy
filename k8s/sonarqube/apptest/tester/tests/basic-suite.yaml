@@ -8,3 +8,4 @@ actions:
         equals: 200
       stdout:
         contains: 'sonarqube'
+

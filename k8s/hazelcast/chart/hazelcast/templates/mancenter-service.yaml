@@ -14,3 +14,4 @@ spec:
   ports:
   - name: mancenterport
     port: 8080
+

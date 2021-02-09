@@ -10,3 +10,4 @@ spec:
   backend:
     serviceName: cg-service
     servicePort: 80
+

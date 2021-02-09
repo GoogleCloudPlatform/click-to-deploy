@@ -17,3 +17,4 @@ require 'spec_helper'
 describe service('couchdb'), :if => os[:family] == 'debian' do
   it { should be_enabled }
 end
+

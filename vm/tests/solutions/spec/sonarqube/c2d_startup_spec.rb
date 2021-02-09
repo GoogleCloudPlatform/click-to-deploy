@@ -57,3 +57,4 @@ end
 describe user('sonar') do
   it { should exist }
 end
+

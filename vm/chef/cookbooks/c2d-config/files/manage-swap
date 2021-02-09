@@ -58,3 +58,4 @@ if [[ "$memavail" -lt "$memsmall" && "$spaceavail" -gt "$spacelimit" ]]; then
 else
   echo "swap not enabled: available memory over $memsmall or not enough free space on disk."
 fi
+

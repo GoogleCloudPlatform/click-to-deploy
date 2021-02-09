@@ -73,3 +73,4 @@ systemctl disable google-c2d-startup.service
 
 echo "Google C2D startup config results: SUCCESSES=${SUCCESS_CNT} FAILURES=${FAILURE_CNT}"
 exit ${FAILURE_CNT}
+

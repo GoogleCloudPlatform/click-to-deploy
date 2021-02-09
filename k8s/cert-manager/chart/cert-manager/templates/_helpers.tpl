@@ -62,3 +62,4 @@ If release name contains chart name it will be used as a full name.
   name: wait-for-crds-created
   image: {{ .Values.deployer.image }}
 {{- end -}}
+

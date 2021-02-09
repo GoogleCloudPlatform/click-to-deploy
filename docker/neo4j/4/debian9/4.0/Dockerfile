@@ -70,3 +70,4 @@ EXPOSE 7474 7473 7687
 
 ENTRYPOINT ["/sbin/tini", "-g", "--", "/docker-entrypoint.sh"]
 CMD ["neo4j"]
+

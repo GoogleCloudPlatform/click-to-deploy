@@ -93,3 +93,4 @@ template '/etc/nginx/sites-available/default' do
 end
 
 c2d_startup_script 'odoo-setup'
+

@@ -42,3 +42,4 @@ setup_nginx "${default_domain}"
 
 # Start Mattermost
 systemctl start mattermost
+

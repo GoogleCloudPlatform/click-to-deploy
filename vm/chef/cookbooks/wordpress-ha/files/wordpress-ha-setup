@@ -220,3 +220,4 @@ systemctl enable gcs-sync
 systemctl start gcs-sync
 
 echo "C2D: Added and enabled gcs-sync service!"
+

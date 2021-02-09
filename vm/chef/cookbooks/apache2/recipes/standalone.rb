@@ -7,3 +7,4 @@ include_recipe 'apache2::security-config'
 service 'apache2' do
   action [ :enable, :restart ]
 end
+

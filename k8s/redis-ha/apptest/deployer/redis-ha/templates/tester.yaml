@@ -34,3 +34,4 @@ spec:
     - name: REDIS_SERVICE
       value: {{ template "redis-ha.fullname" . }}
   restartPolicy: Never
+

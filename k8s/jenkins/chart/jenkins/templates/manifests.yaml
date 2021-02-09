@@ -123,3 +123,4 @@ spec:
   backend:
     serviceName: {{ .Release.Name }}-jenkins-ui
     servicePort: 8080
+

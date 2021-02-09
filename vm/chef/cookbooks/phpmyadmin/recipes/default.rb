@@ -47,3 +47,4 @@ EOH
 end
 
 c2d_startup_script 'phpmyadmin-setup'
+

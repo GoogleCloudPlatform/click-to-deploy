@@ -42,3 +42,4 @@ vm-lint: ## Runs lint for Chef cookbooks
 .PHONY: vm-generate-triggers
 vm-generate-triggers: ## Generates and displays GCB triggers for VM
 	@python scripts/triggers_vm_generator.py
+

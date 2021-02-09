@@ -90,3 +90,4 @@ if (( ${FAILURE_CNT} > 0 )); then
 else
   success
 fi
+

@@ -17,3 +17,4 @@ default['magento']['packages']['dependencies'] = ['redis-server']
 default['magento']['user'] = 'www-data'
 default['magento']['version'] = '2.1.15'
 default['magento']['db']['name'] = 'magento'
+

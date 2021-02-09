@@ -63,3 +63,4 @@ app/build:: .build/airflow-operator/deployer \
 	docker tag gcr.io/airflow-operator/airflow-operator:v1alpha1 "$(REGISTRY)/airflow-operator:$(TAG)"
 	docker push "$(REGISTRY)/airflow-operator:$(TAG)"
 	@touch "$@"
+

@@ -129,3 +129,4 @@ spec:
       resources:
         requests:
           storage: {{ .Values.joomla.persistence.size }}
+

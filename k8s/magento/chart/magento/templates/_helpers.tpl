@@ -8,3 +8,4 @@ Define Protocol based if the certificate has been provided or not
     HTTP
 {{- end -}}
 {{- end -}}
+

@@ -86,3 +86,4 @@ package 'remove_temporary_deps' do
 end
 
 c2d_startup_script 'redis'
+

@@ -11,3 +11,4 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
 ## download geoip db on start if it does not exist
 # @reboot                www-data   [[ "$(ls -A /var/www/html/app/cache/ip_data 2>/dev/null)" ]] || php /var/www/html/app/console mautic:iplookup:download > /var/log/cron.pipe 2>&1
+

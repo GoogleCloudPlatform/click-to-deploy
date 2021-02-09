@@ -69,3 +69,4 @@ required:
 - namespace
 - elasticsearch.replicas
 - metrics.exporter.enabled
+

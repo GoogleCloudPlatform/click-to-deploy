@@ -16,3 +16,4 @@ RUN curl -o /bin/kubectl \
 
 WORKDIR /
 ENTRYPOINT ["/tester.sh"]
+

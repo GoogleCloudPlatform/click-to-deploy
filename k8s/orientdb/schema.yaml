@@ -83,3 +83,4 @@ required:
 - orientdb.persistence.storage.size
 - orientdb.persistence.backup.size
 - orientdb.rootPassword
+

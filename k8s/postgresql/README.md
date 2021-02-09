@@ -403,3 +403,4 @@ To update your PostgreSQL installation, follow the steps below:
 ```shell
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
 ```
+

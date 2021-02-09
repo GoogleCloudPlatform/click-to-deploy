@@ -61,3 +61,4 @@ package 'uninstall_dev_packages' do
   package_name node['alfresco']['src']['temp_packages']
   action :purge
 end
+

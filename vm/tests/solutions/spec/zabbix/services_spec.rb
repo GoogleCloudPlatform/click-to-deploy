@@ -38,3 +38,4 @@ describe service('zabbix-server'), :if => os[:family] == 'debian' do
   it { should be_enabled }
   it { should be_running }
 end
+

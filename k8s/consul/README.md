@@ -492,3 +492,4 @@ you can use this command to delete the cluster:
 ```shell
 gcloud container clusters delete "${CLUSTER}" --zone "${ZONE}"
 ```
+

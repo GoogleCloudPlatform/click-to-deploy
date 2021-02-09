@@ -25,3 +25,4 @@ spec:
     singular: nucliofunctionevent
   scope: Namespaced
   version: v1beta1
+

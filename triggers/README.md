@@ -96,3 +96,4 @@ The following sections are concerned to Kubernetes apps.
       --filter="filename:cloudbuild-k8s.yaml AND substitutions._SOLUTION_NAME:$APP_NAME" \
       --project $PROJECT_ID
     ```
+

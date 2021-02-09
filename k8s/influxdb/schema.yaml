@@ -76,3 +76,4 @@ required:
 - admin.user
 - admin.password
 - metrics.exporter.enabled
+

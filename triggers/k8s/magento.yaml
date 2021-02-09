@@ -28,3 +28,4 @@ includedFiles:
 name: Trigger-for-K8s-magento
 substitutions:
   _SOLUTION_NAME: magento
+

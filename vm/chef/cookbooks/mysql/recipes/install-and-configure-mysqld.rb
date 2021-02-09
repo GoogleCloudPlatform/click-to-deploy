@@ -33,3 +33,4 @@ bash 'rm_test_db_and_users' do
     mysql -u root -e "DELETE FROM mysql.user WHERE User != 'mysql.sys' AND User != 'root'"
   EOH
 end
+

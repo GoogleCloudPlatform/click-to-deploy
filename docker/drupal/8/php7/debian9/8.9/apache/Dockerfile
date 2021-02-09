@@ -89,3 +89,4 @@ COPY makedb.php /makedb.php
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["apache2-foreground"]
+

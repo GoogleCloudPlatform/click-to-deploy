@@ -27,3 +27,4 @@ if [[ "${DEBUG_DOCKER_ENTRYPOINT}" = "true" ]]; then
 fi
 
 /scripts/$1
+

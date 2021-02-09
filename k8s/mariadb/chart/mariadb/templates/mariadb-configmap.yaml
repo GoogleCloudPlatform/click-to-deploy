@@ -43,3 +43,4 @@ data:
     ssl-ca=/etc/mysql/mariadb.conf.d/certs/ca.crt
     ssl-cert=/etc/mysql/mariadb.conf.d/certs/tls.crt
     ssl-key=/etc/mysql/mariadb.conf.d/certs/tls.key
+

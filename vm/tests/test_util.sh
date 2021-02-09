@@ -27,3 +27,4 @@ function failure() { echo "> FAILED" && exit 1; }
 function failure_msg() { echo "> FAILED: ${1}" && exit 1; }
 function warning() { echo "> WARNING" && exit 2; }
 function warning_msg() { echo "> WARNING: ${1}" && exit 2; }
+

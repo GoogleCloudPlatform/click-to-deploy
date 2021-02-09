@@ -17,3 +17,4 @@ default['percona']['debian']['codename'] = 'stretch'
 default['percona']['pkg'] = 'lsof psmisc socat libaio1 libdbd-mysql-perl \
   libdbi-perl netcat-openbsd perl-base percona-xtradb-cluster-5.7 \
   percona-xtrabackup-24 debian-keyring'
+

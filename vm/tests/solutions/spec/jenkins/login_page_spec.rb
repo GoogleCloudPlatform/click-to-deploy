@@ -20,3 +20,4 @@ describe command('curl -k https://localhost/login') do
   its(:stdout) { should match /name="j_password"/ }
   its(:stdout) { should match /type="password"/ }
 end
+

@@ -20,3 +20,4 @@ spec:
     - name: SERVICEACCOUNT
       value: $SERVICE_ACCOUNT
   restartPolicy: Never
+

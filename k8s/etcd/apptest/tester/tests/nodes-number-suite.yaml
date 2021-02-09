@@ -19,3 +19,4 @@ actions:
     expect:
       stdout:
         equals: '3'
+

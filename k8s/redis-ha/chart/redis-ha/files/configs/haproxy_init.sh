@@ -20,3 +20,4 @@ if [ "${AUTH:-}" ]; then
     sed -i "s/REPLACE_AUTH_SECRET/${ESCAPED_AUTH}/" "$HAPROXY_CONF"
 fi
 {{- end }}
+

@@ -39,3 +39,4 @@ spec:
     - name: ORIENTDB_USER
       value: "root"
   restartPolicy: Never
+

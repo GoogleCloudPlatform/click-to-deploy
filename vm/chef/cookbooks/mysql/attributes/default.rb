@@ -20,3 +20,4 @@ default['mysql']['bind_address'] = 'localhost'
 default['mysql']['apt']['file'] = 'mysql-apt-config_0.8.12-1_all.deb'
 default['mysql']['apt']['md5'] = '65b0b081ce9cf90c7e2d3cc540aa8955'
 default['mysql']['apt']['url'] = "https://dev.mysql.com/get/#{node['mysql']['apt']['file']}"
+

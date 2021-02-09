@@ -54,3 +54,4 @@ EOH
 end
 
 c2d_startup_script 'couchdb'
+

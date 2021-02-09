@@ -69,3 +69,4 @@ spec:
       - name: neo4j-storage
         persistentVolumeClaim:
           claimName: {{ .Release.Name }}-neo4j-pvc
+

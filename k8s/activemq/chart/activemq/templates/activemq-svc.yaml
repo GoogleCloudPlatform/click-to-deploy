@@ -32,3 +32,4 @@ spec:
     targetPort: 61614
     name: activemq-ws
   selector: *ActivemqDeploymentLabels
+

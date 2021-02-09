@@ -21,3 +21,4 @@ require 'spec_helper'
 describe command('mysqld --version') do
   its(:stdout) { should match /mysqld  Ver 10\.5\..* for debian-linux-gnu on x86_64 .mariadb.org binary distribution./ }
 end
+

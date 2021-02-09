@@ -113,3 +113,4 @@ package 'uninstall_temp_package' do
   package_name node['mongodb']['temp_packages']
   action :purge
 end
+

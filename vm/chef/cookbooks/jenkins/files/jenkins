@@ -65,3 +65,4 @@ sed -i -e 's/<isSetupComplete>false/<isSetupComplete>true/' -e 's/<installStateN
 
 systemctl stop jenkins
 systemctl start jenkins
+

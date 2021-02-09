@@ -21,3 +21,4 @@ spec:
             - -ec
             - curl -v -H "x-goog-cg-cron:true" cg-service:80/compliance/ruleConfig/syncPoliciesFromGcsToSpanner/
           restartPolicy: Never
+

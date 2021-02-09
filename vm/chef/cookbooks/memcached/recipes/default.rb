@@ -30,3 +30,4 @@ bash 'modify /etc/memcached.conf' do
 end
 
 c2d_startup_script 'memcached'
+

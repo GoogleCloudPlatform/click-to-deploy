@@ -31,3 +31,4 @@ package 'Install Packages' do
   package_name ['google-fluentd', 'google-fluentd-catch-all-config']
   action :install
 end
+

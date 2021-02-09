@@ -29,3 +29,4 @@ spec:
       operated-prometheus: "true"
   endpoints:
   - port: web
+

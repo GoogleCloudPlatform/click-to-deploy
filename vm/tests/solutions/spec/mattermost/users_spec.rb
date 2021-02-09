@@ -19,3 +19,4 @@ describe user('mattermost') do
   it { should belong_to_group 'mattermost' }
   it { should have_home_directory '/home/mattermost' }
 end
+

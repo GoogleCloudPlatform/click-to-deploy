@@ -66,3 +66,4 @@ steps:
   - --volume=/workspace/vm/tests:/tests:ro
   - --volume=/workspace/service-account.json:/service-account.json:ro
   - gcr.io/cloud-marketplace-tools/vm/imagebuilder:local
+

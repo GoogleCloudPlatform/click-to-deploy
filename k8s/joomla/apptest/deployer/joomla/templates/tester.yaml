@@ -51,3 +51,4 @@ spec:
     - name: JOOMLA_DB_NAME
       value: joomla
   restartPolicy: Never
+

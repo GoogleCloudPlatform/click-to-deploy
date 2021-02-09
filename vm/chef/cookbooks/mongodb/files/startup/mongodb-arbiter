@@ -48,3 +48,4 @@ envsubst < mongod.arb.conf.template > mongod.conf
 rm mongod.arb.conf.template
 
 service mongod start
+

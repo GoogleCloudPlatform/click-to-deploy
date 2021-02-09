@@ -104,3 +104,4 @@ required:
 - replication.password
 - metrics.exporter.enabled
 - certificate
+

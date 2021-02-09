@@ -17,3 +17,4 @@ depends 'mysql'
 depends 'nginx'
 depends 'nodejs'
 supports 'debian'
+

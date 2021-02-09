@@ -29,3 +29,4 @@ includedFiles:
 name: Trigger-for-K8s-etcd
 substitutions:
   _SOLUTION_NAME: etcd
+

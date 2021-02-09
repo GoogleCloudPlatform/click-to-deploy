@@ -17,3 +17,4 @@ require 'spec_helper'
 describe file('/usr/src/license/RabbitMQ_LICENSE_and_COPYRIGHT') do
   it { should be_file }
 end
+

@@ -33,3 +33,4 @@ spec:
     app: {{ include "redis-ha.name" $root }}
     "statefulset.kubernetes.io/pod-name": {{ $fullName }}-server-{{ $i }}
 {{- end }}
+

@@ -37,3 +37,4 @@ tests:
   expect:
     stdout:
       matches: '<str name="status">OK</str>'
+

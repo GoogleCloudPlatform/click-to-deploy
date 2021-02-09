@@ -32,3 +32,4 @@ COPY --from=build /tmp/grafana.tar.gz /data/chart/
 COPY --from=build /tmp/test/grafana.tar.gz /data-test/chart/
 COPY --from=build /tmp/apptest/schema.yaml /data-test/
 COPY --from=build /tmp/schema.yaml /data/
+

@@ -44,3 +44,4 @@ done
 tar -zcf /tmp/backup.tar.gz -C /tmp/backup .
 
 nodetool clearsnapshot "${KEYSPACE}"
+

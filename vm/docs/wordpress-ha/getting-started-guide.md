@@ -114,3 +114,4 @@ When Multisite feature is enabled with installation of WordPress HA, it will add
 and will disable all plugins to enable installing of network for Multisite sites.
 
 To complete installation please visit [Create a Network for sites](https://wordpress.org/support/article/create-a-network/#step-3-installing-a-network) and continue from Step 3.
+

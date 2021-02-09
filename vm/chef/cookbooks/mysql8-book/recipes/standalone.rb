@@ -17,3 +17,4 @@
 include_recipe 'mysql8-book::version-8.0-standalone'
 
 c2d_startup_script 'mysql-book-customization'
+

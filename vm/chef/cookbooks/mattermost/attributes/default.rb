@@ -24,3 +24,4 @@ default['mattermost']['password'] = `openssl rand -base64 12 | fold -w 12 | head
 default['mattermost']['db']['name'] = 'mattermost'
 
 default['mattermost']['certbot']['version'] = '1.5.0'
+

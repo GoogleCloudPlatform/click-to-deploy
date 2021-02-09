@@ -13,3 +13,4 @@
 # limitations under the License.
 
 default['mysql8-book']['tools'] = ['mysql-shell']
+

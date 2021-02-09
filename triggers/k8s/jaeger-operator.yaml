@@ -28,3 +28,4 @@ includedFiles:
 name: Trigger-for-K8s-jaeger-operator
 substitutions:
   _SOLUTION_NAME: jaeger-operator
+

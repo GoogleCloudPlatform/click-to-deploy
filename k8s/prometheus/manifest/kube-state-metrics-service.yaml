@@ -18,3 +18,4 @@ spec:
     protocol: TCP
   selector:
     k8s-app: kube-state-metrics
+

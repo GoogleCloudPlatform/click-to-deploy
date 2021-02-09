@@ -50,3 +50,4 @@ else
   kill -9 "$SOLR_PID"
 fi
 ) | tee "$SOLR_LOGS_DIR/solr_oom_killer-$SOLR_PORT-$NOW.log"
+

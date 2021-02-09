@@ -26,3 +26,4 @@ spec:
     port: 9121
   selector: *RedisLabels
   type: ClusterIP
+

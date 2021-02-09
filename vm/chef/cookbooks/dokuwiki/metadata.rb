@@ -17,3 +17,4 @@ depends 'apache2'
 depends 'c2d-config'
 depends 'php73'
 supports 'debian'
+

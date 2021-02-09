@@ -10,3 +10,4 @@ neo4j:
     memory: 512Mi
   username: neo4j
   password: null
+

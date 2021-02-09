@@ -20,3 +20,4 @@ spec:
     kind: Deployment
   - group: ''
     kind: Service
+

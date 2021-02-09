@@ -35,3 +35,4 @@ default['nagios']['ncpa']['url'] = "https://assets.nagios.com/downloads/ncpa/#{n
 
 default['nagios']['packages']['core'] = %w(autoconf gcc libc6 libgd-dev mailutils make php unzip)
 default['nagios']['packages']['plugins'] = %w(autoconf bc build-essential dc gawk gcc gettext libc6 libmcrypt-dev libnet-snmp-perl libssl-dev make snmp wget)
+

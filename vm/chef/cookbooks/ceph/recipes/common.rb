@@ -62,3 +62,4 @@ file "/home/#{node['ceph']['deploymentuser']}/.ssh/config" do
   mode '0600'
   action :create
 end
+

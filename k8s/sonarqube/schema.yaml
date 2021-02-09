@@ -97,3 +97,4 @@ required:
 - sonarqube.persistence.size
 - metrics.exporter.enabled
 - certificate
+

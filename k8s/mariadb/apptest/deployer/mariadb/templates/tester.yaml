@@ -33,3 +33,4 @@ spec:
           name: {{ .Release.Name }}-mariadb
           key: mariadb-pass
   restartPolicy: Never
+

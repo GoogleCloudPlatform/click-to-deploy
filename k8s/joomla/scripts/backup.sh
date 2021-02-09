@@ -114,3 +114,4 @@ kubectl exec ${app}-joomla-0 -n ${namespace} -c joomla \
   -- /bin/bash -c "rm ${remote_backup_file} ${remote_backup_file}.md5"
 
 echo "Done. Backup files stored in: ${final_backup_file}."
+

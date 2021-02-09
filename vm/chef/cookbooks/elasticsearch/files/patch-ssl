@@ -8,3 +8,4 @@ xpack.security.transport.ssl.key: certs/node${current_node_idx}.key
 xpack.security.transport.ssl.certificate: certs/node${current_node_idx}.crt
 xpack.security.transport.ssl.certificate_authorities: certs/ca.crt
 xpack.security.transport.ssl.verification_mode: certificate
+

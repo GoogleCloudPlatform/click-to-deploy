@@ -27,3 +27,4 @@ cd /var/www/ghost
 
 ghost config --no-prompt --url="http://$(get_external_ip)" --dbpass="${ghost_db_password}"
 ghost setup --no-prompt --no-setup-mysql --no-setup-ssl
+

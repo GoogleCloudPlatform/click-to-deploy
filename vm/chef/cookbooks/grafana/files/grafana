@@ -40,3 +40,4 @@ readonly grafana_url="https://localhost:${grafana_port}"
 until curl -s -k "${grafana_url}"; do
   sleep 3
 done
+

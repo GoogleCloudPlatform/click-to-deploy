@@ -36,3 +36,4 @@ spec:
           key: solr-password
 
   restartPolicy: Never
+

@@ -15,3 +15,4 @@
 name 'logstash'
 depends 'openjdk11'
 supports 'debian'
+

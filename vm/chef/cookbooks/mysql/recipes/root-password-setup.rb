@@ -18,3 +18,4 @@
 include_recipe 'mysql'
 
 c2d_startup_script 'mysql-root-localhost-password-setup'
+

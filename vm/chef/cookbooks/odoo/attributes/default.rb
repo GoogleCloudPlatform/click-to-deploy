@@ -48,3 +48,4 @@ default['odoo']['src']['sha256'] = '7418008825f02b5b0dfcd4b16d5b73b97bdb0f670bfb
 default['odoo']['wkhtmltopdf']['version'] = '0.12.5'
 default['odoo']['wkhtmltopdf']['release'] = '0.12.5-1'
 default['odoo']['wkhtmltopdf']['sha256'] = '1140b0ab02aa6e17346af2f14ed0de807376de475ba90e1db3975f112fbd20bb'
+

@@ -16,3 +16,4 @@ c2d_startup_script 'create-self-signed-certificate' do
   source 'create-self-signed-certificate.erb'
   action :template
 end
+

@@ -33,3 +33,4 @@ spec:
           name: {{ .Release.Name }}-galera
           key: root-password
   restartPolicy: Never
+

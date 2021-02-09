@@ -19,3 +19,4 @@ describe command('curl http://localhost/') do
   its(:stdout) { should match /<h1>Redmine<\/h1>/ }
   its(:exit_status) { should eq 0 }
 end
+

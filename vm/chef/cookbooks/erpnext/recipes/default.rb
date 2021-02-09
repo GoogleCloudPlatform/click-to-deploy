@@ -96,3 +96,4 @@ git '/usr/src/bench' do
 end
 
 c2d_startup_script 'erpnext-setup'
+

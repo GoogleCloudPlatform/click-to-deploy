@@ -25,3 +25,4 @@ spec:
     singular: nuclioproject
   scope: Namespaced
   version: v1beta1
+

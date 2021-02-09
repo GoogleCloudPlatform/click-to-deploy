@@ -31,3 +31,4 @@ kubectl get -f airflowbase.yaml -o yaml
 kubectl get -f airflowcluster.yaml -o yaml
 kubectl delete -f airflowbase.yaml
 kubectl delete -f airflowcluster.yaml
+

@@ -40,3 +40,4 @@ while read -r f; do
     esac
     echo
 done < <(find /docker-entrypoint-initdb.d/ -mindepth 1 -type f | sort -n)
+

@@ -87,3 +87,4 @@ else
 fi
 
 echo "${START_POS_OPT}"
+

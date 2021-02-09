@@ -159,3 +159,4 @@ for node in ${cluster_hostname_list}; do
 
   (( node_id += 1 ))
 done
+

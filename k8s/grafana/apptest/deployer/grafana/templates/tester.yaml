@@ -38,3 +38,4 @@ spec:
           name: {{ .Release.Name }}-grafana
           key: admin-password
   restartPolicy: Never
+

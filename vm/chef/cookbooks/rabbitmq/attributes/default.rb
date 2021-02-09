@@ -14,3 +14,4 @@
 
 default['rabbitmq']['package_version'] = '3.6.15-1'
 default['rabbitmq']['license_url'] = 'https://raw.githubusercontent.com/rabbitmq/rabbitmq-server/master/LICENSE-MPL-RabbitMQ'
+

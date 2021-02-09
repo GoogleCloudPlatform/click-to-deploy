@@ -28,3 +28,4 @@ includedFiles:
 name: Trigger-for-K8s-flink-operator
 substitutions:
   _SOLUTION_NAME: flink-operator
+

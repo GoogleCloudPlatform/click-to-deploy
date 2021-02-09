@@ -39,3 +39,4 @@ bash 'Install RVM' do
       curl -sSL https://get.rvm.io | bash -s stable --rails --with-gems="bundler,rb-inotify"'
 EOH
 end
+

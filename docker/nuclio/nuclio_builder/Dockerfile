@@ -21,3 +21,4 @@ COPY docker-entrypoint.sh /entrypoint.sh
 COPY scripts /scripts
 
 ENTRYPOINT ["/entrypoint.sh"]
+

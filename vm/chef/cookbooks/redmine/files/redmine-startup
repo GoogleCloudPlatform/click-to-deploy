@@ -36,3 +36,4 @@ source /usr/local/rvm/scripts/rvm
 
 # Replace default password for Redmine admin user:
 rails runner "user = User.find_by_login('admin') ; user.password, user.password_confirmation = '${redmine_admin_password}'; user.save!" -e production
+

@@ -42,3 +42,4 @@ spec:
     port: 9104
   selector: *MariaDBDeploymentLabels
   clusterIP: None
+

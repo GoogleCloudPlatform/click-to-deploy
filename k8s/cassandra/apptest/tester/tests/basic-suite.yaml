@@ -67,3 +67,4 @@ actions:
     expect:
       stdout:
         equals: "jmx_scrape_error 0.0\njmx_scrape_error 0.0\njmx_scrape_error 0.0"
+

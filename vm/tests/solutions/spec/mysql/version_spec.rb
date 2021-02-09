@@ -21,3 +21,4 @@ require 'spec_helper'
 describe command('mysqld --version') do
   its(:stdout) { should match /mysqld  Ver 5\.7\..* .MySQL Community Server .GPL../ }
 end
+

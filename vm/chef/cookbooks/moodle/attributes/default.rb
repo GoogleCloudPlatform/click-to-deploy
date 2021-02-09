@@ -16,3 +16,4 @@ default['moodle']['user'] = 'www-data'
 default['moodle']['group'] = 'www-data'
 default['moodle']['db']['name'] = 'moodle'
 default['moodle']['version'] = '38'
+

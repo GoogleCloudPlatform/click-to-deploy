@@ -155,3 +155,4 @@ data:
            etcdctl ${AUTH_OPTIONS} member remove \
              --debug=true "$(cat "${ETCD_DATA_DIR}/member_id")" > \
              "$(dirname "${ETCD_DATA_DIR}")/member_removal.log" 2>&1
+

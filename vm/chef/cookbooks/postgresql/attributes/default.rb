@@ -13,3 +13,4 @@
 # limitations under the License.
 
 default['postgresql']['packages'] = ['postgresql', 'postgresql-client']
+

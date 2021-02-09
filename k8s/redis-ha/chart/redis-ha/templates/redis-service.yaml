@@ -24,3 +24,4 @@ spec:
   selector:
     app.kubernetes.io/name: "{{ .Release.Name }}"
     app: {{ template "redis-ha.name" . }}
+

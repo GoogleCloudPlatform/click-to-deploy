@@ -12,3 +12,4 @@ spec:
     requests:
       storage: "{{ .Values.mancenter.persistence.size }}"
   storageClassName: "{{ .Values.mancenter.persistence.storageClass }}"
+

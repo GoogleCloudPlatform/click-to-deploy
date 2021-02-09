@@ -24,3 +24,4 @@ UseDNS no
 
 # Enable the use of Git protcol v2
 AcceptEnv GIT_PROTOCOL
+

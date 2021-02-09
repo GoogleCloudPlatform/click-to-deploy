@@ -11,3 +11,4 @@ spec:
       app.kubernetes.io/name: {{ .Release.Name }}
       app.kubernetes.io/component: zookeeper
   maxUnavailable: {{ .Values.zookeeper.maxUnavaliblePod }}
+

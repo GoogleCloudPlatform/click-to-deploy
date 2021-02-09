@@ -11,3 +11,4 @@ spec:
     - port: 8983
       name: "solr-client"
   selector: *SolrDeploymentLabels
+

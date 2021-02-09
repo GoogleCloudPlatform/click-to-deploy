@@ -39,3 +39,4 @@ describe 'Installed Stackdriver Monitoring' do
     it { should be_running }
   end
 end
+

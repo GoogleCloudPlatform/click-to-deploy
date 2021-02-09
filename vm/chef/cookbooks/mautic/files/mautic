@@ -22,3 +22,4 @@ declare -r mautic_password
 mysql -u root -e "CREATE USER 'mautic'@'localhost' IDENTIFIED BY '${mautic_password}';"
 mysql -u root -e "GRANT ALL PRIVILEGES ON mautic.* TO 'mautic'@'localhost' IDENTIFIED BY '${mautic_password}'";
 mysql -u root -e "FLUSH PRIVILEGES"
+

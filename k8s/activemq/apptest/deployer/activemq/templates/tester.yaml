@@ -39,3 +39,4 @@ spec:
     - name: ACTIVEMQ_ADMIN_USER
       value: "admin"
   restartPolicy: Never
+

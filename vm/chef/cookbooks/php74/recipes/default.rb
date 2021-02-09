@@ -27,3 +27,4 @@ end
 node['php74']['modules'].each do |pkg|
   include_recipe "php74::module_#{pkg}"
 end
+

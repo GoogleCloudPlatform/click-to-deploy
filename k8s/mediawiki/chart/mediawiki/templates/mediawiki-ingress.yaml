@@ -14,3 +14,4 @@ spec:
     serviceName: {{ .Release.Name }}-mediawiki-svc
     servicePort: http
 {{- end -}}
+

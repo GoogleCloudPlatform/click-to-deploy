@@ -34,3 +34,4 @@ spec:
       - name: crd-configmap
         configMap:
           name: {{ template "jaeger_operator.CRDsConfigMap" . }}
+

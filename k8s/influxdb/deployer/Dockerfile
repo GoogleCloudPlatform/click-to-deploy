@@ -32,3 +32,4 @@ COPY --from=build /tmp/influxdb.tar.gz /data/chart/
 COPY --from=build /tmp/test/influxdb.tar.gz /data-test/chart/
 COPY --from=build /tmp/apptest/schema.yaml /data-test/
 COPY --from=build /tmp/schema.yaml /data/
+

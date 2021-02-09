@@ -52,3 +52,4 @@ if [[ ! -d $coredir ]]; then
 else
     echo "Core $CORE already exists"
 fi
+

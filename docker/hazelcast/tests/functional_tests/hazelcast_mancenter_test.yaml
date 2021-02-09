@@ -28,3 +28,4 @@ tests:
   expect:
     stdout:
       matches: 'Hazelcast Management Center'
+

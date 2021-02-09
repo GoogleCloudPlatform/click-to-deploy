@@ -5,3 +5,4 @@ sentinel failover-timeout master 180000
 sentinel parallel-syncs master 1
 
 pidfile /var/run/redis/redis-sentinel.pid
+

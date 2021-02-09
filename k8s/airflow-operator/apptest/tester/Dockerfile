@@ -19,3 +19,4 @@ COPY tester.sh /tester/
 
 WORKDIR /tester
 ENTRYPOINT ["./tester.sh"]
+

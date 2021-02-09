@@ -207,3 +207,4 @@ required:
 - name
 - namespace
 - gatekeeper.auditInterval
+

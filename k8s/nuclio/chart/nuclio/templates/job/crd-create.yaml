@@ -33,3 +33,4 @@ spec:
       - name: crd-configmap
         configMap:
           name: {{ template "nuclio.CRDsConfigMap" . }}
+

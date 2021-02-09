@@ -60,3 +60,4 @@ if [[ "${UserKey}" =~ ^(ssh-rsa) && -n "${UserName}" ]]; then
 else
    echo "Not found additional RSA keys."
 fi
+

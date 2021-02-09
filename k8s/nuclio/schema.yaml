@@ -110,3 +110,4 @@ required:
 - name
 - namespace
 - dashboard.replicas
+

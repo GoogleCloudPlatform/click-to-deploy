@@ -36,3 +36,4 @@ while [[ true ]]; do
   pull_if_changed
   sleep 10
 done
+

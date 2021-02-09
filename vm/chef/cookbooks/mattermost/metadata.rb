@@ -16,3 +16,4 @@ name 'mattermost'
 depends 'mysql'
 depends 'git'
 supports 'debian'
+

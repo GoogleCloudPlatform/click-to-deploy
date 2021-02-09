@@ -38,3 +38,4 @@ if [[ -d "${VM_CONFIG_SCRIPT_DIR}" ]]; then
 else
   failure
 fi
+

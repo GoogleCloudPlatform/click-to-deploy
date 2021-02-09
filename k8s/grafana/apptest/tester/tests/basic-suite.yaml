@@ -20,3 +20,4 @@ actions:
         contains: '# TYPE go_gc_duration_seconds summary'
       exitCode:
         equals: 0
+

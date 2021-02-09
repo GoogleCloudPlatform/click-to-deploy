@@ -55,3 +55,4 @@ done
 readonly password="$(get_attribute_value "influxdb-admin-password")"
 
 influx "${args[@]}" -port "${api_port}" -execute "CREATE USER admin WITH PASSWORD '${password}' WITH ALL PRIVILEGES"
+

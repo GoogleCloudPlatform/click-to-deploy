@@ -56,3 +56,4 @@ required:
 - namespace
 - neo4j.persistence.size
 - neo4j.password
+

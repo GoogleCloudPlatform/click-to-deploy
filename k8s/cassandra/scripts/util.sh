@@ -124,3 +124,4 @@ function init_util {
 add_flag_boolean SHOW_HELP help
 add_flag_with_argument NAMESPACE namespace
 add_flag_with_argument APP_INSTANCE_NAME app_instance_name
+

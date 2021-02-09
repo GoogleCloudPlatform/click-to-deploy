@@ -45,3 +45,4 @@ end
 describe file('/etc/systemd/system/redis-sentinel.service') do
   it { should exist }
 end
+

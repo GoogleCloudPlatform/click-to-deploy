@@ -7,3 +7,4 @@ actions:
     expect:
       stdout:
         matches: '(?m)^pg_up 1$'
+

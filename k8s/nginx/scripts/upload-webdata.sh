@@ -39,3 +39,4 @@ for i in ${PODS[@]}; do
 done
 
 echo "Upload operation finished."
+

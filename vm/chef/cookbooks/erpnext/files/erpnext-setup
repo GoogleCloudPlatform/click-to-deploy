@@ -47,3 +47,4 @@ supervisorctl restart all
 until curl "http://localhost:80"; do
   sleep 3
 done
+

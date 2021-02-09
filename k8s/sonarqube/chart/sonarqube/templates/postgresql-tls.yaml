@@ -10,3 +10,4 @@ data:
 {{ .Values.tls.base64EncodedPrivateKey | indent 4 }}
   secret.crt: |
 {{ .Values.tls.base64EncodedCertificate | indent 4 }}
+

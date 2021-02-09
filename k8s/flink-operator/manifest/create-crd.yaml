@@ -35,3 +35,4 @@ spec:
       - name: crd-configmap
         configMap:
           name: $APP_INSTANCE_NAME-crd-configmap
+

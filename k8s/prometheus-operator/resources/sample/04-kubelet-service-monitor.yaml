@@ -27,3 +27,4 @@ spec:
   namespaceSelector:
     matchNames:
     - kube-system
+

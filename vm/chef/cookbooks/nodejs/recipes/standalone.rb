@@ -17,3 +17,4 @@ include_recipe 'apache2::security-config'
 include_recipe 'git'
 
 include_recipe 'nodejs::default'
+

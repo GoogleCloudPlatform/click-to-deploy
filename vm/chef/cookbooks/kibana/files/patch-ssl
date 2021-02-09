@@ -6,3 +6,4 @@ server.ssl.clientAuthentication: optional
 
 elasticsearch.ssl.certificateAuthorities: [ "/etc/kibana/config/certs/ca.crt" ]
 elasticsearch.ssl.verificationMode: certificate
+

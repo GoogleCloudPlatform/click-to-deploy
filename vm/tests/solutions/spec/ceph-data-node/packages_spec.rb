@@ -33,3 +33,4 @@ end
 describe package('radosgw') do
   it { should be_installed }
 end
+

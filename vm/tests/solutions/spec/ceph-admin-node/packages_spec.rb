@@ -17,3 +17,4 @@ require 'spec_helper'
 describe package('ceph-deploy') do
   it { should be_installed }
 end
+

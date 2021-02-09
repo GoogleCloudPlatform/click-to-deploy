@@ -18,3 +18,4 @@ depends 'c2d-config'
 depends 'openjdk8'
 depends 'postgresql'
 supports 'debian'
+

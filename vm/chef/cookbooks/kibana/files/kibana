@@ -100,3 +100,4 @@ fi
 
 # Enable and start Logstash service
 systemctl start kibana
+

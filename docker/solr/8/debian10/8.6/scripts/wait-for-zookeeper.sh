@@ -177,3 +177,4 @@ done
 #  bash scripts/wait-for-zookeeper.sh foo
 #  bash scripts/wait-for-zookeeper.sh 'ZK_HOST=[2001:DB8::1]:2181,[2001:DB8::1],127.0.0.1:2181,127.0.0.2'
 #  ZK_HOST=[2001:DB8::1]:2181,[2001:DB8::1],127.0.0.1:2181,127.0.0.2 bash scripts/wait-for-zookeeper.sh
+

@@ -31,3 +31,4 @@ describe port(8069) do
   it { should be_listening.on('127.0.0.1') }
   it { should_not be_listening.on('0.0.0.0') }
 end
+

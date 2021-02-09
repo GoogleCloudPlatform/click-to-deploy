@@ -13,3 +13,4 @@
 # limitations under the License.
 
 default['cloudsql']['binary'] = 'https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64'
+

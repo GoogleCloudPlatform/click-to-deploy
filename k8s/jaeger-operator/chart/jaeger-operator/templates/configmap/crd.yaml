@@ -11,3 +11,4 @@ data:
   {{ base $path }}: |-
   {{- $root.Files.Get $path | nindent 4 }}
   {{- end -}}
+

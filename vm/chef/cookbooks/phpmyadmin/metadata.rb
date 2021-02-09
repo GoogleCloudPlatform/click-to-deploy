@@ -14,3 +14,4 @@
 
 name 'phpmyadmin'
 supports 'debian'
+

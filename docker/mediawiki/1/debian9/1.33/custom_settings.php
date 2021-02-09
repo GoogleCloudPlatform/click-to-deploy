@@ -25,3 +25,4 @@ $wgResourceBasePath = $wgScriptPath;
 ## The URL path to the logo. Make sure you change this from default,
 ## or else you'll overwrite your logo when you upgrade!
 $wgLogo = "$wgResourceBasePath/resources/assets/wiki.png";
+

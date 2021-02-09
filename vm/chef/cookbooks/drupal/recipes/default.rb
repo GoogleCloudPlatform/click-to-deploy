@@ -89,3 +89,4 @@ c2d_startup_script 'drupal' do
   source 'drupal'
   action :cookbook_file
 end
+

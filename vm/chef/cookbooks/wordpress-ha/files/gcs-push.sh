@@ -159,3 +159,4 @@ while [[ true ]]; do
     push_if_changed
     sleep 10
 done
+

@@ -16,3 +16,4 @@ name 'grafana'
 depends 'apache2'
 depends 'c2d-config'
 supports 'debian'
+

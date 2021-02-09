@@ -77,3 +77,4 @@ spec:
     kind: Pod
   - group: v1
     kind: Service
+

@@ -32,3 +32,4 @@ actions:
         contains: '# TYPE rabbitmq_consumers gauge'
       exitCode:
         equals: 0
+

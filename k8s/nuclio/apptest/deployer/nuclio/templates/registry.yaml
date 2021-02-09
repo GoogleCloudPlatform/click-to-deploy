@@ -13,3 +13,4 @@ spec:
     image: "registry@sha256:b1165286043f2745f45ea637873d61939bff6d9a59f76539d6228abf79f87774"
     imagePullPolicy: Always
   restartPolicy: Never
+

@@ -65,3 +65,4 @@ useradd -m -u 994 -g mattermost -m -s /bin/sh -d /var/opt/gitlab/mattermost matt
 useradd -m -u 993 -g registry -m -s /bin/sh -d /var/opt/gitlab/registry registry
 useradd -m -u 992 -g gitlab-prometheus -m -s /bin/sh -d /var/opt/gitlab/prometheus gitlab-prometheus
 useradd -m -u 991 -g gitlab-consul -m -s /bin/sh -d /var/opt/gitlab/consul gitlab-consul
+

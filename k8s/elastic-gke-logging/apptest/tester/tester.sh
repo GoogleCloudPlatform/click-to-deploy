@@ -57,3 +57,4 @@ export -f find_saved_kibana_index_pattern_count
 for test in /tests/*; do
   testrunner -logtostderr "--test_spec=${test}"
 done
+

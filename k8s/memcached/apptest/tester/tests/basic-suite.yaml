@@ -26,3 +26,4 @@ actions:
     expect:
       stdout:
         equals: "memcached_up 1\nmemcached_up 1\nmemcached_up 1"
+

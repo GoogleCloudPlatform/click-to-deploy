@@ -15,3 +15,4 @@
 name 'postgresql'
 depends 'c2d-config'
 supports 'debian'
+

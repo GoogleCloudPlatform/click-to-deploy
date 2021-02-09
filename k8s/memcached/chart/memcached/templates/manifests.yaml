@@ -104,3 +104,4 @@ spec:
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: memcached-server
   type: ClusterIP # LoadBalancer
+

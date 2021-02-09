@@ -66,3 +66,4 @@ sed -i -e '$ i \\
 ' /etc/tomcat8/tomcat-users.xml
 EOH
 end
+

@@ -20,3 +20,4 @@ end
 execute 'rename index.html' do
   command 'mv /var/www/html/index.nginx-debian.html /var/www/html/index.html'
 end
+

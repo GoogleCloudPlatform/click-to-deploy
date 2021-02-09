@@ -25,3 +25,4 @@ end
 describe port(33060) do
   it { should be_listening.on('::').with('tcp6') }
 end
+

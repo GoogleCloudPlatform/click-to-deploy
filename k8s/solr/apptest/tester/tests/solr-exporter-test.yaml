@@ -11,3 +11,4 @@ actions:
         matches: "3.0"
       exitCode:
         equals: 0
+

@@ -16,3 +16,4 @@ default['php73']['packages'] = ['php7.3-fpm', 'php7.3-common', 'php7.3']
 
 # Default modules to install
 default['php73']['modules'] = %w(cgi gd curl json)
+

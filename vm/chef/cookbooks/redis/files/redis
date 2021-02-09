@@ -84,3 +84,4 @@ systemctl start redis-sentinel
 until [[ "$(redis-cli ping)" == "PONG" ]]; do
   echo "Waiting for redis-cli to report PONG..." && sleep 5
 done
+

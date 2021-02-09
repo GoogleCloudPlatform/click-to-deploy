@@ -20,3 +20,4 @@ spec:
   selector:
     release: "{{ .Release.Name }}"
     app.kubernetes.io/name: "{{ .Release.Name }}"
+

@@ -23,3 +23,4 @@ describe 'C2D startup config' do
     it { should_not exist }
   end
 end
+

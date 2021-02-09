@@ -130,3 +130,4 @@ spec:
       resources:
         requests:
           storage: "{{ .Values.mediawiki.persistence.size }}"
+

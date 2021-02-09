@@ -21,3 +21,4 @@ end
 describe user('jenkins') do
   it { should belong_to_group 'jenkins' }
 end
+

@@ -69,3 +69,4 @@ actions:
         matches: 'consumer-1 Received TestMessage'
       exitCode:
         equals: 0
+

@@ -16,3 +16,4 @@ default['prestashop']['version'] = '1.7.6.5'
 default['prestashop']['db']['name'] = 'prestashop'
 
 default['prestashop']['temp_packages'] = ['unzip']
+

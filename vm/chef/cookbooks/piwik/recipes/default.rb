@@ -117,3 +117,4 @@ c2d_startup_script 'piwik' do
   source 'piwik.erb'
   action :template
 end
+

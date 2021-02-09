@@ -199,3 +199,4 @@ spec:
   - name: v1alpha2
     served: true
     storage: true
+

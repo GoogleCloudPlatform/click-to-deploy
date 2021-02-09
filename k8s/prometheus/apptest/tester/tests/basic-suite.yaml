@@ -142,3 +142,4 @@ actions:
     expect:
       stdout:
         contains: '"title":"StatefulSets"'
+

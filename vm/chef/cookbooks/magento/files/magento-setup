@@ -35,3 +35,4 @@ else
 fi
 
 php /var/www/html/bin/magento setup:install "${args[@]}"
+

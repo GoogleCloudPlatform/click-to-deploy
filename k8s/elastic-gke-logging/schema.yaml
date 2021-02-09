@@ -92,3 +92,4 @@ required:
 - elasticsearch.replicas
 - fluentd.serviceAccount
 - metrics.exporter.enabled
+

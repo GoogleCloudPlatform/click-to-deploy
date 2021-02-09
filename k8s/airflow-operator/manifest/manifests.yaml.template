@@ -25,3 +25,4 @@ spec:
       - name: airflowoperator
         image: $IMAGE_AIRFLOWOPERATOR
         imagePullPolicy: Always
+

@@ -99,3 +99,4 @@ required:
 - db.password
 - metrics.exporter.enabled
 - certificate
+

@@ -13,3 +13,4 @@ spec:
     app.kubernetes.io/name: "$APP_INSTANCE_NAME"
     app.kubernetes.io/component: cassandra-server
   type: LoadBalancer
+

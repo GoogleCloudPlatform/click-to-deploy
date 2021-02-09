@@ -162,3 +162,4 @@ spec:
           requests:
             storage: "{{ .Values.persistence.size}}"
         storageClassName: "{{ .Values.persistence.storageClass }}"
+

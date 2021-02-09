@@ -34,3 +34,4 @@ COPY --from=build /tmp/apptest/schema.yaml /data-test/
 COPY --from=build /tmp/schema.yaml /data/
 
 ENV WAIT_FOR_READY_TIMEOUT 900
+

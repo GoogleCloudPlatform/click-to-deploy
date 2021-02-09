@@ -74,3 +74,4 @@ action :template do
 
   c2d_startup_count += 1
 end
+

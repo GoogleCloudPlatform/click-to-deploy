@@ -46,3 +46,4 @@ end
 describe package('php7.4-mysql') do
   it { should be_installed }
 end
+

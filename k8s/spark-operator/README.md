@@ -185,3 +185,4 @@ To view your app, open the URL in your browser.
 Follow these
 [examples](https://github.com/GoogleCloudPlatform/spark-on-k8s-operator/blob/master/docs/quick-start-guide.md#running-the-examples)
 to deploy your Spark jobs.
+

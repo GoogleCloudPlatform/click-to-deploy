@@ -26,3 +26,4 @@ end
 describe command('mysqld --version') do
   its(:stdout) { should match /mysqld  Ver 8\.0\..* .MySQL Community Server - GPL./ }
 end
+

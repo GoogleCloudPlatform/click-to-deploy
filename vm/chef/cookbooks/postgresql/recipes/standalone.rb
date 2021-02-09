@@ -23,3 +23,4 @@ bash 'configure postgresql' do
   sed -i "s/^#listen_addresses = 'localhost'/listen_addresses = '*'/" /etc/postgresql/*/main/postgresql.conf
 EOH
 end
+

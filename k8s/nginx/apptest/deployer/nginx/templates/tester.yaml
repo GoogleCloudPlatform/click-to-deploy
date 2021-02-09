@@ -30,3 +30,4 @@ spec:
     - name: PUBLIC_IP_AVAILABLE
       value: "{{ .Values.publicIp.available }}"
   restartPolicy: Never
+

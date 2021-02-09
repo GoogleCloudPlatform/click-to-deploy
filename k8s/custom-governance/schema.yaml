@@ -108,3 +108,4 @@ required:
 - certificate.hostname
 - deployment.staticIP
 - setupAttributes.initialEmail
+

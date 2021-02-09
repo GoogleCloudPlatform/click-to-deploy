@@ -58,3 +58,4 @@ spec:
             claimName: backup-${APP_INSTANCE_NAME}-orientdb-0
         restartPolicy: Never
   backoffLimit: 4
+

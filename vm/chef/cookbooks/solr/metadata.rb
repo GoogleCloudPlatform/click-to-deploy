@@ -16,3 +16,4 @@ name 'solr'
 depends 'apache2'
 depends 'openjdk8'
 supports 'debian'
+

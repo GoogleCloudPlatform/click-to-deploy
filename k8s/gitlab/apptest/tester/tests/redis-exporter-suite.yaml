@@ -20,3 +20,4 @@ actions:
         matches: '(?m)^# TYPE process_cpu_seconds_total counter$'
       exitCode:
         equals: 0
+

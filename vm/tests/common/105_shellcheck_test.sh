@@ -24,3 +24,4 @@ sudo apt-get install shellcheck -y
   -type f \
   -not -path "*/downloads/*" | xargs shellcheck --shell=bash
 ) && success || warning
+

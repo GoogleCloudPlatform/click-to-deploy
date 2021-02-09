@@ -29,3 +29,4 @@ data:
       ## via a loopback interface (e.g. localhost)
       ## See http://www.rabbitmq.com/access-control.html#loopback-users
       loopback_users.guest = false
+

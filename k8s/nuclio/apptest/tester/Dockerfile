@@ -19,3 +19,4 @@ COPY helloworld.py /helloworld.py
 
 WORKDIR /
 ENTRYPOINT ["/tester.sh"]
+

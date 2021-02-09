@@ -27,3 +27,4 @@ COPY --from=exporter-builder /zookeeper_exporter /zookeeper_exporter
 COPY --from=exporter-builder /opt/exporter.tar.gz /opt/exporter.tar.gz
 
 ENTRYPOINT ["/zookeeper_exporter"]
+

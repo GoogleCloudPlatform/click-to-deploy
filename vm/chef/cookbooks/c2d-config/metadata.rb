@@ -15,3 +15,4 @@
 name 'c2d-config'
 chef_version '>= 12.1'
 supports 'debian'
+

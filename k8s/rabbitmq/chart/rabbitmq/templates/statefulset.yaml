@@ -169,3 +169,4 @@ spec:
       resources:
         requests:
           storage: {{ .Values.rabbitmq.persistence.size }}
+

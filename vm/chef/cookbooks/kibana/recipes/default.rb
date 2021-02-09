@@ -76,3 +76,4 @@ end
 
 # Copy startup script
 c2d_startup_script 'kibana'
+

@@ -44,3 +44,4 @@ EOF
 # Enabling Sonarqube.
 systemctl start sonar
 systemctl enable sonar
+

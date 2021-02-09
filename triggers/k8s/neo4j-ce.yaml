@@ -28,3 +28,4 @@ includedFiles:
 name: Trigger-for-K8s-neo4j-ce
 substitutions:
   _SOLUTION_NAME: neo4j-ce
+

@@ -21,3 +21,4 @@ include_recipe 'php7::module_mcrypt'
 include_recipe 'php7::module_xml'
 include_recipe 'php7::module_xsl'
 include_recipe 'php7::module_zip'
+

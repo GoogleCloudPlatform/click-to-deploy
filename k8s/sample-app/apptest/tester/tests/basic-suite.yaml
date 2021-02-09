@@ -17,3 +17,4 @@ actions:
         html:
           title:
             exactly: 'Welcome to nginx!'
+

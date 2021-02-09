@@ -15,3 +15,4 @@
 # limitations under the License.
 
 curl -X POST ${APP_INSTANCE_NAME}-service/snakeoil
+

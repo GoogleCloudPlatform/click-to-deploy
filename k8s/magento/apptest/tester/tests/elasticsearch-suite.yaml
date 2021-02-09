@@ -44,3 +44,4 @@ actions:
     expect:
       stdout:
         equals: "elasticsearch_cluster_health_up 1\nelasticsearch_cluster_health_up 1"
+

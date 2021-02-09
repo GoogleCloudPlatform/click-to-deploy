@@ -52,3 +52,4 @@ COPY --from=builder /go/src/github.com/jaegertracing/jaeger-operator/LICENSE /us
 ENTRYPOINT ["/usr/local/bin/jaeger-operator"]
 
 USER ${USER_UID}
+

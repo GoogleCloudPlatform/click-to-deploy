@@ -163,3 +163,4 @@ required:
 - db.persistence.size
 - enablePublicServiceAndIngress
 - metrics.exporter.enabled
+

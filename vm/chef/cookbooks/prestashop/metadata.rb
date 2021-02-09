@@ -17,3 +17,4 @@ depends 'apache2'
 depends 'mysql'
 depends 'php72'
 supports 'debian'
+

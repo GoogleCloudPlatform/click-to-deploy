@@ -17,3 +17,4 @@ default['matomo']['db']['password'] = 'matomopw'
 default['matomo']['db']['name'] = 'matomo'
 
 default['matomo']['app']['first-password'] = `openssl rand -base64 12 | fold -w 12 | head -n1 | tr -d '\r\n'`
+

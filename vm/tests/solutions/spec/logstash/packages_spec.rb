@@ -17,3 +17,4 @@ require 'spec_helper'
 describe package('logstash') do
   it { should be_installed }
 end
+

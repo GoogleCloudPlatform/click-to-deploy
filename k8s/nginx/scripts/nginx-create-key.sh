@@ -28,3 +28,4 @@ cat https1.key
 echo "Base64 for Certificate Key"
 cat https1.key | base64 -w 0
 echo ""
+

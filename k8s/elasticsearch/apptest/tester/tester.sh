@@ -23,3 +23,4 @@ export HEALTH_URL="${ELASTIC_URL}/_cluster/health"
 for test in /tests/*; do
   testrunner -logtostderr "--test_spec=${test}"
 done
+

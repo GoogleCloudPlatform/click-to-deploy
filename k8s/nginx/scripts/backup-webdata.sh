@@ -31,3 +31,4 @@ echo "- Connecting to $APP_INSTANCE_NAME-nginx-0 Pod"
 mkdir -p backup
 kubectl cp --namespace $NAMESPACE $APP_INSTANCE_NAME-nginx-0:/usr/share/nginx/html backup
 echo "Backup operation finished."
+

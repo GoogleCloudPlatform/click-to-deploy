@@ -22,3 +22,4 @@ default['ceph']['config-dir'] = "#{node['c2d-config']['config-dir']}/#{node['cep
 
 default['ceph']['rsync-dir-name'] = 'data-node-config'
 default['ceph']['rsync-dir'] = "#{node['ceph']['config-dir']}/#{node['ceph']['rsync-dir-name']}"
+

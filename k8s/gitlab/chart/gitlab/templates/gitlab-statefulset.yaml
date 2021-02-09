@@ -240,3 +240,4 @@ spec:
         requests:
           storage: {{ .Values.gitlab.persistence.logs.size | quote }}
       storageClassName: {{ .Values.persistence.storageClass }}
+

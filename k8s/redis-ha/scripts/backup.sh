@@ -43,3 +43,4 @@ else
     "${NAMESPACE}"/"${REDIS_MASTER}":/data/"${BACKUP_FILE}" "${BACKUP_FILE}"
   echo "Backup saved as ${BACKUP_FILE}"
 fi
+

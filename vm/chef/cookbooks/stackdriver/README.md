@@ -19,3 +19,4 @@ value `"1"`, logging is enabled.
 
 If the `google-monitoring-enable` metadata item is not present or is present
 with value `"1"`, monitoring is enabled.
+

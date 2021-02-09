@@ -28,3 +28,4 @@ includedFiles:
 name: Trigger-for-K8s-hazelcast
 substitutions:
   _SOLUTION_NAME: hazelcast
+

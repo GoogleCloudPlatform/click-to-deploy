@@ -44,3 +44,4 @@ if (!$mysql->query('CREATE DATABASE IF NOT EXISTS `' . $mysql->real_escape_strin
 fwrite($stderr, "\nMySQL Database Created\n");
 
 $mysql->close();
+

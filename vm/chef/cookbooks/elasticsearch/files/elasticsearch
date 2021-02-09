@@ -193,3 +193,4 @@ fi
 # Await until all nodes are green
 wait_for_green_elastic_cluster "${es_protocol}" "${es_current_node}" \
   "${es_nodes_count}" "${es_password}"
+

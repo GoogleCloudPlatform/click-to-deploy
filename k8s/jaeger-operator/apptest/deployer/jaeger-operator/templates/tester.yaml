@@ -30,3 +30,4 @@ spec:
   initContainers:
     {{- include "initContainerWaitForCRDsDeploy" . | nindent 4 }}
   restartPolicy: Never
+

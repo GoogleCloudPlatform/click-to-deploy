@@ -71,3 +71,4 @@ spec:
         secret:
           secretName: {{ template "nuclio.registryCredentialsName" . }}
           optional: true
+

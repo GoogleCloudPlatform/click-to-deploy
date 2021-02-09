@@ -60,3 +60,4 @@ expect -c "\
 # Applying changes
 systemctl is-active nginx && systemctl restart nginx
 systemctl is-active puma && systemctl restart puma || (sleep 10 && systemctl restart puma)
+

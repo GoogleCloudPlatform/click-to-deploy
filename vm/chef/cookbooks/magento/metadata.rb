@@ -18,3 +18,4 @@ depends 'composer'
 depends 'mysql'
 depends 'php7'
 supports 'debian'
+

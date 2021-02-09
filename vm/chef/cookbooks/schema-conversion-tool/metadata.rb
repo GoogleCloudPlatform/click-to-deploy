@@ -15,3 +15,4 @@
 name 'schema-conversion-tool'
 depends 'c2d-config'
 supports 'debian'
+

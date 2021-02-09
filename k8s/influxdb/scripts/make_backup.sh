@@ -52,3 +52,4 @@ mkdir -p $INFLUXDB_BACKUP_DIR
 echo "Copying backup to local computer"
 kubectl cp $INFLUXDB_INSTANCE-influxdb-0:/$INFLUXDB_BACKUP_DIR $INFLUXDB_BACKUP_DIR
 echo "Backup operation finished."
+

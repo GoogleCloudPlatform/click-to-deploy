@@ -64,3 +64,4 @@ else
       --replicas="${REPLICAS}"
   echo "Backup restored"
 fi
+

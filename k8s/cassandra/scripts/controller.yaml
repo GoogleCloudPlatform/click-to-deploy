@@ -8,3 +8,4 @@ spec:
     image: marketplace.gcr.io/google/cassandra3
     command: ["/bin/sh"]
     args: ["-c", "while true; do sleep 60; done"]
+

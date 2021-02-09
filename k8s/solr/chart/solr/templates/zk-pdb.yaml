@@ -13,3 +13,4 @@ spec:
       app.kubernetes.io/component: zookeeper
   maxUnavailable: 2
 {{- end }}
+

@@ -35,3 +35,4 @@ default['redmine']['user'] = 'redmine'
 # DB Settings
 default['redmine']['db']['user'] = 'redmineuser'
 default['redmine']['db']['name'] = 'redmine'
+

@@ -93,3 +93,4 @@ spec:
         configMap:
           name: {{ printf "%s-%s-crd-%s" $release $name $file | trunc 63 |  trimSuffix "-" | trimSuffix "." }}
        {{- end -}}
+

@@ -97,3 +97,4 @@ c2d_startup_script 'joomla' do
   source 'joomla'
   action :cookbook_file
 end
+

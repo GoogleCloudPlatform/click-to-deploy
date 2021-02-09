@@ -147,3 +147,4 @@ c2d_startup_script 'load-balancer-check'
 package node['wordpress-ha']['temp_packages'] do
   action :purge
 end
+

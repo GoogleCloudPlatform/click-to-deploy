@@ -51,3 +51,4 @@ spec:
     serviceName: {{ .Release.Name }}-joomla-svc
     servicePort: http
 {{ end }}
+

@@ -76,3 +76,4 @@ kubectl patch statefulset "${sts_name}" --namespace "${namespace}" \
   --patch '{ "spec": { "updateStrategy": {"type": "OnDelete" } } }'
 
 echo "Done."
+

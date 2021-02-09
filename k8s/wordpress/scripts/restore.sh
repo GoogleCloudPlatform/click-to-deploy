@@ -150,3 +150,4 @@ echo "Backup of version ${backup_version} successfully restored."
 echo "Original data are saved in database: ${wp_database_backup}."
 echo "Original files are saved in archive ${remote_backup_dir}/${wp_files_backup}."
 echo "Done."
+

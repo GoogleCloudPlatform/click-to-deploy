@@ -15,3 +15,4 @@
 # headless packages installation omits agpl-licensed libpulse0 package,
 # which is a dependency on openjdk-8-jre
 default['openjdk8']['packages'] = %w( openjdk-8-jdk-headless openjdk-8-jre-headless )
+

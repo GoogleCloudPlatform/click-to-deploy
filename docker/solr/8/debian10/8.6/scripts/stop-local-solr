@@ -24,3 +24,4 @@ fi
 
 echo "Shutting down the background Solr"
 solr stop
+

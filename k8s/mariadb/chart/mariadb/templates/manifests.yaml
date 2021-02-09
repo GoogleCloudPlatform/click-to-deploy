@@ -294,3 +294,4 @@ spec:
       accessModes:
       - ReadWriteOnce
       storageClassName: {{ .Values.mariadb.persistence.storageClass }}
+

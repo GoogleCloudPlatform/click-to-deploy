@@ -20,3 +20,4 @@ describe command('curl -L http://localhost/') do
   its(:stdout) { should match /<p>\nYou are currently not logged in! Enter your authentication credentials below to log in. You need to have cookies enabled to log in.\n<\/p>/ }
   its(:exit_status) { should eq 0 }
 end
+

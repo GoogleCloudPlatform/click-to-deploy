@@ -50,3 +50,4 @@ fi
 
 sudo -u www-data wp core install "${args[@]}"
 sudo -u www-data wp theme activate twentyseventeen --path=/var/www/html
+

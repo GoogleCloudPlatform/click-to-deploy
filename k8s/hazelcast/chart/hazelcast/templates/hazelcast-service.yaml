@@ -16,3 +16,4 @@ spec:
     port: 5701
   - name: metrics
     port: 8080
+

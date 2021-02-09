@@ -19,3 +19,4 @@ describe command('curl -L http://localhost/') do
   its(:stdout) { should match /<title>Sign in - Matomo<\/title>/ }
   its(:exit_status) { should eq 0 }
 end
+

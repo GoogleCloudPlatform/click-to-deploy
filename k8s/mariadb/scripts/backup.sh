@@ -73,3 +73,4 @@ kubectl -n ${NAMESPACE} exec -it ${PRIMARY} -- sh -c "mkdir -p ${BKP_DIR} && \
 
 kubectl cp ${NAMESPACE}/${PRIMARY}:${BKP_DIR}/${BKP_NAME} ${OUTPUT}
 kubectl -n ${NAMESPACE} exec -it ${PRIMARY} -- sh -c "rm -f ${BKP_DIR}/${BKP_NAME}"
+

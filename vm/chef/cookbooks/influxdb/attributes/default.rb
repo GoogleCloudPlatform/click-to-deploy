@@ -15,3 +15,4 @@
 default['influxdb']['repo']['uri'] = 'https://repos.influxdata.com/debian'
 default['influxdb']['repo']['components'] = ['stable']
 default['influxdb']['repo']['key'] = 'https://repos.influxdata.com/influxdb.key'
+

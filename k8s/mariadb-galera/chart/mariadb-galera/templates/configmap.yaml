@@ -40,3 +40,4 @@ data:
 
   galera-recovery.sh: |
     {{- tpl (.Files.Get "config/galera-recovery.sh") . | nindent 4 }}
+

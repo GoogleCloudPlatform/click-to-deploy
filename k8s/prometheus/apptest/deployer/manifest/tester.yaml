@@ -38,3 +38,4 @@ spec:
           name: ${APP_INSTANCE_NAME}-grafana
           key: admin-password
   restartPolicy: Never
+

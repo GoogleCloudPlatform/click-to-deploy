@@ -18,3 +18,4 @@ describe command('curl http://localhost/') do
   its(:stdout) { should match /<title>Welcome to nginx!<\/title>/ }
   its(:stdout) { should match /<p><em>Thank you for using nginx.<\/em><\/p>/ }
 end
+

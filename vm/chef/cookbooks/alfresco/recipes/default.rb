@@ -123,3 +123,4 @@ c2d_startup_script 'alfresco'
 
 # Download source code
 include_recipe 'alfresco::download_source_code'
+

@@ -71,3 +71,4 @@ tests:
 
 - name: Remove data via API
   command: [curl, -X, POST, -u, 'neo4j:admin123', -d, '{"statements": [{"statement": "MATCH(n:Person) DELETE (n)" }]}', -H, 'Content-Type: application/json', -v, 'http://localhost:7474/db/neo4j/tx']
+

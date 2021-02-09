@@ -26,3 +26,4 @@ sed -i 's/;WWW-Authenticate = Basic realm="administrator"/WWW-Authenticate = Bas
 sed -i '/bind_address = 0.0.0.0/a require_valid_user = true' $INI_FILE
 
 service couchdb start
+

@@ -33,3 +33,4 @@ export -f search_grafana_dash_db
 for test in /tests/*; do
   testrunner -logtostderr "--test_spec=${test}"
 done
+

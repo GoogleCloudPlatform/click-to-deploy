@@ -16,3 +16,4 @@ name 'nodejs'
 depends 'apache2'
 depends 'git'
 supports 'debian'
+

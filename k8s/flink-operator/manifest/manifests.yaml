@@ -101,3 +101,4 @@ spec:
         secret:
           defaultMode: 420
           secretName: $APP_INSTANCE_NAME-webhook-cert
+

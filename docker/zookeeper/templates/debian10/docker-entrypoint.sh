@@ -70,3 +70,4 @@ if [[ ! -f "${ZOO_DATA_DIR}/myid" ]]; then
 fi
 
 exec "$@"
+

@@ -23,3 +23,4 @@ describe 'Hide PHP Version' do
     its(:stdout) { should_not match /X-Powered-By:/ }
   end
 end
+

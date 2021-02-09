@@ -19,3 +19,4 @@ actions:
         contains: 'Welcome to Drupal_Site | Drupal_Site'
       exitCode:
         equals: 0
+

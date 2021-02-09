@@ -23,3 +23,4 @@ describe service('php7.4-fpm'), :if => os[:family] == 'debian' do
   it { should be_enabled }
   it { should be_running }
 end
+

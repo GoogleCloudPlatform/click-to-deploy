@@ -274,3 +274,4 @@ required:
 - webhook.replicas
 - cainjector.replicas
 - metrics.exporter.enabled
+

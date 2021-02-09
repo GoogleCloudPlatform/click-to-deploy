@@ -21,3 +21,4 @@ default['mongodb']['package'] = 'mongodb-org'
 default['mongodb']['source_package'] = 'mongodb'
 default['mongodb']['temp_packages'] = ['dirmngr', 'dpkg-dev']
 default['mongodb']['permanent_packages'] = ['xfsprogs']
+

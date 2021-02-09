@@ -27,3 +27,4 @@ includedFiles:
   - k8s/*
 substitutions:
   _SOLUTION_NAME: gatekeeper
+

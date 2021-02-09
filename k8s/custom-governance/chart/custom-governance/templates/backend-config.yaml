@@ -8,3 +8,4 @@ spec:
     enabled: true
     oauthclientCredentials:
       secretName: oauth-secret
+

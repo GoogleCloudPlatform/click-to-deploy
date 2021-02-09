@@ -161,3 +161,4 @@ echo "Backup of version ${backup_version} successfully restored."
 echo "Original data are saved in database: ${mediawiki_database_backup}."
 echo "Original files are saved in archive ${remote_backup_dir}/${mediawiki_files_backup}."
 echo "Done."
+

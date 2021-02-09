@@ -51,3 +51,4 @@ spec:
     - name: WORDPRESS_DB_NAME
       value: wordpress
   restartPolicy: Never
+

@@ -68,3 +68,4 @@ spec:
         persistentVolumeClaim:
           claimName: {{ .Release.Name }}-activemq
       restartPolicy: Always
+

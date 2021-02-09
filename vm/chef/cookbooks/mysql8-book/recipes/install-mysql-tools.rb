@@ -20,3 +20,4 @@ package 'install_mysql8_book_tools' do
   retry_delay 30
   action :install
 end
+

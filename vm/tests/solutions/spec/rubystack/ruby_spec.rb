@@ -17,3 +17,4 @@ require 'spec_helper'
 describe file('/usr/local/bin/ruby') do
   it { should be_executable.by('others') }
 end
+

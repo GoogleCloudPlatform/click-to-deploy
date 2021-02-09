@@ -27,3 +27,4 @@ tests:
   expect:
     stdout:
       matches: quota
+

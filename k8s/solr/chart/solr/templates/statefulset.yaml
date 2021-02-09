@@ -147,3 +147,4 @@ spec:
         resources:
           requests:
             storage: {{ .Values.persistence.solr.storageSize }}
+

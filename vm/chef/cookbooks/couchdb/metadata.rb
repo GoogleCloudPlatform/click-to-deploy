@@ -15,3 +15,4 @@
 name 'couchdb'
 depends 'c2d-config'
 supports 'debian'
+

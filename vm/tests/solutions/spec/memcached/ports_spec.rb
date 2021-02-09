@@ -21,3 +21,4 @@ end
 describe port(11211) do
   it { should be_listening }
 end
+

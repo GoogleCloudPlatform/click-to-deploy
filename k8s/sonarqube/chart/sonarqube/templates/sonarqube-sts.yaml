@@ -109,3 +109,4 @@ spec:
       resources:
         requests:
           storage: {{ .Values.sonarqube.persistence.size }}
+

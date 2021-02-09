@@ -25,3 +25,4 @@ end
 describe user('nagios') do
   it { should belong_to_group 'nagios' }
 end
+

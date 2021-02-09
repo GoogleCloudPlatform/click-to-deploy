@@ -17,3 +17,4 @@ include_recipe 'wordpress::common'
 include_recipe 'phpmyadmin'
 
 c2d_startup_script 'wordpress-setup'
+

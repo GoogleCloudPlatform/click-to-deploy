@@ -17,3 +17,4 @@ default['joomla']['sha1'] = '3c31861bf2d505f263389f8a7011ff3adc33e716'
 default['joomla']['user'] = 'www-data'
 
 default['joomla']['db']['name'] = 'joomla'
+

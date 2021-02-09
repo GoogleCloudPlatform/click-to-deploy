@@ -25,3 +25,4 @@ end
 describe file('/opt/c2d/downloads/gcs-push.sh') do
   it { should exist }
 end
+

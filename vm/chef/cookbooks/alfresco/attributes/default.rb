@@ -35,3 +35,4 @@ default['alfresco']['src']['urls'] = {
   'jid3lib_wget' => 'https://downloads.sourceforge.net/project/javamusictag/jid3lib/beta-dev6/jid3lib-0.5.4.tar.gz',
   'libwmf_wget' => 'https://sourceforge.net/projects/wvware/files/libwmf/0.2.8.4/libwmf-0.2.8.4.tar.gz',
 }
+

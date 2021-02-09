@@ -31,3 +31,4 @@ cat flink-job-cluster.yaml | envsubst | kubectl delete -f -
 kubectl get services  -n ${NAMESPACE} | awk '/flink-operator/{print $1}' | xargs  kubectl delete -n ${NAMESPACE} service
 kubectl get pods -n ${NAMESPACE} | awk '/flink-operator-controller-manager/{print $1}' | xargs kubectl delete -n ${NAMESPACE} pod
 kubectl get deployments -n ${NAMESPACE} | awk '/flink-operator-controller-manager/{print $1}' | xargs kubectl delete -n ${NAMESPACE} deployment
+

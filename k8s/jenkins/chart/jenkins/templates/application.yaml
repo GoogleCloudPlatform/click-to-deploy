@@ -88,3 +88,4 @@ spec:
     kind: StatefulSet
   - group: networking.k8s.io
     kind: Ingress
+

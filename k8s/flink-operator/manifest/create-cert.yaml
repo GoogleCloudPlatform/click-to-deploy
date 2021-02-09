@@ -40,3 +40,4 @@ spec:
       - name: webhook-configmap
         configMap:
           name: $APP_INSTANCE_NAME-webhook-configmap
+

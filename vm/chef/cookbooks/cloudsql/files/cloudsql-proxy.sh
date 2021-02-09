@@ -19,3 +19,4 @@ source /opt/c2d/c2d-utils || exit 1
 readonly connection_name="$(get_attribute_value "cloudsql-connection-name")"
 
 /opt/c2d/downloads/cloud_sql_proxy -instances="${connection_name}"=tcp:3306
+

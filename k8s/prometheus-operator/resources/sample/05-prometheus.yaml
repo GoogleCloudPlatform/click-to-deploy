@@ -10,3 +10,4 @@ spec:
   serviceMonitorSelector:
     matchExpressions:
     - {key: k8s-app, operator: Exists}
+

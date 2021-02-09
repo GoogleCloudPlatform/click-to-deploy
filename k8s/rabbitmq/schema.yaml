@@ -114,3 +114,4 @@ required:
 - rabbitmq.password
 - rabbitmq.serviceAccount
 - metrics.exporter.enabled
+

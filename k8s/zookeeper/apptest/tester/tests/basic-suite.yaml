@@ -23,3 +23,4 @@ actions:
         contains: test-value
       exitCode:
         equals: 0
+

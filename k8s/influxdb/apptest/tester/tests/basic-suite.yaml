@@ -51,3 +51,4 @@ actions:
         contains: '# HELP go_gc_duration_seconds A summary of the GC invocation durations.'
       exitCode:
         equals: 0
+

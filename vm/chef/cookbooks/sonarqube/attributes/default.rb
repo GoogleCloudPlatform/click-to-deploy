@@ -16,3 +16,4 @@ default['sonarqube']['user'] = 'sonar'
 default['sonarqube']['db']['username'] = 'sonar'
 default['sonarqube']['db']['name'] = 'sonar'
 default['sonarqube']['version'] = '7.9.1'
+

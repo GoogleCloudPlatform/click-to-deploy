@@ -39,3 +39,4 @@ actions:
         matches: '(?m)^# TYPE apache_cpuload gauge$'
       exitCode:
         equals: 0
+

@@ -20,3 +20,4 @@ source "$(dirname "${0}")/test_util.sh"
 
 # The test check whatever chef is removed
 dpkg -l chef && failure || success
+

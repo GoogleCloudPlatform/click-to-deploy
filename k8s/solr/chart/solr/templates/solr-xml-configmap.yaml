@@ -31,3 +31,4 @@ data:
         <int name="connTimeout">${connTimeout:60000}</int>
       </shardHandlerFactory>
     </solr>
+

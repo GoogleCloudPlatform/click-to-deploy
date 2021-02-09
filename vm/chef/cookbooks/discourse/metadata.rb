@@ -17,3 +17,4 @@ depends 'postgresql'
 depends 'c2d-config'
 depends 'rvm'
 supports 'debian'
+

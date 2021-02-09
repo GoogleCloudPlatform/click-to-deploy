@@ -84,3 +84,4 @@ echo "----------------------------------"
 echo "Node ${SERVER_ID} is now running."
 echo "Hostname: ${short_hostname}"
 echo "----------------------------------"
+

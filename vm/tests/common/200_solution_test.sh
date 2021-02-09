@@ -33,3 +33,4 @@ gem install serverspec rake
 
 cd solutions/
 rake "spec:${SOLUTION_NAME}" && success || failure
+

@@ -18,3 +18,4 @@ describe command('curl -L http://localhost/') do
   its(:stdout) { should match /<title>Apache2 Debian Default Page: It works<\/title>/ }
   its(:exit_status) { should eq 0 }
 end
+

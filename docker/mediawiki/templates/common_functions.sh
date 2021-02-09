@@ -120,3 +120,4 @@ function validate_required_fields() {
         echo true
     fi
 }
+

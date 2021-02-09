@@ -77,3 +77,4 @@ echo "Creating NFS server and shared disk..."
 kubectl apply -f "${nfs_manifest_file}" --namespace "${namespace}"
 
 echo "Done."
+

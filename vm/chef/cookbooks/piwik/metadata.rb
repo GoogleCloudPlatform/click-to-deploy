@@ -18,3 +18,4 @@ depends 'c2d-config'
 depends 'mysql'
 depends 'php74'
 supports 'debian'
+

@@ -6,3 +6,4 @@ metadata:
 spec:
   domains:
     - {{.Values.certificate.hostname}}
+

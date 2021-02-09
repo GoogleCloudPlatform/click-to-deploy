@@ -45,3 +45,4 @@ spec:
           name: {{ .Release.Name }}-mysql-secret
           key: root-password
   restartPolicy: Never
+

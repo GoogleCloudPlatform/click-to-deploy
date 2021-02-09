@@ -1,3 +1,4 @@
 [mysqld]
 server-id=${SERVER_ID}
 replicate-do-db=${DATABASE_NAME}
+

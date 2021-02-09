@@ -81,3 +81,4 @@ end
 package node['prestashop']['temp_packages'] do
   action :purge
 end
+

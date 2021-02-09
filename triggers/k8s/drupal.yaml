@@ -28,3 +28,4 @@ includedFiles:
 name: Trigger-for-K8s-drupal
 substitutions:
   _SOLUTION_NAME: drupal
+

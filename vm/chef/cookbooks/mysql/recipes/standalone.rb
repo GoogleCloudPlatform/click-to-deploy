@@ -16,3 +16,4 @@
 # and use password authentication for the 'root' user account
 
 include_recipe 'mysql::version-5.7-standalone'
+

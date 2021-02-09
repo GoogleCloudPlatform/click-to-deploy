@@ -24,3 +24,4 @@ metadata:
 data:
   registry_url: {{ .Values.registry.pushPullUrl }}
 {{- end }}
+

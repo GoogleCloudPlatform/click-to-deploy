@@ -14,3 +14,4 @@
 
 default['solr']['version'] = '8.6.2'
 default['solr']['packages'] = ['lsof']
+

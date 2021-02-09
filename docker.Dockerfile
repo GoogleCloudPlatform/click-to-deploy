@@ -39,3 +39,4 @@ FROM marketplace.gcr.io/google/debian9
 
 COPY --from=build /bin/dockerfiles /bin/dockerfiles
 COPY --from=build /bin/cloudbuild /bin/cloudbuild
+

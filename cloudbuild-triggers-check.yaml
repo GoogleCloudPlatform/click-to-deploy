@@ -58,3 +58,4 @@ steps:
   - 'PROJECT=$PROJECT_ID'
   - 'DIRECTORY_NAME=vm/packer/templates'
   - 'CLOUDBUILD_NAME=cloudbuild-vm.yaml'
+

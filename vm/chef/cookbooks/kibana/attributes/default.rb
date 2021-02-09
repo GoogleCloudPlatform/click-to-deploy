@@ -23,3 +23,4 @@ default['kibana']['keyserver_url'] =
   'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
 
 default['kibana']['packages'] = ['apt-transport-https', 'jq']
+

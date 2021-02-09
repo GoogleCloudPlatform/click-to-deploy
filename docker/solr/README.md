@@ -10,3 +10,4 @@ Learn more about Apache Solr in [official documentation](https://lucene.apache.o
 ## Disclaimer
 
 This is not an official Google product.
+

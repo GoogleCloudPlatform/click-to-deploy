@@ -17,3 +17,4 @@ default['dokuwiki']['user']['real_name'] = 'John Doe'
 default['dokuwiki']['user']['groups'] = 'admin,user'
 
 default['dokuwiki']['title'] = 'DokuWiki!'
+

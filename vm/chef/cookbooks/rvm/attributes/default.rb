@@ -13,3 +13,4 @@
 # limitations under the License.
 
 default['rvm']['packages'] = ['gnupg2', 'gnupg']
+

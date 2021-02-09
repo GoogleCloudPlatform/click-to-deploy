@@ -17,3 +17,4 @@
 source /etc/default/sct.env
 export SCT_SERVER_KEY
 bash run.sh &> c2d_sct_runner.log
+

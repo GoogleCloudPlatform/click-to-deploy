@@ -15,3 +15,4 @@
 name 'composer'
 depends 'php7'
 supports 'debian'
+

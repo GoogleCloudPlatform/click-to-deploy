@@ -115,3 +115,4 @@ function setup_nginx() {
   # Restart nginx configuration
   systemctl restart nginx
 }
+

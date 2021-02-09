@@ -25,3 +25,4 @@ actions:
         html:
           title:
             equals: 'Log In ‹ WordPress on Google Kubernetes Engine — WordPress'
+

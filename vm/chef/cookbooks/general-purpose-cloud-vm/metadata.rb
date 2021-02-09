@@ -15,3 +15,4 @@
 name 'general-purpose-cloud-vm'
 depends 'c2d-config'
 supports 'debian'
+

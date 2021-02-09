@@ -47,3 +47,4 @@ tests:
   expect:
     stdout:
       equals: bar
+

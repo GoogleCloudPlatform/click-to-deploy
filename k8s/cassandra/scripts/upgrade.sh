@@ -109,3 +109,4 @@ for node_number in $(seq $(( $(get_desired_number_of_replicas_in_sts) - 1 )) -1 
 done
 
 info "Update procedure of your Cassandra StatefulSet has been finished."
+

@@ -52,3 +52,4 @@ kubectl exec $INFLUXDB_INSTANCE-influxdb-0 --namespace "$NAMESPACE" -- influxd r
 echo "- Removing temporary backup files from $INFLUXDB_INSTANCE-influxdb-0 Pod"
 kubectl exec -it $INFLUXDB_INSTANCE-influxdb-0 --namespace "$NAMESPACE" -- rmdir -rf /$INFLUXDB_BACKUP_DIR
 echo "Restore operation finished."
+

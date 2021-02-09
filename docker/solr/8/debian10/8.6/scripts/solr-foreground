@@ -27,3 +27,4 @@ fi
 . /opt/docker-solr/scripts/run-initdb
 
 exec solr-fg "$@"
+

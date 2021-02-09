@@ -52,3 +52,4 @@ end
 describe service('frappe-bench-workers:frappe-bench-frappe-schedule') do
   it { should be_running.under('supervisor') }
 end
+

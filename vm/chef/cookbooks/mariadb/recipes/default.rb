@@ -55,3 +55,4 @@ service 'mysql' do
 end
 
 c2d_startup_script 'mariadb-setup'
+

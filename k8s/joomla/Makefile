@@ -62,3 +62,4 @@ include ../c2d_deployer.Makefile
 
 # Build tester image
 app/build:: .build/$(CHART_NAME)/tester
+

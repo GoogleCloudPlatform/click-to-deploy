@@ -110,3 +110,4 @@ while (( attempts_left > 0 )); do
   sleep "$wait_seconds"
 done
 echo "Solr is running on $solr_url"
+

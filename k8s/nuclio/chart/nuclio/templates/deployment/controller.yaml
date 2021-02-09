@@ -49,3 +49,4 @@ spec:
           value: {{ template "nuclio.registryCredentialsName" . }}
       initContainers:
         {{- include "initContainerWaitForCRDsDeploy" . | nindent 6 }}
+

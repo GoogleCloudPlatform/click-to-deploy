@@ -30,3 +30,4 @@ actions:
     expect:
       stdout:
         contains: 'PING'
+

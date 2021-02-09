@@ -13,3 +13,4 @@
 # limitations under the License.
 
 default['haproxy']['packages'] = ['haproxy']
+

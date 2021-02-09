@@ -103,3 +103,4 @@ USER $SOLR_USER
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["solr-foreground"]
+

@@ -365,3 +365,4 @@ command to delete the cluster:
 ```shell
 gcloud container clusters delete "${CLUSTER}" --zone "${ZONE}"
 ```
+

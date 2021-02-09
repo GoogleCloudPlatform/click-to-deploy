@@ -29,3 +29,4 @@ includedFiles:
 name: Trigger-for-K8s-consul
 substitutions:
   _SOLUTION_NAME: consul
+

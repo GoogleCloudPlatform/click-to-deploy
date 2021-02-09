@@ -97,3 +97,4 @@ index d23b4edc..3a678848 100644
 +COPY go.mod go.sum LICENSE ./
  
  RUN go mod download
+

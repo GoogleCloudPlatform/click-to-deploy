@@ -42,3 +42,4 @@ spec:
           name: {{ .Release.Name }}-redis-secret
           key: redis-password
   restartPolicy: Never
+

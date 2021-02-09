@@ -150,3 +150,4 @@ echo "Backup of version ${backup_version} successfully restored."
 echo "Original data are saved in database: ${joomla_database_backup}."
 echo "Original files are saved in archive ${remote_backup_dir}/${joomla_files_backup}."
 echo "Done."
+

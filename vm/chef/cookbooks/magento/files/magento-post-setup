@@ -42,3 +42,4 @@ php /var/www/html/bin/magento cache:flush
 # command ensures all files in var are owned by the user and group www-data.
 
 chown -R www-data:www-data var/
+

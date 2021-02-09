@@ -15,3 +15,4 @@
 name 'kibana'
 depends 'openjdk11'
 supports 'debian'
+

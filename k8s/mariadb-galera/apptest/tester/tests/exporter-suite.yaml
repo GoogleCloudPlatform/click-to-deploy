@@ -19,3 +19,4 @@ actions:
         matches: '(?m)^# TYPE mysql_version_info gauge$'
       exitCode:
         equals: 0
+

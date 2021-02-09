@@ -15,3 +15,4 @@
 name 'erpnext'
 depends 'c2d-config'
 supports 'debian'
+

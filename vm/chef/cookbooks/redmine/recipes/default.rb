@@ -214,3 +214,4 @@ c2d_startup_script 'redmine' do
   source 'redmine-startup'
   action :cookbook_file
 end
+

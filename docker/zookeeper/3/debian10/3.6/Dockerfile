@@ -91,3 +91,4 @@ RUN chmod 775 /docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
 CMD ["zkServer.sh", "start-foreground"]
+

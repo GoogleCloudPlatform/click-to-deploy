@@ -40,3 +40,4 @@ COPY --from=build /tmp/schema.yaml /data/
 
 ENV WAIT_FOR_READY_TIMEOUT 600
 ENV TESTER_TIMEOUT 600
+

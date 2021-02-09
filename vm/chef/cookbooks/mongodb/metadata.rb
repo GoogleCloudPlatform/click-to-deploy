@@ -14,3 +14,4 @@
 
 name 'mongodb'
 supports 'debian'
+

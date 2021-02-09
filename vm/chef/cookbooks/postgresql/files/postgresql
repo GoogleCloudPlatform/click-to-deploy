@@ -23,3 +23,4 @@ done
 readonly password="$(get_metadata_value "instance/attributes/postgresql-postgres-password")"
 
 su - postgres -c "psql -c \"alter role postgres with password '${password}'\""
+

@@ -20,3 +20,4 @@ node.override['mysql']['bind_address'] = '0.0.0.0'
 include_recipe 'mysql::version-5.7'
 
 c2d_startup_script 'mysql-root-allhosts-password-setup'
+

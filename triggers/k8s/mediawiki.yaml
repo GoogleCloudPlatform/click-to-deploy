@@ -28,3 +28,4 @@ includedFiles:
 name: Trigger-for-K8s-mediawiki
 substitutions:
   _SOLUTION_NAME: mediawiki
+

@@ -30,3 +30,4 @@ spec:
     - name: APP_SERVICE
       value: {{ .Release.Name }}-hazelcast
   restartPolicy: Never
+

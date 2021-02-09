@@ -115,3 +115,4 @@ spec:
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: influxdb-server
   type: ClusterIP # LoadBalancer
+

@@ -83,3 +83,4 @@ kubectl -n ${NAMESPACE} exec -it ${POD} -- bash -c "mysql -uroot -p\${MYSQL_ROOT
 
 # cleanup
 kubectl -n ${NAMESPACE} exec -it ${POD} -- sh -c "rm -f ${BKP_FILE}"
+

@@ -14,3 +14,4 @@
 
 name 'c2d-shared'
 supports 'debian'
+

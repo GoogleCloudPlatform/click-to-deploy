@@ -9,3 +9,4 @@ metadata:
 data:
   custom_settings.php: |
     {{- tpl (.Files.Get "files/custom_settings.php") . | nindent 4 -}}
+

@@ -129,3 +129,4 @@ until nodetool status | grep UN; do
 done
 
 echo "Cassandra install validation complete"
+

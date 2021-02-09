@@ -28,3 +28,4 @@ includedFiles:
 name: Trigger-for-K8s-cert-manager
 substitutions:
   _SOLUTION_NAME: cert-manager
+

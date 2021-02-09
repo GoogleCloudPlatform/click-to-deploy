@@ -73,3 +73,4 @@ ENTRYPOINT ["/docker-entrypoint.sh"]
 
 # Set default flags to run in development mode.
 CMD ["amppkg", "-development", "-config=amppkg.example.toml"]
+

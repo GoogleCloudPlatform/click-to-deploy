@@ -15,3 +15,4 @@
 include_recipe 'ceph::common'
 
 include_recipe 'ceph::data-node'
+

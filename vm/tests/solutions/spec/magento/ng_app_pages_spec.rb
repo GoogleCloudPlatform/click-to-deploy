@@ -23,3 +23,4 @@ describe command('curl -L http://localhost/admin') do
   its(:stdout) { should match /ng-app="magentoSetup"/ }
   its(:exit_status) { should eq 0 }
 end
+

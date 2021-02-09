@@ -8,3 +8,4 @@ get_var_from_container = $(shell docker pull $1 2>&1 > /dev/null \
 
 # Gets first argv as image and try to get C2D_RELEASE from container.
 get_c2d_release = $(call get_var_from_container, $1, C2D_RELEASE)
+

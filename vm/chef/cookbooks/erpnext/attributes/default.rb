@@ -32,3 +32,4 @@ default['erpnext']['mysql-root-password'] = `openssl rand -base64 12 | fold -w 1
 default['erpnext']['erpnext-admin-password'] = `openssl rand -base64 12 | fold -w 12 | head -n1 | tr -d '\r\n'`
 
 default['erpnext']['werkzeug']['version'] = '0.16.1'
+

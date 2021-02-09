@@ -13,3 +13,4 @@
 # limitations under the License.
 
 default['nginx']['packages'] = ['nginx']
+

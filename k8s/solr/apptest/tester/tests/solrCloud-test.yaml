@@ -37,3 +37,4 @@ actions:
         matches: "3"
       exitCode:
         equals: 0
+

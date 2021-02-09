@@ -50,3 +50,4 @@ spec:
           name: {{ .Release.Name }}-redis-secret
           key: password
   restartPolicy: Never
+

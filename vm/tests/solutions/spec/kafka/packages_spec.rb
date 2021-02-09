@@ -17,3 +17,4 @@ require 'spec_helper'
 describe package('zookeeperd') do
   it { should be_installed }
 end
+

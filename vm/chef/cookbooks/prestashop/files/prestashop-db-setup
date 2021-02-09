@@ -22,3 +22,4 @@ declare -r prestashop_password
 mysql -u root -e "CREATE USER 'prestashop'@'localhost' IDENTIFIED BY '${prestashop_password}';"
 mysql -u root -e "GRANT ALL PRIVILEGES ON prestashop.* TO 'prestashop'@'localhost' IDENTIFIED BY '${prestashop_password}'";
 mysql -u root -e "FLUSH PRIVILEGES"
+

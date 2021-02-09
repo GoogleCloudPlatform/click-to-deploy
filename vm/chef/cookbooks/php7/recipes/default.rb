@@ -20,3 +20,4 @@ end
 node['php7']['modules'].each do |pkg|
   include_recipe "php7::module_#{pkg}"
 end
+

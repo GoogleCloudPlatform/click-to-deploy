@@ -18,3 +18,4 @@ describe port(8080) do
   it { should be_listening.on('0.0.0.0') }
   it { should be_listening.with('tcp') }
 end
+

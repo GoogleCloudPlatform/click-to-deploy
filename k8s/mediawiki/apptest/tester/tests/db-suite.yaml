@@ -35,3 +35,4 @@ actions:
         matches: 'ERROR 1045 (28000): Access denied for user ''root''@''.+'' (using password: NO)'
       exitCode:
         equals: 1
+

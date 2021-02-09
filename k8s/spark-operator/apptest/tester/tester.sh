@@ -49,3 +49,4 @@ while true; do
   echo "Waiting 4 seconds before retry"
   sleep 4
 done
+

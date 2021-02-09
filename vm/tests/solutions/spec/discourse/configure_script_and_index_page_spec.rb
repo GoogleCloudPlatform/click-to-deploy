@@ -26,3 +26,4 @@ describe command('curl -L http://$(hostname)/') do
   its(:stdout) { should match /<title>Discourse<\/title>/ }
   its(:exit_status) { should eq 0 }
 end
+

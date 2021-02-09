@@ -6,3 +6,4 @@ production:
   username: redmineuser
   password: temp
   encoding: utf8
+

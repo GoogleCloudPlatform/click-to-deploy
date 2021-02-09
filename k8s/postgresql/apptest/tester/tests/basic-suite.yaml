@@ -79,3 +79,4 @@ actions:
     expect:
       exitCode:
         equals: 0
+

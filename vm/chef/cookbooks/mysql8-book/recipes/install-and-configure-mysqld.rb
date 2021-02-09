@@ -33,3 +33,4 @@ c2d_startup_script 'mysqld' do
   source 'opt-c2d-scripts-mysqld.erb'
   action :template
 end
+

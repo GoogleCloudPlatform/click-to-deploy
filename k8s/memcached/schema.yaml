@@ -51,3 +51,4 @@ required:
 - namespace
 - memcached.replicas
 - metrics.exporter.enabled
+

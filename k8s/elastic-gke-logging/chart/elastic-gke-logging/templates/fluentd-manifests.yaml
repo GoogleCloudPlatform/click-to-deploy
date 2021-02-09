@@ -193,3 +193,4 @@ spec:
       - name: config-volume
         configMap:
           name: {{ .Release.Name }}-fluentd-es-config
+

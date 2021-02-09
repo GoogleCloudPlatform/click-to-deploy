@@ -21,3 +21,4 @@ end
 describe file('/etc/sudoers.d/frappe') do
   it { should_not exist }
 end
+

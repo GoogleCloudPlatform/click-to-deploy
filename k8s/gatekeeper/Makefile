@@ -111,3 +111,4 @@ licenses:
 	echo '-----' >> .build/licenses/LICENSE
 	echo >> .build/licenses/LICENSE
 	cat licenses_for_manifest/LICENSE >> .build/licenses/LICENSE
+

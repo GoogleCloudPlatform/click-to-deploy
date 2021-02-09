@@ -86,3 +86,4 @@ bash 'edit php.ini' do
     sed -i 's/max_execution_time = .*/max_execution_time = 120/' /etc/php/*/apache2/php.ini
 EOH
 end
+

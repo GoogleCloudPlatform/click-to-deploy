@@ -20,3 +20,4 @@ package 'install packages' do
   package_name node['nodejs']['packages']
   action :install
 end
+

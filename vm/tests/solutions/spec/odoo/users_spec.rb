@@ -21,3 +21,4 @@ end
 describe user('odoo') do
   it { should exist }
 end
+

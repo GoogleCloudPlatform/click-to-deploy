@@ -66,3 +66,4 @@ if [[ -n "${WSREP_CLUSTER_ADDRESS}" ]]; then
 else
     echo "*** [Galera] Starting new cluster!"
 fi
+

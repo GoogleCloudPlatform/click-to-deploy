@@ -9,3 +9,4 @@ metadata:
   labels:
     app.kubernetes.io/name: $APP_INSTANCE_NAME
     app.kubernetes.io/component: crd-configmap
+

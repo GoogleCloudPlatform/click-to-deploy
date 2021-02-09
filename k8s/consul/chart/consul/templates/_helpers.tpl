@@ -40,3 +40,4 @@ Inject additional parameter to cmd if gossipEncryption is enabled
 -encrypt="${GOSSIP_KEY}" \
 {{ end }}
 {{- end }}
+

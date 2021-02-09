@@ -159,3 +159,4 @@ validate_env && create_config && create_log_props && create_data_dirs && create_
 
 exec "$@"
 
+

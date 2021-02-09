@@ -99,3 +99,4 @@ data:
 
                 set -x
                 exec java -cp "$CLASSPATH" $JVMFLAGS $MAIN $ZK_CONFIG_FILE
+

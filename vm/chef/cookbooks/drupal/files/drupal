@@ -36,3 +36,4 @@ if has_external_ip; then
 fi
 echo "# Internal IP" >> /var/www/html/sites/default/settings.php
 trusted_host_patterns "^$(get_internal_ip | sed 's/\./\\./g')\$" >> /var/www/html/sites/default/settings.php
+

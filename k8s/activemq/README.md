@@ -355,3 +355,4 @@ kubectl delete persistentvolumeclaims \
   --namespace ${NAMESPACE}
   --selector app.kubernetes.io/name=${APP_INSTANCE_NAME}
 ```
+

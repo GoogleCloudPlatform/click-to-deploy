@@ -118,3 +118,4 @@ git '/opt/certbot' do
 end
 
 c2d_startup_script 'mattermost-setup'
+

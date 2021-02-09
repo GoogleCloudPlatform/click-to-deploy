@@ -55,3 +55,4 @@ exec java \
     ${MC_HTTP_PORT} \
     ${MC_HTTPS_PORT} \
     ${MC_CONTEXT}
+

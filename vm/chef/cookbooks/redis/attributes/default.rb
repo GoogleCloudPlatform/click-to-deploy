@@ -21,3 +21,4 @@ default['redis']['packages']['dependencies'] = ['libjemalloc1']
 default['redis']['packages']['all_dependencies'] =
   default['redis']['packages']['temp_dependencies'] +
   default['redis']['packages']['dependencies']
+

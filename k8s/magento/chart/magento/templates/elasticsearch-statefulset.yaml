@@ -113,3 +113,4 @@ spec:
       resources:
         requests:
           storage: {{ .Values.elasticsearch.persistence.size }}
+

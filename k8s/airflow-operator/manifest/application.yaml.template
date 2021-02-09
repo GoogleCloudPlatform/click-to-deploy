@@ -39,3 +39,4 @@ spec:
   componentKinds:
   - group: apps/v1
     kind: Deployment
+

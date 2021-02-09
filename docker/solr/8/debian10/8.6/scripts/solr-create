@@ -78,3 +78,4 @@ else
 fi
 
 exec solr-fg
+

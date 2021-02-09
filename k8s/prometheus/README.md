@@ -351,3 +351,4 @@ echo "Grafana credentials:"
 echo "- user: ${GRAFANA_USERNAME}"
 echo "- pass: ${GRAFANA_PASSWORD}"
 ```
+

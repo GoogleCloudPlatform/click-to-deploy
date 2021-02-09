@@ -37,3 +37,4 @@ end
 describe package('libjbig2dec0') do
   it { should_not be_installed }
 end
+

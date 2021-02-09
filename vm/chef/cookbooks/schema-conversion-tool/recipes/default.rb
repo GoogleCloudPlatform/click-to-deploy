@@ -53,3 +53,4 @@ cookbook_file '/lib/systemd/system/sct.service' do
 end
 
 c2d_startup_script 'sct-startup'
+

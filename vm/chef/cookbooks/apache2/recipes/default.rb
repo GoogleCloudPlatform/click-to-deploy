@@ -24,3 +24,4 @@ end
 service 'apache2' do
   action [ :enable, :restart ]
 end
+

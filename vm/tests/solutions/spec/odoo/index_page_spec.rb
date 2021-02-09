@@ -18,3 +18,4 @@ describe command('curl -L http://localhost/web/database/selector') do
   its(:stdout) { should match /<title>Odoo<\/title>/ }
   its(:exit_status) { should eq 0 }
 end
+

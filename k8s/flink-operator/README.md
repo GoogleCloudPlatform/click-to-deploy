@@ -229,3 +229,4 @@ To restore Flink resources from your local environment, use the following comman
 ```shell
 kubectl --namespace "${NAMESPACE}" apply -f backup_file.yaml
 ```
+

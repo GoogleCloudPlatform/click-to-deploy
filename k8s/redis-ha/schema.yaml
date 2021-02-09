@@ -89,3 +89,4 @@ required:
 - redis.password
 - haproxy.replicas
 - metrics.exporter.enabled
+

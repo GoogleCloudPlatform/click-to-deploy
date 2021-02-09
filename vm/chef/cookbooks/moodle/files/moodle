@@ -43,3 +43,4 @@ else
 fi
 
 sudo -u www-data /usr/bin/php /var/www/html/admin/cli/install.php "${args[@]}"
+

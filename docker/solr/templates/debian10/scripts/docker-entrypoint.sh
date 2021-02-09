@@ -41,3 +41,4 @@ fi
 # Note: if you specify "solr", you'll typically want to add -f to run it in
 # the foreground.
 exec "$@"
+

@@ -16,3 +16,4 @@ default['php7']['packages'] = ['php7.0-fpm', 'php7.0']
 
 # Default modules to install
 default['php7']['modules'] = %w(common cgi gd curl mcrypt json)
+

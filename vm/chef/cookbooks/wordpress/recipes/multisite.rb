@@ -15,3 +15,4 @@
 include_recipe 'wordpress::common'
 
 c2d_startup_script 'wordpress-multisite-setup'
+

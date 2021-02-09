@@ -22,3 +22,4 @@ bash 'Assign IPv6 only' do
     sed -e "${LINE_NUMBER}i${LISTEN_CONFIG}" -i "${PORTS_FILE}"
   EOH
 end
+

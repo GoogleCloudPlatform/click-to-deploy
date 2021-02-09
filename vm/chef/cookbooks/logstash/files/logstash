@@ -68,3 +68,4 @@ fi
 # Enable and start Logstash service
 systemctl enable logstash
 systemctl start logstash
+

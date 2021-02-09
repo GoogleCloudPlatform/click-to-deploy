@@ -17,3 +17,4 @@ require 'spec_helper'
 describe user('mysql') do
   it { should exist }
 end
+

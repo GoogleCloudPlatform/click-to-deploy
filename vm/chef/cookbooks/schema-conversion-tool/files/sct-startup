@@ -19,3 +19,4 @@ sudo service sct start
 until curl -q http://localhost:8080/test 2>&1 | grep 401 &> /dev/null; do
   sleep 3
 done
+

@@ -88,3 +88,4 @@ required:
 - replicas
 - metrics.exporter.enabled
 - persistence.size
+

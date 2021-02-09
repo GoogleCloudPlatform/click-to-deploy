@@ -51,3 +51,4 @@ spec:
     - name: DRUPAL_DB_NAME
       value: drupal
   restartPolicy: Never
+

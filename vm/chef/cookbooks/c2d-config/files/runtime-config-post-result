@@ -41,3 +41,4 @@ curl -s \
   -H "Authorization: Bearer ${ACCESS_TOKEN}" \
   -H "Content-Type: application/json" \
   "${RUNTIME_CONFIG_URL}/variables"
+

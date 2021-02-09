@@ -111,3 +111,4 @@ required:
 - db.exporter.password
 - certificate
 - metrics.exporter.enabled
+

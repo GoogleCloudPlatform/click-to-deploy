@@ -49,3 +49,4 @@ c2d_startup_script 'ceph-admin-node' do
   source 'opt-c2d-scripts-ceph-admin-node.erb'
   action :template
 end
+

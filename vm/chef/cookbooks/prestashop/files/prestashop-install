@@ -43,3 +43,4 @@ rm -rf /var/www/html/install
 
 # Rename the admin directory
 mv /var/www/html/admin*/ /var/www/html/adminpanel
+

@@ -73,3 +73,4 @@ app/build:: .build/flink-operator/deployer \
 	docker tag gcr.io/flink-operator/flink-operator:v1beta1 "$(REGISTRY)/flink-operator:$(TAG)"
 	docker push "$(REGISTRY)/flink-operator:$(TAG)"
 	@touch "$@"
+

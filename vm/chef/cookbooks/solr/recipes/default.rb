@@ -82,3 +82,4 @@ c2d_startup_script 'solr' do
   source 'solr.erb'
   action :template
 end
+

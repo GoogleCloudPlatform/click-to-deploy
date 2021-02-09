@@ -28,3 +28,4 @@ describe 'Disable Apache Web Server Signature' do
     its(:stdout) { should_not match /<address>(.*?)<\/address>/ }
   end
 end
+

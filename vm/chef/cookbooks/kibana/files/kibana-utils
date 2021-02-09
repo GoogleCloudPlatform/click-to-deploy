@@ -104,3 +104,4 @@ function create_user() {
     exit 1
   fi
 }
+

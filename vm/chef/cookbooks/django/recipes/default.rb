@@ -24,3 +24,4 @@ bash 'install django via pip3' do
     pip3 install django
 EOH
 end
+

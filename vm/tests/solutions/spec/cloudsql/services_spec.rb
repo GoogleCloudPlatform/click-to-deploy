@@ -17,3 +17,4 @@ require 'spec_helper'
 describe service('cloudsql-proxy'), :if => os[:family] == 'debian' do
   it { should be_enabled }
 end
+

@@ -123,3 +123,4 @@ spec:
       resources:
         requests:
           storage: "{{ .Values.hazelcast.persistence.size }}"
+

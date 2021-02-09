@@ -32,3 +32,4 @@ c2d_startup_script 'ceph-data-node' do
   source 'opt-c2d-scripts-ceph-data-node.erb'
   action :template
 end
+

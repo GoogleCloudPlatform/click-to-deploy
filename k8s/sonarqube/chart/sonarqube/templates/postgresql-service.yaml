@@ -25,3 +25,4 @@ spec:
     port: 9187
   selector: *PostgresSQLLabels
   type: ClusterIP
+

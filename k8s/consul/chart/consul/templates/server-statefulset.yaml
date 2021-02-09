@@ -162,3 +162,4 @@ spec:
           requests:
             storage: {{ .Values.server.persistence.size }}
         storageClassName: {{ .Values.server.persistence.storageClass }}
+

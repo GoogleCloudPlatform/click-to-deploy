@@ -319,3 +319,4 @@ function download_certificates() {
   download_certificate "${cert_folder}" "${certshare_host}" "ca"
   download_certificate "${cert_folder}" "${certshare_host}" "node${node_idx}"
 }
+

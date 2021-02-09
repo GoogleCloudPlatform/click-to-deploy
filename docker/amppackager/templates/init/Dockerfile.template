@@ -41,3 +41,4 @@ COPY *.toml ./
 ENV C2D_RELEASE={{ $amppackager_init.Version }}
 
 CMD ["/bin/bash", "-c", "./deploy.sh"]]
+

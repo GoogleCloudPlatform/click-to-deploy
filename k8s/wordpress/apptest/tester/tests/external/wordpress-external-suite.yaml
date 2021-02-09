@@ -19,3 +19,4 @@ actions:
         contains: 'WordPress on Google Kubernetes Engine &#8211; Just another WordPress site'
       exitCode:
         equals: 0
+

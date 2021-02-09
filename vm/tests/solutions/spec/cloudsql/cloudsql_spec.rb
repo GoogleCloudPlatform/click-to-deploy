@@ -25,3 +25,4 @@ end
 describe file('/lib/systemd/system/cloudsql-proxy.service') do
   it { should exist }
 end
+

@@ -16,3 +16,4 @@ default['wordpress']['user'] = 'www-data'
 default['wordpress']['db']['name'] = 'wordpress'
 default['wordpress']['version'] = 'latest'
 default['wordpress']['cli']['url'] = 'https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar'
+

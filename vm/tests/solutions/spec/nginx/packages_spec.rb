@@ -17,3 +17,4 @@ require 'spec_helper'
 describe package('php7.0') do
   it { should be_installed }
 end
+

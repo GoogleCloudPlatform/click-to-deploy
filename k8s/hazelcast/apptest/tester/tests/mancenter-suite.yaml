@@ -10,3 +10,4 @@ actions:
         html:
           body:
             matches: 'Hazelcast Management Center'
+

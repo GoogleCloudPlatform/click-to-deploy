@@ -151,3 +151,4 @@ app/build:: .build/prometheus/alertmanager \
 	    && docker build --tag "$(TESTER_IMAGE)" .
 	docker push "$(TESTER_IMAGE)"
 	@touch "$@"
+

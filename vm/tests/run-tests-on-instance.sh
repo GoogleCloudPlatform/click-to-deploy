@@ -67,3 +67,4 @@ if [[ "${#failed[@]}" -ne 0 ]]; then
 fi
 
 exit ${failure_cnt}
+

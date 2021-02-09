@@ -19,3 +19,4 @@ rules:
     type: $3
   help: "Hazelcast metric instance=$2 name=$1 type=$3"
   attrNameSnakeCase: false
+

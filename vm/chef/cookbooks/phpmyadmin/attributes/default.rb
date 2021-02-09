@@ -15,3 +15,4 @@
 default['phpmyadmin']['packages'] = ['unzip']
 default['phpmyadmin']['version'] = '5.0.2'
 default['phpmyadmin']['sha256'] = 'a6ea4f16ced9f2ce3a9b23d47c1cd0fee5a46ead9bd5f9ec76f8edfb7a153edc'
+

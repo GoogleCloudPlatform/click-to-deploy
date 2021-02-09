@@ -73,3 +73,4 @@ if [ ! -f "$DIR/log4j2.xml" ]; then
     cp -a /opt/solr/server/resources/log4j2.xml "$DIR/log4j2.xml"
 fi
 
+

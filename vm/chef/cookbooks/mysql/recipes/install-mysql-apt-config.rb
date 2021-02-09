@@ -23,3 +23,4 @@ package 'mysql-apt-config' do
   source "/tmp/#{node['mysql']['apt']['file']}"
   provider Chef::Provider::Package::Dpkg
 end
+

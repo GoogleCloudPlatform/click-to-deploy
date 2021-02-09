@@ -109,3 +109,4 @@ remote_file "/usr/src/#{node['sonarqube']['version']}.zip" do
 end
 
 c2d_startup_script 'sonar-config-setup'
+

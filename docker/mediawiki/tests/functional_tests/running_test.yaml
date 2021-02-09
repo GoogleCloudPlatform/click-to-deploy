@@ -48,3 +48,4 @@ tests:
   expect:
     stdout:
       matches: 'ServerUptime'
+

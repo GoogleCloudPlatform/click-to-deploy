@@ -95,3 +95,4 @@ git '/usr/src/device-detector' do
 end
 
 c2d_startup_script 'mautic'
+

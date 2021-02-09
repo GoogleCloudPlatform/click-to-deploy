@@ -69,3 +69,4 @@ c2d_startup_script 'dokuwiki' do
   source 'dokuwiki'
   action :cookbook_file
 end
+

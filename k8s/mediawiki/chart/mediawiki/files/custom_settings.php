@@ -28,3 +28,4 @@ $wgLogo = "$wgResourceBasePath/resources/assets/wiki.png";
 
 ## Additional configuration can be found at:
 ## https://www.mediawiki.org/wiki/LocalSettings.php
+

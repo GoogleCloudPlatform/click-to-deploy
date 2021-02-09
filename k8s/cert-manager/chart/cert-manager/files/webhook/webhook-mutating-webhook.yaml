@@ -26,3 +26,4 @@ webhooks:
         name: {{ include "webhook.fullname" . }}
         namespace: {{ .Release.Namespace | quote }}
         path: /mutate
+

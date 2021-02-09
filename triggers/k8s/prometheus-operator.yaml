@@ -28,3 +28,4 @@ includedFiles:
 name: Trigger-for-K8s-prometheus-operator
 substitutions:
   _SOLUTION_NAME: prometheus-operator
+

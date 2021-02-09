@@ -182,3 +182,4 @@ required:
 - redis.password
 - postgresql.password
 - certificate
+

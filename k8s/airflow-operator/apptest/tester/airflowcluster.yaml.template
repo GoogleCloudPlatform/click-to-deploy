@@ -40,3 +40,4 @@ spec:
       once: true
   airflowbase:
     name: $NAME
+

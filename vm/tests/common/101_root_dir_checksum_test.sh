@@ -65,3 +65,4 @@ done
 # and execute this command as root: find /root/ -mindepth 1 | xargs md5sum
 # CHECKSUM
 md5sum -c "${ROOT_MD5}" && success || failure
+

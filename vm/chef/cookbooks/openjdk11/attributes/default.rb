@@ -15,3 +15,4 @@
 # headless packages installation omits agpl-licensed libpulse0 package,
 # which is a dependency on openjdk-11-jre
 default['openjdk11']['packages'] = %w( openjdk-11-jdk-headless openjdk-11-jre-headless )
+

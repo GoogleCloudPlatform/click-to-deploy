@@ -21,3 +21,4 @@ end
 describe package('openjdk-8-jdk-headless:amd64') do
   it { should be_installed }
 end
+

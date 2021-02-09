@@ -132,3 +132,4 @@ service 'puma.service' do
 end
 
 c2d_startup_script 'discourse-setup'
+

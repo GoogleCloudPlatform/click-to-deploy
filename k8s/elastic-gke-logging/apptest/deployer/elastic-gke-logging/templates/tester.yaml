@@ -30,3 +30,4 @@ spec:
     - name: ELASTICSEARCH_REPLICAS
       value: "{{ .Values.elasticsearch.replicas }}"
   restartPolicy: Never
+

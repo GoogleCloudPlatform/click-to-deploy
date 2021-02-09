@@ -19,3 +19,4 @@ describe user('discourse') do
   it { should belong_to_group 'discourse' }
   it { should have_home_directory '/home/discourse' }
 end
+

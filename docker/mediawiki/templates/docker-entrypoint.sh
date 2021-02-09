@@ -139,3 +139,4 @@ echo " Password: ${MEDIAWIKI_ADMIN_PASSWORD}"
 echo "=================================="
 echo "Starting container..."
 exec "$@"
+

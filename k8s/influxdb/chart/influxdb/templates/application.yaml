@@ -84,3 +84,4 @@ spec:
     kind: Secret
   - group: apps/v1
     kind: StatefulSet
+

@@ -15,3 +15,4 @@
 name 'mysql8-book'
 supports 'debian'
 depends 'mysql'
+

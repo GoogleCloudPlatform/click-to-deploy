@@ -41,3 +41,4 @@ gcloud builds submit . \
     `$_SOLUTION_NAME` variable. The configuration contains all required steps to
     test the application.
 1.  Run additional Cloud Build instance using the generated configuration.
+

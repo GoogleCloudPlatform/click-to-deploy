@@ -60,3 +60,4 @@ EOPHP
 # Due to the file locking in linux, we save the output to a tmp file then save.
 mv /tmp/env.php /var/www/html/app/etc/env.php
 chown www-data:www-data /var/www/html/app/etc/env.php
+

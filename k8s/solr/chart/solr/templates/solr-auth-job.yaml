@@ -67,3 +67,4 @@ spec:
               echo "Did NOT see a Running Solr instance after 60 secs!";
               exit 1;
 {{- end }}
+

@@ -44,3 +44,4 @@ data:
   Gitlab.gitlab-license:
     {{- .Values.gitlab.license | nindent 4 }}
   {{ end }}
+

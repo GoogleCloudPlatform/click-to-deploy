@@ -42,3 +42,4 @@ spec:
           value: {{ .Values.setupAttributes.initialEmail }}
         - name: GKE_INSTANCE
           value: "k8"
+

@@ -34,3 +34,4 @@ if ! /opt/docker-solr/scripts/wait-for-solr.sh --max-attempts "$max_try" --wait-
     fi
     exit 1
 fi
+

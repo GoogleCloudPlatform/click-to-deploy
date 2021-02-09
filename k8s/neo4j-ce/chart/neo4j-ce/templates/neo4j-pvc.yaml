@@ -12,3 +12,4 @@ spec:
     requests:
       storage: "{{ .Values.neo4j.persistence.size }}"
   storageClassName: "{{ .Values.neo4j.persistence.storageClass }}"
+

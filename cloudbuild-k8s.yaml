@@ -52,3 +52,4 @@ steps:
   - --substitutions
   - _CLUSTER_NAME=${_CLUSTER_NAME},_CLUSTER_LOCATION=${_CLUSTER_LOCATION}
   - .
+

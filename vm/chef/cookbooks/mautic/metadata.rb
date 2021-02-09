@@ -20,3 +20,4 @@ depends 'mysql'
 depends 'php73'
 depends 'c2d-config'
 supports 'debian'
+

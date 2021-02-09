@@ -44,3 +44,4 @@ elif [[ "${installphpMyAdmin:-}" == "false" ]]; then
   echo "phpMyAdmin not selected for install."
   rm -rf /opt/c2d/downloads/phpmyadmin
 fi
+

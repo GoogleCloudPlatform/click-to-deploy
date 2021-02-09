@@ -17,3 +17,4 @@ require 'spec_helper'
 describe package('mongodb-org-server') do
   it { should be_installed }
 end
+
