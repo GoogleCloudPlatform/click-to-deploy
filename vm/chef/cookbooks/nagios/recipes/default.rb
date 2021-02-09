@@ -36,7 +36,7 @@ remote_file "/tmp/#{node['nagios']['core']['file']}" do
   source node['nagios']['core']['url']
   action :create
 end
-
+# Add coment
 # download nagios-plugins
 remote_file "/tmp/#{node['nagios']['plugins']['file']}" do
   source node['nagios']['plugins']['url']
