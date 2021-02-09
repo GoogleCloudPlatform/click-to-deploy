@@ -84,9 +84,34 @@ properties:
       serviceAccount:
         description: Service account used by Nuclio Controller StatefulSet
         roles:
+        # Allow management of Nuclio CRDs
         - type: ClusterRole
-          rulesType: PREDEFINED
-          rulesFromRoleName: viewer # see what happens! cluster-admin
+          rulesType: CUSTOM
+          rules:
+            - apiGroups: ["nuclio.io"]
+              resources: ["nucliofunctions", "nuclioprojects", "nucliofunctionevents", "nuclioapigateways"]
+              verbs: ["*"]
+        - type: Role
+          rulesType: CUSTOM
+          rules:
+            - apiGroups: [""]
+              resources: ["services", "configmaps", "pods", "pods/log", "events"]
+              verbs: ["*"]
+            - apiGroups: ["apps", "extensions"]
+              resources: ["deployments"]
+              verbs: ["*"]
+            - apiGroups: ["extensions"]
+              resources: ["ingresses"]
+              verbs: ["*"]
+            - apiGroups: ["autoscaling"]
+              resources: ["horizontalpodautoscalers"]
+              verbs: ["*"]
+            - apiGroups: ["metrics.k8s.io", "custom.metrics.k8s.io"]
+              resources: ["*"]
+              verbs: ["*"]
+            - apiGroups: ["batch"]
+              resources: ["jobs", "cronjobs"]
+              verbs: ["*"]
   CDRJobServiceAccount:
     type: string
     title: CRD deployer Service Account
