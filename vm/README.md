@@ -118,7 +118,7 @@ docker run \
   -e "ATTACH_LICENSE=true" \
   -e "LICENSE_PROJECT_NAME=click-to-deploy-images" \
   -e "TESTS_CUSTOM_METADATA=google-c2d-startup-enable=0" \
-  gcr.io/cloud-marketplace-tools/vm/imagebuilder:0.1.2
+  gcr.io/cloud-marketplace-tools/vm/imagebuilder:0.1.6
 ```
 
 For more configuration options, see

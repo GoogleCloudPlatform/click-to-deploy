@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2018 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -46,11 +46,16 @@ cat "${ROOT_MD5}"
 
 # FIND different files that $ROOT_MD5 has
 for file in $(find /root/ -mindepth 1); do
-  # IF $ROOT_MD5 doesn't contains $file
-  if grep -q "^[a-f0-9]\+ \+${file}$" "${ROOT_MD5}"; then
-    echo "${file}: exists"
+  if [[ "${file}" == /root/.config* || "${file}" == /root/.gsutil* ]]; then
+    echo "${file}: gcloud config. Skip."
+    continue
   else
-    failure_msg "${file} is not expected!"
+    # IF $ROOT_MD5 doesn't contains $file
+    if grep -q "^[a-f0-9]\+ \+${file}$" "${ROOT_MD5}"; then
+      echo "${file}: exists"
+    else
+      failure_msg "${file} is not expected!"
+    fi
   fi
 done
 
