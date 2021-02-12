@@ -49,9 +49,10 @@ fi
 # If no metadata for password is provided, use a default one
 # and requires user to change it, otherwise, use the provided one.
 if [[ ! -z "${metadata_admin_password}" ]]; then
-  echo ""
+  echo "Using password provided by metadata."
   neo4j-admin set-initial-password "${metadata_admin_password}"
 else
+  echo "Using default password."
   neo4j-admin set-initial-password "${default_password}" --require-password-change
 fi
 
