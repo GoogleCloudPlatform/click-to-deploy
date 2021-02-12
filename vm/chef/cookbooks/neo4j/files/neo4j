@@ -42,7 +42,7 @@ if [[ "${metadata_enable_remote}" == "true" ]]; then
   sed -i "s/#dbms.connector.http.advertised_address=${external_ip}:7474/dbms.connector.http.advertised_address=${external_ip}:7474/g" \
     "${neo4j_config}"
 else
-  echo "Remote access is disasbled."
+  echo "Remote access is disabled."
 fi
 
 # Set the initial password.
