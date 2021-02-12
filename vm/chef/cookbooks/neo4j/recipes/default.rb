@@ -23,13 +23,19 @@ apt_repository 'add_neo4j_repo' do
   trusted true
 end
 
-execute 'apt-get update'
+# Update sources
+apt_update 'update' do
+  action :update
+  retries 5
+  retry_delay 30
+end	end
 
 # Install Neo4j
 package 'neo4j' do
   action :install
 end
 
+# Enable service
 service 'neo4j.service' do
   action [ :enable, :start ]
 end
