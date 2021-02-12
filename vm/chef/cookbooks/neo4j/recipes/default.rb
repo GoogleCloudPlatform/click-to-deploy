@@ -28,7 +28,7 @@ apt_update 'update' do
   action :update
   retries 5
   retry_delay 30
-end	end
+end
 
 # Install Neo4j
 package 'neo4j' do
