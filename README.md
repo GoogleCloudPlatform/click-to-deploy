@@ -23,11 +23,11 @@ The Cloud Build configurations use Google Cloud Build (GCB) custom worker pools.
 If you want to create a new worker pool, run the following command:
 
 ```shell
-  gcloud beta builds worker-pools create gcb-workers-pool-e2 \                                         [11:41:43]
+gcloud beta builds worker-pools create gcb-workers-pool-e2 \
   --project=[PROJECT_ID] \
   --peered-network=projects/[NETWORK_PROJECT_NUMBER]/global/networks/default \
   --region=us-central1 \
-  --worker-machine-type=e2-standard-2 
+  --worker-machine-type=e2-standard-2
 ```
 
 Where:
