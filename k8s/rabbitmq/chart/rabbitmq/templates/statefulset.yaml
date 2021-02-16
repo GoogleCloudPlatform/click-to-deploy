@@ -101,8 +101,6 @@ spec:
           mountPath: /etc/rabbitmq
         - name: {{ .Release.Name }}-rabbitmq-pvc
           mountPath: /var/lib/rabbitmq
-        # - name: rabbitmq-secret
-        #   mountPath: /var/lib/rabbitmq
         livenessProbe:
           exec:
             command:
