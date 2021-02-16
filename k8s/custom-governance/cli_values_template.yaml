@@ -1,12 +1,12 @@
 # # This is a YAML-formatted file.
 # # Declare variables to be passed into your templates.
-aditum:
+cg:
   image:
     # Container registry repo where the application image is hosted.
     # Typically you do not need to modify this.
-    repo: marketplace.gcr.io/aditum-marketplace-dev/custom-governance
+    repo: marketplace.gcr.io/custom-governance/custom-governance
     # Container tag
-    tag: 1.0
+    tag: 1.3.2
 # Required. Generate a new OAuth credential for IAP.
 oAuth:
   # Encode the client ID and secret in base64 like the following
