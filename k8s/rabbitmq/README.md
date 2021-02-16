@@ -404,7 +404,7 @@ You can access the metrics at `[APP_BASE_URL]:15692/metrics`, where
 can
 [expose RabbitMQ service internally using port forwarding](#access-rabbitmq-service),
 and then access the metrics by navigating to the
-[http://localhost:15672/api/metrics](http://localhost:15692//metrics)
+[http://localhost:15692/metrics](http://localhost:15692/metrics)
 endpoint.
 
 ### Configuring Prometheus to collect metrics
