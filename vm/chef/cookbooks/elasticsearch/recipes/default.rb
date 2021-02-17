@@ -14,10 +14,8 @@
 
 include_recipe 'openjdk11'
 
-apt_update 'update' do
-  action :update
-  retries 5
-  retry_delay 30
+execute 'Update Sources' do
+  command 'apt-get update'
 end
 
 package 'Install Packages' do
@@ -34,11 +32,7 @@ apt_repository 'add_elastic_co_repo' do
   trusted true
 end
 
-apt_update 'update' do
-  action :update
-  retries 5
-  retry_delay 30
-end
+execute 'apt-get update'
 
 # Install elasticsearch
 package 'elasticsearch' do

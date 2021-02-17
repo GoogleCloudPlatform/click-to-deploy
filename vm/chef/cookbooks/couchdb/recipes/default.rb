@@ -20,8 +20,7 @@ bash 'add apache repo' do
 EOH
 end
 
-apt_update 'update' do
-  action :update
+execute 'apt-get update' do
   retries 5
   retry_delay 30
 end
