@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+include_recipe 'git'
 include_recipe 'openjdk11'
 
 # Configure Neo4j repository
@@ -38,6 +39,13 @@ end
 # Enable service
 service 'neo4j.service' do
   action [ :enable, :start ]
+end
+
+# Clone neo4j source code per license requirements.
+git '/usr/src/neo4j' do
+  repository 'https://github.com/neo4j/neo4j.git'
+  reference node['neo4j']['version']
+  action :checkout
 end
 
 # Copy startup script

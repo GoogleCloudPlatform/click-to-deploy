@@ -15,4 +15,5 @@
 name 'neo4j'
 depends 'c2d-config'
 depends 'openjdk11'
+depends 'git'
 supports 'debian'
