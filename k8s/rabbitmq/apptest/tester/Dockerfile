@@ -4,7 +4,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     curl \
     gettext \
-    python \
+    python3 \
     wget \
     && rm -rf /var/lib/apt/lists/*
 

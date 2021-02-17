@@ -27,4 +27,15 @@ spec:
           fieldPath: metadata.namespace
     - name: APP_INSTANCE_NAME
       value: {{ .Release.Name }}
+    - name: SERVICE
+      value: {{ .Release.Name }}-rabbitmq-svc
+    - name: USERNAME
+      value: rabbit
+    # Password for the default user.
+    - name: PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: {{ .Release.Name }}-rabbitmq-secret
+          key: rabbitmq-pass
+
   restartPolicy: Never
