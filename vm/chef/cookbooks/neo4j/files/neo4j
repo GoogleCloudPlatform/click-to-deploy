@@ -18,7 +18,8 @@ source /opt/c2d/c2d-utils || exit 1
 
 # Get settings from metadata
 readonly default_password="neo4j"
-readonly metadata_enable_remote="$(get_attribute_value "neo4j-enable-remote")"
+readonly metadata_enable_remote="$(get_attribute_value "neo4j-enable-remote" \
+  | tr '[:upper:]' '[:lower:]')"
 readonly metadata_admin_password="$(get_attribute_value "neo4j-admin-password")"
 readonly external_ip="$(get_external_ip)"
 readonly neo4j_config="/etc/neo4j/neo4j.conf"
