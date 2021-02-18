@@ -50,7 +50,7 @@ spec:
       node:
 
       ```
-      kubectl exec -it {{ .Release.Name }}-rabbitmq-0 --namespace {{ .Release.Namespace }} -- rabbitmqctl cluster_status
+      kubectl exec -it {{ .Release.Name }}-rabbitmq-0 --namespace {{ .Release.Namespace }} -- rabbitmq-diagnostics cluster_status
       ```
 
       # Authorization

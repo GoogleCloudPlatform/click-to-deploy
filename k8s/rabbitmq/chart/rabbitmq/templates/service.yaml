@@ -9,14 +9,14 @@ metadata:
     app.kubernetes.io/component: rabbitmq-server
 spec:
   ports:
-  - name: client-access-2
+  - name: amqp
     port: 5672
-  - name: client-access-1
+  - name: amqp-ssl
     port: 5671
-  - name: clitool
+  - name: clustering
     port: 25672
-  - name: epmd
-    port: 4369
+  - name: prometheus
+    port: 15692
   - name: http
     port: 15672
   selector:
