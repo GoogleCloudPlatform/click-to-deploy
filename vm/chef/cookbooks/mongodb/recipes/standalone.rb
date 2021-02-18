@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,9 +14,7 @@
 
 include_recipe 'git'
 
-apt_update do
-  action :update
-end
+execute 'apt-get update'
 
 package 'install_temp_package' do
   package_name node['mongodb']['temp_packages']
@@ -53,35 +51,29 @@ end
 
 execute 'update-rc.d disable-transparent-hugepages defaults'
 
+directory '/data/db' do
+  owner 'mongodb'
+  group 'mongodb'
+  mode '0755'
+  recursive true
+  action :create
+end
+
 # Enable the mongod service to make it autostart on boot.
-execute 'systemctl enable mongod.service'
+service 'mongod.service' do
+  action [ :enable, :start ]
+end
 
-cookbook_file '/etc/mongod.arb.conf.template' do
-  source 'conf/mongod.arb.conf'
+cookbook_file '/etc/mongod.conf.template' do
+  source 'conf/mongod.standalone.conf'
   owner 'root'
   group 'root'
   mode 0644
   action :create
 end
 
-cookbook_file '/etc/mongod.serv.conf.template' do
-  source 'conf/mongod.serv.conf'
-  owner 'root'
-  group 'root'
-  mode 0644
-  action :create
-end
-
-c2d_startup_script 'mongodb-server' do
-  source 'startup/mongodb-server'
-end
-
-c2d_startup_script 'mongodb-arbiter' do
-  source 'startup/mongodb-arbiter'
-end
-
-c2d_startup_script 'mongodb-validator' do
-  source 'startup/mongodb-validator'
+c2d_startup_script 'mongodb-standalone' do
+  source 'startup/mongodb-standalone'
 end
 
 # Prepare directory for sources and licenses
@@ -93,11 +85,11 @@ directory '/usr/src/licenses' do
   action :create
 end
 
-# Download MongoDB source.
-# MongoDB source is published under the name mongodb.
-execute 'download_mongodb_source_code' do
-  command "apt-get source -y #{node['mongodb']['source_package']}"
-  cwd '/usr/src'
+# Clone mongodb source code per license requirements.
+git '/usr/src/mongodb' do
+  repository 'https://github.com/mongodb/mongo.git'
+  reference "v#{node['mongodb']['release']}"
+  action :checkout
 end
 
 # Download the Software licenses

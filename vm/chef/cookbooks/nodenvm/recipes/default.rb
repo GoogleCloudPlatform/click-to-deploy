@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,6 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name 'mongodb'
-depends 'git'
-supports 'debian'
+directory node['nvm']['dir'] do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  recursive true
+  action :create
+end
+
+remote_file '/opt/c2d/install-nvm' do
+  source "https://raw.githubusercontent.com/nvm-sh/nvm/v#{node['nvm']['version']}/install.sh"
+  mode '0755'
+  action :create
+end
+
+bash 'Install NVM' do
+  code <<-EOH
+    export NVM_DIR="/usr/local/nvm"
+    /opt/c2d/install-nvm
+    source /usr/local/nvm/nvm.sh
+EOH
+end

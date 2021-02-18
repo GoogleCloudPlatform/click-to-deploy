@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name 'mongodb'
-depends 'git'
-supports 'debian'
+default['nvm']['version'] = '0.37.0'
+default['nvm']['dir'] = '/usr/local/nvm'
+
+# ENV NODE_VERSION 14.15.1
+# ENV NVM_VERSION 0.37.0

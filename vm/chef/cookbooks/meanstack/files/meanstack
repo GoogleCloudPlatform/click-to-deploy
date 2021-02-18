@@ -1,0 +1,45 @@
+#!/bin/bash -eu
+#
+# Copyright 2021 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source $NVM_DIR/nvm.sh
+
+readonly supervisor_config="/etc/supervisor/conf.d/supervisor-mean.conf"
+readonly webapp_homepage="/sites/web/src/index.html"
+export API_PORT=8080
+export WEB_PORT=4200
+export HTTP_PORT=80
+
+# Configure Web app
+if [[ -f "${webapp_homepage}" ]]; then
+  echo "Setting up Web app..."
+  sed -i 's/<base href="\/">/<base href="\/web\/">/g' \
+    "${webapp_homepage}"
+  echo "Web app set up."
+fi
+
+# # Set up static website
+# chown -R www-data:www-data homepage/
+
+echo "Setting up NGINX..."
+# Configure NGINX
+rm -f /etc/nginx/sites-enabled/default && \
+  cat /etc/nginx/sites-available/nginx-mean.conf \
+    | envsubst '\$API_PORT,\$WEB_PORT,\$HTTP_PORT' \
+    > /etc/nginx/sites-enabled/nginx-mean.conf
+echo "NGINX set up."
+
+echo "Starting supervisord..."
+supervisord --configuration "${supervisor_config}"
