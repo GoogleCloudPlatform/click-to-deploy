@@ -1,10 +1,13 @@
 # Overview
 
-GitLab is a DevOps tool for the entire software development and operations lifecycle.
-It offers backlog and planning tools, source code management, built-in continuous integration pipelines
-(CI/CD), packages and artifacts management, issue-tracking and monitoring tools.
+GitLab is a DevOps tool for the entire software development and operations
+life cycle. It offers tools for planning and managing backlogs, source code
+management, built-in continuous integration and continuous delivery (CI/CD)
+pipelines, package and artifact management, and issue-tracking and monitoring
+tools.
 
-For more information, visit the GitLab [official website](https://gitlab.com/).
+For more information, visit the GitLab
+[official website](https://gitlab.com/).
 
 ## About Google Click to Deploy
 
@@ -14,50 +17,53 @@ Popular open stacks on Kubernetes, packaged by Google.
 
 ![Architecture diagram](resources/gitlab-k8s-app-architecture.png)
 
-A Kubernetes StatefulSet manages GitLab Enterprise Edition single-instance solution.
+A Kubernetes StatefulSet manages a single-instance GitLab Enterprise Edition
+solution.
 
-By default, GitLab is exposed externally using a LoadBalancer Service by three ports, as follows:
+By default, a LoadBalancer Service exposes GitLab externally, using the
+following three ports:
 
-* `22` - for SSH connections
-* `80` - for HTTP interface
-* `443` - for HTTPS interface
+* `22`, for SSH connections
+* `80`, for HTTP interface
+* `443`, for HTTPS interface
 
-A StatefulSet object is used to manage the GitLab workload,
-using container based on [omnibus-gitlab](https://gitlab.com/gitlab-org/omnibus-gitlab/).
-Thus you should have 1 replica as a part of a StatefulSet.
+You use a StatefulSet object to manage the GitLab workload, with a container
+based on [omnibus-gitlab](https://gitlab.com/gitlab-org/omnibus-gitlab/).
+This means that you should have one replica as part of your StatefulSet.
 
-Additional workloads are available for a separate PostgreSQL and Redis single-instance solutions.
-Both deployments are not exposed externally and you can connect internally via following ports:
+Additional workloads are available for separate PostgreSQL and Redis
+single-instance solutions. Both deployments are not exposed externally. To
+connect to them internally, use the following ports:
 
-* `6379` - for Redis Instance
-* `5432` - for PostgreSQL Instance
+* `6379`, for the Redis instance
+* `5432`, for the PostgreSQL instance
 
-GitLab instance can be customised by providing configurations via Configmap.
-For more information, [check available configuration options](https://docs.gitlab.com/omnibus/settings/configuration.html).
+To customize your GitLab instance, provide configurations by using Configmap.
+For more information on available configuration options, refer to the
+[GitLab Docs](https://docs.gitlab.com/omnibus/settings/configuration.html).
 
 # Installation
 
 ## Quick install with Google Cloud Marketplace
 
-Get up and running with a few clicks! To install this GitLab
-app to a Google Kubernetes Engine cluster via Google Cloud
-Marketplace, follow these
+Get up and running with a few clicks! To install this GitLab app to a Google
+Kubernetes Engine cluster via Google Cloud Marketplace, follow these
 [on-screen instructions](https://console.cloud.google.com/marketplace/details/google/gitlab).
 
 ## Command-line instructions
 
 ### Prerequisites
 
-#### Set up command-line tools
+#### Setting up command-line tools
 
-You'll need the following tools in your development environment:
+You need the following tools in your development environment:
 
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
-- [docker](https://docs.docker.com/install/)
-- [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-- [openssl](https://www.openssl.org/)
-- [helm](https://helm.sh/)
+- [Docker](https://docs.docker.com/install/)
+- [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+- [OpenSSL](https://www.openssl.org/)
+- [Helm](https://helm.sh/)
 
 Configure `gcloud` as a Docker credential helper:
 
@@ -65,9 +71,9 @@ Configure `gcloud` as a Docker credential helper:
 gcloud auth configure-docker
 ```
 
-#### Create a Google Kubernetes Engine (GKE) cluster
+#### Creating a Google Kubernetes Engine (GKE) cluster
 
-Create a new cluster from the command-line:
+Create a new cluster from the command line:
 
 ```shell
 export CLUSTER=gitlab-cluster
@@ -82,7 +88,7 @@ Configure `kubectl` to connect to the new cluster:
 gcloud container clusters get-credentials "${CLUSTER}" --zone "${ZONE}"
 ```
 
-#### Clone this repo
+#### Cloning this repo
 
 Clone this repo, as well as its associated tools repo:
 
@@ -90,7 +96,7 @@ Clone this repo, as well as its associated tools repo:
 git clone --recursive https://github.com/GoogleCloudPlatform/click-to-deploy.git
 ```
 
-#### Install the Application resource definition
+#### Installing the Application resource definition
 
 An Application resource is a collection of individual Kubernetes
 components, such as Services, StatefulSets, and so on, that you can
@@ -110,7 +116,7 @@ The Application resource is defined by the
 community. You can find the source code at
 [github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
 
-### Install the app
+### Installing the app
 
 Navigate to the `gitlab` directory:
 
@@ -118,7 +124,7 @@ Navigate to the `gitlab` directory:
 cd click-to-deploy/k8s/gitlab
 ```
 
-#### Configure the app with environment variables
+#### Configuring the app with environment variables
 
 Choose an instance name and
 [namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)
@@ -135,8 +141,8 @@ Enable Cloud Monitoring:
 > Cloud Monitoring enabled. If you are using a non-Google Cloud
 > cluster, you cannot export metrics to Cloud Monitoring.
 
-By default, the application does not export metrics to Cloud
-Monitoring. To enable this option, change the value to `true`.
+By default, the app does not export metrics to Cloud Monitoring. To enable
+this option, change the value to `true`.
 
 ```shell
 export METRICS_EXPORTER_ENABLED=false
@@ -157,7 +163,7 @@ export TAG="12.9.4-<BUILD_ID>"
 Alternatively, you can use a short tag to point to the latest
 image for your selected version.
 
-> Warning: this tag is not stable, and the image that it references
+> Warning: This tag is not stable, and the image that it references
 > might change over time.
 
 ```shell
@@ -184,75 +190,85 @@ Set or generate the password for the GitLab services:
 # Set alias for password generation
 alias generate_pwd="cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 1 | tr -d '\n'"
 
-# Generate password for GitLab, Redis and PostgreSQL
+# Generate password for GitLab, Redis, and PostgreSQL
 export GITLAB_ROOT_PASSWORD="$(generate_pwd)"
 export REDIS_ROOT_PASSWORD="$(generate_pwd)"
 export POSTGRES_PASSWORD="$(generate_pwd)"
 ```
 
-For the persistent disk provisioning of the GitLab StatefulSets,
-you will need to:
+For persistent disk provisioning of the GitLab StatefulSets, you will need to
+specify the StorageClass name, or create a new StorageClass.
 
- * Set the StorageClass name. Check your available options
- using the command below:
-   * ```kubectl get storageclass```
-   * Or check how to create a new StorageClass in [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
+To check your available options, use the following command:
+
+```shell
+kubectl get storageclass
+```
+
+For steps to create a new StorageClass, refer to the
+[Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
 
 ```shell
 export DEFAULT_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
 ```
 
-#### Set GitLab domain name
+#### (Optional) Setting your GitLab domain name
 
-Optional: set `DOMAIN_NAME` variable to configure GitLab instance URL.
+Optionally, you can set a `DOMAIN_NAME` variable to configure the URL of your
+GitLab instance.
 
 ```shell
 export DOMAIN_NAME="gitlab.example.com"
 ```
 
-Leave this variable empty if you want GitLab instance to be configured
-with automatically provided external IP.
+If you want to configure your GitLab instance with an automatically-provided
+external IP address, leave this variable empty.
 
 ```shell
 unset DOMAIN_NAME
 ```
 
-#### GitLab SSL configuration
+#### Configuring GitLab Secure Sockets Layer (SSL)
 
-This Helm chart offers several possible SSL configurations which has different result
-in combination with `DOMAIN_NAME`:
+This Helm chart offers several possible Secure Sockets Layer (SSL)
+configurations, which have different results in combination with the
+`DOMAIN_NAME` variable.
 
 Example configurations:
 
 * Dynamic external IP with SSL disabled:
+
   ```shell
   unset DOMAIN_NAME
   export SSL_CONFIGURATION="Default"
   ```
 
 * Dynamic external IP with a self-signed certificate:
+  
   ```shell
   unset DOMAIN_NAME
   export SSL_CONFIGURATION="Self-signed"
   ```
 
-* Domain name with a Let's encrypt certificate:
-  > Important: A valid domain name should be provided in this option.
-  > Provided DNS should be resolvable, otherwise Let's Encrypt will not be able
-  > to create a valid certificate and your deployment will fail.
+* Domain name with a Let's Encrypt certificate:
+
+  > Important: A valid domain name should be provided in this option. The
+  > DNS provided must be resolvable, or Let's Encrypt will not be able to
+  > create a valid certificate, and your deployment will fail.
 
   ```shell
   export DOMAIN_NAME="gitlab.example.com"
   export SSL_CONFIGURATION="Default"
   ```
 
-#### Create TLS certificate for GitLab
+#### (Optional) Creating a Transport Layer Security (TLS) certificate for GitLab
 
-> This step is optional and should be used only if `SSL_CONFIGURATION` set as `Self-signed`.
+> This step is optional and should be used only if `SSL_CONFIGURATION` is set
+> as `Self-signed`.
 
 1.  If you already have a certificate that you want to use, copy your
-    certificate and key pair to the `/tmp/tls.crt`, and `/tmp/tls.key` files,
-    then skip to the next step.
+    certificate and key pair to the `/tmp/tls.crt` and `/tmp/tls.key` files,
+    respectively, then skip to the next step.
 
     To create a new certificate, run the following command:
 
@@ -263,7 +279,7 @@ Example configurations:
         -subj "/CN=gitlab/O=gitlab"
     ```
 
-2.  Set `TLS_CERTIFICATE_KEY` and `TLS_CERTIFICATE_CRT` variables:
+2.  Set the `TLS_CERTIFICATE_KEY` and `TLS_CERTIFICATE_CRT` variables:
 
     ```shell
     export TLS_CERTIFICATE_KEY="$(cat /tmp/tls.key | base64)"
@@ -271,16 +287,16 @@ Example configurations:
     ```
 
 
-#### Create namespace in your Kubernetes cluster
+#### Creating namespace in your Kubernetes cluster
 
-If you use a different namespace than the `default`, run the
-command below to create a new namespace:
+If you use a different namespace than the `default`, create a new namespace by
+running the following command:
 
 ```shell
 kubectl create namespace "${NAMESPACE}"
 ```
 
-#### Create the GitLab Service Account
+#### Creating the GitLab Service Account
 
 To create the GitLab Service Account and ClusterRoleBinding:
 
@@ -291,10 +307,10 @@ kubectl create clusterrole "${GITLAB_SERVICE_ACCOUNT}-role" --verb=get,list,watc
 kubectl create clusterrolebinding "${GITLAB_SERVICE_ACCOUNT}-rule" --clusterrole="${GITLAB_SERVICE_ACCOUNT}-role" --serviceaccount="${NAMESPACE}:${GITLAB_SERVICE_ACCOUNT}"
 ```
 
-#### Expand the manifest template
+#### Expanding the manifest template
 
-Use `helm template` to expand the template. We recommend that you
-save the expanded manifest file for future updates to your app.
+Use `helm template` to expand the template. We recommend that you save the
+expanded manifest file for future updates to your app.
 
 ```shell
 helm template chart/gitlab \
@@ -320,18 +336,17 @@ helm template chart/gitlab \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
-#### Apply the manifest to your Kubernetes cluster
+#### Applying the manifest to your Kubernetes cluster
 
-Use `kubectl` to apply the manifest to your Kubernetes cluster:
+To apply the manifest to your Kubernetes cluster, use `kubectl`:
 
 ```shell
 kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 ```
 
-#### View the app in the Google Cloud Console
+#### Viewing your app in the Google Cloud Console
 
-To get the Cloud Console URL for your app, run the following
-command:
+To get the Cloud Console URL for your app, run the following command:
 
 ```shell
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
@@ -339,9 +354,9 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 To view the app, open the URL in your browser.
 
-### Access GitLab User Interface
+### Accessing the GitLab User Interface
 
-Get the external IP of your GitLab website using the following
+To get the external IP address of your GitLab website, use the following
 command:
 
 ```shell
@@ -351,31 +366,36 @@ SERVICE_IP="$(kubectl get "service/${APP_INSTANCE_NAME}-gitlab-svc" \
 echo "http://${SERVICE_IP}/"
 ```
 
-Use your GitLab root password generated earlier to sign-in.
+Use the GitLab root password you generated earlier to sign in.
 
-# Backup
+# Backing up
 
-Below steps are based on [Official GitLab Backup/Restore documentation](https://docs.gitlab.com/ee/raketasks/backup_restore.html#back-up-gitlab) .
+The below steps are based on the official
+[GitLab backup/restore documentation](https://docs.gitlab.com/ee/raketasks/backup_restore.html#back-up-gitlab) .
 
 ```
 APP_INSTANCE_NAME=gitlab-1
 NAMESPACE=default
 ```
 
-Run Backup command:
+Run the backup command:
+
 ```
 kubectl --namespace ${NAMESPACE} exec -it \
   "${APP_INSTANCE_NAME}-gitlab-0" -- bash -c "gitlab-backup create"
 ```
 
-You can see created backup files from output of backup command or via running:
+You can see the created backup files in the output of the backup command, or
+by running the following command:
+
 ```
 kubectl --namespace ${NAMESPACE} exec -it \
   "${APP_INSTANCE_NAME}-gitlab-0" -- bash -c \
   "ls /var/opt/gitlab/backups/"
 ```
 
-Copy backup file to local workstation:
+Copy the backup file to your local workstation:
+
 ```
 BACKUP_TAR="<STAMP>_gitlab_backup.tar"
 
@@ -384,18 +404,19 @@ kubectl --namespace ${NAMESPACE} cp \
 ```
 
 > GitLab does not back up any configuration files, SSL certificates, or
-> system files.  You are highly advised to read about storing
-> configuration files:
-> https://docs.gitlab.com/ee/raketasks/backup_restore.html#storing-configuration-files
+> system files.  We recommend that you read about storing configuration files
+> in the
+> [GitLab documentation](https://docs.gitlab.com/ee/raketasks/backup_restore.html#storing-configuration-files).
 
-Copy secret files manually:
+Manually copy secret files:
+
 ```
 for secret in "gitlab-secrets.json" "gitlab.rb"; do
   kubectl --namespace ${NAMESPACE} cp ${APP_INSTANCE_NAME}-gitlab-0:/etc/gitlab/$secret $secret
 done
 ```
 
-Save your root password of this database to local workstation.
+Save your root password for this database to your local workstation:
 
 ```
 kubectl --namespace ${NAMESPACE} get secret \
@@ -403,23 +424,32 @@ kubectl --namespace ${NAMESPACE} get secret \
   -ojsonpath='{.data.gitlab-root-password}' > root-password-base64.txt
 ```
 
-# Restore
-For Gitlab Restore Prerequisites visit [here](https://docs.gitlab.com/ee/raketasks/backup_restore.html#restore-prerequisites).
+# Restoring a backup
 
-Below steps are based on [Official GitLab Backup/Restore documentation](https://docs.gitlab.com/ee/raketasks/backup_restore.html#restore-for-omnibus-gitlab-installations).
+For the Gitlab restore prerequisites, refer to the
+[GitLab documentation](https://docs.gitlab.com/ee/raketasks/backup_restore.html#restore-prerequisites).
 
-We assume you have below files in local workstation if you followed backup procedure in this document.
+The following steps are based on the official
+[GitLab backup/restore documentation](https://docs.gitlab.com/ee/raketasks/backup_restore.html#restore-for-omnibus-gitlab-installations).
 
-- `<STAMP>_gitlab_backup.tar` - Gitlab Backup tar file
-- `gitlab.rb` and `gitlab-secrets.json` - Database encryption key related secret files. For more information visit https://docs.gitlab.com/ee/raketasks/backup_restore.html#storing-configuration-files
-- `root-password-base64.txt` - File contains encoded root password.
+If you followed the previous steps for creating your backup, you should have
+the following files on your local workstation:
 
-Export mandatory variables.
+ * `<STAMP>_gitlab_backup.tar` - Gitlab backup TAR file
+ * `gitlab.rb` and `gitlab-secrets.json` - Database-encryption-key-related
+   secret files. For more information, refer to the
+   [GitLab documentation](https://docs.gitlab.com/ee/raketasks/backup_restore.html#storing-configuration-files).
+ * `root-password-base64.txt` - A file containining the encoded root password.
+
+Export mandatory variables:
+
 ```
 APP_INSTANCE_NAME=gitlab-1
 NAMESPACE=default
 ```
-Copy Gitlab Backup tar file to running gitlab instance.
+
+Copy the Gitlab backup TAR file to your running GitLab instance:
+
 ```
 BACKUP_TAR="<STAMP>_gitlab_backup.tar"
 
@@ -427,28 +457,34 @@ kubectl --namespace ${NAMESPACE} cp ${BACKUP_TAR} \
   ${APP_INSTANCE_NAME}-gitlab-0:/var/opt/gitlab/backups/
 ```
 
-Change ownership of file to `git` user.
+Change ownership of the file to `git` user:
+
 ```
 kubectl --namespace ${NAMESPACE} exec -it \
   "${APP_INSTANCE_NAME}-gitlab-0" -- bash -c \
   "chown git:git /var/opt/gitlab/backups/*"
 ```
 
-Run Restore command and follow the output:
+Run the restore command and follow its output:
+
 ```
 kubectl --namespace ${NAMESPACE} exec -it \
   "${APP_INSTANCE_NAME}-gitlab-0" -- bash -c \
   "gitlab-backup restore"
 ```
 
-Copy Database encryption key related secret files to instance. We assume they are in your current directory.
+Copy database-encryption-key-related secret files to your instance. These will
+likely be in your current directory.
+
 ```
 for secret in "gitlab-secrets.json" "gitlab.rb"; do
   kubectl --namespace ${NAMESPACE} cp $secret ${APP_INSTANCE_NAME}-gitlab-0:/etc/gitlab/
 done
 ```
 
-If you deployed with other root password than previous, you should restore it as well.
+If you deployed with a different root password than the one you most recently
+created, you should restore that root password as well:
+
 ```
 # COPY encoded old password
 OLD_PASS=$(cat root-password-base64.txt)
@@ -461,17 +497,17 @@ kubectl --namespace $NAMESPACE patch secret \
 
 # Scaling
 
-This is a single-instance version of GitLab. It is not intended to
-be scaled up with its current configuration.
+This is a single-instance version of GitLab. It is not intended to be scaled
+up with its current configuration.
 
-# Upgrade the app
+# Upgrading the app
 
-## Prepare the environment
+## Preparing your environment
 
-The steps below describe the upgrade procedure with the new version of GitLab Docker image.
+The steps below describe the upgrade procedure with the new version of the
+GitLab Docker image.
 
-> Note that during the upgrade, your GitLab instance will be
-unavailable.
+> Note: During the upgrade, your GitLab instance will be unavailable.
 
 Set your environment variables to match the installation properties:
 
@@ -480,30 +516,29 @@ export APP_INSTANCE_NAME=gitlab-1
 export NAMESPACE=default
 ```
 
-## Upgrade the app
+## Upgrading your app
 
-The GitLab StatefulSet is configured to roll out updates
-automatically. To start an update, patch the StatefulSet with a
-new image reference:
+The GitLab StatefulSet is configured to roll out updates automatically. To
+start an update, patch the StatefulSet with a new image reference:
 
 ```shell
 kubectl set image statefulset "${APP_INSTANCE_NAME}-gitlab" \
   --namespace "${NAMESPACE}" gitlab=[NEW_IMAGE_REFERENCE]
 ```
 
-where `[NEW_IMAGE_REFERENCE]` is the Docker image reference of the
-new image that you want to use.
+where `[NEW_IMAGE_REFERENCE]` is the Docker image reference of the new image
+that you want to use.
 
-To check the status of Pods in the StatefulSet, and the progress
-of the new image, run the following command:
+To check the status of Pods in the StatefulSet, and the progress of the new
+image, run the following command:
 
 ```shell
 kubectl get pods -l app.kubernetes.io/name=${APP_INSTANCE_NAME} \
   --namespace "${NAMESPACE}"
 ```
 
-To verify the current image being used for an `gitlab` container,
-run the following command:
+To verify the current image being used for an `gitlab` container, run the
+following command:
 
 ```shell
 kubectl get statefulset "${APP_INSTANCE_NAME}-gitlab" \
@@ -511,20 +546,20 @@ kubectl get statefulset "${APP_INSTANCE_NAME}-gitlab" \
   --output jsonpath='{.spec.template.spec.containers[0].image}'
 ```
 
-# Uninstall the app
+# Uninstalling the app
 
 ## Using the Google Cloud Console
 
 1.  In the Cloud Console, open
     [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
 
-2. From the list of apps, choose your app installation.
+2.  From the list of apps, choose your app installation.
 
-3.  On the Application Details page, click **Delete**.
+3.  On the **Application Details** page, click **Delete**.
 
 ## Using the command-line
 
-### Prepare the environment
+### Preparing your environment
 
 Set your installation name and Kubernetes namespace:
 
@@ -533,13 +568,13 @@ export APP_INSTANCE_NAME=gitlab-1
 export NAMESPACE=default
 ```
 
-### Delete the resources
+### Deleting your resources
 
-> **NOTE:** We recommend using a `kubectl` version that is the same
-> as the version of your cluster. Using the same version for `kubectl`
-> and the cluster helps to avoid unforeseen issues.
+> **NOTE:** We recommend using a `kubectl` version that is the same as the
+> version of your cluster. Using the same version for `kubectl` and the cluster
+> helps to avoid unforeseen issues.
 
-#### Delete the deployment with the generated manifest file
+#### Deleting the deployment with the generated manifest file
 
 Run `kubectl` on the expanded manifest file:
 
@@ -547,10 +582,10 @@ Run `kubectl` on the expanded manifest file:
 kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace ${NAMESPACE}
 ```
 
-#### Delete the deployment by deleting the Application resource
+#### Deleting the deployment by deleting the Application resource
 
-If you don't have the expanded manifest file, delete the
-resources by using types and a label:
+If you don't have the expanded manifest file, delete the resources by using
+types and a label:
 
 ```shell
 kubectl delete application,statefulset,secret,service,configmap \
@@ -558,11 +593,11 @@ kubectl delete application,statefulset,secret,service,configmap \
   --selector app.kubernetes.io/name=${APP_INSTANCE_NAME}
 ```
 
-### Delete the persistent volumes of your installation
+### Deleting the persistent volumes of your installation
 
 By design, removing StatefulSets in Kubernetes does not remove any
-PersistentVolumeClaims that were attached to their Pods. This
-prevents your installations from accidentally deleting stateful data.
+PersistentVolumeClaims that were attached to their Pods. This prevents your
+installations from accidentally deleting stateful data.
 
 To remove the PersistentVolumeClaims with their attached persistent disks, run
 the following `kubectl` command:

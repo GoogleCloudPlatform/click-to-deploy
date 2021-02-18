@@ -59,14 +59,14 @@ properties:
   gitlab.domainName:
     type: string
     title: GitLab instance domain name
-    description: If domain name is not set GitLab instance will be configured with automatically provided external IP.
+    description: If no domain name is set, the GitLab instance will be configured with an automatically-provided external IP address.
     pattern: '^(([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$'
   gitlab.sslConfiguration:
     type: string
     title: SSL configuration options
     description: |
-      [Default] If GitLab domain is set the Let's Encrypt certificate is generated, otherwise SSL is disabled.
-      [Self-signed] Custom self-signed certificates will be generated and installed on GitLab instance.
+      [Default] If the GitLab domain is set, the Let's Encrypt certificate is generated; otherwise, SSL is disabled.
+      [Self-signed] Custom self-signed certificates will be generated and installed on the GitLab instance.
     default: 'Default'
     enum:
     - 'Default'
@@ -74,14 +74,14 @@ properties:
   persistence.storageClass:
     type: string
     title: StorageClass
-    description: You can choose an existing StorageClass or create a new one. Newly created StorageClass provisioner will be "pd-ssd".
+    description: You can choose an existing StorageClass or create a new one. The newly created StorageClass provisioner will be "pd-ssd".
     x-google-marketplace:
       type: STORAGE_CLASS
       storageClass:
         type: SSD
   gitlab.persistence.data.size:
     type: string
-    title: GitLab application data storage size
+    title: GitLab app data storage size
     description: Storage size for GitLab data persistent volume
     default: '8Gi'
     pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
@@ -116,7 +116,7 @@ properties:
   metrics.exporter.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
-    description: Your GCP project must have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not currently supported.
+    description: Your Google Cloud project must have the operations suite enabled. For non-Google-Cloud clusters, export of metrics to the operations suite is not currently supported.
     default: false
 
   # Generated values
@@ -126,7 +126,7 @@ properties:
       type: DEPLOYER_IMAGE
   gitlab.serviceAccountName:
     type: string
-    title: GitLab Service Account
+    title: Service account used by the GitLab instance
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
