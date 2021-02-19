@@ -14,14 +14,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $NVM_DIR/nvm.sh
-
 readonly supervisor_config="/etc/supervisor/conf.d/supervisor-mean.conf"
 readonly webapp_homepage="/sites/web/src/index.html"
+export NVM_DIR=/usr/local/nvm
 export API_PORT=8080
 export WEB_PORT=4200
 export HTTP_PORT=80
 
+function check_web_ready() {
+  echo "$(curl -s -I http://localhost/web/ | grep "200 OK" | wc -l)"
+}
 # Configure Web app
 if [[ -f "${webapp_homepage}" ]]; then
   echo "Setting up Web app..."
@@ -30,11 +32,9 @@ if [[ -f "${webapp_homepage}" ]]; then
   echo "Web app set up."
 fi
 
-# # Set up static website
-# chown -R www-data:www-data homepage/
-
+# Configure front end web-server
 echo "Setting up NGINX..."
-# Configure NGINX
+systemctl stop nginx
 rm -f /etc/nginx/sites-enabled/default && \
   cat /etc/nginx/sites-available/nginx-mean.conf \
     | envsubst '\$API_PORT,\$WEB_PORT,\$HTTP_PORT' \
@@ -43,3 +43,13 @@ echo "NGINX set up."
 
 echo "Starting supervisord..."
 supervisord --configuration "${supervisor_config}"
+
+# Await for web project be up before releasing the script
+echo "Awaiting for webapp be compiled and served..."
+while [[ "$(check_web_ready)" -eq 0 ]]; do
+  echo "Not ready."
+  sleep 5
+done
+echo "Angular webapp is ready."
+
+echo "MEAN Stack ready."

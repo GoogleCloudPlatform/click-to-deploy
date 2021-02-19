@@ -52,13 +52,20 @@ cookbook_file '/sites/api/index.js' do
   action :create
 end
 
+cookbook_file '/sites/api/env_vars.sh' do
+  source 'sites/sample-api/env_vars.sh'
+  owner 'root'
+  group 'root'
+  mode 0755
+  action :create
+end
+
 # Web App
 nodenvm_npm 'Install Angular' do
   action :install_global
   package "@angular/cli@11.0.2"
 end
 
-# Web app
 nodenvm_run 'Create Angular Web Application' do
   cwd '/sites'
   command "ng new web --create-application --defaults --interactive=false"
@@ -73,7 +80,7 @@ directory '/sites/homepage' do
   action :create
 end
 
-cookbook_file '/sites/homepage' do
+cookbook_file '/sites/homepage/index.html' do
   source 'sites/sample-web/index.html'
   owner 'www-data'
   group 'www-data'

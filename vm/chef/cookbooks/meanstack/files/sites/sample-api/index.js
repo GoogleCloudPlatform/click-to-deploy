@@ -17,29 +17,26 @@ app.get('/', function (req, res) {
   })
 })
 
-// MongoDB Integration routes
-if (MONGODB_PASSWORD != "") {
-  mongoose.connect(`mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@${MONGODB_HOST}:${MONGODB_PORT}/${MONGODB_NAME}`, {
-    useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(`mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@${MONGODB_HOST}:${MONGODB_PORT}/${MONGODB_NAME}`, {
+  useNewUrlParser: true, useUnifiedTopology: true});
 
-  const Pet = mongoose.model('Pet', { name: String });
+const Pet = mongoose.model('Pet', { name: String });
 
-  app.get('/pet/create', function (req, res) {
-      const cat = new Pet({ name: 'Cat' });
-      cat.save().then(() => {
-          res.json(cat);
-      });
+app.get('/pet/create', function (req, res) {
+  const cat = new Pet({ name: 'Cat' });
+  cat.save().then(() => {
+      res.json(cat);
+  });
+})
+
+app.get('/pets', function (req, res) {
+  Pet.find({}, (err, pets) => {
+      res.json(pets)
   })
-
-  app.get('/pets', function (req, res) {
-      Pet.find({}, (err, pets) => {
-          res.json(pets)
-      })
-  })
-}
+})
 
 // Add other routes
 
 app.listen(API_PORT, () => {
-    console.log(`Starting on Port: ${API_PORT}`)
+  console.log(`Starting on Port: ${API_PORT}`)
 })

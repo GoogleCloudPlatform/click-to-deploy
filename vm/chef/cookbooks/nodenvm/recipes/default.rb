@@ -28,8 +28,18 @@ end
 
 bash 'Install NVM' do
   code <<-EOH
+    # Back up .bashrc.
+    cp -f /root/.bashrc /root/.bashrc.bak
+
+    # Install NVM
     export NVM_DIR="/usr/local/nvm"
     /opt/c2d/install-nvm
+
+    # Restore backup and remove it.
+    cp -f /root/.bashrc.bak /root/.bashrc
+    rm -f /root/.bashrc.bak
+
+    # Import NVM
     source /usr/local/nvm/nvm.sh
 EOH
 end
