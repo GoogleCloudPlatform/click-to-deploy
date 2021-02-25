@@ -107,7 +107,7 @@ spec:
         - --source=mariadb:http://localhost:9104/metrics
         - --pod-id=$(POD_NAME)
         - --namespace-id=$(POD_NAMESPACE)
-        - --monitored-resource-types=k8s
+        - --monitored-resource-type-prefix=k8s_
         env:
         - name: POD_NAME
           valueFrom:
