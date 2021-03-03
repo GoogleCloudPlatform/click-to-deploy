@@ -98,8 +98,7 @@ function prepare_apache_and_php() {
   mv -f .htaccess.txt .htaccess
 
   # Create apache root htaccess
-  echo "RedirectMatch 302 ^\/(?!.*store).* /store/" > \
-    ../.htaccess
+  echo "RedirectMatch 302 ^\/(?!.*store).* /store/" > ../.htaccesss
 
   # Disable default apache website
   a2dissite 000-default
