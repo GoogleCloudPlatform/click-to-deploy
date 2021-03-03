@@ -41,7 +41,7 @@ package 'Install Packages' do
   action :install
 end
 
-# Clone opencart source code per license requirements.
+# Clone OpenCart source code per license requirements.
 git '/usr/src/opencart' do
   repository 'https://github.com/opencart/opencart.git'
   reference node['opencart']['version']

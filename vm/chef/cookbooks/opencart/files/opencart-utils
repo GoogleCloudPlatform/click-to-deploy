@@ -37,7 +37,7 @@ function setup_mysql_user() {
 }
 
 #######################################
-# Setup OpenCard Installer.
+# Setup OpenCart Installer.
 #######################################
 function setup_opencart_installer() {
   local -r src_installer_folder="/usr/src/opencart"
@@ -52,15 +52,15 @@ function setup_opencart_installer() {
 }
 
 #######################################
-# Install Opencart initial database
+# Install OpenCart initial database
 # Arguments:
 #   MySQL Username.
 #   MySQL Password.
 #   MySQL Database name.
-#   Opencart admin username.
-#   Opencart admin password.
-#   Opencart admin email.
-#   Opencart site url.
+#   OpenCart admin username.
+#   OpenCart admin password.
+#   OpenCart admin email.
+#   OpenCart site url.
 #######################################
 function install_opencart_db() {
   local -r db_user="$1"
@@ -91,7 +91,7 @@ function install_opencart_db() {
 function prepare_apache_and_php() {
   cd "${opencart_folder}"
 
-  # Enable opencart specific php configs
+  # Enable OpenCart specific php configs
   mv php.ini /etc/php/7.4/apache2/conf.d/opencart.ini
 
   # Enable store htaccess
@@ -105,7 +105,7 @@ function prepare_apache_and_php() {
 }
 
 #######################################
-# Fix Opencart storage location.
+# Fix OpencarOpenCartt storage location.
 #######################################
 function fix_storage_location() {
   cd "${opencart_folder}"
@@ -115,7 +115,7 @@ function fix_storage_location() {
 }
 
 #######################################
-# Fix Opencart PHP dependencies folder.
+# Fix OpenCart PHP dependencies folder.
 #######################################
 function fix_vendor_modules() {
   cd "${opencart_folder}"

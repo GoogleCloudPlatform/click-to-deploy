@@ -40,11 +40,11 @@ setup_mysql_user "${opencart_db_user}" "${opencart_db_password}" \
   "${opencart_db_name}"
 
 # Setup Opencart installer
-echo "Setting up Opencart Installer..."
+echo "Setting up OpenCart Installer..."
 setup_opencart_installer
 
 # Install Opencart
-echo "Setting up Opencart DB..."
+echo "Setting up OpenCart DB..."
 install_opencart_db \
   "${opencart_db_user}" "${opencart_db_password}" "${opencart_db_name}" \
   "${opencart_admin_user}" "${opencart_admin_password}" \
