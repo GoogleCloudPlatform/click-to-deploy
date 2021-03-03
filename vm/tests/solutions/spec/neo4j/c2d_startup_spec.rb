@@ -12,8 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['joomla']['version'] = '3.9.24'
-default['joomla']['sha1'] = '882c25c664b2c7b11963a7b589484a79e10eb5ff'
-default['joomla']['user'] = 'www-data'
+require 'spec_helper'
 
-default['joomla']['db']['name'] = 'joomla'
+describe 'C2D startup config' do
+  describe service('google-c2d-startup.service') do
+    it { should be_enabled }
+  end
+
+  describe file('/var/lock/google_vm_config.lock') do
+    it { should_not exist }
+  end
+end
+
+describe 'C2D startup scripts should exists' do
+  describe file('/opt/c2d/scripts/00-manage-swap') do
+    it { should exist }
+  end
+
+  describe file('/opt/c2d/scripts/01-neo4j') do
+    it { should exist }
+  end
+end
