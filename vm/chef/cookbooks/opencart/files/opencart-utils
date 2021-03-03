@@ -19,21 +19,13 @@ source /opt/c2d/c2d-utils || exit 1
 readonly opencart_folder="/var/www/html/store"
 
 #######################################
-# Checks if a host and port are opened
+# Creates a user for Mattermost application in MYSQL database.
 # Arguments:
-#   Host name
-#   Port number
+#   MySQL Hostname.
+#   MySQL Database Name.
+#   MySQL Username to be created.
+#   MySQL Password for username created.
 #######################################
-function wait_for_port() {
-  local HOST="$1"
-  local PORT="$2"
-  timeout --preserve-status 300 bash -c "until echo > /dev/tcp/${HOST}/${PORT}; do sleep 2; done"
-  if [[ "$?" -ne 0 ]]; then
-    exit 1
-  fi
-}
-
-# Setup MySQL user
 function setup_mysql_user() {
   local -r db_user="$1"
   local -r db_password="$2"
@@ -44,7 +36,9 @@ function setup_mysql_user() {
   mysql -u root -e "FLUSH PRIVILEGES"
 }
 
-# Prepare files to installer
+#######################################
+# Setup OpenCard Installer.
+#######################################
 function setup_opencart_installer() {
   local -r src_installer_folder="/usr/src/opencart"
 
@@ -57,6 +51,17 @@ function setup_opencart_installer() {
   composer update --no-interaction
 }
 
+#######################################
+# Install Opencart initial database
+# Arguments:
+#   MySQL Username.
+#   MySQL Password.
+#   MySQL Database name.
+#   Opencart admin username.
+#   Opencart admin password.
+#   Opencart admin email.
+#   Opencart site url.
+#######################################
 function install_opencart_db() {
   local -r db_user="$1"
   local -r db_password="$2"
@@ -80,31 +85,9 @@ function install_opencart_db() {
     --http_server "${url}"
 }
 
-function patch_file() {
-  local -r contents="$1"
-  local -r target_file="$2"
-  local -r target_line="$3"
-
-  sed -i "${target_line}i${contents}" "${target_file}"
-}
-
-function enable_apache_config() {
-  local target_file="/etc/apache2/apache2.conf"
-  local line_number="$(cat "${target_file}" \
-    | grep -n "/var/www/" \
-    | cut -f 1 -d ':')"
-  local patch_line_number=0
-
-  ((patch_line_number=line_number+5))
-  patch_file "<Directory /var/www/html>" "${target_file}" "${patch_line_number}"
-
-  ((patch_line_number=patch_line_number+1))
-  patch_file "  AllowOverride All" "${target_file}" "${patch_line_number}"
-
-  ((patch_line_number=patch_line_number+1))
-  patch_file "</Directory>" "${target_file}" "${patch_line_number}"
-}
-
+#######################################
+# Prepare Apache and PHP configuration files.
+#######################################
 function prepare_apache_and_php() {
   cd "${opencart_folder}"
 
@@ -120,11 +103,11 @@ function prepare_apache_and_php() {
 
   # Disable default apache website
   a2dissite 000-default
-
-  # Enable configuration override
-  enable_apache_config
 }
 
+#######################################
+# Fix Opencart storage location.
+#######################################
 function fix_storage_location() {
   cd "${opencart_folder}"
   mv /var/www/html/store/system/storage /var/www/storage
@@ -132,6 +115,9 @@ function fix_storage_location() {
   sed -i "s/DIR_SYSTEM \. 'storage\//'\/var\/www\/storage\//g" admin/config.php
 }
 
+#######################################
+# Fix Opencart PHP dependencies folder.
+#######################################
 function fix_vendor_modules() {
   cd "${opencart_folder}"
 

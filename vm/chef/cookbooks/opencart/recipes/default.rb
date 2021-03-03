@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ end
 # Clone opencart source code per license requirements.
 git '/usr/src/opencart' do
   repository 'https://github.com/opencart/opencart.git'
-  reference "#{node['opencart']['version']}"
+  reference node['opencart']['version']
   action :checkout
 end
 
@@ -67,6 +67,10 @@ cookbook_file '/opt/c2d/opencart-utils' do
   group 'root'
   mode 0644
   action :create
+end
+
+apache2_allow_override 'Allow override' do
+  directory '/var/www/html'
 end
 
 execute 'enable apache modules' do

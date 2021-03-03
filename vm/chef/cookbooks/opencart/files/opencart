@@ -39,7 +39,7 @@ echo "Setting up MySQL user..."
 setup_mysql_user "${opencart_db_user}" "${opencart_db_password}" \
   "${opencart_db_name}"
 
-# Setup opencart installer
+# Setup Opencart installer
 echo "Setting up Opencart Installer..."
 setup_opencart_installer
 
