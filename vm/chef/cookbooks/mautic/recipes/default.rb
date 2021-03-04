@@ -81,14 +81,6 @@ EOH
 end
 
 # Download licenses/source code for OSPO
-remote_file '/var/www/html/mautic/vendor/ip2location/ip2location-php/LICENSE' do
-  source 'https://raw.githubusercontent.com/chrislim2888/IP2Location-PHP-Module/master/LICENSE.TXT'
-  owner node['mautic']['user']
-  group node['mautic']['user']
-  mode '0644'
-  action :create
-end
-
 git '/usr/src/device-detector' do
   repository 'https://github.com/matomo-org/device-detector.git'
   action :checkout
