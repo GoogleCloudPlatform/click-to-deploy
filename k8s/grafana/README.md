@@ -206,8 +206,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-helm template chart/grafana \
-  --name $APP_INSTANCE_NAME \
+helm template $APP_INSTANCE_NAME chart/grafana \
   --namespace $NAMESPACE \
   --set grafana.image.repo=$IMAGE_GRAFANA \
   --set grafana.image.tag=$TAG \
