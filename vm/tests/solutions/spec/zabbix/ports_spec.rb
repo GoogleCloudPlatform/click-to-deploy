@@ -20,20 +20,18 @@ end
 
 describe port(25) do
   it { should be_listening.on('127.0.0.1') }
-  it { should be_listening.on('::1').with('tcp6') }
 end
 
 describe port(80) do
-  it { should be_listening.on('::').with('tcp6') }
+  it { should be_listening }
 end
 
 describe port(443) do
-  it { should be_listening.on('::').with('tcp6') }
+  it { should be_listening }
 end
 
 describe port(5432) do
   it { should be_listening.on('127.0.0.1') }
-  it { should be_listening.on('::1').with('tcp6') }
 end
 
 describe port(10051) do
