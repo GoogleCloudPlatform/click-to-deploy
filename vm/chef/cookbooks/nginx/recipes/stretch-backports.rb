@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,9 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-package 'install packages' do
+package 'install packages' do # ~FC009
   package_name node['nginx']['packages']
+  default_release 'stretch-backports'
   action :install
+  retries 5
+  retry_delay 60
 end
 
 execute 'rename index.html' do
