@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['joomla']['version'] = '3.9.24'
-default['joomla']['sha1'] = '882c25c664b2c7b11963a7b589484a79e10eb5ff'
-default['joomla']['user'] = 'www-data'
+require 'spec_helper'
 
-default['joomla']['db']['name'] = 'joomla'
+describe service('neo4j'), :if => os[:family] == 'debian' do
+  it { should be_enabled }
+end
