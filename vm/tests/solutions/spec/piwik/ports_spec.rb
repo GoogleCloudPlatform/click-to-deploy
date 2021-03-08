@@ -15,11 +15,11 @@
 require 'spec_helper'
 
 describe port(22) do
-  it { should be_listening.on('0.0.0.0') }
+  it { should be_listening }
 end
 
 describe port(80) do
-  it { should be_listening.on('::').with('tcp6') }
+  it { should be_listening }
 end
 
 describe port(3306) do
