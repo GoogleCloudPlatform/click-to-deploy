@@ -17,11 +17,11 @@ default['mautic']['packages'] = [
     'libxmlrpc-epi0',
     'libxslt1.1',
     'libzip4',
-    'php7.3-bcmath',
-    'php7.3-gmp',
-    'php7.3-imap',
+    'php7.4-bcmath',
+    'php7.4-gmp',
+    'php7.4-imap',
 ]
 
-default['mautic']['version'] = '3.0'
+default['mautic']['version'] = '3.3'
 default['mautic']['user'] = 'www-data'
 default['mautic']['db']['name'] = 'mautic'
