@@ -19,6 +19,24 @@ source /opt/c2d/c2d-utils || exit 1
 readonly opencart_folder="/var/www/html/store"
 
 #######################################
+# Awaits for host and port be ready.
+# Arguments:
+#   Target Hostname.
+#   Target Port.
+#   Timeout expected, 300s by default.
+#######################################
+function wait_for_port() {
+  local -r host="$1"
+  local -r port="$2"
+  local -r timeout="${3:-300}"
+
+  timeout --preserve-status "${timeout}" bash -c "until echo > /dev/tcp/${host}/${port}; do sleep 2; done"
+  if [[ "$?" -ne 0 ]]; then
+    exit 1
+  fi
+}
+
+#######################################
 # Creates a user for Mattermost application in MYSQL database.
 # Arguments:
 #   MySQL Hostname.
