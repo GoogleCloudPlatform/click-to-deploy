@@ -65,17 +65,6 @@ function has_external_ip() {
   fi
 }
 
-function wait_for_port() {
-  local -r host="$1"
-  local -r port="$2"
-  local -r timeout="${3:-300}"
-
-  timeout --preserve-status "${timeout}" bash -c "until echo > /dev/tcp/${host}/${port}; do sleep 2; done"
-  if [[ "$?" -ne 0 ]]; then
-    exit 1
-  fi
-}
-
 # Disk operations
 
 function format_and_mount_disk() {
