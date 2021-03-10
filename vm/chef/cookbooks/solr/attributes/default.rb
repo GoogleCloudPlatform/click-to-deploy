@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,5 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['solr']['version'] = '8.6.2'
+require 'net/http'
+
+# Find latest version for Solr 8
+uri = URI('https://downloads.apache.org/lucene/solr/')
+response = Net::HTTP.get(uri)
+match = response.match /(?<version>8\.\d+\.\d+)/
+
+default['solr']['version'] = match[:version]
 default['solr']['packages'] = ['lsof']
