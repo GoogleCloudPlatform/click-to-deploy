@@ -14,10 +14,5 @@
 
 require 'net/http'
 
-# Find latest version for Solr 8
-uri = URI('https://downloads.apache.org/lucene/solr/')
-response = Net::HTTP.get(uri)
-match = response.match /(?<version>8\.\d+\.\d+)/
-
-default['solr']['version'] = match[:version]
+default['solr']['version'] = '8.8.1'
 default['solr']['packages'] = ['lsof']
