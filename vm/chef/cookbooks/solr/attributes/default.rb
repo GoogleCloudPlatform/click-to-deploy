@@ -12,7 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'net/http'
-
 default['solr']['version'] = '8.8.1'
 default['solr']['packages'] = ['lsof']
