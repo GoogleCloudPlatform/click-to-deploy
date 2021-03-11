@@ -26,13 +26,13 @@ end
 
 # Download sha512 checksum from apache
 remote_file '/tmp/solr-checksum.sha512' do
-  source "https://www-us.apache.org/dist/lucene/solr/#{node['solr']['version']}/solr-#{node['solr']['version']}.tgz.sha512"
+  source "https://archive.apache.org/dist/lucene/solr/#{node['solr']['version']}/solr-#{node['solr']['version']}.tgz.sha512"
   action :create
 end
 
 # Download solr from apache
 remote_file "/tmp/solr-#{node['solr']['version']}.tgz" do
-  source "https://www-us.apache.org/dist/lucene/solr/#{node['solr']['version']}/solr-#{node['solr']['version']}.tgz"
+  source "https://archive.apache.org/dist/lucene/solr/#{node['solr']['version']}/solr-#{node['solr']['version']}.tgz"
   verify 'sed -i -e "s/ .*//; s=$=  %{path}=" /tmp/solr-checksum.sha512 && sha512sum -c /tmp/solr-checksum.sha512'
   action :create
 end
