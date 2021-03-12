@@ -36,13 +36,8 @@ bash 'Install NVM' do
     /opt/c2d/install-nvm
 
     # Restore backup and remove it.
-<<<<<<< HEAD
-    cp -f /root/.bashrc.bak /root/.bashrc
-    rm -f /root/.bashrc.bak
-=======
     cp -f /root/.bashrc.bak /root/.bashrc \
       && rm -f /root/.bashrc.bak
->>>>>>> miani-vm-nodenvm-cookbook
 
     # Import NVM
     source /usr/local/nvm/nvm.sh
