@@ -21,5 +21,5 @@ end
 
 nodenvm_run 'Create Angular Web Application' do
   cwd '/sites'
-  command "ng new web --create-application --defaults --interactive=false"
+  command 'ng new web --create-application --defaults --interactive=false'
 end
