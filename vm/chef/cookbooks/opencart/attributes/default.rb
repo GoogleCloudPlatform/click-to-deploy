@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['joomla']['version'] = '3.9.24'
-default['joomla']['sha1'] = '882c25c664b2c7b11963a7b589484a79e10eb5ff'
-default['joomla']['user'] = 'www-data'
-
-default['joomla']['db']['name'] = 'joomla'
+default['opencart']['version'] = '3.0.3.7'
+default['opencart']['db']['name'] = 'opencart'
+default['opencart']['packages'] = ['jq']
