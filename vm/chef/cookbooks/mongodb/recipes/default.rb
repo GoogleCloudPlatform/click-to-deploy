@@ -13,6 +13,7 @@
 # limitations under the License.
 
 include_recipe 'mongodb::common'
+include_recipe 'mongodb::licenses'
 
 # Enable the mongod service to make it autostart on boot.
 execute 'systemctl enable mongod.service'
