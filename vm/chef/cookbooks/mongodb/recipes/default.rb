@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'mongodb::generic'
+include_recipe 'mongodb::common'
 
 # Enable the mongod service to make it autostart on boot.
 execute 'systemctl enable mongod.service'
