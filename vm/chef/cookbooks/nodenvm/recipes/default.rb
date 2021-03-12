@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,8 +36,13 @@ bash 'Install NVM' do
     /opt/c2d/install-nvm
 
     # Restore backup and remove it.
+<<<<<<< HEAD
     cp -f /root/.bashrc.bak /root/.bashrc
     rm -f /root/.bashrc.bak
+=======
+    cp -f /root/.bashrc.bak /root/.bashrc \
+      && rm -f /root/.bashrc.bak
+>>>>>>> miani-vm-nodenvm-cookbook
 
     # Import NVM
     source /usr/local/nvm/nvm.sh
