@@ -12,10 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['mongodb']['debian']['codename'] = 'stretch'
-default['mongodb']['version'] = '4.0.0'
-default['mongodb']['release'] =
-  default['mongodb']['version'].split('.').take(2).join('.')
+default['mongodb']['debian']['codename'] = 'buster'
+default['mongodb']['release'] = '4.4'
 
 default['mongodb']['package'] = 'mongodb-org'
 default['mongodb']['source_package'] = 'mongodb'

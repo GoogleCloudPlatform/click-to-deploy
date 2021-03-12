@@ -15,35 +15,29 @@
 include_recipe 'mongodb::common'
 include_recipe 'mongodb::licenses'
 
+directory '/data/db' do
+  owner 'mongodb'
+  group 'mongodb'
+  mode '0755'
+  recursive true
+  action :create
+end
+
 # Enable the mongod service to make it autostart on boot.
-execute 'systemctl enable mongod.service'
+service 'mongod.service' do
+  action [ :enable, :start ]
+end
 
-cookbook_file '/etc/mongod.arb.conf.template' do
-  source 'conf/mongod.arb.conf'
+cookbook_file '/etc/mongod.conf.template' do
+  source 'conf/mongod.standalone.conf'
   owner 'root'
   group 'root'
   mode 0644
   action :create
 end
 
-cookbook_file '/etc/mongod.serv.conf.template' do
-  source 'conf/mongod.serv.conf'
-  owner 'root'
-  group 'root'
-  mode 0644
-  action :create
-end
-
-c2d_startup_script 'mongodb-server' do
-  source 'startup/mongodb-server'
-end
-
-c2d_startup_script 'mongodb-arbiter' do
-  source 'startup/mongodb-arbiter'
-end
-
-c2d_startup_script 'mongodb-validator' do
-  source 'startup/mongodb-validator'
+c2d_startup_script 'mongodb-standalone' do
+  source 'startup/mongodb-standalone'
 end
 
 include_recipe 'mongodb::uninstall_temp'

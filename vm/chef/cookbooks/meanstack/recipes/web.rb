@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,6 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name 'mongodb'
-depends 'git'
-supports 'debian'
+include_recipe 'meanstack::default'
+
+nodenvm_npm 'Install Angular' do
+  action :install_global
+  package "@angular/cli@#{node['meanstack']['angular']['version']}"
+end
+
+nodenvm_run 'Create Angular Web Application' do
+  cwd '/sites'
+  command 'ng new web --create-application --defaults --interactive=false'
+end

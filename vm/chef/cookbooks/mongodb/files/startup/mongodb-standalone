@@ -1,0 +1,54 @@
+#!/bin/bash -eu
+#
+# Copyright 2021 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
+
+readonly mongodb_admin_password="$(get_attribute_value "mongodb_admin_password")"
+
+service mongod restart
+sleep 15
+
+echo "Checking current config..."
+cat /etc/mongod.conf
+
+echo "Creating admin user..."
+mongo <<-_EOT_
+use admin
+db.createUser(
+  {
+    user: "admin",
+    pwd: "${mongodb_admin_password}",
+    roles: [ { role: "userAdminAnyDatabase", db: "admin" }, "readWriteAnyDatabase" ]
+  }
+)
+_EOT_
+
+# Stop mongodb.
+service mongod stop
+
+# Copy standalone config with authentication enabled.
+cp -f /etc/mongod.conf.template /etc/mongod.conf
+
+# Grant permissions
+chown -R mongodb:mongodb /var/lib/mongodb/ \
+  && chown -R mongodb:mongodb /data/db/
+
+# Increase max open files.
+echo "ulimit -n 64000" >> /etc/default/mongodb
+
+# Restart mongodb.
+echo "Starting MongoDB..."
+service mongod start

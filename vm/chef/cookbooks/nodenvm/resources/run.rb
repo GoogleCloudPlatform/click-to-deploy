@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,6 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name 'mongodb'
-depends 'git'
-supports 'debian'
+property :command, String, default: ''
+property :cwd, String, default: '/'
+
+action :run do
+  bash 'Run command in node context' do
+    code <<-EOH
+      source /usr/local/nvm/nvm.sh
+      nvm use default
+      cd "#{new_resource.cwd}"
+      #{new_resource.command}
+    EOH
+  end
+end

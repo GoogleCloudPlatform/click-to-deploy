@@ -1,0 +1,319 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Click-to-Deploy MEAN Stack VM</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body>
+
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+      <br><br>
+      <h1 class="header center blue-text">MEAN Stack VM</h1>
+      <div class="row center">
+        <h5 class="header col s12 light">A bootstrap solution with MongoDB, Angular, Express and Node.js combined.</h5>
+      </div>
+      <div class="row center">
+        <a href="/web/" id="download-button" class="btn-large waves-effect waves-light red" target="_blank">
+          Access Angular Demo
+        </a>
+        <a href="/api/" id="download-button" class="btn-large waves-effect waves-light orange" target="_blank">
+          Access Demo API
+        </a>
+      </div>
+      <br><br>
+
+    </div>
+  </div>
+
+
+  <div class="container">
+
+    <!--   MongoDB   -->
+    <div class="section scrollspy">
+      <div class="row">
+        <div class="col s12 m12">
+          <h4 class="center blue-text" id="mongodb">MongoDB</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 m8">
+          <div class="icon-block">
+            <h2 class="center light-blue-text"><i class="material-icons">flash_on</i></h2>
+            <h5 class="center">Getting started</h5>
+
+            <div class="code-viewer">
+              <pre class="cv-comment">
+                # List databases via shell
+              </pre>
+              <pre>
+                  mongo -u admin -p "${PASSWORD}" --eval "db.adminCommand('listDatabases')"
+              </pre>
+              <pre class="cv-output">
+                  MongoDB shell version v${VERSION_MONGO}
+                  connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&gssapiServiceName=mongodb
+                  Implicit session: session { "id" : UUID("60e60b1d-39f7-4480-b841-ed96df53eb11") }
+                  MongoDB server version: ${VERSION_MONGO}
+                  {
+                    "databases" : [
+                      {
+                        "name" : "admin",
+                        "sizeOnDisk" : 172032,
+                        "empty" : false
+                      },
+                      {
+                        "name" : "config",
+                        "sizeOnDisk" : 12288,
+                        "empty" : false
+                      },
+                      {
+                        "name" : "local",
+                        "sizeOnDisk" : 73728,
+                        "empty" : false
+                      }
+                    ],
+                    "totalSize" : 258048,
+                    "ok" : 1
+                  }
+
+              </pre>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center light-blue-text"><i class="material-icons">settings</i></h2>
+            <h5 class="center">Useful Information</h5>
+
+            <ul class="bullet-list light">
+              <li>Mongo version ${VERSION_MONGO}</li>
+              <li>Mongo runs on port 27017. Port is not exposed publicly.</li>
+              <li>Username: admin</li>
+              <li>Password: find it in your GCP Console.</li>
+              <li style="list-style-type: none !important;">&nbsp;</li>
+              <li><a href="https://docs.mongodb.com/manual/tutorial/getting-started/" target="_blank">Getting started</a></li>
+              <li><a href="https://docs.mongodb.com/" target="_blank">Official Docs</a></li>
+            </ul>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <br><br>
+
+    <!--   Express   -->
+    <div class="section">
+      <div class="row">
+        <div class="col s12 m12">
+          <h4 class="center blue-text" id="express">Express</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 m8">
+          <div class="icon-block">
+            <h2 class="center light-blue-text"><i class="material-icons">flash_on</i></h2>
+            <h5 class="center">Getting started</h5>
+
+            <div class="code-viewer">
+              <pre class="cv-comment"># Enable Node</pre>
+              <pre>source /usr/local/nvm/nvm.sh</pre>
+              <pre class="cv-comment"># Create a new express application</pre>
+              <pre>express --no-view api</pre>
+              <pre class="cv-output cv-output-left">
+                  change directory:
+                  $ cd api
+
+                install dependencies:
+                  $ npm install
+
+                run the app:
+                  $ DEBUG=api:* npm start
+              </pre>
+              <pre class="cv-comment"># Run the commands above to serve the newly created app.</pre>
+              <pre class="cv-comment"># You should view the output below:</pre>
+              <pre class="cv-output cv-output-left">
+                  > api@0.0.0 start /home/user/api
+                  > node ./bin/www
+
+                    api:server Listening on port 3000 +0ms
+              </pre>
+            </div>
+
+            <h5 class="center" id="api-usage">Demo API Usage</h5>
+
+            <div class="code-viewer">
+              <pre class="cv-comment"># Fetch Home endpoint</pre>
+              <pre>curl -X GET ${SITE_URL}/api/</pre>
+              <pre class="cv-output cv-output-left">
+                  > {"name":"Google Cloud Marketplace - Sample API"}
+              </pre>
+              <pre class="cv-comment"># Create a new record</pre>
+              <pre>curl -H "Content-Type: application/json" -d '{"name": "Cat"}' ${SITE_URL}/api/pets</pre>
+              <pre class="cv-output cv-output-left">
+                  > {"_id":"6048bc2ec0b60f343233265a","name":"Cat","__v":0}
+              </pre>
+              <pre class="cv-comment"># Find all records</pre>
+              <pre>curl -X GET ${SITE_URL}/api/pets</pre>
+              <pre class="cv-output cv-output-left">
+                  [{"_id":"6048b7fbc29fa52b0e093666","name":"Cat","__v":0}]
+              </pre>
+
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center light-blue-text"><i class="material-icons">settings</i></h2>
+            <h5 class="center">Useful Information</h5>
+
+            <p class="light">
+              <ul class="bullet-list light">
+                <li>Express version ${VERSION_EXPRESS}</li>
+                <li>Express is installed globally on the machine.</li>
+                <li>Demo API runs on port ${API_PORT}. Port is not exposed publicly.</li>
+                <li>Demo API is exposed via NGINX through the address <a href="${SITE_URL}/api/">${SITE_URL}/api/</a>.</li>
+                <li style="list-style-type: none !important;">&nbsp;</li>
+                <li><a href="https://expressjs.com/en/starter/hello-world.html" target="_blank">Getting started</a></li>
+                <li><a href="https://expressjs.com/en/4x/api.html" target="_blank">Official Docs</a></li>
+              </ul>
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <br><br>
+
+    <!--   Angular   -->
+    <div class="section scrollspy">
+        <div class="row">
+          <div class="col s12 m12">
+            <h4 class="center blue-text">Angular</h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s12 m8">
+            <div class="icon-block">
+              <h2 class="center light-blue-text"><i class="material-icons">flash_on</i></h2>
+              <h5 class="center">Getting started</h5>
+
+              <div class="code-viewer">
+                <pre class="cv-comment"># Enable Node</pre>
+                <pre>source /usr/local/nvm/nvm.sh</pre>
+                <pre class="cv-comment"># Check Angular version</pre>
+                <pre>ng version</pre>
+                <pre class="cv-comment"># Create a new application</pre>
+                <pre>ng new web --create-application --defaults --interactive=false</pre>
+                <pre class="cv-comment"># Serve the app</pre>
+                <pre>cd web/ && ng serve --port 4040</pre>
+                <pre class="cv-output">
+                  ...
+
+  Build at: 2021-03-02T14:48:13.679Z - Hash: bd7f681a449b0f52c08a - Time: 11486ms
+
+  ** Angular Live Development Server is listening on localhost:4040, open your browser on http://localhost:4040/ **
+
+                </pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="col s12 m4">
+            <div class="icon-block">
+              <h2 class="center light-blue-text"><i class="material-icons">settings</i></h2>
+              <h5 class="center">Useful Information</h5>
+
+              <ul class="bullet-list light">
+                <li>Angular version ${VERSION_ANGULAR}</li>
+                <li>Angular is installed globally on the machine.</li>
+                <li>Demo app runs on port ${WEB_PORT}. Port is not exposed publicly.</li>
+                <li>Demo app is exposed via NGINX through the address <a href="${SITE_URL}/web/">${SITE_URL}/web/</a>.</li>
+                <li style="list-style-type: none !important;">&nbsp;</li>
+                <li><a href="https://angular.io/start" target="_blank">Getting started</a></li>
+                <li><a href="https://angular.io/docs" target="_blank">Official Docs</a></li>
+              </ul>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <br><br>
+
+
+    <!--   Node.js   -->
+    <div class="section">
+      <div class="row">
+        <div class="col s12 m12">
+          <h4 class="center blue-text">Node.js</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 m8">
+          <div class="icon-block">
+            <h2 class="center light-blue-text"><i class="material-icons">flash_on</i></h2>
+            <h5 class="center">Getting started</h5>
+
+            <div class="code-viewer">
+              <pre class="cv-comment"># Enable Node</pre>
+              <pre>source /usr/local/nvm/nvm.sh</pre>
+              <pre class="cv-comment"># List specific node versions</pre>
+              <pre>nvm ls-remote 12*</pre>
+              <pre class="cv-comment"># Install a specific version</pre>
+              <pre>nvm install v12.21.0</pre>
+              <pre class="cv-comment"># Use a specific version</pre>
+              <pre>nvm use v12</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center light-blue-text"><i class="material-icons">settings</i></h2>
+            <h5 class="center">Useful Information</h5>
+
+            <p class="light">
+              <ul class="bullet-list light">
+                <li>Node version ${VERSION_NODEJS}</li>
+                <li>Node is installed via nvm.</li>
+                <li style="list-style-type: none !important;">&nbsp;</li>
+                <li><a href="https://nodejs.org/en/docs/guides/getting-started-guide/" target="_blank">Getting started</a></li>
+                <li><a href="https://nodejs.org/en/docs/" target="_blank">Official Docs</a></li>
+              </ul>
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <br><br>
+
+  </div>
+
+  <footer class="page-footer">
+    <div class="footer-copyright">
+      <div class="container">
+      Built by <a style="color: #DDD; text-decoration: underline;" href="https://github.com/GoogleCloudPlatform/click-to-deploy" target="_blank">
+        Click-to-Deploy
+      </a>
+      </div>
+    </div>
+  </footer>
+
+  <!--  Scripts-->
+  <script src="js/materialize.min.js"></script>
+
+  </body>
+</html>
