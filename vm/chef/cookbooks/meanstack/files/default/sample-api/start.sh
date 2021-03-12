@@ -1,10 +1,12 @@
-# Copyright 2021 Google LLC
+#!/bin/bash
+#
+# Copyright 2021 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#      http://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,7 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['meanstack']['angular']['version'] = '11.0.2'
-default['meanstack']['express']['version'] = '4.16.1'
-default['meanstack']['nginx']['user'] = 'www-data'
-default['meanstack']['nginx']['group'] = 'www-data'
+source /usr/local/nvm/nvm.sh
+source /opt/c2d/c2d-utils || exit 1
+
+readonly mongodb_password="$(get_attribute_value "mongodb_admin_password")"
+
+export MONGODB_USERNAME="admin"
+export MONGODB_PASSWORD="${mongodb_password}"
+export MONGODB_NAME="admin"
+
+node /sites/api/index.js

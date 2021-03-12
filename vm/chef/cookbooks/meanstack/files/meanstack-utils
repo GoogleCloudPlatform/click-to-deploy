@@ -1,0 +1,90 @@
+#!/bin/bash -e
+#
+# Copyright 2021 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+export HOME=/root
+source /usr/local/nvm/nvm.sh
+source /opt/c2d/c2d-utils || exit 1
+
+#######################################
+# Awaits for host and port be ready.
+# Arguments:
+#   Target Hostname.
+#   Target Port.
+#   Timeout expected, 300s by default.
+#######################################
+function wait_for_port() {
+  local -r host="$1"
+  local -r port="$2"
+  local -r timeout="${3:-300}"
+
+  timeout --preserve-status "${timeout}" bash -c "until echo > /dev/tcp/${host}/${port}; do sleep 2; done"
+  if [[ "$?" -ne 0 ]]; then
+    exit 1
+  fi
+}
+
+# Check if webapp is ready through NGINX proxy
+function check_web_ready() {
+  echo "$(curl -s -I http://localhost/web/ | grep "200 OK" | wc -l)"
+}
+
+function setup_webapp_homepage() {
+  local -r webapp_homepage="/sites/web/src/index.html"
+
+  if [[ -f "${webapp_homepage}" ]]; then
+    echo "Setting up Web app..."
+    sed -i 's/<base href="\/">/<base href="\/web\/">/g' \
+      "${webapp_homepage}"
+    echo "Web app set up."
+  fi
+}
+
+function enable_metrics_exporter() {
+  ln -s /etc/nginx/sites-available/nginx-metrics.conf /etc/nginx/sites-enabled/nginx-metrics.conf
+}
+
+function setup_nginx_stack() {
+  rm -f /etc/nginx/sites-enabled/default && \
+  cat /etc/nginx/sites-available/nginx-mean.conf \
+    | envsubst '\$API_PORT,\$WEB_PORT,\$HTTP_PORT' \
+    > /etc/nginx/sites-enabled/nginx-mean.conf
+}
+
+function setup_ready_homepage() {
+  cat /sites/homepage/ready.html \
+    | envsubst '\$API_PORT,\$WEB_PORT,\$HTTP_PORT,\$SITE_URL,\$VERSION_MONGO,\$VERSION_EXPRESS,\$VERSION_ANGULAR,\$VERSION_NODEJS' \
+    > /sites/homepage/index.html
+}
+
+function get_mongo_version() {
+  mongo --version \
+    | grep '"version"' \
+    | grep -o -E '([0-9]+\.)([0-9]+\.)([0-9+])'
+}
+
+function get_express_version() {
+  express --version
+}
+
+function get_angular_version() {
+  ng --version \
+    | grep "core" \
+    | grep -o -E '([0-9]+\.)([0-9]+\.)([0-9+])'
+}
+
+function get_nodejs_version() {
+  node -v | tr -d 'v'
+}

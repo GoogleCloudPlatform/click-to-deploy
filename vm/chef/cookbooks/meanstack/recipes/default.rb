@@ -12,88 +12,45 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+include_recipe 'mongodb::standalone'
 include_recipe 'nginx'
 include_recipe 'nodenvm'
 include_recipe 'nodenvm::node14'
-include_recipe 'mongodb::standalone'
+include_recipe 'meanstack::api'
+include_recipe 'meanstack::web'
 include_recipe 'supervisord'
 
-# API
-directory '/sites/api' do
-  owner 'root'
-  group 'root'
+directory '/sites/homepage' do
+  owner node['meanstack']['nginx']['user']
+  group node['meanstack']['nginx']['group']
   mode '0755'
   recursive true
   action :create
 end
 
-nodenvm_run 'Init API Application' do
-  cwd '/sites/api'
-  command 'npm init --force'
-end
-
-nodenvm_npm 'Install Express' do
-  cwd '/sites/api'
-  action :install
-  package "express"
-end
-
-nodenvm_npm 'Install Mongoose' do
-  cwd '/sites/api'
-  action :install
-  package "mongoose"
-end
-
-cookbook_file '/sites/api/index.js' do
-  source 'sites/sample-api/index.js'
-  owner 'www-data'
-  group 'www-data'
-  mode 0664
-  action :create
-end
-
-cookbook_file '/sites/api/env_vars.sh' do
-  source 'sites/sample-api/env_vars.sh'
-  owner 'root'
-  group 'root'
+remote_directory '/sites/homepage' do
+  source 'homepage'
+  owner node['meanstack']['nginx']['user']
+  group node['meanstack']['nginx']['group']
   mode 0755
   action :create
 end
 
-# Web App
-nodenvm_npm 'Install Angular' do
-  action :install_global
-  package "@angular/cli@11.0.2"
+bash 'Update Homepage' do
+  user 'root'
+  code <<-EOH
+  sed -i 's/root \\/var\\/www\\/html\\;/root \\/sites\\/homepage\\;/g' /etc/nginx/sites-available/default
+EOH
 end
 
-nodenvm_run 'Create Angular Web Application' do
-  cwd '/sites'
-  command "ng new web --create-application --defaults --interactive=false"
-end
-
-# Front end webserver
-directory '/sites/homepage' do
-  owner 'www-data'
-  group 'www-data'
-  mode '0755'
-  recursive true
-  action :create
-end
-
-cookbook_file '/sites/homepage/index.html' do
-  source 'sites/sample-web/index.html'
-  owner 'www-data'
-  group 'www-data'
-  mode 0664
-  action :create
-end
-
-cookbook_file '/etc/nginx/sites-available/nginx-mean.conf' do
-  source 'conf/nginx-mean.conf'
-  owner 'root'
-  group 'root'
-  mode 0664
-  action :create
+['mean', 'metrics'].each do |file|
+  cookbook_file "/etc/nginx/sites-available/nginx-#{file}.conf" do
+    source "conf/nginx-#{file}.conf"
+    owner 'root'
+    group 'root'
+    mode 0755
+    action :create
+  end
 end
 
 # Configure supervisor
@@ -101,7 +58,35 @@ cookbook_file '/etc/supervisor/conf.d/supervisor-mean.conf' do
   source 'conf/supervisor-mean.conf'
   owner 'root'
   group 'root'
-  mode 0664
+  mode 0755
+  action :create
+end
+
+service 'supervisor' do
+  action [ :enable, :stop ]
+end
+
+bash 'Copy licenses' do
+  user 'root'
+  code <<-EOH
+  node_version="$(ls -l /usr/local/nvm/versions/node/ \
+    | grep -v "total" \
+    | awk '{ print $9 }')"
+  node_dir="/usr/local/nvm/versions/node/${node_version}"
+  target_dir="/usr/src/licenses"
+
+  cp "${node_dir}/lib/node_modules/@angular/cli/node_modules/@schematics/angular/LICENSE" "${target_dir}/angular_LICENSE"
+  cp "${node_dir}/lib/node_modules/express-generator/LICENSE" "${target_dir}/expressjs_LICENSE"
+  cp "${node_dir}/LICENSE" "${target_dir}/nodejs_LICENSE"
+EOH
+end
+
+# Copy the utils file for MEAN Stack startup
+cookbook_file '/opt/c2d/meanstack-utils' do
+  source 'meanstack-utils'
+  owner 'root'
+  group 'root'
+  mode 0644
   action :create
 end
 

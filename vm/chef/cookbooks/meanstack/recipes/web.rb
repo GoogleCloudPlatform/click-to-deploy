@@ -12,7 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['meanstack']['angular']['version'] = '11.0.2'
-default['meanstack']['express']['version'] = '4.16.1'
-default['meanstack']['nginx']['user'] = 'www-data'
-default['meanstack']['nginx']['group'] = 'www-data'
+include_recipe 'meanstack::default'
+
+nodenvm_npm 'Install Angular' do
+  action :install_global
+  package "@angular/cli@#{node['meanstack']['angular']['version']}"
+end
+
+nodenvm_run 'Create Angular Web Application' do
+  cwd '/sites'
+  command "ng new web --create-application --defaults --interactive=false"
+end

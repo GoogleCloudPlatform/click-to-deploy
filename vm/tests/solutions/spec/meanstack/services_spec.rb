@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['meanstack']['angular']['version'] = '11.0.2'
-default['meanstack']['express']['version'] = '4.16.1'
-default['meanstack']['nginx']['user'] = 'www-data'
-default['meanstack']['nginx']['group'] = 'www-data'
+require 'spec_helper'
+
+describe service('mongod'), :if => os[:family] == 'debian' do
+  it { should be_enabled }
+end

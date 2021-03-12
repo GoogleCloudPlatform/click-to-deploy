@@ -14,42 +14,65 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-readonly supervisor_config="/etc/supervisor/conf.d/supervisor-mean.conf"
-readonly webapp_homepage="/sites/web/src/index.html"
-export NVM_DIR=/usr/local/nvm
+source /opt/c2d/meanstack-utils || exit 1
+
+readonly enable_metrics="$(get_attribute_value "mean-enable-metrics" \
+  | tr '[:upper:]' '[:lower:]')"
+
+# Export variables for templating ready.html page.
 export API_PORT=8080
 export WEB_PORT=4200
 export HTTP_PORT=80
+export VERSION_MONGO="$(get_mongo_version)"
+export VERSION_EXPRESS="$(get_express_version)"
+export VERSION_ANGULAR="$(get_angular_version)"
+export VERSION_NODEJS="$(get_nodejs_version)"
 
-function check_web_ready() {
-  echo "$(curl -s -I http://localhost/web/ | grep "200 OK" | wc -l)"
-}
-# Configure Web app
-if [[ -f "${webapp_homepage}" ]]; then
-  echo "Setting up Web app..."
-  sed -i 's/<base href="\/">/<base href="\/web\/">/g' \
-    "${webapp_homepage}"
-  echo "Web app set up."
+# Define SITE_URL
+declare SITE_URL="http://$(get_internal_ip)"
+if [[ has_external_ip ]]; then
+  SITE_URL="http://$(get_external_ip)"
 fi
+export SITE_URL
 
-# Configure front end web-server
+# Configure Web app
+setup_webapp_homepage
+
 echo "Setting up NGINX..."
 systemctl stop nginx
-rm -f /etc/nginx/sites-enabled/default && \
-  cat /etc/nginx/sites-available/nginx-mean.conf \
-    | envsubst '\$API_PORT,\$WEB_PORT,\$HTTP_PORT' \
-    > /etc/nginx/sites-enabled/nginx-mean.conf
+
+echo "-> Configure Stack on NGINX..."
+setup_nginx_stack
+
+# Enable metrics or not
+if [[ "${enable_metrics}" == "true" ]]; then
+  echo "-> Enable NGINX metrics..."
+  enable_metrics_exporter
+else
+  echo "-> NGINX metrics are disabled."
+fi
+
 echo "NGINX set up."
+echo "Starting NGINX..."
+systemctl start nginx
+
+wait_for_port localhost 27017
 
 echo "Starting supervisord..."
-supervisord --configuration "${supervisor_config}"
+systemctl start supervisor
 
 # Await for web project be up before releasing the script
 echo "Awaiting for webapp be compiled and served..."
 while [[ "$(check_web_ready)" -eq 0 ]]; do
   echo "Not ready."
-  sleep 5
+  sleep 3
 done
 echo "Angular webapp is ready."
+
+echo "Setup ready homepage..."
+setup_ready_homepage
+
+# Define permissions
+chown -R www-data:www-data /sites/
 
 echo "MEAN Stack ready."
