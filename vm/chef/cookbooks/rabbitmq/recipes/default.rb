@@ -25,12 +25,11 @@ end
 package 'Install Deps Packages' do
   action :install
   package_name node['rabbitmq']['deps_packages']
-  # options('--prerelease --no-format-executable')
 end
 
 repos = [
-  { "name" => "rabbitmq", "component" => "main" },
-  { "name" => "rabbitmq-erlang", "component" => "erlang-22.x" }
+  { 'name' => 'rabbitmq', 'component' => 'main' },
+  { 'name' => 'rabbitmq-erlang', 'component' => 'erlang-22.x' },
 ]
 
 repos.each do |repo|
