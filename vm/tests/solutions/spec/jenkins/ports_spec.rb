@@ -19,11 +19,11 @@ describe port(22) do
 end
 
 describe port(80) do
-  it { should be_listening.on('::').with('tcp6') }
+  it { should be_listening.with('tcp6') }
 end
 
 describe port(443) do
-  it { should be_listening.on('::').with('tcp6') }
+  it { should be_listening.with('tcp6') }
 end
 
 describe port(8080) do
