@@ -30,6 +30,8 @@ default['erpnext']['packages'] = [
 default['erpnext']['version'] = '12'
 default['erpnext']['site'] = 'site1.local'
 
+default['erpnext']['nodejs']['version'] = '12'
+
 default['erpnext']['frappe']['bench'] = 'frappe-bench'
 default['erpnext']['frappe']['user'] = 'frappe'
 default['erpnext']['frappe']['password'] = `openssl rand -base64 12 | fold -w 12 | head -n1 | tr -d '\r\n'`

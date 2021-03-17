@@ -63,7 +63,7 @@ end
 
 # Install NodeJS
 remote_file "/home/#{node['erpnext']['frappe']['user']}/setup_nodejs" do
-  source 'https://deb.nodesource.com/setup_12.x'
+  source "https://deb.nodesource.com/setup_#{node['erpnext']['nodejs']['version']}.x"
   action :create
 end
 
@@ -93,7 +93,10 @@ end
 bash 'Init bench' do
   code <<-EOH
     su - #{node['erpnext']['frappe']['user']} -c \
-      "bench init --frappe-branch version-12 --python /usr/bin/python3 #{node['erpnext']['frappe']['bench']}"
+      "bench init \
+        --frappe-branch version-#{node['erpnext']['version']} \
+        --python /usr/bin/python3 \
+        #{node['erpnext']['frappe']['bench']}"
   EOH
 end
 
