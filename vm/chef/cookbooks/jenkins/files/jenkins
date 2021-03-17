@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2017 Google Inc.
+# Copyright 2021 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,20 +16,25 @@
 
 source /opt/c2d/c2d-utils || exit 1
 
-readonly user=admin
-readonly pass="$(get_metadata_value "instance/attributes/jenkins-admin-password")"
+readonly jenkins_user="admin"
+readonly jenkins_password="$(get_attribute_value "jenkins-admin-password")"
 
-readonly salt=$(dd if=/dev/urandom bs=16 count=1 2>/dev/null | base64 - | tr -d / | fold -w 16 | head -n1)
-readonly hash=$(echo -n "${pass}{$salt}" | sha256sum | sed "s/\(.*\)...$/$salt:\1/")
+# Generates a password salted hashed with bcrypt
+readonly hash="#jbcrypt:$(htpasswd -bnBC 10 "" "${jenkins_password}" \
+                          | tr -d ':\n' \
+                          | sed 's/$2y/$2a/')"
 
-token=$(dd if=/dev/urandom bs=72 count=1 2>/dev/null | base64 - | tr -d \\n)
+readonly token=$(dd if=/dev/urandom bs=72 count=1 2>/dev/null | base64 - | tr -d \\n)
 
-rm -fr /var/lib/jenkins/users/admin*
-rm -fr /var/lib/jenkins/users/*
+systemctl stop jenkins
 
-mkdir /var/lib/jenkins/users/${user}
+rm -f /var/lib/jenkins/secrets/initialAdminPassword
+rm -rf /var/lib/jenkins/users/admin*
+rm -rf /var/lib/jenkins/users/*
 
-cat <<EOF >/var/lib/jenkins/users/${user}/config.xml
+mkdir -p "/var/lib/jenkins/users/${jenkins_user}"
+
+cat <<EOF >/var/lib/jenkins/users/${jenkins_user}/config.xml
 <?xml version='1.0' encoding='UTF-8'?>
 <user>
   <fullName>admin</fullName>
@@ -60,8 +65,6 @@ cat <<EOF >/var/lib/jenkins/users/${user}/config.xml
   </properties>
 
 EOF
-chown -R jenkins:jenkins /var/lib/jenkins/users/${user}
-sed -i -e 's/<isSetupComplete>false/<isSetupComplete>true/' -e 's/<installStateName>NEW/<installStateName>RUNNING/' /var/lib/jenkins/config.xml
+chown -R jenkins:jenkins "/var/lib/jenkins/users/${jenkins_user}"
 
-systemctl stop jenkins
 systemctl start jenkins
