@@ -12,8 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+apt_update do
+  action :update
+end
+
 package 'Install packages' do
   package_name node['erpnext']['packages']
+  action :install
+end
+
+package 'Install mariadb-server' do
+  package_name "mariadb-server=#{node['erpnext']['mariadb']['version']}"
   action :install
 end
 
