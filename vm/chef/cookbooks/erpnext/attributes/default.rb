@@ -15,7 +15,6 @@
 default['erpnext']['packages'] = [
     'build-essential',
     'git',
-    'libmariadb-dev',
     'nginx',
     'python3-dev',
     'python3-pip',
@@ -30,7 +29,9 @@ default['erpnext']['version'] = '12'
 default['erpnext']['site'] = 'site1.local'
 
 default['erpnext']['nodejs']['version'] = '12'
+
 default['erpnext']['mariadb']['version'] = '1:10.3.*'
+default['erpnext']['mariadb']['packages'] = [ 'mariadb-server', 'libmariadb-dev' ]
 
 default['erpnext']['frappe']['bench'] = 'frappe-bench'
 default['erpnext']['frappe']['user'] = 'frappe'

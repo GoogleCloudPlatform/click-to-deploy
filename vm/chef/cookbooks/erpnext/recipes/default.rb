@@ -21,9 +21,11 @@ package 'Install packages' do
   action :install
 end
 
-package 'Install mariadb-server' do
-  package_name "mariadb-server=#{node['erpnext']['mariadb']['version']}"
-  action :install
+node['erpnext']['mariadb']['packages'].each do |pkg|
+  package pkg do
+    version node['erpnext']['mariadb']['version']
+    action :install
+  end
 end
 
 # Create frappe user.
