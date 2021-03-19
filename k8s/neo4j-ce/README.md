@@ -183,7 +183,7 @@ helm template chart/neo4j-ce \
   --namespace "${NAMESPACE}" \
   --set "neo4j.image.repo=${IMAGE_NEO4J_CE}" \
   --set "neo4j.image.tag=${TAG}" \
-  --set "neo4j.persistence.storageClass=${STORAGE_CLASS}" \
+  --set "neo4j.persistence.storageClass=${NEO4J_STORAGE_CLASS}" \
   --set "neo4j.persistence.size=${PERSISTENT_DISK_SIZE}" \
   --set "neo4j.password=${NEO4J_PASSWORD}" \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
