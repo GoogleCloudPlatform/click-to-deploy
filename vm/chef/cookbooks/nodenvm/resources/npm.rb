@@ -31,7 +31,7 @@ action :install_global do
     code <<-EOH
       source /usr/local/nvm/nvm.sh
       nvm use default
-      echo y | npm install --silent -g "#{new_resource.package}"
+      yes | npm install --silent -g "#{new_resource.package}"
     EOH
   end
 end

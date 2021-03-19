@@ -36,8 +36,7 @@ bash 'Install NVM' do
     /opt/c2d/install-nvm
 
     # Restore backup and remove it.
-    cp -f /root/.bashrc.bak /root/.bashrc \
-      && rm -f /root/.bashrc.bak
+    mv /root/.bashrc.bak /root/.bashrc
 
     # Import NVM
     source /usr/local/nvm/nvm.sh
