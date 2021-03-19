@@ -20,7 +20,7 @@ include_recipe 'php7::composer'
 include_recipe 'php7::module_libapache2'
 include_recipe 'php7::module_mysql'
 include_recipe 'mysql'
-include_recipe 'composer'
+include_recipe 'composer::composer1'
 
 package 'install_dependencies' do
   package_name node['magento']['packages']['dependencies']
