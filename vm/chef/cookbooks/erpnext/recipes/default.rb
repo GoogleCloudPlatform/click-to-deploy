@@ -12,9 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+apt_update do
+  action :update
+end
+
 package 'Install packages' do
   package_name node['erpnext']['packages']
   action :install
+end
+
+node['erpnext']['mariadb']['packages'].each do |pkg|
+  package pkg do
+    version node['erpnext']['mariadb']['version']
+    action :install
+  end
 end
 
 # Create frappe user.
