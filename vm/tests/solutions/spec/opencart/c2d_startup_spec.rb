@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,18 +14,26 @@
 
 require 'spec_helper'
 
-describe port(22) do
-  it { should be_listening.on('0.0.0.0') }
+describe 'C2D startup config' do
+  describe service('google-c2d-startup.service') do
+    it { should be_enabled }
+  end
+
+  describe file('/var/lock/google_vm_config.lock') do
+    it { should_not exist }
+  end
 end
 
-describe port(80) do
-  it { should be_listening.with('tcp6') }
-end
+describe 'C2D startup scripts should exists' do
+  describe file('/opt/c2d/scripts/00-manage-swap') do
+    it { should exist }
+  end
 
-describe port(443) do
-  it { should be_listening.with('tcp6') }
-end
+  describe file('/opt/c2d/scripts/01-mysql') do
+    it { should exist }
+  end
 
-describe port(8080) do
-  it { should be_listening.on('::ffff:127.0.0.1').with('tcp6') }
+  describe file('/opt/c2d/scripts/02-opencart') do
+    it { should exist }
+  end
 end

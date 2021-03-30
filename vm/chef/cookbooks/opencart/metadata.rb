@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,20 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'spec_helper'
-
-describe port(22) do
-  it { should be_listening.on('0.0.0.0') }
-end
-
-describe port(80) do
-  it { should be_listening.with('tcp6') }
-end
-
-describe port(443) do
-  it { should be_listening.with('tcp6') }
-end
-
-describe port(8080) do
-  it { should be_listening.on('::ffff:127.0.0.1').with('tcp6') }
-end
+name 'opencart'
+depends 'apache2'
+depends 'mysql'
+depends 'php74'
+depends 'git'
+depends 'composer'
+supports 'debian'

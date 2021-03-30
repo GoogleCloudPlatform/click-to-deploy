@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,18 +14,17 @@
 
 require 'spec_helper'
 
-describe port(22) do
-  it { should be_listening.on('0.0.0.0') }
-end
+describe 'Disable Apache Web Server Signature' do
+  describe file('/etc/apache2/conf-available/security.conf') do
+    its(:content) { should match /^ServerTokens Prod$/ }
+    its(:content) { should match /^ServerSignature Off$/ }
+  end
 
-describe port(80) do
-  it { should be_listening.with('tcp6') }
-end
+  describe command('curl -I http://localhost') do
+    its(:stdout) { should match /^Server: Apache\r$/ }
+  end
 
-describe port(443) do
-  it { should be_listening.with('tcp6') }
-end
-
-describe port(8080) do
-  it { should be_listening.on('::ffff:127.0.0.1').with('tcp6') }
+  describe command('curl http://localhost/page-does-not-exists') do
+    its(:stdout) { should_not match /<address>(.*?)<\/address>/ }
+  end
 end
