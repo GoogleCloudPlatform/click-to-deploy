@@ -12,9 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+apt_update do
+  action :update
+end
+
 package 'Install packages' do
   package_name node['erpnext']['packages']
   action :install
+end
+
+node['erpnext']['mariadb']['packages'].each do |pkg|
+  package pkg do
+    version node['erpnext']['mariadb']['version']
+    action :install
+  end
 end
 
 # Create frappe user.
@@ -36,41 +47,97 @@ template "/etc/sudoers.d/#{node['erpnext']['frappe']['user']}" do
   variables(frappeuser: node['erpnext']['frappe']['user'])
 end
 
-# Download installation script.
-remote_file "/home/#{node['erpnext']['frappe']['user']}/install.py" do
-  source node['erpnext']['install-script']
+bash 'Set MariaDB root password' do
+  code <<-EOH
+    mysqladmin -uroot password "#{node['erpnext']['mysql-root-password']}"
+
+    mysql -uroot -p"#{node['erpnext']['mysql-root-password']}" <<EOSQL
+      DELETE FROM mysql.user WHERE User='';
+      DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
+      FLUSH PRIVILEGES;
+EOSQL
+  EOH
+end
+
+# Add required MariaDB configuration
+cookbook_file '/etc/mysql/mariadb.conf.d/70-frappe.cnf' do
+  source 'frappe.cnf'
+  owner 'root'
+  group 'root'
+  mode 0664
   action :create
 end
 
-bash 'Install ERPNext' do
-  user node['erpnext']['frappe']['user']
-  code <<-EOH
-    sudo -n python3 /home/#{node['erpnext']['frappe']['user']}/install.py --production \
-         --site #{node['erpnext']['site']} \
-         --user #{node['erpnext']['frappe']['user']} \
-         --mysql-root-password #{node['erpnext']['mysql-root-password']} \
-         --admin-password #{node['erpnext']['erpnext-admin-password']} \
-         --bench-name #{node['erpnext']['frappe']['bench']} \
-         --version #{node['erpnext']['version']}
-EOH
-  flags '-eu'
-  environment({
-    'PYTHONIOENCODING' => 'utf-8',
-    'LANGUAGE' => 'en_US.UTF-8',
-    'LANG' => 'en_US.UTF-8',
-    'LC_ALL' => 'en_US.UTF-8',
-  })
+service 'mysql' do
+  action :restart
 end
 
-bash 'Fix frappe dependencies' do
+# Install NodeJS
+remote_file "/home/#{node['erpnext']['frappe']['user']}/setup_nodejs" do
+  source "https://deb.nodesource.com/setup_#{node['erpnext']['nodejs']['version']}.x"
+  action :create
+end
+
+bash 'Setup nodejs' do
+  code <<-EOH
+    bash /home/#{node['erpnext']['frappe']['user']}/setup_nodejs
+  EOH
+end
+
+package 'Install nodejs' do
+  package_name 'nodejs'
+  action :install
+end
+
+bash 'Install yarn' do
+  code <<-EOH
+    npm install -g yarn
+  EOH
+end
+
+bash 'Install bench' do
+  code <<-EOH
+    pip3 install frappe-bench
+  EOH
+end
+
+bash 'Init bench' do
+  code <<-EOH
+    su - #{node['erpnext']['frappe']['user']} -c \
+      "bench init \
+        --frappe-branch version-#{node['erpnext']['version']} \
+        --python /usr/bin/python3 \
+        #{node['erpnext']['frappe']['bench']}"
+  EOH
+end
+
+bash 'Create bench site' do
   user node['erpnext']['frappe']['user']
   cwd "/home/#{node['erpnext']['frappe']['user']}/#{node['erpnext']['frappe']['bench']}"
   code <<-EOH
-    bench pip install werkzeug==#{node['erpnext']['werkzeug']['version']}
-    bench restart
-    bench enable-scheduler
-EOH
-  flags '-eu'
+    bench new-site \
+      --mariadb-root-password="#{node['erpnext']['mysql-root-password']}" \
+      --admin-password="#{node['erpnext']['erpnext-admin-password']}" \
+      #{node['erpnext']['site']}
+  EOH
+end
+
+bash 'Install erpnext app' do
+  user node['erpnext']['frappe']['user']
+  cwd "/home/#{node['erpnext']['frappe']['user']}/#{node['erpnext']['frappe']['bench']}"
+  code <<-EOH
+    bench get-app --branch version-#{node['erpnext']['version']} erpnext
+    bench --site #{node['erpnext']['site']} install-app erpnext
+    bench --site #{node['erpnext']['site']} enable-scheduler
+  EOH
+end
+
+bash 'Setup production' do
+  user node['erpnext']['frappe']['user']
+  cwd "/home/#{node['erpnext']['frappe']['user']}/#{node['erpnext']['frappe']['bench']}"
+  code <<-EOH
+    sudo bench setup production #{node['erpnext']['frappe']['user']} --yes
+  EOH
 end
 
 # Save initial root password. Will be changed during startup.
@@ -83,16 +150,9 @@ file "/etc/sudoers.d/#{node['erpnext']['frappe']['user']}" do
   action :delete
 end
 
-# Cleanup passwords file.
-file "/home/#{node['erpnext']['frappe']['user']}/passwords.txt" do
+# Cleanup nodejs setup script.
+file "/home/#{node['erpnext']['frappe']['user']}/setup_nodejs" do
   action :delete
-end
-
-# Clone bench source code per license requirements.
-git '/usr/src/bench' do
-  repository 'https://github.com/frappe/bench.git'
-  reference 'master'
-  action :checkout
 end
 
 c2d_startup_script 'erpnext-setup'
