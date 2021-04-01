@@ -1,0 +1,16 @@
+{
+  "wordpress": [
+    {
+      "name": "Public service and ingress",
+      "env_vars": [
+        "PUBLIC_SERVICE_AND_INGRESS_ENABLED=true"
+      ]
+    },
+    {
+      "name": "Prometheus metrics",
+      "env_vars": [
+        "METRICS_EXPORTER_ENABLED=true"
+      ]
+    }
+  ]
+}

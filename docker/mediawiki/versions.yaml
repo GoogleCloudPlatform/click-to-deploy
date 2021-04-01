@@ -22,18 +22,18 @@ versions:
   from: marketplace.gcr.io/google/php7-apache2:7.3
   packages:
     composer:
-      sha256: 5d377e9b504dc9f6c9228d81c321ba85290512cdb396a12d3708b0cd30d2e20c
-      version: 2.0.3
+      sha256: 8e91344a5ca2fc0fb583c50f195a1f36918908561c4ea3d6f01a4ef01c3b8560
+      version: 2.0.9
     mediawiki:
       major: '1.35'
-      sha512: 0d3d5b464abc2fdea2aa798bdf7fc53d5269852d9ed3f787710528505bbccfed2796b0e2459f5776929f3f0f207a145ae4a8f13e3040322e22d59481a71cfcde
-      version: 1.35.0
+      sha512: 71afdfeaa52459fc87e135449579b65aac6ed528240050a6fb5073ab19d091584f5fdfec7a8a48f060b1ddba322243d2e00e659f7e964fbeec69f22a271d756d
+      version: 1.35.1
   repo: mediawiki1-php7-apache
   tags:
-  - 1.35.0-debian9
+  - 1.35.1-debian9
   - 1.35-debian9
   - 1-debian9
-  - 1.35.0
+  - 1.35.1
   - '1.35'
   - '1'
   - latest
@@ -41,8 +41,8 @@ versions:
   from: marketplace.gcr.io/google/php7-apache2:7.3
   packages:
     composer:
-      sha256: 5d377e9b504dc9f6c9228d81c321ba85290512cdb396a12d3708b0cd30d2e20c
-      version: 2.0.3
+      sha256: 8e91344a5ca2fc0fb583c50f195a1f36918908561c4ea3d6f01a4ef01c3b8560
+      version: 2.0.9
     mediawiki:
       major: '1.33'
       sha512: e37280b4c14bfdae3480b8f99672da5c93761f4f80019104d5df24affe0c8447881c6ff85f32d16381ee74a3ce7a083f4dda2e0a24bd6687fbf0b41f11f0564f

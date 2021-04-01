@@ -1,0 +1,8 @@
+[mysqld]
+server-id=${SERVER_ID}
+log_bin=/var/log/mysql/mysql-bin.log
+expire_logs_days=10
+max_binlog_size=1000M
+binlog-format=row
+log-basename=master
+binlog-do-db=${DATABASE_NAME}

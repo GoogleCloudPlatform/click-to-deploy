@@ -148,12 +148,12 @@ spec:
           httpGet:
             path: /api/status
             port: 5601
-          initialDelaySeconds: 5
+          initialDelaySeconds: 30
         livenessProbe:
           httpGet:
             path: /api/status
             port: 5601
-          initialDelaySeconds: 5
+          initialDelaySeconds: 30
 ---
 apiVersion: batch/v1
 kind: Job

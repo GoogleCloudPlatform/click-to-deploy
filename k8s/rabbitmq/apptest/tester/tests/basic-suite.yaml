@@ -2,16 +2,6 @@ actions:
 - name: RabbitMQ test
   bashTest:
     script: |-
-      SERVICE="${APP_INSTANCE_NAME}-rabbitmq-svc.${NAMESPACE}.svc.cluster.local"
-
-      USERNAME=$(kubectl get sts -oyaml \
-        --namespace "${NAMESPACE}" "${APP_INSTANCE_NAME}-rabbitmq" | \
-        grep -A1 name:.RABBITMQ_DEFAULT_USER | sed -n '/value: /s/.* //p')
-
-      PASSWORD=$(kubectl get secret "${APP_INSTANCE_NAME}-rabbitmq-secret" \
-        --namespace "${NAMESPACE}" \
-        --output=jsonpath='{.data.rabbitmq-pass}' | base64 -d)
-
       wget -t3 "http://${SERVICE}:15672/cli/rabbitmqadmin"
       chmod +x rabbitmqadmin
 
@@ -24,9 +14,9 @@ actions:
     expect:
       exitCode:
         equals: 0
-- name: Is RabbitMQ api/metrics HTTP endpoint working
+- name: Is RabbitMQ /metrics HTTP endpoint working for Prometheus metrics
   bashTest:
-    script: curl -f "http://$APP_INSTANCE_NAME-rabbitmq-svc:15672/api/metrics"
+    script: curl -f "http://$APP_INSTANCE_NAME-rabbitmq-svc:15692/metrics"
     expect:
       stdout:
         contains: '# TYPE rabbitmq_consumers gauge'

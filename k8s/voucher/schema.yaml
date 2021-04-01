@@ -1,0 +1,64 @@
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+  # The published version is required and MUST match the tag
+  # of the deployer image
+  publishedVersion: 1.0.0
+  publishedVersionMetadata:
+    releaseNote: >-
+      A first release of Voucher.
+  images: 
+    '':
+      properties:
+        voucherImage:
+          type: FULL
+  clusterConstraints:
+    assistedClusterCreation:
+      type: DISABLED
+      creationGuidance: "Create a cluster with Workload Identity enabled."
+
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  serviceAccount:
+    type: string
+    title: Workload Identity Service Account
+    x-google-marketplace:
+     type: SERVICE_ACCOUNT
+     serviceAccount:
+       description: >-
+         The kubernetes service account name with which Voucher will run.
+         The service account needs to be configured with Kubernetes Workload Identity.
+  kmsResourceId:
+    type: string
+    title: KMS Resource ID
+  projectId:
+    type: string
+    title: GCP project ID
+  enableServerAuth:
+    type: boolean
+    title: Enable server authentication
+    default: false
+  username: 
+    type: string
+    title: Username (required if server authentication is enabled)
+    default: ''
+  passHash: 
+    type: string
+    title: Bcrypt-hashed password (required if server authentication is enabled)
+    default: ''
+
+required:
+- name
+- namespace
+- serviceAccount
+- kmsResourceId
+- projectId
+- enableServerAuth

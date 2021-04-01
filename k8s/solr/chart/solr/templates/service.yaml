@@ -1,0 +1,13 @@
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: "{{ .Release.Name }}-solr-svc"
+  labels: &SolrDeploymentLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: solr-server
+spec:
+  type: "ClusterIP"
+  ports:
+    - port: 8983
+      name: "solr-client"
+  selector: *SolrDeploymentLabels
