@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/component: rabbitmq-server
 data:
   enabled_plugins: |
-      [rabbitmq_management,rabbitmq_peer_discovery_k8s,prometheus_rabbitmq_exporter].
+      [rabbitmq_management,rabbitmq_peer_discovery_k8s,rabbitmq_prometheus].
   rabbitmq.conf: |
       ## Clustering
       cluster_formation.peer_discovery_backend = rabbit_peer_discovery_k8s

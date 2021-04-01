@@ -1,0 +1,70 @@
+#!/bin/bash -eu
+#
+# Copyright 2020 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/logstash-utils || exit 1
+
+# Export variables to be used in configuration files
+export is_elkstack="$(get_attribute_value "is_elkstack")"
+export es_host="$(get_attribute_value "es_host")"
+export es_port="$(get_attribute_value "es_port")"
+export es_username="$(get_attribute_value "es_username")"
+export es_password="$(get_attribute_value "es_password")"
+readonly es_use_https="$(get_attribute_value "es_use_https" \
+  | tr '[:upper:]' '[:lower:]')"
+
+readonly logstash_config_folder="/etc/logstash/conf.d"
+readonly logstash_template="${logstash_config_folder}/syslog.conf.template"
+export es_protocol="http"
+
+systemctl stop logstash
+
+# If image is being used by ELK Stack, configure Elasticsearch pipeline
+if [[ "${is_elkstack:-"false"}" == "true" ]]; then
+  echo "Awaiting for Elasticsearch server to be up..."
+  await_for_host_and_port "${es_host}" "${es_port}"
+
+  # If HTTPS option is selected, download certificates
+  if [[ "${es_use_https:-"false"}" == "true" ]]; then
+    es_protocol="https"
+    echo "HTTPS option is selected."
+    echo "Downloading certificate..."
+    download_certificate "${es_host}"
+  fi
+
+  # Move proper config according HTTP(S) option chosen
+  mv "${logstash_config_folder}/syslog.${es_protocol}.conf.template" \
+    "${logstash_template}"
+
+  echo "Setting up Logstash..."
+
+  if [[ -z "${es_username}" ]]; then
+    echo "Disable authentication"
+    sed -i '/user =>/d' "${logstash_template}"
+    sed -i '/password =>/d'  "${logstash_template}"
+  fi
+
+  echo "Bind to all addresses..."
+  echo "http.host: 0.0.0.0" >> /etc/logstash/logstash.yml
+
+  echo "Configuring syslog pipeline..."
+  envsubst '\$es_protocol \$es_host \$es_port \$es_username \$es_password' \
+      < "${logstash_template}" \
+      > "${logstash_config_folder}/syslog.conf"
+fi
+
+# Enable and start Logstash service
+systemctl enable logstash
+systemctl start logstash

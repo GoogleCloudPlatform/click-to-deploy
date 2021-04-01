@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2017 Google Inc.
+# Copyright 2021 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,6 +37,18 @@ function wait_for_rabbitmq_stats_node() {
     "${stats_node_hostname}:15672"
 }
 
+# TODO(armandomiani): This method will soon be moved to c2d-utils
+function wait_for_port() {
+  local -r host="$1"
+  local -r port="$2"
+  local -r timeout="${3:-300}"
+
+  timeout --preserve-status "${timeout}" bash -c "until echo > /dev/tcp/${host}/${port}; do sleep 2; done"
+  if [[ "$?" -ne 0 ]]; then
+    exit 1
+  fi
+}
+
 readonly stats_node_hostname="$(get_attribute_value "STATS_NODE_HOSTNAME")"
 
 readonly is_stats_node="$(get_attribute_value "ISSTATSNODE")"
@@ -46,15 +58,24 @@ readonly is_disk_node="$(get_attribute_value "ISQUEUEDISKNODE")"
 readonly rabbitmq_username="$(get_attribute_value "RABBITMQ_USERNAME")"
 readonly rabbitmq_password="$(get_attribute_value "RABBITMQ_PASSWORD")"
 
-# Install the management plugin
+# Install the management plugin for stats node
+# and the agent plugin for the workers.
 if [[ "${is_stats_node:-0}" -eq 1 ]]; then
-  until rabbitmq-plugins enable rabbitmq_management; do
+  echo "Enable rabbitmq_management plugin on a stats node."
+
+  declare is_plugin_enabled="0"
+  while [[ "${is_plugin_enabled}" -eq "0" ]]; do
+    rabbitmq-plugins enable rabbitmq_management
     sleep 2
+    is_plugin_enabled="$(rabbitmq-plugins list | grep -P "rabbitmq_management " | grep "*" | wc -l)"
   done
+
+  echo "Await management plugin be enabled..."
+  wait_for_port "localhost" "15672" 500
+  echo "Management plugin running."
 else
-  until rabbitmq-plugins enable rabbitmq_management_agent; do
-    sleep 2
-  done
+  echo "Enable rabbitmq_management_agent on a worker node."
+  rabbitmq-plugins enable rabbitmq_management_agent
 fi
 
 if [[ "${is_stats_node:-0}" -ne 0 ]]; then

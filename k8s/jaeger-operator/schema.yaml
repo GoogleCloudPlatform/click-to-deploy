@@ -39,10 +39,11 @@ properties:
       type: NAMESPACE
   operator.serviceAccountName:
     type: string
-    title: Service account used by Jaeger Operator
+    title: Jaeger Operator Service Account
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: Service account used by Jaeger Operator Deployment
         roles:
         - type: ClusterRole
           rulesType: CUSTOM
@@ -126,10 +127,11 @@ properties:
               - '*'
   CDRJobServiceAccount:
     type: string
-    title: Service account used by CRDs deployer
+    title: CRD deployer Service Account
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: Service account used by Jaeger Operator CRD deployer Job
         roles:
         - type: ClusterRole
           rulesType: CUSTOM

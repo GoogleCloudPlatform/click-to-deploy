@@ -12,18 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import mock
 import os
 import tempfile
 import time
 import triggers_vm_generator
-import unittest
+import unittest.mock
 
 
 class CreateThreadPoolAndWaitTest(unittest.TestCase):
 
   def test_close(self):
-    with self.assertRaises(AssertionError):
+    with self.assertRaises(ValueError):
       with triggers_vm_generator.CreateThreadPoolAndWait() as pool:
         pass
       pool.apply_async(lambda: True)
@@ -58,9 +57,9 @@ class VmTriggerConfigTest(unittest.TestCase):
     self.trigger = triggers_vm_generator.VmTriggerConfig(
         solution='wordpress', knife_binary='/bin/bash')
 
-  @mock.patch(
+  @unittest.mock.patch(
       'triggers_vm_generator.VmTriggerConfig.packer_dir',
-      new_callable=mock.PropertyMock)
+      new_callable=unittest.mock.PropertyMock)
   def test_packer_run_list(self, packer_dir):
     temp_dir = tempfile.mkdtemp()
     packer_dir.return_value = temp_dir

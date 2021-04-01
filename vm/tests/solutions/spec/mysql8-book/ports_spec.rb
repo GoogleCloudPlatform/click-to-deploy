@@ -19,9 +19,9 @@ describe port(22) do
 end
 
 describe port(3306) do
-  it { should be_listening.on('::').with('tcp6') }
+  it { should be_listening.with('tcp6') }
 end
 
 describe port(33060) do
-  it { should be_listening.on('::').with('tcp6') }
+  it { should be_listening.with('tcp6') }
 end

@@ -55,7 +55,7 @@ spec:
 
         Forward OrientDB Studio service port to your machine:
         ```shell
-        kubectl port-forward svc/{{ .Release.Name }}-orientdb \
+        kubectl port-forward svc/{{ .Release.Name }}-orientdb-svc \
           --namespace {{ .Release.Namespace }} 2480
         ```
         Visit [http://localhost:2480](http://localhost:2480) on your web browser.

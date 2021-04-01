@@ -1,0 +1,61 @@
+#!/bin/bash -eu
+#
+# Copyright 2021 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
+
+# Get settings from metadata
+readonly default_password="neo4j"
+readonly metadata_enable_remote="$(get_attribute_value "neo4j-enable-remote" \
+  | tr '[:upper:]' '[:lower:]')"
+readonly metadata_admin_password="$(get_attribute_value "neo4j-admin-password")"
+readonly external_ip="$(get_external_ip)"
+readonly neo4j_config="/etc/neo4j/neo4j.conf"
+
+# Stop the service
+systemctl stop neo4j
+
+if [[ "${metadata_enable_remote}" == "true" ]]; then
+  echo "Remote access is enabled."
+  echo "Configuring addresses..."
+
+  # Configure bolt addresses
+  sed -i 's/#dbms.connector.bolt.listen_address=:7687/dbms.connector.bolt.listen_address=0.0.0.0:7687/g' \
+    "${neo4j_config}"
+  sed -i "s/#dbms.connector.bolt.advertised_address=${external_ip}:7687/dbms.connector.bolt.advertised_address=${external_ip}:7687/g" \
+    "${neo4j_config}"
+
+  # Configure http addresses
+  sed -i 's/#dbms.connector.http.listen_address=:7474/dbms.connector.http.listen_address=0.0.0.0:7474/g' \
+    "${neo4j_config}"
+  sed -i "s/#dbms.connector.http.advertised_address=${external_ip}:7474/dbms.connector.http.advertised_address=${external_ip}:7474/g" \
+    "${neo4j_config}"
+else
+  echo "Remote access is disabled."
+fi
+
+# Set the initial password.
+# If no metadata for password is provided, use a default one
+# and requires user to change it, otherwise, use the provided one.
+if [[ ! -z "${metadata_admin_password}" ]]; then
+  echo "Using password provided by metadata."
+  neo4j-admin set-initial-password "${metadata_admin_password}"
+else
+  echo "Using default password."
+  neo4j-admin set-initial-password "${default_password}" --require-password-change
+fi
+
+echo "Starting service..."
+systemctl start neo4j

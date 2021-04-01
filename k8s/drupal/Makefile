@@ -6,7 +6,7 @@ include ../images.Makefile
 CHART_NAME := drupal
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 8.8
+TRACK ?= 9.1
 
 EXPORTER_TAG ?= exporter
 METRICS_EXPORTER_TAG ?= v0.5.1
@@ -14,7 +14,7 @@ METRICS_EXPORTER_TAG ?= v0.5.1
 VERIFY_WAIT_TIMEOUT = 1800
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
-IMAGE_DRUPAL ?= $(SOURCE_REGISTRY)/drupal8-php7-apache:$(TRACK)
+IMAGE_DRUPAL ?= $(SOURCE_REGISTRY)/drupal9-php7-apache:$(TRACK)
 IMAGE_MARIADB ?= $(SOURCE_REGISTRY)/mariadb10:latest
 IMAGE_APACHE_EXPORTER ?= $(SOURCE_REGISTRY)/wordpress5-php7-apache:$(EXPORTER_TAG)
 IMAGE_MYSQLD_EXPORTER ?= $(SOURCE_REGISTRY)/mysql5:$(EXPORTER_TAG)

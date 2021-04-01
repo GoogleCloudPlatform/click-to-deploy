@@ -81,10 +81,10 @@ properties:
   hazelcast.serviceAccount:
     type: string
     title: Hazelcast Service Account
-    description: Service account to assign to Hazelcast StatefulSet
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: Service account used by Hazelcast StatefulSet
         roles:
         - type: ClusterRole
           rulesType: CUSTOM

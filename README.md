@@ -23,28 +23,17 @@ The Cloud Build configurations use Google Cloud Build (GCB) custom worker pools.
 If you want to create a new worker pool, run the following command:
 
 ```shell
-gcloud alpha builds worker-pools create gcb-workers-pool \
+gcloud beta builds worker-pools create gcb-workers-pool-e2 \
   --project=[PROJECT_ID] \
-  --regions=us-central1,us-west1,us-east1,us-east-4 \
-  --worker-count=2 \
-  --worker-machine-type=n1-standard-1 \
-  --worker-tag=gcb-worker \
-  --worker-network-name=default \
-  --worker-network-project=[PROJECT_ID] \
-  --worker-network-subnet=default
+  --peered-network=projects/[NETWORK_PROJECT_NUMBER]/global/networks/default \
+  --region=us-central1 \
+  --worker-machine-type=e2-standard-2
 ```
 
 Where:
 
 *   `[PROJECT_ID]` is the GCP project ID where you want to create your custom worker pool.
-
-If you want to update the number of workers in an existing pool, run the following command:
-
-```shell
-gcloud alpha builds worker-pools update gcb-workers-pool \
-  --project=[PROJECT_ID] \
-  --worker-count=4 \
-```
+*   `[NETWORK_PROJECT_NUMBER]` is the project number of the Cloud project that holds your VPC network.
 
 For more information, see the
-[gcloud alpha builds worker-pools commands](https://cloud.google.com/sdk/gcloud/reference/alpha/builds/worker-pools/).
+[gcloud beta builds worker-pools commands](https://cloud.google.com/sdk/gcloud/reference/beta/builds/worker-pools/).
