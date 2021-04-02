@@ -6,7 +6,7 @@ include ../images.Makefile
 CHART_NAME := memcached
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 1.5
+TRACK ?= 1.6
 
 METRICS_EXPORTER_TAG ?= v0.5.1
 
