@@ -11,26 +11,23 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-FROM {{ .From }}
-{{- $neo4j := index .Packages "neo4j" }}
-{{- $tini := index .Packages "tini" }}
-{{- $dockerneo4j := index .Packages "dockerneo4j" }}
+FROM gcr.io/google-appengine/debian9
 
-ENV NEO4J_VERSION {{ $neo4j.Version }}
-ENV NEO4J_SHA256 {{ $neo4j.Gpg }}
+ENV NEO4J_VERSION 4.1.6
+ENV NEO4J_SHA256 877fab336425465728284c008c15401982a7695c019cd2874c9b0f6ef8d5bf36
 ENV NEO4J_HOME  /var/lib/neo4j
 ENV NEO4J_EDITION community
 ENV NEO4J_TARBALL neo4j.tar.gz
 
-ENV TINI_VERSION v{{ $tini.Version }}
-ENV TINI_SHA256 {{ $tini.Gpg }}
+ENV TINI_VERSION v0.18.0
+ENV TINI_SHA256 12d20136605531b09a2c2dac02ccee85e1b874eb322ef6baf7561cd93f93c855
 
 # Required for neo4jlabs-plugins.json 
-ENV DOCKER_NEO4J_VERSION {{ $dockerneo4j.Version }}
+ENV DOCKER_NEO4J_VERSION 4.1.6
 ENV DOCKER_NEO4J_TARBALL docker-neo4j.tar.gz
-ENV DOCKER_NEO4J_SHA256  {{ $dockerneo4j.Gpg }}
+ENV DOCKER_NEO4J_SHA256  f36222e76127e7fc30191d74f66bdf69ea2360de2d222d7db1266ed4fc235f27
 
-ENV C2D_RELEASE {{ $neo4j.Version }}
+ENV C2D_RELEASE 4.1.6
 
 RUN addgroup --system neo4j && adduser --system --no-create-home --home "${NEO4J_HOME}" --ingroup neo4j neo4j
 
