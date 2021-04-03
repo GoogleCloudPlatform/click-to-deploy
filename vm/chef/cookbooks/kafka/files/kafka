@@ -16,19 +16,31 @@
 
 source /opt/c2d/c2d-utils
 
-declare kafka_mode="$(get_attribute_value "kafka-mode")"
-declare kafka_nodes="$(get_attribute_value "kafka-nodes")"
+readonly kafka_nodes="$(get_attribute_value "kafka-nodes")"
+readonly kafka_nodes_count="$(echo "${kafka_nodes}" | wc -w)"
+readonly kafka_config="/opt/kafka/config/server.properties"
+readonly zookeeper_config="/opt/kafka/config/zookeeper.properties"
 
-declare -r zookeeper_config="/opt/kafka/config/zookeeper.properties"
-
-# Define default value for Kafka mode
-: ${kafka_mode:-"standalone"}
-
-echo "Kafka Mode: ${kafka_mode}"
+echo "Kafka nodes: ${kafka_nodes_count}"
 
 # Configure Kafka in Cluster mode
-if [[ "${kafka_mode}" == "cluster" ]]; then
-  declare -r current_id="hostname -a | rev | cut -d '-' -f 1 | rev"
+if [[ "${kafka_nodes}" -gt 1 ]]; then
+  echo "Starting cluster-mode configuration..."
+
+  # Get Broker Id
+  declare current_node_id="$(hostname -a | rev | cut -d '-' -f 1 | rev)"
+  declare broker_id="$(echo "$(($current_node_id + 1))")"
+
+  # Get Zookeeper Master
+  declare zookeeper_master="$(echo "${kafka_nodes}" | cut -f 1 -d ' ')"
+  declare zookeeper_master_ip="$(getent hosts "${zookeeper_master}" | awk '{ print $1 }')"
+  declare zookeeper_connection="${zookeeper_master_ip}:2181"
+
+  echo "Current Node hostname: $(hostname -a)"
+  echo "Current Node: ${current_node_id}"
+  echo "Current Broker Id: ${broker_id}"
+  echo "ZK Master: ${zookeeper_master}"
+  echo "ZK Master IP: ${zookeeper_master_ip}"
 
   # Stop Kafka
   systemctl stop kafka
@@ -36,43 +48,23 @@ if [[ "${kafka_mode}" == "cluster" ]]; then
   # Configure Zookeeper
   mkdir -p /var/data/kafka
 
-  # Set data dir
+  # Configure Zookeeper Set data dir
   sed -i 's/dataDir=\/tmp\/zookeeper/data=\/var\/data\/kafka/g' "${zookeeper_config}"
 
-  # server.properties
-  # broker.id = autonumber of instance suffix (integer) -> replace
-  # broker.rack = cluster id RACK1 , RACK 2  -> append
-  # log.dirs = /var/data/kafka -> replace
-  # zookeeper.connect = "ip:port"
-  # optional
-  # offsets.topic.num.partitions = 3
-  # offsets.topic.replication.factor = 2
-  # min.insync.replicas = 2
-  # default.replication.factor
+  # Remove existing Kafka settings
+  sed -i '/broker.id=0/d' "${kafka_config}"
+  sed -i '/log.dirs/d' "${kafka_config}"
+  sed -i '/zookeeper.connect=/d' "${kafka_config}"
 
-  # check logging.
+  # Create new configurations
+  echo "######## C2D Custom Configurations ########"
+  echo "broker.id=${broker_id}" >> "${kafka_config}"
+  echo "broker.rack=RACK1" >> "${kafka_config}"
+  echo "logs.dirs=/var/data/kafka" >> "${kafka_config}"
+  echo "zookeeper.connect=${zookeeper_connection}" >> "${kafka_config}"
 
-  # tests
-  #   root@armadom-kafka-16196:/opt/kafka/bin# ./kafka-topics.sh --create --zookeeper 10.128.0.28 --replication-factor 2 --partitions 2 --topic test
-  # Created topic test.
+  # Start Kafka
+  systemctl start kafka
 
-  #   root@armadom-kafka-16196:/opt/kafka/bin# ./kafka-topics.sh --list --zookeeper 10.128.0.28
-  # test
-
-  # .zookeeper-shell ip:port ls /brokers/ids
-  #   root@armadom-kafka-16196:/opt/kafka/bin# ./zookeeper-shell.sh 10.128.0.28:2181 ls /brokers/ids
-  # Connecting to 10.128.0.28:2181
-
-  # WATCHER::
-
-  # WatchedEvent state:SyncConnected type:None path:null
-  # [1, 2]
-
-  # 103 echo "dasdasd" > ./kafka-console-producer.sh --broker-list $MY_IP:9092 --topic test
-  # 104  ./kafka-console-consumer.sh --boostrap-server $MY_IP:9092 --topic test --from-beginning
-
-  # kafkacat for testing
-  # kafkacat -b $MY_IP:9092 -t test -e
-
+  echo "Configuration finished."
 fi
-

@@ -74,3 +74,6 @@ end
 service 'kafka.service' do
   action :enable
 end
+
+# Copy startup script
+c2d_startup_script 'kafka'
