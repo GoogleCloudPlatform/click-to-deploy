@@ -123,7 +123,7 @@ function prepare_apache_and_php() {
 }
 
 #######################################
-# Fix OpencarOpenCartt storage location.
+# Fix OpenCart storage location.
 #######################################
 function fix_storage_location() {
   cd "${opencart_folder}"
