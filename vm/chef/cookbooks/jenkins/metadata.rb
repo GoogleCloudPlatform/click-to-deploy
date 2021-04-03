@@ -15,5 +15,5 @@
 name 'jenkins'
 depends 'apache2'
 depends 'c2d-config'
-depends 'openjdk8'
+depends 'openjdk11'
 supports 'debian'

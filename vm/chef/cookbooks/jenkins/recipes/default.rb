@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,10 +16,18 @@ include_recipe 'c2d-config'
 include_recipe 'apache2'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
-include_recipe 'openjdk8'
+include_recipe 'openjdk11'
+
+apt_update do
+  action :update
+end
+
+package 'wget' do
+  action :install
+end
 
 execute 'install_jenkins_repo_key' do
-  command 'wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -'
+  command 'wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -'
 end
 
 execute 'add_jenkins_repo' do
@@ -66,36 +74,10 @@ bash 'configure_jenkins' do
   sed -i '/^HTTP_PORT/a HTTP_HOST=127.0.0.1' /etc/default/jenkins
   sed -i '/^JENKINS_ARGS/ s/"$/ --httpListenAddress=$HTTP_HOST"/' /etc/default/jenkins
 
-  while [[ ! -d /var/lib/jenkins/plugins ]]; do
-    sleep 3
-  done
-
-  cd /var/lib/jenkins/plugins
-  while [[ ! -e /var/lib/jenkins/jenkins.install.UpgradeWizard.state ]]; do
-    sleep 3
-  done
-
-  while [[ ! -e /var/lib/jenkins/secrets/initialAdminPassword ]]; do
-    sleep 3
-  done
-
-  while [[ ! -e /var/lib/jenkins/config.xml ]]; do
-    sleep 3
-  done
-
+  jenkins_version="$(java -jar /usr/share/jenkins/jenkins.war --version 2> /dev/null)"
+  echo -n "${jenkins_version}" > /var/lib/jenkins/jenkins.install.UpgradeWizard.state
   cp /var/lib/jenkins/jenkins.install.UpgradeWizard.state /var/lib/jenkins/jenkins.install.InstallUtil.lastExecVersion
-  rm /var/lib/jenkins/secrets/initialAdminPassword
-  sed -i -e 's/<isSetupComplete>false/<isSetupComplete>true/' -e 's/<installStateName>NEW/<installStateName>RUNNING/' /var/lib/jenkins/config.xml
 EOH
-end
-
-node['jenkins']['plugins'].each do |plugin|
-  bash "install plugin: #{plugin}" do
-    code <<-EOH
-      curl -L --silent http://updates.jenkins-ci.org/latest/#{plugin}.hpi -o "/var/lib/jenkins/plugins/#{plugin}.jpi"
-      chown jenkins:jenkins /var/lib/jenkins/plugins/#{plugin}.jpi
-    EOH
-  end
 end
 
 c2d_startup_script 'jenkins' do
