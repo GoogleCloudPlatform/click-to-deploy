@@ -1,0 +1,77 @@
+#!/bin/bash -eu
+#
+# Copyright 2021 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/opencart-utils || exit 1
+
+export COMPOSER_HOME="/root/.config/composer"
+
+readonly opencart_email="$(get_attribute_value "opencart-email")"
+readonly opencart_db_password="$(get_attribute_value "opencart-db-password")"
+readonly opencart_admin_password="$(get_attribute_value "opencart-admin-password")"
+readonly opencart_db_user="opencart"
+readonly opencart_db_name="opencart"
+readonly opencart_admin_user="admin"
+declare  opencart_url="http://$(get_internal_ip)/store/"
+
+# Setup website url
+if [[ has_external_ip ]]; then
+  opencart_url="http://$(get_external_ip)/store/"
+fi
+
+echo "Awaiting for MySQL be up..."
+wait_for_port "localhost" "3306"
+
+# Setup MySQL user
+echo "Setting up MySQL user..."
+setup_mysql_user "${opencart_db_user}" "${opencart_db_password}" \
+  "${opencart_db_name}"
+
+# Setup Opencart installer
+echo "Setting up OpenCart Installer..."
+setup_opencart_installer
+
+# Install Opencart
+echo "Setting up OpenCart DB..."
+install_opencart_db \
+  "${opencart_db_user}" "${opencart_db_password}" "${opencart_db_name}" \
+  "${opencart_admin_user}" "${opencart_admin_password}" \
+  "${opencart_email}" "${opencart_url}"
+
+# Prepare Apache and PHP configurations
+echo "Preparing Apache and PHP config..."
+prepare_apache_and_php
+
+# Fix storage location
+echo "Fix Storage Location..."
+fix_storage_location
+
+# Fix vendor modules
+echo "Fix vendor modules..."
+fix_vendor_modules
+
+# Grants ownership to user on whole folder
+echo "Granting access to www-data..."
+chown -R www-data:www-data /var/www/
+
+# Remove installation folder
+echo "Removing installation folder..."
+rm -rf /var/www/html/store/install
+
+# Restart Apache
+echo "Restarting Apache..."
+systemctl restart apache2
+
+echo "Installation complete!"
