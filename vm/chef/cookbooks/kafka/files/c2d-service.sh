@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2017 Google Inc.
+# Copyright 2021 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,28 +15,28 @@
 # limitations under the License.
 
 start() {
-/opt/kafka/bin/zookeeper-server-start.sh -daemon /opt/kafka/config/zookeeper.properties
-sleep 10
-/opt/kafka/bin/kafka-server-start.sh -daemon /opt/kafka/config/server.properties
+  /opt/kafka/bin/zookeeper-server-start.sh -daemon /opt/kafka/config/zookeeper.properties
+  sleep 10
+  /opt/kafka/bin/kafka-server-start.sh -daemon /opt/kafka/config/server.properties
 }
 
 stop(){
-/opt/kafka/bin/kafka-server-stop.sh /opt/kafka/config/server.properties
-/opt/kafka/bin/zookeeper-server-stop.sh /opt/kafka/config/zookeeper.properties
+  /opt/kafka/bin/kafka-server-stop.sh /opt/kafka/config/server.properties
+  /opt/kafka/bin/zookeeper-server-stop.sh /opt/kafka/config/zookeeper.properties
 }
 
 
 case "$1" in
-        start)
-                start
-                ;;
-        stop)
-                stop
-                ;;
-        restart)
-                stop
-                start
-                ;;
-        *)
-                echo "Usage: $0 {start|stop|restart}"
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart)
+    stop
+    start
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart}"
 esac
