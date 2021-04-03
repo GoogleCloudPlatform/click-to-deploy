@@ -14,25 +14,7 @@
 #
 # Reference: https://kafka.apache.org/quickstart
 
-# Install ZooKeeper which also pulls down java as a dependency
-package 'install packages' do
-  package_name node['kafka']['packages']
-  action :install
-end
-
-# Make the dir where kafka will live
-directory '/opt/kafka' do
-  owner 'root'
-  group 'root'
-  mode '0755'
-  action :create
-end
-
-# Download md5 checksum from apache
-remote_file '/tmp/kafka-checksum.md5' do
-  source "https://archive.apache.org/dist/kafka/#{node['kafka']['version']}/kafka_#{node['scala']['version']}-#{node['kafka']['version']}.tgz.md5"
-  action :create
-end
+include_recipe 'kafka::common'
 
 # Download Kafka
 remote_file '/tmp/kafka.tgz' do
