@@ -1,15 +1,14 @@
 actions:
 
-- name: Site address should be 200 OK (service DNS)
-  httpTest:
-    url: http://{{ .Env.APP_INSTANCE_NAME }}-mediawiki-svc/index.php/Main_Page
+- name: Site addess should be 200 OK (service DNS)
+  bashTest:
+    script: |
+      curl -s -L "http://${APP_INSTANCE_NAME}-mediawiki-svc/"
     expect:
-      statusCode:
-        equals: 200
-      bodyText:
-        html:
-          body:
-            matches: 'MediaWiki has been installed.'
+      exitCode:
+        equals: 0
+      stdout:
+        contains: "MediaWiki has been installed"
 
 - name: External Server status request should fail
   httpTest:
