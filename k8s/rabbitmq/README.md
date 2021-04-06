@@ -264,14 +264,6 @@ save the expanded manifest file for future updates to the application.
     files.
     
     ```shell
-    # For Helm version 2.* use this syntax: 
-    helm template chart/rabbitmq \
-      --name "$APP_INSTANCE_NAME" \
-      ....
-    ```
-
-    ```shell
-    # For Helm version 3+, use this syntax:
     helm template "$APP_INSTANCE_NAME" chart/rabbitmq \
       --namespace "$NAMESPACE" \
       --set rabbitmq.image.repo="$IMAGE_RABBITMQ" \
