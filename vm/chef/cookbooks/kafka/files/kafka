@@ -21,10 +21,11 @@ readonly kafka_nodes_count="$(echo "${kafka_nodes}" | wc -w)"
 readonly kafka_config="/opt/kafka/config/server.properties"
 readonly zookeeper_config="/opt/kafka/config/zookeeper.properties"
 
-echo "Kafka nodes: ${kafka_nodes_count}"
+echo "Kafka nodes: ${kafka_nodes}"
+echo "Kafka nodes count: ${kafka_nodes_count}"
 
 # Configure Kafka in Cluster mode
-if [[ "${kafka_nodes}" -gt 1 ]]; then
+if [[ "${kafka_nodes_count}" -gt 1 ]]; then
   echo "Starting cluster-mode configuration..."
 
   # Get Broker Id
