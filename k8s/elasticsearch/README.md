@@ -198,8 +198,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-helm template chart/elasticsearch \
-  --name "$APP_INSTANCE_NAME" \
+helm template "$APP_INSTANCE_NAME" chart/elasticsearch \
   --namespace "$NAMESPACE" \
   --set elasticsearch.initImage="$IMAGE_INIT" \
   --set elasticsearch.image.repo="$IMAGE_ELASTICSEARCH" \
