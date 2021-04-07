@@ -22,6 +22,11 @@ ENV NEO4J_TARBALL neo4j.tar.gz
 ENV TINI_VERSION v0.18.0
 ENV TINI_SHA256 12d20136605531b09a2c2dac02ccee85e1b874eb322ef6baf7561cd93f93c855
 
+# Required for neo4jlabs-plugins.json 
+ENV DOCKER_NEO4J_VERSION 4.0.2
+ENV DOCKER_NEO4J_TARBALL docker-neo4j.tar.gz
+ENV DOCKER_NEO4J_SHA256  d13e9422335340b2a6650a4be349248315420b930ce0c3359be2095c2ab3e7cc
+
 ENV C2D_RELEASE 4.0.2
 
 RUN addgroup --system neo4j && adduser --system --no-create-home --home "${NEO4J_HOME}" --ingroup neo4j neo4j
@@ -35,6 +40,11 @@ RUN apt update \
     && echo "${NEO4J_SHA256}  ${NEO4J_TARBALL}" | sha256sum -c --strict --quiet \
     && tar --extract --file ${NEO4J_TARBALL} --directory /var/lib \
     && mv /var/lib/neo4j-* "${NEO4J_HOME}" \
+    && curl -o ${DOCKER_NEO4J_TARBALL} --fail --silent --show-error --location --remote-name https://github.com/neo4j/docker-neo4j/archive/refs/tags/neo4j-${DOCKER_NEO4J_VERSION}.tar.gz \
+    && echo "${DOCKER_NEO4J_SHA256}  ${DOCKER_NEO4J_TARBALL}" | sha256sum -c --strict --quiet \
+    && tar --extract --file ${DOCKER_NEO4J_TARBALL} --directory /tmp \
+    && mv /tmp/docker-neo4j*/neo4jlabs-plugins.json /neo4jlabs-plugins.json \
+    && rm ${DOCKER_NEO4J_TARBALL} \    
     && rm ${NEO4J_TARBALL} \
     && mv "${NEO4J_HOME}"/data /data \
     && mv "${NEO4J_HOME}"/logs /logs \
