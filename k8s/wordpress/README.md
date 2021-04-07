@@ -261,8 +261,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-helm template chart/wordpress \
-  --name "$APP_INSTANCE_NAME" \
+helm template "$APP_INSTANCE_NAME" chart/wordpress \
   --namespace "$NAMESPACE" \
   --set wordpress.image.repo="$IMAGE_WORDPRESS" \
   --set wordpress.image.tag="$TAG" \

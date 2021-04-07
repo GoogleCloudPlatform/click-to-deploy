@@ -176,8 +176,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the app.
 
 ```shell
-helm template chart/jaeger-operator \
-  --name "${APP_INSTANCE_NAME}" \
+helm template "${APP_INSTANCE_NAME}" chart/jaeger-operator \
   --namespace "${NAMESPACE}" \
   --set operator.image.repository="${IMAGE_OPERATOR}" \
   --set operator.image.tag="${TAG}" \
