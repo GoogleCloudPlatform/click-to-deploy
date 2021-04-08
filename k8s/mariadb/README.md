@@ -217,8 +217,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-helm template chart/mariadb \
-  --name "$APP_INSTANCE_NAME" \
+helm template "$APP_INSTANCE_NAME" chart/mariadb \
   --namespace "$NAMESPACE" \
   --set mariadb.image.repo="$IMAGE_MARIADB" \
   --set mariadb.image.tag="$TAG" \
