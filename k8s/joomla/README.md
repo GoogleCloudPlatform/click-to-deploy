@@ -259,8 +259,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-helm template chart/joomla \
-  --name "${APP_INSTANCE_NAME}" \
+helm template "${APP_INSTANCE_NAME}" chart/joomla \
   --namespace "${NAMESPACE}" \
   --set joomla.image.repo="${IMAGE_JOOMLA}" \
   --set joomla.image.tag="${TAG}" \
