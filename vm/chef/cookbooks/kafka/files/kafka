@@ -26,13 +26,14 @@ if [[ "${kafka_nodes_count}" -gt 1 ]]; then
   echo "Starting cluster-mode configuration..."
 
   # Get Broker Id
-  declare current_node_id="$(hostname -a | rev | cut -d '-' -f 1 | rev)"
-  declare broker_id="$(echo "$(($current_node_id + 1))")"
+  declare current_node_id="$(hostname -a | awk -F '-' '{ print $NF }')"
+  declare broker_id="$((current_node_id + 1))"
 
   # Get Zookeeper Master
   declare zookeeper_master="$(echo "${kafka_nodes}" | cut -f 1 -d ' ')"
   declare zookeeper_master_ip="$(getent hosts "${zookeeper_master}" | awk '{ print $1 }')"
-  declare zookeeper_connection="${zookeeper_master_ip}:2181"
+  declare zookeeper_master_port="2181"
+  declare zookeeper_connection="${zookeeper_master_ip}:${zookeeper_master_port}"
 
   # Stop Kafka
   systemctl stop kafka
@@ -41,7 +42,7 @@ if [[ "${kafka_nodes_count}" -gt 1 ]]; then
   mkdir -p /var/data/kafka
 
   # Configure Zookeeper Set data dir
-  sed -i 's/dataDir=\/tmp\/zookeeper/data=\/var\/data\/kafka/g' "${zookeeper_config}"
+  sed -i 's@dataDir=/tmp/zookeeper@data=/var/data/kafka@g' "${zookeeper_config}"
 
   # Remove existing Kafka settings
   sed -i '/broker.id=0/d' "${kafka_config}"
@@ -49,11 +50,13 @@ if [[ "${kafka_nodes_count}" -gt 1 ]]; then
   sed -i '/zookeeper.connect=/d' "${kafka_config}"
 
   # Create new configurations
-  echo "######## C2D Custom Configuration ########"
-  echo "broker.id=${broker_id}" >> "${kafka_config}"
-  echo "broker.rack=RACK1" >> "${kafka_config}"
-  echo "logs.dirs=/var/data/kafka" >> "${kafka_config}"
-  echo "zookeeper.connect=${zookeeper_connection}" >> "${kafka_config}"
+  cat << EOF >> "${kafka_config}"
+  ######## C2D Custom Configuration ########
+  broker.id=${broker_id}
+  broker.rack=RACK1
+  logs.dirs=/var/data/kafka
+  zookeeper.connect=${zookeeper_connection}
+EOF
 
   # Start Kafka
   systemctl start kafka
