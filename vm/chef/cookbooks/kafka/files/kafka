@@ -21,9 +21,6 @@ readonly kafka_nodes_count="$(echo "${kafka_nodes}" | wc -w)"
 readonly kafka_config="/opt/kafka/config/server.properties"
 readonly zookeeper_config="/opt/kafka/config/zookeeper.properties"
 
-echo "Kafka nodes: ${kafka_nodes}"
-echo "Kafka nodes count: ${kafka_nodes_count}"
-
 # Configure Kafka in Cluster mode
 if [[ "${kafka_nodes_count}" -gt 1 ]]; then
   echo "Starting cluster-mode configuration..."
@@ -36,12 +33,6 @@ if [[ "${kafka_nodes_count}" -gt 1 ]]; then
   declare zookeeper_master="$(echo "${kafka_nodes}" | cut -f 1 -d ' ')"
   declare zookeeper_master_ip="$(getent hosts "${zookeeper_master}" | awk '{ print $1 }')"
   declare zookeeper_connection="${zookeeper_master_ip}:2181"
-
-  echo "Current Node hostname: $(hostname -a)"
-  echo "Current Node: ${current_node_id}"
-  echo "Current Broker Id: ${broker_id}"
-  echo "ZK Master: ${zookeeper_master}"
-  echo "ZK Master IP: ${zookeeper_master_ip}"
 
   # Stop Kafka
   systemctl stop kafka
@@ -58,7 +49,7 @@ if [[ "${kafka_nodes_count}" -gt 1 ]]; then
   sed -i '/zookeeper.connect=/d' "${kafka_config}"
 
   # Create new configurations
-  echo "######## C2D Custom Configurations ########"
+  echo "######## C2D Custom Configuration ########"
   echo "broker.id=${broker_id}" >> "${kafka_config}"
   echo "broker.rack=RACK1" >> "${kafka_config}"
   echo "logs.dirs=/var/data/kafka" >> "${kafka_config}"
