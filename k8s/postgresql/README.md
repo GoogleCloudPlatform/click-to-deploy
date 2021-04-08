@@ -241,8 +241,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-helm template chart/postgresql \
-  --name "$APP_INSTANCE_NAME" \
+helm template "$APP_INSTANCE_NAME" chart/postgresql \
   --namespace "$NAMESPACE" \
   --set postgresql.serviceAccount="$POSTGRESQL_SERVICE_ACCOUNT" \
   --set postgresql.image.repo="$IMAGE_POSTGRESQL" \

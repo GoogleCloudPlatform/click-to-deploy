@@ -17,7 +17,7 @@ actions:
     script: curl -f "http://${APP_INSTANCE_NAME}-apache-exporter-svc:9117/metrics"
     expect:
       stdout:
-        matches: '(?m)^# TYPE http_requests_total counter$'
+        matches: '(?m)^# TYPE promhttp_metric_handler_requests_total counter$'
       exitCode:
         equals: 0
 

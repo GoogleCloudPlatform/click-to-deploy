@@ -207,8 +207,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-helm template chart/zookeeper \
-  --name "${APP_INSTANCE_NAME}" \
+helm template "${APP_INSTANCE_NAME}" chart/zookeeper \
   --namespace "${NAMESPACE}" \
   --set zookeeper.image.name="${IMAGE_ZOOKEEPER}" \
   --set zookeeper.image.tag="${TAG}" \
