@@ -51,11 +51,11 @@ if [[ "${kafka_nodes_count}" -gt 1 ]]; then
 
   # Create new configurations
   cat << EOF >> "${kafka_config}"
-  ######## C2D Custom Configuration ########
-  broker.id=${broker_id}
-  broker.rack=RACK1
-  logs.dirs=/var/data/kafka
-  zookeeper.connect=${zookeeper_connection}
+######## C2D Custom Configuration ########
+broker.id=${broker_id}
+broker.rack=RACK1
+logs.dirs=/var/data/kafka
+zookeeper.connect=${zookeeper_connection}
 EOF
 
   # Start Kafka
