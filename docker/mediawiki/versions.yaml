@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2021 Google LLC
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,14 +26,14 @@ versions:
       version: 2.0.9
     mediawiki:
       major: '1.35'
-      sha512: 71afdfeaa52459fc87e135449579b65aac6ed528240050a6fb5073ab19d091584f5fdfec7a8a48f060b1ddba322243d2e00e659f7e964fbeec69f22a271d756d
-      version: 1.35.1
+      sha512: 2d2e2e0307fa0b8bc52088431301a2fd1aeacc2347a55f663267154c3639b478789c7105454204136b83d070a6cc37045ce4a072846ad2f298a63379712d2da7
+      version: 1.35.2
   repo: mediawiki1-php7-apache
   tags:
-  - 1.35.1-debian9
+  - 1.35.2-debian9
   - 1.35-debian9
   - 1-debian9
-  - 1.35.1
+  - 1.35.2
   - '1.35'
   - '1'
   - latest
