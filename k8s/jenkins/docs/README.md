@@ -2,7 +2,7 @@
 
 Jenkins is an excellent tool for automation and provides hundreds of plugin that can be used to automate any project.  
 
-K8s and jenkins can be integrated together and deploy multiple pods as jenkins slaves on demand, this can allow jenkins to be flexible and escalate workload in pods dynamically, also allow to deploy any container solution inside pipelines and build containers. 
+K8s and jenkins can be integrated together and deploy multiple pods as jenkins agents on demand, this can allow jenkins to be flexible and escalate workload in pods dynamically, also allow to deploy any container solution inside pipelines and build containers. 
 
 In this document you will find instructions to integrate Jenkins and K8s.
 
@@ -14,11 +14,11 @@ Using the same architecture deployed, Jenkins pod master will be able to communi
 
 
 
-# Deploying slaves in k8s
+# Deploying agents in k8s
 
 ## Jenkins service account
 
-Create jenkins service account to integrate jenkins master to kubernetes to deploy slaves: 
+Create jenkins service account to integrate jenkins master to kubernetes to deploy agents: 
 
 ```
 cat > jenkins-service-account.yaml << EOF
@@ -31,7 +31,7 @@ EOF
 kubectl apply -f jenkins-service-account.yaml -n $NAMESPACE
 ```
 
-Create service role with permissions to deploy slave pods:
+Create service role with permissions to deploy agent pods:
 ```
 cat > jenkins-service-role.yaml << EOF
 ---
@@ -97,14 +97,17 @@ Create a secret text in jenkins with the token:
 Get the CA certificate and add it to the k8s plugin configuration:
 ```
 # CA Certificate
-kubectl get secret $(kubectl get sa $APP_INSTANCE_NAME-serviceaccount -n $NAMESPACE -o jsonpath="{.secrets[0].name}") -n $NAMESPACE -o jsonpath={.data.'ca\.crt'} \ 
-| base64 --decode
+kubectl get secret $(kubectl get sa $APP_INSTANCE_NAME-serviceaccount -n $NAMESPACE -o jsonpath="{.secrets[0].name}") -n $NAMESPACE -o jsonpath={.data.'ca\.crt'} \
+ | base64 --decode
 ```
 ![Add CA certificate](resources/configure-jenkins-k8s-plugin2.PNG)
 
-Get Jenkins URL and add it to k8s plugin configuration.
+Get jenkins service pod ip address and add it to k8s plugin configuration as Jenkins Url.
+```
+echo http://$(kubectl get svc $APP_INSTANCE_NAME-jenkins-ui -n $NAMESPACE -o jsonpath="{.spec.clusterIP}"):8080
+```
 
-Since the agent connector service is exp  osed as ClusterIP is required to use the option Jenkins tunnel in the jenkins k8s plugin, you can get the internal service name with the next command:
+Since the agent connector service is exposed as ClusterIP is required to use the option Jenkins tunnel in the jenkins k8s plugin, you can get the internal service name with the next command:
 ```
 echo $APP_INSTANCE_NAME-jenkins-agents-connector.$NAMESPACE.svc.cluster.local:50000
 ```
@@ -120,15 +123,13 @@ Follow the next pipeline example to build a Golang project and docker image usin
 pipeline {
 agent {
         kubernetes {
-            label 'jenkins-slave'
+            label 'jenkins-agent'
             yaml """
 kind: Pod
 metadata:
-  name: jenkins-slave
+  name: jenkins-agent
 spec:
   containers:
-  - name: jnlp
-    image: golang:1.12  
   - name: golang
     image: golang:1.12
     command:
