@@ -266,7 +266,7 @@ To set up Jenkins and customize your installation, follow these on-screen steps:
 
 # Deploying slaves in k8s
 
-Integrate jenkins with k8s
+[Integrate jenkins with k8s](docs/CONFIGURE_K8S_PLUGIN_IN_JENKINS.md)
 
 # App metrics
 

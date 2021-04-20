@@ -1,16 +1,14 @@
 # Overview
 
-Jenkins is an excellent tool for automation and provides hundreds of plugin that can be used to automate any project.  
-
 K8s and jenkins can be integrated together and deploy multiple pods as jenkins agents on demand, this can allow jenkins to be flexible and escalate workload in pods dynamically, also allow to deploy any container solution inside pipelines and build containers. 
 
 In this document you will find instructions to integrate Jenkins and K8s.
 
 ## Architecture
 
-Using the same architecture deployed, Jenkins pod master will be able to communicate with K8s API and deploy new pods inside the cluster on demand, those pods are ephemeral and they only be alive during the execution of the job or pipeline.
+Using the same architecture deployed, Jenkins pod master will be able to communicate with K8s API and deploy new pods inside the cluster on demand, those pods are ephemeral and they are only be alive during the execution of the job or pipeline.
 
-![Architecture diagram](resources/jenkins-k8s-app-architecture.png)
+![Architecture diagram](resources/jenkins-k8s-app-architecture-with-k8s-plugin.png)
 
 
 
@@ -18,7 +16,7 @@ Using the same architecture deployed, Jenkins pod master will be able to communi
 
 ## Jenkins service account
 
-Create jenkins service account to integrate jenkins master to kubernetes to deploy agents: 
+First create a jenkins service account to integrate jenkins master to kubernetes to deploy agents: 
 
 ```
 cat > jenkins-service-account.yaml << EOF
@@ -31,7 +29,7 @@ EOF
 kubectl apply -f jenkins-service-account.yaml -n $NAMESPACE
 ```
 
-Create service role with permissions to deploy agent pods:
+Create a service role with permissions to deploy agent pods:
 ```
 cat > jenkins-service-role.yaml << EOF
 ---
@@ -59,7 +57,7 @@ EOF
 kubectl apply -f jenkins-service-role.yaml -n $NAMESPACE
 ```
 
-Create role binding for jenkins service account:
+Create a role binding for jenkins service account:
 ```
 cat > jenkins-service-role-binding.yaml << EOF
 ---
@@ -84,7 +82,7 @@ Install kubernetes plugin in jenkins master server.
 
 [Jenkins Kubernetes Plugin](https://plugins.jenkins.io/kubernetes/)
 
-Add service account token to jenkins, first get the token using the next command:
+Add the service account token to jenkins, first get the token using the next command:
 ```
 # Service Account Token
 kubectl get secret $(kubectl get sa $APP_INSTANCE_NAME-serviceaccount -n $NAMESPACE -o jsonpath="{.secrets[0].name}") -n $NAMESPACE -o jsonpath="{.data.token}" \
@@ -102,7 +100,7 @@ kubectl get secret $(kubectl get sa $APP_INSTANCE_NAME-serviceaccount -n $NAMESP
 ```
 ![Add CA certificate](resources/configure-jenkins-k8s-plugin2.PNG)
 
-Get jenkins service pod ip address and add it to k8s plugin configuration as Jenkins Url.
+Get the jenkins service pod ip address and add it to k8s plugin configuration as Jenkins Url.
 ```
 echo http://$(kubectl get svc $APP_INSTANCE_NAME-jenkins-ui -n $NAMESPACE -o jsonpath="{.spec.clusterIP}"):8080
 ```
