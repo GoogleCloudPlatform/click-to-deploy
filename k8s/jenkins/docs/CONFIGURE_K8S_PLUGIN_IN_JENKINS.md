@@ -1,22 +1,24 @@
-# Overview
+# Tutorials
 
-K8s and jenkins can be integrated together and deploy multiple pods as jenkins agents on demand, this can allow jenkins to be flexible and escalate workload in pods dynamically, also allow to deploy any container solution inside pipelines and build containers. 
+## Scaling Agents on Kubernetes
+
+K8s and Jenkins can be integrated together and deploy multiple pods as Jenkins agents on demand, this can allow Jenkins to be flexible and escalate workload in pods dynamically, also allow to deploy any container solution inside pipelines and build containers. 
 
 In this document you will find instructions to integrate Jenkins and K8s.
 
 ## Architecture
 
-Using the same architecture deployed, Jenkins pod master will be able to communicate with K8s API and deploy new pods inside the cluster on demand, those pods are ephemeral and they are only be alive during the execution of the job or pipeline.
+Using the same architecture deployed, Jenkins primary pod will be able to communicate with K8s API and deploy new pods inside the cluster on demand, those pods are ephemeral and they are only be alive during the execution of the job or pipeline.
 
 ![Architecture diagram](resources/jenkins-k8s-app-architecture-with-k8s-plugin.png)
 
 
 
-# Deploying agents in k8s
+# Deploying Agents in K8s
 
 ## Jenkins service account
 
-First create a jenkins service account to integrate jenkins master to kubernetes to deploy agents: 
+1. Create a Jenkins service account to integrate Jenkins to Kubernetes to deploy agents: 
 
 ```
 cat > jenkins-service-account.yaml << EOF
@@ -29,7 +31,7 @@ EOF
 kubectl apply -f jenkins-service-account.yaml -n $NAMESPACE
 ```
 
-Create a service role with permissions to deploy agent pods:
+2. Create a service role with permissions to deploy agent pods:
 ```
 cat > jenkins-service-role.yaml << EOF
 ---
@@ -57,7 +59,7 @@ EOF
 kubectl apply -f jenkins-service-role.yaml -n $NAMESPACE
 ```
 
-Create a role binding for jenkins service account:
+3. Create a role binding for Jenkins service account:
 ```
 cat > jenkins-service-role-binding.yaml << EOF
 ---
@@ -76,45 +78,45 @@ EOF
 kubectl apply -f jenkins-service-role-binding.yaml -n $NAMESPACE
 ```
 
-## Configure kubernetes plugin
+## Configure Kubernetes plugin
 
-Install kubernetes plugin in jenkins master server.
+1. Install [Jenkins Kubernetes Plugin](https://plugins.jenkins.io/kubernetes/).
 
-[Jenkins Kubernetes Plugin](https://plugins.jenkins.io/kubernetes/)
-
-Add the service account token to jenkins, first get the token using the next command:
+2. Add the service account token to Jenkins, first get the token using the next command:
 ```
 # Service Account Token
-kubectl get secret $(kubectl get sa $APP_INSTANCE_NAME-serviceaccount -n $NAMESPACE -o jsonpath="{.secrets[0].name}") -n $NAMESPACE -o jsonpath="{.data.token}" \
-| base64 --decode
+kubectl get secret $(kubectl get sa $APP_INSTANCE_NAME-serviceaccount \
+-n $NAMESPACE -o jsonpath="{.secrets[0].name}") \
+-n $NAMESPACE -o jsonpath="{.data.token}" | base64 --decode
 ```
-Create a secret text in jenkins with the token:
+3. Create a secret text in Jenkins with the token:
 
-![Service account token](resources/configure-jenkins-k8s-plugin1.PNG)
+![Service account token](resources/configure-jenkins-k8s-plugin1.png)
 
-Get the CA certificate and add it to the k8s plugin configuration:
+4. Get the CA certificate and add it to the plugin configuration:
 ```
 # CA Certificate
-kubectl get secret $(kubectl get sa $APP_INSTANCE_NAME-serviceaccount -n $NAMESPACE -o jsonpath="{.secrets[0].name}") -n $NAMESPACE -o jsonpath={.data.'ca\.crt'} \
- | base64 --decode
+kubectl get secret $(kubectl get sa $APP_INSTANCE_NAME-serviceaccount \
+-n $NAMESPACE -o jsonpath="{.secrets[0].name}") \
+-n $NAMESPACE -o jsonpath={.data.'ca\.crt'} | base64 --decode
 ```
-![Add CA certificate](resources/configure-jenkins-k8s-plugin2.PNG)
+![Add CA certificate](resources/configure-jenkins-k8s-plugin2.png)
 
-Get the jenkins service pod ip address and add it to k8s plugin configuration as Jenkins Url.
+5. Get the jenkins service pod ip address and add it to the plugin configuration as Jenkins Url.
 ```
 echo http://$(kubectl get svc $APP_INSTANCE_NAME-jenkins-ui -n $NAMESPACE -o jsonpath="{.spec.clusterIP}"):8080
 ```
 
-Since the agent connector service is exposed as ClusterIP is required to use the option Jenkins tunnel in the jenkins k8s plugin, you can get the internal service name with the next command:
+6. Since the agent connector service is exposed as ClusterIP is required to use the option Jenkins tunnel in the plugin, you can get the internal service name with the next command:
 ```
 echo $APP_INSTANCE_NAME-jenkins-agents-connector.$NAMESPACE.svc.cluster.local:50000
 ```
 
-![Add jenkins agent connector service name](resources/configure-jenkins-k8s-plugin3.PNG)
+![Add jenkins agent connector service name](resources/configure-jenkins-k8s-plugin3.png)
 
-## Build a docker image in jenkins with kaniko
+## Build a docker image in Jenkins with kaniko
 
-Once jenkins is correctly configured and integrated with k8s you can create custom and flexible pipelines and deploy them  inside the cluster.
+Once Jenkins is correctly configured and integrated with K8s you can create custom and flexible pipelines and deploy them  inside the cluster.
 
 Follow the next pipeline example to build a Golang project and docker image using [Kaniko](https://github.com/GoogleContainerTools/kaniko):
 ```
@@ -180,8 +182,7 @@ spec:
                           --dockerfile $WORKSPACE/Dockerfile \
                           --destination $REGISTRY/$REPOSITORY/$IMAGE
                     '''
-
-                    To push an image to any repository as Google GCR is required to configure authentication,
+                    Authentication is required to push an image to Google Container Registry,
                     find further documentation in Kaniko repository:
                     https://github.com/GoogleContainerTools/kaniko#pushing-to-google-gcr 
                     */
@@ -192,4 +193,4 @@ spec:
 }
 ```
 Correct execution of the example pipeline:
-![Jenkins build docker image kaniko](resources/jenkins-build-docker-image-kaniko-pipeline.PNG)
+![Jenkins build docker image kaniko](resources/jenkins-build-docker-image-kaniko-pipeline.png)
