@@ -12,30 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'c2d-config'
+require 'spec_helper'
 
-execute 'add repo' do
-  command 'echo "deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main" | tee -a /etc/apt/sources.list.d/pgdg.list'
+describe 'C2D startup config' do
+  describe service('google-c2d-startup.service') do
+    it { should be_enabled }
+  end
+
+  describe file('/var/lock/google_vm_config.lock') do
+    it { should_not exist }
+  end
 end
 
-execute 'install repo key' do
-  command 'curl -s https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -'
-end
+describe 'C2D startup scripts should exists' do
+  describe file('/opt/c2d/scripts/00-manage-swap') do
+    it { should exist }
+  end
 
-apt_update do
-  action :update
-end
-
-package 'install packages' do
-  package_name node['postgresql']['packages']
-  action :install
-end
-
-c2d_startup_script 'postgresql' do
-  source 'postgresql'
-  action :cookbook_file
-end
-
-service 'postgresql' do
-  action [ :enable, :start ]
+  describe file('/opt/c2d/scripts/01-postgresql') do
+    it { should exist }
+  end
 end

@@ -1,0 +1,75 @@
+#!/bin/bash -eu
+#
+# Copyright 2021 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
+
+readonly pgsql_nodes="$(get_attribute_value "pgsql-nodes")"
+readonly pgsql_install_sample="$(get_attribute_value "pgsql-install-sample" \
+  | tr '[:upper:]' '[:lower:]')"
+
+readonly current_node="$(hostname)"
+readonly current_node_idx="$(hostname | awk -F '-' '{ print $NF }')"
+readonly master_hostname="$(echo "${pgsql_nodes}" | awk '{ print $1 }')"
+readonly sample_database="pets"
+
+# Check whether Bucardo is installed or not.
+check_if_bucardo_is_set
+
+# Create bucardo user
+execute_query "CREATE USER bucardo superuser;"
+
+# Configure nodes
+if [[ "${current_node}" == "${master_hostname}" ]]; then
+  # Configure master node
+
+  # Create database on master node
+  execute_query "CREATE DATABASE bucardo;"
+  execute_query "ALTER DATABASE bucardo OWNER TO bucardo;"
+
+  configure_pg_hba_master
+
+  # Restart PostgreSQL
+  systemctl restart postgresql
+
+  # Install Bucardo database
+  bucardo install --batch
+
+  if [[ "${pgsql_install_sample}" == "true" ]]; then
+    create_sample_database
+
+    # Await so user bucardo can connect to all replicas.
+    await_for_replicas "${sample_database}" "${pg_nodes}"
+
+    # Add master db and replicas to the replication
+    add_databases "${sample_database}" "${pg_nodes}"
+
+    # Add syncs
+    add_syncs "${pg_nodes}"
+
+    # Start bucardo service
+    bucardo start
+  fi
+else
+  # Configure replica nodes
+  # TODO(armadom): review it
+  create_sample_database
+
+  configure_pg_hba_replica
+
+  # Grant privileges to bucardo user
+  execute_query "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO bucardo;"
+
+fi

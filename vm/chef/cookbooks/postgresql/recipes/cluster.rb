@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,4 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['postgresql']['packages'] = ['postgresql-plperl-13', 'postgresql-client']
+include_recipe 'postgresql::standalone'
+include_recipe 'bucardo'
+
+cookbook_file "/opt/pgcluster-utils" do
+  source "pgcluster-utils"
+  owner 'root'
+  group 'root'
+  mode 0755
+  action :create
+end
+
+cookbook_file '/opt/dump.sql' do
+  source 'dump.sql'
+  owner 'root'
+  group 'root'
+  mode 0664
+  action :create
+end
+
+c2d_startup_script 'postgresql-cluster'

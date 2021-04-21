@@ -1,0 +1,125 @@
+#!/bin/bash -eu
+#
+# Copyright 2021 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+function check_if_bucardo_is_set() {
+  which bucardo > /dev/null
+  if [[ "$?" -ne 0 ]]; then
+    echo "Bucardo not found."
+    exit 1
+  fi
+}
+
+function execute_query() {
+  local -r command="$1"
+  execute_query "Executing query: ${command}"
+  su - postgres -c "psql -c \"${command}\""
+}
+
+function await_for_replicas() {
+  local -r database_name="$1"
+  local -r instances="$2"
+  local connected=""
+  local instance_id=""
+
+  for instance in $instances; do
+    instance_id="$(echo ${instance} | awk -F '-' '{ print $NF }')"
+    connected="false"
+
+    # Skip for master node
+    if [[ "${instance_id}" == "0" ]]; then
+      continue
+    fi
+
+    echo "Trying to connect to instance ${instance}"
+    while [[ "${connected}" == "false" ]]; do
+      su - postgres -c "psql -U bucardo -d ${database_name} -h \"${instance}\" -c \"SELECT Version();\"" \
+        >/dev/null 2>&1
+
+      if [[ "$?" -eq 0 ]]; then
+        echo "Connected to the instance: ${instance}."
+        connected="true"
+      else
+        echo "Connection to ${instance} failed."
+      fi
+    done
+  done
+}
+
+function add_databases() {
+  local -r database_name="$1"
+  local -r instances="$2"
+  local instance_id=""
+
+  for instance in $instances; do
+    instance_id="$(echo ${instance} | awk -F '-' '{ print $NF }')"
+    echo "Adding ${instance} to bucardo..."
+
+    # Add databases
+    bucardo add database "${instance}" \
+      dbname="${database_name}" \
+      host="${instance}"
+
+    # Add tables
+    bucardo add all table % db="${instance}"
+  done
+}
+
+function add_syncs() {
+  local -r instances_list="$1"
+
+  for instance in $instances_list; do
+    source_instance_id="$(echo ${instance} | awk -F '-' '{ print $NF }')"
+
+    echo "Adding ${instance} replicas:"
+    for replica in $instances_list; do
+      if [[ "${replica}" == "${instance}" ]]; then
+        continue
+      fi
+
+      destination_instance_id="$(echo ${replica} | awk -F '-' '{ print $NF }')"
+      herd_name="node${source_instance_id}_to_node${destination_instance_id}"
+      sync_name="sync_${herd_name}"
+
+      echo "Adding ${replica} as ${instance} replica. Herd: ${herd_name}. Sync: ${sync_name}"
+
+      # Add herds
+      bucardo add all tables --herd="${herd_name}" --db="${instance}"
+      bucardo add sync "${sync_name}" \
+        relgroup="${herd_name}" \
+        db="${instance},${replica}"
+
+    done
+
+    echo "----"
+  done
+}
+
+function configure_pg_hba_master() {
+  echo "local  all  bucard  trust" >> /etc/postgresql/13/main/pg_hba.conf
+}
+
+function configure_pg_hba_replica() {
+  local -r node_ip="$(ifconfig | grep -o -P "broadcast (.*)$" | awk '{ print $2 }')"
+  local -r submask="$(echo $node_ip | awk -F '.' '{ print $1 "." $2 ".0.0/16" }')"
+
+  echo "Configure pg_hba.conf for replica..."
+  echo "host  all  bucardo  ${submast}  trust" >> /etc/postgresql/13/main/pg_hba.conf
+}
+
+function create_sample_database() {
+  echo "Creating sample database..."
+  psql -U postgres < /opt/dump.sql
+}

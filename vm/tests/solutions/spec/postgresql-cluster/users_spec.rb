@@ -12,30 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'c2d-config'
+require 'spec_helper'
 
-execute 'add repo' do
-  command 'echo "deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main" | tee -a /etc/apt/sources.list.d/pgdg.list'
-end
-
-execute 'install repo key' do
-  command 'curl -s https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -'
-end
-
-apt_update do
-  action :update
-end
-
-package 'install packages' do
-  package_name node['postgresql']['packages']
-  action :install
-end
-
-c2d_startup_script 'postgresql' do
-  source 'postgresql'
-  action :cookbook_file
-end
-
-service 'postgresql' do
-  action [ :enable, :start ]
+describe user('postgres') do
+  it { should exist }
 end
