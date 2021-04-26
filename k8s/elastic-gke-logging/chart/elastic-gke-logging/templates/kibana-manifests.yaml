@@ -137,11 +137,11 @@ spec:
         image: {{ .Values.kibana.image }}
         imagePullPolicy: Always
         env:
-        - name: ELASTICSEARCH_URL
+        - name: ELASTICSEARCH_HOSTS
           value: "http://{{ .Release.Name }}-elasticsearch-svc:9200"
         - name: KIBANA_DEFAULTAPPID
           value: "discover"
-        ports:
+        ports: 
         - name: http
           containerPort: 5601
         readinessProbe:
