@@ -18,4 +18,4 @@ package 'Install Bucardo Dependencies' do
 end
 
 include_recipe 'bucardo::dbix'
-include_recipe 'bucardo:bucardo-service'
+include_recipe 'bucardo::bucardo-service'

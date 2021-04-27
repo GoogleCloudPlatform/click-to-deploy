@@ -15,7 +15,7 @@
 include_recipe 'postgresql::standalone'
 include_recipe 'bucardo'
 
-cookbook_file "/opt/pgcluster-utils" do
+cookbook_file "/opt/c2d/pgcluster-utils" do
   source "pgcluster-utils"
   owner 'root'
   group 'root'
@@ -23,7 +23,7 @@ cookbook_file "/opt/pgcluster-utils" do
   action :create
 end
 
-cookbook_file '/opt/dump.sql' do
+cookbook_file '/opt/c2d/dump.sql' do
   source 'dump.sql'
   owner 'root'
   group 'root'

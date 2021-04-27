@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source /opt/c2d/c2d-utils || exit 1
+
 function check_if_bucardo_is_set() {
   which bucardo > /dev/null
   if [[ "$?" -ne 0 ]]; then
@@ -24,8 +26,8 @@ function check_if_bucardo_is_set() {
 
 function execute_query() {
   local -r command="$1"
-  execute_query "Executing query: ${command}"
-  su - postgres -c "psql -c \"${command}\""
+  echo "Executing query: ${command}"
+  psql "postgresql://postgres:${PGPASSWORD}@localhost" -c "${command}"
 }
 
 function await_for_replicas() {
@@ -108,7 +110,8 @@ function add_syncs() {
 }
 
 function configure_pg_hba_master() {
-  echo "local  all  bucard  trust" >> /etc/postgresql/13/main/pg_hba.conf
+  sed -i 's/peer/trust/g' /etc/postgresql/13/main/pg_hba.conf
+  echo "local  all  bucardo  trust" >> /etc/postgresql/13/main/pg_hba.conf
 }
 
 function configure_pg_hba_replica() {
@@ -116,10 +119,10 @@ function configure_pg_hba_replica() {
   local -r submask="$(echo $node_ip | awk -F '.' '{ print $1 "." $2 ".0.0/16" }')"
 
   echo "Configure pg_hba.conf for replica..."
-  echo "host  all  bucardo  ${submast}  trust" >> /etc/postgresql/13/main/pg_hba.conf
+  echo "host  all  bucardo  ${submask}  trust" >> /etc/postgresql/13/main/pg_hba.conf
 }
 
 function create_sample_database() {
   echo "Creating sample database..."
-  psql -U postgres < /opt/dump.sql
+  psql -U postgres < /opt/c2d/dump.sql
 }

@@ -14,7 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source /opt/c2d/c2d-utils || exit 1
+source /opt/c2d/pgcluster-utils || exit 1
+
+export PGPASSWORD="$(get_attribute_value "postgresql-postgres-password")"
 
 readonly pgsql_nodes="$(get_attribute_value "pgsql-nodes")"
 readonly pgsql_install_sample="$(get_attribute_value "pgsql-install-sample" \
@@ -42,7 +44,11 @@ if [[ "${current_node}" == "${master_hostname}" ]]; then
   configure_pg_hba_master
 
   # Restart PostgreSQL
-  systemctl restart postgresql
+  echo "Stopping PostgreSQL..."
+  systemctl stop postgresql
+  sleep 30
+  echo "Restarting PostgreSQL..."
+  systemctl start postgresql
 
   # Install Bucardo database
   bucardo install --batch
