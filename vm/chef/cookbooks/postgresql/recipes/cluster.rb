@@ -31,4 +31,18 @@ cookbook_file '/opt/c2d/dump.sql' do
   action :create
 end
 
+# Prepare directory for licenses
+directory '/usr/src/licenses' do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  recursive true
+  action :create
+end
+
+remote_file 'Postgres License' do
+  path '/usr/src/licenses/postgres_license'
+  source 'https://raw.githubusercontent.com/postgres/postgres/master/COPYRIGHT'
+end
+
 c2d_startup_script 'postgresql-cluster'

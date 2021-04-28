@@ -47,8 +47,11 @@ function await_for_replicas() {
 
     echo "Trying to connect to instance ${instance}"
     while [[ "${connected}" == "false" ]]; do
-      su - postgres -c "psql -U bucardo -d ${database_name} -h \"${instance}\" -c \"SELECT Version();\"" \
+      # Avoid to fail, as we are checking exit-code.
+      set +e
+      su - postgres -c "psql -U bucardo -d ${database_name} -h \"${instance}\" -c \"SELECT 1 FROM animals;\"" \
         >/dev/null 2>&1
+      set -e
 
       if [[ "$?" -eq 0 ]]; then
         echo "Connected to the instance: ${instance}."
@@ -67,23 +70,28 @@ function add_databases() {
 
   for instance in $instances; do
     instance_id="$(echo ${instance} | awk -F '-' '{ print $NF }')"
+    node_name="node${instance_id}"
     echo "Adding ${instance} to bucardo..."
 
     # Add databases
-    bucardo add database "${instance}" \
+    bucardo add database "${node_name}" \
       dbname="${database_name}" \
       host="${instance}"
 
     # Add tables
-    bucardo add all table % db="${instance}"
+    bucardo add all table % db="${node_name}"
   done
 }
 
 function add_syncs() {
   local -r instances_list="$1"
+  local source_instance_id=""
+  local source_node_name=""
+  local destination_node_name=""
 
   for instance in $instances_list; do
     source_instance_id="$(echo ${instance} | awk -F '-' '{ print $NF }')"
+    source_node_name="node${source_instance_id}"
 
     echo "Adding ${instance} replicas:"
     for replica in $instances_list; do
@@ -92,17 +100,17 @@ function add_syncs() {
       fi
 
       destination_instance_id="$(echo ${replica} | awk -F '-' '{ print $NF }')"
-      herd_name="node${source_instance_id}_to_node${destination_instance_id}"
+      destination_node_name="node${destination_instance_id}"
+      herd_name="${source_node_name}_to_${destination_node_name}"
       sync_name="sync_${herd_name}"
 
       echo "Adding ${replica} as ${instance} replica. Herd: ${herd_name}. Sync: ${sync_name}"
 
       # Add herds
-      bucardo add all tables --herd="${herd_name}" --db="${instance}"
+      bucardo add all tables --herd="${herd_name}" --db="${source_node_name}"
       bucardo add sync "${sync_name}" \
         relgroup="${herd_name}" \
-        db="${instance},${replica}"
-
+        db="${source_node_name},${destination_node_name}"
     done
 
     echo "----"
@@ -111,7 +119,8 @@ function add_syncs() {
 
 function configure_pg_hba_master() {
   sed -i 's/peer/trust/g' /etc/postgresql/13/main/pg_hba.conf
-  echo "local  all  bucardo  trust" >> /etc/postgresql/13/main/pg_hba.conf
+  # echo "local  all  bucardo  trust" >> /etc/postgresql/13/main/pg_hba.conf
+  configure_pg_hba_replica
 }
 
 function configure_pg_hba_replica() {
@@ -124,5 +133,6 @@ function configure_pg_hba_replica() {
 
 function create_sample_database() {
   echo "Creating sample database..."
-  psql -U postgres < /opt/c2d/dump.sql
+  execute_query "create database pets;"
+  psql "postgresql://postgres:${PGPASSWORD}@localhost/pets" < /opt/c2d/dump.sql
 }

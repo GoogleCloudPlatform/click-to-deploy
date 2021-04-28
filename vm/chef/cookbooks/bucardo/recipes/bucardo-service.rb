@@ -31,3 +31,18 @@ bash 'Install Buscardo Service' do
     && chmod 777 /var/run/bucardo
 EOH
 end
+
+# Prepare license
+directory '/usr/src/licenses' do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  recursive true
+  action :create
+end
+
+# Download License
+remote_file 'Bucardo License' do
+  path '/usr/src/licenses/bucardo_license'
+  source 'https://raw.githubusercontent.com/bucardo/bucardo/master/LICENSE'
+end

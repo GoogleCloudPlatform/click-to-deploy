@@ -1,4 +1,3 @@
-create database pets;
 create table animals (
   id integer primary key,
   name varchar(50)
