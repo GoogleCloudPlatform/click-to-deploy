@@ -264,9 +264,9 @@ To set up Jenkins and customize your installation, follow these on-screen steps:
 *   Create the first admin user
 *   Optionally, configure the Jenkins URL; you can also change the URL later
 
-# Deploying Agents in K8s
+# Deploying Jenkins agents using Kubernetes
 
-[Integrate Jenkins and K8s](docs/CONFIGURE_K8S_PLUGIN_IN_JENKINS.md)
+For information about using Jenkins with Kubernetes, refer to [Integrate Jenkins and Kubernetes](docs/CONFIGURE_K8S_PLUGIN_IN_JENKINS.md)
 
 # App metrics
 

@@ -1,10 +1,8 @@
-# Tutorials
+# Using Kubernetes to scale Jenkins agents
 
-## Scaling Agents on Kubernetes
+You can integrate Jenkins with Kubernetes to deploy multiple pods as Jenkins agents on demand. This enables your Jenkins deployment to dynamically scale its workload, and to deploy any container solution inside pipelines and build containers.
 
-K8s and Jenkins can be integrated together and deploy multiple pods as Jenkins agents on demand, this can allow Jenkins to be flexible and escalate workload in pods dynamically, also allow to deploy any container solution inside pipelines and build containers. 
-
-In this document you will find instructions to integrate Jenkins and K8s.
+This page contains instructions for integrating Jenkins with Kubernetes.
 
 ## Architecture
 
@@ -114,11 +112,12 @@ echo $APP_INSTANCE_NAME-jenkins-agents-connector.$NAMESPACE.svc.cluster.local:50
 
 ![Add jenkins agent connector service name](resources/configure-jenkins-k8s-plugin3.png)
 
-## Build a docker image in Jenkins with kaniko
+## Build a Docker image in Jenkins with Kaniko
 
-Once Jenkins is correctly configured and integrated with K8s you can create custom and flexible pipelines and deploy them  inside the cluster.
+After Jenkins is correctly configured and integrated with Kubernetes, you can create custom and flexible pipelines and deploy them inside the cluster.
 
-Follow the next pipeline example to build a Golang project and docker image using [Kaniko](https://github.com/GoogleContainerTools/kaniko):
+To build a Golang project and Docker image using [Kaniko](https://github.com/GoogleContainerTools/kaniko), refer to the following sample pipeline:
+
 ```
 pipeline {
 agent {
