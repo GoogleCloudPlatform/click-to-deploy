@@ -36,6 +36,7 @@ check_if_bucardo_is_set
 # Create bucardo user
 echo "Creating bucardo user in local database..."
 execute_query "CREATE USER bucardo superuser;"
+execute_query "ALTER SYSTEM SET max_connections TO '500';"
 
 # Configure nodes
 if [[ "${current_node}" == "${master_hostname}" ]]; then
