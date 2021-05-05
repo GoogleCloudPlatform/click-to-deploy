@@ -16,6 +16,9 @@
 
 source /opt/c2d/c2d-utils || exit 1
 
+readonly wordpress_admin_username="admin"
+readonly wordpress_admin_password="$(get_attribute_value "wordpress-admin-password")"
+readonly wordpress_admin_email="$(get_attribute_value "wordpress-admin-email")"
 readonly wordpress_mysql_password="$(get_attribute_value "wordpress-mysql-password")"
 readonly mysql_root_password="$(get_attribute_value "mysql-root-password")"
 
@@ -36,9 +39,9 @@ sudo -u www-data wp config create \
 # Run the CLI installer for WordPress
 declare -a args
 args=(--title="WordPress on Google Compute Engine" \
---admin_user=admin \
---admin_password="$(get_attribute_value "wordpress-admin-password")" \
---admin_email="$(get_attribute_value "wordpress-admin-email")" \
+--admin_user="${wordpress_admin_username}" \
+--admin_password="${wordpress_admin_password}" \
+--admin_email="${wordpress_admin_email}" \
 --path=/var/www/html/ \
 --skip-email)
 
@@ -49,4 +52,3 @@ else
 fi
 
 sudo -u www-data wp core install "${args[@]}"
-sudo -u www-data wp theme activate twentyseventeen --path=/var/www/html
