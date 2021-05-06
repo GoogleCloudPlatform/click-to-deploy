@@ -6,7 +6,7 @@ This page contains instructions for integrating Jenkins with Kubernetes.
 
 ## Architecture
 
-Using the same architecture deployed, Jenkins primary pod will be able to communicate with K8s API and deploy new pods inside the cluster on demand, those pods are ephemeral and they are only be alive during the execution of the job or pipeline.
+Using the same architecture deployed, the Jenkins primary pod will be able to communicate with K8s API and deploy new pods inside the cluster on demand. These pods are ephemeral and will only be alive during the execution of the job or pipeline.
 
 ![Architecture diagram](resources/jenkins-k8s-app-architecture-with-k8s-plugin.png)
 
@@ -105,7 +105,7 @@ kubectl get secret $(kubectl get sa $APP_INSTANCE_NAME-serviceaccount \
 echo http://$(kubectl get svc $APP_INSTANCE_NAME-jenkins-ui -n $NAMESPACE -o jsonpath="{.spec.clusterIP}"):8080
 ```
 
-6. Since the agent connector service is exposed as ClusterIP is required to use the option Jenkins tunnel in the plugin, you can get the internal service name with the next command:
+6. The agent connector is exposed service as a ClusterIP. You can get the internal service name with the next command:
 ```
 echo $APP_INSTANCE_NAME-jenkins-agents-connector.$NAMESPACE.svc.cluster.local:50000
 ```
