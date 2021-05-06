@@ -27,7 +27,8 @@ bash 'Install Buscardo Service' do
     && cd bucardo/ \
     && perl Makefile.PL \
     && make install \
-    && mkdir /var/run/bucardo \
+    && mkdir -p /var/run/bucardo \
+    && mkdir -p /var/log/bucardo \
     && chmod 777 /var/run/bucardo
 EOH
 end

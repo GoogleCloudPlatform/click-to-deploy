@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,6 +30,10 @@ describe 'C2D startup scripts should exists' do
   end
 
   describe file('/opt/c2d/scripts/01-postgresql') do
+    it { should exist }
+  end
+
+  describe file('/opt/c2d/scripts/02-postgresql-cluster') do
     it { should exist }
   end
 end

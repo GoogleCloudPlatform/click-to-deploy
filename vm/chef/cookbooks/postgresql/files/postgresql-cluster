@@ -23,15 +23,14 @@ readonly pgsql_install_sample="$(get_attribute_value "pgsql-install-sample" \
   | tr '[:upper:]' '[:lower:]')"
 
 readonly current_node="$(hostname)"
-readonly current_node_idx="$(hostname | awk -F '-' '{ print $NF }')"
 readonly master_hostname="$(echo "${pgsql_nodes}" | awk '{ print $1 }')"
-readonly sample_database="pets"
+readonly sample_database="world"
 
 echo "Current Node: ${current_node}"
 echo "Master hostname: ${master_hostname}"
 
-# Check whether Bucardo is installed or not.
-check_if_bucardo_is_set
+# Setup bucardo
+setup_bucardo
 
 # Create bucardo user
 echo "Creating bucardo user in local database..."
@@ -62,20 +61,18 @@ if [[ "${current_node}" == "${master_hostname}" ]]; then
   bucardo install --batch
 
   if [[ "${pgsql_install_sample}" == "true" ]]; then
-    create_sample_database
+    create_sample_database "${sample_database}"
 
     # Await so user bucardo can connect to all replicas.
     await_for_replicas "${sample_database}" "${pgsql_nodes}"
 
-    # Add master db and replicas to the replication
-    add_databases "${sample_database}" "${pgsql_nodes}"
+    # Add all nodes to the replication.
+    add_databases_to_replication "${sample_database}" "${pgsql_nodes}"
 
-    # Add syncs
-    add_syncs "${pgsql_nodes}"
+    # Add the replication syncs.
+    add_replication_syncs "${pgsql_nodes}"
 
     # Start bucardo service
-    mkdir -p /var/run/bucardo
-    mkdir -p /var/log/bucardo
     bucardo start
   fi
 else
@@ -88,7 +85,7 @@ else
   echo "Restarting PostgreSQL..."
   systemctl start postgresql
 
-  create_sample_database
+  create_sample_database "${sample_database}"
 
   # Grant privileges to bucardo user
   execute_query "GRANT USAGE ON SCHEMA public TO bucardo;"
