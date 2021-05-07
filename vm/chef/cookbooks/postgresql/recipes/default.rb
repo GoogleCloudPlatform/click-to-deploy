@@ -19,7 +19,7 @@ execute 'add repo' do
 end
 
 execute 'install repo key' do
-  command 'curl -s https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -'
+  command 'wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -'
 end
 
 apt_update do
