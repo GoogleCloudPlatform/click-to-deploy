@@ -38,6 +38,7 @@ C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)
 NAME ?= $(APP_ID)-1
+VERIFY_WAIT_TIMEOUT := 400
 
 # Additional variables
 ifdef ELASTICSEARCH_REPLICAS
