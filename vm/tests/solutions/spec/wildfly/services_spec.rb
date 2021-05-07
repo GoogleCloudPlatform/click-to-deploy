@@ -14,6 +14,7 @@
 
 require 'spec_helper'
 
-describe service('logstash'), :if => os[:family] == 'debian' do
+describe service('wildfly'), :if => os[:family] == 'debian' do
   it { should be_enabled }
+  it { should be_running }
 end

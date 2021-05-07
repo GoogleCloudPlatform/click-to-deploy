@@ -18,11 +18,6 @@ apt_update 'update' do
   action :update
 end
 
-# Install the package required to apt-get update with elasticsearch repo
-package 'apt-transport-https' do
-  action :install
-end
-
 user node['wildfly']['user'] do
   action :create
   home "/home/#{node['wildfly']['user']}"
@@ -31,25 +26,29 @@ user node['wildfly']['user'] do
   manage_home true
 end
 
-# https://hub.docker.com/r/jboss/wildfly/dockerfile
+remote_file '/tmp/wildfly.tar.gz' do
+  source "https://download.jboss.org/wildfly/#{node['wildfly']['version']}.Final/wildfly-#{node['wildfly']['version']}.Final.tar.gz"
+  checksum node['wildfly']['sha256']
+  action :create
+end
+
 bash 'Install Wildfly' do
   user 'root'
   cwd '/tmp'
   code <<-EOH
-  cd $HOME \
-    && curl -O https://download.jboss.org/wildfly/$WILDFLY_VERSION/wildfly-$WILDFLY_VERSION.tar.gz \
-    && sha1sum wildfly-$WILDFLY_VERSION.tar.gz | grep $WILDFLY_SHA1 \
-    && tar xf wildfly-$WILDFLY_VERSION.tar.gz \
-    && mkdir -p $JBOSS_HOME \
-    && mv $HOME/wildfly-$WILDFLY_VERSION $JBOSS_HOME \
-    && rm wildfly-$WILDFLY_VERSION.tar.gz \
-    && chown -R jboss:jboss ${JBOSS_HOME} \
-    && chmod -R g+rw ${JBOSS_HOME}
+    mkdir -p /tmp/wildfly \
+    && tar xf /tmp/wildfly.tar.gz -C /tmp/wildfly --strip-components=1 \
+    && mkdir -p "${jboss_home}" \
+    && mv -f /tmp/wildfly "${jboss_home}/../" \
+    && rm -f wildfly.tar.gz \
+    && chown -R jboss:jboss "${jboss_home}" \
+    && chmod -R g+rw "${jboss_home}"
 EOH
+  environment({
+    'jboss_home' => node['wildfly']['jboss_home'],
+  })
 end
 
-# https://bgasparotto.com/start-stop-restart-wildfly/
-# https://stackoverflow.com/questions/42907443/wildfly-as-systemd-service
 cookbook_file '/lib/systemd/system/wildfly.service' do
   source 'wildfly.service'
   owner 'root'
@@ -59,11 +58,7 @@ cookbook_file '/lib/systemd/system/wildfly.service' do
 end
 
 service 'wildfly.service' do
-  action [ :enable, :stop ]
+  action [ :enable, :start ]
 end
 
-# mattermost service setup
-
-
-# Copy startup script
 c2d_startup_script 'wildfly'
