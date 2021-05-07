@@ -20,6 +20,21 @@ spec:
       - name: tls-volume
         secret:
           secretName: {{ .Release.Name }}-tls
+      initContainers:
+      - name: increase-max-map-count
+        image: {{ .Values.deployer.image }}
+        command:
+        - /bin/bash
+        - -c
+        - |
+          CONFIG_FILE="/var/lib/postgresql/data/pgdata/postgresql.conf"
+          echo "ssl = on" >> "${CONFIG_FILE}"
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: {{ .Release.Name }}-postgresql-pvc
+          mountPath: /var/lib/postgresql/data
+        securityContext:
+          privileged: true
       containers:
       - name: postgresql-server
         image: "{{ .Values.postgresql.image.repo }}:{{ .Values.postgresql.image.tag }}"
