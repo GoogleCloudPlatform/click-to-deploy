@@ -260,8 +260,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the app.
 
 ```shell
-helm template chart/drupal \
-  --name "${APP_INSTANCE_NAME}" \
+helm template "${APP_INSTANCE_NAME}" chart/drupal \
   --namespace "${NAMESPACE}" \
   --set drupal.image.repo="${IMAGE_DRUPAL}" \
   --set drupal.image.tag="${TAG}" \

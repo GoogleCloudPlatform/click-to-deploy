@@ -30,10 +30,10 @@ versions:
     imageNameFromBuilder: 'local/controller:1.4.16'
     tags:
       - '1.4.16-debian9'
-      - '1.1-debian9'
+      - '1.4-debian9'
+      - '1-debian9'      
       - '1.4.16'
       - '1.4'
-      - '1-debian9'
       - '1'
       - 'latest'
   - repo: nuclio-dashboard
@@ -42,10 +42,10 @@ versions:
     imageNameFromBuilder: 'local/dashboard:1.4.16'
     tags:
       - '1.4.16-debian9'
-      - '1.1-debian9'
+      - '1.4-debian9'
+      - '1-debian9'
       - '1.4.16'
       - '1.4'
-      - '1-debian9'
       - '1'
       - 'latest'
 
