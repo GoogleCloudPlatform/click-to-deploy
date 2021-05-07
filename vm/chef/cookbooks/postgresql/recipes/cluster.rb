@@ -31,8 +31,8 @@ package 'install packages' do
   action :install
 end
 
-cookbook_file "/opt/c2d/pgcluster-utils" do
-  source "pgcluster-utils"
+cookbook_file '/opt/c2d/pgcluster-utils' do
+  source 'pgcluster-utils'
   owner 'root'
   group 'root'
   mode 0755

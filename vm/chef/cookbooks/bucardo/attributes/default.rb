@@ -21,5 +21,5 @@ default['bucardo']['packages'] = [
   'libpg-hstore-perl',
   'libpgobject-perl',
   'libdbix-safe-perl',
-  'make'
+  'make',
 ]
