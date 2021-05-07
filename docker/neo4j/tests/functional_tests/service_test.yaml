@@ -12,7 +12,7 @@
 # specific language governing permissions and limitations under the License.
 
 setup:
-- command: [docker, run, -ti, --name, some-neo4j-$UNIQUE, -d, -p, '7474:7477', -p, '7689:7689', -e, "NEO4J_AUTH=neo4j/admin123", $IMAGE]
+- command: [docker, run, -ti, --name, some-neo4j-$UNIQUE, -d, -e, "NEO4J_AUTH=neo4j/admin123", $IMAGE]
 - command: [docker, exec, some-neo4j-$UNIQUE, apt, update]
 - command: [docker, exec, some-neo4j-$UNIQUE, apt, -y, install, curl]
 - command: [sleep, 10s]

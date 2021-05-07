@@ -15,3 +15,4 @@
 default['grafana']['repo']['uri'] = 'https://packages.grafana.com/oss/deb'
 default['grafana']['repo']['components'] = ['stable', 'main']
 default['grafana']['repo']['key'] = 'https://packages.grafana.com/gpg.key'
+default['grafana']['version'] = '7.4'

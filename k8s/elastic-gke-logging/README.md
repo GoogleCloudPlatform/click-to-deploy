@@ -225,8 +225,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-helm template chart/elastic-gke-logging \
-  --name "$APP_INSTANCE_NAME" \
+helm template "$APP_INSTANCE_NAME" chart/elastic-gke-logging \
   --namespace "$NAMESPACE" \
   --set elasticsearch.replicas="$ELASTICSEARCH_REPLICAS" \
   --set fluentd.serviceAccount="$FLUENTD_SERVICE_ACCOUNT" \

@@ -6,12 +6,12 @@ include ../images.Makefile
 CHART_NAME := elasticsearch
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 6.8
+TRACK ?= 7.10
 
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
-IMAGE_ELASTICSEARCH ?= $(SOURCE_REGISTRY)/elasticsearch6:$(TRACK)
+IMAGE_ELASTICSEARCH ?= $(SOURCE_REGISTRY)/elasticsearch7:$(TRACK)
 IMAGE_UBUNTU16_04 ?= $(SOURCE_REGISTRY)/ubuntu1604:latest
 IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
