@@ -9,9 +9,9 @@ actions:
 - name: Jenkins service login with incorrect credentials
   bashTest:
     script: |-
-      if ! curl -uadmin:Invalid -s -k "http://${IP}:${PORT}/" | grep -q 'Error 401 Invalid password/token'; then
-        exit 1
-      fi
+      curl -I -u "admin:Invalid" "http://${IP}:${PORT}/" | grep "401 Unauthorized" | wc -l
     expect:
       exitCode:
         equals: 0
+      stdout:
+        equals: 1
