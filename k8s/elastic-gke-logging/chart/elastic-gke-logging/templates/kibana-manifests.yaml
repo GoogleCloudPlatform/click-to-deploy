@@ -141,7 +141,7 @@ spec:
           value: "http://{{ .Release.Name }}-elasticsearch-svc:9200"
         - name: KIBANA_DEFAULTAPPID
           value: "discover"
-        ports: 
+        ports:
         - name: http
           containerPort: 5601
         readinessProbe:
@@ -189,7 +189,7 @@ spec:
       - name: kibana-init
         image: {{ .Values.initImage }}
         command: ['/bin/bash', '-c']
-        args: 
+        args:
         - |
           kibana_url="http://{{ .Release.Name }}-kibana-svc:5601"
           index_pattern_id="logstash-*"
