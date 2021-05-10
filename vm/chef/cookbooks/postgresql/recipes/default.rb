@@ -15,7 +15,7 @@
 include_recipe 'c2d-config'
 
 execute 'add repo' do
-  command 'echo "deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main" | tee -a /etc/apt/sources.list.d/pgdg.list'
+  command 'echo "deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main" | tee -a /etc/apt/sources.list.d/pgdg.list'
 end
 
 execute 'install repo key' do
