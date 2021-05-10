@@ -88,8 +88,8 @@ spec:
             cpu: 1000m
             memory: 4Gi
           requests:
-            cpu: 100m
-            memory: 1536Mi
+            cpu: 1000m
+            memory: 4Gi
         ports:
         - name: exporter
           containerPort: 9114
