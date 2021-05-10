@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['bucardo']['version'] = '5.4.1'
+default['bucardo']['version'] = '5.6.0'
 default['bucardo']['packages'] = [
   'libboolean-perl',
   'libdbd-mock-perl',

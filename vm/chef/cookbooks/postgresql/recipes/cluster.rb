@@ -14,23 +14,11 @@
 
 include_recipe 'bucardo'
 
-# execute 'add repo' do
-#   command 'echo "deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main" | tee -a /etc/apt/sources.list.d/pgdg.list'
-# end
-
-# execute 'install repo key' do
-#   command 'curl -s https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -'
-# end
-
-# apt_update do
-#   action :update
-# end
-
 apt_repository 'apt.postgresql.org' do
   uri node['postgresql']['repository_url']
   key node['postgresql']['key']
   components ['main']
-  distribution 'buster-pgdg'
+  distribution "#{node['postgresql']['cluster']['distribution']}-pgdg"
 end
 
 apt_update do
