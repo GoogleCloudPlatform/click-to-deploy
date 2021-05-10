@@ -18,7 +18,7 @@ source /opt/c2d/c2d-utils || exit 1
 
 readonly postgres_username="postgres"
 readonly sample_table="countries"
-readonly pghba_path="/etc/postgresql/13/main/pg_hba.conf"
+readonly pghba_path="/etc/postgresql/*/main/pg_hba.conf"
 
 #######################################
 # Setup bucardo and check installation
@@ -41,31 +41,36 @@ function setup_bucardo() {
 function execute_query() {
   local -r command="$1"
 
-  if [[ -z "${PGPASSWORD}" ]]; then
-    echo "PGPASSWORD environment variable is not set."
-    exit 1
-  fi
-
   echo "Executing query: ${command}"
   psql "postgresql://${postgres_username}:${PGPASSWORD}@localhost" -c "${command}"
 }
+
+function connect_instance() {
+  local -r database_name="$1"
+  local -r instance="$2"
+
+  su - postgres -c "psql -U bucardo -d ${database_name} -h \"${instance}\" -c \"SELECT 1 FROM ${sample_table};\"" \
+    >/dev/null 2>&1
+}
+
 
 #######################################
 # Ensure all given instances have the replication table and bucardo user can access it.
 # All replicas will be tested, but not master one.
 # Arguments:
 #   Database name.
-#   Instances list.
+#   Instances list delimited by spaces.
+#     Examples: node1 node2 node3
 #######################################
 function await_for_replicas() {
   local -r database_name="$1"
   local -r instances="$2"
-  local connected=""
-  local instance_id=""
+  local -r max_retries=10
 
   for instance in $instances; do
     instance_id="$(echo ${instance} | awk -F '-' '{ print $NF }')"
     connected="false"
+    retry_count=0
 
     # Skip for master node
     if [[ "${instance_id}" == "0" ]]; then
@@ -73,20 +78,17 @@ function await_for_replicas() {
     fi
 
     echo "Trying to connect to instance ${instance}..."
-    while [[ "${connected}" == "false" ]]; do
-      # Avoid to fail script as we are checking exit-code.
-      set +e
-      su - postgres -c "psql -U bucardo -d ${database_name} -h \"${instance}\" -c \"SELECT 1 FROM ${sample_table};\"" \
-        >/dev/null 2>&1
-      set -e
+    until connect_instance "${database_name}" "${instance}"; do
+      echo "Connection to ${instance} failed."
+      sleep 5
 
-      if [[ "$?" -eq 0 ]]; then
-        echo "Connected to the instance: ${instance}."
-        connected="true"
+      if [[ "${retry_count}" -gt "${max_retries}" ]]; then
+        echo "Timeout exceeded."
       else
-        echo "Connection to ${instance} failed."
+        (( retry_count=${retry_count}+1 ))
       fi
     done
+    echo "Connected to the instance: ${instance}."
   done
 }
 
@@ -94,13 +96,12 @@ function await_for_replicas() {
 # Enroll all the instances databases to the replication service.
 # Arguments:
 #   Database name.
-#   Instances list.
+#   Instances list delimited by spaces.
+#     Examples: node1 node2 node3
 #######################################
 function add_databases_to_replication() {
   local -r database_name="$1"
   local -r instances="$2"
-  local instance_id=""
-  local node_name=""
 
   for instance in $instances; do
     # Node name should be short and without special chars.
@@ -122,13 +123,11 @@ function add_databases_to_replication() {
 #######################################
 # Add the replication syncs permutating all possible combinations.
 # Arguments:
-#   Instances list.
+#   Instances list delimited by spaces.
+#     Examples: node1 node2 node3
 #######################################
 function add_replication_syncs() {
   local -r instances_list="$1"
-  local source_instance_id=""
-  local source_node_name=""
-  local destination_node_name=""
 
   for instance in $instances_list; do
     source_instance_id="$(echo ${instance} | awk -F '-' '{ print $NF }')"
@@ -160,22 +159,21 @@ function add_replication_syncs() {
 }
 
 #######################################
-# Configure the PostreSQL authentication for master.
+# Configure the PostgreSQL authentication for master.
 #######################################
 function configure_pg_hba_master() {
-  sed -i 's/peer/trust/g' "${pghba_path}"
-  configure_pg_hba_replica
+  sed -i 's/peer/trust/g' ${pghba_path}
 }
 
 #######################################
 # Configure the PostreSQL authentication for any replica.
 #######################################
-function configure_pg_hba_replica() {
+function configure_pb_hba_node() {
   local -r node_ip="$(ifconfig | grep -o -P "broadcast (.*)$" | awk '{ print $2 }')"
   local -r submask="$(echo $node_ip | awk -F '.' '{ print $1 "." $2 ".0.0/16" }')"
 
   echo "Configure pg_hba.conf for replica..."
-  echo "host  all  bucardo  ${submask}  trust" >> "${pghba_path}"
+  echo "host  all  bucardo  ${submask}  trust" >> ${pghba_path}
 }
 
 #######################################
@@ -186,5 +184,5 @@ function create_sample_database() {
 
   echo "Creating sample database..."
   execute_query "create database ${dbname};"
-  psql "postgresql://${postgres_username}:${PGPASSWORD}@localhost/${dbname}" < /opt/c2d/dump.sql
+  psql "postgresql://${postgres_username}:${PGPASSWORD}@localhost/${dbname}" < /opt/c2d/sample_db.sql
 }

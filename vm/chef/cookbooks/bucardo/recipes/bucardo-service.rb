@@ -19,21 +19,26 @@ remote_file '/tmp/bucardo.tar.gz' do
   action :create
 end
 
-bash 'Install Buscardo Service' do
+bash 'Extract Bucardo' do
   cwd '/tmp'
   code <<-EOH
     mkdir -p bucardo/ \
-    && tar xvfz bucardo.tar.gz  -C bucardo/ --strip-components=1 \
-    && cd bucardo/ \
-    && perl Makefile.PL \
-    && make install \
-    && mkdir -p /var/run/bucardo \
-    && mkdir -p /var/log/bucardo \
-    && chmod 777 /var/run/bucardo
+      && tar xvfz bucardo.tar.gz  -C bucardo/ --strip-components=1
 EOH
 end
 
-# Prepare license
+bash 'Install Bucardo Service' do
+  cwd '/tmp/bucardo'
+  code <<-EOH
+    perl Makefile.PL \
+      && make install \
+      && mkdir -p /var/run/bucardo \
+      && mkdir -p /var/log/bucardo \
+      && chmod 777 /var/run/bucardo
+EOH
+end
+
+# Prepare directory for licenses
 directory '/usr/src/licenses' do
   owner 'root'
   group 'root'

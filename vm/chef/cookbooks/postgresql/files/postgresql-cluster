@@ -18,13 +18,20 @@ source /opt/c2d/pgcluster-utils || exit 1
 
 export PGPASSWORD="$(get_attribute_value "postgresql-postgres-password")"
 
-readonly pgsql_nodes="$(get_attribute_value "pgsql-nodes")"
-readonly pgsql_install_sample="$(get_attribute_value "pgsql-install-sample" \
+# postgresql-nodes attribute should receive an instance list delimited by spaces.
+# Example: node1 node2 node3
+readonly pgsql_nodes="$(get_attribute_value "postgresql-nodes")"
+readonly pgsql_install_sample_db="$(get_attribute_value "postgresql-install-sample-db" \
   | tr '[:upper:]' '[:lower:]')"
 
 readonly current_node="$(hostname)"
 readonly master_hostname="$(echo "${pgsql_nodes}" | awk '{ print $1 }')"
 readonly sample_database="world"
+
+if [[ -z "${PGPASSWORD}" ]]; then
+  echo "PGPASSWORD environment variable is not set."
+  exit 1
+fi
 
 echo "Current Node: ${current_node}"
 echo "Master hostname: ${master_hostname}"
@@ -48,6 +55,7 @@ if [[ "${current_node}" == "${master_hostname}" ]]; then
 
   echo "Configure pg_hba..."
   configure_pg_hba_master
+  configure_pb_hba_node
 
   # Restart PostgreSQL
   echo "Stopping PostgreSQL..."
@@ -60,7 +68,7 @@ if [[ "${current_node}" == "${master_hostname}" ]]; then
   echo "Installing bucardo database..."
   bucardo install --batch
 
-  if [[ "${pgsql_install_sample}" == "true" ]]; then
+  if [[ "${pgsql_install_sample_db}" == "true" ]]; then
     create_sample_database "${sample_database}"
 
     # Await so user bucardo can connect to all replicas.
@@ -77,7 +85,7 @@ if [[ "${current_node}" == "${master_hostname}" ]]; then
   fi
 else
   # Configure replica nodes
-  configure_pg_hba_replica
+  configure_pb_hba_node
 
   echo "Stopping PostgreSQL..."
   systemctl stop postgresql

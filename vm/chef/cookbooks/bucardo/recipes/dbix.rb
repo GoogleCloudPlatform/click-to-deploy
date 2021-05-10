@@ -19,15 +19,20 @@ remote_file '/tmp/dbix.tar.gz' do
   action :create
 end
 
-bash 'Install DBIX' do
+bash 'Extract DBIX' do
   cwd '/tmp'
   code <<-EOH
     mkdir -p dbix/ \
-    && tar xvfz dbix.tar.gz -C dbix/ --strip-components=1 \
-    && cd dbix/ \
-    && perl Makefile.PL \
-    && make \
-    && make test \
-    && make install
+      && tar xvfz dbix.tar.gz -C dbix/ --strip-components=1
+EOH
+end
+
+bash 'Install DBIX' do
+  cwd '/tmp/dbix'
+  code <<-EOH
+    perl Makefile.PL \
+      && make \
+      && make test \
+      && make install
 EOH
 end

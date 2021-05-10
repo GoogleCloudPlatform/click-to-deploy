@@ -14,12 +14,23 @@
 
 include_recipe 'bucardo'
 
-execute 'add repo' do
-  command 'echo "deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main" | tee -a /etc/apt/sources.list.d/pgdg.list'
-end
+# execute 'add repo' do
+#   command 'echo "deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main" | tee -a /etc/apt/sources.list.d/pgdg.list'
+# end
 
-execute 'install repo key' do
-  command 'curl -s https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -'
+# execute 'install repo key' do
+#   command 'curl -s https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -'
+# end
+
+# apt_update do
+#   action :update
+# end
+
+apt_repository 'apt.postgresql.org' do
+  uri node['postgresql']['repository_url']
+  key node['postgresql']['key']
+  components ['main']
+  distribution 'buster-pgdg'
 end
 
 apt_update do
@@ -39,8 +50,8 @@ cookbook_file '/opt/c2d/pgcluster-utils' do
   action :create
 end
 
-cookbook_file '/opt/c2d/dump.sql' do
-  source 'dump.sql'
+cookbook_file '/opt/c2d/sample_db.sql' do
+  source 'sample_db.sql'
   owner 'root'
   group 'root'
   mode 0664
@@ -61,11 +72,10 @@ remote_file 'Postgres License' do
   source 'https://raw.githubusercontent.com/postgres/postgres/master/COPYRIGHT'
 end
 
-bash 'configure postgresql' do
+bash 'Configure postgresql' do
   user 'root'
   code <<-EOH
-  set -x
-  set -e
+  set -ex
   echo 'host    all     postgres        0.0.0.0/0          md5' >> /etc/postgresql/*/main/pg_hba.conf
   sed -i "s/^#listen_addresses = 'localhost'/listen_addresses = '*'/" /etc/postgresql/*/main/postgresql.conf
 EOH
