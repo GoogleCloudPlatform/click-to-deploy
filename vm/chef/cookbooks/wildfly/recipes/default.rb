@@ -13,6 +13,7 @@
 # limitations under the License.
 
 include_recipe 'openjdk11'
+include_recipe 'git'
 
 apt_update 'update' do
   action :update
@@ -55,6 +56,13 @@ cookbook_file '/lib/systemd/system/wildfly.service' do
   group 'root'
   mode 0664
   action :create
+end
+
+# Download source-code due LGPL licensing
+git '/usr/src/wildfly' do
+  repository 'https://github.com/wildfly/wildfly.git'
+  revision "#{node['wildfly']['version']}.Final"
+  action :checkout
 end
 
 service 'wildfly.service' do

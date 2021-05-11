@@ -14,4 +14,5 @@
 
 name 'wildfly'
 depends 'openjdk11'
+depends 'git'
 supports 'debian'
