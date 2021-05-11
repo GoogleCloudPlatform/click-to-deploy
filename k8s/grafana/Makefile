@@ -6,7 +6,7 @@ include ../images.Makefile
 CHART_NAME := grafana
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 7.3
+TRACK ?= 7.4
 
 METRICS_EXPORTER_TAG ?= v0.5.1
 

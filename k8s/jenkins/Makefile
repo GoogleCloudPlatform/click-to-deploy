@@ -7,7 +7,7 @@ CHART_NAME := jenkins
 APP_ID ?= $(CHART_NAME)
 VERIFY_WAIT_TIMEOUT = 1800
 
-TRACK ?= 2.222
+TRACK ?= 2.288
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 IMAGE_JENKINS = $(SOURCE_REGISTRY)/jenkins2:$(TRACK)
