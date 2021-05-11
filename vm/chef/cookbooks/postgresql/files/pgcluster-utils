@@ -77,16 +77,16 @@ function await_for_replicas() {
       continue
     fi
 
-    echo "Trying to connect to instance ${instance}..."
     until connect_instance "${database_name}" "${instance}"; do
-      echo "Connection to ${instance} failed."
+      echo "Trying to connect to instance ${instance}..."
       sleep 5
 
       if [[ "${retry_count}" -gt "${max_retries}" ]]; then
-        echo "Timeout exceeded."
-      else
-        (( retry_count=${retry_count}+1 ))
+        echo "Connection to ${instance} failed."
+        exit 1
       fi
+
+      (( retry_count=${retry_count}+1 ))
     done
     echo "Connected to the instance: ${instance}."
   done
