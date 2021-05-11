@@ -12,29 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'c2d-config'
+include_recipe 'bucardo::default'
 
-apt_repository 'apt.postgresql.org' do
-  uri node['postgresql']['repository_url']
-  key node['postgresql']['key']
-  components ['main']
-  distribution "#{node['postgresql']['standalone']['distribution']}-pgdg"
+remote_file '/tmp/dbix.tar.gz' do
+  source 'http://bucardo.org/downloads/dbix_safe.tar.gz'
+  action :create
 end
 
-apt_update do
-  action :update
+bash 'Extract DBIX' do
+  cwd '/tmp'
+  code <<-EOH
+    mkdir -p dbix/ \
+      && tar xvfz dbix.tar.gz -C dbix/ --strip-components=1
+EOH
 end
 
-package 'install packages' do
-  package_name node['postgresql']['packages']
-  action :install
-end
-
-c2d_startup_script 'postgresql' do
-  source 'postgresql'
-  action :cookbook_file
-end
-
-service 'postgresql' do
-  action [ :enable, :start ]
+bash 'Install DBIX' do
+  cwd '/tmp/dbix'
+  code <<-EOH
+    perl Makefile.PL \
+      && make \
+      && make test \
+      && make install
+EOH
 end
