@@ -42,11 +42,12 @@ bash 'Install Wildfly' do
     && mkdir -p "${jboss_home}" \
     && mv -f /tmp/wildfly "${jboss_home}/../" \
     && rm -f wildfly.tar.gz \
-    && chown -R jboss:jboss "${jboss_home}" \
+    && chown -R "${wildfly_user}:${wildfly_user}" "${jboss_home}" \
     && chmod -R g+rw "${jboss_home}"
 EOH
   environment({
     'jboss_home' => node['wildfly']['jboss_home'],
+    'wildfly_user' => node['wildfly']['user'],
   })
 end
 
