@@ -210,8 +210,7 @@ export SONARQUBE_PERSISTENT_DISK_SIZE="10Gi"
 export DB_PERSISTENT_DISK_SIZE="10Gi"
 
 ```shell
-helm template chart/sonarqube \
-  --name "$APP_INSTANCE_NAME" \
+helm template "$APP_INSTANCE_NAME" chart/sonarqube \
   --namespace "$NAMESPACE" \
   --set sonarqube.image.repo="$IMAGE_SONARQUBE" \
   --set sonarqube.image.tag="$TAG" \

@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2021 Google LLC
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,14 +25,14 @@ versions:
       gpg: 1f210b9037fcf82670d75892dfc44400f13fe9ada7af9e787f93e50e3b764111
       version: 1.9.1
     drupal:
-      md5: 156f9cef63049553f54fd38b3ce0a120
-      version: 9.1.5
+      md5: 9a79719270a4eb260598e14d468564ce
+      version: 9.1.8
   repo: drupal9-php7-apache
   tags:
-  - 9.1.5-debian9
+  - 9.1.8-debian9
   - 9.1-debian9
   - 9-debian9
-  - 9.1.5
+  - 9.1.8
   - '9.1'
   - '9'
   - latest
@@ -43,14 +43,14 @@ versions:
       gpg: 1f210b9037fcf82670d75892dfc44400f13fe9ada7af9e787f93e50e3b764111
       version: 1.9.1
     drupal:
-      md5: 75f7a83b14a1e4ec13ca9827f71ccd1c
-      version: 8.9.13
+      md5: 4a5a663fa77a98bb2d5d68222145c764
+      version: 8.9.15
   repo: drupal8-php7-apache
   tags:
-  - 8.9.13-debian9
+  - 8.9.15-debian9
   - 8.9-debian9
   - 8-debian9
-  - 8.9.13
+  - 8.9.15
   - '8.9'
   - '8'
   - latest

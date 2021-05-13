@@ -183,8 +183,7 @@ Use `helm template` to expand the template. We recommend that you save
 the expanded manifest file for future updates to your app.
 
 ```shell
-helm template chart/activemq \
-  --name "${APP_INSTANCE_NAME}" \
+helm template "${APP_INSTANCE_NAME}" chart/activemq \
   --namespace "${NAMESPACE}" \
   --set image.repo="${IMAGE_ACTIVEMQ}" \
   --set image.tag="${TAG}" \

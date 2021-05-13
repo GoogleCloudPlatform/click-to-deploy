@@ -193,8 +193,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the app.
 
 ```shell
-helm template chart/prometheus-operator \
-  --name "${APP_INSTANCE_NAME}" \
+helm template "${APP_INSTANCE_NAME}" chart/prometheus-operator \
   --namespace "${NAMESPACE}" \
   --set operator.image.repo="${IMAGE_OPERATOR}" \
   --set operator.image.tag="${TAG}" \
