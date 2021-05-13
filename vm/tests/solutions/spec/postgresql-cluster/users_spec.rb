@@ -12,29 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'c2d-config'
+require 'spec_helper'
 
-apt_repository 'apt.postgresql.org' do
-  uri node['postgresql']['repository_url']
-  key node['postgresql']['key']
-  components ['main']
-  distribution "#{node['postgresql']['standalone']['distribution']}-pgdg"
-end
-
-apt_update do
-  action :update
-end
-
-package 'install packages' do
-  package_name node['postgresql']['packages']
-  action :install
-end
-
-c2d_startup_script 'postgresql' do
-  source 'postgresql'
-  action :cookbook_file
-end
-
-service 'postgresql' do
-  action [ :enable, :start ]
+describe user('postgres') do
+  it { should exist }
 end

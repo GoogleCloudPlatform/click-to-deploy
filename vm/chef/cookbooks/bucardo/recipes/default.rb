@@ -12,29 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'c2d-config'
-
-apt_repository 'apt.postgresql.org' do
-  uri node['postgresql']['repository_url']
-  key node['postgresql']['key']
-  components ['main']
-  distribution "#{node['postgresql']['standalone']['distribution']}-pgdg"
-end
-
-apt_update do
-  action :update
-end
-
-package 'install packages' do
-  package_name node['postgresql']['packages']
+package 'Install Bucardo Dependencies' do
+  package_name node['bucardo']['packages']
   action :install
 end
 
-c2d_startup_script 'postgresql' do
-  source 'postgresql'
-  action :cookbook_file
-end
-
-service 'postgresql' do
-  action [ :enable, :start ]
-end
+include_recipe 'bucardo::dbix'
+include_recipe 'bucardo::bucardo-service'

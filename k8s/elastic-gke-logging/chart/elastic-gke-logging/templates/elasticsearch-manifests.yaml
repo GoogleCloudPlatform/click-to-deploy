@@ -10,6 +10,11 @@ data:
     cluster.name: "${CLUSTER_NAME}"
     node.name: "${NODE_NAME}"
 
+    cluster.initial_master_nodes:
+    {{range $i, $e := until (atoi (printf "%d" (int64 .Values.elasticsearch.replicas))) }}
+     - "{{$.Release.Name }}-elasticsearch-{{$i}}"
+    {{end}}
+
     path.data: /usr/share/elasticsearch/data
     path.repo: ["${BACKUP_REPO_PATH}"]
 
@@ -83,8 +88,8 @@ spec:
             cpu: 1000m
             memory: 4Gi
           requests:
-            cpu: 100m
-            memory: 1536Mi
+            cpu: 1000m
+            memory: 4Gi
         ports:
         - name: exporter
           containerPort: 9114
@@ -113,13 +118,6 @@ spec:
             - -x
             - "java"
           initialDelaySeconds: 5
-        resources:
-          limits:
-            cpu: 1000m
-            memory: 4Gi
-          requests:
-            cpu: 100m
-            memory: 1536Mi
       {{ if .Values.metrics.exporter.enabled }}
       - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}
@@ -226,7 +224,7 @@ spec:
         image: {{ .Values.kibana.image }}
         imagePullPolicy: Always
         env:
-        - name: ELASTICSEARCH_URL
+        - name: ELASTICSEARCH_HOSTS
           value: "http://{{ .Release.Name }}-elasticsearch-svc:9200"
         ports:
         - name: http

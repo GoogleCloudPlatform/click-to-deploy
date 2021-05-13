@@ -12,29 +12,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'c2d-config'
+require 'spec_helper'
 
-apt_repository 'apt.postgresql.org' do
-  uri node['postgresql']['repository_url']
-  key node['postgresql']['key']
-  components ['main']
-  distribution "#{node['postgresql']['standalone']['distribution']}-pgdg"
+describe 'C2D startup config' do
+  describe service('google-c2d-startup.service') do
+    it { should be_enabled }
+  end
+
+  describe file('/var/lock/google_vm_config.lock') do
+    it { should_not exist }
+  end
 end
 
-apt_update do
-  action :update
-end
+describe 'C2D startup scripts should exists' do
+  describe file('/opt/c2d/scripts/00-manage-swap') do
+    it { should exist }
+  end
 
-package 'install packages' do
-  package_name node['postgresql']['packages']
-  action :install
-end
+  describe file('/opt/c2d/scripts/01-postgresql') do
+    it { should exist }
+  end
 
-c2d_startup_script 'postgresql' do
-  source 'postgresql'
-  action :cookbook_file
-end
-
-service 'postgresql' do
-  action [ :enable, :start ]
+  describe file('/opt/c2d/scripts/02-postgresql-cluster') do
+    it { should exist }
+  end
 end

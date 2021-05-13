@@ -14,4 +14,5 @@
 
 name 'postgresql'
 depends 'c2d-config'
+depends 'bucardo'
 supports 'debian'

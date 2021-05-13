@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,3 +13,10 @@
 # limitations under the License.
 
 default['postgresql']['packages'] = ['postgresql', 'postgresql-client']
+default['postgresql']['repository_url'] = 'http://apt.postgresql.org/pub/repos/apt/'
+default['postgresql']['key'] = 'https://www.postgresql.org/media/keys/ACCC4CF8.asc'
+
+default['postgresql']['standalone']['distribution'] = 'stretch'
+
+default['postgresql']['cluster']['packages'] = ['postgresql-plperl-13', 'postgresql-client']
+default['postgresql']['cluster']['distribution'] = 'buster'
