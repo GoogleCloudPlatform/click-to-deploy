@@ -45,10 +45,10 @@ properties:
   grafana.serviceaccount:
     type: string
     title: Grafana Service Account
-    description: Service account to assign to main Grafana StatefulSet
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: Service account used by main Grafana StatefulSet
         roles:
         - type: ClusterRole
           rulesType: PREDEFINED

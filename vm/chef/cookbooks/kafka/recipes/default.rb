@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,19 +30,18 @@ end
 
 # Download md5 checksum from apache
 remote_file '/tmp/kafka-checksum.md5' do
-  source "https://www-us.apache.org/dist/kafka/#{node['kafka']['version']}/kafka_#{node['scala']['version']}-#{node['kafka']['version']}.tgz.md5"
+  source "https://archive.apache.org/dist/kafka/#{node['kafka']['version']}/kafka_#{node['scala']['version']}-#{node['kafka']['version']}.tgz.md5"
   action :create
 end
 
 # Download Kafka
 remote_file '/tmp/kafka.tgz' do
-  source "https://www-us.apache.org/dist/kafka/#{node['kafka']['version']}/kafka_#{node['scala']['version']}-#{node['kafka']['version']}.tgz"
+  source "https://archive.apache.org/dist/kafka/#{node['kafka']['version']}/kafka_#{node['scala']['version']}-#{node['kafka']['version']}.tgz"
   verify 'sed -i -e "s/.*: \(.*\)/\1/; s/ //g; s=$=  %{path}=" /tmp/kafka-checksum.md5 && md5sum -c /tmp/kafka-checksum.md5'
   action :create
 end
 
-# Configure Kafka
-bash 'configure_kafka' do
+bash 'Configure Kafka Scripts' do
   user 'root'
   cwd '/tmp'
   code <<-EOH
@@ -75,3 +74,6 @@ end
 service 'kafka.service' do
   action :enable
 end
+
+# Copy startup script
+c2d_startup_script 'kafka'

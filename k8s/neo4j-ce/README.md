@@ -178,12 +178,11 @@ To expand the template, use `helm template`. We recommend that you save the
 expanded manifest file for future updates to your app.
 
 ```shell
-helm template chart/neo4j-ce \
-  --name "${APP_INSTANCE_NAME}" \
+helm template "${APP_INSTANCE_NAME}" chart/neo4j-ce \
   --namespace "${NAMESPACE}" \
   --set "neo4j.image.repo=${IMAGE_NEO4J_CE}" \
   --set "neo4j.image.tag=${TAG}" \
-  --set "neo4j.persistence.storageClass=${STORAGE_CLASS}" \
+  --set "neo4j.persistence.storageClass=${NEO4J_STORAGE_CLASS}" \
   --set "neo4j.persistence.size=${PERSISTENT_DISK_SIZE}" \
   --set "neo4j.password=${NEO4J_PASSWORD}" \
   > "${APP_INSTANCE_NAME}_manifest.yaml"

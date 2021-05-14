@@ -1,0 +1,19 @@
+[Unit]
+Description=Wildfly
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/opt/jboss/wildfly/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0
+ExecStop=/opt/jboss/wildfly/bin/jboss-cli.sh --connect=:shutdown
+TimeoutStartSec=3600
+Restart=always
+RestartSec=20
+User=jboss
+Group=jboss
+LimitNOFILE=64000
+Environment="LAUNCH_JBOSS_IN_BACKGROUND=true"
+
+[Install]
+WantedBy=multi-user.target

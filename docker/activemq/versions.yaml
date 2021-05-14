@@ -20,14 +20,14 @@ versions:
   from: gcr.io/google-appengine/openjdk
   packages:
     activemq:
-      sha512: 999928176e57b0805e8a53834e7f4eb648baf271a0c60de31ebd95fa63f2b089aa41c2ef7353790835e2e8cc39c4b778f535b38e6dc0c67a79c3c1da335c4a0a
-      version: 5.16.0
+      sha512: f98c9da5dafa2dc291070fecd57b7fccd0954cc8b2be09abc77ea66745b89283358297f308ec30dd47efd3e0c9d4cffc3821ef429f8f94d6c8971bbe933809b2
+      version: 5.16.1
   repo: activemq5
   tags:
-  - 5.16.0-debian9
+  - 5.16.1-debian9
   - 5.16-debian9
   - 5-debian9
-  - 5.16.0
+  - 5.16.1
   - '5.16'
   - '5'
   - latest
@@ -35,12 +35,12 @@ versions:
   from: gcr.io/google-appengine/openjdk
   packages:
     activemq:
-      sha512: 4a237fe2d3cdfbc1b5b45c92a5aab0d009acbfe5383c188b9691100e2e47de0548a1c24e0d8382a88c4600cd2b8792ce75e9be7d88de55f86b0bde7c9a92c285
-      version: 5.15.13
+      sha512: 5708ed926988e4796a8badaed3dafd32bcbc47890169df2712568ad706858370b20e5cd9a4e3298521692151e63a5ac6d06866b3ad188aa0e36b28e370240d5c
+      version: 5.15.14
   repo: activemq5
   tags:
-  - 5.15.13-debian9
+  - 5.15.14-debian9
   - 5.15-debian9
-  - 5.15.13
+  - 5.15.14
   - '5.15'
 

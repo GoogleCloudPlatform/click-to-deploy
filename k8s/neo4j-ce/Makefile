@@ -6,9 +6,7 @@ include ../images.Makefile
 CHART_NAME := neo4j-ce
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 4.0
-
-# VERIFY_WAIT_TIMEOUT = 60
+TRACK ?= 4.1
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 IMAGE_NEO4J_CE ?= $(SOURCE_REGISTRY)/neo4j4:$(TRACK)

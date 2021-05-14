@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2018 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ case "${DEBIAN_VERSION}" in
     echo "e12f5739f81b08c470f20890304bf53e /root/.bashrc" >> "${ROOT_MD5}"
     echo "54328f6b27a45c51986ed436f3f609bf /root/.profile" >> "${ROOT_MD5}"
   ;;
-  9*)
+  9*|10*)
     echo "e12f5739f81b08c470f20890304bf53e /root/.bashrc" >> "${ROOT_MD5}"
     echo "46438b614dcb2175148fa7e0bdc604a4 /root/.profile" >> "${ROOT_MD5}"
   ;;
@@ -46,11 +46,16 @@ cat "${ROOT_MD5}"
 
 # FIND different files that $ROOT_MD5 has
 for file in $(find /root/ -mindepth 1); do
-  # IF $ROOT_MD5 doesn't contains $file
-  if grep -q "^[a-f0-9]\+ \+${file}$" "${ROOT_MD5}"; then
-    echo "${file}: exists"
+  if [[ "${file}" == /root/.config* || "${file}" == /root/.gsutil* ]]; then
+    echo "${file}: gcloud config. Skip."
+    continue
   else
-    failure_msg "${file} is not expected!"
+    # IF $ROOT_MD5 doesn't contains $file
+    if grep -q "^[a-f0-9]\+ \+${file}$" "${ROOT_MD5}"; then
+      echo "${file}: exists"
+    else
+      failure_msg "${file} is not expected!"
+    fi
   fi
 done
 

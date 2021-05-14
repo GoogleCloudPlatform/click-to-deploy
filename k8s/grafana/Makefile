@@ -6,12 +6,12 @@ include ../images.Makefile
 CHART_NAME := grafana
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 6.5
+TRACK ?= 7.4
 
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
-IMAGE_GRAFANA ?= $(SOURCE_REGISTRY)/grafana6:$(TRACK)
+IMAGE_GRAFANA ?= $(SOURCE_REGISTRY)/grafana7:$(TRACK)
 IMAGE_DEBIAN9 ?= $(SOURCE_REGISTRY)/debian9:latest
 IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 

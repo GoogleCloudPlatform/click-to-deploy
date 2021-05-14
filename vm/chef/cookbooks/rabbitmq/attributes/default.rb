@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,5 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['rabbitmq']['package_version'] = '3.6.15-1'
+default['rabbitmq']['deps_packages'] = ['gnupg2', 'apt-transport-https', 'curl', 'wget']
+default['rabbitmq']['package_version'] = '3.8.10-1'
 default['rabbitmq']['license_url'] = 'https://raw.githubusercontent.com/rabbitmq/rabbitmq-server/master/LICENSE-MPL-RabbitMQ'

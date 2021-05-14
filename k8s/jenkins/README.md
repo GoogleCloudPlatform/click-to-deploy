@@ -190,8 +190,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to your app.
 
 ```shell
-helm template chart/jenkins \
-  --name $APP_INSTANCE_NAME \
+helm template $APP_INSTANCE_NAME chart/jenkins \
   --namespace $NAMESPACE \
   --set "jenkins.image.repo=$IMAGE_JENKINS_REPO" \
   --set "jenkins.image.tag=$IMAGE_JENKINS_TAG" \
@@ -264,6 +263,10 @@ To set up Jenkins and customize your installation, follow these on-screen steps:
 *   Install plugins
 *   Create the first admin user
 *   Optionally, configure the Jenkins URL; you can also change the URL later
+
+# Deploying Jenkins agents using Kubernetes
+
+For information about using Jenkins with Kubernetes, refer to [Integrate Jenkins and Kubernetes](docs/CONFIGURE_K8S_PLUGIN_IN_JENKINS.md)
 
 # App metrics
 

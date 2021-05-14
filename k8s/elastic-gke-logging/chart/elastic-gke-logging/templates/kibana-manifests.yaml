@@ -137,7 +137,7 @@ spec:
         image: {{ .Values.kibana.image }}
         imagePullPolicy: Always
         env:
-        - name: ELASTICSEARCH_URL
+        - name: ELASTICSEARCH_HOSTS
           value: "http://{{ .Release.Name }}-elasticsearch-svc:9200"
         - name: KIBANA_DEFAULTAPPID
           value: "discover"
@@ -148,12 +148,12 @@ spec:
           httpGet:
             path: /api/status
             port: 5601
-          initialDelaySeconds: 5
+          initialDelaySeconds: 30
         livenessProbe:
           httpGet:
             path: /api/status
             port: 5601
-          initialDelaySeconds: 5
+          initialDelaySeconds: 30
 ---
 apiVersion: batch/v1
 kind: Job
@@ -189,7 +189,7 @@ spec:
       - name: kibana-init
         image: {{ .Values.initImage }}
         command: ['/bin/bash', '-c']
-        args: 
+        args:
         - |
           kibana_url="http://{{ .Release.Name }}-kibana-svc:5601"
           index_pattern_id="logstash-*"

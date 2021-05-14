@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2021 Google LLC
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,22 +18,22 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 9/php7/debian9/9.0/apache
+- dir: 9/php7/debian9/9.1/apache
   from: marketplace.gcr.io/google/php7-apache2:7.3
   packages:
     composer:
       gpg: 1f210b9037fcf82670d75892dfc44400f13fe9ada7af9e787f93e50e3b764111
       version: 1.9.1
     drupal:
-      md5: bfaeacfe00e96ac6788603e0fcf82880
-      version: 9.0.7
+      md5: 9a79719270a4eb260598e14d468564ce
+      version: 9.1.8
   repo: drupal9-php7-apache
   tags:
-  - 9.0.7-debian9
-  - 9.0-debian9
+  - 9.1.8-debian9
+  - 9.1-debian9
   - 9-debian9
-  - 9.0.7
-  - '9.0'
+  - 9.1.8
+  - '9.1'
   - '9'
   - latest
 - dir: 8/php7/debian9/8.9/apache
@@ -43,30 +43,15 @@ versions:
       gpg: 1f210b9037fcf82670d75892dfc44400f13fe9ada7af9e787f93e50e3b764111
       version: 1.9.1
     drupal:
-      md5: 6d300dbeb0aaae986c1b523df4f772aa
-      version: 8.9.7
+      md5: 4a5a663fa77a98bb2d5d68222145c764
+      version: 8.9.15
   repo: drupal8-php7-apache
   tags:
-  - 8.9.7-debian9
+  - 8.9.15-debian9
   - 8.9-debian9
   - 8-debian9
-  - 8.9.7
+  - 8.9.15
   - '8.9'
   - '8'
   - latest
-- dir: 8/php7/debian9/8.8/apache
-  from: marketplace.gcr.io/google/php7-apache2:7.3
-  packages:
-    composer:
-      gpg: 1f210b9037fcf82670d75892dfc44400f13fe9ada7af9e787f93e50e3b764111
-      version: 1.9.1
-    drupal:
-      md5: 0fa6b0f305d4398c2c036d853f8d2cd9
-      version: 8.8.10
-  repo: drupal8-php7-apache
-  tags:
-  - 8.8.10-debian9
-  - 8.8-debian9
-  - 8.8.10
-  - '8.8'
 

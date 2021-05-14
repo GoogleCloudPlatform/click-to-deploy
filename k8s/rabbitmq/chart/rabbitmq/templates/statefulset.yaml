@@ -32,10 +32,14 @@ spec:
           # Remove cached erlang cookie since we are always providing it,
           # that opens the way to recreate the application and access to existing data
           # as a new erlang will be regenerated again.
-          rm -f /var/lib/rabbitmq/.erlang.cookie
+          echo ${RABBITMQ_ERLANG_COOKIE} > /var/lib/rabbitmq/.erlang.cookie
+          chmod 600 /var/lib/rabbitmq/.erlang.cookie
 
           # Copy the mounted configuration to both places.
           cp /rabbitmqconfig/rabbitmq.conf /etc/rabbitmq/rabbitmq.conf
+          # Change permission to allow to add more configurations via variables
+          chown :999 /etc/rabbitmq/rabbitmq.conf
+          chmod 660 /etc/rabbitmq/rabbitmq.conf
           cp /rabbitmqconfig/enabled_plugins /etc/rabbitmq/enabled_plugins
         volumeMounts:
         - name: configmap
@@ -44,6 +48,13 @@ spec:
           mountPath: /etc/rabbitmq
         - name: {{ .Release.Name }}-rabbitmq-pvc
           mountPath: /var/lib/rabbitmq
+        env:
+        - name: RABBITMQ_ERLANG_COOKIE
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-rabbitmq-secret
+              key: rabbitmq-erlang-cookie
+
       containers:
       - name: rabbitmq
         image: "{{ .Values.rabbitmq.image.repo }}:{{ .Values.rabbitmq.image.tag }}"
@@ -65,11 +76,6 @@ spec:
           value: '{{ .Release.Name }}-rabbitmq-discovery'
         - name: K8S_HOSTNAME_SUFFIX
           value: '.{{ .Release.Name }}-rabbitmq-discovery.{{ .Release.Namespace }}.svc.cluster.local'
-        - name: RABBITMQ_ERLANG_COOKIE
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Release.Name }}-rabbitmq-secret
-              key: rabbitmq-erlang-cookie
         # User name to create when RabbitMQ creates a new database from scratch.
         - name: RABBITMQ_DEFAULT_USER
           value: '{{ .Values.rabbitmq.user }}'
@@ -80,14 +86,14 @@ spec:
               name: {{ .Release.Name }}-rabbitmq-secret
               key: rabbitmq-pass
         ports:
-        - name: clitool
+        - name: clustering
           containerPort: 25672
-        - name: client-access-2
+        - name: amqp
           containerPort: 5672
-        - name: client-access-1
+        - name: amqp-ssl
           containerPort: 5671
-        - name: epmd
-          containerPort: 4369
+        - name: prometheus
+          containerPort: 15692
         - name: http
           containerPort: 15672
         volumeMounts:
@@ -133,7 +139,7 @@ spec:
         command:
         - /monitor
         - --stackdriver-prefix=custom.googleapis.com
-        - --source=rabbitmq:http://localhost:15672/api/metrics
+        - --source=rabbitmq:http://localhost:15692/metrics
         - --pod-id=$(POD_NAME)
         - --namespace-id=$(POD_NAMESPACE)
         - --monitored-resource-type-prefix=k8s_
