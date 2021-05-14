@@ -173,7 +173,7 @@ export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/postgresql/prometheus-t
 Generate a random password:
 
 ```shell
-export POSTGRESQL_DB_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 1 | tr -d '\n')"
+export POSTGRESQL_DB_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 1 | tr -d '\n' | base64)"
 ```
 
 Expose the Service externally:

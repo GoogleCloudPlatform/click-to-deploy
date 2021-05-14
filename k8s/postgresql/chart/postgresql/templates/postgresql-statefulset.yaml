@@ -39,6 +39,14 @@ spec:
         env:
         - name: "PGDATA"
           value: "/var/lib/postgresql/data/pgdata"
+        - name: POSTGRESQL_ENABLE_TLS
+          value: "yes"
+        - name: POSTGRESQL_TLS_PREFER_SERVER_CIPHERS
+          value: "yes"
+        - name: POSTGRESQL_TLS_CERT_FILE
+          value: /var/lib/postgresql/data/tls/server.crt
+        - name: POSTGRESQL_TLS_KEY_FILE
+          value: /var/lib/postgresql/data/tls/server.key
         - name: "POSTGRES_PASSWORD"
           valueFrom:
             secretKeyRef:
