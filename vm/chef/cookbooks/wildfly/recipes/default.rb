@@ -21,10 +21,8 @@ end
 
 user node['wildfly']['user'] do
   action :create
-  home "/home/#{node['wildfly']['user']}"
   password node['wildfly']['password']
   shell '/bin/bash'
-  manage_home true
 end
 
 remote_file '/tmp/wildfly.tar.gz' do
