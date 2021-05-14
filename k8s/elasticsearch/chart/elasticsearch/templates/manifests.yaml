@@ -15,8 +15,11 @@ data:
 
     network.host: 0.0.0.0
 
-    discovery.zen.minimum_master_nodes: 2
-    discovery.zen.ping.unicast.hosts: ${DISCOVERY_SERVICE}
+    discovery.seed_hosts: [ "${DISCOVERY_SERVICE}" ]
+    cluster.initial_master_nodes: [ "{{ .Release.Name }}-elasticsearch-0" ]
+
+    node.master: true
+
   log4j2.properties: |
     status = error
 

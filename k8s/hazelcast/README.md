@@ -221,8 +221,7 @@ Use `helm template` to expand the template. We recommend that you
 save the expanded manifest file for future updates to your app.
 
 ```shell
-helm template chart/hazelcast \
-  --name "${APP_INSTANCE_NAME}" \
+helm template "${APP_INSTANCE_NAME}" chart/hazelcast \
   --namespace "${NAMESPACE}" \
   --set hazelcast.image.repo="${IMAGE_HAZELCAST}" \
   --set hazelcast.image.tag="${TAG}" \
