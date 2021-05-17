@@ -55,19 +55,20 @@ Use the following content for the `docker-compose.yml` file, then run `docker-co
 version: '2'
 services:
   activemq:
-    container_name: some-activemq
+    container_name: activemq
     image: marketplace.gcr.io/google/activemq5
     environment:
       "ACTIVEMQ_ADMIN_LOGIN": "setyourdesiredlogin"
-      "ACTIVEMQ_ADMIN_PASSWORD": "setyourdesiredpassword"
+      "ACTIVEMQ_ADMIN_PASSWORD": "example-password"
     ports:
       - '5672:5672'
-      - '61613:61613' 
+      - '61613:61613'
       - '1883:1883'
       - '61614:61614'
       - '8161:8161'
     volumes:
       - ./data/:/opt/activemq/data
+
   ```
   
 Or you can use `docker run` directly:
