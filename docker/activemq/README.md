@@ -85,6 +85,7 @@ docker run -e ACTIVEMQ_ADMIN_PASSWORD="setyourdesiredpassword" \
     -p 61614:61614 \
     -p 8161:8161 \
     -v $PWD/data/:/opt/activemq/data \
+    -e "ACTIVEMQ_ADMIN_PASSWORD=example-password"
     marketplace.gcr.io/google/activemq5
 ```
 
