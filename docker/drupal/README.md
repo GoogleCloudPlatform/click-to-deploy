@@ -101,10 +101,10 @@ services:
       - '80:8080'
       - '443:8443'
     environment:
-      - DRUPAL_DATABASE_HOST=mariadb
-      - DRUPAL_DATABASE_PORT_NUMBER=3306
-      - DRUPAL_DATABASE_USER=some-user
-      - DRUPAL_DATABASE_NAME=some-database
+      - DRUPAL_DB_HOST=mysql
+      - DRUPAL_DB_PORT=3306
+      - DRUPAL_DB_USER=root
+      - DRUPAL_DB_NAME=some-database
       - ALLOW_EMPTY_PASSWORD=yes
     volumes:
       - 'drupal_data:/bitnami/drupal'
@@ -113,10 +113,10 @@ services:
 ```
  | **Variable** | **Description** |
 |:-------------|:----------------|
-|DRUPAL_DATABASE_HOST | Hostname for MariaDB server|
-|DRUPAL_DATABASE_PORT_NUMBER | Port used by MariaDB server|
-|DRUPAL_DATABASE_USE | Database user that Drupal will use to connect with the database|
-|DRUPAL_DATABASE_NAME | Database name that Drupal will use to connect with the database|
+|DRUPAL_DB_HOST | Hostname for MariaDB server|
+|DRUPAL_DB_PORT | Port used by MariaDB server|
+|DRUPAL_DB_USER | Database user that Drupal will use to connect with the database|
+|DRUPAL_DB_NAME | Database name that Drupal will use to connect with the database|
 |ALLOW_EMPTY_PASSWORD | It can be used to allow blank passwords|
 |MARIADB_USER | Database user|
 |MARIADB_DATABASE | Database name|
