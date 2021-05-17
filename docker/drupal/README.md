@@ -35,8 +35,8 @@ docker -- pull marketplace.gcr.io/google/drupal
 
  [Using Docker](#using-docker)
   * [Run a  server](#run-a-activemq-server-docker)
-    * [Runnung Drupal with Postgres Datadase service ](#Runnung Drupal with Postgres Datadase service )
-    * [Runnung Drupal with MirandaDB Datadase service ](#Runnung Drupal with MirandaDB Datadase service )
+    * [Runnung Drupal with Postgres Datadase service](#Runnung Drupal with Postgres Datadase service)
+    * [Runnung Drupal with MirandaDB Datadase service](#Runnung Drupal with MirandaDB Datadase service)
   * [Configurations](#configurations-docker)
     * [Authentication and authorization](#authentication-and-authorization-docker)
 * [References](#references)
