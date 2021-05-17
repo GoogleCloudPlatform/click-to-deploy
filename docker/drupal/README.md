@@ -78,6 +78,38 @@ services:
 ```
  Then, access it via http://localhost:8080 or http://host-ip:8080 in a browser.
  
+## Runnung Drupal with MirandaDB Datadase service 
+ 
+ Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
+
+ ```yaml
+ version: '2'
+services:
+  mariadb:
+    image: docker.io/bitnami/mariadb:latest
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - MARIADB_USER=bn_drupal
+      - MARIADB_DATABASE=bitnami_drupal
+    volumes:
+      - 'mariadb_data:/bitnami/mariadb'
+  drupal:
+    image: docker.io/bitnami/drupal:latest
+    ports:
+      - '80:8080'
+      - '443:8443'
+    environment:
+      - DRUPAL_DATABASE_HOST=mariadb
+      - DRUPAL_DATABASE_PORT_NUMBER=3306
+      - DRUPAL_DATABASE_USER=bn_drupal
+      - DRUPAL_DATABASE_NAME=bitnami_drupal
+      - ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - 'drupal_data:/bitnami/drupal'
+    depends_on:
+      - mariadb
+```
+ 
  
  
  
