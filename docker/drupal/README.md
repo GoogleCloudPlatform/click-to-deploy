@@ -7,7 +7,7 @@ Dockerfile source for Drupal [docker](https://docker.io) image.
 
 This source repo was originally copied from:
 https://github.com/docker-library/drupal
-https://github.com/joomla/docker-joomla
+
 
 # Disclaimer
 
@@ -36,7 +36,7 @@ docker -- pull marketplace.gcr.io/google/drupal
  [Using Docker](#using-docker)
   * [Run a  server](#run-a-activemq-server-docker)
     * [Runnung Drupal with Postgres Datadase service](#Runnung Drupal with Postgres Datadase service)
-    * [Runnung Drupal with MirandaDB Datadase service](#Runnung Drupal with MirandaDB Datadase service)
+    * [Runnung Drupal with MariaDB Datadase service](#Runnung Drupal with MariaDB Datadase service)
   * [Configurations](#configurations-docker)
     * [Authentication and authorization](#authentication-and-authorization-docker)
 * [References](#references)
@@ -88,7 +88,7 @@ services:
  version: '2'
 services:
   mariadb:
-    image: docker.io/bitnami/mariadb:latest
+    image: mariadb:latest
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
       - MARIADB_USER=bn_drupal
@@ -96,7 +96,7 @@ services:
     volumes:
       - 'mariadb_data:/bitnami/mariadb'
   drupal:
-    image: docker.io/bitnami/drupal:latest
+    image: drupal:latest
     ports:
       - '80:8080'
       - '443:8443'
@@ -111,8 +111,15 @@ services:
     depends_on:
       - mariadb
 ```
- 
- 
+ | **Variable** | **Description** |
+|:-------------|:----------------|
+|DRUPAL_DATABASE_HOST | Hostname for MariaDB server|
+|DRUPAL_DATABASE_PORT_NUMBER | Port used by MariaDB server|
+|DRUPAL_DATABASE_USE | Database user that Drupal will use to connect with the database|
+|DRUPAL_DATABASE_NAME | Database name that Drupal will use to connect with the database|
+|ALLOW_EMPTY_PASSWORD | It can be used to allow blank passwords|
+|MARIADB_USER | Database user|
+|MARIADB_DATABASE | Database name|
  
  
 
