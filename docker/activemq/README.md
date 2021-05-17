@@ -63,7 +63,7 @@ services:
     container_name: some-activemq
     image: marketplace.gcr.io/google/activemq5
     environment:
-    "ACTIVEMQ_ADMIN_PASSWORD":"example-password"
+      "ACTIVEMQ_ADMIN_PASSWORD":"example-password"
     ports:
       - '5672:5672'
       - '61613:61613' 
