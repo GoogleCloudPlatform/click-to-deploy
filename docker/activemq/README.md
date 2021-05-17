@@ -34,14 +34,9 @@ docker -- pull marketplace.gcr.io/google/activemq5
     * [Start a activemq instance](#start-a-activemq-instance-docker)
     * [Use a persistent data volume](#use-a-persistent-data-volume-docker)
   * [Configurations](#configurations-docker)
-    * [Using flags](#using-flags-docker)
     * [Authentication and authorization](#authentication-and-authorization-docker)
-  * [Mongo CLI](#mongo-cli-docker)
-    * [Connect to a running activemq container](#connect-to-a-running-activemq-container-docker)
-    * [Connect to a remote activemq server](#connect-to-a-remote--server-docker)
 * [References](#references)
   * [Ports](#references-ports)
-  * [Volumes](#references-volumes)
 
 # Using Docker
 
@@ -63,7 +58,8 @@ services:
     container_name: some-activemq
     image: marketplace.gcr.io/google/activemq5
     environment:
-      "ACTIVEMQ_ADMIN_PASSWORD":"example-password"
+      "ACTIVEMQ_ADMIN_LOGIN": "setyourdesiredlogin"
+      "ACTIVEMQ_ADMIN_PASSWORD": "setyourdesiredpassword"
     ports:
       - '5672:5672'
       - '61613:61613' 
@@ -71,7 +67,7 @@ services:
       - '61614:61614'
       - '8161:8161'
     volumes:
-      -$PWD/data/:/opt/activemq/data
+      - $PWD/data/:/opt/activemq/data
   ```
   
 Or you can use `docker run` directly:
@@ -85,9 +81,19 @@ docker run -e ACTIVEMQ_ADMIN_PASSWORD="setyourdesiredpassword" \
     -p 61614:61614 \
     -p 8161:8161 \
     -v $PWD/data/:/opt/activemq/data \
-    -e "ACTIVEMQ_ADMIN_PASSWORD=example-password"
     marketplace.gcr.io/google/activemq5
 ```
+
+ActiveMQ WebConsole available at http://0.0.0.0:8161
+
+## [Ports](#references-ports)
+
+61616 JMS
+8161  UI
+5672  AMQP  
+61613 STOMP
+1883  MQTT  
+61614 WS    
 
 For more information about ActiveMQ, visit [official documentation](https://activemq.apache.org/).
 
