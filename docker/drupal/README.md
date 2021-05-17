@@ -47,7 +47,7 @@ docker -- pull marketplace.gcr.io/google/drupal
 Consult [Marketplace container documentation](https://cloud.google.com/marketplace/docs/container-images)
 for additional information about setting up your Docker environment.
 
-## Runnung Drupal with Postgres Datadase service 
+# Runnung Drupal with Postgres Datadase service 
 
 Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
 
@@ -80,7 +80,7 @@ services:
 ```
  Then, access it via http://localhost:8080 or http://host-ip:8080 in a browser.
  
-## Runnung Drupal with MirandaDB Datadase service 
+# Runnung Drupal with MirandaDB Datadase service 
  
  Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
 
@@ -91,8 +91,8 @@ services:
     image: mariadb:latest
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
-      - MARIADB_USER=bn_drupal
-      - MARIADB_DATABASE=bitnami_drupal
+      - MARIADB_USER=some-user
+      - MARIADB_DATABASE=some-database
     volumes:
       - 'mariadb_data:/bitnami/mariadb'
   drupal:
@@ -103,8 +103,8 @@ services:
     environment:
       - DRUPAL_DATABASE_HOST=mariadb
       - DRUPAL_DATABASE_PORT_NUMBER=3306
-      - DRUPAL_DATABASE_USER=bn_drupal
-      - DRUPAL_DATABASE_NAME=bitnami_drupal
+      - DRUPAL_DATABASE_USER=some-user
+      - DRUPAL_DATABASE_NAME=some-database
       - ALLOW_EMPTY_PASSWORD=yes
     volumes:
       - 'drupal_data:/bitnami/drupal'
