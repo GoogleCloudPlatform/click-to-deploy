@@ -85,32 +85,35 @@ services:
  Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
 
  ```yaml
- version: '2'
+version: '2'
 services:
-  mariadb:
-    image: mariadb:latest
-    environment:
-      - ALLOW_EMPTY_PASSWORD=yes
-      - MARIADB_USER=some-user
-      - MARIADB_DATABASE=some-database
-    volumes:
-      - 'mariadb_data:/bitnami/mariadb'
-  drupal:
-    image: drupal:latest
-    ports:
-      - '80:8080'
-      - '443:8443'
-    environment:
-      - DRUPAL_DB_HOST=mysql
-      - DRUPAL_DB_PORT=3306
-      - DRUPAL_DB_USER=root
-      - DRUPAL_DB_NAME=some-database
-      - ALLOW_EMPTY_PASSWORD=yes
-    volumes:
-      - 'drupal_data:/bitnami/drupal'
-    depends_on:
-      - mariadb
+ mariadb:
+   image: mariadb:latest
+   environment:
+     - MARIADB_USER=drupal
+     - MARIADB_DATABASE=drupal
+     - MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=yes
+  # volumes:
+   #  - 'mariadb_data:/mariadb'
+ drupal:
+   image: drupal:latest
+   ports:
+     - 8080:80
+     - 8443:443
+   environment:
+     - DRUPAL_DATABASE_HOST=mariadb
+     - DRUPAL_DATABASE_PORT_NUMBER=3306
+     - DRUPAL_DATABASE_USER=drupal
+     - DRUPAL_DATABASE_NAME=drupal
+     - ALLOW_EMPTY_PASSWORD=yes
+#   volumes:
+ #    - 'drupal_data:/drupal'
+   depends_on:
+     - mariadb
+
 ```
+ Then, access it via http://localhost:8080 or http://host-ip:8080 in a browser.
+
  | **Variable** | **Description** |
 |:-------------|:----------------|
 |DRUPAL_DB_HOST | Hostname for MariaDB server|
@@ -120,6 +123,6 @@ services:
 |ALLOW_EMPTY_PASSWORD | It can be used to allow blank passwords|
 |MARIADB_USER | Database user|
 |MARIADB_DATABASE | Database name|
- 
+|MARIADB_ALLOW_EMPTY_ROOT_PASSWORD|option for empty password| 
  
 
