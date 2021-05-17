@@ -72,9 +72,13 @@ services:
 ```
  Or you can use `docker run` directly:
 
+```
  docker run --name some-drupal -p 8080:80 -d drupal
  
+```
  Then, access it via http://localhost:8080 or http://host-ip:8080 in a browser.
+ 
+ 
  
  
 
