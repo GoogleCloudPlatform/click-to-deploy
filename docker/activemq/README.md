@@ -40,7 +40,7 @@ docker -- pull marketplace.gcr.io/google/activemq5
 
 # Using Docker
 
-Consult [Launcher container documentation](https://cloud.google.com/launcher/docs/launcher-container)
+Consult [Marketplace container documentation](https://cloud.google.com/marketplace/docs/container-images)
 for additional information about setting up your Docker environment.
 
 ## Create and set ownership of `data/` directory to `activemq` user.
@@ -67,7 +67,7 @@ services:
       - '61614:61614'
       - '8161:8161'
     volumes:
-      - $PWD/data/:/opt/activemq/data
+      - ./data/:/opt/activemq/data
   ```
   
 Or you can use `docker run` directly:
