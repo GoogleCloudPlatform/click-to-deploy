@@ -90,8 +90,8 @@ services:
     - MYSQL_PASSWORD=123456qwerty
     - MYSQL_ROOT_PASSWORD=123456qwerty
   command: --default-authentication-plugin=mysql_native_password
- # volumes:
-  #  - db-data:/var/lib/mysql
+  volumes:
+    - /var/lib/mysql
  drupal:
   container_name: drupal
   image: marketplace.gcr.io/google/drupal9-php7-apache
@@ -104,10 +104,10 @@ services:
     - DRUPAL_DB_PASSWORD=123456qwerty
     - DRUPAL_NO_CHECK_VOLUME=yes
   volumes:
-     - /var/www/html/modules
-     - /var/www/html/profiles
-     - /var/www/html/themes
-     - /var/www/html/sites
+    - /var/www/html/modules
+    - /var/www/html/profiles
+    - /var/www/html/themes
+    - /var/www/html/sites
   depends_on:
     - mariadb
 ```
