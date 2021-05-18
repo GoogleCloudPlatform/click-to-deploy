@@ -79,5 +79,5 @@ services:
 ```
 Or you can use `docker run` directly:
 ```
-docker run --name some-mediawiki --link some-mysql:marketplace.gcr.io/google/mysql8 -d marketplace.gcr.io/google/mediawiki1-php7-apache
+docker run --name some-mediawiki -p 8080:80 -d marketplace.gcr.io/google/mediawiki1-php7-apache
 ```
