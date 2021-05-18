@@ -85,7 +85,7 @@ docker run -e ACTIVEMQ_ADMIN_PASSWORD="setyourdesiredpassword" \
 
 ActiveMQ WebConsole available at http://0.0.0.0:8161
 
-## [Ports](#references-ports)
+## Ports
 
 61616 JMS
 8161  UI
