@@ -120,8 +120,11 @@ services:
 |DRUPAL_DB_USER | Database user that Drupal will use to connect with the database|
 |DRUPAL_DB_NAME | Database name that Drupal will use to connect with the database|
 |ALLOW_EMPTY_PASSWORD | It can be used to allow blank passwords|
-|MARIADB_USER | Database user|
-|MARIADB_DATABASE | Database name|
-|MARIADB_ALLOW_EMPTY_ROOT_PASSWORD|option for empty password| 
+|MYSQL_USER | Database user|
+|MYSQL_DATABASE | Database name|
+|MYSQL_ALLOW_EMPTY_ROOT_PASSWORD|option for empty password| 
+|MYSQL_HOST|Database host name|
+|MYSQL_PASSWORD|Database password|
+|MYSQL_ROOT_PASSWORD| Database root password|
  
 
