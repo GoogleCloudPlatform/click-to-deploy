@@ -31,7 +31,7 @@ docker -- pull marketplace.gcr.io/google/activemq5
 
  [Using Docker](#using-docker)
   * [Run a  server](#run-a-activemq-server-docker)
-    * [Start a activemq instance](#start-a-activemq-instance-docker)
+    * [Start an activemq instance](#start-a-activemq-instance-docker)
 * [References](#references)
   * [Ports](#references-ports)
 
@@ -45,7 +45,7 @@ for additional information about setting up your Docker environment.
 mkdir data/
 chown 1000:1000 data/
 ```
-## Start a activemq instance
+## Start an activemq instance
 
 Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
 
