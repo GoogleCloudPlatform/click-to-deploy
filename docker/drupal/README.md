@@ -80,36 +80,47 @@ services:
 ```
  Then, access it via http://localhost:8080 or http://host-ip:8080 in a browser.
  
-# Runnung Drupal with MirandaDB Datadase service 
+# Runnung Drupal with MiriaDB Datadase service 
  
  Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
 
  ```yaml
+ GNU nano 5.4                                                                docker-compose.yml                                                                         
 version: '2'
 services:
  mariadb:
-   image: mariadb:latest
-   environment:
-     - MARIADB_USER=drupal
-     - MARIADB_DATABASE=drupal
-     - MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=yes
-  # volumes:
-   #  - 'mariadb_data:/mariadb'
+  container_name: mariadb
+  image: marketplace.gcr.io/google/mariadb10
+  environment:
+    - MYSQL_HOST=mariadb
+    - MYSQL_USER=drupal
+    - MYSQL_DATABASE=drupal
+ #   - MYSQL_ALLOW_EMPTY_ROOT_PASSWORD=yes
+    - MYSQL_PASSWORD=123456qwerty
+    - MYSQL_ROOT_PASSWORD=123456qwerty
+#    - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+  command: --default-authentication-plugin=mysql_native_password
+ # volumes:
+  #  - db-data:/var/lib/mysql
  drupal:
-   image: drupal:latest
-   ports:
-     - 8080:80
-     - 8443:443
-   environment:
-     - DRUPAL_DATABASE_HOST=mariadb
-     - DRUPAL_DATABASE_PORT_NUMBER=3306
-     - DRUPAL_DATABASE_USER=drupal
-     - DRUPAL_DATABASE_NAME=drupal
-     - ALLOW_EMPTY_PASSWORD=yes
-#   volumes:
- #    - 'drupal_data:/drupal'
-   depends_on:
-     - mariadb
+  container_name: drupal
+  image: marketplace.gcr.io/google/drupal9-php7-apache
+  ports:
+    - 8080:80
+    - 8443:443
+  environment:
+  #  - MYSQL_ROOT_PASSWORD=drupalsuparpawwsord   
+    - MYSQL_PORT_3306_TCP=3306
+    - DRUPAL_DB_HOST=mariadb
+ #   - DRUPAL_DB_USER=drupal
+    - DRUPAL_DB_PASSWORD=123456qwerty
+   # - DRUPAL_DB_NAME=drupal
+   # - ALLOW_EMPTY_PASSWORD=yes
+#  volumes:
+ #   - drupal-data:/var/www/html
+  depends_on:
+    - mariadb
+
 
 ```
  Then, access it via http://localhost:8080 or http://host-ip:8080 in a browser.
