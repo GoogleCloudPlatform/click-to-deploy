@@ -29,16 +29,14 @@ gcloud auth configure-docker
 ### Pull command
 
 ```shell
-docker -- pull marketplace.gcr.io/google/drupal
+docker -- pull marketplace.gcr.io/google/drupal9-php7-apache
 ```
 ## Table of Contents
 
  [Using Docker](#using-docker)
   * [Run a  server](#run-a-activemq-server-docker)
-    * [Runnung Drupal with Postgres Datadase service](#Runnung Drupal with Postgres Datadase service)
-    * [Runnung Drupal with MariaDB Datadase service](#Runnung Drupal with MariaDB Datadase service)
+    * [Runnung Drupal with MariaDB Datadase service](#Runnung-Drupal-with-MariaDB-Datadase-service)
   * [Configurations](#configurations-docker)
-    * [Authentication and authorization](#authentication-and-authorization-docker)
 * [References](#references)
   * [Ports](#references-ports)
 
@@ -47,45 +45,11 @@ docker -- pull marketplace.gcr.io/google/drupal
 Consult [Marketplace container documentation](https://cloud.google.com/marketplace/docs/container-images)
 for additional information about setting up your Docker environment.
 
-# Runnung Drupal with Postgres Datadase service 
-
-Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
-
-```yaml
-version: '2'
-services:
-  drupal:
-    image: drupal:latest
-    ports:
-      - 8080:80
-    volumes:
-      - /var/www/html/modules
-      - /var/www/html/profiles
-      - /var/www/html/themes
-      - /var/www/html/sites
-    restart: always
-
-  postgres:
-    image: postgres:latest
-    environment:
-      POSTGRES_PASSWORD: some-password
-    restart: always
- 
-```
- Or you can use `docker run` directly:
-
-```
- docker run --name some-drupal -p 8080:80 -d drupal
- 
-```
- Then, access it via http://localhost:8080 or http://host-ip:8080 in a browser.
- 
-# Runnung Drupal with MiriaDB Datadase service 
+### <a name="Runnung-Drupal-with-MariaDB-Datadase-service"></a>Runnung Drupal with MariaDB Datadase service 
  
  Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
 
- ```yaml
- GNU nano 5.4                                                                docker-compose.yml                                                                         
+ ```yaml                                                                     
 version: '2'
 services:
  mariadb:
