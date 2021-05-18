@@ -87,6 +87,12 @@ docker run --name some-mediawiki -p 8080:80 -d marketplace.gcr.io/google/mediawi
 ```
 ### <a name="use-a-persistent-data-volume-docker"></a>Use a persistent data volume
 
+```
+# After initial setup, download LocalSettings.php to the same directory as
+      # this yaml and uncomment the following line and use compose to restart
+      # the mediawiki service
+      # - ./LocalSettings.php:/var/www/html/LocalSettings.php
+```
 ```yaml
 version: '2'
 services:
@@ -116,10 +122,12 @@ services:
       - MEDIAWIKI_DBTYPE=mysql
       - MEDIAWIKI_ADMIN_USER=admin
       - MEDIAWIKI_ADMIN_PASSWORD=adminpassword
+      volumes:
+      - /var/www/html/images
+      - /LocalSettings.php:/var/www/html/LocalSettings.php
     depends_on:
       - mariadb
 ```
-
 
 ### <a name="Variables"></a>Variables
 
