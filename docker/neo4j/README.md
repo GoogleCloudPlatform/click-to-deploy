@@ -66,7 +66,7 @@ services:
     environment:
       NEO4J_dbms_logs_debug_level: DEBUG 
   ```
-  #   Open Neo4j in http://localhost:7474/browser
+ ``` Open Neo4j in http://localhost:7474/browser ```
      
      
    ### <a name="use-a-persistent-data-volume-docker"></a>Use a persistent data volume
