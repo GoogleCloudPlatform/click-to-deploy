@@ -13,6 +13,83 @@ For more information on Neo4j versions, see the [official website](https://neo4j
 
 This source repo was originally copied from: https://github.com/neo4j/docker-neo4j
 
-## Disclaimer
+# Disclaimer
 
 This is not an official Google product.
+
+## About
+This image contains an installation of Drupal
+
+For more information, see the
+[Official Image Marketplace Page](marketplace.gcr.io/google/neo4j4).
+
+### Prerequisites
+
+Configure [gcloud](https://cloud.google.com/sdk/gcloud/) as a Docker credential helper:
+
+```shell
+gcloud auth configure-docker
+```
+### Pull command
+
+```shell
+docker -- pull marketplace.gcr.io/google/marketplace.gcr.io/google/neo4j4
+```
+## Table of Contents
+
+ [Using Docker](#using-docker)
+  * [Run a  server](#run-a-activemq-server-docker)
+    * [Runnung Neo4j Service](#Runnung-Neo4j-service)
+  * [Use a persistent data volume docker](#Use-a-persistent-data-volume)
+  * [Variables](#Variables)
+
+# Using Docker
+
+Consult [Marketplace container documentation](https://cloud.google.com/marketplace/docs/container-images)
+for additional information about setting up your Docker environment.
+
+### <a name="Runnung-Neo4j-service"></a>Runnung Neo4j Service
+
+Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
+
+ ```yaml
+version: '3'
+services:
+  neo4j:
+    container_name: neo4j
+    image: marketplace.gcr.io/google/neo4j4
+    hostname: neo4j
+    container_name: neo4j
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      NEO4J_dbms_logs_debug_level: DEBUG 
+      ```
+     Open Neo4j in http://localhost:7474/browser
+     
+     
+   ### <a name="use-a-persistent-data-volume-docker"></a>Use a persistent data volume
+   
+   Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
+   
+   ```yaml
+version: '3'
+services:
+  neo4j:
+    container_name: neo4j
+    image: marketplace.gcr.io/google/neo4j4
+    hostname: neo4j
+    container_name: neo4j
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - ./conf:/conf
+      - ./data:/data
+      - ./import:/import
+      - ./logs:/logs
+      - ./plugins:/plugins
+    environment:
+      NEO4J_dbms_logs_debug_level: DEBUG 
+      ```
