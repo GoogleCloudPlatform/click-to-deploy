@@ -26,7 +26,8 @@ ARG gid=1000
 # ActiveMQ run with user `activemq`, uid = 1000.
 # If you bind mount a volume from the host or a data container,
 # ensure you use the same uid.
-RUN groupadd -r activemq && useradd -r -g activemq activemq
+RUN groupadd -g "${gid}" "${group}" \
+    && useradd -u "${uid}" -g "${gid}" -m -s /bin/bash "${user}"
 
 # Download and setup activemq version v5.16.1
 RUN set -x && \
