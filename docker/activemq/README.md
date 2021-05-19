@@ -54,25 +54,23 @@ version: '2'
 services:
   activemq:
     container_name: activemq
-    image: marketplace.gcr.io/google/activemq5
+    image: marketplace.gcr.io/google/activemq5:5.15
     environment:
-      "ACTIVEMQ_ADMIN_LOGIN": "setyourdesiredlogin"
-      "ACTIVEMQ_ADMIN_PASSWORD": "example-password"
+      - ACTIVEMQ_ADMIN_PASSWORD=some-password
     ports:
-      - '5672:5672'
-      - '61613:61613'
-      - '1883:1883'
-      - '61614:61614'
-      - '8161:8161'
+      - "5672:5672"
+      - "61613:61613"
+      - "1883:1883"
+      - "61614:61614"
+      - "8161:8161"
     volumes:
       - ./data/:/opt/activemq/data
-
   ```
   
 Or you can use `docker run` directly:
 
 ```shell
-docker run -e ACTIVEMQ_ADMIN_PASSWORD="setyourdesiredpassword" \
+docker run -e ACTIVEMQ_ADMIN_PASSWORD="some-password" \
     --name='activemq' -it --rm \
     -p 5672:5672 \
     -p 61613:61613 \
@@ -80,19 +78,19 @@ docker run -e ACTIVEMQ_ADMIN_PASSWORD="setyourdesiredpassword" \
     -p 61614:61614 \
     -p 8161:8161 \
     -v $PWD/data/:/opt/activemq/data \
-    marketplace.gcr.io/google/activemq5
+    marketplace.gcr.io/google/activemq5:5.15
 ```
-
-ActiveMQ WebConsole available at http://0.0.0.0:8161
+Default admin username is ```admin```
+ActiveMQ WebConsole available at http://127.0.0.1:8161
 
 ## Ports
 
-61616 JMS
-8161  UI
-5672  AMQP  
-61613 STOMP
-1883  MQTT  
-61614 WS    
+|61616| JMS|
+|8161|  UI|
+|5672|  AMQP|  
+|61613| STOMP|
+|1883|  MQTT|  
+|61614| WS|    
 
 For more information about ActiveMQ, visit [official documentation](https://activemq.apache.org/).
 
