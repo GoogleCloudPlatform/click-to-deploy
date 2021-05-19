@@ -64,6 +64,7 @@ services:
       - "7474:7474"
       - "7687:7687"
     environment:
+      NEO4J_AUTH: some-user/some-password
       NEO4J_dbms_logs_debug_level: DEBUG 
   ```
  ``` 
@@ -93,5 +94,14 @@ services:
       - ./logs:/logs
       - ./plugins:/plugins
     environment:
-      NEO4J_dbms_logs_debug_level: DEBUG 
+      NEO4J_AUTH: some-user/some-password    
+      NEO4J_dbms_logs_debug_level: DEBUG
+      
       ```
+ ``` 
+ Remote interface available at http://0.0.0.0:7474/ 
+ 
+ [Variables](#Variables)
+ 
+ |NEO4J_AUTH| neo4j credentials|
+ |NEO4J_dbms_logs_debug_level| log level|
