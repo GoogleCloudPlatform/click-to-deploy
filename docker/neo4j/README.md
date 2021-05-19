@@ -18,7 +18,7 @@ This source repo was originally copied from: https://github.com/neo4j/docker-neo
 This is not an official Google product.
 
 ## About
-This image contains an installation of Drupal
+This image contains an installation of Neo4j
 
 For more information, see the
 [Official Image Marketplace Page](marketplace.gcr.io/google/neo4j4).
@@ -65,8 +65,8 @@ services:
       - "7687:7687"
     environment:
       NEO4J_dbms_logs_debug_level: DEBUG 
-      ```
-     Open Neo4j in http://localhost:7474/browser
+  ```
+  #   Open Neo4j in http://localhost:7474/browser
      
      
    ### <a name="use-a-persistent-data-volume-docker"></a>Use a persistent data volume
