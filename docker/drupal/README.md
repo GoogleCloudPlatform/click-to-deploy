@@ -17,7 +17,7 @@ This is not an official Google product.
 This image contains an installation of Drupal
 
 For more information, see the
-[Official Image Marketplace Page](to-do).
+[Official Image Marketplace Page](https://console.cloud.google.com/marketplace/product/google/drupal).
 
 ### Prerequisites
 
@@ -58,8 +58,8 @@ services:
     - MYSQL_HOST=mariadb
     - MYSQL_USER=drupal
     - MYSQL_DATABASE=drupal
-    - MYSQL_PASSWORD=123456qwerty
-    - MYSQL_ROOT_PASSWORD=123456qwerty
+    - MYSQL_PASSWORD=some-password
+    - MYSQL_ROOT_PASSWORD=some-passowrd
   command: --default-authentication-plugin=mysql_native_password
  drupal:
   container_name: drupal
@@ -70,7 +70,7 @@ services:
   environment:  
     - MYSQL_PORT_3306_TCP=3306
     - DRUPAL_DB_HOST=mariadb
-    - DRUPAL_DB_PASSWORD=123456qwerty
+    - DRUPAL_DB_PASSWORD=some-password
   depends_on:
     - mariadb
 ```
@@ -87,8 +87,8 @@ services:
     - MYSQL_HOST=mariadb
     - MYSQL_USER=drupal
     - MYSQL_DATABASE=drupal
-    - MYSQL_PASSWORD=123456qwerty
-    - MYSQL_ROOT_PASSWORD=123456qwerty
+    - MYSQL_PASSWORD=some-password
+    - MYSQL_ROOT_PASSWORD=some-password
   command: --default-authentication-plugin=mysql_native_password
   volumes:
     - /var/lib/mysql
@@ -101,7 +101,7 @@ services:
   environment: 
     - MYSQL_PORT_3306_TCP=3306
     - DRUPAL_DB_HOST=mariadb
-    - DRUPAL_DB_PASSWORD=123456qwerty
+    - DRUPAL_DB_PASSWORD=some-password
     - DRUPAL_NO_CHECK_VOLUME=yes
   volumes:
     - /var/www/html/modules
