@@ -86,7 +86,7 @@ docker run -d --name some-drupal -p 8080:80 -p 8443:443  \
     marketplace.gcr.io/google/drupal9-php7-apache
 ```
 MariaDB
-```docker run -d --name some-mysql \
+```docker run -d --name mariadb \
     -e MYSQL_HOST=mariadb \
     -e MYSQL_USER=drupal \
     -e MYSQL_DATABASE=drupal \
