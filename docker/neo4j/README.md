@@ -70,7 +70,8 @@ services:
  Remote interface available at http://0.0.0.0:7474/ 
  ```
  Or you can use `docker run` directly:
-```
+ 
+```shell
 docker run -d --name some-neo4j -p 7474:7474 -p 7687:7687 \
       -e "NEO4J_AUTH: some-user/some-password" \
       -e "NEO4J_dbms_logs_debug_level: DEBUG" \
