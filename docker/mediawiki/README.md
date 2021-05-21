@@ -95,7 +95,7 @@ marketplace.gcr.io/google/mediawiki1-php7-apache
 MariaDB
 
 ```
-docker run -d --name some-mariadb --opt --default-authentication-plugin=mysql_native_password \
+docker run -d --name some-mariadb --opt CMD [--default-authentication-plugin=mysql_native_password] \
       -e MYSQL_ROOT_PASSWORD=rootpassword \
       -e MYSQL_PASSWORD=dbpassword \ 
       -e MYSQL_USER=mediawiki \
