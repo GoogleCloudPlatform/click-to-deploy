@@ -53,7 +53,7 @@ for additional information about setting up your Docker environment.
 Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
 
  ```yaml
-version: '3'
+version: '2'
 services:
   neo4j:
     container_name: some-neo4j
@@ -63,8 +63,8 @@ services:
       - "7474:7474"
       - "7687:7687"
     environment:
-      NEO4J_AUTH: some-user/some-password
-      NEO4J_dbms_logs_debug_level: DEBUG 
+      - NEO4J_AUTH=some-user/some-password
+      - NEO4J_dbms_logs_debug_level=DEBUG 
   ```
  ``` 
  Remote interface available at http://0.0.0.0:7474/ 
@@ -72,10 +72,10 @@ services:
  Or you can use `docker run` directly:
  
 ```shell
-docker run -d --name some-neo4j -p 7474:7474 -p 7687:7687 \
-      -e "NEO4J_AUTH: some-user/some-password" \
-      -e "NEO4J_dbms_logs_debug_level: DEBUG" \
-marketplace.gcr.io/google/mediawiki1-php7-apache
+docker run -d --name 'some-neo4j' -it --rm -p 7474:7474 -p 7687:7687 \
+      -e NEO4J_AUTH="some-user/some-password" \
+      -e NEO4J_dbms_logs_debug_level=DEBUG \
+marketplace.gcr.io/google/neo4j4
 ```   
     
    ### <a name="use-a-persistent-data-volume-docker"></a>Use a persistent data volume
@@ -118,7 +118,7 @@ docker run -d --name some-neo4j -p 7474:7474 -p 7687:7687 \
       -v "/import:/import" \
       -v "/logs:/logs" \
       -v "/plugins:/plugins" \
-      marketplace.gcr.io/google/mediawiki1-php7-apache
+      marketplace.gcr.io/google/neo4j4
 ```   
  
  [Variables](#Variables)
