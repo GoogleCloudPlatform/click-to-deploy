@@ -61,7 +61,6 @@ services:
       - MYSQL_USER=mediawiki
       - MYSQL_DATABASE=MediaWiki
       - MYSQL_HOST=mariandb
-    command: ["--default-authentication-plugin=mysql_native_password"]
   mediawiki:
     container_name: some-mediawiki
     image: marketplace.gcr.io/google/mediawiki1-php7-apache
@@ -95,13 +94,14 @@ marketplace.gcr.io/google/mediawiki1-php7-apache
 MariaDB
 
 ```
-docker run -d --name some-mariadb --opt CMD [--default-authentication-plugin=mysql_native_password] \
+docker run --name some-mariadb -d -it \
       -e MYSQL_ROOT_PASSWORD=rootpassword \
       -e MYSQL_PASSWORD=dbpassword \ 
       -e MYSQL_USER=mediawiki \
       -e MYSQL_DATABASE=MediaWiki \
       -e MYSQL_HOST=mariandb \
 marketplace.gcr.io/google/mariadb10
+
 ```
 
 
