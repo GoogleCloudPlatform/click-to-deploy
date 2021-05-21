@@ -78,7 +78,7 @@ services:
  
 Or you can use `docker run` directly:
 
-```
+```shell
 docker run -d --name some-drupal -p 8080:80 -p 8443:443  \
     -e MYSQL_PORT_3306_TCP=3306 \
     -e DRUPAL_DB_HOST=mariadb \
@@ -87,7 +87,7 @@ docker run -d --name some-drupal -p 8080:80 -p 8443:443  \
 ```
 MariaDB
 
-```
+```shell
 docker run -d --name some-mariadb \
     -e MYSQL_HOST=mariadb \
     -e MYSQL_USER=drupal \
@@ -136,16 +136,16 @@ services:
 
 Or you can use `docker run` directly:
 
-```
-docker run d --name some-drupal -p 8080:80 -p 8443:443  \
-    -e MYSQL_PORT_3306_TCP=3306 \
-    -e DRUPAL_DB_HOST=mariadb \
-    -e DRUPAL_DB_PASSWORD=some-password \
-    -e /var/www/html/modules \
-    -e /var/www/html/profiles \ 
-    -e /var/www/html/themes \
-    -e /var/www/html/sites \
-    marketplace.gcr.io/google/drupal9-php7-apache
+```shell
+docker run -d --name some-drupal -p 8080:80 -p 8443:443 \
+    -e "MYSQL_PORT_3306_TCP=3306 \
+    -e "DRUPAL_DB_HOST=mariadb" \
+    -e "DRUPAL_DB_PASSWORD=some-password" \
+    -v "/var/www/html/modules" \
+    -v "/var/www/html/profiles" \ 
+    -v "/var/www/html/themes" \
+    -v "/var/www/html/sites" \
+marketplace.gcr.io/google/drupal9-php7-apache
 ```
 
  ### <a name="Variables"></a>Variables
