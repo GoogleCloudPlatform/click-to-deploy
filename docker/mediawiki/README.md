@@ -61,8 +61,6 @@ services:
       - MYSQL_USER=mediawiki
       - MYSQL_DATABASE=MediaWiki
       - MYSQL_HOST=mariandb
-#    volumes:
- #     - /my/own/datadir:/var/lib/mysql
     command: ["--default-authentication-plugin=mysql_native_password"]
   mediawiki:
     container_name: some-mediawiki
@@ -83,8 +81,30 @@ services:
 ```
 Or you can use `docker run` directly:
 ```
-docker run --name some-mediawiki -p 8080:80 -d marketplace.gcr.io/google/mediawiki1-php7-apache
+docker run --name some-mediawiki -p 8080:80 -d \
+      -e MEDIAWIKI_DB_HOST=mariadb \
+      -e MEDIAWIKI_DB_PORT=3306 \
+      -e MEDIAWIKI_DB_USER=mediawiki \
+      -e MEDIAWIKI_DB_PASSWORD=dbpassword \
+      -e MEDIAWIKI_DBNAME=MediaWiki \
+      -e MEDIAWIKI_DBTYPE=mysql \
+      -e MEDIAWIKI_ADMIN_USER=admin \
+      -e MEDIAWIKI_ADMIN_PASSWORD=adminpassword \
+marketplace.gcr.io/google/mediawiki1-php7-apache
 ```
+MariaDB
+
+```
+docker run -d --name some-mariadb --opt --default-authentication-plugin=mysql_native_password \
+      -e MYSQL_ROOT_PASSWORD=rootpassword \
+      -e MYSQL_PASSWORD=dbpassword \ 
+      -e MYSQL_USER=mediawiki \
+      -e MYSQL_DATABASE=MediaWiki \
+      -e MYSQL_HOST=mariandb \
+marketplace.gcr.io/google/mariadb10
+```
+
+
 ### <a name="use-a-persistent-data-volume-docker"></a>Use a persistent data volume
 
 ```
@@ -127,6 +147,22 @@ services:
       - /LocalSettings.php:/var/www/html/LocalSettings.php
     depends_on:
       - mariadb
+```
+Or you can use `docker run` directly:
+
+```
+docker run --name some-mediawiki -p 8080:80 -d \
+      -e MEDIAWIKI_DB_HOST=mariadb \
+      -e MEDIAWIKI_DB_PORT=3306 \
+      -e MEDIAWIKI_DB_USER=mediawiki \
+      -e MEDIAWIKI_DB_PASSWORD=dbpassword \
+      -e MEDIAWIKI_DBNAME=MediaWiki \
+      -e MEDIAWIKI_DBTYPE=mysql \
+      -e MEDIAWIKI_ADMIN_USER=admin \
+      -e MEDIAWIKI_ADMIN_PASSWORD=adminpassword \
+      -v /var/www/html/images
+      -v /LocalSettings.php:/var/www/html/LocalSettings.php
+marketplace.gcr.io/google/mediawiki1-php7-apache
 ```
 
 ### <a name="Variables"></a>Variables
