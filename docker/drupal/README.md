@@ -60,7 +60,6 @@ services:
     - MYSQL_DATABASE=drupal
     - MYSQL_PASSWORD=some-password
     - MYSQL_ROOT_PASSWORD=some-passowrd
-  command: --default-authentication-plugin=mysql_native_password
  drupal:
   container_name: some-drupal
   image: marketplace.gcr.io/google/drupal9-php7-apache
@@ -79,7 +78,9 @@ services:
 Or you can use `docker run` directly:
 
 ```shell
-docker run -d --name some-drupal -it --rm -p 8080:80 -p 8443:443  \
+docker run -d --name 'some-drupal' -it --rm \
+    -p 8080:80 \
+    -p 8443:443 \
     -e MYSQL_PORT_3306_TCP=3306 \
     -e DRUPAL_DB_HOST=mariadb \
     -e DRUPAL_DB_PASSWORD=some-password \
@@ -88,7 +89,8 @@ docker run -d --name some-drupal -it --rm -p 8080:80 -p 8443:443  \
 MariaDB
 
 ```shell
-docker run -d --name some-mariadb \
+docker run -d --name 'some-mariadb' -it --rm \
+    -p 3306:3306 \
     -e MYSQL_HOST=mariadb \
     -e MYSQL_USER=drupal \
     -e MYSQL_DATABASE=drupal \
