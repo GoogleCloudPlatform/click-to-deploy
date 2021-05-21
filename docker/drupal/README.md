@@ -77,25 +77,32 @@ services:
  
 Or you can use `docker run` directly:
 
+```
+ docker network create drupal
+```
+
 ```shell
 docker run -d --name 'some-drupal' -it --rm \
     -p 8080:80 \
     -p 8443:443 \
     -e MYSQL_PORT_3306_TCP=3306 \
-    -e DRUPAL_DB_HOST=mariadb \
+    -e DRUPAL_DB_HOST=some-mariadb \
+    -e DRUPAL_DB_USER=drupal \
+    -e DRUPAL_USER=admin\
     -e DRUPAL_DB_PASSWORD=some-password \
+    --network drupal \
     marketplace.gcr.io/google/drupal9-php7-apache
 ```
 MariaDB
 
 ```shell
 docker run -d --name 'some-mariadb' -it --rm \
-    -p 3306:3306 \
-    -e MYSQL_HOST=mariadb \
+    -p 127.0.0.1:3306:3306 \
     -e MYSQL_USER=drupal \
     -e MYSQL_DATABASE=drupal \
     -e MYSQL_PASSWORD=some-password \
     -e MYSQL_ROOT_PASSWORD=some-passowrd \
+    --network drupal \
 marketplace.gcr.io/google/mariadb10
 ```
  
@@ -137,12 +144,15 @@ services:
 ```
 
 Or you can use `docker run` directly:
-
+```
+ docker network create drupal
+```
 ```shell
 docker run -d --name 'some-drupal' -p 8080:80 -p 8443:443 \
     -e MYSQL_PORT_3306_TCP=3306 \
     -e DRUPAL_DB_HOST=mariadb \
     -e DRUPAL_DB_PASSWORD=some-password \
+    --network drupal \
     -v /var/www/html/modules \
     -v /var/www/html/profiles \ 
     -v /var/www/html/themes \
@@ -157,6 +167,9 @@ marketplace.gcr.io/google/drupal9-php7-apache
 |DRUPAL_DB_HOST | Hostname for MariaDB server|
 |DRUPAL_DB_PORT | Port used by MariaDB server|
 |DRUPAL_DB_USER | Database user that Drupal will use to connect with the database|
+|DRUPAL_DB_PASSWORD| Database password|
+|DRUPAL_PASSWORD|Admin password|
+|DRUPAL_USER|Admin user|
 |DRUPAL_DB_NAME | Database name that Drupal will use to connect with the database|
 |ALLOW_EMPTY_PASSWORD | It can be used to allow blank passwords|
 |MYSQL_USER | Database user|
