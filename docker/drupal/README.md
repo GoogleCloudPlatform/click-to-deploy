@@ -52,7 +52,7 @@ for additional information about setting up your Docker environment.
 version: '2'
 services:
  mariadb:
-  container_name: mariadb
+  container_name: some-mariadb
   image: marketplace.gcr.io/google/mariadb10
   environment:
     - MYSQL_HOST=mariadb
@@ -62,7 +62,7 @@ services:
     - MYSQL_ROOT_PASSWORD=some-passowrd
   command: --default-authentication-plugin=mysql_native_password
  drupal:
-  container_name: drupal
+  container_name: some-drupal
   image: marketplace.gcr.io/google/drupal9-php7-apache
   ports:
     - 8080:80
@@ -88,7 +88,7 @@ docker run -d --name some-drupal -p 8080:80 -p 8443:443  \
 MariaDB
 
 ```
-docker run -d --name mariadb \
+docker run -d --name some-mariadb \
     -e MYSQL_HOST=mariadb \
     -e MYSQL_USER=drupal \
     -e MYSQL_DATABASE=drupal \
@@ -103,7 +103,7 @@ marketplace.gcr.io/google/mariadb10
  version: '2'
 services:
  mariadb:
-  container_name: mariadb
+  container_name: some-mariadb
   image: marketplace.gcr.io/google/mariadb10
   environment:
     - MYSQL_HOST=mariadb
@@ -115,7 +115,7 @@ services:
   volumes:
     - /var/lib/mysql
  drupal:
-  container_name: drupal
+  container_name: some-drupal
   image: marketplace.gcr.io/google/drupal9-php7-apache
   ports:
     - 8080:80
@@ -137,7 +137,10 @@ services:
 Or you can use `docker run` directly:
 
 ```
-docker run -d --name some-drupal \
+docker run d --name some-drupal -p 8080:80 -p 8443:443  \
+    -e MYSQL_PORT_3306_TCP=3306 \
+    -e DRUPAL_DB_HOST=mariadb \
+    -e DRUPAL_DB_PASSWORD=some-password \
     -v /path/on/host/modules:/var/www/html/modules \
     -v /path/on/host/profiles:/var/www/html/profiles \
     -v /path/on/host/sites:/var/www/html/sites \
