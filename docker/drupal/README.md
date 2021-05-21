@@ -76,6 +76,26 @@ services:
 ```
  Then, access it via http://localhost:8080 or http://host-ip:8080 in a browser.
  
+Or you can use `docker run` directly:
+
+```
+docker run -d --name some-drupal -p 8080:80 -p 8443:443  \
+    -e MYSQL_PORT_3306_TCP=3306
+    -e DRUPAL_DB_HOST=mariadb
+    -e DRUPAL_DB_PASSWORD=some-password
+    marketplace.gcr.io/google/drupal9-php7-apache
+```
+MariaDB
+```docker run -d --name some-mysql \
+    -e MYSQL_HOST=mariadb \
+    -e MYSQL_USER=drupal \
+    -e MYSQL_DATABASE=drupal \
+    -e MYSQL_PASSWORD=some-password \
+    -e MYSQL_ROOT_PASSWORD=some-passowrd 
+marketplace.gcr.io/google/mariadb10
+```
+ 
+ 
  ### <a name="use-a-persistent-data-volume-docker"></a>Use a persistent data volume
  ```yaml  
  version: '2'
@@ -111,6 +131,18 @@ services:
   depends_on:
     - mariadb
 ```
+
+Or you can use `docker run` directly:
+
+```
+docker run -d --name some-drupal --network some-network \
+    -v /path/on/host/modules:/var/www/html/modules \
+    -v /path/on/host/profiles:/var/www/html/profiles \
+    -v /path/on/host/sites:/var/www/html/sites \
+    -v /path/on/host/themes:/var/www/html/themes \
+    marketplace.gcr.io/google/drupal9-php7-apache
+```
+
  ### <a name="Variables"></a>Variables
 
  | **Variable** | **Description** |
