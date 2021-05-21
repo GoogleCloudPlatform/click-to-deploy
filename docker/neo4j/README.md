@@ -72,8 +72,10 @@ services:
  Or you can use `docker run` directly:
  
 ```shell
-docker run -d --name 'some-neo4j' -it --rm -p 7474:7474 -p 7687:7687 \
-      -e NEO4J_AUTH="some-user/some-password" \
+docker run  --name 'some-neo4j' -it --rm \
+      -p 7474:7474 \
+      -p 7687:7687 \
+      -e NEO4J_AUTH="neo4j/some-password" \
       -e NEO4J_dbms_logs_debug_level=DEBUG \
 marketplace.gcr.io/google/neo4j4
 ```   
@@ -99,7 +101,7 @@ services:
       - ./logs:/logs
       - ./plugins:/plugins
     environment:
-      NEO4J_AUTH: some-user/some-password    
+      NEO4J_AUTH: neo4j/some-password    
       NEO4J_dbms_logs_debug_level: DEBUG
       
       ```
@@ -110,15 +112,17 @@ services:
   Or you can use `docker run` directly:
   
 ```shell
-docker run -d --name some-neo4j -p 7474:7474 -p 7687:7687 \
-      -e NEO4J_AUTH="some-user/some-password" \
+docker run --name 'some-neo4j' -it --rm \
+      -p 7474:7474 \
+      -p 7687:7687 \
+      -e NEO4J_AUTH="neo4j/some-password" \
       -e NEO4J_dbms_logs_debug_level=DEBUG \
-      -v "/conf:/conf" \
-      -v "/data:/data" \
-      -v "/import:/import" \
-      -v "/logs:/logs" \
-      -v "/plugins:/plugins" \
-      marketplace.gcr.io/google/neo4j4
+      -v /conf:/conf \
+      -v /data:/data \
+      -v /import:/import \
+      -v /logs:/logs \
+      -v /plugins:/plugins \
+marketplace.gcr.io/google/neo4j4
 ```   
  
  [Variables](#Variables)
