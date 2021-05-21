@@ -33,7 +33,7 @@ gcloud auth configure-docker
 ### Pull command
 
 ```shell
-docker -- pull marketplace.gcr.io/google/marketplace.gcr.io/google/neo4j4
+docker -- pull marketplace.gcr.io/google/neo4j4
 ```
 ## Table of Contents
 
