@@ -71,9 +71,9 @@ services:
  ```
  Or you can use `docker run` directly:
 ```
-docker run --name some-neo4j -p 7474:7474 -p 7687:7687 -d \
-      -e NEO4J_AUTH: some-user/some-password 
-      -e NEO4J_dbms_logs_debug_level: DEBUG 
+docker run -d --name some-neo4j -p 7474:7474 -p 7687:7687 \
+      -e "NEO4J_AUTH: some-user/some-password" \
+      -e "NEO4J_dbms_logs_debug_level: DEBUG" \
 marketplace.gcr.io/google/mediawiki1-php7-apache
 ```   
     
@@ -107,17 +107,17 @@ services:
  
    ```
   Or you can use `docker run` directly:
-```
-
-docker run --name some-neo4j -p 7474:7474 -p 7687:7687 -d \
-      -e NEO4J_AUTH: some-user/some-password 
-      -e NEO4J_dbms_logs_debug_level: DEBUG
-      -v ./conf:/conf
-      -v ./data:/data
-      -v ./import:/import
-      -v ./logs:/logs
-      -v ./plugins:/plugins
-marketplace.gcr.io/google/mediawiki1-php7-apache
+  
+```shell
+docker run -d --name some-neo4j -p 7474:7474 -p 7687:7687 \
+      -e "NEO4J_AUTH: "some-user/some-password" \
+      -e "NEO4J_dbms_logs_debug_level: DEBUG" \
+      -v ./conf:/conf \
+      -v ./data:/data \
+      -v ./import:/import \
+      -v ./logs:/logs \
+      -v ./plugins:/plugins \
+      marketplace.gcr.io/google/mediawiki1-php7-apache
 ```   
  
  [Variables](#Variables)
