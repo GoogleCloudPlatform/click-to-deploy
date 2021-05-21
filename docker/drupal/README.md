@@ -141,10 +141,10 @@ docker run d --name some-drupal -p 8080:80 -p 8443:443  \
     -e MYSQL_PORT_3306_TCP=3306 \
     -e DRUPAL_DB_HOST=mariadb \
     -e DRUPAL_DB_PASSWORD=some-password \
-    -v /path/on/host/modules:/var/www/html/modules \
-    -v /path/on/host/profiles:/var/www/html/profiles \
-    -v /path/on/host/sites:/var/www/html/sites \
-    -v /path/on/host/themes:/var/www/html/themes \
+    -e /var/www/html/modules \
+    -e /var/www/html/profiles \ 
+    -e /var/www/html/themes \
+    -e /var/www/html/sites \
     marketplace.gcr.io/google/drupal9-php7-apache
 ```
 
