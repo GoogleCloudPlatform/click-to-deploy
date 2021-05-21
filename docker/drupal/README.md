@@ -79,7 +79,7 @@ services:
 Or you can use `docker run` directly:
 
 ```shell
-docker run -d --name some-drupal -p 8080:80 -p 8443:443  \
+docker run -d --name some-drupal -it --rm -p 8080:80 -p 8443:443  \
     -e MYSQL_PORT_3306_TCP=3306 \
     -e DRUPAL_DB_HOST=mariadb \
     -e DRUPAL_DB_PASSWORD=some-password \
