@@ -42,7 +42,7 @@ for additional information about setting up your Docker environment.
 
 ### <a name="run-a-server"></a> Run a server
 
-### <a name="start-a-activemq-instance-docker"></a>Start an activemq instance
+   ### <a name="start-a-activemq-instance-docker"></a>Start an activemq instance
 
 ## Create and set ownership of `data/` directory to `activemq` user.
 ```shell
