@@ -1,6 +1,6 @@
 ActiveMQ-docker
 ============
-Dockerfile source for ActiveMQ [docker](https://docker.io) image..
+Dockerfile source for ActiveMQ [docker](https://docker.io) image.
 
 ## Upstream
 This source repo was originally copied from:
