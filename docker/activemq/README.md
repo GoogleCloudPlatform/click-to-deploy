@@ -42,14 +42,12 @@ for additional information about setting up your Docker environment.
 
 ### <a name="run-a-server"></a> Run a server
 
-   ### <a name="start-a-activemq-instance-docker"></a>Start an activemq instance
-
 ## Create and set ownership of `data/` directory to `activemq` user.
 ```shell
 mkdir data/
 chown 1000:1000 data/
 ```
-## Start an activemq instance
+### <a name="start-a-activemq-instance-docker"></a> Start an activemq instance
 
 Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
 
