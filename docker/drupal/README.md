@@ -34,7 +34,6 @@ docker -- pull marketplace.gcr.io/google/drupal9-php7-apache
 ## Table of Contents
 
  [Using Docker](#using-docker)
-  * [Run a  server](#run-a-activemq-server-docker)
     * [Runnung Drupal with MariaDB Datadase service](#Runnung-Drupal-with-MariaDB-Datadase-service)
   * [Use a persistent data volume docker](#Use-a-persistent-data-volume)
   * [Variables](#Variables)
