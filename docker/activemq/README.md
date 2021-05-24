@@ -30,17 +30,13 @@ docker -- pull marketplace.gcr.io/google/activemq5
 ## Table of Contents
 
  [Using Docker](#using-docker)
-  * [Run a server](#run-a-activemq-server-docker)
-    * [Start an activemq instance](#start-a-activemq-instance-docker)
-* [References](#references)
-  * [Ports](#references-ports)
+* [Start an activemq instance](#start-a-activemq-instance-docker)
+* [Ports](#references-ports)
 
 # Using Docker
 
 Consult [Marketplace container documentation](https://cloud.google.com/marketplace/docs/container-images)
 for additional information about setting up your Docker environment.
-
-### <a name="#run-a-activemq-server-docker"></a>Run a server
 
 ### <a name="start-a-activemq-instance-docker"></a>Start an activemq instance
 
