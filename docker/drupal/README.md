@@ -17,7 +17,7 @@ This is not an official Google product.
 This image contains an installation of Drupal
 
 For more information, see the
-[Official Image Marketplace Page](https://console.cloud.google.com/marketplace/product/google/drupal).
+[Official Image Marketplace Page](https://console.cloud.google.com/marketplace/product/google/drupal9-php7-apache).
 
 ### Prerequisites
 
