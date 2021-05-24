@@ -21,7 +21,7 @@ This is not an official Google product.
 This image contains an installation of Neo4j
 
 For more information, see the
-[Official Image Marketplace Page](marketplace.gcr.io/google/neo4j4).
+[Official Image Marketplace Page](https://console.cloud.google.com/marketplace/product/google/neo4j4).
 
 ### Prerequisites
 
