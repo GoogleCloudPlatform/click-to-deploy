@@ -30,7 +30,7 @@ docker -- pull marketplace.gcr.io/google/activemq5
 ## Table of Contents
 
  [Using Docker](#using-docker)
-  * [Run a  server](#run-a-activemq-server-docker)
+  * [Run a server](#run-a-activemq-server-docker)
     * [Start an activemq instance](#start-a-activemq-instance-docker)
 * [References](#references)
   * [Ports](#references-ports)
@@ -39,6 +39,8 @@ docker -- pull marketplace.gcr.io/google/activemq5
 
 Consult [Marketplace container documentation](https://cloud.google.com/marketplace/docs/container-images)
 for additional information about setting up your Docker environment.
+
+### <a name="start-a-activemq-instance-docker"></a>Start an activemq instance
 
 ## Create and set ownership of `data/` directory to `activemq` user.
 ```shell
