@@ -30,13 +30,17 @@ docker -- pull marketplace.gcr.io/google/activemq5
 ## Table of Contents
 
  [Using Docker](#using-docker)
+* [Run a  server](#run-a-server)
 * [Start an activemq instance](#start-a-activemq-instance-docker)
+* [References](#references)
 * [Ports](#references-ports)
 
 # Using Docker
 
 Consult [Marketplace container documentation](https://cloud.google.com/marketplace/docs/container-images)
 for additional information about setting up your Docker environment.
+
+### <a name="run-a-server"></a> Run a server
 
 ### <a name="start-a-activemq-instance-docker"></a>Start an activemq instance
 
@@ -82,6 +86,8 @@ docker run -e ACTIVEMQ_ADMIN_PASSWORD="some-password" \
 ```
 Default admin username is ```admin```
 ActiveMQ WebConsole available at http://127.0.0.1:8161
+
+### <a name="references-ports"></a> References
 
 ### <a name="references-ports"></a>Ports
 
