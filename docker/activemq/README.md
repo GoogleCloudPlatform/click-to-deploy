@@ -13,7 +13,7 @@ This is not an official Google product.
 This image contains an installation of ActiveMQ
 
 For more information, see the
-[Official Image Marketplace Page](https://console.cloud.google.com/marketplace/product/bitnami-launchpad/activemq).
+[Official Image Marketplace Page](https://console.cloud.google.com/marketplace/product/google/activemq5).
 
 ### Prerequisites
 
@@ -87,7 +87,7 @@ ActiveMQ WebConsole available at http://127.0.0.1:8161
 
 | **Port** | **Description** |
 |:-------------|:----------------|
-|61616 |J MS|
+|61616 |JMS|
 |8161 | UI|
 |5672 | AMQP|  
 |61613 | STOMP|
