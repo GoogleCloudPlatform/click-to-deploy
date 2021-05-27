@@ -98,13 +98,14 @@ $dolibarr_main_url_root = '';
 
 EOF
 
-# echo '$dolibarr_main_url_root = '"'${dolibarr_main_url_root}';" >> /var/www/html/htdocs/install/install.forced.php
+# Replace variables in install.forced.php
 sed -i -e  "s|dolibarr_main_url_root =.*|dolibarr_main_url_root = '${main_url_root}';|g" /var/www/html/htdocs/install/install.forced.php
 
 sed -i -e "s|force_install_databaselogin =.*|force_install_databaselogin = '${db_username}';|g" /var/www/html/htdocs/install/install.forced.php
 
 sed -i -e "s|force_install_databasepass =.*|force_install_databasepass = '${db_password}';|g" /var/www/html/htdocs/install/install.forced.php
 
+# Start install wizard 
 curl -s -L http://localhost/install/check.php?testget=ok 
 
 curl -s -L -d 'selectlang=en_US' -d 'action=set' http://localhost/install/fileconf.php 
@@ -120,10 +121,12 @@ curl -s -L -d "login=${admin_username}" -d "pass=${admin_password}" \
 -d "pass_verif=${admin_password}" -d 'selectlang=en_US' -d 'action=set' \
 http://localhost/install/step5.php
 
+# Do not show install wizard again once is completed
 touch /var/lib/dolibarr/documents/install.lock 
 chown www-data:www-data /var/lib/dolibarr/documents/install.lock 
 chmod 444 /var/lib/dolibarr/documents/install.lock 
 
+# Force dolibarr url is configured with external ip
 sed -i "s/dolibarr_main_url_root =.*/dolibarr_main_url_root = 'http:\/\/$(get_external_ip)'/" \
 /var/www/html/htdocs/conf/conf.php
 
