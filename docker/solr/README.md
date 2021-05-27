@@ -38,6 +38,7 @@ gcloud docker -- pull marketplace.gcr.io/google/solr8
   * [Configurations](#configurations-docker)
     * [Using configuration volume](#using-configuration-volume-docker)
 * [References](#references)
+  * [Ports](#references-ports)
   * [Volumes](#references-volumes)
 
 # <a name="using-docker"></a>Using Docker
@@ -91,6 +92,11 @@ Or you can use `docker run` directly:
 docker run --name some-solr -d -p 8983:8983 -v data:/var/solr marketplace.gcr.io/google/solr8 
 ```
 # <a name="references"></a>References
+
+## <a name="references-ports"></a>Ports
+| **Port** | **Description** |
+|:---------|:----------------|
+|8983|Web service port|
 
 ## <a name="references-volumes"></a>Volumes
 
