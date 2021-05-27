@@ -15,5 +15,6 @@
 default['dolibarr']['version'] = '13.0.2'
 default['dolibarr']['sha1'] = 'eb2a602638b9319edb545665a5cca899461b0922'
 
-default['dolibarr']['user'] = 'www-data'
+default['dolibarr']['linux']['user'] = 'www-data'
 default['dolibarr']['db']['name'] = 'dolibarr'
+

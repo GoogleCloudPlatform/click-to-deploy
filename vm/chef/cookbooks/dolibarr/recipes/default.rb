@@ -74,11 +74,20 @@ bash 'install dolibarr' do
     chown -R $user:$user /var/www/html/
     chmod -R 755 /var/www/html/
 
+    # Create conf.php file required for install wizard
+    touch /var/www/html/htdocs/conf/conf.php 
+    chown $user /var/www/html/htdocs/conf/conf.php
+
+    mkdir -p /var/lib/dolibarr/documents
+    chmod -R 700 /var/lib/dolibarr/documents
+    chown -R $user:$user /var/lib/dolibarr
+
 EOH
   environment({
-    'user' => node['dolibarr']['user'],
+    'user' => node['dolibarr']['linux']['user'],
   })
 end
+
 
 template '/etc/apache2/sites-available/000-default.conf' do
   source 'default-apache.erb'
@@ -92,16 +101,20 @@ composer install
 chown -R ${user}:${user} .. 
 EOH
   environment({
-  'user' => node['dolibarr']['user'],
+  'user' => node['dolibarr']['linux']['user'],
 
 })
 end
 
 bash 'MySQL configuration' do
   user 'root'
-  code 'mysql -u root -e "CREATE DATABASE ${defdb}"'
+  code 'mysql -u root -e "CREATE DATABASE ${defdb} CHARACTER SET utf8 COLLATE utf8_general_ci"'
   environment({
   'defdb' => node['dolibarr']['db']['name'],
 })
 end
+
 c2d_startup_script 'dolibarr-db-setup'
+
+c2d_startup_script 'dolibarr-setup-wizard'
+
