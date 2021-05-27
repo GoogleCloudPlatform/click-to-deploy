@@ -57,9 +57,6 @@ services:
     image: marketplace.gcr.io/google/solr8
     ports:
      - 8983:8983
-    command:
-      - solr-precreate
-      - gettingstarted
 ```
 Or you can use `docker run` directly:
 
@@ -80,9 +77,6 @@ services:
      - 8983:8983
     volumes:
       - data:/var/solr
-    command:
-      - solr-precreate
-      - gettingstarted
 volumes:
   data:
 ```
