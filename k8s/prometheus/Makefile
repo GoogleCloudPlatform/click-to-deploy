@@ -3,7 +3,7 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
-TAG ?= 2.11
+TAG ?= 2.18
 
 $(info ---- TAG = $(TAG))
 
@@ -117,8 +117,8 @@ app/build:: .build/prometheus/alertmanager \
 .build/prometheus/kubestatemetrics: .build/var/REGISTRY \
                                     .build/var/TAG \
                                     | .build/prometheus
-	docker pull marketplace.gcr.io/google/kube-state-metrics1:1.3
-	docker tag marketplace.gcr.io/google/kube-state-metrics1:1.3 \
+	docker pull marketplace.gcr.io/google/kube-state-metrics1:1.9
+	docker tag marketplace.gcr.io/google/kube-state-metrics1:1.9 \
 	  "$(REGISTRY)/prometheus/kubestatemetrics:$(TAG)"
 	docker push "$(REGISTRY)/prometheus/kubestatemetrics:$(TAG)"
 	@touch "$@"
@@ -127,8 +127,8 @@ app/build:: .build/prometheus/alertmanager \
 .build/prometheus/nodeexporter: .build/var/REGISTRY \
                                 .build/var/TAG \
                                 | .build/prometheus
-	docker pull marketplace.gcr.io/google/prometheus-nodeexporter0:0.15
-	docker tag marketplace.gcr.io/google/prometheus-nodeexporter0:0.15 \
+	docker pull marketplace.gcr.io/google/prometheus-nodeexporter0:0.16
+	docker tag marketplace.gcr.io/google/prometheus-nodeexporter0:0.16 \
 	  "$(REGISTRY)/prometheus/nodeexporter:$(TAG)"
 	docker push "$(REGISTRY)/prometheus/nodeexporter:$(TAG)"
 	@touch "$@"
@@ -137,8 +137,8 @@ app/build:: .build/prometheus/alertmanager \
 .build/prometheus/grafana: .build/var/REGISTRY \
                            .build/var/TAG \
                            | .build/prometheus
-	docker pull marketplace.gcr.io/google/grafana6:6.5
-	docker tag marketplace.gcr.io/google/grafana6:6.5 "$(REGISTRY)/prometheus/grafana:$(TAG)"
+	docker pull marketplace.gcr.io/google/grafana6:6.7
+	docker tag marketplace.gcr.io/google/grafana6:6.7 "$(REGISTRY)/prometheus/grafana:$(TAG)"
 	docker push "$(REGISTRY)/prometheus/grafana:$(TAG)"
 	@touch "$@"
 

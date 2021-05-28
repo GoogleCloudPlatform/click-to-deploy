@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,23 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'c2d-config::create-self-signed-certificate'
-
-apt_repository 'grafana' do
-  uri node['grafana']['repo']['uri']
-  components node['grafana']['repo']['components']
-  distribution false
-  key node['grafana']['repo']['key']
+package 'Install Bucardo Dependencies' do
+  package_name node['bucardo']['packages']
+  action :install
 end
 
-apt_update 'update' do
-  action :update
-  retries 5
-  retry_delay 30
-end
-
-package 'grafana' do
-  version "#{node['grafana']['version']}*"
-end
-
-c2d_startup_script 'grafana'
+include_recipe 'bucardo::dbix'
+include_recipe 'bucardo::bucardo-service'
