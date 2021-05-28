@@ -82,7 +82,7 @@ bash 'install dolibarr' do
     chmod -R 700 /var/lib/dolibarr/documents
     chown -R $user:$user /var/lib/dolibarr
 
-EOH
+  EOH
   environment({
     'user' => node['dolibarr']['linux']['user'],
   })
@@ -97,21 +97,24 @@ bash 'install requirements' do
   user 'root'
   cwd '/var/www/html/'
   code <<-EOH
-composer install
-chown -R ${user}:${user} .. 
-EOH
+    composer install
+    chown -R ${user}:${user} .. 
+  EOH
   environment({
-  'user' => node['dolibarr']['linux']['user'],
+    'user' => node['dolibarr']['linux']['user'],
+  })
+end
 
-})
+template '/var/www/html/htdocs/install/install.forced.php' do
+  source 'install.forced.php.erb'
 end
 
 bash 'MySQL configuration' do
   user 'root'
-  code 'mysql -u root -e "CREATE DATABASE ${defdb} CHARACTER SET utf8 COLLATE utf8_general_ci"'
+  code 'mysql -u root -e "CREATE DATABASE ${default_db} CHARACTER SET utf8 COLLATE utf8_general_ci"'
   environment({
-  'defdb' => node['dolibarr']['db']['name'],
-})
+    'default_db' => node['dolibarr']['db']['name'],
+  })
 end
 
 c2d_startup_script 'dolibarr-db-setup'
