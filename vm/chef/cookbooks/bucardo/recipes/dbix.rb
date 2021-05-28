@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,23 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'c2d-config::create-self-signed-certificate'
+include_recipe 'bucardo::default'
 
-apt_repository 'grafana' do
-  uri node['grafana']['repo']['uri']
-  components node['grafana']['repo']['components']
-  distribution false
-  key node['grafana']['repo']['key']
+remote_file '/tmp/dbix.tar.gz' do
+  source 'http://bucardo.org/downloads/dbix_safe.tar.gz'
+  action :create
 end
 
-apt_update 'update' do
-  action :update
-  retries 5
-  retry_delay 30
+bash 'Extract DBIX' do
+  cwd '/tmp'
+  code <<-EOH
+    mkdir -p dbix/ \
+      && tar xvfz dbix.tar.gz -C dbix/ --strip-components=1
+EOH
 end
 
-package 'grafana' do
-  version "#{node['grafana']['version']}*"
+bash 'Install DBIX' do
+  cwd '/tmp/dbix'
+  code <<-EOH
+    perl Makefile.PL \
+      && make \
+      && make test \
+      && make install
+EOH
 end
-
-c2d_startup_script 'grafana'
