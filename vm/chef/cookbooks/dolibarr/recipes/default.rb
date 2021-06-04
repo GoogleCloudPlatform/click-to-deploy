@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 include_recipe 'php74'
 include_recipe 'php74::composer'
 include_recipe 'php74::module_libapache2'
