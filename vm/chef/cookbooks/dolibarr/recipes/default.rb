@@ -74,7 +74,7 @@ bash 'install dolibarr' do
     chmod -R 755 /var/www/html/
 
     # Create conf.php file required for install wizard
-    touch /var/www/html/htdocs/conf/conf.php 
+    touch /var/www/html/htdocs/conf/conf.php
     chown $user /var/www/html/htdocs/conf/conf.php
 
     mkdir -p /var/lib/dolibarr/documents
@@ -87,7 +87,6 @@ bash 'install dolibarr' do
   })
 end
 
-
 template '/etc/apache2/sites-available/000-default.conf' do
   source 'default-apache.erb'
 end
@@ -97,7 +96,7 @@ bash 'install requirements' do
   cwd '/var/www/html/'
   code <<-EOH
     composer install
-    chown -R ${user}:${user} .. 
+    chown -R ${user}:${user} ..
   EOH
   environment({
     'user' => node['dolibarr']['linux']['user'],
@@ -119,4 +118,3 @@ end
 c2d_startup_script 'dolibarr-db-setup'
 
 c2d_startup_script 'dolibarr-setup-wizard'
-

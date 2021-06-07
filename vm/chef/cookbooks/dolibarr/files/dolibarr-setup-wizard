@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2019 Google Inc.
+# Copyright 2021 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,33 +33,33 @@ sed -i -e "s|force_install_databaselogin =.*|force_install_databaselogin = '${db
 
 sed -i -e "s|force_install_databasepass =.*|force_install_databasepass = '${db_password}';|g" ${install_forced_file}
 
-# Start install wizard 
-curl -s -L ${localhost_install_url}/check.php?testget=ok 
+# Start install wizard
+curl -s -L ${localhost_install_url}/check.php?testget=ok
 
 shopt -s expand_aliases
 
 alias curl_wizard_step='curl -s -L -d "selectlang=en_US" -d "action=set"'
 
-curl_wizard_step ${localhost_install_url}/fileconf.php 
+curl_wizard_step ${localhost_install_url}/fileconf.php
 
 curl_wizard_step -d "main_url=http://$(get_external_ip)" \
-${localhost_install_url}/step1.php 
+${localhost_install_url}/step1.php
 
-curl_wizard_step ${localhost_install_url}/step2.php  
+curl_wizard_step ${localhost_install_url}/step2.php
 
-curl_wizard_step ${localhost_install_url}/step4.php  
+curl_wizard_step ${localhost_install_url}/step4.php
 
 curl_wizard_step -d "login=${admin_username}" -d "pass=${admin_password}" \
 -d "pass_verif=${admin_password}" ${localhost_install_url}/step5.php
 
 # Do not show install wizard again once is completed
-touch /var/lib/dolibarr/documents/install.lock 
-chown www-data:www-data /var/lib/dolibarr/documents/install.lock 
-chmod 444 /var/lib/dolibarr/documents/install.lock 
+touch /var/lib/dolibarr/documents/install.lock
+chown www-data:www-data /var/lib/dolibarr/documents/install.lock
+chmod 444 /var/lib/dolibarr/documents/install.lock
 
 # Force dolibarr url is configured with external ip
 sed -i "s|dolibarr_main_url_root =.*|dolibarr_main_url_root = '${main_url_root}'|" \
 /var/www/html/htdocs/conf/conf.php
 
-# Delete install.forced.php file 
+# Delete install.forced.php file
 rm ${install_forced_file}
