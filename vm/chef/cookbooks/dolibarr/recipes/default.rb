@@ -48,11 +48,11 @@ end
 bash 'php configuration' do
   user 'root'
   code <<-EOH
-    sed -i 's/^memory_limit = 128M/memory_limit = 512M/' /etc/php/7.4/apache2/php.ini
-    sed -i 's/^short_open_tag = Off/short_open_tag = On/' /etc/php/7.4/apache2/php.ini
-    sed -i 's/^upload_max_filesize = 2M/upload_max_filesize = 128M/' /etc/php/7.4/apache2/php.ini
-    sed -i 's/^max_execution_time = 30/max_execution_time = 360/' /etc/php/7.4/apache2/php.ini
-    sed -i 's/^;date.timezone =/date.timezone = UTC/' /etc/php/7.4/apache2/php.ini
+    sed -i 's/^memory_limit = .*/memory_limit = 512M/' /etc/php/7.4/apache2/php.ini
+    sed -i 's/^short_open_tag = .*/short_open_tag = On/' /etc/php/7.4/apache2/php.ini
+    sed -i 's/^upload_max_filesize = .*/upload_max_filesize = 128M/' /etc/php/7.4/apache2/php.ini
+    sed -i 's/^max_execution_time = .*/max_execution_time = 360/' /etc/php/7.4/apache2/php.ini
+    sed -i 's/^;date.timezone =.*/date.timezone = UTC/' /etc/php/7.4/apache2/php.ini
     a2enmod rewrite
   EOH
 end
