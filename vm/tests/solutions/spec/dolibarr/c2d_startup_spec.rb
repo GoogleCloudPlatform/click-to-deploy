@@ -14,28 +14,30 @@
 
 require 'spec_helper'
 
-describe 'Installed Stackdriver Logging' do
-  describe package('google-fluentd') do
-    it { should be_installed }
-  end
-
-  describe package('google-fluentd-catch-all-config') do
-    it { should be_installed }
-  end
-
-  describe service('google-fluentd.service'), :if => os[:family] == 'debian' do
+describe 'C2D startup config' do
+  describe service('google-c2d-startup.service') do
     it { should be_enabled }
-    it { should be_running }
+  end
+
+  describe file('/var/lock/google_vm_config.lock') do
+    it { should_not exist }
   end
 end
 
-describe 'Installed Stackdriver Monitoring' do
-  describe package('stackdriver-agent') do
-    it { should be_installed }
+describe 'C2D startup scripts should exists' do
+  describe file('/opt/c2d/scripts/00-manage-swap') do
+    it { should exist }
   end
 
-  describe service('stackdriver-agent.service'), :if => os[:family] == 'debian' do
-    it { should be_enabled }
-    it { should be_running }
+  describe file('/opt/c2d/scripts/01-mysql') do
+    it { should exist }
+  end
+
+  describe file('/opt/c2d/scripts/02-dolibarr-db-setup') do
+    it { should exist }
+  end
+
+  describe file('/opt/c2d/scripts/03-dolibarr-setup-wizard') do
+    it { should exist }
   end
 end
