@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,6 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+# MySQL v8.0 installation and configuration recipe
 
-include_recipe 'php7'
-include_recipe 'composer::composer-only'
+include_recipe 'mysql::configure-apt-repo-version-8.0'
+include_recipe 'mysql::install-and-configure-mysqld'

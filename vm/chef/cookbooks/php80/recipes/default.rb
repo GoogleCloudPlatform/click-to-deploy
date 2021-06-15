@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,5 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'php7'
-include_recipe 'composer::composer-only'
+apt_repository 'php' do
+  uri 'https://packages.sury.org/php/'
+  distribution 'stretch'
+  key 'https://packages.sury.org/php/apt.gpg'
+  components ['main']
+end
+
+package 'install packages' do
+  package_name node['php80']['packages']
+  action :install
+end
+
+node['php80']['modules'].each do |pkg|
+  include_recipe "php80::module_#{pkg}"
+end
