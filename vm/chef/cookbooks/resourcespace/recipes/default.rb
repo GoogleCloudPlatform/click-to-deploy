@@ -71,19 +71,14 @@ bash 'Configure Database' do
   })
 end
 
-directory "/var/www/html/include" do
-  owner 'root'
-  group 'root'
-  mode '0777'
-  recursive true
-  action :create
-end
-
-directory "/var/www/html/filestore" do
-  owner 'root'
-  group 'root'
-  mode '0777'
-  action :create
+['include', 'filestore'].each do |folder|
+  directory "/var/www/html/#{folder}" do
+    owner 'root'
+    group 'root'
+    mode 0777
+    recursive true
+    action :create
+  end
 end
 
 # Copy the utils file for resourcespace startup
@@ -95,9 +90,12 @@ cookbook_file '/opt/c2d/resourcespace-utils' do
   action :create
 end
 
-#Set up the cron job for relevance matching and periodic emails
-template '/etc/cron.daily/resourcespace' do
-  source 'resourcespace.erb'
+# Set up the cron job for relevance matching and periodic emails
+cookbook_file '/etc/cron.daily/resourcespace' do
+  source 'resourcespace.cron'
+  owner 'root'
+  group 'root'
+  mode 0755
 end
 
 execute 'enable apache modules' do
