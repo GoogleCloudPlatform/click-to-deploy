@@ -1,0 +1,65 @@
+#!/bin/bash -eu
+#
+# Copyright 2021 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
+
+readonly admin_username="$(get_attribute_value "dolibarr-admin-username")"
+readonly admin_password="$(get_attribute_value "dolibarr-admin-password")"
+
+readonly db_username="dolibarr"
+readonly db_password="$(get_attribute_value "dolibarr-db-password")"
+readonly main_url_root="http://$(get_external_ip)"
+readonly install_forced_file="/var/www/html/htdocs/install/install.forced.php"
+
+readonly localhost_install_url="http://localhost/install"
+
+# Replace variables in install.forced.php
+sed -i -e  "s|dolibarr_main_url_root =.*|dolibarr_main_url_root = '${main_url_root}';|g" ${install_forced_file}
+
+sed -i -e "s|force_install_databaselogin =.*|force_install_databaselogin = '${db_username}';|g" ${install_forced_file}
+
+sed -i -e "s|force_install_databasepass =.*|force_install_databasepass = '${db_password}';|g" ${install_forced_file}
+
+# Start install wizard
+curl -s -L ${localhost_install_url}/check.php?testget=ok
+
+shopt -s expand_aliases
+
+alias curl_wizard_step='curl -s -L -d "selectlang=en_US" -d "action=set"'
+
+curl_wizard_step ${localhost_install_url}/fileconf.php
+
+curl_wizard_step -d "main_url=http://$(get_external_ip)" \
+${localhost_install_url}/step1.php
+
+curl_wizard_step ${localhost_install_url}/step2.php
+
+curl_wizard_step ${localhost_install_url}/step4.php
+
+curl_wizard_step -d "login=${admin_username}" -d "pass=${admin_password}" \
+-d "pass_verif=${admin_password}" ${localhost_install_url}/step5.php
+
+# Do not show install wizard again once is completed
+touch /var/lib/dolibarr/documents/install.lock
+chown www-data:www-data /var/lib/dolibarr/documents/install.lock
+chmod 444 /var/lib/dolibarr/documents/install.lock
+
+# Force dolibarr url is configured with external ip
+sed -i "s|dolibarr_main_url_root =.*|dolibarr_main_url_root = '${main_url_root}'|" \
+/var/www/html/htdocs/conf/conf.php
+
+# Delete install.forced.php file
+rm ${install_forced_file}
