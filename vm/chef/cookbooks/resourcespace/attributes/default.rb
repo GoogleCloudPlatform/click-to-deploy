@@ -23,5 +23,5 @@ default['resourcespace']['packages'] = ['antiword',
                                         'ffmpeg',
                                         'ghostscript',
                                         'subversion',
-                                        'xpdf'
+                                        'xpdf',
                                        ]
