@@ -14,7 +14,6 @@
 
 name 'pimcore'
 depends 'apache2'
-depends 'nginx'
 depends 'mysql'
 depends 'php80'
 depends 'git'

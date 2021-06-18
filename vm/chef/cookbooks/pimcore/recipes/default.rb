@@ -16,11 +16,10 @@
 #   https://pimcore.com/docs/pimcore/current/Development_Documentation/Getting_Started/Installation.html
 #   https://pimcore.com/docs/pimcore/current/Development_Documentation/Installation_and_Upgrade/System_Requirements.html
 
-# include_recipe 'apache2'
-# include_recipe 'apache2::rm-index'
-# include_recipe 'apache2::security-config'
+include_recipe 'apache2'
+include_recipe 'apache2::rm-index'
+include_recipe 'apache2::security-config'
 
-include_recipe 'nginx'
 include_recipe 'mysql::version-8.0-standalone'
 
 include_recipe 'php80'
@@ -49,12 +48,21 @@ package 'Install Dependencies Packages' do
   action :install
 end
 
+# Download source-code for usage and license purposes
 git '/usr/src/pimcore' do
   repository 'https://github.com/pimcore/pimcore.git'
   reference "v#{node['pimcore']['version']}"
   action :checkout
 end
 
+bash 'Copy pimcore' do
+  user 'root'
+  code <<-EOH
+cp -rf /usr/src/pimcore /opt/pimcore
+EOH
+end
+
+# Configure initial database
 bash 'Configure Database' do
   user 'root'
   cwd '/var/www/html'
@@ -67,17 +75,17 @@ EOH
   })
 end
 
-# # Copy the utils file for opencart startup
-# cookbook_file '/opt/c2d/opencart-utils' do
-#   source 'opencart-utils'
-#   owner 'root'
-#   group 'root'
-#   mode 0644
-#   action :create
-# end
+# Copy Pimcore Apache configuration file
+cookbook_file '/opt/c2d/apache-pimcore.conf' do
+  source 'apache-pimcore.conf'
+  owner 'root'
+  group 'root'
+  mode 0644
+  action :create
+end
 
-# execute 'enable apache modules' do
-#   command 'a2enmod rewrite'
-# end
+execute 'enable apache modules' do
+  command 'a2enmod rewrite'
+end
 
 c2d_startup_script 'pimcore'
