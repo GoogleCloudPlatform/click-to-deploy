@@ -16,10 +16,50 @@
 
 source /opt/c2d/c2d-utils || exit 1
 
+
 export COMPOSER_HOME="/root/.config/composer"
+declare -r pimcore_db_name="pimcore"
+declare -r pimcore_db_username="pimcore"
+declare -r pimcore_db_password="$(get_attribute_value "pimcore-db-password")"
+declare -r pimcore_admin_username="admin"
+declare -r pimcore_admin_password="$(get_attribute_value "pimcore-admin-password")"
+declare -r pimcore_project="$(get_attribute_value "pimcore-project")"
+declare -r mysql_password="$(get_attribute_value "mysql-root-password")"
+
+# startup
+export HOME=/root
+source /usr/local/nvm/nvm.sh
+
+# move to imagebuild
+cp -rf /usr/src/pimcore /opt/pimcore
+
+# Install Pimcore Dependencies
+export COMPOSER_MEMORY_LIMIT=-1
+cd /opt/pimcore/
+composer create-project -n pimcore/demo "${pimcore_project}"
+cd "${pimcore_project}"
+COMPOSER_MEMORY_LIMIT=-1 composer install -n
+
+# Creates Pimcore database user
+mysql --user="root" --password="${mysql_password}" --database="mysql" <<-EOSQL
+  CREATE USER '${pimcore_db_username}'@'localhost' IDENTIFIED BY '${pimcore_db_password}';
+  GRANT ALL ON ${pimcore_db_name}.* TO '${pimcore_db_username}'@'localhost';
+EOSQL
+
+# Install Pimcore
+cd "/opt/pimcore/${pimcore_project}"
+vendor/bin/pimcore-install -vv \
+	--admin-username "${pimcore_admin_username}" \
+	--admin-password "${pimcore_admin_password}" \
+	--mysql-username "${pimcore_db_username}" \
+	--mysql-password "${pimcore_db_password}" \
+	--mysql-database "${pimcore_db_name}" \
+	--no-interaction
+
+chown -R www-data:www-data "/opt/pimcore/${pimcore_project}"
 
 # Restart Apache
-echo "Restarting Apache..."
-systemctl restart apache2
+# echo "Restarting Apache..."
+# systemctl restart apache2
 
 echo "Installation complete!"

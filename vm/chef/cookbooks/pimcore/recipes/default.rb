@@ -16,10 +16,12 @@
 #   https://pimcore.com/docs/pimcore/current/Development_Documentation/Getting_Started/Installation.html
 #   https://pimcore.com/docs/pimcore/current/Development_Documentation/Installation_and_Upgrade/System_Requirements.html
 
-include_recipe 'apache2'
-include_recipe 'apache2::rm-index'
-include_recipe 'apache2::security-config'
-include_recipe 'mysql::version-8.0'
+# include_recipe 'apache2'
+# include_recipe 'apache2::rm-index'
+# include_recipe 'apache2::security-config'
+
+include_recipe 'nginx'
+include_recipe 'mysql::version-8.0-standalone'
 
 include_recipe 'php80'
 include_recipe 'php80::module_curl'
@@ -32,6 +34,10 @@ include_recipe 'php80::module_opcache'
 include_recipe 'php80::module_xml'
 include_recipe 'php80::module_zip'
 include_recipe 'composer::composer-only'
+
+include_recipe 'nodenvm'
+include_recipe 'nodenvm::node14'
+
 include_recipe 'git'
 
 apt_update do
@@ -54,7 +60,7 @@ bash 'Configure Database' do
   cwd '/var/www/html'
   code <<-EOH
 # create db
-mysql -u root -e "CREATE DATABASE $dbname CHARACTER SET utf8 COLLATE utf8_general_ci";
+mysql -u root -e "CREATE DATABASE $dbname CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 EOH
   environment({
     'dbname' => node['pimcore']['db']['name'],
@@ -70,8 +76,8 @@ end
 #   action :create
 # end
 
-execute 'enable apache modules' do
-  command 'a2enmod rewrite'
-end
+# execute 'enable apache modules' do
+#   command 'a2enmod rewrite'
+# end
 
 c2d_startup_script 'pimcore'

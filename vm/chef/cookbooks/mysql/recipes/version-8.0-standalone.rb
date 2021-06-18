@@ -16,7 +16,8 @@
 # and use password authentication for the 'root' user account
 
 node.override['mysql']['bind_address'] = '0.0.0.0'
+node.override['mysql']['log_bin_trust_function_creators'] = '1'
 
 include_recipe 'mysql::version-8.0'
 
-c2d_startup_script 'mysql-root-allhosts-password-setup'
+c2d_startup_script 'mysql8-root-localhost-password-setup'

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['pimcore']['version'] = '6.9.4'
+default['pimcore']['version'] = '10.0.4'
 default['pimcore']['db']['name'] = 'pimcore'
 default['pimcore']['packages'] = [
   'unzip',
