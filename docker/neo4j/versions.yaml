@@ -16,16 +16,36 @@ _variables:
 
 versions:
   # Neo4j 4.x
+  - dir: '4/debian9/4.1'
+    repo: 'neo4j4'
+    tags:
+    - '4.1.6-debian9'
+    - '4.1-debian9'
+    - '4-debian9'
+    - '4.1.6'
+    - '4.1'
+    - '4'
+    - 'latest'
+    from: *from9
+    packages:
+      neo4j:
+        version: '4.1.6'
+        gpg: '877fab336425465728284c008c15401982a7695c019cd2874c9b0f6ef8d5bf36'
+      tini:
+        version: '0.18.0'
+        gpg: '12d20136605531b09a2c2dac02ccee85e1b874eb322ef6baf7561cd93f93c855'
+      dockerneo4j:
+        version: '4.1.6'
+        gpg: 'f36222e76127e7fc30191d74f66bdf69ea2360de2d222d7db1266ed4fc235f27'        
+
+  # Neo4j 4.0.2
   - dir: '4/debian9/4.0'
     repo: 'neo4j4'
     tags:
     - '4.0.2-debian9'
     - '4.0-debian9'
-    - '4-debian9'
     - '4.0.2'
     - '4.0'
-    - '4'
-    - 'latest'
     from: *from9
     packages:
       neo4j:
@@ -34,6 +54,9 @@ versions:
       tini:
         version: '0.18.0'
         gpg: '12d20136605531b09a2c2dac02ccee85e1b874eb322ef6baf7561cd93f93c855'
+      dockerneo4j:
+        version: '4.0.2'
+        gpg: 'd13e9422335340b2a6650a4be349248315420b930ce0c3359be2095c2ab3e7cc'        
 
 # Enable parallel build.
 cloudbuild:
