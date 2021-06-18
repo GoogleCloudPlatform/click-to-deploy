@@ -17,10 +17,10 @@
 source /opt/c2d/c2d-utils || exit 1
 
 export COMPOSER_HOME="/root/.config/composer"
+export pimcore_project="$(get_attribute_value "pimcore-project")"
 declare -r mysql_password="$(get_attribute_value "mysql-root-password")"
 declare -r pimcore_db_password="$(get_attribute_value "pimcore-db-password")"
 declare -r pimcore_admin_password="$(get_attribute_value "pimcore-admin-password")"
-declare -r pimcore_project="$(get_attribute_value "pimcore-project")"
 declare -r pimcore_db_name="pimcore"
 declare -r pimcore_db_username="pimcore"
 declare -r pimcore_admin_username="admin"
@@ -62,6 +62,7 @@ vendor/bin/pimcore-install -vv \
 chown -R www-data:www-data "${pimcore_folder}/${pimcore_project}"
 
 # Configure Apache
+rm -f /etc/apache2/sites-enabled/000-default.conf
 envsubst '\$pimcore_project' < /opt/c2d/apache-pimcore.conf \
   > /etc/apache2/sites-enabled/pimcore.conf
 
