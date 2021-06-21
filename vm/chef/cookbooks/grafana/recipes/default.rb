@@ -27,6 +27,8 @@ apt_update 'update' do
   retry_delay 30
 end
 
-package 'grafana'
+package 'grafana' do
+  version "#{node['grafana']['version']}*"
+end
 
 c2d_startup_script 'grafana'

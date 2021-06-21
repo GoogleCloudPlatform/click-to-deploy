@@ -179,8 +179,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-helm template chart/memcached \
-  --name "$APP_INSTANCE_NAME" \
+helm template "$APP_INSTANCE_NAME" chart/memcached \
   --namespace "$NAMESPACE" \
   --set memcached.replicas="$REPLICAS" \
   --set memcached.image.repo="$IMAGE_MEMCACHED" \

@@ -1,0 +1,101 @@
+#!/bin/bash -eu
+#
+# Copyright 2021 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/pgcluster-utils || exit 1
+
+export PGPASSWORD="$(get_attribute_value "postgresql-postgres-password")"
+
+# postgresql-nodes attribute should receive an instance list delimited by spaces.
+# Example: node1 node2 node3
+readonly pgsql_nodes="$(get_attribute_value "postgresql-nodes")"
+readonly pgsql_install_sample_db="$(get_attribute_value "postgresql-install-sample-db" \
+  | tr '[:upper:]' '[:lower:]')"
+
+readonly current_node="$(hostname)"
+readonly master_hostname="$(echo "${pgsql_nodes}" | awk '{ print $1 }')"
+readonly sample_database="world"
+
+if [[ -z "${PGPASSWORD}" ]]; then
+  echo "PGPASSWORD environment variable is not set."
+  exit 1
+fi
+
+echo "Current Node: ${current_node}"
+echo "Master hostname: ${master_hostname}"
+
+# Setup bucardo
+setup_bucardo
+
+# Create bucardo user
+echo "Creating bucardo user in local database..."
+execute_query "CREATE USER bucardo superuser;"
+execute_query "ALTER SYSTEM SET max_connections TO '500';"
+
+# Configure nodes
+if [[ "${current_node}" == "${master_hostname}" ]]; then
+  # Configure master node
+  echo "Setting up master node..."
+
+  # Create database on master node
+  execute_query "CREATE DATABASE bucardo;"
+  execute_query "ALTER DATABASE bucardo OWNER TO bucardo;"
+
+  echo "Configure pg_hba..."
+  configure_pg_hba_master
+  configure_pb_hba_node
+
+  # Restart PostgreSQL
+  echo "Stopping PostgreSQL..."
+  systemctl stop postgresql
+
+  echo "Restarting PostgreSQL..."
+  systemctl start postgresql
+
+  # Install Bucardo database
+  echo "Installing bucardo database..."
+  bucardo install --batch
+
+  if [[ "${pgsql_install_sample_db}" == "true" ]]; then
+    create_sample_database "${sample_database}"
+
+    # Await so user bucardo can connect to all replicas.
+    await_for_replicas "${sample_database}" "${pgsql_nodes}"
+
+    # Add all nodes to the replication.
+    add_databases_to_replication "${sample_database}" "${pgsql_nodes}"
+
+    # Add the replication syncs.
+    add_replication_syncs "${pgsql_nodes}"
+
+    # Start bucardo service
+    bucardo start
+  fi
+else
+  # Configure replica nodes
+  configure_pb_hba_node
+
+  echo "Stopping PostgreSQL..."
+  systemctl stop postgresql
+
+  echo "Restarting PostgreSQL..."
+  systemctl start postgresql
+
+  create_sample_database "${sample_database}"
+
+  # Grant privileges to bucardo user
+  execute_query "GRANT USAGE ON SCHEMA public TO bucardo;"
+  execute_query "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO bucardo;"
+fi
