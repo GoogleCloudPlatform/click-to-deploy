@@ -14,28 +14,17 @@
 
 require 'spec_helper'
 
-describe 'Installed Stackdriver Logging' do
-  describe package('google-fluentd') do
-    it { should be_installed }
+describe 'Disable Apache Web Server Signature' do
+  describe file('/etc/apache2/conf-available/security.conf') do
+    its(:content) { should match /^ServerTokens Prod$/ }
+    its(:content) { should match /^ServerSignature Off$/ }
   end
 
-  describe package('google-fluentd-catch-all-config') do
-    it { should be_installed }
+  describe command('curl -I http://localhost') do
+    its(:stdout) { should match /^Server: Apache\r$/ }
   end
 
-  describe service('google-fluentd.service'), :if => os[:family] == 'debian' do
-    it { should be_enabled }
-    it { should be_running }
-  end
-end
-
-describe 'Installed Stackdriver Monitoring' do
-  describe package('stackdriver-agent') do
-    it { should be_installed }
-  end
-
-  describe service('stackdriver-agent.service'), :if => os[:family] == 'debian' do
-    it { should be_enabled }
-    it { should be_running }
+  describe command('curl http://localhost/page-does-not-exists') do
+    its(:stdout) { should_not match /<address>(.*?)<\/address>/ }
   end
 end
