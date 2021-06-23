@@ -75,10 +75,16 @@ Custom Governance installed through Marketplace is a Kubernetes application on a
 
 ## Prerequisites
 The person performing the onboarding needs to be able to grant the following IAM roles to a service account:
-* **Project Editor**
 * **Dataflow Worker**
 * **Storage Admin**
-* **Service Account Token Creator**
+* **Dataflow Developer**
+* **Compute Engine Network Viewer**
+* **BigQuery Data Editor**
+* **BigQuery Job User**
+* **OrgPolicy Policy Viewer**
+* **Service Usage Admin**
+* **Spanner Admin**
+* **Servive Account User**
 
 The person will also need to:
 * Have access to a VM/desktop/laptop that can create a private GKE cluster and ssh if using command line installation if you wish to install Custom Governance in private cluster.
@@ -339,7 +345,7 @@ To view the app, open the URL in your browser.
 
 We have minimum requirements for GKE clusters running Custom Governance [following GCP Best practices](https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances#best_practices):
 
-  1. We require a service account with the `editor` IAM role in order to allow Custom Governance to deploy successfully.
+  1. We require a service account with IAM roles in order to allow Custom Governance to deploy successfully. **Please create a service account with IAM roles defined [here](##Prerequisites)**.
      * If you are deploying via [CLI installation](#Command-Line-Deployment) you will need to add the `Kubernetes Engine Admin` IAM role as well.
      * By default the Compute Engine service account is used. If you would like to create a custom service account [click here](#Create-a-GKE-Cluster-With-Custom-Service-Account).
   2. [Configure the instance to run as that service account](#configuring-the-gke-cluster-to-run-as-a-custom-service-account).
@@ -360,9 +366,8 @@ The `n1-standard-4` machine type is a good choice that covers the minimum requir
 ![Service Account 1](./images/service-account-1.png)
 1. Click `Create Service Account` and give the service account a name (e.g. cg-custom-sa)
 ![Service Account 2](./images/service-account-2.png)
-1. Chose the `Editor`, `Storage Admin`, `Dataflow Worker` and `Service Account Token Creator` role for the service account. The service account will be used to run Custom Governance.
-![Service Account 3](./images/service-account-3.png)
-1. Provide users with permission to utilize and administer the service account
+1. **Choose the IAM roles defined [here](##Prerequisites) for the service account. The service account will be used to run Custom Governance.**
+2. Provide users with permission to utilize and administer the service account
 ![Service Account 4](./images/service-account-4.png)
 
 #### Configuring the GKE cluster to use custom service account
