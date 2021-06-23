@@ -32,6 +32,21 @@ versions:
         gpg: 'BBE7232D7991050B54C8EA0ADC08637CA615D22C'
     excludeTests:
     - tests/functional_tests/exporter_test.yaml
+  - dir: '3/debian10/3.6'
+    repo: 'zookeeper3'
+    templateSubDir: debian10
+    tags:
+      - '3.6.1-debian10'
+      - '3.6.1'
+      - '3.6-debian10'
+      - '3.6'
+    from: marketplace.gcr.io/google/debian10
+    packages:
+      zookeeper:
+        version: '3.6.1'
+        gpg: 'BBE7232D7991050B54C8EA0ADC08637CA615D22C'
+    excludeTests:
+    - tests/functional_tests/exporter_test.yaml
 
   # Exporter metrics for ZooKeeper image.
   - dir: 'exporter'
