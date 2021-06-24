@@ -29,7 +29,7 @@ versions:
     packages:
       zookeeper:
         version: '3.7.0'
-        gpg: 'BBE7232D7991050B54C8EA0ADC08637CA615D22C'
+        gpg: 'AF3D175EC05DB249738D01AC8D8C3C3ED0B02E66'
     excludeTests:
     - tests/functional_tests/exporter_test.yaml
   - dir: '3/debian10/3.6'

@@ -69,7 +69,7 @@ RUN set -eux; \
     export GNUPGHOME="$(mktemp -d)"; \
     gpg --keyserver ha.pool.sks-keyservers.net --recv-key "${GPG_KEY}" || \
     gpg --keyserver pgp.mit.edu --recv-keys "${GPG_KEY}" || \
-    gpg --keyserver keys.openpgp.org --recv-keys "${GPG_KEY}"; \
+    gpg --keyserver keyserver.pgp.com --recv-keys "${GPG_KEY}"; \
     gpg --batch --verify "${DISTRO_NAME}.tar.gz.asc" "${DISTRO_NAME}.tar.gz"; \
     tar -zxf "${DISTRO_NAME}.tar.gz"; \
     mv "${DISTRO_NAME}/conf/"* "${ZOO_CONF_DIR}"; \
