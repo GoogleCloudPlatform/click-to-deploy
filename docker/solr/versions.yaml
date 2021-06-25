@@ -14,24 +14,24 @@
 
 versions:
   # Solr image
-  - dir: '8/debian10/8.8'
+  - dir: '8/debian10/8.9'
     repo: 'solr8'
     templateSubDir: debian10
     tags:
-      - '8.8.2-debian10'
-      - '8.8.2'
-      - '8.8-debian10'
-      - '8.8'
+      - '8.9.0-debian10'
+      - '8.9.0'
+      - '8.9-debian10'
+      - '8.9'
       - '8-debian10'
       - '8'
       - 'latest'
     from: marketplace.gcr.io/google/debian10
     packages:
       solr:
-        version: '8.8.2'
-        sha512: '2f0affa8ac1e913ec83c2c4b8dffd6b262140478d5aa33203ac01fd5efb695eb9b1661138ce0c549b050fa0aadeb0912b5838b94703e1cca74ecfacbb57bbaee'
+        version: '8.9.0'
+        sha512: '15150b7f191fd9e8d2c1bd8bb619dd4b3f27af2e0e94b7609031f7e745a2e263391c30f68865c208afb97ccaa9bde6d16050200e9bfccef65f762c2ed743c242'
     templateArgs:
-      solrkeys: '86EDB9C33B8517228E88A8F93E48C0C6EF362B9E'
+      solrkeys: '9722F25F650057E26C803B60A6D064D833B3A969'
   - dir: '8/debian10/8.6'
     repo: 'solr8'
     templateSubDir: debian10
