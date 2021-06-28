@@ -13,7 +13,7 @@
 # limitations under the License.
 
 _variables:
-  from9: &from9 gcr.io/google-appengine/debian9:latest
+  from9: &from10 gcr.io/google-appengine/debian10:latest
   nuclio: &nuclio
     version: '1.6.11'
 versions:
