@@ -14,6 +14,24 @@
 
 versions:
   # ZooKeeper image
+  - dir: '3/debian10/3.7'
+    repo: 'zookeeper3'
+    templateSubDir: debian10
+    tags:
+      - '3.7.0-debian10'
+      - '3.7.0'
+      - '3.7-debian10'
+      - '3.7'
+      - '3-debian10'
+      - '3'
+      - 'latest'
+    from: marketplace.gcr.io/google/debian10
+    packages:
+      zookeeper:
+        version: '3.7.0'
+        gpg: 'AF3D175EC05DB249738D01AC8D8C3C3ED0B02E66'
+    excludeTests:
+    - tests/functional_tests/exporter_test.yaml
   - dir: '3/debian10/3.6'
     repo: 'zookeeper3'
     templateSubDir: debian10
@@ -22,9 +40,6 @@ versions:
       - '3.6.1'
       - '3.6-debian10'
       - '3.6'
-      - '3-debian10'
-      - '3'
-      - 'latest'
     from: marketplace.gcr.io/google/debian10
     packages:
       zookeeper:
