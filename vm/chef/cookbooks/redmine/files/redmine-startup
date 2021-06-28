@@ -30,6 +30,7 @@ sed -i "s/password: temp/password: ${mysql_redmineuser_password}/g" config/datab
 
 export RAILS_ENV=production
 
+# Temporay disable error handling for suppress errors from ruby
 set +eu \
   && source /usr/local/rvm/scripts/rvm \
   && set -eu
