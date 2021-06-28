@@ -22,13 +22,26 @@ versions:
       - '1.20-debian10'
       - '1.20.0'
       - '1.20'
+    from: *from10
+    packages:
+      jaeger-operator:
+        version: '1.20.0'
+      golang:
+        version: '1.14'
+  - dir: '1/1.23'
+    repo: jaeger-operator1
+    tags:
+      - '1.23.0-debian10'
+      - '1.23-debian10'
+      - '1.23.0'
+      - '1.23'
       - '1-debian10'
       - '1'
       - 'latest'
     from: *from10
     packages:
       jaeger-operator:
-        version: '1.20.0'
+        version: '1.23.0'
       golang:
         version: '1.14'
 cloudbuild:
