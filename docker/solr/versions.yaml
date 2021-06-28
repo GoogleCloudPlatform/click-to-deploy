@@ -14,6 +14,24 @@
 
 versions:
   # Solr image
+  - dir: '8/debian10/8.9'
+    repo: 'solr8'
+    templateSubDir: debian10
+    tags:
+      - '8.9.0-debian10'
+      - '8.9.0'
+      - '8.9-debian10'
+      - '8.9'
+      - '8-debian10'
+      - '8'
+      - 'latest'
+    from: marketplace.gcr.io/google/debian10
+    packages:
+      solr:
+        version: '8.9.0'
+        sha512: '15150b7f191fd9e8d2c1bd8bb619dd4b3f27af2e0e94b7609031f7e745a2e263391c30f68865c208afb97ccaa9bde6d16050200e9bfccef65f762c2ed743c242'
+    templateArgs:
+      solrkeys: '9722F25F650057E26C803B60A6D064D833B3A969'
   - dir: '8/debian10/8.6'
     repo: 'solr8'
     templateSubDir: debian10
@@ -22,9 +40,6 @@ versions:
       - '8.6.1'
       - '8.6-debian10'
       - '8.6'
-      - '8-debian10'
-      - '8'
-      - 'latest'
     from: marketplace.gcr.io/google/debian10
     packages:
       solr:
@@ -32,7 +47,5 @@ versions:
         sha512: 'c4af7bfc3a67306aafd98a100c1411beee9b59ed6cb30a2ed86d495a3c2bb48d2a4453422d9b5b8eef49268cc17c4f9a8793152054f6a6aa2c2ec48039407cc6'
     templateArgs:
       solrkeys: '50E3EE1C91C7E0CB4DFB007B369424FC98F3F6EC'
-
 cloudbuild:
   enable_parallel: false
-
