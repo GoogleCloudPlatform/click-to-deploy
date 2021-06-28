@@ -25,7 +25,7 @@ versions:
     packages:
       nuclio: *nuclio
   - repo: nuclio-controller
-    builderImage: 'nuclio_builder:latest'
+    builderImage: 'nuclio_builder:1.6.11'
     builderArgs: [ 'controller' ]
     imageNameFromBuilder: 'local/controller:1.6.11'
     tags:
@@ -37,7 +37,7 @@ versions:
       - '1'
       - 'latest'
   - repo: nuclio-dashboard
-    builderImage: 'nuclio_builder:latest'
+    builderImage: 'nuclio_builder:1.6.11'
     builderArgs: [ 'dashboard' ]
     imageNameFromBuilder: 'local/dashboard:1.6.11'
     tags:
