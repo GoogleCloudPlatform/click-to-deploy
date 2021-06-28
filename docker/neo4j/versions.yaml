@@ -16,48 +16,46 @@ _variables:
 
 versions:
   # Neo4j 4.x
-  - dir: '4/debian9/4.1'
+  - dir: '4/debian9/4.3'
     repo: 'neo4j4'
     tags:
-    - '4.1.6-debian9'
-    - '4.1-debian9'
+    - '4.3.0-debian9'
+    - '4.3-debian9'
     - '4-debian9'
-    - '4.1.6'
-    - '4.1'
+    - '4.3.0'
+    - '4.3'
     - '4'
     - 'latest'
     from: *from9
     packages:
       neo4j:
-        version: '4.1.6'
-        gpg: '877fab336425465728284c008c15401982a7695c019cd2874c9b0f6ef8d5bf36'
+        version: '4.3.0'
+        sha256: 'ee6c65dd602f91022fc2a275eb03b3e8596c468e4356d436936c2e626b65ae69'
       tini:
-        version: '0.18.0'
-        gpg: '12d20136605531b09a2c2dac02ccee85e1b874eb322ef6baf7561cd93f93c855'
+        version: '0.19.0'
+        sha256: '93dcc18adc78c65a028a84799ecf8ad40c936fdfc5f2a57b1acda5a8117fa82c'
       dockerneo4j:
-        version: '4.1.6'
-        gpg: 'f36222e76127e7fc30191d74f66bdf69ea2360de2d222d7db1266ed4fc235f27'        
-
-  # Neo4j 4.0.2
-  - dir: '4/debian9/4.0'
+        version: '4.3.0'
+        sha256: '1312455ccef4c1cba9a7541c50df73d31a222264041c76a5275aacd063828cff'
+  - dir: '4/debian9/4.1'
     repo: 'neo4j4'
     tags:
-    - '4.0.2-debian9'
-    - '4.0-debian9'
-    - '4.0.2'
-    - '4.0'
+    - '4.1.6-debian9'
+    - '4.1-debian9'
+    - '4.1.6'
+    - '4.1'
     from: *from9
     packages:
       neo4j:
-        version: '4.0.2'
-        gpg: 'e189f557a41835170fae42ee8d2dea9a94a3c790cfc73f0d9eb28be21b806830'
+        version: '4.1.6'
+        sha256: '877fab336425465728284c008c15401982a7695c019cd2874c9b0f6ef8d5bf36'
       tini:
         version: '0.18.0'
-        gpg: '12d20136605531b09a2c2dac02ccee85e1b874eb322ef6baf7561cd93f93c855'
+        sha256: '12d20136605531b09a2c2dac02ccee85e1b874eb322ef6baf7561cd93f93c855'
       dockerneo4j:
-        version: '4.0.2'
-        gpg: 'd13e9422335340b2a6650a4be349248315420b930ce0c3359be2095c2ab3e7cc'        
-
+        version: '4.1.6'
+        sha256: 'f36222e76127e7fc30191d74f66bdf69ea2360de2d222d7db1266ed4fc235f27'        
+     
 # Enable parallel build.
 cloudbuild:
   enable_parallel: true
