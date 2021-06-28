@@ -16,10 +16,10 @@
 
 source /opt/c2d/c2d-utils || exit 1
 
-REDASH_BASE_PATH="/opt/redash"
-if [[ -e $REDASH_BASE_PATH/env ]]; then
-    rm $REDASH_BASE_PATH/env
-    touch $REDASH_BASE_PATH/env
+readonly redash_base_path="/opt/redash"
+if [[ -e $redash_base_path/env ]]; then
+    rm $redash_base_path/env
+    touch $redash_base_path/env
 fi
 
 readonly redash_admin_name="$(get_attribute_value "redash_admin_name")"
@@ -31,16 +31,17 @@ readonly redash_secret_key="$(get_attribute_value "redash_secret_key")"
 readonly redash_db_password="$(get_attribute_value "redash_db_password")"
 readonly redash_database_url="postgresql://postgres:${redash_db_password}@postgres/postgres"
 
-echo "PYTHONUNBUFFERED=0" >> $REDASH_BASE_PATH/env
-echo "REDASH_LOG_LEVEL=INFO" >> $REDASH_BASE_PATH/env
-echo "REDASH_REDIS_URL=redis://redis:6379/0" >> $REDASH_BASE_PATH/env
-echo "POSTGRES_PASSWORD=${redash_db_password}" >> $REDASH_BASE_PATH/env
-echo "REDASH_COOKIE_SECRET=${redash_cookie_key}" >> $REDASH_BASE_PATH/env
-echo "REDASH_SECRET_KEY=${redash_secret_key}" >> $REDASH_BASE_PATH/env
-echo "REDASH_DATABASE_URL=${redash_database_url}" >> $REDASH_BASE_PATH/env
+echo "PYTHONUNBUFFERED=0" >> $redash_base_path/env
+echo "REDASH_LOG_LEVEL=INFO" >> $redash_base_path/env
+echo "REDASH_REDIS_URL=redis://redis:6379/0" >> $redash_base_path/env
+echo "POSTGRES_PASSWORD=${redash_db_password}" >> $redash_base_path/env
+echo "REDASH_COOKIE_SECRET=${redash_cookie_key}" >> $redash_base_path/env
+echo "REDASH_SECRET_KEY=${redash_secret_key}" >> $redash_base_path/env
+echo "REDASH_DATABASE_URL=${redash_database_url}" >> $redash_base_path/env
 
-echo "export COMPOSE_PROJECT_NAME=redash" >> ~/.profile
-echo "export COMPOSE_FILE=/opt/redash/setup/docker-compose.yml" >> ~/.profile
+# Add compose variables to profile
+echo "export COMPOSE_PROJECT_NAME=redash" >> /etc/profile
+echo "export COMPOSE_FILE=/opt/redash/setup/docker-compose.yml" >> /etc/profile
 
 export COMPOSE_PROJECT_NAME=redash
 export COMPOSE_FILE=/opt/redash/setup/docker-compose.yml
