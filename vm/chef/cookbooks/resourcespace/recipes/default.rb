@@ -98,6 +98,15 @@ cookbook_file '/etc/cron.daily/resourcespace' do
   mode 0755
 end
 
+# Copy the utils file for resourcespace startup
+cookbook_file '/opt/c2d/resourcespace-utils' do
+  source 'resourcespace-utils'
+  owner 'root'
+  group 'root'
+  mode 0644
+  action :create
+end
+
 execute 'enable apache modules' do
   command 'a2enmod rewrite'
 end
