@@ -12,8 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['docker']['packages'] = ['apt-transport-https', 'ca-certificates', 'curl',
-                                'gnupg2', 'software-properties-common']
+default['docker']['packages'] = ['apt-transport-https', 'ca-certificates', 'curl', 'gnupg2', 'software-properties-common']
 
 default['docker']['compose']['version'] = '1.29.2'
 default['docker']['compose']['sha1'] = '2c149783900f15a910381636791bf68039d546fe'
