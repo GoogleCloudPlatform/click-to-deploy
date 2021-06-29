@@ -21,7 +21,7 @@ apt_update do
   action :update
 end
 
-group node['redash']['linux']['user']  do
+group node['redash']['linux']['user'] do
 end
 
 user node['redash']['linux']['user'] do
