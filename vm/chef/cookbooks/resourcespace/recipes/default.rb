@@ -30,6 +30,7 @@ include_recipe 'php74::module_mbstring'
 include_recipe 'php74::module_mysql'
 include_recipe 'php74::module_xml'
 include_recipe 'php74::module_zip'
+include_recipe 'git'
 
 apt_update do
   action :update
@@ -109,6 +110,29 @@ end
 
 execute 'enable apache modules' do
   command 'a2enmod rewrite'
+end
+
+# OSPO Requirements
+# Copy source-code due required components
+git '/var/www/html/lib/crystal-project' do
+  repository 'https://github.com/thecodingmachine/crystal-project.git'
+  action :checkout
+end
+
+git '/var/www/html/lib/TCPDF' do
+  repository 'https://github.com/tecnickcom/TCPDF.git'
+  action :checkout
+end
+
+# Copy licenses due required components
+bash 'Download pending licenses' do
+  cwd '/var/www/html/documentation/licenses'
+  user 'root'
+  code <<-EOH
+  wget -O annotorious.txt https://raw.githubusercontent.com/recogito/annotorious/main/LICENSE \
+    && wget -O OpenLayers.txt https://raw.githubusercontent.com/openlayers/openlayers/main/LICENSE.md \
+    && wget -O tcpdf.txt https://raw.githubusercontent.com/tecnickcom/TCPDF/main/LICENSE.TXT
+EOH
 end
 
 c2d_startup_script 'resourcespace'

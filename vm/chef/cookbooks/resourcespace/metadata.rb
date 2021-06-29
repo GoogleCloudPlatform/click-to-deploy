@@ -13,6 +13,7 @@
 # limitations under the License.
 
 name 'resourcespace'
+depends 'git'
 depends 'apache2'
 depends 'mysql'
 depends 'php74'
