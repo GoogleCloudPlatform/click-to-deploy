@@ -33,4 +33,3 @@ bash 'install docker' do
     apt install -y docker-ce
   EOH
 end
-

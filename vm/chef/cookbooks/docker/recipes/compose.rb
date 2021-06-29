@@ -28,4 +28,3 @@ bash 'install docker compose' do
     'version' => node['docker']['compose']['version'],
   })
 end
-
