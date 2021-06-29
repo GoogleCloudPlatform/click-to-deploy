@@ -25,7 +25,7 @@ group node['redash']['linux']['user'] do
 end
 
 user node['redash']['linux']['user'] do
-  comment "default redash user"
+  comment 'default redash user'
   gid node['redash']['linux']['user']
   home node['redash']['path']
 end
