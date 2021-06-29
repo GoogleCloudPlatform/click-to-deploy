@@ -1,2 +1,0 @@
-#!/bin/sh
-wget -q -r http://localhost/pages/tools/cron_copy_hitcount.php
