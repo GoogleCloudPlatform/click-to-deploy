@@ -32,7 +32,7 @@ versions:
   - '5'
   - latest
   excludeTests:
-  - tests/functional_tests/functional_test.yaml
+  - tests/functional_tests/functional_test_start.yaml
 - dir: 5/debian9/5.15
   from: gcr.io/google-appengine/openjdk
   packages:
@@ -45,6 +45,4 @@ versions:
   - 5.15-debian9
   - 5.15.15
   - '5.15'
-  excludeTests:
-  - tests/functional_tests/functional_test_new.yaml
 
