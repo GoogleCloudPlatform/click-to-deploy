@@ -113,6 +113,14 @@ template 'Set Redmine Apache configuration' do
   mode '0664'
 end
 
+template 'Set default Ruby version' do
+  path '/opt/redmine/.ruby-version'
+  source 'ruby-version.erb'
+  owner 'root'
+  group 'root'
+  mode '0664'
+end
+
 bash 'Install Ruby version required for Redmine' do
   cwd '/opt/redmine'
   user 'root'
