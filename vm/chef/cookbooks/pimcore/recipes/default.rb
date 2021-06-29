@@ -75,9 +75,17 @@ EOH
   })
 end
 
-# Copy Pimcore Apache configuration file
+# Copy Pimcore Apache and PHP configuration files
 cookbook_file '/opt/c2d/apache-pimcore.conf' do
   source 'apache-pimcore.conf'
+  owner 'root'
+  group 'root'
+  mode 0644
+  action :create
+end
+
+cookbook_file '/etc/php/8.0/apache2/conf.d/99-pimcore.ini' do
+  source 'php-pimcore.ini'
   owner 'root'
   group 'root'
   mode 0644
