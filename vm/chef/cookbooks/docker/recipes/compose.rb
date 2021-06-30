@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,26 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['redmine']['packages'] = [
-  'build-essential',
-  'libmysqlclient-dev',
-  'ruby-bundler',
-  'ruby-dev',
-  'zlib1g-dev',
-  'libapache2-mod-passenger',
-]
-default['redmine']['agpl_packages'] = [
-  'ghostscript',
-  'libgs9',
-  'libgs9-common',
-  'libjbig2dec0',
-]
-default['redmine']['version'] = '4.2.1'
-default['redmine']['ruby']['version'] = '2.7.3'
+remote_file '/tmp/docker-compose' do
+  source "https://github.com/docker/compose/releases/download/#{node['docker']['compose']['version']}/docker-compose-Linux-x86_64"
+  verify "echo '#{node['docker']['compose']['sha1']} %{path}' | sha1sum -c"
+  action :create
+end
 
-# OS Settings
-default['redmine']['user'] = 'redmine'
-
-# DB Settings
-default['redmine']['db']['user'] = 'redmineuser'
-default['redmine']['db']['name'] = 'redmine'
+bash 'install docker compose' do
+  user 'root'
+  code <<-EOH
+    mv /tmp/docker-compose /usr/local/bin/docker-compose
+    chmod +x /usr/local/bin/docker-compose
+    EOH
+  environment({
+    'version' => node['docker']['compose']['version'],
+  })
+end
