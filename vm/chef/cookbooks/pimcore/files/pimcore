@@ -28,19 +28,19 @@ declare -r pimcore_folder="/opt/pimcore"
 declare -r pimcore_project_folder="${pimcore_folder}/${pimcore_project}"
 
 function wait_for_app() {
-	local max_retries=10
-	local retry=0
-	local success=0
+  local max_retries=10
+  local retry=1
+  local http_code=0
 
-	while [[ "${success}" -eq 0 && "${retry}" -lt "${max_retries}" ]]; do
-		(( retry=retry+1 ))
-		success="$(curl -I http://localhost | grep "200 OK" | wc -l)"
-		sleep 10
-	done
+  while [[ "${http_code}" -ne 200 && "${retry}" -le "${max_retries}" ]]; do
+    http_code="$(curl -s -L -o /dev/null -w "%{http_code}" http://localhost)"
+    (( retry=retry+1 ))
+  done
 
-	if [[ "${success}" -ne 1 ]]; then
-		exit 1
-	fi
+  if [[ "${retry}" -gt "${max_retries}" ]]; then
+    echo "Max retries exceeded."
+    exit 1
+  fi
 }
 
 # Required for installing all pimcore composer components
@@ -67,12 +67,12 @@ composer install -n
 # Install Pimcore database
 cd "${pimcore_folder}/${pimcore_project}"
 vendor/bin/pimcore-install -vv \
-	--admin-username "${pimcore_admin_username}" \
-	--admin-password "${pimcore_admin_password}" \
-	--mysql-username "${pimcore_db_username}" \
-	--mysql-password "${pimcore_db_password}" \
-	--mysql-database "${pimcore_db_name}" \
-	--no-interaction
+  --admin-username "${pimcore_admin_username}" \
+  --admin-password "${pimcore_admin_password}" \
+  --mysql-username "${pimcore_db_username}" \
+  --mysql-password "${pimcore_db_password}" \
+  --mysql-database "${pimcore_db_name}" \
+  --no-interaction
 
 # Assign permission to Apache user
 chown -R www-data:www-data "${pimcore_folder}/${pimcore_project}"
