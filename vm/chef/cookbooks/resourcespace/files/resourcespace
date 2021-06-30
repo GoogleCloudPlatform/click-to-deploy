@@ -1,0 +1,93 @@
+#!/bin/bash -eu
+#
+# Copyright 2021 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/resourcespace-utils || exit 1
+
+readonly app_name="$(get_attribute_value "app_name")"
+
+readonly mysql_db="resourcespace"
+readonly mysql_username="$(get_attribute_value "mysql_username")"
+readonly mysql_password="$(get_attribute_value "mysql_password")"
+readonly mysql_ro_username="$(get_attribute_value "mysql_ro_username")"
+readonly mysql_ro_password="$(get_attribute_value "mysql_ro_password")"
+
+readonly admin_username="admin"
+readonly admin_password="$(get_attribute_value "admin_password")"
+readonly admin_email="$(get_attribute_value "admin_email")"
+readonly email_from="$(get_attribute_value "email_from")"
+
+declare include_folder="/var/www/html/include"
+declare baseurl="http://$(get_internal_ip)"
+
+echo "Awaiting for MySQL be up..."
+wait_for_port "localhost" "3306"
+
+echo "Setting up MySQL users..."
+setup_mysql_user "${mysql_db}" "${mysql_username}" "${mysql_password}"
+setup_mysql_user "${mysql_db}" "${mysql_ro_username}" "${mysql_ro_password}"
+
+echo "Fill installation form..."
+readonly localhost_install_url="http://localhost/pages/setup.php"
+
+curl -X POST \
+  --data-urlencode "defaultlanguage=en" \
+  --data-urlencode "mysql_server=localhost" \
+  --data-urlencode "mysql_username=${mysql_username}" \
+  --data-urlencode "mysql_password=${mysql_password}" \
+  --data-urlencode "read_only_db_username=${mysql_ro_username}" \
+  --data-urlencode "read_only_db_password=${mysql_ro_password}" \
+  --data-urlencode "mysql_db=${mysql_db}" \
+  --data-urlencode "mysql_bin_path=/usr/bin" \
+  --data-urlencode "applicationname=${app_name}" \
+  --data-urlencode "baseurl=${baseurl}" \
+  --data-urlencode "admin_fullname=Admin" \
+  --data-urlencode "admin_email=${admin_email}" \
+  --data-urlencode "admin_username=${admin_username}" \
+  --data-urlencode "admin_password=${admin_password}" \
+  --data-urlencode "email_from=${email_from}" \
+  --data-urlencode "imagemagick_path=/usr/bin" \
+  --data-urlencode "ghostscript_path=/usr/bin" \
+  --data-urlencode "ffmpeg_path=/usr/bin" \
+  --data-urlencode "exiftool_path=/usr/bin" \
+  --data-urlencode "antiword_path=/usr/bin" \
+  --data-urlencode "pdftotext_path=/usr/bin" \
+  --data-urlencode "smtp_secure=" \
+  --data-urlencode "smtp_host=" \
+  --data-urlencode "smtp_port=25" \
+  --data-urlencode "smtp_auth=on" \
+  --data-urlencode "smtp_username=" \
+  --data-urlencode "smtp_password=" \
+  --data-urlencode "google_vision_key=" \
+  --data-urlencode "submit=Begin installation!" \
+  "${localhost_install_url}"
+
+echo "Setup website url..."
+if [[ has_external_ip ]]; then
+  baseurl="http://$(get_external_ip)"
+  sed -i "s|baseurl = .*;|baseurl = '${baseurl}';|" "${include_folder}/config.php"
+fi
+
+echo "Setup include folder permissions..."
+sudo chmod -R 750 "${include_folder}"
+
+echo "Granting access to www-data..."
+chown -R www-data:www-data /var/www/
+
+# Restart Apache
+echo "Restarting Apache..."
+systemctl restart apache2
+
+echo "Installation complete!"
