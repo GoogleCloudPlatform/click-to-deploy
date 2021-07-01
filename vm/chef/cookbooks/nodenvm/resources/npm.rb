@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,12 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['mysql']['packages'] = ['wget', 'mysql-server', 'mysql-client']
+property :package, String, default: ''
+property :cwd, String, default: '/'
 
-default['mysql']['bind_address'] = 'localhost'
-default['mysql']['log_bin_trust_function_creators'] = '0'
+action :install do
+  bash 'Install npm package' do
+    code <<-EOH
+      source /usr/local/nvm/nvm.sh
+      nvm use default
+      cd "#{new_resource.cwd}"
+      npm install --silent "#{new_resource.package}"
+    EOH
+  end
+end
 
-# Reference: https://dev.mysql.com/downloads/repo/apt/
-default['mysql']['apt']['file'] = 'mysql-apt-config_0.8.17-1_all.deb'
-default['mysql']['apt']['md5'] = '9e393c991311ead61dcc8313aab8e230'
-default['mysql']['apt']['url'] = "https://dev.mysql.com/get/#{node['mysql']['apt']['file']}"
+action :install_global do
+  bash 'Install npm package globally' do
+    code <<-EOH
+      source /usr/local/nvm/nvm.sh
+      nvm use default
+      yes | npm install --silent -g "#{new_resource.package}"
+    EOH
+  end
+end

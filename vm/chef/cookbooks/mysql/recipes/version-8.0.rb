@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,13 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+# MySQL v8.0 installation and configuration recipe
 
-default['mysql']['packages'] = ['wget', 'mysql-server', 'mysql-client']
-
-default['mysql']['bind_address'] = 'localhost'
-default['mysql']['log_bin_trust_function_creators'] = '0'
-
-# Reference: https://dev.mysql.com/downloads/repo/apt/
-default['mysql']['apt']['file'] = 'mysql-apt-config_0.8.17-1_all.deb'
-default['mysql']['apt']['md5'] = '9e393c991311ead61dcc8313aab8e230'
-default['mysql']['apt']['url'] = "https://dev.mysql.com/get/#{node['mysql']['apt']['file']}"
+include_recipe 'mysql::configure-apt-repo-version-8.0'
+include_recipe 'mysql::install-and-configure-mysqld'
