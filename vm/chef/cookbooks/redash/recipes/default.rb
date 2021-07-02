@@ -26,7 +26,7 @@ end
 # Install Deps Packages
 package 'Install Deps Packages' do
   action :install
-  package_name node['redash']['deps_packages']
+  package_name node['redash']['packages']
 end
 
 group node['redash']['linux']['user'] do

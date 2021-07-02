@@ -14,7 +14,7 @@
 
 default['redash']['version'] = 'v8.0.0'
 default['redash']['sha1'] = '3a4dbe8599c3326b639cfd5e3707e37973e40f16'
-default['redash']['deps_packages'] = ['jq']
+default['redash']['packages'] = ['jq']
 
 default['redash']['linux']['user'] = 'redash'
 default['redash']['path'] = '/opt/redash'
