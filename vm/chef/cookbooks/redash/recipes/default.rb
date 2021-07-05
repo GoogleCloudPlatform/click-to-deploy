@@ -15,10 +15,18 @@
 # Reference: https://github.com/getredash/setup
 include_recipe 'docker'
 include_recipe 'docker::compose'
-# Reference: https://docs.opencart.com/requirements/
 
-apt_update do
+# Update sources
+apt_update 'update' do
   action :update
+  retries 5
+  retry_delay 30
+end
+
+# Install Deps Packages
+package 'Install Deps Packages' do
+  action :install
+  package_name node['redash']['packages']
 end
 
 group node['redash']['linux']['user'] do
