@@ -43,4 +43,6 @@ versions:
   - 5.15-debian9
   - 5.15.15
   - '5.15'
+  excludeTests:
+  - tests/functional_tests/activemq_start.yaml
 
