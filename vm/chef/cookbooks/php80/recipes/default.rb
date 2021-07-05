@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,26 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['redmine']['packages'] = [
-  'build-essential',
-  'libmysqlclient-dev',
-  'ruby-bundler',
-  'ruby-dev',
-  'zlib1g-dev',
-  'libapache2-mod-passenger',
-]
-default['redmine']['agpl_packages'] = [
-  'ghostscript',
-  'libgs9',
-  'libgs9-common',
-  'libjbig2dec0',
-]
-default['redmine']['version'] = '4.2.1'
-default['redmine']['ruby']['version'] = '2.7.3'
+apt_repository 'php' do
+  uri 'https://packages.sury.org/php/'
+  distribution 'stretch'
+  key 'https://packages.sury.org/php/apt.gpg'
+  components ['main']
+end
 
-# OS Settings
-default['redmine']['user'] = 'redmine'
+package 'install packages' do
+  package_name node['php80']['packages']
+  action :install
+end
 
-# DB Settings
-default['redmine']['db']['user'] = 'redmineuser'
-default['redmine']['db']['name'] = 'redmine'
+node['php80']['modules'].each do |pkg|
+  include_recipe "php80::module_#{pkg}"
+end

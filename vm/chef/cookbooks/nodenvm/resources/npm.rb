@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,26 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['redmine']['packages'] = [
-  'build-essential',
-  'libmysqlclient-dev',
-  'ruby-bundler',
-  'ruby-dev',
-  'zlib1g-dev',
-  'libapache2-mod-passenger',
-]
-default['redmine']['agpl_packages'] = [
-  'ghostscript',
-  'libgs9',
-  'libgs9-common',
-  'libjbig2dec0',
-]
-default['redmine']['version'] = '4.2.1'
-default['redmine']['ruby']['version'] = '2.7.3'
+property :package, String, default: ''
+property :cwd, String, default: '/'
 
-# OS Settings
-default['redmine']['user'] = 'redmine'
+action :install do
+  bash 'Install npm package' do
+    code <<-EOH
+      source /usr/local/nvm/nvm.sh
+      nvm use default
+      cd "#{new_resource.cwd}"
+      npm install --silent "#{new_resource.package}"
+    EOH
+  end
+end
 
-# DB Settings
-default['redmine']['db']['user'] = 'redmineuser'
-default['redmine']['db']['name'] = 'redmine'
+action :install_global do
+  bash 'Install npm package globally' do
+    code <<-EOH
+      source /usr/local/nvm/nvm.sh
+      nvm use default
+      yes | npm install --silent -g "#{new_resource.package}"
+    EOH
+  end
+end

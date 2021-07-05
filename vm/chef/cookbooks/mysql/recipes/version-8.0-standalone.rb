@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,27 +11,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+# This recipe creates a MySQL VM that is configured to listen on 0.0.0.0
+# and use password authentication for the 'root' user account
 
-default['redmine']['packages'] = [
-  'build-essential',
-  'libmysqlclient-dev',
-  'ruby-bundler',
-  'ruby-dev',
-  'zlib1g-dev',
-  'libapache2-mod-passenger',
-]
-default['redmine']['agpl_packages'] = [
-  'ghostscript',
-  'libgs9',
-  'libgs9-common',
-  'libjbig2dec0',
-]
-default['redmine']['version'] = '4.2.1'
-default['redmine']['ruby']['version'] = '2.7.3'
+node.override['mysql']['bind_address'] = '0.0.0.0'
+node.override['mysql']['log_bin_trust_function_creators'] = '1'
 
-# OS Settings
-default['redmine']['user'] = 'redmine'
+include_recipe 'mysql::version-8.0'
 
-# DB Settings
-default['redmine']['db']['user'] = 'redmineuser'
-default['redmine']['db']['name'] = 'redmine'
+c2d_startup_script 'mysql8-root-localhost-password-setup'
