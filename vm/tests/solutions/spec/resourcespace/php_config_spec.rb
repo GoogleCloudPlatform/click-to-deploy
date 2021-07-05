@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,26 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['redmine']['packages'] = [
-  'build-essential',
-  'libmysqlclient-dev',
-  'ruby-bundler',
-  'ruby-dev',
-  'zlib1g-dev',
-  'libapache2-mod-passenger',
-]
-default['redmine']['agpl_packages'] = [
-  'ghostscript',
-  'libgs9',
-  'libgs9-common',
-  'libjbig2dec0',
-]
-default['redmine']['version'] = '4.2.1'
-default['redmine']['ruby']['version'] = '2.7.3'
+require 'spec_helper'
 
-# OS Settings
-default['redmine']['user'] = 'redmine'
+describe 'Hide PHP Version' do
+  describe file('/etc/php/7.4/apache2/php.ini') do
+    its(:content) { should match /^expose_php = Off$/ }
+  end
 
-# DB Settings
-default['redmine']['db']['user'] = 'redmineuser'
-default['redmine']['db']['name'] = 'redmine'
+  describe command('curl -I http://localhost') do
+    its(:stdout) { should_not match /X-Powered-By:/ }
+  end
+end

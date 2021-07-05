@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,27 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+# MySQL v8.0 installation and configuration recipe
 
-default['redmine']['packages'] = [
-  'build-essential',
-  'libmysqlclient-dev',
-  'ruby-bundler',
-  'ruby-dev',
-  'zlib1g-dev',
-  'libapache2-mod-passenger',
-]
-default['redmine']['agpl_packages'] = [
-  'ghostscript',
-  'libgs9',
-  'libgs9-common',
-  'libjbig2dec0',
-]
-default['redmine']['version'] = '4.2.1'
-default['redmine']['ruby']['version'] = '2.7.3'
-
-# OS Settings
-default['redmine']['user'] = 'redmine'
-
-# DB Settings
-default['redmine']['db']['user'] = 'redmineuser'
-default['redmine']['db']['name'] = 'redmine'
+include_recipe 'mysql::configure-apt-repo-version-8.0'
+include_recipe 'mysql::install-and-configure-mysqld'
