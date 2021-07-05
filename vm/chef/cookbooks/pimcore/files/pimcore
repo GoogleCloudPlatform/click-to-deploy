@@ -1,0 +1,93 @@
+#!/bin/bash -eu
+#
+# Copyright 2021 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
+
+export COMPOSER_HOME="/root/.config/composer"
+export pimcore_project="$(get_attribute_value "pimcore-project")"
+declare -r mysql_password="$(get_attribute_value "mysql-root-password")"
+declare -r pimcore_db_password="$(get_attribute_value "pimcore-db-password")"
+declare -r pimcore_admin_password="$(get_attribute_value "pimcore-admin-password")"
+declare -r pimcore_db_name="pimcore"
+declare -r pimcore_db_username="pimcore"
+declare -r pimcore_admin_username="admin"
+declare -r pimcore_folder="/opt/pimcore"
+declare -r pimcore_project_folder="${pimcore_folder}/${pimcore_project}"
+
+function wait_for_app() {
+  local max_retries=10
+  local retry=1
+  local http_code=0
+
+  while [[ "${http_code}" -ne 200 && "${retry}" -le "${max_retries}" ]]; do
+    http_code="$(curl -s -L -o /dev/null -w "%{http_code}" http://localhost)"
+    (( retry=retry+1 ))
+  done
+
+  if [[ "${retry}" -gt "${max_retries}" ]]; then
+    echo "Max retries exceeded."
+    exit 1
+  fi
+}
+
+# Required for installing all pimcore composer components
+export COMPOSER_MEMORY_LIMIT=-1
+
+# Required for nvm usage
+export HOME=/root
+source /usr/local/nvm/nvm.sh
+
+# Creates Pimcore database user
+mysql --user="root" --password="${mysql_password}" --database="mysql" <<-EOSQL
+  CREATE USER '${pimcore_db_username}'@'localhost' IDENTIFIED BY '${pimcore_db_password}';
+  GRANT ALL ON ${pimcore_db_name}.* TO '${pimcore_db_username}'@'localhost';
+EOSQL
+
+# Create Pimcore website
+cd "${pimcore_folder}/"
+composer create-project -n pimcore/demo "${pimcore_project}"
+
+# Install Pimcore website dependencies
+cd "${pimcore_project_folder}"
+composer install -n
+
+# Install Pimcore database
+cd "${pimcore_folder}/${pimcore_project}"
+vendor/bin/pimcore-install -vv \
+  --admin-username "${pimcore_admin_username}" \
+  --admin-password "${pimcore_admin_password}" \
+  --mysql-username "${pimcore_db_username}" \
+  --mysql-password "${pimcore_db_password}" \
+  --mysql-database "${pimcore_db_name}" \
+  --no-interaction
+
+# Assign permission to Apache user
+chown -R www-data:www-data "${pimcore_folder}/${pimcore_project}"
+
+# Configure Apache
+rm -f /etc/apache2/sites-enabled/000-default.conf
+envsubst '\$pimcore_project' < /opt/c2d/apache-pimcore.conf \
+  > /etc/apache2/sites-enabled/pimcore.conf
+
+# Restart Apache
+echo "Restarting Apache..."
+systemctl restart apache2
+
+# Await for app being ready before finishing startup script
+echo "Awaiting app be ready..."
+wait_for_app
+
+echo "Installation complete!"
