@@ -63,7 +63,7 @@ COPY *.xml *.sh *.yaml *.properties ${HZ_HOME}/
 RUN set -e; \
     apt-get update \
     && apt-get -y install \
-    11-jdk-headless \
+    openjdk-11-jdk-headless \
     maven \
     bash \
     curl \
