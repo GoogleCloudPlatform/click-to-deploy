@@ -16,7 +16,7 @@ versions:
 # Hazelcast Server 4
   - dir: '4/debian9/hazelcast/4.2'
     repo: 'hazelcast4'
-    templateSubDir: 'hazelcast'
+    templateSubDir: 'hazelcast4'
     tags:
     - '4.2.1-debian9'
     - '4.2.1'
@@ -36,7 +36,7 @@ versions:
       hz_eureka:
         version: '1.1.1'
       jmx_prometheus_agent:
-        version: '0.11.0'
+        version: '0.14.0'
     excludeTests:
     - tests/functional_tests/hazelcast_mancenter_test.yaml
   # Hazelcast Server
