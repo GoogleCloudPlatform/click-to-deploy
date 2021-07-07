@@ -64,6 +64,7 @@ versions:
         version: '0.11.0'
     excludeTests:
     - tests/functional_tests/hazelcast_mancenter_test.yaml
+    - tests/functional_tests/hazelcast_test.yaml
 
   # Hazelcast Management Center
   - dir: '3/debian9/hazelcast-mc/3.12'
