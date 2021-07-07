@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM gcr.io/google-appengine/debian9:latest
+FROM gcr.io/google-appengine/debian10:latest
 
 ENV DEBUG_DOCKER_ENTRYPOINT false
 

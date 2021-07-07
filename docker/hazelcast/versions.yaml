@@ -14,7 +14,7 @@
 
 versions:
 # Hazelcast Server 4
-  - dir: '4/debian9/hazelcast/4.2'
+  - dir: '4/debian10/hazelcast/4.2'
     repo: 'hazelcast4'
     templateSubDir: 'hazelcast4'
     tags:
@@ -25,7 +25,7 @@ versions:
     - '4-debian9'
     - '4'
     - 'latest'
-    from: 'gcr.io/google-appengine/debian9:latest'
+    from: 'gcr.io/google-appengine/debian10:latest'
     packages:
       hazelcast:
         version: '4.2.1'
