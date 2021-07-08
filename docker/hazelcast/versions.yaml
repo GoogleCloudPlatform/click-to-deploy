@@ -65,7 +65,25 @@ versions:
     excludeTests:
     - tests/functional_tests/hazelcast_mancenter_test.yaml
     - tests/functional_tests/hazelcast_test.yaml
-
+  # Hazelcast Management Center 4
+  - dir: '4/debian10/hazelcast-mc/4.2021'
+    repo: 'hazelcast-mc3'
+    templateSubDir: 'hazelcast-mc4'
+    tags:
+    - '4.2021.06-debian9'
+    - '4.2021.06'
+    - '4.2021-debian9'
+    - '4.2021'
+    - '4-debian9'
+    - '4'
+    - 'latest'
+    from: 'gcr.io/google-appengine/debian10:latest'
+    packages:
+      hazelcastmc:
+        version: '4.2021.06'
+        sha256: '4cacf7f70d17a364d629dc353795849c36d984a6f688da1b500eb2240828a088'
+    excludeTests:
+    - tests/functional_tests/hazelcast_test.yaml
   # Hazelcast Management Center
   - dir: '3/debian9/hazelcast-mc/3.12'
     repo: 'hazelcast-mc3'
@@ -77,7 +95,6 @@ versions:
     - '3.12'
     - '3-debian9'
     - '3'
-    - 'latest'
     from: 'gcr.io/google-appengine/debian9:latest'
     packages:
       hazelcastmc:
@@ -85,7 +102,6 @@ versions:
         sha256: 'a12528ec4907ca03042944c84397d1bd846486c0b8099b611b30bb50c47b792a'
     excludeTests:
     - tests/functional_tests/hazelcast_test.yaml
-
 # Enable parallel build.
 cloudbuild:
   enable_parallel: true
