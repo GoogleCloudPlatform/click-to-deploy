@@ -21,7 +21,6 @@ setup:
 
 teardown:
 - command: [docker, rm, -f, some-$UNIQUE-id]
-- command: [docker, rm, -f, some-$UNIQUE-id-mc]
 - command: [docker, rm, -f, some-$UNIQUE-id-1]
 - command: [docker, network, rm, testbridge-$UNIQUE-id]
 
