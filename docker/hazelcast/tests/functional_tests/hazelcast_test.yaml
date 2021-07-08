@@ -14,10 +14,11 @@
 
 setup:
 - command: [docker, network, create, -d, bridge, testbridge-$UNIQUE-id]
+- command: [sleep, 10s]
 - command: [docker, run, --name, some-$UNIQUE-id, '--net', testbridge-$UNIQUE-id, '-p5701:5701', -e, DEBUG_DOCKER_ENTRYPOINT='foo', -d, '$IMAGE']
-- command: [sleep, 5s]
+- command: [sleep, 10s]
 - command: [docker, run, --name, some-$UNIQUE-id-1, '--net', testbridge-$UNIQUE-id, '-p5702:5701', -e, DEBUG_DOCKER_ENTRYPOINT='foo', -d, '$IMAGE']
-- command: [sleep, 5s]
+- command: [sleep, 10s]
 
 teardown:
 - command: [docker, rm, -f, some-$UNIQUE-id]
