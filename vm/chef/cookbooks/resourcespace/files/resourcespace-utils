@@ -1,0 +1,52 @@
+#!/bin/bash -eu
+#
+# Copyright 2021 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
+
+#######################################
+# Awaits for host and port be ready.
+# Arguments:
+#   Target Hostname.
+#   Target Port.
+#   Timeout expected, 300s by default.
+#######################################
+function wait_for_port() {
+  local -r host="$1"
+  local -r port="$2"
+  local -r timeout="${3:-300}"
+
+  timeout --preserve-status "${timeout}" bash -c "until echo > /dev/tcp/${host}/${port}; do sleep 2; done"
+  if [[ "$?" -ne 0 ]]; then
+    exit 1
+  fi
+}
+
+#######################################
+# Creates a user for application in MYSQL database.
+# Arguments:
+#   MySQL Database Name.
+#   MySQL Username to be created.
+#   MySQL Password for username created.
+#######################################
+function setup_mysql_user() {
+  local -r db_name="$1"
+  local -r db_user="$2"
+  local -r db_password="$3"
+
+  mysql -u root -e "CREATE USER '${db_user}'@'localhost' IDENTIFIED BY '${db_password}';"
+  mysql -u root -e "GRANT ALL PRIVILEGES ON ${db_name}.* TO '${db_user}'@'localhost' IDENTIFIED BY '${db_password}';";
+  mysql -u root -e "FLUSH PRIVILEGES"
+}

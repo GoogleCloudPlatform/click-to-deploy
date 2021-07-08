@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,12 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['mysql']['packages'] = ['wget', 'mysql-server', 'mysql-client']
+remote_file '/tmp/docker-compose' do
+  source "https://github.com/docker/compose/releases/download/#{node['docker']['compose']['version']}/docker-compose-Linux-x86_64"
+  verify "echo '#{node['docker']['compose']['sha1']} %{path}' | sha1sum -c"
+  action :create
+end
 
-default['mysql']['bind_address'] = 'localhost'
-default['mysql']['log_bin_trust_function_creators'] = '0'
-
-# Reference: https://dev.mysql.com/downloads/repo/apt/
-default['mysql']['apt']['file'] = 'mysql-apt-config_0.8.17-1_all.deb'
-default['mysql']['apt']['md5'] = '9e393c991311ead61dcc8313aab8e230'
-default['mysql']['apt']['url'] = "https://dev.mysql.com/get/#{node['mysql']['apt']['file']}"
+bash 'install docker compose' do
+  user 'root'
+  code <<-EOH
+    mv /tmp/docker-compose /usr/local/bin/docker-compose
+    chmod +x /usr/local/bin/docker-compose
+    EOH
+  environment({
+    'version' => node['docker']['compose']['version'],
+  })
+end

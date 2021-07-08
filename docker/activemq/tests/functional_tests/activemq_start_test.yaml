@@ -20,23 +20,8 @@ teardown:
 
 target: some-activemq-$UNIQUE-id
 tests:
-- name: Produce "TestMessage" message
-  command: ['bin/activemq', 'producer', '--messageCount', '1', '--message', '"TestMessage"']
+- name: Start activemq
+  command: ['bin/activemq', 'start']
   expect:
     stdout:
-      matches: 'producer-1 Produced: 1 messages'
-
-- name: Consume "TestMessage" message
-  command: ['bin/activemq', 'consumer', '--messageCount', '1']
-  expect:
-    stdout:
-      matches: 'consumer-1 Received TestMessage'
-
-- name: Connect web console with correct credentials
-  command:
-    - sh
-    - -c
-    - wget --user admin --password some-passwd http://localhost:8161/admin -O /dev/null
-  expect:
-    stderr:
-      matches: 'HTTP request sent, awaiting response... 200 OK'
+      matches: 'pidfile created'

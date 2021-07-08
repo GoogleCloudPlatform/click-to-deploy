@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,27 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-package 'install_packages' do
-  package_name node['mysql']['packages']
-  retries 5
-  retry_delay 30
+package 'install packages' do
+  package_name node['docker']['packages']
   action :install
 end
 
-template '/etc/mysql/mysql.conf.d/mysqld.cnf' do
-  source 'mysqld.cnf.erb'
-  variables(
-    :bind_address => node['mysql']['bind_address'],
-    :log_bin_trust_function_creators => node['mysql']['log_bin_trust_function_creators']
-  )
-end
-
-c2d_startup_script 'mysql'
-
-bash 'rm_test_db_and_users' do
+bash 'install docker repo' do
   user 'root'
   code <<-EOH
-    mysql -u root -e "DROP DATABASE IF EXISTS test;"
-    mysql -u root -e "DELETE FROM mysql.user WHERE User != 'mysql.sys' AND User != 'root'"
+    curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
+    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
+    apt update
+    apt-cache policy docker-ce
+  EOH
+end
+
+bash 'install docker' do
+  user 'root'
+  code <<-EOH
+    apt install -y docker-ce
   EOH
 end

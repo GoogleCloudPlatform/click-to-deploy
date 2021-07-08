@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,13 +11,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+# This recipe creates a MySQL VM that is configured to listen on 0.0.0.0
+# and use password authentication for the 'root' user account
 
-default['mysql']['packages'] = ['wget', 'mysql-server', 'mysql-client']
+node.override['mysql']['bind_address'] = '0.0.0.0'
+node.override['mysql']['log_bin_trust_function_creators'] = '1'
 
-default['mysql']['bind_address'] = 'localhost'
-default['mysql']['log_bin_trust_function_creators'] = '0'
+include_recipe 'mysql::version-8.0'
 
-# Reference: https://dev.mysql.com/downloads/repo/apt/
-default['mysql']['apt']['file'] = 'mysql-apt-config_0.8.17-1_all.deb'
-default['mysql']['apt']['md5'] = '9e393c991311ead61dcc8313aab8e230'
-default['mysql']['apt']['url'] = "https://dev.mysql.com/get/#{node['mysql']['apt']['file']}"
+c2d_startup_script 'mysql8-root-localhost-password-setup'
