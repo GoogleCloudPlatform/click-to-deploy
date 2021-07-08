@@ -39,7 +39,7 @@ versions:
         version: '0.14.0'
     excludeTests:
     - tests/functional_tests/hazelcast_mancenter_test.yaml
-  # Hazelcast Server
+  # Hazelcast Server 3
   - dir: '3/debian9/hazelcast/3.12'
     repo: 'hazelcast3'
     templateSubDir: 'hazelcast'
@@ -63,6 +63,7 @@ versions:
       jmx_prometheus_agent:
         version: '0.11.0'
     excludeTests:
+    - tests/functional_tests/hazelcast_test.yaml
     - tests/functional_tests/hazelcast_mancenter_test.yaml
   # Hazelcast Management Center 4
   - dir: '4/debian10/hazelcast-mc/4.2021'
@@ -100,6 +101,7 @@ versions:
         version: '3.12.7'
         sha256: 'a12528ec4907ca03042944c84397d1bd846486c0b8099b611b30bb50c47b792a'
     excludeTests:
+    - tests/functional_tests/hazelcast_mancenter_test.yaml
     - tests/functional_tests/hazelcast_test.yaml
 # Enable parallel build.
 cloudbuild:
