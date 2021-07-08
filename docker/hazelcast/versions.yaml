@@ -39,6 +39,7 @@ versions:
         version: '0.14.0'
     excludeTests:
     - tests/functional_tests/hazelcast_mancenter_test.yaml
+    - tests/functional_tests/hazelcast_mancenter4_test.yaml
   # Hazelcast Server
   - dir: '3/debian9/hazelcast/3.12'
     repo: 'hazelcast3'
