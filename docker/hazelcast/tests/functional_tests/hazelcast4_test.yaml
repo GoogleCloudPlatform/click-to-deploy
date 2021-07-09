@@ -42,7 +42,7 @@ tests:
     stdout:
       equals: bar
 
-- name: GET key value from second container
+- name: GET key value from second container 4
   command: ['curl', '-X', 'GET', 'http://some-$UNIQUE-id-1:5701/hazelcast/rest/maps/mapName/foo']
   expect:
     stdout:
