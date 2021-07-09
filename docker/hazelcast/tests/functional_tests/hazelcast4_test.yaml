@@ -27,16 +27,16 @@ teardown:
 
 target: some-$UNIQUE-id
 tests:
-- name: ping hazelcast
+- name: ping hazelcast 4
   command: ['ping', 'some-$UNIQUE-id', '-c', '5']
 
-- name: POST new key value
+- name: POST new key value 4
   command: ['curl', '-v', 'POST', '-H', 'Content-Type: text/plain', '-d', 'bar', 'http://some-$UNIQUE-id:5701/hazelcast/rest/maps/mapName/foo']
   expect:
     exitCode:
       equals: 0
 
-- name: GET key value from first container
+- name: GET key value from first container 4
   command: ['curl', '-X', 'GET', 'http://some-$UNIQUE-id:5701/hazelcast/rest/maps/mapName/foo']
   expect:
     stdout:
