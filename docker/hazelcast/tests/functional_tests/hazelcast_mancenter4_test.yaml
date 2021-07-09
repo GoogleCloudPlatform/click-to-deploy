@@ -20,7 +20,7 @@ setup:
 teardown:
 - command: [docker, stop, some-$UNIQUE-id-mc]
 - command: [docker, rm, some-$UNIQUE-id-mc]
-- command: [docker, network, rm, testbridge-$UNIQUE-id]
+#- command: [docker, network, rm, testbridge-$UNIQUE-id]
 
 target: some-$UNIQUE-id-mc
 tests:

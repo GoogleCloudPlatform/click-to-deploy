@@ -70,7 +70,7 @@ versions:
     - tests/functional_tests/hazelcast_mancenter4_test.yaml
   # Hazelcast Management Center 4
   - dir: '4/debian10/hazelcast-mc/4.2021'
-    repo: 'hazelcast-mc3'
+    repo: 'hazelcast-mc4'
     templateSubDir: 'hazelcast-mc4'
     tags:
     - '4.2021.06-debian9'
