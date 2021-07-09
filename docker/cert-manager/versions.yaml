@@ -13,9 +13,10 @@
 # limitations under the License.
 
 _variables:
-  from9: &from9 gcr.io/google-appengine/debian9:latest
+  from9: &from9 marketplace.gcr.io/google/debian9
+
 versions:
-  - dir: '1/4.0'
+  - dir: '1/debian9/4.0'
     repo: cert-manager1
     templateSubDir: cert-manager1
     tags:
@@ -30,7 +31,7 @@ versions:
     packages:
       cert-manager:
         version: '1.4.0'
-  - dir: '0/13.0'
+  - dir: '0/debian9/13.0'
     repo: cert-manager0
     templateSubDir: cert-manager0
     tags:

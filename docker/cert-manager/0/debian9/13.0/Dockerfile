@@ -21,7 +21,7 @@ RUN for dep in `find $(bazel info execution_root)/../../external/ -maxdepth 1 -t
 
 
 # Result Image
-FROM gcr.io/google-appengine/debian9:latest
+FROM marketplace.gcr.io/google/debian9
 
 ENV C2D_RELEASE=0.13.0
 ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
