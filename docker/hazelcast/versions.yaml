@@ -106,7 +106,7 @@ versions:
         version: '3.12.7'
         sha256: 'a12528ec4907ca03042944c84397d1bd846486c0b8099b611b30bb50c47b792a'
     excludeTests:
-    - tests/functional_tests/hazelcast_mancenter4_test.yaml
+    - tests/functional_tests/hazelcast_mancenter_test.yaml
     - tests/functional_tests/hazelcast_mancenter4_test.yaml
     - tests/functional_tests/hazelcast_test.yaml
     - tests/functional_tests/hazelcast4_test.yaml
