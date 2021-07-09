@@ -15,7 +15,7 @@
 setup:
 - command: [docker, network, create, -d, bridge, testbridge-$UNIQUE-id]
 - command: [docker, run, --name, some-$UNIQUE-id-mc, '--net', testbridge-$UNIQUE-id, '-p8080:8080', -e, DEBUG_DOCKER_ENTRYPOINT='foo', -d, '$IMAGE']
-- command: [sleep, 10s]
+- command: [sleep, 20s]
 
 teardown:
 - command: [docker, stop, some-$UNIQUE-id-mc]
@@ -24,7 +24,7 @@ teardown:
 
 target: some-$UNIQUE-id-mc
 tests:
-- name: Is Hazelcast Management Center Endpoint available?
+- name: Is Hazelcast Management Center 3 Endpoint available?
   command: [curl, 'http://localhost:8080/hazelcast-mancenter/']
   expect:
     stdout:
