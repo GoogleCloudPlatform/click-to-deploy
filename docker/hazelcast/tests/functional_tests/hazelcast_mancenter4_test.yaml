@@ -15,12 +15,12 @@
 setup:
 - command: [docker, network, create, -d, bridge, testbridge-$UNIQUE-id]
 - command: [docker, run, --name, some-$UNIQUE-id-mc, '--net', testbridge-$UNIQUE-id, '-p8080:8080', -e, DEBUG_DOCKER_ENTRYPOINT='foo', -d, '$IMAGE']
-- command: [sleep, 10s]
+- command: [sleep, 20s]
 
 teardown:
 - command: [docker, stop, some-$UNIQUE-id-mc]
 - command: [docker, rm, some-$UNIQUE-id-mc]
-#- command: [docker, network, rm, testbridge-$UNIQUE-id]
+- command: [docker, network, rm, testbridge-$UNIQUE-id]
 
 target: some-$UNIQUE-id-mc
 tests:
