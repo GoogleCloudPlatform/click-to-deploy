@@ -27,9 +27,7 @@ RUN cat /tmp/apptest/schema.yaml \
     > /tmp/apptest/schema.yaml.new \
     && mv /tmp/apptest/schema.yaml.new /tmp/apptest/schema.yaml
 
-#@TODO temporarily using staging deployer image due to cluster permissions fix that is not yet available on prod.
-#FROM gcr.io/cloud-marketplace-tools/k8s/deployer_helm:$MARKETPLACE_TOOLS_TAG
-FROM gcr.io/cloud-marketplace-staging/marketplace-k8s-app-tools/k8s/deployer_helm:unreleased-pr396
+FROM gcr.io/cloud-marketplace-tools/k8s/deployer_helm:$MARKETPLACE_TOOLS_TAG
 
 COPY --from=build /tmp/gatekeeper.tar.gz /data/chart/
 COPY --from=build /tmp/test/gatekeeper.tar.gz /data-test/chart/
