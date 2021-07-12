@@ -31,7 +31,7 @@ tests:
   command: ['ping', 'some-$UNIQUE-id', '-c', '5']
 
 - name: POST new key value
-  command: ['curl', '-v', 'POST', '-H', 'Content-Type: text/plain', '-d', 'bar', 'http://some-$UNIQUE-id:5701/hazelcast/rest/maps/mapName/foo']
+  command: ['curl', '-v', '-X', 'POST', '-H', 'Content-Type: text/plain', '-d', 'bar', 'http://some-$UNIQUE-id:5701/hazelcast/rest/maps/mapName/foo']
   expect:
     exitCode:
       equals: 0
