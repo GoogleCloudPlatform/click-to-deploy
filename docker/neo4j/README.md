@@ -38,17 +38,17 @@ docker -- pull marketplace.gcr.io/google/neo4j4
 ## Table of Contents
 
  [Using Docker](#using-docker)
-  * [Run a  server](#run-a-activemq-server-docker)
-    * [Runnung Neo4j Service](#Runnung-Neo4j-service)
+  * [Run a server](#run-a-activemq-server-docker)
+    * [Running Neo4j Service](#Running-Neo4j-service)
   * [Use a persistent data volume docker](#Use-a-persistent-data-volume)
-  * [Variables](#Variables)
+  * [Variables, paths and ports](#Variables)
 
 # Using Docker
 
 Consult [Marketplace container documentation](https://cloud.google.com/marketplace/docs/container-images)
 for additional information about setting up your Docker environment.
 
-### <a name="Runnung-Neo4j-service"></a>Runnung Neo4j Service
+### <a name="Running-Neo4j-service"></a>Running Neo4j Service
 
 Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
 
@@ -65,11 +65,10 @@ services:
     environment:
       - NEO4J_AUTH=some-user/some-password
       - NEO4J_dbms_logs_debug_level=DEBUG 
-  ```
- ``` 
- Remote interface available at http://0.0.0.0:7474/ 
  ```
- Or you can use `docker run` directly:
+Remote interface available at http://0.0.0.0:7474/ 
+ 
+Or you can use `docker run` directly:
  
 ```shell
 docker run  --name 'some-neo4j' -it --rm \
@@ -78,11 +77,11 @@ docker run  --name 'some-neo4j' -it --rm \
       -e NEO4J_AUTH="neo4j/some-password" \
       -e NEO4J_dbms_logs_debug_level=DEBUG \
 marketplace.gcr.io/google/neo4j4
-```   
+```
     
-   ### <a name="use-a-persistent-data-volume-docker"></a>Use a persistent data volume
+### <a name="Use-a-persistent-data-volume-docker"></a>Use a persistent data volume
    
-   Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
+Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
    
    ```yaml
 version: '2'
@@ -101,15 +100,13 @@ services:
       - ./logs:/logs
       - ./plugins:/plugins
     environment:
-      NEO4J_AUTH: neo4j/some-password    
+      NEO4J_AUTH: neo4j/some-password
       NEO4J_dbms_logs_debug_level: DEBUG
+ ```
       
-      ```
-     
- Remote interface available at http://0.0.0.0:7474/ 
+Remote interface available at http://0.0.0.0:7474/ 
  
-   ```
-  Or you can use `docker run` directly:
+Or you can use `docker run` directly:
   
 ```shell
 docker run --name 'some-neo4j' -it --rm \
@@ -123,11 +120,33 @@ docker run --name 'some-neo4j' -it --rm \
       -v /logs:/logs \
       -v /plugins:/plugins \
 marketplace.gcr.io/google/neo4j4
-```   
+```
  
- [Variables](#Variables)
+### <a name="Variables"><Variables, paths and ports
+
+
+These are the environment variables understood by the container image.
  
-  | **Variable** | **Description** |
+| **Variable** | **Description** |
 |:-------------|:----------------|
- |NEO4J_AUTH| neo4j credentials|
- |NEO4J_dbms_logs_debug_level| log level|
+|NEO4J_AUTH| neo4j credentials|
+|NEO4J_dbms_logs_debug_level| log level|
+ 
+ 
+These are the filesystem ports used by the container image.
+ 
+| **Port** | **Description** |
+|:---------|:----------------|
+|7474|HTTP listen prot |
+|7687|Bolt connector port |
+
+These are the filesystem paths used by the container image.
+
+| **Path** | **Description** |
+|:---------|:----------------|
+|/conf| Neo4j configs |
+|/data| Neo4j data files |
+|/import| DB related folder |
+|/logs| Path for logs |
+|/plugins| Path for plugins |
+ 
