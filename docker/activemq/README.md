@@ -1,15 +1,15 @@
-ActiveMQ-docker
+activemq-docker
 ============
 Dockerfile source for ActiveMQ [docker](https://docker.io) image.
 
-## Upstream
+# Upstream
 This source repo was originally copied from: https://github.com/apache/activemq
 
 
-## Disclaimer
+# Disclaimer
 This is not an official Google product.
 
-## About
+# <a name="about"></a>About
 This image contains an installation of ActiveMQ
 
 For more information, see the
@@ -27,27 +27,36 @@ gcloud auth configure-docker
 ```shell
 docker -- pull marketplace.gcr.io/google/activemq5
 ```
-## Table of Contents
+Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/docker/activemq/5/debian9/5.16).
+=======
 
- [Using Docker](#using-docker)
-* [Run a  server](#run-a-server)
-   * [Start an activemq instance](#start-a-activemq-instance-docker)
+# <a name="table-of-contents"></a>Table of Contents
+* [Using Docker](#using-docker)
+ * [Running ActiveMQ](#running-activemq-docker)
+  * [Run a  server](#run-a-server)
+  * [Start an activemq instance](#start-a-activemq-instance-docker)
 * [References](#references)
-   * [Ports](#references-ports)
+  * [Ports](#references-ports)
+  * [Environment Variables](#references-environment-variables)
+  * [Volumes](#references-volumes)
 
 # Using Docker
 
 Consult [Marketplace container documentation](https://cloud.google.com/marketplace/docs/container-images)
 for additional information about setting up your Docker environment.
 
+## <a name="running-activemq-docker"></a>Running ActiveMQ
+
 ### <a name="run-a-server"></a> Run a server
 
-## Create and set ownership of `data/` directory to `activemq` user.
+Create and set ownership of `data/` directory to `activemq` user.
+
 ```shell
 mkdir data/
 chown 1000:1000 data/
 ```
-### <a name="start-a-activemq-instance-docker"></a> Start an activemq instance
+
+### <a name="start-a-activemq-instance-docker"></a> Start an ActiveMQ instance
 
 Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
 
@@ -56,7 +65,7 @@ version: '2'
 services:
   activemq:
     container_name: activemq
-    image: marketplace.gcr.io/google/activemq5:5.15
+    image: marketplace.gcr.io/google/activemq5:5.16
     environment:
       - ACTIVEMQ_ADMIN_PASSWORD=some-password
     ports:
@@ -67,7 +76,7 @@ services:
       - "8161:8161"
     volumes:
       - ./data/:/opt/activemq/data
-  ```
+```
   
 Or you can use `docker run` directly:
 
@@ -80,23 +89,39 @@ docker run -e ACTIVEMQ_ADMIN_PASSWORD="some-password" \
     -p 61614:61614 \
     -p 8161:8161 \
     -v $PWD/data/:/opt/activemq/data \
-    marketplace.gcr.io/google/activemq5:5.15
+    marketplace.gcr.io/google/activemq5:5.16
 ```
-Default admin username is ```admin```
-ActiveMQ WebConsole available at http://127.0.0.1:8161
+Default admin username is `admin`
 
-### <a name="references"></a> References
+ActiveMQ WebConsole available at `http://127.0.0.1:8161`
 
-### <a name="references-ports"></a>Ports
+# <a name="references"></a> References
+
+## <a name="references-ports"></a>Ports
+
+These are the ports exposed by the container image.
 
 | **Port** | **Description** |
 |:-------------|:----------------|
-|61616 |JMS|
-|8161 | UI|
-|5672 | AMQP|  
-|61613 | STOMP|
-|1883 | MQTT|  
-|61614 | WS|    
+|61616 | JMS |
+|8161 | UI |
+|5672 | AMQP |
+|61613 | STOMP |
+|1883 | MQTT |
+|61614 | WS |
 
-For more information about ActiveMQ, visit [official documentation](https://activemq.apache.org/).
+## <a name="references-environment-variables"></a>Environment Variables
 
+These are the environment variables understood by the container image.
+
+| **Variable** | **Description** |
+|:-------------|:----------------|
+|ACTIVEMQ_ADMIN_PASSWORD| Password for admin user. |
+
+## <a name="references-volumes"></a>Volumes
+
+These are the filesystem paths used by the container image.
+
+| **Path** | **Description** |
+|:---------|:----------------|
+|/opt/activemq/data| All ActiveMQ files are installed here. |
