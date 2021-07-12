@@ -1,4 +1,5 @@
-# neo4j-docker
+neo4j-docker
+============
 
 Neo4j Community Edition is an open source graph database management system written in Java.
 It provides a web dashboard for managing data and users.
@@ -17,7 +18,8 @@ This source repo was originally copied from: https://github.com/neo4j/docker-neo
 
 This is not an official Google product.
 
-## About
+# <a name="about"></a>About
+
 This image contains an installation of Neo4j
 
 For more information, see the
@@ -35,24 +37,33 @@ gcloud auth configure-docker
 ```shell
 docker -- pull marketplace.gcr.io/google/neo4j4
 ```
-## Table of Contents
+Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/docker/neo4j/4/debian9/4.3).
+
+# <a name="table-of-contents"></a>Table of Contents
 
  [Using Docker](#using-docker)
-  * [Run a server](#run-a-activemq-server-docker)
-    * [Running Neo4j Service](#Running-Neo4j-service)
-  * [Use a persistent data volume docker](#Use-a-persistent-data-volume)
-  * [Variables, paths and ports](#Variables)
+  * [Run a server](#run-a-Neo4j-server-docker)
+    * [Running Neo4j Service](#running-Neo4j-service)
+  * [Use a persistent data volume docker](#use-a-persistent-data-volume)
+  * [References](#references)
+   * [Ports](#references-ports)
+   * [Environment Variables](#references-environment-variables)
+   * [Volumes](#references-volumes)
 
-# Using Docker
+# <a name="using-docker"></a>Using Docker
 
 Consult [Marketplace container documentation](https://cloud.google.com/marketplace/docs/container-images)
 for additional information about setting up your Docker environment.
 
-### <a name="Running-Neo4j-service"></a>Running Neo4j Service
+## <a name="run-a-Neo4j-server-docker"></a>Run a server
+
+This section describes how to spin up a Neo4j service using this image.
+
+### <a name="running-Neo4j-service"></a>Running Neo4j Service
 
 Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
 
- ```yaml
+```yaml
 version: '2'
 services:
   neo4j:
@@ -65,8 +76,8 @@ services:
     environment:
       - NEO4J_AUTH=some-user/some-password
       - NEO4J_dbms_logs_debug_level=DEBUG 
- ```
-Remote interface available at http://0.0.0.0:7474/ 
+```
+Remote interface available at `http://0.0.0.0:7474/` 
  
 Or you can use `docker run` directly:
  
@@ -79,11 +90,11 @@ docker run  --name 'some-neo4j' -it --rm \
 marketplace.gcr.io/google/neo4j4
 ```
     
-### <a name="Use-a-persistent-data-volume-docker"></a>Use a persistent data volume
+### <a name="use-a-persistent-data-volume-docker"></a>Use a persistent data volume
    
 Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
    
-   ```yaml
+```yaml
 version: '2'
 services:
   neo4j:
@@ -102,9 +113,7 @@ services:
     environment:
       NEO4J_AUTH: neo4j/some-password
       NEO4J_dbms_logs_debug_level: DEBUG
- ```
-      
-Remote interface available at http://0.0.0.0:7474/ 
+```
  
 Or you can use `docker run` directly:
   
@@ -122,23 +131,27 @@ docker run --name 'some-neo4j' -it --rm \
 marketplace.gcr.io/google/neo4j4
 ```
  
-### <a name="Variables"><Variables, paths and ports
+# <a name="references"></a>References
 
+## <a name="references-ports"></a>Ports
 
-These are the environment variables understood by the container image.
- 
-| **Variable** | **Description** |
-|:-------------|:----------------|
-|NEO4J_AUTH| neo4j credentials|
-|NEO4J_dbms_logs_debug_level| log level|
- 
- 
 These are the filesystem ports used by the container image.
  
 | **Port** | **Description** |
 |:---------|:----------------|
 |7474|HTTP listen prot |
 |7687|Bolt connector port |
+
+## <a name="references-environment-variables"></a>Environment Variables
+
+These are the environment variables understood by the container image.
+
+| **Variable** | **Description** |
+|:-------------|:----------------|
+|NEO4J_AUTH| neo4j credentials|
+|NEO4J_dbms_logs_debug_level| log level|
+ 
+## <a name="references-volumes"></a>Volumes
 
 These are the filesystem paths used by the container image.
 
