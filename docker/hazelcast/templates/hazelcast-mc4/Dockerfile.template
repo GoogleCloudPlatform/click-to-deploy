@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,13 +38,13 @@ RUN echo "Installing new APK packages" \
     && mv ${MC_INSTALL_NAME}/${MC_INSTALL_JAR} ${MC_INSTALL_JAR} \
     && mv ${MC_INSTALL_NAME}/bin/start.sh start.sh \
     && mv ${MC_INSTALL_NAME}/bin/mc-conf.sh mc-conf.sh
-    
+
 RUN echo "Adding license to /usr/share/hazelcast directory" \
     && mkdir -p /usr/share/hazelcast-management-center/ \
     && curl https://raw.githubusercontent.com/hazelcast/hazelcast/master/LICENSE \
-        -o /usr/share/hazelcast-management-center/LICENSE    
-    
-RUN chmod +x start.sh mc-conf.sh    
+        -o /usr/share/hazelcast-management-center/LICENSE
+
+RUN chmod +x start.sh mc-conf.sh
 
 FROM gcr.io/google-appengine/debian10:latest
 ARG MC_VERSION

@@ -24,7 +24,7 @@ teardown:
 
 target: some-$UNIQUE-id-mc
 tests:
-- name: Is Hazelcast Management Center 3 Endpoint available?
+- name: Is Hazelcast Management Center Endpoint available?
   command: [curl, 'http://localhost:8080/hazelcast-mancenter/']
   expect:
     stdout:
