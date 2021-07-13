@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,12 +14,13 @@
 
 setup:
 - command: [docker, network, create, -d, bridge, testbridge-$UNIQUE-id]
-- command: [docker, run, --name, some-$UNIQUE-id-mc, '--net', testbridge-$UNIQUE-id, '-p8080:8080', -e, DEBUG_DOCKER_ENTRYPOINT='foo', -d, '$IMAGE']
-- command: [sleep, 10s]
+- command: [docker, run, --name, some-$UNIQUE-id-mc, '--net', testbridge-$UNIQUE-id, '-p', '8080:8080', -e, DEBUG_DOCKER_ENTRYPOINT='foo', -d, '$IMAGE']
+- command: [sleep, 20s]
 
 teardown:
-- command: [docker, stop, some-$UNIQUE-id]
-- command: [docker, rm, some-$UNIQUE-id]
+- command: [docker, stop, some-$UNIQUE-id-mc]
+- command: [docker, rm, some-$UNIQUE-id-mc]
+- command: [docker, network, rm, testbridge-$UNIQUE-id]
 
 target: some-$UNIQUE-id-mc
 tests:
