@@ -31,6 +31,16 @@ end
   end
 end
 
+cookbook_file '/etc/apache2/mods-available/dav_svn.conf' do
+  source 'dav_svn.conf'
+  owner 'root'
+  group 'root'
+  mode 0755
+  action :create
+end
+
 service 'apache2' do
   action [ :enable, :restart ]
 end
+
+c2d_startup_script 'subversion'

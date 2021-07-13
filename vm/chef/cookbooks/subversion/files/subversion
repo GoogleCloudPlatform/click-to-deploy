@@ -16,4 +16,21 @@
 
 source /opt/c2d/c2d-utils || exit 1
 
-echo "Installation complete??"
+readonly svn_repository_name="$(get_attribute_value "svn-repository-name")"
+readonly svn_admin_username="$(get_attribute_value "svn-admin-username")"
+readonly svn_admin_password="$(get_attribute_value "svn-admin-password")"
+
+echo "Creating repository..."
+mkdir -p /var/lib/svn/ \
+  && svnadmin create "/var/lib/svn/${svn_repository_name}" \
+  && chown -R www-data:www-data /var/lib/svn \
+  && chmod -R 775 /var/lib/svn
+
+echo "Adding ${svn_admin_username} user..."
+htpasswd -b -c /etc/apache2/dav_svn.passwd \
+  "${svn_admin_username}" "${svn_admin_password}"
+
+echo "Restarting Apache2..."
+systemctl restart apache2
+
+echo "Installation complete."
