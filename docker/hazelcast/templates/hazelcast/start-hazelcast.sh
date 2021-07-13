@@ -34,7 +34,7 @@ if [[ -n "${MAX_HEAP_SIZE}" ]]; then
 fi
 
 if [[ -n "${MANCENTER_URL}" ]]; then
-  export JAVA_OPTS="-Dhazelcast.mancenter.enabled=true -Dhazelcast.mancenter.url=${MANCENTER_URL} ${JAVA_OPTS}"
+  export JAVA_OPTS="-Dhazelcast.rest.enabled=true -Dhazelcast.mancenter.enabled=true -Dhazelcast.mancenter.url=${MANCENTER_URL} ${JAVA_OPTS}"
 else
   export JAVA_OPTS="-Dhazelcast.mancenter.enabled=false ${JAVA_OPTS}"
 fi
