@@ -41,14 +41,14 @@ Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlat
 
 # <a name="table-of-contents"></a>Table of Contents
 
- [Using Docker](#using-docker)
-  * [Run a server](#run-a-Neo4j-server-docker)
-    * [Running Neo4j Service](#running-Neo4j-service)
-  * [Use a persistent data volume docker](#use-a-persistent-data-volume)
-  * [References](#references)
-   * [Ports](#references-ports)
-   * [Environment Variables](#references-environment-variables)
-   * [Volumes](#references-volumes)
+* [Using Docker](#using-docker)
+ * [Run a server](#run-a-Neo4j-server-docker)
+   * [Running Neo4j Service](#running-Neo4j-service)
+ * [Use a persistent data volume docker](#use-a-persistent-data-volume)
+ * [References](#references)
+  * [Ports](#references-ports)
+  * [Environment Variables](#references-environment-variables)
+  * [Volumes](#references-volumes)
 
 # <a name="using-docker"></a>Using Docker
 
