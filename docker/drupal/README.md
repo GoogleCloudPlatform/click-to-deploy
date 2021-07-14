@@ -37,9 +37,9 @@ Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlat
 
 # <a name="table-of-contents"></a>Table of Contents
 * [Using Docker](#using-docker)
- * [Running Drupal](#running-drupal-docker)
-  * [Runnung Drupal with MariaDB Datadase service](#Runnung-Drupal-with-MariaDB-Datadase-service)
-  * [Use a persistent data volume docker](#Use-a-persistent-data-volume)
+  * [Running Drupal](#running-drupal-docker)
+    * [Runnung Drupal with MariaDB Datadase service](#Runnung-Drupal-with-MariaDB-Datadase-service)
+    * [Use a persistent data volume docker](#Use-a-persistent-data-volume)
 * [References](#references)
   * [Ports](#references-ports)
   * [Environment Variables](#references-environment-variables)
