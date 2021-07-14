@@ -87,7 +87,7 @@ docker run  --name 'some-neo4j' -it --rm \
       -p 7687:7687 \
       -e NEO4J_AUTH="neo4j/some-password" \
       -e NEO4J_dbms_logs_debug_level=DEBUG \
-marketplace.gcr.io/google/neo4j4
+      marketplace.gcr.io/google/neo4j4
 ```
     
 ### <a name="use-a-persistent-data-volume-docker"></a>Use a persistent data volume
