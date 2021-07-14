@@ -37,10 +37,10 @@ Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlat
 
 # <a name="table-of-contents"></a>Table of Contents
 * [Using Docker](#using-docker)
- * [Run a  server](#start-a-mediaWiki-instance-docker)
-  * [Running Mediawiki withc MySQL Service](#runnung-mediawiki-with-mysql-db-service)
- * [Use a persistent data volume docker](#use-a-persistent-data-volume)
- * [References](#references)
+  * [Run a  server](#start-a-mediaWiki-instance-docker)
+    * [Running Mediawiki with MySQL Service](#runnung-mediawiki-with-mysql-db-service)
+    * [Use a persistent data volume docker](#use-a-persistent-data-volume)
+* [References](#references)
   * [Ports](#references-ports)
   * [Environment Variables](#references-environment-variables)
   * [Volumes](#references-volumes)
@@ -125,9 +125,9 @@ marketplace.gcr.io/google/mariadb10
 
 ```
 # After initial setup, download LocalSettings.php to the same directory as
-      # this yaml and uncomment the following line and use compose to restart
-      # the mediawiki service
-      # - ./LocalSettings.php:/var/www/html/LocalSettings.php
+# this yaml and uncomment the following line and use compose to restart
+# the mediawiki service
+# - ./LocalSettings.php:/var/www/html/LocalSettings.php
 ```
 
 ```yaml
