@@ -123,11 +123,10 @@ marketplace.gcr.io/google/mariadb10
 
 ### <a name="use-a-persistent-data-volume-docker"></a>Use a persistent data volume
 
-```
-# After initial setup, download LocalSettings.php to the same directory as
-# this yaml and uncomment the following line and use compose to restart
-# the mediawiki service
-# - ./LocalSettings.php:/var/www/html/LocalSettings.php
+```After initial setup, download LocalSettings.php to the same directory as
+this yaml and uncomment the following line and use compose to restart
+the mediawiki service
+- ./LocalSettings.php:/var/www/html/LocalSettings.php
 ```
 
 ```yaml
