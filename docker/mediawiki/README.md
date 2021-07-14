@@ -104,7 +104,7 @@ docker run --name some-mediawiki -p 8080:80 -d \
       -e MEDIAWIKI_DBTYPE=mysql \
       -e MEDIAWIKI_ADMIN_USER=admin \
       -e MEDIAWIKI_ADMIN_PASSWORD=adminpassword \
-marketplace.gcr.io/google/mediawiki1-php7-apache
+      marketplace.gcr.io/google/mediawiki1-php7-apache
 ```
 
 MariaDB:
@@ -116,7 +116,7 @@ docker run --name some-mariadb -d -it \
       -e MYSQL_USER=mediawiki \
       -e MYSQL_DATABASE=MediaWiki \
       -e MYSQL_HOST=mariandb \
-marketplace.gcr.io/google/mariadb10
+      marketplace.gcr.io/google/mariadb10
 
 ```
 
@@ -142,8 +142,8 @@ services:
       - MYSQL_USER=mediawiki
       - MYSQL_DATABASE=MediaWiki
       - MYSQL_HOST=mariandb
-#    volumes:
- #     - /my/own/datadir:/var/lib/mysql
+    volumes:
+      - /my/own/datadir:/var/lib/mysql
     command: ["--default-authentication-plugin=mysql_native_password"]
   mediawiki:
     container_name: some-mediawiki
@@ -179,7 +179,7 @@ docker run --name some-mediawiki -p 8080:80 -d \
       -e MEDIAWIKI_ADMIN_PASSWORD=adminpassword \
       -v /var/www/html/images
       -v /LocalSettings.php:/var/www/html/LocalSettings.php
-marketplace.gcr.io/google/mediawiki1-php7-apache
+      marketplace.gcr.io/google/mediawiki1-php7-apache
 ```
 
 # <a name="references"></a>References
