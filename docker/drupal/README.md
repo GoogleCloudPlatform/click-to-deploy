@@ -117,7 +117,7 @@ docker run -d --name 'some-mariadb' -it --rm \
     -e MYSQL_PASSWORD=some-password \
     -e MYSQL_ROOT_PASSWORD=some-passowrd \
     --network drupal \
-marketplace.gcr.io/google/mariadb10
+    marketplace.gcr.io/google/mariadb10
 ```
 Then, access it via `http://localhost:8080` or `http://host-ip:8080` in a browser.
  
@@ -174,7 +174,7 @@ docker run -d --name 'some-drupal' -p 8080:80 -p 8443:443 \
     -v /var/www/html/profiles \ 
     -v /var/www/html/themes \
     -v /var/www/html/sites \
-marketplace.gcr.io/google/drupal9-php7-apache
+    marketplace.gcr.io/google/drupal9-php7-apache
 ```
 
 # <a name="references"></a>References
