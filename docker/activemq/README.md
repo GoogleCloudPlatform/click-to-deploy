@@ -32,9 +32,9 @@ Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlat
 
 # <a name="table-of-contents"></a>Table of Contents
 * [Using Docker](#using-docker)
- * [Running ActiveMQ](#running-activemq-docker)
-  * [Run a  server](#run-a-server)
-  * [Start an activemq instance](#start-a-activemq-instance-docker)
+  * [Running ActiveMQ](#running-activemq-docker)
+    * [Run a  server](#run-a-server)
+    * [Start an activemq instance](#start-a-activemq-instance-docker)
 * [References](#references)
   * [Ports](#references-ports)
   * [Environment Variables](#references-environment-variables)
