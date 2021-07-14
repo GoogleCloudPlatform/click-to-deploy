@@ -121,10 +121,10 @@ docker run -d --name 'some-mariadb' -it --rm \
 ```
 Then, access it via `http://localhost:8080` or `http://host-ip:8080` in a browser.
  
-### <a name="use-a-persistent-data-volume-docker"></a>Use a persistent data volume
+ ### <a name="use-a-persistent-data-volume-docker"></a>Use a persistent data volume
 
 ```yaml
- version: '2'
+version: '2'
 services:
  mariadb:
   container_name: some-mariadb
