@@ -128,7 +128,7 @@ docker run --name 'some-neo4j' -it --rm \
       -v /import:/import \
       -v /logs:/logs \
       -v /plugins:/plugins \
-marketplace.gcr.io/google/neo4j4
+      marketplace.gcr.io/google/neo4j4
 ```
  
 # <a name="references"></a>References
