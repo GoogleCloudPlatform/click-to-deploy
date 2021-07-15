@@ -26,14 +26,14 @@ versions:
       version: 2.1.3
     mediawiki:
       major: '1.36'
-      sha512: 3429b8781102e2da21c67f3d31bfdb07af0924d579521b4f1a89ddc195e20a6f19f2fa073ddbd2093d4debd19eb595c2eb096a67a6566c3e5fa7260b6f23e3aa
-      version: 1.36.0
+      sha512: 1b84c0ac2160e2a04e7b8da2ffa2bbbda32e6306ca30f6794e4298ac8085ddee4cc2d755394e49af3a00eac393d8e79fdff284b665fba33629fbd1af1f8413d1
+      version: 1.36.1
   repo: mediawiki1-php7-apache
   tags:
-  - 1.36.0-debian9
+  - 1.36.1-debian9
   - 1.36-debian9
   - 1-debian9
-  - 1.36.0
+  - 1.36.1
   - '1.36'
   - '1'
   - latest
@@ -45,12 +45,12 @@ versions:
       version: 2.1.3
     mediawiki:
       major: '1.35'
-      sha512: 2d2e2e0307fa0b8bc52088431301a2fd1aeacc2347a55f663267154c3639b478789c7105454204136b83d070a6cc37045ce4a072846ad2f298a63379712d2da7
-      version: 1.35.2
+      sha512: cb0d899faab5d43d684b00382ffa35c13e8ecff89c056b0fbfef9c510b2d10d53eaebce8bd34d9fff608f5d1d88cc160a233cc497dc9fb9cd027344b2a9593be
+      version: 1.35.3
   repo: mediawiki1-php7-apache
   tags:
-  - 1.35.2-debian9
+  - 1.35.3-debian9
   - 1.35-debian9
-  - 1.35.2
+  - 1.35.3
   - '1.35'
 
