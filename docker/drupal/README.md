@@ -216,4 +216,3 @@ These are the filesystem paths used by the container image.
 | **Path** | **Description** |
 |:---------|:----------------|
 |/var/www/html| All Drupal files are installed here containing user uploaded data, themes, profiles and modules. |
- 
