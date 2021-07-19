@@ -12,7 +12,7 @@ data:
     <hazelcast xsi:schemaLocation="http://www.hazelcast.com/schema/config hazelcast-config-{{ .Values.hazelcast.image.tag }}.xsd"
                    xmlns="http://www.hazelcast.com/schema/config"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-      <management-center enabled="true">${hazelcast.mancenter.url}</management-center>
+      <management-center scripting-enabled="true" />
       <properties>
         <property name="hazelcast.discovery.enabled">true</property>
       </properties>
