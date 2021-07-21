@@ -13,7 +13,7 @@
 # limitations under the License.
 
 default['subversion']['packages'] = [
-  "subversion",
-  "libapache2-mod-svn",
-  "libsvn-dev"
+  'subversion',
+  'libapache2-mod-svn',
+  'libsvn-dev',
 ]
