@@ -18,11 +18,25 @@ describe port(22) do
   it { should be_listening }
 end
 
-describe port(80) do
+describe port(8000) do
   it { should be_listening }
 end
 
-describe port(3306) do
+describe port(8443) do
+  it { should be_listening }
+end
+
+describe port(5432) do
+  it { should be_listening.on('127.0.0.1') }
+  it { should_not be_listening.on('0.0.0.0') }
+end
+
+describe port(8001) do
+  it { should be_listening.on('127.0.0.1') }
+  it { should_not be_listening.on('0.0.0.0') }
+end
+
+describe port(8444) do
   it { should be_listening.on('127.0.0.1') }
   it { should_not be_listening.on('0.0.0.0') }
 end

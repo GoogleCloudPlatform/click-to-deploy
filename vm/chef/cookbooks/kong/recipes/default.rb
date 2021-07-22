@@ -47,3 +47,7 @@ bash 'Install Kong Binary' do
     dpkg -i kong.deb
 EOH
 end
+
+c2d_startup_script 'kong-db-setup'
+
+c2d_startup_script 'kong-setup'

@@ -29,11 +29,15 @@ describe 'C2D startup scripts should exists' do
     it { should exist }
   end
 
-  describe file('/opt/c2d/scripts/01-mysql') do
+  describe file('/opt/c2d/scripts/01-postgresql') do
     it { should exist }
   end
 
-  describe file('/opt/c2d/scripts/02-opencart') do
+  describe file('/opt/c2d/scripts/02-kong-db-setup') do
+    it { should exist }
+  end
+
+  describe file('/opt/c2d/scripts/03-kong-setup') do
     it { should exist }
   end
 end

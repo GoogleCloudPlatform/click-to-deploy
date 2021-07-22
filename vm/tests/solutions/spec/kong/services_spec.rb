@@ -14,12 +14,12 @@
 
 require 'spec_helper'
 
-describe service('apache2'), :if => os[:family] == 'debian' do
+describe service('postgresql'), :if => os[:family] == 'debian' do
   it { should be_enabled }
   it { should be_running }
 end
 
-describe service('mysql'), :if => os[:family] == 'debian' do
+describe service('kong'), :if => os[:family] == 'debian' do
   it { should be_enabled }
   it { should be_running }
 end

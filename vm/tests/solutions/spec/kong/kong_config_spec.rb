@@ -14,12 +14,11 @@
 
 require 'spec_helper'
 
-describe 'Hide PHP Version' do
-  describe file('/etc/php/7.4/apache2/php.ini') do
-    its(:content) { should match /^expose_php = Off$/ }
+describe 'Kong config file should exists' do
+  describe file('/etc/kong/kong.conf') do
+    it { should exist }
   end
-
-  describe command('curl -I http://localhost') do
-    its(:stdout) { should_not match /X-Powered-By:/ }
+  describe file('/usr/src/kong/LICENSE') do
+    it { should exist }
   end
 end
