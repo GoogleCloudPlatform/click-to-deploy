@@ -15,7 +15,7 @@
 require 'spec_helper'
 
 describe 'Kong config file should exists' do
-  describe file('/etc/kong/kong.conf') do
+  describe file('/etc/kong/kong.conf.default') do
     it { should exist }
   end
   describe file('/usr/src/kong/LICENSE') do

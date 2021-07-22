@@ -18,8 +18,3 @@ describe service('postgresql'), :if => os[:family] == 'debian' do
   it { should be_enabled }
   it { should be_running }
 end
-
-describe service('kong'), :if => os[:family] == 'debian' do
-  it { should be_enabled }
-  it { should be_running }
-end
