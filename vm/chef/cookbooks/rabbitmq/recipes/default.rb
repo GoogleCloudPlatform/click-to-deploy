@@ -29,10 +29,10 @@ end
 
 # Configure erlang repository
 apt_repository 'erlang_repo' do
-  uri node['rabbitmq']['apt']['uri']
+  uri node['rabbitmq']['erlang']['apt']['uri']
+  key node['rabbitmq']['erlang']['apt']['key']
   components node['rabbitmq']['apt']['components']
   keyserver node['rabbitmq']['apt']['keyserver']
-  key node['rabbitmq']['erlang']['apt']['uri']
   distribution node['rabbitmq']['apt']['lsb_codename']
   trusted true
 end
@@ -40,9 +40,9 @@ end
 # Configure RabbitMQ repository
 apt_repository 'rabbitmq_repo' do
   uri node['rabbitmq']['apt']['uri']
+  key node['rabbitmq']['apt']['key']
   components node['rabbitmq']['apt']['components']
   keyserver node['rabbitmq']['apt']['keyserver']
-  key node['rabbitmq']['erlang']['apt']['uri']
   distribution node['rabbitmq']['apt']['lsb_codename']
   trusted true
 end
