@@ -28,24 +28,23 @@ package 'Install Deps Packages' do
 end
 
 # Configure erlang repository
-apt_repository 'add_erlang_repo' do
-  uri 'https://dl.cloudsmith.io/public/rabbitmq/rabbitmq-erlang/deb/debian'
-  components ['main']
-  keyserver 'hkps://keys.openpgp.org'
-  key 'https://dl.cloudsmith.io/public/rabbitmq/rabbitmq-erlang/gpg.E495BB49CC4BBE5B.key'
-  distribution 'buster'
+apt_repository 'erlang_repo' do
+  uri node['rabbitmq']['apt']['uri']
+  components node['rabbitmq']['apt']['components']
+  keyserver node['rabbitmq']['apt']['keyserver']
+  key node['rabbitmq']['erlang']['apt']['uri']
+  distribution node['rabbitmq']['apt']['lsb_codename']
   trusted true
 end
 
 # Configure RabbitMQ repository
-apt_repository 'add_rabbitmq_repo' do
-  uri 'https://dl.cloudsmith.io/public/rabbitmq/rabbitmq-server/deb/debian'
-  components ['main']
-  keyserver 'hkps://keys.openpgp.org'
-  key 'https://dl.cloudsmith.io/public/rabbitmq/rabbitmq-server/gpg.9F4587F226208342.key'
-  distribution 'buster'
+apt_repository 'rabbitmq_repo' do
+  uri node['rabbitmq']['apt']['uri']
+  components node['rabbitmq']['apt']['components']
+  keyserver node['rabbitmq']['apt']['keyserver']
+  key node['rabbitmq']['erlang']['apt']['uri']
+  distribution node['rabbitmq']['apt']['lsb_codename']
   trusted true
-  deb_src true
 end
 
 # Update sources

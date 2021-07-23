@@ -35,11 +35,11 @@ default['rabbitmq']['packages'] = [
   'rabbitmq-server',
 ]
 
+default['rabbitmq']['apt']['lsb_codename'] = 'buster'
+default['rabbitmq']['apt']['components'] = ['main']
+default['rabbitmq']['apt']['keyserver'] = 'hkps://keys.openpgp.org'
+default['rabbitmq']['apt']['uri'] = 'https://dl.cloudsmith.io/public/rabbitmq/rabbitmq-server/deb/debian'
+default['rabbitmq']['apt']['key'] = 'https://dl.cloudsmith.io/public/rabbitmq/rabbitmq-server/gpg.9F4587F226208342.key'
 
-
-default['rabbitmq']['package_version'] = '3.8.17'
-
-default['rabbitmq']['erlang']['apt']['uri'] = "https://dl.cloudsmith.io/public/rabbitmq/rabbitmq-erlang/deb/debian"
-default['rabbitmq']['erlang']['apt']['lsb_codename'] = "buster"
-default['rabbitmq']['erlang']['apt']['components'] = ["main"]
+default['rabbitmq']['erlang']['apt']['uri'] = 'https://dl.cloudsmith.io/public/rabbitmq/rabbitmq-erlang/deb/debian'
 default['rabbitmq']['erlang']['apt']['key'] = 'https://dl.cloudsmith.io/public/rabbitmq/rabbitmq-erlang/gpg.E495BB49CC4BBE5B.key'
