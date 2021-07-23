@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# Reference: https://www.rabbitmq.com/install-debian.html#apt
+# Reference: https://www.rabbitmq.com/install-debian.html#apt-cloudsmith
 
 # Update sources
 apt_update 'update' do
@@ -27,19 +27,24 @@ package 'Install Deps Packages' do
   package_name node['rabbitmq']['deps_packages']
 end
 
-repos = [
-  { 'name' => 'rabbitmq', 'component' => 'main' },
-  { 'name' => 'rabbitmq-erlang', 'component' => 'erlang-22.x' },
-]
+# Configure erlang repository
+apt_repository 'erlang_repo' do
+  uri node['rabbitmq']['erlang']['apt']['uri']
+  key node['rabbitmq']['erlang']['apt']['key']
+  components node['rabbitmq']['apt']['components']
+  keyserver node['rabbitmq']['apt']['keyserver']
+  distribution node['rabbitmq']['apt']['lsb_codename']
+  trusted true
+end
 
-repos.each do |repo|
-  apt_repository "configure_#{repo['name']}_repository" do
-    uri "https://dl.bintray.com/#{repo['name']}/debian"
-    components [repo['component']]
-    keyserver 'https://github.com/rabbitmq/signing-keys/releases/download/2.0/rabbitmq-release-signing-key.asc'
-    distribution 'buster'
-    trusted true
-  end
+# Configure RabbitMQ repository
+apt_repository 'rabbitmq_repo' do
+  uri node['rabbitmq']['apt']['uri']
+  key node['rabbitmq']['apt']['key']
+  components node['rabbitmq']['apt']['components']
+  keyserver node['rabbitmq']['apt']['keyserver']
+  distribution node['rabbitmq']['apt']['lsb_codename']
+  trusted true
 end
 
 # Update sources
@@ -50,9 +55,8 @@ apt_update 'update' do
 end
 
 package 'install_rabbitmq' do
-  package_name 'rabbitmq-server'
-  version node['rabbitmq']['package_version']
   action :install
+  package_name node['rabbitmq']['packages']
 end
 
 # 1. Set the share cookie such that the erlang nodes can communicate

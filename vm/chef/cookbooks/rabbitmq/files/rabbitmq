@@ -89,10 +89,12 @@ if [[ "${is_stats_node:-0}" -ne 0 ]]; then
   rabbitmqctl set_permissions "${rabbitmq_username}" ".*" ".*" ".*"
   rabbitmqctl set_user_tags "${rabbitmq_username}" administrator
 
-  readonly rabbitmq_admin_cmd="$(find /var/lib/rabbitmq/* -name rabbitmqadmin)"
-  chmod u+x "${rabbitmq_admin_cmd}"
+  # Download Management CLI
+  # https://www.rabbitmq.com/management-cli.html
+  curl -o /usr/sbin/rabbitmqadmin http://localhost:15672/cli/rabbitmqadmin \
+    && chmod +x /usr/sbin/rabbitmqadmin
 
-  until "${rabbitmq_admin_cmd}" \
+  until rabbitmqadmin \
     --username="${rabbitmq_username}" \
     --password="${rabbitmq_password}" \
     declare queue name=sample_queue; do
