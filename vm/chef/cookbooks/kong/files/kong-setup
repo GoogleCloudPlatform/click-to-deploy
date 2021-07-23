@@ -27,7 +27,7 @@ sed -i "s/#pg_user =.*/pg_user = ${db_username}/" /etc/kong/kong.conf
 sed -i "s/#pg_password =.*/pg_password = ${db_password}/" /etc/kong/kong.conf
 sed -i "s/#pg_database = .*/pg_database = kong/" /etc/kong/kong.conf
 
-# Run kong migration script
+# Run kong migration script and enable service
 kong migrations bootstrap
 systemctl enable kong
 systemctl start kong
