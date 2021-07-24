@@ -14,30 +14,45 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source /opt/c2d/c2d-utils || exit 1
+source /opt/c2d/limesurvey-utils || exit 1
 
-export COMPOSER_HOME="/root/.config/composer"
+# export COMPOSER_HOME="/root/.config/composer"
 
-# readonly opencart_email="$(get_attribute_value "opencart-email")"
-# readonly opencart_db_password="$(get_attribute_value "opencart-db-password")"
-# readonly opencart_admin_password="$(get_attribute_value "opencart-admin-password")"
-# readonly opencart_db_user="opencart"
-# readonly opencart_db_name="opencart"
+export LIMESURVEY_DB_HOST="localhost"
+export LIMESURVEY_DB_USERNAME="limesurvey"
+export LIMESURVEY_DB_PASSWORD="$(get_attribute_value "limesurvey-db-password")"
+export LIMESURVEY_DB_NAME="limesurvey"
+
 # readonly opencart_admin_user="admin"
-declare  limesurvey_url="http://$(get_internal_ip)/store/"
+declare limesurvey_url="http://$(get_internal_ip)/"
+declare limesurvey_root="/var/www/html"
+declare apache_usergroup="www-data:www-data"
 
 # Setup website url
 if [[ has_external_ip ]]; then
-  opencart_url="http://$(get_external_ip)/store/"
+  limesurvey_url="http://$(get_external_ip)/"
 fi
+
+# Assign permissions to Apache user
+chown -R "${apache_usergroup}" "${limesurvey_root}/tmp" \
+  && chown -R "${apache_usergroup}" "${limesurvey_root}/upload" \
+  && chown -R "${apache_usergroup}" "${limesurvey_root}/application/config" \
+  chmod -R 755 "${limesurvey_root}/tmp" \
+  && chmod -R 755 "${limesurvey_root}/upload" \
+  && chmod -R 755 "${limesurvey_root}/application/config" \
 
 echo "Awaiting for MySQL be up..."
 wait_for_port "localhost" "3306"
 
-# # Setup MySQL user
-# echo "Setting up MySQL user..."
-# setup_mysql_user "${opencart_db_user}" "${opencart_db_password}" \
-#   "${opencart_db_name}"
+# Setup MySQL user
+echo "Setting up MySQL user..."
+setup_mysql_user "${LIMESURVEY_DB_USERNAME}" "${LIMESURVEY_DB_PASSWORD}" \
+  "${LIMESURVEY_DB_NAME}"
+
+# Configure config.php
+cat "${limesurvey_root}/application/config/config.template.php" \
+  | envsubst '\$LIMESURVEY_DB_HOST,\$LIMESURVEY_DB_USERNAME,\$LIMESURVEY_DB_PASSWORD,\$LIMESURVEY_DB_NAME' \
+  > "${limesurvey_root}/application/config/config.php"
 
 # # Setup Opencart installer
 # echo "Setting up OpenCart Installer..."

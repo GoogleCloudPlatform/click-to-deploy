@@ -12,6 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['limesurvey']['version'] = '3.0.3.7'
+default['limesurvey']['version'] = '5.0.9+210722'
 default['limesurvey']['db']['name'] = 'limesurvey'
-default['limesurvey']['packages'] = ['unzip']

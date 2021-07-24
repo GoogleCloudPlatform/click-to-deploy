@@ -40,55 +40,59 @@ apt_update do
   action :update
 end
 
-package 'Install Packages' do
-  package_name node['limesurvey']['packages']
-  action :install
-end
-
-remote_file '/tmp/drupal.tar.gz' do
-  source 'https://www.drupal.org/download-latest/tar.gz'
+remote_file '/tmp/limesurvey.tar.gz' do
+  source "https://github.com/LimeSurvey/LimeSurvey/archive/refs/tags/#{node['limesurvey']['version']}.tar.gz"
   action :create
 end
 
-# execute 'extract drupal' do
-#   cwd '/tmp'
-#   command 'tar -xf drupal.tar.gz -C /var/www/html --strip-components 1'
-# end
+execute 'Extract LimeSurvey' do
+  cwd '/tmp'
+  command 'tar -xf limesurvey.tar.gz -C /var/www/html --strip-components 1'
+end
 
-# # Clone Limesurvey source code per license requirements.
-# git '/usr/src/opencart' do
-#   repository 'https://github.com/opencart/opencart.git'
-#   reference node['opencart']['version']
-#   action :checkout
-# end
+# Clone LimeSurvey source code due license requirements.
+git '/usr/src/limesurvey' do
+  repository 'https://github.com/LimeSurvey/LimeSurvey.git'
+  reference node['limesurvey']['version']
+  action :checkout
+end
 
-# bash 'Configure Database' do
-#   user 'root'
-#   cwd '/var/www/html'
-#   code <<-EOH
-# # create db
-# mysql -u root -e "CREATE DATABASE $defdb CHARACTER SET utf8 COLLATE utf8_general_ci";
-# EOH
-#   environment({
-#     'defdb' => node['opencart']['db']['name'],
-#   })
-# end
+bash 'Configure Database' do
+  user 'root'
+  cwd '/var/www/html'
+  code <<-EOH
+# create db
+mysql -u root -e "CREATE DATABASE $defdb CHARACTER SET utf8 COLLATE utf8_general_ci";
+EOH
+  environment({
+    'defdb' => node['limesurvey']['db']['name'],
+  })
+end
 
-# # Copy the utils file for opencart startup
-# cookbook_file '/opt/c2d/opencart-utils' do
-#   source 'opencart-utils'
-#   owner 'root'
-#   group 'root'
-#   mode 0644
-#   action :create
-# end
+# Copy the utils file for limesurvey startup
+cookbook_file '/opt/c2d/limesurvey-utils' do
+  source 'limesurvey-utils'
+  owner 'root'
+  group 'root'
+  mode 0644
+  action :create
+end
 
-# apache2_allow_override 'Allow override' do
-#   directory '/var/www/html'
-# end
+# LimeSurvey configuration template
+cookbook_file '/var/www/html/application/config/config.template.php' do
+  source 'config.php'
+  owner 'root'
+  group 'root'
+  mode 0644
+  action :create
+end
 
-# execute 'enable apache modules' do
-#   command 'a2enmod rewrite'
-# end
+apache2_allow_override 'Allow override' do
+  directory '/var/www/html'
+end
+
+execute 'enable apache modules' do
+  command 'a2enmod rewrite'
+end
 
 c2d_startup_script 'limesurvey'
