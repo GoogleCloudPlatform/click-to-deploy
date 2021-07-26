@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2021 Google LLC
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,39 +18,39 @@
 cloudbuild:
   enable_parallel: false
 versions:
+- dir: 1/debian9/1.36
+  from: marketplace.gcr.io/google/php7-apache2:7.3
+  packages:
+    composer:
+      sha256: f8a72e98dec8da736d8dac66761ca0a8fbde913753e9a43f34112367f5174d11
+      version: 2.1.3
+    mediawiki:
+      major: '1.36'
+      sha512: 1b84c0ac2160e2a04e7b8da2ffa2bbbda32e6306ca30f6794e4298ac8085ddee4cc2d755394e49af3a00eac393d8e79fdff284b665fba33629fbd1af1f8413d1
+      version: 1.36.1
+  repo: mediawiki1-php7-apache
+  tags:
+  - 1.36.1-debian9
+  - 1.36-debian9
+  - 1-debian9
+  - 1.36.1
+  - '1.36'
+  - '1'
+  - latest
 - dir: 1/debian9/1.35
   from: marketplace.gcr.io/google/php7-apache2:7.3
   packages:
     composer:
-      sha256: 8e91344a5ca2fc0fb583c50f195a1f36918908561c4ea3d6f01a4ef01c3b8560
-      version: 2.0.9
+      sha256: f8a72e98dec8da736d8dac66761ca0a8fbde913753e9a43f34112367f5174d11
+      version: 2.1.3
     mediawiki:
       major: '1.35'
-      sha512: 71afdfeaa52459fc87e135449579b65aac6ed528240050a6fb5073ab19d091584f5fdfec7a8a48f060b1ddba322243d2e00e659f7e964fbeec69f22a271d756d
-      version: 1.35.1
+      sha512: cb0d899faab5d43d684b00382ffa35c13e8ecff89c056b0fbfef9c510b2d10d53eaebce8bd34d9fff608f5d1d88cc160a233cc497dc9fb9cd027344b2a9593be
+      version: 1.35.3
   repo: mediawiki1-php7-apache
   tags:
-  - 1.35.1-debian9
+  - 1.35.3-debian9
   - 1.35-debian9
-  - 1-debian9
-  - 1.35.1
+  - 1.35.3
   - '1.35'
-  - '1'
-  - latest
-- dir: 1/debian9/1.33
-  from: marketplace.gcr.io/google/php7-apache2:7.3
-  packages:
-    composer:
-      sha256: 8e91344a5ca2fc0fb583c50f195a1f36918908561c4ea3d6f01a4ef01c3b8560
-      version: 2.0.9
-    mediawiki:
-      major: '1.33'
-      sha512: e37280b4c14bfdae3480b8f99672da5c93761f4f80019104d5df24affe0c8447881c6ff85f32d16381ee74a3ce7a083f4dda2e0a24bd6687fbf0b41f11f0564f
-      version: 1.33.4
-  repo: mediawiki1-php7-apache
-  tags:
-  - 1.33.4-debian9
-  - 1.33-debian9
-  - 1.33.4
-  - '1.33'
 

@@ -41,8 +41,7 @@ remote_file '/tmp/kafka.tgz' do
   action :create
 end
 
-# Configure Kafka
-bash 'configure_kafka' do
+bash 'Configure Kafka Scripts' do
   user 'root'
   cwd '/tmp'
   code <<-EOH
@@ -75,3 +74,6 @@ end
 service 'kafka.service' do
   action :enable
 end
+
+# Copy startup script
+c2d_startup_script 'kafka'

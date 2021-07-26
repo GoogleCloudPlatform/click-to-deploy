@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,14 +14,14 @@
 
 setup:
 - command: [docker, network, create, -d, bridge, testbridge-$UNIQUE-id]
-- command: [docker, run, --name, some-$UNIQUE-id, '--net', testbridge-$UNIQUE-id, '-p5701:5701', -e, DEBUG_DOCKER_ENTRYPOINT='foo', -d, '$IMAGE']
-- command: [sleep, 5s]
-- command: [docker, run, --name, some-$UNIQUE-id-1, '--net', testbridge-$UNIQUE-id, '-p5702:5701', -e, DEBUG_DOCKER_ENTRYPOINT='foo', -d, '$IMAGE']
-- command: [sleep, 5s]
+- command: [sleep, 10s]
+- command: [docker, run, --name, some-$UNIQUE-id, '--net', testbridge-$UNIQUE-id, '-p', '5701:5701', -e, DEBUG_DOCKER_ENTRYPOINT='foo', -d, '$IMAGE']
+- command: [sleep, 10s]
+- command: [docker, run, --name, some-$UNIQUE-id-1, '--net', testbridge-$UNIQUE-id, '-p', '5702:5701', -e, DEBUG_DOCKER_ENTRYPOINT='foo', -d, '$IMAGE']
+- command: [sleep, 10s]
 
 teardown:
 - command: [docker, rm, -f, some-$UNIQUE-id]
-- command: [docker, rm, -f, some-$UNIQUE-id-mc]
 - command: [docker, rm, -f, some-$UNIQUE-id-1]
 - command: [docker, network, rm, testbridge-$UNIQUE-id]
 
@@ -31,7 +31,7 @@ tests:
   command: ['ping', 'some-$UNIQUE-id', '-c', '5']
 
 - name: POST new key value
-  command: ['curl', '-v', 'POST', '-H', 'Content-Type: text/plain', '-d', 'bar', 'http://some-$UNIQUE-id:5701/hazelcast/rest/maps/mapName/foo']
+  command: ['curl', '-v', '-X', 'POST', '-H', 'Content-Type: text/plain', '-d', 'bar', 'http://some-$UNIQUE-id:5701/hazelcast/rest/maps/mapName/foo']
   expect:
     exitCode:
       equals: 0

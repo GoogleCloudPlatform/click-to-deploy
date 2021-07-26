@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC.
+# Copyright 2021 Google LLC.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,12 +20,6 @@ teardown:
 
 target: some-activemq-$UNIQUE-id
 tests:
-- name: Start activemq
-  command: ['bin/activemq', 'start']
-  expect:
-    stdout:
-      matches: 'pidfile created'
-
 - name: Produce "TestMessage" message
   command: ['bin/activemq', 'producer', '--messageCount', '1', '--message', '"TestMessage"']
   expect:

@@ -17,11 +17,8 @@
 source /opt/c2d/c2d-utils || exit 1
 
 # Read passwords generated for current instance:
-mysql_redmineuser_password=$(get_attribute_value "mysql-redmineuser-password")
-redmine_admin_password=$(get_attribute_value "redmine-admin-password")
-
-declare -r mysql_redmineuser_password
-declare -r redmine_admin_password
+declare -r mysql_redmineuser_password="$(get_attribute_value "mysql-redmineuser-password")"
+declare -r redmine_admin_password="$(get_attribute_value "redmine-admin-password")"
 
 # Update Redmine's dedicated user password.
 mysql -u root -e "SET PASSWORD FOR 'redmineuser'@'localhost' = PASSWORD('${mysql_redmineuser_password}')"
@@ -32,7 +29,13 @@ cd /opt/redmine
 sed -i "s/password: temp/password: ${mysql_redmineuser_password}/g" config/database.yml
 
 export RAILS_ENV=production
-source /usr/local/rvm/scripts/rvm
+
+# Temporay disable error handling for suppress errors from ruby
+set +eu \
+  && source /usr/local/rvm/scripts/rvm \
+  && set -eu
+
+mkdir -p /tmp && chown -R redmine:redmine tmp/
 
 # Replace default password for Redmine admin user:
-rails runner "user = User.find_by_login('admin') ; user.password, user.password_confirmation = '${redmine_admin_password}'; user.save!" -e production
+bin/rails runner "user = User.find_by_login('admin') ; user.password, user.password_confirmation = '${redmine_admin_password}'; user.save!" -e production
