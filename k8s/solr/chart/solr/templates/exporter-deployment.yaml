@@ -8,6 +8,8 @@ metadata:
     app.kubernetes.io/component: solr-exporter
 spec:
   type: "ClusterIP"
+  clusterIP: None
+  publishNotReadyAddresses: true
   ports:
     - port: 9983
       name: "solr-client"
