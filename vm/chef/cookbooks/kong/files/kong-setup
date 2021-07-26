@@ -31,3 +31,4 @@ sed -i "s/#pg_database = .*/pg_database = kong/" /etc/kong/kong.conf
 kong migrations bootstrap
 systemctl enable kong
 systemctl start kong
+
