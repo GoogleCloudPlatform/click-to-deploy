@@ -6,7 +6,7 @@ include ../images.Makefile
 CHART_NAME := postgresql
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 13.2
+TRACK ?= 13.3
 
 POSTGRESQL_TAG ?= $(TRACK)
 POSTGRESQL_EXPORTER_TAG ?= 0.8.0
