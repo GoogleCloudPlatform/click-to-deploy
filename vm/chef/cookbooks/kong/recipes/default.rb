@@ -45,6 +45,9 @@ bash 'Install Kong Binary' do
   code <<-EOH
     # Install deb package
     dpkg -i kong.deb
+    # Remove non-interactive kong user home directory
+    usermod -d /nonexistent kong
+    rm -rf /home/kong
 EOH
 end
 
