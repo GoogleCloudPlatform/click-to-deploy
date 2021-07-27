@@ -55,9 +55,9 @@ RUN a2enmod rewrite expires
 WORKDIR /usr/src/drupal
 
 # https://www.drupal.org/node/3060/release
-ENV DRUPAL_VERSION 8.9.16
-ENV C2D_RELEASE 8.9.16
-ENV DRUPAL_MD5 d84c1abbdec51463cb062bafe42798f1
+ENV DRUPAL_VERSION 8.9.17
+ENV C2D_RELEASE 8.9.17
+ENV DRUPAL_MD5 bb344910d8ce6bd494fc0c7d7f54049d
 
 # Download package and extract to web volume
 RUN set -eux; \
