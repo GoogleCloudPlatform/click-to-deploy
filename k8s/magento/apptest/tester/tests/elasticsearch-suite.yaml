@@ -30,7 +30,7 @@ actions:
 - name: Existing document can be found
   bashTest:
     script: |-
-      curl -s -f "http://${APP_INSTANCE_NAME}-elasticsearch-svc.$NAMESPACE.svc.cluster.local:9200/_search?q=name:John" | jq -j -r '.hits.hits[]._source.lastname'
+      curl -s -f "http://${APP_INSTANCE_NAME}-elasticsearch-svc.$NAMESPACE.svc.cluster.local:9200/_search?q=name:John" | jq -r '.hits.hits[]._source.lastname'
     expect:
       stdout:
         equals: 'Jones'
