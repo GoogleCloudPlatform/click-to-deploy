@@ -33,7 +33,7 @@ setup:
   - 'MYSQL_RANDOM_ROOT_PASSWORD=yes'
   - '-d'
   - 'marketplace.gcr.io/google/mariadb10'
-- command: [sleep, '20s']
+- command: [sleep, '30s']
 - command:
   - 'docker'
   - 'run'
