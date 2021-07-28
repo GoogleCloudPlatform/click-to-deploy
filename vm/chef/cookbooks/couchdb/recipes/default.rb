@@ -15,7 +15,7 @@
 bash 'add apache repo' do
   cwd '/tmp'
   code <<-EOH
-    echo "deb https://apache.bintray.com/couchdb-deb/ #{node['couchdb']['debian']['codename']} main" >> /etc/apt/sources.list
+    echo "deb https://apache.jfrog.io/artifactory/couchdb-deb/ #{node['couchdb']['debian']['codename']} main" >> /etc/apt/sources.list
     curl -L https://couchdb.apache.org/repo/bintray-pubkey.asc | apt-key add -
 EOH
 end
