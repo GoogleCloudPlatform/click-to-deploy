@@ -5,7 +5,7 @@ actions:
     script: |-
       curl -s -f -X PUT -H 'Content-Type:application/json' -d '{
         "name": "John",
-        "surname": "Smith"
+        "lastname": "Smith"
       }' "http://${APP_INSTANCE_NAME}-elasticsearch-svc.$NAMESPACE.svc.cluster.local:9200/employees/person/1" | jq -r '.result'
     expect:
       exitCode:
