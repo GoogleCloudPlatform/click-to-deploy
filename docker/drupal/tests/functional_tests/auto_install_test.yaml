@@ -30,7 +30,7 @@ setup:
   - '-e'
   - 'MYSQL_USER=drupal'
   - '-e'
-  - 'MYSQL_RANDOM_ROOT_PASSWORD=yes'
+  - 'MYSQL_ROOT_PASSWORD=some-passowrd'
   - '-d'
   - 'marketplace.gcr.io/google/mariadb10'
 - command: [sleep, '30s']
