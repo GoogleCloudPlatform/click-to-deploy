@@ -38,9 +38,7 @@ actions:
 - name: Prometheus metrics are exported
   bashTest:
     script: |-
-      for node in $(getent hosts $APP_INSTANCE_NAME-elasticsearch-prometheus-svc.$NAMESPACE.svc.cluster.local | awk '{print $1}'); do
-        wget -O - -q "http://$node:9114/metrics" | grep -e '^elasticsearch_cluster_health_up '
-      done
+      curl -s -f "http://$APP_INSTANCE_NAME-elasticsearch-prometheus-svc.$NAMESPACE.svc.cluster.local:9114/metrics" | grep -e '^elasticsearch_cluster_health_up '
     expect:
       stdout:
         equals: "elasticsearch_cluster_health_up 1"
