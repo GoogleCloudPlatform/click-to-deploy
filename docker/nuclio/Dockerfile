@@ -14,7 +14,7 @@ COPY patch /src/nuclio
 
 WORKDIR /src/nuclio
 
-RUN patch -p1 < patch
+RUN patch
 
 COPY docker-entrypoint.sh /entrypoint.sh
 
