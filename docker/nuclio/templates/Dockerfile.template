@@ -1,5 +1,5 @@
 {{- $nuclio := index .Packages "nuclio" -}}
-FROM gcr.io/cloud-builders/docker
+FROM gcr.io/iguazio/golang:1.14.3
 
 ENV NUCLIO_VERSION={{ $nuclio.Version }}
 ENV NUCLIO_LABEL={{ $nuclio.Version }}

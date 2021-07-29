@@ -1,4 +1,4 @@
-FROM gcr.io/cloud-builders/docker
+FROM gcr.io/iguazio/golang:1.14.3
 
 ENV NUCLIO_VERSION=1.6.15
 ENV NUCLIO_LABEL=1.6.15
