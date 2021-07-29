@@ -15,11 +15,10 @@
 _variables:
   from9: &from10 gcr.io/google-appengine/debian10:latest
   nuclio: &nuclio
-    version: '1.6.11'
+    version: '1.6.15'
 versions:
   - dir: 'nuclio_builder'
     repo: nuclio_builder
-    templateSubDir: nuclio_builder
     tags: [ 'latest' ]
     builder: true
     packages:
@@ -27,24 +26,24 @@ versions:
   - repo: nuclio-controller
     builderImage: 'nuclio_builder:latest'
     builderArgs: [ 'controller' ]
-    imageNameFromBuilder: 'local/controller:1.6.11'
+    imageNameFromBuilder: 'local/controller:1.6.15'
     tags:
-      - '1.6.11-debian9'
+      - '1.6.15-debian9'
       - '1.6-debian9'
       - '1-debian9'      
-      - '1.6.11'
+      - '1.6.15'
       - '1.6'
       - '1'
       - 'latest'
   - repo: nuclio-dashboard
     builderImage: 'nuclio_builder:latest'
     builderArgs: [ 'dashboard' ]
-    imageNameFromBuilder: 'local/dashboard:1.6.11'
+    imageNameFromBuilder: 'local/dashboard:1.6.15'
     tags:
-      - '1.6.11-debian9'
+      - '1.6.15-debian9'
       - '1.6-debian9'
       - '1-debian9'
-      - '1.6.11'
+      - '1.6.15'
       - '1.6'
       - '1'
       - 'latest'

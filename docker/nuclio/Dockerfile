@@ -1,8 +1,7 @@
-{{- $nuclio := index .Packages "nuclio" -}}
 FROM gcr.io/cloud-builders/docker
 
-ENV NUCLIO_VERSION={{ $nuclio.Version }}
-ENV NUCLIO_LABEL={{ $nuclio.Version }}
+ENV NUCLIO_VERSION=
+ENV NUCLIO_LABEL=
 ENV NUCLIO_DOCKER_REPO=local
 
 RUN git clone https://github.com/nuclio/nuclio.git /src/nuclio/ \
@@ -14,8 +13,6 @@ RUN apt-get update && apt-get install make golang -y
 COPY patch /src/nuclio
 
 WORKDIR /src/nuclio
-
-RUN patch -p1 < patch
 
 COPY docker-entrypoint.sh /entrypoint.sh
 
