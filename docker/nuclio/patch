@@ -32,7 +32,7 @@ index 8aafcb34..a03193bb 100644
  #
  
 -FROM alpine:3.11
-+FROM gcr.io/google-appengine/debian9:latest
++FROM gcr.io/google-appengine/debian10:latest
  
 -RUN apk add --no-cache ca-certificates
 +ARG NUCLIO_LABEL
@@ -54,7 +54,7 @@ index 1dadc9c7..60a8d0a1 100644
  #
  
 -FROM nginx:stable-alpine
-+FROM gcr.io/cloud-marketplace-containers/google/nginx1:1.15
++FROM gcr.io/cloud-marketplace-containers/google/nginx1:1.20
 +
 +ARG NUCLIO_LABEL
 +ENV C2D_RELEASE=${NUCLIO_LABEL}
