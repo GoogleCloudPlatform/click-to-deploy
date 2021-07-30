@@ -28,11 +28,6 @@ readonly limesurvey_admin_email="$(get_attribute_value "limesurvey-admin-email")
 declare limesurvey_root="/var/www/html"
 declare apache_usergroup="www-data:www-data"
 
-# Setup website url
-if [[ has_external_ip ]]; then
-  limesurvey_url="http://$(get_external_ip)/"
-fi
-
 # Assign permissions to Apache user
 chown -R "${apache_usergroup}" "${limesurvey_root}/tmp" \
   && chown -R "${apache_usergroup}" "${limesurvey_root}/upload" \
