@@ -16,6 +16,8 @@
 
 source /opt/c2d/limesurvey-utils || exit 1
 
+export COMPOSER_HOME="/root/.config/composer"
+
 export LIMESURVEY_DB_HOST="localhost"
 export LIMESURVEY_DB_USERNAME="limesurvey"
 export LIMESURVEY_DB_NAME="limesurvey"
@@ -55,7 +57,7 @@ composer install -n
 
 # Install Limesurvey
 cd "${limesurvey_root}/application/commands"
-php console install \
+php console.php install \
   "${limesurvey_admin_username}" "${limesurvey_admin_password}" \
   "${limesurvey_admin_fullname}" "${limesurvey_admin_email}"
 
