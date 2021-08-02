@@ -15,7 +15,6 @@
 require 'spec_helper'
 
 describe command('curl -L http://localhost/') do
-  its(:stdout) { should match /name="login_form"/ }
-  its(:stdout) { should match /<title>Sign in - Matomo<\/title>/ }
+  its(:stdout) { should match /<title>Matomo 4.4.0 › Installation<\/title>/ }
   its(:exit_status) { should eq 0 }
 end
