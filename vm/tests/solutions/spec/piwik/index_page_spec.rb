@@ -15,6 +15,6 @@
 require 'spec_helper'
 
 describe command('curl -L http://localhost/') do
-  its(:stdout) { should contain /<title>Matomo<\/title>/ }
+  its(:stdout) { should match /Matomo *<\/title>/ } 
   its(:exit_status) { should eq 0 }
 end
