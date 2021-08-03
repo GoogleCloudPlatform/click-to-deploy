@@ -5,8 +5,8 @@ actions:
     script: |-
       curl -s -f -X PUT -H 'Content-Type:application/json' -d '{
         "name": "John",
-        "surname": "Smith"
-      }' "http://${APP_INSTANCE_NAME}-elasticsearch-svc:9200/employees/person/1" | jq -r '.result'
+        "lastname": "Smith"
+      }' "http://${APP_INSTANCE_NAME}-elasticsearch-svc.$NAMESPACE.svc.cluster.local:9200/employees/person/1" | jq -r '.result'
     expect:
       exitCode:
         equals: 0
@@ -20,7 +20,7 @@ actions:
         "doc": {
           "lastname": "Jones"
         }
-      }' "http://${APP_INSTANCE_NAME}-elasticsearch-svc:9200/employees/person/1/_update" | jq -r '.result'
+      }' "http://${APP_INSTANCE_NAME}-elasticsearch-svc.$NAMESPACE.svc.cluster.local:9200/employees/person/1/_update" | jq -r '.result'
     expect:
       exitCode:
         equals: 0
@@ -30,7 +30,7 @@ actions:
 - name: Existing document can be found
   bashTest:
     script: |-
-      curl -s -f "http://${APP_INSTANCE_NAME}-elasticsearch-svc:9200/_search?q=name:John" | jq -r '.hits.hits[]._source.lastname'
+      sleep 2 && curl -s -f "http://${APP_INSTANCE_NAME}-elasticsearch-svc.$NAMESPACE.svc.cluster.local:9200/_search?q=name:John" | jq -r '.hits.hits[]._source.lastname'
     expect:
       stdout:
         equals: 'Jones'
@@ -38,9 +38,7 @@ actions:
 - name: Prometheus metrics are exported
   bashTest:
     script: |-
-      for node in $(getent hosts $APP_INSTANCE_NAME-elasticsearch-prometheus-svc.$NAMESPACE.svc.cluster.local | awk '{print $1}'); do
-        wget -O - -q "http://$node:9114/metrics" | grep -e '^elasticsearch_cluster_health_up '
-      done
+      curl -s -f "http://$APP_INSTANCE_NAME-elasticsearch-prometheus-svc.$NAMESPACE.svc.cluster.local:9114/metrics" | grep -e '^elasticsearch_cluster_health_up '
     expect:
       stdout:
-        equals: "elasticsearch_cluster_health_up 1\nelasticsearch_cluster_health_up 1"
+        equals: "elasticsearch_cluster_health_up 1"
