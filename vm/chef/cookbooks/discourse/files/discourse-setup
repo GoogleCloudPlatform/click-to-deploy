@@ -20,14 +20,17 @@ source /opt/c2d/c2d-utils || exit 1
 readonly discourse_user_email="${discourse_user_email:-$(get_attribute_value "discourse-user-email")}"
 readonly discourse_user_password="${discourse_user_password:-$(get_attribute_value "discourse-user-password")}"
 readonly discourse_db_password="${discourse_db_password:-$(get_attribute_value "discourse-db-password")}"
+
+set +e # allow for empty optional variable
 discourse_hostname="${discourse_hostname:-$(get_attribute_value "discourse-hostname")}"
+set -e
 
 # Enforce to use IP instead Discourse hostname if not specified
 if [ -z ${discourse_hostname} ]; then
   if has_external_ip; then
     discourse_hostname="$(get_external_ip)"
   else
-    discourse_hostname=="$(get_internal_ip)"
+    discourse_hostname="$(get_internal_ip)"
   fi
 fi
 
@@ -44,6 +47,7 @@ set +u
 # Creating Discourse admin user
 export RAILS_ENV=production
 source /usr/local/rvm/scripts/rvm
+
 cd /var/www/discourse
 expect -c "\
   spawn bundle exec rake admin:create
@@ -58,5 +62,5 @@ expect -c "\
   expect EOF" | grep "Your account now has Admin privileges"
 
 # Applying changes
-systemctl is-active nginx && systemctl restart nginx
-systemctl is-active puma && systemctl restart puma || (sleep 10 && systemctl restart puma)
+systemctl restart nginx
+systemctl restart puma || (sleep 10 && systemctl restart puma)
