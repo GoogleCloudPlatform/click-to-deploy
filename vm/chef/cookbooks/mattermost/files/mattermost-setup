@@ -42,3 +42,8 @@ setup_nginx "${default_domain}"
 
 # Start Mattermost
 systemctl start mattermost
+
+# Wait until ready.
+until curl "http://localhost:80"; do
+  sleep 3
+done
