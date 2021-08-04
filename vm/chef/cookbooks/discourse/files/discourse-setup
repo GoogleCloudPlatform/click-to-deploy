@@ -21,9 +21,8 @@ readonly discourse_user_email="${discourse_user_email:-$(get_attribute_value "di
 readonly discourse_user_password="${discourse_user_password:-$(get_attribute_value "discourse-user-password")}"
 readonly discourse_db_password="${discourse_db_password:-$(get_attribute_value "discourse-db-password")}"
 
-set +e # allow for empty optional variable
-discourse_hostname="${discourse_hostname:-$(get_attribute_value "discourse-hostname")}"
-set -e
+# Getting optional deployment variables
+discourse_hostname="${discourse_hostname:-$(get_attribute_value "discourse-hostname" || true)}"
 
 # Enforce to use IP instead Discourse hostname if not specified
 if [ -z ${discourse_hostname} ]; then
