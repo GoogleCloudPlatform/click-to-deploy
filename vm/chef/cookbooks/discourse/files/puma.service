@@ -11,7 +11,6 @@ Environment=RAILS_ENV=production
 PIDFile=/home/discourse/discourse/tmp/pids/puma.pid
 ExecStart=/bin/bash -c 'source /usr/local/rvm/scripts/rvm; bundle exec puma -e production'
 ExecStop=/bin/bash -c 'source /usr/local/rvm/scripts/rvm; bundle exec pumactl stop'
-ExecRestart=/bin/bash -c 'source /usr/local/rvm/scripts/rvm; bundle exec pumactl restart'
 ExecReload=/bin/bash -c 'source /usr/local/rvm/scripts/rvm; bundle exec pumactl phased-restart'
 Restart=always
 KillMode=process
