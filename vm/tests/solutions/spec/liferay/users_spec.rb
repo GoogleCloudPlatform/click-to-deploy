@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,17 +14,8 @@
 
 require 'spec_helper'
 
-describe 'Disable Apache Web Server Signature' do
-  describe file('/etc/apache2/conf-available/security.conf') do
-    its(:content) { should match /^ServerTokens Prod$/ }
-    its(:content) { should match /^ServerSignature Off$/ }
-  end
-
-  describe command('curl -I http://localhost') do
-    its(:stdout) { should match /^Server: Apache\r$/ }
-  end
-
-  describe command('curl http://localhost/page-does-not-exists') do
-    its(:stdout) { should_not match /<address>(.*?)<\/address>/ }
-  end
+describe user('liferay') do
+  it { should exist }
+  it { should belong_to_group 'liferay' }
+  it { should have_home_directory '/opt/liferay' }
 end

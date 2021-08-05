@@ -14,12 +14,18 @@
 
 require 'spec_helper'
 
-describe 'Hide PHP Version' do
-  describe file('/etc/php/7.4/apache2/php.ini') do
-    its(:content) { should match /^expose_php = Off$/ }
-  end
+describe package('mysql-client') do
+  it { should be_installed }
+end
 
-  describe command('curl -I http://localhost') do
-    its(:stdout) { should_not match /X-Powered-By:/ }
-  end
+describe package('mysql-server') do
+  it { should be_installed }
+end
+
+describe package('openjdk-8-jdk-headless') do
+  it { should be_installed }
+end
+
+describe package('openjdk-8-jre-headless') do
+  it { should be_installed }
 end

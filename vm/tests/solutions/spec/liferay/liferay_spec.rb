@@ -14,11 +14,20 @@
 
 require 'spec_helper'
 
-describe port(22) do
-  it { should be_listening }
+describe 'Source code should exists' do
+  describe file('/usr/src/liferay/copyright.txt') do
+    it { should exist }
+  end
 end
 
-describe port(3306) do
-  it { should be_listening.on('127.0.0.1') }
-  it { should_not be_listening.on('0.0.0.0') }
+describe 'Liferay bundle should exists' do
+  describe file('/opt/liferay/readme.html') do
+    it { should exist }
+  end
+end
+
+describe 'Liferay startup script should exists' do
+  describe file('/etc/init.d/liferay') do
+    it { should exist }
+  end
 end
