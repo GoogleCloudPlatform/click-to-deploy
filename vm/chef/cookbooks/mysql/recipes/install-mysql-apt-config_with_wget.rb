@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,18 +11,19 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+# Install mysql-apt-config -- MySQL installation package
 
-apt_repository 'php' do
-  uri 'https://packages.sury.org/php/'
-  key 'https://packages.sury.org/php/apt.gpg'
-  components ['main']
-end
-
-package 'install packages' do
-  package_name node['php74']['packages']
+apt_package 'wget' do
   action :install
 end
 
-node['php74']['modules'].each do |pkg|
-  include_recipe "php74::module_#{pkg}"
+remote_file "/tmp/#{node['mysql']['apt']['file']}" do
+  source node['mysql']['apt']['url']
+  verify "echo '#{node['mysql']['apt']['md5']} %{path}' | md5sum -c"
+end
+
+package 'mysql-apt-config' do
+  source "/tmp/#{node['mysql']['apt']['file']}"
+  provider Chef::Provider::Package::Dpkg
 end
