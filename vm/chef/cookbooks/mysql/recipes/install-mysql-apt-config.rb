@@ -15,7 +15,7 @@
 # Install mysql-apt-config -- MySQL installation package
 
 apt_package 'wget' do
- action :install
+  action :install
 end
 
 remote_file "/tmp/#{node['mysql']['apt']['file']}" do
