@@ -16,30 +16,30 @@
 
 source /opt/c2d/c2d-utils || exit 1
 
-readonly liferay_admin_name="$(get_attribute_value "liferay-admin-name")"
+# Default user
+readonly liferay_admin_name="admin"
+readonly liferay_admin_email="admin@liferay.com"
 readonly liferay_admin_password="$(get_attribute_value "liferay-admin-password")"
-readonly liferay_admin_email="$(get_attribute_value "liferay-admin-email")"
 
 # Create portal-setup-wizard.properties file
 cat << EOF > /opt/liferay/portal-setup-wizard.properties
-admin.email.from.address=${liferay_admin_email}
-admin.email.from.name=${liferay_admin_name}
 default.admin.password=${liferay_admin_password}
 default.admin.screen.name=${liferay_admin_name}
-default.admin.email.address.prefix=
+default.admin.email.address.prefix=${liferay_admin_name}
 default.admin.first.name=${liferay_admin_name}
-default.admin.middle.name=
-default.admin.last.name=
+default.admin.last.name=${liferay_admin_name}
+admin.email.from.address=${liferay_admin_email}
+admin.email.from.name=${liferay_admin_name} ${liferay_admin_name}
+company.default.web.id=liferay.com
 company.default.locale=en_US
 company.default.time.zone=UTC
-company.default.web.id=
 liferay.home=/opt/liferay
 setup.wizard.enabled=false
 EOF
 chown liferay:liferay /opt/liferay/portal-setup-wizard.properties
 
 # Add liferay startup script to start on boot
-# update-rc.d liferay defaults 99
+update-rc.d liferay defaults 99
 
 # Start liferay service
-# /etc/init.d/liferay start
+/etc/init.d/liferay start
