@@ -44,6 +44,4 @@ setup_nginx "${default_domain}"
 systemctl start mattermost
 
 # Wait until ready.
-until curl "http://localhost:80"; do
-  sleep 3
-done
+wait_for_app
