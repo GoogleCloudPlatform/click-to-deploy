@@ -12,9 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name 'lapp'
-supports 'debian'
-depends 'apache2'
-depends 'postgresql'
-depends 'phppgadmin'
-depends 'php74'
+# Repository branch name follows the pattern: REL_7-13-0.
+default['phppgadmin']['version'] = '7.13.0'.gsub! '.', '-'

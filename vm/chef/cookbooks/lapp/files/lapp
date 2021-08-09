@@ -1,10 +1,12 @@
-# Copyright 2021 Google LLC
+#!/bin/bash -eu
+#
+# Copyright 2021 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#      http://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,14 +14,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'spec_helper'
+source /opt/c2d/c2d-utils || exit 1
 
-describe 'Hide PHP Version' do
-  describe file('/etc/php/7.4/apache2/php.ini') do
-    its(:content) { should match /^expose_php = Off$/ }
-  end
+readonly db_username="app"
+readonly db_password="$(get_attribute_value "lapp-db-password")"
+readonly db_name="$(get_attribute_value "lapp-db-name")"
 
-  describe command('curl -I http://localhost') do
-    its(:stdout) { should_not match /X-Powered-By:/ }
-  end
-end
+# Create app user
+sudo -u postgres psql -c "CREATE USER ${db_username} WITH PASSWORD '${db_password}';"
+sudo -u postgres psql -c "CREATE DATABASE ${db_name} OWNER ${db_username};"
+
+echo "LAPP Installation complete?"

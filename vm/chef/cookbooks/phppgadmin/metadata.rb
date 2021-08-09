@@ -12,9 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name 'lapp'
-supports 'debian'
-depends 'apache2'
-depends 'postgresql'
-depends 'phppgadmin'
+name 'phppgadmin'
+depends 'git'
 depends 'php74'
+supports 'debian'

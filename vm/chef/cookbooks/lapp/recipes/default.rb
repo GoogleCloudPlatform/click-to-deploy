@@ -19,6 +19,15 @@ include_recipe 'postgresql'
 include_recipe 'php74'
 include_recipe 'php74::module_libapache2'
 include_recipe 'php74::module_pgsql'
+include_recipe 'phppgadmin'
+
+remote_directory '/var/www/html' do
+  source 'homepage'
+  owner 'www-data'
+  group 'www-data'
+  mode 0755
+  action :create
+end
 
 cookbook_file '/etc/apache2/sites-available/lapp-server.conf' do
   source 'lapp-server.conf'
