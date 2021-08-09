@@ -20,9 +20,9 @@ versions:
     repo: cert-manager1
     templateSubDir: cert-manager1
     tags:
-      - '1.4.0-debian9'
+      - '1.4.3-debian9'
       - '1.4-debian9'
-      - '1.4.0'
+      - '1.4.3'
       - '1.4'
       - '1-debian9'
       - '1'
