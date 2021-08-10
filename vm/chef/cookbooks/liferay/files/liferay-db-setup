@@ -17,7 +17,7 @@
 source /opt/c2d/c2d-utils || exit 1
 
 readonly db_username="liferay"
-readonly db_password="{liferay_db_password:-$(get_attribute_value "liferay-db-password")}"
+readonly db_password="${liferay_db_password:-$(get_attribute_value "liferay-db-password")}"
 readonly db_name="liferay"
 
 # Create liferay user and database
