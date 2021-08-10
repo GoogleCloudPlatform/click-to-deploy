@@ -19,7 +19,7 @@ source /opt/c2d/c2d-utils || exit 1
 # Default user
 readonly liferay_admin_name="admin"
 readonly liferay_admin_email="admin@liferay.com"
-readonly liferay_admin_password="$(get_attribute_value "liferay-admin-password")"
+readonly liferay_admin_password="{liferay_admin_password:-$(get_attribute_value "liferay-admin-password")}"
 
 # Create portal-setup-wizard.properties file
 cat << EOF > /opt/liferay/portal-setup-wizard.properties
@@ -40,8 +40,8 @@ chown liferay:liferay /opt/liferay/portal-setup-wizard.properties
 
 # Update liferay tomcat path
 tomcat_path=$(readlink -f /opt/liferay/tomcat*)/
-
 sed -i "s|/opt/liferay/tomcat/|${tomcat_path}|g" /etc/systemd/system/liferay.service
+systemctl daemon-reload
 
 # Start liferay service
 systemctl start liferay
