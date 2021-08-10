@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,9 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name 'discourse'
-depends 'postgresql'
-depends 'c2d-config'
-depends 'git'
-depends 'rvm'
-supports 'debian'
+default['kong']['version'] = '2.5.0'
+default['kong']['sha1'] = 'c1fc7092253914c980fe369b9083cf1ef04f41f2'
+default['kong']['db']['name'] = 'kong'
+default['kong']['packages'] = ['zlib1g-dev']
