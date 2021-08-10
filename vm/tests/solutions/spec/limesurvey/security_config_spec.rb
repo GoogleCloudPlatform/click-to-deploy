@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,9 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name 'discourse'
-depends 'postgresql'
-depends 'c2d-config'
-depends 'git'
-depends 'rvm'
-supports 'debian'
+require 'spec_helper'
+
+describe 'Disable Apache Web Server Signature' do
+  describe file('/etc/apache2/conf-available/security.conf') do
+    its(:content) { should match /^ServerTokens Prod$/ }
+    its(:content) { should match /^ServerSignature Off$/ }
+  end
+
+  describe command('curl -I http://localhost') do
+    its(:stdout) { should match /^Server: Apache\r$/ }
+  end
+
+  describe command('curl http://localhost/page-does-not-exists') do
+    its(:stdout) { should_not match /<address>(.*?)<\/address>/ }
+  end
+end

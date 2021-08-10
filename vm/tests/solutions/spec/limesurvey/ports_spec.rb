@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,9 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name 'discourse'
-depends 'postgresql'
-depends 'c2d-config'
-depends 'git'
-depends 'rvm'
-supports 'debian'
+require 'spec_helper'
+
+describe port(22) do
+  it { should be_listening }
+end
+
+describe port(80) do
+  it { should be_listening }
+end
+
+describe port(3306) do
+  it { should be_listening.on('127.0.0.1') }
+  it { should_not be_listening.on('0.0.0.0') }
+end
