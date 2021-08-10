@@ -51,6 +51,11 @@ end
 # Download installation file and verify its checksum
 # NOTE: this operation is conducted without certificate check,
 # because DigiCert's certificates are untrusted on Debian 9
+
+apt_package 'wget' do
+  action :install
+end
+
 bash 'download_and_check_alfresco' do
   code <<-EOH
     wget --no-check-certificate $alfresco_install_url -O /tmp/alfresco.bin

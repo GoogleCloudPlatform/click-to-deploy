@@ -14,10 +14,6 @@
 #
 # Download sources according to OSPO spreadsheet.
 
-apt_package 'wget' do
-  action :install
-end
-
 package 'install_dev_packages' do
   package_name node['alfresco']['src']['temp_packages']
   action :install
