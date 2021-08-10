@@ -73,8 +73,8 @@ bash 'Install Liferay bundle' do
   code <<-EOH
   # Download Liferay Tomcat bundle for JAR dependencies
   curl -s https://api.github.com/repos/liferay/liferay-portal/releases/tags/$version | \
-  jq --raw-output '.assets[].browser_download_url' | grep -E ".*tomcat.*\.(tar\.gz)$"| \
-  xargs wget -q -O liferay-bundle.tar.gz
+    jq --raw-output '.assets[].browser_download_url' | grep -E ".*tomcat.*\.(tar\.gz)$"| \
+    xargs wget -q -O liferay-bundle.tar.gz
   echo "$sha1 liferay-bundle.tar.gz" | sha1sum -c || exit 1
 
   mkdir -p liferay-bundle
@@ -94,25 +94,17 @@ bash 'Install Liferay bundle' do
   })
 end
 
-bash 'Copy Liferay source code ' do
-  user 'root'
-  cwd '/tmp'
-  code <<-EOH
-    # Copy liferay source code for license compliance
-    mkdir -p liferay-source
-    tar xfvz liferay-source.tar.gz -C liferay-source
-    mkdir -p /usr/src/liferay
-    cp -r liferay-source/*/* /usr/src/liferay
-  EOH
-end
-
 # Copy startup script
-cookbook_file '/etc/init.d/liferay' do
-  source 'liferay-startup-script'
+cookbook_file '/etc/systemd/system/liferay.service' do
+  source 'liferay-service'
   owner 'root'
   group 'root'
   mode 0755
   action :create
+end
+
+service 'liferay.service' do
+  action [ :enable, :stop ]
 end
 
 bash 'MySQL configuration' do

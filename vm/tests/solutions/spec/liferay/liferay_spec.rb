@@ -26,8 +26,8 @@ describe 'Liferay bundle should exists' do
   end
 end
 
-describe 'Liferay startup script should exists' do
-  describe file('/etc/init.d/liferay') do
+describe 'Liferay service script should exists' do
+  describe file('/etc/systemd/system/liferay.service') do
     it { should exist }
   end
 end

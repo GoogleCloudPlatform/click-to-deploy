@@ -38,8 +38,10 @@ setup.wizard.enabled=false
 EOF
 chown liferay:liferay /opt/liferay/portal-setup-wizard.properties
 
-# Add liferay startup script to start on boot
-update-rc.d liferay defaults 99
+# Update liferay tomcat path
+tomcat_path=$(readlink -f /opt/liferay/tomcat*)/
+
+sed -i "s|/opt/liferay/tomcat/|${tomcat_path}|g" /etc/systemd/system/liferay.service
 
 # Start liferay service
-/etc/init.d/liferay start
+systemctl start liferay
