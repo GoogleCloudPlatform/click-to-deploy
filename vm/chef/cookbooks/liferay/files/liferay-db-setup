@@ -20,6 +20,7 @@ readonly db_username="liferay"
 readonly db_password="{liferay_db_password:-$(get_attribute_value "liferay-db-password")}"
 readonly db_name="liferay"
 
+# Create liferay user and database
 mysql -u root -e "CREATE USER '${db_username}'@'localhost' IDENTIFIED BY '${db_password}';"
 mysql -u root -e "GRANT ALL PRIVILEGES ON ${db_name}.* TO '${db_username}'@'localhost' IDENTIFIED BY '${db_password}'";
 mysql -u root -e "FLUSH PRIVILEGES"
@@ -32,5 +33,4 @@ jdbc.default.driverClassName=com.mysql.jdbc.Driver
 jdbc.default.username=${db_username}
 jdbc.default.password=${db_password}
 EOF
-
 chown liferay:liferay portal-ext.properties
