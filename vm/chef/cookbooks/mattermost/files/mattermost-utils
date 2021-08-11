@@ -115,3 +115,23 @@ function setup_nginx() {
   # Restart nginx configuration
   systemctl restart nginx
 }
+
+#######################################
+# Await the application to be ready.
+#######################################
+function wait_for_app() {
+  local max_retries=10
+  local retry=1
+  local http_code=0
+
+  while [[ "${http_code}" -ne 200 && "${retry}" -le "${max_retries}" ]]; do
+    http_code="$(curl -s -L -o /dev/null -w "%{http_code}" http://localhost)"
+    (( retry=retry+1 ))
+    sleep 5
+  done
+
+  if [[ "${retry}" -gt "${max_retries}" ]]; then
+    echo "Max retries exceeded."
+    exit 1
+  fi
+}
