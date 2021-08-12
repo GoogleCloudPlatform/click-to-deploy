@@ -12,17 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apt_repository 'php' do
-  uri 'https://packages.sury.org/php/'
-  key 'https://packages.sury.org/php/apt.gpg'
-  components ['main']
-end
+require 'spec_helper'
 
-package 'install packages' do
-  package_name node['php74']['packages']
-  action :install
-end
-
-node['php74']['modules'].each do |pkg|
-  include_recipe "php74::module_#{pkg}"
+describe user('liferay') do
+  it { should exist }
+  it { should belong_to_group 'liferay' }
+  it { should have_home_directory '/opt/liferay' }
 end

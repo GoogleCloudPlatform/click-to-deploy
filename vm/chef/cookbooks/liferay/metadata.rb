@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,17 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apt_repository 'php' do
-  uri 'https://packages.sury.org/php/'
-  key 'https://packages.sury.org/php/apt.gpg'
-  components ['main']
-end
-
-package 'install packages' do
-  package_name node['php74']['packages']
-  action :install
-end
-
-node['php74']['modules'].each do |pkg|
-  include_recipe "php74::module_#{pkg}"
-end
+name 'liferay'
+depends 'c2d-config'
+depends 'mysql'
+depends 'openjdk8'
+supports 'debian'

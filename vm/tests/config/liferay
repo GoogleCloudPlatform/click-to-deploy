@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,17 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apt_repository 'php' do
-  uri 'https://packages.sury.org/php/'
-  key 'https://packages.sury.org/php/apt.gpg'
-  components ['main']
-end
+## format 'user1\|user2\|user3'
+export liferay_admin_password="$(cat /dev/urandom | tr -dc "a-zA-Z0-9" | fold -w 12 | head -n 1 | tr -d "\n")"
+export liferay_db_password="$(cat /dev/urandom | tr -dc "a-zA-Z0-9" | fold -w 12 | head -n 1 | tr -d "\n")"
 
-package 'install packages' do
-  package_name node['php74']['packages']
-  action :install
-end
-
-node['php74']['modules'].each do |pkg|
-  include_recipe "php74::module_#{pkg}"
-end
+/opt/c2d/scripts/02-liferay-db-setup
+/opt/c2d/scripts/03-liferay-setup
