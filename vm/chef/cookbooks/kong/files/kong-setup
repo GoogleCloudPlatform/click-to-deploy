@@ -19,6 +19,7 @@ source /opt/c2d/c2d-utils || exit 1
 readonly db_username="kong"
 readonly db_password="$(get_attribute_value "kong-db-password")"
 readonly db_name="kong"
+readonly external_ip="$(get_external_ip)"
 
 # Create kong.conf file
 cp /etc/kong/kong.conf.default /etc/kong/kong.conf
@@ -32,4 +33,15 @@ kong migrations bootstrap
 systemctl enable kong
 systemctl start kong
 
+# Custom banner for kong details
+
+cat << EOF | boxes >> /etc/motd
+Welcome to Kong by Click to Deploy
+
+Documentation:          https://docs.konghq.com/gateway-oss
+Support:                https://discuss.konghq.com/
+License:                https://github.com/Kong/kong/blob/master/LICENSE
+Click-to-deploy Repo:   https://github.com/GoogleCloudPlatform/click-to-deploy
+
+Kong service running on: http://${external_ip}:8000 and https://${external_ip}:8443
 
