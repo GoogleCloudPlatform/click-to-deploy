@@ -26,30 +26,6 @@ ul.bullet-list li {
   list-style-type: circle !important;
 }
 
-pre {
-  text-align: left;
-  white-space: normal;
-}
-
-/* code viewer */
-
-div.code-viewer {
-  background-color: #303030;
-  color: #FFFFFF;
-  font-family:"SFMono-Regular", Consolas, Liberation Mono, Menlo, Courier, monospace;
-  font-size: 0.7em;
-  padding: 10px;
-  padding-left: 15px;
-}
-
-div.code-viewer pre.cv-output {
-  color: #ABABAB;
-}
-
-div.code-viewer pre.cv-output-left {
-  white-space: pre-line !important;
-}
-
-div.code-viewer pre.cv-comment {
-  color: #99CC99;
+body > footer > div > div > a {
+  text-align: center;
 }
