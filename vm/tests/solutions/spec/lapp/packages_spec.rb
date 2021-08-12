@@ -17,3 +17,11 @@ require 'spec_helper'
 describe package('apache2') do
   it { should be_installed }
 end
+
+describe package('php7.4') do
+  it { should be_installed }
+end
+
+describe package('postgresql') do
+  it { should be_installed }
+end
