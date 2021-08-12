@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,15 +12,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['mattermost']['packages'] = ['jq', 'nginx', 'gettext-base']
-default['mattermost']['version'] = '5.37.0'
-default['mattermost']['sha256'] = 'ff1f194047e4a395795b6a6b7de664ad0a0095d7762685745f842130154e97f5'
+require 'spec_helper'
 
-# OS Settings
-default['mattermost']['user'] = 'mattermost'
-default['mattermost']['password'] = `openssl rand -base64 12 | fold -w 12 | head -n1 | tr -d '\r\n'`
+describe port(22) do
+  it { should be_listening }
+end
 
-# DB Settings
-default['mattermost']['db']['name'] = 'mattermost'
+describe port(3306) do
+  it { should be_listening.on('127.0.0.1') }
+  it { should_not be_listening.on('0.0.0.0') }
+end
 
-default['mattermost']['certbot']['version'] = '1.5.0'
+describe port(8005) do
+  it { should_not be_listening.on('0.0.0.0') }
+end
+
+describe port(8080) do
+  it { should be_listening }
+end
+
+describe port(9201) do
+  it { should_not be_listening.on('0.0.0.0') }
+end
+
+describe port(9300) do
+  it { should_not be_listening.on('0.0.0.0') }
+end
