@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,12 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['mysql']['packages'] = ['wget', 'mysql-server', 'mysql-client']
+require 'spec_helper'
 
-default['mysql']['bind_address'] = 'localhost'
-default['mysql']['log_bin_trust_function_creators'] = '0'
+describe 'Source code should exists' do
+  describe file('/usr/src/liferay/copyright.txt') do
+    it { should exist }
+  end
+end
 
-# Reference: https://dev.mysql.com/downloads/repo/apt/
-default['mysql']['apt']['file'] = 'mysql-apt-config_0.8.18-1_all.deb'
-default['mysql']['apt']['md5'] = 'e4859996303bd28a61b3261875560d62'
-default['mysql']['apt']['url'] = "https://dev.mysql.com/get/#{node['mysql']['apt']['file']}"
+describe 'Liferay bundle should exists' do
+  describe file('/opt/liferay/readme.html') do
+    it { should exist }
+  end
+end
+
+describe 'Liferay service script should exists' do
+  describe file('/etc/systemd/system/liferay.service') do
+    it { should exist }
+  end
+end
