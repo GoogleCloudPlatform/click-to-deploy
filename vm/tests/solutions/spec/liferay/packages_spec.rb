@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,17 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apt_repository 'php' do
-  uri 'https://packages.sury.org/php/'
-  key 'https://packages.sury.org/php/apt.gpg'
-  components ['main']
+require 'spec_helper'
+
+describe package('mysql-client') do
+  it { should be_installed }
 end
 
-package 'install packages' do
-  package_name node['php74']['packages']
-  action :install
+describe package('mysql-server') do
+  it { should be_installed }
 end
 
-node['php74']['modules'].each do |pkg|
-  include_recipe "php74::module_#{pkg}"
+describe package('openjdk-8-jdk-headless') do
+  it { should be_installed }
+end
+
+describe package('openjdk-8-jre-headless') do
+  it { should be_installed }
 end
