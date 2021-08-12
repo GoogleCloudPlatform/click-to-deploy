@@ -14,6 +14,25 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+div#mainContainer {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
 footer.page-footer {
   background-color: #1967D2;
 }
@@ -28,4 +47,8 @@ ul.bullet-list li {
 
 body > footer > div > div > a {
   text-align: center;
+}
+
+.page-footer {
+  padding-top: 0px;
 }
