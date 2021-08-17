@@ -13,6 +13,10 @@
 # limitations under the License.
 
 include_recipe 'apache2::mod-rewrite'
+include_recipe 'apache2::mod_deflate'
+include_recipe 'apache2::mod_expires'
+include_recipe 'apache2::mod_headers'
+include_recipe 'apache2::mod_ssl'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 include_recipe 'php74'
@@ -23,7 +27,7 @@ include_recipe 'php74::module_mysql'
 include_recipe 'php74::module_soap'
 include_recipe 'mysql'
 include_recipe 'composer::composer2'
-include_recipe 'elasticsearch'
+include_recipe 'elasticsearch::standalone'
 
 package 'install_dependencies' do
   package_name node['magento']['packages']['dependencies']
@@ -80,4 +84,9 @@ end
 
 execute 'enable php7.4-fpm' do
   command 'a2enconf php7.4-fpm'
+end
+
+# Start elasticsearch
+service 'elasticsearch' do
+  action :start           
 end
