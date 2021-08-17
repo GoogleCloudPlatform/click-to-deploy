@@ -15,5 +15,5 @@
 default['magento']['packages']['dependencies'] = ['redis-server']
 
 default['magento']['user'] = 'www-data'
-default['magento']['version'] = '2.1.15'
-default['magento']['db']['name'] = 'magento'
+default['magento']['version'] = '2.4.3'
+default['magento']['db']['name'] = 'magento2'

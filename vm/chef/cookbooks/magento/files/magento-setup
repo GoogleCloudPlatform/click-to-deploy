@@ -23,8 +23,6 @@ args+=( --admin-firstname="owner" \
   --admin-user="admin" \
   --admin-password=$(get_attribute_value "magento-admin-password") \
   --db-host="localhost" \
-  --db-name="magento" \
-  --db-user="magento" \
   --db-password=$(get_attribute_value "magento-db-password") \
   --backend-frontname="admin" ) #MAGENTO ADMIN URL
 

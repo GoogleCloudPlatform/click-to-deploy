@@ -1,12 +1,10 @@
-#!/bin/bash -eu
-#
-# Copyright 2017 Google Inc.
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#      http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,13 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source /opt/c2d/c2d-utils || exit 1
-
-magento_password="$(get_attribute_value "magento-db-password")"
-declare -r magento_password
-
-service elasticsearch start
-
-mysql -u root -e "CREATE USER 'magento'@'localhost' IDENTIFIED BY '${magento_password}';"
-mysql -u root -e "GRANT ALL PRIVILEGES ON magento.* TO 'magento'@'localhost' IDENTIFIED BY '${magento_password}'";
-mysql -u root -e "FLUSH PRIVILEGES"
+package 'php7.4-bcmath'
