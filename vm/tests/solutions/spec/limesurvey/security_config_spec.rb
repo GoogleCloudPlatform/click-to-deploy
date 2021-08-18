@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,17 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apt_repository 'php' do
-  uri 'https://packages.sury.org/php/'
-  key 'https://packages.sury.org/php/apt.gpg'
-  components ['main']
-end
+require 'spec_helper'
 
-package 'install packages' do
-  package_name node['php73']['packages']
-  action :install
-end
+describe 'Disable Apache Web Server Signature' do
+  describe file('/etc/apache2/conf-available/security.conf') do
+    its(:content) { should match /^ServerTokens Prod$/ }
+    its(:content) { should match /^ServerSignature Off$/ }
+  end
 
-node['php73']['modules'].each do |pkg|
-  include_recipe "php73::module_#{pkg}"
+  describe command('curl -I http://localhost') do
+    its(:stdout) { should match /^Server: Apache\r$/ }
+  end
+
+  describe command('curl http://localhost/page-does-not-exists') do
+    its(:stdout) { should_not match /<address>(.*?)<\/address>/ }
+  end
 end

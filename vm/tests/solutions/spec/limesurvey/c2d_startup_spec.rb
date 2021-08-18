@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,17 +12,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apt_repository 'php' do
-  uri 'https://packages.sury.org/php/'
-  key 'https://packages.sury.org/php/apt.gpg'
-  components ['main']
+require 'spec_helper'
+
+describe 'C2D startup config' do
+  describe service('google-c2d-startup.service') do
+    it { should be_enabled }
+  end
+
+  describe file('/var/lock/google_vm_config.lock') do
+    it { should_not exist }
+  end
 end
 
-package 'install packages' do
-  package_name node['php73']['packages']
-  action :install
-end
+describe 'C2D startup scripts should exists' do
+  describe file('/opt/c2d/scripts/00-manage-swap') do
+    it { should exist }
+  end
 
-node['php73']['modules'].each do |pkg|
-  include_recipe "php73::module_#{pkg}"
+  describe file('/opt/c2d/scripts/01-mysql') do
+    it { should exist }
+  end
+
+  describe file('/opt/c2d/scripts/02-limesurvey') do
+    it { should exist }
+  end
 end

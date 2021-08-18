@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,17 +12,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apt_repository 'php' do
-  uri 'https://packages.sury.org/php/'
-  key 'https://packages.sury.org/php/apt.gpg'
-  components ['main']
+require 'spec_helper'
+
+describe port(22) do
+  it { should be_listening }
 end
 
-package 'install packages' do
-  package_name node['php73']['packages']
-  action :install
+describe port(3306) do
+  it { should be_listening.on('127.0.0.1') }
+  it { should_not be_listening.on('0.0.0.0') }
 end
 
-node['php73']['modules'].each do |pkg|
-  include_recipe "php73::module_#{pkg}"
+describe port(8005) do
+  it { should_not be_listening.on('0.0.0.0') }
+end
+
+describe port(8080) do
+  it { should be_listening }
+end
+
+describe port(9201) do
+  it { should_not be_listening.on('0.0.0.0') }
+end
+
+describe port(9300) do
+  it { should_not be_listening.on('0.0.0.0') }
 end

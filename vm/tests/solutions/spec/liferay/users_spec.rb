@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,17 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apt_repository 'php' do
-  uri 'https://packages.sury.org/php/'
-  key 'https://packages.sury.org/php/apt.gpg'
-  components ['main']
-end
+require 'spec_helper'
 
-package 'install packages' do
-  package_name node['php73']['packages']
-  action :install
-end
-
-node['php73']['modules'].each do |pkg|
-  include_recipe "php73::module_#{pkg}"
+describe user('liferay') do
+  it { should exist }
+  it { should belong_to_group 'liferay' }
+  it { should have_home_directory '/opt/liferay' }
 end

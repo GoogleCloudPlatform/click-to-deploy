@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,15 +14,16 @@
 
 apt_repository 'php' do
   uri 'https://packages.sury.org/php/'
+  distribution 'buster'
   key 'https://packages.sury.org/php/apt.gpg'
   components ['main']
 end
 
 package 'install packages' do
-  package_name node['php73']['packages']
+  package_name node['php74']['packages']
   action :install
 end
 
-node['php73']['modules'].each do |pkg|
-  include_recipe "php73::module_#{pkg}"
+node['php74']['modules'].each do |pkg|
+  include_recipe "php74::module_#{pkg}"
 end
