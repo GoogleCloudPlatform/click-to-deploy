@@ -27,7 +27,8 @@ spec:
         - /bin/bash
         - -c
         - |
-          CONFIG_FILE="/var/lib/postgresql/data/pgdata/postgresql.conf"
+          mkdir -p /var/lib/postgresql/data/tls
+          CONFIG_FILE="/var/lib/postgresql/data/postgresql.conf"
           echo "ssl = on" >> "${CONFIG_FILE}"
         imagePullPolicy: IfNotPresent
         volumeMounts:
@@ -53,7 +54,7 @@ spec:
           mountPath: /var/lib/postgresql/data/tls
         env:
         - name: "PGDATA"
-          value: "/var/lib/postgresql/data/pgdata"
+          value: "/var/lib/postgresql/data"
         - name: "POSTGRES_PASSWORD"
           valueFrom:
             secretKeyRef:

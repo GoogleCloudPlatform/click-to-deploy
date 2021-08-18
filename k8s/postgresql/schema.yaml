@@ -43,6 +43,10 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
+  deployer.image:
+    type: string
+    x-google-marketplace:
+      type: DEPLOYER_IMAGE
   postgresql.serviceAccount:
     type: string
     title: PostgreSQL service account
