@@ -23,7 +23,12 @@ args+=( --admin-firstname="owner" \
   --admin-user="admin" \
   --admin-password=$(get_attribute_value "magento-admin-password") \
   --db-host="localhost" \
+  --db-name="magento2" \
+  --db-user="magento" \
   --db-password=$(get_attribute_value "magento-db-password") \
+  --search-engine="elasticsearch7" \
+  --elasticsearch-host="localhost" \
+  --elasticsearch-port="9200" \
   --backend-frontname="admin" ) #MAGENTO ADMIN URL
 
 if has_external_ip; then
