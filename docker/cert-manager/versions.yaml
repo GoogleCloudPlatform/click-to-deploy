@@ -30,7 +30,7 @@ versions:
     from: *from9
     packages:
       cert-manager:
-        version: '1.4.0'
+        version: '1.4.3'
   - dir: '0/debian9/0.13'
     repo: cert-manager0
     templateSubDir: cert-manager0
