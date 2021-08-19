@@ -16,7 +16,18 @@ _variables:
   from9: &from9 marketplace.gcr.io/google/debian9
 
 versions:
-  - dir: '1/debian9/1.4'
+  - dir: '1/debian9/1.5'
+    repo: cert-manager1
+    templateSubDir: cert-manager1
+    tags:
+      - '1.5.1-debian9'
+      - '1.5-debian9'
+      - '1.5.1'
+      - '1.5'
+      - '1-debian9'
+      - '1'
+      - 'latest'
+  - dir: '1/debian9/1.5'
     repo: cert-manager1
     templateSubDir: cert-manager1
     tags:
@@ -24,9 +35,6 @@ versions:
       - '1.4-debian9'
       - '1.4.3'
       - '1.4'
-      - '1-debian9'
-      - '1'
-      - 'latest'
     from: *from9
     packages:
       cert-manager:
