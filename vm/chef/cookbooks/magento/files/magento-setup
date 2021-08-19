@@ -38,3 +38,9 @@ else
 fi
 
 php /var/www/html/bin/magento setup:install "${args[@]}"
+
+php /var/www/html/bin/magento setup:upgrade
+
+php /var/www/html/bin/magento setup:di:compile
+
+php /var/www/html/bin/magento cache:flush
