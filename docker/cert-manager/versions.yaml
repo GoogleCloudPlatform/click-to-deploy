@@ -27,7 +27,11 @@ versions:
       - '1-debian9'
       - '1'
       - 'latest'
-  - dir: '1/debian9/1.5'
+    from: *from9
+    packages:
+      cert-manager:
+        version: '1.5.1'
+  - dir: '1/debian9/1.4'
     repo: cert-manager1
     templateSubDir: cert-manager1
     tags:
