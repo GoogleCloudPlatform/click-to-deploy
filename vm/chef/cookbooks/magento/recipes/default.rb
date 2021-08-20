@@ -55,7 +55,7 @@ bash 'configure magento' do
 tar -xf /tmp/magento2.tar.gz --strip-components 1
 
 composer update
- 
+
 composer install
 
 find var vendor pub/static pub/media app/etc -type f -exec chmod g+w {} \;
@@ -88,5 +88,5 @@ end
 
 # Start elasticsearch
 service 'elasticsearch' do
-  action :start           
+  action :start
 end
