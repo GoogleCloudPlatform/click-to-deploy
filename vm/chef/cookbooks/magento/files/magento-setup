@@ -16,6 +16,27 @@
 
 source /opt/c2d/c2d-utils || exit 1
 
+#######################################
+# Await the application to be ready.
+#######################################
+function wait_for_app() {
+  local max_retries=10
+  local retry=1
+  local http_code=0
+
+  while [[ "${http_code}" -ne 200 && "${retry}" -le "${max_retries}" ]]; do
+    echo "Trying to fetch homepage... ${retry}"
+    http_code="$(curl -s -L -o /dev/null -w "%{http_code}" http://$(get_internal_ip))"
+    (( retry=retry+1 ))
+    sleep 25
+  done
+
+  if [[ "${retry}" -gt "${max_retries}" ]]; then
+    echo "Max retries exceeded."
+    exit 1
+  fi
+}
+
 declare -a args=()
 args+=( --admin-firstname="owner" \
   --admin-lastname="owner" \
@@ -45,22 +66,4 @@ php /var/www/html/bin/magento setup:di:compile
 
 php /var/www/html/bin/magento cache:flush
 
-#######################################
-# Await the application to be ready.
-#######################################
-function wait_for_app() {
-  local max_retries=10
-  local retry=1
-  local http_code=0
-
-  while [[ "${http_code}" -ne 200 && "${retry}" -le "${max_retries}" ]]; do
-    http_code="$(curl -s -L -o /dev/null -w "%{http_code}" http://$(get_internal_ip))"
-    (( retry=retry+1 ))
-    sleep 5
-  done
-
-  if [[ "${retry}" -gt "${max_retries}" ]]; then
-    echo "Max retries exceeded."
-    exit 1
-  fi
-}
+wait_for_app
