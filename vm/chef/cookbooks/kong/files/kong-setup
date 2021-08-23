@@ -33,15 +33,5 @@ kong migrations bootstrap
 systemctl enable kong
 systemctl start kong
 
-# Custom banner for kong details
-
-cat << EOF | boxes >> /etc/motd
-Welcome to Kong by Click to Deploy
-
-Documentation:          https://docs.konghq.com/gateway-oss
-Support:                https://discuss.konghq.com/
-License:                https://github.com/Kong/kong/blob/master/LICENSE
-Click-to-deploy Repo:   https://github.com/GoogleCloudPlatform/click-to-deploy
-
-Kong service running on: http://${external_ip}:8000 and https://${external_ip}:8443
-EOF
+# Update motd banner with external ip
+sed -i "s/EXTERNAL_IP/${external_ip}/g" /etc/motd
