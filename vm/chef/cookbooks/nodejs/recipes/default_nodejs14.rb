@@ -12,9 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['ghost']['cli']['version'] = '1.17.3'
-default['ghost']['app']['version'] = '4.12.1'
-default['ghost']['app']['install_dir'] = '/var/www/ghost'
+execute 'download packages' do
+  command 'curl -sL https://deb.nodesource.com/setup_14.x | bash -'
+end
 
-default['ghost']['db']['user'] = 'ghost'
-default['ghost']['db']['name'] = 'ghost_production'
+package 'install packages' do
+  package_name node['nodejs']['packages']
+  action :install
+end

@@ -25,5 +25,5 @@ mysql -u root -e "FLUSH PRIVILEGES;"
 
 cd /var/www/ghost
 
-ghost config --no-prompt --url="http://$(get_external_ip)" --dbpass="${ghost_db_password}"
+ghost install "${version}" --no-prompt --no-setup --no-stack
 ghost setup --no-prompt --no-setup-mysql --no-setup-ssl

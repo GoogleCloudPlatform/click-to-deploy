@@ -21,7 +21,7 @@ end
 
 include_recipe 'mysql'
 include_recipe 'nginx'
-include_recipe 'nodejs'
+include_recipe 'nodejs::default_nodejs14'
 
 file '/var/www/html/index.html' do
   action :delete
@@ -35,17 +35,22 @@ execute 'install ghost-cli' do
   command "npm install -g ghost-cli@#{node['ghost']['cli']['version']}"
 end
 
+user 'ghostadmin' do
+  gid 'sudo'
+  action :create
+end
+ 
 directory node['ghost']['app']['install_dir'] do
-  owner 'root'
-  group 'root'
-  mode '0755'
+  owner 'ghostadmin'
+  group 'sudo'
+  mode '0775'
   action :create
   recursive true
 end
 
 # Using Ghost-CLI programatically: https://docs.ghost.org/v1/docs/using-ghost-cli-programatically
 bash 'install ghost' do
-  user 'root'
+  user 'ghostadmin'
   cwd node['ghost']['app']['install_dir']
   code <<-EOH
     ghost install "${version}" --no-prompt --no-setup --no-stack
