@@ -35,7 +35,6 @@ execute 'install ghost-cli' do
   command "npm install -g ghost-cli@#{node['ghost']['cli']['version']}"
 end
 
-<<<<<<< HEAD
 user 'ghostuser' do
   gid 'root'
   home '/home/ghostuser'
@@ -52,6 +51,4 @@ directory node['ghost']['app']['install_dir'] do
   recursive true
 end
 
-=======
->>>>>>> 06e24e35df26b8a84b4571c9731ac9ea8ccf345b
 c2d_startup_script 'ghost'
