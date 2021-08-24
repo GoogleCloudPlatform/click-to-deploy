@@ -61,5 +61,5 @@ expect -c "\
   expect EOF" | grep "Your account now has Admin privileges"
 
 # Applying changes
-systemctl restart nginx
-systemctl restart puma || (sleep 10 && systemctl restart puma)
+systemctl is-active nginx && systemctl restart nginx
+systemctl is-active puma && systemctl restart puma || (sleep 10 && systemctl restart puma)
