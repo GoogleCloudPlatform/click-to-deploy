@@ -26,4 +26,8 @@ mysql -u root -e "FLUSH PRIVILEGES;"
 cd /var/www/ghost
 
 ghost install "${version}" --no-prompt --no-setup --no-stack
-ghost setup --no-prompt --no-setup-mysql --no-setup-ssl
+ghost config --no-prompt --url=http://localhost:2368 --db=mysql --dbhost=localhost --dbuser="${dbuser}" --dbname="${dbname}"
+ghost setup linux-user --no-prompt
+
+# ghost install "${version}" --no-prompt --no-setup --no-stack
+# ghost setup --no-prompt --no-setup-mysql --no-setup-ssl

@@ -35,33 +35,4 @@ execute 'install ghost-cli' do
   command "npm install -g ghost-cli@#{node['ghost']['cli']['version']}"
 end
 
-user 'ghostadmin' do
-  gid 'sudo'
-  action :create
-end
- 
-directory node['ghost']['app']['install_dir'] do
-  owner 'ghostadmin'
-  group 'sudo'
-  mode '0775'
-  action :create
-  recursive true
-end
-
-# Using Ghost-CLI programatically: https://docs.ghost.org/v1/docs/using-ghost-cli-programatically
-bash 'install ghost' do
-  user 'ghostadmin'
-  cwd node['ghost']['app']['install_dir']
-  code <<-EOH
-    ghost install "${version}" --no-prompt --no-setup --no-stack
-    ghost config --no-prompt --url=http://localhost:2368 --db=mysql --dbhost=localhost --dbuser="${dbuser}" --dbname="${dbname}"
-    ghost setup linux-user --no-prompt
-EOH
-  environment({
-    'version' => node['ghost']['app']['version'],
-    'dbuser' => node['ghost']['db']['user'],
-    'dbname' => node['ghost']['db']['name'],
-  })
-end
-
 c2d_startup_script 'ghost'
