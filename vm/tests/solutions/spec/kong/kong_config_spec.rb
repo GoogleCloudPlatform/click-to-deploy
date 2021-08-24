@@ -22,3 +22,9 @@ describe 'Kong config file should exists' do
     it { should exist }
   end
 end
+
+describe 'Kong banner info in motd should exists' do
+  describe file('/etc/motd') do
+    its(:content) { should match /Welcome to Kong by Click to Deploy/ }
+  end
+end
