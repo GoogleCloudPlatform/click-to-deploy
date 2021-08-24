@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+node.override['postgresql']['standalone']['distribution'] = 'buster'
+
 include_recipe 'apache2'
 include_recipe 'apache2::security-config'
 include_recipe 'apache2::mod-rewrite'

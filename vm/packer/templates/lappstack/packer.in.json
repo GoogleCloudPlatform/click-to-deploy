@@ -2,6 +2,6 @@
   "license": "c2d-lappstack",
   "source_image_family": "debian-10",
   "chef": {
-    "run_list": [ "c2d-config", "lapp", "stackdriver" ]
+    "run_list": [ "c2d-config", "lappstack", "stackdriver" ]
   }
 }
