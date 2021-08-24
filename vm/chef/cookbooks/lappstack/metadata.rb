@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name 'lapp'
+name 'lappstack'
 supports 'debian'
 depends 'apache2'
 depends 'postgresql'
