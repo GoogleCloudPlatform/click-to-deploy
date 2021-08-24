@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2017 Google Inc.
+# Copyright 2021 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,10 +16,7 @@
 
 source /opt/c2d/c2d-utils || exit 1
 
-until pg_isready; do
-  sleep 3
-done
+readonly redis_password="$(get_attribute_value "redis-password")"
 
-readonly password="$(get_attribute_value "postgresql-postgres-password")"
-
-su - postgres -c "psql -c \"alter role postgres with password '${password}'\""
+echo "requirepass ${redis_password}" >> /etc/redis/redis.conf
+systemctl restart redis-server
