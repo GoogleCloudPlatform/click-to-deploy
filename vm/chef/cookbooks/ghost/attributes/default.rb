@@ -18,3 +18,5 @@ default['ghost']['app']['install_dir'] = '/var/www/ghost'
 
 default['ghost']['db']['user'] = 'ghost'
 default['ghost']['db']['name'] = 'ghost_production'
+
+default['ghost']['user'] = 'ghostuser'

@@ -23,15 +23,8 @@ mysql -u root -e "CREATE USER 'ghost'@'localhost' IDENTIFIED BY '${ghost_db_pass
 mysql -u root -e "GRANT ALL PRIVILEGES ON ghost_production.* TO 'ghost'@'localhost' IDENTIFIED BY '${ghost_db_password}';";
 mysql -u root -e "FLUSH PRIVILEGES;"
 
-
-usermod -aG sudo ghostuser
-
 cd /var/www/ghost
 
-su ghostuser
+runuser ghostuser -c "ghost install --no-stack --no-prompt --no-setup-ssl --url="http://$(get_external_ip)" --db=mysql --dbhost=localhost --dbuser="ghost" --dbname="ghost_production" --dbpass="${ghost_db_password}""
 
-ghost install "${version}" --no-prompt --no-setup --no-stack
-ghost config --no-prompt --url="http://localhost:2368" --db=mysql --dbhost=localhost --dbuser="${dbuser}" --dbname="${dbname}"
-ghost setup linux-user --no-prompt
-ghost config --no-prompt --url="http://$(get_external_ip)" --dbpass="${ghost_db_password}"
-ghost setup --no-prompt --no-setup-mysql --no-setup-ssl
+

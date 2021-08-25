@@ -35,18 +35,34 @@ execute 'install ghost-cli' do
   command "npm install -g ghost-cli@#{node['ghost']['cli']['version']}"
 end
 
-user 'ghostuser' do
-  gid 'root'
+user node['ghost']['user'] do
   home '/home/ghostuser'
   shell '/bin/bash'
-  password '$1$JJsvHslasdfjVEroftprNn4JHtDi'
   action :create
 end
- 
-directory node['ghost']['app']['install_dir'] do
+
+directory "Create a directory" do
+  group 'ghostuser'
+  mode '0755'
   owner 'ghostuser'
-  group 'root'
-  mode '0775'
+  path '/home/ghostuser' 
+end
+
+bash 'Grant sudo to ghost user' do
+  user 'root'
+  cwd '/tmp'
+  environment({
+    'user' => node['ghost']['user'],
+  })
+  code <<-EOH
+    usermod -aG sudo,google-sudoers $user
+EOH
+end
+
+directory node['ghost']['app']['install_dir'] do
+  owner node['ghost']['user']
+  group node['ghost']['user']
+  mode '0755'
   action :create
   recursive true
 end
