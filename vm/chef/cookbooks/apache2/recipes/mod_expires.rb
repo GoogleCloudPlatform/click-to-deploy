@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,14 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'spec_helper'
+include_recipe 'apache2'
 
-describe command('curl -L http://localhost/') do
-  its(:stdout) { should match /ng-app="magentoSetup"/ }
-  its(:exit_status) { should eq 0 }
-end
-
-describe command('curl -L http://localhost/admin') do
-  its(:stdout) { should match /ng-app="magentoSetup"/ }
-  its(:exit_status) { should eq 0 }
-end
+execute 'a2enmod expires'

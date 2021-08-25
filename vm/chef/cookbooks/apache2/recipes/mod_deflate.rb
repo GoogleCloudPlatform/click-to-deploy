@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['magento']['packages']['dependencies'] = ['redis-server']
+include_recipe 'apache2'
 
-default['magento']['user'] = 'www-data'
-default['magento']['version'] = '2.4.3'
-default['magento']['db']['name'] = 'magento2'
+execute 'a2enmod deflate'
