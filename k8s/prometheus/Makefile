@@ -3,11 +3,16 @@ include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
 
-TAG ?= 2.18
+TRACK ?= 2.18
 
-$(info ---- TAG = $(TAG))
+PROMETHEUS_ALERTMANAGER_TAG ?= 0.14
+PROMETHEUS_NODEXPORTER_TAG ?= 0.16
+KUBE_STATE_METRICS_TAG ?= 1.9
+GRAFANA_TAG ?= 6.7
 
-APP_DEPLOYER_IMAGE ?= $(REGISTRY)/prometheus/deployer:$(TAG)
+$(info ---- TAG = $(TRACK))
+
+APP_DEPLOYER_IMAGE ?= $(REGISTRY)/prometheus/deployer:$(TRACK)
 NAME ?= prometheus-1
 
 ifdef IMAGE_PROMETHEUS
@@ -50,7 +55,7 @@ APP_PARAMETERS ?= { \
   $(PROMETHEUS_REPLICAS_FIELD) \
 }
 
-TESTER_IMAGE ?= $(REGISTRY)/prometheus/tester:$(TAG)
+TESTER_IMAGE ?= $(REGISTRY)/prometheus/tester:$(TRACK)
 
 
 app/build:: .build/prometheus/alertmanager \
@@ -73,11 +78,11 @@ app/build:: .build/prometheus/alertmanager \
                             .build/var/APP_DEPLOYER_IMAGE \
                             .build/var/MARKETPLACE_TOOLS_TAG \
                             .build/var/REGISTRY \
-                            .build/var/TAG \
+                            .build/var/TRACK \
                             | .build/prometheus
 	docker build \
 	    --build-arg REGISTRY="$(REGISTRY)/prometheus" \
-	    --build-arg TAG="$(TAG)" \
+	    --build-arg TAG="$(TRACK)" \
 	    --build-arg MARKETPLACE_TOOLS_TAG="$(MARKETPLACE_TOOLS_TAG)" \
 	    --tag "$(APP_DEPLOYER_IMAGE)" \
 	    -f deployer/Dockerfile \
@@ -87,59 +92,59 @@ app/build:: .build/prometheus/alertmanager \
 
 
 .build/prometheus/server: .build/var/REGISTRY \
-                          .build/var/TAG \
+                          .build/var/TRACK \
                           | .build/prometheus
-	docker pull marketplace.gcr.io/google/prometheus2:$(TAG)
-	docker tag marketplace.gcr.io/google/prometheus2:$(TAG) "$(REGISTRY)/prometheus:$(TAG)"
-	docker push "$(REGISTRY)/prometheus:$(TAG)"
+	docker pull marketplace.gcr.io/google/prometheus2:$(TRACK)
+	docker tag marketplace.gcr.io/google/prometheus2:$(TRACK) "$(REGISTRY)/prometheus:$(TRACK)"
+	docker push "$(REGISTRY)/prometheus:$(TRACK)"
 	@touch "$@"
 
 
 .build/prometheus/alertmanager: .build/var/REGISTRY \
-                                .build/var/TAG \
+                                .build/var/TRACK \
                                 | .build/prometheus
-	docker pull marketplace.gcr.io/google/prometheus-alertmanager0:0.14
-	docker tag marketplace.gcr.io/google/prometheus-alertmanager0:0.14 \
-	  "$(REGISTRY)/prometheus/alertmanager:$(TAG)"
-	docker push "$(REGISTRY)/prometheus/alertmanager:$(TAG)"
+	docker pull marketplace.gcr.io/google/prometheus-alertmanager0:$(PROMETHEUS_ALERTMANAGER_TAG)
+	docker tag marketplace.gcr.io/google/prometheus-alertmanager0:$(PROMETHEUS_ALERTMANAGER_TAG) \
+	  "$(REGISTRY)/prometheus/alertmanager:$(TRACK)"
+	docker push "$(REGISTRY)/prometheus/alertmanager:$(TRACK)"
 	@touch "$@"
 
 
 .build/prometheus/debian9: .build/var/REGISTRY \
-                           .build/var/TAG \
+                           .build/var/TRACK \
                            | .build/prometheus
 	docker pull marketplace.gcr.io/google/debian9
-	docker tag marketplace.gcr.io/google/debian9 "$(REGISTRY)/prometheus/debian9:$(TAG)"
-	docker push "$(REGISTRY)/prometheus/debian9:$(TAG)"
+	docker tag marketplace.gcr.io/google/debian9 "$(REGISTRY)/prometheus/debian9:$(TRACK)"
+	docker push "$(REGISTRY)/prometheus/debian9:$(TRACK)"
 	@touch "$@"
 
 
 .build/prometheus/kubestatemetrics: .build/var/REGISTRY \
-                                    .build/var/TAG \
+                                    .build/var/TRACK \
                                     | .build/prometheus
-	docker pull marketplace.gcr.io/google/kube-state-metrics1:1.9
-	docker tag marketplace.gcr.io/google/kube-state-metrics1:1.9 \
-	  "$(REGISTRY)/prometheus/kubestatemetrics:$(TAG)"
-	docker push "$(REGISTRY)/prometheus/kubestatemetrics:$(TAG)"
+	docker pull marketplace.gcr.io/google/kube-state-metrics1:$(KUBE_STATE_METRICS_TAG)
+	docker tag marketplace.gcr.io/google/kube-state-metrics1:$(KUBE_STATE_METRICS_TAG) \
+	  "$(REGISTRY)/prometheus/kubestatemetrics:$(TRACK)"
+	docker push "$(REGISTRY)/prometheus/kubestatemetrics:$(TRACK)"
 	@touch "$@"
 
 
 .build/prometheus/nodeexporter: .build/var/REGISTRY \
-                                .build/var/TAG \
+                                .build/var/TRACK \
                                 | .build/prometheus
-	docker pull marketplace.gcr.io/google/prometheus-nodeexporter0:0.16
-	docker tag marketplace.gcr.io/google/prometheus-nodeexporter0:0.16 \
-	  "$(REGISTRY)/prometheus/nodeexporter:$(TAG)"
-	docker push "$(REGISTRY)/prometheus/nodeexporter:$(TAG)"
+	docker pull marketplace.gcr.io/google/prometheus-nodeexporter0:$(PROMETHEUS_NODEXPORTER_TAG)
+	docker tag marketplace.gcr.io/google/prometheus-nodeexporter0:$(PROMETHEUS_NODEXPORTER_TAG) \
+	  "$(REGISTRY)/prometheus/nodeexporter:$(TRACK)"
+	docker push "$(REGISTRY)/prometheus/nodeexporter:$(TRACK)"
 	@touch "$@"
 
 
 .build/prometheus/grafana: .build/var/REGISTRY \
-                           .build/var/TAG \
+                           .build/var/TRACK \
                            | .build/prometheus
-	docker pull marketplace.gcr.io/google/grafana6:6.7
-	docker tag marketplace.gcr.io/google/grafana6:6.7 "$(REGISTRY)/prometheus/grafana:$(TAG)"
-	docker push "$(REGISTRY)/prometheus/grafana:$(TAG)"
+	docker pull marketplace.gcr.io/google/grafana6:$(GRAFANA_TAG)
+	docker tag marketplace.gcr.io/google/grafana6:$(GRAFANA_TAG) "$(REGISTRY)/prometheus/grafana:$(TRACK)"
+	docker push "$(REGISTRY)/prometheus/grafana:$(TRACK)"
 	@touch "$@"
 
 
