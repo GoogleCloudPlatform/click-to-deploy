@@ -5,7 +5,7 @@ include ../images.Makefile
 
 CHART_NAME := solr
 APP_ID ?= $(CHART_NAME)
-WAIT_FOR_READY_TIMEOUT = 600
+WAIT_FOR_READY_TIMEOUT := 600
 
 TRACK ?= 8.6
 ZK_TAG ?= 3.6

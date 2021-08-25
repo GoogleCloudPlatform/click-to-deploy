@@ -13,20 +13,20 @@
 # limitations under the License.
 
 versions:
-  - dir: '12/debian9/12.9'
-    repo: gitlab12
+  - dir: '14/debian9/14.1'
+    repo: gitlab14
     tags:
-      - '12.9.4-debian9'
-      - '12.9-debian9'
-      - '12-debian9'
-      - '12.9.4'
-      - '12.9'
-      - '12'
+      - '14.1.2-debian9'
+      - '14.1-debian9'
+      - '14-debian9'
+      - '14.1.2'
+      - '14.1'
+      - '14'
       - 'latest'
     from: marketplace.gcr.io/google/debian9
     packages:
       gitlab:
-        version: '12.9.4'
+        version: '14.1.2'
   - dir: '13/debian10/13.5'
     repo: gitlab13
     tags:

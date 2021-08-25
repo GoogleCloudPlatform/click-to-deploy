@@ -6,12 +6,13 @@ include ../images.Makefile
 CHART_NAME := hazelcast
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 3.12
+TRACK ?= 4.2
+TRACK_MC ?= 4.2021
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
-IMAGE_HAZELCAST ?= $(SOURCE_REGISTRY)/hazelcast3:$(TRACK)
-IMAGE_MANCENTER ?= $(SOURCE_REGISTRY)/hazelcast-mc3:$(TRACK)
+IMAGE_HAZELCAST ?= $(SOURCE_REGISTRY)/hazelcast4:$(TRACK)
+IMAGE_MANCENTER ?= $(SOURCE_REGISTRY)/hazelcast-mc4:$(TRACK_MC)
 IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 # Main image

@@ -18,6 +18,24 @@
 cloudbuild:
   enable_parallel: false
 versions:
+- dir: 9/php7/debian9/9.2/apache
+  from: marketplace.gcr.io/google/php7-apache2:7.3
+  packages:
+    composer:
+      gpg: 1f210b9037fcf82670d75892dfc44400f13fe9ada7af9e787f93e50e3b764111
+      version: 1.9.1
+    drupal:
+      md5: a7cf6d1ba5338d7d81b7ef3f398f27f7
+      version: 9.2.3
+  repo: drupal9-php7-apache
+  tags:
+  - 9.2.3-debian9
+  - 9.2-debian9
+  - 9-debian9
+  - 9.2.3
+  - '9.2'
+  - '9'
+  - latest
 - dir: 9/php7/debian9/9.1/apache
   from: marketplace.gcr.io/google/php7-apache2:7.3
   packages:
@@ -25,33 +43,11 @@ versions:
       gpg: 1f210b9037fcf82670d75892dfc44400f13fe9ada7af9e787f93e50e3b764111
       version: 1.9.1
     drupal:
-      md5: 5e2f14bdb08dd3dd1df0eba6e48e3bfd
-      version: 9.1.6
+      md5: 5ed5b284d11bba4edbe9ce94d603da7a
+      version: 9.1.11
   repo: drupal9-php7-apache
   tags:
-  - 9.1.6-debian9
+  - 9.1.11-debian9
   - 9.1-debian9
-  - 9-debian9
-  - 9.1.6
+  - 9.1.11
   - '9.1'
-  - '9'
-  - latest
-- dir: 8/php7/debian9/8.9/apache
-  from: marketplace.gcr.io/google/php7-apache2:7.3
-  packages:
-    composer:
-      gpg: 1f210b9037fcf82670d75892dfc44400f13fe9ada7af9e787f93e50e3b764111
-      version: 1.9.1
-    drupal:
-      md5: 75f7a83b14a1e4ec13ca9827f71ccd1c
-      version: 8.9.13
-  repo: drupal8-php7-apache
-  tags:
-  - 8.9.13-debian9
-  - 8.9-debian9
-  - 8-debian9
-  - 8.9.13
-  - '8.9'
-  - '8'
-  - latest
-

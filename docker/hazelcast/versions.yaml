@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,7 +13,34 @@
 # limitations under the License.
 
 versions:
-  # Hazelcast Server
+# Hazelcast Server 4
+  - dir: '4/debian10/hazelcast/4.2'
+    repo: 'hazelcast4'
+    templateSubDir: 'hazelcast4'
+    tags:
+    - '4.2.1-debian9'
+    - '4.2.1'
+    - '4.2-debian9'
+    - '4.2'
+    - '4-debian9'
+    - '4'
+    - 'latest'
+    from: 'marketplace.gcr.io/google/debian10'
+    packages:
+      hazelcast:
+        version: '4.2.1'
+        sha1: 'aa1639e547675f3ecc1d178fd19a2962d7f5df34'
+      cache_api:
+        version: '1.1.1'
+        sha1: 'c56fb980eb5208bfee29a9a5b9d951aba076bd91'
+      hz_eureka:
+        version: '1.1.1'
+      jmx_prometheus_agent:
+        version: '0.14.0'
+    excludeTests:
+    - tests/functional_tests/hazelcast_mancenter_test.yaml
+
+# Hazelcast Server 3
   - dir: '3/debian9/hazelcast/3.12'
     repo: 'hazelcast3'
     templateSubDir: 'hazelcast'
@@ -24,8 +51,7 @@ versions:
     - '3.12'
     - '3-debian9'
     - '3'
-    - 'latest'
-    from: 'gcr.io/google-appengine/debian9:latest'
+    from: 'marketplace.gcr.io/google/debian9'
     packages:
       hazelcast:
         version: '3.12.4'
@@ -40,7 +66,27 @@ versions:
     excludeTests:
     - tests/functional_tests/hazelcast_mancenter_test.yaml
 
-  # Hazelcast Management Center
+# Hazelcast Management Center 4
+  - dir: '4/debian10/hazelcast-mc/4.2021'
+    repo: 'hazelcast-mc4'
+    templateSubDir: 'hazelcast-mc4'
+    tags:
+    - '4.2021.06-debian9'
+    - '4.2021.06'
+    - '4.2021-debian9'
+    - '4.2021'
+    - '4-debian9'
+    - '4'
+    - 'latest'
+    from: 'marketplace.gcr.io/google/debian10'
+    packages:
+      hazelcastmc:
+        version: '4.2021.06'
+        sha256: '4cacf7f70d17a364d629dc353795849c36d984a6f688da1b500eb2240828a088'
+    excludeTests:
+    - tests/functional_tests/hazelcast_test.yaml
+
+# Hazelcast Management Center 3
   - dir: '3/debian9/hazelcast-mc/3.12'
     repo: 'hazelcast-mc3'
     templateSubDir: 'hazelcast-mc'
@@ -51,8 +97,7 @@ versions:
     - '3.12'
     - '3-debian9'
     - '3'
-    - 'latest'
-    from: 'gcr.io/google-appengine/debian9:latest'
+    from: 'marketplace.gcr.io/google/debian9'
     packages:
       hazelcastmc:
         version: '3.12.7'
@@ -62,4 +107,4 @@ versions:
 
 # Enable parallel build.
 cloudbuild:
-  enable_parallel: true
+  enable_parallel: false

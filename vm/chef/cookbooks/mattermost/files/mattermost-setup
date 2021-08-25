@@ -42,3 +42,6 @@ setup_nginx "${default_domain}"
 
 # Start Mattermost
 systemctl start mattermost
+
+# Wait until ready.
+wait_for_app
