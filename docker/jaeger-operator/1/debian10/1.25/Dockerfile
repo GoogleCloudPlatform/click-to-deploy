@@ -28,7 +28,7 @@ RUN go get -u github.com/kardianos/govendor \
 
 
 # Result Image
-FROM gcr.io/google-appengine/debian10:latest
+FROM marketplace.gcr.io/google/debian10
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
             openssl \
