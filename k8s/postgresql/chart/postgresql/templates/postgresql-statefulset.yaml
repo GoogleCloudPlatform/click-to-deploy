@@ -16,30 +16,25 @@ spec:
       labels: *PostgreSQLLabels
     spec:
       serviceAccount: {{ .Values.postgresql.serviceAccount }}
+      securityContext:
+        fsGroup: 999 # Potgresql user group
       volumes:
       - name: tls-volume
         secret:
           secretName: {{ .Release.Name }}-tls
-      initContainers:
-      - name: increase-max-map-count
-        image: {{ .Values.deployer.image }}
-        command:
-        - /bin/bash
-        - -c
-        - |
-          mkdir -p /var/lib/postgresql/data/tls
-          CONFIG_FILE="/var/lib/postgresql/data/postgresql.conf"
-          echo "ssl = on" >> "${CONFIG_FILE}"
-        imagePullPolicy: IfNotPresent
-        volumeMounts:
-        - name: {{ .Release.Name }}-postgresql-pvc
-          mountPath: /var/lib/postgresql/data
-        securityContext:
-          privileged: true
+          defaultMode: 0640 # Posgresql required permissions for server.crt and server.key files
+      - name: config-volume
+        configMap:
+          name: {{ .Release.Name }}-postgresql-config
       containers:
       - name: postgresql-server
         image: "{{ .Values.postgresql.image.repo }}:{{ .Values.postgresql.image.tag }}"
         imagePullPolicy: Always
+        args:
+          - -c
+          - hba_file=/etc/postgresql/volume/pg_hba.conf
+          - -c
+          - config_file=/etc/postgresql/volume/postgresql.conf
         resources:
           requests:
             cpu: 100m
@@ -48,13 +43,15 @@ spec:
         - containerPort: 5432
           name: postgres
         volumeMounts:
+        - name: config-volume
+          mountPath: /etc/postgresql/volume
         - name: {{ .Release.Name }}-postgresql-pvc
           mountPath: /var/lib/postgresql/data
         - name: tls-volume
           mountPath: /var/lib/postgresql/data/tls
         env:
         - name: "PGDATA"
-          value: "/var/lib/postgresql/data"
+          value: "/var/lib/postgresql/data/pgdata"
         - name: "POSTGRES_PASSWORD"
           valueFrom:
             secretKeyRef:
