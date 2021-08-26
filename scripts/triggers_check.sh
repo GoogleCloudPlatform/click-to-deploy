@@ -28,21 +28,33 @@ done
 
 function trigger_active {
   local -r solution=$1
+  local exit_code=""
 
   gcloud alpha builds triggers list --project="${PROJECT}" --format json \
-    | jq -e --arg filename "${CLOUDBUILD_NAME}" --arg solution "${solution}" \
+    | jq -e --arg solution "${solution}" \
     '.[] | select(.substitutions._SOLUTION_NAME == $solution and .disabled != true)'
-    
-   return $?
+  exit_code="$?"
+
+  if [[ "${exit_code}" -ne 0 ]]; then
+    echo "Fail for trigger ${solution}."
+  fi
+
+  return exit_code
 }
 
 function main {
   local -i failure_cnt=0
 
+  set -x
+
+  echo "${DIRECTORY_NAME}"
+  echo "Iterating over dir: ${DIRECTORY_NAME}"
+
   for solution in ${DIRECTORY_NAME}/*; do
     if [[ -d ${solution} ]]; then
       solution="${solution%/}"     # strip trailing slash
       solution="${solution##*/}"   # strip path and leading slash
+      echo "${solution}"
 
       set +e
       trigger_active "${solution}"
@@ -62,7 +74,7 @@ function main {
   echo "* Done with results: ${failure_cnt} failure(s)."
   echo "* For more information, see https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/triggers/README.md"
   echo "*************************************************************"
-  
+
   return ${failure_cnt}
 }
 
