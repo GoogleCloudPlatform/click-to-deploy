@@ -19,6 +19,7 @@ source /opt/c2d/c2d-utils || exit 1
 readonly db_username="kong"
 readonly db_password="$(get_attribute_value "kong-db-password")"
 readonly db_name="kong"
+readonly external_ip="$(get_external_ip)"
 
 # Create kong.conf file
 cp /etc/kong/kong.conf.default /etc/kong/kong.conf
@@ -32,4 +33,5 @@ kong migrations bootstrap
 systemctl enable kong
 systemctl start kong
 
-
+# Update motd banner with external ip
+sed -i "s/EXTERNAL_IP/${external_ip}/g" /etc/motd
