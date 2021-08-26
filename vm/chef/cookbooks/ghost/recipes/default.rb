@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,8 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# Reference: https://docs.ghost.org/v1.0.0/docs/install
-# Reference: https://www.linuxbabe.com/ubuntu/install-ghost-blog-ubuntu
+# Reference: https://ghost.org/docs/install/ubuntu/
 
 apt_update 'update' do
   action :update
@@ -35,30 +34,25 @@ execute 'install ghost-cli' do
   command "npm install -g ghost-cli@#{node['ghost']['cli']['version']}"
 end
 
+# Create ghost user.
 user node['ghost']['user'] do
   home '/home/ghostuser'
   shell '/bin/bash'
   action :create
+  manage_home true
 end
 
-directory "Create a directory" do
-  group 'ghostuser'
-  mode '0755'
-  owner 'ghostuser'
-  path '/home/ghostuser' 
+# Add ghost user to sudoers.
+template "/etc/sudoers.d/#{node['ghost']['user']}" do
+  source 'etc-sudoers.d-ghostuser.erb'
+  owner  'root'
+  group  'root'
+  mode   '0440'
+  verify 'visudo -c -f %{path}'
+  variables(ghostuser: node['ghost']['user'])
 end
 
-bash 'Grant sudo to ghost user' do
-  user 'root'
-  cwd '/tmp'
-  environment({
-    'user' => node['ghost']['user'],
-  })
-  code <<-EOH
-    usermod -aG sudo,google-sudoers $user
-EOH
-end
-
+# Assign permissions for install directory.
 directory node['ghost']['app']['install_dir'] do
   owner node['ghost']['user']
   group node['ghost']['user']
