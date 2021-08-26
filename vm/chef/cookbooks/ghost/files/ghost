@@ -25,6 +25,6 @@ mysql -u root -e "FLUSH PRIVILEGES;"
 
 cd /var/www/ghost
 
-runuser ghostuser -c "ghost install --no-stack --no-prompt --no-setup-ssl --url="http://$(get_external_ip)" --db=mysql --dbhost=localhost --dbuser="ghost" --dbname="ghost_production" --dbpass="${ghost_db_password}""
-
-
+runuser ghostuser -c "ghost install --no-stack --no-prompt --no-setup-ssl \
+--url="http://$(get_external_ip)" --db=mysql --dbhost=localhost --dbuser="ghost" \
+--dbname="ghost_production" --dbpass="${ghost_db_password}""
