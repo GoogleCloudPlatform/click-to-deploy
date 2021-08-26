@@ -33,7 +33,7 @@ done
 # Arguments:
 #   Solution name.
 #######################################
-function generate_trigger_name() {
+function get_trigger_name() {
   local -r solution="$1"
   local solution_type_name=""
 
@@ -59,8 +59,7 @@ function generate_trigger_name() {
 
 function trigger_active {
   local -r solution=$1
-  local exit_code=""
-  local -r trigger_name="$(generate_trigger_name "${solution}")"
+  local -r trigger_name="$(get_trigger_name "${solution}")"
 
   gcloud alpha builds triggers list --project="${PROJECT}" --format json | \
     jq -e --arg solution "${solution}" --arg triggerName "${trigger_name}" \
