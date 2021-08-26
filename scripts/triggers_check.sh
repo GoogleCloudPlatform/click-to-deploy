@@ -31,8 +31,6 @@ function trigger_active {
   local exit_code=""
 
   gcloud alpha builds triggers list --project="${PROJECT}" --format json > /tmp/triggers.json
-  echo "Display full triggers list:"
-  cat /tmp/triggers.json
 
   cat /tmp/triggers.json | jq -e --arg solution "${solution}" \
     '.[] | select(.substitutions._SOLUTION_NAME == $solution and .disabled != true)'
