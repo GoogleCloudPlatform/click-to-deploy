@@ -51,6 +51,28 @@ bash 'Install Kong Binary' do
 EOH
 end
 
+bash 'Add Kong Banner to Motd' do
+  user 'root'
+  cwd '/tmp'
+  code <<-EOH
+
+echo >> /etc/motd
+cat << EOF | boxes >> /etc/motd
+Welcome to Kong by Click to Deploy
+
+Documentation:            https://docs.konghq.com/gateway-oss
+Support:                  https://discuss.konghq.com/
+License:                  https://github.com/Kong/kong/blob/master/LICENSE
+Click-to-deploy Repo:     https://github.com/GoogleCloudPlatform/click-to-deploy
+
+Kong service running on:  http://EXTERNAL_IP:8000
+                          https://EXTERNAL_IP:8443
+
+EOF
+
+EOH
+end
+
 c2d_startup_script 'kong-db-setup'
 
 c2d_startup_script 'kong-setup'
