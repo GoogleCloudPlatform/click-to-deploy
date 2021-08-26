@@ -57,7 +57,8 @@ function trigger_active {
 
   gcloud alpha builds triggers list --project="${PROJECT}" --format json > /tmp/triggers.json
   jq -e --arg solution "${solution}" --arg triggerName "${trigger_name}" \
-    '.[] | select(.name == $triggerName and .substitutions._SOLUTION_NAME == $solution and .disabled != true)' /tmp/triggers.json
+    '.triggers[] | select(.name == $triggerName and .substitutions._SOLUTION_NAME == $solution and .disabled != true)' \
+    /tmp/triggers.json
 
   return $?
 }
@@ -94,10 +95,6 @@ function main {
     for failed in "${failures[@]}"; do
         echo "- ${failed}";
     done
-
-    gcloud alpha builds triggers list --project="${PROJECT}" --format json > /tmp/triggers.json
-    cat -n /tmp/triggers.json
-    gsutil cp /tmp/triggers.json gs://c2d-solutions-source-code/triggers.json
   fi
 
   echo "* For more information, see https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/triggers/README.md"
