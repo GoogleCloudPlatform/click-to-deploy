@@ -32,8 +32,7 @@ function trigger_active {
 
   gcloud alpha builds triggers list --project="${PROJECT}" --format json > /tmp/triggers.json
 
-  cat /tmp/triggers.json | jq -e --arg solution "${solution}" \
-    '.[] | select(.substitutions._SOLUTION_NAME == $solution and .disabled != true)'
+  cat /tmp/triggers.json | jq -e --arg solution "${solution}" '.[] | select(.substitutions._SOLUTION_NAME == $solution and .disabled != true)'
   exit_code="$?"
 
   if [[ "${exit_code}" -ne 0 ]]; then
