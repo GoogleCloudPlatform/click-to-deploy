@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2017 Google Inc.
+# Copyright 2021 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,10 +16,12 @@
 
 source /opt/c2d/c2d-utils || exit 1
 
-until pg_isready; do
-  sleep 3
-done
+readonly db_username="app"
+readonly db_password="$(get_attribute_value "lapp-db-password")"
+readonly db_name="$(get_attribute_value "lapp-db-name")"
 
-readonly password="$(get_attribute_value "postgresql-postgres-password")"
+# Create app user
+sudo -u postgres psql -c "CREATE USER ${db_username} WITH PASSWORD '${db_password}';"
+sudo -u postgres psql -c "CREATE DATABASE ${db_name} OWNER ${db_username};"
 
-su - postgres -c "psql -c \"alter role postgres with password '${password}'\""
+echo "LAPP Installation complete?"
