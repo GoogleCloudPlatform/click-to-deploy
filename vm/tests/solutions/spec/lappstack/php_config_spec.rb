@@ -1,12 +1,10 @@
-#!/bin/bash -eu
-#
-# Copyright 2017 Google Inc.
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#      http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,12 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source /opt/c2d/c2d-utils || exit 1
+require 'spec_helper'
 
-until pg_isready; do
-  sleep 3
-done
+describe 'Hide PHP Version' do
+  describe file('/etc/php/7.4/apache2/php.ini') do
+    its(:content) { should match /^expose_php = Off$/ }
+  end
 
-readonly password="$(get_attribute_value "postgresql-postgres-password")"
-
-su - postgres -c "psql -c \"alter role postgres with password '${password}'\""
+  describe command('curl -I http://localhost') do
+    its(:stdout) { should_not match /X-Powered-By:/ }
+  end
+end
