@@ -36,7 +36,7 @@ end
 
 # Create ghost user.
 user node['ghost']['user'] do
-  home '/home/ghostuser'
+  home '/home/ghost_app'
   shell '/bin/bash'
   action :create
   manage_home true
@@ -49,7 +49,7 @@ template "/etc/sudoers.d/#{node['ghost']['user']}" do
   group  'root'
   mode   '0440'
   verify 'visudo -c -f %{path}'
-  variables(ghostuser: node['ghost']['user'])
+  variables(ghost_app: node['ghost']['user'])
 end
 
 # Assign permissions for install directory.

@@ -14,8 +14,8 @@
 
 require 'spec_helper'
 
-describe user('ghostuser') do
+describe user('ghost_app') do
   it { should exist }
-  it { should belong_to_group 'ghostuser' }
-  it { should have_home_directory '/home/ghostuser' }
+  it { should belong_to_group 'ghost_app' }
+  it { should have_home_directory '/home/ghost_app' }
 end
