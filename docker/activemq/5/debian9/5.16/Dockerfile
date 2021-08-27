@@ -1,13 +1,13 @@
 FROM gcr.io/google-appengine/openjdk
 
 # This is release version of ActiveMQ to pull in.
-ENV ACTIVEMQ_VERSION 5.16.2
-ENV ACTIVEMQ_SHA512 27bb26786640f74dcf404db884bedffc0af4bfb2a0248c398044ac9a13e19ff097c590b79eb1404e0b04d17a8f85a8f7de87186a96744e19162d70b3c7a9bdde
+ENV ACTIVEMQ_VERSION 5.16.3
+ENV ACTIVEMQ_SHA512 3394afe9963f55cf62dafb287bdc58cac1fb76a614cc87939bec7b7909972eb5b3069022a9eb324242a315899b1096335c0531af75152c74eb309c0c5981b217
 ENV ACTIVEMQ apache-activemq-${ACTIVEMQ_VERSION}
 ENV ACTIVEMQ_FILE ${ACTIVEMQ}-bin.tar.gz
 ENV ACTIVEMQ_DOWNLOAD_URL http://archive.apache.org/dist/activemq/
 
-ENV C2D_RELEASE 5.16.2
+ENV C2D_RELEASE 5.16.3
 
 ENV ACTIVEMQ_TCP=61616 \
     ACTIVEMQ_AMQP=5672 \
@@ -29,7 +29,7 @@ ARG gid=1000
 RUN groupadd -g "${gid}" "${group}" \
     && useradd -u "${uid}" -g "${gid}" -m -s /bin/bash "${user}"
 
-# Download and setup activemq version v5.16.2
+# Download and setup activemq version v5.16.3
 RUN set -x && \
     mkdir -p "${ACTIVEMQ_HOME}" \
     && wget -q "${ACTIVEMQ_DOWNLOAD_URL}/${ACTIVEMQ_VERSION}/${ACTIVEMQ_FILE}" -O "${ACTIVEMQ_FILE}" \
