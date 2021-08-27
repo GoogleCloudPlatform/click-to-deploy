@@ -26,7 +26,14 @@ for var in DIRECTORY_NAME CLOUDBUILD_NAME PROJECT; do
   fi
 done
 
-function generate_trigger_name() {
+#######################################
+# Generates the trigger name according DIRECTORY_NAME.
+# Expected DIRECTORY_NAME values:
+# docker, k8s, and vm/packer/templates
+# Arguments:
+#   Solution name.
+#######################################
+function get_trigger_name() {
   local -r solution="$1"
   local solution_type_name=""
 
@@ -52,13 +59,11 @@ function generate_trigger_name() {
 
 function trigger_active {
   local -r solution=$1
-  local exit_code=""
-  local -r trigger_name="$(generate_trigger_name "${solution}")"
+  local -r trigger_name="$(get_trigger_name "${solution}")"
 
-  gcloud alpha builds triggers list --project="${PROJECT}" --format json > /tmp/triggers.json
-  jq -e --arg solution "${solution}" --arg triggerName "${trigger_name}" \
-    '.triggers[] | select(.name == $triggerName and .substitutions._SOLUTION_NAME == $solution and .disabled != true)' \
-    /tmp/triggers.json
+  gcloud alpha builds triggers list --project="${PROJECT}" --format json | \
+    jq -e --arg solution "${solution}" --arg triggerName "${trigger_name}" \
+      '.triggers[] | select(.name == $triggerName and .substitutions._SOLUTION_NAME == $solution and .disabled != true)'
 
   return $?
 }
