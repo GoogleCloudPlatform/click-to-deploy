@@ -14,10 +14,6 @@
 
 include_recipe 'c2d-config'
 
-apt_update do
-  action :update
-end
-
 apt_repository 'apt.postgresql.org' do
   uri node['postgresql']['repository_url']
   key node['postgresql']['key']

@@ -1,5 +1,6 @@
-#!/usr/bin/env bash
-# Copyright 2016 The Kubernetes Authors.
+#!/bin/bash
+#
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,11 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# The zkMetrics script can be used to retrieve metrics from the ZooKeeper
-# process and print them to stdout. A recurring Kubernetes job can be used
-# to collect these metrics and provide them to a collector.
+set -e
 
-set -eu
-
-ZK_CLIENT_PORT=${ZK_CLIENT_PORT:-2181}
-echo mntr | nc localhost $ZK_CLIENT_PORT >& 1
+cat > /RELEASE <<EOF
+RELEASE_PACKAGE=gitlab-ee
+RELEASE_VERSION=${GITLAB_VERSION}-ee.0
+DOWNLOAD_URL=${DOWNLOAD_URL}
+EOF
