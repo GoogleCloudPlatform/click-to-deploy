@@ -41,14 +41,15 @@ done
 #   Target array.
 #######################################
 function contains_element () {
-  local search=""$1
-  local -a list="$2"
+  local -r search="$1"
+  shift
+  local -r -a list="$@"
   local result="not-found"
 
-  for item in "${list[@]}"; do
-      if [[ "${search}" == "$item" ]]; then
-        result="found"
-      fi
+  for item in ${list[@]}; do
+    if [[ "${search}" == "$item" ]]; then
+      result="found"
+    fi
   done
   echo "${result}"
 }
