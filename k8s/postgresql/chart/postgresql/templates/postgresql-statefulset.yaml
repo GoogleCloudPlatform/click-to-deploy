@@ -16,25 +16,14 @@ spec:
       labels: *PostgreSQLLabels
     spec:
       serviceAccount: {{ .Values.postgresql.serviceAccount }}
-      securityContext:
-        fsGroup: 999 # Potgresql user group
       volumes:
       - name: tls-volume
         secret:
           secretName: {{ .Release.Name }}-tls
-          defaultMode: 0640 # Posgresql required permissions for server.crt and server.key files
-      - name: config-volume
-        configMap:
-          name: {{ .Release.Name }}-postgresql-config
       containers:
       - name: postgresql-server
         image: "{{ .Values.postgresql.image.repo }}:{{ .Values.postgresql.image.tag }}"
         imagePullPolicy: Always
-        args:
-          - -c
-          - hba_file=/etc/postgresql/volume/pg_hba.conf
-          - -c
-          - config_file=/etc/postgresql/volume/postgresql.conf
         resources:
           requests:
             cpu: 100m
@@ -43,8 +32,6 @@ spec:
         - containerPort: 5432
           name: postgres
         volumeMounts:
-        - name: config-volume
-          mountPath: /etc/postgresql/volume
         - name: {{ .Release.Name }}-postgresql-pvc
           mountPath: /var/lib/postgresql/data
         - name: tls-volume

@@ -159,7 +159,7 @@ Alternatively you can use short tag which points to the latest image for selecte
 > Warning: this tag is not stable and referenced image might change over time.
 
 ```shell
-export TAG="13.4"
+export TAG="9.6"
 ```
 
 Configure the container images:
@@ -173,7 +173,7 @@ export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/postgresql/prometheus-t
 Generate a random password:
 
 ```shell
-export POSTGRESQL_DB_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 1 | tr -d '\n' | base64)"
+export POSTGRESQL_DB_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 1 | tr -d '\n')"
 ```
 
 Expose the Service externally:
