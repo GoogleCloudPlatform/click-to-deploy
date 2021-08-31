@@ -18,14 +18,6 @@ set -eu
 
 shopt -s nullglob
 
-# Non-c2d applications should not have required triggers.
-declare -a k8s_exceptions=(
-  "amppackager"
-  "gatekeeper"
-  "flink-operator"
-  "spark-operator"
-)
-
 # Ensure all required env vars are supplied.
 for var in DIRECTORY_NAME CLOUDBUILD_NAME PROJECT; do
   if ! [[ -v "${var}" ]]; then
@@ -33,26 +25,6 @@ for var in DIRECTORY_NAME CLOUDBUILD_NAME PROJECT; do
     exit 1
   fi
 done
-
-#######################################
-# Check if a value exists in a given array.
-# Arguments:
-#   Expected value.
-#   Target array.
-#######################################
-function contains_element () {
-  local -r search="$1"
-  shift
-  local -a list="$@"
-  local result="not-found"
-
-  for item in ${list[@]}; do
-    if [[ "${search}" == "$item" ]]; then
-      result="found"
-    fi
-  done
-  echo "${result}"
-}
 
 #######################################
 # Generates the trigger name according DIRECTORY_NAME.
@@ -106,14 +78,6 @@ function main {
       solution="${solution##*/}"   # strip path and leading slash
       echo "${solution}"
 
-      # Skip a trigger check if a k8s solution is marked as exception
-      if [[ "${DIRECTORY_NAME}" == "k8s" ]]; then
-        if [[ "$(contains_element "${solution}" "${k8s_exceptions[@]}")" == "found" ]]; then
-          echo "Skip checking ${solution} trigger."
-          continue
-        fi
-      fi
-
       set +e
       trigger_active "${solution}"
       local -i status_code=$?
@@ -134,7 +98,7 @@ function main {
 
   if [[ "${failure_cnt}" -gt 0 ]]; then
     for failed in "${failures[@]}"; do
-      echo "- ${failed}";
+        echo "- ${failed}";
     done
   fi
 
