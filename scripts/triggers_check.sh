@@ -18,12 +18,11 @@ set -eu
 
 shopt -s nullglob
 
-set -x
-
 # Non-c2d applications should not have required triggers.
 declare -a k8s_exceptions=(
   "amppackager"
   "gatekeeper"
+  "flink-operator"
 )
 
 # Ensure all required env vars are supplied.
@@ -134,7 +133,7 @@ function main {
 
   if [[ "${failure_cnt}" -gt 0 ]]; then
     for failed in "${failures[@]}"; do
-        echo "- ${failed}";
+      echo "- ${failed}";
     done
   fi
 
