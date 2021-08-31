@@ -18,6 +18,12 @@ set -eu
 
 shopt -s nullglob
 
+# Non-c2d applications should not have required triggers.
+declare -a exceptions=(
+  "amppackager"
+  "gatekeeper"
+)
+
 # Ensure all required env vars are supplied.
 for var in DIRECTORY_NAME CLOUDBUILD_NAME PROJECT; do
   if ! [[ -v "${var}" ]]; then
@@ -25,6 +31,19 @@ for var in DIRECTORY_NAME CLOUDBUILD_NAME PROJECT; do
     exit 1
   fi
 done
+
+#######################################
+# Check if a value exists in a given array.
+# Arguments:
+#   Expected value.
+#   Target array.
+#######################################
+function contains_element () {
+  local e match="$1"
+  shift
+  for e; do [[ "$e" == "$match" ]] && return 0; done
+  return 1
+}
 
 #######################################
 # Generates the trigger name according DIRECTORY_NAME.
@@ -77,6 +96,13 @@ function main {
       solution="${solution%/}"     # strip trailing slash
       solution="${solution##*/}"   # strip path and leading slash
       echo "${solution}"
+
+      # Skip a trigger check if solution is marked as exception
+      contains_element "${solution}" "${exceptions[@]}"
+      if [[ "$?" -eq 0 ]]; then
+        echo "Skip checking ${solution} trigger."
+        continue
+      fi
 
       set +e
       trigger_active "${solution}"
