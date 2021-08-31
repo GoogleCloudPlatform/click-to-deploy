@@ -18,6 +18,8 @@ set -eu
 
 shopt -s nullglob
 
+set -x
+
 # Non-c2d applications should not have required triggers.
 declare -a exceptions=(
   "amppackager"
