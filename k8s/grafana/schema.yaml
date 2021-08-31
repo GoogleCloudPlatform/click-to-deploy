@@ -51,8 +51,16 @@ properties:
         description: Service account used by main Grafana StatefulSet
         roles:
         - type: ClusterRole
-          rulesType: PREDEFINED
-          rulesFromRoleName: cluster-admin
+          rulesType: CUSTOM
+          rules:
+          - apiGroups: [""]
+            resources:
+            - endpoints
+            - pods
+            - nodes
+            verbs:
+            - get
+            - list
   grafana.persistence.storageClass:
     type: string
     title: StorageClass
