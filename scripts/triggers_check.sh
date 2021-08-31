@@ -23,6 +23,7 @@ declare -a k8s_exceptions=(
   "amppackager"
   "gatekeeper"
   "flink-operator"
+  "spark-operator"
 )
 
 # Ensure all required env vars are supplied.
