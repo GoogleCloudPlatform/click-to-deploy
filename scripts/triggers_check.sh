@@ -41,8 +41,8 @@ done
 #   Target array.
 #######################################
 function contains_element () {
-  local -r search=""$1
-  local -r -a list="$2"
+  local search=""$1
+  local -a list="$2"
   local result="not-found"
 
   for item in "${list[@]}"; do
