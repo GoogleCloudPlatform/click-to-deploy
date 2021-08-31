@@ -21,7 +21,7 @@ shopt -s nullglob
 set -x
 
 # Non-c2d applications should not have required triggers.
-declare -a exceptions=(
+declare -a k8s_exceptions=(
   "amppackager"
   "gatekeeper"
 )
@@ -41,10 +41,16 @@ done
 #   Target array.
 #######################################
 function contains_element () {
-  local e match="$1"
-  shift
-  for e; do [[ "$e" == "$match" ]] && return 0; done
-  return 1
+  local -r search=""$1
+  local -r -a list="$2"
+  local result="not-found"
+
+  for item in "${list[@]}"; do
+      if [[ "${search}" == "$item" ]]; then
+        result="found"
+      fi
+  done
+  echo "${result}"
 }
 
 #######################################
@@ -99,11 +105,12 @@ function main {
       solution="${solution##*/}"   # strip path and leading slash
       echo "${solution}"
 
-      # Skip a trigger check if solution is marked as exception
-      contains_element "${solution}" "${exceptions[@]}"
-      if [[ "$?" -eq 0 ]]; then
-        echo "Skip checking ${solution} trigger."
-        continue
+      # Skip a trigger check if a k8s solution is marked as exception
+      if [[ "${DIRECTORY_NAME}" == "k8s" ]]; then
+        if [[ "$(contains_element "${solution}" "${k8s_exceptions[@]}")" == "found" ]]; then
+          echo "Skip checking ${solution} trigger."
+          continue
+        fi
       fi
 
       set +e
