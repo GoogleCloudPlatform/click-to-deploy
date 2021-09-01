@@ -24,11 +24,11 @@ IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_REDIS))
 
 # List of images used in application
-ADDITIONAL_IMAGES := exporter haproxy prometheus-to-sd
+ADDITIONAL_IMAGES := redis-exporter haproxy prometheus-to-sd
 
 # Additional images variable names should correspond with ADDITIONAL_IMAGES list
 # Should be dynamically to use $(MARKETPLACE_TOOLS_TAG)
-image-exporter := $(call get_sha256,$(IMAGE_EXPORTER))
+image-redis-exporter := $(call get_sha256,$(IMAGE_EXPORTER))
 image-haproxy := $(call get_sha256,$(IMAGE_HAPROXY))
 image-prometheus-to-sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))
 
