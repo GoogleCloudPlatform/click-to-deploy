@@ -14,7 +14,7 @@
 
 include_recipe 'postgresql::default'
 
-if node['postgresql']['standalone']['allow_external'] then
+if node['postgresql']['standalone']['allow_external']
   bash 'configure postgresql' do
     user 'root'
     code <<-EOH
