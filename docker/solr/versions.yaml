@@ -20,7 +20,7 @@ versions:
   from: marketplace.gcr.io/google/debian10
   packages:
     solr:
-      gpg: 50E3EE1C91C7E0CB4DFB007B369424FC98F3F6EC
+      gpg: 9722F25F650057E26C803B60A6D064D833B3A969
       sha512: 15150b7f191fd9e8d2c1bd8bb619dd4b3f27af2e0e94b7609031f7e745a2e263391c30f68865c208afb97ccaa9bde6d16050200e9bfccef65f762c2ed743c242
       version: 8.9.0
   repo: solr8
