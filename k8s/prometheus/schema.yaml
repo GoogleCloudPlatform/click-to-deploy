@@ -58,9 +58,18 @@ properties:
       serviceAccount:
         description: Service account used by main Prometheus StatefulSet
         roles:
+        roles:
         - type: ClusterRole
-          rulesType: PREDEFINED
-          rulesFromRoleName: cluster-admin
+          rulesType: CUSTOM
+          rules:
+          - apiGroups: [""]
+            resources:
+            - endpoints
+            - pods
+            - nodes
+            verbs:
+            - get
+            - list
   KUBE_STATE_METRICS_SERVICE_ACCOUNT:
     type: string
     title: Kube State Metrics Service Account
@@ -119,8 +128,16 @@ properties:
         description: Service account used by Alertmanager StatefulSet
         roles:
         - type: ClusterRole
-          rulesType: PREDEFINED
-          rulesFromRoleName: cluster-admin
+          rulesType: CUSTOM
+          rules:
+          - apiGroups: [""]
+            resources:
+            - endpoints
+            - pods
+            - nodes
+            verbs:
+            - get
+            - list
   GRAFANA_SERVICE_ACCOUNT:
     type: string
     title: Grafana Service Account
@@ -130,8 +147,16 @@ properties:
         description: Service account used by Grafana StatefulSet
         roles:
         - type: ClusterRole
-          rulesType: PREDEFINED
-          rulesFromRoleName: cluster-admin
+          rulesType: CUSTOM
+          rules:
+          - apiGroups: [""]
+            resources:
+            - endpoints
+            - pods
+            - nodes
+            verbs:
+            - get
+            - list
   NODE_EXPORTER_SERVICE_ACCOUNT:
     type: string
     title: Node Exporter Service Account
@@ -141,8 +166,16 @@ properties:
         description: Service account used by Node Exporter DaemonSet
         roles:
         - type: ClusterRole
-          rulesType: PREDEFINED
-          rulesFromRoleName: cluster-admin
+          rulesType: CUSTOM
+          rules:
+          - apiGroups: [""]
+            resources:
+            - endpoints
+            - pods
+            - nodes
+            verbs:
+            - get
+            - list
   STORAGE_CLASS:
     type: string
     title: StorageClass
