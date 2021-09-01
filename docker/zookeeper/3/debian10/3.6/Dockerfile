@@ -1,6 +1,6 @@
 FROM marketplace.gcr.io/google/debian10
 
-ARG ZK_VERSION=3.6.1
+ARG ZK_VERSION=3.6.3
 
 ENV ZOO_CONF_DIR=/conf \
     ZOO_DATA_DIR=/data \
@@ -38,7 +38,8 @@ RUN set -eux; \
     # Verify that gosu binary works
     gosu nobody true
 
-ARG GPG_KEY=BBE7232D7991050B54C8EA0ADC08637CA615D22C
+ENV GPG_KEYS AF3D175EC05DB249738D01AC8D8C3C3ED0B02E66 DFF24FB8323ADAC90E3CF36F729E61230EA917E9
+
 ARG SHORT_DISTRO_NAME="zookeeper-${ZK_VERSION}"
 ARG DISTRO_NAME="apache-zookeeper-${ZK_VERSION}-bin"
 
@@ -67,9 +68,9 @@ RUN set -eux; \
     ddist "${DISTRO_NAME}.tar.gz" "zookeeper/${SHORT_DISTRO_NAME}/${DISTRO_NAME}.tar.gz"; \
     ddist "${DISTRO_NAME}.tar.gz.asc" "zookeeper/${SHORT_DISTRO_NAME}/${DISTRO_NAME}.tar.gz.asc"; \
     export GNUPGHOME="$(mktemp -d)"; \
-    gpg --keyserver ha.pool.sks-keyservers.net --recv-key "${GPG_KEY}" || \
-    gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys "${GPG_KEY}" || \
-    gpg --keyserver keyserver.pgp.com --recv-keys "${GPG_KEY}"; \
+    gpg --keyserver ha.pool.sks-keyservers.net --recv-key ${GPG_KEYS} || \
+    gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys ${GPG_KEYS} || \
+    gpg --keyserver keyserver.pgp.com --recv-keys ${GPG_KEYS}; \
     gpg --batch --verify "${DISTRO_NAME}.tar.gz.asc" "${DISTRO_NAME}.tar.gz"; \
     tar -zxf "${DISTRO_NAME}.tar.gz"; \
     mv "${DISTRO_NAME}/conf/"* "${ZOO_CONF_DIR}"; \

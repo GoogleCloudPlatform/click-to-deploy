@@ -17,12 +17,12 @@ spec:
     spec:
       serviceAccount: {{ .Values.postgresql.serviceAccount }}
       securityContext:
-        fsGroup: 999 # Potgresql user group
+        fsGroup: 999 # PostgreSQL user group
       volumes:
       - name: tls-volume
         secret:
           secretName: {{ .Release.Name }}-tls
-          defaultMode: 0640 # Posgresql required permissions for server.crt and server.key files
+          defaultMode: 0640 # PostgreSQL required permissions for server.crt and server.key files
       - name: config-volume
         configMap:
           name: {{ .Release.Name }}-postgresql-config
