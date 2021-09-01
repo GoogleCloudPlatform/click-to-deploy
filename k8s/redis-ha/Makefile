@@ -15,13 +15,13 @@ REDIS_EXPORTER_TAG ?= 1.3.1
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
-IMAGE_REDIS ?= $(SOURCE_REGISTRY)/redis6:$(REDIS_TAG)
+IMAGE_MAIN ?= $(SOURCE_REGISTRY)/redis6:$(TRACK)
 IMAGE_HAPROXY = $(SOURCE_REGISTRY)/haproxy2:2
 IMAGE_EXPORTER = $(SOURCE_REGISTRY)/redis-exporter1:$(REDIS_EXPORTER_TAG)
 IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 # Main image
-image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_REDIS))
+image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_MAIN))
 
 # List of images used in application
 ADDITIONAL_IMAGES := redis-exporter haproxy prometheus-to-sd
