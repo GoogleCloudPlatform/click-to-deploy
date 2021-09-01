@@ -45,7 +45,7 @@ versions:
   - '0.16'
   - '0'
   - latest
-  templateSubDir: cert-manager0
+  templateSubDir: cert-manager1
 - dir: 0/debian9/0.13
   from: marketplace.gcr.io/google/debian9
   packages:
