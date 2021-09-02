@@ -29,11 +29,11 @@ describe 'C2D startup scripts should exists' do
     it { should exist }
   end
 
-  describe file('/opt/c2d/scripts/01-mysql') do
+  describe file('/opt/c2d/scripts/01-create-self-signed-certificate') do
     it { should exist }
   end
 
-  describe file('/opt/c2d/scripts/02-create-self-signed-certificate') do
+  describe file('/opt/c2d/scripts/02-mysql') do
     it { should exist }
   end
 
