@@ -42,16 +42,6 @@ user node['ghost']['user'] do
   manage_home true
 end
 
-# Add ghost user to sudoers.
-template "/etc/sudoers.d/#{node['ghost']['user']}" do
-  source 'etc-sudoers.d-ghost_app.erb'
-  owner  'root'
-  group  'root'
-  mode   '0440'
-  verify 'visudo -c -f %{path}'
-  variables(ghost_app: node['ghost']['user'])
-end
-
 # Assign permissions for install directory.
 directory node['ghost']['app']['install_dir'] do
   owner node['ghost']['user']
@@ -59,6 +49,16 @@ directory node['ghost']['app']['install_dir'] do
   mode '0755'
   action :create
   recursive true
+end
+
+# Add ghost user to sudoers.
+template "/var/www/ghost/#{node['ghost']['user']}" do
+  source 'etc-sudoers.d-ghost_app.erb'
+  owner  'root'
+  group  'root'
+  mode   '0440'
+  verify 'visudo -c -f %{path}'
+  variables(ghost_app: node['ghost']['user'])
 end
 
 c2d_startup_script 'ghost'
