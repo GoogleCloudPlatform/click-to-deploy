@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2017 Google Inc.
+# Copyright 2021 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 
 source /opt/c2d/c2d-utils || exit 1
 
-readonly wordpress_admin_username="admin"
-readonly wordpress_admin_password="$(get_attribute_value "wordpress-admin-password")"
-readonly wordpress_admin_email="$(get_attribute_value "wordpress-admin-email")"
-readonly wordpress_mysql_password="$(get_attribute_value "wordpress-mysql-password")"
 readonly mysql_root_password="$(get_attribute_value "mysql-root-password")"
+readonly wordpress_admin_username="admin"
+readonly wordpress_admin_email="$(get_attribute_value "wordpress-admin-email")"
+readonly wordpress_admin_password="$(get_attribute_value "wordpress-admin-password")"
+readonly wordpress_mysql_password="$(get_attribute_value "wordpress-mysql-password")"
 readonly wordpress_enable_https="$(get_attribute_value "wordpress-enable-https" \
   | tr '[:upper:]' '[:lower:]')"
 
@@ -36,10 +36,10 @@ echo "Flushed privileges."
 
 sudo -u www-data wp config create \
   --dbname=wordpress \
---dbuser=wordpress \
---dbpass="${wordpress_mysql_password}" \
---path=/var/www/html/ \
---force
+  --dbuser=wordpress \
+  --dbpass="${wordpress_mysql_password}" \
+  --path=/var/www/html/ \
+  --force
 
 # Run the CLI installer for WordPress
 declare -a args=(

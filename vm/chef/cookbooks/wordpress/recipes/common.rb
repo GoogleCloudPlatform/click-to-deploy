@@ -22,6 +22,7 @@ include_recipe 'php74::module_libapache2'
 include_recipe 'php74::module_mbstring'
 include_recipe 'php74::module_mysql'
 include_recipe 'php74::module_xml'
+include_recipe 'c2d-config::create-self-signed-certificate'
 
 remote_file '/tmp/wp-cli.phar' do
   source node['wordpress']['cli']['url']
