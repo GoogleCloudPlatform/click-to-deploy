@@ -27,7 +27,7 @@ mysql -u root -e "FLUSH PRIVILEGES;"
 
 cd /var/www/ghost
 
-mv ghost_app /etc/sudoers.d/ghost_app
+mv /opt/c2d/ghost_app /etc/sudoers.d/ghost_app
 
 runuser ${ghost_user} -c "ghost install --no-stack --no-prompt --no-setup-ssl \
   --url="http://$(get_external_ip)" --db=mysql --dbhost=localhost --dbuser="${ghost_db_user}" \

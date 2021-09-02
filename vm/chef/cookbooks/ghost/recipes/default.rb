@@ -52,7 +52,7 @@ directory node['ghost']['app']['install_dir'] do
 end
 
 # Add ghost user to sudoers.
-template "/var/www/ghost/#{node['ghost']['user']}" do
+template "/opt/c2d/#{node['ghost']['user']}" do
   source 'etc-sudoers.d-ghost_app.erb'
   owner  'root'
   group  'root'
