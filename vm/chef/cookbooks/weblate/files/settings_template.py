@@ -5,7 +5,7 @@ import platform
 from logging.handlers import SysLogHandler
 
 # Title of site to use
-SITE_TITLE = "${WEBLATE_SITE_TITLE}"
+SITE_TITLE = os.environ['WEBLATE_SITE_TITLE']
 
 # Site domain
 SITE_DOMAIN = ""
@@ -16,7 +16,7 @@ ENABLE_HTTPS = False
 DEBUG = True
 
 ADMINS = (
-  ("${WEBLATE_ADMIN_NAME}", "${WEBLATE_ADMIN_EMAIL}")
+  (os.environ['WEBLATE_ADMIN_NAME'], os.environ['WEBLATE_ADMIN_EMAIL'])
 )
 
 MANAGERS = ADMINS
