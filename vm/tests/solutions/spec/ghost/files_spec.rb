@@ -14,6 +14,6 @@
 
 require 'spec_helper'
 
-describe file('/etc/sudoers.d/etc-sudoers.d-ghost_app.erb') do
+describe file('/etc/sudoers.d/ghost_app') do
   it { should_not exist }
 end
