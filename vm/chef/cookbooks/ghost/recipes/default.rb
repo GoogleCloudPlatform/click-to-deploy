@@ -44,7 +44,7 @@ end
 
 # Add ghost user to sudoers.
 template "/etc/sudoers.d/#{node['ghost']['user']}" do
-  source 'etc-sudoers.d-ghostuser.erb'
+  source 'etc-sudoers.d-ghost_app.erb'
   owner  'root'
   group  'root'
   mode   '0440'

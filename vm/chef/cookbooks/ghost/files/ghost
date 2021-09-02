@@ -32,4 +32,4 @@ runuser ${ghost_user} -c "ghost install --no-stack --no-prompt --no-setup-ssl \
   --url="http://$(get_external_ip)" --db=mysql --dbhost=localhost --dbuser="${ghost_db_user}" \
   --dbname="${ghost_db_name}" --dbpass="${ghost_db_password}""
 
-rm /etc/sudoers.d/etc-sudoers.d-ghostuser.erb
+rm /etc/sudoers.d/etc-sudoers.d-ghost_app.erb
