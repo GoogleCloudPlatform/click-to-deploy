@@ -146,7 +146,6 @@ the selected version.
 
 ```shell
 export TAG="6.2"
-export REDIS_EXPORTER_TAG="1.3.1"
 ```
 
 Configure the container image:
@@ -155,7 +154,7 @@ Configure the container image:
 export IMAGE_REGISTRY="marketplace.gcr.io/google"
 
 export IMAGE_REDIS="${IMAGE_REGISTRY}/redis-ha:${TAG}"
-export IMAGE_REDIS_EXPORTER="${IMAGE_REGISTRY}/redis-ha/redis-exporter:${REDIS_EXPORTER_TAG}"
+export IMAGE_REDIS_EXPORTER="${IMAGE_REGISTRY}/redis-ha/redis-exporter:${TAG}"
 export IMAGE_HAPROXY="${IMAGE_REGISTRY}/redis-ha/haproxy:${TAG}"
 export IMAGE_METRICS_EXPORTER="${IMAGE_REGISTRY}/redis-ha/prometheus-to-sd:${TAG}"
 ```
