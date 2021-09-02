@@ -23,11 +23,20 @@ properties:
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: Service account used by Spark Operator
+        # TODO(liyinan926): Review permission set.
         roles:
         - type: ClusterRole
-          rulesType: PREDEFINED
-          # TODO(liyinan926): Reduce the permission set.
-          rulesFromRoleName: cluster-admin
+          rulesType: CUSTOM
+          rules:
+          - apiGroups: [""]
+            resources:
+            - endpoints
+            - pods
+            - nodes
+            verbs:
+            - get
+            - list
 required:
 - APP_INSTANCE_NAME
 - NAMESPACE
