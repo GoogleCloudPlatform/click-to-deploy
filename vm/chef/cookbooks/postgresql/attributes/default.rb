@@ -17,6 +17,7 @@ default['postgresql']['repository_url'] = 'http://apt.postgresql.org/pub/repos/a
 default['postgresql']['key'] = 'https://www.postgresql.org/media/keys/ACCC4CF8.asc'
 
 default['postgresql']['standalone']['distribution'] = 'stretch'
+default['postgresql']['standalone']['allow_external'] = true
 
 default['postgresql']['cluster']['packages'] = ['postgresql-plperl-13', 'postgresql-client']
 default['postgresql']['cluster']['distribution'] = 'buster'
