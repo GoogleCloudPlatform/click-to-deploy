@@ -171,6 +171,7 @@ For the persistent disk provisioning of the Redis will need to set persistent di
 size. The default disk size is "10Gi":
 
 ```shell
+export DEFAULT_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
 export PERSISTENT_DISK_SIZE="10Gi"
 ```
 
@@ -204,6 +205,7 @@ helm template chart/redis-ha \
   --set redis.replicas="${REDIS_REPLICAS}" \
   --set redis.password="${REDIS_AUTH_PASSWORD}" \
   --set redis.persistence.size="${PERSISTENT_DISK_SIZE}" \
+  --set redis.persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \
   --set redis.exporter.image="${IMAGE_REDIS_EXPORTER}" \
   --set metrics.image="${IMAGE_METRICS_EXPORTER}" \
   --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED:-false}" \
