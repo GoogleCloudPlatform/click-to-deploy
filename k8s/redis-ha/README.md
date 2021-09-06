@@ -145,7 +145,7 @@ the selected version.
 > over time.
 
 ```shell
-export TAG="5.0"
+export TAG="6.2"
 ```
 
 Configure the container image:
@@ -153,7 +153,7 @@ Configure the container image:
 ```shell
 export IMAGE_REGISTRY="marketplace.gcr.io/google"
 
-export IMAGE_REDIS="${IMAGE_REGISTRY}/redis-ha"
+export IMAGE_REDIS="${IMAGE_REGISTRY}/redis-ha:${TAG}"
 export IMAGE_REDIS_EXPORTER="${IMAGE_REGISTRY}/redis-ha/redis-exporter:${TAG}"
 export IMAGE_HAPROXY="${IMAGE_REGISTRY}/redis-ha/haproxy:${TAG}"
 export IMAGE_METRICS_EXPORTER="${IMAGE_REGISTRY}/redis-ha/prometheus-to-sd:${TAG}"
@@ -171,6 +171,7 @@ For the persistent disk provisioning of the Redis will need to set persistent di
 size. The default disk size is "10Gi":
 
 ```shell
+export DEFAULT_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
 export PERSISTENT_DISK_SIZE="10Gi"
 ```
 
@@ -204,6 +205,7 @@ helm template chart/redis-ha \
   --set redis.replicas="${REDIS_REPLICAS}" \
   --set redis.password="${REDIS_AUTH_PASSWORD}" \
   --set redis.persistence.size="${PERSISTENT_DISK_SIZE}" \
+  --set redis.persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \
   --set redis.exporter.image="${IMAGE_REDIS_EXPORTER}" \
   --set metrics.image="${IMAGE_METRICS_EXPORTER}" \
   --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED:-false}" \

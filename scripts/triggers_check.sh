@@ -58,12 +58,14 @@ function get_trigger_name() {
 }
 
 function trigger_active {
-  local -r solution=$1
+  local -r solution="$1"
   local -r trigger_name="$(get_trigger_name "${solution}")"
 
   gcloud alpha builds triggers list --project="${PROJECT}" --format json | \
     jq -e --arg solution "${solution}" --arg triggerName "${trigger_name}" \
-      '.triggers[] | select(.name == $triggerName and .substitutions._SOLUTION_NAME == $solution and .disabled != true)'
+      'if type == "object" then .triggers else . end
+        | .[]
+        | select(.name == $triggerName and .substitutions._SOLUTION_NAME == $solution and .disabled != true)'
 
   return $?
 }
