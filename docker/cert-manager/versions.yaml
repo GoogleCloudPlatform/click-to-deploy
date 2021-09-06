@@ -20,9 +20,9 @@ versions:
     repo: cert-manager1
     templateSubDir: cert-manager1
     tags:
-      - '1.5.1-debian9'
+      - '1.5.3-debian9'
       - '1.5-debian9'
-      - '1.5.1'
+      - '1.5.3'
       - '1.5'
       - '1-debian9'
       - '1'
@@ -30,7 +30,7 @@ versions:
     from: *from9
     packages:
       cert-manager:
-        version: '1.5.1'
+        version: '1.5.3'
   - dir: '1/debian9/1.4'
     repo: cert-manager1
     templateSubDir: cert-manager1
