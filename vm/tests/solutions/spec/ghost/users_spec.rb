@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['ghost']['cli']['version'] = '1.17.3'
-default['ghost']['app']['version'] = '4.12.1'
-default['ghost']['app']['install_dir'] = '/var/www/ghost'
+require 'spec_helper'
 
-default['ghost']['db']['user'] = 'ghost'
-default['ghost']['db']['name'] = 'ghost_production'
-
-default['ghost']['user'] = 'ghost_app'
+describe user('ghost_app') do
+  it { should exist }
+  it { should belong_to_group 'ghost_app' }
+  it { should have_home_directory '/home/ghost_app' }
+end
