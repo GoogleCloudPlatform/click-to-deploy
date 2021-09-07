@@ -16,39 +16,55 @@
 
 source /opt/c2d/c2d-utils || exit 1
 
+export WEBLATE_SITE_TITLE="$(get_attribute_value "weblate-site-title")"
+export WEBLATE_ADMIN_NAME="$(get_attribute_value "weblate-admin-name")"
+export WEBLATE_ADMIN_EMAIL="$(get_attribute_value "weblate-admin-email")"
+export WEBLATE_DB_NAME="$(get_attribute_value "weblate-db-name")"
+export WEBLATE_DB_USER="$(get_attribute_value "weblate-db-user")"
+export WEBLATE_DB_PASSWORD="$(get_attribute_value "weblate-db-password")"
+export WEBLATE_SENDER_EMAIL="$(get_attribute_value "weblate-sender-email")"
+export WEBLATE_REDIS_PASSWORD="$(get_attribute_value "redis-password")"
+export DJANGO_SECRET_KEY="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 1 | tr -d '\n')"
+
+#######################################
+# Awaits for host and port be ready.
+# Arguments:
+#   Target Hostname.
+#   Target Port.
+#   Timeout expected, 300s by default.
+#######################################
+function wait_for_port() {
+  local -r host="$1"
+  local -r port="$2"
+  local -r timeout="${3:-300}"
+
+  timeout --preserve-status "${timeout}" bash -c "until echo > /dev/tcp/${host}/${port}; do sleep 2; done"
+  if [[ "$?" -ne 0 ]]; then
+    exit 1
+  fi
+}
+
+echo "Awaiting for PostgreSQL..."
+wait_for_port "localhost" "5432"
+
+echo "Awaiting for Redis..."
+wait_for_port "localhost" "6379"
+
 # Create database and user
-
-readonly db_password="$(get_attribute_value "weblate-db-password")"
-readonly db_username="weblate"
-readonly db_name="weblate"
-
-sudo -u postgres psql -c "CREATE USER ${db_username} WITH PASSWORD '${db_password}';"
-sudo -u postgres psql -c "CREATE DATABASE ${db_name} OWNER ${db_username};"
-
+sudo -u postgres psql -c "CREATE USER ${WEBLATE_DB_USER} WITH PASSWORD '${WEBLATE_DB_PASSWORD}';"
+sudo -u postgres psql -c "CREATE DATABASE ${WEBLATE_DB_NAME} OWNER ${WEBLATE_DB_USER};"
 
 # Create configuration file
-local python_folder="$(ls -la /opt/weblate-env/lib | grep "python" | awk '{ print $9 }')"
-local config_file="/opt/weblate-env/lib/${python_folder}/site-packages/weblate/settings.py"
-
-# Apply configuration
-
-declare -a substitutions=(
-  "\$WEBLATE_SITE_TITLE"
-  "\$WEBLATE_ADMIN_NAME"
-  "\$WEBLATE_ADMIN_EMAIL"
-  "\$WEBLATE_DB_NAME"
-  "\$WEBLATE_DB_USER"
-  "\$WEBLATE_DB_PASSWORD"
-  "\$WEBLATE_REDIS_PASSWORD"
-  "\$DJANGO_SECRET_KEY"
-)
-envsubst "${substitutions[*]}" > "${config_file}"
+declare -r python_folder="$(ls -la /opt/weblate-env/lib | grep "python" | awk '{ print $9 }')"
+declare config_file="/opt/weblate-env/lib/${python_folder}/site-packages/weblate/settings.py"
+cp -f /opt/c2d/weblate-settings.py "${config_file}"
 
 # Setup Weblate
+# weblate migrate
+# weblate createadmin
+# weblate collectstatic
+# weblate compress
+# /opt/weblate-env/lib/python3.5/site-packages/weblate/examples/celery start
+# weblate runserver
 
-weblate migrate
-weblate createadmin
-weblate collectstatic
-weblate compress
-/opt/weblate-env/lib/python3.5/site-packages/weblate/examples/celery start
-weblate runserver
+echo "Installation complete?"

@@ -19,7 +19,7 @@ include_recipe 'apache2::mod-wsgi'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 include_recipe 'redis::standalone'
-include_recipe 'postgresql'
+include_recipe 'postgresql::standalone-buster'
 include_recipe 'git'
 
 apt_update do
@@ -38,18 +38,17 @@ git '/usr/src/weblate' do
   action :checkout
 end
 
-bash 'Install Weblate' do
+bash 'Install Dependencies' do
   user 'root'
   code <<-EOH
     virtualenv --python=python3 /opt/weblate-env
     source /opt/weblate-env/bin/activate
-    pip install Weblate psycopg2-binary
-    pip install ruamel.yaml aeidon boto3 zeep chardet tesserocr
+    pip install psycopg2-binary ruamel.yaml aeidon boto3 zeep chardet tesserocr
 EOH
 end
 
-cookbook_file '/opt/c2d/settings_template.py' do
-  source 'settings_template.py'
+cookbook_file '/opt/c2d/weblate-settings.py' do
+  source 'settings.py'
   owner 'root'
   group 'root'
   mode 0755
