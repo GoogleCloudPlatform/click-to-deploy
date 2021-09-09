@@ -1,11 +1,13 @@
-# solr-docker
+# kafka-docker
 
-Container solution for Apache Solr.
-Learn more about Apache Solr in [official documentation](https://lucene.apache.org/solr/).
+Container solution for Apache Kafka.
+Learn more about Apache Kafka in [official documentation](https://kafka.apache.org/).
 
 ## Upstream
 
-- Source for [Apache Solr docker solution](https://github.com/docker-solr/docker-solr/)
+Build instruction for docker containers partially copied from:
+(https://github.com/wurstmeister/kafka-docker)
+
 
 ## Disclaimer
 
