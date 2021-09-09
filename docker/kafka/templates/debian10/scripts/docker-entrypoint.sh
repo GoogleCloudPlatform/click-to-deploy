@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2020 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ set -e
 
 # Clear some variables that we don't want runtime
 unset KAFKA_USER KAFKA_UID KAFKA_GROUP KAFKA_GID \
-      KAFKA_CLOSER_URL KAFKA_DIST_URL KAFKA_ARCHIVE_URL KAFKA_DOWNLOAD_URL KAFKA_DOWNLOAD_SERVER KAFKA_SHA512
+      KAFKA_DOCKER_SCRIPTS KAFKA_DIST_URL KAFKA_SHA512
 
 if [[ "$VERBOSE" == "yes" ]]; then
     set -x
@@ -29,15 +29,13 @@ if [[ -v KAFKA_PORT ]] && ! grep -E -q '^[0-9]+$' <<<"${KAFKA_PORT:-}"; then
   export KAFKA_PORT
 fi
 
-# when invoked with e.g.: docker run solr -help
+# when invoked with e.g.: docker run kafka -help
 if [ "${1:0:1}" == '-' ]; then
-    set -- solr-foreground "$@"
+    set -- "$KAFKA_HOME/bin/kafka-server-start.sh" "$@"
 fi
 
 # execute command passed in as arguments.
 # The Dockerfile has specified the PATH to include
-# /opt/solr/bin (for Solr) and /opt/docker-solr/scripts (for our scripts
-# like solr-foreground, solr-create, solr-precreate, solr-demo).
-# Note: if you specify "solr", you'll typically want to add -f to run it in
-# the foreground.
+# /opt/kafka/bin (for kafka) and /opt/docker-kafka/scripts (for our scripts
+# like create-topics, start-kafka, versions).
 exec "$@"
