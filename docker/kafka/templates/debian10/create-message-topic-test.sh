@@ -1,0 +1,1 @@
+echo "$3" | /opt/kafka/bin/kafka-console-producer.sh --broker-list $1 --topic "$2" && echo OK

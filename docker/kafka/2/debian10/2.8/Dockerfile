@@ -22,12 +22,16 @@ ENV KAFKA_USER="kafka" \
 
 ENV PATH="${PATH}:${KAFKA_HOME}/bin"
 
+# Kafka run with user `kafka`, uid = 9092.
+# If you bind mount a volume from the host or a data container,
+# ensure you use the same uid.
 RUN set -ex; \
   groupadd -r --gid "${KAFKA_GID}" "${KAFKA_GROUP}"; \
   useradd -r --uid "${KAFKA_UID}" --gid "${KAFKA_GID}" -s /sbin/nologin "${KAFKA_USER}"
 
 COPY --chown=$KAFKA_USER:$KAFKA_GROUP scripts ${KAFKA_DOCKER_SCRIPTS}
 
+# Download and setup kafka version v2.8.0
 RUN chmod a+x ${KAFKA_DOCKER_SCRIPTS}/*.sh \
   && ln -s ${KAFKA_DOCKER_SCRIPTS}/*.sh /usr/bin \
   && curl -sSL ${KAFKA_DIST_URL} -o "/opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz" \
@@ -40,6 +44,13 @@ RUN chmod a+x ${KAFKA_DOCKER_SCRIPTS}/*.sh \
   && rm /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz
 
 COPY --chown=${KAFKA_USER}:${KAFKA_GROUP} scripts/overrides /opt/overrides
+
+RUN set -x && \
+    export KAFKA_LICENSE_VERSION="${KAFKA_VERSION}" \
+    # Copy License to container image
+    && mkdir -p /usr/share/doc/kafka \
+    && curl -sSL https://raw.githubusercontent.com/apache/kafka/${KAFKA_VERSION}/LICENSE \
+    -o /usr/share/doc/kafka/LICENSE
 
 VOLUME ${KAFKA_LOG_DIRS}
 EXPOSE 9092
