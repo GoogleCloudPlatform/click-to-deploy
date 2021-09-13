@@ -47,4 +47,4 @@ tests:
   command: ["/opt/kafka/bin/kafka-console-consumer.sh", "--bootstrap-server", "kafka-$UNIQUE-id-1:9092,kafka-$UNIQUE-id-2:9092", "--topic", "test", "--from-beginning", "--max-messages", "1", "--timeout-ms", "5000"]
   expected:
     stdout:
-      matches: "test-mess3age\nProcessed a total of 1 messages"
+      matches: "test-message\nProcessed a total of 1 messages"
