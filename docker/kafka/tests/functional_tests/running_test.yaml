@@ -35,18 +35,18 @@ tests:
       matches: "Created topic test."
 - name: Get topics list
   command: ["/opt/kafka/bin/kafka-topics.sh", "--list", "--zookeeper", "zk-$UNIQUE-id:2181"]
-  expected:
+  expect:
     stdout:
       matches: "test"
 - name: Create message in test topic
   command: ["/opt/docker-kafka/scripts/create-message-topic-test.sh", "kafka-$UNIQUE-id-1:9092,kafka-$UNIQUE-id-2:9092", "test", "test-message"]
-  expected:
+  expect:
     stdout:
       matches: "OK"
 - name: Get message from test topic
   command: ["/opt/kafka/bin/kafka-console-consumer.sh", "--bootstrap-server", "kafka-$UNIQUE-id-1:9092,kafka-$UNIQUE-id-2:9092", "--topic", "test", "--from-beginning", "--max-messages", "1", "--timeout-ms", "5000"]
-  expected:
+  expect:
     stdout:
-      matches: "te"
+      matches: "test-message"
     stderr:
       matches: "Processed a total of 1 messages"
