@@ -153,7 +153,7 @@ Configure the container image:
 ```shell
 export IMAGE_REGISTRY="marketplace.gcr.io/google"
 
-export IMAGE_REDIS="${IMAGE_REGISTRY}/redis-ha:${TAG}"
+export IMAGE_REDIS="${IMAGE_REGISTRY}/redis-ha"
 export IMAGE_REDIS_EXPORTER="${IMAGE_REGISTRY}/redis-ha/redis-exporter:${TAG}"
 export IMAGE_HAPROXY="${IMAGE_REGISTRY}/redis-ha/haproxy:${TAG}"
 export IMAGE_METRICS_EXPORTER="${IMAGE_REGISTRY}/redis-ha/prometheus-to-sd:${TAG}"
@@ -196,9 +196,29 @@ kubectl create namespace "${NAMESPACE}"
 Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to your app.
 
+Helm version 2
 ```shell
 helm template chart/redis-ha \
   --name "${APP_INSTANCE_NAME}" \
+  --namespace "${NAMESPACE}" \
+  --set redis.image.repo="${IMAGE_REDIS}" \
+  --set redis.image.tag="${TAG}" \
+  --set redis.replicas="${REDIS_REPLICAS}" \
+  --set redis.password="${REDIS_AUTH_PASSWORD}" \
+  --set redis.persistence.size="${PERSISTENT_DISK_SIZE}" \
+  --set redis.persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \
+  --set redis.exporter.image="${IMAGE_REDIS_EXPORTER}" \
+  --set metrics.image="${IMAGE_METRICS_EXPORTER}" \
+  --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED:-false}" \
+  --set haproxy.image="${IMAGE_HAPROXY}" \
+  --set haproxy.replicas="${HAPROXY_REPLICAS}" \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
+```
+
+Helm version 3
+```
+helm template chart/redis-ha \
+  --name-template="${APP_INSTANCE_NAME}" \
   --namespace "${NAMESPACE}" \
   --set redis.image.repo="${IMAGE_REDIS}" \
   --set redis.image.tag="${TAG}" \
