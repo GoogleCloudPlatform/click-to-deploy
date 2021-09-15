@@ -14,11 +14,11 @@
 
 require 'spec_helper'
 
-describe 'Kong config file should exists' do
-  describe file('/etc/kong/kong.conf.default') do
+describe 'Weblate config file should exists' do
+  describe file('/opt/c2d/weblate-settings.py') do
     it { should exist }
   end
-  describe file('/usr/src/kong/LICENSE') do
+  describe file('/usr/src/weblate/COPYING') do
     it { should exist }
   end
 end

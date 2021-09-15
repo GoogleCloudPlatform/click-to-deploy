@@ -39,4 +39,3 @@ default['weblate']['packages'] = [
   'libleptonica-dev',
   'exim4'
 ]
-

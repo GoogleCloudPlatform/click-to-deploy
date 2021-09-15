@@ -14,16 +14,19 @@
 #
 # Reference: https://docs.weblate.org/en/latest/admin/install/venv-debian.html
 
-include_recipe 'apache2'
-include_recipe 'apache2::mod-wsgi'
-include_recipe 'apache2::rm-index'
-include_recipe 'apache2::security-config'
+node.override['postgresql']['standalone']['allow_external'] = false
+
+include_recipe 'nginx'
 include_recipe 'redis::standalone'
-include_recipe 'postgresql::standalone-buster'
+include_recipe 'postgresql::standalone_buster'
 include_recipe 'git'
 
 apt_update do
   action :update
+end
+
+user 'weblate' do
+  action :create
 end
 
 package 'Install dependencies' do
@@ -49,6 +52,30 @@ end
 
 cookbook_file '/opt/c2d/weblate-settings.py' do
   source 'settings.py'
+  owner 'root'
+  group 'root'
+  mode 0755
+  action :create
+end
+
+cookbook_file '/opt/weblate-env/weblate.uwsgi.ini' do
+  source 'weblate.uwsgi.ini'
+  owner 'root'
+  group 'root'
+  mode 0755
+  action :create
+end
+
+cookbook_file '/etc/nginx/sites-available/weblate' do
+  source 'weblate.nginx'
+  owner 'root'
+  group 'root'
+  mode 0755
+  action :create
+end
+
+cookbook_file '/opt/c2d/weblate-utils' do
+  source 'weblate-utils'
   owner 'root'
   group 'root'
   mode 0755

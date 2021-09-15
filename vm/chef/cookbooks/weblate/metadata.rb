@@ -13,9 +13,9 @@
 # limitations under the License.
 
 name 'weblate'
-depends 'apache2'
-depends 'c2d-config'
 depends 'git'
-depends 'postgresql'
+depends 'nginx'
 depends 'redis'
+depends 'postgresql'
+depends 'c2d-config'
 supports 'debian'

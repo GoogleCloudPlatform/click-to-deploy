@@ -29,15 +29,15 @@ describe 'C2D startup scripts should exists' do
     it { should exist }
   end
 
-  describe file('/opt/c2d/scripts/01-postgresql') do
+  describe file('/opt/c2d/scripts/01-redis-standalone') do
     it { should exist }
   end
 
-  describe file('/opt/c2d/scripts/02-kong-db-setup') do
+  describe file('/opt/c2d/scripts/02-postgresql') do
     it { should exist }
   end
 
-  describe file('/opt/c2d/scripts/03-kong-setup') do
+  describe file('/opt/c2d/scripts/03-weblate') do
     it { should exist }
   end
 end

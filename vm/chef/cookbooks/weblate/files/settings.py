@@ -8,7 +8,7 @@ from logging.handlers import SysLogHandler
 SITE_TITLE = os.environ['WEBLATE_SITE_TITLE']
 
 # Site domain
-SITE_DOMAIN = ""
+SITE_DOMAIN = "127.0.0.1:8000"
 
 # Whether site uses https
 ENABLE_HTTPS = False
@@ -24,9 +24,9 @@ MANAGERS = ADMINS
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ['WEBLATE_DB_NAME']",
+        "NAME": os.environ['WEBLATE_DB_NAME'],
         "USER": os.environ['WEBLATE_DB_USER'],
-        "PASSWORD": os.environ['WEBLATE_DB_PASSWORD']",
+        "PASSWORD": os.environ['WEBLATE_DB_PASSWORD'],
         "HOST": "127.0.0.1",
         "PORT": ""
     }
@@ -142,7 +142,7 @@ STATICFILES_FINDERS = (
 
 # Make this unique, and don't share it with anybody.
 # You can generate it using weblate/examples/generate-secret-key
-SECRET_KEY = os.environ['DJANGO_SECRET_KEY']"
+SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 _TEMPLATE_LOADERS = [
     "django.template.loaders.filesystem.Loader",
@@ -661,8 +661,10 @@ REST_FRAMEWORK = {
 # Fonts CDN URL
 FONTS_CDN_URL = None
 
+COMPRESS_ENABLED = True
+
 # Django compressor offline mode
-COMPRESS_OFFLINE = False
+COMPRESS_OFFLINE = True
 COMPRESS_OFFLINE_CONTEXT = [
     {"fonts_cdn_url": FONTS_CDN_URL, "STATIC_URL": STATIC_URL, "LANGUAGE_BIDI": True},
     {"fonts_cdn_url": FONTS_CDN_URL, "STATIC_URL": STATIC_URL, "LANGUAGE_BIDI": False},

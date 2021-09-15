@@ -12,19 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'spec_helper'
+include_recipe 'apache2'
 
-describe service('postgresql'), :if => os[:family] == 'debian' do
-  it { should be_enabled }
-  it { should be_running }
+package 'libapache2-mod-wsgi-py3' do
+  action :install
 end
 
-describe service('redis'), :if => os[:family] == 'debian' do
-  it { should be_enabled }
-  it { should be_running }
-end
-
-describe service('nginx'), :if => os[:family] == 'debian' do
-  it { should be_enabled }
-  it { should be_running }
-end
+execute 'a2enmod wsgi'
