@@ -76,7 +76,6 @@ bash 'configure_jenkins' do
 
   jenkins_version="$(java -jar /usr/share/jenkins/jenkins.war --version 2> /dev/null)"
   echo -n "${jenkins_version}" > /var/lib/jenkins/jenkins.install.UpgradeWizard.state
-  cp /var/lib/jenkins/jenkins.install.UpgradeWizard.state /var/lib/jenkins/jenkins.install.InstallUtil.lastExecVersion
 EOH
 end
 
