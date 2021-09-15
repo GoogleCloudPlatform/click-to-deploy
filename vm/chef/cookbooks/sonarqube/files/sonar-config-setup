@@ -44,3 +44,40 @@ EOF
 # Enabling Sonarqube.
 systemctl start sonar
 systemctl enable sonar
+
+
+#######################################
+# Await the application to be ready.
+#######################################
+function wait_for_app() {
+  local max_retries=10
+  local retry=1
+  local http_code=0
+
+  while [[ "${http_code}" -ne 200 && "${retry}" -le "${max_retries}" ]]; do
+    echo "Trying to fetch homepage... ${retry}"
+    http_code="$(curl -s -L -o /dev/null -w "%{http_code}" http://$(get_external_ip))"
+    (( retry=retry+1 ))
+    sleep 25
+  done
+
+  if [[ "${retry}" -gt "${max_retries}" ]]; then
+    echo "Max retries exceeded."
+    exit 1
+  fi
+}
+
+wait_for_app
+
+# Change admin password.
+user="admin"
+echo "$user"
+new_salt="$(tr -dc A-Za-z0-9 </dev/urandom | head -c 40 ; echo '')"
+echo "${new_salt}"
+new_password="${sonar_pass}"
+echo "${new_password}"
+salted_password="$(echo -n "--${new_salt}--${new_password}--" | sha1sum | awk '{print $1}')"
+echo "$salted_password"
+sudo -u sonar psql <<EOF
+UPDATE users SET crypted_password='${salted_password}', salt='${new_salt}', hash_method='SHA1' WHERE login='${user}';
+EOF
