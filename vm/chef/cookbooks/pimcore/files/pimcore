@@ -35,7 +35,6 @@ function wait_for_app() {
   while [[ "${http_code}" -ne 200 && "${retry}" -le "${max_retries}" ]]; do
     http_code="$(curl -s -L -o /dev/null -w "%{http_code}" http://localhost)"
     (( retry=retry+1 ))
-    sleep 20
   done
 
   if [[ "${retry}" -gt "${max_retries}" ]]; then
