@@ -37,5 +37,5 @@ default['weblate']['packages'] = [
   'tesseract-ocr',
   'libtesseract-dev',
   'libleptonica-dev',
-  'exim4'
+  'exim4',
 ]
