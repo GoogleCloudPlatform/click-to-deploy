@@ -46,7 +46,7 @@ bash 'Install Dependencies' do
   code <<-EOH
     virtualenv --python=python3 /opt/weblate-env
     source /opt/weblate-env/bin/activate
-    pip install #{node['weblate']['pip_dependencies']}
+    pip install #{node['weblate']['pip-packages']}
 EOH
 end
 

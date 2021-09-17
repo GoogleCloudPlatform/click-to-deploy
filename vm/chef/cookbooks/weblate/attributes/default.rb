@@ -14,7 +14,7 @@
 
 default['weblate']['version'] = '4.8'
 default['weblate']['db']['name'] = 'weblate'
-default['weblate']['pip_dependencies'] = [
+default['weblate']['pip-packages'] = [
   'psycopg2-binary',
   'ruamel.yaml',
   'aeidon',
