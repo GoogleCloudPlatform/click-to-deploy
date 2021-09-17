@@ -14,6 +14,15 @@
 
 default['weblate']['version'] = '4.8'
 default['weblate']['db']['name'] = 'weblate'
+default['weblate']['pip_dependencies'] = [
+  'psycopg2-binary',
+  'ruamel.yaml',
+  'aeidon',
+  'boto3',
+  'zeep',
+  'chardet',
+  'tesserocr',
+].join(' ')
 
 default['weblate']['packages'] = [
   'gettext-base',

@@ -47,8 +47,8 @@ declare -r config_file="/opt/weblate-env/lib/${python_folder}/site-packages/webl
 cp -f /opt/c2d/weblate-settings.py "${config_file}"
 
 # Create log file
-touch /var/log/weblate.log \
-  && chown weblate:weblate /var/log/weblate.log
+touch /var/log/weblate.log
+chown weblate:weblate /var/log/weblate.log
 
 # Setup initial database
 weblate migrate
