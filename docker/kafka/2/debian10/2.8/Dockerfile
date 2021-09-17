@@ -8,7 +8,7 @@ ENV C2D_RELEASE 2.8.0
 
 RUN set -ex \
   && apt-get update \
-  && apt-get -y install default-jdk curl ca-certificates jq curl net-tools \
+  && apt-get -y install default-jdk curl ca-certificates jq net-tools \
   && rm -rf /var/lib/apt/lists/*
 
 ENV KAFKA_USER="kafka" \
