@@ -74,11 +74,11 @@ spec:
         - name: kafka
           image: "{{ .Values.kafka.image.repo }}:{{ .Values.kafka.image.tag }}"
           imagePullPolicy: IfNotPresent
-          command:
-            - 'bash'
-            - '-c'
-            - |
-              sleep 7200
+#          command:
+#            - 'bash'
+#            - '-c'
+#            - |
+#              sleep 7200
           ports:
             - containerPort: 9092
               name: kafka-port
@@ -89,43 +89,47 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: status.podIP
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
             - name: KAFKA_ADVERTISED_PORT
               value: "9092"
             - name: KAFKA_PORT
               value: "9092"
-
-#            - name: ZK_ADMIN_PASSWORD
-#              valueFrom:
-#                secretKeyRef:
-#                  name: {{ .Release.Name }}-kafka-secret
-#                  key: zk-admin-password
-#            - name: ZK_READONLY_PASSWORD
-#              valueFrom:
-#                secretKeyRef:
-#                  name: {{ .Release.Name }}-kafka-secret
-#                  key: zk-readonly-password
-#                  # export KAFKA_OPTS=-Djava.security.auth.login.config=<path-to-jaas-file>/users_jaas.conf
-#            - name: KAFKA_ZK_CREDS_AND_ACLS
-#              value: "-DzkACLProvider=org.apache.kafka.common.cloud.VMParamsAllAndReadonlyDigestZkACLProvider #-DzkCredentialsProvider=org.apache.kafka.common.cloud.#VMParamsSingleSetCredentialsDigestZkCredentialsProvider -DzkDigestUsername=admin-user #-DzkDigestPassword=$(ZK_ADMIN_PASSWORD) -DzkDigestReadonlyUsername=readonly-user #-DzkDigestReadonlyPassword=$(ZK_READONLY_PASSWORD)"
-#            - name: KAFKA_OPTS
-#              value: "$(KAFKA_ZK_CREDS_AND_ACLS)"
-#
-#          livenessProbe:
-#            tcpSocket:
-#              port: kafka-port
-#            initialDelaySeconds: 60
-#            timeoutSeconds: 5
-#            failureThreshold: 1
-#            periodSeconds: 10
-#            successThreshold: 1
-#          readinessProbe:
-#            tcpSocket:
-#              port: kafka-port
-#            initialDelaySeconds: 20
-#            timeoutSeconds: 5
-#            failureThreshold: 1
-#            periodSeconds: 1
-#            successThreshold: 1
+            - name: KAFKA_LOG_DIRS
+              value: "/kafka/logs"
+            - name: ZK_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-kafka-secret
+                  key: zk-admin-password
+            - name: ZK_READONLY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-kafka-secret
+                  key: zk-readonly-password
+                  # export KAFKA_OPTS=-Djava.security.auth.login.config=<path-to-jaas-file>/users_jaas.conf
+            - name: KAFKA_ZK_CREDS_AND_ACLS
+              value: "-DzkACLProvider=org.apache.kafka.common.cloud.VMParamsAllAndReadonlyDigestZkACLProvider #-DzkCredentialsProvider=org.apache.kafka.common.cloud.#VMParamsSingleSetCredentialsDigestZkCredentialsProvider -DzkDigestUsername=admin-user #-DzkDigestPassword=$(ZK_ADMIN_PASSWORD) -DzkDigestReadonlyUsername=readonly-user #-DzkDigestReadonlyPassword=$(ZK_READONLY_PASSWORD)"
+            - name: KAFKA_OPTS
+              value: "$(KAFKA_ZK_CREDS_AND_ACLS)"
+          livenessProbe:
+            tcpSocket:
+              port: kafka-port
+            initialDelaySeconds: 60
+            timeoutSeconds: 5
+            failureThreshold: 1
+            periodSeconds: 10
+            successThreshold: 1
+          readinessProbe:
+            tcpSocket:
+              port: kafka-port
+            initialDelaySeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 1
+            periodSeconds: 1
+            successThreshold: 1
           volumeMounts:
             - name: logdir
               mountPath: /kafka
