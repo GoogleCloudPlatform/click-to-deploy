@@ -23,6 +23,7 @@ spec:
       securityContext:
         fsGroup: 9092
         runAsUser: 9092
+        runAsGroup: 9092
       terminationGracePeriodSeconds: 30
 #      volumes:
 #        - name: solr-xml
@@ -73,6 +74,11 @@ spec:
         - name: kafka
           image: "{{ .Values.kafka.image.repo }}:{{ .Values.kafka.image.tag }}"
           imagePullPolicy: IfNotPresent
+          command:
+            - 'bash'
+            - '-c'
+            - |
+              sleep 7200
           ports:
             - containerPort: 9092
               name: kafka-port
@@ -105,30 +111,31 @@ spec:
 #              value: "$(KAFKA_ZK_CREDS_AND_ACLS)"
 #
 #          livenessProbe:
-#            initialDelaySeconds: 45
+#            tcpSocket:
+#              port: kafka-port
+#            initialDelaySeconds: 60
+#            timeoutSeconds: 5
+#            failureThreshold: 1
 #            periodSeconds: 10
-#            httpGet:
-#              scheme: "HTTP"
-#              path: /solr
-#              port: 9092
+#            successThreshold: 1
 #          readinessProbe:
-#            initialDelaySeconds: 15
-#            periodSeconds: 5
-#            httpGet:
-#              scheme: "HTTP"
-#              path: /solr
-#              port: 9092
-#          volumeMounts:
-#            - name: homedir
-#              mountPath: /opt/solr/server/home
+#            tcpSocket:
+#              port: kafka-port
+#            initialDelaySeconds: 20
+#            timeoutSeconds: 5
+#            failureThreshold: 1
+#            periodSeconds: 1
+#            successThreshold: 1
+          volumeMounts:
+            - name: logdir
+              mountPath: /kafka
 
-#  volumeClaimTemplates:
-#    - metadata:
-#        name: homedir
-#      spec:
-#        accessModes: [ "ReadWriteOnce" ]
-#        storageClassName: {{ .Values.persistence.storageClass }}
-#        resources:
-#          requests:
-#            storage: {{ .Values.persistence.kafka.storageSize }}
-#
+  volumeClaimTemplates:
+    - metadata:
+        name: logdir
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: {{ .Values.persistence.storageClass }}
+        resources:
+          requests:
+            storage: {{ .Values.persistence.kafka.storageSize }}
