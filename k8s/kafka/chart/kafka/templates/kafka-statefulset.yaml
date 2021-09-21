@@ -25,13 +25,14 @@ spec:
         runAsUser: 9092
         runAsGroup: 9092
       terminationGracePeriodSeconds: 30
-#      volumes:
-#        - name: solr-xml
-#          configMap:
-#            name: {{ .Release.Name }}-solr-config-map
-#            items:
-#              - key: solr.xml
-#                path: solr.xml
+      volumes:
+        - name: jaas-config
+          secret:
+            secretName: {{ .Release.Name }}-kafka-secrets
+            items:
+            - key: jaas.conf
+              path: jaas.conf
+              mode: 0755
       initContainers:
         {{- if not .Values.kafka.standalone }}
         - name: check-zk
@@ -99,21 +100,23 @@ spec:
               value: "9092"
             - name: KAFKA_LOG_DIRS
               value: "/kafka/logs"
-            - name: ZK_ADMIN_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Release.Name }}-kafka-secret
-                  key: zk-admin-password
-            - name: ZK_READONLY_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Release.Name }}-kafka-secret
-                  key: zk-readonly-password
-                  # export KAFKA_OPTS=-Djava.security.auth.login.config=<path-to-jaas-file>/users_jaas.conf
-            - name: KAFKA_ZK_CREDS_AND_ACLS
-              value: "-DzkACLProvider=org.apache.kafka.common.cloud.VMParamsAllAndReadonlyDigestZkACLProvider #-DzkCredentialsProvider=org.apache.kafka.common.cloud.#VMParamsSingleSetCredentialsDigestZkCredentialsProvider -DzkDigestUsername=admin-user #-DzkDigestPassword=$(ZK_ADMIN_PASSWORD) -DzkDigestReadonlyUsername=readonly-user #-DzkDigestReadonlyPassword=$(ZK_READONLY_PASSWORD)"
+#            - name: ZK_ADMIN_PASSWORD
+#              valueFrom:
+#                secretKeyRef:
+#                  name: {{ .Release.Name }}-kafka-secret
+#                  key: zk-admin-password
+#            - name: ZK_READONLY_PASSWORD
+#              valueFrom:
+#                secretKeyRef:
+#                  name: {{ .Release.Name }}-kafka-secret
+#                  key: zk-readonly-password
+#                  # export KAFKA_OPTS=-Djava.security.auth.login.config=<path-to-jaas-file>/users_jaas.conf
+#            - name: KAFKA_ZK_CREDS_AND_ACLS
+#              value: "-DzkACLProvider=org.apache.kafka.common.cloud.VMParamsAllAndReadonlyDigestZkACLProvider #-DzkCredentialsProvider=org.apache.kafka.common.cloud.#VMParamsSingleSetCredentialsDigestZkCredentialsProvider -DzkDigestUsername=admin-user #-DzkDigestPassword=$(ZK_ADMIN_PASSWORD) -DzkDigestReadonlyUsername=readonly-user #-DzkDigestReadonlyPassword=$(ZK_READONLY_PASSWORD)"
+            #- name: KAFKA_OPTS
+            #  value: "$(KAFKA_ZK_CREDS_AND_ACLS)"
             - name: KAFKA_OPTS
-              value: "$(KAFKA_ZK_CREDS_AND_ACLS)"
+              value: "-Djava.security.auth.login.config=/tmp2/jaas.conf"
           livenessProbe:
             tcpSocket:
               port: kafka-port
@@ -125,7 +128,7 @@ spec:
           readinessProbe:
             tcpSocket:
               port: kafka-port
-            initialDelaySeconds: 20
+            initialDelaySeconds:
             timeoutSeconds: 5
             failureThreshold: 1
             periodSeconds: 1
@@ -133,6 +136,8 @@ spec:
           volumeMounts:
             - name: logdir
               mountPath: /kafka
+            - name: jaas-config
+              mountPath: /tmp2
 
   volumeClaimTemplates:
     - metadata:

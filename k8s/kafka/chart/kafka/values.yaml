@@ -8,14 +8,18 @@ kafka:
   # Don't set true for production deployment
   standalone: false
 
+  ssl_enable: true
+
   # Solr password for user "solr"
   # solrPassword: null
 
   # ZooKeeper ACL admin password for username "admin-user"
-  zkAdminPassword: null
+  # zkAdminPassword: null
 
   # ZooKeeper ACL readonly password for username "readonly-user"
-  zkReadOnlyPassword: null
+  # zkReadOnlyPassword: null
+  zkUser: null
+  zkPassword: null
 
 metrics:
   image: null

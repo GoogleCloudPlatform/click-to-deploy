@@ -72,6 +72,8 @@ data:
                 for (( i=1; i<=$ZK_REPLICAS; i++ ))
                 do
                     echo "server.$i=$NAME-$((i-1)).$DOMAIN:$ZK_SERVER_PORT:$ZK_ELECTION_PORT" >> $ZK_CONFIG_FILE
+                    echo "authProvider.$i=org.apache.zookeeper.server.auth.SASLAuthenticationProvider" >> $ZK_CONFIG_FILE
+
                 done
 
                 rm -f $LOG4J_PROPERTIES
@@ -100,4 +102,8 @@ data:
 
                 set -x
                 exec java -cp "$CLASSPATH" $JVMFLAGS $MAIN $ZK_CONFIG_FILE
+
+                ## Enable client auth
+                echo "requireClientAuthScheme=sasl" >>  $ZK_CONFIG_FILE
+
 {{- end }}
