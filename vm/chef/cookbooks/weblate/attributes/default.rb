@@ -47,4 +47,6 @@ default['weblate']['packages'] = [
   'libtesseract-dev',
   'libleptonica-dev',
   'exim4',
+  'uwsgi',
+  'uwsgi-plugin-python3'
 ]
