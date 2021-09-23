@@ -17,32 +17,26 @@
 source /opt/c2d/c2d-utils || exit 1
 
 readonly default_site="$(get_attribute_value "default_site_name")"
-readonly external_ip="$(get_external_ip)"
-
-# Get external IP address.
-if has_external_ip; then
-  args+=(--url="$(get_external_ip)")
-else
-  args+=(--url="$(get_internal_ip)")
-fi
 
 mkdir /opt/django/
 cd /opt/django/
 
 # Create default project.
-django-admin startproject ${default_site}
+django-admin startproject "${default_site}"
 
 # Check if a directory exists.
-if [ -d "/opt/django/${default_site}" ] 
- then
-    echo "Directory ${default_site} exists." 
- else
-    echo "Error: Directory ${default_site} does not exists."
+if [[ ! -d "/opt/django/${default_site}" ]]; then
+  echo "Error: Directory ${default_site} does not exists."
+  exit 1
 fi
 
 # Whitelist external IP address.
-sed -i -e "s@ALLOWED_HOSTS = \[]@ALLOWED_HOSTS = ['${external_ip}']@g" /opt/django/${default_site}/${default_site}/settings.py
+if has_external_ip; then
+sed -i -e "s@ALLOWED_HOSTS = \[]@ALLOWED_HOSTS = ['$(get_external_ip)']@g" "/opt/django/${default_site}/${default_site}/settings.py"
+else
+   echo "No external IP detected"
+fi
 
 # Install Django server
-python3 ${default_site}/manage.py migrate
-python3 ${default_site}/manage.py runserver
+python3 "${default_site}/manage.py" migrate
+python3 "${default_site}/manage.py" runserver

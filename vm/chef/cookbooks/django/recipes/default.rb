@@ -13,7 +13,6 @@
 # limitations under the License.
 
 include_recipe 'c2d-config::default'
-# Can be included to operate with pyton applications.
 include_recipe 'apache2::mod_wsgi'
 
 apt_update do
@@ -41,12 +40,8 @@ template '/etc/apache2/sites-available/django.conf' do
   mode '0644'
 end
 
-execute 'disable 000-defautl.conf' do
+execute 'disable 000-default.conf' do
   command 'a2dissite 000-default.conf'
-end
-
-service 'apache2' do
-  action :reload
 end
 
 execute 'enable django.conf' do
