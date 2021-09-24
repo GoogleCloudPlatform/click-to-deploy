@@ -11,7 +11,7 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-FROM gcr.io/google-appengine/debian9
+FROM marketplace.gcr.io/google/debian9
 
 ENV NEO4J_VERSION 4.3.3
 ENV NEO4J_SHA256 bb3965c18e613ee738f07af1c7c8da985ba3ca8025054ce66266376c6d4f7065

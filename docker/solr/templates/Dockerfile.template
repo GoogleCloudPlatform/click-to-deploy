@@ -1,11 +1,10 @@
 {{- $solr := index .Packages "solr" -}}
-{{- $template := index .TemplateArgs -}}
 
 FROM {{ .From }}
 
 ARG SOLR_VERSION={{ $solr.Version }}
 ARG SOLR_SHA512={{ $solr.Sha512 }}
-ARG SOLR_KEYS={{ $template.solrkeys }}
+ARG SOLR_KEYS={{ $solr.Gpg }}
 
 ENV C2D_RELEASE={{ $solr.Version }}
 
