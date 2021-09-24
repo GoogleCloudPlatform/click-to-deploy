@@ -64,7 +64,9 @@ weblate createadmin \
 weblate collectstatic --clear --no-input
 weblate compress
 
-# Start background worker
+# Start background worker into /var/log folder
+# in order to generate log files into the right folder
+cd /var/log
 /opt/weblate-env/lib/*/site-packages/weblate/examples/celery start
 
 # Start back-end server as uwsgi mode
