@@ -14,7 +14,7 @@
 
 require 'spec_helper'
 
-describe command("curl -L http://#{request.remote_ip}/") do
+describe command("curl -L http://#{require.remote_ip}/") do
   its(:stdout) { should match /<title>The install worked successfully! Congratulations!<\/title>/ }
   its(:exit_status) { should eq 0 }
 end
