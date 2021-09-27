@@ -14,8 +14,8 @@ RUN set -eu \
     && wget -q -O /bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v1.12.0/bin/linux/amd64/kubectl \
     && chmod 755 /bin/kubectl
 
-COPY tests/solrCloud-test.yaml /tests/solrCloud-test.yaml
-COPY tests/solr-exporter-test.yaml /tests/solr-exporter-test.yaml
+COPY tests/kafkaCluster-test.yaml /tests/kafkaCluster-test.yaml
+COPY tests/kafka-exporter-test.yaml /tests/kafka-exporter-test.yaml
 COPY tester.sh /tester.sh
 
 WORKDIR /

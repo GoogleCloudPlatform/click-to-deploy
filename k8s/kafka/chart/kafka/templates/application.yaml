@@ -1,0 +1,116 @@
+---
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "{{ .Release.Name }}"
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": {{ .Chart.Name | quote }}, "partner_name": "Google Click to Deploy"}'
+
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+spec:
+  descriptor:
+    type: Kafka
+    version: "{{ .Values.kafka.image.tag }}"
+    description: >-
+      Apache Kafka is an open-source distributed event streaming platform used for high-performance
+      data pipelines, streaming analytics, data integration, and mission-critical applications.
+
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [community forums](https://kafka.apache.org/).
+
+      Additional community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/kafka/).
+
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy Kafka'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/kafka/README.md
+    - description: Getting started with Kafka
+      url: https://kafka.apache.org/quickstart
+    notes: |-
+      {{- if .Values.enablePublicServiceAndIngress }}
+      # Connect to your Kafka service
+      Get the external IP of your Kafka service by using the following command:
+
+      ```
+      SERVICE_IP=$(kubectl get ingress {{ .Release.Name }}-kafka-ingress \
+        --namespace {{ .Release.Namespace }} \
+        --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+      echo "${SERVICE_IP}"
+      ```
+      The command shows you the URL of your site.
+
+      # Update TLS certificate for Kafka
+      By default, the app uses a self-signed certificate. You can follow the steps at
+      [Update TLS certificate for Kafka](https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/kafka/README.md#create-tls-certificate-for-kafka)
+      to update it.
+      {{- else }}
+
+      # Open your Kafka service
+      Kafka is exposed in a ClusterIP-only service, `{{ .Release.Name }}-kafka-svc`.
+      To connect to Kafka, you can either expose a public service endpoint, or keep it private,
+      but connect from you local environment with `kubectl port-forward`.
+
+      ## Forward Kafka port in local environment
+      You can use the port forwarding feature of `kubectl` to forward Kafka's port to your local
+      machine. Run the following command in the background:
+
+      ```shell
+      kubectl port-forward \
+        --namespace {{ .Release.Namespace }} \
+        svc/{{ .Release.Name }}-kafka-svc \
+        9092:9092
+      ```
+      Now you can access the Kafka using [http://localhost:9092](http://localhost:9092).
+      {{- end }}
+  info:
+  {{- if .Values.enablePublicServiceAndIngress }}
+  - name: Kafka - Site address
+    type: Reference
+    valueFrom:
+      ingressRef:
+        name: {{ .Release.Name }}-kafka-ingress
+        protocol: {{ include "ingress.protocol" . | trim }}
+  {{- else }}
+  - name: Forward Kafka port locally
+    value: kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-kafka-svc 9092:9092
+  - name: Kafka - Site address (local only)
+    value: http://localhost:9092/
+  {{- end }}
+  - name: Kafka - admin username
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: kafka-user
+        name: {{ .Release.Name }}-kafka-secret
+  - name: Kafka - admin user password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: kafka-admin-password
+        name: {{ .Release.Name }}-kafka-secret
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "{{ .Release.Name }}"
+  componentKinds:
+  - group: v1
+    kind: PersistentVolumeClaim
+  - group: apps/v1
+    kind: StatefulSet
+  - group: v1
+    kind: Secret
+  - group: v1
+    kind: Service
+  {{- if .Values.enablePublicServiceAndIngress }}
+  - group: networking.k8s.io
+    kind: Ingress
+  {{- end }}
+  - group: v1
+    kind: ConfigMap
