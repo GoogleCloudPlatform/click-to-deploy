@@ -685,7 +685,7 @@ SILENCED_SYSTEM_CHECKS = [
 
 # Celery worker configuration for testing
 CELERY_TASK_ALWAYS_EAGER = False
-CELERY_BROKER_URL = f"redis://{REDIS_PASSWORD}localhost:6379"
+CELERY_BROKER_URL = f"redis://:{REDIS_PASSWORD}@localhost:6379"
 CELERY_RESULT_BACKEND = CELERY_BROKER_URL
 
 # Celery settings, it is not recommended to change these
