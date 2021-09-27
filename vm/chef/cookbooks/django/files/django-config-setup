@@ -51,7 +51,7 @@ fi
 
 # Whitelist external IP address.
 if has_external_ip; then
-sed -i -e "s@ALLOWED_HOSTS = \[]@ALLOWED_HOSTS = ['$(get_external_ip)']@g" \
+sed -i -e "s@ALLOWED_HOSTS = \[]@ALLOWED_HOSTS = ['$(get_external_ip)', 'localhost']@g" \
 "/opt/django/${default_site}/${default_site}/settings.py"
 else
    echo "No external IP detected"
