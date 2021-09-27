@@ -43,17 +43,13 @@ function wait_for_app() {
   local http_code=0
   local host_ip=""
 
-  if [[ has_external_ip ]]; then
-    host_ip="$(get_external_ip)"
-  else
-    host_ip="$(get_internal_ip)"
-  fi
-
   echo "Checking for app readiness..."
 
   while [[ "${http_code}" -ne 200 && "${retry}" -le "${max_retries}" ]]; do
     echo "Retry: ${retry}"
-    http_code="$(curl -s -L -o /dev/null -w "%{http_code}" http://${host_ip})"
+    http_code="$(curl --connect-timeout 5 -s -L -o /dev/null -w "%{http_code}" http://localhost)"
+    echo "Http Code: ${http_code}"
+    systemctl restart nginx
     (( retry=retry+1 ))
     sleep 20
   done
@@ -64,6 +60,15 @@ function wait_for_app() {
   else
     echo "App is ready."
   fi
+}
+
+function wait_for_redis() {
+  local -r redis_password="$1"
+
+  while [[ $(redis-cli -a "${redis_password}" ping) != 'PONG' ]]; do
+    echo 'Checking Redis...'
+  done
+  echo "Redis is up."
 }
 
 #######################################
