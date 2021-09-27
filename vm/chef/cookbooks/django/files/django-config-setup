@@ -60,6 +60,7 @@ fi
 python3 "${default_site}/manage.py" migrate
 python3 "${default_site}/manage.py" runserver
 
+# Wait until ready.
 wait_for_app
 
 
