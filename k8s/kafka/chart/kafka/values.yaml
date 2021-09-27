@@ -8,7 +8,8 @@ kafka:
   # Don't set true for production deployment
   standalone: false
 
-  ssl_enable: true
+  ssl_enable: false
+  auth_enable: false
 
   # Solr password for user "solr"
   # solrPassword: null

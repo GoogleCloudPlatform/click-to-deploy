@@ -25,6 +25,7 @@ spec:
         runAsUser: 9092
         runAsGroup: 9092
       terminationGracePeriodSeconds: 30
+      {{- if and (not .Values.kafka.standalone) (.Values.kafka.auth_enable)}}
       volumes:
         - name: jaas-config
           secret:
@@ -33,6 +34,7 @@ spec:
             - key: jaas.conf
               path: jaas.conf
               mode: 0755
+      {{- end}}
       initContainers:
         {{- if not .Values.kafka.standalone }}
         - name: check-zk
@@ -115,29 +117,33 @@ spec:
 #              value: "-DzkACLProvider=org.apache.kafka.common.cloud.VMParamsAllAndReadonlyDigestZkACLProvider #-DzkCredentialsProvider=org.apache.kafka.common.cloud.#VMParamsSingleSetCredentialsDigestZkCredentialsProvider -DzkDigestUsername=admin-user #-DzkDigestPassword=$(ZK_ADMIN_PASSWORD) -DzkDigestReadonlyUsername=readonly-user #-DzkDigestReadonlyPassword=$(ZK_READONLY_PASSWORD)"
             #- name: KAFKA_OPTS
             #  value: "$(KAFKA_ZK_CREDS_AND_ACLS)"
+            {{- if and (not .Values.kafka.standalone) (.Values.kafka.auth_enable)}}
             - name: KAFKA_OPTS
               value: "-Djava.security.auth.login.config=/tmp2/jaas.conf"
-          livenessProbe:
-            tcpSocket:
-              port: kafka-port
-            initialDelaySeconds: 60
-            timeoutSeconds: 5
-            failureThreshold: 1
-            periodSeconds: 10
-            successThreshold: 1
-          readinessProbe:
-            tcpSocket:
-              port: kafka-port
-            initialDelaySeconds:
-            timeoutSeconds: 5
-            failureThreshold: 1
-            periodSeconds: 1
-            successThreshold: 1
+            {{- end }}
+#          livenessProbe:
+#            tcpSocket:
+#              port: kafka-port
+#            initialDelaySeconds: 60
+#            timeoutSeconds: 5
+#            failureThreshold: 1
+#            periodSeconds: 10
+#            successThreshold: 1
+#          readinessProbe:
+#            tcpSocket:
+#              port: kafka-port
+#            initialDelaySeconds:
+#            timeoutSeconds: 5
+#            failureThreshold: 1
+#            periodSeconds: 1
+#            successThreshold: 1
           volumeMounts:
             - name: logdir
               mountPath: /kafka
+            {{- if and (not .Values.kafka.standalone) (.Values.kafka.auth_enable)}}
             - name: jaas-config
               mountPath: /tmp2
+            {{- end}}
 
   volumeClaimTemplates:
     - metadata:

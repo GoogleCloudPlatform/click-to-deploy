@@ -104,6 +104,12 @@ data:
                 exec java -cp "$CLASSPATH" $JVMFLAGS $MAIN $ZK_CONFIG_FILE
 
                 ## Enable client auth
-                echo "requireClientAuthScheme=sasl" >>  $ZK_CONFIG_FILE
+                echo "requireClientAuthScheme=sasl" >> $ZK_CONFIG_FILE
+                echo "quorum.auth.enableSasl=true" >> $ZK_CONFIG_FILE
+                echo "quorum.auth.learnerRequireSasl=true" >> $ZK_CONFIG_FILE
+                echo "quorum.auth.serverRequireSasl=true" >> $ZK_CONFIG_FILE
+                echo "quorum.auth.learner.loginContext=QuorumLearner" >> $ZK_CONFIG_FILE
+                echo "quorum.auth.server.loginContext=QuorumServer" >> $ZK_CONFIG_FILE
+                echo "quorum.cnxn.threads.size=20" >> $ZK_CONFIG_FILE
 
 {{- end }}
