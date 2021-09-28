@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,6 +15,6 @@
 require 'spec_helper'
 
 describe command('curl -L http://localhost/') do
-  its(:stdout) { should match /<title>The install worked successfully! Congratulations!<\/title>/ }
+  its(:stdout) { should match /<title>Apache2 Debian Default Page: It works<\/title>/ }
   its(:exit_status) { should eq 0 }
 end

@@ -40,16 +40,4 @@ template '/etc/apache2/sites-available/django.conf' do
   mode '0644'
 end
 
-execute 'disable 000-default.conf' do
-  command 'a2dissite 000-default.conf'
-end
-
-execute 'enable django.conf' do
-  command 'a2ensite django.conf'
-end
-
-service 'apache2' do
-  action :reload
-end
-
 c2d_startup_script 'django-config-setup'
