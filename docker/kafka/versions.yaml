@@ -15,6 +15,8 @@
 versions:
   # Kafka image
   - dir: '2/debian10/2.8'
+    excludeTests:
+    - tests/functional_tests/exporter_test.yaml
     repo: 'kafka2'
     templateSubDir: debian10
     tags:
