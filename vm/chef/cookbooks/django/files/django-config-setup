@@ -40,6 +40,10 @@ function wait_for_app() {
 mkdir /opt/django/
 cd /opt/django/
 
+echo "$(a2dissite 000-default)"
+echo "$(a2ensite django)"
+echo "$(systemctl reload apache2)"
+
 # Create default project.
 django-admin startproject "${default_site}"
 
@@ -60,11 +64,6 @@ fi
 # Install Django server
 python3 "${default_site}/manage.py" migrate
 python3 "${default_site}/manage.py" runserver
-
-
-a2dissite 000-default
-a2ensite django
-systemctl reload apache2
 
 # Wait until ready.
 wait_for_app
