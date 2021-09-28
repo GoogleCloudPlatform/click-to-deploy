@@ -34,7 +34,7 @@ versions:
         sha512: '3c49dca1147a0a249dd88e089f40af31a67b8207ed2d9e2294fa9a6d41f5ed0b006943cd60d8e30d7e69d760d398f299cafcd68b6ed7bedf9f93d1b7a9e8c487'
     templateArgs:
       scalaversion: '2.13'
-  - dir: exporter
+  - dir: 'exporter'
     excludeTests:
     - tests/functional_tests/running_test.yaml
     from: marketplace.gcr.io/google/debian10
@@ -42,12 +42,12 @@ versions:
       kafka_exporter:
         sha512: '42fcd2b303e82e3ea518cffe7c528c2c35f9ecace8427d68f556c8a91894056f9d8a84fb5bdac2c447b91870909f0dbcce5548a061149da4ffbf33e16545d488'
         version: '1.4.2'
-    repo: kafka2
+    repo: kafka-exporter1
     tags:
-    - exporter-1.4.2
-    - exporter-1.4
-    - exporter-1
-    - exporter
+    - 1.4.2
+    - 1.4
+    - 1
+    - latest
     templateSubDir: exporter
 
 cloudbuild:
