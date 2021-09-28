@@ -40,9 +40,9 @@ function wait_for_app() {
 mkdir /opt/django/
 cd /opt/django/
 
-echo "$(a2dissite 000-default)"
-echo "$(a2ensite django)"
-echo "$(systemctl reload apache2)"
+a2dissite 000-default
+a2ensite django
+systemctl reload apache2
 
 # Create default project.
 django-admin startproject "${default_site}"
