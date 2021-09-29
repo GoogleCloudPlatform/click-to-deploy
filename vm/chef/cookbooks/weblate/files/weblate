@@ -67,12 +67,17 @@ weblate createadmin \
 weblate collectstatic --clear --no-input
 weblate compress
 
+# Set permissions for weblate user
+chown -R weblate:weblate /opt/weblate-env
+
 # Start background worker into /var/log folder
 # in order to generate log files into the right folder
-cd /var/log
+mkdir -p /var/log/weblate
+cd /var/log/weblate
 /opt/weblate-env/lib/*/site-packages/weblate/examples/celery start
 
 # Start back-end server as uwsgi mode
+systemctl enable weblate
 systemctl start weblate
 wait_for_port "127.0.0.1" "8080"
 

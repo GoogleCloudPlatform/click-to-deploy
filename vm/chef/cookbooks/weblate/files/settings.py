@@ -13,7 +13,7 @@ SITE_DOMAIN = "127.0.0.1:8000"
 # Whether site uses https
 ENABLE_HTTPS = False
 
-DEBUG = True
+DEBUG = False
 
 ADMINS = (
   (os.environ['WEBLATE_ADMIN_NAME'], os.environ['WEBLATE_ADMIN_EMAIL'])

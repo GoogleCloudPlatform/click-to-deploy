@@ -16,6 +16,9 @@
 
 source /opt/c2d/c2d-utils || exit 1
 
+#######################################
+# Generates the environment variables file
+#######################################
 function generate_envfile() {
   cat > /opt/c2d/weblate.env <<- EOM
 WEBLATE_ADMIN_USER="${WEBLATE_ADMIN_USER}"
@@ -78,6 +81,9 @@ function wait_for_app() {
   fi
 }
 
+#######################################
+# Awaits for Redis to be ready for receiving connections.
+#######################################
 function wait_for_redis() {
   local -r redis_password="$1"
 

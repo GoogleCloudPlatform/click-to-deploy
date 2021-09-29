@@ -83,7 +83,7 @@ cookbook_file '/lib/systemd/system/weblate.service' do
 end
 
 service 'weblate.service' do
-  action [ :enable, :stop ]
+  action [ :disable, :stop ]
 end
 
 cookbook_file '/opt/c2d/weblate-utils' do
