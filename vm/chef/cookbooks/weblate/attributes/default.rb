@@ -48,5 +48,5 @@ default['weblate']['packages'] = [
   'libleptonica-dev',
   'exim4',
   'uwsgi',
-  'uwsgi-plugin-python3'
+  'uwsgi-plugin-python3',
 ]
