@@ -74,6 +74,18 @@ cookbook_file '/etc/nginx/sites-available/weblate' do
   action :create
 end
 
+cookbook_file '/lib/systemd/system/weblate.service' do
+  source 'weblate.service'
+  owner 'root'
+  group 'root'
+  mode 0664
+  action :create
+end
+
+service 'weblate.service' do
+  action [ :enable, :stop ]
+end
+
 cookbook_file '/opt/c2d/weblate-utils' do
   source 'weblate-utils'
   owner 'root'
