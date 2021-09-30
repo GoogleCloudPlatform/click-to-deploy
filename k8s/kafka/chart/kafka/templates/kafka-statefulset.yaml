@@ -77,11 +77,6 @@ spec:
         - name: kafka
           image: "{{ .Values.kafka.image.repo }}:{{ .Values.kafka.image.tag }}"
           imagePullPolicy: IfNotPresent
-#          command:
-#            - 'bash'
-#            - '-c'
-#            - |
-#              sleep 7200
           ports:
             - containerPort: 9092
               name: kafka-port
