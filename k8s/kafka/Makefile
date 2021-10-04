@@ -8,13 +8,14 @@ APP_ID ?= $(CHART_NAME)
 WAIT_FOR_READY_TIMEOUT := 600
 
 TRACK ?= 2.8
+EXPORTER_TRACK ?= 1.4.2
 ZK_TAG ?= 3.6
 
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 IMAGE_KAFKA ?= $(SOURCE_REGISTRY)/kafka2:$(TRACK)
-IMAGE_EXPORTER ?= $(SOURCE_REGISTRY)/kafka2:$(TRACK)
+IMAGE_EXPORTER ?= $(SOURCE_REGISTRY)/kafka-exporter1:$(EXPORTER_TRACK)
 IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 IMAGE_ZOOKEEPER ?= $(SOURCE_REGISTRY)/zookeeper3:$(ZK_TAG)
 
@@ -22,10 +23,11 @@ IMAGE_ZOOKEEPER ?= $(SOURCE_REGISTRY)/zookeeper3:$(ZK_TAG)
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_KAFKA))
 
 # List of images used in application
-ADDITIONAL_IMAGES := zookeeper prometheus-to-sd
+ADDITIONAL_IMAGES := zookeeper exporter prometheus-to-sd
 
 # Additional images variable names should correspond with ADDITIONAL_IMAGES list
 image-zookeeper := $(call get_sha256,$(IMAGE_ZOOKEEPER))
+image-exporter := $(call get_sha256,$(IMAGE_EXPORTER))
 image-prometheus-to-sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))
 
 C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
