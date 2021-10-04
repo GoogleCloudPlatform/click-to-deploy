@@ -32,17 +32,4 @@ versions:
   - '1.25'
   - '1'
   - latest
-- dir: 1/debian10/1.20
-  from: marketplace.gcr.io/google/debian10
-  packages:
-    golang:
-      version: '1.14'
-    jaeger-operator:
-      version: 1.20.0
-  repo: jaeger-operator1
-  tags:
-  - 1.20.0-debian10
-  - 1.20-debian10
-  - 1.20.0
-  - '1.20'
 
