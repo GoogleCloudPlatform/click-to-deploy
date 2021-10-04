@@ -1,0 +1,11 @@
+actions:
+- name: Check if zookeeper shows 3 live kafka brokers
+  bashTest:
+    script: |
+          echo dump | nc {{ .Release.Name }}-zk-client 2181 | grep brokers | wc -l | grep {{ .Values.kafka.replicas}}
+    expect:
+      stdout:
+        matches: "3"
+      exitCode:
+        equals: 0
+
