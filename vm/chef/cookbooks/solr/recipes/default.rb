@@ -24,6 +24,17 @@ package 'install_packages' do
   action :install
 end
 
+user 'solr' do
+  action :create
+end
+
+directory '/var/solr/data' do
+  owner 'solr'
+  group 'solr'
+  action :create
+  recursive true
+end
+
 # Download sha512 checksum from apache
 remote_file '/tmp/solr-checksum.sha512' do
   source "https://archive.apache.org/dist/lucene/solr/#{node['solr']['version']}/solr-#{node['solr']['version']}.tgz.sha512"
