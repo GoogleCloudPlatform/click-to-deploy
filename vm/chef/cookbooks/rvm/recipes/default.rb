@@ -26,8 +26,8 @@ bash 'Install keys for RVM' do
   cwd '/tmp/'
   user 'root'
   code <<-EOH
-    curl -sSL https://rvm.io/mpapis.asc | gpg2 --import -
-    curl -sSL https://rvm.io/pkuczynski.asc | gpg2 --import -
+    curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+    curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -
 EOH
 end
 
