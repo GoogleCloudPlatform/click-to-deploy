@@ -13,7 +13,7 @@
 # limitations under the License.
 
 include_recipe 'git'
-include_recipe 'postgresql'
+include_recipe 'postgresql::standalone_buster'
 include_recipe 'rvm'
 
 apt_update 'update'
