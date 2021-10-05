@@ -18,6 +18,10 @@ apt_repository 'php' do
   components ['main']
 end
 
+apt_update do
+  action :update
+end
+
 package 'install packages' do
   package_name node['php74']['packages']
   action :install

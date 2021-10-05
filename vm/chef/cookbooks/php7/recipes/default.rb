@@ -17,6 +17,10 @@ package 'install packages' do
   action :install
 end
 
+apt_update do
+  action :update
+end
+
 node['php7']['modules'].each do |pkg|
   include_recipe "php7::module_#{pkg}"
 end
