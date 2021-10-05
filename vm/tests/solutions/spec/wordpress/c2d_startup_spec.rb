@@ -37,15 +37,11 @@ describe 'C2D startup scripts should exists' do
     it { should exist }
   end
 
-  describe file('/opt/c2d/scripts/03-create-self-signed-certificate') do
+  describe file('/opt/c2d/scripts/03-phpmyadmin-setup') do
     it { should exist }
   end
 
-  describe file('/opt/c2d/scripts/04-phpmyadmin-setup') do
-    it { should exist }
-  end
-
-  describe file('/opt/c2d/scripts/05-wordpress-setup') do
+  describe file('/opt/c2d/scripts/04-wordpress-setup') do
     it { should exist }
   end
 end
