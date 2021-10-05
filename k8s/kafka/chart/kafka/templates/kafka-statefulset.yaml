@@ -116,22 +116,22 @@ spec:
             - name: KAFKA_OPTS
               value: "-Djava.security.auth.login.config=/tmp2/jaas.conf"
             {{- end }}
-#          livenessProbe:
-#            tcpSocket:
-#              port: kafka-port
-#            initialDelaySeconds: 60
-#            timeoutSeconds: 5
-#            failureThreshold: 1
-#            periodSeconds: 10
-#            successThreshold: 1
-#          readinessProbe:
-#            tcpSocket:
-#              port: kafka-port
-#            initialDelaySeconds:
-#            timeoutSeconds: 5
-#            failureThreshold: 1
-#            periodSeconds: 1
-#            successThreshold: 1
+          livenessProbe:
+            tcpSocket:
+              port: kafka-port
+            initialDelaySeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 1
+            periodSeconds: 10
+            successThreshold: 1
+          readinessProbe:
+            tcpSocket:
+              port: kafka-port
+            initialDelaySeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 1
+            periodSeconds: 1
+            successThreshold: 1
           volumeMounts:
             - name: logdir
               mountPath: /kafka
