@@ -28,9 +28,9 @@ end
 # Configure elasticsearch repository
 apt_repository 'add_elastic_co_repo' do
   uri node['elasticsearch']['repository_url']
-  components ['stable', 'main']
+  components ['main']
   keyserver node['elasticsearch']['keyserver_url']
-  distribution nil
+  distribution node['elasticsearch']['repository']['distribution']
   trusted true
 end
 

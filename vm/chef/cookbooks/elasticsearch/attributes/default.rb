@@ -19,6 +19,7 @@ default['elasticsearch']['release'] =
 
 default['elasticsearch']['repository_url'] =
   "https://artifacts.elastic.co/packages/#{default['elasticsearch']['release']}.x/apt"
+default['elasticsearch']['repository']['distribution'] = 'stable'
 default['elasticsearch']['keyserver_url'] =
   'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
 
