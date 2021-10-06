@@ -25,10 +25,10 @@ end
 
 # Configure elasticsearch repository
 apt_repository 'add_elastic_co_repo' do
-  uri node['logstash']['repository_url']
-  components ['stable', 'main']
-  keyserver node['logstash']['keyserver_url']
-  distribution false
+  uri node['logstash']['repo']['url']
+  distribution node['logstash']['repo']['distribution']
+  components node['logstash']['repo']['components']
+  keyserver node['logstash']['repo']['keyserver']
   trusted true
 end
 
