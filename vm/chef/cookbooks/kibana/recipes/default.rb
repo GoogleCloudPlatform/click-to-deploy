@@ -26,10 +26,10 @@ end
 
 # Configure elasticsearch repository
 apt_repository 'add_elastic_co_repo' do
-  uri node['kibana']['repository_url']
-  components ['stable', 'main']
-  keyserver node['kibana']['keyserver_url']
-  distribution nil
+  uri node['kibana']['repo']['url']
+  distribution node['kibana']['repo']['distribution']
+  components node['kibana']['repo']['components']
+  keyserver node['kibana']['repo']['keyserver']
   trusted true
 end
 
