@@ -18,12 +18,17 @@ apt_repository 'cassandra_repository' do
   uri node['cassandra']['repo']['uri']
   components node['cassandra']['repo']['components']
   keyserver node['cassandra']['repo']['keyserver']
-  distribution nil
+  distribution node['cassandra']['repo']['distribution']
   trusted true
 end
 
+apt_preference 'cassandra' do
+  pin          "version #{node['cassandra']['apt_version']}"
+  pin_priority '1000'
+end
+
 package 'cassandra' do
-  version node['cassandra']['version']
+  :install
 end
 
 # TODO(b/68245727) Write an automated test to verify the config file contents.
