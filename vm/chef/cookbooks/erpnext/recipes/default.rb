@@ -23,7 +23,7 @@ apt_preference "MariaDB packages preference" do
 end
 
 package 'Install packages' do
-  package_name node['erpnext']['packages']
+  package_name node['erpnext']['mariadb']['packages']
   action :install
 end
 
