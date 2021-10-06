@@ -16,7 +16,8 @@ apt_update do
   action :update
 end
 
-apt_preference node['erpnext']['packages'] do
+apt_preference "MariaDB packages preference" do
+  package_name node['erpnext']['mariadb']['packages']
   pin          "version #{node['erpnext']['mariadb']['apt_version']}"
   pin_priority '1000'
 end
