@@ -39,8 +39,8 @@ steps:
   - -exc
   - |
     TAG="$$(cat ./IMAGEBUILDER_TAG)"
-    docker pull "gcr.io/cloud-marketplace-ops-test/imagebuilder:$$TAG"
-    docker tag "gcr.io/cloud-marketplace-ops-test/imagebuilder:$$TAG" "gcr.io/cloud-marketplace-tools/vm/imagebuilder:local"
+    docker pull "gcr.io/cloud-marketplace-tools/vm/imagebuilder:$$TAG"
+    docker tag "gcr.io/cloud-marketplace-tools/vm/imagebuilder:$$TAG" "gcr.io/cloud-marketplace-tools/vm/imagebuilder:local"
 
 - id: Build VM-based Solution
   name: gcr.io/cloud-builders/docker
