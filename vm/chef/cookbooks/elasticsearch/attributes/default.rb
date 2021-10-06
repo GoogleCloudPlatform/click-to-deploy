@@ -17,10 +17,11 @@ default['elasticsearch']['version'] = '7.10.0'
 default['elasticsearch']['release'] =
   default['elasticsearch']['version'].split('.')[0]
 
-default['elasticsearch']['repository_url'] =
+default['elasticsearch']['repo']['url'] =
   "https://artifacts.elastic.co/packages/#{default['elasticsearch']['release']}.x/apt"
-default['elasticsearch']['repository']['distribution'] = 'stable'
-default['elasticsearch']['keyserver_url'] =
+default['elasticsearch']['repo']['distribution'] = 'stable'
+default['elasticsearch']['repo']['components'] = ['main']
+default['elasticsearch']['repo']['keyserver'] =
   'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
 
 default['elasticsearch']['packages'] = ['apt-transport-https', 'unzip']
