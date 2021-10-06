@@ -27,10 +27,9 @@ package 'Install packages' do
   action :install
 end
 
-node['erpnext']['mariadb']['packages'].each do |pkg|
-  package pkg do
-    :install
-  end
+package 'Install packages' do
+  package_name node['erpnext']['packages']
+  action :install
 end
 
 # Create frappe user.
