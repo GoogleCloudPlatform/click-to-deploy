@@ -15,7 +15,7 @@
 # Remember to check if repo component update
 # is needed when changing the version.
 default['cassandra']['version'] = '4.0'
-default['cassandra']['apt_version'] = "#{default['grafana']['version']}.*"
+default['cassandra']['apt_version'] = "#{default['cassandra']['version']}.*"
 
 default['cassandra']['repo']['uri'] = 'http://www.apache.org/dist/cassandra/debian'
 default['cassandra']['repo']['components'] = ['main']
