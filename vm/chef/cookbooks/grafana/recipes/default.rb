@@ -17,7 +17,7 @@ include_recipe 'c2d-config::create-self-signed-certificate'
 apt_repository 'grafana' do
   uri node['grafana']['repo']['uri']
   components node['grafana']['repo']['components']
-  distribution false
+  distribution nil
   key node['grafana']['repo']['key']
 end
 
