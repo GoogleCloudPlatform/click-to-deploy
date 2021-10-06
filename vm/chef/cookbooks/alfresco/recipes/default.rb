@@ -58,10 +58,6 @@ apt_package 'wget' do
   action :install
 end
 
-apt_package 'default-jdk' do
-  action :install
-end
-
 bash 'download_and_check_alfresco' do
   code <<-EOH
     wget --no-check-certificate $alfresco_install_url -O /tmp/alfresco.bin
