@@ -29,7 +29,7 @@ apt_repository 'add_elastic_co_repo' do
   uri node['kibana']['repository_url']
   components ['stable', 'main']
   keyserver node['kibana']['keyserver_url']
-  distribution false
+  distribution nil
   trusted true
 end
 
