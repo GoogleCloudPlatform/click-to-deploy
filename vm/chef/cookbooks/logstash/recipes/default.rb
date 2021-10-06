@@ -28,7 +28,7 @@ apt_repository 'add_elastic_co_repo' do
   uri node['logstash']['repository_url']
   components ['stable', 'main']
   keyserver node['logstash']['keyserver_url']
-  distribution false
+  distribution nil
   trusted true
 end
 
