@@ -17,5 +17,5 @@
 default['cassandra']['version'] = '4.0.1'
 
 default['cassandra']['repo']['uri'] = 'http://www.apache.org/dist/cassandra/debian'
-default['cassandra']['repo']['components'] = ['main']
+default['cassandra']['repo']['components'] = ['40x','main']
 default['cassandra']['repo']['keyserver'] = 'https://www.apache.org/dist/cassandra/KEYS'

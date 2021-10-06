@@ -18,7 +18,7 @@ apt_repository 'cassandra_repository' do
   uri node['cassandra']['repo']['uri']
   components node['cassandra']['repo']['components']
   keyserver node['cassandra']['repo']['keyserver']
-  distribution '40x'
+  distribution nil
   trusted true
 end
 
