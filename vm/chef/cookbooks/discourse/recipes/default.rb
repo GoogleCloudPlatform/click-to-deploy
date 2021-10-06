@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+node.override['postgresql']['standalone']['allow_external'] = false
+
 include_recipe 'git'
 include_recipe 'postgresql::standalone_buster'
 include_recipe 'rvm'
