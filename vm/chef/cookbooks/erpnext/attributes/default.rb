@@ -30,7 +30,8 @@ default['erpnext']['site'] = 'site1.local'
 
 default['erpnext']['nodejs']['version'] = '12'
 
-default['erpnext']['mariadb']['version'] = '1:10.3.*'
+default['erpnext']['mariadb']['version'] = '10.3'
+default['erpnext']['mariadb']['apt_version'] = "1:#{default['mariadb']['version']}.*"
 default['erpnext']['mariadb']['packages'] = [ 'mariadb-server', 'libmariadb-dev' ]
 
 default['erpnext']['frappe']['bench'] = 'frappe-bench'
