@@ -30,7 +30,7 @@ apt_repository 'add_elastic_co_repo' do
   uri node['elasticsearch']['repository_url']
   components ['stable', 'main']
   keyserver node['elasticsearch']['keyserver_url']
-  distribution false
+  distribution nil
   trusted true
 end
 
