@@ -31,7 +31,6 @@ package 'cassandra' do
   :install
 end
 
-# TODO(b/68245727) Write an automated test to verify the config file contents.
 bash 'prepare_config_yaml_file' do
   code <<-EOH
     readonly conf_orig_file=/etc/cassandra/cassandra.yaml

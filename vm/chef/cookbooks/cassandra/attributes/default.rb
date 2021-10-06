@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Remember to check if repo component update
-# is needed when changing the version.
 default['cassandra']['version'] = '4.0'
 default['cassandra']['apt_version'] = "#{default['cassandra']['version']}.*"
 
