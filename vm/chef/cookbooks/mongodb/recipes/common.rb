@@ -32,7 +32,7 @@ apt_repository 'add_mongo_repository' do
   uri 'http://repo.mongodb.org/apt/debian'
   components ["#{node['mongodb']['debian']['codename']}/mongodb-org/#{node['mongodb']['release']}", 'main']
   keyserver 'hkp://keyserver.ubuntu.com:80'
-  distribution false
+  distribution nil
   trusted true
 end
 
