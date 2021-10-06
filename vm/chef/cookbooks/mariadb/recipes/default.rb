@@ -27,7 +27,7 @@ apt_update 'update' do
 end
 
 apt_preference 'mariadb-server' do
-  pin          "version #{node['mariadb']['version']}"
+  pin          "version #{node['mariadb']['apt_version']}"
   pin_priority '1000'
 end
 
