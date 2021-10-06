@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'openjdk8'
-
 apt_repository 'cassandra_repository' do
   uri node['cassandra']['repo']['uri']
   components node['cassandra']['repo']['components']
