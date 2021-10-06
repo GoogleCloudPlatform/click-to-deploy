@@ -16,6 +16,11 @@ apt_update do
   action :update
 end
 
+apt_preference 'mariadb-server' do
+  pin          "version #{node['erpnext']['mariadb']['apt_version']}"
+  pin_priority '1000'
+end
+
 package 'Install packages' do
   package_name node['erpnext']['packages']
   action :install
@@ -23,8 +28,7 @@ end
 
 node['erpnext']['mariadb']['packages'].each do |pkg|
   package pkg do
-    version node['erpnext']['mariadb']['version']
-    action :install
+    :install
   end
 end
 
