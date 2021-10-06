@@ -16,7 +16,7 @@ apt_update do
   action :update
 end
 
-apt_preference 'mariadb-server' do
+apt_preference node['erpnext']['packages'] do
   pin          "version #{node['erpnext']['mariadb']['apt_version']}"
   pin_priority '1000'
 end
