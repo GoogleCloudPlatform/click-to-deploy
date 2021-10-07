@@ -22,7 +22,7 @@ bash 'install zabbix' do
   user 'root'
   cwd '/tmp'
   code <<-EOH
-  wget https://repo.zabbix.com/zabbix/#{node['zabbix']['version']}/debian/pool/main/z/zabbix-release/zabbix-release_#{node['zabbix']['release']}+stretch_all.deb
+  wget https://repo.zabbix.com/zabbix/#{node['zabbix']['version']}/debian/pool/main/z/zabbix-release/zabbix-release_#{node['zabbix']['release']}+buster_all.deb
   dpkg -i zabbix-release_#{node['zabbix']['release']}+stretch_all.deb
   apt-get update
 EOH
