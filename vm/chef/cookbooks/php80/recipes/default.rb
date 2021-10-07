@@ -27,7 +27,7 @@ package 'install packages' do
   package_name node['php80']['packages']
   action :install
   retries 5
-  retry_delay 60
+  retry_delay 20
 end
 
 node['php80']['modules'].each do |pkg|

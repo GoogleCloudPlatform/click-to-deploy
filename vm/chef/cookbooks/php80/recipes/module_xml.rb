@@ -13,7 +13,7 @@
 # limitations under the License.
 
 package 'php8.0-xml' do
-  :install
+  action :install
   retries 5
   retry_delay 20
 end
