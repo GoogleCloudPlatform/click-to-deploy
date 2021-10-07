@@ -15,5 +15,5 @@
 package 'php8.0-xml' do
   :install
   retries 5
-  retry_delay 60
+  retry_delay 20
 end
