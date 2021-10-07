@@ -23,7 +23,7 @@ bash 'install zabbix' do
   cwd '/tmp'
   code <<-EOH
   wget https://repo.zabbix.com/zabbix/#{node['zabbix']['version']}/debian/pool/main/z/zabbix-release/zabbix-release_#{node['zabbix']['release']}+buster_all.deb
-  dpkg -i zabbix-release_#{node['zabbix']['release']}+stretch_all.deb
+  dpkg -i zabbix-release_#{node['zabbix']['release']}+buster_all.deb
   apt-get update
 EOH
 end
