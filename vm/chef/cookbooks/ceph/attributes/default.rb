@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['ceph']['version'] = 'luminous'
+default['ceph']['version'] = 'pacific'
 default['ceph']['deploymentuser'] = 'cephdep'
 
 default['ceph']['adminnodepackages'] = %w(ceph-deploy rsync)
