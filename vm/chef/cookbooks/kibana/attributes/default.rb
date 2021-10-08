@@ -17,9 +17,11 @@ default['kibana']['version'] = '7.10.0'
 default['kibana']['release'] =
   default['kibana']['version'].split('.')[0]
 
-default['kibana']['repository_url'] =
+default['kibana']['repo']['url'] =
   "https://artifacts.elastic.co/packages/#{default['kibana']['release']}.x/apt"
-default['kibana']['keyserver_url'] =
+default['kibana']['repo']['keyserver'] =
   'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
+default['kibana']['repo']['distribution'] = 'stable'
+default['kibana']['repo']['components'] = ['main']
 
 default['kibana']['packages'] = ['apt-transport-https', 'jq']
