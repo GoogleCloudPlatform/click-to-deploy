@@ -26,12 +26,12 @@ package 'wget' do
   action :install
 end
 
-execute 'install_jenkins_repo_key' do
-  command 'wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -'
-end
-
-execute 'add_jenkins_repo' do
-  command 'echo "deb http://pkg.jenkins.io/debian-stable binary/" >> /etc/apt/sources.list'
+apt_repository 'jenkins_repository' do
+  uri node['jenkins']['repo']['uri']
+  components node['jenkins']['repo']['components']
+  keyserver node['jenkins']['repo']['keyserver']
+  distribution nil
+  trusted true
 end
 
 apt_update do
