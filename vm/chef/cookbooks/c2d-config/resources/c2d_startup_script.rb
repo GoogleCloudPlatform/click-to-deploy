@@ -42,6 +42,7 @@ resource_name :c2d_startup_script
 provides :c2d_startup_script
 
 property :source, String, name_property: true, required: true
+provides :c2d_startup_script
 
 default_action :cookbook_file
 
