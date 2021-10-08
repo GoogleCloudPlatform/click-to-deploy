@@ -20,7 +20,6 @@ default['zabbix']['packages'] = %w(
                                    zabbix-server-pgsql
                                    zabbix-proxy-pgsql
                                    zabbix-frontend-php
-                                   locales
                                   )
 
 default['zabbix']['repo']['uri'] = "https://repo.zabbix.com/zabbix/#{default['zabbix']['version']}/debian"
