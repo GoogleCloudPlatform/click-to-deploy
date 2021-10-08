@@ -14,4 +14,4 @@
 
 default['zabbix']['version'] = '4.2'
 default['zabbix']['release'] = '4.2-1'
-default['zabbix']['packages'] = %w(mailutils php-pgsql zabbix-server-pgsql zabbix-proxy-pgsql zabbix-frontend-php)
+default['zabbix']['packages'] = %w(mailutils php-pgsql zabbix-server-pgsql zabbix-frontend-php zabbix-proxy-pgsql)
