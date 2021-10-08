@@ -13,7 +13,7 @@ SITE_DOMAIN = "127.0.0.1:8000"
 # Whether site uses https
 ENABLE_HTTPS = False
 
-DEBUG = True
+DEBUG = False
 
 ADMINS = (
   (os.environ['WEBLATE_ADMIN_NAME'], os.environ['WEBLATE_ADMIN_EMAIL'])
@@ -602,6 +602,8 @@ DEFAULT_FROM_EMAIL = os.environ['WEBLATE_SENDER_EMAIL']
 # List of URLs your site is supposed to serve
 ALLOWED_HOSTS = ["*"]
 
+REDIS_PASSWORD = os.environ['WEBLATE_REDIS_PASSWORD']
+
 # Configuration for caching
 CACHES = {
     "default": {
@@ -614,7 +616,7 @@ CACHES = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "PARSER_CLASS": "redis.connection.HiredisParser",
             # If you set password here, adjust CELERY_BROKER_URL as well
-            "PASSWORD": os.environ['WEBLATE_REDIS_PASSWORD'],
+            "PASSWORD": REDIS_PASSWORD,
             "CONNECTION_POOL_KWARGS": {},
         },
         "KEY_PREFIX": "weblate",
@@ -683,7 +685,7 @@ SILENCED_SYSTEM_CHECKS = [
 
 # Celery worker configuration for testing
 CELERY_TASK_ALWAYS_EAGER = False
-CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_BROKER_URL = f"redis://:{REDIS_PASSWORD}@localhost:6379"
 CELERY_RESULT_BACKEND = CELERY_BROKER_URL
 
 # Celery settings, it is not recommended to change these

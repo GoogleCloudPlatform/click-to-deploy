@@ -1,0 +1,25 @@
+[Unit]
+Description=Weblate Backend
+After=network.target
+After=postgresql.service
+After=redis.service
+Requires=postgresql.service
+Requires=redis.service
+
+[Service]
+Type=forking
+EnvironmentFile=/opt/c2d/weblate.env
+WorkingDirectory=/opt/weblate-env
+PassEnvironment=WEBLATE_ADMIN_USER WEBLATE_ADMIN_NAME WEBLATE_ADMIN_EMAIL WEBLATE_ADMIN_PASSWORD WEBLATE_SITE_TITLE WEBLATE_DB_NAME WEBLATE_DB_USER WEBLATE_DB_PASSWORD WEBLATE_SENDER_EMAIL WEBLATE_REDIS_PASSWORD DJANGO_SECRET_KEY
+ExecStart=/bin/bash -c 'source /opt/weblate-env/bin/activate; uwsgi --ini /opt/weblate-env/weblate.uwsgi.ini --daemonize2 /var/log/weblate.log'
+TimeoutStartSec=30
+Restart=always
+RestartSec=10
+User=weblate
+Group=weblate
+LimitNOFILE=49152
+KillMode=control-group
+KillSignal=SIGKILL
+
+[Install]
+WantedBy=multi-user.target
