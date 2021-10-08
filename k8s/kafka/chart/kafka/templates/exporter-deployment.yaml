@@ -46,7 +46,7 @@ spec:
               name: kafka-client
           command:
             - "kafka_exporter"
-            - "--kafka.server={{ .Release.Name }}-kafka-svc:9092"
+            - "--kafka.server={{ .Release.Name }}-kafka-client:9092"
           livenessProbe:
             initialDelaySeconds: 20
             periodSeconds: 10

@@ -72,10 +72,12 @@ spec:
           value: "*"
         - name: ZK_DATA_DIR
           value: /data
-        {{- if and (not .Values.kafka.standalone) (.Values.kafka.auth_enable)}}
-        - name: SERVER_JVMFLAGS
-          value: "-Djava.security.auth.login.config=/server-jaas/server-jaas.conf"
+
+        {{- if (not .Values.kafka.auth_enable)}}
+        - name: ZOO_ENABLE_AUTH
+          value: "no"
         {{- end}}
+
         readinessProbe:
           exec:
             command:
@@ -101,10 +103,6 @@ spec:
           mountPath: /config-scripts
         - name: datadir
           mountPath: /opt/zookeeper
-        {{- if and (not .Values.kafka.standalone) (.Values.kafka.auth_enable)}}
-        - name: server-jaas-config
-          mountPath: /server-jaas
-        {{- end}}
       securityContext:
         runAsUser: 1000
         fsGroup: 1000
@@ -113,15 +111,6 @@ spec:
           configMap:
             name: {{ .Release.Name }}-zk-config-scripts
             defaultMode: 0555
-        {{- if and (not .Values.kafka.standalone) (.Values.kafka.auth_enable)}}
-        - name: server-jaas-config
-          secret:
-            secretName: {{ .Release.Name }}-zk-secrets
-            items:
-            - key: server-jaas.conf
-              path: server-jaas.conf
-              mode: 0555
-        {{- end}}
   volumeClaimTemplates:
   - metadata:
       name: datadir

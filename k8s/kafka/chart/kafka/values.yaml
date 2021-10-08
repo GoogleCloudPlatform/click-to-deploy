@@ -3,22 +3,23 @@ kafka:
     repo: null
     tag: null
   replicas: 3
-  # if set "true", solr will be deployed as standalone mode with
+  # if set "true", kafka will be deployed as standalone mode with
   # single instance without external zookeeper and no any authentication.
   # Don't set true for production deployment
   standalone: false
 
-  ssl_enable: false
   auth_enable: false
 
-  # Solr password for user "solr"
-  # solrPassword: null
+  # Kafka user and password
+  kUser: null
+  kPassword: null
 
   # ZooKeeper ACL admin password for username "admin-user"
-  # zkAdminPassword: null
+  zkAdminPassword: null
 
   # ZooKeeper ACL readonly password for username "readonly-user"
-  # zkReadOnlyPassword: null
+  zkReadOnlyPassword: null
+
   zkUser: null
   zkPassword: null
 

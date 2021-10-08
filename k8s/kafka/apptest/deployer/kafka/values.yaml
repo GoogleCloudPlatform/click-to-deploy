@@ -1,1 +1,4 @@
 testerImage: null
+
+standalone: false
+auth_enable: false
