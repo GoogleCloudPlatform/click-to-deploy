@@ -17,15 +17,16 @@ include_recipe 'apache2::default'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 
-# install zabbix package
-bash 'install zabbix' do
-  user 'root'
-  cwd '/tmp'
-  code <<-EOH
-  wget https://repo.zabbix.com/zabbix/#{node['zabbix']['version']}/debian/pool/main/z/zabbix-release/zabbix-release_#{node['zabbix']['release']}+stretch_all.deb
-  dpkg -i zabbix-release_#{node['zabbix']['release']}+stretch_all.deb
-  apt-get update
-EOH
+apt_repository 'zabbix_repository' do
+  uri node['zabbix']['repo']['uri']
+  components node['zabbix']['repo']['components']
+  keyserver node['zabbix']['repo']['keyserver']
+  distribution node['zabbix']['repo']['distribution']
+  trusted true
+end
+
+apt_update do
+  action :update
 end
 
 package 'install packages' do
