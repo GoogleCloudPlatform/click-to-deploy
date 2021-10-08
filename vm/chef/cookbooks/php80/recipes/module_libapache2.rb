@@ -12,4 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-package 'libapache2-mod-php8.0'
+package 'libapache2-mod-php8.0' do
+  action :install
+  retries 5
+  retry_delay 20
+end
