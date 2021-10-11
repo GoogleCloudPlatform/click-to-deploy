@@ -27,8 +27,6 @@ spec:
     matchLabels: *KafkaDeploymentLabels
   replicas: 1
   revisionHistoryLimit: 1
-  strategy:
-    type: Recreate
   template:
     metadata:
       labels: *KafkaDeploymentLabels
@@ -45,8 +43,30 @@ spec:
             - containerPort: 9308
               name: kafka-client
           command:
-            - "kafka_exporter"
-            - "--kafka.server={{ .Release.Name }}-kafka-client:9092"
+            - bash
+            - -c
+            - |
+                kafka_exporter \
+                {{- if (.Values.kafka.auth_enable)}}
+                --sasl.username=$K_USER \
+                --sasl.password=$K_PASSWORD \
+                --sasl.enabled \
+                --sasl.mechanism=plain \
+                {{- end }}
+                --kafka.server={{ .Release.Name }}-kafka-client:9092
+          {{- if (.Values.kafka.auth_enable)}}
+          env:
+          - name: K_USER
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-kafka-secrets
+                key: kafka_user
+          - name: K_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-kafka-secrets
+                key: kafka_password
+        {{- end }}
           livenessProbe:
             initialDelaySeconds: 20
             periodSeconds: 10
@@ -89,12 +109,12 @@ spec:
             - '-c'
             - |
               COUNTER=0;
-              while [  $COUNTER -lt 120 ]; do
+              while [  $COUNTER -lt 30 ]; do
                 echo dump | nc {{ .Release.Name }}-zk-client 2181 | grep brokers | wc -l | grep {{ .Values.kafka.replicas}} && exit 0;
                 let COUNTER=COUNTER+1;
-                sleep 2
+                sleep 1
               done;
-              echo "Did NOT see all Kafka broker instances alive after 120 secs!";
+              echo "Did NOT see all Kafka broker instances alive after 30 secs!";
               exit 1;
 
 {{- end }}

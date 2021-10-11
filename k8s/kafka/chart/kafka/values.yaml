@@ -8,20 +8,11 @@ kafka:
   # Don't set true for production deployment
   standalone: false
 
-  auth_enable: false
+  auth_enable: true
 
   # Kafka user and password
-  kUser: null
-  kPassword: null
-
-  # ZooKeeper ACL admin password for username "admin-user"
-  zkAdminPassword: null
-
-  # ZooKeeper ACL readonly password for username "readonly-user"
-  zkReadOnlyPassword: null
-
-  zkUser: null
-  zkPassword: null
+  kUser: admin
+  kPassword: admin
 
 metrics:
   image: null

@@ -18,5 +18,6 @@ set -xeo pipefail
 shopt -s nullglob
 
 for test in /tests/*; do
+  sleep 7200
   testrunner -logtostderr "--test_spec=${test}"
 done

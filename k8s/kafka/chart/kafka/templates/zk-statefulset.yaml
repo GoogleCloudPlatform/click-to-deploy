@@ -72,12 +72,6 @@ spec:
           value: "*"
         - name: ZK_DATA_DIR
           value: /data
-
-        {{- if (not .Values.kafka.auth_enable)}}
-        - name: ZOO_ENABLE_AUTH
-          value: "no"
-        {{- end}}
-
         readinessProbe:
           exec:
             command:

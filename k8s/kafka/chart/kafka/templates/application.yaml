@@ -54,7 +54,7 @@ spec:
       {{- else }}
 
       # Open your Kafka service
-      Kafka is exposed in a ClusterIP-only service, `{{ .Release.Name }}-kafka-svc`.
+      Kafka is exposed in a ClusterIP-only service, `{{ .Release.Name }}-kafka-client`.
       To connect to Kafka, you can either expose a public service endpoint, or keep it private,
       but connect from you local environment with `kubectl port-forward`.
 
@@ -84,7 +84,7 @@ spec:
   - name: Kafka - Site address (local only)
     value: http://localhost:9092/
   {{- end }}
-  - name: Kafka - admin username
+  - name: Kafka - username
     type: Reference
     valueFrom:
       secretKeyRef:

@@ -33,7 +33,7 @@ spec:
             items:
             - key: kafka_server_jaas.conf
               path: kafka_server_jaas.conf
-              mode: 0755
+              mode: 0555
       {{- end}}
       initContainers:
         {{- if not .Values.kafka.standalone }}
@@ -130,11 +130,15 @@ spec:
             - name: KAFKA_SASL_ENABLED_MECHANISMS
               value: "PLAIN"
             - name: KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL
-              value: "PLAIN"
+              value: "SASL_PLAINTEXT"
             - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
               value: "INTERNAL:PLAINTEXT,CLIENT:SASL_PLAINTEXT"
-            {{- end }}
-            {{- if and (not .Values.kafka.standalone) (not .Values.kafka.auth_enable)}}
+            - name: KAFKA_AUTHORIZER_CLASS_NAME
+              value: "kafka.security.auth.SimpleAclAuthorizer"
+            - name: KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND
+              value: "true"
+
+            {{- else}}
             - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
               value: "INTERNAL:PLAINTEXT,CLIENT:PLAINTEXT"
             {{- end }}

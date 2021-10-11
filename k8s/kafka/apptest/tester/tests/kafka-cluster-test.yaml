@@ -11,7 +11,7 @@ actions:
 - name: Check if Kafka broker service shows 3 live brokers
   bashTest:
     script: |
-          kafkacat -L -b ${APP_INSTANCE_NAME}-kafka-svc
+          kafkacat -L -b ${APP_INSTANCE_NAME}-kafka-client
     expect:
       exitCode:
         equals: 0
@@ -21,7 +21,7 @@ actions:
   bashTest:
     script: |
       BROKER_ID=1001
-      BROKER_IP=$(kafkacat -L -b ${APP_INSTANCE_NAME}-kafka-svc|grep "broker $BROKER_ID" | grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}" )
+      BROKER_IP=$(kafkacat -L -b ${APP_INSTANCE_NAME}-kafka-client|grep "broker $BROKER_ID" | grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}" )
       echo "Test from Docker Testrunner" | kafkacat -P -b $BROKER_IP -t test
     expect:
       exitCode:
@@ -30,7 +30,7 @@ actions:
   bashTest:
     script: |
       BROKER_ID=1002
-      BROKER_IP=$(kafkacat -L -b ${APP_INSTANCE_NAME}-kafka-svc|grep "broker $BROKER_ID" | grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}" )
+      BROKER_IP=$(kafkacat -L -b ${APP_INSTANCE_NAME}-kafka-client|grep "broker $BROKER_ID" | grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}" )
       kafkacat -b $BROKER_IP -t test -e
     expect:
       exitCode:
@@ -41,7 +41,7 @@ actions:
   bashTest:
     script: |
       BROKER_ID=1003
-      BROKER_IP=$(kafkacat -L -b ${APP_INSTANCE_NAME}-kafka-svc|grep "broker $BROKER_ID" | grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}" )
+      BROKER_IP=$(kafkacat -L -b ${APP_INSTANCE_NAME}-kafka-client|grep "broker $BROKER_ID" | grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}" )
       kafkacat -b $BROKER_IP -t test -e
     expect:
       exitCode:
