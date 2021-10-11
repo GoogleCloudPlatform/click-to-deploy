@@ -19,9 +19,15 @@ apt_repository 'php' do
   components ['main']
 end
 
+apt_update do
+  action :update
+end
+
 package 'install packages' do
   package_name node['php80']['packages']
   action :install
+  retries 5
+  retry_delay 20
 end
 
 node['php80']['modules'].each do |pkg|

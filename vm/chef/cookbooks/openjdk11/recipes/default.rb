@@ -35,7 +35,7 @@ package 'install packages' do
 end
 
 package 'install packages' do
-  only_if { node['platform_version'].include? '10.' }
+  only_if { platform?('debian') && node['platform_version'].to_i >= 10 }
   package_name node['openjdk11']['packages']
   action :install
   retries 5
