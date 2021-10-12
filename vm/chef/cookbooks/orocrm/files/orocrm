@@ -1,0 +1,84 @@
+#!/bin/bash -eu
+#
+# Copyright 2021 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
+
+export COMPOSER_HOME="/root/.config/composer"
+
+declare -r mysql_password="$(get_attribute_value "mysql-root-password")"
+readonly oro_db_password="$(get_attribute_value "oro-db-password")"
+readonly oro_db_user="oro"
+readonly oro_db_name="oro_crm"
+readonly oro_admin_user="admin"
+readonly oro_admin_password="$(get_attribute_value "oro-admin-password")"
+readonly oro_project="my_project"
+declare -r oro_folder="/opt/orocrm"
+declare oro_url="http://$(get_internal_ip)/"
+
+# Creates Orocrm database user
+mysql --user="root" --password="${mysql_password}" --database="mysql" <<-EOSQL
+  CREATE USER '${oro_db_user}'@'localhost' IDENTIFIED BY '${oro_db_password}';
+  GRANT ALL ON ${oro_db_name}.* TO '${oro_db_user}'@'localhost';
+EOSQL
+
+echo "[client]" >> /etc/my.cnf
+echo "default-character-set = utf8mb4" >> /etc/my.cnf
+echo "" >> /etc/my.cnf
+echo "[mysql]" >> /etc/my.cnf
+echo "default-character-set = utf8mb4" >> /etc/my.cnf
+echo "" >> /etc/my.cnf
+echo "[mysqld]" >> /etc/my.cnf
+echo "default-authentication-plugin=mysql_native_password" >> /etc/my.cnf
+echo "innodb_file_per_table = 0" >> /etc/my.cnf
+echo "wait_timeout = 28800" >> /etc/my.cnf
+
+service mysql restart
+echo "Restarting Mysql..."
+
+mkdir "${oro_folder}"
+cd "${oro_folder}/"
+composer create-project oro/crm-application ${oro_project} -n
+
+# Install Oro_crm
+cd "${oro_project}/"
+
+sed -i "s/database_user: .*$/database_user: ${oro_db_user}/" config/parameters.yml
+sed -i "s/database_password: .*$/database_password: ${oro_db_password}/" config/parameters.yml
+
+rm -rf var/cache/*
+
+echo "Installing OroCRM..."
+cd bin
+php console oro:install -vv \
+--application-url=${oro_url} \
+  --user-name="${oro_admin_user}" \
+  --user-password="${oro_admin_password}" \
+  --user-email=example@example.com \
+  --user-lastname=Test \
+  --user-firstname=User \
+  --env=prod \
+  --no-interaction
+
+  # Configure Apache
+rm -f /etc/apache2/sites-enabled/000-default.conf
+envsubst '\$oro_project' < /opt/c2d/apache-orocrm.conf \
+  > /etc/apache2/sites-enabled/orocrm.conf
+
+# Restart Apache
+echo "Restarting Apache..."
+systemctl restart apache2
+
+echo "Installation complete!"
