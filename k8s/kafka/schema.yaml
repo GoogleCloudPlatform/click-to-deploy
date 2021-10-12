@@ -63,6 +63,7 @@ properties:
       type: STORAGE_CLASS
       storageClass:
         type: SSD
+
   kafka.standalone:
     type: boolean
     title: Kafka Standalone mode
@@ -81,8 +82,22 @@ properties:
     default: "5Gi"
     description: ZooKeeper instance storage size
     pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
-
-
+  kafka.kUser:
+    type: string
+    title: Kakfa username
+    default: "kafka"
+    description: Username for kafka auth
+    pattern: '^[a-zA-Z]{1,10}$'
+  kafka.kPassword:
+    type: string
+    title: Kakfa user password
+    description: User password for kafka auth
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 10
+        includeSymbols: False
+        base64: False
 
   metrics.exporter.enabled:
     type: boolean

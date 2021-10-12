@@ -1,4 +1,3 @@
-{{- if not .Values.kafka.standalone }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -8,7 +7,11 @@ metadata:
     app.kubernetes.io/component: zookeeper
 spec:
   serviceName: {{ .Release.Name }}-zk-headless
+{{- if not .Values.kafka.standalone }}
   replicas: 3
+{{- else}}
+  replicas: 1
+{{- end}}
   selector:
     matchLabels: *ZookeeperDeploymentLabels
   podManagementPolicy: "Parallel"
@@ -51,7 +54,11 @@ spec:
         - name: JMXSSL
           value: "false"
         - name : ZK_REPLICAS
+        {{- if not .Values.kafka.standalone }}
           value: "3"
+        {{- else}}
+          value: "1"
+        {{- end}}
         - name : ZK_HEAP_SIZE
           value: "1000M"
         - name : ZK_TICK_TIME
@@ -114,4 +121,3 @@ spec:
       resources:
         requests:
           storage: {{ .Values.persistence.zookeeper.storageSize }}
-{{- end }}

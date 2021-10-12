@@ -1,3 +1,4 @@
+{{- if not .Values.kafka.standalone}}
 apiVersion: "policy/v1beta1"
 kind: "PodDisruptionBudget"
 metadata:
@@ -9,3 +10,4 @@ spec:
   selector:
     matchLabels: *KafkaDeploymentLabels
   maxUnavailable: 1
+{{- end}}

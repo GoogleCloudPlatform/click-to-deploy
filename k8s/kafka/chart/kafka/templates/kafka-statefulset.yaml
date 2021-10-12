@@ -25,7 +25,7 @@ spec:
         runAsUser: 9092
         runAsGroup: 9092
       terminationGracePeriodSeconds: 30
-      {{- if and (not .Values.kafka.standalone) (.Values.kafka.auth_enable)}}
+      {{- if (not .Values.kafka.standalone)}}
       volumes:
         - name: jaas-config
           secret:
@@ -87,44 +87,22 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
-
             - name: STAS_DELAY
               value: "30"
-
             - name: KAFKA_INTER_BROKER_LISTENER_NAME
               value: "INTERNAL"
-
             - name: BROKER_ID_COMMAND
               value: "hostname | sed s/{{ .Release.Name }}-kafka-//"
-
+            - name: KAFKA_LISTENERS
+              value: "INTERNAL://$(BROKER_POD_IP):9093,CLIENT://$(BROKER_POD_NAME).{{ .Release.Name }}-kafka-headless.{{ .Release.Namespace }}.svc.cluster.local:9092"
+            - name: KAFKA_ADVERTISED_LISTENERS
+              value: "INTERNAL://$(BROKER_POD_IP):9093,CLIENT://$(BROKER_POD_NAME).{{ .Release.Name }}-kafka-headless.{{ .Release.Namespace }}.svc.cluster.local:9092"
+            - name: KAFKA_LOG_DIRS
+              value: "/kafka/logs"
             - name: KAFKA_ZOOKEEPER_CONNECT
               value: "{{ .Release.Name }}-zk-client.{{ .Release.Namespace }}.svc.cluster.local:2181"
 
-            - name: KAFKA_LISTENERS
-              value: "INTERNAL://$(BROKER_POD_IP):9093,CLIENT://$(BROKER_POD_NAME).{{ .Release.Name }}-kafka-headless.{{ .Release.Namespace }}.svc.cluster.local:9092"
-
-            - name: KAFKA_ADVERTISED_LISTENERS
-              value: "INTERNAL://$(BROKER_POD_IP):9093,CLIENT://$(BROKER_POD_NAME).{{ .Release.Name }}-kafka-headless.{{ .Release.Namespace }}.svc.cluster.local:9092"
-
-            - name: KAFKA_LOG_DIRS
-              value: "/kafka/logs"
-
-#            - name: ZK_ADMIN_PASSWORD
-#              valueFrom:
-#                secretKeyRef:
-#                  name: {{ .Release.Name }}-kafka-secret
-#                  key: zk-admin-password
-#            - name: ZK_READONLY_PASSWORD
-#              valueFrom:
-#                secretKeyRef:
-#                  name: {{ .Release.Name }}-kafka-secret
-#                  key: zk-readonly-password
-#                  # export KAFKA_OPTS=-Djava.security.auth.login.config=<path-to-jaas-file>/users_jaas.conf
-#            - name: KAFKA_ZK_CREDS_AND_ACLS
-#              value: "-DzkACLProvider=org.apache.kafka.common.cloud.VMParamsAllAndReadonlyDigestZkACLProvider #-DzkCredentialsProvider=org.apache.kafka.common.cloud.#VMParamsSingleSetCredentialsDigestZkCredentialsProvider -DzkDigestUsername=admin-user #-DzkDigestPassword=$(ZK_ADMIN_PASSWORD) -DzkDigestReadonlyUsername=readonly-user #-DzkDigestReadonlyPassword=$(ZK_READONLY_PASSWORD)"
-            #- name: KAFKA_OPTS
-            #  value: "$(KAFKA_ZK_CREDS_AND_ACLS)"
-            {{- if and (not .Values.kafka.standalone) (.Values.kafka.auth_enable)}}
+            {{- if not .Values.kafka.standalone}}
             - name: KAFKA_OPTS
               value: "-Djava.security.auth.login.config=/tmp/kafka_server_jaas.conf"
             - name: KAFKA_SASL_ENABLED_MECHANISMS
@@ -161,7 +139,7 @@ spec:
           volumeMounts:
             - name: logdir
               mountPath: /kafka
-            {{- if and (not .Values.kafka.standalone) (.Values.kafka.auth_enable)}}
+            {{- if not .Values.kafka.standalone}}
             - name: jaas-config
               mountPath: /tmp
             {{- end}}

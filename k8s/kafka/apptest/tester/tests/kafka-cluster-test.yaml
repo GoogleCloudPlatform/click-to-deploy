@@ -8,41 +8,55 @@ actions:
         matches: "3"
       exitCode:
         equals: 0
+- name: Check if auth with broker service fail
+  bashTest:
+    script: |
+          AUTH_OPTS="-X sasl.mechanism=PLAIN -X security.protocol=SASL_PLAINTEXT -X sasl.username=${KAFKA_USER} -X sasl.password=wrongpassword"
+          kafkacat -L -b ${APP_INSTANCE_NAME}-kafka-client $AUTH_OPTS
+    expect:
+      exitCode:
+        equals: 1
+      stdout:
+        matches: ERROR
 - name: Check if Kafka broker service shows 3 live brokers
   bashTest:
     script: |
-          kafkacat -L -b ${APP_INSTANCE_NAME}-kafka-client
+          AUTH_OPTS="-X sasl.mechanisms=PLAIN -X security.protocol=SASL_PLAINTEXT -X sasl.username=${KAFKA_USER} -X sasl.password=${KAFKA_PASSWORD}"
+          kafkacat -L -b ${APP_INSTANCE_NAME}-kafka-client $AUTH_OPTS
     expect:
       exitCode:
         equals: 0
       stdout:
         matches: 3 brokers.
-- name: Produces a message in broker 1
+- name: Produces a message in broker 0
   bashTest:
     script: |
-      BROKER_ID=1001
-      BROKER_IP=$(kafkacat -L -b ${APP_INSTANCE_NAME}-kafka-client|grep "broker $BROKER_ID" | grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}" )
-      echo "Test from Docker Testrunner" | kafkacat -P -b $BROKER_IP -t test
+      BROKER_ID=0
+      AUTH_OPTS="-X sasl.mechanisms=PLAIN -X security.protocol=SASL_PLAINTEXT -X sasl.username=${KAFKA_USER} -X sasl.password=${KAFKA_PASSWORD}"
+      BROKER=$(kafkacat -L -b ${APP_INSTANCE_NAME}-kafka-client $AUTH_OPTS|grep "broker $BROKER_ID"| awk '{$1=$1};1' | awk '{print $4}' )
+      echo "Test from Docker Testrunner" | kafkacat -P -b $BROKER -t test $AUTH_OPTS
     expect:
       exitCode:
         equals: 0
-- name: Consumes message in broker 2
+- name: Consumes message in broker 1
   bashTest:
     script: |
-      BROKER_ID=1002
-      BROKER_IP=$(kafkacat -L -b ${APP_INSTANCE_NAME}-kafka-client|grep "broker $BROKER_ID" | grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}" )
-      kafkacat -b $BROKER_IP -t test -e
+      BROKER_ID=1
+      AUTH_OPTS="-X sasl.mechanisms=PLAIN -X security.protocol=SASL_PLAINTEXT -X sasl.username=${KAFKA_USER} -X sasl.password=${KAFKA_PASSWORD}"
+      BROKER=$(kafkacat -L -b ${APP_INSTANCE_NAME}-kafka-client $AUTH_OPTS|grep "broker $BROKER_ID" | awk '{$1=$1};1' | awk '{print $4}' )
+      kafkacat -b $BROKER -t test -e $AUTH_OPTS
     expect:
       exitCode:
         equals: 0
       stderr:
         matches: Test from Docker Testrunner
-- name: Consumes message in broker 3
+- name: Consumes message in broker 2
   bashTest:
     script: |
-      BROKER_ID=1003
-      BROKER_IP=$(kafkacat -L -b ${APP_INSTANCE_NAME}-kafka-client|grep "broker $BROKER_ID" | grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}" )
-      kafkacat -b $BROKER_IP -t test -e
+      BROKER_ID=2
+      AUTH_OPTS="-X sasl.mechanisms=PLAIN -X security.protocol=SASL_PLAINTEXT -X sasl.username=${KAFKA_USER} -X sasl.password=${KAFKA_PASSWORD}"
+      BROKER=$(kafkacat -L -b ${APP_INSTANCE_NAME}-kafka-client $AUTH_OPTS|grep "broker $BROKER_ID" | awk '{$1=$1};1' | awk '{print $4}' )
+      kafkacat -b $BROKER -t test -e $AUTH_OPTS
     expect:
       exitCode:
         equals: 0

@@ -47,14 +47,14 @@ spec:
             - -c
             - |
                 kafka_exporter \
-                {{- if (.Values.kafka.auth_enable)}}
+          {{- if not .Values.kafka.standalone}}
                 --sasl.username=$K_USER \
                 --sasl.password=$K_PASSWORD \
                 --sasl.enabled \
                 --sasl.mechanism=plain \
-                {{- end }}
+          {{- end }}
                 --kafka.server={{ .Release.Name }}-kafka-client:9092
-          {{- if (.Values.kafka.auth_enable)}}
+          {{- if not .Values.kafka.standalone}}
           env:
           - name: K_USER
             valueFrom:
@@ -108,9 +108,15 @@ spec:
             - 'sh'
             - '-c'
             - |
+
+        {{- if (not .Values.kafka.standalone)}}
+              REPLICAS={{ .Values.kafka.replicas}}
+        {{- else }}
+              REPLICAS=1
+        {{- end }}
               COUNTER=0;
               while [  $COUNTER -lt 30 ]; do
-                echo dump | nc {{ .Release.Name }}-zk-client 2181 | grep brokers | wc -l | grep {{ .Values.kafka.replicas}} && exit 0;
+                echo dump | nc {{ .Release.Name }}-zk-client 2181 | grep brokers | wc -l | grep $REPLICAS && exit 0;
                 let COUNTER=COUNTER+1;
                 sleep 1
               done;

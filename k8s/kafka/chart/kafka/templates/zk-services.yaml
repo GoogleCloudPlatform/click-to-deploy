@@ -1,4 +1,3 @@
-{{- if not .Values.kafka.standalone }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -37,4 +36,3 @@ spec:
   selector:
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: zookeeper
-{{- end }}
