@@ -21,11 +21,11 @@ export COMPOSER_MEMORY_LIMIT=-1
 
 declare -r mysql_password="$(get_attribute_value "mysql-root-password")"
 declare -r oro_db_password="$(get_attribute_value "oro-db-password")"
+export oro_project="$(get_attribute_value "oro-project")"
+declare -r oro_admin_password="$(get_attribute_value "oro-admin-password")"
 declare -r oro_db_user="oro"
 declare -r oro_db_name="oro_crm"
 declare -r oro_admin_user="admin"
-declare -r oro_admin_password="$(get_attribute_value "oro-admin-password")"
-declare -r oro_project="my_project"
 declare -r oro_folder="/opt/orocrm"
 declare -r oro_url="http://$(get_internal_ip)/"
 
@@ -87,7 +87,7 @@ php bin/console oro:install -vv \
 echo "Assign permission to Apache user..."
 chown -R www-data:www-data "${oro_folder}/"
 
-# Configure Apache
+echo "Configure Apache..."
 rm -f /etc/apache2/sites-enabled/000-default.conf
 envsubst '\$oro_project' < /opt/c2d/apache-orocrm.conf \
   > /etc/apache2/sites-enabled/orocrm.conf
