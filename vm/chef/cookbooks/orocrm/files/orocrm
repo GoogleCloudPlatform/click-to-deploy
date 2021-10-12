@@ -17,16 +17,33 @@
 source /opt/c2d/c2d-utils || exit 1
 
 export COMPOSER_HOME="/root/.config/composer"
+export COMPOSER_MEMORY_LIMIT=-1
 
 declare -r mysql_password="$(get_attribute_value "mysql-root-password")"
-readonly oro_db_password="$(get_attribute_value "oro-db-password")"
-readonly oro_db_user="oro"
-readonly oro_db_name="oro_crm"
-readonly oro_admin_user="admin"
-readonly oro_admin_password="$(get_attribute_value "oro-admin-password")"
-readonly oro_project="my_project"
+declare -r oro_db_password="$(get_attribute_value "oro-db-password")"
+declare -r oro_db_user="oro"
+declare -r oro_db_name="oro_crm"
+declare -r oro_admin_user="admin"
+declare -r oro_admin_password="$(get_attribute_value "oro-admin-password")"
+declare -r oro_project="my_project"
 declare -r oro_folder="/opt/orocrm"
-declare oro_url="http://$(get_internal_ip)/"
+declare -r oro_url="http://$(get_internal_ip)/"
+
+function wait_for_app() {
+  local max_retries=10
+  local retry=1
+  local http_code=0
+
+  while [[ "${http_code}" -ne 200 && "${retry}" -le "${max_retries}" ]]; do
+    http_code="$(curl -s -L -o /dev/null -w "%{http_code}" http://localhost)"
+    (( retry=retry+1 ))
+  done
+
+  if [[ "${retry}" -gt "${max_retries}" ]]; then
+    echo "Max retries exceeded."
+    exit 1
+  fi
+}
 
 # Creates Orocrm database user
 mysql --user="root" --password="${mysql_password}" --database="mysql" <<-EOSQL
@@ -34,12 +51,6 @@ mysql --user="root" --password="${mysql_password}" --database="mysql" <<-EOSQL
   GRANT ALL ON ${oro_db_name}.* TO '${oro_db_user}'@'localhost';
 EOSQL
 
-echo "[client]" >> /etc/my.cnf
-echo "default-character-set = utf8mb4" >> /etc/my.cnf
-echo "" >> /etc/my.cnf
-echo "[mysql]" >> /etc/my.cnf
-echo "default-character-set = utf8mb4" >> /etc/my.cnf
-echo "" >> /etc/my.cnf
 echo "[mysqld]" >> /etc/my.cnf
 echo "default-authentication-plugin=mysql_native_password" >> /etc/my.cnf
 echo "innodb_file_per_table = 0" >> /etc/my.cnf
@@ -53,16 +64,16 @@ cd "${oro_folder}/"
 composer create-project oro/crm-application ${oro_project} -n
 
 # Install Oro_crm
-cd "${oro_project}/"
+cd "${oro_folder}/${oro_project}/"
 
+echo "Adding DB user and password to config file..."
 sed -i "s/database_user: .*$/database_user: ${oro_db_user}/" config/parameters.yml
 sed -i "s/database_password: .*$/database_password: ${oro_db_password}/" config/parameters.yml
 
 rm -rf var/cache/*
 
 echo "Installing OroCRM..."
-cd bin
-php console oro:install -vv \
+php bin/console oro:install -vv \
 --application-url=${oro_url} \
   --user-name="${oro_admin_user}" \
   --user-password="${oro_admin_password}" \
@@ -70,9 +81,13 @@ php console oro:install -vv \
   --user-lastname=Test \
   --user-firstname=User \
   --env=prod \
-  --no-interaction
+  --no-interaction \
 
-  # Configure Apache
+# Assign permission to Apache user
+echo "Assign permission to Apache user..."
+chown -R www-data:www-data "${oro_folder}/"
+
+# Configure Apache
 rm -f /etc/apache2/sites-enabled/000-default.conf
 envsubst '\$oro_project' < /opt/c2d/apache-orocrm.conf \
   > /etc/apache2/sites-enabled/orocrm.conf

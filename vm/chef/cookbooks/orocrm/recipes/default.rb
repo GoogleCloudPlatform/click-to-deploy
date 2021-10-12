@@ -16,8 +16,10 @@
 include_recipe 'apache2'
 include_recipe 'apache2::mod_deflate'
 include_recipe 'apache2::mod_headers'
+include_recipe 'apache2::rm-index'
+include_recipe 'apache2::security-config'
 
-include_recipe 'mysql::version-8.0'
+include_recipe 'mysql::version-8.0-standalone'
 
 include_recipe 'git'
 
@@ -43,7 +45,7 @@ include_recipe 'php74::module_ldap'
 include_recipe 'php74::module_mongodb'
 include_recipe 'php74::module_libapache2'
 
-include_recipe 'composer::composer2'
+include_recipe 'composer::composer-only'
 
 include_recipe 'nodejs::default_nodejs14'
 
@@ -83,4 +85,4 @@ execute 'enable apache modules' do
   command 'a2enmod rewrite'
 end
 
-#c2d_startup_script 'orocrm'
+c2d_startup_script 'orocrm'
