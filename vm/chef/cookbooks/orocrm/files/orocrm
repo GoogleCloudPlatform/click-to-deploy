@@ -14,36 +14,39 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source /opt/c2d/c2d-utils || exit 1
+source /opt/c2d/orocrm-utils || exit 1
 
 export COMPOSER_HOME="/root/.config/composer"
 export COMPOSER_MEMORY_LIMIT=-1
+export oro_project="$(get_attribute_value "oro-project")"
 
+declare -r oro_config_file="config/parameters.yml"
 declare -r mysql_password="$(get_attribute_value "mysql-root-password")"
 declare -r oro_db_password="$(get_attribute_value "oro-db-password")"
-export oro_project="$(get_attribute_value "oro-project")"
 declare -r oro_admin_password="$(get_attribute_value "oro-admin-password")"
 declare -r oro_db_user="oro"
 declare -r oro_db_name="oro_crm"
 declare -r oro_admin_user="admin"
 declare -r oro_folder="/opt/orocrm"
 declare -r oro_url="http://$(get_internal_ip)/"
+#Getting optional deployment variable
+#oro_url="$(get_attribute_value "oro-hostname" || true)}"
 
-function wait_for_app() {
-  local max_retries=10
-  local retry=1
-  local http_code=0
-
-  while [[ "${http_code}" -ne 200 && "${retry}" -le "${max_retries}" ]]; do
-    http_code="$(curl -s -L -o /dev/null -w "%{http_code}" http://localhost)"
-    (( retry=retry+1 ))
-  done
-
-  if [[ "${retry}" -gt "${max_retries}" ]]; then
-    echo "Max retries exceeded."
-    exit 1
+# Enforce to use external IP or internal IP if no OroCRM hostname provided
+if [ -z ${oro_url} ]; then
+  if has_external_ip; then
+    oro_url="http://$(get_external_ip)/"
+  else
+    oro_url="http://$(get_internal_ip)/"
   fi
-}
+fi
+
+echo "$oro_url"
+
+# Required fileds for OroCRM istallation
+declare -r oro_user_email="example@example.com"
+declare -r oro_user_firstname="Administrator"
+declare -r oro_user_lastname="Application"
 
 # Creates Orocrm database user
 mysql --user="root" --password="${mysql_password}" --database="mysql" <<-EOSQL
@@ -56,30 +59,30 @@ echo "default-authentication-plugin=mysql_native_password" >> /etc/my.cnf
 echo "innodb_file_per_table = 0" >> /etc/my.cnf
 echo "wait_timeout = 28800" >> /etc/my.cnf
 
+echo "Restarting MySQL..."
 service mysql restart
-echo "Restarting Mysql..."
 
 mkdir "${oro_folder}"
 cd "${oro_folder}/"
-composer create-project oro/crm-application ${oro_project} -n
+composer create-project oro/crm-application "${oro_project}" -n
 
 # Install Oro_crm
 cd "${oro_folder}/${oro_project}/"
 
 echo "Adding DB user and password to config file..."
-sed -i "s/database_user: .*$/database_user: ${oro_db_user}/" config/parameters.yml
-sed -i "s/database_password: .*$/database_password: ${oro_db_password}/" config/parameters.yml
+sed -i "s/database_user: .*$/database_user: ${oro_db_user}/" "${oro_config_file}"
+sed -i "s/database_password: .*$/database_password: ${oro_db_password}/" "${oro_config_file}"
 
 rm -rf var/cache/*
 
 echo "Installing OroCRM..."
 php bin/console oro:install -vv \
---application-url=${oro_url} \
+--application-url="${oro_url}" \
   --user-name="${oro_admin_user}" \
   --user-password="${oro_admin_password}" \
-  --user-email=example@example.com \
-  --user-lastname=Test \
-  --user-firstname=User \
+  --user-email="${oro_user_email}" \
+  --user-firstname="${oro_user_firstname}" \
+  --user-lastname="${oro_user_lastname}" \
   --env=prod \
   --no-interaction \
 
@@ -95,5 +98,8 @@ envsubst '\$oro_project' < /opt/c2d/apache-orocrm.conf \
 # Restart Apache
 echo "Restarting Apache..."
 systemctl restart apache2
+
+# Await for app be ready
+wait_for_app
 
 echo "Installation complete!"

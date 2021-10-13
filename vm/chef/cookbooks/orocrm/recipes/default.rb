@@ -53,7 +53,7 @@ apt_update do
   action :update
 end
 
-# Clone Orocrm source code per license requirements.
+# Clone OroCRM source code per license requirements.
 git '/usr/src/orocrm' do
   repository 'https://github.com/oroinc/crm-application.git'
   reference node['orocrm']['version']
@@ -72,9 +72,18 @@ EOH
   })
 end
 
-# Copy Ora Apache configuration files
+# Copy Apache configuration files
 cookbook_file '/opt/c2d/apache-orocrm.conf' do
   source 'apache-orocrm.conf'
+  owner 'root'
+  group 'root'
+  mode 0644
+  action :create
+end
+
+# Copy the utils file for orocrm startup
+cookbook_file '/opt/c2d/orocrm-utils' do
+  source 'orocrm-utils'
   owner 'root'
   group 'root'
   mode 0644

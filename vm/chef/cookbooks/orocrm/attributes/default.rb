@@ -14,4 +14,3 @@
 
 default['orocrm']['version'] = '4.2.6'
 default['orocrm']['db']['name'] = 'oro_crm'
-default['orocrm']['db']['user'] = 'oro'
