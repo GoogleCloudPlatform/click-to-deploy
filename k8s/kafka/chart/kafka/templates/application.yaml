@@ -51,7 +51,7 @@ spec:
       Deployed service of {{ template "kafkaMode" . }} is ClusterIP type, so you can reach to {{ template "kafkaMode" . }} Admin UI within a kubernetes cluster.
 
       {{- if not .Values.kafka.standalone }}
-      Kafka cluster is configured with [Basic authentication plugin](https://lucene.apache.org/solr/guide/8_6/basic-authentication-plugin.html) beside [ZooKeeper ACL](https://lucene.apache.org/solr/guide/8_6/zookeeper-access-control.html).
+      Kafka cluster is configured with [SASL PLAINTEXT](https://kafka.apache.org/090/documentation.html#security_sasl).
       You can check credentials from application page in console or you can print it by running below commands:
 
       ```shell
@@ -65,71 +65,28 @@ spec:
       echo "username: kafka"
       echo "password: ${KAFKA_PASSWORD}"
       ```
-
-
-
-
-
-
-
-
-
-
-
-      # Connect to your Kafka service
-      Get the external IP of your Kafka service by using the following command:
-
-      ```
-      SERVICE_IP=$(kubectl get ingress {{ .Release.Name }}-kafka-ingress \
-        --namespace {{ .Release.Namespace }} \
-        --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
-
-      echo "${SERVICE_IP}"
-      ```
-      The command shows you the URL of your site.
-
-      # Update TLS certificate for Kafka
-      By default, the app uses a self-signed certificate. You can follow the steps at
-      [Update TLS certificate for Kafka](https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/kafka/README.md#create-tls-certificate-for-kafka)
-      to update it.
       {{- else }}
 
-      # Open your Kafka service
-      Kafka is exposed in a ClusterIP-only service, `{{ .Release.Name }}-kafka-client`.
-      To connect to Kafka, you can either expose a public service endpoint, or keep it private,
-      but connect from you local environment with `kubectl port-forward`.
+      Kafka deployed as a standalone mode without any authentication enabled and for development and testing purposes.
 
-      ## Forward Kafka port in local environment
-      You can use the port forwarding feature of `kubectl` to forward Kafka's port to your local
-      machine. Run the following command in the background:
-
-      ```shell
-      kubectl port-forward \
-        --namespace {{ .Release.Namespace }} \
-        svc/{{ .Release.Name }}-kafka-svc \
-        9092:9092
-      ```
-      Now you can access the Kafka using [http://localhost:9092](http://localhost:9092).
       {{- end }}
+
   info:
-
-  - name: Forward Kafka port locally
-    value: kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-kafka-svc 9092:9092
-  - name: Kafka - Site address (local only)
-    value: http://localhost:9092/
-
-  - name: Kafka - username
+  - name: {{ template "kafkaMode" . }} service
+    type: Reference
+    valueFrom:
+      serviceRef:
+        name: "{{ .Release.Name }}-kafka-client"
+  {{- if not .Values.kafka.standalone }}
+  - name: Kakfa Cluster User
+    value: kafka
+  - name: Kafka Cluster Password
     type: Reference
     valueFrom:
       secretKeyRef:
-        key: kafka-user
-        name: {{ .Release.Name }}-kafka-secret
-  - name: Kafka - admin user password
-    type: Reference
-    valueFrom:
-      secretKeyRef:
-        key: kafka-admin-password
-        name: {{ .Release.Name }}-kafka-secret
+        key: kafka_password
+        name: "{{ .Release.Name }}-kafka-secrets"
+  {{- end }}
   selector:
     matchLabels:
       app.kubernetes.io/name: "{{ .Release.Name }}"
