@@ -1,10 +1,12 @@
-# Copyright 2018 Google LLC
+#!/bin/bash -eu
+#
+# Copyright 2017 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#      http://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,9 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['grafana']['repo']['uri'] = 'https://packages.grafana.com/oss/deb'
-default['grafana']['repo']['components'] = ['main']
-default['grafana']['repo']['distribution'] = 'stable'
-default['grafana']['repo']['key'] = 'https://packages.grafana.com/gpg.key'
-default['grafana']['version'] = '7.4'
-default['grafana']['apt_version'] = "#{default['grafana']['version']}.*"
+until mysqladmin ping --user=root > /dev/null 2>&1; do
+  sleep 3
+done

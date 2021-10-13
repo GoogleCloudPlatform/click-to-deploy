@@ -28,18 +28,21 @@ export WEBLATE_SENDER_EMAIL="$(get_attribute_value "weblate-sender-email")"
 export WEBLATE_REDIS_PASSWORD="$(get_attribute_value "redis-password")"
 export DJANGO_SECRET_KEY="$(openssl rand 40 | openssl base64 -A)"
 
+# Generate env file
+generate_envfile
+
 echo "Awaiting for PostgreSQL..."
 wait_for_port "localhost" "5432"
 
 echo "Awaiting for Redis..."
-wait_for_port "localhost" "6379"
+wait_for_redis "${WEBLATE_REDIS_PASSWORD}"
 
 # Create database and user
 create_db_user
 
 # Install Weblate and uwsgi
 activate_virtualenv
-pip install weblate uwsgi
+pip install weblate
 
 # Create configuration file
 declare -r python_folder="$(ls -la /opt/weblate-env/lib | grep "python" | awk '{ print $9 }')"
@@ -64,13 +67,19 @@ weblate createadmin \
 weblate collectstatic --clear --no-input
 weblate compress
 
-# Start background worker
+# Set permissions for weblate user
+chown -R weblate:weblate /opt/weblate-env
+
+# Start background worker into /var/log folder
+# in order to generate log files into the right folder
+mkdir -p /var/log/weblate
+cd /var/log/weblate
 /opt/weblate-env/lib/*/site-packages/weblate/examples/celery start
 
 # Start back-end server as uwsgi mode
-uwsgi \
-  --ini /opt/weblate-env/weblate.uwsgi.ini \
-  --daemonize2 /var/log/weblate.log
+systemctl enable weblate
+systemctl start weblate
+wait_for_port "127.0.0.1" "8080"
 
 # Configure NGINX
 rm -f /etc/nginx/sites-enabled/default \
