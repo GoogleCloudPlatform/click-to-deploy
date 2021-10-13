@@ -12,21 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'openjdk8'
-
 apt_repository 'cassandra_repository' do
   uri node['cassandra']['repo']['uri']
   components node['cassandra']['repo']['components']
   keyserver node['cassandra']['repo']['keyserver']
-  distribution false
+  distribution node['cassandra']['repo']['distribution']
   trusted true
 end
 
-package 'cassandra' do
-  version node['cassandra']['version']
+apt_preference 'cassandra' do
+  pin          "version #{node['cassandra']['apt_version']}"
+  pin_priority '1000'
 end
 
-# TODO(b/68245727) Write an automated test to verify the config file contents.
+package 'cassandra' do
+  :install
+end
+
 bash 'prepare_config_yaml_file' do
   code <<-EOH
     readonly conf_orig_file=/etc/cassandra/cassandra.yaml
