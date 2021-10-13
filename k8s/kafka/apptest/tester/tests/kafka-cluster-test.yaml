@@ -46,7 +46,7 @@ actions:
           sasl.mechanism=PLAIN
           sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="${KAFKA_USER}" password="${KAFKA_PASSWORD}";
           EOF
-          echo "message" | /opt/kafka/bin/kafka-console-producer.sh --broker-list ${APP_INSTANCE_NAME}-kafka-client:9092 --topic "test" --producer.config admin.properties 2>&1 >/dev/null && echo OK
+          echo "test-message" | /opt/kafka/bin/kafka-console-producer.sh --broker-list ${APP_INSTANCE_NAME}-kafka-client:9092 --topic "test" --producer.config admin.properties 2>&1 >/dev/null && echo OK
     expect:
       exitCode:
         equals: 0
