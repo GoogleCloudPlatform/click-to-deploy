@@ -63,13 +63,11 @@ properties:
       type: STORAGE_CLASS
       storageClass:
         type: SSD
-
   kafka.standalone:
     type: boolean
     title: Kafka Standalone mode
     description: Kafka Standalone mode is mainly for development and testing purposes. If this option is enabled external ZooKeeper ensemble will not be deployed and authentication will be disabled for the Kafka services.
     default: false
-
   persistence.kafka.storage.size:
     type: string
     title: Storage size for Kafka instance
@@ -98,7 +96,6 @@ properties:
         length: 10
         includeSymbols: False
         base64: False
-
   metrics.exporter.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
