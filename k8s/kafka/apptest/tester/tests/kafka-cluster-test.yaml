@@ -11,54 +11,61 @@ actions:
 - name: Check if auth with broker service fail
   bashTest:
     script: |
-          AUTH_OPTS="-X sasl.mechanism=PLAIN -X security.protocol=SASL_PLAINTEXT -X sasl.username=${KAFKA_USER} -X sasl.password=wrongpassword"
-          kafkacat -L -b ${APP_INSTANCE_NAME}-kafka-client $AUTH_OPTS
+          cat << EOF > admin.properties
+          security.protocol=SASL_PLAINTEXT
+          sasl.mechanism=PLAIN
+          sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="wronguser" password="wrongpassword";
+          EOF
+          /opt/kafka/bin/kafka-topics.sh --create --bootstrap-server ${APP_INSTANCE_NAME}-kafka-client:9092  --replication-factor 2 --partitions 4 --topic test --command-config admin.properties
     expect:
       exitCode:
         equals: 1
       stdout:
-        matches: ERROR
-- name: Check if Kafka broker service shows 3 live brokers
+        matches: Invalid username or password
+
+- name: Create topic test
   bashTest:
     script: |
-          AUTH_OPTS="-X sasl.mechanisms=PLAIN -X security.protocol=SASL_PLAINTEXT -X sasl.username=${KAFKA_USER} -X sasl.password=${KAFKA_PASSWORD}"
-          kafkacat -L -b ${APP_INSTANCE_NAME}-kafka-client $AUTH_OPTS
+          cat << EOF > admin.properties
+          security.protocol=SASL_PLAINTEXT
+          sasl.mechanism=PLAIN
+          sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="${KAFKA_USER}" password="${KAFKA_PASSWORD}";
+          EOF
+          /opt/kafka/bin/kafka-topics.sh --create --bootstrap-server ${APP_INSTANCE_NAME}-kafka-client:9092  --replication-factor 1 --partitions 4 --topic test --command-config admin.properties
     expect:
       exitCode:
         equals: 0
       stdout:
-        matches: 3 brokers.
-- name: Produces a message in broker 0
+        matches: Created topic test.
+
+- name: Create message in test topic
   bashTest:
     script: |
-      BROKER_ID=0
-      AUTH_OPTS="-X sasl.mechanisms=PLAIN -X security.protocol=SASL_PLAINTEXT -X sasl.username=${KAFKA_USER} -X sasl.password=${KAFKA_PASSWORD}"
-      BROKER=$(kafkacat -L -b ${APP_INSTANCE_NAME}-kafka-client $AUTH_OPTS|grep "broker $BROKER_ID"| awk '{$1=$1};1' | awk '{print $4}' )
-      echo "Test from Docker Testrunner" | kafkacat -P -b $BROKER -t test $AUTH_OPTS
+          cat << EOF > admin.properties
+          security.protocol=SASL_PLAINTEXT
+          sasl.mechanism=PLAIN
+          sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="${KAFKA_USER}" password="${KAFKA_PASSWORD}";
+          EOF
+          echo "message" | /opt/kafka/bin/kafka-console-producer.sh --broker-list ${APP_INSTANCE_NAME}-kafka-client:9092 --topic "test" --producer.config admin.properties 2>&1 >/dev/null && echo OK
     expect:
       exitCode:
         equals: 0
-- name: Consumes message in broker 1
+      stdout:
+        matches: OK
+
+- name: Get message from test topic
   bashTest:
     script: |
-      BROKER_ID=1
-      AUTH_OPTS="-X sasl.mechanisms=PLAIN -X security.protocol=SASL_PLAINTEXT -X sasl.username=${KAFKA_USER} -X sasl.password=${KAFKA_PASSWORD}"
-      BROKER=$(kafkacat -L -b ${APP_INSTANCE_NAME}-kafka-client $AUTH_OPTS|grep "broker $BROKER_ID" | awk '{$1=$1};1' | awk '{print $4}' )
-      kafkacat -b $BROKER -t test -e $AUTH_OPTS
+          cat << EOF > admin.properties
+          security.protocol=SASL_PLAINTEXT
+          sasl.mechanism=PLAIN
+          sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="${KAFKA_USER}" password="${KAFKA_PASSWORD}";
+          EOF
+          /opt/kafka/bin/kafka-console-consumer.sh --bootstrap-server ${APP_INSTANCE_NAME}-kafka-client:9092 --topic test --from-beginning --max-messages 1 --timeout-ms 5000 --consumer.config admin.properties
     expect:
       exitCode:
         equals: 0
-      stderr:
-        matches: Test from Docker Testrunner
-- name: Consumes message in broker 2
-  bashTest:
-    script: |
-      BROKER_ID=2
-      AUTH_OPTS="-X sasl.mechanisms=PLAIN -X security.protocol=SASL_PLAINTEXT -X sasl.username=${KAFKA_USER} -X sasl.password=${KAFKA_PASSWORD}"
-      BROKER=$(kafkacat -L -b ${APP_INSTANCE_NAME}-kafka-client $AUTH_OPTS|grep "broker $BROKER_ID" | awk '{$1=$1};1' | awk '{print $4}' )
-      kafkacat -b $BROKER -t test -e $AUTH_OPTS
-    expect:
-      exitCode:
-        equals: 0
-      stderr:
-        matches: Test from Docker Testrunner
+    stdout:
+      matches: "test-message"
+    stderr:
+      matches: "Processed a total of 1 messages"
