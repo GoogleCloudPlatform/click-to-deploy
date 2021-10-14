@@ -57,6 +57,7 @@ export CLUSTER=kafka-cluster
 export ZONE=us-west1-a
 export PROJECT_ID=<GCP_Project_ID>
 
+gcloud config set project ${PROJECT}
 gcloud container clusters create "$CLUSTER" --zone "$ZONE"
 ```
 
@@ -131,11 +132,12 @@ export TAG=2.8
 Configure the container images:
 
 ```shell
-export IMAGE_KAFKA="marketplace.gcr.io/google/kafka"
-export IMAGE_ZOOKEEPER="marketplace.gcr.io/google/kafka/zookeeper:${TAG}"
-export IMAGE_EXPORTER="marketplace.gcr.io/google/kafka/exporter:${TAG}"
-export IMAGE_DEPLOYER="marketplace.gcr.io/google/kafka/deployer:${TAG}"
-export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/kafka/prometheus-to-sd:${TAG}"
+IMAGE_REGISTRY="marketplace.gcr.io/google"
+export IMAGE_KAFKA="${IMAGE_REGISTRY}/kafka"
+export IMAGE_ZOOKEEPER="${IMAGE_REGISTRY}/kafka/zookeeper:${TAG}"
+export IMAGE_EXPORTER="${IMAGE_REGISTRY}/kafka/exporter:${TAG}"
+export IMAGE_DEPLOYER="${IMAGE_REGISTRY}/kafka/deployer:${TAG}"
+export IMAGE_METRICS_EXPORTER="${IMAGE_REGISTRY}/kafka/prometheus-to-sd:${TAG}"
 ```
 Set or generate the passwords:
 
@@ -351,7 +353,7 @@ To deploy Kafka as a standalone mode, run following commands:
 APP_INSTANCE_NAME=kafka-standalone
 NAMESPACE=default
 STANDALONE_MODE_ENABLED=true
-TAG="2.8.0"
+TAG="2.8"
 IMAGE_KAFKA="marketplace.gcr.io/google/kafka"
 IMAGE_DEPLOYER="marketplace.gcr.io/google/kafka/deployer:${TAG}"
 IMAGE_EXPORTER="marketplace.gcr.io/google/kafka/exporter:${TAG}"
