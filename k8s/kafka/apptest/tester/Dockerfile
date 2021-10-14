@@ -1,7 +1,7 @@
 FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.2
 
 ARG KUBECTL_VERSION=1.12.0
-ARG KAFKA_VERSION=${KAFKA_VERSION}
+ARG KAFKA_VERSION=2.8.0
 ARG SCALA_VERSION=2.13
 
 RUN set -eu \

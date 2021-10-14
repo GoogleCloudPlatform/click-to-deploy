@@ -121,9 +121,6 @@ this option, change the value to `true`.
 ```shell
 export METRICS_EXPORTER_ENABLED=false
 
-# If you set the value in true export the following variables
-export METRICS_EXPORTER_TAG="v0.5.1"
-export IMAGE_METRICS_EXPORTER="k8s.gcr.io/prometheus-to-sd:${METRICS_EXPORTER_TAG}"
 ```
 
 Configure the image tag:
@@ -138,6 +135,7 @@ export IMAGE_KAFKA="marketplace.gcr.io/google/kafka"
 export IMAGE_ZOOKEEPER="marketplace.gcr.io/google/kafka/zookeeper:${TAG}"
 export IMAGE_EXPORTER="marketplace.gcr.io/google/kafka/exporter:${TAG}"
 export IMAGE_DEPLOYER="marketplace.gcr.io/google/kafka/deployer:${TAG}"
+export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/kafka/prometheus-to-sd:${TAG}"
 ```
 Set or generate the passwords:
 
@@ -356,6 +354,7 @@ STANDALONE_MODE_ENABLED=true
 TAG="2.8.0"
 IMAGE_KAFKA="marketplace.gcr.io/google/kafka"
 IMAGE_DEPLOYER="marketplace.gcr.io/google/kafka/deployer:${TAG}"
+IMAGE_EXPORTER="marketplace.gcr.io/google/kafka/exporter:${TAG}"
 STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
 PERSISTENT_KAFKA_SIZE="2Gi"
 METRICS_EXPORTER_ENABLED=false
@@ -367,6 +366,7 @@ helm template "${APP_INSTANCE_NAME}" \
     --set kafka.image.repo="${IMAGE_KAFKA}" \
     --set kafka.image.tag="${TAG}" \
     --set deployer.image="${IMAGE_DEPLOYER}" \
+    --set exporter.image="${IMAGE_EXPORTER}" \
     --set persistence.storageClass="${STORAGE_CLASS}" \
     --set persistence.kafka.storageSize="${PERSISTENT_KAFKA_SIZE}" \
     --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED}" \
