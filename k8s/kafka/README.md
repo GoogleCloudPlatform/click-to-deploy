@@ -315,7 +315,7 @@ kubectl scale statefulsets "${APP_INSTANCE_NAME}-kafka" \
 
 When this option is used to scale down a cluster, it reduces the number of
 replicas without disconnecting nodes from the cluster. Scaling down also does
-not affect the `persistentvolumeclaims` of your StatefulSet.
+not affect the `PersistentVolumeClaims` of your `StatefulSet`.
 
 
 # Upgrading the app
