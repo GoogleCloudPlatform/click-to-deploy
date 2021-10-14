@@ -182,7 +182,7 @@ To expand the template, use `helm template`. We recommend that you save the
 expanded manifest file for future updates to your app.
 
 ```shell
-helm template chart/kafka \
+helm template "${APP_INSTANCE_NAME}" chart/kafka \
   --name-template "${APP_INSTANCE_NAME}" \
   --namespace "${NAMESPACE}" \
   --set kafka.image.repo="${IMAGE_KAFKA}" \
