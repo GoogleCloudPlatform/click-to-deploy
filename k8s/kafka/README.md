@@ -130,7 +130,6 @@ Configure the image tag:
 
 ```shell
 export TAG=2.8
-export ZK_TAG=3.6
 ```
 Configure the container images:
 
