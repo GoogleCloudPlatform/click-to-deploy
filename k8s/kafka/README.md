@@ -233,8 +233,10 @@ kubectl run --rm -i --tty kafkaclient \
         --env="KAFKA_USER=${KAFKA_USER}" \
         --env="KAFKA_PASSWORD=${KAFKA_PASSWORD}" \
         -- bash
+```
 
-# Inside the container install kafkacat util
+Inside the container install kafkacat util
+```shell
 apt update
 apt install -y kafkacat
 ```
@@ -354,23 +356,28 @@ APP_INSTANCE_NAME=kafka-standalone
 NAMESPACE=default
 STANDALONE_MODE_ENABLED=true
 TAG="2.8"
-IMAGE_KAFKA="marketplace.gcr.io/google/kafka"
-IMAGE_DEPLOYER="marketplace.gcr.io/google/kafka/deployer:${TAG}"
-IMAGE_EXPORTER="marketplace.gcr.io/google/kafka/exporter:${TAG}"
+IMAGE_REGISTRY="marketplace.gcr.io/google"
+IMAGE_KAFKA="${IMAGE_REGISTRY}/kafka"
+IMAGE_ZOOKEEPER="${IMAGE_REGISTRY}/kafka/zookeeper:${TAG}"
+IMAGE_DEPLOYER="${IMAGE_REGISTRY}/kafka/deployer:${TAG}"
+IMAGE_EXPORTER="${IMAGE_REGISTRY}/kafka/exporter:${TAG}"
 STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
 PERSISTENT_KAFKA_SIZE="2Gi"
+PERSISTENT_ZK_SIZE="2Gi"
 METRICS_EXPORTER_ENABLED=false
 
 # Generate manifest file
 helm template "${APP_INSTANCE_NAME}" \
     --namespace "${NAMESPACE}" \
     --set kafka.standalone="${STANDALONE_MODE_ENABLED}" \
+    --set zookeeper.image="${IMAGE_ZOOKEEPER}" \
     --set kafka.image.repo="${IMAGE_KAFKA}" \
     --set kafka.image.tag="${TAG}" \
     --set deployer.image="${IMAGE_DEPLOYER}" \
     --set exporter.image="${IMAGE_EXPORTER}" \
     --set persistence.storageClass="${STORAGE_CLASS}" \
     --set persistence.kafka.storageSize="${PERSISTENT_KAFKA_SIZE}" \
+    --set persistence.zookeeper.size="${PERSISTENT_ZK_SIZE}" \
     --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED}" \
     chart/kafka > ${APP_INSTANCE_NAME}_standalone_manifest.yaml
 
