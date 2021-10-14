@@ -16,6 +16,7 @@ actions:
           sasl.mechanism=PLAIN
           sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="wronguser" password="wrongpassword";
           EOF
+
           /opt/kafka/bin/kafka-topics.sh --create --bootstrap-server ${APP_INSTANCE_NAME}-kafka-client:9092  --replication-factor 2 --partitions 4 --topic test --command-config admin.properties
     expect:
       exitCode:
@@ -31,6 +32,7 @@ actions:
           sasl.mechanism=PLAIN
           sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="${KAFKA_USER}" password="${KAFKA_PASSWORD}";
           EOF
+
           /opt/kafka/bin/kafka-topics.sh --create --bootstrap-server ${APP_INSTANCE_NAME}-kafka-client:9092  --replication-factor 1 --partitions 4 --topic test --command-config admin.properties
     expect:
       exitCode:
@@ -46,6 +48,7 @@ actions:
           sasl.mechanism=PLAIN
           sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="${KAFKA_USER}" password="${KAFKA_PASSWORD}";
           EOF
+
           echo "test-message" | /opt/kafka/bin/kafka-console-producer.sh --broker-list ${APP_INSTANCE_NAME}-kafka-client:9092 --topic "test" --producer.config admin.properties 2>&1 >/dev/null && echo OK
     expect:
       exitCode:
@@ -61,6 +64,7 @@ actions:
           sasl.mechanism=PLAIN
           sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="${KAFKA_USER}" password="${KAFKA_PASSWORD}";
           EOF
+
           /opt/kafka/bin/kafka-console-consumer.sh --bootstrap-server ${APP_INSTANCE_NAME}-kafka-client:9092 --topic test --from-beginning --max-messages 1 --timeout-ms 5000 --consumer.config admin.properties
     expect:
       exitCode:
