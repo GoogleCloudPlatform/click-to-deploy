@@ -53,7 +53,7 @@ gcloud auth configure-docker
 Create a new cluster from the command line:
 
 ```shell
-export CLUSTER=kakfa-cluster
+export CLUSTER=kafka-cluster
 export ZONE=us-west1-a
 export PROJECT_ID=<GCP_Project_ID>
 
@@ -273,7 +273,7 @@ kafkacat -b ${APP_INSTANCE_NAME}-kafka-client -t test -e $AUTH_OPTS
 
 
 ## Authentication and Security
-This Kafka deployment use SASL authentication protocol for Kakfa broker client authentication,  there is not internal authentication enabled for the communcation between Kafka brokers and zookeeper.
+This Kafka deployment use SASL authentication protocol for Kafka broker client authentication, there is not internal authentication enabled for the communication between Kafka brokers and ZooKeeper.
 
 Those Java parameters should be passed to external clients which want to connect to Kafka. You can check this parameters by running below commands:
 ```shell
