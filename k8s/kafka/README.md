@@ -182,21 +182,20 @@ expanded manifest file for future updates to your app.
 
 ```shell
 helm template "${APP_INSTANCE_NAME}" chart/kafka \
-  --name-template "${APP_INSTANCE_NAME}" \
-  --namespace "${NAMESPACE}" \
-  --set kafka.image.repo="${IMAGE_KAFKA}" \
-  --set kafka.image.tag="${TAG}" \
-  --set kafka.kUser="${KAFKA_USER}" \
-  --set kafka.kPassword="${KAFKA_PASSWORD}" \
-  --set persistence.kafka.size="${PERSISTENT_KAFKA_SIZE}" \
-  --set persistence.zookeeper.size="${PERSISTENT_ZK_SIZE}" \
-  --set persistence.storageClass="${STORAGE_CLASS}" \
-  --set exporter.image="${IMAGE_EXPORTER}" \
-  --set zookeeper.image="${IMAGE_ZOOKEEPER}" \
-  --set deployer.image="${IMAGE_DEPLOYER}" \
-  --set metrics.image="${IMAGE_METRICS_EXPORTER}" \
-  --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED}" \
-  > "${APP_INSTANCE_NAME}_manifest.yaml"
+    --namespace "${NAMESPACE}" \
+    --set kafka.image.repo="${IMAGE_KAFKA}" \
+    --set kafka.image.tag="${TAG}" \
+    --set kafka.kUser="${KAFKA_USER}" \
+    --set kafka.kPassword="${KAFKA_PASSWORD}" \
+    --set persistence.kafka.size="${PERSISTENT_KAFKA_SIZE}" \
+    --set persistence.zookeeper.size="${PERSISTENT_ZK_SIZE}" \
+    --set persistence.storageClass="${STORAGE_CLASS}" \
+    --set exporter.image="${IMAGE_EXPORTER}" \
+    --set zookeeper.image="${IMAGE_ZOOKEEPER}" \
+    --set deployer.image="${IMAGE_DEPLOYER}" \
+    --set metrics.image="${IMAGE_METRICS_EXPORTER}" \
+    --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED}" \
+    > "${APP_INSTANCE_NAME}_manifest.yaml"
   ```
 
 #### Applying the manifest to your Kubernetes cluster
@@ -215,11 +214,11 @@ To accomplish this, run the following commands:
 ```shell
 # Get "kafka" user credentials of Kafka Cluster
 KAFKA_USER=$(kubectl get secret --namespace \
-  ${NAMESPACE} ${APP_INSTANCE_NAME}-kafka-secrets \
-  -o jsonpath="{.data.kafka_user}" | base64 --decode)
+            ${NAMESPACE} ${APP_INSTANCE_NAME}-kafka-secrets \
+            -o jsonpath="{.data.kafka_user}" | base64 --decode)
 KAFKA_PASSWORD=$(kubectl get secret --namespace \
-  ${NAMESPACE} ${APP_INSTANCE_NAME}-kafka-secrets \
-  -o jsonpath="{.data.kafka_password}" | base64 --decode)
+            ${NAMESPACE} ${APP_INSTANCE_NAME}-kafka-secrets \
+            -o jsonpath="{.data.kafka_password}" | base64 --decode)
 
 echo "username: ${KAFKA_USER}"
 echo "password: ${KAFKA_PASSWORD}"
@@ -229,11 +228,11 @@ After running the commands, run a test pod and install kafkacat util in the cont
 
 ```shell
 kubectl run --rm -i --tty kafkaclient \
---image=ubuntu --restart=Never \
---env="APP_INSTANCE_NAME=${APP_INSTANCE_NAME}" \
---env="KAFKA_USER=${KAFKA_USER}" \
---env="KAFKA_PASSWORD=${KAFKA_PASSWORD}" \
--- bash
+        --image=ubuntu --restart=Never \
+        --env="APP_INSTANCE_NAME=${APP_INSTANCE_NAME}" \
+        --env="KAFKA_USER=${KAFKA_USER}" \
+        --env="KAFKA_PASSWORD=${KAFKA_PASSWORD}" \
+        -- bash
 
 # Inside the container install kafkacat util
 apt update
@@ -245,10 +244,10 @@ After kafkacat util is installed, you can connect to the Kafka Cluster service w
 ```shell
 # Inside the container run kafkacat command
 kafkacat -L -b ${APP_INSTANCE_NAME}-kafka-client \
--X sasl.mechanisms=PLAIN \
--X security.protocol=SASL_PLAINTEXT  \
--X sasl.username=${KAFKA_USER} \
--X sasl.password=${KAFKA_PASSWORD}
+         -X sasl.mechanisms=PLAIN \
+         -X security.protocol=SASL_PLAINTEXT  \
+         -X sasl.username=${KAFKA_USER} \
+         -X sasl.password=${KAFKA_PASSWORD}
 ```
 ### Interacting with Kafka Cluster via `kafkacat`
 > Note: kafkaclient pod should be kept running
@@ -257,9 +256,9 @@ kafkacat -L -b ${APP_INSTANCE_NAME}-kafka-client \
 
 ```shell
 AUTH_OPTS="-X sasl.mechanisms=PLAIN \
--X security.protocol=SASL_PLAINTEXT  \
--X sasl.username=${KAFKA_USER} \
--X sasl.password=${KAFKA_PASSWORD}"
+         -X security.protocol=SASL_PLAINTEXT  \
+         -X sasl.username=${KAFKA_USER} \
+         -X sasl.password=${KAFKA_PASSWORD}"
 
 # Check Cluster status and kafka broker list
 kafkacat -L -b ${APP_INSTANCE_NAME}-kafka-client $AUTH_OPTS
@@ -280,10 +279,10 @@ Those Java parameters should be passed to external clients which want to connect
 ```shell
 # Java option for basic auth
 kubectl -n ${NAMESPACE} \
-exec -it ${APP_INSTANCE_NAME}-kafka-0 -c kafka \
--- bash -c 'echo OPTIONS=\
-KAFKA_SASL_ENABLED_MECHANISMS=$KAFKA_SASL_ENABLED_MECHANISMS, \
-KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL=$KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL'
+        exec -it ${APP_INSTANCE_NAME}-kafka-0 -c kafka \
+        -- bash -c 'echo OPTIONS=\
+        KAFKA_SASL_ENABLED_MECHANISMS=$KAFKA_SASL_ENABLED_MECHANISMS, \
+        KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL=$KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL'
 
 ```
 
@@ -311,7 +310,7 @@ is your desired number of replicas:
 ```
 export REPLICAS=4
 kubectl scale statefulsets "${APP_INSTANCE_NAME}-kafka" \
-  --namespace "${NAMESPACE}" --replicas="${REPLICAS}"
+        --namespace "${NAMESPACE}" --replicas="${REPLICAS}"
 ```
 
 When this option is used to scale down a cluster, it reduces the number of
@@ -331,7 +330,7 @@ want to use:
 
 ```shell
 kubectl set image statefulset ${APP_INSTANCE_NAME}-kafka --namespace ${NAMESPACE} \
-  "kafka=[NEW_IMAGE_REFERENCE]"
+        "kafka=[NEW_IMAGE_REFERENCE]"
 ```
 
 To check the status of Pods in the StatefulSet, and the progress of the
@@ -339,7 +338,7 @@ new image, run the following command:
 
 ```shell
 kubectl get pods --selector app.kubernetes.io/name=${APP_INSTANCE_NAME} \
-  --namespace ${NAMESPACE}
+        --namespace ${NAMESPACE}
 ```
 # Kafka Standalone mode
 It is also possible to deploy this Kafka application as a standalone mode for testing purposes.
@@ -363,15 +362,15 @@ METRICS_EXPORTER_ENABLED=false
 
 # Generate manifest file
 helm template "${APP_INSTANCE_NAME}" \
-  --namespace "${NAMESPACE}" \
-  --set kafka.standalone="${STANDALONE_MODE_ENABLED}" \
-  --set kafka.image.repo="${IMAGE_KAFKA}" \
-  --set kafka.image.tag="${TAG}" \
-  --set deployer.image="${IMAGE_DEPLOYER}" \
-  --set persistence.storageClass="${STORAGE_CLASS}" \
-  --set persistence.kafka.storageSize="${PERSISTENT_KAFKA_SIZE}" \
-  --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED}" \
-  chart/kafka > ${APP_INSTANCE_NAME}_standalone_manifest.yaml
+    --namespace "${NAMESPACE}" \
+    --set kafka.standalone="${STANDALONE_MODE_ENABLED}" \
+    --set kafka.image.repo="${IMAGE_KAFKA}" \
+    --set kafka.image.tag="${TAG}" \
+    --set deployer.image="${IMAGE_DEPLOYER}" \
+    --set persistence.storageClass="${STORAGE_CLASS}" \
+    --set persistence.kafka.storageSize="${PERSISTENT_KAFKA_SIZE}" \
+    --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED}" \
+    chart/kafka > ${APP_INSTANCE_NAME}_standalone_manifest.yaml
 
 # Apply the manifest file
 kubectl apply -f "${APP_INSTANCE_NAME}_standalone_manifest.yaml" --namespace "${NAMESPACE}"
@@ -420,8 +419,8 @@ resources by using types and a label:
 
 ```shell
 kubectl delete application,statefulset,secret,service,deployment,pdb,cm,jobs \
-  --namespace ${NAMESPACE} \
-  --selector app.kubernetes.io/name=${APP_INSTANCE_NAME}
+      --namespace ${NAMESPACE} \
+      --selector app.kubernetes.io/name=${APP_INSTANCE_NAME}
 ```
 
 Deleting the `Application` resource deletes all of your deployment's resources,
@@ -430,6 +429,6 @@ with their attached persistent disks, run the following `kubectl` command:
 
 ```shell
 kubectl delete persistentvolumeclaims \
-  --namespace ${NAMESPACE} \
-  --selector app.kubernetes.io/name=${APP_INSTANCE_NAME}
+      --namespace ${NAMESPACE} \
+      --selector app.kubernetes.io/name=${APP_INSTANCE_NAME}
 ```
