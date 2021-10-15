@@ -24,7 +24,7 @@ spec:
         secret:
           secretName: {{ .Release.Name }}-tls
           defaultMode: 0640 # PostgreSQL required permissions for server.crt and server.key files
-    {{- end}}
+    {{- end }}
       - name: config-volume
         configMap:
           name: {{ .Release.Name }}-postgresql-config
