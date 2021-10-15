@@ -187,10 +187,10 @@ export EXPOSE_PUBLIC_SERVICE=false
 
 ### TLS Secure Configuration
 
-By default, TLS configuration is enabled for Postgresql service. To disable this option, change the value to `false`:
+By default, TLS configuration is disabled for Postgresql service. To enable this option, change the value to `true`:
 
 ```shell
-export TLS_ENABLED=false
+export TLS_ENABLED=true
 ```
 ##### Create TLS certificate for PostgreSQL
 
