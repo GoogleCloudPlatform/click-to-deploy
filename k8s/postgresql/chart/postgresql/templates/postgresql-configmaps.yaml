@@ -7,4 +7,7 @@ metadata:
     app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: postgresql-server
 data:
-  {{- (tpl (.Files.Glob "files/**.conf").AsConfig . ) | nindent 2 }}
+  pg_hba.conf: |-
+{{- (tpl (.Files.Get "files/pg_hba.conf") . )| nindent 4 }}
+  postgresql.conf: |-
+{{- (tpl (.Files.Get "files/postgresql.conf") . )| nindent 4 }}
