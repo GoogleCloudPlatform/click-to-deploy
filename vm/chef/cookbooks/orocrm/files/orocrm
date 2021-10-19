@@ -18,81 +18,73 @@ source /opt/c2d/orocrm-utils || exit 1
 
 export COMPOSER_HOME="/root/.config/composer"
 export COMPOSER_MEMORY_LIMIT=-1
-export oro_project="$(get_attribute_value "oro-project")"
+export ORO_PROJECT="$(get_attribute_value "oro-project")"
 
-declare -r oro_config_file="config/parameters.yml"
-declare -r mysql_password="$(get_attribute_value "mysql-root-password")"
-declare -r oro_db_password="$(get_attribute_value "oro-db-password")"
-declare -r oro_admin_password="$(get_attribute_value "oro-admin-password")"
-declare -r oro_db_user="oro"
-declare -r oro_db_name="oro_crm"
-declare -r oro_admin_user="admin"
-declare -r oro_folder="/opt/orocrm"
-declare -r oro_url="http://$(get_internal_ip)/"
+declare -r ORO_CONFIG_FILE="config/parameters.yml"
+declare -r MYSQL_PASSWORD="$(get_attribute_value "mysql-root-password")"
+declare -r ORO_DB_PASSWORD="$(get_attribute_value "oro-db-password")"
+declare -r ORO_ADMIN_PASSWORD="$(get_attribute_value "oro-admin-password")"
+declare -r ORO_DB_USER="oro"
+declare -r ORO_DB_NAME="oro_crm"
+declare -r ORO_ADMIN_USER="admin"
+declare -r ORO_FOLDER="/opt/orocrm"
+#declare -r ORO_URL="http://$(get_internal_ip)/"
 #Getting optional deployment variable
-#oro_url="$(get_attribute_value "oro-hostname" || true)}"
+ORO_URL="$(get_attribute_value "oro-hostname" || true)"
 
 # Enforce to use external IP or internal IP if no OroCRM hostname provided
-if [ -z ${oro_url} ]; then
+if [ -z ${ORO_URL} ]; then
   if has_external_ip; then
-    oro_url="http://$(get_external_ip)/"
+    ORO_URL="http://$(get_external_ip)/"
   else
-    oro_url="http://$(get_internal_ip)/"
+    ORO_URL="http://$(get_internal_ip)/"
   fi
 fi
 
-echo "$oro_url"
+echo "$ORO_URL"
 
 # Required fileds for OroCRM istallation
-declare -r oro_user_email="example@example.com"
-declare -r oro_user_firstname="Administrator"
-declare -r oro_user_lastname="Application"
+declare -r ORO_USER_EMAIL="example@example.com"
+declare -r ORO_USER_FIRSTNAME="Administrator"
+declare -r ORO_USER_LASTNAME="Application"
 
-# Creates Orocrm database user
-mysql --user="root" --password="${mysql_password}" --database="mysql" <<-EOSQL
-  CREATE USER '${oro_db_user}'@'localhost' IDENTIFIED BY '${oro_db_password}';
-  GRANT ALL ON ${oro_db_name}.* TO '${oro_db_user}'@'localhost';
-EOSQL
-
-echo "[mysqld]" >> /etc/my.cnf
-echo "default-authentication-plugin=mysql_native_password" >> /etc/my.cnf
-echo "innodb_file_per_table = 0" >> /etc/my.cnf
-echo "wait_timeout = 28800" >> /etc/my.cnf
+# Creates OroCRM database user
+create_db_user
 
 echo "Restarting MySQL..."
 service mysql restart
 
-mkdir "${oro_folder}"
-cd "${oro_folder}/"
-composer create-project oro/crm-application "${oro_project}" -n
+mkdir "${ORO_FOLDER}"
+cd "${ORO_FOLDER}/"
+composer create-project oro/crm-application "${ORO_PROJECT}" -n
 
 # Install Oro_crm
-cd "${oro_folder}/${oro_project}/"
+cd "${ORO_FOLDER}/${ORO_PROJECT}/"
 
 echo "Adding DB user and password to config file..."
-sed -i "s/database_user: .*$/database_user: ${oro_db_user}/" "${oro_config_file}"
-sed -i "s/database_password: .*$/database_password: ${oro_db_password}/" "${oro_config_file}"
+sed -i "s/database_user: .*$/database_user: ${ORO_DB_USER}/" "${ORO_CONFIG_FILE}"
+sed -i "s/database_password: .*$/database_password: ${ORO_DB_PASSWORD}/" "${ORO_CONFIG_FILE}"
 
 rm -rf var/cache/*
 
 echo "Installing OroCRM..."
 php bin/console oro:install -vv \
---application-url="${oro_url}" \
-  --user-name="${oro_admin_user}" \
-  --user-password="${oro_admin_password}" \
-  --user-email="${oro_user_email}" \
-  --user-firstname="${oro_user_firstname}" \
-  --user-lastname="${oro_user_lastname}" \
+--application-url="${ORO_URL}" \
+  --user-name="${ORO_ADMIN_USER}" \
+  --user-password="${ORO_ADMIN_PASSWORD}" \
+  --user-email="${ORO_USER_EMAIL}" \
+  --user-firstname="${ORO_USER_FIRSTNAME}" \
+  --user-lastname="${ORO_USER_LASTNAME}" \
   --env=prod \
   --no-interaction \
 
 # Assign permission to Apache user
 echo "Assign permission to Apache user..."
-chown -R www-data:www-data "${oro_folder}/"
+chown -R www-data:www-data "${ORO_FOLDER}/"
 
 echo "Configure Apache..."
 rm -f /etc/apache2/sites-enabled/000-default.conf
-envsubst '\$oro_project' < /opt/c2d/apache-orocrm.conf \
+envsubst '\$ORO_PROJECT' < /opt/c2d/apache-orocrm.conf \
   > /etc/apache2/sites-enabled/orocrm.conf
 
 # Restart Apache
