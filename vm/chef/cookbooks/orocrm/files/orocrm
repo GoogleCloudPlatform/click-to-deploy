@@ -20,7 +20,10 @@ export COMPOSER_HOME="/root/.config/composer"
 export COMPOSER_MEMORY_LIMIT=-1
 export ORO_PROJECT="$(get_attribute_value "oro-project")"
 
-declare -r ORO_CONFIG_FILE="config/parameters.yml"
+# Required fileds for OroCRM istallation
+declare  ORO_USER_EMAIL="$(get_attribute_value "oro-user-email")"
+declare  ORO_USER_FIRSTNAME="$(get_attribute_value "oro-user-firstname")"
+declare  ORO_USER_LASTNAME="$(get_attribute_value "oro-user-lastname")"
 declare -r MYSQL_PASSWORD="$(get_attribute_value "mysql-root-password")"
 declare -r ORO_DB_PASSWORD="$(get_attribute_value "oro-db-password")"
 declare -r ORO_ADMIN_PASSWORD="$(get_attribute_value "oro-admin-password")"
@@ -28,12 +31,11 @@ declare -r ORO_DB_USER="oro"
 declare -r ORO_DB_NAME="oro_crm"
 declare -r ORO_ADMIN_USER="admin"
 declare -r ORO_FOLDER="/opt/orocrm"
-#declare -r ORO_URL="http://$(get_internal_ip)/"
-#Getting optional deployment variable
-ORO_URL="$(get_attribute_value "oro-hostname" || true)"
+declare -r ORO_CONFIG_FILE="config/parameters.yml"
+declare ORO_URL="$(get_attribute_value "oro-hostname" || true)"
 
 # Enforce to use external IP or internal IP if no OroCRM hostname provided
-if [ -z ${ORO_URL} ]; then
+if [ -z "${ORO_URL}" ]; then
   if has_external_ip; then
     ORO_URL="http://$(get_external_ip)/"
   else
@@ -42,11 +44,6 @@ if [ -z ${ORO_URL} ]; then
 fi
 
 echo "$ORO_URL"
-
-# Required fileds for OroCRM istallation
-declare -r ORO_USER_EMAIL="example@example.com"
-declare -r ORO_USER_FIRSTNAME="Administrator"
-declare -r ORO_USER_LASTNAME="Application"
 
 # Creates OroCRM database user
 create_db_user
@@ -69,7 +66,7 @@ rm -rf var/cache/*
 
 echo "Installing OroCRM..."
 php bin/console oro:install -vv \
---application-url="${ORO_URL}" \
+  --application-url="${ORO_URL}" \
   --user-name="${ORO_ADMIN_USER}" \
   --user-password="${ORO_ADMIN_PASSWORD}" \
   --user-email="${ORO_USER_EMAIL}" \
