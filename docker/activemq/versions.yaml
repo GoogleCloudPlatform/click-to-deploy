@@ -31,8 +31,6 @@ versions:
   - '5.16'
   - '5'
   - latest
-  excludeTests:
-  - tests/functional_tests/activemq_start_test.yaml
 - dir: 5/debian9/5.15
   from: gcr.io/google-appengine/openjdk
   packages:
@@ -47,3 +45,4 @@ versions:
   - '5.15'
   excludeTests:
   - tests/functional_tests/activemq_start_test.yaml
+
