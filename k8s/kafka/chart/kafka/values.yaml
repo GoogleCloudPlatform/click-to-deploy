@@ -1,0 +1,35 @@
+kafka:
+  image:
+    repo: null
+    tag: null
+  replicas: 3
+  # if set "true", kafka will be deployed as standalone mode with
+  # single kafka and zookeeper instances and no any authentication.
+  # Don't set true for production deployment
+  standalone: false
+
+  # Kafka user and password
+  kUser: kafka
+  kPassword: null
+
+metrics:
+  image: null
+  enabled: true
+  exporter:
+    enabled: false
+
+persistence:
+  storageClass: null
+  kafka:
+    storageSize: "10Gi"
+  zookeeper:
+    storageSize: "5Gi"
+
+zookeeper:
+  image: null
+
+exporter:
+  image: null
+
+deployer:
+  image: null

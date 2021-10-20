@@ -25,14 +25,14 @@ versions:
       gpg: 1f210b9037fcf82670d75892dfc44400f13fe9ada7af9e787f93e50e3b764111
       version: 1.9.1
     drupal:
-      md5: 80b74a545702ec3f539f6c3b47d85f99
-      version: 9.2.6
+      md5: 7e0f73c3dc008bc6fa3f8cce4c9603c0
+      version: 9.2.7
   repo: drupal9-php7-apache
   tags:
-  - 9.2.6-debian9
+  - 9.2.7-debian9
   - 9.2-debian9
   - 9-debian9
-  - 9.2.6
+  - 9.2.7
   - '9.2'
   - '9'
   - latest
