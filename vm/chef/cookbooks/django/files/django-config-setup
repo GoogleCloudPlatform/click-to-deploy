@@ -56,10 +56,10 @@ fi
 
 # Whitelist external IP address.
 if has_external_ip; then
-sed -i -e "s@ALLOWED_HOSTS = \[]@ALLOWED_HOSTS = ['$(get_external_ip)', '.localhost', '127.0.0.1', '[::1]']@g" \
-  "/opt/django/${default_site}/${default_site}/settings.py"
+    sed -i -e "s@ALLOWED_HOSTS = \[]@ALLOWED_HOSTS = ['$(get_external_ip)', '.localhost', '127.0.0.1', '[::1]']@g" \
+    "/opt/django/${default_site}/${default_site}/settings.py"
 else
-   echo "No external IP detected"
+    echo "No external IP detected"
 fi
 
 # Install Django server
