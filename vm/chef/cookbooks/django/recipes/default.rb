@@ -24,7 +24,7 @@ package node['django']['packages']
 bash 'install django via pip3' do
   user 'root'
   code <<-EOH
-    pip3 install django
+    pip3 install django gunicorn
 EOH
 end
 
