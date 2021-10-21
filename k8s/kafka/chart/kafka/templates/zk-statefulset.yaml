@@ -9,9 +9,9 @@ spec:
   serviceName: {{ .Release.Name }}-zk-headless
 {{- if not .Values.kafka.standalone }}
   replicas: 3
-{{- else}}
+{{- else }}
   replicas: 1
-{{- end}}
+{{- end }}
   selector:
     matchLabels: *ZookeeperDeploymentLabels
   podManagementPolicy: "Parallel"
@@ -30,7 +30,7 @@ spec:
                     values:
                     - zookeeper
               topologyKey: "kubernetes.io/hostname"
-    {{- end}}
+    {{- end }}
       containers:
       - name: zookeeper
         imagePullPolicy: Always
