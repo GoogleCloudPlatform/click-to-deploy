@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,28 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'spec_helper'
-
-describe port(22) do
-  it { should be_listening.on('0.0.0.0') }
-end
-
-describe port(25) do
-  it { should be_listening.on('127.0.0.1') }
-end
-
-describe port(80) do
-  it { should be_listening }
-end
-
-describe port(443) do
-  it { should be_listening }
-end
-
-describe port(5432) do
-  it { should be_listening.on('127.0.0.1') }
-end
-
-describe port(10051) do
-  it { should be_listening.on('0.0.0.0') }
-end
+description: Trigger for K8s kafka
+filename: cloudbuild-k8s.yaml
+github:
+  name: click-to-deploy
+  owner: GoogleCloudPlatform
+  pullRequest:
+    branch: .*
+    commentControl: COMMENTS_ENABLED
+includedFiles:
+- cloudbuild-k8s.yaml
+- k8s.Dockerfile
+- k8s/kafka/**
+- k8s/*
+name: Trigger-for-K8s-kafka
+substitutions:
+  _SOLUTION_NAME: kafka
