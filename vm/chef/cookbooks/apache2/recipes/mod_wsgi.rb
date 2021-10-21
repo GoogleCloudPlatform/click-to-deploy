@@ -11,12 +11,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-# This recipe creates a MySQL VM that is configured to listen on localhost
-# and use password authentication for the 'root' user account
 
-node.override['mysql']['log_bin_trust_function_creators'] = '1'
+include_recipe 'apache2'
 
-include_recipe 'mysql::version-8.0'
+package 'libapache2-mod-wsgi' do
+  action :install
+end
 
-c2d_startup_script 'mysql8-root-localhost-password-setup'
+execute 'a2enmod wsgi'
