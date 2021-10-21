@@ -19,6 +19,7 @@ spec:
     metadata:
       labels: *ZookeeperDeploymentLabels
     spec:
+    {{- if not .Values.kafka.standalone }}
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -29,6 +30,7 @@ spec:
                     values:
                     - zookeeper
               topologyKey: "kubernetes.io/hostname"
+    {{- end}}
       containers:
       - name: zookeeper
         imagePullPolicy: Always
