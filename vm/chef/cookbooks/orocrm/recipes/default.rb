@@ -81,7 +81,6 @@ bash 'Set required mysqld options for OroCRM' do
     default-authentication-plugin=mysql_native_password
     innodb_file_per_table = 0
     wait_timeout = 28800
-    
 EOF
 EOH
 end
