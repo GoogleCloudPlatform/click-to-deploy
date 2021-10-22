@@ -66,6 +66,7 @@ EOSQL
 # Change PHP configuration
 #######################################
 function change_php_config() {
+echo "Change PHP configuration files..."
 sed -i "s|^memory_limit.*|memory_limit = 256M|" "$PHP_CONF"
 sed -i "s|^upload_max_filesize.*|upload_max_filesize = 50M|" "$PHP_CONF"
 sed -i "s|^post_max_size.*|post_max_size = 50M|" "$PHP_CONF"

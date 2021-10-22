@@ -31,15 +31,15 @@ declare CURL="curl --request POST -c /tmp/cookie -b /tmp/cookie"
 # Enforce to use external IP or internal IP if no EspoCRM hostname provided
 if [ -z "${ESPO_URL}" ]; then
   if has_external_ip; then
-    ESPO_URL="http://$(get_external_ip)/"
+    ESPO_URL="http://$(get_external_ip)"
   else
-    ESPO_URL="http://$(get_internal_ip)/"
+    ESPO_URL="http://$(get_internal_ip)"
   fi
 fi
 
-declare URL="${ESPO_URL}"install/
+declare URL="${ESPO_URL}/install/"
 
-# Creates Pimcore database user
+# Creates EspoCRM database user
 create_db_user
 
 echo "Restarting MySQL..."
@@ -52,13 +52,12 @@ chown -R www-data:www-data "${ESPO_FOLDER}/"
 rm -f /etc/apache2/sites-enabled/000-default.conf
 mv /opt/c2d/apache-espocrm.conf /etc/apache2/sites-enabled/espocrm.conf
 
+# Change PHP configuration
+change_php_config
+
 # Restart Apache
 echo "Restarting Apache..."
 systemctl restart apache2
-
-# Change PHP configuration
-echo "Change PHP configuration files..."
-change_php_config
 
 # Waiting application to be ready
 wait_for_app
