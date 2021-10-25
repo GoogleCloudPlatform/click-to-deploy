@@ -1,6 +1,6 @@
 diff --color -Naur '--exclude=.git' nuclio2/cmd/controller/Dockerfile nuclio/cmd/controller/Dockerfile
 --- nuclio2/cmd/controller/Dockerfile	2021-10-25 12:15:25.881372191 +0000
-+++ nuclio/cmd/controller/Dockerfile	2021-10-25 14:09:12.627357520 +0000
++++ nuclio/cmd/controller/Dockerfile	2021-10-25 15:10:40.719092417 +0000
 @@ -17,7 +17,7 @@
  #
 
@@ -10,13 +10,12 @@ diff --color -Naur '--exclude=.git' nuclio2/cmd/controller/Dockerfile nuclio/cmd
 
  FROM nuclio-base:$NUCLIO_LABEL as build-controller
 
-@@ -40,9 +40,16 @@
+@@ -40,9 +40,15 @@
  FROM $ALPINE_IMAGE
 
  # install apache2-utils for htpasswd
 -RUN apk add --no-cache ca-certificates apache2-utils
-+RUN apt-get update \
-+    && apt-get install ca-certificates apache2-utils -y
++RUN apt-get update && apt-get install ca-certificates apache2-utils -y
 +
 +ARG NUCLIO_LABEL
 +ENV C2D_RELEASE=${NUCLIO_LABEL}
