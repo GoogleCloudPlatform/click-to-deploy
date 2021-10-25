@@ -15,8 +15,7 @@ diff --color -Naur '--exclude=.git' nuclio2/cmd/controller/Dockerfile nuclio/cmd
 
  # install apache2-utils for htpasswd
 -RUN apk add --no-cache ca-certificates apache2-utils
-+RUN apt-get update \
-+    && apt-get install ca-certificates apache2-utils
++RUN apt-get update && apt-get install ca-certificates apache2-utils -y
 +
 +ARG NUCLIO_LABEL
 +ENV C2D_RELEASE=${NUCLIO_LABEL}
@@ -64,7 +63,7 @@ diff --color -Naur '--exclude=.git' nuclio2/cmd/dashboard/docker/Dockerfile nucl
 +     && curl -L $DOCKER_CLI_DOWNLOAD_URL | tar -xz -C /tmp/download \
 +     && mv /tmp/download/docker/docker /usr/local/bin/ \
 +     && rm -rf /tmp/download \
-+-    && apt remove curl
++     && apt remove curl \
 +     && rm -rf /var/lib/apt/lists/*
 
  # copy runners
