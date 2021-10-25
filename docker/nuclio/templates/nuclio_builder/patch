@@ -1,6 +1,6 @@
 diff --color -Naur '--exclude=.git' nuclio2/cmd/controller/Dockerfile nuclio/cmd/controller/Dockerfile
 --- nuclio2/cmd/controller/Dockerfile	2021-10-25 12:15:25.881372191 +0000
-+++ nuclio/cmd/controller/Dockerfile	2021-10-25 12:22:58.378070364 +0000
++++ nuclio/cmd/controller/Dockerfile	2021-10-25 14:09:12.627357520 +0000
 @@ -17,7 +17,7 @@
  #
 
@@ -15,7 +15,8 @@ diff --color -Naur '--exclude=.git' nuclio2/cmd/controller/Dockerfile nuclio/cmd
 
  # install apache2-utils for htpasswd
 -RUN apk add --no-cache ca-certificates apache2-utils
-+RUN apt-get update && apt-get install ca-certificates apache2-utils -y
++RUN apt-get update \
++    && apt-get install ca-certificates apache2-utils -y
 +
 +ARG NUCLIO_LABEL
 +ENV C2D_RELEASE=${NUCLIO_LABEL}
@@ -29,7 +30,7 @@ diff --color -Naur '--exclude=.git' nuclio2/cmd/controller/Dockerfile nuclio/cmd
  CMD [ "controller" ]
 diff --color -Naur '--exclude=.git' nuclio2/cmd/dashboard/docker/Dockerfile nuclio/cmd/dashboard/docker/Dockerfile
 --- nuclio2/cmd/dashboard/docker/Dockerfile	2021-10-25 12:15:25.885372551 +0000
-+++ nuclio/cmd/dashboard/docker/Dockerfile	2021-10-25 12:50:56.412992200 +0000
++++ nuclio/cmd/dashboard/docker/Dockerfile	2021-10-25 14:05:58.493895556 +0000
 @@ -15,7 +15,7 @@
  #
  # Build assets stage: builds the dashboard assets (js, html, css, etc)
