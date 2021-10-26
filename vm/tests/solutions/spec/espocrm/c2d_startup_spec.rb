@@ -36,7 +36,6 @@ describe 'C2D startup scripts should exists' do
   describe file('/opt/c2d/scripts/02-mysql8-root-localhost-password-setup') do
     it { should exist }
   end
-end
 
   describe file('/opt/c2d/scripts/03-opencart') do
     it { should exist }
