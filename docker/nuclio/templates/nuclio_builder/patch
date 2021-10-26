@@ -1,6 +1,6 @@
 diff -Naur '--exclude=.git' nuclio2/cmd/controller/Dockerfile nuclio/cmd/controller/Dockerfile
 --- nuclio2/cmd/controller/Dockerfile	2021-10-25 12:15:25.881372191 +0000
-+++ nuclio/cmd/controller/Dockerfile	2021-10-26 09:32:53.003229389 +0000
++++ nuclio/cmd/controller/Dockerfile	2021-10-26 15:45:02.235576152 +0000
 @@ -17,7 +17,6 @@
  #
 
@@ -32,17 +32,16 @@ diff -Naur '--exclude=.git' nuclio2/cmd/controller/Dockerfile nuclio/cmd/control
  CMD [ "controller" ]
 diff -Naur '--exclude=.git' nuclio2/cmd/dashboard/docker/Dockerfile nuclio/cmd/dashboard/docker/Dockerfile
 --- nuclio2/cmd/dashboard/docker/Dockerfile	2021-10-25 12:15:25.885372551 +0000
-+++ nuclio/cmd/dashboard/docker/Dockerfile	2021-10-26 10:00:22.343554088 +0000
-@@ -15,7 +15,7 @@
++++ nuclio/cmd/dashboard/docker/Dockerfile	2021-10-26 15:45:30.866151770 +0000
+@@ -15,7 +15,6 @@
  #
  # Build assets stage: builds the dashboard assets (js, html, css, etc)
  #
 -ARG NGINX_IMAGE=nginx
-+ARG NGINX_IMAGE=marketplace.gcr.io/google/nginx1
  ARG NUCLIO_LABEL
  ARG UHTTPC_ARCH=amd64
 
-@@ -55,19 +55,23 @@
+@@ -55,19 +54,23 @@
  # Output stage: Creates version file, copies binary and assets to an alpine image
  #
 
@@ -73,7 +72,7 @@ diff -Naur '--exclude=.git' nuclio2/cmd/dashboard/docker/Dockerfile nuclio/cmd/d
 
  # copy runners
  COPY cmd/dashboard/docker/runners /runners
-@@ -88,6 +92,12 @@
+@@ -88,6 +91,12 @@
  # copy a lightweight http client
  COPY --from=uhttpc /home/nuclio/bin/uhttpc /usr/local/bin/uhttpc
 
