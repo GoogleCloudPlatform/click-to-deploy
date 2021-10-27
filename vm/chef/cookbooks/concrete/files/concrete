@@ -1,0 +1,84 @@
+#!/bin/bash -eu
+#
+# Copyright 2021 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/concrete-utils || exit 1
+
+export COMPOSER_HOME="/root/.config/composer"
+export COMPOSER_MEMORY_LIMIT=-1
+export CONCRETE_PROJECT="$(get_attribute_value "CONCRETE-project")"
+
+# Required fields for CONCRETECRM istallation
+declare CONCRETE_USER_EMAIL="$(get_attribute_value "CONCRETE-user-email")"
+declare CONCRETE_USER_FIRSTNAME="$(get_attribute_value "CONCRETE-user-firstname")"
+declare CONCRETE_USER_LASTNAME="$(get_attribute_value "CONCRETE-user-lastname")"
+declare -r MYSQL_PASSWORD="$(get_attribute_value "mysql-root-password")"
+declare -r CONCRETE_DB_PASSWORD="$(get_attribute_value "CONCRETE-db-password")"
+declare -r CONCRETE_ADMIN_PASSWORD="$(get_attribute_value "CONCRETE-admin-password")"
+declare -r CONCRETE_DB_USER="concrete"
+declare -r CONCRETE_DB_NAME="concretedb"
+declare -r CONCRETE_ADMIN_USER="admin"
+declare -r CONCRETE_FOLDER="/opt/concrete"
+declare -r CONCRETE_DB_SERVER="localhost"
+declare CONCRETE_URL="$(get_attribute_value "CONCRETE-hostname" || true)"
+
+# Enforce to use external IP or internal IP if no CONCRETECRM hostname provided
+if [ -z "${CONCRETE_URL}" ]; then
+  if has_external_ip; then
+    CONCRETE_URL="http://$(get_external_ip)/"
+  else
+    CONCRETE_URL="http://$(get_internal_ip)/"
+  fi
+fi
+
+echo "Application URL: ${CONCRETE_URL}"
+
+# Creates CONCRETECRM database user
+create_db_user
+
+echo "Restarting MySQL..."
+service mysql restart
+
+mkdir "${CONCRETE_FOLDER}"
+cd "${CONCRETE_FOLDER}/"
+composer create-project concrete5/composer "${CONCRETE_PROJECT}" -n
+
+echo "Installing Concrete..."
+vendor/bin/concrete5 c5:install -vv \
+  --db-server="${CONCRETE_DB_SERVER}" \
+  --db-username="${CONCRETE_DB_USER}" \
+  --db-password="${CONCRETE_DB_PASSWORD}" \
+  --db-database="${CONCRETE_DB_NAME}" \
+  --admin-password="${CONCRETE_ADMIN_PASSWORD}" \
+  --allow-as-root \
+  --no-interaction \
+
+  echo "Configure Apache..."
+rm -f /etc/apache2/sites-enabled/000-default.conf
+envsubst '\$CONCRETE_PROJECT' < /opt/c2d/apache-concrete.conf \
+  > /etc/apache2/sites-enabled/concrete.conf
+
+  # Assign permission to Apache user
+echo "Assign permission to Apache user..."
+chown -R www-data:www-data "${CONCRETE_FOLDER}/"
+
+  # Restart Apache
+echo "Restarting Apache..."
+systemctl restart apache2
+
+# Await for app be ready
+wait_for_app
+
+echo "Installation complete!"
