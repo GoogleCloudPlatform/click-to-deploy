@@ -66,7 +66,8 @@ EOSQL
 # Change PHP configuration
 #######################################
 function change_php_config() {
-  local -r php_conf="/etc/php/7.4/apache2/php.ini"
+  local -r php_version="$(php -v | awk '/PHP [0-9]+\.[0-9]+/ {print $2}' | grep -o -P "^[0-9]+\.[0-9]+")"
+  local -r php_conf="/etc/php/${php_version}/apache2/php.ini"
   echo "Change PHP configuration files..."
   sed -i "s|^memory_limit.*|memory_limit = 256M|" "${php_conf}"
   sed -i "s|^upload_max_filesize.*|upload_max_filesize = 50M|" "${php_conf}"
