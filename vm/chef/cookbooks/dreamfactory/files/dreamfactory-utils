@@ -69,13 +69,15 @@ function create_config_file() {
 # Configure PHP with recommended settings.
 #######################################
 function configure_phpfpm() {
-  local -r phpfpm_config="/etc/php/7.4/fpm/pool.d/www.conf"
+  local -r php_version="$(php -v | awk '/PHP [0-9]+\.[0-9]+/ {print $2}' | grep -o -P "^[0-9]+\.[0-9]+")"
+  local -r phpfpm_config="/etc/php/${php_version}/fpm/pool.d/www.conf"
   sed -i "s/pm.max_children = 5/pm.max_children = 5000/" "${phpfpm_config}"
   sed -i "s/pm.start_servers = 2/pm.start_servers = 150/" "${phpfpm_config}"
   sed -i "s/pm.min_spare_servers = 1/pm.min_spare_servers = 100/" "${phpfpm_config}"
   sed -i "s/pm.max_spare_servers = 3/pm.max_spare_servers = 200/" "${phpfpm_config}"
   sed -i "s/pm = dynamic/pm = ondemand/" "${phpfpm_config}"
-  systemctl restart php7.4-fpm
+  sed -i "s|listen = /run/php/.*$|listen = /var/run/php/php-fpm.sock|g" "${phpfpm_config}"
+  systemctl restart "php${php_version}-fpm"
 }
 
 #######################################
