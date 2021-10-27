@@ -41,7 +41,7 @@ package 'Install Dependencies Packages' do
   action :install
 end
 
-# Clone OroCRM source code per license requirements.
+# Clone EspoCRM source code per license requirements.
 git '/usr/src/espocrm' do
   repository 'https://github.com/espocrm/espocrm.git'
   reference node['espocrm']['version']
@@ -62,11 +62,11 @@ bash 'Configure Database' do
   user 'root'
   cwd '/var/www/html'
   code <<-EOH
-# create db
-mysql -u root -e "CREATE DATABASE $defdb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
+  # create db
+    mysql -u root -e "CREATE DATABASE $defdb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
 EOH
-  environment({
-    'defdb' => node['espocrm']['db']['name'],
+    environment({
+      'defdb' => node['espocrm']['db']['name'],
   })
 end
 
