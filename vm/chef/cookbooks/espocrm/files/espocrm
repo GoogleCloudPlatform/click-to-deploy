@@ -44,15 +44,15 @@ create_db_user
 echo "Restarting MySQL..."
 service mysql restart
 
+# Change PHP configuration
+change_php_config
+
 # Assign permission to Apache user
 echo "Assign permission to Apache user..."
 chown -R www-data:www-data "${ESPO_FOLDER}/"
 
 rm -f /etc/apache2/sites-enabled/000-default.conf
 mv /opt/c2d/apache-espocrm.conf /etc/apache2/sites-enabled/espocrm.conf
-
-# Change PHP configuration
-change_php_config
 
 # Restart Apache
 echo "Restarting Apache..."
