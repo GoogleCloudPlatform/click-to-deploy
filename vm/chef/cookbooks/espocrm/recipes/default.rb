@@ -62,10 +62,10 @@ bash 'Configure Database' do
   user 'root'
   cwd '/var/www/html'
   code <<-EOH
-  # create db
-    mysql -u root -e "CREATE DATABASE $defdb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
+# create db
+mysql -u root -e "CREATE DATABASE $defdb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
 EOH
-    environment({
+  environment({
     'defdb' => node['espocrm']['db']['name'],
   })
 end
