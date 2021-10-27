@@ -20,12 +20,11 @@ source /opt/c2d/espocrm-utils || exit 1
 declare -r MYSQL_PASSWORD="$(get_attribute_value "mysql-root-password")"
 declare -r ESPO_DB_PASSWORD="$(get_attribute_value "espo-db-password")"
 declare -r ESPO_ADMIN_PASSWORD="$(get_attribute_value "espo-admin-password")"
-declare ESPO_URL="$(get_attribute_value "espo-hostname" || true)"
 declare -r ESPO_DB_USER="espo"
 declare -r ESPO_DB_NAME="espo_crm"
 declare -r ESPO_ADMIN_USER="admin"
 declare -r ESPO_FOLDER="/opt/espocrm"
-declare CURL="curl --request POST -c /tmp/cookie -b /tmp/cookie"
+declare ESPO_URL="$(get_attribute_value "espo-hostname" || true)"
 
 # Enforce to use external IP or internal IP if no EspoCRM hostname provided
 if [ -z "${ESPO_URL}" ]; then
