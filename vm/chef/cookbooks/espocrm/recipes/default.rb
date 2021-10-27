@@ -73,10 +73,10 @@ end
 bash 'Set required mysqld options for EspoCRM' do
   code <<-EOH
     cat > /etc/my.cnf << 'EOF'
-    #
-    # Required mysqld options for EspoCRM
-    [mysqld]
-    default-authentication-plugin=mysql_native_password
+#
+# Required mysqld options for EspoCRM
+[mysqld]
+default-authentication-plugin=mysql_native_password
 EOF
 EOH
 end
