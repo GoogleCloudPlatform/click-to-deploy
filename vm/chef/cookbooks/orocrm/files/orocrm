@@ -20,7 +20,7 @@ export COMPOSER_HOME="/root/.config/composer"
 export COMPOSER_MEMORY_LIMIT=-1
 export ORO_PROJECT="$(get_attribute_value "oro-project")"
 
-# Required fileds for OroCRM istallation
+# Required fields for OroCRM istallation
 declare  ORO_USER_EMAIL="$(get_attribute_value "oro-user-email")"
 declare  ORO_USER_FIRSTNAME="$(get_attribute_value "oro-user-firstname")"
 declare  ORO_USER_LASTNAME="$(get_attribute_value "oro-user-lastname")"
@@ -43,7 +43,7 @@ if [ -z "${ORO_URL}" ]; then
   fi
 fi
 
-echo "$ORO_URL"
+echo "Application URL: ${ORO_URL}"
 
 # Creates OroCRM database user
 create_db_user
