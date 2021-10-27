@@ -142,34 +142,6 @@ If you use a different namespace than the `default`, run the command below to cr
 ```shell
 kubectl create namespace "${NAMESPACE}"
 ```
-
-##### Create dedicated Service Accounts
-
-Define the environment variables:
-
-```shell
-export OPERATOR_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-jaeger-operator"
-export CRD_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-crd-creator-job"
-```
-
-Expand the manifest to create Service Accounts:
-
-```shell
-cat resources/service-accounts.yaml \
-  | envsubst '${APP_INSTANCE_NAME} \
-              ${NAMESPACE} \
-              ${OPERATOR_SERVICE_ACCOUNT} \
-              ${CRD_SERVICE_ACCOUNT}' \
-    > "${APP_INSTANCE_NAME}_sa_manifest.yaml"
-```
-
-Create the accounts on the cluster with `kubectl`:
-
-```shell
-kubectl apply -f "${APP_INSTANCE_NAME}_sa_manifest.yaml" \
-    --namespace "${NAMESPACE}"
-```
-
 #### Expand the manifest template
 
 Use `helm template` to expand the template. We recommend that you save the
@@ -180,9 +152,7 @@ helm template "${APP_INSTANCE_NAME}" chart/jaeger-operator \
   --namespace "${NAMESPACE}" \
   --set operator.image.repository="${IMAGE_OPERATOR}" \
   --set operator.image.tag="${TAG}" \
-  --set deployerHelm.image="gcr.io/cloud-marketplace-tools/k8s/deployer_helm:0.8.0" \
-  --set operator.serviceAccountName="${OPERATOR_SERVICE_ACCOUNT}" \
-  --set CDRJobServiceAccount="${CRD_SERVICE_ACCOUNT}" \
+  --set deployerHelm.image="gcr.io/cloud-marketplace-tools/k8s/deployer_helm:0.8.0"
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
