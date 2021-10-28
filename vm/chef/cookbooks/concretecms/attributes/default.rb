@@ -12,5 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['concrete']['version'] = '8.5.6'
-default['concrete']['db']['name'] = 'concretedb'
+default['concretecms']['version'] = '8.5.6'
+default['concretecms']['db']['name'] = 'concretedb'

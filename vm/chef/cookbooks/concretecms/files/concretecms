@@ -14,27 +14,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source /opt/c2d/concrete-utils || exit 1
+source /opt/c2d/concretecms-utils || exit 1
 
 export COMPOSER_HOME="/root/.config/composer"
 export COMPOSER_MEMORY_LIMIT=-1
-export CONCRETE_PROJECT="$(get_attribute_value "CONCRETE-project")"
+export CONCRETE_PROJECT="$(get_attribute_value "concrete-project")"
 
-# Required fields for CONCRETECRM istallation
-declare CONCRETE_USER_EMAIL="$(get_attribute_value "CONCRETE-user-email")"
-declare CONCRETE_USER_FIRSTNAME="$(get_attribute_value "CONCRETE-user-firstname")"
-declare CONCRETE_USER_LASTNAME="$(get_attribute_value "CONCRETE-user-lastname")"
+# Required fields for ConcreteCMS istallation
 declare -r MYSQL_PASSWORD="$(get_attribute_value "mysql-root-password")"
-declare -r CONCRETE_DB_PASSWORD="$(get_attribute_value "CONCRETE-db-password")"
-declare -r CONCRETE_ADMIN_PASSWORD="$(get_attribute_value "CONCRETE-admin-password")"
+declare -r CONCRETE_DB_PASSWORD="$(get_attribute_value "concrete-db-password")"
+declare -r CONCRETE_ADMIN_PASSWORD="$(get_attribute_value "concrete-admin-password")"
 declare -r CONCRETE_DB_USER="concrete"
 declare -r CONCRETE_DB_NAME="concretedb"
 declare -r CONCRETE_ADMIN_USER="admin"
-declare -r CONCRETE_FOLDER="/opt/concrete"
+declare -r CONCRETE_FOLDER="/opt/concretecms"
 declare -r CONCRETE_DB_SERVER="localhost"
-declare CONCRETE_URL="$(get_attribute_value "CONCRETE-hostname" || true)"
+declare CONCRETE_URL="$(get_attribute_value "concrete-hostname" || true)"
 
-# Enforce to use external IP or internal IP if no CONCRETECRM hostname provided
+# Enforce to use external IP or internal IP if no ConcreteCMS hostname provided
 if [ -z "${CONCRETE_URL}" ]; then
   if has_external_ip; then
     CONCRETE_URL="http://$(get_external_ip)/"
@@ -45,7 +42,7 @@ fi
 
 echo "Application URL: ${CONCRETE_URL}"
 
-# Creates CONCRETECRM database user
+# Creates ConcreteCMS database user
 create_db_user
 
 echo "Restarting MySQL..."
@@ -68,8 +65,8 @@ vendor/bin/concrete5 c5:install -vv \
 
   echo "Configure Apache..."
 rm -f /etc/apache2/sites-enabled/000-default.conf
-envsubst '\$CONCRETE_PROJECT' < /opt/c2d/apache-concrete.conf \
-  > /etc/apache2/sites-enabled/concrete.conf
+envsubst '\$CONCRETE_PROJECT' < /opt/c2d/apache-concretecms.conf \
+  > /etc/apache2/sites-enabled/concretecms.conf
 
   # Assign permission to Apache user
 echo "Assign permission to Apache user..."

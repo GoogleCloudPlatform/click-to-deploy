@@ -43,10 +43,10 @@ apt_update do
   action :update
 end
 
-# Clone Concrete source code per license requirements.
-git '/usr/src/concrete' do
+# Clone ConcreteCMS source code per license requirements.
+git '/usr/src/concretecms' do
   repository 'https://github.com/concrete5/concrete5.git'
-  reference node['concrete']['version']
+  reference node['concretecms']['version']
   action :checkout
 end
 
@@ -58,15 +58,15 @@ bash 'Configure Database' do
 mysql -u root -e "CREATE DATABASE $defdb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
 EOH
   environment({
-    'defdb' => node['concrete']['db']['name'],
+    'defdb' => node['concretecms']['db']['name'],
   })
 end
 
-bash 'Set required mysqld options for Concrete' do
+bash 'Set required mysqld options for concretecms' do
   code <<-EOH
     cat > /etc/my.cnf << 'EOF'
     #
-    # Required mysqld options for Percona XtraDB Cluster
+    # Required mysqld options for ConcreteCMS
     [mysqld]
     default-authentication-plugin=mysql_native_password
     innodb_file_per_table = 0
@@ -76,17 +76,17 @@ EOH
 end
 
 # Copy Apache configuration files
-cookbook_file '/opt/c2d/apache-concrete.conf' do
-  source 'apache-concrete.conf'
+cookbook_file '/opt/c2d/apache-concretecms.conf' do
+  source 'apache-concretecms.conf'
   owner 'root'
   group 'root'
   mode 0644
   action :create
 end
 
-# Copy the utils file for Concrete startup
-cookbook_file '/opt/c2d/concrete-utils' do
-  source 'concrete-utils'
+# Copy the utils file for concretecms startup
+cookbook_file '/opt/c2d/concretecms-utils' do
+  source 'concretecms-utils'
   owner 'root'
   group 'root'
   mode 0644
@@ -97,4 +97,4 @@ execute 'enable apache modules' do
   command 'a2enmod rewrite'
 end
 
-c2d_startup_script 'concrete'
+c2d_startup_script 'concretecms'

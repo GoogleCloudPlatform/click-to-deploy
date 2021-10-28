@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name 'concrete'
+name 'concretecms'
 depends 'apache2'
 depends 'mysql'
 depends 'php74'
