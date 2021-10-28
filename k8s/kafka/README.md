@@ -57,7 +57,7 @@ export CLUSTER=kafka-cluster
 export ZONE=us-west1-a
 export PROJECT_ID=<GCP_Project_ID>
 
-gcloud config set project ${PROJECT}
+gcloud config set project ${PROJECT_ID}
 gcloud container clusters create "$CLUSTER" --zone "$ZONE"
 ```
 
@@ -228,6 +228,7 @@ After running the commands, run a test pod and install kafkacat util in the cont
 
 ```shell
 kubectl run --rm -i --tty kafkaclient \
+        --namespace ${NAMESPACE} \
         --image=ubuntu --restart=Never \
         --env="APP_INSTANCE_NAME=${APP_INSTANCE_NAME}" \
         --env="KAFKA_USER=${KAFKA_USER}" \
@@ -379,7 +380,7 @@ helm template "${APP_INSTANCE_NAME}" \
     --set persistence.kafka.storageSize="${PERSISTENT_KAFKA_SIZE}" \
     --set persistence.zookeeper.size="${PERSISTENT_ZK_SIZE}" \
     --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED}" \
-    chart/kafka > ${APP_INSTANCE_NAME}_standalone_manifest.yaml
+    chart/kafka > ${APP_INSTANCE_NAME}_manifest.yaml
 
 # Apply the manifest file
 kubectl apply -f "${APP_INSTANCE_NAME}_standalone_manifest.yaml" --namespace "${NAMESPACE}"
