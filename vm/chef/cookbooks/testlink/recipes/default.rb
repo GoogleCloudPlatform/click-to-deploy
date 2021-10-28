@@ -14,10 +14,8 @@
 
 include_recipe 'nginx'
 include_recipe 'mysql'
-
 include_recipe 'php74'
 include_recipe 'php74::module_bcmath'
-# ctype
 include_recipe 'php74::module_curl'
 include_recipe 'php74::module_dom'
 include_recipe 'php74::module_gd'
@@ -32,34 +30,7 @@ include_recipe 'php74::module_xml'
 include_recipe 'php74::module_zip'
 include_recipe 'composer'
 include_recipe 'git'
-
-# TODO: check it if exts are really required.
-# php-mcrypt \
-# php-openssl \
-# php-gmp \
-# php-pdo_odbc \
-# php-json \
-# php-pdo \
-# php-sqlite3 \
-# php-apcu \
-# php-gd \
-# php-xcache \
-# php-odbc \
-# php-pdo_mysql \
-# php-pdo_sqlite \
-# php-pgsql \
-# php-gettext \
-# php-xmlreader \
-# php-xmlrpc \
-# php-ldap \
-# php-bz2 \
-# php-memcache \
-# php-mssql \
-# php-iconv \
-# php-pdo_dblib \
-# php-curl \
-# php-ctype \
-# php-fpm && \
+include_recipe 'c2d-config::create-self-signed-certificate'
 
 apt_update do
   action :update
@@ -101,40 +72,12 @@ bash 'Prepare permissions' do
 EOH
 end
 
-# # Clone OpenCart source code per license requirements.
-# git '/usr/src/opencart' do
-#   repository 'https://github.com/opencart/opencart.git'
-#   reference node['opencart']['version']
-#   action :checkout
-# end
-
-# bash 'Configure Database' do
-#   user 'root'
-#   cwd '/var/www/html'
-#   code <<-EOH
-# # create db
-# mysql -u root -e "CREATE DATABASE $defdb CHARACTER SET utf8 COLLATE utf8_general_ci";
-# EOH
-#   environment({
-#     'defdb' => node['opencart']['db']['name'],
-#   })
-# end
-
-# # Copy the utils file for opencart startup
-# cookbook_file '/opt/c2d/opencart-utils' do
-#   source 'opencart-utils'
-#   owner 'root'
-#   group 'root'
-#   mode 0644
-#   action :create
-# end
-
-# apache2_allow_override 'Allow override' do
-#   directory '/var/www/html'
-# end
-
-# execute 'enable apache modules' do
-#   command 'a2enmod rewrite'
-# end
+cookbook_file '/etc/nginx/sites-available/testlink.conf' do
+  source 'nginx-testlink.conf'
+  owner 'root'
+  group 'root'
+  mode 0755
+  action :create
+end
 
 c2d_startup_script 'testlink'
