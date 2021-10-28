@@ -78,6 +78,13 @@ function setup_mysql_user() {
   mysql -u root -e "FLUSH PRIVILEGES;"
 }
 
+function create_temp_user() {
+  mysql -u root -e "CREATE USER 'tmproot'@'localhost' IDENTIFIED BY 'tmproot';"
+  mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'tmproot'@'localhost' WITH GRANT OPTION;"
+  mysql -u root -e "GRANT SHOW DATABASES ON *.* TO 'tmproot'@'localhost'"
+  mysql -u root -e "FLUSH PRIVILEGES;"
+}
+
 function generate_config_file() {
   local -r db_user="$1"
   local -r db_password="$2"
@@ -90,22 +97,33 @@ define('DB_USER', '${db_user}');
 define('DB_PASS', '${db_password}');
 define('DB_HOST', 'localhost');
 define('DB_NAME', '${db_name}');
-define('DB_TABLE_PREFIX', 'testlink');
+define('DB_TABLE_PREFIX', '');
 EOM
 }
 
 function install_testlink() {
-
+  local response="$(curl 'http://localhost/install/installNewDB.php' \
+                    -H 'Content-Type: application/x-www-form-urlencoded' \
+                    -H 'Accept: text/html' \
+                    --data-raw 'isNew=1&databasetype=mysql&databasehost=localhost&databasename=testlink&tableprefix=&databaseloginname=tmproot&databaseloginpassword=tmproot&tl_loginname=testlink&tl_loginpassword=testdb1234' \
+                    --compressed \
+                    --insecure \
+                    -s -o /dev/null -w "%{http_code}")"
+  if [[ "${response}" -ne 200 ]]; then
+    echo "Database install failed."
+    exit 1
+  fi
+  echo "Database installed with success."
 }
 
 echo "Stopping webserver..."
 systemctl stop nginx
 
 echo "Setting up database user..."
-setup_mysql_user "${testlink_db_user}" "${testlink_db_password}" "${testink_db_name}"
+setup_mysql_user "${testlink_db_user}" "${testlink_db_password}" "${testlink_db_name}"
 
 echo "Creating app database configuration file..."
-generate_config_file "${testlink_db_user}" "${testlink_db_password}" "${testink_db_name}"
+generate_config_file "${testlink_db_user}" "${testlink_db_password}" "${testlink_db_name}"
 
 echo "Setting up PHP..."
 configure_php
@@ -122,6 +140,14 @@ systemctl start nginx
 
 # check app /install
 
-install_testlink`
+create_temp_user
+
+install_testlink
+
+# update admin password
+mysql -u root -e "update users set password = md5('admin1234') where id = 1;" "${testlink_db_name}"
+
+# remove tmproot user
+mysql -u root -e "drop user 'tmproot'@'localhost';"
 
 echo "Installation complete?"

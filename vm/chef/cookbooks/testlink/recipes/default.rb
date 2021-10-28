@@ -65,9 +65,9 @@ bash 'Prepare permissions' do
   code <<-EOH
   mkdir -p /var/testlink/logs/
   mkdir -p /var/testlink/upload_area/
-  chmod 640 -R gui/templates_c/
-  chmod 640 -R /var/testlink/logs/
-  chmod 640 -R /var/testlink/upload_area/
+  chmod 740 -R gui/templates_c/
+  chmod 740 -R /var/testlink/logs/
+  chmod 740 -R /var/testlink/upload_area/
   chown -R www-data:www-data /opt/testlink/
   chown -R www-data:www-data /var/testlink/logs/
   chown -R www-data:www-data /var/testlink/upload_area/
