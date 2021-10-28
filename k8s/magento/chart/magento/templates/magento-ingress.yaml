@@ -1,6 +1,6 @@
 {{- if .Values.enablePublicServiceAndIngress }}
 ---
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Release.Name }}-magento-ingress
@@ -8,9 +8,10 @@ metadata:
     app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: magento-webserver
 spec:
-  backend:
-    serviceName: {{ .Release.Name }}-magento-svc
-    servicePort: http
+  defaultBackend:
+    name: {{ .Release.Name }}-magento-svc
+    port:
+      name: http
   {{- if .Values.tls.base64EncodedCertificate }}
   tls:
   - secretName: {{ .Release.Name }}-tls
