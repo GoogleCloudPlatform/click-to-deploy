@@ -13,9 +13,9 @@
 # limitations under the License.
 
 _variables:
-  from9: &from9 gcr.io/google-appengine/debian9:latest
+  from10: &from10 marketplace.gcr.io/google/debian10:latest
   nuclio: &nuclio
-    version: '1.4.16'
+    version: '1.6.26'
 versions:
   - dir: 'nuclio_builder'
     repo: nuclio_builder
@@ -27,25 +27,25 @@ versions:
   - repo: nuclio-controller
     builderImage: 'nuclio_builder:latest'
     builderArgs: [ 'controller' ]
-    imageNameFromBuilder: 'local/controller:1.4.16'
+    imageNameFromBuilder: 'local/controller:1.6.26'
     tags:
-      - '1.4.16-debian9'
-      - '1.4-debian9'
-      - '1-debian9'      
-      - '1.4.16'
-      - '1.4'
+      - '1.6.26-debian10'
+      - '1.6-debian10'
+      - '1-debian10'
+      - '1.6.26'
+      - '1.6'
       - '1'
       - 'latest'
   - repo: nuclio-dashboard
     builderImage: 'nuclio_builder:latest'
     builderArgs: [ 'dashboard' ]
-    imageNameFromBuilder: 'local/dashboard:1.4.16'
+    imageNameFromBuilder: 'local/dashboard:1.6.26'
     tags:
-      - '1.4.16-debian9'
-      - '1.4-debian9'
-      - '1-debian9'
-      - '1.4.16'
-      - '1.4'
+      - '1.6.26-debian10'
+      - '1.6-debia10'
+      - '1-debian10'
+      - '1.6.26'
+      - '1.6'
       - '1'
       - 'latest'
 
