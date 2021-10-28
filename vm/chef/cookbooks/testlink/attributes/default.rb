@@ -13,5 +13,5 @@
 # limitations under the License.
 
 default['testlink']['version'] = '1.9.20'
-default['testlink']['db']['name'] = 'opencart'
+default['testlink']['db']['name'] = 'testlink'
 default['testlink']['packages'] = ['msmtp']

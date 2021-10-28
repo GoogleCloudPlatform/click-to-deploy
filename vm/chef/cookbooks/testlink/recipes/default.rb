@@ -21,7 +21,6 @@ include_recipe 'php74::module_dom'
 include_recipe 'php74::module_gd'
 include_recipe 'php74::module_json'
 include_recipe 'php74::module_ldap'
-include_recipe 'php74::module_libapache2'
 include_recipe 'php74::module_mbstring'
 include_recipe 'php74::module_mysql'
 include_recipe 'php74::module_opcache'
@@ -64,11 +63,14 @@ bash 'Prepare permissions' do
   user 'root'
   cwd '/opt/testlink'
   code <<-EOH
-  mkdir -p logs/
-  mkdir -p upload_area/
+  mkdir -p /var/testlink/logs/
+  mkdir -p /var/testlink/upload_area/
   chmod 640 -R gui/templates_c/
-  chmod 640 -R logs
-  chmod 640 -R upload_area
+  chmod 640 -R /var/testlink/logs/
+  chmod 640 -R /var/testlink/upload_area/
+  chown -R www-data:www-data /opt/testlink/
+  chown -R www-data:www-data /var/testlink/logs/
+  chown -R www-data:www-data /var/testlink/upload_area/
 EOH
 end
 
