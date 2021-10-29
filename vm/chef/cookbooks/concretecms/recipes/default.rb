@@ -65,12 +65,12 @@ end
 bash 'Set required mysqld options for concretecms' do
   code <<-EOH
     cat > /etc/my.cnf << 'EOF'
-    #
-    # Required mysqld options for ConcreteCMS
-    [mysqld]
-    default-authentication-plugin=mysql_native_password
-    innodb_file_per_table = 0
-    wait_timeout = 28800
+#
+# Required mysqld options for ConcreteCMS
+[mysqld]
+default-authentication-plugin=mysql_native_password
+innodb_file_per_table = 0
+wait_timeout = 28800
 EOF
 EOH
 end

@@ -29,16 +29,6 @@ declare -r CONCRETE_DB_NAME="concretedb"
 declare -r CONCRETE_ADMIN_USER="admin"
 declare -r CONCRETE_FOLDER="/opt/concretecms"
 declare -r CONCRETE_DB_SERVER="localhost"
-declare CONCRETE_URL="$(get_attribute_value "concrete-hostname" || true)"
-
-# Enforce to use external IP or internal IP if no ConcreteCMS hostname provided
-if [ -z "${CONCRETE_URL}" ]; then
-  if has_external_ip; then
-    CONCRETE_URL="http://$(get_external_ip)/"
-  else
-    CONCRETE_URL="http://$(get_internal_ip)/"
-  fi
-fi
 
 echo "Application URL: ${CONCRETE_URL}"
 
