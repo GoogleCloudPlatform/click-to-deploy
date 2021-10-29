@@ -30,8 +30,6 @@ declare -r CONCRETE_ADMIN_USER="admin"
 declare -r CONCRETE_FOLDER="/opt/concretecms"
 declare -r CONCRETE_DB_SERVER="localhost"
 
-echo "Application URL: ${CONCRETE_URL}"
-
 # Creates ConcreteCMS database user
 create_db_user
 
