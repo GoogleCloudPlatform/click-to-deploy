@@ -14,7 +14,7 @@
 
 require 'spec_helper'
 
-describe service('apache2'), :if => os[:family] == 'debian' do
+describe service('nginx'), :if => os[:family] == 'debian' do
   it { should be_enabled }
   it { should be_running }
 end

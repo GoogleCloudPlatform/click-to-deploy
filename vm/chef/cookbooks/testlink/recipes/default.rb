@@ -27,9 +27,7 @@ include_recipe 'php74::module_opcache'
 include_recipe 'php74::module_soap'
 include_recipe 'php74::module_xml'
 include_recipe 'php74::module_zip'
-include_recipe 'composer'
 include_recipe 'git'
-include_recipe 'c2d-config::create-self-signed-certificate'
 
 apt_update do
   action :update
@@ -81,5 +79,21 @@ cookbook_file '/etc/nginx/sites-available/testlink.conf' do
   mode 0755
   action :create
 end
+
+cookbook_file '/opt/c2d/testlink-utils' do
+  source 'testlink-utils'
+  owner 'root'
+  group 'root'
+  mode 0755
+  action :create
+end
+
+# cookbook_file '/opt/c2d/testlink' do
+#   source 'testlink'
+#   owner 'root'
+#   group 'root'
+#   mode 0755
+#   action :create
+# end
 
 c2d_startup_script 'testlink'

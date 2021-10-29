@@ -14,107 +14,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source /opt/c2d/c2d-utils || exit 1
+source /opt/c2d/testlink-utils || exit 1
 
-export COMPOSER_HOME="/root/.config/composer"
+declare -r testlink_admin_password="$(get_attribute_value "testlink-admin-password")"
 
-declare testlink_db_user="testlink" # metadata
-declare testlink_db_password="testdb1234" # metadata
-declare testlink_db_name="testlink"
+declare -r testlink_db_password="$(get_attribute_value "testlink-db-password")"
+declare -r testlink_db_user="testlink"
+declare -r testlink_db_name="testlink"
 
-export testlink_db_user="testlink" # metadata
-export testlink_db_password="testdb1234" # metadata
-export testlink_db_name="testlink"
-
-function configure_php() {
-  local -r php_version="$(php -v | awk '/PHP [0-9]+\.[0-9]+/ {print $2}' | grep -o -P "^[0-9]+\.[0-9]+")"
-  local -r phpfpm_config="/etc/php/${php_version}/fpm/pool.d/www.conf"
-  local -r php_config="/etc/php/${php_version}/fpm/php.ini"
-
-  # Configure PHP-FPM
-  echo "security.limit_extensions = .php .html" >> "${phpfpm_config}"
-  sed -i -e "s/listen\s*=\s*.*$/listen = 127.0.0.1:9000/g" "${phpfpm_config}"
-  sed -i "s/pm.max_children = 5/pm.max_children = 5000/" "${phpfpm_config}"
-  sed -i "s/pm.start_servers = 2/pm.start_servers = 150/" "${phpfpm_config}"
-  sed -i "s/pm.min_spare_servers = 1/pm.min_spare_servers = 100/" "${phpfpm_config}"
-  sed -i "s/pm.max_spare_servers = 3/pm.max_spare_servers = 200/" "${phpfpm_config}"
-  sed -i "s/pm = dynamic/pm = ondemand/" "${phpfpm_config}"
-
-  # Configure PHP
-  sed -i "s|;date.timezone =.*|date.timezone = UTC|" "${php_config}"
-  sed -i "s|memory_limit =.*|memory_limit = 512M|" "${php_config}"
-  sed -i "s|gc_maxlifetime =.*|gc_maxlifetime = 3600|" "${php_config}"
-  sed -i "s|upload_max_filesize =.*|upload_max_filesize = 50M|" "${php_config}"
-  sed -i "s|max_file_uploads =.*|max_file_uploads = 200|" "${php_config}"
-  sed -i "s|max_execution_time =.*|max_execution_time = 120|" "${php_config}"
-  sed -i "s|post_max_size =.*|max_file_uploads = 100M|" "${php_config}"
-  echo 'sendmail_path = "/usr/sbin/ssmtp -t"' >> "${php_config}"
-
-  # Restart php-fpm service
-  systemctl restart "php${php_version}-fpm"
-}
-
-function configure_nginx() {
-  declare nginx_config="/etc/nginx/nginx.conf"
-  sed -i "s/worker_connections 768;/worker_connections 2048;/" "${nginx_config}"
-  sed -i "s/keepalive_timeout 65;/keepalive_timeout 10;/" "${nginx_config}"
-}
-
-#######################################
-# Create a user for Dreamfactory application in MySQL database.
-# Arguments:
-#   MySQL Username to be created.
-#   MySQL Password for username created.
-#   MySQL Database Name.
-#######################################
-function setup_mysql_user() {
-  local -r db_user="$1"
-  local -r db_password="$2"
-  local -r db_name="$3"
-
-  mysql -u root -e "CREATE DATABASE ${db_name} CHARACTER SET utf8 COLLATE utf8_general_ci;"
-  mysql -u root -e "CREATE USER '${db_user}'@'localhost' IDENTIFIED BY '${db_password}';"
-  mysql -u root -e "GRANT SELECT, INSERT, UPDATE, DELETE, REFERENCES, CREATE, DROP, INDEX, ALTER, CREATE TEMPORARY TABLES ON ${db_name}.* TO '${db_user}'@'localhost' IDENTIFIED BY '${db_password}';";
-  mysql -u root -e "FLUSH PRIVILEGES;"
-}
-
-function create_temp_user() {
-  mysql -u root -e "CREATE USER 'tmproot'@'localhost' IDENTIFIED BY 'tmproot';"
-  mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'tmproot'@'localhost' WITH GRANT OPTION;"
-  mysql -u root -e "GRANT SHOW DATABASES ON *.* TO 'tmproot'@'localhost'"
-  mysql -u root -e "FLUSH PRIVILEGES;"
-}
-
-function generate_config_file() {
-  local -r db_user="$1"
-  local -r db_password="$2"
-  local -r db_name="$3"
-
-  cat > /opt/testlink/config_db.inc.php <<- EOM
-<?php
-define('DB_TYPE', 'mysql');
-define('DB_USER', '${db_user}');
-define('DB_PASS', '${db_password}');
-define('DB_HOST', 'localhost');
-define('DB_NAME', '${db_name}');
-define('DB_TABLE_PREFIX', '');
-EOM
-}
-
-function install_testlink() {
-  local response="$(curl 'http://localhost/install/installNewDB.php' \
-                    -H 'Content-Type: application/x-www-form-urlencoded' \
-                    -H 'Accept: text/html' \
-                    --data-raw 'isNew=1&databasetype=mysql&databasehost=localhost&databasename=testlink&tableprefix=&databaseloginname=tmproot&databaseloginpassword=tmproot&tl_loginname=testlink&tl_loginpassword=testdb1234' \
-                    --compressed \
-                    --insecure \
-                    -s -o /dev/null -w "%{http_code}")"
-  if [[ "${response}" -ne 200 ]]; then
-    echo "Database install failed."
-    exit 1
-  fi
-  echo "Database installed with success."
-}
+declare -r testlink_tmproot_username="tmproot"
+declare -r testlink_tmproot_password="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 1 | tr -d '\n')"
 
 echo "Stopping webserver..."
 systemctl stop nginx
@@ -138,16 +47,21 @@ ln -s /etc/nginx/sites-available/testlink.conf /etc/nginx/sites-enabled/
 echo "Starting webserver..."
 systemctl start nginx
 
-# check app /install
+# Check if install app is ready
+wait_for_app
 
-create_temp_user
+# Create temporary user for installing TestLink database
+create_temp_user "${testlink_tmproot_username}" "${testlink_tmproot_password}"
 
-install_testlink
+install_testlink \
+  "${testlink_db_name}" \
+  "${testlink_tmproot_username}" "${testlink_tmproot_password}" \
+  "${testlink_db_user}" "${testlink_db_password}"
 
-# update admin password
-mysql -u root -e "update users set password = md5('admin1234') where id = 1;" "${testlink_db_name}"
+# Update admin password
+mysql -u root -e "UPDATE users SET password = md5('${testlink_admin_password}') WHERE id = 1;" "${testlink_db_name}"
 
-# remove tmproot user
-mysql -u root -e "drop user 'tmproot'@'localhost';"
+# Remove temporary MySQL superuser
+mysql -u root -e "DROP USER '${testlink_tmproot_username}'@'localhost';"
 
-echo "Installation complete?"
+echo "Installation complete!"
