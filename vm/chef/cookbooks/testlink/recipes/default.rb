@@ -88,12 +88,4 @@ cookbook_file '/opt/c2d/testlink-utils' do
   action :create
 end
 
-# cookbook_file '/opt/c2d/testlink' do
-#   source 'testlink'
-#   owner 'root'
-#   group 'root'
-#   mode 0755
-#   action :create
-# end
-
 c2d_startup_script 'testlink'
