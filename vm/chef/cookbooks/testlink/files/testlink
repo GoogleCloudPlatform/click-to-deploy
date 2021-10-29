@@ -23,7 +23,7 @@ declare -r testlink_db_user="testlink"
 declare -r testlink_db_name="testlink"
 
 declare -r testlink_tmproot_username="tmproot"
-declare -r testlink_tmproot_password="temporootpassword"
+declare -r testlink_tmproot_password="$(openssl rand -base64 12)"
 
 echo "Stopping webserver..."
 systemctl stop nginx
