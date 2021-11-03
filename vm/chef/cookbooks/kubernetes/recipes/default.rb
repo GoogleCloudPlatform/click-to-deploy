@@ -18,19 +18,6 @@
 #include_recipe 'apache2::security-config'
 #include_recipe 'mysql'
 
-# Reference: https://docs.opencart.com/requirements/
-#include_recipe 'php74'
-#include_recipe 'php74::module_curl'
-#include_recipe 'php74::module_gd'
-#include_recipe 'php74::module_json'
-#include_recipe 'php74::module_libapache2'
-#include_recipe 'php74::module_mbstring'
-#include_recipe 'php74::module_mysql'
-#include_recipe 'php74::module_opcache'
-#include_recipe 'php74::module_xml'
-#include_recipe 'php74::module_zip'
-#include_recipe 'composer'
-#include_recipe 'git'
 #
 apt_repository 'docker_repository' do
   uri node['docker']['repo']['uri']
@@ -52,9 +39,22 @@ apt_update do
   action :update
 end
 
-package 'Install Packages' do
-  package_name node['kubernetes']['packages']
+package 'Install dependencies packages' do
+  package_name node['kubernetes']['dependencies']['packages']
   action :install
+end
+
+package 'Install kubernetes packages' do
+  package_name node['kubernetes']['packages']
+  version node['kubernetes']['version']
+  action :install
+end
+
+bash 'Hold kubernetes packages version' do
+  user 'root'
+  code <<-EOH
+    apt-mark hold kubelet kubeadm kubectl containerd.io
+EOH
 end
 
 bash 'Disable swap memory' do
@@ -90,75 +90,34 @@ bash 'Adding rules to firewall' do
   EOH
 end
 
-
 bash 'Configure containerd' do
   user 'root'
   code <<-EOH
-    cat <<EOF | tee /etc/modules-load.d/containerd.conf
-    overlay
-    br_netfilter
-    EOF
+    echo "overlay" >> /etc/modules-load.d/containerd.conf
+    echo "br_netfilter" >> /etc/modules-load.d/containerd.conf
 
     modprobe overlay
     modprobe br_netfilter
 
-    cat <<EOF | tee /etc/sysctl.d/99-kubernetes-cri.conf
-    net.bridge.bridge-nf-call-iptables = 1
-    net.bridge.bridge-nf-call-ip6tables = 1
-    net.ipv4.ip_forward = 1
-    EOF
+    # Setup required sysctl params, these persist across reboots.
+    echo "net.bridge.bridge-nf-call-iptables  = 1" >> /etc/sysctl.d/99-kubernetes-cri.conf
+    echo "net.ipv4.ip_forward                 = 1" >> /etc/sysctl.d/99-kubernetes-cri.conf
+    echo "net.bridge.bridge-nf-call-ip6tables = 1" >> /etc/sysctl.d/99-kubernetes-cri.conf
 
+    # Apply sysctl params without reboot
     sysctl --system
 
     mkdir -p /etc/containerd
-    containerd config default | tee /etc/containerd/config.toml
+    containerd config default > /etc/containerd/config.toml
     systemctl restart containerd
   EOH
 end
 
+bash 'Add KUBECONFIG env' do
+  user 'root'
+  code <<-EOH
+    echo 'export KUBECONFIG="/etc/kubernetes/admin.conf"' >> /etc/profile
+  EOH
+end
 
-
-
-# Install containerd as container runtime for kubernetes sandbox
-
-#
-
-
-# Clone OpenCart source code per license requirements.
-#git '/usr/src/opencart' do
-#  repository 'https://github.com/opencart/opencart.git'
-#  reference node['opencart']['version']
-#  action :checkout
-#end
-#
-#bash 'Configure Database' do
-#  user 'root'
-#  cwd '/var/www/html'
-#  code <<-EOH
-## create db
-#mysql -u root -e "CREATE DATABASE $defdb CHARACTER SET utf8 COLLATE utf8_general_ci";
-#EOH
-#  environment({
-#    'defdb' => node['opencart']['db']['name'],
-#  })
-#end
-
-# Copy the utils file for opencart startup
-#cookbook_file '/opt/c2d/opencart-utils' do
-#  source 'opencart-utils'
-#  owner 'root'
-#  group 'root'
-#  mode 0644
-#  action :create
-#end
-#
-#apache2_allow_override 'Allow override' do
-#  directory '/var/www/html'
-#end
-#
-#execute 'enable apache modules' do
-#  command 'a2enmod rewrite'
-#end
-#
-#c2d_startup_script 'opencart'
-#
+c2d_startup_script 'kubernetes-setup'

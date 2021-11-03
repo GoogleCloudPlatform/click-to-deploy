@@ -12,10 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['kubernetes']['version'] = '3.0.3.7'
-#default['opencart']['db']['name'] = 'opencart'
-default['kubernetes']['packages'] = ['ufw', 'containerd','apt-transport-https', 'ca-certificates',
-    'curl', 'kubelet', 'kubeadm', 'kubectl']
+default['kubernetes']['version'] = '1.22.3-00'
+default['kubernetes']['packages'] = ['kubelet', 'kubeadm', 'kubectl']
+default['kubernetes']['dependencies']['packages'] = ['ufw',
+                                                    'containerd',
+                                                    'apt-transport-https',
+                                                    'ca-certificates',
+                                                    'curl']
 
 default['kubernetes']['repo']['uri'] = 'http://apt.kubernetes.io/'
 default['kubernetes']['repo']['components'] = ['main']
