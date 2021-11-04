@@ -57,18 +57,20 @@ bash 'Extract Testlink' do
 EOH
 end
 
+['logs', 'upload_area', 'gui/templates_c'].each do |dir|
+  directory "/var/testlink/#{dir}/" do
+    owner 'www-data'
+    group 'www-data'
+    mode '0740'
+    recursive true
+    action :create
+  end
+end
+
 bash 'Prepare permissions' do
   user 'root'
-  cwd '/opt/testlink'
   code <<-EOH
-  mkdir -p /var/testlink/logs/
-  mkdir -p /var/testlink/upload_area/
-  chmod 740 -R gui/templates_c/
-  chmod 740 -R /var/testlink/logs/
-  chmod 740 -R /var/testlink/upload_area/
   chown -R www-data:www-data /opt/testlink/
-  chown -R www-data:www-data /var/testlink/logs/
-  chown -R www-data:www-data /var/testlink/upload_area/
 EOH
 end
 
