@@ -47,21 +47,22 @@ ln -s /etc/nginx/sites-available/testlink.conf /etc/nginx/sites-enabled/
 echo "Starting webserver..."
 systemctl start nginx
 
-# Check if install app is ready
+echo "Checking if app is ready..."
 wait_for_app
 
-# Create temporary user for installing TestLink database
+echo "Creating temporary superuser in database..."
 create_temp_user "${testlink_tmproot_username}" "${testlink_tmproot_password}"
 
+echo "Installing Testlink..."
 install_testlink \
   "${testlink_db_name}" \
   "${testlink_tmproot_username}" "${testlink_tmproot_password}" \
   "${testlink_db_user}" "${testlink_db_password}"
 
-# Update admin password
+echo "Updating admin password..."
 mysql -u root -e "UPDATE users SET password = md5('${testlink_admin_password}') WHERE id = 1;" "${testlink_db_name}"
 
-# Remove temporary MySQL superuser
+echo "Removing temporary user from database..."
 mysql -u root -e "DROP USER '${testlink_tmproot_username}'@'localhost';"
 
 echo "Installation complete!"
