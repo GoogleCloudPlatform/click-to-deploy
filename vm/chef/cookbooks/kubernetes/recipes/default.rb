@@ -11,14 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-# Reference: https://github.com/opencart/opencart/blob/master/INSTALL.md
-#include_recipe 'apache2'
-#include_recipe 'apache2::rm-index'
-#include_recipe 'apache2::security-config'
-#include_recipe 'mysql'
 
-#
 apt_repository 'docker_repository' do
   uri node['docker']['repo']['uri']
   components node['docker']['repo']['components']

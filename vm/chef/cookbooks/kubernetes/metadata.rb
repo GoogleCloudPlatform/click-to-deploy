@@ -13,9 +13,4 @@
 # limitations under the License.
 
 name 'kubernetes'
-#depends 'apache2'
-#depends 'mysql'
-#depends 'php74'
-#depends 'git'
-#depends 'composer'
 supports 'debian'
