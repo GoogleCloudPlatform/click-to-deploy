@@ -18,12 +18,16 @@ source /opt/c2d/c2d-utils || exit 1
 
 # Configure kubernetes master node
 kubeadm init --cri-socket /run/containerd/containerd.sock
+export KUBECONFIG="/etc/kubernetes/admin.conf"
 
 # Configure access
 chmod 666 /etc/kubernetes/admin.conf
 
-# Make master node schedulable
-kubectl taint nodes --all node-role.kubernetes.io/master-
+# Make master schedulable
+sleep 5
+kubectl taint nodes --all node.kubernetes.io/not-ready-
 
 # Configure network plugin
 kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+sleep 5
+kubectl taint nodes --all node-role.kubernetes.io/master-
