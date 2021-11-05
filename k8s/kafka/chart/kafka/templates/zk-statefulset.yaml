@@ -57,10 +57,10 @@ spec:
           value: "false"
         - name : ZK_REPLICAS
         {{- if not .Values.kafka.standalone }}
-          value: "3"
-        {{- else}}
+          value: {{ .Values.zookeeper.replicas }}
+        {{- else }}
           value: "1"
-        {{- end}}
+        {{- end }}
         - name : ZK_HEAP_SIZE
           value: "1000M"
         - name : ZK_TICK_TIME

@@ -27,6 +27,11 @@ persistence:
 
 zookeeper:
   image: null
+  # The number of replicas must be 2n + 1 ZooKeeper servers where
+  # n is any number greater than 0. The odd number of servers allows
+  # ZooKeeper to perform majority elections for leadership.
+  # https://docs.confluent.io/platform/current/zookeeper/deployment.html#multi-node-setup
+  replicas: 3
 
 exporter:
   image: null
