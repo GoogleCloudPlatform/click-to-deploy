@@ -13,6 +13,7 @@
 # limitations under the License.
 #
 # Reference: https://documentation.concretecms.org/developers/introduction/installing-concrete-cms
+
 include_recipe 'apache2'
 include_recipe 'apache2::mod_deflate'
 include_recipe 'apache2::mod_headers'

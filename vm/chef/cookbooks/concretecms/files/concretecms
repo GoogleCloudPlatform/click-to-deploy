@@ -51,16 +51,14 @@ vendor/bin/concrete5 c5:install -vv \
   --allow-as-root \
   --no-interaction \
 
-  echo "Configure Apache..."
+echo "Configure Apache..."
 rm -f /etc/apache2/sites-enabled/000-default.conf
 envsubst '\$CONCRETE_PROJECT' < /opt/c2d/apache-concretecms.conf \
   > /etc/apache2/sites-enabled/concretecms.conf
 
-  # Assign permission to Apache user
 echo "Assign permission to Apache user..."
 chown -R www-data:www-data "${CONCRETE_FOLDER}/"
 
-  # Restart Apache
 echo "Restarting Apache..."
 systemctl restart apache2
 
