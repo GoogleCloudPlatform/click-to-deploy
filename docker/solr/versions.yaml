@@ -20,15 +20,15 @@ versions:
   from: marketplace.gcr.io/google/debian10
   packages:
     solr:
-      gpg: FBC25D7E1712025294FE66590A6AA179B9BBF45E
-      sha512: 7bd884f9bb2ee0a632156996c710e8d755db34408b503093570bcef43c085d814b27e1f39fd78e6af7349e390b20e084923188a05876badedbad07e21e3a1757
-      version: 8.10.0
+      gpg: 9722F25F650057E26C803B60A6D064D833B3A969
+      sha512: 0edd60204fc683c81e5b6572e31d61ded51637eb59b1c5b69efaee50c47019152b582907e210fce7a8bdd40c365e0b951a6bcb45692557dcb347dffe42dcaede
+      version: 8.10.1
   repo: solr8
   tags:
-  - 8.10.0-debian10
+  - 8.10.1-debian10
   - 8.10-debian10
   - 8-debian10
-  - 8.10.0
+  - 8.10.1
   - '8.10'
   - '8'
   - latest
