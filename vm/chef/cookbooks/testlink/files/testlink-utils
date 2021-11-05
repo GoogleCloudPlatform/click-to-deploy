@@ -91,6 +91,39 @@ function create_temp_user() {
 }
 
 #######################################
+# Check if a user can connect to the database.
+# Arguments:
+#   MySQL Username.
+#   MySQL Password.
+#######################################
+function check_database_connection() {
+  local -r username="$1"
+  local -r password="$2"
+  local -r max_retries=10
+  local retries=0
+  local exit_code=999
+
+  # Temporarily disable errors while checking database
+  set +e
+
+  while [[ "${exit_code}" -ne 0 && "${retries}" -lt "${max_retries}" ]]; do
+    mysql -u "${username}" -p"${password}" \
+      -e "SHOW VARIABLES WHERE Variable_Name = 'version';" > /dev/null 2>&1
+    exit_code="$?"
+    (( retries=retries+1 ))
+  done
+
+  if [[ "${retries}" -eq "${max_retries}" ]]; then
+    echo "User cannot access. Max retries exceeded."
+    exit 1
+  else
+    echo "User connected with success."
+  fi
+
+  set -e
+}
+
+#######################################
 # Generate application database configuration file.
 # Arguments:
 #   Application MySQL username.
@@ -151,7 +184,7 @@ function install_testlink() {
                     --compressed \
                     --insecure \
                     --silent \
-                    --output /dev/null \
+                    --output /opt/c2d/install_output.txt \
                     --write-out "%{http_code}")"
   if [[ "${response}" -ne 200 ]]; then
     echo "Database install failed."

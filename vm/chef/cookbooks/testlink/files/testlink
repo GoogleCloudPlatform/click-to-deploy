@@ -23,9 +23,7 @@ declare -r testlink_db_user="testlink"
 declare -r testlink_db_name="testlink"
 
 declare -r testlink_tmproot_username="tmproot"
-declare -r testlink_tmproot_password="$(openssl rand -base64 12)"
-
-echo "testlink_tmproot_password: ${testlink_tmproot_password}"
+declare -r testlink_tmproot_password="$(openssl rand -base64 12 | grep -o '[[:alnum:]]' | tr -d '\n')"
 
 echo "Stopping webserver..."
 systemctl stop nginx
@@ -55,13 +53,14 @@ wait_for_app
 echo "Creating temporary superuser in database..."
 create_temp_user "${testlink_tmproot_username}" "${testlink_tmproot_password}"
 
+echo "Checking user connectivity..."
+check_database_connection "${testlink_tmproot_username}" "${testlink_tmproot_password}"
+
 echo "Installing Testlink..."
 install_testlink \
   "${testlink_db_name}" \
   "${testlink_tmproot_username}" "${testlink_tmproot_password}" \
   "${testlink_db_user}" "${testlink_db_password}"
-
-sleep 10
 
 echo "Updating admin password..."
 mysql -u root -e "UPDATE users SET password = md5('${testlink_admin_password}') WHERE id = 1;" "${testlink_db_name}"
