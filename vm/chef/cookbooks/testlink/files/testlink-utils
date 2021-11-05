@@ -176,6 +176,7 @@ function install_testlink() {
     "&tl_loginpassword=${app_password}"
   )
   local -r querystring="$(echo "${params[@]}" | tr -d ' ')"
+  local -r log_file="/opt/c2d/testlink-install.log"
 
   local response="$(curl 'http://localhost/install/installNewDB.php' \
                     -H 'Content-Type: application/x-www-form-urlencoded' \
@@ -184,10 +185,10 @@ function install_testlink() {
                     --compressed \
                     --insecure \
                     --silent \
-                    --output /opt/c2d/testlink-install.log \
+                    --output "${log_file}" \
                     --write-out "%{http_code}")"
   if [[ "${response}" -ne 200 ]]; then
-    echo "Database install failed. Check the logs at /opt/c2d/testlink-install.log"
+    echo "Database install failed. Check the logs at ${log_file}."
     exit 1
   fi
   echo "Database installed with success."
