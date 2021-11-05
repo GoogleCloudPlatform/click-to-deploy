@@ -30,7 +30,7 @@ declare -r CONCRETE_ADMIN_USER="admin"
 declare -r CONCRETE_FOLDER="/opt/concretecms"
 declare -r CONCRETE_DB_SERVER="localhost"
 
-# Creates ConcreteCMS database user
+echo "Creating database user..."
 create_db_user
 
 echo "Restarting MySQL..."
@@ -62,7 +62,7 @@ chown -R www-data:www-data "${CONCRETE_FOLDER}/"
 echo "Restarting Apache..."
 systemctl restart apache2
 
-# Await for app be ready
+echo "Waiting application to be ready..."
 wait_for_app
 
 echo "Installation complete!"
