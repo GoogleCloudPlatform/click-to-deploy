@@ -184,10 +184,10 @@ function install_testlink() {
                     --compressed \
                     --insecure \
                     --silent \
-                    --output /opt/c2d/install_output.txt \
+                    --output /opt/c2d/testlink-install.log \
                     --write-out "%{http_code}")"
   if [[ "${response}" -ne 200 ]]; then
-    echo "Database install failed."
+    echo "Database install failed. Check the logs at /opt/c2d/testlink-install.log"
     exit 1
   fi
   echo "Database installed with success."
