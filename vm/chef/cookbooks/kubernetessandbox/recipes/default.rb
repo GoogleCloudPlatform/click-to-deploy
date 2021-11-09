@@ -72,15 +72,12 @@ end
 bash 'Adding rules to firewall' do
   user 'root'
   code <<-EOH
-    ufw allow 6443/tcp
-    ufw allow 2379/tcp
-    ufw allow 2380/tcp
-    ufw allow 10250/tcp
-    ufw allow 10251/tcp
-    ufw allow 10252/tcp
-    ufw allow 10255/tcp
+    ufw allow ${ports}/tcp
     ufw reload
   EOH
+  environment({
+    'ports' => node['kubernetes']['firewall']['ports'],
+  })
 end
 
 bash 'Configure containerd' do
@@ -111,6 +108,20 @@ bash 'Add KUBECONFIG env' do
   code <<-EOH
     echo 'export KUBECONFIG="/etc/kubernetes/admin.conf"' >> /etc/profile
   EOH
+end
+
+bash 'Get weave network plugin' do
+  user 'root'
+  code <<-EOH
+    mkdir -p /opt/kubernetes/weave
+    curl -sSL -k https://cloud.weave.works/k8s/net?k8s-version=v${kubernetes_version} \
+      -o /opt/kubernetes/weave/network_addon.yaml
+    curl -sSL -k https://raw.githubusercontent.com/weaveworks/weave/master/LICENSE \
+      -o /opt/kubernetes/weave/LICENSE
+  EOH
+  environment({
+    'kubernetes_version' => node['kubernetes']['version'],
+  })
 end
 
 c2d_startup_script 'kubernetes-setup'

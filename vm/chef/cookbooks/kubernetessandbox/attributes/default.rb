@@ -20,6 +20,7 @@ default['kubernetes']['repo']['uri'] = 'http://apt.kubernetes.io/'
 default['kubernetes']['repo']['components'] = ['main']
 default['kubernetes']['repo']['distribution'] = 'kubernetes-xenial'
 default['kubernetes']['repo']['keyserver'] = 'https://packages.cloud.google.com/apt/doc/apt-key.gpg'
+default['kubernetes']['firewall']['ports'] = '22,6443,2379,2380,10250,10251,10252,10255'
 
 default['docker']['repo']['uri'] = 'https://download.docker.com/linux/debian'
 default['docker']['repo']['components'] = ['stable']
