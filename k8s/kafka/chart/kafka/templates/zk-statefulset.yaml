@@ -57,7 +57,7 @@ spec:
           value: "false"
         - name : ZK_REPLICAS
         {{- if not .Values.kafka.standalone }}
-          value: "{{ .Values.zookeeper.replicas }}""
+          value: "{{ .Values.zookeeper.replicas }}"
         {{- else }}
           value: "1"
         {{- end }}
