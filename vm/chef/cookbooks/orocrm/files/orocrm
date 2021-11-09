@@ -75,7 +75,13 @@ php bin/console oro:install -vv \
   --env=prod \
   --no-interaction \
 
-# Assign permission to Apache user
+echo "Configure Supervisor..."
+envsubst '\$ORO_PROJECT' < /opt/c2d/supervisor.conf \
+  >> /etc/supervisor/supervisord.conf
+
+echo "Restarting Supervisor..."
+systemctl restart supervisor
+
 echo "Assign permission to Apache user..."
 chown -R www-data:www-data "${ORO_FOLDER}/"
 
@@ -84,11 +90,9 @@ rm -f /etc/apache2/sites-enabled/000-default.conf
 envsubst '\$ORO_PROJECT' < /opt/c2d/apache-orocrm.conf \
   > /etc/apache2/sites-enabled/orocrm.conf
 
-# Restart Apache
 echo "Restarting Apache..."
 systemctl restart apache2
 
-# Await for app be ready
 wait_for_app
 
 echo "Installation complete!"
