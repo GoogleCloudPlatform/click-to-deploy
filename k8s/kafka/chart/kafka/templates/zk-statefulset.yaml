@@ -8,7 +8,7 @@ metadata:
 spec:
   serviceName: {{ .Release.Name }}-zk-headless
 {{- if not .Values.kafka.standalone }}
-  replicas: 3
+  replicas: {{ .Values.zookeeper.replicas }}
 {{- else }}
   replicas: 1
 {{- end }}
