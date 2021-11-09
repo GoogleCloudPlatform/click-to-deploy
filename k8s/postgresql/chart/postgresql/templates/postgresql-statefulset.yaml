@@ -19,10 +19,12 @@ spec:
       securityContext:
         fsGroup: 999 # PostgreSQL user group
       volumes:
+    {{- if .Values.tls.enabled }}
       - name: tls-volume
         secret:
           secretName: {{ .Release.Name }}-tls
           defaultMode: 0640 # PostgreSQL required permissions for server.crt and server.key files
+    {{- end }}
       - name: config-volume
         configMap:
           name: {{ .Release.Name }}-postgresql-config
@@ -47,8 +49,10 @@ spec:
           mountPath: /etc/postgresql/volume
         - name: {{ .Release.Name }}-postgresql-pvc
           mountPath: /var/lib/postgresql/data
+      {{- if .Values.tls.enabled }}
         - name: tls-volume
           mountPath: /var/lib/postgresql/data/tls
+      {{- end}}
         env:
         - name: "PGDATA"
           value: "/var/lib/postgresql/data/pgdata"

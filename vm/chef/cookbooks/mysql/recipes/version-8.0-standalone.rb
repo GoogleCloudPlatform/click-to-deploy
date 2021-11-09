@@ -12,10 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# This recipe creates a MySQL VM that is configured to listen on 0.0.0.0
+# This recipe creates a MySQL VM that is configured to listen on localhost
 # and use password authentication for the 'root' user account
 
-node.override['mysql']['bind_address'] = '0.0.0.0'
 node.override['mysql']['log_bin_trust_function_creators'] = '1'
 
 include_recipe 'mysql::version-8.0'
