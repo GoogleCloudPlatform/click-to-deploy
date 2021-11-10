@@ -6,12 +6,14 @@ include ../images.Makefile
 CHART_NAME := nginx
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 1.15
+TRACK ?= 1.20
 
+EXPORTER_TAG ?= 0.7
 METRICS_EXPORTER_TAG ?= v0.9.0
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 IMAGE_NGINX ?= $(SOURCE_REGISTRY)/nginx1:$(TRACK)
+IMAGE_NGINX_EXPORTER = $(SOURCE_REGISTRY)/nginx-exporter0:$(EXPORTER_TAG)
 IMAGE_DEBIAN9 ?= $(SOURCE_REGISTRY)/debian9:latest
 IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
@@ -20,10 +22,11 @@ IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_NGINX))
 
 # List of images used in application
-ADDITIONAL_IMAGES := debian9 prometheus-to-sd
+ADDITIONAL_IMAGES := debian9 nginx-exporter prometheus-to-sd
 
 # Additional images variable names should correspond with ADDITIONAL_IMAGES list
 image-debian9 :=  $(call get_sha256,$(IMAGE_DEBIAN9))
+image-nginx-exporter := $(call get_sha256,$(IMAGE_NGINX_EXPORTER))
 image-prometheus-to-sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))
 
 C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))

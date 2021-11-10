@@ -29,6 +29,10 @@ x-google-marketplace:
       properties:
         nginx.initImage:
           type: FULL
+    nginx-exporter:
+      properties:
+        exporter.image:
+          type: FULL
     prometheus-to-sd:
       properties:
         metrics.image:
