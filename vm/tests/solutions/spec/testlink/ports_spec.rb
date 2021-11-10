@@ -12,8 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['orocrm']['version'] = '4.2.6'
-default['orocrm']['db']['name'] = 'oro_crm'
-default['orocrm']['packages'] = [
-  'supervisor',
-]
+require 'spec_helper'
+
+describe port(22) do
+  it { should be_listening }
+end
+
+describe port(80) do
+  it { should be_listening }
+end
+
+describe port(3306) do
+  it { should be_listening.on('127.0.0.1') }
+  it { should_not be_listening.on('0.0.0.0') }
+end

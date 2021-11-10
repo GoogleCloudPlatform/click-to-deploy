@@ -12,8 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['orocrm']['version'] = '4.2.6'
-default['orocrm']['db']['name'] = 'oro_crm'
-default['orocrm']['packages'] = [
-  'supervisor',
-]
+require 'spec_helper'
+
+describe package('kubelet') do
+  it { should be_installed }
+end
+
+describe package('kubeadm') do
+  it { should be_installed }
+end
+
+describe package('kubectl') do
+  it { should be_installed }
+end
+
+describe package('containerd.io') do
+  it { should be_installed }
+end

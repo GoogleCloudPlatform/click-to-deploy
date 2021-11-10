@@ -91,6 +91,15 @@ spec:
         - name: certs
           mountPath: /etc/nginx/certs
           readOnly: true
+      - name: prometheus-exporter
+        image: {{ .Values.exporter.image }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9113
+          name: prometheus-port
+        env:
+        - name: "SCRAPE_URI"
+          value: "http://localhost/stub_status"
       {{ if .Values.metrics.curatedExporter.enabled }}
       - name: prometheus-to-sd-curated
         image: {{ .Values.metrics.image }}

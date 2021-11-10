@@ -12,8 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['orocrm']['version'] = '4.2.6'
-default['orocrm']['db']['name'] = 'oro_crm'
-default['orocrm']['packages'] = [
-  'supervisor',
-]
+name 'kubernetessandbox'
+supports 'debian'
