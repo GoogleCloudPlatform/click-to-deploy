@@ -45,6 +45,9 @@ fi
 
 echo "Application URL: ${ORO_URL}"
 
+echo "Restarting Apache..."
+systemctl stop apache2
+
 # Creates OroCRM database user
 create_db_user
 
@@ -79,9 +82,6 @@ echo "Configure Supervisor..."
 envsubst '\$ORO_PROJECT' < /opt/c2d/supervisor.conf \
   >> /etc/supervisor/supervisord.conf
 
-echo "Restarting Supervisor..."
-systemctl restart supervisor
-
 echo "Assign permission to Apache user..."
 chown -R www-data:www-data "${ORO_FOLDER}/"
 
@@ -92,6 +92,9 @@ envsubst '\$ORO_PROJECT' < /opt/c2d/apache-orocrm.conf \
 
 echo "Restarting Apache..."
 systemctl restart apache2
+
+echo "Restarting Supervisor..."
+systemctl restart supervisor
 
 wait_for_app
 
