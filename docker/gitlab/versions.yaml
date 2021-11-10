@@ -20,13 +20,13 @@ versions:
   from: marketplace.gcr.io/google/debian10
   packages:
     gitlab:
-      version: 14.4.1
+      version: 14.4.2
   repo: gitlab14
   tags:
-  - 14.4.1-debian10
+  - 14.4.2-debian10
   - 14.4-debian10
   - 14-debian10
-  - 14.4.1
+  - 14.4.2
   - '14.4'
   - '14'
   - latest
