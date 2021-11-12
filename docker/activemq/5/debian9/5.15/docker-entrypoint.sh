@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2019 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,6 +23,27 @@ if [[ "${DEBUG_DOCKER_ENTRYPOINT}" = "true" ]]; then
 fi
 
 set -e
+
+# Defines if admin panel website will be bind to all hosts or only localhosts
+: ${ADMIN_BIND_ALL_HOSTS:=false}
+
+declare -r activemq_version="$(${ACTIVEMQ_HOME}/bin/activemq --version \
+                                | grep ^ActiveMQ \
+                                | cut -d ' ' -f 2 \
+                                | grep -o -P "^(\d+)\.(\d+)")"
+declare -r jetty_config="${ACTIVEMQ_HOME}/conf/jetty.xml"
+
+# ActiveMQ 5.15 allows all hosts by default, then disable if user fills out the variable
+if [[ "${activemq_version}" == "5.15" && "${ADMIN_BIND_ALL_HOSTS}" == "false" ]]; then
+    sed -i "s|<property name=\"host\" value=\"0.0.0.0\"\/>|<property name=\"host\" value=\"127.0.0.1\"/>|g" \
+        "${jetty_config}"
+fi
+
+# ActiveMQ 5.16 and later versions allows only localhost by default
+if [[ "${activemq_version}" != "5.15" && "${ADMIN_BIND_ALL_HOSTS}" == "true" ]]; then
+    sed -i "s|<property name=\"host\" value=\"127.0.0.1\"\/>|<property name=\"host\" value=\"0.0.0.0\"/>|g" \
+        "${jetty_config}"
+fi
 
 # Set admin password if defined.
 if [[ ! -z "${ACTIVEMQ_ADMIN_PASSWORD}" ]]; then
