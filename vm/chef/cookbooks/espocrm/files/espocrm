@@ -24,18 +24,6 @@ declare -r ESPO_DB_USER="espo"
 declare -r ESPO_DB_NAME="espo_crm"
 declare -r ESPO_ADMIN_USER="admin"
 declare -r ESPO_FOLDER="/opt/espocrm"
-declare ESPO_URL="$(get_attribute_value "espo-hostname" || true)"
-
-# Enforce to use external IP or internal IP if no EspoCRM hostname provided
-if [ -z "${ESPO_URL}" ]; then
-  if has_external_ip; then
-    ESPO_URL="http://$(get_external_ip)"
-  else
-    ESPO_URL="http://$(get_internal_ip)"
-  fi
-fi
-
-declare URL="${ESPO_URL}/install/"
 
 # Creates EspoCRM database user
 create_db_user

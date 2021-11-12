@@ -81,6 +81,7 @@ function change_php_config() {
 #######################################
 function install_app() {
   local -r curl="curl --request POST -c /tmp/cookie -b /tmp/cookie"
+  local -r URL="http://localhost/install/"
   echo "$URL"
   $curl $URL --data "user-lang=en_US&action=step1"
   $curl $URL --data "license-agree=1&action=step2"
