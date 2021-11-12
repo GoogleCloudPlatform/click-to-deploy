@@ -168,7 +168,7 @@ export STORAGE_CLASS="standard" # provide your StorageClass name if not "standar
 export PERSISTENT_DISK_SIZE="5Gi"
 ```
 
-By default, ActiveMQ Administration console is binded to `127.0.0.1` hostname. If you want to expose it to all hosts, use the variable below:
+By default, ActiveMQ Administration console binds `127.0.0.1` hostname. If you want to expose it to all hosts, use the variable below:
 
 ```shell
 export ACTIVEMQ_ADMIN_BIND_ALL="true"
