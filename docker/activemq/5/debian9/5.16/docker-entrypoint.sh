@@ -24,11 +24,11 @@ fi
 
 set -e
 
-# Defines if admin panel website will be bind to all hosts or only localhost
+# Defines if admin panel website will be bind all hosts or only localhost
 : ${ACTIVEMQ_ADMIN_BIND_ALL:=false}
 
 if [[ "${ACTIVEMQ_ADMIN_BIND_ALL}" == "true" ]]; then
-    sed -i "s|<property name=\"host\" value=\"127.0.0.1\"\/>|<property name=\"host\" value=\"0.0.0.0\"/>|g" \
+    sed -i 's|<property name="host" value="127.0.0.1"/>|<property name="host" value="0.0.0.0"/>|g' \
         "${ACTIVEMQ_HOME}/conf/jetty.xml"
 fi
 
