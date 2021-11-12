@@ -1,0 +1,63 @@
+#!/bin/bash -eu
+#
+# Copyright 2021 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
+
+#######################################
+# Awaits for website at localhost be ready.
+#######################################
+function wait_for_app() {
+  local max_retries=10
+  local retry=1
+  local http_code=0
+  local host_ip=""
+
+  # Prevent exit on error in case of request max-time reached.
+  set +e
+
+  echo "Checking for app readiness..."
+
+  while [[ "${http_code}" -ne 200 && "${retry}" -le "${max_retries}" ]]; do
+    echo "Retry: ${retry}"
+    http_code="$(curl --max-time 5 -s -L -o /dev/null -w "%{http_code}" http://localhost)"
+    echo "Http Code: ${http_code}"
+    (( retry=retry+1 ))
+
+    if [[ "${http_code}" -ne 200 ]]; then
+      systemctl restart apache2
+      sleep 30
+    fi
+  done
+
+  if [[ "${retry}" -gt "${max_retries}" ]]; then
+    echo "Max retries exceeded."
+    exit 1
+  else
+    echo "App is ready."
+  fi
+
+  set -e
+}
+
+#######################################
+# Creates app database user.
+#######################################
+function create_db_user() {
+  mysql --user="root" --password="${MYSQL_PASSWORD}" --database="mysql" <<-EOSQL
+  CREATE USER '${CONCRETE_DB_USER}'@'localhost' IDENTIFIED BY '${CONCRETE_DB_PASSWORD}';
+  GRANT ALL ON ${CONCRETE_DB_NAME}.* TO '${CONCRETE_DB_USER}'@'localhost';
+EOSQL
+}

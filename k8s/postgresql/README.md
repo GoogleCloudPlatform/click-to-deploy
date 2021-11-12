@@ -185,9 +185,16 @@ the value to `true`.
 export EXPOSE_PUBLIC_SERVICE=false
 ```
 
+### TLS Secure Configuration
+
+By default, TLS configuration is disabled for Postgresql service. To enable this option, change the value to `true`:
+
+```shell
+export TLS_ENABLED=true
+```
 ##### Create TLS certificate for PostgreSQL
 
-> Note: You can skip this step if you have not set up external access.
+> Note: You can skip this step if you have not set up external access or TLS is disabled.
 
 1.  If you already have a certificate that you want to use, copy your
     certificate and key pair to the `/tmp/tls.crt`, and `/tmp/tls.key` files,
@@ -253,6 +260,7 @@ helm template "$APP_INSTANCE_NAME" chart/postgresql \
   --set metrics.image="$IMAGE_METRICS_EXPORTER" \
   --set metrics.exporter.enabled="$METRICS_EXPORTER_ENABLED" \
   --set exporter.image="$IMAGE_POSTGRESQL_EXPORTER" \
+  --set tls.enabled=$TLS_ENABLED \
   --set tls.base64EncodedPrivateKey="$TLS_CERTIFICATE_KEY" \
   --set tls.base64EncodedCertificate="$TLS_CERTIFICATE_CRT" \
   > "${APP_INSTANCE_NAME}_manifest.yaml"

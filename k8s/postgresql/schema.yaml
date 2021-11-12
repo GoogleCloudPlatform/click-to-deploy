@@ -81,6 +81,11 @@ properties:
     title: Enable Stackdriver Metrics Exporter
     description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
     default: false
+  tls.enabled:
+    type: boolean
+    title: Enable TLS Security Configuration
+    description: Enable TLS secure communication for your PostgreSQL service.
+    default: true
   certificate:
     type: string
     x-google-marketplace:

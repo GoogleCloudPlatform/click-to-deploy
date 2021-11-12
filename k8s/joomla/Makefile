@@ -6,7 +6,7 @@ include ../images.Makefile
 CHART_NAME ?= joomla
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 3.9
+TRACK ?= 3.10
 
 EXPORTER_TAG ?= exporter
 METRICS_EXPORTER_TAG ?= v0.5.1
