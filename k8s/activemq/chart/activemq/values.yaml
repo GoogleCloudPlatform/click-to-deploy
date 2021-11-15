@@ -8,4 +8,4 @@ persistence:
 consolePassword: null
 enableBashDebug: false
 admin:
-  bindAllHosts: true
+  bindAllHosts: false
