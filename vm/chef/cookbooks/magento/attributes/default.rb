@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,5 +15,5 @@
 default['magento']['packages']['dependencies'] = ['redis-server']
 
 default['magento']['user'] = 'www-data'
-default['magento']['version'] = '2.1.15'
-default['magento']['db']['name'] = 'magento'
+default['magento']['version'] = '2.4.3'
+default['magento']['db']['name'] = 'magento2'

@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,27 +20,14 @@ versions:
   from: gcr.io/google-appengine/openjdk
   packages:
     activemq:
-      sha512: f98c9da5dafa2dc291070fecd57b7fccd0954cc8b2be09abc77ea66745b89283358297f308ec30dd47efd3e0c9d4cffc3821ef429f8f94d6c8971bbe933809b2
-      version: 5.16.1
+      sha512: 3394afe9963f55cf62dafb287bdc58cac1fb76a614cc87939bec7b7909972eb5b3069022a9eb324242a315899b1096335c0531af75152c74eb309c0c5981b217
+      version: 5.16.3
   repo: activemq5
   tags:
-  - 5.16.1-debian9
+  - 5.16.3-debian9
   - 5.16-debian9
   - 5-debian9
-  - 5.16.1
+  - 5.16.3
   - '5.16'
   - '5'
   - latest
-- dir: 5/debian9/5.15
-  from: gcr.io/google-appengine/openjdk
-  packages:
-    activemq:
-      sha512: 5708ed926988e4796a8badaed3dafd32bcbc47890169df2712568ad706858370b20e5cd9a4e3298521692151e63a5ac6d06866b3ad188aa0e36b28e370240d5c
-      version: 5.15.14
-  repo: activemq5
-  tags:
-  - 5.15.14-debian9
-  - 5.15-debian9
-  - 5.15.14
-  - '5.15'
-

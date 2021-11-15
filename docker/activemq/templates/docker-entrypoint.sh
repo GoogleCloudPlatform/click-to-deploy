@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2019 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,6 +23,14 @@ if [[ "${DEBUG_DOCKER_ENTRYPOINT}" = "true" ]]; then
 fi
 
 set -e
+
+# Defines if admin panel website will be bind all hosts or only localhost
+: ${ACTIVEMQ_ADMIN_BIND_ALL:=false}
+
+if [[ "${ACTIVEMQ_ADMIN_BIND_ALL}" == "true" ]]; then
+    sed -i 's|<property name="host" value="127.0.0.1"/>|<property name="host" value="0.0.0.0"/>|g' \
+        "${ACTIVEMQ_HOME}/conf/jetty.xml"
+fi
 
 # Set admin password if defined.
 if [[ ! -z "${ACTIVEMQ_ADMIN_PASSWORD}" ]]; then

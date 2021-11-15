@@ -1,0 +1,59 @@
+#!/bin/bash -eu
+#
+# Copyright 2021 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
+
+readonly redash_base_path="/opt/redash"
+if [[ -e $redash_base_path/env ]]; then
+    rm $redash_base_path/env
+    touch $redash_base_path/env
+fi
+
+readonly redash_admin_name="$(get_attribute_value "redash_admin_name")"
+readonly redash_admin_password="$(get_attribute_value "redash_admin_password")"
+readonly redash_admin_email="$(get_attribute_value "redash_admin_email")"
+
+readonly redash_cookie_key="$(get_attribute_value "redash_cookie_key")"
+readonly redash_secret_key="$(get_attribute_value "redash_secret_key")"
+readonly redash_db_password="$(get_attribute_value "redash_db_password")"
+readonly redash_database_url="postgresql://postgres:${redash_db_password}@postgres/postgres"
+
+cat << EOF > "${redash_base_path}/env"
+PYTHONUNBUFFERED=0
+REDASH_LOG_LEVEL=INFO
+REDASH_REDIS_URL=redis://redis:6379/0
+POSTGRES_PASSWORD="${redash_db_password}"
+REDASH_COOKIE_SECRET="${redash_cookie_key}"
+REDASH_SECRET_KEY="${redash_secret_key}"
+REDASH_DATABASE_URL="${redash_database_url}"
+EOF
+
+# Add compose variables to profile
+echo "export COMPOSE_PROJECT_NAME=redash" >> /etc/profile
+echo "export COMPOSE_FILE=/opt/redash/setup/docker-compose.yml" >> /etc/profile
+
+export COMPOSE_PROJECT_NAME=redash
+export COMPOSE_FILE=/opt/redash/setup/docker-compose.yml
+docker-compose run --rm server create_db
+docker-compose up -d
+
+# Wait for redash service and create admin user
+sleep 20
+
+curl -s -L localhost/setup --data-urlencode "name=${redash_admin_name}" \
+--data-urlencode "email=${redash_admin_email}" --data-urlencode "password=${redash_admin_password}" \
+--data-urlencode "security_notifications=y" --data-urlencode "newsletter=y" \
+--data-urlencode "org_name=default" > /dev/null

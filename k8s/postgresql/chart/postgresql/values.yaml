@@ -16,5 +16,6 @@ metrics:
   exporter:
     enabled: false
 tls:
+  enabled: true
   base64EncodedPrivateKey: null
   base64EncodedCertificate: null

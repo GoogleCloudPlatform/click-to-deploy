@@ -15,6 +15,9 @@
 default['discourse']['version'] = '2.4.5'
 default['discourse']['src']['sha256'] = 'c2cc374e2125b20030661ca81c590b081680d48facd515f5b3d1d38b8db159f1'
 
+default['discourse']['ruby']['version'] = '2.7.2'
+default['discourse']['bundler']['version'] = '~>2.2'
+
 default['discourse']['packages'] = [
   'build-essential',
   'libssl-dev',

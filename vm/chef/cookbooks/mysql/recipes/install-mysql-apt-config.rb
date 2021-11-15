@@ -14,6 +14,10 @@
 #
 # Install mysql-apt-config -- MySQL installation package
 
+apt_package 'wget' do
+  action :install
+end
+
 remote_file "/tmp/#{node['mysql']['apt']['file']}" do
   source node['mysql']['apt']['url']
   verify "echo '#{node['mysql']['apt']['md5']} %{path}' | md5sum -c"

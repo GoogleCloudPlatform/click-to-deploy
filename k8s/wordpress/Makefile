@@ -7,14 +7,13 @@ CHART_NAME := wordpress
 APP_ID ?= $(CHART_NAME)
 VERIFY_WAIT_TIMEOUT = 1800
 
-TRACK ?= 5.3
+TRACK ?= 5.8
 
-WORDPRESS_TAG ?= latest
 MYSQL_TAG ?= latest
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
-IMAGE_WORDPRESS ?= $(SOURCE_REGISTRY)/wordpress5-php7-apache:$(WORDPRESS_TAG)
+IMAGE_WORDPRESS ?= $(SOURCE_REGISTRY)/wordpress5-php7-apache:$(TRACK)
 IMAGE_APACHE_EXPORTER ?= $(SOURCE_REGISTRY)/wordpress5-php7-apache:exporter
 IMAGE_MYSQL ?= $(SOURCE_REGISTRY)/mysql5:$(MYSQL_TAG)
 IMAGE_MYSQLD_EXPORTER ?= $(SOURCE_REGISTRY)/mysql5:exporter

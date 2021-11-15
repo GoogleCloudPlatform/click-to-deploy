@@ -1,0 +1,54 @@
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+versions:
+  # Kafka image
+  - dir: '2/debian10/2.8'
+    excludeTests:
+    - tests/functional_tests/exporter_test.yaml
+    repo: 'kafka2'
+    templateSubDir: debian10
+    tags:
+      - '2.8.0-debian10'
+      - '2.8.0'
+      - '2.8-debian10'
+      - '2.8'
+      - '2-debian10'
+      - '2'
+      - 'latest'
+    from: marketplace.gcr.io/google/debian10
+    packages:
+      kafka:
+        version: '2.8.0'
+        sha512: '3c49dca1147a0a249dd88e089f40af31a67b8207ed2d9e2294fa9a6d41f5ed0b006943cd60d8e30d7e69d760d398f299cafcd68b6ed7bedf9f93d1b7a9e8c487'
+    templateArgs:
+      scalaversion: '2.13'
+  - dir: 'exporter'
+    excludeTests:
+    - tests/functional_tests/running_test.yaml
+    from: marketplace.gcr.io/google/debian10
+    packages:
+      kafka_exporter:
+        sha512: '42fcd2b303e82e3ea518cffe7c528c2c35f9ecace8427d68f556c8a91894056f9d8a84fb5bdac2c447b91870909f0dbcce5548a061149da4ffbf33e16545d488'
+        version: '1.4.2'
+    repo: kafka-exporter1
+    tags:
+    - 1.4.2
+    - 1.4
+    - 1
+    - latest
+    templateSubDir: exporter
+
+cloudbuild:
+  enable_parallel: false

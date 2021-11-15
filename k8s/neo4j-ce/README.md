@@ -132,7 +132,7 @@ export NAMESPACE=default
 Configure the container image:
 
 ```shell
-TAG=4.0
+TAG=4.3
 export IMAGE_REGISTRY="marketplace.gcr.io/google"
 export IMAGE_NEO4J_CE="${IMAGE_REGISTRY}/neo4j4"
 ```

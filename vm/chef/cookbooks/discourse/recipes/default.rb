@@ -12,7 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'postgresql'
+node.override['postgresql']['standalone']['allow_external'] = false
+
+include_recipe 'git'
+include_recipe 'postgresql::standalone_buster'
 include_recipe 'rvm'
 
 apt_update 'update'
@@ -34,46 +37,35 @@ execute 'Build nginx with custom modules' do
   command '/tmp/nginx-install'
 end
 
-bash 'Discourse User' do
-  cwd 'tmp'
-  user 'root'
-  code <<-EOH
-    useradd discourse -s /bin/bash -m -U
-EOH
-end
-
-remote_file '/tmp/discourse.tar.gz' do
-  source "https://github.com/discourse/discourse/archive/v#{node['discourse']['version']}.tar.gz"
-  checksum node['discourse']['src']['sha256']
+user 'discourse' do
   action :create
+  home '/home/discourse'
+  shell '/bin/bash'
+  manage_home true
 end
 
-bash 'Extract Discourse source code' do
-  cwd '/tmp'
-  user 'root'
-  code <<-EOH
-    mkdir -p /var/www/discourse
-    tar xf /tmp/discourse.tar.gz --strip-components=1 -C /var/www/discourse
-    chown -R discourse:discourse /var/www/discourse
-EOH
+git '/var/www/discourse' do
+  repository 'https://github.com/discourse/discourse'
+  revision "v#{node['discourse']['version']}"
+  action :checkout
 end
 
-bash 'Discourse Bundle Install' do
-  cwd '/tmp/'
+bash 'Discourse Install Ruby environment' do
   user 'root'
+  environment({
+    'rubyVersion' => node['discourse']['ruby']['version'],
+    'bundlerVersion' => node['discourse']['bundler']['version'],
+  })
   code <<-EOH
-    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin su discourse -c '\
-      cd /var/www/discourse
       source /usr/local/rvm/scripts/rvm
-      bundle install --deployment --jobs 4 --without test development
-      mkdir -p /home/discourse/discourse/tmp/sockets \
-               /home/discourse/discourse/tmp/pids \
-               /home/discourse/discourse/log'
+      rvm install ruby-${rubyVersion}
+      rvm --default use ${rubyVersion}
+
+      gem install bundler -v "${bundlerVersion}"
 EOH
 end
 
 bash 'Create Discourse DB and user' do
-  cwd '/tmp/'
   user 'postgres'
   code <<-EOH
     psql -c "CREATE DATABASE discoursedb;"
@@ -85,27 +77,56 @@ EOH
 end
 
 bash 'Update DB credentials' do
-  cwd '/var/www/discourse'
   user 'root'
   code <<-EOH
-    export CONFIG="config/discourse_defaults.conf"
+    export CONFIG="/var/www/discourse/config/discourse_defaults.conf"
     sed -i 's/db_host =.*/db_host = localhost/' ${CONFIG}
     sed -i 's/db_name =.*/db_name = discoursedb/' ${CONFIG}
     sed -i 's/db_password =.*/db_password = tmp_build_password/' ${CONFIG}
 EOH
 end
 
-bash 'Discourse DB Migrate and precompile assets precompile' do
-  cwd '/tmp/'
+bash 'Change directory owner' do
+  cwd '/var/www/discourse'
   user 'root'
   code <<-EOH
-    /etc/init.d/redis-server start
-    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin su discourse -c '\
-      cd /var/www/discourse
+      chown -R discourse:discourse /var/www/discourse
+EOH
+end
+
+bash 'Discourse Bundle Install' do
+  cwd '/var/www/discourse'
+  user 'discourse'
+  code <<-EOH
+      # disable brotli compression
+      sed -i 's/^\s*brotli(path, max_compress)$/# brotli(path, max_compress)/' /var/www/discourse/lib/tasks/assets.rake
+
+      # run bundle installation
       source /usr/local/rvm/scripts/rvm
-      export RAILS_ENV=production
-      bundle exec rake db:migrate
-      bundle exec rake assets:precompile'
+
+      bundle config set --local deployment 'true'
+      bundle config set --local without 'test development'
+      bundle install --jobs 4
+
+      mkdir -p /home/discourse/discourse/tmp/sockets \
+               /home/discourse/discourse/tmp/pids \
+               /home/discourse/discourse/log
+EOH
+end
+
+service 'redis-server' do
+  action :start
+end
+
+bash 'Discourse DB Migrate and precompile assets precompile' do
+  cwd '/var/www/discourse'
+  user 'discourse'
+  code <<-EOH
+    source /usr/local/rvm/scripts/rvm
+
+    export RAILS_ENV=production
+    bundle exec rake db:migrate
+    bundle exec rake assets:precompile
 EOH
 end
 
