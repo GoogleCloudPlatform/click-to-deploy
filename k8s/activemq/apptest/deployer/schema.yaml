@@ -4,3 +4,7 @@ properties:
     default: $REGISTRY/tester:$TAG
     x-google-property:
       type: IMAGE
+  admin.bindAllHosts:
+    type: boolean
+    title: Bind all hosts
+    default: true
