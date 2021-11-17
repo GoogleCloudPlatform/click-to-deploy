@@ -50,13 +50,8 @@ args+=( --admin-firstname="owner" \
   --search-engine="elasticsearch7" \
   --elasticsearch-host="localhost" \
   --elasticsearch-port="9200" \
+  --base-url="http://localhost/" \
   --backend-frontname="admin" ) #MAGENTO ADMIN URL
-
-if has_external_ip; then
-  args+=( --base-url=http://"$(get_external_ip)")
-else
-  args+=( --base-url=http://"$(get_internal_ip)")
-fi
 
 php /var/www/html/bin/magento setup:install "${args[@]}"
 
