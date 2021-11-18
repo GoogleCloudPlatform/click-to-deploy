@@ -33,6 +33,11 @@ spec:
         # MySQL Endpoint
         - name: MAGENTO_MYSQL_HOST
           value: "{{ .Release.Name }}-mysql-svc.{{ .Release.Namespace }}.svc"
+        # Elasticsearch Settings
+        - name: MAGENTO_ELASTICSEARCH_HOST
+          value: "{{ .Release.Name }}-elasticsearch-svc.{{ .Release.Namespace }}.svc"
+        - name: MAGENTO_ELASTICSEARCH_PORT
+          value: "9200"
         # MySQL App User Credentials
         - name: MAGENTO_MYSQL_USERNAME
           valueFrom:

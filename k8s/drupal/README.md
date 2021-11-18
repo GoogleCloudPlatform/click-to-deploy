@@ -184,14 +184,14 @@ It is advised to use stable image reference which you can find on
 Example:
 
 ```shell
-export TAG="8.8.2-20200311-092629"
+export TAG="9.2.5-<BUILD_ID>"
 ```
 
 Alternatively you can use short tag which points to the latest image for selected version.
 > Warning: this tag is not stable and referenced image might change over time.
 
 ```shell
-export TAG="8.8"
+export TAG="9.2"
 ```
 
 Configure the container images:
@@ -260,8 +260,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the app.
 
 ```shell
-helm template chart/drupal \
-  --name "${APP_INSTANCE_NAME}" \
+helm template "${APP_INSTANCE_NAME}" chart/drupal \
   --namespace "${NAMESPACE}" \
   --set drupal.image.repo="${IMAGE_DRUPAL}" \
   --set drupal.image.tag="${TAG}" \

@@ -34,7 +34,7 @@ readonly INITIAL_PASSWORD_FILE="/mysql_initial_password"
 readonly MYSQL_INITIAL_PASSWORD="$(cat ${INITIAL_PASSWORD_FILE})"
 
 mysql --user=root --password="${MYSQL_INITIAL_PASSWORD}" --host=localhost mysql <<-EOSQL
-  UPDATE user SET PASSWORD=PASSWORD("${MYSQL_ROOT_PASSWORD}") WHERE user='root';
+  ALTER USER 'root'@'localhost' IDENTIFIED BY "${MYSQL_ROOT_PASSWORD}";
   FLUSH PRIVILEGES;
 EOSQL
 

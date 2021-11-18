@@ -1,0 +1,188 @@
+#!/bin/bash -eu
+#
+# Copyright 2021 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
+
+readonly postgres_username="postgres"
+readonly sample_table="countries"
+readonly pghba_path="/etc/postgresql/*/main/pg_hba.conf"
+
+#######################################
+# Setup bucardo and check installation
+#######################################
+function setup_bucardo() {
+  which bucardo > /dev/null
+  if [[ "$?" -ne 0 ]]; then
+    echo "Bucardo not found."
+    exit 1
+  fi
+
+  mkdir -p /var/run/bucardo
+}
+
+#######################################
+# Executes a given command locally using default postgres user.
+# Arguments:
+#   Command to be ran.
+#######################################
+function execute_query() {
+  local -r command="$1"
+
+  echo "Executing query: ${command}"
+  psql "postgresql://${postgres_username}:${PGPASSWORD}@localhost" -c "${command}"
+}
+
+function connect_instance() {
+  local -r database_name="$1"
+  local -r instance="$2"
+
+  su - postgres -c "psql -U bucardo -d ${database_name} -h \"${instance}\" -c \"SELECT 1 FROM ${sample_table};\"" \
+    >/dev/null 2>&1
+}
+
+
+#######################################
+# Ensure all given instances have the replication table and bucardo user can access it.
+# All replicas will be tested, but not master one.
+# Arguments:
+#   Database name.
+#   Instances list delimited by spaces.
+#     Examples: node1 node2 node3
+#######################################
+function await_for_replicas() {
+  local -r database_name="$1"
+  local -r instances="$2"
+  local -r max_retries=10
+
+  for instance in $instances; do
+    instance_id="$(echo ${instance} | awk -F '-' '{ print $NF }')"
+    connected="false"
+    retry_count=0
+
+    # Skip for master node
+    if [[ "${instance_id}" == "0" ]]; then
+      continue
+    fi
+
+    until connect_instance "${database_name}" "${instance}"; do
+      echo "Trying to connect to instance ${instance}..."
+      sleep 5
+
+      if [[ "${retry_count}" -gt "${max_retries}" ]]; then
+        echo "Connection to ${instance} failed."
+        exit 1
+      fi
+
+      (( retry_count=${retry_count}+1 ))
+    done
+    echo "Connected to the instance: ${instance}."
+  done
+}
+
+#######################################
+# Enroll all the instances databases to the replication service.
+# Arguments:
+#   Database name.
+#   Instances list delimited by spaces.
+#     Examples: node1 node2 node3
+#######################################
+function add_databases_to_replication() {
+  local -r database_name="$1"
+  local -r instances="$2"
+
+  for instance in $instances; do
+    # Node name should be short and without special chars.
+    instance_id="$(echo ${instance} | awk -F '-' '{ print $NF }')"
+    node_name="node${instance_id}"
+
+    echo "Adding ${instance} to bucardo..."
+
+    # Add database server
+    bucardo add database "${node_name}" \
+      dbname="${database_name}" \
+      host="${instance}"
+
+    # Add all available tables
+    bucardo add all table % db="${node_name}"
+  done
+}
+
+#######################################
+# Add the replication syncs permutating all possible combinations.
+# Arguments:
+#   Instances list delimited by spaces.
+#     Examples: node1 node2 node3
+#######################################
+function add_replication_syncs() {
+  local -r instances_list="$1"
+
+  for instance in $instances_list; do
+    source_instance_id="$(echo ${instance} | awk -F '-' '{ print $NF }')"
+    source_node_name="node${source_instance_id}"
+
+    echo "Adding ${instance} replicas:"
+    for replica in $instances_list; do
+      # Skip replication between same instance
+      if [[ "${replica}" == "${instance}" ]]; then
+        continue
+      fi
+
+      destination_instance_id="$(echo ${replica} | awk -F '-' '{ print $NF }')"
+      destination_node_name="node${destination_instance_id}"
+      herd_name="${source_node_name}_to_${destination_node_name}"
+      sync_name="sync_${herd_name}"
+
+      echo "Adding ${replica} as ${instance} replica. Herd: ${herd_name}. Sync: ${sync_name}"
+
+      # Add sync between source and destination
+      bucardo add all tables --herd="${herd_name}" --db="${source_node_name}"
+      bucardo add sync "${sync_name}" \
+        relgroup="${herd_name}" \
+        db="${source_node_name},${destination_node_name}"
+    done
+
+    echo "----"
+  done
+}
+
+#######################################
+# Configure the PostgreSQL authentication for master.
+#######################################
+function configure_pg_hba_master() {
+  sed -i 's/peer/trust/g' ${pghba_path}
+}
+
+#######################################
+# Configure the PostreSQL authentication for any replica.
+#######################################
+function configure_pb_hba_node() {
+  local -r node_ip="$(ifconfig | grep -o -P "broadcast (.*)$" | awk '{ print $2 }')"
+  local -r submask="$(echo $node_ip | awk -F '.' '{ print $1 "." $2 ".0.0/16" }')"
+
+  echo "Configure pg_hba.conf for replica..."
+  echo "host  all  bucardo  ${submask}  trust" >> ${pghba_path}
+}
+
+#######################################
+# Create the sample database locally.
+#######################################
+function create_sample_database() {
+  local -r dbname="$1"
+
+  echo "Creating sample database..."
+  execute_query "create database ${dbname};"
+  psql "postgresql://${postgres_username}:${PGPASSWORD}@localhost/${dbname}" < /opt/c2d/sample_db.sql
+}

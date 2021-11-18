@@ -236,8 +236,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-helm template chart/nginx \
-  --name "$APP_INSTANCE_NAME" \
+helm template "$APP_INSTANCE_NAME" chart/nginx \
   --namespace "$NAMESPACE" \
   --set nginx.replicas="$REPLICAS" \
   --set nginx.initImage="$IMAGE_NGINX_INIT" \

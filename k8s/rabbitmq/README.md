@@ -31,9 +31,9 @@ The deployment creates two services:
 The RabbitMQ K8s application has the following ports configured:
 
 -   ports `5671` and `5672` are enabled for communication from AMQP clients
--   port `4369` is enabled to allow for peer discovery
+-   port `15692` is enabled to Prometheus metrics for `/metrics` endpoint
 -   port `15672` is enabled for RabbitMQ administration over HTTP API
--   port `25672` is enabled as a distribution port for communication with CLI
+-   port `25672` is enabled as a distribution port for communication with CLI and for clustering purpose
     tools
 
 This deployment applies an High Availability (HA) policy, which configures
@@ -198,14 +198,14 @@ It is advised to use stable image reference which you can find on
 Example:
 
 ```shell
-export TAG="3.7.24-20200311-092515"
+export TAG="3.8.11-20210211-092515"
 ```
 
 Alternatively you can use short tag which points to the latest image for selected version.
 > Warning: this tag is not stable and referenced image might change over time.
 
 ```shell
-export TAG="3.7"
+export TAG="3.8"
 ```
 
 Configure the container images:
@@ -264,8 +264,7 @@ save the expanded manifest file for future updates to the application.
     files.
 
     ```shell
-    helm template chart/rabbitmq \
-      --name "$APP_INSTANCE_NAME" \
+    helm template "$APP_INSTANCE_NAME" chart/rabbitmq \
       --namespace "$NAMESPACE" \
       --set rabbitmq.image.repo="$IMAGE_RABBITMQ" \
       --set rabbitmq.image.tag="$TAG" \
@@ -399,12 +398,12 @@ For detailed information about setting up the Prometheus plugin, see
 [Monitoring with Prometheus](https://www.rabbitmq.com/prometheus.html) in the
 RabbitMQ documentation.
 
-You can access the metrics at `[APP_BASE_URL]:15672/api/metrics`, where
+You can access the metrics at `[APP_BASE_URL]:15692/metrics`, where
 `[APP_BASE_URL]` is the base URL address of the application. For example, you
 can
 [expose RabbitMQ service internally using port forwarding](#access-rabbitmq-service),
 and then access the metrics by navigating to the
-[http://localhost:15672/api/metrics](http://localhost:15672/api/metrics)
+[http://localhost:15692/metrics](http://localhost:15692/metrics)
 endpoint.
 
 ### Configuring Prometheus to collect metrics

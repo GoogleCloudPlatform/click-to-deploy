@@ -22,6 +22,10 @@ Get up and running with a few clicks! Install this Prometheus operator app to a
 Google Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 [on-screen instructions](https://console.cloud.google.com/marketplace/details/google/prometheus-operator).
 
+### If you have an on-prem cluster rather than GKE cluster
+You will also need to login 
+[login instructions](https://cloud.google.com/anthos/multicluster-management/console/logging-in)
+
 ## Command-line instructions
 
 ### Prerequisites
@@ -46,6 +50,7 @@ gcloud auth configure-docker
 ```
 
 #### Create a Google Kubernetes Engine (GKE) cluster
+(Or you can use your existing GKE on-prem cluster instead)
 
 Create a new cluster from the command-line:
 
@@ -129,6 +134,26 @@ Configure the container image:
 export IMAGE_OPERATOR="marketplace.gcr.io/google/prometheus-operator"
 ```
 
+#### If using GKE on-prem
+This solution can also be used in [GKE On-Prem](https://cloud.google.com/anthos/gke/docs/on-prem/1.5) clusters.
+Test Google Container Registry (GCR) accessibility,
+```
+kubectl -n "${NAMESPACE}" run test-image --image="marketplace.gcr.io/google/ubuntu:latest" -- sleep infinity 1>/dev/null && kubectl -n "${NAMESPACE}" get pod test-image -o=go-template='{{$output := "Failed to pull image from GCR"}}{{range .status.containerStatuses}}{{if eq .ready true}}{{$output = (print "Successfully pulled image from GCR. ")}}{{end}}{{end}}{{printf $output}}{{"\n"}}' && kubectl -n "${NAMESPACE}" delete pod test-image 1>/dev/null
+```
+If you do not see commmand outputs the message
+> Successfully pulled image from GCR.
+
+
+, then create a secret with the key used for [gcp.whitelistedServiceAccountKeyPath](
+https://cloud.google.com/anthos/gke/docs/on-prem/how-to/admin-workstation#gcpwhitelistedserviceaccountkeypath) when you set up on-prem Admin Workstation, and patch it to the default service account. 
+
+(Before running the following command, you may want to backup `~/.docker/config.json` first, if you are using other private container registry.)
+```shell
+cat $PATH_TO_YOUR_JSON_KEY | docker login -u _json_key --password-stdin https://marketplace.gcr.io
+kubectl create secret generic gcr-cred -n "${NAMESPACE}" --from-file=.dockerconfigjson="${HOME}/.docker/config.json" --type=kubernetes.io/dockerconfigjson
+kubectl -n "${NAMESPACE}" patch serviceaccount default  -p '{"imagePullSecrets": [{"name":"gcr-cred"}]}'
+```
+
 #### Create a namespace in your Kubernetes cluster
 
 If you plan to use a different namespace than the `default`, run the command below to create a new namespace:
@@ -168,8 +193,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the app.
 
 ```shell
-helm template chart/prometheus-operator \
-  --name "${APP_INSTANCE_NAME}" \
+helm template "${APP_INSTANCE_NAME}" chart/prometheus-operator \
   --namespace "${NAMESPACE}" \
   --set operator.image.repo="${IMAGE_OPERATOR}" \
   --set operator.image.tag="${TAG}" \

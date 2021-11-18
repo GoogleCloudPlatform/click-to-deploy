@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,16 +13,26 @@
 # limitations under the License.
 
 default['erpnext']['packages'] = [
-    'python3-minimal',
+    'build-essential',
+    'git',
+    'nginx',
+    'python3-dev',
+    'python3-pip',
     'python3-setuptools',
     'redis-server',
-    'nginx',
-    'build-essential',
+    'supervisor',
+    'virtualenv',
+    'wkhtmltopdf',
 ]
 
 default['erpnext']['version'] = '12'
 default['erpnext']['site'] = 'site1.local'
-default['erpnext']['install-script'] = 'https://raw.githubusercontent.com/frappe/bench/master/playbooks/install.py'
+
+default['erpnext']['nodejs']['version'] = '12'
+
+default['erpnext']['mariadb']['version'] = '10.3'
+default['erpnext']['mariadb']['apt_version'] = "1:#{default['mariadb']['version']}.*"
+default['erpnext']['mariadb']['packages'] = [ 'mariadb-server', 'libmariadb-dev' ]
 
 default['erpnext']['frappe']['bench'] = 'frappe-bench'
 default['erpnext']['frappe']['user'] = 'frappe'
@@ -30,5 +40,3 @@ default['erpnext']['frappe']['password'] = `openssl rand -base64 12 | fold -w 12
 
 default['erpnext']['mysql-root-password'] = `openssl rand -base64 12 | fold -w 12 | head -n1 | tr -d '\r\n'`
 default['erpnext']['erpnext-admin-password'] = `openssl rand -base64 12 | fold -w 12 | head -n1 | tr -d '\r\n'`
-
-default['erpnext']['werkzeug']['version'] = '0.16.1'

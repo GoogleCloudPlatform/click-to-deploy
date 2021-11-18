@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,23 +12,33 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'openjdk8'
+include_recipe 'openjdk11'
 
-# Install the package required to apt-get update with elasticsearch repo
-package 'apt-transport-https' do
+apt_update 'update' do
+  action :update
+  retries 5
+  retry_delay 30
+end
+
+package 'Install Packages' do
+  package_name node['elasticsearch']['packages']
   action :install
 end
 
 # Configure elasticsearch repository
 apt_repository 'add_elastic_co_repo' do
-  uri node['elasticsearch']['repository_url']
-  components ['stable', 'main']
-  keyserver node['elasticsearch']['keyserver_url']
-  distribution false
+  uri node['elasticsearch']['repo']['url']
+  components node['elasticsearch']['repo']['components']
+  keyserver node['elasticsearch']['repo']['keyserver']
+  distribution node['elasticsearch']['repo']['distribution']
   trusted true
 end
 
-execute 'apt-get update'
+apt_update 'update' do
+  action :update
+  retries 5
+  retry_delay 30
+end
 
 # Install elasticsearch
 package 'elasticsearch' do
@@ -54,8 +64,27 @@ end
 # Update service configuration
 execute 'update-rc.d elasticsearch defaults 95 10'
 
-# Copy startup script
-c2d_startup_script 'elasticsearch'
+# Certshare service
+cookbook_file '/etc/systemd/system/certshare.service' do
+  source 'certshare.service'
+  owner 'root'
+  group 'root'
+  mode 0664
+  action :create
+end
+
+service 'certshare.service' do
+  action [ :enable, :stop ]
+end
+
+# Patch for including ssl feature for elasticsearch
+cookbook_file '/opt/c2d/patch-ssl' do
+  source 'patch-ssl'
+  owner 'root'
+  group 'root'
+  mode 0664
+  action :create
+end
 
 # Copy the utils file for elasticsearch startup
 cookbook_file '/opt/c2d/elasticsearch-utils' do
@@ -74,3 +103,6 @@ remote_file '/usr/src/elasticsearch_src.tar.gz' do
   retries 5
   retry_delay 30
 end
+
+# Copy startup script
+c2d_startup_script 'elasticsearch'

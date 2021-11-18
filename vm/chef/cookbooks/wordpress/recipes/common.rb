@@ -13,6 +13,7 @@
 # limitations under the License.
 
 include_recipe 'apache2'
+include_recipe 'apache2::mod_ssl'
 include_recipe 'apache2::security-config'
 include_recipe 'apache2::rm-index'
 include_recipe 'mysql'
@@ -21,6 +22,7 @@ include_recipe 'php74::module_libapache2'
 include_recipe 'php74::module_mbstring'
 include_recipe 'php74::module_mysql'
 include_recipe 'php74::module_xml'
+include_recipe 'c2d-config::create-self-signed-certificate'
 
 remote_file '/tmp/wp-cli.phar' do
   source node['wordpress']['cli']['url']
@@ -69,12 +71,16 @@ execute 'a2enconfs' do
   command 'a2enconf php7.4-fpm'
 end
 
-template '/etc/apache2/sites-available/wordpress.conf' do
-  source 'wordpress.conf.erb'
+# Include both configurations to the image
+['http', 'https'].each do |file|
+  template "/etc/apache2/sites-available/wordpress-#{file}.conf" do
+    source "wordpress-#{file}.conf.erb"
+  end
 end
 
+# Enable HTTP version by default on image build
 execute 'enable wordpress.conf' do
-  command 'a2ensite wordpress'
+  command 'a2ensite wordpress-http'
 end
 
 bash 'edit php.ini' do

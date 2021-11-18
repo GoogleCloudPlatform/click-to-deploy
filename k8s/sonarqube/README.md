@@ -141,14 +141,14 @@ It is advised to use stable image reference which you can find on
 Example:
 
 ```shell
-export TAG="<BUILD_ID>"
+export TAG="8.9.2-<BUILD_ID>"
 ```
 
 Alternatively you can use short tag which points to the latest image for selected version.
 > Warning: this tag is not stable and referenced image might change over time.
 
 ```shell
-export TAG="7.7"
+export TAG="8.9"
 ```
 
 Configure the container images:
@@ -210,8 +210,7 @@ export SONARQUBE_PERSISTENT_DISK_SIZE="10Gi"
 export DB_PERSISTENT_DISK_SIZE="10Gi"
 
 ```shell
-helm template chart/sonarqube \
-  --name "$APP_INSTANCE_NAME" \
+helm template "$APP_INSTANCE_NAME" chart/sonarqube \
   --namespace "$NAMESPACE" \
   --set sonarqube.image.repo="$IMAGE_SONARQUBE" \
   --set sonarqube.image.tag="$TAG" \

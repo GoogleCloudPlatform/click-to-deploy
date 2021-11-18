@@ -1,0 +1,13 @@
+actions:
+- name: Get number of live nodes from exporter metrics
+  bashTest:
+    script: |
+            curl "http://${APP_INSTANCE_NAME}-solr-exporter.${NAMESPACE}.svc.cluster.local:9983/metrics" 2> /dev/null \
+              | grep 'solr_collections_live_nodes' \
+              | grep -v "^#" \
+              | awk '{print $2}'
+    expect:
+      stdout:
+        matches: "3.0"
+      exitCode:
+        equals: 0

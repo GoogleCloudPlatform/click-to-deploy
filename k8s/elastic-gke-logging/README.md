@@ -179,14 +179,14 @@ It is advised to use stable image reference which you can find on
 Example:
 
 ```shell
-export TAG="6.3.2-20200311-092725"
+export TAG="7.10"
 ```
 
 Alternatively you can use short tag which points to the latest image for selected version.
 > Warning: this tag is not stable and referenced image might change over time.
 
 ```shell
-export TAG="6.3"
+export TAG="7.10"
 ```
 
 Configure the container images:
@@ -225,8 +225,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-helm template chart/elastic-gke-logging \
-  --name "$APP_INSTANCE_NAME" \
+helm template "$APP_INSTANCE_NAME" chart/elastic-gke-logging \
   --namespace "$NAMESPACE" \
   --set elasticsearch.replicas="$ELASTICSEARCH_REPLICAS" \
   --set fluentd.serviceAccount="$FLUENTD_SERVICE_ACCOUNT" \
@@ -464,10 +463,10 @@ run [`scripts/create-backup-infra.sh`](scripts/create-backup-infra.sh):
 
 ```shell
 scripts/create-backup-infra.sh \
-  --app elasticsearch-1 \
+  --app elastic-gke-logging-1 \
   --namespace default \
   --disk-size 10Gi \
-  --backup-claim elasticsearch-1-backup
+  --backup-claim elastic-gke-logging-1-backup
 ```
 
 ### Patch the Elasticsearch StatefulSet to mount a backup disk
@@ -478,9 +477,9 @@ run the patch and automatically perform a rolling update on the StatefulSet, run
 
 ```shell
 scripts/patch-sts-for-backup.sh \
-  --app elasticsearch-1 \
+  --app elastic-gke-logging-1 \
   --namespace default \
-  --backup-claim elasticsearch-1-backup
+  --backup-claim elastic-gke-logging-1-backup
 ```
 
 ### Register the snapshot repository in the Elasticsearch cluster

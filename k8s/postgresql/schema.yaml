@@ -46,10 +46,11 @@ properties:
   postgresql.serviceAccount:
     type: string
     title: PostgreSQL service account
-    description: >-
-      Service account to assign to PostgreSQL StatefulSet (with default permissions)
     x-google-marketplace:
       type: SERVICE_ACCOUNT
+      serviceAccount:
+        description: >-
+          Service account used by PostgreSQL StatefulSet (with default permissions)
   postgresql.persistence.storageClass:
     type: string
     title: StorageClass
@@ -80,6 +81,11 @@ properties:
     title: Enable Stackdriver Metrics Exporter
     description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
     default: false
+  tls.enabled:
+    type: boolean
+    title: Enable TLS Security Configuration
+    description: Enable TLS secure communication for your PostgreSQL service.
+    default: true
   certificate:
     type: string
     x-google-marketplace:

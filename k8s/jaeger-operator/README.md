@@ -119,14 +119,14 @@ It is advised to use stable image reference which you can find on
 Example:
 
 ```shell
-export TAG="1.15.1-20200213-132947"
+export TAG="1.25.0-<BUILD_ID>"
 ```
 
 Alternatively you can use short tag which points to the latest image for selected version.
 > Warning: this tag is not stable and referenced image might change over time.
 
 ```shell
-export TAG="1.15"
+export TAG="1.25"
 ```
 
 Configure the container image:
@@ -176,8 +176,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the app.
 
 ```shell
-helm template chart/jaeger-operator \
-  --name "${APP_INSTANCE_NAME}" \
+helm template "${APP_INSTANCE_NAME}" chart/jaeger-operator \
   --namespace "${NAMESPACE}" \
   --set operator.image.repository="${IMAGE_OPERATOR}" \
   --set operator.image.tag="${TAG}" \

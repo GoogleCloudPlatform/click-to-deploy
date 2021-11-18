@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Remember to check if repo component update
-# is needed when changing the version.
-default['cassandra']['version'] = '3.11.7'
+default['cassandra']['version'] = '4.0'
+default['cassandra']['apt_version'] = "#{default['cassandra']['version']}.*"
 
 default['cassandra']['repo']['uri'] = 'http://www.apache.org/dist/cassandra/debian'
-default['cassandra']['repo']['components'] = ['311x', 'main']
+default['cassandra']['repo']['components'] = ['main']
+default['cassandra']['repo']['distribution'] = '40x'
 default['cassandra']['repo']['keyserver'] = 'https://www.apache.org/dist/cassandra/KEYS'

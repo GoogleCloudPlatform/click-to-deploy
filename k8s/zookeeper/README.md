@@ -151,14 +151,14 @@ It is advised to use stable image reference which you can find on
 Example:
 
 ```shell
-export TAG="3.4.14-20200311-092523"
+export TAG="3.6.1-20200901-092523"
 ```
 
 Alternatively you can use short tag which points to the latest image for selected version.
 > Warning: this tag is not stable and referenced image might change over time.
 
 ```shell
-export TAG="3.4"
+export TAG="3.6"
 ```
 
 Configure the container images:
@@ -207,8 +207,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-helm template chart/zookeeper \
-  --name "${APP_INSTANCE_NAME}" \
+helm template "${APP_INSTANCE_NAME}" chart/zookeeper \
   --namespace "${NAMESPACE}" \
   --set zookeeper.image.name="${IMAGE_ZOOKEEPER}" \
   --set zookeeper.image.tag="${TAG}" \

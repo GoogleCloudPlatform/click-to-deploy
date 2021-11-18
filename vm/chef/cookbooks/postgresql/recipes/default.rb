@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,16 +14,15 @@
 
 include_recipe 'c2d-config'
 
-execute 'add repo' do
-  command 'echo "deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main" | tee -a /etc/apt/sources.list.d/pgdg.list'
+apt_repository 'apt.postgresql.org' do
+  uri node['postgresql']['repository_url']
+  key node['postgresql']['key']
+  components ['main']
+  distribution "#{node['postgresql']['standalone']['distribution']}-pgdg"
 end
 
-execute 'install repo key' do
-  command 'wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -'
-end
-
-execute 'update' do
-  command 'apt-get update'
+apt_update do
+  action :update
 end
 
 package 'install packages' do

@@ -1,0 +1,43 @@
+# Copyright 2019 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+FROM gcr.io/google-appengine/debian9:latest
+
+ENV GOPATH /usr/local
+
+ENV NOTICES_SHA256 0a8f689176d60e15b61fba62513dea66186cd455cadeeb0ba5791d588f361fe5
+
+RUN set -eux \
+    && apt-get update \
+    && apt-get install -y \
+        wget \
+        bash \
+        dnsutils \
+        git \
+        golang \
+        govendor
+
+ADD peer-finder.go ${GOPATH}/src/peer-finder/peer-finder.go
+ADD LICENSE ${GOPATH}/src/peer-finder/LICENSE
+
+RUN set -eux \
+    && cd "${GOPATH}/src/peer-finder" \
+    && go get ./... \
+    && CGO_ENABLED=0 go build -o /peer-finder -a -installsuffix cgo --ldflags '-w' ./peer-finder.go \
+    && mkdir -p "/usr/share/peer-finder/" \
+    && govendor license > /usr/share/peer-finder/NOTICES \
+    && echo "${NOTICES_SHA256} /usr/share/peer-finder/NOTICES" | sha256sum -c
+
+EXPOSE 9376
+CMD ["/peer-finder"]

@@ -15,12 +15,13 @@
 bash 'add apache repo' do
   cwd '/tmp'
   code <<-EOH
-    echo "deb https://apache.bintray.com/couchdb-deb/ #{node['couchdb21']['debian']['codename']} main" >> /etc/apt/sources.list
-    curl -L https://couchdb.apache.org/repo/bintray-pubkey.asc | apt-key add -
+    echo "deb https://apache.jfrog.io/artifactory/couchdb-deb/ #{node['couchdb21']['debian']['codename']} main" >> /etc/apt/sources.list
+    curl -L https://couchdb.apache.org/repo/keys.asc | apt-key add -
 EOH
 end
 
-execute 'apt-get update' do
+apt_update 'update' do
+  action :update
   retries 5
   retry_delay 30
 end

@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,14 +13,21 @@
 # limitations under the License.
 
 include_recipe 'apache2::mod-rewrite'
+include_recipe 'apache2::mod_deflate'
+include_recipe 'apache2::mod_expires'
+include_recipe 'apache2::mod_headers'
+include_recipe 'apache2::mod_ssl'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
-include_recipe 'php7'
-include_recipe 'php7::composer'
-include_recipe 'php7::module_libapache2'
-include_recipe 'php7::module_mysql'
+include_recipe 'php74'
+include_recipe 'php74::module_bcmath'
+include_recipe 'php74::composer'
+include_recipe 'php74::module_libapache2'
+include_recipe 'php74::module_mysql'
+include_recipe 'php74::module_soap'
 include_recipe 'mysql'
-include_recipe 'composer'
+include_recipe 'composer::composer2'
+include_recipe 'elasticsearch::standalone'
 
 package 'install_dependencies' do
   package_name node['magento']['packages']['dependencies']
@@ -47,6 +54,8 @@ bash 'configure magento' do
   code <<-EOH
 tar -xf /tmp/magento2.tar.gz --strip-components 1
 
+composer update
+
 composer install
 
 find var vendor pub/static pub/media app/etc -type f -exec chmod g+w {} \;
@@ -58,7 +67,7 @@ EOH
 end
 
 execute 'configure php' do
-  command "sed -i '/^;always_populate_raw_post_data = -1$/s/;//' /etc/php/7.0/fpm/php.ini"
+  command "sed -i '/^;always_populate_raw_post_data = -1$/s/;//' /etc/php/7.4/fpm/php.ini"
 end
 
 template '/etc/apache2/sites-available/magento.conf' do
@@ -73,6 +82,11 @@ execute 'enable proxy_fcgi' do
   command 'a2enmod proxy_fcgi setenvif'
 end
 
-execute 'enable php7.0-fpm' do
-  command 'a2enconf php7.0-fpm'
+execute 'enable php7.4-fpm' do
+  command 'a2enconf php7.4-fpm'
+end
+
+# Start elasticsearch
+service 'elasticsearch' do
+  action :start
 end
