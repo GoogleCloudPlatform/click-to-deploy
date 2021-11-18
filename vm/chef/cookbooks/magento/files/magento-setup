@@ -56,7 +56,7 @@ if has_external_ip; then
   args+=( --base-url=http://"$(get_external_ip)")
 else
   args+=( --base-url=http://"$(get_internal_ip)")
-fi  
+fi
 
 php /var/www/html/bin/magento setup:install "${args[@]}"
 
