@@ -57,7 +57,7 @@ function wait_for_app() {
 
   while [[ "${http_code}" -ne 200 && "${retry}" -le "${max_retries}" ]]; do
     echo "Trying to fetch homepage... ${retry}"
-    http_code="$(curl -s -L -o /dev/null -w "%{http_code}" http://localhost"
+    http_code="$(curl -s -L -o /dev/null -w "%{http_code}" http://localhost)"
     (( retry=retry+1 ))
     sleep 25
   done
