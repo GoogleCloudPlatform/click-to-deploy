@@ -16,4 +16,4 @@ default['joomla']['version'] = '4.0.4'
 default['joomla']['sha1'] = '78966c6a8bada758b1715abd9969d43429737b2f'
 default['joomla']['user'] = 'www-data'
 
-default['joomla']['db']['name'] = 'joomla'
+default['joomla']['db']['name'] = 'joomla_db'

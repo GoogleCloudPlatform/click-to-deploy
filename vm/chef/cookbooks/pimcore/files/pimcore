@@ -75,7 +75,7 @@ vendor/bin/pimcore-install -vv \
   --no-interaction
 
 # Assign permission to Apache user
-chown -R www-data:www-data "${pimcore_folder}/${pimcore_project}"
+chown -R www-data:www-data "${JOOMLA_FOLDER}"
 
 # Configure Apache
 rm -f /etc/apache2/sites-enabled/000-default.conf
@@ -91,3 +91,7 @@ echo "Awaiting app be ready..."
 wait_for_app
 
 echo "Installation complete!"
+
+# Install Joomla website dependencies
+cd "${JOOMLA_FOLDER}"
+composer install --ignore-platform-reqs
