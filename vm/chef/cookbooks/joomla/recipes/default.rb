@@ -99,8 +99,8 @@ execute 'enable apache modules' do
   command 'a2enmod rewrite'
 end
 
-execute 'restart Apache' do
-  command 'systemctl restart apache2'
+service 'apache2' do
+  action :restart
 end
 
 c2d_startup_script 'joomla'
