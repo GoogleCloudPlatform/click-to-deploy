@@ -62,7 +62,7 @@ bash 'Configure Database' do
 mysql -u root -e "CREATE DATABASE $defdb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
 EOH
   environment({
-    'defdb' => node['joomla']['db']['name']
+    'defdb' => node['joomla']['db']['name'],
   })
 end
 
