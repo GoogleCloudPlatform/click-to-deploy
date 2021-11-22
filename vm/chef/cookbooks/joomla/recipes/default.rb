@@ -40,8 +40,8 @@ remote_file '/tmp/joomla.tar.gz' do
 end
 
 directory '/opt/joomla' do
-  owner 'root'
-  group 'root'
+  owner 'www-data'
+  group 'www-data'
   mode '0755'
   action :create
 end
@@ -88,7 +88,7 @@ cookbook_file '/opt/c2d/joomla-utils' do
 end
 
 execute 'disable 000-default.conf' do
-  command 'a2dissite default'
+  command 'a2dissite 000-default'
 end
 
 execute 'enable joomla.conf' do
@@ -97,6 +97,10 @@ end
 
 execute 'enable apache modules' do
   command 'a2enmod rewrite'
+end
+
+execute 'restart Apache' do
+  command 'systemctl restart apache2'
 end
 
 c2d_startup_script 'joomla'
