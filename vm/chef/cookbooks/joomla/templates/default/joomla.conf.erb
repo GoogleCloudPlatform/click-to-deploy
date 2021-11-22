@@ -2,11 +2,11 @@
   DocumentRoot /opt/joomla
     
   <Directory /opt/joomla/>
-       Options FollowSymlinks
-       AllowOverride All
-       Require all granted
+    Options FollowSymlinks
+    AllowOverride All
+    Require all granted
   </Directory>
 
-       ErrorLog ${APACHE_LOG_DIR}/error.log
-       CustomLog ${APACHE_LOG_DIR}/access.log combined
+  ErrorLog ${APACHE_LOG_DIR}/error.log
+  CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
