@@ -18,20 +18,20 @@ include_recipe 'apache2'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 
+include_recipe 'git'
+
 include_recipe 'mysql::version-8.0-standalone'
 
 include_recipe 'php74'
+include_recipe 'php74::module_cli'
 include_recipe 'php74::module_curl'
 include_recipe 'php74::module_gd'
-include_recipe 'php74::module_mbstring'
-include_recipe 'php74::module_mysql'
-include_recipe 'php74::module_cli'
-include_recipe 'php74::module_xml'
-include_recipe 'php74::module_zip'
 include_recipe 'php74::module_ldap'
 include_recipe 'php74::module_libapache2'
-
-include_recipe 'git'
+include_recipe 'php74::module_mbstring'
+include_recipe 'php74::module_mysql'
+include_recipe 'php74::module_xml'
+include_recipe 'php74::module_zip'
 
 remote_file '/tmp/joomla.tar.gz' do
   source "https://github.com/joomla/joomla-cms/releases/download/#{node['joomla']['version']}/Joomla_#{node['joomla']['version']}-Stable-Full_Package.tar.gz"
@@ -85,6 +85,10 @@ cookbook_file '/opt/c2d/joomla-utils' do
   group 'root'
   mode 0644
   action :create
+end
+
+execute 'disable 000-default.conf' do
+  command 'a2dissite default'
 end
 
 execute 'enable joomla.conf' do

@@ -56,11 +56,12 @@ function wait_for_app() {
 # Creates app database user.
 #######################################
 function create_db_user() {
-local -r joomla_db_name="joomla_db"
-local -r joomla_db_username="joomla"
-mysql --user="root" --password="${MYSQL_PASSWORD}" --database="mysql" <<-EOSQL
-  CREATE USER '${joomla_db_username}'@'localhost' IDENTIFIED BY '${JOOMLA_DB_PASSWORD}';
-  GRANT ALL ON ${joomla_db_name}.* TO '${joomla_db_username}'@'localhost';
+  local -r joomla_db_name="joomla_db"
+  local -r joomla_db_username="joomla"
+
+  mysql --user="root" --password="${mysql_password}" --database="mysql" <<-EOSQL
+    CREATE USER '${joomla_db_username}'@'localhost' IDENTIFIED BY '${joomla_db_password}';
+    GRANT ALL ON ${joomla_db_name}.* TO '${joomla_db_username}'@'localhost';
 EOSQL
 }
 
@@ -68,8 +69,6 @@ EOSQL
 # Configure Apache.
 #######################################
 function configure_apache() {
-  local -r joomla_folder="/opt/joomla"
-  chown -R www-data:www-data "${joomla_folder}"
-  rm -f /etc/apache2/sites-enabled/000-default.conf
+  chown -R www-data:www-data /opt/joomla
   systemctl restart apache2
 }

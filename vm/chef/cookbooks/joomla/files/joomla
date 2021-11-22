@@ -16,8 +16,8 @@
 
 source /opt/c2d/joomla-utils || exit 1
 
-declare -r JOOMLA_DB_PASSWORD="$(get_attribute_value "joomla-db-password")"
-declare -r MYSQL_PASSWORD="$(get_attribute_value "mysql-root-password")"
+declare -r joomla_db_password="$(get_attribute_value "joomla-db-password")"
+declare -r mysql_password="$(get_attribute_value "mysql-root-password")"
 
 echo "Creating database user..."
 create_db_user
