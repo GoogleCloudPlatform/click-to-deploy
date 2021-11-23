@@ -14,9 +14,9 @@ Popular open stacks on Kubernetes, packaged by Google.
 
 ![Architecture diagram](resources/activemq-k8s-app-architecture.png)
 
-A Kubernetes Deployment manages ActiveMQ 5 single broker. 
+A Kubernetes Deployment manages ActiveMQ 5 single broker.
 This deployment is based on default ActiveMQ 5 broker which has no authentication enabled for the subscribers.
-As a Database, it uses embedded KahaDB with persistent volume which is 5Gi by default in this deployment. 
+As a Database, it uses embedded KahaDB with persistent volume which is 5Gi by default in this deployment.
 
 Access to the ActiveMQ service is authenticated and credentials are stored in Kubernetes Secret resource.
 
@@ -168,6 +168,12 @@ export STORAGE_CLASS="standard" # provide your StorageClass name if not "standar
 export PERSISTENT_DISK_SIZE="5Gi"
 ```
 
+By default, ActiveMQ Administration console binds `127.0.0.1` hostname. If you want to expose it to all hosts, use the variable below:
+
+```shell
+export ACTIVEMQ_ADMIN_BIND_ALL="true"
+```
+
 #### Create namespace in your Kubernetes cluster
 
 If you use a different namespace than the `default`, run the command
@@ -190,6 +196,7 @@ helm template "${APP_INSTANCE_NAME}" chart/activemq \
   --set persistence.storageClass="${STORAGE_CLASS}" \
   --set persistence.size="${PERSISTENT_DISK_SIZE}" \
   --set consolePassword="${ACTIVEMQ_ADMIN_PASSWORD}" \
+  --set admin.bindAllHosts="${ACTIVEMQ_ADMIN_BIND_ALL}" \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 

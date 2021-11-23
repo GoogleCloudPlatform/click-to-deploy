@@ -60,6 +60,11 @@ git '/usr/src/orocrm' do
   action :checkout
 end
 
+package 'Install Packages' do
+  package_name node['orocrm']['packages']
+  action :install
+end
+
 bash 'Configure Database' do
   user 'root'
   cwd '/var/www/html'
@@ -88,6 +93,15 @@ end
 # Copy Apache configuration files
 cookbook_file '/opt/c2d/apache-orocrm.conf' do
   source 'apache-orocrm.conf'
+  owner 'root'
+  group 'root'
+  mode 0644
+  action :create
+end
+
+# Copy Supervisor configuration files
+cookbook_file '/opt/c2d/supervisor.conf' do
+  source 'supervisor.conf'
   owner 'root'
   group 'root'
   mode 0644
