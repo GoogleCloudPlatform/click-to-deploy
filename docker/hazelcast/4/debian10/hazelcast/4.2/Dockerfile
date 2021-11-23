@@ -21,9 +21,8 @@ ENV C2D_RELEASE 4.2.2
 
 # Versions of Hazelcast and Hazelcast plugins
 ARG HZ_VERSION=4.2.2
-ARG HZ_VERSION_SHA=4ee0935858c11b8fd6034179785cd2ae72660b40
+ARG HZ_VERSION_SHA=1b2471dfe16b7716e1aa11a706647f5b04b6197ed295b1a4f4c54b44f0eac0c1
 ARG CACHE_API_VERSION=1.1.1
-ARG CACHE_API_VERSION_SHA=c56fb980eb5208bfee29a9a5b9d951aba076bd91
 ARG JMX_PROMETHEUS_AGENT_VERSION=0.14.0
 ARG LOG4J2_VERSION=2.13.3
 
@@ -61,7 +60,7 @@ COPY *.xml *.sh *.yaml *.properties ${HZ_HOME}/
 
 # Install
 RUN set -e; \
-    apt-get update \
+    apt-get --allow-releaseinfo-change update \
     && apt-get -y install \
     openjdk-11-jdk-headless \
     maven \
@@ -81,6 +80,7 @@ RUN echo "Downloading Hazelcast and related JARs" \
     && cd "${HZ_HOME}/lib" \
     && HAZELCAST_ALL_URL=$(${HZ_HOME}/get-hz-all-url.sh) \
     && for JAR_URL in ${HAZELCAST_ALL_URL} ${CACHE_API_URL} ${PROMETHEUS_AGENT_URL} ${EUREKA_PLUGIN_URLS} ${LOG4J2_URLS}; do curl -sf -O -L ${JAR_URL} || exit $?; done \
+    && echo "${HZ_VERSION_SHA} hazelcast-all-${HZ_VERSION}.jar" | sha256sum -c \
     && mv jmx_prometheus_javaagent-*.jar jmx_prometheus_javaagent.jar \
     && echo "Setting Pardot ID to 'docker'" \
     && echo 'hazelcastDownloadId=docker' > "hazelcast-download.properties" \
