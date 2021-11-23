@@ -58,6 +58,14 @@ actions:
       exitCode:
         equals: 0
 
+- name: Foo test
+  bashTest:
+    script: foo
+    expect:
+      stdout:
+        matches: 'consumer-1 Received TestMessage'
+      exitCode:
+        equals: 0
 - name: Consume "TestMessage" message
   bashTest:
     script: |-

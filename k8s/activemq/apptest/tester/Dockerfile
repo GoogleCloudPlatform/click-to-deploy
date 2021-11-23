@@ -1,5 +1,4 @@
-#FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.3
-FROM gcr.io/cloud-marketplace-ops-test/testrunner:latest
+FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.4
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     wget \
