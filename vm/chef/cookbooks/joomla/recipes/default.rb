@@ -48,7 +48,7 @@ directory '/opt/joomla' do
 end
 
 bash 'Extract Joomla' do
-  user 'root'
+  user 'www-data'
   cwd '/tmp'
   code <<-EOH
 tar -xf joomla.tar.gz -C /opt/joomla
