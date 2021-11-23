@@ -55,19 +55,19 @@ function wait_for_app() {
 #######################################
 # Creates app database user.
 # Arguments:
-#   MySQL Password for username created.
 #   MySQL Database password.
+#   MySQL Password for username created.
 #   MySQL Database name.
 #   MySQL Username to be created.
 #######################################
 function create_db_user() {
-  local db_password="$1"
-  local password="$2"
+  local root_password="$1"
+  local db_password="$2"
   local db_name="$3"
   local db_username="$4"
   
   echo "Creating database user..."
-  mysql --user="root" --password="${password}" --database="mysql" <<-EOSQL
+  mysql --user="root" --password="${root_password}" --database="mysql" <<-EOSQL
     CREATE USER '${db_username}'@'localhost' IDENTIFIED BY '${db_password}';
     GRANT ALL ON ${db_name}.* TO '${db_username}'@'localhost';
 EOSQL
