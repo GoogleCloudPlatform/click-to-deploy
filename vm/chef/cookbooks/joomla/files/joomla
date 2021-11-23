@@ -24,6 +24,12 @@ declare -r joomla_db_username="joomla"
 echo "Creating database user..."
 create_db_user "${mysql_password}" "${joomla_db_password}" "${joomla_db_name}" "${joomla_db_username}"
 
+echo "Assign permission to Apache user..."
+chown -R www-data:www-data /opt/joomla
+
+echo "Restarting Apache..."
+systemctl restart apache2
+
 echo "Waiting application to be ready..."
 wait_for_app
 
