@@ -28,10 +28,9 @@ versions:
     packages:
       hazelcast:
         version: '4.2.2'
-        sha1: '4ee0935858c11b8fd6034179785cd2ae72660b40'
+        sha256: '1b2471dfe16b7716e1aa11a706647f5b04b6197ed295b1a4f4c54b44f0eac0c1'
       cache_api:
         version: '1.1.1'
-        sha1: 'c56fb980eb5208bfee29a9a5b9d951aba076bd91'
       hz_eureka:
         version: '1.1.1'
       jmx_prometheus_agent:
