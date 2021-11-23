@@ -54,10 +54,21 @@ function wait_for_app() {
 
 #######################################
 # Creates app database user.
+# Arguments:
+#   MySQL Password for username created.
+#   MySQL Database password.
+#   MySQL Database name.
+#   MySQL Username to be created.
 #######################################
 function create_db_user() {
-  mysql --user="root" --password="${mysql_password}" --database="mysql" <<-EOSQL
-    CREATE USER '${joomla_db_username}'@'localhost' IDENTIFIED BY '${joomla_db_password}';
-    GRANT ALL ON ${joomla_db_name}.* TO '${joomla_db_username}'@'localhost';
+  local db_password="$1"
+  local password="$2"
+  local db_name="$3"
+  local db_username="$4"
+  
+  echo "Creating database user..."
+  mysql --user="root" --password="${password}" --database="mysql" <<-EOSQL
+    CREATE USER '${db_username}'@'localhost' IDENTIFIED BY '${db_password}';
+    GRANT ALL ON ${db_name}.* TO '${db_username}'@'localhost';
 EOSQL
 }
