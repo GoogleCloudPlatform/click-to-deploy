@@ -16,26 +16,6 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 3/debian10/3.0
-  excludeTests:
-  - tests/functional_tests/exporter_test.yaml
-  from: marketplace.gcr.io/google/debian10
-  packages:
-    kafka:
-      sha512: 86cdeb04af123399858d03431e9777948c1c40ec0d843966cf9bd90b8235b47ebbb5cb96d1f0660710b9286da86bbb5ee65e21e757606f5a1e67f970ae5cf57c
-      version: 3.0.0
-  repo: kafka3
-  tags:
-  - 3.0.0-debian10
-  - 3.0-debian10
-  - 3-debian10
-  - 3.0.0
-  - '3.0'
-  - '3'
-  - latest
-  templateArgs:
-    scalaversion: '2.13'
-  templateSubDir: debian10
 - dir: 2/debian10/2.8
   excludeTests:
   - tests/functional_tests/exporter_test.yaml
