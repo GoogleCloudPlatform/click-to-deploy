@@ -39,6 +39,8 @@ export IP
 export PORT
 export PASSWORD
 
+sleep 60
+
 for test in /tests/*; do
   testrunner -logtostderr "--test_spec=${test}"
 done
