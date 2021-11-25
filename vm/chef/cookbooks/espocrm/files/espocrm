@@ -1,0 +1,55 @@
+#!/bin/bash -eu
+#
+# Copyright 2021 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/espocrm-utils || exit 1
+
+# Required fileds for EspoCRM istallation
+declare -r MYSQL_PASSWORD="$(get_attribute_value "mysql-root-password")"
+declare -r ESPO_DB_PASSWORD="$(get_attribute_value "espo-db-password")"
+declare -r ESPO_ADMIN_PASSWORD="$(get_attribute_value "espo-admin-password")"
+declare -r ESPO_DB_USER="espo"
+declare -r ESPO_DB_NAME="espo_crm"
+declare -r ESPO_ADMIN_USER="admin"
+declare -r ESPO_FOLDER="/opt/espocrm"
+
+# Creates EspoCRM database user
+create_db_user
+
+echo "Restarting MySQL..."
+service mysql restart
+
+# Change PHP configuration
+change_php_config
+
+# Assign permission to Apache user
+echo "Assign permission to Apache user..."
+chown -R www-data:www-data "${ESPO_FOLDER}/"
+
+rm -f /etc/apache2/sites-enabled/000-default.conf
+mv /opt/c2d/apache-espocrm.conf /etc/apache2/sites-enabled/espocrm.conf
+
+# Restart Apache
+echo "Restarting Apache..."
+systemctl restart apache2
+
+# Waiting application to be ready
+wait_for_app
+
+# Installs EspoCRM app
+echo "Installing EspoCRM app..."
+install_app
+
+echo "Installation complete!"

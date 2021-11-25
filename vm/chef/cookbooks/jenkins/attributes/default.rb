@@ -13,3 +13,7 @@
 # limitations under the License.
 
 default['jenkins']['packages'] = %w(jenkins git groovy subversion)
+
+default['jenkins']['repo']['uri'] = 'http://pkg.jenkins.io/debian-stable'
+default['jenkins']['repo']['components'] = ['binary/']
+default['jenkins']['repo']['keyserver'] = 'https://pkg.jenkins.io/debian/jenkins.io.key'

@@ -17,9 +17,11 @@ default['logstash']['version'] = '7.8.1'
 default['logstash']['release'] =
   default['logstash']['version'].split('.')[0]
 
-default['logstash']['repository_url'] =
+default['logstash']['repo']['url'] =
   "https://artifacts.elastic.co/packages/#{default['logstash']['release']}.x/apt"
-default['logstash']['keyserver_url'] =
+default['logstash']['repo']['keyserver'] =
   'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
+default['logstash']['repo']['distribution'] = 'stable'
+default['logstash']['repo']['components'] = ['main']
 
 default['jruby']['version'] = '9.2.13.0'
