@@ -1,10 +1,10 @@
 {{- $kafka := index .Packages "kafka" -}}
-{{- $template := index .TemplateArgs -}}
+{{- $scala := index .Packages "scala" -}}
 
 FROM {{ .From }}
 
 ARG KAFKA_VERSION={{ $kafka.Version }}
-ARG SCALA_VERSION={{ $template.scalaversion }}
+ARG SCALA_VERSION={{ $scala.Version }}
 ARG KAFKA_SHA512={{ $kafka.Sha512 }}
 
 ENV C2D_RELEASE {{ $kafka.Version }}
