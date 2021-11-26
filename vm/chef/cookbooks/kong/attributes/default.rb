@@ -13,6 +13,6 @@
 # limitations under the License.
 
 default['kong']['version'] = '2.6.0'
-default['kong']['sha1'] = '4d95838baa999c1056171116f0af366894e96591'
+default['kong']['sha1'] = '78b17c1be6a84f50442a689cd949960c8dc2e9f3'
 default['kong']['db']['name'] = 'kong'
 default['kong']['packages'] = ['zlib1g-dev', 'boxes']
