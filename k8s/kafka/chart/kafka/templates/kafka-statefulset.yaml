@@ -88,7 +88,7 @@ spec:
                 fieldRef:
                   fieldPath: metadata.namespace
             - name: STAS_DELAY
-              value: "30"
+              value: "10"
             - name: KAFKA_INTER_BROKER_LISTENER_NAME
               value: "INTERNAL"
             - name: BROKER_ID_COMMAND

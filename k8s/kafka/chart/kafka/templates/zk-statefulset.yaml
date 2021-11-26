@@ -8,10 +8,10 @@ metadata:
 spec:
   serviceName: {{ .Release.Name }}-zk-headless
 {{- if not .Values.kafka.standalone }}
-  replicas: 3
-{{- else}}
+  replicas: {{ .Values.zookeeper.replicas }}
+{{- else }}
   replicas: 1
-{{- end}}
+{{- end }}
   selector:
     matchLabels: *ZookeeperDeploymentLabels
   podManagementPolicy: "Parallel"
@@ -19,6 +19,7 @@ spec:
     metadata:
       labels: *ZookeeperDeploymentLabels
     spec:
+    {{- if not .Values.kafka.standalone }}
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -29,6 +30,7 @@ spec:
                     values:
                     - zookeeper
               topologyKey: "kubernetes.io/hostname"
+    {{- end }}
       containers:
       - name: zookeeper
         imagePullPolicy: Always
@@ -55,10 +57,10 @@ spec:
           value: "false"
         - name : ZK_REPLICAS
         {{- if not .Values.kafka.standalone }}
-          value: "3"
-        {{- else}}
+          value: "{{ .Values.zookeeper.replicas }}"
+        {{- else }}
           value: "1"
-        {{- end}}
+        {{- end }}
         - name : ZK_HEAP_SIZE
           value: "1000M"
         - name : ZK_TICK_TIME

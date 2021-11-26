@@ -1,0 +1,101 @@
+#!/bin/bash -eu
+#
+# Copyright 2021 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/orocrm-utils || exit 1
+
+export COMPOSER_HOME="/root/.config/composer"
+export COMPOSER_MEMORY_LIMIT=-1
+export ORO_PROJECT="$(get_attribute_value "oro-project")"
+
+# Required fields for OroCRM istallation
+declare  ORO_USER_EMAIL="$(get_attribute_value "oro-user-email")"
+declare  ORO_USER_FIRSTNAME="$(get_attribute_value "oro-user-firstname")"
+declare  ORO_USER_LASTNAME="$(get_attribute_value "oro-user-lastname")"
+declare -r MYSQL_PASSWORD="$(get_attribute_value "mysql-root-password")"
+declare -r ORO_DB_PASSWORD="$(get_attribute_value "oro-db-password")"
+declare -r ORO_ADMIN_PASSWORD="$(get_attribute_value "oro-admin-password")"
+declare -r ORO_DB_USER="oro"
+declare -r ORO_DB_NAME="oro_crm"
+declare -r ORO_ADMIN_USER="admin"
+declare -r ORO_FOLDER="/opt/orocrm"
+declare -r ORO_CONFIG_FILE="config/parameters.yml"
+declare ORO_URL="$(get_attribute_value "oro-hostname" || true)"
+
+# Enforce to use external IP or internal IP if no OroCRM hostname provided
+if [ -z "${ORO_URL}" ]; then
+  if has_external_ip; then
+    ORO_URL="http://$(get_external_ip)/"
+  else
+    ORO_URL="http://$(get_internal_ip)/"
+  fi
+fi
+
+echo "Application URL: ${ORO_URL}"
+
+echo "Restarting Apache..."
+systemctl stop apache2
+
+# Creates OroCRM database user
+create_db_user
+
+echo "Restarting MySQL..."
+service mysql restart
+
+mkdir "${ORO_FOLDER}"
+cd "${ORO_FOLDER}/"
+composer create-project oro/crm-application "${ORO_PROJECT}" -n
+
+# Install Oro_crm
+cd "${ORO_FOLDER}/${ORO_PROJECT}/"
+
+echo "Adding DB user and password to config file..."
+sed -i "s/database_user: .*$/database_user: ${ORO_DB_USER}/" "${ORO_CONFIG_FILE}"
+sed -i "s/database_password: .*$/database_password: ${ORO_DB_PASSWORD}/" "${ORO_CONFIG_FILE}"
+
+rm -rf var/cache/*
+
+echo "Installing OroCRM..."
+php bin/console oro:install -vv \
+  --application-url="${ORO_URL}" \
+  --user-name="${ORO_ADMIN_USER}" \
+  --user-password="${ORO_ADMIN_PASSWORD}" \
+  --user-email="${ORO_USER_EMAIL}" \
+  --user-firstname="${ORO_USER_FIRSTNAME}" \
+  --user-lastname="${ORO_USER_LASTNAME}" \
+  --env=prod \
+  --no-interaction \
+
+echo "Configure Supervisor..."
+envsubst '\$ORO_PROJECT' < /opt/c2d/supervisor.conf \
+  >> /etc/supervisor/supervisord.conf
+
+echo "Assign permission to Apache user..."
+chown -R www-data:www-data "${ORO_FOLDER}/"
+
+echo "Configure Apache..."
+rm -f /etc/apache2/sites-enabled/000-default.conf
+envsubst '\$ORO_PROJECT' < /opt/c2d/apache-orocrm.conf \
+  > /etc/apache2/sites-enabled/orocrm.conf
+
+echo "Restarting Apache..."
+systemctl restart apache2
+
+echo "Restarting Supervisor..."
+systemctl restart supervisor
+
+wait_for_app
+
+echo "Installation complete!"
