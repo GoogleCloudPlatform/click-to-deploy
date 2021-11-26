@@ -1,6 +1,6 @@
 FROM l.gcr.io/google/bazel:latest as bazel
 
-ENV APP_VERSION=0.13.0
+ENV APP_VERSION=0.13.1
 
 RUN apt-get update \
     && apt-get install make automake -y --no-install-recommends
@@ -23,7 +23,7 @@ RUN for dep in `find $(bazel info execution_root)/../../external/ -maxdepth 1 -t
 # Result Image
 FROM marketplace.gcr.io/google/debian9
 
-ENV C2D_RELEASE=0.13.0
+ENV C2D_RELEASE=0.13.1
 ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 
 # Non root
