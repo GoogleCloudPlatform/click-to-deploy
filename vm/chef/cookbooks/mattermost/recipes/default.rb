@@ -96,7 +96,7 @@ cookbook_file '/lib/systemd/system/mattermost.service' do
 end
 
 service 'mattermost.service' do
-  action [ :enable, :stop ]
+  action [ :stop ]
 end
 
 ['domain', 'localhost'].each do |file|
