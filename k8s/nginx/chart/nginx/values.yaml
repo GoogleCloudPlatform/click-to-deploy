@@ -10,6 +10,8 @@ nginx:
 tls:
   base64EncodedPrivateKey: null
   base64EncodedCertificate: null
+exporter:
+  image: null
 metrics:
   image: null
   curatedExporter:

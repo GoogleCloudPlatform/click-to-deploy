@@ -33,7 +33,11 @@ describe 'C2D startup scripts should exists' do
     it { should exist }
   end
 
-  describe file('/opt/c2d/scripts/02-joomla') do
+  describe file('/opt/c2d/scripts/02-mysql8-root-localhost-password-setup') do
+    it { should exist }
+  end
+
+  describe file('/opt/c2d/scripts/03-joomla') do
     it { should exist }
   end
 end

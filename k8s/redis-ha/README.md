@@ -153,7 +153,7 @@ Configure the container image:
 ```shell
 export IMAGE_REGISTRY="marketplace.gcr.io/google"
 
-export IMAGE_REDIS="${IMAGE_REGISTRY}/redis-ha:${TAG}"
+export IMAGE_REDIS="${IMAGE_REGISTRY}/redis-ha"
 export IMAGE_REDIS_EXPORTER="${IMAGE_REGISTRY}/redis-ha/redis-exporter:${TAG}"
 export IMAGE_HAPROXY="${IMAGE_REGISTRY}/redis-ha/haproxy:${TAG}"
 export IMAGE_METRICS_EXPORTER="${IMAGE_REGISTRY}/redis-ha/prometheus-to-sd:${TAG}"
@@ -196,9 +196,9 @@ kubectl create namespace "${NAMESPACE}"
 Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to your app.
 
-```shell
+```
 helm template chart/redis-ha \
-  --name "${APP_INSTANCE_NAME}" \
+  --name-template="${APP_INSTANCE_NAME}" \
   --namespace "${NAMESPACE}" \
   --set redis.image.repo="${IMAGE_REDIS}" \
   --set redis.image.tag="${TAG}" \

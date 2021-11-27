@@ -21,6 +21,7 @@ following GitHub repositories:
 *   https://github.com/GoogleCloudPlatform/etcd-docker
 *   https://github.com/GoogleCloudPlatform/fluentd-docker
 *   https://github.com/GoogleCloudPlatform/grafana-docker
+*   https://github.com/GoogleCloudPlatform/haproxy-docker
 *   https://github.com/GoogleCloudPlatform/influxdb-docker
 *   https://github.com/GoogleCloudPlatform/jenkins-docker
 *   https://github.com/GoogleCloudPlatform/joomla-docker
