@@ -1,4 +1,4 @@
-FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.2
+FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.4
 
 RUN set -eu \
     && apt-get update \
