@@ -13,6 +13,9 @@
 # limitations under the License.
 #
 # Reference: https://konghq.com/install/#kong-community
+
+node.override['postgresql']['standalone']['allow_external'] = false
+
 include_recipe 'postgresql::standalone_buster'
 include_recipe 'git'
 
