@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'postgresql::standalone_buster'
+include_recipe 'postgresql'
 include_recipe 'nginx'
 
 package 'Install packages' do
