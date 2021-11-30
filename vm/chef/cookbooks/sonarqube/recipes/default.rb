@@ -18,7 +18,7 @@ include_recipe 'c2d-config::default'
 include_recipe 'apache2::default'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
-include_recipe 'postgresql::standalone_buster'
+include_recipe 'postgresql::default'
 
 package 'install openjdk-11-jdk' do
   package_name 'openjdk-11-jdk'
