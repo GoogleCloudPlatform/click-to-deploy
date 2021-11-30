@@ -19,5 +19,7 @@ default['postgresql']['key'] = 'https://www.postgresql.org/media/keys/ACCC4CF8.a
 default['postgresql']['standalone']['distribution'] = 'stretch'
 default['postgresql']['standalone']['allow_external'] = true
 
+default['postgresql']['standalone_buster']['distribution'] = 'buster'
+
 default['postgresql']['cluster']['packages'] = ['postgresql-plperl-13', 'postgresql-client']
 default['postgresql']['cluster']['distribution'] = 'buster'
