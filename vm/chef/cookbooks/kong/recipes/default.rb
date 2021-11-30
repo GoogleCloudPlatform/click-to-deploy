@@ -13,7 +13,7 @@
 # limitations under the License.
 #
 # Reference: https://konghq.com/install/#kong-community
-include_recipe 'postgresql'
+include_recipe 'postgresql::standalone_buster'
 include_recipe 'git'
 
 apt_update do
