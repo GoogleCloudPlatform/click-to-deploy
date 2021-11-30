@@ -1,4 +1,4 @@
-FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.2
+FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.4
 
 # Add debian backport source repository
 RUN set -x \
