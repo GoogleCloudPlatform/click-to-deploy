@@ -15,3 +15,4 @@
 node.override['postgresql']['standalone']['distribution'] = 'buster'
 
 include_recipe 'postgresql::standalone'
+include_recipe 'postgresql::default'
