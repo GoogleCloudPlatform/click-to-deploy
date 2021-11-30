@@ -18,7 +18,7 @@ apt_repository 'apt.postgresql.org' do
   uri node['postgresql']['repository_url']
   key node['postgresql']['key']
   components ['main']
-  distribution "#{node['postgresql']['standalone_buster']['distribution']}-pgdg"
+  distribution "#{node['postgresql']['standalone']['distribution']}-pgdg"
 end
 
 apt_update do
