@@ -23,7 +23,7 @@ package 'Install packages' do
 end
 
 bash 'Update Pip3' do
-  code "pip3 install --upgrade pip"
+  code 'pip3 install --upgrade pip'
   user 'root'
 end
 
