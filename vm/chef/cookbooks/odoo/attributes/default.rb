@@ -31,7 +31,7 @@ default['odoo']['packages'] = [
     'python3-setuptools',
     'python3-vobject',
     'python3-watchdog',
-    'libssl1.0-dev',
+    'libssl-dev',
     'git',
 ]
 
