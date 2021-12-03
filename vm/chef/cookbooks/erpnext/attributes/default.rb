@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,12 +25,13 @@ default['erpnext']['packages'] = [
     'wkhtmltopdf',
 ]
 
-default['erpnext']['version'] = '12'
+default['erpnext']['version'] = '13'
 default['erpnext']['site'] = 'site1.local'
 
 default['erpnext']['nodejs']['version'] = '12'
 
-default['erpnext']['mariadb']['version'] = '1:10.3.*'
+default['erpnext']['mariadb']['version'] = '10.3'
+default['erpnext']['mariadb']['apt_version'] = "1:#{default['mariadb']['version']}.*"
 default['erpnext']['mariadb']['packages'] = [ 'mariadb-server', 'libmariadb-dev' ]
 
 default['erpnext']['frappe']['bench'] = 'frappe-bench'

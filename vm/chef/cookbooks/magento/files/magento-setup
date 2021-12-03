@@ -16,6 +16,27 @@
 
 source /opt/c2d/c2d-utils || exit 1
 
+#######################################
+# Await the application to be ready.
+#######################################
+function wait_for_app() {
+  local max_retries=10
+  local retry=1
+  local http_code=0
+
+  while [[ "${http_code}" -ne 200 && "${retry}" -le "${max_retries}" ]]; do
+    echo "Trying to fetch homepage... ${retry}"
+    http_code="$(curl -s -L -o /dev/null -w "%{http_code}" http://localhost/index.php/"
+    (( retry=retry+1 ))
+    sleep 25
+  done
+
+  if [[ "${retry}" -gt "${max_retries}" ]]; then
+    echo "Max retries exceeded."
+    exit 1
+  fi
+}
+
 declare -a args=()
 args+=( --admin-firstname="owner" \
   --admin-lastname="owner" \
@@ -23,9 +44,12 @@ args+=( --admin-firstname="owner" \
   --admin-user="admin" \
   --admin-password=$(get_attribute_value "magento-admin-password") \
   --db-host="localhost" \
-  --db-name="magento" \
+  --db-name="magento2" \
   --db-user="magento" \
   --db-password=$(get_attribute_value "magento-db-password") \
+  --search-engine="elasticsearch7" \
+  --elasticsearch-host="localhost" \
+  --elasticsearch-port="9200" \
   --backend-frontname="admin" ) #MAGENTO ADMIN URL
 
 if has_external_ip; then
@@ -35,3 +59,11 @@ else
 fi
 
 php /var/www/html/bin/magento setup:install "${args[@]}"
+
+php /var/www/html/bin/magento setup:upgrade
+
+php /var/www/html/bin/magento setup:di:compile
+
+php /var/www/html/bin/magento cache:flush
+
+wait_for_app

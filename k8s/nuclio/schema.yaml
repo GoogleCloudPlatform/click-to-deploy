@@ -85,8 +85,16 @@ properties:
         description: Service account used by Nuclio Controller StatefulSet
         roles:
         - type: ClusterRole
-          rulesType: PREDEFINED
-          rulesFromRoleName: cluster-admin
+          rulesType: CUSTOM
+          rules:
+          - apiGroups: [""]
+            resources:
+            - endpoints
+            - pods
+            - nodes
+            verbs:
+            - get
+            - list
   CDRJobServiceAccount:
     type: string
     title: CRD deployer Service Account

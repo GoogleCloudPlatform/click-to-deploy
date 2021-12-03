@@ -11,10 +11,10 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-FROM gcr.io/google-appengine/debian9
+FROM marketplace.gcr.io/google/debian9
 
-ENV NEO4J_VERSION 4.3.0
-ENV NEO4J_SHA256 ee6c65dd602f91022fc2a275eb03b3e8596c468e4356d436936c2e626b65ae69
+ENV NEO4J_VERSION 4.3.6
+ENV NEO4J_SHA256 f86e4766097714b57910a5043cbeabf209f69f9e7525da5650640daa2e32f8ad
 ENV NEO4J_HOME  /var/lib/neo4j
 ENV NEO4J_EDITION community
 ENV NEO4J_TARBALL neo4j.tar.gz
@@ -23,11 +23,11 @@ ENV TINI_VERSION v0.19.0
 ENV TINI_SHA256 93dcc18adc78c65a028a84799ecf8ad40c936fdfc5f2a57b1acda5a8117fa82c
 
 # Required for neo4jlabs-plugins.json 
-ENV DOCKER_NEO4J_VERSION 4.3.0
+ENV DOCKER_NEO4J_VERSION 4.3.6
 ENV DOCKER_NEO4J_TARBALL docker-neo4j.tar.gz
-ENV DOCKER_NEO4J_SHA256  1312455ccef4c1cba9a7541c50df73d31a222264041c76a5275aacd063828cff
+ENV DOCKER_NEO4J_SHA256  98419761acbc678858dc4a0770d4eae586e6760897bf2251d6aec23463380227
 
-ENV C2D_RELEASE 4.3.0
+ENV C2D_RELEASE 4.3.6
 
 RUN addgroup --system neo4j && adduser --system --no-create-home --home "${NEO4J_HOME}" --ingroup neo4j neo4j
 

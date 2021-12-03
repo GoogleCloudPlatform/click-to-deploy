@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2020 Google Inc.
+# Copyright 2021 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source /opt/c2d/c2d-utils || exit 1
 source /opt/mattermost-utils || exit 1
 
 # Default values
@@ -41,4 +40,10 @@ update_config "${database_dsn}" "${metadata_sitename}"
 setup_nginx "${default_domain}"
 
 # Start Mattermost
+systemctl enable mattermost
 systemctl start mattermost
+
+# Wait until ready.
+wait_for_app
+
+echo "Installation complete."
