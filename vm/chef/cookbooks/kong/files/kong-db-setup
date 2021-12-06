@@ -25,6 +25,7 @@ echo "Setting up pgsql password encryption:"
 sed -i 's/scram-sha-256/md5/g' /etc/postgresql/*/main/pg_hba.conf
 echo "password_encryption = md5" >> /etc/postgresql/*/main/postgresql.conf
 
+# Ensure configuration is properly set before set up Kong
 declare password_encryption=""
 while [[ "${password_encryption}" != "md5" ]]; do
   echo "Reloading PostgreSQL..."
