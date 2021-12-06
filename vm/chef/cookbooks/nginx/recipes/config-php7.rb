@@ -17,3 +17,7 @@
 template '/etc/nginx/sites-available/default' do
   source 'default-php7.erb'
 end
+
+service 'nginx' do
+  action :reload
+end
