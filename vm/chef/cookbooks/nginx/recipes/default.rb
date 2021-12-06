@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# install nginx package
+apt_repository 'nginx' do
+  uri node['nginx']['repo']['uri']
+  components node['nginx']['repo']['components']
+  distribution node['nginx']['repo']['distribution']
+  key node['nginx']['repo']['keyserver']
+end
+
+apt_update 'update' do
+  action :update
+  retries 5
+  retry_delay 30
+end
+
 package 'install packages' do
   package_name node['nginx']['packages']
   action :install
-end
-
-execute 'rename index.html' do
-  command 'mv /var/www/html/index.nginx-debian.html /var/www/html/index.html'
 end
