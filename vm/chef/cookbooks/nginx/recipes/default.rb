@@ -30,3 +30,10 @@ package 'install packages' do
   package_name node['nginx']['packages']
   action :install
 end
+
+directory '/etc/nginx/sites-available' do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
