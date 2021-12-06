@@ -12,9 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'mysql'
-include_recipe 'php74'
-include_recipe 'php74::module_mysql'
-
-include_recipe 'nginx::default'
-include_recipe 'nginx::config-nginx'
+template '/etc/nginx/nginx.conf' do
+  source 'nginx.conf.erb'
+end

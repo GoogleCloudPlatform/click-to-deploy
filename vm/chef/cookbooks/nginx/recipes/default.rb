@@ -37,3 +37,10 @@ directory '/etc/nginx/sites-available' do
   mode '0755'
   action :create
 end
+
+directory '/etc/nginx/sites-enabled' do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
