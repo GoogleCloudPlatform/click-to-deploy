@@ -19,5 +19,4 @@ source /opt/c2d/c2d-utils || exit 1
 readonly odoo_password="$(get_attribute_value "odoo-password")"
 
 echo "admin_passwd = ${odoo_password}" >> /etc/odoo/odoo.conf
-
 systemctl restart odoo
