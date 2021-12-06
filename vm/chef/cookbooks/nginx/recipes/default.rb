@@ -44,3 +44,9 @@ directory '/etc/nginx/sites-enabled' do
   mode '0755'
   action :create
 end
+
+template '/etc/nginx/nginx.conf' do
+  source 'nginx.conf.erb'
+end
+
+end

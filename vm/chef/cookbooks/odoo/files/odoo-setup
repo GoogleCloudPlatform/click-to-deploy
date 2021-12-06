@@ -20,8 +20,4 @@ readonly odoo_password="$(get_attribute_value "odoo-password")"
 
 echo "admin_passwd = ${odoo_password}" >> /etc/odoo/odoo.conf
 
-rm /etc/nginx/conf.d/default.conf
-
-systemctl reload nginx
-
 systemctl restart odoo

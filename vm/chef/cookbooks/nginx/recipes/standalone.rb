@@ -17,4 +17,4 @@ include_recipe 'php74'
 include_recipe 'php74::module_mysql'
 
 include_recipe 'nginx::default'
-include_recipe 'nginx::config-nginx'
+
