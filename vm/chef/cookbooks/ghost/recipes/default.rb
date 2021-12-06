@@ -19,7 +19,7 @@ apt_update 'update' do
 end
 
 include_recipe 'mysql'
-include_recipe 'nginx'
+include_recipe 'nginx::standalone'
 include_recipe 'nodejs::default_nodejs14'
 
 file '/var/www/html/index.html' do
