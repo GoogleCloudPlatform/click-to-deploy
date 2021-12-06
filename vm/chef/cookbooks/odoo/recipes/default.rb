@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'postgresql'
+node.override['postgresql']['standalone']['allow_external'] = false
+
+include_recipe 'postgresql::standalone_buster'
 include_recipe 'nginx'
 
 package 'Install packages' do
