@@ -23,7 +23,7 @@ readonly external_ip="$(get_external_ip)"
 
 # Create kong.conf file
 cp /etc/kong/kong.conf.default /etc/kong/kong.conf
-sed -i "s/#database =.*/database = postgres/" /etc/kong/kong.conf
+sed -i "s/#database =.*/database = off/" /etc/kong/kong.conf
 sed -i "s/#pg_user =.*/pg_user = ${db_username}/" /etc/kong/kong.conf
 sed -i "s/#pg_password =.*/pg_password = ${db_password}/" /etc/kong/kong.conf
 sed -i "s/#pg_database = .*/pg_database = kong/" /etc/kong/kong.conf
