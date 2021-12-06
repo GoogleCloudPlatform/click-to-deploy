@@ -17,5 +17,5 @@ template '/etc/nginx/nginx.conf' do
 end
 
 file '/etc/nginx/conf.d/default.conf' do
-  action :delete 
+  action :delete
 end
