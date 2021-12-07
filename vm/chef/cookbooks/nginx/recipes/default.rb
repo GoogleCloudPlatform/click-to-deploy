@@ -49,10 +49,10 @@ template '/etc/nginx/nginx.conf' do
   source 'nginx.conf.erb'
 end
 
-file '/etc/nginx/conf.d/default.conf' do
-  action :delete
-end
-
 service 'nginx' do
   action :reload
+end
+
+file '/etc/nginx/conf.d/default.conf' do
+  action :delete
 end

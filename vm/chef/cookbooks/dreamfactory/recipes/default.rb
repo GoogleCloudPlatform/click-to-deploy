@@ -16,7 +16,6 @@
 
 include_recipe 'mysql'
 include_recipe 'nginx'
-include_recipe 'nginx::extras'
 include_recipe 'redis::standalone'
 
 include_recipe 'php74'
@@ -57,6 +56,10 @@ cookbook_file '/etc/nginx/sites-available/dreamfactory.conf' do
   group 'root'
   mode 0755
   action :create
+end
+
+service 'nginx' do
+  action :reload
 end
 
 cookbook_file '/opt/c2d/dreamfactory-utils' do
