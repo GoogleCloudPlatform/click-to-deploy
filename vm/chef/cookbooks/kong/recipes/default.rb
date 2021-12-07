@@ -13,7 +13,10 @@
 # limitations under the License.
 #
 # Reference: https://konghq.com/install/#kong-community
-include_recipe 'postgresql'
+
+node.override['postgresql']['standalone']['allow_external'] = false
+
+include_recipe 'postgresql::standalone_buster'
 include_recipe 'git'
 
 apt_update do
@@ -34,7 +37,7 @@ end
 
 # Download md5 checksum from apache
 remote_file '/tmp/kong.deb' do
-  source "https://download.konghq.com/gateway-2.x-debian-stretch/pool/all/k/kong/kong_#{node['kong']['version']}_amd64.deb"
+  source "https://download.konghq.com/gateway-2.x-debian-buster/pool/all/k/kong/kong_#{node['kong']['version']}_amd64.deb"
   verify "echo '#{node['kong']['sha1']} %{path}' | sha1sum -c"
   action :create
 end
