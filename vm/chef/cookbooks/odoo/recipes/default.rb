@@ -95,7 +95,7 @@ bash 'Install python requirements' do
   user 'root'
 end
 
-template '/etc/nginx/sites-available/default' do
+template '/etc/nginx/sites-enabled/default' do
   source 'default-nginx.erb'
 end
 
