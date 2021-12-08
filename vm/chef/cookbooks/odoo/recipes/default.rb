@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,9 +22,14 @@ package 'Install packages' do
   action :install
 end
 
+bash 'Update Pip3' do
+  code 'pip3 install --upgrade pip'
+  user 'root'
+end
+
 # Download WKHTMLtoPDF from the official server
 remote_file '/tmp/wkhtmltopdf.deb' do
-  source "https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/#{node['odoo']['wkhtmltopdf']['version']}/wkhtmltox_#{node['odoo']['wkhtmltopdf']['release']}.stretch_amd64.deb"
+  source "https://github.com/wkhtmltopdf/packaging/releases/download/#{node['odoo']['wkhtmltopdf']['release']}/wkhtmltox_#{node['odoo']['wkhtmltopdf']['release']}.buster_amd64.deb"
   checksum node['odoo']['wkhtmltopdf']['sha256']
   action :create
 end
