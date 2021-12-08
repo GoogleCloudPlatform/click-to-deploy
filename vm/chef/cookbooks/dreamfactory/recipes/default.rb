@@ -50,7 +50,7 @@ bash 'Copy app' do
 EOH
 end
 
-cookbook_file '/etc/nginx/sites-available/dreamfactory.conf' do
+cookbook_file '/etc/nginx/sites-enabled/dreamfactory.conf' do
   source 'nginx-dreamfactory.conf'
   owner 'root'
   group 'root'

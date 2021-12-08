@@ -74,7 +74,7 @@ bash 'Prepare permissions' do
 EOH
 end
 
-cookbook_file '/etc/nginx/sites-available/testlink.conf' do
+cookbook_file '/etc/nginx/sites-enabled/testlink.conf' do
   source 'nginx-testlink.conf'
   owner 'root'
   group 'root'
