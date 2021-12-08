@@ -1,4 +1,4 @@
-user  nginx;
+user  www-data;
 worker_processes  auto;
 
 error_log  /var/log/nginx/error.log notice;
@@ -29,5 +29,4 @@ http {
 
     include /etc/nginx/conf.d/*.conf;
     include /etc/nginx/sites-enabled/*;
-    include /etc/nginx/sites-available/*;
 }
