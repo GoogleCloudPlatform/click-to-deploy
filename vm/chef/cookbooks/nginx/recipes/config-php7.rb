@@ -14,7 +14,7 @@
 
 # This recipe overwrite configuration of nginx to use php7.
 
-template '/etc/nginx/sites-available/default' do
+template '/etc/nginx/sites-enabled/default' do
   source 'default-php7.erb'
 end
 

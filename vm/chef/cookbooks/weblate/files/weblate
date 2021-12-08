@@ -42,7 +42,7 @@ create_db_user
 
 # Install Weblate and uwsgi
 activate_virtualenv
-pip install weblate
+pip3 install weblate
 
 # Create configuration file
 declare -r python_folder="$(ls -la /opt/weblate-env/lib | grep "python" | awk '{ print $9 }')"
