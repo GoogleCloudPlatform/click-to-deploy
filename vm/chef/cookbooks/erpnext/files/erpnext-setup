@@ -41,8 +41,6 @@ EOSQL
 # Cleanup mysql initial password file.
 rm -f "${INITIAL_PASSWORD_FILE}"
 
-supervisorctl restart all
-
 # Wait until ready.
 until curl "http://localhost:80"; do
   sleep 3
