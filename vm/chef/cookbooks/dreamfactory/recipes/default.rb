@@ -58,10 +58,6 @@ cookbook_file '/etc/nginx/sites-enabled/dreamfactory.conf' do
   action :create
 end
 
-service 'nginx' do
-  action :reload
-end
-
 cookbook_file '/opt/c2d/dreamfactory-utils' do
   source 'dreamfactory-utils'
   owner 'root'
