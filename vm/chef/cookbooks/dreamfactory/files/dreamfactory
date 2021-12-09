@@ -64,7 +64,6 @@ configure_nginx
 echo "Enabling Website..."
 rm -f "${df_install_folder}/public/web.config"
 rm -f /etc/nginx/sites-enabled/default
-ln -s /etc/nginx/sites-available/dreamfactory.conf /etc/nginx/sites-enabled/
 
 echo "Starting Webserver..."
 systemctl start nginx
