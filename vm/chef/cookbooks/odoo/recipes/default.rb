@@ -15,7 +15,7 @@
 node.override['postgresql']['standalone']['allow_external'] = false
 
 include_recipe 'postgresql::standalone_buster'
-include_recipe 'nginx'
+include_recipe 'nginx::embedded'
 
 package 'Install packages' do
   package_name node['odoo']['packages']
@@ -95,8 +95,18 @@ bash 'Install python requirements' do
   user 'root'
 end
 
-template '/etc/nginx/sites-enabled/default' do
+template '/etc/nginx/sites-available/odoo.conf' do
   source 'default-nginx.erb'
+end
+
+bash 'Configure website' do
+  user 'root'
+  cwd '/etc/nginx'
+  code 'ln -s sites-available/odoo.conf sites-enabled/'
+end
+
+service 'nginx.service' do
+  action [ :restart ]
 end
 
 c2d_startup_script 'odoo-setup'
