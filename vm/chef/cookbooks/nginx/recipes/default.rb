@@ -41,12 +41,13 @@ end
   end
 end
 
-# Include sites-enabled/ folder to default configuration
-bash 'Add sites-enabled' do
+# Include sites-enabled/ folder to default configuration and set user
+bash 'Configure NGINX' do
   user 'root'
   cwd '/etc/nginx'
   code <<-EOH
   sed -i "/^.*include.*conf.d/a \ \ \ \ include /etc/nginx/sites-enabled/*.conf;" nginx.conf
+  sed -i 's/user \ nginx;/user www-data;/g' nginx.conf
 EOH
 end
 

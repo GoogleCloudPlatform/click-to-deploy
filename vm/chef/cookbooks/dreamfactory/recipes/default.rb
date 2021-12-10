@@ -15,7 +15,7 @@
 # Reference: https://wiki.dreamfactory.com/DreamFactory/Installation
 
 include_recipe 'mysql'
-include_recipe 'nginx::standalone'
+include_recipe 'nginx'
 include_recipe 'redis::standalone'
 
 include_recipe 'php74'
@@ -50,7 +50,7 @@ bash 'Copy app' do
 EOH
 end
 
-cookbook_file '/etc/nginx/sites-enabled/dreamfactory.conf' do
+cookbook_file '/etc/nginx/sites-available/dreamfactory.conf' do
   source 'nginx-dreamfactory.conf'
   owner 'root'
   group 'root'
