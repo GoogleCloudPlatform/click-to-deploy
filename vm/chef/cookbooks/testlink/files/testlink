@@ -40,9 +40,6 @@ configure_php
 echo "Setting up NGINX..."
 configure_nginx
 
-echo "Enabling Website..."
-ln -s /etc/nginx/sites-available/testlink.conf /etc/nginx/sites-enabled/
-
 echo "Starting webserver..."
 systemctl start nginx
 
