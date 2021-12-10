@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# install nginx package
+# Install NGINX package
 apt_repository 'nginx' do
   uri node['nginx']['repo']['uri']
   components node['nginx']['repo']['components']
@@ -31,28 +31,25 @@ package 'install packages' do
   action :install
 end
 
-directory '/etc/nginx/sites-available' do
-  owner 'root'
-  group 'root'
-  mode '0755'
-  action :create
+# Create default folders
+['available', 'enabled'].each do |dir|
+  directory "/etc/nginx/sites-#{dir}" do
+    owner 'root'
+    group 'root'
+    mode '0755'
+    action :create
+  end
 end
 
-directory '/etc/nginx/sites-enabled' do
-  owner 'root'
-  group 'root'
-  mode '0755'
-  action :create
-end
-
-template '/etc/nginx/nginx.conf' do
-  source 'nginx.conf.erb'
+# Include sites-enabled/ folder to default configuration
+bash 'Add sites-enabled' do
+  user 'root'
+  cwd '/etc/nginx'
+  code <<-EOH
+  sed -i "/^.*include.*conf.d/a \ \ \ \ include /etc/nginx/sites-enabled/*.conf;" nginx.conf
+EOH
 end
 
 service 'nginx' do
   action :reload
-end
-
-file '/etc/nginx/conf.d/default.conf' do
-  action :delete
 end

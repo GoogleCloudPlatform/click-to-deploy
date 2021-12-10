@@ -16,5 +16,12 @@ include_recipe 'mysql'
 include_recipe 'php74'
 include_recipe 'php74::module_mysql'
 
-include_recipe 'nginx::default'
-include_recipe 'nginx::config-php7'
+include_recipe 'nginx'
+
+bash 'Enable default homepage' do
+  user 'root'
+  cwd '/etc/nginx'
+  code <<-EOH
+  mv conf.d/default.conf sites-enabled/default.conf
+EOH
+end
