@@ -101,12 +101,11 @@ end
 
 bash 'Configure website' do
   user 'root'
-  cwd '/etc/nginx'
-  code 'ln -s sites-available/odoo.conf sites-enabled/'
+  code 'ln -s /etc/nginx/sites-available/odoo.conf /etc/nginx/sites-enabled/odoo.conf'
 end
 
-service 'nginx.service' do
-  action [ :restart ]
+service 'nginx' do
+  action [ :reload ]
 end
 
 c2d_startup_script 'odoo-setup'
