@@ -39,6 +39,7 @@ sed -i -e 's@#sonar.jdbc.password=@sonar.jdbc.password='${postgres_sonar_db}'@g'
 sed -i -e 's@#sonar.jdbc.url=jdbc:postgresql://localhost/sonarqube?currentSchema=my_schema@sonar.jdbc.url=jdbc:postgresql://localhost/sonar@g' /opt/sonarqube/conf/sonar.properties
 sed -i -e 's@#sonar.web.javaAdditionalOpts=@sonar.web.javaAdditionalOpts=-server@g' /opt/sonarqube/conf/sonar.properties
 sed -i -e 's@#sonar.web.host=0.0.0.0@sonar.web.host=0.0.0.0@g' /opt/sonarqube/conf/sonar.properties
+echo "sonar.search.javaAdditionalOpts=-Dlog4j2.formatMsgNoLookups=true" >> /opt/sonarqube/conf/sonar.properties
 
 passwd sonar <<EOF
 $sonar_pass
