@@ -19,6 +19,7 @@ include_recipe 'apache2'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 include_recipe 'postgresql::standalone_buster'
+include_recipe 'tomcat'
 
 # Notes:
 # 1) This recipe adds two new entries to /etc/hosts - pointing hostname to
@@ -54,25 +55,25 @@ end
 # NOTE: this operation is conducted without certificate check,
 # because DigiCert's certificates are untrusted on Debian 9
 
-apt_package 'wget' do
+apt_package 'zip' do
   action :install
 end
 
-bash 'download_and_check_alfresco' do
-  code <<-EOH
-    wget --no-check-certificate $alfresco_install_url -O /tmp/alfresco.bin
-    echo "$alfresco_sha256 /tmp/alfresco.bin" | sha256sum -c
-    chmod u+x /tmp/alfresco.bin
-EOH
-  environment({
-    'alfresco_install_url' => node['alfresco']['install']['url'],
-    'alfresco_sha256' => node['alfresco']['install']['sha256'],
-  })
+# Download alfresco.
+remote_file '/tmp/tomcat.zip' do
+  source "#{node['alfresco']['install']['url']}"
+  verify "echo '#{node['alfresco']['install']['sha256']} %{path}' | sha256sum -c"
+  action :create
 end
 
-# Install Alfresco with pre-defined options
-execute 'install_alfresco' do
-  command '/tmp/alfresco.bin --optionfile /tmp/install-opts'
+
+# Extract alfreso to home directory.
+bash 'Extract Alfresco' do
+  user 'root'
+  cwd '/tmp'
+  code <<-EOH
+unzip alfresco.zip -d /opt/alfresco
+EOH
 end
 
 # Configure Apache to serve as Alfresco proxy:
@@ -127,6 +128,3 @@ end
 # Copy post-deploy configuration script
 # (to override and configure instance's specific passwords):
 c2d_startup_script 'alfresco'
-
-# Download source code
-include_recipe 'alfresco::download_source_code'
