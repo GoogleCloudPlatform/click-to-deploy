@@ -51,6 +51,10 @@ await_for_host_and_port "${es_host}" "${es_port}"
 
 echo "Setting up Kibana..."
 
+# Fix for CVE-2021-44228
+echo 'ES_JAVA_OPTS="-Dlog4j2.disable.jmx=true -Dlog4j2.formatMsgNoLookups=true"' >> \
+  /etc/default/kibana
+
 # Disable authentication if Elasticsearch username is not provided.
 if [[ -z "${kibana_username}" ]]; then
   echo "Disable authentication"
