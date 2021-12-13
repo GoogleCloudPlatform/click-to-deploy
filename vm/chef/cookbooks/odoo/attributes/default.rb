@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,6 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+# https://www.odoo.com/documentation/15.0/administration/install/install.html#
 
 default['odoo']['packages'] = [
     'python3-pip',
@@ -31,20 +33,17 @@ default['odoo']['packages'] = [
     'python3-setuptools',
     'python3-vobject',
     'python3-watchdog',
-    'libssl1.0-dev',
+    'libssl-dev',
     'git',
 ]
 
-default['odoo']['pip-packages'] = 'vobject qrcode pyldap num2words'
+default['odoo']['pip-packages'] = 'vobject qrcode pyldap num2words xlwt pyopenssl sslcrypto'
 
-# Notice for future update to version 13:
-# The 13.0 version requires python 3.6+ and xlwt pip-package
+default['odoo']['version'] = '15.0'
+default['odoo']['release'] = '20211201'
+default['odoo']['sha256'] = 'a5c974da075e91f59a4331557b70a36865a2271148349db58e0064b20c972538'
+default['odoo']['src']['sha256'] = '2a14b4c4d84e0380a354ae542af04e3b46c38ab3184406187be27c4d2972e623'
 
-default['odoo']['version'] = '12.0'
-default['odoo']['release'] = '20200922'
-default['odoo']['sha256'] = 'd84d1385822a034755cd3bfe01c917dc96c2db6b4a357dea2ec3b9c7d1e4bc91'
-default['odoo']['src']['sha256'] = '7418008825f02b5b0dfcd4b16d5b73b97bdb0f670bfb21809e8b3372fb1ac924'
-
-default['odoo']['wkhtmltopdf']['version'] = '0.12.5'
-default['odoo']['wkhtmltopdf']['release'] = '0.12.5-1'
-default['odoo']['wkhtmltopdf']['sha256'] = '1140b0ab02aa6e17346af2f14ed0de807376de475ba90e1db3975f112fbd20bb'
+default['odoo']['wkhtmltopdf']['version'] = '0.12.6'
+default['odoo']['wkhtmltopdf']['release'] = '0.12.6-1'
+default['odoo']['wkhtmltopdf']['sha256'] = '3e7a93a2ae4a2dd5cccb1b7bcce0eb462c75f05efa314a29499dadfdc5ebc59e'

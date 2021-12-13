@@ -24,6 +24,10 @@ x-google-marketplace:
           type: REPO_WITH_REGISTRY
         jenkins.image.tag:
           type: TAG
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
 
 properties:
   name:
@@ -48,6 +52,12 @@ properties:
     default: "8Gi"
     description: The storage size Jenkins persistent volume
     pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  metrics.exporter.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project must have Stackdriver enabled. For non-GCP clusters,
+      the export of metrics to Stackdriver is not yet supported.
+    default: false
   certificate:
     type: string
     x-google-marketplace:
@@ -60,4 +70,5 @@ properties:
 required:
 - name
 - namespace
+- metrics.exporter.enabled
 - certificate

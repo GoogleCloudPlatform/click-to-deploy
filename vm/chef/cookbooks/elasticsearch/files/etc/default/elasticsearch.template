@@ -21,7 +21,7 @@ DATA_DIR=/var/lib/elasticsearch/data
 #PID_DIR=/var/run/elasticsearch
 
 # Additional Java OPTS
-ES_JAVA_OPTS="-Xms${es_heap_size_gb}g -Xmx${es_heap_size_gb}g"
+ES_JAVA_OPTS="-Xms${es_heap_size_gb}g -Xmx${es_heap_size_gb}g -Dlog4j2.formatMsgNoLookups=true"
 
 # Configure restart on package upgrade (true, every other setting will lead to not restarting)
 RESTART_ON_UPGRADE=true

@@ -25,10 +25,10 @@ default['erpnext']['packages'] = [
     'wkhtmltopdf',
 ]
 
-default['erpnext']['version'] = '12'
+default['erpnext']['version'] = '13'
 default['erpnext']['site'] = 'site1.local'
 
-default['erpnext']['nodejs']['version'] = '12'
+default['erpnext']['nodejs']['version'] = '14'
 
 default['erpnext']['mariadb']['version'] = '10.3'
 default['erpnext']['mariadb']['apt_version'] = "1:#{default['mariadb']['version']}.*"
