@@ -31,6 +31,11 @@ export es_protocol="http"
 
 systemctl stop logstash
 
+# Fix for CVE-2021-44228
+readonly jvm_options="/etc/logstash/jvm.options"
+echo "-Dlog4j2.disable.jmx=true" >> "${jvm_options}"
+echo "-Dlog4j2.formatMsgNoLookups=true" >> "${jvm_options}"
+
 # If image is being used by ELK Stack, configure Elasticsearch pipeline
 if [[ "${is_elkstack:-"false"}" == "true" ]]; then
   echo "Awaiting for Elasticsearch server to be up..."
