@@ -22,6 +22,7 @@ readonly user="admin"
 readonly new_salt="$(tr -dc A-Za-z0-9 </dev/urandom | head -c 40 ; echo '')"
 readonly new_password="${sonar_pass}"
 readonly salted_password="$(echo -n "--${new_salt}--${new_password}--" | sha1sum | awk '{print $1}')"
+readonly sonarqube_properties="/opt/sonarqube/conf/sonar.properties"
 
 # Creating postgres DB for sonar.
 sudo -u postgres psql <<EOF
@@ -34,11 +35,12 @@ EOF
 # Configure SonarQube to run as a sonar user.
 sed -i -e 's@#RUN_AS_USER=@RUN_AS_USER=sonar@g' /opt/sonarqube/bin/linux-x86-64/sonar.sh
 # Sonarqube default configuration file edits.
-sed -i -e 's@#sonar.jdbc.username=@sonar.jdbc.username=sonar@g' /opt/sonarqube/conf/sonar.properties
-sed -i -e 's@#sonar.jdbc.password=@sonar.jdbc.password='${postgres_sonar_db}'@g' /opt/sonarqube/conf/sonar.properties
-sed -i -e 's@#sonar.jdbc.url=jdbc:postgresql://localhost/sonarqube?currentSchema=my_schema@sonar.jdbc.url=jdbc:postgresql://localhost/sonar@g' /opt/sonarqube/conf/sonar.properties
-sed -i -e 's@#sonar.web.javaAdditionalOpts=@sonar.web.javaAdditionalOpts=-server@g' /opt/sonarqube/conf/sonar.properties
-sed -i -e 's@#sonar.web.host=0.0.0.0@sonar.web.host=0.0.0.0@g' /opt/sonarqube/conf/sonar.properties
+sed -i -e 's@#sonar.jdbc.username=@sonar.jdbc.username=sonar@g' "${sonarqube_properties}"
+sed -i -e 's@#sonar.jdbc.password=@sonar.jdbc.password='${postgres_sonar_db}'@g' "${sonarqube_properties}"
+sed -i -e 's@#sonar.jdbc.url=jdbc:postgresql://localhost/sonarqube?currentSchema=my_schema@sonar.jdbc.url=jdbc:postgresql://localhost/sonar@g' "${sonarqube_properties}"
+sed -i -e 's@#sonar.web.javaAdditionalOpts=@sonar.web.javaAdditionalOpts=-server@g' "${sonarqube_properties}"
+sed -i -e 's@#sonar.web.host=0.0.0.0@sonar.web.host=0.0.0.0@g' "${sonarqube_properties}"
+echo "sonar.search.javaAdditionalOpts=-Dlog4j2.formatMsgNoLookups=true" >> "${sonarqube_properties}"
 
 passwd sonar <<EOF
 $sonar_pass
