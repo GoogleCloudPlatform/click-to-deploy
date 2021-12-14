@@ -46,7 +46,10 @@ spec:
           runAsGroup: 1000
         env:
         - name: JAVA_OPTS
-          value: "-Xmx1800m"
+          value: >-
+                -Xmx1800m
+                -Dlog4j2.formatMsgNoLookups=true
+                -Dlog4j2.disable.jmx=true
         - name: INSTALL_MONITORING
           value: "true"
         - name: INSTALL_PROMETHEUS
