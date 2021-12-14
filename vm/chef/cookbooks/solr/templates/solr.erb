@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2017 Google Inc.
+# Copyright 2021 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ source /opt/c2d/c2d-utils || exit 1
 solr_memory_mb=$( awk '/MemAvailable/ { print int($2 / 1024 * .8) }' /proc/meminfo )
 
 sed -i -e "s/^#SOLR_HEAP.*/SOLR_HEAP=\"${solr_memory_mb}m\"/" /etc/default/solr.in.sh
+echo "SOLR_OPTS=\"\$SOLR_OPTS -Dlog4j2.formatMsgNoLookups=true\"" >> /etc/default/solr.in.sh
 
 # Create realm.properties file for solr auth
 readonly solr_pass="$(get_attribute_value "solr-admin-password")"
