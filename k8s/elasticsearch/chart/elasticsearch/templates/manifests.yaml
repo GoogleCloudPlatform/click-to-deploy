@@ -79,6 +79,9 @@ spec:
           value: "{{ .Release.Name }}-elasticsearch-svc"
         - name: BACKUP_REPO_PATH
           value: ""
+        - name: ES_JAVA_OPTS
+          value: >-
+                -Dlog4j2.formatMsgNoLookups=true
         ports:
         - name: prometheus
           containerPort: 9114
