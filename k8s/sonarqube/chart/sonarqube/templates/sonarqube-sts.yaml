@@ -52,6 +52,10 @@ spec:
               value: jdbc:postgresql://{{ .Release.Name }}-postgresql-service:5432/{{.Values.postgresql.db.name}}
             - name: SONARQUBE_JDBC_USERNAME
               value: {{.Values.postgresql.db.user}}
+            - name: JAVA_OPTS
+              value: >-
+                    -Dlog4j2.formatMsgNoLookups=true
+                    -Dlog4j2.disable.jmx=true
           ports:
             - containerPort: 9000
               name: sonar-port

@@ -65,6 +65,10 @@ spec:
           value: 0.0.0.0:7687
         - name: NEO4J_dbms_connector_http_listen__address
           value: 0.0.0.0:7474
+        - name: JAVA_OPTS
+          value: >-
+                -Dlog4j2.formatMsgNoLookups=true
+                -Dlog4j2.disable.jmx=true
       volumes:
       - name: neo4j-storage
         persistentVolumeClaim:

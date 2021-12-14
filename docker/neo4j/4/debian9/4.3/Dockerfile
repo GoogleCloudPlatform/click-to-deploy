@@ -22,12 +22,16 @@ ENV NEO4J_TARBALL neo4j.tar.gz
 ENV TINI_VERSION v0.19.0
 ENV TINI_SHA256 93dcc18adc78c65a028a84799ecf8ad40c936fdfc5f2a57b1acda5a8117fa82c
 
-# Required for neo4jlabs-plugins.json 
+# Required for neo4jlabs-plugins.json
 ENV DOCKER_NEO4J_VERSION 4.3.6
 ENV DOCKER_NEO4J_TARBALL docker-neo4j.tar.gz
 ENV DOCKER_NEO4J_SHA256  98419761acbc678858dc4a0770d4eae586e6760897bf2251d6aec23463380227
 
 ENV C2D_RELEASE 4.3.6
+
+# Workaround for CVE-2021-44228
+# https://www.docker.com/blog/apache-log4j-2-cve-2021-44228/
+ENV JAVA_OPTS="-Dlog4j.formatMsgNoLookups=true"
 
 RUN addgroup --system neo4j && adduser --system --no-create-home --home "${NEO4J_HOME}" --ingroup neo4j neo4j
 
@@ -44,7 +48,7 @@ RUN apt update \
     && echo "${DOCKER_NEO4J_SHA256}  ${DOCKER_NEO4J_TARBALL}" | sha256sum -c --strict --quiet \
     && tar --extract --file ${DOCKER_NEO4J_TARBALL} --directory /tmp \
     && mv /tmp/docker-neo4j*/neo4jlabs-plugins.json /neo4jlabs-plugins.json \
-    && rm ${DOCKER_NEO4J_TARBALL} \    
+    && rm ${DOCKER_NEO4J_TARBALL} \
     && rm ${NEO4J_TARBALL} \
     && mv "${NEO4J_HOME}"/data /data \
     && mv "${NEO4J_HOME}"/logs /logs \
