@@ -70,12 +70,15 @@ ENV JAVA_OPTS_DEFAULT="-Dhazelcast.mc.home=${MC_DATA} -Djava.net.preferIPv4Stack
     NO_CONTAINER_SUPPORT="false" \
     MIN_HEAP_SIZE="" \
     MAX_HEAP_SIZE="" \
-    JAVA_OPTS="" \
     MC_INIT_SCRIPT="" \
     MC_INIT_CMD="" \
     MC_CLASSPATH="" \
     MC_ADMIN_USER="" \
     MC_ADMIN_PASSWORD=""
+
+# Workaround for CVE-2021-44228
+# https://www.docker.com/blog/apache-log4j-2-cve-2021-44228/
+ENV JAVA_OPTS="-Dlog4j.formatMsgNoLookups=true"
 
 RUN echo "Installing new APK packages" \
  && apt update \
