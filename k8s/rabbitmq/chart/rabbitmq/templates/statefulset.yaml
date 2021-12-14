@@ -64,6 +64,10 @@ spec:
             cpu: 100m
             memory: 100Mi
         env:
+        - name: JAVA_OPTS
+          value: >-
+                -Dlog4j2.formatMsgNoLookups=true
+                -Dlog4j2.disable.jmx=true
         - name: MY_POD_NAME
           valueFrom:
             fieldRef:
