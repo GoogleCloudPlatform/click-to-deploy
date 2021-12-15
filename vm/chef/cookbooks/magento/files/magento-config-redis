@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2017 Google Inc.
+# Copyright 2021 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,31 +32,3 @@ fi
 
 echo "maxmemory ${memory_for_redis}mb" >> /etc/redis/redis.conf
 systemctl restart redis
-
-# Configure env.php to use redis as a backend cache
-
-php << 'EOPHP' > /tmp/env.php
-<?php
-$config = require('/var/www/html/app/etc/env.php');
-$config['cache'] = array(
-  'frontend' => array(
-    'default' => array(
-      'backend' => 'Cm_Cache_Backend_Redis',
-      'backend_options' => array(
-        'server' => '127.0.0.1',
-        'database' => 0,
-        'port' => 6379),
-    ),
-    'page_cache' => array(
-      'backend' => 'Cm_Cache_Backend_Redis',
-      'backend_options' => array(
-        'server' => '127.0.0.1',
-        'port' => 6379,
-        'database' => 1,
-        'compress_data' => 0))));
-echo "<?php\nreturn " . var_export($config, true) . ";\n";
-EOPHP
-
-# Due to the file locking in linux, we save the output to a tmp file then save.
-mv /tmp/env.php /var/www/html/app/etc/env.php
-chown www-data:www-data /var/www/html/app/etc/env.php

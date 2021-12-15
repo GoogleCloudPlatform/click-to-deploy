@@ -33,19 +33,23 @@ describe 'C2D startup scripts should exists' do
     it { should exist }
   end
 
-  describe file('/opt/c2d/scripts/02-magento') do
+  describe file('/opt/c2d/scripts/02-redis-standalone') do
     it { should exist }
   end
 
-  describe file('/opt/c2d/scripts/03-magento-setup') do
+  describe file('/opt/c2d/scripts/03-magento') do
     it { should exist }
   end
 
-  describe file('/opt/c2d/scripts/04-magento-post-setup') do
+  describe file('/opt/c2d/scripts/04-magento-setup') do
     it { should exist }
   end
 
-  describe file('/opt/c2d/scripts/05-magento-config-redis') do
+  describe file('/opt/c2d/scripts/05-magento-post-setup') do
+    it { should exist }
+  end
+
+  describe file('/opt/c2d/scripts/06-magento-config-redis') do
     it { should exist }
   end
 end

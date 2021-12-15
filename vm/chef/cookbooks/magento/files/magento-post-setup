@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2017 Google Inc.
+# Copyright 2021 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +13,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
 
 #######################################
 # Awaits for website at localhost be ready.
@@ -80,3 +82,14 @@ php /var/www/html/bin/magento cache:flush
 chown -R www-data:www-data var/
 
 wait_for_app
+
+# Reconfigure correct base_url
+declare base_url=""
+if has_external_ip; then
+  base_url="http://$(get_external_ip)/"
+else
+  base_url="http://$(get_internal_ip)/"
+fi
+
+php /var/www/html/bin/magento setup:store-config:set --base-url="${base_url}"
+php /var/www/html/bin/magento cache:flush
