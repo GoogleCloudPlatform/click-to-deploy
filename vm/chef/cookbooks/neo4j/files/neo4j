@@ -46,6 +46,9 @@ else
   echo "Remote access is disabled."
 fi
 
+# CVE-2021-44228
+echo "dbms.jvm.additional=-Dlog4j2.formatMsgNoLookups=true" >> "${neo4j_config}"
+
 # Set the initial password.
 # If no metadata for password is provided, use a default one
 # and requires user to change it, otherwise, use the provided one.

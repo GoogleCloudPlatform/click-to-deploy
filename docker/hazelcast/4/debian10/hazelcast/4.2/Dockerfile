@@ -50,8 +50,11 @@ ENV HZ_HOME="${HZ_HOME}" \
     PROMETHEUS_PORT="" \
     PROMETHEUS_CONFIG="${HZ_HOME}/jmx_agent_config.yaml" \
     LOGGING_LEVEL="" \
-    CLASSPATH="" \
-    JAVA_OPTS=""
+    CLASSPATH=""
+
+# Workaround for CVE-2021-44228
+# https://www.docker.com/blog/apache-log4j-2-cve-2021-44228/
+ENV JAVA_OPTS="-Dlog4j.formatMsgNoLookups=true"
 
 # Expose port
 EXPOSE 5701
