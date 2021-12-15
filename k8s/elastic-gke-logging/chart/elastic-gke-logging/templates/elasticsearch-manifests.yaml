@@ -76,7 +76,10 @@ spec:
             fieldRef:
               fieldPath: metadata.name
         - name: ES_JAVA_OPTS
-          value: -Xms1536m -Xmx1536m
+          value: >-
+                -Xms1536m -Xmx1536m
+                -Dlog4j2.formatMsgNoLookups=true
+                -Dlog4j2.disable.jmx=true
         - name: CLUSTER_NAME
           value: "{{ .Release.Name }}-cluster"
         - name: DISCOVERY_SERVICE

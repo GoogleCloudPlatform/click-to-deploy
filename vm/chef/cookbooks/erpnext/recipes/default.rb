@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -142,6 +142,19 @@ bash 'Setup production' do
   cwd "/home/#{node['erpnext']['frappe']['user']}/#{node['erpnext']['frappe']['bench']}"
   code <<-EOH
     sudo bench setup production #{node['erpnext']['frappe']['user']} --yes
+  EOH
+end
+
+link '/etc/supervisor/conf.d/frappe-bench.conf' do
+  to "/home/#{node['erpnext']['frappe']['user']}/#{node['erpnext']['frappe']['bench']}/config/supervisor.conf"
+end
+
+bash 'Setup supervisor' do
+  user node['erpnext']['frappe']['user']
+  cwd "/home/#{node['erpnext']['frappe']['user']}/#{node['erpnext']['frappe']['bench']}"
+  code <<-EOH
+    sudo supervisorctl update
+    sudo supervisorctl restart all
   EOH
 end
 

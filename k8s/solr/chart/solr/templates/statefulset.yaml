@@ -77,6 +77,10 @@ spec:
             - containerPort: 8983
               name: solr-client
           env:
+            - name: JAVA_OPTS
+              value: >-
+                    -Dlog4j2.formatMsgNoLookups=true
+                    -Dlog4j2.disable.jmx=true
             - name: "SOLR_JAVA_MEM"
               value: "-Xms2g -Xmx3g"
             - name: "SOLR_HOME"
