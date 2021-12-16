@@ -38,7 +38,10 @@ spec:
         imagePullPolicy: Always
         env:
         - name: ES_JAVA_OPS
-          value: "-Xms1g -Xmx1g"
+          value: >-
+                -Xms1g -Xmx1g
+                -Dlog4j2.formatMsgNoLookups=true
+                -Dlog4j2.disable.jmx=true
         - name: BACKUP_REPO_PATH
           value: ""
         ports:
