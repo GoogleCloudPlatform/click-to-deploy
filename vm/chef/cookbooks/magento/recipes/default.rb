@@ -28,6 +28,7 @@ include_recipe 'php74::module_soap'
 include_recipe 'mysql'
 include_recipe 'composer::composer2'
 include_recipe 'elasticsearch::standalone'
+include_recipe 'redis::standalone'
 
 package 'install_dependencies' do
   package_name node['magento']['packages']['dependencies']
