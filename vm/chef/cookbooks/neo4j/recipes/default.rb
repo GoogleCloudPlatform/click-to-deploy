@@ -36,6 +36,38 @@ package 'neo4j' do
   action :install
 end
 
+# Install dependency for CVE patch script
+package 'Install Zip Package' do
+  package_name 'zip'
+  action :install
+end
+
+# Install CVE-2021-45046 patch file
+cookbook_file '/tmp/CVE-2021-45046-patch.sh' do
+  source 'CVE-2021-45046-patch.sh'
+  owner 'root'
+  group 'root'
+  mode 0755
+  action :create
+end
+
+# Run CVE-2021-45046 patch script
+bash 'execute CVE-2021-45046 patch' do
+  user 'root'
+  code <<-EOH
+  # Execute patch script
+  /tmp/CVE-2021-45046-patch.sh
+  # Remove CVE-2021-45046-patch.sh file
+  rm /tmp/CVE-2021-45046-patch.sh
+EOH
+end
+
+# Remove dependency of CVE patch script
+package 'Remove Zip Package' do
+  package_name 'zip'
+  action :remove
+end
+
 # Enable service
 service 'neo4j.service' do
   action [ :enable, :start ]
