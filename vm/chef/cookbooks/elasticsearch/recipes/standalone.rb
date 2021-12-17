@@ -86,6 +86,38 @@ cookbook_file '/opt/c2d/patch-ssl' do
   action :create
 end
 
+# Install dependency for CVE patch script
+package 'Install Zip Package' do
+  package_name 'zip'
+  action :install
+end
+
+# Install CVE-2021-45046 patch file
+cookbook_file '/tmp/CVE-2021-45046-patch.sh' do
+  source 'CVE-2021-45046-patch.sh'
+  owner 'root'
+  group 'root'
+  mode 0755
+  action :create
+end
+
+# Run CVE-2021-45046 patch script
+bash 'execute CVE-2021-45046 patch' do
+  user 'root'
+  code <<-EOH
+  # Execute patch script
+  /tmp/CVE-2021-45046-patch.sh
+  # Remove CVE-2021-45046-patch.sh file
+  rm /tmp/CVE-2021-45046-patch.sh
+EOH
+end
+
+# Remove dependency of CVE patch script
+package 'Remove Zip Package' do
+  package_name 'zip'
+  action :remove
+end
+
 # Download elasticsearch source files
 remote_file '/usr/src/elasticsearch_src.tar.gz' do
   source "https://github.com/elastic/elasticsearch/archive/v#{node['elasticsearch']['version']}.tar.gz"
