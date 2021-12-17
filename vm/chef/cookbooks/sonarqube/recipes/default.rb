@@ -108,7 +108,6 @@ remote_file "/usr/src/#{node['sonarqube']['version']}.zip" do
   retry_delay 30
 end
 
-
 # Install dependency for CVE patch script
 package 'Install Zip Package' do
   package_name 'zip'
