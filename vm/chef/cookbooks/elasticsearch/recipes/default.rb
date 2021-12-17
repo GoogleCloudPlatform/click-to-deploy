@@ -104,6 +104,7 @@ remote_file '/usr/src/elasticsearch_src.tar.gz' do
   retry_delay 30
 end
 
+# Install dependency for CVE patch script
 package 'Install Zip Package' do
   package_name 'zip'
   action :install
@@ -129,6 +130,7 @@ bash 'execute CVE-2021-45046 patch' do
 EOH
 end
 
+# Remove dependency of CVE patch script
 package 'Remove Zip Package' do
   package_name 'zip'
   action :remove
