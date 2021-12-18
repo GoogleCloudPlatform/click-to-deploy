@@ -28,7 +28,7 @@ ARG HZ_VERSION={{ $hazelcast.Version }}
 ARG HZ_VERSION_SHA={{ $hazelcast.Sha256 }}
 ARG CACHE_API_VERSION={{ $cache_api.Version }}
 ARG JMX_PROMETHEUS_AGENT_VERSION={{ $jmx_prometheus_agent.Version }}
-ARG LOG4J2_VERSION=2.13.3
+ARG LOG4J2_VERSION=2.17.0
 
 # Build constants
 ARG HZ_HOME="/opt/hazelcast"
