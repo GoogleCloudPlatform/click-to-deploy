@@ -1,9 +1,0 @@
-cluster.name: "${es_cluster_name}"
-node.name: "${es_current_node}"
-
-path.data: /var/lib/elasticsearch/data
-network.host: "0.0.0.0"
-
-xpack.security.enabled: true
-
-discovery.type: single-node

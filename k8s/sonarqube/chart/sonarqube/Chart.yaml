@@ -1,6 +1,0 @@
-name: sonarqube
-description: Sonarqube is an open sourced code quality scanning tool
-version: 1.0.1
-home: https://www.sonarqube.org/
-sources:
-  - https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/k8s/sonarqube
