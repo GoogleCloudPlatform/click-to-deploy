@@ -16,33 +16,19 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 8/debian10/8.10
+- dir: 8/debian10/8.11
   from: marketplace.gcr.io/google/debian10
   packages:
     solr:
-      gpg: 9722F25F650057E26C803B60A6D064D833B3A969
-      sha512: 1e8593b4a9b196aa3a12edc1928c83fc108f1cae2dd17f17a10b76d2b1a441341db6a165f74bca0f78bfc7fd0d63b30f525221d5725529961212886a50ee6aa7
-      version: 8.10.1
+      gpg: 2CECBFBA181601547B654B9FFA81AC8A490F538E
+      sha512: 4893f836aec84b03d7bfe574e59e305c03b5ede4a48020034fbe81440b8feee79e55fd9ead230e5b89b3f25124e9b56c1ddc4bb5c7f631cf4e846b9cab5f9a45
+      version: 8.11.1
   repo: solr8
   tags:
-  - 8.10.1-debian10
-  - 8.10-debian10
+  - 8.11.1-debian10
+  - 8.11-debian10
   - 8-debian10
-  - 8.10.1
-  - '8.10'
+  - 8.11.1
+  - '8.11'
   - '8'
   - latest
-- dir: 8/debian10/8.9
-  from: marketplace.gcr.io/google/debian10
-  packages:
-    solr:
-      gpg: 9722F25F650057E26C803B60A6D064D833B3A969
-      sha512: 15150b7f191fd9e8d2c1bd8bb619dd4b3f27af2e0e94b7609031f7e745a2e263391c30f68865c208afb97ccaa9bde6d16050200e9bfccef65f762c2ed743c242
-      version: 8.9.0
-  repo: solr8
-  tags:
-  - 8.9.0-debian10
-  - 8.9-debian10
-  - 8.9.0
-  - '8.9'
-
