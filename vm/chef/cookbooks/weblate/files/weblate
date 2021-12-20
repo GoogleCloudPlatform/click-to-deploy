@@ -40,26 +40,18 @@ wait_for_redis "${WEBLATE_REDIS_PASSWORD}"
 # Create database and user
 create_db_user
 
-#Upgrade Python to 3.10
 activate_virtualenv
-echo "Installing Python3.10 ..."
-wget https://www.python.org/ftp/python/3.10.1/Python-3.10.1.tgz
-tar -xf Python-3.10.1.tgz
-cd Python-3.10.1
-./configure --enable-optimizations 
-make altinstall
-update-alternatives --install /usr/bin/python python /usr/local/bin/python3.10 1
 
 #Upgrade Pip
 echo "Upgrading pip ..."
-/usr/local/bin/python3.10 -m pip install --upgrade pip
-update-alternatives --install /usr/bin/pip pip /usr/local/bin/pip3.10 1
+python3 -m pip install --upgrade pip
+
 echo "Upgrading cffi xcffib ..."
-pip install --upgrade cffi xcffib
+pip3 install --upgrade cffi xcffib
 
 # Install Weblate and uwsgi
 echo "Installing weblate..."
-pip install "Weblate[all]"
+pip3 install Weblate
 
 # Create configuration file
 declare -r python_folder="$(ls -la /opt/weblate-env/lib | grep "python" | awk '{ print $9 }')"
