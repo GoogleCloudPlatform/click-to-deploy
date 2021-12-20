@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['weblate']['version'] = '4.9.1'
+default['weblate']['version'] = '4.10.1'
 default['weblate']['db']['name'] = 'weblate'
 default['weblate']['pip-packages'] = [
   'psycopg2-binary',
@@ -22,15 +22,20 @@ default['weblate']['pip-packages'] = [
   'zeep',
   'chardet',
   'tesserocr',
+  'python-ldap',
+  'xmlsec',
 ].join(' ')
 
 default['weblate']['packages'] = [
   'gettext-base',
   'libxml2-dev',
   'libxslt-dev',
+  'libsasl2-dev',
+  'libldap2-dev',
   'libfreetype6-dev',
   'libjpeg-dev',
   'libz-dev',
+  'libxmlsec1-dev',
   'libyaml-dev',
   'libcairo-dev',
   'gir1.2-pango-1.0',
@@ -49,4 +54,6 @@ default['weblate']['packages'] = [
   'exim4',
   'uwsgi',
   'uwsgi-plugin-python3',
+  'git',
+  'wget',
 ]
