@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['jenkins']['packages'] = %w(jenkins git groovy subversion)
+default['jenkins']['packages'] = %w(jenkins git subversion)
 
 default['jenkins']['repo']['uri'] = 'http://pkg.jenkins.io/debian-stable'
 default['jenkins']['repo']['components'] = ['binary/']

@@ -43,6 +43,12 @@ package 'install_packages' do
   action :install
 end
 
+apt_package 'install_groovy' do
+  package_name "groovy"
+  action :install
+  options "--no-install-recommends"
+end
+
 template '/etc/apache2/conf-available/jenkins.conf' do
   source 'jenkins-conf.erb'
   cookbook 'jenkins'
