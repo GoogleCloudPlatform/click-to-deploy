@@ -44,9 +44,9 @@ package 'install_packages' do
 end
 
 apt_package 'install_groovy' do
-  package_name "groovy"
+  package_name 'groovy'
   action :install
-  options "--no-install-recommends"
+  options '--no-install-recommends'
 end
 
 template '/etc/apache2/conf-available/jenkins.conf' do
