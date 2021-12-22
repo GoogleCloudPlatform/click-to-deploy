@@ -16,24 +16,24 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 2/debian10/2.8
+- dir: 3/debian10/3.0
   excludeTests:
   - tests/functional_tests/exporter_test.yaml
   from: marketplace.gcr.io/google/debian10
   packages:
     kafka:
-      sha512: 91fcd1061247ad0ddb63fa2b5c0251ee0e58e60cc9e1a3ebe2e84e9a31872448a36622dd15868de2c6d3f7e26020a8c61477bc764e2fb6776a25e4344eb8892d
-      version: 2.8.1
+      sha512: 86cdeb04af123399858d03431e9777948c1c40ec0d843966cf9bd90b8235b47ebbb5cb96d1f0660710b9286da86bbb5ee65e21e757606f5a1e67f970ae5cf57c
+      version: 3.0.0
     scala:
       version: '2.13'
   repo: kafka2
   tags:
-  - 2.8.1-debian10
-  - 2.8-debian10
-  - 2-debian10
-  - 2.8.1
-  - '2.8'
-  - '2'
+  - 3.0.0-debian10
+  - 3.0-debian10
+  - 3-debian10
+  - 3.0.0
+  - '3.0'
+  - '3'
   - latest
   templateSubDir: debian10
 - dir: exporter
