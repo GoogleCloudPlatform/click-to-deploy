@@ -42,7 +42,7 @@ if [[ "${kafka_nodes_count}" -gt 1 ]]; then
   mkdir -p /var/data/kafka
 
   # Configure Zookeeper Set data dir
-  sed -i 's@dataDir=/tmp/zookeeper@data=/var/data/kafka@g' "${zookeeper_config}"
+  sed -i 's@dataDir=/tmp/zookeeper@dataDir=/var/data/kafka@g' "${zookeeper_config}"
 
   # Remove existing Kafka settings
   sed -i '/broker.id=0/d' "${kafka_config}"
