@@ -17,8 +17,8 @@ versions:
     repo: 'hazelcast4'
     templateSubDir: 'hazelcast4'
     tags:
-    - '4.2.2-debian10'
-    - '4.2.2'
+    - '4.2.4-debian10'
+    - '4.2.4'
     - '4.2-debian10'
     - '4.2'
     - '4-debian10'
@@ -27,8 +27,8 @@ versions:
     from: 'marketplace.gcr.io/google/debian10'
     packages:
       hazelcast:
-        version: '4.2.2'
-        sha256: '1b2471dfe16b7716e1aa11a706647f5b04b6197ed295b1a4f4c54b44f0eac0c1'
+        version: '4.2.4'
+        sha256: 'ec41b0181341e311e4d68f12dee5b700650d1f158858c1a44bae5ad0e686eb2e'
       cache_api:
         version: '1.1.1'
       hz_eureka:
@@ -41,12 +41,12 @@ versions:
     - tests/functional_tests/hazelcast_mancenter_test.yaml
 
 # Hazelcast Management Center 4
-  - dir: '4/debian10/hazelcast-mc/4.2021.12-1'
+  - dir: '4/debian10/hazelcast-mc/4.2021.12'
     repo: 'hazelcast-mc4'
     templateSubDir: 'hazelcast-mc4'
     tags:
-    - '4.2021.12-1-debian9'
-    - '4.2021.12-1'
+    - '4.2021.12-debian9'
+    - '4.2021.12'
     - '4.2021-debian9'
     - '4.2021'
     - '4-debian9'
