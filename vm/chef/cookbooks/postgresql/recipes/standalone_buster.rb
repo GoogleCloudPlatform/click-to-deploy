@@ -12,6 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-node.override['postgresql']['standalone']['distribution'] = 'bullseye'
+node.override['postgresql']['standalone']['distribution'] = 'buster'
 
 include_recipe 'postgresql::standalone'
