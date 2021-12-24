@@ -22,7 +22,7 @@ package 'install packages' do
 end
 
 remote_file '/tmp/ruby.tar.gz' do
-  source "https://cache.ruby-lang.org/pub/ruby/snapshot/snapshot-ruby_3_0.tar.gz"
+  source 'https://cache.ruby-lang.org/pub/ruby/snapshot/snapshot-ruby_3_0.tar.gz'
   action :create
 end
 
