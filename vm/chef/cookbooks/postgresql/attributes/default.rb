@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['postgresql']['packages'] = ['postgresql-13', 'postgresql-client']
+default['postgresql']['packages'] = ['postgresql', 'postgresql-client']
 default['postgresql']['repository_url'] = 'http://apt.postgresql.org/pub/repos/apt/'
 default['postgresql']['key'] = 'https://www.postgresql.org/media/keys/ACCC4CF8.asc'
 
