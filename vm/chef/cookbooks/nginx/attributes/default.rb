@@ -13,7 +13,6 @@
 # limitations under the License.
 
 default['nginx']['packages'] = ['nginx']
-
 default['nginx']['version'] = '1.20'
 default['nginx']['repo']['uri'] = 'https://nginx.org/packages/debian/'
 default['nginx']['repo']['components'] = ['nginx']
