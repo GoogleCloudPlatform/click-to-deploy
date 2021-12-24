@@ -16,9 +16,9 @@
 
 node.override['postgresql']['standalone']['allow_external'] = false
 
-include_recipe 'nginx'
+include_recipe 'nginx::embedded_bullseye'
 include_recipe 'redis::standalone'
-include_recipe 'postgresql::standalone_buster'
+include_recipe 'postgresql::standalone_bullseye'
 include_recipe 'git'
 
 apt_update do
@@ -66,7 +66,7 @@ cookbook_file '/opt/weblate-env/weblate.uwsgi.ini' do
   action :create
 end
 
-cookbook_file '/etc/nginx/sites-available/weblate' do
+cookbook_file '/etc/nginx/sites-available/weblate.conf' do
   source 'weblate.nginx'
   owner 'root'
   group 'root'

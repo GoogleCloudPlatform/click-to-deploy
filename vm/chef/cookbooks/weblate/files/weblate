@@ -42,13 +42,6 @@ create_db_user
 
 activate_virtualenv
 
-#Upgrade Pip
-echo "Upgrading pip ..."
-python3 -m pip install --upgrade pip
-
-echo "Upgrading cffi xcffib ..."
-pip3 install --upgrade cffi xcffib
-
 # Install Weblate and uwsgi
 echo "Installing weblate..."
 pip3 install Weblate
@@ -74,7 +67,7 @@ weblate createadmin \
 
 # Prepare static files
 weblate collectstatic --clear --no-input
-weblate compress
+weblate compress --force
 
 # Set permissions for weblate user
 chown -R weblate:weblate /opt/weblate-env
@@ -92,7 +85,7 @@ wait_for_port "127.0.0.1" "8080"
 
 # Configure NGINX
 rm -f /etc/nginx/sites-enabled/default \
-  && ln -s /etc/nginx/sites-available/weblate /etc/nginx/sites-enabled/weblate \
+  && ln -s /etc/nginx/sites-available/weblate.conf /etc/nginx/sites-enabled/weblate.conf \
   && systemctl restart nginx
 
 # Await for app be ready

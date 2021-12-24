@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['weblate']['version'] = '4.10'
+default['weblate']['version'] = '4.10.1'
 default['weblate']['db']['name'] = 'weblate'
 default['weblate']['pip-packages'] = [
   'psycopg2-binary',
@@ -37,6 +37,7 @@ default['weblate']['packages'] = [
   'libz-dev',
   'libxmlsec1-dev',
   'libyaml-dev',
+  'libffi-dev',
   'libcairo-dev',
   'gir1.2-pango-1.0',
   'libgirepository1.0-dev',
