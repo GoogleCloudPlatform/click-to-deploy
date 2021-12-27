@@ -193,7 +193,7 @@ STATICFILES_FINDERS = (
 
 # Make this unique, and don't share it with anybody.
 # You can generate it using weblate/examples/generate-secret-key
-SECRET_KEY = ""
+SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 TEMPLATES = [
     {
