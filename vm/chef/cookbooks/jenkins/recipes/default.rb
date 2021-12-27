@@ -43,6 +43,12 @@ package 'install_packages' do
   action :install
 end
 
+apt_package 'install_groovy' do
+  package_name 'groovy'
+  action :install
+  options '--no-install-recommends'
+end
+
 template '/etc/apache2/conf-available/jenkins.conf' do
   source 'jenkins-conf.erb'
   cookbook 'jenkins'
@@ -73,6 +79,7 @@ bash 'configure_jenkins' do
 
   sed -i '/^HTTP_PORT/a HTTP_HOST=127.0.0.1' /etc/default/jenkins
   sed -i '/^JENKINS_ARGS/ s/"$/ --httpListenAddress=$HTTP_HOST"/' /etc/default/jenkins
+  sed -i '/^JAVA_ARGS/ s/"$/ -Dlog4j2.formatMsgNoLookups=true -Dlog4j2.disable.jmx=true"/' /etc/default/jenkins
 
   jenkins_version="$(java -jar /usr/share/jenkins/jenkins.war --version 2> /dev/null)"
   echo -n "${jenkins_version}" > /var/lib/jenkins/jenkins.install.UpgradeWizard.state

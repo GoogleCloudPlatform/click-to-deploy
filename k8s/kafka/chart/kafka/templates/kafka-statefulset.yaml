@@ -75,6 +75,10 @@ spec:
             - name: kafka-internal
               containerPort: 9093
           env:
+            - name: JAVA_OPTS
+              value: >-
+                    -Dlog4j2.formatMsgNoLookups=true
+                    -Dlog4j2.disable.jmx=true
             - name: BROKER_POD_IP
               valueFrom:
                 fieldRef:
