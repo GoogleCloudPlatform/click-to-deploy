@@ -16,7 +16,7 @@
 
 node.override['postgresql']['standalone']['allow_external'] = false
 
-include_recipe 'nginx::embedded_bullseye'
+include_recipe 'nginx::default_bullseye'
 include_recipe 'redis::standalone'
 include_recipe 'postgresql::standalone_bullseye'
 include_recipe 'git'
