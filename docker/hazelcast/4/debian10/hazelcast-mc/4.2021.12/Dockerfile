@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ARG MC_VERSION=4.2021.06
+ARG MC_VERSION=4.2021.12-1
 ARG MC_INSTALL_NAME="hazelcast-management-center-${MC_VERSION}"
 ARG MC_INSTALL_JAR="hazelcast-management-center-${MC_VERSION}.jar"
 ARG MC_INSTALL_ZIP="${MC_INSTALL_NAME}.zip"
@@ -31,7 +31,7 @@ RUN echo "Installing new APK packages" \
     && apt install --no-install-recommends -y bash wget unzip procps libnss3 curl \
     && echo "Downloading Management Center" \
     && wget -O ${MC_INSTALL_ZIP} http://download.hazelcast.com/management-center/${MC_INSTALL_ZIP} \
-    && echo "4cacf7f70d17a364d629dc353795849c36d984a6f688da1b500eb2240828a088" "${MC_INSTALL_ZIP}" | sha256sum -c \
+    && echo "e665ec321e7300d7bccc6fe43724cff1f7d396fb9cf13dcc5087044664f36464" "${MC_INSTALL_ZIP}" | sha256sum -c \
     && unzip ${MC_INSTALL_ZIP} -x ${MC_INSTALL_NAME}/docs/* \
     && mv ${MC_INSTALL_NAME}/${MC_INSTALL_JAR} ${MC_INSTALL_JAR} \
     && mv ${MC_INSTALL_NAME}/bin/start.sh start.sh \
@@ -68,12 +68,15 @@ ENV JAVA_OPTS_DEFAULT="-Dhazelcast.mc.home=${MC_DATA} -Djava.net.preferIPv4Stack
     NO_CONTAINER_SUPPORT="false" \
     MIN_HEAP_SIZE="" \
     MAX_HEAP_SIZE="" \
-    JAVA_OPTS="" \
     MC_INIT_SCRIPT="" \
     MC_INIT_CMD="" \
     MC_CLASSPATH="" \
     MC_ADMIN_USER="" \
     MC_ADMIN_PASSWORD=""
+
+# Workaround for CVE-2021-44228
+# https://www.docker.com/blog/apache-log4j-2-cve-2021-44228/
+ENV JAVA_OPTS="-Dlog4j.formatMsgNoLookups=true"
 
 RUN echo "Installing new APK packages" \
  && apt update \

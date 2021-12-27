@@ -1,6 +1,4 @@
-#!/bin/bash
-#
-# Copyright 2020 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,13 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# stop the background Solr, and restore the normal configuration
-
-set -e
-
-if [[ "$VERBOSE" == "yes" ]]; then
-    set -x
-fi
-
-echo "Shutting down the background Solr"
-solr stop
+## format 'user1\|user2\|user3'
+export ssh_username_deleted_allowed_users='tomcat'

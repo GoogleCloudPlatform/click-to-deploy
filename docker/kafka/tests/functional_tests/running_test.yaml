@@ -29,12 +29,12 @@ teardown:
 target: kafka-$UNIQUE-id-1
 tests:
 - name: Create topic "test"
-  command: ["/opt/kafka/bin/kafka-topics.sh", "--create", "--zookeeper", "zk-$UNIQUE-id:2181", "--replication-factor", "2", "--partitions", "4", "--topic", "test"]
+  command: ["/opt/kafka/bin/kafka-topics.sh", "--create", "--bootstrap-server", "kafka-$UNIQUE-id-1:9092", "--replication-factor", "2", "--partitions", "4", "--topic", "test"]
   expect:
     stdout:
       matches: "Created topic test."
 - name: Get topics list
-  command: ["/opt/kafka/bin/kafka-topics.sh", "--list", "--zookeeper", "zk-$UNIQUE-id:2181"]
+  command: ["/opt/kafka/bin/kafka-topics.sh", "--list", "--bootstrap-server", "kafka-$UNIQUE-id-1:9092"]
   expect:
     stdout:
       matches: "test"

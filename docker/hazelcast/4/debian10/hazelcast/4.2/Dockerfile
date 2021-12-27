@@ -16,15 +16,15 @@ FROM marketplace.gcr.io/google/debian10
 
 ENV DEBUG_DOCKER_ENTRYPOINT false
 
-ENV HAZELCAST_VERSION 4.2.2
-ENV C2D_RELEASE 4.2.2
+ENV HAZELCAST_VERSION 4.2.4
+ENV C2D_RELEASE 4.2.4
 
 # Versions of Hazelcast and Hazelcast plugins
-ARG HZ_VERSION=4.2.2
-ARG HZ_VERSION_SHA=1b2471dfe16b7716e1aa11a706647f5b04b6197ed295b1a4f4c54b44f0eac0c1
+ARG HZ_VERSION=4.2.4
+ARG HZ_VERSION_SHA=ec41b0181341e311e4d68f12dee5b700650d1f158858c1a44bae5ad0e686eb2e
 ARG CACHE_API_VERSION=1.1.1
 ARG JMX_PROMETHEUS_AGENT_VERSION=0.14.0
-ARG LOG4J2_VERSION=2.13.3
+ARG LOG4J2_VERSION=2.17.0
 
 # Build constants
 ARG HZ_HOME="/opt/hazelcast"
@@ -50,8 +50,11 @@ ENV HZ_HOME="${HZ_HOME}" \
     PROMETHEUS_PORT="" \
     PROMETHEUS_CONFIG="${HZ_HOME}/jmx_agent_config.yaml" \
     LOGGING_LEVEL="" \
-    CLASSPATH="" \
-    JAVA_OPTS=""
+    CLASSPATH=""
+
+# Workaround for CVE-2021-44228
+# https://www.docker.com/blog/apache-log4j-2-cve-2021-44228/
+ENV JAVA_OPTS="-Dlog4j.formatMsgNoLookups=true"
 
 # Expose port
 EXPOSE 5701

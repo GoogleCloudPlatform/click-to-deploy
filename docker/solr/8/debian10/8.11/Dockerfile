@@ -1,10 +1,10 @@
 FROM marketplace.gcr.io/google/debian10
 
-ARG SOLR_VERSION=8.9.0
-ARG SOLR_SHA512=15150b7f191fd9e8d2c1bd8bb619dd4b3f27af2e0e94b7609031f7e745a2e263391c30f68865c208afb97ccaa9bde6d16050200e9bfccef65f762c2ed743c242
-ARG SOLR_KEYS=9722F25F650057E26C803B60A6D064D833B3A969
+ARG SOLR_VERSION=8.11.1
+ARG SOLR_SHA512=4893f836aec84b03d7bfe574e59e305c03b5ede4a48020034fbe81440b8feee79e55fd9ead230e5b89b3f25124e9b56c1ddc4bb5c7f631cf4e846b9cab5f9a45
+ARG SOLR_KEYS=2CECBFBA181601547B654B9FFA81AC8A490F538E
 
-ENV C2D_RELEASE=8.9.0
+ENV C2D_RELEASE=8.11.1
 
 RUN set -ex; \
   apt-get update; \
@@ -27,6 +27,10 @@ ENV SOLR_USER="solr" \
     SOLR_PID_DIR=/var/solr \
     SOLR_LOGS_DIR=/var/solr/logs \
     LOG4J_PROPS=/var/solr/log4j2.xml
+
+# Workaround for CVE-2021-44228
+# https://www.docker.com/blog/apache-log4j-2-cve-2021-44228/
+ENV JAVA_OPTS="-Dlog4j.formatMsgNoLookups=true"
 
 RUN set -ex; \
   groupadd -r --gid "$SOLR_GID" "$SOLR_GROUP"; \
