@@ -28,6 +28,6 @@ setAcl /config world:anyone:cdrwa
 setAcl /latest_producer_id_block world:anyone:cdrwa
 setAcl /log_dir_event_notification world:anyone:cdrwa
 setAcl /feature world:anyone:cdrwa
-setAcl /cluster world:anyone:cdrwaquit
+setAcl /cluster world:anyone:cdrwa
 quit
 EOF
