@@ -38,13 +38,17 @@ tests:
     - sh
     - -c
     - sleep 30
-    - curl -s http://localhost/-/health'
+    - curl -s http://localhost/-/health
   expect:
     stdout:
       equals: 'GitLab OK'
 
 - name: GitLab Readiness Check
-  command: ['curl', '-s', 'http://localhost/-/readiness?all=1']
+  command:
+    - sh
+    - -c
+    - sleep 30
+    - curl -s http://localhost/-/readiness?all=1
   expect:
     stdout:
       matches: '"master_check":\[{"status":"ok"}\]'
@@ -64,7 +68,11 @@ tests:
       matches: '"gitaly_check":\[{"status":"ok".*}\]'
 
 - name: GitLab Liveness Check
-  command: ['curl', '-s', 'http://localhost/-/liveness']
+  command:
+    - sh
+    - -c
+    - sleep 30
+    - curl -s http://localhost/-/liveness
   expect:
     stdout:
       matches: '{"status":"ok"}'
