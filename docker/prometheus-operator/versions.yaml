@@ -22,12 +22,23 @@ versions:
       - '0.34.0'
       - '0.34-debian9'
       - '0.34'
+    from: *from9
+    packages:
+      prometheus-operator:
+        version: '0.34.0'
+  - dir: '0/0.53'
+    repo: prometheus-operator0
+    tags:
+      - '0.53.1-debian9'
+      - '0.53.1'
+      - '0.53-debian9'
+      - '0.53'
       - '0-debian9'
       - '0'
       - 'latest'
     from: *from9
     packages:
       prometheus-operator:
-        version: '0.34.0'
+        version: '0.53.1'
 cloudbuild:
   enable_parallel: false
