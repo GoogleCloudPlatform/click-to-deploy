@@ -34,7 +34,11 @@ teardown:
 target: gitlab-$UNIQUE-id
 tests:
 - name: GitLab Health Check
-  command: ['curl', '-s', 'http://localhost/-/health']
+  command:
+    - sh
+    - -c
+    - sleep 30
+    - curl -s http://localhost/-/health'
   expect:
     stdout:
       equals: 'GitLab OK'
