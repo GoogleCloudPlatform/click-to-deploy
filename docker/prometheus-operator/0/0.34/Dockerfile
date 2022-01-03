@@ -23,7 +23,7 @@ RUN git config --global http.sslverify false \
     -o operator cmd/operator/main.go
 
 # Result Image
-FROM gcr.io/google-appengine/debian9:latest
+FROM gcr.io/google-appengine/debian10:latest
 
 ENV C2D_RELEASE=0.34.0
 
