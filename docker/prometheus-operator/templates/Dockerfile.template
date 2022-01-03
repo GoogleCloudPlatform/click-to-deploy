@@ -36,8 +36,8 @@ COPY --from=builder /go/src/github.com/coreos/prometheus-operator/operator /bin
 COPY --from=builder /go/src/github.com/coreos/prometheus-operator/vendor/github.com/hashicorp /go/src/github.com/coreos/prometheus-operator/vendor/github.com/hashicorp
 
 # License and Notices
-COPY --from=builder /go/src/github.com/coreos/prometheus-operator/NOTICES /usr/share/prometheus-operator/NOTICES
-COPY --from=builder /go/src/github.com/coreos/prometheus-operator/LICENSE /usr/share/prometheus-operator/LICENSE
+COPY --from=builder /go/src/github.com/prometheus-operator/prometheus-operator/blob/main/NOTICE /usr/share/prometheus-operator/NOTICES
+COPY --from=builder /go/src/github.com/prometheus-operator/prometheus-operator/blob/main/LICENSE /usr/share/prometheus-operator/LICENSE
 
 # User 'nobody' has uid `65534'
 USER 65534
