@@ -30,9 +30,6 @@ ENV C2D_RELEASE=0.34.0
 # Binaries
 COPY --from=builder /go/src/github.com/coreos/prometheus-operator/operator /bin
 
-# Copy dependencies which require source code mirroring
-COPY --from=builder /go/src/github.com/coreos/prometheus-operator/vendor/github.com/hashicorp /go/src/github.com/coreos/prometheus-operator/vendor/github.com/hashicorp
-
 # License and Notices
 COPY --from=builder /go/src/github.com/coreos/prometheus-operator/NOTICES /usr/share/prometheus-operator/NOTICES
 COPY --from=builder /go/src/github.com/coreos/prometheus-operator/LICENSE /usr/share/prometheus-operator/LICENSE
