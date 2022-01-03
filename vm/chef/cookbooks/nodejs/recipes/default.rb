@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 # limitations under the License.
 
 execute 'download packages' do
-  command 'curl -sL https://deb.nodesource.com/setup_6.x | bash -'
+  command 'curl -sL https://deb.nodesource.com/setup_16.x | bash -'
 end
 
 package 'install packages' do
