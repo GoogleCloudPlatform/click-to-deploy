@@ -34,21 +34,6 @@ versions:
   - '3'
   - latest
   templateSubDir: debian10
-- dir: 3/debian10/3.6
-  excludeTests:
-  - tests/functional_tests/exporter_test.yaml
-  from: marketplace.gcr.io/google/debian10
-  packages:
-    zookeeper:
-      gpg: AF3D175EC05DB249738D01AC8D8C3C3ED0B02E66 DFF24FB8323ADAC90E3CF36F729E61230EA917E9
-      version: 3.6.3
-  repo: zookeeper3
-  tags:
-  - 3.6.3-debian10
-  - 3.6-debian10
-  - 3.6.3
-  - '3.6'
-  templateSubDir: debian10
 - dir: exporter
   excludeTests:
   - tests/functional_tests/running_test.yaml
