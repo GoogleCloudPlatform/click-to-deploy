@@ -13,50 +13,25 @@
 # limitations under the License.
 
 _variables:
-  from9: &from9 marketplace.gcr.io/google/debian9
+  from9: &from10 marketplace.gcr.io/google/debian10
 
 versions:
-  - dir: '1/debian9/1.5'
+  - dir: '1/debian10/1.6'
     repo: cert-manager1
     templateSubDir: cert-manager1
     tags:
-      - '1.5.1-debian9'
-      - '1.5-debian9'
-      - '1.5.1'
-      - '1.5'
-      - '1-debian9'
+      - '1.6.1-debian10'
+      - '1.6-debian10'
+      - '1.6.1'
+      - '1.6'
+      - '1-debian10'
       - '1'
       - 'latest'
-    from: *from9
+    from: *from10
     packages:
       cert-manager:
-        version: '1.5.1'
-  - dir: '1/debian9/1.4'
-    repo: cert-manager1
-    templateSubDir: cert-manager1
-    tags:
-      - '1.4.3-debian9'
-      - '1.4-debian9'
-      - '1.4.3'
-      - '1.4'
-    from: *from9
-    packages:
-      cert-manager:
-        version: '1.4.3'
-  - dir: '0/debian9/0.13'
-    repo: cert-manager0
-    templateSubDir: cert-manager0
-    tags:
-      - '0.13.0-debian9'
-      - '0.13-debian9'
-      - '0.13.0'
-      - '0.13'
-      - '0-debian9'
-      - '0'
-      - 'latest'
-    from: *from9
-    packages:
-      cert-manager:
-        version: '0.13.0'
+        version: '1.6.1'
+      bazel:
+        version: '4.0.0'
 cloudbuild:
   enable_parallel: false
