@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-_variables:
-  from9: &from9 gcr.io/google-appengine/debian9:latest
 versions:
   - dir: '0/0.34'
     repo: prometheus-operator0
@@ -22,7 +20,7 @@ versions:
       - '0.34.0'
       - '0.34-debian9'
       - '0.34'
-    from: *from9
+    from: gcr.io/google-appengine/debian9:latest
     packages:
       prometheus-operator:
         version: '0.34.0'
@@ -36,7 +34,7 @@ versions:
       - '0-debian9'
       - '0'
       - 'latest'
-    from: *from9
+    from: gcr.io/google-appengine/debian10:latest
     packages:
       prometheus-operator:
         version: '0.53.1'
