@@ -116,7 +116,7 @@ spec:
             - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
               value: "INTERNAL:PLAINTEXT,CLIENT:SASL_PLAINTEXT"
             - name: KAFKA_AUTHORIZER_CLASS_NAME
-              value: "kafka.security.auth.SimpleAclAuthorizer"
+              value: "kafka.security.authorizer.AclAuthorizer"
             - name: KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND
               value: "true"
 
