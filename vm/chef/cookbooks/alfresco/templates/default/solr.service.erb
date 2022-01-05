@@ -1,0 +1,15 @@
+[Unit]
+Description=Alfresco SearchServices
+After=network.target
+
+[Service]
+Type=forking
+
+User=solr
+Group=solr
+
+ExecStart=/opt/solr/alfresco-search-services/solr/bin/solr start
+ExecStop=/opt/solr/alfresco-search-services/solr/bin/solr stop
+
+[Install]
+WantedBy=multi-user.target

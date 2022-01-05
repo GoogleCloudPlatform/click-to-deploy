@@ -25,9 +25,9 @@ alfresco_admin_password="$(get_attribute_value "alfresco-admin-password")"
 declare -r postgresql_alfresco_password
 declare -r alfresco_admin_password
 
-declare -r ALFRESCO_HOME="/opt/alfresco"
-declare -r TOMCAT_HOME="/opt/tomcat"
-declare -r SOLR_HOME="/opt/solr/alfresco-search-services"
+export ALFRESCO_HOME="/opt/alfresco"
+export TOMCAT_HOME="/opt/tomcat"
+export SOLR_HOME="/opt/solr/alfresco-search-services"
 
 
 echo -e "Change PostgreSQL alfresco user password and update Alfresco configuration"
@@ -37,10 +37,6 @@ envsubst \
   < /opt/alfresco/alfresco-global.properties.template \
   > /opt/tomcat/shared/classes/alfresco-global.properties
 rm /opt/alfresco/alfresco-global.properties.template
-
-# Add hostname entries to /etc/hosts
-echo "127.0.0.1 $(hostname)" >> /etc/hosts
-echo "::1 $(hostname)" >> /etc/hosts
 
 echo -e "Copying configuration and war files..."
 mkdir -p "${ALFRESCO_HOME}"/modules/share
@@ -61,6 +57,7 @@ sed -i 's/alfresco.port.ssl=8443/#alfresco.port.ssl=8443/' "${SOLR_HOME}"/solrho
 sleep 3
 
 echo -e "Starting Solr6...Creating indexes..."
+
 "${SOLR_HOME}"/solr/bin/solr start -a "-Dcreate.alfresco.defaults=alfresco,archive" -force
 sleep 20
 
@@ -71,7 +68,14 @@ java -jar "${ALFRESCO_HOME}"/bin/alfresco-mmt.jar install "${ALFRESCO_HOME}"/amp
 java -jar "${ALFRESCO_HOME}"/bin/alfresco-mmt.jar install "${ALFRESCO_HOME}"/rm-apts/alfresco-rm-community-repo-3.0.a.amp "${TOMCAT_HOME}"/webapps/alfresco.war
 java -jar "${ALFRESCO_HOME}"/bin/alfresco-mmt.jar install "${ALFRESCO_HOME}"/rm-apts/alfresco-rm-community-share-3.0.a.amp "${TOMCAT_HOME}"/webapps/share.war
 
-echo -e "Stopping Solr6..."
-"${SOLR_HOME}"/solr/bin/solr restart -force 
-/opt/activemq/apache-activemq-5.16.3/bin/activemq start
-service tomcat start
+"${SOLR_HOME}"/solr/bin/solr stop
+
+echo -e "Starting services..."
+
+systemctl daemon-reload
+
+systemctl start activemq
+
+systemctl start solr
+
+systemctl start tomcat

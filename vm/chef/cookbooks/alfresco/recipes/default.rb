@@ -91,6 +91,17 @@ unzip solr.zip -d /opt/solr
 EOH
 end
 
+user 'solr' do
+  action :create
+end
+
+directory '/opt/solr' do
+  owner 'solr'
+  group 'solr'
+  mode '0755'
+  action :create
+end
+
 # Download Records Management.
 remote_file '/tmp/rm.zip' do
   source "#{node['rm']['install']['url']}"
@@ -131,7 +142,19 @@ unzip activemq.zip -d /opt/activemq
 EOH
 end
 
-# Configure Apache to serve as Alfresco proxy:
+user 'activemq' do
+  action :create
+end
+
+directory '/opt/activemq' do
+  owner 'activemq'
+  group 'activemq'
+  mode '0755'
+
+  action :create
+end
+
+# Configure Apache to server as Alfresco proxy:
 template '/etc/apache2/sites-available/alfresco.conf' do
   source 'alfresco.conf.erb'
   owner 'root'
@@ -171,9 +194,17 @@ service 'tomcat' do
   action :stop
 end
 
-# Prepare Alfresco to be run as service
-template '/etc/init.d/alfresco' do
-  source 'alfresco.service.erb'
+# Prepare Activemq to be run as service
+template '/etc/systemd/system/activemq.service' do
+  source 'activemq.service.erb'
+  owner 'root'
+  group 'root'
+  mode '0755'
+end
+
+# Prepare Solr to be run as service
+template '/etc/systemd/system/solr.service' do
+  source 'solr.service.erb'
   owner 'root'
   group 'root'
   mode '0755'
