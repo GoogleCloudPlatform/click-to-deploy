@@ -1,4 +1,4 @@
-diff --color -Naur '--exclude=.git' nuclio/cmd/controller/Dockerfile nuclio2/cmd/controller/Dockerfile
+diff -Naur '--exclude=.git' nuclio/cmd/controller/Dockerfile nuclio2/cmd/controller/Dockerfile
 --- nuclio/cmd/controller/Dockerfile	2022-01-04 17:58:01.633000000 +0000
 +++ nuclio2/cmd/controller/Dockerfile	2022-01-05 15:25:43.882745933 +0000
 @@ -17,7 +17,6 @@
@@ -29,7 +29,7 @@ diff --color -Naur '--exclude=.git' nuclio/cmd/controller/Dockerfile nuclio2/cmd
 +COPY --from=build-controller /nuclio/LICENSE /usr/share/nuclio/LICENSE
 +
  CMD [ "controller" ]
-diff --color -Naur '--exclude=.git' nuclio/cmd/dashboard/docker/Dockerfile nuclio2/cmd/dashboard/docker/Dockerfile
+diff -Naur '--exclude=.git' nuclio/cmd/dashboard/docker/Dockerfile nuclio2/cmd/dashboard/docker/Dockerfile
 --- nuclio/cmd/dashboard/docker/Dockerfile	2022-01-04 17:58:01.637000000 +0000
 +++ nuclio2/cmd/dashboard/docker/Dockerfile	2022-01-05 15:58:26.333943187 +0000
 @@ -15,7 +15,6 @@
@@ -83,7 +83,7 @@ diff --color -Naur '--exclude=.git' nuclio/cmd/dashboard/docker/Dockerfile nucli
  HEALTHCHECK --interval=1s --timeout=3s CMD /usr/local/bin/uhttpc --url http://127.0.0.1:8082/ready || exit 1
 
  CMD ["sh",  "-c", "./runner.sh"]
-diff --color -Naur '--exclude=.git' nuclio/.dockerignore nuclio2/.dockerignore
+diff -Naur '--exclude=.git' nuclio/.dockerignore nuclio2/.dockerignore
 --- nuclio/.dockerignore	2022-01-05 15:22:10.071657779 +0000
 +++ nuclio2/.dockerignore	2022-01-05 15:22:30.169452024 +0000
 @@ -5,6 +5,7 @@
@@ -94,7 +94,7 @@ diff --color -Naur '--exclude=.git' nuclio/.dockerignore nuclio2/.dockerignore
 
  pkg/dashboard/ui/node_modules
  pkg/dashboard/ui/dist
-diff --color -Naur '--exclude=.git' nuclio/hack/docker/build/builder/Dockerfile nuclio2/hack/docker/build/builder/Dockerfile
+diff -Naur '--exclude=.git' nuclio/hack/docker/build/builder/Dockerfile nuclio2/hack/docker/build/builder/Dockerfile
 --- nuclio/hack/docker/build/builder/Dockerfile	2022-01-04 17:59:37.365547000 +0000
 +++ nuclio2/hack/docker/build/builder/Dockerfile	2022-01-05 15:21:41.385096768 +0000
 @@ -23,6 +23,6 @@
@@ -105,7 +105,7 @@ diff --color -Naur '--exclude=.git' nuclio/hack/docker/build/builder/Dockerfile 
 +COPY go.mod go.sum LICENSE ./
 
  RUN go mod download
-diff --color -Naur '--exclude=.git' nuclio/Makefile nuclio2/Makefile
+diff -Naur '--exclude=.git' nuclio/Makefile nuclio2/Makefile
 --- nuclio/Makefile	2022-01-04 17:59:37.361547000 +0000
 +++ nuclio2/Makefile	2022-01-05 11:07:09.801719107 +0000
 @@ -57,7 +57,7 @@
