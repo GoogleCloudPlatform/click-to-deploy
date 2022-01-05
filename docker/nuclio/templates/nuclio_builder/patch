@@ -78,17 +78,7 @@ diff --color -Naur '--exclude=.git' nuclio/cmd/dashboard/docker/Dockerfile nucli
  HEALTHCHECK --interval=1s --timeout=3s CMD /usr/local/bin/uhttpc --url http://127.0.0.1:8082/ready || exit 1
 
  CMD ["sh",  "-c", "./runner.sh"]
-diff --color -Naur '--exclude=.git' nuclio/hack/docker/build/builder/Dockerfile nuclio2/hack/docker/build/builder/Dockerfile
---- nuclio/hack/docker/build/builder/Dockerfile	2022-01-04 17:59:37.365547000 +0000
-+++ nuclio2/hack/docker/build/builder/Dockerfile	2022-01-05 11:05:35.141267881 +0000
-@@ -23,6 +23,6 @@
 
- WORKDIR /nuclio
-
--COPY go.mod go.sum ./
-+COPY go.mod go.sum LICENSE ./
-
- RUN go mod download
 diff --color -Naur '--exclude=.git' nuclio/Makefile nuclio2/Makefile
 --- nuclio/Makefile	2022-01-04 17:59:37.361547000 +0000
 +++ nuclio2/Makefile	2022-01-05 11:07:09.801719107 +0000
