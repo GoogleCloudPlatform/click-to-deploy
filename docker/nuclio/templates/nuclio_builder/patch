@@ -1,6 +1,6 @@
 diff --color -Naur '--exclude=.git' nuclio/cmd/controller/Dockerfile nuclio2/cmd/controller/Dockerfile
 --- nuclio/cmd/controller/Dockerfile	2022-01-04 17:58:01.633000000 +0000
-+++ nuclio2/cmd/controller/Dockerfile	2022-01-05 12:27:59.566703204 +0000
++++ nuclio2/cmd/controller/Dockerfile	2022-01-05 15:25:43.882745933 +0000
 @@ -17,7 +17,6 @@
  #
 
@@ -9,7 +9,7 @@ diff --color -Naur '--exclude=.git' nuclio/cmd/controller/Dockerfile nuclio2/cmd
 
  FROM nuclio-base:$NUCLIO_LABEL as build-controller
 
-@@ -37,12 +36,15 @@
+@@ -37,12 +36,17 @@
  # Output stage: Creates version file, copies binary to an alpine based image
  #
 
@@ -25,6 +25,8 @@ diff --color -Naur '--exclude=.git' nuclio/cmd/controller/Dockerfile nuclio2/cmd
  # copy controller binary from build stage
  COPY --from=build-controller /nuclio/controller /usr/local/bin
 
++# License
++COPY --from=build-controller /nuclio/LICENSE /usr/share/nuclio/LICENSE
 +
  CMD [ "controller" ]
 diff --color -Naur '--exclude=.git' nuclio/cmd/dashboard/docker/Dockerfile nuclio2/cmd/dashboard/docker/Dockerfile
@@ -79,7 +81,28 @@ diff --color -Naur '--exclude=.git' nuclio/cmd/dashboard/docker/Dockerfile nucli
  HEALTHCHECK --interval=1s --timeout=3s CMD /usr/local/bin/uhttpc --url http://127.0.0.1:8082/ready || exit 1
 
  CMD ["sh",  "-c", "./runner.sh"]
+diff --color -Naur '--exclude=.git' nuclio/.dockerignore nuclio2/.dockerignore
+--- nuclio/.dockerignore	2022-01-05 15:22:10.071657779 +0000
++++ nuclio2/.dockerignore	2022-01-05 15:22:30.169452024 +0000
+@@ -5,6 +5,7 @@
 
+ !go.mod
+ !go.sum
++!LICENSE
+
+ pkg/dashboard/ui/node_modules
+ pkg/dashboard/ui/dist
+diff --color -Naur '--exclude=.git' nuclio/hack/docker/build/builder/Dockerfile nuclio2/hack/docker/build/builder/Dockerfile
+--- nuclio/hack/docker/build/builder/Dockerfile	2022-01-04 17:59:37.365547000 +0000
++++ nuclio2/hack/docker/build/builder/Dockerfile	2022-01-05 15:21:41.385096768 +0000
+@@ -23,6 +23,6 @@
+
+ WORKDIR /nuclio
+
+-COPY go.mod go.sum ./
++COPY go.mod go.sum LICENSE ./
+
+ RUN go mod download
 diff --color -Naur '--exclude=.git' nuclio/Makefile nuclio2/Makefile
 --- nuclio/Makefile	2022-01-04 17:59:37.361547000 +0000
 +++ nuclio2/Makefile	2022-01-05 11:07:09.801719107 +0000
