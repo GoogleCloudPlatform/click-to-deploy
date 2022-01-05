@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -60,12 +60,11 @@ apt_package 'zip' do
 end
 
 # Download alfresco.
-remote_file '/tmp/tomcat.zip' do
+remote_file '/tmp/alfresco.zip' do
   source "#{node['alfresco']['install']['url']}"
   verify "echo '#{node['alfresco']['install']['sha256']} %{path}' | sha256sum -c"
   action :create
 end
-
 
 # Extract alfreso to home directory.
 bash 'Extract Alfresco' do
@@ -73,6 +72,62 @@ bash 'Extract Alfresco' do
   cwd '/tmp'
   code <<-EOH
 unzip alfresco.zip -d /opt/alfresco
+EOH
+end
+
+# Download SearchServices.
+remote_file '/tmp/solr.zip' do
+  source "#{node['alfresco']['search']['install']['url']}"
+  verify "echo '#{node['alfresco']['search']['install']['sha256']} %{path}' | sha256sum -c"
+  action :create
+end
+
+# Extract SearchServices to home directory.
+bash 'Extract Solr' do
+  user 'root'
+  cwd '/tmp'
+  code <<-EOH
+unzip solr.zip -d /opt/solr
+EOH
+end
+
+# Download Records Management.
+remote_file '/tmp/rm.zip' do
+  source "#{node['rm']['install']['url']}"
+  verify "echo '#{node['rm']['install']['sha256']} %{path}' | sha256sum -c"
+  action :create
+end
+
+directory '/opt/alfresco/rm-apts' do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  recursive true
+  action :create
+end
+
+# Extract Records Management to home directory.
+bash 'Extract Records Management' do
+  user 'root'
+  cwd '/tmp'
+  code <<-EOH
+unzip rm.zip -d /opt/alfresco/rm-apts
+EOH
+end
+
+# Download ActiveMQ.
+remote_file '/tmp/activemq.zip' do
+  source "#{node['activemq']['install']['url']}"
+  verify "echo '#{node['activemq']['install']['sha256']} %{path}' | sha256sum -c"
+  action :create
+end
+
+# Extract ActiveMQ to home directory.
+bash 'Extract ActiveMQ' do
+  user 'root'
+  cwd '/tmp'
+  code <<-EOH
+unzip activemq.zip -d /opt/activemq
 EOH
 end
 
@@ -96,25 +151,24 @@ service 'apache2' do
   action :restart
 end
 
-# Set environment variables for Alfresco's tomcat with new configuration script
-execute 'move_original_setenv_file' do
-  cwd '/opt/alfresco/tomcat/bin'
-  command 'mv setenv.sh setenv.sh.orig'
-end
-
-template '/opt/alfresco/tomcat/bin/setenv.sh' do
-  source 'setenv.sh.erb'
-  owner 'root'
-  group 'root'
-  mode '0640'
-end
-
 # Copy alfresco-global.properties template configuration file (to override):
 template '/opt/alfresco/alfresco-global.properties.template' do
   source 'alfresco-global.properties.template.erb'
   owner 'root'
   group 'root'
   mode '0640'
+end
+
+directory '/opt/tomcat/shared/classes' do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  recursive true
+  action :create
+end
+
+service 'tomcat' do
+  action :stop
 end
 
 # Prepare Alfresco to be run as service
@@ -125,6 +179,4 @@ template '/etc/init.d/alfresco' do
   mode '0755'
 end
 
-# Copy post-deploy configuration script
-# (to override and configure instance's specific passwords):
 c2d_startup_script 'alfresco'
