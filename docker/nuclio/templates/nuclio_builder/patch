@@ -1,26 +1,22 @@
-diff -Naur '--exclude=.git' nuclio2/cmd/controller/Dockerfile nuclio/cmd/controller/Dockerfile
---- nuclio2/cmd/controller/Dockerfile	2021-10-25 12:15:25.881372191 +0000
-+++ nuclio/cmd/controller/Dockerfile	2021-10-26 15:45:02.235576152 +0000
-@@ -17,7 +17,6 @@
+diff --color -Naur '--exclude=.git' nuclio/cmd/controller/Dockerfile nuclio2/cmd/controller/Dockerfile
+--- nuclio/cmd/controller/Dockerfile	2022-01-04 17:58:01.633000000 +0000
++++ nuclio2/cmd/controller/Dockerfile	2022-01-05 10:54:52.587901273 +0000
+@@ -17,7 +17,7 @@
  #
 
  ARG NUCLIO_LABEL
--ARG ALPINE_IMAGE=gcr.io/iguazio/alpine:3.11
+-ARG ALPINE_IMAGE=gcr.io/iguazio/alpine:3.15
++ARG ALPINE_IMAGE=marketplace.gcr.io/google/debian10
 
  FROM nuclio-base:$NUCLIO_LABEL as build-controller
 
-@@ -37,12 +36,18 @@
- # Output stage: Creates version file, copies binary to an alpine based image
- #
-
--FROM $ALPINE_IMAGE
-+FROM marketplace.gcr.io/google/debian10
+@@ -40,9 +40,14 @@
+ FROM $ALPINE_IMAGE
 
  # install apache2-utils for htpasswd
 -RUN apk add --no-cache ca-certificates apache2-utils
 +RUN apt-get update && apt-get install ca-certificates apache2-utils -y
 +
-+ARG NUCLIO_LABEL
 +ENV C2D_RELEASE=${NUCLIO_LABEL}
 
  # copy controller binary from build stage
@@ -30,27 +26,25 @@ diff -Naur '--exclude=.git' nuclio2/cmd/controller/Dockerfile nuclio/cmd/control
 +COPY --from=build-controller /nuclio/LICENSE /usr/share/nuclio/LICENSE
 +
  CMD [ "controller" ]
-diff -Naur '--exclude=.git' nuclio2/cmd/dashboard/docker/Dockerfile nuclio/cmd/dashboard/docker/Dockerfile
---- nuclio2/cmd/dashboard/docker/Dockerfile	2021-10-25 12:15:25.885372551 +0000
-+++ nuclio/cmd/dashboard/docker/Dockerfile	2021-10-26 15:45:30.866151770 +0000
-@@ -15,7 +15,6 @@
+diff --color -Naur '--exclude=.git' nuclio/cmd/dashboard/docker/Dockerfile nuclio2/cmd/dashboard/docker/Dockerfile
+--- nuclio/cmd/dashboard/docker/Dockerfile	2022-01-04 17:58:01.637000000 +0000
++++ nuclio2/cmd/dashboard/docker/Dockerfile	2022-01-05 11:04:02.905033095 +0000
+@@ -15,7 +15,7 @@
  #
  # Build assets stage: builds the dashboard assets (js, html, css, etc)
  #
 -ARG NGINX_IMAGE=nginx
++ARG NGINX_IMAGE=marketplace.gcr.io/google/nginx1
  ARG NUCLIO_LABEL
  ARG UHTTPC_ARCH=amd64
 
-@@ -55,19 +54,23 @@
- # Output stage: Creates version file, copies binary and assets to an alpine image
- #
+@@ -57,17 +57,20 @@
 
--FROM $NGINX_IMAGE
-+FROM marketplace.gcr.io/google/nginx1
-+
+ FROM $NGINX_IMAGE
+
 +ARG NUCLIO_LABEL
 +ENV C2D_RELEASE=${NUCLIO_LABEL}
-
++
  # docker client
  ARG DOCKER_CLI_ARCH=x86_64
  ARG DOCKER_CLI_VERSION="19.03.14"
@@ -62,7 +56,6 @@ diff -Naur '--exclude=.git' nuclio2/cmd/dashboard/docker/Dockerfile nuclio/cmd/d
 -    && mv /tmp/download/docker/docker /usr/local/bin/ \
 -    && rm -rf /tmp/download \
 -    && apk del curl
-+
 +RUN apt-get update && apt-get install ca-certificates git curl parallel -y \
 +     && mkdir -p /tmp/download \
 +     && curl -L $DOCKER_CLI_DOWNLOAD_URL | tar -xz -C /tmp/download \
@@ -85,20 +78,9 @@ diff -Naur '--exclude=.git' nuclio2/cmd/dashboard/docker/Dockerfile nuclio/cmd/d
  HEALTHCHECK --interval=1s --timeout=3s CMD /usr/local/bin/uhttpc --url http://127.0.0.1:8082/ready || exit 1
 
  CMD ["sh",  "-c", "./runner.sh"]
-diff -Naur '--exclude=.git' nuclio2/.dockerignore nuclio/.dockerignore
---- nuclio2/.dockerignore	2021-10-25 12:15:25.877371831 +0000
-+++ nuclio/.dockerignore	2021-10-25 12:16:30.247161343 +0000
-@@ -5,6 +5,7 @@
-
- !go.mod
- !go.sum
-+!LICENSE
-
- pkg/dashboard/ui/node_modules
- pkg/dashboard/ui/dist
-diff -Naur '--exclude=.git' nuclio2/hack/docker/build/builder/Dockerfile nuclio/hack/docker/build/builder/Dockerfile
---- nuclio2/hack/docker/build/builder/Dockerfile	2021-10-25 12:15:25.905374350 +0000
-+++ nuclio/hack/docker/build/builder/Dockerfile	2021-10-25 12:51:55.538309414 +0000
+diff --color -Naur '--exclude=.git' nuclio/hack/docker/build/builder/Dockerfile nuclio2/hack/docker/build/builder/Dockerfile
+--- nuclio/hack/docker/build/builder/Dockerfile	2022-01-04 17:59:37.365547000 +0000
++++ nuclio2/hack/docker/build/builder/Dockerfile	2022-01-05 11:05:35.141267881 +0000
 @@ -23,6 +23,6 @@
 
  WORKDIR /nuclio
@@ -107,9 +89,9 @@ diff -Naur '--exclude=.git' nuclio2/hack/docker/build/builder/Dockerfile nuclio/
 +COPY go.mod go.sum LICENSE ./
 
  RUN go mod download
-diff -Naur '--exclude=.git' nuclio2/Makefile nuclio/Makefile
---- nuclio2/Makefile	2021-10-25 12:15:25.881372191 +0000
-+++ nuclio/Makefile	2021-10-25 12:18:24.605446888 +0000
+diff --color -Naur '--exclude=.git' nuclio/Makefile nuclio2/Makefile
+--- nuclio/Makefile	2022-01-04 17:59:37.361547000 +0000
++++ nuclio2/Makefile	2022-01-05 11:07:09.801719107 +0000
 @@ -57,7 +57,7 @@
  # Add labels to docker images
  NUCLIO_DOCKER_LABELS = --label nuclio.version_info="$(NUCLIO_VERSION_INFO)"
