@@ -150,7 +150,6 @@ directory '/opt/activemq' do
   owner 'activemq'
   group 'activemq'
   mode '0755'
-
   action :create
 end
 

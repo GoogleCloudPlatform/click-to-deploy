@@ -39,8 +39,8 @@ envsubst \
 rm /opt/alfresco/alfresco-global.properties.template
 
 echo -e "Copying configuration and war files..."
-mkdir -p "${ALFRESCO_HOME}"/modules/share
-mkdir -p "${ALFRESCO_HOME}"/modules/platform
+mkdir -p "${TOMCAT_HOME}"/modules/share
+mkdir -p "${TOMCAT_HOME}"/modules/platform
 
 rm -rf "${TOMCAT_HOME}"/webapps/*
 
@@ -58,10 +58,10 @@ sleep 3
 
 echo -e "Starting Solr6...Creating indexes..."
 
-"${SOLR_HOME}"/solr/bin/solr start -a "-Dcreate.alfresco.defaults=alfresco,archive" -force
-sleep 20
+#"${SOLR_HOME}"/solr/bin/solr start -a "-Dcreate.alfresco.defaults=alfresco,archive" -force
+#sleep 20
 
-sed -i 's/#shared.loader=/shared.loader=${catalina.base}/shared/classes,${catalina.base}/shared/lib/*.jar/' "${TOMCAT_HOME}"/conf/catalina.properties
+sed -i 's/shared.loader=/shared.loader=${catalina.base}\/shared\/classes,${catalina.base}\/shared\/lib\/*.jar/' "${TOMCAT_HOME}"/conf/catalina.properties
 
 echo -e "Installing AMP files..."
 java -jar "${ALFRESCO_HOME}"/bin/alfresco-mmt.jar install "${ALFRESCO_HOME}"/amps/alfresco-share-services.amp "${TOMCAT_HOME}"/webapps/alfresco.war
