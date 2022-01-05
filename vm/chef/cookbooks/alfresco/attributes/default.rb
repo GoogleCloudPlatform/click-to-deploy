@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,26 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['alfresco']['install']['url'] = 'https://download.alfresco.com/release/community/201707-build-00028/alfresco-community-installer-201707-linux-x64.bin'
-default['alfresco']['install']['sha256'] = '099d2f26c593e58fe640e714e561d317b8ad3458bd361020796ed79a41a4f259'
+default['alfresco']['install']['url'] = 'https://download.alfresco.com/cloudfront/release/community/7.1.0.1-build-2669/alfresco-content-services-community-distribution-7.1.0.1.zip'
+default['alfresco']['install']['sha256'] = '8a7036b72134a7e685b494f776f3dd1576b380d1ac563ee78d38b2a88107b3f2'
+
+
+default['alfresco']['search']['install']['url'] = 'https://download.alfresco.com/cloudfront/release/community/SearchServices/2.0.1/alfresco-search-services-2.0.1.zip'
+default['alfresco']['search']['install']['sha256'] = '00decf904bf99a0a3dcf4bdfb830f4b3be71cea237683084d5527010574f59be'
+
+default['activemq']['install']['url'] = 'https://downloads.apache.org/activemq/5.16.3/apache-activemq-5.16.3-bin.zip'
+default['activemq']['install']['sha256'] = '0aeceabce625dde1b2d9285311dca8e0cd4abf8f384ff1e9983ca775f1f762b4'
+
+
+default['rm']['install']['url'] = 'https://download.alfresco.com/cloudfront/release/community/RM/3.0.a/alfresco-community.zip'
+default['rm']['install']['sha256'] = '6bd10de34698f2edb4811e16546cd1c63afb24438379765a2ecc0a76daad2b2d'
+
 
 default['alfresco']['db']['username'] = 'alfresco'
 default['alfresco']['db']['password'] = 'alfresco'
 default['alfresco']['db']['name'] = 'alfresco'
-
-default['alfresco']['src']['temp_packages'] = ['subversion', 'git']
-
-# Downloading jmagick and jodconverter from fork,
-# because original repositories are no longer available
-default['alfresco']['src']['urls'] = {
-  'alfresco_svn' => 'https://svn.alfresco.com/repos/alfresco-open-mirror/alfresco/COMMUNITYTAGS/5.2.f/root',
-
-  'gytheio_git' => 'git://github.com/Alfresco/gytheio.git',
-  'jmagick_git' => 'git://github.com/techblue/jmagick.git',
-  'jodconverter_git' => 'git://github.com/mirkonasato/jodconverter.git',
-
-  'hibernate_wget' => 'https://downloads.sourceforge.net/project/hibernate/hibernate3/3.2.6.ga/hibernate-3.2.6.ga.tar.gz',
-  'java_geom_wget' => 'https://downloads.sourceforge.net/project/geom-java/javaGeom/javaGeom-0.11.2/javaGeom-0.11.2-src.zip',
-  'jid3lib_wget' => 'https://downloads.sourceforge.net/project/javamusictag/jid3lib/beta-dev6/jid3lib-0.5.4.tar.gz',
-  'libwmf_wget' => 'https://sourceforge.net/projects/wvware/files/libwmf/0.2.8.4/libwmf-0.2.8.4.tar.gz',
-}

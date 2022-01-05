@@ -32,6 +32,7 @@ system.serverMode=UNKNOWN
 ftp.port=21
 
 ### RMI registry port for JMX ###
+alfresco.rmi.services.host=localhost
 alfresco.rmi.services.port=50500
 
 ### External executable locations ###
@@ -45,7 +46,7 @@ alfresco-pdf-renderer.root=/opt/alfresco/common/alfresco-pdf-renderer
 alfresco-pdf-renderer.exe=${alfresco-pdf-renderer.root}/alfresco-pdf-renderer
 
 jodconverter.enabled=false
-jodconverter.officeHome=/opt/alfresco/libreoffice
+jodconverter.officeHome=null
 jodconverter.portNumbers=8100
 
 ### Initial admin password ###
@@ -58,10 +59,11 @@ notification.email.siteinvite=false
 dir.license.external=/opt/alfresco
 
 ### Solr indexing ###
-index.subsystem.name=solr4
+index.subsystem.name=solr6
 dir.keystore=${dir.root}/keystore
 solr.host=localhost
-solr.port.ssl=8443
+solr.port=8983
+solr.secureComms=none
 
 ### Allow extended ResultSet processing
 security.anyDenyDenies=false
@@ -71,3 +73,7 @@ smart.folders.enabled=false
 
 ### Remote JMX (Default: disabled) ###
 alfresco.jmx.connector.enabled=false
+
+messaging.broker.url=failover:(tcp://localhost:61616)?timeout=3000
+local.transform.service.enabled=false
+legacy.transform.service.enabled=false
