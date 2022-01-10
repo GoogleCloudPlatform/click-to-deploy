@@ -68,7 +68,7 @@ java -jar "${ALFRESCO_HOME}"/bin/alfresco-mmt.jar install "${ALFRESCO_HOME}"/amp
 java -jar "${ALFRESCO_HOME}"/bin/alfresco-mmt.jar install "${ALFRESCO_HOME}"/rm-apts/alfresco-rm-community-repo-3.0.a.amp "${TOMCAT_HOME}"/webapps/alfresco.war
 java -jar "${ALFRESCO_HOME}"/bin/alfresco-mmt.jar install "${ALFRESCO_HOME}"/rm-apts/alfresco-rm-community-share-3.0.a.amp "${TOMCAT_HOME}"/webapps/share.war
 
-"${SOLR_HOME}"/solr/bin/solr stop
+#"${SOLR_HOME}"/solr/bin/solr stop
 
 echo -e "Starting services..."
 

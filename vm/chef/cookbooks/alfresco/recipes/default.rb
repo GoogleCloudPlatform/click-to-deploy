@@ -99,6 +99,7 @@ directory '/opt/solr' do
   owner 'solr'
   group 'solr'
   mode '0755'
+  recursive true
   action :create
 end
 
@@ -150,6 +151,7 @@ directory '/opt/activemq' do
   owner 'activemq'
   group 'activemq'
   mode '0755'
+  recursive true
   action :create
 end
 
