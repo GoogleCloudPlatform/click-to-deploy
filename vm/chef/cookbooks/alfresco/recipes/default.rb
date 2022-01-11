@@ -15,9 +15,6 @@
 node.override['postgresql']['standalone']['allow_external'] = false
 
 include_recipe 'openjdk11'
-include_recipe 'apache2'
-include_recipe 'apache2::rm-index'
-include_recipe 'apache2::security-config'
 include_recipe 'postgresql::standalone_buster'
 include_recipe 'tomcat'
 
@@ -28,14 +25,6 @@ include_recipe 'tomcat'
 # 2) This recipe provides custom setenv.sh script for Alfresco Tomcat -
 #    this is related to slow Alfresco startup; see also:
 #    https://wiki.apache.org/tomcat/HowTo/FasterStartUp#Entropy_Source
-
-# Copy Alfresco installation configuration:
-template '/tmp/install-opts' do
-  source 'install-opts.erb'
-  owner 'root'
-  group 'root'
-  mode '0640'
-end
 
 # Prepare database configuration
 bash 'configure_database' do
@@ -155,25 +144,38 @@ directory '/opt/activemq' do
   action :create
 end
 
-# Configure Apache to server as Alfresco proxy:
-template '/etc/apache2/sites-available/alfresco.conf' do
-  source 'alfresco.conf.erb'
-  owner 'root'
-  group 'root'
-  mode '0640'
-end
+# Create an additional classpath to Tomcat
 
-bash 'enable_alfresco_site_on_apache' do
+bash 'Move alfresco war file to tomcat' do
+  user 'root'
+  cwd '/tmp'
   code <<-EOH
-    a2enmod proxy proxy_http rewrite
-    a2dissite 000-default
-    a2ensite alfresco
+    cp /opt/alfresco/web-server/webapps/*.* /opt/tomcat/webapps/
+    cp /opt/alfresco/web-server/conf/Catalina/localhost/*.* /opt/tomcat/conf/Catalina/localhost/
+    chown -R tomcat:tomcat /opt/tomcat/latest
 EOH
 end
 
-service 'apache2' do
-  action :restart
-end
+
+# Configure Apache to server as Alfresco proxy:
+#template '/etc/apache2/sites-available/alfresco.conf' do
+#  source 'alfresco.conf.erb'
+#  owner 'root'
+#  group 'root'
+#  mode '0640'
+#end
+
+#bash 'enable_alfresco_site_on_apache' do
+#  code <<-EOH
+#    a2enmod proxy proxy_http rewrite
+#    a2dissite 000-default
+#    a2ensite alfresco
+#EOH
+#end
+
+#service 'apache2' do
+#  action :restart
+#end
 
 # Copy alfresco-global.properties template configuration file (to override):
 template '/opt/alfresco/alfresco-global.properties.template' do
@@ -183,17 +185,17 @@ template '/opt/alfresco/alfresco-global.properties.template' do
   mode '0640'
 end
 
-directory '/opt/tomcat/shared/classes' do
-  owner 'root'
-  group 'root'
-  mode '0755'
-  recursive true
-  action :create
-end
+#directory '/opt/tomcat/shared/classes' do
+#  owner 'root'
+#  group 'root'
+#  mode '0755'
+#  recursive true
+#  action :create
+#end
 
-service 'tomcat' do
-  action :stop
-end
+#service 'tomcat' do
+#  action :stop
+#end
 
 # Prepare Activemq to be run as service
 template '/etc/systemd/system/activemq.service' do

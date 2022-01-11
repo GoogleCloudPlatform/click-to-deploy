@@ -19,16 +19,13 @@
 
 source /opt/c2d/c2d-utils || exit 1
 
-postgresql_alfresco_password="$(get_attribute_value "postgresql-alfresco-password")"
-alfresco_admin_password="$(get_attribute_value "alfresco-admin-password")"
-
-declare -r postgresql_alfresco_password
-declare -r alfresco_admin_password
 
 export ALFRESCO_HOME="/opt/alfresco"
 export TOMCAT_HOME="/opt/tomcat"
 export SOLR_HOME="/opt/solr/alfresco-search-services"
 
+declare -r postgresql_alfresco_password="$(get_attribute_value "postgresql-alfresco-password")"
+declare -r alfresco_admin_password="$(get_attribute_value "alfresco-admin-password")"
 
 echo -e "Change PostgreSQL alfresco user password and update Alfresco configuration"
 su - postgres -c "psql -c \"alter role alfresco with password '${postgresql_alfresco_password}'\""
@@ -38,18 +35,18 @@ envsubst \
   > /opt/tomcat/shared/classes/alfresco-global.properties
 rm /opt/alfresco/alfresco-global.properties.template
 
-echo -e "Copying configuration and war files..."
-mkdir -p "${TOMCAT_HOME}"/modules/share
-mkdir -p "${TOMCAT_HOME}"/modules/platform
+#echo -e "Copying configuration and war files..."
+#mkdir -p "${TOMCAT_HOME}"/modules/share
+#mkdir -p "${TOMCAT_HOME}"/modules/platform
 
-rm -rf "${TOMCAT_HOME}"/webapps/*
+#rm -rf "${TOMCAT_HOME}"/webapps/*
+#
+#cp "${ALFRESCO_HOME}"/web-server/webapps/*.war "${TOMCAT_HOME}"/webapps/
+#cp -r "${ALFRESCO_HOME}"/web-server/conf/Catalina "${TOMCAT_HOME}"/conf/
+#cp -r "${ALFRESCO_HOME}"/web-server/shared "${TOMCAT_HOME}"
 
-cp "${ALFRESCO_HOME}"/web-server/webapps/*.war "${TOMCAT_HOME}"/webapps/
-cp -r "${ALFRESCO_HOME}"/web-server/conf/Catalina "${TOMCAT_HOME}"/conf/
-cp -r "${ALFRESCO_HOME}"/web-server/shared "${TOMCAT_HOME}"
-
-mkdir -p "${TOMCAT_HOME}"/shared/lib
-cp "${ALFRESCO_HOME}"/web-server/lib/*.jar "${TOMCAT_HOME}"/shared/lib
+#mkdir -p "${TOMCAT_HOME}"/shared/lib
+#cp "${ALFRESCO_HOME}"/web-server/lib/*.jar "${TOMCAT_HOME}"/shared/lib
 
 echo -e "Configuring Solr6 for Non-SSL..."
 sed -i 's/alfresco.secureComms=https/alfresco.secureComms=none/' "${SOLR_HOME}"/solrhome/templates/rerank/conf/solrcore.properties
@@ -73,9 +70,6 @@ java -jar "${ALFRESCO_HOME}"/bin/alfresco-mmt.jar install "${ALFRESCO_HOME}"/rm-
 echo -e "Starting services..."
 
 systemctl daemon-reload
-
 systemctl start activemq
-
 systemctl start solr
-
 systemctl start tomcat
