@@ -33,7 +33,11 @@ describe 'C2D startup scripts should exists' do
     it { should exist }
   end
 
-  describe file('/opt/c2d/scripts/02-alfresco') do
+  describe file('/opt/c2d/scripts/02-tomcat') do
+    it { should exist }
+  end
+
+  describe file('/opt/c2d/scripts/03-alfresco') do
     it { should exist }
   end
 end
