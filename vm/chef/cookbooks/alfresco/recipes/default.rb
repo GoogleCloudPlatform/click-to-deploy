@@ -152,7 +152,7 @@ bash 'Move alfresco war file to tomcat' do
   code <<-EOH
     cp /opt/alfresco/web-server/webapps/*.* /opt/tomcat/webapps/
     cp /opt/alfresco/web-server/conf/Catalina/localhost/*.* /opt/tomcat/conf/Catalina/localhost/
-    chown -R tomcat:tomcat /opt/tomcat/latest
+    chown -R tomcat:tomcat /opt/tomcat/
 EOH
 end
 
