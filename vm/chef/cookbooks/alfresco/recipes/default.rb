@@ -153,6 +153,9 @@ bash 'Move alfresco war file to tomcat' do
     cp /opt/alfresco/web-server/webapps/*.* /opt/tomcat/webapps/
     cp /opt/alfresco/web-server/conf/Catalina/localhost/*.* /opt/tomcat/conf/Catalina/localhost/
     chown -R tomcat:tomcat /opt/tomcat/
+
+    # Delete tomcat home user folder
+    rm -rf /home/tomcat
 EOH
 end
 
