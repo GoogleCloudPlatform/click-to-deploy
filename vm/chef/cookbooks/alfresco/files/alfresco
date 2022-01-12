@@ -42,7 +42,7 @@ echo -e "Copying configuration and war files..."
 mkdir -p "${TOMCAT_HOME}"/modules/share
 mkdir -p "${TOMCAT_HOME}"/modules/platform
 
-rm -rf "${TOMCAT_HOME}"/webapps/*
+#m -rf "${TOMCAT_HOME}"/webapps/*
 
 cp "${ALFRESCO_HOME}"/web-server/webapps/*.war "${TOMCAT_HOME}"/webapps/
 cp -r "${ALFRESCO_HOME}"/web-server/conf/Catalina "${TOMCAT_HOME}"/conf/
@@ -69,6 +69,10 @@ java -jar "${ALFRESCO_HOME}"/bin/alfresco-mmt.jar install "${ALFRESCO_HOME}"/rm-
 java -jar "${ALFRESCO_HOME}"/bin/alfresco-mmt.jar install "${ALFRESCO_HOME}"/rm-apts/alfresco-rm-community-share-3.0.a.amp "${TOMCAT_HOME}"/webapps/share.war
 
 #"${SOLR_HOME}"/solr/bin/solr stop
+
+chown -R tomcat:tomcat /opt/tomcat
+chown -R solr:solr /opt/solr
+chown -R activemq:activemq /opt/activemq
 
 echo -e "Starting services..."
 

@@ -95,14 +95,6 @@ user 'solr' do
   action :create
 end
 
-directory '/opt/solr' do
-  owner 'solr'
-  group 'solr'
-  mode '0755'
-  recursive true
-  action :create
-end
-
 # Download Records Management.
 remote_file '/tmp/rm.zip' do
   source "#{node['rm']['install']['url']}"
@@ -144,14 +136,6 @@ EOH
 end
 
 user 'activemq' do
-  action :create
-end
-
-directory '/opt/activemq' do
-  owner 'activemq'
-  group 'activemq'
-  mode '0755'
-  recursive true
   action :create
 end
 
