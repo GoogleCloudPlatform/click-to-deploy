@@ -39,7 +39,6 @@ service mysql restart
 mkdir "${CONCRETE_FOLDER}"
 cd "${CONCRETE_FOLDER}/"
 
-
 composer create-project concrete5/composer "${CONCRETE_PROJECT}" -n
 
 echo "Installing Concrete..."
