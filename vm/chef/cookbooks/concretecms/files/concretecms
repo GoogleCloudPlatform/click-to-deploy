@@ -38,10 +38,13 @@ service mysql restart
 
 mkdir "${CONCRETE_FOLDER}"
 cd "${CONCRETE_FOLDER}/"
+
+
 composer create-project concrete5/composer "${CONCRETE_PROJECT}" -n
 
 echo "Installing Concrete..."
 cd "${CONCRETE_FOLDER}/${CONCRETE_PROJECT}"
+composer require doctrine/annotations
 vendor/bin/concrete5 c5:install -vv \
   --db-server="${CONCRETE_DB_SERVER}" \
   --db-username="${CONCRETE_DB_USER}" \

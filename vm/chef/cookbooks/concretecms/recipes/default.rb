@@ -32,9 +32,10 @@ include_recipe 'php74::module_simplexml'
 include_recipe 'php74::module_gd'
 include_recipe 'php74::module_mbstring'
 include_recipe 'php74::module_curl'
-include_recipe 'php74::module_mcrypt'
 include_recipe 'php74::module_zip'
 include_recipe 'php74::module_libapache2'
+include_recipe 'php74::module_intl'
+include_recipe 'php74::module_fileinfo'
 
 include_recipe 'composer::composer-only'
 
