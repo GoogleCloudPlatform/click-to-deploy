@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['discourse']['version'] = '2.4.5'
-default['discourse']['src']['sha256'] = 'c2cc374e2125b20030661ca81c590b081680d48facd515f5b3d1d38b8db159f1'
+default['discourse']['version'] = '2.7.12'
+default['discourse']['src']['sha256'] = '9b1257e7106fe55777012da5e106be75ab7e2bf7ac66fdc5788cd73b6e76012b'
 
 default['discourse']['ruby']['version'] = '2.7.2'
 default['discourse']['bundler']['version'] = '~>2.2'
