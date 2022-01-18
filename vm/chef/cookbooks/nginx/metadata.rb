@@ -14,5 +14,5 @@
 
 name 'nginx'
 depends 'mysql'
-depends 'php7'
+depends 'php74'
 supports 'debian'
