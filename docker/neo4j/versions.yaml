@@ -20,20 +20,20 @@ versions:
   from: marketplace.gcr.io/google/debian9
   packages:
     dockerneo4j:
-      sha256: 6215b02cd6903dd79a0c9f9955d9cb46db2a98656abaf90119f0653ab13e2966
-      version: 4.4.2
+      sha256: 7a0eb6f7620374b67da70c7ec1c848244721549bb783f864957f598bdff0ac73
+      version: 4.4.3
     neo4j:
-      sha256: 2594e5af77a9fad2338febe3b868d17dbd40fe537455758d19780d88621c8387
-      version: 4.4.2
+      sha256: 87a01906c178977c082579def934afde0f806695e593fd119f237bff01cfa738
+      version: 4.4.3
     tini:
       sha256: 93dcc18adc78c65a028a84799ecf8ad40c936fdfc5f2a57b1acda5a8117fa82c
       version: 0.19.0
   repo: neo4j4
   tags:
-  - 4.4.2-debian9
+  - 4.4.3-debian9
   - 4.4-debian9
   - 4-debian9
-  - 4.4.2
+  - 4.4.3
   - '4.4'
   - '4'
   - latest
