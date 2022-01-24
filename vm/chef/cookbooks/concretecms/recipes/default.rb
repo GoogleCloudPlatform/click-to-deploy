@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,9 +32,10 @@ include_recipe 'php74::module_simplexml'
 include_recipe 'php74::module_gd'
 include_recipe 'php74::module_mbstring'
 include_recipe 'php74::module_curl'
-include_recipe 'php74::module_mcrypt'
 include_recipe 'php74::module_zip'
 include_recipe 'php74::module_libapache2'
+include_recipe 'php74::module_intl'
+include_recipe 'php74::module_fileinfo'
 
 include_recipe 'composer::composer-only'
 
