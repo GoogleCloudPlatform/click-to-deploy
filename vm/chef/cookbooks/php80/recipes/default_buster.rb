@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,8 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'spec_helper'
+apt_repository 'php' do
+  uri 'https://packages.sury.org/php/'
+  distribution 'buster'
+  key 'https://packages.sury.org/php/apt.gpg'
+  components ['main']
+end
 
-describe package('php7.4') do
-  it { should be_installed }
+apt_update do
+  action :update
+end
+
+package 'install packages' do
+  package_name node['php80']['packages']
+  action :install
+  retries 5
+  retry_delay 20
+end
+
+node['php80']['modules'].each do |pkg|
+  include_recipe "php80::module_#{pkg}"
 end
