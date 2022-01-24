@@ -15,5 +15,5 @@
 name 'liferay'
 depends 'c2d-config'
 depends 'mysql'
-depends 'openjdk8'
+depends 'openjdk11'
 supports 'debian'
