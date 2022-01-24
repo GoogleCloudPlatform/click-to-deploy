@@ -1,0 +1,106 @@
+global:
+  priorityClassName: ""
+  rbac:
+    create: true
+  podSecurityPolicy:
+    enabled: false
+    useAppArmor: true
+  logLevel: 2
+  leaderElection:
+    namespace: "kube-system"
+
+installCRDs: true
+replicaCount: 1
+
+image:
+  repository: null # Controller
+  tag: null
+  pullPolicy: IfNotPresent
+
+serviceAccount:
+  create: true
+  automountServiceAccountToken: true
+securityContext:
+  runAsNonRoot: true
+
+prometheus:
+  enabled: true
+  servicemonitor:
+    enabled: false
+    prometheusInstance: default
+    targetPort: 9402
+    path: /metrics
+    interval: 60s
+    scrapeTimeout: 30s
+    labels: {}
+    honorLabels: false
+
+webhook:
+  replicaCount: 1
+  timeoutSeconds: 10
+  securityContext:
+    runAsNonRoot: true
+  livenessProbe:
+    failureThreshold: 3
+    initialDelaySeconds: 60
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 1
+  readinessProbe:
+    failureThreshold: 3
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    successThreshold: 1
+    timeoutSeconds: 1
+
+  image:
+  #  repository: #webhook
+    pullPolicy: IfNotPresent
+
+  serviceAccount:
+    create: true
+    automountServiceAccountToken: true
+  securePort: 10250
+  hostNetwork: false
+
+cainjector:
+  enabled: true
+  replicaCount: 1
+  securityContext:
+    runAsNonRoot: true
+  image:
+  #  repository: #cert-manager-cainjector
+    pullPolicy: IfNotPresent
+
+  serviceAccount:
+    create: true
+    automountServiceAccountToken: true
+
+startupapicheck:
+  enabled: true
+  securityContext:
+    runAsNonRoot: true
+  timeout: 1m
+  backoffLimit: 4
+  jobAnnotations:
+    helm.sh/hook: post-install
+    helm.sh/hook-weight: "1"
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+
+  image:
+  #  repository: #cert-manager-ctl
+    pullPolicy: IfNotPresent
+
+  rbac:
+    annotations:
+      helm.sh/hook: post-install
+      helm.sh/hook-weight: "-5"
+      helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+
+  serviceAccount:
+    create: true
+    annotations:
+      helm.sh/hook: post-install
+      helm.sh/hook-weight: "-5"
+      helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+    automountServiceAccountToken: true

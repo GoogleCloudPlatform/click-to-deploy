@@ -12,10 +12,8 @@ x-google-marketplace:
   images:
     '':
       properties:
-        controller.image.repo:
+        image.repository:
           type: REPO_WITH_REGISTRY
-        controller.image.tag:
-          type: TAG
     prometheus-to-sd:
       properties:
         metrics.image:
