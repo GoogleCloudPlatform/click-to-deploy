@@ -51,9 +51,9 @@ spec:
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           command: ["/app/cainjector"]
-          imagePullPolicy: {{ .Values.cainjector.image.pullPolicy }}
+          imagePullPolicy: IfNotPresent
           args:
           {{- if .Values.global.logLevel }}
           - --v={{ .Values.global.logLevel }}

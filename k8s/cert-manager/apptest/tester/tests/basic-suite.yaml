@@ -9,14 +9,14 @@ actions:
   bashTest:
     script: |
       kubectl apply --namespace ${NAMESPACE} -f - <<EOF
-      apiVersion: cert-manager.io/v1alpha2
+      apiVersion: cert-manager.io/v1
       kind: Issuer
       metadata:
         name: test-selfsigned
       spec:
         selfSigned: {}
       ---
-      apiVersion: cert-manager.io/v1alpha2
+      apiVersion: cert-manager.io/v1
       kind: Certificate
       metadata:
         name: selfsigned-cert
@@ -53,14 +53,14 @@ actions:
   bashTest:
     script: |
       kubectl delete --namespace ${NAMESPACE} -f - <<EOF
-      apiVersion: cert-manager.io/v1alpha2
+      apiVersion: cert-manager.io/v1
       kind: Issuer
       metadata:
         name: test-selfsigned
       spec:
         selfSigned: {}
       ---
-      apiVersion: cert-manager.io/v1alpha2
+      apiVersion: cert-manager.io/v1
       kind: Certificate
       metadata:
         name: selfsigned-cert

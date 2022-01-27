@@ -71,9 +71,9 @@ spec:
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           command: ["/app/controller"]
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          imagePullPolicy: IfNotPresent
           args:
           {{- if .Values.global.logLevel }}
           - --v={{ .Values.global.logLevel }}
