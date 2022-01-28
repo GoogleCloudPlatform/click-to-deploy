@@ -1,4 +1,3 @@
-{{- if .Values.startupapicheck.enabled }}
 {{- if .Values.global.podSecurityPolicy.enabled }}
 apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
@@ -17,9 +16,9 @@ metadata:
     apparmor.security.beta.kubernetes.io/allowedProfileNames: 'runtime/default'
     apparmor.security.beta.kubernetes.io/defaultProfileName:  'runtime/default'
     {{- end }}
-    {{- with .Values.startupapicheck.rbac.annotations }}
-    {{- toYaml . | nindent 4 }}
-    {{- end }}
+    helm.sh/hook: post-install
+    helm.sh/hook-weight: "-5"
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
 spec:
   privileged: false
   allowPrivilegeEscalation: false
@@ -47,5 +46,4 @@ spec:
     ranges:
     - min: 1000
       max: 1000
-{{- end }}
 {{- end }}

@@ -52,19 +52,10 @@ spec:
       {{- with .Values.global.priorityClassName }}
       priorityClassName: {{ . | quote }}
       {{- end }}
-      {{- $enabledDefined := gt (len (keys (pick .Values.securityContext "enabled"))) 0 }}
-      {{- $legacyEnabledExplicitlyOff := and $enabledDefined (not .Values.securityContext.enabled) }}
-      {{- if and .Values.securityContext (not $legacyEnabledExplicitlyOff) }}
       securityContext:
-        {{- if .Values.securityContext.enabled }}
-        {{/* support legacy securityContext.enabled and its two parameters */}}
-        fsGroup: {{ default 1001 .Values.securityContext.fsGroup }}
-        runAsUser: {{ default 1001 .Values.securityContext.runAsUser }}
-        {{- else }}
-        {{/* this is the way forward: support an arbitrary yaml block */}}
-        {{- toYaml .Values.securityContext | nindent 8 }}
-        {{- end }}
-      {{- end }}
+        runAsNonRoot: true
+        fsGroup: 1000
+        runAsUser: 1000
       {{- with .Values.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
@@ -115,10 +106,10 @@ spec:
           ports:
           - containerPort: 9402
             protocol: TCP
-          {{- with .Values.containerSecurityContext }}
           securityContext:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
+            runAsNonRoot: true
+            fsGroup: 1000
+            runAsUser: 1000
           {{- with .Values.volumeMounts }}
           volumeMounts:
             {{- toYaml . | nindent 12 }}

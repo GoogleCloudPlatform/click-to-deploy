@@ -1,4 +1,3 @@
-{{- if .Values.startupapicheck.enabled }}
 {{- if .Values.global.podSecurityPolicy.enabled }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -10,10 +9,10 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/component: "startupapicheck"
     {{- include "labels" . | nindent 4 }}
-  {{- with .Values.startupapicheck.rbac.annotations }}
   annotations:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
+    helm.sh/hook: post-install
+    helm.sh/hook-weight: "-5"
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -22,5 +21,4 @@ subjects:
   - kind: ServiceAccount
     name: {{ template "startupapicheck.serviceAccountName" . }}
     namespace: {{ .Release.Namespace }}
-{{- end }}
 {{- end }}

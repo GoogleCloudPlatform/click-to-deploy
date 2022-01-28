@@ -44,13 +44,11 @@ spec:
       {{- with .Values.global.priorityClassName }}
       priorityClassName: {{ . | quote }}
       {{- end }}
-      {{- with .Values.webhook.securityContext }}
       securityContext:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- if .Values.webhook.hostNetwork }}
-      hostNetwork: true
-      {{- end }}
+        runAsNonRoot: true
+        fsGroup: 1000
+        runAsUser: 1000
+      hostNetwork: false
       containers:
         - name: {{ .Chart.Name }}
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
@@ -63,10 +61,7 @@ spec:
           {{- if .Values.webhook.config }}
           - --config=/var/cert-manager/config/config.yaml
           {{- end }}
-          {{- $config := default .Values.webhook.config "" }}
-          {{ if not $config.securePort -}}
-          - --secure-port={{ .Values.webhook.securePort }}
-          {{- end }}
+          - --secure-port=10250
           {{- $tlsConfig := default $config.tlsConfig "" }}
           {{ if or (not $config.tlsConfig) (and (not $tlsConfig.dynamic) (not $tlsConfig.filesystem) ) -}}
           - --dynamic-serving-ca-secret-namespace=$(POD_NAMESPACE)
@@ -95,11 +90,11 @@ spec:
               port: 6080
               {{- end }}
               scheme: HTTP
-            initialDelaySeconds: {{ .Values.webhook.livenessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.webhook.livenessProbe.periodSeconds }}
-            timeoutSeconds: {{ .Values.webhook.livenessProbe.timeoutSeconds }}
-            successThreshold: {{ .Values.webhook.livenessProbe.successThreshold }}
-            failureThreshold: {{ .Values.webhook.livenessProbe.failureThreshold }}
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3
           readinessProbe:
             httpGet:
               path: /healthz
@@ -109,15 +104,15 @@ spec:
               port: 6080
               {{- end }}
               scheme: HTTP
-            initialDelaySeconds: {{ .Values.webhook.readinessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.webhook.readinessProbe.periodSeconds }}
-            timeoutSeconds: {{ .Values.webhook.readinessProbe.timeoutSeconds }}
-            successThreshold: {{ .Values.webhook.readinessProbe.successThreshold }}
-            failureThreshold: {{ .Values.webhook.readinessProbe.failureThreshold }}
-          {{- with .Values.webhook.containerSecurityContext }}
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3
           securityContext:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
+            runAsNonRoot: true
+            fsGroup: 1000
+            runAsUser: 1000
           env:
           - name: POD_NAMESPACE
             valueFrom:

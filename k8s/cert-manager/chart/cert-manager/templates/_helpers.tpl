@@ -65,11 +65,7 @@ If release name contains chart name it will be used as a full name.
 Create the name of the service account to use
 */}}
 {{- define "webhook.serviceAccountName" -}}
-{{- if .Values.webhook.serviceAccount.create -}}
     {{ default (include "webhook.fullname" .) .Values.webhook.serviceAccount.name }}
-{{- else -}}
-    {{ default "default" .Values.webhook.serviceAccount.name }}
-{{- end -}}
 {{- end -}}
 
 {{/*
@@ -99,11 +95,7 @@ If release name contains chart name it will be used as a full name.
 Create the name of the service account to use
 */}}
 {{- define "cainjector.serviceAccountName" -}}
-{{- if .Values.cainjector.serviceAccount.create -}}
     {{ default (include "cainjector.fullname" .) .Values.cainjector.serviceAccount.name }}
-{{- else -}}
-    {{ default "default" .Values.cainjector.serviceAccount.name }}
-{{- end -}}
 {{- end -}}
 
 {{/*
@@ -133,11 +125,7 @@ If release name contains chart name it will be used as a full name.
 Create the name of the service account to use
 */}}
 {{- define "startupapicheck.serviceAccountName" -}}
-{{- if .Values.startupapicheck.serviceAccount.create -}}
     {{ default (include "startupapicheck.fullname" .) .Values.startupapicheck.serviceAccount.name }}
-{{- else -}}
-    {{ default "default" .Values.startupapicheck.serviceAccount.name }}
-{{- end -}}
 {{- end -}}
 
 {{/*

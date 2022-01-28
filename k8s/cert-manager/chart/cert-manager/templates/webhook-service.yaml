@@ -21,7 +21,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  type: {{ .Values.webhook.serviceType }}
+  type: ClusterIP
   {{- with .Values.webhook.loadBalancerIP }}
   loadBalancerIP: {{ . }}
   {{- end }}

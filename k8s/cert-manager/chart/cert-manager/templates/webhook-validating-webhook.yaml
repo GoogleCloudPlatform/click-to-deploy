@@ -41,7 +41,7 @@ webhooks:
     # Equivalent matchPolicy ensures that non-v1 resource requests are sent to
     # this webhook (after the resources have been converted to v1).
     matchPolicy: Equivalent
-    timeoutSeconds: {{ .Values.webhook.timeoutSeconds }}
+    timeoutSeconds: 10
     failurePolicy: Fail
     sideEffects: None
     clientConfig:
