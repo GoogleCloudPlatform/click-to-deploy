@@ -22,6 +22,6 @@ default['mautic']['packages'] = [
     'php7.4-imap',
 ]
 
-default['mautic']['version'] = '3.3'
+default['mautic']['version'] = '4.1.1'
 default['mautic']['user'] = 'www-data'
 default['mautic']['db']['name'] = 'mautic'
