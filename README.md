@@ -30,7 +30,6 @@ Below is the list of solutions, in this repo, currently affected by the log4j CV
 | activemq | Uses log4j 1.x |
 | elastic-gke-logging | Vulnerable |
 | elasticsearch | Vulnerable |
-| hazelcast | Vulnerable |
 | kafka | Uses log4j 1.x |
 | magento |  Vulnerable (uses elasticsearch) |
 | sonarqube | Vulnerable (uses elasticsearch) |
