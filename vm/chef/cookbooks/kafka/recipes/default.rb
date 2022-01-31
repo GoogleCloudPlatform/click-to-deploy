@@ -63,6 +63,14 @@ cookbook_file '/lib/systemd/system/kafka.service' do
   action :create
 end
 
+cookbook_file '/opt/kafka/kafka_server_jaas.conf' do
+  source 'kafka_server_jaas.conf'
+  owner 'root'
+  group 'root'
+  mode 0644
+  action :create
+end
+
 cookbook_file '/opt/kafka/bin/c2d-service.sh' do
   source 'c2d-service.sh'
   owner 'root'

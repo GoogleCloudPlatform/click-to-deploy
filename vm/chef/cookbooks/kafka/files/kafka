@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2021 Google Inc.
+# Copyright 2022 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,8 +41,13 @@ if [[ "${kafka_nodes_count}" -gt 1 ]]; then
   # Configure Zookeeper
   mkdir -p /var/data/kafka
 
-  # Configure Zookeeper Set data dir
+  # Configure Zookeeper
   sed -i 's@dataDir=/tmp/zookeeper@dataDir=/var/data/kafka@g' "${zookeeper_config}"
+
+  cat << EOF >> "${zookeeper_config}"
+requireClientAuthScheme=sasl
+jaasLoginRenew=3600000" 
+EOF
 
   # Remove existing Kafka settings
   sed -i '/broker.id=0/d' "${kafka_config}"
@@ -56,6 +61,9 @@ broker.id=${broker_id}
 broker.rack=RACK1
 logs.dirs=/var/data/kafka
 zookeeper.connect=${zookeeper_connection}
+sasl.enabled.mechanisms=PLAIN
+sasl.mechanism.inter.broker.protocol=PLAIN
+allow.everyone.if.no.acl.found=true
 EOF
 
   # Start Kafka
@@ -63,3 +71,16 @@ EOF
 
   echo "Configuration finished."
 fi
+
+cat << EOF >> "${zookeeper_config}"
+requireClientAuthScheme=sasl
+jaasLoginRenew=3600000" 
+EOF
+
+cat << EOF >> "${kafka_config}"
+sasl.enabled.mechanisms=PLAIN
+sasl.mechanism.inter.broker.protocol=PLAIN
+allow.everyone.if.no.acl.found=true
+EOF
+
+systemctl restarrt kafka
