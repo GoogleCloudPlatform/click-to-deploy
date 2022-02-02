@@ -47,7 +47,7 @@ end
 
 # Download tomcat.
 remote_file '/tmp/tomcat.tar.gz' do
-  source "https://dlcdn.apache.org/tomcat/tomcat-10/v#{node['tomcat']['version']}/bin/apache-tomcat-#{node['tomcat']['version']}.tar.gz"
+  source "https://archive.apache.org/dist/tomcat/tomcat-10/v#{node['tomcat']['version']}/bin/apache-tomcat-#{node['tomcat']['version']}.tar.gz"
   verify "echo '#{node['tomcat']['sha1']} %{path}' | sha1sum -c"
   action :create
 end
