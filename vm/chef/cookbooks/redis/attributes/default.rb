@@ -16,7 +16,7 @@ default['redis']['download_url'] =
   'http://download.redis.io/releases/redis-stable.tar.gz'
 
 default['redis']['packages']['temp_dependencies'] = ['dpkg-dev', 'gcc', 'make']
-default['redis']['packages']['dependencies'] = ['libjemalloc1']
+default['redis']['packages']['dependencies'] = ['libjemalloc2']
 
 default['redis']['packages']['all_dependencies'] =
   default['redis']['packages']['temp_dependencies'] +
