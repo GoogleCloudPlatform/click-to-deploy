@@ -27,7 +27,7 @@ versions:
   - dir: '0/0.54'
     repo: prometheus-operator0
     tags:
-      - '0.55.0-debian9'
+      - '0.54.0-debian9'
       - '0.54.0'
       - '0.54-debian9'
       - '0.54'
