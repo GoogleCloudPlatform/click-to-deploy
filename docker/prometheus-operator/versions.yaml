@@ -24,19 +24,19 @@ versions:
     packages:
       prometheus-operator:
         version: '0.34.0'
-  - dir: '0/0.53'
+  - dir: '0/0.54'
     repo: prometheus-operator0
     tags:
-      - '0.53.1-debian9'
-      - '0.53.1'
-      - '0.53-debian9'
-      - '0.53'
+      - '0.55.0-debian9'
+      - '0.54.0'
+      - '0.54-debian9'
+      - '0.54'
       - '0-debian9'
       - '0'
       - 'latest'
     from: gcr.io/google-appengine/debian10:latest
     packages:
       prometheus-operator:
-        version: '0.53.1'
+        version: '0.54.0'
 cloudbuild:
   enable_parallel: false
