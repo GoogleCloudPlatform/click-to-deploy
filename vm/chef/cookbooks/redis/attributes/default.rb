@@ -12,8 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-default['redis']['version'] ='6.2.6'
+default['redis']['version'] = '6.2.6'
 
 default['redis']['download_url'] =
   "http://download.redis.io/releases/redis-#{default['redis']['version']}.tar.gz"
