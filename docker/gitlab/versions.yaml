@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 14/debian10/14.6
+- dir: 14/debian10/14.7
   from: marketplace.gcr.io/google/debian10
   packages:
     gitlab:
-      version: 14.6.0
+      version: 14.7.0
   repo: gitlab14
   tags:
-  - 14.6.0-debian10
-  - 14.6-debian10
+  - 14.7.0-debian10
+  - 14.7-debian10
   - 14-debian10
-  - 14.6.0
-  - '14.6'
+  - 14.7.0
+  - '14.7'
   - '14'
   - latest
 - dir: 13/debian10/13.12
