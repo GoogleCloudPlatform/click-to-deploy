@@ -34,9 +34,6 @@ spec:
     spec:
       restartPolicy: OnFailure
       serviceAccountName: {{ template "startupapicheck.serviceAccountName" . }}
-      {{- with .Values.global.priorityClassName }}
-      priorityClassName: {{ . | quote }}
-      {{- end }}
       securityContext:
         runAsNonRoot: true
         fsGroup: 1000

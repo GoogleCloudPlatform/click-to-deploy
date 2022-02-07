@@ -1,4 +1,3 @@
-{{- if .Values.global.rbac.create }}
 # create certificate role
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -43,4 +42,3 @@ subjects:
   - kind: ServiceAccount
     name: {{ template "startupapicheck.serviceAccountName" . }}
     namespace: {{ .Release.Namespace }}
-{{- end }}

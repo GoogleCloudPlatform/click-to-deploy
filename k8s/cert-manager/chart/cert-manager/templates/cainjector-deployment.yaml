@@ -41,9 +41,6 @@ spec:
       {{- end }}
     spec:
       serviceAccountName: {{ template "cainjector.serviceAccountName" . }}
-      {{- with .Values.global.priorityClassName }}
-      priorityClassName: {{ . | quote }}
-      {{- end }}
       securityContext:
         runAsNonRoot: true
         fsGroup: 1000
@@ -54,9 +51,7 @@ spec:
           command: ["/app/cainjector"]
           imagePullPolicy: IfNotPresent
           args:
-          {{- if .Values.global.logLevel }}
-          - --v={{ .Values.global.logLevel }}
-          {{- end }}
+          - --v=2
           {{- with .Values.global.leaderElection }}
           - --leader-election-namespace={{ .namespace }}
           {{- if .leaseDuration }}

@@ -27,7 +27,7 @@ spec:
   - protocol: TCP
     port: 9402
     name: tcp-prometheus-servicemonitor
-    targetPort: {{ .Values.prometheus.servicemonitor.targetPort }}
+    targetPort: 9402
   selector:
     app.kubernetes.io/name: {{ include "cert-manager.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}

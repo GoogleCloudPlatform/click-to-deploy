@@ -1,4 +1,3 @@
-{{- if .Values.global.rbac.create }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -57,7 +56,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: {{ template "cainjector.fullname" . }}:leaderelection
-  namespace: {{ .Values.global.leaderElection.namespace }}
+  namespace: kube-system
   labels:
     app: {{ include "cainjector.name" . }}
     app.kubernetes.io/name: {{ include "cainjector.name" . }}
@@ -94,7 +93,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: {{ include "cainjector.fullname" . }}:leaderelection
-  namespace: {{ .Values.global.leaderElection.namespace }}
+  namespace: kube-system
   labels:
     app: {{ include "cainjector.name" . }}
     app.kubernetes.io/name: {{ include "cainjector.name" . }}
@@ -109,4 +108,3 @@ subjects:
   - kind: ServiceAccount
     name: {{ template "cainjector.serviceAccountName" . }}
     namespace: {{ .Release.Namespace }}
-{{- end }}

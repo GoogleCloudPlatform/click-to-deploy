@@ -49,9 +49,6 @@ spec:
       {{- end }}
     spec:
       serviceAccountName: {{ template "cert-manager.serviceAccountName" . }}
-      {{- with .Values.global.priorityClassName }}
-      priorityClassName: {{ . | quote }}
-      {{- end }}
       securityContext:
         runAsNonRoot: true
         fsGroup: 1000
