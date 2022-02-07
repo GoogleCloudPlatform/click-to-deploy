@@ -78,7 +78,7 @@ RUN set -eux; \
 	curl -o composer.phar "https://getcomposer.org/download/${COMPOSER_VERSION}/composer.phar"; \
 	echo "${COMPOSER_SHA256} composer.phar" | sha256sum -c - ; \
 	chmod +x composer.phar; \
-	php -d memory_limit=2G ./composer.phar require drush/drush; \
+	php -d memory_limit=4G ./composer.phar require drush/drush; \
 	cp LICENSE.txt vendor/drush/drush/src/; \
 	rm -f composer.phar; \
 	rm -rf /var/lib/apt/lists/*

@@ -1,10 +1,10 @@
-# Copyright 2022 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#      http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,25 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+apt_repository 'php' do
+  uri 'https://packages.sury.org/php/'
+  distribution 'buster'
+  key 'https://packages.sury.org/php/apt.gpg'
+  components ['main']
+end
 
-cloudbuild:
-  enable_parallel: false
-versions:
-- dir: 1/debian10/1.7
-  from: marketplace.gcr.io/google/debian10
-  packages:
-    cert-manager:
-      version: 1.7.0
-    bazel:
-      version: 4.0.0  
-  repo: cert-manager1
-  tags:
-  - 1.7.0-debian10
-  - 1.7-debian10
-  - 1-debian10
-  - 1.7.0
-  - '1.7'
-  - '1'
-  - latest
-  templateSubDir: cert-manager1
+apt_update do
+  action :update
+end
 
+package 'install packages' do
+  package_name node['php80']['packages']
+  action :install
+  retries 5
+  retry_delay 20
+end
+
+node['php80']['modules'].each do |pkg|
+  include_recipe "php80::module_#{pkg}"
+end

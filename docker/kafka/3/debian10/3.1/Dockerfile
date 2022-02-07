@@ -1,10 +1,10 @@
 FROM marketplace.gcr.io/google/debian10
 
-ARG KAFKA_VERSION=3.0.0
+ARG KAFKA_VERSION=3.1.0
 ARG SCALA_VERSION=2.13
-ARG KAFKA_SHA512=86cdeb04af123399858d03431e9777948c1c40ec0d843966cf9bd90b8235b47ebbb5cb96d1f0660710b9286da86bbb5ee65e21e757606f5a1e67f970ae5cf57c
+ARG KAFKA_SHA512=5954c1cf38187134a6e0a21520cbef5cd5320a3e9290e630c3895990e892219917d911fabbc64da5db17bcaa940b8277c23344b50f2ff4256eaca78116e9fdc9
 
-ENV C2D_RELEASE 3.0.0
+ENV C2D_RELEASE 3.1.0
 
 RUN set -ex \
   && apt-get update \
@@ -31,7 +31,7 @@ RUN set -ex; \
 
 COPY --chown=$KAFKA_USER:$KAFKA_GROUP scripts ${KAFKA_DOCKER_SCRIPTS}
 
-# Download and setup kafka version v3.0.0
+# Download and setup kafka version v3.1.0
 RUN chmod a+x ${KAFKA_DOCKER_SCRIPTS}/*.sh \
   && ln -s ${KAFKA_DOCKER_SCRIPTS}/*.sh /usr/bin \
   && curl -sSL ${KAFKA_DIST_URL} -o "/opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz" \

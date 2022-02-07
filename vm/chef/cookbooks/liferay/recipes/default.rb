@@ -13,7 +13,7 @@
 # limitations under the License.
 #
 include_recipe 'mysql'
-include_recipe 'openjdk8'
+include_recipe 'openjdk11'
 
 apt_update do
   action :update
