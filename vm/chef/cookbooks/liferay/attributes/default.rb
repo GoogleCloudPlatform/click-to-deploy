@@ -22,7 +22,7 @@ default['liferay']['sha1']['bundle'] = 'a6c3d508805ff221f1d76ffac73dacafcea7303b
 default['liferay']['packages'] = ['jq', 'zip']
 
 default['liferay']['home'] = '/opt/liferay'
-default['liferay']['java']['home'] = '/usr/lib/jvm/java-8-openjdk-amd64/'
+default['liferay']['java']['home'] = '/usr/lib/jvm/java-11-openjdk-amd64/'
 
 default['liferay']['linux']['user'] = 'liferay'
 default['liferay']['db']['name'] = 'liferay'
