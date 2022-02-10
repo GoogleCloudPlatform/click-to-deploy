@@ -31,7 +31,7 @@ end
 
 bash 'prepare_config_yaml_file' do
   code <<-EOH
-    readonly conf_orig_file=/etc/cassandra/cassandra.yam-Duse
+    readonly conf_orig_file=/etc/cassandra/cassandra.yaml
     readonly conf_template_file=/etc/cassandra/cassandra.yaml.template
 
     cp "${conf_orig_file}" "${conf_template_file}"
