@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ end
 
 bash 'prepare_config_yaml_file' do
   code <<-EOH
-    readonly conf_orig_file=/etc/cassandra/cassandra.yaml
+    readonly conf_orig_file=/etc/cassandra/cassandra.yam-Duse
     readonly conf_template_file=/etc/cassandra/cassandra.yaml.template
 
     cp "${conf_orig_file}" "${conf_template_file}"
@@ -62,14 +62,12 @@ bash 'prepare_env_config_script' do
     cp "${env_orig_file}" "${env_template_file}"
 
     sed -i "s|# set jvm HeapDumpPath with CASSANDRA_HEAPDUMP_DIR|# set jvm HeapDumpPath with CASSANDRA_HEAPDUMP_DIR\nCASSANDRA_HEAPDUMP_DIR=\\${cassandra_mount_dir}/dumps|" "${env_template_file}"
-    sed -i "s/# JVM_OPTS=\\"\\$JVM_OPTS -Djava.rmi.server.hostname=<public name>\\"/JVM_OPTS=\\"\$\JVM_OPTS -Djava.rmi.server.hostname=\\${cassandra_internal_ip}\\"/" "${env_template_file}"
 
     # Make sure that the file ends with new line.
     echo -e "\n" >> "${env_template_file}"
 
     # Additional JVM options to be appended to file.
     echo "JVM_OPTS=\\"\\$JVM_OPTS -XX:TargetSurvivorRatio=50\\"" >> "${env_template_file}"
-    echo "JVM_OPTS=\\"\\$JVM_OPTS -XX:+AggressiveOpts\\"" >> "${env_template_file}"
     echo "JVM_OPTS=\\"\\$JVM_OPTS -XX:MaxDirectMemorySize=5g\\"" >> "${env_template_file}"
     echo "JVM_OPTS=\\"\\$JVM_OPTS -XX:+UseLargePages\\"" >> "${env_template_file}"
 EOH
