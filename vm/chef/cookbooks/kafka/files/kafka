@@ -55,7 +55,8 @@ Server {
 EOF
 
   # Get Broker Id
-  declare broker_id=$(hostname -a | awk -F '-' '{ print $NF }' | awk '{print substr($0,length,1)}')
+  declare current_node_id="$(hostname -a | awk -F '-' '{ print $NF }')"
+  declare broker_id="$((current_node_id + 1))"
 
   # Get Zookeeper Master
   declare zookeeper_master="$(echo "${kafka_nodes}" | cut -f 1 -d ' ')"
