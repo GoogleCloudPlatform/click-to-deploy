@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2021 Google Inc.
+# Copyright 2022 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,18 +16,46 @@
 
 source /opt/c2d/c2d-utils
 
-readonly kafka_nodes="$(get_attribute_value "kafka-nodes")"
-readonly kafka_nodes_count="$(echo "${kafka_nodes}" | wc -w)"
-readonly kafka_config="/opt/kafka/config/server.properties"
 readonly zookeeper_config="/opt/kafka/config/zookeeper.properties"
+readonly zookeeper_auth_config="/opt/kafka/config/zookeeper_jaas.conf"
+readonly kafka_nodes="$(get_attribute_value "kafka-nodes")"
+readonly kafka_config="/opt/kafka/config/server.properties"
+readonly kafka_auth_config="/opt/kafka/config/kafka_server_jaas.conf"
+readonly kafka_user="$(get_attribute_value "kafka-user")"
+readonly kafka_password="$(get_attribute_value "kafka-password")"
 
 # Configure Kafka in Cluster mode
-if [[ "${kafka_nodes_count}" -gt 1 ]]; then
+if [ "${kafka_nodes}" -gt 1 ]; then
   echo "Starting cluster-mode configuration..."
 
+# Create auth file
+  cat >> "${kafka_auth_config}" << EOF
+KafkaServer {
+  org.apache.kafka.common.security.plain.PlainLoginModule required
+  username="${kafka_user}"
+  password="${kafka_password}"
+  user_${kafka_user}="${kafka_password}";
+};
+
+Client {
+  org.apache.zookeeper.server.auth.DigestLoginModule required
+  username="${kafka_user}"
+  password="${kafka_password}";
+};
+EOF
+
+cat >> "${zookeeper_auth_config}" << EOF
+Server {
+  org.apache.kafka.common.security.plain.PlainLoginModule required
+  username="${kafka_user}"
+  password="${kafka_password}"
+  user_${kafka_user}="${kafka_password}";
+};
+
+EOF
+
   # Get Broker Id
-  declare current_node_id="$(hostname -a | awk -F '-' '{ print $NF }')"
-  declare broker_id="$((current_node_id + 1))"
+  declare broker_id=$(hostname -a | awk -F '-' '{ print $NF }' | awk '{print substr($0,length,1)}')
 
   # Get Zookeeper Master
   declare zookeeper_master="$(echo "${kafka_nodes}" | cut -f 1 -d ' ')"
@@ -49,13 +77,29 @@ if [[ "${kafka_nodes_count}" -gt 1 ]]; then
   sed -i '/log.dirs/d' "${kafka_config}"
   sed -i '/zookeeper.connect=/d' "${kafka_config}"
 
-  # Create new configurations
-  cat << EOF >> "${kafka_config}"
+  # Add auth to zookeeper
+  cat >> "${zookeeper_config}" << EOF
+authProvider.1=org.apache.zookeeper.server.auth.SASLAuthenticationProvider
+requireClientAuthScheme=sasl
+jaasLoginRenew=3600000
+EOF
+
+  # Create new kafka configurations
+  cat >> "${kafka_config}" << EOF
 ######## C2D Custom Configuration ########
 broker.id=${broker_id}
 broker.rack=RACK1
 logs.dirs=/var/data/kafka
 zookeeper.connect=${zookeeper_connection}
+
+security.inter.broker.protocol=SASL_PLAINTEXT
+sasl.mechanism.inter.broker.protocol=PLAIN
+sasl.enabled.mechanisms=PLAIN
+
+authorizer.class.name=kafka.security.authorizer.AclAuthorizer
+allow.everyone.if.no.acl.found=true
+listeners=SASL_PLAINTEXT://0.0.0.0:9092
+advertised.listeners=SASL_PLAINTEXT://:9092
 EOF
 
   # Start Kafka
@@ -63,3 +107,4 @@ EOF
 
   echo "Configuration finished."
 fi
+
