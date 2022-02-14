@@ -21,7 +21,6 @@ readonly kafka_nodes_count="$(echo "${kafka_nodes}" | wc -w)"
 readonly kafka_config="/opt/kafka/config/server.properties"
 readonly zookeeper_config="/opt/kafka/config/zookeeper.properties"
 readonly kafka_auth_config="/opt/kafka/config/kafka_server_jaas.conf"
-readonly zookeeper_auth_config="/opt/kafka/config/zookeeper_jaas.conf"
 readonly kafka_user="$(get_attribute_value "kafka-user")"
 readonly kafka_password="$(get_attribute_value "kafka-password")"
 
