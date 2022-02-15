@@ -73,7 +73,7 @@ fi
 # Set the initial user and password.
 # If no metadata for password is provided, use a default one
 # and requires user to change it, otherwise, use the provided one.
-if [[ ! -z "${metadata_admin_password}" ]]; then
+if [[ ! -z "${metadata_kafka_user}" && ! -z "${metadata_kafka_password}" ]]; then
   cat >> "${kafka_auth_config}" << EOF
   KafkaServer {
     org.apache.kafka.common.security.plain.PlainLoginModule required
