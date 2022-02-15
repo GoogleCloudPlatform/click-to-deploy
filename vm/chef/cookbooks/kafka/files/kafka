@@ -21,8 +21,12 @@ readonly kafka_nodes_count="$(echo "${kafka_nodes}" | wc -w)"
 readonly kafka_config="/opt/kafka/config/server.properties"
 readonly zookeeper_config="/opt/kafka/config/zookeeper.properties"
 readonly kafka_auth_config="/opt/kafka/config/kafka_server_jaas.conf"
-readonly kafka_user="$(get_attribute_value "kafka-user")"
-readonly kafka_password="$(get_attribute_value "kafka-password")"
+
+readonly metadata_kafka_user="$(get_attribute_value "kafka-user")"
+readonly metadata_kafka_password="$(get_attribute_value "kafka-password")"
+
+readonly default_kafka_user="kafka"
+readonly default_kafka_password="kafka"
 
 # Stop Kafka
 systemctl stop kafka
@@ -64,19 +68,31 @@ EOF
   echo "Configuration finished."
 fi
 
-# Stop Kafka
-systemctl stop kafka
-
 # Create auth files
-cat >> "${kafka_auth_config}" << EOF
-KafkaServer {
-  org.apache.kafka.common.security.plain.PlainLoginModule required
-  username=${kafka_user}
-  password=${kafka_password}
-  user_${kafka_user}=${kafka_password};
-};
+
+# Set the initial user and password.
+# If no metadata for password is provided, use a default one
+# and requires user to change it, otherwise, use the provided one.
+if [[ ! -z "${metadata_admin_password}" ]]; then
+  cat >> "${kafka_auth_config}" << EOF
+  KafkaServer {
+    org.apache.kafka.common.security.plain.PlainLoginModule required
+    username=${metadata_kafka_user}
+    password=${metadata_kafka_password}
+    user_${metadata_kafka_user}=${metadata_kafka_password};
+  };
 
 EOF
+else
+  cat >> "${kafka_auth_config}" << EOF
+  KafkaServer {
+    org.apache.kafka.common.security.plain.PlainLoginModule required
+    username=${default_kafka_user}
+    password=${default_kafka_password}
+    user_${default_kafka_user}=${default_kafka_password};
+  };
+EOF
+fi
 
 # Add auth to kafka
 cat >> "${kafka_config}" << EOF
