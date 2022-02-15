@@ -36,7 +36,7 @@ bash 'prepare_config_yaml_file' do
 
     cp "${conf_orig_file}" "${conf_template_file}"
 
-    sed -i "s/seeds: \\"127.0.0.1\\"/seeds: \\"\\${cassandra_seeds}\\"/" "${conf_template_file}"
+    sed -i "s/seeds: \\"127.0.0.1:7000\\"/seeds: \\"\\${cassandra_seeds}\\"/" "${conf_template_file}"
     sed -i "s/^listen_address: localhost\\$/listen_address: \\${cassandra_internal_ip}/" "${conf_template_file}"
     sed -i "s/^rpc_address: localhost\\$/rpc_address: 0.0.0.0/" "${conf_template_file}"
     sed -i "s/^# broadcast_rpc_address: .*\\$/broadcast_rpc_address: \\${cassandra_internal_ip}/" "${conf_template_file}"
