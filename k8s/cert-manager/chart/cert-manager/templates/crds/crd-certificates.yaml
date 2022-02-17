@@ -2,8 +2,6 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: certificates.cert-manager.io
-  annotations:
-    cert-manager.io/inject-ca-from-secret: '{{ template "webhook.caRef" . }}'
   labels:
     app: '{{ template "cert-manager.name" . }}'
     app.kubernetes.io/name: '{{ template "cert-manager.name" . }}'
@@ -68,7 +66,7 @@ spec:
                 - secretName
               properties:
                 additionalOutputFormats:
-                  description: AdditionalOutputFormats defines extra output formats of the private key and signed certificate chain to be written to this Certificate's target Secret. This is an Alpha Feature and is only enabled with the `--feature-gates=AdditionalCertificateOutputFormats=true` option.
+                  description: AdditionalOutputFormats defines extra output formats of the private key and signed certificate chain to be written to this Certificate's target Secret. This is an Alpha Feature and is only enabled with the `--feature-gates=AdditionalCertificateOutputFormats=true` option on both the controller and webhook components.
                   type: array
                   items:
                     description: CertificateAdditionalOutputFormat defines an additional output format of a Certificate resource. These contain supplementary data formats of the signed certificate chain and paired private key.
@@ -334,6 +332,9 @@ spec:
                       type:
                         description: Type of the condition, known values are (`Ready`, `Issuing`).
                         type: string
+                  x-kubernetes-list-map-keys:
+                    - type
+                  x-kubernetes-list-type: map
                 lastFailureTime:
                   description: LastFailureTime is the time as recorded by the Certificate controller of the most recent failure to complete a CertificateRequest for this Certificate resource. If set, cert-manager will not re-request another Certificate until 1 hour has elapsed from this time.
                   type: string
