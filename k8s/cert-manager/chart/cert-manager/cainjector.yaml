@@ -11,8 +11,8 @@ metadata:
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/component: "cainjector"
     app.kubernetes.io/version: "v0.1.0"
-    app.kubernetes.io/managed-by: Helm
-    helm.sh/chart: cert-manager-v0.1.0
+
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -24,8 +24,8 @@ metadata:
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/component: "cainjector"
     app.kubernetes.io/version: "v0.1.0"
-    app.kubernetes.io/managed-by: Helm
-    helm.sh/chart: cert-manager-v0.1.0
+
+
 rules:
   - apiGroups: ["cert-manager.io"]
     resources: ["certificates"]
@@ -56,8 +56,8 @@ metadata:
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/component: "cainjector"
     app.kubernetes.io/version: "v0.1.0"
-    app.kubernetes.io/managed-by: Helm
-    helm.sh/chart: cert-manager-v0.1.0
+
+
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -79,8 +79,8 @@ metadata:
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/component: "cainjector"
     app.kubernetes.io/version: "v0.1.0"
-    app.kubernetes.io/managed-by: Helm
-    helm.sh/chart: cert-manager-v0.1.0
+
+
 rules:
   # Used for leader election by the controller
   # cert-manager-cainjector-leader-election is used by the CertificateBased injector controller
@@ -117,8 +117,8 @@ metadata:
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/component: "cainjector"
     app.kubernetes.io/version: "v0.1.0"
-    app.kubernetes.io/managed-by: Helm
-    helm.sh/chart: cert-manager-v0.1.0
+
+
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -140,8 +140,8 @@ metadata:
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/component: "cainjector"
     app.kubernetes.io/version: "v0.1.0"
-    app.kubernetes.io/managed-by: Helm
-    helm.sh/chart: cert-manager-v0.1.0
+
+
 spec:
   replicas: {{ .Values.cainjector.replicaCount }}
   selector:
@@ -157,8 +157,8 @@ spec:
         app.kubernetes.io/instance: cert-manager
         app.kubernetes.io/component: "cainjector"
         app.kubernetes.io/version: "v0.1.0"
-        app.kubernetes.io/managed-by: Helm
-        helm.sh/chart: cert-manager-v0.1.0
+
+
     spec:
       serviceAccountName: cert-manager-cainjector
       securityContext:
