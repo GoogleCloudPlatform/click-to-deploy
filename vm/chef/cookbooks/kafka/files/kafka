@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2021 Google Inc.
+# Copyright 2022 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,6 +20,16 @@ readonly kafka_nodes="$(get_attribute_value "kafka-nodes")"
 readonly kafka_nodes_count="$(echo "${kafka_nodes}" | wc -w)"
 readonly kafka_config="/opt/kafka/config/server.properties"
 readonly zookeeper_config="/opt/kafka/config/zookeeper.properties"
+readonly kafka_auth_config="/opt/kafka/config/kafka_server_jaas.conf"
+
+readonly metadata_kafka_user="$(get_attribute_value "kafka-user")"
+readonly metadata_kafka_password="$(get_attribute_value "kafka-password")"
+
+readonly default_kafka_user="kafka"
+readonly default_kafka_password="kafka"
+
+# Stop Kafka
+systemctl stop kafka
 
 # Configure Kafka in Cluster mode
 if [[ "${kafka_nodes_count}" -gt 1 ]]; then
@@ -35,9 +45,6 @@ if [[ "${kafka_nodes_count}" -gt 1 ]]; then
   declare zookeeper_master_port="2181"
   declare zookeeper_connection="${zookeeper_master_ip}:${zookeeper_master_port}"
 
-  # Stop Kafka
-  systemctl stop kafka
-
   # Configure Zookeeper
   mkdir -p /var/data/kafka
 
@@ -49,8 +56,8 @@ if [[ "${kafka_nodes_count}" -gt 1 ]]; then
   sed -i '/log.dirs/d' "${kafka_config}"
   sed -i '/zookeeper.connect=/d' "${kafka_config}"
 
-  # Create new configurations
-  cat << EOF >> "${kafka_config}"
+  # Create new kafka configurations
+  cat >> "${kafka_config}" << EOF
 ######## C2D Custom Configuration ########
 broker.id=${broker_id}
 broker.rack=RACK1
@@ -58,8 +65,47 @@ logs.dirs=/var/data/kafka
 zookeeper.connect=${zookeeper_connection}
 EOF
 
-  # Start Kafka
-  systemctl start kafka
-
   echo "Configuration finished."
 fi
+
+# Create auth files
+
+# Set the initial user and password.
+# If no metadata for password is provided, use a default one
+# and requires user to change it, otherwise, use the provided one.
+if [[ ! -z "${metadata_kafka_user}" && ! -z "${metadata_kafka_password}" ]]; then
+  cat >> "${kafka_auth_config}" << EOF
+  KafkaServer {
+    org.apache.kafka.common.security.plain.PlainLoginModule required
+    username=${metadata_kafka_user}
+    password=${metadata_kafka_password}
+    user_${metadata_kafka_user}=${metadata_kafka_password};
+  };
+
+EOF
+else
+  cat >> "${kafka_auth_config}" << EOF
+  KafkaServer {
+    org.apache.kafka.common.security.plain.PlainLoginModule required
+    username=${default_kafka_user}
+    password=${default_kafka_password}
+    user_${default_kafka_user}=${default_kafka_password};
+  };
+EOF
+fi
+
+# Add auth to kafka
+cat >> "${kafka_config}" << EOF
+######## C2D Custom Configuration ########
+security.inter.broker.protocol=SASL_PLAINTEXT
+sasl.mechanism.inter.broker.protocol=PLAIN
+sasl.enabled.mechanisms=PLAIN
+
+authorizer.class.name=kafka.security.authorizer.AclAuthorizer
+allow.everyone.if.no.acl.found=true
+listeners=SASL_PLAINTEXT://0.0.0.0:9092
+advertised.listeners=SASL_PLAINTEXT://:9092
+EOF
+
+# Start Kafka
+systemctl start kafka
