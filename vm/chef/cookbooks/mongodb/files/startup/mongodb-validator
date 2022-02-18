@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2022 Google Inc.
+# Copyright 2017 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,8 +22,7 @@ readonly mongodb_servers="$(get_attribute_value "mongodb_servers")"
 readonly mongodb_arbiters="$(get_attribute_value "mongodb_arbiters")"
 
 # Test if we can connect to MongoDB on this instance.
-sleep 10
-until mongo --eval 'printjson(rs.status())'; do
+until mongo --eval 'quit(rs.status().code)'; do
   echo "Waiting for MongoDB on current node..." && sleep 2
 done
 
