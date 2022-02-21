@@ -1,19 +1,15 @@
-
 ---
 apiVersion: v1
 kind: ServiceAccount
 automountServiceAccountToken: true
 metadata:
   name: cert-manager
-  namespace: "$(NAMESPACE)"
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-    app.kubernetes.io/version: "v0.1.0"
-
-
 
 ---
 # Issuer controller role
@@ -24,11 +20,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-    app.kubernetes.io/version: "v0.1.0"
-
-
 rules:
   - apiGroups: ["cert-manager.io"]
     resources: ["issuers", "issuers/status"]
@@ -51,10 +44,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-    app.kubernetes.io/version: "v0.1.0"
-
 
 rules:
   - apiGroups: ["cert-manager.io"]
@@ -78,9 +69,9 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-    app.kubernetes.io/version: "v0.1.0"
+
 
 
 rules:
@@ -114,10 +105,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-    app.kubernetes.io/version: "v0.1.0"
-
 
 rules:
   - apiGroups: ["acme.cert-manager.io"]
@@ -153,10 +142,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-    app.kubernetes.io/version: "v0.1.0"
-
 
 rules:
   # Use to update challenge resource status
@@ -206,7 +193,6 @@ rules:
     resources: ["secrets"]
     verbs: ["get", "list", "watch"]
 ---
-# Source: cert-manager/templates/rbac.yaml
 # ingress-shim controller role
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -215,10 +201,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-    app.kubernetes.io/version: "v0.1.0"
-
 
 rules:
   - apiGroups: ["cert-manager.io"]
@@ -253,11 +237,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-    app.kubernetes.io/version: "v0.1.0"
-
-
     rbac.authorization.k8s.io/aggregate-to-view: "true"
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
     rbac.authorization.k8s.io/aggregate-to-admin: "true"
@@ -276,11 +257,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-    app.kubernetes.io/version: "v0.1.0"
-
-
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
     rbac.authorization.k8s.io/aggregate-to-admin: "true"
 rules:
@@ -299,10 +277,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "cert-manager"
-    app.kubernetes.io/version: "v0.1.0"
-
 
 rules:
   - apiGroups: ["cert-manager.io"]
@@ -320,10 +296,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "cert-manager"
-    app.kubernetes.io/version: "v0.1.0"
-
 
 rules:
   - apiGroups: ["certificates.k8s.io"]
@@ -348,10 +322,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-    app.kubernetes.io/version: "v0.1.0"
-
 
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -359,7 +331,7 @@ roleRef:
   name: cert-manager-controller-issuers
 subjects:
   - name: cert-manager
-    namespace: "$(NAMESPACE)"
+    namespace: "{{ .Release.Namespace }}"
     kind: ServiceAccount
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -369,10 +341,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-    app.kubernetes.io/version: "v0.1.0"
-
 
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -380,7 +350,7 @@ roleRef:
   name: cert-manager-controller-clusterissuers
 subjects:
   - name: cert-manager
-    namespace: "$(NAMESPACE)"
+    namespace: "{{ .Release.Namespace }}"
     kind: ServiceAccount
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -390,10 +360,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-    app.kubernetes.io/version: "v0.1.0"
-
 
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -401,7 +369,7 @@ roleRef:
   name: cert-manager-controller-certificates
 subjects:
   - name: cert-manager
-    namespace: "$(NAMESPACE)"
+    namespace: "{{ .Release.Namespace }}"
     kind: ServiceAccount
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -411,10 +379,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-    app.kubernetes.io/version: "v0.1.0"
-
 
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -422,7 +388,7 @@ roleRef:
   name: cert-manager-controller-orders
 subjects:
   - name: cert-manager
-    namespace: "$(NAMESPACE)"
+    namespace: "{{ .Release.Namespace }}"
     kind: ServiceAccount
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -432,10 +398,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-    app.kubernetes.io/version: "v0.1.0"
-
 
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -443,7 +407,7 @@ roleRef:
   name: cert-manager-controller-challenges
 subjects:
   - name: cert-manager
-    namespace: "$(NAMESPACE)"
+    namespace: "{{ .Release.Namespace }}"
     kind: ServiceAccount
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -453,10 +417,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-    app.kubernetes.io/version: "v0.1.0"
-
 
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -464,7 +426,7 @@ roleRef:
   name: cert-manager-controller-ingress-shim
 subjects:
   - name: cert-manager
-    namespace: "$(NAMESPACE)"
+    namespace: "{{ .Release.Namespace }}"
     kind: ServiceAccount
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -474,10 +436,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "cert-manager"
-    app.kubernetes.io/version: "v0.1.0"
-
 
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -485,7 +445,7 @@ roleRef:
   name: cert-manager-controller-approve:cert-manager-io
 subjects:
   - name: cert-manager
-    namespace: "$(NAMESPACE)"
+    namespace: "{{ .Release.Namespace }}"
     kind: ServiceAccount
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -495,10 +455,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "cert-manager"
-    app.kubernetes.io/version: "v0.1.0"
-
 
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -506,7 +464,7 @@ roleRef:
   name: cert-manager-controller-certificatesigningrequests
 subjects:
   - name: cert-manager
-    namespace: "$(NAMESPACE)"
+    namespace: "{{ .Release.Namespace }}"
     kind: ServiceAccount
 
 ---
@@ -518,10 +476,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-    app.kubernetes.io/version: "v0.1.0"
-
 
 rules:
   # Used for leader election by the controller
@@ -552,10 +508,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-    app.kubernetes.io/version: "v0.1.0"
-
 
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -572,14 +526,12 @@ apiVersion: v1
 kind: Service
 metadata:
   name: cert-manager
-  namespace: "$(NAMESPACE)"
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-    app.kubernetes.io/version: "v0.1.0"
-
 
 spec:
   type: ClusterIP
@@ -590,7 +542,7 @@ spec:
     targetPort: 9402
   selector:
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
 
 ---
@@ -598,31 +550,27 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cert-manager
-  namespace: "$(NAMESPACE)"
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-    app.kubernetes.io/version: "v0.1.0"
-
 
 spec:
   replicas: {{ .Values.controller.replicaCount }}
   selector:
     matchLabels:
       app.kubernetes.io/name: cert-manager
-      app.kubernetes.io/instance: cert-manager
+      app.kubernetes.io/instance: "{{ .Release.Name }}"
       app.kubernetes.io/component: "controller"
   template:
     metadata:
       labels:
         app: cert-manager
         app.kubernetes.io/name: cert-manager
-        app.kubernetes.io/instance: cert-manager
+        app.kubernetes.io/instance: "{{ .Release.Name }}"
         app.kubernetes.io/component: "controller"
-        app.kubernetes.io/version: "v0.1.0"
-
 
       annotations:
         prometheus.io/path: "/metrics"
@@ -631,11 +579,12 @@ spec:
     spec:
       serviceAccountName: cert-manager
       securityContext:
-
+        fsGroup: 1000
+        runAsUser: 1000
         runAsNonRoot: true
       containers:
         - name: cert-manager
-          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           command: ["/app/controller"]
           imagePullPolicy: IfNotPresent
           args:
@@ -651,4 +600,3 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.namespace
-

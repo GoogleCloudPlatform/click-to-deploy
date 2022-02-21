@@ -5,8 +5,8 @@ metadata:
   annotations:
     cert-manager.io/inject-ca-from-secret: '{{ template "webhook.caRef" . }}'
   labels:
-    app: '{{ template "cert-manager.name" . }}'
-    app.kubernetes.io/name: '{{ template "cert-manager.name" . }}'
+    app: "{{ .Release.Name }}"
+    app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/instance: '{{ .Release.Name }}'
     # Generated labels {{- include "labels" . | nindent 4 }}
 spec:

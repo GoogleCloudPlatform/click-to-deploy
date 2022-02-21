@@ -4,7 +4,7 @@ kind: ServiceAccount
 automountServiceAccountToken: true
 metadata:
   name: cert-manager-startupapicheck
-  namespace: "$(NAMESPACE)"
+  namespace: "{{ .Release.Namespace }}"
   annotations:
     helm.sh/hook: post-install
     helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
@@ -12,10 +12,8 @@ metadata:
   labels:
     app: startupapicheck
     app.kubernetes.io/name: startupapicheck
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "startupapicheck"
-    app.kubernetes.io/version: "v0.1.0"
-
 
 ---
 # create certificate role
@@ -23,37 +21,31 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: cert-manager-startupapicheck:create-cert
-  namespace: "$(NAMESPACE)"
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: startupapicheck
     app.kubernetes.io/name: startupapicheck
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "startupapicheck"
-    app.kubernetes.io/version: "v0.1.0"
-
-
   annotations:
-    helm.sh/hook: post-install
-    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+    helm.sh/hook: "post-install"
+    helm.sh/hook-delete-policy: "before-hook-creation,hook-succeeded"
     helm.sh/hook-weight: "-5"
 rules:
-  - apiGroups: ["cert-manager.io"]
-    resources: ["certificates"]
-    verbs: ["create"]
+- apiGroups: ["cert-manager.io"]
+  resources: ["certificates"]
+  verbs: ["create"]
 ---
-# Source: cert-manager/templates/startupapicheck-rbac.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: cert-manager-startupapicheck:create-cert
-  namespace: "$(NAMESPACE)"
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: startupapicheck
     app.kubernetes.io/name: startupapicheck
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "startupapicheck"
-    app.kubernetes.io/version: "v0.1.0"
-
 
   annotations:
     helm.sh/hook: post-install
@@ -72,14 +64,12 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: cert-manager-startupapicheck
-  namespace: "$(NAMESPACE)"
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: startupapicheck
     app.kubernetes.io/name: startupapicheck
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "startupapicheck"
-    app.kubernetes.io/version: "v0.1.0"
-
 
   annotations:
     helm.sh/hook: post-install
@@ -92,19 +82,19 @@ spec:
       labels:
         app: startupapicheck
         app.kubernetes.io/name: startupapicheck
-        app.kubernetes.io/instance: cert-manager
+        app.kubernetes.io/instance: "{{ .Release.Name }}"
         app.kubernetes.io/component: "startupapicheck"
-        app.kubernetes.io/version: "v0.1.0"
-
 
     spec:
       restartPolicy: OnFailure
       serviceAccountName: cert-manager-startupapicheck
       securityContext:
         runAsNonRoot: true
+        fsGroup: 1000
+        runAsUser: 1000
       containers:
         - name: cert-manager
-          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           command: ["/app/cmctl"]
           imagePullPolicy: IfNotPresent
           args:

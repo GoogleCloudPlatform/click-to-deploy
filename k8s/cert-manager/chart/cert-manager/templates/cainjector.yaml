@@ -4,15 +4,12 @@ kind: ServiceAccount
 automountServiceAccountToken: true
 metadata:
   name: cert-manager-cainjector
-  namespace: "$(NAMESPACE)"
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: cainjector
     app.kubernetes.io/name: cainjector
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "cainjector"
-    app.kubernetes.io/version: "v0.1.0"
-
-
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -21,11 +18,8 @@ metadata:
   labels:
     app: cainjector
     app.kubernetes.io/name: cainjector
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "cainjector"
-    app.kubernetes.io/version: "v0.1.0"
-
-
 rules:
   - apiGroups: ["cert-manager.io"]
     resources: ["certificates"]
@@ -53,10 +47,8 @@ metadata:
   labels:
     app: cainjector
     app.kubernetes.io/name: cainjector
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "cainjector"
-    app.kubernetes.io/version: "v0.1.0"
-
 
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -64,7 +56,7 @@ roleRef:
   name: cert-manager-cainjector
 subjects:
   - name: cert-manager-cainjector
-    namespace: "$(NAMESPACE)"
+    namespace: "{{ .Release.Namespace }}"
     kind: ServiceAccount
 ---
 # leader election rules
@@ -76,10 +68,8 @@ metadata:
   labels:
     app: cainjector
     app.kubernetes.io/name: cainjector
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "cainjector"
-    app.kubernetes.io/version: "v0.1.0"
-
 
 rules:
   # Used for leader election by the controller
@@ -103,7 +93,6 @@ rules:
     resources: ["leases"]
     verbs: ["create"]
 ---
-# Source: cert-manager/templates/cainjector-rbac.yaml
 # grant cert-manager permission to manage the leaderelection configmap in the
 # leader election namespace
 apiVersion: rbac.authorization.k8s.io/v1
@@ -114,10 +103,8 @@ metadata:
   labels:
     app: cainjector
     app.kubernetes.io/name: cainjector
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "cainjector"
-    app.kubernetes.io/version: "v0.1.0"
-
 
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -128,44 +115,41 @@ subjects:
     name: cert-manager-cainjector
     namespace: default
 ---
-# Source: cert-manager/templates/cainjector-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cert-manager-cainjector
-  namespace: "$(NAMESPACE)"
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: cainjector
     app.kubernetes.io/name: cainjector
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "cainjector"
-    app.kubernetes.io/version: "v0.1.0"
-
 
 spec:
   replicas: {{ .Values.cainjector.replicaCount }}
   selector:
     matchLabels:
       app.kubernetes.io/name: cainjector
-      app.kubernetes.io/instance: cert-manager
+      app.kubernetes.io/instance: "{{ .Release.Name }}"
       app.kubernetes.io/component: "cainjector"
   template:
     metadata:
       labels:
         app: cainjector
         app.kubernetes.io/name: cainjector
-        app.kubernetes.io/instance: cert-manager
+        app.kubernetes.io/instance: "{{ .Release.Name }}"
         app.kubernetes.io/component: "cainjector"
-        app.kubernetes.io/version: "v0.1.0"
-
 
     spec:
       serviceAccountName: cert-manager-cainjector
       securityContext:
         runAsNonRoot: true
+        fsGroup: 1000
+        runAsUser: 1000
       containers:
         - name: cert-manager
-          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           command: ["/app/cainjector"]
           imagePullPolicy: IfNotPresent
           args:
