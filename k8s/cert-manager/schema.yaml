@@ -38,7 +38,7 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  replicaCount:
+  controller.replicaCount:
     type: integer
     title: Controller replicas
     description: Number of replicas of the Cert Manager controller
@@ -56,18 +56,6 @@ properties:
     description: Number of replicas of the Cert Manager CA Injector
     default: 1
     minimum: 1
-
-  global.rbac.create:
-    type: string
-    default: true
-
-
-
-
-  deployer.image:
-    type: string
-    x-google-marketplace:
-      type: DEPLOYER_IMAGE
   metrics.exporter.enabled:
     type: boolean
     title: Enable Cloud Monitoring for metrics
@@ -78,7 +66,7 @@ properties:
 required:
 - name
 - namespace
-- replicaCount
+- controller.replicaCount
 - webhook.replicaCount
 - cainjector.replicaCount
 - metrics.exporter.enabled
