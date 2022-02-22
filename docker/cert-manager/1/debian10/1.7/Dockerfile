@@ -1,9 +1,6 @@
-{{- $cert_manager := index .Packages "cert-manager" -}}
-{{- $bazel := index .Packages "bazel" -}}
+FROM  marketplace.gcr.io/google/debian10 as bazel
 
-FROM  {{ .From }} as bazel
-
-ENV APP_VERSION={{ $cert_manager.Version }}
+ENV APP_VERSION=1.7.0
 
 RUN apt-get update \
     && apt-get install make automake git apt-transport-https curl gnupg patch -y --no-install-recommends \
@@ -12,8 +9,8 @@ RUN apt-get update \
     && echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" | tee /etc/apt/sources.list.d/bazel.list
 
 RUN apt-get update \
-    && apt-get install bazel-{{ $bazel.Version }} -y --no-install-recommends \
-    && ln -s /usr/bin/bazel-{{ $bazel.Version }} /usr/bin/bazel
+    && apt-get install bazel-4.0.0 -y --no-install-recommends \
+    && ln -s /usr/bin/bazel-4.0.0 /usr/bin/bazel
 
 RUN git clone --branch v${APP_VERSION} \
     https://github.com/jetstack/cert-manager.git /src/cert-manager/
@@ -39,9 +36,9 @@ RUN for dep in `find $(bazel info execution_root)/../../external/ -maxdepth 1 -t
     do cp -r $dep /src/vendor/; done
 
 # Result Image
-FROM {{ .From }}
+FROM marketplace.gcr.io/google/debian10
 
-ENV C2D_RELEASE={{ $cert_manager.Version }}
+ENV C2D_RELEASE=1.7.0
 ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 
 # Non root
