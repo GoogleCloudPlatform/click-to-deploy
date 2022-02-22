@@ -14,6 +14,6 @@
 
 require 'spec_helper'
 
-describe package('php7.0') do
+describe package('php7.4') do
   it { should be_installed }
 end

@@ -15,7 +15,7 @@
 _variables:
   from10: &from10 marketplace.gcr.io/google/debian10:latest
   nuclio: &nuclio
-    version: '1.6.26'
+    version: '1.7.7'
 versions:
   - dir: 'nuclio_builder'
     repo: nuclio_builder
@@ -27,25 +27,25 @@ versions:
   - repo: nuclio-controller
     builderImage: 'nuclio_builder:latest'
     builderArgs: [ 'controller' ]
-    imageNameFromBuilder: 'local/controller:1.6.26'
+    imageNameFromBuilder: 'local/controller:1.7.7'
     tags:
-      - '1.6.26-debian10'
-      - '1.6-debian10'
+      - '1.7.7-debian10'
+      - '1.7-debian10'
       - '1-debian10'
-      - '1.6.26'
-      - '1.6'
+      - '1.7.7'
+      - '1.7'
       - '1'
       - 'latest'
   - repo: nuclio-dashboard
     builderImage: 'nuclio_builder:latest'
     builderArgs: [ 'dashboard' ]
-    imageNameFromBuilder: 'local/dashboard:1.6.26'
+    imageNameFromBuilder: 'local/dashboard:1.7.7'
     tags:
-      - '1.6.26-debian10'
-      - '1.6-debia10'
+      - '1.7.7-debian10'
+      - '1.7-debia10'
       - '1-debian10'
-      - '1.6.26'
-      - '1.6'
+      - '1.7.7'
+      - '1.7'
       - '1'
       - 'latest'
 
