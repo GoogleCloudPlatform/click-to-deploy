@@ -1,0 +1,140 @@
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+<%
+if ENV['MAIN_CONFIG'] != ""
+  main_config = ENV['MAIN_CONFIG']
+end
+
+if ENV['ADDITIONAL_CONFIG_DIR'] != ""
+  additional_config_dir = ENV['ADDITIONAL_CONFIG_DIR']
+end
+%>
+
+---
+driver:
+  # Usage: https://github.com/test-kitchen/kitchen-google
+  #
+  # 1. Create service account with compute admin and service account user roles
+  # 2. Download json key
+  # 3. Set 'GOOGLE_APPLICATION_CREDENTIALS' to the path of the json key
+  # 4. Ensure the user running test kitchen has an ssh key with access to the compute instances
+  # 5. Create an ssh keypair with ssh-keygen
+  # 6. Open GCP Compute Engine, Metadata page
+  # 7. Choose "ssh keys" tab. Edit, Add item (at bottom)
+  # 8. Paste the public key into the box. Replace the username suffix with the username 'ci'
+  # 9. Set your environment:
+  #  export CHEF_GCP_ZONE=<compute zone>
+  #  export CHEF_GCP_PROJECT=<project_id>
+  #  export CHEF_GCP_SA_EMAIL=<service account email>
+  #  export CHEF_SSH_USER=<ssh username>
+  #  export CHEF_SSH_KEY=<path to ssh private key>
+  #  export GOOGLE_APPLICATION_CREDENTIALS=<path to service account json credentials>
+  #
+  # 10. If testing Windows, you need to define WINRM rules in the test project. It is not recomended to open WINRM
+  # to the world in a production environment.
+  #   - VPC networks --> firewall --> create rule
+  #   - Create ingress rule
+  #      - target tags: test-kitchen
+  #      - source: 0.0.0.0/0
+  #      - ports: tcp/5985 and tcp/5986
+  #      - gcloud compute --project=united-aura-313415 firewall-rules create winrm \
+  #          --direction=INGRESS --priority=1000 --network=default --action=ALLOW \
+  #          --rules=tcp:5986,tcp:5985 --source-ranges=0.0.0.0/0 \
+  #          --target-tags=test-kitchen
+  #
+  #
+  # 11. If running locally (outside of CI), set the platform variables:
+  #  export CHEF_PLATFORM=ubuntu-20.04
+  #  export CHEF_IMAGE_PROJECT="ubuntu-os-cloud"
+  #  export CHEF_IMAGE_FAMILY="ubuntu-2004-lts"
+  #  export CHEF_IMAGE_APPLICATION="ubuntu"
+  #  export CHEF_IMAGE_RELEASE="a"
+  #  export CHEF_IMAGE_VERSION="2004"
+  #  export AGENT_TYPE=ops-agent
+  #  export VERSION=latest
+  #  export CHEF_TEST_DIR=test/integration/${AGENT_TYPE}/${VERSION}
+  #  export STATE="present"
+  #
+  # 12. If using a custom config or additional config.
+  #  export MAIN_CONFIG=<file path to custom config>
+  #  export ADDITIONAL_CONFIG_DIR=<directory path to custom config>
+  #
+  # 13. Run 'kitchen test'
+  name: gce
+  # https://console.cloud.google.com/compute/instances?authuser=0&orgonly=true&project=united-aura-313415&folder=&organizationId=&supportedpurview=organizationId
+  project: <%= ENV['CHEF_GCP_PROJECT'] %>
+  zone: <%= ENV['CHEF_GCP_ZONE'] %>
+  # service account with compute admin role
+  email: <%= ENV['CHEF_GCP_SA_EMAIL'] %>
+  tags:
+    - ci
+    - chef
+    - test-kitchen # used by winrm firewall rule
+  service_account_scopes:
+    # https://www.googleapis.com/auth/monitoring
+    - monitoring
+  machine_type: "e2-medium"
+  auto_migrate: true
+  disks:
+    disk0:
+      disk_type: pd-ssd
+      disk_size: 120
+      boot: true
+
+# Use CINC, the open source distribution of Chef
+# https://cinc.sh/blog/cooking_with_cinc/
+provisioner:
+  name: chef_zero
+  product_name: cinc
+  download_url: <%= ENV['CHEF_CLIENT_URL'] %>
+  # We need to accept the license despite using Apache 2.0 licensed cinc
+  chef_license: accept
+
+verifier:
+  # Use CINC Auditor, which installs a symlink for inspec
+  # /usr/local/bin/inspec -> /opt/cinc/bin/cinc-wrapper
+  # https://cinc.sh/start/auditor/
+  name: inspec
+
+transport:
+  connection_timeout: 10
+  connection_retries: 10
+  max_ssh_sessions: 1
+  # this username needs to match the user specified in the ssh keypair
+  username: <%= ENV['CHEF_SSH_USER'] %>
+  ssh_key:
+    - <%= ENV['CHEF_SSH_KEY'] %>
+
+platforms:
+  - name: <%= ENV['CHEF_PLATFORM'] %>
+    driver:
+      image_project: <%= ENV['CHEF_IMAGE_PROJECT'] %>
+      image_family: <%= ENV['CHEF_IMAGE_FAMILY'] %>
+      metadata:
+        application: <%= ENV['CHEF_IMAGE_APPLICATION'] %>
+        release: <%= ENV['CHEF_IMAGE_RELEASE'] %>
+        version: <%= ENV['CHEF_IMAGE_VERSION'] %>
+
+suites:
+  - name: default
+    verifier:
+      inspec_tests: ["<%= ENV['CHEF_TEST_DIR'] %>"]
+    attributes:
+      agent_type: <%= ENV['AGENT_TYPE'] %>
+      version: <%= ENV['VERSION'] %>
+      package_state: <%= ENV['STATE'] %>
+      # optional, see .github/scripts/configure_config_paths.sh
+      main_config: "<%= main_config %>"
+      additional_config_dir: "<%= additional_config_dir %>"

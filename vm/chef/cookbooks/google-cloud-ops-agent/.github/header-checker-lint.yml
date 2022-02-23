@@ -1,0 +1,10 @@
+allowedLicenses:
+  - Apache-2.0
+sourceFileExtensions:
+  - rb
+  - conf 
+  - yaml 
+  - yml 
+  - ps1 
+  - sh
+

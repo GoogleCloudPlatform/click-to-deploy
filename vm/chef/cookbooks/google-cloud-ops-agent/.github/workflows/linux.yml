@@ -1,0 +1,181 @@
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+---
+name: "Linux Continuous Integration"
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+      - ci
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    env:
+      CHEF_GCP_ZONE: us-east1-b
+    strategy:
+      fail-fast: false
+      matrix:
+        agent_type:
+          - ops-agent
+          - logging
+          - monitoring
+        version:
+          - "2.0.1"
+          - latest
+        # distro is the platform name in kitchen.yml
+        distro:
+          - ubuntu-20.04
+          - ubuntu-18.04
+          - ubuntu-16.04
+          - debian-10
+          - debian-9
+          - centos-s8
+          - centos-8
+          - centos-7
+          - almalinux-8
+          - rocky-linux-8
+          - rhel-8
+          - rhel-7
+          # disabled until CINC supports sles-12
+          #- sles-12
+          - sles-15
+          - opensuse-leap
+
+        exclude:
+          # invalid combos
+          - agent_type: logging
+            version: "2.0.1"
+          - agent_type: monitoring
+            version: "2.0.1"
+          # disabled due to a suse repo bug that prevents the agent
+          # from starting
+          - agent_type: "logging"
+            distro: "sles-15"
+          - agent_type: "logging"
+            distro: "opensuse-leap"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install test utils
+        run: ./.github/scripts/setup.sh
+        env:
+          CHEF_PRIVATE_KEY: ${{ secrets.CHEF_PRIVATE_KEY }}
+          CHEF_PUBLIC_KEY: ${{ secrets.CHEF_PUBLIC_KEY }}
+        timeout-minutes: 40
+
+      - name: Install Gcloud SDK
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: ${{ secrets.CHEF_GCP_PROJECT }}
+          service_account_key: ${{ secrets.CHEF_GCP_SA_KEY }}
+          export_default_credentials: true
+        timeout-minutes: 40
+
+      - name: Install
+        run: |
+          . ./.github/scripts/configure_kitchen.sh
+          /usr/bin/kitchen create
+          /usr/bin/kitchen converge
+          /usr/bin/kitchen verify
+        env:
+          VERSION: ${{ matrix.version }}
+          AGENT_TYPE: ${{ matrix.agent_type }}
+          STATE: "present"
+          CHEF_PLATFORM: ${{ matrix.distro }}
+          CHEF_GCP_PROJECT: ${{ secrets.CHEF_GCP_PROJECT }}
+          CHEF_GCP_SA_EMAIL: ${{ secrets.CHEF_GCP_SA_EMAIL }}
+          CHEF_SSH_USER: ${{ secrets.CHEF_SSH_USER }}
+          CHEF_SSH_KEY: ~/.ssh/id_rsa
+          CHEF_TEST_DIR: test/integration/linux/${{ matrix.agent_type }}/${{ matrix.version }}
+        timeout-minutes: 40
+
+      - name: Upgrade to latest
+        run: |
+          . ./.github/scripts/configure_kitchen.sh
+          /usr/bin/kitchen create
+          /usr/bin/kitchen converge
+          /usr/bin/kitchen verify
+        env:
+          VERSION: "latest"
+          AGENT_TYPE: ${{ matrix.agent_type }}
+          STATE: "present"
+          CHEF_PLATFORM: ${{ matrix.distro }}
+          CHEF_GCP_PROJECT: ${{ secrets.CHEF_GCP_PROJECT }}
+          CHEF_GCP_SA_EMAIL: ${{ secrets.CHEF_GCP_SA_EMAIL }}
+          CHEF_SSH_USER: ${{ secrets.CHEF_SSH_USER }}
+          CHEF_SSH_KEY: ~/.ssh/id_rsa
+          CHEF_TEST_DIR: test/integration/linux/${{ matrix.agent_type }}/latest
+        if: matrix.version != 'latest'
+        timeout-minutes: 40
+
+      - name: Uninstall
+        run: |
+          . ./.github/scripts/configure_kitchen.sh
+          /usr/bin/kitchen create
+          /usr/bin/kitchen converge
+          /usr/bin/kitchen verify
+        env:
+          VERSION: "latest"
+          AGENT_TYPE: ${{ matrix.agent_type }}
+          STATE: "absent"
+          CHEF_PLATFORM: ${{ matrix.distro }}
+          CHEF_GCP_PROJECT: ${{ secrets.CHEF_GCP_PROJECT }}
+          CHEF_GCP_SA_EMAIL: ${{ secrets.CHEF_GCP_SA_EMAIL }}
+          CHEF_SSH_USER: ${{ secrets.CHEF_SSH_USER }}
+          CHEF_SSH_KEY: ~/.ssh/id_rsa
+          CHEF_TEST_DIR: test/integration/linux/${{ matrix.agent_type }}/latest
+        timeout-minutes: 40
+
+      - name: Install with custom config
+        run: |
+          . ./.github/scripts/configure_kitchen.sh
+          /usr/bin/kitchen create
+          sleep 30
+          ./.github/scripts/copy_configs.sh
+          . ./.github/scripts/configure_config_paths.sh
+          /usr/bin/kitchen converge
+          /usr/bin/kitchen verify
+        env:
+          VERSION: ${{ matrix.version }}
+          AGENT_TYPE: ${{ matrix.agent_type }}
+          STATE: "present"
+          CHEF_PLATFORM: ${{ matrix.distro }}
+          CHEF_GCP_PROJECT: ${{ secrets.CHEF_GCP_PROJECT }}
+          CHEF_GCP_SA_EMAIL: ${{ secrets.CHEF_GCP_SA_EMAIL }}
+          CHEF_SSH_USER: ${{ secrets.CHEF_SSH_USER }}
+          CHEF_SSH_KEY: ~/.ssh/id_rsa
+          CHEF_TEST_DIR: test/integration/linux/${{ matrix.agent_type }}/${{ matrix.version }}
+          CHEF_CONFIG_BASE: test/integration/linux/${{ matrix.agent_type }}/config
+        timeout-minutes: 40
+
+      - name: Tear down instance
+        run: |
+          . ./.github/scripts/configure_kitchen.sh
+          /usr/bin/kitchen destroy
+        env:
+          VERSION: ${{ matrix.version }}
+          AGENT_TYPE: ${{ matrix.agent_type }}
+          STATE: "absent"
+          CHEF_PLATFORM: ${{ matrix.distro }}
+          CHEF_GCP_PROJECT: ${{ secrets.CHEF_GCP_PROJECT }}
+          CHEF_GCP_SA_EMAIL: ${{ secrets.CHEF_GCP_SA_EMAIL }}
+          CHEF_SSH_USER: ${{ secrets.CHEF_SSH_USER }}
+          CHEF_SSH_KEY: ~/.ssh/id_rsa
+          CHEF_TEST_DIR: test/integration/linux/${{ matrix.agent_type }}/${{ matrix.version }}
+          CLEANUP: true
+        timeout-minutes: 40
+        if: ${{ always() }}
