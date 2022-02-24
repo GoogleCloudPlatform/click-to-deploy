@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,51 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-_variables:
-  from9: &from9 marketplace.gcr.io/google/debian9
 
-versions:
-  - dir: '1/debian9/1.5'
-    repo: cert-manager1
-    templateSubDir: cert-manager1
-    tags:
-      - '1.5.1-debian9'
-      - '1.5-debian9'
-      - '1.5.1'
-      - '1.5'
-      - '1-debian9'
-      - '1'
-      - 'latest'
-    from: *from9
-    packages:
-      cert-manager:
-        version: '1.5.1'
-  - dir: '1/debian9/1.4'
-    repo: cert-manager1
-    templateSubDir: cert-manager1
-    tags:
-      - '1.4.3-debian9'
-      - '1.4-debian9'
-      - '1.4.3'
-      - '1.4'
-    from: *from9
-    packages:
-      cert-manager:
-        version: '1.4.3'
-  - dir: '0/debian9/0.13'
-    repo: cert-manager0
-    templateSubDir: cert-manager0
-    tags:
-      - '0.13.0-debian9'
-      - '0.13-debian9'
-      - '0.13.0'
-      - '0.13'
-      - '0-debian9'
-      - '0'
-      - 'latest'
-    from: *from9
-    packages:
-      cert-manager:
-        version: '0.13.0'
 cloudbuild:
   enable_parallel: false
+versions:
+- dir: 1/debian10/1.7
+  from: marketplace.gcr.io/google/debian10
+  packages:
+    cert-manager:
+      version: 1.7.0
+    bazel:
+      version: 4.0.0  
+  repo: cert-manager1
+  tags:
+  - 1.7.0-debian10
+  - 1.7-debian10
+  - 1-debian10
+  - 1.7.0
+  - '1.7'
+  - '1'
+  - latest
+  templateSubDir: cert-manager1
+

@@ -12,17 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['liferay']['version'] = '7.4.1-ga2'
+default['liferay']['version'] = '7.4.3.10-ga10'
 # SHA1 value check for liferay SOURCE, the cookbook download it from
 # https://github.com/liferay/liferay-portal/archive/refs/tags/<version>.tar.gz
-default['liferay']['sha1']['source'] = 'b3410bdb081914f393c2f7918622aa8c2476288b'
+default['liferay']['sha1']['source'] = '280929de4c00f15412e831a5b1b8d9969ed57afd'
 # SHA1 value check for liferay bundle, the cookbook download it from
-# https://github.com/liferay/liferay-portal/releases/download/<version>/liferay-ce-portal-tomcat-<version>-<date>.zip
-default['liferay']['sha1']['bundle'] = '76e38f2e8535a89bb6a499092e67698c70d3dd9f'
+# https://github.com/liferay/liferay-portal/releases/download/<version>/liferay-ce-portal-tomcat-<version>-<date>.tar.gz
+default['liferay']['sha1']['bundle'] = 'a6c3d508805ff221f1d76ffac73dacafcea7303b'
 default['liferay']['packages'] = ['jq', 'zip']
 
 default['liferay']['home'] = '/opt/liferay'
-default['liferay']['java']['home'] = '/usr/lib/jvm/java-8-openjdk-amd64/'
+default['liferay']['java']['home'] = '/usr/lib/jvm/java-11-openjdk-amd64/'
 
 default['liferay']['linux']['user'] = 'liferay'
 default['liferay']['db']['name'] = 'liferay'
