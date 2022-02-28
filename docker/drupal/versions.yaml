@@ -22,17 +22,17 @@ versions:
   from: marketplace.gcr.io/google/php7-apache2:7.3
   packages:
     composer:
-      gpg: 81ef304a70c957d6f05a7659f03b00eb50df6155195f51118459b2e49c96c3f3
-      version: 2.2.5
+      gpg: 1f210b9037fcf82670d75892dfc44400f13fe9ada7af9e787f93e50e3b764111
+      version: 1.9.1
     drupal:
-      md5: 6160714e2df873d413ca341d192891ae
-      version: 9.3.4
+      md5: 01adfb2ac9246f28c494486704c27680
+      version: 9.3.6
   repo: drupal9-php7-apache
   tags:
-  - 9.3.4-debian9
+  - 9.3.6-debian9
   - 9.3-debian9
   - 9-debian9
-  - 9.3.4
+  - 9.3.6
   - '9.3'
   - '9'
   - latest
@@ -40,23 +40,23 @@ versions:
   from: marketplace.gcr.io/google/php7-apache2:7.3
   packages:
     composer:
-      gpg: 81ef304a70c957d6f05a7659f03b00eb50df6155195f51118459b2e49c96c3f3
-      version: 2.2.5
+      gpg: 1f210b9037fcf82670d75892dfc44400f13fe9ada7af9e787f93e50e3b764111
+      version: 1.9.1
     drupal:
-      md5: 13647faa6fdc286ff753b4a0c785db01
-      version: 9.2.11
+      md5: 7f3b96ce21c625da345ee90b9f11a503
+      version: 9.2.13
   repo: drupal9-php7-apache
   tags:
-  - 9.2.11-debian9
+  - 9.2.13-debian9
   - 9.2-debian9
-  - 9.2.11
+  - 9.2.13
   - '9.2'
 - dir: 8/php7/debian9/8.9/apache
   from: marketplace.gcr.io/google/php7-apache2:7.3
   packages:
     composer:
-      gpg: 81ef304a70c957d6f05a7659f03b00eb50df6155195f51118459b2e49c96c3f3
-      version: 2.2.5
+      gpg: 1f210b9037fcf82670d75892dfc44400f13fe9ada7af9e787f93e50e3b764111
+      version: 1.9.1
     drupal:
       md5: 03c77251b7332bf7e194b9702b077dd2
       version: 8.9.20
