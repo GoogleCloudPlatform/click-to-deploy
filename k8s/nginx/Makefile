@@ -22,7 +22,7 @@ IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_NGINX))
 
 # List of images used in application
-ADDITIONAL_IMAGES := debian11 nginx-exporter prometheus-to-sd
+ADDITIONAL_IMAGES := debian nginx-exporter prometheus-to-sd
 
 # Additional images variable names should correspond with ADDITIONAL_IMAGES list
 image-debian :=  $(call get_sha256,$(IMAGE_DEBIAN))
