@@ -106,13 +106,13 @@ version: '2'
 services:
   postgres:
     container_name: postgres
-    image: marketplace.gcr.io/google/gitlab/postgresql:13.12
+    image: marketplace.gcr.io/google/postgresql13
     environment:
       - POSTGRES_USER=gitlab
       - POSTGRES_PASSWORD=some-password
   redis:
     container_name: redis
-    image: marketplace.gcr.io/google/gitlab/redis:13.12
+    image: marketplace.gcr.io/google/redis6
     command: ["redis-server", "--requirepass", "some-password", "--dir", "/data"]
   gitlab:
     container_name: gitlab
@@ -158,7 +158,7 @@ version: '2'
 services:
   postgres:
     container_name: postgres
-    image: marketplace.gcr.io/google/gitlab/postgresql:13.12
+    image: marketplace.gcr.io/google/postgresql13
     environment:
       - POSTGRES_USER=gitlab
       - POSTGRES_PASSWORD=some-password
@@ -166,7 +166,7 @@ services:
       - /var/lib/postgresql/data
   redis:
     container_name: redis
-    image: marketplace.gcr.io/google/gitlab/redis:13.12
+    image: marketplace.gcr.io/google/redis6
     command: ["redis-server", "--requirepass", "some-password", "--dir", "/data"]
     volumes:
       - /data
