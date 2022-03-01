@@ -76,6 +76,8 @@ services:
       - KAFKA_ADVERTISED_HOST_NAME=kafka-node-1
       - KAFKA_ADVERTISED_PORT=9092
       - KAFKA_PORT=9092
+    depends_on:
+      - zookeeper
   kafka-node-2:
     container_name: kafka-node-2
     image: marketplace.gcr.io/google/kafka3
@@ -86,9 +88,57 @@ services:
       - KAFKA_ADVERTISED_HOST_NAME=kafka-node-2
       - KAFKA_ADVERTISED_PORT=9092
       - KAFKA_PORT=9092
+    depends_on:
+      - zookeeper
 ```
 
 Or you can use `docker run` directly:
 
 ```shell
 ```
+
+### <a name="use-a-persistent-data-volume-docker"></a>Use a persistent data volume
+
+```yaml
+version: '2'
+services:
+  zookeeper:
+    container_name: zookeeper
+    image: marketplace.gcr.io/google/zookeeper3
+    environment:
+      - ZOO_4LW_COMMANDS_WHITELIST="*"
+      - ZK_DATA_DIR=/data
+    volumes:
+      - /data
+  kafka-node-1:
+    container_name: kafka-node-1
+    image: marketplace.gcr.io/google/kafka3
+    restart: always
+    ports:
+      - 9092:9092
+    environment:
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_ADVERTISED_HOST_NAME=kafka-node-1
+      - KAFKA_ADVERTISED_PORT=9092
+      - KAFKA_PORT=9092
+    depends_on:
+      - zookeeper
+    volumes:
+      - /kafka
+  kafka-node-2:
+    container_name: kafka-node-2
+    image: marketplace.gcr.io/google/kafka3
+    restart: always
+    ports:
+      - 9093:9092
+    environment:
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_ADVERTISED_HOST_NAME=kafka-node-2
+      - KAFKA_ADVERTISED_PORT=9092
+      - KAFKA_PORT=9092
+    depends_on:
+      - zookeeper
+    volumes:
+      - /kafka
+```
+
