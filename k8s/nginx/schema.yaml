@@ -25,7 +25,7 @@ x-google-marketplace:
           type: REPO_WITH_REGISTRY
         nginx.image.tag:
           type: TAG
-    debian9:
+    debian11:
       properties:
         nginx.initImage:
           type: FULL
