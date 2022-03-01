@@ -142,3 +142,17 @@ services:
       - /kafka
 ```
 
+# <a name="references"></a>References
+
+## <a name="references-ports"></a>Ports
+
+These are the ports exposed by the container image.
+
+| **Port** | **Description** |
+| :------- | :-------------- |
+| TCP 9092 | Kafka Server    |
+
+## <a name="references-environment-variables"></a>Environment Variables
+
+These are the environment variables understood by the container image.
+
