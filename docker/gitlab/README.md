@@ -52,7 +52,7 @@ for additional information about setting up your Docker environment.
 
 This section describes how to spin up a Gitlab service using this image.
 
-### <a name="Runnung-Gitlab-standalone)"></a>Running Gitlab standalone 
+### <a name="Runnung-Gitlab-standalone"></a>Running Gitlab standalone 
 
 Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
 
@@ -95,7 +95,7 @@ docker run -d --name 'gitlab' -it --rm \
 
 Then, access it via [http://localhost:8080](http://localhost:8080) or `http://host-ip:8080` in a browser.
 
-### <a name="Runnung-Gitlab-with-PostgreSQL-and-Redis-services)"></a>Running Gitlab with PostgreSQL and Redis services
+### <a name="Runnung-Gitlab-with-PostgreSQL-and-Redis-services"></a>Running Gitlab with PostgreSQL and Redis services
 
 Gitlab requires PostgreSQL and Redis services, which can be run in external containers.
 
