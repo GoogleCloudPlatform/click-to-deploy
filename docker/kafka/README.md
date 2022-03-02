@@ -50,9 +50,9 @@ Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlat
 Consult [Marketplace container documentation](https://cloud.google.com/marketplace/docs/container-images)
 for additional information about setting up your Docker environment.
 
-## <a name="running-kafka-docker"></a>Running Gitlab
+## <a name="running-kafka-docker"></a>Running Kafka
 
-This section describes how to spin up a Gitlab service using this image.
+This section describes how to spin up a Kafka service using this image.
 
 ### <a name="Runnung-Kafka-with-Zookeeper-service)"></a>Running Kafka with Zookeeper service
 
