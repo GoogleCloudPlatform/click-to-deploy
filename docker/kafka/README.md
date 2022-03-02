@@ -95,6 +95,24 @@ services:
 Or you can use `docker run` directly:
 
 ```shell
+docker network create kafka-network
+docker run -d --network kafka-network --hostname zookeeper \
+    -e ZOO_4LW_COMMANDS_WHITELIST="*" --name zookeeper \
+    marketplace.gcr.io/google/zookeeper3
+docker run -d --network kafka-network --hostname kafka-node-1 \
+    -p 9092:9092 \
+    -e "KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181" \
+    -e "KAFKA_ADVERTISED_HOST_NAME=kafka-node-1" \
+    -e "KAFKA_ADVERTISED_PORT=9092" -e "KAFKA_PORT=9092" \
+    --name kafka-node-1 \
+    marketplace.gcr.io/google/kafka3
+docker run -d --network kafka-network --hostname kafka-node-2 \
+    -p 9093:9092 \
+    -e "KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181" \
+    -e "KAFKA_ADVERTISED_HOST_NAME=kafka-node-2" \
+    -e "KAFKA_ADVERTISED_PORT=9092" -e "KAFKA_PORT=9092" \
+    --name kafka-node-2 \
+    marketplace.gcr.io/google/kafka3
 ```
 
 ### <a name="use-a-persistent-data-volume-docker"></a>Use a persistent data volume
@@ -155,4 +173,25 @@ These are the ports exposed by the container image.
 ## <a name="references-environment-variables"></a>Environment Variables
 
 These are the environment variables understood by the container image.
+| **Variable**               | **Description**                                         |
+| :------------------------- | :------------------------------------------------------ |
+| KAFKA_ZOOKEEPER_CONNECT    | Zookeeper address, mandatory parameter                  |
+| KAFKA_ADVERTISED_HOST_NAME | Advertised hostname                                     |
+| KAFKA_BROKER_ID            | Broker id, default is 1001                              |
+| KAFKA_CREATE_TOPICS        | Automatically create topics, "Topic:Partition:Replicas" |
+| KAFKA_ADVERTISED_LISTENERS | List of kafka listeners                                 |
+
+if you want to customize any Kafka parameters, simply add them as environment variables. 
+For example in order to increase the message.max.bytes parameter set the environment to KAFKA_MESSAGE_MAX_BYTES: 2000000. 
+To turn off automatic topic creation set KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
+
+You can see full list of acceptable parameters on the official [Kafka docs](https://kafka.apache.org/documentation/#brokerconfigs). 
+
+## <a name="references-volumes"></a>Volumes
+
+These are the filesystem paths used by the container image.
+
+| **Path** | **Description** |
+| :------- | :-------------- |
+| /kafka   | Kafka logs      |
 
