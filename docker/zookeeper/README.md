@@ -70,7 +70,7 @@ services:
     ports:
       - 2181:2181
     environment:
-      - ZOO_4LW_COMMANDS_WHITELIST="*"
+      - ZOO_4LW_COMMANDS_WHITELIST=*
 ```
 
 Or you can use `docker run` directly:
@@ -82,5 +82,142 @@ docker run -d --hostname zookeeper \
     --name zookeeper \
     marketplace.gcr.io/google/zookeeper3
 ```
+
+### <a name="Runnung-Zookeeper-cluster"></a>Running Zookeeper cluster
+
+Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
+
+```yaml
+version: '2'
+services:
+  zookeeper1:
+    container_name: zookeeper1
+    restart: always
+    image: marketplace.gcr.io/google/zookeeper3
+    hostname: zookeeper1
+    ports:
+      - 2181:2181
+    environment:
+      - ZOO_4LW_COMMANDS_WHITELIST=*
+      - ZOO_MY_ID=1
+      - ZOO_SERVERS=server.1=zookeeper1:2888:3888;2181 server.2=zookeeper2:2888:3888;2181 server.3=zookeeper3:2888:3888;2181
+  zookeeper2:
+    container_name: zookeeper2
+    restart: always
+    image: marketplace.gcr.io/google/zookeeper3
+    hostname: zookeeper2
+    ports:
+      - 2182:2181
+    environment:
+      - ZOO_4LW_COMMANDS_WHITELIST=*
+      - ZOO_MY_ID=2
+      - ZOO_SERVERS=server.1=zookeeper1:2888:3888;2181 server.2=zookeeper2:2888:3888;2181 server.3=zookeeper3:2888:3888;2181
+  zookeeper3:
+    container_name: zookeeper3
+    restart: always
+    image: marketplace.gcr.io/google/zookeeper3
+    hostname: zookeeper3
+    ports:
+      - 2183:2181
+    environment:
+      - ZOO_4LW_COMMANDS_WHITELIST=*
+      - ZOO_MY_ID=3
+      - ZOO_SERVERS=server.1=zookeeper1:2888:3888;2181 server.2=zookeeper2:2888:3888;2181 server.3=zookeeper3:2888:3888;2181
+```
+
+### <a name="use-a-persistent-data-volume-docker"></a>Use a persistent data volume
+
+```yaml
+version: '2'
+services:
+  zookeeper1:
+    container_name: zookeeper1
+    restart: always
+    image: marketplace.gcr.io/google/zookeeper3
+    hostname: zookeeper1
+    ports:
+      - 2181:2181
+    environment:
+      - ZOO_4LW_COMMANDS_WHITELIST=*
+      - ZOO_MY_ID=1
+      - ZOO_SERVERS=server.1=zookeeper1:2888:3888;2181 server.2=zookeeper2:2888:3888;2181 server.3=zookeeper3:2888:3888;2181
+    volumes:
+      - /data
+      - /datalog
+  zookeeper2:
+    container_name: zookeeper2
+    restart: always
+    image: marketplace.gcr.io/google/zookeeper3
+    hostname: zookeeper2
+    ports:
+      - 2182:2181
+    environment:
+      - ZOO_4LW_COMMANDS_WHITELIST=*
+      - ZOO_MY_ID=2
+      - ZOO_SERVERS=server.1=zookeeper1:2888:3888;2181 server.2=zookeeper2:2888:3888;2181 server.3=zookeeper3:2888:3888;2181
+    volumes:
+      - /data
+      - /datalog
+  zookeeper3:
+    container_name: zookeeper3
+    restart: always
+    image: marketplace.gcr.io/google/zookeeper3
+    hostname: zookeeper3
+    ports:
+      - 2183:2181
+    environment:
+      - ZOO_4LW_COMMANDS_WHITELIST=*
+      - ZOO_MY_ID=3
+      - ZOO_SERVERS=server.1=zookeeper1:2888:3888;2181 server.2=zookeeper2:2888:3888;2181 server.3=zookeeper3:2888:3888;2181
+    volumes:
+      - /data
+      - /datalog
+```
+
+# <a name="references"></a>References
+
+## <a name="references-ports"></a>Ports
+
+These are the ports exposed by the container image.
+
+| **Port** | **Description**        |
+| :------- | :--------------------- |
+| TCP 2181 | Zookeeper Server.      |
+| TCP 2888 | Zookeeper peer port.   |
+| TCP 3888 | Zookeeper leader port. |
+
+## <a name="references-environment-variables"></a>Environment Variables
+
+These are the environment variables understood by the container image.
+
+| **Variable**                  | **Description**                                                                     |
+| :---------------------------- | :---------------------------------------------------------------------------------- |
+| ZOO_CONF_DIR                  | Path to the config folder, /conf by default.                                        |
+| ZOO_DATA_DIR                  | Path to the data folder, /data by default.                                          |
+| ZOO_DATA_LOG_DIR              | Path to the transaction logs folder, /datalog by default.                           |
+| ZOO_LOG_DIR                   | Path to the logs folder, /logs by default.                                          |
+| ZOO_TICK_TIME                 | The length of a single tick.                                                        |
+| ZOO_INIT_LIMIT                | Amount of time, in ticks, to allow followers to connect and sync to a leader.       |
+| ZOO_SYNC_LIMIT                | Amount of time, in ticks (see tickTime), to allow followers to sync with Zookeeper. |
+| ZOO_AUTOPURGE_PURGEINTERVAL   | Interval in hours to run purge tasks.                                               |
+| ZOO_AUTOPURGE_SNAPRETAINCOUNT | Amount of recent snapshots to purge.                                                |
+| ZOO_MAX_CLIENT_CNXNS          | Amount of recent snapshots to purge.                                                |
+| ZOO_STANDALONE_ENABLED        | POssibility of run in standalone mode.                                              |
+| ZOO_ADMINSERVER_ENABLED       | Amount of recent snapshots to purge.                                                |
+| ZOO_MY_ID                     | The id must be unique within the ensemble.                                          |
+| ZOO_SERVERS                   | The list of machines of the Zookeeper ensemble.                                     |
+| ZOO_CFG_EXTRA                 | Additional configuration.                                                           |
+
+You can see full list of acceptable parameters on the official [Zookeeper docs](https://zookeeper.apache.org/doc/r3.4.14/zookeeperAdmin.html).
+
+## <a name="references-volumes"></a>Volumes
+
+These are the filesystem paths used by the container image.
+
+| **Path** | **Description**          |
+| :------- | :----------------------- |
+| /data    | Data folder.             |
+| /datalog | Transaction logs folder. |
+| /logs    | Logs folder.             |
 
 
