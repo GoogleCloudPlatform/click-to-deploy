@@ -36,7 +36,6 @@ docker -- pull marketplace.gcr.io/google/zookeeper3
 Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/docker/zookeeper/3/debian10/3.7/)
 
 =======
-
 # <a name="table-of-contents"></a>Table of Contents
 * [Using Docker](#using-docker)
   * [Running Zookeeper](#running-zookeeper-docker)
