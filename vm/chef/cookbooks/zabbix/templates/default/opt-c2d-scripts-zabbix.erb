@@ -48,12 +48,17 @@ if [[ ! -n "$passadmin" ]]; then
 fi
 
 while ! pg_isready; do sleep 3; done
+
 echo 'Setting passwords.'
 su - postgres -c "psql -c \"alter role zabbix with password '${passdb}'\""
 su - postgres -c "psql zabbix -c \"update users set passwd=md5('${passadmin}') where username='Admin'\""
 
+echo 'Setting password in zabbix.conf.php.'
 sed -i "s@^\$DB\['PASSWORD'\] =.*@\$DB['PASSWORD'] = '$passdb';@" /etc/zabbix/web/zabbix.conf.php
-sed -i "s@^DBPassword=.*@DBPassword=$passdb@" /etc/zabbix/zabbix_server.conf
+
+echo 'Setting passwords in configs.'
+sed -i "s/^.*DBPassword=.*$/DBPassword=$passdb/" /etc/zabbix/zabbix_server.conf
+sed -i "s/^.*DBPassword=.*$/DBPassword=$passdb/" /etc/zabbix/zabbix_proxy.conf
 
 echo 'Restaring zabbix server.'
 service zabbix-server restart
