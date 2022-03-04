@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@ include_recipe 'c2d-config::default'
 include_recipe 'apache2::default'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
+include_recipe 'postgresql::standalone_buster'
 
 # install zabbix package
 apt_repository 'zabbix' do
@@ -54,7 +55,7 @@ RedirectMatch ^/$ /zabbix/
   su - postgres -c 'createuser zabbix'
   su - postgres -c 'createdb -O zabbix zabbix'
 
-  zcat /usr/share/doc/zabbix-sql-scripts/postgresql/create.sql.gz | sudo -u zabbix psql zabbix
+  zcat /usr/share/doc/zabbix-sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix
 
   ### for PostgreSQL -- uses socket (localhost uses tcp)
   sed -i '/^# DBHost=localhost/ a \

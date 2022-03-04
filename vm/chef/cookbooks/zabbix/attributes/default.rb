@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['zabbix']['version'] = '5.4'
+default['zabbix']['version'] = '6.0'
 default['zabbix']['packages'] = %w(postgresql postgresql-contrib mailutils php-pgsql zabbix-server-pgsql zabbix-frontend-php zabbix-proxy-pgsql zabbix-sql-scripts zabbix-apache-conf)
 default['zabbix']['repo']['uri'] = "https://repo.zabbix.com/zabbix/#{default['zabbix']['version']}/debian/"
 default['zabbix']['repo']['components'] = ['main']
