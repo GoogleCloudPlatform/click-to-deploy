@@ -37,7 +37,6 @@ Dockerfiles for this images can be found here:
 
 - [hazelcast4](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/docker/hazelcast/4/debian10/hazelcast4.2/)
 - [hazelcast-mc4](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/docker/hazelcast/4/debian10/hazelcast-mc/4.2021.12/)
-=======
 
 # <a name="table-of-contents"></a>Table of Contents
 * [Using Docker](#using-docker)
