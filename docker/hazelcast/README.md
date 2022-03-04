@@ -144,8 +144,6 @@ services:
       - JAVA_OPTS=-Dhazelcast.mancenter.enabled=true -Dhazelcast.mancenter.url=http://hazelcast-mc:8080
       - HZ_LICENSEKEY=<your_license_key>
       - HZ_PERSISTENCE_ENABLED="true"
-    volumes:
-      - /opt/hazelcast/data
   hazelcast2:
     container_name: hazelcast2
     restart: always
@@ -157,8 +155,6 @@ services:
       - JAVA_OPTS=-Dhazelcast.mancenter.enabled=true -Dhazelcast.mancenter.url=http://hazelcast-mc:8080
       - HZ_LICENSEKEY=<your_license_key>
       - HZ_PERSISTENCE_ENABLED="true"
-    volumes:
-      - /opt/hazelcast/data
   hazelcast-mc:
     container_name: hazelcast-mc
     restart: always
@@ -179,7 +175,7 @@ services:
 
 ## <a name="references-ports"></a>Ports
 
-These are the ports exposed by the container image.
+These are the ports exposed by the container images.
 
 | **Port** | **Description**                |
 | :------- | :----------------------------- |
@@ -187,3 +183,64 @@ These are the ports exposed by the container image.
 | TCP 8080 | Hazelcast MC http port.        |
 | TCP 8081 | Hazelcast MC healthcheck port. |
 | TCP 8443 | Hazelcast MC https port.       |
+
+## <a name="references-environment-variables"></a>Environment Variables
+
+These are the environment variables understood by the container images.
+
+### Hazelcast
+
+| **Variable**    | **Description**                               |
+| :-------------- | :-------------------------------------------- |
+| HZ_LICENSEKEY   | Enterprise License key.                       |
+| JAVA_OPTS       | Pass java arguments, e.g. -Xms512M -Xmx1024M. |
+| PROMETHEUS_PORT | The port of the JMX Prometheus agent.         |
+| LOGGING_LEVEL   | Logging level.                                |
+
+Configuration entries of your cluster can be overritten without changing the declarative configuration files (XML/YAML), see [Overriding Configuration documentation section](https://docs.hazelcast.org/docs/latest/manual/html-single/#overriding-configuration).
+
+Assume that you want to have the following configuration for your cluster, represented as YAML:
+```yaml
+hazelcast:
+  cluster-name: dev
+  network:
+    port:
+      auto-increment: true
+      port-count: 100
+      port: 5701
+```
+
+If you want to use the environment variables, the above would be represented as a set of the following environment variables:
+```shell
+docker run -d \
+    -p 5701:5701 \
+    --name hazelcast \ 
+    -e HZ_CLUSTERNAME=dev \
+    -e HZ_NETWORK_PORT_AUTOINCREMENT=true \
+    -e HZ_NETWORK_PORT_PORTCOUNT=100 \
+    -e HZ_NETWORK_PORT_PORT=5701 \
+    marketplace.gcr.io/google/hazelcast4
+```
+
+### Hazelcast Management center
+
+| **Variable**      | **Description**                                       |
+| :---------------- | :---------------------------------------------------- |
+| MC_LICENSEKEY     | Enterprise License key.                               |
+| JAVA_OPTS         | Pass java arguments, e.g. -Xms512M -Xmx1024M.         |
+| MC_HTTP_PORT      | Http port, 8080 by default.                           |
+| MC_HTTPS_PORT     | HTTPS port, 8443 by default.                          |
+| MC_CONTEXT_PATH   | UI path, / by default.                                |
+| MC_ADMIN_USER     | Admin login.                                          |
+| MC_ADMIN_PASSWORD | Admin password.                                       |
+| MC_INIT_CMD       | Execute one or more commands separated by semicolons. |
+| MC_INIT_SCRIPT    | Execute a script in Bash syntax.                      |
+
+## <a name="references-volumes"></a>Volumes
+
+These are the filesystem paths used by the container image.
+
+| **Path** | **Description**                  |
+| :------- | :------------------------------- |
+| /data    | Folder to store persistent data. |
+
