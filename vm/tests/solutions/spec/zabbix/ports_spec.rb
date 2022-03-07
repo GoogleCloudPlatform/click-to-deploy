@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,5 +35,5 @@ describe port(5432) do
 end
 
 describe port(10051) do
-  it { should be_listening.on('127.0.0.1') }
+  it { should be_listening.on('0.0.0.0') }
 end
