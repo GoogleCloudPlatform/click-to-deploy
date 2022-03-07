@@ -64,8 +64,6 @@ RedirectMatch ^/$ /zabbix/
 \
 DBHost=localhost' /etc/zabbix/zabbix_server.conf
 
-  sed -i 's/# ListenIP=0.0.0.0/ListenIP=127.0.0.1/' /etc/zabbix/zabbix_server.conf
-
 EOH
 end
 

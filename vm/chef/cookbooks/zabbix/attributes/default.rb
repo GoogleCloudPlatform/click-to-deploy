@@ -13,7 +13,7 @@
 # limitations under the License.
 
 default['zabbix']['version'] = '6.0'
-default['zabbix']['packages'] = %w(php7.3-pgsql zabbix-server-pgsql zabbix-frontend-php zabbix-proxy-pgsql zabbix-sql-scripts zabbix-apache-conf)
+default['zabbix']['packages'] = %w(mailutils php-pgsql zabbix-server-pgsql zabbix-frontend-php zabbix-proxy-pgsql zabbix-sql-scripts zabbix-apache-conf)
 default['zabbix']['repo']['uri'] = "https://repo.zabbix.com/zabbix/#{default['zabbix']['version']}/debian/"
 default['zabbix']['repo']['components'] = ['main']
 default['zabbix']['repo']['distribution'] = 'buster'
