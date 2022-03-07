@@ -53,8 +53,8 @@ RedirectMatch ^/$ /zabbix/
   a2ensite default-ssl
 
   su - postgres -c 'createuser zabbix'
-  su - postgres -c 'createdb -O zabbix zabbix'
-  su - postgres -c 'createdb -O zabbix zabbix_proxy'
+  su - postgres -c 'createdb -O zabbix zabbix -E UTF-8'
+  su - postgres -c 'createdb -O zabbix zabbix_proxy -E UTF-8'
 
   zcat /usr/share/doc/zabbix-sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix
   cat /usr/share/doc/zabbix-sql-scripts/postgresql/proxy.sql | sudo -u zabbix psql zabbix_proxy
@@ -65,10 +65,6 @@ RedirectMatch ^/$ /zabbix/
 DBHost=localhost' /etc/zabbix/zabbix_server.conf
 
   sed -i 's/# ListenIP=0.0.0.0/ListenIP=127.0.0.1/' /etc/zabbix/zabbix_server.conf
-
-  sed -i '/^# DBHost=localhost/ a \
-\
-DBHost=localhost' /etc/zabbix/zabbix_proxy.conf  
 
 EOH
 end
