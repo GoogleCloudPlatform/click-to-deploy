@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ end
 # Download tomcat.
 remote_file '/tmp/tomcat.tar.gz' do
   source "https://archive.apache.org/dist/tomcat/tomcat-10/v#{node['tomcat']['version']}/bin/apache-tomcat-#{node['tomcat']['version']}.tar.gz"
-  verify "echo '#{node['tomcat']['sha1']} %{path}' | sha1sum -c"
+  verify "echo '#{node['tomcat']['sha256']} %{path}' | sha256sum -c"
   action :create
 end
 
