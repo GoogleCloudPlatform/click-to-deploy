@@ -18,7 +18,6 @@ include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 include_recipe 'postgresql::standalone_buster'
 
-
 # install zabbix package
 apt_repository 'zabbix' do
   uri node['zabbix']['repo']['uri']
@@ -88,11 +87,11 @@ service 'apache2' do
   action [ :enable, :restart ]
 end
 
-service 'zabbix-proxy' do
+service 'zabbix-server' do
   action [ :enable, :stop ]
 end
 
-service 'zabbix-server' do
+service 'zabbix-proxy' do
   action [ :enable, :stop ]
 end
 

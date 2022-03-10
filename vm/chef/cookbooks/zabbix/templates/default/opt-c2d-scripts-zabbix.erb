@@ -60,6 +60,11 @@ echo 'Setting passwords in configs.'
 sed -i "s/^.*DBPassword=.*$/DBPassword=$passdb/" /etc/zabbix/zabbix_server.conf
 sed -i "s/^.*DBPassword=.*$/DBPassword=$passdb/" /etc/zabbix/zabbix_proxy.conf
 
+echo 'Adding system locale.'
+sed -i 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
+locale-gen
+service apache2 restart
+
 echo 'Restaring zabbix server.'
 service zabbix-server restart
 echo 'Restaring zabbix proxy.'

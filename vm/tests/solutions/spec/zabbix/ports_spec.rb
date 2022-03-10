@@ -35,5 +35,9 @@ describe port(5432) do
 end
 
 describe port(10051) do
+  it { should be_listening.on('127.0.0.1') }
+end
+
+describe port(10055) do
   it { should be_listening.on('0.0.0.0') }
 end
