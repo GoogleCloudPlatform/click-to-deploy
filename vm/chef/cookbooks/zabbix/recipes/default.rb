@@ -44,7 +44,7 @@ bash 'configure zabbix' do
   cwd '/tmp'
   code <<-EOH
 
-  sed -i 's/# php_value date.timezone/php_value date.timezone/' 
+  sed -i 's/# php_value date.timezone/php_value date.timezone/' /etc/apache2/conf-enabled/zabbix.conf
   sed -i '1 i\
 RedirectMatch ^/$ /zabbix/
 ' /etc/apache2/conf-enabled/zabbix.conf
