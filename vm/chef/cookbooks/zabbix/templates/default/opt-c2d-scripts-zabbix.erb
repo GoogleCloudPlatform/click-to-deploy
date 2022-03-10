@@ -62,4 +62,5 @@ sed -i "s/^.*DBPassword=.*$/DBPassword=$passdb/" /etc/zabbix/zabbix_proxy.conf
 
 echo 'Restaring zabbix server.'
 service zabbix-server restart
+echo 'Restaring zabbix proxy.'
 service zabbix-proxy restart

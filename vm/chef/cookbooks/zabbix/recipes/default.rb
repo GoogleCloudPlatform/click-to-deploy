@@ -18,6 +18,7 @@ include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 include_recipe 'postgresql::standalone_buster'
 
+
 # install zabbix package
 apt_repository 'zabbix' do
   uri node['zabbix']['repo']['uri']
@@ -43,7 +44,7 @@ bash 'configure zabbix' do
   cwd '/tmp'
   code <<-EOH
 
-  sed -i 's/# php_value date.timezone/php_value date.timezone/' /etc/apache2/conf-enabled/zabbix.conf
+  sed -i 's/# php_value date.timezone/php_value date.timezone/' 
   sed -i '1 i\
 RedirectMatch ^/$ /zabbix/
 ' /etc/apache2/conf-enabled/zabbix.conf
@@ -53,8 +54,8 @@ RedirectMatch ^/$ /zabbix/
   a2ensite default-ssl
 
   su - postgres -c 'createuser zabbix'
-  su - postgres -c 'createdb -O zabbix zabbix'
-  su - postgres -c 'createdb -O zabbix zabbix_proxy'
+  su - postgres -c 'createdb -O zabbix -E Unicode zabbix'
+  su - postgres -c 'createdb -O zabbix -E Unicode zabbix_proxy'
 
   zcat /usr/share/doc/zabbix-sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix
   cat /usr/share/doc/zabbix-sql-scripts/postgresql/proxy.sql | sudo -u zabbix psql zabbix_proxy
@@ -68,7 +69,9 @@ DBHost=localhost' /etc/zabbix/zabbix_server.conf
 
   sed -i '/^# DBHost=localhost/ a \
 \
-DBHost=localhost' /etc/zabbix/zabbix_proxy.conf  
+DBHost=localhost' /etc/zabbix/zabbix_proxy.conf
+
+  sed -i 's/# ListenPort=10051/ListenPort=10055/' /etc/zabbix/zabbix_proxy.conf
 
 EOH
 end
@@ -85,11 +88,11 @@ service 'apache2' do
   action [ :enable, :restart ]
 end
 
-service 'zabbix-server' do
+service 'zabbix-proxy' do
   action [ :enable, :stop ]
 end
 
-service 'zabbix-proxy' do
+service 'zabbix-server' do
   action [ :enable, :stop ]
 end
 
