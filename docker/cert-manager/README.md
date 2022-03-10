@@ -23,4 +23,4 @@ For more information, see the:
 - [Official Image Marketplace Page](https://console.cloud.google.com/marketplace/details/google/cert-manager1).
 - [Cert Manager Documentation](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/k8s/cert-manager).
 
-Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/docker/cert-manager/1/debian10/1.7/)
+Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/docker/cert-manager/1/debian10/1.7/).
