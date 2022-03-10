@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ end
 # Download md5 checksum from apache
 remote_file '/tmp/kong.deb' do
   source "https://download.konghq.com/gateway-2.x-debian-buster/pool/all/k/kong/kong_#{node['kong']['version']}_amd64.deb"
-  verify "echo '#{node['kong']['sha1']} %{path}' | sha1sum -c"
+  verify "echo '#{node['kong']['sha256']} %{path}' | sha256sum -c"
   action :create
 end
 
