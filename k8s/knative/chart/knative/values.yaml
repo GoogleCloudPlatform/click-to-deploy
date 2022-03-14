@@ -1,37 +1,26 @@
-kafka:
+# Default values for cert-manager.
+certmanager:
   image:
-    repo: null
-    tag: null
-  replicas: 3
-  # if set "true", kafka will be deployed as standalone mode with
-  # single kafka and zookeeper instances and no any authentication.
-  # Don't set true for production deployment
-  standalone: false
+    repository: marketplace.gcr.io/google/cert-manager1
+    tag: 1.6
 
-  # Kafka user and password
-  kUser: kafka
-  kPassword: null
+  # Replica count for components
+  controller:
+    replicaCount: 1
 
-metrics:
-  image: null
-  enabled: true
-  exporter:
-    enabled: false
+  webhook:
+    replicaCount: 1
 
-persistence:
-  storageClass: null
-  kafka:
-    storageSize: "10Gi"
-  zookeeper:
-    storageSize: "5Gi"
+  cainjector:
+    replicaCount: 1
 
-zookeeper:
-  image: null
-  # The number of replicas must be 2n + 1 ZooKeeper servers where
-  # n is any number greater than 0. The odd number of servers allows
-  # ZooKeeper to perform majority elections for leadership.
-  # https://docs.confluent.io/platform/current/zookeeper/deployment.html#multi-node-setup
-  replicas: 3
+  metrics:
+    image: null
+    exporter:
+      enabled: false
+
+istio:
+  image:
 
 exporter:
   image: null
