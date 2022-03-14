@@ -39,6 +39,11 @@ istio:
   # image: busybox:1.28
 
 # Default values for knative
+knative:
+  eventing:
+    image:
+      repository:
+      tag:
 
 
 exporter:
