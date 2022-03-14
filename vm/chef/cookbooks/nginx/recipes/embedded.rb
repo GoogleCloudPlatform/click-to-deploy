@@ -12,9 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['nginx']['packages'] = ['nginx']
-default['nginx']['version'] = '1.20'
-default['nginx']['repo']['uri'] = 'https://nginx.org/packages/debian/'
-default['nginx']['repo']['components'] = ['nginx']
-default['nginx']['repo']['distribution'] = 'buster'
-default['nginx']['repo']['keyserver'] = 'http://nginx.org/keys/nginx_signing.key'
+include_recipe 'nginx'
+
+file '/etc/nginx/conf.d/default.conf' do
+  action :delete
+end
