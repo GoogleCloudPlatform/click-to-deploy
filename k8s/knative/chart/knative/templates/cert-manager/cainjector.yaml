@@ -155,9 +155,12 @@ spec:
       serviceAccountName: cert-manager-cainjector
       securityContext:
         runAsNonRoot: true
+        fsGroup: 1000
+        runAsUser: 1000
       containers:
         - name: cert-manager
-          image: "quay.io/jetstack/cert-manager-cainjector:v1.7.1"
+          image: "{{ .Values.certmanager.image.repository }}:{{ .Values.certmanager.image.tag }}"
+          command: ["/app/cainjector"]
           imagePullPolicy: IfNotPresent
           args:
           - --v=2
