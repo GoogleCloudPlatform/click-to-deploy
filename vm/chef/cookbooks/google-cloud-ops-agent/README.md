@@ -15,7 +15,6 @@ This is not an official Google product.
 Chef cookbook for [Google Cloud Operations agents](https://cloud.google.com/stackdriver/docs/solutions/agents).
 
 For more information, see the [Official Image Marketplace Page](https://github.com/GoogleCloudPlatform/google-cloud-ops-agents-chef/blob/master/README.md).
-============
 
 # <a name="table-of-contents"></a>Table of Contents
 * [Cloning Cookbook](#cloning-cookbook)
