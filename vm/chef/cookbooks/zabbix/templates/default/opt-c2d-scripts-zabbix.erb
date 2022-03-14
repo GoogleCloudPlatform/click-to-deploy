@@ -18,7 +18,8 @@
 echo 'setting RANDFILE var value to /root/.rnd'
 export RANDFILE="/root/.rnd"
 
-source /opt/c2d/c2d-utils || exit 1
+source /opt/c2d/zabbix-utils || exit 1
+
 
 set +o errexit
 passdb=$(get_attribute_value "zabbix-db-password")
@@ -69,3 +70,8 @@ echo 'Restaring zabbix server.'
 service zabbix-server restart
 echo 'Restaring zabbix proxy.'
 service zabbix-proxy restart
+
+# Await for app be ready
+wait_for_app
+
+echo "Installation complete."
