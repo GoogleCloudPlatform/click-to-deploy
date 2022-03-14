@@ -80,6 +80,17 @@ knative:
       minReplicaCount: 1
       maxReplicaCount: 5
 
+    netcertmanager:
+      controller:
+        image:
+          repository: gcr.io/knative-releases/knative.dev/net-certmanager/cmd/controller@sha256
+          tag: dc69b905b235fc2e587931c3e3b59e4cabcc762dc184b108981bcea1b1006cdc
+
+      webhook:
+        image:
+          repository: gcr.io/knative-releases/knative.dev/net-certmanager/cmd/webhook@sha256
+          tag: e6688cf1fdcc7a6adbd1cf531ddc28beb16fa72c705a29a943bc48704cdf1944
+
   eventing:
     controller:
       image:
@@ -90,7 +101,6 @@ knative:
       image:
         repository: gcr.io/knative-releases/knative.dev/eventing/cmd/mtping@sha256
         tag: d23d9e0c54c2ed2e95a81106c921fd67e648f17c06e37a2f08acab9e126a3328
-
         # when set to 0 (and only 0) will be set to 1 when the first PingSource is created.
       replicaCount: 0
 

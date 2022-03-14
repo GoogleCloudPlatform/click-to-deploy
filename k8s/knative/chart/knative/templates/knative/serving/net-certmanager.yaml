@@ -1,5 +1,4 @@
 
----
 # net-certmanager.yaml
 # Copyright 2020 The Knative Authors
 #
@@ -199,7 +198,7 @@ spec:
         - name: controller
           # This is the Go import path for the binary that is containerized
           # and substituted here.
-          image: gcr.io/knative-releases/knative.dev/net-certmanager/cmd/controller@sha256:dc69b905b235fc2e587931c3e3b59e4cabcc762dc184b108981bcea1b1006cdc
+          image: {{ .Values.knative.serving.netcertmanager.controller.image.repository }}:{{ .Values.knative.serving.netcertmanager.controller.image.tag }}
           resources:
             requests:
               cpu: 30m
@@ -304,7 +303,7 @@ spec:
         - name: webhook
           # This is the Go import path for the binary that is containerized
           # and substituted here.
-          image: gcr.io/knative-releases/knative.dev/net-certmanager/cmd/webhook@sha256:e6688cf1fdcc7a6adbd1cf531ddc28beb16fa72c705a29a943bc48704cdf1944
+          image: {{ .Values.knative.serving.netcertmanager.webhook.image.repository }}:{{ .Values.knative.serving.netcertmanager.webhook.image.tag }}
           resources:
             requests:
               cpu: 20m
