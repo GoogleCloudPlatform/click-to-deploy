@@ -16,46 +16,18 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 1/debian9/1.7
-  from: marketplace.gcr.io/google/debian9
+- dir: 1/debian10/1.7
+  from: marketplace.gcr.io/google/debian10
   packages:
     cert-manager:
       version: 1.7.1
   repo: cert-manager1
   tags:
-  - 1.7.1-debian9
-  - 1.7-debian9
-  - 1-debian9
+  - 1.7.1-debian10
+  - 1.7-debian10
+  - 1-debian10
   - 1.7.1
   - '1.7'
   - '1'
   - latest
   templateSubDir: cert-manager1
-- dir: 0/debian9/0.16
-  from: marketplace.gcr.io/google/debian9
-  packages:
-    cert-manager:
-      version: 0.16.1
-  repo: cert-manager0
-  tags:
-  - 0.16.1-debian9
-  - 0.16-debian9
-  - 0-debian9
-  - 0.16.1
-  - '0.16'
-  - '0'
-  - latest
-  templateSubDir: cert-manager0
-- dir: 0/debian9/0.13
-  from: marketplace.gcr.io/google/debian9
-  packages:
-    cert-manager:
-      version: 0.13.1
-  repo: cert-manager0
-  tags:
-  - 0.13.1-debian9
-  - 0.13-debian9
-  - 0.13.1
-  - '0.13'
-  templateSubDir: cert-manager0
-
