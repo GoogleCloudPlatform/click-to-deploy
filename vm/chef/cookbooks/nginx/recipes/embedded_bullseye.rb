@@ -12,11 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-execute 'download packages' do
-  command "curl -sL https://deb.nodesource.com/setup_#{node['nodejs']['version']}.x | bash -"
-end
+include_recipe 'nginx::embedded'
 
-package 'install packages' do
-  package_name node['nodejs']['packages']
-  action :install
-end
+node.override['postgresql']['standalone']['distribution'] = 'bullseye'
