@@ -9,7 +9,6 @@ metadata:
     heritage: Tiller
     istio: security
     release: istio
-    knative.dev/crd-install: "true"
   name: authorizationpolicies.security.istio.io
 spec:
   group: security.istio.io
@@ -215,7 +214,6 @@ metadata:
     chart: istio
     heritage: Tiller
     release: istio
-    knative.dev/crd-install: "true"
   name: destinationrules.networking.istio.io
 spec:
   group: networking.istio.io
@@ -2374,7 +2372,6 @@ metadata:
     chart: istio
     heritage: Tiller
     release: istio
-    knative.dev/crd-install: "true"
   name: envoyfilters.networking.istio.io
 spec:
   group: networking.istio.io
@@ -2603,7 +2600,6 @@ metadata:
     chart: istio
     heritage: Tiller
     release: istio
-    knative.dev/crd-install: "true"
   name: gateways.networking.istio.io
 spec:
   group: networking.istio.io
@@ -2850,7 +2846,6 @@ metadata:
   name: istiooperators.install.istio.io
   labels:
     release: istio
-    knative.dev/crd-install: "true"
 spec:
   conversion:
     strategy: None
@@ -2899,7 +2894,6 @@ metadata:
     heritage: Tiller
     istio: security
     release: istio
-    knative.dev/crd-install: "true"
   name: peerauthentications.security.istio.io
 spec:
   group: security.istio.io
@@ -2985,7 +2979,6 @@ metadata:
     chart: istio
     heritage: Tiller
     release: istio
-    knative.dev/crd-install: "true"
   name: proxyconfigs.networking.istio.io
 spec:
   group: networking.istio.io
@@ -3051,7 +3044,6 @@ metadata:
     heritage: Tiller
     istio: security
     release: istio
-    knative.dev/crd-install: "true"
   name: requestauthentications.security.istio.io
 spec:
   group: security.istio.io
@@ -3144,7 +3136,6 @@ metadata:
     chart: istio
     heritage: Tiller
     release: istio
-    knative.dev/crd-install: "true"
   name: serviceentries.networking.istio.io
 spec:
   group: networking.istio.io
@@ -3407,7 +3398,6 @@ metadata:
     chart: istio
     heritage: Tiller
     release: istio
-    knative.dev/crd-install: "true"
   name: sidecars.networking.istio.io
 spec:
   group: networking.istio.io
@@ -3771,7 +3761,6 @@ metadata:
     heritage: Tiller
     istio: telemetry
     release: istio
-    knative.dev/crd-install: "true"
   name: telemetries.telemetry.istio.io
 spec:
   group: telemetry.istio.io
@@ -4006,7 +3995,6 @@ metadata:
     chart: istio
     heritage: Tiller
     release: istio
-    knative.dev/crd-install: "true"
   name: virtualservices.networking.istio.io
 spec:
   group: networking.istio.io
@@ -5423,7 +5411,6 @@ metadata:
     chart: istio
     heritage: Tiller
     release: istio
-    knative.dev/crd-install: "true"
   name: wasmplugins.extensions.istio.io
 spec:
   group: extensions.istio.io
@@ -5512,7 +5499,6 @@ metadata:
     chart: istio
     heritage: Tiller
     release: istio
-    knative.dev/crd-install: "true"
   name: workloadentries.networking.istio.io
 spec:
   group: networking.istio.io
@@ -5631,7 +5617,6 @@ metadata:
     chart: istio
     heritage: Tiller
     release: istio
-    knative.dev/crd-install: "true"
   name: workloadgroups.networking.istio.io
 spec:
   group: networking.istio.io

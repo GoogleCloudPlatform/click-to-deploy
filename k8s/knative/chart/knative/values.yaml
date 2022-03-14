@@ -1,4 +1,4 @@
-# Default values for cert-manager.
+# Default values for cert-manager
 certmanager:
   image:
     repository: marketplace.gcr.io/google/cert-manager1
@@ -19,6 +19,7 @@ certmanager:
     exporter:
       enabled: false
 
+# Default values for istio
 istio:
   # Replica count for components
   ingressgateway:
@@ -33,6 +34,12 @@ istio:
       tag: 1.13.0
     minReplicaCount: 1
     maxReplicaCount: 1
+
+  # Replicar busybox
+  # image: busybox:1.28
+
+# Default values for knative
+
 
 exporter:
   image: null
