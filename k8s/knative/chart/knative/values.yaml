@@ -91,6 +91,17 @@ knative:
           repository: gcr.io/knative-releases/knative.dev/net-certmanager/cmd/webhook@sha256
           tag: e6688cf1fdcc7a6adbd1cf531ddc28beb16fa72c705a29a943bc48704cdf1944
 
+    netistio:
+      controller:
+        image:
+          repository: gcr.io/knative-releases/knative.dev/net-istio/cmd/controller@sha256
+          tag: f253b82941c2220181cee80d7488fe1cefce9d49ab30bdb54bcb8c76515f7a26
+
+      webhook:
+        image:
+          repository: gcr.io/knative-releases/knative.dev/net-istio/cmd/webhook@sha256
+          tag: a705c1ea8e9e556f860314fe055082fbe3cde6a924c29291955f98d979f8185e
+
   eventing:
     controller:
       image:
