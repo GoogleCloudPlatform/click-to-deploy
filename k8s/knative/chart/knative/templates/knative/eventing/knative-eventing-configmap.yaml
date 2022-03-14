@@ -1,2 +1,2 @@
 # Istio k8s definitions loaded as string, should not be processed by helm
-{{ .Files.Get "files/eventing-core.yaml" }}
+{{ .Files.Get "files/knative-eventing-configmap.yaml" }}
