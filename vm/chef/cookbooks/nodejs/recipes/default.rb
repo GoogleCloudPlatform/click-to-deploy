@@ -13,7 +13,7 @@
 # limitations under the License.
 
 execute 'download packages' do
-  command 'curl -sL https://deb.nodesource.com/setup_17.x | bash -'
+  command "curl -sL https://deb.nodesource.com/setup_#{node['nodejs']['version']}.x | bash -"
 end
 
 package 'install packages' do
