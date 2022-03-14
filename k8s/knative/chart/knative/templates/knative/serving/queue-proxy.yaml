@@ -25,4 +25,4 @@ metadata:
 spec:
   # This is the Go import path for the binary that is containerized
   # and substituted here.
-  image: {{ .Values.knative.eventing.queueproxy.image.repository }}:{{ .Values.knative.eventing.queueproxy.image.tag }}
+  image: {{ .Values.knative.serving.queueproxy.image.repository }}:{{ .Values.knative.serving.queueproxy.image.tag }}

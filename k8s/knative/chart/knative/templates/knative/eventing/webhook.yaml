@@ -27,8 +27,8 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: eventing-webhook
-  minReplicas: 1
-  maxReplicas: 5
+  minReplicas: {{ .Values.knative.eventing.webhook.minReplicaCount }}
+  maxReplicas: {{ .Values.knative.eventing.webhook.maxReplicaCount }}
   metrics:
     - type: Resource
       resource:
@@ -110,7 +110,7 @@ spec:
           terminationMessagePolicy: FallbackToLogsOnError
           # This is the Go import path for the binary that is containerized
           # and substituted here.
-          image: gcr.io/knative-releases/knative.dev/eventing/cmd/webhook@sha256:d5666785e0ac6cbab414142485297e575a38c9c1d9a3f17520e7f58eb4de3f80
+          image: {{ .Values.knative.eventing.webhook.image.repository }}:{{ .Values.knative.eventing.webhook.image.tag }}
           resources:
             requests:
               # taken from serving.

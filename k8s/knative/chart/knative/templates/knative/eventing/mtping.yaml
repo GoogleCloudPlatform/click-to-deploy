@@ -24,7 +24,7 @@ metadata:
     app.kubernetes.io/name: knative-eventing
 spec:
   # when set to 0 (and only 0) will be set to 1 when the first PingSource is created.
-  replicas: 0
+  replicas: {{ .Values.knative.eventing.mtping.replicaCount }}
   selector:
     matchLabels: &labels
       eventing.knative.dev/source: ping-source-controller
@@ -49,7 +49,7 @@ spec:
       enableServiceLinks: false
       containers:
         - name: dispatcher
-          image: gcr.io/knative-releases/knative.dev/eventing/cmd/mtping@sha256:d23d9e0c54c2ed2e95a81106c921fd67e648f17c06e37a2f08acab9e126a3328
+          image: {{ .Values.knative.eventing.mtping.image.repository }}:{{ .Values.knative.eventing.mtping.image.tag }}
           env:
             - name: SYSTEM_NAMESPACE
               value: ''

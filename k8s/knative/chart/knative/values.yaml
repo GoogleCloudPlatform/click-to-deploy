@@ -33,20 +33,20 @@ istio:
       repository: docker.io/istio/pilot
       tag: 1.13.0
     minReplicaCount: 1
-    maxReplicaCount: 1
+    maxReplicaCount: 5
 
   # change busybox
   # image: busybox:1.28
 
 # Default values for knative
 knative:
-  eventing:
+  serving:
     activator:
       image:
         repository: gcr.io/knative-releases/knative.dev/serving/cmd/activator@sha256
         tag: 2bd3c199ce1a176ae7eec269a3b06319369cbbfbf4d1eba7965e014ccc7bc607
       minReplicaCount: 1
-      maxReplicaCount: 1
+      maxReplicaCount: 5
 
     autoscaler:
       image:
@@ -78,7 +78,28 @@ knative:
         repository: gcr.io/knative-releases/knative.dev/serving/cmd/webhook@sha256
         tag: 7e76260703b2ef866f178e6de196fba5b6125fc34182352a8ad10d3e357e0e59
       minReplicaCount: 1
-      maxReplicaCount: 1
+      maxReplicaCount: 5
+
+  eventing:
+    controller:
+      image:
+        repository: gcr.io/knative-releases/knative.dev/eventing/cmd/controller@sha256
+        tag: 65b4fbd331d9db65d4a27c6462fac20971de540f9fea7cb7a16884265e1bd9bc
+
+    mtping:
+      image:
+        repository: gcr.io/knative-releases/knative.dev/eventing/cmd/mtping@sha256
+        tag: d23d9e0c54c2ed2e95a81106c921fd67e648f17c06e37a2f08acab9e126a3328
+
+        # when set to 0 (and only 0) will be set to 1 when the first PingSource is created.
+      replicaCount: 0
+
+    webhook:
+      image:
+        repository: gcr.io/knative-releases/knative.dev/eventing/cmd/webhook@sha256
+        tag: d5666785e0ac6cbab414142485297e575a38c9c1d9a3f17520e7f58eb4de3f80
+      minReplicaCount: 1
+      maxReplicaCount: 5
 
 exporter:
   image: null

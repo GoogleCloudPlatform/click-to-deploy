@@ -1,0 +1,3 @@
+# Istio k8s definitions loaded as string, should not be processed by helm
+{{ .Files.Get "files/serving-certmanager.yaml" }}
+{{ .Files.Get "files/serving-istio.yaml" }}
