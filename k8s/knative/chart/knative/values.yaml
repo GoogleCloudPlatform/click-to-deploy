@@ -35,16 +35,50 @@ istio:
     minReplicaCount: 1
     maxReplicaCount: 1
 
-  # Replicar busybox
+  # change busybox
   # image: busybox:1.28
 
 # Default values for knative
 knative:
   eventing:
-    image:
-      repository:
-      tag:
+    activator:
+      image:
+        repository: gcr.io/knative-releases/knative.dev/serving/cmd/activator@sha256
+        tag: 2bd3c199ce1a176ae7eec269a3b06319369cbbfbf4d1eba7965e014ccc7bc607
+      minReplicaCount: 1
+      maxReplicaCount: 1
 
+    autoscaler:
+      image:
+        repository: gcr.io/knative-releases/knative.dev/serving/cmd/autoscaler@sha256
+        tag: f0b24c15d41ba0c312aec290ecb5edb9ab5146317043ed71512c032faf34e75e
+      replicaCount: 1
+
+    controller:
+      image:
+        repository: gcr.io/knative-releases/knative.dev/serving/cmd/controller@sha256
+        tag: 6a686b1ed7aa145c00c90c543848fed6119647d2071759c5eebe4c2b29eeaea0
+
+    domainmapping:
+      image:
+        repository: gcr.io/knative-releases/knative.dev/serving/cmd/domain-mapping@sha256
+        tag: 4fab9aa8a2e0300ca25782b3e78213ee0fdb717bb55d2cc4f67a9a041775cbfe
+      webhook:
+        image:
+          repository: gcr.io/knative-releases/knative.dev/serving/cmd/domain-mapping-webhook@sha256
+          tag: c8a79d608d3e2f2b0d654043584c306e589954477dfd7923ac0b7585bd3980f6
+
+    queueproxy:
+      image:
+        repository: gcr.io/knative-releases/knative.dev/serving/cmd/queue@sha256
+        tag: 96977f1a6618e3aa6c6a4ee421da2d3693794f9bd18be3b057a802830e0b9180
+
+    webhook:
+      image:
+        repository: gcr.io/knative-releases/knative.dev/serving/cmd/webhook@sha256
+        tag: 7e76260703b2ef866f178e6de196fba5b6125fc34182352a8ad10d3e357e0e59
+      minReplicaCount: 1
+      maxReplicaCount: 1
 
 exporter:
   image: null

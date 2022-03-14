@@ -23,8 +23,8 @@ metadata:
     app.kubernetes.io/version: "1.2.0"
     serving.knative.dev/release: "v1.2.0"
 spec:
-  minReplicas: 1
-  maxReplicas: 5
+  minReplicas: {{ .Values.knative.eventing.webhook.minReplicaCount }}
+  maxReplicas: {{ .Values.knative.eventing.webhook.maxReplicaCount }}
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
@@ -112,7 +112,7 @@ spec:
         - name: webhook
           # This is the Go import path for the binary that is containerized
           # and substituted here.
-          image: gcr.io/knative-releases/knative.dev/serving/cmd/webhook@sha256:7e76260703b2ef866f178e6de196fba5b6125fc34182352a8ad10d3e357e0e59
+          image: {{ .Values.knative.eventing.webhook.image.repository }}:{{ .Values.knative.eventing.webhook.image.tag }}
           resources:
             requests:
               cpu: 100m

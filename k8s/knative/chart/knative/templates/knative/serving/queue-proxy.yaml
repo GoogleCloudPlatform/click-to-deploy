@@ -25,4 +25,4 @@ metadata:
 spec:
   # This is the Go import path for the binary that is containerized
   # and substituted here.
-  image: gcr.io/knative-releases/knative.dev/serving/cmd/queue@sha256:96977f1a6618e3aa6c6a4ee421da2d3693794f9bd18be3b057a802830e0b9180
+  image: {{ .Values.knative.eventing.queueproxy.image.repository }}:{{ .Values.knative.eventing.queueproxy.image.tag }}
