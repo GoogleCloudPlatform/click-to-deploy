@@ -66,8 +66,8 @@ RUN set -eux; \
 	tar -xz --strip-components=1 -f drupal.tar.gz; \
 	rm drupal.tar.gz
 
-ENV COMPOSER_VERSION 1.9.1
-ENV COMPOSER_SHA256 1f210b9037fcf82670d75892dfc44400f13fe9ada7af9e787f93e50e3b764111
+ENV COMPOSER_VERSION 2.5.5
+ENV COMPOSER_SHA256 81ef304a70c957d6f05a7659f03b00eb50df6155195f51118459b2e49c96c3f3
 
 # Install composer binary and install drush
 RUN set -eux; \
