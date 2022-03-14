@@ -137,7 +137,7 @@ metadata:
     app.kubernetes.io/component: "cainjector"
 
 spec:
-  replicas: 1
+  replicas: {{ .Values.certmanager.cainjector.replicaCount }}
   selector:
     matchLabels:
       app.kubernetes.io/name: cainjector

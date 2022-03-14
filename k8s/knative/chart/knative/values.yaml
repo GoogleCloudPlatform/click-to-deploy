@@ -20,7 +20,19 @@ certmanager:
       enabled: false
 
 istio:
-  image:
+  # Replica count for components
+  ingressgateway:
+    image:
+        repository: docker.io/istio/proxyv2
+        tag: 1.13.0
+    replicaCount: 1
+
+  istiod:
+    image:
+      repository: docker.io/istio/pilot
+      tag: 1.13.0
+    minReplicaCount: 1
+    maxReplicaCount: 1
 
 exporter:
   image: null

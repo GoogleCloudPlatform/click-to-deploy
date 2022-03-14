@@ -601,7 +601,7 @@ metadata:
     app.kubernetes.io/component: "controller"
 
 spec:
-  replicas: 1
+  replicas: {{ .Values.certmanager.controller.replicaCount }}
   selector:
     matchLabels:
       app.kubernetes.io/name: cert-manager

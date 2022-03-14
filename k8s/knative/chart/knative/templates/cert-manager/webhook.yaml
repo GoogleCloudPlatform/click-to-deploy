@@ -144,7 +144,7 @@ metadata:
     app.kubernetes.io/component: "webhook"
 
 spec:
-  replicas: 1
+  replicas: {{ .Values.certmanager.webhook.replicaCount }}
   selector:
     matchLabels:
       app.kubernetes.io/name: webhook
