@@ -1,20 +1,17 @@
+# Default values for cert-manager.
+image:
+  repository: null
+  tag: null
+
+# Replica count for components
 controller:
-  replicas: 1
-  serviceAccountName: null
-  image:
-    repository: null
-    tag: null
+  replicaCount: 1
 
 webhook:
-  replicas: 1
-  serviceAccountName: null
+  replicaCount: 1
 
 cainjector:
-  replicas: 1
-  serviceAccountName: null
-
-deployer:
-  image: null
+  replicaCount: 1
 
 metrics:
   image: null
