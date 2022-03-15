@@ -137,7 +137,7 @@ metadata:
     app.kubernetes.io/component: "cainjector"
 
 spec:
-  replicas: {{ .Values.certmanager.cainjector.replicaCount }}
+  replicas: {{ .Values.certmanager.cainjector.replicas }}
   selector:
     matchLabels:
       app.kubernetes.io/name: cainjector
@@ -159,7 +159,7 @@ spec:
         runAsUser: 1000
       containers:
         - name: cert-manager
-          image: "{{ .Values.certmanager.image.repository }}:{{ .Values.certmanager.image.tag }}"
+          image: "{{ .Values.certmanager.image.repo }}:{{ .Values.certmanager.image.tag }}"
           command: ["/app/cainjector"]
           imagePullPolicy: IfNotPresent
           args:

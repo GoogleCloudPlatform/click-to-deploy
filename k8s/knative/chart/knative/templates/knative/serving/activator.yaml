@@ -23,8 +23,8 @@ metadata:
     app.kubernetes.io/version: "1.2.0"
     serving.knative.dev/release: "v1.2.0"
 spec:
-  minReplicas: {{ .Values.knative.serving.activator.minReplicaCount }}
-  maxReplicas: {{ .Values.knative.serving.activator.maxReplicaCount }}
+  minReplicas: 1
+  maxReplicas: 5
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
@@ -104,7 +104,7 @@ spec:
         - name: activator
           # This is the Go import path for the binary that is containerized
           # and substituted here.
-          image: {{ .Values.knative.serving.activator.image.repository }}:{{ .Values.knative.serving.activator.image.tag }}
+          image: {{ .Values.knative.serving.activator.image.repo }}:{{ .Values.knative.serving.activator.image.tag }}
           # The numbers are based on performance test results from
           # https://github.com/knative/serving/issues/1625#issuecomment-511930023
           resources:

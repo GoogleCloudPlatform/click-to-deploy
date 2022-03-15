@@ -23,7 +23,7 @@ metadata:
     app.kubernetes.io/version: "1.2.0"
     serving.knative.dev/release: "v1.2.0"
 spec:
-  replicas: {{ .Values.knative.serving.autoscaler.replicaCount }}
+  replicas: {{ .Values.knative.serving.autoscaler.replicas }}
   selector:
     matchLabels:
       app: autoscaler
@@ -53,7 +53,7 @@ spec:
         - name: autoscaler
           # This is the Go import path for the binary that is containerized
           # and substituted here.
-          image: {{ .Values.knative.serving.autoscaler.image.repository }}:{{ .Values.knative.serving.autoscaler.image.tag }}
+          image: {{ .Values.knative.serving.autoscaler.image.repo }}:{{ .Values.knative.serving.autoscaler.image.tag }}
           resources:
             requests:
               cpu: 100m

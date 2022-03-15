@@ -27,12 +27,5 @@ spec:
           fieldPath: metadata.namespace
     - name: APP_INSTANCE_NAME
       value: {{ .Release.Name }}
-    - name: KAFKA_USER
-      value: kafka
-    - name: KAFKA_PASSWORD
-      valueFrom:
-        secretKeyRef:
-          name: {{ .Release.Name }}-kafka-secrets
-          key: kafka_password
 
   restartPolicy: Never

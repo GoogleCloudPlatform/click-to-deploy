@@ -198,7 +198,7 @@ spec:
         - name: controller
           # This is the Go import path for the binary that is containerized
           # and substituted here.
-          image: {{ .Values.knative.serving.netcertmanager.controller.image.repository }}:{{ .Values.knative.serving.netcertmanager.controller.image.tag }}
+          image: {{ .Values.knative.serving.netcertmanager.controller.image.repo }}:{{ .Values.knative.serving.netcertmanager.controller.image.tag }}
           resources:
             requests:
               cpu: 30m
@@ -303,7 +303,7 @@ spec:
         - name: webhook
           # This is the Go import path for the binary that is containerized
           # and substituted here.
-          image: {{ .Values.knative.serving.netcertmanager.webhook.image.repository }}:{{ .Values.knative.serving.netcertmanager.webhook.image.tag }}
+          image: {{ .Values.knative.serving.netcertmanager.webhook.image.repo }}:{{ .Values.knative.serving.netcertmanager.webhook.image.tag }}
           resources:
             requests:
               cpu: 20m

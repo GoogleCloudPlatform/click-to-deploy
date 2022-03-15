@@ -51,7 +51,7 @@ spec:
       containers:
         - name: eventing-controller
           terminationMessagePolicy: FallbackToLogsOnError
-          image: {{ .Values.knative.eventing.controller.image.repository }}:{{ .Values.knative.eventing.controller.image.tag }}
+          image: {{ .Values.knative.eventing.controller.image.repo }}:{{ .Values.knative.eventing.controller.image.tag }}
           resources:
             requests:
               cpu: 100m

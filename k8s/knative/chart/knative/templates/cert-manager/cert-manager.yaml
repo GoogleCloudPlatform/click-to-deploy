@@ -601,7 +601,7 @@ metadata:
     app.kubernetes.io/component: "controller"
 
 spec:
-  replicas: {{ .Values.certmanager.controller.replicaCount }}
+  replicas: {{ .Values.certmanager.controller.replicas }}
   selector:
     matchLabels:
       app.kubernetes.io/name: cert-manager
@@ -627,7 +627,7 @@ spec:
         runAsUser: 1000
       containers:
         - name: cert-manager
-          image: "{{ .Values.certmanager.image.repository }}:{{ .Values.certmanager.image.tag }}"
+          image: "{{ .Values.certmanager.image.repo }}:{{ .Values.certmanager.image.tag }}"
           command: ["/app/controller"]
           imagePullPolicy: IfNotPresent
           args:

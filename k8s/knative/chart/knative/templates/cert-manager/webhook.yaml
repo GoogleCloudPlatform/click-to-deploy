@@ -144,7 +144,7 @@ metadata:
     app.kubernetes.io/component: "webhook"
 
 spec:
-  replicas: {{ .Values.certmanager.webhook.replicaCount }}
+  replicas: {{ .Values.certmanager.webhook.replicas }}
   selector:
     matchLabels:
       app.kubernetes.io/name: webhook
@@ -167,7 +167,7 @@ spec:
         runAsUser: 1000
       containers:
         - name: cert-manager
-          image: "{{ .Values.certmanager.image.repository }}:{{ .Values.certmanager.image.tag }}"
+          image: "{{ .Values.certmanager.image.repo }}:{{ .Values.certmanager.image.tag }}"
           command: ["/app/webhook"]
           imagePullPolicy: IfNotPresent
           args:
