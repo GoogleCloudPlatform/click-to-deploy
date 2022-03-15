@@ -22,8 +22,8 @@ versions:
   from: marketplace.gcr.io/google/php7-apache2:7.3
   packages:
     composer:
-      gpg: 81ef304a70c957d6f05a7659f03b00eb50df6155195f51118459b2e49c96c3f3
-      version: 2.5.5
+      gpg: e1e1c580a237c739ecc1be57cf512e6b741faaa566439257d19ecd739ddfefaf
+      version: 2.2.8
     drupal:
       md5: db57fb613b8565fd15593a0e7af4139a
       version: 9.3.7
@@ -40,8 +40,8 @@ versions:
   from: marketplace.gcr.io/google/php7-apache2:7.3
   packages:
     composer:
-      gpg: 81ef304a70c957d6f05a7659f03b00eb50df6155195f51118459b2e49c96c3f3
-      version: 2.5.5
+      gpg: e1e1c580a237c739ecc1be57cf512e6b741faaa566439257d19ecd739ddfefaf
+      version: 2.2.8
     drupal:
       md5: 21b5324cbb7ad6b35a92925bf77fb37d
       version: 9.2.14
@@ -55,8 +55,8 @@ versions:
   from: marketplace.gcr.io/google/php7-apache2:7.3
   packages:
     composer:
-      gpg: 81ef304a70c957d6f05a7659f03b00eb50df6155195f51118459b2e49c96c3f3
-      version: 2.5.5
+      gpg: e1e1c580a237c739ecc1be57cf512e6b741faaa566439257d19ecd739ddfefaf
+      version: 2.2.8
     drupal:
       md5: 03c77251b7332bf7e194b9702b077dd2
       version: 8.9.20
