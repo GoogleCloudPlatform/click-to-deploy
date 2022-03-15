@@ -166,35 +166,6 @@ command to create a new namespace:
 kubectl create namespace "${NAMESPACE}"
 ```
 
-##### Create dedicated Service Accounts
-
-Define the environment variables:
-
-```shell
-export CONTROLLER_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-cert-manager-controller"
-export WEBHOOK_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-cert-manager-webhook"
-export CAINJECTOR_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-cert-manager-cainjector"
-```
-
-Expand the manifest to create Service Accounts:
-
-```shell
-cat resources/service-accounts.yaml \
-  | envsubst '${APP_INSTANCE_NAME} \
-              ${NAMESPACE} \
-              ${CONTROLLER_SERVICE_ACCOUNT} \
-              ${WEBHOOK_SERVICE_ACCOUNT} \
-              ${CAINJECTOR_SERVICE_ACCOUNT} \
-    > "${APP_INSTANCE_NAME}_sa_manifest.yaml"
-```
-
-Create the accounts on the same cluster as `kubectl`:
-
-```shell
-kubectl apply -f "${APP_INSTANCE_NAME}_sa_manifest.yaml" \
-    --namespace "${NAMESPACE}"
-```
-
 #### Expand the manifest template
 
 Use `helm template` to expand the template. We recommend that you save the
@@ -203,7 +174,7 @@ expanded manifest file for future updates to your app.
 ```shell
 helm template "${APP_INSTANCE_NAME}" chart/cert-manager \
   --namespace "${NAMESPACE}" \
-  --set image.repo="${IMAGE_CONTROLLER}" \
+  --set image.repository="${IMAGE_CONTROLLER}" \
   --set image.tag="${TAG}" \
   --set controller.replicas="${CONTROLLER_REPLICAS:-1}" \
   --set webhook.replicas="${WEBHOOK_REPLICAS:-1}" \
