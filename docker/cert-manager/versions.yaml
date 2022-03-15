@@ -19,6 +19,8 @@ versions:
 - dir: 1/debian10/1.7
   from: marketplace.gcr.io/google/debian10
   packages:
+    bazel:
+      version: 4.0.0
     cert-manager:
       version: 1.7.1
   repo: cert-manager1
