@@ -16,7 +16,6 @@
 
 include_recipe 'mysql'
 include_recipe 'nginx'
-include_recipe 'nginx::extras'
 include_recipe 'redis::standalone'
 
 include_recipe 'php74'

@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,8 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This recipe overwrite configuration of nginx to use php7.
+require 'spec_helper'
 
-template '/etc/nginx/sites-available/default' do
-  source 'default-php7.erb'
+describe 'Installed Ops-agent' do
+  describe package('google-cloud-ops-agent') do
+    it { should be_installed }
+  end
+
+  describe service('google-cloud-ops-agent.service') do
+    it { should be_enabled }
+    it { should be_running }
+  end
+
+  describe file('/etc/google-cloud-ops-agent/config.yaml') do
+    it { should exist }
+  end
 end
