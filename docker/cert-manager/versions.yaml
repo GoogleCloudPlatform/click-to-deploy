@@ -19,18 +19,17 @@ versions:
 - dir: 1/debian10/1.7
   from: marketplace.gcr.io/google/debian10
   packages:
-    cert-manager:
-      version: 1.7.0
     bazel:
-      version: 4.0.0  
+      version: 4.0.0
+    cert-manager:
+      version: 1.7.1
   repo: cert-manager1
   tags:
-  - 1.7.0-debian10
+  - 1.7.1-debian10
   - 1.7-debian10
   - 1-debian10
-  - 1.7.0
+  - 1.7.1
   - '1.7'
   - '1'
   - latest
   templateSubDir: cert-manager1
-
