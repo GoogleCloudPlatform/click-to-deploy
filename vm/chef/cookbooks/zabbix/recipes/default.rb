@@ -60,15 +60,11 @@ RedirectMatch ^/$ /zabbix/
   cat /usr/share/doc/zabbix-sql-scripts/postgresql/proxy.sql | sudo -u zabbix psql zabbix_proxy
 
   ### for PostgreSQL -- uses socket (localhost uses tcp)
-  sed -i '/^# DBHost=localhost/ a \
-\
-DBHost=localhost' /etc/zabbix/zabbix_server.conf
+  sed -i 's/^# DBHost=localhost/DBHost=localhost/' /etc/zabbix/zabbix_server.conf
 
   sed -i 's/# ListenIP=0.0.0.0/ListenIP=127.0.0.1/' /etc/zabbix/zabbix_server.conf
 
-  sed -i '/^# DBHost=localhost/ a \
-\
-DBHost=localhost' /etc/zabbix/zabbix_proxy.conf
+  sed -i 's/^# DBHost=localhost/DBHost=localhost/' /etc/zabbix/zabbix_proxy.conf
 
   sed -i 's/# ListenPort=10051/ListenPort=10055/' /etc/zabbix/zabbix_proxy.conf
 

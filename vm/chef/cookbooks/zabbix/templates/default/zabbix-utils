@@ -37,9 +37,9 @@ function wait_for_app() {
     (( retry=retry+1 ))
 
     if [[ "${http_code}" -ne 200 ]]; then
-      systemctl stop weblate
-      systemctl start weblate
-      systemctl restart nginx
+      systemctl stop zabbix-server
+      systemctl start zabbix-server
+      systemctl restart apache2
       sleep 30
     fi
   done
@@ -54,7 +54,6 @@ function wait_for_app() {
   set -e
 }
 
-#!/bin/bash
 #######################################
 # Awaits for ports.
 #######################################
@@ -79,5 +78,3 @@ function wait_for_server_port() {
  fi
   set -e
 }
-
-wait_for_server_port
