@@ -3,4 +3,3 @@
 FROM {{ .From }}
 
 ENV C2D_RELEASE {{ $knative.Version }}
-
