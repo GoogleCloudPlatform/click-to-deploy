@@ -83,6 +83,14 @@ template '/etc/zabbix/web/zabbix.conf.php' do
   mode '0644'
 end
 
+template '/opt/c2d/zabbix-utils' do
+  source 'zabbix-utils'
+  owner 'root'
+  group 'root'
+  mode 0755
+  action :create
+end
+
 service 'apache2' do
   action [ :enable, :restart ]
 end
