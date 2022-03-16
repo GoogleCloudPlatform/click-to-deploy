@@ -1,0 +1,4 @@
+FROM {{ .From }}
+
+ENV C2D_RELEASE {{ $kafka.Version }}
+
