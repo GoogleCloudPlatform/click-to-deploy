@@ -71,6 +71,9 @@ service zabbix-server restart
 echo 'Restaring zabbix proxy.'
 service zabbix-proxy restart
 
+# Await for ports to be ready
+wait_for_server_port
+
 # Await for app be ready
 wait_for_app
 

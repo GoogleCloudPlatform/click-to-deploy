@@ -54,25 +54,30 @@ function wait_for_app() {
   set -e
 }
 
+#!/bin/bash
 #######################################
 # Awaits for ports.
 #######################################
-function wait_for_server_port()
-{
-    echo "Waiting for server port..."
-    attempts=0
-    max_attempts=5
-    while ( ss -tunl | grep -E 127.0.0.1:10051 < /dev/null || ss -tunl | grep -E 0.0.0.0:10055 < /dev/null )  && [[ $attempts < $max_attempts ]] ; do
-        attempts=$((attempts+1))
-        sleep 1;
-        echo "waiting... (${attempts}/${max_attempts})" 
-    done
-    
-  if [[ "${attempts}" -gt "${max_attempts}" ]]; then
-    echo "Max attempts exceeded."
+function wait_for_server_port() {
+ local attempts=1
+ local max_attempts=5
+ set +e
+
+ echo "Waiting for server port..."
+ 
+ while [[ ! $(ss -tunl | grep -E 127.0.0.1:10051 && ss -tunl | grep -E 0.0.0.0:10055)  && $attempts -le $max_attempts ]] ; do
+ echo "Retry: $attempts"
+ attempts=$(( $attempts + 1 ))
+ sleep 1
+ done
+
+ if [[ $attempts -gt $max_attempts ]]; then
+    echo "Max retries exceeded."
     exit 1
   else
-    echo "App is ready."
-  fi
-
+    echo "Ports are opened"
+ fi
+  set -e
 }
+
+wait_for_server_port
