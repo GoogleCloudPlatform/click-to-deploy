@@ -7,7 +7,7 @@ CHART_NAME := knative
 APP_ID ?= $(CHART_NAME)
 WAIT_FOR_READY_TIMEOUT := 600
 
-TRACK ?= 1.3.0
+TRACK ?= v1.3.0
 ISTIO_TRACK ?= 1.13.0
 CM_TRACK ?= 1.6
 
@@ -17,9 +17,9 @@ METRICS_EXPORTER_TAG ?= v0.5.1
 VERIFY_WAIT_TIMEOUT = 1800
 
 MARKETPLACE_SOURCE_REGISTRY ?= marketplace.gcr.io/google
-ISTIO_SOURCE_REGISTRY ?= gcr.io/knative-releases/knative.dev
+KNATIVE_SOURCE_REGISTRY ?= gcr.io/knative-releases/knative.dev
 
-IMAGE_KNATIVE ?= $(ISTIO_SOURCE_REGISTRY)/serving/cmd/activator:v$(TRACK)
+IMAGE_KNATIVE ?= $(MARKETPLACE_SOURCE_REGISTRY)/cert-manager1:$(CM_TRACK)
 
 # CERT MANAGER
 IMAGE_CERTMANAGER ?= $(MARKETPLACE_SOURCE_REGISTRY)/cert-manager1:$(CM_TRACK)
@@ -29,36 +29,35 @@ IMAGE_ISTIO_INGRESSGATEWAY ?= docker.io/istio/proxyv2:$(ISTIO_TRACK)
 IMAGE_ISTIO_ISTIOD ?= docker.io/istio/pilot:$(ISTIO_TRACK)
 
 # KNATIVE SERVING
-IMAGE_KNATIVE_SERVING_ACTIVATOR ?= $(ISTIO_SOURCE_REGISTRY)/serving/cmd/activator:v$(TRACK)
-IMAGE_KNATIVE_SERVING_AUTOSCALER ?= $(ISTIO_SOURCE_REGISTRY)/serving/cmd/autoscaler:v$(TRACK)
-IMAGE_KNATIVE_SERVING_CONTROLLER ?= $(ISTIO_SOURCE_REGISTRY)/serving/cmd/controller:v$(TRACK)
-IMAGE_KNATIVE_SERVING_DOMAINMAPPING ?= $(ISTIO_SOURCE_REGISTRY)/serving/cmd/domain-mapping:v$(TRACK)
-IMAGE_KNATIVE_SERVING_DOMAINMAPPING_WEBHOOK ?= $(ISTIO_SOURCE_REGISTRY)//serving/cmd/domain-mapping-webhook:v$(TRACK)
-IMAGE_KNATIVE_SERVING_QUEUEPROXY ?= $(ISTIO_SOURCE_REGISTRY)/serving/cmd/queue:v$(TRACK)
-IMAGE_KNATIVE_SERVING_WEBHOOK ?= $(ISTIO_SOURCE_REGISTRY)/serving/cmd/webhook:v$(TRACK)
-IMAGE_KNATIVE_SERVING_NETCERMANAGER_CONTROLLER ?= $(ISTIO_SOURCE_REGISTRY)/net-certmanager/cmd/controller:v$(TRACK)
-IMAGE_KNATIVE_SERVING_NETCERMANAGER_WEBHOOK ?= $(ISTIO_SOURCE_REGISTRY)/net-certmanager/cmd/webhook:v$(TRACK)
-IMAGE_KNATIVE_SERVING_NETISTIO_CONTROLLER ?= $(ISTIO_SOURCE_REGISTRY)/net-istio/cmd/controller:v$(TRACK)
-IMAGE_KNATIVE_SERVING_NETISTIO_WEBHOOK ?= $(ISTIO_SOURCE_REGISTRY)/net-istio/cmd/webhook:v$(TRACK)
+IMAGE_KNATIVE_SERVING_ACTIVATOR ?= $(KNATIVE_SOURCE_REGISTRY)/serving/cmd/activator:$(TRACK)
+IMAGE_KNATIVE_SERVING_AUTOSCALER ?= $(KNATIVE_SOURCE_REGISTRY)/serving/cmd/autoscaler:$(TRACK)
+IMAGE_KNATIVE_SERVING_CONTROLLER ?= $(KNATIVE_SOURCE_REGISTRY)/serving/cmd/controller:$(TRACK)
+IMAGE_KNATIVE_SERVING_DOMAINMAPPING ?= $(KNATIVE_SOURCE_REGISTRY)/serving/cmd/domain-mapping:$(TRACK)
+IMAGE_KNATIVE_SERVING_DOMAINMAPPING_WEBHOOK ?= $(KNATIVE_SOURCE_REGISTRY)//serving/cmd/domain-mapping-webhook:$(TRACK)
+IMAGE_KNATIVE_SERVING_QUEUEPROXY ?= $(KNATIVE_SOURCE_REGISTRY)/serving/cmd/queue:$(TRACK)
+IMAGE_KNATIVE_SERVING_WEBHOOK ?= $(KNATIVE_SOURCE_REGISTRY)/serving/cmd/webhook:$(TRACK)
+IMAGE_KNATIVE_SERVING_NETCERMANAGER_CONTROLLER ?= $(KNATIVE_SOURCE_REGISTRY)/net-certmanager/cmd/controller:$(TRACK)
+IMAGE_KNATIVE_SERVING_NETCERMANAGER_WEBHOOK ?= $(KNATIVE_SOURCE_REGISTRY)/net-certmanager/cmd/webhook:$(TRACK)
+IMAGE_KNATIVE_SERVING_NETISTIO_CONTROLLER ?= $(KNATIVE_SOURCE_REGISTRY)/net-istio/cmd/controller:$(TRACK)
+IMAGE_KNATIVE_SERVING_NETISTIO_WEBHOOK ?= $(KNATIVE_SOURCE_REGISTRY)/net-istio/cmd/webhook:$(TRACK)
 
 # KNATIVE EVENTING
-IMAGE_KNATIVE_EVENTING_CONTROLLER ?= $(ISTIO_SOURCE_REGISTRY)/eventing/cmd/controller:v$(TRACK)
-IMAGE_KNATIVE_EVENTING_MTPING ?= $(ISTIO_SOURCE_REGISTRY)/eventing/cmd/mtping:v$(TRACK)
-IMAGE_KNATIVE_EVENTING_WEBHOOK ?= $(ISTIO_SOURCE_REGISTRY)/eventing/cmd/webhook:v$(TRACK)
+IMAGE_KNATIVE_EVENTING_CONTROLLER ?= $(KNATIVE_SOURCE_REGISTRY)/eventing/cmd/controller:$(TRACK)
+IMAGE_KNATIVE_EVENTING_MTPING ?= $(KNATIVE_SOURCE_REGISTRY)/eventing/cmd/mtping:$(TRACK)
+IMAGE_KNATIVE_EVENTING_WEBHOOK ?= $(KNATIVE_SOURCE_REGISTRY)/eventing/cmd/webhook:$(TRACK)
 
 #IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
-
 
 # Main image
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_KNATIVE))
 
 # List of images used in application
-ADDITIONAL_IMAGES := certmanager istio-ingressgateway istio-istiod knative-serving-activator knative-serving-autoscaler knative-serving-controller knative-serving-domainmapping knative-serving-domainmapping-webhook knative-serving-queueproxy knative-serving-webhook knative-serving-netcertmanager-controller knative-serving-netcertmanager-webhook knative-serving-netistio-controller knative-serving-netistio-webhook knative-eventing-controller knative-eventing-mtping knative-eventing-webhook
+ADDITIONAL_IMAGES := certmanager ingressgateway istiod knative-serving-activator knative-serving-autoscaler knative-serving-controller knative-serving-domainmapping knative-serving-domainmapping-webhook knative-serving-queueproxy knative-serving-webhook knative-serving-netcertmanager-controller knative-serving-netcertmanager-webhook knative-serving-netistio-controller knative-serving-netistio-webhook knative-eventing-controller knative-eventing-mtping knative-eventing-webhook
 
 # Additional images variable names should correspond with ADDITIONAL_IMAGES list
 image-certmanager := $(call get_sha256,$(IMAGE_CERTMANAGER))
-image-istio-ingressgateway := $(call get_sha256,$(IMAGE_ISTIO_INGRESSGATEWAY))
-image-istio-istiod := $(call get_sha256,$(IMAGE_ISTIO_ISTIOD))
+image-ingressgateway := $(call get_sha256,$(IMAGE_ISTIO_INGRESSGATEWAY))
+image-istiod := $(call get_sha256,$(IMAGE_ISTIO_ISTIOD))
 image-knative-serving-activator := $(call get_sha256,$(IMAGE_KNATIVE_SERVING_ACTIVATOR))
 image-knative-serving-autoscaler := $(call get_sha256,$(IMAGE_KNATIVE_SERVING_AUTOSCALER))
 image-knative-serving-controller := $(call get_sha256,$(IMAGE_KNATIVE_SERVING_CONTROLLER))
