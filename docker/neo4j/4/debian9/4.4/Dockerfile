@@ -13,8 +13,8 @@
 
 FROM marketplace.gcr.io/google/debian9
 
-ENV NEO4J_VERSION 4.4.3
-ENV NEO4J_SHA256 87a01906c178977c082579def934afde0f806695e593fd119f237bff01cfa738
+ENV NEO4J_VERSION 4.4.4
+ENV NEO4J_SHA256 46ea100f162c86284c352fa56606565d6d87ffe5fc9369945914d08728eff2be
 ENV NEO4J_HOME  /var/lib/neo4j
 ENV NEO4J_EDITION community
 ENV NEO4J_TARBALL neo4j.tar.gz
@@ -23,11 +23,11 @@ ENV TINI_VERSION v0.19.0
 ENV TINI_SHA256 93dcc18adc78c65a028a84799ecf8ad40c936fdfc5f2a57b1acda5a8117fa82c
 
 # Required for neo4jlabs-plugins.json
-ENV DOCKER_NEO4J_VERSION 4.4.3
+ENV DOCKER_NEO4J_VERSION 4.4.4
 ENV DOCKER_NEO4J_TARBALL docker-neo4j.tar.gz
-ENV DOCKER_NEO4J_SHA256  7a0eb6f7620374b67da70c7ec1c848244721549bb783f864957f598bdff0ac73
+ENV DOCKER_NEO4J_SHA256  f430bf2650ec840b18122cfb827642eee582294f0c561db9032d46c8113762d0
 
-ENV C2D_RELEASE 4.4.3
+ENV C2D_RELEASE 4.4.4
 
 # Workaround for CVE-2021-44228
 # https://www.docker.com/blog/apache-log4j-2-cve-2021-44228/
@@ -47,7 +47,7 @@ RUN apt update \
     && curl -o ${DOCKER_NEO4J_TARBALL} --fail --silent --show-error --location --remote-name https://github.com/neo4j/docker-neo4j/archive/refs/tags/neo4j-${DOCKER_NEO4J_VERSION}.tar.gz \
     && echo "${DOCKER_NEO4J_SHA256}  ${DOCKER_NEO4J_TARBALL}" | sha256sum -c --strict --quiet \
     && tar --extract --file ${DOCKER_NEO4J_TARBALL} --directory /tmp \
-    && mv /tmp/docker-neo4j*/neo4jlabs-plugins.json /neo4jlabs-plugins.json \
+    && mv /tmp/docker-neo4j*/docker-image-src/common/neo4jlabs-plugins.json /neo4jlabs-plugins.json \
     && rm ${DOCKER_NEO4J_TARBALL} \
     && rm ${NEO4J_TARBALL} \
     && mv "${NEO4J_HOME}"/data /data \

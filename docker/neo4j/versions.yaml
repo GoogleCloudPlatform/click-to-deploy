@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,20 +20,20 @@ versions:
   from: marketplace.gcr.io/google/debian9
   packages:
     dockerneo4j:
-      sha256: 7a0eb6f7620374b67da70c7ec1c848244721549bb783f864957f598bdff0ac73
-      version: 4.4.3
+      sha256: f430bf2650ec840b18122cfb827642eee582294f0c561db9032d46c8113762d0
+      version: 4.4.4
     neo4j:
-      sha256: 87a01906c178977c082579def934afde0f806695e593fd119f237bff01cfa738
-      version: 4.4.3
+      sha256: 46ea100f162c86284c352fa56606565d6d87ffe5fc9369945914d08728eff2be
+      version: 4.4.4
     tini:
       sha256: 93dcc18adc78c65a028a84799ecf8ad40c936fdfc5f2a57b1acda5a8117fa82c
       version: 0.19.0
   repo: neo4j4
   tags:
-  - 4.4.3-debian9
+  - 4.4.4-debian9
   - 4.4-debian9
   - 4-debian9
-  - 4.4.3
+  - 4.4.4
   - '4.4'
   - '4'
   - latest
