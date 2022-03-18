@@ -18,12 +18,14 @@ include_recipe 'apache2'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 include_recipe 'php74'
-include_recipe 'php74::module_dom'
 include_recipe 'php74::module_gd'
 include_recipe 'php74::module_libapache2'
 include_recipe 'php74::module_mbstring'
 include_recipe 'php74::module_mysql'
-include_recipe 'mysql'
+include_recipe 'php74::module_cli'
+include_recipe 'php74::module_curl'
+include_recipe 'php74::module_xml'
+include_recipe 'mysql::version-8.0-standalone'
 
 remote_file 'download_matomo' do
   path '/tmp/matomo.tar.gz'
@@ -50,10 +52,9 @@ end
 bash 'prepare_database_configuration' do
   user 'root'
   code <<-EOH
-    mysql -u root -e "CREATE USER '$user'@'localhost' IDENTIFIED BY '$pass'"
-    mysql -u root -e "CREATE DATABASE $dbname DEFAULT CHARACTER SET 'utf8'"
-    mysql -u root -e "GRANT ALL PRIVILEGES ON $dbname.* TO '$user'@'localhost'"
-    mysql -u root -e "FLUSH PRIVILEGES"
+    mysql -u root -e "CREATE USER '$user'@'localhost' IDENTIFIED BY '$pass';"
+    mysql -u root -e "CREATE DATABASE $dbname CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+    mysql -u root -e "GRANT ALL ON $dbname.* TO '$user'@'localhost';"
 EOH
   flags '-eu'
   environment({
