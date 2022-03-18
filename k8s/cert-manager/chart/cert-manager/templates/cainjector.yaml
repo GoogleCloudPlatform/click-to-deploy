@@ -64,7 +64,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: cert-manager-cainjector:leaderelection
-  namespace: kube-system
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: cainjector
     app.kubernetes.io/name: cainjector
@@ -99,7 +99,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: cert-manager-cainjector:leaderelection
-  namespace: kube-system
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: cainjector
     app.kubernetes.io/name: cainjector
@@ -113,7 +113,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: cert-manager-cainjector
-    namespace: default
+    namespace: "{{ .Release.Namespace }}" 
 ---
 apiVersion: apps/v1
 kind: Deployment

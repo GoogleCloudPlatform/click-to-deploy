@@ -57,7 +57,7 @@ subjects:
 - apiGroup: ""
   kind: ServiceAccount
   name: cert-manager-webhook
-  namespace: default
+  namespace: "{{ .Release.Namespace }}"
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -100,7 +100,7 @@ subjects:
 - apiGroup: ""
   kind: ServiceAccount
   name: cert-manager-webhook
-  namespace: default
+  namespace: "{{ .Release.Namespace }}"
 ---
 apiVersion: v1
 kind: Service
