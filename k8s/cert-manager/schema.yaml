@@ -31,6 +31,29 @@ x-google-marketplace:
           minimumNodeCount: 1
     istio:
       type: UNSUPPORTED
+  deployerServiceAccount:
+    roles:
+      - type: ClusterRole
+        rulesType: CUSTOM
+        rules:
+          - apiGroups:
+            - 'apiextensions.k8s.io'
+            - 'rbac.authorization.k8s.io'
+            resources:
+            - 'customresourcedefinitions'
+            - 'clusterroles'
+            - 'clusterrolebindings'
+            verbs:
+            - '*'
+          - apiGroups:
+            - ''
+            resources:
+            - 'namespaces'
+            verbs:
+            - 'create'
+            - 'list'
+            - 'update'
+            - 'patch'
 properties:
   name:
     type: string
