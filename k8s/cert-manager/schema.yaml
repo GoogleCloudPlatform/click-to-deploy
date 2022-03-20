@@ -32,6 +32,8 @@ x-google-marketplace:
     istio:
       type: UNSUPPORTED
   deployerServiceAccount:
+    description: >
+      Creates app resources, including CRDs and ClusterRoleBindings.
     roles:
       - type: ClusterRole
         rulesType: CUSTOM
