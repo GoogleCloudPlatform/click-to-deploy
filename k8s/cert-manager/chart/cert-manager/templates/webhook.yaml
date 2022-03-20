@@ -261,7 +261,7 @@ webhooks:
       - key: "name"
         operator: "NotIn"
         values:
-        - default
+        - {{ .Release.Namespace }}
     rules:
       - apiGroups:
           - "cert-manager.io"
