@@ -49,9 +49,7 @@ x-google-marketplace:
             resources: 
             - 'customresourcedefinitions'
             verbs: 
-            - 'get'
-            - 'list'
-            - 'create'
+            - '*'
           - apiGroups:
             - 'admissionregistration.k8s.io'
             resources:
