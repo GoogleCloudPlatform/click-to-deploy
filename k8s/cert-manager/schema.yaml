@@ -33,16 +33,17 @@ x-google-marketplace:
       type: UNSUPPORTED
   deployerServiceAccount:
     description: >
-      Creates app resources, including CRDs and ClusterRoleBindings.
+      Creates app resources, including Webhooks and ClusterRoleBindings.
     roles:
       - type: ClusterRole
         rulesType: CUSTOM
         rules:
           - apiGroups:
-            - 'apiextensions.k8s.io'
+            - 'admissionregistration.k8s.io/v1'
             - 'rbac.authorization.k8s.io'
             resources:
-            - 'customresourcedefinitions'
+            - 'mutatingwebhookconfigurations'
+            - 'validatingwebhookconfigurations'
             - 'clusterroles'
             - 'clusterrolebindings'
             verbs:
