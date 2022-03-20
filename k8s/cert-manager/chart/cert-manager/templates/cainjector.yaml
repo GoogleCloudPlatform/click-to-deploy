@@ -154,7 +154,7 @@ spec:
           imagePullPolicy: IfNotPresent
           args:
           - --v=2
-          - --leader-election-namespace=kube-system
+          - --leader-election-namespace={{ .Release.Namespace }}
           env:
           - name: POD_NAMESPACE
             valueFrom:

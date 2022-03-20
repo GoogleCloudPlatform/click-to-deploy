@@ -590,7 +590,7 @@ spec:
           args:
           - --v=2
           - --cluster-resource-namespace=$(POD_NAMESPACE)
-          - --leader-election-namespace=kube-system
+          - --leader-election-namespace={{ .Release.Namespace }}
           ports:
           - containerPort: 9402
             name: http-metrics
