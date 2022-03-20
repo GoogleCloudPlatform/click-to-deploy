@@ -39,13 +39,17 @@ x-google-marketplace:
         rulesType: CUSTOM
         rules:
           - apiGroups:
-            - 'admissionregistration.k8s.io/v1'
             - 'rbac.authorization.k8s.io'
+            resources:
+            - 'clusterroles'
+            - 'clusterrolebindings'
+            verbs:
+            - '*'
+          - apiGroups:
+            - 'admissionregistration.k8s.io'
             resources:
             - 'mutatingwebhookconfigurations'
             - 'validatingwebhookconfigurations'
-            - 'clusterroles'
-            - 'clusterrolebindings'
             verbs:
             - '*'
           - apiGroups:
