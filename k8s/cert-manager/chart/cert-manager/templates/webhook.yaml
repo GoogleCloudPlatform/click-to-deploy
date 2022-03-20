@@ -167,7 +167,7 @@ spec:
           - --secure-port=10250
           - --dynamic-serving-ca-secret-namespace=$(POD_NAMESPACE)
           - --dynamic-serving-ca-secret-name=cert-manager-webhook-ca
-          - --dynamic-serving-dns-names=cert-manager-webhook,cert-manager-webhook.default,cert-manager-webhook.default.svc
+          - --dynamic-serving-dns-names=cert-manager-webhook,cert-manager-webhook.{{ .Release.Namespace }},cert-manager-webhook.{{ .Release.Namespace }}.svc
           ports:
           - name: https
             protocol: TCP
@@ -209,7 +209,7 @@ metadata:
     app.kubernetes.io/component: "webhook"
 
   annotations:
-    cert-manager.io/inject-ca-from-secret: "default/cert-manager-webhook-ca"
+    cert-manager.io/inject-ca-from-secret: "{{ .Release.Namespace }}/cert-manager-webhook-ca"
 webhooks:
   - name: webhook.cert-manager.io
     rules:
@@ -249,7 +249,7 @@ metadata:
     app.kubernetes.io/component: "webhook"
 
   annotations:
-    cert-manager.io/inject-ca-from-secret: "default/cert-manager-webhook-ca"
+    cert-manager.io/inject-ca-from-secret: "{{ .Release.Namespace }}/cert-manager-webhook-ca"
 webhooks:
   - name: webhook.cert-manager.io
     namespaceSelector:
