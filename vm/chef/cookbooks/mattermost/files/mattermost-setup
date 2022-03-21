@@ -23,8 +23,8 @@ readonly default_db_user="mattermost"
 readonly default_domain="localhost"
 
 # Get settings from metadata
-readonly metadata_db_pwd="${metadata_db_pwd:-$(get_attribute_value "mattermost-database-pwd")}"
-readonly metadata_sitename="${metadata_sitename:-$(get_attribute_value "mattermost-sitename")}"
+readonly metadata_db_pwd="$(get_attribute_value "mattermost-database-pwd")"
+readonly metadata_sitename="$(get_attribute_value "mattermost-sitename")"
 
 # Create user in MySQL database
 create_db_user \
