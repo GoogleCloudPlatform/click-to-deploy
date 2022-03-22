@@ -14,4 +14,4 @@
 
 default['kafka']['version'] = '3.1.0'
 default['scala']['version'] = '2.13'
-default['kafka']['packages'] = ['zookeeperd']
+default['kafka']['packages'] = ['zookeeperd', 'kafkacat']
