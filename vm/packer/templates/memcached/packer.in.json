@@ -2,6 +2,6 @@
   "license": "c2d-memcached",
   "source_image_family": "debian-11",
   "chef": {
-    "run_list": [ "memcached", "google-cloud-ops-agent" ]
+    "run_list": [ "c2d-config", "memcached", "google-cloud-ops-agent" ]
   }
 }
