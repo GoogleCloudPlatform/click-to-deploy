@@ -64,36 +64,37 @@ EOH
   })
 end
 
-# Preapare Matomo's installation script
-directory '/tmp/matomo' do
-  action :create
-end
-
-# This script is borrowed from: https://github.com/nebev/piwik-cli-setup (MIT)
-template 'prepare_piwik_installation_script' do
-  path '/tmp/matomo/install.php'
-  source 'install-piwik.php.erb'
+# This DB dump file is based
+template 'copy_dump_file' do
+  path '/var/www/html/config/matomo.sql'
+  source 'matomo.sql.erb'
   owner 'root'
   group 'root'
   mode '0640'
+end
+
+bash 'run_sql_script' do
+  user 'root'
+  code <<-EOH
+    cd /var/www/html/config
+    mysql -u root < "matomo.sql"
+EOH
+  flags '-eu'
 end
 
 # This configuration file is based
-# on: https://github.com/nebev/piwik-cli-setup (MIT)
-template 'prepare_piwik_installation_script_config' do
-  path '/tmp/matomo/install.json'
-  source 'install-piwik.json.erb'
+template 'copy_config_file' do
+  path '/var/www/html/config/config.ini.php'
+  source 'config.ini.php.erb'
   owner 'root'
   group 'root'
   mode '0640'
 end
 
-# It uses open source Piwik confiuration script available
-# at: https://github.com/nebev/piwik-cli-setup
+# Preparing Piwik
 bash 'configure_piwik_for_first_use' do
   user 'root'
   code <<-EOH
-    php /tmp/matomo/install.php
     rm -Rf /var/www/html/plugins/Morpheus/icons/submodules
     chown -R www-data:www-data /var/www/html
     chmod -R 0755 /var/www/html/tmp/assets
