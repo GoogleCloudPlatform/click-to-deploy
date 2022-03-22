@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['kubernetes']['version'] = '1.22.3-00'
+default['kubernetes']['version'] = '1.22.4-00'
 default['kubernetes']['packages'] = ['kubelet', 'kubeadm', 'kubectl']
 default['kubernetes']['dependencies']['packages'] = ['ufw', 'containerd', 'apt-transport-https', 'ca-certificates', 'curl']
 

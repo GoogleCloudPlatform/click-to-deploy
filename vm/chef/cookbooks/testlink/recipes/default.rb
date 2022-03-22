@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'nginx'
+include_recipe 'nginx::embedded'
 include_recipe 'mysql'
 include_recipe 'php74'
 include_recipe 'php74::module_bcmath'
@@ -74,7 +74,7 @@ bash 'Prepare permissions' do
 EOH
 end
 
-cookbook_file '/etc/nginx/sites-available/testlink.conf' do
+cookbook_file '/etc/nginx/sites-enabled/testlink.conf' do
   source 'nginx-testlink.conf'
   owner 'root'
   group 'root'
