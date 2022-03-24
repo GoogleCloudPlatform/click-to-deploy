@@ -12,11 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name 'orocrm'
-depends 'apache2'
-depends 'mysql'
-depends 'php81'
-depends 'git'
-depends 'composer'
-depends 'nodejs'
+name 'php81'
 supports 'debian'
