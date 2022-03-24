@@ -14,98 +14,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source /opt/c2d/c2d-utils
+source /opt/c2d/kafka-utils
 
+readonly kafka_user="$(get_attribute_value "kafka-user")"
+readonly kafka_password="$(get_attribute_value "kafka-password")"
 readonly kafka_nodes="$(get_attribute_value "kafka-nodes")"
 readonly kafka_nodes_count="$(echo "${kafka_nodes}" | wc -w)"
-readonly kafka_config="/opt/kafka/config/server.properties"
-readonly zookeeper_config="/opt/kafka/config/zookeeper.properties"
-readonly kafka_auth_config="/opt/kafka/config/kafka_server_jaas.conf"
-
-readonly metadata_kafka_user="$(get_attribute_value "kafka-user")"
-readonly metadata_kafka_password="$(get_attribute_value "kafka-password")"
-
-readonly default_kafka_user="kafka"
-readonly default_kafka_password="kafka"
 
 # Stop Kafka
 systemctl stop kafka
 
-# Configure Kafka in Cluster mode
+# # Configure Kafka in Cluster mode
 if [[ "${kafka_nodes_count}" -gt 1 ]]; then
-  echo "Starting cluster-mode configuration..."
-
-  # Get Broker Id
-  declare current_node_id="$(hostname -a | awk -F '-' '{ print $NF }')"
-  declare broker_id="$((current_node_id + 1))"
-
-  # Get Zookeeper Master
-  declare zookeeper_master="$(echo "${kafka_nodes}" | cut -f 1 -d ' ')"
-  declare zookeeper_master_ip="$(getent hosts "${zookeeper_master}" | awk '{ print $1 }')"
-  declare zookeeper_master_port="2181"
-  declare zookeeper_connection="${zookeeper_master_ip}:${zookeeper_master_port}"
-
-  # Configure Zookeeper
-  mkdir -p /var/data/kafka
-
-  # Configure Zookeeper Set data dir
-  sed -i 's@dataDir=/tmp/zookeeper@dataDir=/var/data/kafka@g' "${zookeeper_config}"
-
-  # Remove existing Kafka settings
-  sed -i '/broker.id=0/d' "${kafka_config}"
-  sed -i '/log.dirs/d' "${kafka_config}"
-  sed -i '/zookeeper.connect=/d' "${kafka_config}"
-
-  # Create new kafka configurations
-  cat >> "${kafka_config}" << EOF
-######## C2D Custom Configuration ########
-broker.id=${broker_id}
-broker.rack=RACK1
-logs.dirs=/var/data/kafka
-zookeeper.connect=${zookeeper_connection}
-EOF
-
-  echo "Configuration finished."
-fi
-
-# Create auth files
-
-# Set the initial user and password.
-# If no metadata for password is provided, use a default one
-# and requires user to change it, otherwise, use the provided one.
-if [[ ! -z "${metadata_kafka_user}" && ! -z "${metadata_kafka_password}" ]]; then
-  cat >> "${kafka_auth_config}" << EOF
-  KafkaServer {
-    org.apache.kafka.common.security.plain.PlainLoginModule required
-    username=${metadata_kafka_user}
-    password=${metadata_kafka_password}
-    user_${metadata_kafka_user}=${metadata_kafka_password};
-  };
-
-EOF
+  setup_cluster_config "${kafka_nodes}" "${kafka_user}" "${kafka_password}"
 else
-  cat >> "${kafka_auth_config}" << EOF
-  KafkaServer {
-    org.apache.kafka.common.security.plain.PlainLoginModule required
-    username=${default_kafka_user}
-    password=${default_kafka_password}
-    user_${default_kafka_user}=${default_kafka_password};
-  };
-EOF
+  setup_kafka_auth "standalone" "${kafka_user}" "${kafka_password}"
 fi
 
-# Add auth to kafka
-cat >> "${kafka_config}" << EOF
-######## C2D Custom Configuration ########
-security.inter.broker.protocol=SASL_PLAINTEXT
-sasl.mechanism.inter.broker.protocol=PLAIN
-sasl.enabled.mechanisms=PLAIN
-
-authorizer.class.name=kafka.security.authorizer.AclAuthorizer
-allow.everyone.if.no.acl.found=true
-listeners=SASL_PLAINTEXT://0.0.0.0:9092
-advertised.listeners=SASL_PLAINTEXT://:9092
-EOF
+echo "Setup finished."
 
 # Start Kafka
 systemctl start kafka
