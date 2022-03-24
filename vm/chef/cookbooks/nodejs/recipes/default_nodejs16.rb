@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name 'orocrm'
-depends 'apache2'
-depends 'mysql'
-depends 'php81'
-depends 'git'
-depends 'composer'
-depends 'nodejs'
-supports 'debian'
+execute 'download packages' do
+  command 'curl -sL https://deb.nodesource.com/setup_16.x | bash -'
+end
+
+package 'install packages' do
+  package_name node['nodejs']['packages']
+  action :install
+end

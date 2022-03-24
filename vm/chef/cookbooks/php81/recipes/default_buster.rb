@@ -12,11 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name 'orocrm'
-depends 'apache2'
-depends 'mysql'
-depends 'php81'
-depends 'git'
-depends 'composer'
-depends 'nodejs'
-supports 'debian'
+apt_repository 'php' do
+  uri 'https://packages.sury.org/php/'
+  distribution 'buster'
+  key 'https://packages.sury.org/php/apt.gpg'
+  components ['main']
+end
+
+apt_update do
+  action :update
+end
+
+package 'install packages' do
+  package_name node['php81']['packages']
+  action :install
+  retries 5
+  retry_delay 20
+end
+
+node['php81']['modules'].each do |pkg|
+  include_recipe "php81::module_#{pkg}"
+end
