@@ -77,9 +77,13 @@ bash 'run_sql_script' do
   user 'root'
   code <<-EOH
     cd /var/www/html/config
+    sed -i "s|{{ MATOMODATABASE }}|$dbname|g" matomo.sql
     mysql -u root < "matomo.sql"
 EOH
   flags '-eu'
+  environment({
+    'dbname' => node['matomo']['db']['name'],
+  })
 end
 
 # This configuration file is based
@@ -96,12 +100,19 @@ bash 'configure_piwik_for_first_use' do
   user 'root'
   code <<-EOH
     rm -Rf /var/www/html/plugins/Morpheus/icons/submodules
-    chown -R www-data:www-data /var/www/html
+    mkdir /var/www/html/tmp/assets
     chmod -R 0755 /var/www/html/tmp/assets
+    mkdir /var/www/html/tmp/cache
     chmod -R 0755 /var/www/html/tmp/cache
+    mkdir /var/www/html/tmp/logs
     chmod -R 0755 /var/www/html/tmp/logs
+    mkdir /var/www/html/tmp/tcpdf
     chmod -R 0755 /var/www/html/tmp/tcpdf
+    mkdir /var/www/html/tmp/templates_c
     chmod -R 0755 /var/www/html/tmp/templates_c
+    mkdir /var/www/html/tmp/cache/tracker/
+    chmod -R 0755 /var/www/html/tmp/cache/tracker/
+    chown -R www-data:www-data /var/www/html
 EOH
 end
 

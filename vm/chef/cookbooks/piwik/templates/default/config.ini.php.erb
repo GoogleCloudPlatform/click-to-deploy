@@ -2,8 +2,8 @@
 ; file automatically generated or modified by Matomo; you can manually override the default values in global.ini.php by redefining them in this file.
 [database]
 host = "127.0.0.1"
-username = "matomouser"
-password = "adasd12sas"
-dbname = "matomo"
+username = "<%= node['matomo']['db']['username'] %>"
+password = "<%= node['matomo']['db']['password'] %>"
+dbname = "<%= node['matomo']['db']['name'] %>"
 tables_prefix = "matomo_"
 charset = "utf8mb4"

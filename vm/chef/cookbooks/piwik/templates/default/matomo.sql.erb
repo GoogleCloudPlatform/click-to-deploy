@@ -1,9 +1,3 @@
--- MySQL dump 10.13  Distrib 8.0.28, for Linux (x86_64)
---
--- Host: localhost    Database: matomo
--- ------------------------------------------------------
--- Server version	8.0.28
-
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -15,17 +9,7 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
---
--- Current Database: `matomo`
---
-
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `matomo` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-
-USE `matomo`;
-
---
--- Table structure for table `matomo_access`
---
+USE `{{ MATOMODATABASE }}`;
 
 DROP TABLE IF EXISTS `matomo_access`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -40,18 +24,10 @@ CREATE TABLE `matomo_access` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matomo_access`
---
-
 LOCK TABLES `matomo_access` WRITE;
 /*!40000 ALTER TABLE `matomo_access` DISABLE KEYS */;
 /*!40000 ALTER TABLE `matomo_access` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `matomo_archive_invalidations`
---
 
 DROP TABLE IF EXISTS `matomo_archive_invalidations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -73,18 +49,10 @@ CREATE TABLE `matomo_archive_invalidations` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matomo_archive_invalidations`
---
-
 LOCK TABLES `matomo_archive_invalidations` WRITE;
 /*!40000 ALTER TABLE `matomo_archive_invalidations` DISABLE KEYS */;
 /*!40000 ALTER TABLE `matomo_archive_invalidations` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `matomo_brute_force_log`
---
 
 DROP TABLE IF EXISTS `matomo_brute_force_log`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -99,18 +67,10 @@ CREATE TABLE `matomo_brute_force_log` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matomo_brute_force_log`
---
-
 LOCK TABLES `matomo_brute_force_log` WRITE;
 /*!40000 ALTER TABLE `matomo_brute_force_log` DISABLE KEYS */;
 /*!40000 ALTER TABLE `matomo_brute_force_log` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `matomo_changes`
---
 
 DROP TABLE IF EXISTS `matomo_changes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -129,18 +89,10 @@ CREATE TABLE `matomo_changes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matomo_changes`
---
-
 LOCK TABLES `matomo_changes` WRITE;
 /*!40000 ALTER TABLE `matomo_changes` DISABLE KEYS */;
 /*!40000 ALTER TABLE `matomo_changes` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `matomo_custom_dimensions`
---
 
 DROP TABLE IF EXISTS `matomo_custom_dimensions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -159,18 +111,10 @@ CREATE TABLE `matomo_custom_dimensions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matomo_custom_dimensions`
---
-
 LOCK TABLES `matomo_custom_dimensions` WRITE;
 /*!40000 ALTER TABLE `matomo_custom_dimensions` DISABLE KEYS */;
 /*!40000 ALTER TABLE `matomo_custom_dimensions` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `matomo_goal`
---
 
 DROP TABLE IF EXISTS `matomo_goal`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -192,18 +136,10 @@ CREATE TABLE `matomo_goal` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matomo_goal`
---
-
 LOCK TABLES `matomo_goal` WRITE;
 /*!40000 ALTER TABLE `matomo_goal` DISABLE KEYS */;
 /*!40000 ALTER TABLE `matomo_goal` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `matomo_locks`
---
 
 DROP TABLE IF EXISTS `matomo_locks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -216,18 +152,10 @@ CREATE TABLE `matomo_locks` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matomo_locks`
---
-
 LOCK TABLES `matomo_locks` WRITE;
 /*!40000 ALTER TABLE `matomo_locks` DISABLE KEYS */;
 /*!40000 ALTER TABLE `matomo_locks` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `matomo_log_action`
---
 
 DROP TABLE IF EXISTS `matomo_log_action`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -243,18 +171,10 @@ CREATE TABLE `matomo_log_action` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matomo_log_action`
---
-
 LOCK TABLES `matomo_log_action` WRITE;
 /*!40000 ALTER TABLE `matomo_log_action` DISABLE KEYS */;
 /*!40000 ALTER TABLE `matomo_log_action` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `matomo_log_conversion`
---
 
 DROP TABLE IF EXISTS `matomo_log_conversion`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -304,18 +224,10 @@ CREATE TABLE `matomo_log_conversion` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matomo_log_conversion`
---
-
 LOCK TABLES `matomo_log_conversion` WRITE;
 /*!40000 ALTER TABLE `matomo_log_conversion` DISABLE KEYS */;
 /*!40000 ALTER TABLE `matomo_log_conversion` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `matomo_log_conversion_item`
---
 
 DROP TABLE IF EXISTS `matomo_log_conversion_item`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -341,18 +253,10 @@ CREATE TABLE `matomo_log_conversion_item` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matomo_log_conversion_item`
---
-
 LOCK TABLES `matomo_log_conversion_item` WRITE;
 /*!40000 ALTER TABLE `matomo_log_conversion_item` DISABLE KEYS */;
 /*!40000 ALTER TABLE `matomo_log_conversion_item` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `matomo_log_link_visit_action`
---
 
 DROP TABLE IF EXISTS `matomo_log_link_visit_action`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -405,18 +309,10 @@ CREATE TABLE `matomo_log_link_visit_action` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matomo_log_link_visit_action`
---
-
 LOCK TABLES `matomo_log_link_visit_action` WRITE;
 /*!40000 ALTER TABLE `matomo_log_link_visit_action` DISABLE KEYS */;
 /*!40000 ALTER TABLE `matomo_log_link_visit_action` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `matomo_log_profiling`
---
 
 DROP TABLE IF EXISTS `matomo_log_profiling`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -431,18 +327,10 @@ CREATE TABLE `matomo_log_profiling` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matomo_log_profiling`
---
-
 LOCK TABLES `matomo_log_profiling` WRITE;
 /*!40000 ALTER TABLE `matomo_log_profiling` DISABLE KEYS */;
 /*!40000 ALTER TABLE `matomo_log_profiling` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `matomo_log_visit`
---
 
 DROP TABLE IF EXISTS `matomo_log_visit`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -515,18 +403,10 @@ CREATE TABLE `matomo_log_visit` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matomo_log_visit`
---
-
 LOCK TABLES `matomo_log_visit` WRITE;
 /*!40000 ALTER TABLE `matomo_log_visit` DISABLE KEYS */;
 /*!40000 ALTER TABLE `matomo_log_visit` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `matomo_logger_message`
---
 
 DROP TABLE IF EXISTS `matomo_logger_message`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -541,18 +421,10 @@ CREATE TABLE `matomo_logger_message` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matomo_logger_message`
---
-
 LOCK TABLES `matomo_logger_message` WRITE;
 /*!40000 ALTER TABLE `matomo_logger_message` DISABLE KEYS */;
 /*!40000 ALTER TABLE `matomo_logger_message` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `matomo_option`
---
 
 DROP TABLE IF EXISTS `matomo_option`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -566,19 +438,11 @@ CREATE TABLE `matomo_option` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matomo_option`
---
-
 LOCK TABLES `matomo_option` WRITE;
 /*!40000 ALTER TABLE `matomo_option` DISABLE KEYS */;
 INSERT INTO `matomo_option` VALUES ('fingerprint_salt_1_2022-03-20','{\"value\":\"s9xp9v7jhj7zjn9po6ljo7vdn0h7ytjw\",\"time\":1647959190}',0),('fingerprint_salt_1_2022-03-21','{\"value\":\"jfdhnc45wwj3ej071vu06z22wrrgyn3e\",\"time\":1647959190}',0),('fingerprint_salt_1_2022-03-22','{\"value\":\"v00g1yn6s06nfaeygah5ws4flao6bmk6\",\"time\":1647959190}',0),('fingerprint_salt_1_2022-03-23','{\"value\":\"e8jlx5aga2r2xgeg3033t7srfog5madd\",\"time\":1647959190}',0),('geoip2.loc_db_url','https://download.db-ip.com/free/dbip-city-lite-2022-03.mmdb.gz',0),('geoip2.updater_last_run_time','1647907200',0),('geoip2.updater_period','month',0),('install_mail_sent','1',0),('install_version','4.8.0',0),('MatomoUpdateHistory','4.8.0,',0),('MobileMessaging_DelegatedManagement','false',0),('piwikUrl','http://35.222.73.103/',1),('PrivacyManager.doNotTrackEnabled','1',0),('PrivacyManager.ipAnonymizerEnabled','1',0),('SitesManager_DefaultTimezone','Africa/Algiers',0),('TaskScheduler.timetable','a:1:{s:45:\"Piwik\\Plugins\\GeoIp2\\GeoIP2AutoUpdater.update\";i:1649203237;}',0),('UpdateCheck_LastTimeChecked','1647959138',1),('UpdateCheck_LatestVersion','4.8.0',0),('usercountry.location_provider','geoip2php',0),('usercountry.switchtoisoregions','1647959197',0),('useridsalt','DPa8u$NgCDxVz$8LS_$yMB0OUdbkPrwLedl1B3wU',1),('UsersManager.lastSeen.super user was set','1647959195',1),('version_Actions','4.8.0',1),('version_Annotations','4.8.0',1),('version_API','4.8.0',1),('version_BulkTracking','4.8.0',1),('version_Contents','4.8.0',1),('version_core','4.8.0',1),('version_CoreAdminHome','4.8.0',1),('version_CoreConsole','4.8.0',1),('version_CoreHome','4.8.0',1),('version_CorePluginsAdmin','4.8.0',1),('version_CoreUpdater','4.8.0',1),('version_CoreVisualizations','4.8.0',1),('version_CoreVue','4.8.0',1),('version_CustomDimensions','4.8.0',1),('version_CustomJsTracker','4.8.0',1),('version_Dashboard','4.8.0',1),('version_DevicePlugins','4.8.0',1),('version_DevicesDetection','4.8.0',1),('version_Diagnostics','4.8.0',1),('version_Ecommerce','4.8.0',1),('version_Events','4.8.0',1),('version_Feedback','4.8.0',1),('version_GeoIp2','4.8.0',1),('version_Goals','4.8.0',1),('version_Heartbeat','4.8.0',1),('version_ImageGraph','4.8.0',1),('version_Insights','4.8.0',1),('version_Installation','4.8.0',1),('version_Intl','4.8.0',1),('version_IntranetMeasurable','4.8.0',1),('version_LanguagesManager','4.8.0',1),('version_Live','4.8.0',1),('version_log_conversion.revenue','float default NULL',1),('version_log_link_visit_action.idaction_content_interaction','INTEGER(10) UNSIGNED DEFAULT NULL',1),('version_log_link_visit_action.idaction_content_name','INTEGER(10) UNSIGNED DEFAULT NULL',1),('version_log_link_visit_action.idaction_content_piece','INTEGER(10) UNSIGNED DEFAULT NULL',1),('version_log_link_visit_action.idaction_content_target','INTEGER(10) UNSIGNED DEFAULT NULL',1),('version_log_link_visit_action.idaction_event_action','INTEGER(10) UNSIGNED DEFAULT NULL',1),('version_log_link_visit_action.idaction_event_category','INTEGER(10) UNSIGNED DEFAULT NULL',1),('version_log_link_visit_action.idaction_name','INTEGER(10) UNSIGNED',1),('version_log_link_visit_action.idaction_product_cat','INT(10) UNSIGNED NULL',1),('version_log_link_visit_action.idaction_product_cat2','INT(10) UNSIGNED NULL',1),('version_log_link_visit_action.idaction_product_cat3','INT(10) UNSIGNED NULL',1),('version_log_link_visit_action.idaction_product_cat4','INT(10) UNSIGNED NULL',1),('version_log_link_visit_action.idaction_product_cat5','INT(10) UNSIGNED NULL',1),('version_log_link_visit_action.idaction_product_name','INT(10) UNSIGNED NULL',1),('version_log_link_visit_action.idaction_product_sku','INT(10) UNSIGNED NULL',1),('version_log_link_visit_action.idaction_url','INTEGER(10) UNSIGNED DEFAULT NULL',1),('version_log_link_visit_action.idpageview','CHAR(6) NULL DEFAULT NULL',1),('version_log_link_visit_action.product_price','DOUBLE NULL',1),('version_log_link_visit_action.search_cat','VARCHAR(200) NULL',1),('version_log_link_visit_action.search_count','INTEGER(10) UNSIGNED NULL',1),('version_log_link_visit_action.server_time','DATETIME NOT NULL',1),('version_log_link_visit_action.time_dom_completion','MEDIUMINT(10) UNSIGNED NULL',1),('version_log_link_visit_action.time_dom_processing','MEDIUMINT(10) UNSIGNED NULL',1),('version_log_link_visit_action.time_network','MEDIUMINT(10) UNSIGNED NULL',1),('version_log_link_visit_action.time_on_load','MEDIUMINT(10) UNSIGNED NULL',1),('version_log_link_visit_action.time_server','MEDIUMINT(10) UNSIGNED NULL',1),('version_log_link_visit_action.time_spent_ref_action','INTEGER(10) UNSIGNED NULL',1),('version_log_link_visit_action.time_transfer','MEDIUMINT(10) UNSIGNED NULL',1),('version_log_visit.config_browser_engine','VARCHAR(10) NULL',1),('version_log_visit.config_browser_name','VARCHAR(40) NULL1',1),('version_log_visit.config_browser_version','VARCHAR(20) NULL',1),('version_log_visit.config_client_type','TINYINT( 1 ) NULL DEFAULT NULL1',1),('version_log_visit.config_cookie','TINYINT(1) NULL',1),('version_log_visit.config_device_brand','VARCHAR( 100 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL1',1),('version_log_visit.config_device_model','VARCHAR( 100 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL1',1),('version_log_visit.config_device_type','TINYINT( 100 ) NULL DEFAULT NULL1',1),('version_log_visit.config_flash','TINYINT(1) NULL',1),('version_log_visit.config_java','TINYINT(1) NULL',1),('version_log_visit.config_os','CHAR(3) NULL',1),('version_log_visit.config_os_version','VARCHAR( 100 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL',1),('version_log_visit.config_pdf','TINYINT(1) NULL',1),('version_log_visit.config_quicktime','TINYINT(1) NULL',1),('version_log_visit.config_realplayer','TINYINT(1) NULL',1),('version_log_visit.config_resolution','VARCHAR(18) NULL',1),('version_log_visit.config_silverlight','TINYINT(1) NULL',1),('version_log_visit.config_windowsmedia','TINYINT(1) NULL',1),('version_log_visit.location_browser_lang','VARCHAR(20) NULL',1),('version_log_visit.location_city','varchar(255) DEFAULT NULL1',1),('version_log_visit.location_country','CHAR(3) NULL1',1),('version_log_visit.location_latitude','decimal(9, 6) DEFAULT NULL1',1),('version_log_visit.location_longitude','decimal(9, 6) DEFAULT NULL1',1),('version_log_visit.location_region','char(3) DEFAULT NULL1',1),('version_log_visit.profilable','TINYINT(1) NULL',1),('version_log_visit.referer_keyword','VARCHAR(255) NULL1',1),('version_log_visit.referer_name','VARCHAR(255) NULL1',1),('version_log_visit.referer_type','TINYINT(1) UNSIGNED NULL1',1),('version_log_visit.referer_url','VARCHAR(1500) NULL',1),('version_log_visit.user_id','VARCHAR(200) NULL',1),('version_log_visit.visit_entry_idaction_name','INTEGER(10) UNSIGNED NULL',1),('version_log_visit.visit_entry_idaction_url','INTEGER(11) UNSIGNED NULL  DEFAULT NULL',1),('version_log_visit.visit_exit_idaction_name','INTEGER(10) UNSIGNED NULL',1),('version_log_visit.visit_exit_idaction_url','INTEGER(10) UNSIGNED NULL DEFAULT 0',1),('version_log_visit.visit_first_action_time','DATETIME NOT NULL',1),('version_log_visit.visit_goal_buyer','TINYINT(1) NULL',1),('version_log_visit.visit_goal_converted','TINYINT(1) NULL',1),('version_log_visit.visit_total_actions','INT(11) UNSIGNED NULL',1),('version_log_visit.visit_total_events','INT(11) UNSIGNED NULL',1),('version_log_visit.visit_total_interactions','MEDIUMINT UNSIGNED DEFAULT 0',1),('version_log_visit.visit_total_searches','SMALLINT(5) UNSIGNED NULL',1),('version_log_visit.visit_total_time','INT(11) UNSIGNED NOT NULL',1),('version_log_visit.visitor_count_visits','INT(11) UNSIGNED NOT NULL DEFAULT 01',1),('version_log_visit.visitor_localtime','TIME NULL',1),('version_log_visit.visitor_returning','TINYINT(1) NULL1',1),('version_log_visit.visitor_seconds_since_first','INT(11) UNSIGNED NULL1',1),('version_log_visit.visitor_seconds_since_last','INT(11) UNSIGNED NULL',1),('version_log_visit.visitor_seconds_since_order','INT(11) UNSIGNED NULL1',1),('version_Login','4.8.0',1),('version_Marketplace','4.8.0',1),('version_MobileMessaging','4.8.0',1),('version_Monolog','4.8.0',1),('version_Morpheus','4.8.0',1),('version_MultiSites','4.8.0',1),('version_Overlay','4.8.0',1),('version_PagePerformance','4.8.0',1),('version_PrivacyManager','4.8.0',1),('version_ProfessionalServices','4.8.0',1),('version_Proxy','4.8.0',1),('version_Referrers','4.8.0',1),('version_Resolution','4.8.0',1),('version_RssWidget','1.0',1),('version_ScheduledReports','4.8.0',1),('version_SegmentEditor','4.8.0',1),('version_SEO','4.8.0',1),('version_SitesManager','4.8.0',1),('version_Tour','4.8.0',1),('version_Transitions','4.8.0',1),('version_TwoFactorAuth','4.8.0',1),('version_UserCountry','4.8.0',1),('version_UserCountryMap','4.8.0',1),('version_UserId','4.8.0',1),('version_UserLanguage','4.8.0',1),('version_UsersManager','4.8.0',1),('version_VisitFrequency','4.8.0',1),('version_VisitorInterest','4.8.0',1),('version_VisitsSummary','4.8.0',1),('version_VisitTime','4.8.0',1),('version_WebsiteMeasurable','4.8.0',1),('version_Widgetize','4.8.0',1);
 /*!40000 ALTER TABLE `matomo_option` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `matomo_plugin_setting`
---
 
 DROP TABLE IF EXISTS `matomo_plugin_setting`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -595,18 +459,10 @@ CREATE TABLE `matomo_plugin_setting` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matomo_plugin_setting`
---
-
 LOCK TABLES `matomo_plugin_setting` WRITE;
 /*!40000 ALTER TABLE `matomo_plugin_setting` DISABLE KEYS */;
 /*!40000 ALTER TABLE `matomo_plugin_setting` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `matomo_privacy_logdata_anonymizations`
---
 
 DROP TABLE IF EXISTS `matomo_privacy_logdata_anonymizations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -631,18 +487,10 @@ CREATE TABLE `matomo_privacy_logdata_anonymizations` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matomo_privacy_logdata_anonymizations`
---
-
 LOCK TABLES `matomo_privacy_logdata_anonymizations` WRITE;
 /*!40000 ALTER TABLE `matomo_privacy_logdata_anonymizations` DISABLE KEYS */;
 /*!40000 ALTER TABLE `matomo_privacy_logdata_anonymizations` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `matomo_report`
---
 
 DROP TABLE IF EXISTS `matomo_report`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -669,18 +517,10 @@ CREATE TABLE `matomo_report` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matomo_report`
---
-
 LOCK TABLES `matomo_report` WRITE;
 /*!40000 ALTER TABLE `matomo_report` DISABLE KEYS */;
 /*!40000 ALTER TABLE `matomo_report` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `matomo_report_subscriptions`
---
 
 DROP TABLE IF EXISTS `matomo_report_subscriptions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -696,18 +536,10 @@ CREATE TABLE `matomo_report_subscriptions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matomo_report_subscriptions`
---
-
 LOCK TABLES `matomo_report_subscriptions` WRITE;
 /*!40000 ALTER TABLE `matomo_report_subscriptions` DISABLE KEYS */;
 /*!40000 ALTER TABLE `matomo_report_subscriptions` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `matomo_segment`
---
 
 DROP TABLE IF EXISTS `matomo_segment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -728,18 +560,10 @@ CREATE TABLE `matomo_segment` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matomo_segment`
---
-
 LOCK TABLES `matomo_segment` WRITE;
 /*!40000 ALTER TABLE `matomo_segment` DISABLE KEYS */;
 /*!40000 ALTER TABLE `matomo_segment` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `matomo_sequence`
---
 
 DROP TABLE IF EXISTS `matomo_sequence`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -751,18 +575,10 @@ CREATE TABLE `matomo_sequence` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matomo_sequence`
---
-
 LOCK TABLES `matomo_sequence` WRITE;
 /*!40000 ALTER TABLE `matomo_sequence` DISABLE KEYS */;
 /*!40000 ALTER TABLE `matomo_sequence` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `matomo_session`
---
 
 DROP TABLE IF EXISTS `matomo_session`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -776,19 +592,11 @@ CREATE TABLE `matomo_session` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matomo_session`
---
-
 LOCK TABLES `matomo_session` WRITE;
 /*!40000 ALTER TABLE `matomo_session` DISABLE KEYS */;
 INSERT INTO `matomo_session` VALUES ('10c8f3fc225c223827797d2db332cf15264f37b7f07dac76083f2aae190e2e7819406e441f6192ea039ea023cc645f15279c578bfb2325fa6184cd258a4c078f',1647959198,1209600,'a:1:{s:4:\"data\";s:224:\"YToyOntzOjExOiJMb2dpbi5sb2dpbiI7YToxOntzOjU6Im5vbmNlIjtzOjMyOiI5M2Q0ZWEzNWI5ZjM0ZDNlNzM5MjMyNGU5OTM3MDhlNyI7fXM6NDoiX19aRiI7YToxOntzOjExOiJMb2dpbi5sb2dpbiI7YToxOntzOjQ6IkVOVlQiO2E6MTp7czo1OiJub25jZSI7aToxNjQ3OTU5Nzk2O319fX0=\";}');
 /*!40000 ALTER TABLE `matomo_session` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `matomo_site`
---
 
 DROP TABLE IF EXISTS `matomo_site`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -816,19 +624,11 @@ CREATE TABLE `matomo_site` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matomo_site`
---
-
 LOCK TABLES `matomo_site` WRITE;
 /*!40000 ALTER TABLE `matomo_site` DISABLE KEYS */;
 INSERT INTO `matomo_site` VALUES (1,'Sample Site','https://example.com','2022-03-22 14:26:30',0,1,'','','Africa/Algiers','USD',0,'','','','','website',0,'anonymous');
 /*!40000 ALTER TABLE `matomo_site` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `matomo_site_setting`
---
 
 DROP TABLE IF EXISTS `matomo_site_setting`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -845,18 +645,10 @@ CREATE TABLE `matomo_site_setting` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matomo_site_setting`
---
-
 LOCK TABLES `matomo_site_setting` WRITE;
 /*!40000 ALTER TABLE `matomo_site_setting` DISABLE KEYS */;
 /*!40000 ALTER TABLE `matomo_site_setting` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `matomo_site_url`
---
 
 DROP TABLE IF EXISTS `matomo_site_url`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -868,18 +660,10 @@ CREATE TABLE `matomo_site_url` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matomo_site_url`
---
-
 LOCK TABLES `matomo_site_url` WRITE;
 /*!40000 ALTER TABLE `matomo_site_url` DISABLE KEYS */;
 /*!40000 ALTER TABLE `matomo_site_url` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `matomo_tracking_failure`
---
 
 DROP TABLE IF EXISTS `matomo_tracking_failure`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -893,18 +677,10 @@ CREATE TABLE `matomo_tracking_failure` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matomo_tracking_failure`
---
-
 LOCK TABLES `matomo_tracking_failure` WRITE;
 /*!40000 ALTER TABLE `matomo_tracking_failure` DISABLE KEYS */;
 /*!40000 ALTER TABLE `matomo_tracking_failure` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `matomo_twofactor_recovery_code`
---
 
 DROP TABLE IF EXISTS `matomo_twofactor_recovery_code`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -917,18 +693,10 @@ CREATE TABLE `matomo_twofactor_recovery_code` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matomo_twofactor_recovery_code`
---
-
 LOCK TABLES `matomo_twofactor_recovery_code` WRITE;
 /*!40000 ALTER TABLE `matomo_twofactor_recovery_code` DISABLE KEYS */;
 /*!40000 ALTER TABLE `matomo_twofactor_recovery_code` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `matomo_user`
---
 
 DROP TABLE IF EXISTS `matomo_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -946,19 +714,11 @@ CREATE TABLE `matomo_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matomo_user`
---
-
 LOCK TABLES `matomo_user` WRITE;
 /*!40000 ALTER TABLE `matomo_user` DISABLE KEYS */;
 INSERT INTO `matomo_user` VALUES ('admin','$2y$10$oyS61.pnEbqbAAOJVuDdieX4qjY5ovkCi4zTsGJ/vBgbQeC1saRFS','admin@admin.com','',1,'2022-03-22 14:25:59','2022-03-22 14:25:59',NULL),('anonymous','','anonymous@example.org','',0,'2022-03-22 14:25:33','2022-03-22 14:25:33',NULL);
 /*!40000 ALTER TABLE `matomo_user` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `matomo_user_dashboard`
---
 
 DROP TABLE IF EXISTS `matomo_user_dashboard`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -972,18 +732,10 @@ CREATE TABLE `matomo_user_dashboard` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matomo_user_dashboard`
---
-
 LOCK TABLES `matomo_user_dashboard` WRITE;
 /*!40000 ALTER TABLE `matomo_user_dashboard` DISABLE KEYS */;
 /*!40000 ALTER TABLE `matomo_user_dashboard` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `matomo_user_language`
---
 
 DROP TABLE IF EXISTS `matomo_user_language`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -996,18 +748,10 @@ CREATE TABLE `matomo_user_language` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matomo_user_language`
---
-
 LOCK TABLES `matomo_user_language` WRITE;
 /*!40000 ALTER TABLE `matomo_user_language` DISABLE KEYS */;
 /*!40000 ALTER TABLE `matomo_user_language` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `matomo_user_token_auth`
---
 
 DROP TABLE IF EXISTS `matomo_user_token_auth`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1027,10 +771,6 @@ CREATE TABLE `matomo_user_token_auth` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matomo_user_token_auth`
---
-
 LOCK TABLES `matomo_user_token_auth` WRITE;
 /*!40000 ALTER TABLE `matomo_user_token_auth` DISABLE KEYS */;
 INSERT INTO `matomo_user_token_auth` VALUES (1,'anonymous','anonymous default token','680739136e1160dfc2242d8e8aea6a605e535082089f4d029d9c04cff1753957228a50d521960d6a7f7a2f947d8621de98c35c3922ab7352a0d5f04aec2bd048','sha512',0,'2022-03-22 14:25:38','2022-03-22 14:25:33',NULL);
@@ -1045,3 +785,4 @@ UNLOCK TABLES;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
