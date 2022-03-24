@@ -12,11 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name 'orocrm'
-depends 'apache2'
-depends 'mysql'
-depends 'php81'
-depends 'git'
-depends 'composer'
-depends 'nodejs'
-supports 'debian'
+default['php81']['packages'] = ['php8.1-fpm', 'php8.1-common', 'php8.1']
+
+# Default modules to install
+default['php81']['modules'] = %w(cgi gd curl)
