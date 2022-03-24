@@ -64,7 +64,7 @@ configure_nginx
 #  remove web.config due security
 echo "Enabling Website..."
 rm -f "${df_install_folder}/public/web.config"
-rm -f /etc/nginx/sites-enabled/default
+rm -f /etc/nginx/sites-enabled/default.conf
 ln -s /etc/nginx/sites-available/dreamfactory.conf /etc/nginx/sites-enabled/
 
 echo "Starting Webserver..."

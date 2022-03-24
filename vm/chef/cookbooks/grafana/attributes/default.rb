@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,5 +16,5 @@ default['grafana']['repo']['uri'] = 'https://packages.grafana.com/oss/deb'
 default['grafana']['repo']['components'] = ['main']
 default['grafana']['repo']['distribution'] = 'stable'
 default['grafana']['repo']['key'] = 'https://packages.grafana.com/gpg.key'
-default['grafana']['version'] = '8.2.5'
+default['grafana']['version'] = '8.4.2'
 default['grafana']['apt_version'] = "#{default['grafana']['version']}.*"
