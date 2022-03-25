@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -44,7 +44,6 @@ bash 'configure_piwik_for_first_use' do
   user 'root'
   code <<-EOH
     rm -Rf /var/www/html/plugins/Morpheus/icons/submodules
-    chown -R www-data:www-data /var/www/html
     mkdir /var/www/html/tmp/assets
     chmod -R 0755 /var/www/html/tmp/assets
     mkdir /var/www/html/tmp/cache
