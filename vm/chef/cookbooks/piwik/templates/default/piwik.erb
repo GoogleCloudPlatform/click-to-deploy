@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2017 Google Inc.
+# Copyright 2022 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,16 +36,3 @@ declare -r matomo_admin_password
 mysqladmin -u "${mysql_matomo_username}" \
   -p"${mysql_matomo_first_password}" \
   password "${mysql_matomo_new_password}"
-
-sed -i "s/${mysql_matomo_first_password}/${mysql_matomo_new_password}/" \
-  /var/www/html/config/config.ini.php
-
-# Calculate the admin's password hash in the way that Matomo
-# recognizes it correctly
-matomo_admin_password_hash="$( php -r "echo password_hash(md5('${matomo_admin_password}'), PASSWORD_DEFAULT);" )"
-declare -r matomo_admin_password_hash
-
-mysql -u "${mysql_matomo_username}" \
-  -p"${mysql_matomo_new_password}" \
-  -D "${mysql_matomo_db_name}" \
-  -e "UPDATE user SET password = '${matomo_admin_password_hash}', email = '${matomo_admin_email}' WHERE login = 'admin'"
