@@ -59,7 +59,7 @@ end
 
 remote_file '/tmp/dolibarr.tar.gz' do
   source "https://github.com/Dolibarr/dolibarr/archive/refs/tags/#{node['dolibarr']['version']}.tar.gz"
-  verify "echo '#{node['dolibarr']['sha1']} %{path}' | sha1sum -c"
+  verify "echo '#{node['dolibarr']['sha256']} %{path}' | sha256sum -c"
   action :create
 end
 
