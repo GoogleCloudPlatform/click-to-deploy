@@ -1,4 +1,4 @@
-FROM gcr.io/google-appengine/openjdk
+FROM marketplace.gcr.io/google/debian10
 
 # This is release version of ActiveMQ to pull in.
 ENV ACTIVEMQ_VERSION 5.17.0
@@ -22,6 +22,11 @@ ARG user=activemq
 ARG group=activemq
 ARG uid=1000
 ARG gid=1000
+
+RUN set -ex \
+  && apt-get --allow-releaseinfo-change update \
+  && apt-get -y install default-jdk ca-certificates wget \
+  && rm -rf /var/lib/apt/lists/*
 
 # ActiveMQ run with user `activemq`, uid = 1000.
 # If you bind mount a volume from the host or a data container,
