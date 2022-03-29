@@ -9,8 +9,7 @@ RUN apt-get update \
     && echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" | tee /etc/apt/sources.list.d/bazel.list
 
 RUN apt-get update \
-    && apt-get install bazel- -y --no-install-recommends \
-    && ln -s /usr/bin/bazel- /usr/bin/bazel
+    && apt-get install bazel -y --no-install-recommends
 
 RUN git clone --branch v${APP_VERSION} \
     https://github.com/jetstack/cert-manager.git /src/cert-manager/
