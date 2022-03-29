@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2018 Google Inc.
+# Copyright 2022 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,21 +14,46 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#######################################
+# Awaits for website at localhost be ready.
+#######################################
+function wait_for_app() {
+  local max_retries=10
+  local retry=1
+  local http_code=0
+  local host_ip=""
+
+  # Prevent exit on error in case of request max-time reached.
+  set +e
+
+  echo "Checking for app readiness..."
+
+  while [[ "${http_code}" -ne 200 && "${retry}" -le "${max_retries}" ]]; do
+    echo "Retry: ${retry}"
+    http_code="$(curl --max-time 5 -s -L -o /dev/null -w "%{http_code}" http://localhost:8086)"
+    echo "Http Code: ${http_code}"
+    (( retry=retry+1 ))
+
+    if [[ "${http_code}" -ne 200 ]]; then
+      systemctl stop influxd
+      systemctl start influxd
+      sleep 30
+    fi
+  done
+
+  if [[ "${retry}" -gt "${max_retries}" ]]; then
+    echo "Max retries exceeded."
+    exit 1
+  else
+    echo "App is ready."
+  fi
+
+  set -e
+}
+
 source /opt/c2d/c2d-utils || exit 1
 
-api_port="$(get_attribute_value "api-port")"
-influx_url="http://localhost:${api_port}/ping"
-
-export INFLUXDB_META_DIR="/var/lib/influxdb/meta"
-export INFLUXDB_DATA_DIR="/var/lib/influxdb/data"
-export INFLUXDB_DATA_WAL_DIR="/var/lib/influxdb/wal"
-export INFLUXDB_HTTP_AUTH_ENABLED=true
-export INFLUXDB_HTTP_BIND_ADDRESS=":${api_port}"
-export INFLUXDB_GRAPHITE_0_BIND_ADDRESS=":$(get_attribute_value "graphite-port")"
-
-if [[ "$(get_attribute_value "enable-graphite")" = True ]]; then
-  export INFLUXDB_GRAPHITE_0_ENABLED=true
-fi
+export INFLUXDB_ADMIN_PASSWORD="$(get_attribute_value "influxdb-admin-password")"
 
 declare -a args=()
 
@@ -37,21 +62,34 @@ if [[ "$(get_attribute_value "enable-https")" = True ]]; then
   chown root:influxdb /etc/ssl/private/c2d-temporary-self-signed-cert.key
   chmod 650 /etc/ssl/private
   chmod 640 /etc/ssl/private/c2d-temporary-self-signed-cert.key
-  influx_url="https://localhost:${api_port}/ping"
+  influx_url="https://localhost:8086/ping"
   export INFLUXDB_HTTP_HTTPS_ENABLED=true
   export INFLUXDB_HTTP_HTTPS_CERTIFICATE="/etc/ssl/certs/c2d-temporary-self-signed-cert.pem"
   export INFLUXDB_HTTP_HTTPS_PRIVATE_KEY="/etc/ssl/private/c2d-temporary-self-signed-cert.key"
   args+=(-ssl -unsafeSsl)
+  echo "tls-cert = \"/etc/ssl/certs/c2d-temporary-self-signed-cert.pem\"" >> /etc/influxdb/config.toml
+  echo "tls-key = \"/etc/ssl/private/c2d-temporary-self-signed-cert.key\"" >> /etc/influxdb/config.toml
 fi
-
-influxd config > /etc/influxdb/influxdb.conf
 
 systemctl restart influxdb.service
 
-until curl -s -k "${influx_url}"; do
-  sleep 3
-done
+# Create admin user
+influx setup --skip-verify \
+  --username admin \
+  --password "${INFLUXDB_ADMIN_PASSWORD}" \
+  --org Google_C2D_InfluxDB \
+  --bucket influxdb_bucket \
+  --retention 0 \
+  --force \
+  --name influxdb_config
 
-readonly password="$(get_attribute_value "influxdb-admin-password")"
+influx auth create \
+  --org Google_C2D_InfluxDB \
+  --all-access
 
-influx "${args[@]}" -port "${api_port}" -execute "CREATE USER admin WITH PASSWORD '${password}' WITH ALL PRIVILEGES"
+# Await for app be ready
+wait_for_app
+
+echo "Installation complete."
+
+
