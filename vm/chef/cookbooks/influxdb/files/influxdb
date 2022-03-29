@@ -55,41 +55,39 @@ source /opt/c2d/c2d-utils || exit 1
 
 export INFLUXDB_ADMIN_PASSWORD="$(get_attribute_value "influxdb-admin-password")"
 
-declare -a args=()
-
-if [[ "$(get_attribute_value "enable-https")" = True ]]; then
-  chown root:influxdb /etc/ssl/private
-  chown root:influxdb /etc/ssl/private/c2d-temporary-self-signed-cert.key
-  chmod 650 /etc/ssl/private
-  chmod 640 /etc/ssl/private/c2d-temporary-self-signed-cert.key
-  influx_url="https://localhost:8086/ping"
-  export INFLUXDB_HTTP_HTTPS_ENABLED=true
-  export INFLUXDB_HTTP_HTTPS_CERTIFICATE="/etc/ssl/certs/c2d-temporary-self-signed-cert.pem"
-  export INFLUXDB_HTTP_HTTPS_PRIVATE_KEY="/etc/ssl/private/c2d-temporary-self-signed-cert.key"
-  args+=(-ssl -unsafeSsl)
-  echo "tls-cert = \"/etc/ssl/certs/c2d-temporary-self-signed-cert.pem\"" >> /etc/influxdb/config.toml
-  echo "tls-key = \"/etc/ssl/private/c2d-temporary-self-signed-cert.key\"" >> /etc/influxdb/config.toml
-fi
-
-systemctl restart influxdb.service
-
-# Create admin user
-influx setup --skip-verify \
+# Run the CLI installer for InfluxDB
+declare -a args=(
+  --skip-verify \
   --username admin \
   --password "${INFLUXDB_ADMIN_PASSWORD}" \
   --org Google_C2D_InfluxDB \
   --bucket influxdb_bucket \
   --retention 0 \
   --force \
-  --name influxdb_config
+  --name influxdb_config \
+)
 
-influx auth create \
-  --org Google_C2D_InfluxDB \
-  --all-access
+if [[ "$(get_attribute_value "enable-https")" = True ]]; then
+  chown root:influxdb /etc/ssl/private
+  chown root:influxdb /etc/ssl/private/c2d-temporary-self-signed-cert.key
+  chmod 650 /etc/ssl/private
+  chmod 640 /etc/ssl/private/c2d-temporary-self-signed-cert.key
+  influx_url="https://localhost:8086"
+  args+=(--host="${influx_url}")
+  echo "tls-cert = \"/etc/ssl/certs/c2d-temporary-self-signed-cert.pem\"" >> /etc/influxdb/config.toml
+  echo "tls-key = \"/etc/ssl/private/c2d-temporary-self-signed-cert.key\"" >> /etc/influxdb/config.toml
+else
+
+  influx_url="http://localhost:8086"
+  args+=(--host="${influx_url}")
+fi
+
+systemctl restart influxdb.service
+
+influx setup "${args[@]}"
 
 # Await for app be ready
 wait_for_app
 
 echo "Installation complete."
-
 
