@@ -1,16 +1,13 @@
-FROM {{ .From }}
-
-{{- $activemq := index .Packages "activemq" }}
-{{- $template := index .TemplateArgs }}
+FROM marketplace.gcr.io/google/debian10
 
 # This is release version of ActiveMQ to pull in.
-ENV ACTIVEMQ_VERSION {{ $activemq.Version }}
-ENV ACTIVEMQ_SHA512 {{ $activemq.Sha512 }}
+ENV ACTIVEMQ_VERSION 5.17.0
+ENV ACTIVEMQ_SHA512 d3252df7528b7000fceaf0a8b45c65216010467fea775bb3219ef04aaa659156f4c87982eb11a6982204d2737b9cc2b93efac88b651f1447270528bf62b1e238
 ENV ACTIVEMQ apache-activemq-${ACTIVEMQ_VERSION}
 ENV ACTIVEMQ_FILE ${ACTIVEMQ}-bin.tar.gz
 ENV ACTIVEMQ_DOWNLOAD_URL http://archive.apache.org/dist/activemq/
 
-ENV C2D_RELEASE {{ $activemq.Version }}
+ENV C2D_RELEASE 5.17.0
 
 ENV ACTIVEMQ_TCP=61616 \
     ACTIVEMQ_AMQP=5672 \
@@ -37,7 +34,7 @@ RUN set -ex \
 RUN groupadd -g "${gid}" "${group}" \
     && useradd -u "${uid}" -g "${gid}" -m -s /bin/bash "${user}"
 
-# Download and setup activemq version v{{ $activemq.Version }}
+# Download and setup activemq version v5.17.0
 RUN set -x && \
     mkdir -p "${ACTIVEMQ_HOME}" \
     && wget -q "${ACTIVEMQ_DOWNLOAD_URL}/${ACTIVEMQ_VERSION}/${ACTIVEMQ_FILE}" -O "${ACTIVEMQ_FILE}" \
