@@ -22,4 +22,12 @@ end
 
 package 'influxdb2'
 
+cookbook_file '/opt/c2d/influxdb-utils' do
+  source 'influxdb-utils'
+  owner 'root'
+  group 'root'
+  mode 0755
+  action :create
+end
+
 c2d_startup_script 'influxdb'

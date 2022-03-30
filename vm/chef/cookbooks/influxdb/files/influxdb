@@ -17,32 +17,31 @@
 source /opt/c2d/influxdb-utils || exit 1
 
 export INFLUXDB_ADMIN_PASSWORD="$(get_attribute_value "influxdb-admin-password")"
+export INFLUXDB_ORG="$(get_attribute_value "influxdb-organization")"
+export INFLUXDB_BUCKET="$(get_attribute_value "influxdb-bucket")"
 
 # Run the CLI installer for InfluxDB
 declare -a args=(
   --skip-verify \
   --username admin \
   --password "${INFLUXDB_ADMIN_PASSWORD}" \
-  --org Google_C2D_InfluxDB \
-  --bucket influxdb_bucket \
+  --org "${INFLUXDB_ORG}" \
+  --bucket "${INFLUXDB_BUCKET}" \
   --retention 0 \
   --force \
   --name influxdb_config \
-)
+)``
 
 if [[ "$(get_attribute_value "enable-https")" = True ]]; then
   chown root:influxdb /etc/ssl/private
   chown root:influxdb /etc/ssl/private/c2d-temporary-self-signed-cert.key
   chmod 650 /etc/ssl/private
   chmod 640 /etc/ssl/private/c2d-temporary-self-signed-cert.key
-  influx_url="https://localhost:8086"
-  args+=(--host="${influx_url}")
+  args+=(--host=https://localhost:8086)
   echo "tls-cert = \"/etc/ssl/certs/c2d-temporary-self-signed-cert.pem\"" >> /etc/influxdb/config.toml
   echo "tls-key = \"/etc/ssl/private/c2d-temporary-self-signed-cert.key\"" >> /etc/influxdb/config.toml
 else
-
-  influx_url="http://localhost:8086"
-  args+=(--host="${influx_url}")
+  args+=(--host=http://localhost:8086)
 fi
 
 systemctl restart influxdb.service
