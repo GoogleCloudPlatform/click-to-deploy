@@ -71,7 +71,7 @@ actions:
         http:
         - match:
           - uri:
-              exact: /hello
+              exact: /
           route:
           - destination:
               host: helloworld-test
@@ -90,12 +90,6 @@ actions:
       kubectl wait --for=condition=Available=True --timeout=120s --namespace $NAMESPACE deploy helloworld-test
       timeout 60 bash -c 'while [[ "$(curl -s -H "Host: helloworld-test" -o /dev/null -w ''%{http_code}'' $INGRESS_GATEWAY)" != "200" ]]; do sleep 5;done' 
       curl -s -H "Host: helloworld-test" $INGRESS_GATEWAY | grep -qz "Hello istio"
-    expect:
-      exitCode:
-        equals: 0
-  - name: Wait for 5 minutes
-  bashTest:
-    script: sleep 300s
     expect:
       exitCode:
         equals: 0

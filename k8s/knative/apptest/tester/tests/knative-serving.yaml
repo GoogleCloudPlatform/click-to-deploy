@@ -35,12 +35,6 @@ actions:
     expect:
       exitCode:
         equals: 0
-- name: Wait for 5 minutes
-  bashTest:
-    script: sleep 300s
-    expect:
-      exitCode:
-        equals: 0
 - name: Delete kservice
   bashTest:
     script: kubectl delete --namespace $NAMESPACE kservice helloworld-knative-test
