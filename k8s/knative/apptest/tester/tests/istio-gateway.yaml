@@ -85,20 +85,9 @@ actions:
       export INGRESS_GATEWAY=$(kubectl get svc istio-ingressgateway \
       --namespace $NAMESPACE \
       -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-      echo $INGRESS_GATEWAY
-      kubectl wait --for=condition=Available=True --timeout=60s --namespace $NAMESPACE deploy helloworld-test
-      export DEBUG_E=$(kubectl describe --namespace $NAMESPACE virtualservice helloworld-test && \
-      kubectl describe --namespace $NAMESPACE service helloworld-test && \
-      kubectl describe --namespace $NAMESPACE deploy helloworld-test && \
-      curl -s -iv -H 'Host: helloworld-test' $INGRESS_GATEWAY/hello 2>&1)
-      echo $DEBUG_E
+      kubectl wait --for=condition=Available=True --timeout=120s --namespace $NAMESPACE deploy helloworld-test
+      kubectl wait --for=condition=Reconciled --timeout=120s --namespace $NAMESPACE virtualservice helloworld-test
       curl -s -H 'Host: helloworld-test' $INGRESS_GATEWAY/hello | grep -qz 'instance: helloworld-test'
-    expect:
-      exitCode:
-        equals: 0
-- name: wait for 60 minutes
-  bashTest:
-    script: sleep 3600s
     expect:
       exitCode:
         equals: 0
