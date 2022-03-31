@@ -49,6 +49,11 @@ actions:
               image: docker.io/istio/examples-helloworld-v1
               ports:
               - containerPort: 5000
+              readinessProbe:
+                httpGet:
+                  path: /hello
+                  port: 5000
+                initialDelaySeconds: 5
       EOF
     expect:
       exitCode:
@@ -86,7 +91,7 @@ actions:
       --namespace $NAMESPACE \
       -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
       kubectl wait --for=condition=Available=True --timeout=120s --namespace $NAMESPACE deploy helloworld-test
-      kubectl wait --for=condition=Reconciled --timeout=120s --namespace $NAMESPACE virtualservice helloworld-test
+      timeout 60 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' $INGRESS_GATEWAY/hello)" != "200" ]]; do sleep 5;done' 
       curl -s -H 'Host: helloworld-test' $INGRESS_GATEWAY/hello | grep -qz 'instance: helloworld-test'
     expect:
       exitCode:
