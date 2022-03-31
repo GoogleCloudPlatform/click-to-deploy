@@ -39,7 +39,7 @@ actions:
 - name: Try to get new cert
   bashTest:
     script: kubectl wait --for=condition=Ready --namespace $NAMESPACE --timeout=120s certificate selfsigned-cert
-  expect:
+    expect:
       exitCode:
         equals: 0
 - name: Try to get cert secret
