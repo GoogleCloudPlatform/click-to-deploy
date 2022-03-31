@@ -96,18 +96,18 @@ actions:
     expect:
       exitCode:
         equals: 0
+- name: wait for 60 minutes
+  bashTest:
+    script: sleep 3600s
+    expect:
+      exitCode:
+        equals: 0
 - name: Delete app and service
   bashTest:
     script: |
       kubectl delete --namespace $NAMESPACE virtualservice helloworld-test
       kubectl delete --namespace $NAMESPACE service helloworld-test
       kubectl delete --namespace $NAMESPACE deploy helloworld-test
-    expect:
-      exitCode:
-        equals: 0
-- name: wait for 10 minutes
-  bashTest:
-    script: sleep 600s
     expect:
       exitCode:
         equals: 0
