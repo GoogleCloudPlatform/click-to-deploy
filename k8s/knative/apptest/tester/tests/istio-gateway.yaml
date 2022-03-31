@@ -93,6 +93,12 @@ actions:
     expect:
       exitCode:
         equals: 0
+  - name: Wait for 5 minutes
+  bashTest:
+    script: sleep 300s
+    expect:
+      exitCode:
+        equals: 0
 - name: Delete app and service
   bashTest:
     script: |
