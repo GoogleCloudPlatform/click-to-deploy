@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -75,7 +75,13 @@ service 'kafka.service' do
   action :enable
 end
 
+cookbook_file '/opt/c2d/kafka-utils' do
+  source 'kafka-utils'
+  owner 'root'
+  group 'root'
+  mode 0644
+  action :create
+end
+
 # Copy startup script
 c2d_startup_script 'kafka'
-
-c2d_startup_script 'zk-acls'
