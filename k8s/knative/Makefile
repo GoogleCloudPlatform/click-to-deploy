@@ -55,12 +55,12 @@ IMAGE_KNATIVE_EVENTING_WEBHOOK ?= $(KNATIVE_SOURCE_REGISTRY)/eventing/cmd/webhoo
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_KNATIVE))
 
 # List of images used in application
-ADDITIONAL_IMAGES := certmanager ingressgateway istiod knative-serving-activator knative-serving-autoscaler knative-serving-controller knative-serving-domainmapping knative-serving-domainmapping-webhook knative-serving-queueproxy knative-serving-webhook knative-serving-netcertmanager-controller knative-serving-netcertmanager-webhook knative-serving-netistio-controller knative-serving-netistio-webhook knative-eventing-controller knative-eventing-mtping knative-eventing-webhook
+ADDITIONAL_IMAGES := certmanager istio-ingressgateway istio-istiod knative-serving-activator knative-serving-autoscaler knative-serving-controller knative-serving-domainmapping knative-serving-domainmapping-webhook knative-serving-queueproxy knative-serving-webhook knative-serving-netcertmanager-controller knative-serving-netcertmanager-webhook knative-serving-netistio-controller knative-serving-netistio-webhook knative-eventing-controller knative-eventing-mtping knative-eventing-webhook
 
 # Additional images variable names should correspond with ADDITIONAL_IMAGES list
 image-certmanager := $(call get_sha256,$(IMAGE_CERTMANAGER))
-image-ingressgateway := $(call get_sha256,$(IMAGE_ISTIO_INGRESSGATEWAY))
-image-istiod := $(call get_sha256,$(IMAGE_ISTIO_ISTIOD))
+image-istio-ingressgateway := $(call get_sha256,$(IMAGE_ISTIO_INGRESSGATEWAY))
+image-istio-istiod := $(call get_sha256,$(IMAGE_ISTIO_ISTIOD))
 image-knative-serving-activator := $(call get_sha256,$(IMAGE_KNATIVE_SERVING_ACTIVATOR))
 image-knative-serving-autoscaler := $(call get_sha256,$(IMAGE_KNATIVE_SERVING_AUTOSCALER))
 image-knative-serving-controller := $(call get_sha256,$(IMAGE_KNATIVE_SERVING_CONTROLLER))
