@@ -21,7 +21,7 @@ kind: ServiceAccount
 automountServiceAccountToken: true
 metadata:
   name: cert-manager
-  namespace: "cert-manager"
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
@@ -362,7 +362,7 @@ roleRef:
   name: cert-manager-controller-issuers
 subjects:
   - name: cert-manager
-    namespace: "cert-manager"
+    namespace: "{{ .Release.Namespace }}"
     kind: ServiceAccount
 ---
 # Source: cert-manager/templates/rbac.yaml
@@ -382,7 +382,7 @@ roleRef:
   name: cert-manager-controller-clusterissuers
 subjects:
   - name: cert-manager
-    namespace: "cert-manager"
+    namespace: "{{ .Release.Namespace }}"
     kind: ServiceAccount
 ---
 # Source: cert-manager/templates/rbac.yaml
@@ -402,7 +402,7 @@ roleRef:
   name: cert-manager-controller-certificates
 subjects:
   - name: cert-manager
-    namespace: "cert-manager"
+    namespace: "{{ .Release.Namespace }}"
     kind: ServiceAccount
 ---
 # Source: cert-manager/templates/rbac.yaml
@@ -422,7 +422,7 @@ roleRef:
   name: cert-manager-controller-orders
 subjects:
   - name: cert-manager
-    namespace: "cert-manager"
+    namespace: "{{ .Release.Namespace }}"
     kind: ServiceAccount
 ---
 # Source: cert-manager/templates/rbac.yaml
@@ -442,7 +442,7 @@ roleRef:
   name: cert-manager-controller-challenges
 subjects:
   - name: cert-manager
-    namespace: "cert-manager"
+    namespace: "{{ .Release.Namespace }}"
     kind: ServiceAccount
 ---
 # Source: cert-manager/templates/rbac.yaml
@@ -462,7 +462,7 @@ roleRef:
   name: cert-manager-controller-ingress-shim
 subjects:
   - name: cert-manager
-    namespace: "cert-manager"
+    namespace: "{{ .Release.Namespace }}"
     kind: ServiceAccount
 ---
 # Source: cert-manager/templates/rbac.yaml
@@ -482,7 +482,7 @@ roleRef:
   name: cert-manager-controller-approve:cert-manager-io
 subjects:
   - name: cert-manager
-    namespace: "cert-manager"
+    namespace: "{{ .Release.Namespace }}"
     kind: ServiceAccount
 ---
 # Source: cert-manager/templates/rbac.yaml
@@ -502,7 +502,7 @@ roleRef:
   name: cert-manager-controller-certificatesigningrequests
 subjects:
   - name: cert-manager
-    namespace: "cert-manager"
+    namespace: "{{ .Release.Namespace }}"
     kind: ServiceAccount
 ---
 
@@ -511,7 +511,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: cert-manager:leaderelection
-  namespace: kube-system
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
@@ -545,7 +545,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: cert-manager:leaderelection
-  namespace: kube-system
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
@@ -560,7 +560,7 @@ subjects:
   - apiGroup: ""
     kind: ServiceAccount
     name: cert-manager
-    namespace: cert-manager
+    namespace: "{{ .Release.Namespace }}"
 ---
 
 # Source: cert-manager/templates/service.yaml
@@ -568,7 +568,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: cert-manager
-  namespace: "cert-manager"
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
@@ -593,7 +593,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cert-manager
-  namespace: "cert-manager"
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
@@ -633,7 +633,7 @@ spec:
           args:
           - --v=2
           - --cluster-resource-namespace=$(POD_NAMESPACE)
-          - --leader-election-namespace=kube-system
+          - --leader-election-namespace={{ .Release.Namespace }}
           ports:
           - containerPort: 9402
             protocol: TCP

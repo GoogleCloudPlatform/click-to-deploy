@@ -4,7 +4,7 @@ kind: ServiceAccount
 automountServiceAccountToken: true
 metadata:
   name: cert-manager-webhook
-  namespace: "cert-manager"
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: webhook
     app.kubernetes.io/name: webhook
@@ -17,7 +17,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: cert-manager-webhook
-  namespace: "cert-manager"
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: webhook
     app.kubernetes.io/name: webhook
@@ -60,14 +60,14 @@ subjects:
 - apiGroup: ""
   kind: ServiceAccount
   name: cert-manager-webhook
-  namespace: cert-manager
+  namespace: "{{ .Release.Namespace }}"
 ---
 # Source: cert-manager/templates/webhook-rbac.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: cert-manager-webhook:dynamic-serving
-  namespace: "cert-manager"
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: webhook
     app.kubernetes.io/name: webhook
@@ -90,7 +90,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: cert-manager-webhook:dynamic-serving
-  namespace: "cert-manager"
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: webhook
     app.kubernetes.io/name: webhook
@@ -105,14 +105,14 @@ subjects:
 - apiGroup: ""
   kind: ServiceAccount
   name: cert-manager-webhook
-  namespace: cert-manager
+  namespace: "{{ .Release.Namespace }}"
 ---
 # Source: cert-manager/templates/webhook-service.yaml
 apiVersion: v1
 kind: Service
 metadata:
   name: cert-manager-webhook
-  namespace: "cert-manager"
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: webhook
     app.kubernetes.io/name: webhook
@@ -136,7 +136,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cert-manager-webhook
-  namespace: "cert-manager"
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: webhook
     app.kubernetes.io/name: webhook
@@ -175,7 +175,7 @@ spec:
           - --secure-port=10250
           - --dynamic-serving-ca-secret-namespace=$(POD_NAMESPACE)
           - --dynamic-serving-ca-secret-name=cert-manager-webhook-ca
-          - --dynamic-serving-dns-names=cert-manager-webhook,cert-manager-webhook.cert-manager,cert-manager-webhook.cert-manager.svc
+          - --dynamic-serving-dns-names=cert-manager-webhook,cert-manager-webhook.{{ .Release.Namespace }},cert-manager-webhook.{{ .Release.Namespace }}.svc
           ports:
           - name: https
             protocol: TCP
@@ -218,7 +218,7 @@ metadata:
     app.kubernetes.io/component: "webhook"
 
   annotations:
-    cert-manager.io/inject-ca-from-secret: "cert-manager/cert-manager-webhook-ca"
+    cert-manager.io/inject-ca-from-secret: "{{ .Release.Namespace }}/cert-manager-webhook-ca"
 webhooks:
   - name: webhook.cert-manager.io
     rules:
@@ -244,7 +244,7 @@ webhooks:
     clientConfig:
       service:
         name: cert-manager-webhook
-        namespace: "cert-manager"
+        namespace: "{{ .Release.Namespace }}"
         path: /mutate
 ---
 # Source: cert-manager/templates/webhook-validating-webhook.yaml
@@ -259,7 +259,7 @@ metadata:
     app.kubernetes.io/component: "webhook"
 
   annotations:
-    cert-manager.io/inject-ca-from-secret: "cert-manager/cert-manager-webhook-ca"
+    cert-manager.io/inject-ca-from-secret: "{{ .Release.Namespace }}/cert-manager-webhook-ca"
 webhooks:
   - name: webhook.cert-manager.io
     namespaceSelector:
@@ -271,7 +271,7 @@ webhooks:
       - key: "name"
         operator: "NotIn"
         values:
-        - cert-manager
+        - {{ .Release.Namespace }}
     rules:
       - apiGroups:
           - "cert-manager.io"
@@ -294,5 +294,5 @@ webhooks:
     clientConfig:
       service:
         name: cert-manager-webhook
-        namespace: "cert-manager"
+        namespace: "{{ .Release.Namespace }}"
         path: /validate

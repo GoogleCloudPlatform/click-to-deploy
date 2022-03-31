@@ -4,7 +4,7 @@ kind: ServiceAccount
 automountServiceAccountToken: true
 metadata:
   name: cert-manager-cainjector
-  namespace: "cert-manager"
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: cainjector
     app.kubernetes.io/name: cainjector
@@ -63,7 +63,7 @@ roleRef:
   name: cert-manager-cainjector
 subjects:
   - name: cert-manager-cainjector
-    namespace: "cert-manager"
+    namespace: "{{ .Release.Namespace }}"
     kind: ServiceAccount
 ---
 # Source: cert-manager/templates/cainjector-rbac.yaml
@@ -72,7 +72,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: cert-manager-cainjector:leaderelection
-  namespace: kube-system
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: cainjector
     app.kubernetes.io/name: cainjector
@@ -108,7 +108,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: cert-manager-cainjector:leaderelection
-  namespace: kube-system
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: cainjector
     app.kubernetes.io/name: cainjector
@@ -122,14 +122,14 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: cert-manager-cainjector
-    namespace: cert-manager
+    namespace: "{{ .Release.Namespace }}"
 ---
 # Source: cert-manager/templates/cainjector-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cert-manager-cainjector
-  namespace: "cert-manager"
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: cainjector
     app.kubernetes.io/name: cainjector
@@ -164,7 +164,7 @@ spec:
           imagePullPolicy: IfNotPresent
           args:
           - --v=2
-          - --leader-election-namespace=kube-system
+          - --leader-election-namespace={{ .Release.Namespace }}
           env:
           - name: POD_NAMESPACE
             valueFrom:

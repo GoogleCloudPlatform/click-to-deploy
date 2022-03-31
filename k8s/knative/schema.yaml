@@ -145,6 +145,42 @@ x-google-marketplace:
         knative.eventing.webhook.image.tag:
           type: TAG
 
+  deployerServiceAccount:
+    description: Creates app resources, including Webhooks and ClusterRoleBindings.
+    roles:
+      - type: ClusterRole
+        rulesType: CUSTOM
+        rules:
+          - apiGroups:
+            - 'rbac.authorization.k8s.io'
+            resources:
+            - 'clusterroles'
+            - 'clusterrolebindings'
+            verbs:
+            - '*'
+          - apiGroups: 
+            - 'apiextensions.k8s.io'
+            resources: 
+            - 'customresourcedefinitions'
+            verbs: 
+            - '*'
+          - apiGroups:
+            - 'admissionregistration.k8s.io'
+            resources:
+            - 'mutatingwebhookconfigurations'
+            - 'validatingwebhookconfigurations'
+            verbs:
+            - '*'
+          - apiGroups:
+            - ''
+            resources:
+            - 'namespaces'
+            verbs:
+            - 'create'
+            - 'list'
+            - 'update'
+            - 'patch'
+
 properties:
   name:
     type: string
