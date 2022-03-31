@@ -85,10 +85,9 @@ actions:
       export INGRESS_GATEWAY=$(kubectl get svc istio-ingressgateway \
       --namespace $NAMESPACE \
       -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+      echo $INGRESS_GATEWAY
       kubectl wait --for=condition=Available=True --timeout=60s --namespace $NAMESPACE deploy helloworld-test
-      curl -s -H 'Host: helloworld-test' \
-      $INGRESS_GATEWAY/hello \
-      | grep -qz 'instance: helloworld-test'
+      curl -s -H 'Host: helloworld-test' $INGRESS_GATEWAY/hello | grep "instance: helloworld-test"
     expect:
       exitCode:
         equals: 0
@@ -97,7 +96,7 @@ actions:
     script: |
       kubectl delete --namespace $NAMESPACE virtualservice helloworld-test
       kubectl delete --namespace $NAMESPACE service helloworld-test
-      kubectl delete --namespace $NAMESPACE ndeploy helloworld-test
+      kubectl delete --namespace $NAMESPACE deploy helloworld-test
     expect:
       exitCode:
         equals: 0
