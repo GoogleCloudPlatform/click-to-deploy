@@ -7,21 +7,14 @@ actions:
         equals: 0
 - name: Wait for the webhook get ready
   bashTest:
-    script: |
-      timeout 120 bash -c '
-        until ( kubectl get deploy cert-manager-webhook  \
-                --namespace ${NAMESPACE} \
-                -o=jsonpath='{.status.conditions[0].status}' \
-                | grep -qz True);
-          do sleep 2;
-        done'
+    script: kubectl wait --for=condition=Available=True --timeout=120s --namespace $NAMESPACE deploy cert-manager-webhook
     expect:
       exitCode:
         equals: 0
 - name: Create test issuer and self signed cert
   bashTest:
     script: |
-      kubectl apply --namespace ${NAMESPACE} -f - <<EOF
+      kubectl apply --namespace $NAMESPACE -f - <<EOF
       apiVersion: cert-manager.io/v1
       kind: Issuer
       metadata:
@@ -45,20 +38,13 @@ actions:
         equals: 0
 - name: Try to get new cert
   bashTest:
-    script: |
-      timeout 60 bash -c '
-        until ( kubectl get Certificate selfsigned-cert \
-                -o=jsonpath='{.status.conditions[0].status}' \
-                | grep -qz True);
-          do sleep 2;
-        done'
+    script: kubectl wait --for=condition=Ready --namespace $NAMESPACE --timeout=120s certificate selfsigned-cert
     expect:
       exitCode:
         equals: 0
 - name: Try to get cert secret
   bashTest:
-    script: |
-      kubectl get secret selfsigned-cert-tls
+    script: timeout 60 bash -c 'until (kubectl get secret --namespace $NAMESPACE selfsigned-cert-tls); do sleep 5;done'
     expect:
       exitCode:
         equals: 0
@@ -87,3 +73,4 @@ actions:
     expect:
       exitCode:
         equals: 0
+
