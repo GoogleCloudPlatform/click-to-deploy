@@ -195,7 +195,7 @@ spec:
               path: /healthz
               port: 6080
               scheme: HTTP
-            initialDelaySeconds: 20 20 20 
+            initialDelaySeconds: 20 
             periodSeconds: 5
             timeoutSeconds: 1
             successThreshold: 1
