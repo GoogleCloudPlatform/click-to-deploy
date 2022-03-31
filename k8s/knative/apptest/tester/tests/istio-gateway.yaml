@@ -1,10 +1,4 @@
 actions:
-- name: kubectl smoke test
-  bashTest:
-    script: kubectl version
-    expect:
-      exitCode:
-        equals: 0
 - name: Wait for the istio ingressgateway get ready
   bashTest:
     script: kubectl wait --for=condition=Available=True --timeout=120s --namespace $NAMESPACE deploy istio-ingressgateway
@@ -23,7 +17,7 @@ actions:
           app: helloworld-test
       spec:
         ports:
-        - port: 5000
+        - port: 8080
           name: http
         selector:
           app: helloworld-test
@@ -46,13 +40,16 @@ actions:
           spec:
             containers:
             - name: helloworld
-              image: docker.io/istio/examples-helloworld-v1
+              image: gcr.io/knative-samples/helloworld-go
               ports:
-              - containerPort: 5000
+              - containerPort: 8080
+              env:
+              - name: TARGET
+                value: "istio"
               readinessProbe:
                 httpGet:
-                  path: /hello
-                  port: 5000
+                  path: /
+                  port: 8080
                 initialDelaySeconds: 5
       EOF
     expect:
@@ -79,7 +76,7 @@ actions:
           - destination:
               host: helloworld-test
               port:
-                number: 5000
+                number: 8080
       EOF
     expect:
       exitCode:
@@ -91,8 +88,8 @@ actions:
       --namespace $NAMESPACE \
       -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
       kubectl wait --for=condition=Available=True --timeout=120s --namespace $NAMESPACE deploy helloworld-test
-      timeout 60 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' $INGRESS_GATEWAY/hello)" != "200" ]]; do sleep 5;done' 
-      curl -s -H 'Host: helloworld-test' $INGRESS_GATEWAY/hello | grep -qz 'instance: helloworld-test'
+      timeout 60 bash -c 'while [[ "$(curl -s -H "Host: helloworld-test" -o /dev/null -w ''%{http_code}'' $INGRESS_GATEWAY)" != "200" ]]; do sleep 5;done' 
+      curl -s -H "Host: helloworld-test" $INGRESS_GATEWAY | grep -qz "Hello istio"
     expect:
       exitCode:
         equals: 0
