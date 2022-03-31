@@ -7,21 +7,14 @@ actions:
         equals: 0
 - name: Wait for the istio ingressgateway get ready
   bashTest:
-    script: |
-      timeout 120 bash -c '
-        until ( kubectl get deploy istio-ingressgateway  \
-                --namespace ${NAMESPACE} \
-                -o=jsonpath='{.status.conditions[0].status}' \
-                | grep -qz True);
-          do sleep 2;
-        done'
+    script: kubectl wait --for=condition=Available=True --timeout=120s --namespace $NAMESPACE deploy istio-ingressgateway
     expect:
       exitCode:
         equals: 0
 - name: Create helloworld app and service
   bashTest:
     script: |
-      kubectl apply --namespace ${NAMESPACE} -f - <<EOF
+      kubectl apply --namespace $NAMESPACE -f - <<EOF
       apiVersion: v1
       kind: Service
       metadata:
@@ -63,7 +56,7 @@ actions:
 - name: Create helloworld virtualservice
   bashTest:
     script: |
-      kubectl apply --namespace ${NAMESPACE} -f - <<EOF
+      kubectl apply --namespace $NAMESPACE -f - <<EOF
       apiVersion: networking.istio.io/v1alpha3
       kind: VirtualService
       metadata:
@@ -89,24 +82,22 @@ actions:
 - name: Try to get responce from ingress
   bashTest:
     script: |
-      timeout 60 bash -c '
-        export INGRESS_GATEWAY=$(kubectl get svc istio-ingressgateway \
-               --namespace ${NAMESPACE} \
-               -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-        until (curl -s -H 'Host: helloworld-test' \
-               $INGRESS_GATEWAY/hello \
-               | grep -qz "instance: helloworld-test");
-          do sleep 2;
-        done'
+      export INGRESS_GATEWAY=$(kubectl get svc istio-ingressgateway \
+      --namespace $NAMESPACE \
+      -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+      kubectl wait --for=condition=Available=True --timeout=60s --namespace $NAMESPACE deploy helloworld-test
+      curl -s -H 'Host: helloworld-test' \
+      $INGRESS_GATEWAY/hello \
+      | grep -qz 'instance: helloworld-test'
     expect:
       exitCode:
         equals: 0
 - name: Delete app and service
   bashTest:
     script: |
-      kubectl delete --namespace ${NAMESPACE} kubectl delete virtualservice helloworld-test
-      kubectl delete --namespace ${NAMESPACE} kubectl delete service helloworld-test
-      kubectl delete --namespace ${NAMESPACE} kubectl delete deploy helloworld-test
+      kubectl delete --namespace $NAMESPACE virtualservice helloworld-test
+      kubectl delete --namespace $NAMESPACE service helloworld-test
+      kubectl delete --namespace $NAMESPACE ndeploy helloworld-test
     expect:
       exitCode:
         equals: 0
