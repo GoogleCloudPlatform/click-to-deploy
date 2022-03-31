@@ -99,6 +99,15 @@ cd click-to-deploy/k8s/knative
 
 #### Configure the app with environment variables
 
+Choose an instance name and
+[namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)
+for the app. In most cases, you can use the `default` namespace.
+
+```shell
+export APP_INSTANCE_NAME=knative
+export NAMESPACE=default
+```
+
 Set up the image tag:
 
 It is advised to use a stable image reference, which you can find on:
@@ -162,7 +171,8 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to your app.
 
 ```shell
-helm template knative chart/knative \
+helm template "${APP_INSTANCE_NAME}" chart/knative \
+    --namespace "${NAMESPACE}" \
     --set certmanager.image.repo=$IMAGE_CERT_MANAGER \
     --set certmanager.image.tag=$TRACK_CERT_MANAGER \
     --set istio.ingressgateway.image.repo=$IMAGE_ISTIO_INGRESSGATEWAY \
