@@ -38,20 +38,13 @@ actions:
         equals: 0
 - name: Try to get new cert
   bashTest:
-    script: |
-      timeout 60 bash -c '
-        until ( kubectl get Certificate selfsigned-cert \
-                --namespace $NAMESPACE \
-                -o=jsonpath='{.status.conditions[0].status}' \
-                | grep -qz True);
-          do sleep 2;
-        done'
-    expect:
+    script: kubectl wait --for=condition=Ready --namespace $NAMESPACE --timeout=120s certificate selfsigned-cert
+  expect:
       exitCode:
         equals: 0
 - name: Try to get cert secret
   bashTest:
-    script: kubectl get secret selfsigned-cert-tls --namespace $NAMESPACE
+    script: timeout 60 bash -c 'until (kubectl get secret --namespace $NAMESPACE selfsigned-cert-tls); do sleep 5;done'
     expect:
       exitCode:
         equals: 0
