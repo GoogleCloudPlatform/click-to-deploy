@@ -1,28 +1,3 @@
-# Copyright 2018 The Knative Authors
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     https://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: config-istio
-  namespace: "{{ .Release.Namespace }}"
-  labels:
-    app.kubernetes.io/component: net-istio
-    app.kubernetes.io/name: knative-serving
-    app.kubernetes.io/version: "1.2.0"
-    serving.knative.dev/release: "v1.2.0"
-    networking.knative.dev/ingress-provider: istio
 data:
   _example: |
     ################################
@@ -45,7 +20,7 @@ data:
     # `gateway.{{gateway_namespace}}.{{gateway_name}}: "{{ingress_name}}.{{ingress_namespace}}.svc.cluster.local"`.
     # The {{gateway_namespace}} is optional; when it is omitted, the system will search for
     # the gateway in the serving system namespace `knative-serving`
-    gateway.knative-serving.knative-ingress-gateway: "istio-ingressgateway.{{ .Release.Namespace }}.svc.cluster.local"
+    gateway.knative-serving.knative-ingress-gateway: "istio-ingressgateway.istio-system.svc.cluster.local"
 
     # A cluster local gateway to allow pods outside of the mesh to access
     # Services and Routes not exposing through an ingress.  If the users
@@ -61,7 +36,7 @@ data:
     # {{local_gateway_namespace}} is optional; when it is omitted, the system
     # will search for the local gateway in the serving system namespace
     # `knative-serving`
-    local-gateway.knative-serving.knative-local-gateway: "knative-local-gateway.{{ .Release.Namespace }}.svc.cluster.local"
+    local-gateway.knative-serving.knative-local-gateway: "knative-local-gateway.istio-system.svc.cluster.local"
 
     # DEPRECATED: local-gateway.mesh is deprecated.
     # See: https://github.com/knative/serving/issues/11523

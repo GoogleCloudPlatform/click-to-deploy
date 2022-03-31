@@ -21,3 +21,4 @@ data:
     enablePrometheusMerge: true
     rootnamespace: "{{ .Release.Namespace }}"
     trustDomain: cluster.local
+
