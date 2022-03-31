@@ -205,7 +205,7 @@ helm template "${APP_INSTANCE_NAME}" chart/knative \
     --set certmanager.cainjector.replicas=${CERT_MANAGER_CAINJECTOR_REPLICAS:-1} \
     --set istio.ingressgateway.replicas=${ISTIO_INGRESS_GATEWAY_REPLICAS:-1} \
     --set knative.autoscaler.replicas=${KNATIVE_AUTOSCALER_REPLICAS:-1} \
-    > knative_manifest.yaml
+    > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 
 #### Apply the manifest to your Kubernetes cluster
@@ -213,7 +213,23 @@ helm template "${APP_INSTANCE_NAME}" chart/knative \
 Use `kubectl` to apply the manifest to your Kubernetes cluster:
 
 ```shell
-kubectl apply -f knative_manifest.yaml
+kubectl apply -f ${APP_INSTANCE_NAME}_manifest.yaml
+```
+
+In case of such errors:
+```
+unable to recognize "/data/resources.yaml": no matches for kind "EnvoyFilter" in version "networking.istio.io/v1alpha3"
+unable to recognize "/data/resources.yaml": no matches for kind "Gateway" in version "networking.istio.io/v1alpha3"
+unable to recognize "/data/resources.yaml": no matches for kind "Image" in version "caching.internal.knative.dev/v1alpha1"
+unable to recognize "/data/resources.yaml": no matches for kind "PeerAuthentication" in version "security.istio.io/v1beta1"
+```
+re-apply the manifest.
+
+The solution contains a lot of CRDs and some of them did not have time to apply. Or install them first before installing the manifest:
+
+```shell
+kubectl apply -f ./chart/knative/templates/crds/
+kubectl apply -f ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 
 #### View the app in the Google Cloud Console
