@@ -87,10 +87,9 @@ actions:
       -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
       echo $INGRESS_GATEWAY
       kubectl wait --for=condition=Available=True --timeout=60s --namespace $NAMESPACE deploy helloworld-test
-      kubectl get --namespace $NAMESPACE virtualservice helloworld-test
-      kubectl get --namespace $NAMESPACE service helloworld-test
-      kubectl get --namespace $NAMESPACE deploy helloworld-test
-      curl -s -iv -H 'Host: helloworld-test' $INGRESS_GATEWAY/hello 2>&1
+      export DEBUG_E=$(curl -s -iv -H 'Host: helloworld-test' $INGRESS_GATEWAY/hello 2>&1)
+      echo $DEBUG_E
+      curl -s -H 'Host: helloworld-test' $INGRESS_GATEWAY/hello | grep -qz 'instance: helloworld-test'
     expect:
       exitCode:
         equals: 0
