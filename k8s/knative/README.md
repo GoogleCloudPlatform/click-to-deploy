@@ -104,7 +104,7 @@ Set up the image tag:
 It is advised to use a stable image reference, which you can find on:
 - [Cert Manager - Marketplace Container Registry](https://marketplace.gcr.io/google/cert-manager1).
 - [Knative - Marketplace Container Registry](https://marketplace.gcr.io/google/knative1).
-- [Istio - Docker Hub](https://hub.docker.com/r/istio/proxyv2/tags)
+- [Istio - Google Container Registry](https://gcr.io/istio-release/proxyv2)
 For example:
 
 ```shell
@@ -120,8 +120,8 @@ Configure the container images:
 IMAGE_CERT_MANAGER=marketplace.gcr.io/google/cert-manager1
 
 # ISTIO
-IMAGE_ISTIO_INGRESSGATEWAY=docker.io/istio/proxyv2
-IMAGE_ISTIO_ISTIOD=docker.io/istio/pilot
+IMAGE_ISTIO_INGRESSGATEWAY=gcr.io/istio-release/proxyv2
+IMAGE_ISTIO_ISTIOD=gcr.io/istio-release/pilot
 
 # KNATIVE SERVING
 IMAGE_KNATIVE_SERVING_ACTIVATOR=gcr.io/knative-releases/knative.dev/serving/cmd/activator
@@ -162,7 +162,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to your app.
 
 ```shell
-helm template knative chart/knative \
+helm install knative chart/knative \
     --set certmanager.image.repo=$IMAGE_CERT_MANAGER \
     --set certmanager.image.tag=$TRACK_CERT_MANAGER \
     --set istio.ingressgateway.image.repo=$IMAGE_ISTIO_INGRESSGATEWAY \
@@ -197,18 +197,10 @@ helm template knative chart/knative \
     --set knative.eventing.mtping.image.tag=$TRACK_KNATIVE \
     --set knative.eventing.webhook.image.repo=$IMAGE_KNATIVE_EVENTING_WEBHOOK \
     --set knative.eventing.webhook.image.tag=$TRACK_KNATIVE \
-    --set certmanager.controller.replicas="${CERT_MANAGER_CONTROLLER_REPLICAS:-1}" \
-    --set certmanager.webhook.replicas="${CERT_MANAGER_WEBHOOK_REPLICAS:-1}" \
-    --set certmanager.cainjector.replicas="${CERT_MANAGER_CAINJECTOR_REPLICAS:-1}" \
-    --set istio.ingressgateway.replicas="${ISTIO_INGRESS_GATEWAY_REPLICAS:-1}" \
-    --set knative.autoscaler.replicas="${KNATIVE_AUTOSCALER_REPLICAS:-1}" \
-    > "knative_manifest.yaml"
+    --set certmanager.controller.replicas=${CERT_MANAGER_CONTROLLER_REPLICAS:-1} \
+    --set certmanager.webhook.replicas=${CERT_MANAGER_WEBHOOK_REPLICAS:-1} \
+    --set certmanager.cainjector.replicas=${CERT_MANAGER_CAINJECTOR_REPLICAS:-1} \
+    --set istio.ingressgateway.replicas=${ISTIO_INGRESS_GATEWAY_REPLICAS:-1} \
+    --set knative.autoscaler.replicas=${KNATIVE_AUTOSCALER_REPLICAS:-1}
 ```
 
-#### Apply the manifest to your Kubernetes cluster
-
-Use `kubectl` to apply the manifest to your Kubernetes cluster:
-
-```shell
-kubectl apply -f knative_manifest.yaml
-```
