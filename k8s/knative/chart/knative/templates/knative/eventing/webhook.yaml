@@ -16,7 +16,7 @@ apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
   name: eventing-webhook
-  namespace: knative-eventing
+  namespace: "{{ .Release.Namespace }}"
   labels:
     eventing.knative.dev/release: "v1.2.0"
     app.kubernetes.io/component: eventing-webhook
@@ -42,7 +42,7 @@ apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
   name: eventing-webhook
-  namespace: knative-eventing
+  namespace: "{{ .Release.Namespace }}"
   labels:
     eventing.knative.dev/release: "v1.2.0"
     app.kubernetes.io/component: eventing-webhook
@@ -73,7 +73,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: eventing-webhook
-  namespace: knative-eventing
+  namespace: "{{ .Release.Namespace }}"
   labels:
     eventing.knative.dev/release: "v1.2.0"
     app.kubernetes.io/component: eventing-webhook
@@ -185,7 +185,7 @@ metadata:
     app.kubernetes.io/version: "1.2.0"
     app.kubernetes.io/name: knative-eventing
   name: eventing-webhook
-  namespace: knative-eventing
+  namespace: "{{ .Release.Namespace }}"
 spec:
   ports:
     - name: https-webhook
@@ -222,7 +222,7 @@ webhooks:
     clientConfig:
       service:
         name: eventing-webhook
-        namespace: knative-eventing
+        namespace: "{{ .Release.Namespace }}"
     sideEffects: None
     failurePolicy: Ignore
     name: config.webhook.eventing.knative.dev
@@ -260,7 +260,7 @@ webhooks:
     clientConfig:
       service:
         name: eventing-webhook
-        namespace: knative-eventing
+        namespace: "{{ .Release.Namespace }}"
     sideEffects: None
     failurePolicy: Fail
     name: webhook.eventing.knative.dev
@@ -294,7 +294,7 @@ webhooks:
     clientConfig:
       service:
         name: eventing-webhook
-        namespace: knative-eventing
+        namespace: "{{ .Release.Namespace }}"
     sideEffects: None
     failurePolicy: Fail
     name: validation.webhook.eventing.knative.dev
@@ -319,7 +319,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: eventing-webhook-certs
-  namespace: knative-eventing
+  namespace: "{{ .Release.Namespace }}"
   labels:
     eventing.knative.dev/release: "v1.2.0"
     app.kubernetes.io/version: "1.2.0"
@@ -354,7 +354,7 @@ webhooks:
     clientConfig:
       service:
         name: eventing-webhook
-        namespace: knative-eventing
+        namespace: "{{ .Release.Namespace }}"
     failurePolicy: Fail
     sideEffects: None
     name: sinkbindings.webhook.sources.knative.dev

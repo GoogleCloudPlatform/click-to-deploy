@@ -16,7 +16,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: autoscaler
-  namespace: knative-serving
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/component: autoscaler
     app.kubernetes.io/name: knative-serving
@@ -119,7 +119,7 @@ metadata:
     app.kubernetes.io/version: "1.2.0"
     serving.knative.dev/release: "v1.2.0"
   name: autoscaler
-  namespace: knative-serving
+  namespace: "{{ .Release.Namespace }}"
 spec:
   ports:
     # Define metrics and profiling for them to be accessible within service meshes.

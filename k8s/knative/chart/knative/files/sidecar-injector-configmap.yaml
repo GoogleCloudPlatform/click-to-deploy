@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: istio-sidecar-injector
-  namespace: istio-system
+  namespace: "{{ .Release.Namespace }}"
   labels:
     istio.io/rev: default
     install.operator.istio.io/owning-resource: unknown
@@ -30,7 +30,7 @@ data:
         "hub": "docker.io/istio",
         "imagePullPolicy": "",
         "imagePullSecrets": [],
-        "istioNamespace": "istio-system",
+        "istioNamespace": "{{ .Release.Namespace }}",
         "istiod": {
           "enableAnalysis": false
         },
@@ -46,7 +46,7 @@ data:
           "clusterName": "",
           "enabled": false
         },
-        "namespace": "istio-system",
+        "namespace": "{{ .Release.Namespace }}",
         "network": "",
         "omitSidecarInjectorConfigMap": false,
         "oneNamespace": false,

@@ -16,7 +16,7 @@ apiVersion: caching.internal.knative.dev/v1alpha1
 kind: Image
 metadata:
   name: queue-proxy
-  namespace: knative-serving
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/component: queue-proxy
     app.kubernetes.io/name: knative-serving

@@ -16,7 +16,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: config-br-default-channel
-  namespace: knative-eventing
+  namespace: "{{ .Release.Namespace }}"
   labels:
     eventing.knative.dev/release: "v1.2.0"
     app.kubernetes.io/version: "1.2.0"
@@ -45,7 +45,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: config-br-defaults
-  namespace: knative-eventing
+  namespace: "{{ .Release.Namespace }}"
   labels:
     eventing.knative.dev/release: "v1.2.0"
     app.kubernetes.io/version: "1.2.0"
@@ -58,7 +58,7 @@ data:
       apiVersion: v1
       kind: ConfigMap
       name: config-br-default-channel
-      namespace: knative-eventing
+      namespace: "{{ .Release.Namespace }}"
       delivery:
         retry: 10
         backoffPolicy: exponential
@@ -83,7 +83,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: default-ch-webhook
-  namespace: knative-eventing
+  namespace: "{{ .Release.Namespace }}"
   labels:
     eventing.knative.dev/release: "v1.2.0"
     app.kubernetes.io/version: "1.2.0"
@@ -118,7 +118,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: config-ping-defaults
-  namespace: knative-eventing
+  namespace: "{{ .Release.Namespace }}"
   labels:
     eventing.knative.dev/release: "v1.2.0"
   annotations:
@@ -165,7 +165,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: config-features
-  namespace: knative-eventing
+  namespace: "{{ .Release.Namespace }}"
   labels:
     eventing.knative.dev/release: "v1.2.0"
     knative.dev/config-propagation: original
@@ -212,7 +212,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: config-kreference-mapping
-  namespace: knative-eventing
+  namespace: "{{ .Release.Namespace }}"
   labels:
     eventing.knative.dev/release: "v1.2.0"
     knative.dev/config-propagation: original
@@ -261,7 +261,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: config-leader-election
-  namespace: knative-eventing
+  namespace: "{{ .Release.Namespace }}"
   labels:
     eventing.knative.dev/release: "v1.2.0"
     app.kubernetes.io/version: "1.2.0"
@@ -323,7 +323,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: config-logging
-  namespace: knative-eventing
+  namespace: "{{ .Release.Namespace }}"
   labels:
     eventing.knative.dev/release: "v1.2.0"
     knative.dev/config-propagation: original
@@ -377,7 +377,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: config-observability
-  namespace: knative-eventing
+  namespace: "{{ .Release.Namespace }}"
   labels:
     eventing.knative.dev/release: "v1.2.0"
     knative.dev/config-propagation: original
@@ -454,7 +454,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: config-tracing
-  namespace: knative-eventing
+  namespace: "{{ .Release.Namespace }}"
   labels:
     eventing.knative.dev/release: "v1.2.0"
     knative.dev/config-propagation: original
@@ -484,7 +484,7 @@ data:
 
     # URL to zipkin collector where traces are sent.
     # This must be specified when backend is "zipkin"
-    zipkin-endpoint: "http://zipkin.istio-system.svc.cluster.local:9411/api/v2/spans"
+    zipkin-endpoint: "http://zipkin.{{ .Release.Namespace }}.svc.cluster.local:9411/api/v2/spans"
 
     # Enable zipkin debug mode. This allows all spans to be sent to the server
     # bypassing sampling.

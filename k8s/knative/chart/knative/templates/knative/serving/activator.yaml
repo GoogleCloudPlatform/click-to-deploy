@@ -16,7 +16,7 @@ apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
   name: activator
-  namespace: knative-serving
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/component: activator
     app.kubernetes.io/name: knative-serving
@@ -45,7 +45,7 @@ apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: activator-pdb
-  namespace: knative-serving
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/component: activator
     app.kubernetes.io/name: knative-serving
@@ -76,7 +76,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: activator
-  namespace: knative-serving
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/component: activator
     app.kubernetes.io/version: "1.2.0"
@@ -181,7 +181,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: activator-service
-  namespace: knative-serving
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: activator
     app.kubernetes.io/component: activator

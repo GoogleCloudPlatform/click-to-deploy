@@ -51,7 +51,7 @@ apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
   name: knative-ingress-gateway
-  namespace: knative-serving
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/component: net-istio
     app.kubernetes.io/name: knative-serving
@@ -91,7 +91,7 @@ apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
   name: knative-local-gateway
-  namespace: knative-serving
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/component: net-istio
     app.kubernetes.io/name: knative-serving
@@ -113,7 +113,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: knative-local-gateway
-  namespace: istio-system
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/component: net-istio
     app.kubernetes.io/name: knative-serving
@@ -137,7 +137,7 @@ apiVersion: "security.istio.io/v1beta1"
 kind: "PeerAuthentication"
 metadata:
   name: "webhook"
-  namespace: "knative-serving"
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/component: net-istio
     app.kubernetes.io/name: knative-serving
@@ -156,7 +156,7 @@ apiVersion: "security.istio.io/v1beta1"
 kind: "PeerAuthentication"
 metadata:
   name: "domainmapping-webhook"
-  namespace: "knative-serving"
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/component: net-istio
     app.kubernetes.io/name: knative-serving
@@ -175,7 +175,7 @@ apiVersion: "security.istio.io/v1beta1"
 kind: "PeerAuthentication"
 metadata:
   name: "net-istio-webhook"
-  namespace: "knative-serving"
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/component: net-istio
     app.kubernetes.io/name: knative-serving
@@ -209,7 +209,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: net-istio-controller
-  namespace: knative-serving
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/component: net-istio
     app.kubernetes.io/name: knative-serving
@@ -295,7 +295,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: net-istio-webhook
-  namespace: knative-serving
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/component: net-istio
     app.kubernetes.io/name: knative-serving
@@ -375,7 +375,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: net-istio-webhook-certs
-  namespace: knative-serving
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/component: net-istio
     app.kubernetes.io/name: knative-serving
@@ -402,7 +402,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: net-istio-webhook
-  namespace: knative-serving
+  namespace: "{{ .Release.Namespace }}"
   labels:
     role: net-istio-webhook
     app.kubernetes.io/component: net-istio
@@ -457,7 +457,7 @@ webhooks:
     clientConfig:
       service:
         name: net-istio-webhook
-        namespace: knative-serving
+        namespace: "{{ .Release.Namespace }}"
     failurePolicy: Fail
     sideEffects: None
     objectSelector:
@@ -497,7 +497,7 @@ webhooks:
     clientConfig:
       service:
         name: net-istio-webhook
-        namespace: knative-serving
+        namespace: "{{ .Release.Namespace }}"
     failurePolicy: Fail
     sideEffects: None
     name: config.webhook.istio.networking.internal.knative.dev

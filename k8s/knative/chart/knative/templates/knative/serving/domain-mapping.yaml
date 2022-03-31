@@ -16,7 +16,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: domain-mapping
-  namespace: knative-serving
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/component: domain-mapping
     app.kubernetes.io/name: knative-serving
@@ -104,7 +104,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: domainmapping-webhook
-  namespace: knative-serving
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/component: domain-mapping
     app.kubernetes.io/name: knative-serving
@@ -214,7 +214,7 @@ metadata:
     app.kubernetes.io/version: "1.2.0"
     serving.knative.dev/release: "v1.2.0"
   name: domainmapping-webhook
-  namespace: knative-serving
+  namespace: "{{ .Release.Namespace }}"
 spec:
   ports:
     # Define metrics and profiling for them to be accessible within service meshes.

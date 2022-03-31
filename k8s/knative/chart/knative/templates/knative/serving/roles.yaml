@@ -249,7 +249,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: controller
-    namespace: knative-serving
+    namespace: "{{ .Release.Namespace }}"
 roleRef:
   kind: ClusterRole
   name: knative-serving-admin
@@ -267,7 +267,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: controller
-    namespace: knative-serving
+    namespace: "{{ .Release.Namespace }}"
 roleRef:
   kind: ClusterRole
   name: knative-serving-aggregated-addressable-resolver

@@ -17,7 +17,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: config-autoscaler
-  namespace: knative-serving
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/component: autoscaler
     app.kubernetes.io/name: knative-serving
@@ -229,7 +229,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: config-defaults
-  namespace: knative-serving
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/name: knative-serving
     app.kubernetes.io/component: controller
@@ -373,7 +373,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: config-deployment
-  namespace: knative-serving
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/name: knative-serving
     app.kubernetes.io/component: controller
@@ -477,7 +477,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: config-domain
-  namespace: knative-serving
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/name: knative-serving
     app.kubernetes.io/component: controller
@@ -543,7 +543,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: config-features
-  namespace: knative-serving
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/name: knative-serving
     app.kubernetes.io/component: controller
@@ -706,7 +706,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: config-gc
-  namespace: knative-serving
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/name: knative-serving
     app.kubernetes.io/component: controller
@@ -807,7 +807,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: config-leader-election
-  namespace: knative-serving
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/name: knative-serving
     app.kubernetes.io/component: controller
@@ -870,7 +870,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: config-logging
-  namespace: knative-serving
+  namespace: "{{ .Release.Namespace }}"
   labels:
     serving.knative.dev/release: "v1.2.0"
     app.kubernetes.io/version: "1.2.0"
@@ -949,7 +949,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: config-network
-  namespace: knative-serving
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/name: knative-serving
     app.kubernetes.io/version: "1.2.0"
@@ -1125,7 +1125,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: config-observability
-  namespace: knative-serving
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/name: knative-serving
     app.kubernetes.io/version: "1.2.0"
@@ -1234,7 +1234,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: config-tracing
-  namespace: knative-serving
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/name: knative-serving
     app.kubernetes.io/version: "1.2.0"
@@ -1263,7 +1263,7 @@ data:
 
     # URL to zipkin collector where traces are sent.
     # This must be specified when backend is "zipkin"
-    zipkin-endpoint: "http://zipkin.istio-system.svc.cluster.local:9411/api/v2/spans"
+    zipkin-endpoint: "http://zipkin.{{ .Release.Namespace }}.svc.cluster.local:9411/api/v2/spans"
 
     # Enable zipkin debug mode. This allows all spans to be sent to the server
     # bypassing sampling.

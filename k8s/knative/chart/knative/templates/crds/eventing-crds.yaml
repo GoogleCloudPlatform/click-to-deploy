@@ -1373,7 +1373,7 @@ spec:
       clientConfig:
         service:
           name: eventing-webhook
-          namespace: knative-eventing
+          namespace: "{{ .Release.Namespace }}"
 
 ---
 # Copyright 2020 The Knative Authors
