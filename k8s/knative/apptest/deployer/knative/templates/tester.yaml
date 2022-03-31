@@ -27,5 +27,5 @@ spec:
           fieldPath: metadata.namespace
     - name: APP_INSTANCE_NAME
       value: {{ .Release.Name }}
-
   restartPolicy: Never
+
