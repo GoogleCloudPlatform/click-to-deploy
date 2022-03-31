@@ -105,4 +105,10 @@ actions:
     expect:
       exitCode:
         equals: 0
+- name: wait for 10 minutes
+  bashTest:
+    script: sleep 600s
+    expect:
+      exitCode:
+        equals: 0
 
