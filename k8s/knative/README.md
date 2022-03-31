@@ -155,3 +155,60 @@ export CERT_MANAGER_CAINJECTOR_REPLICAS=3
 export ISTIO_INGRESS_GATEWAY_REPLICAS=3
 export KNATIVE_AUTOSCALER_REPLICAS=3
 ```
+
+#### Expand the manifest template
+
+Use `helm template` to expand the template. We recommend that you save the
+expanded manifest file for future updates to your app.
+
+```shell
+helm template knative chart/knative \
+    --set certmanager.image.repo=$IMAGE_CERT_MANAGER \
+    --set certmanager.image.tag=$TRACK_CERT_MANAGER \
+    --set istio.ingressgateway.image.repo=$IMAGE_ISTIO_INGRESSGATEWAY \
+    --set istio.ingressgateway.image.tag=$TRACK_ISTIO \
+    --set istio.istiod.image.repo=$IMAGE_ISTIO_ISTIOD \
+    --set istio.istiod.image.tag=$TRACK_ISTIO \
+    --set knative.serving.activator.image.repo=$IMAGE_KNATIVE_SERVING_ACTIVATOR \
+    --set knative.serving.activator.image.tag=$TRACK_KNATIVE \
+    --set knative.serving.autoscaler.image.repo=$IMAGE_KNATIVE_SERVING_AUTOSCALER \
+    --set knative.serving.autoscaler.image.tag=$TRACK_KNATIVE \
+    --set knative.serving.controller.image.repo=$IMAGE_KNATIVE_SERVING_CONTROLLER \
+    --set knative.serving.controller.image.tag=$TRACK_KNATIVE \
+    --set knative.serving.domainmapping.image.repo=$IMAGE_KNATIVE_SERVING_DOMAINMAPPING \
+    --set knative.serving.domainmapping.image.tag=$TRACK_KNATIVE \
+    --set knative.serving.domainmapping.webhook.image.repo=$IMAGE_KNATIVE_SERVING_DOMAINMAPPING_WEBHOOK \
+    --set knative.serving.domainmapping.webhook.image.tag=$TRACK_KNATIVE \
+    --set knative.serving.queueproxy.image.repo=$IMAGE_KNATIVE_SERVING_QUEUEPROXY \
+    --set knative.serving.queueproxy.image.tag=$TRACK_KNATIVE \
+    --set knative.serving.webhook.image.repo=$IMAGE_KNATIVE_SERVING_WEBHOOK \
+    --set knative.serving.webhook.image.tag=$TRACK_KNATIVE \
+    --set knative.serving.netcertmanager.controller.image.repo=$IMAGE_KNATIVE_SERVING_NETCERMANAGER_CONTROLLER \
+    --set knative.serving.netcertmanager.controller.image.tag=$TRACK_KNATIVE \
+    --set knative.serving.netcertmanager.webhook.image.repo=$IMAGE_KNATIVE_SERVING_NETCERMANAGER_WEBHOOK \
+    --set knative.serving.netcertmanager.webhook.image.tag=$TRACK_KNATIVE \
+    --set knative.serving.netistio.controller.image.repo=$IMAGE_KNATIVE_SERVING_NETISTIO_CONTROLLER \
+    --set knative.serving.netistio.controller.image.tag=$TRACK_KNATIVE \
+    --set knative.serving.netistio.webhook.image.repo=$IMAGE_KNATIVE_SERVING_NETISTIO_WEBHOOK \
+    --set knative.serving.netistio.webhook.image.tag=$TRACK_KNATIVE \
+    --set knative.eventing.controller.image.repo=$IMAGE_KNATIVE_EVENTING_CONTROLLER \
+    --set knative.eventing.controller.image.tag=$TRACK_KNATIVE \
+    --set knative.eventing.mtping.image.repo=$IMAGE_KNATIVE_EVENTING_MTPING \
+    --set knative.eventing.mtping.image.tag=$TRACK_KNATIVE \
+    --set knative.eventing.webhook.image.repo=$IMAGE_KNATIVE_EVENTING_WEBHOOK \
+    --set knative.eventing.webhook.image.tag=$TRACK_KNATIVE \
+    --set certmanager.controller.replicas="${CERT_MANAGER_CONTROLLER_REPLICAS:-1}" \
+    --set certmanager.webhook.replicas="${CERT_MANAGER_WEBHOOK_REPLICAS:-1}" \
+    --set certmanager.cainjector.replicas="${CERT_MANAGER_CAINJECTOR_REPLICAS:-1}" \
+    --set istio.ingressgateway.replicas="${ISTIO_INGRESS_GATEWAY_REPLICAS:-1}" \
+    --set knative.autoscaler.replicas="${KNATIVE_AUTOSCALER_REPLICAS:-1}" \
+    > "knative_manifest.yaml"
+```
+
+#### Apply the manifest to your Kubernetes cluster
+
+Use `kubectl` to apply the manifest to your Kubernetes cluster:
+
+```shell
+kubectl apply -f knative_manifest.yaml
+```
