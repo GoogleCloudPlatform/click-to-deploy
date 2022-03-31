@@ -623,7 +623,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: istio-reader-service-account
-    namespace: istio-system
+    namespace: "{{ .Release.Namespace }}"
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -639,7 +639,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: istio-reader-service-account
-    namespace: istio-system
+    namespace: "{{ .Release.Namespace }}"
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -655,7 +655,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: istiod
-    namespace: istio-system
+    namespace: "{{ .Release.Namespace }}"
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -671,7 +671,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: istiod
-    namespace: istio-system
+    namespace: "{{ .Release.Namespace }}"
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -687,13 +687,13 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: istiod-service-account
-    namespace: istio-system
+    namespace: "{{ .Release.Namespace }}"
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: istio-ingressgateway-sds
-  namespace: istio-system
+  namespace: "{{ .Release.Namespace }}"
   labels:
     release: istio
     istio.io/rev: default
@@ -713,7 +713,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: istiod
-  namespace: istio-system
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: istiod
     release: istio
@@ -740,7 +740,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: istiod-istio-system
-  namespace: istio-system
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: istiod
     release: istio
@@ -767,7 +767,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: istio-ingressgateway-sds
-  namespace: istio-system
+  namespace: "{{ .Release.Namespace }}"
   labels:
     release: istio
     istio.io/rev: default
@@ -785,7 +785,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: istiod
-  namespace: istio-system
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: istiod
     release: istio
@@ -796,13 +796,13 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: istiod
-    namespace: istio-system
+    namespace: "{{ .Release.Namespace }}"
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: istiod-istio-system
-  namespace: istio-system
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: istiod
     release: istio
@@ -813,4 +813,4 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: istiod-service-account
-    namespace: istio-system
+    namespace: "{{ .Release.Namespace }}"

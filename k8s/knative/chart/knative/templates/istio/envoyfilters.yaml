@@ -2,7 +2,7 @@ apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
 metadata:
   name: stats-filter-1.11
-  namespace: istio-system
+  namespace: "{{ .Release.Namespace }}"
   labels:
     istio.io/rev: default
 spec:
@@ -124,7 +124,7 @@ apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
 metadata:
   name: stats-filter-1.12
-  namespace: istio-system
+  namespace: "{{ .Release.Namespace }}"
   labels:
     istio.io/rev: default
 spec:
@@ -246,7 +246,7 @@ apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
 metadata:
   name: stats-filter-1.13
-  namespace: istio-system
+  namespace: "{{ .Release.Namespace }}"
   labels:
     istio.io/rev: default
 spec:
@@ -368,7 +368,7 @@ apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
 metadata:
   name: tcp-stats-filter-1.11
-  namespace: istio-system
+  namespace: "{{ .Release.Namespace }}"
   labels:
     istio.io/rev: default
 spec:
@@ -482,7 +482,7 @@ apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
 metadata:
   name: tcp-stats-filter-1.12
-  namespace: istio-system
+  namespace: "{{ .Release.Namespace }}"
   labels:
     istio.io/rev: default
 spec:
@@ -596,7 +596,7 @@ apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
 metadata:
   name: tcp-stats-filter-1.13
-  namespace: istio-system
+  namespace: "{{ .Release.Namespace }}"
   labels:
     istio.io/rev: default
 spec:

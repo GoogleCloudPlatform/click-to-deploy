@@ -13,7 +13,7 @@ webhooks:
     clientConfig:
       service:
         name: istiod
-        namespace: istio-system
+        namespace: "{{ .Release.Namespace }}"
         path: /inject
         port: 443
       caBundle: ""
@@ -49,7 +49,7 @@ webhooks:
     clientConfig:
       service:
         name: istiod
-        namespace: istio-system
+        namespace: "{{ .Release.Namespace }}"
         path: /inject
         port: 443
       caBundle: ""
@@ -87,7 +87,7 @@ webhooks:
     clientConfig:
       service:
         name: istiod
-        namespace: istio-system
+        namespace: "{{ .Release.Namespace }}"
         path: /inject
         port: 443
       caBundle: ""
@@ -121,7 +121,7 @@ webhooks:
     clientConfig:
       service:
         name: istiod
-        namespace: istio-system
+        namespace: "{{ .Release.Namespace }}"
         path: /inject
         port: 443
       caBundle: ""
@@ -168,7 +168,7 @@ webhooks:
     clientConfig:
       service:
         name: istiod
-        namespace: istio-system
+        namespace: "{{ .Release.Namespace }}"
         path: /validate
       caBundle: ""
     rules:

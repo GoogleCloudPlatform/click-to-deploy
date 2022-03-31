@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: istiod
-  namespace: istio-system
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: istiod
     istio.io/rev: default
@@ -91,7 +91,7 @@ spec:
             - name: PILOT_ENABLE_PROTOCOL_SNIFFING_FOR_INBOUND
               value: "true"
             - name: ISTIOD_ADDR
-              value: istiod.istio-system.svc:15012
+              value: istiod.{{ .Release.Namespace }}.svc:15012
             - name: PILOT_ENABLE_ANALYSIS
               value: "false"
             - name: CLUSTER_ID
@@ -145,7 +145,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: istiod
-  namespace: istio-system
+  namespace: "{{ .Release.Namespace }}"
   labels:
     istio.io/rev: default
     install.operator.istio.io/owning-resource: unknown
@@ -182,7 +182,7 @@ metadata:
     operator.istio.io/component: Pilot
     release: istio
   name: istiod
-  namespace: istio-system
+  namespace: "{{ .Release.Namespace }}"
 spec:
   maxReplicas: 5
   metrics:
@@ -200,7 +200,7 @@ apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
   name: istiod
-  namespace: istio-system
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: istiod
     istio.io/rev: default
