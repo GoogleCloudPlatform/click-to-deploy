@@ -91,6 +91,7 @@ actions:
     script: |
       timeout 60 bash -c '
         export INGRESS_GATEWAY=$(kubectl get svc istio-ingressgateway \
+               --namespace ${NAMESPACE} \
                -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
         until (curl -s -H 'Host: helloworld-test' \
                $INGRESS_GATEWAY/hello \
