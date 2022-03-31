@@ -117,38 +117,31 @@ It is advised to use a stable image reference, which you can find on:
 For example:
 
 ```shell
-TRACK_CERT_MANAGER=1.6
-TRACK_ISTIO=1.13.0
-TRACK_KNATIVE=v1.3.0
+export TRACK_CERT_MANAGER=1.6
+export TRACK_ISTIO=1.13.0
+export TRACK_KNATIVE=v1.3.0
 ```
 
 Configure the container images:
 
 ```shell
-# CERT MANAGER
-IMAGE_CERT_MANAGER=marketplace.gcr.io/google/cert-manager1
-
-# ISTIO
-IMAGE_ISTIO_INGRESSGATEWAY=gcr.io/istio-release/proxyv2
-IMAGE_ISTIO_ISTIOD=gcr.io/istio-release/pilot
-
-# KNATIVE SERVING
-IMAGE_KNATIVE_SERVING_ACTIVATOR=gcr.io/knative-releases/knative.dev/serving/cmd/activator
-IMAGE_KNATIVE_SERVING_AUTOSCALER=gcr.io/knative-releases/knative.dev/serving/cmd/autoscaler
-IMAGE_KNATIVE_SERVING_CONTROLLER=gcr.io/knative-releases/knative.dev/serving/cmd/controller
-IMAGE_KNATIVE_SERVING_DOMAINMAPPING=gcr.io/knative-releases/knative.dev/serving/cmd/domain-mapping
-IMAGE_KNATIVE_SERVING_DOMAINMAPPING_WEBHOOK=gcr.io/knative-releases/knative.dev/serving/cmd/domain-mapping-webhook
-IMAGE_KNATIVE_SERVING_QUEUEPROXY=gcr.io/knative-releases/knative.dev/serving/cmd/queue
-IMAGE_KNATIVE_SERVING_WEBHOOK=gcr.io/knative-releases/knative.dev/serving/cmd/webhook
-IMAGE_KNATIVE_SERVING_NETCERMANAGER_CONTROLLER=gcr.io/knative-releases/knative.dev/net-certmanager/cmd/controller
-IMAGE_KNATIVE_SERVING_NETCERMANAGER_WEBHOOK=gcr.io/knative-releases/knative.dev/net-certmanager/cmd/webhook
-IMAGE_KNATIVE_SERVING_NETISTIO_CONTROLLER=gcr.io/knative-releases/knative.dev/net-istio/cmd/controller
-IMAGE_KNATIVE_SERVING_NETISTIO_WEBHOOK=gcr.io/knative-releases/knative.dev/net-istio/cmd/webhook
-
-# KNATIVE EVENTING
-IMAGE_KNATIVE_EVENTING_CONTROLLER=gcr.io/knative-releases/knative.dev/eventing/cmd/controller
-IMAGE_KNATIVE_EVENTING_MTPING=gcr.io/knative-releases/knative.dev/eventing/cmd/mtping
-IMAGE_KNATIVE_EVENTING_WEBHOOK=gcr.io/knative-releases/knative.dev/eventing/cmd/webhook
+export IMAGE_CERT_MANAGER=marketplace.gcr.io/google/cert-manager1
+export IMAGE_ISTIO_INGRESSGATEWAY=gcr.io/istio-release/proxyv2
+export IMAGE_ISTIO_ISTIOD=gcr.io/istio-release/pilot
+export IMAGE_KNATIVE_SERVING_ACTIVATOR=gcr.io/knative-releases/knative.dev/serving/cmd/activator
+export IMAGE_KNATIVE_SERVING_AUTOSCALER=gcr.io/knative-releases/knative.dev/serving/cmd/autoscaler
+export IMAGE_KNATIVE_SERVING_CONTROLLER=gcr.io/knative-releases/knative.dev/serving/cmd/controller
+export IMAGE_KNATIVE_SERVING_DOMAINMAPPING=gcr.io/knative-releases/knative.dev/serving/cmd/domain-mapping
+export IMAGE_KNATIVE_SERVING_DOMAINMAPPING_WEBHOOK=gcr.io/knative-releases/knative.dev/serving/cmd/domain-mapping-webhook
+export IMAGE_KNATIVE_SERVING_QUEUEPROXY=gcr.io/knative-releases/knative.dev/serving/cmd/queue
+export IMAGE_KNATIVE_SERVING_WEBHOOK=gcr.io/knative-releases/knative.dev/serving/cmd/webhook
+export IMAGE_KNATIVE_SERVING_NETCERMANAGER_CONTROLLER=gcr.io/knative-releases/knative.dev/net-certmanager/cmd/controller
+export IMAGE_KNATIVE_SERVING_NETCERMANAGER_WEBHOOK=gcr.io/knative-releases/knative.dev/net-certmanager/cmd/webhook
+export IMAGE_KNATIVE_SERVING_NETISTIO_CONTROLLER=gcr.io/knative-releases/knative.dev/net-istio/cmd/controller
+export IMAGE_KNATIVE_SERVING_NETISTIO_WEBHOOK=gcr.io/knative-releases/knative.dev/net-istio/cmd/webhook
+export IMAGE_KNATIVE_EVENTING_CONTROLLER=gcr.io/knative-releases/knative.dev/eventing/cmd/controller
+export IMAGE_KNATIVE_EVENTING_MTPING=gcr.io/knative-releases/knative.dev/eventing/cmd/mtping
+export IMAGE_KNATIVE_EVENTING_WEBHOOK=gcr.io/knative-releases/knative.dev/eventing/cmd/webhook
 ```
 
 By default, each deployment has 1 replica, but you can choose to set the
@@ -222,3 +215,271 @@ Use `kubectl` to apply the manifest to your Kubernetes cluster:
 ```shell
 kubectl apply -f knative_manifest.yaml
 ```
+
+#### View the app in the Google Cloud Console
+
+To get the Cloud Console URL for your app, run the following command:
+
+```shell
+echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
+```
+
+To view the app, open the URL in your browser.
+
+#### Get the ingress public address
+
+To get the Istio IngressGateway public ip, run the following command:
+
+```shell
+export INGRESS_GATEWAY=$(kubectl get svc istio-ingressgateway --namespace $NAMESPACE -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+echo $INGRESS_GATEWAY
+```
+
+#### Deploy your first knative app
+
+By default, Knative Serving routes use `example.com` as the default domain.
+The fully qualified domain name for a route by default is `{route}.{namespace}.{default-domain}`.
+
+To change the {default-domain} value there are a few steps involved:
+
+##### Edit using kubectl
+
+- Edit the domain configuration config-map to replace `example.com` with your own domain, for example `mydomain.com`:
+
+```shell
+kubectl edit cm config-domain --namespace $NAMESPACE
+```
+
+This command opens your default text editor and allows you to edit the config map. 
+
+```yaml
+apiVersion: v1
+data:
+  example.com: ""
+kind: ConfigMap
+[...]
+```
+
+- Edit the file to replace `example.com` with the domain you'd like to use and save your changes. In this example, we configure `mydomain.com` for all routes: 
+
+```yaml
+apiVersion: v1
+data:
+  mydomain.com: ""
+kind: ConfigMap
+[...]
+```
+
+##### Apply from a file
+
+You can also apply an updated domain configuration:
+
+- Create a new file, `config-domain.yaml` and paste the following text, replacing the `example.org` and `example.com` values with the new domain you want to use:
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-domain
+data:
+  # These are example settings of domain.
+  # example.org will be used for routes having app=prod.
+  example.org: |
+    selector:
+      app: prod
+  # Default value for domain, for routes that does not have app=prod labels.
+  # Although it will match all routes, it is the least-specific rule so it
+  # will only be used if no other domain matches.
+  example.com: ""
+```
+
+- Apply updated domain configuration to your cluster:
+
+```shell
+kubectl apply -f config-domain.yaml --namespace $NAMESPACE
+```
+
+Deploy an app (for example, `helloworld-go`), to your cluster as normal. 
+
+- Create a new file, `helloworld-go.yaml` and paste the following text:
+
+```yaml
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: helloworld-go
+spec:
+  template:
+    metadata:
+      name: helloworld-go-v1
+    spec:
+      containers:
+        - image: gcr.io/knative-samples/helloworld-go
+          ports:
+            - containerPort: 8080
+          env:
+            - name: TARGET
+              value: "knative"
+```
+
+You can check the customized domain in  Knative Route "helloworld-go" with
+the following command:
+
+```shell
+kubectl get route helloworld-go --output jsonpath="{.status.domain}" --namespace $NAMESPACE
+```
+You should see the full customized domain: `helloworld-go.$NAMESPACE.yourdomain.com`.
+
+You can map the domain to the IP address of your Knative gateway in your local 
+machine with:
+
+```shell
+export INGRESS_GATEWAY=$(kubectl get svc istio-ingressgateway --namespace $NAMESPACE -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+export DOMAIN_NAME=$(kubectl get route helloworld-go --output jsonpath="{.status.domain}" --namespace $NAMESPACE)
+# Add the record of Gateway IP and domain name into file "/etc/hosts"
+echo -e "$INGRESS_GATEWAY\t$DOMAIN_NAME" | sudo tee -a /etc/hosts
+```
+
+You can now access your domain from the browser in your machine and do some quick checks.
+
+#### Publish your domain
+
+To publish your domain, you need to update your DNS provider to point to the IP address for your service ingress.
+
+- Create a [wildcard record](https://support.google.com/domains/answer/4633759)
+for the namespace and custom domain to the ingress IP Address, which would enable 
+hostnames for multiple services in the same namespace to work without creating additional DNS entries.
+For example, your ingress Ip is `35.237.28.44` and namespace is `default`.
+
+
+```dns
+*.default.yourdomain.com                   59     IN     A   35.237.28.44
+```
+
+- Create an A record to point from the fully qualified domain name to the IP address of your Knative gateway. 
+This step needs to be done for each Knative Service or Route created.
+  
+```dns
+helloworld-go.default.yourdomain.com        59     IN     A   35.237.28.44
+```
+
+If you are using Google Cloud DNS, you can find step-by-step instructions
+in the [Cloud DNS quickstart](https://cloud.google.com/dns/quickstart).
+
+
+Once the domain update has propagated, you can access your app using 
+the fully qualified domain name of the deployed route.
+
+# Scaling up or down
+
+To change the number of replicas of the `Cert Manager controller`, use the following
+command, where `REPLICAS` is your desired number of replicas:
+
+```shell
+export REPLICAS=3
+kubectl scale deployment cert-manager --namespace $NAMESPACE --replicas=$REPLICAS
+```
+
+To change the number of replicas of `Cert Manager cainjector`, use the following command,
+where `REPLICAS` is your desired number of replicas:
+
+```shell
+export REPLICAS=3
+kubectl scale deployment cert-manager-cainjector --namespace $NAMESPACE --replicas=$REPLICAS
+```
+
+To change the number of replicas of the `Cert Manager webhook`, use the following command,
+where `REPLICAS` is your desired number of replicas:
+
+```shell
+export REPLICAS=3
+kubectl scale deployment cert-manager-webhook --namespace $NAMESPACE --replicas=$REPLICAS
+```
+
+To change the number of replicas of `Istio IngressGateway`, use the following command,
+where `REPLICAS` is your desired number of replicas:
+
+```shell
+export REPLICAS=3
+kubectl scale deployment istio-ingressgateway --namespace $NAMESPACE --replicas=$REPLICAS
+```
+
+To change the number of replicas of the `Knative autoscaler`, use the following command,
+where `REPLICAS` is your desired number of replicas:
+
+```shell
+export REPLICAS=3
+kubectl scale deployment autoscaler --namespace $NAMESPACE --replicas=$REPLICAS
+```
+
+# Back up and restore
+
+## Back up Knative configuration data to your local environment
+
+To back up Knative configuration resources and issued certificates, use the following command:
+
+```shell
+kubectl get --namespace $NAMESPACE --output=yaml \
+configmaps,kservice,issuer,clusterissuer,certificates,certificaterequests > backup_file.yaml
+```
+
+## Restore Knative configuration data from your local environment
+
+```shell
+kubectl apply -f backup_file.yaml
+```
+
+# Uninstall the app
+
+## Using the Google Cloud Console
+
+- In the Cloud Console, open
+   [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
+
+- From the list of apps, click **Knative**.
+
+- On the Application Details page, click **Delete**.
+
+## Using the command-line
+
+### Prepare your environment
+
+Set your installation name and Kubernetes namespace:
+
+```shell
+export APP_INSTANCE_NAME=knative
+export NAMESPACE=default
+```
+
+### Delete the resources
+
+> **NOTE:** We recommend that you use a `kubectl` version that is the same
+> version as that of your cluster. Using the same versions for `kubectl` and
+> the cluster helps to avoid unforeseen issues.
+
+To delete the resources, use the expanded manifest file used for the
+installation.
+
+Run `kubectl` on the expanded manifest file:
+
+```shell
+kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
+```
+
+You can also delete the resources by using types and a label:
+
+```shell
+kubectl delete application --namespace $NAMESPACE --selector app.kubernetes.io/name=${APP_INSTANCE_NAME}
+```
+
+**NOTE:** This will delete only the `knative` solution. All `knative`-managed resources will remain available.
+
+### Delete the GKE cluster
+
+If you don't need the deployed app or the GKE cluster, delete the cluster
+by using this command:
+
+```shell
+gcloud container clusters delete "${CLUSTER}" --zone "${ZONE}"
+```
+
