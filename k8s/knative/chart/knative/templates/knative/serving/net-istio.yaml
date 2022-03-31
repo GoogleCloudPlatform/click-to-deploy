@@ -506,6 +506,3 @@ webhooks:
         - key: serving.knative.dev/release
           operator: Exists
 
----
-# Istio k8s definitions loaded as string, should not be processed by helm
-{{ .Files.Get "files/net-istio-configmap.yaml" }}
