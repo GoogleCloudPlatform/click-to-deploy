@@ -38,10 +38,10 @@ RUN apt-get update \
 
 ARG CHART_NAME
 
-RUN sed '/^kubectl apply/ikubectl apply -f /data/extracted/knative/chart/templates/crds/istio-crd.yaml\n\
+RUN sed '/^kubectl apply/ikubectl apply -f /data/extracted/knative/chart/templates/crds/\n\
     kubectl wait --for=condition=Established --timeout=15s crd envoyfilters.networking.istio.io\n\
     kubectl wait --for=condition=Established --timeout=15s crd gateways.networking.istio.io\n\
-    kubectl wait --for=condition=Established --timeout=15s crd peerauthentications.security.istio.io' -i /bin/deploy.sh
+    kubectl wait --for=condition=Established --timeout=15s crd images.caching.internal.knative.dev' -i /bin/deploy.sh
 
 COPY --from=build /tmp/$CHART_NAME.tar.gz /data/chart/
 COPY --from=build /tmp/test/$CHART_NAME.tar.gz /data-test/chart/
