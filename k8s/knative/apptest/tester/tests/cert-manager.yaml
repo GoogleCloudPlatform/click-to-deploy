@@ -48,6 +48,7 @@ actions:
     script: |
       timeout 60 bash -c '
         until ( kubectl get Certificate selfsigned-cert \
+                --namespace ${NAMESPACE} \ 
                 -o=jsonpath='{.status.conditions[0].status}' \
                 | grep -qz True);
           do sleep 2;
@@ -58,7 +59,7 @@ actions:
 - name: Try to get cert secret
   bashTest:
     script: |
-      kubectl get secret selfsigned-cert-tls
+      kubectl get secret selfsigned-cert-tls --namespace ${NAMESPACE} 
     expect:
       exitCode:
         equals: 0
