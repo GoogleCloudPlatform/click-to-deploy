@@ -48,7 +48,7 @@ actions:
     script: |
       timeout 60 bash -c '
         until ( kubectl get Certificate selfsigned-cert \
-                --namespace ${NAMESPACE} \ 
+                --namespace ${NAMESPACE} \
                 -o=jsonpath='{.status.conditions[0].status}' \
                 | grep -qz True);
           do sleep 2;
