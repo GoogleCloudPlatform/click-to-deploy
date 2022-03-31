@@ -1,0 +1,112 @@
+actions:
+- name: kubectl smoke test
+  bashTest:
+    script: kubectl version
+    expect:
+      exitCode:
+        equals: 0
+- name: Wait for the istio ingressgateway get ready
+  bashTest:
+    script: |
+      timeout 120 bash -c '
+        until ( kubectl get deploy istio-ingressgateway  \
+                --namespace ${NAMESPACE} \
+                -o=jsonpath='{.status.conditions[0].status}' \
+                | grep -qz True);
+          do sleep 2;
+        done'
+    expect:
+      exitCode:
+        equals: 0
+- name: Create helloworld app and service
+  bashTest:
+    script: |
+      kubectl apply --namespace ${NAMESPACE} -f - <<EOF
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: helloworld-test
+        labels:
+          app: helloworld-test
+      spec:
+        ports:
+        - port: 5000
+          name: http
+        selector:
+          app: helloworld-test
+      ---
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: helloworld-test
+        labels:
+          app: helloworld-test
+      spec:
+        replicas: 1
+        selector:
+          matchLabels:
+            app: helloworld-test
+        template:
+          metadata:
+            labels:
+              app: helloworld-test
+          spec:
+            containers:
+            - name: helloworld
+              image: docker.io/istio/examples-helloworld-v1
+              ports:
+              - containerPort: 5000
+      EOF
+    expect:
+      exitCode:
+        equals: 0
+- name: Create helloworld virtualservice
+  bashTest:
+    script: |
+      kubectl apply --namespace ${NAMESPACE} -f - <<EOF
+      apiVersion: networking.istio.io/v1alpha3
+      kind: VirtualService
+      metadata:
+        name: helloworld-test
+      spec:
+        hosts:
+        - "*"
+        gateways:
+        - knative-ingress-gateway
+        http:
+        - match:
+          - uri:
+              exact: /hello
+          route:
+          - destination:
+              host: helloworld-test
+              port:
+                number: 5000
+      EOF
+    expect:
+      exitCode:
+        equals: 0
+- name: Try to get responce from ingress
+  bashTest:
+    script: |
+      timeout 60 bash -c '
+        export INGRESS_GATEWAY=$(kubectl get svc istio-ingressgateway \
+               -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+        until (curl -s -H 'Host: helloworld-test' \
+               $INGRESS_GATEWAY/hello \
+               | grep -qz "instance: helloworld-test");
+          do sleep 2;
+        done'
+    expect:
+      exitCode:
+        equals: 0
+- name: Delete app and service
+  bashTest:
+    script: |
+      kubectl delete --namespace ${NAMESPACE} kubectl delete virtualservice helloworld-test
+      kubectl delete --namespace ${NAMESPACE} kubectl delete service helloworld-test
+      kubectl delete --namespace ${NAMESPACE} kubectl delete deploy helloworld-test
+    expect:
+      exitCode:
+        equals: 0
+

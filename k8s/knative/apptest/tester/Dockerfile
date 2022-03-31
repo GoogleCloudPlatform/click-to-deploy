@@ -10,7 +10,7 @@ RUN mkdir -p /opt/kubectl/1.14 \
     && chmod 755 /opt/kubectl/1.14/kubectl \
     && ln -s /opt/kubectl/1.14/kubectl /usr/bin/kubectl
 
-COPY tests/cert-manager.yaml /tests/cert-manager.yaml
+COPY tests/cert-manager.yaml tests/istio-gateway.yml /tests/
 COPY tester.sh /tester.sh
 
 WORKDIR /
