@@ -162,7 +162,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to your app.
 
 ```shell
-helm install knative chart/knative \
+helm template knative chart/knative \
     --set certmanager.image.repo=$IMAGE_CERT_MANAGER \
     --set certmanager.image.tag=$TRACK_CERT_MANAGER \
     --set istio.ingressgateway.image.repo=$IMAGE_ISTIO_INGRESSGATEWAY \
@@ -201,6 +201,14 @@ helm install knative chart/knative \
     --set certmanager.webhook.replicas=${CERT_MANAGER_WEBHOOK_REPLICAS:-1} \
     --set certmanager.cainjector.replicas=${CERT_MANAGER_CAINJECTOR_REPLICAS:-1} \
     --set istio.ingressgateway.replicas=${ISTIO_INGRESS_GATEWAY_REPLICAS:-1} \
-    --set knative.autoscaler.replicas=${KNATIVE_AUTOSCALER_REPLICAS:-1}
+    --set knative.autoscaler.replicas=${KNATIVE_AUTOSCALER_REPLICAS:-1} \
+    > knative_manifest.yaml
 ```
 
+#### Apply the manifest to your Kubernetes cluster
+
+Use `kubectl` to apply the manifest to your Kubernetes cluster:
+
+```shell
+kubectl apply -f knative_manifest.yaml
+```
