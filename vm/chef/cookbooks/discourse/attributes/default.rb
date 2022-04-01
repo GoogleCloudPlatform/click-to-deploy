@@ -15,8 +15,8 @@
 default['discourse']['version'] = '2.8.2'
 default['discourse']['src']['sha256'] = ''
 
-default['discourse']['ruby']['version'] = '3.1.1'
-default['discourse']['bundler']['version'] = '~>2.3'
+default['discourse']['ruby']['version'] = '2.7.2'
+default['discourse']['bundler']['version'] = '~>2.2'
 
 default['discourse']['packages'] = [
   'build-essential',
