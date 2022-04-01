@@ -14,17 +14,28 @@
 
 require 'spec_helper'
 
-describe 'Installed Ops-agent' do
-  describe package('google-cloud-ops-agent') do
+describe 'Installed Stackdriver Logging' do
+  describe package('google-fluentd') do
     it { should be_installed }
   end
 
-  describe service('google-cloud-ops-agent.service') do
+  describe package('google-fluentd-catch-all-config') do
+    it { should be_installed }
+  end
+
+  describe service('google-fluentd.service'), :if => os[:family] == 'debian' do
     it { should be_enabled }
     it { should be_running }
   end
+end
 
-  describe file('/etc/google-cloud-ops-agent/config.yaml') do
-    it { should exist }
+describe 'Installed Stackdriver Monitoring' do
+  describe package('stackdriver-agent') do
+    it { should be_installed }
+  end
+
+  describe service('stackdriver-agent.service'), :if => os[:family] == 'debian' do
+    it { should be_enabled }
+    it { should be_running }
   end
 end
