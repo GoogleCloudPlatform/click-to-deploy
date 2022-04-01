@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,8 +13,8 @@
 # limitations under the License.
 
 default['mattermost']['packages'] = ['jq', 'nginx', 'gettext-base']
-default['mattermost']['version'] = '6.1.0'
-default['mattermost']['sha256'] = '304a46c1abf984b97d6adaf74b8ab4324df68178dcd95cdf721ad02756c7e14d'
+default['mattermost']['version'] = '6.5.0'
+default['mattermost']['sha256'] = '2ec39e64cc58e6e7213aad09c48401fa7e0d8df22c9720d9880f6d66097a9279'
 
 # OS Settings
 default['mattermost']['user'] = 'mattermost'

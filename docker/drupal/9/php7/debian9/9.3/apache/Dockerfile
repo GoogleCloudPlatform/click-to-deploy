@@ -55,9 +55,9 @@ RUN a2enmod rewrite expires
 WORKDIR /usr/src/drupal
 
 # https://www.drupal.org/node/3060/release
-ENV DRUPAL_VERSION 9.3.0
-ENV C2D_RELEASE 9.3.0
-ENV DRUPAL_MD5 e8baf9fc096b125b384b8a5234fabbc2
+ENV DRUPAL_VERSION 9.3.7
+ENV C2D_RELEASE 9.3.7
+ENV DRUPAL_MD5 db57fb613b8565fd15593a0e7af4139a
 
 # Download package and extract to web volume
 RUN set -eux; \
@@ -66,8 +66,8 @@ RUN set -eux; \
 	tar -xz --strip-components=1 -f drupal.tar.gz; \
 	rm drupal.tar.gz
 
-ENV COMPOSER_VERSION 1.9.1
-ENV COMPOSER_SHA256 1f210b9037fcf82670d75892dfc44400f13fe9ada7af9e787f93e50e3b764111
+ENV COMPOSER_VERSION 2.2.8
+ENV COMPOSER_SHA256 e1e1c580a237c739ecc1be57cf512e6b741faaa566439257d19ecd739ddfefaf
 
 # Install composer binary and install drush
 RUN set -eux; \
@@ -75,7 +75,7 @@ RUN set -eux; \
 	curl -o composer.phar "https://getcomposer.org/download/${COMPOSER_VERSION}/composer.phar"; \
 	echo "${COMPOSER_SHA256} composer.phar" | sha256sum -c - ; \
 	chmod +x composer.phar; \
-	php -d memory_limit=2G ./composer.phar require drush/drush; \
+	php -d memory_limit=4G ./composer.phar require drush/drush; \
 	cp LICENSE.txt vendor/drush/drush/src/; \
 	rm -f composer.phar; \
 	rm -rf /var/lib/apt/lists/*

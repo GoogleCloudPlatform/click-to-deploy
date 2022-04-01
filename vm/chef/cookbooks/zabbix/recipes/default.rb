@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,10 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+node.override['postgresql']['standalone']['allow_external'] = false
+
 include_recipe 'c2d-config::default'
 include_recipe 'apache2::default'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
+include_recipe 'postgresql::standalone_buster'
 
 # install zabbix package
 apt_repository 'zabbix' do
@@ -52,16 +55,20 @@ RedirectMatch ^/$ /zabbix/
   a2ensite default-ssl
 
   su - postgres -c 'createuser zabbix'
-  su - postgres -c 'createdb -O zabbix zabbix'
+  su - postgres -c 'createdb -O zabbix -E Unicode zabbix'
+  su - postgres -c 'createdb -O zabbix -E Unicode zabbix_proxy'
 
-  zcat /usr/share/doc/zabbix-sql-scripts/postgresql/create.sql.gz | sudo -u zabbix psql zabbix
+  zcat /usr/share/doc/zabbix-sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix
+  cat /usr/share/doc/zabbix-sql-scripts/postgresql/proxy.sql | sudo -u zabbix psql zabbix_proxy
 
   ### for PostgreSQL -- uses socket (localhost uses tcp)
-  sed -i '/^# DBHost=localhost/ a \
-\
-DBHost=' /etc/zabbix/zabbix_server.conf
+  sed -i 's/^# DBHost=localhost/DBHost=localhost/' /etc/zabbix/zabbix_server.conf
 
-  sed -i 's/# ListenIP=127.0.0.1/ListenIP=127.0.0.1/' /etc/zabbix/zabbix_server.conf
+  sed -i 's/# ListenIP=0.0.0.0/ListenIP=127.0.0.1/' /etc/zabbix/zabbix_server.conf
+
+  sed -i 's/^# DBHost=localhost/DBHost=localhost/' /etc/zabbix/zabbix_proxy.conf
+
+  sed -i 's/# ListenPort=10051/ListenPort=10055/' /etc/zabbix/zabbix_proxy.conf
 
 EOH
 end
@@ -72,6 +79,14 @@ template '/etc/zabbix/web/zabbix.conf.php' do
   owner 'root'
   group 'root'
   mode '0644'
+end
+
+template '/opt/c2d/zabbix-utils' do
+  source 'zabbix-utils'
+  owner 'root'
+  group 'root'
+  mode 0755
+  action :create
 end
 
 service 'apache2' do

@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2021 Google Inc.
+# Copyright 2022 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,6 +35,7 @@ systemctl stop nginx
 
 echo "Installing dependencies..."
 cd "${df_install_folder}"
+composer update
 composer install -n --no-dev
 
 echo "Create database user..."
@@ -63,7 +64,7 @@ configure_nginx
 #  remove web.config due security
 echo "Enabling Website..."
 rm -f "${df_install_folder}/public/web.config"
-rm -f /etc/nginx/sites-enabled/default
+rm -f /etc/nginx/sites-enabled/default.conf
 ln -s /etc/nginx/sites-available/dreamfactory.conf /etc/nginx/sites-enabled/
 
 echo "Starting Webserver..."

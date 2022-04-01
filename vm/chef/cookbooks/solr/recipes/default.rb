@@ -17,7 +17,7 @@
 include_recipe 'apache2'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
-include_recipe 'openjdk8'
+include_recipe 'openjdk11'
 
 package 'install_packages' do
   package_name node['solr']['packages']

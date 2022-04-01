@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['tomcat']['version'] = '10.0.14'
-default['tomcat']['sha1'] = 'd17918d6667602da47fd4561b43dd12acc66f92c'
+default['tomcat']['version'] = '10.0.17'
+default['tomcat']['sha256'] = 'eff0763ffc6cd24b06fb1d4ae6fdb52681b90d3976012660a95d570019bd93c8'
 
 default['tomcat']['app']['install_dir'] = '/opt/tomcat'
 
