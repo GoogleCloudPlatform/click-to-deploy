@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['discourse']['version'] = '2.9'
-default['discourse']['src']['sha256'] = '9b1257e7106fe55777012da5e106be75ab7e2bf7ac66fdc5788cd73b6e76012b'
+default['discourse']['version'] = '2.8.2'
+default['discourse']['src']['sha256'] = ''
 
-default['discourse']['ruby']['version'] = '2.9'
-default['discourse']['bundler']['version'] = '~>2.9'
+default['discourse']['ruby']['version'] = '3.1.1'
+default['discourse']['bundler']['version'] = '~>2.3'
 
 default['discourse']['packages'] = [
   'build-essential',
