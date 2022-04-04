@@ -1,0 +1,164 @@
+#!/bin/bash -eu
+#
+# Copyright 2022 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/c2d-utils
+
+readonly config_path="/opt/kafka/config"
+
+#######################################
+# Configure ZooKeeper authentication provider.
+#   Arguments:
+#     Zookeeper password
+#######################################
+function configure_zookeeper() {
+  local -r password="$1"
+  local -r zookeeper_config="${config_path}/zookeeper.properties"
+  local -r zookeeper_jaas_config="${config_path}/zookeeper_jaas.conf"
+
+  # Configure Zookeeper
+  mkdir -p /var/data/kafka
+
+  sed -i 's@dataDir=/tmp/zookeeper@dataDir=/var/data/kafka@g' "${zookeeper_config}"
+  cat >> "${zookeeper_config}" << EOF
+  authProvider.1=org.apache.zookeeper.server.auth.SASLAuthenticationProvider
+  requireClientAuthScheme=sasl
+  jaasLoginRenew=3600000
+EOF
+
+  # Setup Zookeeper authentication
+  cat >> "${zookeeper_jaas_config}" << EOF
+  Server {
+    org.apache.zookeeper.server.auth.DigestLoginModule required
+    user_super="zookeeper"
+    user_admin="${password}";
+  };
+EOF
+}
+
+#######################################
+# Configure Kafka in cluster-mode and ZooKeeper connection.
+#######################################
+function configure_kafka() {
+  local -r nodes="$1"
+  local -r kafka_config="${config_path}/server.properties"
+  local -r current_node_id="$(hostname -a | awk -F '-' '{ print $NF }')"
+  local -r broker_id="$((current_node_id + 1))"
+  local -r zookeeper_primary="$(echo "${nodes}" | cut -f 1 -d ' ')"
+  local -r zookeeper_primary_ip="$(getent hosts "${zookeeper_primary}" | awk '{ print $1 }')"
+  local -r zookeeper_primary_port="2181"
+  local -r zookeeper_connection="${zookeeper_primary_ip}:${zookeeper_primary_port}"
+
+  # Remove existing Kafka settings
+  sed -i '/broker.id=0/d' "${kafka_config}"
+  sed -i '/log.dirs/d' "${kafka_config}"
+  sed -i '/zookeeper.connect=/d' "${kafka_config}"
+
+  # Create new kafka configurations
+  cat >> "${kafka_config}" << EOF
+######## C2D Custom Configuration ########
+broker.id=${broker_id}
+broker.rack=RACK1
+logs.dirs=/var/data/kafka
+zookeeper.connect=${zookeeper_connection}
+EOF
+}
+
+#######################################
+# Setup Kafka authentication and credentials.
+#   Arguments:
+#     Mode: cluster or standalone
+#     Kafka Username
+#     Kafka Password
+#######################################
+function setup_kafka_auth() {
+  local -r mode="$1"
+  local -r username="$2"
+  local -r password="$3"
+  local -r consumer_config="${config_path}/consumer.properties"
+  local -r producer_config="${config_path}/producer.properties"
+  local -r kafka_auth_config="${config_path}/kafka_server_jaas.conf"
+  local -r kafka_config="${config_path}/server.properties"
+
+  # Setup consumer.properties
+  cat >> "${consumer_config}" << EOF
+######## C2D Custom Configuration ########
+security.protocol=SASL_PLAINTEXT
+sasl.mechanism=PLAIN
+EOF
+
+  # Setup producer.properties
+  cat >> "${producer_config}" << EOF
+######## C2D Custom Configuration ########
+security.protocol=SASL_PLAINTEXT
+sasl.mechanism=PLAIN
+bootstrap.servers=localhost:9092
+compression.type=none
+EOF
+
+  # Setup kafka auth
+  cat >> "${kafka_config}" << EOF
+######## C2D Custom Configuration ########
+security.inter.broker.protocol=SASL_PLAINTEXT
+sasl.mechanism.inter.broker.protocol=PLAIN
+sasl.enabled.mechanisms=PLAIN
+auto.create.topics.enable=true
+authorizer.class.name=kafka.security.authorizer.AclAuthorizer
+allow.everyone.if.no.acl.found=true
+listeners=SASL_PLAINTEXT://0.0.0.0:9092
+advertised.listeners=SASL_PLAINTEXT://:9092
+EOF
+
+  # Setup Kafka Credentials
+  cat >> "${kafka_auth_config}" << EOF
+KafkaServer {
+  org.apache.kafka.common.security.plain.PlainLoginModule required
+  username="${username}"
+  password="${password}"
+  user_admin="${password}";
+};
+EOF
+
+  if [[ "${mode}" == "cluster" ]]; then
+    # Setup Kafka for authenticating to ZooKeeper
+    cat >> "${kafka_auth_config}" << EOF
+Client {
+  org.apache.zookeeper.server.auth.DigestLoginModule required
+  username="${username}"
+  password="${password}";
+};
+EOF
+  fi
+}
+
+#######################################
+# Fully setup Kafka cluster and authentication.
+#######################################
+function setup_cluster_config() {
+  local -r nodes="$1"
+  local -r username="$2"
+  local -r password="$3"
+
+  echo "Starting cluster-mode configuration..."
+
+  echo "Setting up ZooKeeper..."
+  configure_zookeeper "${password}"
+
+  echo "Setting up Kafka..."
+  configure_kafka "${nodes}"
+
+  echo "Setting up Cluster"
+  setup_kafka_auth "cluster" "${username}" "${password}"
+}
