@@ -1,13 +1,13 @@
-FROM gcr.io/google-appengine/openjdk
+FROM marketplace.gcr.io/google/debian10
 
 # This is release version of ActiveMQ to pull in.
-ENV ACTIVEMQ_VERSION 5.16.3
-ENV ACTIVEMQ_SHA512 3394afe9963f55cf62dafb287bdc58cac1fb76a614cc87939bec7b7909972eb5b3069022a9eb324242a315899b1096335c0531af75152c74eb309c0c5981b217
+ENV ACTIVEMQ_VERSION 5.16.4
+ENV ACTIVEMQ_SHA512 c40aa043d86cf524a8c2fee35df0fda23fe626f7f9965c3b3ad617deae5a5c426c379c09ab0afb3568d85aad34c3c551aabc67caac5d75111df88f1b52e7e70d
 ENV ACTIVEMQ apache-activemq-${ACTIVEMQ_VERSION}
 ENV ACTIVEMQ_FILE ${ACTIVEMQ}-bin.tar.gz
 ENV ACTIVEMQ_DOWNLOAD_URL http://archive.apache.org/dist/activemq/
 
-ENV C2D_RELEASE 5.16.3
+ENV C2D_RELEASE 5.16.4
 
 ENV ACTIVEMQ_TCP=61616 \
     ACTIVEMQ_AMQP=5672 \
@@ -23,13 +23,18 @@ ARG group=activemq
 ARG uid=1000
 ARG gid=1000
 
+RUN set -ex \
+  && apt-get --allow-releaseinfo-change update \
+  && apt-get -y install default-jdk ca-certificates wget \
+  && rm -rf /var/lib/apt/lists/*
+
 # ActiveMQ run with user `activemq`, uid = 1000.
 # If you bind mount a volume from the host or a data container,
 # ensure you use the same uid.
 RUN groupadd -g "${gid}" "${group}" \
     && useradd -u "${uid}" -g "${gid}" -m -s /bin/bash "${user}"
 
-# Download and setup activemq version v5.16.3
+# Download and setup activemq version v5.16.4
 RUN set -x && \
     mkdir -p "${ACTIVEMQ_HOME}" \
     && wget -q "${ACTIVEMQ_DOWNLOAD_URL}/${ACTIVEMQ_VERSION}/${ACTIVEMQ_FILE}" -O "${ACTIVEMQ_FILE}" \

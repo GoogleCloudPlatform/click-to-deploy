@@ -15,8 +15,14 @@
 # limitations under the License.
 
 start() {
+  set -x
+
   # Start services
+  if [[ -f /opt/kafka/config/zookeeper_jaas.conf ]]; then
+    export KAFKA_OPTS="-Djava.security.auth.login.config=/opt/kafka/config/zookeeper_jaas.conf"
+  fi
   /opt/kafka/bin/zookeeper-server-start.sh -daemon /opt/kafka/config/zookeeper.properties
+
   sleep 10
   export KAFKA_OPTS="-Djava.security.auth.login.config=/opt/kafka/config/kafka_server_jaas.conf"
   /opt/kafka/bin/kafka-server-start.sh -daemon /opt/kafka/config/server.properties

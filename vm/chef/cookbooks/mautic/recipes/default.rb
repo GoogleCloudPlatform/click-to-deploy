@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,11 +35,11 @@ end
 bash 'php configuration' do
   user 'root'
   code <<-EOH
-    sed -i 's/^memory_limit = 128M/memory_limit = 512M/' /etc/php/7.3/apache2/php.ini
-    sed -i 's/^short_open_tag = Off/short_open_tag = On/' /etc/php/7.3/apache2/php.ini
-    sed -i 's/^upload_max_filesize = 2M/upload_max_filesize = 128M/' /etc/php/7.3/apache2/php.ini
-    sed -i 's/^max_execution_time = 30/max_execution_time = 300/' /etc/php/7.3/apache2/php.ini
-    sed -i 's/^;date.timezone =/date.timezone = UTC/' /etc/php/7.3/apache2/php.ini
+    sed -i 's/^memory_limit = 128M/memory_limit = 512M/' /etc/php/*/apache2/php.ini
+    sed -i 's/^short_open_tag = Off/short_open_tag = On/' /etc/php/*/apache2/php.ini
+    sed -i 's/^upload_max_filesize = 2M/upload_max_filesize = 128M/' /etc/php/*/apache2/php.ini
+    sed -i 's/^max_execution_time = 30/max_execution_time = 300/' /etc/php/*/apache2/php.ini
+    sed -i 's/^;date.timezone =/date.timezone = UTC/' /etc/php/*/apache2/php.ini
     phpenmod imap
   EOH
 end
