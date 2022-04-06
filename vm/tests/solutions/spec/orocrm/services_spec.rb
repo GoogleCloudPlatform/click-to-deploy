@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ describe service('mysql'), :if => os[:family] == 'debian' do
   it { should be_running }
 end
 
-describe service('php7.4-fpm'), :if => os[:family] == 'debian' do
+describe service('php8.1-fpm'), :if => os[:family] == 'debian' do
   it { should be_enabled }
   it { should be_running }
 end
