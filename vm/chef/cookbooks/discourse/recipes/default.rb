@@ -15,7 +15,7 @@
 node.override['postgresql']['standalone']['allow_external'] = false
 
 include_recipe 'git'
-include_recipe 'postgresql::standalone_bullseye'
+include_recipe 'postgresql::standalone_buster'
 include_recipe 'rvm'
 
 apt_update 'update'
@@ -60,8 +60,8 @@ bash 'Discourse Install Ruby environment' do
       source /usr/local/rvm/scripts/rvm
       rvm install ruby-${rubyVersion}
       rvm --default use ${rubyVersion}
-
-      gem install bundler -v "${bundlerVersion}"
+      gem install rails
+      gem install bundler
 EOH
 end
 
@@ -126,7 +126,6 @@ bash 'Discourse DB Migrate and precompile assets precompile' do
 
     export RAILS_ENV=production
     bundle exec rake db:migrate
-    bundle exec rake assets:precompile
 EOH
 end
 

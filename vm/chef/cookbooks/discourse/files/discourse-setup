@@ -48,18 +48,7 @@ export RAILS_ENV=production
 source /usr/local/rvm/scripts/rvm
 
 cd /var/www/discourse
-expect -c "\
-  spawn bundle exec rake admin:create
-  expect "Email:*"
-  send "$discourse_user_email\\r"
-  expect \"Password:\"
-  send "$discourse_user_password\\r"
-  expect \"Repeat password*\"
-  send "$discourse_user_password\\r"
-  expect \"Do you want to grant Admin privileges to this account\"
-  send "Y\\r"
-  expect EOF" | grep "Your account now has Admin privileges"
 
-# Applying changes
-systemctl is-active nginx && systemctl restart nginx
-systemctl is-active puma && systemctl restart puma || (sleep 10 && systemctl restart puma)
+bundle exec rails server
+
+systemctl restart nginx
