@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,30 +24,27 @@ include_recipe 'mysql::version-8.0-standalone'
 include_recipe 'git'
 
 # Reference: https://doc.oroinc.com/backend/setup/system-requirements/
-include_recipe 'php74'
-include_recipe 'php74::module_curl'
-include_recipe 'php74::module_ctype'
-include_recipe 'php74::module_fileinfo'
-include_recipe 'php74::module_gd'
-include_recipe 'php74::module_intl'
-include_recipe 'php74::module_json'
-include_recipe 'php74::module_mbstring'
-include_recipe 'php74::module_mysql'
-include_recipe 'php74::module_cli'
-include_recipe 'php74::module_simplexml'
-include_recipe 'php74::module_tokenizer'
-include_recipe 'php74::module_xml'
-include_recipe 'php74::module_zip'
-include_recipe 'php74::module_imap'
-include_recipe 'php74::module_soap'
-include_recipe 'php74::module_bcmath'
-include_recipe 'php74::module_ldap'
-include_recipe 'php74::module_mongodb'
-include_recipe 'php74::module_libapache2'
+include_recipe 'php81::default_buster'
+include_recipe 'php81::module_cli'
+include_recipe 'php81::module_ctype'
+include_recipe 'php81::module_fileinfo'
+include_recipe 'php81::module_intl'
+include_recipe 'php81::module_mbstring'
+include_recipe 'php81::module_mysql'
+include_recipe 'php81::module_simplexml'
+include_recipe 'php81::module_tokenizer'
+include_recipe 'php81::module_xml'
+include_recipe 'php81::module_zip'
+include_recipe 'php81::module_imap'
+include_recipe 'php81::module_soap'
+include_recipe 'php81::module_bcmath'
+include_recipe 'php81::module_ldap'
+include_recipe 'php81::module_mongodb'
+include_recipe 'php81::module_libapache2'
 
 include_recipe 'composer::composer-only'
 
-include_recipe 'nodejs::default_nodejs14'
+include_recipe 'nodejs::default_nodejs16'
 
 apt_update do
   action :update
