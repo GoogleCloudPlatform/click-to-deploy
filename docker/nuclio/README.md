@@ -1,4 +1,4 @@
-Nuclio-docker
+nuclio-docker
 ============
 
 Nuclio is a serverless platform which provide run code as the service.
