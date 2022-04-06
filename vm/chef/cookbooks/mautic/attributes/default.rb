@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,6 +22,6 @@ default['mautic']['packages'] = [
     'php7.4-imap',
 ]
 
-default['mautic']['version'] = '4.1.1'
+default['mautic']['version'] = '4.2.0'
 default['mautic']['user'] = 'www-data'
 default['mautic']['db']['name'] = 'mautic'
