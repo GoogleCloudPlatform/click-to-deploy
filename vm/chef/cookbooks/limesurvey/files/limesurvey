@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2021 Google Inc.
+# Copyright 2022 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,8 +15,6 @@
 # limitations under the License.
 
 source /opt/c2d/limesurvey-utils || exit 1
-
-export COMPOSER_HOME="/root/.config/composer"
 
 export LIMESURVEY_DB_HOST="localhost"
 export LIMESURVEY_DB_USERNAME="limesurvey"
@@ -50,10 +48,6 @@ setup_mysql_user "${LIMESURVEY_DB_USERNAME}" "${LIMESURVEY_DB_PASSWORD}" \
 cat "${limesurvey_root}/application/config/config.template.php" \
   | envsubst '\$LIMESURVEY_DB_HOST,\$LIMESURVEY_DB_USERNAME,\$LIMESURVEY_DB_PASSWORD,\$LIMESURVEY_DB_NAME' \
   > "${limesurvey_root}/application/config/config.php"
-
-# Install dependencies
-cd "${limesurvey_root}/"
-composer install -n
 
 # Install Limesurvey
 cd "${limesurvey_root}/application/commands"
