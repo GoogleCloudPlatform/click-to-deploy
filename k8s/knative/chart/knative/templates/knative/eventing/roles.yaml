@@ -83,7 +83,7 @@ roleRef:
   name: channelable-manipulator
   apiGroup: rbac.authorization.k8s.io
 ---
-# Copyright 2020 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -185,7 +185,7 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 ---
 
-# Copyright 2019 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -329,7 +329,7 @@ rules:
       - watch
 
 ---
-# Copyright 2019 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -407,7 +407,7 @@ rules:
       - "watch"
 
 ---
-# Copyright 2019 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -462,7 +462,7 @@ rules:
       - delete
 
 ---
-# Copyright 2019 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -575,7 +575,7 @@ rules:
     verbs: ["get", "list", "watch"]
 
 ---
-# Copyright 2019 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -711,7 +711,7 @@ rules:
     verbs: *everything
 
 ---
-# Copyright 2020 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -778,7 +778,7 @@ rules:
       - patch
 
 ---
-# Copyright 2019 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -840,7 +840,7 @@ rules:
       - "patch"
 
 ---
-# Copyright 2019 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -893,7 +893,7 @@ rules:
       - watch
 
 ---
-# Copyright 2019 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -980,7 +980,7 @@ rules:
       - create
 
 ---
-# Copyright 2019 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1079,7 +1079,7 @@ rules:
     verbs: ["get", "list", "create", "update", "delete", "patch", "watch"]
 
 ---
-# Copyright 2020 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

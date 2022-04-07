@@ -1,6 +1,6 @@
 
 # net-certmanager.yaml
-# Copyright 2020 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ rules:
     verbs: ["get", "list", "create", "update", "delete", "patch", "watch"]
 
 ---
-# Copyright 2020 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -76,7 +76,7 @@ webhooks:
           operator: Exists
 
 ---
-# Copyright 2020 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -103,7 +103,7 @@ metadata:
     networking.knative.dev/certificate-provider: cert-manager
 
 ---
-# Copyright 2020 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -153,7 +153,7 @@ data:
       name: letsencrypt-issuer
 
 ---
-# Copyright 2020 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -256,7 +256,7 @@ spec:
     app: net-certmanager-controller
 
 ---
-# Copyright 2020 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -283,7 +283,7 @@ metadata:
     networking.knative.dev/certificate-provider: cert-manager
 spec:
   selector:
-    matchLabels:
+    matchLabels: &labels
       app: net-certmanager-webhook
       role: net-certmanager-webhook
   template:
@@ -291,11 +291,10 @@ spec:
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
       labels:
-        app: net-certmanager-webhook
+        !!merge <<: *labels
         app.kubernetes.io/component: net-certmanager
         app.kubernetes.io/version: "1.2.0"
         app.kubernetes.io/name: knative-serving
-        role: net-certmanager-webhook
         serving.knative.dev/release: "v1.2.0"
     spec:
       serviceAccountName: controller
@@ -341,7 +340,7 @@ spec:
               containerPort: 8443
 
 ---
-# Copyright 2020 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

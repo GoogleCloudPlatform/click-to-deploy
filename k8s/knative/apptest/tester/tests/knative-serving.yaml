@@ -23,15 +23,17 @@ actions:
     expect:
       exitCode:
         equals: 0
-- name: Try to get responce from ingress
+- name: Try to get response from ingress
   bashTest:
     script: |
       export INGRESS_GATEWAY=$(kubectl get svc istio-ingressgateway \
-      --namespace $NAMESPACE \
-      -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-      kubectl wait --for=condition=Ready --timeout=120s --namespace $NAMESPACE kservice helloworld-knative-test
-      timeout 60 bash -c 'while [[ "$(curl -s -H "Host: helloworld-knative-test.$NAMESPACE.example.com" -o /dev/null -w ''%{http_code}'' $INGRESS_GATEWAY)" != "200" ]]; do sleep 5;done' 
-      curl -s -H "Host: helloworld-knative-test.$NAMESPACE.example.com"  $INGRESS_GATEWAY | grep -qz 'Hello knative'
+        --namespace $NAMESPACE -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+      kubectl wait --for=condition=Ready --timeout=120s \
+        --namespace $NAMESPACE kservice helloworld-knative-test
+      timeout 60 bash -c 'while [[ "$(curl -s -H "Host: helloworld-knative-test.$NAMESPACE.example.com" \
+        -o /dev/null -w ''%{http_code}'' $INGRESS_GATEWAY)" != "200" ]]; \
+        do sleep 5;done' 
+      curl -s -H "Host: helloworld-knative-test.$NAMESPACE.example.com" $INGRESS_GATEWAY | grep -qz 'Hello knative'
     expect:
       exitCode:
         equals: 0

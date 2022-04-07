@@ -1,4 +1,4 @@
-# Copyright 2020 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -86,7 +86,7 @@ spec:
               containerPort: 8008
 
 ---
-# Copyright 2020 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -112,7 +112,7 @@ metadata:
     serving.knative.dev/release: "v1.2.0"
 spec:
   selector:
-    matchLabels:
+    matchLabels: &labels
       app: domainmapping-webhook
       role: domainmapping-webhook
   template:
@@ -120,8 +120,7 @@ spec:
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
       labels:
-        app: domainmapping-webhook
-        role: domainmapping-webhook
+        !!merge <<: *labels
         app.kubernetes.io/component: domain-mapping
         app.kubernetes.io/name: knative-serving
         app.kubernetes.io/version: "1.2.0"

@@ -1,4 +1,4 @@
-# Copyright 2020 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ spec:
       app: webhook
 
 ---
-# Copyright 2018 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -82,7 +82,7 @@ metadata:
     app.kubernetes.io/name: knative-serving
 spec:
   selector:
-    matchLabels:
+    matchLabels: &labels
       app: webhook
       role: webhook
   template:
@@ -90,8 +90,7 @@ spec:
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
       labels:
-        app: webhook
-        role: webhook
+        !!merge <<: *labels
         serving.knative.dev/release: "v1.2.0"
         app.kubernetes.io/component: webhook
         app.kubernetes.io/version: "1.2.0"
@@ -203,7 +202,7 @@ spec:
     role: webhook
 
 ---
-# Copyright 2020 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -242,7 +241,7 @@ webhooks:
     timeoutSeconds: 10
 
 ---
-# Copyright 2020 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -298,7 +297,7 @@ webhooks:
           - services
 
 ---
-# Copyright 2020 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -345,7 +344,7 @@ webhooks:
           - domainmappings
 
 ---
-# Copyright 2020 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -372,7 +371,7 @@ metadata:
 # The data is populated at install time.
 
 ---
-# Copyright 2020 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -420,7 +419,7 @@ webhooks:
           - domainmappings
 
 ---
-# Copyright 2020 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -477,7 +476,7 @@ webhooks:
           - services
 
 ---
-# Copyright 2020 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

@@ -1,4 +1,4 @@
-# Copyright 2018 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ data:
     kind: InMemoryChannel
 
 ---
-# Copyright 2021 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -65,7 +65,7 @@ data:
         backoffDelay: PT0.2S
 
 ---
-# Copyright 2018 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -100,7 +100,7 @@ data:
         kind: InMemoryChannel
 
 ---
-# Copyright 2020 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -147,7 +147,7 @@ data:
     data-max-size: -1
 
 ---
-# Copyright 2021 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -194,7 +194,7 @@ data:
   new-trigger-filters: "disabled"
 
 ---
-# Copyright 2021 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -243,7 +243,7 @@ data:
     # Pod.v1: https://addressable-pod.{{`{{ .SystemNamespace }}`}}.svc.cluster.local/{{`{{ .Name }}`}}
 
 ---
-# Copyright 2018 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -305,7 +305,7 @@ data:
     buckets: "1"
 
 ---
-# Copyright 2018 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -359,7 +359,7 @@ data:
   loglevel.webhook: "info"
 
 ---
-# Copyright 2019 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -436,7 +436,7 @@ data:
     sink-event-error-reporting.enable: "false"
 
 ---
-# Copyright 2019 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

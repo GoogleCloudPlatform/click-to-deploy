@@ -1,5 +1,5 @@
 ---
-# Copyright 2018 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -211,7 +211,7 @@ data:
     max-scale-limit: "0"
 
 ---
-# Copyright 2019 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -355,7 +355,7 @@ data:
     enable-service-links: "false"
 
 ---
-# Copyright 2019 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -459,7 +459,7 @@ data:
     concurrency-state-endpoint: ""
 
 ---
-# Copyright 2018 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -525,7 +525,7 @@ data:
         app: secret
 
 ---
-# Copyright 2020 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -688,7 +688,7 @@ data:
     kubernetes.podspec-persistent-volume-write: "disabled"
 
 ---
-# Copyright 2018 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -789,7 +789,7 @@ data:
     max-non-active-revisions: "1000"
 
 ---
-# Copyright 2020 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -852,7 +852,7 @@ data:
     buckets: "1"
 
 ---
-# Copyright 2018 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -931,7 +931,7 @@ data:
     loglevel.net-istio-controller: "info"
 
 ---
-# Copyright 2018 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1107,7 +1107,7 @@ data:
     default-external-scheme: "http"
 
 ---
-# Copyright 2018 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1216,7 +1216,7 @@ data:
     profiling.enable: "false"
 
 ---
-# Copyright 2019 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

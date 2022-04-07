@@ -10,7 +10,6 @@ metadata:
     app.kubernetes.io/name: cainjector
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/component: "cainjector"
-
 ---
 # Source: cert-manager/templates/cainjector-rbac.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -22,7 +21,6 @@ metadata:
     app.kubernetes.io/name: cainjector
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/component: "cainjector"
-
 rules:
   - apiGroups: ["cert-manager.io"]
     resources: ["certificates"]
@@ -56,7 +54,6 @@ metadata:
     app.kubernetes.io/name: cainjector
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/component: "cainjector"
-
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -78,7 +75,6 @@ metadata:
     app.kubernetes.io/name: cainjector
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/component: "cainjector"
-
 rules:
   # Used for leader election by the controller
   # cert-manager-cainjector-leader-election is used by the CertificateBased injector controller
@@ -114,7 +110,6 @@ metadata:
     app.kubernetes.io/name: cainjector
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/component: "cainjector"
-
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -130,27 +125,18 @@ kind: Deployment
 metadata:
   name: cert-manager-cainjector
   namespace: "{{ .Release.Namespace }}"
-  labels:
+  labels: &labels
     app: cainjector
     app.kubernetes.io/name: cainjector
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/component: "cainjector"
-
 spec:
   replicas: {{ .Values.certmanager.cainjector.replicas }}
   selector:
-    matchLabels:
-      app.kubernetes.io/name: cainjector
-      app.kubernetes.io/instance: cert-manager
-      app.kubernetes.io/component: "cainjector"
+    matchLabels: *labels
   template:
     metadata:
-      labels:
-        app: cainjector
-        app.kubernetes.io/name: cainjector
-        app.kubernetes.io/instance: cert-manager
-        app.kubernetes.io/component: "cainjector"
-
+      labels: *labels
     spec:
       serviceAccountName: cert-manager-cainjector
       securityContext:

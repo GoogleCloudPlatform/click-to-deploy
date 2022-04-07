@@ -32,7 +32,7 @@ spec:
     - description: Getting started with knative
       url: https://knative.dev/docs/
     notes: |-
-      # Get authentication credentials for the cluster
+      # Get authentication credentials for the cluster:
 
       ```shell
       gcloud container clusters get-credentials \

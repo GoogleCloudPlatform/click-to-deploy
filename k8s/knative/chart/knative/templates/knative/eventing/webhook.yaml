@@ -1,4 +1,4 @@
-# Copyright 2021 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -55,7 +55,7 @@ spec:
       app: eventing-webhook
 
 ---
-# Copyright 2018 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -195,7 +195,7 @@ spec:
     role: eventing-webhook
 
 ---
-# Copyright 2018 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -233,7 +233,7 @@ webhooks:
     timeoutSeconds: 10
 
 ---
-# Copyright 2018 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -267,7 +267,7 @@ webhooks:
     timeoutSeconds: 10
 
 ---
-# Copyright 2018 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -301,7 +301,7 @@ webhooks:
     timeoutSeconds: 10
 
 ---
-# Copyright 2018 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -327,7 +327,7 @@ metadata:
 # The data is populated at install time.
 
 ---
-# Copyright 2018 The Knative Authors
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

@@ -7,7 +7,6 @@ CHART_NAME := knative
 APP_ID ?= $(CHART_NAME)
 WAIT_FOR_READY_TIMEOUT := 600
 
-# Only used for makefile deployer (legacy)
 TRACK ?= 1.3
 # Track for components
 KNATIVE_TRACK ?= v1.3.0
@@ -81,15 +80,6 @@ C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)
 NAME ?= $(APP_ID)-1
-
-# Additional variables
-#ifdef PUBLIC_SERVICE_AND_INGRESS_ENABLED
-#  PUBLIC_SERVICE_AND_INGRESS_ENABLED_FIELD = , "enablePublicServiceAndIngress": $(PUBLIC_SERVICE_AND_INGRESS_ENABLED)
-#endif
-#
-#ifdef METRICS_EXPORTER_ENABLED
-#  METRICS_EXPORTER_ENABLED_FIELD = , "metrics.exporter.enabled": $(METRICS_EXPORTER_ENABLED)
-#endif
 
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \

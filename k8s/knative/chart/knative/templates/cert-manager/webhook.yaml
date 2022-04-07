@@ -10,7 +10,6 @@ metadata:
     app.kubernetes.io/name: webhook
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/component: "webhook"
-
 ---
 # Source: cert-manager/templates/webhook-config.yaml
 apiVersion: v1
@@ -35,7 +34,6 @@ metadata:
     app.kubernetes.io/name: webhook
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/component: "webhook"
-
 rules:
 - apiGroups: ["authorization.k8s.io"]
   resources: ["subjectaccessreviews"]
@@ -51,7 +49,6 @@ metadata:
     app.kubernetes.io/name: webhook
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/component: "webhook"
-
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -73,7 +70,6 @@ metadata:
     app.kubernetes.io/name: webhook
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/component: "webhook"
-
 rules:
 - apiGroups: [""]
   resources: ["secrets"]
@@ -96,7 +92,6 @@ metadata:
     app.kubernetes.io/name: webhook
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/component: "webhook"
-
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -118,7 +113,6 @@ metadata:
     app.kubernetes.io/name: webhook
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/component: "webhook"
-
 spec:
   type: ClusterIP
   ports:
@@ -137,27 +131,18 @@ kind: Deployment
 metadata:
   name: cert-manager-webhook
   namespace: "{{ .Release.Namespace }}"
-  labels:
+  labels: &labels
     app: webhook
     app.kubernetes.io/name: webhook
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/component: "webhook"
-
 spec:
   replicas: {{ .Values.certmanager.webhook.replicas }}
   selector:
-    matchLabels:
-      app.kubernetes.io/name: webhook
-      app.kubernetes.io/instance: cert-manager
-      app.kubernetes.io/component: "webhook"
+    matchLabels: *labels
   template:
     metadata:
-      labels:
-        app: webhook
-        app.kubernetes.io/name: webhook
-        app.kubernetes.io/instance: cert-manager
-        app.kubernetes.io/component: "webhook"
-
+      labels: *labels
     spec:
       serviceAccountName: cert-manager-webhook
       securityContext:
@@ -216,7 +201,6 @@ metadata:
     app.kubernetes.io/name: webhook
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/component: "webhook"
-
   annotations:
     cert-manager.io/inject-ca-from-secret: "{{ .Release.Namespace }}/cert-manager-webhook-ca"
 webhooks:
@@ -257,7 +241,6 @@ metadata:
     app.kubernetes.io/name: webhook
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/component: "webhook"
-
   annotations:
     cert-manager.io/inject-ca-from-secret: "{{ .Release.Namespace }}/cert-manager-webhook-ca"
 webhooks:
