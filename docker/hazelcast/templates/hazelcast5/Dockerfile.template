@@ -27,9 +27,6 @@ ENV C2D_RELEASE {{ $hazelcast.Version }}
 # Versions of Hazelcast and Hazelcast plugins
 ARG HZ_VERSION={{ $hazelcast.Version }}
 ARG HZ_VERSION_SHA={{ $hazelcast.Sha256 }}
-ARG CACHE_API_VERSION={{ $cache_api.Version }}
-ARG JMX_PROMETHEUS_AGENT_VERSION={{ $jmx_prometheus_agent.Version }}
-ARG LOG4J2_VERSION={{ $log4j2.Version }}
 
 # Build constants
 ARG HZ_HOME="/opt/hazelcast"
@@ -57,6 +54,7 @@ RUN echo "Installing new APK packages" \
     && apt-get -y install openjdk-11-jdk-headless bash curl libxml2-utils zip unzip procps net-tools telnet inetutils-ping \
     && echo "Downloading Hazelcast distribution zip..." \
     && HAZELCAST_ZIP_URL=$(${HZ_HOME}/get-hz-all-url.sh) \
+    && curl -sf -L ${HAZELCAST_ZIP_URL} --output ${HZ_HOME}/hazelcast-distribution.zip \
     && curl -sf -L ${HAZELCAST_ZIP_URL} --output ${HZ_HOME}/hazelcast-distribution.zip \
     && unzip -qq ${HZ_HOME}/hazelcast-distribution.zip 'hazelcast-*/**' -d ${HZ_HOME}/tmp/ \
     && mv ${HZ_HOME}/tmp/*/* ${HZ_HOME}/ \
