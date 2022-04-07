@@ -28,15 +28,15 @@ ARG HZ_HOME="/opt/hazelcast"
 
 # Runtime constants / variables
 ENV HZ_HOME="${HZ_HOME}" \
-    CLASSPATH_DEFAULT="${HZ_HOME}/*:${HZ_HOME}/lib/*" \
+    CLASSPATH_DEFAULT="${HZ_HOME}/*" \
     JAVA_OPTS_DEFAULT="-Djava.net.preferIPv4Stack=true -Dhz.network.rest-api.enabled=true -Dhz.network.rest-api.endpoint-groups.DATA.enabled=true -Dhazelcast.rest.enabled=true -Dhazelcast.logging.type=log4j2 -XX:MaxRAMPercentage=80.0 -XX:MaxGCPauseMillis=5 --add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED" \
-    MIN_HEAP_SIZE="" \
-    MAX_HEAP_SIZE="" \
-    MANCENTER_URL="" \
     PROMETHEUS_PORT="" \
-    PROMETHEUS_CONFIG="${HZ_HOME}/jmx_agent_config.yaml" \
-    LOGGING_LEVEL="" \
-    CLASSPATH=""
+    PROMETHEUS_CONFIG="${HZ_HOME}/config/jmx_agent_config.yaml" \
+    CLASSPATH="" \
+    JAVA_OPTS="" \
+    HAZELCAST_CONFIG=config/hazelcast-docker.xml \
+    LANG=C.UTF-8 \
+    PATH=${HZ_HOME}/bin:$PATH
 
 # Expose port
 EXPOSE 5701
