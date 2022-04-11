@@ -18,8 +18,8 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 1/debian9/1.37
-  from: marketplace.gcr.io/google/php7-apache2:7.3
+- dir: 1/debian11/1.37
+  from: marketplace.gcr.io/google/php7-apache2:7.4
   packages:
     composer:
       sha256: 48f9fdc9ad93904fee96550b45ae03a51f69718502ee855da894b4ad71d2dfe0
@@ -37,8 +37,8 @@ versions:
   - '1.37'
   - '1'
   - latest
-- dir: 1/debian9/1.36
-  from: marketplace.gcr.io/google/php7-apache2:7.3
+- dir: 1/debian11/1.36
+  from: marketplace.gcr.io/google/php7-apache2:7.4
   packages:
     composer:
       sha256: 48f9fdc9ad93904fee96550b45ae03a51f69718502ee855da894b4ad71d2dfe0
@@ -49,8 +49,8 @@ versions:
       version: 1.36.3
   repo: mediawiki1-php7-apache
   tags:
-  - 1.36.3-debian9
-  - 1.36-debian9
+  - 1.36.3-debian11
+  - 1.36-debian11
   - 1.36.3
   - '1.36'
 
