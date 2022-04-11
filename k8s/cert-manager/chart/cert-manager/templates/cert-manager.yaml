@@ -10,7 +10,6 @@ metadata:
     app.kubernetes.io/name: cert-manager
     app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-
 ---
 # Issuer controller role
 apiVersion: rbac.authorization.k8s.io/v1
@@ -46,7 +45,6 @@ metadata:
     app.kubernetes.io/name: cert-manager
     app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-
 rules:
   - apiGroups: ["cert-manager.io"]
     resources: ["clusterissuers", "clusterissuers/status"]
@@ -71,9 +69,6 @@ metadata:
     app.kubernetes.io/name: cert-manager
     app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-
-
-
 rules:
   - apiGroups: ["cert-manager.io"]
     resources: ["certificates", "certificates/status", "certificaterequests", "certificaterequests/status"]
@@ -107,7 +102,6 @@ metadata:
     app.kubernetes.io/name: cert-manager
     app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-
 rules:
   - apiGroups: ["acme.cert-manager.io"]
     resources: ["orders", "orders/status"]
@@ -144,7 +138,6 @@ metadata:
     app.kubernetes.io/name: cert-manager
     app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-
 rules:
   # Use to update challenge resource status
   - apiGroups: ["acme.cert-manager.io"]
@@ -203,7 +196,6 @@ metadata:
     app.kubernetes.io/name: cert-manager
     app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-
 rules:
   - apiGroups: ["cert-manager.io"]
     resources: ["certificates", "certificaterequests"]
@@ -279,7 +271,6 @@ metadata:
     app.kubernetes.io/name: cert-manager
     app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "cert-manager"
-
 rules:
   - apiGroups: ["cert-manager.io"]
     resources: ["signers"]
@@ -313,7 +304,6 @@ rules:
   - apiGroups: ["authorization.k8s.io"]
     resources: ["subjectaccessreviews"]
     verbs: ["create"]
-
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -324,7 +314,6 @@ metadata:
     app.kubernetes.io/name: cert-manager
     app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -343,7 +332,6 @@ metadata:
     app.kubernetes.io/name: cert-manager
     app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -362,7 +350,6 @@ metadata:
     app.kubernetes.io/name: cert-manager
     app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -381,7 +368,6 @@ metadata:
     app.kubernetes.io/name: cert-manager
     app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -400,7 +386,6 @@ metadata:
     app.kubernetes.io/name: cert-manager
     app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -419,7 +404,6 @@ metadata:
     app.kubernetes.io/name: cert-manager
     app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -438,7 +422,6 @@ metadata:
     app.kubernetes.io/name: cert-manager
     app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "cert-manager"
-
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -457,7 +440,6 @@ metadata:
     app.kubernetes.io/name: cert-manager
     app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "cert-manager"
-
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -466,7 +448,6 @@ subjects:
   - name: cert-manager
     namespace: "{{ .Release.Namespace }}"
     kind: ServiceAccount
-
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -478,7 +459,6 @@ metadata:
     app.kubernetes.io/name: cert-manager
     app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-
 rules:
   # Used for leader election by the controller
   # See also: https://github.com/kubernetes-sigs/controller-runtime/pull/1144#discussion_r480173688
@@ -510,7 +490,6 @@ metadata:
     app.kubernetes.io/name: cert-manager
     app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -520,7 +499,6 @@ subjects:
     kind: ServiceAccount
     name: cert-manager
     namespace: "{{ .Release.Namespace }}"
-
 ---
 apiVersion: v1
 kind: Service
@@ -532,7 +510,6 @@ metadata:
     app.kubernetes.io/name: cert-manager
     app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-
 spec:
   type: ClusterIP
   ports:
@@ -551,27 +528,18 @@ kind: Deployment
 metadata:
   name: cert-manager
   namespace: "{{ .Release.Namespace }}"
-  labels:
+  labels: &labels
     app: cert-manager
     app.kubernetes.io/name: cert-manager
     app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-
 spec:
   replicas: {{ .Values.controller.replicaCount }}
   selector:
-    matchLabels:
-      app.kubernetes.io/name: cert-manager
-      app.kubernetes.io/instance: "{{ .Release.Name }}"
-      app.kubernetes.io/component: "controller"
+    matchLabels: *labels
   template:
     metadata:
-      labels:
-        app: cert-manager
-        app.kubernetes.io/name: cert-manager
-        app.kubernetes.io/instance: "{{ .Release.Name }}"
-        app.kubernetes.io/component: "controller"
-
+      labels: *labels
       annotations:
         prometheus.io/path: "/metrics"
         prometheus.io/scrape: 'true'

@@ -10,7 +10,6 @@ metadata:
     app.kubernetes.io/name: webhook
     app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "webhook"
-
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -33,7 +32,6 @@ metadata:
     app.kubernetes.io/name: webhook
     app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "webhook"
-
 rules:
 - apiGroups: ["authorization.k8s.io"]
   resources: ["subjectaccessreviews"]
@@ -48,7 +46,6 @@ metadata:
     app.kubernetes.io/name: webhook
     app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "webhook"
-
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -69,7 +66,6 @@ metadata:
     app.kubernetes.io/name: webhook
     app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "webhook"
-
 rules:
 - apiGroups: [""]
   resources: ["secrets"]
@@ -91,7 +87,6 @@ metadata:
     app.kubernetes.io/name: webhook
     app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "webhook"
-
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -112,7 +107,6 @@ metadata:
     app.kubernetes.io/name: webhook
     app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "webhook"
-
 spec:
   type: ClusterIP
   ports:
@@ -130,27 +124,18 @@ kind: Deployment
 metadata:
   name: cert-manager-webhook
   namespace: "{{ .Release.Namespace }}"
-  labels:
+  labels: &labels
     app: webhook
     app.kubernetes.io/name: webhook
     app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "webhook"
-
 spec:
   replicas: {{.Values.webhook.replicaCount }}
   selector:
-    matchLabels:
-      app.kubernetes.io/name: webhook
-      app.kubernetes.io/instance: "{{ .Release.Name }}"
-      app.kubernetes.io/component: "webhook"
+    matchLabels: *labels
   template:
     metadata:
-      labels:
-        app: webhook
-        app.kubernetes.io/name: webhook
-        app.kubernetes.io/instance: "{{ .Release.Name }}"
-        app.kubernetes.io/component: "webhook"
-
+      labels: *labels
     spec:
       serviceAccountName: cert-manager-webhook
       securityContext:
