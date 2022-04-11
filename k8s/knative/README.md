@@ -117,7 +117,7 @@ It is advised to use a stable image reference, which you can find on:
 For example:
 
 ```shell
-export TRACK_CERT_MANAGER=1.6
+export TRACK_CERT_MANAGER=1.7
 export TRACK_ISTIO=1.13.0
 export TRACK_KNATIVE=v1.3.0
 ```

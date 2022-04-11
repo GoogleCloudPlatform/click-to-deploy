@@ -11,7 +11,7 @@ TRACK ?= 1.3
 # Track for components
 KNATIVE_TRACK ?= v1.3.0
 ISTIO_TRACK ?= 1.13.0
-CM_TRACK ?= 1.6
+CM_TRACK ?= 1.7
 
 EXPORTER_TAG ?= exporter
 METRICS_EXPORTER_TAG ?= v0.5.1
