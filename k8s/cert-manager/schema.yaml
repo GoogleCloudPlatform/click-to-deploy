@@ -20,6 +20,7 @@ x-google-marketplace:
         metrics.image:
           type: FULL
   clusterConstraints:
+    k8sVersion: ">=1.18.1"
     resources:
     - replicas: 1
       requests:
