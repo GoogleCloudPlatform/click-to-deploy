@@ -39,7 +39,9 @@ actions:
         equals: 0
 - name: Delete kservice
   bashTest:
-    script: kubectl delete --namespace $NAMESPACE kservice helloworld-knative-test
+    script: |
+      kubectl delete --namespace $NAMESPACE kservice helloworld-knative-test
+      kubectl delete --namespace $NAMESPACE service autoscaler-bucket-00-of-01
     expect:
       exitCode:
         equals: 0
