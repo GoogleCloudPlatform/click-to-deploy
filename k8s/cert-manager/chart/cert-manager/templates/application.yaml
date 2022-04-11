@@ -77,3 +77,12 @@ spec:
     kind: Pod
   - group: v1
     kind: Service
+  - group: rbac.authorization.k8s.io/v1
+    kind:  ClusterRole
+  - group: rbac.authorization.k8s.io/v1
+    kind:  ClusterRoleBinding
+  - group: rbac.authorization.k8s.io/v1
+    kind:  Role
+  - group: rbac.authorization.k8s.io/v1
+    kind:  RoleBinding
+
