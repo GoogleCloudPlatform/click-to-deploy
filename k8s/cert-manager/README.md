@@ -138,7 +138,7 @@ It is advised to use a stable image reference, which you can find on
 For example:
 
 ```shell
-export TAG="1.6"
+export TAG="1.7"
 ```
 
 Configure the container image:

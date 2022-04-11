@@ -80,19 +80,28 @@ properties:
     title: Controller replicas
     description: Number of replicas of the Cert Manager controller
     default: 1
-    minimum: 1
+    enum:
+      - '1'
+      - '3'
+      - '5'
   webhook.replicaCount:
     type: integer
     title: WebHook replicas
     description: Number of replicas of the Cert Manager webhook
     default: 1
-    minimum: 1
+    enum:
+      - '1'
+      - '3'
+      - '5'
   cainjector.replicaCount:
     type: integer
     title: CA Injector replicas
     description: Number of replicas of the Cert Manager CA Injector
     default: 1
-    minimum: 1
+    enum:
+      - '1'
+      - '3'
+      - '5'
   metrics.exporter.enabled:
     type: boolean
     title: Enable Cloud Monitoring for metrics
