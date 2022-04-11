@@ -6,7 +6,7 @@ include ../images.Makefile
 CHART_NAME := gitlab
 APP_ID ?= $(CHART_NAME)
 
-VERIFY_WAIT_TIMEOUT = 2600
+VERIFY_WAIT_TIMEOUT = 3600
 
 TRACK ?= 14.8
 POSTGRESQL_TAG ?= latest
