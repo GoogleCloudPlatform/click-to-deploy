@@ -224,7 +224,7 @@ unable to recognize "/data/resources.yaml": no matches for kind "PeerAuthenticat
 ```
 re-apply the manifest.
 
-The solution contains a lot of CRDs and some of them did not have time to apply. Install them before installing the manifest:
+The solution contains several CRDs. Install them before installing the manifest:
 
 ```shell
 kubectl apply -f ./chart/knative/templates/crds/
