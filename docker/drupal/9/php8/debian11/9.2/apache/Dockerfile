@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/php7-apache2:7.3
+FROM marketplace.gcr.io/google/php8-apache2:8.0
 
 RUN set -ex; \
 	savedAptMark="$(apt-mark showmanual)"; \
@@ -12,9 +12,8 @@ RUN set -ex; \
 	; \
 	\
 	docker-php-ext-configure gd \
-		--with-freetype-dir=/usr \
-		--with-jpeg-dir=/usr \
-		--with-png-dir=/usr \
+		--with-freetype=/usr \
+		--with-jpeg=/usr \
 	; \
 	\
 	docker-php-ext-install -j "$(nproc)" \
@@ -32,7 +31,7 @@ RUN set -ex; \
 	ldd "$(php -r 'echo ini_get("extension_dir");')"/*.so \
 		| awk '/=>/ { print $3 }' \
 		| sort -u \
-		| xargs -r dpkg-query -S \
+		| xargs -r realpath | xargs -r dpkg-query --search \
 		| cut -d: -f1 \
 		| sort -u \
 		| xargs -rt apt-mark manual; \
@@ -55,9 +54,9 @@ RUN a2enmod rewrite expires
 WORKDIR /usr/src/drupal
 
 # https://www.drupal.org/node/3060/release
-ENV DRUPAL_VERSION 9.3.9
-ENV C2D_RELEASE 9.3.9
-ENV DRUPAL_MD5 09ff49df4ee07a1afc8339e5f22c2c14
+ENV DRUPAL_VERSION 9.2.16
+ENV C2D_RELEASE 9.2.16
+ENV DRUPAL_MD5 469c24790fb36dc09472c8f25e1d248d
 
 # Download package and extract to web volume
 RUN set -eux; \
