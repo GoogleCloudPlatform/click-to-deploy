@@ -12,14 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-package 'install packages' do
-  package_name node['nginx']['packages']
-  default_release 'stretch-backports'
-  action :install
-  retries 5
-  retry_delay 60
-end
+require 'spec_helper'
 
-execute 'rename index.html' do
-  command 'mv /var/www/html/index.nginx-debian.html /var/www/html/index.html'
+describe 'Installed Ops-agent' do
+  describe package('google-cloud-ops-agent') do
+    it { should be_installed }
+  end
+
+  describe service('google-cloud-ops-agent.service') do
+    it { should be_enabled }
+    it { should be_running }
+  end
+
+  describe file('/etc/google-cloud-ops-agent/config.yaml') do
+    it { should exist }
+  end
 end
