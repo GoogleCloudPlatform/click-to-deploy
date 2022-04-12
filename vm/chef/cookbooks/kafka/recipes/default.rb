@@ -75,7 +75,13 @@ service 'kafka.service' do
   action :enable
 end
 
+cookbook_file '/opt/c2d/kafka-utils' do
+  source 'kafka-utils'
+  owner 'root'
+  group 'root'
+  mode 0644
+  action :create
+end
+
 # Copy startup script
 c2d_startup_script 'kafka'
-
-c2d_startup_script 'zk-acls'

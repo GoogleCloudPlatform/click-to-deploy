@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@
 
 node.override['postgresql']['standalone']['allow_external'] = false
 
-include_recipe 'nginx'
-include_recipe 'redis::standalone'
-include_recipe 'postgresql::standalone_buster'
 include_recipe 'git'
+include_recipe 'nginx'
+include_recipe 'postgresql::standalone_bullseye'
+include_recipe 'redis::standalone'
 
 apt_update do
   action :update
@@ -66,7 +66,7 @@ cookbook_file '/opt/weblate-env/weblate.uwsgi.ini' do
   action :create
 end
 
-cookbook_file '/etc/nginx/sites-available/weblate' do
+cookbook_file '/etc/nginx/sites-available/weblate.conf' do
   source 'weblate.nginx'
   owner 'root'
   group 'root'
