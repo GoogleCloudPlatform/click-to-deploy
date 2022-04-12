@@ -18,9 +18,9 @@ This app offers "list of resources".
 
 ## Quick install with Google Cloud Marketplace
 
-Get up and running with a few clicks! To install this Cert Manager app to a
+Get up and running with a few clicks! To install this Knative app to a
 Google Kubernetes Engine cluster via Google Cloud Marketplace, follow the
-[on-screen instructions](https://console.cloud.google.com/marketplace/details/google/cert-manager).
+[on-screen instructions](https://console.cloud.google.com/marketplace/details/google/knative).
 
 ## Command-line instructions
 
@@ -37,7 +37,6 @@ your environment by default.
 - [docker](https://docs.docker.com/install/)
 - [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 - [helm](https://helm.sh/)
-- [envsubst](https://command-not-found.com/envsubst)
 
 Configure `gcloud` as a Docker credential helper:
 
@@ -166,46 +165,46 @@ expanded manifest file for future updates to your app.
 ```shell
 helm template "${APP_INSTANCE_NAME}" chart/knative \
     --namespace "${NAMESPACE}" \
-    --set certmanager.image.repo=$IMAGE_CERT_MANAGER \
-    --set certmanager.image.tag=$TRACK_CERT_MANAGER \
-    --set istio.ingressgateway.image.repo=$IMAGE_ISTIO_INGRESSGATEWAY \
-    --set istio.ingressgateway.image.tag=$TRACK_ISTIO \
-    --set istio.istiod.image.repo=$IMAGE_ISTIO_ISTIOD \
-    --set istio.istiod.image.tag=$TRACK_ISTIO \
-    --set knative.serving.activator.image.repo=$IMAGE_KNATIVE_SERVING_ACTIVATOR \
-    --set knative.serving.activator.image.tag=$TRACK_KNATIVE \
-    --set knative.serving.autoscaler.image.repo=$IMAGE_KNATIVE_SERVING_AUTOSCALER \
-    --set knative.serving.autoscaler.image.tag=$TRACK_KNATIVE \
-    --set knative.serving.controller.image.repo=$IMAGE_KNATIVE_SERVING_CONTROLLER \
-    --set knative.serving.controller.image.tag=$TRACK_KNATIVE \
-    --set knative.serving.domainmapping.image.repo=$IMAGE_KNATIVE_SERVING_DOMAINMAPPING \
-    --set knative.serving.domainmapping.image.tag=$TRACK_KNATIVE \
-    --set knative.serving.domainmapping.webhook.image.repo=$IMAGE_KNATIVE_SERVING_DOMAINMAPPING_WEBHOOK \
-    --set knative.serving.domainmapping.webhook.image.tag=$TRACK_KNATIVE \
-    --set knative.serving.queueproxy.image.repo=$IMAGE_KNATIVE_SERVING_QUEUEPROXY \
-    --set knative.serving.queueproxy.image.tag=$TRACK_KNATIVE \
-    --set knative.serving.webhook.image.repo=$IMAGE_KNATIVE_SERVING_WEBHOOK \
-    --set knative.serving.webhook.image.tag=$TRACK_KNATIVE \
-    --set knative.serving.netcertmanager.controller.image.repo=$IMAGE_KNATIVE_SERVING_NETCERMANAGER_CONTROLLER \
-    --set knative.serving.netcertmanager.controller.image.tag=$TRACK_KNATIVE \
-    --set knative.serving.netcertmanager.webhook.image.repo=$IMAGE_KNATIVE_SERVING_NETCERMANAGER_WEBHOOK \
-    --set knative.serving.netcertmanager.webhook.image.tag=$TRACK_KNATIVE \
-    --set knative.serving.netistio.controller.image.repo=$IMAGE_KNATIVE_SERVING_NETISTIO_CONTROLLER \
-    --set knative.serving.netistio.controller.image.tag=$TRACK_KNATIVE \
-    --set knative.serving.netistio.webhook.image.repo=$IMAGE_KNATIVE_SERVING_NETISTIO_WEBHOOK \
-    --set knative.serving.netistio.webhook.image.tag=$TRACK_KNATIVE \
-    --set knative.eventing.controller.image.repo=$IMAGE_KNATIVE_EVENTING_CONTROLLER \
-    --set knative.eventing.controller.image.tag=$TRACK_KNATIVE \
-    --set knative.eventing.mtping.image.repo=$IMAGE_KNATIVE_EVENTING_MTPING \
-    --set knative.eventing.mtping.image.tag=$TRACK_KNATIVE \
-    --set knative.eventing.webhook.image.repo=$IMAGE_KNATIVE_EVENTING_WEBHOOK \
-    --set knative.eventing.webhook.image.tag=$TRACK_KNATIVE \
-    --set certmanager.controller.replicas=${CERT_MANAGER_CONTROLLER_REPLICAS:-1} \
-    --set certmanager.webhook.replicas=${CERT_MANAGER_WEBHOOK_REPLICAS:-1} \
-    --set certmanager.cainjector.replicas=${CERT_MANAGER_CAINJECTOR_REPLICAS:-1} \
-    --set istio.ingressgateway.replicas=${ISTIO_INGRESS_GATEWAY_REPLICAS:-1} \
-    --set knative.autoscaler.replicas=${KNATIVE_AUTOSCALER_REPLICAS:-1} \
-    > ${APP_INSTANCE_NAME}_manifest.yaml
+    --set certmanager.image.repo="$IMAGE_CERT_MANAGER" \
+    --set certmanager.image.tag="$TRACK_CERT_MANAGER" \
+    --set istio.ingressgateway.image.repo="$IMAGE_ISTIO_INGRESSGATEWAY" \
+    --set istio.ingressgateway.image.tag="$TRACK_ISTIO" \
+    --set istio.istiod.image.repo="$IMAGE_ISTIO_ISTIOD" \
+    --set istio.istiod.image.tag="$TRACK_ISTIO" \
+    --set knative.serving.activator.image.repo="$IMAGE_KNATIVE_SERVING_ACTIVATOR" \
+    --set knative.serving.activator.image.tag="$TRACK_KNATIVE" \
+    --set knative.serving.autoscaler.image.repo="$IMAGE_KNATIVE_SERVING_AUTOSCALER" \
+    --set knative.serving.autoscaler.image.tag="$TRACK_KNATIVE" \
+    --set knative.serving.controller.image.repo="$IMAGE_KNATIVE_SERVING_CONTROLLER" \
+    --set knative.serving.controller.image.tag="$TRACK_KNATIVE" \
+    --set knative.serving.domainmapping.image.repo="$IMAGE_KNATIVE_SERVING_DOMAINMAPPING" \
+    --set knative.serving.domainmapping.image.tag="$TRACK_KNATIVE" \
+    --set knative.serving.domainmapping.webhook.image.repo="$IMAGE_KNATIVE_SERVING_DOMAINMAPPING_WEBHOOK" \
+    --set knative.serving.domainmapping.webhook.image.tag="$TRACK_KNATIVE" \
+    --set knative.serving.queueproxy.image.repo="$IMAGE_KNATIVE_SERVING_QUEUEPROXY" \
+    --set knative.serving.queueproxy.image.tag="$TRACK_KNATIVE" \
+    --set knative.serving.webhook.image.repo="$IMAGE_KNATIVE_SERVING_WEBHOOK" \
+    --set knative.serving.webhook.image.tag="$TRACK_KNATIVE" \
+    --set knative.serving.netcertmanager.controller.image.repo="$IMAGE_KNATIVE_SERVING_NETCERMANAGER_CONTROLLER" \
+    --set knative.serving.netcertmanager.controller.image.tag="$TRACK_KNATIVE" \
+    --set knative.serving.netcertmanager.webhook.image.repo="$IMAGE_KNATIVE_SERVING_NETCERMANAGER_WEBHOOK" \
+    --set knative.serving.netcertmanager.webhook.image.tag="$TRACK_KNATIVE" \
+    --set knative.serving.netistio.controller.image.repo="$IMAGE_KNATIVE_SERVING_NETISTIO_CONTROLLER" \
+    --set knative.serving.netistio.controller.image.tag="$TRACK_KNATIVE" \
+    --set knative.serving.netistio.webhook.image.repo="$IMAGE_KNATIVE_SERVING_NETISTIO_WEBHOOK" \
+    --set knative.serving.netistio.webhook.image.tag="$TRACK_KNATIVE" \
+    --set knative.eventing.controller.image.repo="$IMAGE_KNATIVE_EVENTING_CONTROLLER" \
+    --set knative.eventing.controller.image.tag="$TRACK_KNATIVE" \
+    --set knative.eventing.mtping.image.repo="$IMAGE_KNATIVE_EVENTING_MTPING" \
+    --set knative.eventing.mtping.image.tag="$TRACK_KNATIVE" \
+    --set knative.eventing.webhook.image.repo="$IMAGE_KNATIVE_EVENTING_WEBHOOK" \
+    --set knative.eventing.webhook.image.tag="$TRACK_KNATIVE" \
+    --set certmanager.controller.replicas="${CERT_MANAGER_CONTROLLER_REPLICAS:-1}" \
+    --set certmanager.webhook.replicas="${CERT_MANAGER_WEBHOOK_REPLICAS:-1}" \
+    --set certmanager.cainjector.replicas="${CERT_MANAGER_CAINJECTOR_REPLICAS:-1}" \
+    --set istio.ingressgateway.replicas="${ISTIO_INGRESS_GATEWAY_REPLICAS:-1}" \
+    --set knative.autoscaler.replicas="${KNATIVE_AUTOSCALER_REPLICAS:-1}" \
+    > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster
@@ -225,7 +224,7 @@ unable to recognize "/data/resources.yaml": no matches for kind "PeerAuthenticat
 ```
 re-apply the manifest.
 
-The solution contains a lot of CRDs and some of them did not have time to apply. Or install them first before installing the manifest:
+The solution contains a lot of CRDs and some of them did not have time to apply. Install them before installing the manifest:
 
 ```shell
 kubectl apply -f ./chart/knative/templates/crds/
@@ -276,7 +275,7 @@ kind: ConfigMap
 [...]
 ```
 
-- Edit the file to replace `example.com` with the domain you'd like to use and save your changes. In this example, we configure `mydomain.com` for all routes: 
+- Edit the file to replace `example.com` with the new domain and save your changes. In this example, we configure `mydomain.com` for all routes: 
 
 ```yaml
 apiVersion: v1
@@ -338,13 +337,13 @@ spec:
               value: "knative"
 ```
 
-You can check the customized domain in  Knative Route "helloworld-go" with
+You can check the custom domain in Knative Route "helloworld-go" with
 the following command:
 
 ```shell
 kubectl get route helloworld-go --output jsonpath="{.status.domain}" --namespace $NAMESPACE
 ```
-You should see the full customized domain: `helloworld-go.$NAMESPACE.yourdomain.com`.
+You should view the full customized domain: `helloworld-go.$NAMESPACE.yourdomain.com`.
 
 You can map the domain to the IP address of your Knative gateway in your local 
 machine with:
@@ -380,7 +379,7 @@ helloworld-go.default.yourdomain.com        59     IN     A   35.237.28.44
 ```
 
 If you are using Google Cloud DNS, you can find step-by-step instructions
-in the [Cloud DNS quickstart](https://cloud.google.com/dns/quickstart).
+in the [Quickstart](https://cloud.google.com/dns/quickstart).
 
 
 Once the domain update has propagated, you can access your app using 
