@@ -5,18 +5,18 @@ server {
     root /var/www/html;
 
     location ~ ^/favicon.ico$ {
-        alias /opt/weblate-env/lib/python3.7/site-packages/data/static/favicon.ico;
+        alias /opt/weblate-env/lib/python3.9/site-packages/data/static/favicon.ico;
         expires 30d;
     }
 
     location /static/ {
         # DATA_DIR/static/
-        alias /opt/weblate-env/lib/python3.7/site-packages/data/static/;
+        alias /opt/weblate-env/lib/python3.9/site-packages/data/static/;
         expires 30d;
     }
 
     location /media/ {
-        alias /opt/weblate-env/lib/python3.7/site-packages/data/media/;
+        alias /opt/weblate-env/lib/python3.9/site-packages/data/media/;
         expires 30d;
     }
 

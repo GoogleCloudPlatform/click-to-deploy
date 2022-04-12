@@ -36,7 +36,7 @@ include_recipe 'php74::module_zip'
 
 remote_file '/tmp/joomla.tar.gz' do
   source "https://github.com/joomla/joomla-cms/releases/download/#{node['joomla']['version']}/Joomla_#{node['joomla']['version']}-Stable-Full_Package.tar.gz"
-  verify "echo '#{node['joomla']['sha1']} %{path}' | sha1sum -c"
+  verify "echo '#{node['joomla']['sha256']} %{path}' | sha256sum -c"
   action :create
 end
 
