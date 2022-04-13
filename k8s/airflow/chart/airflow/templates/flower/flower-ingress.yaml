@@ -1,0 +1,68 @@
+{{- if and (.Values.flower.enabled) (.Values.ingress.enabled) (eq .Values.ingress.apiVersion "networking.k8s.io/v1") }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "airflow.fullname" . }}-flower
+  {{- if .Values.ingress.flower.annotations }}
+  annotations:
+    {{- toYaml .Values.ingress.flower.annotations | nindent 4 }}
+  {{- end }}
+  labels:
+    app: {{ include "airflow.labels.app" . }}
+    component: flower
+    chart: {{ include "airflow.labels.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    {{- if .Values.ingress.flower.labels }}
+    {{- toYaml .Values.ingress.flower.labels | nindent 4 }}
+    {{- end }}
+spec:
+  {{- if .Values.ingress.flower.tls.enabled }}
+  tls:
+    - hosts:
+        - {{ .Values.ingress.flower.host }}
+      {{- if .Values.ingress.flower.tls.secretName }}
+      secretName: {{ .Values.ingress.flower.tls.secretName }}
+      {{- end }}
+  {{- end }}
+  {{- if .Values.ingress.flower.ingressClassName }}
+  ingressClassName: {{ .Values.ingress.flower.ingressClassName }}
+  {{- end }}
+  rules:
+    - host: {{ .Values.ingress.flower.host }}
+      http:
+        paths:
+          {{- range .Values.ingress.flower.precedingPaths }}
+          - path: {{ .path }}
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ .serviceName }}
+                port:
+                  {{- if kindIs "string" .servicePort }}
+                  name: {{ .servicePort }}
+                  {{- else }}
+                  number: {{ .servicePort }}
+                  {{- end }}
+          {{- end }}
+          - path: {{ .Values.ingress.flower.path }}
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ include "airflow.fullname" . }}-flower
+                port:
+                  name: flower
+          {{- range .Values.ingress.flower.succeedingPaths }}
+          - path: {{ .path }}
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ .serviceName }}
+                port:
+                  {{- if kindIs "string" .servicePort }}
+                  name: {{ .servicePort }}
+                  {{- else }}
+                  number: {{ .servicePort }}
+                  {{- end }}
+          {{- end }}
+{{- end }}

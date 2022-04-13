@@ -1,0 +1,165 @@
+{{- if .Values.flower.enabled }}
+{{- $podNodeSelector := include "airflow.podNodeSelector" (dict "Release" .Release "Values" .Values "nodeSelector" .Values.flower.nodeSelector) }}
+{{- $podAffinity := include "airflow.podAffinity" (dict "Release" .Release "Values" .Values "affinity" .Values.flower.affinity) }}
+{{- $podTolerations := include "airflow.podTolerations" (dict "Release" .Release "Values" .Values "tolerations" .Values.flower.tolerations) }}
+{{- $podSecurityContext := include "airflow.podSecurityContext" (dict "Release" .Release "Values" .Values "securityContext" .Values.flower.securityContext) }}
+{{- $extraPipPackages := concat .Values.airflow.extraPipPackages .Values.flower.extraPipPackages }}
+{{- $extraVolumeMounts := .Values.flower.extraVolumeMounts }}
+{{- $volumeMounts := include "airflow.volumeMounts" (dict "Release" .Release "Values" .Values "extraPipPackages" $extraPipPackages "extraVolumeMounts" $extraVolumeMounts) }}
+{{- $extraVolumes := .Values.flower.extraVolumes }}
+{{- $volumes := include "airflow.volumes" (dict "Release" .Release "Values" .Values "extraPipPackages" $extraPipPackages "extraVolumes" $extraVolumes) }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "airflow.fullname" . }}-flower
+  {{- if .Values.flower.annotations }}
+  annotations:
+    {{- toYaml .Values.flower.annotations | nindent 4 }}
+  {{- end }}
+  labels:
+    app: {{ include "airflow.labels.app" . }}
+    component: flower
+    chart: {{ include "airflow.labels.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    {{- if .Values.flower.labels }}
+    {{- toYaml .Values.flower.labels | nindent 4 }}
+    {{- end }}
+spec:
+  replicas: {{ .Values.flower.replicas }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      ## multiple flower pods can safely run concurrently
+      maxSurge: 25%
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: {{ include "airflow.labels.app" . }}
+      component: flower
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/secret-config-envs: {{ include (print $.Template.BasePath "/config/secret-config-envs.yaml") . | sha256sum }}
+        checksum/secret-local-settings: {{ include (print $.Template.BasePath "/config/secret-local-settings.yaml") . | sha256sum }}
+        {{- if .Values.airflow.podAnnotations }}
+        {{- toYaml .Values.airflow.podAnnotations | nindent 8 }}
+        {{- end }}
+        {{- if .Values.flower.podAnnotations }}
+        {{- toYaml .Values.flower.podAnnotations | nindent 8 }}
+        {{- end }}
+        {{- if .Values.flower.safeToEvict }}
+        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+        {{- end }}
+      labels:
+        app: {{ include "airflow.labels.app" . }}
+        component: flower
+        release: {{ .Release.Name }}
+        {{- if .Values.flower.podLabels }}
+        {{- toYaml .Values.flower.podLabels | nindent 8 }}
+        {{- end }}
+    spec:
+      restartPolicy: Always
+      {{- if .Values.airflow.image.pullSecret }}
+      imagePullSecrets:
+        - name: {{ .Values.airflow.image.pullSecret }}
+      {{- end }}
+      {{- if $podNodeSelector }}
+      nodeSelector:
+        {{- $podNodeSelector | nindent 8 }}
+      {{- end }}
+      {{- if $podAffinity }}
+      affinity:
+        {{- $podAffinity | nindent 8 }}
+      {{- end }}
+      {{- if $podTolerations }}
+      tolerations:
+        {{- $podTolerations | nindent 8 }}
+      {{- end }}
+      {{- if $podSecurityContext }}
+      securityContext:
+        {{- $podSecurityContext | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "airflow.serviceAccountName" . }}
+      initContainers:
+        {{- if $extraPipPackages }}
+        {{- include "airflow.init_container.install_pip_packages" (dict "Release" .Release "Values" .Values "extraPipPackages" $extraPipPackages) | indent 8 }}
+        {{- end }}
+        {{- if .Values.dags.gitSync.enabled }}
+        ## git-sync is included so "airflow plugins" & "python packages" can be stored in the dags repo
+        {{- include "airflow.container.git_sync" (dict "Release" .Release "Values" .Values "sync_one_time" "true") | indent 8 }}
+        {{- end }}
+        {{- include "airflow.init_container.check_db" (dict "Release" .Release "Values" .Values "volumeMounts" $volumeMounts) | indent 8 }}
+        {{- include "airflow.init_container.wait_for_db_migrations" (dict "Release" .Release "Values" .Values "volumeMounts" $volumeMounts) | indent 8 }}
+      containers:
+        - name: airflow-flower
+          {{- include "airflow.image" . | indent 10 }}
+          resources:
+            {{- toYaml .Values.flower.resources | nindent 12 }}
+          envFrom:
+            {{- include "airflow.envFrom" . | indent 12 }}
+          env:
+            {{- include "airflow.env" . | indent 12 }}
+          ports:
+            - name: flower
+              containerPort: 5555
+              protocol: TCP
+          command:
+            {{- include "airflow.command" . | indent 12 }}
+          args:
+            - "bash"
+            - "-c"
+            {{- if .Values.airflow.legacyCommands }}
+            - "exec airflow flower"
+            {{- else }}
+            - "exec airflow celery flower"
+            {{- end }}
+          {{- if .Values.flower.readinessProbe.enabled }}
+          readinessProbe:
+            initialDelaySeconds: {{ .Values.flower.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.flower.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.flower.readinessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.flower.readinessProbe.failureThreshold }}
+            exec:
+              command:
+                - "bash"
+                - "-c"
+                {{- if or (.Values.flower.basicAuthSecret) (.Values.airflow.config.AIRFLOW__CELERY__FLOWER_BASIC_AUTH) }}
+                - "exec curl --user $AIRFLOW__CELERY__FLOWER_BASIC_AUTH 'http://localhost:5555{{ .Values.airflow.config.AIRFLOW__CELERY__FLOWER_URL_PREFIX }}'"
+                {{- else }}
+                - "exec curl 'http://localhost:5555{{ .Values.airflow.config.AIRFLOW__CELERY__FLOWER_URL_PREFIX }}'"
+                {{- end }}
+          {{- end }}
+          {{- if .Values.flower.livenessProbe.enabled }}
+          livenessProbe:
+            initialDelaySeconds: {{ .Values.flower.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.flower.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.flower.livenessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.flower.livenessProbe.failureThreshold }}
+            exec:
+              command:
+                - "bash"
+                - "-c"
+                {{- if or (.Values.flower.basicAuthSecret) (.Values.airflow.config.AIRFLOW__CELERY__FLOWER_BASIC_AUTH) }}
+                - "exec curl --user $AIRFLOW__CELERY__FLOWER_BASIC_AUTH 'http://localhost:5555{{ .Values.airflow.config.AIRFLOW__CELERY__FLOWER_URL_PREFIX }}'"
+                {{- else }}
+                - "exec curl 'http://localhost:5555{{ .Values.airflow.config.AIRFLOW__CELERY__FLOWER_URL_PREFIX }}'"
+                {{- end }}
+          {{- end }}
+          {{- if $volumeMounts }}
+          volumeMounts:
+            {{- $volumeMounts | indent 12 }}
+          {{- end }}
+        {{- if .Values.dags.gitSync.enabled }}
+        ## git-sync is included so "airflow plugins" & "python packages" can be stored in the dags repo
+        {{- include "airflow.container.git_sync" . | indent 8 }}
+        {{- end }}
+        {{- if .Values.airflow.extraContainers }}
+        {{- toYaml .Values.airflow.extraContainers | nindent 8 }}
+        {{- end }}
+      {{- if $volumes }}
+      volumes:
+        {{- $volumes | indent 8 }}
+      {{- end }}
+{{- end }}

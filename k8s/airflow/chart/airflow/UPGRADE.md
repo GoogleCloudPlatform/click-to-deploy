@@ -1,0 +1,1 @@
+This file has been replaced by [CHANGELOG.md](CHANGELOG.md) for versions `7.0.0` and later.

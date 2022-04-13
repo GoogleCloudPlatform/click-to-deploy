@@ -1,0 +1,182 @@
+#
+# NOTE:
+# - This is intended to be a `custom-values.yaml` starting point for non-production deployment (like minikube)
+
+# External Dependencies:
+# - A PUBLIC git repo for DAGs: https://github.com/USERNAME/REPOSITORY.git
+#
+
+###################################
+# Airflow - Common Configs
+###################################
+airflow:
+  ## the airflow executor type to use
+  ##
+  executor: CeleryExecutor
+
+  ## the fernet key used to encrypt the connections in the database
+  ##
+  fernetKey: "7T512UXSSmBOkpWimFHIVb8jK6lfmSAvx4mO6Arehnc="
+
+  ## environment variables for the web/scheduler/worker Pods (for airflow configs)
+  ##
+  config:
+    # Security
+    AIRFLOW__WEBSERVER__EXPOSE_CONFIG: "False"
+
+    # DAGS
+    AIRFLOW__CORE__LOAD_EXAMPLES: "True"
+
+    ## Disable noisy "Handling signal: ttou" Gunicorn log messages
+    GUNICORN_CMD_ARGS: "--log-level WARNING"
+
+  ## a list of initial users to create
+  ##
+  users:
+    - username: admin
+      password: admin
+      role: Admin
+      email: admin@example.com
+      firstName: admin
+      lastName: admin
+
+  ## a list of initial connections to create
+  ##
+  connections:
+    ## see docs: https://airflow.apache.org/docs/apache-airflow-providers-google/stable/connections/gcp.html
+    - id: my_gcp
+      type: google_cloud_platform
+      description: my GCP connection
+      extra: |-
+        { "extra__google_cloud_platform__num_retries": "5" }
+
+  ## a list of initial variables to create
+  ##
+  variables:
+    - key: "environment"
+      value: "dev"
+
+  ## a list of initial pools to create
+  ##
+  pools:
+    - name: "pool_1"
+      slots: 5
+      description: "example pool with 5 slots"
+    - name: "pool_2"
+      slots: 10
+      description: "example pool with 10 slots"
+
+###################################
+# Airflow - Scheduler Configs
+###################################
+scheduler:
+  ## the number of scheduler Pods to run
+  ##
+  replicas: 1
+
+###################################
+# Airflow - WebUI Configs
+###################################
+web:
+  ## configs for the Service of the web Pods
+  ##
+  service:
+    type: NodePort
+
+###################################
+# Airflow - Worker Configs
+###################################
+workers:
+  ## if the airflow workers StatefulSet should be deployed
+  ##
+  enabled: true
+
+  ## the number of workers Pods to run
+  ##
+  replicas: 1
+
+###################################
+# Airflow - Triggerer Configs
+###################################
+triggerer:
+  ## if the airflow triggerer should be deployed
+  ##
+  ## WARNING:
+  ## - the triggerer component was added in airflow 2.2.0
+  ## - if `airflow.legacyCommands` is `true` the triggerer will NOT be deployed
+  ##
+  enabled: true
+
+  ## the number of triggerer Pods to run
+  ##
+  replicas: 1
+
+###################################
+# Airflow - Flower Configs
+###################################
+flower:
+  ## if the Flower UI should be deployed
+  ##
+  enabled: true
+
+###################################
+# Airflow - Logs Configs
+###################################
+logs:
+  ## configs for the logs PVC
+  ##
+  persistence:
+    ## if a persistent volume is mounted at `logs.path`
+    ##
+    enabled: false
+
+###################################
+# Airflow - DAGs Configs
+###################################
+dags:
+  ## configs for the git-sync sidecar (https://github.com/kubernetes/git-sync)
+  ##
+  gitSync:
+    ## if the git-sync sidecar container is enabled
+    ##
+    enabled: false
+
+    ## the url of the git repo
+    ##
+    repo: "https://github.com/USERNAME/REPOSITORY.git"
+
+    ## the git branch to check out
+    ##
+    branch: master
+
+    ## the git revision (tag or hash) to check out
+    ##
+    revision: HEAD
+
+    ## the number of seconds between syncs
+    ##
+    syncWait: 60
+
+    ## the name of a pre-created Secret with git http credentials
+    ##
+    httpSecret: ""
+
+    ## the key in `dags.gitSync.httpSecret` with your git username
+    ##
+    httpSecretUsernameKey: username
+
+    ## the key in `dags.gitSync.httpSecret` with your git password/token
+    ##
+    httpSecretPasswordKey: password
+
+###################################
+# Database - PostgreSQL Chart
+###################################
+postgresql:
+  enabled: true
+
+###################################
+# Database - Redis Chart
+###################################
+redis:
+  enabled: true

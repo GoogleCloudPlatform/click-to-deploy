@@ -1,0 +1,160 @@
+{{- if include "airflow.triggerer.should_use" . }}
+{{- $podNodeSelector := include "airflow.podNodeSelector" (dict "Release" .Release "Values" .Values "nodeSelector" .Values.triggerer.nodeSelector) }}
+{{- $podAffinity := include "airflow.podAffinity" (dict "Release" .Release "Values" .Values "affinity" .Values.triggerer.affinity) }}
+{{- $podTolerations := include "airflow.podTolerations" (dict "Release" .Release "Values" .Values "tolerations" .Values.triggerer.tolerations) }}
+{{- $podSecurityContext := include "airflow.podSecurityContext" (dict "Release" .Release "Values" .Values "securityContext" .Values.triggerer.securityContext) }}
+{{- $extraPipPackages := concat .Values.airflow.extraPipPackages .Values.triggerer.extraPipPackages }}
+{{- $extraVolumeMounts := .Values.triggerer.extraVolumeMounts }}
+{{- $volumeMounts := include "airflow.volumeMounts" (dict "Release" .Release "Values" .Values "extraPipPackages" $extraPipPackages "extraVolumeMounts" $extraVolumeMounts) }}
+{{- $extraVolumes := .Values.triggerer.extraVolumes }}
+{{- $volumes := include "airflow.volumes" (dict "Release" .Release "Values" .Values "extraPipPackages" $extraPipPackages "extraVolumes" $extraVolumes) }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "airflow.fullname" . }}-triggerer
+  {{- if .Values.triggerer.annotations }}
+  annotations:
+    {{- toYaml .Values.triggerer.annotations | nindent 4 }}
+  {{- end }}
+  labels:
+    app: {{ include "airflow.labels.app" . }}
+    component: triggerer
+    chart: {{ include "airflow.labels.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    {{- if .Values.triggerer.labels }}
+    {{- toYaml .Values.triggerer.labels | nindent 4 }}
+    {{- end }}
+spec:
+  replicas: {{ .Values.triggerer.replicas }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      ## multiple triggerer pods can safely run concurrently
+      maxSurge: 25%
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: {{ include "airflow.labels.app" . }}
+      component: triggerer
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/secret-config-envs: {{ include (print $.Template.BasePath "/config/secret-config-envs.yaml") . | sha256sum }}
+        checksum/secret-local-settings: {{ include (print $.Template.BasePath "/config/secret-local-settings.yaml") . | sha256sum }}
+        {{- if .Values.airflow.podAnnotations }}
+        {{- toYaml .Values.airflow.podAnnotations | nindent 8 }}
+        {{- end }}
+        {{- if .Values.triggerer.podAnnotations }}
+        {{- toYaml .Values.triggerer.podAnnotations | nindent 8 }}
+        {{- end }}
+        {{- if .Values.triggerer.safeToEvict }}
+        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+        {{- end }}
+      labels:
+        app: {{ include "airflow.labels.app" . }}
+        component: triggerer
+        release: {{ .Release.Name }}
+        {{- if .Values.triggerer.podLabels }}
+        {{- toYaml .Values.triggerer.podLabels | nindent 8 }}
+        {{- end }}
+    spec:
+      restartPolicy: Always
+      {{- if .Values.airflow.image.pullSecret }}
+      imagePullSecrets:
+        - name: {{ .Values.airflow.image.pullSecret }}
+      {{- end }}
+      {{- if $podNodeSelector }}
+      nodeSelector:
+        {{- $podNodeSelector | nindent 8 }}
+      {{- end }}
+      {{- if $podAffinity }}
+      affinity:
+        {{- $podAffinity | nindent 8 }}
+      {{- end }}
+      {{- if $podTolerations }}
+      tolerations:
+        {{- $podTolerations | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "airflow.serviceAccountName" . }}
+      {{- if $podSecurityContext }}
+      securityContext:
+        {{- $podSecurityContext | nindent 8 }}
+      {{- end }}
+      initContainers:
+        {{- if $extraPipPackages }}
+        {{- include "airflow.init_container.install_pip_packages" (dict "Release" .Release "Values" .Values "extraPipPackages" $extraPipPackages) | indent 8 }}
+        {{- end }}
+        {{- if .Values.dags.gitSync.enabled }}
+        {{- include "airflow.container.git_sync" (dict "Release" .Release "Values" .Values "sync_one_time" "true") | indent 8 }}
+        {{- end }}
+        {{- include "airflow.init_container.check_db" (dict "Release" .Release "Values" .Values "volumeMounts" $volumeMounts) | indent 8 }}
+        {{- include "airflow.init_container.wait_for_db_migrations" (dict "Release" .Release "Values" .Values "volumeMounts" $volumeMounts) | indent 8 }}
+      containers:
+        - name: airflow-triggerer
+          {{- include "airflow.image" . | indent 10 }}
+          resources:
+            {{- toYaml .Values.triggerer.resources | nindent 12 }}
+          envFrom:
+            {{- include "airflow.envFrom" . | indent 12 }}
+          env:
+            {{- include "airflow.env" . | indent 12 }}
+          command:
+            {{- include "airflow.command" . | indent 12 }}
+          args:
+            - "bash"
+            - "-c"
+            - "exec airflow triggerer"
+          {{- if .Values.triggerer.livenessProbe.enabled }}
+          livenessProbe:
+            initialDelaySeconds: {{ .Values.triggerer.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.triggerer.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.triggerer.livenessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.triggerer.livenessProbe.failureThreshold }}
+            exec:
+              command:
+                {{- include "airflow.command" . | indent 16 }}
+                - "python"
+                - "-Wignore"
+                - "-c"
+                - |
+                  import os
+                  import sys
+
+                  # suppress logs triggered from importing airflow packages
+                  os.environ["AIRFLOW__LOGGING__LOGGING_LEVEL"] = "ERROR"
+
+                  from airflow.jobs.triggerer_job import TriggererJob
+                  from airflow.utils.db import create_session
+                  from airflow.utils.net import get_hostname
+
+                  with create_session() as session:
+                      # ensure the TriggererJob with most recent heartbeat for this `hostname` is alive
+                      hostname = get_hostname()
+                      triggerer_job = session \
+                          .query(TriggererJob) \
+                          .filter_by(hostname=hostname) \
+                          .order_by(TriggererJob.latest_heartbeat.desc()) \
+                          .limit(1) \
+                          .first()
+                      if (triggerer_job is not None) and triggerer_job.is_alive():
+                          pass
+                      else:
+                          sys.exit(f"The TriggererJob (id={triggerer_job.id}) for hostname '{hostname}' is not alive")
+          {{- end }}
+          {{- if $volumeMounts }}
+          volumeMounts:
+            {{- $volumeMounts | indent 12 }}
+          {{- end }}
+        {{- if .Values.dags.gitSync.enabled }}
+        {{- include "airflow.container.git_sync" . | indent 8 }}
+        {{- end }}
+        {{- if .Values.airflow.extraContainers }}
+        {{- toYaml .Values.airflow.extraContainers | nindent 8 }}
+        {{- end }}
+      {{- if $volumes }}
+      volumes:
+        {{- $volumes | indent 8 }}
+      {{- end }}
+{{- end }}

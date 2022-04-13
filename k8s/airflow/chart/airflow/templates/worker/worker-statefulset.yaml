@@ -1,0 +1,187 @@
+{{- if .Values.workers.enabled }}
+{{- $podNodeSelector := include "airflow.podNodeSelector" (dict "Release" .Release "Values" .Values "nodeSelector" .Values.workers.nodeSelector) }}
+{{- $podAffinity := include "airflow.podAffinity" (dict "Release" .Release "Values" .Values "affinity" .Values.workers.affinity) }}
+{{- $podTolerations := include "airflow.podTolerations" (dict "Release" .Release "Values" .Values "tolerations" .Values.workers.tolerations) }}
+{{- $podSecurityContext := include "airflow.podSecurityContext" (dict "Release" .Release "Values" .Values "securityContext" .Values.workers.securityContext) }}
+{{- $extraPipPackages := concat .Values.airflow.extraPipPackages .Values.workers.extraPipPackages }}
+{{- $extraVolumeMounts := .Values.workers.extraVolumeMounts }}
+{{- $volumeMounts := include "airflow.volumeMounts" (dict "Release" .Release "Values" .Values "extraPipPackages" $extraPipPackages "extraVolumeMounts" $extraVolumeMounts) }}
+{{- $extraVolumes := .Values.workers.extraVolumes }}
+{{- $volumes := include "airflow.volumes" (dict "Release" .Release "Values" .Values "extraPipPackages" $extraPipPackages "extraVolumes" $extraVolumes) }}
+apiVersion: apps/v1
+## StatefulSet gives workers consistent DNS names, allowing webserver access to log files
+kind: StatefulSet
+metadata:
+  name: {{ include "airflow.fullname" . }}-worker
+  {{- if .Values.workers.annotations }}
+  annotations:
+    {{- toYaml .Values.workers.annotations | nindent 4 }}
+  {{- end }}
+  labels:
+    app: {{ include "airflow.labels.app" . }}
+    component: worker
+    chart: {{ include "airflow.labels.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    {{- if .Values.workers.labels }}
+    {{- toYaml .Values.workers.labels | nindent 4 }}
+    {{- end }}
+spec:
+  serviceName: "{{ include "airflow.fullname" . }}-worker"
+  replicas: {{ .Values.workers.replicas }}
+  updateStrategy:
+    type: RollingUpdate
+  ## we do not need to guarantee the order in which workers are scaled
+  podManagementPolicy: Parallel
+  selector:
+    matchLabels:
+      app: {{ include "airflow.labels.app" . }}
+      component: worker
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/secret-config-envs: {{ include (print $.Template.BasePath "/config/secret-config-envs.yaml") . | sha256sum }}
+        checksum/secret-local-settings: {{ include (print $.Template.BasePath "/config/secret-local-settings.yaml") . | sha256sum }}
+        {{- if .Values.airflow.podAnnotations }}
+        {{- toYaml .Values.airflow.podAnnotations | nindent 8 }}
+        {{- end }}
+        {{- if .Values.workers.podAnnotations }}
+        {{- toYaml .Values.workers.podAnnotations | nindent 8 }}
+        {{- end }}
+        {{- if .Values.workers.safeToEvict }}
+        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+        {{- end }}
+      labels:
+        app: {{ include "airflow.labels.app" . }}
+        component: worker
+        release: {{ .Release.Name }}
+        {{- if .Values.workers.podLabels }}
+        {{- toYaml .Values.workers.podLabels | nindent 8 }}
+        {{- end }}
+    spec:
+      restartPolicy: Always
+      {{- if .Values.airflow.image.pullSecret }}
+      imagePullSecrets:
+        - name: {{ .Values.airflow.image.pullSecret }}
+      {{- end }}
+      {{- if .Values.workers.celery.gracefullTermination }}
+      terminationGracePeriodSeconds: {{ add .Values.workers.terminationPeriod .Values.workers.celery.gracefullTerminationPeriod }}
+      {{- else }}
+      terminationGracePeriodSeconds: {{ .Values.workers.terminationPeriod }}
+      {{- end }}
+      serviceAccountName: {{ include "airflow.serviceAccountName" . }}
+      {{- if $podNodeSelector }}
+      nodeSelector:
+        {{- $podNodeSelector | nindent 8 }}
+      {{- end }}
+      {{- if $podAffinity }}
+      affinity:
+        {{- $podAffinity | nindent 8 }}
+      {{- end }}
+      {{- if $podTolerations }}
+      tolerations:
+        {{- $podTolerations | nindent 8 }}
+      {{- end }}
+      {{- if $podSecurityContext }}
+      securityContext:
+        {{- $podSecurityContext | nindent 8 }}
+      {{- end }}
+      initContainers:
+        {{- if $extraPipPackages }}
+        {{- include "airflow.init_container.install_pip_packages" (dict "Release" .Release "Values" .Values "extraPipPackages" $extraPipPackages) | indent 8 }}
+        {{- end }}
+        {{- if .Values.dags.gitSync.enabled }}
+        {{- include "airflow.container.git_sync" (dict "Release" .Release "Values" .Values "sync_one_time" "true") | indent 8 }}
+        {{- end }}
+        {{- include "airflow.init_container.check_db" (dict "Release" .Release "Values" .Values "volumeMounts" $volumeMounts) | indent 8 }}
+        {{- include "airflow.init_container.wait_for_db_migrations" (dict "Release" .Release "Values" .Values "volumeMounts" $volumeMounts) | indent 8 }}
+      containers:
+        - name: airflow-worker
+          {{- include "airflow.image" . | indent 10 }}
+          resources:
+            {{- toYaml .Values.workers.resources | nindent 12 }}
+          envFrom:
+            {{- include "airflow.envFrom" . | indent 12 }}
+          env:
+            {{- include "airflow.env" . | indent 12 }}
+            # have dumb-init only send signals to direct child process (needed for celery workers to warm shutdown)
+            - name: DUMB_INIT_SETSID
+              value: "0"
+          {{- if .Values.workers.celery.gracefullTermination }}
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - "timeout"
+                  - "{{ .Values.workers.celery.gracefullTerminationPeriod }}s"
+                  - "python"
+                  - "-Wignore"
+                  - "-c"
+                  - |
+                    import os
+                    import time
+                    import subprocess
+                    from celery import Celery
+                    from celery.app.control import Inspect
+                    from typing import List
+
+                    def run_command(cmd: List[str]) -> str:
+                        process = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+                        output, error = process.communicate()
+                        if error is not None:
+                            raise Exception(error)
+                        else:
+                            return output.decode(encoding="utf-8")
+
+                    broker_url = run_command(["bash", "-c", "eval $AIRFLOW__CELERY__BROKER_URL_CMD"])
+                    local_celery_host = f"celery@{os.environ['HOSTNAME']}"
+                    app = Celery(broker=broker_url)
+
+                    # prevent the worker accepting new tasks
+                    print(f"canceling celery consumer for {local_celery_host}...")
+                    app.control.cancel_consumer("default", destination=[local_celery_host])
+
+                    # wait until the worker finishes its current tasks
+                    i = Inspect(app=app, destination=[local_celery_host])
+                    active_tasks = i.active()[local_celery_host]
+                    while len(active_tasks) > 0:
+                        print(f"waiting [10 sec] for remaining tasks to finish: {[task.get('name') for task in active_tasks]}")
+                        time.sleep(10)
+                        active_tasks = i.active()[local_celery_host]
+          {{- end }}
+          ports:
+            - name: wlog
+              containerPort: 8793
+              protocol: TCP
+          command:
+            {{- include "airflow.command" . | indent 12 }}
+          args:
+            - "bash"
+            - "-c"
+            {{- if .Values.airflow.legacyCommands }}
+            - "exec airflow worker"
+            {{- else }}
+            - "exec airflow celery worker"
+            {{- end }}
+          {{- if $volumeMounts }}
+          volumeMounts:
+            {{- $volumeMounts | indent 12 }}
+          {{- end }}
+        {{- if .Values.dags.gitSync.enabled }}
+        {{- include "airflow.container.git_sync" . | indent 8 }}
+        {{- end }}
+        {{- if .Values.workers.logCleanup.enabled }}
+        {{- $lc_resources := .Values.workers.logCleanup.resources }}
+        {{- $lc_retention_min := .Values.workers.logCleanup.retentionMinutes }}
+        {{- $lc_interval_sec := .Values.workers.logCleanup.intervalSeconds }}
+        {{- include "airflow.container.log_cleanup" (dict "Release" .Release "Values" .Values "resources" $lc_resources "retention_min" $lc_retention_min "interval_sec" $lc_interval_sec) | indent 8 }}
+        {{- end }}
+        {{- if .Values.airflow.extraContainers }}
+        {{- toYaml .Values.airflow.extraContainers | nindent 8 }}
+        {{- end }}
+      {{- if $volumes }}
+      volumes:
+        {{- $volumes | indent 8 }}
+      {{- end }}
+{{- end }}

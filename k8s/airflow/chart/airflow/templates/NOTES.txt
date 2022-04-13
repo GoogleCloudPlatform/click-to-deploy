@@ -1,0 +1,213 @@
+{{- /* if remote_logging has been enabled by the user */ -}}
+{{- $remote_logging_enabled := false }}
+{{- $remote_logging_envvars := list "AIRFLOW__CORE__REMOTE_LOGGING" "AIRFLOW__LOGGING__REMOTE_LOGGING" }}
+{{- range $key, $val := .Values.airflow.config }}
+  {{- if has $key $remote_logging_envvars }}
+  {{- $remote_logging_enabled = true }}
+  {{- end }}
+{{- end }}
+{{- range $env := .Values.airflow.extraEnv }}
+  {{- if has $env.name $remote_logging_envvars }}
+  {{- $remote_logging_enabled = true }}
+  {{- end }}
+{{- end }}
+
+{{- /* if we show the fernet_key warning */ -}}
+{{- $fernet_key_warning := true }}
+{{- $fernet_key_envvars := list "AIRFLOW__CORE__FERNET_KEY" "AIRFLOW__CORE__FERNET_KEY_CMD" "AIRFLOW__CORE__FERNET_KEY_SECRET" }}
+{{- if not (eq .Values.airflow.fernetKey "7T512UXSSmBOkpWimFHIVb8jK6lfmSAvx4mO6Arehnc=")  }}
+{{- $fernet_key_warning = false }}
+{{- end }}
+{{- range $key, $val := .Values.airflow.config }}
+  {{- if has $key $fernet_key_envvars }}
+  {{- $fernet_key_warning = false }}
+  {{- end }}
+{{- end }}
+{{- range $env := .Values.airflow.extraEnv }}
+  {{- if has $env.name $fernet_key_envvars }}
+  {{- $fernet_key_warning = false }}
+  {{- end }}
+{{- end }}
+
+{{- /* if we show the webserver secret_key warning */ -}}
+{{- $web_secret_warning := true }}
+{{- $web_secret_envvars := list "AIRFLOW__WEBSERVER__SECRET_KEY" "AIRFLOW__WEBSERVER__SECRET_KEY_CMD" "AIRFLOW__WEBSERVER__SECRET_KEY_SECRET" }}
+{{- if not (eq .Values.airflow.webserverSecretKey "THIS IS UNSAFE!")  }}
+{{- $web_secret_warning = false }}
+{{- end }}
+{{- range $key, $val := .Values.airflow.config }}
+  {{- if has $key $web_secret_envvars }}
+  {{- $web_secret_warning = false }}
+  {{- end }}
+{{- end }}
+{{- range $env := .Values.airflow.extraEnv }}
+  {{- if has $env.name $web_secret_envvars }}
+  {{- $web_secret_warning = false }}
+  {{- end }}
+{{- end }}
+
+{{- /* if we show the external database password warning */ -}}
+{{- $external_database_password_warning := false }}
+{{- if and (not .Values.postgresql.enabled) (not .Values.externalDatabase.passwordSecret) }}
+  {{- /* don't show a warning if the password is empty */ -}}
+  {{- if .Values.externalDatabase.password }}
+  {{- $external_database_password_warning = true }}
+  {{- end }}
+{{- end }}
+
+{{- /* if we show the external redis password warning */ -}}
+{{- $external_redis_password_warning := false }}
+{{- if and (not .Values.redis.enabled) (not .Values.externalRedis.passwordSecret) }}
+  {{- /* don't show a warning if the password is empty */ -}}
+  {{- if .Values.externalRedis.password }}
+  {{- $external_redis_password_warning = true }}
+  {{- end }}
+{{- end }}
+
+{{- /* if we show the extraPipPackages warning */ -}}
+{{- $extra_pip_warning := false }}
+{{- if .Values.airflow.extraPipPackages }}
+{{- $extra_pip_warning = true }}
+{{- else if .Values.airflow.kubernetesPodTemplate.extraPipPackages }}
+{{- $extra_pip_warning = true }}
+{{- else if .Values.scheduler.extraPipPackages }}
+{{- $extra_pip_warning = true }}
+{{- else if .Values.web.extraPipPackages }}
+{{- $extra_pip_warning = true }}
+{{- else if .Values.workers.extraPipPackages }}
+{{- $extra_pip_warning = true }}
+{{- else if .Values.flower.extraPipPackages }}
+{{- $extra_pip_warning = true }}
+{{- end }}
+
+{{- /* if we show the embedded postgres warning */ -}}
+{{- $embedded_postgres_warning := false }}
+{{- if .Values.postgresql.enabled }}
+{{- $embedded_postgres_warning = true }}
+{{- end }}
+
+{{- /* if we show the git-sync known_hosts warning */ -}}
+{{- $known_host_warning := false }}
+{{- if and (.Values.dags.gitSync.enabled) (.Values.dags.gitSync.sshSecret) (not .Values.dags.gitSync.sshKnownHosts) }}
+{{- $known_host_warning = true }}
+{{- end }}
+
+{{- /* if we show the scheduler livenessProbe warning */ -}}
+{{- $scheduler_livenessProbe_warning := false }}
+{{- if not .Values.scheduler.livenessProbe.enabled }}
+{{- $scheduler_livenessProbe_warning = true }}
+{{- end }}
+
+{{- /* if we show the scheduler livenessProbe taskCreationCheck warning */ -}}
+{{- $scheduler_livenessProbe_taskCreationCheck_warning := false }}
+{{- if and (.Values.scheduler.livenessProbe.enabled) (not .Values.scheduler.livenessProbe.taskCreationCheck.enabled) }}
+{{- $scheduler_livenessProbe_taskCreationCheck_warning = true }}
+{{- end }}
+
+========================================================================
+Thanks for deploying Apache Airflow with the User-Community Helm Chart!
+
+====================
+        TIPS
+====================
+{{- range $user := .Values.airflow.users }}
+{{- if and (eq $user.username "admin") (eq $user.password "admin") }}
+Default Airflow Webserver login:
+  * Username:  admin
+  * Password:  admin
+{{- end }}
+{{ end }}
+
+{{- if and (not .Values.logs.persistence.enabled) (not $remote_logging_enabled) }}
+You have NOT set up persistence for worker task logs, do this by:
+  1. Using a Kubernetes PVC with `logs.persistence.*`
+  2. Using remote logging with `AIRFLOW__LOGGING__REMOTE_LOGGING`
+{{ end }}
+
+{{- if and (not .Values.ingress.enabled) (eq .Values.web.service.type "ClusterIP") }}
+It looks like you have NOT exposed the Airflow Webserver, do this by:
+  1. Using a Kubernetes Ingress with `ingress.*`
+  2. Using a Kubernetes LoadBalancer/NodePort type Service with `web.service.type`
+{{ end }}
+
+{{- if .Values.ingress.enabled }}
+Your Kubernetes Ingress endpoint URLs:
+  * Airflow Webserver:  http{{ if .Values.ingress.web.tls.enabled }}s{{ end }}://{{ .Values.ingress.web.host }}{{ .Values.ingress.web.path }}/
+{{- if .Values.flower.enabled }}
+  * Flower Dashboard:   http{{ if .Values.ingress.flower.tls.enabled }}s{{ end }}://{{ .Values.ingress.flower.host }}{{ .Values.ingress.flower.path }}/
+{{- end }}
+{{ end }}
+
+{{- if eq .Values.web.service.type "LoadBalancer" }}
+You deployed a "LoadBalancer" type Service for the Airflow Webserver:
+  * External IP:    kubectl get svc/{{ include "airflow.fullname" . }}-web --namespace {{ .Release.Namespace }} -o jsonpath="{.status.loadBalancer.ingress[0].ip}"
+  * External Port:  {{ .Values.web.service.externalPort }}
+  * NOTE:           it may take a few minutes for the External IP to be provisioned by your cloud provider
+{{ end }}
+
+{{- if eq .Values.web.service.type "NodePort" }}
+You deployed a "NodePort" type Service for the Airflow Webserver:
+  * Node IP:    kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}"
+  * Node Port:  kubectl get svc/{{ include "airflow.fullname" . }}-web --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}"
+  * NOTE:       any Node's external IP will work
+{{ end }}
+
+{{- if true }}
+Use these commands to port-forward the Services to your localhost:
+  * Airflow Webserver:  kubectl port-forward svc/{{ include "airflow.fullname" . }}-web 8080:8080 --namespace {{ .Release.Namespace }}
+{{- if .Values.flower.enabled }}
+  * Flower Dashboard:   kubectl port-forward svc/{{ include "airflow.fullname" . }}-flower 5555:5555 --namespace {{ .Release.Namespace }}
+{{- end }}
+{{ end }}
+
+{{- if or ($fernet_key_warning) ($web_secret_warning) ($extra_pip_warning) ($embedded_postgres_warning) ($known_host_warning) }}
+====================
+      WARNINGS
+====================
+{{- if $fernet_key_warning }}
+[CRITICAL] default fernet encryption key value!
+  * HELP: set a custom value with `airflow.fernetKey` or `AIRFLOW__CORE__FERNET_KEY`
+{{ end }}
+
+{{- if $web_secret_warning }}
+[CRITICAL] default webserver secret_key value!
+  * HELP: set a custom value with `airflow.webserverSecretKey` or `AIRFLOW__WEBSERVER__SECRET_KEY`
+{{ end }}
+
+{{- if $external_database_password_warning }}
+[CRITICAL] external database password is set using plain-text value!
+  * HELP: create a Kubernetes secret with your database password and configure `externalDatabase.passwordSecret`
+{{ end }}
+
+{{- if $external_redis_password_warning }}
+[CRITICAL] external redis password is set using plain-text value!
+  * HELP: create a Kubernetes secret with your redis password and configure `externalRedis.passwordSecret`
+{{ end }}
+
+{{- if $extra_pip_warning }}
+[HIGH] using `extraPipPackages` can cause unexpected runtime errors if external PyPi packages change between Pod restarts
+  * HELP: create a Docker image with your pip packages installed and use it with `airflow.image.*`
+{{ end }}
+
+{{- if $embedded_postgres_warning }}
+[HIGH] using the embedded postgres database is NOT suitable for production!
+  * HELP: use an external postgres/mysql database with `externalDatabase.*`
+{{ end }}
+
+{{- if $known_host_warning }}
+[HIGH] git-sync ssh known_hosts verification is disabled!
+  * HELP: set `dags.gitSync.sshKnownHosts` with the ssh fingerprint of your git host
+{{ end }}
+
+{{- if $scheduler_livenessProbe_warning }}
+[MEDIUM] the scheduler liveness probe is disabled, the scheduler may not be restarted if it becomes unhealthy!
+  * HELP: enable the probe with `scheduler.livenessProbe.enabled`
+{{ end }}
+
+{{- if $scheduler_livenessProbe_taskCreationCheck_warning }}
+[MEDIUM] the scheduler "task creation check" is disabled, the scheduler may not be restarted if it deadlocks!
+  * HELP: configure the check with `scheduler.livenessProbe.taskCreationCheck.*`
+{{ end }}
+
+{{- end }}
+========================================================================

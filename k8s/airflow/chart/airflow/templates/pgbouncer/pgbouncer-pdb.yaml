@@ -1,0 +1,24 @@
+{{- if and (include "airflow.pgbouncer.should_use" .) (.Values.pgbouncer.podDisruptionBudget.enabled) }}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "airflow.fullname" . }}-pgbouncer
+  labels:
+    app: {{ include "airflow.labels.app" . }}
+    component: pgbouncer
+    chart: {{ include "airflow.labels.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  {{- if .Values.pgbouncer.podDisruptionBudget.maxUnavailable }}
+  maxUnavailable: {{ .Values.pgbouncer.podDisruptionBudget.maxUnavailable }}
+  {{- end }}
+  {{- if .Values.pgbouncer.podDisruptionBudget.minAvailable }}
+  minAvailable: {{ .Values.pgbouncer.podDisruptionBudget.minAvailable }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app: {{ include "airflow.labels.app" . }}
+      component: pgbouncer
+      release: {{ .Release.Name }}
+{{- end }}

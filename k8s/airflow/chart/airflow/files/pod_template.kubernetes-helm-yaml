@@ -1,0 +1,87 @@
+{{- $podNodeSelector := include "airflow.podNodeSelector" (dict "Release" .Release "Values" .Values "nodeSelector" .Values.airflow.kubernetesPodTemplate.nodeSelector) }}
+{{- $podAffinity := include "airflow.podAffinity" (dict "Release" .Release "Values" .Values "affinity" .Values.airflow.kubernetesPodTemplate.affinity) }}
+{{- $podTolerations := include "airflow.podTolerations" (dict "Release" .Release "Values" .Values "tolerations" .Values.airflow.kubernetesPodTemplate.tolerations) }}
+{{- $podSecurityContext := include "airflow.podSecurityContext" (dict "Release" .Release "Values" .Values "securityContext" .Values.airflow.kubernetesPodTemplate.securityContext) }}
+{{- $extraPipPackages := .Values.airflow.kubernetesPodTemplate.extraPipPackages }}
+{{- $extraVolumeMounts := .Values.airflow.kubernetesPodTemplate.extraVolumeMounts }}
+{{- $volumeMounts := include "airflow.volumeMounts" (dict "Release" .Release "Values" .Values "extraPipPackages" $extraPipPackages "extraVolumeMounts" $extraVolumeMounts) }}
+{{- $extraVolumes := .Values.airflow.kubernetesPodTemplate.extraVolumes }}
+{{- $volumes := include "airflow.volumes" (dict "Release" .Release "Values" .Values "extraPipPackages" $extraPipPackages "extraVolumes" $extraVolumes) }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dummy-name
+  {{- if .Values.airflow.kubernetesPodTemplate.podAnnotations }}
+  annotations:
+    {{- toYaml .Values.airflow.kubernetesPodTemplate.podAnnotations | nindent 4 }}
+  {{- end }}
+  {{- if .Values.airflow.kubernetesPodTemplate.podLabels }}
+  labels:
+    {{- toYaml .Values.airflow.kubernetesPodTemplate.podLabels | nindent 4 }}
+  {{- end }}
+spec:
+  restartPolicy: Never
+  {{- if .Values.airflow.image.pullSecret }}
+  imagePullSecrets:
+    - name: {{ .Values.airflow.image.pullSecret }}
+  {{- end }}
+  serviceAccountName: {{ include "airflow.serviceAccountName" . }}
+  shareProcessNamespace: {{ .Values.airflow.kubernetesPodTemplate.shareProcessNamespace }}
+  {{- if $podNodeSelector }}
+  nodeSelector:
+    {{- $podNodeSelector | nindent 4 }}
+  {{- end }}
+  {{- if $podAffinity }}
+  affinity:
+    {{- $podAffinity | nindent 4 }}
+  {{- end }}
+  {{- if $podTolerations }}
+  tolerations:
+    {{- $podTolerations | nindent 4 }}
+  {{- end }}
+  {{- if $podSecurityContext }}
+  securityContext:
+    {{- $podSecurityContext | nindent 4 }}
+  {{- end }}
+  {{- if or ($extraPipPackages) (.Values.dags.gitSync.enabled) (.Values.airflow.kubernetesPodTemplate.extraInitContainers) }}
+  initContainers:
+    {{- if $extraPipPackages }}
+    {{- include "airflow.init_container.install_pip_packages" (dict "Release" .Release "Values" .Values "extraPipPackages" $extraPipPackages) | indent 4 }}
+    {{- end }}
+    {{- if .Values.dags.gitSync.enabled }}
+    {{- include "airflow.container.git_sync" (dict "Release" .Release "Values" .Values "sync_one_time" "true") | indent 4 }}
+    {{- end }}
+    {{- if .Values.airflow.kubernetesPodTemplate.extraInitContainers }}
+    {{- toYaml .Values.airflow.kubernetesPodTemplate.extraInitContainers | nindent 4 }}
+    {{- end }}
+  {{- end }}
+  containers:
+    - name: base
+      {{- include "airflow.image" . | indent 6 }}
+      envFrom:
+        {{- include "airflow.envFrom" . | indent 8 }}
+      env:
+        ## KubernetesExecutor Pods use LocalExecutor internally
+        - name: AIRFLOW__CORE__EXECUTOR
+          value: LocalExecutor
+        {{- /* NOTE: the FIRST definition of an `env` takes precedence (so we include user-defined `env` LAST) */ -}}
+        {{- /* NOTE: we set `CONNECTION_CHECK_MAX_COUNT=20` to enable airflow's `/entrypoint` db connection check */ -}}
+        {{- include "airflow.env" (dict "Release" .Release "Values" .Values "CONNECTION_CHECK_MAX_COUNT" "20")  | indent 8 }}
+      ports: []
+      command: []
+      args: []
+      {{- if .Values.airflow.kubernetesPodTemplate.resources }}
+      resources:
+        {{- toYaml .Values.airflow.kubernetesPodTemplate.resources | nindent 8 }}
+      {{- end }}
+      {{- if $volumeMounts }}
+      volumeMounts:
+        {{- $volumeMounts | indent 8 }}
+      {{- end }}
+    {{- if .Values.airflow.kubernetesPodTemplate.extraContainers }}
+    {{- toYaml .Values.airflow.kubernetesPodTemplate.extraContainers | nindent 4 }}
+    {{- end }}
+  {{- if $volumes }}
+  volumes:
+    {{- $volumes | indent 4 }}
+  {{- end }}

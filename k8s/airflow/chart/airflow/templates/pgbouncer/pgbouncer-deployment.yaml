@@ -1,0 +1,217 @@
+{{- if include "airflow.pgbouncer.should_use" . }}
+{{- $podNodeSelector := include "airflow.podNodeSelector" (dict "Release" .Release "Values" .Values "nodeSelector" .Values.pgbouncer.nodeSelector) }}
+{{- $podAffinity := include "airflow.podAffinity" (dict "Release" .Release "Values" .Values "affinity" .Values.pgbouncer.affinity) }}
+{{- $podTolerations := include "airflow.podTolerations" (dict "Release" .Release "Values" .Values "tolerations" .Values.pgbouncer.tolerations) }}
+{{- $podSecurityContext := include "airflow.podSecurityContext" (dict "Release" .Release "Values" .Values "securityContext" .Values.pgbouncer.securityContext) }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "airflow.fullname" . }}-pgbouncer
+  labels:
+    app: {{ include "airflow.labels.app" . }}
+    component: pgbouncer
+    chart: {{ include "airflow.labels.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    {{- if .Values.pgbouncer.labels }}
+    {{- toYaml .Values.pgbouncer.labels | nindent 4 }}
+    {{- end }}
+  {{- if .Values.pgbouncer.annotations }}
+  annotations:
+  {{- toYaml .Values.pgbouncer.annotations | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      ## multiple pgbouncer pods can safely run concurrently
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: {{ include "airflow.labels.app" . }}
+      component: pgbouncer
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/secret-config-envs: {{ include (print $.Template.BasePath "/config/secret-config-envs.yaml") . | sha256sum }}
+        checksum/secret-pgbouncer: {{ include (print $.Template.BasePath "/pgbouncer/pgbouncer-secret.yaml") . | sha256sum }}
+        {{- if .Values.airflow.podAnnotations }}
+        {{- toYaml .Values.airflow.podAnnotations | nindent 8 }}
+        {{- end }}
+        {{- if .Values.pgbouncer.podAnnotations }}
+        {{- toYaml .Values.pgbouncer.podAnnotations | nindent 8 }}
+        {{- end }}
+        {{- if .Values.pgbouncer.safeToEvict }}
+        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+        {{- end }}
+      labels:
+        app: {{ include "airflow.labels.app" . }}
+        component: pgbouncer
+        release: {{ .Release.Name }}
+        {{- if .Values.pgbouncer.podLabels }}
+        {{- toYaml .Values.pgbouncer.podLabels | nindent 8 }}
+        {{- end }}
+    spec:
+      restartPolicy: Always
+      {{- if .Values.airflow.image.pullSecret }}
+      imagePullSecrets:
+        - name: {{ .Values.airflow.image.pullSecret }}
+      {{- end }}
+      {{- if $podNodeSelector }}
+      nodeSelector:
+        {{- $podNodeSelector | nindent 8 }}
+      {{- end }}
+      {{- if $podAffinity }}
+      affinity:
+        {{- $podAffinity | nindent 8 }}
+      {{- end }}
+      {{- if $podTolerations }}
+      tolerations:
+        {{- $podTolerations | nindent 8 }}
+      {{- end }}
+      {{- if $podSecurityContext }}
+      securityContext:
+        {{- $podSecurityContext | nindent 8 }}
+      {{- end }}
+      terminationGracePeriodSeconds: {{ .Values.pgbouncer.terminationGracePeriodSeconds }}
+      serviceAccountName: {{ include "airflow.serviceAccountName" . }}
+      containers:
+        - name: pgbouncer
+          image: {{ .Values.pgbouncer.image.repository }}:{{ .Values.pgbouncer.image.tag }}
+          imagePullPolicy: {{ .Values.pgbouncer.image.pullPolicy }}
+          securityContext:
+            runAsUser: {{ .Values.pgbouncer.image.uid }}
+            runAsGroup: {{ .Values.pgbouncer.image.gid }}
+          resources:
+            {{- toYaml .Values.pgbouncer.resources | nindent 12 }}
+          envFrom:
+            {{- include "airflow.envFrom" . | indent 12 }}
+          env:
+            {{- include "airflow.env" . | indent 12 }}
+          ports:
+            - name: pgbouncer
+              containerPort: 6432
+              protocol: TCP
+          command:
+            - "/usr/bin/dumb-init"
+            ## rewrite SIGTERM as SIGINT, so pgbouncer does a safe shutdown
+            - "--rewrite=15:2"
+            - "--"
+          args:
+            - "/bin/sh"
+            - "-c"
+            ## we generate users.txt on startup, because DATABASE_PASSWORD is defined from a Secret,
+            ## and we want to pickup the new values on container restart (possibly due to livenessProbe failure)
+            - |-
+              /home/pgbouncer/config/gen_auth_file.sh && \
+              exec pgbouncer /home/pgbouncer/config/pgbouncer.ini
+          {{- if .Values.pgbouncer.livenessProbe.enabled }}
+          livenessProbe:
+            initialDelaySeconds: {{ .Values.pgbouncer.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.pgbouncer.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.pgbouncer.livenessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.pgbouncer.livenessProbe.failureThreshold }}
+            exec:
+              command:
+                - "/bin/sh"
+                - "-c"
+                ## this check is intended to fail when the DATABASE_PASSWORD secret is updated,
+                ## which would cause `gen_auth_file.sh` to run again on container start
+                - psql $(eval $DATABASE_PSQL_CMD) --tuples-only --command="SELECT 1;" | grep -q "1"
+          {{- end }}
+          {{- if .Values.pgbouncer.startupProbe.enabled }}
+          startupProbe:
+            initialDelaySeconds: {{ .Values.pgbouncer.startupProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.pgbouncer.startupProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.pgbouncer.startupProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.pgbouncer.startupProbe.failureThreshold }}
+            tcpSocket:
+              port: 6432
+          {{- end }}
+          volumeMounts:
+            - name: pgbouncer-config
+              mountPath: /home/pgbouncer/config
+              readOnly: true
+            - name: pgbouncer-certs
+              mountPath: /home/pgbouncer/certs
+              readOnly: true
+      volumes:
+        - name: pgbouncer-config
+          secret:
+            secretName: {{ include "airflow.fullname" . }}-pgbouncer
+            items:
+              - key: gen_auth_file.sh
+                path: gen_auth_file.sh
+                mode: 0755
+              - key: pgbouncer.ini
+                path: pgbouncer.ini
+        - name: pgbouncer-certs
+          projected:
+            sources:
+              {{- if or (not .Values.pgbouncer.clientSSL.keyFile.existingSecret) (not .Values.pgbouncer.clientSSL.certFile.existingSecret) }}
+              ## CLIENT TLS FILES (CHART GENERATED)
+              - secret:
+                  name: {{ include "airflow.fullname" . }}-pgbouncer-certs
+                  items:
+                    {{- if not .Values.pgbouncer.clientSSL.keyFile.existingSecret }}
+                    - key: client.key
+                      path: client.key
+                    {{- end }}
+                    {{- if not .Values.pgbouncer.clientSSL.certFile.existingSecret }}
+                    - key: client.crt
+                      path: client.crt
+                    {{- end }}
+              {{- end }}
+
+              {{- if or (.Values.pgbouncer.clientSSL.caFile.existingSecret) (.Values.pgbouncer.clientSSL.keyFile.existingSecret) (.Values.pgbouncer.clientSSL.certFile.existingSecret) }}
+              ## CLIENT TLS FILES (USER PROVIDED)
+              {{- if .Values.pgbouncer.clientSSL.caFile.existingSecret }}
+              - secret:
+                  name: {{ .Values.pgbouncer.clientSSL.caFile.existingSecret }}
+                  items:
+                    - key: {{ .Values.pgbouncer.clientSSL.caFile.existingSecretKey }}
+                      path: client-ca.crt
+              {{- end }}
+              {{- if .Values.pgbouncer.clientSSL.keyFile.existingSecret }}
+              - secret:
+                  name: {{ .Values.pgbouncer.clientSSL.keyFile.existingSecret }}
+                  items:
+                    - key: {{ .Values.pgbouncer.clientSSL.keyFile.existingSecretKey }}
+                      path: client.key
+              {{- end }}
+              {{- if .Values.pgbouncer.clientSSL.certFile.existingSecret }}
+              - secret:
+                  name: {{ .Values.pgbouncer.clientSSL.certFile.existingSecret }}
+                  items:
+                    - key: {{ .Values.pgbouncer.clientSSL.certFile.existingSecretKey }}
+                      path: client.crt
+              {{- end }}
+              {{- end }}
+
+              {{- if or (.Values.pgbouncer.serverSSL.caFile.existingSecret) (.Values.pgbouncer.serverSSL.keyFile.existingSecret) (.Values.pgbouncer.serverSSL.certFile.existingSecret) }}
+              ## SERVER TLS FILES (USER PROVIDED)
+              {{- if .Values.pgbouncer.serverSSL.caFile.existingSecret }}
+              - secret:
+                  name: {{ .Values.pgbouncer.serverSSL.caFile.existingSecret }}
+                  items:
+                    - key: {{ .Values.pgbouncer.serverSSL.caFile.existingSecretKey }}
+                      path: server-ca.crt
+              {{- end }}
+              {{- if .Values.pgbouncer.serverSSL.keyFile.existingSecret }}
+              - secret:
+                  name: {{ .Values.pgbouncer.serverSSL.keyFile.existingSecret }}
+                  items:
+                    - key: {{ .Values.pgbouncer.serverSSL.keyFile.existingSecretKey }}
+                      path: server.key
+              {{- end }}
+              {{- if .Values.pgbouncer.serverSSL.certFile.existingSecret }}
+              - secret:
+                  name: {{ .Values.pgbouncer.serverSSL.certFile.existingSecret }}
+                  items:
+                    - key: {{ .Values.pgbouncer.serverSSL.certFile.existingSecretKey }}
+                      path: server.crt
+              {{- end }}
+              {{- end }}
+{{- end }}

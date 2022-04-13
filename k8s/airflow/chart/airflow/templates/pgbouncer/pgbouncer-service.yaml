@@ -1,0 +1,22 @@
+{{- if include "airflow.pgbouncer.should_use" . }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "airflow.fullname" . }}-pgbouncer
+  labels:
+    app: {{ include "airflow.labels.app" . }}
+    component: pgbouncer
+    chart: {{ include "airflow.labels.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: ClusterIP
+  selector:
+    app: {{ include "airflow.labels.app" . }}
+    component: pgbouncer
+    release: {{ .Release.Name }}
+  ports:
+    - name: pgbouncer
+      protocol: TCP
+      port: 6432
+{{- end }}

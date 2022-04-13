@@ -1,0 +1,219 @@
+{{- $podNodeSelector := include "airflow.podNodeSelector" (dict "Release" .Release "Values" .Values "nodeSelector" .Values.scheduler.nodeSelector) }}
+{{- $podAffinity := include "airflow.podAffinity" (dict "Release" .Release "Values" .Values "affinity" .Values.scheduler.affinity) }}
+{{- $podTolerations := include "airflow.podTolerations" (dict "Release" .Release "Values" .Values "tolerations" .Values.scheduler.tolerations) }}
+{{- $podSecurityContext := include "airflow.podSecurityContext" (dict "Release" .Release "Values" .Values "securityContext" .Values.scheduler.securityContext) }}
+{{- $extraPipPackages := concat .Values.airflow.extraPipPackages .Values.scheduler.extraPipPackages }}
+{{- $extraVolumeMounts := .Values.scheduler.extraVolumeMounts }}
+{{- $volumeMounts := include "airflow.volumeMounts" (dict "Release" .Release "Values" .Values "extraPipPackages" $extraPipPackages "extraVolumeMounts" $extraVolumeMounts) }}
+{{- $extraVolumes := .Values.scheduler.extraVolumes }}
+{{- $volumes := include "airflow.volumes" (dict "Release" .Release "Values" .Values "extraPipPackages" $extraPipPackages "extraVolumes" $extraVolumes) }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "airflow.fullname" . }}-scheduler
+  {{- if .Values.scheduler.annotations }}
+  annotations:
+    {{- toYaml .Values.scheduler.annotations | nindent 4 }}
+  {{- end }}
+  labels:
+    app: {{ include "airflow.labels.app" . }}
+    component: scheduler
+    chart: {{ include "airflow.labels.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    {{- if .Values.scheduler.labels }}
+    {{- toYaml .Values.scheduler.labels | nindent 4 }}
+    {{- end }}
+spec:
+  replicas: {{ .Values.scheduler.replicas }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      {{- if .Values.airflow.legacyCommands }}
+      ## only one scheduler can run concurrently (Airflow 1.10)
+      maxSurge: 0
+      maxUnavailable: 100%
+      {{- else }}
+      ## multiple schedulers can run concurrently (Airflow 2.0)
+      maxSurge: 25%
+      maxUnavailable: 0
+      {{- end }}
+  selector:
+    matchLabels:
+      app: {{ include "airflow.labels.app" . }}
+      component: scheduler
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/secret-config-envs: {{ include (print $.Template.BasePath "/config/secret-config-envs.yaml") . | sha256sum }}
+        checksum/secret-local-settings: {{ include (print $.Template.BasePath "/config/secret-local-settings.yaml") . | sha256sum }}
+        {{- if include "airflow.executor.kubernetes_like" . }}
+        checksum/config-pod-template: {{ include (print $.Template.BasePath "/config/configmap-pod-template.yaml") . | sha256sum }}
+        {{- end }}
+        {{- if .Values.airflow.podAnnotations }}
+        {{- toYaml .Values.airflow.podAnnotations | nindent 8 }}
+        {{- end }}
+        {{- if .Values.scheduler.podAnnotations }}
+        {{- toYaml .Values.scheduler.podAnnotations | nindent 8 }}
+        {{- end }}
+        {{- if .Values.scheduler.safeToEvict }}
+        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+        {{- end }}
+      labels:
+        app: {{ include "airflow.labels.app" . }}
+        component: scheduler
+        release: {{ .Release.Name }}
+        {{- if .Values.scheduler.podLabels }}
+        {{- toYaml .Values.scheduler.podLabels | nindent 8 }}
+        {{- end }}
+    spec:
+      restartPolicy: Always
+      {{- if .Values.airflow.image.pullSecret }}
+      imagePullSecrets:
+        - name: {{ .Values.airflow.image.pullSecret }}
+      {{- end }}
+      {{- if $podNodeSelector }}
+      nodeSelector:
+        {{- $podNodeSelector | nindent 8 }}
+      {{- end }}
+      {{- if $podAffinity }}
+      affinity:
+        {{- $podAffinity | nindent 8 }}
+      {{- end }}
+      {{- if $podTolerations }}
+      tolerations:
+        {{- $podTolerations | nindent 8 }}
+      {{- end }}
+      {{- if $podSecurityContext }}
+      securityContext:
+        {{- $podSecurityContext | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "airflow.serviceAccountName" . }}
+      initContainers:
+        {{- if $extraPipPackages }}
+        {{- include "airflow.init_container.install_pip_packages" (dict "Release" .Release "Values" .Values "extraPipPackages" $extraPipPackages) | indent 8 }}
+        {{- end }}
+        {{- if .Values.dags.gitSync.enabled }}
+        {{- include "airflow.container.git_sync" (dict "Release" .Release "Values" .Values "sync_one_time" "true") | indent 8 }}
+        {{- end }}
+        {{- include "airflow.init_container.check_db" (dict "Release" .Release "Values" .Values "volumeMounts" $volumeMounts) | indent 8 }}
+        {{- include "airflow.init_container.wait_for_db_migrations" (dict "Release" .Release "Values" .Values "volumeMounts" $volumeMounts) | indent 8 }}
+        {{- if .Values.scheduler.extraInitContainers }}
+        {{- toYaml .Values.scheduler.extraInitContainers | nindent 8 }}
+        {{- end }}
+      containers:
+        - name: airflow-scheduler
+          {{- include "airflow.image" . | indent 10 }}
+          resources:
+            {{- toYaml .Values.scheduler.resources | nindent 12 }}
+          envFrom:
+            {{- include "airflow.envFrom" . | indent 12 }}
+          env:
+            {{- include "airflow.env" . | indent 12 }}
+          command:
+            {{- include "airflow.command" . | indent 12 }}
+          args:
+            - "bash"
+            - "-c"
+            - "exec airflow scheduler -n {{ .Values.scheduler.numRuns }}"
+          {{- if .Values.scheduler.livenessProbe.enabled }}
+          livenessProbe:
+            initialDelaySeconds: {{ .Values.scheduler.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.scheduler.livenessProbe.periodSeconds }}
+            failureThreshold: {{ .Values.scheduler.livenessProbe.failureThreshold }}
+            timeoutSeconds: {{ .Values.scheduler.livenessProbe.timeoutSeconds }}
+            exec:
+              command:
+                {{- include "airflow.command" . | indent 16 }}
+                - "python"
+                - "-Wignore"
+                - "-c"
+                - |
+                  import os
+                  import sys
+
+                  # suppress logs triggered from importing airflow packages
+                  {{- if .Values.airflow.legacyCommands }}
+                  os.environ["AIRFLOW__CORE__LOGGING_LEVEL"] = "ERROR"
+                  {{- else }}
+                  os.environ["AIRFLOW__LOGGING__LOGGING_LEVEL"] = "ERROR"
+                  {{- end }}
+
+                  from airflow.jobs.scheduler_job import SchedulerJob
+                  from airflow.utils.db import create_session
+                  from airflow.utils.net import get_hostname
+                  {{- if .Values.scheduler.livenessProbe.taskCreationCheck.enabled }}
+                  from airflow.jobs.local_task_job import LocalTaskJob
+                  from airflow.utils import timezone
+                  {{- end }}
+
+                  with create_session() as session:
+                      # ensure the SchedulerJob with most recent heartbeat for this `hostname` is alive
+                      hostname = get_hostname()
+                      scheduler_job = session \
+                          .query(SchedulerJob) \
+                          .filter_by(hostname=hostname) \
+                          .order_by(SchedulerJob.latest_heartbeat.desc()) \
+                          .limit(1) \
+                          .first()
+                      if (scheduler_job is not None) and scheduler_job.is_alive():
+                          pass
+                      else:
+                          sys.exit(f"The SchedulerJob (id={scheduler_job.id}) for hostname '{hostname}' is not alive")
+
+                      {{- if .Values.scheduler.livenessProbe.taskCreationCheck.enabled }}
+                      {{- $task_job_threshold := .Values.scheduler.livenessProbe.taskCreationCheck.thresholdSeconds }}
+                      {{- if not (or (typeIs "float64" $task_job_threshold) (typeIs "int64" $task_job_threshold)) }}
+                      {{- /* the type of a number could be float64 or int64 depending on how it was set (values.yaml, or --set) */ -}}
+                      {{ required (printf "`scheduler.livenessProbe.taskCreationCheck.thresholdSeconds` must be int-type, but got %s!" (typeOf $task_job_threshold)) nil }}
+                      {{- end }}
+
+                      # ensure the most recent LocalTaskJob had a start_date in the last `task_job_threshold` seconds
+                      task_job_threshold = {{ $task_job_threshold }}
+                      task_job = session \
+                          .query(LocalTaskJob) \
+                          .order_by(LocalTaskJob.id.desc()) \
+                          .limit(1) \
+                          .first()
+                      if task_job is not None:
+                          if (timezone.utcnow() - task_job.start_date).total_seconds() < task_job_threshold:
+                              pass
+                          else:
+                              sys.exit(
+                                  f"The most recent LocalTaskJob (id={task_job.id}, dag_id={task_job.dag_id}) "
+                                  f"started over {task_job_threshold} seconds ago"
+                              )
+                      {{- end }}
+          {{- end }}
+          {{- if or ($volumeMounts) (include "airflow.executor.kubernetes_like" .) }}
+          volumeMounts:
+            {{- $volumeMounts | indent 12 }}
+            {{- if include "airflow.executor.kubernetes_like" . }}
+            - name: pod-template
+              mountPath: /opt/airflow/pod_templates/pod_template.yaml
+              subPath: pod_template.yaml
+              readOnly: true
+            {{- end }}
+          {{- end }}
+        {{- if .Values.dags.gitSync.enabled }}
+        {{- include "airflow.container.git_sync" . | indent 8 }}
+        {{- end }}
+        {{- if .Values.scheduler.logCleanup.enabled }}
+        {{- $lc_resources := .Values.scheduler.logCleanup.resources }}
+        {{- $lc_retention_min := .Values.scheduler.logCleanup.retentionMinutes }}
+        {{- $lc_interval_sec := .Values.scheduler.logCleanup.intervalSeconds }}
+        {{- include "airflow.container.log_cleanup" (dict "Release" .Release "Values" .Values "resources" $lc_resources "retention_min" $lc_retention_min "interval_sec" $lc_interval_sec) | indent 8 }}
+        {{- end }}
+        {{- if .Values.airflow.extraContainers }}
+        {{- toYaml .Values.airflow.extraContainers | nindent 8 }}
+        {{- end }}
+      {{- if or ($volumes) (include "airflow.executor.kubernetes_like" .) }}
+      volumes:
+        {{- $volumes | indent 8 }}
+        {{- if include "airflow.executor.kubernetes_like" . }}
+        - name: pod-template
+          configMap:
+            name: {{ include "airflow.fullname" . }}-pod-template
+        {{- end }}
+      {{- end }}

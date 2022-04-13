@@ -1,0 +1,24 @@
+{{- if and (include "airflow.triggerer.should_use" .) (.Values.triggerer.podDisruptionBudget.enabled) }}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "airflow.fullname" . }}-triggerer
+  labels:
+    app: {{ include "airflow.labels.app" . }}
+    component: triggerer
+    chart: {{ include "airflow.labels.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  {{- if .Values.triggerer.podDisruptionBudget.maxUnavailable }}
+  maxUnavailable: {{ .Values.triggerer.podDisruptionBudget.maxUnavailable }}
+  {{- end }}
+  {{- if .Values.triggerer.podDisruptionBudget.minAvailable }}
+  minAvailable: {{ .Values.triggerer.podDisruptionBudget.minAvailable }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app: {{ include "airflow.labels.app" . }}
+      component: triggerer
+      release: {{ .Release.Name }}
+{{- end }}
