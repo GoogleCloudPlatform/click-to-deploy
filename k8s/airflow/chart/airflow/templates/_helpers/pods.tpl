@@ -337,7 +337,7 @@ EXAMPLE USAGE: {{ include "airflow.container.log_cleanup" (dict "Release" .Relea
 {{- end }}
 
 {{/*
-The list of `volumeMounts` for web/scheduler/worker/flower container
+The list of `volumeMounts` for web/scheduler/worker container
 EXAMPLE USAGE: {{ include "airflow.volumeMounts" (dict "Release" .Release "Values" .Values "extraPipPackages" $extraPipPackages "extraVolumeMounts" $extraVolumeMounts) }}
 */}}
 {{- define "airflow.volumeMounts" }}
@@ -390,7 +390,7 @@ EXAMPLE USAGE: {{ include "airflow.volumeMounts" (dict "Release" .Release "Value
 {{- end }}
 
 {{/*
-The list of `volumes` for web/scheduler/worker/flower Pods
+The list of `volumes` for web/scheduler/worker Pods
 EXAMPLE USAGE: {{ include "airflow.volumes" (dict "Release" .Release "Values" .Values "extraPipPackages" $extraPipPackages "extraVolumes" $extraVolumes) }}
 */}}
 {{- define "airflow.volumes" }}
@@ -468,7 +468,7 @@ EXAMPLE USAGE: {{ include "airflow.volumes" (dict "Release" .Release "Values" .V
 {{- end }}
 
 {{/*
-The list of `envFrom` for web/scheduler/worker/flower Pods
+The list of `envFrom` for web/scheduler/worker Pods
 */}}
 {{- define "airflow.envFrom" }}
 - secretRef:
@@ -476,7 +476,7 @@ The list of `envFrom` for web/scheduler/worker/flower Pods
 {{- end }}
 
 {{/*
-The list of `env` for web/scheduler/worker/flower Pods
+The list of `env` for web/scheduler/worker Pods
 EXAMPLE USAGE: {{ include "airflow.env" (dict "Release" .Release "Values" .Values "CONNECTION_CHECK_MAX_COUNT" "0") }}
 */}}
 {{- define "airflow.env" }}
@@ -531,15 +531,6 @@ EXAMPLE USAGE: {{ include "airflow.env" (dict "Release" .Release "Values" .Value
   {{- else }}
   value: "0"
   {{- end }}
-{{- end }}
-
-{{- /* set AIRFLOW__CELERY__FLOWER_BASIC_AUTH */ -}}
-{{- if .Values.flower.basicAuthSecret }}
-- name: AIRFLOW__CELERY__FLOWER_BASIC_AUTH
-  valueFrom:
-    secretKeyRef:
-      name: {{ .Values.flower.basicAuthSecret }}
-      key: {{ .Values.flower.basicAuthSecretKey }}
 {{- end }}
 
 {{- /* user-defined environment variables */ -}}

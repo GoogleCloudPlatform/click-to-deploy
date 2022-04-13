@@ -123,23 +123,6 @@
       {{ required (printf "If `ingress.web.path` is set, then `airflow.config.AIRFLOW__WEBSERVER__BASE_URL` must be set! (try setting AIRFLOW__WEBSERVER__BASE_URL to 'http://{HOSTNAME}%s')" (.Values.ingress.web.path | trimSuffix "/*")) nil }}
     {{- end }}
   {{- end }}
-
-  {{/* Checks for `ingress.flower.path` */}}
-  {{- if .Values.ingress.flower.path }}
-    {{- if not (.Values.ingress.flower.path | hasPrefix "/") }}
-    {{ required "The `ingress.flower.path` should start with a '/'!" nil }}
-    {{- end }}
-    {{- if .Values.ingress.flower.path | hasSuffix "/" }}
-    {{ required "The `ingress.flower.path` should NOT include a trailing '/'!" nil }}
-    {{- end }}
-    {{- if .Values.airflow.config.AIRFLOW__CELERY__FLOWER_URL_PREFIX }}
-      {{- if not (eq (.Values.ingress.flower.path | trimSuffix "/*") .Values.airflow.config.AIRFLOW__CELERY__FLOWER_URL_PREFIX) }}
-      {{ required (printf "The `ingress.flower.path` must be compatable with `airflow.config.AIRFLOW__CELERY__FLOWER_URL_PREFIX`! (try setting AIRFLOW__CELERY__FLOWER_URL_PREFIX to '%s', rather than '%s')" (.Values.ingress.flower.path | trimSuffix "/*") .Values.airflow.config.AIRFLOW__CELERY__FLOWER_URL_PREFIX) nil }}
-      {{- end }}
-    {{- else }}
-      {{ required (printf "If `ingress.flower.path` is set, then `airflow.config.AIRFLOW__CELERY__FLOWER_URL_PREFIX` must be set! (try setting AIRFLOW__CELERY__FLOWER_URL_PREFIX to '%s')" (.Values.ingress.flower.path | trimSuffix "/*")) nil }}
-    {{- end }}
-  {{- end }}
 {{- end }}
 
 {{/* Checks for `pgbouncer` */}}

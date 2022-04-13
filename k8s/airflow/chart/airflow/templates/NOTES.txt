@@ -65,10 +65,6 @@
 {{- $extra_pip_warning = true }}
 {{- else if .Values.web.extraPipPackages }}
 {{- $extra_pip_warning = true }}
-{{- else if .Values.workers.extraPipPackages }}
-{{- $extra_pip_warning = true }}
-{{- else if .Values.flower.extraPipPackages }}
-{{- $extra_pip_warning = true }}
 {{- end }}
 
 {{- /* if we show the embedded postgres warning */ -}}
@@ -124,9 +120,6 @@ It looks like you have NOT exposed the Airflow Webserver, do this by:
 {{- if .Values.ingress.enabled }}
 Your Kubernetes Ingress endpoint URLs:
   * Airflow Webserver:  http{{ if .Values.ingress.web.tls.enabled }}s{{ end }}://{{ .Values.ingress.web.host }}{{ .Values.ingress.web.path }}/
-{{- if .Values.flower.enabled }}
-  * Flower Dashboard:   http{{ if .Values.ingress.flower.tls.enabled }}s{{ end }}://{{ .Values.ingress.flower.host }}{{ .Values.ingress.flower.path }}/
-{{- end }}
 {{ end }}
 
 {{- if eq .Values.web.service.type "LoadBalancer" }}
@@ -146,9 +139,6 @@ You deployed a "NodePort" type Service for the Airflow Webserver:
 {{- if true }}
 Use these commands to port-forward the Services to your localhost:
   * Airflow Webserver:  kubectl port-forward svc/{{ include "airflow.fullname" . }}-web 8080:8080 --namespace {{ .Release.Namespace }}
-{{- if .Values.flower.enabled }}
-  * Flower Dashboard:   kubectl port-forward svc/{{ include "airflow.fullname" . }}-flower 5555:5555 --namespace {{ .Release.Namespace }}
-{{- end }}
 {{ end }}
 
 {{- if or ($fernet_key_warning) ($web_secret_warning) ($extra_pip_warning) ($embedded_postgres_warning) ($known_host_warning) }}
