@@ -523,33 +523,6 @@ EXAMPLE USAGE: {{ include "airflow.env" (dict "Release" .Release "Values" .Value
 {{- end }}
 {{- end }}
 
-{{- /* set REDIS_PASSWORD */ -}}
-{{- if .Values.redis.enabled }}
-{{- if .Values.redis.existingSecret }}
-- name: REDIS_PASSWORD
-  valueFrom:
-    secretKeyRef:
-      name: {{ .Values.redis.existingSecret }}
-      key: {{ .Values.redis.existingSecretPasswordKey }}
-{{- else }}
-- name: REDIS_PASSWORD
-  valueFrom:
-    secretKeyRef:
-      name: {{ include "airflow.redis.fullname" . }}
-      key: redis-password
-{{- end }}
-{{- else }}
-{{- if .Values.externalRedis.passwordSecret }}
-- name: REDIS_PASSWORD
-  valueFrom:
-    secretKeyRef:
-      name: {{ .Values.externalRedis.passwordSecret }}
-      key: {{ .Values.externalRedis.passwordSecretKey }}
-{{- else }}
-{{- /* in this case, REDIS_PASSWORD is set in the `-config-envs` Secret */ -}}
-{{- end }}
-{{- end }}
-
 {{- /* disable the `/entrypoint` db connection check */ -}}
 {{- if not .Values.airflow.legacyCommands }}
 - name: CONNECTION_CHECK_MAX_COUNT

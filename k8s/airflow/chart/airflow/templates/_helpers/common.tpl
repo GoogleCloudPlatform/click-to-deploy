@@ -128,19 +128,3 @@ Used to discover the Service and Secret name created by the sub-chart.
 {{- end -}}
 {{- end -}}
 
-{{/*
-Construct the `redis.fullname` of the redis sub-chat chart.
-Used to discover the master Service and Secret name created by the sub-chart.
-*/}}
-{{- define "airflow.redis.fullname" -}}
-{{- if .Values.redis.fullnameOverride -}}
-{{- .Values.redis.fullnameOverride | trunc 63 | trimSuffix "-" -}}
-{{- else -}}
-{{- $name := default "redis" .Values.redis.nameOverride -}}
-{{- if contains $name .Release.Name -}}
-{{- .Release.Name | trunc 63 | trimSuffix "-" -}}
-{{- else -}}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
-{{- end -}}
-{{- end -}}

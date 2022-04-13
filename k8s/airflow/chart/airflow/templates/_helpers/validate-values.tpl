@@ -179,12 +179,3 @@
   {{- end }}
 {{- end }}
 
-{{/* Checks for `externalRedis` */}}
-{{- if .Values.externalRedis.host }}
-  {{/* check if they are using externalRedis (the default value for `externalRedis.host` is "localhost") */}}
-  {{- if not (eq .Values.externalRedis.host "localhost") }}
-    {{- if .Values.redis.enabled }}
-    {{ required "If `externalRedis.host` is set, then `redis.enabled` should be `false`!" nil }}
-    {{- end }}
-  {{- end }}
-{{- end }}

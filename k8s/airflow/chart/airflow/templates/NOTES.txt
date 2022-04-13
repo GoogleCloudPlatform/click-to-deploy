@@ -55,15 +55,6 @@
   {{- end }}
 {{- end }}
 
-{{- /* if we show the external redis password warning */ -}}
-{{- $external_redis_password_warning := false }}
-{{- if and (not .Values.redis.enabled) (not .Values.externalRedis.passwordSecret) }}
-  {{- /* don't show a warning if the password is empty */ -}}
-  {{- if .Values.externalRedis.password }}
-  {{- $external_redis_password_warning = true }}
-  {{- end }}
-{{- end }}
-
 {{- /* if we show the extraPipPackages warning */ -}}
 {{- $extra_pip_warning := false }}
 {{- if .Values.airflow.extraPipPackages }}
@@ -177,11 +168,6 @@ Use these commands to port-forward the Services to your localhost:
 {{- if $external_database_password_warning }}
 [CRITICAL] external database password is set using plain-text value!
   * HELP: create a Kubernetes secret with your database password and configure `externalDatabase.passwordSecret`
-{{ end }}
-
-{{- if $external_redis_password_warning }}
-[CRITICAL] external redis password is set using plain-text value!
-  * HELP: create a Kubernetes secret with your redis password and configure `externalRedis.passwordSecret`
 {{ end }}
 
 {{- if $extra_pip_warning }}
