@@ -1,1 +1,0 @@
-../__common__/stackdriver_installed.rb
