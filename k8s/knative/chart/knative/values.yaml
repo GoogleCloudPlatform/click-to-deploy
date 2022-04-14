@@ -1,0 +1,118 @@
+# Default values for cert-manager
+certmanager:
+  image:
+    repo: null
+    tag: null
+
+  # Replica count for components
+  controller:
+    replicas: 1
+
+  webhook:
+    replicas: 1
+
+  cainjector:
+    replicas: 1
+
+  metrics:
+    image: null
+    exporter:
+      enabled: false
+
+# Default values for istio
+istio:
+  # Replica count for components
+  ingressgateway:
+    image:
+        repo: null
+        tag: null
+    replicas: 1
+
+  istiod:
+    image:
+      repo: null
+      tag: null
+
+  # change busybox
+  # image: busybox:1.28
+
+# Default values for knative
+knative:
+  serving:
+    activator:
+      image:
+        repo: null
+        tag: null
+
+    autoscaler:
+      image:
+        repo: null
+        tag: null
+      replicas: 1
+
+    controller:
+      image:
+        repo: null
+        tag: null
+
+    domainmapping:
+      image:
+        repo: null
+        tag: null
+      webhook:
+        image:
+          repo: null
+          tag: null
+
+    queueproxy:
+      image:
+        repo: null
+        tag: null
+
+    webhook:
+      image:
+        repo: null
+        tag: null
+
+    netcertmanager:
+      controller:
+        image:
+          repo: null
+          tag: null
+
+      webhook:
+        image:
+          repo: null
+          tag: null
+
+    netistio:
+      controller:
+        image:
+          repo: null
+          tag: null
+
+      webhook:
+        image:
+          repo: null
+          tag: null
+
+  eventing:
+    controller:
+      image:
+        repo: null
+        tag: null
+
+    mtping:
+      image:
+        repo: null
+        tag: null
+        # when set to 0 (and only 0) will be set to 1 when the first PingSource is created.
+      replicas: 0
+
+    webhook:
+      image:
+        repo: null
+        tag: null
+
+exporter:
+  image: null
