@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-_variables:
-  from9: &from10 marketplace.gcr.io/google/debian10
 
+cloudbuild:
+  enable_parallel: false
 versions:
 - dir: 1/debian9/1.7
   from: marketplace.gcr.io/google/debian9
@@ -31,3 +31,4 @@ versions:
   - '1'
   - latest
   templateSubDir: cert-manager1
+
