@@ -1,1 +1,1 @@
-../__common__/stackdriver_installed.rb
+../__common__/ops_agent_installed.rb
