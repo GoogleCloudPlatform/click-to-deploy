@@ -16,21 +16,18 @@ _variables:
   from9: &from10 marketplace.gcr.io/google/debian10
 
 versions:
-  - dir: '1/debian10/1.6'
-    repo: cert-manager1
-    templateSubDir: cert-manager1
-    tags:
-      - '1.6.1-debian10'
-      - '1.6-debian10'
-      - '1.6.1'
-      - '1.6'
-      - '1-debian10'
-      - '1'
-      - 'latest'
-    from: *from10
-    packages:
-      cert-manager:
-        version: '1.6.1'
-      bazel:
-        version: '4.0.0'
-
+- dir: 1/debian9/1.7
+  from: marketplace.gcr.io/google/debian9
+  packages:
+    cert-manager:
+      version: 1.7.2
+  repo: cert-manager1
+  tags:
+  - 1.7.2-debian9
+  - 1.7-debian9
+  - 1-debian9
+  - 1.7.2
+  - '1.7'
+  - '1'
+  - latest
+  templateSubDir: cert-manager1

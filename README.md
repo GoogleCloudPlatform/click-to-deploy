@@ -17,7 +17,6 @@ Below is the list of solutions, in this repo, currently affected by the log4j CV
 | Solution | Notes |
 | --- | --- |
 | elasticsearch | Vulnerable |
-| kafka | Uses log4j 1.x |
 | logstash | Vulnerable |
 | magento | Vulnerable (uses elasticsearch) |
 | sonarqube | Vulnerable (uses elasticsearch) |
