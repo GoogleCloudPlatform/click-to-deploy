@@ -1,8 +1,4 @@
 {{- if include "airflow.pgbouncer.should_use" . }}
-{{- $podNodeSelector := include "airflow.podNodeSelector" (dict "Release" .Release "Values" .Values "nodeSelector" .Values.pgbouncer.nodeSelector) }}
-{{- $podAffinity := include "airflow.podAffinity" (dict "Release" .Release "Values" .Values "affinity" .Values.pgbouncer.affinity) }}
-{{- $podTolerations := include "airflow.podTolerations" (dict "Release" .Release "Values" .Values "tolerations" .Values.pgbouncer.tolerations) }}
-{{- $podSecurityContext := include "airflow.podSecurityContext" (dict "Release" .Release "Values" .Values "securityContext" .Values.pgbouncer.securityContext) }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -55,26 +51,6 @@ spec:
         {{- end }}
     spec:
       restartPolicy: Always
-      {{- if .Values.airflow.image.pullSecret }}
-      imagePullSecrets:
-        - name: {{ .Values.airflow.image.pullSecret }}
-      {{- end }}
-      {{- if $podNodeSelector }}
-      nodeSelector:
-        {{- $podNodeSelector | nindent 8 }}
-      {{- end }}
-      {{- if $podAffinity }}
-      affinity:
-        {{- $podAffinity | nindent 8 }}
-      {{- end }}
-      {{- if $podTolerations }}
-      tolerations:
-        {{- $podTolerations | nindent 8 }}
-      {{- end }}
-      {{- if $podSecurityContext }}
-      securityContext:
-        {{- $podSecurityContext | nindent 8 }}
-      {{- end }}
       terminationGracePeriodSeconds: {{ .Values.pgbouncer.terminationGracePeriodSeconds }}
       serviceAccountName: {{ include "airflow.serviceAccountName" . }}
       containers:

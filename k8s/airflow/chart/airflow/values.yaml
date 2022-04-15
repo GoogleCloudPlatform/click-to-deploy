@@ -8,7 +8,6 @@ airflow:
     repository: apache/airflow
     tag: 2.2.5-python3.8
     pullPolicy: IfNotPresent
-    pullSecret: ""
     uid: 50000
     gid: 0
 
@@ -166,33 +165,6 @@ airflow:
   ##
   poolsUpdate: true
 
-  ## default nodeSelector for airflow Pods (is overridden by pod-specific values)
-  ## - docs for nodeSelector:
-  ##   https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector
-  ##
-  defaultNodeSelector: {}
-
-  ## default affinity configs for airflow Pods (is overridden by pod-specific values)
-  ## - spec for Affinity:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#affinity-v1-core
-  ##
-  defaultAffinity: {}
-
-  ## default toleration configs for airflow Pods (is overridden by pod-specific values)
-  ## - spec for Toleration:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#toleration-v1-core
-  ##
-  defaultTolerations: []
-
-  ## default securityContext configs for airflow Pods (is overridden by pod-specific values)
-  ## - spec for PodSecurityContext:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#podsecuritycontext-v1-core
-  ##
-  defaultSecurityContext:
-    ## sets the filesystem owner group of files/folders in mounted volumes
-    ## this does NOT give root permissions to Pods, only the "root" group
-    fsGroup: 0
-
   ## extra annotations for airflow Pods
   ##
   podAnnotations: {}
@@ -286,24 +258,6 @@ airflow:
     ##
     resources: {}
 
-    ## the nodeSelector configs for the Pod template
-    ## - docs for nodeSelector:
-    ##   https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector
-    ##
-    nodeSelector: {}
-
-    ## the affinity configs for the Pod template
-    ## - spec for Affinity:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#affinity-v1-core
-    ##
-    affinity: {}
-
-    ## the toleration configs for the Pod template
-    ## - spec for Toleration:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#toleration-v1-core
-    ##
-    tolerations: []
-
     ## labels for the Pod template
     ##
     podLabels: {}
@@ -378,29 +332,6 @@ airflow:
     ##
     resources: {}
 
-    ## the nodeSelector configs for the db-migrations Pods
-    ## - docs for nodeSelector:
-    ##   https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector
-    ##
-    nodeSelector: {}
-
-    ## the affinity configs for the db-migrations Pods
-    ## - spec for Affinity:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#affinity-v1-core
-    ##
-    affinity: {}
-
-    ## the toleration configs for the db-migrations Pods
-    ## - spec for Toleration:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#toleration-v1-core
-    ##
-    tolerations: []
-
-    ## the security context for the db-migrations Pods
-    ## - spec for PodSecurityContext:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#podsecuritycontext-v1-core
-    ##
-    securityContext: {}
 
     ## Labels for the db-migrations Deployment
     ##
@@ -439,29 +370,6 @@ airflow:
     ##
     resources: {}
 
-    ## the nodeSelector configs for the sync Pods
-    ## - docs for nodeSelector:
-    ##   https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector
-    ##
-    nodeSelector: {}
-
-    ## the affinity configs for the sync Pods
-    ## - spec for Affinity:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#affinity-v1-core
-    ##
-    affinity: {}
-
-    ## the toleration configs for the sync Pods
-    ## - spec for Toleration:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#toleration-v1-core
-    ##
-    tolerations: []
-
-    ## the security context for the sync Pods
-    ## - spec for PodSecurityContext:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#podsecuritycontext-v1-core
-    ##
-    securityContext: {}
 
     ## Labels for the sync Deployments/Jobs
     ##
@@ -497,30 +405,6 @@ scheduler:
   ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#resourcerequirements-v1-core
   ##
   resources: {}
-
-  ## the nodeSelector configs for the scheduler Pods
-  ## - docs for nodeSelector:
-  ##   https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector
-  ##
-  nodeSelector: {}
-
-  ## the affinity configs for the scheduler Pods
-  ## - spec of Affinity:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#affinity-v1-core
-  ##
-  affinity: {}
-
-  ## the toleration configs for the scheduler Pods
-  ## - spec of Toleration:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#toleration-v1-core
-  ##
-  tolerations: []
-
-  ## the security context for the scheduler Pods
-  ## - spec of PodSecurityContext:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#podsecuritycontext-v1-core
-  ##
-  securityContext: {}
 
   ## labels for the scheduler Deployment
   ##
@@ -681,29 +565,6 @@ web:
   ##
   resources: {}
 
-  ## the nodeSelector configs for the web Pods
-  ## - docs for nodeSelector:
-  ##   https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector
-  ##
-  nodeSelector: {}
-
-  ## the affinity configs for the web Pods
-  ## - spec for Affinity:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#affinity-v1-core
-  ##
-  affinity: {}
-
-  ## the toleration configs for the web Pods
-  ## - spec for Toleration:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#toleration-v1-core
-  ##
-  tolerations: []
-
-  ## the security context for the web Pods
-  ## - spec for PodSecurityContext:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#podsecuritycontext-v1-core
-  ##
-  securityContext: {}
 
   ## labels for the web Deployment
   ##
@@ -812,29 +673,6 @@ triggerer:
   ##
   resources: {}
 
-  ## the nodeSelector configs for the triggerer Pods
-  ## - docs for nodeSelector:
-  ##   https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector
-  ##
-  nodeSelector: {}
-
-  ## the affinity configs for the triggerer Pods
-  ## - spec for Affinity:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#affinity-v1-core
-  ##
-  affinity: {}
-
-  ## the toleration configs for the triggerer Pods
-  ## - spec for Toleration:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#toleration-v1-core
-  ##
-  tolerations: []
-
-  ## the security context for the triggerer Pods
-  ## - spec for PodSecurityContext:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#podsecuritycontext-v1-core
-  ##
-  securityContext: {}
 
   ## labels for the triggerer Deployment
   ##
@@ -1274,29 +1112,7 @@ pgbouncer:
   ##
   resources: {}
 
-  ## the nodeSelector configs for the pgbouncer Pods
-  ## - docs for nodeSelector:
-  ##   https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector
-  ##
-  nodeSelector: {}
 
-  ## the affinity configs for the pgbouncer Pods
-  ## - spec for Affinity:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#affinity-v1-core
-  ##
-  affinity: {}
-
-  ## the toleration configs for the pgbouncer Pods
-  ## - spec for Toleration:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#toleration-v1-core
-  ##
-  tolerations: []
-
-  ## the security context for the pgbouncer Pods
-  ## - spec for PodSecurityContext:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#podsecuritycontext-v1-core
-  ##
-  securityContext: {}
 
   ## Labels for the pgbouncer Deployment
   ##
@@ -1490,24 +1306,6 @@ postgresql:
   ## configs for the postgres StatefulSet
   ##
   master:
-    ## the nodeSelector configs for the postgres Pods
-    ## - docs for nodeSelector:
-    ##   https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector
-    ##
-    nodeSelector: {}
-
-    ## the affinity configs for the postgres Pods
-    ## - spec for Affinity:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#affinity-v1-core
-    ##
-    affinity: {}
-
-    ## the toleration configs for the postgres Pods
-    ## - spec for Toleration:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#toleration-v1-core
-    ##
-    tolerations: []
-
     ## annotations for the postgres Pods
     ##
     podAnnotations:

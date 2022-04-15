@@ -19,38 +19,6 @@ Define the command/entrypoint configs for airflow containers
 {{- end }}
 
 {{/*
-Define the nodeSelector for airflow pods
-EXAMPLE USAGE: {{ include "airflow.nodeSelector" (dict "Release" .Release "Values" .Values "nodeSelector" $nodeSelector) }}
-*/}}
-{{- define "airflow.podNodeSelector" }}
-{{- .nodeSelector | default .Values.airflow.defaultNodeSelector | toYaml }}
-{{- end }}
-
-{{/*
-Define the Affinity for airflow pods
-EXAMPLE USAGE: {{ include "airflow.podAffinity" (dict "Release" .Release "Values" .Values "affinity" $affinity) }}
-*/}}
-{{- define "airflow.podAffinity" }}
-{{- .affinity | default .Values.airflow.defaultAffinity | toYaml }}
-{{- end }}
-
-{{/*
-Define the Tolerations for airflow pods
-EXAMPLE USAGE: {{ include "airflow.podTolerations" (dict "Release" .Release "Values" .Values "tolerations" $tolerations) }}
-*/}}
-{{- define "airflow.podTolerations" }}
-{{- .tolerations | default .Values.airflow.defaultTolerations | toYaml }}
-{{- end }}
-
-{{/*
-Define the PodSecurityContext for airflow pods
-EXAMPLE USAGE: {{ include "airflow.podSecurityContext" (dict "Release" .Release "Values" .Values "securityContext" $securityContext) }}
-*/}}
-{{- define "airflow.podSecurityContext" }}
-{{- .securityContext | default .Values.airflow.defaultSecurityContext | toYaml }}
-{{- end }}
-
-{{/*
 Define an init-container which checks the DB status
 EXAMPLE USAGE: {{ include "airflow.init_container.check_db" (dict "Release" .Release "Values" .Values "volumeMounts" $volumeMounts) }}
 */}}

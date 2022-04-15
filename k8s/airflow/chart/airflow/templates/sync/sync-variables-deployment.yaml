@@ -1,8 +1,4 @@
 {{- if and (.Values.airflow.variables) (.Values.airflow.variablesUpdate) }}
-{{- $podNodeSelector := include "airflow.podNodeSelector" (dict "Release" .Release "Values" .Values "nodeSelector" .Values.airflow.sync.nodeSelector) }}
-{{- $podAffinity := include "airflow.podAffinity" (dict "Release" .Release "Values" .Values "affinity" .Values.airflow.sync.affinity) }}
-{{- $podTolerations := include "airflow.podTolerations" (dict "Release" .Release "Values" .Values "tolerations" .Values.airflow.sync.tolerations) }}
-{{- $podSecurityContext := include "airflow.podSecurityContext" (dict "Release" .Release "Values" .Values "securityContext" .Values.airflow.sync.securityContext) }}
 {{- $extraPipPackages := .Values.airflow.extraPipPackages }}
 {{- $volumeMounts := include "airflow.volumeMounts" (dict "Release" .Release "Values" .Values "extraPipPackages" $extraPipPackages) }}
 {{- $volumes := include "airflow.volumes" (dict "Release" .Release "Values" .Values "extraPipPackages" $extraPipPackages) }}
@@ -57,26 +53,6 @@ spec:
         {{- end }}
     spec:
       restartPolicy: Always
-      {{- if .Values.airflow.image.pullSecret }}
-      imagePullSecrets:
-        - name: {{ .Values.airflow.image.pullSecret }}
-      {{- end }}
-      {{- if $podNodeSelector }}
-      nodeSelector:
-        {{- $podNodeSelector | nindent 8 }}
-      {{- end }}
-      {{- if $podAffinity }}
-      affinity:
-        {{- $podAffinity | nindent 8 }}
-      {{- end }}
-      {{- if $podTolerations }}
-      tolerations:
-        {{- $podTolerations | nindent 8 }}
-      {{- end }}
-      {{- if $podSecurityContext }}
-      securityContext:
-        {{- $podSecurityContext | nindent 8 }}
-      {{- end }}
       serviceAccountName: {{ include "airflow.serviceAccountName" . }}
       initContainers:
         {{- if $extraPipPackages }}
