@@ -29,15 +29,8 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      {{- if .Values.airflow.legacyCommands }}
-      ## only one scheduler can run concurrently (Airflow 1.10)
-      maxSurge: 0
-      maxUnavailable: 100%
-      {{- else }}
-      ## multiple schedulers can run concurrently (Airflow 2.0)
       maxSurge: 25%
       maxUnavailable: 0
-      {{- end }}
   selector:
     matchLabels:
       app: {{ include "airflow.labels.app" . }}
@@ -133,12 +126,7 @@ spec:
                   import os
                   import sys
 
-                  # suppress logs triggered from importing airflow packages
-                  {{- if .Values.airflow.legacyCommands }}
-                  os.environ["AIRFLOW__CORE__LOGGING_LEVEL"] = "ERROR"
-                  {{- else }}
                   os.environ["AIRFLOW__LOGGING__LOGGING_LEVEL"] = "ERROR"
-                  {{- end }}
 
                   from airflow.jobs.scheduler_job import SchedulerJob
                   from airflow.utils.db import create_session

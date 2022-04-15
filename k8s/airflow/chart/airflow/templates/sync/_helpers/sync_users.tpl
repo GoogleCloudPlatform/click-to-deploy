@@ -17,15 +17,9 @@ The python sync script for users.
 import sys
 from flask_appbuilder.security.sqla.models import User, Role
 from werkzeug.security import check_password_hash, generate_password_hash
-{{- if .Values.airflow.legacyCommands }}
-import airflow.www_rbac.app as www_app
-flask_app, flask_appbuilder = www_app.create_app()
-{{- else }}
 import airflow.www.app as www_app
 flask_app = www_app.create_app()
 flask_appbuilder = flask_app.appbuilder
-{{- end }}
-
 
 #############
 ## Classes ##

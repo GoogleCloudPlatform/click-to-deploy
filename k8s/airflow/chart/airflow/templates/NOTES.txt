@@ -105,12 +105,6 @@ Default Airflow Webserver login:
 {{- end }}
 {{ end }}
 
-{{- if and (not .Values.logs.persistence.enabled) (not $remote_logging_enabled) }}
-You have NOT set up persistence for worker task logs, do this by:
-  1. Using a Kubernetes PVC with `logs.persistence.*`
-  2. Using remote logging with `AIRFLOW__LOGGING__REMOTE_LOGGING`
-{{ end }}
-
 {{- if and (not .Values.ingress.enabled) (eq .Values.web.service.type "ClusterIP") }}
 It looks like you have NOT exposed the Airflow Webserver, do this by:
   1. Using a Kubernetes Ingress with `ingress.*`

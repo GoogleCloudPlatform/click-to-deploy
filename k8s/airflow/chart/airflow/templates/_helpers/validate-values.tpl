@@ -3,64 +3,6 @@
   {{ required "The `.Release.name` must be less than 43 characters (due to the 63 character limit for names in Kubernetes)!" nil }}
 {{- end }}
 
-{{/* Checks for `airflow.legacyCommands` */}}
-{{- if .Values.airflow.legacyCommands }}
-  {{- if not (eq "1" (.Values.scheduler.replicas | toString)) }}
-  {{ required "If `airflow.legacyCommands=true`, then `scheduler.replicas` must be set to `1`!" nil }}
-  {{- end }}
-{{- end }}
-
-{{/* Checks for `airflow.image` */}}
-{{- if eq .Values.airflow.image.repository "apache/airflow" }}
-  {{- if hasPrefix "1." .Values.airflow.image.tag }}
-    {{- if not .Values.airflow.legacyCommands }}
-    {{ required "When using airflow 1.10.X, `airflow.legacyCommands` must be `true`!" nil }}
-    {{- end }}
-  {{ end }}
-  {{- if hasPrefix "2." .Values.airflow.image.tag }}
-    {{- if .Values.airflow.legacyCommands }}
-    {{ required "When using airflow 2.X.X, `airflow.legacyCommands` must be `false`!" nil }}
-    {{- end }}
-  {{ end }}
-{{- end }}
-
-{{/* Checks for `airflow.executor` */}}
-{{- if not (has .Values.airflow.executor (list "CeleryExecutor" "CeleryKubernetesExecutor" "KubernetesExecutor")) }}
-  {{ required "The `airflow.executor` must be one of: [CeleryExecutor, CeleryKubernetesExecutor, KubernetesExecutor]!" nil }}
-{{- end }}
-{{- if eq .Values.airflow.executor "CeleryExecutor" }}
-  {{- if not .Values.workers.enabled }}
-  {{ required "If `airflow.executor=CeleryExecutor`, then `workers.enabled` should be `true`!" nil }}
-  {{- end }}
-{{- end }}
-{{- if eq .Values.airflow.executor "CeleryKubernetesExecutor" }}
-  {{- if not .Values.workers.enabled }}
-  {{ required "If `airflow.executor=CeleryKubernetesExecutor`, then `workers.enabled` should be `true`!" nil }}
-  {{- end }}
-{{- end }}
-{{- if eq .Values.airflow.executor "KubernetesExecutor" }}
-  {{- if or (.Values.workers.enabled) (.Values.flower.enabled) (.Values.redis.enabled) }}
-  {{ required "If `airflow.executor=KubernetesExecutor`, then all of [`workers.enabled`, `flower.enabled`, `redis.enabled`] should be `false`!" nil }}
-  {{- end }}
-{{- end }}
-
-{{/* Checks for `airflow.config` */}}
-{{- if .Values.airflow.config.AIRFLOW__CORE__EXECUTOR }}
-  {{ required "Don't define `airflow.config.AIRFLOW__CORE__EXECUTOR`, it will be automatically set from `airflow.executor`!" nil }}
-{{- end }}
-{{- if or .Values.airflow.config.AIRFLOW__CORE__DAGS_FOLDER }}
-  {{ required "Don't define `airflow.config.AIRFLOW__CORE__DAGS_FOLDER`, it will be automatically set from `dags.path`!" nil }}
-{{- end }}
-{{- if or (.Values.airflow.config.AIRFLOW__CELERY__BROKER_URL) (.Values.airflow.config.AIRFLOW__CELERY__BROKER_URL_CMD) }}
-  {{ required "Don't define `airflow.config.AIRFLOW__CELERY__BROKER_URL`, it will be automatically set by the chart!" nil }}
-{{- end }}
-{{- if or (.Values.airflow.config.AIRFLOW__CELERY__RESULT_BACKEND) (.Values.airflow.config.AIRFLOW__CELERY__RESULT_BACKEND_CMD) }}
-  {{ required "Don't define `airflow.config.AIRFLOW__CELERY__RESULT_BACKEND`, it will be automatically set by the chart!" nil }}
-{{- end }}
-{{- if or (.Values.airflow.config.AIRFLOW__CORE__SQL_ALCHEMY_CONN) (.Values.airflow.config.AIRFLOW__CORE__SQL_ALCHEMY_CONN_CMD) }}
-  {{ required "Don't define `airflow.config.AIRFLOW__CORE__SQL_ALCHEMY_CONN`, it will be automatically set by the chart!" nil }}
-{{- end }}
-
 {{/* Checks for `logs.persistence` */}}
 {{- if .Values.logs.persistence.enabled }}
   {{- if not (eq .Values.logs.persistence.accessMode "ReadWriteMany") }}
@@ -68,11 +10,6 @@
   {{- end }}
   {{- if .Values.scheduler.logCleanup.enabled }}
   {{ required "If `logs.persistence.enabled=true`, then `scheduler.logCleanup.enabled` must be disabled!" nil }}
-  {{- end }}
-  {{- if .Values.workers.enabled }}
-    {{- if .Values.workers.logCleanup.enabled }}
-    {{ required "If `logs.persistence.enabled=true`, then `workers.logCleanup.enabled` must be disabled!" nil }}
-    {{- end }}
   {{- end }}
 {{- end }}
 

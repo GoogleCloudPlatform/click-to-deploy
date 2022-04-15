@@ -44,24 +44,6 @@ Construct the name of the airflow ServiceAccount.
 {{- end -}}
 
 {{/*
-A flag indicating if a celery-like executor is selected (empty if false)
-*/}}
-{{- define "airflow.executor.celery_like" -}}
-{{- if or (eq .Values.airflow.executor "CeleryExecutor") (eq .Values.airflow.executor "CeleryKubernetesExecutor") -}}
-true
-{{- end -}}
-{{- end -}}
-
-{{/*
-A flag indicating if a kubernetes-like executor is selected (empty if false)
-*/}}
-{{- define "airflow.executor.kubernetes_like" -}}
-{{- if or (eq .Values.airflow.executor "KubernetesExecutor") (eq .Values.airflow.executor "CeleryKubernetesExecutor") -}}
-true
-{{- end -}}
-{{- end -}}
-
-{{/*
 The scheme (HTTP, HTTPS) used by the webserver
 */}}
 {{- define "airflow.web.scheme" -}}
@@ -80,23 +62,6 @@ The path containing DAG files
 {{- printf "%s/repo/%s" (.Values.dags.path | trimSuffix "/") (.Values.dags.gitSync.repoSubPath | trimAll "/") -}}
 {{- else -}}
 {{- printf .Values.dags.path -}}
-{{- end -}}
-{{- end -}}
-
-{{/*
-If the airflow triggerer should be used.
-*/}}
-{{- define "airflow.triggerer.should_use" -}}
-{{- if .Values.triggerer.enabled -}}
-{{- if not .Values.airflow.legacyCommands -}}
-{{- if include "airflow.image.version" . -}}
-{{- if semverCompare ">=2.2.0" (include "airflow.image.version" .) -}}
-true
-{{- end -}}
-{{- else -}}
-true
-{{- end -}}
-{{- end -}}
 {{- end -}}
 {{- end -}}
 

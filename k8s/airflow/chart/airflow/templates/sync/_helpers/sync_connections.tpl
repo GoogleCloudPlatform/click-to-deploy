@@ -26,9 +26,7 @@ class ConnectionWrapper(object):
             self,
             conn_id: str,
             conn_type: str,
-            {{- if not .Values.airflow.legacyCommands }}
             description: Optional[str] = None,
-            {{- end }}
             host: Optional[str] = None,
             login: Optional[str] = None,
             password: Optional[str] = None,
@@ -38,9 +36,7 @@ class ConnectionWrapper(object):
     ):
         self.conn_id = conn_id
         self.conn_type = conn_type
-        {{- if not .Values.airflow.legacyCommands }}
         self.description = description
-        {{- end }}
         self._host = host
         self._login = login
         self._password = password
@@ -72,9 +68,7 @@ class ConnectionWrapper(object):
         return Connection(
             conn_id=self.conn_id,
             conn_type=self.conn_type,
-            {{- if not .Values.airflow.legacyCommands }}
             description=self.description,
-            {{- end }}
             host=self.host,
             login=self.login,
             password=self.password,
@@ -99,7 +93,7 @@ VAR__CONNECTION_WRAPPERS = {
   {{ .id | quote }}: ConnectionWrapper(
     conn_id={{ (required "each `id` in `airflow.connections` must be non-empty!" .id) | quote }},
     conn_type={{ (required "each `type` in `airflow.connections` must be non-empty!" .type) | quote }},
-    {{- if and (.description) (not $.Values.airflow.legacyCommands) }}
+    {{- if .description }}
     description={{ .description | quote }},
     {{- end }}
     {{- if .host }}
@@ -139,9 +133,7 @@ def compare_connections(c1: Connection, c2: Connection) -> bool:
     return (
             c1.conn_id == c2.conn_id
             and c1.conn_type == c2.conn_type
-            {{- if not .Values.airflow.legacyCommands }}
             and c1.description == c2.description
-            {{- end }}
             and c1.host == c2.host
             and c1.login == c2.login
             and c1.password == c2.password
@@ -173,9 +165,7 @@ def sync_connection(connection_wrapper: ConnectionWrapper) -> None:
             else:
                 logging.info(f"Connection=`{c_id}` exists but has changed, updating...")
                 c_old.conn_type = c_new.conn_type
-                {{- if not .Values.airflow.legacyCommands }}
                 c_old.description = c_new.description
-                {{- end }}
                 c_old.host = c_new.host
                 c_old.login = c_new.login
                 c_old.password = c_new.password

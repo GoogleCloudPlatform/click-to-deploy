@@ -2,15 +2,11 @@
 ## CONFIG | Airflow Configs
 ########################################
 airflow:
-  ## if we use legacy 1.10 airflow commands
-  ##
-  legacyCommands: false
-
   ## configs for the airflow container image
   ##
   image:
     repository: apache/airflow
-    tag: 2.1.4-python3.8
+    tag: 2.2.5-python3.8
     pullPolicy: IfNotPresent
     pullSecret: ""
     uid: 50000
@@ -20,7 +16,7 @@ airflow:
   ## - allowed values: "CeleryExecutor", "KubernetesExecutor", "CeleryKubernetesExecutor"
   ## - customize the "KubernetesExecutor" pod-template with `airflow.kubernetesPodTemplate.*`
   ##
-  executor: CeleryExecutor
+  executor: KubernetesExecutor
 
   ## the fernet encryption key (sets `AIRFLOW__CORE__FERNET_KEY`)
   ## - [WARNING] you must change this value to ensure the security of your airflow
@@ -790,175 +786,6 @@ web:
   extraVolumeMounts: []
 
   ## extra Volumes for the web Pods
-  ## - spec for Volume:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#volume-v1-core
-  ##
-  extraVolumes: []
-
-###################################
-## COMPONENT | Airflow Workers
-###################################
-workers:
-  ## if the airflow workers StatefulSet should be deployed
-  ##
-  enabled: true
-
-  ## the number of worker Pods to run
-  ## - if you set this >1 we recommend defining a `workers.podDisruptionBudget`
-  ## - this is the minimum when `workers.autoscaling.enabled` is true
-  ##
-  replicas: 1
-
-  ## resource requests/limits for the worker Pod
-  ## - spec for ResourceRequirements:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#resourcerequirements-v1-core
-  ##
-  resources: {}
-
-  ## the nodeSelector configs for the worker Pods
-  ## - docs for nodeSelector:
-  ##   https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector
-  ##
-  nodeSelector: {}
-
-  ## the affinity configs for the worker Pods
-  ## - spec for Affinity:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#affinity-v1-core
-  ##
-  affinity: {}
-
-  ## the toleration configs for the worker Pods
-  ## - spec for Toleration:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#toleration-v1-core
-  ##
-  tolerations: []
-
-  ## the security context for the worker Pods
-  ## - spec for PodSecurityContext:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#podsecuritycontext-v1-core
-  ##
-  securityContext: {}
-
-  ## labels for the worker StatefulSet
-  ##
-  labels: {}
-
-  ## Pod labels for the worker StatefulSet
-  ##
-  podLabels: {}
-
-  ## annotations for the worker StatefulSet
-  ##
-  annotations: {}
-
-  ## Pod annotations for the worker StatefulSet
-  ##
-  podAnnotations: {}
-
-  ## if we add the annotation: "cluster-autoscaler.kubernetes.io/safe-to-evict" = "true"
-  ##
-  safeToEvict: true
-
-  ## configs for the PodDisruptionBudget of the worker StatefulSet
-  ##
-  podDisruptionBudget:
-    ## if a PodDisruptionBudget resource is created for the worker StatefulSet
-    ##
-    enabled: false
-
-    ## the maximum unavailable pods/percentage for the worker StatefulSet
-    ##
-    maxUnavailable: ""
-
-    ## the minimum available pods/percentage for the worker StatefulSet
-    ##
-    minAvailable: ""
-
-  ## configs for the HorizontalPodAutoscaler of the worker Pods
-  ## - [WARNING] if using git-sync, ensure `dags.gitSync.resources` is set
-  ## - [WARNING] if using worker log-cleanup, ensure `workers.logCleanup.resources` is set
-  ##
-  ## ____ EXAMPLE _______________
-  ##   autoscaling:
-  ##     enabled: true
-  ##     maxReplicas: 16
-  ##     metrics:
-  ##     - type: Resource
-  ##       resource:
-  ##         name: memory
-  ##         target:
-  ##           type: Utilization
-  ##           averageUtilization: 80
-  ##
-  autoscaling:
-    enabled: false
-    maxReplicas: 2
-    metrics: []
-
-  ## configs for the celery worker Pods
-  ##
-  celery:
-    ## if celery worker Pods are gracefully terminated
-    ## - consider defining a `workers.podDisruptionBudget` to prevent there not being
-    ##   enough available workers during graceful termination waiting periods
-    ##
-    ## graceful termination process:
-    ##  1. prevent worker accepting new tasks
-    ##  2. wait AT MOST `workers.celery.gracefullTerminationPeriod` for tasks to finish
-    ##  3. send SIGTERM to worker
-    ##  4. wait AT MOST `workers.terminationPeriod` for kill to finish
-    ##  5. send SIGKILL to worker
-    ##
-    gracefullTermination: false
-
-    ## how many seconds to wait for tasks to finish before SIGTERM of the celery worker
-    ##
-    gracefullTerminationPeriod: 600
-
-  ## how many seconds to wait after SIGTERM before SIGKILL of the celery worker
-  ## - [WARNING] tasks that are still running during SIGKILL will be orphaned, this is important
-  ##   to understand with KubernetesPodOperator(), as Pods may continue running
-  ##
-  terminationPeriod: 60
-
-  ## configs for the log-cleanup sidecar of the worker Pods
-  ## - helps prevent excessive log buildup by regularly deleting old files
-  ##
-  logCleanup:
-    ## if the log-cleanup sidecar is enabled
-    ## - [WARNING] must be disabled if `logs.persistence.enabled` is `true`
-    ##
-    enabled: true
-
-    ## resource requests/limits for the log-cleanup container
-    ## - spec of ResourceRequirements:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#resourcerequirements-v1-core
-    ##
-    resources: {}
-
-    ## the number of minutes to retain log files (by last-modified time)
-    ##
-    retentionMinutes: 21600
-
-    ## the number of seconds between each check for files to delete
-    ##
-    intervalSeconds: 900
-
-  ## extra pip packages to install in the worker Pod
-  ##
-  ## ____ EXAMPLE _______________
-  ##   extraPipPackages:
-  ##     - "SomeProject==1.0.0"
-  ##
-  extraPipPackages: []
-
-  ## extra VolumeMounts for the worker Pods
-  ## - spec for VolumeMount:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#volumemount-v1-core
-  ##
-  extraVolumeMounts: []
-
-  ## extra Volumes for the worker Pods
   ## - spec for Volume:
   ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#volume-v1-core
   ##
