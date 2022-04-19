@@ -75,7 +75,7 @@ Your Kubernetes Ingress endpoint URLs:
 
 {{- if eq .Values.web.service.type "LoadBalancer" }}
 You deployed a "LoadBalancer" type Service for the Airflow Webserver:
-  * External IP:    kubectl get svc/{{ include "airflow.fullname" . }}-web --namespace {{ .Release.Namespace }} -o jsonpath="{.status.loadBalancer.ingress[0].ip}"
+  * External IP:    kubectl get svc/{{ .Release.Name }}-web --namespace {{ .Release.Namespace }} -o jsonpath="{.status.loadBalancer.ingress[0].ip}"
   * External Port:  {{ .Values.web.service.externalPort }}
   * NOTE:           it may take a few minutes for the External IP to be provisioned by your cloud provider
 {{ end }}
@@ -83,13 +83,13 @@ You deployed a "LoadBalancer" type Service for the Airflow Webserver:
 {{- if eq .Values.web.service.type "NodePort" }}
 You deployed a "NodePort" type Service for the Airflow Webserver:
   * Node IP:    kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}"
-  * Node Port:  kubectl get svc/{{ include "airflow.fullname" . }}-web --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}"
+  * Node Port:  kubectl get svc/{{ .Release.Name }}-web --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}"
   * NOTE:       any Node's external IP will work
 {{ end }}
 
 {{- if true }}
 Use these commands to port-forward the Services to your localhost:
-  * Airflow Webserver:  kubectl port-forward svc/{{ include "airflow.fullname" . }}-web 8080:8080 --namespace {{ .Release.Namespace }}
+  * Airflow Webserver:  kubectl port-forward svc/{{ .Release.Name }}-web 8080:8080 --namespace {{ .Release.Namespace }}
 {{ end }}
 
 {{- if or ($extra_pip_warning) ($embedded_postgres_warning) ($known_host_warning) }}

@@ -6,7 +6,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "airflow.fullname" . }}-scheduler
+  name: {{ .Release.Name }}-scheduler
   {{- if .Values.scheduler.annotations }}
   annotations:
     {{- toYaml .Values.scheduler.annotations | nindent 4 }}
@@ -170,4 +170,4 @@ spec:
         {{- $volumes | indent 8 }}
         - name: pod-template
           configMap:
-            name: {{ include "airflow.fullname" . }}-pod-template
+            name: {{ .Release.Name }}-pod-template

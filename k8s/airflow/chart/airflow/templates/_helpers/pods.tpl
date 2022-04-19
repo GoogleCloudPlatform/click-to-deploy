@@ -308,7 +308,7 @@ EXAMPLE USAGE: {{ include "airflow.volumes" (dict "Release" .Release "Values" .V
     {{- if .Values.airflow.localSettings.existingSecret }}
     secretName: {{ .Values.airflow.localSettings.existingSecret }}
     {{- else }}
-    secretName: {{ include "airflow.fullname" . }}-local-settings
+    secretName: {{ .Release.Name }}-local-settings
     {{- end }}
     defaultMode: 0644
 {{- end }}
@@ -320,7 +320,7 @@ EXAMPLE USAGE: {{ include "airflow.volumes" (dict "Release" .Release "Values" .V
     {{- if .Values.dags.persistence.existingClaim }}
     claimName: {{ .Values.dags.persistence.existingClaim }}
     {{- else }}
-    claimName: {{ printf "%s-dags" (include "airflow.fullname" . | trunc 58) }}
+    claimName: {{ printf "%s-dags" (.Release.Name | trunc 58) }}
     {{- end }}
 {{- else if .Values.dags.gitSync.enabled }}
 - name: dags-data
@@ -334,7 +334,7 @@ EXAMPLE USAGE: {{ include "airflow.volumes" (dict "Release" .Release "Values" .V
     {{- if .Values.logs.persistence.existingClaim }}
     claimName: {{ .Values.logs.persistence.existingClaim }}
     {{- else }}
-    claimName: {{ printf "%s-logs" (include "airflow.fullname" . | trunc 58) }}
+    claimName: {{ printf "%s-logs" (.Release.Name | trunc 58) }}
     {{- end }}
 {{- else }}
 - name: logs-data
@@ -352,7 +352,7 @@ EXAMPLE USAGE: {{ include "airflow.volumes" (dict "Release" .Release "Values" .V
 {{- if .Values.dags.gitSync.sshKnownHosts }}
 - name: git-known-hosts
   secret:
-    secretName: {{ include "airflow.fullname" . }}-known-hosts
+    secretName: {{ .Release.Name }}-known-hosts
     defaultMode: 0644
 {{- end }}
 {{- end }}
@@ -379,7 +379,7 @@ The list of `envFrom` for web/scheduler/worker Pods
 */}}
 {{- define "airflow.envFrom" }}
 - secretRef:
-    name: {{ include "airflow.fullname" . }}-config-envs
+    name: {{ .Release.Name }}-config-envs
 {{- end }}
 
 {{/*

@@ -6,7 +6,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "airflow.fullname" . }}-web
+  name: {{ .Release.Name }}-web
   {{- if .Values.web.annotations }}
   annotations:
     {{- toYaml .Values.web.annotations | nindent 4 }}
@@ -129,6 +129,6 @@ spec:
             {{- if .Values.web.webserverConfig.existingSecret }}
             secretName: {{ .Values.web.webserverConfig.existingSecret }}
             {{- else }}
-            secretName: {{ include "airflow.fullname" . }}-webserver-config
+            secretName: {{ .Release.Name }}-webserver-config
             {{- end }}
             defaultMode: 0644

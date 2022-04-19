@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "airflow.fullname" . }}-pod-template
+  name: {{ .Release.Name }}-pod-template
   labels:
     app: {{ include "airflow.labels.app" . }}
     chart: {{ include "airflow.labels.chart" . }}

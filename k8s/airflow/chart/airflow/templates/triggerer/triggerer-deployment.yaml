@@ -7,7 +7,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "airflow.fullname" . }}-triggerer
+  name: {{ .Release.Name }}-triggerer
   {{- if .Values.triggerer.annotations }}
   annotations:
     {{- toYaml .Values.triggerer.annotations | nindent 4 }}

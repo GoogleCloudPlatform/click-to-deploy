@@ -2,10 +2,6 @@
 Construct the base name for all resources in this chart.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
-{{- define "airflow.fullname" -}}
-{{- printf "%s" .Release.Name | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
-
 {{/*
 The version of airflow being deployed.
 - extracted from the image tag (only for images in airflow's official DockerHub repo)
@@ -37,7 +33,7 @@ Construct the name of the airflow ServiceAccount.
 */}}
 {{- define "airflow.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create -}}
-{{- .Values.serviceAccount.name | default (include "airflow.fullname" .) -}}
+{{- .Values.serviceAccount.name | default .Release.Name -}}
 {{- else -}}
 {{- .Values.serviceAccount.name | default "default" -}}
 {{- end -}}

@@ -5,7 +5,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "airflow.fullname" . }}-sync-variables
+  name: {{ .Release.Name }}-sync-variables
   labels:
     app: {{ include "airflow.labels.app" . }}
     component: sync-variables
@@ -87,7 +87,7 @@ spec:
         {{- $volumes | indent 8 }}
         - name: scripts
           secret:
-            secretName: {{ include "airflow.fullname" . }}-sync-variables
+            secretName: {{ .Release.Name }}-sync-variables
         {{- if .Values.airflow.variablesTemplates }}
         - name: templates
           projected:

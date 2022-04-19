@@ -1710,7 +1710,7 @@ extraManifests:
     apiVersion: apps/v1
     kind: Deployment
     metadata:
-      name: {{ include "airflow.fullname" . }}-busybox
+      name: {{ .Release.Name }}-busybox
       labels:
         app: {{ include "airflow.labels.app" . }}
         component: busybox
