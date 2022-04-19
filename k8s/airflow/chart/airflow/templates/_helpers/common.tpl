@@ -66,17 +66,6 @@ The path containing DAG files
 {{- end -}}
 
 {{/*
-If PgBouncer should be used.
-*/}}
-{{- define "airflow.pgbouncer.should_use" -}}
-{{- if .Values.pgbouncer.enabled -}}
-{{- if or (.Values.postgresql.enabled) (eq .Values.externalDatabase.type "postgres") -}}
-true
-{{- end -}}
-{{- end -}}
-{{- end -}}
-
-{{/*
 Construct the `postgresql.fullname` of the postgresql sub-chat chart.
 Used to discover the Service and Secret name created by the sub-chart.
 */}}

@@ -37,9 +37,7 @@ spec:
       annotations:
         checksum/secret-config-envs: {{ include (print $.Template.BasePath "/config/secret-config-envs.yaml") . | sha256sum }}
         checksum/secret-local-settings: {{ include (print $.Template.BasePath "/config/secret-local-settings.yaml") . | sha256sum }}
-        {{- if include "airflow.executor.kubernetes_like" . }}
         checksum/config-pod-template: {{ include (print $.Template.BasePath "/config/configmap-pod-template.yaml") . | sha256sum }}
-        {{- end }}
         {{- if .Values.airflow.podAnnotations }}
         {{- toYaml .Values.airflow.podAnnotations | nindent 8 }}
         {{- end }}
@@ -150,16 +148,12 @@ spec:
                               )
                       {{- end }}
           {{- end }}
-          {{- if or ($volumeMounts) (include "airflow.executor.kubernetes_like" .) }}
           volumeMounts:
             {{- $volumeMounts | indent 12 }}
-            {{- if include "airflow.executor.kubernetes_like" . }}
             - name: pod-template
               mountPath: /opt/airflow/pod_templates/pod_template.yaml
               subPath: pod_template.yaml
               readOnly: true
-            {{- end }}
-          {{- end }}
         {{- if .Values.dags.gitSync.enabled }}
         {{- include "airflow.container.git_sync" . | indent 8 }}
         {{- end }}
@@ -172,12 +166,8 @@ spec:
         {{- if .Values.airflow.extraContainers }}
         {{- toYaml .Values.airflow.extraContainers | nindent 8 }}
         {{- end }}
-      {{- if or ($volumes) (include "airflow.executor.kubernetes_like" .) }}
       volumes:
         {{- $volumes | indent 8 }}
-        {{- if include "airflow.executor.kubernetes_like" . }}
         - name: pod-template
           configMap:
             name: {{ include "airflow.fullname" . }}-pod-template
-        {{- end }}
-      {{- end }}

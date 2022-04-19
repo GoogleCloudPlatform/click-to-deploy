@@ -1,4 +1,3 @@
-{{- if include "airflow.executor.kubernetes_like" . }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -15,4 +14,3 @@ data:
     {{- else }}
     {{- tpl (.Files.Get "files/pod_template.kubernetes-helm-yaml") . | nindent 4 }}
     {{- end }}
-{{- end }}

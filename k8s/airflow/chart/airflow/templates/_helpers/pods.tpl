@@ -387,49 +387,8 @@ The list of `env` for web/scheduler/worker Pods
 EXAMPLE USAGE: {{ include "airflow.env" (dict "Release" .Release "Values" .Values "CONNECTION_CHECK_MAX_COUNT" "0") }}
 */}}
 {{- define "airflow.env" }}
-{{- /* set DATABASE_USER */ -}}
-{{- if .Values.postgresql.enabled }}
-- name: DATABASE_USER
-  value: {{ .Values.postgresql.postgresqlUsername | quote }}
-{{- else }}
-{{- if .Values.externalDatabase.userSecret }}
-- name: DATABASE_USER
-  valueFrom:
-    secretKeyRef:
-      name: {{ .Values.externalDatabase.userSecret }}
-      key: {{ .Values.externalDatabase.userSecretKey }}
-{{- else }}
-{{- /* in this case, DATABASE_USER is set in the `-config-envs` Secret */ -}}
-{{- end }}
-{{- end }}
-
-{{- /* set DATABASE_PASSWORD */ -}}
-{{- if .Values.postgresql.enabled }}
-{{- if .Values.postgresql.existingSecret }}
-- name: DATABASE_PASSWORD
-  valueFrom:
-    secretKeyRef:
-      name: {{ .Values.postgresql.existingSecret }}
-      key: {{ .Values.postgresql.existingSecretKey }}
-{{- else }}
-- name: DATABASE_PASSWORD
-  valueFrom:
-    secretKeyRef:
-      name: {{ include "airflow.postgresql.fullname" . }}
-      key: postgresql-password
-{{- end }}
-{{- else }}
-{{- if .Values.externalDatabase.passwordSecret }}
-- name: DATABASE_PASSWORD
-  valueFrom:
-    secretKeyRef:
-      name: {{ .Values.externalDatabase.passwordSecret }}
-      key: {{ .Values.externalDatabase.passwordSecretKey }}
-{{- else }}
-{{- /* in this case, DATABASE_PASSWORD is set in the `-config-envs` Secret */ -}}
-{{- end }}
-{{- end }}
-
+- name: DATABASE_HOST
+  value: {{ .Release.Name }}-postgresql-svc
 {{- /* disable the `/entrypoint` db connection check */ -}}
 - name: CONNECTION_CHECK_MAX_COUNT
   {{- if .CONNECTION_CHECK_MAX_COUNT }}

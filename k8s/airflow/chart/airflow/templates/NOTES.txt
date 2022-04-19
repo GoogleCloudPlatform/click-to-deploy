@@ -12,49 +12,6 @@
   {{- end }}
 {{- end }}
 
-{{- /* if we show the fernet_key warning */ -}}
-{{- $fernet_key_warning := true }}
-{{- $fernet_key_envvars := list "AIRFLOW__CORE__FERNET_KEY" "AIRFLOW__CORE__FERNET_KEY_CMD" "AIRFLOW__CORE__FERNET_KEY_SECRET" }}
-{{- if not (eq .Values.airflow.fernetKey "7T512UXSSmBOkpWimFHIVb8jK6lfmSAvx4mO6Arehnc=")  }}
-{{- $fernet_key_warning = false }}
-{{- end }}
-{{- range $key, $val := .Values.airflow.config }}
-  {{- if has $key $fernet_key_envvars }}
-  {{- $fernet_key_warning = false }}
-  {{- end }}
-{{- end }}
-{{- range $env := .Values.airflow.extraEnv }}
-  {{- if has $env.name $fernet_key_envvars }}
-  {{- $fernet_key_warning = false }}
-  {{- end }}
-{{- end }}
-
-{{- /* if we show the webserver secret_key warning */ -}}
-{{- $web_secret_warning := true }}
-{{- $web_secret_envvars := list "AIRFLOW__WEBSERVER__SECRET_KEY" "AIRFLOW__WEBSERVER__SECRET_KEY_CMD" "AIRFLOW__WEBSERVER__SECRET_KEY_SECRET" }}
-{{- if not (eq .Values.airflow.webserverSecretKey "THIS IS UNSAFE!")  }}
-{{- $web_secret_warning = false }}
-{{- end }}
-{{- range $key, $val := .Values.airflow.config }}
-  {{- if has $key $web_secret_envvars }}
-  {{- $web_secret_warning = false }}
-  {{- end }}
-{{- end }}
-{{- range $env := .Values.airflow.extraEnv }}
-  {{- if has $env.name $web_secret_envvars }}
-  {{- $web_secret_warning = false }}
-  {{- end }}
-{{- end }}
-
-{{- /* if we show the external database password warning */ -}}
-{{- $external_database_password_warning := false }}
-{{- if and (not .Values.postgresql.enabled) (not .Values.externalDatabase.passwordSecret) }}
-  {{- /* don't show a warning if the password is empty */ -}}
-  {{- if .Values.externalDatabase.password }}
-  {{- $external_database_password_warning = true }}
-  {{- end }}
-{{- end }}
-
 {{- /* if we show the extraPipPackages warning */ -}}
 {{- $extra_pip_warning := false }}
 {{- if .Values.airflow.extraPipPackages }}
@@ -135,24 +92,10 @@ Use these commands to port-forward the Services to your localhost:
   * Airflow Webserver:  kubectl port-forward svc/{{ include "airflow.fullname" . }}-web 8080:8080 --namespace {{ .Release.Namespace }}
 {{ end }}
 
-{{- if or ($fernet_key_warning) ($web_secret_warning) ($extra_pip_warning) ($embedded_postgres_warning) ($known_host_warning) }}
+{{- if or ($extra_pip_warning) ($embedded_postgres_warning) ($known_host_warning) }}
 ====================
       WARNINGS
 ====================
-{{- if $fernet_key_warning }}
-[CRITICAL] default fernet encryption key value!
-  * HELP: set a custom value with `airflow.fernetKey` or `AIRFLOW__CORE__FERNET_KEY`
-{{ end }}
-
-{{- if $web_secret_warning }}
-[CRITICAL] default webserver secret_key value!
-  * HELP: set a custom value with `airflow.webserverSecretKey` or `AIRFLOW__WEBSERVER__SECRET_KEY`
-{{ end }}
-
-{{- if $external_database_password_warning }}
-[CRITICAL] external database password is set using plain-text value!
-  * HELP: create a Kubernetes secret with your database password and configure `externalDatabase.passwordSecret`
-{{ end }}
 
 {{- if $extra_pip_warning }}
 [HIGH] using `extraPipPackages` can cause unexpected runtime errors if external PyPi packages change between Pod restarts
