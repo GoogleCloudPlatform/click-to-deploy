@@ -246,15 +246,7 @@ EXAMPLE USAGE: {{ include "airflow.volumeMounts" (dict "Release" .Release "Value
   mountPath: {{ .Values.logs.path }}
 {{- end }}
 
-{{- /* user-defined (global) */ -}}
-{{- if .Values.airflow.extraVolumeMounts }}
-{{ toYaml .Values.airflow.extraVolumeMounts }}
-{{- end }}
 
-{{- /* user-defined */ -}}
-{{- if .extraVolumeMounts }}
-{{ toYaml .extraVolumeMounts }}
-{{- end }}
 {{- end }}
 
 {{/*
@@ -306,15 +298,6 @@ EXAMPLE USAGE: {{ include "airflow.volumes" (dict "Release" .Release "Values" .V
 {{- end }}
 {{- end }}
 
-{{- /* user-defined (global) */ -}}
-{{- if .Values.airflow.extraVolumes }}
-{{ toYaml .Values.airflow.extraVolumes }}
-{{- end }}
-
-{{- /* user-defined */ -}}
-{{- if .extraVolumes }}
-{{ toYaml .extraVolumes }}
-{{- end }}
 {{- end }}
 
 {{/*

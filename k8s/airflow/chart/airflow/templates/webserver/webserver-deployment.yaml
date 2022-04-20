@@ -1,7 +1,3 @@
-{{- $extraVolumeMounts := .Values.web.extraVolumeMounts }}
-{{- $volumeMounts := include "airflow.volumeMounts" (dict "Release" .Release "Values" .Values "extraVolumeMounts" $extraVolumeMounts) }}
-{{- $extraVolumes := .Values.web.extraVolumes }}
-{{- $volumes := include "airflow.volumes" (dict "Release" .Release "Values" .Values "extraVolumes" $extraVolumes) }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -107,7 +103,7 @@ spec:
               port: web
           {{- end }}
           volumeMounts:
-            {{- $volumeMounts | indent 12 }}
+            {{- include "airflow.volumeMounts" . | indent 12 }}
             - name: webserver-config
               mountPath: /opt/airflow/webserver_config.py
               subPath: webserver_config.py
@@ -116,7 +112,7 @@ spec:
         {{- include "airflow.container.git_sync" . | indent 8 }}
         {{- end }}
       volumes:
-        {{- $volumes | indent 8 }}
+        {{- include "airflow.volumes" . | indent 8 }}
         - name: webserver-config
           secret:
             {{- if .Values.web.webserverConfig.existingSecret }}

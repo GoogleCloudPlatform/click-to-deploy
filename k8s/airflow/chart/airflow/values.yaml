@@ -10,11 +10,6 @@ airflow:
     pullPolicy: IfNotPresent
     uid: 50000
     gid: 0
-
-  extraVolumeMounts: []
-  extraVolumes: []
-  clusterDomain: "cluster.local"
-
   ########################################
   ## FILE | pod_template.yaml
   ########################################
@@ -73,17 +68,6 @@ airflow:
     ##
     extraInitContainers: []
 
-    ## extra VolumeMounts for the Pod template
-    ## - spec for VolumeMount:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#volumemount-v1-core
-    ##
-    extraVolumeMounts: []
-
-    ## extra Volumes for the Pod template
-    ## - spec for Volume:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#volume-v1-core
-    ##
-    extraVolumes: []
 
   ########################################
   ## COMPONENT | db-migrations Deployment
@@ -275,17 +259,7 @@ scheduler:
 
 
 
-  ## extra VolumeMounts for the scheduler Pods
-  ## - spec of VolumeMount:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#volumemount-v1-core
-  ##
-  extraVolumeMounts: []
 
-  ## extra Volumes for the scheduler Pods
-  ## - spec of Volume:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#volume-v1-core
-  ##
-  extraVolumes: []
 
   ## extra init containers to run in the scheduler Pods
   ## - spec of Container:
@@ -404,17 +378,7 @@ web:
 
 
 
-  ## extra VolumeMounts for the web Pods
-  ## - spec for VolumeMount:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#volumemount-v1-core
-  ##
-  extraVolumeMounts: []
 
-  ## extra Volumes for the web Pods
-  ## - spec for Volume:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#volume-v1-core
-  ##
-  extraVolumes: []
 
 ###################################
 ## COMPONENT | Triggerer
@@ -485,17 +449,7 @@ triggerer:
     periodSeconds: 30
     timeoutSeconds: 60
     failureThreshold: 5
-  ## extra VolumeMounts for the triggerer Pods
-  ## - spec for VolumeMount:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#volumemount-v1-core
-  ##
-  extraVolumeMounts: []
 
-  ## extra Volumes for the triggerer Pods
-  ## - spec for Volume:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#volume-v1-core
-  ##
-  extraVolumes: []
 
 ###################################
 ## CONFIG | Airflow Logs
