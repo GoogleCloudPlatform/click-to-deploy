@@ -50,9 +50,6 @@ spec:
       volumeMounts:
         {{- $volumeMounts | indent 8 }}
       {{- end }}
-    {{- if .Values.airflow.kubernetesPodTemplate.extraContainers }}
-    {{- toYaml .Values.airflow.kubernetesPodTemplate.extraContainers | nindent 4 }}
-    {{- end }}
   {{- if $volumes }}
   volumes:
     {{- $volumes | indent 4 }}

@@ -159,9 +159,6 @@ spec:
         {{- $lc_interval_sec := .Values.scheduler.logCleanup.intervalSeconds }}
         {{- include "airflow.container.log_cleanup" (dict "Release" .Release "Values" .Values "resources" $lc_resources "retention_min" $lc_retention_min "interval_sec" $lc_interval_sec) | indent 8 }}
         {{- end }}
-        {{- if .Values.airflow.extraContainers }}
-        {{- toYaml .Values.airflow.extraContainers | nindent 8 }}
-        {{- end }}
       volumes:
         {{- $volumes | indent 8 }}
         - name: pod-template

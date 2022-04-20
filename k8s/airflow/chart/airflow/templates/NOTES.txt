@@ -1,11 +1,6 @@
 {{- /* if remote_logging has been enabled by the user */ -}}
 {{- $remote_logging_enabled := false }}
 {{- $remote_logging_envvars := list "AIRFLOW__CORE__REMOTE_LOGGING" "AIRFLOW__LOGGING__REMOTE_LOGGING" }}
-{{- range $env := .Values.airflow.extraEnv }}
-  {{- if has $env.name $remote_logging_envvars }}
-  {{- $remote_logging_enabled = true }}
-  {{- end }}
-{{- end }}
 
 {{- /* if we show the embedded postgres warning */ -}}
 {{- $embedded_postgres_warning := false }}

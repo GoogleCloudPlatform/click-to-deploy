@@ -11,31 +11,6 @@ airflow:
     uid: 50000
     gid: 0
 
-  users:
-    - username: admin
-      password: admin
-      role: Admin
-      email: admin@example.com
-      firstName: admin
-      lastName: admin
-  usersTemplates: {}
-  usersUpdate: true
-
-  connections: []
-  connectionsTemplates: {}
-  connectionsUpdate: true
-
-  variables: []
-  variablesTemplates: {}xtra
-  variablesUpdate: true
-
-  pools: []
-  poolsUpdate: true
-  podAnnotations: {}
-
-
-  extraEnv: []
-  extraContainers: []
   extraVolumeMounts: []
   extraVolumes: []
   clusterDomain: "cluster.local"
@@ -113,7 +88,6 @@ airflow:
     ## - spec for Container:
     ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#container-v1-core
     ##
-    extraContainers: []
 
     ## extra init-containers for the Pod template
     ## - spec of Container:
