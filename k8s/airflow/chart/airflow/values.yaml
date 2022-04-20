@@ -11,45 +11,6 @@ airflow:
     uid: 50000
     gid: 0
 
-  ## the secret_key for flask (sets `AIRFLOW__WEBSERVER__SECRET_KEY`)
-  ## - [WARNING] you must change this value to ensure the security of your airflow
-  ## - set `AIRFLOW__WEBSERVER__SECRET_KEY` with `airflow.extraEnv` from a Secret to avoid storing this in your values
-  ##
-  webserverSecretKey: "THIS IS UNSAFE!"
-
-  ## environment variables for airflow configs
-  ## - airflow env-vars are structured: "AIRFLOW__{config_section}__{config_name}"
-  ## - airflow configuration reference:
-  ##   https://airflow.apache.org/docs/apache-airflow/stable/configurations-ref.html
-  ##
-  ## ____ EXAMPLE _______________
-  ##   config:
-  ##     # dag configs
-  ##     AIRFLOW__CORE__LOAD_EXAMPLES: "False"
-  ##     AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL: "30"
-  ##
-  ##     # email configs
-  ##     AIRFLOW__EMAIL__EMAIL_BACKEND: "airflow.utils.email.send_email_smtp"
-  ##     AIRFLOW__SMTP__SMTP_HOST: "smtpmail.example.com"
-  ##     AIRFLOW__SMTP__SMTP_MAIL_FROM: "admin@example.com"
-  ##     AIRFLOW__SMTP__SMTP_PORT: "25"
-  ##     AIRFLOW__SMTP__SMTP_SSL: "False"
-  ##     AIRFLOW__SMTP__SMTP_STARTTLS: "False"
-  ##
-  ##     # domain used in airflow emails
-  ##     AIRFLOW__WEBSERVER__BASE_URL: "http://airflow.example.com"
-  ##
-  ##     # ether environment variables
-  ##     HTTP_PROXY: "http://proxy.example.com:8080"
-  ##
-  config: {}
-
-  ## a list of users to create
-  ## - templates can ONLY be used in: `password`, `email`, `firstName`, `lastName`
-  ## - templates used a bash-like syntax: ${MY_USERNAME}, $MY_USERNAME
-  ## - templates are defined in `usersTemplates`
-  ## - `role` can be a single role or a list of roles
-  ##
   users:
     - username: admin
       password: admin
@@ -57,142 +18,26 @@ airflow:
       email: admin@example.com
       firstName: admin
       lastName: admin
-
-  ## bash-like templates to be used in `airflow.users`
-  ## - [WARNING] if a Secret or ConfigMap is missing, the sync Pod will crash
-  ## - [WARNING] all keys must match the regex: ^[a-zA-Z_][a-zA-Z0-9_]*$
-  ##
-  ## ____ EXAMPLE _______________
-  ##   usersTemplates
-  ##     MY_USERNAME:
-  ##       kind: configmap
-  ##       name: my-configmap
-  ##       key: username
-  ##     MY_PASSWORD:
-  ##       kind: secret
-  ##       name: my-secret
-  ##       key: password
-  ##
   usersTemplates: {}
-
-  ## if we create a Deployment to perpetually sync `airflow.users`
-  ## - when `true`, users are updated in real-time, as ConfigMaps/Secrets change
-  ## - when `true`, users changes from the WebUI will be reverted automatically
-  ## - when `false`, users will only update one-time, after each `helm upgrade`
-  ##
   usersUpdate: true
 
-  ## a list airflow connections to create
-  ## - templates can ONLY be used in: `host`, `login`, `password`, `schema`, `extra`
-  ## - templates used a bash-like syntax: ${AWS_ACCESS_KEY} or $AWS_ACCESS_KEY
-  ## - templates are defined in `connectionsTemplates`
-  ##
-  ## ____ EXAMPLE _______________
-  ##   connections:
-  ##     - id: my_aws
-  ##       type: aws
-  ##       description: my AWS connection
-  ##       extra: |-
-  ##         { "aws_access_key_id": "${AWS_KEY_ID}",
-  ##           "aws_secret_access_key": "${AWS_ACCESS_KEY}",
-  ##           "region_name":"eu-central-1" }
-  ##
   connections: []
-
-  ## bash-like templates to be used in `airflow.connections`
-  ## - see docs for `airflow.usersTemplates`
-  ##
   connectionsTemplates: {}
-
-  ## if we create a Deployment to perpetually sync `airflow.connections`
-  ## - see docs for `airflow.usersUpdate`
-  ##
   connectionsUpdate: true
 
-  ## a list airflow variables to create
-  ## - templates can ONLY be used in: `value`
-  ## - templates used a bash-like syntax: ${MY_VALUE} or $MY_VALUE
-  ## - templates are defined in `connectionsTemplates`
-  ##
-  ## ____ EXAMPLE _______________
-  ##   variables:
-  ##     - key: "var_1"
-  ##       value: "my_value_1"
-  ##     - key: "var_2"
-  ##       value: "my_value_2"
-  ##
   variables: []
-
-  ## bash-like templates to be used in `airflow.variables`
-  ## - see docs for `airflow.usersTemplates`
-  ##
   variablesTemplates: {}
-
-  ## if we create a Deployment to perpetually sync `airflow.variables`
-  ## - see docs for `airflow.usersUpdate`
-  ##
   variablesUpdate: true
 
-  ## a list airflow pools to create
-  ##
-  ## ____ EXAMPLE _______________
-  ##   pools:
-  ##     - name: "pool_1"
-  ##       description: "example pool with 5 slots"
-  ##       slots: 5
-  ##     - name: "pool_2"
-  ##       description: "example pool with 10 slots"
-  ##       slots: 10
-  ##
   pools: []
-
-  ## if we create a Deployment to perpetually sync `airflow.pools`
-  ## - see docs for `airflow.usersUpdate`
-  ##
   poolsUpdate: true
-
-  ## extra annotations for airflow Pods
-  ##
   podAnnotations: {}
 
-  ## extra pip packages to install in airflow Pods
-  ##
-  ## ____ EXAMPLE _______________
-  ##   extraPipPackages:
-  ##     - "SomeProject==1.0.0"
-  ##
   extraPipPackages: []
-
-  ## extra environment variables for the airflow Pods
-  ## - spec for EnvVar:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#envvar-v1-core
-  ##
   extraEnv: []
-
-  ## extra containers for the airflow Pods
-  ## - spec for Container:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#container-v1-core
-  ##
   extraContainers: []
-
-  ## extra VolumeMounts for the airflow Pods
-  ## - spec for VolumeMount:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#volumemount-v1-core
-  ##
   extraVolumeMounts: []
-
-  ## extra Volumes for the airflow Pods
-  ## - spec for Volume:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#volume-v1-core
-  ##
   extraVolumes: []
-
-  ## kubernetes cluster domain name
-  ## - configured in the kubelet with `--cluster-domain` flag (deprecated):
-  ##   https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/
-  ## - or configured in the kubelet with configuration file `clusterDomain` option:
-  ##   https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/
-  ##
   clusterDomain: "cluster.local"
 
   ########################################
@@ -518,6 +363,7 @@ web:
   ## FILE | webserver_config.py
   ########################################
   ##
+  webserverBaseUrl: "http://localhost:8080"
   webserverConfig:
     ## the full content of the `webserver_config.py` file (as a string)
     ## - docs for Flask-AppBuilder security configs:

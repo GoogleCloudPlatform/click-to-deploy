@@ -51,14 +51,6 @@
     {{- if .Values.ingress.web.path | hasSuffix "/" }}
     {{ required "The `ingress.web.path` should NOT include a trailing '/'!" nil }}
     {{- end }}
-    {{- if .Values.airflow.config.AIRFLOW__WEBSERVER__BASE_URL }}
-      {{- $webUrl := .Values.airflow.config.AIRFLOW__WEBSERVER__BASE_URL | urlParse }}
-      {{- if not (eq (.Values.ingress.web.path | trimSuffix "/*") (get $webUrl "path")) }}
-      {{ required (printf "The `ingress.web.path` must be compatable with `airflow.config.AIRFLOW__WEBSERVER__BASE_URL`! (try setting AIRFLOW__WEBSERVER__BASE_URL to 'http://{HOSTNAME}%s', rather than '%s')" (.Values.ingress.web.path | trimSuffix "/*") .Values.airflow.config.AIRFLOW__WEBSERVER__BASE_URL) nil }}
-      {{- end }}
-    {{- else }}
-      {{ required (printf "If `ingress.web.path` is set, then `airflow.config.AIRFLOW__WEBSERVER__BASE_URL` must be set! (try setting AIRFLOW__WEBSERVER__BASE_URL to 'http://{HOSTNAME}%s')" (.Values.ingress.web.path | trimSuffix "/*")) nil }}
-    {{- end }}
   {{- end }}
 {{- end }}
 

@@ -43,11 +43,7 @@ Construct the name of the airflow ServiceAccount.
 The scheme (HTTP, HTTPS) used by the webserver
 */}}
 {{- define "airflow.web.scheme" -}}
-{{- if and (.Values.airflow.config.AIRFLOW__WEBSERVER__WEB_SERVER_SSL_CERT) (.Values.airflow.config.AIRFLOW__WEBSERVER__WEB_SERVER_SSL_KEY) -}}
-HTTPS
-{{- else -}}
 HTTP
-{{- end -}}
 {{- end -}}
 
 {{/*
