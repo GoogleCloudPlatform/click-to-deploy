@@ -16,28 +16,6 @@ airflow:
   clusterDomain: "cluster.local"
 
   ########################################
-  ## FILE | airflow_local_settings.py
-  ########################################
-  ##
-  localSettings:
-    ## the full content of the `airflow_local_settings.py` file (as a string)
-    ## - docs for airflow cluster policies:
-    ##   https://airflow.apache.org/docs/apache-airflow/stable/concepts/cluster-policies.html
-    ##
-    ## ____ EXAMPLE _______________
-    ##    stringOverride: |
-    ##      # use a custom `xcom_sidecar` image for KubernetesPodOperator()
-    ##      from airflow.kubernetes.pod_generator import PodDefaults
-    ##      PodDefaults.SIDECAR_CONTAINER.image = "gcr.io/PROJECT-ID/custom-sidecar-image"
-    ##
-    stringOverride: ""
-
-    ## the name of a Secret containing a `airflow_local_settings.py` key
-    ## - if set, this disables `airflow.localSettings.stringOverride`
-    ##
-    existingSecret: ""
-
-  ########################################
   ## FILE | pod_template.yaml
   ########################################
   ## - generates a file for `AIRFLOW__KUBERNETES__POD_TEMPLATE_FILE`
