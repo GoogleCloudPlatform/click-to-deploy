@@ -1,7 +1,6 @@
 {{- if and (.Values.airflow.dbMigrations.enabled) (.Values.airflow.dbMigrations.runAsJob) }}
-{{- $extraPipPackages := .Values.airflow.extraPipPackages }}
-{{- $volumeMounts := include "airflow.volumeMounts" (dict "Release" .Release "Values" .Values "extraPipPackages" $extraPipPackages) }}
-{{- $volumes := include "airflow.volumes" (dict "Release" .Release "Values" .Values "extraPipPackages" $extraPipPackages) }}
+{{- $volumeMounts := include "airflow.volumeMounts" (dict "Release" .Release "Values" .Values ) }}
+{{- $volumes := include "airflow.volumes" (dict "Release" .Release "Values" .Values ) }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -49,9 +48,6 @@ spec:
       restartPolicy: OnFailure
       serviceAccountName: {{ include "airflow.serviceAccountName" . }}
       initContainers:
-        {{- if $extraPipPackages }}
-        {{- include "airflow.init_container.install_pip_packages" (dict "Release" .Release "Values" .Values "extraPipPackages" $extraPipPackages) | indent 8 }}
-        {{- end }}
         {{- if .Values.dags.gitSync.enabled }}
         ## git-sync is included so "airflow plugins" & "python packages" can be stored in the dags repo
         {{- include "airflow.container.git_sync" (dict "Release" .Release "Values" .Values "sync_one_time" "true") | indent 8 }}

@@ -26,14 +26,14 @@ airflow:
   connectionsUpdate: true
 
   variables: []
-  variablesTemplates: {}
+  variablesTemplates: {}xtra
   variablesUpdate: true
 
   pools: []
   poolsUpdate: true
   podAnnotations: {}
 
-  extraPipPackages: []
+
   extraEnv: []
   extraContainers: []
   extraVolumeMounts: []
@@ -108,14 +108,6 @@ airflow:
     ##   https://kubernetes.io/docs/tasks/configure-pod-container/share-process-namespace/
     ##
     shareProcessNamespace: false
-
-    ## extra pip packages to install in the Pod template
-    ##
-    ## ____ EXAMPLE _______________
-    ##   extraPipPackages:
-    ##     - "SomeProject==1.0.0"
-    ##
-    extraPipPackages: []
 
     ## extra containers for the pod template
     ## - spec for Container:
@@ -329,13 +321,7 @@ scheduler:
       ##
       thresholdSeconds: 300
 
-  ## extra pip packages to install in the scheduler Pods
-  ##
-  ## ____ EXAMPLE _______________
-  ##   extraPipPackages:
-  ##     - "SomeProject==1.0.0"
-  ##
-  extraPipPackages: []
+
 
   ## extra VolumeMounts for the scheduler Pods
   ## - spec of VolumeMount:
@@ -464,13 +450,7 @@ web:
     timeoutSeconds: 5
     failureThreshold: 6
 
-  ## extra pip packages to install in the web Pods
-  ##
-  ## ____ EXAMPLE _______________
-  ##   extraPipPackages:
-  ##     - "SomeProject==1.0.0"
-  ##
-  extraPipPackages: []
+
 
   ## extra VolumeMounts for the web Pods
   ## - spec for VolumeMount:
@@ -553,15 +533,6 @@ triggerer:
     periodSeconds: 30
     timeoutSeconds: 60
     failureThreshold: 5
-
-  ## extra pip packages to install in the triggerer Pod
-  ##
-  ## ____ EXAMPLE _______________
-  ##   extraPipPackages:
-  ##     - "SomeProject==1.0.0"
-  ##
-  extraPipPackages: []
-
   ## extra VolumeMounts for the triggerer Pods
   ## - spec for VolumeMount:
   ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#volumemount-v1-core

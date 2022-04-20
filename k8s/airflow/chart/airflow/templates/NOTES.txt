@@ -7,18 +7,6 @@
   {{- end }}
 {{- end }}
 
-{{- /* if we show the extraPipPackages warning */ -}}
-{{- $extra_pip_warning := false }}
-{{- if .Values.airflow.extraPipPackages }}
-{{- $extra_pip_warning = true }}
-{{- else if .Values.airflow.kubernetesPodTemplate.extraPipPackages }}
-{{- $extra_pip_warning = true }}
-{{- else if .Values.scheduler.extraPipPackages }}
-{{- $extra_pip_warning = true }}
-{{- else if .Values.web.extraPipPackages }}
-{{- $extra_pip_warning = true }}
-{{- end }}
-
 {{- /* if we show the embedded postgres warning */ -}}
 {{- $embedded_postgres_warning := false }}
 {{- if .Values.postgresql.enabled }}
@@ -91,11 +79,6 @@ Use these commands to port-forward the Services to your localhost:
 ====================
       WARNINGS
 ====================
-
-{{- if $extra_pip_warning }}
-[HIGH] using `extraPipPackages` can cause unexpected runtime errors if external PyPi packages change between Pod restarts
-  * HELP: create a Docker image with your pip packages installed and use it with `airflow.image.*`
-{{ end }}
 
 {{- if $embedded_postgres_warning }}
 [HIGH] using the embedded postgres database is NOT suitable for production!

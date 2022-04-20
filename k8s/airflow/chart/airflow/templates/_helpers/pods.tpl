@@ -65,32 +65,6 @@ EXAMPLE USAGE: {{ include "airflow.init_container.wait_for_db_migrations" (dict 
 {{- end }}
 
 {{/*
-Define an init-container which installs a list of pip packages
-EXAMPLE USAGE: {{ include "airflow.init_container.install_pip_packages" (dict "Release" .Release "Values" .Values "extraPipPackages" $extraPipPackages) }}
-*/}}
-{{- define "airflow.init_container.install_pip_packages" }}
-- name: install-pip-packages
-  {{- include "airflow.image" . | indent 2 }}
-  envFrom:
-    {{- include "airflow.envFrom" . | indent 4 }}
-  env:
-    {{- include "airflow.env" . | indent 4 }}
-  command:
-    {{- include "airflow.command" . | indent 4 }}
-  args:
-    - "bash"
-    - "-c"
-    - |
-      unset PYTHONUSERBASE && \
-      pip install --user {{ range .extraPipPackages }}{{ . | quote }} {{ end }} && \
-      echo "copying '/home/airflow/.local/*' to '/opt/home-airflow-local'..." && \
-      cp -r /home/airflow/.local/* /opt/home-airflow-local
-  volumeMounts:
-    - name: home-airflow-local
-      mountPath: /opt/home-airflow-local
-{{- end }}
-
-{{/*
 Define a container which regularly syncs a git-repo
 EXAMPLE USAGE: {{ include "airflow.container.git_sync" (dict "Release" .Release "Values" .Values "sync_one_time" "true") }}
 */}}
@@ -279,12 +253,6 @@ EXAMPLE USAGE: {{ include "airflow.volumeMounts" (dict "Release" .Release "Value
   mountPath: {{ .Values.logs.path }}
 {{- end }}
 
-{{- /* pip-packages */ -}}
-{{- if .extraPipPackages }}
-- name: home-airflow-local
-  mountPath: /home/airflow/.local
-{{- end }}
-
 {{- /* user-defined (global) */ -}}
 {{- if .Values.airflow.extraVolumeMounts }}
 {{ toYaml .Values.airflow.extraVolumeMounts }}
@@ -355,12 +323,6 @@ EXAMPLE USAGE: {{ include "airflow.volumes" (dict "Release" .Release "Values" .V
     secretName: {{ .Release.Name }}-known-hosts
     defaultMode: 0644
 {{- end }}
-{{- end }}
-
-{{- /* pip-packages */ -}}
-{{- if .extraPipPackages }}
-- name: home-airflow-local
-  emptyDir: {}
 {{- end }}
 
 {{- /* user-defined (global) */ -}}

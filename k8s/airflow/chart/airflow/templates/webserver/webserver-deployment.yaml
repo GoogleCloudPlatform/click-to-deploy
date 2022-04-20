@@ -1,8 +1,7 @@
-{{- $extraPipPackages := concat .Values.airflow.extraPipPackages .Values.web.extraPipPackages }}
 {{- $extraVolumeMounts := .Values.web.extraVolumeMounts }}
-{{- $volumeMounts := include "airflow.volumeMounts" (dict "Release" .Release "Values" .Values "extraPipPackages" $extraPipPackages "extraVolumeMounts" $extraVolumeMounts) }}
+{{- $volumeMounts := include "airflow.volumeMounts" (dict "Release" .Release "Values" .Values "extraVolumeMounts" $extraVolumeMounts) }}
 {{- $extraVolumes := .Values.web.extraVolumes }}
-{{- $volumes := include "airflow.volumes" (dict "Release" .Release "Values" .Values "extraPipPackages" $extraPipPackages "extraVolumes" $extraVolumes) }}
+{{- $volumes := include "airflow.volumes" (dict "Release" .Release "Values" .Values "extraVolumes" $extraVolumes) }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -59,9 +58,6 @@ spec:
       restartPolicy: Always
       serviceAccountName: {{ include "airflow.serviceAccountName" . }}
       initContainers:
-        {{- if $extraPipPackages }}
-        {{- include "airflow.init_container.install_pip_packages" (dict "Release" .Release "Values" .Values "extraPipPackages" $extraPipPackages) | indent 8 }}
-        {{- end }}
         {{- if .Values.dags.gitSync.enabled }}
         {{- include "airflow.container.git_sync" (dict "Release" .Release "Values" .Values "sync_one_time" "true") | indent 8 }}
         {{- end }}
