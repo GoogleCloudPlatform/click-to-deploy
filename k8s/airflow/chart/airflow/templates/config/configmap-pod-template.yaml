@@ -9,8 +9,4 @@ metadata:
     heritage: {{ .Release.Service }}
 data:
   pod_template.yaml: |-
-    {{- if .Values.airflow.kubernetesPodTemplate.stringOverride }}
-    {{- .Values.airflow.kubernetesPodTemplate.stringOverride | nindent 4 }}
-    {{- else }}
     {{- tpl (.Files.Get "files/pod_template.kubernetes-helm-yaml") . | nindent 4 }}
-    {{- end }}

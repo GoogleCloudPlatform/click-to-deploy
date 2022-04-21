@@ -1,275 +1,28 @@
-########################################
-## CONFIG | Airflow Configs
-########################################
 airflow:
-  ## configs for the airflow container image
-  ##
   image:
     repository: apache/airflow
     tag: 2.2.5-python3.8
     pullPolicy: IfNotPresent
     uid: 50000
     gid: 0
-  ########################################
-  ## FILE | pod_template.yaml
-  ########################################
-  ## - generates a file for `AIRFLOW__KUBERNETES__POD_TEMPLATE_FILE`
-  ## - the `dags.gitSync` values will create a git-sync init-container in the pod
-  ## - the `airflow.extraPipPackages` will NOT be installed
-  ##
-  kubernetesPodTemplate:
-    ## the full content of the pod-template file (as a string)
-    ## - [WARNING] all other `kubernetesPodTemplate.*` are disabled when this is set
-    ## - docs for pod-template file:
-    ##   https://airflow.apache.org/docs/apache-airflow/stable/executor/kubernetes.html#pod-template-file
-    ##
-    ## ____ EXAMPLE _______________
-    ##   stringOverride: |-
-    ##     apiVersion: v1
-    ##     kind: Pod
-    ##     spec: ...
-    ##
-    stringOverride: ""
-
-    ## resource requests/limits for the Pod template "base" container
-    ## - spec for ResourceRequirements:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#resourcerequirements-v1-core
-    ##
-    resources: {}
-
-    ## labels for the Pod template
-    ##
-    podLabels: {}
-
-    ## annotations for the Pod template
-    ##
-    podAnnotations: {}
-
-    ## the security context for the Pod template
-    ## - spec for PodSecurityContext:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#podsecuritycontext-v1-core
-    ##
-    securityContext: {}
-
-    ## the shareProcessNamespace config for the Pod template
-    ## - docs for shareProcessNamespace:
-    ##   https://kubernetes.io/docs/tasks/configure-pod-container/share-process-namespace/
-    ##
-    shareProcessNamespace: false
-
-    ## extra containers for the pod template
-    ## - spec for Container:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#container-v1-core
-    ##
-
-    ## extra init-containers for the Pod template
-    ## - spec of Container:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#container-v1-core
-    ##
-    extraInitContainers: []
-
-
-  ########################################
-  ## COMPONENT | db-migrations Deployment
-  ########################################
   dbMigrations:
-    ## if the db-migrations Deployment/Job is created
-    ## - [WARNING] if `false`, you have to MANUALLY run `airflow db upgrade` when required
-    ##
     enabled: true
-
-    ## if a post-install helm Job should be used (instead of a Deployment)
-    ## - [WARNING] setting `true` will NOT work with the helm `--wait` flag,
-    ##   this is because post-install helm Jobs run AFTER the main resources become Ready,
-    ##   which will cause a deadlock, as other resources require db-migrations to become Ready
-    ##
     runAsJob: false
-
-    ## resource requests/limits for the db-migrations Pods
-    ## - spec for ResourceRequirements:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#resourcerequirements-v1-core
-    ##
-    resources: {}
-
-
-    ## Labels for the db-migrations Deployment
-    ##
-    labels: {}
-
-    ## Pod labels for the db-migrations Deployment
-    ##
-    podLabels: {}
-
-    ## annotations for the db-migrations Deployment/Job
-    ##
-    annotations: {}
-
-    ## Pod annotations for the db-migrations Deployment/Job
-    ##
-    podAnnotations: {}
-
-    ## if we add the annotation: "cluster-autoscaler.kubernetes.io/safe-to-evict" = "true"
-    ##
-    safeToEvict: true
-
-    ## the number of seconds between checks for unapplied db migrations
-    ## - only applies if `airflow.dbMigrations.runAsJob` is `false`
-    ##
     checkInterval: 300
 
-  ########################################
-  ## COMPONENT | Sync Deployments
-  ########################################
-  ## - used by the Deployments/Jobs used by `airflow.{connections,pools,users,variables}`
-  ##
-  sync:
-    ## resource requests/limits for the sync Pods
-    ## - spec for ResourceRequirements:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#resourcerequirements-v1-core
-    ##
-    resources: {}
-
-
-    ## Labels for the sync Deployments/Jobs
-    ##
-    labels: {}
-
-    ## Pod labels for the sync Deployments/Jobs
-    ##
-    podLabels: {}
-
-    ## annotations for the sync Deployments/Jobs
-    ##
-    annotations: {}
-
-    ## Pod annotations for the sync Deployments/Jobs
-    ##
-    podAnnotations: {}
-
-    ## if we add the annotation: "cluster-autoscaler.kubernetes.io/safe-to-evict" = "true"
-    ##
-    safeToEvict: true
-
-###################################
-## COMPONENT | Airflow Scheduler
-###################################
 scheduler:
-  ## the number of scheduler Pods to run
-  ## - if you set this >1 we recommend defining a `scheduler.podDisruptionBudget`
-  ##
   replicas: 1
-
-  ## resource requests/limits for the scheduler Pod
-  ## - spec of ResourceRequirements:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#resourcerequirements-v1-core
-  ##
-  resources: {}
-
-  ## labels for the scheduler Deployment
-  ##
-  labels: {}
-
-  ## Pod labels for the scheduler Deployment
-  ##
-  podLabels: {}
-
-  ## annotations for the scheduler Deployment
-  ##
-  annotations: {}
-
-  ## Pod annotations for the scheduler Deployment
-  ##
-  podAnnotations: {}
-
-  ## if we add the annotation: "cluster-autoscaler.kubernetes.io/safe-to-evict" = "true"
-  ##
-  safeToEvict: true
-
-  ## configs for the PodDisruptionBudget of the scheduler
-  ##
-  podDisruptionBudget:
-    ## if a PodDisruptionBudget resource is created for the scheduler
-    ##
-    enabled: false
-
-    ## the maximum unavailable pods/percentage for the scheduler
-    ##
-    maxUnavailable: ""
-
-    ## the minimum available pods/percentage for the scheduler
-    ##
-    minAvailable: ""
-
-  ## configs for the log-cleanup sidecar of the scheduler
-  ## - helps prevent excessive log buildup by regularly deleting old files
-  ##
-  logCleanup:
-    ## if the log-cleanup sidecar is enabled
-    ## - [WARNING] must be disabled if `logs.persistence.enabled` is `true`
-    ##
-    enabled: true
-
-    ## resource requests/limits for the log-cleanup container
-    ## - spec of ResourceRequirements:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#resourcerequirements-v1-core
-    ##
-    resources: {}
-
-    ## the number of minutes to retain log files (by last-modified time)
-    ##
-    retentionMinutes: 21600
-
-    ## the number of seconds between each check for files to delete
-    ##
-    intervalSeconds: 900
-
-  ## sets `airflow --num_runs` parameter used to run the airflow scheduler
-  ##
   numRuns: -1
-
-  ## configs for the scheduler Pods' liveness probe
-  ## - "unhealthy" means the SchedulerJob has not had a heartbeat for
-  ##   AIRFLOW__SCHEDULER__SCHEDULER_HEALTH_CHECK_THRESHOLD seconds
-  ## - `periodSeconds` x `failureThreshold` = max seconds a scheduler can be in an "unhealthy" state
-  ##
   livenessProbe:
     enabled: true
     initialDelaySeconds: 10
     periodSeconds: 30
     timeoutSeconds: 60
     failureThreshold: 5
-
-    ## configs for an additional check that ensures tasks are being created by the scheduler
-    ## - this check works by ensuring that the most recent LocalTaskJob had a `start_date` no more than
-    ##   `taskCreationCheck.thresholdSeconds` seconds ago
-    ## - this check is useful because the scheduler can deadlock with a heartbeat, but not be scheduling new tasks:
-    ##   https://github.com/apache/airflow/issues/7935 - patched in airflow `2.0.2`
-    ##   https://github.com/apache/airflow/issues/15938 - patched in airflow `2.1.1`
-    ##
     taskCreationCheck:
-      ## if the task creation check is enabled
-      ##
       enabled: false
-
-      ## the maximum number of seconds since the start_date of the most recent LocalTaskJob
-      ## - [WARNING] must be AT LEAST equal to your shortest DAG schedule_interval
-      ## - [WARNING] DummyOperator tasks will NOT be seen by this probe
-      ##
       thresholdSeconds: 300
 
-
-
-
-
-  ## extra init containers to run in the scheduler Pods
-  ## - spec of Container:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#container-v1-core
-  ##
-  extraInitContainers: []
-
-###################################
-## COMPONENT | Airflow Webserver
-###################################
 web:
   ########################################
   ## FILE | webserver_config.py

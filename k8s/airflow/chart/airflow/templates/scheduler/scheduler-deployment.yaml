@@ -2,19 +2,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Release.Name }}-scheduler
-  {{- if .Values.scheduler.annotations }}
-  annotations:
-    {{- toYaml .Values.scheduler.annotations | nindent 4 }}
-  {{- end }}
   labels:
     app: {{ include "airflow.labels.app" . }}
     component: scheduler
     chart: {{ include "airflow.labels.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-    {{- if .Values.scheduler.labels }}
-    {{- toYaml .Values.scheduler.labels | nindent 4 }}
-    {{- end }}
 spec:
   replicas: {{ .Values.scheduler.replicas }}
   strategy:
@@ -33,22 +26,11 @@ spec:
         checksum/secret-config-envs: {{ include (print $.Template.BasePath "/config/secret-config-envs.yaml") . | sha256sum }}
         checksum/secret-local-settings: {{ include (print $.Template.BasePath "/config/secret-local-settings.yaml") . | sha256sum }}
         checksum/config-pod-template: {{ include (print $.Template.BasePath "/config/configmap-pod-template.yaml") . | sha256sum }}
-        {{- if .Values.airflow.podAnnotations }}
-        {{- toYaml .Values.airflow.podAnnotations | nindent 8 }}
-        {{- end }}
-        {{- if .Values.scheduler.podAnnotations }}
-        {{- toYaml .Values.scheduler.podAnnotations | nindent 8 }}
-        {{- end }}
-        {{- if .Values.scheduler.safeToEvict }}
         cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
-        {{- end }}
       labels:
         app: {{ include "airflow.labels.app" . }}
         component: scheduler
         release: {{ .Release.Name }}
-        {{- if .Values.scheduler.podLabels }}
-        {{- toYaml .Values.scheduler.podLabels | nindent 8 }}
-        {{- end }}
     spec:
       restartPolicy: Always
       serviceAccountName: {{ include "airflow.serviceAccountName" . }}
@@ -58,9 +40,6 @@ spec:
         {{- end }}
         {{- include "airflow.init_container.check_db" (dict "Release" .Release "Values" .Values "volumeMounts" $volumeMounts) | indent 8 }}
         {{- include "airflow.init_container.wait_for_db_migrations" (dict "Release" .Release "Values" .Values "volumeMounts" $volumeMounts) | indent 8 }}
-        {{- if .Values.scheduler.extraInitContainers }}
-        {{- toYaml .Values.scheduler.extraInitContainers | nindent 8 }}
-        {{- end }}
       containers:
         - name: airflow-scheduler
           {{- include "airflow.image" . | indent 10 }}
@@ -149,12 +128,7 @@ spec:
         {{- if .Values.dags.gitSync.enabled }}
         {{- include "airflow.container.git_sync" . | indent 8 }}
         {{- end }}
-        {{- if .Values.scheduler.logCleanup.enabled }}
-        {{- $lc_resources := .Values.scheduler.logCleanup.resources }}
-        {{- $lc_retention_min := .Values.scheduler.logCleanup.retentionMinutes }}
-        {{- $lc_interval_sec := .Values.scheduler.logCleanup.intervalSeconds }}
-        {{- include "airflow.container.log_cleanup" (dict "Release" .Release "Values" .Values "resources" $lc_resources "retention_min" $lc_retention_min "interval_sec" $lc_interval_sec) | indent 8 }}
-        {{- end }}
+        {{- include "airflow.container.log_cleanup" . | indent 8 }}
       volumes:
         {{- include "airflow.volumes" . | indent 8 }}
         - name: pod-template

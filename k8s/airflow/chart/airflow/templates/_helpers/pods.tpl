@@ -161,17 +161,15 @@ EXAMPLE USAGE: {{ include "airflow.container.log_cleanup" (dict "Release" .Relea
 {{- define "airflow.container.log_cleanup" }}
 - name: log-cleanup
   {{- include "airflow.image" . | indent 2 }}
-  resources:
-    {{- toYaml .resources | nindent 4 }}
   envFrom:
     {{- include "airflow.envFrom" . | indent 4 }}
   env:
     - name: LOG_PATH
       value: {{ .Values.logs.path | quote }}
     - name: RETENTION_MINUTES
-      value: {{ .retention_min | quote }}
+      value: "21600"
     - name: INTERVAL_SECONDS
-      value: {{ .interval_sec | quote }}
+      value: "900"
     {{- /* this has user-defined variables, so must be included BELOW (so the ABOVE `env` take precedence) */ -}}
     {{- include "airflow.env" . | indent 4 }}
   command:

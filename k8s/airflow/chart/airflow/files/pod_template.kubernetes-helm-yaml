@@ -2,26 +2,13 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: dummy-name
-  {{- if .Values.airflow.kubernetesPodTemplate.podAnnotations }}
-  annotations:
-    {{- toYaml .Values.airflow.kubernetesPodTemplate.podAnnotations | nindent 4 }}
-  {{- end }}
-  {{- if .Values.airflow.kubernetesPodTemplate.podLabels }}
-  labels:
-    {{- toYaml .Values.airflow.kubernetesPodTemplate.podLabels | nindent 4 }}
-  {{- end }}
 spec:
   restartPolicy: Never
   serviceAccountName: {{ include "airflow.serviceAccountName" . }}
-  shareProcessNamespace: {{ .Values.airflow.kubernetesPodTemplate.shareProcessNamespace }}
-  {{- if or (.Values.dags.gitSync.enabled) (.Values.airflow.kubernetesPodTemplate.extraInitContainers) }}
+  shareProcessNamespace: "false"
+  {{- if .Values.dags.gitSync.enabled }}
   initContainers:
-    {{- if .Values.dags.gitSync.enabled }}
     {{- include "airflow.container.git_sync" (dict "Release" .Release "Values" .Values "sync_one_time" "true") | indent 4 }}
-    {{- end }}
-    {{- if .Values.airflow.kubernetesPodTemplate.extraInitContainers }}
-    {{- toYaml .Values.airflow.kubernetesPodTemplate.extraInitContainers | nindent 4 }}
-    {{- end }}
   {{- end }}
   containers:
     - name: base
@@ -38,10 +25,6 @@ spec:
       ports: []
       command: []
       args: []
-      {{- if .Values.airflow.kubernetesPodTemplate.resources }}
-      resources:
-        {{- toYaml .Values.airflow.kubernetesPodTemplate.resources | nindent 8 }}
-      {{- end }}
       volumeMounts:
         {{- include "airflow.volumeMounts" . | indent 8 }}
   volumes:

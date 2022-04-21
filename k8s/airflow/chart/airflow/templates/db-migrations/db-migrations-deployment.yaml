@@ -11,13 +11,6 @@ metadata:
     chart: {{ include "airflow.labels.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-    {{- if .Values.airflow.dbMigrations.labels }}
-    {{- toYaml .Values.airflow.dbMigrations.labels | nindent 4 }}
-    {{- end }}
-  {{- if .Values.airflow.dbMigrations.annotations }}
-  annotations:
-    {{- toYaml .Values.airflow.dbMigrations.annotations | nindent 4 }}
-  {{- end }}
 spec:
   replicas: 1
   strategy:
@@ -40,16 +33,11 @@ spec:
         {{- if .Values.airflow.dbMigrations.podAnnotations }}
         {{- toYaml .Values.airflow.dbMigrations.podAnnotations | nindent 8 }}
         {{- end }}
-        {{- if .Values.airflow.dbMigrations.safeToEvict }}
         cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
-        {{- end }}
       labels:
         app: {{ include "airflow.labels.app" . }}
         component: db-migrations
         release: {{ .Release.Name }}
-        {{- if .Values.airflow.dbMigrations.podLabels }}
-        {{- toYaml .Values.airflow.dbMigrations.podLabels | nindent 8 }}
-        {{- end }}
     spec:
       restartPolicy: Always
       serviceAccountName: {{ include "airflow.serviceAccountName" . }}
@@ -62,8 +50,6 @@ spec:
       containers:
         - name: db-migrations
           {{- include "airflow.image" . | indent 10 }}
-          resources:
-            {{- toYaml .Values.airflow.dbMigrations.resources | nindent 12 }}
           envFrom:
             {{- include "airflow.envFrom" . | indent 12 }}
           env:
