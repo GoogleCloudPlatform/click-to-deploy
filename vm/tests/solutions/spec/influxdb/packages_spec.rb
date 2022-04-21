@@ -14,6 +14,6 @@
 
 require 'spec_helper'
 
-describe package('influxdb') do
+describe package('influxdb2') do
   it { should be_installed }
 end
