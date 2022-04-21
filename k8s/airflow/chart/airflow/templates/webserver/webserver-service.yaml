@@ -18,11 +18,6 @@ spec:
     app: {{ include "airflow.labels.app" . }}
     component: web
     release: {{ .Release.Name }}
-  sessionAffinity: {{ .Values.web.service.sessionAffinity }}
-  {{- if .Values.web.service.sessionAffinityConfig }}
-  sessionAffinityConfig:
-    {{- toYaml .Values.web.service.sessionAffinityConfig | nindent 4 }}
-  {{- end }}
   ports:
     - name: web
       protocol: TCP

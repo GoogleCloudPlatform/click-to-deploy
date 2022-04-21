@@ -28,8 +28,6 @@ web:
   replicas: 1
   service:
     annotations: {}
-    sessionAffinity: "None"
-    sessionAffinityConfig: {}
     type: ClusterIP
     externalPort: 8080
     loadBalancerIP: ""
