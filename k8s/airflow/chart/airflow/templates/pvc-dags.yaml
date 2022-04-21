@@ -1,4 +1,3 @@
-{{- if and (.Values.dags.persistence.enabled) (not .Values.dags.persistence.existingClaim) }}
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
@@ -10,7 +9,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   accessModes:
-    - {{ .Values.dags.persistence.accessMode | quote }}
+    - ReadWriteMany
   resources:
     requests:
       storage: {{ .Values.dags.persistence.size | quote }}
@@ -21,4 +20,3 @@ spec:
   storageClassName: "{{ .Values.dags.persistence.storageClass }}"
   {{- end }}
   {{- end }}
-{{- end }}

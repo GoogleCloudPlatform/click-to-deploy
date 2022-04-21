@@ -35,42 +35,11 @@ logs:
     storageClass: ""
     size: 1Gi
 
-###################################
-## CONFIG | Airflow DAGs
-###################################
 dags:
-  ## the airflow dags folder
-  ##
   path: /opt/airflow/dags
-
-  ## configs for the dags PVC
-  ##
   persistence:
-    ## if a persistent volume is mounted at `dags.path`
-    ##
-    enabled: false
-
-    ## the name of an existing PVC to use
-    ##
-    existingClaim: ""
-
-    ## sub-path under `dags.persistence.existingClaim` to use
-    ##
-    subPath: ""
-
-    ## the name of the StorageClass used by the PVC
-    ## - if set to "", then `PersistentVolumeClaim/spec.storageClassName` is omitted
-    ## - if set to "-", then `PersistentVolumeClaim/spec.storageClassName` is set to ""
-    ##
     storageClass: ""
-
-    ## the access mode of the PVC
-    ## - [WARNING] must be "ReadOnlyMany" or "ReadWriteMany" otherwise airflow pods will fail to start
-    ##
     accessMode: ReadOnlyMany
-
-    ## the size of PVC to request
-    ##
     size: 1Gi
 
   ## configs for the git-sync sidecar (https://github.com/kubernetes/git-sync)

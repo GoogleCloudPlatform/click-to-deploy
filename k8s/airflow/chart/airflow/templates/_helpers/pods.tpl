@@ -159,23 +159,11 @@ The list of `volumeMounts` for web/scheduler/worker container
 EXAMPLE USAGE: {{ include "airflow.volumeMounts" (dict "Release" .Release "Values" .Values "extraPipPackages" $extraPipPackages "extraVolumeMounts" $extraVolumeMounts) }}
 */}}
 {{- define "airflow.volumeMounts" }}
-{{- /* airflow_local_settings.py */ -}}
-{{- /* dags */ -}}
-{{- if .Values.dags.persistence.enabled }}
 - name: dags-data
   mountPath: {{ .Values.dags.path }}
-  subPath: {{ .Values.dags.persistence.subPath }}
-  {{- if eq .Values.dags.persistence.accessMode "ReadOnlyMany" }}
-  readOnly: true
-  {{- end }}
-{{- else if .Values.dags.gitSync.enabled }}
-- name: dags-data
-  mountPath: {{ .Values.dags.path }}
-{{- end }}
 
 - name: logs-data
   mountPath: {{ .Values.logs.path }}
-
 {{- end }}
 
 {{/*
@@ -183,19 +171,9 @@ The list of `volumes` for web/scheduler/worker Pods
 EXAMPLE USAGE: {{ include "airflow.volumes" (dict "Release" .Release "Values" .Values "extraPipPackages" $extraPipPackages "extraVolumes" $extraVolumes) }}
 */}}
 {{- define "airflow.volumes" }}
-{{- /* dags */ -}}
-{{- if .Values.dags.persistence.enabled }}
 - name: dags-data
   persistentVolumeClaim:
-    {{- if .Values.dags.persistence.existingClaim }}
-    claimName: {{ .Values.dags.persistence.existingClaim }}
-    {{- else }}
     claimName: {{ printf "%s-dags" (.Release.Name | trunc 58) }}
-    {{- end }}
-{{- else if .Values.dags.gitSync.enabled }}
-- name: dags-data
-  emptyDir: {}
-{{- end }}
 
 - name: logs-data
   persistentVolumeClaim:
