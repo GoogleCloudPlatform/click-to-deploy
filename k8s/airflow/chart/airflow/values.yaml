@@ -13,15 +13,6 @@ airflow:
 scheduler:
   replicas: 1
   numRuns: -1
-  livenessProbe:
-    enabled: true
-    initialDelaySeconds: 10
-    periodSeconds: 30
-    timeoutSeconds: 60
-    failureThreshold: 5
-    taskCreationCheck:
-      enabled: false
-      thresholdSeconds: 300
 
 web:
   webserverBaseUrl: "http://localhost:8080"
@@ -34,130 +25,14 @@ web:
     loadBalancerSourceRanges: []
     nodePort:
       http: ""
-  readinessProbe:
-    enabled: true
-    initialDelaySeconds: 10
-    periodSeconds: 10
-    timeoutSeconds: 5
-    failureThreshold: 6
-  livenessProbe:
-    enabled: true
-    initialDelaySeconds: 10
-    periodSeconds: 10
-    timeoutSeconds: 5
-    failureThreshold: 6
 
-
-
-
-
-###################################
-## COMPONENT | Triggerer
-###################################
 triggerer:
-  ## if the airflow triggerer should be deployed
-  ## - [WARNING] the triggerer component was added in airflow 2.2.0
-  ## - [WARNING] if `airflow.legacyCommands` is `true` the triggerer will NOT be deployed
-  ##
-  enabled: true
-
-  ## the number of triggerer Pods to run
-  ## - if you set this >1 we recommend defining a `triggerer.podDisruptionBudget`
-  ##
   replicas: 1
 
-  ## resource requests/limits for the triggerer Pods
-  ## - spec for ResourceRequirements:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#resourcerequirements-v1-core
-  ##
-  resources: {}
-
-
-  ## labels for the triggerer Deployment
-  ##
-  labels: {}
-
-  ## Pod labels for the triggerer Deployment
-  ##
-  podLabels: {}
-
-  ## annotations for the triggerer Deployment
-  ##
-  annotations: {}
-
-  ## Pod annotations for the triggerer Deployment
-  ##
-  podAnnotations: {}
-
-  ## if we add the annotation: "cluster-autoscaler.kubernetes.io/safe-to-evict" = "true"
-  ##
-  safeToEvict: true
-
-  ## configs for the PodDisruptionBudget of the triggerer Deployment
-  ##
-  podDisruptionBudget:
-    ## if a PodDisruptionBudget resource is created for the triggerer Deployment
-    ##
-    enabled: false
-
-    ## the maximum unavailable pods/percentage for the triggerer Deployment
-    ##
-    maxUnavailable: ""
-
-    ## the minimum available pods/percentage for the triggerer Deployment
-    ##
-    minAvailable: ""
-
-  ## maximum number of triggers each triggerer will run at once (sets `AIRFLOW__TRIGGERER__DEFAULT_CAPACITY`)
-  ##
-  capacity: 1000
-
-  ## configs for the triggerer Pods' liveness probe
-  ##
-  livenessProbe:
-    enabled: true
-    initialDelaySeconds: 10
-    periodSeconds: 30
-    timeoutSeconds: 60
-    failureThreshold: 5
-
-
-###################################
-## CONFIG | Airflow Logs
-###################################
 logs:
-  ## the airflow logs folder
-  ##
   path: /opt/airflow/logs
-
-  ## configs for the logs PVC
-  ##
   persistence:
-    ## if a persistent volume is mounted at `logs.path`
-    ##
-    enabled: false
-
-    ## the name of an existing PVC to use
-    ##
-    existingClaim: ""
-
-    ## sub-path under `logs.persistence.existingClaim` to use
-    ##
-    subPath: ""
-
-    ## the name of the StorageClass used by the PVC
-    ## - if set to "", then `PersistentVolumeClaim/spec.storageClassName` is omitted
-    ## - if set to "-", then `PersistentVolumeClaim/spec.storageClassName` is set to ""
-    ##
     storageClass: ""
-
-    ## the access mode of the PVC
-    ## - [WARNING] must be "ReadWriteMany" or airflow pods will fail to start
-    ##
-    accessMode: ReadWriteMany
-
-    ## the size of PVC to request
-    ##
     size: 1Gi
 
 ###################################

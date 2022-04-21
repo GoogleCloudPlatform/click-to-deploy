@@ -1,4 +1,3 @@
-{{- if include "airflow.triggerer.should_use" . }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -74,12 +73,11 @@ spec:
             - "bash"
             - "-c"
             - "exec airflow triggerer"
-          {{- if .Values.triggerer.livenessProbe.enabled }}
           livenessProbe:
-            initialDelaySeconds: {{ .Values.triggerer.livenessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.triggerer.livenessProbe.periodSeconds }}
-            timeoutSeconds: {{ .Values.triggerer.livenessProbe.timeoutSeconds }}
-            failureThreshold: {{ .Values.triggerer.livenessProbe.failureThreshold }}
+            initialDelaySeconds: 10 
+            periodSeconds: 30
+            timeoutSeconds: 60
+            failureThreshold: 5
             exec:
               command:
                 {{- include "airflow.command" . | indent 16 }}
@@ -110,7 +108,6 @@ spec:
                           pass
                       else:
                           sys.exit(f"The TriggererJob (id={triggerer_job.id}) for hostname '{hostname}' is not alive")
-          {{- end }}
           volumeMounts:
             {{- include "airflow.volumeMounts" . | indent 12 }}
         {{- if .Values.dags.gitSync.enabled }}
@@ -118,4 +115,3 @@ spec:
         {{- end }}
       volumes:
         {{- include "airflow.volumes" . | indent 8 }}
-{{- end }}

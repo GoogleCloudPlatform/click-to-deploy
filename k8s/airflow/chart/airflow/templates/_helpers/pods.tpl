@@ -155,67 +155,6 @@ EXAMPLE USAGE: {{ include "airflow.container.git_sync" (dict "Release" .Release 
 {{- end }}
 
 {{/*
-Define a container which regularly deletes airflow logs older than a retention period.
-EXAMPLE USAGE: {{ include "airflow.container.log_cleanup" (dict "Release" .Release "Values" .Values "resources" $lc_resources "retention_min" $lc_retention_min "interval_sec" $lc_interval_sec) }}
-*/}}
-{{- define "airflow.container.log_cleanup" }}
-- name: log-cleanup
-  {{- include "airflow.image" . | indent 2 }}
-  envFrom:
-    {{- include "airflow.envFrom" . | indent 4 }}
-  env:
-    - name: LOG_PATH
-      value: {{ .Values.logs.path | quote }}
-    - name: RETENTION_MINUTES
-      value: "21600"
-    - name: INTERVAL_SECONDS
-      value: "900"
-    {{- /* this has user-defined variables, so must be included BELOW (so the ABOVE `env` take precedence) */ -}}
-    {{- include "airflow.env" . | indent 4 }}
-  command:
-    {{- include "airflow.command" . | indent 4 }}
-  args:
-    - "bash"
-    - "-c"
-    - |
-      set -euo pipefail
-
-      # break the infinite loop when we receive SIGINT or SIGTERM
-      trap "exit 0" SIGINT SIGTERM
-
-      while true; do
-        START_EPOCH=$(date --utc +%s)
-        echo "[$(date --utc +%FT%T.%3N)] deleting log files older than $RETENTION_MINUTES minutes..."
-
-        # delete all writable files ending in ".log" with modified-time older than $RETENTION_MINUTES
-        # NOTE: `-printf "."` prints a "." for each deleted file, which we count the bytes of with `wc -c`
-        DELETED_COUNT=$(
-          find "$LOG_PATH" \
-            -type f \
-            -name "*.log" \
-            -mmin +"$RETENTION_MINUTES" \
-            -writable \
-            -delete \
-            -printf "." \
-          | wc -c
-        )
-
-        END_EPOCH=$(date --utc +%s)
-        LOOP_DURATION=$((END_EPOCH - START_EPOCH))
-        echo "[$(date --utc +%FT%T.%3N)] deleted $DELETED_COUNT files in $LOOP_DURATION seconds"
-
-        SECONDS_TO_SLEEP=$((INTERVAL_SECONDS - LOOP_DURATION))
-        if (( SECONDS_TO_SLEEP > 0 )); then
-          echo "[$(date --utc +%FT%T.%3N)] waiting $SECONDS_TO_SLEEP seconds..."
-          sleep $SECONDS_TO_SLEEP
-        fi
-      done
-  volumeMounts:
-    - name: logs-data
-      mountPath: {{ .Values.logs.path }}
-{{- end }}
-
-{{/*
 The list of `volumeMounts` for web/scheduler/worker container
 EXAMPLE USAGE: {{ include "airflow.volumeMounts" (dict "Release" .Release "Values" .Values "extraPipPackages" $extraPipPackages "extraVolumeMounts" $extraVolumeMounts) }}
 */}}
@@ -234,16 +173,8 @@ EXAMPLE USAGE: {{ include "airflow.volumeMounts" (dict "Release" .Release "Value
   mountPath: {{ .Values.dags.path }}
 {{- end }}
 
-{{- /* logs */ -}}
-{{- if .Values.logs.persistence.enabled }}
 - name: logs-data
   mountPath: {{ .Values.logs.path }}
-  subPath: {{ .Values.logs.persistence.subPath }}
-{{- else }}
-- name: logs-data
-  mountPath: {{ .Values.logs.path }}
-{{- end }}
-
 
 {{- end }}
 
@@ -266,19 +197,9 @@ EXAMPLE USAGE: {{ include "airflow.volumes" (dict "Release" .Release "Values" .V
   emptyDir: {}
 {{- end }}
 
-{{- /* logs */ -}}
-{{- if .Values.logs.persistence.enabled }}
 - name: logs-data
   persistentVolumeClaim:
-    {{- if .Values.logs.persistence.existingClaim }}
-    claimName: {{ .Values.logs.persistence.existingClaim }}
-    {{- else }}
     claimName: {{ printf "%s-logs" (.Release.Name | trunc 58) }}
-    {{- end }}
-{{- else }}
-- name: logs-data
-  emptyDir: {}
-{{- end }}
 
 {{- /* git-sync */ -}}
 {{- if .Values.dags.gitSync.enabled }}

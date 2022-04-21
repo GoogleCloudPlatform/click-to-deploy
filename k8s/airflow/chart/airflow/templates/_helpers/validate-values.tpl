@@ -3,16 +3,6 @@
   {{ required "The `.Release.name` must be less than 43 characters (due to the 63 character limit for names in Kubernetes)!" nil }}
 {{- end }}
 
-{{/* Checks for `logs.persistence` */}}
-{{- if .Values.logs.persistence.enabled }}
-  {{- if not (eq .Values.logs.persistence.accessMode "ReadWriteMany") }}
-  {{ required "The `logs.persistence.accessMode` must be `ReadWriteMany`!" nil }}
-  {{- end }}
-  {{- if .Values.scheduler.logCleanup.enabled }}
-  {{ required "If `logs.persistence.enabled=true`, then `scheduler.logCleanup.enabled` must be disabled!" nil }}
-  {{- end }}
-{{- end }}
-
 {{/* Checks for `dags.persistence` */}}
 {{- if .Values.dags.persistence.enabled }}
   {{- if not (has .Values.dags.persistence.accessMode (list "ReadOnlyMany" "ReadWriteMany")) }}

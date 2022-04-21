@@ -58,30 +58,17 @@ spec:
             - "bash"
             - "-c"
             - "exec airflow webserver"
-          {{- if .Values.web.livenessProbe.enabled }}
-          livenessProbe:
-            initialDelaySeconds: {{ .Values.web.livenessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.web.livenessProbe.periodSeconds }}
-            timeoutSeconds: {{ .Values.web.livenessProbe.timeoutSeconds }}
-            failureThreshold: {{ .Values.web.livenessProbe.failureThreshold }}
+          livenessProbe: &probes
+            initialDelaySeconds: 10 
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 6
             httpGet:
               scheme: {{ include "airflow.web.scheme" . }}
               {{- $airflowUrl := .Values.web.webserverBaseUrl  | default "" | printf "%s/health" | urlParse }}
               path: {{ get $airflowUrl "path" }}
               port: web
-          {{- end }}
-          {{- if .Values.web.readinessProbe.enabled }}
-          readinessProbe:
-            initialDelaySeconds: {{ .Values.web.readinessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.web.readinessProbe.periodSeconds }}
-            timeoutSeconds: {{ .Values.web.readinessProbe.timeoutSeconds }}
-            failureThreshold: {{ .Values.web.readinessProbe.failureThreshold }}
-            httpGet:
-              scheme: {{ include "airflow.web.scheme" . }}
-              {{- $airflowUrl := .Values.web.webserverBaseUrl | default "" | printf "%s/health" | urlParse }}
-              path: {{ get $airflowUrl "path" }}
-              port: web
-          {{- end }}
+          readinessProbe: *probes
           volumeMounts:
             {{- include "airflow.volumeMounts" . | indent 12 }}
             - name: webserver-config

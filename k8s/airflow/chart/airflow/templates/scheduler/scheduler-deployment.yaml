@@ -55,12 +55,11 @@ spec:
             - "bash"
             - "-c"
             - "exec airflow scheduler -n {{ .Values.scheduler.numRuns }}"
-          {{- if .Values.scheduler.livenessProbe.enabled }}
           livenessProbe:
-            initialDelaySeconds: {{ .Values.scheduler.livenessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.scheduler.livenessProbe.periodSeconds }}
-            failureThreshold: {{ .Values.scheduler.livenessProbe.failureThreshold }}
-            timeoutSeconds: {{ .Values.scheduler.livenessProbe.timeoutSeconds }}
+            initialDelaySeconds: 10 
+            periodSeconds: 30
+            failureThreshold: 5
+            timeoutSeconds: 60
             exec:
               command:
                 {{- include "airflow.command" . | indent 16 }}
@@ -76,10 +75,6 @@ spec:
                   from airflow.jobs.scheduler_job import SchedulerJob
                   from airflow.utils.db import create_session
                   from airflow.utils.net import get_hostname
-                  {{- if .Values.scheduler.livenessProbe.taskCreationCheck.enabled }}
-                  from airflow.jobs.local_task_job import LocalTaskJob
-                  from airflow.utils import timezone
-                  {{- end }}
 
                   with create_session() as session:
                       # ensure the SchedulerJob with most recent heartbeat for this `hostname` is alive
@@ -94,31 +89,6 @@ spec:
                           pass
                       else:
                           sys.exit(f"The SchedulerJob (id={scheduler_job.id}) for hostname '{hostname}' is not alive")
-
-                      {{- if .Values.scheduler.livenessProbe.taskCreationCheck.enabled }}
-                      {{- $task_job_threshold := .Values.scheduler.livenessProbe.taskCreationCheck.thresholdSeconds }}
-                      {{- if not (or (typeIs "float64" $task_job_threshold) (typeIs "int64" $task_job_threshold)) }}
-                      {{- /* the type of a number could be float64 or int64 depending on how it was set (values.yaml, or --set) */ -}}
-                      {{ required (printf "`scheduler.livenessProbe.taskCreationCheck.thresholdSeconds` must be int-type, but got %s!" (typeOf $task_job_threshold)) nil }}
-                      {{- end }}
-
-                      # ensure the most recent LocalTaskJob had a start_date in the last `task_job_threshold` seconds
-                      task_job_threshold = {{ $task_job_threshold }}
-                      task_job = session \
-                          .query(LocalTaskJob) \
-                          .order_by(LocalTaskJob.id.desc()) \
-                          .limit(1) \
-                          .first()
-                      if task_job is not None:
-                          if (timezone.utcnow() - task_job.start_date).total_seconds() < task_job_threshold:
-                              pass
-                          else:
-                              sys.exit(
-                                  f"The most recent LocalTaskJob (id={task_job.id}, dag_id={task_job.dag_id}) "
-                                  f"started over {task_job_threshold} seconds ago"
-                              )
-                      {{- end }}
-          {{- end }}
           volumeMounts:
             {{- include "airflow.volumeMounts" . | indent 12 }}
             - name: pod-template
@@ -128,7 +98,6 @@ spec:
         {{- if .Values.dags.gitSync.enabled }}
         {{- include "airflow.container.git_sync" . | indent 8 }}
         {{- end }}
-        {{- include "airflow.container.log_cleanup" . | indent 8 }}
       volumes:
         {{- include "airflow.volumes" . | indent 8 }}
         - name: pod-template
