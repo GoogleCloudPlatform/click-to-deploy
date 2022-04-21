@@ -24,82 +24,8 @@ scheduler:
       thresholdSeconds: 300
 
 web:
-  ########################################
-  ## FILE | webserver_config.py
-  ########################################
-  ##
   webserverBaseUrl: "http://localhost:8080"
-  webserverConfig:
-    ## the full content of the `webserver_config.py` file (as a string)
-    ## - docs for Flask-AppBuilder security configs:
-    ##   https://flask-appbuilder.readthedocs.io/en/latest/security.html
-    ##
-    ## ____ EXAMPLE _______________
-    ##   stringOverride: |
-    ##     from airflow import configuration as conf
-    ##     from flask_appbuilder.security.manager import AUTH_DB
-    ##
-    ##     # the SQLAlchemy connection string
-    ##     SQLALCHEMY_DATABASE_URI = conf.get('core', 'SQL_ALCHEMY_CONN')
-    ##
-    ##     # use embedded DB for auth
-    ##     AUTH_TYPE = AUTH_DB
-    ##
-    stringOverride: ""
-
-    ## the name of a Secret containing a `webserver_config.py` key
-    ##
-    existingSecret: ""
-
-  ## the number of web Pods to run
-  ## - if you set this >1 we recommend defining a `web.podDisruptionBudget`
-  ##
   replicas: 1
-
-  ## resource requests/limits for the web Pod
-  ## - spec for ResourceRequirements:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#resourcerequirements-v1-core
-  ##
-  resources: {}
-
-
-  ## labels for the web Deployment
-  ##
-  labels: {}
-
-  ## Pod labels for the web Deployment
-  ##
-  podLabels: {}
-
-  ## annotations for the web Deployment
-  ##
-  annotations: {}
-
-  ## Pod annotations for the web Deployment
-  ##
-  podAnnotations: {}
-
-  ## if we add the annotation: "cluster-autoscaler.kubernetes.io/safe-to-evict" = "true"
-  ##
-  safeToEvict: true
-
-  ## configs for the PodDisruptionBudget of the web Deployment
-  ##
-  podDisruptionBudget:
-    ## if a PodDisruptionBudget resource is created for the web Deployment
-    ##
-    enabled: false
-
-    ## the maximum unavailable pods/percentage for the web Deployment
-    ##
-    maxUnavailable: ""
-
-    ## the minimum available pods/percentage for the web Deployment
-    ##
-    minAvailable: ""
-
-  ## configs for the Service of the web Pods
-  ##
   service:
     annotations: {}
     sessionAffinity: "None"
@@ -110,18 +36,12 @@ web:
     loadBalancerSourceRanges: []
     nodePort:
       http: ""
-
-  ## configs for the web Pods' readiness probe
-  ##
   readinessProbe:
     enabled: true
     initialDelaySeconds: 10
     periodSeconds: 10
     timeoutSeconds: 5
     failureThreshold: 6
-
-  ## configs for the web Pods' liveness probe
-  ##
   livenessProbe:
     enabled: true
     initialDelaySeconds: 10

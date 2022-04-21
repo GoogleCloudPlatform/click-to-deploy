@@ -2,19 +2,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Release.Name }}-web
-  {{- if .Values.web.annotations }}
-  annotations:
-    {{- toYaml .Values.web.annotations | nindent 4 }}
-  {{- end }}
   labels:
     app: {{ include "airflow.labels.app" . }}
     component: web
     chart: {{ include "airflow.labels.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-    {{- if .Values.web.labels }}
-    {{- toYaml .Values.web.labels | nindent 4 }}
-    {{- end }}
 spec:
   replicas: {{ .Values.web.replicas }}
   strategy:
@@ -34,22 +27,11 @@ spec:
         checksum/secret-config-envs: {{ include (print $.Template.BasePath "/config/secret-config-envs.yaml") . | sha256sum }}
         checksum/secret-local-settings: {{ include (print $.Template.BasePath "/config/secret-local-settings.yaml") . | sha256sum }}
         checksum/config-webserver-config: {{ include (print $.Template.BasePath "/config/secret-webserver-config.yaml") . | sha256sum }}
-        {{- if .Values.airflow.podAnnotations }}
-        {{- toYaml .Values.airflow.podAnnotations | nindent 8 }}
-        {{- end }}
-        {{- if .Values.web.podAnnotations }}
-        {{- toYaml .Values.web.podAnnotations | nindent 8 }}
-        {{- end }}
-        {{- if .Values.web.safeToEvict }}
         cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
-        {{- end }}
       labels:
         app: {{ include "airflow.labels.app" . }}
         component: web
         release: {{ .Release.Name }}
-        {{- if .Values.web.podLabels }}
-        {{- toYaml .Values.web.podLabels | nindent 8 }}
-        {{- end }}
     spec:
       restartPolicy: Always
       serviceAccountName: {{ include "airflow.serviceAccountName" . }}
@@ -62,8 +44,6 @@ spec:
       containers:
         - name: airflow-web
           {{- include "airflow.image" . | indent 10 }}
-          resources:
-            {{- toYaml .Values.web.resources | nindent 12 }}
           ports:
             - name: web
               containerPort: 8080
@@ -115,9 +95,5 @@ spec:
         {{- include "airflow.volumes" . | indent 8 }}
         - name: webserver-config
           secret:
-            {{- if .Values.web.webserverConfig.existingSecret }}
-            secretName: {{ .Values.web.webserverConfig.existingSecret }}
-            {{- else }}
             secretName: {{ .Release.Name }}-webserver-config
-            {{- end }}
             defaultMode: 0644
