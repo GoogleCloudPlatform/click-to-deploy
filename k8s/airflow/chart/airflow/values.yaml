@@ -55,101 +55,12 @@ ingress:
     precedingPaths: []
     succeedingPaths: []
 
-###################################
-## DATABASE | Embedded Postgres
-###################################
 postgresql:
-  ## if the `stable/postgresql` chart is used
-  ## - [WARNING] the embedded Postgres is NOT SUITABLE for production deployments of Airflow
-  ## - [WARNING] consider using an external database with `externalDatabase.*`
-  ## - set to `false` if using `externalDatabase.*`
-  ##
-  enabled: true
-
-  ## configs for the PVC of postgresql
-  ##
+  image:
+    repo: "marketplace.gcr.io/google/postgresql"
+    tag: "13.4"
   persistence:
-    ## if postgres will use Persistent Volume Claims to store data
-    ## - [WARNING] if false, data will be LOST as postgres Pods restart
-    ##
-    enabled: true
-
-    ## the name of the StorageClass used by the PVC
-    ##
-    storageClass: ""
-
-    ## the access modes of the PVC
-    ##
-    accessModes:
-      - ReadWriteOnce
-
-    ## the size of PVC to request
-    ##
-    size: 8Gi
-
-  ## configs for the postgres StatefulSet
-  ##
-  master:
-    ## annotations for the postgres Pods
-    ##
-    podAnnotations:
-      cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
-
-###################################
-## DATABASE | External Database
-###################################
-externalDatabase:
-  ## the type of external database
-  ## - allowed values: "mysql", "postgres"
-  ##
-  type: postgres
-
-  ## the host of the external database
-  ##
-  host: localhost
-
-  ## the port of the external database
-  ##
-  port: 5432
-
-  ## the database/scheme to use within the external database
-  ##
-  database: airflow
-
-  ## the username for the external database
-  ##
-  user: airflow
-
-  ## the name of a pre-created secret containing the external database user
-  ## - if set, this overrides `externalDatabase.user`
-  ##
-  userSecret: ""
-
-  ## the key within `externalDatabase.userSecret` containing the user string
-  ##
-  userSecretKey: "postgresql-user"
-
-  ## the password for the external database
-  ## - [WARNING] to avoid storing the password in plain-text within your values,
-  ##   create a Kubernetes secret and use `externalDatabase.passwordSecret`
-  ##
-  password: ""
-
-  ## the name of a pre-created secret containing the external database password
-  ## - if set, this overrides `externalDatabase.password`
-  ##
-  passwordSecret: ""
-
-  ## the key within `externalDatabase.passwordSecret` containing the password string
-  ##
-  passwordSecretKey: "postgresql-password"
-
-  ## extra connection-string properties for the external database
-  ##
-  ## ____ EXAMPLE _______________
-  ##   # require SSL (only for Postgres)
-  ##   properties: "?sslmode=require"
-  ##
-  properties: ""
-
+    size: '10Gi'
+    storageClass: "standard"
+  exposePublicService: false
 
