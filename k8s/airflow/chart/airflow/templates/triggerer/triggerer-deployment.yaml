@@ -2,19 +2,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Release.Name }}-triggerer
-  {{- if .Values.triggerer.annotations }}
-  annotations:
-    {{- toYaml .Values.triggerer.annotations | nindent 4 }}
-  {{- end }}
   labels:
     app: {{ include "airflow.labels.app" . }}
     component: triggerer
     chart: {{ include "airflow.labels.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-    {{- if .Values.triggerer.labels }}
-    {{- toYaml .Values.triggerer.labels | nindent 4 }}
-    {{- end }}
 spec:
   replicas: {{ .Values.triggerer.replicas }}
   strategy:
@@ -31,35 +24,20 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/secret-config-envs: {{ include (print $.Template.BasePath "/config/secret-config-envs.yaml") . | sha256sum }}
-        checksum/secret-local-settings: {{ include (print $.Template.BasePath "/config/secret-local-settings.yaml") . | sha256sum }}
-        {{- if .Values.airflow.podAnnotations }}
-        {{- toYaml .Values.airflow.podAnnotations | nindent 8 }}
-        {{- end }}
-        {{- if .Values.triggerer.podAnnotations }}
-        {{- toYaml .Values.triggerer.podAnnotations | nindent 8 }}
-        {{- end }}
-        {{- if .Values.triggerer.safeToEvict }}
         cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
-        {{- end }}
       labels:
         app: {{ include "airflow.labels.app" . }}
         component: triggerer
         release: {{ .Release.Name }}
-        {{- if .Values.triggerer.podLabels }}
-        {{- toYaml .Values.triggerer.podLabels | nindent 8 }}
-        {{- end }}
     spec:
       restartPolicy: Always
       serviceAccountName: {{ include "airflow.serviceAccountName" . }}
       initContainers:
-        {{- include "airflow.init_container.check_db" (dict "Release" .Release "Values" .Values "volumeMounts" $volumeMounts) | indent 8 }}
-        {{- include "airflow.init_container.wait_for_db_migrations" (dict "Release" .Release "Values" .Values "volumeMounts" $volumeMounts) | indent 8 }}
+        {{- include "airflow.init_container.check_db" . | indent 8 }}
+        {{- include "airflow.init_container.wait_for_db_migrations" . | indent 8 }}
       containers:
         - name: airflow-triggerer
           {{- include "airflow.image" . | indent 10 }}
-          resources:
-            {{- toYaml .Values.triggerer.resources | nindent 12 }}
           envFrom:
             {{- include "airflow.envFrom" . | indent 12 }}
           env:

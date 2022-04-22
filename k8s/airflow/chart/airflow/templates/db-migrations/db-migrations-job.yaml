@@ -1,6 +1,4 @@
 {{- if and (.Values.airflow.dbMigrations.enabled) (.Values.airflow.dbMigrations.runAsJob) }}
-{{- $volumeMounts := include "airflow.volumeMounts" (dict "Release" .Release "Values" .Values ) }}
-{{- $volumes := include "airflow.volumes" (dict "Release" .Release "Values" .Values ) }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -11,49 +9,27 @@ metadata:
     chart: {{ include "airflow.labels.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-    {{- if .Values.airflow.dbMigrations.labels }}
-    {{- toYaml .Values.airflow.dbMigrations.labels | nindent 4 }}
-    {{- end }}
   annotations:
     helm.sh/hook: post-install,post-upgrade
     helm.sh/hook-weight: "-100"
     helm.sh/hook-delete-policy: before-hook-creation
-    {{- if .Values.airflow.dbMigrations.annotations }}
-    {{- toYaml .Values.airflow.dbMigrations.annotations | nindent 4 }}
-    {{- end }}
 spec:
   template:
     metadata:
       annotations:
-        checksum/secret-config-envs: {{ include (print $.Template.BasePath "/config/secret-config-envs.yaml") . | sha256sum }}
-        checksum/secret-local-settings: {{ include (print $.Template.BasePath "/config/secret-local-settings.yaml") . | sha256sum }}
-        checksum/db-migrations-script: {{ include "airflow.db_migrations.db_migrations.py" . | sha256sum }}
-        {{- if .Values.airflow.podAnnotations }}
-        {{- toYaml .Values.airflow.podAnnotations | nindent 8 }}
-        {{- end }}
-        {{- if .Values.airflow.dbMigrations.podAnnotations }}
-        {{- toYaml .Values.airflow.dbMigrations.podAnnotations | nindent 8 }}
-        {{- end }}
-        {{- if .Values.airflow.dbMigrations.safeToEvict }}
         cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
-        {{- end }}
       labels:
         app: {{ include "airflow.labels.app" . }}
         component: db-migrations
         release: {{ .Release.Name }}
-        {{- if .Values.airflow.dbMigrations.podLabels }}
-        {{- toYaml .Values.airflow.dbMigrations.podLabels | nindent 8 }}
-        {{- end }}
     spec:
       restartPolicy: OnFailure
       serviceAccountName: {{ include "airflow.serviceAccountName" . }}
       initContainers:
-        {{- include "airflow.init_container.check_db" (dict "Release" .Release "Values" .Values "volumeMounts" $volumeMounts) | indent 8 }}
+        {{- include "airflow.init_container.check_db" . | indent 8 }}
       containers:
         - name: db-migrations
           {{- include "airflow.image" . | indent 10 }}
-          resources:
-            {{- toYaml .Values.airflow.dbMigrations.resources | nindent 12 }}
           envFrom:
             {{- include "airflow.envFrom" . | indent 12 }}
           env:
@@ -65,12 +41,12 @@ spec:
             - "-u"
             - "/mnt/scripts/db_migrations.py"
           volumeMounts:
-            {{- $volumeMounts | indent 12 }}
+            {{- include "airflow.volumeMounts" . | indent 12 }}
             - name: scripts
               mountPath: /mnt/scripts
               readOnly: true
       volumes:
-        {{- $volumes | indent 8 }}
+        {{- include "airflow.volumes" . | indent 8 }}
         - name: scripts
           secret:
             secretName: {{ .Release.Name }}-db-migrations

@@ -35,10 +35,8 @@ EXAMPLE USAGE: {{ include "airflow.init_container.check_db" (dict "Release" .Rel
     - "bash"
     - "-c"
     - "exec timeout 60s airflow db check"
-  {{- if .volumeMounts }}
   volumeMounts:
-    {{- .volumeMounts | indent 4 }}
-  {{- end }}
+    {{- include "airflow.volumeMounts" . | indent 4 }}
 {{- end }}
 
 {{/*
@@ -58,10 +56,8 @@ EXAMPLE USAGE: {{ include "airflow.init_container.wait_for_db_migrations" (dict 
     - "bash"
     - "-c"
     - "exec airflow db check-migrations -t 60"
-  {{- if .volumeMounts }}
   volumeMounts:
-    {{- .volumeMounts | indent 4 }}
-  {{- end }}
+    {{- include "airflow.volumeMounts" . | indent 4 }}
 {{- end }}
 
 {{- define "airflow.volumeMounts" }}
@@ -95,7 +91,6 @@ EXAMPLE USAGE: {{ include "airflow.env" (dict "Release" .Release "Values" .Value
 {{- define "airflow.env" }}
 - name: DATABASE_HOST
   value: {{ .Release.Name }}-postgresql-svc
-{{- /* disable the `/entrypoint` db connection check */ -}}
 - name: CONNECTION_CHECK_MAX_COUNT
   {{- if .CONNECTION_CHECK_MAX_COUNT }}
   value: {{ .CONNECTION_CHECK_MAX_COUNT | quote }}

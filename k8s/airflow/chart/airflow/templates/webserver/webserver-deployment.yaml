@@ -24,9 +24,6 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/secret-config-envs: {{ include (print $.Template.BasePath "/config/secret-config-envs.yaml") . | sha256sum }}
-        checksum/secret-local-settings: {{ include (print $.Template.BasePath "/config/secret-local-settings.yaml") . | sha256sum }}
-        checksum/config-webserver-config: {{ include (print $.Template.BasePath "/config/secret-webserver-config.yaml") . | sha256sum }}
         cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
       labels:
         app: {{ include "airflow.labels.app" . }}
@@ -36,8 +33,8 @@ spec:
       restartPolicy: Always
       serviceAccountName: {{ include "airflow.serviceAccountName" . }}
       initContainers:
-        {{- include "airflow.init_container.check_db" (dict "Release" .Release "Values" .Values "volumeMounts" $volumeMounts) | indent 8 }}
-        {{- include "airflow.init_container.wait_for_db_migrations" (dict "Release" .Release "Values" .Values "volumeMounts" $volumeMounts) | indent 8 }}
+        {{- include "airflow.init_container.check_db" . | indent 8 }}
+        {{- include "airflow.init_container.wait_for_db_migrations" . | indent 8 }}
       containers:
         - name: airflow-web
           {{- include "airflow.image" . | indent 10 }}
