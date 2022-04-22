@@ -32,11 +32,7 @@ Construct the `labels.chart` for used by all resources in this chart.
 Construct the name of the airflow ServiceAccount.
 */}}
 {{- define "airflow.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create -}}
-{{- .Values.serviceAccount.name | default .Release.Name -}}
-{{- else -}}
-{{- .Values.serviceAccount.name | default "default" -}}
-{{- end -}}
+{{- .Release.Name -}}
 {{- end -}}
 
 {{/*

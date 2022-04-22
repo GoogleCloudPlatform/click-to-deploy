@@ -35,122 +35,25 @@ dags:
     accessMode: ReadOnlyMany
     size: 1Gi
 
-###################################
-## CONFIG | Kubernetes Ingress
-###################################
-ingress:
-  ## if we should deploy Ingress resources
-  ##
-  enabled: false
 
+ingress:
+  enabled: false
   ## the `apiVersion` to use for Ingress resources
   ## - for Kubernetes 1.19 and later: "networking.k8s.io/v1"
   ## - for Kubernetes 1.18 and before: "networking.k8s.io/v1beta1"
   ##
   apiVersion: networking.k8s.io/v1
-
-  ## configs for the Ingress of the web Service
-  ##
   web:
-    ## annotations for the web Ingress
-    ##
     annotations: {}
-
-    ## additional labels for the web Ingress
-    ##
     labels: {}
-
-    ## the path for the web Ingress
-    ## - [WARNING] do NOT include the trailing slash (for root, set an empty string)
-    ##
-    ## ____ EXAMPLE _______________
-    ##   # webserver URL: http://example.com/airflow
-    ##   path: "/airflow"
-    ##
     path: ""
-
-    ## the hostname for the web Ingress
-    ##
     host: ""
-
-    ## the Ingress Class for the web Ingress
-    ## - [WARNING] requires Kubernetes 1.18 or later, use "kubernetes.io/ingress.class" annotation for older versions
-    ##
     ingressClassName: ""
-
-    ## configs for web Ingress TLS
-    ##
     tls:
-      ## enable TLS termination for the web Ingress
-      ##
       enabled: false
-
-      ## the name of a pre-created Secret containing a TLS private key and certificate
-      ##
       secretName: ""
-
-    ## http paths to add to the web Ingress before the default path
-    ##
-    ## ____ EXAMPLE _______________
-    ##   precedingPaths:
-    ##     - path: "/*"
-    ##       serviceName: "my-service"
-    ##       servicePort: "port-name"
-    ##
     precedingPaths: []
-
-    ## http paths to add to the web Ingress after the default path
-    ##
-    ## ____ EXAMPLE _______________
-    ##   succeedingPaths:
-    ##     - path: "/extra-service"
-    ##       serviceName: "my-service"
-    ##       servicePort: "port-name"
-    ##
     succeedingPaths: []
-
-###################################
-## CONFIG | Kubernetes RBAC
-###################################
-rbac:
-  ## if Kubernetes RBAC resources are created
-  ## - these allow the service account to create/delete Pods in the airflow namespace,
-  ##   which is required for the KubernetesPodOperator() to function
-  ##
-  create: true
-
-  ## if the created RBAC Role has GET/LIST on Event resources
-  ## - this is needed for KubernetesPodOperator() to use `log_events_on_failure=True`
-  ##
-  events: true
-
-###################################
-## CONFIG | Kubernetes ServiceAccount
-###################################
-serviceAccount:
-  ## if a Kubernetes ServiceAccount is created
-  ## - if `false`, you must create the service account outside this chart with name: `serviceAccount.name`
-  ##
-  create: true
-
-  ## the name of the ServiceAccount
-  ## - by default the name is generated using the `airflow.serviceAccountName` template in `_helpers/common.tpl`
-  ##
-  name: ""
-
-  ## annotations for the ServiceAccount
-  ##
-  ## ____ EXAMPLE _______________
-  ##   # EKS - IAM Roles for Service Accounts
-  ##   annotations:
-  ##     eks.amazonaws.com/role-arn: "arn:aws:iam::XXXXXXXXXX:role/<<MY-ROLE-NAME>>"
-  ##
-  ## ____ EXAMPLE _______________
-  ##   # GKE - WorkloadIdentity
-  ##   annotations:
-  ##     iam.gke.io/gcp-service-account: "<<GCP_SERVICE>>@<<GCP_PROJECT>>.iam.gserviceaccount.com"
-  ##
-  annotations: {}
 
 ###################################
 ## DATABASE | Embedded Postgres
@@ -249,48 +152,4 @@ externalDatabase:
   ##
   properties: ""
 
-###################################
-## CONFIG | ServiceMonitor (Prometheus Operator)
-###################################
-serviceMonitor:
-  ## if ServiceMonitor resources should be deployed for airflow webserver
-  ## - [WARNING] you will need a metrics exporter in your `airflow.image`, for example:
-  ##   https://github.com/epoch8/airflow-exporter
-  ## - ServiceMonitor is a resource from prometheus-operator:
-  ##   https://github.com/prometheus-operator/prometheus-operator
-  ##
-  enabled: false
 
-  ## labels for ServiceMonitor, so that Prometheus can select it
-  ##
-  selector:
-    prometheus: kube-prometheus
-
-  ## the ServiceMonitor web endpoint path
-  ##
-  path: /admin/metrics
-
-  ## the ServiceMonitor web endpoint interval
-  ##
-  interval: "30s"
-
-###################################
-## CONFIG | PrometheusRule (Prometheus Operator)
-###################################
-prometheusRule:
-  ## if PrometheusRule resources should be deployed for airflow webserver
-  ## - [WARNING] you will need a metrics exporter in your `airflow.image`, for example:
-  ##   https://github.com/epoch8/airflow-exporter
-  ## - PrometheusRule is a resource from prometheus-operator:
-  ##   https://github.com/prometheus-operator/prometheus-operator
-  ##
-  enabled: false
-
-  ## labels for PrometheusRule, so that Prometheus can select it
-  ##
-  additionalLabels: {}
-
-  ## alerting rules for Prometheus
-  ## - docs for alerting rules: https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/
-  ##
-  groups: []
