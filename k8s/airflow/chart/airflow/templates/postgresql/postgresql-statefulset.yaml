@@ -51,7 +51,7 @@ spec:
               name: {{ .Release.Name }}-config-envs
               key: DATABASE_PASSWORD
         - name: "POSTGRES_USER"
-          value: "postgres"
+          value: "airflow"
         - name: "POSTGRES_DB"
           value: "airflow"
   volumeClaimTemplates:

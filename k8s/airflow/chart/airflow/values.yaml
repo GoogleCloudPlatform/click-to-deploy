@@ -24,17 +24,11 @@ web:
 triggerer:
   replicas: 1
 
-logs:
-  persistence:
-    storageClass: ""
-    size: 1Gi
-
-dags:
-  persistence:
-    storageClass: ""
-    accessMode: ReadOnlyMany
-    size: 1Gi
-
+nfs:
+  repo: "marketplace.gcr.io/google/nfs-server1"
+  tag: "1.3"
+  storageClass: "standard"
+  size: 2Gi
 
 ingress:
   enabled: false

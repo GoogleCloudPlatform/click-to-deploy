@@ -61,19 +61,18 @@ EXAMPLE USAGE: {{ include "airflow.init_container.wait_for_db_migrations" (dict 
 {{- end }}
 
 {{- define "airflow.volumeMounts" }}
-- name: dags-data
+- name: dags-logs-data
   mountPath: /opt/airflow/dags
-- name: logs-data
+  subPath: dags
+- name: dags-logs-data
   mountPath: /opt/airflow/logs
+  subPath: logs
 {{- end }}
 
 {{- define "airflow.volumes" }}
-- name: dags-data
+- name: dags-logs-data
   persistentVolumeClaim:
-    claimName: {{ printf "%s-dags" (.Release.Name | trunc 58) }}
-- name: logs-data
-  persistentVolumeClaim:
-    claimName: {{ printf "%s-logs" (.Release.Name | trunc 58) }}
+    claimName: {{ .Release.Name }}-nfs-dags-logs
 {{- end }}
 
 {{/*
