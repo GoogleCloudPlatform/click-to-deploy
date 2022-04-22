@@ -64,137 +64,20 @@ EXAMPLE USAGE: {{ include "airflow.init_container.wait_for_db_migrations" (dict 
   {{- end }}
 {{- end }}
 
-{{/*
-Define a container which regularly syncs a git-repo
-EXAMPLE USAGE: {{ include "airflow.container.git_sync" (dict "Release" .Release "Values" .Values "sync_one_time" "true") }}
-*/}}
-{{- define "airflow.container.git_sync" }}
-{{- if .sync_one_time }}
-- name: dags-git-clone
-{{- else }}
-- name: dags-git-sync
-{{- end }}
-  image: {{ .Values.dags.gitSync.image.repository }}:{{ .Values.dags.gitSync.image.tag }}
-  imagePullPolicy: {{ .Values.dags.gitSync.image.pullPolicy }}
-  securityContext:
-    runAsUser: {{ .Values.dags.gitSync.image.uid }}
-    runAsGroup: {{ .Values.dags.gitSync.image.gid }}
-  resources:
-    {{- toYaml .Values.dags.gitSync.resources | nindent 4 }}
-  envFrom:
-    {{- include "airflow.envFrom" . | indent 4 }}
-  env:
-    {{- if .sync_one_time }}
-    - name: GIT_SYNC_ONE_TIME
-      value: "true"
-    {{- end }}
-    - name: GIT_SYNC_ROOT
-      value: "/dags"
-    - name: GIT_SYNC_DEST
-      value: "repo"
-    - name: GIT_SYNC_REPO
-      value: {{ .Values.dags.gitSync.repo | quote }}
-    - name: GIT_SYNC_BRANCH
-      value: {{ .Values.dags.gitSync.branch | quote }}
-    - name: GIT_SYNC_REV
-      value: {{ .Values.dags.gitSync.revision | quote }}
-    - name: GIT_SYNC_DEPTH
-      value: {{ .Values.dags.gitSync.depth | quote }}
-    - name: GIT_SYNC_WAIT
-      value: {{ .Values.dags.gitSync.syncWait | quote }}
-    - name: GIT_SYNC_TIMEOUT
-      value: {{ .Values.dags.gitSync.syncTimeout | quote }}
-    - name: GIT_SYNC_ADD_USER
-      value: "true"
-    - name: GIT_SYNC_MAX_SYNC_FAILURES
-      value: {{ .Values.dags.gitSync.maxFailures | quote }}
-    {{- if .Values.dags.gitSync.sshSecret }}
-    - name: GIT_SYNC_SSH
-      value: "true"
-    - name: GIT_SSH_KEY_FILE
-      value: "/etc/git-secret/id_rsa"
-    {{- end }}
-    {{- if .Values.dags.gitSync.sshKnownHosts }}
-    - name: GIT_KNOWN_HOSTS
-      value: "true"
-    - name: GIT_SSH_KNOWN_HOSTS_FILE
-      value: "/etc/git-secret/known_hosts"
-    {{- else }}
-    - name: GIT_KNOWN_HOSTS
-      value: "false"
-    {{- end }}
-    {{- if .Values.dags.gitSync.httpSecret }}
-    - name: GIT_SYNC_USERNAME
-      valueFrom:
-        secretKeyRef:
-          name: {{ .Values.dags.gitSync.httpSecret }}
-          key: {{ .Values.dags.gitSync.httpSecretUsernameKey }}
-    - name: GIT_SYNC_PASSWORD
-      valueFrom:
-        secretKeyRef:
-          name: {{ .Values.dags.gitSync.httpSecret }}
-          key: {{ .Values.dags.gitSync.httpSecretPasswordKey }}
-    {{- end }}
-    {{- /* this has user-defined variables, so must be included BELOW (so the ABOVE `env` take precedence) */ -}}
-    {{- include "airflow.env" . | indent 4 }}
-  volumeMounts:
-    - name: dags-data
-      mountPath: /dags
-    {{- if .Values.dags.gitSync.sshSecret }}
-    - name: git-secret
-      mountPath: /etc/git-secret/id_rsa
-      readOnly: true
-      subPath: {{ .Values.dags.gitSync.sshSecretKey }}
-    {{- end }}
-    {{- if .Values.dags.gitSync.sshKnownHosts }}
-    - name: git-known-hosts
-      mountPath: /etc/git-secret/known_hosts
-      readOnly: true
-      subPath: known_hosts
-    {{- end }}
-{{- end }}
-
-{{/*
-The list of `volumeMounts` for web/scheduler/worker container
-EXAMPLE USAGE: {{ include "airflow.volumeMounts" (dict "Release" .Release "Values" .Values "extraPipPackages" $extraPipPackages "extraVolumeMounts" $extraVolumeMounts) }}
-*/}}
 {{- define "airflow.volumeMounts" }}
 - name: dags-data
-  mountPath: {{ .Values.dags.path }}
-
+  mountPath: /opt/airflow/dags
 - name: logs-data
-  mountPath: {{ .Values.logs.path }}
+  mountPath: /opt/airflow/logs
 {{- end }}
 
-{{/*
-The list of `volumes` for web/scheduler/worker Pods
-EXAMPLE USAGE: {{ include "airflow.volumes" (dict "Release" .Release "Values" .Values "extraPipPackages" $extraPipPackages "extraVolumes" $extraVolumes) }}
-*/}}
 {{- define "airflow.volumes" }}
 - name: dags-data
   persistentVolumeClaim:
     claimName: {{ printf "%s-dags" (.Release.Name | trunc 58) }}
-
 - name: logs-data
   persistentVolumeClaim:
     claimName: {{ printf "%s-logs" (.Release.Name | trunc 58) }}
-
-{{- /* git-sync */ -}}
-{{- if .Values.dags.gitSync.enabled }}
-{{- if .Values.dags.gitSync.sshSecret }}
-- name: git-secret
-  secret:
-    secretName: {{ .Values.dags.gitSync.sshSecret }}
-    defaultMode: 0644
-{{- end }}
-{{- if .Values.dags.gitSync.sshKnownHosts }}
-- name: git-known-hosts
-  secret:
-    secretName: {{ .Release.Name }}-known-hosts
-    defaultMode: 0644
-{{- end }}
-{{- end }}
-
 {{- end }}
 
 {{/*

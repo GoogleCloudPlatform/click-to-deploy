@@ -15,128 +15,25 @@ scheduler:
   numRuns: -1
 
 web:
-  webserverBaseUrl: "http://localhost:8080"
   replicas: 1
   service:
-    annotations: {}
     type: ClusterIP
-    externalPort: 8080
     loadBalancerIP: ""
     loadBalancerSourceRanges: []
-    nodePort:
-      http: ""
 
 triggerer:
   replicas: 1
 
 logs:
-  path: /opt/airflow/logs
   persistence:
     storageClass: ""
     size: 1Gi
 
 dags:
-  path: /opt/airflow/dags
   persistence:
     storageClass: ""
     accessMode: ReadOnlyMany
     size: 1Gi
-
-  ## configs for the git-sync sidecar (https://github.com/kubernetes/git-sync)
-  ##
-  gitSync:
-    ## if the git-sync sidecar container is enabled
-    ##
-    enabled: false
-
-    ## the git-sync container image
-    ##
-    image:
-      repository: k8s.gcr.io/git-sync/git-sync
-      tag: v3.5.0
-      pullPolicy: IfNotPresent
-      uid: 65533
-      gid: 65533
-
-    ## resource requests/limits for the git-sync container
-    ## - spec for ResourceRequirements:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#resourcerequirements-v1-core
-    ##
-    resources: {}
-
-    ## the url of the git repo
-    ##
-    ## ____ EXAMPLE _______________
-    ##   # https git repo
-    ##   repo: "https://github.com/USERNAME/REPOSITORY.git"
-    ##
-    ## ____ EXAMPLE _______________
-    ##   # ssh git repo
-    ##   repo: "git@github.com:USERNAME/REPOSITORY.git"
-    ##
-    repo: ""
-
-    ## the sub-path within your repo where dags are located
-    ## - only dags under this path within your repo will be seen by airflow,
-    ##   (note, the full repo will still be cloned)
-    ##
-    repoSubPath: ""
-
-    ## the git branch to check out
-    ##
-    branch: master
-
-    ## the git revision (tag or hash) to check out
-    ##
-    revision: HEAD
-
-    ## shallow clone with a history truncated to the specified number of commits
-    ##
-    depth: 1
-
-    ## the number of seconds between syncs
-    ##
-    syncWait: 60
-
-    ## the max number of seconds allowed for a complete sync
-    ##
-    syncTimeout: 120
-
-    ## the name of a pre-created Secret with git http credentials
-    ##
-    httpSecret: ""
-
-    ## the key in `dags.gitSync.httpSecret` with your git username
-    ##
-    httpSecretUsernameKey: username
-
-    ## the key in `dags.gitSync.httpSecret` with your git password/token
-    ##
-    httpSecretPasswordKey: password
-
-    ## the name of a pre-created Secret with git ssh credentials
-    ##
-    sshSecret: ""
-
-    ## the key in `dags.gitSync.sshSecret` with your ssh-key file
-    ##
-    sshSecretKey: id_rsa
-
-    ## the string value of a "known_hosts" file (for SSH only)
-    ## - [WARNING] known_hosts verification will be disabled if left empty, making you more
-    ##   vulnerable to repo spoofing attacks
-    ##
-    ## ____ EXAMPLE _______________
-    ##   sshKnownHosts: |-
-    ##     <HOST_NAME> ssh-rsa <HOST_KEY>
-    ##
-    sshKnownHosts: ""
-
-    ## the number of consecutive failures allowed before aborting
-    ##  - the first sync must succeed
-    ##  - a value of -1 will retry forever after the initial sync
-    ##
-    maxFailures: 0
 
 ###################################
 ## CONFIG | Kubernetes Ingress

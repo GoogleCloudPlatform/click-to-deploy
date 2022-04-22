@@ -47,17 +47,6 @@ HTTP
 {{- end -}}
 
 {{/*
-The path containing DAG files
-*/}}
-{{- define "airflow.dags.path" -}}
-{{- if .Values.dags.gitSync.enabled -}}
-{{- printf "%s/repo/%s" (.Values.dags.path | trimSuffix "/") (.Values.dags.gitSync.repoSubPath | trimAll "/") -}}
-{{- else -}}
-{{- printf .Values.dags.path -}}
-{{- end -}}
-{{- end -}}
-
-{{/*
 Construct the `postgresql.fullname` of the postgresql sub-chat chart.
 Used to discover the Service and Secret name created by the sub-chart.
 */}}

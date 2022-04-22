@@ -8,12 +8,6 @@
 {{- $embedded_postgres_warning = true }}
 {{- end }}
 
-{{- /* if we show the git-sync known_hosts warning */ -}}
-{{- $known_host_warning := false }}
-{{- if and (.Values.dags.gitSync.enabled) (.Values.dags.gitSync.sshSecret) (not .Values.dags.gitSync.sshKnownHosts) }}
-{{- $known_host_warning = true }}
-{{- end }}
-
 {{- /* if we show the scheduler livenessProbe warning */ -}}
 {{- $scheduler_livenessProbe_warning := false }}
 {{- if not .Values.scheduler.livenessProbe.enabled }}
@@ -54,15 +48,8 @@ Your Kubernetes Ingress endpoint URLs:
 {{- if eq .Values.web.service.type "LoadBalancer" }}
 You deployed a "LoadBalancer" type Service for the Airflow Webserver:
   * External IP:    kubectl get svc/{{ .Release.Name }}-web --namespace {{ .Release.Namespace }} -o jsonpath="{.status.loadBalancer.ingress[0].ip}"
-  * External Port:  {{ .Values.web.service.externalPort }}
+  * External Port:  8080
   * NOTE:           it may take a few minutes for the External IP to be provisioned by your cloud provider
-{{ end }}
-
-{{- if eq .Values.web.service.type "NodePort" }}
-You deployed a "NodePort" type Service for the Airflow Webserver:
-  * Node IP:    kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}"
-  * Node Port:  kubectl get svc/{{ .Release.Name }}-web --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}"
-  * NOTE:       any Node's external IP will work
 {{ end }}
 
 {{- if true }}
@@ -78,11 +65,6 @@ Use these commands to port-forward the Services to your localhost:
 {{- if $embedded_postgres_warning }}
 [HIGH] using the embedded postgres database is NOT suitable for production!
   * HELP: use an external postgres/mysql database with `externalDatabase.*`
-{{ end }}
-
-{{- if $known_host_warning }}
-[HIGH] git-sync ssh known_hosts verification is disabled!
-  * HELP: set `dags.gitSync.sshKnownHosts` with the ssh fingerprint of your git host
 {{ end }}
 
 {{- if $scheduler_livenessProbe_warning }}
