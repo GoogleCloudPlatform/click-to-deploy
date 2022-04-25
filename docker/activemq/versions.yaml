@@ -31,16 +31,4 @@ versions:
   - '5.17'
   - '5'
   - latest
-- dir: 5/debian10/5.16
-  from: marketplace.gcr.io/google/debian10
-  packages:
-    activemq:
-      sha512: c40aa043d86cf524a8c2fee35df0fda23fe626f7f9965c3b3ad617deae5a5c426c379c09ab0afb3568d85aad34c3c551aabc67caac5d75111df88f1b52e7e70d
-      version: 5.16.4
-  repo: activemq5
-  tags:
-  - 5.16.4-debian10
-  - 5.16-debian10
-  - 5.16.4
-  - '5.16'
 
