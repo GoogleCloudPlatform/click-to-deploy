@@ -108,19 +108,19 @@ spec:
         livenessProbe:
           exec:
             command:
-            - rabbitmqctl
-            - status
+              - /bin/sh
+              - -c
+              - "wget -qO - --user=\"$RABBITMQ_DEFAULT_USER\" --password=\"$RABBITMQ_DEFAULT_PASS\" http://localhost:15672/api/aliveness-test/%2F | grep -q \"ok\""
           initialDelaySeconds: 60
           timeoutSeconds: 30
-          periodSeconds: 60
         readinessProbe:
           exec:
             command:
-            - rabbitmqctl
-            - status
+              - /bin/sh
+              - -c
+              - "wget -qO - --user=\"$RABBITMQ_DEFAULT_USER\" --password=\"$RABBITMQ_DEFAULT_PASS\" http://localhost:15672/api/aliveness-test/%2F | grep -q \"ok\""
           initialDelaySeconds: 20
           timeoutSeconds: 30
-          periodSeconds: 60
         lifecycle:
           postStart:
             exec:
