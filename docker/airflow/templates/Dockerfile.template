@@ -3,19 +3,11 @@
 
 ARG AIRFLOW_VERSION="{{ $airflow.Version }}"
 ARG AIRFLOW_EXTRAS="amazon,async,celery,cncf.kubernetes,dask,docker,elasticsearch,ftp,google,google_auth,grpc,hashicorp,http,ldap,microsoft.azure,mysql,odbc,pandas,postgres,redis,sendgrid,sftp,slack,ssh,statsd,virtualenv"
-ARG ADDITIONAL_AIRFLOW_EXTRAS=""
-ARG ADDITIONAL_PYTHON_DEPS=""
 
 ARG AIRFLOW_HOME=/opt/airflow
 ARG AIRFLOW_UID="50000"
 ARG AIRFLOW_USER_HOME_DIR=/home/airflow
-
 ARG AIRFLOW_PIP_VERSION="{{ $pip.Version }}"
-ARG AIRFLOW_IMAGE_REPOSITORY="https://github.com/apache/airflow"
-ARG AIRFLOW_IMAGE_README_URL="https://raw.githubusercontent.com/apache/airflow/main/docs/docker-stack/README.md"
-
-ARG AIRFLOW_VERSION_SPECIFICATION=""
-ARG PIP_PROGRESS_BAR="on"
 
 FROM {{ .From }} as airflow-build-image
 
@@ -23,7 +15,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-o", "errexit", "-o", "nounset", "-o", "n
 ENV DEBIAN_FRONTEND=noninteractive LANGUAGE=C.UTF-8 LANG=C.UTF-8 LC_ALL=C.UTF-8 \
     LC_CTYPE=C.UTF-8 LC_MESSAGES=C.UTF-8
 
-ARG DEV_APT_DEPS="\
+ENV DEV_APT_DEPS="\
      apt-transport-https \
      apt-utils \
      build-essential \
@@ -48,6 +40,8 @@ ARG DEV_APT_DEPS="\
      openssh-client \
      postgresql-client \
      python3 \
+     python3-pip \
+     python3-dev \
      sasl2-bin \
      software-properties-common \
      sqlite3 \
@@ -56,68 +50,46 @@ ARG DEV_APT_DEPS="\
      unixodbc-dev \
      yarn"
 
-ARG ADDITIONAL_DEV_APT_DEPS=""
-ARG DEV_APT_COMMAND="\
+ENV DEV_APT_COMMAND="\
     curl --silent --fail --location https://deb.nodesource.com/setup_14.x | \
-        bash -o pipefail -o errexit -o nolog - \
+    bash -o pipefail -o errexit -o nolog - \
     && curl --silent https://dl.yarnpkg.com/debian/pubkey.gpg | \
     apt-key add - >/dev/null 2>&1\
     && echo 'deb https://dl.yarnpkg.com/debian/ stable main' > /etc/apt/sources.list.d/yarn.list"
-ARG ADDITIONAL_DEV_APT_COMMAND="echo"
-ARG ADDITIONAL_DEV_APT_ENV=""
-
-ENV DEV_APT_DEPS=${DEV_APT_DEPS} \
-    ADDITIONAL_DEV_APT_DEPS=${ADDITIONAL_DEV_APT_DEPS} \
-    DEV_APT_COMMAND=${DEV_APT_COMMAND} \
-    ADDITIONAL_DEV_APT_COMMAND=${ADDITIONAL_DEV_APT_COMMAND} \
-    ADDITIONAL_DEV_APT_ENV=${ADDITIONAL_DEV_APT_ENV}
 
 RUN apt-get update \
     && apt-get install --no-install-recommends -yqq apt-utils >/dev/null 2>&1 \
     && apt-get install -y --no-install-recommends curl gnupg2 \
     && mkdir -pv /usr/share/man/man1 \
     && mkdir -pv /usr/share/man/man7 \
-    && export ${ADDITIONAL_DEV_APT_ENV?} \
     && bash -o pipefail -o errexit -o nounset -o nolog -c "${DEV_APT_COMMAND}" \
-    && bash -o pipefail -o errexit -o nounset -o nolog -c "${ADDITIONAL_DEV_APT_COMMAND}" \
     && apt-get update \
-    && apt-get install -y --no-install-recommends \
-           ${DEV_APT_DEPS} \
-           ${ADDITIONAL_DEV_APT_DEPS} \
+    && apt-get install -y --no-install-recommends ${DEV_APT_DEPS} \
     && apt-get autoremove -yqq --purge \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-ARG INSTALL_MYSQL_CLIENT="true"
-ARG INSTALL_MSSQL_CLIENT="true"
-ARG AIRFLOW_REPO=apache/airflow
-ARG AIRFLOW_BRANCH=main
 ARG AIRFLOW_EXTRAS
-ARG ADDITIONAL_AIRFLOW_EXTRAS=""
-# Allows to override constraints source
-ARG CONSTRAINTS_GITHUB_REPOSITORY="apache/airflow"
-ARG AIRFLOW_CONSTRAINTS="constraints"
-ARG AIRFLOW_CONSTRAINTS_REFERENCE=""
-ARG AIRFLOW_CONSTRAINTS_LOCATION=""
-ARG DEFAULT_CONSTRAINTS_BRANCH="constraints-main"
-ARG AIRFLOW_PIP_VERSION
-
-ARG PIP_PROGRESS_BAR
-ARG AIRFLOW_PRE_CACHED_PIP_PACKAGES="false"
 ARG AIRFLOW_VERSION
-ARG AIRFLOW_VERSION_SPECIFICATION
-ARG INSTALL_PROVIDERS_FROM_SOURCES="false"
-ARG AIRFLOW_INSTALLATION_METHOD="apache-airflow"
-ARG UPGRADE_TO_NEWER_DEPENDENCIES="false"
-ARG AIRFLOW_SOURCES_WWW_FROM="empty"
-ARG AIRFLOW_SOURCES_WWW_TO="/empty"
-
+ARG AIRFLOW_PIP_VERSION
 ARG AIRFLOW_HOME
 ARG AIRFLOW_USER_HOME_DIR
 ARG AIRFLOW_UID
 
-ENV INSTALL_MYSQL_CLIENT=${INSTALL_MYSQL_CLIENT} \
-    INSTALL_MSSQL_CLIENT=${INSTALL_MSSQL_CLIENT}
+ENV AIRFLOW_PIP_VERSION=${AIRFLOW_PIP_VERSION} \
+    AIRFLOW_VERSION=${AIRFLOW_VERSION} \
+    AIRFLOW_EXTRAS=${AIRFLOW_EXTRAS} \
+    AIRFLOW_PRE_CACHED_PIP_PACKAGES="false" \
+    INSTALL_PROVIDERS_FROM_SOURCES="false" \
+    AIRFLOW_INSTALLATION_METHOD="apache-airflow" \
+    PATH=${PATH}:${AIRFLOW_USER_HOME_DIR}/.local/bin \
+    AIRFLOW_PIP_VERSION=${AIRFLOW_PIP_VERSION} \
+    AIRFLOW_USER_HOME_DIR=${AIRFLOW_USER_HOME_DIR} \
+    AIRFLOW_HOME=${AIRFLOW_HOME} \
+    AIRFLOW_UID=${AIRFLOW_UID} \
+    INSTALL_MYSQL_CLIENT="true" \
+    INSTALL_MSSQL_CLIENT="true" \
+    PIP_USER="true"
 
 COPY scripts/docker/install_mysql.sh scripts/docker/install_mssql.sh /scripts/docker/
 
@@ -130,117 +102,30 @@ RUN adduser --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-passw
 
 USER airflow
 
-RUN if [[ -f /docker-context-files/pip.conf ]]; then \
-        mkdir -p ${AIRFLOW_USER_HOME_DIR}/.config/pip; \
-        cp /docker-context-files/pip.conf "${AIRFLOW_USER_HOME_DIR}/.config/pip/pip.conf"; \
-    fi; \
-    if [[ -f /docker-context-files/.piprc ]]; then \
-        cp /docker-context-files/.piprc "${AIRFLOW_USER_HOME_DIR}/.piprc"; \
-    fi
+COPY --chown=airflow:0 scripts/docker/install_pip_version.sh /scripts/docker/
 
-ENV AIRFLOW_PIP_VERSION=${AIRFLOW_PIP_VERSION} \
-    AIRFLOW_PRE_CACHED_PIP_PACKAGES=${AIRFLOW_PRE_CACHED_PIP_PACKAGES} \
-    INSTALL_PROVIDERS_FROM_SOURCES=${INSTALL_PROVIDERS_FROM_SOURCES} \
-    AIRFLOW_VERSION=${AIRFLOW_VERSION} \
-    AIRFLOW_INSTALLATION_METHOD=${AIRFLOW_INSTALLATION_METHOD} \
-    AIRFLOW_VERSION_SPECIFICATION=${AIRFLOW_VERSION_SPECIFICATION} \
-    AIRFLOW_SOURCES_FROM=${AIRFLOW_SOURCES_FROM} \
-    AIRFLOW_SOURCES_TO=${AIRFLOW_SOURCES_TO} \
-    AIRFLOW_REPO=${AIRFLOW_REPO} \
-    AIRFLOW_BRANCH=${AIRFLOW_BRANCH} \
-    AIRFLOW_EXTRAS=${AIRFLOW_EXTRAS}${ADDITIONAL_AIRFLOW_EXTRAS:+,}${ADDITIONAL_AIRFLOW_EXTRAS} \
-    CONSTRAINTS_GITHUB_REPOSITORY=${CONSTRAINTS_GITHUB_REPOSITORY} \
-    AIRFLOW_CONSTRAINTS=${AIRFLOW_CONSTRAINTS} \
-    AIRFLOW_CONSTRAINTS_REFERENCE=${AIRFLOW_CONSTRAINTS_REFERENCE} \
-    AIRFLOW_CONSTRAINTS_LOCATION=${AIRFLOW_CONSTRAINTS_LOCATION} \
-    DEFAULT_CONSTRAINTS_BRANCH=${DEFAULT_CONSTRAINTS_BRANCH} \
-    PATH=${PATH}:${AIRFLOW_USER_HOME_DIR}/.local/bin \
-    AIRFLOW_PIP_VERSION=${AIRFLOW_PIP_VERSION} \
-    PIP_PROGRESS_BAR=${PIP_PROGRESS_BAR} \
-    AIRFLOW_USER_HOME_DIR=${AIRFLOW_USER_HOME_DIR} \
-    AIRFLOW_HOME=${AIRFLOW_HOME} \
-    AIRFLOW_UID=${AIRFLOW_UID} \
-    AIRFLOW_INSTALL_EDITABLE_FLAG="" \
-    UPGRADE_TO_NEWER_DEPENDENCIES=${UPGRADE_TO_NEWER_DEPENDENCIES} \
-    # By default PIP installs everything to ~/.local
-    PIP_USER="true"
+RUN /scripts/docker/install_pip_version.sh
 
-COPY --chown=airflow:0 scripts/docker/common.sh scripts/docker/install_pip_version.sh \
-    /scripts/docker/install_airflow_dependencies_from_branch_tip.sh \
-    /scripts/docker/
-
-RUN /scripts/docker/install_pip_version.sh; \
-    if [[ ${AIRFLOW_PRE_CACHED_PIP_PACKAGES} == "true" && \
-          ${UPGRADE_TO_NEWER_DEPENDENCIES} == "false" ]]; then \
-        /scripts/docker/install_airflow_dependencies_from_branch_tip.sh; \
-    fi
-
-COPY --chown=airflow:0 scripts/docker/compile_www_assets.sh scripts/docker/prepare_node_modules.sh /scripts/docker/
-COPY --chown=airflow:0 ${AIRFLOW_SOURCES_WWW_FROM} ${AIRFLOW_SOURCES_WWW_TO}
-
-RUN if [[ ${AIRFLOW_INSTALLATION_METHOD} == "." ]]; then \
-        # only prepare node modules and compile assets if the prod image is build from sources
-        # otherwise they are already compiled-in. We should do it in one step with removing artifacts \
-        # as we want to keep the final image small
-        /scripts/docker/prepare_node_modules.sh; \
-        REMOVE_ARTIFACTS="true" BUILD_TYPE="prod" /scripts/docker/compile_www_assets.sh; \
-        # Copy generated dist folder (otherwise it will be overridden by the COPY step below)
-        mv -f /opt/airflow/airflow/www/static/dist /tmp/dist; \
-    fi;
-
-COPY --chown=airflow:0 ${AIRFLOW_SOURCES_FROM} ${AIRFLOW_SOURCES_TO}
-
-# Copy back the generated dist folder
-RUN if [[ ${AIRFLOW_INSTALLATION_METHOD} == "." ]]; then \
-        mv -f /tmp/dist /opt/airflow/airflow/www/static/dist; \
-    fi;
-
-ARG ADDITIONAL_PYTHON_DEPS=""
-ARG INSTALL_FROM_DOCKER_CONTEXT_FILES=""
-ARG INSTALL_FROM_PYPI="true"
-ARG EAGER_UPGRADE_ADDITIONAL_REQUIREMENTS="dill<0.3.3 certifi<2021.0.0 google-ads<14.0.1"
-
-ENV ADDITIONAL_PYTHON_DEPS=${ADDITIONAL_PYTHON_DEPS} \
-    INSTALL_FROM_DOCKER_CONTEXT_FILES=${INSTALL_FROM_DOCKER_CONTEXT_FILES} \
-    INSTALL_FROM_PYPI=${INSTALL_FROM_PYPI} \
-    EAGER_UPGRADE_ADDITIONAL_REQUIREMENTS=${EAGER_UPGRADE_ADDITIONAL_REQUIREMENTS}
+ENV INSTALL_FROM_PYPI="true" \
+    EAGER_UPGRADE_ADDITIONAL_REQUIREMENTS="dill<0.3.3 certifi<2021.0.0 google-ads<14.0.1"
 
 WORKDIR /opt/airflow
 
-COPY --chown=airflow:0 scripts/docker/install_from_docker_context_files.sh scripts/docker/install_airflow.sh \
-     scripts/docker/install_additional_dependencies.sh \
-     /scripts/docker/
+COPY --chown=airflow:0 scripts/docker/install_airflow.sh /scripts/docker/
 
-RUN if [[ ${INSTALL_FROM_DOCKER_CONTEXT_FILES} == "true" ]]; then \
-        /scripts/docker/install_from_docker_context_files.sh; \
-    elif [[ ${INSTALL_FROM_PYPI} == "true" ]]; then \
-        /scripts/docker/install_airflow.sh; \
-    fi; \
-    if [[ -n "${ADDITIONAL_PYTHON_DEPS}" ]]; then \
-        /scripts/docker/install_additional_dependencies.sh; \
-    fi; \
-    find "${AIRFLOW_USER_HOME_DIR}/.local/" -name '*.pyc' -print0 | xargs -0 rm -f || true ; \
-    find "${AIRFLOW_USER_HOME_DIR}/.local/" -type d -name '__pycache__' -print0 | xargs -0 rm -rf || true ; \
-    find "${AIRFLOW_USER_HOME_DIR}/.local" -executable -print0 | xargs --null chmod g+x; \
-    find "${AIRFLOW_USER_HOME_DIR}/.local" -print0 | xargs --null chmod g+rw
-
-RUN if [[ -f /docker-context-files/requirements.txt ]]; then \
-        pip install --no-cache-dir --user -r /docker-context-files/requirements.txt; \
-    fi
+RUN /scripts/docker/install_airflow.sh \
+    && find "${AIRFLOW_USER_HOME_DIR}/.local/" -name '*.pyc' -print0 | xargs -0 rm -f || true \
+    && find "${AIRFLOW_USER_HOME_DIR}/.local/" -type d -name '__pycache__' -print0 | xargs -0 rm -rf || true \
+    && find "${AIRFLOW_USER_HOME_DIR}/.local" -executable -print0 | xargs --null chmod g+x \
+    && find "${AIRFLOW_USER_HOME_DIR}/.local" -print0 | xargs --null chmod g+rw
 
 FROM {{ .From }} as main
 
 SHELL ["/bin/bash", "-o", "pipefail", "-o", "errexit", "-o", "nounset", "-o", "nolog", "-c"]
 
+ARG AIRFLOW_USER_HOME_DIR
+ARG AIRFLOW_HOME
 ARG AIRFLOW_UID
-
-LABEL org.apache.airflow.distro="debian" \
-  org.apache.airflow.distro.version="buster" \
-  org.apache.airflow.module="airflow" \
-  org.apache.airflow.component="airflow" \
-  org.apache.airflow.image="airflow" \
-  org.apache.airflow.uid="${AIRFLOW_UID}"
-
 ARG AIRFLOW_PIP_VERSION
 ARG AIRFLOW_VERSION
 
@@ -249,7 +134,7 @@ ENV AIRFLOW_VERSION=${AIRFLOW_VERSION} \
     LC_CTYPE=C.UTF-8 LC_MESSAGES=C.UTF-8 \
     AIRFLOW_PIP_VERSION=${AIRFLOW_PIP_VERSION}
 
-ARG RUNTIME_APT_DEPS="\
+ENV RUNTIME_APT_DEPS="\
        apt-transport-https \
        apt-utils \
        ca-certificates \
@@ -259,7 +144,7 @@ ARG RUNTIME_APT_DEPS="\
        gosu \
        krb5-user \
        ldap-utils \
-       libffi6 \
+       libffi7 \
        libldap-2.4-2 \
        libsasl2-2 \
        libsasl2-modules \
@@ -271,38 +156,23 @@ ARG RUNTIME_APT_DEPS="\
        postgresql-client \
        python2 \
        python3 \
+       python3-pip \
        rsync \
        sasl2-bin \
        sqlite3 \
        sudo \
        unixodbc"
-ARG ADDITIONAL_RUNTIME_APT_DEPS=""
-ARG RUNTIME_APT_COMMAND="echo"
-ARG ADDITIONAL_RUNTIME_APT_COMMAND=""
-ARG ADDITIONAL_RUNTIME_APT_ENV=""
-ARG INSTALL_MYSQL_CLIENT="true"
-ARG INSTALL_MSSQL_CLIENT="true"
-ARG AIRFLOW_USER_HOME_DIR
-ARG AIRFLOW_HOME
 
-ARG AIRFLOW_INSTALLATION_METHOD="apache-airflow"
-ARG AIRFLOW_IMAGE_REPOSITORY
-ARG AIRFLOW_IMAGE_README_URL
-
-ENV RUNTIME_APT_DEPS=${RUNTIME_APT_DEPS} \
-    ADDITIONAL_RUNTIME_APT_DEPS=${ADDITIONAL_RUNTIME_APT_DEPS} \
-    RUNTIME_APT_COMMAND=${RUNTIME_APT_COMMAND} \
-    ADDITIONAL_RUNTIME_APT_COMMAND=${ADDITIONAL_RUNTIME_APT_COMMAND} \
-    INSTALL_MYSQL_CLIENT=${INSTALL_MYSQL_CLIENT} \
-    INSTALL_MSSQL_CLIENT=${INSTALL_MSSQL_CLIENT} \
+ENV RUNTIME_APT_COMMAND="echo" \
+    INSTALL_MYSQL_CLIENT="true" \
+    INSTALL_MSSQL_CLIENT="true" \
+    AIRFLOW_INSTALLATION_METHOD="apache-airflow" \
     AIRFLOW_UID=${AIRFLOW_UID} \
     AIRFLOW__CORE__LOAD_EXAMPLES="false" \
     AIRFLOW_USER_HOME_DIR=${AIRFLOW_USER_HOME_DIR} \
     AIRFLOW_HOME=${AIRFLOW_HOME} \
     PATH="${AIRFLOW_USER_HOME_DIR}/.local/bin:${PATH}" \
     GUNICORN_CMD_ARGS="--worker-tmp-dir /dev/shm" \
-    AIRFLOW_INSTALLATION_METHOD=${AIRFLOW_INSTALLATION_METHOD} \
-    AIRFLOW_VERSION_SPECIFICATION=${AIRFLOW_VERSION_SPECIFICATION} \
     PIP_USER="true"
 
 RUN apt-get update \
@@ -310,17 +180,14 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends curl gnupg2 \
     && mkdir -pv /usr/share/man/man1 \
     && mkdir -pv /usr/share/man/man7 \
-    && export ${ADDITIONAL_RUNTIME_APT_ENV?} \
     && bash -o pipefail -o errexit -o nounset -o nolog -c "${RUNTIME_APT_COMMAND}" \
-    && bash -o pipefail -o errexit -o nounset -o nolog -c "${ADDITIONAL_RUNTIME_APT_COMMAND}" \
     && apt-get update \
-    && apt-get install -y --no-install-recommends \
-           ${RUNTIME_APT_DEPS} \
-           ${ADDITIONAL_RUNTIME_APT_DEPS} \
+    && apt-get install -y --no-install-recommends ${RUNTIME_APT_DEPS} \
     && apt-get autoremove -yqq --purge \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
-    && rm -rf /var/log/*
+    && rm -rf /var/log/* \
+    && ln -s /usr/bin/python3 /usr/bin/python
 
 COPY scripts/docker/install_mysql.sh /scripts/docker/install_mssql.sh /scripts/docker/
 RUN chmod a+x /scripts/docker/install_mysql.sh /scripts/docker/install_mssql.sh \
@@ -328,7 +195,7 @@ RUN chmod a+x /scripts/docker/install_mysql.sh /scripts/docker/install_mssql.sh 
     && /scripts/docker/install_mysql.sh prod \
     && /scripts/docker/install_mssql.sh \
     && adduser --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password \
-           --quiet "airflow" --uid "${AIRFLOW_UID}" --gid "0" --home "${AIRFLOW_USER_HOME_DIR}" \
+       --quiet "airflow" --uid "${AIRFLOW_UID}" --gid "0" --home "${AIRFLOW_USER_HOME_DIR}" \
     && mkdir -pv "${AIRFLOW_HOME}" \
     && mkdir -pv "${AIRFLOW_HOME}/dags" \
     && mkdir -pv "${AIRFLOW_HOME}/logs" \
@@ -339,8 +206,8 @@ RUN chmod a+x /scripts/docker/install_mysql.sh /scripts/docker/install_mssql.sh 
 
 COPY --chown=airflow:0 --from=airflow-build-image \
      "${AIRFLOW_USER_HOME_DIR}/.local" "${AIRFLOW_USER_HOME_DIR}/.local"
-COPY --chown=airflow:0 scripts/in_container/prod/entrypoint_prod.sh /entrypoint
-COPY --chown=airflow:0 scripts/in_container/prod/clean-logs.sh /clean-logs
+COPY --chown=airflow:0 scripts/prod/entrypoint_prod.sh /entrypoint
+COPY --chown=airflow:0 scripts/prod/clean-logs.sh /clean-logs
 
 RUN chmod a+x /entrypoint /clean-logs \
     && chmod g=u /etc/passwd \
@@ -354,40 +221,10 @@ ENV DUMB_INIT_SETSID="1" \
     LD_PRELOAD="/usr/lib/x86_64-linux-gnu/libstdc++.so.6"
 
 WORKDIR ${AIRFLOW_HOME}
-
 EXPOSE 8080
-
 USER ${AIRFLOW_UID}
 
-ARG AIRFLOW_IMAGE_REPOSITORY
-ARG AIRFLOW_IMAGE_DATE_CREATED
-
-ENV AIRFLOW_VERSION {{ $airflow.Version }}
 ENV C2D_RELEASE {{ $airflow.Version }}
 
-LABEL org.apache.airflow.distro="debian" \
-  org.apache.airflow.distro.version="buster" \
-  org.apache.airflow.module="airflow" \
-  org.apache.airflow.component="airflow" \
-  org.apache.airflow.image="airflow" \
-  org.apache.airflow.version="${AIRFLOW_VERSION}" \
-  org.apache.airflow.uid="${AIRFLOW_UID}" \
-  org.apache.airflow.main-image.build-id="${BUILD_ID}" \
-  org.apache.airflow.main-image.commit-sha="${COMMIT_SHA}" \
-  org.opencontainers.image.source="${AIRFLOW_IMAGE_REPOSITORY}" \
-  org.opencontainers.image.created=${AIRFLOW_IMAGE_DATE_CREATED} \
-  org.opencontainers.image.authors="dev@airflow.apache.org" \
-  org.opencontainers.image.url="https://airflow.apache.org" \
-  org.opencontainers.image.documentation="https://airflow.apache.org/docs/docker-stack/index.html" \
-  org.opencontainers.image.version="${AIRFLOW_VERSION}" \
-  org.opencontainers.image.revision="${COMMIT_SHA}" \
-  org.opencontainers.image.vendor="Apache Software Foundation" \
-  org.opencontainers.image.licenses="Apache-2.0" \
-  org.opencontainers.image.ref.name="airflow" \
-  org.opencontainers.image.title="Production Airflow Image" \
-  org.opencontainers.image.description="Reference, production-ready Apache Airflow image" \
-  io.artifacthub.package.license='Apache-2.0' \
-  io.artifacthub.package.readme-url='${AIRFLOW_IMAGE_README_URL}'
-
 ENTRYPOINT ["/usr/bin/dumb-init", "--", "/entrypoint"]
-CMD []
+CMD [""]

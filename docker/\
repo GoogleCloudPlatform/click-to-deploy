@@ -30,15 +30,6 @@ function common::get_colors() {
     export COLOR_YELLOW
 }
 
-
-function common::get_airflow_version_specification() {
-    if [[ -z ${AIRFLOW_VERSION_SPECIFICATION=}
-        && -n ${AIRFLOW_VERSION}
-        && ${AIRFLOW_INSTALLATION_METHOD} != "." ]]; then
-        AIRFLOW_VERSION_SPECIFICATION="==${AIRFLOW_VERSION}"
-    fi
-}
-
 function common::override_pip_version_if_needed() {
     if [[ -n ${AIRFLOW_VERSION} ]]; then
         if [[ ${AIRFLOW_VERSION} =~ ^2\.0.* || ${AIRFLOW_VERSION} =~ ^1\.* ]]; then
