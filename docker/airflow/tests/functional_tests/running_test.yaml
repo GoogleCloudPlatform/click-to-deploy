@@ -54,8 +54,9 @@ setup:
   - '-e'
   - '_AIRFLOW_WWW_USER_PASSWORD=airflow'
   - '-d'
-  - '$IMAGE webserver'
-- command: [sleep, 30s]
+  - '$IMAGE'
+  - 'webserver'
+- command: [sleep, '70s']
 
 teardown:
 - command: [docker, stop, some-airflow-$UNIQUE-id, some-postgres-$UNIQUE-id]
@@ -65,7 +66,7 @@ teardown:
 target: some-airflow-$UNIQUE-id
 tests:
 - name: Test health status
-  command: [curl, -L, 'http://localhost:8080/health']
+  command: [curl, -s, -L, 'http://localhost:8080/health']
   expect:
     stdout:
       matches: '"status": "healthy"'
