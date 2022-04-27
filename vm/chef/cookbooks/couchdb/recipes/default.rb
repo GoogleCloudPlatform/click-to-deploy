@@ -44,7 +44,6 @@ bash 'preparing user environment and install' do
 EOH
 end
 
-
 service 'couchdb' do
   action [ :enable ]
 end
