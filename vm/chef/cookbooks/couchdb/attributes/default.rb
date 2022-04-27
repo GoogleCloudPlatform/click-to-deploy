@@ -14,3 +14,4 @@
 
 default['couchdb']['debian']['codename'] = 'buster'
 default['couchdb']['password'] = 'admTmpP@ssw0rd'
+default['couchdb']['cookie'] = 'couchdb-server'
