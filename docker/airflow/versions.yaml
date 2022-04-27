@@ -18,7 +18,7 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 2/debian11/2.2/airflow
+- dir: 2/debian11/2.2
   from: marketplace.gcr.io/google/debian11:latest
   packages:
     pip:
