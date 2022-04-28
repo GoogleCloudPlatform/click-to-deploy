@@ -6,7 +6,7 @@ Learn more about Apache Airflow in [official documentation](https://airflow.apac
 ## Upstream
 
 Build instruction for docker containers partially copied from:
-(https://github.com/wurstmeister/kafka-docker)
+(https://github.com/apache/airflow/blob/main/Dockerfile)
 
 
 ## Disclaimer
