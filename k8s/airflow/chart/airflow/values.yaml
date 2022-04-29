@@ -1,10 +1,10 @@
 airflow:
   image:
-    repository: apache/airflow
-    tag: 2.2.5-python3.8
+    repo: "gcr.io/ccm-ops-test-adhoc/airflow2"
+    tag: "2.2.5"
     pullPolicy: IfNotPresent
-    uid: 50000
-    gid: 0
+  uid: 50000
+  gid: 0
   dbMigrations:
     enabled: true
     runAsJob: false
