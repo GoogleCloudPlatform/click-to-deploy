@@ -97,29 +97,6 @@ properties:
             verbs:
             - get
             - list
-  deployerServiceAccount:
-    type: string
-    title: Deployer Service Account
-    x-google-marketplace:
-      type: SERVICE_ACCOUNT
-      serviceAccount:
-        description: Service account used by application deployer
-        roles:
-        - type: ClusterRole
-          rulesType: CUSTOM
-          rules:
-          - apiGroups: [""]
-            resources:
-            - pods/log
-            - pods
-            verbs:
-            - get
-            - list
-          - apiGroups: [""]
-            resources:
-            - pods/exec
-            verbs:
-            - create
   mancenter.licenseKey:
     type: string
     title: License Key
