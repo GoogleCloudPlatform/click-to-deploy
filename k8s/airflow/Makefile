@@ -10,7 +10,6 @@ WAIT_FOR_READY_TIMEOUT := 600
 # Only used for makefile deployer (legacy)
 TRACK ?= 2.2.5
 # Track for components
-AIRFLOW_TRACK ?= 2.2.5
 POSTGRESQL_TRACK ?= 13.4
 NFS_TRACK ?= 1.3
 
@@ -19,7 +18,7 @@ VERIFY_WAIT_TIMEOUT = 1800
 MARKETPLACE_SOURCE_REGISTRY ?= marketplace.gcr.io/google
 AIRFLOW_SOURCE_REGISTRY ?= gcr.io/ccm-ops-test-adhoc/
 
-IMAGE_AIRFLOW ?= $(MARKETPLACE_SOURCE_REGISTRY)/airflow2:$(TRACK)
+IMAGE_AIRFLOW ?= $(AIRFLOW_SOURCE_REGISTRY)/airflow2:$(TRACK)
 
 # POSTGRESQL
 IMAGE_POSTGRESQL ?= $(MARKETPLACE_SOURCE_REGISTRY)/postgresql:$(POSTGRESQL_TRACK)
@@ -35,7 +34,7 @@ ADDITIONAL_IMAGES := postgresql nfs
 
 # Additional images variable names should correspond with ADDITIONAL_IMAGES list
 image-postgresql := $(call get_sha256,$(IMAGE_POSTGRESQL))
-image-nfs := $(call get_sha256,$(IMAGE_ISTIO_NFS))
+image-nfs := $(call get_sha256,$(IMAGE_NFS))
 
 C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
 
