@@ -8,7 +8,7 @@ APP_ID ?= $(CHART_NAME)
 WAIT_FOR_READY_TIMEOUT := 600
 
 # Only used for makefile deployer (legacy)
-TRACK ?= 2.2.5
+TRACK ?= 2.2
 # Track for components
 POSTGRESQL_TRACK ?= 13.4
 NFS_TRACK ?= 1.3
@@ -16,9 +16,9 @@ NFS_TRACK ?= 1.3
 VERIFY_WAIT_TIMEOUT = 1800
 
 MARKETPLACE_SOURCE_REGISTRY ?= marketplace.gcr.io/google
-AIRFLOW_SOURCE_REGISTRY ?= gcr.io/ccm-ops-test-adhoc/
+AIRFLOW_SOURCE_REGISTRY ?= gcr.io/ccm-ops-test-adhoc
 
-IMAGE_AIRFLOW ?= $(AIRFLOW_SOURCE_REGISTRY)/airflow2:$(TRACK)
+IMAGE_AIRFLOW ?= $(AIRFLOW_SOURCE_REGISTRY)/airflow:$(TRACK)
 
 # POSTGRESQL
 IMAGE_POSTGRESQL ?= $(MARKETPLACE_SOURCE_REGISTRY)/postgresql:$(POSTGRESQL_TRACK)
