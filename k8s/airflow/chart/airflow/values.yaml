@@ -1,7 +1,7 @@
 airflow:
   image:
-    repo: "gcr.io/ccm-ops-test-adhoc/airflow2"
-    tag: "2.2.5"
+    repo: null
+    tag: null
     pullPolicy: IfNotPresent
   uid: 50000
   gid: 0
@@ -22,20 +22,19 @@ triggerer:
 
 nfs:
   image:
-    repo: "marketplace.gcr.io/google/nfs-server1"
-    tag: "1.3"
+    repo: null
+    tag: null
   persistance:
-    storageClass: "standard"
-    size: '5Gi'
+    storageClass: standard
+    size: 5Gi
 
 enablePublicServiceAndIngress: false
 
 postgresql:
   image:
-    repo: "marketplace.gcr.io/google/postgresql"
-    tag: "13.4"
+    repo: null
+    tag: null
   persistence:
-    size: '5Gi'
-    storageClass: "standard"
-  exposePublicService: false
+    size: 5Gi
+    storageClass: standard
 
