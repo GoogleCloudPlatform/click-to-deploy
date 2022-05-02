@@ -50,8 +50,6 @@ spec:
   - group: apps/v1
     kind: Deployment
   - group: v1
-    kind: PersistentVolumeClaim
-  - group: v1
     kind: ConfigMap
   - group: v1
     kind: ServiceAccount
