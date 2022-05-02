@@ -9,26 +9,9 @@ Default Airflow Webserver login:
   * Username:  admin
   * Password:  admin
 
-{{- if and (not .Values.ingress.enabled) (eq .Values.web.service.type "ClusterIP") }}
+{{- if not .Values.enablePublicServiceAndIngress }}
 It looks like you have NOT exposed the Airflow Webserver, do this by:
-  1. Using a Kubernetes Ingress with `ingress.*`
-  2. Using a Kubernetes LoadBalancer/NodePort type Service with `web.service.type`
-{{ end }}
-
-{{- if .Values.ingress.enabled }}
-Your Kubernetes Ingress endpoint URLs:
-  * Airflow Webserver:  http{{ if .Values.ingress.web.tls.enabled }}s{{ end }}://{{ .Values.ingress.web.host }}{{ .Values.ingress.web.path }}/
-{{ end }}
-
-{{- if eq .Values.web.service.type "LoadBalancer" }}
-You deployed a "LoadBalancer" type Service for the Airflow Webserver:
-  * External IP:    kubectl get svc/{{ .Release.Name }}-web --namespace {{ .Release.Namespace }} -o jsonpath="{.status.loadBalancer.ingress[0].ip}"
-  * External Port:  8080
-  * NOTE:           it may take a few minutes for the External IP to be provisioned by your cloud provider
-{{ end }}
-
-{{- if true }}
-Use these commands to port-forward the Services to your localhost:
-  * Airflow Webserver:  kubectl port-forward svc/{{ .Release.Name }}-web 8080:8080 --namespace {{ .Release.Namespace }}
+  1. Using a Kubernetes Ingress with target `{{ .Release.Name }}-web`
+  2. Using a Kubernetes NodePort service and Ingress with `enablePublicServiceAndIngress=true`
 {{ end }}
 

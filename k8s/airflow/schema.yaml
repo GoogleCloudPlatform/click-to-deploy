@@ -21,128 +21,21 @@ x-google-marketplace:
   images:
     '':
       properties:
-        knative.serving.activator.image.repo:
+        airflow.image.repo:
           type: REPO_WITH_REGISTRY
-        knative.serving.activator.image.tag:
+        airflow.image.tag:
           type: TAG
-
-    certmanager:
+    postgresql:
       properties:
-        certmanager.image.repo:
+        postgresql.image.repo:
           type: REPO_WITH_REGISTRY
-        certmanager.image.tag:
+        postgresql.image.tag:
           type: TAG
-
-    istio-ingressgateway:
+    nfs:
       properties:
-        istio.ingressgateway.image.repo:
+        nfs.image.repo:
           type: REPO_WITH_REGISTRY
-        istio.ingressgateway.image.tag:
-          type: TAG
-
-    istio-istiod:
-      properties:
-        istio.istiod.image.repo:
-          type: REPO_WITH_REGISTRY
-        istio.istiod.image.tag:
-          type: TAG
-
-    knative-serving-activator:
-      properties:
-        knative.serving.activator.image.repo:
-          type: REPO_WITH_REGISTRY
-        knative.serving.activator.image.tag:
-          type: TAG
-
-    knative-serving-autoscaler:
-      properties:
-        knative.serving.autoscaler.image.repo:
-          type: REPO_WITH_REGISTRY
-        knative.serving.autoscaler.image.tag:
-          type: TAG
-
-    knative-serving-controller:
-      properties:
-        knative.serving.controller.image.repo:
-          type: REPO_WITH_REGISTRY
-        knative.serving.controller.image.tag:
-          type: TAG
-
-    knative-serving-domainmapping:
-      properties:
-        knative.serving.domainmapping.image.repo:
-          type: REPO_WITH_REGISTRY
-        knative.serving.domainmapping.image.tag:
-          type: TAG
-
-    knative-serving-domainmapping-webhook:
-      properties:
-        knative.serving.domainmapping.webhook.image.repo:
-          type: REPO_WITH_REGISTRY
-        knative.serving.domainmapping.webhook.image.tag:
-          type: TAG
-
-    knative-serving-queueproxy:
-      properties:
-        knative.serving.queueproxy.image.repo:
-          type: REPO_WITH_REGISTRY
-        knative.serving.queueproxy.image.tag:
-          type: TAG
-
-    knative-serving-webhook:
-      properties:
-        knative.serving.webhook.image.repo:
-          type: REPO_WITH_REGISTRY
-        knative.serving.webhook.image.tag:
-          type: TAG
-
-    knative-serving-netcertmanager-controller:
-      properties:
-        knative.serving.netcertmanager.controller.image.repo:
-          type: REPO_WITH_REGISTRY
-        knative.serving.netcertmanager.controller.image.tag:
-          type: TAG
-
-    knative-serving-netcertmanager-webhook:
-      properties:
-        knative.serving.netcertmanager.webhook.image.repo:
-          type: REPO_WITH_REGISTRY
-        knative.serving.netcertmanager.webhook.image.tag:
-          type: TAG
-
-    knative-serving-netistio-controller:
-      properties:
-        knative.serving.netistio.controller.image.repo:
-          type: REPO_WITH_REGISTRY
-        knative.serving.netistio.controller.image.tag:
-          type: TAG
-
-    knative-serving-netistio-webhook:
-      properties:
-        knative.serving.netistio.webhook.image.repo:
-          type: REPO_WITH_REGISTRY
-        knative.serving.netistio.webhook.image.tag:
-          type: TAG
-
-    knative-eventing-controller:
-      properties:
-        knative.eventing.controller.image.repo:
-          type: REPO_WITH_REGISTRY
-        knative.eventing.controller.image.tag:
-          type: TAG
-
-    knative-eventing-mtping:
-      properties:
-        knative.eventing.mtping.image.repo:
-          type: REPO_WITH_REGISTRY
-        knative.eventing.mtping.image.tag:
-          type: TAG
-
-    knative-eventing-webhook:
-      properties:
-        knative.eventing.webhook.image.repo:
-          type: REPO_WITH_REGISTRY
-        knative.eventing.webhook.image.tag:
+        nfs.image.tag:
           type: TAG
 
 properties:
@@ -154,48 +47,64 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  certmanager.controller.replicas:
+  scheduler.replicas:
     type: integer
-    title: Certmanager controller replicas
-    description: Number of replicas of the Cert Manager controller
+    title: Airflow Scheduler replicas
+    description: Number of replicas of the Airflow Scheduler
     default: 1
     minimum: 1
-  certmanager.webhook.replicas:
+  web.replicas:
     type: integer
-    title: Certmanager webhook replicas
-    description: Number of replicas of the Cert Manager webhook
+    title: Airflow Webserver replicas
+    description: Number of replicas of the Airflow Webserver
     default: 1
     minimum: 1
-  certmanager.cainjector.replicas:
+  triggerer.replicas:
     type: integer
-    title: Certmanager CA injector replicas
-    description: Number of replicas of the Cert Manager CA Injector
+    title: Airflow Triggerer replicas
+    description: Number of replicas of the Airflow Triggerer
     default: 1
     minimum: 1
-  istio.ingressgateway.replicas:
-    type: integer
-    title: Istio Ingress Gateway replicas
-    description: Number of replicas of the Istio Ingress Gateway
-    default: 1
-    minimum: 1
-  knative.serving.autoscaler.replicas:
-    type: integer
-    title: Knative serving autoscaler replicas
-    description: Number of replicas of the Knative serving autoscaler
-    default: 1
-    minimum: 1
-  knative.eventing.mtping.replicas:
-    type: integer
-    title: Knative eventing mtping replicas
-    description: Number of replicas of the Knative eventing mtping
-    default: 1
-    minimum: 0
+  enablePublicServiceAndIngress:
+    type: boolean
+    title: Enable public IP access
+    description: Set the Airflow Service type to NodePort and enable Ingress
+    default: false
+  nfs.persistence.storageClass:
+    type: string
+    title: NFS volume StorageClass
+    description: You can choose an existing StorageClass or create a new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  nfs.persistence.size:
+    type: string
+    title: Storage size for NFS persistent volume
+    default: "5Gi"
+    description: NFS storage size
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  postgresql.persistence.storageClass:
+    type: string
+    title: PostgreSQL StorageClass
+    description: You can choose an existing StorageClass or create a new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  postgresql.persistence.size:
+    type: string
+    title: Storage size for PostgreSQL persistent volume
+    default: "5Gi"
+    description: PostgreSQL storage size
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
 required:
 - name
 - namespace
-- certmanager.controller.replicas
-- certmanager.webhook.replicas
-- certmanager.cainjector.replicas
-- istio.ingressgateway.replicas
-- knative.serving.autoscaler.replicas
-- knative.eventing.mtping.replicas
+- scheduler.replicas
+- web.replicas
+- triggerer.replicas
+- nfs.persistence.size
+- postgresql.persistence.size
+- enablePublicServiceAndIngress
+

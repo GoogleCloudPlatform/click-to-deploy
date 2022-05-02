@@ -16,45 +16,26 @@ scheduler:
 
 web:
   replicas: 1
-  service:
-    type: ClusterIP
-    loadBalancerIP: ""
-    loadBalancerSourceRanges: []
 
 triggerer:
   replicas: 1
 
 nfs:
-  repo: "marketplace.gcr.io/google/nfs-server1"
-  tag: "1.3"
-  storageClass: "standard"
-  size: 2Gi
+  image:
+    repo: "marketplace.gcr.io/google/nfs-server1"
+    tag: "1.3"
+  persistance:
+    storageClass: "standard"
+    size: '5Gi'
 
-ingress:
-  enabled: false
-  ## the `apiVersion` to use for Ingress resources
-  ## - for Kubernetes 1.19 and later: "networking.k8s.io/v1"
-  ## - for Kubernetes 1.18 and before: "networking.k8s.io/v1beta1"
-  ##
-  apiVersion: networking.k8s.io/v1
-  web:
-    annotations: {}
-    labels: {}
-    path: ""
-    host: ""
-    ingressClassName: ""
-    tls:
-      enabled: false
-      secretName: ""
-    precedingPaths: []
-    succeedingPaths: []
+enablePublicServiceAndIngress: false
 
 postgresql:
   image:
     repo: "marketplace.gcr.io/google/postgresql"
     tag: "13.4"
   persistence:
-    size: '10Gi'
+    size: '5Gi'
     storageClass: "standard"
   exposePublicService: false
 

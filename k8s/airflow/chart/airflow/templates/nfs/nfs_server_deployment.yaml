@@ -24,7 +24,7 @@ spec:
             name: {{ .Release.Name }}-nfs-server-pvc
       containers:
       - name: {{ .Release.Name }}-nfs-server
-        image: "{{ .Values.nfs.repo }}:{{ .Values.nfs.tag }}"
+        image: "{{ .Values.nfs.image.repo }}:{{ .Values.nfs.image.tag }}"
         ports:
           - name: nfs
             containerPort: 2049
