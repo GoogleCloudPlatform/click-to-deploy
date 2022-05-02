@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@ versions:
   from: marketplace.gcr.io/google/debian10
   packages:
     solr:
-      gpg: 2CECBFBA181601547B654B9FFA81AC8A490F538E
-      sha512: 4893f836aec84b03d7bfe574e59e305c03b5ede4a48020034fbe81440b8feee79e55fd9ead230e5b89b3f25124e9b56c1ddc4bb5c7f631cf4e846b9cab5f9a45
+      gpg: 9722F25F650057E26C803B60A6D064D833B3A969
+      sha512: ac962e1a9aa0974018f34f3db8059024cb92b3e53389fa5e437d7785b9428990326a850334929a0e8e3af875d3d882788ad30b4f1baac80d29e6890417638b68
       version: 8.11.1
   repo: solr8
   tags:
@@ -32,3 +32,4 @@ versions:
   - '8.11'
   - '8'
   - latest
+
