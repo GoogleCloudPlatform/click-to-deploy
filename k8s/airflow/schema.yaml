@@ -38,6 +38,21 @@ x-google-marketplace:
         nfs.image.tag:
           type: TAG
 
+  deployerServiceAccount:
+    description:
+      Creates app resources including persistentvolumes.
+    roles:
+      - type: ClusterRole  # For getting persistentvolumes
+        rulesType: CUSTOM
+        rules:
+          - apiGroups:
+            - 'rbac.authorization.k8s.io'
+            resources:
+            - 'clusterroles'
+            - 'clusterrolebindings'
+            verbs:
+            - '*'
+            
 properties:
   name:
     type: string
