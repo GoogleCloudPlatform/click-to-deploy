@@ -52,7 +52,13 @@ x-google-marketplace:
             - 'clusterrolebindings'
             verbs:
             - '*'
-            
+          - apiGroups:
+            - '*'
+            resources:
+            - 'persistentvolumes'
+            verbs:
+            - '*'
+          
 properties:
   name:
     type: string
