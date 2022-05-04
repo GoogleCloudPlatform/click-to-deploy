@@ -22,7 +22,6 @@ spec:
       containers:
       - args:
         - --kubelet-service=kube-system/kubelet
-        - --logtostderr=true
         image: {{ .Values.operator.image.repo }}:{{ .Values.operator.image.tag }}
         name: prometheus-operator
         ports:
