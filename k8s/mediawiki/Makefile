@@ -6,7 +6,7 @@ include ../images.Makefile
 CHART_NAME := mediawiki
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 1.36
+TRACK ?= 1.37
 
 MARIADB_TAG ?= 10.3
 EXPORTER_TAG ?= exporter
