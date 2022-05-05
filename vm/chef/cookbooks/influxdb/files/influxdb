@@ -19,7 +19,12 @@ source /opt/c2d/influxdb-utils || exit 1
 export INFLUXDB_ADMIN_PASSWORD="$(get_attribute_value "influxdb-admin-password")"
 export INFLUXDB_ORG="$(get_attribute_value "influxdb-organization")"
 export INFLUXDB_BUCKET="$(get_attribute_value "influxdb-bucket")"
-export INFLUX_TOKEN="${INFLUX_TOKEN:-"$(openssl rand -hex 64)"}"
+
+if [[ -z "$(get_attribute_value "influxdb-token")" ]]; then
+   export INFLUX_TOKEN="$(openssl rand -hex 64)"
+else
+   export INFLUX_TOKEN="$(get_attribute_value "influxdb-token")"
+fi
 
 # Run the CLI installer for InfluxDB
 declare -a args=(
@@ -30,7 +35,7 @@ declare -a args=(
   --org "${INFLUXDB_ORG}" \
   --bucket "${INFLUXDB_BUCKET}" \
   --retention 0 \
-  --token "$INFLUX_TOKEN" \
+  --token "${INFLUX_TOKEN}" \
 )``
 
 if [[ "$(get_attribute_value "enable-https")" = True ]]; then
