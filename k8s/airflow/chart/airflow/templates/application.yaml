@@ -53,7 +53,8 @@ spec:
     valueFrom:
       secretKeyRef:
         key: _AIRFLOW_WWW_USER_PASSWORD
-        name: {{ .Release.Name }}-config-envs - name: Airflow IP address
+        name: {{ .Release.Name }}-config-envs 
+  - name: Airflow IP address
     type: Reference
     valueFrom:
       serviceRef:
