@@ -46,6 +46,8 @@ spec:
             {{- include "airflow.envFrom" . | indent 12 }}
           env:
             {{- include "airflow.env" . | indent 12 }}
+            - name: _AIRFLOW_WWW_USER_CREATE 
+              value: 'true'
           command:
             {{- include "airflow.command" . | indent 12 }}
           args:

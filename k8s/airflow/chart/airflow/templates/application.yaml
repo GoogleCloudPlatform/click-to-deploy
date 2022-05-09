@@ -24,7 +24,36 @@ spec:
       # Access Airflow
       Lorem Ipsum again
   info:
-  - name: Airflow IP address
+  - name: Airflow - admin username
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: _AIRFLOW_WWW_USER_USERNAME
+        name: {{ .Release.Name }}-config-envs
+  - name: Airflow - admin e-mail address
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: _AIRFLOW_WWW_USER_EMAIL
+        name: {{ .Release.Name }}-config-envs
+  - name: Airflow - admin user password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: _AIRFLOW_WWW_USER_PASSWORD
+        name: {{ .Release.Name }}-config-envs
+  - name: PostgreSQL - Airflow user password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: DATABASE_PASSWORD
+        name: {{ .Release.Name }}-config-envs
+  - name: Airflow - admin user password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: _AIRFLOW_WWW_USER_PASSWORD
+        name: {{ .Release.Name }}-config-envs - name: Airflow IP address
     type: Reference
     valueFrom:
       serviceRef:

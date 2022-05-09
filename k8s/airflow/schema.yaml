@@ -68,6 +68,20 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
+  airflow.admin.email:
+    type: string
+    title: Airflow UI admin e-mail address
+    description: Administrator e-mail address who will be able to manage the e-commerce.
+    default: admin@store.example
+    pattern:  ^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$
+  airflow.admin.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 10
+        includeSymbols: False
+        base64: False
   scheduler.replicas:
     type: integer
     title: Airflow Scheduler replicas

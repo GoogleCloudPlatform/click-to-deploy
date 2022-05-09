@@ -9,6 +9,10 @@ airflow:
     enabled: true
     runAsJob: false
     checkInterval: 300
+  admin:
+    username: airflow_admin
+    password: null
+    email: null
 
 scheduler:
   replicas: 1
