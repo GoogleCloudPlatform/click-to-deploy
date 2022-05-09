@@ -13,6 +13,7 @@
 # limitations under the License.
 
 versions:
+# Hazelcast 4 
   - dir: '4/debian10/hazelcast/4.2'
     repo: 'hazelcast4'
     templateSubDir: 'hazelcast4'
@@ -57,6 +58,43 @@ versions:
       hazelcastmc:
         version: '4.2021.12-1'
         sha256: 'e665ec321e7300d7bccc6fe43724cff1f7d396fb9cf13dcc5087044664f36464'
+    excludeTests:
+    - tests/functional_tests/hazelcast_test.yaml
+
+# Hazelcast 5
+  - dir: '5/debian10/hazelcast/5.0'
+    repo: 'hazelcast5'
+    templateSubDir: 'hazelcast5'
+    tags:
+    - '5.0.3-debian10'
+    - '5.0.3'
+    - '5.0-debian10'
+    - '5.0'
+    - '5-debian10'
+    - '5'
+    - 'latest'
+    from: 'marketplace.gcr.io/google/debian10'
+    packages:
+      hazelcast:
+        version: '5.0.3'
+        sha256: 'ab5810b9f8dffb74e75002eb074d952b2173135e5caba542341f427cad2b4949'
+    excludeTests:
+    - tests/functional_tests/hazelcast_mancenter_test.yaml
+
+# Hazelcast Management Center 5
+  - dir: '5/debian10/hazelcast-mc/5.1'
+    repo: 'hazelcast-mc5'
+    templateSubDir: 'hazelcast-mc5'
+    tags:
+    - '5.1-debian10'
+    - '5.1'
+    - '5'
+    - 'latest'
+    from: 'marketplace.gcr.io/google/debian10'
+    packages:
+      hazelcastmc:
+        version: '5.1.1'
+        sha256: '14958a936856fcae1ad616fa256048359257447e83c74d71eb50fa2b4ac198b0'
     excludeTests:
     - tests/functional_tests/hazelcast_test.yaml
 

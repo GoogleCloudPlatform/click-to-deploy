@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,5 +27,5 @@ describe port(443) do
 end
 
 describe port(8080) do
-  it { should be_listening.on('::ffff:127.0.0.1').with('tcp6') }
+  it { should be_listening.with('tcp6') }
 end

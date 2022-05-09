@@ -16,19 +16,17 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 1/debian10/1.7
-  from: marketplace.gcr.io/google/debian10
+- dir: 1/debian9/1.7
+  from: marketplace.gcr.io/google/debian9
   packages:
     cert-manager:
-      version: 1.7.0
-    bazel:
-      version: 4.0.0  
+      version: 1.7.2
   repo: cert-manager1
   tags:
-  - 1.7.0-debian10
-  - 1.7-debian10
-  - 1-debian10
-  - 1.7.0
+  - 1.7.2-debian9
+  - 1.7-debian9
+  - 1-debian9
+  - 1.7.2
   - '1.7'
   - '1'
   - latest
