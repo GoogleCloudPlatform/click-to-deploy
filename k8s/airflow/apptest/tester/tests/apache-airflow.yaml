@@ -34,3 +34,9 @@ actions:
     expect:
       stdout:
         matches: "2"
+- name: Scale down airflow
+  bashTest:
+    script: kubectl scale deploy -n $NAMESPACE --replicas=0 --all
+    expect:
+      exitCode:
+        equals: 0

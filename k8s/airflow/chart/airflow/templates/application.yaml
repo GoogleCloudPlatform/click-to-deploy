@@ -83,4 +83,7 @@ spec:
     kind: ConfigMap
   - group: v1
     kind: ServiceAccount
-
+  - group: rbac.authorization.k8s.io/v1
+    kind:  Role
+  - group: rbac.authorization.k8s.io/v1
+    kind:  RoleBinding
