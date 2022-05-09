@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,55 +18,36 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 9/php7/debian9/9.3/apache
-  from: marketplace.gcr.io/google/php7-apache2:7.3
+- dir: 9/php8/debian11/9.3/apache
+  from: marketplace.gcr.io/google/php8-apache2:8.1
   packages:
     composer:
-      gpg: 1f210b9037fcf82670d75892dfc44400f13fe9ada7af9e787f93e50e3b764111
-      version: 1.9.1
+      gpg: e1e1c580a237c739ecc1be57cf512e6b741faaa566439257d19ecd739ddfefaf
+      version: 2.2.8
     drupal:
-      md5: e8baf9fc096b125b384b8a5234fabbc2
-      version: 9.3.0
-  repo: drupal9-php7-apache
+      md5: 09ff49df4ee07a1afc8339e5f22c2c14
+      version: 9.3.9
+  repo: drupal9-php8-apache
   tags:
-  - 9.3.0-debian9
-  - 9.3-debian9
-  - 9-debian9
-  - 9.3.0
+  - 9.3.9-debian11
+  - 9.3-debian11
+  - 9-debian11
+  - 9.3.9
   - '9.3'
   - '9'
   - latest
-- dir: 9/php7/debian9/9.2/apache
-  from: marketplace.gcr.io/google/php7-apache2:7.3
+- dir: 9/php8/debian11/9.2/apache
+  from: marketplace.gcr.io/google/php8-apache2:8.0
   packages:
     composer:
-      gpg: 1f210b9037fcf82670d75892dfc44400f13fe9ada7af9e787f93e50e3b764111
-      version: 1.9.1
+      gpg: e1e1c580a237c739ecc1be57cf512e6b741faaa566439257d19ecd739ddfefaf
+      version: 2.2.8
     drupal:
-      md5: 6982ab0a20ad6721e576625329c949a3
-      version: 9.2.10
-  repo: drupal9-php7-apache
+      md5: 469c24790fb36dc09472c8f25e1d248d
+      version: 9.2.16
+  repo: drupal9-php8-apache
   tags:
-  - 9.2.10-debian9
-  - 9.2-debian9
-  - 9.2.10
+  - 9.2.16-debian11
+  - 9.2-debian11
+  - 9.2.16
   - '9.2'
-- dir: 8/php7/debian9/8.9/apache
-  from: marketplace.gcr.io/google/php7-apache2:7.3
-  packages:
-    composer:
-      gpg: 1f210b9037fcf82670d75892dfc44400f13fe9ada7af9e787f93e50e3b764111
-      version: 1.9.1
-    drupal:
-      md5: 03c77251b7332bf7e194b9702b077dd2
-      version: 8.9.20
-  repo: drupal8-php7-apache
-  tags:
-  - 8.9.20-debian9
-  - 8.9-debian9
-  - 8-debian9
-  - 8.9.20
-  - '8.9'
-  - '8'
-  - latest
-

@@ -64,6 +64,11 @@ chown -R www-data:www-data "${CONCRETE_FOLDER}/"
 echo "Restarting Apache..."
 systemctl restart apache2
 
+# Fix for new installation to avoid php error(https://github.com/concrete5/concrete5/issues/10574)
+sed -i '/^.*$cmf->setMetadataFor($loadedClass, null);/s/^/#/' "${CONCRETE_FOLDER}/${CONCRETE_PROJECT}"/public/concrete/src/Updater/Update.php
+curl -I http://localhost
+sed -i '/^.*#/s///' "${CONCRETE_FOLDER}/${CONCRETE_PROJECT}"/public/concrete/src/Updater/Update.php
+
 echo "Waiting application to be ready..."
 wait_for_app
 

@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2020 Google Inc.
+# Copyright 2022 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ readonly cassandra_disk_name="$(hostname)-data"
 readonly cassandra_mount_dir=/cassandra
 
 # Get my and my peers' private IPs.
-cassandra_seeds="127.0.0.1"
+cassandra_seeds="127.0.0.1:7000"
 for instance in ${instances}; do
   until ping -n -c1 "${instance}" > /dev/null 2>&1; do
     echo "Waiting for host '${instance}' to answer ping..." && sleep 3
