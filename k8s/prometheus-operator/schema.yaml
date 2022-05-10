@@ -28,6 +28,18 @@ x-google-marketplace:
           minimumNodeCount: 1
     istio:
       type: UNSUPPORTED
+
+  deployerServiceAccount:
+      description: >
+        Creates app resources, including the MyAppCustomResource CRD.
+      roles:
+      - type: ClusterRole
+        rulesType: CUSTOM
+        rules:
+        - apiGroups: ['apiextensions.k8s.io']
+          resources: ['customresourcedefinitions']
+          verbs: ['*']
+
 properties:
   name:
     type: string
@@ -157,8 +169,6 @@ properties:
               resources:
               - ingresses
               verbs: ["get", "list", "watch"]
-            - nonResourceURLs: ["/metrics"]
-              verbs: ["get"]
   deployerHelm.image:
     type: string
     x-google-marketplace:
@@ -167,3 +177,4 @@ properties:
 required:
 - name
 - namespace
+
