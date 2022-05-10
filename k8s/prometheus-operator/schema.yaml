@@ -31,7 +31,7 @@ x-google-marketplace:
 
   deployerServiceAccount:
       description: >
-        Creates app resources, including the MyAppCustomResource CRD.
+        Service account used by application deployer
       roles:
       - type: ClusterRole
         rulesType: CUSTOM
@@ -148,8 +148,6 @@ properties:
               - get
               - list
               - watch
-            # The permissions above are needed to run integration tests, and can be used for deploying a sample instance.
-            # TODO: Discuss them further.
             - apiGroups: [""]
               resources:
               - nodes
