@@ -36,7 +36,9 @@ actions:
         matches: "2"
 - name: Scale down airflow
   bashTest:
-    script: kubectl scale deploy -n $NAMESPACE --replicas=0 --all
+    script: |
+      kubectl scale deploy -n $NAMESPACE --replicas=0 --all
+      kubectl wait --for delete pod -l 'component in (web, scheduler, triggerer)' -n $NAMESPACE
     expect:
       exitCode:
         equals: 0
