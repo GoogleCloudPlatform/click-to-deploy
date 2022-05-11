@@ -3,3 +3,4 @@ operator:
   image:
     repo: null
     tag: null
+    track: 0.54.1
