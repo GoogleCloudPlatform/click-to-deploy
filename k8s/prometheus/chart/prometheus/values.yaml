@@ -1,0 +1,25 @@
+prometheus:
+  image: null
+  tag: null
+  serviceAccountName: null
+  replicas: 2
+  storageClass: null
+  initContainer:
+    image: null
+
+alertmanager:
+  image: null
+  serviceAccountName: null
+
+kubestatemetrics:
+  image: null
+  serviceAccountName: null
+
+nodeexporter:
+  image: null
+  serviceAccountName: null
+
+grafana:
+  image: null
+  password: null
+  serviceAccountName: null

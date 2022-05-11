@@ -1,13 +1,14 @@
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: $APP_INSTANCE_NAME-alertmanager
+  name: {{ .Release.Name }}-alertmanager
   labels: &Labels
     k8s-app: alertmanager
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: alertmanager
 spec:
-  serviceName: "$APP_INSTANCE_NAME-alertmanager-operated"
+  serviceName: "{{ .Release.Name }}-alertmanager-operated"
   replicas: 2
   podManagementPolicy: OrderedReady
   updateStrategy:
@@ -19,10 +20,10 @@ spec:
     metadata:
       labels: *Labels
     spec:
-      serviceAccountName: $ALERTMANAGER_SERVICE_ACCOUNT
+      serviceAccountName: "{{ .Values.alertmanager.serviceAccountName }}"
       containers:
         - name: prometheus-alertmanager
-          image: $IMAGE_ALERTMANAGER
+          image: "{{ .Values.alertmanager.image }}"
           imagePullPolicy: Always
           args:
             - --config.file=/etc/config/alertmanager.yml
@@ -30,8 +31,8 @@ spec:
             - --web.listen-address=:9093
             - --web.route-prefix=/
             - --mesh.listen-address=$(POD_IP):6783
-            - --mesh.peer=$APP_INSTANCE_NAME-alertmanager-0.$APP_INSTANCE_NAME-alertmanager-operated.$NAMESPACE.svc:6783
-            - --mesh.peer=$APP_INSTANCE_NAME-alertmanager-1.$APP_INSTANCE_NAME-alertmanager-operated.$NAMESPACE.svc:6783
+            - --mesh.peer={{ .Release.Name }}-alertmanager-0.{{ .Release.Name }}-alertmanager-operated.{{ .Release.Namespace }}.svc:6783
+            - --mesh.peer={{ .Release.Name }}-alertmanager-1.{{ .Release.Name }}-alertmanager-operated.{{ .Release.Namespace }}.svc:6783
             - --log.level=debug
           env:
           - name: POD_IP
@@ -53,7 +54,7 @@ spec:
           volumeMounts:
             - name: config-volume
               mountPath: /etc/config
-            - name: $APP_INSTANCE_NAME-alertmanager-data
+            - name: {{ .Release.Name }}-alertmanager-data
               mountPath: "/data"
               subPath: ""
           resources:
@@ -66,7 +67,7 @@ spec:
       volumes:
         - name: config-volume
           configMap:
-            name: $APP_INSTANCE_NAME-alertmanager-config
+            name: {{ .Release.Name }}-alertmanager-config
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -79,9 +80,9 @@ spec:
             topologyKey: "kubernetes.io/hostname"
   volumeClaimTemplates:
   - metadata:
-      name: $APP_INSTANCE_NAME-alertmanager-data
+      name: {{ .Release.Name }}-alertmanager-data
     spec:
-      storageClassName: $STORAGE_CLASS
+      storageClassName: "{{ .Values.prometheus.storageClass }}"
       accessModes:
         - ReadWriteOnce
       resources:

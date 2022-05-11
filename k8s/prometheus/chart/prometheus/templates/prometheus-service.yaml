@@ -1,10 +1,11 @@
+---
 kind: Service
 apiVersion: v1
 metadata:
-  name: $APP_INSTANCE_NAME-prometheus
+  name: {{ .Release.Name }}-prometheus
   labels:
     k8s-app: prometheus
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: prometheus
 spec:
   ports:

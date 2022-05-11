@@ -1,0 +1,135 @@
+"\"groups\": \n- \"name\": \"k8s.rules\"\n  \"rules\": \n  - \"expr\":
+    |\n      sum(rate(container_cpu_usage_seconds_total{job=\"cadvisor\", image!=\"\"}[5m]))
+    by (namespace)\n    \"record\": \"namespace:container_cpu_usage_seconds_total:sum_rate\"\n
+    \ - \"expr\": |\n      sum(container_memory_usage_bytes{job=\"cadvisor\", image!=\"\"})
+    by (namespace)\n    \"record\": \"namespace:container_memory_usage_bytes:sum\"\n
+    \ - \"expr\": |\n      sum by (namespace, label_name) (\n         sum(rate(container_cpu_usage_seconds_total{job=\"cadvisor\",
+    image!=\"\"}[5m])) by (namespace, pod_name)\n       * on (namespace, pod_name)
+    group_left(label_name)\n         label_replace(kube_pod_labels{job=\"kube-state-metrics\"},
+    \"pod_name\", \"$1\", \"pod\", \"(.*)\")\n      )\n    \"record\": \"namespace_name:container_cpu_usage_seconds_total:sum_rate\"\n
+    \ - \"expr\": |\n      sum by (namespace, label_name) (\n        sum(container_memory_usage_bytes{job=\"cadvisor\",image!=\"\"})
+    by (pod_name, namespace)\n      * on (namespace, pod_name) group_left(label_name)\n
+    \       label_replace(kube_pod_labels{job=\"kube-state-metrics\"}, \"pod_name\",
+    \"$1\", \"pod\", \"(.*)\")\n      )\n    \"record\": \"namespace_name:container_memory_usage_bytes:sum\"\n
+    \ - \"expr\": |\n      sum by (namespace, label_name) (\n        sum(kube_pod_container_resource_requests_memory_bytes{job=\"kube-state-metrics\"})
+    by (namespace, pod)\n      * on (namespace, pod) group_left(label_name)\n        label_replace(kube_pod_labels{job=\"kube-state-metrics\"},
+    \"pod_name\", \"$1\", \"pod\", \"(.*)\")\n      )\n    \"record\": \"namespace_name:kube_pod_container_resource_requests_memory_bytes:sum\"\n
+    \ - \"expr\": |\n      sum by (namespace, label_name) (\n        sum(kube_pod_container_resource_requests_cpu_cores{job=\"kube-state-metrics\"}
+    and on(pod) kube_pod_status_scheduled{condition=\"true\"}) by (namespace, pod)\n
+    \     * on (namespace, pod) group_left(label_name)\n        label_replace(kube_pod_labels{job=\"kube-state-metrics\"},
+    \"pod_name\", \"$1\", \"pod\", \"(.*)\")\n      )\n    \"record\": \"namespace_name:kube_pod_container_resource_requests_cpu_cores:sum\"\n-
+    \"name\": \"kube-scheduler.rules\"\n  \"rules\": \n  - \"expr\": |\n      histogram_quantile(0.99,
+    sum(rate(scheduler_e2e_scheduling_latency_microseconds_bucket{job=\"kube-scheduler\"}[5m]))
+    without(instance, pod)) / 1e+06\n    \"labels\": \n      \"quantile\": \"0.99\"\n
+    \   \"record\": \"cluster_quantile:scheduler_e2e_scheduling_latency:histogram_quantile\"\n
+    \ - \"expr\": |\n      histogram_quantile(0.99, sum(rate(scheduler_scheduling_algorithm_latency_microseconds_bucket{job=\"kube-scheduler\"}[5m]))
+    without(instance, pod)) / 1e+06\n    \"labels\": \n      \"quantile\": \"0.99\"\n
+    \   \"record\": \"cluster_quantile:scheduler_scheduling_algorithm_latency:histogram_quantile\"\n
+    \ - \"expr\": |\n      histogram_quantile(0.99, sum(rate(scheduler_binding_latency_microseconds_bucket{job=\"kube-scheduler\"}[5m]))
+    without(instance, pod)) / 1e+06\n    \"labels\": \n      \"quantile\": \"0.99\"\n
+    \   \"record\": \"cluster_quantile:scheduler_binding_latency:histogram_quantile\"\n
+    \ - \"expr\": |\n      histogram_quantile(0.9, sum(rate(scheduler_e2e_scheduling_latency_microseconds_bucket{job=\"kube-scheduler\"}[5m]))
+    without(instance, pod)) / 1e+06\n    \"labels\": \n      \"quantile\": \"0.9\"\n
+    \   \"record\": \"cluster_quantile:scheduler_e2e_scheduling_latency:histogram_quantile\"\n
+    \ - \"expr\": |\n      histogram_quantile(0.9, sum(rate(scheduler_scheduling_algorithm_latency_microseconds_bucket{job=\"kube-scheduler\"}[5m]))
+    without(instance, pod)) / 1e+06\n    \"labels\": \n      \"quantile\": \"0.9\"\n
+    \   \"record\": \"cluster_quantile:scheduler_scheduling_algorithm_latency:histogram_quantile\"\n
+    \ - \"expr\": |\n      histogram_quantile(0.9, sum(rate(scheduler_binding_latency_microseconds_bucket{job=\"kube-scheduler\"}[5m]))
+    without(instance, pod)) / 1e+06\n    \"labels\": \n      \"quantile\": \"0.9\"\n
+    \   \"record\": \"cluster_quantile:scheduler_binding_latency:histogram_quantile\"\n
+    \ - \"expr\": |\n      histogram_quantile(0.5, sum(rate(scheduler_e2e_scheduling_latency_microseconds_bucket{job=\"kube-scheduler\"}[5m]))
+    without(instance, pod)) / 1e+06\n    \"labels\": \n      \"quantile\": \"0.5\"\n
+    \   \"record\": \"cluster_quantile:scheduler_e2e_scheduling_latency:histogram_quantile\"\n
+    \ - \"expr\": |\n      histogram_quantile(0.5, sum(rate(scheduler_scheduling_algorithm_latency_microseconds_bucket{job=\"kube-scheduler\"}[5m]))
+    without(instance, pod)) / 1e+06\n    \"labels\": \n      \"quantile\": \"0.5\"\n
+    \   \"record\": \"cluster_quantile:scheduler_scheduling_algorithm_latency:histogram_quantile\"\n
+    \ - \"expr\": |\n      histogram_quantile(0.5, sum(rate(scheduler_binding_latency_microseconds_bucket{job=\"kube-scheduler\"}[5m]))
+    without(instance, pod)) / 1e+06\n    \"labels\": \n      \"quantile\": \"0.5\"\n
+    \   \"record\": \"cluster_quantile:scheduler_binding_latency:histogram_quantile\"\n-
+    \"name\": \"kube-apiserver.rules\"\n  \"rules\": \n  - \"expr\": |\n      histogram_quantile(0.99,
+    sum(rate(apiserver_request_latencies_bucket{job=\"apiserver\"}[5m])) without(instance,
+    pod)) / 1e+06\n    \"labels\": \n      \"quantile\": \"0.99\"\n    \"record\":
+    \"cluster_quantile:apiserver_request_latencies:histogram_quantile\"\n  - \"expr\":
+    |\n      histogram_quantile(0.9, sum(rate(apiserver_request_latencies_bucket{job=\"apiserver\"}[5m]))
+    without(instance, pod)) / 1e+06\n    \"labels\": \n      \"quantile\": \"0.9\"\n
+    \   \"record\": \"cluster_quantile:apiserver_request_latencies:histogram_quantile\"\n
+    \ - \"expr\": |\n      histogram_quantile(0.5, sum(rate(apiserver_request_latencies_bucket{job=\"apiserver\"}[5m]))
+    without(instance, pod)) / 1e+06\n    \"labels\": \n      \"quantile\": \"0.5\"\n
+    \   \"record\": \"cluster_quantile:apiserver_request_latencies:histogram_quantile\"\n-
+    \"name\": \"node.rules\"\n  \"rules\": \n  - \"expr\": \"sum(min(kube_pod_info)
+    by (node))\"\n    \"record\": \":kube_pod_info_node_count:\"\n  - \"expr\": |\n
+    \     max(label_replace(kube_pod_info{job=\"kube-state-metrics\"}, \"pod\", \"$1\",
+    \"pod\", \"(.*)\")) by (node, namespace, pod)\n    \"record\": \"node_namespace_pod:kube_pod_info:\"\n
+    \ - \"expr\": |\n      count by (node) (sum by (node, cpu) (\n        node_cpu{job=\"node-exporter\"}\n
+    \     * on (namespace, pod) group_left(node)\n        node_namespace_pod:kube_pod_info:\n
+    \     ))\n    \"record\": \"node:node_num_cpu:sum\"\n  - \"expr\": |\n      1
+    - avg(rate(node_cpu{job=\"node-exporter\",mode=\"idle\"}[1m]))\n    \"record\":
+    \":node_cpu_utilisation:avg1m\"\n  - \"expr\": |\n      1 - avg by (node) (\n
+    \       rate(node_cpu{job=\"node-exporter\",mode=\"idle\"}[1m])\n      * on (namespace,
+    pod) group_left(node)\n        node_namespace_pod:kube_pod_info:)\n    \"record\":
+    \"node:node_cpu_utilisation:avg1m\"\n  - \"expr\": |\n      sum(node_load1{job=\"node-exporter\"})\n
+    \     /\n      sum(node:node_num_cpu:sum)\n    \"record\": \":node_cpu_saturation_load1:\"\n
+    \ - \"expr\": |\n      sum by (node) (\n        node_load1{job=\"node-exporter\"}\n
+    \     * on (namespace, pod) group_left(node)\n        node_namespace_pod:kube_pod_info:\n
+    \     )\n      /\n      node:node_num_cpu:sum\n    \"record\": \"node:node_cpu_saturation_load1:\"\n
+    \ - \"expr\": |\n      1 -\n      sum(node_memory_MemFree{job=\"node-exporter\"}
+    + node_memory_Cached{job=\"node-exporter\"} + node_memory_Buffers{job=\"node-exporter\"})\n
+    \     /\n      sum(node_memory_MemTotal{job=\"node-exporter\"})\n    \"record\":
+    \":node_memory_utilisation:\"\n  - \"expr\": |\n      sum by (node) (\n        (node_memory_MemFree{job=\"node-exporter\"}
+    + node_memory_Cached{job=\"node-exporter\"} + node_memory_Buffers{job=\"node-exporter\"})\n
+    \       * on (namespace, pod) group_left(node)\n          node_namespace_pod:kube_pod_info:\n
+    \     )\n    \"record\": \"node:node_memory_bytes_available:sum\"\n  - \"expr\":
+    |\n      sum by (node) (\n        node_memory_MemTotal{job=\"node-exporter\"}\n
+    \       * on (namespace, pod) group_left(node)\n          node_namespace_pod:kube_pod_info:\n
+    \     )\n    \"record\": \"node:node_memory_bytes_total:sum\"\n  - \"expr\": |\n
+    \     (node:node_memory_bytes_total:sum - node:node_memory_bytes_available:sum)\n
+    \     /\n      scalar(sum(node:node_memory_bytes_total:sum))\n    \"record\":
+    \"node:node_memory_utilisation:ratio\"\n  - \"expr\": |\n      1e3 * sum(\n        (rate(node_vmstat_pgpgin{job=\"node-exporter\"}[1m])\n
+    \      + rate(node_vmstat_pgpgout{job=\"node-exporter\"}[1m]))\n      )\n    \"record\":
+    \":node_memory_swap_io_bytes:sum_rate\"\n  - \"expr\": |\n      1 -\n      sum
+    by (node) (\n        (node_memory_MemFree{job=\"node-exporter\"} + node_memory_Cached{job=\"node-exporter\"}
+    + node_memory_Buffers{job=\"node-exporter\"})\n      * on (namespace, pod) group_left(node)\n
+    \       node_namespace_pod:kube_pod_info:\n      )\n      /\n      sum by (node)
+    (\n        node_memory_MemTotal{job=\"node-exporter\"}\n      * on (namespace,
+    pod) group_left(node)\n        node_namespace_pod:kube_pod_info:\n      )\n    \"record\":
+    \"node:node_memory_utilisation:\"\n  - \"expr\": |\n      1 - (node:node_memory_bytes_available:sum
+    / node:node_memory_bytes_total:sum)\n    \"record\": \"node:node_memory_utilisation_2:\"\n
+    \ - \"expr\": |\n      1e3 * sum by (node) (\n        (rate(node_vmstat_pgpgin{job=\"node-exporter\"}[1m])\n
+    \      + rate(node_vmstat_pgpgout{job=\"node-exporter\"}[1m]))\n       * on (namespace,
+    pod) group_left(node)\n         node_namespace_pod:kube_pod_info:\n      )\n    \"record\":
+    \"node:node_memory_swap_io_bytes:sum_rate\"\n  - \"expr\": |\n      avg(irate(node_disk_io_time_ms{job=\"node-exporter\",device=~\"(sd|xvd|nvme).+\"}[1m])
+    / 1e3)\n    \"record\": \":node_disk_utilisation:avg_irate\"\n  - \"expr\": |\n
+    \     avg by (node) (\n        irate(node_disk_io_time_ms{job=\"node-exporter\",device=~\"(sd|xvd|nvme).+\"}[1m])
+    / 1e3\n      * on (namespace, pod) group_left(node)\n        node_namespace_pod:kube_pod_info:\n
+    \     )\n    \"record\": \"node:node_disk_utilisation:avg_irate\"\n  - \"expr\":
+    |\n      avg(irate(node_disk_io_time_weighted{job=\"node-exporter\",device=~\"(sd|xvd|nvme).+\"}[1m])
+    / 1e3)\n    \"record\": \":node_disk_saturation:avg_irate\"\n  - \"expr\": |\n
+    \     avg by (node) (\n        irate(node_disk_io_time_weighted{job=\"node-exporter\",device=~\"(sd|xvd|nvme).+\"}[1m])
+    / 1e3\n      * on (namespace, pod) group_left(node)\n        node_namespace_pod:kube_pod_info:\n
+    \     )\n    \"record\": \"node:node_disk_saturation:avg_irate\"\n  - \"expr\":
+    |\n      sum(irate(node_network_receive_bytes{job=\"node-exporter\",device=\"eth0\"}[1m]))
+    +\n      sum(irate(node_network_transmit_bytes{job=\"node-exporter\",device=\"eth0\"}[1m]))\n
+    \   \"record\": \":node_net_utilisation:sum_irate\"\n  - \"expr\": |\n      sum
+    by (node) (\n        (irate(node_network_receive_bytes{job=\"node-exporter\",device=\"eth0\"}[1m])
+    +\n        irate(node_network_transmit_bytes{job=\"node-exporter\",device=\"eth0\"}[1m]))\n
+    \     * on (namespace, pod) group_left(node)\n        node_namespace_pod:kube_pod_info:\n
+    \     )\n    \"record\": \"node:node_net_utilisation:sum_irate\"\n  - \"expr\":
+    |\n      sum(irate(node_network_receive_drop{job=\"node-exporter\",device=\"eth0\"}[1m]))
+    +\n      sum(irate(node_network_transmit_drop{job=\"node-exporter\",device=\"eth0\"}[1m]))\n
+    \   \"record\": \":node_net_saturation:sum_irate\"\n  - \"expr\": |\n      sum
+    by (node) (\n        (irate(node_network_receive_drop{job=\"node-exporter\",device=\"eth0\"}[1m])
+    +\n        irate(node_network_transmit_drop{job=\"node-exporter\",device=\"eth0\"}[1m]))\n
+    \     * on (namespace, pod) group_left(node)\n        node_namespace_pod:kube_pod_info:\n
+    \     )\n    \"record\": \"node:node_net_saturation:sum_irate\"\n- \"name\": \"kube-prometheus-node-recording.rules\"\n
+    \ \"rules\": \n  - \"expr\": \"sum(rate(node_cpu{mode!=\\\"idle\\\",mode!=\\\"iowait\\\"}[3m]))
+    BY (instance)\"\n    \"record\": \"instance:node_cpu:rate:sum\"\n  - \"expr\":
+    \"sum((node_filesystem_size{mountpoint=\\\"/\\\"} - node_filesystem_free{mountpoint=\\\"/\\\"}))
+    BY (instance)\"\n    \"record\": \"instance:node_filesystem_usage:sum\"\n  - \"expr\":
+    \"sum(rate(node_network_receive_bytes[3m])) BY (instance)\"\n    \"record\": \"instance:node_network_receive_bytes:rate:sum\"\n
+    \ - \"expr\": \"sum(rate(node_network_transmit_bytes[3m])) BY (instance)\"\n    \"record\":
+    \"instance:node_network_transmit_bytes:rate:sum\"\n  - \"expr\": \"sum(rate(node_cpu{mode!=\\\"idle\\\",mode!=\\\"iowait\\\"}[5m]))
+    WITHOUT (cpu, mode) / ON(instance) GROUP_LEFT() count(sum(node_cpu) BY (instance,
+    cpu)) BY (instance)\"\n    \"record\": \"instance:node_cpu:ratio\"\n  - \"expr\":
+    \"sum(rate(node_cpu{mode!=\\\"idle\\\",mode!=\\\"iowait\\\"}[5m]))\"\n    \"record\":
+    \"cluster:node_cpu:sum_rate5m\"\n  - \"expr\": \"cluster:node_cpu:rate5m / count(sum(node_cpu)
+    BY (instance, cpu))\"\n    \"record\": \"cluster:node_cpu:ratio\"\n"
