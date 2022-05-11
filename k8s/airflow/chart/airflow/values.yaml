@@ -28,7 +28,7 @@ nfs:
   image:
     repo: null
     tag: null
-  persistance:
+  persistence:
     storageClass: standard
     size: 5Gi
 
@@ -39,6 +39,6 @@ postgresql:
     repo: null
     tag: null
   persistence:
-    size: 5Gi
     storageClass: standard
+    size: 5Gi
 
