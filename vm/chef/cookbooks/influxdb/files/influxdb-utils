@@ -1,0 +1,74 @@
+#!/bin/bash -eu
+#
+# Copyright 2022 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
+
+#######################################
+# Awaits for website at localhost be ready.
+#######################################
+function wait_for_app() {
+  local max_retries=5
+  local https_max_retries=5
+  local retry=1
+  local https_retry=1
+  local https_code=0
+  local http_code=0
+  local host_ip=""
+
+  # Prevent exit on error in case of request max-time reached.
+  set +e
+
+  echo "Checking for app readiness(http protocol)..."
+
+  while [[ "${http_code}" -ne 200 && "${retry}" -le "${max_retries}" ]]; do
+    echo "Retry: ${retry}"
+    http_code="$(curl --max-time 5 -s -L -o /dev/null -w "%{http_code}" http://localhost:8086)"
+    echo "Http Code: ${http_code}"
+    (( retry=retry+1 ))
+
+    if [[ "${http_code}" -ne 200 ]]; then
+    echo "Switching to https test..."
+  else
+    echo "App is ready"
+    exit 0
+    fi
+  done
+
+  if [[ "${retry}" -gt "${max_retries}" ]]; then
+    echo "Max retries exceeded."
+  fi
+
+ echo "Checking for app readiness(https protocol)..."
+
+ while [[ "${https_code}" -ne 200 && "${https_retry}" -le "${https_max_retries}" ]]; do
+    echo "Retry: ${https_retry}"
+    https_code="$(curl --max-time 5 -s -L -k -o /dev/null -w "%{http_code}" https://localhost:8086)"
+    echo "Https Code: ${https_code}"
+    (( https_retry=https_retry+1 ))
+
+    if [[ "${https_code}" -ne 200 ]]; then
+    echo "Check failed..."
+    fi
+  done
+
+  if [[ "${https_retry}" -gt "${https_max_retries}" ]]; then
+    echo "Max retries exceeded."
+    exit 1
+  else
+    echo "App is ready."
+  fi
+  set -e
+}
