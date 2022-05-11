@@ -37,7 +37,7 @@ actions:
 - name: Scale down airflow
   bashTest:
     script: |
-      kubectl scale deploy -n $NAMESPACE --replicas=0 --all
+      kubectl scale deploy --replicas=0 $APP_INSTANCE_NAME-web $APP_INSTANCE_NAME-scheduler $APP_INSTANCE_NAME-triggerer -n $NAMESPACE
       kubectl wait --for delete pod -l 'component in (web, scheduler, triggerer)' -n $NAMESPACE
     expect:
       exitCode:
