@@ -5,9 +5,7 @@ metadata:
   labels:
     app: {{ include "airflow.labels.app" . }}
     component: scheduler
-    chart: {{ include "airflow.labels.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    name: {{ .Release.Name }}
 spec:
   replicas: {{ .Values.scheduler.replicas }}
   strategy:
@@ -19,7 +17,7 @@ spec:
     matchLabels:
       app: {{ include "airflow.labels.app" . }}
       component: scheduler
-      release: {{ .Release.Name }}
+      name: {{ .Release.Name }}
   template:
     metadata:
       annotations:
@@ -27,7 +25,7 @@ spec:
       labels:
         app: {{ include "airflow.labels.app" . }}
         component: scheduler
-        release: {{ .Release.Name }}
+        name: {{ .Release.Name }}
     spec:
       restartPolicy: Always
       serviceAccountName: {{ include "airflow.serviceAccountName" . }}

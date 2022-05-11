@@ -6,14 +6,12 @@ metadata:
   labels:
     app: {{ include "airflow.labels.app" . }}
     component: web
-    chart: {{ include "airflow.labels.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    name: {{ .Release.Name }}
 spec:
   selector:
     app: {{ include "airflow.labels.app" . }}
     component: web
-    release: {{ .Release.Name }}
+    name: {{ .Release.Name }}
   ports:
     - name: web
       protocol: TCP

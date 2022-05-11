@@ -6,9 +6,7 @@ metadata:
   labels:
     app: {{ include "airflow.labels.app" . }}
     component: db-migrations
-    chart: {{ include "airflow.labels.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    name: {{ .Release.Name }}
   annotations:
     helm.sh/hook: post-install,post-upgrade
     helm.sh/hook-weight: "-100"
@@ -21,7 +19,7 @@ spec:
       labels:
         app: {{ include "airflow.labels.app" . }}
         component: db-migrations
-        release: {{ .Release.Name }}
+        name: {{ .Release.Name }}
     spec:
       restartPolicy: OnFailure
       serviceAccountName: {{ include "airflow.serviceAccountName" . }}

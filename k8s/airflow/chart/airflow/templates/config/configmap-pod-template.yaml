@@ -4,9 +4,7 @@ metadata:
   name: {{ .Release.Name }}-pod-template
   labels:
     app: {{ include "airflow.labels.app" . }}
-    chart: {{ include "airflow.labels.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    name: {{ .Release.Name }}
 data:
   pod_template.yaml: |-
     {{- tpl (.Files.Get "files/pod_template.kubernetes-helm-yaml") . | nindent 4 }}

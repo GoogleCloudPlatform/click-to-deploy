@@ -6,13 +6,6 @@ Construct the `labels.app` for used by all resources in this chart.
 {{- end -}}
 
 {{/*
-Construct the `labels.chart` for used by all resources in this chart.
-*/}}
-{{- define "airflow.labels.chart" -}}
-{{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
-
-{{/*
 Construct the name of the airflow ServiceAccount.
 */}}
 {{- define "airflow.serviceAccountName" -}}

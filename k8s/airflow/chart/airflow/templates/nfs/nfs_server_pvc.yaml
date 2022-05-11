@@ -17,9 +17,7 @@ metadata:
   name: {{ .Release.Name }}-nfs-dags-logs
   labels:
     app: {{ include "airflow.labels.app" . }}
-    chart: {{ include "airflow.labels.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    name: {{ .Release.Name }}
 spec:
   accessModes:
     - ReadWriteMany

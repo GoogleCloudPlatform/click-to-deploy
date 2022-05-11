@@ -6,9 +6,7 @@ metadata:
   labels:
     app: {{ include "airflow.labels.app" . }}
     component: web
-    chart: {{ include "airflow.labels.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    name: {{ .Release.Name }}
 spec:
   tls:
   - secretName: {{ .Release.Name }}-web-tls
