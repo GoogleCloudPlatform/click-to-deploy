@@ -5,6 +5,9 @@ actions:
     expect:
       exitCode:
         equals: 0
+- name: debug
+  bashTest:
+    script: sleep 3600s
 - name: Test nuclio build
   bashTest:
     script: |
