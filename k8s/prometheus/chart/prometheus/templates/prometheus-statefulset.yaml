@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/component: prometheus
 spec:
   serviceName: "{{ .Release.Name }}-prometheus"
-  replicas: "{{ .Values.prometheus.replicas }}"
+  replicas: {{ .Values.prometheus.replicas }}
   podManagementPolicy: "Parallel"
   updateStrategy:
     type: "RollingUpdate"
@@ -31,8 +31,9 @@ spec:
           subPath: ""
       containers:
         - name: prometheus-server
-          image: "{{ .Values.prometheus.image }}:{{ .Values.prometheus.image.tag }}"
+          image: "{{ .Values.prometheus.image.repo }}:{{ .Values.prometheus.image.tag }}"
           imagePullPolicy: "IfNotPresent"
+          # command: ["tail", "-f", "/dev/null"]
           args:
             - --config.file=/etc/config/prometheus.yaml
             - --storage.tsdb.path=/data
@@ -84,7 +85,7 @@ spec:
       name: {{ .Release.Name }}-prometheus-data
       labels: *Labels
     spec:
-      storageClassName: "{{ .Values.proemtheus.storageClass }}"
+      storageClassName: "{{ .Values.prometheus.storageClass }}"
       accessModes:
         - ReadWriteOnce
       resources:

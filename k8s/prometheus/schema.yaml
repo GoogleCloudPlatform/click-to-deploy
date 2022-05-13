@@ -32,7 +32,7 @@ x-google-marketplace:
       properties:
         grafana.image:
           type: FULL
-    prometheus-init:
+    init-container:
       properties:
         prometheus.initContainer.image:
           type: FULL
@@ -58,12 +58,22 @@ properties:
         - type: ClusterRole
           rulesType: CUSTOM
           rules:
-          - apiGroups: [""]
+          - apiGroups:
+            - apps
+            resources:
+            - statefulsets
+            verbs:
+            - '*'
+          - apiGroups: ["*"]
             resources:
             - endpoints
             - pods
             - nodes
+            - services
+            - services/finalizers
+            - endpoints
             verbs:
+            - watch
             - get
             - list
   prometheus.replicas:
@@ -180,7 +190,7 @@ properties:
             - daemonsets
             - deployments
             - replicasets
-            verbs: ["list", "watch"]
+            verbs: ["get", "list", "watch"]
           - apiGroups: ["batch"]
             resources:
             - cronjobs
@@ -190,6 +200,33 @@ properties:
             resources:
             - horizontalpodautoscalers
             verbs: ["list", "watch"]
+          - apiGroups: ["certificates.k8s.io"]
+            resources:
+            - certificatesigningrequests
+            verbs: ["get", "list", "watch"]
+          - apiGroups: ["policy"]
+            resources:
+            - poddisruptionbudgets
+            verbs: ["get", "list", "watch"]
+          - apiGroups: ["networking.k8s.io"]
+            resources:
+            - ingresses
+            - networkpolicies
+            verbs: ["get", "list", "watch"]
+          - apiGroups: ["coordination.k8s.io"]
+            resources:
+            - leases
+            verbs: ["get", "list", "watch"]
+          - apiGroups: ["admissionregistration.k8s.io"]
+            resources:
+            - mutatingwebhookconfigurations
+            - validatingwebhookconfigurations
+            verbs: ["get", "list", "watch"]
+          - apiGroups: ["storage.k8s.io"]
+            resources:
+            - storageclasses
+            - volumeattachments
+            verbs: ["get", "list", "watch"]
 
   prometheus.storageClass:
     type: string

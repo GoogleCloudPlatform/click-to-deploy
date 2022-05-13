@@ -10,6 +10,8 @@ metadata:
     app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: prometheus
 data:
-  {{ (.Files.Glob "files/alerts.yaml").AsConfig }}
-  {{ (.Files.Glob "files/prometheus.yaml").AsConfig }}
-  {{ (.Files.Glob "files/rules.yaml").AsConfig }}
+  {{- $root := . -}}
+  {{- range $path, $bytes := .Files.Glob "files/prometheus/*" }}
+  {{ base $path }}: |
+  {{- $root.Files.Get $path | nindent 4}}
+  {{- end -}}

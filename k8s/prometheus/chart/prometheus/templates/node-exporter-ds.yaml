@@ -18,7 +18,7 @@ spec:
       labels:
         k8s-app: node-exporter
     spec:
-      serviceAccountName: "{{ .Values.nodeexporter.serviceAccountName }}"s
+      serviceAccountName: "{{ .Values.nodeexporter.serviceAccountName }}"
       containers:
         - name: prometheus-node-exporter
           image: "{{ .Values.nodeexporter.image }}"

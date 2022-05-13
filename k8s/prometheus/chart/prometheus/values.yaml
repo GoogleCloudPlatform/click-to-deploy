@@ -1,6 +1,7 @@
 prometheus:
-  image: null
-  tag: null
+  image:
+    repo: null
+    tag: null
   serviceAccountName: null
   replicas: 2
   storageClass: null
