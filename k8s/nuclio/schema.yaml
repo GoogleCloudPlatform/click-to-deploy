@@ -88,13 +88,14 @@ properties:
           rulesType: CUSTOM
           rules:
           - apiGroups: [""]
-            resources:
-            - endpoints
-            - pods
-            - nodes
-            verbs:
-            - get
-            - list
+            resources: ["endpoints","pods","nodes"]
+            verbs: ["get","list"]
+        - type: ClusterRole
+          rulesType: CUSTOM
+          rules:
+            - apiGroups: ["apiextensions.k8s.io"]
+              resources: ["customresourcedefinitions"]
+              verbs: ["get","list","create"]
   CDRJobServiceAccount:
     type: string
     title: CRD deployer Service Account
