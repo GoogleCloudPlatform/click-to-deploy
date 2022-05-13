@@ -25,7 +25,15 @@ spec:
     singular: nuclioproject
   scope: Namespaced
   versions:
-    - name: v1
-      served: true
-      storage: true
+  - name: v1beta1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            x-kubernetes-preserve-unknown-fields: true
+          status:
+            x-kubernetes-preserve-unknown-fields: true
 
