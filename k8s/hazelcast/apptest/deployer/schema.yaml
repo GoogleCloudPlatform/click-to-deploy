@@ -4,3 +4,24 @@ properties:
     default: $REGISTRY/tester:$TAG
     x-google-property:
       type: IMAGE
+
+x-google-marketplace:
+  deployerServiceAccount:
+    description: >
+      Service account used by tester application deployer
+    roles:
+    - type: ClusterRole
+      rulesType: CUSTOM
+      rules:
+      - apiGroups: [""]
+        resources:
+        - pods/log
+        - pods
+        verbs:
+        - get
+        - list
+      - apiGroups: [""]
+        resources:
+        - pods/exec
+        verbs:
+        - create
