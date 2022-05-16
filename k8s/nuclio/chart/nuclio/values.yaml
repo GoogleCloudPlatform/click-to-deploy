@@ -1,6 +1,5 @@
 dashboard:
   replicas: 1
-  serviceAccountName: null
   image:
     repo: null
     tag: null
