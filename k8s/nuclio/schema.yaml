@@ -76,7 +76,7 @@ properties:
              - apiGroups: [""]
                resources: ["nodes","pods"]
                verbs: ["get", "list"]
-  controller.serviceAccountName:
+  nuclio.serviceAccountName:
     type: string
     title: Nuclio Controller Service Account
     x-google-marketplace:
