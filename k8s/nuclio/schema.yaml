@@ -96,7 +96,7 @@ properties:
             - apiGroups: ["apps", "extensions"]
               resources: ["deployments"]
               verbs: ["*"]
-            - apiGroups: ["networking.k8s.io"]
+            - apiGroups: ["extensions","networking.k8s.io"]
               resources: ["ingresses"]
               verbs: ["*"]
             - apiGroups: ["autoscaling"]
