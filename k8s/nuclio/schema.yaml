@@ -59,23 +59,6 @@ properties:
     default: null
     title: Docker credentials secret name
     description: Name of the Secret which contains login credentials for the Docker registry. To create this, follow the steps in the README.
-  dashboard.serviceAccountName:
-    type: string
-    title: Nuclio Dashboard Service Account
-    x-google-marketplace:
-      type: SERVICE_ACCOUNT
-      serviceAccount:
-        description: Service account used by Nuclio Dashboard StatefulSet
-        roles:
-        - type: ClusterRole
-          rulesType: CUSTOM
-          rules:
-             - apiGroups: ["nuclio.io"]
-               resources: ["nucliofunctions", "nuclioprojects", "nucliofunctionevents"]
-               verbs: ["*"]
-             - apiGroups: [""]
-               resources: ["nodes","pods"]
-               verbs: ["get", "list"]
   nuclio.serviceAccountName:
     type: string
     title: Nuclio Controller Service Account
