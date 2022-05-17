@@ -13,5 +13,5 @@ data:
   {{- $root := . -}}
   {{- range $path, $bytes := .Files.Glob "files/dashboards/*" }}
   {{ base $path }}: |
-  {{- $root.Files.Get $path | toJson | nindent 4}}
+  {{- $root.Files.Get $path | nindent 4}}
   {{- end -}}

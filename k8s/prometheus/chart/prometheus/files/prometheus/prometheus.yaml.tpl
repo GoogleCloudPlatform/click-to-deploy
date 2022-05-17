@@ -231,7 +231,7 @@
   - "action": "labelmap"
     "regex": "__meta_kubernetes_service_label_(.+)"
   - "action": "keep"
-    "regex": "default;kube-state-metrics"
+    "regex": "{{ .Release.Namespace }};kube-state-metrics"
     "source_labels":
     - "__meta_kubernetes_namespace"
     - "__meta_kubernetes_service_label_k8s_app"
