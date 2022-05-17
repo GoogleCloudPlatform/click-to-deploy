@@ -1,6 +1,6 @@
 FROM marketplace.gcr.io/google/debian10
 
-ARG ZK_VERSION=3.7.0
+ARG ZK_VERSION=3.7.1
 
 ENV ZOO_CONF_DIR=/conf \
     ZOO_DATA_DIR=/data \
