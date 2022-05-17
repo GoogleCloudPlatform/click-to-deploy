@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,12 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['postgresql']['packages'] = ['postgresql', 'postgresql-client']
-default['postgresql']['repository_url'] = 'http://apt.postgresql.org/pub/repos/apt/'
-default['postgresql']['key'] = 'https://www.postgresql.org/media/keys/ACCC4CF8.asc'
-
-default['postgresql']['standalone']['distribution'] = 'buster'
-default['postgresql']['standalone']['allow_external'] = true
-
-default['postgresql']['cluster']['packages'] = ['postgresql-plperl-13', 'postgresql-client']
-default['postgresql']['cluster']['distribution'] = 'buster'
+cloudbuild:
+  enable_parallel: false
+versions:
+- dir: 2/debian11/2.2
+  from: marketplace.gcr.io/google/debian11:latest
+  packages:
+    pip:
+      version: 21.3.1
+    airflow:
+      version: 2.2.5
+  repo: airflow2
+  tags:
+  - '2.2.5-debian11'
+  - '2.2-debian11'
+  - '2-debian11'
+  - '2.2.5'
+  - '2.2'
+  - '2'
+  - 'latest'

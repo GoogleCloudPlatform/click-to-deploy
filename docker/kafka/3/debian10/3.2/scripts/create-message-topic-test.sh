@@ -1,3 +1,5 @@
+#!/bin/bash
+#
 # Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,13 +13,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+# Send message to a topic define in a Kafka broker list, script used by functional tests.
+#
+# Use:
+#
+# /opt/docker-kafka/scripts/create-message-topic-test.sh broker-list topic msg
+#
+set -e
 
-default['postgresql']['packages'] = ['postgresql', 'postgresql-client']
-default['postgresql']['repository_url'] = 'http://apt.postgresql.org/pub/repos/apt/'
-default['postgresql']['key'] = 'https://www.postgresql.org/media/keys/ACCC4CF8.asc'
-
-default['postgresql']['standalone']['distribution'] = 'buster'
-default['postgresql']['standalone']['allow_external'] = true
-
-default['postgresql']['cluster']['packages'] = ['postgresql-plperl-13', 'postgresql-client']
-default['postgresql']['cluster']['distribution'] = 'buster'
+echo "$3" | /opt/kafka/bin/kafka-console-producer.sh --broker-list "$1" --topic "$2" 2>&1 >/dev/null && echo OK
