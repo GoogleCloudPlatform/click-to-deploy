@@ -14,6 +14,6 @@ actions:
     script: mysql -h ${APP_INSTANCE_NAME}-galera-svc.${NAMESPACE}.svc.cluster.local -u root -p"wrong_pass" -e "SHOW DATABASES"
     expect:
       stderr:
-        matches: 'ERROR 1045 (28000): Access denied for user ''root''@''.+'' (using password: YES)'
+        matches: 'ERROR 1045 \(28000\): Access denied for user ''root''@''.+'' \(using password: YES\)'
       exitCode:
         equals: 1
