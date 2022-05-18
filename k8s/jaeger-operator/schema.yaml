@@ -125,6 +125,13 @@ properties:
               - kafkausers
               verbs:
               - '*'
+            - apiGroups:
+              - networking.k8s.io
+              resources:
+              - ingresses
+              verbs:
+              - '*'
+
   CDRJobServiceAccount:
     type: string
     title: CRD deployer Service Account
