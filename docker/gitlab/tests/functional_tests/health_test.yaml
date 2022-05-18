@@ -44,20 +44,6 @@ tests:
   expect:
     stdout:
       matches: '"master_check":\[{"status":"ok"}\]'
-    stdout:
-      matches: '"db_check":\[{"status":"ok"}\]'
-    stdout:
-      matches: '"redis_check":\[{"status":"ok"}\]'
-    stdout:
-      matches: '"db_check":\[{"status":"ok"}\]'
-    stdout:
-      matches: '"cache_check":\[{"status":"ok"}\]'
-    stdout:
-      matches: '"queues_check":\[{"status":"ok"}\]'
-    stdout:
-      matches: '"shared_state_check":\[{"status":"ok"}\]'
-    stdout:
-      matches: '"gitaly_check":\[{"status":"ok".*}\]'
 
 - name: GitLab Liveness Check
   command: ['curl', '-s', 'http://localhost/-/liveness']
