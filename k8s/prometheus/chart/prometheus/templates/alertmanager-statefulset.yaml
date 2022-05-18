@@ -30,9 +30,9 @@ spec:
             - --storage.path=/data
             - --web.listen-address=:9093
             - --web.route-prefix=/
-            - --mesh.listen-address=$(POD_IP):6783
-            - --mesh.peer={{ .Release.Name }}-alertmanager-0.{{ .Release.Name }}-alertmanager-operated.{{ .Release.Namespace }}.svc:6783
-            - --mesh.peer={{ .Release.Name }}-alertmanager-1.{{ .Release.Name }}-alertmanager-operated.{{ .Release.Namespace }}.svc:6783
+            - --cluster.listen-address=$(POD_IP):6783
+            - --cluster.peer={{ .Release.Name }}-alertmanager-0.{{ .Release.Name }}-alertmanager-operated.{{ .Release.Namespace }}.svc:6783
+            - --cluster.peer={{ .Release.Name }}-alertmanager-1.{{ .Release.Name }}-alertmanager-operated.{{ .Release.Namespace }}.svc:6783
             - --log.level=debug
           env:
           - name: POD_IP
