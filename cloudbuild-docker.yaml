@@ -14,7 +14,7 @@
 
 timeout: 3600s # 1h
 options:
- machineType: 'E2_HIGHCPU_8'
+ machineType: 'E2_HIGHCPU_32'
 steps:
 
 - id: Build C2D Docker Image

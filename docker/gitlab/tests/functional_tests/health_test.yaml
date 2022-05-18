@@ -25,7 +25,7 @@ setup:
   - gitlab-$UNIQUE-id
   - '-d'
   - '$IMAGE'
-- command: [sleep, 800s]
+- command: [sleep, 200s]
 
 teardown:
 - command: [docker, stop, gitlab-$UNIQUE-id]
@@ -37,7 +37,7 @@ tests:
   command: ['curl', '-s', '--connect-timeout', '5', '--max-time', '10', '--retry', '50', '--retry-delay', '6', 'http://localhost/-/health']
   expect:
     stdout:
-      equals: 'GitLab OK'
+      matches: 'GitLab OK'
 
 - name: GitLab Readiness Check
   command: ['curl', '-s', '--connect-timeout', '5', '--max-time', '10', '--retry', '50', '--retry-delay', '6', 'http://localhost/-/readiness?all=1']
