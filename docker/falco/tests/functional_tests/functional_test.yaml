@@ -30,7 +30,7 @@ setup:
   - '--name'
   - 'some-falco-$UNIQUE-id'
   - '-e'
-  - FALCO_BPF_PROBE=
+  - FALCO_BPF_PROBE=falco_debian_5.10.0-14-cloud-amd64_1.o
   - '-v'
   - '/var/run/docker.sock:/host/var/run/docker.sock'
   - '-v'
