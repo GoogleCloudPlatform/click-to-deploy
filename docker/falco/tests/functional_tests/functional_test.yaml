@@ -29,10 +29,10 @@ setup:
   - testbridge-$UNIQUE-id
   - '--name'
   - 'some-falco-$UNIQUE-id'
+  - '-e'
+  - 'FALCO_BPF_PROBE=""'
   - '-v'
   - '/var/run/docker.sock:/host/var/run/docker.sock'
-  - '-v'
-  - '/dev:/host/dev'
   - '-v'
   - '/proc:/host/proc:ro'
   - '-v'
@@ -43,6 +43,8 @@ setup:
   - '/usr:/host/usr:ro'
   - '-v'
   - '/etc:/host/etc:ro'
+  - '-v'
+  - '/root/.falco:/root/.falco'
   - '-d'
   - '$IMAGE'
 - command: [sleep, 90s]
