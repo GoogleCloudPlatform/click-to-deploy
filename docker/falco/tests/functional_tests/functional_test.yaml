@@ -47,6 +47,8 @@ setup:
   - '/root/.falco:/root/.falco'
   - '-d'
   - '$IMAGE'
+- command: [sleep, 30s]
+- command: [docker, logs, some-falco-$UNIQUE-id]
 - command: [sleep, 90s]
 
 teardown:
