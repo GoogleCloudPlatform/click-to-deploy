@@ -30,7 +30,7 @@ setup:
   - '--name'
   - 'some-falco-$UNIQUE-id'
   - '-e'
-  - FALCO_BPF_PROBE=/root/.falco/falco-bpf.o
+  - FALCO_BPF_PROBE=
   - '-v'
   - '/var/run/docker.sock:/host/var/run/docker.sock'
   - '-v'
