@@ -1,13 +1,14 @@
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: $APP_INSTANCE_NAME-grafana
+  name: {{ .Release.Name }}-grafana
   labels: &Labels
     k8s-app: grafana
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: grafana
 spec:
-  serviceName: $APP_INSTANCE_NAME-grafana
+  serviceName: {{ .Release.Name }}-grafana
   replicas: 1
   selector:
     matchLabels: *Labels
@@ -15,18 +16,18 @@ spec:
     metadata:
       labels: *Labels
     spec:
-      serviceAccountName: $GRAFANA_SERVICE_ACCOUNT
+      serviceAccountName: "{{ .Values.grafana.serviceAccountName }}"
       initContainers:
           - name: "init-chmod-data"
-            image: $IMAGE_PROMETHEUS_INIT
+            image: "{{ .Values.prometheus.initContainer.image }}"
             imagePullPolicy: "IfNotPresent"
             command: ["chmod", "777", "/var/lib/grafana"]
             volumeMounts:
-            - name: $APP_INSTANCE_NAME-grafana-data
+            - name: {{ .Release.Name }}-grafana-data
               mountPath: "/var/lib/grafana"
       containers:
         - name: grafana
-          image: $IMAGE_GRAFANA
+          image: "{{ .Values.grafana.image }}"
           imagePullPolicy: Always
           volumeMounts:
             - name: config
@@ -37,7 +38,7 @@ spec:
               mountPath: "/etc/grafana/provisioning/datasources/"
             - name: dashboardproviders
               mountPath: "/etc/grafana/provisioning/dashboards/"
-            - name: $APP_INSTANCE_NAME-grafana-data
+            - name: {{ .Release.Name }}-grafana-data
               mountPath: "/var/lib/grafana"
           ports:
             - name: service
@@ -50,12 +51,12 @@ spec:
             - name: GF_SECURITY_ADMIN_USER
               valueFrom:
                 secretKeyRef:
-                  name: $APP_INSTANCE_NAME-grafana
+                  name: {{ .Release.Name }}-grafana
                   key: admin-user
             - name: GF_SECURITY_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: $APP_INSTANCE_NAME-grafana
+                  name: {{ .Release.Name }}-grafana
                   key: admin-password
           livenessProbe:
             httpGet:
@@ -79,21 +80,21 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: $APP_INSTANCE_NAME-grafana-ini
+            name: {{ .Release.Name }}-grafana-ini
         - name: datasources
           configMap:
-            name: $APP_INSTANCE_NAME-grafana-datasources
+            name: {{ .Release.Name }}-grafana-datasources
         - name: dashboardproviders
           configMap:
-            name: $APP_INSTANCE_NAME-grafana-dashboardproviders
+            name: {{ .Release.Name }}-grafana-dashboardproviders
         - name: dashboards
           configMap:
-            name: $APP_INSTANCE_NAME-dashboards
+            name: {{ .Release.Name }}-dashboards
   volumeClaimTemplates:
   - metadata:
-      name: $APP_INSTANCE_NAME-grafana-data
+      name: {{ .Release.Name }}-grafana-data
     spec:
-      storageClassName: $STORAGE_CLASS
+      storageClassName: "{{ .Values.prometheus.storageClass }}"
       accessModes:
         - ReadWriteOnce
       resources:
