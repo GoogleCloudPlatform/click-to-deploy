@@ -1,9 +1,9 @@
 FROM marketplace.gcr.io/google/debian10
 
-ENV GITLAB_VERSION 14.8.6
-ENV DOWNLOAD_URL "https://packages.gitlab.com/gitlab/gitlab-ee/packages/debian/stretch/gitlab-ee_14.8.6-ee.0_amd64.deb/download.deb"
+ENV GITLAB_VERSION 15.0.0
+ENV DOWNLOAD_URL "https://packages.gitlab.com/gitlab/gitlab-ee/packages/debian/stretch/gitlab-ee_15.0.0-ee.0_amd64.deb/download.deb"
 
-ENV C2D_RELEASE 14.8.6
+ENV C2D_RELEASE 15.0.0
 
 SHELL ["/bin/sh", "-c"],
 
