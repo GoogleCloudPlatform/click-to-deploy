@@ -1,9 +1,10 @@
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: $APP_INSTANCE_NAME-alertmanager-config
+  name: {{ .Release.Name }}-alertmanager-config
   labels:
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: alertmanager
 data:
   alertmanager.yml: |
