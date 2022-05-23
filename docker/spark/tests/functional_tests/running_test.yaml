@@ -13,8 +13,55 @@
 # limitations under the License.
 
 setup:
-- command: [docker, run, -d, -e, ZOO_4LW_COMMANDS_WHITELIST="*", --name, zk-$UNIQUE-id, --restart, always, "marketplace.gcr.io/google/zookeeper3"]
-- command: [docker, run, -d, -p, "8983:8983", -e, ZK_HOST=zk, --link, "zk-$UNIQUE-id:zk", --name, solr-$UNIQUE-id, '$IMAGE']
+- command:
+  - docker
+  - run
+  - '-d'
+  - '-e'
+  - SPARK_LOCAL_IP=spark-master
+  - '-e'
+  - SPARK_WORKLOAD=master
+  - -p
+  - 127.0.0.1:9090:9090
+  - -p
+  - 127.0.0.1:7077:7077
+  - --name
+  - spark-master-$UNIQUE
+  - "$IMAGE"
+- command:
+  - docker
+  - run
+  - -d
+  - -e
+  - SPARK_LOCAL_IP=spark-worker-a
+  - -e
+  - SPARK_LOCAL_IP=spark-worker-a
+  - -e
+  - SPARK_LOCAL_IP=spark-worker-a
+  - -e
+  - SPARK_LOCAL_IP=spark-worker-a
+  - -e
+  - SPARK_LOCAL_IP=spark-worker-a
+  - -e
+  - SPARK_LOCAL_IP=spark-worker-a
+  - -e
+  - SPARK_LOCAL_IP=spark-worker-a
+  - --name
+  - spark-worker-$UNIQUE-a
+  - -p
+  - 127.0.0.1:9091:8080k
+  - -p
+  - 127.0.0.1:7000:7000
+  - "$IMAGE"
+- command:
+  - docker
+  - run
+  - -d
+  - -e
+  - SPARK_LOCAL_IP=spark-worker-b
+  - --name
+  - spark-worker-$UNIQUE-b
+  - "$IMAGE"
 - command: [sleep, 5s]
 
 
@@ -35,3 +82,16 @@ tests:
   expect:
     stdout:
       matches: '<str name="status">OK</str>'
+
+
+
+# curl localhost:9090 ->
+<li><strong>Alive Workers:</strong> 2</li>
+
+# run below on master
+/opt/spark/bin/spark-submit --master spark://spark-master:7077 \
+	--driver-memory 1G \
+	--executor-memory 1G \
+	/opt/spark-apps/test_job.py | grep "app.name"
+
+should contains -> PySpark Partition Example -> on stdout
