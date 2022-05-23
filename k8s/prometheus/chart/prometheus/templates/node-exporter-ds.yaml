@@ -1,10 +1,11 @@
+---
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: $APP_INSTANCE_NAME-node-exporter
+  name: {{ .Release.Name }}-node-exporter
   labels:
     k8s-app: node-exporter
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: node-exporter
 spec:
   updateStrategy:
@@ -17,10 +18,10 @@ spec:
       labels:
         k8s-app: node-exporter
     spec:
-      serviceAccountName: $NODE_EXPORTER_SERVICE_ACCOUNT
+      serviceAccountName: "{{ .Values.nodeexporter.serviceAccountName }}"
       containers:
         - name: prometheus-node-exporter
-          image: $IMAGE_NODE_EXPORTER
+          image: "{{ .Values.nodeexporter.image }}"
           imagePullPolicy: Always
           args:
             - --path.procfs=/host/proc
