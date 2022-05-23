@@ -54,7 +54,6 @@ RUN sed -e 's/time_format_iso_8601: false/time_format_iso_8601: true/' < /etc/fa
 RUN rm -df /lib/modules \
 	&& ln -s $HOST_ROOT/lib/modules /lib/modules
 
-COPY falco_debian_5.10.0-14-cloud-amd64_1.o /
 COPY ./docker-entrypoint.sh /
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
