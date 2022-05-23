@@ -37,8 +37,6 @@ versions:
   - latest
 
 - dir: exporter
-  excludeTests:
-  - tests/functional_tests/functional_test.yaml
   from: marketplace.gcr.io/google/debian11
   packages:
     falco_exporter:
