@@ -1,7 +1,4 @@
-{{- $spark := index .Packages "spark" -}}
-{{- $hadoop := index .Packages "hadoop" -}}
-
-FROM {{ .From }} AS builder
+FROM marketplace.gcr.io/google/debian11 AS builder
 
 # Add Java 11
 RUN apt-get update \
@@ -10,7 +7,7 @@ RUN apt-get update \
     wget
 
 # Download and uncompress spark from the apache/spark github
-RUN wget --no-verbose -O apache-spark.tgz "https://github.com/apache/spark/archive/refs/tags/{{ $spark.Version }}.tar.gz" \
+RUN wget --no-verbose -O apache-spark.tgz "https://github.com/apache/spark/archive/refs/tags/v3.3.0-rc2.tar.gz" \
       && mkdir -p /opt/spark \
       && tar -xf apache-spark.tgz -C /opt/spark --strip-components=1 \
       && rm apache-spark.tgz
@@ -18,9 +15,9 @@ RUN wget --no-verbose -O apache-spark.tgz "https://github.com/apache/spark/archi
 WORKDIR /opt/spark
 
 # Build a Runnable Distribution
-RUN ./build/mvn -Pyarn -Dhadoop.version={{ $hadoop.Minor }} -DskipTests clean package
+RUN ./build/mvn -Pyarn -Dhadoop.version=3.3.0 -DskipTests clean package
 
-FROM {{ .From }}
+FROM marketplace.gcr.io/google/debian11
 
 # Add Java 11
 RUN apt-get update \
@@ -48,8 +45,8 @@ RUN update-alternatives --install "/usr/bin/python" "python" "$(which python3)" 
 
 # Fix the value of PYTHONHASHSEED
 # Note: this is needed when you use Python 3.3 or greater
-ENV SPARK_VERSION={{ $spark.Version }}
-ENV HADOOP_VERSION={{ $hadoop.Minor }}
+ENV SPARK_VERSION=v3.3.0-rc2
+ENV HADOOP_VERSION=3.3.0
 ENV SPARK_HOME=/opt/spark
 ENV PYTHONHASHSEED=1
 
