@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2021 Google Inc.
+# Copyright 2022 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,6 +27,11 @@ chmod 666 /etc/kubernetes/admin.conf
 timeout 10 bash -c \
     'until kubectl get nodes| grep NotReady; do echo "waiting for master node response"; sleep 1; done'
 kubectl taint nodes --all node.kubernetes.io/not-ready-
+
+
+# Disable the read-only port
+echo "readOnlyPort: 0" >> /var/lib/kubelet/config.yaml
+service kubelet restart
 
 # Configure network plugin
 kubectl apply -f /opt/kubernetes/weave/network_addon.yaml

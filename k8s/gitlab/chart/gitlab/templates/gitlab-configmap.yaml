@@ -27,7 +27,7 @@ data:
     gitlab_rails['redis_host'] = ENV['REDIS_HOST'];
     gitlab_rails['redis_password'] = ENV['REDIS_PASSWORD'];
 
-    unicorn['worker_processes'] = 2;
+    puma['worker_processes'] = 2;
     manage_accounts['enable'] = true;
     manage_storage_directories['manage_etc'] = false;
 
