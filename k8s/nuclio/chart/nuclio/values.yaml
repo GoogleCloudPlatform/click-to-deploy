@@ -1,15 +1,16 @@
 dashboard:
   replicas: 1
-  serviceAccountName: null
   image:
     repo: null
     tag: null
 
 controller:
-  serviceAccountName: null
   image:
     repo: null
     tag: null
+
+nuclio:
+  serviceAccountName: null
 
 registry:
   pushPullUrl: null
