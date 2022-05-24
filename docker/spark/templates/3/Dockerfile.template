@@ -10,7 +10,7 @@ RUN apt-get update \
     wget
 
 # Download and uncompress spark from the apache/spark github
-RUN wget --no-verbose -O apache-spark.tgz "https://github.com/apache/spark/archive/refs/tags/{{ $spark.Version }}.tar.gz" \
+RUN wget --no-verbose -O apache-spark.tgz "https://github.com/apache/spark/archive/refs/tags/v{{ $spark.Version }}-rc2.tar.gz" \
       && mkdir -p /opt/spark \
       && tar -xf apache-spark.tgz -C /opt/spark --strip-components=1 \
       && rm apache-spark.tgz
@@ -21,6 +21,8 @@ WORKDIR /opt/spark
 RUN ./build/mvn -Pyarn -Dhadoop.version={{ $hadoop.Minor }} -DskipTests clean package
 
 FROM {{ .From }}
+
+ENV C2D_RELEASE {{ $spark.Version }}
 
 # Add Java 11
 RUN apt-get update \

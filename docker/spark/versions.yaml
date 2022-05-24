@@ -19,33 +19,16 @@ versions:
   from: marketplace.gcr.io/google/debian11
   packages:
     spark:
-      version: v3.3.0-rc2
+      version: 3.3.0
     hadoop:
       minor: 3.3.0
   repo: spark3
   tags:
-  - 3.3.0-rc2-debian11
+  - 3.3.0-debian11
   - 3.3-debian11
   - 3-debian11
-  - 3.3.0-rc2
+  - 3.3.0
   - '3.3'
   - '3'
   - latest
   templateSubDir: 3
-
-  # - dir: exporter
-  # excludeTests:
-  # - tests/functional_tests/running_test.yaml
-  # from: marketplace.gcr.io/google/debian10
-  # packages:
-  #   kafka_exporter:
-  #     sha512: 42fcd2b303e82e3ea518cffe7c528c2c35f9ecace8427d68f556c8a91894056f9d8a84fb5bdac2c447b91870909f0dbcce5548a061149da4ffbf33e16545d488
-  #     version: 1.4.2
-  # repo: kafka-exporter1
-  # tags:
-  # - 1.4.2
-  # - '1.4'
-  # - '1'
-  # - latest
-  # templateSubDir: exporter
-
