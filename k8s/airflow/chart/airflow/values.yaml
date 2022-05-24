@@ -3,7 +3,6 @@ airflow:
     repo: null
     tag: null
   admin:
-    username: airflow_admin
     password: null
     email: null
 
