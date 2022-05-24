@@ -39,7 +39,8 @@ versions:
       version: 0.7.0
   repo: falco-exporter0
   tags:
-  - exporter-0.7.0
-  - exporter-0.7
-  - exporter
+  - 0.7.0
+  - '0.7'
+  - '0'
+  - latest
   templateSubDir: exporter
