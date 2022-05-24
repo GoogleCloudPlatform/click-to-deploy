@@ -14,27 +14,33 @@
 
 
 cloudbuild:
-  enable_parallel: true
+  enable_parallel: false
 versions:
-- dir: 4/debian9/4.4
-  from: marketplace.gcr.io/google/debian9
+- dir: 0/debian11/0.31
+  from: marketplace.gcr.io/google/debian11
   packages:
-    dockerneo4j:
-      sha256: dce1ac670a2d59f4fa90ec6beca2cde9eac954a69e6bdf83ffa1864feb4d0c93
-      version: 4.4.7
-    neo4j:
-      sha256: b2f5d1aa575b75613b8412860960449370c02f8696a390f621f54b323f3ef339
-      version: 4.4.7
-    tini:
-      sha256: 93dcc18adc78c65a028a84799ecf8ad40c936fdfc5f2a57b1acda5a8117fa82c
-      version: 0.19.0
-  repo: neo4j4
+    falco:
+      version: 0.31.1
+  repo: falco0
   tags:
-  - 4.4.7-debian9
-  - 4.4-debian9
-  - 4-debian9
-  - 4.4.7
-  - '4.4'
-  - '4'
+  - 0.31.1-debian11
+  - 0.31-debian11
+  - 0-debian11
+  - 0.31.1
+  - '0.31'
+  - '3'
   - latest
 
+- dir: exporter
+  from: marketplace.gcr.io/google/debian11
+  packages:
+    falco_exporter:
+      sha256: cda8d6c60c240c73c28ed0d4e81cb7b52808dcf0358aec41fddc93a30d1e68b7
+      version: 0.7.0
+  repo: falco-exporter0
+  tags:
+  - 0.7.0
+  - '0.7'
+  - '0'
+  - latest
+  templateSubDir: exporter
