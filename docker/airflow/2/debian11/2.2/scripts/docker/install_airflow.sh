@@ -10,7 +10,7 @@ function install_airflow() {
     echo
     echo "Installing all packages and upgrade if needed"
     echo
-    pip install --upgrade --upgrade-strategy only-if-needed "${AIRFLOW_INSTALLATION_METHOD}[${AIRFLOW_EXTRAS}]==${AIRFLOW_VERSION}" airflow-exporter
+    pip install --upgrade --upgrade-strategy only-if-needed "${AIRFLOW_INSTALLATION_METHOD}[${AIRFLOW_EXTRAS}]==${AIRFLOW_VERSION}" airflow-exporter 
 }
 
 install_airflow
