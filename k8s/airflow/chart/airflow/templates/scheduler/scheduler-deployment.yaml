@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -44,7 +45,7 @@ spec:
           args:
             - "bash"
             - "-c"
-            - "exec airflow scheduler -n {{ .Values.scheduler.numRuns }}"
+            - "exec airflow scheduler -n -1"
           livenessProbe:
             initialDelaySeconds: 10 
             periodSeconds: 30
@@ -90,3 +91,4 @@ spec:
         - name: pod-template
           configMap:
             name: {{ .Release.Name }}-pod-template
+

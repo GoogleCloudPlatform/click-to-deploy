@@ -1,4 +1,3 @@
-{{- if and (.Values.airflow.dbMigrations.enabled) (not .Values.airflow.dbMigrations.runAsJob) }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -54,4 +53,4 @@ spec:
         - name: scripts
           secret:
             secretName: {{ .Release.Name }}-db-migrations
-{{- end }}
+

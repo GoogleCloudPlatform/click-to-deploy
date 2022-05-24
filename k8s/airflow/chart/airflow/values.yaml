@@ -2,13 +2,6 @@ airflow:
   image:
     repo: null
     tag: null
-    pullPolicy: IfNotPresent
-  uid: 50000
-  gid: 0
-  dbMigrations:
-    enabled: true
-    runAsJob: false
-    checkInterval: 300
   admin:
     username: airflow_admin
     password: null
@@ -16,7 +9,6 @@ airflow:
 
 scheduler:
   replicas: 1
-  numRuns: -1
 
 web:
   replicas: 1

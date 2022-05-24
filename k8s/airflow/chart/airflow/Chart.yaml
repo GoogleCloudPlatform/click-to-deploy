@@ -1,5 +1,2 @@
-apiVersion: v2
-description: Airflow Helm Chart
-name: Airflow
+name: airflow
 version: 1.0.0
-appVersion: 2.2.5

@@ -3,10 +3,10 @@ Define the image configs for airflow containers
 */}}
 {{- define "airflow.image" }}
 image: {{ .Values.airflow.image.repo }}:{{ .Values.airflow.image.tag }}
-imagePullPolicy: {{ .Values.airflow.image.pullPolicy }}
+imagePullPolicy: ifNotPresent
 securityContext:
-  runAsUser: {{ .Values.airflow.uid }}
-  runAsGroup: {{ .Values.airflow.gid }}
+  runAsUser: 50000
+  runAsGroup: 0
 {{- end }}
 
 {{/*

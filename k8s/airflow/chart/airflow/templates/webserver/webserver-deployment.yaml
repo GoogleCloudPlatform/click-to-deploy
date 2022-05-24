@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -74,3 +75,4 @@ spec:
           secret:
             secretName: {{ .Release.Name }}-webserver-config
             defaultMode: 0644
+

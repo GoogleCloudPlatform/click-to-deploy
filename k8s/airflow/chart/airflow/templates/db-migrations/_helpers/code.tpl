@@ -17,7 +17,7 @@ log = logging.getLogger(__file__)
 log.setLevel("INFO")
 
 # how frequently to check for unapplied migrations
-CONF__CHECK_MIGRATIONS_INTERVAL = {{ .Values.airflow.dbMigrations.checkInterval }}
+CONF__CHECK_MIGRATIONS_INTERVAL = 300
 
 
 ###############
@@ -77,11 +77,6 @@ def main(sync_forever: bool):
 ##############
 ## Run Main ##
 ##############
-{{- /* if running as a Job, only run the initial check & apply */ -}}
-{{- if .Values.airflow.dbMigrations.runAsJob }}
-main(sync_forever=False)
-{{- else }}
 main(sync_forever=True)
-{{- end }}
 
 {{- end }}
