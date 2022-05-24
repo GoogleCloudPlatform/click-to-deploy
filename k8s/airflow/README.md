@@ -138,7 +138,7 @@ export NFS_TRACK=1.3
 Configure the container images:
 
 ```shell
-export IMAGE_AIRFLOW=gcr.io/ccm-ops-test-adhoc/airflow
+export IMAGE_AIRFLOW=marketplace.gcr.io/google/airflow2
 export IMAGE_POSTGRESQL=marketplace.gcr.io/google/postgresql
 export IMAGE_NFS=marketplace.gcr.io/google/nfs-server1
 ```
