@@ -71,7 +71,7 @@ properties:
   airflow.admin.email:
     type: string
     title: Airflow UI admin e-mail address
-    description: Administrator e-mail address who will be able to manage the e-commerce.
+    description: Administrator e-mail address who will be able to manage the Airflow.
     default: admin@store.example
     pattern:  ^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$
   airflow.admin.password:

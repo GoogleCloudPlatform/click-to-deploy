@@ -44,7 +44,7 @@ spec:
       Airflow Webserver, you can either expose a public service endpoint, or keep it private, but connect
       from your local environment with `kubectl port-forward`.
 
-      ## Forward the MediaWiki port in your local environment
+      ## Forward the Airflow Webserver port in your local environment
 
       To use `kubectl`'s port forwarding feature to forward MediaWiki's port to your local
       machine, run the following command in the background:
@@ -56,7 +56,7 @@ spec:
         8080:8080
       ```
 
-      Now you can access the MediaWiki UI with [http://localhost:8080](http://localhost:8080).
+      Now you can access the Airflow Webserver with [http://localhost:8080](http://localhost:8080).
       {{- end }}
   info:
   {{ if .Values.enablePublicServiceAndIngress -}}

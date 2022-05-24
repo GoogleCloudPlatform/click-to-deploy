@@ -7,7 +7,6 @@ CHART_NAME := airflow
 APP_ID ?= $(CHART_NAME)
 WAIT_FOR_READY_TIMEOUT := 600
 
-# Only used for makefile deployer (legacy)
 TRACK ?= 2.2
 # Track for components
 POSTGRESQL_TRACK ?= 13.4
@@ -45,7 +44,7 @@ NAME ?= $(APP_ID)-1
 ifdef PUBLIC_SERVICE_AND_INGRESS_ENABLED
   PUBLIC_SERVICE_AND_INGRESS_ENABLED_FIELD = , "enablePublicServiceAndIngress": $(PUBLIC_SERVICE_AND_INGRESS_ENABLED)
 endif
-#
+
 #ifdef METRICS_EXPORTER_ENABLED
 #  METRICS_EXPORTER_ENABLED_FIELD = , "metrics.exporter.enabled": $(METRICS_EXPORTER_ENABLED)
 #endif
