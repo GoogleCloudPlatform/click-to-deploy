@@ -13,7 +13,11 @@ spec:
     type: Apache Airflow
     version: "{{ .Values.postgresql.image.tag }}"
     description: |-
-      Lorem ipsum
+      Airflow is a platform created by the community to programmatically author, schedule and monitor workflows.
+
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/airflow/).
     maintainers:
     - name: Google Click to Deploy
       url: https://cloud.google.com/solutions/#click-to-deploy
@@ -22,8 +26,52 @@ spec:
       url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/airflow/README.md
     notes: |-
       # Access Airflow
-      Lorem Ipsum again
+      {{ if .Values.enablePublicServiceAndIngress -}}
+      # Open your Airflow Webserver
+      To get the external IP of your Airflow Webserver, use the following command:
+
+      ```
+      SERVICE_IP=$(kubectl get ingress {{ .Release.Name }}-airflow-web \
+        --namespace {{ .Release.Namespace }} \
+        --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+      echo "https://${SERVICE_IP}/"
+      ```
+      {{- else -}}
+      # Open your Airflow Webserver
+
+      Airflow is exposed by the ClusterIP-only service `{{ .Release.Name }}-airflow-svc`. To connect to the
+      Airflow Webserver, you can either expose a public service endpoint, or keep it private, but connect
+      from your local environment with `kubectl port-forward`.
+
+      ## Forward the MediaWiki port in your local environment
+
+      To use `kubectl`'s port forwarding feature to forward MediaWiki's port to your local
+      machine, run the following command in the background:
+
+      ```shell
+      kubectl port-forward \
+        --namespace {{ .Release.Namespace }} \
+        svc/{{ .Release.Name }}-airflow-svc \
+        8080:8080
+      ```
+
+      Now you can access the MediaWiki UI with [http://localhost:8080](http://localhost:8080).
+      {{- end }}
   info:
+  {{ if .Values.enablePublicServiceAndIngress -}}
+  - name: Airflow site address
+    type: Reference
+    valueFrom:
+      ingressRef:
+        name: {{ .Release.Name }}-airflow-web
+        protocol: HTTPS
+  {{- else -}}
+  - name: Forward Airflow Webserver port locally
+    value: kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-airflow-svc 8080:8080
+  - name: Airflow Webserver address (local only)
+    value: "http://localhost:8080/"
+  {{- end }}
   - name: Airflow - admin username
     type: Reference
     valueFrom:
@@ -48,17 +96,6 @@ spec:
       secretKeyRef:
         key: DATABASE_PASSWORD
         name: {{ .Release.Name }}-config-envs
-  - name: Airflow - admin user password
-    type: Reference
-    valueFrom:
-      secretKeyRef:
-        key: _AIRFLOW_WWW_USER_PASSWORD
-        name: {{ .Release.Name }}-config-envs 
-  - name: Airflow IP address
-    type: Reference
-    valueFrom:
-      serviceRef:
-        name: "{{ .Release.Name }}-airflow-svc"
   - name: Application Namespace
     value: "{{ .Release.Namespace }}"
   selector:

@@ -3,7 +3,7 @@ Define the image configs for airflow containers
 */}}
 {{- define "airflow.image" }}
 image: {{ .Values.airflow.image.repo }}:{{ .Values.airflow.image.tag }}
-imagePullPolicy: ifNotPresent
+imagePullPolicy: IfNotPresent
 securityContext:
   runAsUser: 50000
   runAsGroup: 0
