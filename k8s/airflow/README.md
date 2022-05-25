@@ -133,6 +133,7 @@ For example:
 export AIRFLOW_TRACK=2.2
 export POSTGRESQL_TRACK=13.4
 export NFS_TRACK=1.3
+export METRICS_EXPORTER_TAG=0.5
 ```
 
 Configure the container images:
@@ -141,6 +142,7 @@ Configure the container images:
 export IMAGE_AIRFLOW=marketplace.gcr.io/google/airflow2
 export IMAGE_POSTGRESQL=marketplace.gcr.io/google/postgresql
 export IMAGE_NFS=marketplace.gcr.io/google/nfs-server1
+export IMAGE_METRICS_EXPORTER=k8s.gcr.io/prometheus-to-sd:${METRICS_EXPORTER_TAG}
 ```
 
 By default, each deployment has 1 replica, but you can choose to set the
@@ -167,6 +169,18 @@ By default, the Service is not exposed externally. To enable this option, change
 export PUBLIC_SERVICE_AND_INGRESS_ENABLED=false
 ```
 
+(Optional) Enable Stackdriver Metrics Exporter:
+
+> **NOTE:** Your GCP project must have Stackdriver enabled. If you are using a
+> non-GCP cluster, you cannot export metrics to Stackdriver.
+
+By default, the application does not export metrics to Stackdriver. To enable
+this option, change the value to `true`.
+
+```shell
+export METRICS_EXPORTER_ENABLED=false
+```
+
 #### Expand the manifest template
 
 Use `helm template` to expand the template. We recommend that you save the
@@ -191,6 +205,8 @@ helm template "${APP_INSTANCE_NAME}" chart/airflow \
     --set airflow.admin.email="${AIRFLOW_ADMIN_EMAIL}" \
     --set airflow.admin.password="${AIRFLOW_ADMIN_PASSWORD}" \
     --set enablePublicServiceAndIngress="${PUBLIC_SERVICE_AND_INGRESS_ENABLED}" \
+    --set metrics.image="$IMAGE_METRICS_EXPORTER" \
+    --set metrics.exporter.enabled="$METRICS_EXPORTER_ENABLED" \
     > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
@@ -235,6 +251,46 @@ SERVICE_IP=$(kubectl get svc airflow-lb \
 
 echo "http://${SERVICE_IP}:8080/"
 ```
+
+# App metrics
+
+## Prometheus metrics
+
+The app can be configured to expose its metrics through the 
+[Airflow Exporter](https://github.com/epoch8/airflow-exporter) 
+in the [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
+
+You can access the Airflow metrics at `[AIRFLOW-SERVICE]:8080/admin/metrics`, where `[AIRFLOW-SERVICE]` is the
+    [Kubernetes Service](https://kubernetes.io/docs/concepts/services-networking/service/) `${APP_INSTANCE_NAME}-airflow-svc`.
+
+### Configuring Prometheus to collect the metrics
+
+Prometheus can be configured to automatically collect the application's metrics.
+Follow the steps in
+[Configuring Prometheus](https://prometheus.io/docs/introduction/first_steps/#configuring-prometheus).
+
+You configure the metrics in the
+[`scrape_configs` section](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config).
+
+## Exporting metrics to Stackdriver
+
+The deployment includes a
+[Prometheus to Stackdriver (`prometheus-to-sd`)](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd)
+container. If you enabled the option to export metrics to Stackdriver, the
+metrics are automatically exported to Stackdriver and visible in
+[Stackdriver Metrics Explorer](https://cloud.google.com/monitoring/charts/metrics-explorer).
+The name of each metric starts with the application's name, which you define in
+the `APP_INSTANCE_NAME` environment variable.
+
+The exporting option might not be available for GKE on-prem clusters.
+
+> Note: Stackdriver has [quotas](https://cloud.google.com/monitoring/quotas) for
+> the number of custom metrics created in a single GCP project. If the quota is
+> met, additional metrics might not show up in the Stackdriver Metrics Explorer.
+
+You can remove existing metric descriptors using
+[Stackdriver's REST API](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors/delete).
+
 
 # Scaling up or down
 

@@ -69,6 +69,29 @@ spec:
               mountPath: /opt/airflow/webserver_config.py
               subPath: webserver_config.py
               readOnly: true
+        {{ if .Values.metrics.exporter.enabled }}
+        - name: stackdriver-exporter
+          image: {{ .Values.metrics.image }}
+          ports:
+          - name: profiler
+            containerPort: 6060
+          command:
+          - /monitor
+          - --stackdriver-prefix=custom.googleapis.com
+          - --source=airflow:http://localhost:8080/admin/metrics
+          - --pod-id=$(POD_NAME)
+          - --namespace-id=$(POD_NAMESPACE)
+          - --monitored-resource-types=k8s
+          env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+        {{ end }}
       volumes:
         {{- include "airflow.volumes" . | indent 8 }}
         - name: webserver-config
