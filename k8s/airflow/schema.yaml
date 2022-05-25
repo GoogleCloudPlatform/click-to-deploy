@@ -133,6 +133,11 @@ properties:
     default: "5Gi"
     description: PostgreSQL storage size
     pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  metrics.exporter.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project must have Stackdriver enabled. Non-GCP clusters cannot export metrics to Stackdriver.
+    default: false
 required:
 - name
 - namespace
