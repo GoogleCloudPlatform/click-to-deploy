@@ -1,0 +1,192 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ template "falco.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels: &FalcoDeploymentLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: falco
+spec:
+  selector:
+    matchLabels: *FalcoDeploymentLabels
+  template:
+    metadata:
+      name: {{ template "falco.fullname" .}}
+      labels: *FalcoDeploymentLabels
+    spec:
+      serviceAccountName: {{ .Values.falco.serviceAccount.name }}
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      tolerations:
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/master
+      containers:
+        - name: falco
+          image: {{ .Values.falco.image.repo }}:{{ .Values.falco.image.tag }}
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: 100m
+              memory: 512Mi
+            limits:
+              cpu: 1000m
+              memory: 1024Mi
+          args:
+            - /usr/bin/falco
+            - --cri
+            - /run/containerd/containerd.sock
+            - --cri
+            - /run/crio/crio.sock
+            - -K
+            - /var/run/secrets/kubernetes.io/serviceaccount/token
+            - -k
+            - "https://$(KUBERNETES_SERVICE_HOST)"
+            - --k8s-node
+            - "$(FALCO_K8S_NODE_NAME)"
+            - -pk
+          env:
+            - name: FALCO_K8S_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: FALCO_BPF_PROBE
+              value: ""
+          livenessProbe:
+            initialDelaySeconds: 60
+            timeoutSeconds: 5
+            periodSeconds: 15
+            httpGet:
+              path: /healthz
+              port: 8765
+          readinessProbe:
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+            periodSeconds: 15
+            httpGet:
+              path: /healthz
+              port: 8765
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - mountPath: /host/var/run/docker.sock
+              name: docker-socket
+            - mountPath: /host/run/containerd/containerd.sock
+              name: containerd-socket
+            - mountPath: /host/run/crio/crio.sock
+              name: crio-socket
+            - mountPath: /host/dev
+              name: dev-fs
+              readOnly: true
+            - mountPath: /host/proc
+              name: proc-fs
+              readOnly: true
+            - mountPath: /host/boot
+              name: boot-fs
+              readOnly: true
+            - mountPath: /host/lib/modules
+              name: lib-modules
+            - mountPath: /host/usr
+              name: usr-fs
+              readOnly: true
+            - mountPath: /host/etc
+              name: etc-fs
+              readOnly: true
+            - mountPath: /etc/falco
+              name: config-volume
+            - mountPath: /var/run/falco
+              name: grpc-socket-dir
+        - name: falco-exporter
+          image: {{ .Values.falco.exporter.image }}
+          imagePullPolicy: IfNotPresent
+          args:
+            - /usr/bin/falco-exporter
+            - --client-socket=unix:///var/run/falco/falco.sock
+            - --timeout=2m
+            - --listen-address=0.0.0.0:9376
+          ports:
+            - name: metrics
+              containerPort: 9376
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /liveness
+              port: 19376
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: 19376
+            initialDelaySeconds: 30
+          volumeMounts:
+            - mountPath: /var/run/falco
+              name: grpc-socket-dir
+              readOnly: true
+        {{ if .Values.metrics.exporter.enabled }}
+        - name: prometheus-to-sd
+          image: {{ .Values.metrics.image }}
+          command:
+            - /monitor
+            - --stackdriver-prefix=custom.googleapis.com
+            - --source=falco:http://localhost:9376/metrics
+            - --pod-id=$(POD_NAME)
+            - --namespace-id=$(POD_NAMESPACE)
+            - --monitored-resource-type-prefix=k8s_
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+        {{ end }}
+      volumes:
+        - name: docker-socket
+          hostPath:
+            path: /var/run/docker.sock
+        - name: containerd-socket
+          hostPath:
+            path: /run/containerd/containerd.sock
+        - name: crio-socket
+          hostPath:
+            path: /run/crio/crio.sock
+        - name: dev-fs
+          hostPath:
+            path: /dev
+        - name: proc-fs
+          hostPath:
+            path: /proc
+        - name: boot-fs
+          hostPath:
+            path: /boot
+        - name: lib-modules
+          hostPath:
+            path: /lib/modules
+        - name: usr-fs
+          hostPath:
+            path: /usr
+        - name: etc-fs
+          hostPath:
+            path: /etc
+        - name: config-volume
+          configMap:
+            name: {{ template "falco.fullname" . }}
+            items:
+              - key: falco.yaml
+                path: falco.yaml
+              - key: falco_rules.yaml
+                path: falco_rules.yaml
+              - key: falco_rules.local.yaml
+                path: falco_rules.local.yaml
+              - key: application_rules.yaml
+                path: rules.available/application_rules.yaml
+              - key: aws_cloudtrail_rules.yaml
+                path: aws_cloudtrail_rules.yaml
+        - name: grpc-socket-dir
+          hostPath:
+            path: /var/run/falco
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
