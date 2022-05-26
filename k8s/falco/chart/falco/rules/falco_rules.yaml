@@ -3134,7 +3134,3 @@
     "Detect Polkit pkexec Local Privilege Escalation Exploit (CVE-2021-4034) (user=%user.loginname uid=%user.loginuid command=%proc.cmdline args=%proc.args)"
   priority: CRITICAL
   tags: [process, mitre_privilege_escalation]
-
-# Application rules have moved to application_rules.yaml. Please look
-# there if you want to enable them by adding to
-# falco_rules.local.yaml.

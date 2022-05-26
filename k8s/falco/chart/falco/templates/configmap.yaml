@@ -26,10 +26,6 @@ data:
       - /etc/falco/k8s_audit_rules.yaml
       - /etc/falco/rules.d
     plugins:
-      - name: cloudtrail
-        library_path: libcloudtrail.so
-        init_config: ""
-        open_params: ""
       - name: json
         library_path: libjson.so
         init_config: ""
@@ -256,4 +252,4 @@ data:
       chunk_wait_us: 1000
       watch_freq_sec: 1
 
-{{ (.Files.Glob "rules/*").AsConfig | indent 2 }}
+{{ (.Files.Glob "rules/falco_rules.yaml").AsConfig | indent 2 }}

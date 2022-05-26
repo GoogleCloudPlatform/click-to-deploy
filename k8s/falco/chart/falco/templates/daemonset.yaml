@@ -176,12 +176,6 @@ spec:
                 path: falco.yaml
               - key: falco_rules.yaml
                 path: falco_rules.yaml
-              - key: falco_rules.local.yaml
-                path: falco_rules.local.yaml
-              - key: application_rules.yaml
-                path: rules.available/application_rules.yaml
-              - key: aws_cloudtrail_rules.yaml
-                path: aws_cloudtrail_rules.yaml
         - name: grpc-socket-dir
           hostPath:
             path: /var/run/falco
