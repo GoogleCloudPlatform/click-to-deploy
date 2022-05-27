@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,13 +23,13 @@ versions:
   packages:
     zookeeper:
       gpg: AF3D175EC05DB249738D01AC8D8C3C3ED0B02E66 DFF24FB8323ADAC90E3CF36F729E61230EA917E9
-      version: 3.7.0
+      version: 3.7.1
   repo: zookeeper3
   tags:
-  - 3.7.0-debian10
+  - 3.7.1-debian10
   - 3.7-debian10
   - 3-debian10
-  - 3.7.0
+  - 3.7.1
   - '3.7'
   - '3'
   - latest
