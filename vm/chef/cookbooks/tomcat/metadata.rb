@@ -13,7 +13,6 @@
 # limitations under the License.
 
 name 'tomcat'
-depends 'apache2'
 depends 'c2d-config'
 depends 'openjdk11'
 supports 'debian'
