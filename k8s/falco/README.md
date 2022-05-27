@@ -16,7 +16,7 @@ Popular open stacks on Kubernetes packaged by Google.
 
 ## Architecture
 
-The application offers the Falco application deployed as DaemonSet to work on every node on Kubernetes cluster..
+The application offers the Falco application deployed as DaemonSet to work on every node on Kubernetes cluster.
 
 ![Architecture diagram](resources/falco-k8s-app-architecture.png)
 
