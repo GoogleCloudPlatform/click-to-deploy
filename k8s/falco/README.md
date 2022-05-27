@@ -155,9 +155,10 @@ export TAG="0.31"
 Configure the container images:
 
 ```shell
-export IMAGE_FALCO="marketplace.gcr.io/google/falco"
-export IMAGE_FALCO_EXPORTER="marketplace.gcr.io/google/falco/falco-exporter:${TAG}"
-export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/falco/prometheus-to-sd:${TAG}"
+export SOURCE_REGISTRY="marketplace.gcr.io/google"
+export IMAGE_FALCO="${SOURCE_REGISTRY}/falco"
+export IMAGE_FALCO_EXPORTER="${SOURCE_REGISTRY}/falco/falco-exporter:${TAG}"
+export IMAGE_METRICS_EXPORTER="${SOURCE_REGISTRY}/falco/prometheus-to-sd:${TAG}"
 ```
 
 Configure minimum rule priority level to load and run:
