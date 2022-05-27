@@ -140,7 +140,7 @@ Configure the container images:
 
 ```shell
 export IMAGE_AIRFLOW=marketplace.gcr.io/google/airflow2
-export IMAGE_POSTGRESQL=marketplace.gcr.io/google/postgresql
+export IMAGE_POSTGRESQL=marketplace.gcr.io/google/postgresql13
 export IMAGE_NFS=marketplace.gcr.io/google/nfs-server1
 export IMAGE_METRICS_EXPORTER=k8s.gcr.io/prometheus-to-sd:${METRICS_EXPORTER_TAG}
 ```
