@@ -1,0 +1,56 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-db-migrations
+  labels:
+    app: {{ include "airflow.labels.app" . }}
+    component: db-migrations
+    name: {{ .Release.Name }}
+spec:
+  replicas: 1
+  strategy:
+    ## only 1 replica should run at a time
+    type: Recreate
+  selector:
+    matchLabels:
+      app: {{ include "airflow.labels.app" . }}
+      component: db-migrations
+      name: {{ .Release.Name }}
+  template:
+    metadata:
+      annotations:
+        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+      labels:
+        app: {{ include "airflow.labels.app" . }}
+        component: db-migrations
+        name: {{ .Release.Name }}
+    spec:
+      restartPolicy: Always
+      serviceAccountName: {{ include "airflow.serviceAccountName" . }}
+      initContainers:
+        {{- include "airflow.init_container.check_db" . | indent 8 }}
+      containers:
+        - name: db-migrations
+          {{- include "airflow.image" . | indent 10 }}
+          envFrom:
+            {{- include "airflow.envFrom" . | indent 12 }}
+          env:
+            {{- include "airflow.env" . | indent 12 }}
+          command:
+            {{- include "airflow.command" . | indent 12 }}
+          args:
+            - "python"
+            - "-u"
+            - "/mnt/scripts/db_migrations.py"
+          volumeMounts:
+            {{- include "airflow.volumeMounts" . | indent 12 }}
+            - name: scripts
+              mountPath: /mnt/scripts
+              readOnly: true
+      volumes:
+        {{- include "airflow.volumes" . | indent 8 }}
+        - name: scripts
+          secret:
+            secretName: {{ .Release.Name }}-db-migrations
+
