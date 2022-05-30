@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['kubernetes']['version'] = '1.22.4-00'
+default['kubernetes']['version'] = '1.24.1-00'
 default['kubernetes']['packages'] = ['kubelet', 'kubeadm', 'kubectl']
 default['kubernetes']['dependencies']['packages'] = ['ufw', 'containerd', 'apt-transport-https', 'ca-certificates', 'curl']
 
