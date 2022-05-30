@@ -46,7 +46,7 @@ end
 bash 'Hold kubernetes packages version' do
   user 'root'
   code <<-EOH
-    apt-mark hold kubelet kubeadm kubectl containerd.io
+    apt-get install -y kubelet=1.24.1-00 && apt-mark hold kubelet kubeadm kubectl containerd.io
 EOH
 end
 
