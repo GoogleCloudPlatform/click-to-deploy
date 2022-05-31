@@ -1,0 +1,13 @@
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-postgresql-config
+  labels: &PostgreSQLLabels
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: postgresql-server
+data:
+  pg_hba.conf: |-
+{{- (tpl (.Files.Get "files/pg_hba.conf") . )| nindent 4 }}
+  postgresql.conf: |-
+{{- (tpl (.Files.Get "files/postgresql.conf") . )| nindent 4 }}
