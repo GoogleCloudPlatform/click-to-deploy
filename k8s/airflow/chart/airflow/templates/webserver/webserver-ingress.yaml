@@ -1,0 +1,19 @@
+{{ if .Values.enablePublicServiceAndIngress }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-airflow-web
+  labels:
+    app: {{ include "airflow.labels.app" . }}
+    component: web
+    name: {{ .Release.Name }}
+spec:
+  tls:
+  - secretName: {{ .Release.Name }}-web-tls
+  defaultBackend:
+    service:
+      name: {{ .Release.Name }}-airflow-svc
+      port:
+        name: web
+{{- end }}
