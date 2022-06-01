@@ -20,8 +20,7 @@ versions:
   packages:
     spark:
       version: 3.3.0
-    hadoop:
-      minor: 3.3.0
+      sha256: a63520419a5801e7d9aef252a0d1596ccc6bdb4071370b2d3b6b1864140b7ea2
   repo: spark3
   tags:
   - 3.3.0-debian11

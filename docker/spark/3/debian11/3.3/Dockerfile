@@ -1,25 +1,6 @@
-FROM marketplace.gcr.io/google/debian11 AS builder
+FROM marketplace.gcr.io/google/debian11
 
 ENV C2D_RELEASE 3.3.0
-
-# Add Java 11
-RUN apt-get update \
-  && apt-get install -y \
-    openjdk-11-jdk \
-    wget
-
-# Download and uncompress spark from the apache/spark github
-RUN wget --no-verbose -O apache-spark.tgz "https://github.com/apache/spark/archive/refs/tags/v3.3.0-rc2.tar.gz" \
-      && mkdir -p /opt/spark \
-      && tar -xf apache-spark.tgz -C /opt/spark --strip-components=1 \
-      && rm apache-spark.tgz
-
-WORKDIR /opt/spark
-
-# Build a Runnable Distribution
-RUN ./build/mvn -Pyarn -Dhadoop.version=3.3.0 -DskipTests clean package
-
-FROM marketplace.gcr.io/google/debian11
 
 # Add Java 11
 RUN apt-get update \
@@ -47,14 +28,21 @@ RUN update-alternatives --install "/usr/bin/python" "python" "$(which python3)" 
 
 # Fix the value of PYTHONHASHSEED
 # Note: this is needed when you use Python 3.3 or greater
+ENV SPARK_SHA256=a63520419a5801e7d9aef252a0d1596ccc6bdb4071370b2d3b6b1864140b7ea2
 ENV SPARK_VERSION=3.3.0
-ENV HADOOP_VERSION=3.3.0
+ENV HADOOP_VERSION=
 ENV SPARK_HOME=/opt/spark
 ENV PYTHONHASHSEED=1
 
-WORKDIR /opt/spark
+# Download and uncompress spark from the apache archive
+RUN curl -L -o apache-spark.tgz "https://dist.apache.org/repos/dist/dev/spark/v${SPARK_VERSION}-rc3-bin/spark-${SPARK_VERSION}-bin-hadoop3.tgz" \
+      && echo "${SPARK_SHA256}  apache-spark.tgz" | sha256sum -c --strict --quiet \
+      && mkdir -p /opt/spark \
+      && tar -xf apache-spark.tgz -C /opt/spark --strip-components=1 \
+      && rm -f apache-spark.tgz
 
-COPY --from=builder /opt/spark .
+
+WORKDIR /opt/spark
 
 ENV SPARK_MASTER_PORT=7077
 ENV SPARK_MASTER_WEBUI_PORT=8080
