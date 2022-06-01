@@ -20,7 +20,7 @@ versions:
   packages:
     keycloak:
       version: 18.0.0
-  repo: airflow2
+  repo: keycloak18
   tags:
   - '18.0.0-debian11'
   - '18.0-debian11'

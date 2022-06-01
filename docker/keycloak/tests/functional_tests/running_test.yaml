@@ -28,9 +28,8 @@ setup:
   - '-d'
   - '$IMAGE'
   - 'start-dev'
-- command: [docker, ps]
 - command: [sleep, '20s']
-- command: [docker, ps]
+- command: [docker, exec, some-keycloak-0-0-id, curl, -s, -L, http://localhost:8080/realms/master ]
 
 teardown:
 - command: [docker, stop, some-keycloak-$UNIQUE-id]
