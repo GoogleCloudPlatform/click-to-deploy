@@ -13,6 +13,7 @@
 # limitations under the License.
 
 setup:
+- command: [docker, network, create, -d, bridge, testbridge-$UNIQUE-id]
 - command:
   - docker
   - run
@@ -22,11 +23,13 @@ setup:
   - '-e'
   - SPARK_WORKLOAD=master
   - -p
-  - 127.0.0.1:9090:9090
+  - 127.0.0.1:9090:8080
   - -p
   - 127.0.0.1:7077:7077
   - --name
   - spark-$UNIQUE-master
+  - --network
+  - testbridge-$UNIQUE-id
   - "$IMAGE"
 - command: ["sleep", "10s"]
 - command:
@@ -53,6 +56,8 @@ setup:
   - 127.0.0.1:9091:8080
   - -p
   - 127.0.0.1:7001:7000
+  - --network
+  - testbridge-$UNIQUE-id
   - "$IMAGE"
 - command:
   - docker
@@ -78,28 +83,29 @@ setup:
   - 127.0.0.1:9092:8080
   - -p
   - 127.0.0.1:7002:7000
+  - --network
+  - testbridge-$UNIQUE-id
   - "$IMAGE"
 - command: [sleep, 5s]
-
 
 teardown:
 - command: [docker, stop, spark-$UNIQUE-master, spark-$UNIQUE-worker-a, spark-$UNIQUE-worker-b]
 - command: [docker, rm, spark-$UNIQUE-master, spark-$UNIQUE-worker-a, spark-$UNIQUE-worker-b]
+- command: [docker, network, rm, testbridge-$UNIQUE-id]
 
 target: spark-$UNIQUE-master
 tests:
-- name: Create successfully "mycollection"
+- name: Submit a sample job and check results
   command:
   - /opt/spark/bin/spark-submit
-  - --master spark://spark-$UNIQUE-master:7077
-  - --driver-memory 1G
-  - --executor-memory 1G
-  - --/opt/spark-apps/test_job.py
+  - --master
+  - spark://spark-$UNIQUE-master:7077
+  - /opt/spark-apps/test_job.py
   expect:
     stdout:
       contains: "PySpark Partition Example"
 
-- name: Ping successfully "mycollection"
+- name: Check alive workers count
   command: [curl, -L, "http://spark-$UNIQUE-master:9090"]
   expect:
     stdout:
