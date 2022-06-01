@@ -25,12 +25,12 @@ setup:
   - 'KEYCLOAK_ADMIN=admin'
   - '-e'
   - 'KEYCLOAK_ADMIN_PASSWORD=admin'
-  - '-p'
-  - '8080:8080'
   - '-d'
   - '$IMAGE'
   - 'start-dev'
+- command: [docker, ps]
 - command: [sleep, '20s']
+- command: [docker, ps]
 
 teardown:
 - command: [docker, stop, some-keycloak-$UNIQUE-id]
@@ -43,5 +43,5 @@ tests:
   command: [curl, -s, -L, 'http://localhost:8080/realms/master']
   expect:
     stdout:
-      matches: '"realm":"master"'
+      matches: 'public_key'
 
