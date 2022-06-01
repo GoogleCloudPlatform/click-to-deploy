@@ -41,5 +41,5 @@ tests:
   command: [curl, -s, -L, 'http://localhost:8080/realms/master']
   expect:
     stdout:
-      matches: 'public_key'
+      matches: '"realm":"master"'
 
