@@ -29,7 +29,7 @@ setup:
   - '$IMAGE'
   - 'start-dev'
 - command: [sleep, '20s']
-- command: [docker, exec, some-keycloak-0-0-id, curl, -s, -L, http://localhost:8080/realms/master ]
+- command: [docker, exec, some-keycloak-$UNIQUE-id, curl, -s, -L, 'http://localhost:8080/realms/master' ]
 
 teardown:
 - command: [docker, stop, some-keycloak-$UNIQUE-id]
