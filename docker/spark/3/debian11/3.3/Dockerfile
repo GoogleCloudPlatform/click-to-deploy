@@ -66,7 +66,5 @@ COPY start-spark.sh /
 COPY metrics.properties /opt/spark/conf/metrics.properties
 COPY test_job.py /opt/spark-apps/test_job.py
 
-RUN echo "spark.eventLog.logStageExecutorMetrics=true" >> /opt/spark/conf/spark-defaults.conf \
-      && echo "spark.ui.prometheus.enabled=true" >> /opt/spark/conf/spark-defaults.conf
 
 CMD ["/bin/bash", "/start-spark.sh"]

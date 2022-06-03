@@ -26,6 +26,8 @@ setup:
   - 127.0.0.1:9090:8080
   - -p
   - 127.0.0.1:7077:7077
+  - -p
+  - 127.0.0.1:18080:18080
   - --name
   - spark-$UNIQUE-master
   - --network
@@ -110,3 +112,9 @@ tests:
   expect:
     stdout:
       contains: '<li><strong>Alive Workers:</strong> 2</li>'
+
+- name: await
+  command: [tail, -f, "/dev/null"]
+  expect:
+    stdout:
+      contains: 'nothing'
