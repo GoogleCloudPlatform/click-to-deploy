@@ -46,8 +46,11 @@ end
 bash 'Hold kubernetes packages version' do
   user 'root'
   code <<-EOH
-    apt-get install -y kubelet=1.24.1-00 && apt-mark hold kubelet kubeadm kubectl containerd.io
+    apt-get install -y kubelet=${version} && apt-mark hold kubelet kubeadm kubectl containerd.io
 EOH
+  environment({
+    'version' => node['kubernetes']['version'],
+  })
 end
 
 bash 'Disable swap memory' do
