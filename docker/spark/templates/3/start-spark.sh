@@ -14,47 +14,66 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -eu
+set -e
 
 . "/opt/spark/bin/load-spark-env.sh"
 
 # Default values
-: ${SPARK_ENABLE_HISTORY:=false}
-: ${SPARK_ENABLE_PROMETHEUS:=false}
+export SPARK_MASTER_HOST=`hostname`
+export SPARK_ENABLE_HISTORY="${SPARK_ENABLE_HISTORY:=false}"
+export SPARK_ENABLE_PROMETHEUS="${SPARK_ENABLE_PROMETHEUS:=false}"
+export START_MASTER="${START_MASTER:=false}"
+export START_WORKER="${START_WORKER:=false}"
+export START_HISTORY="${START_HISTORY:=false}"
 
 declare -r config_file="/opt/spark/conf/spark-defaults.conf"
 
-# Configure Prometheus
-if [[ "${SPARK_ENABLE_PROMETHEUS}" == "true" ]]; then
-    cat <<EOF >> ${config_file}
+# Enable bash debug if DEBUG_DOCKER_ENTRYPOINT exists
+if [[ "${DEBUG_DOCKER_ENTRYPOINT}" = "true" ]]; then
+  echo "!!! WARNING: DEBUG_DOCKER_ENTRYPOINT is enabled!"
+  echo "!!! WARNING: Use only for debugging. Do not use in production!"
+  set -x
+  env
+fi
+
+function setup_prometheus() {
+  cat <<EOF >> ${config_file}
 spark.eventLog.logStageExecutorMetrics=true
 spark.ui.prometheus.enabled=true
 EOF
-fi
+}
 
-# Configure History Server
-if [[ "${SPARK_ENABLE_PROMETHEUS}" == "true" ]]; then
-    mkdir -p /opt/spark-events
-    cat <<EOF >> ${config_file}
+function setup_history_server() {
+  mkdir -p /opt/spark-events
+  cat <<EOF >> ${config_file}
 spark.eventLog.enabled=true
 spark.eventLog.dir=/opt/spark-events
 spark.history.fs.logDirectory=/opt/spark-events
 EOF
+}
+
+# Configure Prometheus
+if [[ "${SPARK_ENABLE_PROMETHEUS}" == "true" ]]; then
+  setup_prometheus
 fi
 
-cd /opt/spark/bin
+# Configure History Server
+if [[ "${SPARK_ENABLE_HISTORY}" == "true" ]]; then
+  setup_history_server
+fi
 
-if [ "${SPARK_WORKLOAD}" == "master" ]; then
-    # Start master service
-    export SPARK_MASTER_HOST=`hostname`
-    ./spark-class org.apache.spark.deploy.master.Master \
-        --host "${SPARK_MASTER_HOST}" \
-        --port "${SPARK_MASTER_PORT}" \
-        --webui-port ${SPARK_MASTER_WEBUI_PORT} >> ${SPARK_MASTER_LOG}
-elif [ "${SPARK_WORKLOAD}" == "worker" ]; then
+if [[ "${SPARK_WORKLOAD}" == "master" ]]; then
+  # Start master service
+  export START_MASTER="true"
+  if [[ "${SPARK_ENABLE_HISTORY}" == "true" ]]; then
+    export START_HISTORY="true"
+  fi
+elif [[ "${SPARK_WORKLOAD}" == "worker" ]]; then
     # Start worker service
-    ./spark-class org.apache.spark.deploy.worker.Worker \
-        --webui-port ${SPARK_WORKER_WEBUI_PORT} ${SPARK_MASTER} >> ${SPARK_WORKER_LOG}
+    export START_WORKER="true"
 else
-    echo "Undefined Workload Type $SPARK_WORKLOAD, must specify: master, worker, submit"
+    echo "Undefined Workload Type $SPARK_WORKLOAD, must specify: master, worker or history."
 fi
+
+# Start supervisor
+supervisord --nodaemon --configuration /etc/supervisor/conf.d/supervisor.conf

@@ -22,6 +22,10 @@ setup:
   - SPARK_LOCAL_IP=spark-$UNIQUE-master
   - '-e'
   - SPARK_WORKLOAD=master
+  - '-e'
+  - SPARK_ENABLE_HISTORY=true
+  - '-e'
+  - SPARK_ENABLE_PROMETHEUS=true
   - -p
   - 127.0.0.1:9090:8080
   - -p
@@ -113,8 +117,14 @@ tests:
     stdout:
       contains: '<li><strong>Alive Workers:</strong> 2</li>'
 
-- name: await
-  command: [tail, -f, "/dev/null"]
+- name: Check completed jobs
+  command: [curl, -L, "http://spark-$UNIQUE-master:18080/api/v1/applications?status=completed"]
   expect:
     stdout:
-      contains: 'nothing'
+      contains: '"name": "PySpark Partition Example"'
+
+- name: Check Prometheus metrics
+  command: [curl, -L, "http://spark-$UNIQUE-master:8080/metrics/master/prometheus"]
+  expect:
+    stdout:
+      contains: 'metrics_master_aliveWorkers_Value{type="gauges"} 2'

@@ -7,22 +7,23 @@ RUN apt-get update \
   && apt-get install -y \
     openjdk-11-jdk
 
-# Add Dependencies for PySpark
+# Add Dependencies for PySpark and Spark
 RUN apt-get install -y \
+    ca-certificates \
     curl \
-    vim \
-    wget \
     software-properties-common \
     ssh \
     net-tools \
-    ca-certificates \
     python3 \
     python3-pip \
     python3-numpy \
     python3-matplotlib \
     python3-scipy \
     python3-pandas \
-    python3-sympy
+    python3-sympy \
+    supervisor \
+    vim \
+    wget
 
 RUN update-alternatives --install "/usr/bin/python" "python" "$(which python3)" 1
 
@@ -40,7 +41,6 @@ RUN curl -L -o apache-spark.tgz "https://dist.apache.org/repos/dist/dev/spark/v$
       && mkdir -p /opt/spark \
       && tar -xf apache-spark.tgz -C /opt/spark --strip-components=1 \
       && rm -f apache-spark.tgz
-
 
 WORKDIR /opt/spark
 
@@ -65,6 +65,9 @@ RUN mkdir -p $SPARK_LOG_DIR \
 COPY start-spark.sh /
 COPY metrics.properties /opt/spark/conf/metrics.properties
 COPY test_job.py /opt/spark-apps/test_job.py
+COPY supervisor.conf /etc/supervisor/conf.d/supervisor.conf
 
+WORKDIR /opt/spark
 
-CMD ["/bin/bash", "/start-spark.sh"]
+ENTRYPOINT [ "/start-spark.sh" ]
+# CMD ["supervisord", "--nodaemon", "--configuration", "/etc/supervisor/conf.d/supervisor.conf"]
