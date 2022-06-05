@@ -13,7 +13,7 @@
 # limitations under the License.
 
 setup:
-# - command: [docker, network, create, -d, bridge, testbridge-$UNIQUE-id]
+- command: [docker, network, create, -d, bridge, testbridge-$UNIQUE-id]
 - command:
   - docker
   - run
@@ -103,7 +103,7 @@ setup:
 teardown:
 - command: [docker, stop, spark-$UNIQUE-master, spark-$UNIQUE-worker-a, spark-$UNIQUE-worker-b]
 - command: [docker, rm, spark-$UNIQUE-master, spark-$UNIQUE-worker-a, spark-$UNIQUE-worker-b]
-# - command: [docker, network, rm, testbridge-$UNIQUE-id]
+- command: [docker, network, rm, testbridge-$UNIQUE-id]
 
 target: spark-$UNIQUE-master
 tests:
