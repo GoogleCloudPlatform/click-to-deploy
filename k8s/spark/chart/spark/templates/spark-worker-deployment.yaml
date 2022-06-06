@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - image: "{{ .Values.spark.image.repo }}:{{ .Values.spark.image.tag }}"
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         name: spark
         env:
         - name: SPARK_MASTER
@@ -27,19 +27,19 @@ spec:
           value: "{{ .Release.Name }}-spark-master-svc.{{ .Release.Namespace }}.svc.cluster.local"
         - name: SPARK_WORKLOAD
           value: "worker"
-        - name: SPARK_LOCAL_IP
-          value: ""
         ports:
         - containerPort: 8080
           name: worker-ui
         livenessProbe:
-          tcpSocket:
-            port: worker-ui
-          initialDelaySeconds: 600
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 60
           periodSeconds: 20
         readinessProbe:
-          tcpSocket:
-            port: worker-ui
+          httpGet:
+            path: /
+            port: 8080
           initialDelaySeconds: 30
           periodSeconds: 10
       restartPolicy: Always

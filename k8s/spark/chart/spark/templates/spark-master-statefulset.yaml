@@ -21,8 +21,10 @@ spec:
         image: "{{ .Values.spark.image.repo }}:{{ .Values.spark.image.tag }}"
         imagePullPolicy: Always
         env:
+        # - name: SPARK_LOCAL_IP
+        #   value: "{{ .Release.Name }}-spark-master-0" # spark-1-spark-master-svc.default.svc.cluster.local
         - name: SPARK_LOCAL_IP
-          value: "{{ .Release.Name }}-spark-master-0" # spark-1-spark-master-svc.default.svc.cluster.local
+          value: "0.0.0.0"
         - name: SPARK_WORKLOAD
           value: "master"
         - name: SPARK_ENABLE_HISTORY
@@ -41,6 +43,11 @@ spec:
         volumeMounts:
         - name: {{ .Release.Name }}-spark-master-pvc
           mountPath: /opt/spark-events
+        - name: {{ .Release.Name }}-spark-master-apps-pvc
+          mountPath: /opt/spark-apps
+        - name: configmap
+          mountPath: /opt/spark-apps/sample_job.py
+          subPath: sample_job.py
         readinessProbe:
           httpGet:
             path: /
@@ -74,9 +81,22 @@ spec:
             fieldRef:
               fieldPath: metadata.namespace
       {{ end }}
+      volumes:
+      - name: configmap
+        configMap:
+          name: "{{ .Release.Name }}-configmap"
   volumeClaimTemplates:
   - metadata:
       name: {{ .Release.Name }}-spark-master-pvc
+      labels: *SparkMasterDeploymentLabels
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: {{ .Values.spark.persistence.storageClass }}
+      resources:
+        requests:
+          storage: {{ .Values.spark.persistence.size }}
+  - metadata:
+      name: {{ .Release.Name }}-spark-master-apps-pvc
       labels: *SparkMasterDeploymentLabels
     spec:
       accessModes: [ "ReadWriteOnce" ]
