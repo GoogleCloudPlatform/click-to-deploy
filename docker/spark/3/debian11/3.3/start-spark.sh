@@ -20,6 +20,7 @@ set -e
 
 # Default values
 export SPARK_MASTER_HOST=`hostname`
+export SPARK_LOCAL_IP="${SPARK_LOCAL_IP:=$(hostname)}"
 export SPARK_ENABLE_HISTORY="${SPARK_ENABLE_HISTORY:=false}"
 export SPARK_ENABLE_PROMETHEUS="${SPARK_ENABLE_PROMETHEUS:=false}"
 export START_MASTER="${START_MASTER:=false}"

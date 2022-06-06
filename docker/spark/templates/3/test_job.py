@@ -1,4 +1,3 @@
-import time
 from pyspark.sql import SparkSession
 
 def main():
