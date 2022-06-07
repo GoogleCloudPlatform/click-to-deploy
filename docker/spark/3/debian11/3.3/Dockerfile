@@ -70,4 +70,3 @@ COPY supervisor.conf /etc/supervisor/conf.d/supervisor.conf
 WORKDIR /opt/spark
 
 ENTRYPOINT [ "/start-spark.sh" ]
-# CMD ["supervisord", "--nodaemon", "--configuration", "/etc/supervisor/conf.d/supervisor.conf"]
