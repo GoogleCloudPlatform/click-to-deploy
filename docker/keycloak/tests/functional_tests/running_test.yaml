@@ -25,10 +25,12 @@ setup:
   - 'KEYCLOAK_ADMIN=admin'
   - '-e'
   - 'KEYCLOAK_ADMIN_PASSWORD=admin'
+  - '-e'
+  - 'KC_DB=dev-mem'
   - '-d'
   - '$IMAGE'
   - 'start-dev'
-- command: [sleep, '35s']
+- command: [sleep, '45s']
 
 teardown:
 - command: [docker, stop, some-keycloak-$UNIQUE-id]

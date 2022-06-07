@@ -71,6 +71,7 @@ services:
     environment:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_DB=dev-mem
 ```
 
 Or you can use `docker run` directly:
@@ -80,6 +81,7 @@ docker run -d -p 8080:8080 \
     --name keycloak \
     -e KEYCLOAK_ADMIN=admin \
     -e KEYCLOAK_ADMIN_PASSWORD=admin \
+    -e KC_DB=dev-mem
     marketplace.gcr.io/google/keycloak18 \
     start-dev
 ```
