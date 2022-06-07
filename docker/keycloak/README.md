@@ -104,9 +104,7 @@ services:
     command: start-dev
     environment:
         KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
-        KC_DB_URL_DATABASE: keycloak
         KC_DB_USERNAME: keycloak
-        KC_DB_SCHEMA: public
         KC_DB_PASSWORD: password
         KEYCLOAK_ADMIN: admin
         KEYCLOAK_ADMIN_PASSWORD: password
@@ -138,9 +136,7 @@ services:
     command: start-dev
     environment:
         KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
-        KC_DB_URL_DATABASE: keycloak
         KC_DB_USERNAME: keycloak
-        KC_DB_SCHEMA: public
         KC_DB_PASSWORD: password
         KEYCLOAK_ADMIN: admin
         KEYCLOAK_ADMIN_PASSWORD: password
@@ -168,7 +164,27 @@ These are the ports exposed by the container image.
 
 These are the environment variables understood by the container image.
 
-| **Variable**                  | **Description**                                                                                        |
-| :-------------------- | :--------------------------------------------------------------------------- |
-|     | Sets  |
+| **Variable**            | **Description**                                                              |
+| :---------------------- | :--------------------------------------------------------------------------- |
+| KC_DB                   | Use chosen DB provider                                                       |
+| KEYCLOAK_ADMIN          | Keycloak admin's username                                                    |
+| KEYCLOAK_ADMIN_PASSWORD | Keycloak admin's password                                                    |
+| KC_DB_URL               | Connection string in the format `jdbc:provider://dbhostname:port/database`   |
+| KC_DB_USERNAME          | DB username                                                                  |
+| KC_DB_PASSWORD          | DB password                                                                  |
+| KC_HOSTNAME             | Keycloak hostname for production mode                                        |
+| KC_HOSTNAME_STRICT      | Disable hostname verification if set to false                                |
+| KC_HTTP_ENABLED         | Set to `true` in case of using reverse proxy with TLS                        |
+| KC_HEALTH_ENABLED       | Expose health endopints at the `/health`, `/health/ready` and `/health/live` |
+| KC_METRICS_ENABLED      | Expose `/metrics` endpoint                                                   |
+
+You can see full list of acceptable parameters on the official [Keycloak docs](https://www.keycloak.org/server/all-config). 
+
+## <a name="references-volumes"></a>Volumes
+
+These are the filesystem paths used by the container image.
+
+| **Path**             | **Description** |
+| :------------------- | :-------------- |
+| /opt/keycloak/data   | Keycloak data   |
 
