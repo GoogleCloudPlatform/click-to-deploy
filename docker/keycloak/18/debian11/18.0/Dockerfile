@@ -24,6 +24,9 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+ENV KC_DB=postgres
+RUN /opt/keycloak/bin/kc.sh build --db=postgres
+
 ENV C2D_RELEASE 18.0.0
 
 USER 1000
