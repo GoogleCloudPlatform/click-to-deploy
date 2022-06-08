@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,6 +16,26 @@
 cloudbuild:
   enable_parallel: false
 versions:
+- dir: 3/debian10/3.2
+  excludeTests:
+  - tests/functional_tests/exporter_test.yaml
+  from: marketplace.gcr.io/google/debian10
+  packages:
+    kafka:
+      sha512: 736a129823b058dc10788d0893bde47b6f39b9e4972f9eac2d5c9e85e51e477344c6f1e1ebd126ce34d5fd430eb07e55fdd60d60cb541f1d48655c0ebc0a4778
+      version: 3.2.0
+    scala:
+      version: '2.13'
+  repo: kafka3
+  tags:
+  - 3.2.0-debian10
+  - 3.2-debian10
+  - 3-debian10
+  - 3.2.0
+  - '3.2'
+  - '3'
+  - latest
+  templateSubDir: debian10
 - dir: 3/debian10/3.1
   excludeTests:
   - tests/functional_tests/exporter_test.yaml
@@ -30,11 +50,8 @@ versions:
   tags:
   - 3.1.0-debian10
   - 3.1-debian10
-  - 3-debian10
   - 3.1.0
   - '3.1'
-  - '3'
-  - latest
   templateSubDir: debian10
 - dir: exporter
   excludeTests:
