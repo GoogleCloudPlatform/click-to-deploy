@@ -18,11 +18,9 @@ versions:
 - dir: 1/debian11/1.5
   from: marketplace.gcr.io/google/debian11:latest
   packages:
-    python:
-      version: 3.8.12
     superset:
       version: 1.5.0
-  repo: airflow2
+  repo: superset1
   tags:
   - '1.5.0-debian11'
   - '1.5-debian11'
