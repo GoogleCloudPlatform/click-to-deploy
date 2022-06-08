@@ -9,8 +9,7 @@ APP_ID ?= $(CHART_NAME)
 TRACK ?= 3.3
 METRICS_EXPORTER_TAG ?= v0.5.1
 
-# SOURCE_REGISTRY ?= marketplace.gcr.io/google
-SOURCE_REGISTRY ?= gcr.io/ccm-ops-test-adhoc
+SOURCE_REGISTRY ?= marketplace.gcr.io/google
 
 IMAGE_SPARK ?= $(SOURCE_REGISTRY)/spark3:$(TRACK)
 IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
