@@ -31,7 +31,7 @@ actions:
   bashTest:
     script: |-
       set -e
-      kubectl exec "${APP_INSTANCE_NAME}-cassandra-0" -- nodetool status | \
+      kubectl exec "${APP_INSTANCE_NAME}-cassandra-0" -- nodetool -h ::FFFF:127.0.0.1 status | \
         grep "^UN" -c
     expect:
       stdout:
