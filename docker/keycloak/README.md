@@ -132,7 +132,7 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: password
   keycloak:
-    image: gcr.io/ccm-ops-test-adhoc/keycloak
+    image: marketplace.gcr.io/google/keycloak18
     volumes:
       - keycloak-data-volume:/opt/keycloak/data
     command: start-dev
