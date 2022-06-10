@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-spark-worker
+  labels: &SparkWorkerDeploymentLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: spark-worker
+spec:
+  strategy:
+    type: Recreate
+  replicas: {{ .Values.spark.workers }}
+  selector:
+    matchLabels: *SparkWorkerDeploymentLabels
+  template:
+    metadata:
+      labels: *SparkWorkerDeploymentLabels
+    spec:
+      containers:
+      - image: "{{ .Values.spark.image.repo }}:{{ .Values.spark.image.tag }}"
+        imagePullPolicy: Always
+        name: spark
+        env:
+        - name: SPARK_MASTER
+          value: "spark://{{ .Release.Name }}-spark-master-svc.{{ .Release.Namespace }}.svc.cluster.local:7077"
+        - name: SPARK_MASTER_HOST
+          value: "{{ .Release.Name }}-spark-master-svc.{{ .Release.Namespace }}.svc.cluster.local"
+        - name: SPARK_WORKLOAD
+          value: "worker"
+        ports:
+        - containerPort: 8080
+          name: worker-ui
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+      restartPolicy: Always
