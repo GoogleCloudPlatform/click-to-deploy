@@ -1,0 +1,96 @@
+---
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "{{ .Release.Name }}"
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": {{ .Chart.Name | quote }}, "partner_name": "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+spec:
+  descriptor:
+    type: Spark
+    version: "{{ .Values.spark.image.tag }}"
+    description: >-
+      Apache Spark is an open-source framework and extensible platform for distributed processing.
+
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [official webite](https://spark.apache.org/community.html).
+
+      Additional community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/spark/).
+
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy Spark'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/spark/README.md
+    - description: 'Getting started with Spark'
+      url: https://spark.apache.org/docs/latest/quick-start.html
+    notes: |-
+      # Open Spark UI
+      Spark is exposed in a ClusterIP-only service, `{{ .Release.Name }}-spark-master-svc`.
+      To connect to Spark UI, you can either expose a public service endpoint, or keep it private,
+      but connect from you local environment with `kubectl port-forward`.  Run the following command in the background:
+
+      ```shell
+      kubectl port-forward \
+        --namespace {{ .Release.Namespace }} \
+        svc/{{ .Release.Name }}-spark-master-svc \
+        8080
+      ```
+
+      Now you can access the Spark UI with [http://localhost:8080](http://localhost:8080).s
+
+      # List Sample Apps
+      Spark Kubernetes Application comes with an embedded sample job at `/opt/spark-apps` folder.
+      You can easily add new files, modifying the `{{ .Release.Name }}-configmap` object.
+
+      In order to list the apps in this folder, use the command below:
+
+      ```shell
+      kubectl exec -ti {{ .Release.Name }}-spark-master-0 -- ls -la /opt/spark-apps/*.py
+      ```
+
+      Consequently, you can submit a job connecting to the port 7077 or via CLI using the command below:
+
+      ```shell
+      kubectl exec -ti {{ .Release.Name }}-spark-master-0 -- /opt/spark/bin/spark-submit \
+          --master \
+          spark://spark-1-spark-master-svc:7077 \
+          /opt/spark-apps/sample_job.py
+      ```
+
+      Finally, check the completed jobs at the history server:
+
+      ```shell
+      kubectl port-forward \
+        --namespace {{ .Release.Namespace }} \
+        svc/{{ .Release.Name }}-spark-master-svc \
+        18080 &
+      ```
+
+      And browse the URL `http://localhost:18080`
+  info:
+  - name: Forward Master UI locally
+    value: kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-spark-master-svc 8080
+  - name: Forward History Server UI locally
+    value: kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-spark-master-svc 18080
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "{{ .Release.Name }}"
+  componentKinds:
+  - group: v1
+    kind: PersistentVolumeClaim
+  - group: apps/v1
+    kind: Deployment
+  - group: apps/v1
+    kind: StatefulSet
+  - group: v1
+    kind: Service
+  - group: v1
+    kind: ConfigMap

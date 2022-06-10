@@ -12,14 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['redis']['version'] = '7.0.0'
+FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.4
 
-default['redis']['download_url'] =
-  "http://download.redis.io/releases/redis-#{default['redis']['version']}.tar.gz"
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl wget dnsutils netcat jq \
+    && rm -rf /var/lib/apt/lists/*
 
-default['redis']['packages']['temp_dependencies'] = ['dpkg-dev', 'gcc', 'make']
-default['redis']['packages']['dependencies'] = ['libjemalloc2']
+RUN mkdir -p /opt/kubectl/1.21 \
+    && wget -q -O /opt/kubectl/1.21/kubectl \
+       https://storage.googleapis.com/kubernetes-release/release/v1.21.6/bin/linux/amd64/kubectl \
+    && chmod 755 /opt/kubectl/1.21/kubectl \
+    && ln -s /opt/kubectl/1.21/kubectl /usr/bin/kubectl
 
-default['redis']['packages']['all_dependencies'] =
-  default['redis']['packages']['temp_dependencies'] +
-  default['redis']['packages']['dependencies']
+COPY tests/spark-tests.yaml /tests/
+COPY tester.sh /tester.sh
+
+WORKDIR /
+ENTRYPOINT ["/tester.sh"]

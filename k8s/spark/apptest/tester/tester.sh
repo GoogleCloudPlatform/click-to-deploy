@@ -1,3 +1,5 @@
+#!/bin/bash
+#
 # Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,14 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['redis']['version'] = '7.0.0'
+set -xeo pipefail
+shopt -s nullglob
 
-default['redis']['download_url'] =
-  "http://download.redis.io/releases/redis-#{default['redis']['version']}.tar.gz"
-
-default['redis']['packages']['temp_dependencies'] = ['dpkg-dev', 'gcc', 'make']
-default['redis']['packages']['dependencies'] = ['libjemalloc2']
-
-default['redis']['packages']['all_dependencies'] =
-  default['redis']['packages']['temp_dependencies'] +
-  default['redis']['packages']['dependencies']
+for test in /tests/*; do
+  testrunner -logtostderr "--test_spec=${test}"
+done
