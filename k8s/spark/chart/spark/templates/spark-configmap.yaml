@@ -1,0 +1,27 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-configmap
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: spark-master
+data:
+  sample_job.py: |
+    from pyspark.sql import SparkSession
+
+    def main():
+        appName = "PySpark C2D Example"
+        master = "local[8]"
+
+        spark = SparkSession.builder \
+            .appName(appName) \
+            .master(master) \
+            .getOrCreate()
+        configurations = spark.sparkContext.getConf().getAll()
+        for conf in configurations:
+            print(conf)
+
+
+    if __name__ == '__main__':
+        main()

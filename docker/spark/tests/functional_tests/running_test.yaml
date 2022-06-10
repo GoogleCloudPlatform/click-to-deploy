@@ -1,0 +1,142 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+setup:
+- command: [docker, network, create, -d, bridge, testbridge-$UNIQUE-id]
+- command:
+  - docker
+  - run
+  - '-d'
+  - '-e'
+  - SPARK_LOCAL_IP=spark-$UNIQUE-master
+  - '-e'
+  - SPARK_WORKLOAD=master
+  - '-e'
+  - SPARK_ENABLE_HISTORY=true
+  - '-e'
+  - SPARK_ENABLE_PROMETHEUS=true
+  - '-e'
+  - SPARK_MASTER_HOST=spark-$UNIQUE-master
+  - -p
+  - 127.0.0.1:9090:8080
+  - -p
+  - 127.0.0.1:7077:7077
+  - -p
+  - 127.0.0.1:18080:18080
+  - --name
+  - spark-$UNIQUE-master
+  - --network
+  - testbridge-$UNIQUE-id
+  - "$IMAGE"
+- command: ["sleep", "10s"]
+- command:
+  - docker
+  - run
+  - -d
+  - -e
+  - SPARK_MASTER=spark://spark-$UNIQUE-master:7077
+  - '-e'
+  - SPARK_MASTER_HOST=spark-$UNIQUE-master
+  - -e
+  - SPARK_WORKER_CORES=1
+  - -e
+  - SPARK_WORKER_MEMORY=1G
+  - -e
+  - SPARK_DRIVER_MEMORY=1G
+  - -e
+  - SPARK_EXECUTOR_MEMORY=1G
+  - -e
+  - SPARK_WORKLOAD=worker
+  - -e
+  - SPARK_LOCAL_IP=spark-$UNIQUE-worker-a
+  - --name
+  - spark-$UNIQUE-worker-a
+  - -p
+  - 127.0.0.1:9091:8080
+  - -p
+  - 127.0.0.1:7001:7000
+  - --network
+  - testbridge-$UNIQUE-id
+  - "$IMAGE"
+- command:
+  - docker
+  - run
+  - -d
+  - -e
+  - SPARK_MASTER=spark://spark-$UNIQUE-master:7077
+  - '-e'
+  - SPARK_MASTER_HOST=spark-$UNIQUE-master
+  - -e
+  - SPARK_WORKER_CORES=1
+  - -e
+  - SPARK_WORKER_MEMORY=1G
+  - -e
+  - SPARK_DRIVER_MEMORY=1G
+  - -e
+  - SPARK_EXECUTOR_MEMORY=1G
+  - -e
+  - SPARK_WORKLOAD=worker
+  - -e
+  - SPARK_LOCAL_IP=spark-$UNIQUE-worker-b
+  - --name
+  - spark-$UNIQUE-worker-b
+  - -p
+  - 127.0.0.1:9092:8080
+  - -p
+  - 127.0.0.1:7002:7000
+  - --network
+  - testbridge-$UNIQUE-id
+  - "$IMAGE"
+- command: [sleep, 5s]
+
+teardown:
+- command: [docker, stop, spark-$UNIQUE-master, spark-$UNIQUE-worker-a, spark-$UNIQUE-worker-b]
+- command: [docker, rm, spark-$UNIQUE-master, spark-$UNIQUE-worker-a, spark-$UNIQUE-worker-b]
+- command: [docker, network, rm, testbridge-$UNIQUE-id]
+
+target: spark-$UNIQUE-master
+tests:
+- name: Submit a sample job and check results
+  command:
+  - /opt/spark/bin/spark-submit
+  - --master
+  - spark://spark-$UNIQUE-master:7077
+  - /opt/spark-apps/test_job.py
+  expect:
+    stdout:
+      contains: "PySpark Partition Example"
+
+- name: Check alive workers count via UI
+  command: [curl, -L, "http://spark-$UNIQUE-master:8080"]
+  expect:
+    stdout:
+      contains: '<li><strong>Alive Workers:</strong> 2</li>'
+
+- name: Check History Server UI
+  command: [curl, -L, "http://spark-$UNIQUE-master:18080"]
+  expect:
+    stdout:
+      contains: '<title>History Server</title>'
+
+- name: Check completed jobs via API
+  command: [curl, -L, "http://spark-$UNIQUE-master:18080/api/v1/applications?status=completed"]
+  expect:
+    stdout:
+      contains: '"name": "PySpark Partition Example"'
+
+- name: Check alive workers via Prometheus metrics
+  command: [curl, "http://spark-$UNIQUE-master:8080/metrics/master/prometheus/"]
+  expect:
+    stdout:
+      contains: 'metrics_master_aliveWorkers_Value{type="gauges"} 2'
