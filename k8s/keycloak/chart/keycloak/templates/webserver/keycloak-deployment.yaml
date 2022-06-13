@@ -36,8 +36,8 @@ spec:
             {{- include "keycloak.env" . | indent 12 }}
           command:
             {{- include "keycloak.command" . | indent 12 }}
-          livenessProbe: &probes
-            initialDelaySeconds: 20 
+          livenessProbe:
+            initialDelaySeconds: 10 
             periodSeconds: 10
             timeoutSeconds: 5
             failureThreshold: 6
@@ -45,7 +45,15 @@ spec:
               scheme: HTTP
               path: /health
               port: web
-          readinessProbe: *probes
+          readinessProbe:
+            initialDelaySeconds: 20 
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 6
+            httpGet:
+              scheme: HTTP
+              path: /health/ready
+              port: web
         {{ if .Values.metrics.exporter.enabled }}
         - name: stackdriver-exporter
           image: {{ .Values.metrics.image }}
