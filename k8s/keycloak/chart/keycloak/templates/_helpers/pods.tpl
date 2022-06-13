@@ -16,7 +16,7 @@ app.kubernetes.io/name: "{{ .Release.Name }}"
 app.kubernetes.io/component: keycloak
 {{- end -}}
 
-{{- define "airflow.serviceAccountName" -}}
+{{- define "keycloak.serviceAccountName" -}}
 {{- .Release.Name -}}
 {{- end -}}
 
