@@ -5,8 +5,8 @@ kind: Ingress
 metadata:
   name: {{ .Release.Name }}-keycloak-web
   labels:
-    {{ include "keycloak.labels" . | indent 4 }}
-spec:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: keycloak
   tls:
   - secretName: {{ .Release.Name }}-web-tls
   defaultBackend:

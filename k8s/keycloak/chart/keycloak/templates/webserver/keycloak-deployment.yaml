@@ -4,7 +4,8 @@ kind: Deployment
 metadata:
   name: {{ .Release.Name }}-web
   labels: &KeycloakLabels
-    {{ include "keycloak.labels" . | indent 4 }}
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: keycloak
 spec:
   replicas: {{ .Values.keycloak.replicas }}
   strategy:

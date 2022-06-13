@@ -11,11 +11,6 @@ securityContext:
 - "--auto-build"
 {{- end }}
 
-{{- define "keycloak.labels" -}}
-app.kubernetes.io/name: "{{ .Release.Name }}"
-app.kubernetes.io/component: keycloak
-{{- end -}}
-
 {{- define "keycloak.serviceAccountName" -}}
 {{- .Release.Name -}}
 {{- end -}}

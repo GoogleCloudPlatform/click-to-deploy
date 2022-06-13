@@ -3,7 +3,8 @@ kind: RoleBinding
 metadata:
   name: {{ .Release.Name }}
   labels:
-    {{ include "keycloak.labels" . | indent 4 }}
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: keycloak
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
