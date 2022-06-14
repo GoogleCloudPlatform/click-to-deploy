@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-web
+  name: {{ .Release.Name }}-keycloak-web
   labels: &KeycloakLabels
     app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: keycloak
@@ -36,7 +36,10 @@ spec:
           env:
             {{- include "keycloak.env" . | indent 12 }}
           command:
-            {{- include "keycloak.command" . | indent 12 }}
+            - "/opt/keycloak/bin/kc.sh"
+          args:
+            - "start"
+            - "--auto-build"
           livenessProbe:
             initialDelaySeconds: 10 
             periodSeconds: 10

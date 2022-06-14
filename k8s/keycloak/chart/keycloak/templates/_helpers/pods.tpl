@@ -6,11 +6,6 @@ securityContext:
   runAsNonRoot: true
 {{- end }}
 
-{{- define "keycloak.command" }}
-- "start"
-- "--auto-build"
-{{- end }}
-
 {{- define "keycloak.serviceAccountName" -}}
 {{- .Release.Name -}}
 {{- end -}}
