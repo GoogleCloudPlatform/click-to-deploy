@@ -7,7 +7,7 @@ actions:
         equals: 0
 - name: Wait for the webserver get ready
   bashTest:
-    script: kubectl wait --for=condition=Available=True --timeout=120s --namespace $NAMESPACE deploy "${APP_INSTANCE_NAME}-web"
+    script: kubectl wait --for=condition=Available=True --timeout=120s --namespace $NAMESPACE deploy "${APP_INSTANCE_NAME}-keycloak-web"
     expect:
       exitCode:
         equals: 0
