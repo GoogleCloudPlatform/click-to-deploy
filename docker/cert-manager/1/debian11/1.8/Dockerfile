@@ -1,6 +1,6 @@
-FROM  marketplace.gcr.io/google/debian10 as bazel
+FROM  marketplace.gcr.io/google/debian11 as bazel
 
-ENV APP_VERSION=1.7.2
+ENV APP_VERSION=1.8.0
 
 RUN apt-get update \
     && apt-get install make automake git apt-transport-https curl gnupg patch -y --no-install-recommends \
@@ -35,9 +35,9 @@ RUN for dep in `find $(bazel info execution_root)/../../external/ -maxdepth 1 -t
     do cp -r $dep /src/vendor/; done
 
 # Result Image
-FROM marketplace.gcr.io/google/debian10
+FROM marketplace.gcr.io/google/debian11
 
-ENV C2D_RELEASE=1.7.2
+ENV C2D_RELEASE=1.8.0
 ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 
 # Non root
