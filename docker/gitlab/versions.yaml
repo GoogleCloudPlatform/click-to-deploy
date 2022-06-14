@@ -16,20 +16,45 @@
 cloudbuild:
   enable_parallel: false
 versions:
+- dir: 15/debian10/15.0
+  from: marketplace.gcr.io/google/debian10
+  packages:
+    gitlab:
+      version: 15.0.2
+  repo: gitlab15
+  tags:
+  - 15.0.2-debian10
+  - 15.0-debian10
+  - 15-debian10
+  - 15.0.2
+  - '15.0'
+  - '15'
+  - latest
+- dir: 14/debian10/14.10
+  from: marketplace.gcr.io/google/debian10
+  packages:
+    gitlab:
+      version: 14.10.4
+  repo: gitlab14
+  tags:
+  - 14.10.4-debian10
+  - 14.10-debian10
+  - 14-debian10
+  - 14.10.4
+  - '14.10'
+  - '14'
+  - latest
 - dir: 14/debian10/14.8
   from: marketplace.gcr.io/google/debian10
   packages:
     gitlab:
-      version: 14.8.2
+      version: 14.8.6
   repo: gitlab14
   tags:
-  - 14.8.2-debian10
+  - 14.8.6-debian10
   - 14.8-debian10
-  - 14-debian10
-  - 14.8.2
+  - 14.8.6
   - '14.8'
-  - '14'
-  - latest
 - dir: 13/debian10/13.12
   from: marketplace.gcr.io/google/debian10
   packages:
