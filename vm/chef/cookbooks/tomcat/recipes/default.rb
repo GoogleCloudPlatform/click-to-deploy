@@ -23,7 +23,7 @@ apt_update do
 end
 
 package 'Install Packages' do
-  package_name "xmlstarlet"
+  package_name 'xmlstarlet'
   action :install
 end
 
