@@ -44,7 +44,6 @@ Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlat
 * [References](#references)
   * [Ports](#references-ports)
   * [Environment Variables](#references-environment-variables)
-  * [Volumes](#references-volumes)
 
 # <a name="using-docker"></a>Using Docker
 
@@ -62,7 +61,7 @@ Use the following content for the `docker-compose.yml` file, then run `docker-co
 ```yaml
 version: '2'
 services:
-  hazelcast:
+  superset:
     image: marketplace.gcr.io/google/superset1
     ports:
       - 8088:8088
@@ -85,7 +84,7 @@ Use the following content for the `docker-compose.yml` file, then run `docker-co
 ```yaml
 version: '2'
 services:
-  hazelcast:
+  superset:
     image: marketplace.gcr.io/google/superset1
     ports:
       - 8088:8088
@@ -99,7 +98,7 @@ Or you can use `docker run` directly:
 ```shell
 docker run -d \
     -p 8088:8088 \
-    --name hazelcast \
+    --name superset \
     -e SUPERSET_PASSWORD="superset/some-password" \
     -e NEO4J_dbms_logs_debug_level=yes \
     marketplace.gcr.io/google/superset1
@@ -111,26 +110,17 @@ docker run -d \
 
 These are the ports exposed by the container image.
 
-| **Port** | **Description**    |
-| :------- | :----------------- |
-| TCP 8088 | Superset Dashboards|
+| **Port** | **Description**|
+| :------- | :--------------|
+| TCP 8088 | Superset UI    |
 
 ## <a name="references-environment-variables"></a>Environment Variables
 
 These are the environment variables understood by the container image.
-| **Variable**                  | **Description**                                                                                        |
-| :---------------------------- | :----------------------------------------------------------------------------------------------------- |
-| SUPERSET_PASSWORD     | Sets password for Admin user while initializing Superset  |
-| SUPERSET_LOAD_EXAMPLES | Dowloands and install some Doshaboard examples to play with.              |
+| **Variable**                  | **Description**                                          |
+| :---------------------------- | :------------------------------------------------------- |
+| SUPERSET_PASSWORD             | Sets password for Admin user while initializing Superset |
+| SUPERSET_LOAD_EXAMPLES        | Installs dashboards examples.                            |
 |
 
 You can see full list of acceptable parameters on the official [Superset docs](https://superset.apache.org/docs/installation/configuring-superset/). 
-
-## <a name="references-volumes"></a>Volumes
-
-These are the filesystem paths used by the container image.
-
-| **Path**             | **Description** |
-| :------------------- | :-------------- |
-
-
