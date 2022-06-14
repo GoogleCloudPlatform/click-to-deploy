@@ -18,6 +18,15 @@
 include_recipe 'c2d-config'
 include_recipe 'openjdk11'
 
+apt_update do
+  action :update
+end
+
+package 'Install Packages' do
+  package_name "xmlstarlet"
+  action :install
+end
+
 # Create tomcat user.
 user node['tomcat']['user'] do
   home '/home/tomcat'
