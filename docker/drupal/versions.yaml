@@ -25,14 +25,14 @@ versions:
       gpg: e1e1c580a237c739ecc1be57cf512e6b741faaa566439257d19ecd739ddfefaf
       version: 2.2.8
     drupal:
-      md5: 99e45173551d6bfb58138945cb40e1fc
-      version: 9.3.13
+      md5: 79532e99c9f323b54c4cc9db78e8bf6d
+      version: 9.3.16
   repo: drupal9-php8-apache
   tags:
-  - 9.3.13-debian9
+  - 9.3.16-debian9
   - 9.3-debian9
   - 9-debian9
-  - 9.3.13
+  - 9.3.16
   - '9.3'
   - '9'
   - latest
