@@ -1,0 +1,99 @@
+---
+# Source: superset/templates/superset-secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: superset-1-superset-secret
+  labels:
+    app.kubernetes.io/name: superset-1
+    app.kubernetes.io/component: apache-superset
+type: Opaque
+data:
+  superset-password: ""
+---
+# Source: superset/templates/superset-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: superset-1-superset-svc
+  labels:
+    app.kubernetes.io/name: superset-1
+    app.kubernetes.io/component: apache-superset
+spec:
+  ports:
+  - name: http
+    port: 8088
+    targetPort: http
+  selector:
+    app.kubernetes.io/name: superset-1
+    app.kubernetes.io/component: apache-superset
+  
+  type: NodePort
+---
+# Source: superset/templates/superset-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: superset-1-apache-exporter-svc
+  labels:
+    app.kubernetes.io/name: superset-1
+    app.kubernetes.io/component: apache-superset
+spec:
+  ports:
+  - name: exporter
+    port: 9117
+  selector:
+    app.kubernetes.io/name: superset-1
+    app.kubernetes.io/component: apache-superset
+  type: ClusterIP
+---
+# Source: superset/templates/superset-statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: superset-1-superset
+  labels: &supersetDeploymentLabels
+    app.kubernetes.io/name: "superset-1"
+    app.kubernetes.io/component: apache-superset
+spec:
+  replicas: 1
+  serviceName: superset-1-superset-svc
+  selector:
+    matchLabels: *supersetDeploymentLabels
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels: *supersetDeploymentLabels
+    spec:
+      containers:
+      - image: gcr.io/ccm-ops-test-adhoc/superset1:1.5
+        name: superset
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        env:            
+        # A superset's password.
+        - name: SUPERSET_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: superset-1-superset-secret
+              key: superset-password
+---
+# Source: superset/templates/superset-service.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: superset-1-superset-ingress
+  labels:
+    app.kubernetes.io/name: "superset-1"
+    app.kubernetes.io/component: apache-superset
+spec:
+  tls:
+  - secretName: superset-1-tls
+  defaultBackend:
+    service:
+      name: superset-1-superset-svc
+      port:
+        name: http

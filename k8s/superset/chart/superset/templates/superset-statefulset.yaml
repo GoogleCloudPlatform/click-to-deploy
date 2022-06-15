@@ -1,0 +1,53 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-superset
+  labels: &supersetDeploymentLabels
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: apache-superset
+spec:
+  replicas: 1
+  serviceName: {{ .Release.Name }}-superset-svc
+  selector:
+    matchLabels: *supersetDeploymentLabels
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels: *supersetDeploymentLabels
+    spec:
+      containers:
+      - image: {{ .Values.superset.image.repo }}:{{ .Values.superset.image.tag }}
+        name: superset
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        env:            
+        # A superset's password.
+        - name: SUPERSET_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-superset-secret
+              key: superset-password
+      {{ if .Values.metrics.exporter.enabled }}
+      - name: prometheus-to-sd
+        image: {{ .Values.metrics.image }}
+        command:
+        - /monitor
+        - --stackdriver-prefix=custom.googleapis.com
+        - --source=apache-superset:http://localhost:9117/metrics
+        - --pod-id=$(POD_NAME)
+        - --namespace-id=$(POD_NAMESPACE)
+        - --monitored-resource-types=k8s
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+      {{ end }}

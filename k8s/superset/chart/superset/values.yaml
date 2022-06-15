@@ -1,0 +1,26 @@
+drupal:
+  image:
+    repo: null
+    tag: null
+  user: admin
+  password: null
+  persistence:
+    size: 8Gi
+    storageClass: null
+  persistence:
+    size: 5Gi
+
+enablePublicServiceAndIngress: true
+
+apache:
+  exporter:
+    image: null
+
+metrics:
+  image: null
+  exporter:
+    enabled: false
+
+tls:
+  base64EncodedPrivateKey: null
+  base64EncodedCertificate: null
