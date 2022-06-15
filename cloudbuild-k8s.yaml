@@ -76,8 +76,11 @@ steps:
   - 'DOCKER_NETWORK=cloudbuild'
   dir: k8s/${_SOLUTION_NAME}
   args:
-  - make
-  - app/doctor
+  - '-c'
+  - |
+    ls / \
+    && ls /builder/home \
+    && make app/doctor
 
 - id: Build Solution
   name: gcr.io/cloud-marketplace-tools/k8s/dev:local
