@@ -44,10 +44,6 @@ EOF
             ADMIN_PASSWORD="admin"
         fi
 
-if [[ -z "${INFLUX_TOKEN}" ]]; then
-   export INFLUX_TOKEN="$(openssl rand -hex 64)"
-fi        
-
 # Initialize the database
 echo_step "1" "Starting" "Applying DB migrations"
 superset db upgrade
