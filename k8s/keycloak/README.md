@@ -1,5 +1,21 @@
 # keycloak
 
+Keycloak is an open source software product to allow single sign-on with 
+Identity and Access Management aimed at modern applications and services.
+
+For more information, visit the Keycloak [official website](https://www.keycloak.org/).
+
+## About Google Click to Deploy
+
+Popular open stacks on Kubernetes, packaged by Google.
+
+## Architecture
+
+![Architecture diagram](resources/keycloak-k8s-app-architecture.png)
+
+This app offers "list of resources".
+
+
 ```shell
 export APP_INSTANCE_NAME=keycloak
 export NAMESPACE=default
