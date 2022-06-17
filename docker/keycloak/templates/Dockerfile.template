@@ -21,10 +21,12 @@ ENV LANGUAGE=C.UTF-8 LANG=C.UTF-8 LC_ALL=C.UTF-8 LC_CTYPE=C.UTF-8 LC_MESSAGES=C.
 COPY --from=build --chown=1000:0 /opt/keycloak /opt/keycloak
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends curl locales openjdk-11-jre-headless \
+    && apt-get install -y --no-install-recommends curl locales openjdk-11-jre-headless libh2-java \
     && apt-get autoremove -yqq --purge \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+RUN cp /usr/share/java/h2-1.4.197.jar /opt/keycloak/lib/lib/main/com.h2database.h2-1.4.197.jar
 
 ENV KC_DB=postgres
 RUN /opt/keycloak/bin/kc.sh build --db=postgres
