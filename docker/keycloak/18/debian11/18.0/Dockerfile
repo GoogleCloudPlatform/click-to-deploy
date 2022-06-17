@@ -24,7 +24,7 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN cp /usr/share/java/h2-*.jar /opt/keycloak/lib/lib/main/com.h2database.h2-1.4.197.jar
+RUN cp /usr/share/java/h2-1.4.197.jar /opt/keycloak/lib/lib/main/com.h2database.h2-1.4.197.jar
 
 ENV KC_DB=postgres
 RUN /opt/keycloak/bin/kc.sh build --db=postgres
