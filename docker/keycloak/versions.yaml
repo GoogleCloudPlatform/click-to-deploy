@@ -20,6 +20,8 @@ versions:
   packages:
     keycloak:
       version: 18.0.0
+    h2database:
+      version: 1.4.197
   repo: keycloak18
   tags:
   - '18.0.0-debian11'
