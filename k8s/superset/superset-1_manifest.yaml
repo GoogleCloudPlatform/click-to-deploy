@@ -104,8 +104,6 @@ data:
     'CACHE_DEFAULT_TIMEOUT': 86400,
     'CACHE_KEY_PREFIX': 'superset_',
     'CACHE_REDIS_HOST': 'superset-1-redis-svc',
-    'CACHE_REDIS_PORT': 6379,
-    'CACHE_REDIS_DB': 1,
     'CACHE_REDIS_URL': 'redis://superset-1-redis-svc:6379/1'
     }   
 
@@ -115,12 +113,19 @@ data:
     'CACHE_KEY_PREFIX': 'superset_filter_',
     'CACHE_REDIS_URL': 'redis://superset-1-redis-svc:6379/2'
     }
-    
+
     EXPLORE_FORM_DATA_CACHE_CONFIG = {
     'CACHE_TYPE': 'RedisCache',
     'CACHE_DEFAULT_TIMEOUT': 86400,
     'CACHE_KEY_PREFIX': 'superset_explore_',
     'CACHE_REDIS_URL': 'redis://superset-1-redis-svc:6379/3'
+    }
+
+    DATA_CACHE_CONFIG = {
+    'CACHE_TYPE': 'RedisCache',
+    'CACHE_KEY_PREFIX': 'superset_results_',  
+    'CACHE_DEFAULT_TIMEOUT': 86400,
+    'CACHE_REDIS_URL': 'redis://superset-1-redis-svc:6379/4' 
     }
 ---
 # Source: superset/templates/redis-configmap.yaml
