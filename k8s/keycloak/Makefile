@@ -16,7 +16,7 @@ VERIFY_WAIT_TIMEOUT = 1800
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 
-IMAGE_KEYCLOAK ?= gcr.io/ccm-ops-test-adhoc/keycloak18:$(TRACK)
+IMAGE_KEYCLOAK ?= $(SOURCE_REGISTRY)/keycloak18:$(TRACK)
 
 # POSTGRESQL
 IMAGE_POSTGRESQL ?= $(SOURCE_REGISTRY)/postgresql13:$(POSTGRESQL_TRACK)

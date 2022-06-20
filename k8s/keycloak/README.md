@@ -137,7 +137,7 @@ export METRICS_EXPORTER_TAG=0.5
 Configure the container images:
 
 ```shell
-export IMAGE_KEYCLOAK=gcr.io/ccm-ops-test-adhoc/keycloak18
+export IMAGE_KEYCLOAK=marketplace.gcr.io/google/keycloak18
 export IMAGE_POSTGRESQL=marketplace.gcr.io/google/postgresql13
 export IMAGE_METRICS_EXPORTER=k8s.gcr.io/prometheus-to-sd:${METRICS_EXPORTER_TAG}
 ```
@@ -307,8 +307,6 @@ Use this command to see a base64-encoded version of your PostgreSQL password:
 ```shell
 kubectl get secret $APP_INSTANCE_NAME-config-envs --namespace $NAMESPACE -o jsonpath='{.data.KC_DB_PASSWORD}' | base64 -d
 ```
-
-
 
 ### Establish the PostgreSQL connection
 
