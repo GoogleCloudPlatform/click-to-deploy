@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -46,8 +46,11 @@ end
 bash 'Hold kubernetes packages version' do
   user 'root'
   code <<-EOH
-    apt-mark hold kubelet kubeadm kubectl containerd.io
+    apt-get install -y kubelet=${version} && apt-mark hold kubelet kubeadm kubectl containerd.io
 EOH
+  environment({
+    'version' => node['kubernetes']['version'],
+  })
 end
 
 bash 'Disable swap memory' do

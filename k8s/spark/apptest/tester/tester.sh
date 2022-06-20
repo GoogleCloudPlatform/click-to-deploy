@@ -1,3 +1,5 @@
+#!/bin/bash
+#
 # Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,22 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-cloudbuild:
-  enable_parallel: false
-versions:
-- dir: 18/debian11/18.0
-  from: marketplace.gcr.io/google/debian11:latest
-  packages:
-    keycloak:
-      version: 18.0.0
-    h2database:
-      version: 1.4.197
-  repo: keycloak18
-  tags:
-  - '18.0.0-debian11'
-  - '18.0-debian11'
-  - '18-debian11'
-  - '18.0.0'
-  - '18.0'
-  - '18'
-  - 'latest'
+set -xeo pipefail
+shopt -s nullglob
+
+for test in /tests/*; do
+  testrunner -logtostderr "--test_spec=${test}"
+done
