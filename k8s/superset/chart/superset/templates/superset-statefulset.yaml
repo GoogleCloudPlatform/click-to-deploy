@@ -7,7 +7,6 @@ metadata:
     app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: apache-superset
 spec:
-  replicas: 1
   serviceName: {{ .Release.Name }}-superset-svc
   selector:
     matchLabels: *supersetDeploymentLabels
@@ -17,6 +16,20 @@ spec:
     metadata:
       labels: *supersetDeploymentLabels
     spec:
+      initContainers:
+      - name: check-db
+        image: busybox:1.35
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+          - |
+            echo 'Waiting for PostgreSQL to become ready...'
+            until printf "." && nc -z -w 2 "{{ .Release.Name }}-postgresql-service" 5432; do
+            sleep 2;
+            done;
+            sleep 5;
+            echo 'PostgreSQL is ready'  
       containers:
       - image: {{ .Values.superset.image.repo }}:{{ .Values.superset.image.tag }}
         name: superset
@@ -31,16 +44,54 @@ spec:
             secretKeyRef:
               name: {{ .Release.Name }}-superset-secret
               key: superset-password
+        #- name: SUPERSET__SQLALCHEMY_DATABASE_URI
+        # value: postgresql+psycopg2://{{ .Values.postgresql.db.user}}:{{ .Values.postgresql.db.password}}@{{ .Release.Name }}-postgresql-service:5432/{{.Values.postgresql.db.name}}
+        # A username used for accessing the database.
+        - name: DATABASE_USER
+          value: {{ .Values.postgresql.db.user}}         
+        # A password used for accessing the database.
+        - name: DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: {{.Release.Name}}-postgresql-secret
+        # A database name used by Superset.
+        - name: DATABASE_DB
+          value: {{.Values.postgresql.db.name}}
+        # A hostname of Postgresql service.
+        - name: DATABASE_HOST
+          value: {{ .Release.Name }}-postgres-svc
+        - name: PYTHONPATH
+          value: "/etc/superset"  
+        ports:
+        - containerPort: 8088
+          name: superset-port
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8088
+          initialDelaySeconds: 60
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8088
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          failureThreshold: 6
       {{ if .Values.metrics.exporter.enabled }}
       - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}
+        ports:
+        - name: profiler
+          containerPort: 6060
         command:
-        - /monitor
-        - --stackdriver-prefix=custom.googleapis.com
-        - --source=apache-superset:http://localhost:9117/metrics
-        - --pod-id=$(POD_NAME)
-        - --namespace-id=$(POD_NAMESPACE)
-        - --monitored-resource-types=k8s
+          - /monitor
+          - --stackdriver-prefix=custom.googleapis.com
+          - --source=superset:http://localhost:8088/api/prometheus/metrics
+          - --pod-id=$(POD_NAME)
+          - --namespace-id=$(POD_NAMESPACE)
+          - --monitored-resource-types=k8s
         env:
         - name: POD_NAME
           valueFrom:
@@ -51,3 +102,10 @@ spec:
             fieldRef:
               fieldPath: metadata.namespace
       {{ end }}
+        volumeMounts:
+           - name: config-volume
+             mountPath: /etc/superset
+      volumes:
+        - name: config-volume
+          configMap:
+            name: superset-configmap

@@ -10,32 +10,14 @@ spec:
   ports:
   - name: http
     port: 8088
-    targetPort: 8088
   selector:
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: apache-superset
   {{ if .Values.enablePublicServiceAndIngress }}
-  type: NodePort
+  type: LoadBalancer
   {{ else }}
   type: ClusterIP
   {{ end }}
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ .Release.Name }}-apache-exporter-svc
-  labels:
-    app.kubernetes.io/name: {{ .Release.Name }}
-    app.kubernetes.io/component: apache-superset
-spec:
-  ports:
-  - name: exporter
-    port: 9117
-  selector:
-    app.kubernetes.io/name: {{ .Release.Name }}
-    app.kubernetes.io/component: apache-superset
-  type: ClusterIP
-{{ if .Values.enablePublicServiceAndIngress }}
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -52,4 +34,3 @@ spec:
       name: {{ .Release.Name }}-superset-svc
       port:
         name: http
-{{ end }}
