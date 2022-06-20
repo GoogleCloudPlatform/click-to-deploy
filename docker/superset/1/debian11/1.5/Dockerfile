@@ -30,7 +30,8 @@ RUN groupadd supergroup && \
         libsasl2-modules-gssapi-mit && \
     pip install apache-superset==$SUPERSET_VERSION && \
     pip install MarkupSafe==2.0.1 && \
-    pip install psycopg2-binary
+    pip install psycopg2-binary \
+    pip install pillow mysqlclient
 
 
 # Configure Filesystem
