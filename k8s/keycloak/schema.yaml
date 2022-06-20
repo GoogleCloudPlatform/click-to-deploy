@@ -76,6 +76,23 @@ properties:
     description: Number of replicas of the Keycloak webserver replicas
     default: 1
     minimum: 1
+  keycloak.serviceAccount:
+    type: string
+    title: Keycloak Service Account
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        description: Service account used by Keycloak deployment
+        roles:
+        - type: ClusterRole
+          rulesType: CUSTOM
+          rules:
+          - apiGroups: [""]
+            resources:
+            - pods
+            verbs:
+            - get
+            - list
   enablePublicServiceAndIngress:
     type: boolean
     title: Enable public IP access

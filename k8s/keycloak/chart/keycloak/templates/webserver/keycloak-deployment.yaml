@@ -21,7 +21,7 @@ spec:
       labels: *KeycloakLabels
     spec:
       restartPolicy: Always
-      serviceAccountName: {{ include "keycloak.serviceAccountName" . }}
+      serviceAccountName: "{{ .Values.keycloak.serviceAccount }}"
       initContainers:
         {{- include "keycloak.init_container.check_db" . | indent 8 }}
       containers:

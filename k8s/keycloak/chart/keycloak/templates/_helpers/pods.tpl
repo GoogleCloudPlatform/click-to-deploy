@@ -6,10 +6,6 @@ securityContext:
   runAsNonRoot: true
 {{- end }}
 
-{{- define "keycloak.serviceAccountName" -}}
-{{- .Release.Name -}}
-{{- end -}}
-
 {{- define "keycloak.init_container.check_db" }}
 - name: check-db
   image: busybox:1.35

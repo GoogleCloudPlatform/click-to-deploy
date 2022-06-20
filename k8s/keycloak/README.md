@@ -124,7 +124,7 @@ export PSQL_PERSISTENT_DISK_SIZE="5Gi"
 Set up the image tag:
 
 It is advised to use a stable image reference, which you can find on:
-- [Keycloak - Marketplace Container Registry](https://gcr.io/ccm-ops-test-adhoc/keycloak18).
+- [Keycloak - Marketplace Container Registry](https://marketplace.gcr.io/google/keycloak18).
 - [PostgreSQL - Marketplace Container Registry](https://marketplace.gcr.io/google/postgresql13).
 For example:
 
@@ -175,6 +175,17 @@ this option, change the value to `true`.
 export METRICS_EXPORTER_ENABLED=false
 ```
 
+#### Create the Keycloak Service Account
+
+To create the Keycloak Service Account and ClusterRoleBinding:
+
+```shell
+export KEYCLOAK_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-serviceaccount"
+kubectl create serviceaccount "${KEYCLOAK_SERVICE_ACCOUNT}" --namespace "${NAMESPACE}"
+kubectl create clusterrole "${KEYCLOAK_SERVICE_ACCOUNT}-role" --verb=get,list --resource=pods
+kubectl create clusterrolebinding "${KEYCLOAK_SERVICE_ACCOUNT}-rule" --clusterrole="${KEYCLOAK_SERVICE_ACCOUNT}-role" --serviceaccount="${NAMESPACE}:${KEYCLOAK_SERVICE_ACCOUNT}"
+```
+
 #### Expand the manifest template
 
 Use `helm template` to expand the template. We recommend that you save the
@@ -185,6 +196,7 @@ helm template "${APP_INSTANCE_NAME}" chart/keycloak \
     --namespace "${NAMESPACE}" \
     --set keycloak.image.repo="$IMAGE_KEYCLOAK" \
     --set keycloak.image.tag="$KEYCLOAK_TRACK" \
+    --set keycloak.serviceAccount="${KEYCLOAK_SERVICE_ACCOUNT}" \
     --set postgresql.image.repo="$IMAGE_POSTGRESQL" \
     --set postgresql.image.tag="$POSTGRESQL_TRACK" \
     --set postgresql.persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \
