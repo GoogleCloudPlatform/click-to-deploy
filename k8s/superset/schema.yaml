@@ -41,7 +41,7 @@ x-google-marketplace:
       properties:
         postgresql.image:
           type: FULL
-    postgres-exporter:
+    postgresql-exporter:
       properties:
         postgresql.exporter.image:
           type: FULL
