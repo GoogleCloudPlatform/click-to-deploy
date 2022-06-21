@@ -38,7 +38,7 @@ image-postgresql-exporter := $(call get_sha256,$(IMAGE_POSTGRESQL_EXPORTER))
 image-prometheus-to-sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))
 image-redis := $(call get_sha256,$(IMAGE_REDIS))
 image-redis-exporter := $(call get_sha256,$(IMAGE_REDIS_EXPORTER))
-image-postgresql-exporter := $(call get_sha256,$(IMAGE_REDIS_EXPORTER))
+image-postgresql-exporter := $(call get_sha256,$(IMAGE_POSTGRESQL_EXPORTER))
 
 C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
 
