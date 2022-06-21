@@ -44,18 +44,6 @@ spec:
             secretKeyRef:
               name: {{ .Release.Name }}-superset-secret
               key: superset-password
-        # A username used for accessing the database.
-        - name: DATABASE_USER
-          value: {{ .Values.postgresql.db.user}}         
-        # A password used for accessing the database.
-        - name: DATABASE_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: password
-              name: {{.Release.Name}}-postgresql-secret
-        # A database name used by Superset.
-        - name: DATABASE_DB
-          value: {{.Values.postgresql.db.name}}
         # A hostname of Postgresql service.
         - name: DATABASE_HOST
           value: {{ .Release.Name }}-postgres-svc

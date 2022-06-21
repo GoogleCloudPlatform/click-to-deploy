@@ -13,12 +13,13 @@ spec:
     type: superset
     version: "{{ .Values.superset.image.tag }}"
     description: |-
-                 Apache Superset is a modern, enterprise-ready business intelligence web application. It is fast, lightweight, intuitive,
-                 and loaded with options that make it easy for users of all skill sets to explore and visualize their data,
-                 from simple pie charts to highly detailed deck.gl geospatial charts.
+      Apache Superset is a modern, enterprise-ready business intelligence web application. It is fast, lightweight, intuitive,
+      and loaded with options that make it easy for users of all skill sets to explore and visualize their data,
+      from simple pie charts to highly detailed deck.gl geospatial charts.
 
       # Support
       Google does not offer support for this solution. However, community support is available on https://superset.apache.org/docs/intro
+      
       Additional community support is available on [community forums](https://stackoverflow.com/questions/tagged/superset+apache-superset).
     maintainers:
     - name: Google Click to Deploy
@@ -61,7 +62,7 @@ spec:
       app.kubernetes.io/name: "{{ .Release.Name }}"
   componentKinds:
   - group: apps/v1
-    kind: StatefulSet
+    kind: StatefulSet    
   - group: v1
     kind: PersistentVolumeClaim
   - group: v1
@@ -70,3 +71,5 @@ spec:
     kind: Service
   - group: v1
     kind: ServiceAccount
+  - group: apps/v1
+    kind: ConfigMap

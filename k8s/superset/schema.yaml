@@ -109,6 +109,6 @@ properties:
 required:
 - name
 - namespace
-- Superset.persistence.size
+- superset.persistence.size
 - enablePublicServiceAndIngress
 - metrics.exporter.enabled
