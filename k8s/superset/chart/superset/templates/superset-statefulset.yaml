@@ -44,8 +44,6 @@ spec:
             secretKeyRef:
               name: {{ .Release.Name }}-superset-secret
               key: superset-password
-        #- name: SUPERSET__SQLALCHEMY_DATABASE_URI
-        # value: postgresql+psycopg2://{{ .Values.postgresql.db.user}}:{{ .Values.postgresql.db.password}}@{{ .Release.Name }}-postgresql-service:5432/{{.Values.postgresql.db.name}}
         # A username used for accessing the database.
         - name: DATABASE_USER
           value: {{ .Values.postgresql.db.user}}         
