@@ -25,25 +25,25 @@ x-google-marketplace:
   images:
     '':
       properties:
-        Superset.image.repo:
+        superset.image.repo:
           type: REPO_WITH_REGISTRY
-        Superset.image.tag:
+        superset.image.tag:
           type: TAG
     redis-exporter:
       properties:
-        apache.exporter.image:
+        redis.exporter.image:
           type: FULL
     redis:
       properties:
-        apache.exporter.image:
-          type: FULL                    
+        redis.image:
+          type: FULL
     postgresql:
       properties:
-        db.image:
+        postgresql.image:
           type: FULL
     postgres-exporter:
       properties:
-        db.exporter.image:
+        postgresql.exporter.image:
           type: FULL
     prometheus-to-sd:
       properties:
@@ -64,7 +64,7 @@ properties:
     x-google-marketplace:
       type: GENERATED_PASSWORD
       generatedPassword:
-        length: 12      
+        length: 12
   superset.persistence.storageClass:
     type: string
     title: StorageClass
@@ -80,6 +80,14 @@ properties:
     description: The storage size for Superset persistent volume
     pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
   superset.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 10
+        includeSymbols: False
+        base64: False
+  redis.password:
     type: string
     x-google-marketplace:
       type: GENERATED_PASSWORD

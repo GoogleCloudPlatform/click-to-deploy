@@ -19,7 +19,7 @@ spec:
 
       # Support
       Google does not offer support for this solution. However, community support is available on https://superset.apache.org/docs/intro
-      
+
       Additional community support is available on [community forums](https://stackoverflow.com/questions/tagged/superset+apache-superset).
     maintainers:
     - name: Google Click to Deploy
@@ -45,24 +45,22 @@ spec:
 
       Then, navigate to the [http://localhost:8088](http://localhost:8088) endpoint.
   info:
-  - name: Temporary password for user admin
+  - name: Application Namespace
+    value: {{ .Release.Namespace }}
+  - name: Login for web console
+    value: "admin"
+  - name: Password for user admin
     type: Reference
     valueFrom:
       secretKeyRef:
         key: superset-password
         name: {{ .Release.Name }}-superset-secret
-  - name: Application Namespace
-    value: {{ .Release.Namespace }}
-  - name: Default login for web console
-    value: "admin"
-  - name: Default password for web console
-    value: "admin"
   selector:
     matchLabels:
       app.kubernetes.io/name: "{{ .Release.Name }}"
   componentKinds:
   - group: apps/v1
-    kind: StatefulSet    
+    kind: StatefulSet
   - group: v1
     kind: PersistentVolumeClaim
   - group: v1

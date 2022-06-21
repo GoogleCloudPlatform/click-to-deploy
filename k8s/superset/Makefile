@@ -12,7 +12,8 @@ TRACK ?= 1.5
 METRICS_EXPORTER_TAG ?= v0.5.1
 REDIS_EXPORTER_TAG ?= 1.3.1
 POSTGRESQL_EXPORTER_TAG ?= latest
-POSTGRESQL_TAG ?= latest
+POSTGRESQL_TAG ?= 13.4
+REDIS_TAG ?= latest
 
 VERIFY_WAIT_TIMEOUT = 1800
 
@@ -20,7 +21,7 @@ SOURCE_REGISTRY ?= marketplace.gcr.io/google
 IMAGE_SUPERSET ?= $(SOURCE_REGISTRY)/superset1:$(TRACK)
 IMAGE_POSTGRESQL ?= $(SOURCE_REGISTRY)/postgresql13:$(POSTGRESQL_TAG)
 IMAGE_POSTGRESQL_EXPORTER ?= $(SOURCE_REGISTRY)/postgresql-exporter0:$(POSTGRESQL_EXPORTER_TAG)
-IMAGE_REDIS ?= $(SOURCE_REGISTRY)/redis6:$(TRACK)
+IMAGE_REDIS ?= $(SOURCE_REGISTRY)/redis6:$(REDIS_TAG)
 IMAGE_REDIS_EXPORTER ?= $(SOURCE_REGISTRY)/redis-exporter1:$(REDIS_EXPORTER_TAG)
 IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
@@ -50,20 +51,10 @@ ifdef PUBLIC_SERVICE_AND_INGRESS_ENABLED
   PUBLIC_SERVICE_AND_INGRESS_ENABLED_FIELD = , "enablePublicServiceAndIngress": $(PUBLIC_SERVICE_AND_INGRESS_ENABLED)
 endif
 
-ifdef DB_PASSWORD
-  DB_PASSWORD_FIELD = , "postgresql.db.password": "$(DB_PASSWORD)"
-endif
-
-ifdef SUPERSET_PASSWORD
-  SUPERSET_PASSWORD_FIELD = , "superset.password ": "$(SUPERSET_PASSWORD)"
-endif
-
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
   $(PUBLIC_SERVICE_AND_INGRESS_ENABLED_FIELD) \
-  $(DB_PASSWORD) \
-  $(SUPERSET_PASSWORD) \
 }
 
 # c2d_deployer.Makefile provides the main targets for installing the application.
