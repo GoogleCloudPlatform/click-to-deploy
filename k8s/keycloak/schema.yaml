@@ -32,27 +32,6 @@ x-google-marketplace:
         postgresql.image.tag:
           type: TAG
 
-  deployerServiceAccount:
-    description:
-      Creates app resources including persistentvolumes.
-    roles:
-      - type: ClusterRole  # For getting persistentvolumes
-        rulesType: CUSTOM
-        rules:
-          - apiGroups:
-            - 'rbac.authorization.k8s.io'
-            resources:
-            - 'clusterroles'
-            - 'clusterrolebindings'
-            verbs:
-            - '*'
-          - apiGroups:
-            - '*'
-            resources:
-            - 'persistentvolumes'
-            verbs:
-            - '*'
-          
 properties:
   name:
     type: string
