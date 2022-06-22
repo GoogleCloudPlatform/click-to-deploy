@@ -1,4 +1,4 @@
-# Superset-docker
+# superset-docker
 
 Container solution for Apache Superset.
 Learn more about Apache Superset in [official documentation](https://superset.apache.org/).
@@ -33,14 +33,14 @@ gcloud auth configure-docker
 ```shell
 docker -- pull marketplace.gcr.io/google/superset1
 ```
-Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/docker/Superset/1/debian11/1.5/)
+Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/docker/superset/1/debian11/1.5/)
 =======
 
 # <a name="table-of-contents"></a>Table of Contents
 * [Using Docker](#using-docker)
-  * [Running Superset](#running-Superset-docker)
-    * [Running Superset with SQLite](#Runnung-Superset-SQLite)
-    * [Running Superset with additional parameters](#Running-Superset-with-additionlal-parameters)
+  * [Running Superset](#running-superset-docker)
+    * [Running Superset with SQLite](#running-superset-sqlite)
+    * [Running Superset with additional parameters](#running-superset-with-additional-parameters)
 * [References](#references)
   * [Ports](#references-ports)
   * [Environment Variables](#references-environment-variables)
@@ -50,11 +50,11 @@ Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlat
 Consult [Marketplace container documentation](https://cloud.google.com/marketplace/docs/container-images)
 for additional information about setting up your Docker environment.
 
-## <a name="running-Superset-docker"></a>Running Superset
+## <a name="running-superset-docker"></a>Running Superset
 
 This section describes how to spin up an Superset service using this image.
 
-### <a name="Runnung-Superset-SQLite"></a>Running Superset with SQLite
+### <a name="running-superset-sqlite"></a>Running Superset with SQLite
 
 Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
 
@@ -76,7 +76,7 @@ docker run -d \
     marketplace.gcr.io/google/superset1
 ```
 
-### <a name="Running-Superset-with-additionlal-parametersr"></a>Running Superset with additional parameters
+### <a name="running-superset-with-additional-parameters"></a>Running Superset with additional parameters
 
 Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
 
@@ -90,7 +90,7 @@ services:
       - 8088:8088
     environment:
       SUPERSET_PASSWORD: superset/some-password
-      SUPERSET_LOAD_EXAMPLES: yes            
+      SUPERSET_LOAD_EXAMPLES: yes
 ```
 
 Or you can use `docker run` directly:
@@ -100,7 +100,6 @@ docker run -d \
     -p 8088:8088 \
     --name superset \
     -e SUPERSET_PASSWORD="superset/some-password" \
-    -e NEO4J_dbms_logs_debug_level=yes \
     marketplace.gcr.io/google/superset1
 ```
 
@@ -123,4 +122,4 @@ These are the environment variables understood by the container image.
 | SUPERSET_LOAD_EXAMPLES        | Installs dashboards examples.                            |
 |
 
-You can see full list of acceptable parameters on the official [Superset docs](https://superset.apache.org/docs/installation/configuring-superset/). 
+You can see full list of acceptable parameters on the official [Superset docs](https://superset.apache.org/docs/installation/configuring-superset/).

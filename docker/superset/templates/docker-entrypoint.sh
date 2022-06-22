@@ -70,7 +70,7 @@ if [ "$SUPERSET_LOAD_EXAMPLES" = "yes" ]; then
     superset load_examples
     echo_step "4" "Complete" "Loading examples"
     else
-    echo_step "4" "Complete" "No examples loaded"  
+    echo_step "4" "Complete" "No examples loaded"
 fi
 
 HYPHEN_SYMBOL='-'

@@ -32,12 +32,12 @@ RUN groupadd supergroup && \
     pip install MarkupSafe==2.0.1 && \
     pip install psycopg2-binary && \
     pip install pillow && \
-    pip install mysqlclient 
+    pip install mysqlclient
 
 # Configure Filesystem
 VOLUME /etc/superset
 VOLUME /home/superset
-VOLUME /var/lib/superset    
+VOLUME /var/lib/superset
 
 EXPOSE 8088
 
