@@ -19,3 +19,19 @@ actions:
     expect:
       exitCode:
         equals: 0
+- name: Test healt status
+  httpTest:
+    url: http://{{ .Env.APP_INSTANCE_NAME }}-superset-svc:8088/health
+    expect:
+      statusCode:
+        equals: 200
+- name: Login URL should be 200 OK
+  httpTest:
+    url: http://{{ .Env.APP_INSTANCE_NAME }}-superset-svc:8088/login/
+    expect:
+      statusCode:
+        equals: 200
+      bodyText:
+        html:
+          title:
+            equals: 'Superset'
