@@ -1,0 +1,84 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-keycloak-web
+  labels: &KeycloakLabels
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: keycloak
+spec:
+  replicas: {{ .Values.keycloak.replicas }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      ## multiple web pods can safely run concurrently
+      maxSurge: 25%
+      maxUnavailable: 0
+  selector:
+    matchLabels: *KeycloakLabels
+  template:
+    metadata:
+      labels: *KeycloakLabels
+    spec:
+      restartPolicy: Always
+      serviceAccountName: "{{ .Values.keycloak.serviceAccount }}"
+      initContainers:
+        {{- include "keycloak.init_container.check_db" . | indent 8 }}
+      containers:
+        - name: keycloak-web
+          {{- include "keycloak.image" . | indent 10 }}
+          ports:
+            - name: web
+              containerPort: 8080
+              protocol: TCP
+          envFrom:
+            {{- include "keycloak.envFrom" . | indent 12 }}
+          env:
+            {{- include "keycloak.env" . | indent 12 }}
+          command:
+            - "/opt/keycloak/bin/kc.sh"
+          args:
+            - "start"
+            - "--auto-build"
+          livenessProbe:
+            initialDelaySeconds: 10 
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 6
+            httpGet:
+              scheme: HTTP
+              path: /health
+              port: web
+          readinessProbe:
+            initialDelaySeconds: 20 
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 6
+            httpGet:
+              scheme: HTTP
+              path: /health/ready
+              port: web
+        {{ if .Values.metrics.exporter.enabled }}
+        - name: stackdriver-exporter
+          image: {{ .Values.metrics.image }}
+          ports:
+          - name: profiler
+            containerPort: 6060
+          command:
+          - /monitor
+          - --stackdriver-prefix=custom.googleapis.com
+          - --source=keycloak:http://localhost:8080/metrics
+          - --pod-id=$(POD_NAME)
+          - --namespace-id=$(POD_NAMESPACE)
+          - --monitored-resource-types=k8s
+          env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+        {{ end }}
+
