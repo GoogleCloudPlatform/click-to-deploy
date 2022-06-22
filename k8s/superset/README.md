@@ -19,21 +19,18 @@ Popular open stacks on Kubernetes, packaged by Google.
 > (optionally) exposed externally, using an Ingress and TLS configuration. The
 > steps to enable the Ingress resource are in the sections below.
 
-![Architecture diagram](resources/Superset-k8s-app-architecture.png)
+![Architecture diagram](resources/superset-k8s-app-architecture.png)
 
-By default, Ingress is disabled and Superset is exposed using a ClusterIP Service on port `80`.
-You can enable the option to expose the service externally. In that case, Superset's interface is exposed through the ports `80` and `443` using an Ingress resource. The TLS certificates are stored in the `[APP_INSTANCE_NAME]-tls` Secret resource.
+By default, Ingress is disabled and Superset is exposed using a ClusterIP Service on port `8088`.
+You can enable the option to expose the service externally. In that case, Superset's interface is exposed through the ports `8088` using an Ingress resource. The TLS certificates are stored in the `[APP_INSTANCE_NAME]-tls` Secret resource.
 
-Separate StatefulSet Kubernetes objects are used to manage the Superset, MySQL, and Redis instances.
+Separate StatefulSet Kubernetes objects are used to manage the Superset, PostgreSQL, and Redis instances.
 
 ### Superset Workloads
 
-The Superset single-replica StatefulSet runs the [Superset website](https://www.Superset.com) on a [Superset-docker](https://github.com/GoogleCloudPlatform/Superset-docker) container installation. The credentials for the administrator account are automatically generated, and configured in the app through a Kubernetes Secret.
+The Superset single-replica StatefulSet runs the [Superset webserver](https://superset.apache.org/) on a [superset-docker](https://github.com/GoogleCloudPlatform/superset-docker) container installation. The credentials for the administrator account are automatically generated, and configured in the app through a Kubernetes Secret.
 
 A Persistent Volume Claim is used for storing persistent configuration data and static assets.
-
-This workload also offers an embedded [NGINX Prometheus Metrics Exporter](https://github.com/GoogleCloudPlatform/nginx-docker/tree/master/exporter).
-
 
 ### Redis Workloads
 
@@ -48,31 +45,22 @@ The [save behaviour](https://redis.io/topics/persistence#snapshotting) may be co
 This workload also offers an embedded [Redis Prometheus Metrics Exporter](https://github.com/GoogleCloudPlatform/redis-docker/tree/master/exporter).
 
 
-### MySQL Workloads
+### PostgreSQL Workloads
 
-The MySQL single-replica StatefulSet runs a [MySQL Server](https://www.mysql.com) app on a [mysql-docker](https://github.com/GoogleCloudPlatform/mysql-docker) container installation. The credentials for the `root` account are automatically generated, and configured in the app through the Secret resource `[APP_INSTANCE_NAME]-mysql-secret`.
+The PostgreSQL single-replica StatefulSet runs a [PostgreSQL Server](https://www.postgresql.org/) app on a [postgresql-docker](https://github.com/GoogleCloudPlatform/postgresql-docker) container installation. The credentials for the `superset` account are automatically generated, and configured in the app through the Secret resource `[APP_INSTANCE_NAME]-superset-secret`.
 
-By default, the Services exposing MySQL are of type ClusterIP, which means it is accessible only in a private network on port `3306`.
+By default, the Services exposing PostgreSQL are of type ClusterIP, which means it is accessible only in a private network on port `5432`.
 
 A Persistent Volume Claim is used for storing all the e-commerce data.
 
-This workfload also offers an embedded [MySQL Prometheus Metrics Exporter](https://github.com/GoogleCloudPlatform/mysql-docker/tree/master/exporter).
+This workfload also offers an embedded [PostgreSQL Prometheus Metrics Exporter](https://github.com/GoogleCloudPlatform/postgresql-docker/tree/master/exporter).
 
-### Elasticsearch Workloads
-
-The Elasticsearch StatefulSet runs an [Elasticsearch Server](https://www.elastic.co/elasticsearch/) on an [elasticsearch-docker](https://github.com/GoogleCloudPlatform/elasticsearch-docker) container installation.
-
-By default, the Services exposing Elasticsearch are of type ClusterIP, which means it is accessible only in a private network on port `9200`.
-
-A Persistent Volume Claim is used for storing all the e-commerce catalog.
-
-This workfload also offers an embedded [Elasticsearch Prometheus Metrics Exporter](https://github.com/justwatchcom/elasticsearch_exporter).
 
 # Installation
 
 ## Quick install with Google Cloud Marketplace
 
-Get up and running with a few clicks! Install this Superset app to a Google Kubernetes Engine cluster in Google Cloud Marketplace by following these [on-screen instructions](https://console.cloud.google.com/marketplace/details/google/Superset).
+Get up and running with a few clicks! Install this Superset app to a Google Kubernetes Engine cluster in Google Cloud Marketplace by following these [on-screen instructions](https://console.cloud.google.com/marketplace/details/google/superset).
 
 ## Command line instructions
 
@@ -136,10 +124,10 @@ The Application resource is defined by the [Kubernetes SIG-apps](https://github.
 
 ### Install the app
 
-Navigate to the `Superset` directory:
+Navigate to the `superset` directory:
 
 ```shell
-cd click-to-deploy/k8s/Superset
+cd click-to-deploy/k8s/superset
 ```
 
 #### Configure the app with environment variables
@@ -147,7 +135,7 @@ cd click-to-deploy/k8s/Superset
 Choose an instance name and [namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) for the app. In most cases, you can use the `default` namespace.
 
 ```shell
-export APP_INSTANCE_NAME=Superset-1
+export APP_INSTANCE_NAME=superset-1
 export NAMESPACE=default
 ```
 
@@ -161,7 +149,8 @@ For the persistent disk provisioning of the Superset StatefulSets, you will need
 
 ```shell
 export DEFAULT_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
-export PERSISTENT_DISK_SIZE="10Gi"
+export SUPERSET_PERSISTENT_DISK_SIZE="10Gi"
+export DB_PERSISTENT_DISK_SIZE="10Gi"
 ```
 
 
@@ -198,7 +187,7 @@ Alternatively you can use short tag which points to the latest image for selecte
 > Warning: this tag is not stable and referenced image might change over time.
 
 ```shell
-export TAG="2.4"
+export TAG="1.5"
 ```
 
 Configure the container images:
@@ -206,35 +195,26 @@ Configure the container images:
 ```shell
 export IMAGE_REGISTRY="marketplace.gcr.io/google"
 
-export IMAGE_Superset="${IMAGE_REGISTRY}/Superset"
-export IMAGE_MYSQL="${IMAGE_REGISTRY}/Superset/mysql:${TAG}"
-export IMAGE_REDIS="${IMAGE_REGISTRY}/Superset/redis:${TAG}"
-export IMAGE_ELASTICSEARCH="${IMAGE_REGISTRY}/Superset/elasticsearch:${TAG}"
+export IMAGE_SUPERSET="${IMAGE_REGISTRY}/superset"
+export IMAGE_POSTGRESQL="${IMAGE_REGISTRY}/superset/postgresql:${TAG}"
+export IMAGE_REDIS="${IMAGE_REGISTRY}/superset/redis:${TAG}"
 
-export IMAGE_NGINX_EXPORTER="${IMAGE_REGISTRY}/Superset/nginx-exporter:${TAG}"
-export IMAGE_MYSQL_EXPORTER="${IMAGE_REGISTRY}/Superset/mysql-exporter:${TAG}"
-export IMAGE_REDIS_EXPORTER="${IMAGE_REGISTRY}/Superset/redis-exporter:${TAG}"
-export IMAGE_METRICS_EXPORTER="${IMAGE_REGISTRY}/Superset/prometheus-to-sd:${TAG}"
+export IMAGE_POSTGRESQL_EXPORTER="${IMAGE_REGISTRY}/superset/postgresql-exporter:${TAG}"
+export IMAGE_REDIS_EXPORTER="${IMAGE_REGISTRY}/superset/redis-exporter:${TAG}"
+export IMAGE_METRICS_EXPORTER="${IMAGE_REGISTRY}/superset/prometheus-to-sd:${TAG}"
 ```
 
 Set or generate the passwords:
 
 ```shell
-# Set e-mail address for Superset admin user
-export Superset_ADMIN_EMAIL="admin@store.example"
-
 # Set password. Use your own passwords
-export Superset_ADMIN_PASSWORD="admin_password"
+export SUPERSET_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 1 | tr -d '\n' | base64)"
 
-# Set mysql root and Superset user passwords
-export Superset_DB_PASSWORD="Superset_password"
-export DB_ROOT_PASSWORD="root_password"
-
-# Set mysqld-exporter user password
-export DB_EXPORTER_PASSWORD="exporter_password"
+# Set PostgreSQL superset user password
+export POSTGRESQL_DB_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 1 | tr -d '\n' | base64)"
 
 # Set redis-server password
-export REDIS_PASSWORD="redis_password"
+export REDIS_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 1 | tr -d '\n' | base64)"
 ```
 
 #### Create TLS certificate for Superset
@@ -273,30 +253,22 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to your app.
 
 ```shell
-helm template chart/Superset \
-    --name "${APP_INSTANCE_NAME}" \
-    --namespace "${NAMESPACE}" \
-    --set persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \
-    --set Superset.image.repo="${IMAGE_Superset}" \
-    --set Superset.image.tag="${TAG}" \
-    --set Superset.admin.email="${Superset_ADMIN_EMAIL}" \
-    --set Superset.admin.password="${Superset_ADMIN_PASSWORD}" \
-    --set Superset.persistence.size="${PERSISTENT_DISK_SIZE}" \
-    --set db.image="${IMAGE_MYSQL}" \
-    --set db.rootPassword="${DB_ROOT_PASSWORD}" \
-    --set db.SupersetPassword="${Superset_DB_PASSWORD}" \
-    --set db.exporter.password="${DB_EXPORTER_PASSWORD}" \
-    --set db.exporter.image="${IMAGE_MYSQL_EXPORTER}" \
-    --set redis.image="${IMAGE_REDIS}" \
-    --set redis.password="${REDIS_PASSWORD}" \
-    --set redis.exporter.image="${IMAGE_REDIS_EXPORTER}" \
-    --set elasticsearch.image="${IMAGE_ELASTICSEARCH}" \
-    --set nginx.exporter.image="${IMAGE_NGINX_EXPORTER}" \
-    --set tls.base64EncodedPrivateKey="${TLS_CERTIFICATE_KEY}" \
-    --set tls.base64EncodedCertificate="${TLS_CERTIFICATE_CRT}" \
-    --set metrics.image="${IMAGE_METRICS_EXPORTER}" \
-    --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED}" \
-    > "${APP_INSTANCE_NAME}_manifest.yaml"
+helm template "${APP_INSTANCE_NAME}" chart/superset \
+  --namespace "${NAMESPACE}" \
+  --set superset.image.repo="${IMAGE_SUPERSET}" \
+  --set postgresql.serviceAccount="$POSTGRESQL_SERVICE_ACCOUNT" \
+  --set superset.image.tag="${TAG}" \
+  --set superset.password="${SUPERSET_PASSWORD}" \
+  --set superset.persistence.size="${SUPERSET_PERSISTENT_DISK_SIZE}" \
+  --set enablePublicServiceAndIngress="${PUBLIC_SERVICE_AND_INGRESS_ENABLED}" \
+  --set postgresql.image="$IMAGE_POSTGRESQL" \
+  --set postgresql.exporter.image="$IMAGE_POSTGRESQL_EXPORTER" \
+  --set postgresql.db.password="$POSTGRESQL_DB_PASSWORD" \
+  --set postgresql.persistence.size="$DB_PERSISTENT_DISK_SIZE" \
+  --set redis.image="${IMAGE_REDIS}" \
+  --set redis.password="${REDIS_PASSWORD}" \
+  --set redis.exporter.image="${IMAGE_REDIS_EXPORTER}" \
+  > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster
@@ -319,10 +291,10 @@ To view the app, open the URL in your browser.
 
 ### Open your Superset website
 
-To get the external IP of your Superset website, use the following command:
+To get the external IP of your Superset webserver, use the following command:
 
 ```shell
-SERVICE_IP=$(kubectl get ingress "${APP_INSTANCE_NAME}-Superset-ingress" \
+SERVICE_IP=$(kubectl get ingress "${APP_INSTANCE_NAME}-superset-ingress" \
   --namespace "${NAMESPACE}" \
   --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
@@ -336,15 +308,13 @@ The command shows you the URL of your site.
 
 ## Prometheus metrics
 
-The app can be configured to expose its metrics through the [MySQL Server Exporter](https://github.com/GoogleCloudPlatform/mysql-docker/tree/master/exporter), [NGINX Exporter](https://github.com/GoogleCloudPlatform/nginx-docker/tree/master/exporter), and [Redis Exporter](https://github.com/GoogleCloudPlatform/redis-docker/tree/master/exporter), in the [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
+The app can be configured to expose its metrics through the [PostreSQL Server Exporter](https://github.com/GoogleCloudPlatform/postgresql-docker/tree/master/exporter)and [Redis Exporter](https://github.com/GoogleCloudPlatform/redis-docker/tree/master/exporter), in the [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
 
-1.  You can access the NGINX metrics at `[NGINX-SERVICE]:9113/metrics`, where `[NGINX-SERVICE]` is the [Kubernetes Service](https://kubernetes.io/docs/concepts/services-networking/service/) `${APP_INSTANCE_NAME}-Superset-svc`.
-
-2.  You can access the Redis metrics at `[REDIS-SERVICE]:9121/metrics`, where `[REDIS-SERVICE]` is the
+1.  You can access the Redis metrics at `[REDIS-SERVICE]:9121/metrics`, where `[REDIS-SERVICE]` is the
     [Kubernetes Service](https://kubernetes.io/docs/concepts/services-networking/service/) `${APP_INSTANCE_NAME}-redis-svc`.
 
-3.  You can access the MySQL metrics at `[MYSQL-SERVICE]:9104/metrics`, where `[MYSQL-SERVICE]` is the
-    [Kubernetes Service](https://kubernetes.io/docs/concepts/services-networking/service/) `${APP_INSTANCE_NAME}-mysql-svc`.
+2.  You can access the PostreSQL metrics at `[POSTGRESQL-SERVICE]:9187/metrics`, where `[POSTGRESQL-SERVICE]` is the
+    [Kubernetes Service](https://kubernetes.io/docs/concepts/services-networking/service/) `${APP_INSTANCE_NAME}-postgresql-svc`.
 
 ### Configuring Prometheus to collect the metrics
 
@@ -373,113 +343,51 @@ This is a single-instance version of Superset. It is not intended to be scaled u
 
 # Backup and restore
 
-The following steps are based on scripts embedded in the [Superset-docker](https://www.github.com/GoogleCloudPlatform/Superset-docker) container, which enables you to easily use the Superset CLI commands described in the [Superset documentation](https://devdocs.Superset.com/guides/v2.3/install-gde/install/cli/install-cli-backup.html).
+The following steps are based on scripts embedded in the [superset-docker](https://www.github.com/GoogleCloudPlatform/superset-docker) container, which enables you to easily use the Superset CLI commands described in the [Superset documentation](https://devdocs.Superset.com/guides/v2.3/install-gde/install/cli/install-cli-backup.html).
 
-## Backup Superset data to your local workstation
+## Backing up PostgreSQL
 
-The commands below will back up all of your data in a `backups/{{TIMESTAMP}}` folder on the working directory. It will create three different files, as follows:
-
-| File type |              Filename              |
-|:---------:|:----------------------------------:|
-|   Media   | {{timestamp}}_filesystem_media.tgz |
-|    Code   | {{timestamp}}_filesystem_code.tgz  |
-|  Database | {{timestamp}}_db.sql               |
-
-
-To back up your Superset data, run the following commands:
+Your Superset configuration and project data is stored in the PostgreSQL database.
+The following script creates a `postgresql/backup.sql` file with the contents of the database.
 
 ```shell
-# Backup directory in Superset pod
-BKP_DIR=/app/var/backups
-
-# Pod name which will be responsible for backing up the data
-POD_NAME="${APP_INSTANCE_NAME}-Superset-0"
-
-# Run backup command in Superset container
-Superset_BACKUP_ID=$(kubectl -n ${NAMESPACE} exec -it ${POD_NAME} -c Superset -- backup.sh | tr -d '\r')
-
-# Declare backup files
-CODE_FILE="${Superset_BACKUP_ID}_filesystem_code.tgz"
-MEDIA_FILE="${Superset_BACKUP_ID}_filesystem_media.tgz"
-DB_FILE="${Superset_BACKUP_ID}_db.sql"
-
-# Declare local folder where backup will be stored.
-LOCAL_BACKUP_DESTINATION="backups/${Superset_BACKUP_ID}/"
-mkdir -p "${LOCAL_BACKUP_DESTINATION}"
-
-# Iterate over backup files and copy them
-for file in "CODE_FILE" "MEDIA_FILE" "DB_FILE"; do
-    filename=$(eval "echo \$${file}")
-
-    REMOTE_FILE="${BKP_DIR}/${filename}"
-    LOCAL_FILE="$(pwd)/${LOCAL_BACKUP_DESTINATION}/${filename}"
-
-    kubectl cp "${NAMESPACE}/${POD_NAME}:${REMOTE_FILE}" "${LOCAL_FILE}"
-    kubectl --namespace "${NAMESPACE}" exec -it "${POD_NAME}" --container Superset -- sh -c "rm -f ${REMOTE_FILE}"
-done
-
-# Display downloaded files.
-ls -la "$(pwd)/${LOCAL_BACKUP_DESTINATION}"
+mkdir postgresql
+kubectl --namespace $NAMESPACE exec -t \
+    $(kubectl -n$NAMESPACE get pod -oname | \
+        sed -n /\\/$APP_INSTANCE_NAME-postgresql/s.pods\\?/..p) \
+    -c postgresql-server \
+    -- pg_dumpall -c -U postgres > postgresql/backup.sql
 ```
 
-## Restore Superset data on a running Superset instance
+## Backup your database password
 
-In order to restore Superset data, you must specify the `Superset_BACKUP_ID`.
-
-`Superset_BACKUP_ID` is a timestamp which prefixes all created files. The script above also creates a folder with the `BACKUP_ID` as its name.
-
-In order to check which backups you have available, just run:
+Use this command to see a base64-encoded version of your PostgreSQL password:
 
 ```shell
-ls -la backups/
+kubectl get secret $APP_INSTANCE_NAME-secret --namespace $NAMESPACE -o yaml | grep password:
 ```
 
-To get the latest backup available, run:
+### Restore the database
 
-```shell
-Superset_BACKUP_ID=$(ls -ld backups/*/ | nl | awk '{if ($1 == "1") print $10}' | tr -d 'backups,/')
-```
+1. Use this command to restore your data from `postgresql/backup.sql`:
 
-
-Next, run the following commands to restore data from a specified backup:
-```shell
-
-
-# Set backup files paths
-CODE_FILE="${Superset_BACKUP_ID}_filesystem_code.tgz"
-MEDIA_FILE="${Superset_BACKUP_ID}_filesystem_media.tgz"
-DB_FILE="${Superset_BACKUP_ID}_db.sql"
-
-# Iterate over backup files and copy them
-for file in "CODE_FILE" "MEDIA_FILE" "DB_FILE"; do
-    filename=$(eval "echo \$${file}")
-
-    local_file="$(pwd)/backups/${Superset_BACKUP_ID}/${filename}"
-    destination_file="/app/var/backups/${filename}"
-
-    kubectl cp "${local_file}" "${NAMESPACE}/${POD_NAME}:${destination_file}"
-done
-
-# Restore the data inside container
-kubectl --namespace "${NAMESPACE}" exec -it "${POD_NAME}" --container Superset -- /bin/bash -c "restore.sh ${Superset_BACKUP_ID}"
-```
+    ```shell
+    cat postgresql/backup.sql | kubectl --namespace $NAMESPACE exec -i \
+      $(kubectl -n$NAMESPACE get pod -oname | \
+        sed -n /\\/$APP_INSTANCE_NAME-postgresql/s.pods\\?/..p) \
+      -c postgresql-server \
+      -- psql -U postgres
+    ```
 
 # Upgrading the app
 
-Before upgrading, we recommend that you [back up all of your Superset data](#backup-Superset-data-to-your-local-workstation). For additional information about upgrading, visit the [Superset documentation](https://devdocs.Superset.com/guides/v2.3/comp-mgr/cli/cli-upgrade.html).
+Before upgrading, we recommend that you [back up all of your Superset data](#backup-uperset-data-to-your-local-workstation). For additional information about upgrading, visit the [superset documentation](https://superset.apache.org/docs/installation/upgrading-superset).
 
-The [Superset-docker](https://www.github.com/GoogleCloudPlatform/Superset-docker) container running in the Superset StatefulSet is embedded with an upgrade script. To start the upgrade script, run the following command:
-
-```shell
-kubectl --namespace "${NAMESPACE}" exec -it "${POD_NAME}" --container Superset -- upgrade_Superset.sh
-```
-
-To check the version of Superset, run the command below:
+The [superset-docker](https://www.github.com/GoogleCloudPlatform/superset-docker) container running in the Superset StatefulSet is embedded with an upgrade script. To start the upgrade script, run the following command:
 
 ```shell
-kubectl --namespace "${NAMESPACE}" exec -it "${POD_NAME}" --container Superset -- /app/bin/Superset -V
+kubectl --namespace "${NAMESPACE}" exec -it "${POD_NAME}" --container superset -- pip install apache-superset --upgrade
 ```
-
 # Uninstall the app
 
 ## Using the Google Cloud Console
@@ -490,14 +398,12 @@ kubectl --namespace "${NAMESPACE}" exec -it "${POD_NAME}" --container Superset -
 
 1. On the Application Details page, click **Delete**.
 
-## Using the command line
-
 ### Prepare the environment
 
 Set your installation name and Kubernetes namespace:
 
 ```shell
-export APP_INSTANCE_NAME=Superset-1
+export APP_INSTANCE_NAME=superset-1
 export NAMESPACE=default
 ```
 
@@ -530,7 +436,7 @@ To remove the PersistentVolumeClaims along with their attached persistent disks,
 
 ```shell
 # specify the variables values matching your installation:
-export APP_INSTANCE_NAME=Superset-1
+export APP_INSTANCE_NAME=superset-1
 export NAMESPACE=default
 
 kubectl delete persistentvolumeclaims \
