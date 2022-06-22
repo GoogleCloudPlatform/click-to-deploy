@@ -1,4 +1,4 @@
-FROM  marketplace.gcr.io/google/debian9 as bazel
+FROM  marketplace.gcr.io/google/debian11 as bazel
 
 ENV APP_VERSION=1.7.2
 
@@ -35,7 +35,7 @@ RUN for dep in `find $(bazel info execution_root)/../../external/ -maxdepth 1 -t
     do cp -r $dep /src/vendor/; done
 
 # Result Image
-FROM marketplace.gcr.io/google/debian9
+FROM marketplace.gcr.io/google/debian11
 
 ENV C2D_RELEASE=1.7.2
 ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
