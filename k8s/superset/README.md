@@ -87,7 +87,7 @@ gcloud auth configure-docker
 Create a new cluster from the command line:
 
 ```shell
-export CLUSTER=Superset-cluster
+export CLUSTER=superset-cluster
 export ZONE=us-west1-a
 
 gcloud container clusters create "${CLUSTER}" --zone "${ZONE}"
