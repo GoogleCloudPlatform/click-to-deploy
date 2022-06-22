@@ -1,0 +1,67 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-postgresql
+  labels: &PostgreSQLLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: postgresql-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels: *PostgreSQLLabels
+  serviceName: {{ .Release.Name }}-postgresql-svc
+  template:
+    metadata:
+      labels: *PostgreSQLLabels
+    spec:
+      securityContext:
+        fsGroup: 999 # PostgreSQL user group
+      volumes:
+      - name: config-volume
+        configMap:
+          name: {{ .Release.Name }}-postgresql-config
+      containers:
+      - name: postgresql-server
+        image: "{{ .Values.postgresql.image.repo }}:{{ .Values.postgresql.image.tag }}"
+        imagePullPolicy: Always
+        args:
+          - -c
+          - hba_file=/etc/postgresql/volume/pg_hba.conf
+          - -c
+          - config_file=/etc/postgresql/volume/postgresql.conf
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        ports:
+        - containerPort: 5432
+          name: postgres
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/postgresql/volume
+        - name: {{ .Release.Name }}-postgresql-pvc
+          mountPath: /var/lib/postgresql/data
+        env:
+        - name: "PGDATA"
+          value: "/var/lib/postgresql/data/pgdata"
+        - name: "POSTGRES_PASSWORD"
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-config-envs
+              key: KC_DB_PASSWORD
+        - name: "POSTGRES_USER"
+          value: "keycloak"
+        - name: "POSTGRES_DB"
+          value: "keycloak"
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Release.Name }}-postgresql-pvc
+      labels: *PostgreSQLLabels
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      storageClassName: {{ .Values.postgresql.persistence.storageClass }}
+      resources:
+        requests:
+          storage: {{ .Values.postgresql.persistence.size }}
