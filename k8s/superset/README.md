@@ -7,7 +7,7 @@ Superset can connect to any SQL based datasource through SQLAlchemy, including m
 
 Superset is lightweight and highly scalable, leveraging the power of your existing data infrastructure without requiring yet another ingestion layer.
 
-For more information on Superset, see the [Falco Project official documentation](https://superset.apache.org/docs/intro).
+For more information on Superset, see the [Superset Project official documentation](https://superset.apache.org/docs/intro).
 
 ## About Google Click to Deploy
 
