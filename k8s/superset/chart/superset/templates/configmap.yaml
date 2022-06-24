@@ -66,3 +66,4 @@ data:
     'CACHE_DEFAULT_TIMEOUT': 86400,
     'CACHE_REDIS_URL': 'redis://:{{ .Values.redis.password}}@{{ .Release.Name }}-redis-svc:6379/4' 
     }
+    
