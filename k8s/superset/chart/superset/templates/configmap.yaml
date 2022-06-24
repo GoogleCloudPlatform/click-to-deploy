@@ -44,7 +44,7 @@ data:
     'CACHE_KEY_PREFIX': 'superset_',
     'CACHE_REDIS_HOST': '{{ .Release.Name }}-redis-svc',
     'CACHE_REDIS_URL': 'redis://:{{ .Values.redis.password}}@{{ .Release.Name }}-redis-svc:6379/1'
-    }   
+    }
 
     FILTER_STATE_CACHE_CONFIG = {
     'CACHE_TYPE': 'RedisCache',
@@ -62,8 +62,7 @@ data:
 
     DATA_CACHE_CONFIG = {
     'CACHE_TYPE': 'RedisCache',
-    'CACHE_KEY_PREFIX': 'superset_results_',  
+    'CACHE_KEY_PREFIX': 'superset_results_',
     'CACHE_DEFAULT_TIMEOUT': 86400,
-    'CACHE_REDIS_URL': 'redis://:{{ .Values.redis.password}}@{{ .Release.Name }}-redis-svc:6379/4' 
+    'CACHE_REDIS_URL': 'redis://:{{ .Values.redis.password}}@{{ .Release.Name }}-redis-svc:6379/4'
     }
-    

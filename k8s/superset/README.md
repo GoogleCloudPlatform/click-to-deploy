@@ -2,8 +2,6 @@
 
 Apache Superset is an open-source software application for data exploration and data visualization. It's enterprise-ready business web application. Superset is able to handle data at petabyte scale and can connect to any SQL based datasource through SQLAlchemy, including modern cloud native databases.
 
-Superset is lightweight and highly scalable, leveraging the power of your existing data infrastructure without requiring yet another ingestion layer.
-
 For more information on Superset, see the [Superset Project official documentation](https://superset.apache.org/docs/intro).
 
 ## About Google Click to Deploy

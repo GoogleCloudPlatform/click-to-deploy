@@ -29,7 +29,7 @@ spec:
             sleep 2;
             done;
             sleep 5;
-            echo 'PostgreSQL is ready'  
+            echo 'PostgreSQL is ready'
       containers:
       - image: {{ .Values.superset.image.repo }}:{{ .Values.superset.image.tag }}
         name: superset
@@ -37,7 +37,7 @@ spec:
           requests:
             cpu: 100m
             memory: 100Mi
-        env:            
+        env:
         # A superset's password.
         - name: SUPERSET_PASSWORD
           valueFrom:
@@ -48,7 +48,7 @@ spec:
         - name: DATABASE_HOST
           value: {{ .Release.Name }}-postgres-svc
         - name: PYTHONPATH
-          value: "/etc/superset"  
+          value: "/etc/superset"
         ports:
         - containerPort: 8088
           name: superset-port

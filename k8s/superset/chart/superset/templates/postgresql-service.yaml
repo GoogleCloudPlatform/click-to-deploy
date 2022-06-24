@@ -3,13 +3,13 @@ kind: Service
 metadata:
   name: {{ .Release.Name }}-postgresql-service
   labels:
-    app.kubernetes.io/name: "{{ .Release.Name}}"
+    app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: postgresql-service
 spec:
   ports:
     - port: 5432
   selector:
-    app.kubernetes.io/name: "{{.Release.Name}}"
+    app.kubernetes.io/name: "{{.Release.Name }}"
     app.kubernetes.io/component: postgresql-server
 ---
 kind: Service
