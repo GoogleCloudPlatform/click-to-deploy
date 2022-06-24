@@ -35,3 +35,12 @@ actions:
         html:
           title:
             equals: 'Superset'
+
+- name: Prometheus metrics availability
+  bashTest:
+    script: |-
+     sleep 20
+     curl -f "http://${APP_INSTANCE_NAME}-superset-svc:8088/metrics"
+    expect:
+      statusCode:
+        equals: 200
