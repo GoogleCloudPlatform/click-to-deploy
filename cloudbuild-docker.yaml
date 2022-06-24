@@ -13,8 +13,6 @@
 # limitations under the License.
 
 timeout: 3600s # 1h
-options:
-  workerPool: projects/${PROJECT_ID}/locations/us-central1/workerPools/gcb-docker-workers-pool-e2
 steps:
 
 - id: Build C2D Docker Image
