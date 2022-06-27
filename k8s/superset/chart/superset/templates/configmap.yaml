@@ -68,4 +68,4 @@ data:
     }
 
     from superset.stats_logger import StatsdStatsLogger
-    STATS_LOGGER = StatsdStatsLogger(host='localhost', port=8125, prefix='superset')
+    STATS_LOGGER = StatsdStatsLogger(host='localhost', port=9125, prefix='superset')

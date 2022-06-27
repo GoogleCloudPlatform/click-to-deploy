@@ -40,7 +40,7 @@ actions:
   bashTest:
     script: |-
      sleep 20
-     curl -f "http://${APP_INSTANCE_NAME}-superset-svc:8125/metrics"
+     curl -f "http://${APP_INSTANCE_NAME}-superset-svc:9102/metrics"
     expect:
       statusCode:
         equals: 200
