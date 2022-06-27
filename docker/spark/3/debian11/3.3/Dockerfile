@@ -29,14 +29,14 @@ RUN update-alternatives --install "/usr/bin/python" "python" "$(which python3)" 
 
 # Fix the value of PYTHONHASHSEED
 # Note: this is needed when you use Python 3.3 or greater
-ENV SPARK_SHA256=a63520419a5801e7d9aef252a0d1596ccc6bdb4071370b2d3b6b1864140b7ea2
+ENV SPARK_SHA256=7fbfb59b46fcbf0f7b3584c923d43fe6d0b405ab050d5ad43f659ead8521b4e4
 ENV SPARK_VERSION=3.3.0
-ENV HADOOP_VERSION=
+ENV SCALA_VERSION=2.13
 ENV SPARK_HOME=/opt/spark
 ENV PYTHONHASHSEED=1
 
 # Download and uncompress spark from the apache archive
-RUN curl -L -o apache-spark.tgz "https://dist.apache.org/repos/dist/dev/spark/v${SPARK_VERSION}-rc3-bin/spark-${SPARK_VERSION}-bin-hadoop3.tgz" \
+RUN curl -L -o apache-spark.tgz "https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop3-scala${SCALA_VERSION}.tgz" \
       && echo "${SPARK_SHA256}  apache-spark.tgz" | sha256sum -c --strict --quiet \
       && mkdir -p /opt/spark \
       && tar -xf apache-spark.tgz -C /opt/spark --strip-components=1 \
