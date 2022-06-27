@@ -49,6 +49,10 @@ x-google-marketplace:
       properties:
         metrics.image:
           type: FULL
+    statsd-exporter:
+      properties:
+        statsd.exporter.image:
+          type: FULL
 
 properties:
   name:

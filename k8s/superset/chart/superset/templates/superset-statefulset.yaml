@@ -65,6 +65,17 @@ spec:
           initialDelaySeconds: 60
           periodSeconds: 30
           failureThreshold: 6
+      - name: statsd-exporter
+          image: {{ .Values.statsd.exporter.image }}
+          imagePullPolicy: IfNotPresent
+          args:
+            - --web.listen-address=":9102"
+            - --web.telemetry-path="/metrics"
+            - --statsd.listen-tcp=":8125"
+          ports:
+            - name: metrics
+              containerPort: 8125
+              protocol: TCP
       {{ if .Values.metrics.exporter.enabled }}
       - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}
@@ -74,7 +85,7 @@ spec:
         command:
           - /monitor
           - --stackdriver-prefix=custom.googleapis.com
-          - --source=superset:http://localhost:8088/metrics
+          - --source=superset:http://localhost:8125/metrics
           - --pod-id=$(POD_NAME)
           - --namespace-id=$(POD_NAMESPACE)
           - --monitored-resource-types=k8s

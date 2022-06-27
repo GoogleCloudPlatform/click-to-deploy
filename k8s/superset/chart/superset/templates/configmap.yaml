@@ -66,3 +66,6 @@ data:
     'CACHE_DEFAULT_TIMEOUT': 86400,
     'CACHE_REDIS_URL': 'redis://:{{ .Values.redis.password}}@{{ .Release.Name }}-redis-svc:6379/4'
     }
+
+    from superset.stats_logger import StatsdStatsLogger
+    STATS_LOGGER = StatsdStatsLogger(host='localhost', port=8125, prefix='superset')

@@ -8,6 +8,10 @@ superset:
     size: 8Gi
     storageClass: null
 
+statsd:
+  exporter:
+    image: null
+
 enablePublicServiceAndIngress: true
 
 postgresql:
@@ -39,4 +43,4 @@ redis:
     size: 5Gi
 
 persistence:
-  storageClass: null    
+  storageClass: null

@@ -14,11 +14,13 @@ REDIS_EXPORTER_TAG ?= 1.3.1
 POSTGRESQL_EXPORTER_TAG ?= latest
 POSTGRESQL_TAG ?= 13.4
 REDIS_TAG ?= latest
+STATSD_EXPORTER_TAG ?= latest
 
 VERIFY_WAIT_TIMEOUT = 1800
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 IMAGE_SUPERSET ?= $(SOURCE_REGISTRY)/superset1:$(TRACK)
+IMAGE_STATSD_EXPORTER ?= $(SOURCE_REGISTRY)/statsd-exporter:$(STATSD_EXPORTER_TAG)
 IMAGE_POSTGRESQL ?= $(SOURCE_REGISTRY)/postgresql13:$(POSTGRESQL_TAG)
 IMAGE_POSTGRESQL_EXPORTER ?= $(SOURCE_REGISTRY)/postgresql-exporter0:$(POSTGRESQL_EXPORTER_TAG)
 IMAGE_REDIS ?= $(SOURCE_REGISTRY)/redis6:$(REDIS_TAG)
@@ -30,15 +32,17 @@ IMAGE_PROMETHEUS_TO_SD ?= gke.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_SUPERSET))
 
 # List of images used in application
-ADDITIONAL_IMAGES := postgresql postgresql-exporter redis redis-exporter prometheus-to-sd
+ADDITIONAL_IMAGES := postgresql postgresql-exporter redis redis-exporter prometheus-to-sd statsd-exporter
 
 # Additional images variable names should correspond with ADDITIONAL_IMAGES list
+image-statsd-exporter := $(call get_sha256,$(IMAGE_STATSD_EXPORTER))
 image-postgresql := $(call get_sha256,$(IMAGE_POSTGRESQL))
 image-postgresql-exporter := $(call get_sha256,$(IMAGE_POSTGRESQL_EXPORTER))
 image-prometheus-to-sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))
 image-redis := $(call get_sha256,$(IMAGE_REDIS))
 image-redis-exporter := $(call get_sha256,$(IMAGE_REDIS_EXPORTER))
 image-postgresql-exporter := $(call get_sha256,$(IMAGE_POSTGRESQL_EXPORTER))
+
 
 C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
 
