@@ -27,4 +27,9 @@ spec:
           fieldPath: metadata.namespace
     - name: APP_INSTANCE_NAME
       value: {{ .Release.Name }}
+    - name: REDIS_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: {{ .Release.Name }}-redis-secret
+          key: password
   restartPolicy: Never

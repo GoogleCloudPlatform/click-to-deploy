@@ -15,7 +15,7 @@
 FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.4
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl wget dnsutils netcat jq \
+    redis-tools curl wget dnsutils netcat jq \
     && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /opt/kubectl/1.21 \
@@ -25,7 +25,10 @@ RUN mkdir -p /opt/kubectl/1.21 \
     && ln -s /opt/kubectl/1.21/kubectl /usr/bin/kubectl
 
 COPY tests/superset-tests.yaml /tests/
+COPY tests/redis-tests.yaml /tests/
+COPY tests/postgresql-tests.yaml /tests/
 COPY tester.sh /tester.sh
+
 
 WORKDIR /
 ENTRYPOINT ["/tester.sh"]
