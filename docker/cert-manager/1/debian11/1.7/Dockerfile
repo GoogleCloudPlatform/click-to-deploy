@@ -11,10 +11,11 @@ RUN apt-get update \
 RUN apt-get update \
     && apt-get install bazel -y --no-install-recommends
 
-RUN git clone --branch v${APP_VERSION} \
-    https://github.com/cert-manager/cert-manager.git /src/cert-manager/
-
 WORKDIR /src/cert-manager/
+
+RUN curl https://github.com/cert-manager/cert-manager/archive/refs/tags/v${APP_VERSION}.tar.gz -L -o cert-manager.tar.gz \
+    && tar -xzf cert-manager.tar.gz \
+    && mv ./cert-manager-${APP_VERSION}/* ./
 
 RUN bazel build --stamp --workspace_status_command=hack/build/print-workspace-status.sh //cmd/controller \
  && bazel build --stamp --workspace_status_command=hack/build/print-workspace-status.sh //cmd/cainjector \
