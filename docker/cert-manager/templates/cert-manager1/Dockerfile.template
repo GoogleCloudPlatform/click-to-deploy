@@ -14,7 +14,7 @@ RUN apt-get update \
     && apt-get install bazel -y --no-install-recommends
 
 RUN git clone --branch v${APP_VERSION} \
-    https://github.com/jetstack/cert-manager.git /src/cert-manager/
+    https://github.com/cert-manager/cert-manager.git /src/cert-manager/
 
 WORKDIR /src/cert-manager/
 
