@@ -1,18 +1,25 @@
----
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Release.Name }}-superset-svc
+  annotations:
+    cloud.google.com/neg: '{"ingress":true}'
   labels:
-    app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: apache-superset
+    app.kubernetes.io/name: {{ .Release.Name }}
+  name: {{ .Release.Name }}-superset-svc
 spec:
   ports:
-  - name: http
+  - name: superset-port
     port: 8088
+    protocol: TCP
+    targetPort: 8088
+  - name: exporter-port
+    port: 9102
+    protocol: TCP
+    targetPort: 9102
   selector:
-    app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: apache-superset
+    app.kubernetes.io/name: {{ .Release.Name }}
   {{ if .Values.enablePublicServiceAndIngress }}
   type: LoadBalancer
   {{ else }}
@@ -34,24 +41,3 @@ spec:
       name: {{ .Release.Name }}-superset-svc
       port:
         name: http
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ .Release.Name }}-statsd-exporter-svc
-  annotations:
-    prometheus.io/port: "9102"
-    prometheus.io/scrape: "true"
-  labels:
-    app.kubernetes.io/name: "{{ .Release.Name }}"
-    app.kubernetes.io/component: superset-statsd
-spec:
-  ports:
-    - port: 9102
-      targetPort: 9102
-      protocol: TCP
-      name: exporter
-  selector:
-    app.kubernetes.io/name: "{{ .Release.Name }}"
-    app.kubernetes.io/component: superset-statsd
-  type: ClusterIP

@@ -38,7 +38,7 @@ actions:
 
 - name: Prometheus metrics availability
   bashTest:
-    script: curl -f "http://${APP_INSTANCE_NAME}-statsd-exporter-svc:9102/metrics"
+    script: curl -f "http://${APP_INSTANCE_NAME}-superset-svc:9102/metrics"
     expect:
       stdout:
         matches: '(?m)^# TYPE process_cpu_seconds_total counter$'

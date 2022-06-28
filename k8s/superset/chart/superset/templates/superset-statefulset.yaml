@@ -65,6 +65,9 @@ spec:
           initialDelaySeconds: 60
           periodSeconds: 30
           failureThreshold: 6
+        volumeMounts:
+           - name: config-volume
+             mountPath: /etc/superset
       - name: statsd-exporter
         image: {{ .Values.statsd.exporter.image }}
         imagePullPolicy: IfNotPresent
@@ -103,9 +106,6 @@ spec:
             fieldRef:
               fieldPath: metadata.namespace
       {{ end }}
-        volumeMounts:
-           - name: config-volume
-             mountPath: /etc/superset
       volumes:
         - name: config-volume
           configMap:
