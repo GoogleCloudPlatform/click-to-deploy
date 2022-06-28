@@ -1,10 +1,12 @@
+#!/bin/bash
+#
 # Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#      http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,24 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-cloudbuild:
-  enable_parallel: false
-versions:
-- dir: 3/debian11/3.3
-  from: marketplace.gcr.io/google/debian11
-  packages:
-    scala:
-      minor: 2.13
-    spark:
-      version: 3.3.0
-      sha256: 7fbfb59b46fcbf0f7b3584c923d43fe6d0b405ab050d5ad43f659ead8521b4e4
-  repo: spark3
-  tags:
-  - 3.3.0-debian11
-  - 3.3-debian11
-  - 3-debian11
-  - 3.3.0
-  - '3.3'
-  - '3'
-  - latest
-  templateSubDir: 3
+set -xeo pipefail
+shopt -s nullglob
+
+for test in /tests/*; do
+  testrunner -logtostderr "--test_spec=${test}"
+done

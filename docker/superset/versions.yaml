@@ -4,7 +4,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#      http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,21 +15,17 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 3/debian11/3.3
-  from: marketplace.gcr.io/google/debian11
+- dir: 1/debian11/1.5
+  from: marketplace.gcr.io/google/debian11:latest
   packages:
-    scala:
-      minor: 2.13
-    spark:
-      version: 3.3.0
-      sha256: 7fbfb59b46fcbf0f7b3584c923d43fe6d0b405ab050d5ad43f659ead8521b4e4
-  repo: spark3
+    superset:
+      version: 1.5.0
+  repo: superset1
   tags:
-  - 3.3.0-debian11
-  - 3.3-debian11
-  - 3-debian11
-  - 3.3.0
-  - '3.3'
-  - '3'
-  - latest
-  templateSubDir: 3
+  - '1.5.0-debian11'
+  - '1.5-debian11'
+  - '1-debian11'
+  - '1.5.0'
+  - '1.5'
+  - '1'
+  - 'latest'
