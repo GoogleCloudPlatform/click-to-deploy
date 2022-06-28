@@ -68,14 +68,18 @@ spec:
       - name: statsd-exporter
         image: {{ .Values.statsd.exporter.image }}
         imagePullPolicy: IfNotPresent
-        args:
-          - --web.listen-address=":9102"
-          - --web.telemetry-path="/metrics"
-          - --statsd.listen-tcp=":9125"
         ports:
-        - name: metrics
+        - name: exporter
           containerPort: 9102
           protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /metrics
+            port: 9102
+        readinessProbe:
+          httpGet:
+            path: /metrics
+            port: 9102
       {{ if .Values.metrics.exporter.enabled }}
       - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}
@@ -85,7 +89,7 @@ spec:
         command:
           - /monitor
           - --stackdriver-prefix=custom.googleapis.com
-          - --source=superset:http://localhost:9102/metrics
+          - --source=superset-statsd:http://localhost:9102/metrics
           - --pod-id=$(POD_NAME)
           - --namespace-id=$(POD_NAMESPACE)
           - --monitored-resource-types=k8s

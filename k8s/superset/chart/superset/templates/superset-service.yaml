@@ -34,3 +34,24 @@ spec:
       name: {{ .Release.Name }}-superset-svc
       port:
         name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-statsd-exporter-svc
+  annotations:
+    prometheus.io/port: "9102"
+    prometheus.io/scrape: "true"
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: superset-statsd
+spec:
+  ports:
+    - port: 9102
+      targetPort: 9102
+      protocol: TCP
+      name: exporter
+  selector:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: superset-statsd
+  type: ClusterIP
