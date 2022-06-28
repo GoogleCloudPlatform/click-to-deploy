@@ -1,0 +1,22 @@
+actions:
+- name: kubectl smoke test
+  bashTest:
+    script: kubectl version
+    expect:
+      exitCode:
+        equals: 0
+- name: Wait for the webserver get ready
+  bashTest:
+    script: kubectl wait --for=condition=Available=True --timeout=120s --namespace $NAMESPACE deploy "${APP_INSTANCE_NAME}-keycloak-web"
+    expect:
+      exitCode:
+        equals: 0
+- name: Get master token
+  bashTest:
+    script: curl -f "http://${APP_INSTANCE_NAME}-keycloak-svc:8080/realms/master"
+    expect:
+      stdout:
+        contains: '"realm":"master"'
+      exitCode:
+        equals: 0
+

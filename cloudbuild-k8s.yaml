@@ -55,7 +55,7 @@ steps:
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
   # Use local Docker network named cloudbuild as described here:
   # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
-  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  - 'DOCKER_NETWORK=cloudbuild'
   dir: k8s/${_SOLUTION_NAME}
   entrypoint: bash
   args:
@@ -71,9 +71,10 @@ steps:
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  - 'VERIFICATION_LOGS_PATH=/workspace/k8s/${_SOLUTION_NAME}/.mpdev_logs'
   # Use local Docker network named cloudbuild as described here:
   # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
-  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  - 'DOCKER_NETWORK=cloudbuild'
   dir: k8s/${_SOLUTION_NAME}
   args:
   - make
@@ -86,9 +87,10 @@ steps:
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  - 'VERIFICATION_LOGS_PATH=/workspace/k8s/${_SOLUTION_NAME}/.mpdev_logs'
   # Use local Docker network named cloudbuild as described here:
   # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
-  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  - 'DOCKER_NETWORK=cloudbuild'
   dir: k8s/${_SOLUTION_NAME}
   args:
   - make
@@ -102,9 +104,10 @@ steps:
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  - 'VERIFICATION_LOGS_PATH=/workspace/k8s/${_SOLUTION_NAME}/.mpdev_logs'
   # Use local Docker network named cloudbuild as described here:
   # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
-  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  - 'DOCKER_NETWORK=cloudbuild'
   dir: k8s/${_SOLUTION_NAME}
   args:
   - make
@@ -118,9 +121,10 @@ steps:
   env:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
+  - 'VERIFICATION_LOGS_PATH=/workspace/k8s/${_SOLUTION_NAME}/.mpdev_logs'
   # Use local Docker network named cloudbuild as described here:
   # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
-  - 'EXTRA_DOCKER_PARAMS=--net cloudbuild'
+  - 'DOCKER_NETWORK=cloudbuild'
   dir: k8s/${_SOLUTION_NAME}
   entrypoint: bash
   args:
