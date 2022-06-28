@@ -36,7 +36,7 @@ versions:
     statsd_exporter:
       sha256: b04a25fe937a2e74dab097d589bd1f4da9e874d62b166c4e74d5d55b0f58eab6
       version: 0.22.5
-  repo: falco-exporter0
+  repo: statsd-exporter0
   tags:
   - 0.22.5
   - '0.22'
