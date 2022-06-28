@@ -54,7 +54,7 @@ spec:
             - "-c"
             - "exec airflow webserver"
           livenessProbe: &probes
-            initialDelaySeconds: 10 
+            initialDelaySeconds: 30 
             periodSeconds: 10
             timeoutSeconds: 5
             failureThreshold: 6
