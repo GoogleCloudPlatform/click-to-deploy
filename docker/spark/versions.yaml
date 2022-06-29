@@ -18,9 +18,11 @@ versions:
 - dir: 3/debian11/3.3
   from: marketplace.gcr.io/google/debian11
   packages:
+    scala:
+      minor: 2.13
     spark:
       version: 3.3.0
-      sha256: a63520419a5801e7d9aef252a0d1596ccc6bdb4071370b2d3b6b1864140b7ea2
+      sha256: 7fbfb59b46fcbf0f7b3584c923d43fe6d0b405ab050d5ad43f659ead8521b4e4
   repo: spark3
   tags:
   - 3.3.0-debian11

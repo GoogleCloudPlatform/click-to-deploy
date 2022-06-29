@@ -4,7 +4,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#      http://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,36 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 1/debian11/1.5
-  from: marketplace.gcr.io/google/debian11:latest
-  packages:
-    superset:
-      version: 1.5.0
-  repo: superset1
-  tags:
-  - '1.5.0-debian11'
-  - '1.5-debian11'
-  - '1-debian11'
-  - '1.5.0'
-  - '1.5'
-  - '1'
-  - 'latest'
-
-- dir: exporter
+- dir: 1/debian11/1.11
   from: marketplace.gcr.io/google/debian11
   packages:
-    statsd_exporter:
-      sha256: b04a25fe937a2e74dab097d589bd1f4da9e874d62b166c4e74d5d55b0f58eab6
-      version: 0.22.5
-  repo: statsd-exporter0
+    hydra:
+      version: 1.11.8
+      gpg: 98355a10277858fd9d71869aba05652a986fb3c056b731a9d9313f2166ab11c3
+  repo: hydra1
   tags:
-  - 0.22.5
-  - '0.22'
-  - '0'
+  - 1.11.8-debian11
+  - 1.11-debian11
+  - 1-debian11
+  - 1.11.8
+  - '1.11'
+  - '1'
   - latest
-  templateSubDir: exporter
-  excludeTests:
-  - tests/functional_tests/running_test.yaml
