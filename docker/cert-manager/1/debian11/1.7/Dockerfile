@@ -1,9 +1,9 @@
-FROM  marketplace.gcr.io/google/debian9 as bazel
+FROM  marketplace.gcr.io/google/debian11 as bazel
 
 ENV APP_VERSION=1.7.2
 
 RUN apt-get update \
-    && apt-get install make automake git apt-transport-https curl gnupg patch -y --no-install-recommends \
+    && apt-get install make automake git apt-transport-https curl gnupg patch openssl -y --no-install-recommends \
     && curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor > bazel.gpg \
     && mv bazel.gpg /etc/apt/trusted.gpg.d/ \
     && echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" | tee /etc/apt/sources.list.d/bazel.list
@@ -11,10 +11,10 @@ RUN apt-get update \
 RUN apt-get update \
     && apt-get install bazel -y --no-install-recommends
 
-RUN git clone --branch v${APP_VERSION} \
-    https://github.com/jetstack/cert-manager.git /src/cert-manager/
-
 WORKDIR /src/cert-manager/
+
+RUN git clone --branch v${APP_VERSION} \
+    https://github.com/cert-manager/cert-manager.git /src/cert-manager/
 
 RUN bazel build --stamp --workspace_status_command=hack/build/print-workspace-status.sh //cmd/controller \
  && bazel build --stamp --workspace_status_command=hack/build/print-workspace-status.sh //cmd/cainjector \
@@ -35,7 +35,13 @@ RUN for dep in `find $(bazel info execution_root)/../../external/ -maxdepth 1 -t
     do cp -r $dep /src/vendor/; done
 
 # Result Image
-FROM marketplace.gcr.io/google/debian9
+FROM marketplace.gcr.io/google/debian11
+
+# Update openssl
+RUN apt-get update \
+    && apt-get install --no-install-recommends -yqq openssl \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 ENV C2D_RELEASE=1.7.2
 ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
