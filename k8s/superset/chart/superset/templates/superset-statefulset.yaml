@@ -64,7 +64,7 @@ spec:
             port: 8088
           initialDelaySeconds: 60
           periodSeconds: 30
-          failureThreshold: 6
+          failureThreshold: 6ss
         volumeMounts:
            - name: config-volume
              mountPath: /etc/superset
@@ -95,7 +95,7 @@ spec:
           - --source=superset-statsd:http://localhost:9102/metrics
           - --pod-id=$(POD_NAME)
           - --namespace-id=$(POD_NAMESPACE)
-          - --monitored-resource-types=k8s
+          - --monitored-resource-type-prefix=k8s_
         env:
         - name: POD_NAME
           valueFrom:
