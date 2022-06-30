@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian10
+FROM marketplace.gcr.io/google/debian11
 
 ARG KAFKA_VERSION=3.1.0
 ARG SCALA_VERSION=2.13
@@ -8,7 +8,7 @@ ENV C2D_RELEASE 3.1.0
 
 RUN set -ex \
   && apt-get update \
-  && apt-get -y install default-jdk curl ca-certificates jq net-tools \
+  && apt-get -y install default-jdk curl ca-certificates jq net-tools openssl \
   && rm -rf /var/lib/apt/lists/*
 
 ENV KAFKA_USER="kafka" \

@@ -1,17 +1,14 @@
-{{- $kafka := index .Packages "kafka" -}}
-{{- $scala := index .Packages "scala" -}}
+FROM marketplace.gcr.io/google/debian11
 
-FROM {{ .From }}
+ARG KAFKA_VERSION=3.2.0
+ARG SCALA_VERSION=2.13
+ARG KAFKA_SHA512=736a129823b058dc10788d0893bde47b6f39b9e4972f9eac2d5c9e85e51e477344c6f1e1ebd126ce34d5fd430eb07e55fdd60d60cb541f1d48655c0ebc0a4778
 
-ARG KAFKA_VERSION={{ $kafka.Version }}
-ARG SCALA_VERSION={{ $scala.Version }}
-ARG KAFKA_SHA512={{ $kafka.Sha512 }}
-
-ENV C2D_RELEASE {{ $kafka.Version }}
+ENV C2D_RELEASE 3.2.0
 
 RUN set -ex \
   && apt-get update \
-  && apt-get -y install default-jdk curl ca-certificates jq net-tools \
+  && apt-get -y install default-jdk curl ca-certificates jq net-tools openssl \
   && rm -rf /var/lib/apt/lists/*
 
 ENV KAFKA_USER="kafka" \
@@ -34,7 +31,7 @@ RUN set -ex; \
 
 COPY --chown=$KAFKA_USER:$KAFKA_GROUP scripts ${KAFKA_DOCKER_SCRIPTS}
 
-# Download and setup kafka version v{{ $kafka.Version }}
+# Download and setup kafka version v3.2.0
 RUN chmod a+x ${KAFKA_DOCKER_SCRIPTS}/*.sh \
   && ln -s ${KAFKA_DOCKER_SCRIPTS}/*.sh /usr/bin \
   && curl -sSL ${KAFKA_DIST_URL} -o "/opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz" \
