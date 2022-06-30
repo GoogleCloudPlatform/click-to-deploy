@@ -70,10 +70,6 @@ spec:
   - group: v1
     kind: ConfigMap
   - group: v1
-    kind: ClusterRole
-  - group: v1
-    kind: ClusterRoleBinding
-  - group: v1
     kind: ServiceAccount
   - group: batch/v1
     kind: Job
