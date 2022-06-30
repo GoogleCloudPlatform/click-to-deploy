@@ -33,6 +33,7 @@ RUN set -eux; \
         gosu \
         gnupg \
         netcat \
+        openssl \
         wget; \
     rm -rf /var/lib/apt/lists/*; \
     # Verify that gosu binary works
