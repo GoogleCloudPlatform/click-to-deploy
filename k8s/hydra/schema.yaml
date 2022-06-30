@@ -38,29 +38,6 @@ x-google-marketplace:
         metrics.image:
           type: FULL
 
-  deployerServiceAccount:
-    description: Creates app resources, including Webhooks and ClusterRoleBindings.
-    roles:
-      - type: ClusterRole
-        rulesType: CUSTOM
-        rules:
-          - apiGroups:
-            - 'rbac.authorization.k8s.io'
-            resources:
-            - 'clusterroles'
-            - 'clusterrolebindings'
-            verbs:
-            - '*'
-          - apiGroups:
-            - ''
-            resources:
-            - 'namespaces'
-            verbs:
-            - 'create'
-            - 'list'
-            - 'update'
-            - 'patch'
-
 properties:
   name:
     type: string
