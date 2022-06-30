@@ -64,7 +64,7 @@ spec:
             port: 8088
           initialDelaySeconds: 60
           periodSeconds: 30
-          failureThreshold: 6ss
+          failureThreshold: 6
         volumeMounts:
            - name: config-volume
              mountPath: /etc/superset
