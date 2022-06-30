@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian10 as exporter-builder
+FROM marketplace.gcr.io/google/debian11 as exporter-builder
 
 ENV EXPORTER_VERSION 1.4.2
 ENV EXPORTER_SHA512 42fcd2b303e82e3ea518cffe7c528c2c35f9ecace8427d68f556c8a91894056f9d8a84fb5bdac2c447b91870909f0dbcce5548a061149da4ffbf33e16545d488
