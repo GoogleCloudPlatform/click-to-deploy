@@ -7,6 +7,6 @@ response="$(
         ping
     )"
 if [[ "${response}" != "PONG" ]]; then
-  echo "${response}"
+  echo "Redis Ping Response: ${response}"
   exit 1
 fi
