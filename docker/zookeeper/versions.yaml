@@ -22,7 +22,7 @@ versions:
   from: marketplace.gcr.io/google/debian11
   packages:
     zookeeper:
-      gpg: AF3D175EC05DB249738D01AC8D8C3C3ED0B02E66 DFF24FB8323ADAC90E3CF36F729E61230EA917E9
+      gpg: BBE7232D7991050B54C8EA0ADC08637CA615D22C
       version: 3.8.0
   repo: zookeeper3
   tags:
@@ -40,7 +40,7 @@ versions:
   from: marketplace.gcr.io/google/debian11
   packages:
     zookeeper:
-      gpg: AF3D175EC05DB249738D01AC8D8C3C3ED0B02E66 DFF24FB8323ADAC90E3CF36F729E61230EA917E9
+      gpg: DFF24FB8323ADAC90E3CF36F729E61230EA917E9
       version: 3.7.1
   repo: zookeeper3
   tags:
