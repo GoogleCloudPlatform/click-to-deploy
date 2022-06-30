@@ -1,8 +1,6 @@
-{{- $zookeeper := index .Packages "zookeeper" -}}
+FROM marketplace.gcr.io/google/debian11
 
-FROM {{ .From }}
-
-ARG ZK_VERSION={{ $zookeeper.Version }}
+ARG ZK_VERSION=3.8.0
 
 ENV ZOO_CONF_DIR=/conf \
     ZOO_DATA_DIR=/data \
@@ -40,7 +38,7 @@ RUN set -eux; \
     # Verify that gosu binary works
     gosu nobody true
 
-ENV GPG_KEYS {{ $zookeeper.Gpg }}
+ENV GPG_KEYS AF3D175EC05DB249738D01AC8D8C3C3ED0B02E66 DFF24FB8323ADAC90E3CF36F729E61230EA917E9
 
 ARG SHORT_DISTRO_NAME="zookeeper-${ZK_VERSION}"
 ARG DISTRO_NAME="apache-zookeeper-${ZK_VERSION}-bin"
