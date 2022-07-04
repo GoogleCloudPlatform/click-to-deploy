@@ -53,4 +53,4 @@ COPY --from=builder /jq /usr/local/bin/jq
 EXPOSE 2379 2380 20160 20180
 ENV C2D_RELEASE 5.3.2
 
-ENTRYPOINT ["/tikv-server"]
+CMD ["/tikv-server"]
