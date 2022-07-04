@@ -1,7 +1,7 @@
 FROM marketplace.gcr.io/google/debian11:latest as builder
 
 RUN apt-get update \
-    && apt-get install curl perl build-essential cmake git -y --no-install-recommends
+    && apt-get install curl perl build-essential cmake git unzip -y --no-install-recommends
 ENV GOLANG_VERSION=1.16
 RUN curl -L https://golang.org/dl/go${GOLANG_VERSION}.linux-amd64.tar.gz -o /golang.tar.gz &&tar -xzf /golang.tar.gz -C /usr/local
 ENV PATH /usr/local/go/bin:$PATH
@@ -27,7 +27,7 @@ RUN make build_dist_release
 
 # Install jq for pd-ctl
 RUN cd / && \
-    wget https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 -O jq && \
+    curl -L https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 -o jq && \
     chmod +x jq
 
 #build pd
