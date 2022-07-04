@@ -18,23 +18,39 @@
 cloudbuild:
   enable_parallel: false
 versions:
+- dir: 1/debian11/1.38
+  from: marketplace.gcr.io/google/php7-apache2:7.4
+  packages:
+    composer:
+      sha256: c6ab768ad3239c4d4cc4f39f8ff7462925e088cd441e5bdb749fbf6efe049769
+      version: 2.3.8
+    mediawiki:
+      major: '1.38'
+      sha512: 0b548f3eff5eff01a4a33ee18347861a81481d45fcaf3252f9a07fc4f5423a6c9c18a11d6f014d8afc59d0f13650940af81c95b4d9e094310944b5717b7a6072
+      version: 1.38.2
+  repo: mediawiki1-php7-apache
+  tags:
+  - 1.38.2-debian11
+  - 1.38-debian11
+  - 1-debian11
+  - 1.38.2
+  - '1.38'
+  - '1'
+  - latest
 - dir: 1/debian11/1.37
   from: marketplace.gcr.io/google/php7-apache2:7.4
   packages:
     composer:
-      sha256: 3b3b5a899c06a46aec280727bdf50aad14334f6bc40436ea76b07b650870d8f4
-      version: 2.3.5
+      sha256: c6ab768ad3239c4d4cc4f39f8ff7462925e088cd441e5bdb749fbf6efe049769
+      version: 2.3.8
     mediawiki:
       major: '1.37'
-      sha512: a92cbdf7fd60e91d5690919c3ab301a32b4c9cb5681ba8b6ba74d21d22947aa2da894b1e4f3294684e40cfeb47a529bf1cb253692baa4f9251d47d7c98015844
-      version: 1.37.2
+      sha512: 5c5e406a3ecf83136bb46606b4dd7288b99959a17b37c3b0b74426f47fee8b9b14f3b5106f99d41c07e4924b78bcc3cc61e0058ceb98a087d3ba5ab5a51402e3
+      version: 1.37.3
   repo: mediawiki1-php7-apache
   tags:
-  - 1.37.2-debian11
+  - 1.37.3-debian11
   - 1.37-debian11
-  - 1-debian11
-  - 1.37.2
+  - 1.37.3
   - '1.37'
-  - '1'
-  - latest
 
