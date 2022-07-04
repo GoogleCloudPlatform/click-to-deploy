@@ -1,6 +1,6 @@
-FROM  marketplace.gcr.io/google/debian11 as bazel
+FROM  marketplace.gcr.io/google/debian10 as bazel
 
-ENV APP_VERSION=1.7.2
+ENV APP_VERSION=1.8.2
 
 RUN apt-get update \
     && apt-get install make automake git apt-transport-https curl gnupg patch openssl -y --no-install-recommends \
@@ -35,7 +35,7 @@ RUN for dep in `find $(bazel info execution_root)/../../external/ -maxdepth 1 -t
     do cp -r $dep /src/vendor/; done
 
 # Result Image
-FROM marketplace.gcr.io/google/debian11
+FROM marketplace.gcr.io/google/debian10
 
 # Update openssl
 RUN apt-get update \
@@ -43,7 +43,7 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-ENV C2D_RELEASE=1.7.2
+ENV C2D_RELEASE=1.8.2
 ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 
 # Non root
