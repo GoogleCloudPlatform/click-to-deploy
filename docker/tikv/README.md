@@ -308,3 +308,32 @@ services:
 volumes:
   data:
 ```
+
+# <a name="references"></a>References
+
+## <a name="references-ports"></a>Ports
+
+These are the ports exposed by the container image.
+
+| **Port**  | **Description**  |
+| :-------- | :--------------- |
+| TCP 2379  | PD client port   |
+| TCP 2380  | PD peer port     |
+| TCP 20160 | Tikv client port |
+| TCp 20180 | Tikv status port |
+
+## <a name="references-environment-variables"></a>Environment Variables
+
+Tikv doesn't support any ENVs, instead you should use command line parameters. 
+You can see full list of acceptable parameters on the official [Tikv docs](https://tikv.org/docs/5.1/deploy/configure/tikv-command-line/). 
+
+## <a name="references-volumes"></a>Volumes
+
+These are the filesystem paths used by the container image.
+
+| **Path**        | **Description**                                                          |
+| :-------------- | :----------------------------------------------------------------------- |
+| /tmp/tikv/store | Default data dir, can be changed by --data-dir                           |
+| ""              | Log path can be set by --log-file. Otherwise, logs are written to stderr |
+
+
