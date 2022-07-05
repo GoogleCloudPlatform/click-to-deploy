@@ -25,7 +25,7 @@ RUN rustup self update \
 
 RUN make build_dist_release
 
-# Install jq for pd-ctl
+#install jq for pd-ctl
 RUN cd / && \
     curl -L https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 -o jq && \
     chmod +x jq
@@ -41,7 +41,23 @@ RUN GO111MODULE=on go mod download
 
 RUN make
 
+#build tikvtest
+WORKDIR /tikvtest
+COPY tikvtest_source/tikvtest.go /tikvtest/tikvtest.go
+RUN export GO111MODULE=on \
+    && go mod init tikvtest \
+    && go get github.com/pingcap/tidb/config@kv-only-4.0 \
+    && go get github.com/pingcap/tidb/store/tikv@kv-only-4.0 \
+    && go build tikvtest.go
+
 FROM marketplace.gcr.io/google/debian11:latest
+
+ENV PD_ENDPOINT 127.0.0.1:2379
+
+RUN apt-get update \
+    && apt-get install --no-install-recommends -yqq curl openssl \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /tikv/target/release/tikv-server /tikv-server
 COPY --from=builder /tikv/target/release/tikv-ctl /tikv-ctl
@@ -49,6 +65,7 @@ COPY --from=builder /go/src/github.com/tikv/pd/bin/pd-server /pd-server
 COPY --from=builder /go/src/github.com/tikv/pd/bin/pd-ctl /pd-ctl
 COPY --from=builder /go/src/github.com/tikv/pd/bin/pd-recover /pd-recover
 COPY --from=builder /jq /usr/local/bin/jq
+COPY --from=builder /tikvtest/tikvtest /tikvtest
 
 EXPOSE 2379 2380 20160 20180
 ENV C2D_RELEASE 5.3.2
