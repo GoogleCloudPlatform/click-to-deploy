@@ -16,16 +16,16 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 1/debian9/1.7
-  from: marketplace.gcr.io/google/debian9
+- dir: 1/debian11/1.7
+  from: marketplace.gcr.io/google/debian11
   packages:
     cert-manager:
       version: 1.7.2
   repo: cert-manager1
   tags:
-  - 1.7.2-debian9
-  - 1.7-debian9
-  - 1-debian9
+  - 1.7.2-debian11
+  - 1.7-debian11
+  - 1-debian11
   - 1.7.2
   - '1.7'
   - '1'

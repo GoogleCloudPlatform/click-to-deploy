@@ -1,0 +1,32 @@
+actions:
+- name: Check success authentication
+  bashTest:
+    script: redis-cli -h ${APP_INSTANCE_NAME}-redis-svc -a ${REDIS_PASSWORD} info keyspace
+    expect:
+      stdout:
+        match: "keys"
+      exitCode:
+        equals: 0
+
+- name: Check bad authentication
+  bashTest:
+    script: redis-cli -h ${APP_INSTANCE_NAME}-redis-svc -a wrongpassword info keyspace
+    expect:
+      exitCode:
+        equals: 0
+      stdout:
+        contains: "NOAUTH Authentication required"
+
+- name: Try to set an item to Redis
+  bashTest:
+    script: redis-cli -h ${APP_INSTANCE_NAME}-redis-svc -a ${REDIS_PASSWORD} SET mykey 'PING'
+    expect:
+      stdout:
+        contains: 'OK'
+
+- name: Try to get an item from Redis
+  bashTest:
+    script: redis-cli -h ${APP_INSTANCE_NAME}-redis-svc -a ${REDIS_PASSWORD} GET mykey
+    expect:
+      stdout:
+        contains: 'PING'
