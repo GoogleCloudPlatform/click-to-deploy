@@ -20,17 +20,15 @@ setup:
   - '--net'
   - 'testbridge-$UNIQUE-id'
   - '--name'
-  - 'some-postgres-$UNIQUE-id'
-  - '-e'
-  - 'POSTGRES_USER=airflow'
-  - '-e'
-  - 'POSTGRES_PASSWORD=airflow'
-  - '-e'
-  - 'POSTGRES_DB=airflow'
-  - '-e'
-  - 'MYSQL_ROOT_PASSWORD=some-password'
+  - 'pd-server-$UNIQUE-id'
   - '-d'
-  - 'marketplace.gcr.io/google/postgresql13'
+  - '$IMAGE'
+  - '/pd-server'
+  - '--name=pd-server-$UNIQUE-id'
+  - '--client-urls=http://0.0.0.0:2379'
+  - '--peer-urls=http://0.0.0.0:2380'
+  - '--advertise-client-urls=http://pd-server-$UNIQUE-id:2379'
+  - '--advertise-peer-urls=http://pd-server-$UNIQUE-id:2380'
 - command: [sleep, '20s']
 - command:
   - 'docker'
@@ -38,34 +36,31 @@ setup:
   - '--net'
   - 'testbridge-$UNIQUE-id'
   - '--name'
-  - 'some-airflow-$UNIQUE-id'
-  - '-e'
-  - 'AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@some-postgres-$UNIQUE-id/airflow'
-  - '-e'
-  - 'AIRFLOW_UID=50000'
-  - '-e'
-  - '_AIRFLOW_DB_UPGRADE=true'
-  - '-e'
-  - '_AIRFLOW_WWW_USER_CREATE=true'
-  - '-e'
-  - '_AIRFLOW_WWW_USER_USERNAME=airflow'
-  - '-e'
-  - '_AIRFLOW_WWW_USER_PASSWORD=airflow'
+  - 'tikv-server-$UNIQUE-id'
   - '-d'
   - '$IMAGE'
-  - 'webserver'
-- command: [sleep, '70s']
+  - '/tikv-server'
+  - '--addr=0.0.0.0:20160'
+  - '--advertise-addr=tikv-server-$UNIQUE-id:20160'
+  - '--pd=pd-server-$UNIQUE-id:2379'
+- command: [sleep, '20s']
 
 teardown:
-- command: [docker, stop, some-airflow-$UNIQUE-id, some-postgres-$UNIQUE-id]
-- command: [docker, rm, some-airflow-$UNIQUE-id, some-postgres-$UNIQUE-id]
+- command: [docker, stop, tikv-server-$UNIQUE-id, pd-server-$UNIQUE-id]
+- command: [docker, rm, tikv-server-$UNIQUE-id, pd-server-$UNIQUE-id]
 - command: [docker, network, rm, testbridge-$UNIQUE-id]
 
-target: some-airflow-$UNIQUE-id
+target: pd-server-$UNIQUE-id
 tests:
-- name: Test health status
-  command: [curl, -s, -L, 'http://localhost:8080/health']
+- name: Test PUT/GET/DELETE
+  command: ['/tikvtest']
   expect:
     stdout:
-      matches: '"status": "healthy"'
+      matches: 'Successfully put TestKey:TestValue to tikv'
+    stdout:
+      matches: 'found val: TestValue for key: TestKey'
+    stdout:
+      matches: 'key: TestKey deleted'
+    stdout:
+      matches: 'found val:  for key: TestKey'
 
