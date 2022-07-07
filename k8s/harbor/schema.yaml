@@ -1,0 +1,68 @@
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      Initial release.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  clusterConstraints:
+    resources:
+      - replicas: 1
+        requests:
+          cpu: 100m
+          memory: 100Mi
+
+  images:
+    '':
+      properties:
+        core.image.repo:
+          type: REPO_WITH_REGISTRY
+        core.image.tag:
+          type: TAG
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
+
+  deployerServiceAccount:
+    description: Creates app resources, including Webhooks and ClusterRoleBindings.
+    roles:
+      - type: ClusterRole
+        rulesType: CUSTOM
+        rules:
+          - apiGroups:
+            - 'rbac.authorization.k8s.io'
+            resources:
+            - 'clusterroles'
+            - 'clusterrolebindings'
+            verbs:
+            - '*'
+          - apiGroups:
+            - ''
+            resources:
+            - 'namespaces'
+            verbs:
+            - 'create'
+            - 'list'
+            - 'update'
+            - 'patch'
+
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+
+required:
+- name
+- namespace
