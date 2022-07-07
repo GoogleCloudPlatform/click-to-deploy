@@ -443,7 +443,7 @@ portal:
 
 core:
   image:
-    repository: gcr.io/ccm-ops-test-adhoc/harbor
+    repository: gcr.io/cloud-marketplace-ops-test/harbor
     tag: 2.5
   # set the service account to be used, default if left empty
   serviceAccountName: ""
