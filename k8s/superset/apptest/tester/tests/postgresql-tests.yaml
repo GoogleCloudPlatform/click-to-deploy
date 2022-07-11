@@ -1,0 +1,11 @@
+actions:
+
+- name: Prometheus metrics availability
+  bashTest:
+    script: |-
+      SERVICE="${APP_INSTANCE_NAME}-postgres-exporter-svc"
+      sleep 20
+      wget -O- http://${APP_INSTANCE_NAME}-postgres-exporter-svc:9187/metrics
+    expect:
+      stdout:
+        matches: '(?m)^pg_up 1$'
