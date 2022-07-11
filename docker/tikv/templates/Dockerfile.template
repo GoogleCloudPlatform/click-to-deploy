@@ -54,6 +54,9 @@ RUN export GO111MODULE=on \
     && go get github.com/pingcap/tidb/store/tikv@kv-only-4.0 \
     && go build tikvtest.go
 
+#copy inferno license to /usr/src
+RUN cp -r $(find /root/.cargo/registry -name "inferno-*" -type d) /usr/src/
+
 FROM {{ .From }}
 
 ENV PD_ENDPOINT 127.0.0.1:2379
@@ -62,6 +65,9 @@ RUN apt-get update \
     && apt-get install --no-install-recommends -yqq curl openssl \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+#satisfy CDDL license
+COPY --from=builder /usr/src/inferno-* /usr/src/inferno/
 
 COPY --from=builder /tikv/target/release/tikv-server /tikv-server
 COPY --from=builder /tikv/target/release/tikv-ctl /tikv-ctl
