@@ -39,11 +39,11 @@ service mysql restart
 mkdir "${CONCRETE_FOLDER}"
 cd "${CONCRETE_FOLDER}/"
 
+echo "Configuring and updating composer..."
 composer create-project concretecms/composer "${CONCRETE_PROJECT}" --no-install -d "${CONCRETE_FOLDER}"
 cd "${CONCRETE_FOLDER}"/"${CONCRETE_PROJECT}"
-composer config --no-plugins allow-plugins.composer/installers true
-composer config --no-plugins allow-plugins.mlocati/composer-patcher true
-composer install -n
+composer update --no-install
+composer install -n --no-dev
 
 echo "Installing Concrete..."
 cd "${CONCRETE_FOLDER}/${CONCRETE_PROJECT}"
