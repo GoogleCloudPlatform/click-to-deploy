@@ -1,0 +1,8 @@
+actions:
+- name: Nuctl smoke test
+  bashTest:
+    script: echo test 
+    expect:
+      exitCode:
+        equals: 0
+

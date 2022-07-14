@@ -1,0 +1,53 @@
+{{- range $pdReplica := slice "pd0" "pd1" "pd2" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-pd
+  labels: &pdLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: {{ $pdReplica }}
+spec:
+  replicas: 1 # Should be only one replica
+  selector:
+    matchLabels: *pdLabels
+  template:
+    metadata:
+      labels: *pdLabels
+    spec:
+      containers:
+      - name: {{ .Release.Name }}-pd-{{ $pdReplica }}
+        image: {{ .Values.tikv.image.repo }}:{{ .Values.tikv.image.tag }}
+        imagePullPolicy: Always
+        ports:
+        - name: client
+          containerPort: 2379
+        - name: peer
+          containerPort: 2380
+        command:
+        - /pd-server
+        - --name={{ $pdReplica }}
+        - --client-urls=http://0.0.0.0:2379
+        - --peer-urls=http://0.0.0.0:2380
+        - --advertise-client-urls=http://{{ $pdReplica }}:2379
+        - --advertise-peer-urls=http://{{ $pdReplica }}:2380
+        - --initial-cluster=pd0=http://pd0:2380,pd1=http://pd1:2380,pd2=http://pd2:2380
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-pd-{{ $pdReplica }}
+  labels: &pdLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: {{ $pdReplica }}
+spec:
+  ports:
+  - name: client
+    port: 2379
+    protocol: TCP
+  - name: peer
+    port: 2380
+    protocol: TCP
+  selector: *pdLabels
+  type: ClusterIP
+---
+{{- end }}

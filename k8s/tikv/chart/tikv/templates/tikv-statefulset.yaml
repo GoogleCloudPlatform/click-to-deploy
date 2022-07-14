@@ -1,0 +1,44 @@
+---
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: {{ .Release.Name }}-tikv
+  labels: &tikvLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: tikv-server
+spec:
+  replicas: {{ .Values.tikv.replicas }}
+  selector:
+    matchLabels: *tikvLabels
+  serviceName: {{ .Release.Name }}-tikv
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels: *tikvLabels
+    spec:
+      serviceAccountName: "default"
+      containers:
+      - name: {{ .Release.Name }}-tikv
+        image: {{ .Values.tikv.image.repo }}:{{ .Values.tikv.image.tag }}
+        imagePullPolicy: Always
+        ports:
+        - name: client
+          containerPort: 20160
+        - name: status
+          containerPort: 20180
+        volumeMounts:
+        - name: {{ .Release.Name }}-data-pvc
+          mountPath: /var/lib/mariadb
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Release.Name }}-data-pvc
+      labels: *tikvLabels
+    spec:
+      resources:
+        requests:
+          storage: {{ .Values.tikv.persistence.size }}
+      accessModes:
+      - ReadWriteOnce
+      storageClassName: {{ .Values.tikv.persistence.storageClass }}
+
