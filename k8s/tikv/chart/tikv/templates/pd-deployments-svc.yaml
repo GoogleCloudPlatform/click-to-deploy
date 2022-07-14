@@ -1,21 +1,24 @@
-{{- range $pdReplica := slice "pd0" "pd1" "pd2" }}
+---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ .Release.Name }}-pd
   labels: &pdLabels
-    app.kubernetes.io/name: {{ .Release.Name }}
-    app.kubernetes.io/component: {{ $pdReplica }}
+    app.kubernetes.io/name: {{ $.Release.Name }}
+    app.kubernetes.io/component: pd
 spec:
-  replicas: 1 # Should be only one replica
+  replicas: 3
   selector:
     matchLabels: *pdLabels
+  serviceName: {{ .Release.Name }}-pd
+  updateStrategy:
+    type: RollingUpdate
   template:
     metadata:
       labels: *pdLabels
     spec:
       containers:
-      - name: {{ .Release.Name }}-pd-{{ $pdReplica }}
+      - name: {{ .Release.Name }}-pd
         image: {{ .Values.tikv.image.repo }}:{{ .Values.tikv.image.tag }}
         imagePullPolicy: Always
         ports:
@@ -25,20 +28,36 @@ spec:
           containerPort: 2380
         command:
         - /pd-server
-        - --name={{ $pdReplica }}
+        - --name=$(POD_NAME)
         - --client-urls=http://0.0.0.0:2379
         - --peer-urls=http://0.0.0.0:2380
-        - --advertise-client-urls=http://{{ $pdReplica }}:2379
-        - --advertise-peer-urls=http://{{ $pdReplica }}:2380
-        - --initial-cluster=pd0=http://pd0:2380,pd1=http://pd1:2380,pd2=http://pd2:2380
+        - --advertise-client-urls=http://$(POD_NAME).{{ .Release.Name }}-pd:2379
+        - --advertise-peer-urls=http://$(POD_NAME).{{ .Release.Name }}-pd:2380
+        - --initial-cluster={{ .Release.Name }}-pd-0=http://{{ .Release.Name }}-pd-0.{{ .Release.Name }}-pd:2380,{{ .Release.Name }}-pd-1=http://{{ .Release.Name }}-pd-1.{{ .Release.Name }}-pd:2380,{{ .Release.Name }}-pd-2=http://{{ .Release.Name }}-pd-2.{{ .Release.Name }}-pd:2380
+        livenessProbe: &healthCheck
+          exec:
+            command:
+            - sh
+            - -c
+            - >-
+               curl -s localhost:2379/pd/api/v1/health |
+               jq -c ".[]| select( .name==\"$POD_NAME\")| .health" |
+               grep -q true
+          initialDelaySeconds: 15
+          periodSeconds: 15
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Release.Name }}-pd-{{ $pdReplica }}
+  name: {{ .Release.Name }}-pd
   labels: &pdLabels
     app.kubernetes.io/name: {{ .Release.Name }}
-    app.kubernetes.io/component: {{ $pdReplica }}
+    app.kubernetes.io/component: pd
 spec:
   ports:
   - name: client
@@ -48,6 +67,5 @@ spec:
     port: 2380
     protocol: TCP
   selector: *pdLabels
-  type: ClusterIP
----
-{{- end }}
+  clusterIP: None
+

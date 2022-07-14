@@ -15,5 +15,5 @@ spec:
     port: 20180
     protocol: TCP
   selector: *tikvLabels
-  type: ClusterIP
-
+  clusterIP: None
+#create separete service for each tikv replica

@@ -17,7 +17,6 @@ spec:
     metadata:
       labels: *tikvLabels
     spec:
-      serviceAccountName: "default"
       containers:
       - name: {{ .Release.Name }}-tikv
         image: {{ .Values.tikv.image.repo }}:{{ .Values.tikv.image.tag }}
@@ -27,9 +26,20 @@ spec:
           containerPort: 20160
         - name: status
           containerPort: 20180
+        command:
+        - /tikv-server
+        - --addr=0.0.0.0:20160
+        - --advertise-addr=$(POD_NAME).{{ .Release.Name }}-tikv:20160
+        - --data-dir=/data/db
+        - --pd={{ .Release.Name }}-pd-0.{{ .Release.Name }}-pd:2379,{{ .Release.Name }}-pd-1.{{ .Release.Name }}-pd:2379,{{ .Release.Name }}-pd-2.{{ .Release.Name }}-pd:2379
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
         volumeMounts:
         - name: {{ .Release.Name }}-data-pvc
-          mountPath: /var/lib/mariadb
+          mountPath: /data/db
   volumeClaimTemplates:
   - metadata:
       name: {{ .Release.Name }}-data-pvc
