@@ -35,7 +35,7 @@ systemctl stop nginx
 
 echo "Installing dependencies..."
 cd "${df_install_folder}"
-composer update
+composer update --no-install
 composer install -n --no-dev
 
 echo "Create database user..."
