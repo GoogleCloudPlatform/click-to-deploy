@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2021 Google Inc.
+# Copyright 2022 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -58,6 +58,9 @@ else
 fi
 
 sudo -u www-data wp core install "${args[@]}"
+
+cd /var/www/html/
+sudo -u www-data wp cache flush
 
 # If https is enabled, apply the configuration
 if [[ "${wordpress_enable_https}" == "true" ]]; then
