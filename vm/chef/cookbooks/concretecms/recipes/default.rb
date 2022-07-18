@@ -37,7 +37,7 @@ include_recipe 'php80::module_libapache2'
 include_recipe 'php80::module_intl'
 include_recipe 'php80::module_fileinfo'
 
-include_recipe 'composer::composer-only'
+include_recipe 'composer::composer2'
 
 include_recipe 'nodejs::default_nodejs14'
 

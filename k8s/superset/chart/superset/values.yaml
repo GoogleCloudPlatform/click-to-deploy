@@ -12,7 +12,7 @@ statsd:
   exporter:
     image: null
 
-enablePublicServiceAndIngress: true
+enablePublicServiceAndIngress: false
 
 postgresql:
   image: null
