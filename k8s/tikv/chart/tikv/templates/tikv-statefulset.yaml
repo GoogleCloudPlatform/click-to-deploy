@@ -7,10 +7,11 @@ metadata:
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: tikv-server
 spec:
+  podManagementPolicy: Parallel
   replicas: {{ .Values.tikv.replicas }}
   selector:
     matchLabels: *tikvLabels
-  serviceName: {{ .Release.Name }}-tikv
+  serviceName: {{ .Release.Name }}-tikv-peer
   updateStrategy:
     type: RollingUpdate
   template:
@@ -22,16 +23,20 @@ spec:
         image: {{ .Values.tikv.image.repo }}:{{ .Values.tikv.image.tag }}
         imagePullPolicy: Always
         ports:
-        - name: client
+        - name: server
           containerPort: 20160
         - name: status
           containerPort: 20180
         command:
         - /tikv-server
         - --addr=0.0.0.0:20160
-        - --advertise-addr=$(POD_NAME).{{ .Release.Name }}-tikv:20160
+        - --advertise-addr=$(POD_NAME).{{ .Release.Name }}-tikv-peer:20160
+        - --status-addr=0.0.0.0:20180
+        - --advertise-status-addr=$(POD_NAME).{{ .Release.Name }}-tikv-peer:20180
         - --data-dir=/data/db
-        - --pd={{ .Release.Name }}-pd-0.{{ .Release.Name }}-pd:2379,{{ .Release.Name }}-pd-1.{{ .Release.Name }}-pd:2379,{{ .Release.Name }}-pd-2.{{ .Release.Name }}-pd:2379
+        - --capacity=0
+        - --config=/etc/tikv/tikv.toml
+        - --pd={{ .Release.Name }}-pd:2379
         env:
         - name: POD_NAME
           valueFrom:
@@ -40,6 +45,17 @@ spec:
         volumeMounts:
         - name: {{ .Release.Name }}-data-pvc
           mountPath: /data/db
+        - mountPath: /etc/tikv
+          name: config
+          readOnly: true
+      volumes:
+      - name: config
+        configMap:
+          defaultMode: 420
+          items:
+          - key: config-file
+            path: tikv.toml
+          name: {{ .Release.Name }}-tikv-config
   volumeClaimTemplates:
   - metadata:
       name: {{ .Release.Name }}-data-pvc

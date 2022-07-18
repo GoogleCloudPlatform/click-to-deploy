@@ -2,18 +2,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Release.Name }}-tikv
+  name: {{ .Release.Name }}-tikv-peer
   labels: &tikvLabels
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: tikv-server
 spec:
   ports:
-  - name: client
+  - name: server
     port: 20160
-    protocol: TCP
-  - name: status
-    port: 20180
     protocol: TCP
   selector: *tikvLabels
   clusterIP: None
-#create separete service for each tikv replica
+  publishNotReadyAddresses: true

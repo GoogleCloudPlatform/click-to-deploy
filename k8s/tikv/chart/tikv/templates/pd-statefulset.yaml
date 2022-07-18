@@ -7,10 +7,11 @@ metadata:
     app.kubernetes.io/name: {{ $.Release.Name }}
     app.kubernetes.io/component: pd
 spec:
+  podManagementPolicy: Parallel
   replicas: 3
   selector:
     matchLabels: *pdLabels
-  serviceName: {{ .Release.Name }}-pd
+  serviceName: {{ .Release.Name }}-pd-peer
   updateStrategy:
     type: RollingUpdate
   template:
@@ -18,7 +19,7 @@ spec:
       labels: *pdLabels
     spec:
       containers:
-      - name: {{ .Release.Name }}-pd
+      - name: {{ .Release.Name }}-pd-peer
         image: {{ .Values.tikv.image.repo }}:{{ .Values.tikv.image.tag }}
         imagePullPolicy: Always
         ports:
@@ -31,9 +32,9 @@ spec:
         - --name=$(POD_NAME)
         - --client-urls=http://0.0.0.0:2379
         - --peer-urls=http://0.0.0.0:2380
-        - --advertise-client-urls=http://$(POD_NAME).{{ .Release.Name }}-pd:2379
-        - --advertise-peer-urls=http://$(POD_NAME).{{ .Release.Name }}-pd:2380
-        - --initial-cluster={{ .Release.Name }}-pd-0=http://{{ .Release.Name }}-pd-0.{{ .Release.Name }}-pd:2380,{{ .Release.Name }}-pd-1=http://{{ .Release.Name }}-pd-1.{{ .Release.Name }}-pd:2380,{{ .Release.Name }}-pd-2=http://{{ .Release.Name }}-pd-2.{{ .Release.Name }}-pd:2380
+        - --advertise-client-urls=http://$(POD_NAME).{{ .Release.Name }}-pd-peer:2379
+        - --advertise-peer-urls=http://$(POD_NAME).{{ .Release.Name }}-pd-peer:2380
+        - --initial-cluster={{ .Release.Name }}-pd-0=http://{{ .Release.Name }}-pd-0.{{ .Release.Name }}-pd-peer:2380,{{ .Release.Name }}-pd-1=http://{{ .Release.Name }}-pd-1.{{ .Release.Name }}-pd-peer:2380,{{ .Release.Name }}-pd-2=http://{{ .Release.Name }}-pd-2.{{ .Release.Name }}-pd-peer:2380
         livenessProbe: &healthCheck
           exec:
             command:
@@ -50,22 +51,5 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ .Release.Name }}-pd
-  labels: &pdLabels
-    app.kubernetes.io/name: {{ .Release.Name }}
-    app.kubernetes.io/component: pd
-spec:
-  ports:
-  - name: client
-    port: 2379
-    protocol: TCP
-  - name: peer
-    port: 2380
-    protocol: TCP
-  selector: *pdLabels
-  clusterIP: None
+
 
