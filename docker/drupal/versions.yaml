@@ -18,22 +18,37 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 9/php8/debian9/9.3/apache
-  from: marketplace.gcr.io/google/php8-apache2:8.0
+- dir: 9/php8/debian9/9.4/apache
+  from: marketplace.gcr.io/google/php8-apache2:8.1
   packages:
     composer:
       gpg: e1e1c580a237c739ecc1be57cf512e6b741faaa566439257d19ecd739ddfefaf
       version: 2.2.8
     drupal:
-      md5: 99e45173551d6bfb58138945cb40e1fc
-      version: 9.3.13
+      md5: c0ca04ac175159d4770f390c8019bf87
+      version: 9.4.2
   repo: drupal9-php8-apache
   tags:
-  - 9.3.13-debian9
-  - 9.3-debian9
+  - 9.4.2-debian9
+  - 9.4-debian9
   - 9-debian9
-  - 9.3.13
-  - '9.3'
+  - 9.4.2
+  - '9.4'
   - '9'
   - latest
+- dir: 9/php8/debian9/9.3/apache
+  from: marketplace.gcr.io/google/php8-apache2:8.1
+  packages:
+    composer:
+      gpg: e1e1c580a237c739ecc1be57cf512e6b741faaa566439257d19ecd739ddfefaf
+      version: 2.2.8
+    drupal:
+      md5: 3465a79d749c28be0aca0d35969e4a77
+      version: 9.3.18
+  repo: drupal9-php8-apache
+  tags:
+  - 9.3.18-debian9
+  - 9.3-debian9
+  - 9.3.18
+  - '9.3'
 
