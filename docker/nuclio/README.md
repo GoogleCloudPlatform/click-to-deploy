@@ -51,7 +51,7 @@ for additional information about setting up your Docker environment.
 
 This section describes how to spin up a Nuclio service using this image.
 
-### <a name="Runnung-Nuclio-Dashboard"></a>Running Nuclio Dashboard
+### <a name="Running-Nuclio-Dashboard"></a>Running Nuclio Dashboard
 
 Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
 
