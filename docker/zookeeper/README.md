@@ -40,7 +40,7 @@ Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlat
 * [Using Docker](#using-docker)
   * [Running Zookeeper](#running-zookeeper-docker)
     * [Running Zookeeper standalone](#Running-Zookeeper-standalone)
-    * [Running Zookeeper cluster](#Runnung-Zookeeper-cluster)
+    * [Running Zookeeper cluster](#Running-Zookeeper-cluster)
     * [Use a persistent data volume docker](#Use-a-persistent-data-volume)
 * [References](#references)
   * [Ports](#references-ports)
@@ -56,7 +56,7 @@ for additional information about setting up your Docker environment.
 
 This section describes how to spin up a Zookeeper service using this image.
 
-### <a name="Runnung-Zookeeper-standalone"></a>Running Zookeeper standalone
+### <a name="Running-Zookeeper-standalone"></a>Running Zookeeper standalone
 
 Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
 
@@ -82,7 +82,7 @@ docker run -d --hostname zookeeper \
     marketplace.gcr.io/google/zookeeper3
 ```
 
-### <a name="Runnung-Zookeeper-cluster"></a>Running Zookeeper cluster
+### <a name="Running-Zookeeper-cluster"></a>Running Zookeeper cluster
 
 Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
 
