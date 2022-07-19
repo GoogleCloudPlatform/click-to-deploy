@@ -38,7 +38,7 @@ Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlat
 # <a name="table-of-contents"></a>Table of Contents
 * [Using Docker](#using-docker)
   * [Running Airflow](#running-airflow-docker)
-    * [Running Airflow with PostgreSQL and Redis services](#Runnung-Airflow-with-PostgreSQL-and-Redis-services)
+    * [Running Airflow with PostgreSQL and Redis services](#Running-Airflow-with-PostgreSQL-and-Redis-services)
     * [Use a persistent data volume docker](#Use-a-persistent-data-volume)
 * [References](#references)
   * [Ports](#references-ports)
@@ -54,7 +54,7 @@ for additional information about setting up your Docker environment.
 
 This section describes how to spin up an Airflow service using this image.
 
-### <a name="Runnung-Airflow-with-PostgreSQL-and-Redis-service"></a>Running Airflow with PostgreSQL and Redis services
+### <a name="Running-Airflow-with-PostgreSQL-and-Redis-service"></a>Running Airflow with PostgreSQL and Redis services
 
 Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
 
