@@ -36,7 +36,7 @@ Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlat
 
 This section describes how to spin up a Ory Hydra service using this image.
 
-### Runnung Hydra with PostgreSQL Datadase service
+### Running Hydra with PostgreSQL Database service
 
 First, let's create a network for our Hydra setup.
 
