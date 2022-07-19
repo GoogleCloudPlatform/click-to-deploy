@@ -1,7 +1,7 @@
 FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.4
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl netcat \
+    curl wget netcat \
     && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /opt/kubectl/1.21 \

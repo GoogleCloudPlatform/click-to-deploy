@@ -34,8 +34,9 @@ actions:
         matches: 'found val:  for key: TestKey'
 - name: Check cluster health
   bashTest:
-    script: curl -s "${APP_INSTANCE_NAME}-pd:2379/pd/api/v1/health"| grep -c '"health": true'
+    script: |
+      curl -s "${APP_INSTANCE_NAME}-pd:2379/pd/api/v1/health"| grep -c '"health": true'
     expect:
       stdout:
-        matches: '3'
+        matches: "3"
 
