@@ -53,7 +53,7 @@ For information on how we test the Docker images, see
 ## Generate Dockerfile from template
 
 We use [`dockerfile`](https://github.com/GoogleCloudPlatform/runtimes-common/tree/master/versioning)
-to generate versionsed `Dockerfiles` from a common template.
+to generate versioned `Dockerfiles` from a common template.
 
 ## Generate Cloud Build configuration
 
