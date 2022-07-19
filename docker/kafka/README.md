@@ -38,7 +38,7 @@ Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlat
 # <a name="table-of-contents"></a>Table of Contents
 * [Using Docker](#using-docker)
   * [Running Kafka](#running-kafka-docker)
-    * [Running Kafka with Zookeeper service](#Runnung-Kafka-with-Zookeeper-service)
+    * [Running Kafka with Zookeeper service](#Running-Kafka-with-Zookeeper-service)
     * [Use a persistent data volume docker](#Use-a-persistent-data-volume)
 * [References](#references)
   * [Ports](#references-ports)
@@ -54,7 +54,7 @@ for additional information about setting up your Docker environment.
 
 This section describes how to spin up a Kafka service using this image.
 
-### <a name="Runnung-Kafka-with-Zookeeper-service)"></a>Running Kafka with Zookeeper service
+### <a name="Running-Kafka-with-Zookeeper-service)"></a>Running Kafka with Zookeeper service
 
 Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
 
