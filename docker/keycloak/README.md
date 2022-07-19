@@ -38,8 +38,8 @@ Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlat
 # <a name="table-of-contents"></a>Table of Contents
 * [Using Docker](#using-docker)
   * [Running Keycloak](#running-keycloak-docker)
-    * [Running Keycloak standalone](#Runnung-Keycloak-standalone)
-    * [Running Keycloak with PostgreSQL service](#Runnung-Keycloak-with-PostgreSQL)
+    * [Running Keycloak standalone](#Running-Keycloak-standalone)
+    * [Running Keycloak with PostgreSQL service](#Running-Keycloak-with-PostgreSQL)
     * [Use a persistent data volume docker](#Use-a-persistent-data-volume)
 * [References](#references)
   * [Ports](#references-ports)
@@ -177,7 +177,7 @@ These are the environment variables understood by the container image.
 | KC_HOSTNAME             | Keycloak hostname for production mode                                        |
 | KC_HOSTNAME_STRICT      | Disable hostname verification if set to false                                |
 | KC_HTTP_ENABLED         | Set to `true` in case of using reverse proxy with TLS                        |
-| KC_HEALTH_ENABLED       | Expose health endopints at the `/health`, `/health/ready` and `/health/live` |
+| KC_HEALTH_ENABLED       | Expose health endpoints at the `/health`, `/health/ready` and `/health/live` |
 | KC_METRICS_ENABLED      | Expose `/metrics` endpoint                                                   |
 
 You can see full list of acceptable parameters on the official [Keycloak docs](https://www.keycloak.org/server/all-config). 
