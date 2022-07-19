@@ -38,7 +38,7 @@ Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlat
 # <a name="table-of-contents"></a>Table of Contents
 * [Using Docker](#using-docker)
   * [Running Drupal](#running-drupal-docker)
-    * [Running Drupal with MariaDB Datadase service](#Runnung-Drupal-with-MariaDB-Datadase-service)
+    * [Running Drupal with MariaDB Database service](#Running-drupal-with-mariadb-database-service)
     * [Use a persistent data volume docker](#Use-a-persistent-data-volume)
 * [References](#references)
   * [Ports](#references-ports)
@@ -54,7 +54,7 @@ for additional information about setting up your Docker environment.
 
 This section describes how to spin up a Drupal service using this image.
 
-### <a name="Runnung-Drupal-with-MariaDB-Datadase-service"></a>Runnung Drupal with MariaDB Datadase service 
+### <a name="Running-Drupal-with-MariaDB-Database-service"></a>Running Drupal with MariaDB Database service
 
 Drupal requires a separate MySQL service which can be run in another container.
  
@@ -71,7 +71,7 @@ services:
     - MYSQL_USER=drupal
     - MYSQL_DATABASE=drupal
     - MYSQL_PASSWORD=some-password
-    - MYSQL_ROOT_PASSWORD=some-passowrd
+    - MYSQL_ROOT_PASSWORD=some-password
  drupal:
   container_name: some-drupal
   image: marketplace.gcr.io/google/drupal9-php7-apache
@@ -115,7 +115,7 @@ docker run -d --name 'some-mariadb' -it --rm \
     -e MYSQL_USER=drupal \
     -e MYSQL_DATABASE=drupal \
     -e MYSQL_PASSWORD=some-password \
-    -e MYSQL_ROOT_PASSWORD=some-passowrd \
+    -e MYSQL_ROOT_PASSWORD=some-password \
     --network drupal \
     marketplace.gcr.io/google/mariadb10
 ```
