@@ -36,8 +36,8 @@ Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlat
 # <a name="table-of-contents"></a>Table of Contents
 * [Using Docker](#using-docker)
   * [Running Solr](#running-solr-docker)
-    * [Running Solr in standalone mode](#Runnung-Solr-in-standalone-mode)
-    * [Running Solr with Zookeeper service](#Runnung-Solr-with-Zookeeper-service)
+    * [Running Solr in standalone mode](#Running-Solr-in-standalone-mode)
+    * [Running Solr with Zookeeper service](#Running-Solr-with-Zookeeper-service)
     * [Use a persistent data volume docker](#Use-a-persistent-data-volume)
 * [References](#references)
   * [Ports](#references-ports)
@@ -54,7 +54,7 @@ for additional information about setting up your Docker environment.
 This section describes how to spin up a Solr service using this image.
 
 
-### <a name="Runnung-Solr-in-standalone-mode"></a>Running Solr in standalone mode
+### <a name="Running-Solr-in-standalone-mode"></a>Running Solr in standalone mode
 
 Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
 
@@ -77,7 +77,7 @@ docker run -d \
     marketplace.gcr.io/google/solr8
 ```
 
-### <a name="Runnung-Solr-in-standalone-mode"></a>Running Solr in standalone mode
+### <a name="Running-Solr-in-standalone-mode"></a>Running Solr in standalone mode
 
 Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
 
