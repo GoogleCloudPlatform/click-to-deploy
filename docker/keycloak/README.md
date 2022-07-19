@@ -55,7 +55,7 @@ for additional information about setting up your Docker environment.
 
 This section describes how to spin up an Keycloak service using this image.
 
-### <a name="Runnung-Keycloak-standalone"></a>Running Keycloak standalone
+### <a name="Running-Keycloak-standalone"></a>Running Keycloak standalone
 
 Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
 
@@ -86,7 +86,7 @@ docker run -d -p 8080:8080 \
     start-dev
 ```
 
-### <a name="Runnung-Keycloak-with-PostgreSQL"></a>Running Keycloak with PostgreSQL service
+### <a name="Running-Keycloak-with-PostgreSQL"></a>Running Keycloak with PostgreSQL service
 
 Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
 
