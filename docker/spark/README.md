@@ -96,7 +96,7 @@ These are the ports exposed by the container image.
 | TCP 8080  | Spark UI           |
 | TCP 18080 | History Server UI  |
 
-## <a name="references-environment-variables"></a>Enviment Variables
+## <a name="references-environment-variables"></a>Environment Variables
 
 These are the environment variables understood by the container image.
 | **Variable**          | **Description**                                                       |
