@@ -1,0 +1,14 @@
+{{- if and ( .Capabilities.APIVersions.Has "monitoring.coreos.com/v1" ) .Values.metrics.enabled .Values.metrics.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ template "harbor.fullname" . }}
+  labels: {{ include "harbor.labels" . | nindent 4 }}
+spec:
+  jobLabel: app.kubernetes.io/name
+  endpoints:
+  - honorLabels: true
+    port: http-metrics
+  selector:
+    matchLabels: {{ include "harbor.matchLabels" . | nindent 6 }}
+{{- end }}

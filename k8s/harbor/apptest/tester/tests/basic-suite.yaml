@@ -1,0 +1,80 @@
+actions:
+  - name: Harbor Liveness Check
+    bashTest:
+      script: |-
+        curl --retry 3 --retry-connrefused --retry-delay 5 http://$APP_INSTANCE_NAME/api/v2.0/ping
+      expect:
+        stdout:
+          contains: 'Pong'
+
+  - name: Chartmuseum Liveness Check
+    bashTest:
+      script: |-
+        curl --retry 3 --retry-connrefused --retry-delay 5 http://$CHARTMUSEUM_APP_NAME/health
+      expect:
+        stdout:
+          contains: '{"healthy":true}'
+
+  - name: Database Liveness Check
+    bashTest:
+      script: |-
+        kubectl exec -it "${DATABASE_APP_NAME}-0" -c database -- /docker-healthcheck.sh
+      expect:
+        exitCode:
+          equals: 0
+
+  - name: Jobservice Liveness Check
+    bashTest:
+      script: |-
+        curl --retry 3 --retry-connrefused --retry-delay 5 http://$JOBSERVICE_APP_NAME/api/v1/stats
+      expect:
+        stdout:
+          contains: '"status":"Healthy"'
+
+  - name: Notary Server Liveness Check
+    bashTest:
+      script: |-
+        curl --retry 3 --retry-connrefused --retry-delay 5 http://$NOTARY_SERVER_APP_NAME:4443/_notary_server/health
+      expect:
+        exitCode:
+          equals: 0
+
+  - name: Notary Signer Liveness Check
+    bashTest:
+      script: |-
+        curl -k --retry 3 --retry-connrefused --retry-delay 5 https://$NOTARY_SIGNER_APP_NAME:7899/
+      expect:
+        exitCode:
+          equals: 0
+
+  - name: Portal Liveness Check
+    bashTest:
+      script: |-
+        curl --retry 3 --retry-connrefused --retry-delay 5 http://$PORTAL_APP_NAME/
+      expect:
+        exitCode:
+          equals: 0
+
+  - name: Redis Liveness Check
+    bashTest:
+      script: |-
+        redis-cli -h ${REDIS_APP_NAME} ping
+      expect:
+        stdout:
+          contains: 'PONG'
+
+  - name: Registry Liveness Check
+    bashTest:
+      script: |-
+        curl --retry 3 --retry-connrefused --retry-delay 5 http://$REGISTRY_APP_NAME:5000
+      expect:
+        exitCode:
+          equals: 0
+
+  - name: Trivy Liveness Check
+    bashTest:
+      script: |-
+        curl --retry 3 --retry-connrefused --retry-delay 5 http://$TRIVY_APP_NAME:8080/probe/healthy
+      expect:
+        exitCode:
+          equals: 0
