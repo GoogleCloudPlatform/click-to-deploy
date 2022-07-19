@@ -13,11 +13,10 @@ spec:
     type: Harbor
     version: "{{ .Values.core.image.tag }}"
     description: |-
-      Harbor acts as a security camera detecting abnormal behavior, intrusions, and data theft in real time.
+      Harbor is an open source trusted cloud native registry project that stores, signs, and scans content.
       # Support
       Google does not offer support for this solution. However, community support is available on
       [Stack Overflow](https://stackoverflow.com/questions/tagged/harbor/).
-      Here's a few ways to find out what's happening and get involved - [the Harbor community](https://harbor.org/community/).
     maintainers:
     - name: Google Click to Deploy
       url: https://cloud.google.com/solutions/#click-to-deploy
