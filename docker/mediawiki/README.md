@@ -38,7 +38,7 @@ Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlat
 # <a name="table-of-contents"></a>Table of Contents
 * [Using Docker](#using-docker)
   * [Run a  server](#start-a-mediaWiki-instance-docker)
-    * [Running Mediawiki with MySQL Service](#runnung-mediawiki-with-mysql-db-service)
+    * [Running Mediawiki with MySQL Service](#running-mediawiki-with-mysql-db-service)
     * [Use a persistent data volume docker](#use-a-persistent-data-volume)
 * [References](#references)
   * [Ports](#references-ports)
@@ -55,7 +55,7 @@ for additional information about setting up your Docker environment.
 
 This section describes how to spin up a Mediawiki service using this image.
 
-### <a name="runnung-mediawiki-with-mysql-db-service"></a>Running Mediawiki with MySQL DB Service
+### <a name="running-mediawiki-with-mysql-db-service"></a>Running Mediawiki with MySQL DB Service
 
 Mediawiki requires a separate MySQL service which can be run in another container.
 
@@ -217,4 +217,4 @@ These are the filesystem paths used by the container image.
 
 | **Path** | **Description** |
 |:---------|:----------------|
-|/var/www/html| All MideiaWiki filesare installed here. |
+|/var/www/html| All MediaWiki fileshare installed here. |
