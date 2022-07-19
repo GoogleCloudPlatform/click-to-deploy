@@ -42,7 +42,7 @@ Dockerfiles for this images can be found here:
 * [Using Docker](#using-docker)
   * [Running Hazelcast](#running-hazelcast-docker)
     * [Running Hazelcast standalone](#Running-Hazelcast-standalone)
-    * [Running Hazelcast cluster](#Runnung-Hazelcast-cluster)
+    * [Running Hazelcast cluster](#Running-Hazelcast-cluster)
     * [Use a persistent data volume docker (Enterprise version only)](#Use-a-persistent-data-volume)
 * [References](#references)
   * [Ports](#references-ports)
@@ -58,7 +58,7 @@ for additional information about setting up your Docker environment.
 
 This section describes how to spin up a Hazelcast service using this image.
 
-### <a name="Runnung-Hazelcast-standalone"></a>Running Hazelcast standalone
+### <a name="Running-Hazelcast-standalone"></a>Running Hazelcast standalone
 
 Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
 
@@ -80,7 +80,7 @@ docker run -d \
     marketplace.gcr.io/google/hazelcast4
 ```
 
-### <a name="Runnung-Hazelcast-cluster"></a>Running Hazelcast cluster
+### <a name="Running-Hazelcast-cluster"></a>Running Hazelcast cluster
 
 Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
 
@@ -196,7 +196,7 @@ These are the environment variables understood by the container images.
 | PROMETHEUS_PORT | The port of the JMX Prometheus agent.         |
 | LOGGING_LEVEL   | Logging level.                                |
 
-Configuration entries of your cluster can be overritten without changing the declarative configuration files (XML/YAML), see [Overriding Configuration documentation section](https://docs.hazelcast.org/docs/latest/manual/html-single/#overriding-configuration).
+Configuration entries of your cluster can be overwritten without changing the declarative configuration files (XML/YAML), see [Overriding Configuration documentation section](https://docs.hazelcast.org/docs/latest/manual/html-single/#overriding-configuration).
 
 Assume that you want to have the following configuration for your cluster, represented as YAML:
 ```yaml
