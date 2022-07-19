@@ -8,7 +8,7 @@ This is not an officially supported Google product.
 
 # :warning: About log4j Vulnerabilities
 
-We are constantly working on updating the scripts used in this repository to use non-impacted versions of the OSS that are used here. So updates are constanly being made in this repository.
+We are constantly working on updating the scripts used in this repository to use non-impacted versions of the OSS that are used here. So updates are constantly being made in this repository.
 
 Below is the list of solutions, in this repo, currently affected by the log4j CVEs, or using a log4j version < 2.16
 
