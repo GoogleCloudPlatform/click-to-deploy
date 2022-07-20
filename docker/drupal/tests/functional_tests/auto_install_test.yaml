@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2022 Google LLC
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -68,7 +68,7 @@ tests:
   command: [curl, -L, 'http://localhost']
   expect:
     stdout:
-      matches: '<title>Welcome to Drupal_Site \| Drupal_Site</title>'
+      contains: '<title>Welcome \| Drupal_Site</title>'
 - name: Test Drupal login page
   command: [curl, -L, 'http://localhost/user/login/']
   expect:
