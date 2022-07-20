@@ -17,6 +17,7 @@ cloudbuild:
   enable_parallel: false
 versions:
 - dir: 3/debian11/3.2
+  templateSubDir: debian11
   excludeTests:
   - tests/functional_tests/exporter_test.yaml
   from: marketplace.gcr.io/google/debian11
@@ -35,26 +36,8 @@ versions:
   - '3.2'
   - '3'
   - latest
-  templateSubDir: debian11
-- dir: 3/debian11/3.1
-  excludeTests:
-  - tests/functional_tests/exporter_test.yaml
-  from: marketplace.gcr.io/google/debian11
-  packages:
-    kafka:
-      sha512: 5954c1cf38187134a6e0a21520cbef5cd5320a3e9290e630c3895990e892219917d911fabbc64da5db17bcaa940b8277c23344b50f2ff4256eaca78116e9fdc9
-      version: 3.1.0
-    scala:
-      version: '2.13'
-  repo: kafka3
-  tags:
-  - 3.1.0-debian11
-  - 3.1-debian11
-  - 3.1.0
-  - '3.1'
-  templateSubDir: debian11
-
 - dir: exporter
+  templateSubDir: exporter
   excludeTests:
   - tests/functional_tests/running_test.yaml
   from: marketplace.gcr.io/google/debian11
