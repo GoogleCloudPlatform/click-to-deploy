@@ -5,7 +5,7 @@ superset:
   user: admin
   password: null
   persistence:
-    size: 8Gi
+    size: 10Gi
     storageClass: null
 
 statsd:
@@ -23,7 +23,7 @@ postgresql:
     name: superset
     user: superset
   persistence:
-    size: 10Gi
+    size: 8Gi
 metrics:
   image: null
   exporter:
