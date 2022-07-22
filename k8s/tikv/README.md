@@ -256,7 +256,7 @@ To back up the application, you must back up the database.
 
 ### Set up your local environment
 
-Set up environment variables to match your Airflow installation:
+Set up environment variables to match your TiKV installation:
 
 ```shell
 export APP_INSTANCE_NAME=tikv
@@ -301,7 +301,7 @@ exit
 - In the Cloud Console, open
    [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
 
-- From the list of apps, click **Airflow**.
+- From the list of apps, click **Tikv**.
 
 - On the Application Details page, click **Delete**.
 
