@@ -16,6 +16,10 @@ spec:
     type: RollingUpdate
   template:
     metadata:
+      annotations:
+        prometheus.io/port: "20180"
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/metrics"
       labels: *tikvLabels
     spec:
       containers:
@@ -48,6 +52,29 @@ spec:
         - mountPath: /etc/tikv
           name: config
           readOnly: true
+      {{ if .Values.metrics.exporter.enabled }}
+      - name: stackdriver-exporter
+        image: {{ .Values.metrics.image }}
+        ports:
+        - name: profiler
+          containerPort: 6060
+        command:
+        - /monitor
+        - --stackdriver-prefix=custom.googleapis.com
+        - --source=tikv:http://localhost:20180/metrics
+        - --pod-id=$(POD_NAME)
+        - --namespace-id=$(POD_NAMESPACE)
+        - --monitored-resource-types=k8s
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+      {{ end }}
       volumes:
       - name: config
         configMap:

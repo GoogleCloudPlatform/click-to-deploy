@@ -5,21 +5,35 @@ include ../images.Makefile
 
 CHART_NAME := tikv
 APP_ID ?= $(CHART_NAME)
+WAIT_FOR_READY_TIMEOUT := 600
+VERIFY_WAIT_TIMEOUT = 1800
 
 SOURCE_REGISTRY ?= gcr.io/ccm-ops-test-adhoc
 
 TRACK ?= 5.3
+METRICS_EXPORTER_TAG ?= v0.5.1
 
 IMAGE_TIKV ?= gcr.io/ccm-ops-test-adhoc/tikv5:$(TRACK)
 
 # Main image
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_TIKV))
 
+# Prometheus-to-SD
+IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+
+# List of images used in application
+ADDITIONAL_IMAGES := prometheus-to-sd
+
+image-prometheus-to-sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))
 C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)
+
 NAME ?= $(APP_ID)-1
+ifdef METRICS_EXPORTER_ENABLED
+  METRICS_EXPORTER_ENABLED_FIELD = , "metrics.exporter.enabled": $(METRICS_EXPORTER_ENABLED)
+endif
 
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \

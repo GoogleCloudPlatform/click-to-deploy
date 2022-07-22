@@ -11,6 +11,9 @@ spec:
   - name: server
     port: 20160
     protocol: TCP
+  - name: status
+    port: 20180
+    protocol: TCP
   selector: *tikvLabels
   clusterIP: None
   publishNotReadyAddresses: true
