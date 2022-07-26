@@ -32,6 +32,10 @@ spec:
       - name: postgresql-server
         image: "{{ .Values.postgresql.image.repo }}:{{ .Values.postgresql.image.tag }}"
         imagePullPolicy: Always
+        # command: ["tail"]
+        # args:
+        #   - -f
+        #   - /dev/null
         args:
           - -c
           - hba_file=/etc/postgresql/volume/pg_hba.conf
