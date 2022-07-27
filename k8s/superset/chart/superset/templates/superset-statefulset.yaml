@@ -110,3 +110,15 @@ spec:
         - name: config-volume
           configMap:
             name: superset-configmap
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Release.Name }}-superset-pvc
+      labels:
+        app.kubernetes.io/name: {{ .Release.Name }}
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      storageClassName: {{ .Values.superset.persistence.storageClass }}
+      resources:
+        requests:
+          storage: {{ .Values.superset.persistence.size }}
