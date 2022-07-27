@@ -19,6 +19,7 @@ spec:
       initContainers:
       - name: check-db
         image: {{ .Values.postgresql.image }}
+        imagePullPolicy: IfNotPresent
         command: ['sh', '-c',
           'until pg_isready -h {{ .Release.Name }}-postgresql-service -p 5432;
           do echo waiting for database; sleep 2; done;']
