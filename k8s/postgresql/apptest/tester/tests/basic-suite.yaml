@@ -1,34 +1,5 @@
 actions:
-- name: Secure login
-  bashTest:
-    script: |-
-      SERVICE="${APP_INSTANCE_NAME}-postgresql-svc"
-      PGPASSWORD=''
-      FAILED=0
-
-      echo "Getting PostgreSQL postgres Password."
-      PGPASSWORD=$(kubectl get secret "${APP_INSTANCE_NAME}-secret" \
-        --namespace "${NAMESPACE}" \
-        --output=jsonpath='{.data.password}' | base64 -d)
-
-      # test1 -- authenticated connection
-      if ! PGPASSWORD="${PGPASSWORD}" psql sslmode=require -U postgres -h "${SERVICE}" -c '\dt' | grep -q 'No relations found'; then
-        echo "Test1: secure connection -- failed"
-        $((FAILED+=1))
-      fi
-
-      if [[ "${FAILED}" != 0 ]]; then
-        echo
-        echo "Username: postgres"
-        echo "Password: ${PGPASSWORD}"
-        echo "Service: ${SERVICE}"
-        echo
-        exit "${FAILED}"
-      fi
-    expect:
-      exitCode:
-        equals: 0
-- name: Db operations
+- name: Db operations and authentication
   bashTest:
     script: |-
       SERVICE="${APP_INSTANCE_NAME}-postgresql-svc"
