@@ -11,8 +11,7 @@ HARBOR_TRACK ?= v2.5.2
 
 VERIFY_WAIT_TIMEOUT = 1800
 
-# SOURCE_REGISTRY ?= marketplace.gcr.io/google
-SOURCE_REGISTRY ?= gcr.io/cloud-marketplace-ops-test
+SOURCE_REGISTRY ?= marketplace.gcr.io/google
 HARBOR_SOURCE_REGISTRY ?= goharbor
 METRICS_EXPORTER_TAG ?= v0.11.1-gke.1
 
@@ -62,7 +61,6 @@ RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)
 NAME ?= $(APP_ID)-1
 
 # Additional variables
-
 
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \

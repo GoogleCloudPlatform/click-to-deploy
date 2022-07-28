@@ -16,7 +16,7 @@ The application offers the Harbor application deployed as Deployment with all de
 ![Architecture diagram](resources/harbor-k8s-app-architecture.png)
 
 Harbor configuration file `/etc/core/app.conf` is automatically generated in the application
-through a Kubernetes ConfigMap. It's good to know that you can modify ConfigMaps you need and then remove the corresponding Pod to reload the Harbor configuration.
+through a Kubernetes ConfigMap. It's good to know that to modify ConfigMaps you wish you should remove the corresponding Pod to reload the Harbor configuration.
 
 # Installation
 
