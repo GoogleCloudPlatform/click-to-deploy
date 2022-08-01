@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/name: "{{ .Release.Name }}"
 spec:
   descriptor:
-    type: superset
+    type: Superset
     version: "{{ .Values.superset.image.tag }}"
     description: |-
       Apache Superset is an open-source software application for data exploration and data visualization.
@@ -28,8 +28,26 @@ spec:
     - description: 'Superset: Installing from scratch'
       url: https://superset.apache.org/docs/installation/installing-superset-from-scratch
     notes: |-
-      # Access superset
+      {{- if .Values.enablePublicServiceAndIngress }}
+      # Open your Superset site
+      Get the external IP of your Superset site by using the following command:
 
+      ```
+      SERVICE_IP=$(kubectl get ingress {{ .Release.Name }}-superset-ingress \
+        --namespace {{ .Release.Namespace }} \
+        --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+      echo "https://${SERVICE_IP}/"
+      ```
+      The command shows you the URL of your site.
+
+      # Update TLS certificate for Superset
+      By default, the app uses a self-signed certificate. You can follow the steps at
+      [Update TLS certificate for Superset](https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/superset/README.md#create-tls-certificate-for-superset)
+      to update it.
+      {{- else }}
+
+      # Access Superset
       Superset is exposed in a ClusterIP-only service `{{.Release.Name}}-superset-svc`. To connect to
       superset UI, you can either expose a public service endpoint or keep it private, but connect
       from you local environment with `kubectl port-forward`
@@ -42,6 +60,8 @@ spec:
       ```
 
       Then, navigate to the [http://localhost:8088](http://localhost:8088) endpoint.
+
+      {{ end }}
   info:
   - name: Application Namespace
     value: {{ .Release.Namespace }}
