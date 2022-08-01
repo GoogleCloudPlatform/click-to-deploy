@@ -49,7 +49,7 @@ spec:
 
       # Access Superset
       Superset is exposed in a ClusterIP-only service `{{.Release.Name}}-superset-svc`. To connect to
-      superset UI, you can either expose a public service endpoint or keep it private, but connect
+      Superset UI, you can either expose a public service endpoint or keep it private, but connect
       from you local environment with `kubectl port-forward`
 
       ```
