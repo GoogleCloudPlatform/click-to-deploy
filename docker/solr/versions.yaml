@@ -21,7 +21,7 @@ versions:
   packages:
     solr:
       gpg: 2CECBFBA181601547B654B9FFA81AC8A490F538E
-      sha512: 052bf256b5ee43cc8ab54bf0e4195badc281fa4458af7f04af6466cd7420705094d18989eb60f81aa39f3dd3f285704cc9411e472e99b4a6f9d7bc11f25c0254
+      sha512: 22fedcc0090eda72c3c5a5ea769c93adaf7d92c5c4479993f009ef0b9d42de5bd2ed1e0565ca01f3428587d8a3836286aa3017aab157050f2bd5bc3482fdebaa
       version: 8.11.2
   repo: solr8
   tags:
