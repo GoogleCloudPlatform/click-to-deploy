@@ -64,7 +64,7 @@ spec:
       {{ end }}
   info:
   {{ if .Values.enablePublicServiceAndIngress }}
-  - name: Superset site address
+  - name: Superset dashboard address
     type: Reference
     valueFrom:
       ingressRef:
