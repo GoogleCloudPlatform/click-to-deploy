@@ -12,13 +12,13 @@ HARBOR_TRACK ?= v2.5.2
 VERIFY_WAIT_TIMEOUT = 1800
 
 # SOURCE_REGISTRY ?= marketplace.gcr.io/google
-SOURCE_REGISTRY ?= gcr.io/ccm-ops-test-adhoc
+SOURCE_REGISTRY ?= gcr.io/cloud-marketplace-ops-test
 HARBOR_SOURCE_REGISTRY ?= goharbor
 METRICS_EXPORTER_TAG ?= v0.11.1-gke.1
 
 IMAGE_HARBOR ?= $(SOURCE_REGISTRY)/harbor:$(TRACK)
 
-# Additionall images
+# Additional images
 IMAGE_HARBOR_CORE ?= $(HARBOR_SOURCE_REGISTRY)/harbor-core:$(HARBOR_TRACK)
 IMAGE_HARBOR_CHARTMUSEUM ?= $(HARBOR_SOURCE_REGISTRY)/chartmuseum-photon:$(HARBOR_TRACK)
 IMAGE_HARBOR_DATABASE ?= $(HARBOR_SOURCE_REGISTRY)/harbor-db:$(HARBOR_TRACK)
