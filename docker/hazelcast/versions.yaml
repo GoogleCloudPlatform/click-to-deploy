@@ -86,7 +86,7 @@ versions:
     repo: 'hazelcast-mc5'
     templateSubDir: 'hazelcast-mc5'
     tags:
-    - '5.1-git debian10'
+    - '5.1-debian10'
     - '5.1'
     - '5'
     - 'latest'
