@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ARG MC_VERSION=5.1.1
+ARG MC_VERSION=5.1.3
 ARG MC_INSTALL_NAME="hazelcast-management-center-${MC_VERSION}"
 ARG MC_INSTALL_JAR="hazelcast-management-center-${MC_VERSION}.jar"
 ARG MC_INSTALL_ZIP="${MC_INSTALL_NAME}.zip"
@@ -31,7 +31,7 @@ RUN echo "Installing new APK packages" \
     && apt install --no-install-recommends -y bash wget unzip procps libnss3 curl \
     && echo "Downloading Management Center" \
     && wget -O ${MC_INSTALL_ZIP} https://repository.hazelcast.com/download/management-center/${MC_INSTALL_ZIP} \
-    && echo "14958a936856fcae1ad616fa256048359257447e83c74d71eb50fa2b4ac198b0" "${MC_INSTALL_ZIP}" | sha256sum -c \
+    && echo "40090f0ccc34a24969341025c7155e0af96e8488d152f1c43b1df502a41a83b3" "${MC_INSTALL_ZIP}" | sha256sum -c \
     && unzip ${MC_INSTALL_ZIP} -x ${MC_INSTALL_NAME}/docs/* \
     && mv ${MC_INSTALL_NAME}/${MC_INSTALL_JAR} ${MC_INSTALL_JAR} \
     && mv ${MC_INSTALL_NAME}/bin/start.sh start.sh \
