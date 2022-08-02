@@ -32,7 +32,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
       - name: registry
-        image: {{ .Values.registry.registry.image.repository }}:{{ .Values.registry.registry.image.tag }}
+        image: {{ .Values.registry.registry.image.repo }}:{{ .Values.registry.registry.image.tag }}
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -67,7 +67,7 @@ spec:
           mountPath: /etc/registry/config.yml
           subPath: config.yml
       - name: registryctl
-        image: {{ .Values.registry.controller.image.repository }}:{{ .Values.registry.controller.image.tag }}
+        image: {{ .Values.registry.controller.image.repo }}:{{ .Values.registry.controller.image.tag }}
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:

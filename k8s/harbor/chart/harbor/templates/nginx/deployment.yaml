@@ -33,7 +33,7 @@ spec:
       automountServiceAccountToken: false
       containers:
       - name: nginx
-        image: "{{ .Values.nginx.image.repository }}:{{ .Values.nginx.image.tag }}"
+        image: "{{ .Values.nginx.image.repo }}:{{ .Values.nginx.image.tag }}"
         imagePullPolicy: "IfNotPresent"
         livenessProbe:
           httpGet:

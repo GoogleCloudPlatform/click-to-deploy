@@ -35,7 +35,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
       - name: jobservice
-        image: {{ .Values.jobservice.image.repository }}:{{ .Values.jobservice.image.tag }}
+        image: {{ .Values.jobservice.image.repo }}:{{ .Values.jobservice.image.tag }}
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:

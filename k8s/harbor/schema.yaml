@@ -21,97 +21,97 @@ x-google-marketplace:
   images:
     '':
       properties:
-        core.image.repository:
+        core.image.repo:
           type: REPO_WITH_REGISTRY
         core.image.tag:
           type: TAG
 
     core:
       properties:
-        core.image.repository:
+        core.image.repo:
           type: REPO_WITH_REGISTRY
         core.image.tag:
           type: TAG
 
     nginx:
       properties:
-        nginx.image.repository:
+        nginx.image.repo:
           type: REPO_WITH_REGISTRY
         nginx.image.tag:
           type: TAG
 
     portal:
       properties:
-        portal.image.repository:
+        portal.image.repo:
           type: REPO_WITH_REGISTRY
         portal.image.tag:
           type: TAG
 
     jobservice:
       properties:
-        jobservice.image.repository:
+        jobservice.image.repo:
           type: REPO_WITH_REGISTRY
         jobservice.image.tag:
           type: TAG
 
     registry:
       properties:
-        registry.registry.image.repository:
+        registry.registry.image.repo:
           type: REPO_WITH_REGISTRY
         registry.registry.image.tag:
           type: TAG
     registryctl:
       properties:
-        registry.controller.image.repository:
+        registry.controller.image.repo:
           type: REPO_WITH_REGISTRY
         registry.controller.image.tag:
           type: TAG
 
     chartmuseum:
       properties:
-        chartmuseum.image.repository:
+        chartmuseum.image.repo:
           type: REPO_WITH_REGISTRY
         chartmuseum.image.tag:
           type: TAG
 
     trivy:
       properties:
-        trivy.image.repository:
+        trivy.image.repo:
           type: REPO_WITH_REGISTRY
         trivy.image.tag:
           type: TAG
 
     notary-server:
       properties:
-        notary.server.image.repository:
+        notary.server.image.repo:
           type: REPO_WITH_REGISTRY
         notary.server.image.tag:
           type: TAG
 
     notary-signer:
       properties:
-        notary.signer.image.repository:
+        notary.signer.image.repo:
           type: REPO_WITH_REGISTRY
         notary.signer.image.tag:
           type: TAG
 
     database:
       properties:
-        database.internal.image.repository:
+        database.internal.image.repo:
           type: REPO_WITH_REGISTRY
         database.internal.image.tag:
           type: TAG
 
     redis:
       properties:
-        redis.internal.image.repository:
+        redis.internal.image.repo:
           type: REPO_WITH_REGISTRY
         redis.internal.image.tag:
           type: TAG
 
     exporter:
       properties:
-        exporter.internal.image.repository:
+        exporter.internal.image.repo:
           type: REPO_WITH_REGISTRY
         exporter.internal.image.tag:
           type: TAG

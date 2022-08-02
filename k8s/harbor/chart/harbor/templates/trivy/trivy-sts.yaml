@@ -26,7 +26,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: trivy
-          image: {{ .Values.trivy.image.repository }}:{{ .Values.trivy.image.tag }}
+          image: {{ .Values.trivy.image.repo }}:{{ .Values.trivy.image.tag }}
           imagePullPolicy: IfNotPresent
           securityContext:
             privileged: false

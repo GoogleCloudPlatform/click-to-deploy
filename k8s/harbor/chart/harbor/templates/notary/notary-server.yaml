@@ -26,7 +26,7 @@ spec:
       automountServiceAccountToken: false
       containers:
       - name: notary-server
-        image: {{ .Values.notary.server.image.repository }}:{{ .Values.notary.server.image.tag }}
+        image: {{ .Values.notary.server.image.repo }}:{{ .Values.notary.server.image.tag }}
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:

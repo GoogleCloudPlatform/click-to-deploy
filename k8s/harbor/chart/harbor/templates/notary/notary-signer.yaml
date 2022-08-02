@@ -25,7 +25,7 @@ spec:
       automountServiceAccountToken: false
       containers:
       - name: notary-signer
-        image: {{ .Values.notary.signer.image.repository }}:{{ .Values.notary.signer.image.tag }}
+        image: {{ .Values.notary.signer.image.repo }}:{{ .Values.notary.signer.image.tag }}
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:

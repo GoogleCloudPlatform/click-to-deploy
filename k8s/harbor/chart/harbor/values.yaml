@@ -23,32 +23,32 @@ harborAdminPassword: "Harbor12345"
 # If service exposed via "ingress", the Nginx will not be used
 nginx:
   image:
-    repository: goharbor/nginx-photon
+    repo: goharbor/nginx-photon
     tag: v2.5.2
 
 portal:
   image:
-    repository: goharbor/harbor-portal
+    repo: goharbor/harbor-portal
     tag: v2.5.2
 
 core:
   image:
-    repository: goharbor/harbor-core
+    repo: goharbor/harbor-core
     tag: v2.5.2
 
 jobservice:
   image:
-    repository: goharbor/harbor-jobservice
+    repo: goharbor/harbor-jobservice
     tag: v2.5.2
 
 registry:
   registry:
     image:
-      repository: goharbor/registry-photon
+      repo: goharbor/registry-photon
       tag: v2.5.2
   controller:
     image:
-      repository: goharbor/harbor-registryctl
+      repo: goharbor/harbor-registryctl
       tag: v2.5.2
   credentials:
     username: "harbor_registry_user"
@@ -56,28 +56,28 @@ registry:
 
 chartmuseum:
   image:
-    repository: goharbor/chartmuseum-photon
+    repo: goharbor/chartmuseum-photon
     tag: v2.5.2
 
 trivy:
   image:
-    repository: goharbor/trivy-adapter-photon
+    repo: goharbor/trivy-adapter-photon
     tag: v2.5.2
 
 notary:
   server:
     image:
-      repository: goharbor/notary-server-photon
+      repo: goharbor/notary-server-photon
       tag: v2.5.2
   signer:
     image:
-      repository: goharbor/notary-signer-photon
+      repo: goharbor/notary-signer-photon
       tag: v2.5.2
 
 database:
   internal:
     image:
-      repository: goharbor/harbor-db
+      repo: goharbor/harbor-db
       tag: v2.5.2
     # The initial superuser password for internal database
     password: "changeit"
@@ -85,12 +85,12 @@ database:
 redis:
   internal:
     image:
-      repository: goharbor/redis-photon
+      repo: goharbor/redis-photon
       tag: v2.5.2
 
 exporter:
   image:
-    repository: goharbor/harbor-exporter
+    repo: goharbor/harbor-exporter
     tag: v2.5.2
 
 metrics:

@@ -29,7 +29,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
       - name: core
-        image: {{ .Values.core.image.repository }}:{{ .Values.core.image.tag }}
+        image: {{ .Values.core.image.repo }}:{{ .Values.core.image.tag }}
         imagePullPolicy: IfNotPresent
         startupProbe:
           httpGet:
