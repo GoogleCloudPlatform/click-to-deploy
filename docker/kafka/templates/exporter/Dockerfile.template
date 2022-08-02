@@ -1,6 +1,6 @@
-FROM {{ .From }} as exporter-builder
+{{- $kafka_exporter := index .Packages "kafka_exporter" -}}
 
-{{- $kafka_exporter := index .Packages "kafka_exporter" }}
+FROM {{ .From }}
 
 ENV EXPORTER_VERSION {{ $kafka_exporter.Version }}
 ENV EXPORTER_SHA512 {{ $kafka_exporter.Sha512 }}
@@ -19,7 +19,9 @@ RUN set -ex; \
 
 RUN set -eu \
     # Installing utilities
-    && apt-get update && apt-get install -y --no-install-recommends curl\
+    && apt-get update && apt-get install -y --no-install-recommends \
+      curl \
+      openssl \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir -p ${EXPORTER_HOME} \
     && cd ${EXPORTER_HOME} \
