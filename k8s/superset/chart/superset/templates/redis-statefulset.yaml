@@ -130,7 +130,7 @@ spec:
         app.kubernetes.io/component: superset-server
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: {{ .Values.persistence.storageClass }}
+      storageClassName: {{ .Values.superset.persistence.storageClass }}
       resources:
         requests:
           storage: {{ .Values.redis.persistence.size }}
