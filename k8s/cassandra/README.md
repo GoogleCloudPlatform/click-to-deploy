@@ -261,7 +261,7 @@ external access, using the following options:
     Then, in your main terminal, start `cqlsh`:
 
     ```shell
-    cqlsh --cqlversion=6.0.0
+    cqlsh --cqlversion=3.4.5
 
     In the response, you see the Cassandra welcome message:
 
@@ -305,7 +305,7 @@ echo $CASSANDRA_IP
 Connect `cqlsh` to the external IP address, using the following command:
 
 ```shell
-CQLSH_HOST=$CASSANDRA_IP cqlsh --cqlversion=6.0.0
+CQLSH_HOST=$CASSANDRA_IP cqlsh --cqlversion=3.4.5
 ```
 
 # Application metrics
