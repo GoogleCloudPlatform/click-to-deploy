@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM marketplace.gcr.io/google/debian11 AS build
+FROM marketplace.gcr.io/google/debian11
 
 ENV BAZEL_VERSION 0.19.2
 ENV BAZEL_ARCH linux_amd64_stripped
@@ -28,14 +28,10 @@ RUN set -eux \
     && /bazel-installer.sh
 
 RUN set -eux \
-    && git clone https://github.com/GoogleCloudPlatform/click-to-deploy.git --depth=1 \
-    && git checkout miani-tools-20220701
-    && cd click-to-deploy/tools \
+    && git clone https://github.com/GoogleCloudPlatform/click-to-deploy.git \
+    && cd click-to-deploy \
+    && git checkout mjanas-dockertools \
+    && cd tools \
     && bazel build dockerversioning/scripts/dockerfiles:dockerfiles dockerversioning/scripts/cloudbuild:cloudbuild \
-    && cp bazel-bin/scripts/dockerfiles/${BAZEL_ARCH}/dockerfiles /bin/dockerfiles \
-    && cp bazel-bin/scripts/cloudbuild/${BAZEL_ARCH}/cloudbuild /bin/cloudbuild
-
-FROM marketplace.gcr.io/google/debian11
-
-COPY --from=build /bin/dockerfiles /workspace/dockerfiles
-COPY --from=build /bin/cloudbuild /workspace/cloudbuild
+    && cp bazel-bin/dockerversioning/scripts/dockerfiles/${BAZEL_ARCH}/dockerfiles /workspace/dockerfiles \
+    && cp bazel-bin/dockerversioning/scripts/cloudbuild/${BAZEL_ARCH}/cloudbuild /workspace/cloudbuild
