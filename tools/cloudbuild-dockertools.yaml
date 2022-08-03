@@ -1,0 +1,18 @@
+steps:
+- id: Build C2D Docker Image
+  name: gcr.io/cloud-builders/docker
+  args:
+  - build
+  - --tag
+  - dockertools
+  - --file
+  - dockertools.Dockerfile
+  - .
+
+- id: Copy dockerfiles tool to GCS
+  name: 'gcr.io/cloud-builders/gsutil'
+  args: ['cp', '/workspace/dockerfiles', 'gs://$PROJECT_ID-mjanas/dockerfiles']
+
+- id: Copy cloudbuild tool to GCS
+  name: 'gcr.io/cloud-builders/gsutil'
+  args: ['cp', '/workspace/cloudbuild', 'gs://$PROJECT_ID-mjanas/cloudbuild']

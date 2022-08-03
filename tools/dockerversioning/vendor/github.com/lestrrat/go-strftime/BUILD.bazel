@@ -1,0 +1,13 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "strftime.go",
+        "writer.go",
+    ],
+    importmap = "vendor/github.com/lestrrat/go-strftime",
+    importpath = "github.com/lestrrat/go-strftime",
+    visibility = ["//visibility:public"],
+    deps = ["//vendor/github.com/pkg/errors:go_default_library"],
+)
