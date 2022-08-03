@@ -6,8 +6,8 @@ steps:
   - --tag
   - dockertools
   - --file
-  - dockertools.Dockerfile
-  - .
+  - tools/dockertools.Dockerfile
+  - tools
 
 - id: Copy dockerfiles tool to GCS
   name: 'gcr.io/cloud-builders/gsutil'
