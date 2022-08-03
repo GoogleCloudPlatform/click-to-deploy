@@ -9,6 +9,15 @@ steps:
   - tools/dockertools.Dockerfile
   - tools
 
+- id: Share dockertools using workspaces
+  name: dockertools
+  entrypoint: bash
+  args:
+  - -c
+  - |
+    cp /bin/cloudbuild /workspace/cloudbuild &&
+    cp /bin/dockerfiles /workspace/dockerfiles
+
 - id: Copy dockerfiles tool to GCS
   name: 'gcr.io/cloud-builders/gsutil'
   args: ['cp', '/workspace/dockerfiles', 'gs://$PROJECT_ID-mjanas/dockerfiles']
