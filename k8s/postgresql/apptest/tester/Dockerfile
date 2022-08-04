@@ -1,9 +1,14 @@
 FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.4
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    postgresql-client \
-    wget \
-    && rm -rf /var/lib/apt/lists/*
+    gnupg2 \
+    wget
+
+RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main' >  /etc/apt/sources.list.d/pgdg.list \
+        && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
+        && apt update \
+        && apt -y install postgresql-client-10 \
+        && rm -rf /var/lib/apt/lists/*
 
 RUN wget -q -O /bin/kubectl \
     https://storage.googleapis.com/kubernetes-release/release/v1.12.0/bin/linux/amd64/kubectl \
@@ -14,4 +19,5 @@ COPY tests/exporter-suite.yaml /tests/exporter-suite.yaml
 COPY tester.sh /tester.sh
 
 WORKDIR /
+
 ENTRYPOINT ["/tester.sh"]

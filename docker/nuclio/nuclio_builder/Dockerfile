@@ -1,7 +1,7 @@
 FROM gcr.io/cloud-builders/docker
 
-ENV NUCLIO_VERSION=1.8.12
-ENV NUCLIO_LABEL=1.8.12
+ENV NUCLIO_VERSION=1.9.3
+ENV NUCLIO_LABEL=1.9.3
 ENV NUCLIO_DOCKER_REPO=local
 
 RUN git clone https://github.com/nuclio/nuclio.git /src/nuclio/ \
