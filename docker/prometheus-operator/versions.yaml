@@ -13,19 +13,19 @@
 # limitations under the License.
 
 versions:
-  - dir: '0/0.56'
+  - dir: '0/0.58'
     repo: prometheus-operator0
     tags:
-      - '0.56.2-debian11'
-      - '0.56.2'
-      - '0.56-debian11'
-      - '0.56'
+      - '0.58.0-debian11'
+      - '0.58.0'
+      - '0.58-debian11'
+      - '0.58'
       - '0-debian11'
       - '0'
       - 'latest'
     from: marketplace.gcr.io/google/debian11
     packages:
       prometheus-operator:
-        version: '0.56.2'
+        version: '0.58.0'
 cloudbuild:
   enable_parallel: false
