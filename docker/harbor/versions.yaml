@@ -1,0 +1,17 @@
+cloudbuild:
+  enable_parallel: false
+versions:
+- dir: 2/debian11/2.5
+  from: marketplace.gcr.io/google/debian11
+  packages:
+    harbor:
+      version: 2.5.2
+  repo: harbor2
+  tags:
+  - 2.5.2-debian11
+  - 2.5-debian11
+  - 2-debian11
+  - 2.5.2
+  - '2.5'
+  - '2'
+  - latest
