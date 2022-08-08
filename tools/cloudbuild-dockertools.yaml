@@ -18,10 +18,21 @@ steps:
     cp /bin/cloudbuild /workspace/cloudbuild &&
     cp /bin/dockerfiles /workspace/dockerfiles
 
-- id: Copy dockerfiles tool to GCS
-  name: 'gcr.io/cloud-builders/gsutil'
-  args: ['cp', '/workspace/dockerfiles', 'gs://$PROJECT_ID-mjanas/dockerfiles']
+- id: Create a new GitHub Release.
+  name: dockertools
+  entrypoint: bash
+  args:
+  - -c
+  - |
+    gh release create $TAG_NAME --target mjanas-dockertools  --notes "Dockertools" /workspace/*
+  secretEnv: ['GH_TOKEN']
+  
+artifacts:
+  objects:
+    location: 'gs://$PROJECT_ID-mjanas/'
+    paths: ['/workspace/cloudbuild', '/workspace/dockerfiles']
 
-- id: Copy cloudbuild tool to GCS
-  name: 'gcr.io/cloud-builders/gsutil'
-  args: ['cp', '/workspace/cloudbuild', 'gs://$PROJECT_ID-mjanas/cloudbuild']
+availableSecrets:
+  secretManager:
+  - versionName: projects/$PROJECT_ID/secrets/GH_TOKEN/versions/1
+    env: 'GH_TOKEN'
