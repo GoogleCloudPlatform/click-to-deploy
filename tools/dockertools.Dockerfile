@@ -19,7 +19,7 @@ ENV BAZEL_ARCH linux_amd64_stripped
 
 RUN set -eux \
     && apt-get update \
-    && apt-get install git wget unzip python g++ -y
+    && apt-get install git wget unzip python g++ curl -y
 
 # Install Bazel
 RUN set -eux \
@@ -28,9 +28,9 @@ RUN set -eux \
     && /bazel-installer.sh
 
 # Install gh CLI
-RUM curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
+RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
     && chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
-    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
     && apt update \
     && apt install gh
 
