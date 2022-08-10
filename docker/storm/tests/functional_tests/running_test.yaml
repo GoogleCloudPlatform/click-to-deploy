@@ -13,73 +13,27 @@
 # limitations under the License.
 
 setup:
-- command: [docker, network, create, -d, bridge, testbridge-$UNIQUE-id]
-- command:
-  - 'docker'
-  - 'run'
-  - '--net'
-  - 'testbridge-$UNIQUE-id'
-  - '--name'
-  - 'some-postgres-$UNIQUE-id'
-  - '-e'
-  - 'POSTGRES_USER=superset'
-  - '-e'
-  - 'POSTGRES_PASSWORD=superset'
-  - '-e'
-  - 'POSTGRES_DB=superset'
-  - '-e'
-  - 'MYSQL_ROOT_PASSWORD=some-password'
-  - '-d'
-  - 'marketplace.gcr.io/google/postgresql13'
-- command: [sleep, '20s']
-- command:
-  - 'docker'
-  - 'run'
-  - '--net'
-  - 'testbridge-$UNIQUE-id'
-  - '--name'
-  - 'some-superset-$UNIQUE-id'
-  - '-e'
-  - 'SUPERSET__SQLALCHEMY_DATABASE_URI=postgresql+psycopg2://superset:superset@some-postgres-$UNIQUE-id/superset'
-  - '-e'
-  - 'DATABASE_HOST=db'
-  - '-e'
-  - 'DATABASE_DB=superset'
-  - '-e'
-  - 'DATABASE_USER=superset'
-  - '-e'
-  - 'DATABASE_PASSWORD=superset'
-  - '-d'
-  - '$IMAGE'
-- command: [sleep, '70s']
+- command: [docker, run, -d, -h, storm-1, --name, storm-$UNIQUE-id, '$IMAGE']
+- command: [sleep, 30s]
 
 teardown:
-- command: [docker, stop, some-superset-$UNIQUE-id, some-postgres-$UNIQUE-id]
-- command: [docker, rm, some-superset-$UNIQUE-id, some-postgres-$UNIQUE-id]
-- command: [docker, network, rm, testbridge-$UNIQUE-id]
+- command: [docker, stop, storm-$UNIQUE-id]
+- command: [docker, rm, storm-$UNIQUE-id]
 
-target: some-superset-$UNIQUE-id
+target: storm-$UNIQUE-id
 tests:
 - name: Test health status
-  command: [curl, -I, -s, -L, 'http://localhost:8088/health']
+  command: [curl, -I, -s, -L, 'http://localhost:8080']
   expect:
     stdout:
       matches: '200 OK'
-
-
-setup:
-- command: [docker, run, -d, -h, zk-1, --name, zk-$UNIQUE-id, '$IMAGE']
-- command: [sleep, 5s]
-
-teardown:
-- command: [docker, stop, zk-$UNIQUE-id]
-- command: [docker, rm, zk-$UNIQUE-id]
-
-target: zk-$UNIQUE-id
-tests:
+- name: Test Storm homepage
+  command: [curl, -L, 'http://localhost:8080']
+  expect:
+    stdout:
+      matches: 'Storm UI'
 - name: Can connect to ZooKeeper
-  command: [zkCli.sh, ls, /zookeeper]
+  command: [/apache-zookeeper-3.8.0-bin/bin/zkCli.sh, ls, /zookeeper]
   expect:
     stdout:
       matches: quota
-
