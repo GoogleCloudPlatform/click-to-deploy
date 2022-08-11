@@ -197,6 +197,8 @@ export IMAGE_REDIS="${IMAGE_REGISTRY}/superset/redis:${TAG}"
 export IMAGE_POSTGRESQL_EXPORTER="${IMAGE_REGISTRY}/superset/postgresql-exporter:${TAG}"
 export IMAGE_REDIS_EXPORTER="${IMAGE_REGISTRY}/superset/redis-exporter:${TAG}"
 export IMAGE_METRICS_EXPORTER="${IMAGE_REGISTRY}/superset/prometheus-to-sd:${TAG}"
+
+export IMAGE_STATSD="${IMAGE_REGISTRY}/superset/statsd-exporter:${TAG}"
 ```
 
 Set or generate the passwords:
@@ -251,6 +253,7 @@ expanded manifest file for future updates to your app.
 helm template "${APP_INSTANCE_NAME}" chart/superset \
   --namespace "${NAMESPACE}" \
   --set superset.image.repo="${IMAGE_SUPERSET}" \
+  --set statsd.exporter.image="${IMAGE_STATSD}" \
   --set postgresql.serviceAccount="$POSTGRESQL_SERVICE_ACCOUNT" \
   --set superset.image.tag="${TAG}" \
   --set superset.password="${SUPERSET_PASSWORD}" \
@@ -263,6 +266,8 @@ helm template "${APP_INSTANCE_NAME}" chart/superset \
   --set redis.image="${IMAGE_REDIS}" \
   --set redis.password="${REDIS_PASSWORD}" \
   --set redis.exporter.image="${IMAGE_REDIS_EXPORTER}" \
+  --set tls.base64EncodedPrivateKey="$TLS_CERTIFICATE_KEY" \
+  --set tls.base64EncodedCertificate="$TLS_CERTIFICATE_CRT" \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
