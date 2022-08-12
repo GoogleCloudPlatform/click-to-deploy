@@ -266,7 +266,7 @@ helm template "${APP_INSTANCE_NAME}" chart/superset \
   --set redis.image="${IMAGE_REDIS}" \
   --set redis.password="${REDIS_PASSWORD}" \
   --set redis.exporter.image="${IMAGE_REDIS_EXPORTER}" \
-  --set tls.base64EncodedPrivateKey="$TLS_CERTIFICATE_KEY" \
+  --set tls.base64EncodedPrivateKey="${TLS_CERTIFICATE_KEY}" \
   --set tls.base64EncodedCertificate="$TLS_CERTIFICATE_CRT" \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
