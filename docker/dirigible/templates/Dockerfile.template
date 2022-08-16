@@ -1,0 +1,9 @@
+FROM dirigiblelabs/dirigible-all AS build
+
+FROM {{ .From }}
+
+COPY --from=build /usr/local/tomcat/ /usr/local/tomcat/
+
+EXPOSE 8080
+
+ENTRYPOINT ["/usr/local/tomcat/bin/catalina.sh", "jpda", "run"]
