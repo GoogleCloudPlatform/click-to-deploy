@@ -24,7 +24,11 @@ RUN apt-get update \
     gnupg2 \
     procps \
     libpq-dev \
-    -y --no-install-recommends
+    -y --no-install-recommends \
+    && apt-get autoremove -yqq --purge \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
+
 
 WORKDIR /opt/conjur-server
 
@@ -52,7 +56,10 @@ RUN bundle --without test development
 RUN find / -name httpclient -type d -exec find {} -name *.pem -type f -delete \;
 
 RUN ln -sf /opt/conjur-server/bin/conjurctl /usr/local/bin/
+    && echo $CONJUR_APP_VERSION > ./VERSION
 
 ENV RAILS_ENV production
 
-ENTRYPOINT [ "conjurctl" ]
+ENV C2D_RELEASE 1.18.1
+
+ENTRYPOINT ["/bin/bash", "-l" ]
