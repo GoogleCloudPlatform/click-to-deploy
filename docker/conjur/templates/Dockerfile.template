@@ -57,7 +57,7 @@ RUN bundle --without test development
 # removing CA bundle of httpclient gem
 RUN find / -name httpclient -type d -exec find {} -name *.pem -type f -delete \;
 
-RUN ln -sf /opt/conjur-server/bin/conjurctl /usr/local/bin/
+RUN ln -sf /opt/conjur-server/bin/conjurctl /usr/local/bin/ \
     && echo $CONJUR_APP_VERSION > ./VERSION
 
 ENV RAILS_ENV production
