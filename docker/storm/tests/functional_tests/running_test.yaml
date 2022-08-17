@@ -13,7 +13,7 @@
 # limitations under the License.
 
 setup:
-- command: [docker, run, -d, -h, storm-1, --name, storm-$UNIQUE-id, '$IMAGE']
+- command: [docker, run, -d, --name, storm-$UNIQUE-id, '$IMAGE']
 - command: [sleep, 30s]
 
 teardown:
