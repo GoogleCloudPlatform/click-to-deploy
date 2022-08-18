@@ -16,6 +16,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
 
 ENV CONJUR_APP_VERSION={{ $conjur.Version }}
 ENV CONJUR_CLI_VERSION={{ $conjurcli.Version }}
+ENV OPENSSL_FIPS_ENABLED "false"
 
 EXPOSE 80
 
