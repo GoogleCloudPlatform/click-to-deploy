@@ -20,6 +20,8 @@ versions:
   packages:
     conjur:
       version: 1.18.1
+    conjurcli:
+      version: 6.2.6
   repo: airflow2
   tags:
   - '1.18.1-debian11'

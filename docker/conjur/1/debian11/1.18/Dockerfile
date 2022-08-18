@@ -2,6 +2,9 @@ FROM marketplace.gcr.io/google/debian11:latest
 
 SHELL ["/bin/bash", "-c", "-l"]
 
+RUN echo -e '#!/bin/bash -l\nexec "$@"' > /usr/local/bin/entrypoint.sh \
+    && chmod a+x /usr/local/bin/entrypoint.sh
+
 ENV DEBIAN_FRONTEND=noninteractive \
     PORT=80 \
     LOG_DIR=/opt/conjur-server/log \
@@ -9,6 +12,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     SSL_CERT_DIRECTORY=/opt/conjur/etc/ssl
 
 ENV CONJUR_APP_VERSION=1.18.1
+ENV CONJUR_CLI_VERSION=6.2.6
 
 EXPOSE 80
 
@@ -27,8 +31,7 @@ RUN apt-get update \
     -y --no-install-recommends \
     && apt-get autoremove -yqq --purge \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* \
-
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /opt/conjur-server
 
@@ -58,8 +61,12 @@ RUN find / -name httpclient -type d -exec find {} -name *.pem -type f -delete \;
 RUN ln -sf /opt/conjur-server/bin/conjurctl /usr/local/bin/ \
     && echo $CONJUR_APP_VERSION > ./VERSION
 
+#install conjur-cli
+RUN gem install conjur-cli -v $CONJUR_CLI_VERSION
+
 ENV RAILS_ENV production
 
 ENV C2D_RELEASE 1.18.1
 
-ENTRYPOINT ["/bin/bash", "-l" ]
+ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
+CMD ["conjurctl"]
