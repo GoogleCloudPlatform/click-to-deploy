@@ -16,7 +16,9 @@ steps:
   - -c
   - |
     cp /bin/cloudbuild /workspace/cloudbuild &&
-    cp /bin/dockerfiles /workspace/dockerfiles
+    cp /bin/dockerfiles /workspace/dockerfiles &&
+    cp /bin/cloudbuild /workspace/cloudbuild_$TAG_NAME &&
+    cp /bin/dockerfiles /workspace/dockerfiles_$TAG_NAME
 
 - id: Create a new GitHub Release.
   name: dockertools
@@ -26,11 +28,11 @@ steps:
   - |
     gh release create $TAG_NAME --target mjanas-dockertools --notes "Dockertools" /workspace/{cloudbuild,dockerfiles}
   secretEnv: ['GH_TOKEN']
-  
+
 artifacts:
   objects:
-    location: 'gs://$PROJECT_ID-mjanas/'
-    paths: ['/workspace/cloudbuild', '/workspace/dockerfiles']
+    location: 'gs://$PROJECT_ID-c2d/'
+    paths: ['/workspace/cloudbuild', '/workspace/dockerfiles', '/workspace/cloudbuild_$TAG_NAME', '/workspace/dockerfiles_$TAG_NAME']
 
 availableSecrets:
   secretManager:
