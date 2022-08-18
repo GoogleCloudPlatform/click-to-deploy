@@ -14,7 +14,7 @@
 
 FROM marketplace.gcr.io/google/debian11
 
-ENV DOCKER_TOOLS_TAG v1.0.1
+ENV DOCKER_TOOLS_TAG v1.0.0
 
 RUN set -eux \
     && apt-get update \
