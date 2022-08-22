@@ -36,9 +36,7 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | d
 
 RUN set -eux \
     && git clone https://github.com/GoogleCloudPlatform/click-to-deploy.git \
-    && cd click-to-deploy \
-    && git checkout mjanas-dockertools \
-    && cd tools \
+    && cd click-to-deploy/tools \
     && bazel build dockerversioning/scripts/dockerfiles:dockerfiles dockerversioning/scripts/cloudbuild:cloudbuild \
     && cp bazel-bin/dockerversioning/scripts/dockerfiles/${BAZEL_ARCH}/dockerfiles /bin/dockerfiles \
     && cp bazel-bin/dockerversioning/scripts/cloudbuild/${BAZEL_ARCH}/cloudbuild /bin/cloudbuild

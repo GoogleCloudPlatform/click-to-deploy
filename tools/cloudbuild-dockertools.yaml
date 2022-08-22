@@ -1,5 +1,5 @@
 steps:
-- id: Build C2D Docker Image
+- id: Build Dockertools Docker Image
   name: gcr.io/cloud-builders/docker
   args:
   - build
