@@ -26,7 +26,7 @@ steps:
   args:
   - -c
   - |
-    gh release create $TAG_NAME --target mjanas-dockertools --notes "Dockertools" /workspace/{cloudbuild,dockerfiles}
+    gh release create $TAG_NAME --notes "Dockertools" /workspace/{cloudbuild,dockerfiles}
   secretEnv: ['GH_TOKEN']
 
 artifacts:

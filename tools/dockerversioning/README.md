@@ -8,29 +8,29 @@ Versioning tools for Dockerfile source repos.
 
 # Installation
 
-- Install [Bazel, version 0.13.0](https://bazel.build) as the build tool.
+- Install [Bazel, version 0.19.2](https://bazel.build) as the build tool.
 
 - Clone this repo:
 
 ``` shell
 git clone https://github.com/GoogleCloudPlatform/click-to-deploy.git
-cd tools/
+cd click-to-deploy/tools
 ```
 
 - Build:
 
 ``` shell
 bazel run //:gazelle
-bazel build versioning/scripts/dockerfiles:dockerfiles
-bazel build versioning/scripts/cloudbuild:cloudbuild
+bazel build dockerversioning/scripts/dockerfiles:dockerfiles
+bazel build dockerversioning/scripts/cloudbuild:cloudbuild
 ```
 
 - Set the path to the built scripts:
 
 ``` shell
 BAZEL_ARCH=linux_amd64_stripped
-export PATH=$PATH:$PWD/bazel-bin/versioning/scripts/dockerfiles/${BAZEL_ARCH}/
-export PATH=$PATH:$PWD/bazel-bin/versioning/scripts/cloudbuild/${BAZEL_ARCH}/
+export PATH=$PATH:$PWD/bazel-bin/dockerversioning/scripts/dockerfiles/${BAZEL_ARCH}/
+export PATH=$PATH:$PWD/bazel-bin/dockerversioning/scripts/cloudbuild/${BAZEL_ARCH}/
 ```
 
 # Create `versions.yaml`
