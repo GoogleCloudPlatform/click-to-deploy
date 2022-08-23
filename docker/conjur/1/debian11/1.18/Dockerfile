@@ -2,8 +2,8 @@ FROM marketplace.gcr.io/google/debian11:latest
 
 SHELL ["/bin/bash", "-c", "-l"]
 
-RUN echo -e '#!/bin/bash -l\nexec "$@"' > /usr/local/bin/entrypoint.sh \
-    && chmod a+x /usr/local/bin/entrypoint.sh
+COPY sample_policy.yaml /opt/conjur-server/
+COPY entrypoint.sh run_test.sh /usr/local/bin/
 
 ENV DEBIAN_FRONTEND=noninteractive \
     PORT=80 \
@@ -66,6 +66,10 @@ RUN ln -sf /opt/conjur-server/bin/conjurctl /usr/local/bin/ \
 RUN gem install conjur-cli -v $CONJUR_CLI_VERSION
 
 ENV RAILS_ENV production
+
+#preserve ruby ENVs
+RUN echo "export PATH=\"$PATH\"" >> /etc/bash.bashrc
+RUN echo "export GEM_HOME=\"$GEM_HOME\"" >> /etc/bash.bashrc
 
 ENV C2D_RELEASE 1.18.1
 
