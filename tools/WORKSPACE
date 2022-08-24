@@ -74,13 +74,6 @@ py_library(
     url = "https://pypi.python.org/packages/source/m/mock/mock-1.0.1.tar.gz",
 )
 
-docker_pull(
-    name = "python_base",
-    digest = "sha256:163a514abdb54f99ba371125e884c612e30d6944628dd6c73b0feca7d31d2fb3",
-    registry = "gcr.io",
-    repository = "google-appengine/python",
-)
-
 new_http_archive(
     name = "docker_credential_gcr",
     build_file_content = """package(default_visibility = ["//visibility:public"])
@@ -98,38 +91,3 @@ git_repository(
     commit = "ac87be384d4e321a14aa9c11b3383a0f374511d3",
     remote = "https://github.com/GoogleCloudPlatform/base-images-docker.git",
 )
-
-UBUNTU_MAP = {
-    "16_0_4": {
-        "sha256": "51a8c466269bdebf232cac689aafad8feacd64804b13318c01096097a186d051",
-        "url": "https://storage.googleapis.com/ubuntu_tar/20171028/ubuntu-xenial-core-cloudimg-amd64-root.tar.gz",
-    },
-}
-
-[http_file(
-    name = "ubuntu_%s_tar_download" % version,
-    sha256 = map["sha256"],
-    url = map["url"],
-) for version, map in UBUNTU_MAP.items()]
-
-docker_pull(
-    name = "node_base",
-    digest = "sha256:fdc4906b4253e21663aa78805a3c3c45c6d8bc47596b4af953024f7a4ac64a71",
-    registry = "gcr.io",
-    repository = "gcp-runtimes/nodejs8_app_builder",
-)
-
-docker_pull(
-    name = "distroless_base",
-    digest = "sha256:4a8979a768c3ef8d0a8ed8d0af43dc5920be45a51749a9c611d178240f136eb4",
-    registry = "gcr.io",
-    repository = "distroless/base",
-)
-
-docker_pull(
-    name = "php_base",
-    digest = "sha256:194817f8f35b3cf26a706e6825994845c98a4745d61d6dea30fee976ed5aac0d",
-    registry = "gcr.io",
-    repository = "gae-runtimes/php72_app_builder",
-)
-
