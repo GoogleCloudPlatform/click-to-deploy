@@ -71,6 +71,8 @@ ENV RAILS_ENV production
 RUN echo "export PATH=\"$PATH\"" >> /etc/bash.bashrc
 RUN echo "export GEM_HOME=\"$GEM_HOME\"" >> /etc/bash.bashrc
 
+EXPOSE 80
+
 ENV C2D_RELEASE 1.18.1
 
 ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
