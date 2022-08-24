@@ -27,12 +27,6 @@ git_repository(
 )
 
 git_repository(
-    name = "io_bazel_rules_python",
-    commit = "115e3a0dab4291184fdcb0d4e564a0328364571a",
-    remote = "https://github.com/bazelbuild/rules_python.git",
-)
-
-git_repository(
     name = "containerregistry",
     commit = "6b250f0bae8cce028df939010ee3118c8f2977ba",
     remote = "https://github.com/google/containerregistry",
@@ -52,42 +46,3 @@ load(
 )
 
 repositories()
-
-new_http_archive(
-    name = "mock",
-    build_file_content = """
-# Rename mock.py to __init__.py
-genrule(
-    name = "rename",
-    srcs = ["mock.py"],
-    outs = ["__init__.py"],
-    cmd = "cat $< >$@",
-)
-py_library(
-   name = "mock",
-   srcs = [":__init__.py"],
-   visibility = ["//visibility:public"],
-)""",
-    sha256 = "b839dd2d9c117c701430c149956918a423a9863b48b09c90e30a6013e7d2f44f",
-    strip_prefix = "mock-1.0.1/",
-    type = "tar.gz",
-    url = "https://pypi.python.org/packages/source/m/mock/mock-1.0.1.tar.gz",
-)
-
-new_http_archive(
-    name = "docker_credential_gcr",
-    build_file_content = """package(default_visibility = ["//visibility:public"])
-exports_files(["docker-credential-gcr"])""",
-    sha256 = "c4f51ff78c25e2bfef38af0f38c6966806e25da7c5e43092c53a4d467fea4743",
-    type = "tar.gz",
-    url = "https://github.com/GoogleCloudPlatform/docker-credential-gcr/releases/download/v1.4.1/docker-credential-gcr_linux_amd64-1.4.1.tar.gz",
-)
-
-# TODO(aaron-prindle) cleanup circular dep here by pushing ubuntu_base to GCR
-# OR by moving structure_test to own repo
-
-git_repository(
-    name = "base_images_docker",
-    commit = "ac87be384d4e321a14aa9c11b3383a0f374511d3",
-    remote = "https://github.com/GoogleCloudPlatform/base-images-docker.git",
-)
