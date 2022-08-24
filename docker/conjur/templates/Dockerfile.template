@@ -54,7 +54,7 @@ RUN curl -L https://github.com/cyberark/conjur/archive/refs/tags/v${CONJUR_APP_V
 RUN curl -sSL https://rvm.io/pkuczynski.asc | gpg2 --import - \
     && curl -sSL https://get.rvm.io | bash -s stable --ruby \
     && source /usr/local/rvm/scripts/rvm \
-    && rvm install ruby-3 \
+    && rvm install 3.0.0 \
     && gem install bundler
 
 RUN bundle --without test development
@@ -71,8 +71,8 @@ RUN gem install conjur-cli -v $CONJUR_CLI_VERSION
 ENV RAILS_ENV production
 
 #preserve ruby ENVs
-RUN echo "export PATH=\"$PATH\"" >> /etc/bash.bashrc
-RUN echo "export GEM_HOME=\"$GEM_HOME\"" >> /etc/bash.bashrc
+ENV PATH "/usr/local/rvm/gems/ruby-3.0.0/bin:/usr/local/rvm/gems/ruby-3.0.0@global/bin:/usr/local/rvm/rubies/ruby-3.0.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/rvm/bin"
+ENV GEM_HOME "/usr/local/rvm/gems/ruby-3.0.0"
 
 EXPOSE 80
 
