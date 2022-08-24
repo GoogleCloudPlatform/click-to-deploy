@@ -32,6 +32,9 @@ type cloudBuildOptions struct {
 	// Optional timeout duration. If not specified, the Cloud Builder default timeout is used.
 	TimeoutSeconds int
 
+	// Optional machine type used to run the build, must be one of: N1_HIGHCPU_8, N1_HIGHCPU_32, E2_HIGHCPU_8, E2_HIGHCPU_32. If not specified, the default machine is used.
+	MachineType string
+
 	// Optional parallel build. If specified, images can be build on bigger machines in parallel.
 	EnableParallel bool
 
@@ -158,7 +161,12 @@ timeout: {{ .TimeoutSeconds }}s
 
 {{- if $parallel }}
 options:
-  machineType: 'N1_HIGHCPU_8'
+  machineType: 'E2_HIGHCPU_8'
+{{- else }}
+{{- if .MachineType }}
+options:
+  machineType: '{{ .MachineType }}'
+{{- end }}
 {{- end }}
 `
 
@@ -187,6 +195,7 @@ type cloudBuildTemplateData struct {
 	ImageBuilds    []imageBuildTemplateData
 	AllImages      []string
 	TimeoutSeconds int
+	MachineType    string
 }
 
 func shouldParallelize(options cloudBuildOptions, numberOfVersions int, numberOfTests int) bool {
@@ -256,6 +265,7 @@ func newCloudBuildTemplateData(
 	}
 
 	data.TimeoutSeconds = options.TimeoutSeconds
+	data.MachineType = options.MachineType
 	data.Parallel = shouldParallelize(options, len(spec.Versions), len(functionalTests))
 	return data
 }
@@ -328,6 +338,7 @@ func main() {
 	newTagsPtr := config.BoolOption("new_tags", false, "Require that image tags do not already exist.")
 	firstTagOnly := config.BoolOption("first_tag", false, "Build only the first per version.")
 	timeoutPtr := config.IntOption("timeout", 0, "Timeout in seconds. If not set, the default Cloud Build timeout is used.")
+	machineTypePtr := config.StringOption("machineType","", "Optional machine type used to run the build, , must be one of: N1_HIGHCPU_8, N1_HIGHCPU_32, E2_HIGHCPU_8, E2_HIGHCPU_32. If not specified, the default machine is used.")
 	enableParallel := config.BoolOption("enable_parallel", false, "Enable parallel build and bigger VM")
 	forceParallel := config.BoolOption("force_parallel", false, "Force parallel build and bigger VM")
 	config.Parse()
@@ -345,7 +356,7 @@ func main() {
 		dirs = strings.Split(*dirsPtr, ",")
 	}
 	spec := versions.LoadVersions("versions.yaml")
-	options := cloudBuildOptions{dirs, *testsPtr, *newTagsPtr, *firstTagOnly, *timeoutPtr, *enableParallel, *forceParallel}
+	options := cloudBuildOptions{dirs, *testsPtr, *newTagsPtr, *firstTagOnly, *timeoutPtr, *machineTypePtr, *enableParallel, *forceParallel}
 	result := renderCloudBuildConfig(*registryPtr, spec, options)
 	fmt.Println(result)
 }
