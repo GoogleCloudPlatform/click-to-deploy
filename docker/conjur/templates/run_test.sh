@@ -5,7 +5,7 @@ ADMIN_KEY=$(conjurctl account create myConjurAccount|tail -n 1|sed 's/API key fo
 echo "Admin key is $ADMIN_KEY"
 
 echo "Step 2. Login with admin API key"
-conjur init -u conjur -a myConjurAccount
+conjur init --url $(hostname) -a myConjurAccount
 conjur authn login -u admin -p ${ADMIN_KEY}
 
 echo "Step 3. Create sample policy"
