@@ -32,6 +32,10 @@ setup:
 - command: [sleep, '20s']
 - command:
   - 'docker'
+  - 'logs'
+  - 'some-postgres-$UNIQUE-id'
+- command:
+  - 'docker'
   - 'run'
   - '--net'
   - 'testbridge-$UNIQUE-id'
@@ -40,11 +44,20 @@ setup:
   - '-e'
   - 'DATABASE_URL=postgres://conjur:conjur@some-postgres-$UNIQUE-id/conjur'
   - '-e'
-  - 'CONJUR_DATA_KEY="ZaJdUUf+IZbYt80MyUdOfEZLjKF006n0xf8roGU7kcQ="'
+  - 'CONJUR_DATA_KEY=ZaJdUUf+IZbYt80MyUdOfEZLjKF006n0xf8roGU7kcQ='
   - '-d'
   - '$IMAGE'
   - 'conjurctl server'
+- command:
+  - 'docker'
+  - 'logs'
+  - 'some-conjur-$UNIQUE-id'
 - command: [sleep, '40s']
+- command: [docker, ps ]
+- command:
+  - 'docker'
+  - 'logs'
+  - 'some-conjur-$UNIQUE-id'
 
 teardown:
 - command: [docker, stop, some-conjur-$UNIQUE-id, some-postgres-$UNIQUE-id]
