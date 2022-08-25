@@ -1,6 +1,6 @@
 # Description
 
-Versioning tools for Dockerfile source repos.
+Versioning tools for Dockerfile source repos. Previously, these tools were in  [runtimes-common](https://github.com/GoogleCloudPlatform/runtimes-common/tree/b39744e5a8588beba847a271e379b864a6ac2939) but were moved to [click-to-deploy](https://github.com/GoogleCloudPlatform/click-to-deploy) for further development.
 
 - `dockerfiles` generates versionsed Dockerfiles from a common template.
 - `cloudbuild` generates a configuration file to build these Dockerfiles using
