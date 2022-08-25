@@ -10,6 +10,6 @@ go_library(
     srcs = ["versions.go"],
     importpath = "github.com/GoogleCloudPlatform/click-to-deploy/tools/dockerversioning/versions",
     deps = [
-        "//dockerversioning/vendor/gopkg.in/yaml.v2:go_default_library",
+        "@com_github_gopkg_v2//:go_default_library",
     ],
 )
