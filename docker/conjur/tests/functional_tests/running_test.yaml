@@ -43,7 +43,6 @@ setup:
   - 'CONJUR_DATA_KEY=ZaJdUUf+IZbYt80MyUdOfEZLjKF006n0xf8roGU7kcQ='
   - '-d'
   - '$IMAGE'
-  - '/usr/local/bin/conjurctl server'
 - command: [sleep, '20s']
 - command:
   - 'docker'
