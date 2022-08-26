@@ -13,6 +13,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
 
 ENV CONJUR_APP_VERSION=1.18.1
 ENV CONJUR_CLI_VERSION=6.2.6
+ENV RUBY_VERSION=3.0.0
 ENV OPENSSL_FIPS_ENABLED "false"
 
 EXPOSE 80
@@ -51,7 +52,7 @@ RUN curl -L https://github.com/cyberark/conjur/archive/refs/tags/v${CONJUR_APP_V
 RUN curl -sSL https://rvm.io/pkuczynski.asc | gpg2 --import - \
     && curl -sSL https://get.rvm.io | bash -s stable --ruby \
     && source /usr/local/rvm/scripts/rvm \
-    && rvm install 3.0.0 \
+    && rvm install ${RUBY_VERSION} \
     && gem install bundler
 
 RUN bundle --without test development
@@ -60,10 +61,10 @@ RUN bundle --without test development
 RUN find / -name httpclient -type d -exec find {} -name *.pem -type f -delete \;
 
 RUN ln -sf /opt/conjur-server/bin/conjurctl /usr/local/bin/ \
-    && echo $CONJUR_APP_VERSION > ./VERSION
+    && echo ${CONJUR_APP_VERSION} > ./VERSION
 
 #install conjur-cli
-RUN gem install conjur-cli -v $CONJUR_CLI_VERSION
+RUN gem install conjur-cli -v ${CONJUR_CLI_VERSION}
 
 ENV RAILS_ENV production
 

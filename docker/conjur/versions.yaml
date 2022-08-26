@@ -22,6 +22,8 @@ versions:
       version: 1.18.1
     conjurcli:
       version: 6.2.6
+    ruby:
+      version: 3.0.0
   repo: conjur1
   tags:
   - '1.18.1-debian11'
