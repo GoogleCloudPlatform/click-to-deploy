@@ -29,11 +29,7 @@ setup:
   - 'POSTGRES_DB=conjur'
   - '-d'
   - 'marketplace.gcr.io/google/postgresql13'
-- command: [sleep, '20s']
-- command:
-  - 'docker'
-  - 'logs'
-  - 'some-postgres-$UNIQUE-id'
+- command: [sleep, '30s']
 - command:
   - 'docker'
   - 'run'
@@ -47,12 +43,17 @@ setup:
   - 'CONJUR_DATA_KEY=ZaJdUUf+IZbYt80MyUdOfEZLjKF006n0xf8roGU7kcQ='
   - '-d'
   - '$IMAGE'
-  - 'conjurctl server'
+  - '/usr/local/bin/conjurctl server'
+- command:
+  - 'docker'
+  - 'exec'
+  - 'some-conjur-$UNIQUE-id'
+  - 'env'
 - command:
   - 'docker'
   - 'logs'
   - 'some-conjur-$UNIQUE-id'
-- command: [sleep, '40s']
+- command: [sleep, '20s']
 - command: [docker, ps ]
 - command:
   - 'docker'
