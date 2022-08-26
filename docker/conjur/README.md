@@ -73,7 +73,6 @@ services:
   conjur:
     image: marketplace.gcr.io/google/conjur1
     container_name: conjur_server
-    command: conjurctl server
     environment:
       DATABASE_URL: postgres://conjur:conjur@postgres/conjur
     depends_on:
@@ -102,7 +101,6 @@ services:
   conjur:
     image: marketplace.gcr.io/google/conjur1
     container_name: conjur_server
-    command: conjurctl server
     environment:
       DATABASE_URL: postgres://conjur:conjur@postgres/conjur
     depends_on:
