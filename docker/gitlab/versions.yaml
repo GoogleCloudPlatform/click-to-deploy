@@ -14,7 +14,7 @@
 
 
 cloudbuild:
-  enable_parallel: false
+  enable_parallel: true
 versions:
 - dir: 14/debian10/14.8
   from: marketplace.gcr.io/google/debian10
