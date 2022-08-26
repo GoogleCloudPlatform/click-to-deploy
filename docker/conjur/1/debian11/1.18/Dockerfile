@@ -76,4 +76,4 @@ EXPOSE 80
 ENV C2D_RELEASE 1.18.1
 
 ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
-CMD ["conjurctl"]
+CMD ["conjurctl", "server"]

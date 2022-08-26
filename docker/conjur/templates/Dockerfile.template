@@ -79,4 +79,4 @@ EXPOSE 80
 ENV C2D_RELEASE {{ $conjur.Version }}
 
 ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
-CMD ["conjurctl"]
+CMD ["conjurctl", "server"]
