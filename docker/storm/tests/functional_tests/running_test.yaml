@@ -33,7 +33,7 @@ tests:
     stdout:
       matches: 'Storm UI'
 - name: Can connect to ZooKeeper
-  command: [/apache-zookeeper-3.8.0-bin/bin/zkCli.sh, ls, /zookeeper]
+  command: [/apache-zookeeper/bin/zkCli.sh, ls, /zookeeper]
   expect:
     stdout:
       matches: quota

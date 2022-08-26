@@ -10,9 +10,8 @@ ENV STORM_VERSION ${STORM_VERSION}
 ENV STORM_CONF_DIR=/conf \
     STORM_DATA_DIR=/data \
     STORM_LOG_DIR=/logs \
-    ZOO_CONF_DIR=/conf
-    
-
+    ZOO_CONF_DIR=/conf \
+    ZOO_DIR=/apache-zookeeper
 
 # create Storm data directories
 
@@ -55,6 +54,8 @@ ENV ZK_GPG_KEYS BBE7232D7991050B54C8EA0ADC08637CA615D22C
 ARG ZK_SHORT_DISTRO_NAME="zookeeper-3.8.0"
 ARG ZK_DISTRO_NAME="apache-zookeeper-3.8.0-bin"
 
+RUN mkdir $ZOO_DIR
+
 # Download Apache Storm and Apache Zookeeper
 RUN set -eux; \
     ddist() { \
@@ -96,10 +97,10 @@ RUN set -eux; \
     gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys ${ZK_GPG_KEYS} || \
     gpg --keyserver keyserver.pgp.com --recv-keys ${ZK_GPG_KEYS}; \
     gpg --batch --verify "${ZK_DISTRO_NAME}.tar.gz.asc" "${ZK_DISTRO_NAME}.tar.gz"; \
-    tar -zxf "${ZK_DISTRO_NAME}.tar.gz"; \
-    mv "${ZK_DISTRO_NAME}/conf/"* "${ZOO_CONF_DIR}"; \
+    tar -zxf "${ZK_DISTRO_NAME}.tar.gz" --strip-components=1 -C $ZOO_DIR; \
+    mv "${ZOO_DIR}/conf/"* "${ZOO_CONF_DIR}"; \
     rm -rf "${GNUPGHOME}" "${ZK_DISTRO_NAME}.tar.gz" "${ZK_DISTRO_NAME}.tar.gz.asc"; \
-    chown -R storm:storm "$ZK_DISTRO_NAME"
+    chown -R storm:storm "$ZOO_DIR"
 
 
 WORKDIR $DISTRO_NAME
@@ -113,10 +114,10 @@ EXPOSE 8080 8000
 VOLUME ["/logs"]
 
 # copy configuration
-COPY zoo.cfg /apache-zookeeper-3.8.0-bin/conf/zoo.cfg
+COPY zoo.cfg /apache-zookeeper/conf/zoo.cfg
 
 COPY ./docker-entrypoint.sh /
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
-CMD ["/apache-zookeeper-3.8.0-bin/bin/zkServer.sh", "start-foreground"]
+CMD ["/apache-zookeeper/bin/zkServer.sh", "start-foreground"]
