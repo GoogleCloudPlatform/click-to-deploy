@@ -70,10 +70,6 @@ RUN gem install conjur-cli -v $CONJUR_CLI_VERSION
 
 ENV RAILS_ENV production
 
-#preserve ruby ENVs
-ENV PATH "/usr/local/rvm/gems/ruby-3.0.0/bin:/usr/local/rvm/gems/ruby-3.0.0@global/bin:/usr/local/rvm/rubies/ruby-3.0.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/rvm/bin"
-ENV GEM_HOME "/usr/local/rvm/gems/ruby-3.0.0"
-
 EXPOSE 80
 
 ENV C2D_RELEASE {{ $conjur.Version }}
