@@ -29,7 +29,7 @@ setup:
   - 'POSTGRES_DB=conjur'
   - '-d'
   - 'marketplace.gcr.io/google/postgresql13'
-- command: [sleep, '30s']
+- command: [sleep, '20s']
 - command:
   - 'docker'
   - 'run'
@@ -44,10 +44,6 @@ setup:
   - '-d'
   - '$IMAGE'
 - command: [sleep, '20s']
-- command:
-  - 'docker'
-  - 'logs'
-  - 'some-conjur-$UNIQUE-id'
 
 teardown:
 - command: [docker, stop, some-conjur-$UNIQUE-id, some-postgres-$UNIQUE-id]
