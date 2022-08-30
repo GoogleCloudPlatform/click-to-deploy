@@ -20,13 +20,13 @@ versions:
   from: marketplace.gcr.io/google/debian11
   packages:
     falco:
-      version: 0.32.1
+      version: 0.32.2
   repo: falco0
   tags:
-  - 0.32.1-debian11
+  - 0.32.2-debian11
   - 0.32-debian11
   - 0-debian11
-  - 0.32.1
+  - 0.32.2
   - '0.32'
   - '0'
   - latest
