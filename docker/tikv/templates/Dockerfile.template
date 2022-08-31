@@ -27,7 +27,7 @@ RUN rustup self update \
   && rustup set profile minimal \
   && rustup default $(cat "rust-toolchain")
 
-ENV CARGO_BUILD_JOBS 16
+ENV CARGO_BUILD_JOBS 32
 RUN lscpu
 
 RUN make build_dist_release
