@@ -25,13 +25,14 @@ spec:
   {{ else }}
   type: ClusterIP
   {{ end }}
+{{ if .Values.enablePublicServiceAndIngress }}
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Release.Name }}-superset-ingress
   labels:
-    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: apache-superset
 spec:
   tls:
@@ -40,4 +41,5 @@ spec:
     service:
       name: {{ .Release.Name }}-superset-svc
       port:
-        name: http
+        name: superset-port
+{{ end }}

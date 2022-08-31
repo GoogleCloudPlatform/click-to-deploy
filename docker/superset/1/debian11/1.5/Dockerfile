@@ -8,7 +8,7 @@ ENV SUPERSET_HOME=/var/lib/superset
 
 # Installing python3 and dependencies
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends build-essential libssl-dev libffi-dev python3-dev python3-pip libsasl2-dev \
+    && apt-get install -y --no-install-recommends build-essential libssl-dev libffi-dev python3-dev python3-pip libsasl2-dev openssl\
     libldap2-dev default-libmysqlclient-dev
 
 # Create superset user & install dependencies
@@ -33,6 +33,7 @@ RUN groupadd supergroup && \
     pip install psycopg2-binary && \
     pip install pillow && \
     pip install mysqlclient && \
+    pip install pybigquery && \
     pip install statsd && \
     pip install statsd-client
 
