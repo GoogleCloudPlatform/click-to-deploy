@@ -14,7 +14,7 @@
 
 setup:
 - command: [docker, run, -d, --name, storm-$UNIQUE-id, '$IMAGE']
-- command: [sleep, 30s]
+- command: [sleep, 60s]
 
 teardown:
 - command: [docker, stop, storm-$UNIQUE-id]
