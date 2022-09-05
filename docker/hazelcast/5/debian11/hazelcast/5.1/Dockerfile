@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM marketplace.gcr.io/google/debian10
+FROM marketplace.gcr.io/google/debian11
 
 ENV DEBUG_DOCKER_ENTRYPOINT false
 
@@ -46,7 +46,7 @@ COPY *.jar get-hz-all-url.sh ${HZ_HOME}/
 # Install
 RUN echo "Installing new APK packages" \
     && apt-get --allow-releaseinfo-change update \
-    && apt-get -y install openjdk-11-jdk-headless bash curl libxml2-utils zip unzip procps net-tools telnet inetutils-ping \
+    && apt-get -y install openjdk-11-jdk-headless bash curl libxml2-utils zip unzip procps net-tools telnet openssl inetutils-ping \
     && echo "Downloading Hazelcast distribution zip..." \
     && HAZELCAST_ZIP_URL=$(${HZ_HOME}/get-hz-all-url.sh) \
     && curl -sf -L ${HAZELCAST_ZIP_URL} --output ${HZ_HOME}/hazelcast-distribution.zip \
