@@ -20,7 +20,7 @@ versions:
   from: marketplace.gcr.io/google/debian11
   packages:
     activemq:
-      sha512: 5b0778c959224621e0d0815f1c06b413a0c6850a608c020b8f85d517447d2bae13ccb013bfebf78b9eaa6b71929f1be9a41d16bfe57271de7567c529d49b5cee
+      sha512: 7c6ee4c1a9f58ccaa374d8528255d55c181c3402855fe06202bb30f722bdbd69a2cebaf0eded67324f94b4158b6d8d97b621d8730d92676e51b982ed4fc8a7b0
       version: 5.17.2
   repo: activemq5
   tags:
