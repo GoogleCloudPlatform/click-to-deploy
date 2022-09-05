@@ -17,7 +17,7 @@ ARG MC_INSTALL_NAME="hazelcast-management-center-${MC_VERSION}"
 ARG MC_INSTALL_JAR="hazelcast-management-center-${MC_VERSION}.jar"
 ARG MC_INSTALL_ZIP="${MC_INSTALL_NAME}.zip"
 
-FROM marketplace.gcr.io/google/debian11 AS builder
+FROM marketplace.gcr.io/google/debian10 AS builder
 
 ARG MC_VERSION
 ARG MC_INSTALL_NAME
@@ -28,7 +28,7 @@ WORKDIR /tmp/build
 
 RUN echo "Installing new APK packages" \
   && apt update \
-    && apt install --no-install-recommends -y bash wget unzip procps libnss3 curl openssl \
+    && apt install --no-install-recommends -y bash wget unzip procps libnss3 curl \
     && echo "Downloading Management Center" \
     && wget -O ${MC_INSTALL_ZIP} https://repository.hazelcast.com/download/management-center/${MC_INSTALL_ZIP} \
     && echo "40090f0ccc34a24969341025c7155e0af96e8488d152f1c43b1df502a41a83b3" "${MC_INSTALL_ZIP}" | sha256sum -c \
