@@ -25,10 +25,21 @@ versions:
   tags:
   - 1.7.2-debian11
   - 1.7-debian11
-  - 1-debian11
   - 1.7.2
   - '1.7'
+  templateSubDir: cert-manager1
+- dir: 1/debian11/1.9
+  from: marketplace.gcr.io/google/debian11
+  packages:
+    cert-manager:
+      version: 1.9.1
+  repo: cert-manager1
+  tags:
+  - 1.9.1-debian11
+  - 1.9-debian11
+  - 1-debian11
+  - 1.9.1
+  - '1.9'
   - '1'
   - latest
   templateSubDir: cert-manager1
-
