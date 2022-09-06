@@ -3,7 +3,7 @@
 FROM {{ .From }}
 
 ENV GITLAB_VERSION {{ $gitlab.Version }}
-ENV DOWNLOAD_URL "https://packages.gitlab.com/gitlab/gitlab-ee/packages/debian/stretch/gitlab-ee_{{ $gitlab.Version }}-ee.0_amd64.deb/download.deb"
+ENV DOWNLOAD_URL "https://packages.gitlab.com/gitlab/gitlab-ee/packages/debian/bullseye/gitlab-ee_{{ $gitlab.Version }}-ee.0_amd64.deb/download.deb"
 
 ENV C2D_RELEASE {{ $gitlab.Version }}
 
@@ -23,6 +23,8 @@ RUN apt-get update -q \
       tzdata \
       nano \
       less \
+      openssl \
+      perl \
       jq \
     && rm -rf /var/lib/apt/lists/* \
     && sed 's/session\s*required\s*pam_loginuid.so/session optional pam_loginuid.so/g' -i /etc/pam.d/sshd

@@ -17,32 +17,31 @@ cloudbuild:
   enable_parallel: false
   machineType: 'E2_HIGHCPU_32'
 versions:
-- dir: 14/debian10/14.8
-  from: marketplace.gcr.io/google/debian10
+- dir: 15/debian11/15.3
+  from: marketplace.gcr.io/google/debian11
   packages:
     gitlab:
-      version: 14.8.2
+      version: 15.3.3
+  repo: gitlab15
+  tags:
+  - 15.3.3-debian11
+  - 15.3-debian11
+  - 15-debian11
+  - 15.3.3
+  - '15.3'
+  - '15'
+  - latest
+- dir: 14/debian11/14.10
+  from: marketplace.gcr.io/google/debian11
+  packages:
+    gitlab:
+      version: 14.10.4
   repo: gitlab14
   tags:
-  - 14.8.2-debian10
-  - 14.8-debian10
-  - 14-debian10
-  - 14.8.2
-  - '14.8'
+  - 14.10.4-debian11
+  - 14.10-debian11
+  - 14-debian11
+  - 14.10.4
+  - '14.10'
   - '14'
   - latest
-- dir: 13/debian10/13.12
-  from: marketplace.gcr.io/google/debian10
-  packages:
-    gitlab:
-      version: 13.12.15
-  repo: gitlab13
-  tags:
-  - 13.12.15-debian10
-  - 13.12-debian10
-  - 13-debian10
-  - 13.12.15
-  - '13.12'
-  - '13'
-  - latest
-
