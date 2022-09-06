@@ -16,18 +16,18 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 5/debian10/5.17
-  from: marketplace.gcr.io/google/debian10
+- dir: 5/debian11/5.17
+  from: marketplace.gcr.io/google/debian11
   packages:
     activemq:
-      sha512: cd30ace8dc4fd0fd0c960a0a1442e4f34733defb98fdaff06278a8b392696509fe57601f3e11fe6698f417e223dc43286bf4e86a4999a9848f3cc8dd68f4968f
-      version: 5.17.1
+      sha512: 7c6ee4c1a9f58ccaa374d8528255d55c181c3402855fe06202bb30f722bdbd69a2cebaf0eded67324f94b4158b6d8d97b621d8730d92676e51b982ed4fc8a7b0
+      version: 5.17.2
   repo: activemq5
   tags:
-  - 5.17.1-debian10
-  - 5.17-debian10
-  - 5-debian10
-  - 5.17.1
+  - 5.17.2-debian11
+  - 5.17-debian11
+  - 5-debian11
+  - 5.17.2
   - '5.17'
   - '5'
   - latest
