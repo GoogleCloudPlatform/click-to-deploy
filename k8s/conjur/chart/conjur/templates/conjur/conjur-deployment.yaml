@@ -7,6 +7,10 @@ metadata:
     app.kubernetes.io/component: conjur
 spec:
   replicas: {{ .Values.conjur.replicas }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
   selector:
     matchLabels: *ConjurLabels
   template:
@@ -20,19 +24,6 @@ spec:
         - name: conjur
           image: "{{ .Values.conjur.image.repo }}:{{ .Values.conjur.image.tag }}"
           imagePullPolicy: Always
-{{- if .Values.account.create }}
-          command: ["bash"]
-          args:
-          - -c
-          - |
-             if conjurctl role retrieve-key {{ .Values.account.name }}:user:admin >/dev/null 2>&1; then
-               conjurctl server;
-             else
-               conjurctl server --account={{ .Values.account.name }} | grep -v 'API key for admin:';
-             fi
-{{ else }}
-          args: ["server"]
-{{- end }}
           ports:
             - name: http
               containerPort: 8080

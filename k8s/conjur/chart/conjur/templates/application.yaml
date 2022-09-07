@@ -5,42 +5,43 @@ metadata:
   annotations:
     kubernetes-engine.cloud.google.com/icon: >-
       data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
-    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": "keycloak", "partner_name": "Google Click to Deploy"}'
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": "conjur", "partner_name": "Google Click to Deploy"}'
   labels:
     app.kubernetes.io/name: "{{ .Release.Name }}"
 spec:
   descriptor:
-    type: Keycloak
+    type: Conjur
     version: "{{ .Values.postgresql.image.tag }}"
     description: |-
-      Keycloak is an open source software product to allow single sign-on with Identity and Access Management aimed at modern applications and services. 
+      Conjur is a seamless open source interface to securely authenticate, control and audit non-human access across tools, 
+      applications, containers and cloud environments via robust secrets management.
       # Support
       Google does not offer support for this solution. However, community support is available on
-      [Stack Overflow](https://stackoverflow.com/questions/tagged/keycloak/).
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/conjur/).
     maintainers:
     - name: Google Click to Deploy
       url: https://cloud.google.com/solutions/#click-to-deploy
     links:
-    - description: 'User Guide: Google Click to Deploy Keycloak'
-      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/keycloak/README.md
+    - description: 'User Guide: Google Click to Deploy Conjur'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/conjur/README.md
     notes: |-
-      # Access Keycloak
+      # Access Conjur
       {{ if .Values.enablePublicServiceAndIngress -}}
-      # Open your Keycloak Webserver
-      To get the external IP of your Keycloak Webserver, use the following command:
+      # Open your Conjur Webserver
+      To get the external IP of your Conjur Webserver, use the following command:
 
       ```
-      SERVICE_IP=$(kubectl get ingress {{ .Release.Name }}-keycloak-web \
+      SERVICE_IP=$(kubectl get ingress {{ .Release.Name }}-conjur-svc \
         --namespace {{ .Release.Namespace }} \
         --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
       echo "https://${SERVICE_IP}/"
       ```
       {{- else -}}
-      # Open your Keycloak Webserver
+      # Open your Conjur Webserver
 
-      Keycloak is exposed by the ClusterIP-only service `{{ .Release.Name }}-keycloak-svc`. To connect to the
-      Keycloak Webserver, you can either expose a public service endpoint, or keep it private, but connect
+      Conjur is exposed by the ClusterIP-only service `{{ .Release.Name }}-conjur-svc`. To connect to the
+      Conjur Webserver, you can either expose a public service endpoint, or keep it private, but connect
       from your local environment with `kubectl port-forward`.
 
       ## Forward the Keycloak Webserver port in your local environment
@@ -51,7 +52,7 @@ spec:
       ```shell
       kubectl port-forward \
         --namespace {{ .Release.Namespace }} \
-        svc/{{ .Release.Name }}-keycloak-svc \
+        svc/{{ .Release.Name }}-conjur-svc \
         8080:8080
       ```
 
@@ -59,29 +60,29 @@ spec:
       {{- end }}
   info:
   {{ if .Values.enablePublicServiceAndIngress -}}
-  - name: Keycloak site address
+  - name: Conjur site address
     type: Reference
     valueFrom:
       ingressRef:
-        name: {{ .Release.Name }}-keycloak-web
+        name: {{ .Release.Name }}-conjur-svc
         protocol: HTTPS
   {{- else -}}
-  - name: Forward Keycloak Webserver port locally
-    value: kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-keycloak-svc 8080:8080
-  - name: Keycloak Webserver address (local only)
+  - name: Forward Conjur Webserver port locally
+    value: kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-conjur-svc 8080:8080
+  - name: Conjur Webserver address (local only)
     value: "http://localhost:8080/"
   {{- end }}
-  - name: Keycloak - admin user password
+  - name: Conjur - data key
     type: Reference
     valueFrom:
       secretKeyRef:
-        key: KEYCLOAK_ADMIN_PASSWORD
+        key: CONJUR_DATA_KEY
         name: {{ .Release.Name }}-config-envs
-  - name: PostgreSQL - Keycloak user password
+  - name: PostgreSQL - Conjur user password
     type: Reference
     valueFrom:
       secretKeyRef:
-        key: KC_DB_PASSWORD
+        key: POSTGRES_PASSWORD
         name: {{ .Release.Name }}-config-envs
   - name: Application Namespace
     value: "{{ .Release.Namespace }}"
@@ -101,8 +102,6 @@ spec:
   {{ end }}
   - group: apps/v1
     kind: Deployment
-  - group: v1
-    kind: ConfigMap
   - group: v1
     kind: ServiceAccount
   - group: rbac.authorization.k8s.io/v1
