@@ -4,8 +4,6 @@ conjur:
     tag: null
   replicas: 1
   serviceAccount: null
-  admin:   
-    password: null
 
 metrics:
   image: null

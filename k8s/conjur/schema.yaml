@@ -41,37 +41,12 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  keycloak.admin.password:
-    type: string
-    x-google-marketplace:
-      type: GENERATED_PASSWORD
-      generatedPassword:
-        length: 16
-        includeSymbols: False
-        base64: False
-  keycloak.replicas:
+  conjur.replicas:
     type: integer
-    title: Keycloak webserver replicas
-    description: Number of replicas of the Keycloak webserver replicas
+    title: Conjur replicas
+    description: Number of replicas of the Conjur webserver
     default: 1
     minimum: 1
-  keycloak.serviceAccount:
-    type: string
-    title: Keycloak Service Account
-    x-google-marketplace:
-      type: SERVICE_ACCOUNT
-      serviceAccount:
-        description: Service account used by Keycloak deployment
-        roles:
-        - type: ClusterRole
-          rulesType: CUSTOM
-          rules:
-          - apiGroups: [""]
-            resources:
-            - pods
-            verbs:
-            - get
-            - list
   enablePublicServiceAndIngress:
     type: boolean
     title: Enable public IP access
@@ -99,7 +74,7 @@ properties:
 required:
 - name
 - namespace
-- keycloak.replicas
+- conjur.replicas
 - postgresql.persistence.size
 - enablePublicServiceAndIngress
 
