@@ -21,9 +21,9 @@ x-google-marketplace:
   images:
     '':
       properties:
-        keycloak.image.repo:
+        conjur.image.repo:
           type: REPO_WITH_REGISTRY
-        keycloak.image.tag:
+        conjur.image.tag:
           type: TAG
     postgresql:
       properties:
@@ -31,6 +31,21 @@ x-google-marketplace:
           type: REPO_WITH_REGISTRY
         postgresql.image.tag:
           type: TAG
+
+  deployerServiceAccount:
+    description:
+      Creates app resources including persistentvolumes.
+    roles:
+      - type: ClusterRole  # For getting persistentvolumes
+        rulesType: CUSTOM
+        rules:
+          - apiGroups:
+            - 'rbac.authorization.k8s.io'
+            resources:
+            - 'clusterroles'
+            - 'clusterrolebindings'
+            verbs:
+            - '*'
 
 properties:
   name:
