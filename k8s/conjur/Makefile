@@ -10,7 +10,6 @@ WAIT_FOR_READY_TIMEOUT := 600
 TRACK ?= 1.18
 # Track for components
 POSTGRESQL_TRACK ?= 13.4
-METRICS_EXPORTER_TAG ?= v0.5.1
 
 VERIFY_WAIT_TIMEOUT = 1800
 
@@ -24,7 +23,7 @@ IMAGE_CONJUR ?= gcr.io/ccm-ops-test-adhoc/conjur1:$(TRACK)
 IMAGE_POSTGRESQL ?= marketplace.gcr.io/google/postgresql13:$(POSTGRESQL_TRACK)
 
 # Main image
-image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_KEYCLOAK))
+image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_CONJUR))
 
 # List of images used in application
 ADDITIONAL_IMAGES := postgresql

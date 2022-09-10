@@ -54,6 +54,4 @@ spec:
             value: "8080"
           - name: DATABASE_HOST
             value: {{ .Release.Name }}-postgresql-svc
-          - name: CONJUR_ACCOUNT
-            value: {{ .Values.account.name }}
 
