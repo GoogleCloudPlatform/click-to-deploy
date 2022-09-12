@@ -142,6 +142,18 @@ export IMAGE_POSTGRESQL=marketplace.gcr.io/google/postgresql13
 export IMAGE_METRICS_EXPORTER=k8s.gcr.io/prometheus-to-sd:${METRICS_EXPORTER_TAG}
 ```
 
+Generate a random DB password:
+
+```shell
+export POSTGRESQL_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' |head -c16)"
+```
+
+Generate a Conjur data key:
+
+```shell
+export CONJUR_DATA_KEY="$(openssl rand -base64 32)"
+```
+
 By default, Conjur deployment has 1 replica, but you can choose to set the
 number of replicas for Conjur webserver.
 
@@ -169,6 +181,19 @@ this option, change the value to `true`.
 export METRICS_EXPORTER_ENABLED=false
 ```
 
+##### Create the Conjur Service Account
+
+To create the Conjur Service Account and ClusterRoleBinding:
+
+```shell
+export CONJUR_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-serviceaccount"
+cat resources/service-accounts.yaml \
+  | envsubst '$NAMESPACE $PROMETHEUS_SERVICE_ACCOUNT $KUBE_STATE_METRICS_SERVICE_ACCOUNT $ALERTMANAGER_SERVICE_ACCOUNT $GRAFANA_SERVICE_ACCOUNT $NODE_EXPORTER_SERVICE_ACCOUNT' \
+  > "${APP_INSTANCE_NAME}_sa_manifest.yaml"
+kubectl apply -f "${APP_INSTANCE_NAME}_sa_manifest.yaml" \
+  --namespace "${NAMESPACE}"
+```
+
 #### Expand the manifest template
 
 Use `helm template` to expand the template. We recommend that you save the
@@ -179,6 +204,9 @@ helm template "${APP_INSTANCE_NAME}" chart/keycloak \
     --namespace "${NAMESPACE}" \
     --set conjur.image.repo="$IMAGE_CONJUR" \
     --set conjur.image.tag="$CONJUR_TRACK" \
+    --set conjur.serviceAccount="${CONJUR_SERVICE_ACCOUNT}" \
+    --set conjur.db.password="${POSTGRESQL_PASSWORD}" \
+    --set conjur.data_key="${CONJUR_DATA_KEY}" \
     --set postgresql.image.repo="$IMAGE_POSTGRESQL" \
     --set postgresql.image.tag="$POSTGRESQL_TRACK" \
     --set postgresql.persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \

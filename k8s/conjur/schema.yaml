@@ -70,6 +70,29 @@ properties:
         length: 32
         includeSymbols: False
         base64: True
+  conjur.serviceAccount:
+    type: string
+    title: Conjur Service Account
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        description: Service account used by Conjur deployment
+        roles:
+        - type: ClusterRole
+          rulesType: CUSTOM
+          rules:
+          - apiGroups: [""]
+            resources: ["pods", "serviceaccounts"]
+            verbs: ["get", "list"]
+          - apiGroups: ["extensions"]
+            resources: [ "deployments", "replicasets"]
+            verbs: ["get", "list"]
+          - apiGroups: ["apps"]
+            resources: [ "deployments", "statefulsets", "replicasets"]
+            verbs: ["get", "list"]
+          - apiGroups: [""]
+            resources: ["pods/exec"]
+            verbs: ["create", "get"]
   enablePublicServiceAndIngress:
     type: boolean
     title: Enable public IP access

@@ -17,7 +17,7 @@ spec:
     metadata:
       labels: *ConjurLabels
     spec:
-      serviceAccountName: {{ .Release.Name }}-sa
+      serviceAccountName: "{{ .Values.conjur.serviceAccount }}"
       initContainers:
         {{- include "conjur.init_container.check_db" . | indent 8 }}
       containers:
