@@ -62,6 +62,14 @@ properties:
     description: Number of replicas of the Conjur webserver
     default: 1
     minimum: 1
+  conjur.data_key:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 32
+        includeSymbols: False
+        base64: True
   enablePublicServiceAndIngress:
     type: boolean
     title: Enable public IP access
@@ -81,6 +89,12 @@ properties:
     default: "5Gi"
     description: PostgreSQL storage size
     pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  conjur.db.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 12
   metrics.exporter.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
