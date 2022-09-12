@@ -16,7 +16,7 @@ WORKDIR /go/src/github.com/coreos/prometheus-operator
 ENV GO111MODULE=on
 
 RUN set -x && \
-    apt-get update && apt-get install -qq -y govendor
+    apt-get update && apt-get install -qq -y govendor openssl
 
 RUN git config --global http.sslverify false \
     && go get -u github.com/kardianos/govendor \
