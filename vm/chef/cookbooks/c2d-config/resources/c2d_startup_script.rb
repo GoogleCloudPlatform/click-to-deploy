@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -39,10 +39,14 @@
 #       end
 
 resource_name :c2d_startup_script
+provides :c2d_startup_script
 
 property :source, String, name_property: true, required: true
+provides :c2d_startup_script
 
 default_action :cookbook_file
+
+unified_mode true
 
 c2d_startup_count = 0
 c2d_startup_dir = '/opt/c2d/scripts'

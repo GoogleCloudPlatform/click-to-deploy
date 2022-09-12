@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,19 +11,52 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+# Reference: https://www.rabbitmq.com/install-debian.html#apt-cloudsmith
 
-apt_repository 'configure_rabbitmq_repository' do
-  uri 'http://www.rabbitmq.com/debian/'
-  components ['testing', 'main']
-  keyserver 'https://www.rabbitmq.com/rabbitmq-release-signing-key.asc'
-  distribution false
+# Update sources
+apt_update 'update' do
+  action :update
+  retries 5
+  retry_delay 30
+end
+
+# Install Deps Packages
+package 'Install Deps Packages' do
+  action :install
+  package_name node['rabbitmq']['deps_packages']
+end
+
+# Configure erlang repository
+apt_repository 'erlang_repo' do
+  uri node['rabbitmq']['erlang']['apt']['uri']
+  key node['rabbitmq']['erlang']['apt']['key']
+  components node['rabbitmq']['apt']['components']
+  keyserver node['rabbitmq']['apt']['keyserver']
+  distribution node['rabbitmq']['apt']['lsb_codename']
   trusted true
 end
 
+# Configure RabbitMQ repository
+apt_repository 'rabbitmq_repo' do
+  uri node['rabbitmq']['apt']['uri']
+  key node['rabbitmq']['apt']['key']
+  components node['rabbitmq']['apt']['components']
+  keyserver node['rabbitmq']['apt']['keyserver']
+  distribution node['rabbitmq']['apt']['lsb_codename']
+  trusted true
+end
+
+# Update sources
+apt_update 'update' do
+  action :update
+  retries 5
+  retry_delay 30
+end
+
 package 'install_rabbitmq' do
-  package_name 'rabbitmq-server'
-  version node['rabbitmq']['package_version']
   action :install
+  package_name node['rabbitmq']['packages']
 end
 
 # 1. Set the share cookie such that the erlang nodes can communicate

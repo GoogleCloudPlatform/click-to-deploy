@@ -1,0 +1,8 @@
+{
+  "license": "c2d-liferay",
+  "source_image_family": "debian-10",
+  "disk_size": "30",
+  "chef": {
+    "run_list": [ "c2d-config", "liferay", "stackdriver" ]
+  }
+}

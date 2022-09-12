@@ -1,0 +1,18 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-prometheus
+  labels:
+    k8s-app: prometheus
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: prometheus
+spec:
+  ports:
+    - name: http
+      port: 9090
+      protocol: TCP
+      targetPort: 9090
+  sessionAffinity: ClientIP
+  selector:
+    k8s-app: prometheus

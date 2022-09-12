@@ -1,0 +1,62 @@
+#!/bin/bash -eu
+#
+# Copyright 2022 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/limesurvey-utils || exit 1
+
+export LIMESURVEY_DB_HOST="localhost"
+export LIMESURVEY_DB_USERNAME="limesurvey"
+export LIMESURVEY_DB_NAME="limesurvey"
+export LIMESURVEY_DB_PASSWORD="$(get_attribute_value "limesurvey-db-password")"
+readonly limesurvey_admin_username="admin"
+readonly limesurvey_admin_password="$(get_attribute_value "limesurvey-admin-password")"
+readonly limesurvey_admin_fullname="$(get_attribute_value "limesurvey-admin-fullname")"
+readonly limesurvey_admin_email="$(get_attribute_value "limesurvey-admin-email")"
+
+declare limesurvey_root="/var/www/html"
+declare apache_usergroup="www-data:www-data"
+
+# Assign permissions to Apache user
+chown -R "${apache_usergroup}" "${limesurvey_root}/tmp" \
+  && chown -R "${apache_usergroup}" "${limesurvey_root}/upload" \
+  && chown -R "${apache_usergroup}" "${limesurvey_root}/application/config" \
+  && chmod -R 755 "${limesurvey_root}/tmp" \
+  && chmod -R 755 "${limesurvey_root}/upload" \
+  && chmod -R 755 "${limesurvey_root}/application/config"
+
+echo "Awaiting for MySQL be up..."
+wait_for_port "localhost" "3306"
+
+# Setup MySQL user
+echo "Setting up MySQL user..."
+setup_mysql_user "${LIMESURVEY_DB_USERNAME}" "${LIMESURVEY_DB_PASSWORD}" \
+  "${LIMESURVEY_DB_NAME}"
+
+# Configure config.php
+cat "${limesurvey_root}/application/config/config.template.php" \
+  | envsubst '\$LIMESURVEY_DB_HOST,\$LIMESURVEY_DB_USERNAME,\$LIMESURVEY_DB_PASSWORD,\$LIMESURVEY_DB_NAME' \
+  > "${limesurvey_root}/application/config/config.php"
+
+# Install Limesurvey
+cd "${limesurvey_root}/application/commands"
+php console.php install \
+  "${limesurvey_admin_username}" "${limesurvey_admin_password}" \
+  "${limesurvey_admin_fullname}" "${limesurvey_admin_email}"
+
+# Restart Apache
+echo "Restarting Apache..."
+systemctl restart apache2
+
+echo "Installation complete!"

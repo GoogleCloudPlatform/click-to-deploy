@@ -1,9 +1,19 @@
 actions:
-- name: Prometheus metrics availability
+- name: Monitoring Prometheus metrics availability
   bashTest:
     script: |-
       SERVICE="${APP_INSTANCE_NAME}-jenkins-ui"
       curl -s -u "admin:${PASSWORD}" http://${SERVICE}.${NAMESPACE}.svc.cluster.local:8080/monitoring?format=prometheus | grep -q ^javamelody_memory_used_bytes
+    expect:
+      exitCode:
+        equals: 0
+- name: Prometheus metrics availability
+  bashTest:
+    script: |-
+      # First metrics are collected 60s after plugin setup
+      sleep 120
+      SERVICE="${APP_INSTANCE_NAME}-jenkins-ui"
+      curl -L -s http://${SERVICE}.${NAMESPACE}.svc.cluster.local:8080/prometheus | grep -q ^default_jenkins_executors_available
     expect:
       exitCode:
         equals: 0

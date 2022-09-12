@@ -1,0 +1,46 @@
+superset:
+  image:
+    repo: null
+    tag: null
+  user: admin
+  password: null
+  persistence:
+    size: 10Gi
+    storageClass: null
+
+statsd:
+  exporter:
+    image: null
+
+enablePublicServiceAndIngress: false
+
+postgresql:
+  image: null
+  exporter:
+    image: null
+  db:
+    password: null
+    name: superset
+    user: superset
+  persistence:
+    size: 8Gi
+metrics:
+  image: null
+  exporter:
+    enabled: false
+tls:
+  base64EncodedPrivateKey: null
+  base64EncodedCertificate: null
+deployer:
+  image: null
+
+redis:
+  image: null
+  password: null
+  exporter:
+    image: null
+  persistence:
+    size: 5Gi
+
+persistence:
+  storageClass: null

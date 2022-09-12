@@ -1,0 +1,37 @@
+#!/bin/bash -eu
+#
+# Copyright 2022 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/kafka-utils
+
+readonly kafka_user="$(get_attribute_value "kafka-user")"
+readonly kafka_password="$(get_attribute_value "kafka-password")"
+readonly kafka_nodes="$(get_attribute_value "kafka-nodes")"
+readonly kafka_nodes_count="$(echo "${kafka_nodes}" | wc -w)"
+
+# Stop Kafka
+systemctl stop kafka
+
+# # Configure Kafka in Cluster mode
+if [[ "${kafka_nodes_count}" -gt 1 ]]; then
+  setup_cluster_config "${kafka_nodes}" "${kafka_user}" "${kafka_password}"
+else
+  setup_kafka_auth "standalone" "${kafka_user}" "${kafka_password}"
+fi
+
+echo "Setup finished."
+
+# Start Kafka
+systemctl start kafka

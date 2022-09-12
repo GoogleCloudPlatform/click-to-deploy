@@ -1,0 +1,52 @@
+#!/bin/bash
+#
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+setup:
+- command: [docker, network, create, kafka-$UNIQUE-network]
+- command: [docker, run, -d, --network, kafka-$UNIQUE-network, --hostname, zk-$UNIQUE-id, -e, ZOO_4LW_COMMANDS_WHITELIST="*", --name, zk-$UNIQUE-id, --restart, always, "marketplace.gcr.io/google/zookeeper3"]
+- command: [docker, run, -d, --network, kafka-$UNIQUE-network, --hostname, kafka-$UNIQUE-id-1, -e,"KAFKA_ZOOKEEPER_CONNECT=zk-$UNIQUE-id:2181", -e, "KAFKA_ADVERTISED_HOST_NAME=kafka-$UNIQUE-id-1", -e, "KAFKA_ADVERTISED_PORT=9092", -e, "KAFKA_PORT=9092", --name, kafka-$UNIQUE-id-1, '$IMAGE']
+- command: [docker, run, -d, --network, kafka-$UNIQUE-network, --hostname, kafka-$UNIQUE-id-2, -e,"KAFKA_ZOOKEEPER_CONNECT=zk-$UNIQUE-id:2181", -e, "KAFKA_ADVERTISED_HOST_NAME=kafka-$UNIQUE-id-2", -e, "KAFKA_ADVERTISED_PORT=9092", -e, "KAFKA_PORT=9092",--name, kafka-$UNIQUE-id-2, '$IMAGE']
+- command: [sleep, 5s]
+
+teardown:
+- command: [docker, stop, zk-$UNIQUE-id, kafka-$UNIQUE-id-1, kafka-$UNIQUE-id-2]
+- command: [docker, rm, zk-$UNIQUE-id, kafka-$UNIQUE-id-1, kafka-$UNIQUE-id-2]
+- command: [docker, network, rm, kafka-$UNIQUE-network]
+
+target: kafka-$UNIQUE-id-1
+tests:
+- name: Create topic "test"
+  command: ["/opt/kafka/bin/kafka-topics.sh", "--create", "--bootstrap-server", "kafka-$UNIQUE-id-1:9092", "--replication-factor", "2", "--partitions", "4", "--topic", "test"]
+  expect:
+    stdout:
+      matches: "Created topic test."
+- name: Get topics list
+  command: ["/opt/kafka/bin/kafka-topics.sh", "--list", "--bootstrap-server", "kafka-$UNIQUE-id-1:9092"]
+  expect:
+    stdout:
+      matches: "test"
+- name: Create message in test topic
+  command: ["/opt/docker-kafka/scripts/create-message-topic-test.sh", "kafka-$UNIQUE-id-1:9092,kafka-$UNIQUE-id-2:9092", "test", "test-message"]
+  expect:
+    stdout:
+      matches: "OK"
+- name: Get message from test topic
+  command: ["/opt/kafka/bin/kafka-console-consumer.sh", "--bootstrap-server", "kafka-$UNIQUE-id-1:9092,kafka-$UNIQUE-id-2:9092", "--topic", "test", "--from-beginning", "--max-messages", "1", "--timeout-ms", "5000"]
+  expect:
+    stdout:
+      matches: "test-message"
+    stderr:
+      matches: "Processed a total of 1 messages"

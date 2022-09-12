@@ -1,0 +1,106 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-spark-master
+  labels: &SparkMasterDeploymentLabels
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: spark-master
+spec:
+  selector:
+    matchLabels: *SparkMasterDeploymentLabels
+  serviceName: {{ .Release.Name }}-spark-master-svc
+  replicas: 1
+  template:
+    metadata:
+      labels: *SparkMasterDeploymentLabels
+    spec:
+      terminationGracePeriodSeconds: 180
+      containers:
+      - name: spark
+        image: "{{ .Values.spark.image.repo }}:{{ .Values.spark.image.tag }}"
+        imagePullPolicy: Always
+        env:
+        # - name: SPARK_LOCAL_IP
+        #   value: "{{ .Release.Name }}-spark-master-0" # spark-1-spark-master-svc.default.svc.cluster.local
+        - name: SPARK_LOCAL_IP
+          value: "0.0.0.0"
+        - name: SPARK_WORKLOAD
+          value: "master"
+        - name: SPARK_ENABLE_HISTORY
+          value: "true"
+        - name: SPARK_ENABLE_PROMETHEUS
+          value: "true"
+        - name: SPARK_MASTER_HOST
+          value: "{{ .Release.Name }}-spark-master-0"
+        ports:
+        - name: spark
+          containerPort: 7077
+        - name: ui
+          containerPort: 8080
+        - name: history
+          containerPort: 18080
+        volumeMounts:
+        - name: {{ .Release.Name }}-spark-master-pvc
+          mountPath: /opt/spark-events
+        - name: {{ .Release.Name }}-spark-master-apps-pvc
+          mountPath: /opt/spark-apps
+        - name: configmap
+          mountPath: /opt/spark-apps/sample_job.py
+          subPath: sample_job.py
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 30
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 30
+      {{ if .Values.metrics.exporter.enabled }}
+      - name: prometheus-to-sd
+        image: {{ .Values.metrics.image }}
+        ports:
+        - name: profiler
+          containerPort: 6060
+        command:
+        - /monitor
+        - --stackdriver-prefix=custom.googleapis.com
+        - --source=spark:http://localhost:8080/metrics/executors/prometheus
+        - --pod-id=$(POD_NAME)
+        - --namespace-id=$(POD_NAMESPACE)
+        - --monitored-resource-types=k8s
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+      {{ end }}
+      volumes:
+      - name: configmap
+        configMap:
+          name: "{{ .Release.Name }}-configmap"
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Release.Name }}-spark-master-pvc
+      labels: *SparkMasterDeploymentLabels
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: {{ .Values.spark.persistence.storageClass }}
+      resources:
+        requests:
+          storage: {{ .Values.spark.persistence.size }}
+  - metadata:
+      name: {{ .Release.Name }}-spark-master-apps-pvc
+      labels: *SparkMasterDeploymentLabels
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: {{ .Values.spark.persistence.storageClass }}
+      resources:
+        requests:
+          storage: {{ .Values.spark.persistence.size }}

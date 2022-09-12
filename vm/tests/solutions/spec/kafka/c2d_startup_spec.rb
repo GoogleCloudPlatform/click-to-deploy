@@ -28,4 +28,8 @@ describe 'C2D startup scripts should exists' do
   describe file('/opt/c2d/scripts/00-manage-swap') do
     it { should exist }
   end
+
+  describe file('/opt/c2d/scripts/01-kafka') do
+    it { should exist }
+  end
 end

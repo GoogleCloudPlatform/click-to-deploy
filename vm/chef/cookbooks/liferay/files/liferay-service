@@ -1,0 +1,19 @@
+[Unit]
+Description=Liferay Apache Tomcat Web Application Container
+After=network.target
+
+[Service]
+Type=forking
+Environment=CATALINA_PID=/opt/liferay/tomcat/tmp/tomcat.pid
+Environment='CATALINA_OPTS=-Dlog4j2.formatMsgNoLookups=true'
+ExecStart=/opt/liferay/tomcat/bin/startup.sh
+ExecStop=/opt/liferay/tomcat/bin/shutdown.sh
+
+User=liferay
+Group=liferay
+UMask=0007
+RestartSec=10
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

@@ -14,8 +14,10 @@
 
 # Remember to check if repo component update
 # is needed when changing the version.
-default['mariadb']['version'] = '1:10.5.*+maria~stretch'
+default['mariadb']['version'] = '10.7'
+default['mariadb']['apt_version'] = "1:#{default['mariadb']['version']}.*"
 
-default['mariadb']['repo']['uri'] = 'http://mirror.mva-n.net/mariadb/repo/10.5/debian'
-default['mariadb']['repo']['components'] = ['stretch', 'main']
+default['mariadb']['repo']['uri'] = 'https://ftp.icm.edu.pl/pub/unix/database/mariadb/repo/10.5/debian'
+default['mariadb']['repo']['distribution'] = 'buster'
+default['mariadb']['repo']['components'] = ['main']
 default['mariadb']['repo']['keyserver'] = 'https://mariadb.org/mariadb_release_signing_key.asc'

@@ -1,0 +1,93 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-jenkins
+  labels: &JenkinsLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: jenkins-master
+spec:
+  replicas: 1
+  selector:
+    matchLabels: *JenkinsLabels
+  serviceName: {{ .Release.Name }}-jenkins-ui
+  template:
+    metadata:
+      labels: *JenkinsLabels
+    spec:
+      initContainers:
+        - name: volume-permissions-fix
+          image: "{{ .Values.jenkins.image.repo }}:{{ .Values.jenkins.image.tag }}"
+          command: ["sh", "-c", "chown 1000:1000 /var/jenkins_home"]
+          securityContext:
+            runAsUser: 0
+          volumeMounts:
+          - name: {{ .Release.Name }}-jenkins-pvc
+            mountPath: /var/jenkins_home
+      containers:
+      - name: jenkins-master
+        image: "{{ .Values.jenkins.image.repo }}:{{ .Values.jenkins.image.tag }}"
+        ports:
+        - containerPort: 8080
+        - containerPort: 50000
+        volumeMounts:
+        - name: {{ .Release.Name }}-jenkins-pvc
+          mountPath: /var/jenkins_home
+        readinessProbe:
+          httpGet:
+            path: /login
+            port: 8080
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 2
+          failureThreshold: 5
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+        env:
+        - name: JAVA_OPTS
+          value: >-
+                -Xmx1800m
+                -Dlog4j2.formatMsgNoLookups=true
+                -Dlog4j2.disable.jmx=true
+        - name: INSTALL_MONITORING
+          value: "true"
+        - name: INSTALL_PROMETHEUS
+          value: "true"
+        resources:
+          limits:
+            memory: 2.0Gi
+          requests:
+            cpu: 100m
+            memory: 2.0Gi
+      {{ if .Values.metrics.exporter.enabled }}
+      - name: prometheus-to-sd
+        image: {{ .Values.metrics.image }}
+        command:
+        - /monitor
+        - --stackdriver-prefix=custom.googleapis.com
+        - --source=prometheus:http://localhost:8080/prometheus
+        - --pod-id=$(POD_NAME)
+        - --namespace-id=$(POD_NAMESPACE)
+        - --monitored-resource-types=k8s
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+      {{ end }}
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Release.Name }}-jenkins-pvc
+      labels: *JenkinsLabels
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      storageClassName: {{ .Values.jenkins.persistence.storageClass }}
+      resources:
+        requests:
+          storage: {{ .Values.jenkins.persistence.size }}

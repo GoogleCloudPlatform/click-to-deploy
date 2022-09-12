@@ -1,0 +1,47 @@
+#!/bin/bash -eu
+#
+# Copyright 2021 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
+
+# Default user
+readonly liferay_admin_name="admin"
+readonly liferay_admin_email="admin@liferay.com"
+readonly liferay_admin_password="${liferay_admin_password:-$(get_attribute_value "liferay-admin-password")}"
+
+# Create portal-setup-wizard.properties file
+cat << EOF > /opt/liferay/portal-setup-wizard.properties
+default.admin.password=${liferay_admin_password}
+default.admin.screen.name=${liferay_admin_name}
+default.admin.email.address.prefix=${liferay_admin_name}
+default.admin.first.name=${liferay_admin_name}
+default.admin.last.name=${liferay_admin_name}
+admin.email.from.address=${liferay_admin_email}
+admin.email.from.name=${liferay_admin_name} ${liferay_admin_name}
+company.default.web.id=liferay.com
+company.default.locale=en_US
+company.default.time.zone=UTC
+liferay.home=/opt/liferay
+setup.wizard.enabled=false
+EOF
+chown liferay:liferay /opt/liferay/portal-setup-wizard.properties
+
+# Update liferay tomcat path
+tomcat_path=$(readlink -f /opt/liferay/tomcat*)/
+sed -i "s|/opt/liferay/tomcat/|${tomcat_path}|g" /etc/systemd/system/liferay.service
+systemctl daemon-reload
+
+# Start liferay service
+systemctl start liferay

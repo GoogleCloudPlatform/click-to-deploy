@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2020 Google Inc.
+# Copyright 2021 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +13,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
 
 #######################################
 # Creates a user for Mattermost application in MYSQL database.
@@ -30,7 +32,7 @@ function create_db_user() {
 
   echo >&2 "Creating database user..."
   mysql -u root -e "CREATE USER '${db_user}'@'${db_host}' IDENTIFIED BY '${db_pwd}';"
-  mysql -u root -e "GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, CREATE TEMPORARY TABLES ON ${db_name}.* TO '${db_user}'@'${db_host}' IDENTIFIED BY '${db_pwd}';";
+  mysql -u root -e "GRANT ALL PRIVILEGES ON ${db_name}.* TO '${db_user}'@'${db_host}' IDENTIFIED BY '${db_pwd}';";
   mysql -u root -e "FLUSH PRIVILEGES"
 }
 
@@ -114,4 +116,26 @@ function setup_nginx() {
   echo >&2 "Restarting nginx..."
   # Restart nginx configuration
   systemctl restart nginx
+}
+
+#######################################
+# Await the application to be ready.
+#######################################
+function wait_for_app() {
+  local max_retries=10
+  local retry=1
+  local http_code=0
+
+  while [[ "${http_code}" -ne 200 && "${retry}" -le "${max_retries}" ]]; do
+    http_code="$(curl -s -L -o /dev/null -w "%{http_code}" http://localhost)"
+    (( retry=retry+1 ))
+    sleep 5
+  done
+
+  if [[ "${retry}" -gt "${max_retries}" ]]; then
+    echo "Max retries exceeded."
+    exit 1
+  else
+    echo "App is ready."
+  fi
 }

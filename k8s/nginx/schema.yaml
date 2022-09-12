@@ -25,9 +25,13 @@ x-google-marketplace:
           type: REPO_WITH_REGISTRY
         nginx.image.tag:
           type: TAG
-    debian9:
+    debian:
       properties:
         nginx.initImage:
+          type: FULL
+    nginx-exporter:
+      properties:
+        exporter.image:
           type: FULL
     prometheus-to-sd:
       properties:

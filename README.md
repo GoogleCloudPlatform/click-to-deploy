@@ -6,6 +6,34 @@ Source for Google Click to Deploy solutions listed on Google Cloud Marketplace.
 
 This is not an officially supported Google product.
 
+# :warning: About log4j Vulnerabilities
+
+We are constantly working on updating the scripts used in this repository to use non-impacted versions of the OSS that are used here. So updates are constanly being made in this repository.
+
+Below is the list of solutions, in this repo, currently affected by the log4j CVEs, or using a log4j version < 2.16
+
+## Virtual Machines
+
+| Solution | Notes |
+| --- | --- |
+| elasticsearch | Vulnerable |
+| logstash | Vulnerable |
+| magento | Vulnerable (uses elasticsearch) |
+| sonarqube | Vulnerable (uses elasticsearch) |
+| liferay | Vulnerable |
+
+## Kubernetes Applications
+
+| Solution | Notes |
+| --- | --- |
+| activemq | Uses log4j 1.x |
+| elastic-gke-logging | Vulnerable |
+| elasticsearch | Vulnerable |
+| kafka | Uses log4j 1.x |
+| magento |  Vulnerable (uses elasticsearch) |
+| sonarqube | Vulnerable (uses elasticsearch) |
+| zookeeper | Vulnerable (uses elasticsearch) |
+
 # Cloud Build CI
 
 This repository uses Cloud Build for continuous integration. Each type of application has its own configuration file.

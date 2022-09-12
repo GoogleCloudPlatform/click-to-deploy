@@ -142,7 +142,7 @@ export METRICS_EXPORTER_ENABLED=false
 Configure the image tag:
 
 ```shell
-export TAG=8.6
+export TAG=8.9
 export ZK_TAG=3.6
 ```
 Configure the container images:
@@ -389,7 +389,7 @@ To deploy Solr in standalone mode, run the following commands:
 APP_INSTANCE_NAME=solr-standalone
 NAMESPACE=default
 STANDALONE_MODE_ENABLED=true
-TAG="8.6"
+TAG="8.9"
 IMAGE_SOLR="marketplace.gcr.io/google/solr8"
 IMAGE_DEPLOYER="marketplace.gcr.io/google/solr/deployer:${TAG}"
 STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"

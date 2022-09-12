@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,53 +13,91 @@
 # limitations under the License.
 
 versions:
-  # Hazelcast Server
-  - dir: '3/debian9/hazelcast/3.12'
-    repo: 'hazelcast3'
-    templateSubDir: 'hazelcast'
+# Hazelcast 4 
+  - dir: '4/debian10/hazelcast/4.2'
+    repo: 'hazelcast4'
+    templateSubDir: 'hazelcast4'
     tags:
-    - '3.12.4-debian9'
-    - '3.12.4'
-    - '3.12-debian9'
-    - '3.12'
-    - '3-debian9'
-    - '3'
+    - '4.2.4-debian10'
+    - '4.2.4'
+    - '4.2-debian10'
+    - '4.2'
+    - '4-debian10'
+    - '4'
     - 'latest'
-    from: 'gcr.io/google-appengine/debian9:latest'
+    from: 'marketplace.gcr.io/google/debian10'
     packages:
       hazelcast:
-        version: '3.12.4'
-        sha1: 'b3f6c41142dbdbd9f98a72808364234fcc1c4539'
+        version: '4.2.4'
+        sha256: 'ec41b0181341e311e4d68f12dee5b700650d1f158858c1a44bae5ad0e686eb2e'
       cache_api:
         version: '1.1.1'
-        sha1: 'c56fb980eb5208bfee29a9a5b9d951aba076bd91'
       hz_eureka:
         version: '1.1.1'
       jmx_prometheus_agent:
-        version: '0.11.0'
+        version: '0.14.0'
+      log4j2:
+        version: '2.17.0'
     excludeTests:
     - tests/functional_tests/hazelcast_mancenter_test.yaml
 
-  # Hazelcast Management Center
-  - dir: '3/debian9/hazelcast-mc/3.12'
-    repo: 'hazelcast-mc3'
-    templateSubDir: 'hazelcast-mc'
+# Hazelcast Management Center 4
+  - dir: '4/debian10/hazelcast-mc/4.2021.12'
+    repo: 'hazelcast-mc4'
+    templateSubDir: 'hazelcast-mc4'
     tags:
-    - '3.12.7-debian9'
-    - '3.12.7'
-    - '3.12-debian9'
-    - '3.12'
-    - '3-debian9'
-    - '3'
+    - '4.2021.12-debian9'
+    - '4.2021.12'
+    - '4.2021-debian9'
+    - '4.2021'
+    - '4-debian9'
+    - '4'
     - 'latest'
-    from: 'gcr.io/google-appengine/debian9:latest'
+    from: 'marketplace.gcr.io/google/debian10'
     packages:
       hazelcastmc:
-        version: '3.12.7'
-        sha256: 'a12528ec4907ca03042944c84397d1bd846486c0b8099b611b30bb50c47b792a'
+        version: '4.2021.12-1'
+        sha256: 'e665ec321e7300d7bccc6fe43724cff1f7d396fb9cf13dcc5087044664f36464'
+    excludeTests:
+    - tests/functional_tests/hazelcast_test.yaml
+
+# Hazelcast 5
+  - dir: '5/debian10/hazelcast/5.1'
+    repo: 'hazelcast5'
+    templateSubDir: 'hazelcast5'
+    tags:
+    - '5.1.3-debian10'
+    - '5.1.3'
+    - '5.1-debian10'
+    - '5.1'
+    - '5-debian10'
+    - '5'
+    - 'latest'
+    from: 'marketplace.gcr.io/google/debian10'
+    packages:
+      hazelcast:
+        version: '5.1.3'
+        sha256: '92c682407e56a4f300b903c0b906bea5800fd470532b81a87991853b743c9d38'
+    excludeTests:
+    - tests/functional_tests/hazelcast_mancenter_test.yaml
+
+# Hazelcast Management Center 5
+  - dir: '5/debian10/hazelcast-mc/5.1'
+    repo: 'hazelcast-mc5'
+    templateSubDir: 'hazelcast-mc5'
+    tags:
+    - '5.1-debian10'
+    - '5.1'
+    - '5'
+    - 'latest'
+    from: 'marketplace.gcr.io/google/debian10'
+    packages:
+      hazelcastmc:
+        version: '5.1.3'
+        sha256: '40090f0ccc34a24969341025c7155e0af96e8488d152f1c43b1df502a41a83b3'
     excludeTests:
     - tests/functional_tests/hazelcast_test.yaml
 
 # Enable parallel build.
 cloudbuild:
-  enable_parallel: true
+  enable_parallel: false

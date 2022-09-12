@@ -1,0 +1,159 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-kafka
+  labels: &KafkaDeploymentLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: kafka
+spec:
+  selector:
+    matchLabels: *KafkaDeploymentLabels
+  serviceName: {{ .Release.Name }}-kafka-headless
+  {{- if not .Values.kafka.standalone }}
+  replicas: {{ .Values.kafka.replicas }}
+  {{- else }}
+  replicas: 1
+  {{- end }}
+  updateStrategy:
+        type: RollingUpdate
+  template:
+    metadata:
+      labels: *KafkaDeploymentLabels
+    spec:
+      securityContext:
+        fsGroup: 9092
+        runAsUser: 9092
+        runAsGroup: 9092
+      terminationGracePeriodSeconds: 30
+      {{- if (not .Values.kafka.standalone)}}
+      volumes:
+        - name: jaas-config
+          secret:
+            secretName: {{ .Release.Name }}-kafka-secrets
+            items:
+            - key: kafka_server_jaas.conf
+              path: kafka_server_jaas.conf
+              mode: 0555
+      {{- end}}
+      initContainers:
+        {{- if not .Values.kafka.standalone }}
+        - name: check-zk
+          image: {{ .Values.deployer.image }}
+          command:
+            - 'sh'
+            - '-c'
+            - |
+              COUNTER=0;
+              while [  $COUNTER -lt 120 ]; do
+                addr=$(nslookup -type=a {{ .Release.Name }}-zk-client | grep "Address:" | awk 'NR>1 {print $2}')
+                if [ ! -z "$addr" ]; then
+                  while read -r line; do
+                    echo $line;
+                    mode=$(echo srvr | nc $line 2181 | grep "Mode");
+                    echo $mode;
+                    if [ "$mode" = "Mode: leader" ] || [ "$mode" = "Mode: standalone" ]; then
+                      echo "Found a leader!";
+                      exit 0;
+                    fi;
+                  done <<EOF
+              $addr
+              EOF
+                fi;
+                let COUNTER=COUNTER+1;
+                sleep 2;
+              done;
+              echo "Did NOT see a ZK leader after 240 secs!";
+              exit 1;
+        {{- end }}
+      containers:
+        - name: kafka
+          image: "{{ .Values.kafka.image.repo }}:{{ .Values.kafka.image.tag }}"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: kafka-client
+              containerPort: 9092
+            - name: kafka-internal
+              containerPort: 9093
+          env:
+            - name: JAVA_OPTS
+              value: >-
+                    -Dlog4j2.formatMsgNoLookups=true
+                    -Dlog4j2.disable.jmx=true
+            - name: BROKER_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: BROKER_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: STAS_DELAY
+              value: "10"
+            - name: KAFKA_INTER_BROKER_LISTENER_NAME
+              value: "INTERNAL"
+            - name: BROKER_ID_COMMAND
+              value: "hostname | sed s/{{ .Release.Name }}-kafka-//"
+            - name: KAFKA_LISTENERS
+              value: "INTERNAL://$(BROKER_POD_IP):9093,CLIENT://$(BROKER_POD_NAME).{{ .Release.Name }}-kafka-headless.{{ .Release.Namespace }}.svc.cluster.local:9092"
+            - name: KAFKA_ADVERTISED_LISTENERS
+              value: "INTERNAL://$(BROKER_POD_IP):9093,CLIENT://$(BROKER_POD_NAME).{{ .Release.Name }}-kafka-headless.{{ .Release.Namespace }}.svc.cluster.local:9092"
+            - name: KAFKA_LOG_DIRS
+              value: "/kafka/logs"
+            - name: KAFKA_ZOOKEEPER_CONNECT
+              value: "{{ .Release.Name }}-zk-client.{{ .Release.Namespace }}.svc.cluster.local:2181"
+
+            {{- if not .Values.kafka.standalone}}
+            - name: KAFKA_OPTS
+              value: "-Djava.security.auth.login.config=/tmp/kafka_server_jaas.conf"
+            - name: KAFKA_SASL_ENABLED_MECHANISMS
+              value: "PLAIN"
+            - name: KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL
+              value: "SASL_PLAINTEXT"
+            - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+              value: "INTERNAL:PLAINTEXT,CLIENT:SASL_PLAINTEXT"
+            - name: KAFKA_AUTHORIZER_CLASS_NAME
+              value: "kafka.security.authorizer.AclAuthorizer"
+            - name: KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND
+              value: "true"
+
+            {{- else}}
+            - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+              value: "INTERNAL:PLAINTEXT,CLIENT:PLAINTEXT"
+            {{- end }}
+          livenessProbe:
+            tcpSocket:
+              port: kafka-client
+            initialDelaySeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 1
+            periodSeconds: 10
+            successThreshold: 1
+          readinessProbe:
+            tcpSocket:
+              port: kafka-client
+            initialDelaySeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 1
+            periodSeconds: 1
+            successThreshold: 1
+          volumeMounts:
+            - name: logdir
+              mountPath: /kafka
+            {{- if not .Values.kafka.standalone}}
+            - name: jaas-config
+              mountPath: /tmp
+            {{- end}}
+
+  volumeClaimTemplates:
+    - metadata:
+        name: logdir
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: {{ .Values.persistence.storageClass }}
+        resources:
+          requests:
+            storage: {{ .Values.persistence.kafka.storageSize }}

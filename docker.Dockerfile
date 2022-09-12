@@ -12,30 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM marketplace.gcr.io/google/debian9 AS build
+FROM marketplace.gcr.io/google/debian11
 
-ENV BAZEL_VERSION 0.13.0
-ENV BAZEL_ARCH linux_amd64_stripped
+ENV DOCKER_TOOLS_TAG v1.0.0
 
 RUN set -eux \
     && apt-get update \
-    && apt-get install git wget unzip python g++ -y
+    && apt-get install wget -y
 
-# Install Bazel
-RUN set -eux \
-    && wget -q -O /bazel-installer.sh "https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-installer-linux-x86_64.sh" \
-    && chmod +x /bazel-installer.sh \
-    && /bazel-installer.sh
 
 RUN set -eux \
-    && git clone https://github.com/GoogleCloudPlatform/runtimes-common.git --depth=1 \
-    && cd runtimes-common \
-    && bazel run //:gazelle \
-    && bazel build versioning/scripts/dockerfiles:dockerfiles versioning/scripts/cloudbuild:cloudbuild \
-    && cp bazel-bin/versioning/scripts/dockerfiles/${BAZEL_ARCH}/dockerfiles /bin/dockerfiles \
-    && cp bazel-bin/versioning/scripts/cloudbuild/${BAZEL_ARCH}/cloudbuild /bin/cloudbuild
-
-FROM marketplace.gcr.io/google/debian9
-
-COPY --from=build /bin/dockerfiles /bin/dockerfiles
-COPY --from=build /bin/cloudbuild /bin/cloudbuild
+    && wget https://github.com/GoogleCloudPlatform/click-to-deploy/releases/download/${DOCKER_TOOLS_TAG}/cloudbuild -O /bin/cloudbuild \
+    && wget https://github.com/GoogleCloudPlatform/click-to-deploy/releases/download/${DOCKER_TOOLS_TAG}/dockerfiles -O /bin/dockerfiles \
+    && chmod +x /bin/cloudbuild \
+    && chmod +x /bin/dockerfiles

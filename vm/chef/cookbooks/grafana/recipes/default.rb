@@ -17,7 +17,7 @@ include_recipe 'c2d-config::create-self-signed-certificate'
 apt_repository 'grafana' do
   uri node['grafana']['repo']['uri']
   components node['grafana']['repo']['components']
-  distribution false
+  distribution node['grafana']['repo']['distribution']
   key node['grafana']['repo']['key']
 end
 
@@ -27,6 +27,13 @@ apt_update 'update' do
   retry_delay 30
 end
 
-package 'grafana'
+apt_preference 'grafana' do
+  pin          "version #{node['grafana']['apt_version']}"
+  pin_priority '1000'
+end
+
+package 'grafana' do
+  :install
+end
 
 c2d_startup_script 'grafana'

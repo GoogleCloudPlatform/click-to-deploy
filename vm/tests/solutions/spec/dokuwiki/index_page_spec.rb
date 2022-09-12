@@ -16,7 +16,7 @@ require 'spec_helper'
 
 describe command('curl -L http://localhost/') do
   its(:stdout) { should match /<meta name="generator" content="DokuWiki"\/>/ }
-  its(:stdout) { should match /<a href="https:\/\/dokuwiki.org\/" title="Driven by DokuWiki" >/ }
-  its(:stdout) { should match /<p>\nYou are currently not logged in! Enter your authentication credentials below to log in. You need to have cookies enabled to log in.\n<\/p>/ }
+  its(:stdout) { should match /<span>DokuWiki!<\/span>/ }
+  its(:stdout) { should match /<h1 class="sectionedit1" id="permission_denied">Permission Denied<\/h1>/ }
   its(:exit_status) { should eq 0 }
 end

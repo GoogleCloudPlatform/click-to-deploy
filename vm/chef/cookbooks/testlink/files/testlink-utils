@@ -1,0 +1,229 @@
+#!/bin/bash -eu
+#
+# Copyright 2021 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
+
+#######################################
+# Set up PHP recommended settings.
+#######################################
+function configure_php() {
+  # Finds the current PHP version
+  local -r php_version="$(php -v | awk '/PHP [0-9]+\.[0-9]+/ {print $2}' | grep -o -P "^[0-9]+\.[0-9]+")"
+  local -r phpfpm_config="/etc/php/${php_version}/fpm/pool.d/www.conf"
+  local -r php_config="/etc/php/${php_version}/fpm/php.ini"
+
+  # Configure PHP-FPM
+  echo "security.limit_extensions = .php .html" >> "${phpfpm_config}"
+  sed -i -e "s/listen\s*=\s*.*$/listen = 127.0.0.1:9000/g" "${phpfpm_config}"
+  sed -i "s/pm.max_children = 5/pm.max_children = 5000/" "${phpfpm_config}"
+  sed -i "s/pm.start_servers = 2/pm.start_servers = 150/" "${phpfpm_config}"
+  sed -i "s/pm.min_spare_servers = 1/pm.min_spare_servers = 100/" "${phpfpm_config}"
+  sed -i "s/pm.max_spare_servers = 3/pm.max_spare_servers = 200/" "${phpfpm_config}"
+  sed -i "s/pm = dynamic/pm = ondemand/" "${phpfpm_config}"
+
+  # Configure PHP
+  sed -i "s|;date.timezone =.*|date.timezone = UTC|" "${php_config}"
+  sed -i "s|memory_limit =.*|memory_limit = 512M|" "${php_config}"
+  sed -i "s|gc_maxlifetime =.*|gc_maxlifetime = 3600|" "${php_config}"
+  sed -i "s|upload_max_filesize =.*|upload_max_filesize = 50M|" "${php_config}"
+  sed -i "s|max_file_uploads =.*|max_file_uploads = 200|" "${php_config}"
+  sed -i "s|max_execution_time =.*|max_execution_time = 120|" "${php_config}"
+  sed -i "s|post_max_size =.*|max_file_uploads = 100M|" "${php_config}"
+  echo 'sendmail_path = "/usr/sbin/ssmtp -t"' >> "${php_config}"
+
+  # Restart php-fpm service
+  systemctl restart "php${php_version}-fpm"
+}
+
+#######################################
+# Set up NGINX recommended settings.
+#######################################
+function configure_nginx() {
+  declare nginx_config="/etc/nginx/nginx.conf"
+  sed -i "s/worker_connections.*;/worker_connections 2048;/" "${nginx_config}"
+  sed -i "s/keepalive_timeout.*;/keepalive_timeout 10;/" "${nginx_config}"
+}
+
+#######################################
+# Create a user for TestLink application in MySQL database.
+# Arguments:
+#   MySQL Username to be created.
+#   MySQL Password for username created.
+#   MySQL Database Name.
+#######################################
+function setup_mysql_user() {
+  local -r db_user="$1"
+  local -r db_password="$2"
+  local -r db_name="$3"
+
+  mysql -u root -e "CREATE DATABASE ${db_name} CHARACTER SET utf8 COLLATE utf8_general_ci;"
+  mysql -u root -e "CREATE USER '${db_user}'@'localhost' IDENTIFIED BY '${db_password}';"
+  mysql -u root -e "GRANT SELECT, INSERT, UPDATE, DELETE, REFERENCES, CREATE, DROP, INDEX, ALTER, CREATE TEMPORARY TABLES ON ${db_name}.* TO '${db_user}'@'localhost' IDENTIFIED BY '${db_password}';";
+  mysql -u root -e "FLUSH PRIVILEGES;"
+}
+
+#######################################
+# Create a superuser in MySQL database.
+# Arguments:
+#   MySQL Username.
+#   MySQL Password.
+#######################################
+function create_temp_user() {
+  local -r username="$1"
+  local -r password="$2"
+  mysql -u root -e "CREATE USER '${username}'@'localhost' IDENTIFIED BY '${password}';"
+  mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO '${username}'@'localhost' WITH GRANT OPTION;"
+  mysql -u root -e "GRANT SHOW DATABASES ON *.* TO '${username}'@'localhost'"
+  mysql -u root -e "FLUSH PRIVILEGES;"
+}
+
+#######################################
+# Check if a user can connect to the database.
+# Arguments:
+#   MySQL Username.
+#   MySQL Password.
+#######################################
+function check_database_connection() {
+  local -r username="$1"
+  local -r password="$2"
+  local -r max_retries=10
+  local retries=0
+  local exit_code=999
+
+  # Temporarily disable errors while checking database
+  set +e
+
+  while [[ "${exit_code}" -ne 0 && "${retries}" -lt "${max_retries}" ]]; do
+    mysql -u "${username}" -p"${password}" \
+      -e "SHOW VARIABLES WHERE Variable_Name = 'version';" > /dev/null 2>&1
+    exit_code="$?"
+    (( retries=retries+1 ))
+  done
+
+  if [[ "${retries}" -eq "${max_retries}" ]]; then
+    echo "User cannot access. Max retries exceeded."
+    exit 1
+  else
+    echo "User connected with success."
+  fi
+
+  set -e
+}
+
+#######################################
+# Generate application database configuration file.
+# Arguments:
+#   Application MySQL username.
+#   Application MySQL password.
+#   Application MySQL database name.
+#######################################
+function generate_config_file() {
+  local -r db_user="$1"
+  local -r db_password="$2"
+  local -r db_name="$3"
+  local -r config_file="/opt/testlink/config_db.inc.php"
+
+  cat > "${config_file}" <<- EOM
+<?php
+define('DB_TYPE', 'mysql');
+define('DB_USER', '${db_user}');
+define('DB_PASS', '${db_password}');
+define('DB_HOST', 'localhost');
+define('DB_NAME', '${db_name}');
+define('DB_TABLE_PREFIX', '');
+EOM
+  chown www-data:www-data "${config_file}"
+}
+
+#######################################
+# Install TestLink database.
+# Arguments:
+#   MySQL database name.
+#   MySQL superuser database username.
+#   MySQL superuser password.
+#   MySQL TestLink username.
+#   MySQL TestLink password.
+#######################################
+function install_testlink() {
+  local -r database_name="$1"
+  local -r install_username="$2"
+  local -r install_password="$3"
+  local -r app_username="$4"
+  local -r app_password="$5"
+
+  local -a params=(
+    "isNew=1"
+    "&databasetype=mysql"
+    "&databasehost=localhost"
+    "&databasename=${database_name}"
+    "&tableprefix="
+    "&databaseloginname=${install_username}"
+    "&databaseloginpassword=${install_password}"
+    "&tl_loginname=${app_username}"
+    "&tl_loginpassword=${app_password}"
+  )
+  local -r querystring="$(echo "${params[@]}" | tr -d ' ')"
+  local -r log_file="/opt/c2d/testlink-install.log"
+
+  local response="$(curl 'http://localhost/install/installNewDB.php' \
+                    -H 'Content-Type: application/x-www-form-urlencoded' \
+                    -H 'Accept: text/html' \
+                    --data-raw "${querystring}" \
+                    --compressed \
+                    --insecure \
+                    --silent \
+                    --output "${log_file}" \
+                    --write-out "%{http_code}")"
+  if [[ "${response}" -ne 200 ]]; then
+    echo "Database install failed. Check the logs at ${log_file}."
+    exit 1
+  fi
+  echo "Database installed with success."
+}
+
+#######################################
+# Await application respond with success.
+#######################################
+function wait_for_app() {
+  local max_retries=10
+  local retry=1
+  local http_code=0
+
+  echo "Checking for app readiness..."
+
+  while [[ "${http_code}" -ne 200 && "${retry}" -le "${max_retries}" ]]; do
+    echo "Retry: ${retry}"
+    http_code="$(curl \
+                  --silent \
+                  --insecure \
+                  --location \
+                  --output /dev/null \
+                  --write-out "%{http_code}" "http://localhost/install/installCheck.php?licenseOK=on")"
+    echo "Http Code: ${http_code}"
+    (( retry=retry+1 ))
+
+    if [[ "${http_code}" -ne 200 ]]; then
+      sleep 30
+    fi
+  done
+
+  if [[ "${retry}" -gt "${max_retries}" ]]; then
+    echo "Max retries exceeded."
+    exit 1
+  else
+    echo "App is ready."
+  fi
+}

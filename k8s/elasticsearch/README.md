@@ -161,24 +161,24 @@ export METRICS_EXPORTER_ENABLED=false
 Set up the image tag:
 
 It is advised to use stable image reference which you can find on
-[Marketplace Container Registry](https://marketplace.gcr.io/google/elasticsearch).
+[Marketplace Container Registry](https://marketplace.gcr.io/google/elasticsearch7).
 Example:
 
 ```shell
-export TAG="6.3.2-20200311-092308"
+export TAG="7.10"
 ```
 
 Alternatively you can use short tag which points to the latest image for selected version.
 > Warning: this tag is not stable and referenced image might change over time.
 
 ```shell
-export TAG="6.3"
+export TAG="7.9"
 ```
 
 Configure the container images:
 
 ```shell
-export IMAGE_ELASTICSEARCH="marketplace.gcr.io/google/elasticsearch"
+export IMAGE_ELASTICSEARCH="marketplace.gcr.io/google/elasticsearch7"
 export IMAGE_INIT="marketplace.gcr.io/google/elasticsearch/ubuntu16_04:${TAG}"
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/elasticsearch/prometheus-to-sd:${TAG}"
 ```

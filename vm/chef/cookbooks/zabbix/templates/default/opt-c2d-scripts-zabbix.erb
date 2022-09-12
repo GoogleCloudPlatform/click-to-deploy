@@ -18,7 +18,8 @@
 echo 'setting RANDFILE var value to /root/.rnd'
 export RANDFILE="/root/.rnd"
 
-source /opt/c2d/c2d-utils || exit 1
+source /opt/c2d/zabbix-utils || exit 1
+
 
 set +o errexit
 passdb=$(get_attribute_value "zabbix-db-password")
@@ -48,13 +49,32 @@ if [[ ! -n "$passadmin" ]]; then
 fi
 
 while ! pg_isready; do sleep 3; done
+
 echo 'Setting passwords.'
 su - postgres -c "psql -c \"alter role zabbix with password '${passdb}'\""
-su - postgres -c "psql zabbix -c \"update users set passwd=md5('${passadmin}') where alias='Admin'\""
+su - postgres -c "psql zabbix -c \"update users set passwd=md5('${passadmin}') where username='Admin'\""
 
+echo 'Setting password in zabbix.conf.php.'
 sed -i "s@^\$DB\['PASSWORD'\] =.*@\$DB['PASSWORD'] = '$passdb';@" /etc/zabbix/web/zabbix.conf.php
-sed -i "s@^DBPassword=.*@DBPassword=$passdb@" /etc/zabbix/zabbix_server.conf
+
+echo 'Setting passwords in configs.'
+sed -i "s/^.*DBPassword=.*$/DBPassword=$passdb/" /etc/zabbix/zabbix_server.conf
+sed -i "s/^.*DBPassword=.*$/DBPassword=$passdb/" /etc/zabbix/zabbix_proxy.conf
+
+echo 'Adding system locale.'
+sed -i 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
+locale-gen
+service apache2 restart
 
 echo 'Restaring zabbix server.'
 service zabbix-server restart
+echo 'Restaring zabbix proxy.'
 service zabbix-proxy restart
+
+# Await for ports to be ready
+wait_for_server_port
+
+# Await for app be ready
+wait_for_app
+
+echo "Installation complete."

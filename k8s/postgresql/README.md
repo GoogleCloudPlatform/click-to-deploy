@@ -159,7 +159,7 @@ Alternatively you can use short tag which points to the latest image for selecte
 > Warning: this tag is not stable and referenced image might change over time.
 
 ```shell
-export TAG="9.6"
+export TAG="13.4"
 ```
 
 Configure the container images:
@@ -173,7 +173,7 @@ export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/postgresql/prometheus-t
 Generate a random password:
 
 ```shell
-export POSTGRESQL_DB_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 1 | tr -d '\n')"
+export POSTGRESQL_DB_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 1 | tr -d '\n' | base64)"
 ```
 
 Expose the Service externally:
@@ -185,9 +185,16 @@ the value to `true`.
 export EXPOSE_PUBLIC_SERVICE=false
 ```
 
+### TLS Secure Configuration
+
+By default, TLS configuration is disabled for Postgresql service. To enable this option, change the value to `true`:
+
+```shell
+export TLS_ENABLED=true
+```
 ##### Create TLS certificate for PostgreSQL
 
-> Note: You can skip this step if you have not set up external access.
+> Note: You can skip this step if you have not set up external access or TLS is disabled.
 
 1.  If you already have a certificate that you want to use, copy your
     certificate and key pair to the `/tmp/tls.crt`, and `/tmp/tls.key` files,
@@ -241,8 +248,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-helm template chart/postgresql \
-  --name "$APP_INSTANCE_NAME" \
+helm template "$APP_INSTANCE_NAME" chart/postgresql \
   --namespace "$NAMESPACE" \
   --set postgresql.serviceAccount="$POSTGRESQL_SERVICE_ACCOUNT" \
   --set postgresql.image.repo="$IMAGE_POSTGRESQL" \
@@ -254,6 +260,7 @@ helm template chart/postgresql \
   --set metrics.image="$IMAGE_METRICS_EXPORTER" \
   --set metrics.exporter.enabled="$METRICS_EXPORTER_ENABLED" \
   --set exporter.image="$IMAGE_POSTGRESQL_EXPORTER" \
+  --set tls.enabled=$TLS_ENABLED \
   --set tls.base64EncodedPrivateKey="$TLS_CERTIFICATE_KEY" \
   --set tls.base64EncodedCertificate="$TLS_CERTIFICATE_CRT" \
   > "${APP_INSTANCE_NAME}_manifest.yaml"

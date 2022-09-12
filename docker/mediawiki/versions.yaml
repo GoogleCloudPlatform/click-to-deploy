@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,39 +18,39 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 1/debian9/1.35
-  from: marketplace.gcr.io/google/php7-apache2:7.3
+- dir: 1/debian11/1.38
+  from: marketplace.gcr.io/google/php7-apache2:7.4
   packages:
     composer:
-      sha256: 24faa5bc807e399f32e9a21a33fbb5b0686df9c8850efabe2c047c2ccfb9f9cc
-      version: 2.0.9
+      sha256: 0ec0cd63115cad28307e4b796350712e3cb77db992399aeb4a18a9c0680d7de2
+      version: 2.3.9
     mediawiki:
-      major: '1.35'
-      sha512: 71afdfeaa52459fc87e135449579b65aac6ed528240050a6fb5073ab19d091584f5fdfec7a8a48f060b1ddba322243d2e00e659f7e964fbeec69f22a271d756d
-      version: 1.35.1
+      major: '1.38'
+      sha512: 0b548f3eff5eff01a4a33ee18347861a81481d45fcaf3252f9a07fc4f5423a6c9c18a11d6f014d8afc59d0f13650940af81c95b4d9e094310944b5717b7a6072
+      version: 1.38.2
   repo: mediawiki1-php7-apache
   tags:
-  - 1.35.1-debian9
-  - 1.35-debian9
-  - 1-debian9
-  - 1.35.1
-  - '1.35'
+  - 1.38.2-debian11
+  - 1.38-debian11
+  - 1-debian11
+  - 1.38.2
+  - '1.38'
   - '1'
   - latest
-- dir: 1/debian9/1.33
-  from: marketplace.gcr.io/google/php7-apache2:7.3
+- dir: 1/debian11/1.37
+  from: marketplace.gcr.io/google/php7-apache2:7.4
   packages:
     composer:
-      sha256: 24faa5bc807e399f32e9a21a33fbb5b0686df9c8850efabe2c047c2ccfb9f9cc
-      version: 2.0.9
+      sha256: 0ec0cd63115cad28307e4b796350712e3cb77db992399aeb4a18a9c0680d7de2
+      version: 2.3.9
     mediawiki:
-      major: '1.33'
-      sha512: e37280b4c14bfdae3480b8f99672da5c93761f4f80019104d5df24affe0c8447881c6ff85f32d16381ee74a3ce7a083f4dda2e0a24bd6687fbf0b41f11f0564f
-      version: 1.33.4
+      major: '1.37'
+      sha512: b92d954a3bc7d4b202ae8f43e95b8111a388fe8af4991fab468196bda035bccfd67700f873c081e922e19d17881a15d00ab44f06d60f4d78019b85c6761cab26
+      version: 1.37.4
   repo: mediawiki1-php7-apache
   tags:
-  - 1.33.4-debian9
-  - 1.33-debian9
-  - 1.33.4
-  - '1.33'
+  - 1.37.4-debian11
+  - 1.37-debian11
+  - 1.37.4
+  - '1.37'
 

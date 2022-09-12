@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2020 Google Inc.
+# Copyright 2022 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,24 +24,23 @@ readonly FRAPPE_PASSWORD="$(get_attribute_value "frappe-user-password")"
 
 # Change frappe user password.
 FRAPPE_USER="frappe"
+FRAPPE_SITE="site1.local"
 echo "${FRAPPE_USER}:${FRAPPE_PASSWORD}" | chpasswd
 
 # Change erpnext admin password.
-su - ${FRAPPE_USER} -c "cd frappe-bench && bench set-admin-password ${ERPNEXT_ADMIN_PASSWORD}"
+su - ${FRAPPE_USER} -c "cd frappe-bench && bench --site ${FRAPPE_SITE} set-admin-password ${ERPNEXT_ADMIN_PASSWORD}"
 
 # Change mysql root password.
 readonly INITIAL_PASSWORD_FILE="/mysql_initial_password"
 readonly MYSQL_INITIAL_PASSWORD="$(cat ${INITIAL_PASSWORD_FILE})"
 
 mysql --user=root --password="${MYSQL_INITIAL_PASSWORD}" --host=localhost mysql <<-EOSQL
-  UPDATE user SET PASSWORD=PASSWORD("${MYSQL_ROOT_PASSWORD}") WHERE user='root';
+  ALTER USER 'root'@'localhost' IDENTIFIED BY "${MYSQL_ROOT_PASSWORD}";
   FLUSH PRIVILEGES;
 EOSQL
 
 # Cleanup mysql initial password file.
 rm -f "${INITIAL_PASSWORD_FILE}"
-
-supervisorctl restart all
 
 # Wait until ready.
 until curl "http://localhost:80"; do

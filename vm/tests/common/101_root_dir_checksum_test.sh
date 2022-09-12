@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,6 +33,10 @@ case "${DEBIAN_VERSION}" in
     echo "e12f5739f81b08c470f20890304bf53e /root/.bashrc" >> "${ROOT_MD5}"
     echo "46438b614dcb2175148fa7e0bdc604a4 /root/.profile" >> "${ROOT_MD5}"
   ;;
+  11*)
+    echo "0a540d50c157ed0070459b82c358a05a /root/.bashrc" >> "${ROOT_MD5}"
+    echo "d68ce7c7d7d2bb7d48aeb2f137b828e4 /root/.profile" >> "${ROOT_MD5}"
+  ;;  
   *)
     failure_msg "Debian ${DEBIAN_VERSION} is not supported!"
   ;;
