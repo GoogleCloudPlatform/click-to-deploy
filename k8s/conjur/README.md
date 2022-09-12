@@ -131,7 +131,6 @@ For example:
 ```shell
 export CONJUR_TRACK=1.18
 export POSTGRESQL_TRACK=13.4
-export METRICS_EXPORTER_TAG=0.5
 ```
 
 Configure the container images:
@@ -139,7 +138,6 @@ Configure the container images:
 ```shell
 export IMAGE_CONJUR=gcr.io/ccm-ops-test-adhoc/conjur1
 export IMAGE_POSTGRESQL=marketplace.gcr.io/google/postgresql13
-export IMAGE_METRICS_EXPORTER=k8s.gcr.io/prometheus-to-sd:${METRICS_EXPORTER_TAG}
 ```
 
 Generate a random DB password:
@@ -171,15 +169,8 @@ export PUBLIC_SERVICE_AND_INGRESS_ENABLED=false
 
 (Optional) Enable Stackdriver Metrics Exporter:
 
-> **NOTE:** Your GCP project must have Stackdriver enabled. If you are using a
-> non-GCP cluster, you cannot export metrics to Stackdriver.
-
-By default, the application does not export metrics to Stackdriver. To enable
-this option, change the value to `true`.
-
-```shell
-export METRICS_EXPORTER_ENABLED=false
-```
+At the moment, the application does not support exporting Prometheus metrics and does not have any exporter. 
+Status of the related issue can be checked on the [official Github page](https://github.com/cyberark/conjur/issues/1520).
 
 ##### Create the Conjur Service Account
 
@@ -211,7 +202,7 @@ helm template "${APP_INSTANCE_NAME}" chart/keycloak \
     --set postgresql.image.tag="$POSTGRESQL_TRACK" \
     --set postgresql.persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \
     --set postgresql.persistence.size="${PSQL_PERSISTENT_DISK_SIZE}" \
-    --set keycloak.replicas="${KEYCLOAK_REPLICAS:-1}" \
+    --set conjur.replicas="${CONJUR_REPLICAS:-1}" \
     --set enablePublicServiceAndIngress="${PUBLIC_SERVICE_AND_INGRESS_ENABLED}" \
     > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```

@@ -8,11 +8,6 @@ conjur:
     password: null
   serviceAccount: null
 
-metrics:
-  image: null
-  exporter:
-    enabled: false
-
 enablePublicServiceAndIngress: false
 
 postgresql:

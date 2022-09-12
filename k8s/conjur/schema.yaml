@@ -117,12 +117,9 @@ properties:
     x-google-marketplace:
       type: GENERATED_PASSWORD
       generatedPassword:
-        length: 12
-  metrics.exporter.enabled:
-    type: boolean
-    title: Enable Stackdriver Metrics Exporter
-    description: Your GCP project must have Stackdriver enabled. Non-GCP clusters cannot export metrics to Stackdriver.
-    default: false
+        length: 16
+        includeSymbols: False
+        base64: False
 required:
 - name
 - namespace
