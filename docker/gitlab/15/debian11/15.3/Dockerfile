@@ -1,9 +1,9 @@
-FROM marketplace.gcr.io/google/debian10
+FROM marketplace.gcr.io/google/debian11
 
-ENV GITLAB_VERSION 13.12.15
-ENV DOWNLOAD_URL "https://packages.gitlab.com/gitlab/gitlab-ee/packages/debian/stretch/gitlab-ee_13.12.15-ee.0_amd64.deb/download.deb"
+ENV GITLAB_VERSION 15.3.3
+ENV DOWNLOAD_URL "https://packages.gitlab.com/gitlab/gitlab-ee/packages/debian/bullseye/gitlab-ee_15.3.3-ee.0_amd64.deb/download.deb"
 
-ENV C2D_RELEASE 13.12.15
+ENV C2D_RELEASE 15.3.3
 
 SHELL ["/bin/sh", "-c"],
 
@@ -21,6 +21,8 @@ RUN apt-get update -q \
       tzdata \
       nano \
       less \
+      openssl \
+      perl \
       jq \
     && rm -rf /var/lib/apt/lists/* \
     && sed 's/session\s*required\s*pam_loginuid.so/session optional pam_loginuid.so/g' -i /etc/pam.d/sshd
