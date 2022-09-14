@@ -167,11 +167,6 @@ By default, the Service is not exposed externally. To enable this option, change
 export PUBLIC_SERVICE_AND_INGRESS_ENABLED=false
 ```
 
-(Optional) Enable Stackdriver Metrics Exporter:
-
-At the moment, the application does not support exporting Prometheus metrics and does not have any exporter. 
-Status of the related issue can be checked on the [official Github page](https://github.com/cyberark/conjur/issues/1520).
-
 ##### Create the Conjur Service Account
 
 To create the Conjur Service Account and ClusterRoleBinding:
@@ -195,9 +190,9 @@ helm template "${APP_INSTANCE_NAME}" chart/keycloak \
     --namespace "${NAMESPACE}" \
     --set conjur.image.repo="$IMAGE_CONJUR" \
     --set conjur.image.tag="$CONJUR_TRACK" \
-    --set conjur.serviceAccount="${CONJUR_SERVICE_ACCOUNT}" \
-    --set conjur.db.password="${POSTGRESQL_PASSWORD}" \
-    --set conjur.data_key="${CONJUR_DATA_KEY}" \
+    --set conjur.serviceAccount="$CONJUR_SERVICE_ACCOUNT" \
+    --set conjur.db.password="$POSTGRESQL_PASSWORD" \
+    --set conjur.data_key="$CONJUR_DATA_KEY" \
     --set postgresql.image.repo="$IMAGE_POSTGRESQL" \
     --set postgresql.image.tag="$POSTGRESQL_TRACK" \
     --set postgresql.persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \
@@ -224,4 +219,193 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 ```
 
 To view the app, open the URL in your browser.
+
+### Open your Conjur website
+
+To get the external IP of your Conjur website, use the following command:
+
+```shell
+SERVICE_IP=$(kubectl get ingress "${APP_INSTANCE_NAME}-conjur" \
+  --namespace "${NAMESPACE}" \
+  --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+echo "https://${SERVICE_IP}/"
+```
+The command shows you the URL of your site. In case you don't have Ingress Controller and didn't set `enablePublicServiceAndIngress`, you can expose Webserver port:
+
+```shell
+kubectl expose deploy "${APP_INSTANCE_NAME}-conjur" \
+  --namespace "${NAMESPACE}" \
+  --type=LoadBalancer --name=conjur-lb
+SERVICE_IP=$(kubectl get svc conjur-lb \
+  --namespace "${NAMESPACE}" \
+  --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+echo "http://${SERVICE_IP}/"
+```
+
+# App metrics
+
+At the moment, the application does not support exporting Prometheus metrics and does not have any exporter. 
+Status of the related issue can be checked on the [official Github page](https://github.com/cyberark/conjur/issues/1520).
+
+# Scaling up or down
+
+To change the number of replicas of the `Conjur`, use the following
+command, where `REPLICAS` is your desired number of replicas:
+
+```shell
+export REPLICAS=3
+kubectl scale deployment "${APP_INSTANCE_NAME}-conjur" --namespace $NAMESPACE --replicas=$REPLICAS
+```
+
+# Backup and restore
+
+To back up the application, you must back up the database and Cojur data key.
+
+### Set up your local environment
+
+Set up environment variables to match your Conjur installation:
+
+```shell
+export APP_INSTANCE_NAME=conjur
+export NAMESPACE=default
+```
+
+## Backup your database password
+
+Use this command to see a base64-encoded version of your PostgreSQL password:
+
+```shell
+kubectl get secret $APP_INSTANCE_NAME-config-envs --namespace $NAMESPACE -o jsonpath='{.data.POSTGRES_PASSWORD}' | base64 -d
+```
+
+## Backup your data key
+
+Use this command to see a base64-encoded version of your Conjur data key:
+
+```shell
+kubectl get secret $APP_INSTANCE_NAME-config-envs --namespace $NAMESPACE -o jsonpath='{.data.CONJUR_DATA_KEY}' | base64 -d
+```
+
+### Establish the PostgreSQL connection
+
+To back up the Keycloak database, you must connect to the PostgreSQL host and port.
+Using a separate terminal, create a local proxy using the following `kubectl`
+command:
+
+```shell
+kubectl port-forward "svc/${APP_INSTANCE_NAME}-postgresql-svc" 5432 --namespace ${NAMESPACE}
+```
+
+## Backing up PostgreSQL
+
+To create the backup, you need the `postgresql-client-13` package. To install the
+package, on Debian-based distributions, run:
+
+```shell
+sudo apt-get install postgresql-client-13
+```
+To create the backup, run the following command:
+
+```shell
+pg_dump -U conjur -h 127.0.0.1 -p 5432 conjur > psql-backup.sql
+```
+
+### Restore your configuration
+
+1. Use this command to restore your data from `psql-backup.sql`:
+
+```shell
+psql -U conjur -h 127.0.0.1 -p 5432 conjur < psql-backup.sql
+```
+
+2. Update data key in the secret
+
+```shell
+export CONJUR_DATA_KEY="put your data key here"
+kubectl patch secret $APP_INSTANCE_NAME-config-envs --namespace $NAMESPACE \
+--patch="{\"data\": { \"CONJUR_DATA_KEY\": \"$(echo -n $CONJUR_DATA_KEY |base64 -w0)\" }}" -oyaml
+
+```
+
+3. Finally, restart the Conjur pods:
+
+```shell
+kubectl rollout restart deploy $APP_INSTANCE_NAME-conjur --namespace $NAMESPACE
+```
+
+# Uninstall the app
+
+## Using the Google Cloud Console
+
+- In the Cloud Console, open
+   [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
+
+- From the list of apps, click **Conjur**.
+
+- On the Application Details page, click **Delete**.
+
+## Using the command-line
+
+### Prepare your environment
+
+Set your installation name and Kubernetes namespace:
+
+```shell
+export APP_INSTANCE_NAME=conjur
+export NAMESPACE=default
+```
+
+### Delete the resources
+
+> **NOTE:** We recommend that you use a `kubectl` version that is the same
+> version as that of your cluster. Using the same versions for `kubectl` and
+> the cluster helps to avoid unforeseen issues.
+
+To delete the resources, use the expanded manifest file used for the
+installation.
+
+Run `kubectl` on the expanded manifest file:
+
+```shell
+kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
+```
+
+You can also delete the resources by using types and a label:
+
+```shell
+kubectl delete application --namespace $NAMESPACE --selector app.kubernetes.io/name=${APP_INSTANCE_NAME}
+```
+
+### Delete the persistent volumes of your installation
+
+By design, the removal of StatefulSets in Kubernetes does not remove
+PersistentVolumeClaims that were attached to their Pods. This prevents your
+installations from accidentally deleting stateful data.
+
+To remove the PersistentVolumeClaims with their attached persistent disks, run
+the following `kubectl` commands:
+
+```shell
+for pv in $(kubectl get pvc --namespace $NAMESPACE \
+  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME \
+  --output jsonpath='{.items[*].spec.volumeName}');
+do
+  kubectl delete pv/$pv --namespace $NAMESPACE
+done
+
+kubectl delete persistentvolumeclaims \
+  --namespace $NAMESPACE \
+  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
+```
+
+### Delete the GKE cluster
+
+If you don't need the deployed app or the GKE cluster, delete the cluster
+by using this command:
+
+```shell
+gcloud container clusters delete "${CLUSTER}" --zone "${ZONE}"
+```
 
