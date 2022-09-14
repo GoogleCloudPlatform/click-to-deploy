@@ -19,7 +19,7 @@ This app offers "list of resources".
 
 ## Quick install with Google Cloud Marketplace
 
-Get up and running with a few clicks! To install this Keycloak app to a
+Get up and running with a few clicks! To install this Conjur app to a
 Google Kubernetes Engine cluster via Google Cloud Marketplace, follow the
 [on-screen instructions](https://console.cloud.google.com/marketplace/details/google/conjur).
 
@@ -186,7 +186,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to your app.
 
 ```shell
-helm template "${APP_INSTANCE_NAME}" chart/keycloak \
+helm template "${APP_INSTANCE_NAME}" chart/conjur \
     --namespace "${NAMESPACE}" \
     --set conjur.image.repo="$IMAGE_CONJUR" \
     --set conjur.image.tag="$CONJUR_TRACK" \
@@ -290,7 +290,7 @@ kubectl get secret $APP_INSTANCE_NAME-config-envs --namespace $NAMESPACE -o json
 
 ### Establish the PostgreSQL connection
 
-To back up the Keycloak database, you must connect to the PostgreSQL host and port.
+To back up the Conjur database, you must connect to the PostgreSQL host and port.
 Using a separate terminal, create a local proxy using the following `kubectl`
 command:
 
