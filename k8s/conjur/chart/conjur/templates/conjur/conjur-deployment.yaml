@@ -26,7 +26,7 @@ spec:
           imagePullPolicy: Always
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: 80
               protocol: TCP
           livenessProbe:
             httpGet:
@@ -49,9 +49,4 @@ spec:
           envFrom:
           - secretRef:
               name: {{ .Release.Name }}-config-envs
-          env:
-          - name: PORT
-            value: "8080"
-          - name: DATABASE_HOST
-            value: {{ .Release.Name }}-postgresql-svc
 
