@@ -17,7 +17,7 @@ versions:
     repo: prometheus-operator0
     tags:
       - '0.59.1-debian11'
-      - '0.58.1'
+      - '0.59.1'
       - '0.59-debian11'
       - '0.59'
       - '0-debian11'
@@ -26,7 +26,7 @@ versions:
     from: marketplace.gcr.io/google/debian11
     packages:
       prometheus-operator:
-        version: '0.59.0'
+        version: '0.59.1'
   - dir: '0/0.54'
     repo: prometheus-operator0
     tags:
