@@ -31,7 +31,7 @@ steps:
 
 artifacts:
   objects:
-    location: 'gs://$PROJECT_ID-c2d/'
+    location: 'gs://$PROJECT_ID/'
     paths: ['/workspace/cloudbuild', '/workspace/dockerfiles', '/workspace/cloudbuild_$TAG_NAME', '/workspace/dockerfiles_$TAG_NAME']
 
 availableSecrets:
