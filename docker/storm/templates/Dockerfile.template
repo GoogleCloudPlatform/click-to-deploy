@@ -43,6 +43,16 @@ RUN apt-get update \
 # Verify that gosu binary work
     gosu nobody true
 
+# Download and install latest maven verison
+RUN curl -o maven.tar.gz https://dlcdn.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz \
+  && tar -xvf maven.tar.gz \
+  && mkdir -p /opt/maven/ \
+  && mv apache-maven-*/* /opt/maven/ \
+  && rm -f maven.tar.gz \
+  && M2_HOME='/opt/maven' \
+  && PATH="$M2_HOME/bin:$PATH"
+RUN update-alternatives --install "/usr/bin/mvn" "mvn" "/opt/maven/bin/mvn" 1
+
 # Set default version to Python 3
 RUN update-alternatives --install "/usr/bin/python" "python" "$(which python3)" 1
 
