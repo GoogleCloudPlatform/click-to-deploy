@@ -20,8 +20,6 @@ versions:
   packages:
     gogs:
       version: 0.12.10
-    gosu:
-      version: 1.14
   repo: gogs0
   tags:
   - '0.12.10-debian11'

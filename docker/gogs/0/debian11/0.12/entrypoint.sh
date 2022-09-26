@@ -2,7 +2,7 @@
 
 prepare_gogs_config() {
     # create app.ini config 
-    cat /opt/gogs/app.ini.env | \
+    cat /app/gogs/app.ini.env | \
     envsubst > /data/gogs/conf/app.ini
 }
 
@@ -29,5 +29,5 @@ prepare_gogs_config
 if [ $# -gt 0 ];then
     exec "$@"
 else
-    exec /opt/gogs/gogs web
+    exec /app/gogs/gogs web
 fi

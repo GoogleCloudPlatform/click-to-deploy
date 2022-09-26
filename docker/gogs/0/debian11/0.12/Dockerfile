@@ -8,8 +8,7 @@ ENV GOGS_DB_USER root
 ENV GOGS_DB_PASSWORD ${1:+1}
 ENV GOGS_SECRET_KEY ChangeMe
 
-COPY app.ini.env /opt/gogs/
-COPY entrypoint.sh /usr/local/bin/
+WORKDIR /app/gogs
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends curl git ca-certificates rsync sqlite3 gettext-base \
@@ -17,16 +16,13 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-ENV GOSU_VERSION 1.14
-ARG GOSU_DIST=https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-amd64
-ADD $GOSU_DIT /usr/sbin/gosu
-RUN chmod a+x /usr/sbin/gosu
-
 ENV GOGS_VERSION 0.12.10
 ARG GOGS_DIST=https://github.com/gogs/gogs/releases/download/v${GOGS_VERSION}/gogs_${GOGS_VERSION}_linux_amd64.tar.gz
 ADD $GOGS_DIST /tmp/gogs.tar.gz
-RUN (tar -xvf /tmp/gogs.tar.gz -C /opt/ && rm /tmp/gogs.tar.gz) || true
-WORKDIR /opt/gogs
+RUN (tar -xvf /tmp/gogs.tar.gz -C /app/ && rm /tmp/gogs.tar.gz) || true
+
+COPY app.ini.env /app/gogs/
+COPY entrypoint.sh /usr/local/bin/
 
 RUN groupadd -g 1000 git \
     && useradd -m -u 1000 -g git -m -s /bin/bash -d /data/git git \
@@ -40,4 +36,4 @@ VOLUME ["/data", "/backup"]
 EXPOSE 22 3000
 
 ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
-CMD [ "/opt/gogs/gogs", "web" ]
+CMD [ "/app/gogs/gogs", "web" ]
