@@ -1,12 +1,12 @@
-#conjur
+#gogs
 
-Container solution for Conjur.
-Learn more about Conjur in [official documentation](https://www.conjur.org/get-started/quick-start/oss-environment/).
+Container solution for Gogs.
+Learn more about Gogs in [official documentation](https://gogs.io/docs/installation/configuration_and_run).
 
 ## Upstream
 
 Build instruction for docker containers partially copied from:
-(https://github.com/cyberark/conjur/blob/master/Dockerfile)
+(https://github.com/gogs/gogs/blob/main/Dockerfile)
 
 ## Disclaimer
 
@@ -14,10 +14,10 @@ This is not an official Google product.
 
 # <a name="about"></a>About
 
-This image contains an installation of Conjur.
+This image contains an installation of Gogs.
 
 For more information, see the
-[Official Image Marketplace Page](https://console.cloud.google.com/marketplace/product/google/conjur1).
+[Official Image Marketplace Page](https://console.cloud.google.com/marketplace/product/google/gogs0).
 
 ### Prerequisites
 
@@ -29,16 +29,17 @@ gcloud auth configure-docker
 ### Pull command
 
 ```shell
-docker -- pull marketplace.gcr.io/google/conjur1
+docker -- pull marketplace.gcr.io/google/gogs0
 ```
 
-Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/docker/conjur/1/debian11/1.18/)
+Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/docker/gogs/0/debian11/0.12/)
 =======
 
 # <a name="table-of-contents"></a>Table of Contents
 * [Using Docker](#using-docker)
-  * [Running Conjur](#running-conjur-docker)
-    * [Running Conjur with PostgreSQL](#Runnung-Conjur-with-PostgreSQL)
+  * [Running Gogs](#running-gogs-docker)
+    * [Running Gogs standalone](#Runnung-Gogs-standalone)
+    * [Running Gogs with PostgreSQL](#Runnung-Gogs-with-PostgreSQL)
     * [Use a persistent data volume docker](#Use-a-persistent-data-volume)
 * [References](#references)
   * [Ports](#references-ports)
@@ -50,7 +51,7 @@ Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlat
 Consult [Marketplace container documentation](https://cloud.google.com/marketplace/docs/container-images)
 for additional information about setting up your Docker environment.
 
-## <a name="running-conjur-docker"></a>Running Conjur
+## <a name="running-gogs-docker"></a>Running Gogs
 
 This section describes how to spin up an Tikv service using this image.
 

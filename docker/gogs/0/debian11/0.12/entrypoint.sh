@@ -13,13 +13,6 @@ create_volume_subfolder() {
         # Modify the owner of /data dir, make $USER(git) user have permission to create sub-dir in /data.
         chown -R "$USER:$USER" /data
     fi
-
-    # Create VOLUME subfolder
-    for f in /data/gogs/data /data/gogs/conf /data/gogs/log /data/git /data/ssh; do
-        if [ ! -d $f ]; then
-            mkdir -p $f
-        fi
-    done
 }
 
 create_volume_subfolder

@@ -24,13 +24,17 @@ RUN (tar -xvf /tmp/gogs.tar.gz -C /app/ && rm /tmp/gogs.tar.gz) || true
 COPY app.ini.env /app/gogs/
 COPY entrypoint.sh /usr/local/bin/
 
-RUN groupadd -g 1000 git \
-    && useradd -m -u 1000 -g git -m -s /bin/bash -d /data/git git \
+RUN groupadd -g 1000 git && useradd -m -u 1000 -g git -m -s /bin/bash -d /data/git git
+
+RUN mkdir -p /data/gogs/data \
+    && mkdir /data/gogs/conf \
+    && mkdir /data/gogs/logs \
+    && mkdir /data/git/gogs-repositories \ 
     && chown -R git:git /data
 
-ENV C2D_RELEASE 0.12.10
-
 USER git
+
+ENV C2D_RELEASE 0.12.10
 
 VOLUME ["/data", "/backup"]
 EXPOSE 22 3000
