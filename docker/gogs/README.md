@@ -69,14 +69,13 @@ services:
     image: marketplace.gcr.io/google/gogs0
     ports:
       - "3000:3000"
-    volumes:
-      - "gogs-data:/data/gogs"
-      - "git-repo:/data/git/gogs-repositories"
-volumes:
-    gogs-data:
-    git-repo:
 ```
 
+Or you can use `docker run` directly:
+
+```shell
+docker run --name gogs -p 3000:3000 -d marketplace.gcr.io/google/gogs0
+```
 
 ### <a name="Runnung-Gogs-with-PostgreSQL"></a>Running Conjur with PostgreSQL
 
@@ -89,21 +88,25 @@ services:
   postgres:
     image: marketplace.gcr.io/google/postgresql13
     environment:
-      POSTGRES_USER: conjur
-      POSTGRES_PASSWORD: conjur
-      POSTGRES_DB: conjur
+      POSTGRES_USER: gogs
+      POSTGRES_PASSWORD: gogs
+      POSTGRES_DB: gogs
     restart: always
 
-  conjur:
-    image: marketplace.gcr.io/google/conjur1
-    container_name: conjur_server
+  gogs:
+    container_name: gogs
+    restart: always
+    image: gogs-test
     environment:
-      DATABASE_URL: postgres://conjur:conjur@postgres/conjur
-    depends_on:
-    - postgres
-    restart: on-failure
+      GOGS_DB_TYPE: postgres
+      GOGS_DB_HOST: postgres:5432
+      GOGS_DB_NAME: gogs
+      GOGS_DB_USER: gogs
+      GOGS_DB_PASSWORD: gogs
     ports:
-      - 8080:80
+      - "3000:3000"
+    depends_on:
+      - postgres
 ```
 
 ### <a name="use-a-persistent-data-volume-docker"></a>Use a persistent data volume
@@ -115,27 +118,35 @@ services:
   postgres:
     image: marketplace.gcr.io/google/postgresql13
     environment:
-      POSTGRES_USER: conjur
-      POSTGRES_PASSWORD: conjur
-      POSTGRES_DB: conjur
+      POSTGRES_USER: gogs
+      POSTGRES_PASSWORD: gogs
+      POSTGRES_DB: gogs
     volumes:
       - postgres-db-volume:/var/lib/postgresql/data
    restart: always
 
-  conjur:
-    image: marketplace.gcr.io/google/conjur1
-    container_name: conjur_server
+  gogs:
+    container_name: gogs
+    restart: always
+    image: gogs-test
     environment:
-      DATABASE_URL: postgres://conjur:conjur@postgres/conjur
-    depends_on:
-    - postgres
-    restart: on-failure
+      GOGS_DB_TYPE: postgres
+      GOGS_DB_HOST: postgres:5432
+      GOGS_DB_NAME: gogs
+      GOGS_DB_USER: gogs
+      GOGS_DB_PASSWORD: gogs
     ports:
-      - 8080:80
+      - "3000:3000"
+    volumes:
+      - "gogs-data:/data/gogs"
+      - "git-repo:/data/git/gogs-repositories"
+    depends_on:
+      - postgres
 
 volumes:
   postgres-db-volume:
-
+  gogs-data:
+  git-repo:
 ```
 
 # <a name="references"></a>References
@@ -146,15 +157,14 @@ This is the port exposed by the container image.
 
 | **Port**  | **Description**  |
 | :-------- | :--------------- |
-| TCP 80    | Conjur HTTP port |
+| TCP 3000    | Gogs HTTP port |
 
 ## <a name="references-environment-variables"></a>Environment Variables
 
 These are the environment variables understood by the container image.
 | **Variable**    | **Description**                                                                                  |
 | :-------------- | :----------------------------------------------------------------------------------------------- |
-| DATABASE_URL    | Postgres connection string in the format `postgres://username[:password]@database[:port]/dbname` |
-| CONJUR_DATA_KEY | 32 bytes, base64 encrypted. Can be generated with the `openssl rand -base64 32` command          |
+|     |  |
 
 ## <a name="references-volumes"></a>Volumes
 

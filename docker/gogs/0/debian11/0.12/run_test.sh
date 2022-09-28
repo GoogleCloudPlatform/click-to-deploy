@@ -13,7 +13,7 @@ else
 fi
 
 echo "Step 3. Create testrepo"
-curl -u "testuser:testpassword" -H "Content-Type: application/json"  -d "{\"Name\": \"testrepo\"}" localhost:3000/api/v1/admin/users/testuser/repos/
+curl -u "testuser:testpassword" -H "Content-Type: application/json"  -d "{\"Name\": \"testrepo\"}" localhost:3000/api/v1/admin/users/testuser/repos/ && echo
 
 echo "Step 4. Ger repo info"
 export TEST_REPO=$(curl -s -u "testuser:testpassword" localhost:3000/api/v1/repos/testuser/testrepo/|jq -r .clone_url)
@@ -24,6 +24,6 @@ else
   echo "Test repo clone url is $TEST_REPO"
 fi
 
-echo "Step 7. Clone test repo"
+echo "Step 5. Clone test repo"
 git clone $TEST_REPO /tmp/testrepo/
 
