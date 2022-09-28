@@ -4,7 +4,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#      http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,35 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 cloudbuild:
   enable_parallel: false
+  machineType: 'E2_HIGHCPU_32'
 versions:
-- dir: 0/debian11/0.32
-  from: marketplace.gcr.io/google/debian11
+- dir: 5/debian11/5.3
+  from: marketplace.gcr.io/google/debian11:latest
   packages:
-    falco:
-      version: 0.32.2
-  repo: falco0
+    tikv:
+      version: 5.3.2
+    pd:
+      version: 5.3.2
+    golang:
+      version: 1.16
+  repo: tikv5
   tags:
-  - 0.32.2-debian11
-  - 0.32-debian11
-  - 0-debian11
-  - 0.32.2
-  - '0.32'
-  - '0'
-  - latest
-- dir: exporter
-  from: marketplace.gcr.io/google/debian11
-  packages:
-    falco_exporter:
-      sha256: cda8d6c60c240c73c28ed0d4e81cb7b52808dcf0358aec41fddc93a30d1e68b7
-      version: 0.7.0
-  repo: falco-exporter0
-  tags:
-  - 0.7.0
-  - '0.7'
-  - '0'
-  - latest
-  templateSubDir: exporter
-
+  - '5.3.2-debian11'
+  - '5.3-debian11'
+  - '5-debian11'
+  - '5.3.2'
+  - '5.3'
+  - '5'
+  - 'latest'
