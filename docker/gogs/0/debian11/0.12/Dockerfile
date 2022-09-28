@@ -7,11 +7,13 @@ ENV GOGS_DB_NAME gogs
 ENV GOGS_DB_USER root
 ENV GOGS_DB_PASSWORD ${1:+1}
 ENV GOGS_SECRET_KEY ChangeMe
+ENV GOGS_DOMAIN localhost
+ENV GOGS_EXTERNAL_URL http://localhost:3000/
 
 WORKDIR /app/gogs
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends curl git ca-certificates rsync sqlite3 gettext-base \
+    && apt-get install -y --no-install-recommends curl git ca-certificates rsync sqlite3 gettext-base jq \
     && apt-get autoremove -yqq --purge \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
@@ -22,7 +24,7 @@ ADD $GOGS_DIST /tmp/gogs.tar.gz
 RUN (tar -xvf /tmp/gogs.tar.gz -C /app/ && rm /tmp/gogs.tar.gz) || true
 
 COPY app.ini.env /app/gogs/
-COPY entrypoint.sh /usr/local/bin/
+COPY entrypoint.sh run_test.sh /usr/local/bin/
 
 RUN groupadd -g 1000 git && useradd -m -u 1000 -g git -m -s /bin/bash -d /data/git git
 

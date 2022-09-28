@@ -55,7 +55,30 @@ for additional information about setting up your Docker environment.
 
 This section describes how to spin up an Tikv service using this image.
 
-### <a name="Runnung-Conjur-with-PostgreSQL"></a>Running Conjur with PostgreSQL
+### <a name="Runnung-Gogs-standalone"></a>Running Gogs standalone
+
+Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
+
+```yaml
+---
+version: '3'
+services:
+  gogs:
+    container_name: gogs
+    restart: always
+    image: marketplace.gcr.io/google/gogs0
+    ports:
+      - "3000:3000"
+    volumes:
+      - "gogs-data:/data/gogs"
+      - "git-repo:/data/git/gogs-repositories"
+volumes:
+    gogs-data:
+    git-repo:
+```
+
+
+### <a name="Runnung-Gogs-with-PostgreSQL"></a>Running Conjur with PostgreSQL
 
 Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
 
