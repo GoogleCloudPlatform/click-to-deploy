@@ -23,7 +23,7 @@ gcloud auth configure-docker
 ```shell
 docker -- pull marketplace.gcr.io/google/activemq5
 ```
-Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/docker/activemq/5/debian9/5.16).
+Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/docker/activemq/5/debian9/5.17).
 =======
 
 # <a name="table-of-contents"></a>Table of Contents
@@ -61,7 +61,7 @@ version: '2'
 services:
   activemq:
     container_name: activemq
-    image: marketplace.gcr.io/google/activemq5:5.16
+    image: marketplace.gcr.io/google/activemq5
     environment:
       - ACTIVEMQ_ADMIN_PASSWORD=some-password
     ports:
@@ -85,7 +85,7 @@ docker run -e ACTIVEMQ_ADMIN_PASSWORD="some-password" \
     -p 61614:61614 \
     -p 8161:8161 \
     -v $PWD/data/:/opt/activemq/data \
-    marketplace.gcr.io/google/activemq5:5.16
+    marketplace.gcr.io/google/activemq5
 ```
 Default admin username is `admin`
 
