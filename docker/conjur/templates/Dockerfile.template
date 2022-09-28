@@ -67,8 +67,8 @@ RUN find / -name httpclient -type d -exec find {} -name *.pem -type f -delete \;
 RUN ln -sf /opt/conjur-server/bin/conjurctl /usr/local/bin/ \
     && echo ${CONJUR_APP_VERSION} > ./VERSION
 
-#install conjur-cli
-RUN gem install conjur-cli -v ${CONJUR_CLI_VERSION}
+#install conjur-cli and remove xdg due to the license restrictions
+RUN gem install conjur-cli -v ${CONJUR_CLI_VERSION} && gem uninstall xdg -x -I
 
 ENV RAILS_ENV production
 

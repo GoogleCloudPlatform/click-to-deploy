@@ -2,6 +2,7 @@
 
 echo "Step 1. Create admin"
 ADMIN_KEY=$(conjurctl account create myConjurAccount|tail -n 1|sed 's/API key for admin: //')
+gem install xdg -v 2.2.3 >> /dev/null
 echo "Admin key is $ADMIN_KEY"
 
 echo "Step 2. Login with admin API key"
@@ -30,4 +31,5 @@ if [ "$GET_VAR" != "1234567890" ];then
 else
   echo "secretVar is $GET_VAR"
 fi
+gem uninstall xdg -x -I >> /dev/null
 
