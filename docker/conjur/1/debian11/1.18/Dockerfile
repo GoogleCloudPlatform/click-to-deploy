@@ -12,7 +12,6 @@ ENV DEBIAN_FRONTEND=noninteractive \
     SSL_CERT_DIRECTORY=/opt/conjur/etc/ssl
 
 ENV CONJUR_APP_VERSION=1.18.1
-ENV CONJUR_CLI_VERSION=6.2.6
 ENV RUBY_VERSION=3.0.0
 ENV OPENSSL_FIPS_ENABLED "false"
 
@@ -30,6 +29,7 @@ RUN apt-get update \
     gnupg2 \
     procps \
     libpq-dev \
+    jq \
     -y --no-install-recommends \
     && apt-get autoremove -yqq --purge \
     && apt-get clean \
@@ -62,9 +62,6 @@ RUN find / -name httpclient -type d -exec find {} -name *.pem -type f -delete \;
 
 RUN ln -sf /opt/conjur-server/bin/conjurctl /usr/local/bin/ \
     && echo ${CONJUR_APP_VERSION} > ./VERSION
-
-#install conjur-cli and remove xdg due to the license restrictions
-RUN gem install conjur-cli -v ${CONJUR_CLI_VERSION} && gem uninstall xdg -x -I
 
 ENV RAILS_ENV production
 
