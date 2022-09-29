@@ -25,7 +25,7 @@ ARG gid=1000
 
 RUN set -ex \
   && apt-get --allow-releaseinfo-change update \
-  && apt-get -y install default-jdk ca-certificates wget openssl\
+  && apt-get -y install default-jdk ca-certificates wget openssl procps \
   && rm -rf /var/lib/apt/lists/*
 
 # ActiveMQ run with user `activemq`, uid = 1000.
