@@ -64,8 +64,10 @@ FROM {{ .From }}
 
 ENV PD_ENDPOINT 127.0.0.1:2379
 
+#fix security issues
 RUN apt-get update \
-    && apt-get install --no-install-recommends -yqq curl openssl \
+    && apt-get install --no-install-recommends -yqq \
+    curl openssl zlib1g libgnutls30 libc6 libc-bin libtirpc3 libtirpc-common libpcre2-8-0 libssl1.1 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
