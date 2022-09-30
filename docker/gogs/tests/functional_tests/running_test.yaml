@@ -20,28 +20,20 @@ setup:
   - '--net'
   - 'testbridge-$UNIQUE-id'
   - '--name'
-  - 'some-keycloak-$UNIQUE-id'
-  - '-e'
-  - 'KEYCLOAK_ADMIN=admin'
-  - '-e'
-  - 'KEYCLOAK_ADMIN_PASSWORD=admin'
-  - '-e'
-  - 'KC_DB=dev-mem'
-  - '-d'
+  - 'some-gogs-$UNIQUE-id'
   - '$IMAGE'
-  - 'start-dev'
-- command: [sleep, '45s']
+- command: [sleep, '15s']
 
 teardown:
-- command: [docker, stop, some-keycloak-$UNIQUE-id]
-- command: [docker, rm, some-keycloak-$UNIQUE-id]
+- command: [docker, stop, some-gogs-$UNIQUE-id]
+- command: [docker, rm, some-gogs-$UNIQUE-id]
 - command: [docker, network, rm, testbridge-$UNIQUE-id]
 
 target: some-keycloak-$UNIQUE-id
 tests:
-- name: Test health status
-  command: [curl, -s, -L, 'http://localhost:8080/realms/master']
+- name: Run test script
+  command: [ "/usr/local/bin/run_test.sh" ]
   expect:
-    stdout:
-      matches: '"realm":"master"'
+    exitCode:
+      equals: 0
 
