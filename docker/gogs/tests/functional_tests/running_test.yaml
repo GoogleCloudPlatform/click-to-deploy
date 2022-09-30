@@ -21,6 +21,7 @@ setup:
   - 'testbridge-$UNIQUE-id'
   - '--name'
   - 'some-gogs-$UNIQUE-id'
+  - '-d'
   - '$IMAGE'
 - command: [sleep, '15s']
 
