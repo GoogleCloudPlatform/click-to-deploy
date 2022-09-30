@@ -24,8 +24,6 @@ setup:
   - '-d'
   - '$IMAGE'
 - command: [sleep, '15s']
-- command: [docker, logs, some-gogs-$UNIQUE-id]
-- command: [docker, exec, some-gogs-$UNIQUE-id, /usr/local/bin/run_test.sh]
 
 teardown:
 - command: [docker, stop, some-gogs-$UNIQUE-id]
@@ -37,6 +35,10 @@ tests:
 - name: Run test script
   command: [ "/usr/local/bin/run_test.sh" ]
   expect:
-    exitCode:
-      equals: 0
+    stdout:
+      matches: 'Test user name is testuser'
+    stdout:
+      matches: 'Test repo clone url is http://localhost:3000/testuser/testrepo.git'
+    stdout:
+      matches: 'You appear to have cloned an empty repository'
 

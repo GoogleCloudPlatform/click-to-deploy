@@ -25,5 +25,5 @@ else
 fi
 
 echo "Step 5. Clone test repo"
-git clone $TEST_REPO /tmp/testrepo/
+git clone $TEST_REPO /tmp/testrepo/ 2>&1
 
