@@ -29,7 +29,7 @@ teardown:
 - command: [docker, rm, some-gogs-$UNIQUE-id]
 - command: [docker, network, rm, testbridge-$UNIQUE-id]
 
-target: some-keycloak-$UNIQUE-id
+  target: some-gogs-$UNIQUE-id
 tests:
 - name: Run test script
   command: [ "/usr/local/bin/run_test.sh" ]
