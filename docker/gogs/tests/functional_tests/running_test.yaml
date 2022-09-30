@@ -24,6 +24,8 @@ setup:
   - '-d'
   - '$IMAGE'
 - command: [sleep, '15s']
+- command: [docker, logs, some-gogs-$UNIQUE-id]
+- command: [docker, exec, some-gogs-$UNIQUE-id, /usr/local/bin/run_test.sh]
 
 teardown:
 - command: [docker, stop, some-gogs-$UNIQUE-id]
