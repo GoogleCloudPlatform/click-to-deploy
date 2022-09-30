@@ -162,11 +162,27 @@ This is the port exposed by the container image.
 ## <a name="references-environment-variables"></a>Environment Variables
 
 These are the environment variables understood by the container image.
-| **Variable**    | **Description**                                                                                  |
-| :-------------- | :----------------------------------------------------------------------------------------------- |
-|     |  |
+| **Variable**      | **Description**                                            |
+| :---------------- | :--------------------------------------------------------- |
+| GOGS_CUSTOM       | Path to the Gogs data folder                               |
+| GOGS_DB_TYPE      | Used DB type - internal `sqlite3` or `postgres`.           |
+| GOGS_DB_HOST      | Connection string in the format `dbhostname:port`          |
+| GOGS_DB_NAME      | DB name                                                    |
+| GOGS_DB_USER      | DB username                                                |
+| GOGS_DB_PASSWORD  | DB password                                                |
+| GOGS_SECRET_KEY   | Secret key for encrypting internal data                    |
+| GOGS_DOMAIN       | Gogs domain, `localhost` by default                        |
+| GOGS_EXTERNAL_URL | Gogs full external url, `http://localhost:3000` by default |
+
 
 ## <a name="references-volumes"></a>Volumes
 
-Conjur doesn't store any files, instead you should persist your PostgreSQL database.
+These are the filesystem paths used by the container image.
+
+| **Path**     | **Description**      |
+| :----------- | :------------------- |
+| /data/gogs   | Gogs config and logs |
+| /data/git    | Git repositories     |
+| /backup      | Gogs backups         |
+
 
