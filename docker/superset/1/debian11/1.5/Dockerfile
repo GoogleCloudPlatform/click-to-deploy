@@ -33,6 +33,7 @@ RUN groupadd supergroup && \
     pip install psycopg2-binary && \
     pip install pillow && \
     pip install mysqlclient && \
+    pip install pybigquery && \
     pip install statsd && \
     pip install statsd-client
 

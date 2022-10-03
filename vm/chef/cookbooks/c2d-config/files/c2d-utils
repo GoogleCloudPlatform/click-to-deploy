@@ -133,9 +133,7 @@ function check_rtc_var_presence() {
 function get_rtc_var_text() {
   local -r rtc_name="$1"
   local -r var_name="$2"
-  read_rtc_var "${rtc_name}" "${var_name}" |
-    python -c 'import json,sys; o=json.load(sys.stdin); print o["text"];'
-
+  read_rtc_var "${rtc_name}" "${var_name}" | jq -r '.text'
 }
 
 function set_rtc_var_text() {
