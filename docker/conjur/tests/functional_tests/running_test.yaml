@@ -1,0 +1,60 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+setup:
+- command: [docker, network, create, -d, bridge, testbridge-$UNIQUE-id]
+- command:
+  - 'docker'
+  - 'run'
+  - '--net'
+  - 'testbridge-$UNIQUE-id'
+  - '--name'
+  - 'some-postgres-$UNIQUE-id'
+  - '-e'
+  - 'POSTGRES_USER=conjur'
+  - '-e'
+  - 'POSTGRES_PASSWORD=conjur'
+  - '-e'
+  - 'POSTGRES_DB=conjur'
+  - '-d'
+  - 'marketplace.gcr.io/google/postgresql13'
+- command: [sleep, '20s']
+- command:
+  - 'docker'
+  - 'run'
+  - '--net'
+  - 'testbridge-$UNIQUE-id'
+  - '--name'
+  - 'some-conjur-$UNIQUE-id'
+  - '-e'
+  - 'DATABASE_URL=postgres://conjur:conjur@some-postgres-$UNIQUE-id/conjur'
+  - '-e'
+  - 'CONJUR_DATA_KEY=ZaJdUUf+IZbYt80MyUdOfEZLjKF006n0xf8roGU7kcQ='
+  - '-d'
+  - '$IMAGE'
+- command: [sleep, '20s']
+
+teardown:
+- command: [docker, stop, some-conjur-$UNIQUE-id, some-postgres-$UNIQUE-id]
+- command: [docker, rm, some-conjur-$UNIQUE-id, some-postgres-$UNIQUE-id]
+- command: [docker, network, rm, testbridge-$UNIQUE-id]
+
+target: some-conjur-$UNIQUE-id
+tests:
+- name: Run test script
+  command: [ "/usr/local/bin/run_test.sh" ]
+  expect:
+    exitCode:
+      equals: 0
+
