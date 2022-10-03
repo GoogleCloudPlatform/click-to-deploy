@@ -41,7 +41,7 @@ spec:
             - |
               set -euo pipefail
               flags=()
-              {{- if eq .Values.falco.gVisor }}
+              {{- if .Values.falco.gVisor -}}
               # Check if gVisor is configured on the node.
               if [[ -f /host/run/containerd/runsc/config.toml ]]; then
                 echo Configuring Falco+gVisor integration.
