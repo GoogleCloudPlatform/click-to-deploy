@@ -8,12 +8,12 @@ APP_ID ?= $(CHART_NAME)
 WAIT_FOR_READY_TIMEOUT := 600
 VERIFY_WAIT_TIMEOUT = 1800
 
-SOURCE_REGISTRY ?= gcr.io/ccm-ops-test-adhoc
+SOURCE_REGISTRY ?= marketplace.gcr.io/google
 
 TRACK ?= 5.3
 METRICS_EXPORTER_TAG ?= v0.5.1
 
-IMAGE_TIKV ?= gcr.io/ccm-ops-test-adhoc/tikv5:$(TRACK)
+IMAGE_TIKV ?= $(SOURCE_REGISTRY)/tikv5:$(TRACK)
 
 # Main image
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_TIKV))

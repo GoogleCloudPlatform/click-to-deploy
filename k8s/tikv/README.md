@@ -1,7 +1,7 @@
 # Overview
 
 TiKV is an open source distributed Key-Value database which is based on the design of Google Spanner and HBase, 
-but it is much simpler without dependency on any distributed file system. 
+but it is simpler without dependency on any distributed file system. 
 It has primary features including Geo-Replication, Horizontal scalability, Consistent distributed transactions, Coprocessor support.
 
 ## About Google Click to Deploy
@@ -115,7 +115,7 @@ export TIKV_PERSISTENT_DISK_SIZE="2Gi"
 Set up the image tag:
 
 It is advised to use a stable image reference, which you can find on:
-- [TiKV - Marketplace Container Registry](https://gcr.io/ccm-ops-test-adhoc/tikv5).
+- [TiKV - Marketplace Container Registry](https://marketplace.gcr.io/google/tikv5).
 For example:
 
 ```shell
@@ -126,7 +126,7 @@ export METRICS_EXPORTER_TAG=0.5
 Configure the container images:
 
 ```shell
-export IMAGE_TIKV=gcr.io/ccm-ops-test-adhoc/tikv5
+export IMAGE_TIKV=marketplace.gcr.io/google/tikv5
 export IMAGE_METRICS_EXPORTER=k8s.gcr.io/prometheus-to-sd:${METRICS_EXPORTER_TAG}
 ```
 
@@ -156,13 +156,13 @@ expanded manifest file for future updates to your app.
 ```shell
 helm template "${APP_INSTANCE_NAME}" chart/tikv \
     --namespace "${NAMESPACE}" \
-    --set tikv.image.repo="$IMAGE_TIKV" \
-    --set tikv.image.tag="$TIKV_TRACK" \
+    --set tikv.image.repo="${IMAGE_TIKV}" \
+    --set tikv.image.tag="${TIKV_TRACK}" \
     --set tikv.persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \
     --set tikv.persistence.size="${TIKV_PERSISTENT_DISK_SIZE}" \
     --set tikv.replicas="${TIKV_REPLICAS:-1}" \
-    --set metrics.image="$IMAGE_METRICS_EXPORTER" \
-    --set metrics.exporter.enabled="$METRICS_EXPORTER_ENABLED" \
+    --set metrics.image="${IMAGE_METRICS_EXPORTER}" \
+    --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED}" \
     > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
@@ -199,8 +199,8 @@ kubectl patch svc "$APP_INSTANCE_NAME-pd" \
 If you run your TiKV cluster behind a LoadBalancer, you can get the external IP of the PD service using the following command:
 
 ```shell
-PD_IP=$(kubectl get svc $APP_INSTANCE_NAME-pd \
-  --namespace $NAMESPACE \
+PD_IP=$(kubectl get svc ${APP_INSTANCE_NAME-pd} \
+  --namespace ${NAMESPACE} \
   --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
 echo "$PD_IP"
@@ -247,7 +247,7 @@ command, where `REPLICAS` is your desired number of replicas:
 
 ```shell
 export REPLICAS=3
-kubectl scale statefulset "${APP_INSTANCE_NAME}-tikv" --namespace $NAMESPACE --replicas=$REPLICAS
+kubectl scale statefulset "${APP_INSTANCE_NAME}-tikv" --namespace ${NAMESPACE} --replicas=${REPLICAS}
 ```
 
 # Backup and restore
@@ -270,13 +270,13 @@ Use the following commands:
 
 ```shell
 mkdir ~/backup
-kubectl exec -it "${APP_INSTANCE_NAME}-pd-0" --namespace $NAMESPACE -- /bin/bash
+kubectl exec -it "${APP_INSTANCE_NAME}-pd-0" --namespace ${NAMESPACE} -- /bin/bash
 curl -L https://download.pingcap.org/tidb-community-toolkit-v6.1.0-linux-amd64.tar.gz -o /tidb.tar.gz
 tar xvf /tidb.tar.gz tidb-community-toolkit-v6.1.0-linux-amd64/br-v6.1.0-linux-amd64.tar.gz
 tar xvf /tidb-community-toolkit-v6.1.0-linux-amd64/br-v6.1.0-linux-amd64.tar.gz --directory /
 /br backup raw --pd "localhost:2379" -s "local:///tmp" --cf default
 exit
-kubectl --namespace $NAMESPACE cp "${APP_INSTANCE_NAME}-pd-0:/tmp" ~/backup
+kubectl --namespace ${NAMESPACE} cp "${APP_INSTANCE_NAME}-pd-0:/tmp" ~/backup
 ```
 
 ### Restore your database
@@ -285,8 +285,8 @@ To restore the database, you should use the official tool `br`.
 Use the following commands:
 
 ```shell
-kubectl --namespace $NAMESPACE cp ~/backup "${APP_INSTANCE_NAME}-pd-0:/tmp"
-kubectl exec -it "${APP_INSTANCE_NAME}-pd-0" --namespace $NAMESPACE -- /bin/bash
+kubectl --namespace ${NAMESPACE} cp ~/backup "${APP_INSTANCE_NAME}-pd-0:/tmp"
+kubectl exec -it "${APP_INSTANCE_NAME}-pd-0" --namespace ${NAMESPACE} -- /bin/bash
 curl -L https://download.pingcap.org/tidb-community-toolkit-v6.1.0-linux-amd64.tar.gz -o /tidb.tar.gz
 tar xvf /tidb.tar.gz tidb-community-toolkit-v6.1.0-linux-amd64/br-v6.1.0-linux-amd64.tar.gz
 tar xvf /tidb-community-toolkit-v6.1.0-linux-amd64/br-v6.1.0-linux-amd64.tar.gz --directory /
@@ -328,13 +328,13 @@ installation.
 Run `kubectl` on the expanded manifest file:
 
 ```shell
-kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
+kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace ${NAMESPACE}
 ```
 
 You can also delete the resources by using types and a label:
 
 ```shell
-kubectl delete application --namespace $NAMESPACE --selector app.kubernetes.io/name=${APP_INSTANCE_NAME}
+kubectl delete application --namespace ${NAMESPACE} --selector app.kubernetes.io/name=${APP_INSTANCE_NAME}
 ```
 
 ### Delete the persistent volumes of your installation
@@ -347,16 +347,16 @@ To remove the PersistentVolumeClaims with their attached persistent disks, run
 the following `kubectl` commands:
 
 ```shell
-for pv in $(kubectl get pvc --namespace $NAMESPACE \
-  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME \
+for pv in $(kubectl get pvc --namespace ${NAMESPACE} \
+  --selector app.kubernetes.io/name=${APP_INSTANCE_NAME} \
   --output jsonpath='{.items[*].spec.volumeName}');
 do
   kubectl delete pv/$pv --namespace $NAMESPACE
 done
 
 kubectl delete persistentvolumeclaims \
-  --namespace $NAMESPACE \
-  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
+  --namespace ${NAMESPACE} \
+  --selector app.kubernetes.io/name=${APP_INSTANCE_NAME}
 ```
 
 ### Delete the GKE cluster
