@@ -16,24 +16,24 @@
 cloudbuild:
   enable_parallel: true
 versions:
-- dir: 4/debian9/4.4
-  from: marketplace.gcr.io/google/debian9
+- dir: 4/debian11/4.4
+  from: marketplace.gcr.io/google/debian11
   packages:
     dockerneo4j:
-      sha256: dce1ac670a2d59f4fa90ec6beca2cde9eac954a69e6bdf83ffa1864feb4d0c93
-      version: 4.4.7
+      sha256: 40cde651c97b354f6dc6d84863d7d4dca301742bd2d92445a961e84ff85350a5
+      version: 4.4.10
     neo4j:
-      sha256: b2f5d1aa575b75613b8412860960449370c02f8696a390f621f54b323f3ef339
-      version: 4.4.7
+      sha256: 869ecb89ce36fe457b4d4c4fcaa48fdf2f2d739c45323bd2c8ccdf09aa11abbf
+      version: 4.4.10
     tini:
       sha256: 93dcc18adc78c65a028a84799ecf8ad40c936fdfc5f2a57b1acda5a8117fa82c
       version: 0.19.0
   repo: neo4j4
   tags:
-  - 4.4.7-debian9
-  - 4.4-debian9
-  - 4-debian9
-  - 4.4.7
+  - 4.4.9-debian11
+  - 4.4-debian11
+  - 4-debian11
+  - 4.4.9
   - '4.4'
   - '4'
   - latest

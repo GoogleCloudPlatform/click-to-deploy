@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/php8-apache2:8.0
+FROM marketplace.gcr.io/google/php8-apache2:8.1
 
 RUN set -ex; \
 	savedAptMark="$(apt-mark showmanual)"; \
@@ -54,9 +54,9 @@ RUN a2enmod rewrite expires
 WORKDIR /usr/src/drupal
 
 # https://www.drupal.org/node/3060/release
-ENV DRUPAL_VERSION 9.3.13
-ENV C2D_RELEASE 9.3.13
-ENV DRUPAL_MD5 99e45173551d6bfb58138945cb40e1fc
+ENV DRUPAL_VERSION 9.3.21
+ENV C2D_RELEASE 9.3.21
+ENV DRUPAL_MD5 c3ed50edc147726c290b8bdb8d4f6cd7
 
 # Download package and extract to web volume
 RUN set -eux; \

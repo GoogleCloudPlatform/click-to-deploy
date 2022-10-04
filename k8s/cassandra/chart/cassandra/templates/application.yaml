@@ -72,7 +72,7 @@ spec:
       In you main terminal:
 
       ```shell
-      cqlsh --cqlversion=3.4.4
+      cqlsh --cqlversion=3.4.5
       ```
 
       In the response, you should see a Cassandra welcome message:

@@ -75,6 +75,22 @@ RUN set -x \
     openjdk-11-jdk \
     && rm -rf /var/lib/apt/lists/*
 
+# Add up-to-date libs for security purposes
+RUN set -x \
+    apt update \
+    && apt install -y \
+      dpkg \
+      gpgv \
+      libc6 \
+      libc-bin \
+      libgnutls30 \
+      libtirpc3 \
+      libtirpc-common \
+      libssl1.1 \
+      openssl \
+      zlib1g \
+    && rm -rf /var/lib/apt/lists/*
+
 ENV PATH "${NEO4J_HOME}"/bin:$PATH
 
 WORKDIR "${NEO4J_HOME}"

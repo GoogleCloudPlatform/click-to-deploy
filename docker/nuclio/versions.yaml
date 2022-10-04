@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 _variables:
   from10: &from10 marketplace.gcr.io/google/debian10:latest
   nuclio: &nuclio
-    version: '1.8.12'
+    version: '1.9.3'
 versions:
   - dir: 'nuclio_builder'
     repo: nuclio_builder
@@ -27,25 +27,25 @@ versions:
   - repo: nuclio-controller
     builderImage: 'nuclio_builder:latest'
     builderArgs: [ 'controller' ]
-    imageNameFromBuilder: 'local/controller:1.8.12'
+    imageNameFromBuilder: 'local/controller:1.9.3'
     tags:
-      - '1.8.12-debian10'
-      - '1.8-debian10'
+      - '1.9.3-debian10'
+      - '1.9-debian10'
       - '1-debian10'
-      - '1.8.12'
-      - '1.8'
+      - '1.9.3'
+      - '1.9'
       - '1'
       - 'latest'
   - repo: nuclio-dashboard
     builderImage: 'nuclio_builder:latest'
     builderArgs: [ 'dashboard' ]
-    imageNameFromBuilder: 'local/dashboard:1.8.12'
+    imageNameFromBuilder: 'local/dashboard:1.9.3'
     tags:
-      - '1.8.12-debian10'
-      - '1.8-debia10'
+      - '1.9.3-debian10'
+      - '1.9-debia10'
       - '1-debian10'
-      - '1.8.12'
-      - '1.8'
+      - '1.9.3'
+      - '1.9'
       - '1'
       - 'latest'
 

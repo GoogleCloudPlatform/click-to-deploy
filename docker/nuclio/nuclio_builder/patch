@@ -1,6 +1,4 @@
 diff -Naur '--exclude=.git' nuclio/cmd/controller/Dockerfile nuclio2/cmd/controller/Dockerfile
---- nuclio/cmd/controller/Dockerfile	2022-01-04 17:58:01.633000000 +0000
-+++ nuclio2/cmd/controller/Dockerfile	2022-01-05 15:25:43.882745933 +0000
 @@ -17,7 +17,6 @@
  #
 
@@ -30,8 +28,6 @@ diff -Naur '--exclude=.git' nuclio/cmd/controller/Dockerfile nuclio2/cmd/control
 +
  CMD [ "controller" ]
 diff -Naur '--exclude=.git' nuclio/cmd/dashboard/docker/Dockerfile nuclio2/cmd/dashboard/docker/Dockerfile
---- nuclio/cmd/dashboard/docker/Dockerfile	2022-01-04 17:58:01.637000000 +0000
-+++ nuclio2/cmd/dashboard/docker/Dockerfile	2022-01-05 15:58:26.333943187 +0000
 @@ -15,7 +15,6 @@
  #
  # Build assets stage: builds the dashboard assets (js, html, css, etc)

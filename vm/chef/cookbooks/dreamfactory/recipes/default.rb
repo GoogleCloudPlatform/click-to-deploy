@@ -28,7 +28,7 @@ include_recipe 'php74::module_opcache'
 include_recipe 'php74::module_sqlite'
 include_recipe 'php74::module_simplexml'
 include_recipe 'php74::module_zip'
-include_recipe 'composer'
+include_recipe 'composer::composer2'
 include_recipe 'git'
 
 include_recipe 'c2d-config::create-self-signed-certificate'
