@@ -267,16 +267,9 @@ export NAMESPACE=default
 
 To back up the database, you should use the official tool `br`.
 Use the following commands:
-
 ```shell
-mkdir ~/backup
-kubectl exec -it "${APP_INSTANCE_NAME}-pd-0" --namespace ${NAMESPACE} -- /bin/bash
-curl -L https://download.pingcap.org/tidb-community-toolkit-v6.1.0-linux-amd64.tar.gz -o /tidb.tar.gz
-tar xvf /tidb.tar.gz tidb-community-toolkit-v6.1.0-linux-amd64/br-v6.1.0-linux-amd64.tar.gz
-tar xvf /tidb-community-toolkit-v6.1.0-linux-amd64/br-v6.1.0-linux-amd64.tar.gz --directory /
-/br backup raw --pd "localhost:2379" -s "local:///tmp" --cf default
-exit
-kubectl --namespace ${NAMESPACE} cp "${APP_INSTANCE_NAME}-pd-0:/tmp" ~/backup
+# `--app` and `--namespace` are required
+scripts/backup.sh --app ${APP_INSTANCE_NAME} --namespace ${NAMESPACE}
 ```
 
 ### Restore your database
@@ -285,14 +278,11 @@ To restore the database, you should use the official tool `br`.
 Use the following commands:
 
 ```shell
-kubectl --namespace ${NAMESPACE} cp ~/backup "${APP_INSTANCE_NAME}-pd-0:/tmp"
-kubectl exec -it "${APP_INSTANCE_NAME}-pd-0" --namespace ${NAMESPACE} -- /bin/bash
-curl -L https://download.pingcap.org/tidb-community-toolkit-v6.1.0-linux-amd64.tar.gz -o /tidb.tar.gz
-tar xvf /tidb.tar.gz tidb-community-toolkit-v6.1.0-linux-amd64/br-v6.1.0-linux-amd64.tar.gz
-tar xvf /tidb-community-toolkit-v6.1.0-linux-amd64/br-v6.1.0-linux-amd64.tar.gz --directory /
-/br restore raw --pd "localhost:2379" -s "local:///tmp" --cf default
-exit
+export TIKV_BACKUP_DIR=/path/to/your/backup
+# `--app`, `--namespace` and `--backup-dir` are required
+scripts/restore.sh --app ${APP_INSTANCE_NAME} --namespace ${NAMESPACE} --backup-dir ${PATH_TO_YOUR_BACKUP}
 ```
+
 
 # Uninstall the app
 
