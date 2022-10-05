@@ -1,3 +1,5 @@
+DO_NOT_MERGE
+
 # Overview
 
 Magento is an extensible and modular e-commerce platform. It enables catalog management, CMS, payment methods, layout control, a flexible pricing system, and more.
