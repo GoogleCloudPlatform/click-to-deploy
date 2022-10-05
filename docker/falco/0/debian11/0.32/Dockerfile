@@ -29,6 +29,7 @@ RUN apt-get update \
 	libssl-dev \
 	llvm-11 \
 	netcat \
+	openssl \
 	xz-utils \
 	&& rm -rf /var/lib/apt/lists/*
 
