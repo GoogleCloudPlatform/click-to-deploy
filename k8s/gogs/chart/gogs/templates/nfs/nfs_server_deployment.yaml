@@ -18,7 +18,7 @@ spec:
       initContainers:
       - name: {{ .Release.Name }}-nfs-changeowner
         image: busybox
-        command: ["sh", "-c", "mkdir -p /exports/dags && mkdir -p /exports/logs && chmod -R 777 /exports"]   
+        command: ["sh", "-c", "mkdir -p /exports/data && mkdir -p /exports/git && chmod -R 777 /exports"]   
         volumeMounts:
           - mountPath: /exports
             name: {{ .Release.Name }}-nfs-server-pvc

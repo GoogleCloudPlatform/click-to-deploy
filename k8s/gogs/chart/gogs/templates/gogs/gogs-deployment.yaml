@@ -43,13 +43,17 @@ spec:
             periodSeconds: 10
             successThreshold: 1
             failureThreshold: 3
-          envFrom:
-          - secretRef:
-              name: {{ .Release.Name }}-config-envs
+          volumeMounts:
+            - name: gogs-data
+              mountPath: /data/gogs
+              subPath: data
+            - name: gogs-data
+              mountPath: /data/git/gogs-repositories
+              subPath: git
           env:
           - name: "GOGS_DB_TYPE"
             value: "postgres"
-          - name: "POSTGRES_PASSWORD"
+          - name: "GOGS_DB_PASSWORD"
             valueFrom:
               secretKeyRef:
                 name: {{ .Release.Name }}-config-envs
@@ -60,4 +64,18 @@ spec:
             value: "gogs"
           - name: "GOGS_DB_HOST"
             value: "{{ .Release.Name }}-postgresql-svc"
+          - name: "GOGS_DOMAIN"
+            value: "{{ .Release.Name }}-gogs-svc"
+          - name: "GOGS_EXTERNAL_URL"
+            value: "http://{{ .Release.Name }}-gogs-svc:3000/"
+          - name: "GOGS_SECRET_KEY"
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-config-envs
+                key: GOGS_SECRET_KEY
+      volumes:
+        - name: gogs-data
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-nfs-gogs
+
 

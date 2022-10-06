@@ -3,10 +3,9 @@ gogs:
     repo: null
     tag: null
   replicas: 1
-  data_key: null
+  secret_key: null
   db:
     password: null
-  serviceAccount: null
 
 nfs:
   image:
@@ -14,7 +13,7 @@ nfs:
     tag: null
   persistence:
     storageClass: standard
-    size: 5Gi
+    size: 10Gi
 
 enablePublicServiceAndIngress: false
 

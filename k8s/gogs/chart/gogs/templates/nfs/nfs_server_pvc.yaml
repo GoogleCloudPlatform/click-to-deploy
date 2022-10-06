@@ -14,7 +14,7 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{ .Release.Name }}-nfs-dags-logs
+  name: {{ .Release.Name }}-nfs-gogs
   labels:
     app: {{ include "airflow.labels.app" . }}
     name: {{ .Release.Name }}
@@ -29,7 +29,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: {{ .Release.Name }}-nfs-dags-logs
+  name: {{ .Release.Name }}-nfs-gogs
 spec:
   persistentVolumeReclaimPolicy: "Delete"
   capacity:
