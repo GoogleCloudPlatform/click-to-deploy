@@ -1,0 +1,68 @@
+x-google-marketplace:
+  schemaVersion: v2
+  applicationApiVersion: v1beta1
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      A regular update.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  images:
+    '':
+      properties:
+        tikv.image.repo:
+          type: REPO_WITH_REGISTRY
+        tikv.image.tag:
+          type: TAG
+  clusterConstraints:
+    resources:
+    - replicas: 1
+      requests:
+        cpu: 100m
+        memory: 500Mi
+      affinity:
+        simple NodeAffinity:
+          type: REQUIRE_ONE_NODE_PER_REPLICA
+          minimumNodeCount: 1
+    istio:
+      type: OPTIONAL
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  tikv.replicas:
+    type: integer
+    title: TiKV replicas
+    description: Number of replicas of the TiKV server
+    default: 3
+    minimum: 3
+  tikv.persistence.storageClass:
+    type: string
+    title: StorageClass
+    description: You can choose an existing StorageClass or create a new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  tikv.persistence.size:
+    type: string
+    title: Storage size for persistent volumes
+    default: "2Gi"
+    description: TiKV storage size
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  metrics.exporter.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project must have Stackdriver enabled. Non-GCP clusters cannot export metrics to Stackdriver.
+    default: false
+required:
+- name
+- namespace
+- tikv.replicas
