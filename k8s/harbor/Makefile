@@ -15,7 +15,7 @@ SOURCE_REGISTRY ?= marketplace.gcr.io/google
 HARBOR_SOURCE_REGISTRY ?= goharbor
 METRICS_EXPORTER_TAG ?= v0.11.1-gke.1
 
-IMAGE_HARBOR ?= $(SOURCE_REGISTRY)/harbor:$(TRACK)
+IMAGE_HARBOR ?= $(SOURCE_REGISTRY)/harbor2:$(TRACK)
 
 # Additional images
 IMAGE_HARBOR_CORE ?= $(HARBOR_SOURCE_REGISTRY)/harbor-core:$(HARBOR_TRACK)
