@@ -1,0 +1,67 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: {{ .Release.Name }}
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": {{ .Chart.Name | quote }}, "partner_name": "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+spec:
+  descriptor:
+    type: Harbor
+    version: "{{ .Values.core.image.tag }}"
+    description: |-
+      Harbor is an open source trusted cloud native registry project that stores, signs, and scans content.
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/harbor/).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy Harbor'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/harbor/README.md
+    - description: 'Harbor documentation'
+      url: https://harbor.org/docs/
+    notes: |-
+      # Get authentication credentials for the cluster
+
+      ```shell
+      gcloud container clusters get-credentials [CLUSTER_NAME] --zone [CLUSTER_ZONE]
+      ```
+      where:
+      * `[CLUSTER_NAME]` is the name of the cluster for this application
+      * `[CLUSTER_ZONE]` is the zone, in which the cluster is operating
+
+      Please read [here](https://cloud.google.com/kubernetes-engine/docs/quickstart#get_authentication_credentials_for_the_cluster) for more information.
+
+      # Verifying Harbor installation
+
+      To verify Harbor is running run the following command:
+      ```
+      kubectl get daemonset -l app.kubernetes.io/name={{ .Release.Name }}
+      ```
+      or
+      ```
+      kubectl get pods -l app.kubernetes.io/name={{ .Release.Name }}
+      ```
+
+  info:
+  - name: Harbor Deployment name
+    value: "{{ template "harbor.core" . }}"
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Release.Name }}
+  componentKinds:
+  - group: v1
+    kind: Deployment
+  - group: v1
+    kind: StatefulSet
+  - group: v1
+    kind: ConfigMap
+  - group: v1
+    kind: Service
+  - group: v1
+    kind: ServiceAccount

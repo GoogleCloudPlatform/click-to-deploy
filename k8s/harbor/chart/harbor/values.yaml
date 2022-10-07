@@ -1,0 +1,102 @@
+expose:
+  # Set how to expose the service. Set the type as "ingress" or "clusterIP".
+  type: clusterIP
+  tls:
+    auto:
+      commonName: "cert-1"
+  ingress:
+    hosts:
+      core: core.harbor.domain
+      notary: notary.harbor.domain
+  clusterIP:
+    name: harbor
+    ports:
+      httpPort: 80
+      httpsPort: 443
+      notaryPort: 4443
+
+externalURL: https://core.harbor.domain
+
+# The initial password of Harbor admin.
+harborAdminPassword: "Harbor12345"
+
+# If service exposed via "ingress", the Nginx will not be used
+nginx:
+  image:
+    repo: goharbor/nginx-photon
+    tag: v2.5.2
+
+portal:
+  image:
+    repo: goharbor/harbor-portal
+    tag: v2.5.2
+
+core:
+  image:
+    repo: goharbor/harbor-core
+    tag: v2.5.2
+
+jobservice:
+  image:
+    repo: goharbor/harbor-jobservice
+    tag: v2.5.2
+
+registry:
+  registry:
+    image:
+      repo: goharbor/registry-photon
+      tag: v2.5.2
+  controller:
+    image:
+      repo: goharbor/harbor-registryctl
+      tag: v2.5.2
+  credentials:
+    username: "harbor_registry_user"
+    password: "harbor_registry_password"
+
+chartmuseum:
+  image:
+    repo: goharbor/chartmuseum-photon
+    tag: v2.5.2
+
+trivy:
+  image:
+    repo: goharbor/trivy-adapter-photon
+    tag: v2.5.2
+
+notary:
+  server:
+    image:
+      repo: goharbor/notary-server-photon
+      tag: v2.5.2
+  signer:
+    image:
+      repo: goharbor/notary-signer-photon
+      tag: v2.5.2
+
+database:
+  internal:
+    image:
+      repo: goharbor/harbor-db
+      tag: v2.5.2
+    # The initial superuser password for internal database
+    password: "changeit"
+
+redis:
+  internal:
+    image:
+      repo: goharbor/redis-photon
+      tag: v2.5.2
+
+exporter:
+  image:
+    repo: goharbor/harbor-exporter
+    tag: v2.5.2
+
+metrics:
+  enabled: true
+  image: null
+  serviceMonitor:
+    enabled: true
+  exporter:
+    enabled: true

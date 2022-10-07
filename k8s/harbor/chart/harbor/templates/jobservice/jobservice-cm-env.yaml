@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ template "harbor.jobservice" . }}-env"
+  labels:
+{{ include "harbor.labels" . | indent 4 }}
+data:
+  CORE_URL: "http://{{ template "harbor.core" . }}:80"
+  TOKEN_SERVICE_URL: "http://{{ template "harbor.core" . }}:80/service/token"
+  REGISTRY_URL: "http://{{ template "harbor.registry" . }}:5000"
+  REGISTRY_CONTROLLER_URL: "http://{{ template "harbor.registry" . }}:8080"
+  REGISTRY_CREDENTIAL_USERNAME: "harbor_registry_user"
+  HTTP_PROXY: ""
+  HTTPS_PROXY: ""
+  NO_PROXY: "{{ template "harbor.noProxy" . }}"
+  METRIC_NAMESPACE: harbor
+  METRIC_SUBSYSTEM: jobservice

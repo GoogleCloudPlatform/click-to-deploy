@@ -1,0 +1,69 @@
+{{- if ne .Values.expose.type "ingress" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "harbor.nginx" . }}
+  labels:
+{{ include "harbor.labels" . | indent 4 }}
+    component: nginx
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+{{ include "harbor.matchLabels" . | indent 6 }}
+      component: nginx
+  template:
+    metadata:
+      labels:
+{{ include "harbor.labels" . | indent 8 }}
+        component: nginx
+      annotations:
+        checksum/configmap: {{ include (print $.Template.BasePath "/nginx/configmap-https.yaml") . | sha256sum }}
+      {{- if eq (include "harbor.autoGenCertForNginx" .) "true" }}
+        checksum/secret: {{ include (print $.Template.BasePath "/nginx/secret.yaml") . | sha256sum }}
+      {{- end }}
+{{- if .Values.nginx.podAnnotations }}
+{{ toYaml .Values.nginx.podAnnotations | indent 8 }}
+{{- end }}
+    spec:
+      securityContext:
+        runAsUser: 10000
+        fsGroup: 10000
+      automountServiceAccountToken: false
+      containers:
+      - name: nginx
+        image: "{{ .Values.nginx.image.repo }}:{{ .Values.nginx.image.tag }}"
+        imagePullPolicy: "IfNotPresent"
+        livenessProbe:
+          httpGet:
+            scheme: HTTPS
+            path: /
+            port: 8443
+          initialDelaySeconds: 300
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            scheme: HTTPS
+            path: /
+            port: 8443
+          initialDelaySeconds: 1
+          periodSeconds: 10
+        ports:
+        - containerPort: 8080
+        - containerPort: 8443
+        - containerPort: 4443
+        volumeMounts:
+        - name: config
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+        - name: certificate
+          mountPath: /etc/nginx/cert
+      volumes:
+      - name: config
+        configMap:
+          name: {{ template "harbor.nginx" . }}
+      - name: certificate
+        secret:
+          secretName: {{ template "harbor.tlsSecretForNginx" . }}
+{{- end }}
