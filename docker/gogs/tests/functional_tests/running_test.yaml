@@ -24,17 +24,16 @@ setup:
   - '-d'
   - '$IMAGE'
 - command: [sleep, '15s']
-- command: [ docker, exec, some-gogs-$UNIQUE-id, run_test.sh ]
 
 teardown:
 - command: [docker, stop, some-gogs-$UNIQUE-id]
 - command: [docker, rm, some-gogs-$UNIQUE-id]
 - command: [docker, network, rm, testbridge-$UNIQUE-id]
 
-  target: some-gogs-$UNIQUE-id
+target: some-gogs-$UNIQUE-id
 tests:
 - name: Run test script
-  command: [ "/usr/local/bin/run_test.sh" ]
+  command: [ run_test.sh ]
   expect:
     stdout:
       matches: 'Test user name is testuser'
