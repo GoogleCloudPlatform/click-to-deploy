@@ -1,0 +1,14 @@
+tikv:
+  image:
+    repo: null
+    tag: null
+  replicas: 3
+  persistence:
+    storageClass: null
+    size: 2Gi
+
+metrics:
+  image: null
+  exporter:
+    enabled: false
+
