@@ -16,7 +16,7 @@ apiVersion: v1
 metadata:
   name: {{ .Release.Name }}-nfs-gogs
   labels:
-    app: {{ include "airflow.labels.app" . }}
+    app: gogs
     name: {{ .Release.Name }}
 spec:
   accessModes:
