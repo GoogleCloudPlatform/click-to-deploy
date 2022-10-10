@@ -17,6 +17,11 @@ nfs:
 
 enablePublicServiceAndIngress: false
 
+metrics:
+  image: null
+  exporter:
+    enabled: false
+
 postgresql:
   image:
     repo: null

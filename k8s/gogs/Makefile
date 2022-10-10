@@ -11,6 +11,7 @@ TRACK ?= 0.12
 # Track for components
 POSTGRESQL_TRACK ?= 13.4
 NFS_TRACK ?= 1.3
+METRICS_EXPORTER_TAG ?= v0.5.1
 
 VERIFY_WAIT_TIMEOUT = 1800
 
@@ -26,11 +27,14 @@ IMAGE_POSTGRESQL ?= marketplace.gcr.io/google/postgresql13:$(POSTGRESQL_TRACK)
 # NFS
 IMAGE_NFS ?= marketplace.gcr.io/google/nfs-server1:$(NFS_TRACK)
 
+# Prometheus-to-SD
+IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+
 # Main image
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_GOGS))
 
 # List of images used in application
-ADDITIONAL_IMAGES := postgresql nfs
+ADDITIONAL_IMAGES := postgresql nfs prometheus-to-sd
 
 # Additional images variable names should correspond with ADDITIONAL_IMAGES list
 image-postgresql := $(call get_sha256,$(IMAGE_POSTGRESQL))
@@ -45,6 +49,10 @@ NAME ?= $(APP_ID)-1
 # Additional variables
 ifdef PUBLIC_SERVICE_AND_INGRESS_ENABLED
   PUBLIC_SERVICE_AND_INGRESS_ENABLED_FIELD = , "enablePublicServiceAndIngress": $(PUBLIC_SERVICE_AND_INGRESS_ENABLED)
+endif
+
+ifdef METRICS_EXPORTER_ENABLED
+  METRICS_EXPORTER_ENABLED_FIELD = , "metrics.exporter.enabled": $(METRICS_EXPORTER_ENABLED)
 endif
 
 APP_PARAMETERS ?= { \
