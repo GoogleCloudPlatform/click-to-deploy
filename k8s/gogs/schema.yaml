@@ -21,15 +21,21 @@ x-google-marketplace:
   images:
     '':
       properties:
-        conjur.image.repo:
+        gogs.image.repo:
           type: REPO_WITH_REGISTRY
-        conjur.image.tag:
+        gogs.image.tag:
           type: TAG
     postgresql:
       properties:
         postgresql.image.repo:
           type: REPO_WITH_REGISTRY
         postgresql.image.tag:
+          type: TAG
+    nfs:
+      properties:
+        nfs.image.repo:
+          type: REPO_WITH_REGISTRY
+        nfs.image.tag:
           type: TAG
 
   deployerServiceAccount:
@@ -40,10 +46,9 @@ x-google-marketplace:
         rulesType: CUSTOM
         rules:
           - apiGroups:
-            - 'rbac.authorization.k8s.io'
+            - '*'
             resources:
-            - 'clusterroles'
-            - 'clusterrolebindings'
+            - 'persistentvolumes'
             verbs:
             - '*'
 
@@ -56,43 +61,20 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  conjur.replicas:
+  gogs.replicas:
     type: integer
-    title: Conjur replicas
-    description: Number of replicas of the Conjur webserver
+    title: Gogs replicas
+    description: Number of replicas of the Gogs webserver
     default: 1
     minimum: 1
-  conjur.data_key:
+  gogs.secret_key:
     type: string
     x-google-marketplace:
       type: GENERATED_PASSWORD
       generatedPassword:
-        length: 32
+        length: 16
         includeSymbols: False
-        base64: True
-  conjur.serviceAccount:
-    type: string
-    title: Conjur Service Account
-    x-google-marketplace:
-      type: SERVICE_ACCOUNT
-      serviceAccount:
-        description: Service account used by Conjur deployment
-        roles:
-        - type: ClusterRole
-          rulesType: CUSTOM
-          rules:
-          - apiGroups: [""]
-            resources: ["pods", "serviceaccounts"]
-            verbs: ["get", "list"]
-          - apiGroups: ["extensions"]
-            resources: [ "deployments", "replicasets"]
-            verbs: ["get", "list"]
-          - apiGroups: ["apps"]
-            resources: [ "deployments", "statefulsets", "replicasets"]
-            verbs: ["get", "list"]
-          - apiGroups: [""]
-            resources: ["pods/exec"]
-            verbs: ["create", "get"]
+        base64: False
   enablePublicServiceAndIngress:
     type: boolean
     title: Enable public IP access
@@ -112,7 +94,21 @@ properties:
     default: "5Gi"
     description: PostgreSQL storage size
     pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
-  conjur.db.password:
+  nfs.persistence.storageClass:
+    type: string
+    title: NFS volume StorageClass
+    description: You can choose an existing StorageClass or create a new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  nfs.persistence.size:
+    type: string
+    title: Storage size for NFS persistent volume
+    default: "5Gi"
+    description: NFS storage size
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  gogs.db.password:
     type: string
     x-google-marketplace:
       type: GENERATED_PASSWORD
@@ -123,7 +119,8 @@ properties:
 required:
 - name
 - namespace
-- conjur.replicas
+- gogs.replicas
 - postgresql.persistence.size
+- nfs.persistence.size
 - enablePublicServiceAndIngress
 

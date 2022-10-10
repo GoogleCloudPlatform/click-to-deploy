@@ -11,7 +11,7 @@ metadata:
 spec:
   descriptor:
     type: Gogs
-    version: "{{ .Values.postgresql.image.tag }}"
+    version: "{{ .Values.gogs.image.tag }}"
     description: |-
       Gogs is a lorem ipsum.
       # Support
@@ -63,7 +63,7 @@ spec:
     type: Reference
     valueFrom:
       ingressRef:
-        name: {{ .Release.Name }}-conjur-svc
+        name: {{ .Release.Name }}-gogs-svc
         protocol: HTTPS
   {{- else -}}
   - name: Forward Conjur Webserver port locally
@@ -71,11 +71,11 @@ spec:
   - name: Conjur Webserver address (local only)
     value: "http://localhost:8080/"
   {{- end }}
-  - name: Conjur - data key
+  - name: Gogs - secret key
     type: Reference
     valueFrom:
       secretKeyRef:
-        key: CONJUR_DATA_KEY
+        key: GOGS_SECRET_KEY
         name: {{ .Release.Name }}-config-envs
   - name: PostgreSQL - Conjur user password
     type: Reference
@@ -103,7 +103,4 @@ spec:
     kind: Deployment
   - group: v1
     kind: ServiceAccount
-  - group: rbac.authorization.k8s.io/v1
-    kind:  Role
-  - group: rbac.authorization.k8s.io/v1
-    kind:  RoleBinding
+

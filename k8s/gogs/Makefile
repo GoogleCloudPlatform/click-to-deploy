@@ -3,13 +3,14 @@ include ../gcloud.Makefile
 include ../var.Makefile
 include ../images.Makefile
 
-CHART_NAME := conjur
+CHART_NAME := gogs
 APP_ID ?= $(CHART_NAME)
 WAIT_FOR_READY_TIMEOUT := 600
 
 TRACK ?= 1.18
 # Track for components
 POSTGRESQL_TRACK ?= 13.4
+NFS_TRACK ?= 1.3
 
 VERIFY_WAIT_TIMEOUT = 1800
 
@@ -17,19 +18,23 @@ VERIFY_WAIT_TIMEOUT = 1800
 
 SOURCE_REGISTRY ?= gcr.io/ccm-ops-test-adhoc
 
-IMAGE_CONJUR ?= gcr.io/ccm-ops-test-adhoc/conjur1:$(TRACK)
+IMAGE_GOGS ?= gcr.io/ccm-ops-test-adhoc/gogs0:$(TRACK)
 
 # POSTGRESQL
 IMAGE_POSTGRESQL ?= marketplace.gcr.io/google/postgresql13:$(POSTGRESQL_TRACK)
 
+# NFS
+IMAGE_NFS ?= marketplace.gcr.io/google/nfs-server1:$(NFS_TRACK)
+
 # Main image
-image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_CONJUR))
+image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_GOGS))
 
 # List of images used in application
-ADDITIONAL_IMAGES := postgresql
+ADDITIONAL_IMAGES := postgresql nfs
 
 # Additional images variable names should correspond with ADDITIONAL_IMAGES list
 image-postgresql := $(call get_sha256,$(IMAGE_POSTGRESQL))
+image-nfs := $(call get_sha256,$(IMAGE_NFS))
 
 C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
 
