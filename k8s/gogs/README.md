@@ -117,25 +117,30 @@ For the persistent disk provisioning of the PostgreSQL StatefulSet and NFS Share
 ```shell
 export DEFAULT_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
 export PSQL_PERSISTENT_DISK_SIZE="5Gi"
+export NFS_PERSISTENT_DISK_SIZE="5Gi"
 ```
 
 Set up the image tag:
 
 It is advised to use a stable image reference, which you can find on:
-- [Conjur - Marketplace Container Registry](gcr.io/ccm-ops-test-adhoc/conjur1).
+- [Gogs - Marketplace Container Registry](gcr.io/ccm-ops-test-adhoc/gogs0).
 - [PostgreSQL - Marketplace Container Registry](https://marketplace.gcr.io/google/postgresql13).
 For example:
 
 ```shell
-export CONJUR_TRACK=1.18
+export GOGS_TRACK=0.12
 export POSTGRESQL_TRACK=13.4
+export NFS_TRACK=1.3
+export METRICS_EXPORTER_TAG=0.5
 ```
 
 Configure the container images:
 
 ```shell
-export IMAGE_CONJUR=gcr.io/ccm-ops-test-adhoc/conjur1
+export IMAGE_GOGS=gcr.io/ccm-ops-test-adhoc/gogs0
 export IMAGE_POSTGRESQL=marketplace.gcr.io/google/postgresql13
+export IMAGE_NFS=marketplace.gcr.io/google/nfs-server1
+export IMAGE_METRICS_EXPORTER=k8s.gcr.io/prometheus-to-sd:${METRICS_EXPORTER_TAG}
 ```
 
 Generate a random DB password:
@@ -144,17 +149,17 @@ Generate a random DB password:
 export POSTGRESQL_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' |head -c16)"
 ```
 
-Generate a Conjur data key:
+Generate a Gogs secret key:
 
 ```shell
-export CONJUR_DATA_KEY="$(openssl rand -base64 32)"
+export GOGS_SECRET_KEY="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' |head -c16)"
 ```
 
-By default, Conjur deployment has 1 replica, but you can choose to set the
-number of replicas for Conjur webserver.
+By default, Gogs deployment has 1 replica, but you can choose to set the
+number of replicas for Gogs webserver.
 
 ```shell
-export CONJUR_REPLICAS=1 
+export GOGS_REPLICAS=1 
 ```
 
 (Optional) Expose the Service externally and configure Ingress:
@@ -165,17 +170,16 @@ By default, the Service is not exposed externally. To enable this option, change
 export PUBLIC_SERVICE_AND_INGRESS_ENABLED=false
 ```
 
-##### Create the Conjur Service Account
+(Optional) Enable Stackdriver Metrics Exporter:
 
-To create the Conjur Service Account and ClusterRoleBinding:
+> **NOTE:** Your GCP project must have Stackdriver enabled. If you are using a
+> non-GCP cluster, you cannot export metrics to Stackdriver.
+
+By default, the application does not export metrics to Stackdriver. To enable
+this option, change the value to `true`.
 
 ```shell
-export CONJUR_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-serviceaccount"
-cat resources/service-accounts.yaml \
-  | envsubst '$NAMESPACE $PROMETHEUS_SERVICE_ACCOUNT $KUBE_STATE_METRICS_SERVICE_ACCOUNT $ALERTMANAGER_SERVICE_ACCOUNT $GRAFANA_SERVICE_ACCOUNT $NODE_EXPORTER_SERVICE_ACCOUNT' \
-  > "${APP_INSTANCE_NAME}_sa_manifest.yaml"
-kubectl apply -f "${APP_INSTANCE_NAME}_sa_manifest.yaml" \
-  --namespace "${NAMESPACE}"
+export METRICS_EXPORTER_ENABLED=false
 ```
 
 #### Expand the manifest template
@@ -184,19 +188,24 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to your app.
 
 ```shell
-helm template "${APP_INSTANCE_NAME}" chart/conjur \
+helm template "${APP_INSTANCE_NAME}" chart/gogs \
     --namespace "${NAMESPACE}" \
-    --set conjur.image.repo="$IMAGE_CONJUR" \
-    --set conjur.image.tag="$CONJUR_TRACK" \
-    --set conjur.serviceAccount="$CONJUR_SERVICE_ACCOUNT" \
-    --set conjur.db.password="$POSTGRESQL_PASSWORD" \
-    --set conjur.data_key="$CONJUR_DATA_KEY" \
-    --set postgresql.image.repo="$IMAGE_POSTGRESQL" \
-    --set postgresql.image.tag="$POSTGRESQL_TRACK" \
+    --set gogs.image.repo="${IMAGE_GOGS}" \
+    --set gogs.image.tag="${GOGS_TRACK}" \
+    --set gogs.db.password="${POSTGRESQL_PASSWORD}" \
+    --set gogs.secret_key="${GOGS_SECRET_KEY}" \
+    --set nfs.image.repo="${IMAGE_NFS}" \
+    --set nfs.image.tag="${NFS_TRACK}" \
+    --set nfs.persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \
+    --set nfs.persistence.size="${NFS_PERSISTENT_DISK_SIZE}" \
+    --set postgresql.image.repo="${IMAGE_POSTGRESQL}" \
+    --set postgresql.image.tag="${POSTGRESQL_TRACK}" \
     --set postgresql.persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \
     --set postgresql.persistence.size="${PSQL_PERSISTENT_DISK_SIZE}" \
-    --set conjur.replicas="${CONJUR_REPLICAS:-1}" \
+    --set gogs.replicas="${GOGS_REPLICAS:-1}" \
     --set enablePublicServiceAndIngress="${PUBLIC_SERVICE_AND_INGRESS_ENABLED}" \
+    --set metrics.image="${IMAGE_METRICS_EXPORTER}" \
+    --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED}" \
     > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
@@ -218,12 +227,12 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 To view the app, open the URL in your browser.
 
-### Open your Conjur website
+### Open your Gogs website
 
-To get the external IP of your Conjur website, use the following command:
+To get the external IP of your Gogs website, use the following command:
 
 ```shell
-SERVICE_IP=$(kubectl get ingress "${APP_INSTANCE_NAME}-conjur" \
+SERVICE_IP=$(kubectl get ingress "${APP_INSTANCE_NAME}-gogs" \
   --namespace "${NAMESPACE}" \
   --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
@@ -232,41 +241,71 @@ echo "https://${SERVICE_IP}/"
 The command shows you the URL of your site. In case you don't have Ingress Controller and didn't set `enablePublicServiceAndIngress`, you can expose Webserver port:
 
 ```shell
-kubectl expose deploy "${APP_INSTANCE_NAME}-conjur" \
+kubectl expose deploy "${APP_INSTANCE_NAME}-gogs" \
   --namespace "${NAMESPACE}" \
-  --type=LoadBalancer --name=conjur-lb
-SERVICE_IP=$(kubectl get svc conjur-lb \
+  --type=LoadBalancer --name=gogs-lb
+SERVICE_IP=$(kubectl get svc gogs-lb \
   --namespace "${NAMESPACE}" \
   --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
-echo "http://${SERVICE_IP}/"
+echo "http://${SERVICE_IP}:3000/"
 ```
 
 # App metrics
 
-At the moment, the application does not support exporting Prometheus metrics and does not have any exporter. 
-Status of the related issue can be checked on the [official Github page](https://github.com/cyberark/conjur/issues/1520).
+## Prometheus metrics
+
+The app is configured to expose metrics 
+in the [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
+
+### Configuring Prometheus to collect the metrics
+
+Prometheus can be configured to automatically collect the application's metrics.
+Follow the steps in
+[Configuring Prometheus](https://prometheus.io/docs/introduction/first_steps/#configuring-prometheus).
+
+You configure the metrics in the
+[`scrape_configs` section](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config).
+
+## Exporting metrics to Stackdriver
+
+The deployment includes a
+[Prometheus to Stackdriver (`prometheus-to-sd`)](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd)
+container. If you enabled the option to export metrics to Stackdriver, the
+metrics are automatically exported to Stackdriver and visible in
+[Stackdriver Metrics Explorer](https://cloud.google.com/monitoring/charts/metrics-explorer).
+The name of each metric starts with the application's name, which you define in
+the `APP_INSTANCE_NAME` environment variable.
+
+The exporting option might not be available for GKE on-prem clusters.
+
+> Note: Stackdriver has [quotas](https://cloud.google.com/monitoring/quotas) for
+> the number of custom metrics created in a single GCP project. If the quota is
+> met, additional metrics might not show up in the Stackdriver Metrics Explorer.
+
+You can remove existing metric descriptors using
+[Stackdriver's REST API](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors/delete).
 
 # Scaling up or down
 
-To change the number of replicas of the `Conjur`, use the following
+To change the number of replicas of the `Gogs`, use the following
 command, where `REPLICAS` is your desired number of replicas:
 
 ```shell
 export REPLICAS=3
-kubectl scale deployment "${APP_INSTANCE_NAME}-conjur" --namespace $NAMESPACE --replicas=$REPLICAS
+kubectl scale deployment "${APP_INSTANCE_NAME}-gogs" --namespace $NAMESPACE --replicas=$REPLICAS
 ```
 
 # Backup and restore
 
-To back up the application, you must back up the database and Cojur data key.
+To back up the application, you must back up the database and Gogs secret key.
 
 ### Set up your local environment
 
-Set up environment variables to match your Conjur installation:
+Set up environment variables to match your Gogs installation:
 
 ```shell
-export APP_INSTANCE_NAME=conjur
+export APP_INSTANCE_NAME=gogs
 export NAMESPACE=default
 ```
 
@@ -278,17 +317,17 @@ Use this command to see a base64-encoded version of your PostgreSQL password:
 kubectl get secret $APP_INSTANCE_NAME-config-envs --namespace $NAMESPACE -o jsonpath='{.data.POSTGRES_PASSWORD}' | base64 -d
 ```
 
-## Backup your data key
+## Backup your secret key
 
-Use this command to see a base64-encoded version of your Conjur data key:
+Use this command to see your Gogs secret key:
 
 ```shell
-kubectl get secret $APP_INSTANCE_NAME-config-envs --namespace $NAMESPACE -o jsonpath='{.data.CONJUR_DATA_KEY}' | base64 -d
+kubectl get secret $APP_INSTANCE_NAME-config-envs --namespace $NAMESPACE -o jsonpath='{.data.GOGS_SECRET_KEY}' | base64 -d
 ```
 
 ### Establish the PostgreSQL connection
 
-To back up the Conjur database, you must connect to the PostgreSQL host and port.
+To back up the Gogs database, you must connect to the PostgreSQL host and port.
 Using a separate terminal, create a local proxy using the following `kubectl`
 command:
 
@@ -307,7 +346,7 @@ sudo apt-get install postgresql-client-13
 To create the backup, run the following command:
 
 ```shell
-pg_dump -U conjur -h 127.0.0.1 -p 5432 conjur > psql-backup.sql
+pg_dump -U gogs -h 127.0.0.1 -p 5432 gogs > psql-backup.sql
 ```
 
 ### Restore your configuration
@@ -315,22 +354,22 @@ pg_dump -U conjur -h 127.0.0.1 -p 5432 conjur > psql-backup.sql
 1. Use this command to restore your data from `psql-backup.sql`:
 
 ```shell
-psql -U conjur -h 127.0.0.1 -p 5432 conjur < psql-backup.sql
+psql -U gogs -h 127.0.0.1 -p 5432 gogs < psql-backup.sql
 ```
 
 2. Update data key in the secret
 
 ```shell
-export CONJUR_DATA_KEY="put your data key here"
+export GOGS_SECRET_KEY="put your data key here"
 kubectl patch secret $APP_INSTANCE_NAME-config-envs --namespace $NAMESPACE \
---patch="{\"data\": { \"CONJUR_DATA_KEY\": \"$(echo -n $CONJUR_DATA_KEY |base64 -w0)\" }}" -oyaml
+--patch="{\"data\": { \"GOGS_SECRET_KEY\": \"$(echo -n $GOGS_SECRET_KEY |base64 -w0)\" }}" -oyaml
 
 ```
 
-3. Finally, restart the Conjur pods:
+3. Finally, restart the Gogs pods:
 
 ```shell
-kubectl rollout restart deploy $APP_INSTANCE_NAME-conjur --namespace $NAMESPACE
+kubectl rollout restart deploy $APP_INSTANCE_NAME-gogs --namespace $NAMESPACE
 ```
 
 # Uninstall the app
@@ -340,7 +379,7 @@ kubectl rollout restart deploy $APP_INSTANCE_NAME-conjur --namespace $NAMESPACE
 - In the Cloud Console, open
    [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
 
-- From the list of apps, click **Conjur**.
+- From the list of apps, click **Gogs**.
 
 - On the Application Details page, click **Delete**.
 
@@ -351,7 +390,7 @@ kubectl rollout restart deploy $APP_INSTANCE_NAME-conjur --namespace $NAMESPACE
 Set your installation name and Kubernetes namespace:
 
 ```shell
-export APP_INSTANCE_NAME=conjur
+export APP_INSTANCE_NAME=gogs
 export NAMESPACE=default
 ```
 
