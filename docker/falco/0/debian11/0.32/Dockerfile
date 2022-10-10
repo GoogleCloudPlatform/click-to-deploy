@@ -30,6 +30,7 @@ RUN apt-get update \
 	llvm-11 \
 	netcat \
 	xz-utils \
+	openssl \
 	&& rm -rf /var/lib/apt/lists/*
 
 RUN ln -s /usr/bin/clang-11 /usr/bin/clang \
