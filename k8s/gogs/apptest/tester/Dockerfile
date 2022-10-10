@@ -10,7 +10,7 @@ RUN mkdir -p /opt/kubectl/1.21 \
     && chmod 755 /opt/kubectl/1.21/kubectl \
     && ln -s /opt/kubectl/1.21/kubectl /usr/bin/kubectl
 
-COPY tests/conjur.yaml /tests/
+COPY tests/gogs.yaml /tests/
 COPY tester.sh /tester.sh
 
 WORKDIR /
