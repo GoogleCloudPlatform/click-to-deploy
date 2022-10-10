@@ -1,9 +1,7 @@
-# conjur
+# gogs
 
-Conjur is a seamless open source interface to securely authenticate, control and audit non-human access across tools, 
-applications, containers and cloud environments via robust secrets management.
-
-For more information, visit the Conjur [official website](https://www.conjur.org/).
+Gogs is a simple self-hosted Git service.
+For more information, visit the Gogs [official website](https://gogs.io).
 
 ## About Google Click to Deploy
 
@@ -11,7 +9,7 @@ Popular open stacks on Kubernetes, packaged by Google.
 
 ## Architecture
 
-![Architecture diagram](resources/conjur-k8s-app-architecture.png)
+![Architecture diagram](resources/gogs-k8s-app-architecture.png)
 
 This app offers "list of resources".
 
@@ -19,9 +17,9 @@ This app offers "list of resources".
 
 ## Quick install with Google Cloud Marketplace
 
-Get up and running with a few clicks! To install this Conjur app to a
+Get up and running with a few clicks! To install this Gogs app to a
 Google Kubernetes Engine cluster via Google Cloud Marketplace, follow the
-[on-screen instructions](https://console.cloud.google.com/marketplace/details/google/conjur).
+[on-screen instructions](https://console.cloud.google.com/marketplace/details/google/gogs).
 
 ## Command-line instructions
 
@@ -50,7 +48,7 @@ gcloud auth configure-docker
 Create a new cluster from the command-line:
 
 ```shell
-export CLUSTER=conjur-cluster
+export CLUSTER=gogs-cluster
 export ZONE=us-west1-a
 
 gcloud container clusters create "${CLUSTER}" --zone "${ZONE}"
@@ -91,10 +89,10 @@ community. You can find the source code at
 
 ### Install the app
 
-Navigate to the `conjur` directory:
+Navigate to the `gogs` directory:
 
 ```shell
-cd click-to-deploy/k8s/conjur
+cd click-to-deploy/k8s/gogs
 ```
 
 #### Configure the app with environment variables
@@ -104,7 +102,7 @@ Choose an instance name and
 for the app. In most cases, you can use the `default` namespace.
 
 ```shell
-export APP_INSTANCE_NAME=conjur
+export APP_INSTANCE_NAME=gogs
 export NAMESPACE=default
 ```
 

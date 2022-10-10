@@ -10,8 +10,8 @@ spec:
   ports:
     - name: http
       protocol: TCP
-      port: 80
-      targetPort: 80
+      port: 3000
+      targetPort: 3000
   {{ if .Values.enablePublicServiceAndIngress }}
   type: NodePort
   {{ else }}
