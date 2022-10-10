@@ -8,7 +8,7 @@ metadata:
 {{ include "harbor.labels" . | indent 4 }}
     component: chartmuseum
 spec:
-  accessModes: 
+  accessModes:
     - ReadWriteOnce
   resources:
     requests:

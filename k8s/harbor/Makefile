@@ -39,7 +39,6 @@ image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_HARBOR))
 ADDITIONAL_IMAGES := core chartmuseum database jobservice notary-server notary-signer portal redis registry registryctl trivy nginx prometheus-to-sd
 
 # Additional images variable names should correspond with ADDITIONAL_IMAGES list
-
 image-core := $(call get_sha256,$(IMAGE_HARBOR_CORE))
 image-chartmuseum := $(call get_sha256,$(IMAGE_HARBOR_CHARTMUSEUM))
 image-database := $(call get_sha256,$(IMAGE_HARBOR_DATABASE))

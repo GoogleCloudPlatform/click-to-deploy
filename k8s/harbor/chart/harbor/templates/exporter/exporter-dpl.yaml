@@ -26,7 +26,7 @@ spec:
       automountServiceAccountToken: false
       containers:
       - name: exporter
-        image: {{ .Values.exporter.image.repo }}:{{ .Values.exporter.image.tag }}
+        image: "{{ .Values.exporter.image.repo }}:{{ .Values.exporter.image.tag }}"
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -47,7 +47,7 @@ spec:
         - secretRef:
             name: "{{ template "harbor.exporter" . }}"
         ports:
-        - containerPort: 8080      
+        - containerPort: 8080
       {{ if .Values.metrics.exporter.enabled }}
       - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}

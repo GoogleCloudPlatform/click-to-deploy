@@ -23,75 +23,75 @@ harborAdminPassword: "Harbor12345"
 # If service exposed via "ingress", the Nginx will not be used
 nginx:
   image:
-    repo: goharbor/nginx-photon
-    tag: v2.5.2
+    repo: null
+    tag: null
 
 portal:
   image:
-    repo: goharbor/harbor-portal
-    tag: v2.5.2
+    repo: null
+    tag: null
 
 core:
   image:
-    repo: goharbor/harbor-core
-    tag: v2.5.2
+    repo: null
+    tag: null
 
 jobservice:
   image:
-    repo: goharbor/harbor-jobservice
-    tag: v2.5.2
+    repo: null
+    tag: null
 
 registry:
   registry:
     image:
-      repo: goharbor/registry-photon
-      tag: v2.5.2
+      repo: null
+      tag: null
   controller:
     image:
-      repo: goharbor/harbor-registryctl
-      tag: v2.5.2
+      repo: null
+      tag: null
   credentials:
     username: "harbor_registry_user"
     password: "harbor_registry_password"
 
 chartmuseum:
   image:
-    repo: goharbor/chartmuseum-photon
-    tag: v2.5.2
+    repo: null
+    tag: null
 
 trivy:
   image:
-    repo: goharbor/trivy-adapter-photon
-    tag: v2.5.2
+    repo: null
+    tag: null
 
 notary:
   server:
     image:
-      repo: goharbor/notary-server-photon
-      tag: v2.5.2
+      repo: null
+      tag: null
   signer:
     image:
-      repo: goharbor/notary-signer-photon
-      tag: v2.5.2
+      repo: null
+      tag: null
 
 database:
   internal:
     image:
-      repo: goharbor/harbor-db
-      tag: v2.5.2
+      repo: null
+      tag: null
     # The initial superuser password for internal database
     password: "changeit"
 
 redis:
   internal:
     image:
-      repo: goharbor/redis-photon
-      tag: v2.5.2
+      repo: null
+      tag: null
 
 exporter:
   image:
-    repo: goharbor/harbor-exporter
-    tag: v2.5.2
+    repo: null
+    tag: null
 
 metrics:
   enabled: true
