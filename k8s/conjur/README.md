@@ -188,13 +188,13 @@ expanded manifest file for future updates to your app.
 ```shell
 helm template "${APP_INSTANCE_NAME}" chart/conjur \
     --namespace "${NAMESPACE}" \
-    --set conjur.image.repo="$IMAGE_CONJUR" \
-    --set conjur.image.tag="$CONJUR_TRACK" \
-    --set conjur.serviceAccount="$CONJUR_SERVICE_ACCOUNT" \
-    --set conjur.db.password="$POSTGRESQL_PASSWORD" \
-    --set conjur.data_key="$CONJUR_DATA_KEY" \
-    --set postgresql.image.repo="$IMAGE_POSTGRESQL" \
-    --set postgresql.image.tag="$POSTGRESQL_TRACK" \
+    --set conjur.image.repo="${IMAGE_CONJUR}" \
+    --set conjur.image.tag="${CONJUR_TRACK}" \
+    --set conjur.serviceAccount="${CONJUR_SERVICE_ACCOUNT}" \
+    --set conjur.db.password="${POSTGRESQL_PASSWORD}" \
+    --set conjur.data_key="${CONJUR_DATA_KEY}" \
+    --set postgresql.image.repo="${IMAGE_POSTGRESQL}" \
+    --set postgresql.image.tag="${POSTGRESQL_TRACK}" \
     --set postgresql.persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \
     --set postgresql.persistence.size="${PSQL_PERSISTENT_DISK_SIZE}" \
     --set conjur.replicas="${CONJUR_REPLICAS:-1}" \
@@ -256,7 +256,7 @@ command, where `REPLICAS` is your desired number of replicas:
 
 ```shell
 export REPLICAS=3
-kubectl scale deployment "${APP_INSTANCE_NAME}-conjur" --namespace $NAMESPACE --replicas=$REPLICAS
+kubectl scale deployment "${APP_INSTANCE_NAME}-conjur" --namespace ${NAMESPACE} --replicas=${REPLICAS}
 ```
 
 # Backup and restore
@@ -277,7 +277,7 @@ export NAMESPACE=default
 Use this command to see a base64-encoded version of your PostgreSQL password:
 
 ```shell
-kubectl get secret $APP_INSTANCE_NAME-config-envs --namespace $NAMESPACE -o jsonpath='{.data.POSTGRES_PASSWORD}' | base64 -d
+kubectl get secret ${APP_INSTANCE_NAME}-config-envs --namespace ${NAMESPACE} -o jsonpath='{.data.POSTGRES_PASSWORD}' | base64 -d
 ```
 
 ## Backup your data key
@@ -285,7 +285,7 @@ kubectl get secret $APP_INSTANCE_NAME-config-envs --namespace $NAMESPACE -o json
 Use this command to see a base64-encoded version of your Conjur data key:
 
 ```shell
-kubectl get secret $APP_INSTANCE_NAME-config-envs --namespace $NAMESPACE -o jsonpath='{.data.CONJUR_DATA_KEY}' | base64 -d
+kubectl get secret ${APP_INSTANCE_NAME}-config-envs --namespace ${NAMESPACE} -o jsonpath='{.data.CONJUR_DATA_KEY}' | base64 -d
 ```
 
 ### Establish the PostgreSQL connection
@@ -324,7 +324,7 @@ psql -U conjur -h 127.0.0.1 -p 5432 conjur < psql-backup.sql
 
 ```shell
 export CONJUR_DATA_KEY="put your data key here"
-kubectl patch secret $APP_INSTANCE_NAME-config-envs --namespace $NAMESPACE \
+kubectl patch secret ${APP_INSTANCE_NAME}-config-envs --namespace ${NAMESPACE} \
 --patch="{\"data\": { \"CONJUR_DATA_KEY\": \"$(echo -n $CONJUR_DATA_KEY |base64 -w0)\" }}" -oyaml
 
 ```
@@ -332,7 +332,7 @@ kubectl patch secret $APP_INSTANCE_NAME-config-envs --namespace $NAMESPACE \
 3. Finally, restart the Conjur pods:
 
 ```shell
-kubectl rollout restart deploy $APP_INSTANCE_NAME-conjur --namespace $NAMESPACE
+kubectl rollout restart deploy ${APP_INSTANCE_NAME}-conjur --namespace ${NAMESPACE}
 ```
 
 # Uninstall the app
@@ -369,13 +369,13 @@ installation.
 Run `kubectl` on the expanded manifest file:
 
 ```shell
-kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
+kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace ${NAMESPACE}
 ```
 
 You can also delete the resources by using types and a label:
 
 ```shell
-kubectl delete application --namespace $NAMESPACE --selector app.kubernetes.io/name=${APP_INSTANCE_NAME}
+kubectl delete application --namespace ${NAMESPACE} --selector app.kubernetes.io/name=${APP_INSTANCE_NAME}
 ```
 
 ### Delete the persistent volumes of your installation
@@ -388,16 +388,16 @@ To remove the PersistentVolumeClaims with their attached persistent disks, run
 the following `kubectl` commands:
 
 ```shell
-for pv in $(kubectl get pvc --namespace $NAMESPACE \
-  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME \
+for pv in $(kubectl get pvc --namespace ${NAMESPACE} \
+  --selector app.kubernetes.io/name=${APP_INSTANCE_NAME} \
   --output jsonpath='{.items[*].spec.volumeName}');
 do
-  kubectl delete pv/$pv --namespace $NAMESPACE
+  kubectl delete pv/${pv} --namespace ${NAMESPACE}
 done
 
 kubectl delete persistentvolumeclaims \
-  --namespace $NAMESPACE \
-  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
+  --namespace ${NAMESPACE} \
+  --selector app.kubernetes.io/name=${APP_INSTANCE_NAME}
 ```
 
 ### Delete the GKE cluster
