@@ -75,18 +75,16 @@ notary:
       tag: null
 
 database:
-  internal:
-    image:
-      repo: null
-      tag: null
-    # The initial superuser password for internal database
-    password: "changeit"
+  image:
+    repo: null
+    tag: null
+  # The initial superuser password for internal database
+  password: "changeit"
 
 redis:
-  internal:
-    image:
-      repo: null
-      tag: null
+  image:
+    repo: null
+    tag: null
 
 exporter:
   image:

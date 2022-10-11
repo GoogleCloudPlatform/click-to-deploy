@@ -25,7 +25,7 @@ spec:
       terminationGracePeriodSeconds: 120
       containers:
       - name: redis
-        image: {{ .Values.redis.internal.image.repo }}:{{ .Values.redis.internal.image.tag }}
+        image: {{ .Values.redis.image.repo }}:{{ .Values.redis.image.tag }}
         imagePullPolicy: IfNotPresent
         livenessProbe:
           tcpSocket:

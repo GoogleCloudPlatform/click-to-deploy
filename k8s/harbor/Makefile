@@ -21,6 +21,7 @@ IMAGE_HARBOR ?= $(SOURCE_REGISTRY)/harbor2:$(TRACK)
 IMAGE_HARBOR_CORE ?= $(HARBOR_SOURCE_REGISTRY)/harbor-core:$(HARBOR_TRACK)
 IMAGE_HARBOR_CHARTMUSEUM ?= $(HARBOR_SOURCE_REGISTRY)/chartmuseum-photon:$(HARBOR_TRACK)
 IMAGE_HARBOR_DATABASE ?= $(HARBOR_SOURCE_REGISTRY)/harbor-db:$(HARBOR_TRACK)
+IMAGE_HARBOR_EXPORTER ?= $(HARBOR_SOURCE_REGISTRY)/harbor-exporter:$(HARBOR_TRACK)
 IMAGE_HARBOR_JOBSERVICE ?= $(HARBOR_SOURCE_REGISTRY)/harbor-jobservice:$(HARBOR_TRACK)
 IMAGE_HARBOR_NOTARY_SERVER ?= $(HARBOR_SOURCE_REGISTRY)/notary-server-photon:$(HARBOR_TRACK)
 IMAGE_HARBOR_NOTARY_SIGNER ?= $(HARBOR_SOURCE_REGISTRY)/notary-signer-photon:$(HARBOR_TRACK)
@@ -36,12 +37,13 @@ IMAGE_PROMETHEUS_TO_SD ?= gke.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_HARBOR))
 
 # List of images used in application
-ADDITIONAL_IMAGES := core chartmuseum database jobservice notary-server notary-signer portal redis registry registryctl trivy nginx prometheus-to-sd
+ADDITIONAL_IMAGES := core chartmuseum database exporter jobservice notary-server notary-signer portal redis registry registryctl trivy nginx prometheus-to-sd
 
 # Additional images variable names should correspond with ADDITIONAL_IMAGES list
 image-core := $(call get_sha256,$(IMAGE_HARBOR_CORE))
 image-chartmuseum := $(call get_sha256,$(IMAGE_HARBOR_CHARTMUSEUM))
 image-database := $(call get_sha256,$(IMAGE_HARBOR_DATABASE))
+image-exporter := $(call get_sha256,$(IMAGE_HARBOR_EXPORTER))
 image-jobservice := $(call get_sha256,$(IMAGE_HARBOR_JOBSERVICE))
 image-notary-server := $(call get_sha256,$(IMAGE_HARBOR_NOTARY_SERVER))
 image-notary-signer := $(call get_sha256,$(IMAGE_HARBOR_NOTARY_SIGNER))

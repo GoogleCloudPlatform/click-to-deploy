@@ -31,7 +31,7 @@ spec:
       # for more detail.
       # we may remove it after several releases
       - name: "data-migrator"
-        image: {{ .Values.database.internal.image.repo }}:{{ .Values.database.internal.image.tag }}
+        image: {{ .Values.database.image.repo }}:{{ .Values.database.image.tag }}
         imagePullPolicy: IfNotPresent
         command: ["/bin/sh"]
         args: ["-c", "[ -e /var/lib/postgresql/data/postgresql.conf ] && [ ! -d /var/lib/postgresql/data/pgdata ] && mkdir -m 0700 /var/lib/postgresql/data/pgdata && mv /var/lib/postgresql/data/* /var/lib/postgresql/data/pgdata/ || true"]
@@ -44,7 +44,7 @@ spec:
       # use this init container to correct the permission
       # as "fsGroup" applied before the init container running, the container has enough permission to execute the command
       - name: "data-permissions-ensurer"
-        image: "{{ .Values.database.internal.image.repo }}:{{ .Values.database.internal.image.tag }}"
+        image: "{{ .Values.database.image.repo }}:{{ .Values.database.image.tag }}"
         imagePullPolicy: IfNotPresent
         command: ["/bin/sh"]
         args: ["-c", "chmod -R 700 /var/lib/postgresql/data/pgdata || true"]
@@ -54,7 +54,7 @@ spec:
             subPath:
       containers:
       - name: database
-        image: {{ .Values.database.internal.image.repo }}:{{ .Values.database.internal.image.tag }}
+        image: {{ .Values.database.image.repo }}:{{ .Values.database.image.tag }}
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:

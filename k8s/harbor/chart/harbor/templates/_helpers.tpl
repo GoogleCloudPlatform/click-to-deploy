@@ -72,7 +72,7 @@ app.kubernetes.io/app: "{{ template "harbor.name" . }}"
 {{- end -}}
 
 {{- define "harbor.database.rawPassword" -}}
-    {{- .Values.database.internal.password -}}
+    {{- .Values.database.password -}}
 {{- end -}}
 
 {{- define "harbor.database.escapedRawPassword" -}}

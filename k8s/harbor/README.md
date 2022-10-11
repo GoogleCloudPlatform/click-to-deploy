@@ -193,8 +193,8 @@ helm template "${APP_INSTANCE_NAME}" chart/harbor \
   --set core.image.tag="${TAG}" \
   --set chartmuseum.image.repo="${IMAGE_HARBOR_CHARTMUSEUM}" \
   --set chartmuseum.image.tag="${TAG}" \
-  --set database.internal.image.repo="${IMAGE_HARBOR_DATABASE}" \
-  --set database.internal.image.tag="${TAG}" \
+  --set database.image.repo="${IMAGE_HARBOR_DATABASE}" \
+  --set database.image.tag="${TAG}" \
   --set jobservice.image.repo="${IMAGE_HARBOR_JOBSERVICE}" \
   --set jobservice.image.tag="${TAG}" \
   --set notary.server.image.repo="${IMAGE_HARBOR_NOTARY_SERVER}" \
@@ -203,8 +203,8 @@ helm template "${APP_INSTANCE_NAME}" chart/harbor \
   --set notary.signer.image.tag="${TAG}" \
   --set portal.image.repo="${IMAGE_HARBOR_PORTAL}" \
   --set portal.image.tag="${TAG}" \
-  --set redis.internal.image.repo="${IMAGE_HARBOR_REDIS}" \
-  --set redis.internal.image.tag="${TAG}" \
+  --set redis.image.repo="${IMAGE_HARBOR_REDIS}" \
+  --set redis.image.tag="${TAG}" \
   --set registry.registry.image.repo="${IMAGE_HARBOR_REGISTRY}" \
   --set registry.registry.image.tag="${TAG}" \
   --set registry.controller.image.repo="${IMAGE_HARBOR_REGISTRYCTL}" \

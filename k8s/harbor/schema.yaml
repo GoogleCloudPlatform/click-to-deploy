@@ -60,6 +60,7 @@ x-google-marketplace:
           type: REPO_WITH_REGISTRY
         registry.registry.image.tag:
           type: TAG
+
     registryctl:
       properties:
         registry.controller.image.repo:
@@ -97,23 +98,23 @@ x-google-marketplace:
 
     database:
       properties:
-        database.internal.image.repo:
+        database.image.repo:
           type: REPO_WITH_REGISTRY
-        database.internal.image.tag:
+        database.image.tag:
           type: TAG
 
     redis:
       properties:
-        redis.internal.image.repo:
+        redis.image.repo:
           type: REPO_WITH_REGISTRY
-        redis.internal.image.tag:
+        redis.image.tag:
           type: TAG
 
     exporter:
       properties:
-        exporter.internal.image.repo:
+        exporter.image.repo:
           type: REPO_WITH_REGISTRY
-        exporter.internal.image.tag:
+        exporter.image.tag:
           type: TAG
 
     prometheus-to-sd:
