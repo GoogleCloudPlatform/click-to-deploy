@@ -136,7 +136,7 @@ export POSTGRESQL_TRACK=13.4
 Configure the container images:
 
 ```shell
-export IMAGE_CONJUR=gcr.io/ccm-ops-test-adhoc/conjur1
+export IMAGE_CONJUR=marketplace.gcr.io/google/conjur1
 export IMAGE_POSTGRESQL=marketplace.gcr.io/google/postgresql13
 ```
 

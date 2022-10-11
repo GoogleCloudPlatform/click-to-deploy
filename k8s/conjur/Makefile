@@ -13,14 +13,12 @@ POSTGRESQL_TRACK ?= 13.4
 
 VERIFY_WAIT_TIMEOUT = 1800
 
-#SOURCE_REGISTRY ?= marketplace.gcr.io/google
+SOURCE_REGISTRY ?= marketplace.gcr.io/google
 
-SOURCE_REGISTRY ?= gcr.io/ccm-ops-test-adhoc
-
-IMAGE_CONJUR ?= gcr.io/ccm-ops-test-adhoc/conjur1:$(TRACK)
+IMAGE_CONJUR ?= $(SOURCE_REGISTRY)/conjur1:$(TRACK)
 
 # POSTGRESQL
-IMAGE_POSTGRESQL ?= marketplace.gcr.io/google/postgresql13:$(POSTGRESQL_TRACK)
+IMAGE_POSTGRESQL ?= $(SOURCE_REGISTRY)/postgresql13:$(POSTGRESQL_TRACK)
 
 # Main image
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_CONJUR))

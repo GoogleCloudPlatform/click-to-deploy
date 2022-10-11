@@ -44,19 +44,19 @@ spec:
       Conjur Webserver, you can either expose a public service endpoint, or keep it private, but connect
       from your local environment with `kubectl port-forward`.
 
-      ## Forward the Keycloak Webserver port in your local environment
+      ## Forward the Conjur Webserver port in your local environment
 
-      To use `kubectl`'s port forwarding feature to forward MediaWiki's port to your local
+      To use `kubectl`'s port forwarding feature to forward Conjur's port to your local
       machine, run the following command in the background:
 
       ```shell
       kubectl port-forward \
         --namespace {{ .Release.Namespace }} \
         svc/{{ .Release.Name }}-conjur-svc \
-        8080:8080
+        80:80
       ```
 
-      Now you can access the Keycloak Webserver with [http://localhost:8080](http://localhost:8080).
+      Now you can access the Conjur Webserver with [http://localhost:80](http://localhost:80).
       {{- end }}
   info:
   {{ if .Values.enablePublicServiceAndIngress -}}
@@ -68,9 +68,9 @@ spec:
         protocol: HTTPS
   {{- else -}}
   - name: Forward Conjur Webserver port locally
-    value: kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-conjur-svc 8080:8080
+    value: kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-conjur-svc 80:80
   - name: Conjur Webserver address (local only)
-    value: "http://localhost:8080/"
+    value: "http://localhost:80/"
   {{- end }}
   - name: Conjur - data key
     type: Reference

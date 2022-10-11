@@ -96,7 +96,7 @@ properties:
   enablePublicServiceAndIngress:
     type: boolean
     title: Enable public IP access
-    description: Set the Keycloak Service type to NodePort and enable Ingress
+    description: Set the Conjur Service type to NodePort and enable Ingress
     default: false
   postgresql.persistence.storageClass:
     type: string
