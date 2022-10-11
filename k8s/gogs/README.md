@@ -293,7 +293,7 @@ command, where `REPLICAS` is your desired number of replicas:
 
 ```shell
 export REPLICAS=3
-kubectl scale deployment "${APP_INSTANCE_NAME}-gogs" --namespace $NAMESPACE --replicas=$REPLICAS
+kubectl scale deployment "${APP_INSTANCE_NAME}-gogs" --namespace ${NAMESPACE} --replicas=${REPLICAS}
 ```
 
 # Backup and restore
@@ -314,7 +314,7 @@ export NAMESPACE=default
 Use this command to see a base64-encoded version of your PostgreSQL password:
 
 ```shell
-kubectl get secret $APP_INSTANCE_NAME-config-envs --namespace $NAMESPACE -o jsonpath='{.data.POSTGRES_PASSWORD}' | base64 -d
+kubectl get secret ${APP_INSTANCE_NAME}-config-envs --namespace ${NAMESPACE} -o jsonpath='{.data.POSTGRES_PASSWORD}' | base64 -d
 ```
 
 ## Backup your secret key
@@ -322,7 +322,7 @@ kubectl get secret $APP_INSTANCE_NAME-config-envs --namespace $NAMESPACE -o json
 Use this command to see your Gogs secret key:
 
 ```shell
-kubectl get secret $APP_INSTANCE_NAME-config-envs --namespace $NAMESPACE -o jsonpath='{.data.GOGS_SECRET_KEY}' | base64 -d
+kubectl get secret ${APP_INSTANCE_NAME}-config-envs --namespace ${NAMESPACE} -o jsonpath='{.data.GOGS_SECRET_KEY}' | base64 -d
 ```
 
 ### Establish the PostgreSQL connection
@@ -361,7 +361,7 @@ psql -U gogs -h 127.0.0.1 -p 5432 gogs < psql-backup.sql
 
 ```shell
 export GOGS_SECRET_KEY="put your data key here"
-kubectl patch secret $APP_INSTANCE_NAME-config-envs --namespace $NAMESPACE \
+kubectl patch secret ${APP_INSTANCE_NAME}-config-envs --namespace ${NAMESPACE} \
 --patch="{\"data\": { \"GOGS_SECRET_KEY\": \"$(echo -n $GOGS_SECRET_KEY |base64 -w0)\" }}" -oyaml
 
 ```
@@ -369,7 +369,7 @@ kubectl patch secret $APP_INSTANCE_NAME-config-envs --namespace $NAMESPACE \
 3. Finally, restart the Gogs pods:
 
 ```shell
-kubectl rollout restart deploy $APP_INSTANCE_NAME-gogs --namespace $NAMESPACE
+kubectl rollout restart deploy ${APP_INSTANCE_NAME}-gogs --namespace ${NAMESPACE}
 ```
 
 # Uninstall the app
@@ -406,13 +406,13 @@ installation.
 Run `kubectl` on the expanded manifest file:
 
 ```shell
-kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace $NAMESPACE
+kubectl delete -f ${APP_INSTANCE_NAME}_manifest.yaml --namespace ${NAMESPACE}
 ```
 
 You can also delete the resources by using types and a label:
 
 ```shell
-kubectl delete application --namespace $NAMESPACE --selector app.kubernetes.io/name=${APP_INSTANCE_NAME}
+kubectl delete application --namespace ${NAMESPACE} --selector app.kubernetes.io/name=${APP_INSTANCE_NAME}
 ```
 
 ### Delete the persistent volumes of your installation
@@ -425,16 +425,16 @@ To remove the PersistentVolumeClaims with their attached persistent disks, run
 the following `kubectl` commands:
 
 ```shell
-for pv in $(kubectl get pvc --namespace $NAMESPACE \
-  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME \
+for pv in $(kubectl get pvc --namespace ${NAMESPACE} \
+  --selector app.kubernetes.io/name=${APP_INSTANCE_NAME} \
   --output jsonpath='{.items[*].spec.volumeName}');
 do
-  kubectl delete pv/$pv --namespace $NAMESPACE
+  kubectl delete pv/${pv} --namespace ${NAMESPACE}
 done
 
 kubectl delete persistentvolumeclaims \
-  --namespace $NAMESPACE \
-  --selector app.kubernetes.io/name=$APP_INSTANCE_NAME
+  --namespace ${NAMESPACE} \
+  --selector app.kubernetes.io/name=${APP_INSTANCE_NAME}
 ```
 
 ### Delete the GKE cluster
