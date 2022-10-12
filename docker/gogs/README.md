@@ -77,7 +77,7 @@ Or you can use `docker run` directly:
 docker run --name gogs -p 3000:3000 -d marketplace.gcr.io/google/gogs0
 ```
 
-### <a name="Runnung-Gogs-with-PostgreSQL"></a>Running Conjur with PostgreSQL
+### <a name="Runnung-Gogs-with-PostgreSQL"></a>Running Gogs with PostgreSQL
 
 Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
 
