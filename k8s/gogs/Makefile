@@ -37,6 +37,7 @@ ADDITIONAL_IMAGES := postgresql nfs prometheus-to-sd
 # Additional images variable names should correspond with ADDITIONAL_IMAGES list
 image-postgresql := $(call get_sha256,$(IMAGE_POSTGRESQL))
 image-nfs := $(call get_sha256,$(IMAGE_NFS))
+image-prometheus-to-sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))
 
 C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
 
