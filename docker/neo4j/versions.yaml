@@ -20,20 +20,20 @@ versions:
   from: marketplace.gcr.io/google/debian11
   packages:
     dockerneo4j:
-      sha256: 40cde651c97b354f6dc6d84863d7d4dca301742bd2d92445a961e84ff85350a5
-      version: 4.4.10
+      sha256: 2d206bd7042f1cfe23a192472f2b6ce007a62a993ff5dc20244ad4491ee487a1
+      version: 4.4.11
     neo4j:
-      sha256: 869ecb89ce36fe457b4d4c4fcaa48fdf2f2d739c45323bd2c8ccdf09aa11abbf
-      version: 4.4.10
+      sha256: 28810daac5de4a5d5b77ce2da7d7c3da4c5ccf13288bad885b833c35b96100c8
+      version: 4.4.11
     tini:
       sha256: 93dcc18adc78c65a028a84799ecf8ad40c936fdfc5f2a57b1acda5a8117fa82c
       version: 0.19.0
   repo: neo4j4
   tags:
-  - 4.4.9-debian11
+  - 4.4.11-debian11
   - 4.4-debian11
   - 4-debian11
-  - 4.4.9
+  - 4.4.11
   - '4.4'
   - '4'
   - latest
