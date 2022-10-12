@@ -15,17 +15,15 @@ METRICS_EXPORTER_TAG ?= v0.5.1
 
 VERIFY_WAIT_TIMEOUT = 1800
 
-#SOURCE_REGISTRY ?= marketplace.gcr.io/google
+SOURCE_REGISTRY ?= marketplace.gcr.io/google
 
-SOURCE_REGISTRY ?= gcr.io/ccm-ops-test-adhoc
-
-IMAGE_GOGS ?= gcr.io/ccm-ops-test-adhoc/gogs0:$(TRACK)
+IMAGE_GOGS ?= $(SOURCE_REGISTRY)/gogs0:$(TRACK)
 
 # POSTGRESQL
-IMAGE_POSTGRESQL ?= marketplace.gcr.io/google/postgresql13:$(POSTGRESQL_TRACK)
+IMAGE_POSTGRESQL ?= $(SOURCE_REGISTRY)/postgresql13:$(POSTGRESQL_TRACK)
 
 # NFS
-IMAGE_NFS ?= marketplace.gcr.io/google/nfs-server1:$(NFS_TRACK)
+IMAGE_NFS ?=  $(SOURCE_REGISTRY)/nfs-server1:$(NFS_TRACK)
 
 # Prometheus-to-SD
 IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)

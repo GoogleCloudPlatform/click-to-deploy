@@ -137,7 +137,7 @@ export METRICS_EXPORTER_TAG=0.5
 Configure the container images:
 
 ```shell
-export IMAGE_GOGS=gcr.io/ccm-ops-test-adhoc/gogs0
+export IMAGE_GOGS=marketplace.gcr.io/google/gogs0
 export IMAGE_POSTGRESQL=marketplace.gcr.io/google/postgresql13
 export IMAGE_NFS=marketplace.gcr.io/google/nfs-server1
 export IMAGE_METRICS_EXPORTER=k8s.gcr.io/prometheus-to-sd:${METRICS_EXPORTER_TAG}
