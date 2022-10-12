@@ -5,7 +5,7 @@ echo "Step 1. Create testuser"
 
 echo "Step 2. Get user info"
 export TEST_USERNAME=$(curl -s -u "testuser:testpassword" localhost:3000/api/v1/users/testuser/|jq -r .username)
-if [ "$TEST_USERNAME" != "testuser" ];then 
+if [ "${TEST_USERNAME}" != "testuser" ];then 
   echo "Something went wrong with API!";
   exit 1
 else
@@ -17,7 +17,7 @@ curl -s -u "testuser:testpassword" -H "Content-Type: application/json"  -d "{\"N
 
 echo "Step 4. Ger repo info"
 export TEST_REPO=$(curl -s -u "testuser:testpassword" localhost:3000/api/v1/repos/testuser/testrepo/|jq -r .clone_url)
-if [ "$TEST_REPO" != "http://localhost:3000/testuser/testrepo.git" ];then 
+if [ "${TEST_REPO}" != "${GOGS_EXTERNAL_URL}testuser/testrepo.git" ];then 
   echo "Something went wrong with API!";
   exit 1
 else
@@ -25,5 +25,5 @@ else
 fi
 
 echo "Step 5. Clone test repo"
-git clone $TEST_REPO /tmp/testrepo/ 2>&1 || true
+git clone ${TEST_REPO} /tmp/testrepo/ 2>&1 || true
 

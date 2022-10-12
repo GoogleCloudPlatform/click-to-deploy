@@ -1,7 +1,8 @@
 #!/bin/bash
 
 prepare_gogs_config() {
-    # create app.ini config 
+    # create app.ini config
+    mkdir -p /data/gogs/conf
     cat /app/gogs/app.ini.env | \
     envsubst > /data/gogs/conf/app.ini
 }
