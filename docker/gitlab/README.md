@@ -15,7 +15,7 @@ This is not an official Google product.
 This image contains an installation of Gitlab.
 
 For more information, see the
-[Official Image Marketplace Page](https://console.cloud.google.com/marketplace/product/google/gitlab14).
+[Official Image Marketplace Page](https://console.cloud.google.com/marketplace/product/google/gitlab15).
 
 ### Prerequisites
 
@@ -27,7 +27,7 @@ gcloud auth configure-docker
 ### Pull command
 
 ```shell
-docker -- pull marketplace.gcr.io/google/gitlab14
+docker -- pull marketplace.gcr.io/google/gitlab15
 ```
 Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/docker/gitlab/14/debian10/14.7).
 =======
@@ -61,7 +61,7 @@ version: '2'
 services:
   gitlab:
     container_name: gitlab
-    image: marketplace.gcr.io/google/gitlab14 
+    image: marketplace.gcr.io/google/gitlab15 
     ports:
       - 8080:80
       - 8022:22
@@ -90,7 +90,7 @@ docker run -d --name 'gitlab' -it --rm \
     manage_accounts['enable'] = true; \
     nginx['redirect_http_to_https'] = false; \
     nginx['listen_port'] = 80;" \
-    marketplace.gcr.io/google/gitlab14
+    marketplace.gcr.io/google/gitlab15
 ```
 
 Then, access it via [http://localhost:8080](http://localhost:8080) or `http://host-ip:8080` in a browser.
@@ -116,7 +116,7 @@ services:
     command: ["redis-server", "--requirepass", "some-password", "--dir", "/data"]
   gitlab:
     container_name: gitlab
-    image: marketplace.gcr.io/google/gitlab14
+    image: marketplace.gcr.io/google/gitlab15
     ports:
       - 8080:80
       - 8022:22
@@ -172,7 +172,7 @@ services:
       - /data
   gitlab:
     container_name: gitlab
-    image: marketplace.gcr.io/google/gitlab14
+    image: marketplace.gcr.io/google/gitlab15
     ports:
       - 8080:80
       - 8022:22
