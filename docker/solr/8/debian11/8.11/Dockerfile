@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian10
+FROM marketplace.gcr.io/google/debian11
 
 ARG SOLR_VERSION=8.11.2
 ARG SOLR_SHA512=22fedcc0090eda72c3c5a5ea769c93adaf7d92c5c4479993f009ef0b9d42de5bd2ed1e0565ca01f3428587d8a3836286aa3017aab157050f2bd5bc3482fdebaa
