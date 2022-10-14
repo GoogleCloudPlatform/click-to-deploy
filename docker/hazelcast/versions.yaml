@@ -62,18 +62,18 @@ versions:
     - tests/functional_tests/hazelcast_test.yaml
 
 # Hazelcast 5
-  - dir: '5/debian10/hazelcast/5.1'
+  - dir: '5/debian11/hazelcast/5.1'
     repo: 'hazelcast5'
     templateSubDir: 'hazelcast5'
     tags:
-    - '5.1.3-debian10'
+    - '5.1.3-debian11'
     - '5.1.3'
-    - '5.1-debian10'
+    - '5.1-debian11'
     - '5.1'
-    - '5-debian10'
+    - '5-debian11'
     - '5'
     - 'latest'
-    from: 'marketplace.gcr.io/google/debian10'
+    from: 'marketplace.gcr.io/google/debian11'
     packages:
       hazelcast:
         version: '5.1.3'
@@ -82,15 +82,15 @@ versions:
     - tests/functional_tests/hazelcast_mancenter_test.yaml
 
 # Hazelcast Management Center 5
-  - dir: '5/debian10/hazelcast-mc/5.1'
+  - dir: '5/debian11/hazelcast-mc/5.1'
     repo: 'hazelcast-mc5'
     templateSubDir: 'hazelcast-mc5'
     tags:
-    - '5.1-debian10'
+    - '5.1-debian11'
     - '5.1'
     - '5'
     - 'latest'
-    from: 'marketplace.gcr.io/google/debian10'
+    from: 'marketplace.gcr.io/google/debian11'
     packages:
       hazelcastmc:
         version: '5.1.3'
