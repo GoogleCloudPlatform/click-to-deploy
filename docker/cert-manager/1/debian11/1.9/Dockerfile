@@ -1,4 +1,4 @@
-FROM  marketplace.gcr.io/google/debian10 as bazel
+FROM  marketplace.gcr.io/google/debian11 as bazel
 
 ENV APP_VERSION=1.9.1
 
@@ -35,7 +35,7 @@ RUN for dep in `find $(bazel info execution_root)/../../external/ -maxdepth 1 -t
     do cp -r $dep /src/vendor/; done
 
 # Result Image
-FROM marketplace.gcr.io/google/debian10
+FROM marketplace.gcr.io/google/debian11
 
 # Update openssl
 RUN apt-get update \
