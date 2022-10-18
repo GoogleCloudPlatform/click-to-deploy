@@ -15,12 +15,10 @@
 timeout: 3600s # 1h
 steps:
 
-- id: Build C2D Docker Image
+- id: Find affected solutions
   name: gcr.io/cloud-builders/docker
-  args:
-  - build
-  - --tag
-  - click-to-deploy
-  - --file
-  - docker.Dockerfile
-  - .
+  entrypoint: bash
+   args:
+  - -exc
+  - |
+    echo "PR: ${_PR_NUMBER}"
