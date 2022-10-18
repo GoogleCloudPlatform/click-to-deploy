@@ -15,35 +15,17 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 19/debian11/19.0
-  from: marketplace.gcr.io/google/debian11
+- dir: 0/debian11/0.12
+  from: marketplace.gcr.io/google/debian11:latest
   packages:
-    keycloak:
-      version: 19.0.3
-    h2database:
-      version: 1.4.197
-  repo: keycloak19
+    gogs:
+      version: 0.12.10
+  repo: gogs0
   tags:
-  - '19.0.3-debian11'
-  - '19.0-debian11'
-  - '19-debian11'
-  - '19.0.3'
-  - '19.0'
-  - '19'
-  - 'latest'
-- dir: 18/debian11/18.0
-  from: marketplace.gcr.io/google/debian11
-  packages:
-    keycloak:
-      version: 18.0.2
-    h2database:
-      version: 1.4.197
-  repo: keycloak18
-  tags:
-  - '18.0.0-debian11'
-  - '18.0-debian11'
-  - '18-debian11'
-  - '18.0.0'
-  - '18.0'
-  - '18'
+  - '0.12.10-debian11'
+  - '0.12-debian11'
+  - '0-debian11'
+  - '0.12.10'
+  - '0.12'
+  - '0'
   - 'latest'
