@@ -1,0 +1,95 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+versions:
+# Dragonfly manager
+  - dir: '2/debian11/dragonfly-manager/2.0'
+    repo: 'dragonfly2-manager'
+    templateSubDir: 'dragonfly-manager'
+    tags:
+    - '2.0.6-debian11'
+    - '2.0.6'
+    - '2.0-debian11'
+    - '2.0'
+    - '2-debian11'
+    - '2'
+    - 'latest'
+    from: 'marketplace.gcr.io/google/debian11'
+    packages:
+      dragonfly2_github:
+        version: 2.0.6
+      manager_console:
+        version: 0.1.4
+      grpc_health_probe:
+        version: 0.4.11
+
+  - dir: '2/debian11/dragonfly-scheduler/2.0'
+    repo: 'dragonfly2-scheduler'
+    templateSubDir: 'dragonfly-scheduler'
+    tags:
+    - '2.0.6-debian11'
+    - '2.0.6'
+    - '2.0-debian11'
+    - '2.0'
+    - '2-debian11'
+    - '2'
+    - 'latest'
+    from: 'marketplace.gcr.io/google/debian11'
+    packages:
+      dragonfly2_github:
+        version: 2.0.6
+      manager_console:
+        version: 0.1.4
+      grpc_health_probe:
+        version: 0.4.11
+
+  - dir: '2/debian11/dragonfly-dfget/2.0'
+    repo: 'dragonfly2-dfget'
+    templateSubDir: 'dragonfly-dfget'
+    tags:
+    - '2.0.6-debian11'
+    - '2.0.6'
+    - '2.0-debian11'
+    - '2.0'
+    - '2-debian11'
+    - '2'
+    - 'latest'
+    from: 'marketplace.gcr.io/google/debian11'
+    packages:
+      dragonfly2_github:
+        version: 2.0.6
+      manager_console:
+        version: 0.1.4
+      grpc_health_probe:
+        version: 0.4.11
+
+  - dir: '2/debian11/dragonfly-seed-peer/2.0'
+    repo: 'dragonfly2-seed-peer'
+    templateSubDir: 'dragonfly-seed-peer'
+    tags:
+    - '2.0.6-debian11'
+    - '2.0.6'
+    - '2.0-debian11'
+    - '2.0'
+    - '2-debian11'
+    - '2'
+    - 'latest'
+    from: 'marketplace.gcr.io/google/debian11'
+    packages:
+      dragonfly2_github:
+        version: 2.0.6
+      manager_console:
+        version: 0.1.4
+      grpc_health_probe:
+        version: 0.4.11
