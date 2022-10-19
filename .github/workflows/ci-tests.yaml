@@ -3,8 +3,12 @@ name: ci-tests
 on:
   push:
     branches: [ master ]
+    paths:
+      - 'vm/**'
   pull_request:
     branches: [ master ]
+    paths:
+      - 'vm/**'
 
 jobs:
   build:
