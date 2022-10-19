@@ -23,7 +23,6 @@ steps:
   - |
     echo "Branch: ${BRANCH_NAME}"
     git show-ref
-    git fetch origin "${BRANCH_NAME}"
     git fetch origin master
     git branch -v
     git show-ref
