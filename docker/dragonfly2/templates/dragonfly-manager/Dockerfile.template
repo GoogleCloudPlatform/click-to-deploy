@@ -62,7 +62,7 @@ COPY --from=server-builder /opt/dragonfly/bin/manager /opt/dragonfly/bin/server
 COPY --from=health /bin/grpc_health_probe /bin/grpc_health_probe
 COPY config/manager.yaml /etc/dragonfly/manager.yaml
 COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN apt update && apt install -y gettext-base && \
+RUN apt update && apt install -y curl gettext-base && \
     chmod +x /docker-entrypoint.sh 
 
 EXPOSE 8080 65003

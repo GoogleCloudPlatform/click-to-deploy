@@ -77,7 +77,7 @@ host:
   listenIP: 0.0.0.0
   # access ip for other peers
   # when local ip is different with access ip, advertiseIP should be set
-  advertiseIP: 0.0.0.0
+  advertiseIP: ${DRAGONFLY_SEED_PEER_ADDR}
   # geographical location, separated by "|" characters
   location: ""
   # idc deployed by daemon

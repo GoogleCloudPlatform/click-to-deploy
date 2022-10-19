@@ -33,7 +33,12 @@ versions:
         version: 0.1.4
       grpc_health_probe:
         version: 0.4.11
+    excludeTests: 
+    - tests/functional_tests/scheduler_test.yaml
+    - tests/functional_tests/seed-peer_test.yaml
+    - tests/functional_tests/dfget_test.yaml
 
+# Dragonfly scheduler
   - dir: '2/debian11/dragonfly-scheduler/2.0'
     repo: 'dragonfly2-scheduler'
     templateSubDir: 'dragonfly-scheduler'
@@ -53,27 +58,12 @@ versions:
         version: 0.1.4
       grpc_health_probe:
         version: 0.4.11
+    excludeTests: 
+    - tests/functional_tests/manager_test.yaml
+    - tests/functional_tests/seed-peer_test.yaml
+    - tests/functional_tests/dfget_test.yaml
 
-  - dir: '2/debian11/dragonfly-dfget/2.0'
-    repo: 'dragonfly2-dfget'
-    templateSubDir: 'dragonfly-dfget'
-    tags:
-    - '2.0.6-debian11'
-    - '2.0.6'
-    - '2.0-debian11'
-    - '2.0'
-    - '2-debian11'
-    - '2'
-    - 'latest'
-    from: 'marketplace.gcr.io/google/debian11'
-    packages:
-      dragonfly2_github:
-        version: 2.0.6
-      manager_console:
-        version: 0.1.4
-      grpc_health_probe:
-        version: 0.4.11
-
+# Dragonfly seed-peer
   - dir: '2/debian11/dragonfly-seed-peer/2.0'
     repo: 'dragonfly2-seed-peer'
     templateSubDir: 'dragonfly-seed-peer'
@@ -93,3 +83,32 @@ versions:
         version: 0.1.4
       grpc_health_probe:
         version: 0.4.11
+    excludeTests: 
+    - tests/functional_tests/manager_test.yaml
+    - tests/functional_tests/scheduler_test.yaml
+    - tests/functional_tests/dfget_test.yaml
+
+        # Dragonfly dfget
+  - dir: '2/debian11/dragonfly-dfget/2.0'
+    repo: 'dragonfly2-dfget'
+    templateSubDir: 'dragonfly-dfget'
+    tags:
+    - '2.0.6-debian11'
+    - '2.0.6'
+    - '2.0-debian11'
+    - '2.0'
+    - '2-debian11'
+    - '2'
+    - 'latest'
+    from: 'marketplace.gcr.io/google/debian11'
+    packages:
+      dragonfly2_github:
+        version: 2.0.6
+      manager_console:
+        version: 0.1.4
+      grpc_health_probe:
+        version: 0.4.11
+    excludeTests: 
+    - tests/functional_tests/manager_test.yaml
+    - tests/functional_tests/scheduler_test.yaml
+    - tests/functional_tests/seed-peer_test.yaml

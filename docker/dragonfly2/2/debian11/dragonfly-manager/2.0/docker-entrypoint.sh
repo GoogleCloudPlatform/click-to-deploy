@@ -19,11 +19,12 @@ function replace_vars(){
 
     # If it fails, exit with error, otherwise exit with success.
     if [[ "$?" -ne 0 ]]; then
-        exit_with_error "Error parsing file."
+        echo >&2  "Error parsing file."
+        exit 1
     fi
 }
 
 replace_vars
 
-exec "/opt/dragonfly/bin/server"
+/opt/dragonfly/bin/server --console
 

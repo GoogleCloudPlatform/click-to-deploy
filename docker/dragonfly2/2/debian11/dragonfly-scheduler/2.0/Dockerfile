@@ -36,7 +36,10 @@ COPY --from=builder /opt/dragonfly/bin/scheduler /opt/dragonfly/bin/scheduler
 COPY --from=health /bin/grpc_health_probe /bin/grpc_health_probe
 
 COPY config/scheduler.yaml /etc/dragonfly/scheduler.yaml
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN apt update && apt install -y gettext-base && \
+    chmod +x /docker-entrypoint.sh 
 
 EXPOSE 8002
 
-ENTRYPOINT ["/opt/dragonfly/bin/scheduler"]
+ENTRYPOINT ["/docker-entrypoint.sh"]

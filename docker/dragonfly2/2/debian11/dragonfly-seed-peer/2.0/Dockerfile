@@ -33,7 +33,7 @@ FROM marketplace.gcr.io/google/debian11
 
 ENV DRAGONFLY_MANAGER_ADDR localhost
 ENV DRAGONFLY_SCHEDULER_ADDR localhost
-
+ENV DRAGONFLY_SEED_PEER_ADDR localhost
 ENV PATH=/opt/dragonfly/bin:$PATH
 RUN echo "hosts: files dns" > /etc/nsswitch.conf
 
@@ -41,6 +41,10 @@ COPY --from=builder /opt/dragonfly/bin/dfget /opt/dragonfly/bin/dfget
 COPY --from=health /bin/grpc_health_probe /bin/grpc_health_probe
 
 COPY config/seed-peer.yaml /etc/dragonfly/dfget.yaml
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN apt update && apt install -y gettext-base && \
+    chmod +x /docker-entrypoint.sh 
+
 EXPOSE 65001
 
-ENTRYPOINT ["/opt/dragonfly/bin/dfget", "daemon"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
