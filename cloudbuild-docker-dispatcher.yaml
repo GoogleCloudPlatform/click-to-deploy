@@ -23,6 +23,6 @@ steps:
   - |
     # GCB clones the target branch as master ref
     git diff --name-only "master" $(git merge-base "origin/master" "refs/remotes/origin/master") | tee changes
-    while IFS=, read -r app_type solution; do
+    while IFS=/ read -r app_type solution; do
         echo "(${app_type}) ${solution}"
-    done < file
+    done < changes
