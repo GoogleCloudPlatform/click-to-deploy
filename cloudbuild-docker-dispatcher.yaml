@@ -16,9 +16,11 @@ timeout: 3600s # 1h
 steps:
 
 - id: Find affected solutions
-  name: gcr.io/cloud-builders/docker
+  name: gcr.io/cloud-builders/gcloud
   entrypoint: bash
-   args:
+  args:
   - -exc
   - |
-    echo "PR: ${_PR_NUMBER}"
+    echo "Branch: ${BRANCH_NAME}"
+    pwd
+    git branch
