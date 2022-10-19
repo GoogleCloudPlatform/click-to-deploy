@@ -21,10 +21,8 @@ steps:
   args:
   - -exc
   - |
-    echo "Branch: ${BRANCH_NAME}"
-    git show-ref
-    git fetch origin "${BRANCH_NAME}"
-    git fetch origin master
-    git branch -v
-    git show-ref
-    git diff --name-only "master" $(git merge-base "origin/master" "refs/remotes/origin/master")
+    # GCB clones the target branch as master ref
+    git diff --name-only "master" $(git merge-base "origin/master" "refs/remotes/origin/master") | tee changes
+    while IFS=, read -r app_type solution; do
+        echo "(${app_type}) ${solution}"
+    done < file
