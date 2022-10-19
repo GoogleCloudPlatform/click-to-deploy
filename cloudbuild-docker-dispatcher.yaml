@@ -26,6 +26,15 @@ steps:
     git fetch origin master
     git diff --name-only "master" $(git merge-base "origin/master" "refs/remotes/origin/master") | tee changes
 
-    while IFS=/ read -r app_type solution; do
-        echo "(${app_type} ${solution})"
+    while IFS="/" read -r app_type solution path; do
+      echo "(${app_type}) ${solution}"
+
+      if [[ "${app_type}" == "docker" ]]; then
+        gcloud builds submit \
+          --substitutions "_SOLUTION_NAME=${solution}"
+          --timeout 3600s \
+          --config cloudbuild-docker.yaml \
+      else
+        echo "Skipping: ${app_type}/${solution}/${path}."
+      fi
     done < changes
