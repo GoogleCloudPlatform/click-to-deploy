@@ -18,8 +18,8 @@ versions:
     repo: 'hazelcast5'
     templateSubDir: 'hazelcast5'
     tags:
-    - '5.1.3-debian11'
-    - '5.1.3'
+    - '5.1.4-debian11'
+    - '5.1.4'
     - '5.1-debian11'
     - '5.1'
     - '5-debian11'
@@ -28,7 +28,7 @@ versions:
     from: 'marketplace.gcr.io/google/debian11'
     packages:
       hazelcast:
-        version: '5.1.3'
+        version: '5.1.4'
         sha256: '92c682407e56a4f300b903c0b906bea5800fd470532b81a87991853b743c9d38'
     excludeTests:
     - tests/functional_tests/hazelcast_mancenter_test.yaml
