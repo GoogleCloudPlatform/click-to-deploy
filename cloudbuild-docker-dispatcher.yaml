@@ -22,4 +22,7 @@ steps:
   - -exc
   - |
     echo "Branch: ${BRANCH_NAME}"
-    git diff --name-only "origin/${REVISION_ID}" "$(git merge-base "origin/${REVISION_ID}" "origin/master")"
+    git fetch origin "${BRANCH_NAME}"
+    git fetch origin master
+    git branch -v
+    git diff --name-only "origin/${REVISION_ID}" $(git merge-base "origin/${REVISION_ID}" "origin/master")
