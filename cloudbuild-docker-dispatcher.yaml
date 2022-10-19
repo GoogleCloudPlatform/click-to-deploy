@@ -25,4 +25,4 @@ steps:
     git fetch origin "${BRANCH_NAME}"
     git fetch origin master
     git branch -v
-    git diff --name-only "origin/${REVISION_ID}" $(git merge-base "origin/${REVISION_ID}" "origin/master")
+    git diff --name-only "origin/${BRANCH_NAME}" $(git merge-base "origin/${BRANCH_NAME}" "origin/master")
