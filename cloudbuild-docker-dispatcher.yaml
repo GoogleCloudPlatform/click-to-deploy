@@ -27,4 +27,4 @@ steps:
     git fetch origin master
     git branch -v
     git show-ref
-    git diff --name-only "origin/${BRANCH_NAME}" $(git merge-base "origin/${BRANCH_NAME}" "origin/master")
+    git diff --name-only "origin/master" $(git merge-base "origin/master" "refs/remotes/origin/master")
