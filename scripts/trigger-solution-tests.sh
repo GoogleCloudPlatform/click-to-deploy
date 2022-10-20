@@ -5,6 +5,7 @@ set -e
 function watch_build() {
   local -r solution="$1"
   local -r build_id="$2"
+
   local build_status=""
   local -a args=(
     --filter
@@ -43,6 +44,34 @@ function watch_build() {
   done
 }
 
+function trigger_build() {
+  local -r solution="$1"
+  local -r app_type="$2"
+
+  # Default args to trigger a build
+  local -a args=(
+    --substitutions
+    "_SOLUTION_NAME=${solution}"
+    --timeout
+    3600s
+    --async
+    --config
+    "cloudbuild-${app_type}.yaml"
+  )
+
+  # For K8s solutions, triggers the build in a specific region
+  if [[ "${app_type}" == "k8s" ]]; then
+    args+=(
+      --region
+      "us-central1"
+    )
+  fi
+
+  echo "Triggering build for ${app_type}/${solution}..."
+  gcloud builds submit . "${args[@]}" \
+    | awk '/QUEUED/ { print $1 }'
+}
+
 # Compare local master to remote master (GCB clones the target branch as master)
 git fetch origin master
 git diff --name-only "master" $(git merge-base "origin/master" "refs/remotes/origin/master") \
@@ -57,26 +86,8 @@ while IFS="/" read -r app_type solution; do
   solution_key="${app_type}/${solution}"
 
   if [[ "${app_type}" == "docker" || "${app_type}" == "k8s" ]]; then
-    declare -a args=(
-      --substitutions
-      "_SOLUTION_NAME=${solution}"
-      --timeout
-      3600s
-      --async
-      --config
-      "cloudbuild-${app_type}.yaml"
-    )
-    if [[ "${app_type}" == "k8s" ]]; then
-      args+=(
-        --region
-        "us-central1"
-      )
-    fi
-
-    echo "Triggering build for ${solution_key}..."
-    solution_build_id="$(gcloud builds submit . "${args[@]}" \
-                          | awk '/QUEUED/ { print $1 }')"
-
+    # Trigger the build and enqueues the build_id
+    solution_build_id="$(trigger_build "${solution}" "${app_type}")"
     builds["${solution_key}"]="${solution_build_id}"
   else
     echo "Skipping: ${app_type}/${solution}."
@@ -84,8 +95,6 @@ while IFS="/" read -r app_type solution; do
 done < changes
 
 # Watch all created builds
-echo "${builds[@]}"
-
 for solution in "${!builds[@]}"; do
   build_id="${builds[$solution]}"
   echo "Watching build ${build_id} for: ${solution}..."
