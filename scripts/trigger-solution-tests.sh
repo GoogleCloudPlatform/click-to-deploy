@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -ex
 
 function watch_build() {
   local -r solution="$1"
