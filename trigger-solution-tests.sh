@@ -57,7 +57,7 @@ while IFS="/" read -r app_type solution; do
                           --substitutions "_SOLUTION_NAME=${solution}" \
                           --timeout 3600s \
                           --async \
-                          --region us-central1-a \
+                          --region us-central1 \
                           --config cloudbuild-k8s.yaml | awk '/QUEUED/ { print $1 }')"
 
     builds["${solution_key}"]="${solution_build_id}"
