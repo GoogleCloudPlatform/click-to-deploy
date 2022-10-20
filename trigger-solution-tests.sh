@@ -42,13 +42,23 @@ declare -A builds=()
 while IFS="/" read -r app_type solution; do
   solution_key="${app_type}/${solution}"
 
-  if [[ "${app_type}" == "docker" || "${app_type}" == "k8s" ]]; then
+  if [[ "${app_type}" == "docker" ]]; then
     echo "Triggering build for ${solution_key}..."
     solution_build_id="$(gcloud builds submit . \
                           --substitutions "_SOLUTION_NAME=${solution}" \
                           --timeout 3600s \
                           --async \
-                          --config cloudbuild-${app_type}.yaml | awk '/QUEUED/ { print $1 }')"
+                          --config cloudbuild-docker.yaml | awk '/QUEUED/ { print $1 }')"
+
+    builds["${solution_key}"]="${solution_build_id}"
+  elif [[ "${app_type}" == "k8s" ]]; then
+    echo "Triggering build for ${solution_key}..."
+    solution_build_id="$(gcloud builds submit . \
+                          --substitutions "_SOLUTION_NAME=${solution}" \
+                          --timeout 3600s \
+                          --async \
+                          --region us-central1-a \
+                          --config cloudbuild-k8s.yaml | awk '/QUEUED/ { print $1 }')"
 
     builds["${solution_key}"]="${solution_build_id}"
   else
