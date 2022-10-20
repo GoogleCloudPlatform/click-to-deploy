@@ -30,15 +30,15 @@ steps:
       echo "(${app_type}) ${solution}"
 
       if [[ "${app_type}" == "docker" ]]; then
-        BUILD_ID="$(gcloud builds submit . \
-                    --substitutions "_SOLUTION_NAME=${solution}" \
-                    --timeout 3600s \
-                    --async \
-                    --config cloudbuild-docker.yaml | awk '/QUEUED/ { print $1 }')"
+        created_build_id="$(gcloud builds submit . \
+                              --substitutions "_SOLUTION_NAME=${solution}" \
+                              --timeout 3600s \
+                              --async \
+                              --config cloudbuild-docker.yaml | awk '/QUEUED/ { print $1 }')"
 
         while true; do
           build_status="$(gcloud builds list \
-                          --filter="ID:${BUILD_ID}" \
+                          --filter="ID:${created_build_id}" \
                           --format="value(STATUS)")"
           case "${build_status}" in
             SUCCESS)
@@ -48,12 +48,12 @@ steps:
             sleep 60
             ;;
             FAILURE|CANCELLED)
-            gcloud builds log "${BUILD_ID}"
+            gcloud builds log "${created_build_id}"
             exit 1
             ;;
             *)
             echo "Unrecognized status: ${build_status}"
-            gcloud builds log "${BUILD_ID}"
+            gcloud builds log "${created_build_id}"
             exit 1
             ;;
           esac
