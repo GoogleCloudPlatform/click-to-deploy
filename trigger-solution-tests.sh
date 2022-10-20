@@ -29,8 +29,7 @@ function watch_build() {
   done
 }
 
-# GCB clones the target branch as master
-# Compare local master (which is the target branch to remote master)
+# Compare local master to remote master (GCB clones the target branch as master)
 git fetch origin master
 git diff --name-only "master" $(git merge-base "origin/master" "refs/remotes/origin/master") \
   | grep -P -o "^(\w+)\/(\w+)" \
@@ -43,13 +42,13 @@ declare -A builds=()
 while IFS="/" read -r app_type solution; do
   solution_key="${app_type}/${solution}"
 
-  if [[ "${app_type}" == "docker" ]]; then
+  if [[ "${app_type}" == "docker" || "${app_type}" == "k8s" ]]; then
     echo "Triggering build for ${solution_key}..."
     solution_build_id="$(gcloud builds submit . \
                           --substitutions "_SOLUTION_NAME=${solution}" \
                           --timeout 3600s \
                           --async \
-                          --config cloudbuild-docker.yaml | awk '/QUEUED/ { print $1 }')"
+                          --config cloudbuild-${app_type}.yaml | awk '/QUEUED/ { print $1 }')"
 
     builds["${solution_key}"]="${solution_build_id}"
   else
