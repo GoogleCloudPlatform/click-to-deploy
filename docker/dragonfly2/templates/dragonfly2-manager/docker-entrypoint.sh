@@ -26,5 +26,5 @@ function replace_vars(){
 
 replace_vars
 
-/opt/dragonfly/bin/server --console
+/opt/dragonfly/bin/server 
 

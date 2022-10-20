@@ -35,6 +35,7 @@ ENV DRAGONFLY_MANAGER_ADDR localhost
 ENV DRAGONFLY_SCHEDULER_ADDR localhost
 ENV DRAGONFLY_SEED_PEER_ADDR localhost
 ENV PATH=/opt/dragonfly/bin:$PATH
+
 RUN echo "hosts: files dns" > /etc/nsswitch.conf
 
 COPY --from=builder /opt/dragonfly/bin/dfget /opt/dragonfly/bin/dfget

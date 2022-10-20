@@ -18,7 +18,7 @@ cacheDir: ""
 # logDir is the log storage directory
 # in linux, default value is /var/log/dragonfly
 # in macos(just for testing), default value is /Users/$USER/.dragonfly/logs
-logDir: ""
+logDir: "/var/log/dragonfly/seed-peer"
 
 # dataDir is the download data storage directory
 # in linux, default value is /var/lib/dragonfly

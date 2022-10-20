@@ -26,4 +26,4 @@ function replace_vars(){
 
 replace_vars
 
-/opt/dragonfly/bin/dfget daemon --console
+/opt/dragonfly/bin/dfget daemon 

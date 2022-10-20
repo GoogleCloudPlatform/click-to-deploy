@@ -3,7 +3,7 @@
 function replace_vars(){
 
     local SOURCE_FILE="/etc/dragonfly/scheduler.yaml"
-    local VARS="\$DRAGONFLY_REDIS_HOST \$DRAGONFLY_REDIS_PW \$DRAGONFLY_MANAGER_ADDR"
+    local VARS="\$DRAGONFLY_REDIS_HOST \$DRAGONFLY_REDIS_PW \$DRAGONFLY_MANAGER_ADDR "
     local TEMP_OUTPUT
 
         # Check if source file exists
@@ -26,5 +26,5 @@ function replace_vars(){
 
 replace_vars
 
-/opt/dragonfly/bin/scheduler --console
+/opt/dragonfly/bin/scheduler 
 
