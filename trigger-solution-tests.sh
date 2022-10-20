@@ -1,13 +1,25 @@
 #!/bin/bash
 
 function watch_build() {
-  local -r build_id="$1"
+  local -r solution="$1"
+  local -r build_id="$2"
   local build_status=""
+  local -a args=(
+    --filter
+    "ID:${build_id}"
+    --format
+    "value(status)"
+  )
+
+  if [[ "${solution}" == k8s* ]]; then
+    args+=(
+      --region
+      us-central1
+    )
+  fi
 
   while true; do
-    build_status="$(gcloud builds list \
-                      --filter="ID:${build_id}" \
-                      --format="value(STATUS)")"
+    build_status="$(gcloud builds list "${args[@]}")"
 
     case "${build_status}" in
       SUCCESS)
@@ -42,23 +54,27 @@ declare -A builds=()
 while IFS="/" read -r app_type solution; do
   solution_key="${app_type}/${solution}"
 
-  if [[ "${app_type}" == "docker" ]]; then
-    echo "Triggering build for ${solution_key}..."
-    solution_build_id="$(gcloud builds submit . \
-                          --substitutions "_SOLUTION_NAME=${solution}" \
-                          --timeout 3600s \
-                          --async \
-                          --config cloudbuild-docker.yaml | awk '/QUEUED/ { print $1 }')"
 
-    builds["${solution_key}"]="${solution_build_id}"
-  elif [[ "${app_type}" == "k8s" ]]; then
+  if [[ "${app_type}" == "docker" || "${app_type}" == "k8s" ]]; then
+    declare -a args=(
+      --substitutions
+      "_SOLUTION_NAME=${solution}"
+      --timeout
+      3600s
+      --async
+      --config
+      "cloudbuild-${app_type}.yaml"
+    )
+    if [[ "${app_type}" == "k8s" ]]; then
+      args+=(
+        --region
+        "us-central1"
+      )
+    fi
+
     echo "Triggering build for ${solution_key}..."
-    solution_build_id="$(gcloud builds submit . \
-                          --substitutions "_SOLUTION_NAME=${solution}" \
-                          --timeout 3600s \
-                          --async \
-                          --region us-central1 \
-                          --config cloudbuild-k8s.yaml | awk '/QUEUED/ { print $1 }')"
+    solution_build_id="$(gcloud builds submit . "${args[@]}" \
+                          | awk '/QUEUED/ { print $1 }')"
 
     builds["${solution_key}"]="${solution_build_id}"
   else
@@ -72,7 +88,7 @@ echo "${builds[@]}"
 for solution in "${!builds[@]}"; do
   build_id="${builds[$solution]}"
   echo "Watching build ${build_id} for: ${solution}..."
-  watch_build "${build_id}"
+  watch_build "${solution}" "${build_id}"
 done
 
 echo "All completed."
