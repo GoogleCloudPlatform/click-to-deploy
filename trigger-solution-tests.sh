@@ -3,30 +3,30 @@
 function watch_build() {
   local -r build_id="$1"
   local build_status=""
-  echo "Watch: ${build_id}"
-  # while true; do
-  #   build_status="$(gcloud builds list \
-  #                     --filter="ID:${build_id}" \
-  #                     --format="value(STATUS)")"
 
-  #   case "${build_status}" in
-  #     SUCCESS)
-  #     break
-  #     ;;
-  #     WORKING|QUEUED)
-  #     sleep 60
-  #     ;;
-  #     FAILURE|CANCELLED)
-  #     gcloud builds log "${build_id}"
-  #     exit 1
-  #     ;;
-  #     *)
-  #     echo "Unrecognized status: ${build_status}"
-  #     gcloud builds log "${build_id}"
-  #     exit 1
-  #     ;;
-  #   esac
-  # done
+  while true; do
+    build_status="$(gcloud builds list \
+                      --filter="ID:${build_id}" \
+                      --format="value(STATUS)")"
+
+    case "${build_status}" in
+      SUCCESS)
+      break
+      ;;
+      WORKING|QUEUED)
+      sleep 60
+      ;;
+      FAILURE|CANCELLED)
+      gcloud builds log "${build_id}"
+      exit 1
+      ;;
+      *)
+      echo "Unrecognized status: ${build_status}"
+      gcloud builds log "${build_id}"
+      exit 1
+      ;;
+    esac
+  done
 }
 
 # GCB clones the target branch as master
@@ -45,12 +45,11 @@ while IFS="/" read -r app_type solution; do
 
   if [[ "${app_type}" == "docker" ]]; then
     echo "Triggering build for ${solution_key}..."
-    solution_build_id="$RANDOM"
-    # solution_build_id="$(gcloud builds submit . \
-    #                       --substitutions "_SOLUTION_NAME=${solution}" \
-    #                       --timeout 3600s \
-    #                       --async \
-    #                       --config cloudbuild-docker.yaml | awk '/QUEUED/ { print $1 }')"
+    solution_build_id="$(gcloud builds submit . \
+                          --substitutions "_SOLUTION_NAME=${solution}" \
+                          --timeout 3600s \
+                          --async \
+                          --config cloudbuild-docker.yaml | awk '/QUEUED/ { print $1 }')"
 
     builds[solution_key]="${solution_build_id}"
   else
