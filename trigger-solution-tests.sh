@@ -51,7 +51,7 @@ while IFS="/" read -r app_type solution; do
                           --async \
                           --config cloudbuild-docker.yaml | awk '/QUEUED/ { print $1 }')"
 
-    builds[solution_key]="${solution_build_id}"
+    builds["${solution_key}"]="${solution_build_id}"
   else
     echo "Skipping: ${app_type}/${solution}."
   fi
