@@ -4,7 +4,7 @@ Apache ActiveMQ is an open source and multi-protocol Java-based
 messaging server.
 
 For more information, visit the
-[ActiveMQ official website](https://activemq.apache.org/).
+[ActiveMQ official website](https://activemq.apache.org/)
 
 ## About Google Click to Deploy
 
