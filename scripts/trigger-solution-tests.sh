@@ -67,7 +67,6 @@ function trigger_build() {
     )
   fi
 
-  echo "Triggering build for ${app_type}/${solution}..."
   gcloud builds submit . "${args[@]}" \
     | awk '/QUEUED/ { print $1 }'
 }
@@ -87,6 +86,7 @@ while IFS="/" read -r app_type solution; do
 
   if [[ "${app_type}" == "docker" || "${app_type}" == "k8s" ]]; then
     # Trigger the build and enqueues the build_id
+    echo "Triggering build for ${app_type}/${solution}..."
     solution_build_id="$(trigger_build "${solution}" "${app_type}")"
     builds["${solution_key}"]="${solution_build_id}"
   else
