@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 function watch_build() {
   local -r solution="$1"
   local -r build_id="$2"
@@ -53,7 +55,6 @@ declare -A builds=()
 # Trigger all possible solution changes
 while IFS="/" read -r app_type solution; do
   solution_key="${app_type}/${solution}"
-
 
   if [[ "${app_type}" == "docker" || "${app_type}" == "k8s" ]]; then
     declare -a args=(

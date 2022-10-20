@@ -19,5 +19,4 @@ steps:
   name: gcr.io/cloud-builders/gcloud
   entrypoint: bash
   args:
-  - -ex
-  - trigger-solution-tests.sh
+  - scripts/trigger-solution-tests.sh
