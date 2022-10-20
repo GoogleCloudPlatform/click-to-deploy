@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -ex
+set -e
 
 function watch_build() {
   local -r solution="$1"
@@ -95,7 +95,6 @@ while IFS="/" read -r app_type solution; do
 done < changes
 
 # Watch all created builds
-echo "${builds[@]}"
 for solution in "${!builds[@]}"; do
   build_id="${builds[$solution]}"
   echo "Watching build ${build_id} for: ${solution}..."
