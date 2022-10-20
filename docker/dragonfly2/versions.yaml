@@ -14,9 +14,9 @@
 
 versions:
 # Dragonfly manager
-  - dir: '2/debian11/dragonfly-manager/2.0'
+  - dir: '2/debian11/2.0/dragonfly2-manager'
     repo: 'dragonfly2-manager'
-    templateSubDir: 'dragonfly-manager'
+    templateSubDir: 'dragonfly2-manager'
     tags:
     - '2.0.6-debian11'
     - '2.0.6'
@@ -39,9 +39,9 @@ versions:
     - tests/functional_tests/dfget_test.yaml
 
 # Dragonfly scheduler
-  - dir: '2/debian11/dragonfly-scheduler/2.0'
+  - dir: '2/debian11/2.0/dragonfly2-scheduler'
     repo: 'dragonfly2-scheduler'
-    templateSubDir: 'dragonfly-scheduler'
+    templateSubDir: 'dragonfly2-scheduler'
     tags:
     - '2.0.6-debian11'
     - '2.0.6'
@@ -64,9 +64,9 @@ versions:
     - tests/functional_tests/dfget_test.yaml
 
 # Dragonfly seed-peer
-  - dir: '2/debian11/dragonfly-seed-peer/2.0'
+  - dir: '2/debian11/2.0/dragonfly2-seed-peer'
     repo: 'dragonfly2-seed-peer'
-    templateSubDir: 'dragonfly-seed-peer'
+    templateSubDir: 'dragonfly2-seed-peer'
     tags:
     - '2.0.6-debian11'
     - '2.0.6'
@@ -89,9 +89,9 @@ versions:
     - tests/functional_tests/dfget_test.yaml
 
         # Dragonfly dfget
-  - dir: '2/debian11/dragonfly-dfget/2.0'
+  - dir: '2/debian11/2.0/dragonfly2-dfget'
     repo: 'dragonfly2-dfget'
-    templateSubDir: 'dragonfly-dfget'
+    templateSubDir: 'dragonfly2-dfget'
     tags:
     - '2.0.6-debian11'
     - '2.0.6'
