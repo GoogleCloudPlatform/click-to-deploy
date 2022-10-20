@@ -1,6 +1,6 @@
 activemq-docker
 ============
-Dockerfile source for ActiveMQ [docker](https://docker.io) image.
+Dockerfile source for ActiveMQ [docker](https://docker.io) image
 
 # Disclaimer
 This is not an official Google product.
@@ -73,7 +73,7 @@ services:
     volumes:
       - ./data/:/opt/activemq/data
 ```
-  
+
 Or you can use `docker run` directly:
 
 ```shell
