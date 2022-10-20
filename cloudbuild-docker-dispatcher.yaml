@@ -17,4 +17,7 @@ steps:
 
 - id: Find affected solutions
   name: gcr.io/cloud-builders/gcloud
-  entrypoint: trigger-solution-tests.sh
+  entrypoint: bash
+  args:
+  - -ex
+  - trigger-solution-tests.sh
