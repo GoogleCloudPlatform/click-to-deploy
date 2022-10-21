@@ -77,6 +77,8 @@ function trigger_build() {
 #   | uniq \
 #   | tee changes
 
+declare BRANCH_NAME="$1"
+
 echo "Renaming branch"
 git show-ref
 git branch -m "$BRANCH_NAME"
