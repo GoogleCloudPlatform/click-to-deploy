@@ -1,18 +1,18 @@
 # Clone git repo
 FROM alpine/git:1.0.7 as git
 
-ENV JAEGER_OPERATOR_VERSION=v1.37.0
+ENV JAEGER_OPERATOR_VERSION=v1.38.0
 
 RUN git clone https://github.com/jaegertracing/jaeger-operator.git /src/jaeger-operator/ \
     && cd /src/jaeger-operator/ \
     && git checkout ${JAEGER_OPERATOR_VERSION}
 
 
-FROM golang:1.17 as builder
+FROM golang:1.19 as builder
 
-ENV LD_FLAGS="-X github.com/jaegertracing/jaeger-operator/pkg/version.version=v1.37.0 \
+ENV LD_FLAGS="-X github.com/jaegertracing/jaeger-operator/pkg/version.version=v1.38.0 \
               -X github.com/jaegertracing/jaeger-operator/pkg/version.buildDate=${VERSION_DATE} \
-              -X github.com/jaegertracing/jaeger-operator/pkg/version.defaultJaeger=1.37.0"
+              -X github.com/jaegertracing/jaeger-operator/pkg/version.defaultJaeger=1.38.0"
 
 COPY --from=git /src/jaeger-operator /go/src/github.com/jaegertracing/jaeger-operator
 
@@ -20,12 +20,12 @@ WORKDIR /go/src/github.com/jaegertracing/jaeger-operator
 
 ENV GO111MODULE=on
 
-RUN go get -u github.com/kardianos/govendor \
+
+RUN go install github.com/kardianos/govendor@latest \
     && govendor license +vendor > NOTICES \
     && GOOS=linux GOARCH=amd64 CGO_ENABLED=0 \
        go build -o jaeger-operator -ldflags "${LD_FLAGS} \
        -X github.com/jaegertracing/jaeger-operator/pkg/version.buildDate=$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
-
 
 # Result Image
 FROM marketplace.gcr.io/google/debian11
@@ -38,7 +38,7 @@ ENV OPERATOR=/usr/local/bin/jaeger-operator \
     USER_UID=1001 \
     USER_NAME=jaeger-operator
 
-ENV C2D_RELEASE=1.37.0
+ENV C2D_RELEASE=1.38.0
 
 COPY --from=git /src/jaeger-operator/scripts/* /scripts/
 
