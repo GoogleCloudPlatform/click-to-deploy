@@ -8,8 +8,7 @@ function watch_build() {
 
   local build_status=""
   local -a args=(
-    --filter
-    "ID:${build_id}"
+    "${build_id}"
     --format
     "value(status)"
   )
@@ -22,7 +21,7 @@ function watch_build() {
   fi
 
   while true; do
-    build_status="$(gcloud builds list "${args[@]}")"
+    build_status="$(gcloud builds describe "${args[@]}")"
 
     case "${build_status}" in
       SUCCESS)
