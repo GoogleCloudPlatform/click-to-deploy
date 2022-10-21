@@ -71,33 +71,52 @@ function trigger_build() {
 }
 
 # Compare local master to remote master (GCB clones the target branch as master)
-git fetch origin master
-git diff --name-only "master" $(git merge-base "origin/master" "refs/remotes/origin/master") \
+# git fetch origin master
+# git diff --name-only "master" $(git merge-base "origin/master" "refs/remotes/origin/master") \
+#   | grep -P -o "^(\w+)\/(\w+)" \
+#   | uniq \
+#   | tee changes
+
+echo "Renaming branch"
+git show-ref
+git branch -m "$BRANCH_NAME"
+git show-ref
+
+echo "Without fetch master"
+git diff --name-only "$BRANCH_NAME" $(git merge-base "$BRANCH_NAME" "refs/remotes/origin/master") \
   | grep -P -o "^(\w+)\/(\w+)" \
   | uniq \
   | tee changes
 
-declare -A builds=()
+echo "Fetching master"
+git fetch origin master
+git diff --name-only "$BRANCH_NAME" $(git merge-base "$BRANCH_NAME" "refs/remotes/origin/master") \
+  | grep -P -o "^(\w+)\/(\w+)" \
+  | uniq \
+  | tee changes
 
-# Trigger all possible solution changes
-while IFS="/" read -r app_type solution; do
-  solution_key="${app_type}/${solution}"
 
-  if [[ "${app_type}" == "docker" || "${app_type}" == "k8s" ]]; then
-    # Trigger the build and enqueues the build_id
-    echo "Triggering build for ${app_type}/${solution}..."
-    solution_build_id="$(trigger_build "${solution}" "${app_type}")"
-    builds["${solution_key}"]="${solution_build_id}"
-  else
-    echo "Skipping: ${app_type}/${solution}."
-  fi
-done < changes
+# declare -A builds=()
 
-# Watch all created builds
-for solution in "${!builds[@]}"; do
-  build_id="${builds[$solution]}"
-  echo "Watching build ${build_id} for: ${solution}..."
-  watch_build "${solution}" "${build_id}"
-done
+# # Trigger all possible solution changes
+# while IFS="/" read -r app_type solution; do
+#   solution_key="${app_type}/${solution}"
 
-echo "All completed."
+#   if [[ "${app_type}" == "docker" || "${app_type}" == "k8s" ]]; then
+#     # Trigger the build and enqueues the build_id
+#     echo "Triggering build for ${app_type}/${solution}..."
+#     solution_build_id="$(trigger_build "${solution}" "${app_type}")"
+#     builds["${solution_key}"]="${solution_build_id}"
+#   else
+#     echo "Skipping: ${app_type}/${solution}."
+#   fi
+# done < changes
+
+# # Watch all created builds
+# for solution in "${!builds[@]}"; do
+#   build_id="${builds[$solution]}"
+#   echo "Watching build ${build_id} for: ${solution}..."
+#   watch_build "${solution}" "${build_id}"
+# done
+
+# echo "All completed."
