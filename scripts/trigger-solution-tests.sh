@@ -75,36 +75,33 @@ git branch -m "local"
 git fetch origin master
 git show-ref
 
-echo "no-filter"
-git diff --name-only "local" "origin/master"
-
-echo "filtered"
 git diff --name-only "local" "origin/master" \
-  | grep -P -o "^(\w+)\/(\w+)" \
+  | grep -P -o "^(\w+)\/(\w+)\/" \
   | uniq \
   | tee changes
 
-# declare -A builds=()
+declare -A builds=()
 
-# # Trigger all possible solution changes
-# while IFS="/" read -r app_type solution; do
-#   solution_key="${app_type}/${solution}"
+# Trigger all possible solution changes
+while IFS="/" read -r app_type solution; do
+  solution_key="${app_type}/${solution}"
+  echo "${solution_key}"
 
-#   if [[ "${app_type}" == "docker" || "${app_type}" == "k8s" ]]; then
-#     # Trigger the build and enqueues the build_id
-#     echo "Triggering build for ${app_type}/${solution}..."
-#     solution_build_id="$(trigger_build "${solution}" "${app_type}")"
-#     builds["${solution_key}"]="${solution_build_id}"
-#   else
-#     echo "Skipping: ${app_type}/${solution}."
-#   fi
-# done < changes
+  # if [[ "${app_type}" == "docker" || "${app_type}" == "k8s" ]]; then
+  #   # Trigger the build and enqueues the build_id
+  #   echo "Triggering build for ${app_type}/${solution}..."
+  #   solution_build_id="$(trigger_build "${solution}" "${app_type}")"
+  #   builds["${solution_key}"]="${solution_build_id}"
+  # else
+  #   echo "Skipping: ${app_type}/${solution}."
+  # fi
+done < changes
 
-# # Watch all created builds
+# Watch all created builds
 # for solution in "${!builds[@]}"; do
 #   build_id="${builds[$solution]}"
 #   echo "Watching build ${build_id} for: ${solution}..."
 #   watch_build "${solution}" "${build_id}"
 # done
 
-# echo "All completed."
+echo "All completed."
