@@ -1,6 +1,6 @@
 # Google Click to Deploy containers
 
-## About
+## About.
 
 This directory hosts the source code for the Google Click to Deploy container images
 available through Google Cloud Platform Marketplace.
