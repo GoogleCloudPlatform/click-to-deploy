@@ -16,8 +16,8 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 8/debian10/8.11
-  from: marketplace.gcr.io/google/debian10
+- dir: 8/debian11/8.11
+  from: marketplace.gcr.io/google/debian11
   packages:
     solr:
       gpg: 86EDB9C33B8517228E88A8F93E48C0C6EF362B9E
@@ -25,8 +25,8 @@ versions:
       version: 8.11.2
   repo: solr8
   tags:
-  - 8.11.2-debian10
-  - 8.11-debian10
+  - 8.11.2-debian11
+  - 8.11-debian11
   - 8-debian10
   - 8.11.2
   - '8.11'
