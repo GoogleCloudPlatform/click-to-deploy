@@ -30,7 +30,7 @@ gcloud auth configure-docker
 ```shell
 docker -- pull marketplace.gcr.io/google/solr8
 ```
-Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/docker/solr/8/debian10/8.11/)
+Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/docker/solr/8/debian11/8.11/)
 =======
 
 # <a name="table-of-contents"></a>Table of Contents
