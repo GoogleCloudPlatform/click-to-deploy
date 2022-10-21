@@ -82,11 +82,11 @@ git branch -m "$BRANCH_NAME"
 git fetch origin master
 git show-ref
 
-# echo "Without fetch master"
-# git diff --name-only "$BRANCH_NAME" $(git merge-base "$BRANCH_NAME" "refs/remotes/origin/master") \
-#   | grep -P -o "^(\w+)\/(\w+)" \
-#   | uniq \
-#   | tee changes
+echo "Without fetch master"
+git diff --name-only "$BRANCH_NAME" $(git merge-base "$BRANCH_NAME" "origin/master") \
+  | grep -P -o "^(\w+)\/(\w+)" \
+  | uniq \
+  | tee changes
 
 # echo "Fetching master"
 # git fetch origin master
