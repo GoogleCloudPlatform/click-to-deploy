@@ -78,24 +78,22 @@ function trigger_build() {
 #   | tee changes
 
 declare BRANCH_NAME="$1"
-
-echo "Renaming branch"
-git show-ref
 git branch -m "$BRANCH_NAME"
+git fetch origin master
 git show-ref
 
-echo "Without fetch master"
-git diff --name-only "$BRANCH_NAME" $(git merge-base "$BRANCH_NAME" "refs/remotes/origin/master") \
-  | grep -P -o "^(\w+)\/(\w+)" \
-  | uniq \
-  | tee changes
+# echo "Without fetch master"
+# git diff --name-only "$BRANCH_NAME" $(git merge-base "$BRANCH_NAME" "refs/remotes/origin/master") \
+#   | grep -P -o "^(\w+)\/(\w+)" \
+#   | uniq \
+#   | tee changes
 
-echo "Fetching master"
-git fetch origin master
-git diff --name-only "$BRANCH_NAME" $(git merge-base "$BRANCH_NAME" "refs/remotes/origin/master") \
-  | grep -P -o "^(\w+)\/(\w+)" \
-  | uniq \
-  | tee changes
+# echo "Fetching master"
+# git fetch origin master
+# git diff --name-only "$BRANCH_NAME" $(git merge-base "$BRANCH_NAME" "refs/remotes/origin/master") \
+#   | grep -P -o "^(\w+)\/(\w+)" \
+#   | uniq \
+#   | tee changes
 
 
 # declare -A builds=()
