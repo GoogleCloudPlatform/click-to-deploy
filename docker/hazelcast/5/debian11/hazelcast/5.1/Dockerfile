@@ -12,15 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM marketplace.gcr.io/google/debian10
+FROM marketplace.gcr.io/google/debian11
 
 ENV DEBUG_DOCKER_ENTRYPOINT false
 
-ENV HAZELCAST_VERSION 5.1.3
-ENV C2D_RELEASE 5.1.3
+ENV HAZELCAST_VERSION 5.1.4
+ENV C2D_RELEASE 5.1.4
 
 # Versions of Hazelcast and Hazelcast plugins
-ARG HZ_VERSION=5.1.3
+ARG HZ_VERSION=5.1.4
 ARG HZ_VERSION_SHA=92c682407e56a4f300b903c0b906bea5800fd470532b81a87991853b743c9d38
 
 # Build constants
