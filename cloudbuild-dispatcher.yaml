@@ -15,7 +15,7 @@
 timeout: 3600s # 1h
 steps:
 
-- id: Find affected solutions
+- id: Trigger solution tests
   name: gcr.io/cloud-builders/gcloud
   entrypoint: bash
   args:

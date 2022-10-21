@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
 
 function watch_build() {
   local -r solution="$1"
@@ -8,8 +8,7 @@ function watch_build() {
 
   local build_status=""
   local -a args=(
-    --filter
-    "ID:${build_id}"
+    "${build_id}"
     --format
     "value(status)"
   )
@@ -22,7 +21,7 @@ function watch_build() {
   fi
 
   while true; do
-    build_status="$(gcloud builds list "${args[@]}")"
+    build_status="$(gcloud builds describe "${args[@]}")"
 
     case "${build_status}" in
       SUCCESS)
@@ -71,9 +70,12 @@ function trigger_build() {
     | awk '/QUEUED/ { print $1 }'
 }
 
-# Compare local master to remote master (GCB clones the target branch as master)
+# Rename target branch to local, fetch master and identify solution changes
+git branch -m "local"
 git fetch origin master
-git diff --name-only "master" $(git merge-base "origin/master" "refs/remotes/origin/master") \
+git show-ref
+
+git diff --name-only "local" "origin/master" \
   | grep -P -o "^(\w+)\/(\w+)" \
   | uniq \
   | tee changes
