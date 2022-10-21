@@ -15,11 +15,27 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 18/debian11/18.0
-  from: marketplace.gcr.io/google/debian11:latest
+- dir: 19/debian11/19.0
+  from: marketplace.gcr.io/google/debian11
   packages:
     keycloak:
-      version: 18.0.0
+      version: 19.0.3
+    h2database:
+      version: 1.4.197
+  repo: keycloak19
+  tags:
+  - '19.0.3-debian11'
+  - '19.0-debian11'
+  - '19-debian11'
+  - '19.0.3'
+  - '19.0'
+  - '19'
+  - 'latest'
+- dir: 18/debian11/18.0
+  from: marketplace.gcr.io/google/debian11
+  packages:
+    keycloak:
+      version: 18.0.2
     h2database:
       version: 1.4.197
   repo: keycloak18
