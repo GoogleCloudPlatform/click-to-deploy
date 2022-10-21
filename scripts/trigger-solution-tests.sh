@@ -78,16 +78,7 @@ function trigger_build() {
 #   | uniq \
 #   | tee changes
 
-
-# Compare local master to remote master (GCB clones the target branch as master)
-git branch -m "local"
-git fetch origin master
-git show-ref
-git diff --name-only "local" $(git merge-base "origin/master" "refs/remotes/origin/master") \
-  | grep -P -o "^(\w+)\/(\w+)" \
-  | uniq \
-  | tee changes
-
+echo "latest?"
 git branch -m "local"
 git fetch origin master
 git show-ref
