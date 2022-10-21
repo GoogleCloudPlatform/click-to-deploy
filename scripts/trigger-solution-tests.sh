@@ -83,7 +83,7 @@ git show-ref
 
 echo "Without fetch master"
 
-git diff --name-only "local" $(git merge-base "origin/local" "refs/remotes/origin/master") \
+git diff --name-only "local" $(git merge-base "refs/heads/local" "refs/remotes/origin/master") \
   | grep -P -o "^(\w+)\/(\w+)" \
   | uniq \
   | tee changes
