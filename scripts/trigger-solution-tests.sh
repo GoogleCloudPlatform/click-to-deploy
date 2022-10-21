@@ -70,61 +70,37 @@ function trigger_build() {
     | awk '/QUEUED/ { print $1 }'
 }
 
-# Compare local master to remote master (GCB clones the target branch as master)
-# git fetch origin master
-# git show-ref
-# git diff --name-only "master" $(git merge-base "origin/master" "refs/remotes/origin/master") \
-#   | grep -P -o "^(\w+)\/(\w+)" \
-#   | uniq \
-#   | tee changes
-
-echo "latest?"
+# Rename target branch to local, fetch master and identify solution changes
 git branch -m "local"
 git fetch origin master
 git show-ref
+
 git diff --name-only "local" "origin/master" \
   | grep -P -o "^(\w+)\/(\w+)" \
   | uniq \
   | tee changes
 
-# git fetch origin master
-# git show-ref
+declare -A builds=()
 
-# set -x
-# git diff --name-only "refs/heads/local" $(git merge-base "refs/heads/local" "refs/remotes/origin/master") \
-#   | grep -P -o "^(\w+)\/(\w+)" \
-#   | uniq \
-#   | tee changes
+# Trigger all possible solution changes
+while IFS="/" read -r app_type solution; do
+  solution_key="${app_type}/${solution}"
 
-# echo "Fetching master"
-# git fetch origin master
-# git diff --name-only "$BRANCH_NAME" $(git merge-base "$BRANCH_NAME" "refs/remotes/origin/master") \
-#   | grep -P -o "^(\w+)\/(\w+)" \
-#   | uniq \
-#   | tee changes
+  if [[ "${app_type}" == "docker" || "${app_type}" == "k8s" ]]; then
+    # Trigger the build and enqueues the build_id
+    echo "Triggering build for ${app_type}/${solution}..."
+    solution_build_id="$(trigger_build "${solution}" "${app_type}")"
+    builds["${solution_key}"]="${solution_build_id}"
+  else
+    echo "Skipping: ${app_type}/${solution}."
+  fi
+done < changes
 
+# Watch all created builds
+for solution in "${!builds[@]}"; do
+  build_id="${builds[$solution]}"
+  echo "Watching build ${build_id} for: ${solution}..."
+  watch_build "${solution}" "${build_id}"
+done
 
-# declare -A builds=()
-
-# # Trigger all possible solution changes
-# while IFS="/" read -r app_type solution; do
-#   solution_key="${app_type}/${solution}"
-
-#   if [[ "${app_type}" == "docker" || "${app_type}" == "k8s" ]]; then
-#     # Trigger the build and enqueues the build_id
-#     echo "Triggering build for ${app_type}/${solution}..."
-#     solution_build_id="$(trigger_build "${solution}" "${app_type}")"
-#     builds["${solution_key}"]="${solution_build_id}"
-#   else
-#     echo "Skipping: ${app_type}/${solution}."
-#   fi
-# done < changes
-
-# # Watch all created builds
-# for solution in "${!builds[@]}"; do
-#   build_id="${builds[$solution]}"
-#   echo "Watching build ${build_id} for: ${solution}..."
-#   watch_build "${solution}" "${build_id}"
-# done
-
-# echo "All completed."
+echo "All completed."
