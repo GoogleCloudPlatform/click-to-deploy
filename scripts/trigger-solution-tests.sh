@@ -77,13 +77,13 @@ function trigger_build() {
 #   | uniq \
 #   | tee changes
 
-declare BRANCH_NAME="$1"
-git branch -m "$BRANCH_NAME"
+git branch -m "local"
 git fetch origin master
 git show-ref
 
 echo "Without fetch master"
-git diff --name-only "$BRANCH_NAME" $(git merge-base "$BRANCH_NAME" "refs/remotes/origin/master") \
+
+git diff --name-only "local" $(git merge-base "origin/local" "refs/remotes/origin/master") \
   | grep -P -o "^(\w+)\/(\w+)" \
   | uniq \
   | tee changes
