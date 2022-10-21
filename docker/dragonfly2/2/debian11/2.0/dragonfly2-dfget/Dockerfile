@@ -33,6 +33,7 @@ FROM marketplace.gcr.io/google/debian11
 
 ENV DRAGONFLY_MANAGER_ADDR localhost
 ENV DRAGONFLY_SCHEDULER_ADDR localhost
+ENV DRAGONFLY_DFGET_ADDR localhost
 
 ENV PATH=/opt/dragonfly/bin:$PATH
 RUN echo "hosts: files dns" > /etc/nsswitch.conf
