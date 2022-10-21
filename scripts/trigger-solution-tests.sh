@@ -71,6 +71,16 @@ function trigger_build() {
 }
 
 # Compare local master to remote master (GCB clones the target branch as master)
+# git fetch origin master
+# git show-ref
+# git diff --name-only "master" $(git merge-base "origin/master" "refs/remotes/origin/master") \
+#   | grep -P -o "^(\w+)\/(\w+)" \
+#   | uniq \
+#   | tee changes
+
+
+# Compare local master to remote master (GCB clones the target branch as master)
+git branch -m "local"
 git fetch origin master
 git show-ref
 git diff --name-only "master" $(git merge-base "origin/master" "refs/remotes/origin/master") \
@@ -78,7 +88,6 @@ git diff --name-only "master" $(git merge-base "origin/master" "refs/remotes/ori
   | uniq \
   | tee changes
 
-# git branch -m "local"
 # git fetch origin master
 # git show-ref
 
