@@ -83,7 +83,7 @@ function trigger_build() {
 git branch -m "local"
 git fetch origin master
 git show-ref
-git diff --name-only "master" $(git merge-base "origin/master" "refs/remotes/origin/master") \
+git diff --name-only "local" $(git merge-base "origin/master" "refs/remotes/origin/master") \
   | grep -P -o "^(\w+)\/(\w+)" \
   | uniq \
   | tee changes
