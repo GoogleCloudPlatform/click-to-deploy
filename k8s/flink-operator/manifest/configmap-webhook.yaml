@@ -7,8 +7,8 @@ metadata:
     app.kubernetes.io/name: $APP_INSTANCE_NAME
     app.kubernetes.io/component: webhook-configmap
 data:
-  webook.yaml: |-
-    apiVersion: admissionregistration.k8s.io/v1beta1
+  webhook.yaml: |-
+    apiVersion: admissionregistration.k8s.io/v1
     kind: MutatingWebhookConfiguration
     metadata:
       creationTimestamp: null
@@ -22,6 +22,8 @@ data:
           path: /mutate-flinkoperator-k8s-io-v1beta1-flinkcluster
       failurePolicy: Fail
       name: mflinkcluster.flinkoperator.k8s.io
+      sideEffects: None
+      admissionReviewVersions: ["v1"]
       rules:
       - apiGroups:
         - flinkoperator.k8s.io
@@ -33,7 +35,7 @@ data:
         resources:
         - flinkclusters
     ---
-    apiVersion: admissionregistration.k8s.io/v1beta1
+    apiVersion: admissionregistration.k8s.io/v1
     kind: ValidatingWebhookConfiguration
     metadata:
       creationTimestamp: null
@@ -47,6 +49,8 @@ data:
           path: /validate-flinkoperator-k8s-io-v1beta1-flinkcluster
       failurePolicy: Fail
       name: vflinkcluster.flinkoperator.k8s.io
+      sideEffects: None
+      admissionReviewVersions: ["v1"]
       rules:
       - apiGroups:
         - flinkoperator.k8s.io
