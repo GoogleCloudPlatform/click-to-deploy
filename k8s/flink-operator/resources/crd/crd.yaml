@@ -5,7 +5,7 @@ metadata:
   creationTimestamp: null
   name: flinkclusters.flinkoperator.k8s.io
   annotations:
-    "api-approved.kubernetes.io": "https://github.com/kubernetes/kubernetes/pull/78458"
+    "api-approved.kubernetes.io": "https://github.com/GoogleCloudPlatform/click-to-deploy/pull/1939"
 spec:
   group: flinkoperator.k8s.io
   names:
