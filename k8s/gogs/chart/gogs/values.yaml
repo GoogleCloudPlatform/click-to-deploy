@@ -1,0 +1,32 @@
+gogs:
+  image:
+    repo: null
+    tag: null
+  replicas: 1
+  secret_key: null
+  db:
+    password: null
+
+nfs:
+  image:
+    repo: null
+    tag: null
+  persistence:
+    storageClass: standard
+    size: 10Gi
+
+enablePublicServiceAndIngress: false
+
+metrics:
+  image: null
+  exporter:
+    enabled: false
+
+postgresql:
+  image:
+    repo: null
+    tag: null
+  persistence:
+    storageClass: standard
+    size: 5Gi
+

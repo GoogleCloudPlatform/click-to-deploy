@@ -1,0 +1,110 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "{{ .Release.Name }}"
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": "conjur", "partner_name": "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+spec:
+  descriptor:
+    type: Conjur
+    version: "{{ .Values.postgresql.image.tag }}"
+    description: |-
+      Conjur is a seamless open source interface to securely authenticate, control and audit non-human access across tools, 
+      applications, containers and cloud environments via robust secrets management.
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/conjur/).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy Conjur'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/conjur/README.md
+    notes: |-
+      # Access Conjur
+      {{ if .Values.enablePublicServiceAndIngress -}}
+      # Open your Conjur Webserver
+      To get the external IP of your Conjur Webserver, use the following command:
+
+      ```
+      SERVICE_IP=$(kubectl get ingress {{ .Release.Name }}-conjur-svc \
+        --namespace {{ .Release.Namespace }} \
+        --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+      echo "https://${SERVICE_IP}/"
+      ```
+      {{- else -}}
+      # Open your Conjur Webserver
+
+      Conjur is exposed by the ClusterIP-only service `{{ .Release.Name }}-conjur-svc`. To connect to the
+      Conjur Webserver, you can either expose a public service endpoint, or keep it private, but connect
+      from your local environment with `kubectl port-forward`.
+
+      ## Forward the Conjur Webserver port in your local environment
+
+      To use `kubectl`'s port forwarding feature to forward Conjur's port to your local
+      machine, run the following command in the background:
+
+      ```shell
+      kubectl port-forward \
+        --namespace {{ .Release.Namespace }} \
+        svc/{{ .Release.Name }}-conjur-svc \
+        80:80
+      ```
+
+      Now you can access the Conjur Webserver with [http://localhost:80](http://localhost:80).
+      {{- end }}
+  info:
+  {{ if .Values.enablePublicServiceAndIngress -}}
+  - name: Conjur site address
+    type: Reference
+    valueFrom:
+      ingressRef:
+        name: {{ .Release.Name }}-conjur-svc
+        protocol: HTTPS
+  {{- else -}}
+  - name: Forward Conjur Webserver port locally
+    value: kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-conjur-svc 80:80
+  - name: Conjur Webserver address (local only)
+    value: "http://localhost:80/"
+  {{- end }}
+  - name: Conjur - data key
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: CONJUR_DATA_KEY
+        name: {{ .Release.Name }}-config-envs
+  - name: PostgreSQL - Conjur user password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: POSTGRES_PASSWORD
+        name: {{ .Release.Name }}-config-envs
+  - name: Application Namespace
+    value: "{{ .Release.Namespace }}"
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "{{ .Release.Name }}"
+  componentKinds:
+  - group: apps/v1
+    kind: StatefulSet
+  - group: v1
+    kind: Secret
+  - group: v1
+    kind: Service
+  {{ if .Values.enablePublicServiceAndIngress }}
+  - group: networking.k8s.io
+    kind: Ingress
+  {{ end }}
+  - group: apps/v1
+    kind: Deployment
+  - group: v1
+    kind: ServiceAccount
+  - group: rbac.authorization.k8s.io/v1
+    kind:  Role
+  - group: rbac.authorization.k8s.io/v1
+    kind:  RoleBinding
