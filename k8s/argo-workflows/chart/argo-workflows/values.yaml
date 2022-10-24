@@ -8,6 +8,12 @@ argo_workflows:
     image:
       repo: null
       tag: null
+  db:
+    name: argo_workflows
+    table: argo_workflows
+    host: "{{ .Release.Name }}-postgresql-svc"
+    username: argo
+    password: null
 
 # Configuration values for the PostgreSQL server.
 postgresql:
@@ -16,9 +22,9 @@ postgresql:
     image: null
   cpu: 1000m
   memory: 1Gi
-  user: argoworkflows
+  user: argo
   password: null
-  postgresDatabase: argoworkflows
+  database: argo_workflows
   persistence:
     size: 8Gi
 

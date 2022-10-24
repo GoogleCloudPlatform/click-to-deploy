@@ -36,6 +36,25 @@ data:
     path: /metrics
     port: 9090
   namespaceParallelism: "10"
+  persistence: |
+    connectionPool:
+      maxIdleConns: 100
+      maxOpenConns: 0
+      connMaxLifetime: 0s
+    nodeStatusOffLoad: true
+    archive: true
+    archiveTTL: 7d
+    postgresql:
+      host: "{{- include "argoworkflows.db_svc" . }}"
+      port: 5432
+      database: "{{ .Values.argo_workflows.db.name }}"
+      tableName: "{{ .Values.argo_workflows.db.table }}"
+      userNameSecret:
+        name: argo-pg-secret
+        key: username
+      passwordSecret:
+        name: argo-pg-secret
+        key: password
   retentionPolicy: |
     completed: 10
     failed: 3
