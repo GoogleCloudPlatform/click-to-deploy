@@ -24,11 +24,7 @@ RUN apt-get update && apt-get --no-install-recommends install -y \
 
 WORKDIR /go/src/github.com/argoproj
 RUN git clone https://github.com/argoproj/argo-workflows.git --branch "v${ARGO_VERSION}"
-
-# https://blog.container-solutions.com/faster-builds-in-docker-with-go-1-11
 WORKDIR /go/src/github.com/argoproj/argo-workflows
-# COPY go.mod .
-# COPY go.sum .
 RUN go mod download
 
 # Server: UI
@@ -74,7 +70,7 @@ RUN target=/root/.cache/go-build make dist/argo
 
 FROM marketplace.gcr.io/google/debian11
 
-USER 8737
+# USER 8737
 
 # Controller artifacts
 COPY --from=builder /go/src/github.com/argoproj/argo-workflows/hack/ssh_known_hosts /etc/ssh/
