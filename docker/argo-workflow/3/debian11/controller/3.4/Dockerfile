@@ -1,3 +1,5 @@
+# Server and Workflow Controller: Builder
+
 FROM golang:1.18 as builder
 
 ARG ARGO_VERSION="3.4.1"
@@ -29,34 +31,58 @@ WORKDIR /go/src/github.com/argoproj/argo-workflows
 # COPY go.sum .
 RUN go mod download
 
-
+# Server: UI
 FROM node:16 as argo-ui
 
-COPY --from=builder /go/src/github.com/argoproj/argo-workflows/ui/package.json /src
-WORKDIR /go/src/github.com/argoproj/argo-workflows
-
-RUN ui/package.json ui/yarn.lock ui/
+COPY --from=builder /go/src/github.com/argoproj/argo-workflows/ui/package.json ui/
+COPY --from=builder /go/src/github.com/argoproj/argo-workflows/ui/yarn.lock ui/
 
 RUN JOBS=max yarn --cwd ui install --network-timeout 1000000
 
-COPY ui ui
-COPY api api
+COPY --from=builder /go/src/github.com/argoproj/argo-workflows/ui/ ui/
+COPY --from=builder /go/src/github.com/argoproj/argo-workflows/api/ api/
 
 RUN NODE_OPTIONS="--max-old-space-size=2048" JOBS=max yarn --cwd ui build
 
-# FROM marketplace.gcr.io/google/debian11 as builder
+# Workflow Controller: Build
+FROM builder as workflow-controller-build
 
+# Tell git to forget about all of the files that were not included because of .dockerignore in order to ensure that
+# the git state is "clean" even though said .dockerignore files are not present
+RUN cat .dockerignore >> .gitignore
+RUN git status --porcelain | cut -c4- | xargs git update-index --skip-worktree
 
-# RUN apt install -y git
+RUN target=/root/.cache/go-build make dist/workflow-controller
 
-#
-# WORKDIR /argo-workflows
+# ArgoCLI
+FROM builder as argocli-build
 
+RUN mkdir -p ui/dist
+COPY --from=argo-ui ui/dist/app ui/dist/app
+# stop make from trying to re-build this without yarn installed
+RUN touch ui/dist/node_modules.marker
+RUN touch ui/dist/app/index.html
 
+# Tell git to forget about all of the files that were not included because of .dockerignore in order to ensure that
+# the git state is "clean" even though said .dockerignore files are not present
+RUN cat .dockerignore >> .gitignore
+RUN git status --porcelain | cut -c4- | xargs git update-index --skip-worktree
 
-# Build Workflow Controller
+RUN target=/root/.cache/go-build make dist/argo
 
+# Final
 
-# FROM marketplace.gcr.io/google/debian11
+FROM marketplace.gcr.io/google/debian11
 
-ENTRYPOINT [ "tail", "-f", "/dev/null" ]
+USER 8737
+
+# Controller artifacts
+COPY --from=builder /go/src/github.com/argoproj/argo-workflows/hack/ssh_known_hosts /etc/ssh/
+COPY --from=builder /go/src/github.com/argoproj/argo-workflows/hack/nsswitch.conf /etc/
+COPY --chown=8737 --from=workflow-controller-build /go/src/github.com/argoproj/argo-workflows/dist/workflow-controller /bin/
+
+# CLI artifacts
+COPY --from=argocli-build /go/src/github.com/argoproj/argo-workflows/dist/argo /bin/
+
+COPY docker-entrypoint.sh /
+ENTRYPOINT [ "/docker-entrypoint.sh" ]
