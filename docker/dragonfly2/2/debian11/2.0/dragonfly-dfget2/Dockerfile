@@ -1,15 +1,23 @@
-{{- $dragonfly2_github := index .Packages "dragonfly2_github" -}}
-{{- $manager_console := index .Packages "manager_console" -}}
-{{- $grpc_health_probe := index .Packages "grpc_health_probe" -}}
-
-FROM golang:1.18.3-alpine3.16 as builder
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.FROM golang:1.18.3-alpine3.16 as builder
 
 ARG GOPROXY
 ARG GOTAGS
 ARG GOGCFLAGS
 
-ARG DRAGONFLY2_GITHUB_BRANCH=release-{{ $dragonfly2_github.Version }}
-ARG MANAGER_CONSOLE_BRANCH=release-{{ $manager_console.Version }}
+ARG DRAGONFLY2_GITHUB_BRANCH=release-2.0.6
+ARG MANAGER_CONSOLE_BRANCH=release-0.1.4
 
 WORKDIR /go/src/d7y.io/dragonfly/v2
 
@@ -19,9 +27,9 @@ RUN apk --no-cache add bash make gcc libc-dev git && \
 
 RUN make build-dfget && make install-dfget
 
-FROM {{ .From }} as health
+FROM marketplace.gcr.io/google/debian11 as health
 
-ARG GRPC_HEALTH_PROBE_VERSION=v{{ $grpc_health_probe.Version }}
+ARG GRPC_HEALTH_PROBE_VERSION=v0.4.11
 
 RUN apt update && apt install -y wget && \
     if [ "$(uname -m)" = "ppc64le" ]; then \
@@ -33,19 +41,20 @@ RUN apt update && apt install -y wget && \
     fi && \
     chmod +x /bin/grpc_health_probe
 
-FROM {{ .From }}
+FROM marketplace.gcr.io/google/debian11
 
+ENV C2D_RELEASE 2.0.6
 ENV DRAGONFLY_MANAGER_ADDR localhost
 ENV DRAGONFLY_SCHEDULER_ADDR localhost
-ENV DRAGONFLY_SEED_PEER_ADDR localhost
-ENV PATH=/opt/dragonfly/bin:$PATH
+ENV DRAGONFLY_DFGET_ADDR localhost
 
+ENV PATH=/opt/dragonfly/bin:$PATH
 RUN echo "hosts: files dns" > /etc/nsswitch.conf
 
 COPY --from=builder /opt/dragonfly/bin/dfget /opt/dragonfly/bin/dfget
 COPY --from=health /bin/grpc_health_probe /bin/grpc_health_probe
 
-COPY config/seed-peer.yaml /etc/dragonfly/dfget.yaml
+COPY config/dfget.yaml /etc/dragonfly/dfget.yaml
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN apt update && apt install -y gettext-base && \
     chmod +x /docker-entrypoint.sh 
