@@ -1,0 +1,33 @@
+{{- if .Values.metrics.enabled}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ template "harbor.exporter" . }}-env"
+  labels:
+{{ include "harbor.labels" . | indent 4 }}
+data:
+  HTTP_PROXY: ""
+  HTTPS_PROXY: ""
+  NO_PROXY: "{{ template "harbor.noProxy" . }}"
+  LOG_LEVEL: "info"
+  HARBOR_EXPORTER_PORT: "8001"
+  HARBOR_EXPORTER_METRICS_PATH: "/metrics"
+  HARBOR_EXPORTER_METRICS_ENABLED: "true"
+  HARBOR_EXPORTER_CACHE_TIME: "23"
+  HARBOR_EXPORTER_CACHE_CLEAN_INTERVAL: "14400"
+  HARBOR_METRIC_NAMESPACE: harbor
+  HARBOR_METRIC_SUBSYSTEM: exporter
+  HARBOR_REDIS_URL: "redis://{{ template "harbor.redis" . }}:6379/1"
+  HARBOR_REDIS_NAMESPACE: harbor_job_service_namespace
+  HARBOR_REDIS_TIMEOUT: "3600"
+  HARBOR_SERVICE_SCHEME: "http"
+  HARBOR_SERVICE_HOST: "{{ template "harbor.core" . }}"
+  HARBOR_SERVICE_PORT: "80"
+  HARBOR_DATABASE_HOST: "{{ template "harbor.database" . }}"
+  HARBOR_DATABASE_PORT: "5432"
+  HARBOR_DATABASE_USERNAME: "postgres"
+  HARBOR_DATABASE_DBNAME: "registry"
+  HARBOR_DATABASE_SSLMODE: "disable"
+  HARBOR_DATABASE_MAX_IDLE_CONNS: "100"
+  HARBOR_DATABASE_MAX_OPEN_CONNS: "900"
+{{- end}}
