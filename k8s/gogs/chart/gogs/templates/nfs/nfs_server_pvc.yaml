@@ -1,0 +1,43 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-nfs-server-pvc
+spec:
+  storageClassName: "{{ .Values.nfs.persistence.storageClass }}"
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.nfs.persistence.size | quote }}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-nfs-gogs
+  labels:
+    app: gogs
+    name: {{ .Release.Name }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  resources:
+    requests:
+      storage: {{ .Values.nfs.persistence.size | quote }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Release.Name }}-nfs-gogs
+spec:
+  persistentVolumeReclaimPolicy: "Delete"
+  capacity:
+    storage: {{ .Values.nfs.persistence.size | quote }}
+  storageClassName: ""
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: {{ .Release.Name }}-nfs-server.{{ .Release.Namespace }}.svc.cluster.local
+    path: "/"
+

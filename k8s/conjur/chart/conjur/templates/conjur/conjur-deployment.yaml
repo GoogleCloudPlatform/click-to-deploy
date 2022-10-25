@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-conjur
+  labels: &ConjurLabels
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: conjur
+spec:
+  replicas: {{ .Values.conjur.replicas }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+  selector:
+    matchLabels: *ConjurLabels
+  template:
+    metadata:
+      labels: *ConjurLabels
+    spec:
+      serviceAccountName: "{{ .Values.conjur.serviceAccount }}"
+      initContainers:
+        {{- include "conjur.init_container.check_db" . | indent 8 }}
+      containers:
+        - name: conjur
+          image: "{{ .Values.conjur.image.repo }}:{{ .Values.conjur.image.tag }}"
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 1
+            periodSeconds: 5
+            timeoutSeconds: 2
+            # 1 seconds * 180 = 3 minutes
+            failureThreshold: 180
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 1
+            periodSeconds: 30
+            timeoutSeconds: 30
+            # 1 seconds * 180 = 3 minutes
+            failureThreshold: 180
+          envFrom:
+          - secretRef:
+              name: {{ .Release.Name }}-config-envs
+
