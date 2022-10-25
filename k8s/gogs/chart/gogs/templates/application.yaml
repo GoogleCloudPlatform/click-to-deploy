@@ -1,0 +1,106 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "{{ .Release.Name }}"
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": "gogs", "partner_name": "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+spec:
+  descriptor:
+    type: Gogs
+    version: "{{ .Values.gogs.image.tag }}"
+    description: |-
+      Gogs is a simple self-hosted Git service.
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/gogs/).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy Gogs'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/gogs/README.md
+    notes: |-
+      # Access Gogs
+      {{ if .Values.enablePublicServiceAndIngress -}}
+      # Open your Gogs Webserver
+      To get the external IP of your Gogs Webserver, use the following command:
+
+      ```
+      SERVICE_IP=$(kubectl get ingress {{ .Release.Name }}-gogs-svc \
+        --namespace {{ .Release.Namespace }} \
+        --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+      echo "https://${SERVICE_IP}:3000/"
+      ```
+      {{- else -}}
+      # Open your Gogs Webserver
+
+      Gogs is exposed by the ClusterIP-only service `{{ .Release.Name }}-gogs-svc`. To connect to the
+      Gogs Webserver, you can either expose a public service endpoint, or keep it private, but connect
+      from your local environment with `kubectl port-forward`.
+
+      ## Forward the Gogs Webserver port in your local environment
+
+      To use `kubectl`'s port forwarding feature to forward Gogs port to your local
+      machine, run the following command in the background:
+
+      ```shell
+      kubectl port-forward \
+        --namespace {{ .Release.Namespace }} \
+        svc/{{ .Release.Name }}-gogs-svc \
+        3000:3000
+      ```
+
+      Now you can access the Gogs Webserver with [http://localhost:3000](http://localhost:3000).
+      {{- end }}
+  info:
+  {{ if .Values.enablePublicServiceAndIngress -}}
+  - name: Gogs site address
+    type: Reference
+    valueFrom:
+      ingressRef:
+        name: {{ .Release.Name }}-gogs-svc
+        protocol: HTTPS
+  {{- else -}}
+  - name: Forward Gogs Webserver port locally
+    value: kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-gogs-svc 3000:3000
+  - name: Gogs Webserver address (local only)
+    value: "http://localhost:3000/"
+  {{- end }}
+  - name: Gogs - secret key
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: GOGS_SECRET_KEY
+        name: {{ .Release.Name }}-config-envs
+  - name: PostgreSQL - Conjur user password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: POSTGRES_PASSWORD
+        name: {{ .Release.Name }}-config-envs
+  - name: Application Namespace
+    value: "{{ .Release.Namespace }}"
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "{{ .Release.Name }}"
+  componentKinds:
+  - group: apps/v1
+    kind: StatefulSet
+  - group: v1
+    kind: Secret
+  - group: v1
+    kind: Service
+  {{ if .Values.enablePublicServiceAndIngress }}
+  - group: networking.k8s.io
+    kind: Ingress
+  {{ end }}
+  - group: apps/v1
+    kind: Deployment
+  - group: v1
+    kind: ServiceAccount
+

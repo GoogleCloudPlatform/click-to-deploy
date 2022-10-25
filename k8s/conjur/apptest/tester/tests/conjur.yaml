@@ -1,0 +1,22 @@
+actions:
+- name: kubectl smoke test
+  bashTest:
+    script: kubectl version
+    expect:
+      exitCode:
+        equals: 0
+- name: Wait for the webserver get ready
+  bashTest:
+    script: kubectl wait --for=condition=Available=True --timeout=120s --namespace $NAMESPACE deploy "${APP_INSTANCE_NAME}-conjur"
+    expect:
+      exitCode:
+        equals: 0
+- name: Try to run test
+  bashTest:
+    script: |
+      export CONJUR_PODNAME=$(kubectl get pod --namespace $NAMESPACE -l app.kubernetes.io/component=conjur -o jsonpath={..metadata.name})
+      kubectl exec ${CONJUR_PODNAME} -c conjur --namespace $NAMESPACE -- /usr/local/bin/run_test.sh 
+    expect:
+      stdout:
+        matches: "secretVar is 1234567890"
+
