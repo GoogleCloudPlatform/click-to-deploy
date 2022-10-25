@@ -1,4 +1,4 @@
-FROM dirigiblelabs/dirigible-all:6.3.26 AS build
+FROM dirigiblelabs/dirigible-all:{{ $dirigible.Version }} AS build
 
 FROM {{ .From }}
 
