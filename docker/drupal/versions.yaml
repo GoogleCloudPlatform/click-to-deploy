@@ -25,14 +25,14 @@ versions:
       gpg: e1e1c580a237c739ecc1be57cf512e6b741faaa566439257d19ecd739ddfefaf
       version: 2.2.8
     drupal:
-      md5: 75f8460824dbbabdfaa92637d442de74
-      version: 9.4.5
+      md5: 2dd8931d3a4eac19c777c85af41b88f9
+      version: 9.4.8
   repo: drupal9-php8-apache
   tags:
-  - 9.4.5-debian9
+  - 9.4.8-debian9
   - 9.4-debian9
   - 9-debian9
-  - 9.4.5
+  - 9.4.8
   - '9.4'
   - '9'
   - latest
@@ -43,12 +43,12 @@ versions:
       gpg: e1e1c580a237c739ecc1be57cf512e6b741faaa566439257d19ecd739ddfefaf
       version: 2.2.8
     drupal:
-      md5: c3ed50edc147726c290b8bdb8d4f6cd7
-      version: 9.3.21
+      md5: d0efe1a8886e597c16eb8d4de6d25006
+      version: 9.3.22
   repo: drupal9-php8-apache
   tags:
-  - 9.3.21-debian9
+  - 9.3.22-debian9
   - 9.3-debian9
-  - 9.3.21
+  - 9.3.22
   - '9.3'
 
