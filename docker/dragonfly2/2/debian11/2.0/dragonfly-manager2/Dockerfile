@@ -10,7 +10,13 @@
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
-# limitations under the License.FROM node:12-alpine as console-builder
+# limitations under the License.
+
+
+
+
+
+FROM node:12-alpine as console-builder
 
 ARG MANAGER_CONSOLE_BRANCH=release-0.1.4
 ARG CONSOLE_DIST=https://github.com/dragonflyoss/console/archive/refs/heads/${MANAGER_CONSOLE_BRANCH}.tar.gz

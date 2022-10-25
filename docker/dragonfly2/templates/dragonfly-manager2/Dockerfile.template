@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-{{- $dragonfly2_github := index .Packages "dragonfly2_github" -}}
-{{- $manager_console := index .Packages "manager_console" -}}
-{{- $grpc_health_probe := index .Packages "grpc_health_probe" -}}
+{{ $dragonfly2_github := index .Packages "dragonfly2_github" }}
+{{ $manager_console := index .Packages "manager_console" }}
+{{ $grpc_health_probe := index .Packages "grpc_health_probe" }}
 
 FROM node:12-alpine as console-builder
 

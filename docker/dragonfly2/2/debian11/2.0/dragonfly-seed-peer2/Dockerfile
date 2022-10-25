@@ -10,7 +10,11 @@
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
-# limitations under the License.FROM golang:1.18.3-alpine3.16 as builder
+# limitations under the License.
+
+
+
+
 
 ARG GOPROXY
 ARG GOTAGS
@@ -18,7 +22,7 @@ ARG GOGCFLAGS
 
 ARG DRAGONFLY2_GITHUB_BRANCH=release-2.0.6
 ARG MANAGER_CONSOLE_BRANCH=release-0.1.4
-
+FROM golang:1.18.3-alpine3.16 as builder
 WORKDIR /go/src/d7y.io/dragonfly/v2
 
 RUN apk --no-cache add bash make gcc libc-dev git && \

@@ -12,11 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-{{- $dragonfly2_github := index .Packages "dragonfly2_github" -}}
-{{- $manager_console := index .Packages "manager_console" -}}
-{{- $grpc_health_probe := index .Packages "grpc_health_probe" -}}
-
-FROM golang:1.18.3-alpine3.16 as builder
+{{ $dragonfly2_github := index .Packages "dragonfly2_github" }}
+{{ $manager_console := index .Packages "manager_console" }}
+{{ $grpc_health_probe := index .Packages "grpc_health_probe" }}
 
 ARG GOPROXY
 ARG GOTAGS
@@ -24,7 +22,7 @@ ARG GOGCFLAGS
 
 ARG DRAGONFLY2_GITHUB_BRANCH=release-{{ $dragonfly2_github.Version }}
 ARG MANAGER_CONSOLE_BRANCH=release-{{ $manager_console.Version }}
-
+FROM golang:1.18.3-alpine3.16 as builder
 WORKDIR /go/src/d7y.io/dragonfly/v2
 
 RUN apk --no-cache add bash make gcc libc-dev git && \
