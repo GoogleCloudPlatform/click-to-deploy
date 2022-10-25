@@ -20,7 +20,7 @@ data:
     openssl genrsa -out ${tmpdir}/server-key.pem 2048
     openssl req -new -key ${tmpdir}/server-key.pem -subj "/CN=${service}.${namespace}.svc" -addext "subjectAltName=DNS:${service}.${namespace}.svc" -out ${tmpdir}/server-key.csr
     openssl x509 -req -extfile <(printf "subjectAltName=DNS:${service}.${namespace}.svc") -CA ca.crt -CAkey ca.key -CAcreateserial -in ${tmpdir}/server-key.csr -out ${tmpdir}/server-cert.pem
-    openssl x509 -in ${tmpdir}/server-cert.pem -text -noout
+
     serverCert="$(openssl base64 -A -in ${tmpdir}/server-cert.pem)"
     if [[ -z ${serverCert} ]]; then
         echo "ERROR: The signed certificate did not appear." >&2
@@ -40,4 +40,4 @@ data:
       echo $(cat $webhook | envsubst '${CA_PEM_B64}');
       cat $webhook | envsubst '${CA_PEM_B64}' | kubectl apply -f -
     done
-    sleep 7200s
+
