@@ -1,6 +1,11 @@
-FROM dirigiblelabs/dirigible-all AS build
+FROM dirigiblelabs/dirigible-all:6.3.26 AS build
 
 FROM {{ .From }}
+
+{{- $dirigible := index .Packages "dirigible" }}
+{{- $template := index .TemplateArgs }}
+
+ENV C2D_RELEASE {{ $dirigible.Version }}
 
 COPY --from=build /usr/local/tomcat/ /usr/local/tomcat/
 
