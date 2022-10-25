@@ -1,6 +1,0 @@
-cloudbuild-dispatcher.yaml
-docker/README.md
-docker/activemq/README.md
-docker/mediawiki/versions.yaml
-k8s/activemq/README.md
-scripts/trigger-solution-tests.sh
