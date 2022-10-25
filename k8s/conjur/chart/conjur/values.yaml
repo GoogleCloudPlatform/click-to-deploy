@@ -1,0 +1,20 @@
+conjur:
+  image:
+    repo: null
+    tag: null
+  replicas: 1
+  data_key: null
+  db:
+    password: null
+  serviceAccount: null
+
+enablePublicServiceAndIngress: false
+
+postgresql:
+  image:
+    repo: null
+    tag: null
+  persistence:
+    storageClass: standard
+    size: 5Gi
+
