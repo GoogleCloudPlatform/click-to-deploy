@@ -87,6 +87,7 @@ RUN target=/root/.cache/go-build make dist/argo
 # Stage: Final Image
 FROM {{ .From }}
 
+ENV C2D_RELEASE "{{ $argo_workflows.Version }}"
 USER 8737
 
 # Controller artifacts
