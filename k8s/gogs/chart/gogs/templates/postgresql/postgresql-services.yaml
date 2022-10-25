@@ -1,0 +1,16 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-postgresql-svc
+  labels: &PostgreSQLLabels
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: postgresql-server
+spec:
+  ports:
+  - name: postgres
+    port: 5432
+    targetPort: 5432
+  selector: *PostgreSQLLabels
+  type: ClusterIP
+
