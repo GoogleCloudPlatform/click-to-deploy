@@ -20,7 +20,7 @@ versions:
   from: marketplace.gcr.io/google/debian11
   packages:
     argo_workflows:
-      version: 5.17.2
+      version: 3.4.1
   repo: argo-workflows3
   tags:
   - 3.4.1-debian11
