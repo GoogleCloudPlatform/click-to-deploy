@@ -1,3 +1,5 @@
+#!/bin/bash
+#
 # Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,21 +15,11 @@
 # limitations under the License.
 
 
-cloudbuild:
-  enable_parallel: false
-versions:
-- dir: 3/debian11/3.4
-  from: marketplace.gcr.io/google/debian11
-  packages:
-    argo_workflows:
-      version: 3.4.2
-  repo: argo-workflows3
-  tags:
-  - 3.4.2-debian11
-  - 3.4-debian11
-  - 3-debian11
-  - 3.4.2
-  - '3.4'
-  - '3'
-  - latest
-
+if [[ "${MODE}" == "controller" ]]; then
+  workflow-controller "$@"
+elif [[ "${MODE}" == "cli" ]]; then
+  argo "$@"
+else
+  echo "Invalid mode."
+  exit 1
+fi
