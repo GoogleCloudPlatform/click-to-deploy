@@ -1,0 +1,15 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ template "harbor.registry" . }}
+  annotations:
+    helm.sh/resource-policy: keep
+  labels:
+{{ include "harbor.labels" . | indent 4 }}
+    component: registry
+spec:
+  accessModes: 
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
