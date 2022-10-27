@@ -1,0 +1,28 @@
+{{- if eq .Values.expose.type "clusterIP" }}
+apiVersion: v1
+kind: Service
+metadata:
+{{- $clusterIP := .Values.expose.clusterIP }}
+  name: {{ $clusterIP.name }}
+  labels:
+{{ include "harbor.labels" . | indent 4 }}
+{{- with $clusterIP.annotations }}
+  annotations:
+  {{- toYaml . | nindent 4 }}
+{{- end }}
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: {{ $clusterIP.ports.httpPort }}
+      targetPort: 8080
+    - name: https
+      port: {{ $clusterIP.ports.httpsPort }}
+      targetPort: 8443
+    - name: notary
+      port: {{ $clusterIP.ports.notaryPort }}
+      targetPort: 4443
+  selector:
+{{ include "harbor.matchLabels" . | indent 4 }}
+    component: nginx
+{{- end }}
