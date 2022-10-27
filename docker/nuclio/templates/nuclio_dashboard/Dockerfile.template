@@ -1,6 +1,7 @@
 {{- $nuclio := index .Packages "nuclio" -}}
 FROM {{ .From }} as build
 
+SHELL ["/bin/bash", "-c" ]
 WORKDIR /app
 
 #copy Nuclio sources
@@ -9,20 +10,30 @@ ARG NUCLIO_DIST=https://github.com/nuclio/nuclio/archive/refs/tags/${NUCLIO_VERS
 ADD $NUCLIO_DIST /tmp/nuclio.tar.gz
 RUN (tar -xvf /tmp/nuclio.tar.gz -C /app/ && rm /tmp/nuclio.tar.gz && mv /app/nuclio-${NUCLIO_VERSION}/* /app/) || true
 
-#install docker cli
+#install docker cli and node
 ARG DOCKER_CLI_ARCH=x86_64
 ARG DOCKER_CLI_VERSION="19.03.14"
 ENV DOCKER_CLI_DOWNLOAD_URL="https://download.docker.com/linux/static/stable/$DOCKER_CLI_ARCH/docker-$DOCKER_CLI_VERSION.tgz"
-RUN apt-get update && apt-get install ca-certificates golang node curl -y \
+RUN apt-get update && apt-get install ca-certificates curl -y \
     && mkdir -p /tmp/download \
     && curl -L $DOCKER_CLI_DOWNLOAD_URL | tar -xz -C /tmp/download \
     && mv /tmp/download/docker/docker /usr/local/bin/ \
     && rm -rf /tmp/download \
     && rm -rf /var/lib/apt/lists/*
+RUN curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash \
+    && source ~/.bashrc \
+    && nvm install 10
+
+#install golang
+ADD https://golang.org/dl/go1.17.linux-amd64.tar.gz /tmp/go.tar.gz
+RUN (tar -xvf /tmp/go.tar.gz -C /usr/local/ && rm /tmp/go.tar.gz) || true
+ENV PATH="/usr/local/go/bin:${PATH}"
+
 
 #build dashboard
-RUN npm install -g gulp \
-    && cd /app/package/dashboard/ui \
+RUN source ~/.bashrc \
+    && npm install -g gulp \
+    && cd /app/pkg/dashboard/ui \
     && rm -rf ./dist ./node_modules ./resources/*/node_modules \
     && npm install --production \
     && gulp build --production
@@ -37,7 +48,7 @@ RUN cd /app/cmd/dashboard/ && GOOS=$GOOS GOARCH=$GOARCH CGO_ENABLED=0 go build \
     -ldflags="${NUCLIO_GO_LINK_FLAGS_INJECT_VERSION}" \
     -o dashboard main.go
 
-FROM {{ .Nginx }}
+FROM marketplace.gcr.io/google/nginx1
 
 ARG NUCLIO_VERSION
 ENV C2D_RELEASE=${NUCLIO_VERSION}
@@ -52,7 +63,7 @@ RUN apt-get update \
     && wget -O /tmp/templates.zip $NUCLIO_TEMPLATES_ZIP_GITHUB_URL
 
 # copy dashboard static from build assets stage. /etc/nuclio/dashboard/static will contain index.html and assets
-COPY --from=build /app/package/dashboard/ui/dist /etc/nginx/static/
+COPY --from=build /app/pkg/dashboard/ui/dist /etc/nginx/static/
 
 # copy dashboard binary from build binary stage
 COPY --from=build /app/cmd/dashboard/dashboard /usr/local/bin
@@ -61,7 +72,7 @@ COPY --from=build /app/cmd/dashboard/dashboard /usr/local/bin
 COPY --from=gcr.io/iguazio/uhttpc:0.0.1-amd64 /home/nuclio/bin/uhttpc /usr/local/bin/uhttpc
 
 # copy docker client
-COPY --from=build /tmp/download/docker/docker /usr/local/bin
+COPY --from=build /usr/local/bin/docker /usr/local/bin/docker
 
 #copy LICENSE
 COPY --from=build /app/LICENSE /usr/share/nuclio/LICENSE

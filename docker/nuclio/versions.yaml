@@ -26,12 +26,11 @@ versions:
     - '1'
     - 'latest'
     from: 'marketplace.gcr.io/google/debian11'
-    nginx: 'marketplace.gcr.io/google/nginx1'
     packages:
       nuclio:
         version: '1.10.8'
 # Nuclio controller
-  - dir: '1/debian11/nuclio-dashboard/1.10'
+  - dir: '1/debian11/nuclio-controller/1.10'
     repo: 'nuclio-controller1'
     templateSubDir: 'nuclio_controller'
     tags:

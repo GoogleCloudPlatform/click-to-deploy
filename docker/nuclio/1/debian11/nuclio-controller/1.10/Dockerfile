@@ -1,10 +1,9 @@
-{{- $nuclio := index .Packages "nuclio" -}}
-FROM {{ .From }} as build
+FROM marketplace.gcr.io/google/debian11 as build
 
 WORKDIR /app
 
 #copy Nuclio sources
-ARG NUCLIO_VERSION={{ $nuclio.Version }}
+ARG NUCLIO_VERSION=1.10.8
 ARG NUCLIO_DIST=https://github.com/nuclio/nuclio/archive/refs/tags/${NUCLIO_VERSION}.tar.gz
 ADD $NUCLIO_DIST /tmp/nuclio.tar.gz
 RUN (tar -xvf /tmp/nuclio.tar.gz -C /app/ && rm /tmp/nuclio.tar.gz && mv /app/nuclio-${NUCLIO_VERSION}/* /app/) || true
@@ -24,7 +23,7 @@ RUN cd /app/cmd/controller/ && GOOS=$GOOS GOARCH=$GOARCH CGO_ENABLED=0 go build 
     -ldflags="${NUCLIO_GO_LINK_FLAGS_INJECT_VERSION}" \
     -o controller main.go
 
-FROM {{ .From }}
+FROM marketplace.gcr.io/google/debian11
 
 ARG NUCLIO_VERSION
 ENV C2D_RELEASE=${NUCLIO_VERSION}
