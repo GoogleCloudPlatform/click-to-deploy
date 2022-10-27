@@ -13,27 +13,17 @@
 # limitations under the License.
 
 setup:
-- command: [docker, network, create, -d, bridge, testbridge-$UNIQUE-id]
-- command: [docker, run, --net, testbridge-$UNIQUE-id, --name, some-redis-$UNIQUE-id, -d, -p, '6379:6379', marketplace.gcr.io/google/redis6, --requirepass, dragonfly]
-- command: [docker, run, --net, testbridge-$UNIQUE-id, --name, some-mysql-$UNIQUE-id, -d, -p, '3306:3306', -e, MARIADB_USER=dragonfly, -e, MARIADB_PASSWORD=dragonfly, -e, MARIADB_DATABASE=manager, -e, MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=yes, marketplace.gcr.io/google/mariadb10]
-- command: [sleep, 30s]
-- command: [docker, run, --net, testbridge-$UNIQUE-id, --name, some-dragonfly-manager-$UNIQUE-id, -d, -p, '8080:8080',-p, '65003:65003', -e, DRAGONFLY_MYSQL_HOST=some-mysql-$UNIQUE-id, -e, DRAGONFLY_REDIS_HOST=some-redis-$UNIQUE-id, 'gcr.io/cloud-marketplace-ops-test/dragonfly-manager2:2.0.6-debian11']
-- command: [sleep, 30s]
-- command: [docker, run, --net, testbridge-$UNIQUE-id, --name, some-dragonfly-scheduler-$UNIQUE-id, -d, -p, '8002:8002', -e, DRAGONFLY_REDIS_HOST=some-redis-$UNIQUE-id, -e, DRAGONFLY_MANAGER_ADDR=some-dragonfly-manager-$UNIQUE-id, 'gcr.io/cloud-marketplace-ops-test/dragonfly-scheduler2:2.0.6-debian11']
-- command: [sleep, 30s]
-- command: [docker, run, --net, testbridge-$UNIQUE-id, --name, some-dragonfly-seed-peer-$UNIQUE-id, -d, -p, '65006:65006', -p, '65007:65007', -p, '65008:65008', -e, DRAGONFLY_MANAGER_ADDR=some-dragonfly-manager-$UNIQUE-id, -e, DRAGONFLY_SCHEDULER_ADDR=some-dragonfly-scheduler-$UNIQUE-id, -e, DRAGONFLY_SEED_PEER_ADDR=some-dragonfly-seed-peer-$UNIQUE-id, $IMAGE]
-- command: [sleep, 30s]
+- command: [docker, run, -d , --name, some-dragonfly-seed-peer-$UNIQUE-id, --entrypoint, sleep, $IMAGE, infinity]
 teardown:
-- command: [docker, stop, some-redis-$UNIQUE-id, some-mysql-$UNIQUE-id, some-dragonfly-manager-$UNIQUE-id, some-dragonfly-scheduler-$UNIQUE-id, some-dragonfly-seed-peer-$UNIQUE-id]
-- command: [docker, rm, some-redis-$UNIQUE-id, some-mysql-$UNIQUE-id, some-dragonfly-manager-$UNIQUE-id, some-dragonfly-scheduler-$UNIQUE-id, some-dragonfly-seed-peer-$UNIQUE-id]
-- command: [docker, network, rm, testbridge-$UNIQUE-id]
-
+- command: [docker, stop, some-dragonfly-seed-peer-$UNIQUE-id]
+- command: [docker, rm, some-dragonfly-seed-peer-$UNIQUE-id]
 target: some-dragonfly-seed-peer-$UNIQUE-id
 tests:
-- name: Seed-peer health check
-  command: [/bin/grpc_health_probe, '-addr=localhost:65100']
+- name: seed-peer check binary
+  command: [which, dfget]
   expect:
-    stderr:
-      matches: 'SERVING'
+    stdout:
+      matches: /opt/dragonfly/bin/dfget
+
 
 
