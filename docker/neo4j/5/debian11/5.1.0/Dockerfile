@@ -13,8 +13,13 @@
 
 FROM marketplace.gcr.io/google/debian11
 
+<<<<<<< HEAD:docker/neo4j/5/debian11/5.1.0/Dockerfile
 ENV NEO4J_VERSION 5.1.0
 ENV NEO4J_SHA256 c8086d1f8558376754e7248a7d12838f024ca2699aa59e0aba30816b229ed4f4
+=======
+ENV NEO4J_VERSION 4.4.12
+ENV NEO4J_SHA256 58f2ab847b1898c3f33731dc247784459223185307a4c89757f43ea94eb2a491
+>>>>>>> master:docker/neo4j/4/debian11/4.4/Dockerfile
 ENV NEO4J_HOME  /var/lib/neo4j
 ENV NEO4J_EDITION community
 ENV NEO4J_TARBALL neo4j.tar.gz
@@ -23,11 +28,19 @@ ENV TINI_VERSION v0.19.0
 ENV TINI_SHA256 93dcc18adc78c65a028a84799ecf8ad40c936fdfc5f2a57b1acda5a8117fa82c
 
 # Required for neo4jlabs-plugins.json
+<<<<<<< HEAD:docker/neo4j/5/debian11/5.1.0/Dockerfile
 ENV DOCKER_NEO4J_VERSION 5.1.0
 ENV DOCKER_NEO4J_TARBALL docker-neo4j.tar.gz
 ENV DOCKER_NEO4J_SHA256  5ec1db0bf99918247d18dcb8b0f019a3f959a0fc57ce612738272c5a26f4576f
 
 ENV C2D_RELEASE 5.1.0
+=======
+ENV DOCKER_NEO4J_VERSION 4.4.12
+ENV DOCKER_NEO4J_TARBALL docker-neo4j.tar.gz
+ENV DOCKER_NEO4J_SHA256  2028d26f5593ac9f04527ea56c12fd1b534d5a12b080294cc1acb5f4e7684e68
+
+ENV C2D_RELEASE 4.4.12
+>>>>>>> master:docker/neo4j/4/debian11/4.4/Dockerfile
 
 # Workaround for CVE-2021-44228
 # https://www.docker.com/blog/apache-log4j-2-cve-2021-44228/
