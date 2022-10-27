@@ -25,8 +25,7 @@ RUN cd /app/cmd/controller/ && GOOS=$GOOS GOARCH=$GOARCH CGO_ENABLED=0 go build 
 
 FROM marketplace.gcr.io/google/debian11
 
-ARG NUCLIO_VERSION
-ENV C2D_RELEASE=${NUCLIO_VERSION}
+ENV C2D_RELEASE 1.10.8
 
 # install apache2-utils for htpasswd
 RUN apt-get update \

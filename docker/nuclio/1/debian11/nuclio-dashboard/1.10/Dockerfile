@@ -49,8 +49,7 @@ RUN cd /app/cmd/dashboard/ && GOOS=$GOOS GOARCH=$GOARCH CGO_ENABLED=0 go build \
 
 FROM marketplace.gcr.io/google/nginx1
 
-ARG NUCLIO_VERSION
-ENV C2D_RELEASE=${NUCLIO_VERSION}
+ENV C2D_RELEASE 1.10.8
 
 # fetch nuclio functions templates during build time to ease installation on offline environments
 ARG NUCLIO_TEMPLATES_ZIP_GITHUB_URL="https://github.com/nuclio/nuclio-templates/archive/master.zip"
