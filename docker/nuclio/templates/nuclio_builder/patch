@@ -8,7 +8,7 @@ diff -Naur '--exclude=.git' nuclio/cmd/controller/Dockerfile nuclio2/cmd/control
  FROM nuclio-base:$NUCLIO_LABEL as build-controller
 
 @@ -37,12 +36,17 @@
- # Output stage: Creates version file, copies binary to an alpine based image
+# Output stage: Creates version file, copies binary to an alpine based image
  #
 
 -FROM $ALPINE_IMAGE
@@ -76,7 +76,7 @@ diff -Naur '--exclude=.git' nuclio/cmd/dashboard/docker/Dockerfile nuclio2/cmd/d
 +# Remove entrypoint from parent image
 +ENTRYPOINT []
 +
- HEALTHCHECK --interval=1s --timeout=3s CMD /usr/local/bin/uhttpc --url http://127.0.0.1:8082/ready || exit 1
+HEALTHCHECK --interval=1s --timeout=3s CMD /usr/local/bin/uhttpc --url http://127.0.0.1:8082/ready || exit 1
 
  CMD ["sh",  "-c", "./runner.sh"]
 diff -Naur '--exclude=.git' nuclio/.dockerignore nuclio2/.dockerignore
