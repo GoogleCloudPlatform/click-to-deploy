@@ -76,7 +76,7 @@ git fetch origin master
 git show-ref
 
 git diff --name-only "local" "origin/master" \
-  | grep -P -o "^(\w+)\/(\w+)\/" \
+  | grep -P -o "^([a-zA-Z0-9._-]+)\/([a-zA-Z0-9._-]+)\/" \
   | uniq \
   | tee changes
 

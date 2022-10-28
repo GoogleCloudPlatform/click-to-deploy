@@ -1,0 +1,75 @@
+{{- if .Values.metrics.enabled}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "harbor.exporter" . }}
+  labels:
+{{ include "harbor.labels" . | indent 4 }}
+    component: exporter
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+{{ include "harbor.matchLabels" . | indent 6 }}
+      component: exporter
+  template:
+    metadata:
+      labels:
+{{ include "harbor.labels" . | indent 8 }}
+        component: exporter
+      annotations:
+    spec:
+      securityContext:
+        runAsUser: 10000
+        fsGroup: 10000
+      automountServiceAccountToken: false
+      containers:
+      - name: exporter
+        image: "{{ .Values.exporter.image.repo }}:{{ .Values.exporter.image.tag }}"
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8001
+          initialDelaySeconds: 300
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8001
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        args: ["-log-level", "info"]
+        envFrom:
+        - configMapRef:
+            name: "{{ template "harbor.exporter" . }}-env"
+        - secretRef:
+            name: "{{ template "harbor.exporter" . }}"
+        ports:
+        - containerPort: 8080
+      {{ if .Values.metrics.exporter.enabled }}
+      - name: prometheus-to-sd
+        image: {{ .Values.metrics.image }}
+        command:
+          - /monitor
+          - --stackdriver-prefix=custom.googleapis.com
+          - --source=harbor:http://localhost:8001/metrics
+          - --pod-id=$(POD_NAME)
+          - --namespace-id=$(POD_NAMESPACE)
+          - --monitored-resource-type-prefix=k8s_
+        env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+      {{ end }}
+      volumes:
+      - name: config
+        secret:
+          secretName: "{{ template "harbor.exporter" . }}"
+{{ end }}
