@@ -12,42 +12,39 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-_variables:
-  from10: &from10 marketplace.gcr.io/google/debian10:latest
-  nuclio: &nuclio
-    version: '1.9.3'
 versions:
-  - dir: 'nuclio_builder'
-    repo: nuclio_builder
-    templateSubDir: nuclio_builder
-    tags: [ 'latest' ]
-    builder: true
+# Nuclio dashboard 
+  - dir: '1/debian11/nuclio-dashboard/1.10'
+    repo: 'nuclio-dashboard1'
+    templateSubDir: 'nuclio_dashboard'
+    tags:
+    - '1.10.8-debian11'
+    - '1.10.8'
+    - '1.10-debian11'
+    - '1.10'
+    - '1-debian11'
+    - '1'
+    - 'latest'
+    from: 'marketplace.gcr.io/google/debian11'
     packages:
-      nuclio: *nuclio
-  - repo: nuclio-controller
-    builderImage: 'nuclio_builder:latest'
-    builderArgs: [ 'controller' ]
-    imageNameFromBuilder: 'local/controller:1.9.3'
+      nuclio:
+        version: '1.10.8'
+# Nuclio controller
+  - dir: '1/debian11/nuclio-controller/1.10'
+    repo: 'nuclio-controller1'
+    templateSubDir: 'nuclio_controller'
     tags:
-      - '1.9.3-debian10'
-      - '1.9-debian10'
-      - '1-debian10'
-      - '1.9.3'
-      - '1.9'
-      - '1'
-      - 'latest'
-  - repo: nuclio-dashboard
-    builderImage: 'nuclio_builder:latest'
-    builderArgs: [ 'dashboard' ]
-    imageNameFromBuilder: 'local/dashboard:1.9.3'
-    tags:
-      - '1.9.3-debian10'
-      - '1.9-debia10'
-      - '1-debian10'
-      - '1.9.3'
-      - '1.9'
-      - '1'
-      - 'latest'
+    - '1.10.8-debian11'
+    - '1.10.8'
+    - '1.10-debian11'
+    - '1.10'
+    - '1-debian11'
+    - '1'
+    - 'latest'
+    from: 'marketplace.gcr.io/google/debian11'
+    packages:
+      nuclio:
+        version: '1.10.8'
 
 cloudbuild:
   enable_parallel: true
