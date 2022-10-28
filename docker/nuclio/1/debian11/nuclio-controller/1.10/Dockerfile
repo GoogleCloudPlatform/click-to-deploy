@@ -6,11 +6,12 @@ WORKDIR /app
 ARG NUCLIO_VERSION=1.10.8
 ARG NUCLIO_DIST=https://github.com/nuclio/nuclio/archive/refs/tags/${NUCLIO_VERSION}.tar.gz
 ADD $NUCLIO_DIST /tmp/nuclio.tar.gz
-RUN (tar -xvf /tmp/nuclio.tar.gz -C /app/ && rm /tmp/nuclio.tar.gz && mv /app/nuclio-${NUCLIO_VERSION}/* /app/) || true
+RUN (tar -xf /tmp/nuclio.tar.gz -C /app/ && rm /tmp/nuclio.tar.gz && mv /app/nuclio-${NUCLIO_VERSION}/* /app/) || true
 
 #install golang
-ADD https://golang.org/dl/go1.17.linux-amd64.tar.gz /tmp/go.tar.gz
-RUN (tar -xvf /tmp/go.tar.gz -C /usr/local/ && rm /tmp/go.tar.gz) || true
+ARG GOLANG_VERSION=1.18.7
+ADD https://golang.org/dl/go${GOLANG_VERSION}.linux-amd64.tar.gz /tmp/go.tar.gz
+RUN (tar -xf /tmp/go.tar.gz -C /usr/local/ && rm /tmp/go.tar.gz) || true
 ENV PATH="/usr/local/go/bin:${PATH}"
 
 #build controller binary
