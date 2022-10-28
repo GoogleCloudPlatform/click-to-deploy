@@ -7,7 +7,7 @@ WORKDIR /app
 ARG NUCLIO_VERSION=1.10.8
 ARG NUCLIO_DIST=https://github.com/nuclio/nuclio/archive/refs/tags/${NUCLIO_VERSION}.tar.gz
 ADD $NUCLIO_DIST /tmp/nuclio.tar.gz
-RUN (tar -xvf /tmp/nuclio.tar.gz -C /app/ && rm /tmp/nuclio.tar.gz && mv /app/nuclio-${NUCLIO_VERSION}/* /app/) || true
+RUN (tar -xf /tmp/nuclio.tar.gz -C /app/ && rm /tmp/nuclio.tar.gz && mv /app/nuclio-${NUCLIO_VERSION}/* /app/) || true
 
 #install docker cli and node
 ARG DOCKER_CLI_ARCH=x86_64
@@ -24,8 +24,9 @@ RUN curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | ba
     && nvm install 10
 
 #install golang
-ADD https://golang.org/dl/go1.17.linux-amd64.tar.gz /tmp/go.tar.gz
-RUN (tar -xvf /tmp/go.tar.gz -C /usr/local/ && rm /tmp/go.tar.gz) || true
+ARG GOLANG_VERSION=1.18.7
+ADD https://golang.org/dl/go${GOLANG_VERSION}.linux-amd64.tar.gz /tmp/go.tar.gz
+RUN (tar -xf /tmp/go.tar.gz -C /usr/local/ && rm /tmp/go.tar.gz) || true
 ENV PATH="/usr/local/go/bin:${PATH}"
 
 #build dashboard
@@ -51,9 +52,36 @@ FROM marketplace.gcr.io/google/nginx1
 ENV C2D_RELEASE 1.10.8
 
 # fetch nuclio functions templates during build time to ease installation on offline environments
+# fix security issues
+# Add up-to-date libs for security purposes
+RUN set -x \
+    apt update \
+    && apt install -y \
+      dpkg \
+      gpgv \
+      libc6 \
+      libc-bin \
+      libgnutls30 \
+      libtirpc3 \
+      libtirpc-common \
+      libssl1.1 \
+      openssl \
+      zlib1g \
+    && rm -rf /var/lib/apt/lists/*
+
 ARG NUCLIO_TEMPLATES_ZIP_GITHUB_URL="https://github.com/nuclio/nuclio-templates/archive/master.zip"
 RUN apt-get update \
     && apt-get install -y --no-install-recommends git ca-certificates parallel \
+       dpkg \
+       gpgv \
+       libc6 \
+       libc-bin \
+       libgnutls30 \
+       libtirpc3 \
+       libtirpc-common \
+       libssl1.1 \
+       openssl \
+       zlib1g \
     && apt-get autoremove -yqq --purge \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
