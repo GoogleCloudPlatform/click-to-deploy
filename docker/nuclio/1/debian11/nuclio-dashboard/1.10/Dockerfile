@@ -66,6 +66,8 @@ RUN apt-get update \
        libssl1.1 \
        openssl \
        zlib1g \
+       expat \
+       libexpat1 \
     && apt-get autoremove -yqq --purge \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
