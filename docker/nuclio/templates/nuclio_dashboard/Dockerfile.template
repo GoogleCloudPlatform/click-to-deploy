@@ -29,7 +29,6 @@ ADD https://golang.org/dl/go1.17.linux-amd64.tar.gz /tmp/go.tar.gz
 RUN (tar -xvf /tmp/go.tar.gz -C /usr/local/ && rm /tmp/go.tar.gz) || true
 ENV PATH="/usr/local/go/bin:${PATH}"
 
-
 #build dashboard
 RUN source ~/.bashrc \
     && npm install -g gulp \
