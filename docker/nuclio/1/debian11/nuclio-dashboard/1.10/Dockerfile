@@ -53,22 +53,6 @@ ENV C2D_RELEASE 1.10.8
 
 # fetch nuclio functions templates during build time to ease installation on offline environments
 # fix security issues
-# Add up-to-date libs for security purposes
-RUN set -x \
-    apt update \
-    && apt install -y \
-      dpkg \
-      gpgv \
-      libc6 \
-      libc-bin \
-      libgnutls30 \
-      libtirpc3 \
-      libtirpc-common \
-      libssl1.1 \
-      openssl \
-      zlib1g \
-    && rm -rf /var/lib/apt/lists/*
-
 ARG NUCLIO_TEMPLATES_ZIP_GITHUB_URL="https://github.com/nuclio/nuclio-templates/archive/master.zip"
 RUN apt-get update \
     && apt-get install -y --no-install-recommends git ca-certificates parallel \
