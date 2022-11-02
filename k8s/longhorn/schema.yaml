@@ -12,7 +12,6 @@ x-google-marketplace:
     recommended: false
 
   clusterConstraints:
-    k8sVersion: ">=1.21.1"
     resources:
     - replicas: 1
       requests:
@@ -22,128 +21,79 @@ x-google-marketplace:
   images:
     '':
       properties:
-        knative.serving.activator.image.repo:
+        longhorn.engine.image.repo:
+          type: REPO_WITH_REGISTRY
+        longhorn.engine.image.tag:
+          type: TAG
+
+    longhorn-manager:
+      properties:
+        longhorn.manager.image.repo:
+          type: REPO_WITH_REGISTRY
+        longhorn.manager.image.tag:
+          type: TAG
+
+    longhorn-ui:
+      properties:
+        longhorn.ui.image.repo:
+          type: REPO_WITH_REGISTRY
+        longhorn.ui.image.tag:
+          type: TAG
+
+    longhorn-instance-manager:
+      properties:
+        longhorn.instance-manager.image.repo:
+          type: REPO_WITH_REGISTRY
+        longhorn.instance-manager.istiod.image.tag:
+          type: TAG
+
+    longhorn-share-manager:
+      properties:
+        longhorn.share-manager.image.repo:
           type: REPO_WITH_REGISTRY
         knative.serving.activator.image.tag:
           type: TAG
 
-    certmanager:
+    longhorn-backing-image-manager:
       properties:
-        certmanager.image.repo:
+        longhorn.backing-image-manager.image.repo:
           type: REPO_WITH_REGISTRY
-        certmanager.image.tag:
+        longhorn.backing-image-manager.image.tag:
           type: TAG
 
-    istio-ingressgateway:
+    longhorn-csi-attacher:
       properties:
-        istio.ingressgateway.image.repo:
+        longhorn.csi-attacher.image.repo:
           type: REPO_WITH_REGISTRY
-        istio.ingressgateway.image.tag:
+        longhorn.csi-attacher.image.tag:
           type: TAG
 
-    istio-istiod:
+    longhorn-csi-provisioner:
       properties:
-        istio.istiod.image.repo:
+        longhorn.csi-provisioner.image.repo:
           type: REPO_WITH_REGISTRY
-        istio.istiod.image.tag:
+        longhorn.csi-provisioner.image.tag:
           type: TAG
 
-    knative-serving-activator:
+    longhorn-csi-node-driver-registrar:
       properties:
-        knative.serving.activator.image.repo:
+        longhorn.csi-node-driver-registrar.image.repo:
           type: REPO_WITH_REGISTRY
-        knative.serving.activator.image.tag:
+        longhorn.csi-node-driver-registrar.image.tag:
           type: TAG
 
-    knative-serving-autoscaler:
+    longhorn-csi-resizer:
       properties:
-        knative.serving.autoscaler.image.repo:
+        longhorn.csi-resizer.image.repo:
           type: REPO_WITH_REGISTRY
-        knative.serving.autoscaler.image.tag:
+        longhorn.csi-resizer.image.tag:
           type: TAG
 
-    knative-serving-controller:
+    longhorn-csi-snapshotter:
       properties:
-        knative.serving.controller.image.repo:
-          type: REPO_WITH_REGISTRY
-        knative.serving.controller.image.tag:
-          type: TAG
-
-    knative-serving-domainmapping:
-      properties:
-        knative.serving.domainmapping.image.repo:
-          type: REPO_WITH_REGISTRY
-        knative.serving.domainmapping.image.tag:
-          type: TAG
-
-    knative-serving-domainmapping-webhook:
-      properties:
-        knative.serving.domainmapping.webhook.image.repo:
-          type: REPO_WITH_REGISTRY
-        knative.serving.domainmapping.webhook.image.tag:
-          type: TAG
-
-    knative-serving-queueproxy:
-      properties:
-        knative.serving.queueproxy.image.repo:
-          type: REPO_WITH_REGISTRY
-        knative.serving.queueproxy.image.tag:
-          type: TAG
-
-    knative-serving-webhook:
-      properties:
-        knative.serving.webhook.image.repo:
-          type: REPO_WITH_REGISTRY
-        knative.serving.webhook.image.tag:
-          type: TAG
-
-    knative-serving-netcertmanager-controller:
-      properties:
-        knative.serving.netcertmanager.controller.image.repo:
-          type: REPO_WITH_REGISTRY
-        knative.serving.netcertmanager.controller.image.tag:
-          type: TAG
-
-    knative-serving-netcertmanager-webhook:
-      properties:
-        knative.serving.netcertmanager.webhook.image.repo:
-          type: REPO_WITH_REGISTRY
-        knative.serving.netcertmanager.webhook.image.tag:
-          type: TAG
-
-    knative-serving-netistio-controller:
-      properties:
-        knative.serving.netistio.controller.image.repo:
-          type: REPO_WITH_REGISTRY
-        knative.serving.netistio.controller.image.tag:
-          type: TAG
-
-    knative-serving-netistio-webhook:
-      properties:
-        knative.serving.netistio.webhook.image.repo:
-          type: REPO_WITH_REGISTRY
-        knative.serving.netistio.webhook.image.tag:
-          type: TAG
-
-    knative-eventing-controller:
-      properties:
-        knative.eventing.controller.image.repo:
-          type: REPO_WITH_REGISTRY
-        knative.eventing.controller.image.tag:
-          type: TAG
-
-    knative-eventing-mtping:
-      properties:
-        knative.eventing.mtping.image.repo:
-          type: REPO_WITH_REGISTRY
-        knative.eventing.mtping.image.tag:
-          type: TAG
-
-    knative-eventing-webhook:
-      properties:
-        knative.eventing.webhook.image.repo:
-          type: REPO_WITH_REGISTRY
-        knative.eventing.webhook.image.tag:
+        longhorn.csi-snapshotter.image.repo:
+          type: REPO_WITH_REGI:57,105STRY
+        longhorn.csi-snapshotter.image.tag:
           type: TAG
 
   deployerServiceAccount:
