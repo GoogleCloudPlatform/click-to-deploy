@@ -31,6 +31,8 @@ versions:
         version: '1.10.8'
       golang:
         version: '1.18.7'
+      docker:
+        version: '20.10.19'
 # Nuclio controller
   - dir: '1/debian11/nuclio-controller/1.10'
     repo: 'nuclio-controller1'
