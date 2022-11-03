@@ -11,7 +11,7 @@ RUN (tar -xf /tmp/nuclio.tar.gz -C /app/ && rm /tmp/nuclio.tar.gz && mv /app/nuc
 
 #install docker cli and node
 ARG DOCKER_CLI_ARCH=x86_64
-ARG DOCKER_CLI_VERSION="19.03.14"
+ARG DOCKER_CLI_VERSION=20.10.19
 ENV DOCKER_CLI_DOWNLOAD_URL="https://download.docker.com/linux/static/stable/$DOCKER_CLI_ARCH/docker-$DOCKER_CLI_VERSION.tgz"
 RUN apt-get update && apt-get install ca-certificates curl -y \
     && mkdir -p /tmp/download \
