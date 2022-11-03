@@ -1,0 +1,100 @@
+expose:
+  # Set how to expose the service. Set the type as "ingress" or "clusterIP".
+  type: clusterIP
+  tls:
+    auto:
+      commonName: "cert-1"
+  ingress:
+    hosts:
+      core: core.harbor.domain
+      notary: notary.harbor.domain
+  clusterIP:
+    name: harbor
+    ports:
+      httpPort: 80
+      httpsPort: 443
+      notaryPort: 4443
+
+externalURL: https://core.harbor.domain
+
+# The initial password of Harbor admin.
+harborAdminPassword: "Harbor12345"
+
+# If service exposed via "ingress", the Nginx will not be used
+nginx:
+  image:
+    repo: null
+    tag: null
+
+portal:
+  image:
+    repo: null
+    tag: null
+
+core:
+  image:
+    repo: null
+    tag: null
+
+jobservice:
+  image:
+    repo: null
+    tag: null
+
+registry:
+  registry:
+    image:
+      repo: null
+      tag: null
+  controller:
+    image:
+      repo: null
+      tag: null
+  credentials:
+    username: "harbor_registry_user"
+    password: "harbor_registry_password"
+
+chartmuseum:
+  image:
+    repo: null
+    tag: null
+
+trivy:
+  image:
+    repo: null
+    tag: null
+
+notary:
+  server:
+    image:
+      repo: null
+      tag: null
+  signer:
+    image:
+      repo: null
+      tag: null
+
+database:
+  image:
+    repo: null
+    tag: null
+  # The initial superuser password for internal database
+  password: "changeit"
+
+redis:
+  image:
+    repo: null
+    tag: null
+
+exporter:
+  image:
+    repo: null
+    tag: null
+
+metrics:
+  enabled: true
+  image: null
+  serviceMonitor:
+    enabled: true
+  exporter:
+    enabled: true
