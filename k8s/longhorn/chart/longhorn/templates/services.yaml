@@ -1,15 +1,16 @@
 apiVersion: v1
 kind: Service
 metadata:
-  labels: {{- include "longhorn.labels" . | nindent 4 }}
+  labels: &Labels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: longhorn
     app: longhorn-conversion-webhook
   name: longhorn-conversion-webhook
-  namespace: {{ include "release_namespace" . }}
+  namespace: {{ .Release.Namespace }}
 spec:
   type: ClusterIP
   sessionAffinity: ClientIP
-  selector:
-    app: longhorn-conversion-webhook
+  selector: *Labels
   ports:
   - name: conversion-webhook
     port: 9443
@@ -18,15 +19,16 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  labels: {{- include "longhorn.labels" . | nindent 4 }}
+  labels: &Labels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: longhorn
     app: longhorn-admission-webhook
   name: longhorn-admission-webhook
-  namespace: {{ include "release_namespace" . }}
+  namespace: {{ .Release.Namespace }}
 spec:
   type: ClusterIP
   sessionAffinity: ClientIP
-  selector:
-    app: longhorn-admission-webhook
+  selector: *Labels
   ports:
   - name: admission-webhook
     port: 9443
@@ -35,9 +37,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  labels: {{- include "longhorn.labels" . | nindent 4 }}
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: longhorn
   name: longhorn-engine-manager
-  namespace: {{ include "release_namespace" . }}
+  namespace: {{ .Release.Namespace }}
 spec:
   clusterIP: None
   selector:
@@ -47,9 +51,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  labels: {{- include "longhorn.labels" . | nindent 4 }}
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: longhorn
   name: longhorn-replica-manager
-  namespace: {{ include "release_namespace" . }}
+  namespace: {{ .Release.Namespace }}
 spec:
   clusterIP: None
   selector:

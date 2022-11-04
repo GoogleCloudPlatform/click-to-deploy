@@ -10,12 +10,10 @@ metadata:
 spec:
   replicas: 2
   selector:
-    matchLabels:
-      app: longhorn-conversion-webhook
+    matchLabels: *Labels
   template:
     metadata:
-      labels: {{- include "longhorn.labels" . | nindent 8 }}
-        app: longhorn-conversion-webhook
+      labels: *Labels
     spec:
       affinity:
         podAntiAffinity:
@@ -31,8 +29,8 @@ spec:
               topologyKey: kubernetes.io/hostname
       containers:
       - name: longhorn-conversion-webhook
-        image: {{ .Values.image.longhorn.manager.image.repo }}:{{ .Values.image.longhorn.manager.image.tag }}
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        image: {{ .Values.longhorn.manager.image.repo }}:{{ .Values.longhorn.manager.image.tag }}
+        imagePullPolicy: Always
         securityContext:
           runAsUser: 2000
         command:
@@ -51,27 +49,14 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-      {{- if .Values.privateRegistry.registrySecret }}
-      imagePullSecrets:
-      - name: {{ .Values.privateRegistry.registrySecret }}
-      {{- end }}
-      {{- if .Values.longhornDriver.priorityClass }}
-      priorityClassName: {{ .Values.longhornDriver.priorityClass | quote}}
-      {{- end }}
-      {{- if .Values.longhornDriver.tolerations }}
-      tolerations:
-{{ toYaml .Values.longhornDriver.tolerations | indent 6 }}
-      {{- end }}
-      {{- if .Values.longhornDriver.nodeSelector }}
-      nodeSelector:
-{{ toYaml .Values.longhornDriver.nodeSelector | indent 8 }}
-      {{- end }}
       serviceAccountName: longhorn-service-account
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels: {{- include "longhorn.labels" . | nindent 4 }}
+  labels: &Labels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: longhorn
     app: longhorn-admission-webhook
   name: longhorn-admission-webhook
   namespace: {{ .Release.Namespace }}
