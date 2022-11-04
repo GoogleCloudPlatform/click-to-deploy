@@ -1,5 +1,5 @@
-{{- $knative := index .Packages "knative" -}}
+{{- $longhorn := index .Packages "longhorn" -}}
 
 FROM {{ .From }}
 
-ENV C2D_RELEASE {{ $knative.Version }}
+ENV C2D_RELEASE {{ $longhorn.Version }}
