@@ -1,0 +1,19 @@
+{{ if .Values.enablePublicServiceAndIngress }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-longhorn-ingress
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: wordpress-webserver
+spec:
+  tls:
+  - secretName: {{ .Release.Name }}-tls
+  defaultBackend:
+    service:
+      name: {{ .Release.Name }}-longhorn-frontend
+      port:
+        name: http
+{{ end }}
+

@@ -49,10 +49,14 @@ metadata:
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: longhorn
     app: longhorn-ui
-  name: longhorn-frontend
+  name: {{ .Release.Name }}-longhorn-frontend
   namespace: {{ .Release.Namespace }}
 spec:
+  {{- if .Values.enablePublicServiceAndIngress }}
+  type: NodePort
+  {{- else }}
   type: ClusterIP
+  {{- end }}
   selector: *Labels
   ports:
   - name: http
