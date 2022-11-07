@@ -1,7 +1,6 @@
 # server scheduler instance configuration
 server:
   # # Advertise ip.
-  advertiseIP: ${DRAGONFLY_SCHEDULER_ADDR}
   # # Listen ip.
   # listenIP: 0.0.0.0
   # Port is the ip and port scheduler server listens on.
@@ -156,7 +155,7 @@ network:
   enableIPv6: false
 
 # console shows log on console
-console: false
+console: true
 
 # whether to enable debug level logger and enable pprof
 verbose: true

@@ -121,7 +121,7 @@ network:
   enableIPv6: false
 
 # console shows log on console
-console: false
+console: true
 
 # whether to enable debug level logger and enable pprof
 verbose: true

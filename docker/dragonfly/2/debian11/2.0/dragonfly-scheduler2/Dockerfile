@@ -38,7 +38,9 @@ RUN apt update && apt install -y wget && \
     chmod +x /bin/grpc_health_probe
 
 FROM marketplace.gcr.io/google/debian11
+
 ENV C2D_RELEASE 2.0.7
+
 ENV DRAGONFLY_REDIS_PW dragonfly
 ENV DRAGONFLY_REDIS_HOST localhost
 ENV DRAGONFLY_MANAGER_ADDR localhost
