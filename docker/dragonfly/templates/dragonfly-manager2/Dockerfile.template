@@ -29,7 +29,7 @@ RUN tar -xvf $MANAGER_CONSOLE_BRANCH.tar.gz && \
     npm run build
 
 
-FROM golang:1.18.3-alpine3.16 as server-builder
+FROM golang:1.19-alpine3.16 as server-builder
 
 ARG GOPROXY
 ARG GOTAGS
@@ -60,7 +60,7 @@ FROM {{ .From }}
 WORKDIR /opt/dragonfly
 ENV C2D_RELEASE {{ $dragonfly2_github.Version }}
 ENV PATH=/opt/dragonfly/bin:$PATH
-
+ENV DRAGONFLY_MANAGER_ADDR localhost
 ENV DRAGONFLY_MYSQL_USER dragonfly
 ENV DRAGONFLY_MYSQL_PW dragonfly
 ENV DRAGONFLY_MYSQL_DBNAME manager

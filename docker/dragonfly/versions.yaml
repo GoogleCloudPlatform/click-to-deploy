@@ -18,8 +18,8 @@ versions:
     repo: 'dragonfly-manager2'
     templateSubDir: 'dragonfly-manager2'
     tags:
-    - '2.0.6-debian11'
-    - '2.0.6'
+    - '2.0.7-debian11'
+    - '2.0.7'
     - '2.0-debian11'
     - '2.0'
     - '2-debian11'
@@ -28,7 +28,7 @@ versions:
     from: 'marketplace.gcr.io/google/debian11'
     packages:
       dragonfly2_github:
-        version: 2.0.6
+        version: 2.0.7
       manager_console:
         version: 0.1.4
       grpc_health_probe:
@@ -43,8 +43,8 @@ versions:
     repo: 'dragonfly-scheduler2'
     templateSubDir: 'dragonfly-scheduler2'
     tags:
-    - '2.0.6-debian11'
-    - '2.0.6'
+    - '2.0.7-debian11'
+    - '2.0.7'
     - '2.0-debian11'
     - '2.0'
     - '2-debian11'
@@ -53,7 +53,7 @@ versions:
     from: 'marketplace.gcr.io/google/debian11'
     packages:
       dragonfly2_github:
-        version: 2.0.6
+        version: 2.0.7
       manager_console:
         version: 0.1.4
       grpc_health_probe:
@@ -68,8 +68,8 @@ versions:
     repo: 'dragonfly-seed-peer2'
     templateSubDir: 'dragonfly-seed-peer2'
     tags:
-    - '2.0.6-debian11'
-    - '2.0.6'
+    - '2.0.7-debian11'
+    - '2.0.7'
     - '2.0-debian11'
     - '2.0'
     - '2-debian11'
@@ -78,7 +78,7 @@ versions:
     from: 'marketplace.gcr.io/google/debian11'
     packages:
       dragonfly2_github:
-        version: 2.0.6
+        version: 2.0.7
       manager_console:
         version: 0.1.4
       grpc_health_probe:
@@ -93,8 +93,8 @@ versions:
     repo: 'dragonfly-dfget2'
     templateSubDir: 'dragonfly-dfget2'
     tags:
-    - '2.0.6-debian11'
-    - '2.0.6'
+    - '2.0.7-debian11'
+    - '2.0.7'
     - '2.0-debian11'
     - '2.0'
     - '2-debian11'
@@ -103,7 +103,7 @@ versions:
     from: 'marketplace.gcr.io/google/debian11'
     packages:
       dragonfly2_github:
-        version: 2.0.6
+        version: 2.0.7
       manager_console:
         version: 0.1.4
       grpc_health_probe:
