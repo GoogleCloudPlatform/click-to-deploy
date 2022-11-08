@@ -1,0 +1,136 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-redis
+  labels: &RedisDeploymentLabels
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: dragonfly-redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels: *RedisDeploymentLabels
+  serviceName: {{ .Release.Name }}-redis-svc
+  template:
+    metadata:
+      labels: *RedisDeploymentLabels
+    spec:
+      containers:
+      - image: {{ .Values.redis.image }}
+        name: redis
+        args:
+        - "--requirepass"
+        - "$(REDIS_PASSWORD)"
+        - "--dir"
+        - "/data"
+        - "--appendonly"
+        - "yes"
+        - "--save"
+        - "$(REDIS_SAVE_INTERVAL)"
+        env:
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-redis-secret
+              key: password
+        - name: REDIS_SAVE_INTERVAL
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Release.Name }}-redis-config
+              key: save-interval
+        - name: REDIS_ADDR
+          value: "localhost"
+        ports:
+        - name: redis
+          containerPort: 6379
+        volumeMounts:
+        - name: {{ .Release.Name }}-redis-data-pvc
+          mountPath: /data
+        - name: health
+          mountPath: /health
+        livenessProbe:
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 5
+          exec:
+            command:
+            - sh
+            - -c
+            - /health/redis_ping_liveness_local.sh 1
+        readinessProbe:
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 1
+          successThreshold: 1
+          failureThreshold: 5
+          exec:
+            command:
+            - sh
+            - -c
+            - /health/redis_ping_readiness_local.sh 1
+      - image: {{ .Values.redis.exporter.image }}
+        name: redis-exporter
+        env:
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-redis-secret
+              key: password
+        - name: REDIS_ADDR
+          value: localhost
+        - name: REDIS_EXPORTER_INCL_SYSTEM_METRICS
+          value: "true"
+        ports:
+        - name: redis-exporter
+          containerPort: 9121
+        livenessProbe:
+          httpGet:
+            path: /metrics
+            port: 9121
+        readinessProbe:
+          httpGet:
+            path: /metrics
+            port: 9121
+          initialDelaySeconds: 60
+          timeoutSeconds: 30
+          failureThreshold: 10
+          periodSeconds: 10
+      {{- if .Values.metrics.exporter.enabled }}
+      - name: prometheus-to-sd
+        image: {{ .Values.metrics.image }}
+        command:
+        - /monitor
+        - --stackdriver-prefix=custom.googleapis.com
+        - --source=dragonfly-redis:http://localhost:9121/metrics
+        - --pod-id=$(POD_NAME)
+        - --namespace-id=$(POD_NAMESPACE)
+        - --monitored-resource-types=k8s
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+      {{- end }}
+      volumes:
+       - name: health
+         configMap:
+            name: {{ .Release.Name }}-redis-config
+            defaultMode: 0755
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Release.Name }}-redis-data-pvc
+      labels:
+        app.kubernetes.io/name: "{{ .Release.Name }}"
+        app.kubernetes.io/component: dragonfly-manager
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: {{ .Values.persistence.storageClass }}
+      resources:
+        requests:
+          storage: {{ .Values.redis.persistence.size }}

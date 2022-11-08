@@ -1,0 +1,18 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-redis-config
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: redis-server
+data:
+  # redis save interval configuration is composed from two parameters
+  # 10 is the interval in seconds which will store the data in the disk
+  # 2 is the number of keys changed until the data is persisted
+  save-interval: "30 2"
+  {{- $root := . -}}
+  {{- range $path, $bytes := .Files.Glob "files/redis_*.sh" }}
+  {{ base $path }}: |-
+    {{ $root.Files.Get $path | nindent 4 | trim -}}
+  {{- end -}}
