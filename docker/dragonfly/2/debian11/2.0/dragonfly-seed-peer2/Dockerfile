@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM golang:1.18.3-alpine3.16 as builder
+FROM golang:1.19-alpine3.16 as builder
 ARG GOPROXY
 ARG GOTAGS
 ARG GOGCFLAGS
 
-ARG DRAGONFLY2_GITHUB_BRANCH=release-2.0.6
+ARG DRAGONFLY2_GITHUB_BRANCH=release-2.0.7
 ARG MANAGER_CONSOLE_BRANCH=release-0.1.4
 
 WORKDIR /go/src/d7y.io/dragonfly/v2
@@ -43,10 +43,8 @@ RUN apt update && apt install -y wget && \
     chmod +x /bin/grpc_health_probe
 
 FROM marketplace.gcr.io/google/debian11
-ENV C2D_RELEASE 2.0.6
+ENV C2D_RELEASE 2.0.7
 ENV DRAGONFLY_MANAGER_ADDR localhost
-ENV DRAGONFLY_SCHEDULER_ADDR localhost
-ENV DRAGONFLY_SEED_PEER_ADDR localhost
 ENV PATH=/opt/dragonfly/bin:$PATH
 
 RUN echo "hosts: files dns" > /etc/nsswitch.conf
