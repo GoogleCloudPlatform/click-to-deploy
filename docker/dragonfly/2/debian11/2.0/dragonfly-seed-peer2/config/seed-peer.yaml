@@ -81,7 +81,7 @@ scheduler:
 host:
   # # Access ip for other peers,
   # # when local ip is different with access ip, advertiseIP should be set.
-  advertiseIP: ${DRAGONFLY_SEED_PEER_ADDR}
+  # advertiseIP: ${DRAGONFLY_SEED_PEER_ADDR}
   # Geographical location, separated by "|" characters.
   location: ''
   # IDC deployed by daemon.

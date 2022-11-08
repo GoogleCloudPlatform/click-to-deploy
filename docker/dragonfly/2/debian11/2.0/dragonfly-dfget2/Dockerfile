@@ -47,7 +47,7 @@ FROM marketplace.gcr.io/google/debian11
 
 ENV C2D_RELEASE 2.0.7
 ENV DRAGONFLY_SCHEDULER_ADDR localhost
-ENV DRAGONFLY_DFGET_ADDR localhost
+
 
 ENV PATH=/opt/dragonfly/bin:$PATH
 RUN echo "hosts: files dns" > /etc/nsswitch.conf

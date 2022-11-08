@@ -51,7 +51,7 @@ FROM {{ .From }}
 
 ENV C2D_RELEASE {{ $dragonfly2_github.Version }}
 ENV DRAGONFLY_SCHEDULER_ADDR localhost
-ENV DRAGONFLY_DFGET_ADDR localhost
+
 
 ENV PATH=/opt/dragonfly/bin:$PATH
 RUN echo "hosts: files dns" > /etc/nsswitch.conf

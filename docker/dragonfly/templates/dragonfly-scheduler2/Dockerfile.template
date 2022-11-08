@@ -48,7 +48,6 @@ ENV C2D_RELEASE {{ $dragonfly2_github.Version }}
 ENV DRAGONFLY_REDIS_PW dragonfly
 ENV DRAGONFLY_REDIS_HOST localhost
 ENV DRAGONFLY_MANAGER_ADDR localhost
-ENV DRAGONFLY_SCHEDULER_ADDR localhost
 
 
 ENV PATH=/opt/dragonfly/bin:$PATH

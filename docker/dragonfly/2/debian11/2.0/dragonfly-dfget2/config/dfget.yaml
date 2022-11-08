@@ -69,7 +69,7 @@ scheduler:
 host:
   # access ip for other peers
   # when local ip is different with access ip, advertiseIP should be set
-  advertiseIP: ${DRAGONFLY_DFGET_ADDR}
+  # advertiseIP: ${DRAGONFLY_DFGET_ADDR}
   # geographical location, separated by "|" characters
   location: ""
   # idc deployed by daemon

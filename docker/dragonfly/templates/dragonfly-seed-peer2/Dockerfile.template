@@ -48,7 +48,6 @@ RUN apt update && apt install -y wget && \
 FROM {{ .From }}
 ENV C2D_RELEASE {{ $dragonfly2_github.Version }}
 ENV DRAGONFLY_MANAGER_ADDR localhost
-ENV DRAGONFLY_SEED_PEER_ADDR localhost
 ENV PATH=/opt/dragonfly/bin:$PATH
 
 RUN echo "hosts: files dns" > /etc/nsswitch.conf

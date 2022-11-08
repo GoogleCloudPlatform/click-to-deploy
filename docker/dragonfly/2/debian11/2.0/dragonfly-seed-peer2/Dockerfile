@@ -45,7 +45,6 @@ RUN apt update && apt install -y wget && \
 FROM marketplace.gcr.io/google/debian11
 ENV C2D_RELEASE 2.0.7
 ENV DRAGONFLY_MANAGER_ADDR localhost
-ENV DRAGONFLY_SEED_PEER_ADDR localhost
 ENV PATH=/opt/dragonfly/bin:$PATH
 
 RUN echo "hosts: files dns" > /etc/nsswitch.conf

@@ -17,7 +17,7 @@
 function replace_vars(){
 
     local SOURCE_FILE="/etc/dragonfly/dfget.yaml"
-    local VARS="\$DRAGONFLY_SCHEDULER_ADDR \$DRAGONFLY_DFGET_ADDR"
+    local VARS="\$DRAGONFLY_SCHEDULER_ADDR"
     local TEMP_OUTPUT
 
         # Check if source file exists
