@@ -6,7 +6,7 @@ ENV DOWNLOAD_URL="https://download.docker.com/linux/static/stable/x86_64/docker-
 RUN apt-get update && apt-get install -y --no-install-recommends \
     wget curl dnsutils netcat \
     && rm -rf /var/lib/apt/lists/* \
-    && wget https://github.com/nuclio/nuclio/releases/download/1.4.18/nuctl-1.4.18-linux-amd64 -O /usr/bin/nuctl \
+    && wget https://github.com/nuclio/nuclio/releases/download/1.10.8/nuctl-1.10.8-linux-amd64 -O /usr/bin/nuctl \
     && chmod a+x /usr/bin/nuctl \
     && mkdir -p /tmp/download \
     && curl -L $DOWNLOAD_URL | tar -xz -C /tmp/download \
