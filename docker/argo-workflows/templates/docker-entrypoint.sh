@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,14 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -e
 
-# Enable bash debug if DEBUG_DOCKER_ENTERYPOINT exists
-if [[ "${DEBUG_DOCKER_ENTRYPOINT}" = "true" ]]; then
-    echo "!!! WARNING: DEBUG_DOCKER_ENTRYPOINT is enabled!"
-    echo "!!! WARNING: Use only for debugging. Do not use in production!"
-    set -x
-    env
+if [[ "${MODE}" == "controller" ]]; then
+  workflow-controller "$@"
+elif [[ "${MODE}" == "cli" ]]; then
+  argo "$@"
+else
+  echo "Invalid mode."
+  exit 1
 fi
-
-/scripts/$1
