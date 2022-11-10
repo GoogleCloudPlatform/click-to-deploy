@@ -72,7 +72,7 @@ RUN set -x \
     && echo 'deb http://ftp.debian.org/debian stretch-backports main' > /etc/apt/sources.list.d/stretch-backports.list \
     && apt update \
     && apt install -y \
-    openjdk-11-jdk \
+    openjdk-17-jdk \
     && rm -rf /var/lib/apt/lists/*
 
 # Add up-to-date libs for security purposes
