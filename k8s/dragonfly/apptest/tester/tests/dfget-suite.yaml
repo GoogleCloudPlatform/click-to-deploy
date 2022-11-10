@@ -1,0 +1,7 @@
+- name: Check grpc serving
+  bashTest:
+    script: |-
+      /bin/grpc_health_probe -addr=localhost:65000
+    expect:
+      stderr:
+        matches: 'SERVING'

@@ -1,0 +1,73 @@
+---
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "{{ .Release.Name }}"
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": {{ .Chart.Name | quote }}, "partner_name": "Google Click to Deploy"}'
+
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+spec:
+  descriptor:
+    type: Dragonfly
+    version: "{{ .Values.manager.image.tag }}"
+    description: >-
+      Dragonfly is open-source p2p-based image and file Distribution System.
+      It is designed to improve the efficiency and speed of large-scale file distribution. 
+      It is widely used in the fields of application distribution, cache distribution, log distribution and image distribution.
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/Dragonfly/).
+
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy Dragonfly'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/dragonfly/README.md
+    - description: Getting started with Dragonfly
+      url: https://d7y.io/docs/
+    notes: |-
+      test
+  info:
+  - name: Forward Dragonfly port locally
+    value: kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-manager-service 8080:80
+  - name: Dragonfly - Site address (local only)
+    value: http://localhost:8080/
+  - name: MySQL - root user password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: root-password
+        name: {{ .Release.Name }}-mysql-secret
+  - name: MySQL - Dragonfly user password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: Dragonfly-password
+        name: {{ .Release.Name }}-mysql-secret
+  - name: Redis - server password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: password
+        name: {{ .Release.Name }}-redis-secret
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "{{ .Release.Name }}"
+  componentKinds:
+  - group: apps/v1
+    kind: Deployment
+  - group: apps/v1
+    kind: DaemonSet
+  - group: apps/v1
+    kind: StatefulSet
+  - group: v1
+    kind: Secret
+  - group: v1
+    kind: Service
+  - group: v1
+    kind: ConfigMap

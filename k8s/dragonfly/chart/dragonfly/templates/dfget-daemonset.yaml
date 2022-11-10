@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
@@ -34,7 +35,6 @@ spec:
               echo $etcContainerd/config.toml not found
               exit 1
             fi
-            cat $etcContainerd/config.toml
 
             registries="https://ghcr.io https://quay.io https://harbor.example.com:8443"
             if [[ -n "$domains" ]]; then
@@ -188,4 +188,3 @@ spec:
         - name: containerd-conf
           hostPath:
             path: /etc/containerd
-

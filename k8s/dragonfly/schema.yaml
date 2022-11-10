@@ -60,7 +60,7 @@ x-google-marketplace:
         metrics.image:
           type: FULL
 
-  clusterConstraints:
+  #clusterConstraints:
   #???
 
 
