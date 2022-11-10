@@ -44,20 +44,26 @@ spec:
               {{- if .Values.falco.gVisor }}
               # Check if gVisor is configured on the node.
               if [[ -f /host/run/containerd/runsc/config.toml ]]; then
-                echo Configuring Falco+gVisor integration.
-                # Generate a new trace config file and add "ignore_setup_error"
-                # to prevent pod startup failures when Falco is not running.
-                /usr/bin/falco --gvisor-generate-config=/run/containerd/runsc/falco.sock |
-                sed 's/"name".*:.*"remote"/"name" : "remote",\n            "ignore_setup_error" : true/' > /host/run/containerd/runsc/pod-init.json
-                if [[ -z $(grep pod-init-config /host/run/containerd/runsc/config.toml) ]]; then
-                  echo '  pod-init-config = "/run/containerd/runsc/pod-init.json"' >> /host/run/containerd/runsc/config.toml
+                # Check if gVisor supports trace points.
+                runsc_version="$(/host/home/containerd/usr/local/sbin/runsc --version | grep runsc | cut -d- -f2)"
+                if [[ "${runsc_version}" -ge 459596784 ]]; then
+                  echo Configuring Falco+gVisor integration.
+                  # Generate a new trace config file and add "ignore_setup_error"
+                  # to prevent pod startup failures when Falco is not running.
+                  /usr/bin/falco --gvisor-generate-config=/run/containerd/runsc/falco.sock |
+                  sed 's/"name".*:.*"remote"/"name" : "remote",\n            "ignore_setup_error" : true/' > /host/run/containerd/runsc/pod-init.json
+                  if [[ -z $(grep pod-init-config /host/run/containerd/runsc/config.toml) ]]; then
+                    echo '  pod-init-config = "/run/containerd/runsc/pod-init.json"' >> /host/run/containerd/runsc/config.toml
+                  fi
+  
+                  # Endpoint inside the container is different from outside, add
+                  # "/host" to the endpoint path inside the container.
+                  sed 's/"endpoint" : "\/run/"endpoint" : "\/host\/run/' /host/run/containerd/runsc/pod-init.json > /tmp/pod-init.json
+                  flags=(--gvisor-config /tmp/pod-init.json --gvisor-root /host/run/containerd/runsc/k8s.io)
+                  PATH=${PATH}:/host/home/containerd/usr/local/sbin
+                else
+                  echo gVisor does not support trace points, gVisor integration skipped.
                 fi
-
-                # Endpoint inside the container is different from outside, add
-                # "/host" to the endpoint path inside the container.
-                sed 's/"endpoint" : "\/run/"endpoint" : "\/host\/run/' /host/run/containerd/runsc/pod-init.json > /tmp/pod-init.json
-                flags=(--gvisor-config /tmp/pod-init.json --gvisor-root /host/run/containerd/runsc/k8s.io)
-                PATH=${PATH}:/host/home/containerd/usr/local/sbin
               else
                 echo gVisor not configured on node, gVisor integration skipped.
               fi
