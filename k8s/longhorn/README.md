@@ -90,10 +90,10 @@ community. You can find the source code at
 
 ### Install the app
 
-Navigate to the `knative` directory:
+Navigate to the `longhorn` directory:
 
 ```shell
-cd click-to-deploy/k8s/knative
+cd click-to-deploy/k8s/longhorn
 ```
 
 #### Configure the app with environment variables
@@ -103,58 +103,44 @@ Choose an instance name and
 for the app. In most cases, you can use the `default` namespace.
 
 ```shell
-export APP_INSTANCE_NAME=knative
+export APP_INSTANCE_NAME=longhorn
 export NAMESPACE=default
 ```
 
-Set up the image tag:
-
-It is advised to use a stable image reference, which you can find on:
-- [Cert Manager - Marketplace Container Registry](https://marketplace.gcr.io/google/cert-manager1).
-- [Knative - Marketplace Container Registry](https://marketplace.gcr.io/google/knative1).
-- [Istio - Google Container Registry](https://gcr.io/istio-release/proxyv2)
-For example:
-
 ```shell
-export TRACK_CERT_MANAGER=1.7
-export TRACK_ISTIO=1.13.0
-export TRACK_KNATIVE=v1.3.0
+export TRACK_MANAGER=v1.3.x-head
+export TRACK_LONGHORN=v1.3.2
+export TRACK_CSI_ATTACHER=v3.4.0
+export TRACK_CSI_PROVISIONER=v2.1.2
+export TRACK_CSI_NODE_DRIVER_REGISTRAR=v2.5.0
+export TRACK_CSI_RESIZER=v1.2.0
+export TRACK_CSI_SNAPSHOTTER=v3.0.3
+
 ```
 
 Configure the container images:
 
 ```shell
-export IMAGE_CERT_MANAGER=marketplace.gcr.io/google/cert-manager1
-export IMAGE_ISTIO_INGRESSGATEWAY=gcr.io/istio-release/proxyv2
-export IMAGE_ISTIO_ISTIOD=gcr.io/istio-release/pilot
-export IMAGE_KNATIVE_SERVING_ACTIVATOR=gcr.io/knative-releases/knative.dev/serving/cmd/activator
-export IMAGE_KNATIVE_SERVING_AUTOSCALER=gcr.io/knative-releases/knative.dev/serving/cmd/autoscaler
-export IMAGE_KNATIVE_SERVING_CONTROLLER=gcr.io/knative-releases/knative.dev/serving/cmd/controller
-export IMAGE_KNATIVE_SERVING_DOMAINMAPPING=gcr.io/knative-releases/knative.dev/serving/cmd/domain-mapping
-export IMAGE_KNATIVE_SERVING_DOMAINMAPPING_WEBHOOK=gcr.io/knative-releases/knative.dev/serving/cmd/domain-mapping-webhook
-export IMAGE_KNATIVE_SERVING_QUEUEPROXY=gcr.io/knative-releases/knative.dev/serving/cmd/queue
-export IMAGE_KNATIVE_SERVING_WEBHOOK=gcr.io/knative-releases/knative.dev/serving/cmd/webhook
-export IMAGE_KNATIVE_SERVING_NETCERMANAGER_CONTROLLER=gcr.io/knative-releases/knative.dev/net-certmanager/cmd/controller
-export IMAGE_KNATIVE_SERVING_NETCERMANAGER_WEBHOOK=gcr.io/knative-releases/knative.dev/net-certmanager/cmd/webhook
-export IMAGE_KNATIVE_SERVING_NETISTIO_CONTROLLER=gcr.io/knative-releases/knative.dev/net-istio/cmd/controller
-export IMAGE_KNATIVE_SERVING_NETISTIO_WEBHOOK=gcr.io/knative-releases/knative.dev/net-istio/cmd/webhook
-export IMAGE_KNATIVE_EVENTING_CONTROLLER=gcr.io/knative-releases/knative.dev/eventing/cmd/controller
-export IMAGE_KNATIVE_EVENTING_MTPING=gcr.io/knative-releases/knative.dev/eventing/cmd/mtping
-export IMAGE_KNATIVE_EVENTING_WEBHOOK=gcr.io/knative-releases/knative.dev/eventing/cmd/webhook
+export IMAGE_LONGHORN_ENGINE=docker.io/longhornio/longhorn-engine
+export IMAGE_LONGHORN_MANAGER=docker.io/longhornio/longhorn-manager
+export IMAGE_LONGHORN_UI=docker.io/longhornio/longhorn-ui
+export IMAGE_LONGHORN_INSTANCE_MANAGER=docker.io/longhornio/longhorn-instance-manager
+export IMAGE_LONGHORN_SHARE_MANAGER=docker.io/longhornio/longhorn-share-manager
+export IMAGE_LONGHORN_BACKING_IMAGE_MANAGER=docker.io/longhornio/backing-image-manager
+export IMAGE_LONGHORN_CSI_ATTACHER=docker.io/longhornio/csi-attacher
+export IMAGE_LONGHORN_CSI_PROVISIONER=docker.io/longhornio/csi-provisioner
+export IMAGE_LONGHORN_CSI_NODE_DRIVER_REGISTRAR=docker.io/longhornio/csi-node-driver-registrar
+export IMAGE_LONGHORN_CSI_RESIZER=docker.io/longhornio/csi-resizer
+export IMAGE_LONGHORN_CSI_SNAPSHOTTER=docker.io/longhornio/csi-snapshotter
 ```
 
-By default, each deployment has 1 replica, but you can choose to set the
-number of replicas for:
-- Cert Manager controller, webhook and cainjector.
-- Istio ingress gateway.
-- Knative autoscaler.
-
 ```shell
-export CERT_MANAGER_CONTROLLER_REPLICAS=3
-export CERT_MANAGER_WEBHOOK_REPLICAS=3
-export CERT_MANAGER_CAINJECTOR_REPLICAS=3
-export ISTIO_INGRESS_GATEWAY_REPLICAS=3
-export KNATIVE_AUTOSCALER_REPLICAS=3
+export LONGHORN_MANAGER_REPLICAS=1
+export LONGHORN_CSI_ATTACHER_REPLICAS=1
+export LONGHORN_CSI_PROVISIONER_REPLICAS=1
+export LONGHORN_CSI_SNAPSHOTTER_REPLICAS=1
+export LONGHORN_CSI_RESIZER_REPLICAS=1
+
 ```
 
 #### Expand the manifest template
@@ -163,47 +149,35 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to your app.
 
 ```shell
-helm template "${APP_INSTANCE_NAME}" chart/knative \
+helm template "${APP_INSTANCE_NAME}" chart/longhorn \
     --namespace "${NAMESPACE}" \
-    --set certmanager.image.repo="$IMAGE_CERT_MANAGER" \
-    --set certmanager.image.tag="$TRACK_CERT_MANAGER" \
-    --set istio.ingressgateway.image.repo="$IMAGE_ISTIO_INGRESSGATEWAY" \
-    --set istio.ingressgateway.image.tag="$TRACK_ISTIO" \
-    --set istio.istiod.image.repo="$IMAGE_ISTIO_ISTIOD" \
-    --set istio.istiod.image.tag="$TRACK_ISTIO" \
-    --set knative.serving.activator.image.repo="$IMAGE_KNATIVE_SERVING_ACTIVATOR" \
-    --set knative.serving.activator.image.tag="$TRACK_KNATIVE" \
-    --set knative.serving.autoscaler.image.repo="$IMAGE_KNATIVE_SERVING_AUTOSCALER" \
-    --set knative.serving.autoscaler.image.tag="$TRACK_KNATIVE" \
-    --set knative.serving.controller.image.repo="$IMAGE_KNATIVE_SERVING_CONTROLLER" \
-    --set knative.serving.controller.image.tag="$TRACK_KNATIVE" \
-    --set knative.serving.domainmapping.image.repo="$IMAGE_KNATIVE_SERVING_DOMAINMAPPING" \
-    --set knative.serving.domainmapping.image.tag="$TRACK_KNATIVE" \
-    --set knative.serving.domainmapping.webhook.image.repo="$IMAGE_KNATIVE_SERVING_DOMAINMAPPING_WEBHOOK" \
-    --set knative.serving.domainmapping.webhook.image.tag="$TRACK_KNATIVE" \
-    --set knative.serving.queueproxy.image.repo="$IMAGE_KNATIVE_SERVING_QUEUEPROXY" \
-    --set knative.serving.queueproxy.image.tag="$TRACK_KNATIVE" \
-    --set knative.serving.webhook.image.repo="$IMAGE_KNATIVE_SERVING_WEBHOOK" \
-    --set knative.serving.webhook.image.tag="$TRACK_KNATIVE" \
-    --set knative.serving.netcertmanager.controller.image.repo="$IMAGE_KNATIVE_SERVING_NETCERMANAGER_CONTROLLER" \
-    --set knative.serving.netcertmanager.controller.image.tag="$TRACK_KNATIVE" \
-    --set knative.serving.netcertmanager.webhook.image.repo="$IMAGE_KNATIVE_SERVING_NETCERMANAGER_WEBHOOK" \
-    --set knative.serving.netcertmanager.webhook.image.tag="$TRACK_KNATIVE" \
-    --set knative.serving.netistio.controller.image.repo="$IMAGE_KNATIVE_SERVING_NETISTIO_CONTROLLER" \
-    --set knative.serving.netistio.controller.image.tag="$TRACK_KNATIVE" \
-    --set knative.serving.netistio.webhook.image.repo="$IMAGE_KNATIVE_SERVING_NETISTIO_WEBHOOK" \
-    --set knative.serving.netistio.webhook.image.tag="$TRACK_KNATIVE" \
-    --set knative.eventing.controller.image.repo="$IMAGE_KNATIVE_EVENTING_CONTROLLER" \
-    --set knative.eventing.controller.image.tag="$TRACK_KNATIVE" \
-    --set knative.eventing.mtping.image.repo="$IMAGE_KNATIVE_EVENTING_MTPING" \
-    --set knative.eventing.mtping.image.tag="$TRACK_KNATIVE" \
-    --set knative.eventing.webhook.image.repo="$IMAGE_KNATIVE_EVENTING_WEBHOOK" \
-    --set knative.eventing.webhook.image.tag="$TRACK_KNATIVE" \
-    --set certmanager.controller.replicas="${CERT_MANAGER_CONTROLLER_REPLICAS:-1}" \
-    --set certmanager.webhook.replicas="${CERT_MANAGER_WEBHOOK_REPLICAS:-1}" \
-    --set certmanager.cainjector.replicas="${CERT_MANAGER_CAINJECTOR_REPLICAS:-1}" \
-    --set istio.ingressgateway.replicas="${ISTIO_INGRESS_GATEWAY_REPLICAS:-1}" \
-    --set knative.autoscaler.replicas="${KNATIVE_AUTOSCALER_REPLICAS:-1}" \
+    --set longhorn.engine.image.repo="${IMAGE_LONGHORN_ENGINE}" \
+    --set longhorn.engine.image.tag="${TRACK_LONGHORN}" \
+    --set longhorn.manager.image.repo="${IMAGE_LONGHORN_MANAGER}" \
+    --set longhorn.manager.image.tag="${TRACK_LONGHORN}" \
+    --set longhorn.ui.image.repo="${IMAGE_LONGHORN_UI}" \
+    --set longhorn.ui.image.tag="${TRACK_LONGHORN}" \
+    --set longhorn.instancemanager.image.repo="${IMAGE_LONGHORN_INSTANCE_MANAGER}" \
+    --set longhorn.instancemanager.image.tag="${TRACK_MANAGER}" \
+    --set longhorn.sharemanager.image.repo="${IMAGE_LONGHORN_SHARE_MANAGER}" \
+    --set longhorn.sharemanager.image.tag="${TRACK_MANAGER}" \
+    --set longhorn.backingimagemanager.image.repo="${IMAGE_LONGHORN_BACKING_IMAGE_MANAGER}" \
+    --set longhorn.backingimagemanager.image.tag="${TRACK_MANAGER}" \
+    --set longhorn.csiattacher.image.repo="${IMAGE_LONGHORN_CSI_ATTACHER}" \
+    --set longhorn.csiattacher.image.tag="${TRACK_CSI_ATTACHER}" \
+    --set longhorn.csiprovisioner.image.repo="${IMAGE_LONGHORN_CSI_PROVISIONER}" \
+    --set longhorn.csiprovisioner.image.tag="${TRACK_CSI_PROVISIONER}" \
+    --set longhorn.csinodedriverregistrar.image.repo="${IMAGE_LONGHORN_CSI_NODE_DRIVER_REGISTRAR}" \
+    --set longhorn.csinodedriverregistrar.image.tag="${TRACK_CSI_NODE_DRIVER_REGISTRAR}" \
+    --set longhorn.csiresizer.image.repo="${IMAGE_LONGHORN_CSI_RESIZER}" \
+    --set longhorn.csiresizer.image.tag="${TRACK_CSI_RESIZER}" \
+    --set longhorn.csisnapshotter.image.repo="${IMAGE_LONGHORN_CSI_SNAPSHOTTER}" \
+    --set longhorn.csisnapshotter.image.tag="${TRACK_CSI_SNAPSHOTTER}" \
+    --set longhorn.manager.replicas="${LONGHORN_MANAGER_REPLICAS:-1}" \
+    --set longhorn.csiattacher.replicas="${LONGHORN_CSI_ATTACHER_REPLICAS:-1}" \
+    --set longhorn.csiprovisioner.replicas="${LONGHORN_CSI_PROVISIONER_REPLICAS:-1}" \
+    --set longhorn.csisnapshotter.replicas="${LONGHORN_CSI_SNAPSHOTTER_REPLICAS:-1}" \
+    --set longhorn.csiresizer.replicas="${LONGHORN_CSI_RESIZER_REPLICAS:-1}" \
     > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 

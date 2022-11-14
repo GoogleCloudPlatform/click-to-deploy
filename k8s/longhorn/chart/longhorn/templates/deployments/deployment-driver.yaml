@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: longhorn-driver-deployer
   namespace: {{ .Release.Namespace }}
-  labels:
+  labels: &Labels
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: longhorn
     app: longhorn-driver-deployer
@@ -45,23 +45,23 @@ spec:
               fieldRef:
                 fieldPath: spec.serviceAccountName
           - name: CSI_ATTACHER_IMAGE
-            value: "{{ .Values.longhorn.csi-attacher.image.repo }}:{{ .Values.longhorn.csi-attacher.image.tag }}"
+            value: "{{ .Values.longhorn.csiattacher.image.repo }}:{{ .Values.longhorn.csiattacher.image.tag }}"
           - name: CSI_PROVISIONER_IMAGE
-            value: "{{ .Values.longhorn.csi-provisioner.image.repo }}:{{ .Values.longhorn.csi-provisioner.image.tag }}"
+            value: "{{ .Values.longhorn.csiprovisioner.image.repo }}:{{ .Values.longhorn.csiprovisioner.image.tag }}"
           - name: CSI_NODE_DRIVER_REGISTRAR_IMAGE
-            value: "{{ .Values.longhorn.csi-node-driver-registrar.image.repo }}:{{ .Values.longhorn.csi-node-river-egistrar.image.tag }}"
+            value: "{{ .Values.longhorn.csinodedriverregistrar.image.repo }}:{{ .Values.longhorn.csinodedriverregistrar.image.tag }}"
           - name: CSI_RESIZER_IMAGE
-            value: "{{ .Values.longhorn.csi-resizer.image.repo }}:{{ .Values.longhorn.csi-resizer.image.tag }}"
+            value: "{{ .Values.longhorn.csiresizer.image.repo }}:{{ .Values.longhorn.csiresizer.image.tag }}"
           - name: CSI_SNAPSHOTTER_IMAGE
-            value: "{{ .Values.csi.snapshotter.image.repo }}:{{ .Values.csi.snapshotter.image.tag }}"
+            value: "{{ .Values.longhorn.csisnapshotter.image.repo }}:{{ .Values.longhorn.csisnapshotter.image.tag }}"
           - name: CSI_ATTACHER_REPLICA_COUNT
-            value: {{ .Values.longhorn.csi-attacher.replicas | quote }}
+            value: {{ .Values.longhorn.csiattacher.replicas | quote }}
           - name: CSI_PROVISIONER_REPLICA_COUNT
-            value: {{ .Values.longhorn.csi-provisioner.replicas | quote }}
+            value: {{ .Values.longhorn.csiprovisioner.replicas | quote }}
           - name: CSI_RESIZER_REPLICA_COUNT
-            value: {{ .Values.longhorn.csi-resizer.replicas | quote }}
+            value: {{ .Values.longhorn.csiresizer.replicas | quote }}
           - name: CSI_SNAPSHOTTER_REPLICA_COUNT
-            value: {{ .Values.longhorn.csi-snapshotter.replicas | quote }}
+            value: {{ .Values.longhorn.csisnapshotter.replicas | quote }}
       serviceAccountName: longhorn-service-account
       securityContext:
         runAsUser: 0

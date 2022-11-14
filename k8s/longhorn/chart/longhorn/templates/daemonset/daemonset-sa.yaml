@@ -31,11 +31,11 @@ spec:
         - --engine-image
         - "{{ .Values.longhorn.engine.image.repo }}:{{ .Values.longhorn.engine.image.tag }}"
         - --instance-manager-image
-        - "{{ .Values.longhorn.instance-manager.image.repo }}:{{ .Values.longhorn.instance-manager.image.tag }}"
+        - "{{ .Values.longhorn.instancemanager.image.repo }}:{{ .Values.longhorn.instancemanager.image.tag }}"
         - --share-manager-image
-        - "{{ .Values.longhorn.share-manager.image.repo }}:{{ .Values.longhorn.share-manager.image.tag }}"
+        - "{{ .Values.longhorn.sharemanager.image.repo }}:{{ .Values.longhorn.sharemanager.image.tag }}"
         - --backing-image-manager-image
-        - "{{ .Values.longhorn.backing-image-manager.image.repo }}:{{ .Values.longhorn.backing-image-manager.image.tag }}"
+        - "{{ .Values.longhorn.backingimagemanager.image.repo }}:{{ .Values.longhorn.backingimagemanager.image.tag }}"
         - --manager-image
         - "{{ .Values.longhorn.manager.image.repo }}:{{ .Values.longhorn.manager.image.tag }}"
         - --service-account

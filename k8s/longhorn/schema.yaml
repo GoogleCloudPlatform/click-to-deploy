@@ -42,58 +42,58 @@ x-google-marketplace:
 
     longhorn-instance-manager:
       properties:
-        longhorn.instance-manager.image.repo:
+        longhorn.instancemanager.image.repo:
           type: REPO_WITH_REGISTRY
-        longhorn.instance-manager.istiod.image.tag:
+        longhorn.instancemanager.image.tag:
           type: TAG
 
     longhorn-share-manager:
       properties:
-        longhorn.share-manager.image.repo:
+        longhorn.sharemanager.image.repo:
           type: REPO_WITH_REGISTRY
-        knative.serving.activator.image.tag:
+        knative.sharemanager.image.tag:
           type: TAG
 
     longhorn-backing-image-manager:
       properties:
-        longhorn.backing-image-manager.image.repo:
+        longhorn.backingimagemanager.image.repo:
           type: REPO_WITH_REGISTRY
-        longhorn.backing-image-manager.image.tag:
+        longhorn.backingimagemanager.image.tag:
           type: TAG
 
     longhorn-csi-attacher:
       properties:
-        longhorn.csi-attacher.image.repo:
+        longhorn.csiattacher.image.repo:
           type: REPO_WITH_REGISTRY
-        longhorn.csi-attacher.image.tag:
+        longhorn.csiattacher.image.tag:
           type: TAG
 
     longhorn-csi-provisioner:
       properties:
-        longhorn.csi-provisioner.image.repo:
+        longhorn.csiprovisioner.image.repo:
           type: REPO_WITH_REGISTRY
-        longhorn.csi-provisioner.image.tag:
+        longhorn.csiprovisioner.image.tag:
           type: TAG
 
     longhorn-csi-node-driver-registrar:
       properties:
-        longhorn.csi-node-driver-registrar.image.repo:
+        longhorn.csinodedriverregistrar.image.repo:
           type: REPO_WITH_REGISTRY
-        longhorn.csi-node-driver-registrar.image.tag:
+        longhorn.csinodedriverregistrar.image.tag:
           type: TAG
 
     longhorn-csi-resizer:
       properties:
-        longhorn.csi-resizer.image.repo:
+        longhorn.csiresizer.image.repo:
           type: REPO_WITH_REGISTRY
-        longhorn.csi-resizer.image.tag:
+        longhorn.csiresizer.image.tag:
           type: TAG
 
     longhorn-csi-snapshotter:
       properties:
-        longhorn.csi-snapshotter.image.repo:
-          type: REPO_WITH_REGI:57,105STRY
-        longhorn.csi-snapshotter.image.tag:
+        longhorn.csisnapshotter.image.repo:
+          type: REPO_WITH_REGISTRY
+        longhorn.csisnapshotter.image.tag:
           type: TAG
 
   deployerServiceAccount:
@@ -134,70 +134,65 @@ x-google-marketplace:
 
 properties:
   name:
-    type: string
+type: string
     x-google-marketplace:
       type: NAME
   namespace:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  certmanager.controller.replicas:
+  longhorn.manager.replicas:
     type: integer
-    title: Certmanager controller replicas
-    description: Number of replicas of the Cert Manager controller
+    title: manager replicas
+    description: Number of replicas of the Longhorn manager
     default: 1
     enum:
       - '1'
       - '3'
       - '5'
-  certmanager.webhook.replicas:
+  longhorn.csiattacher.replicas:
     type: integer
-    title: Certmanager webhook replicas
-    description: Number of replicas of the Cert Manager webhook
+    title: csi attacher replicas
+    description: Number of replicas of the Longhorn csi attacher
     default: 1
     enum:
       - '1'
       - '3'
       - '5'
-  certmanager.cainjector.replicas:
+  longhorn.csiprovisioner.replicas:
     type: integer
-    title: Certmanager CA injector replicas
-    description: Number of replicas of the Cert Manager CA Injector
+    title: csi provisioner replicas
+    description: Number of replicas of the Longhorn csi provisioner
     default: 1
     enum:
       - '1'
       - '3'
       - '5'
-  istio.ingressgateway.replicas:
+  longhorn.csisnapshotter.replicas:
     type: integer
-    title: Istio Ingress Gateway replicas
-    description: Number of replicas of the Istio Ingress Gateway
+    title: csi snapshotter replicas
+    description: Number of replicas of the Longhorn csi snapshotter
     default: 1
     enum:
       - '1'
       - '3'
       - '5'
-  knative.serving.autoscaler.replicas:
+  longhorn.csiresizer.replicas:
     type: integer
-    title: Knative serving autoscaler replicas
-    description: Number of replicas of the Knative serving autoscaler
+    title: csi resizer replicas
+    description: Number of replicas of the Longhorn csi resizer
     default: 1
     enum:
       - '1'
       - '3'
       - '5'
-  knative.eventing.mtping.replicas:
-    type: integer
-    title: Knative eventing mtping replicas
-    description: Number of replicas of the Knative eventing mtping
-    default: 1
-    minimum: 0
+
 required:
 - name
 - namespace
-- certmanager.controller.replicas
-- certmanager.webhook.replicas
-- certmanager.cainjector.replicas
-- istio.ingressgateway.replicas
-- knative.serving.autoscaler.replicas
-- knative.eventing.mtping.replicas
+- longhorn.manager.replicas
+- longhorn.csiattacher.replicas
+- longhorn.csiprovisioner.replicas
+- longhorn.csisnapshotter.replicas
+- longhorn.csiresizer.replicas
+

@@ -7,7 +7,7 @@ RUN apt-get update \
 ADD chart/longhorn /tmp/chart
 RUN cd /tmp && tar -czvf /tmp/longhorn.tar.gz chart
 
-ADD apptest/deployer/tikv /tmp/test/chart
+ADD apptest/deployer/longhorn /tmp/test/chart
 RUN cd /tmp/test \
     && tar -czvf /tmp/test/longhorn.tar.gz chart/
 
