@@ -28,7 +28,7 @@ IMAGE_LONGHORN ?= $(MARKETPLACE_SOURCE_REGISTRY)/longhorn1:$(TRACK)
 IMAGE_LONGHORN_ENGINE ?= $(LONGHORN_SOURCE_REGISTRY)/longhorn-engine:$(LONGHORN_TRACK)
 IMAGE_LONGHORN_MANAGER ?= $(LONGHORN_SOURCE_REGISTRY)/longhorn-manager:$(LONGHORN_TRACK)
 IMAGE_LONGHORN_UI ?= $(LONGHORN_SOURCE_REGISTRY)/longhorn-ui:$(LONGHORN_TRACK)
-IMAGE_LONGHORN_INSTACE_MANAGER ?= $(LONGHORN_SOURCE_REGISTRY)/longhorn-instance-manager:$(LONGHORN_MANAGERS_TRACK)
+IMAGE_LONGHORN_INSTANCE_MANAGER ?= $(LONGHORN_SOURCE_REGISTRY)/longhorn-instance-manager:$(LONGHORN_MANAGERS_TRACK)
 IMAGE_LONGHORN_SHARE_MANAGER ?= $(LONGHORN_SOURCE_REGISTRY)/longhorn-share-manager:$(LONGHORN_MANAGERS_TRACK)
 IMAGE_LONGHORN_BACKING_IMAGE_MANAGER ?= $(LONGHORN_SOURCE_REGISTRY)/backing-image-manager:$(LONGHORN_MANAGERS_TRACK)
 IMAGE_LONGHORN_CSI_ATTACHER ?= $(LONGHORN_SOURCE_REGISTRY)/csi-attacher:$(CSI_ATTACHER_TRACK)
@@ -41,7 +41,7 @@ IMAGE_LONGHORN_CSI_SNAPSHOTTER ?= $(LONGHORN_SOURCE_REGISTRY)/csi-snapshotter:$(
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_LONGHORN))
 
 # List of images used in application
-ADDITIONAL_IMAGES := longhorn-engine longhorn-manager longhorn-ui longhorn-instance-manager longhorn-share-manager longhorn-backing-image-manager longhorn-csi-attacher longhorn-csi-provisioner longhorn-node-driver-registrar longhorn-csi-resizer longhorn-csi-snapshotter
+ADDITIONAL_IMAGES := longhorn-engine longhorn-manager longhorn-ui longhorn-instance-manager longhorn-share-manager longhorn-backing-image-manager longhorn-csi-attacher longhorn-csi-provisioner longhorn-csi-node-driver-registrar longhorn-csi-resizer longhorn-csi-snapshotter
 
 # Additional images variable names should correspond with ADDITIONAL_IMAGES list
 image-longhorn-engine := $(call get_sha256,$(IMAGE_LONGHORN_ENGINE))
