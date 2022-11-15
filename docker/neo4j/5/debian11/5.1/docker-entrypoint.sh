@@ -503,6 +503,17 @@ if [ "${cmd}" == "dump-config" ]; then
     echo "Config Dumped"
     exit 0
 fi
+config_file="/var/lib/neo4j/conf/neo4j.conf"
+
+
+sed -i 's/^VERSION=.*//g' "${config_file}"
+echo "server.bolt.tls_level=DISABLED" >> "${config_file}"
+echo "server.bolt.listen_address=:7687" >> "${config_file}"
+echo "server.bolt.advertised_address=:7687" >> "${config_file}" 
+echo "server.http.listen_address=:7474" >> "${config_file}"
+echo "server.http.advertised_address=:7474" >> "${config_file}"
+echo "server.https.listen_address=:7473" >> "${config_file}"
+echo "server.https.advertised_address=:7473" >> "${config_file}"
 
 # Use su-exec to drop privileges to neo4j user
 # Note that su-exec, despite its name, does not replicate the
