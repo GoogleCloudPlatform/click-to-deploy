@@ -29,6 +29,13 @@ RUN cat /tmp/apptest/schema.yaml \
     && mv /tmp/apptest/schema.yaml.new /tmp/apptest/schema.yaml
 
 FROM gcr.io/cloud-marketplace-tools/k8s/deployer_helm:$MARKETPLACE_TOOLS_TAG
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends dnsutils netcat \
+    && rm -rf /var/lib/apt/lists/*
+
+ARG CHART_NAME
+
 COPY --from=build /tmp/longhorn.tar.gz /data/chart/
 COPY --from=build /tmp/test/longhorn.tar.gz /data-test/chart/
 COPY --from=build /tmp/apptest/schema.yaml /data-test/

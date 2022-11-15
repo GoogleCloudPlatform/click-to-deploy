@@ -15,8 +15,8 @@ x-google-marketplace:
     resources:
     - replicas: 1
       requests:
-        cpu: 6
-        memory: 8Gi
+        cpu: 2
+        memory: 4Gi
 
   images:
     '':
@@ -116,13 +116,6 @@ x-google-marketplace:
             verbs: 
             - '*'
           - apiGroups:
-            - 'admissionregistration.k8s.io'
-            resources:
-            - 'mutatingwebhookconfigurations'
-            - 'validatingwebhookconfigurations'
-            verbs:
-            - '*'
-          - apiGroups:
             - ''
             resources:
             - 'namespaces'
@@ -131,6 +124,12 @@ x-google-marketplace:
             - 'list'
             - 'update'
             - 'patch'
+          - apiGroups:
+            - 'policy'
+            resources:
+            - 'podsecuritypolicies'
+            verbs: 
+            - '*'
 
 properties:
   name:
