@@ -10,7 +10,7 @@ RUN mkdir -p /opt/kubectl/1.21 \
     && chmod 755 /opt/kubectl/1.21/kubectl \
     && ln -s /opt/kubectl/1.21/kubectl /usr/bin/kubectl
 
-COPY tests/basic-suite.yaml /tests/basic-suite.yaml
+COPY tests/volume-test.yaml /tests/volume-test.yaml
 COPY tester.sh /tester.sh
 
 WORKDIR /

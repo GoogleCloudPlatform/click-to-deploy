@@ -1,8 +1,0 @@
-actions:
-- name: kubectl smoke test
-  bashTest:
-    script: kubectl version
-    expect:
-      exitCode:
-        equals: 0
-

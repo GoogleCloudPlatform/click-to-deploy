@@ -13,9 +13,9 @@ x-google-marketplace:
 
   clusterConstraints:
     resources:
-    - replicas: 1
+    - replicas: 3
       requests:
-        cpu: 2
+        cpu: 500m
         memory: 4Gi
 
   images:
@@ -128,6 +128,12 @@ x-google-marketplace:
             - 'policy'
             resources:
             - 'podsecuritypolicies'
+            verbs: 
+            - '*'
+          - apiGroups:
+            - 'storage.k8s.io'
+            resources:
+            - 'storageclasses'
             verbs: 
             - '*'
 
