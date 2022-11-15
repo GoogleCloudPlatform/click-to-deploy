@@ -78,6 +78,7 @@ actions:
 - name: Deploy storageClass and pod
   bashTest:
     script: |
+      kubectl delete storageclass longhorn-test || true
       kubectl apply --namespace $NAMESPACE -f /tmp/storageclass.yml
       kubectl apply --namespace $NAMESPACE -f /tmp/pod.yml
       kubectl wait --for=condition=Ready --timeout=120s --namespace $NAMESPACE pod volume-test
