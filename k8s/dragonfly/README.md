@@ -26,7 +26,7 @@ as a Pod, using a Kubernetes StatefulSet.
 MySQL credentials are stored in the `[APP_INSTANCE_NAME]-mysql-secret`
 Secret resource.
 
-*   The password for the MariaDB `root` user is stored in the `root-password` secret.
+*   The password for the MySQL `root` user is stored in the `root-password` secret.
 *   The username and password required to access the `dragonfly` database are stored in
     the `dragonfly-user` and `dragonfly-password` Secrets, respectively.
 
