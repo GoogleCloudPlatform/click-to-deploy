@@ -1,0 +1,66 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+setup:
+- command: [docker, network, create, -d, bridge, testbridge-$UNIQUE-id]
+- command:
+  - 'docker'
+  - 'run'
+  - '--net'
+  - 'testbridge-$UNIQUE-id'
+  - '--name'
+  - 'pd-server-$UNIQUE-id'
+  - '-d'
+  - '$IMAGE'
+  - '/pd-server'
+  - '--name=pd-server-$UNIQUE-id'
+  - '--client-urls=http://0.0.0.0:2379'
+  - '--peer-urls=http://0.0.0.0:2380'
+  - '--advertise-client-urls=http://pd-server-$UNIQUE-id:2379'
+  - '--advertise-peer-urls=http://pd-server-$UNIQUE-id:2380'
+- command: [sleep, '20s']
+- command:
+  - 'docker'
+  - 'run'
+  - '--net'
+  - 'testbridge-$UNIQUE-id'
+  - '--name'
+  - 'tikv-server-$UNIQUE-id'
+  - '-d'
+  - '$IMAGE'
+  - '/tikv-server'
+  - '--addr=0.0.0.0:20160'
+  - '--advertise-addr=tikv-server-$UNIQUE-id:20160'
+  - '--pd=pd-server-$UNIQUE-id:2379'
+- command: [sleep, '20s']
+
+teardown:
+- command: [docker, stop, tikv-server-$UNIQUE-id, pd-server-$UNIQUE-id]
+- command: [docker, rm, tikv-server-$UNIQUE-id, pd-server-$UNIQUE-id]
+- command: [docker, network, rm, testbridge-$UNIQUE-id]
+
+target: pd-server-$UNIQUE-id
+tests:
+- name: Test PUT/GET/DELETE
+  command: ['/tikvtest']
+  expect:
+    stdout:
+      matches: 'Successfully put TestKey:TestValue to tikv'
+    stdout:
+      matches: 'found val: TestValue for key: TestKey'
+    stdout:
+      matches: 'key: TestKey deleted'
+    stdout:
+      matches: 'found val:  for key: TestKey'
+

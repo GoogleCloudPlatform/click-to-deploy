@@ -1,0 +1,55 @@
+FROM marketplace.gcr.io/google/debian11:latest
+
+RUN apt-get update \
+    && apt-get install curl python3 python3-pip openssl -y --no-install-recommends \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN groupadd crate \
+    && useradd -u 1000 -g crate -d /crate crate \
+
+#install crate
+WORKDIR /crate
+
+ENV CRATE_APP_VERSION=5.1.1
+ARG CRATE_DIST=https://cdn.crate.io/downloads/releases/cratedb/x64_linux/crate-${CRATE_VERSION}.tar.gz
+
+ADD $CRATE_DIST /tmp/
+
+RUN (tar -xf crate-${CRATE_VERSION}.tar.gz -C /crate --strip-components=1 &&\
+    rm /tmp/crate-*.tar.gz) || true
+
+#install crash
+ENV CRASH_APP_VERSION=0.28.0
+ARG CRASH_DIST=https://cdn.crate.io/downloads/releases/crash_standalone_${CRASH_VERSION}
+
+ADD $CRASH_DIST /tmp/
+
+RUN mv /tmp/crash_standalone_${CRASH_STANDALONE} /usr/local/bin/crash \
+    && chmod +x /usr/local/bin/crash
+
+ENV PATH /crate/bin:$PATH
+# Default heap size for Docker, can be overwritten by args
+ENV CRATE_HEAP_SIZE 512M
+
+RUN mkdir -p /data/data /data/log
+
+VOLUME /data
+
+WORKDIR /data
+
+# http: 4200 tcp
+# transport: 4300 tcp
+# postgres protocol ports: 5432 tcp
+EXPOSE 4200 4300 5432
+
+ENV C2D_RELEASE 5.1.1
+
+COPY --chown=1000:0 config/crate.yml /crate/config/crate.yml
+COPY --chown=1000:0 config/log4j2.properties /crate/config/log4j2.properties
+
+COPY docker-entrypoint.sh /
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["crate"]
+
