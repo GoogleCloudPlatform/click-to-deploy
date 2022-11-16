@@ -5,7 +5,7 @@ include ../images.Makefile
 
 CHART_NAME := dragonfly
 APP_ID ?= $(CHART_NAME)
-WAIT_FOR_READY_TIMEOUT := 600
+WAIT_FOR_READY_TIMEOUT := 900
 
 TRACK ?= 2.0
 MYSQL_TAG ?= 5.7
@@ -19,7 +19,6 @@ IMAGE_DRAGONFLY_MANAGER ?= $(SOURCE_REGISTRY)/dragonfly-manager2:$(TRACK)
 IMAGE_DRAGONFLY_SCHEDULER ?= $(SOURCE_REGISTRY)/dragonfly-scheduler2:$(TRACK)
 IMAGE_DRAGONFLY_SEEDPEER ?= $(SOURCE_REGISTRY)/dragonfly-seed-peer2:$(TRACK)
 IMAGE_DRAGONFLY_DFGET ?= $(SOURCE_REGISTRY)/dragonfly-dfget2:$(TRACK)
-#IMAGE_NGINX_EXPORTER ?= $(SOURCE_REGISTRY)/nginx1:$(EXPORTER_TAG)
 IMAGE_MYSQL ?= $(SOURCE_REGISTRY)/mysql5:$(MYSQL_TAG)
 IMAGE_REDIS ?= $(SOURCE_REGISTRY)/redis5:$(REDIS_TAG)
 IMAGE_MYSQL_EXPORTER ?= $(SOURCE_REGISTRY)/mysql5:$(EXPORTER_TAG)
@@ -29,15 +28,15 @@ IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 # Main image
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_DRAGONFLY_MANAGER))
-image-$(CHART_NAME)-scheduler := $(call get_sha256,$(IMAGE_DRAGONFLY_SCHEDULER))
-image-$(CHART_NAME)-seedpeer := $(call get_sha256,$(IMAGE_DRAGONFLY_SEEDPEER))
-image-$(CHART_NAME)-dfget := $(call get_sha256,$(IMAGE_DRAGONFLY_DFGET))
 
 # List of images used in application
-ADDITIONAL_IMAGES := mysql mysql-exporter redis redis-exporter prometheus-to-sd
+ADDITIONAL_IMAGES := mysql mysql-exporter redis redis-exporter prometheus-to-sd scheduler seedpeer dfget
 
 # Additional images variable names should correspond with ADDITIONAL_IMAGES list
 
+image-scheduler := $(call get_sha256,$(IMAGE_DRAGONFLY_SCHEDULER))
+image-seedpeer := $(call get_sha256,$(IMAGE_DRAGONFLY_SEEDPEER))
+image-dfget := $(call get_sha256,$(IMAGE_DRAGONFLY_DFGET))
 image-prometheus-to-sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))
 image-mysql := $(call get_sha256,$(IMAGE_MYSQL))
 image-mysql-exporter := $(call get_sha256,$(IMAGE_MYSQL_EXPORTER))

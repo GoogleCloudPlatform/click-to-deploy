@@ -1,3 +1,4 @@
+actions:
 # MySQL Exporter Tests
 - name: Is MySQL /metrics HTTP endpoint working
   bashTest:

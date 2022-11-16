@@ -25,7 +25,7 @@ spec:
           command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-mysql-svc && nc -vz {{ .Release.Name }}-mysql-svc 3306; do echo waiting for mysql; sleep 2; done;']
       containers:
         - name: manager
-          image: {{.Values.manager.image}}
+          image: "{{ .Values.manager.image.repo }}:{{ .Values.manager.image.tag }}"
           imagePullPolicy: IfNotPresent
           env: 
             #Mysql settings 

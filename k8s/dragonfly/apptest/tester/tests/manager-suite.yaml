@@ -1,7 +1,7 @@
 actions:
 - name: Site address should be 200 OK (service DNS)
   httpTest:
-    url: http://{{ .Env.APP_INSTANCE_NAME }}-manager-service
+    url: http://{{ .Env.APP_INSTANCE_NAME }}-manager-service:8080
     expect:
       statusCode:
         equals: 200
@@ -9,10 +9,4 @@ actions:
         html:
           head:
             contains: dragonfly
-- name: Check grpc serving
-  bashTest:
-    script: |-
-      /bin/grpc_health_probe -addr=localhost:65003
-    expect:
-      stderr:
-        matches: 'SERVING'
+

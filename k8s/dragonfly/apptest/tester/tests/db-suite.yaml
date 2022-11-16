@@ -9,12 +9,12 @@ actions:
       exitCode:
         equals: 0
 
-- name: Can connect to a database (as magento user)
+- name: Can connect to a database (as dragonfly user)
   bashTest:
-    script: mysql -h ${APP_INSTANCE_NAME}-mysql-svc.${NAMESPACE}.svc.cluster.local -u "${MAGENTO_DB_USER}" -p"${MAGENTO_DB_PASSWORD}" -e "SHOW DATABASES"
+    script: mysql -h ${APP_INSTANCE_NAME}-mysql-svc.${NAMESPACE}.svc.cluster.local -u "${DRAGONFLY_DB_USER}" -p"${DRAGONFLY_DB_PASSWORD}" -e "SHOW DATABASES"
     expect:
       stdout:
-        contains: magento
+        contains: dragonfly
       exitCode:
         equals: 0
 

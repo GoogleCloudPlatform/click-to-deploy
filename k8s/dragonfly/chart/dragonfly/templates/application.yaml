@@ -20,7 +20,7 @@ spec:
       It is widely used in the fields of application distribution, cache distribution, log distribution and image distribution.
       # Support
       Google does not offer support for this solution. However, community support is available on
-      [Stack Overflow](https://stackoverflow.com/questions/tagged/Dragonfly/).
+      [Stack Overflow](https://stackoverflow.com/)
 
     maintainers:
     - name: Google Click to Deploy
@@ -31,11 +31,24 @@ spec:
     - description: Getting started with Dragonfly
       url: https://d7y.io/docs/
     notes: |-
-      test
+      Dragonfly manager UI is exposed as a ClusterIP-only service, `{{ .Release.Name }}-manager-service`.
+      with Now yTo connect to UI, you can either expose a public service endpoint, or keep it private,
+      but connect from you local environment with `kubectl port-forward`.
+      ## Forward Dragonfly manager port in local environment
+      You can use the port forwarding feature of `kubectl` to forward Dragonfly managers's port to your local
+      machine. Run the following command in the background:
+      ```shell
+      kubectl port-forward \
+        --namespace {{ .Release.Namespace }} \
+        svc/{{ .Release.Name }}-manager-service \
+        8080:8080
+      ```
+      Now you can access the Dragonfly manager UI [http://localhost:8080](http://localhost:8080).
+     
   info:
   - name: Forward Dragonfly port locally
     value: kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-manager-service 8080:80
-  - name: Dragonfly - Site address (local only)
+  - name: Dragonfly Manager - Site address (local only)
     value: http://localhost:8080/
   - name: MySQL - root user password
     type: Reference
@@ -47,7 +60,7 @@ spec:
     type: Reference
     valueFrom:
       secretKeyRef:
-        key: Dragonfly-password
+        key: dragonfly-password
         name: {{ .Release.Name }}-mysql-secret
   - name: Redis - server password
     type: Reference

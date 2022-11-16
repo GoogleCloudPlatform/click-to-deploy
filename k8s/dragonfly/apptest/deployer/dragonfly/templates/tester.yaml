@@ -27,23 +27,21 @@ spec:
           fieldPath: metadata.namespace
     - name: APP_INSTANCE_NAME
       value: {{ .Release.Name }}
-    - name: ENABLE_PUBLIC_SERVICE_AND_INGRESS
-      value: {{ .Values.enablePublicServiceAndIngress | quote }}
     - name: MYSQL_ROOT_PASSWORD
       valueFrom:
         secretKeyRef:
           name: {{ .Release.Name }}-mysql-secret
           key: root-password
-    - name: MAGENTO_DB_USER
+    - name: DRAGONFLY_DB_USER
       valueFrom:
         secretKeyRef:
           name: {{ .Release.Name }}-mysql-secret
-          key: magento-user
-    - name: MAGENTO_DB_PASSWORD
+          key: dragonfly-user
+    - name: DRAGONFLY_DB_PASSWORD
       valueFrom:
         secretKeyRef:
           name: {{ .Release.Name }}-mysql-secret
-          key: magento-password
+          key: dragonfly-password
     - name: REDIS_PASSWORD
       valueFrom:
         secretKeyRef:

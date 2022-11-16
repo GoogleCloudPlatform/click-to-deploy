@@ -19,25 +19,22 @@ x-google-marketplace:
   # Image declaration is required here. Refer to the Images section below.
   images: 
     '': 
-      dragonfly-manager.image.repo:
-        type: REPO_WITH_REGISTRY
-      dragonfly-manager.image.tag:
-        type: TAG
-      dragonfly-scheduler.image.repo:
-        type: REPO_WITH_REGISTRY
-      dragonfly-scheduler.image.tag:
-        type: TAG
-      dragonfly-seed-peer.image.repo:
-        type: REPO_WITH_REGISTRY
-      dragonfly-seed-peer.image.tag:
-        type: TAG
-      dragonfly-dfget.image.repo:
-        type: REPO_WITH_REGISTRY
-      dragonfly-dfget.image.tag:
-        type: TAG
-    nginx-exporter:
       properties:
-        nginx.exporter.image:
+        manager.image.repo:
+          type: REPO_WITH_REGISTRY
+        manager.image.tag:
+          type: TAG
+    scheduler:
+      properties:
+        scheduler.image:
+          type: FULL
+    seedpeer:
+      properties:
+        seedPeer.image:
+          type: FULL
+    dfget:
+      properties:
+        dfget.image:
           type: FULL
     mysql:
       properties:
@@ -59,11 +56,6 @@ x-google-marketplace:
       properties:
         metrics.image:
           type: FULL
-
-  #clusterConstraints:
-  #???
-
-
 
 # The Properties and Required sections of v2 are structured the same as those of v1
 properties:

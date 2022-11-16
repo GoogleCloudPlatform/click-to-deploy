@@ -1,7 +1,7 @@
 manager:
   image: 
     repo: null
-    image: null
+    tag: null
   restPort: 8080
   grpcPort: 65003
   resources:
@@ -14,9 +14,7 @@ manager:
   serviceType: ClusterIP
 
 scheduler:
-  image: 
-    repo: null
-    image: null
+  image: null
   grpcPort: 8002
   resources:
     requests:
@@ -28,9 +26,7 @@ scheduler:
   serviceType: ClusterIP
 
 seedPeer:
-  image: 
-    repo: null
-    image: null
+  image: null
   resources:
     requests:
       cpu: 500m
@@ -41,9 +37,7 @@ seedPeer:
   serviceType: ClusterIP
 
 dfget:
-  image: 
-    repo: null
-    image: null
+  image: null
   resources:
     requests:
       cpu: 500m
@@ -75,7 +69,7 @@ redis:
     size: 5Gi
 
 metrics:
- #image: null
+  image: null
   exporter:
     enabled: false
 
