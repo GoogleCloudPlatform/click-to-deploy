@@ -381,6 +381,7 @@ if [ "${cmd}" == "neo4j" ]; then
     if [ "${NEO4J_AUTH:-}" == "none" ]; then
         NEO4J_dbms_security_auth__enabled=false
     elif [[ "${NEO4J_AUTH:-}" =~ ^([^/]+)\/([^/]+)/?([tT][rR][uU][eE])?$ ]]; then
+        neo4j-admin dbms set-initial-password "admin123"
         admin_user="${BASH_REMATCH[1]}"
         password="${BASH_REMATCH[2]}"
         do_reset="${BASH_REMATCH[3]}"
@@ -503,6 +504,16 @@ if [ "${cmd}" == "dump-config" ]; then
     echo "Config Dumped"
     exit 0
 fi
+config_file="/var/lib/neo4j/conf/neo4j.conf"
+
+sed -i 's/^VERSION=.*//g' "${config_file}"
+echo "server.bolt.tls_level=DISABLED" >> "${config_file}"
+echo "server.bolt.listen_address=:7687" >> "${config_file}"
+echo "server.bolt.advertised_address=:7687" >> "${config_file}" 
+echo "server.http.listen_address=:7474" >> "${config_file}"
+echo "server.http.advertised_address=:7474" >> "${config_file}"
+echo "server.https.listen_address=:7473" >> "${config_file}"
+echo "server.https.advertised_address=:7473" >> "${config_file}"
 
 # Use su-exec to drop privileges to neo4j user
 # Note that su-exec, despite its name, does not replicate the
