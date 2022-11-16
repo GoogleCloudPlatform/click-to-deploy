@@ -9,7 +9,6 @@ longhorn:
     image:
       repo: null
       tag: null
-    replicas: 1
 
   ui:
     image:

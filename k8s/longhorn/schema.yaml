@@ -146,15 +146,6 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  longhorn.manager.replicas:
-    type: integer
-    title: manager replicas
-    description: Number of replicas of the Longhorn manager
-    default: 1
-    enum:
-      - '1'
-      - '3'
-      - '5'
   longhorn.csiattacher.replicas:
     type: integer
     title: csi attacher replicas
@@ -195,7 +186,6 @@ properties:
 required:
 - name
 - namespace
-- longhorn.manager.replicas
 - longhorn.csiattacher.replicas
 - longhorn.csiprovisioner.replicas
 - longhorn.csisnapshotter.replicas

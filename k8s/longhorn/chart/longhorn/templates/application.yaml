@@ -26,15 +26,53 @@ spec:
     - description: 'Official documentation for Longhorn'
       url: https://longhorn.io/docs/1.3.2/what-is-longhorn/
     notes: |-
-      Bicho de sete cabeças
+      # Access Longhorn
+      {{ if .Values.enablePublicServiceAndIngress -}}
+      # Open your Longhorn UI
+      To get the external IP of your Longhorn UI, use the following command:
+
+      ```
+      SERVICE_IP=$(kubectl get ingress {{ .Release.Name }}-longhorn-ingress \
+        --namespace {{ .Release.Namespace }} \
+        --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+      echo "https://${SERVICE_IP}/"
+      ```
+      {{- else -}}
+      # Open your Longhorn UI
+
+      Longhorn is exposed by the ClusterIP-only service `{{ .Release.Name }}-longhorn-frontend`. To connect to the
+      Longhorn UI, you can either expose a public service endpoint, or keep it private, but connect
+      from your local environment with `kubectl port-forward`.
+
+      ## Forward the Longhorn UI port in your local environment
+
+      To use `kubectl`'s port forwarding feature to forward MediaWiki's port to your local
+      machine, run the following command in the background:
+
+      ```shell
+      kubectl port-forward \
+        --namespace {{ .Release.Namespace }} \
+        svc/{{ .Release.Name }}-longhorn-frontend \
+        80:80
+      ```
+
+      Now you can access the Longhorn UI with [http://localhost:80](http://localhost:80).
+      {{- end }}
   info:
-  - name: Longhorn
+  {{ if .Values.enablePublicServiceAndIngress -}}
+  - name: Longhorn site address
     type: Reference
     valueFrom:
-      serviceRef:
-        name: {{ .Release.Name }}-Longhorn
-  - name: Application Namespace
-    value: {{ .Release.Namespace }}
+      ingressRef:
+        name: {{ .Release.Name }}-longhorn-ingress
+        protocol: HTTPS
+  {{- else -}}
+  - name: Forward Longhorn UI port locally
+    value: kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-longhorn-frontend 80:80
+  - name: Longhorn UI address (local only)
+    value: "http://localhost:80/"
+  {{- end }}
   selector:
     matchLabels:
       app.kubernetes.io/name: "{{ .Release.Name }}"

@@ -6,7 +6,7 @@ metadata:
   name: {{ .Release.Name }}-longhorn-ingress
   labels:
     app.kubernetes.io/name: "{{ .Release.Name }}"
-    app.kubernetes.io/component: wordpress-webserver
+    app.kubernetes.io/component: longhorn 
 spec:
   tls:
   - secretName: {{ .Release.Name }}-tls
