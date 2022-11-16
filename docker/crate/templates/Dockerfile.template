@@ -9,26 +9,26 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 RUN groupadd crate \
-    && useradd -u 1000 -g crate -d /crate crate \
+    && useradd -u 1000 -g crate -d /crate crate
 
 #install crate
 WORKDIR /crate
 
-ENV CRATE_APP_VERSION={{ $crate.Version }}
+ENV CRATE_VERSION={{ $crate.Version }}
 ARG CRATE_DIST=https://cdn.crate.io/downloads/releases/cratedb/x64_linux/crate-${CRATE_VERSION}.tar.gz
 
 ADD $CRATE_DIST /tmp/
 
-RUN (tar -xf crate-${CRATE_VERSION}.tar.gz -C /crate --strip-components=1 &&\
+RUN (tar -xf /tmp/crate-${CRATE_VERSION}.tar.gz -C /crate --strip-components=1 &&\
     rm /tmp/crate-*.tar.gz) || true
 
 #install crash
-ENV CRASH_APP_VERSION={{ $crash.Version }}
+ENV CRASH_VERSION={{ $crash.Version }}
 ARG CRASH_DIST=https://cdn.crate.io/downloads/releases/crash_standalone_${CRASH_VERSION}
 
 ADD $CRASH_DIST /tmp/
 
-RUN mv /tmp/crash_standalone_${CRASH_STANDALONE} /usr/local/bin/crash \
+RUN mv /tmp/crash_standalone_${CRASH_VERSION} /usr/local/bin/crash \
     && chmod +x /usr/local/bin/crash
 
 ENV PATH /crate/bin:$PATH
