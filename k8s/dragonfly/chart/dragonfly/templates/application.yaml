@@ -32,7 +32,7 @@ spec:
       url: https://d7y.io/docs/
     notes: |-
       Dragonfly manager UI is exposed as a ClusterIP-only service, `{{ .Release.Name }}-manager-service`.
-      with Now yTo connect to UI, you can either expose a public service endpoint, or keep it private,
+      To connect to UI, you can either expose a public service endpoint, or keep it private,
       but connect from you local environment with `kubectl port-forward`.
       ## Forward Dragonfly manager port in local environment
       You can use the port forwarding feature of `kubectl` to forward Dragonfly managers's port to your local

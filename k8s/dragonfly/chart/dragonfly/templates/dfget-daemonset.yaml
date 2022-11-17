@@ -21,9 +21,7 @@ spec:
           command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-scheduler-service && nc -vz {{ .Release.Name }}-scheduler-service {{ .Values.scheduler.grpcPort }}; do echo waiting for scheduler; sleep 2; done;']
         - name: update-containerd
           image: dragonflyoss/openssl
-          imagePullPolicy: IfNotPresent
-          #resources:
-
+          imagePullPolicy: IfNotPresent         
           command:
           - /bin/sh
           - -cx
@@ -123,8 +121,7 @@ spec:
           volumeMounts:
             - name: containerd-conf
               mountPath: /host/etc/containerd 
-          securityContext:
-          # nsenter need privilege permission
+          securityContext:          
             privileged: true
       containers:
         - name: dfget
