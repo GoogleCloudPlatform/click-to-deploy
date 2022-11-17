@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: postgresql
-        image: {{ .Values.postgresql.image }}
+        image: {{ .Values.db.image }}
         imagePullPolicy: IfNotPresent
         resources:
           requests:
@@ -43,9 +43,9 @@ spec:
               name: {{ .Release.Name }}-postgresql-secret
               key: db-password
         - name: POSTGRES_DB
-          value: "{{ .Values.postgresql.database }}"
+          value: "{{ .Values.db.database }}"
       - name: prometheus-exporter
-        image: {{ .Values.postgresql.exporter.image }}
+        image: {{ .Values.db.exporter.image }}
         imagePullPolicy: Always
         ports:
         - containerPort: 9187
@@ -96,4 +96,4 @@ spec:
       storageClassName: {{ .Values.persistence.storageClass }}
       resources:
         requests:
-          storage: {{ .Values.postgresql.persistence.size }}
+          storage: {{ .Values.db.persistence.size }}

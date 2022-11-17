@@ -1,32 +1,28 @@
 # Configuration values for the Argo Workflows server.
 argo_workflows:
-  server:
-    image:
-      repo: null
-      tag: null
-  controller:
-    image:
-      repo: null
-      tag: null
+  image:
+    repo: null
+    tag: null
   db:
     name: argo_workflows
     table: argo_workflows
     host: "{{ .Release.Name }}-postgresql-svc"
     username: argo
     password: null
+  version:
+    argo: v3.4.1
+    events:
 
 # Configuration values for the PostgreSQL server.
-postgresql:
+db:
   image: null
-  exporter:
-    image: null
   cpu: 1000m
   memory: 1Gi
-  user: argo
-  password: null
   database: argo_workflows
+  exporter:
+    image: null
   persistence:
-    size: 8Gi
+    size: null
 
 # Configuration for exporting metrics to StackDriver
 metrics:
@@ -35,5 +31,5 @@ metrics:
     enabled: false
 
 persistence:
-  storageClass: standard
+  storageClass: null
   accessMode: ReadWriteOnce

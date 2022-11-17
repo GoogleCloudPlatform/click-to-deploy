@@ -19,7 +19,7 @@ spec:
         {{- include "argoworkflows.wait_for_db" . | indent 8 }}
       containers:
       - name: argo-server
-        image: "{{ .Values.argo_workflows.server.image.repo }}:{{ .Values.argo_workflows.server.image.tag }}"
+        image: "{{ .Values.argo_workflows.image.repo }}:{{ .Values.argo_workflows.image.tag }}"
         args:
         - server
         - --namespaced
