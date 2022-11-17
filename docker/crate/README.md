@@ -14,10 +14,10 @@ This is not an official Google product.
 
 # <a name="about"></a>About
 
-This image contains an installation of Tikv.
+This image contains an installation of Crate.
 
 For more information, see the
-[Official Image Marketplace Page](https://console.cloud.google.com/marketplace/product/google/tikv5).
+[Official Image Marketplace Page](https://console.cloud.google.com/marketplace/product/google/crate5).
 
 ### Prerequisites
 
@@ -29,17 +29,17 @@ gcloud auth configure-docker
 ### Pull command
 
 ```shell
-docker -- pull marketplace.gcr.io/google/tikv5
+docker -- pull marketplace.gcr.io/google/crate5
 ```
 
-Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/docker/tikv/5/debian11/5.3/)
+Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/docker/crate/5/debian11/5.1/)
 =======
 
 # <a name="table-of-contents"></a>Table of Contents
 * [Using Docker](#using-docker)
-  * [Running Tikv](#running-tikv-docker)
-    * [Running Tikv standalone](#Runnung-Tikv-standalone)
-    * [Running Tikv cluster](#Runnung-Tikv-cluster)
+  * [Running Crate](#running-crate-docker)
+    * [Running Crate standalone](#Runnung-Crate-standalone)
+    * [Running Crate cluster](#Runnung-Crate-cluster)
     * [Use a persistent data volume docker](#Use-a-persistent-data-volume)
 * [References](#references)
   * [Ports](#references-ports)
@@ -51,44 +51,33 @@ Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlat
 Consult [Marketplace container documentation](https://cloud.google.com/marketplace/docs/container-images)
 for additional information about setting up your Docker environment.
 
-## <a name="running-tikv-docker"></a>Running Tikv
+## <a name="running-crate-docker"></a>Running Crate
 
-This section describes how to spin up an Tikv service using this image.
+This section describes how to spin up an Crate service using this image.
 
-### <a name="Runnung-Tikv-standalone"></a>Running Tikv standalone
+### <a name="Runnung-Crate-standalone"></a>Running Crate standalone
 
 Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
 
 ```yaml
 ---
 version: '3'
-
 services:
-  pd:
-    image: marketplace.gcr.io/google/tikv5
+  crate01:
+    image: marketplace.gcr.io/google/crate5
     ports:
-      - 2379:2379
+      - 4200:4200
+      - 5432:5432
     command:
-      - /pd-server
-      - --name=pd
-      - --client-urls=http://0.0.0.0:2379
-      - --peer-urls=http://0.0.0.0:2380
-      - --advertise-client-urls=http://pd:2379
-      - --advertise-peer-urls=http://pd:2380
+      - "crate"
+      - "-Cdiscovery.type=single-node"
     restart: on-failure
-  
-  tikv:
-    image: marketplace.gcr.io/google/tikv5
-    ports:
-      - 20160:20160
-    command:
-      - /tikv-server
-      - --addr=0.0.0.0:20160
-      - --advertise-addr=tikv:20160
-      - --pd=pd:2379
-    depends_on:
-      - pd
-    restart: on-failure
+```
+
+Or you can use `docker run` directly:
+
+```shell
+docker run --name crate01 -p 4200:4200 -p 5432:5432 -d marketplace.gcr.io/google/crate5 crate -Cdiscovery.type=single-node 
 ```
 
 ### <a name="Runnung-Tikv-cluster"></a>Running Tikv cluster
