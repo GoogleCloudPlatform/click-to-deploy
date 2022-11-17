@@ -20,7 +20,7 @@ versions:
   from: marketplace.gcr.io/google/debian11
   packages:
     dockerneo4j:
-      sha256: 2028d26f5593ac9f04527ea56c12fd1b534d5a12b080294cc1acb5f4e7684e68
+      sha256: 16788a0e85e0df8b3cdcba73448a03c6a56774cfc582e625b9b7fd512e05389d
       version: 4.4.12
     neo4j:
       sha256: 58f2ab847b1898c3f33731dc247784459223185307a4c89757f43ea94eb2a491
