@@ -52,7 +52,7 @@ spec:
           name: tmp
       nodeSelector:
         kubernetes.io/os: linux
-      serviceAccountName: argo-server
+      serviceAccountName: "{{ .Values.argo_workflows.sa.server }}"
       volumes:
       - emptyDir: {}
         name: tmp

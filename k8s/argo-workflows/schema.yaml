@@ -83,6 +83,13 @@ properties:
       type: SERVICE_ACCOUNT
       serviceAccount:
         description: Service account used by Argo Server
+  argo_workflows.sa.argo:
+    type: string
+    title: Argo Service Account
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        description: Service account used by Argo
 
   db.persistence.size:
     type: string

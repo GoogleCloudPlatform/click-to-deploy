@@ -12,6 +12,7 @@ argo_workflows:
     password: null
   sa:
     server: null
+    argo: null
 
 
 # Configuration values for the PostgreSQL server.
