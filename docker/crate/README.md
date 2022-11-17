@@ -6,7 +6,7 @@ Learn more about Crate in [official documentation](https://crate.io/docs/crate/t
 ## Upstream
 
 Build instruction for docker containers partially copied from:
-(https://github.com/tikv/tikv/blob/release-5.3/Dockerfile)
+(https://github.com/crate/docker-crate/blob/master/Dockerfile)
 
 ## Disclaimer
 
@@ -80,105 +80,64 @@ Or you can use `docker run` directly:
 docker run --name crate01 -p 4200:4200 -p 5432:5432 -d marketplace.gcr.io/google/crate5 crate -Cdiscovery.type=single-node 
 ```
 
-### <a name="Runnung-Tikv-cluster"></a>Running Tikv cluster
+### <a name="Runnung-Crate-cluster"></a>Running Crate cluster
 
 Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
 
 ```yaml
 ---
 version: '3'
-
 services:
-  pd0:
-    image: marketplace.gcr.io/google/tikv5
+  crate01:
+    image: marketplace.gcr.io/google/crate5
     ports:
-      - 2379:2379
-    command:
-      - /pd-server
-      - --name=pd0
-      - --client-urls=http://0.0.0.0:2379
-      - --peer-urls=http://0.0.0.0:2380
-      - --advertise-client-urls=http://pd0:2379
-      - --advertise-peer-urls=http://pd0:2380
-      - --initial-cluster=pd0=http://pd0:2380,pd1=http://pd1:2380,pd2=http://pd2:2380
+      - "4201:4200"
+    command: ["crate",
+              "-Ccluster.name=crate-docker-cluster",
+              "-Cnode.name=crate01",
+              "-Cnode.data=true",
+              "-Cnetwork.host=_site_",
+              "-Cdiscovery.seed_hosts=crate02,crate03",
+              "-Ccluster.initial_master_nodes=crate01,crate02,crate03",
+              "-Cgateway.expected_data_nodes=3",
+              "-Cgateway.recover_after_data_nodes=2"]
     restart: on-failure
+    environment:
+      - CRATE_HEAP_SIZE=2g
 
-  pd1:
-    image: marketplace.gcr.io/google/tikv5
+  crate02:
+    image: marketplace.gcr.io/google/crate5
     ports:
-      - 2380:2379
-    command:
-      - /pd-server
-      - --name=pd1
-      - --client-urls=http://0.0.0.0:2379
-      - --peer-urls=http://0.0.0.0:2380
-      - --advertise-client-urls=http://pd1:2379
-      - --advertise-peer-urls=http://pd1:2380
-      - --initial-cluster=pd0=http://pd0:2380,pd1=http://pd1:2380,pd2=http://pd2:2380
+      - "4202:4200"
+    command: ["crate",
+              "-Ccluster.name=crate-docker-cluster",
+              "-Cnode.name=crate02",
+              "-Cnode.data=true",
+              "-Cnetwork.host=_site_",
+              "-Cdiscovery.seed_hosts=crate01,crate03",
+              "-Ccluster.initial_master_nodes=crate01,crate02,crate03",
+              "-Cgateway.expected_data_nodes=3",
+              "-Cgateway.recover_after_data_nodes=2"]
     restart: on-failure
-  
-  pd2:
-    image: marketplace.gcr.io/google/tikv5
-    volumes:
-      - data:/data
-    ports:
-      - 2381:2379
-    command:
-      - /pd-server
-      - --name=pd2
-      - --client-urls=http://0.0.0.0:2379
-      - --peer-urls=http://0.0.0.0:2380
-      - --advertise-client-urls=http://pd2:2379
-      - --advertise-peer-urls=http://pd2:2380
-      - --initial-cluster=pd0=http://pd0:2380,pd1=http://pd1:2380,pd2=http://pd2:2380
-      - --data-dir=/data/pd2
-    restart: on-failure
-  
+    environment:
+      - CRATE_HEAP_SIZE=2g
 
-  tikv0:
-    image: marketplace.gcr.io/google/tikv5
+  crate03:
+    image: marketplace.gcr.io/google/crate5 
     ports:
-      - 20160:20160
-    command:
-      - /tikv-server
-      - --addr=0.0.0.0:20160
-      - --advertise-addr=tikv0:20160
-      - --pd=pd0:2379,pd1:2379,pd2:2379
-    depends_on:
-      - pd0
-      - pd1
-      - pd2
+      - "4203:4200"
+    command: ["crate",
+              "-Ccluster.name=crate-docker-cluster",
+              "-Cnode.name=crate03",
+              "-Cnode.data=true",
+              "-Cnetwork.host=_site_",
+              "-Cdiscovery.seed_hosts=crate01,crate02",
+              "-Ccluster.initial_master_nodes=crate01,crate02,crate03",
+              "-Cgateway.expected_data_nodes=3",
+              "-Cgateway.recover_after_data_nodes=2"]
     restart: on-failure
-
-  tikv1:
-    image: marketplace.gcr.io/google/tikv5
-    ports:
-      - 20161:20160
-    command:
-      - /tikv-server
-      - --addr=0.0.0.0:20160
-      - --advertise-addr=tikv1:20160
-      - --pd=pd0:2379,pd1:2379,pd2:2379
-    depends_on:
-      - pd0
-      - pd1
-      - pd2
-    restart: on-failure
-
-  tikv2:
-    image: marketplace.gcr.io/google/tikv5
-    ports:
-      - 20162:20160
-    command:
-      - /tikv-server
-      - --addr=0.0.0.0:20160
-      - --advertise-addr=tikv2:20160
-      - --pd=pd0:2379,pd1:2379,pd2:2379
-    depends_on:
-      - pd0
-      - pd1
-      - pd2
-    restart: on-failure
+    environment:
+      - CRATE_HEAP_SIZE=2g
 ```
 
 ### <a name="use-a-persistent-data-volume-docker"></a>Use a persistent data volume
@@ -186,116 +145,67 @@ services:
 ```yaml
 ---
 version: '3'
-
 services:
-  pd0:
-    image: marketplace.gcr.io/google/tikv5
-    volumes:
-      - data:/data
+  crate01:
+    image: marketplace.gcr.io/google/crate5
     ports:
-      - 2379:2379
-    command:
-      - /pd-server
-      - --name=pd0
-      - --client-urls=http://0.0.0.0:2379
-      - --peer-urls=http://0.0.0.0:2380
-      - --advertise-client-urls=http://pd0:2379
-      - --advertise-peer-urls=http://pd0:2380
-      - --initial-cluster=pd0=http://pd0:2380,pd1=http://pd1:2380,pd2=http://pd2:2380
-      - --data-dir=/data/pd0
+      - "4201:4200"
+    volumes:
+      - crate01:/data
+    command: ["crate",
+              "-Ccluster.name=crate-docker-cluster",
+              "-Cnode.name=crate01",
+              "-Cnode.data=true",
+              "-Cnetwork.host=_site_",
+              "-Cdiscovery.seed_hosts=crate02,crate03",
+              "-Ccluster.initial_master_nodes=crate01,crate02,crate03",
+              "-Cgateway.expected_data_nodes=3",
+              "-Cgateway.recover_after_data_nodes=2"]
     restart: on-failure
+    environment:
+      - CRATE_HEAP_SIZE=2g
 
-  pd1:
-    image: marketplace.gcr.io/google/tikv5
-    volumes:
-      - data:/data
+  crate02:
+    image: marketplace.gcr.io/google/crate5
     ports:
-      - 2380:2379
-    command:
-      - /pd-server
-      - --name=pd1
-      - --client-urls=http://0.0.0.0:2379
-      - --peer-urls=http://0.0.0.0:2380
-      - --advertise-client-urls=http://pd1:2379
-      - --advertise-peer-urls=http://pd1:2380
-      - --initial-cluster=pd0=http://pd0:2380,pd1=http://pd1:2380,pd2=http://pd2:2380
-      - --data-dir=/data/pd1
-    restart: on-failure
-  
-  pd2:
-    image: marketplace.gcr.io/google/tikv5
+      - "4202:4200"
     volumes:
-      - data:/data
-    ports:
-      - 2381:2379
-    command:
-      - /pd-server
-      - --name=pd2
-      - --client-urls=http://0.0.0.0:2379
-      - --peer-urls=http://0.0.0.0:2380
-      - --advertise-client-urls=http://pd2:2379
-      - --advertise-peer-urls=http://pd2:2380
-      - --initial-cluster=pd0=http://pd0:2380,pd1=http://pd1:2380,pd2=http://pd2:2380
-      - --data-dir=/data/pd2
+      - crate02:/data
+    command: ["crate",
+              "-Ccluster.name=crate-docker-cluster",
+              "-Cnode.name=crate02",
+              "-Cnode.data=true",
+              "-Cnetwork.host=_site_",
+              "-Cdiscovery.seed_hosts=crate01,crate03",
+              "-Ccluster.initial_master_nodes=crate01,crate02,crate03",
+              "-Cgateway.expected_data_nodes=3",
+              "-Cgateway.recover_after_data_nodes=2"]
     restart: on-failure
-  
+    environment:
+      - CRATE_HEAP_SIZE=2g
 
-  tikv0:
-    image: marketplace.gcr.io/google/tikv5
-    volumes:
-      - data:/data
+  crate03:
+    image: marketplace.gcr.io/google/crate5 
     ports:
-      - 20160:20160
-    command:
-      - /tikv-server
-      - --addr=0.0.0.0:20160
-      - --advertise-addr=tikv0:20160
-      - --data-dir=/data/tikv0
-      - --pd=pd0:2379,pd1:2379,pd2:2379
-    depends_on:
-      - pd0
-      - pd1
-      - pd2
-    restart: on-failure
-
-  tikv1:
-    image: marketplace.gcr.io/google/tikv5
+      - "4203:4200"
     volumes:
-      - data:/data
-    ports:
-      - 20161:20160
-    command:
-      - /tikv-server
-      - --addr=0.0.0.0:20160
-      - --advertise-addr=tikv1:20160
-      - --data-dir=/data/tikv1
-      - --pd=pd0:2379,pd1:2379,pd2:2379
-    depends_on:
-      - pd0
-      - pd1
-      - pd2
+      - crate03:/data
+    command: ["crate",
+              "-Ccluster.name=crate-docker-cluster",
+              "-Cnode.name=crate03",
+              "-Cnode.data=true",
+              "-Cnetwork.host=_site_",
+              "-Cdiscovery.seed_hosts=crate01,crate02",
+              "-Ccluster.initial_master_nodes=crate01,crate02,crate03",
+              "-Cgateway.expected_data_nodes=3",
+              "-Cgateway.recover_after_data_nodes=2"]
     restart: on-failure
-
-  tikv2:
-    image: marketplace.gcr.io/google/tikv5
-    volumes:
-      - data:/data
-    ports:
-      - 20162:20160
-    command:
-      - /tikv-server
-      - --addr=0.0.0.0:20160
-      - --advertise-addr=tikv2:20160
-      - --data-dir=/data/tikv2
-      - --pd=pd0:2379,pd1:2379,pd2:2379
-    depends_on:
-      - pd0
-      - pd1
-      - pd2
-    restart: on-failure
-
+    environment:
+      - CRATE_HEAP_SIZE=2g
 volumes:
-  data:
+  crate01:
+  crate02:
+  crate03:
 ```
 
 # <a name="references"></a>References
@@ -304,25 +214,27 @@ volumes:
 
 These are the ports exposed by the container image.
 
-| **Port**  | **Description**  |
-| :-------- | :--------------- |
-| TCP 2379  | PD client port   |
-| TCP 2380  | PD peer port     |
-| TCP 20160 | Tikv client port |
-| TCp 20180 | Tikv status port |
+| **Port** | **Description**            |
+| :------- | :------------------------- |
+| TCP 4200 | CrateDB Admin UI           |
+| TCP 4300 | CrateDB Transport Protocol |
+| TCP 5432 | PostgreSQL Wire Protocol   |
 
 ## <a name="references-environment-variables"></a>Environment Variables
 
-Tikv doesn't support any ENVs, instead you should use command line parameters. 
-You can see full list of acceptable parameters on the official [Tikv docs](https://tikv.org/docs/5.1/deploy/configure/tikv-command-line/). 
+These are the environment variables understood by the container image.
+| **Variable**         | **Description**                                                |
+| :------------------- | :------------------------------------------------------------- |
+| CRATE_JAVA_OPTS      | The Java options to use when running CrateDB                   |
+| CRATE_HEAP_SIZE      | The Java heap size                                             |
+| CRATE_HEAP_DUMP_PATH | The directory to be used for heap dumps in the case of a crash |
 
 ## <a name="references-volumes"></a>Volumes
 
 These are the filesystem paths used by the container image.
 
-| **Path**        | **Description**                                                          |
-| :-------------- | :----------------------------------------------------------------------- |
-| /tmp/tikv/store | Default data dir, can be changed by --data-dir                           |
-| ""              | Log path can be set by --log-file. Otherwise, logs are written to stderr |
+| **Path** | **Description**  |
+| :------- | :--------------- |
+| /data    | Default data dir |
 
 
