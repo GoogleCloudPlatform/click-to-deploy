@@ -1,9 +1,0 @@
-actions:
-- name: Submit draft job
-  bashTest:
-    script: argo submit -n argo --watch https://raw.githubusercontent.com/argoproj/argo-workflows/master/examples/hello-world.yaml
-    expect:
-      stdout:
-        contains:
-      exitCode:
-        equals: 0
