@@ -1,5 +1,6 @@
 # Configuration values for the Argo Workflows server.
 argo_workflows:
+  version: v3.4.1
   image:
     repo: null
     tag: null
@@ -9,9 +10,9 @@ argo_workflows:
     host: "{{ .Release.Name }}-postgresql-svc"
     username: argo
     password: null
-  version:
-    argo: v3.4.1
-    events:
+  sa:
+    server: null
+
 
 # Configuration values for the PostgreSQL server.
 db:

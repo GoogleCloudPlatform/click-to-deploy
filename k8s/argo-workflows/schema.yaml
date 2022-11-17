@@ -75,6 +75,15 @@ properties:
         length: 10
         includeSymbols: False
         base64: False
+
+  argo_workflows.sa.server:
+    type: string
+    title: Argo Server Service Account
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        description: Service account used by Argo Server
+
   db.persistence.size:
     type: string
     title: Storage size for PostgreSQL database.

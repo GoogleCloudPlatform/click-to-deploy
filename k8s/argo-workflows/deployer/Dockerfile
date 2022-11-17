@@ -43,7 +43,7 @@ ARG CHART_NAME
 COPY --from=build /tmp/values.yaml /data/
 WORKDIR /crd
 
-RUN argo_version="$(yaml2json /data/values.yaml | jq -r '.argo_workflows.version.argo')" \
+RUN argo_version="$(yaml2json /data/values.yaml | jq -r '.argo_workflows.version')" \
     && git clone https://github.com/argoproj/argo-workflows.git --branch "${argo_version}" \
     && rm -f argo-workflows/manifests/base/crds/minimal/kustomization.yaml \
     && rm -f argo-workflows/manifests/base/crds/minimal/README.md \
