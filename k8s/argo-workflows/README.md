@@ -19,7 +19,7 @@ Popular open stacks on Kubernetes, packaged by Google.
 
 ![Architecture diagram](resources/argoworkflows-k8s-app-architecture.png)
 
-By default, Argo Workflows Server UI is exposed using a ClusterIP Service on port 2467.
+By default, Argo Workflows Server UI is exposed using a ClusterIP Service on port 2746.
 
 Separate Deployment, StatefulSets Kubernetes objects are used to manage the Argo Workflow Controller and PostgreSQL instances.
 
@@ -41,7 +41,7 @@ Secret resource.
 
 ## Quick install with Google Cloud Marketplace
 
-Get up and running with a few clicks! Install this Dragonfly app to a Google Kubernetes Engine cluster in Google Cloud Marketplace by following these [on-screen instructions](https://console.cloud.google.com/marketplace/details/google/dragonfly).
+Get up and running with a few clicks! Install this Argo Workflows app to a Google Kubernetes Engine cluster in Google Cloud Marketplace by following these [on-screen instructions](https://console.cloud.google.com/marketplace/details/google/argo-workflows).
 
 ## Command line instructions
 
@@ -54,6 +54,8 @@ You'll need the following tools in your development environment. If you're using
 - [gcloud](https://cloud.google.com/sdk/gcloud/)
 - [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 - [docker](https://docs.docker.com/install/)
+- [jq](https://stedolan.github.io/jq/download/)
+- [yaml2json](https://github.com/bronze1man/yaml2json)
 - [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 - [helm](https://helm.sh/)
 
@@ -68,7 +70,7 @@ gcloud auth configure-docker
 Create a new cluster from the command line:
 
 ```shell
-export CLUSTER=dragonfly-cluster
+export CLUSTER=argo-workflows-cluster
 export ZONE=us-west1-a
 
 gcloud container clusters create "${CLUSTER}" --zone "${ZONE}"
@@ -105,10 +107,10 @@ The Application resource is defined by the [Kubernetes SIG-apps](https://github.
 
 ### Install the app
 
-Navigate to the `dragonfly` directory:
+Navigate to the `argo-workflows` directory:
 
 ```shell
-cd click-to-deploy/k8s/dragonfly
+cd click-to-deploy/k8s/argo-workflows
 ```
 
 #### Configure the app with environment variables
@@ -116,11 +118,11 @@ cd click-to-deploy/k8s/dragonfly
 Choose an instance name and [namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) for the app. In most cases, you can use the `default` namespace.
 
 ```shell
-export APP_INSTANCE_NAME=dragonfly-1
+export APP_INSTANCE_NAME=argo-workflows-1
 export NAMESPACE=default
 ```
 
-For the persistent disk provisioning of the MySQL and Redis StatefulSets, you will need to:
+For the persistent disk provisioning of the Deployments and StatefulSets, you will need to:
 
  * Set the StorageClass name. Check your available options using the command below:
    * ```kubectl get storageclass```
@@ -130,8 +132,7 @@ For the persistent disk provisioning of the MySQL and Redis StatefulSets, you wi
 
 ```shell
 export DEFAULT_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
-export DB_PERSISTENT_DISK_SIZE="10Gi"
-export REDIS_PERSISTENT_DISK_SIZE="10Gi"
+export PERSISTENT_DISK_SIZE="10Gi"
 ```
 
 (Optional) Enable Stackdriver Metrics Exporter:
@@ -148,7 +149,7 @@ export METRICS_EXPORTER_ENABLED=false
 Set up the image tag:
 
 It is advised to use stable image reference which you can find on
-[Marketplace Container Registry](https://marketplace.gcr.io/google/dragonfly).
+[Marketplace Container Registry](https://marketplace.gcr.io/google/argo-workflows).
 Example:
 
 ```shell
@@ -159,7 +160,7 @@ Alternatively you can use short tag which points to the latest image for selecte
 > Warning: this tag is not stable and referenced image might change over time.
 
 ```shell
-export TAG="2.0"
+export TAG="3.4"
 ```
 
 Configure the container images:
@@ -167,30 +168,17 @@ Configure the container images:
 ```shell
 export IMAGE_REGISTRY="marketplace.gcr.io/google"
 
-export IMAGE_DRAGONFLY_MANAGER="${IMAGE_REGISTRY}/dragonfly-manager2:${TAG}"
-export IMAGE_DRAGONFLY_SCHEDULER="${IMAGE_REGISTRY}/dragonfly-scheduler2:${TAG}"
-export IMAGE_DRAGONFLY_SEEDPEER="${IMAGE_REGISTRY}/dragonfly-seedpeer2:${TAG}"
-export IMAGE_DRAGONFLY_DFGET="${IMAGE_REGISTRY}/dragonfly-dfget2:${TAG}"
-export IMAGE_MYSQL="${IMAGE_REGISTRY}/mysql:${TAG}"
-export IMAGE_REDIS="${IMAGE_REGISTRY}/redis:${TAG}"
-export IMAGE_ELASTICSEARCH="${IMAGE_REGISTRY}/elasticsearch:${TAG}"
-export IMAGE_MYSQL_EXPORTER="${IMAGE_REGISTRY}/mysql-exporter:${TAG}"
-export IMAGE_REDIS_EXPORTER="${IMAGE_REGISTRY}/redis-exporter:${TAG}"
-export IMAGE_METRICS_EXPORTER="${IMAGE_REGISTRY}/prometheus-to-sd:${TAG}"
+export IMAGE_ARGO_WORKFLOWS="${IMAGE_REGISTRY}/argo-workflows"
+export IMAGE_POSTGRESQL="${IMAGE_ARGO_WORKFLOWS}/postgresql:${TAG}"
+export IMAGE_POSTGRESQL_EXPORTER="${IMAGE_ARGO_WORKFLOWS}/postgresql-exporter:${TAG}"
+export IMAGE_METRICS_EXPORTER="${IMAGE_ARGO_WORKFLOWS}/prometheus-to-sd:${TAG}"
 ```
 
 Set or generate the passwords:
 
 ```shell
-# Set mysql root and user passwords
-export DB_USER_PASSWORD="dragonfly_password"
-export DB_ROOT_PASSWORD="root_password"
-
-# Set mysqld-exporter user password
-export DB_EXPORTER_PASSWORD="exporter_password"
-
-# Set redis-server password
-export REDIS_PASSWORD="redis_password"
+# Set postgresql argo password
+export DB_USER_PASSWORD="argo_db_password"
 ```
 
 #### Create namespace in your Kubernetes cluster
@@ -201,29 +189,42 @@ If you use a different namespace than the `default`, run the command below to cr
 kubectl create namespace "${NAMESPACE}"
 ```
 
+#### Create the Argo Workflows Service Accounts
+
+To create the Argo Workflows Service Accounts:
+
+```shell
+export ARGO_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-argo"
+export ARGO_SERVER_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-argoserver"
+
+kubectl create serviceaccount "${ARGO_SERVICE_ACCOUNT}" --namespace "${NAMESPACE}"
+```
+
+#### Install the Argo Workflows CRDs
+
+To install them, run:
+
+```shell
+resources/install-crd.sh
+```
+
 #### Expand the manifest template
 
 Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to your app.
 
 ```shell
-helm template chart/dragonfly \
-    --name "${APP_INSTANCE_NAME}" \
+helm template "${APP_INSTANCE_NAME}" chart/argo-workflows \
     --namespace "${NAMESPACE}" \
+    --set argo_workflows.image.repo="${IMAGE_ARGO_WORKFLOWS}" \
+    --set argo_workflows.image.tag="${TAG}" \
+    --set argo_workflows.db.password="${DB_USER_PASSWORD}" \
+    --set argo_workflows.sa.server="${ARGO_SERVER_SERVICE_ACCOUNT}" \
+    --set argo_workflows.sa.argo="${ARGO_SERVICE_ACCOUNT}" \
+    --set db.image="${IMAGE_POSTGRESQL}" \
+    --set db.exporter.image="${IMAGE_POSTGRESQL_EXPORTER}" \
+    --set db.persistence.size="${PERSISTENT_DISK_SIZE}" \
     --set persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \
-    --set manager.image.repo="${IMAGE_REGISTRY}" \
-    --set manager.image.tag="${TAG}" \
-    --set scheduler.image="${IMAGE_DRAGONFLY_SCHEDULER}"
-    --set seedPeer.image="${IMAGE_DRAGONFLY_SEEDPEER}"
-    --set dfget.image="${IMAGE_DRAGONFLY_DFGET}"
-    --set db.image="${IMAGE_MYSQL}" \
-    --set db.rootPassword="${DB_ROOT_PASSWORD}" \
-    --set db.dragonflyPassword="${DB_USER_PASSWORD}" \
-    --set db.exporter.password="${DB_EXPORTER_PASSWORD}" \
-    --set db.exporter.image="${IMAGE_MYSQL_EXPORTER}" \
-    --set redis.image="${IMAGE_REDIS}" \
-    --set redis.password="${REDIS_PASSWORD}" \
-    --set redis.exporter.image="${IMAGE_REDIS_EXPORTER}" \
     --set metrics.image="${IMAGE_METRICS_EXPORTER}" \
     --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED}" \
     > "${APP_INSTANCE_NAME}_manifest.yaml"
@@ -247,21 +248,23 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 To view the app, open the URL in your browser.
 
-### Accessing Dragonfly Manager UI
+### Accessing Argo Workflows Server UI
 
-To connect to UI, you can either expose a public service endpoint, or keep it private,but connect from you local environment with `kubectl port-forward`.
-## Forward Dragonfly manager port in local environmentYou can use the port forwarding feature of `kubectl` to forward Dragonfly managers's port to your local
-      machine. Run the following command in the background:
+As authentication is done by the Kubernetes cluster, connection is private,
+use port-forwarding (`kubectl port-forward`) in order to connect to the UI.
+
+Run the following command in the background:
 
 ```shell
 kubectl port-forward \
---namespace ${NAMESPACE} \
-svc/${APP_INSTANCE_NAME}-manager-service \
-8080:8080
+  --namespace ${NAMESPACE} \
+  svc/argo-server \
+  2746:2746
 ```
-Now you can access the Dragonfly manager UI [http://localhost:8080](http://localhost:8080)
 
-```
+Now you can access the Argo Workflows Server UI [https://localhost:2746](https://localhost:2746)
+
+
 # App metrics
 
 ## Prometheus metrics
@@ -295,22 +298,39 @@ The export option may not be available for GKE on-prem clusters.
 
 To remove existing metric descriptors, use [Stackdriver's REST API](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors/delete).
 
-# Scaling
+### Scaling
 
-This is a single-instance version of Dragonfly. It is not intended to be scaled up in its current configuration.
+#### Scaling the cluster up or down
+
+Argo Workflows Controllers can be easily scaled up or down.
+
+By default, the cluster is deployed with a single replica. To
+change the number of replicas, use the following command, where
+`REPLICAS` sets the desired number of replicas:
+
+```shell
+export REPLICAS=3
+kubectl scale deploy "${APP_INSTANCE_NAME}-controller" \
+  --namespace "${NAMESPACE}" --replicas="${REPLICAS}"
+```
+
+If you want to scale your app down, use this command to reduce the
+number of replicas, which disconnects nodes from the cluster.
+Scaling down does not affect your Deployments's
+`PersistentVolumeClaims`.
 
 # Upgrading the app
 
 Start by assigning a new image to your Deployment,StatefulSet or DaemonSet definition:
 
 ```shell
-kubectl set image deployment "$APP_INSTANCE_NAME-manager" \
+kubectl set image deployment "$APP_INSTANCE_NAME-server" \
   --namespace "$NAMESPACE" manager=[NEW_IMAGE_REFERENCE]
 ```
 
 where `[NEW_IMAGE_REFERENCE]` is the new image.
 
-To check that the Pods in the Deployment running the `manager` container are
+To check that the Pods in the Deployment running the `server` container are
 updating, run the following command:
 
 ```shell
@@ -323,11 +343,11 @@ to `Running` and `Ready` before updating the next Pod.
 The final state of the Pods should be `Running`, with a value of `1/1` in the
 **READY** column.
 
-To verify the current image used for a `manager` container, run the following
+To verify the current image used for a `server` container, run the following
 command:
 
 ```shell
-kubectl get statefulsets "$APP_INSTANCE_NAME-manager" \
+kubectl get statefulsets "$APP_INSTANCE_NAME-server" \
   --namespace "$NAMESPACE" \
   --output jsonpath='{.spec.template.spec.containers[0].image}'
 ```
@@ -339,9 +359,9 @@ kubectl get statefulsets "$APP_INSTANCE_NAME-manager" \
 
 1. In the Cloud Console, open [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
 
-1. From the list of apps, select **dragonfly**.
+2. From the list of apps, select **argo-workflows**.
 
-1. On the Application Details page, click **Delete**.
+3. On the Application Details page, click **Delete**.
 
 ## Using the command line
 
@@ -350,7 +370,7 @@ kubectl get statefulsets "$APP_INSTANCE_NAME-manager" \
 Set your installation name and Kubernetes namespace:
 
 ```shell
-export APP_INSTANCE_NAME=dragonfly-1
+export APP_INSTANCE_NAME=argo-workflows-1
 export NAMESPACE=default
 ```
 
@@ -383,7 +403,7 @@ To remove the PersistentVolumeClaims along with their attached persistent disks,
 
 ```shell
 # specify the variables values matching your installation:
-export APP_INSTANCE_NAME=dragonfly-1
+export APP_INSTANCE_NAME=argo-workflows-1
 export NAMESPACE=default
 
 kubectl delete persistentvolumeclaims \
