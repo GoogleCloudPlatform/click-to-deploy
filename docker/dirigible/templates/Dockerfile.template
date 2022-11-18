@@ -1,0 +1,14 @@
+FROM dirigiblelabs/dirigible-all:{{ $dirigible.Version }} AS build
+
+FROM {{ .From }}
+
+{{- $dirigible := index .Packages "dirigible" }}
+{{- $template := index .TemplateArgs }}
+
+ENV C2D_RELEASE {{ $dirigible.Version }}
+
+COPY --from=build /usr/local/tomcat/ /usr/local/tomcat/
+
+EXPOSE 8080
+
+ENTRYPOINT ["/usr/local/tomcat/bin/catalina.sh", "jpda", "run"]
