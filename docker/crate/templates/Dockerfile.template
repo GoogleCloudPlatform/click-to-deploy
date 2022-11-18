@@ -4,7 +4,7 @@
 FROM {{ .From }}
 
 RUN apt-get update \
-    && apt-get install curl python3 python3-pip openssl -y --no-install-recommends \
+    && apt-get install curl python3 python3-pip openjdk-17-jre openjdk-17-source openssl -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -22,6 +22,16 @@ ADD $CRATE_DIST /tmp/
 RUN (tar -xf /tmp/crate-${CRATE_VERSION}.tar.gz -C /crate --strip-components=1 &&\
     rm /tmp/crate-*.tar.gz) || true
 
+#install libraries licenses
+ADD https://raw.githubusercontent.com/antlr/antlr4/master/LICENSE.txt /crate/antlr4_LICENSE
+ADD https://raw.githubusercontent.com/aws/aws-sdk-java/master/LICENSE.txt /crate/aws-sdk-java_LICENSE
+ADD https://raw.githubusercontent.com/FasterXML/jackson-core/2.15/LICENSE /crate/jackson-core_LICENSE
+ADD https://raw.githubusercontent.com/FasterXML/jackson-databind/2.15/LICENSE /crate/jackson-databind_LICENSE
+ADD https://raw.githubusercontent.com/apache/lucene/main/LICENSE.txt /crate/lucene_LICENSE
+ADD https://raw.githubusercontent.com/netty/netty/4.1/LICENSE.txt /crate/netty_LICENSE
+ADD https://raw.githubusercontent.com/qos-ch/slf4j/master/LICENSE.txt /crate/slf4j_LICENSE
+ADD https://raw.githubusercontent.com/apache/logging-log4j2/release-2.x/LICENSE.txt /crate/log4j_LICENSE
+
 #install crash
 ENV CRASH_VERSION={{ $crash.Version }}
 ARG CRASH_DIST=https://cdn.crate.io/downloads/releases/crash_standalone_${CRASH_VERSION}
@@ -30,7 +40,7 @@ ADD $CRASH_DIST /tmp/
 
 RUN mv /tmp/crash_standalone_${CRASH_VERSION} /usr/local/bin/crash \
     && chmod +x /usr/local/bin/crash
-
+ADD https://raw.githubusercontent.com/crate/crash/master/LICENSE /crate/crash_LICENSE
 ENV PATH /crate/bin:$PATH
 # Default heap size for Docker, can be overwritten by args
 ENV CRATE_HEAP_SIZE 512M
