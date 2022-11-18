@@ -1,9 +1,14 @@
+# Copyright 2022 Google LLC
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Eclipse Public License v2.0
+# which accompanies this distribution, and is available at
+# http://www.eclipse.org/legal/epl-v20.html
+
+{{ $dirigible := index .Packages "dirigible" }}
 FROM dirigiblelabs/dirigible-all:{{ $dirigible.Version }} AS build
 
 FROM {{ .From }}
-
-{{- $dirigible := index .Packages "dirigible" }}
-{{- $template := index .TemplateArgs }}
 
 ENV C2D_RELEASE {{ $dirigible.Version }}
 
