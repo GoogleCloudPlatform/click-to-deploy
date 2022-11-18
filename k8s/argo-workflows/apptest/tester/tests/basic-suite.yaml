@@ -1,0 +1,18 @@
+actions:
+- name: Check Argo Controller Metrics
+  bashTest:
+    script: curl "http://argo-controller:9090/metrics"
+    expect:
+      stdout:
+        contains: 'argo_workflows_k8s_request_total'
+      exitCode:
+        equals: 0
+
+- name: Check Argo UI
+  bashTest:
+    script: curl -k https://argo-server:2746/
+    expect:
+      stdout:
+        contains: '<title>Argo</title>'
+      exitCode:
+        equals: 0

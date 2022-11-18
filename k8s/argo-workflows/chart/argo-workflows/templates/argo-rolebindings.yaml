@@ -1,0 +1,138 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: agent-default
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: agent
+subjects:
+- kind: ServiceAccount
+  name: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: argo-binding
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: argo-role
+subjects:
+- kind: ServiceAccount
+  namespace: "{{ .Release.Namespace }}"
+  name: "{{ .Values.argo_workflows.sa.argo }}"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: argo-server-binding
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: argo-server-role
+subjects:
+- kind: ServiceAccount
+  name: "{{ .Values.argo_workflows.sa.server }}"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: artifactgc-default
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: artifactgc
+subjects:
+- kind: ServiceAccount
+  name: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: executor-default
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: executor
+subjects:
+- kind: ServiceAccount
+  name: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: pod-manager-default
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: pod-manager
+subjects:
+- kind: ServiceAccount
+  name: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: workflow-manager-default
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: workflow-manager
+subjects:
+- kind: ServiceAccount
+  name: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: argo-clusterworkflowtemplate-role-binding
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: argo-clusterworkflowtemplate-role
+subjects:
+- kind: ServiceAccount
+  namespace: "{{ .Release.Namespace }}"
+  name: "{{ .Values.argo_workflows.sa.argo }}"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: argo-server-clusterworkflowtemplate-role-binding
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: argo-server-clusterworkflowtemplate-role
+subjects:
+- kind: ServiceAccount
+  namespace: "{{ .Release.Namespace }}"
+  name: "{{ .Values.argo_workflows.sa.server }}"
