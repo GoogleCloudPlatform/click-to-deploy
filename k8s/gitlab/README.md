@@ -313,8 +313,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to your app.
 
 ```shell
-helm template chart/gitlab \
-  --name "${APP_INSTANCE_NAME}" \
+helm template "${APP_INSTANCE_NAME}" chart/gitlab \
   --namespace "${NAMESPACE}" \
   --set gitlab.image.repo="${IMAGE_GITLAB}" \
   --set gitlab.image.tag="${TAG}" \
