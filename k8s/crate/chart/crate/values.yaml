@@ -1,0 +1,16 @@
+crate:
+  image:
+    repo: null
+    tag: null
+  replicas: 3
+  clusterName: null
+  heapSize: 1.0  # GiB
+  persistence:
+    storageClass: null
+    size: 10Gi
+
+metrics:
+  image: null
+  exporter:
+    enabled: false
+
