@@ -28,4 +28,30 @@
 
 FROM marketplace.gcr.io/google/debian11
 
+ENV C2D_DJANGO_USER="django" \
+    C2D_DJANGO_UID="8983" \
+    C2D_DJANGO_GROUP="django" \
+    C2D_DJANGO_GID="8983"
+
+RUN set -ex; \
+    groupadd -r --gid "${C2D_DJANGO_GID}" "${C2D_DJANGO_GROUP}"; \
+    useradd -r --uid "${C2D_DJANGO_UID}" --gid "${C2D_DJANGO_GID}" "${C2D_DJANGO_USER}"
+
+RUN apt-get update \
+    && apt-get install -y \
+      curl \
+      net-tools \
+      procps \
+      python3 \
+      python3-pip \
+      tini \
+    && ln -s "$(which python3)" /usr/bin/python \
+    && pip install django uwsgi \
+    && mkdir -p /sites \
+    && chown -R "${C2D_DJANGO_USER}:${C2D_DJANGO_GROUP}" /sites
+
+
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+USER "${C2D_DJANGO_USER}"
+
 ENTRYPOINT ["/docker-entrypoint.sh"]

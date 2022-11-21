@@ -27,4 +27,30 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+# C2D_DJANGO_SITENAME - Site folder name
+# C2D_DJANGO_PORT     - default_port
+
+set -x
+
+export C2D_DJANGO_PORT="${C2D_DJANGO_PORT:=8080}"
+
+# If website is not ready
+if [[ ! -d "${C2D_DJANGO_SITENAME}" ]]; then
+  cd /sites
+
+  # Create website
+  django-admin startproject "${C2D_DJANGO_SITENAME}"
+
+  # Configure for external access
+  sed -i -e "s@ALLOWED_HOSTS = \[]@ALLOWED_HOSTS = ['.localhost', '127.0.0.1', '[::1]']@g" \
+    "${C2D_DJANGO_SITENAME}/${C2D_DJANGO_SITENAME}/settings.py"
+
+  # Run website migrations
+  python3 "${C2D_DJANGO_SITENAME}/manage.py" migrate
+fi
+
 echo "Starting Django container..."
+
+# Run uwsgi
+cd "/sites/${C2D_DJANGO_SITENAME}" \
+  && /usr/bin/tini uwsgi -- --http ":${C2D_DJANGO_PORT}" --module "${C2D_DJANGO_SITENAME}.wsgi"
