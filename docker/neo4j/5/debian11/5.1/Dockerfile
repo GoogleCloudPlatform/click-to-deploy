@@ -13,8 +13,8 @@
 
 FROM marketplace.gcr.io/google/debian11
 
-ENV NEO4J_VERSION 4.4.12
-ENV NEO4J_SHA256 58f2ab847b1898c3f33731dc247784459223185307a4c89757f43ea94eb2a491
+ENV NEO4J_VERSION 5.1.0
+ENV NEO4J_SHA256 c8086d1f8558376754e7248a7d12838f024ca2699aa59e0aba30816b229ed4f4
 ENV NEO4J_HOME  /var/lib/neo4j
 ENV NEO4J_EDITION community
 ENV NEO4J_TARBALL neo4j.tar.gz
@@ -23,11 +23,11 @@ ENV TINI_VERSION v0.19.0
 ENV TINI_SHA256 93dcc18adc78c65a028a84799ecf8ad40c936fdfc5f2a57b1acda5a8117fa82c
 
 # Required for neo4jlabs-plugins.json
-ENV DOCKER_NEO4J_VERSION 4.4.12
+ENV DOCKER_NEO4J_VERSION 5.1.0
 ENV DOCKER_NEO4J_TARBALL docker-neo4j.tar.gz
-ENV DOCKER_NEO4J_SHA256  16788a0e85e0df8b3cdcba73448a03c6a56774cfc582e625b9b7fd512e05389d
+ENV DOCKER_NEO4J_SHA256  8ea81a2cbc26b242c119592b8d824976e83c5ebb9ea3eaa407740b4a8b5c5862
 
-ENV C2D_RELEASE 4.4.12
+ENV C2D_RELEASE 5.1.0
 
 # Workaround for CVE-2021-44228
 # https://www.docker.com/blog/apache-log4j-2-cve-2021-44228/
@@ -69,7 +69,7 @@ RUN set -x \
     && echo 'deb http://ftp.debian.org/debian stretch-backports main' > /etc/apt/sources.list.d/stretch-backports.list \
     && apt update \
     && apt install -y \
-    openjdk-11-jdk \
+    openjdk-17-jdk \
     && rm -rf /var/lib/apt/lists/*
 
 # Add up-to-date libs for security purposes
