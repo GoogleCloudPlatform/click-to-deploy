@@ -18,16 +18,10 @@ x-google-marketplace:
           type: TAG
   clusterConstraints:
     resources:
-    - replicas: 1
+    - replicas: 3
       requests:
-        cpu: 100m
-        memory: 500Mi
-      affinity:
-        simple NodeAffinity:
-          type: REQUIRE_ONE_NODE_PER_REPLICA
-          minimumNodeCount: 1
-    istio:
-      type: OPTIONAL
+        cpu: 1000m
+        memory: 2Gi
 properties:
   name:
     type: string
@@ -37,13 +31,13 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  tikv.replicas:
+  crate.replicas:
     type: integer
-    title: TiKV replicas
-    description: Number of replicas of the TiKV server
+    title: Crate replicas
+    description: Number of replicas of the Crate database
     default: 3
     minimum: 3
-  tikv.persistence.storageClass:
+  crate.persistence.storageClass:
     type: string
     title: StorageClass
     description: You can choose an existing StorageClass or create a new one.
@@ -51,10 +45,10 @@ properties:
       type: STORAGE_CLASS
       storageClass:
         type: SSD
-  tikv.persistence.size:
+  crate.persistence.size:
     type: string
     title: Storage size for persistent volumes
-    default: "2Gi"
+    default: "5Gi"
     description: TiKV storage size
     pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
   metrics.exporter.enabled:
@@ -65,4 +59,4 @@ properties:
 required:
 - name
 - namespace
-- tikv.replicas
+- crate.replicas

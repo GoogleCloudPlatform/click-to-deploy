@@ -33,6 +33,11 @@ spec:
       port: 4200
   selector:
     app: *Labels
+  {{ if .Values.enablePublicServiceAndIngress }}
+  type: NodePort
+  {{ else }}
+  type: ClusterIP
+  {{ end }}
 ---
 apiVersion: v1
 kind: Service

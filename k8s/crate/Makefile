@@ -3,17 +3,17 @@ include ../gcloud.Makefile
 include ../var.Makefile
 include ../images.Makefile
 
-CHART_NAME := tikv
+CHART_NAME := crate
 APP_ID ?= $(CHART_NAME)
 WAIT_FOR_READY_TIMEOUT := 600
 VERIFY_WAIT_TIMEOUT = 1800
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 
-TRACK ?= 5.3
+TRACK ?= 5.1
 METRICS_EXPORTER_TAG ?= v0.5.1
 
-IMAGE_TIKV ?= $(SOURCE_REGISTRY)/tikv5:$(TRACK)
+IMAGE_TIKV ?= $(SOURCE_REGISTRY)/crate5:$(TRACK)
 
 # Main image
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_TIKV))

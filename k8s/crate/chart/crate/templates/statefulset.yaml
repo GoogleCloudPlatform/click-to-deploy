@@ -77,9 +77,33 @@ spec:
               command: ["sh", "-c", "curl http://localhost:4200 2&>/dev/null | grep '\"ok\" : true'"]
             initialDelaySeconds: 100
             periodSeconds: 60
+        {{ if .Values.metrics.exporter.enabled }}
+        - name: stackdriver-exporter
+          image: {{ .Values.metrics.image }}
+          ports:
+          - name: profiler
+            containerPort: 6060
+          command:
+          - /monitor
+          - --stackdriver-prefix=custom.googleapis.com
+          - --source=postgresql:http://localhost:7071/metrics
+          - --pod-id=$(POD_NAME)
+          - --namespace-id=$(POD_NAMESPACE)
+          - --monitored-resource-types=k8s
+          env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+        {{ end }}
   volumeClaimTemplates:
     - metadata:
-        name: data
+        name: {{ .Release.Name }}-data
+        labels: *Labels
       spec:
         accessModes:
           - ReadWriteOnce
