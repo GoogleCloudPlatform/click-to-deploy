@@ -65,6 +65,8 @@ RUN apt-get update \
 
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
+VOLUME /sites
+
 # USER "${C2D_DJANGO_USER}"
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
