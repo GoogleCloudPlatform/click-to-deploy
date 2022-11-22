@@ -1,0 +1,47 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "{{ .Release.Name }}"
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": "crate", "partner_name": "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+spec:
+  descriptor:
+    type: crate
+    version: "{{ .Values.crate.image.tag }}"
+    description: |-
+      crate is a highly scalable, low latency, and easy to use key-value database.
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/crate/).
+      Additional community support is available on [community chat](https://crate.org/chat).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy crate'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/crate/README.md
+    - description: 'Official documentation for crate'
+      url: https://mariadb.com/kb/en/library/documentation/
+    notes: |-
+      Lorem
+      Ipsum
+  info:
+  - name: MariaDB Application Namespace
+    value: {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "{{ .Release.Name }}"
+  componentKinds:
+  - group: apps/v1
+    kind: StatefulSet
+  - group: v1
+    kind: Service
+  {{ if .Values.enablePublicServiceAndIngress }}
+  - group: networking.k8s.io
+    kind: Ingress
+  {{ end }}
+

@@ -12,9 +12,9 @@ x-google-marketplace:
   images:
     '':
       properties:
-        tikv.image.repo:
+        crate.image.repo:
           type: REPO_WITH_REGISTRY
-        tikv.image.tag:
+        crate.image.tag:
           type: TAG
   clusterConstraints:
     resources:

@@ -17,8 +17,7 @@ spec:
       port: 4300
     - name: ui
       port: 4200
-  selector:
-    app: *Labels
+  selector: *Labels
 ---
 apiVersion: v1
 kind: Service
@@ -31,8 +30,7 @@ spec:
   ports:
     - name: ui
       port: 4200
-  selector:
-    app: *Labels
+  selector: *Labels
   {{ if .Values.enablePublicServiceAndIngress }}
   type: NodePort
   {{ else }}
@@ -50,6 +48,5 @@ spec:
   ports:
     - name: psql
       port: 5432
-  selector:
-    app: *Labels
+  selector: *Labels
 

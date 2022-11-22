@@ -4,7 +4,7 @@ crate:
     tag: null
   replicas: 3
   clusterName: null
-  heapSize: 1.0  # GiB
+  heapSize: 1  # GiB
   persistence:
     storageClass: null
     size: 5Gi
