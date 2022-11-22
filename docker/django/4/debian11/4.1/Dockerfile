@@ -39,19 +39,36 @@ RUN set -ex; \
 
 RUN apt-get update \
     && apt-get install -y \
+      # MySQL dependencies
+      default-libmysqlclient-dev \
+      libmariadb-dev \
+      # PostgreSQL dependencies
+      libpq-dev \
+      postgresql \
+      postgresql-contrib \
+      build-essential \
       curl \
       net-tools \
       procps \
       python3 \
+      python3-dev \
       python3-pip \
       tini \
     && ln -s "$(which python3)" /usr/bin/python \
-    && pip install django uwsgi \
+    && pip install \
+        django \
+        mysqlclient \
+        psycopg2 \
+        uwsgi \
     && mkdir -p /sites \
     && chown -R "${C2D_DJANGO_USER}:${C2D_DJANGO_GROUP}" /sites
 
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
-USER "${C2D_DJANGO_USER}"
+# USER "${C2D_DJANGO_USER}"
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
+
+# curl -L -o uwsgi.tar.gz https://github.com/timonwong/uwsgi_exporter/releases/download/v1.1.0/uwsgi_exporter-1.1.0.linux-amd64.tar.gz
+# tar -xvf uwsgi.tar.gz --strip-components=1
+# mv uwsgi_exporter /usr/local/bin/uwsgi_exporter

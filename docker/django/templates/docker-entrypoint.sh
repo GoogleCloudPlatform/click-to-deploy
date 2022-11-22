@@ -30,27 +30,92 @@
 # C2D_DJANGO_SITENAME - Site folder name
 # C2D_DJANGO_PORT     - default_port
 
+# C2D_DJANGO_DB_TYPE = mysql
+
 set -x
 
+# Responsible for checking if a host and port are listening connections
+function await_for_host_and_port() {
+    local host="$1"
+    local port="$2"
+    timeout --preserve-status 300 bash -c "until echo > /dev/tcp/${host}/${port}; do sleep 2; done"
+    if [[ "$?" -ne 0 ]]; then
+        exit 1
+    fi
+}
+
+function setup_databases() {
+  local -r settings_file="$1"
+
+  if [[ "${C2D_DJANGO_DB_TYPE}" == "mysql" ]]; then
+    apply_db_settings "${settings_file}" "django.db.backends.mysql"
+  elif [[ "${C2D_DJANGO_DB_TYPE}" == "postgresql" ]]; then
+    apply_db_settings "${settings_file}" "django.db.backends.postgresql"
+  else
+    log_info "Invalid DB provided"
+    exit 1
+  fi
+}
+
+function apply_db_settings() {
+  local -r settings_file="$1"
+  local -r db_driver="$2"
+
+  local extra_config="$(cat <<-EOF
+DATABASES = {
+  'default': {
+    'ENGINE': '${db_driver}',
+    'NAME': '${C2D_DJANGO_DB_NAME}',
+    'USER': '${C2D_DJANGO_DB_USER}',
+    'PASSWORD': '${C2D_DJANGO_DB_PASSWORD}',
+    'HOST': '${C2D_DJANGO_DB_HOST}',
+    'PORT': '${C2D_DJANGO_DB_PORT}',
+  }
+}
+EOF
+)"
+  echo "${extra_config}" >> "${settings_file}"
+}
+
+function log_info() {
+  echo "====> $1"
+}
+
 export C2D_DJANGO_PORT="${C2D_DJANGO_PORT:=8080}"
+declare -r SETTINGS_FILE="${C2D_DJANGO_SITENAME}/${C2D_DJANGO_SITENAME}/settings.py"
 
 # If website is not ready
 if [[ ! -d "${C2D_DJANGO_SITENAME}" ]]; then
   cd /sites
 
   # Create website
+  log_info "Creating website..."
   django-admin startproject "${C2D_DJANGO_SITENAME}"
 
   # Configure for external access
+  log_info "Setup for external access..."
   sed -i -e "s@ALLOWED_HOSTS = \[]@ALLOWED_HOSTS = ['.localhost', '127.0.0.1', '[::1]']@g" \
     "${C2D_DJANGO_SITENAME}/${C2D_DJANGO_SITENAME}/settings.py"
 
+  # Setup databases
+  if [[ ! -z "${C2D_DJANGO_DB_TYPE}" ]]; then
+    echo "Setting up database configuration..."
+    echo "Config: ${C2D_DJANGO_DB_TYPE}"
+    env | grep "C2D_DJANGO_DB_" | grep -v "C2D_DJANGO_DB_PASSWORD"
+    setup_databases "${SETTINGS_FILE}"
+
+    echo "Awaiting for database..."
+    await_for_host_and_port "${C2D_DJANGO_DB_HOST}" "${C2D_DJANGO_DB_PORT}"
+  fi
+
   # Run website migrations
   python3 "${C2D_DJANGO_SITENAME}/manage.py" migrate
+else
+  log_info "Website already found."
 fi
 
 echo "Starting Django container..."
 
 # Run uwsgi
 cd "/sites/${C2D_DJANGO_SITENAME}" \
-  && /usr/bin/tini uwsgi -- --http ":${C2D_DJANGO_PORT}" --module "${C2D_DJANGO_SITENAME}.wsgi"
+  && /usr/bin/tini uwsgi -- --http ":${C2D_DJANGO_PORT}" --module "${C2D_DJANGO_SITENAME}.wsgi" --stats 127.0.0.1:1717
