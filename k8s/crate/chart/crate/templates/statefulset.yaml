@@ -41,7 +41,7 @@ spec:
             - -Cprocessors="$MIN_VCPU_COUNT"
           volumeMounts:
             - mountPath: /data
-              name: data
+              name: {{ .Release.Name }}-data
           resources:
             requests:
               cpu: 1
