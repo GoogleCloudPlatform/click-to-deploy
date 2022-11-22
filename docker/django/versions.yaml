@@ -35,7 +35,7 @@ versions:
     gosu:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
       version: '1.14'
-  repo: mysql8
+  repo: django4
   tags:
   - 4.1.3-debian11
   - 4.1-debian11
@@ -43,4 +43,17 @@ versions:
   - 4.1.3
   - '4.1'
   - '4'
+  - latest
+
+- dir: exporter
+  templateSubDir: exporter
+  from: marketplace.gcr.io/google/debian11
+  repo: uwsgi-exporter1
+  tags:
+  - 1.1.0-debian11
+  - 1.1-debian11
+  - 1-debian11
+  - 1.1.0
+  - '1.1'
+  - '1'
   - latest

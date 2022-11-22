@@ -118,4 +118,4 @@ echo "Starting Django container..."
 
 # Run uwsgi
 cd "/sites/${C2D_DJANGO_SITENAME}" \
-  && /usr/bin/tini uwsgi -- --http ":${C2D_DJANGO_PORT}" --module "${C2D_DJANGO_SITENAME}.wsgi" --stats 127.0.0.1:1717
+  && /usr/bin/tini uwsgi -- --http ":${C2D_DJANGO_PORT}" --module "${C2D_DJANGO_SITENAME}.wsgi" --stats :1717
