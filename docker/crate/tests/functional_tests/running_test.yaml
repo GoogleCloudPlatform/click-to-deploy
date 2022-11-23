@@ -23,8 +23,10 @@ setup:
   - 'crate-$UNIQUE-id'
   - '-d'
   - '$IMAGE'
-  - '-Cdiscovery.type=single-node '
+  - '-Cdiscovery.type=single-node'
+- command: [docker, logs, crate-$UNIQUE-id]
 - command: [sleep, '15s']
+- command: [docker, ps]
 
 teardown:
 - command: [docker, stop, crate-$UNIQUE-id]
