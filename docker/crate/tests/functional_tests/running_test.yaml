@@ -24,9 +24,9 @@ setup:
   - '-d'
   - '$IMAGE'
   - '-Cdiscovery.type=single-node'
-- command: [docker, logs, crate-$UNIQUE-id]
 - command: [sleep, '15s']
 - command: [docker, ps]
+- command: [docker, logs, crate-$UNIQUE-id]
 
 teardown:
 - command: [docker, stop, crate-$UNIQUE-id]
@@ -36,14 +36,14 @@ teardown:
 target: crate-$UNIQUE-id
 tests:
 - name: Create empty table
-  command: ['/usr/local/bin/crash -c "CREATE TABLE test (id integer);"']
+  command: ['/usr/local/bin/crash', '-c', '"CREATE TABLE test (id integer);"']
   expect:
     stdout:
       matches: 'CONNECT OK'
     stdout:
       matches: 'CREATE OK, 1 row affected'
 - name: Show tables
-  command: ['/usr/local/bin/crash -c "SHOW TABLES;"']
+  command: ['/usr/local/bin/crash', '-c', '"SHOW TABLES;"']
   expect:
     stdout:
       matches: 'CONNECT OK'
