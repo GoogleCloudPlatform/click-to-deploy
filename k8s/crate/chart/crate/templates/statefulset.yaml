@@ -24,7 +24,7 @@ spec:
             privileged: true
       containers:
         - name: crate
-          image: "{{ .Values.crate.image.name }}:{{ .Values.crate.image.tag }}"
+          image: "{{ .Values.crate.image.repo }}:{{ .Values.crate.image.tag }}"
           imagePullPolicy: Always
           args:
             - -Ccluster.initial_master_nodes={{ .Release.Name }}-crate-0
