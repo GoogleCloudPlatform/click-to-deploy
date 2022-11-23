@@ -219,6 +219,7 @@ These are the ports exposed by the container image.
 | TCP 4200 | CrateDB Admin UI           |
 | TCP 4300 | CrateDB Transport Protocol |
 | TCP 5432 | PostgreSQL Wire Protocol   |
+| TCP 7071 | Prometheus metrics         |
 
 ## <a name="references-environment-variables"></a>Environment Variables
 

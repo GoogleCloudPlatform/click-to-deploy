@@ -20,29 +20,10 @@ setup:
   - '--net'
   - 'testbridge-$UNIQUE-id'
   - '--name'
-  - 'pd-server-$UNIQUE-id'
+  - 'crate-$UNIQUE-id'
   - '-d'
   - '$IMAGE'
-  - '/pd-server'
-  - '--name=pd-server-$UNIQUE-id'
-  - '--client-urls=http://0.0.0.0:2379'
-  - '--peer-urls=http://0.0.0.0:2380'
-  - '--advertise-client-urls=http://pd-server-$UNIQUE-id:2379'
-  - '--advertise-peer-urls=http://pd-server-$UNIQUE-id:2380'
-- command: [sleep, '20s']
-- command:
-  - 'docker'
-  - 'run'
-  - '--net'
-  - 'testbridge-$UNIQUE-id'
-  - '--name'
-  - 'tikv-server-$UNIQUE-id'
-  - '-d'
-  - '$IMAGE'
-  - '/tikv-server'
-  - '--addr=0.0.0.0:20160'
-  - '--advertise-addr=tikv-server-$UNIQUE-id:20160'
-  - '--pd=pd-server-$UNIQUE-id:2379'
+  - '-Cdiscovery.type=single-node '
 - command: [sleep, '20s']
 
 teardown:
@@ -50,17 +31,20 @@ teardown:
 - command: [docker, rm, tikv-server-$UNIQUE-id, pd-server-$UNIQUE-id]
 - command: [docker, network, rm, testbridge-$UNIQUE-id]
 
-target: pd-server-$UNIQUE-id
+target: crate-$UNIQUE-id
 tests:
-- name: Test PUT/GET/DELETE
-  command: ['/tikvtest']
+- name: Create empty table
+  command: ['crash -c "CREATE TABLE test (id integer);"']
   expect:
     stdout:
-      matches: 'Successfully put TestKey:TestValue to tikv'
+      matches: 'CONNECT OK'
     stdout:
-      matches: 'found val: TestValue for key: TestKey'
+      matches: 'CREATE OK, 1 row affected'
+- name: Show tables
+  command: ['crash -c "SHOW TABLES;"']
+  expect:
     stdout:
-      matches: 'key: TestKey deleted'
+      matches: 'CONNECT OK'
     stdout:
-      matches: 'found val:  for key: TestKey'
+      matches: 'SHOW 1 row in set'
 
