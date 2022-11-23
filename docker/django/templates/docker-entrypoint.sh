@@ -77,6 +77,13 @@ EOF
   echo "${extra_config}" >> "${settings_file}"
 }
 
+function setup_static_path() {
+  local -r settings_file="$1"
+  local -r static_path="/sites/${C2D_DJANGO_SITENAME}/static"
+  mkdir -p "${static_path}"
+  echo "STATIC_ROOT = '${static_path}'" >> "${settings_file}"
+}
+
 function log_info() {
   echo "====> $1"
 }
@@ -108,8 +115,14 @@ if [[ ! -d "${C2D_DJANGO_SITENAME}" ]]; then
     await_for_host_and_port "${C2D_DJANGO_DB_HOST}" "${C2D_DJANGO_DB_PORT}"
   fi
 
+  # Setting up static path
+  setup_static_path "${SETTINGS_FILE}"
+
   # Run website migrations
+  python3 "${C2D_DJANGO_SITENAME}/manage.py" makemigrations
   python3 "${C2D_DJANGO_SITENAME}/manage.py" migrate
+  python3 "${C2D_DJANGO_SITENAME}/manage.py" collectstatic --noinput
+
 else
   log_info "Website already found."
 fi
@@ -118,4 +131,8 @@ echo "Starting Django container..."
 
 # Run uwsgi
 cd "/sites/${C2D_DJANGO_SITENAME}" \
-  && /usr/bin/tini uwsgi -- --http ":${C2D_DJANGO_PORT}" --module "${C2D_DJANGO_SITENAME}.wsgi" --stats :1717
+  && /usr/bin/tini uwsgi -- --http ":${C2D_DJANGO_PORT}" --module "${C2D_DJANGO_SITENAME}.wsgi" --stats :1717 --py-autoreload 2
+
+
+# echo "import os" >> "${SETTINGS_FILE}"
+# echo "STATIC_ROOT = os.path.join(BASE_DIR, 'static')" >> "${SETTINGS_FILE}"
