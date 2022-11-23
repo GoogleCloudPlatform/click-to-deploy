@@ -34,14 +34,14 @@ teardown:
 target: crate-$UNIQUE-id
 tests:
 - name: Create empty table
-  command: [/usr/local/bin/crash, -c, 'CREATE TABLE test (id integer);']
+  command: [2>&1, /usr/local/bin/crash, -c, 'CREATE TABLE test (id integer);']
   expect:
     stdout:
       matches: 'CONNECT OK'
     stdout:
       matches: 'CREATE OK, 1 row affected'
 - name: Show tables
-  command: [/usr/local/bin/crash, -c, 'SHOW TABLES;']
+  command: [2>&1, /usr/local/bin/crash, -c, 'SHOW TABLES;']
   expect:
     stdout:
       matches: 'CONNECT OK'
