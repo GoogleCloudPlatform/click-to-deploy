@@ -1,0 +1,37 @@
+actions:
+
+- name: Can connect to a database (as root user)
+  bashTest:
+    script: mysql -h ${APP_INSTANCE_NAME}-mysql-svc.${NAMESPACE}.svc.cluster.local -u root -p"${MYSQL_ROOT_PASSWORD}" -e "SHOW DATABASES"
+    expect:
+      stdout:
+        contains: information_schema
+      exitCode:
+        equals: 0
+
+- name: Can connect to a database (as dragonfly user)
+  bashTest:
+    script: mysql -h ${APP_INSTANCE_NAME}-mysql-svc.${NAMESPACE}.svc.cluster.local -u "${DRAGONFLY_DB_USER}" -p"${DRAGONFLY_DB_PASSWORD}" -e "SHOW DATABASES"
+    expect:
+      stdout:
+        contains: dragonfly
+      exitCode:
+        equals: 0
+
+- name: Can not connect to a database with incorrect credentials
+  bashTest:
+    script: mysql -h ${APP_INSTANCE_NAME}-mysql-svc.${NAMESPACE}.svc.cluster.local -u root -p"changeme" -e "SHOW DATABASES"
+    expect:
+      stderr:
+        contains: 'ERROR 1045 (28000)'
+      exitCode:
+        equals: 1
+
+- name: Can not connect to a database without credentials
+  bashTest:
+    script: mysql -h ${APP_INSTANCE_NAME}-mysql-svc.${NAMESPACE}.svc.cluster.local -e "SHOW DATABASES"
+    expect:
+      stderr:
+        contains: 'ERROR 1045 (28000)'
+      exitCode:
+        equals: 1
