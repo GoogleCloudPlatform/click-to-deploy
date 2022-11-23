@@ -24,11 +24,11 @@ setup:
   - '-d'
   - '$IMAGE'
   - '-Cdiscovery.type=single-node '
-- command: [sleep, '20s']
+- command: [sleep, '15s']
 
 teardown:
-- command: [docker, stop, tikv-server-$UNIQUE-id, pd-server-$UNIQUE-id]
-- command: [docker, rm, tikv-server-$UNIQUE-id, pd-server-$UNIQUE-id]
+- command: [docker, stop, crate-$UNIQUE-id]
+- command: [docker, rm, crate-$UNIQUE-id]
 - command: [docker, network, rm, testbridge-$UNIQUE-id]
 
 target: crate-$UNIQUE-id
