@@ -1,0 +1,12 @@
+<svg fill="none" viewBox="0 0 1 1" width="1" height="1" xmlns="http://www.w3.org/2000/svg">
+	<foreignObject width="100%" height="100%">
+		<div xmlns="http://www.w3.org/1999/xhtml">
+			<style>
+        .bad {
+          color: #FF0000;
+          background-color: #FF0000;
+        }
+			</style>
+		</div>
+	</foreignObject>
+</svg>
