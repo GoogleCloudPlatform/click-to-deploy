@@ -85,6 +85,8 @@ file. When you have a header in your file, add the importings after it.
 If you have issues with extra-lines, check
 [Go template documentation](https://golang.org/pkg/text/template/#hdr-Text_and_spaces).
 
+<p class="bad">
+
 ```docker {.bad .no-copy}
 FROM {{ .From }}
 
@@ -93,6 +95,8 @@ FROM {{ .From }}
 ENV HAPROXY_VERSION {{ $haproxy.Version }}
 ENV C2D_RELEASE {{ $haproxy.Version }}
 ```
+</p>
+
 
 ```docker {.good .no-copy}
 {{- $haproxy := index .Packages "haproxy" -}}
