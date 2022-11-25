@@ -20,7 +20,7 @@ WORKDIR /go/src/github.com/jaegertracing/jaeger-operator
 
 ENV GO111MODULE=on
 
-RUN apt-get update && apt install -y govendor \
+RUN go install github.com/kardianos/govendor@latest \
     && govendor license +vendor > NOTICES \
     && GOOS=linux GOARCH=amd64 CGO_ENABLED=0 \
        go build -o jaeger-operator -ldflags "${LD_FLAGS} \
