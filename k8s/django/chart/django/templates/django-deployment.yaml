@@ -1,0 +1,72 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-django
+  labels: &DjangoDeploymentLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: django-server
+spec:
+  strategy:
+    type: Recreate
+  replicas: {{ .Values.django.replicas }}
+  selector:
+    matchLabels: *DjangoDeploymentLabels
+  template:
+    metadata:
+      labels: *DjangoDeploymentLabels
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+      - image: "{{ .Values.django.image.repo }}:{{ .Values.django.image.tag }}"
+        name: django
+        imagePullPolicy: Always
+        env:
+        - name: C2D_DJANGO_SITENAME
+          value: "{{ .Values.django.site_name }}"
+        - name: C2D_DJANGO_PORT
+          value: "8080"
+        - name: C2D_DJANGO_ALLOWED_HOSTS
+          value: "'.localhost', '127.0.0.1', '[::1]', '{{ .Release.Name}}-django-svc'"
+        - name: C2D_DJANGO_DB_TYPE
+          value: "postgresql"
+        - name: C2D_DJANGO_DB_NAME
+          value: "{{ .Values.django.site_name }}"
+        - name: C2D_DJANGO_DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-postgresql-secret"
+              key: db-user
+        - name: C2D_DJANGO_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-postgresql-secret"
+              key: db-password
+        - name: C2D_DJANGO_DB_HOST
+          value: "{{ .Release.Name }}-postgresql-svc"
+        - name: C2D_DJANGO_DB_PORT
+          value: "5432"
+        ports:
+        - containerPort: 8080
+          name: uwsgi
+        - containerPort: 1717
+          name: stats
+        livenessProbe:
+          tcpSocket:
+            port: uwsgi
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        readinessProbe:
+          tcpSocket:
+            port: uwsgi
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        volumeMounts:
+        - name: django-data
+          mountPath: /sites
+      volumes:
+        - name: django-data
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-nfs-django
+      restartPolicy: Always

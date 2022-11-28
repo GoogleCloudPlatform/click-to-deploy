@@ -1,0 +1,741 @@
+---
+# Source: django/templates/nginx-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: django-1-nginx-secret
+  labels:
+    app.kubernetes.io/name: django-1
+    app.kubernetes.io/component: nginx-server
+data:
+  https1.cert: |
+    LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURJVENDQWdtZ0F3SUJBZ0lVTUd6d0lIdlhx
+    UUZ1RDdIVUNNTHk0a0lHS1hvd0RRWUpLb1pJaHZjTkFRRUwKQlFBd0lERU9NQXdHQTFVRUF3d0Zi
+    bWRwYm5neERqQU1CZ05WQkFvTUJXNW5hVzU0TUI0WERUSXlNVEV5T0RBNQpNRFkwTVZvWERUSXpN
+    VEV5T0RBNU1EWTBNVm93SURFT01Bd0dBMVVFQXd3RmJtZHBibmd4RGpBTUJnTlZCQW9NCkJXNW5h
+    VzU0TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFpM1Y4a1YwU0ln
+    R2QKZnhVSFdrT2xHRmRTcnJOQ0JDM090VVMxNzdNZ2R1MlAvYnBUcHd4VGRUTlVPOVJxeDQ1aWp3
+    Sk1VUHU0Rkw5TAo0ZlBEeTNHVTJXbHVQTTdJaXd5K0lEakZPaWthdG0zcEZJdFNQWHJxZmxOOWJW
+    am4zK252YllicXZqRU9nRlhxCllmd3RFM3ZxeXI4UVJBRG9XaFdBNFdJTUV0SWVGVnljOStFa1Ay
+    ZjNKNk5QOVZ5S2ZEakR3dHNoUVZhOEhJN0EKZzc0VTBKMTZKbm8zcGQvN2Z4VkJiWkR4ZlBjanVH
+    QUVVdGYwSFBpODBiMmJKVERwcGhPOS9XUmQ1bnNScTFGcgpEbXBCUkxKZ3d6T08xN1V2eHdaZWU0
+    VFdZcEFnc3A3WVY5UlE5VktiNnFFTEZDZlBxcU5ua0pzU3VDQ0VjTVMxCnBpMGVLa2JtblFJREFR
+    QUJvMU13VVRBZEJnTlZIUTRFRmdRVTRWTG1pcGlrQjdMM3Uxb1R0dk5KL0krc1NwZ3cKSHdZRFZS
+    MGpCQmd3Rm9BVTRWTG1pcGlrQjdMM3Uxb1R0dk5KL0krc1NwZ3dEd1lEVlIwVEFRSC9CQVV3QXdF
+    QgovekFOQmdrcWhraUc5dzBCQVFzRkFBT0NBUUVBYkkwQ1h2ajRRMEg5UlZNZStUV2tkTzVYeWRt
+    RFFDV3A5eGh1CkNCVW9mMmJRdDBkakdzUWVaZEdRb1NOMGp0ejJNbEJzR1V2ZGpJRVR1K0RzaURl
+    OFVUUzVwbXZnVkErb0lsVXQKb2tVNng3ZnZFbUhaYjFSR3Jra0wwMkNpR1JJMlNwYk9kcTRMN0hv
+    UC9iYUQwa0taU3I0Uno1bjVuaEI2emNreApXQVoxVW9QazYvaGkwOUNwSUJYYXg4VGk0S2ZJWks2
+    ano0eUp0U3ljK1Rudi8za004MzJZTWFOc0tKNTZMazBNClZHQXZ2QWhoaWd2OTEwNktMRHF4OHE1
+    eGU0bnBRMzJic1k0dHpsVUlGYXdzQ2MyZWs4TGpwd2FlUEJmMWovamcKMXhXSHE5YXhjVHcyYlF1
+    cjlOQVowdWQrNktLczdYcGtiVEtuUjA2UkJNQThBbzRWMVE9PQotLS0tLUVORCBDRVJUSUZJQ0FU
+    RS0tLS0tCg==
+  https1.key: |
+    LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2UUlCQURBTkJna3Foa2lHOXcwQkFRRUZB
+    QVNDQktjd2dnU2pBZ0VBQW9JQkFRQ0xkWHlSWFJJaUFaMS8KRlFkYVE2VVlWMUt1czBJRUxjNjFS
+    TFh2c3lCMjdZLzl1bE9uREZOMU0xUTcxR3JIam1LUEFreFErN2dVdjB2aAo4OFBMY1pUWmFXNDh6
+    c2lMREw0Z09NVTZLUnEyYmVrVWkxSTlldXArVTMxdFdPZmY2ZTl0aHVxK01RNkFWZXBoCi9DMFRl
+    K3JLdnhCRUFPaGFGWURoWWd3UzBoNFZYSnozNFNRL1ovY25vMC8xWElwOE9NUEMyeUZCVnJ3Y2pz
+    Q0QKdmhUUW5Yb21lamVsMy90L0ZVRnRrUEY4OXlPNFlBUlMxL1FjK0x6UnZac2xNT21tRTczOVpG
+    M21leEdyVVdzTwpha0ZFc21ERE00N1h0Uy9IQmw1N2hOWmlrQ0N5bnRoWDFGRDFVcHZxb1FzVUo4
+    K3FvMmVRbXhLNElJUnd4TFdtCkxSNHFSdWFkQWdNQkFBRUNnZ0VBRURqczhoM2c5NXEzZnVwcnpn
+    aXpZamI2TTc4L2JTd0U4Um9hamRVSThEeW4KTk0waFlQdXlrNTRTYk5sRFNJNWNFYVdqU2dKV0Fm
+    ZlV0R1orUHFLcVBYWWhzQ29mc3VrYkRyVjczODJiUVdCYwpyaHFjeVBFTTZQLytSYU9EYVkwVllH
+    akMwcmZ6SjJPWEhhblBkb1pDSkM2QWptQ0twcnY4bjNzZnkycXN2REE3ClJtOFNKbG1lRHpLL3Rr
+    K2NvRXFyRHdlQVI0TUNNZWVMcGVuT0FBbUVGOEdZTFdPdnZUZW1XRStBYW9sWUJ5ZisKc3VCK2VD
+    UnRtVjQ2Qkw2MmtqdHE5dXZLaENXK29sK0hNcHljK0pGeS9ob3pSTHlMZEdPa0Erd3FLNjROTXZX
+    eAo4ZXJLa2hsYnNVcXV0aTN3ZWdueW8vQ2hWS2NNU3UxQklFL0ZuWWxlOHdLQmdRREVVYUVsbTQw
+    TW93cVZEamI2Cm42alpxdXgzU3pNL2JYZ0VFdVlIMUpCV3ZFYXhhSnV0ZzY0NHEvd3R3QzRSTDRR
+    ckh5K0xZMGprdFd2OGJGL20KNC9ucEdSb2p1c0MyR2ZRQWJxL0NBNG5zRng2c2tIN2w1SUFiVkUz
+    bDlDaHlKajg1OHV0dEZRVjI0bytrTDFXKwpPRnRSNmxPNUxBL2hUQVJudndVdGMzdFUyd0tCZ1FD
+    MTJzWmRId0NRRHdFckJwbkUyc29RV2dpQ3JBaXFpbllhClJBaFRUcVJIZk9IbzFQUTJDdDYyYXgz
+    bU5OZmxYblo1WW0zSWJNSDRMODBoNTVZTXdBMkkycnBOeUtnMi9xNHMKeCs0NWtiUUgwZFlUZmdu
+    T0U0UFpCVEVQT3MwaDJKOE9KVm5Xa0xPU1lZZkJmNUlYb0QwbDdFamlxY0VOdW9CVQorQ3I3VlBX
+    UDV3S0JnQkc1Z1FBaFBDbmc2b3FzbnVBZjNDSFM0Y2lmZklBRWhTcHcvbDNFbmtlR2RpZDhWMW5p
+    CklxK3hMM0orQUdyQ3pIOE1NTUczOUJQYUlXYkg3aHl0aHBtNkQzY2NYRnZVbWdnVDlrQmhDMm5L
+    YUpXUjhqTVYKWDArWVcvUWdDQ3JPTXpVckxvQkp2cFdPUFFQSTFrZjNWSjlmdGJGcFBnSE1XRFY1
+    dEtEMjVUS3pBb0dCQUlXcwowVTgyTU1XMElkbXN1bTkzbkR5MDBiaXNHSnF6dU9qSnhZem5LOTdZ
+    cjM3a3VyYlcrcXNBeGpPbitHTkVNclk3ClloT0h6blZQUGV5RVBVb1dDbHprMnptK0c5aUJFU3Nk
+    czhGaGx3S0FmbXBKcFk5enpPRkQ3YklTT1NOK0JqengKdTczN0UrU3dDSWgxNjcrdUxBU3FVVkU4
+    RXdxeVl3OFNkUlhXZDhOVkFvR0FMVE9SZmVxS3JpQTBiLzZ1SzNxNwp4OUp1UlZRT1VteXpLcEJT
+    dGQ5Zy9TcUlZb3FZTVNSVUV1WC9IRGpZTHZTd1dZYW9BRVI5M0lZZlkwU2pHTjQzCm83dm9FME9x
+    ZUx1Vm1GYmhaVENqaDQrZTJwN0NkQXNFem0xSDJ4MkhWSnZ1bFVkUDhSQ01TS29sTkJ6UUIzdWMK
+    ekpRbXlkSVVaL0VZTTloMXE3RU9PRmM9Ci0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0K
+---
+# Source: django/templates/postgresql-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: django-1-postgresql-secret
+  labels:
+    app.kubernetes.io/name: django-1
+    app.kubernetes.io/component: postgresql-server
+type: Opaque
+data:
+  db-user: "bXlzaXRl"
+  db-password: "M3BKNzhRYXoxWXN4VTJGcDNxWWs="
+---
+# Source: django/templates/nginx-config.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: django-1-nginx-configmap
+  labels:
+    app.kubernetes.io/name: django-1
+    app.kubernetes.io/component: nginx-server
+data:
+  index.html: |
+   <!DOCTYPE>
+    <html>
+     <head> <title>Web Server Application</title> </head>
+     <body> <h1>Web site powered by NGINX</h1>
+     <p>This page is under construction. Please come back soon!</p></body>
+    </html>
+  nginx-config.conf: |
+   ssl_certificate      certs/https1.cert;
+   ssl_certificate_key  certs/https1.key;
+    upstream django {
+      server django-1-django-svc:8080;
+    }
+
+    # configuration of the server
+    server {
+        # the port your site will be served on
+        listen      80;
+        listen 443 ssl;
+
+        location /stub_status {
+          stub_status on;
+          access_log off;
+          allow 127.0.0.1;
+          deny all;
+        }
+
+        # the domain name it will serve for
+        server_name localhost; # substitute your machine's IP address or FQDN
+        charset     utf-8;
+
+        # max upload size
+        client_max_body_size 75M;   # adjust to taste
+
+        # Django media
+        location /media  {
+            alias /path/to/your/mysite/media;  # your Django project's media files - amend as required
+        }
+
+        location /static {
+            alias /path/to/your/mysite/static; # your Django project's static files - amend as required
+        }
+
+        # Finally, send all non-media requests to the Django server.
+        location / {
+            uwsgi_pass   django-1-django-svc:8080;
+            uwsgi_read_timeout 300;
+            include     uwsgi_params;
+        }
+    }
+---
+# Source: django/templates/nfs-pvc.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: django-1-nfs-django
+spec:
+  persistentVolumeReclaimPolicy: "Delete"
+  capacity:
+    storage: "5Gi"
+  storageClassName: ""
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: django-1-nfs-server.default.svc.cluster.local
+    path: "/"
+---
+# Source: django/templates/nfs-pvc.yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: django-1-nfs-server-pvc
+spec:
+  storageClassName: "standard"
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "5Gi"
+---
+# Source: django/templates/nfs-pvc.yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: django-1-nfs-django
+  labels:
+    app: django
+    name: django-1
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  resources:
+    requests:
+      storage: "5Gi"
+---
+# Source: django/templates/django-services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: django-1-django-svc
+  labels:
+    app.kubernetes.io/name: django-1
+    app.kubernetes.io/component: django-server
+spec:
+  ports:
+  - name: uwsgi
+    port: 8080
+    protocol: TCP
+  - name: stats
+    port: 1717
+    protocol: TCP
+  selector:
+    app.kubernetes.io/name: django-1
+    app.kubernetes.io/component: django-server
+  type: ClusterIP
+---
+# Source: django/templates/nfs-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: django-1-nfs-server
+spec:
+  ports:
+    - name: nfs
+      port: 2049
+      protocol: TCP
+    - name: mountd
+      port: 20048
+      protocol: TCP
+  selector:
+    role: nfs-server
+---
+# Source: django/templates/nginx-services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: django-1-nginx-prometheus-svc
+  labels:
+    app.kubernetes.io/name: django-1
+    app.kubernetes.io/component: nginx-server
+spec:
+  clusterIP: None
+  ports:
+  - name: prometheus-port
+    port: 9113
+    protocol: TCP
+  selector:
+    app.kubernetes.io/name: django-1
+    app.kubernetes.io/component: nginx-server
+---
+# Source: django/templates/nginx-services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: django-1-nginx-svc
+  labels:
+    app.kubernetes.io/name: django-1
+    app.kubernetes.io/component: nginx-server
+spec:
+  ports:
+  - name: nginx-http-port
+    port: 80
+    protocol: TCP
+  - name: nginx-https-port
+    port: 443
+    protocol: TCP
+  selector:
+    app.kubernetes.io/name: django-1
+    app.kubernetes.io/component: nginx-server
+  
+  type: LoadBalancer
+---
+# Source: django/templates/postgresql-services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: django-1-postgresql-svc
+  labels: &PostgreSQLLabels
+    app.kubernetes.io/name: django-1
+    app.kubernetes.io/component: postgresql-server
+spec:
+  ports:
+  - name: postgres
+    port: 5432
+    targetPort: 5432
+  selector: *PostgreSQLLabels
+  type: ClusterIP
+---
+# Source: django/templates/postgresql-services.yaml
+kind: Service
+apiVersion: v1
+metadata:
+  name: django-1-postgresql-exporter-svc
+  labels: &PostgreSQLLabels
+    app.kubernetes.io/name: django-1
+    app.kubernetes.io/component: postgresql-server
+spec:
+  ports:
+  - name: prometheus-exporter
+    port: 9187
+  selector: *PostgreSQLLabels
+  type: ClusterIP
+---
+# Source: django/templates/django-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-1-django
+  labels: &DjangoDeploymentLabels
+    app.kubernetes.io/name: django-1
+    app.kubernetes.io/component: django-server
+spec:
+  strategy:
+    type: Recreate
+  replicas: 1
+  selector:
+    matchLabels: *DjangoDeploymentLabels
+  template:
+    metadata:
+      labels: *DjangoDeploymentLabels
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+      - image: "gcr.io/ccm-ops-test-adhoc/django4:4.1"
+        name: django
+        imagePullPolicy: Always
+        env:
+        - name: C2D_DJANGO_SITENAME
+          value: "mysite"
+        - name: C2D_DJANGO_PORT
+          value: "8080"
+        - name: C2D_DJANGO_ALLOWED_HOSTS
+          value: "'.localhost', '127.0.0.1', '[::1]', 'django-1-django-svc'"
+        - name: C2D_DJANGO_DB_TYPE
+          value: "postgresql"
+        - name: C2D_DJANGO_DB_NAME
+          value: "mysite"
+        - name: C2D_DJANGO_DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: "django-1-postgresql-secret"
+              key: db-user
+        - name: C2D_DJANGO_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "django-1-postgresql-secret"
+              key: db-password
+        - name: C2D_DJANGO_DB_HOST
+          value: "django-1-postgresql-svc"
+        - name: C2D_DJANGO_DB_PORT
+          value: "5432"
+        ports:
+        - containerPort: 8080
+          name: uwsgi
+        - containerPort: 1717
+          name: stats
+        livenessProbe:
+          tcpSocket:
+            port: uwsgi
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        readinessProbe:
+          tcpSocket:
+            port: uwsgi
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        volumeMounts:
+        - name: django-data
+          mountPath: /sites
+      volumes:
+        - name: django-data
+          persistentVolumeClaim:
+            claimName: django-1-nfs-django
+      restartPolicy: Always
+---
+# Source: django/templates/nfs-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-1-nfs-server
+  labels:
+    name: "django-1"
+    component: nfs-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: nfs-server
+  template:
+    metadata:
+      labels:
+        role: nfs-server
+    spec:
+      initContainers:
+      - name: django-1-nfs-changeowner
+        image: busybox
+        command: ["sh", "-c", "mkdir -p /sites && chmod -R 777 /sites"]
+        volumeMounts:
+          - mountPath: /sites
+            name: django-1-nfs-server-pvc
+      containers:
+      - name: django-1-nfs-server
+        image: "marketplace.gcr.io/google/nfs-server1:1.3"
+        ports:
+          - name: nfs
+            containerPort: 2049
+          - name: mountd
+            containerPort: 20048
+        securityContext:
+          privileged: true
+        volumeMounts:
+          - mountPath: /exports
+            name: django-1-nfs-server-pvc
+      volumes:
+        - name: django-1-nfs-server-pvc
+          persistentVolumeClaim:
+            claimName: django-1-nfs-server-pvc
+---
+# Source: django/templates/nginx-statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: django-1-nginx
+  labels: &NginxDeploymentLabels
+    app.kubernetes.io/name: django-1
+    app.kubernetes.io/component: nginx-server
+spec:
+  selector:
+    matchLabels: *NginxDeploymentLabels
+  updateStrategy:
+    type: RollingUpdate
+  serviceName: django-1-nginx-svc
+  replicas: 1
+  volumeClaimTemplates:
+  - metadata:
+      name: django-1-nginx-pvc
+      labels: *NginxDeploymentLabels
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: standard
+      resources:
+        requests:
+          storage: 1Gi
+  template:
+    metadata:
+      labels: *NginxDeploymentLabels
+    spec:
+      terminationGracePeriodSeconds: 180
+      initContainers:
+      # This init container is reponsible for creating default index html file
+      - name: initialize-volume
+        image: gcr.io/ccm-ops-test-adhoc/django/debian:4.1
+        imagePullPolicy: Always
+        command:
+        - /bin/bash
+        - -euc
+        - |
+          if [[ ! -f /usr/share/nginx/html/index.html ]]; then
+          cat <<EOF >/usr/share/nginx/html/index.html
+          <!DOCTYPE>
+          <html>
+            <head>
+              <title>Web Server Application</title>
+            </head>
+            <body>
+               <h1>Web site powered by NGINX</h1>
+               <p>This page is under construction. Please come back soon!</p>
+            </body>
+          </html>
+          EOF
+          fi
+        volumeMounts:
+        - name: django-1-nginx-pvc
+          mountPath: /usr/share/nginx/html
+      containers:
+      - name: nginx
+        image: "gcr.io/ccm-ops-test-adhoc/django/nginx:4.1"
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        ports:
+        - name: nginx
+          containerPort: 80
+          protocol: TCP
+        - name: nginx-https
+          containerPort: 443
+          protocol: TCP
+        - name: prometheus
+          containerPort: 9113
+          protocol: TCP
+        livenessProbe:
+          tcpSocket:
+            port: nginx
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: nginx
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        volumeMounts:
+        - name: django-1-nginx-pvc
+          mountPath: /usr/share/nginx/html
+        - name: nginx-config
+          mountPath: /etc/nginx/conf.d
+          readOnly: true
+        - name: certs
+          mountPath: /etc/nginx/certs
+          readOnly: true
+      - name: prometheus-exporter
+        image: gcr.io/ccm-ops-test-adhoc/django/nginx-exporter:4.1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9113
+          name: prometheus-port
+        env:
+        - name: "SCRAPE_URI"
+          value: "http://localhost/stub_status"
+        - name: NGINX_RETRY_INTERVAL
+          value: "10s"
+        - name: NGINX_RETRIES
+          value: "40"
+      
+      volumes:
+      - name: certs
+        secret:
+          secretName: django-1-nginx-secret
+      - name: nginx-config
+        configMap:
+          name: django-1-nginx-configmap
+          items:
+          - key: nginx-config.conf
+            path: nginx-config.conf
+---
+# Source: django/templates/postgresql-statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: django-1-postgresql
+  labels: &PostgreSQLLabels
+    app.kubernetes.io/name: django-1
+    app.kubernetes.io/component: postgresql-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels: *PostgreSQLLabels
+  serviceName: django-1-postgresql-svc
+  template:
+    metadata:
+      labels: *PostgreSQLLabels
+    spec:
+      containers:
+      - name: postgresql
+        image: marketplace.gcr.io/google/postgresql13:13.8
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        ports:
+        - containerPort: 5432
+          name: postgres
+        volumeMounts:
+        - name: django-1-postgresql-pvc
+          mountPath: /var/lib/postgresql/data
+        env:
+        - name: PGDATA
+          value: "/var/lib/postgresql/data/pgdata"
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: django-1-postgresql-secret
+              key: db-user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: django-1-postgresql-secret
+              key: db-password
+      - name: prometheus-exporter
+        image: marketplace.gcr.io/google/postgresql-exporter0:0.8.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9187
+          name: exporter
+        env:
+        - name: "DATA_SOURCE_URI"
+          value: "localhost:5432/postgres?sslmode=disable"
+        - name: "DATA_SOURCE_USER"
+          valueFrom:
+            secretKeyRef:
+              name: django-1-postgresql-secret
+              key: db-user
+        - name: "DATA_SOURCE_PASS"
+          valueFrom:
+            secretKeyRef:
+              name: django-1-postgresql-secret
+              key: db-password
+  volumeClaimTemplates:
+  - metadata:
+      name: django-1-postgresql-pvc
+      labels: *PostgreSQLLabels
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      storageClassName: 
+      resources:
+        requests:
+          storage: 8Gi
+---
+# Source: django/templates/application.yaml
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "django-1"
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIIAAACCCAMAAAC93eDPAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAMAUExURQAAAACbAACbAACbAACbAACbAACbAACbAACbAACbAACbAACbAACYAACbAACbAACbAACbAACbAACbAACbAACbAACbAACWAACbAACZAACbAACaAACbAACbAACbAACaAACbAACbAACbAACbAACaAACaAACbAACZAACbAACbAACbAACbAACbAACaAACaAACbAACaAACbAACZAACbAACaAACaAACbAACaAACbAACbAACaAACaAACaAACaAACaAACbAACbAACaAACbAACbAACZAACbAACaAACbAACbAACYAACbAACaAACbAACZAACbAACbAACbAACaAACbAACbAACbAACbAACbAACaAACbAACbAACZAACaAACaAACbAACaAACaAACaAACbAACaAACbAACbAACbAACZAACaAACbAACaAACaAACbAACaAACaAACaAACaAACbAACbAACbAACaAACbAACbAACbAACaAACbAACaAACZAACaAACaAACbAACaAACaAACbAACbAACbAACbAACbAACaAACaAACaAACbAACbAACbAACaAACbAACaAACaAACbAACaAACaAACbAACaAACbAACbAACbAACbAACbAACbAACXAACZAACaAACbAACbAACbAACaAACbAACbAACbAACaAACbAACbAACbAACbAACbAACaAACbAACZAACaAACbAACbAACbAACbAACbAACaAACaAACaAACbAACaAACbAACbAACZAACaAACVAACbAACbAACaAACbAACbAACaAACaAACbAACbAACbAACbAACbAACbAACbAACaAACaAACbAACbAACaAACbAACbAACbAACbAACbAACaAACbAACZAACaAACZAACbAACbAACbAACbAACaAACZAACaAACbAACaAACbAACbAACbAACaAACaAACbAACbAACbAACaAACaAACbAACaAACbAACbAACaAACaAACaAACaAACaAACaAACaAACaAACbAACaAACaAACbAACbAACbAACaAACbANJeAvUAAAD/dFJOUwCoSvxPpP77+swo6wOmkD/1+HXx/YIB9wbOCL2j8Az5uYj0Hw3hDoHDwJ3qBxqgNewC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
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": "nginx", "partner_name": "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: "django-1"
+spec:
+  descriptor:
+    type: Django by Google Click to Deploy
+    version: "4.1"
+    description: |-
+      NGINX is open-source software for web serving, reverse proxying,
+      caching, load balancing, and media streaming.
+
+      NGINX can also function as a proxy server for email (IMAP, POP3, and SMTP)
+      and a reverse proxy and load balancer for HTTP, TCP, and UDP servers.
+
+      If you would like to learn more about NGINX, please,
+      visit [NGINX website](https://www.nginx.com/).
+
+      # Support
+
+      This image is built by Google. It is your responsibility to keep
+      container images you run or store in your own repositories
+      up to date with security patches.
+
+      Community support for NGINX is available on
+      [Stack Overflow](http://stackoverflow.com/questions/tagged/nginx/).
+
+      Please report issues with this NGINX container image via
+      the [GitHub Issue Tracker](https://github.com/GoogleCloudPlatform/nginx-docker/issues).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy NGINX'
+      url: https://github.com/GoogleCloudPlatform/nginx-docker/blob/master/1/README.md
+    - description: 'NGINX: Getting Started'
+      url: https://www.nginx.com/resources/wiki/start/
+    notes: |-
+      # Configuring the web content of NGINX server
+
+      Follow this instructions to upload web content to your Web Server:
+
+      1. Navigate to a folder where directory containing your website is located
+         (e.g. assuming that your web content is stored in `html` directory)
+      1. Run the following command to copy the content of `html` directory to the Persistent Volume:
+         ```
+         kubectl cp html django-1-nginx-0:/usr/share/nginx -n default
+         ```
+      1. Set permissions so NGINX server has access to the newly uploaded `html` directory:
+         ```
+         kubectl exec django-1-nginx-0 -n default -- chmod -R a+r /usr/share/nginx/html
+         ```
+      # Configuring SSL certificate for NGINX server
+
+      This version of NGINX application uses pre-generated certificate which is self-signed and is meant to be
+      only a temporary solution just to exemplify SSL/TLS configuration.
+
+      Generate a new self-signed certificate for your NGINX server using `openssl` command
+      or use a signed certifcate that you already own.
+
+      For example, if you would like to generate self-signed certifcate and private key
+      you could run the following command:
+      ```
+      openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout https1.key -out https1.cert
+      ```
+
+      Configure your own certificate using the following command:
+      ```
+      export CERT_FILE=https1.cert
+      export KEY_FILE=https1.key
+      export APP_INSTANCE_NAME=<name of your NGINX instance, e.g. nginx-1>
+      export NAMESPACE=<name of your Kurbernetes namespace, e.g. default>
+
+      # using --dry-run option because we update existing secret resource
+      # if we used kubectl create... for existing secret we would get an error
+      kubectl --namespace default create secret generic django-1-nginx-secret \
+        --from-file=$CERT_FILE --from-file=$KEY_FILE \
+        --dry-run -o yaml | kubectl apply -f -
+      ```
+      where .cert is a file containing SSL certificate and .key file contains private part of it.
+
+      Run these commands to restart all Pods without causing a downtime
+      ```
+      PODS=$(kubectl get pods --namespace default -l app.kubernetes.io/name=django-1 | awk 'FNR>1 {print $1}')
+
+      TIMEOUT=60
+
+      for i in ${PODS[@]}; do
+        echo "Deleting Pod: $i..."
+        kubectl delete pod $i --namespace default
+        echo "Sleeping for $TIMEOUT seconds..."
+        sleep $TIMEOUT
+      done
+      ```
+  info:
+  - name: Nginx External IP
+    type: Reference
+    valueFrom:
+      serviceRef:
+        name: django-1-nginx-svc
+        protocol: HTTPS
+  - name: Application Namespace
+    value: default
+  - name: Nginx Configuration
+    value: nginx-config.conf
+  - name: Nginx Cert
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: https1.cert
+        name: django-1-nginx-secret
+  - name: Nginx Key
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: https1.key
+        name: django-1-nginx-secret
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "django-1"
+  componentKinds:
+  - group: v1
+    kind: ConfigMap
+  - group: v1
+    kind: PersistentVolume
+  - group: v1
+    kind: PersistentVolumeClaim
+  - group: apps/v1
+    kind: StatefulSet
+  - group: apps/v1
+    kind: Deployment
+  - group: v1
+    kind: Secret
+  - group: v1
+    kind: Service
