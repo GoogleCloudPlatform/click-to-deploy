@@ -5,38 +5,33 @@ actions:
     expect:
       exitCode:
         equals: 0
-- name: Wait for the PD get ready
+- name: Wait for the Crate get ready
   bashTest:
-    script: kubectl wait --for=condition=ready --timeout=120s --namespace $NAMESPACE pod "${APP_INSTANCE_NAME}-pd-0"
+    script: |
+      kubectl wait --for=condition=ready --timeout=120s --namespace $NAMESPACE pod "${APP_INSTANCE_NAME}-crate-0"
+      kubectl wait --for=condition=ready --timeout=120s --namespace $NAMESPACE pod "${APP_INSTANCE_NAME}-crate-1"
+      kubectl wait --for=condition=ready --timeout=120s --namespace $NAMESPACE pod "${APP_INSTANCE_NAME}-crate-2"
     expect:
       exitCode:
         equals: 0
-- name: Wait for the TiKV get ready
+- name: Create empty table
   bashTest:
     script: |
-      kubectl wait --for=condition=ready --timeout=120s --namespace $NAMESPACE pod "${APP_INSTANCE_NAME}-tikv-0"
-      kubectl wait --for=condition=ready --timeout=120s --namespace $NAMESPACE pod "${APP_INSTANCE_NAME}-tikv-1"
-      kubectl wait --for=condition=ready --timeout=120s --namespace $NAMESPACE pod "${APP_INSTANCE_NAME}-tikv-2"
-    expect:
-      exitCode:
-        equals: 0
-- name: Run /tikvtest
-  bashTest:
-    script: kubectl exec "${APP_INSTANCE_NAME}-pd-0" --namespace $NAMESPACE -- /tikvtest
+      kubectl exec "${APP_INSTANCE_NAME}-crate-0" --namespace $NAMESPACE -- \
+      /bin/bash -c '2>&1 crash -c "CREATE TABLE test (id integer);"'                                              
     expect:
       stdout:
-        matches: 'Successfully put TestKey:TestValue to tikv'
+        matches: 'CONNECT OK'
       stdout:
-        matches: 'found val: TestValue for key: TestKey'
-      stdout:
-        matches: 'key: TestKey deleted'
-      stdout:
-        matches: 'found val:  for key: TestKey'
-- name: Check cluster health
+        matches: 'CREATE OK, 1 row affected'
+- name: Show tables
   bashTest:
     script: |
-      curl -s "${APP_INSTANCE_NAME}-pd:2379/pd/api/v1/health"| grep -c '"health": true'
+      kubectl exec "${APP_INSTANCE_NAME}-crate-0" --namespace $NAMESPACE -- \
+      /bin/bash -c '2>&1 crash -c "SHOW TABLES;"'                                              
     expect:
       stdout:
-        matches: "3"
+        matches: 'CONNECT OK'
+      stdout:
+        matches: 'SHOW 1 row in set'
 
