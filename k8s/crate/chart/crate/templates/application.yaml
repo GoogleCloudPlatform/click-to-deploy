@@ -13,7 +13,7 @@ spec:
     type: crate
     version: "{{ .Values.crate.image.tag }}"
     description: |-
-      crate is a highly scalable, low latency, and easy to use key-value database.
+      Crate is a distributed SQL database that makes it simple to store and analyze massive amounts of machine data in real-time.
       # Support
       Google does not offer support for this solution. However, community support is available on
       [Stack Overflow](https://stackoverflow.com/questions/tagged/crate/).
@@ -22,16 +22,68 @@ spec:
     - name: Google Click to Deploy
       url: https://cloud.google.com/solutions/#click-to-deploy
     links:
-    - description: 'User Guide: Google Click to Deploy crate'
+    - description: 'User Guide: Google Click to Deploy Crate'
       url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/crate/README.md
-    - description: 'Official documentation for crate'
-      url: https://mariadb.com/kb/en/library/documentation/
+    - description: 'Official documentation for Crate'
+      url: https://crate.io/docs/crate/reference/en/5.1/
     notes: |-
-      Lorem
-      Ipsum
+      {{ if .Values.enablePublicServiceAndIngress }}
+      # Open your Crate UI
+      Get the external IP of your Crate UI using the following command:
+
+      ```
+      SERVICE_IP=$(kubectl get ingress {{ .Release.Name }}-crate-ui \
+        --namespace {{ .Release.Namespace }} \
+        --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+      echo "https://${SERVICE_IP}/"
+      ```
+
+      The command shows you the URL of your site.
+
+      # Update TLS certificate for Crate
+
+      By default the application used self-signed certificate. You can follow
+      [Update TLS certificate for Crate section](https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/crate/README.md#update-tls-certificate-for-crate)
+      to update it.
+
+      {{ else }}
+
+      # Open your Crate UI
+
+      Crate UI is exposed in a ClusterIP-only service `{{ .Release.Name }}-crate-ui`. To connect to
+      Crate UI, you can either expose a public service endpoint or keep it private, but connect
+      from you local environment with `kubectl port-forward`.
+
+      ## Forward WordPress port in local environment
+
+      You can use port forwarding feature of `kubectl` to forward WordPress's port to your local
+      machine. Run the following command in background:
+
+      ```shell
+      kubectl port-forward \
+        --namespace {{ .Release.Namespace }} \
+        svc/{{ .Release.Name }}-crate-ui \
+        4200:4200
+      ```
+
+      Now you can access Crate UI with [http://localhost:4200](http://localhost:4200).
+
+      {{ end }}
   info:
-  - name: MariaDB Application Namespace
-    value: {{ .Release.Namespace }}
+  {{ if .Values.enablePublicServiceAndIngress }}
+  - name: Crate UI address
+    type: Reference
+    valueFrom:
+      ingressRef:
+        name: {{ .Release.Name }}-crate-ui
+        protocol: HTTPS
+  {{ else }}
+  - name: Forward Crate UI port locally
+    value: kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-crate-ui 4200:4200
+  - name: Crate UI address
+    value: http://localhost:4200/
+  {{ end }}
   selector:
     matchLabels:
       app.kubernetes.io/name: "{{ .Release.Name }}"

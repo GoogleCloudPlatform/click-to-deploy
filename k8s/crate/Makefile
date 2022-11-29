@@ -30,6 +30,10 @@ C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)
 
+ifdef PUBLIC_SERVICE_AND_INGRESS_ENABLED
+  PUBLIC_SERVICE_AND_INGRESS_ENABLED_FIELD = , "enablePublicServiceAndIngress": $(PUBLIC_SERVICE_AND_INGRESS_ENABLED)
+endif
+
 NAME ?= $(APP_ID)-1
 ifdef METRICS_EXPORTER_ENABLED
   METRICS_EXPORTER_ENABLED_FIELD = , "metrics.exporter.enabled": $(METRICS_EXPORTER_ENABLED)
@@ -38,6 +42,8 @@ endif
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
+  $(PUBLIC_SERVICE_AND_INGRESS_ENABLED_FIELD) \
+  $(METRICS_EXPORTER_ENABLED_FIELD) \
 }
 
 # app_v2.Makefile provides the main targets for installing the application.
