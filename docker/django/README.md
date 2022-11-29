@@ -145,6 +145,7 @@ These are the environment variables understood by the container image.
 |:-------------|:----------------|
 |C2D_DJANGO_SITENAME| Website name. |
 |C2D_DJANGO_PORT| Port where UWSGI runs. |
+|C2D_DJANGO_MODE| `socket` (default) or `http`. |
 |C2D_DJANGO_ALLOWED_HOSTS| Hosts allowed to perform requests. |
 |C2D_DJANGO_DB_TYPE| `postgresql` or `mysql`. |
 |C2D_DJANGO_DB_NAME| Database name. |
@@ -152,6 +153,7 @@ These are the environment variables understood by the container image.
 |C2D_DJANGO_DB_PASSWORD| Database password. |
 |C2D_DJANGO_DB_HOST| Database host. |
 |C2D_DJANGO_DB_PORT| Database port. |
+
 
 ## <a name="references-volumes"></a>Volumes
 
