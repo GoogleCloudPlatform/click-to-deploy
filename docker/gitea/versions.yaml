@@ -1,0 +1,21 @@
+#Copyright 2021 Google LLC
+
+#Use of this source code is governed by an MIT-style
+#license that can be found in the LICENSE file or at
+#https://opensource.org/licenses/MIT.
+
+versions:
+  - dir: '1/debian11/1.16'
+    repo: 'gitea1'
+    tags:
+    - '1.16.9-debian11'
+    - '1.16.9'   
+    - '1.16-debian11'
+    - '1.16'
+    - '1-debian11'
+    - '1'
+    - 'latest'
+    from: 'marketplace.gcr.io/google/debian11:latest'
+    packages:
+      gitea:
+        version: 1.16

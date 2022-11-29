@@ -1,0 +1,10 @@
+# Crate Configuration
+
+network.host: _local_,_site_
+
+# Paths
+path:
+  logs: /data/log
+  data: /data/data
+blobs:
+  path: /data/blobs
