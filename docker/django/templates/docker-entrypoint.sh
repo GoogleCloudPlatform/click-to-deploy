@@ -133,7 +133,7 @@ echo "Starting Django container..."
 
 # Run uwsgi
 cd "/sites/${C2D_DJANGO_SITENAME}" \
-  && /usr/bin/tini uwsgi -- --socket "0.0.0.0:${C2D_DJANGO_PORT}" --module "${C2D_DJANGO_SITENAME}.wsgi" --stats :1717 --py-autoreload 2 --lazy-apps
+  && /usr/bin/tini uwsgi -- --socket "0.0.0.0:${C2D_DJANGO_PORT}" --module "${C2D_DJANGO_SITENAME}.wsgi" --stats :1717 --py-autoreload 2 --lazy-apps --die-on-term
 
 
 # echo "import os" >> "${SETTINGS_FILE}"
