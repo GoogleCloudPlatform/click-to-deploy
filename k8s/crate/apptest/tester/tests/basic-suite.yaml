@@ -17,7 +17,7 @@ actions:
 - name: Create empty table
   bashTest:
     script: |
-      kubectl exec "${APP_INSTANCE_NAME}-crate-0" --namespace $NAMESPACE -- \
+      kubectl exec "${APP_INSTANCE_NAME}-crate-0" -c crate --namespace $NAMESPACE -- \
       /bin/bash -c '2>&1 crash -c "CREATE TABLE test (id integer);"'                                              
     expect:
       stdout:
@@ -27,7 +27,7 @@ actions:
 - name: Show tables
   bashTest:
     script: |
-      kubectl exec "${APP_INSTANCE_NAME}-crate-0" --namespace $NAMESPACE -- \
+      kubectl exec "${APP_INSTANCE_NAME}-crate-0" -c crate --namespace $NAMESPACE -- \
       /bin/bash -c '2>&1 crash -c "SHOW TABLES;"'                                              
     expect:
       stdout:

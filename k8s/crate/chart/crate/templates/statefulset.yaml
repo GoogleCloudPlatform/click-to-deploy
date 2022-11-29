@@ -30,7 +30,7 @@ spec:
             - -Ccluster.initial_master_nodes={{ .Release.Name }}-crate-0
             - -Ccluster.name={{ .Release.Name }}
             - -Cdiscovery.seed_providers=srv
-            - -Cdiscovery.srv.query=_transport._tcp{{ .Release.Name }}-crate.{{ .Release.Namespace }}.svc.cluster.local
+            - -Cdiscovery.srv.query=_transport._tcp.{{ .Release.Name }}-crate.{{ .Release.Namespace }}.svc.cluster.local
             - -Cnetwork.host="0.0.0.0"
             - -Cnode.name="$POD_NAME"
             - -Cgateway.expected_data_nodes={{ .Values.crate.replicas }}
