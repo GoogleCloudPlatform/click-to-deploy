@@ -52,6 +52,8 @@ endif
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
+  $(PUBLIC_SERVICE_AND_INGRESS_ENABLED_FIELD) \
+  $(METRICS_EXPORTER_ENABLED_FIELD) \
 }
 
 # c2d_deployer.Makefile provides the main targets for installing the application.
