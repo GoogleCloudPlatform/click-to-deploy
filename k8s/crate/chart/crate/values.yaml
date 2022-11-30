@@ -3,7 +3,6 @@ crate:
     repo: null
     tag: null
   replicas: 3
-  clusterName: null
   heapSize: 1  # GiB
   persistence:
     storageClass: null

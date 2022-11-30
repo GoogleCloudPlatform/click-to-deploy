@@ -94,11 +94,11 @@ Choose an instance name and
 for the app. In most cases, you can use the `default` namespace.
 
 ```shell
-export APP_INSTANCE_NAME=tikv
+export APP_INSTANCE_NAME=crate
 export NAMESPACE=default
 ```
 
-For the persistent disk provisioning of the PostgreSQL StatefulSet and NFS Shared Volume, you will need to:
+For the persistent disk provisioning of the Crate StatefulSet, you will need to:
 
 - Set the StorageClass name. Check your available options using the command below:
   * ```kubectl get storageclass```
@@ -108,31 +108,46 @@ For the persistent disk provisioning of the PostgreSQL StatefulSet and NFS Share
 
 ```shell
 export DEFAULT_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
-export TIKV_PERSISTENT_DISK_SIZE="2Gi"
+export CRATE_PERSISTENT_DISK_SIZE="5Gi"
 ```
 
 Set up the image tag:
 
 It is advised to use a stable image reference, which you can find on:
-- [TiKV - Marketplace Container Registry](https://marketplace.gcr.io/google/tikv5).
+- [Crate - Marketplace Container Registry](https://marketplace.gcr.io/google/crate5).
 For example:
 
 ```shell
-export TIKV_TRACK=5.3
+export CRATE_TRACK=5.1
 export METRICS_EXPORTER_TAG=0.5
 ```
 
 Configure the container images:
 
 ```shell
-export IMAGE_TIKV=marketplace.gcr.io/google/tikv5
+export IMAGE_CRATE=marketplace.gcr.io/google/crate5
 export IMAGE_METRICS_EXPORTER=k8s.gcr.io/prometheus-to-sd:${METRICS_EXPORTER_TAG}
 ```
 
-By default, TiKV deployment has 3 replica, but you can choose to set the number of replicas.
+By default, Crate statefulset has 3 replicas, but you can choose to set the number of replicas.
 
 ```shell
-export TIKV_REPLICAS=3
+export CRATE_REPLICAS=3
+```
+
+By default, Java heapsize is 1Gb, but you can choose another size (in gigabytes):
+
+```shell
+export CRATE_HEAPSIZE=1
+```
+
+Expose the Service externally and configure Ingress:
+
+By default, the Service isn't exposed externally. To enable this option, change
+the value to `true`.
+
+```shell
+export PUBLIC_SERVICE_AND_INGRESS_ENABLED=false
 ```
 
 (Optional) Enable Stackdriver Metrics Exporter:
@@ -147,21 +162,49 @@ this option, change the value to `true`.
 export METRICS_EXPORTER_ENABLED=false
 ```
 
+#### Create TLS certificate for Crate
+
+> Note: You can skip this step if you have not set up external access.
+
+1.  If you already have a certificate that you want to use, copy your
+    certificate and key pair to the `/tmp/tls.crt`, and `/tmp/tls.key` files,
+    then skip to the next step.
+
+    To create a new certificate, run the following command:
+
+    ```shell
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+        -keyout /tmp/tls.key \
+        -out /tmp/tls.crt \
+        -subj "/CN=crate/O=crate"
+    ```
+
+2.  Set `TLS_CERTIFICATE_KEY` and `TLS_CERTIFICATE_CRT` variables:
+
+    ```shell
+    export TLS_CERTIFICATE_KEY="$(cat /tmp/tls.key | base64)"
+    export TLS_CERTIFICATE_CRT="$(cat /tmp/tls.crt | base64)"
+    ```
+
 #### Expand the manifest template
 
 Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to your app.
 
 ```shell
-helm template "${APP_INSTANCE_NAME}" chart/tikv \
+helm template "${APP_INSTANCE_NAME}" chart/crate \
     --namespace "${NAMESPACE}" \
-    --set tikv.image.repo="${IMAGE_TIKV}" \
-    --set tikv.image.tag="${TIKV_TRACK}" \
-    --set tikv.persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \
-    --set tikv.persistence.size="${TIKV_PERSISTENT_DISK_SIZE}" \
-    --set tikv.replicas="${TIKV_REPLICAS:-1}" \
+    --set crate.image.repo="${IMAGE_CRATE}" \
+    --set crate.image.tag="${CRATE_TRACK}" \
+    --set crate.persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \
+    --set crate.persistence.size="${CRATE_PERSISTENT_DISK_SIZE}" \
+    --set crate.replicas="${CRATE_REPLICAS:-1}" \
+    --set crate.heapsize="${CRATE_HEAPSIZE:-1}" \
     --set metrics.image="${IMAGE_METRICS_EXPORTER}" \
     --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED}" \
+    --set enablePublicServiceAndIngress="${PUBLIC_SERVICE_AND_INGRESS_ENABLED}" \
+    --set tls.base64EncodedPrivateKey="${TLS_CERTIFICATE_KEY}" \
+    --set tls.base64EncodedCertificate="${TLS_CERTIFICATE_CRT}" \
     > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
@@ -181,34 +224,34 @@ To get the Cloud Console URL for your app, run the following command:
 echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}/${NAMESPACE}/${APP_INSTANCE_NAME}"
 ```
 
-### Access TiKV through an external IP address
+### Access crate through an external IP address
 
 By default, the application does not have an external IP address. To create an external IP address, run the following command:
 
 ```
-kubectl patch svc "$APP_INSTANCE_NAME-pd" \
+kubectl patch svc "$APP_INSTANCE_NAME-crate-ui" \
   --namespace "$NAMESPACE" \
   --patch '{"spec": {"type": "LoadBalancer"}}'
 ```
 
 > **NOTE:** It might take some time for the external IP to be provisioned.
 
-### Access the TiKV's PD service
+### Access the Crate UI service
 
-If you run your TiKV cluster behind a LoadBalancer, you can get the external IP of the PD service using the following command:
+If you run your crate cluster behind a LoadBalancer, you can get the external IP of the UI service using the following command:
 
 ```shell
-PD_IP=$(kubectl get svc ${APP_INSTANCE_NAME-pd} \
+UI_IP=$(kubectl get svc ${APP_INSTANCE_NAME-crate-ui} \
   --namespace ${NAMESPACE} \
   --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
-echo "$PD_IP"
+echo "$UI_IP"
 
 # App metrics
 
 ## Prometheus metrics
 
-The app can be configured to expose PD and TiKV metrics 
+The app can be configured to expose crate metrics 
 in the [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
 
 ### Configuring Prometheus to collect the metrics
@@ -241,12 +284,12 @@ You can remove existing metric descriptors using
 
 # Scaling up or down
 
-To change the number of TiKV replicas, use the following
+To change the number of crate replicas, use the following
 command, where `REPLICAS` is your desired number of replicas:
 
 ```shell
 export REPLICAS=3
-kubectl scale statefulset "${APP_INSTANCE_NAME}-tikv" --namespace ${NAMESPACE} --replicas=${REPLICAS}
+kubectl scale statefulset "${APP_INSTANCE_NAME}-crate" --namespace ${NAMESPACE} --replicas=${REPLICAS}
 ```
 
 # Backup and restore
@@ -255,17 +298,17 @@ To back up the application, you must back up the database.
 
 ### Set up your local environment
 
-Set up environment variables to match your TiKV installation:
+Set up environment variables to match your crate installation:
 
 ```shell
-export APP_INSTANCE_NAME=tikv
+export APP_INSTANCE_NAME=crate
 export NAMESPACE=default
 ```
 
 ## Backing up data
 
-To back up the database, you should use the official tool `br`.
-Use the following commands:
+To back up the database, you should copy required tables.
+Use the following script:
 ```shell
 # `--app` and `--namespace` are required
 scripts/backup.sh --app ${APP_INSTANCE_NAME} --namespace ${NAMESPACE}
@@ -273,15 +316,14 @@ scripts/backup.sh --app ${APP_INSTANCE_NAME} --namespace ${NAMESPACE}
 
 ### Restore your database
 
-To restore the database, you should use the official tool `br`.
+To restore the database, you should use the script and restore dumped tables.
 Use the following commands:
 
 ```shell
-export TIKV_BACKUP_DIR=/path/to/your/backup
+export CRATE_BACKUP_DIR=/path/to/your/backup
 # `--app`, `--namespace` and `--backup-dir` are required
 scripts/restore.sh --app ${APP_INSTANCE_NAME} --namespace ${NAMESPACE} --backup-dir ${PATH_TO_YOUR_BACKUP}
 ```
-
 
 # Uninstall the app
 
@@ -290,7 +332,7 @@ scripts/restore.sh --app ${APP_INSTANCE_NAME} --namespace ${NAMESPACE} --backup-
 - In the Cloud Console, open
    [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
 
-- From the list of apps, click **Tikv**.
+- From the list of apps, click **crate**.
 
 - On the Application Details page, click **Delete**.
 
@@ -301,7 +343,7 @@ scripts/restore.sh --app ${APP_INSTANCE_NAME} --namespace ${NAMESPACE} --backup-
 Set your installation name and Kubernetes namespace:
 
 ```shell
-export APP_INSTANCE_NAME=tikv
+export APP_INSTANCE_NAME=crate
 export NAMESPACE=default
 ```
 

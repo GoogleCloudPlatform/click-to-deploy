@@ -18,9 +18,6 @@
 
 set -exuo pipefail
 
-# Set BR version
-br_version=6.1.0
-
 while [[ "$#" != 0 ]]; do
   case "$1" in
     --app)
@@ -33,9 +30,9 @@ while [[ "$#" != 0 ]]; do
       echo "- namespace: ${namespace}"
       shift 2
       ;;
-    --backup-dir)
-      backup_dir="$2"
-      echo "- backup-dir: ${backup_dir}"
+    --table)
+      table="$2"
+      echo "- table: ${table}"
       shift 2
       ;;
     *)
@@ -44,25 +41,24 @@ while [[ "$#" != 0 ]]; do
   esac
 done;
 
+remote_backup_dir="/tmp"
+crate_master_name="${app}-crate-0"
+
 # Check if required flags were provided:
-for var in app namespace backup_dir; do
+for var in app namespace table; do
   if ! [[ -v "${var}" ]]; then
     echo "Missing flag --${var} - EXIT"
     exit 1
   fi
 done
 
-remote_backup_dir="/tmp"
-tikv_pd_pod0_name="${app}-pd-0"
+local_backup_dir="/tmp/crate"
 
-echo "Restoring database from provided backup..."
-kubectl cp -n "${namespace}" "${backup_dir}" "${tikv_pd_pod0_name}:${remote_backup_dir}"
-kubectl exec "${tikv_pd_pod0_name}" -n "${namespace}" \
+echo "Restoring ${table} from provided backup..."
+kubectl cp -n "${namespace}" "${local_backup_dir}" "${crate_master_name}:${remote_backup_dir}"
+kubectl exec "${crate_master_name}" -n "${namespace}" \
   -- /bin/bash -c "\
-     curl -L https://download.pingcap.org/tidb-community-toolkit-v${br_version}-linux-amd64.tar.gz -o /tidb.tar.gz && \\
-     tar xvf /tidb.tar.gz tidb-community-toolkit-v${br_version}-linux-amd64/br-v${br_version}-linux-amd64.tar.gz && \
-     tar xvf tidb-community-toolkit-v${br_version}-linux-amd64/br-v${br_version}-linux-amd64.tar.gz --directory / && \
-     /br restore raw --pd "localhost:2379" -s "local://${remote_backup_dir}" --cf default"
+     crash -c \"COPY ${table} FROM '/tmp/${table}_*_.json'\""
 
-echo "Backup from ${backup_dir} successfully restored."
+echo "Table ${table} was successfully restored."
 echo "Done."
