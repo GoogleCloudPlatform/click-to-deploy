@@ -1,8 +1,7 @@
 # Overview
 
-TiKV is an open source distributed Key-Value database which is based on the design of Google Spanner and HBase, 
-but it is simpler without dependency on any distributed file system. 
-It has primary features including Geo-Replication, Horizontal scalability, Consistent distributed transactions, Coprocessor support.
+CrateDB is a distributed SQL database that makes it simple to store and analyze massive amounts of data in real-time. 
+CrateDB offers the benefits of an SQL database and the scalability and flexibility typically associated with NoSQL databases.
 
 ## About Google Click to Deploy
 
@@ -10,7 +9,7 @@ Popular open stacks on Kubernetes, packaged by Google.
 
 ## Architecture
 
-![Architecture diagram](resources/tikv-k8s-app-architecture.png)
+![Architecture diagram](resources/crate-k8s-app-architecture.png)
 
 This app offers "list of resources".
 
@@ -18,9 +17,9 @@ This app offers "list of resources".
 
 ## Quick install with Google Cloud Marketplace
 
-Get up and running with a few clicks! To install this TiKV app to a
+Get up and running with a few clicks! To install this Crate app to a
 Google Kubernetes Engine cluster via Google Cloud Marketplace, follow the
-[on-screen instructions](https://console.cloud.google.com/marketplace/details/google/tikv).
+[on-screen instructions](https://console.cloud.google.com/marketplace/details/google/crate).
 
 ## Command-line instructions
 
@@ -49,7 +48,7 @@ gcloud auth configure-docker
 Create a new cluster from the command-line:
 
 ```shell
-export CLUSTER=tikv-cluster
+export CLUSTER=crate-cluster
 export ZONE=us-west1-a
 
 gcloud container clusters create "${CLUSTER}" --zone "${ZONE}"
