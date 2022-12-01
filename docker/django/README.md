@@ -52,7 +52,7 @@ cat > nginx.conf <<EOF
     server {
         # the port your site will be served on
         listen      8081;
-        listen 443 ssl;
+
         location /stub_status {
           stub_status on;
           access_log off;
@@ -86,30 +86,24 @@ Use the following content for the `docker-compose.yml` file, then run `docker-co
 ```yaml
 version: '3'
 services:
-  nginx:
-    image: marketplace.gcr.io/google/nginx1
-    ports:
-      - "127.0.0.1:8081:8081"
-    volumes:
-      - $PWD/nginx.conf:/etc/nginx/conf.d/default.conf
   db:
     image: marketplace.gcr.io/google/postgresql13
     environment:
       - PGDATA=/var/lib/postgresql/data/pgdata
       - POSTGRES_USER=django
       - POSTGRES_PASSWORD=db1234
+      - POSTGRES_DB=django
     ports:
       - "127.0.0.1:5432:5432"
     volumes:
       - ./db_data/:/var/lib/postgresql/data
   django:
-    image: marketplace.gcr.io/google/django4
+    image: gcr.io/ccm-ops-test-adhoc/django4:4.1
     depends_on:
-    - nginx
     - db
     environment:
       - C2D_DJANGO_SITENAME=mysite
-      - C2D_DJANGO_ALLOWED_HOSTS='.localhost', '127.0.0.1', '[::1]', 'nginx'
+      - C2D_DJANGO_ALLOWED_HOSTS='.localhost', '127.0.0.1', '[::1]'
       - C2D_DJANGO_PORT=8080
       - C2D_DJANGO_DB_TYPE=postgresql
       - C2D_DJANGO_DB_NAME=django
@@ -117,14 +111,21 @@ services:
       - C2D_DJANGO_DB_PASSWORD=db1234
       - C2D_DJANGO_DB_HOST=db
       - C2D_DJANGO_DB_PORT=5432
+      - C2D_DJANGO_MODE=socket
     ports:
       - "127.0.0.1:8080:8080"
       - "127.0.0.1:1717:1717"
+  nginx:
+    image: marketplace.gcr.io/google/nginx1
+    depends_on:
+    - django
+    ports:
+      - "127.0.0.1:8081:8081"
     volumes:
-      - ./data/:/sites
+      - $PWD/nginx.conf:/etc/nginx/conf.d/default.conf
 ```
 
-You should be able to view Django homepage at: http://localhost:8081/
+You should be able to view Django homepage through NGINX at: http://localhost:8081/
 
 # <a name="references"></a> References
 
