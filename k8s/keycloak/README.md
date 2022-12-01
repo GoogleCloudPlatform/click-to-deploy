@@ -186,6 +186,30 @@ kubectl create clusterrole "${KEYCLOAK_SERVICE_ACCOUNT}-role" --verb=get,list --
 kubectl create clusterrolebinding "${KEYCLOAK_SERVICE_ACCOUNT}-rule" --clusterrole="${KEYCLOAK_SERVICE_ACCOUNT}-role" --serviceaccount="${NAMESPACE}:${KEYCLOAK_SERVICE_ACCOUNT}"
 ```
 
+#### Create TLS certificate for Keycloak
+
+> Note: You can skip this step if you have not set up external access.
+
+1.  If you already have a certificate that you want to use, copy your
+    certificate and key pair to the `/tmp/tls.crt`, and `/tmp/tls.key` files,
+    then skip to the next step.
+
+    To create a new certificate, run the following command:
+
+    ```shell
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+        -keyout /tmp/tls.key \
+        -out /tmp/tls.crt \
+        -subj "/CN=keycloak/O=keycloak"
+    ```
+
+2.  Set `TLS_CERTIFICATE_KEY` and `TLS_CERTIFICATE_CRT` variables:
+
+    ```shell
+    export TLS_CERTIFICATE_KEY="$(cat /tmp/tls.key | base64)"
+    export TLS_CERTIFICATE_CRT="$(cat /tmp/tls.crt | base64)"
+    ```
+
 #### Expand the manifest template
 
 Use `helm template` to expand the template. We recommend that you save the
@@ -206,6 +230,8 @@ helm template "${APP_INSTANCE_NAME}" chart/keycloak \
     --set enablePublicServiceAndIngress="${PUBLIC_SERVICE_AND_INGRESS_ENABLED}" \
     --set metrics.image="$IMAGE_METRICS_EXPORTER" \
     --set metrics.exporter.enabled="$METRICS_EXPORTER_ENABLED" \
+    --set tls.base64EncodedPrivateKey="$TLS_CERTIFICATE_KEY" \
+    --set tls.base64EncodedCertificate="$TLS_CERTIFICATE_CRT" \
     > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
