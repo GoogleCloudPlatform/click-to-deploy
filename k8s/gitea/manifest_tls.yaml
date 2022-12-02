@@ -1,0 +1,635 @@
+---
+# Source: gitea/templates/gitea-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: test-gitea-init
+  labels: 
+    app.kubernetes.io/name: test
+    app.kubernetes.io/component: gitea-server
+type: Opaque
+stringData:
+  init_directory_structure.sh: |-
+    #!/usr/bin/env bash
+
+    set -euo pipefail
+
+    set -x
+    chown 1000:1000 /data
+    mkdir -p /data/git/.ssh
+    chmod -R 700 /data/git/.ssh
+    [ ! -d /data/gitea/conf ] && mkdir -p /data/gitea/conf
+
+    # prepare temp directory structure
+    mkdir -p "${GITEA_TEMP}"
+    chown 1000:1000 "${GITEA_TEMP}"
+    chmod ug+rwx "${GITEA_TEMP}"    
+
+  configure_gitea.sh: |-
+    #!/usr/bin/env bash
+
+    set -euo pipefail
+
+    echo '==== BEGIN GITEA CONFIGURATION ===='
+
+    { # try
+      gitea migrate
+    } || { # catch
+      echo "Gitea migrate might fail due to database connection...This init-container will try again in a few seconds"
+      exit 1
+    }
+    
+    function configure_admin_user() {
+      local ACCOUNT_ID=$(gitea admin user list --admin | grep -e "\s\+${GITEA_ADMIN_USERNAME}\s\+" | awk -F " " "{printf \$1}")
+      if [[ -z "${ACCOUNT_ID}" ]]; then
+        echo "No admin user '${GITEA_ADMIN_USERNAME}' found. Creating now..."
+        gitea admin user create --admin --username "${GITEA_ADMIN_USERNAME}" --password "${GITEA_ADMIN_PASSWORD}" --email "gitea@local.domain" --must-change-password=false
+        echo '...created.'
+      else
+        echo "Admin account '${GITEA_ADMIN_USERNAME}' already exist. Running update to sync password..."
+        gitea admin user change-password --username "${GITEA_ADMIN_USERNAME}" --password "${GITEA_ADMIN_PASSWORD}"
+        echo '...password sync done.'
+      fi
+    }
+
+    configure_admin_user
+
+    echo '==== END GITEA CONFIGURATION ===='
+---
+# Source: gitea/templates/gitea-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: test-gitea-inline-config
+  labels:
+    app.kubernetes.io/name: test
+    app.kubernetes.io/component: gitea-server
+type: Opaque
+stringData:
+  _generals_: ""
+  database: |-
+    DB_TYPE=postgres
+    HOST=test-postgresql-svc.default.svc.cluster.local:5432
+    NAME=gitea
+    PASSWD=gitea
+    USER=gitea
+  metrics: ENABLED=<nil>
+  repository: ROOT=/data/git/gitea-repositories
+  security: INSTALL_LOCK=true
+  server: |-
+    APP_DATA_PATH=/data
+    DOMAIN=test-gitea-svc.default.svc.cluster.local
+    ENABLE_PPROF=false
+    HTTP_PORT=3000
+    PROTOCOL=http
+    ROOT_URL=http://test-gitea-svc.default.svc.cluster.local
+    SSH_DOMAIN=test-gitea-svc.default.svc.cluster.local
+    SSH_LISTEN_PORT=22
+    SSH_PORT=22
+---
+# Source: gitea/templates/gitea-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: test-gitea-config
+  labels:
+    app.kubernetes.io/name: test
+    app.kubernetes.io/component: gitea-server
+type: Opaque
+stringData:
+  config_environment.sh: |-
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    function env2ini::log() {
+      printf "${1}\n"
+    }
+
+    function env2ini::read_config_to_env() {
+      local section="${1}"
+      local line="${2}"
+
+      if [[ -z "${line}" ]]; then
+        # skip empty line
+        return
+      fi
+      
+      # 'xargs echo -n' trims all leading/trailing whitespaces and a trailing new line
+      local setting="$(awk -F '=' '{print $1}' <<< "${line}" | xargs echo -n)"
+
+      if [[ -z "${setting}" ]]; then
+        env2ini::log '  ! invalid setting'
+        exit 1
+      fi
+
+      local value=''
+      local regex="^${setting}(\s*)=(\s*)(.*)"
+      if [[ $line =~ $regex ]]; then
+        value="${BASH_REMATCH[3]}"
+      else
+        env2ini::log '  ! invalid setting'
+        exit 1
+      fi
+
+      env2ini::log "    + '${setting}'"
+
+      if [[ -z "${section}" ]]; then
+        export "ENV_TO_INI____${setting^^}=${value}"                           # '^^' makes the variable content uppercase
+        return
+      fi
+
+      local masked_section="${section//./_0X2E_}"                            # '//' instructs to replace all matches
+      masked_section="${masked_section//-/_0X2D_}"
+
+      export "ENV_TO_INI__${masked_section^^}__${setting^^}=${value}"        # '^^' makes the variable content uppercase
+    }
+
+    function env2ini::reload_preset_envs() {
+      env2ini::log "Reloading preset envs..."
+
+      while read -r line; do
+        if [[ -z "${line}" ]]; then
+          # skip empty line
+          return
+        fi
+
+        # 'xargs echo -n' trims all leading/trailing whitespaces and a trailing new line
+        local setting="$(awk -F '=' '{print $1}' <<< "${line}" | xargs echo -n)"
+
+        if [[ -z "${setting}" ]]; then
+          env2ini::log '  ! invalid setting'
+          exit 1
+        fi
+
+        local value=''
+        local regex="^${setting}(\s*)=(\s*)(.*)"
+        if [[ $line =~ $regex ]]; then
+          value="${BASH_REMATCH[3]}"
+        else
+          env2ini::log '  ! invalid setting'
+          exit 1
+        fi
+
+        env2ini::log "  + '${setting}'"
+
+        export "${setting^^}=${value}"                           # '^^' makes the variable content uppercase
+      done < "/tmp/existing-envs"
+
+      rm /tmp/existing-envs
+    }
+
+
+    function env2ini::process_config_file() {
+      local config_file="${1}"
+      local section="$(basename "${config_file}")"
+
+      if [[ $section == '_generals_' ]]; then
+        env2ini::log "  [ini root]"
+        section=''
+      else
+        env2ini::log "  ${section}"
+      fi
+
+      while read -r line; do
+        env2ini::read_config_to_env "${section}" "${line}"
+      done < <(awk 1 "${config_file}")                             # Helm .toYaml trims the trailing new line which breaks line processing; awk 1 ... adds it back while reading
+    }
+
+    function env2ini::load_config_sources() {
+      local path="${1}"
+
+      if [[ -d "${path}" ]]; then
+        env2ini::log "Processing $(basename "${path}")..."
+
+        while read -d '' configFile; do
+          env2ini::process_config_file "${configFile}"
+        done < <(find "${path}" -type l -not -name '..data' -print0)
+
+        env2ini::log "\n"
+      fi
+    }
+
+    function env2ini::generate_initial_secrets() {
+      # These environment variables will either be
+      #   - overwritten with user defined values,
+      #   - initially used to set up Gitea
+      # Anyway, they won't harm existing app.ini files
+
+      export ENV_TO_INI__SECURITY__INTERNAL_TOKEN=$(gitea generate secret INTERNAL_TOKEN)
+      export ENV_TO_INI__SECURITY__SECRET_KEY=$(gitea generate secret SECRET_KEY)
+      export ENV_TO_INI__OAUTH2__JWT_SECRET=$(gitea generate secret JWT_SECRET)
+      export ENV_TO_INI__SERVER__LFS_JWT_SECRET=$(gitea generate secret LFS_JWT_SECRET)
+
+      env2ini::log "...Initial secrets generated\n"
+    }
+
+    env | (grep ENV_TO_INI || [[ $? == 1 ]]) > /tmp/existing-envs
+    
+    # MUST BE CALLED BEFORE OTHER CONFIGURATION
+    env2ini::generate_initial_secrets
+
+    env2ini::load_config_sources '/env-to-ini-mounts/inlines/'
+    env2ini::load_config_sources '/env-to-ini-mounts/additionals/'
+
+    # load existing envs to override auto generated envs
+    env2ini::reload_preset_envs
+
+    env2ini::log "=== All configuration sources loaded ===\n"
+
+    # safety to prevent rewrite of secret keys if an app.ini already exists
+    if [ -f ${GITEA_APP_INI} ]; then
+      env2ini::log 'An app.ini file already exists. To prevent overwriting secret keys, these settings are dropped and remain unchanged:'
+      env2ini::log '  - security.INTERNAL_TOKEN'
+      env2ini::log '  - security.SECRET_KEY'
+      env2ini::log '  - oauth2.JWT_SECRET'
+      env2ini::log '  - server.LFS_JWT_SECRET'
+
+      unset ENV_TO_INI__SECURITY__INTERNAL_TOKEN
+      unset ENV_TO_INI__SECURITY__SECRET_KEY
+      unset ENV_TO_INI__OAUTH2__JWT_SECRET
+      unset ENV_TO_INI__SERVER__LFS_JWT_SECRET
+    fi
+
+    environment-to-ini -o $GITEA_APP_INI -p ENV_TO_INI
+---
+# Source: gitea/templates/gitea-secrets.yaml
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: test-tls
+  labels:
+    app.kubernetes.io/name: test
+    app.kubernetes.io/component: gitea-server
+data:
+  tls.key: |
+    LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2Z0lCQURBTkJna3Foa2lHOXcwQkFRRUZB
+    QVNDQktnd2dnU2tBZ0VBQW9JQkFRQytHdDZCcllPRkhiRk4KSEhBazhYUnVIMDBXd3VmbVF5c3pP
+    aDB1eFRzOE4rdU93ODlUbnpXWGFMNnp3M0pQSk5LSDZBd3QvZFA5R0xPWApLM0M0RU9jdHJHYVp2
+    UWpHaXZuTjROYmlnY2xiazNhUS9SVTZORjd5bjNaU3RYU3RMOXBVR0JsV3JMNzM2Y2xxCk5aWUtB
+    RG9jcmdQcFJYMWcwcFhiSllERkl2SXVHLzhXRkhBTVM1THF4czlzQ1ZKMmU2TG1rTnI1MWFFMXZa
+    dk4KSWVYT2NXSjhmNmpvNGpkTHZBcllPcHRkb2s3eURNN2FYb1h5cnh0SVFqc2xqUUVNWGhoMUg0
+    T28wSlZpM3pwcAowL3hDTHZTb1FHTXYrc2U5aDRnTGZGdnBQQXo4dThNbUt1aG9kcWpaQ2dqaWxm
+    RThTUUxNT3pNaS9JOENBZ1VSCm1yQzRjNFpOQWdNQkFBRUNnZ0VBSFBBS0hzTkMyZWlETExHL2dH
+    QWcwUUtDd1l3NXNKdFk0QnRnaGRZUUJrS2MKNE1aOXNNVHphM0RPVnA3UnI2cHpRYXpZN2NkTmxh
+    RkU5U1h2cXBVb0c1TzZxbnhUOGFVR0VZakFMUXFFbENRRwpVRnUxOTM0eFZjMWdQWWJSayt0TTJM
+    QXlhemN3ZXB4anhIOFRyOElKRm9TR28rT29DaTBFRXEvS3dqZG5sZ3o1Cm9Od25yYmdoNEgxY0xC
+    eGFjUzRnQTNuYk42Sm9WaHdXYUk5L1lpblRGY2l1TE1JQ0NqOTcrMjRHZk1ldmZ4WnQKSjIvTkhB
+    Y0sxNHd5VnpIaTNveW5HUFhkWWNzSWp5M0Z2d0FvUjRqSWVycjE4dFVMOVBUWDNrM2tma1hKT3d0
+    egpRRTdoWDQxTVJwZnRRTFBSa3pZRUFKaWlOV2NjYW1UZm0yUk1MNi9KQVFLQmdRRE9sTkoza0pX
+    SHRqTGdwenhYCkkxOXBqNTRjcEE5LzZ3QjNiNEFXb3V1SURPeTlMeWRML3Y5SFMxT1VZUG04R203
+    SG5MZXFFT0lXNmd5WVNtRzcKYzEzM3Vmd2xzSzBmWURUT2duS0pVaGtsU3ZjZm1Fd3RncFRUSFBB
+    S2VWWGU3Z2M0VkdpM1FkVGI5SUN4VWF6OQoxSStwZEl0allITUg1L2Y5VTJVNHdBd1NGUUtCZ1FE
+    cmxRWE9XYU1xemZONnZab2JOVlFJY0Z0RllTQkJHVnJsCmJVbTllT01nYzJDNlVOSWw1MzBySmYv
+    UmlmSmVoaXRkdVZEdURnbWJmK2IxNmFMbmovclp3cy9iQUZidDJEYUMKa1o5Q3M3T3VCRTVoQVls
+    Rk1Bd0tEQ3J3QlgvQWFPbjJTOXBmbGxocG92QzEvQXVXT2lqWDFxVGI3QzJDaS9HTQpqNEhaTFVT
+    SldRS0JnQVFwS3pRTlRYVzJUY0FJbmthREIrRHdhNWJZRnhmVWUrWHI4UUNEdDRxOTkrYTNsR3NM
+    CmI4algwNDhoaE9ZdEFoNHpJZC9qQnlxKy9CSDFMWkxBK0J1Tk8yN202QlhCc2s2V2dnZ1NCeito
+    Q3Vrd0FCaksKa0lUUUNHV3RtL1VwaGl1MFI0ZXBZOGdxWEkwMXYrNDg0Y2ZmK1E2L1dwSEdNbEIv
+    NVlJSEhEY2hBb0dCQUpkUgpCZ1N2NExWS3lmeHBzb1dOY0dkbk84akpoUDByZXczb2I3ZnE0UUJq
+    KzVwUTlWcHhZUjJJNzlNNFp0dytFN2JFCnBHM3p5RW9BRW1xYjRnNFlsZ2l2TC9FOE81blVDZGMr
+    RCt5NUhrMUU2TTg0UEdLYlpQQkROb1VyRXc2VWxNcWwKbUNOVG40QmlyM2hFNTNCYjlRWUdFYWhO
+    QUVKYy93N0kwcCtiaXUwcEFvR0JBTDhGcWhscjRpQklxVWwwR1BkZwpkSmgwSHB6dC8xUnpQdmYw
+    bUtCK0d3aldDQ1RhaHpRU0tXYkpOajlnNXM3N29lR3k4TDNEWTlCWXduYU5ZYkpKCkZiTWZQdjVi
+    dVNRdDR3QXd1YkRScFo4WE91L2Q3WHJPakxLQ2tCRjNsSzBScEhTbWJES29odlQ4REpFYkdTakoK
+    M3lxa1ZLOXRxRm9nZDNORkdXckRpNXpoCi0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0K
+  tls.crt: |
+    LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURJVENDQWdtZ0F3SUJBZ0lVWE5uQTl4YlZW
+    a1JXMCtEbElUalVvclJIMEJvd0RRWUpLb1pJaHZjTkFRRUwKQlFBd0lERU9NQXdHQTFVRUF3d0Za
+    MmwwWldFeERqQU1CZ05WQkFvTUJXZHBkR1ZoTUI0WERUSXlNVEl3TWpFeApNekl6TjFvWERUSXpN
+    VEl3TWpFeE16SXpOMW93SURFT01Bd0dBMVVFQXd3RloybDBaV0V4RGpBTUJnTlZCQW9NCkJXZHBk
+    R1ZoTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF2aHJlZ2EyRGhS
+    MngKVFJ4d0pQRjBiaDlORnNMbjVrTXJNem9kTHNVN1BEZnJqc1BQVTU4MWwyaStzOE55VHlUU2gr
+    Z01MZjNUL1JpegpseXR3dUJEbkxheG1tYjBJeG9yNXplRFc0b0hKVzVOMmtQMFZPalJlOHA5MlVy
+    VjByUy9hVkJnWlZxeSs5K25KCmFqV1dDZ0E2SEs0RDZVVjlZTktWMnlXQXhTTHlMaHYvRmhSd0RF
+    dVM2c2JQYkFsU2RudWk1cERhK2RXaE5iMmIKelNIbHpuRmlmSCtvNk9JM1M3d0syRHFiWGFKTzhn
+    ek8ybDZGOHE4YlNFSTdKWTBCREY0WWRSK0RxTkNWWXQ4NgphZFA4UWk3MHFFQmpML3JIdlllSUMz
+    eGI2VHdNL0x2REppcm9hSGFvMlFvSTRwWHhQRWtDekRzekl2eVBBZ0lGCkVacXd1SE9HVFFJREFR
+    QUJvMU13VVRBZEJnTlZIUTRFRmdRVWZuKzNTVjBoKzFPRTNTRmFDL2J3emVQanl4WXcKSHdZRFZS
+    MGpCQmd3Rm9BVWZuKzNTVjBoKzFPRTNTRmFDL2J3emVQanl4WXdEd1lEVlIwVEFRSC9CQVV3QXdF
+    QgovekFOQmdrcWhraUc5dzBCQVFzRkFBT0NBUUVBc0RBOXQzMTBoMW8yRzNUcU1QUW8xSEN6SFFN
+    OHF4MjNNZUVkCnUxcHl4NnFTOGFyeXB0MWY4T3BGbEtUZTZyTUprVmZCWUdEWlNYMndPMmFwQmN4
+    YnlCK0ZhTGlNelBxNnBJNnIKMTRiNEZUYU5Ja2RtUWIzdHN2enVJNzNQSTNVWnZlbEVweUZCM2tE
+    eWM1dnN3Y3BIZUlkbWNPWmI1Y0tQb1hoRApJY2dZUEdCZjc1TmVLZHQ5aHdoSFhPQ2VzOUMxQmpq
+    NkZ3RmVpN2plZmFwRHE3RC8zQU52MXoxMnF5amNVdjhRCldjNW9Md3d1UUpmYkx6NUNsWUF4aGxq
+    V2VDRGIrMjhHWmVsOEdadHgvQm9hVzZjL1ljSkxLZ1B2ai9WQTJXUWgKUjZNTFlSaU54WDF4YWY5
+    TFdkMlIzTXgzZklWTm44TVArTFNRUVdqdmMxYkFuc1czSWc9PQotLS0tLUVORCBDRVJUSUZJQ0FU
+    RS0tLS0tCg==
+type: kubernetes.io/tls
+---
+# Source: gitea/templates/posgresql-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: test-postgresql-secret
+  labels:
+    app.kubernetes.io/name: test
+    app.kubernetes.io/component: postgresql-server
+type: Opaque
+data:
+  db-user: "Z2l0ZWE="
+  db-password: "Z2l0ZWE="
+---
+# Source: gitea/templates/gitea-services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-gitea-svc
+  labels: &GiteaLabels
+    app.kubernetes.io/name: test
+    app.kubernetes.io/component: gitea-server
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 3000
+    targetPort: 3000
+    protocol: TCP
+  - name: ssh    
+    port: 22
+    targetPort: 22
+    protocol: TCP
+  selector: *GiteaLabels
+---
+# Source: gitea/templates/postgresql-services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-postgresql-svc
+  labels: &PostgreSQLLabels
+    app.kubernetes.io/name: test
+    app.kubernetes.io/component: postgresql-server
+spec:
+  ports:
+  - name: postgres
+    port: 5432
+    targetPort: 5432
+  selector: *PostgreSQLLabels
+  type: ClusterIP
+---
+# Source: gitea/templates/postgresql-services.yaml
+kind: Service
+apiVersion: v1
+metadata:
+  name: test-postgresql-exporter-svc
+  labels: &PostgreSQLLabels
+    app.kubernetes.io/name: test
+    app.kubernetes.io/component: postgresql-server
+spec:
+  ports:
+  - name: prometheus-exporter
+    port: 9187
+  selector: *PostgreSQLLabels
+  type: ClusterIP
+---
+# Source: gitea/templates/gitea-statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: test-gitea
+  labels: &GiteaStatefulSetLabels
+    app.kubernetes.io/name: test
+    app.kubernetes.io/component: gitea-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels: *GiteaStatefulSetLabels
+  serviceName: test-gitea-svc
+  template:
+    metadata:
+      labels: *GiteaStatefulSetLabels
+    spec:
+      securityContext:
+        fsGroup: 1000
+      initContainers:
+        - name: init-directories
+          image: "gcr.io/ccm-ops-test-adhoc/gitea"
+          imagePullPolicy: IfNotPresent
+          command: ["/usr/sbin/init_directory_structure.sh"]
+          env:
+            - name: GITEA_APP_INI
+              value: "/data/gitea/conf/app.ini"
+            - name: GITEA_CUSTOM
+              value: "/data/gitea"
+            - name: GITEA_WORK_DIR
+              value: "/data"
+            - name: GITEA_TEMP
+              value: "/tmp/gitea"
+          volumeMounts:
+            - name: init
+              mountPath: /usr/sbin
+            - name: temp
+              mountPath: /tmp
+            - name: data
+              mountPath: /data
+        - name: init-app-ini
+          image: "gcr.io/ccm-ops-test-adhoc/gitea"
+          imagePullPolicy: IfNotPresent
+          command: ["/usr/sbin/config_environment.sh"]
+          env:
+            - name: GITEA_APP_INI
+              value: "/data/gitea/conf/app.ini"
+            - name: GITEA_CUSTOM
+              value: "/data/gitea"
+            - name: GITEA_WORK_DIR
+              value: "/data"
+            - name: GITEA_TEMP
+              value: "/tmp/gitea"
+          volumeMounts:
+            - name: config
+              mountPath: /usr/sbin
+            - name: temp
+              mountPath: /tmp
+            - name: data
+              mountPath: /data
+            - name: inline-config-sources
+              mountPath: /env-to-ini-mounts/inlines/
+        - name: configure-gitea
+          image: "gcr.io/ccm-ops-test-adhoc/gitea"
+          command: ["/usr/sbin/configure_gitea.sh"]
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsUser: 1000
+          env:
+            - name: GITEA_APP_INI
+              value: "/data/gitea/conf/app.ini"
+            - name: GITEA_CUSTOM
+              value: "/data/gitea"
+            - name: GITEA_WORK_DIR
+              value: "/data"
+            - name: GITEA_TEMP
+              value: "/tmp/gitea"                     
+            - name: GITEA_ADMIN_USERNAME
+              value: "gitea"
+            - name: GITEA_ADMIN_PASSWORD
+              value: "gitea"
+          volumeMounts:
+            - name: init
+              mountPath: /usr/sbin
+            - name: temp
+              mountPath: /tmp
+            - name: data
+              mountPath: /data
+      terminationGracePeriodSeconds: 60
+      containers:
+        - name: gitea
+          image: "gcr.io/ccm-ops-test-adhoc/gitea"
+          imagePullPolicy: IfNotPresent
+          env:
+            # SSH Port values have to be set here as well for openssh configuration
+            - name: SSH_LISTEN_PORT
+              value: "22"
+            - name: SSH_PORT
+              value: "22"
+            - name: GITEA_APP_INI
+              value: "/data/gitea/conf/app.ini"
+            - name: GITEA_CUSTOM
+              value: "/data/gitea"
+            - name: GITEA_WORK_DIR
+              value: "/data"
+            - name: GITEA_TEMP
+              value: "/tmp/gitea"
+            - name: TMPDIR
+              value: "/tmp/gitea"
+          ports:
+            - name: ssh
+              containerPort: 22
+            - name: http
+              containerPort: 3000          
+          livenessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: 200
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 10          
+          readinessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 10   
+          volumeMounts:
+            - name: temp
+              mountPath: /tmp
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: init
+          secret:
+            secretName: test-gitea-init
+            defaultMode: 110
+        - name: config
+          secret:
+            secretName: test-gitea-config
+            defaultMode: 110
+        - name: inline-config-sources
+          secret:
+            secretName: test-gitea-inline-config
+        - name: temp
+          emptyDir: {}
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+        labels: *GiteaStatefulSetLabels
+      spec:
+        accessModes:
+            - ReadWriteOnce
+        resources:
+          requests:
+            storage: "8Gi"
+---
+# Source: gitea/templates/postgresql-statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: test-postgresql
+  labels: &PostgreSQLLabels
+    app.kubernetes.io/name: test
+    app.kubernetes.io/component: postgresql-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels: *PostgreSQLLabels
+  serviceName: test-postgresql-svc
+  template:
+    metadata:
+      labels: *PostgreSQLLabels
+    spec:
+      containers:
+      - name: postgresql
+        image: "marketplace.gcr.io/google/postgresql11"
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        ports:
+        - containerPort: 5432
+          name: postgres
+        volumeMounts:
+        - name: test-postgresql-pvc
+          mountPath: /var/lib/postgresql/data
+        env:
+        - name: PGDATA
+          value: "/var/lib/postgresql/data/pgdata"
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: test-postgresql-secret
+              key: db-user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: test-postgresql-secret
+              key: db-password
+      - name: prometheus-exporter
+        image: marketplace.gcr.io/google/postgresql-exporter0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9187
+          name: exporter
+        env:
+        - name: "DATA_SOURCE_URI"
+          value: "localhost:5432/postgres?sslmode=disable"
+        - name: "DATA_SOURCE_USER"
+          valueFrom:
+            secretKeyRef:
+              name: test-postgresql-secret
+              key: db-user
+        - name: "DATA_SOURCE_PASS"
+          valueFrom:
+            secretKeyRef:
+              name: test-postgresql-secret
+              key: db-password
+  volumeClaimTemplates:
+  - metadata:
+      name: test-postgresql-pvc
+      labels: *PostgreSQLLabels
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      storageClassName: standard
+      resources:
+        requests:
+          storage: 8Gi
+---
+# Source: gitea/templates/gitea-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: test-gitea-ingress
+  labels:
+    app.kubernetes.io/name: test
+    app.kubernetes.io/component: gitea-server
+spec:
+  defaultBackend:
+    service:
+      name: test-gitea-svc
+      port:
+        name: http
+  tls:
+  - secretName: test-tls

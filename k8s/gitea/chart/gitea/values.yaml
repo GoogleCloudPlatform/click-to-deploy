@@ -1,0 +1,39 @@
+gitea:
+  #image:
+  #  repo: null
+  #  tag: null
+  admin:
+    email: "gitea@local.domain"
+    username: gitea
+    password: gitea
+  persistence:
+    size: 8Gi
+  sshPort: 22
+  httpPort: 3000
+  config: {}
+
+postgresql:
+  image: marketplace.gcr.io/google/postgresql11
+  exporter:
+    image: marketplace.gcr.io/google/postgresql-exporter0
+  user: gitea
+  password: gitea
+  postgresqlDatabase: gitea
+  persistence:
+    size: 8Gi
+
+persistence:
+  storageClass: standard
+  accessMode: ReadWriteOnce
+
+metrics:
+  image: null
+  exporter:
+    enabled: false
+
+tls:
+  base64EncodedPrivateKey: null
+  base64EncodedCertificate: null
+
+ingress: 
+  enabled: true
