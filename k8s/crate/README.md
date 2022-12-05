@@ -303,6 +303,7 @@ Set up environment variables to match your crate installation:
 ```shell
 export APP_INSTANCE_NAME=crate
 export NAMESPACE=default
+export TABLENAME=test
 ```
 
 ## Backing up data
@@ -310,19 +311,19 @@ export NAMESPACE=default
 To back up the database, you should copy required tables.
 Use the following script:
 ```shell
-# `--app` and `--namespace` are required
-scripts/backup.sh --app ${APP_INSTANCE_NAME} --namespace ${NAMESPACE}
+# `--app`, `--namespace` and `--table` are required
+scripts/backup.sh --app ${APP_INSTANCE_NAME} --namespace ${NAMESPACE} --table ${TABLENAME}
 ```
 
 ### Restore your database
 
-To restore the database, you should use the script and restore dumped tables.
+To restore the database, you should use the script and restore dumped tables. 
+Put all jsons to the `/tmp/crate` folder. 
 Use the following commands:
 
 ```shell
-export CRATE_BACKUP_DIR=/path/to/your/backup
-# `--app`, `--namespace` and `--backup-dir` are required
-scripts/restore.sh --app ${APP_INSTANCE_NAME} --namespace ${NAMESPACE} --backup-dir ${PATH_TO_YOUR_BACKUP}
+# `--app`, `--namespace` and `--table` are required
+scripts/restore.sh --app ${APP_INSTANCE_NAME} --namespace ${NAMESPACE} --table ${TABLENAME}
 ```
 
 # Uninstall the app
