@@ -18,6 +18,20 @@ x-google-marketplace:
         cpu: 100m
         memory: 100Mi
 
+  deployerServiceAccount:
+    description:
+      Creates app resources including persistentvolumes.
+    roles:
+      - type: ClusterRole  # For getting persistentvolumes
+        rulesType: CUSTOM
+        rules:
+          - apiGroups:
+            - '*'
+            resources:
+            - 'persistentvolumes'
+            verbs:
+            - '*'
+
   images:
     '':
       properties:
@@ -25,12 +39,10 @@ x-google-marketplace:
           type: REPO_WITH_REGISTRY
         django.image.tag:
           type: TAG
-    nginx:
+    uwsgi-exporter:
       properties:
-        nginx.image.repo:
-          type: REPO_WITH_REGISTRY
-        nginx.image.tag:
-          type: TAG
+        django.exporter.image:
+          type: FULL
     debian:
       properties:
         nginx.initImage:
@@ -40,6 +52,12 @@ x-google-marketplace:
         nfs.image.repo:
           type: REPO_WITH_REGISTRY
         nfs.image.tag:
+          type: TAG
+    nginx:
+      properties:
+        nginx.image.repo:
+          type: REPO_WITH_REGISTRY
+        nginx.image.tag:
           type: TAG
     nginx-exporter:
       properties:

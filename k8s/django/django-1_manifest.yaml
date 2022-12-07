@@ -9,58 +9,58 @@ metadata:
     app.kubernetes.io/component: nginx-server
 data:
   https1.cert: |
-    LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURJVENDQWdtZ0F3SUJBZ0lVUFlOeWFYNHhm
-    U2Z3Q2dpeVdNdTBxUkJQMlR3d0RRWUpLb1pJaHZjTkFRRUwKQlFBd0lERU9NQXdHQTFVRUF3d0Zi
-    bWRwYm5neERqQU1CZ05WQkFvTUJXNW5hVzU0TUI0WERUSXlNVEV5T1RBNQpOVFV5T1ZvWERUSXpN
-    VEV5T1RBNU5UVXlPVm93SURFT01Bd0dBMVVFQXd3RmJtZHBibmd4RGpBTUJnTlZCQW9NCkJXNW5h
-    VzU0TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUE3M0xLcmxGZGp2
-    TGoKVXpYM1QyOS9UcW9ReVZtSjBhU2JPeWFNcGFzTDlRVkJtS3gyWHB6UkpheTZtdnljZWFxZ0NZ
-    R29IN2VpQktuVwo4REg5V29FUVdoUjAzRDd2KzJkUm9CRE9xb1pIaHJ1Vi95UjE4VmVFY25TWnhi
-    MTBvSTNxN3NHTlZleHlQVTcwCmFXaGN2VHZ6KzdoWG1veTRmUVgwWW5pd2xnZG8vR3FDSDY3MnN3
-    UEdPN3o5QVJJUDRQeTAyQ1RubnAzYnVRUGgKYk5VQXlGLzE1bXMrL1ZMYldDWFBMNDBZK1RncUZE
-    QU9nQTdHV0VqOUpiRVpNWjNDM05HTklqSzI0N3NOVlJ1egpNUVpoZnhBOGl1OUxBd05nQzFGN2FK
-    d2NRWjJsa3RZaXBaSUVrY3o5RzNHczBDd05yVy9POVJ1TmR4dFdGNFUxCnQ3dy83RnU4SndJREFR
-    QUJvMU13VVRBZEJnTlZIUTRFRmdRVVhqVXhZZVpnUGJER2NsQ2RQTmtpMWxucC9SVXcKSHdZRFZS
-    MGpCQmd3Rm9BVVhqVXhZZVpnUGJER2NsQ2RQTmtpMWxucC9SVXdEd1lEVlIwVEFRSC9CQVV3QXdF
-    QgovekFOQmdrcWhraUc5dzBCQVFzRkFBT0NBUUVBRDlEQm8zNUNNMTNpUUxGRnM0OG1YSW1ZZ1l4
-    R2RPanM4Vm8xCjVvQldadnc5OTZzQmliNElheVlvVTBHUGgzSVBlTjBJMTkwZTVlek9iaU94b3FE
-    ZXB3OHMxeU1hbW9LUittY2UKTVRUZXFGaXQvZjUwZ0doU1VIVU95WjRSMTdEc2lPbFBMSlBXbzVX
-    MXR4bWErQXJZS1A4bGlvQ2Qwc215VG5PRgpUK3k2N0R4dnpHNFJoWGJNWVRoODFaWm5aSGtZRUxR
-    ekJ1bWluMVhzZlMvcWppdmUweERadFZGWE1UaGQxL01NClJ0YXo1S3dITkRxd3hEcDZTZGRqcVJv
-    dWJabW50ajMyVExuaVRUaGdOWEFaRHluZkpJMDFqdWo0MTJYd244NTQKcVQwSFlIN0RlZWEzM3Na
-    clJxWkpqWXlNU1FMZHo2Y2dnZ09MS2lzYUlsUkFKSU5TR1E9PQotLS0tLUVORCBDRVJUSUZJQ0FU
+    LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURJVENDQWdtZ0F3SUJBZ0lVUy9HS3VuQVNk
+    dWI5OVozeFpsWGlnZ3NqV2o4d0RRWUpLb1pJaHZjTkFRRUwKQlFBd0lERU9NQXdHQTFVRUF3d0Zi
+    bWRwYm5neERqQU1CZ05WQkFvTUJXNW5hVzU0TUI0WERUSXlNVEl3TnpFMApOVGt5T0ZvWERUSXpN
+    VEl3TnpFME5Ua3lPRm93SURFT01Bd0dBMVVFQXd3RmJtZHBibmd4RGpBTUJnTlZCQW9NCkJXNW5h
+    VzU0TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF4Smo5M0pxSWNJ
+    MVQKMjhDUDRRMStNK2xYMlVKSlNhNkVLTjFkZExWcmJ4dy9PQ0RVWUtyU2Mxd0oydVJNQ2J0WkxL
+    Z29iSHRuR3BnMwpoSGtuT05xZko3RVg0dnVFUmQrMW1WT3NjZjlpQ1hyNDNxVUp6Mm53c2I5MnJ4
+    MVh0VnhMTVFXWVhwUk0rZitTCjduaFV5MmpyRmJHTHVXcEFQWEpUMzZsWi9OUVVveEh6VTJNWi9q
+    dmNSWE9QY0doa3A3aFVuVlMwby9sZE9zL1kKdHN3T3drdmVaMk42WWNGQ093SUxuM0pFeC9SL0Z5
+    MWNRdnRTSE5xakpacVJtUkliM2FzblRFTGMwdm9TOFlMWApDa1l2bFV5Wk9La1hFNytERVkwUDBJ
+    WXU1dEQyNVE4VTVvL2diVVIxQkY1dGZqWXVVSkFoaWxpcGZVckcrREVRCjVjK3RxUmEwY1FJREFR
+    QUJvMU13VVRBZEJnTlZIUTRFRmdRVXhZOGNoTjdWdzlnSVZDWVNxMFl1blVGbjVnRXcKSHdZRFZS
+    MGpCQmd3Rm9BVXhZOGNoTjdWdzlnSVZDWVNxMFl1blVGbjVnRXdEd1lEVlIwVEFRSC9CQVV3QXdF
+    QgovekFOQmdrcWhraUc5dzBCQVFzRkFBT0NBUUVBSTJnclF3WS9wNGZtSjMycnd1anJ2NUg0NnBY
+    TCtQNG1hdFp2CmxzUG0xd3hoVm9NMlJyQjhwc1AvS2hNc0x6SDByM29za0RwOHVBdk9HRTZQNHhn
+    QmJueTN2V1B4Nk11eVc0K1IKL0lPZlhYTmY1SjY5bm9jOC9EcFNteGsrb3VNZDV5S0Vzd3JKREpB
+    VXc1Y0tHNmsrYVY2aDQrNklRdmF5K01uVQpBSTk2aGZpS2RXa3JwaWVtVGR5MXY0UGVBYlFRTUUv
+    cEpKaEZmTVArL0FPem1DUElNOFBqOHcyWEdXZ2FqblF3Cm9kb0NRWXVXZnVVTGNVVUpsU2VMdXF1
+    eXNNV0xKNlF3OUp3MVg5T3lGK2FjM3dtNDQzQ3Z0WXlLRWZwRFZqYWwKRklWRGtkMy80T2tuNFF1
+    VC81dm15NkhRQUVtUEhHV1FsZUM3RWdBNWtYL0llMW1VVWc9PQotLS0tLUVORCBDRVJUSUZJQ0FU
     RS0tLS0tCg==
   https1.key: |
     LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2UUlCQURBTkJna3Foa2lHOXcwQkFRRUZB
-    QVNDQktjd2dnU2pBZ0VBQW9JQkFRRHZjc3F1VVYyTzh1TlQKTmZkUGIzOU9xaERKV1luUnBKczdK
-    b3lscXd2MUJVR1lySFplbk5FbHJMcWEvSng1cXFBSmdhZ2Z0NklFcWRidwpNZjFhZ1JCYUZIVGNQ
-    dS83WjFHZ0VNNnFoa2VHdTVYL0pIWHhWNFJ5ZEpuRnZYU2dqZXJ1d1kxVjdISTlUdlJwCmFGeTlP
-    L1A3dUZlYWpMaDlCZlJpZUxDV0Iyajhhb0lmcnZhekE4WTd2UDBCRWcvZy9MVFlKT2VlbmR1NUEr
-    RnMKMVFESVgvWG1hejc5VXR0WUpjOHZqUmo1T0NvVU1BNkFEc1pZU1AwbHNSa3huY0xjMFkwaU1y
-    Ymp1dzFWRzdNeApCbUYvRUR5Szcwc0RBMkFMVVh0b25CeEJuYVdTMWlLbGtnU1J6UDBiY2F6UUxB
-    MnRiODcxRzQxM0cxWVhoVFczCnZEL3NXN3duQWdNQkFBRUNnZ0VBRFZFd0xNSytUOVN0WWNCMjZU
-    WmlMSUR3cTkxVEVxQk5Idy9DR2NLcUZYcksKcUhaa28xY0xtbDZCYlNsMVNnVDhPUUdIaUV6YThk
-    ZW5IWVBDTzQrbjFnK0MveUlLS2N4a3ZucGFiQ0xqSG44WApWTmhDTGN3ZXcvSndabzVNL2V5UVNP
-    R3lzUitVUmNBSHN1Q3ZIdTBzeDFVVm5KdU13Zm0xdExaUjJ4ZlhBdGJBCjNuTmJTdWwvMndnaVpX
-    a2FIQnd0QUZ4T1JZWlR5RlFhd1Z3eTJ6RldVSFF2eTlBUEVSZzE3VW95dEtBVU1mY0cKZ3RkZlNU
-    Y01oNnNWV1BmSW9JcFMyNVJDaFd4Sld5cU5UbU5HR0VycFVrQXJpUU4xbGFJdk80cyswYlFTS2xv
-    Mgp1WVFvVHFmOGdQL1NEeVlmTkoweG9ZQzM0MDFqZVlEa2l1ZGkwc1FjcVFLQmdRRDh0cHN3Y0Ni
-    eWxTYlhlRlY0ClFneEF2RC9YSVRlS2FvYUFUTDBYUjR1SGcxMXVmYWhQdFpCL1Nna0dyekpjaTNM
-    bEQzekYzS21YYTRjR3FYWFAKYVZiazBEaGtweTVnd2RaTkoxQlZyMFVEWVdzc2ViUXZ2WEE3VzBt
-    a0xWMXdzT2hOQTRmbU5HbEl2RHczNnhjVQpYbGh5ZGV6ekJrRkExNVFnTUFiMUl1UENPUUtCZ1FE
-    eWtBVlV3YU0zRkpVYTdPdVNOSE1sY1cwMmcxUGR4NnJXCk1oeW9xM2hUQ2JxVzN1M2phVVFWYXpN
-    ZVp5OTFONmgxVDE4UXdkekNOaXVvbVlKTGRnWnM3Nnp0MjVGOG1BMjAKUGZCNTJDcFpTSW9nR01Q
-    VUN6cWJENHNKL1RpdDkxdjIvRXI4Y29KMm5Yd05pQzdxTm9DQjFZTDRhZm8reTE0bQpKQldzZy9m
-    eFh3S0JnSFVJNElBalFIWlJ5dVk0N1dRL09rdDBveUF2V3ZoNGN3ZlNBalJZeHU2Z1VOSE4wZmZ3
-    ClB4WWtKRi83SFJpczRDM2k2VWI4OVhHUnM3dkxHU3RRUHBURE5ZcXZ2aFBEVVVyejdRbHhuVVYr
-    aFZMWW5qRUoKeTROQnVLNFc4Rkl6SzdJVzg0WVNPYndjcU1yQXpqUjVxUDZCVEpZVURINUtHR2g3
-    dFkwcmRrMUpBb0dBTEdKZQpGMXczV1dUU3c5S0dhSUpnYjRHSjBtZkZlTmVJVXhsb1ZSVExONmFZ
-    RmZORTVFL212V1NZUGYvemx5ZFFFK2NxCkpnN1RMbFpyTnJhZ09ONm4zbGNjOVlrdjNmU1V6VjVv
-    R21PTG5EckJ5NDI4aDVobWFPazNMK1M5OGxkSTVMRFYKcDh2c1EzZ2Rzdnd3V1hzUG1MSlEvTk9u
-    anNYM3ZGTHVCRnRCaTFFQ2dZRUF4K2JodTdBVlZ6YkN1dDRBZGRKQgpTMmN3emd1d0xMTklIaVRH
-    cmVOTUwzSDZ5Si9sTnVXTDRmejB2MmZSK21WWU5PTHp1djVLdFpmY0JhMGUyTFZqCnFFYlhaUDk0
-    OWlhOGxoaFZTWisybUJKbTNrekNQUi83czhQYjVoTSsrbkw4UkVQekhTcEJUekdXTXdPQkpSZjIK
-    cWZUQVAyVnBabVRxYmUxSExVOEx3ams9Ci0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0K
+    QVNDQktjd2dnU2pBZ0VBQW9JQkFRREVtUDNjbW9od2pWUGIKd0kvaERYNHo2VmZaUWtsSnJvUW8z
+    VjEwdFd0dkhEODRJTlJncXRKelhBbmE1RXdKdTFrc3FDaHNlMmNhbURlRQplU2M0MnA4bnNSZmkr
+    NFJGMzdXWlU2eHgvMklKZXZqZXBRblBhZkN4djNhdkhWZTFYRXN4QlpoZWxFejUvNUx1CmVGVExh
+    T3NWc1l1NWFrQTljbFBmcVZuODFCU2pFZk5UWXhuK085eEZjNDl3YUdTbnVGU2RWTFNqK1YwNno5
+    aTIKekE3Q1M5NW5ZM3Bod1VJN0FndWZja1RIOUg4WExWeEMrMUljMnFNbG1wR1pFaHZkcXlkTVF0
+    elMraEx4Z3RjSwpSaStWVEprNHFSY1R2NE1SalEvUWhpN20wUGJsRHhUbWorQnRSSFVFWG0xK05p
+    NVFrQ0dLV0tsOVNzYjRNUkRsCno2MnBGclJ4QWdNQkFBRUNnZ0VBQU9oZk9HVVBNNzFjdUJ3emZz
+    MlNqcWY2VkJmaFVLQ1phYnFuTnhxN2tQVnAKWHJseGZkRzFnSFBLN0kvTmhHMExYclllb3hLSFFp
+    bVdkaWFYS3hCRWhVTlY4T1hnM0pWK01LOEtONXlHdDlLYQo4THRIL1FVcjl0cldScDlMbHZhS1hM
+    QU5PRWczOHNSQWZwaHVzWERMQ3JoN1h3WG5nVklRb3ZSdkdUbGpWWmZCCnlVejB4SnZKcnZDNDIv
+    blhlQmFPbGhBUVBIS2VhTHdkenpkOVFPK3M4QWlkWnlWVk9ocjRXTzkrT1RGYjk4L1cKYnlLaTVG
+    VkFONUswWTFFM2FDK1BKNUt4YXFyWS9sTEJpZ1lsZDZwNkJSUkJvY2tUaUo1UUJZUlo0WHhIREFY
+    NQpITUp3QWNDVHdkNk13d084MmpBQkhIcVJqQnlGLzljVDFNcDRNeWsyZ1FLQmdRRHB3K0ZaanNp
+    TTRTUmg5THZyClVrNjExbkpraU41eWdYNlZXOTJxeEx2S05UOGlEUGxNWHZDZzFJd0Q3UzZkWUtu
+    SW9VVlVhWTdwR2xGUjFmL2QKZzNSNlhVZDJKRERENFh1T29oOWRrS1BhT2pCUVk1ZXgvSzM1MnpM
+    RytlNjVvTFpnOGVwcGpVKzg5dGdFMVI4cgorOHQ0djhRYmUybEkrU1Q3V3BuV3ptdmJ4UUtCZ1FE
+    WFRCZDkwVkc0TG9STWkwMzlFMlpjd25QZ1pTR29MMnJICjVwS2U4OUdVUGlwK3dTWE51YWxyZURq
+    Ni84RWVDT1NjM0laOWs3anllcTQxZmRVRDFiYWk2d2V6dzl6bndHb2kKNjJkWnBGdXNxRmM2bS9L
+    K2h5cVdnQ2lFMUNvL3pLUDhHRU1TKzFUSkYrcE4yenIwS1Q1Ny9aeitOQlhhUVRqQgpEVDdCWG5M
+    a3ZRS0JnQm91WWhMUnR3eHdPczd0eGc0NURhKzM4Ti9wcEdCV3VJS3A0MDI0OHY5V3IxZDA5SWJs
+    Ckt6WVlHQVpvamd2NlE0bkE1aTdxRTZOdjJ5TzdRQWpqTEN4NFBnU3hVUFRmVUNOTmJRM2hvVGhU
+    eEExODJnU0oKTkVNRGxkQkxOYjE4am5DVko1Zml4OGQyTGdOOGl4MDEramZ2NGxyaG00MGN1bE9j
+    ZGhaazBCZXhBb0dBQ2JlbgpmOGhJMWZWVGgxanFSamZ2OE5QZUF3ek5maGZWeS92K05pcHZGUy9S
+    SHpOOGoxS0g4US9XRW80a20wUnZmUnorCi9RQUQ0djNpaXd1STU4bG5tdWJjekNKVkFDalJJWTVh
+    ZGROVFIvRzVMaTRId00yOUFGbjhlakpSVGR2Z3N1b3QKYk5mbk5jUmNrUE1LTUNjRWFQaERjNzNL
+    RnJYRzUvKy9DMTlGOUVrQ2dZRUFpTXk5K2h1YU9KNWExNFZGT3RzNgoxc0dYNFhkcndBSWxhTWlK
+    NVNDRGdWKzBQRGdhTllBM0JPTWxtajUwUVJRekd3VURudEpmYXpaNy9SaU9iY3lBCjFpZVhpb2xZ
+    dUQxakFBeWg0MzR6akRzM0NTSVhaUnZodndPbzRLYVpKUEl3cHZjaUFTbUlyQVlPZUhjeStGYXoK
+    Z245SE1kV0ZDUlFlSjlhZWhFWUZMaDA9Ci0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0K
 ---
 # Source: django/templates/postgresql-secrets.yaml
 apiVersion: v1
@@ -73,7 +73,7 @@ metadata:
 type: Opaque
 data:
   db-user: "bXlzaXRl"
-  db-password: "UWkzQk0yNFZoaTJiRnNYM01wWVc="
+  db-password: "bWgxZThZWFF6SzV2eFNQdUhSdG4="
 ---
 # Source: django/templates/nginx-config.yaml
 apiVersion: v1
@@ -609,7 +609,7 @@ metadata:
   annotations:
     kubernetes-engine.cloud.google.com/icon: >-
       data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIIAAACCCAMAAAC93eDPAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAMAUExURQAAAACbAACbAACbAACbAACbAACbAACbAACbAACbAACbAACbAACYAACbAACbAACbAACbAACbAACbAACbAACbAACbAACWAACbAACZAACbAACaAACbAACbAACbAACaAACbAACbAACbAACbAACaAACaAACbAACZAACbAACbAACbAACbAACbAACaAACaAACbAACaAACbAACZAACbAACaAACaAACbAACaAACbAACbAACaAACaAACaAACaAACaAACbAACbAACaAACbAACbAACZAACbAACaAACbAACbAACYAACbAACaAACbAACZAACbAACbAACbAACaAACbAACbAACbAACbAACbAACaAACbAACbAACZAACaAACaAACbAACaAACaAACaAACbAACaAACbAACbAACbAACZAACaAACbAACaAACaAACbAACaAACaAACaAACaAACbAACbAACbAACaAACbAACbAACbAACaAACbAACaAACZAACaAACaAACbAACaAACaAACbAACbAACbAACbAACbAACaAACaAACaAACbAACbAACbAACaAACbAACaAACaAACbAACaAACaAACbAACaAACbAACbAACbAACbAACbAACbAACXAACZAACaAACbAACbAACbAACaAACbAACbAACbAACaAACbAACbAACbAACbAACbAACaAACbAACZAACaAACbAACbAACbAACbAACbAACaAACaAACaAACbAACaAACbAACbAACZAACaAACVAACbAACbAACaAACbAACbAACaAACaAACbAACbAACbAACbAACbAACbAACbAACaAACaAACbAACbAACaAACbAACbAACbAACbAACbAACaAACbAACZAACaAACZAACbAACbAACbAACbAACaAACZAACaAACbAACaAACbAACbAACbAACaAACaAACbAACbAACbAACaAACaAACbAACaAACbAACbAACaAACaAACaAACaAACaAACaAACaAACaAACbAACaAACaAACbAACbAACbAACaAACbANJeAvUAAAD/dFJOUwCoSvxPpP77+swo6wOmkD/1+HXx/YIB9wbOCL2j8Az5uYj0Hw3hDoHDwJ3qBxqgNewC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
-    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": "nginx", "partner_name": "Google Click to Deploy"}'
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": "django", "partner_name": "Google Click to Deploy"}'
   labels:
     app.kubernetes.io/name: "django-1"
 spec:
@@ -617,14 +617,10 @@ spec:
     type: Django by Google Click to Deploy
     version: "4.1"
     description: |-
-      NGINX is open-source software for web serving, reverse proxying,
-      caching, load balancing, and media streaming.
-
-      NGINX can also function as a proxy server for email (IMAP, POP3, and SMTP)
-      and a reverse proxy and load balancer for HTTP, TCP, and UDP servers.
-
-      If you would like to learn more about NGINX, please,
-      visit [NGINX website](https://www.nginx.com/).
+      Django is a free, open-source and high-level Python
+      web framework that encourages rapid development and clean,
+      pragmatic design. Solution runs on UWSGI application server
+      and can be exposed for tcp or http connections.
 
       # Support
 
@@ -632,8 +628,8 @@ spec:
       container images you run or store in your own repositories
       up to date with security patches.
 
-      Community support for NGINX is available on
-      [Stack Overflow](http://stackoverflow.com/questions/tagged/nginx/).
+      Community support for Django is available on
+      [Stack Overflow](http://stackoverflow.com/questions/tagged/django/).
 
       Please report issues with this NGINX container image via
       the [GitHub Issue Tracker](https://github.com/GoogleCloudPlatform/nginx-docker/issues).
@@ -641,69 +637,14 @@ spec:
     - name: Google Click to Deploy
       url: https://cloud.google.com/solutions/#click-to-deploy
     links:
-    - description: 'User Guide: Google Click to Deploy NGINX'
-      url: https://github.com/GoogleCloudPlatform/nginx-docker/blob/master/1/README.md
-    - description: 'NGINX: Getting Started'
-      url: https://www.nginx.com/resources/wiki/start/
+    - description: 'User Guide: Google Click to Deploy Django'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/django/README.md
+    - description: 'Django: Getting Started'
+      url: https://www.djangoproject.com/start/
     notes: |-
-      # Configuring the web content of NGINX server
-
-      Follow this instructions to upload web content to your Web Server:
-
-      1. Navigate to a folder where directory containing your website is located
-         (e.g. assuming that your web content is stored in `html` directory)
-      1. Run the following command to copy the content of `html` directory to the Persistent Volume:
-         ```
-         kubectl cp html django-1-nginx-0:/usr/share/nginx -n default
-         ```
-      1. Set permissions so NGINX server has access to the newly uploaded `html` directory:
-         ```
-         kubectl exec django-1-nginx-0 -n default -- chmod -R a+r /usr/share/nginx/html
-         ```
-      # Configuring SSL certificate for NGINX server
-
-      This version of NGINX application uses pre-generated certificate which is self-signed and is meant to be
-      only a temporary solution just to exemplify SSL/TLS configuration.
-
-      Generate a new self-signed certificate for your NGINX server using `openssl` command
-      or use a signed certifcate that you already own.
-
-      For example, if you would like to generate self-signed certifcate and private key
-      you could run the following command:
-      ```
-      openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout https1.key -out https1.cert
-      ```
-
-      Configure your own certificate using the following command:
-      ```
-      export CERT_FILE=https1.cert
-      export KEY_FILE=https1.key
-      export APP_INSTANCE_NAME=<name of your NGINX instance, e.g. nginx-1>
-      export NAMESPACE=<name of your Kurbernetes namespace, e.g. default>
-
-      # using --dry-run option because we update existing secret resource
-      # if we used kubectl create... for existing secret we would get an error
-      kubectl --namespace default create secret generic django-1-nginx-secret \
-        --from-file=$CERT_FILE --from-file=$KEY_FILE \
-        --dry-run -o yaml | kubectl apply -f -
-      ```
-      where .cert is a file containing SSL certificate and .key file contains private part of it.
-
-      Run these commands to restart all Pods without causing a downtime
-      ```
-      PODS=$(kubectl get pods --namespace default -l app.kubernetes.io/name=django-1 | awk 'FNR>1 {print $1}')
-
-      TIMEOUT=60
-
-      for i in ${PODS[@]}; do
-        echo "Deleting Pod: $i..."
-        kubectl delete pod $i --namespace default
-        echo "Sleeping for $TIMEOUT seconds..."
-        sleep $TIMEOUT
-      done
-      ```
+      Hey yo
   info:
-  - name: Nginx External IP
+  - name: NGINX External IP
     type: Reference
     valueFrom:
       serviceRef:
@@ -711,20 +652,6 @@ spec:
         protocol: HTTPS
   - name: Application Namespace
     value: default
-  - name: Nginx Configuration
-    value: nginx-config.conf
-  - name: Nginx Cert
-    type: Reference
-    valueFrom:
-      secretKeyRef:
-        key: https1.cert
-        name: django-1-nginx-secret
-  - name: Nginx Key
-    type: Reference
-    valueFrom:
-      secretKeyRef:
-        key: https1.key
-        name: django-1-nginx-secret
   selector:
     matchLabels:
       app.kubernetes.io/name: "django-1"

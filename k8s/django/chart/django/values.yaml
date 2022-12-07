@@ -3,6 +3,8 @@ django:
   image:
     repo: null
     tag: null
+  exporter:
+    image: null
   replicas: 1
   persistence:
     storageClass: null

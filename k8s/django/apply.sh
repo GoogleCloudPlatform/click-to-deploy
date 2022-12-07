@@ -77,4 +77,4 @@ helm template "${APP_INSTANCE_NAME}" chart/django \
 
 echo "Template generated!"
 
-kubectl apply -f django-1_manifest.yaml
+# kubectl apply -f django-1_manifest.yaml

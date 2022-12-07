@@ -21,7 +21,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: ""
+  storageClassName: "{{ .Values.nfs.persistence.storageClass }}"
   resources:
     requests:
       storage: {{ .Values.nfs.persistence.size | quote }}
@@ -34,7 +34,7 @@ spec:
   persistentVolumeReclaimPolicy: "Delete"
   capacity:
     storage: {{ .Values.nfs.persistence.size | quote }}
-  storageClassName: ""
+  storageClassName: "{{ .Values.nfs.persistence.storageClass }}"
   accessModes:
     - ReadWriteMany
   nfs:
