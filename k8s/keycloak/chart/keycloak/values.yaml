@@ -22,3 +22,7 @@ postgresql:
     storageClass: standard
     size: 5Gi
 
+tls:
+  base64EncodedPrivateKey: null
+  base64EncodedCertificate: null
+

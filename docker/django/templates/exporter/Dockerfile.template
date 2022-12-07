@@ -20,5 +20,3 @@ RUN curl -L -o uwsgi.tar.gz https://github.com/timonwong/uwsgi_exporter/releases
     && rm -f uwsgi.tar.gz
 
 ENTRYPOINT ["uwsgi_exporter"]
-
-# --stats.uri tcp://localhost:1717

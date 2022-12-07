@@ -27,14 +27,8 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# C2D_DJANGO_SITENAME - Site folder name
-# C2D_DJANGO_PORT     - default_port
-
-# C2D_DJANGO_DB_TYPE = mysql
-
 set -x
 
-# Responsible for checking if a host and port are listening connections
 function await_for_host_and_port() {
     local host="$1"
     local port="$2"
@@ -88,6 +82,7 @@ function log_info() {
   echo "====> $1"
 }
 
+export C2D_DJANGO_MODE="--${C2D_DJANGO_MODE:="socket"}"
 export C2D_DJANGO_PORT="${C2D_DJANGO_PORT:=8080}"
 export C2D_DJANGO_ALLOWED_HOSTS="${C2D_DJANGO_ALLOWED_HOSTS:="'localhost'"}"
 
@@ -133,8 +128,4 @@ echo "Starting Django container..."
 
 # Run uwsgi
 cd "/sites/${C2D_DJANGO_SITENAME}" \
-  && /usr/bin/tini uwsgi -- --socket "0.0.0.0:${C2D_DJANGO_PORT}" --module "${C2D_DJANGO_SITENAME}.wsgi" --stats :1717 --py-autoreload 2 --lazy-apps --die-on-term
-
-
-# echo "import os" >> "${SETTINGS_FILE}"
-# echo "STATIC_ROOT = os.path.join(BASE_DIR, 'static')" >> "${SETTINGS_FILE}"
+  && /usr/bin/tini uwsgi -- "${C2D_DJANGO_MODE}" "0.0.0.0:${C2D_DJANGO_PORT}" --module "${C2D_DJANGO_SITENAME}.wsgi" --stats :1717 --py-autoreload 2 --lazy-apps --die-on-term
