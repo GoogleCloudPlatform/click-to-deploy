@@ -33,9 +33,11 @@ securityContext:
   value: "keycloak"
 - name: KEYCLOAK_ADMIN
   value: "admin"
-- name: KC_HOSTNAME
-  value: "keycloak"
+- name: KC_PROXY
+  value: "edge"
 - name: KC_HOSTNAME_STRICT
+  value: "false"
+- name: KC_HOSTNAME_STRICT_HTTPS
   value: "false"
 - name: KC_HTTP_ENABLED
   value: "true"
