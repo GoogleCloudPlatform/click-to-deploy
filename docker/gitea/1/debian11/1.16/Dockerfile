@@ -79,6 +79,7 @@ RUN addgroup \
 ENV USER git
 ENV GITEA_CUSTOM /data/gitea
 ENV C2D_RELEASE 1.16.9
+
 VOLUME ["/data"]
 
 COPY --from=build-env /go/src/code.gitea.io/gitea/gitea /app/gitea/gitea
