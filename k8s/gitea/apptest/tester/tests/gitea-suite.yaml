@@ -1,0 +1,9 @@
+actions:
+- name: Gitea running check
+  bashTest:
+    script: |-
+      kubectl exec -it ${APP_INSTANCE_NAME}-gitea-0 -- bash -c \
+        'curl localhost:3000'
+    expect:
+      stdout:
+        matches: 'Gitea'
