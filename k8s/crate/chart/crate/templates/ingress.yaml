@@ -1,0 +1,19 @@
+{{ if .Values.enablePublicServiceAndIngress }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-crate-ui
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: crate
+spec:
+  tls:
+  - secretName: {{ .Release.Name }}-web-tls
+  defaultBackend:
+    service:
+      name: {{ .Release.Name }}-crate-ui
+      port:
+        name: ui
+{{- end }}
+
