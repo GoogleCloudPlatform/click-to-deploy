@@ -86,12 +86,19 @@ properties:
     description: Set the Gitea Service type to NodePort and enable Ingress
     default: false
 
+  gitea.domainName:
+    type: string
+    title: Gitea instance domain name
+    description: If no domain name is set, the Gitea instance will be configured with an automatically-provided ClusterIP Service address.
+    pattern: '^(([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$'
+
   metrics.exporter.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
     description: Your GCP project must have Stackdriver enabled. For non-GCP clusters,
       the export of metrics to Stackdriver is not yet supported.
     default: false
+    
   certificate:
     type: string
     x-google-marketplace:

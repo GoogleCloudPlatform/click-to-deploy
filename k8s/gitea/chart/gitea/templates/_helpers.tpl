@@ -1,5 +1,5 @@
 {{- define "gitea.public_protocol" -}}
-{{- if .Values.ingress.enabled -}}
+{{- if .Values.enablePublicServiceAndIngress -}}
 https
 {{- else -}}
 http
@@ -7,5 +7,9 @@ http
 {{- end -}}
 
 {{- define "gitea.default_domain" -}}
+{{- if .Values.gitea.domainName -}}
+{{ .Values.gitea.domainName }}
+{{- else -}}
 {{- printf "%s-gitea-svc.%s.svc.cluster.local" .Release.Name .Release.Namespace -}}
+{{- end -}}
 {{- end -}}
