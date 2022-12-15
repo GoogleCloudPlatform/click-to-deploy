@@ -16,20 +16,20 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 8/debian11/8.11
+- dir: 9/debian11/9.1
   from: marketplace.gcr.io/google/debian11
   packages:
     solr:
-      gpg: 86EDB9C33B8517228E88A8F93E48C0C6EF362B9E
-      sha512: 22fedcc0090eda72c3c5a5ea769c93adaf7d92c5c4479993f009ef0b9d42de5bd2ed1e0565ca01f3428587d8a3836286aa3017aab157050f2bd5bc3482fdebaa
-      version: 8.11.2
-  repo: solr8
+      gpg: 2085660D9C1FCCACC4A479A3BF160FF14992A24C 
+      sha512: 16715fe50a74bc4906f655531523875e9e5d4a013aea22afff10a52dc6f05a8b62e079aee75cd9f2e250300e40071140c0a966cbd51af811a622f2f1f0b0c926
+      version: 9.1.0
+  repo: solr9
   tags:
-  - 8.11.2-debian11
-  - 8.11-debian11
-  - 8-debian10
-  - 8.11.2
-  - '8.11'
-  - '8'
+  - 9.1.0-debian11
+  - 9.1-debian11
+  - 9-debian10
+  - 9.1.0
+  - '9.1'
+  - '9'
   - latest
 
