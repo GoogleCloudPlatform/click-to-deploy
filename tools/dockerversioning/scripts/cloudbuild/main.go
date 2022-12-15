@@ -10,9 +10,9 @@ import (
 	"log"
 	"os"
 	"strings"
-	"text/template"
 
 	"github.com/GoogleCloudPlatform/click-to-deploy/tools/dockerversioning/versions"
+	"github.com/google/safetext/yamltemplate"
 )
 
 type cloudBuildOptions struct {
