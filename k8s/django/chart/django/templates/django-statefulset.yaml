@@ -1,23 +1,23 @@
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ .Release.Name }}-django
   labels: &DjangoDeploymentLabels
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: django-server
 spec:
-  strategy:
-    type: Recreate
-  replicas: {{ .Values.django.replicas }}
   selector:
     matchLabels: *DjangoDeploymentLabels
+  updateStrategy:
+    type: RollingUpdate
+  serviceName: {{ .Release.Name }}-django-svc
+  replicas: {{ .Values.django.replicas }}
   template:
     metadata:
       labels: *DjangoDeploymentLabels
     spec:
-      securityContext:
-        fsGroup: 1000
+      terminationGracePeriodSeconds: 180
       initContainers:
       - name: wait-for-postgresql-db
         image: {{ .Values.postgresql.image }}
@@ -96,4 +96,3 @@ spec:
         - name: django-data
           persistentVolumeClaim:
             claimName: {{ .Release.Name }}-nfs-django
-      restartPolicy: Always
