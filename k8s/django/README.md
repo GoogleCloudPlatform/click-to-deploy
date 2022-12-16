@@ -1,20 +1,15 @@
 # Overview
 
-NGINX is open source software that you can use as a web server, reverse proxy,
-cache, load balancer, and for streaming media. You can also use NGINX as a proxy
-server for email (IMAP, POP3, and SMTP), and a reverse proxy and load balancer
-for HTTP, TCP, and UDP servers.
+Django is a free, open-source and high-level Python web framework that encourages
+rapid development and clean, pragmatic design. Solution runs on UWSGI application
+server and can be exposed for tcp or http connections.
 
-To learn more about NGINX, see the [NGINX website](https://www.nginx.com/).
+To learn more about Django, view the [Django website](https://www.djangoproject.com/).
 
-This application uses NGINX as a web server and is configured to serve only
-static content. Each NGINX Pod is associated with its own PersistentVolume,
-which is created as a standard persistent disk defined by Google Kubernetes
-Engine.
+This application uses NGINX as a web server, it is configured to serve static
+content and as a gateway to a UWSGI deployment along with Django project.
 
-This application is pre-configured with an SSL certificate. While you are
-installing the application using the steps below, you must replace the
-certificate with your own valid SSL certificate.
+Django website is automatically created in startup and hosted in a NFS deployment.
 
 ## About Google Click to Deploy
 
@@ -22,25 +17,14 @@ Popular open stacks on Kubernetes packaged by Google.
 
 ## Architecture
 
-![Architecture diagram](resources/nginx-k8s-app-architecture.png)
+![Architecture diagram](resources/django-k8s-app-architecture.png)
 
-This application uses NGINX to serve static web content. The default
-configuration includes example content.
+This application uses NGINX to serve static web content. Django content
+is processed by an UWSGI/Django deployment.
 
 This application exposes two endpoints: HTTP on port 80 and HTTPS on port 443.
 
-This application uses pre-generated certificates to configure the HTTPS
-endpoint. The certificate is valid for 365 days. The certificate is stored as
-`https1.cert` secret and private key is stored as `https1.key` secret.
-
-If you want to use this application in a production environment, you must:
-
-*   Configure your own valid SSL certificate, and associate it with your domain
-    name.
-*   Upload your web content to the application
-
-The steps to update the certificate for the application are in
-[Update your SSL certificate](#update-your-ssl-certificate).
+A NFS deployment and a PostgreSQL stateful are deployed along with Django solution.
 
 The steps to add content to your server are in
 [Add web content](#add-web-content).
@@ -49,16 +33,16 @@ The steps to add content to your server are in
 
 ## Quick install with Google Cloud Marketplace
 
-Get up and running with a few clicks! Install this NGINX app to a Google
+Get up and running with a few clicks! Install this Django app to a Google
 Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
-[on-screen instructions](https://console.cloud.google.com/marketplace/details/google/nginx).
+[on-screen instructions](https://console.cloud.google.com/marketplace/details/google/django).
 
 ## Command line instructions
 
 You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local
 workstation to complete the following steps.
 
-[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/GoogleCloudPlatform/click-to-deploy&cloudshell_open_in_editor=README.md&cloudshell_working_dir=k8s/nginx)
+[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/GoogleCloudPlatform/click-to-deploy&cloudshell_open_in_editor=README.md&cloudshell_working_dir=k8s/django)
 
 ### Prerequisites
 
@@ -85,7 +69,7 @@ gcloud auth configure-docker
 Create a new cluster from the command line:
 
 ```shell
-export CLUSTER=nginx-cluster
+export CLUSTER=django-cluster
 export ZONE=us-west1-a
 
 gcloud container clusters create "$CLUSTER" --zone "$ZONE"
@@ -215,7 +199,7 @@ export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/nginx/prometheus-to-sd:
         -subj "/CN=nginx/O=nginx"
     ```
 
-1.  Set `TLS_CERTIFICATE_KEY` and `TLS_CERTIFICATE_CRT` variables:
+2.  Set `TLS_CERTIFICATE_KEY` and `TLS_CERTIFICATE_CRT` variables:
 
     ```shell
     export TLS_CERTIFICATE_KEY="$(cat /tmp/tls.key | base64)"

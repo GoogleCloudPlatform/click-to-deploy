@@ -18,6 +18,26 @@ spec:
     spec:
       securityContext:
         fsGroup: 1000
+      initContainers:
+      - name: wait-for-postgresql-db
+        image: {{ .Values.postgresql.image }}
+        imagePullPolicy: IfNotPresent
+        command: [
+          'sh', '-c', 'until psql -lqt | cut -d \| -f 1 | grep -qw $PGUSER; do echo waiting for database; sleep 2; done;'
+        ]
+        env:
+        - name: PGUSER
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-postgresql-secret"
+              key: db-user
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-postgresql-secret"
+              key: db-password
+        - name: PGHOST
+          value: "{{ .Release.Name }}-postgresql-svc"
       containers:
       - image: "{{ .Values.django.image.repo }}:{{ .Values.django.image.tag }}"
         name: django
@@ -28,11 +48,14 @@ spec:
         - name: C2D_DJANGO_PORT
           value: "8080"
         - name: C2D_DJANGO_ALLOWED_HOSTS
-          value: "'.localhost', '127.0.0.1', '[::1]', '{{ .Release.Name}}-django-svc'"
+          value: "'.localhost', '127.0.0.1', '[::1]', '{{ .Release.Name }}-django-svc'"
         - name: C2D_DJANGO_DB_TYPE
           value: "postgresql"
         - name: C2D_DJANGO_DB_NAME
-          value: "{{ .Values.django.site_name }}"
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-postgresql-secret"
+              key: db-user
         - name: C2D_DJANGO_DB_USER
           valueFrom:
             secretKeyRef:

@@ -42,6 +42,12 @@ spec:
             secretKeyRef:
               name: {{ .Release.Name }}-postgresql-secret
               key: db-password
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-postgresql-secret
+              key: db-user
+
       - name: prometheus-exporter
         image: {{ .Values.postgresql.exporter.image }}
         imagePullPolicy: Always

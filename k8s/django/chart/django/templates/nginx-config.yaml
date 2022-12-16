@@ -7,25 +7,11 @@ metadata:
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: nginx-server
 data:
-  index.html: |
-   <!DOCTYPE>
-    <html>
-     <head> <title>Web Server Application</title> </head>
-     <body> <h1>Web site powered by NGINX</h1>
-     <p>This page is under construction. Please come back soon!</p></body>
-    </html>
   nginx-config.conf: |
-   ssl_certificate      certs/https1.cert;
-   ssl_certificate_key  certs/https1.key;
-    upstream django {
-      server django-1-django-svc:8080;
-    }
-
     # configuration of the server
     server {
         # the port your site will be served on
         listen      80;
-        listen 443 ssl;
 
         location /stub_status {
           stub_status on;
@@ -52,7 +38,7 @@ data:
 
         # Finally, send all non-media requests to the Django server.
         location / {
-            uwsgi_pass   django-1-django-svc:8080;
+            uwsgi_pass   {{ .Release.Name }}-django-svc.{{ .Release.Namespace }}.svc.cluster.local:8080;
             uwsgi_read_timeout 300;
             include     uwsgi_params;
         }
