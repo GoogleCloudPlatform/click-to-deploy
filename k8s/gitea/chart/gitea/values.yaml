@@ -1,0 +1,38 @@
+gitea:
+  image:
+    repo: null
+    tag: null
+  admin:
+    email: "gitea@local.domain"
+    username: gitea
+    password: null
+  persistence:
+    size: 8Gi
+  sshPort: 22
+  httpPort: 3000
+  config: {}
+
+postgresql:
+  image: null
+  exporter:
+    image: null
+  user: gitea
+  password: null
+  postgresqlDatabase: gitea
+  persistence:
+    size: 8Gi
+
+persistence:
+  storageClass: standard
+  accessMode: ReadWriteOnce
+
+metrics:
+  image: null
+  exporter:
+    enabled: false
+
+tls:
+  base64EncodedPrivateKey: null
+  base64EncodedCertificate: null
+
+enablePublicServiceAndIngress: false

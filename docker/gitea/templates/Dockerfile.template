@@ -78,6 +78,7 @@ RUN addgroup \
 
 ENV USER git
 ENV GITEA_CUSTOM /data/gitea
+ENV C2D_RELEASE {{ $gitea.Version }}.9
 
 VOLUME ["/data"]
 
