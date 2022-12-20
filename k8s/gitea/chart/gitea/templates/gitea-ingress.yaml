@@ -1,0 +1,20 @@
+{{- if .Values.enablePublicServiceAndIngress }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-gitea-ingress
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: gitea-server
+spec:
+  defaultBackend:
+    service:
+      name: {{ .Release.Name }}-gitea-svc
+      port:
+        name: http
+  {{- if .Values.tls.base64EncodedCertificate }}
+  tls:
+  - secretName: {{ .Release.Name }}-tls
+  {{- end -}}
+{{- end }}
