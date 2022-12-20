@@ -3,50 +3,50 @@ include ../gcloud.Makefile
 include ../var.Makefile
 include ../images.Makefile
 
-CHART_NAME := solr
+CHART_NAME := gitea
 APP_ID ?= $(CHART_NAME)
-WAIT_FOR_READY_TIMEOUT := 600
+WAIT_FOR_READY_TIMEOUT ?= 100
 
-TRACK ?= 9.1
-ZK_TAG ?= 3.6
-
+TRACK ?= 1.16
+POSTGRESQL_TAG ?= latest
+EXPORTER_TAG ?= latest
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
-IMAGE_SOLR ?= $(SOURCE_REGISTRY)/solr9:$(TRACK)
+
+IMAGE_GITEA ?= $(SOURCE_REGISTRY)/gitea1:$(TRACK)
+IMAGE_POSTGRESQL ?= $(SOURCE_REGISTRY)/postgresql11:$(POSTGRESQL_TAG)
+IMAGE_POSTGRESQL_EXPORTER ?= $(SOURCE_REGISTRY)/postgresql-exporter0:$(EXPORTER_TAG)
 IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
-IMAGE_ZOOKEEPER ?= $(SOURCE_REGISTRY)/zookeeper3:$(ZK_TAG)
 
 # Main image
-image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_SOLR))
+image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_GITEA))
 
 # List of images used in application
-ADDITIONAL_IMAGES := zookeeper prometheus-to-sd
+ADDITIONAL_IMAGES := postgresql postgresql-exporter prometheus-to-sd
 
 # Additional images variable names should correspond with ADDITIONAL_IMAGES list
-image-zookeeper := $(call get_sha256,$(IMAGE_ZOOKEEPER))
+image-postgresql := $(call get_sha256,$(IMAGE_POSTGRESQL))
+image-postgresql-exporter := $(call get_sha256,$(IMAGE_POSTGRESQL_EXPORTER))
 image-prometheus-to-sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))
 
 C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)
-NAME ?= $(APP_ID)-1
+VERIFY_WAIT_TIMEOUT := 1000
 
 # Additional variables
 ifdef METRICS_EXPORTER_ENABLED
   METRICS_EXPORTER_ENABLED_FIELD = , "metrics.exporter.enabled": $(METRICS_EXPORTER_ENABLED)
 endif
 
-ifdef STANDALONE_MODE_ENABLED
-  STANDALONE_MODE_ENABLED_FIELD = , "solr.standalone": $(STANDALONE_MODE_ENABLED)
-endif
+NAME ?= $(APP_ID)-1
 
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
   $(METRICS_EXPORTER_ENABLED_FIELD) \
-  $(STANDALONE_MODE_ENABLED_FIELD) \
 }
 
 # c2d_deployer.Makefile provides the main targets for installing the application.

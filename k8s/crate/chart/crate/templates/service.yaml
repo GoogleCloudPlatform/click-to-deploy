@@ -1,0 +1,52 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-crate
+  labels: &Labels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: crate
+spec:
+  # A Headless Service is used for CrateDB node discovery.
+  # Returns the IP adresses of the associated CrateDB Pods.
+  clusterIP: None
+  ports:
+    - name: psql
+      port: 5432
+    - name: transport
+      port: 4300
+    - name: ui
+      port: 4200
+  selector: *Labels
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-crate-ui
+  labels: &Labels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: crate
+spec:
+  ports:
+    - name: ui
+      port: 4200
+  selector: *Labels
+  {{ if .Values.enablePublicServiceAndIngress }}
+  type: NodePort
+  {{ else }}
+  type: ClusterIP
+  {{ end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-crate-psql
+  labels: &Labels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: crate
+spec:
+  ports:
+    - name: psql
+      port: 5432
+  selector: *Labels
+
