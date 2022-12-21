@@ -1,12 +1,10 @@
-{{- $solr := index .Packages "solr" -}}
+FROM marketplace.gcr.io/google/debian11
 
-FROM {{ .From }}
+ARG SOLR_VERSION=9.1.0
+ARG SOLR_SHA512=16715fe50a74bc4906f655531523875e9e5d4a013aea22afff10a52dc6f05a8b62e079aee75cd9f2e250300e40071140c0a966cbd51af811a622f2f1f0b0c926
+ARG SOLR_KEYS=2085660D9C1FCCACC4A479A3BF160FF14992A24C
 
-ARG SOLR_VERSION={{ $solr.Version }}
-ARG SOLR_SHA512={{ $solr.Sha512 }}
-ARG SOLR_KEYS={{ $solr.Gpg }}
-
-ENV C2D_RELEASE={{ $solr.Version }}
+ENV C2D_RELEASE=9.1.0
 
 RUN set -ex; \
   apt-get update; \
@@ -45,7 +43,21 @@ RUN set -ex; \
   mkdir -p "$GNUPGHOME"; \
   chmod 700 "$GNUPGHOME"; \
   echo "disable-ipv6" >> "$GNUPGHOME/dirmngr.conf"; \
-  {{ `gpg --no-tty --keyserver $server --recv-keys $SOLR_KEYS` | KeyServersRetryLoop "\t" }} \
+  found='' && \
+	for server in \
+		pool.sks-keyservers.net \
+		na.pool.sks-keyservers.net \
+		eu.pool.sks-keyservers.net \
+		oc.pool.sks-keyservers.net \
+		ha.pool.sks-keyservers.net \
+		hkp://p80.pool.sks-keyservers.net:80 \
+		hkp://keyserver.ubuntu.com:80 \
+		pgp.mit.edu \
+	; do \
+		gpg --no-tty --keyserver $server --recv-keys $SOLR_KEYS \
+			&& found=yes && break; \
+	done; \
+	test -n "$found" \
   && exit 0
 
 RUN set -ex; \

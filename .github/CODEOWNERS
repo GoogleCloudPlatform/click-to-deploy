@@ -3,10 +3,8 @@
 
 # These owners will be the default owners for everything in
 # the repo. Unless a later match takes precedence.
-*                   @GoogleCloudPlatform/launcher-operations
+*                   @GoogleCloudPlatform/ccm-saap-team
 
-# GCB configuration.
-cloudbuild-vm.yaml  @wgrzelak @khajduczenia @huyhg
 
 /docker/ @GoogleCloudPlatform/c2d-contributors
 /k8s/**/Makefile @GoogleCloudPlatform/c2d-contributors

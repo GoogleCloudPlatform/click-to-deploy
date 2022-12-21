@@ -1,10 +1,12 @@
+#!/bin/bash
+#
 # Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#      http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,24 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+set -xeo pipefail
+shopt -s nullglob
 
-cloudbuild:
-  enable_parallel: false
-versions:
-- dir: 9/debian11/9.1
-  from: marketplace.gcr.io/google/debian11
-  packages:
-    solr:
-      gpg: 2085660D9C1FCCACC4A479A3BF160FF14992A24C 
-      sha512: 16715fe50a74bc4906f655531523875e9e5d4a013aea22afff10a52dc6f05a8b62e079aee75cd9f2e250300e40071140c0a966cbd51af811a622f2f1f0b0c926
-      version: 9.1.0
-  repo: solr9
-  tags:
-  - 9.1.0-debian11
-  - 9.1-debian11
-  - 9-debian10
-  - 9.1.0
-  - '9.1'
-  - '9'
-  - latest
-
+for test in /tests/*; do
+  testrunner -logtostderr "--test_spec=${test}"
+done
