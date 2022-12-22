@@ -1,12 +1,4 @@
 actions:
-- name: Await forever
-  bashTest:
-    script: sleep 3600
-    expect:
-      exitCode:
-        equals: 0
-      stdout:
-        contains: '<title>The install worked successfully! Congratulations!</title>'
 - name: Site address should be 200 OK
   bashTest:
     script: curl -v -L "http://${APP_INSTANCE_NAME}-nginx-svc/"
