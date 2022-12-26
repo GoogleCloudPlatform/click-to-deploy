@@ -24,7 +24,7 @@ versions:
       version: 1.4.197
     sshdcommon:
       version: 2.9.2
-  repo: keycloak19
+  repo: keycloak20
   tags:
   - '20.0.2-debian11'
   - '20.0-debian11'
