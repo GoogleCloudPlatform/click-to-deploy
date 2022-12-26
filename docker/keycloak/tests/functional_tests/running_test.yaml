@@ -31,6 +31,8 @@ setup:
   - '$IMAGE'
   - 'start-dev'
 - command: [sleep, '45s']
+- command: [docker, ps]
+- command: [docker, logs, some-keycloak-$UNIQUE-id]  
 
 teardown:
 - command: [docker, stop, some-keycloak-$UNIQUE-id]
