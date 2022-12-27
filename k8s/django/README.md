@@ -185,7 +185,6 @@ Configure the container images:
 
 ```shell
 export IMAGE_DJANGO="marketplace.gcr.io/google/django"
-export IMAGE_DJANGO="gcr.io/ccm-ops-test-adhoc/django"
 export IMAGE_DJANGO_EXPORTER="${IMAGE_DJANGO}/uwsgi-exporter:${TAG}"
 export IMAGE_NGINX="${IMAGE_DJANGO}/nginx"
 export IMAGE_NGINX_INIT="${IMAGE_DJANGO}/debian:${TAG}"
