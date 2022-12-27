@@ -7,7 +7,7 @@ server and can be exposed for tcp or http connections.
 To learn more about Django, view the [Django website](https://www.djangoproject.com/).
 
 This application uses NGINX as a web server, it is configured to serve static
-content and as a gateway to a UWSGI deployment along with Django project.
+content and as a gateway to an UWSGI deployment along with Django project.
 
 Django website is automatically created in startup and hosted in a NFS deployment.
 
@@ -25,9 +25,6 @@ is processed by an UWSGI/Django deployment.
 This application exposes two endpoints: HTTP on port 80 and HTTPS on port 443.
 
 A NFS deployment and a PostgreSQL stateful are deployed along with Django solution.
-
-The steps to add content to your server are in
-[Add web content](#add-web-content).
 
 # Installation
 
@@ -110,10 +107,10 @@ community. The source code can be found on
 
 ### Install the Application
 
-Navigate to the `nginx` directory:
+Navigate to the `django` directory:
 
 ```shell
-cd click-to-deploy/k8s/nginx
+cd click-to-deploy/k8s/django
 ```
 
 #### Configure the app with environment variables
@@ -121,22 +118,38 @@ cd click-to-deploy/k8s/nginx
 Choose the instance name and namespace for the app:
 
 ```shell
-export APP_INSTANCE_NAME=nginx-1
+export APP_INSTANCE_NAME=django-1
 export NAMESPACE=default
-export REPLICAS=3
 ```
 
-For the persistent disk provisioning of the NGINX StatefulSets, you will need to:
+Set the number of replicas per component and the website name:
+
+```shell
+export NGINX_REPLICAS=3
+export DJANGO_REPLICAS=3
+export DJANGO_SITE_NAME="mysite"
+```
+
+Set the PostgreSQL credentials:
+
+```shell
+export POSTGRES_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 1 | tr -d '\n' | base64)"
+```
+
+For the persistent disk provisioning of the StatefulSets, you will need to:
 
  * Set the StorageClass name. Check your available options using the command below:
    * ```kubectl get storageclass```
    * Or check how to create a new StorageClass in [Kubernetes Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
 
- * Set the persistent disk's size. The default disk size is "1Gi".
+ * Set the persistent disk's sizes.
 
 ```shell
 export DEFAULT_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
-export PERSISTENT_DISK_SIZE="1Gi"
+export DJANGO_DISK_SIZE="10Gi"
+export NGINX_DISK_SIZE="10Gi"
+export POSTGRESQL_DISK_SIZE="10Gi"
+export NFS_PERSISTENT_DISK_SIZE="10Gi"
 ```
 
 Enable Stackdriver Metrics Exporter:
@@ -144,24 +157,17 @@ Enable Stackdriver Metrics Exporter:
 > **NOTE:** Your GCP project must have Stackdriver enabled. If you are using a
 > non-GCP cluster, you cannot export metrics to Stackdriver.
 
-By default, application export metrics to Stackdriver as free curated metrics.
-The metrics prefix would be `kubernetes.io/nginx/`. To disable this option,
-change the value of `CURATED_METRICS_EXPORTER_ENABLED` to `false`.
-
 To keep backward compatibility, users can still export metrics as custom metrics.
 To enable this option, change the value of `METRICS_EXPORTER_ENABLED` to `true`.
 
-We encourage users migrate to the free metrics as it saves cost for the users.
-
 ```shell
-export CURATED_METRICS_EXPORTER_ENABLED=true
 export METRICS_EXPORTER_ENABLED=false
 ```
 
 Set up the image tag:
 
 It is advised to use stable image reference which you can find on
-[Marketplace Container Registry](https://marketplace.gcr.io/google/nginx).
+[Marketplace Container Registry](https://marketplace.gcr.io/google/django).
 Example:
 
 ```shell
@@ -172,19 +178,25 @@ Alternatively you can use short tag which points to the latest image for selecte
 > Warning: this tag is not stable and referenced image might change over time.
 
 ```shell
-export TAG="1.20"
+export TAG="4.1"
 ```
 
 Configure the container images:
 
 ```shell
-export IMAGE_NGINX="marketplace.gcr.io/google/nginx"
-export IMAGE_NGINX_INIT="marketplace.gcr.io/google/nginx/debian9:${TAG}"
-export IMAGE_NGINX_EXPORTER="marketplace.gcr.io/google/nginx/nginx-exporter:${TAG}"
-export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/nginx/prometheus-to-sd:${TAG}"
+export IMAGE_DJANGO="marketplace.gcr.io/google/django"
+export IMAGE_DJANGO="gcr.io/ccm-ops-test-adhoc/django"
+export IMAGE_DJANGO_EXPORTER="${IMAGE_DJANGO}/uwsgi-exporter:${TAG}"
+export IMAGE_NGINX="${IMAGE_DJANGO}/nginx"
+export IMAGE_NGINX_INIT="${IMAGE_DJANGO}/debian:${TAG}"
+export IMAGE_NGINX_EXPORTER="${IMAGE_DJANGO}/nginx-exporter:${TAG}"
+export IMAGE_NFS="${IMAGE_DJANGO}/nfs"
+export IMAGE_POSTGRESQL="${IMAGE_DJANGO}/postgresql:${TAG}"
+export IMAGE_POSTGRESQL_EXPORTER="${IMAGE_DJANGO}/postgresql-exporter:${TAG}"
+export IMAGE_METRICS_EXPORTER="${IMAGE_DJANGO}/prometheus-to-sd:${TAG}"
 ```
 
-#### Create TLS certificate for Nginx
+#### Create TLS certificate for NGINX
 
 1.  If you already have a certificate that you want to use, copy your
     certificate and key pair to the `/tmp/tls.crt`, and `/tmp/tls.key` files,
@@ -221,20 +233,35 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-helm template "$APP_INSTANCE_NAME" chart/nginx \
-  --namespace "$NAMESPACE" \
-  --set nginx.replicas="$REPLICAS" \
-  --set nginx.initImage="$IMAGE_NGINX_INIT" \
-  --set nginx.image.repo="$IMAGE_NGINX" \
-  --set nginx.image.tag="$TAG" \
+helm template "${APP_INSTANCE_NAME}" chart/django \
+  --set django.image.repo="${IMAGE_DJANGO}" \
+  --set django.image.tag="${TAG}" \
+  --set django.replicas="${DJANGO_REPLICAS}" \
+  --set django.persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \
+  --set django.persistence.size="${DJANGO_DISK_SIZE}" \
+  --set django.site_name="${DJANGO_SITE_NAME}" \
+  --set django.exporter.image="${IMAGE_DJANGO_EXPORTER}" \
+  --set nginx.image.repo="${IMAGE_NGINX}" \
+  --set nginx.image.tag="${TAG}" \
+  --set nginx.exporter.image="${IMAGE_NGINX_EXPORTER}" \
+  --set nginx.initImage="${IMAGE_NGINX_INIT}" \
+  --set nginx.replicas="${NGINX_REPLICAS}" \
   --set nginx.persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \
-  --set nginx.persistence.size="${PERSISTENT_DISK_SIZE}" \
-  --set exporter.image="$IMAGE_NGINX_EXPORTER" \
-  --set metrics.image="$IMAGE_METRICS_EXPORTER" \
-  --set metrics.curatedExporter.enabled="$CURATED_METRICS_EXPORTER_ENABLED" \
-  --set metrics.exporter.enabled="$METRICS_EXPORTER_ENABLED" \
-  --set tls.base64EncodedPrivateKey="$TLS_CERTIFICATE_KEY" \
-  --set tls.base64EncodedCertificate="$TLS_CERTIFICATE_CRT" \
+  --set nginx.persistence.size="${NGINX_DISK_SIZE}" \
+  --set nginx.tls.base64EncodedPrivateKey="${TLS_CERTIFICATE_KEY}" \
+  --set nginx.tls.base64EncodedCertificate="${TLS_CERTIFICATE_CRT}" \
+  --set nfs.image.repo="${IMAGE_NFS}" \
+  --set nfs.image.tag="${TAG}" \
+  --set nfs.persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \
+  --set nfs.persistence.size="${NFS_PERSISTENT_DISK_SIZE}" \
+  --set metrics.image="${IMAGE_METRICS_EXPORTER}" \
+  --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED}" \
+  --set postgresql.image="${IMAGE_POSTGRESQL}" \
+  --set postgresql.exporter.image="${IMAGE_POSTGRESQL_EXPORTER}" \
+  --set postgresql.user="${DJANGO_SITE_NAME}" \
+  --set postgresql.password="${POSTGRES_PASSWORD}" \
+  --set postgresql.postgresDatabase="${DJANGO_SITE_NAME}" \
+  --set postgresql.persistence.size="${POSTGRESQL_DISK_SIZE}" \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
@@ -258,7 +285,7 @@ To view your app, open the URL in your browser.
 
 # Using the app
 
-You can get the IP addresses for your NGINX solution either from the command
+You can get the IP addresses for your Django solution either from the command
 line, or from the Google Cloud Platform Console.
 
 In the GCP Console, do the following:
@@ -266,7 +293,7 @@ In the GCP Console, do the following:
 1.  Open the
     [Kubernetes Engine Services](https://console.cloud.google.com/kubernetes/discovery)
     page.
-1.  Identify the NGINX solution using its name (typically `nginx-1-nginx-svc`)
+1.  Identify the Django solution using its name (typically `${APP_INSTANCE_NAME}-django-svc`)
 1.  From the Endpoints column, note the IP addresses for ports 80 and 443.
 
 If you are using the command line, run the following command:
@@ -275,21 +302,15 @@ If you are using the command line, run the following command:
 kubectl get svc -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace "$NAMESPACE"
 ```
 
-This command shows the internal and external IP address of your NGINX service.
-
 # Application metrics
 
 ## Prometheus metrics
 
-The application is configured to expose its metrics through
-[Nginx Exporter](https://github.com/nginxinc/nginx-prometheus-exporter) in the
-[Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
-For more detailed information about setting up the plugin, see the
-[Nginx Exporter documentation](https://github.com/nginxinc/nginx-prometheus-exporter/blob/master/README.md).
+The application is configured to expose its metrics through the following exporters:
 
-You can access the metrics at `[POD_IP]:9113/metrics`, where `[POD_IP]` is the
-IP address from the Kubernetes headless service
-`$APP_INSTANCE_NAME-nginx-prometheus-svc`.
+* [UWSGI Exporter](https://github.com/timonwong/uwsgi_exporter)
+* [NGINX Exporter](https://github.com/nginxinc/nginx-prometheus-exporter)
+* [Postgres Exporter](https://github.com/prometheus-community/postgres_exporter)
 
 ### Configuring Prometheus to collect metrics
 
@@ -321,8 +342,18 @@ You can remove existing metric descriptors using
 
 # Scaling
 
-By default, the NGINX application is deployed using 3 replicas. You can manually
-scale it up or down using the following command:
+By default, the Django application is deployed using 3 replicas. You can manually
+scale it up or down the NGINX or Django workloads using the following command:
+
+For scaling Django, use:
+
+```shell
+kubectl scale statefulsets "$APP_INSTANCE_NAME-django" \
+  --namespace "$NAMESPACE" \
+  --replicas=[NEW_REPLICAS]
+```
+
+For scaling NGINX use:
 
 ```shell
 kubectl scale statefulsets "$APP_INSTANCE_NAME-nginx" \
@@ -332,101 +363,16 @@ kubectl scale statefulsets "$APP_INSTANCE_NAME-nginx" \
 
 where `[NEW_REPLICAS]` is the new number of replicas.
 
-# Add web content
-
-To update the content in your NGINX web server you can use the scripts in the
-`click-to-deploy/k8s/nginx/scripts` folder.
-
-Navigate to `click-to-deploy/k8s/nginx/scripts` and add your web content to the
-`html` folder. Then run the commands below.
-
-```shell
-export APP_INSTANCE_NAME=application_name  # for example, nginx-1
-export NAMESPACE=default
-./upload-webdata.sh
-```
-
-# Backup and Restore
-
-To backup and restore the content of your NGINX web server, use the scripts in
-the `click-to-deploy/k8s/nginx/scripts` folder.
-
-## Backup
-
-To back up the content of your NGINX web server, run the following command:
-
-```shell
-export APP_INSTANCE_NAME=application_name  # for example, nginx-1
-export NAMESPACE=default
-cd click-to-deploy/k8s/nginx/scripts
-./backup-webdata.sh
-```
-
-The web server content is stored in the `backup` folder.
-
-## Restore
-
-To restore the content of your NGINX web server, run the following commands:
-
-```shell
-export APP_INSTANCE_NAME=application_name  # for example, nginx-1
-export NAMESPACE=default
-cd click-to-deploy/k8s/nginx/scripts
-./upload-webdata.sh
-```
-
-# Update your SSL certificate
-
-We strongly recommend that you use a valid certificate issued by an approved
-Certificate Authority (CA) for your NGINX server.
-
-To update the certificate, you need:
-
-*   The certificate file, such as an X509 certificate
-*   The private key file, in the PEM format. If you are using a signed
-    certificate, use a bundled file that contains your domain certificate and
-    the intermediate certificate
-
-To update the certificate for a running server:
-
-**Caution**: To avoid accidentally committing your certificate to your Git
-repository, perform these steps outside the cloned `click-to-deploy` repo.
-
-1.  Save the certificate as `https1.cert` in a folder on your workstation.
-1.  Save the private key of your certificate as `https1.key` in the same folder.
-1.  Copy
-    [`click-to-deploy/k8s/nginx/scripts/nginx-update-cert.sh`](scripts/nginx-update-cert.sh)
-    to the folder where `https1.cert` and `https1.key` are stored.
-1.  Define the `APP_INSTANCE_NAME` environment variable:
-
-    ```shell
-    export APP_INSTANCE_NAME=application_name  # for example, nginx-1
-    ```
-
-1.  Define the `NAMESPACE` environment variable:
-
-    ```shell
-    export NAMESPACE=default
-    ```
-
-1.  Run the update script:
-    [`./nginx-update-cert.sh`](scripts/nginx-update-cert.sh).
-
-If you want to create a self-signed certificate, typically used for testing, use
-the
-[`click-to-deploy/k8s/nginx/scripts/nginx-create-key.sh`](scripts/nginx-create-key.sh)
-script.
-
 # Updating the application
 
-These steps assume that you have a new image for the NGINX container available
+These steps assume that you have a new image for the Django container available
 to your Kubernetes cluster. The new image is used in the following commands as
 `[NEW_IMAGE_REFERENCE]`.
 
-In the NGINX StatefulSet, modify the image used for the Pod template:
+In the Django StatefulSet, modify the image used for the Pod template:
 
 ```shell
-kubectl set image statefulset "$APP_INSTANCE_NAME-nginx" \
+kubectl set image statefulset "$APP_INSTANCE_NAME-django" \
   --namespace "$NAMESPACE" nginx=[NEW_IMAGE_REFERENCE]
 ```
 
@@ -439,7 +385,7 @@ the new image, run the following command:
 kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace "$NAMESPACE"
 ```
 
-To check the current image used by Pods in the `NGINX` Kubernetes application,
+To check the current image used by Pods in the `Django` Kubernetes application,
 run the following command:
 
 ```shell
@@ -448,7 +394,7 @@ kubectl get pods -l app.kubernetes.io/name=$APP_INSTANCE_NAME --namespace "$NAME
 
 # Uninstalling the app
 
-You can delete the NGINX application using the Google Cloud Platform Console, or
+You can delete the Django application using the Google Cloud Platform Console, or
 using the command line.
 
 ## Using the Google Cloud Platform Console
@@ -456,16 +402,16 @@ using the command line.
 1.  In the GCP Console, open
     [Kubernetes Applications](https://console.cloud.google.com/kubernetes/application).
 
-1.  From the list of applications, click **NGINX**.
+2.  From the list of applications, click **Django**.
 
-1.  On the Application Details page, click **Delete**.
+3.  On the Application Details page, click **Delete**.
 
 ## Using the command line
 
-1.  Navigate to the `nginx` directory.
+1.  Navigate to the `django` directory.
 
     ```shell
-    cd click-to-deploy/k8s/nginx
+    cd click-to-deploy/k8s/django
     ```
 
 1.  Run the `kubectl delete` command:
