@@ -30,7 +30,7 @@ setup:
   - '-d'
   - '$IMAGE'
   - 'start-dev'
-- command: [sleep, '45s']
+- command: [sleep, '75s']
 
 teardown:
 - command: [docker, stop, some-keycloak-$UNIQUE-id]
