@@ -123,7 +123,7 @@ spec:
         - --source=uwsgi:http://localhost:9117/metrics
         - --pod-id=$(POD_NAME)
         - --namespace-id=$(POD_NAMESPACE)
-        - --monitored-resource-types=k8s
+        - --monitored-resource-type-prefix=k8s
         env:
         - name: POD_NAME
           valueFrom:
