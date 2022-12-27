@@ -1,0 +1,131 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: {{ .Release.Name }}
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": {{ .Chart.Name | quote }}, "partner_name": "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+spec:
+  descriptor:
+    type: Gitea
+    version: "{{ .Values.gitea.image.tag }}"
+    description: |-
+      Gitea is community managed, self-hosted, painless, lightweight Git service.
+
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/gitea/).
+
+      Additional community support is available on
+      [Gitea Communtiy Forum](https://discourse.gitea.io/).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy Gitea'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/gitea/README.md
+    - description: 'Gitea documentation'
+      url: https://docs.gitea.io/en-us/
+    notes: |-
+      {{- if .Values.enablePublicServiceAndIngress }}
+      # Open your Gitea site
+
+      Get the external IP of your Gitea site using the following command:
+
+      ```
+      SERVICE_IP=$(kubectl get svc \
+        {{ .Release.Name }}-Gitea-svc \
+        --namespace {{ .Release.Namespace }} \
+        --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
+      echo "https://${SERVICE_IP}/"
+
+      The command shows you the URL of your site.
+      # Update TLS certificate for Gitea
+      By default, the app uses a self-signed certificate. You can follow the steps at
+      [Update TLS certificate for Gitea](https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/gitea/README.md#create-tls-certificate-for-gitea)
+      to update it.
+      {{- else }}
+
+      # Open your Gitea site
+      Gitea is exposed in a ClusterIP-only service, `{{ .Release.Name }}-gitea-svc`.
+      To connect to Gitea, you can either expose a public service endpoint, or keep it private,
+      but connect from you local environment with `kubectl port-forward`.
+      ## Forward Gitea port in local environment
+      You can use the port forwarding feature of `kubectl` to forward Gitea's port to your local
+      machine. Run the following command in the background:
+      ```shell
+      kubectl port-forward \
+        --namespace {{ .Release.Namespace }} \
+        svc/{{ .Release.Name }}-gitea-svc \
+        8080:3000
+      ```
+      Now you can access the Gitea UI with [http://localhost:8080](http://localhost:8080).
+      {{- end }}
+      ```
+  info:
+  {{- if .Values.enablePublicServiceAndIngress }}
+  - name: Gitea - site address
+    valueFrom:
+      ingressRef: 
+        name: {{ .Release.Name }}-gitea-ingress
+        protocol: {{ include "gitea.public_protocol" . | trim }}
+  {{- else }}      
+  - name: Forward Gitea port locally
+    value: kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-gitea-svc 8080:3000
+  - name: Gitea - site address (local only)
+    value: http://localhost:8080
+  {{- end }}
+  - name: Gitea - admin username
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: gitea-user
+        name: {{ .Release.Name }}-gitea-secret
+  - name: Gitea - admin e-mail address
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: gitea-admin-email
+        name: {{ .Release.Name }}-gitea-secret
+  - name: Gitea - admin user password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: gitea-admin-password
+        name: {{ .Release.Name }}-gitea-secret
+
+  - name: PostgreSQL username
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: db-user
+        name: "{{ .Release.Name }}-postgresql-secret"
+  - name: PostgreSQL password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: db-password
+        name: "{{ .Release.Name }}-postgresql-secret"
+  - name: Redis password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: redis-password
+        name: "{{ .Release.Name }}-redis-secret"
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Release.Name }}
+  componentKinds:
+  - group: v1
+    kind: ConfigMap
+  - group: v1
+    kind: Secret
+  - group: v1
+    kind: Service
+  - group: apps/v1
+    kind: StatefulSet
+  - group: v1
+    kind: PersistentVolumeClaim

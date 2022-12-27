@@ -15,6 +15,24 @@
 cloudbuild:
   enable_parallel: false
 versions:
+- dir: 20/debian11/20.0
+  from: marketplace.gcr.io/google/debian11
+  packages:
+    keycloak:
+      version: 20.0.2
+    h2database:
+      version: 1.4.197
+    sshdcommon:
+      version: 2.9.2
+  repo: keycloak20
+  tags:
+  - '20.0.2-debian11'
+  - '20.0-debian11'
+  - '20-debian11'
+  - '20.0.2'
+  - '20.0'
+  - '20'
+  - 'latest'
 - dir: 19/debian11/19.0
   from: marketplace.gcr.io/google/debian11
   packages:
@@ -22,6 +40,8 @@ versions:
       version: 19.0.3
     h2database:
       version: 1.4.197
+    sshdcommon:
+      version: 2.9.2
   repo: keycloak19
   tags:
   - '19.0.3-debian11'
@@ -30,7 +50,6 @@ versions:
   - '19.0.3'
   - '19.0'
   - '19'
-  - 'latest'
 - dir: 18/debian11/18.0
   from: marketplace.gcr.io/google/debian11
   packages:
@@ -38,6 +57,8 @@ versions:
       version: 18.0.2
     h2database:
       version: 1.4.197
+    sshdcommon:
+      version: 2.9.2
   repo: keycloak18
   tags:
   - '18.0.0-debian11'
