@@ -13,6 +13,14 @@ RUN mv /tmp/keycloak/keycloak-* /opt/keycloak && mkdir -p /opt/keycloak/data
 
 RUN chmod -R g+rwX /opt/keycloak
 
+#replace vulnerable library
+ENV SSHDCOMMON_VERSION 2.9.2
+RUN rm -f /opt/keycloak/lib/lib/main/org.apache.sshd.sshd-common-2.7.0.jar
+ARG SSHDCOMMON_DIST=https://repo1.maven.org/maven2/org/apache/sshd/sshd-common/$SSHDCOMMON_VERSION/sshd-common-$SSHDCOMMON_VERSION.jar
+ADD $SSHDCOMMON_DIST /opt/keycloak/org.apache.sshd.sshd-common-$SSHDCOMMON_VERSION.jar
+RUN ln -s /opt/keycloak/org.apache.sshd.sshd-common-$SSHDCOMMON_VERSION.jar \
+    /opt/keycloak/lib/lib/main/org.apache.sshd.sshd-common-2.7.0.jar
+
 FROM marketplace.gcr.io/google/debian11
 ENV LANGUAGE=C.UTF-8 LANG=C.UTF-8 LC_ALL=C.UTF-8 LC_CTYPE=C.UTF-8 LC_MESSAGES=C.UTF-8
 

@@ -1,7 +1,7 @@
 # solr-docker
 
 Container solution for Apache Solr.
-Learn more about Apache Solr in [official documentation](https://lucene.apache.org/solr/).
+Learn more about Apache Solr in [official documentation](https://solr.apache.org/guide/solr/latest/index.html).
 
 ## Upstream
 
@@ -28,9 +28,9 @@ gcloud auth configure-docker
 ### Pull command
 
 ```shell
-docker -- pull marketplace.gcr.io/google/solr8
+docker -- pull marketplace.gcr.io/google/solr9
 ```
-Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/docker/solr/8/debian11/8.11/)
+Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/docker/solr/9/debian11/9.1/)
 =======
 
 # <a name="table-of-contents"></a>Table of Contents
@@ -63,7 +63,7 @@ version: '2'
 services:
   solr:
     container_name: solr
-    image: marketplace.gcr.io/google/solr8
+    image: marketplace.gcr.io/google/solr9
     ports:
       - 8983:8983
 ```
@@ -74,10 +74,10 @@ Or you can use `docker run` directly:
 docker run -d \
     -p 8983:8983 \
     --name solr \
-    marketplace.gcr.io/google/solr8
+    marketplace.gcr.io/google/solr9
 ```
 
-### <a name="Runnung-Solr-in-standalone-mode"></a>Running Solr in standalone mode
+### <a name="Runnung-Solr-with-Zookeeper-service"></a>Running Solr with Zookeeper service
 
 Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
 
@@ -91,7 +91,7 @@ services:
       - ZOO_4LW_COMMANDS_WHITELIST="*"
   solr-node-1:
     container_name: solr-node-1
-    image: marketplace.gcr.io/google/solr8
+    image: marketplace.gcr.io/google/solr9
     ports:
       - 8983:8983
     environment:
@@ -100,7 +100,7 @@ services:
       - zookeeper
   solr-node-2:
     container_name: solr-node-2
-    image: marketplace.gcr.io/google/solr8
+    image: marketplace.gcr.io/google/solr9
     ports:
       - 8984:8983
     environment:
@@ -109,7 +109,7 @@ services:
       - zookeeper
   solr-node-3:
     container_name: solr-node-3
-    image: marketplace.gcr.io/google/solr8
+    image: marketplace.gcr.io/google/solr9
     ports:
       - 8985:8983
     environment:
@@ -133,7 +133,7 @@ services:
       - /data
   solr-node-1:
     container_name: solr-node-1
-    image: marketplace.gcr.io/google/solr8
+    image: marketplace.gcr.io/google/solr9
     ports:
       - 8983:8983
     environment:
@@ -145,7 +145,7 @@ services:
       - /var/solr/logs
   solr-node-2:
     container_name: solr-node-2
-    image: marketplace.gcr.io/google/solr8
+    image: marketplace.gcr.io/google/solr9
     ports:
       - 8984:8983
     environment:
@@ -157,7 +157,7 @@ services:
       - /var/solr/logs
   solr-node-3:
     container_name: solr-node-3
-    image: marketplace.gcr.io/google/solr8
+    image: marketplace.gcr.io/google/solr9
     ports:
       - 8985:8983
     environment:

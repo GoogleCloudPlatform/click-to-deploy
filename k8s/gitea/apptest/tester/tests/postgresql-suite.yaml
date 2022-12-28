@@ -1,0 +1,35 @@
+actions:
+- name: DB operations - create table
+  bashTest:
+    script: |-
+      PGCOMMAND="CREATE TABLE test(id serial PRIMARY KEY, name VARCHAR (255) NOT NULL);"
+      PGPASSWORD="${PGPASSWORD}" psql -U gitea -h "${POSTGRESQL_SERVICE}" -c "${PGCOMMAND}"
+    expect:
+      stdout:
+        equals: 'CREATE TABLE'
+
+- name: DB operations - check table
+  bashTest:
+    script: |-
+      PGPASSWORD="${PGPASSWORD}" psql -U gitea -h "${POSTGRESQL_SERVICE}" -c "\dt"
+    expect:
+      stdout:
+        matches: 'test'
+
+- name: DB operations - insert into table
+  bashTest:
+    script: |-
+      PGCOMMAND="INSERT INTO test (name) VALUES ('test');"
+      PGPASSWORD="${PGPASSWORD}" psql -U gitea -h "${POSTGRESQL_SERVICE}" -c "${PGCOMMAND}"
+    expect:
+      stdout:
+        equals: 'INSERT 0 1'
+
+- name: DB operations - cleanup table
+  bashTest:
+    script: |-
+      PGCOMMAND="DROP TABLE test;"
+      PGPASSWORD="${PGPASSWORD}" psql -U gitea -h "${POSTGRESQL_SERVICE}" -c "${PGCOMMAND}"
+    expect:
+      stdout:
+        equals: 'DROP TABLE'
