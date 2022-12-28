@@ -82,6 +82,7 @@ RUN set -x \
       libc-bin \
       libgnutls30 \
       libtirpc3 \
+      libtasn1-6 \
       libtirpc-common \
       libssl1.1 \
       openssl \
