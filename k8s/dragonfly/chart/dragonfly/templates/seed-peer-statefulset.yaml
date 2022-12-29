@@ -14,12 +14,9 @@ spec:
   template:
     metadata:
       labels: *DragonflySeedPeerLabels
-    spec:  
+    spec:
       initContainers:
-        - name: wait-for-scheduler
-          image: busybox:latest
-          imagePullPolicy: IfNotPresent
-          command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-scheduler-service && nc -vz {{ .Release.Name }}-scheduler-service {{ .Values.scheduler.grpcPort }}; do echo waiting for scheduler; sleep 2; done;']
+        {{- include "dragonfly.init_container.wait_for_scheduler" . | indent 8 }}
       containers:
         - name: seed-peer
           image: {{ .Values.seedPeer.image }}
