@@ -1,4 +1,6 @@
-# Copyright 2021 Google LLC
+#!/bin/bash
+#
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,27 +14,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apt_update do
-  action :update
-end
+set -xeo pipefail
+shopt -s nullglob
 
-package 'install packages' do
-  package_name node['ruby']['packages']
-  action :install
-end
+if [[ "${PUBLIC_IP_AVAILABLE}" == "true" ]]; then
+  EXTERNAL_IP="$(kubectl get service/${APP_INSTANCE_NAME}-nginx-svc \
+    --namespace ${NAMESPACE} \
+    --output jsonpath='{.status.loadBalancer.ingress[0].ip}')"
+else
+  EXTERNAL_IP="${APP_INSTANCE_NAME}-nginx-svc"
+fi
 
-remote_file '/tmp/ruby.tar.gz' do
-  source 'https://cache.ruby-lang.org/pub/ruby/snapshot/snapshot-ruby_3_1.tar.gz'
-  action :create
-end
+export EXTERNAL_IP
 
-bash 'unpackage ruby, compile ruby, and install ruby' do
-  user 'root'
-  code <<-EOH
-    tar -xzf /tmp/ruby.tar.gz -C /tmp/
-    cd /tmp/snapshot-ruby_3_1
-    ./configure
-    make
-    make install
-EOH
-end
+for test in /tests/*; do
+  testrunner -logtostderr "--test_spec=${test}"
+done

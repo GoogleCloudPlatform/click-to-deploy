@@ -12,27 +12,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+_variables:
+  dragonfly208: &dragonfly208
+    dragonfly2_github:
+      version: 2.0.8
+    manager_console:
+      version: 0.1.4
+    grpc_health_probe:
+      version: 0.4.11
 versions:
 # Dragonfly manager
   - dir: '2/debian11/2.0/dragonfly-manager2'
     repo: 'dragonfly-manager2'
     templateSubDir: 'dragonfly-manager2'
     tags:
-    - '2.0.7-debian11'
-    - '2.0.7'
+    - '2.0.8-debian11'
+    - '2.0.8'
     - '2.0-debian11'
     - '2.0'
     - '2-debian11'
     - '2'
     - 'latest'
     from: 'marketplace.gcr.io/google/debian11'
-    packages:
-      dragonfly2_github:
-        version: 2.0.7
-      manager_console:
-        version: 0.1.4
-      grpc_health_probe:
-        version: 0.4.11
+    packages: *dragonfly208
     excludeTests: 
     - tests/functional_tests/scheduler_test.yaml
     - tests/functional_tests/seed-peer_test.yaml
@@ -43,21 +45,15 @@ versions:
     repo: 'dragonfly-scheduler2'
     templateSubDir: 'dragonfly-scheduler2'
     tags:
-    - '2.0.7-debian11'
-    - '2.0.7'
+    - '2.0.8-debian11'
+    - '2.0.8'
     - '2.0-debian11'
     - '2.0'
     - '2-debian11'
     - '2'
     - 'latest'
     from: 'marketplace.gcr.io/google/debian11'
-    packages:
-      dragonfly2_github:
-        version: 2.0.7
-      manager_console:
-        version: 0.1.4
-      grpc_health_probe:
-        version: 0.4.11
+    packages: *dragonfly208
     excludeTests: 
     - tests/functional_tests/manager_test.yaml
     - tests/functional_tests/seed-peer_test.yaml
@@ -68,21 +64,15 @@ versions:
     repo: 'dragonfly-seed-peer2'
     templateSubDir: 'dragonfly-seed-peer2'
     tags:
-    - '2.0.7-debian11'
-    - '2.0.7'
+    - '2.0.8-debian11'
+    - '2.0.8'
     - '2.0-debian11'
     - '2.0'
     - '2-debian11'
     - '2'
     - 'latest'
     from: 'marketplace.gcr.io/google/debian11'
-    packages:
-      dragonfly2_github:
-        version: 2.0.7
-      manager_console:
-        version: 0.1.4
-      grpc_health_probe:
-        version: 0.4.11
+    packages: *dragonfly208
     excludeTests: 
     - tests/functional_tests/manager_test.yaml
     - tests/functional_tests/scheduler_test.yaml
@@ -93,21 +83,15 @@ versions:
     repo: 'dragonfly-dfget2'
     templateSubDir: 'dragonfly-dfget2'
     tags:
-    - '2.0.7-debian11'
-    - '2.0.7'
+    - '2.0.8-debian11'
+    - '2.0.8'
     - '2.0-debian11'
     - '2.0'
     - '2-debian11'
     - '2'
     - 'latest'
     from: 'marketplace.gcr.io/google/debian11'
-    packages:
-      dragonfly2_github:
-        version: 2.0.7
-      manager_console:
-        version: 0.1.4
-      grpc_health_probe:
-        version: 0.4.11
+    packages: *dragonfly208
     excludeTests: 
     - tests/functional_tests/manager_test.yaml
     - tests/functional_tests/scheduler_test.yaml
