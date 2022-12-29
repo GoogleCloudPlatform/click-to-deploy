@@ -1,4 +1,6 @@
-# Copyright 2022 Google LLC
+#!/bin/bash
+#
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,22 +14,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-cloudbuild:
-  enable_parallel: false
-versions:
-- dir: 5/debian11/5.1
-  from: marketplace.gcr.io/google/debian11:latest
-  packages:
-    crate:
-      version: 5.1.2
-    crash:
-      version: 0.28.0
-  repo: crate5
-  tags:
-  - '5.1.2-debian11'
-  - '5.1-debian11'
-  - '5-debian11'
-  - '5.1.2'
-  - '5.1'
-  - '5'
-  - 'latest'
+set -xeo pipefail
+shopt -s nullglob
+
+if [[ "${PUBLIC_IP_AVAILABLE}" == "true" ]]; then
+  EXTERNAL_IP="$(kubectl get service/${APP_INSTANCE_NAME}-nginx-svc \
+    --namespace ${NAMESPACE} \
+    --output jsonpath='{.status.loadBalancer.ingress[0].ip}')"
+else
+  EXTERNAL_IP="${APP_INSTANCE_NAME}-nginx-svc"
+fi
+
+export EXTERNAL_IP
+
+for test in /tests/*; do
+  testrunner -logtostderr "--test_spec=${test}"
+done

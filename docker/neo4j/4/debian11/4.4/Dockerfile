@@ -13,8 +13,8 @@
 
 FROM marketplace.gcr.io/google/debian11
 
-ENV NEO4J_VERSION 4.4.12
-ENV NEO4J_SHA256 58f2ab847b1898c3f33731dc247784459223185307a4c89757f43ea94eb2a491
+ENV NEO4J_VERSION 4.4.16
+ENV NEO4J_SHA256 9e4ae513dc1a297dc2cbf4f07af5ced366038055385de9c9d598df1b4aceed91
 ENV NEO4J_HOME  /var/lib/neo4j
 ENV NEO4J_EDITION community
 ENV NEO4J_TARBALL neo4j.tar.gz
@@ -23,11 +23,11 @@ ENV TINI_VERSION v0.19.0
 ENV TINI_SHA256 93dcc18adc78c65a028a84799ecf8ad40c936fdfc5f2a57b1acda5a8117fa82c
 
 # Required for neo4jlabs-plugins.json
-ENV DOCKER_NEO4J_VERSION 4.4.12
+ENV DOCKER_NEO4J_VERSION 4.4.16
 ENV DOCKER_NEO4J_TARBALL docker-neo4j.tar.gz
-ENV DOCKER_NEO4J_SHA256  16788a0e85e0df8b3cdcba73448a03c6a56774cfc582e625b9b7fd512e05389d
+ENV DOCKER_NEO4J_SHA256  e1a211fc61c4accc661544bb826ec9d86dbe71041152cce90714db8bcf6275d2
 
-ENV C2D_RELEASE 4.4.12
+ENV C2D_RELEASE 4.4.16
 
 # Workaround for CVE-2021-44228
 # https://www.docker.com/blog/apache-log4j-2-cve-2021-44228/
@@ -82,6 +82,7 @@ RUN set -x \
       libc-bin \
       libgnutls30 \
       libtirpc3 \
+      libtasn1-6 \
       libtirpc-common \
       libssl1.1 \
       openssl \

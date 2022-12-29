@@ -1,0 +1,23 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-django-svc
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: django-server
+spec:
+  ports:
+  - name: uwsgi
+    port: 8080
+    protocol: TCP
+  - name: stats
+    port: 1717
+    protocol: TCP
+  - name: uwsgi-exporter
+    port: 9117
+    protocol: TCP
+  selector:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: django-server
+  type: ClusterIP

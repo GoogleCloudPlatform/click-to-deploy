@@ -17,7 +17,7 @@ ARG GOPROXY
 ARG GOTAGS
 ARG GOGCFLAGS
 
-ARG DRAGONFLY2_GITHUB_BRANCH=release-2.0.7
+ARG DRAGONFLY2_GITHUB_BRANCH=release-2.0.8
 ARG MANAGER_CONSOLE_BRANCH=release-0.1.4
 
 WORKDIR /go/src/d7y.io/dragonfly/v2
@@ -43,7 +43,7 @@ RUN apt update && apt install -y wget && \
     chmod +x /bin/grpc_health_probe
 
 FROM marketplace.gcr.io/google/debian11
-ENV C2D_RELEASE 2.0.7
+ENV C2D_RELEASE 2.0.8
 ENV DRAGONFLY_MANAGER_ADDR localhost
 ENV PATH=/opt/dragonfly/bin:$PATH
 
