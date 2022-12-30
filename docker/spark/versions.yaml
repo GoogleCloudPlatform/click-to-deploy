@@ -21,14 +21,14 @@ versions:
     scala:
       minor: 2.13
     spark:
-      version: 3.3.0
-      sha256: 7fbfb59b46fcbf0f7b3584c923d43fe6d0b405ab050d5ad43f659ead8521b4e4
+      version: 3.3.1
+      sha256: 1885636ceed1da232f32560c62aa1bf6a18e79e3d98b9a07671b13cc34c7cd6d 
   repo: spark3
   tags:
-  - 3.3.0-debian11
+  - 3.3.1-debian11
   - 3.3-debian11
   - 3-debian11
-  - 3.3.0
+  - 3.3.1
   - '3.3'
   - '3'
   - latest
