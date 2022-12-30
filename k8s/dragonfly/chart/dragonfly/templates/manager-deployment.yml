@@ -15,14 +15,7 @@ spec:
       labels: *DragonflyManagerLabels
     spec:
       initContainers:
-        - name: wait-for-redis
-          image: busybox
-          imagePullPolicy: IfNotPresent
-          command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-redis-svc && nc -vz {{ .Release.Name }}-redis-svc 6379; do echo waiting for redis; sleep 2; done;']
-        - name: wait-for-mysql
-          image: busybox
-          imagePullPolicy: IfNotPresent
-          command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-mysql-svc && nc -vz {{ .Release.Name }}-mysql-svc 3306; do echo waiting for mysql; sleep 2; done;']
+        {{- include "dragonfly.init_container.check_db" . | indent 8 }}
       containers:
         - name: manager
           image: "{{ .Values.manager.image.repo }}:{{ .Values.manager.image.tag }}"

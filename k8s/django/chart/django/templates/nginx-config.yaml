@@ -1,0 +1,45 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-nginx-configmap
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: nginx-server
+data:
+  nginx-config.conf: |
+    # configuration of the server
+    server {
+        # the port your site will be served on
+        listen      80;
+
+        location /stub_status {
+          stub_status on;
+          access_log off;
+          allow 127.0.0.1;
+          deny all;
+        }
+
+        # the domain name it will serve for
+        server_name localhost; # substitute your machine's IP address or FQDN
+        charset     utf-8;
+
+        # max upload size
+        client_max_body_size 75M;   # adjust to taste
+
+        # Django media
+        location /media  {
+            alias /path/to/your/mysite/media;  # your Django project's media files - amend as required
+        }
+
+        location /static {
+            alias /path/to/your/mysite/static; # your Django project's static files - amend as required
+        }
+
+        # Finally, send all non-media requests to the Django server.
+        location / {
+            uwsgi_pass   {{ .Release.Name }}-django-svc.{{ .Release.Namespace }}.svc.cluster.local:8080;
+            uwsgi_read_timeout 300;
+            include     uwsgi_params;
+        }
+    }
