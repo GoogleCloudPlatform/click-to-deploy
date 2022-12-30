@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,12 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ARG MC_VERSION=5.2.1
+{{- $hazelcastmc := index .Packages "hazelcastmc" }}
+
+ARG MC_VERSION={{ $hazelcastmc.Version }}
 ARG MC_INSTALL_NAME="hazelcast-management-center-${MC_VERSION}"
 ARG MC_INSTALL_JAR="hazelcast-management-center-${MC_VERSION}.jar"
 ARG MC_INSTALL_ZIP="${MC_INSTALL_NAME}.zip"
 
-FROM marketplace.gcr.io/google/debian11 AS builder
+FROM {{ .From }} AS builder
 
 ARG MC_VERSION
 ARG MC_INSTALL_NAME
@@ -31,7 +33,7 @@ RUN echo "Installing new APK packages" \
     && apt install --no-install-recommends -y bash wget unzip procps libnss3 curl \
     && echo "Downloading Management Center" \
     && wget -O ${MC_INSTALL_ZIP} https://repository.hazelcast.com/download/management-center/${MC_INSTALL_ZIP} \
-    && echo "da63dc7072f8cf1e02ac10ff38ec5028c5c94977d3ae1ab91c85ea1aaeac0927" "${MC_INSTALL_ZIP}" | sha256sum -c \
+    && echo "{{ $hazelcastmc.Sha256 }}" "${MC_INSTALL_ZIP}" | sha256sum -c \
     && unzip ${MC_INSTALL_ZIP} -x ${MC_INSTALL_NAME}/docs/* \
     && mv ${MC_INSTALL_NAME}/${MC_INSTALL_JAR} ${MC_INSTALL_JAR} \
     && mv ${MC_INSTALL_NAME}/bin/start.sh start.sh \

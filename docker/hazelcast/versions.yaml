@@ -14,39 +14,39 @@
 
 versions:
 # Hazelcast 5
-  - dir: '5/debian11/hazelcast/5.2'
+  - dir: '5/debian11/hazelcast/5.1'
     repo: 'hazelcast5'
     templateSubDir: 'hazelcast5'
     tags:
-    - '5.2.1-debian11'
-    - '5.2.1'
-    - '5.2-debian11'
-    - '5.2'
+    - '5.1.4-debian11'
+    - '5.1.4'
+    - '5.1-debian11'
+    - '5.1'
     - '5-debian11'
     - '5'
     - 'latest'
     from: 'marketplace.gcr.io/google/debian11'
     packages:
       hazelcast:
-        version: '5.2.1'
-        sha256: 'fdb3c9070e69ac37b6ded9c4218d88c66d4499a1edeceb0f83d19b3b166659c2'
+        version: '5.1.4'
+        sha256: '92c682407e56a4f300b903c0b906bea5800fd470532b81a87991853b743c9d38'
     excludeTests:
     - tests/functional_tests/hazelcast_mancenter_test.yaml
 
 # Hazelcast Management Center 5
-  - dir: '5/debian11/hazelcast-mc/5.2'
+  - dir: '5/debian11/hazelcast-mc/5.1'
     repo: 'hazelcast-mc5'
     templateSubDir: 'hazelcast-mc5'
     tags:
-    - '5.2-debian11'
-    - '5.2'
+    - '5.1-debian11'
+    - '5.1'
     - '5'
     - 'latest'
     from: 'marketplace.gcr.io/google/debian11'
     packages:
       hazelcastmc:
-        version: '5.2.1'
-        sha256: 'da63dc7072f8cf1e02ac10ff38ec5028c5c94977d3ae1ab91c85ea1aaeac0927'
+        version: '5.1.3'
+        sha256: '40090f0ccc34a24969341025c7155e0af96e8488d152f1c43b1df502a41a83b3'
     excludeTests:
     - tests/functional_tests/hazelcast_test.yaml
 
