@@ -16,20 +16,20 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 1/debian11/1.38
+- dir: 1/debian11/1.40
   from: marketplace.gcr.io/google/debian11
   packages:
     golang:
       version: '1.19'
     jaeger-operator:
-      version: 1.38.0
+      version: 1.40.0
   repo: jaeger-operator1
   tags:
-  - 1.38.0-debian11
-  - 1.38-debian11
+  - 1.40.0-debian11
+  - 1.40-debian11
   - 1-debian11
-  - 1.38.0
-  - '1.38'
+  - 1.40.0
+  - '1.40'
   - '1'
   - latest
 
