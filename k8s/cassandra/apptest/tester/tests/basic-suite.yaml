@@ -21,7 +21,7 @@ actions:
 
       for ((pod=0; pod<${replicas}; pod++)); do
         export CQLSH_HOST="${APP_INSTANCE_NAME}-cassandra-${pod}.${DOMAIN}"
-        cqlsh -e "SHOW HOST" --cqlversion="3.4.5"
+        cqlsh -e "SHOW HOST" --cqlversion="3.4.6"
       done
     expect:
       exitCode:
@@ -46,12 +46,12 @@ actions:
       DOMAIN="${APP_INSTANCE_NAME}-cassandra-svc.${NAMESPACE}.svc.cluster.local"
 
       export CQLSH_HOST="${APP_INSTANCE_NAME}-cassandra-0.${DOMAIN}"
-      cqlsh -e "CREATE KEYSPACE demo WITH REPLICATION ={ 'class' : 'SimpleStrategy', 'replication_factor' : 2 };" --cqlversion="3.4.5" > /dev/null
-      cqlsh -e "CREATE TABLE demo.person ( name varchar PRIMARY KEY );" --cqlversion="3.4.5" > /dev/null
-      cqlsh -e "INSERT INTO demo.person  ( name ) VALUES ( 'John' );" --cqlversion="3.4.5" > /dev/null
+      cqlsh -e "CREATE KEYSPACE demo WITH REPLICATION ={ 'class' : 'SimpleStrategy', 'replication_factor' : 2 };" --cqlversion="3.4.6" > /dev/null
+      cqlsh -e "CREATE TABLE demo.person ( name varchar PRIMARY KEY );" --cqlversion="3.4.6" > /dev/null
+      cqlsh -e "INSERT INTO demo.person  ( name ) VALUES ( 'John' );" --cqlversion="3.4.6" > /dev/null
 
       export CQLSH_HOST="${APP_INSTANCE_NAME}-cassandra-1.${DOMAIN}"
-      cqlsh -e "SELECT * FROM demo.person" --cqlversion="3.4.5"
+      cqlsh -e "SELECT * FROM demo.person" --cqlversion="3.4.6"
     expect:
       stdout:
         contains: 'John'
