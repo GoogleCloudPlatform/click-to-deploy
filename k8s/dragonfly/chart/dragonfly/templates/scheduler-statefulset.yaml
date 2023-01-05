@@ -16,10 +16,7 @@ spec:
       labels: *DragonflySchedulerLabels
     spec:
       initContainers:
-        - name: wait-for-manager
-          image: busybox
-          imagePullPolicy: IfNotPresent
-          command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-manager-service && nc -vz {{ .Release.Name }}-manager-service {{ .Values.manager.restPort }}; do echo waiting for manager; sleep 2; done;']
+        {{- include "dragonfly.init_container.wait_for_manager" . | indent 8 }}
       containers:
         - name: scheduler
           image: {{ .Values.scheduler.image }}

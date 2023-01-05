@@ -1,0 +1,55 @@
+django:
+  site_name: null
+  image:
+    repo: null
+    tag: null
+  exporter:
+    image: null
+  replicas: 1
+  persistence:
+    storageClass: null
+    size: 2Gi
+
+nginx:
+  image:
+    repo: null
+    tag: null
+  initImage: null
+  replicas: 1
+  persistence:
+    storageClass: null
+    size: 1Gi
+  exporter:
+    image: null
+  tls:
+    base64EncodedPrivateKey: null
+    base64EncodedCertificate: null
+
+metrics:
+  image: null
+  exporter:
+    enabled: false
+
+nfs:
+  image:
+    repo: null
+    tag: null
+  persistence:
+    storageClass: null
+    size: 10Gi
+
+postgresql:
+  image: null
+  exporter:
+    image: null
+  cpu: 1000m
+  memory: 1Gi
+  user: mysite
+  password: null
+  postgresDatabase: mysite
+  persistence:
+    storageClass: null
+    size: 8Gi
+
+publicIp:
+  available: true

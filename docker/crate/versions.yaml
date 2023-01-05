@@ -19,15 +19,15 @@ versions:
   from: marketplace.gcr.io/google/debian11:latest
   packages:
     crate:
-      version: 5.1.1
+      version: 5.1.2
     crash:
       version: 0.28.0
   repo: crate5
   tags:
-  - '5.1.1-debian11'
+  - '5.1.2-debian11'
   - '5.1-debian11'
   - '5-debian11'
-  - '5.1.1'
+  - '5.1.2'
   - '5.1'
   - '5'
   - 'latest'
