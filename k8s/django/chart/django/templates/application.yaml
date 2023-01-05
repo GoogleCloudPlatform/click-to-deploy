@@ -1,0 +1,106 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "{{ .Release.Name }}"
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": "django", "partner_name": "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+spec:
+  descriptor:
+    type: Django by Google Click to Deploy
+    version: "{{ .Values.django.image.tag }}"
+    description: |-
+      Django is a free, open-source and high-level Python
+      web framework that encourages rapid development and clean,
+      pragmatic design. Solution runs on UWSGI application server
+      and can be exposed for tcp or http connections.
+
+      # Support
+
+      This image is built by Google. It is your responsibility to keep
+      container images you run or store in your own repositories
+      up to date with security patches.
+
+      Community support for Django is available on
+      [Stack Overflow](http://stackoverflow.com/questions/tagged/django/).
+
+      Please report issues with this Django container image via
+      the [GitHub Issue Tracker](https://github.com/GoogleCloudPlatform/click-to-deploy/issues).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy Django'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/django/README.md
+    - description: 'Django: Getting Started'
+      url: https://www.djangoproject.com/start/
+    notes: |-
+      # Open your Django website
+      Although NGINX is exposed to the internet, by security reasons Django application only can
+      respond the localhost HTTP header.
+
+      To connect to Django UI, you can either expose a public service endpoint, or keep it private,
+      but connect from you local environment with `kubectl port-forward`.
+
+      ## Forward Magento port in local environment
+      You can use the port forwarding feature of `kubectl` to forward Django's port to your local
+      machine. Run the following command in the background:
+
+      ```shell
+      kubectl port-forward \
+        --namespace {{ .Release.Namespace }} \
+        svc/{{ .Release.Name }}-nginx-svc \
+        8080:80
+      ```
+      Now you can access the Django UI with [http://localhost:8080](http://localhost:8080).
+
+      # Allow different hosts to connect to your Django deployment
+      # Attach to any django pod
+      ```shell
+      kubectl exec -ti {{ .Release.Name}}-django-0 -c django
+      vi /sites/{{ .Values.django.site_name }}/{{ .Values.django.site_name }}/settings.py
+      ```
+
+      # Look for ALLOWED_HOSTS and add any host, ip or domain you might want to use
+  info:
+  - name: Forward NGINX port locally
+    value: kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-nginx-svc 8080:80
+  - name: NGINX/Django Site address
+    value: http://localhost:8080/
+  - name: PostgreSQL - username
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: db-user
+        name: {{ .Release.Name }}-postgresql-secret
+  - name: PostgreSQL - password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: db-password
+        name: {{ .Release.Name }}-postgresql-secret
+  - name: Django source-code location
+    value: "/sites/{{ .Values.django.site_name }} on any Django container pod"
+  - name: Application Namespace
+    value: {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "{{ .Release.Name }}"
+  componentKinds:
+  - group: v1
+    kind: ConfigMap
+  - group: v1
+    kind: PersistentVolume
+  - group: v1
+    kind: PersistentVolumeClaim
+  - group: apps/v1
+    kind: StatefulSet
+  - group: apps/v1
+    kind: Deployment
+  - group: v1
+    kind: Secret
+  - group: v1
+    kind: Service

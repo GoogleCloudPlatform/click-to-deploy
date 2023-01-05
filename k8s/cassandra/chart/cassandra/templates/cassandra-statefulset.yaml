@@ -60,11 +60,13 @@ spec:
             command: [ "/bin/sh", "-c", "nodetool -Dcom.sun.jndi.rmiURLParsing=legacy status" ]
           initialDelaySeconds: 90
           periodSeconds: 30
+          timeoutSeconds: 25
         readinessProbe:
           exec:
             command: [ "/bin/sh", "-c", "nodetool -Dcom.sun.jndi.rmiURLParsing=legacy status | grep -E \"^UN\\s+${POD_IP}\"" ]
           initialDelaySeconds: 90
           periodSeconds: 30
+          timeoutSeconds: 25
         lifecycle:
           preStop:
             exec:

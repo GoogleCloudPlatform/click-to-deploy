@@ -1,6 +1,6 @@
 FROM marketplace.gcr.io/google/debian11
 
-ENV C2D_RELEASE 3.3.0
+ENV C2D_RELEASE 3.3.1
 
 # Add Java 11
 RUN apt-get update \
@@ -29,8 +29,8 @@ RUN update-alternatives --install "/usr/bin/python" "python" "$(which python3)" 
 
 # Fix the value of PYTHONHASHSEED
 # Note: this is needed when you use Python 3.3 or greater
-ENV SPARK_SHA256=7fbfb59b46fcbf0f7b3584c923d43fe6d0b405ab050d5ad43f659ead8521b4e4
-ENV SPARK_VERSION=3.3.0
+ENV SPARK_SHA256=1885636ceed1da232f32560c62aa1bf6a18e79e3d98b9a07671b13cc34c7cd6d
+ENV SPARK_VERSION=3.3.1
 ENV SCALA_VERSION=2.13
 ENV SPARK_HOME=/opt/spark
 ENV PYTHONHASHSEED=1
