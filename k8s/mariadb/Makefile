@@ -8,7 +8,7 @@ APP_ID ?= $(CHART_NAME)
 
 VERIFY_WAIT_TIMEOUT = 1800
 
-TRACK ?= 10.6
+TRACK ?= 10.11
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
