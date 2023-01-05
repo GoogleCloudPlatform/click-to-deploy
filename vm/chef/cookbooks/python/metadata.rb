@@ -4,7 +4,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#      http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,24 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-cloudbuild:
-  enable_parallel: false
-versions:
-- dir: 3/debian11/3.3
-  from: marketplace.gcr.io/google/debian11
-  packages:
-    scala:
-      minor: 2.13
-    spark:
-      version: 3.3.1
-      sha256: 1885636ceed1da232f32560c62aa1bf6a18e79e3d98b9a07671b13cc34c7cd6d
-  repo: spark3
-  tags:
-  - 3.3.1-debian11
-  - 3.3-debian11
-  - 3-debian11
-  - 3.3.1
-  - '3.3'
-  - '3'
-  - latest
-  templateSubDir: 3
+name 'python'
+supports 'debian'
