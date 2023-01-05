@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,6 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+include_recipe 'python'
 
 apt_update do
   action :update
@@ -111,7 +113,7 @@ bash 'Init bench' do
     su - #{node['erpnext']['frappe']['user']} -c \
       "bench init \
         --frappe-branch version-#{node['erpnext']['version']} \
-        --python /usr/bin/python3 \
+        --python /usr/local/bin/python3.10 \
         #{node['erpnext']['frappe']['bench']}"
   EOH
 end
