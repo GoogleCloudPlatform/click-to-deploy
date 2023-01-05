@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['nagios']['core']['version'] = '4.4.6'
+default['nagios']['core']['version'] = '4.4.9'
 default['nagios']['plugins']['version'] = '2.2.1'
 default['nagios']['nrpe']['version'] = '3.2.1'
 
