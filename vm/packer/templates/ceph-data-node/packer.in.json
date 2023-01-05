@@ -1,6 +1,6 @@
 {
   "license": "c2d-ceph",
-  "source_image_family": "debian-9",
+  "source_image_family": "debian-11",
   "chef": {
     "run_list": [ "ceph::data-node" ]
   }

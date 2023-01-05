@@ -1,0 +1,19 @@
+actions:
+- name: Site address should be 200 OK
+  bashTest:
+    script: curl -v -L "http://${APP_INSTANCE_NAME}-nginx-svc/"
+    expect:
+      exitCode:
+        equals: 0
+      stdout:
+        contains: '<title>The install worked successfully! Congratulations!</title>'
+- name: Scale down django
+  bashTest:
+    script: |
+      kubectl scale statefulset --replicas=0 $APP_INSTANCE_NAME-django -n $NAMESPACE
+      kubectl wait --for delete pod -l 'app.kubernetes.io/component=django-server' --timeout=180s -n $NAMESPACE
+      kubectl scale deploy --replicas=0 $APP_INSTANCE_NAME-nfs-server -n $NAMESPACE
+    expect:
+      exitCode:
+        equals: 0
+

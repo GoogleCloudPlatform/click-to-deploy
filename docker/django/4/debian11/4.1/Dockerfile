@@ -50,6 +50,7 @@ RUN apt-get update \
       postgresql-contrib \
       build-essential \
       curl \
+      linux-libc-dev \
       net-tools \
       procps \
       python3 \
