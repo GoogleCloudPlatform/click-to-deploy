@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'mysql'
+include_recipe 'mysql::version-8.0'
 include_recipe 'php74'
 include_recipe 'php74::module_mysql'
 
