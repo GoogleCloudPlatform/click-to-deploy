@@ -230,7 +230,6 @@ Define the environment variables:
 export PROMETHEUS_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-prometheus"
 export KUBE_STATE_METRICS_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-kube-state-metrics"
 export ALERTMANAGER_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-alertmanager"
-export GRAFANA_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-grafana"
 export NODE_EXPORTER_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-node-exporter"
 ```
 
@@ -238,7 +237,7 @@ Expand the manifest to create Service Accounts:
 
 ```shell
 cat resources/service-accounts.yaml \
-  | envsubst '$NAMESPACE $PROMETHEUS_SERVICE_ACCOUNT $KUBE_STATE_METRICS_SERVICE_ACCOUNT $ALERTMANAGER_SERVICE_ACCOUNT $GRAFANA_SERVICE_ACCOUNT $NODE_EXPORTER_SERVICE_ACCOUNT' \
+  | envsubst '$NAMESPACE $PROMETHEUS_SERVICE_ACCOUNT $KUBE_STATE_METRICS_SERVICE_ACCOUNT $ALERTMANAGER_SERVICE_ACCOUNT $NODE_EXPORTER_SERVICE_ACCOUNT' \
   > "${APP_INSTANCE_NAME}_sa_manifest.yaml"
 ```
 
@@ -256,7 +255,7 @@ manifest file for future updates to the application.
 
 ```shell
 awk 'FNR==1 {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $STORAGE_CLASS $IMAGE_PROMETHEUS $IMAGE_ALERTMANAGER $IMAGE_KUBE_STATE_METRICS $IMAGE_NODE_EXPORTER $IMAGE_GRAFANA $IMAGE_PROMETHEUS_INIT $NAMESPACE $GRAFANA_GENERATED_PASSWORD $PROMETHEUS_REPLICAS $PROMETHEUS_REPLICAS $PROMETHEUS_SERVICE_ACCOUNT $KUBE_STATE_METRICS_SERVICE_ACCOUNT $ALERTMANAGER_SERVICE_ACCOUNT $GRAFANA_SERVICE_ACCOUNT $NODE_EXPORTER_SERVICE_ACCOUNT' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $STORAGE_CLASS $IMAGE_PROMETHEUS $IMAGE_ALERTMANAGER $IMAGE_KUBE_STATE_METRICS $IMAGE_NODE_EXPORTER $IMAGE_PROMETHEUS_INIT $NAMESPACE $PROMETHEUS_REPLICAS $PROMETHEUS_REPLICAS $PROMETHEUS_SERVICE_ACCOUNT $KUBE_STATE_METRICS_SERVICE_ACCOUNT $ALERTMANAGER_SERVICE_ACCOUNT $NODE_EXPORTER_SERVICE_ACCOUNT' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
@@ -278,19 +277,19 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 To view your app, open the URL in your browser.
 
-# Access the Grafana UI
+# Access the Prometheus UI
 
-Grafana is exposed as a ClusterIP-only Service, `$APP_INSTANCE_NAME-grafana`. To
-connect to the Grafana UI, you can either expose a public Service endpoint, or
+Prometheus is exposed as a ClusterIP-only Service, `$APP_INSTANCE_NAME-prometheus`. To
+connect to the Prometheus UI, you can either expose a public Service endpoint, or
 keep it private and connect from your local environment using `kubectl
 port-forward`.
 
-## Expose the Grafana service externally
+## Expose the Prometheus service externally
 
-To create an external IP address for Grafana, run the following command:
+To create an external IP address for Prometheus, run the following command:
 
 ```shell
-kubectl patch svc "$APP_INSTANCE_NAME-grafana" \
+kubectl patch svc "$APP_INSTANCE_NAME-prometheus" \
   --namespace "$NAMESPACE" \
   -p '{"spec": {"type": "LoadBalancer"}}'
 ```
@@ -300,36 +299,20 @@ It might take a while for the external IP address to be created.
 Get the public IP address with the following command:
 
 ```shell
-SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-grafana \
+SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-prometheus \
   --namespace $NAMESPACE \
   --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 echo "http://${SERVICE_IP}/"
 ```
 
-## Using local port forwarding for Grafana
+## Using local port forwarding for Prometheus
 
-As an alternative to exposing Grafana publicly, use local port forwarding. In a
+As an alternative to exposing Prometheus publicly, use local port forwarding. In a
 terminal, run the following command:
 
 ```shell
-kubectl port-forward --namespace ${NAMESPACE} ${APP_INSTANCE_NAME}-grafana-0 3000
+kubectl port-forward --namespace ${NAMESPACE} ${APP_INSTANCE_NAME}-prometheus-0 9090
 ```
 
-You can access the Grafana UI at `http://localhost:3000/`.
+You can access the Prometheus UI at `http://localhost:9090/`.
 
-## Sign in to Grafana
-
-Grafana requires authentication. To check your username and password, run the
-following commands:
-
-```shell
-GRAFANA_USERNAME="$(kubectl get secret $APP_INSTANCE_NAME-grafana \
-                      --namespace $NAMESPACE \
-                      --output=jsonpath='{.data.admin-user}' | base64 --decode)"
-GRAFANA_PASSWORD="$(kubectl get secret $APP_INSTANCE_NAME-grafana \
-                      --namespace $NAMESPACE \
-                      --output=jsonpath='{.data.admin-password}' | base64 --decode)"
-echo "Grafana credentials:"
-echo "- user: ${GRAFANA_USERNAME}"
-echo "- pass: ${GRAFANA_PASSWORD}"
-```
