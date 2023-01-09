@@ -14,7 +14,7 @@
 
 apt_repository 'php' do
   uri 'https://packages.sury.org/php/'
-  distribution 'stretch'
+  distribution node['php81']['distribution']
   key 'https://packages.sury.org/php/apt.gpg'
   components ['main']
 end
