@@ -37,9 +37,6 @@ application consists of the following components:
     server and handles them accordingly to its configuration, specified in a
     ConfigMap.
 
-*   **Grafana StatefulSet** - provides a user interface for querying Prometheus
-    about the metrics and visualizes the metrics in pre-configured dashboards.
-
 ### Configuration
 
 *   Prometheus server is deployed to a StatefulSet, and you can configure the
@@ -56,10 +53,6 @@ application consists of the following components:
     StatefulSet is configured to spin up 2 replicas - if you need to change the
     number of replicas, edit the `--mesh.peer` arguments of Alert Manager
     containers.
-
-*   In the Grafana StatefulSet, the pre-configured dashboards of Grafana are
-    stored in a ConfigMap. The StatefulSet is currently configured to have one
-    replica, and does not scale up.
 
 *   Each StatefulSet, Deployment and DaemonSet uses its own dedicated Service
     Account with permissions appropriate for its functionality.
@@ -167,7 +160,6 @@ export IMAGE_PROMETHEUS="marketplace.gcr.io/google/prometheus:${TAG}"
 export IMAGE_ALERTMANAGER="marketplace.gcr.io/google/prometheus/alertmanager:${TAG}"
 export IMAGE_KUBE_STATE_METRICS="marketplace.gcr.io/google/prometheus/kubestatemetrics:${TAG}"
 export IMAGE_NODE_EXPORTER="marketplace.gcr.io/google/prometheus/nodeexporter:${TAG}"
-export IMAGE_GRAFANA="marketplace.gcr.io/google/prometheus/grafana:${TAG}"
 export IMAGE_PROMETHEUS_INIT="marketplace.gcr.io/google/prometheus/debian9:${TAG}"
 ```
 
@@ -191,16 +183,6 @@ for i in "IMAGE_PROMETHEUS" \
   export $i="$repo@$digest";
   env | grep $i;
 done
-```
-
-Generate a random password for Grafana:
-
-```shell
-# Install pwgen and base64
-sudo apt-get install -y pwgen base64
-
-# Set the Grafana password
-export GRAFANA_GENERATED_PASSWORD="$(pwgen 12 1 | tr -d '\n' | base64)"
 ```
 
 Define the size of the Prometheus StatefulSet:
