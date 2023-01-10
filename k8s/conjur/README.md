@@ -129,7 +129,7 @@ It is advised to use a stable image reference, which you can find on:
 For example:
 
 ```shell
-export CONJUR_TRACK=1.18
+export CONJUR_TRACK=1.19
 export POSTGRESQL_TRACK=13.4
 ```
 
@@ -180,6 +180,30 @@ kubectl apply -f "${APP_INSTANCE_NAME}_sa_manifest.yaml" \
   --namespace "${NAMESPACE}"
 ```
 
+#### Create TLS certificate for Conjur
+
+> Note: You can skip this step if you have not set up external access.
+
+1.  If you already have a certificate that you want to use, copy your
+    certificate and key pair to the `/tmp/tls.crt`, and `/tmp/tls.key` files,
+    then skip to the next step.
+
+    To create a new certificate, run the following command:
+
+    ```shell
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+        -keyout /tmp/tls.key \
+        -out /tmp/tls.crt \
+        -subj "/CN=conjur/O=conjur"
+    ```
+
+2.  Set `TLS_CERTIFICATE_KEY` and `TLS_CERTIFICATE_CRT` variables:
+
+    ```shell
+    export TLS_CERTIFICATE_KEY="$(cat /tmp/tls.key | base64)"
+    export TLS_CERTIFICATE_CRT="$(cat /tmp/tls.crt | base64)"
+    ```
+
 #### Expand the manifest template
 
 Use `helm template` to expand the template. We recommend that you save the
@@ -199,6 +223,8 @@ helm template "${APP_INSTANCE_NAME}" chart/conjur \
     --set postgresql.persistence.size="${PSQL_PERSISTENT_DISK_SIZE}" \
     --set conjur.replicas="${CONJUR_REPLICAS:-1}" \
     --set enablePublicServiceAndIngress="${PUBLIC_SERVICE_AND_INGRESS_ENABLED}" \
+    --set tls.base64EncodedPrivateKey="$TLS_CERTIFICATE_KEY" \
+    --set tls.base64EncodedCertificate="$TLS_CERTIFICATE_CRT" \
     > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
