@@ -15,19 +15,19 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 1/debian11/1.18
+- dir: 1/debian11/1.19
   from: marketplace.gcr.io/google/debian11:latest
   packages:
     conjur:
-      version: 1.18.1
+      version: 1.19.0
     ruby:
       version: 3.0.0
   repo: conjur1
   tags:
-  - '1.18.1-debian11'
-  - '1.18-debian11'
+  - '1.19.0-debian11'
+  - '1.19-debian11'
   - '1-debian11'
-  - '1.18.1'
-  - '1.18'
+  - '1.19.0'
+  - '1.19'
   - '1'
   - 'latest'
