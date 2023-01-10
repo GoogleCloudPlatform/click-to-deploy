@@ -33,6 +33,7 @@ RUN apt-get update \
     procps \
     libpq-dev \
     jq \
+    libtasn1-6 \
     -y --no-install-recommends \
     && apt-get autoremove -yqq --purge \
     && apt-get clean \
