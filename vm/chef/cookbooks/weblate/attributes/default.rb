@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['weblate']['version'] = '4.11'
+default['weblate']['version'] = '4.15'
 default['weblate']['db']['name'] = 'weblate'
 default['weblate']['pip-packages'] = [
   'psycopg2-binary',

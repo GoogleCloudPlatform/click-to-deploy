@@ -44,7 +44,7 @@ activate_virtualenv
 
 # Install Weblate and uwsgi
 echo "Installing weblate..."
-pip3 install Weblate==4.11
+pip3 install Weblate==4.15
 # On some Linux distributions running Weblate fails with libffi error:
 # ffi_prep_closure(): bad user_data (it seems that the version of the libffi library seen at runtime is different from the 'ffi.h' file seen at compile-time)
 # This is caused by incompatibility of binary packages distributed via PyPI with the distribution. To address this, you need to rebuild the package on your system:
