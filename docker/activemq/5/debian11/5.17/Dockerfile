@@ -1,13 +1,13 @@
 FROM marketplace.gcr.io/google/debian11
 
 # This is release version of ActiveMQ to pull in.
-ENV ACTIVEMQ_VERSION 5.17.2
-ENV ACTIVEMQ_SHA512 7c6ee4c1a9f58ccaa374d8528255d55c181c3402855fe06202bb30f722bdbd69a2cebaf0eded67324f94b4158b6d8d97b621d8730d92676e51b982ed4fc8a7b0
+ENV ACTIVEMQ_VERSION 5.17.3
+ENV ACTIVEMQ_SHA512 8ed682fd8c9910f186cc14872552fcb1b5e8d361466b880c92dbd8a0f3a8fba339047023891e027ece7f57663a271fe47e73358e0290b371e78e5bfe70387468
 ENV ACTIVEMQ apache-activemq-${ACTIVEMQ_VERSION}
 ENV ACTIVEMQ_FILE ${ACTIVEMQ}-bin.tar.gz
 ENV ACTIVEMQ_DOWNLOAD_URL http://archive.apache.org/dist/activemq/
 
-ENV C2D_RELEASE 5.17.2
+ENV C2D_RELEASE 5.17.3
 
 ENV ACTIVEMQ_TCP=61616 \
     ACTIVEMQ_AMQP=5672 \
@@ -25,7 +25,7 @@ ARG gid=1000
 
 RUN set -ex \
   && apt-get --allow-releaseinfo-change update \
-  && apt-get -y install default-jdk ca-certificates wget openssl procps \
+  && apt-get -y install default-jdk ca-certificates wget openssl procps libtasn1-6 \
   && rm -rf /var/lib/apt/lists/*
 
 # ActiveMQ run with user `activemq`, uid = 1000.
@@ -34,7 +34,7 @@ RUN set -ex \
 RUN groupadd -g "${gid}" "${group}" \
     && useradd -u "${uid}" -g "${gid}" -m -s /bin/bash "${user}"
 
-# Download and setup activemq version v5.17.2
+# Download and setup activemq version v5.17.3
 RUN set -x && \
     mkdir -p "${ACTIVEMQ_HOME}" \
     && wget -q "${ACTIVEMQ_DOWNLOAD_URL}/${ACTIVEMQ_VERSION}/${ACTIVEMQ_FILE}" -O "${ACTIVEMQ_FILE}" \
