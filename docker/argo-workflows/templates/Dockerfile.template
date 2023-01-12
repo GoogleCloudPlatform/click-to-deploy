@@ -25,6 +25,7 @@ RUN apt-get update && apt-get --no-install-recommends install -y \
     apt-utils \
     apt-transport-https \
     ca-certificates \
+    libtasn1-6 \
     wget \
     gcc && \
     apt-get clean \
