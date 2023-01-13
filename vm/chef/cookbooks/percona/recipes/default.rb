@@ -14,7 +14,8 @@
 
 bash 'Download Percona repo package' do
   code <<-EOH
-    wget -P /tmp/ https://repo.percona.com/apt/percona-release_#{node['percona']['version']}.#{node['percona']['debian']['codename']}_all.deb
+    apt-get install wget -y
+    wget -P /tmp/ https://repo.percona.com/percona/apt/percona-release_#{node['percona']['version']}.#{node['percona']['debian']['codename']}_all.deb
 EOH
 end
 
