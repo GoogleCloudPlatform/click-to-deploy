@@ -25,7 +25,6 @@ RUN apt-get update && apt-get --no-install-recommends install -y \
     apt-utils \
     apt-transport-https \
     ca-certificates \
-    libtasn1-6 \
     wget \
     gcc && \
     apt-get clean \
@@ -87,6 +86,12 @@ RUN target=/root/.cache/go-build make dist/argo
 
 # Stage: Final Image
 FROM marketplace.gcr.io/google/debian11
+
+# Update libtasn
+RUN apt-get update \
+    && apt-get install --no-install-recommends -yqq libtasn1-6 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 ENV C2D_RELEASE "3.4.4"
 USER 8737
