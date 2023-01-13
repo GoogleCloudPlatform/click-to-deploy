@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['liferay']['version'] = '7.4.3.10-ga10'
+default['liferay']['version'] = '7.4.3.55-ga55'
 # SHA1 value check for liferay SOURCE, the cookbook download it from
 # https://github.com/liferay/liferay-portal/archive/refs/tags/<version>.tar.gz
-default['liferay']['sha1']['source'] = '280929de4c00f15412e831a5b1b8d9969ed57afd'
+default['liferay']['sha1']['source'] = 'c65f7a3882ea03dea8b85dac09ca571e72a9d909'
 # SHA1 value check for liferay bundle, the cookbook download it from
 # https://github.com/liferay/liferay-portal/releases/download/<version>/liferay-ce-portal-tomcat-<version>-<date>.tar.gz
-default['liferay']['sha1']['bundle'] = 'a6c3d508805ff221f1d76ffac73dacafcea7303b'
+default['liferay']['sha1']['bundle'] = 'ad592944a7ce33b479b9c2f1fb7ff08c51df1b64'
 default['liferay']['packages'] = ['jq', 'zip']
 
 default['liferay']['home'] = '/opt/liferay'
