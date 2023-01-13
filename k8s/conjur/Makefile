@@ -7,7 +7,7 @@ CHART_NAME := conjur
 APP_ID ?= $(CHART_NAME)
 WAIT_FOR_READY_TIMEOUT := 600
 
-TRACK ?= 1.18
+TRACK ?= 1.19
 # Track for components
 POSTGRESQL_TRACK ?= 13.4
 

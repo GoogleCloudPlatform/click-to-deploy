@@ -120,10 +120,20 @@ properties:
         length: 16
         includeSymbols: False
         base64: False
+  certificate:
+    type: string
+    x-google-marketplace:
+      type: TLS_CERTIFICATE
+      tlsCertificate:
+        generatedProperties:
+          base64EncodedPrivateKey: tls.base64EncodedPrivateKey
+          base64EncodedCertificate: tls.base64EncodedCertificate
+
 required:
 - name
 - namespace
 - conjur.replicas
 - postgresql.persistence.size
 - enablePublicServiceAndIngress
+- certificate
 
