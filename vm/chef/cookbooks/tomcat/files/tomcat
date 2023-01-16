@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2021 Google Inc.
+# Copyright 2022 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,14 +17,35 @@
 source /opt/c2d/c2d-utils || exit 1
 
 declare -r tomcat_admin_password="$(get_attribute_value "tomcat-admin-password")"
+declare -r tomcat_conf="/opt/tomcat/conf"
+declare -r enablePublicAccess="$(get_attribute_value "enable-public" \
+  | tr '[:upper:]' '[:lower:]')"
 
+function enablePublicAccess() {
+  local -r app="$1"
+  local -r file="/opt/tomcat/webapps/${app}/META-INF/context.xml"
+  xmlstarlet ed --inplace -d '/Context/Valve' "${file}"
+}
+
+# Add password for tomcat user
 sed -i -e '$ i \
   <user username="tomcat" password="'"${tomcat_admin_password}"'" roles="manager-gui,admin-gui"/>
-' /opt/tomcat/conf/tomcat-users.xml
+' "${tomcat_conf}/tomcat-users.xml"
+
+# Generate a self-signed certificate
+keytool -genkey -keyalg RSA -keysize 2048 -validity 10000 \
+  -alias app -dname "cn=example.com, ou=Click to Deploy, o=Google, c=Unknown" \
+  -storepass changeit -keypass changeit -keystore "${tomcat_conf}/localhost-rsa.jks"
+
+# Reconfigure manager apps
+if [[ "${enablePublicAccess}" == "true" ]]; then
+  enablePublicAccess "manager"
+  enablePublicAccess "host-manager"
+fi
 
 service tomcat restart
 
-until curl -s -f localhost > /dev/null; do
+until curl -s -f -k https://localhost:8443 > /dev/null; do
   sleep 3
 done
 

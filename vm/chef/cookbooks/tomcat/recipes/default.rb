@@ -16,9 +16,16 @@
 # Reference: https://www.mkyong.com/tomcat/tomcat-default-administrator-password/
 
 include_recipe 'c2d-config'
-include_recipe 'apache2::rm-index'
-include_recipe 'apache2::security-config'
 include_recipe 'openjdk11'
+
+apt_update do
+  action :update
+end
+
+package 'Install Packages' do
+  package_name 'xmlstarlet'
+  action :install
+end
 
 # Create tomcat user.
 user node['tomcat']['user'] do
@@ -94,20 +101,16 @@ systemd_unit 'tomcat.service' do
   action [:create, :enable]
 end
 
+cookbook_file '/opt/tomcat/conf/server.xml' do
+  source 'server.xml'
+  owner 'root'
+  group 'root'
+  mode 0664
+  action :create
+end
+
 service 'tomcat' do
   action :reload
-end
-
-execute 'enable proxy_http' do
-  command 'a2enmod proxy_http'
-end
-
-template '/etc/apache2/sites-available/tomcat.conf' do
-  source 'tomcat.conf.erb'
-end
-
-execute 'enable tomcat.conf' do
-  command 'a2ensite tomcat.conf'
 end
 
 bash 'add tomcat groups' do
