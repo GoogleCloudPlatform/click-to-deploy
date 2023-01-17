@@ -28,6 +28,27 @@ spec:
           cp /configmap/*.cnf /etc/mysql/conf.d
           cp /configmap/*.sh /opt/galera
           chmod +x /opt/galera/*
+          sed -i -e "s|^wsrep_node_address[[:space:]]*=.*$|wsrep_node_address=${HOSTNAME}${MARIADB_GALERA_CLUSTER_PATH}|" "${GALERA_CONF}"
+        env:
+        - name: MYSQL_INITDB_SKIP_TZINFO
+          value: "true"
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        {{- $fullName := .Release.Name }}
+        {{- $releaseName := .Release.Namespace }}
+        {{- $initialCluster := list }}
+        {{- range $e, $i := until (int .Values.db.replicas) }}
+        {{- $initialCluster = append $initialCluster (printf "%s-galera-%d.%s-galera-svc.%s.svc.cluster.local" $fullName $i $fullName $releaseName) }}
+        {{- end }}
+        - name: MARIADB_GALERA_CLUSTER_PATH
+          value: {{ printf ".%s-galera-svc.%s.svc.cluster.local" $fullName $releaseName | quote }}
+        - name: MARIADB_GALERA_CLUSTER_ADDRESS
+          value: {{ printf "gcomm://%s" (join "," $initialCluster) | quote }}
+        - name: GALERA_CONF
+          value: /etc/mysql/conf.d/galera.cnf
         volumeMounts:
         - name: configmap
           mountPath: /configmap
@@ -60,14 +81,6 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: metadata.namespace
-        {{- $fullName := .Release.Name }}
-        {{- $releaseName := .Release.Namespace }}
-        {{- $initialCluster := list }}
-        {{- range $e, $i := until (int .Values.db.replicas) }}
-        {{- $initialCluster = append $initialCluster (printf "%s-galera-%d.%s-galera-svc.%s.svc.cluster.local" $fullName $i $fullName $releaseName) }}
-        {{- end }}
-        - name: MARIADB_GALERA_CLUSTER_ADDRESS
-          value: {{ printf "gcomm://%s" (join "," $initialCluster) | quote }}
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:

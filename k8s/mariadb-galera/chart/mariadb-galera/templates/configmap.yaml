@@ -21,6 +21,7 @@ data:
     wsrep_provider=/usr/lib/galera/libgalera_smm.so
     wsrep_sst_method=rsync
     # Cluster settings (automatically updated by the on-start.sh script)
+    wsrep_node_address=127.0.0.1
     wsrep_cluster_address=gcomm://
     wsrep_cluster_name={{ .Release.Name }}-galera
   mariadb.cnf: |
