@@ -35,21 +35,6 @@ spec:
           mountPath: /etc/mysql/conf.d
         - name: scripts
           mountPath: /opt/galera
-      - name: peer-finder
-        image: "{{ .Values.peerFinder.image }}"
-        command: ["/peer-finder"]
-        args: ["-on-start=/opt/galera/on-start.sh", "-service={{ .Release.Name }}-galera-svc"]
-        env:
-        - name: POD_NAMESPACE
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.namespace
-        volumeMounts:
-        - name: scripts
-          mountPath: /opt/galera
-        - name: config
-          mountPath: /etc/mysql/conf.d
       containers:
       - name: mariadb
         image: "{{ .Values.mariadb.image.repo }}:{{ .Values.mariadb.image.tag }}"
@@ -75,6 +60,14 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: metadata.namespace
+        {{- $fullName := .Release.Name }}
+        {{- $releaseName := .Release.Namespace }}
+        {{- $initialCluster := list }}
+        {{- range $e, $i := until (int .Values.db.replicas) }}
+        {{- $initialCluster = append $initialCluster (printf "%s-galera-%d.%s-galera-svc.%s.svc.cluster.local" $fullName $i $fullName $releaseName) }}
+        {{- end }}
+        - name: MARIADB_GALERA_CLUSTER_ADDRESS
+          value: {{ printf "gcomm://%s" (join "," $initialCluster) | quote }}
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
