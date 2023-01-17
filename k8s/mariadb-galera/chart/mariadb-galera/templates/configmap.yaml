@@ -34,8 +34,5 @@ data:
     ssl-cert=/etc/mysql/mariadb.conf.d/certs/tls.crt
     ssl-key=/etc/mysql/mariadb.conf.d/certs/tls.key
 
-  on-start.sh: |
-    {{- tpl (.Files.Get "config/on-start.sh") . | nindent 4 }}
-
   galera-recovery.sh: |
     {{- tpl (.Files.Get "config/galera-recovery.sh") . | nindent 4 }}
