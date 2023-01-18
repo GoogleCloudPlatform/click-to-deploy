@@ -28,7 +28,9 @@
 
 FROM {{ .From }}
 
-ENV C2D_RELEASE 4.1.2
+{{- $django := index .Packages "django" }}
+
+ENV C2D_RELEASE {{ $django.Version }}
 
 ENV C2D_DJANGO_USER="django" \
     C2D_DJANGO_UID="8983" \
