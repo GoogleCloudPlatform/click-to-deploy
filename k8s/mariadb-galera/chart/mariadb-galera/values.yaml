@@ -16,9 +16,6 @@ db:
     user: mysqld-exporter
     password: null
 
-peerFinder:
-  image: null
-
 metrics:
   image: null
   exporter:

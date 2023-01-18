@@ -28,6 +28,27 @@ spec:
           cp /configmap/*.cnf /etc/mysql/conf.d
           cp /configmap/*.sh /opt/galera
           chmod +x /opt/galera/*
+          export WSREP_CLUSTER_ADDRESS=$(echo -n ${CLUSTER_ADDRESS}|sed -e "s|$(hostname -f).*||"|sed -e "s|,$||")
+          sed -i -e "s|^wsrep_node_address[[:space:]]*=.*$|wsrep_node_address=$(hostname -f)|" "${GALERA_CONF}"
+          sed -i -e "s|^wsrep_cluster_address[[:space:]]*=.*$|wsrep_cluster_address=gcomm://${WSREP_CLUSTER_ADDRESS}|" "${GALERA_CONF}"
+        env:
+        - name: MYSQL_INITDB_SKIP_TZINFO
+          value: "true"
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        {{- $fullName := .Release.Name }}
+        {{- $releaseName := .Release.Namespace }}
+        {{- $initialCluster := list }}
+        {{- range $e, $i := until (int .Values.db.replicas) }}
+        {{- $initialCluster = append $initialCluster (printf "%s-galera-%d.%s-galera-svc.%s.svc.cluster.local" $fullName $i $fullName $releaseName) }}
+        {{- end }}
+        - name: CLUSTER_ADDRESS
+          value: {{ printf "%s" (join "," $initialCluster) | quote }}
+        - name: GALERA_CONF
+          value: /etc/mysql/conf.d/galera.cnf
         volumeMounts:
         - name: configmap
           mountPath: /configmap
@@ -35,21 +56,6 @@ spec:
           mountPath: /etc/mysql/conf.d
         - name: scripts
           mountPath: /opt/galera
-      - name: peer-finder
-        image: "{{ .Values.peerFinder.image }}"
-        command: ["/peer-finder"]
-        args: ["-on-start=/opt/galera/on-start.sh", "-service={{ .Release.Name }}-galera-svc"]
-        env:
-        - name: POD_NAMESPACE
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.namespace
-        volumeMounts:
-        - name: scripts
-          mountPath: /opt/galera
-        - name: config
-          mountPath: /etc/mysql/conf.d
       containers:
       - name: mariadb
         image: "{{ .Values.mariadb.image.repo }}:{{ .Values.mariadb.image.tag }}"
