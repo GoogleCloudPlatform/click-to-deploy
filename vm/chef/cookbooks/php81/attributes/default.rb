@@ -13,6 +13,7 @@
 # limitations under the License.
 
 default['php81']['packages'] = ['php8.1-fpm', 'php8.1-common', 'php8.1']
+default['php81']['distribution'] = 'buster'
 
 # Default modules to install
 default['php81']['modules'] = %w(cgi gd curl)

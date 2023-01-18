@@ -1,3 +1,4 @@
+
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,5 +16,6 @@
 # Reference: https://www.drupal.org/download
 
 default['drupal']['user'] = 'www-data'
-
 default['drupal']['db']['name'] = 'drupal'
+
+default['php81']['distribution'] = 'bullseye'

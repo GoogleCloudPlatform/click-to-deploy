@@ -21,10 +21,9 @@ data:
     wsrep_provider=/usr/lib/galera/libgalera_smm.so
     wsrep_sst_method=rsync
     # Cluster settings (automatically updated by the on-start.sh script)
+    wsrep_node_address=127.0.0.1
     wsrep_cluster_address=gcomm://
     wsrep_cluster_name={{ .Release.Name }}-galera
-    wsrep_node_address=127.0.0.1
-
   mariadb.cnf: |
     [mysqld]
     port={{ .Values.service.port }}
@@ -34,9 +33,6 @@ data:
     ssl-ca=/etc/mysql/mariadb.conf.d/certs/ca.crt
     ssl-cert=/etc/mysql/mariadb.conf.d/certs/tls.crt
     ssl-key=/etc/mysql/mariadb.conf.d/certs/tls.key
-
-  on-start.sh: |
-    {{- tpl (.Files.Get "config/on-start.sh") . | nindent 4 }}
 
   galera-recovery.sh: |
     {{- tpl (.Files.Get "config/galera-recovery.sh") . | nindent 4 }}
