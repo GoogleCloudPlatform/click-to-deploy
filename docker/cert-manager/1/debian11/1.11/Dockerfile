@@ -1,8 +1,6 @@
-{{- $cert_manager := index .Packages "cert-manager" -}}
+FROM  marketplace.gcr.io/google/debian11 as build
 
-FROM  {{ .From }} as build
-
-ENV APP_VERSION={{ $cert_manager.Version }}
+ENV APP_VERSION=1.11.0
 
 RUN apt-get update \
     && apt-get install make git jq curl docker.io -y --no-install-recommends 
@@ -18,7 +16,7 @@ RUN make vendor-go \
  && make cmctl-linux
 
 # Result Image
-FROM {{ .From }}
+FROM marketplace.gcr.io/google/debian11
 
 WORKDIR /app
 
@@ -28,7 +26,7 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-ENV C2D_RELEASE={{ $cert_manager.Version }}
+ENV C2D_RELEASE=1.11.0
 ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 
 # Non root
