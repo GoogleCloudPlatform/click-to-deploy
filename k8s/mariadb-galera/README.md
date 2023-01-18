@@ -172,7 +172,6 @@ IMAGE_REGISTRY="marketplace.gcr.io/google"
 export IMAGE_MARIADB="${IMAGE_REGISTRY}/mariadb-galera"
 export IMAGE_MYSQL_EXPORTER="${IMAGE_REGISTRY}/mariadb-galera/mysqld-exporter:${TAG}"
 export IMAGE_METRICS_EXPORTER="${IMAGE_REGISTRY}/mariadb-galera/prometheus-to-sd:${TAG}"
-export IMAGE_PEER_FINDER="${IMAGE_REGISTRY}/mariadb-galera/peer-finder:${TAG}"
 ```
 
 Specify the number of replicas for your MariaDB Galera cluster:
@@ -257,7 +256,6 @@ helm template chart/mariadb-galera \
   --set db.exporter.password="$EXPORTER_DB_PASSWORD" \
   --set metrics.image="$IMAGE_METRICS_EXPORTER" \
   --set metrics.exporter.enabled="$METRICS_EXPORTER_ENABLED" \
-  --set peerFinder.image="$IMAGE_PEER_FINDER" \
   --set tls.base64EncodedPrivateKey="$TLS_CERTIFICATE_KEY" \
   --set tls.base64EncodedCertificate="$TLS_CERTIFICATE_CRT" \
   --set db.replicas="$REPLICAS" \
