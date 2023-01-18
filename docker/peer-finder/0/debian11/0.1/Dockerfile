@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM gcr.io/google-appengine/debian9:latest
+FROM marketplace.gcr.io/google/debian11
 
 ENV GOPATH /usr/local
 

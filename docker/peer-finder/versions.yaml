@@ -12,18 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-_variables:
-  from9: &from9 gcr.io/google-appengine/debian9:latest
-
 versions:
-  - dir: '0/debian9/0.1'
+  - dir: '0/debian11/0.1'
     repo: peer-finder0
     tags:
-      - '0.1-debian9'
+      - '0.1-debian11'
       - '0.1'
       - '0'
       - 'latest'
-    from: *from9
+    from: marketplace.gcr.io/google/debian11
     templateArgs:
       peer_finder_notices_check_sum: '0a8f689176d60e15b61fba62513dea66186cd455cadeeb0ba5791d588f361fe5'
 
