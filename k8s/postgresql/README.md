@@ -159,7 +159,7 @@ Alternatively you can use short tag which points to the latest image for selecte
 > Warning: this tag is not stable and referenced image might change over time.
 
 ```shell
-export TAG="13.4"
+export TAG="15.1"
 ```
 
 Configure the container images:
