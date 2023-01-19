@@ -33,6 +33,7 @@ RUN apt-get update \
 	netcat \
 	xz-utils \
 	openssl \
+  libtasn1-6 \
 	&& rm -rf /var/lib/apt/lists/*
 
 RUN ln -s /usr/bin/clang-11 /usr/bin/clang \

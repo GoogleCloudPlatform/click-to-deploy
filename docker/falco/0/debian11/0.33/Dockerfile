@@ -1,11 +1,11 @@
 FROM marketplace.gcr.io/google/debian11
 
-ARG FALCO_VERSION=0.32.2
+ARG FALCO_VERSION=0.33.1
 ARG VERSION_BUCKET=deb
 ENV VERSION_BUCKET=${VERSION_BUCKET}
 
 ENV FALCO_VERSION ${FALCO_VERSION}
-ENV C2D_RELEASE 0.32.2
+ENV C2D_RELEASE 0.33.1
 ENV HOST_ROOT /host
 ENV HOME /root
 
@@ -31,6 +31,7 @@ RUN apt-get update \
 	netcat \
 	xz-utils \
 	openssl \
+  libtasn1-6 \
 	&& rm -rf /var/lib/apt/lists/*
 
 RUN ln -s /usr/bin/clang-11 /usr/bin/clang \
