@@ -28,10 +28,6 @@ x-google-marketplace:
       properties:
         nodeexporter.image:
           type: FULL
-    init-container:
-      properties:
-        prometheus.initContainer.image:
-          type: FULL
 
 properties:
   name:

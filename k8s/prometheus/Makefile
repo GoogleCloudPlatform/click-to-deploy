@@ -17,19 +17,17 @@ IMAGE_PROMETHEUS ?= $(SOURCE_REGISTRY)/prometheus2:$(TRACK)
 IMAGE_ALERTMANAGER ?= $(SOURCE_REGISTRY)/prometheus-alertmanager0:$(TRACK_ALERTMANAGER)
 IMAGE_NODEEXPORTER ?= $(SOURCE_REGISTRY)/prometheus-nodeexporter1:$(TRACK_NODEEXPORTER)
 IMAGE_KUBESTATEMETRICS ?= $(SOURCE_REGISTRY)/kube-state-metrics2:$(TRACK_KUBESTATEMETRICS)
-IMAGE_INIT_CONTAINER ?= $(SOURCE_REGISTRY)/debian9
 
 # Main image
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_PROMETHEUS))
 
 # List of images used in application
-ADDITIONAL_IMAGES := alertmanager nodeexporter kubestatemetrics init-container
+ADDITIONAL_IMAGES := alertmanager nodeexporter kubestatemetrics
 
 # Additional images variable names should correspond with ADDITIONAL_IMAGES list
 image-alertmanager := $(call get_sha256,$(IMAGE_ALERTMANAGER))
 image-nodeexporter := $(call get_sha256,$(IMAGE_NODEEXPORTER))
 image-kubestatemetrics := $(call get_sha256,$(IMAGE_KUBESTATEMETRICS))
-image-init-container := $(call get_sha256,$(IMAGE_INIT_CONTAINER))
 
 C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
 
