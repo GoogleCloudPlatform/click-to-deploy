@@ -20,4 +20,4 @@ tests:
   command: ['curl', '-s', 'http://localhost:3000']
   expect:
     stdout:
-      matches: "Installation -  Gitea: Git with a cup of tea"
+      matches: "Installation - Gitea: Git with a cup of tea"
