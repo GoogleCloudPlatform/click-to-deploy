@@ -1,6 +1,6 @@
 FROM marketplace.gcr.io/google/debian11 AS build
 
-ENV KEYCLOAK_VERSION 20.0.2
+ENV KEYCLOAK_VERSION 20.0.3
 ARG KEYCLOAK_DIST=https://github.com/keycloak/keycloak/releases/download/$KEYCLOAK_VERSION/keycloak-$KEYCLOAK_VERSION.tar.gz
 
 ADD $KEYCLOAK_DIST /tmp/keycloak/
@@ -37,7 +37,7 @@ RUN cp /usr/share/java/h2-1.4.197.jar /opt/keycloak/lib/lib/main/com.h2database.
 ENV KC_DB=postgres
 RUN /opt/keycloak/bin/kc.sh build --db=postgres
 
-ENV C2D_RELEASE 20.0.2
+ENV C2D_RELEASE 20.0.3
 
 USER 1000
 
