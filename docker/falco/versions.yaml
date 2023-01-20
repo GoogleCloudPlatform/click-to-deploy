@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 0/debian11/0.32
+- dir: 0/debian11/0.33
   from: marketplace.gcr.io/google/debian11
   packages:
     falco:
-      version: 0.32.2
+      version: 0.33.1
   repo: falco0
   tags:
-  - 0.32.2-debian11
-  - 0.32-debian11
+  - 0.33.1-debian11
+  - 0.33-debian11
   - 0-debian11
-  - 0.32.2
-  - '0.32'
+  - 0.33.1
+  - '0.33'
   - '0'
   - latest
 - dir: exporter

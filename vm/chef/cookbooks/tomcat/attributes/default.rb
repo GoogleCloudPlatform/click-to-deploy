@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['tomcat']['version'] = '10.0.17'
-default['tomcat']['sha256'] = 'eff0763ffc6cd24b06fb1d4ae6fdb52681b90d3976012660a95d570019bd93c8'
+default['tomcat']['version'] = '10.1.4'
+default['tomcat']['sha256'] = '95e68c8663187aa62de9b3e6869b2835a61975a38b64949d7c06bd64aef7f17f'
 
 default['tomcat']['app']['install_dir'] = '/opt/tomcat'
 

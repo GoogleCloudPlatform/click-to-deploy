@@ -40,14 +40,21 @@ mkdir "${CONCRETE_FOLDER}"
 cd "${CONCRETE_FOLDER}/"
 
 echo "Configuring and updating composer..."
-composer create-project concretecms/composer "${CONCRETE_PROJECT}" --no-install -d "${CONCRETE_FOLDER}"
+composer create-project concretecms/composer "${CONCRETE_PROJECT}" -d "${CONCRETE_FOLDER}" -n
 cd "${CONCRETE_FOLDER}"/"${CONCRETE_PROJECT}"
-composer update --no-install
-composer install -n --no-dev
+composer install -n
 
 echo "Installing Concrete..."
 cd "${CONCRETE_FOLDER}/${CONCRETE_PROJECT}"
-composer require doctrine/annotations
+
+# Concrete 9.1.3 has a mispelled class name, fix is available in develop branch
+# which is not stable
+# https://github.com/concretecms/concretecms/blob/9.1.3/concrete/src/Entity/Search/SavedSearch.php#L7
+# https://github.com/concretecms/concretecms/blob/develop/concrete/src/Entity/Search/SavedSearch.php#L7
+sed 's/MappedSuperClass/MappedSuperclass/g' public/concrete/src/Entity/Search/SavedSearch.php
+
+# Setup script requires orm 2.13
+composer require doctrine/orm=2.13 -n
 
 vendor/bin/concrete5 c5:install -vv \
   --db-server="${CONCRETE_DB_SERVER}" \
@@ -56,7 +63,7 @@ vendor/bin/concrete5 c5:install -vv \
   --db-database="${CONCRETE_DB_NAME}" \
   --admin-password="${CONCRETE_ADMIN_PASSWORD}" \
   --allow-as-root \
-  --no-interaction \
+  --no-interaction
 
 echo "Configure Apache..."
 rm -f /etc/apache2/sites-enabled/000-default.conf
@@ -68,11 +75,6 @@ chown -R www-data:www-data "${CONCRETE_FOLDER}/"
 
 echo "Restarting Apache..."
 systemctl restart apache2
-
-# Fix for new installation to avoid php error(https://github.com/concrete5/concrete5/issues/10574)
-sed -i '/^.*$cmf->setMetadataFor($loadedClass, null);/s/^/#/' "${CONCRETE_FOLDER}/${CONCRETE_PROJECT}"/public/concrete/src/Updater/Update.php
-curl -I http://localhost
-sed -i '/^.*#/s///' "${CONCRETE_FOLDER}/${CONCRETE_PROJECT}"/public/concrete/src/Updater/Update.php
 
 echo "Waiting application to be ready..."
 wait_for_app
