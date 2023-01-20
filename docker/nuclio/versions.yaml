@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,45 +12,60 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-versions:
-# Nuclio dashboard 
-  - dir: '1/debian11/nuclio-dashboard/1.10'
-    repo: 'nuclio-dashboard1'
-    templateSubDir: 'nuclio_dashboard'
-    tags:
-    - '1.10.8-debian11'
-    - '1.10.8'
-    - '1.10-debian11'
-    - '1.10'
-    - '1-debian11'
-    - '1'
-    - 'latest'
-    from: 'marketplace.gcr.io/google/debian11'
-    packages:
-      nuclio:
-        version: '1.10.8'
-      golang:
-        version: '1.18.7'
-      docker:
-        version: '20.10.19'
-# Nuclio controller
-  - dir: '1/debian11/nuclio-controller/1.10'
-    repo: 'nuclio-controller1'
-    templateSubDir: 'nuclio_controller'
-    tags:
-    - '1.10.8-debian11'
-    - '1.10.8'
-    - '1.10-debian11'
-    - '1.10'
-    - '1-debian11'
-    - '1'
-    - 'latest'
-    from: 'marketplace.gcr.io/google/debian11'
-    packages:
-      nuclio:
-        version: '1.10.8'
-      golang:
-        version: '1.18.7'
 
 cloudbuild:
-  enable_parallel: true
+  enable_parallel: false
+versions:
+- dir: 1/debian11/nuclio-dashboard/1.11
+  from: marketplace.gcr.io/google/debian11
+  packages:
+    docker:
+      version: 20.10.19
+    golang:
+      version: 1.18.7
+    nuclio:
+      version: 1.11.9
+  repo: nuclio-dashboard1
+  tags:
+  - 1.11.9-debian11
+  - 1.11-debian11
+  - 1-debian11
+  - 1.11.9
+  - '1.11'
+  - '1'
+  - latest
+  templateSubDir: nuclio_dashboard
+- dir: 1/debian11/nuclio-dashboard/1.10
+  from: marketplace.gcr.io/google/debian11
+  packages:
+    docker:
+      version: 20.10.19
+    golang:
+      version: 1.18.7
+    nuclio:
+      version: 1.10.9
+  repo: nuclio-dashboard1
+  tags:
+  - 1.10.9-debian11
+  - 1.10-debian11
+  - 1.10.9
+  - '1.10'
+  templateSubDir: nuclio_dashboard
+- dir: 1/debian11/nuclio-controller/1.11
+  from: marketplace.gcr.io/google/debian11
+  packages:
+    golang:
+      version: 1.18.7
+    nuclio:
+      version: 1.11.9
+  repo: nuclio-controller1
+  tags:
+  - 1.11.9
+  - '1.11'
+  - '1'
+  - 1.11.9-debian11
+  - 1.11-debian11
+  - 1-debian11
+  - latest
+  templateSubDir: nuclio_controller
+
