@@ -29,7 +29,7 @@ RUN update-alternatives --install "/usr/bin/python" "python" "$(which python3)" 
 
 # Fix the value of PYTHONHASHSEED
 # Note: this is needed when you use Python 3.3 or greater
-ENV SPARK_SHA256=1885636ceed1da232f32560c62aa1bf6a18e79e3d98b9a07671b13cc34c7cd6d
+ENV SPARK_SHA256=59c96927629647c4eefc2dec753e9af9b72c3f2926780c772079acd8ff0aecee
 ENV SPARK_VERSION=3.3.1
 ENV SCALA_VERSION=2.13
 ENV SPARK_HOME=/opt/spark
