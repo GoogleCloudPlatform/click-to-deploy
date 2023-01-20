@@ -2,6 +2,6 @@
   "license": "c2d-postgresql",
   "source_image_family": "debian-11",
   "chef": {
-    "run_list": [ "c2d-config", "postgresql::standalone", "google-cloud-ops-agent" ]
+    "run_list": [ "c2d-config", "postgresql::standalone_bullseye", "google-cloud-ops-agent" ]
   }
 }
