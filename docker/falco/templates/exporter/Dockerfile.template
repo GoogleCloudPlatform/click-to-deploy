@@ -7,7 +7,7 @@ ENV EXPORTER_SHA256 {{ $falco_exporter.Sha256 }}
 
 RUN set -eu \
     # Installing utilities
-    && apt-get update && apt-get install -y --no-install-recommends wget \
+    && apt-get update && apt-get install -y --no-install-recommends wget libtasn1-6 \
     && rm -rf /var/lib/apt/lists/* \
     && wget -O /opt/falco-exporter.tar.gz https://github.com/falcosecurity/falco-exporter/releases/download/v${EXPORTER_VERSION}/falco-exporter_${EXPORTER_VERSION}_linux_amd64.tar.gz \
     && echo "${EXPORTER_SHA256} /opt/falco-exporter.tar.gz" | sha256sum -c \
