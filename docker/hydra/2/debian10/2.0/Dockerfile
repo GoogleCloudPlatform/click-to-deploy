@@ -1,8 +1,8 @@
-FROM marketplace.gcr.io/google/debian11
+FROM marketplace.gcr.io/google/debian10
 
-ENV HYDRA_VERSION 1.11.8
-ENV HYDRA_SHA256 98355a10277858fd9d71869aba05652a986fb3c056b731a9d9313f2166ab11c3
-ENV C2D_RELEASE 1.11.8
+ENV HYDRA_VERSION 2.0.3
+ENV HYDRA_SHA256 e24bec23bfd75b634fa357e2a412eb7bd01a4cdf032b141da95e5401888f6b3c
+ENV C2D_RELEASE 2.0.3
 
 RUN addgroup --system ory; \
     adduser --system --group --disabled-password  --home /home/ory --shell /usr/sbin/nologin ory; \
