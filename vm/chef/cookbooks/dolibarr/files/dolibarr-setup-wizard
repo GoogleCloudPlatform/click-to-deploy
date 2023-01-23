@@ -20,7 +20,7 @@ readonly admin_username="$(get_attribute_value "dolibarr-admin-username")"
 readonly admin_password="$(get_attribute_value "dolibarr-admin-password")"
 
 readonly db_username="dolibarr"
-readonly db_password="$(get_attribute_value "dolibarr-db-password")"
+readonly db_password="$(get_attribute_value "passwd123")"
 readonly main_url_root="http://$(get_external_ip)"
 readonly install_forced_file="/var/www/html/htdocs/install/install.forced.php"
 
