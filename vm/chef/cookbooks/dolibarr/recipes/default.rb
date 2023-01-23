@@ -34,7 +34,7 @@ include_recipe 'apache2::mod-rewrite'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 
-include_recipe 'mysql'
+include_recipe 'mysql::version-8.0-standalone'
 
 # Restart Apache2 to have php modules enabled and active.
 service 'apache2' do
