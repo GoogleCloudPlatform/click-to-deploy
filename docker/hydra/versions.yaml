@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,18 +16,19 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 1/debian11/1.11
-  from: marketplace.gcr.io/google/debian11
+- dir: 2/debian10/2.0
+  from: marketplace.gcr.io/google/debian10
   packages:
     hydra:
-      version: 1.11.8
-      gpg: 98355a10277858fd9d71869aba05652a986fb3c056b731a9d9313f2166ab11c3
-  repo: hydra1
+      gpg: e24bec23bfd75b634fa357e2a412eb7bd01a4cdf032b141da95e5401888f6b3c
+      version: 2.0.3
+  repo: hydra2
   tags:
-  - 1.11.8-debian11
-  - 1.11-debian11
-  - 1-debian11
-  - 1.11.8
-  - '1.11'
-  - '1'
+  - 2.0.3-debian10
+  - 2.0-debian10
+  - 2-debian10
+  - 2.0.3
+  - '2.0'
+  - '2'
   - latest
+
