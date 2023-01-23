@@ -25,17 +25,17 @@ include_recipe 'mysql::version-8.0-standalone'
 include_recipe 'git'
 
 # Reference: https://documentation.concretecms.org/developers/introduction/system-requirements
-include_recipe 'php80::default_bullseye'
-include_recipe 'php80::module_mysql'
-include_recipe 'php80::module_dom'
-include_recipe 'php80::module_simplexml'
-include_recipe 'php80::module_gd'
-include_recipe 'php80::module_mbstring'
-include_recipe 'php80::module_curl'
-include_recipe 'php80::module_zip'
-include_recipe 'php80::module_libapache2'
-include_recipe 'php80::module_intl'
-include_recipe 'php80::module_fileinfo'
+include_recipe 'php81'
+include_recipe 'php81::module_mysql'
+include_recipe 'php81::module_dom'
+include_recipe 'php81::module_simplexml'
+include_recipe 'php81::module_gd'
+include_recipe 'php81::module_mbstring'
+include_recipe 'php81::module_curl'
+include_recipe 'php81::module_zip'
+include_recipe 'php81::module_libapache2'
+include_recipe 'php81::module_intl'
+include_recipe 'php81::module_fileinfo'
 
 include_recipe 'composer::composer2'
 
@@ -45,9 +45,11 @@ apt_update do
   action :update
 end
 
+# install unzip
+
 # Clone ConcreteCMS source code per license requirements.
 git '/usr/src/concretecms' do
-  repository 'https://github.com/concrete5/concrete5.git'
+  repository 'https://github.com/concretecms/concretecms.git'
   reference node['concretecms']['version']
   action :checkout
 end
