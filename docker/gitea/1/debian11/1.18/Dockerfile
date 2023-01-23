@@ -6,7 +6,7 @@ FROM golang:1.18-alpine3.15 AS build-env
 ARG GOPROXY
 ENV GOPROXY ${GOPROXY:-proxy.golang.org}
 
-ARG GITEA_VERSION=release/v1.16
+ARG GITEA_VERSION=release/v1.18
 ARG TAGS="sqlite sqlite_unlock_notify"
 ENV TAGS "bindata timetzdata $TAGS"
 ARG CGO_EXTRA_CFLAGS
@@ -26,7 +26,7 @@ RUN if [ -n "${GITEA_VERSION}" ]; then git checkout "${GITEA_VERSION}"; fi \
 # Begin env-to-ini build
 RUN go build contrib/environment-to-ini/environment-to-ini.go
 
-FROM marketplace.gcr.io/google/debian11:latest
+FROM marketplace.gcr.io/google/debian11
 
 EXPOSE 22 3000
 
@@ -78,7 +78,7 @@ RUN addgroup \
 
 ENV USER git
 ENV GITEA_CUSTOM /data/gitea
-ENV C2D_RELEASE 1.16.9
+ENV C2D_RELEASE 1.18.9
 
 VOLUME ["/data"]
 
