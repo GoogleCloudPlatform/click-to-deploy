@@ -19,6 +19,10 @@ source /opt/c2d/c2d-utils || exit 1
 readonly db_username="dolibarr"
 readonly db_password="$(get_attribute_value "dolibarr-db-password")"
 
-mysql -u root -e "CREATE USER '${db_username}'@'localhost' IDENTIFIED BY '${db_password}';"
-mysql -u root -e "GRANT ALL PRIVILEGES ON dolibarr.* TO '${db_username}'@'localhost' IDENTIFIED BY '${db_password}'";
-mysql -u root -e "FLUSH PRIVILEGES"
+function create_db_user() {
+  mysql --user="root" --password="${MYSQL_PASSWORD}" --database="mysql" <<-EOSQL
+  CREATE USER '${db_username}'@'localhost' IDENTIFIED BY '${db_password}';
+  GRANT ALL ON ${mysql}.* TO '${db_username}}'@'localhost';
+EOSQL
+}
+
