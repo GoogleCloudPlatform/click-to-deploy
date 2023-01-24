@@ -33,7 +33,7 @@ describe 'C2D startup scripts should exists' do
     it { should exist }
   end
 
-describe file('/opt/c2d/scripts/02-mautic') do
+  describe file('/opt/c2d/scripts/02-mautic') do
     it { should exist }
   end
 end
