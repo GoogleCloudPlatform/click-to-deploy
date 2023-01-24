@@ -13,7 +13,7 @@
 # limitations under the License.
 
 default['mautic']['packages'] = [
-    'libicu64',
+    'libicu-dev',
     'libxmlrpc-epi0',
     'libxslt1.1',
     'libzip4',

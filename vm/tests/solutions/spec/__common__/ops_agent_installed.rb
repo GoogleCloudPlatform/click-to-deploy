@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,17 +14,28 @@
 
 require 'spec_helper'
 
-describe 'Installed Ops-agent' do
-  describe package('google-cloud-ops-agent') do
-    it { should be_installed }
+describe 'Not Installed Stackdriver Logging' do
+  describe package('google-fluentd') do
+    it { should_not be_installed }
   end
 
-  describe service('google-cloud-ops-agent.service') do
-    it { should be_enabled }
-    it { should be_running }
+  describe package('google-fluentd-catch-all-config') do
+    it { should_not be_installed }
   end
 
-  describe file('/etc/google-cloud-ops-agent/config.yaml') do
-    it { should exist }
+  describe service('google-fluentd.service'), :if => os[:family] == 'debian' do
+    it { should_not be_enabled }
+    it { should_not be_running }
+  end
+end
+
+describe 'Not Installed Stackdriver Monitoring' do
+  describe package('stackdriver-agent') do
+    it { should_not be_installed }
+  end
+
+  describe service('stackdriver-agent.service'), :if => os[:family] == 'debian' do
+    it { should_not be_enabled }
+    it { should_not be_running }
   end
 end
