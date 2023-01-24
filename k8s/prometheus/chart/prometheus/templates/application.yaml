@@ -10,77 +10,45 @@ metadata:
     app.kubernetes.io/name: "{{ .Release.Name }}"
 spec:
   descriptor:
-    type: Prometheus & Grafana
+    type: Prometheus
     version: '{{ .Values.prometheus.image.tag }}'
     description: |-
       Prometheus is an open-source monitoring and alerting platform, widely adopted by many companies
-      as a Kubernetes monitoring tool. In this application Prometheus is supported by Grafana,
-      a highly customizable user interface providing a number of preinstalled dashboards visualizing
-      the metrics collected by the Prometheus server.
-
+      as a Kubernetes monitoring tool. 
       # Support
       Google does not offer support for this solution. However, community support is available on
-      [Stack Overflow](https://stackoverflow.com/questions/tagged/prometheus+grafana/).
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/prometheus/).
       Additional support is available on [community forums](https://prometheus.io/community/).
     links:
     - description: 'User Guide: Google Click to Deploy Prometheus'
       url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/prometheus/README.md
     - description: 'First steps with Prometheus'
       url: https://prometheus.io/docs/introduction/first_steps/
-    - description: 'Official documentation for Grafana'
-      url: https://docs.grafana.org
     maintainers:
     - name: Google Click to Deploy
       url: https://cloud.google.com/solutions/#click-to-deploy
     notes: |-
-      # Access Grafana UI
+      # Access Prometheus UI
 
-      Grafana is exposed in a ClusterP-only service `{{ .Release.Name }}-grafana`. To connect to
-      Grafana UI, you can either expose a public service endpoint or keep it private, but connect
+      Prometheus is exposed in a ClusterP-only service `{{ .Release.Name }}-prometheus`. To connect to
+      Prometheus UI, you can either expose a public service endpoint or keep it private, but connect
       from you local environment with `kubectl port-forward`.
 
-      ## Forward Grafana port in local environment
+      ## Forward Prometheus port in local environment
 
       You can use port forwarding feature of `kubectl` to forward Grafana's port to your local
       machine. Run the following command in background:
 
       ```shell
-      kubectl port-forward --namespace ${NAMESPACE} ${APP_INSTANCE_NAME}-grafana-0 3000
+      kubectl port-forward --namespace ${NAMESPACE} ${APP_INSTANCE_NAME}-prometheus-0 9090
       ```
 
-      Now you can access Grafana UI with `http://localhost:3000/`.
-
-      ## Login to Grafana
-
-      Grafana is configured to require authentication. You can find username and password in the
-      'Prometheus & Grafana info' section on the left. They are stored in
-      `{{ .Release.Name }}-grafana` secret.
-
-      # Explore the GKE dashboards
-
-      After logging in to Grafana UI, explore the preconfigured dashboards visualizing the metrics
-      collected by Prometheus. Click on the `Home` button in the top left corner of Grafana homepage
-      and you will be presented a list of available dashboards. Click on a selected dashboard to see
-      its metrics visualization.
+      Now you can access Prometheus UI with `http://localhost:9090/`.
   info:
-  - name: Forward Grafana port locally
-    value: kubectl port-forward --namespace ${NAMESPACE} ${APP_INSTANCE_NAME}-grafana-0 3000
-  - name: Grafana UI URL
-    value: http://localhost:3000/
-  - name: Grafana username
-    type: Reference
-    valueFrom:
-      type: SecretKeyRef
-      secretKeyRef:
-        name: {{ .Release.Name }}-grafana
-        key: admin-user
-  - name: Grafana password
-    type: Reference
-    valueFrom:
-      type: SecretKeyRef
-      secretKeyRef:
-        name: {{ .Release.Name }}-grafana
-        key: admin-password
+  - name: Forward Prometheus port locally
+    value: kubectl port-forward --namespace ${NAMESPACE} ${APP_INSTANCE_NAME}-prometheus-0 9090
+  - name: Prometheus UI URL
+    value: http://localhost:9090/
   selector:
     matchLabels:
       app.kubernetes.io/name: "{{ .Release.Name }}"

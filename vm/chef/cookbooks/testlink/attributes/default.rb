@@ -12,6 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['testlink']['version'] = '1.9.19'
+default['testlink']['version'] = '1.9.20'
 default['testlink']['db']['name'] = 'testlink'
 default['testlink']['packages'] = ['msmtp']

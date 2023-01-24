@@ -22,7 +22,7 @@ spec:
       serviceAccountName: "{{ .Values.prometheus.serviceAccountName }}"
       initContainers:
       - name: "init-chown-data"
-        image: "{{ .Values.prometheus.initContainer.image }}"
+        image: busybox:1.35
         imagePullPolicy: Always
         command: ["chown", "-R", "65534:65534", "/data"]
         volumeMounts:
