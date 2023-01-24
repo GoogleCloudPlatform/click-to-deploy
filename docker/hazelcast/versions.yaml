@@ -17,6 +17,8 @@ cloudbuild:
   enable_parallel: false
 versions:
 - dir: 5/debian11/hazelcast/5.2
+  excludeTests:
+  - tests/functional_tests/hazelcast_mancenter_test.yaml
   from: marketplace.gcr.io/google/debian11
   packages:
     hazelcast:
@@ -32,6 +34,8 @@ versions:
   - latest
   templateSubDir: hazelcast5
 - dir: 5/debian11/hazelcast/5.0
+  excludeTests:
+  - tests/functional_tests/hazelcast_mancenter_test.yaml
   from: marketplace.gcr.io/google/debian11
   packages:
     hazelcast:
@@ -44,6 +48,8 @@ versions:
   - '5.0'
   templateSubDir: hazelcast5
 - dir: 5/debian11/hazelcast-mc/5.2
+  excludeTests:
+  - tests/functional_tests/hazelcast_test.yaml
   from: marketplace.gcr.io/google/debian11
   packages:
     hazelcastmc:
@@ -56,4 +62,3 @@ versions:
   - '5'
   - latest
   templateSubDir: hazelcast-mc5
-
