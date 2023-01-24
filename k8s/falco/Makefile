@@ -6,7 +6,7 @@ include ../images.Makefile
 CHART_NAME := falco
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 0.32
+TRACK ?= 0.33
 
 EXPORTER_TAG ?= 0.7
 METRICS_EXPORTER_TAG ?= v0.11.1-gke.1
