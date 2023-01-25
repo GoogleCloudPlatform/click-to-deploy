@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['joomla']['version'] = '4.1.0'
-default['joomla']['sha256'] = '376a1c3d99bdc55a57af48bc8898ed0fafdebd26456916e409f2914a3c2daf41'
+default['joomla']['version'] = '4.2.6'
+default['joomla']['sha256'] = '96db699bb056966f0e755522621f83a7161f651066ad4ed192d5d50071c1ce67'
 default['joomla']['user'] = 'www-data'
 
 default['joomla']['db']['name'] = 'joomla_db'
