@@ -37,7 +37,8 @@ RUN echo "Installing new APK packages" \
     && unzip ${MC_INSTALL_ZIP} -x ${MC_INSTALL_NAME}/docs/* \
     && mv ${MC_INSTALL_NAME}/${MC_INSTALL_JAR} ${MC_INSTALL_JAR} \
     && mv ${MC_INSTALL_NAME}/bin/start.sh start.sh \
-    && mv ${MC_INSTALL_NAME}/bin/mc-conf.sh mc-conf.sh
+    && mv ${MC_INSTALL_NAME}/bin/mc-conf.sh mc-conf.sh \
+    && mv ${MC_INSTALL_NAME}/bin/hz-mc hz-mc
 
 RUN echo "Adding license to /usr/share/hazelcast directory" \
     && mkdir -p /usr/share/hazelcast-management-center/ \
@@ -46,7 +47,7 @@ RUN echo "Adding license to /usr/share/hazelcast directory" \
 
 RUN chmod +x start.sh mc-conf.sh
 
-FROM gcr.io/google-appengine/debian10:latest
+FROM gcr.io/google-appengine/debian11:latest
 ARG MC_VERSION
 ARG MC_INSTALL_NAME
 ARG MC_INSTALL_JAR
@@ -67,7 +68,7 @@ ENV JAVA_OPTS_DEFAULT="-Dhazelcast.mc.home=${MC_DATA} -Djava.net.preferIPv4Stack
     MC_HEALTH_CHECK_PORT="8081" \
     LOGGING_LEVEL="" \
     MC_CONTEXT_PATH="/" \
-    NO_CONTAINER_SUPPORT="false" \
+    CONTAINER_SUPPORT="true" \
     MIN_HEAP_SIZE="" \
     MAX_HEAP_SIZE="" \
     MC_INIT_SCRIPT="" \
@@ -94,6 +95,7 @@ WORKDIR ${MC_HOME}
 COPY --from=builder /tmp/build/${MC_INSTALL_JAR} .
 COPY --from=builder /tmp/build/start.sh ./bin/start.sh
 COPY --from=builder /tmp/build/mc-conf.sh ./bin/mc-conf.sh
+COPY --from=builder /tmp/build/hz-mc ./bin/hz-mc
 COPY mc-start.sh ./bin/mc-start.sh
 
 VOLUME ["${MC_DATA}"]
@@ -109,4 +111,4 @@ RUN echo "Adding non-root user" \
 USER ${USER_UID}
 
 # Start Management Center
-CMD ["bash", "./bin/mc-start.sh"]
+CMD ["bash", "./bin/hz-mc", "start"]
