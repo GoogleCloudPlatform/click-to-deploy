@@ -14,7 +14,7 @@
 #
 # Reference: https://wiki.dreamfactory.com/DreamFactory/Installation
 
-include_recipe 'mysql'
+include_recipe 'mysql::version-8.0'
 include_recipe 'nginx'
 include_recipe 'redis::standalone'
 
