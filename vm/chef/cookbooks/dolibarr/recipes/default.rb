@@ -34,7 +34,7 @@ include_recipe 'apache2::mod-rewrite'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 
-include_recipe 'mysql::version-8.0-standalone'
+include_recipe 'mysql::version-8.0'
 
 # Restart Apache2 to have php modules enabled and active.
 service 'apache2' do
@@ -108,7 +108,7 @@ template '/var/www/html/htdocs/install/install.forced.php' do
 end
 
 bash 'MySQL configuration' do
-  user 'root'
+  user 'dolibarr'
   code 'mysql -u root -e "CREATE DATABASE ${default_db} CHARACTER SET utf8 COLLATE utf8_general_ci"'
   environment({
     'default_db' => node['dolibarr']['db']['name'],
