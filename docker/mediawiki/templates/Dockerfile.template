@@ -41,6 +41,7 @@ RUN apt-get update; \
         librsvg2-bin \
         netcat \
         imagemagick \
+        libtasn1-6 \
         # Required for SyntaxHighlighting
         python3 \
         unzip \
