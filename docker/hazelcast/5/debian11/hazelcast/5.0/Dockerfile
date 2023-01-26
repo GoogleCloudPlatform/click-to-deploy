@@ -16,11 +16,11 @@ FROM marketplace.gcr.io/google/debian11
 
 ENV DEBUG_DOCKER_ENTRYPOINT false
 
-ENV HAZELCAST_VERSION 5.2.1
-ENV C2D_RELEASE 5.2.1
+ENV HAZELCAST_VERSION 5.0.4
+ENV C2D_RELEASE 5.0.4
 
 # Versions of Hazelcast and Hazelcast plugins
-ARG HZ_VERSION=5.2.1
+ARG HZ_VERSION=5.0.4
 ARG HZ_VERSION_SHA=
 
 # Build constants

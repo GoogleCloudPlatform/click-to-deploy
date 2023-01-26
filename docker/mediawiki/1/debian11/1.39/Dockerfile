@@ -18,9 +18,9 @@
 
 FROM marketplace.gcr.io/google/php7-apache2:7.4
 
-ENV MEDIAWIKI_MAJOR_VERSION 1.37
-ENV MEDIAWIKI_VERSION 1.37.6
-ENV MEDIAWIKI_SHA512 5a93223fa13183d5db1b8f70a484a647c81ebf5ff4bc102f4de0591989242be06a31370716edac4ec88a436bb700d62074b11f6a6345936f478c466dfcb380a4
+ENV MEDIAWIKI_MAJOR_VERSION 1.39
+ENV MEDIAWIKI_VERSION 1.39.1
+ENV MEDIAWIKI_SHA512 88e9f961cad1e1f69b3be04f3fa487cd2baf82ec3443b827b5f7541b7f717d8901d0c0be6928ba3e46db4c350edadf5d7f342d49e3b55f77e8a8b079e5aacd37
 
 ENV COMPOSER_VERSION 2.4.3
 ENV COMPOSER_SHA256 26d72f2790502bc9b22209e1cec1e0e43d33b368606ad227d327cccb388b609a
@@ -28,7 +28,7 @@ ENV COMPOSER_SHA256 26d72f2790502bc9b22209e1cec1e0e43d33b368606ad227d327cccb388b
 ENV MEDIAWIKI_HOSTNAME localhost
 ENV MEDIAWIKI_SITENAME my_first_wiki
 
-ENV C2D_RELEASE 1.37.6
+ENV C2D_RELEASE 1.39.1
 
 # System dependencies
 RUN apt-get update; \
@@ -38,6 +38,7 @@ RUN apt-get update; \
         librsvg2-bin \
         netcat \
         imagemagick \
+        libtasn1-6 \
         # Required for SyntaxHighlighting
         python3 \
         unzip \
