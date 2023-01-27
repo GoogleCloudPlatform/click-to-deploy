@@ -12,5 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['dreamfactory']['version'] = '4.10.0'
+default['dreamfactory']['version'] = '4.12.0'
 default['dreamfactory']['db']['name'] = 'dreamfactory'
