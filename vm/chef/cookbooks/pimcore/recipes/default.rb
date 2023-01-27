@@ -22,7 +22,7 @@ include_recipe 'apache2::security-config'
 
 include_recipe 'mysql::version-8.0-standalone'
 
-include_recipe 'php80::default_buster'
+include_recipe 'php80::default_bullseye'
 include_recipe 'php80::module_curl'
 include_recipe 'php80::module_gd'
 include_recipe 'php80::module_intl'
