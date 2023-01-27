@@ -41,7 +41,8 @@ RUN apt-get update && \
     sqlite3 \
     gnupg \
     git \
-    musl-dev
+    musl-dev \
+    libtasn1-6
 
 RUN ln -s /usr/lib/x86_64-linux-musl/libc.so /lib/libc.musl-x86_64.so.1 \
     &&  ssh-keygen -A \
