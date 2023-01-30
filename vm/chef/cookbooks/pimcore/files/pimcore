@@ -17,6 +17,7 @@
 source /opt/c2d/c2d-utils || exit 1
 
 export COMPOSER_HOME="/root/.config/composer"
+export COMPOSER_ALLOW_SUPERUSER=1
 export pimcore_project="$(get_attribute_value "pimcore-project")"
 declare -r mysql_password="$(get_attribute_value "mysql-root-password")"
 declare -r pimcore_db_password="$(get_attribute_value "pimcore-db-password")"
@@ -62,7 +63,8 @@ composer create-project -n pimcore/demo "${pimcore_project}"
 
 # Install Pimcore website dependencies
 cd "${pimcore_project_folder}"
-composer install -n
+composer install --no-interaction
+
 
 # Install Pimcore database
 cd "${pimcore_folder}/${pimcore_project}"
@@ -72,7 +74,7 @@ vendor/bin/pimcore-install -vv \
   --mysql-username "${pimcore_db_username}" \
   --mysql-password "${pimcore_db_password}" \
   --mysql-database "${pimcore_db_name}" \
-  --no-interaction
+  --no-interaction 
 
 # Assign permission to Apache user
 chown -R www-data:www-data "${pimcore_folder}/${pimcore_project}"
