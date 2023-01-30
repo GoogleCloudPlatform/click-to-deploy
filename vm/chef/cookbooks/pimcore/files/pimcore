@@ -57,6 +57,10 @@ mysql --user="root" --password="${mysql_password}" --database="mysql" <<-EOSQL
   GRANT ALL ON ${pimcore_db_name}.* TO '${pimcore_db_username}'@'localhost' 
 EOSQL
 
+function bind_to_all_addresses() {
+  sed -i "s/.*bind-address.*/bind-address = 127.0.0.1/" \
+    /etc/mysql/mysql.conf.d/mysqld.cnf
+}
 # Create Pimcore website
 cd "${pimcore_folder}/"
 composer create-project -n pimcore/demo "${pimcore_project}"
