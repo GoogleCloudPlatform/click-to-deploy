@@ -23,11 +23,11 @@ include_recipe 'php74::module_gd'
 include_recipe 'php74::module_libapache2'
 include_recipe 'php74::module_mbstring'
 include_recipe 'php74::module_mysql'
-include_recipe 'mysql'
+include_recipe 'mysql::version-8.0-standalone'
 
 remote_file 'download_matomo' do
   path '/tmp/matomo.tar.gz'
-  source 'https://builds.matomo.org/matomo.tar.gz'
+  source 'https://builds.matomo.org/matomo-4.13.0.tar.gz'
   owner 'root'
   group 'root'
   mode '0640'
