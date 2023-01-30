@@ -39,6 +39,7 @@ RUN apt-get update; \
         netcat \
         imagemagick \
         libtasn1-6 \
+        curl \
         # Required for SyntaxHighlighting
         python3 \
         unzip \
