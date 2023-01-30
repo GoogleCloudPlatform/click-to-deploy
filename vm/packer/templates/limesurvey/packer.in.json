@@ -1,7 +1,7 @@
 {
   "license": "c2d-limesurvey",
-  "source_image_family": "debian-10",
+  "source_image_family": "debian-11",
   "chef": {
-    "run_list": [ "c2d-config", "limesurvey", "stackdriver" ]
+    "run_list": [ "c2d-config", "limesurvey", "google-cloud-ops-agent" ]
   }
 }
