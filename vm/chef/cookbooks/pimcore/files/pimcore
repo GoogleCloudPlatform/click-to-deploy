@@ -53,8 +53,8 @@ source /usr/local/nvm/nvm.sh
 
 # Creates Pimcore database user
 mysql --user="root" --password="${mysql_password}" --database="mysql" <<-EOSQL
-  CREATE USER '${pimcore_db_username}'@'localhost' IDENTIFIED BY '${pimcore_db_password}';
-  GRANT ALL ON ${pimcore_db_name}.* TO '${pimcore_db_username}'@'localhost';
+  CREATE USER '${pimcore_db_username}'@'localhost' IDENTIFIED WITH mysql_native_password BY '${pimcore_db_password}';
+  GRANT ALL ON ${pimcore_db_name}.* TO '${pimcore_db_username}'@'localhost' 
 EOSQL
 
 # Create Pimcore website
