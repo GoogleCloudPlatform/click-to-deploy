@@ -28,7 +28,7 @@
 
 FROM marketplace.gcr.io/google/debian11
 
-ENV C2D_RELEASE 4.1.2
+ENV C2D_RELEASE 4.1.5
 
 ENV C2D_DJANGO_USER="django" \
     C2D_DJANGO_UID="8983" \

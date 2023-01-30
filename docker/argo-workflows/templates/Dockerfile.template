@@ -87,6 +87,12 @@ RUN target=/root/.cache/go-build make dist/argo
 # Stage: Final Image
 FROM {{ .From }}
 
+# Update libtasn
+RUN apt-get update \
+    && apt-get install --no-install-recommends -yqq libtasn1-6 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 ENV C2D_RELEASE "{{ $argo_workflows.Version }}"
 USER 8737
 
