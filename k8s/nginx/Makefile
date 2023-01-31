@@ -6,7 +6,7 @@ include ../images.Makefile
 CHART_NAME := nginx
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 1.20
+TRACK ?= 1.23
 
 EXPORTER_TAG ?= 0.7
 METRICS_EXPORTER_TAG ?= v0.9.0
