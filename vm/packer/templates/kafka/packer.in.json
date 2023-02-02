@@ -1,7 +1,7 @@
 {
   "license": "c2d-kafka",
-  "source_image_family": "debian-10",
+  "source_image_family": "debian-11",
   "chef": {
-    "run_list": [ "c2d-shared::aptget-update", "c2d-config", "kafka", "stackdriver" ]
+    "run_list": [ "c2d-shared::aptget-update", "c2d-config", "kafka", "google-cloud-ops-agent" ]
   }
 }
