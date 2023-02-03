@@ -12,6 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['opencart']['version'] = '4.0.1.1
+default['opencart']['version'] = '4.0.1.1'
 default['opencart']['db']['name'] = 'opencart'
 default['opencart']['packages'] = ['jq']
