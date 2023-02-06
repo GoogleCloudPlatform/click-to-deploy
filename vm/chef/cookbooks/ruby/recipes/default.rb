@@ -22,7 +22,7 @@ package 'install packages' do
 end
 
 remote_file '/tmp/ruby.tar.gz' do
-  source 'https://cache.ruby-lang.org/pub/ruby/snapshot/snapshot-ruby_3_1.tar.gz'
+  source 'https://cache.ruby-lang.org/pub/ruby/3.1/ruby-3.1.3.tar.gz'
   action :create
 end
 
@@ -30,7 +30,7 @@ bash 'unpackage ruby, compile ruby, and install ruby' do
   user 'root'
   code <<-EOH
     tar -xzf /tmp/ruby.tar.gz -C /tmp/
-    cd /tmp/snapshot-ruby_3_1
+    cd /tmp/ruby-3.1.3
     ./configure
     make
     make install
