@@ -4,7 +4,7 @@ ARG AIRFLOW_EXTRAS="amazon,async,celery,cncf.kubernetes,dask,docker,elasticsearc
 ARG AIRFLOW_HOME=/opt/airflow
 ARG AIRFLOW_UID="50000"
 ARG AIRFLOW_USER_HOME_DIR=/home/airflow
-ARG AIRFLOW_PIP_VERSION="21.3.1"
+ARG AIRFLOW_PIP_VERSION="22.3.1"
 
 FROM marketplace.gcr.io/google/debian11 as airflow-build-image
 
