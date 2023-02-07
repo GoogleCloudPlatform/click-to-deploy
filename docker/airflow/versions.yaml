@@ -22,7 +22,7 @@ versions:
     airflow:
       version: 2.5.0
     pip:
-      version: 21.3.1
+      version: 22.3.1
   repo: airflow2
   tags:
   - 2.5.0-debian11
@@ -32,4 +32,3 @@ versions:
   - '2.5'
   - '2'
   - latest
-
