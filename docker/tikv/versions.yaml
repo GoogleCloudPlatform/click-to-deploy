@@ -16,21 +16,21 @@ cloudbuild:
   enable_parallel: false
   machineType: 'E2_HIGHCPU_32'
 versions:
-- dir: 5/debian11/5.3
+- dir: 6/debian11/6.1
   from: marketplace.gcr.io/google/debian11:latest
   packages:
     tikv:
-      version: 5.3.2
+      version: 6.1.4
     pd:
-      version: 5.3.2
+      version: 6.1.4
     golang:
-      version: 1.16
+      version: 1.19
   repo: tikv5
   tags:
-  - '5.3.2-debian11'
-  - '5.3-debian11'
-  - '5-debian11'
-  - '5.3.2'
-  - '5.3'
-  - '5'
+  - '6.1.4-debian11'
+  - '6.1-debian11'
+  - '6-debian11'
+  - '6.1.4'
+  - '6.1'
+  - '6'
   - 'latest'

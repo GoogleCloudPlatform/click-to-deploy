@@ -2,31 +2,9 @@ FROM marketplace.gcr.io/google/debian11:latest as builder
 
 RUN apt-get update \
     && apt-get install curl perl build-essential cmake git unzip -y --no-install-recommends
-ENV GOLANG_VERSION=1.16
+ENV GOLANG_VERSION=1.19
 RUN curl -L https://golang.org/dl/go${GOLANG_VERSION}.linux-amd64.tar.gz -o /golang.tar.gz &&tar -xzf /golang.tar.gz -C /usr/local
 ENV PATH /usr/local/go/bin:$PATH
-
-ENV TIKV_APP_VERSION=5.3.2
-
-#build tikv
-WORKDIR /tikv
-
-RUN curl -L https://github.com/tikv/tikv/archive/refs/tags/v${TIKV_APP_VERSION}.tar.gz -o ./tikv.tar.gz && tar -xzf ./tikv.tar.gz && mv ./tikv-*/* ./
-
-ENV LIBRARY_PATH /usr/local/lib:$LIBRARY_PATH
-ENV LD_LIBRARY_PATH /usr/local/lib:$LD_LIBRARY_PATH
-
-RUN curl https://sh.rustup.rs -sSf | sh -s -- --no-modify-path --default-toolchain none -y
-ENV PATH /root/.cargo/bin/:$PATH
-
-RUN rustup self update \
-  && rustup set profile minimal \
-  && rustup default $(cat "rust-toolchain")
-
-ENV CARGO_BUILD_JOBS 32
-RUN lscpu
-
-RUN make build_dist_release
 
 #install jq for pd-ctl
 RUN cd / && \
@@ -34,7 +12,7 @@ RUN cd / && \
     chmod +x jq
 
 #build pd
-ENV PD_APP_VERSION=5.3.2
+ENV PD_APP_VERSION=6.1.4
 
 RUN mkdir -p /go/src/github.com/tikv/pd
 WORKDIR /go/src/github.com/tikv/pd
@@ -53,6 +31,32 @@ RUN export GO111MODULE=on \
     && go get github.com/pingcap/tidb/store/tikv@kv-only-4.0 \
     && go build tikvtest.go
 
+# Install protoc
+RUN curl -LO "https://github.com/protocolbuffers/protobuf/releases/download/v3.15.8/protoc-3.15.8-linux-x86_64.zip"
+RUN unzip protoc-3.15.8-linux-x86_64.zip -d /usr/local/
+ENV PATH /usr/local/bin/:$PATH
+
+ENV TIKV_APP_VERSION=6.1.4
+
+#build tikv
+WORKDIR /tikv
+
+RUN curl -L https://github.com/tikv/tikv/archive/refs/tags/v${TIKV_APP_VERSION}.tar.gz -o ./tikv.tar.gz && tar -xzf ./tikv.tar.gz && mv ./tikv-*/* ./
+
+ENV LIBRARY_PATH /usr/local/lib:$LIBRARY_PATH
+ENV LD_LIBRARY_PATH /usr/local/lib:$LD_LIBRARY_PATH
+
+RUN curl https://sh.rustup.rs -sSf | sh -s -- --no-modify-path --default-toolchain none -y
+ENV PATH /root/.cargo/bin/:$PATH
+
+RUN rustup self update \
+  && rustup set profile minimal \
+  && rustup default $(cat "rust-toolchain")
+
+ENV CARGO_BUILD_JOBS 32
+
+RUN make build_dist_release
+
 #copy inferno license to /usr/src
 RUN cp -r $(find /root/.cargo/registry -name "inferno-*" -type d) /usr/src/
 
@@ -63,7 +67,7 @@ ENV PD_ENDPOINT 127.0.0.1:2379
 #fix security issues
 RUN apt-get update \
     && apt-get install --no-install-recommends -yqq \
-    curl openssl zlib1g libgnutls30 libc6 libc-bin libtirpc3 libtirpc-common libpcre2-8-0 libssl1.1 \
+    curl openssl zlib1g libgnutls30 libc6 libc-bin libtirpc3 libtirpc-common libpcre2-8-0 libssl1.1 libtasn1-6 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -79,6 +83,6 @@ COPY --from=builder /jq /usr/local/bin/jq
 COPY --from=builder /tikvtest/tikvtest /tikvtest
 
 EXPOSE 2379 2380 20160 20180
-ENV C2D_RELEASE 5.3.2
+ENV C2D_RELEASE 6.1.4
 
 CMD ["/tikv-server"]
