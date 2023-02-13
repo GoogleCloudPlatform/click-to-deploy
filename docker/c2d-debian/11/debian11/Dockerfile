@@ -13,5 +13,5 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-ENV C2D_RELEASE 11
+ENV C2D_RELEASE 11.5.0
 

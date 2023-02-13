@@ -25,6 +25,8 @@ versions:
   from: marketplace.gcr.io/google/debian11
   repo: c2d-debian11
   tags:
+  - '11.5.0'
+  - '11.5'
   - '11'
   - latest
 
