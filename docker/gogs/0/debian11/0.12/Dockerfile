@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian11:latest
+FROM marketplace.gcr.io/google/c2d-debian11
 
 ENV GOGS_CUSTOM /data/gogs
 ENV GOGS_DB_TYPE sqlite3
@@ -13,7 +13,7 @@ ENV GOGS_EXTERNAL_URL http://localhost:3000/
 WORKDIR /app/gogs
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends curl git ca-certificates rsync sqlite3 gettext-base jq \
+    && apt-get install -y --no-install-recommends ca-certificates rsync sqlite3 gettext-base jq \
     && apt-get autoremove -yqq --purge \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
