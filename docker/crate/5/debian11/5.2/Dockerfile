@@ -1,7 +1,7 @@
-FROM marketplace.gcr.io/google/debian11
+FROM marketplace.gcr.io/google/c2d-debian11
 
 RUN apt-get update \
-    && apt-get install curl python3 python3-pip openssl -y --no-install-recommends \
+    && apt-get install curl python3 python3-pip -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -11,7 +11,7 @@ RUN groupadd crate \
 #install crate
 WORKDIR /crate
 
-ENV CRATE_VERSION 5.2.0
+ENV CRATE_VERSION 5.2.2
 ARG CRATE_DIST=https://cdn.crate.io/downloads/releases/cratedb/x64_linux/crate-${CRATE_VERSION}.tar.gz
 
 ADD $CRATE_DIST /tmp/
@@ -57,7 +57,7 @@ WORKDIR /data
 # postgres protocol ports: 5432 tcp
 EXPOSE 4200 4300 5432
 
-ENV C2D_RELEASE 5.2.0
+ENV C2D_RELEASE 5.2.2
 
 COPY --chown=1000:0 config/crate.yml /crate/config/crate.yml
 COPY --chown=1000:0 config/log4j2.properties /crate/config/log4j2.properties
