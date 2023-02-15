@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian10
+FROM marketplace.gcr.io/google/c2d-debian11
 
 ENV HYDRA_VERSION 2.0.3
 ENV HYDRA_SHA256 e24bec23bfd75b634fa357e2a412eb7bd01a4cdf032b141da95e5401888f6b3c
@@ -10,7 +10,7 @@ RUN addgroup --system ory; \
 
 RUN set -eu \
     # Installing utilities
-    && apt-get update && apt-get install -y --no-install-recommends wget curl vim lynx \
+    && apt-get update && apt-get install -y --no-install-recommends wget vim lynx \
     && rm -rf /var/lib/apt/lists/* \
     && wget -O /opt/hydra.tar.gz https://github.com/ory/hydra/releases/download/v${HYDRA_VERSION}/hydra_${HYDRA_VERSION}-linux_64bit.tar.gz \
     && echo "${HYDRA_SHA256} /opt/hydra.tar.gz" | sha256sum -c \
