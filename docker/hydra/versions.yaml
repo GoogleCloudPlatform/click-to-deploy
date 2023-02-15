@@ -16,19 +16,18 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 2/debian10/2.0
-  from: marketplace.gcr.io/google/debian10
+- dir: 2/debian11/2.0
+  from: marketplace.gcr.io/google/c2d-debian11
   packages:
     hydra:
       gpg: e24bec23bfd75b634fa357e2a412eb7bd01a4cdf032b141da95e5401888f6b3c
       version: 2.0.3
   repo: hydra2
   tags:
-  - 2.0.3-debian10
-  - 2.0-debian10
-  - 2-debian10
+  - 2.0.3-debian11
+  - 2.0-debian11
+  - 2-debian11
   - 2.0.3
   - '2.0'
   - '2'
   - latest
-
