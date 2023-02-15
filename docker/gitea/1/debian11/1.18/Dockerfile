@@ -26,7 +26,7 @@ RUN if [ -n "${GITEA_VERSION}" ]; then git checkout "${GITEA_VERSION}"; fi \
 # Begin env-to-ini build
 RUN go build contrib/environment-to-ini/environment-to-ini.go
 
-FROM marketplace.gcr.io/google/debian11
+FROM marketplace.gcr.io/google/c2d-debian11
 
 EXPOSE 22 3000
 
@@ -34,15 +34,12 @@ RUN apt-get update && \
     apt-get install -y \
     bash \
     ca-certificates \
-    curl \
     gettext \ 
     openssh-server \
     s6 \
     sqlite3 \
     gnupg \
-    git \
-    musl-dev \
-    libtasn1-6
+    musl-dev
 
 RUN ln -s /usr/lib/x86_64-linux-musl/libc.so /lib/libc.musl-x86_64.so.1 \
     &&  ssh-keygen -A \
