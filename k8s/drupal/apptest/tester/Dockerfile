@@ -18,4 +18,5 @@ COPY tests /tests
 COPY tester.sh /tester.sh
 
 WORKDIR /
-ENTRYPOINT ["/tester.sh"]
+ENTRYPOINT [ "tail", "-f", "/dev/null" ]
+# ENTRYPOINT ["/tester.sh"]
