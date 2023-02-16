@@ -6,7 +6,7 @@ ARG AIRFLOW_UID="50000"
 ARG AIRFLOW_USER_HOME_DIR=/home/airflow
 ARG AIRFLOW_PIP_VERSION="22.3.1"
 
-FROM marketplace.gcr.io/google/debian11 as airflow-build-image
+FROM marketplace.gcr.io/google/c2d-debian11 as airflow-build-image
 
 SHELL ["/bin/bash", "-o", "pipefail", "-o", "errexit", "-o", "nounset", "-o", "nolog", "-c"]
 ENV DEBIAN_FRONTEND=noninteractive LANGUAGE=C.UTF-8 LANG=C.UTF-8 LC_ALL=C.UTF-8 \
@@ -116,7 +116,7 @@ RUN /scripts/docker/install_airflow.sh \
     && find "${AIRFLOW_USER_HOME_DIR}/.local" -executable -print0 | xargs --null chmod g+x \
     && find "${AIRFLOW_USER_HOME_DIR}/.local" -print0 | xargs --null chmod g+rw
 
-FROM marketplace.gcr.io/google/debian11 as main
+FROM marketplace.gcr.io/google/c2d-debian11 as main
 
 SHELL ["/bin/bash", "-o", "pipefail", "-o", "errexit", "-o", "nounset", "-o", "nolog", "-c"]
 
