@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian11
+FROM marketplace.gcr.io/google/c2d-debian11
 
 ENV EXPORTER_VERSION 0.22.5
 ENV EXPORTER_SHA256 b04a25fe937a2e74dab097d589bd1f4da9e874d62b166c4e74d5d55b0f58eab6

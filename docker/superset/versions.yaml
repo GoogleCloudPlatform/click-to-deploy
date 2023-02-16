@@ -16,22 +16,22 @@ cloudbuild:
   enable_parallel: false
 versions:
 - dir: 1/debian11/1.5
-  from: marketplace.gcr.io/google/debian11:latest
+  from: marketplace.gcr.io/google/c2d-debian11
   packages:
     superset:
-      version: 1.5.0
+      version: 1.5.3
   repo: superset1
   tags:
-  - '1.5.0-debian11'
+  - '1.5.3-debian11'
   - '1.5-debian11'
   - '1-debian11'
-  - '1.5.0'
+  - '1.5.3'
   - '1.5'
   - '1'
   - 'latest'
 
 - dir: exporter
-  from: marketplace.gcr.io/google/debian11
+  from: marketplace.gcr.io/google/c2d-debian11
   packages:
     statsd_exporter:
       sha256: b04a25fe937a2e74dab097d589bd1f4da9e874d62b166c4e74d5d55b0f58eab6

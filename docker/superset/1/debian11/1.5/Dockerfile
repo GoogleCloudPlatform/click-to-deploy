@@ -1,7 +1,7 @@
 FROM marketplace.gcr.io/google/debian11:latest
 
-ARG SUPERSET_VERSION="1.5.0"
-ENV C2D_RELEASE "1.5.0"
+ARG SUPERSET_VERSION="1.5.3"
+ENV C2D_RELEASE "1.5.3"
 ENV SUPERSET_VERSION ${SUPERSET_VERSION}
 ENV FLASK_APP="superset.app:create_app()"
 ENV SUPERSET_HOME=/var/lib/superset
