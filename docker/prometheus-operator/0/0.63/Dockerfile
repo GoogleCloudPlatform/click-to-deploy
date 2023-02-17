@@ -26,7 +26,7 @@ RUN git config --global http.sslverify false \
     -o operator cmd/operator/main.go
 
 # Result Image
-FROM gcr.io/google-appengine/debian11:latest
+FROM marketplace.gcr.io/google/c2d-debian11
 
 ENV C2D_RELEASE=0.63.0
 
