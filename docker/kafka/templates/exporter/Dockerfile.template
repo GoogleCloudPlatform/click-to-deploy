@@ -3,7 +3,6 @@
 FROM {{ .From }}
 
 ENV EXPORTER_VERSION {{ $kafka_exporter.Version }}
-ENV EXPORTER_SHA512 {{ $kafka_exporter.Sha512 }}
 
 ENV EXPORTER_USER="exporter" \
     EXPORTER_UID="9308" \
@@ -18,10 +17,6 @@ RUN set -ex; \
   useradd -r --uid "${EXPORTER_UID}" --gid "${EXPORTER_GID}" -s /sbin/nologin "${EXPORTER_USER}"
 
 RUN set -eu \
-    # Installing utilities
-    && apt-get update && apt-get install -y --no-install-recommends \
-      curl \
-      openssl \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir -p ${EXPORTER_HOME} \
     && cd ${EXPORTER_HOME} \
