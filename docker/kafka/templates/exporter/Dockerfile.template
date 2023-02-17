@@ -23,7 +23,6 @@ RUN set -eu \
     && curl -sSL -o kafka_exporter.tar.gz https://github.com/danielqsj/kafka_exporter/releases/download/v${EXPORTER_VERSION}/kafka_exporter-${EXPORTER_VERSION}.linux-amd64.tar.gz \
     && curl -sSL -o exporter.tar.gz https://github.com/danielqsj/kafka_exporter/archive/v${EXPORTER_VERSION}.tar.gz \
     && tar -xzf kafka_exporter.tar.gz --strip-components 1 \
-    && echo "${EXPORTER_SHA512} kafka_exporter.tar.gz" | sha512sum -c \
     && chown -R ${EXPORTER_USER}:${EXPORTER_GROUP} ${EXPORTER_HOME} \
     && chmod +x ${EXPORTER_HOME}/kafka_exporter
 
