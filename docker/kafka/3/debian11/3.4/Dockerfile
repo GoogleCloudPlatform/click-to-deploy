@@ -1,14 +1,13 @@
-FROM marketplace.gcr.io/google/debian11
+FROM marketplace.gcr.io/google/c2d-debian11
 
-ARG KAFKA_VERSION=3.2.0
+ARG KAFKA_VERSION=3.4.0
 ARG SCALA_VERSION=2.13
-ARG KAFKA_SHA512=736a129823b058dc10788d0893bde47b6f39b9e4972f9eac2d5c9e85e51e477344c6f1e1ebd126ce34d5fd430eb07e55fdd60d60cb541f1d48655c0ebc0a4778
 
-ENV C2D_RELEASE 3.2.0
+ENV C2D_RELEASE 3.4.0
 
 RUN set -ex \
   && apt-get update \
-  && apt-get -y install default-jdk curl ca-certificates jq net-tools openssl \
+  && apt-get -y install default-jdk ca-certificates jq net-tools \
   && rm -rf /var/lib/apt/lists/*
 
 ENV KAFKA_USER="kafka" \
@@ -31,11 +30,10 @@ RUN set -ex; \
 
 COPY --chown=$KAFKA_USER:$KAFKA_GROUP scripts ${KAFKA_DOCKER_SCRIPTS}
 
-# Download and setup kafka version v3.2.0
+# Download and setup kafka version v3.4.0
 RUN chmod a+x ${KAFKA_DOCKER_SCRIPTS}/*.sh \
   && ln -s ${KAFKA_DOCKER_SCRIPTS}/*.sh /usr/bin \
   && curl -sSL ${KAFKA_DIST_URL} -o "/opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz" \
-  && echo "${KAFKA_SHA512} /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz" | sha512sum -c - \
   && tar -xzf /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz -C /opt \
   && mv /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION} ${KAFKA_HOME} \
   && chown -R ${KAFKA_USER}:${KAFKA_GROUP} ${KAFKA_HOME} \
