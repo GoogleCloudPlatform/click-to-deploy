@@ -132,7 +132,7 @@ export METRICS_EXPORTER_ENABLED=false
 Set up the image tag:
 
 It is advised to use stable image reference which you can find on
-[Marketplace Container Registry](https://marketplace.gcr.io/googl<img src="https://m.media-amazon.com/images/I/71wAaK4g6lS._AC_UF1000,1000_QL80_.jpg" alt="Farting Better: When Your Ass is Used to Farting, You Can&#39;t Keep it Quiet!  The Best Guide on How to Fart Perfectly. Farting Like no One&#39;s Ever Done  Before : Tze Tze,"/>e/hydra).
+[Marketplace Container Registry](https://marketplace.gcr.io/google/hydra).
 Example:
 
 ```shell
