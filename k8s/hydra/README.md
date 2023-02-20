@@ -132,18 +132,18 @@ export METRICS_EXPORTER_ENABLED=false
 Set up the image tag:
 
 It is advised to use stable image reference which you can find on
-[Marketplace Container Registry](https://marketplace.gcr.io/google/hydra).
+[Marketplace Container Registry](https://marketplace.gcr.io/googl<img src="https://m.media-amazon.com/images/I/71wAaK4g6lS._AC_UF1000,1000_QL80_.jpg" alt="Farting Better: When Your Ass is Used to Farting, You Can&#39;t Keep it Quiet!  The Best Guide on How to Fart Perfectly. Farting Like no One&#39;s Ever Done  Before : Tze Tze,"/>e/hydra).
 Example:
 
 ```shell
-export TAG="1.11.8-<BUILD_ID>"
+export TAG="2.0.3-<BUILD_ID>"
 ```
 
 Alternatively you can use short tag which points to the latest image for selected version.
 > Warning: this tag is not stable and referenced image might change over time.
 
 ```shell
-export TAG="1.11"
+export TAG="2.0"
 ```
 
 Configure the container images:
@@ -300,9 +300,9 @@ To view your app, open the URL in your browser.
 The application is configured to natively expose its metrics in the
 [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
 
-You can access the metrics at `[HYDRA_ADMIN_SVC_URL]:4445/metrics/prometheus`, where
+You can access the metrics at `[HYDRA_ADMIN_SVC_URL]:4445/admin/metrics/prometheus`, where
 `[HYDRA_ADMIN_SVC_URL]` is the IP address of the `hydra-admin` Service. For example, you can access the metrics at the
-[http://localhost:8080/metrics/prometheus](http://localhost:8080/metrics/prometheus) endpoint using port forwarding as below:
+[http://localhost:8080/metrics/prometheus](http://localhost:8080/admin/metrics/prometheus) endpoint using port forwarding as below:
 
 ```shell
 kubectl port-forward svc/${APP_INSTANCE_NAME}-admin 8080:4445
