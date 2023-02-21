@@ -19,7 +19,7 @@ ARG GOTAGS
 ARG GOGCFLAGS
 
 ARG DRAGONFLY2_GITHUB_BRANCH=release-2.0.8
-ARG MANAGER_CONSOLE_BRANCH=release-0.1.4
+ARG MANAGER_CONSOLE_BRANCH=release-0.1.7
 
 WORKDIR /go/src/d7y.io/dragonfly/v2
 
@@ -29,7 +29,7 @@ RUN apk --no-cache add bash make gcc libc-dev git && \
 
 RUN make build-scheduler && make install-scheduler
 
-FROM marketplace.gcr.io/google/debian11 as health
+FROM marketplace.gcr.io/google/c2d-debian11 as health
 
 ARG GRPC_HEALTH_PROBE_VERSION=v0.4.11
 
@@ -37,7 +37,7 @@ RUN apt update && apt install -y wget && \
     wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 && \
     chmod +x /bin/grpc_health_probe
 
-FROM marketplace.gcr.io/google/debian11
+FROM marketplace.gcr.io/google/c2d-debian11
 
 ENV C2D_RELEASE 2.0.8
 

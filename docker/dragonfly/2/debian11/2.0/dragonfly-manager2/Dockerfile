@@ -14,7 +14,7 @@
 
 FROM node:12-alpine as console-builder
 
-ARG MANAGER_CONSOLE_BRANCH=release-0.1.4
+ARG MANAGER_CONSOLE_BRANCH=release-0.1.7
 ARG CONSOLE_DIST=https://github.com/dragonflyoss/console/archive/refs/heads/${MANAGER_CONSOLE_BRANCH}.tar.gz
 
 ADD ${CONSOLE_DIST} .
@@ -31,7 +31,7 @@ ARG GOPROXY
 ARG GOTAGS
 ARG GOGCFLAGS
 ARG DRAGONFLY2_GITHUB_BRANCH=release-2.0.8
-ARG MANAGER_CONSOLE_BRANCH=release-0.1.4
+ARG MANAGER_CONSOLE_BRANCH=release-0.1.7
 
 WORKDIR /go/src/d7y.io/dragonfly/v2
 
@@ -43,7 +43,7 @@ COPY --from=console-builder /console-$MANAGER_CONSOLE_BRANCH/dist /go/src/d7y.io
 
 RUN make build-manager-server && make install-manager
 
-FROM marketplace.gcr.io/google/debian11 as health
+FROM marketplace.gcr.io/google/c2d-debian11 as health
 
 ARG GRPC_HEALTH_PROBE_VERSION=v0.4.11
 
@@ -51,7 +51,7 @@ RUN apt update && apt install -y wget && \
     wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 && \
     chmod +x /bin/grpc_health_probe
 
-FROM marketplace.gcr.io/google/debian11
+FROM marketplace.gcr.io/google/c2d-debian11
 
 WORKDIR /opt/dragonfly
 ENV C2D_RELEASE 2.0.8

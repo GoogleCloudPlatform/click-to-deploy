@@ -1,98 +1,96 @@
-# Copyright 2022 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-_variables:
-  dragonfly208: &dragonfly208
+cloudbuild:
+  enable_parallel: false
+versions:
+- dir: 2/debian11/2.0/dragonfly-manager2
+  excludeTests:
+  - tests/functional_tests/scheduler_test.yaml
+  - tests/functional_tests/seed-peer_test.yaml
+  - tests/functional_tests/dfget_test.yaml
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
     dragonfly2_github:
       version: 2.0.8
-    manager_console:
-      version: 0.1.4
     grpc_health_probe:
       version: 0.4.11
-versions:
-# Dragonfly manager
-  - dir: '2/debian11/2.0/dragonfly-manager2'
-    repo: 'dragonfly-manager2'
-    templateSubDir: 'dragonfly-manager2'
-    tags:
-    - '2.0.8-debian11'
-    - '2.0.8'
-    - '2.0-debian11'
-    - '2.0'
-    - '2-debian11'
-    - '2'
-    - 'latest'
-    from: 'marketplace.gcr.io/google/debian11'
-    packages: *dragonfly208
-    excludeTests: 
-    - tests/functional_tests/scheduler_test.yaml
-    - tests/functional_tests/seed-peer_test.yaml
-    - tests/functional_tests/dfget_test.yaml
+    manager_console:
+      version: 0.1.7
+  repo: dragonfly-manager2
+  tags:
+  - 2.0.8-debian11
+  - 2.0.8
+  - 2.0-debian11
+  - '2.0'
+  - 2-debian11
+  - '2'
+  - latest
+  templateSubDir: dragonfly-manager2
+- dir: 2/debian11/2.0/dragonfly-scheduler2
+  excludeTests:
+  - tests/functional_tests/manager_test.yaml
+  - tests/functional_tests/seed-peer_test.yaml
+  - tests/functional_tests/dfget_test.yaml
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    dragonfly2_github:
+      version: 2.0.8
+    grpc_health_probe:
+      version: 0.4.11
+    manager_console:
+      version: 0.1.7
+  repo: dragonfly-scheduler2
+  tags:
+  - 2.0.8-debian11
+  - 2.0.8
+  - 2.0-debian11
+  - '2.0'
+  - 2-debian11
+  - '2'
+  - latest
+  templateSubDir: dragonfly-scheduler2
+- dir: 2/debian11/2.0/dragonfly-seed-peer2
+  excludeTests:
+  - tests/functional_tests/manager_test.yaml
+  - tests/functional_tests/scheduler_test.yaml
+  - tests/functional_tests/dfget_test.yaml
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    dragonfly2_github:
+      version: 2.0.8
+    grpc_health_probe:
+      version: 0.4.11
+    manager_console:
+      version: 0.1.7
+  repo: dragonfly-seed-peer2
+  tags:
+  - 2.0.8-debian11
+  - 2.0.8
+  - 2.0-debian11
+  - '2.0'
+  - 2-debian11
+  - '2'
+  - latest
+  templateSubDir: dragonfly-seed-peer2
+- dir: 2/debian11/2.0/dragonfly-dfget2
+  excludeTests:
+  - tests/functional_tests/manager_test.yaml
+  - tests/functional_tests/scheduler_test.yaml
+  - tests/functional_tests/seed-peer_test.yaml
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    dragonfly2_github:
+      version: 2.0.8
+    grpc_health_probe:
+      version: 0.4.11
+    manager_console:
+      version: 0.1.7
+  repo: dragonfly-dfget2
+  tags:
+  - 2.0.8-debian11
+  - 2.0.8
+  - 2.0-debian11
+  - '2.0'
+  - 2-debian11
+  - '2'
+  - latest
+  templateSubDir: dragonfly-dfget2
 
-# Dragonfly scheduler
-  - dir: '2/debian11/2.0/dragonfly-scheduler2'
-    repo: 'dragonfly-scheduler2'
-    templateSubDir: 'dragonfly-scheduler2'
-    tags:
-    - '2.0.8-debian11'
-    - '2.0.8'
-    - '2.0-debian11'
-    - '2.0'
-    - '2-debian11'
-    - '2'
-    - 'latest'
-    from: 'marketplace.gcr.io/google/debian11'
-    packages: *dragonfly208
-    excludeTests: 
-    - tests/functional_tests/manager_test.yaml
-    - tests/functional_tests/seed-peer_test.yaml
-    - tests/functional_tests/dfget_test.yaml
-
-# Dragonfly seed-peer
-  - dir: '2/debian11/2.0/dragonfly-seed-peer2'
-    repo: 'dragonfly-seed-peer2'
-    templateSubDir: 'dragonfly-seed-peer2'
-    tags:
-    - '2.0.8-debian11'
-    - '2.0.8'
-    - '2.0-debian11'
-    - '2.0'
-    - '2-debian11'
-    - '2'
-    - 'latest'
-    from: 'marketplace.gcr.io/google/debian11'
-    packages: *dragonfly208
-    excludeTests: 
-    - tests/functional_tests/manager_test.yaml
-    - tests/functional_tests/scheduler_test.yaml
-    - tests/functional_tests/dfget_test.yaml
-
-        # Dragonfly dfget
-  - dir: '2/debian11/2.0/dragonfly-dfget2'
-    repo: 'dragonfly-dfget2'
-    templateSubDir: 'dragonfly-dfget2'
-    tags:
-    - '2.0.8-debian11'
-    - '2.0.8'
-    - '2.0-debian11'
-    - '2.0'
-    - '2-debian11'
-    - '2'
-    - 'latest'
-    from: 'marketplace.gcr.io/google/debian11'
-    packages: *dragonfly208
-    excludeTests: 
-    - tests/functional_tests/manager_test.yaml
-    - tests/functional_tests/scheduler_test.yaml
-    - tests/functional_tests/seed-peer_test.yaml
