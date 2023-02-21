@@ -4,6 +4,7 @@ ENV DEV_APT_DEPS="\
      openssl \
      libtasn1-6 \
      libksba8 \
+     libssl1.1 \
      git \
      curl"
 
@@ -14,4 +15,3 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 ENV C2D_RELEASE 11.5.0
-
