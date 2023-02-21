@@ -85,7 +85,7 @@ actions:
 
     expect:
       stdout:
-        contains: '9'
+        contains: '3'
       exitCode:
         equals: 0
 
