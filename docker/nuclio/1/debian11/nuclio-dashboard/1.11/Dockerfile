@@ -1,10 +1,10 @@
-FROM marketplace.gcr.io/google/debian11 as build
+FROM marketplace.gcr.io/google/c2d-debian11 as build
 
 SHELL ["/bin/bash", "-c" ]
 WORKDIR /app
 
 #copy Nuclio sources
-ARG NUCLIO_VERSION=1.11.10
+ARG NUCLIO_VERSION=1.11.12
 ARG NUCLIO_DIST=https://github.com/nuclio/nuclio/archive/refs/tags/${NUCLIO_VERSION}.tar.gz
 ADD $NUCLIO_DIST /tmp/nuclio.tar.gz
 RUN (tar -xf /tmp/nuclio.tar.gz -C /app/ && rm /tmp/nuclio.tar.gz && mv /app/nuclio-${NUCLIO_VERSION}/* /app/) || true
@@ -49,7 +49,7 @@ RUN cd /app/cmd/dashboard/ && GOOS=$GOOS GOARCH=$GOARCH CGO_ENABLED=0 go build \
 
 FROM marketplace.gcr.io/google/nginx1
 
-ENV C2D_RELEASE 1.11.10
+ENV C2D_RELEASE 1.11.12
 
 # fetch nuclio functions templates during build time to ease installation on offline environments
 # fix security issues
