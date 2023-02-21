@@ -20,13 +20,13 @@ versions:
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     falco:
-      version: 0.34.0
+      version: 0.34.1
   repo: falco0
   tags:
-  - 0.34.0-debian11
+  - 0.34.1-debian11
   - 0.34-debian11
   - 0-debian11
-  - 0.34.0
+  - 0.34.1
   - '0.34'
   - '0'
   - latest
@@ -34,11 +34,12 @@ versions:
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     falco_exporter:
-      version: 0.8.2
+      sha256: cda8d6c60c240c73c28ed0d4e81cb7b52808dcf0358aec41fddc93a30d1e68b7
+      version: 0.7.0
   repo: falco-exporter0
   tags:
-  - 0.8.2
-  - '0.8'
+  - 0.7.0
+  - '0.7'
   - '0'
   - latest
   templateSubDir: exporter
