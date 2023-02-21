@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,24 +15,34 @@
 
 cloudbuild:
   enable_parallel: false
-  machineType: 'E2_HIGHCPU_32'
 versions:
-- dir: 15/debian11/15.6
-  from: marketplace.gcr.io/google/debian11
+- dir: 15/debian11/15.8
+  from: marketplace.gcr.io/google/c2d-debian11
   packages:
     gitlab:
-      version: 15.6.3
+      version: 15.8.3
   repo: gitlab15
   tags:
-  - 15.6.3-debian11
-  - 15.6-debian11
+  - 15.8.3-debian11
+  - 15.8-debian11
   - 15-debian11
-  - 15.6.3
-  - '15.6'
+  - 15.8.3
+  - '15.8'
   - '15'
   - latest
+- dir: 15/debian11/15.6
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    gitlab:
+      version: 15.6.8
+  repo: gitlab15
+  tags:
+  - 15.6.8-debian11
+  - 15.6-debian11
+  - 15.6.8
+  - '15.6'
 - dir: 14/debian11/14.10
-  from: marketplace.gcr.io/google/debian11
+  from: marketplace.gcr.io/google/c2d-debian11
   packages:
     gitlab:
       version: 14.10.5
@@ -45,3 +55,18 @@ versions:
   - '14.10'
   - '14'
   - latest
+- dir: 13/debian11/13.12
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    gitlab:
+      version: 13.12.15
+  repo: gitlab13
+  tags:
+  - 13.12.15-debian11
+  - 13.12-debian11
+  - 13-debian11
+  - 13.12.15
+  - '13.12'
+  - '13'
+  - latest
+

@@ -1,9 +1,9 @@
 FROM marketplace.gcr.io/google/c2d-debian11
 
-ENV GITLAB_VERSION 14.10.5
-ENV DOWNLOAD_URL "https://packages.gitlab.com/gitlab/gitlab-ee/packages/debian/bullseye/gitlab-ee_14.10.5-ee.0_amd64.deb/download.deb"
+ENV GITLAB_VERSION 13.12.15
+ENV DOWNLOAD_URL "https://packages.gitlab.com/gitlab/gitlab-ee/packages/debian/bullseye/gitlab-ee_13.12.15-ee.0_amd64.deb/download.deb"
 
-ENV C2D_RELEASE 14.10.5
+ENV C2D_RELEASE 13.12.15
 
 SHELL ["/bin/sh", "-c"],
 
