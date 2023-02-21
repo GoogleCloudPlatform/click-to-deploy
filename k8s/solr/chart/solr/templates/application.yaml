@@ -114,7 +114,7 @@ spec:
     kind: Deployment
   - group: v1
     kind: PersistentVolumeClaim
-  - group: policy/v1beta1
+  - group: policy/v1
     kind: PodDisruptionBudget
   - group: v1
     kind: Secret
