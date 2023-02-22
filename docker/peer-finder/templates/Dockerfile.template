@@ -20,8 +20,6 @@ FROM {{ .From }}
 
 ENV GOPATH /usr/local
 
-ENV NOTICES_SHA256 {{ $template.peer_finder_notices_check_sum }}
-
 RUN set -eux \
     && apt-get update \
     && apt-get install -y \

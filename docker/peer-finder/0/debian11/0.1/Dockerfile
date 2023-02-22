@@ -16,8 +16,6 @@ FROM marketplace.gcr.io/google/c2d-debian11
 
 ENV GOPATH /usr/local
 
-ENV NOTICES_SHA256 <no value>
-
 RUN set -eux \
     && apt-get update \
     && apt-get install -y \
