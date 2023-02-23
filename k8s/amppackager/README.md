@@ -199,8 +199,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-helm template chart/amppackager \
-  --name "$APP_INSTANCE_NAME" \
+helm template "$APP_INSTANCE_NAME" chart/amppackager \
   --namespace "$NAMESPACE" \
   --set replicaCount="$REPLICAS" \
   --set image.repo="$IMAGE_AMPPACKAGER" \

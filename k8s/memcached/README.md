@@ -396,8 +396,7 @@ Console, or using the command line.
     Use `helm template` to expand the template.
 
     ```shell
-    helm template chart/memcached \
-      --name "$APP_INSTANCE_NAME" \
+    helm template "$APP_INSTANCE_NAME" chart/memcached \
       --namespace "$NAMESPACE" \
       --set memcached.replicas="$REPLICAS" \
       --set memcached.image.repo="$IMAGE_MEMCACHED" \

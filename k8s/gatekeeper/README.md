@@ -145,8 +145,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-helm template chart/gatekeeper \
-  --name $APP_INSTANCE_NAME \
+helm template "${APP_INSTANCE_NAME}" chart/gatekeeper \
   --namespace $NAMESPACE \
   --set gatekeeper.imageGatekeeperRepo=gcr.io/gatekeeper-marketplace/gatekeeper \
   --set gatekeeper.imageGatekeeperTag=$TAG \
