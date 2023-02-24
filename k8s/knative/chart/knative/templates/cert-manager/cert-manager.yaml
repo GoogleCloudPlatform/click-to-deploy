@@ -1,20 +1,4 @@
-# Copyright 2022 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 ---
----
-# Source: cert-manager/templates/serviceaccount.yaml
 apiVersion: v1
 kind: ServiceAccount
 automountServiceAccountToken: true
@@ -24,11 +8,9 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
-
 ---
-# Source: cert-manager/templates/rbac.yaml
 # Issuer controller role
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -37,12 +19,12 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
 rules:
   - apiGroups: ["cert-manager.io"]
     resources: ["issuers", "issuers/status"]
-    verbs: ["update"]
+    verbs: ["update", "patch"]
   - apiGroups: ["cert-manager.io"]
     resources: ["issuers"]
     verbs: ["get", "list", "watch"]
@@ -53,7 +35,6 @@ rules:
     resources: ["events"]
     verbs: ["create", "patch"]
 ---
-# Source: cert-manager/templates/rbac.yaml
 # ClusterIssuer controller role
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -62,12 +43,12 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
 rules:
   - apiGroups: ["cert-manager.io"]
     resources: ["clusterissuers", "clusterissuers/status"]
-    verbs: ["update"]
+    verbs: ["update", "patch"]
   - apiGroups: ["cert-manager.io"]
     resources: ["clusterissuers"]
     verbs: ["get", "list", "watch"]
@@ -78,7 +59,6 @@ rules:
     resources: ["events"]
     verbs: ["create", "patch"]
 ---
-# Source: cert-manager/templates/rbac.yaml
 # Certificates controller role
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -87,12 +67,12 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
 rules:
   - apiGroups: ["cert-manager.io"]
     resources: ["certificates", "certificates/status", "certificaterequests", "certificaterequests/status"]
-    verbs: ["update"]
+    verbs: ["update", "patch"]
   - apiGroups: ["cert-manager.io"]
     resources: ["certificates", "certificaterequests", "clusterissuers", "issuers"]
     verbs: ["get", "list", "watch"]
@@ -112,7 +92,6 @@ rules:
     resources: ["events"]
     verbs: ["create", "patch"]
 ---
-# Source: cert-manager/templates/rbac.yaml
 # Orders controller role
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -121,7 +100,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
 rules:
   - apiGroups: ["acme.cert-manager.io"]
@@ -149,7 +128,6 @@ rules:
     resources: ["events"]
     verbs: ["create", "patch"]
 ---
-# Source: cert-manager/templates/rbac.yaml
 # Challenges controller role
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -158,7 +136,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
 rules:
   # Use to update challenge resource status
@@ -208,7 +186,6 @@ rules:
     resources: ["secrets"]
     verbs: ["get", "list", "watch"]
 ---
-# Source: cert-manager/templates/rbac.yaml
 # ingress-shim controller role
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -217,7 +194,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
 rules:
   - apiGroups: ["cert-manager.io"]
@@ -245,7 +222,6 @@ rules:
     resources: ["events"]
     verbs: ["create", "patch"]
 ---
-# Source: cert-manager/templates/rbac.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -253,7 +229,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
     rbac.authorization.k8s.io/aggregate-to-view: "true"
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
@@ -266,7 +242,6 @@ rules:
     resources: ["challenges", "orders"]
     verbs: ["get", "list", "watch"]
 ---
-# Source: cert-manager/templates/rbac.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -274,7 +249,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
     rbac.authorization.k8s.io/aggregate-to-admin: "true"
@@ -286,7 +261,6 @@ rules:
     resources: ["challenges", "orders"]
     verbs: ["create", "delete", "deletecollection", "patch", "update"]
 ---
-# Source: cert-manager/templates/rbac.yaml
 # Permission to approve CertificateRequests referencing cert-manager.io Issuers and ClusterIssuers
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -295,7 +269,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "cert-manager"
 rules:
   - apiGroups: ["cert-manager.io"]
@@ -303,7 +277,6 @@ rules:
     verbs: ["approve"]
     resourceNames: ["issuers.cert-manager.io/*", "clusterissuers.cert-manager.io/*"]
 ---
-# Source: cert-manager/templates/rbac.yaml
 # Permission to:
 # - Update and sign CertificatSigningeRequests referencing cert-manager.io Issuers and ClusterIssuers
 # - Perform SubjectAccessReviews to test whether users are able to reference Namespaced Issuers
@@ -314,15 +287,16 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "cert-manager"
+
 rules:
   - apiGroups: ["certificates.k8s.io"]
     resources: ["certificatesigningrequests"]
     verbs: ["get", "list", "watch", "update"]
   - apiGroups: ["certificates.k8s.io"]
     resources: ["certificatesigningrequests/status"]
-    verbs: ["update"]
+    verbs: ["update", "patch"]
   - apiGroups: ["certificates.k8s.io"]
     resources: ["signers"]
     resourceNames: ["issuers.cert-manager.io/*", "clusterissuers.cert-manager.io/*"]
@@ -331,8 +305,6 @@ rules:
     resources: ["subjectaccessreviews"]
     verbs: ["create"]
 ---
-
-# Source: cert-manager/templates/rbac.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -340,7 +312,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -351,7 +323,6 @@ subjects:
     namespace: "{{ .Release.Namespace }}"
     kind: ServiceAccount
 ---
-# Source: cert-manager/templates/rbac.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -359,7 +330,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -370,7 +341,6 @@ subjects:
     namespace: "{{ .Release.Namespace }}"
     kind: ServiceAccount
 ---
-# Source: cert-manager/templates/rbac.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -378,7 +348,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -389,7 +359,6 @@ subjects:
     namespace: "{{ .Release.Namespace }}"
     kind: ServiceAccount
 ---
-# Source: cert-manager/templates/rbac.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -397,7 +366,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -408,7 +377,6 @@ subjects:
     namespace: "{{ .Release.Namespace }}"
     kind: ServiceAccount
 ---
-# Source: cert-manager/templates/rbac.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -416,7 +384,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -427,7 +395,6 @@ subjects:
     namespace: "{{ .Release.Namespace }}"
     kind: ServiceAccount
 ---
-# Source: cert-manager/templates/rbac.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -435,7 +402,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -446,7 +413,6 @@ subjects:
     namespace: "{{ .Release.Namespace }}"
     kind: ServiceAccount
 ---
-# Source: cert-manager/templates/rbac.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -454,7 +420,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "cert-manager"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -465,7 +431,6 @@ subjects:
     namespace: "{{ .Release.Namespace }}"
     kind: ServiceAccount
 ---
-# Source: cert-manager/templates/rbac.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -473,7 +438,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "cert-manager"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -484,7 +449,6 @@ subjects:
     namespace: "{{ .Release.Namespace }}"
     kind: ServiceAccount
 ---
-# Source: cert-manager/templates/rbac.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -493,7 +457,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
 rules:
   # Used for leader election by the controller
@@ -512,8 +476,8 @@ rules:
   - apiGroups: ["coordination.k8s.io"]
     resources: ["leases"]
     verbs: ["create"]
+
 ---
-# Source: cert-manager/templates/rbac.yaml
 # grant cert-manager permission to manage the leaderelection configmap in the
 # leader election namespace
 apiVersion: rbac.authorization.k8s.io/v1
@@ -524,7 +488,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -536,7 +500,6 @@ subjects:
     name: cert-manager
     namespace: "{{ .Release.Namespace }}"
 ---
-# Source: cert-manager/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -545,7 +508,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
 spec:
   type: ClusterIP
@@ -556,10 +519,10 @@ spec:
     targetPort: 9402
   selector:
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/component: "controller"
+
 ---
-# Source: cert-manager/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -598,10 +561,11 @@ spec:
           - --leader-election-namespace={{ .Release.Namespace }}
           ports:
           - containerPort: 9402
+            name: http-metrics
             protocol: TCP
           env:
           - name: POD_NAMESPACE
             valueFrom:
               fieldRef:
                 fieldPath: metadata.namespace
----
+
