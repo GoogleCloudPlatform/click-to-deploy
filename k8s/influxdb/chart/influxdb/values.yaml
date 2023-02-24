@@ -9,6 +9,7 @@ influxdb:
 admin:
   user: influxdb-admin
   password: null
+  apiToken: null
 
 metrics:
   image: null
