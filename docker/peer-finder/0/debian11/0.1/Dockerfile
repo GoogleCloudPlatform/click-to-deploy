@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM gcr.io/google-appengine/debian9:latest
+FROM marketplace.gcr.io/google/c2d-debian11
 
 ENV GOPATH /usr/local
-
-ENV NOTICES_SHA256 0a8f689176d60e15b61fba62513dea66186cd455cadeeb0ba5791d588f361fe5
 
 RUN set -eux \
     && apt-get update \
@@ -33,11 +31,10 @@ ADD LICENSE ${GOPATH}/src/peer-finder/LICENSE
 
 RUN set -eux \
     && cd "${GOPATH}/src/peer-finder" \
-    && go get ./... \
-    && CGO_ENABLED=0 go build -o /peer-finder -a -installsuffix cgo --ldflags '-w' ./peer-finder.go \
-    && mkdir -p "/usr/share/peer-finder/" \
-    && govendor license > /usr/share/peer-finder/NOTICES \
-    && echo "${NOTICES_SHA256} /usr/share/peer-finder/NOTICES" | sha256sum -c
+    && export GO111MODULE=on \
+    && go mod init \
+    && go get k8s.io/apimachinery/pkg/util/sets@v0.25.0 \
+    && CGO_ENABLED=0 go build -o /peer-finder -a -installsuffix cgo --ldflags '-w' ./peer-finder.go
 
 EXPOSE 9376
 CMD ["/peer-finder"]

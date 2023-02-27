@@ -64,6 +64,13 @@ properties:
       generatedPassword:
         length: 32
         base64: false
+  admin.apiToken:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 32
+        base64: false
   metrics.exporter.enabled:
     type: boolean
     title: Enable Stackdriver Metrics Exporter
