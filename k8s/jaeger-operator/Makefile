@@ -10,7 +10,7 @@ APP_ID ?= $(CHART_NAME)
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 
-TRACK ?= 1.25
+TRACK ?= 1.40
 
 IMAGE_MAIN ?= $(SOURCE_REGISTRY)/jaeger-operator1:$(TRACK)
 
