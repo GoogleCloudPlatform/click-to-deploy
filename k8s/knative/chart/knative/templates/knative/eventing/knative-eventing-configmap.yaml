@@ -1,10 +1,11 @@
-# Copyright 2022 Google LLC
+---
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,16 +19,15 @@ metadata:
   name: config-br-default-channel
   namespace: "{{ .Release.Namespace }}"
   labels:
-    eventing.knative.dev/release: "v1.2.0"
-    app.kubernetes.io/version: "1.2.0"
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
     app.kubernetes.io/name: knative-eventing
 data:
   channel-template-spec: |
     apiVersion: messaging.knative.dev/v1
     kind: InMemoryChannel
-
 ---
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -47,8 +47,8 @@ metadata:
   name: config-br-defaults
   namespace: "{{ .Release.Namespace }}"
   labels:
-    eventing.knative.dev/release: "v1.2.0"
-    app.kubernetes.io/version: "1.2.0"
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
     app.kubernetes.io/name: knative-eventing
 data:
   # Configures the default for any Broker that does not specify a spec.config or Broker class.
@@ -63,9 +63,8 @@ data:
         retry: 10
         backoffPolicy: exponential
         backoffDelay: PT0.2S
-
 ---
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -85,8 +84,8 @@ metadata:
   name: default-ch-webhook
   namespace: "{{ .Release.Namespace }}"
   labels:
-    eventing.knative.dev/release: "v1.2.0"
-    app.kubernetes.io/version: "1.2.0"
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
     app.kubernetes.io/name: knative-eventing
 data:
   # Configuration for defaulting channels that do not specify CRD implementations.
@@ -98,9 +97,8 @@ data:
       some-namespace:
         apiVersion: messaging.knative.dev/v1
         kind: InMemoryChannel
-
 ---
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -120,10 +118,10 @@ metadata:
   name: config-ping-defaults
   namespace: "{{ .Release.Namespace }}"
   labels:
-    eventing.knative.dev/release: "v1.2.0"
+    eventing.knative.dev/release: "v1.9.0"
   annotations:
     knative.dev/example-checksum: "9185c153"
-    app.kubernetes.io/version: "1.2.0"
+    app.kubernetes.io/version: "1.9.0"
     app.kubernetes.io/name: knative-eventing
 data:
   _example: |
@@ -145,9 +143,8 @@ data:
     # Max number of bytes allowed to be sent for message excluding any
     # base64 decoding. Default is no limit set for data
     data-max-size: -1
-
 ---
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -167,10 +164,10 @@ metadata:
   name: config-features
   namespace: "{{ .Release.Namespace }}"
   labels:
-    eventing.knative.dev/release: "v1.2.0"
+    eventing.knative.dev/release: "v1.9.0"
     knative.dev/config-propagation: original
     knative.dev/config-category: eventing
-    app.kubernetes.io/version: "1.2.0"
+    app.kubernetes.io/version: "1.9.0"
     app.kubernetes.io/name: knative-eventing
 data:
   # ALPHA feature: The kreference-group allows you to use the Group field in KReferences.
@@ -179,22 +176,18 @@ data:
   # ALPHA feature: The delivery-retryafter allows you to use the RetryAfter field in DeliverySpec.
   # For more details: https://github.com/knative/eventing/issues/5811
   delivery-retryafter: "disabled"
-  # ALPHA feature: The delivery-timeout allows you to use the Timeout field in DeliverySpec.
+  # BETA feature: The delivery-timeout allows you to use the Timeout field in DeliverySpec.
   # For more details: https://github.com/knative/eventing/issues/5148
-  delivery-timeout: "disabled"
+  delivery-timeout: "enabled"
   # ALPHA feature: The kreference-mapping allows you to map kreference onto templated URI
   # For more details: https://github.com/knative/eventing/issues/5593
   kreference-mapping: "disabled"
-  # ALPHA feature: The subscriber-strict flag force subscriptions to define a subscriber
-  # For more details: https://github.com/knative/eventing/issues/5756
-  strict-subscriber: "disabled"
   # ALPHA feature: The new-trigger-filters flag allows you to use the new `filters` field
   # in Trigger objects with its rich filtering capabilities.
   # For more details: https://github.com/knative/eventing/issues/5204
   new-trigger-filters: "disabled"
-
 ---
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -214,7 +207,7 @@ metadata:
   name: config-kreference-mapping
   namespace: "{{ .Release.Namespace }}"
   labels:
-    eventing.knative.dev/release: "v1.2.0"
+    eventing.knative.dev/release: "v1.9.0"
     knative.dev/config-propagation: original
     knative.dev/config-category: eventing
   annotations:
@@ -240,10 +233,9 @@ data:
     # - SystemNamespace: knative namespace
     # - UID: reference UID
     #
-    # Pod.v1: https://addressable-pod.{{`{{ .SystemNamespace }}`}}.svc.cluster.local/{{`{{ .Name }}`}}
-
+    # Pod.v1: https://addressable-pod.{{ .SystemNamespace }}.svc.cluster.local/{{ .Name }}
 ---
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -263,8 +255,8 @@ metadata:
   name: config-leader-election
   namespace: "{{ .Release.Namespace }}"
   labels:
-    eventing.knative.dev/release: "v1.2.0"
-    app.kubernetes.io/version: "1.2.0"
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
     app.kubernetes.io/name: knative-eventing
   annotations:
     knative.dev/example-checksum: "f7948630"
@@ -305,7 +297,7 @@ data:
     buckets: "1"
 
 ---
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -325,10 +317,10 @@ metadata:
   name: config-logging
   namespace: "{{ .Release.Namespace }}"
   labels:
-    eventing.knative.dev/release: "v1.2.0"
+    eventing.knative.dev/release: "v1.9.0"
     knative.dev/config-propagation: original
     knative.dev/config-category: eventing
-    app.kubernetes.io/version: "1.2.0"
+    app.kubernetes.io/version: "1.9.0"
     app.kubernetes.io/name: knative-eventing
 data:
   # Common configuration for all Knative codebase
@@ -357,9 +349,8 @@ data:
   # For all components changes are be picked up immediately.
   loglevel.controller: "info"
   loglevel.webhook: "info"
-
 ---
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -379,10 +370,10 @@ metadata:
   name: config-observability
   namespace: "{{ .Release.Namespace }}"
   labels:
-    eventing.knative.dev/release: "v1.2.0"
+    eventing.knative.dev/release: "v1.9.0"
     knative.dev/config-propagation: original
     knative.dev/config-category: eventing
-    app.kubernetes.io/version: "1.2.0"
+    app.kubernetes.io/version: "1.9.0"
     app.kubernetes.io/name: knative-eventing
   annotations:
     knative.dev/example-checksum: "f46cf09d"
@@ -434,9 +425,65 @@ data:
     # sink-event-error-reporting.enable whether the adapter reports a kube event to the CRD indicating
     # a failure to send a cloud event to the sink.
     sink-event-error-reporting.enable: "false"
-
 ---
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-sugar
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+  annotations:
+    knative.dev/example-checksum: "62dfac6f"
+data:
+  _example: |
+    ################################
+    #                              #
+    #    EXAMPLE CONFIGURATION     #
+    #                              #
+    ################################
+    # This block is not actually functional configuration,
+    # but serves to illustrate the available configuration
+    # options and document them in a way that is accessible
+    # to users that `kubectl edit` this config map.
+    #
+    # These sample configuration options may be copied out of
+    # this example block and unindented to be in the data block
+    # to actually change the configuration.
+
+    # namespace-selector specifies a LabelSelector which
+    # determines which namespaces the Sugar Controller should operate upon
+    # Use an empty value to disable the feature (this is the default):
+    namespace-selector: ""
+
+    # Use an empty object as a string to enable for all namespaces
+    namespace-selector: "{}"
+
+    # trigger-selector specifies a LabelSelector which
+    # determines which triggers the Sugar Controller should operate upon
+    # Use an empty value to disable the feature (this is the default):
+    trigger-selector: ""
+
+    # Use an empty object as string to enable for all triggers
+    trigger-selector: "{}"
+---
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -456,10 +503,10 @@ metadata:
   name: config-tracing
   namespace: "{{ .Release.Namespace }}"
   labels:
-    eventing.knative.dev/release: "v1.2.0"
+    eventing.knative.dev/release: "v1.9.0"
     knative.dev/config-propagation: original
     knative.dev/config-category: eventing
-    app.kubernetes.io/version: "1.2.0"
+    app.kubernetes.io/version: "1.9.0"
     app.kubernetes.io/name: knative-eventing
   annotations:
     knative.dev/example-checksum: "0492ceb0"
