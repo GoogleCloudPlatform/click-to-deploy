@@ -1,6 +1,5 @@
-# Generated when HEAD was dc8f82eb4cc1573fbaa6b7085b27dc77918d5233
-#
-# Copyright 2022 Google LLC
+---
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,17 +21,15 @@ metadata:
   labels:
     app.kubernetes.io/component: net-istio
     app.kubernetes.io/name: knative-serving
-    app.kubernetes.io/version: "1.2.0"
-    serving.knative.dev/release: "v1.2.0"
+    app.kubernetes.io/version: "1.9.0"
     serving.knative.dev/controller: "true"
     networking.knative.dev/ingress-provider: istio
 rules:
   - apiGroups: ["networking.istio.io"]
     resources: ["virtualservices", "gateways", "destinationrules"]
     verbs: ["get", "list", "create", "update", "delete", "patch", "watch"]
-
 ---
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -55,8 +52,7 @@ metadata:
   labels:
     app.kubernetes.io/component: net-istio
     app.kubernetes.io/name: knative-serving
-    app.kubernetes.io/version: "1.2.0"
-    serving.knative.dev/release: "v1.2.0"
+    app.kubernetes.io/version: "1.9.0"
     networking.knative.dev/ingress-provider: istio
 spec:
   selector:
@@ -68,9 +64,8 @@ spec:
         protocol: HTTP
       hosts:
         - "*"
-
 ---
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -95,8 +90,7 @@ metadata:
   labels:
     app.kubernetes.io/component: net-istio
     app.kubernetes.io/name: knative-serving
-    app.kubernetes.io/version: "1.2.0"
-    serving.knative.dev/release: "v1.2.0"
+    app.kubernetes.io/version: "1.9.0"
     networking.knative.dev/ingress-provider: istio
 spec:
   selector:
@@ -113,12 +107,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: knative-local-gateway
-  namespace: "{{ .Release.Namespace }}"
+  namespace: istio-system
   labels:
     app.kubernetes.io/component: net-istio
     app.kubernetes.io/name: knative-serving
-    app.kubernetes.io/version: "1.2.0"
-    serving.knative.dev/release: "v1.2.0"
+    app.kubernetes.io/version: "1.9.0"
     networking.knative.dev/ingress-provider: istio
     experimental.istio.io/disable-gateway-port-translation: "true"
 spec:
@@ -129,7 +122,6 @@ spec:
     - name: http2
       port: 80
       targetPort: 8081
-
 ---
 # Allows the Webhooks to be reached by kube-api with or without
 # sidecar injection and with mTLS PERMISSIVE and STRICT.
@@ -137,12 +129,11 @@ apiVersion: "security.istio.io/v1beta1"
 kind: "PeerAuthentication"
 metadata:
   name: "webhook"
-  namespace: "{{ .Release.Namespace }}"
+  namespace: "knative-serving"
   labels:
     app.kubernetes.io/component: net-istio
     app.kubernetes.io/name: knative-serving
-    app.kubernetes.io/version: "1.2.0"
-    serving.knative.dev/release: "v1.2.0"
+    app.kubernetes.io/version: "1.9.0"
     networking.knative.dev/ingress-provider: istio
 spec:
   selector:
@@ -156,12 +147,11 @@ apiVersion: "security.istio.io/v1beta1"
 kind: "PeerAuthentication"
 metadata:
   name: "domainmapping-webhook"
-  namespace: "{{ .Release.Namespace }}"
+  namespace: "knative-serving"
   labels:
     app.kubernetes.io/component: net-istio
     app.kubernetes.io/name: knative-serving
-    app.kubernetes.io/version: "1.2.0"
-    serving.knative.dev/release: "v1.2.0"
+    app.kubernetes.io/version: "1.9.0"
     networking.knative.dev/ingress-provider: istio
 spec:
   selector:
@@ -175,12 +165,11 @@ apiVersion: "security.istio.io/v1beta1"
 kind: "PeerAuthentication"
 metadata:
   name: "net-istio-webhook"
-  namespace: "{{ .Release.Namespace }}"
+  namespace: "knative-serving"
   labels:
     app.kubernetes.io/component: net-istio
     app.kubernetes.io/name: knative-serving
-    app.kubernetes.io/version: "1.2.0"
-    serving.knative.dev/release: "v1.2.0"
+    app.kubernetes.io/version: "1.9.0"
     networking.knative.dev/ingress-provider: istio
 spec:
   selector:
@@ -189,7 +178,6 @@ spec:
   portLevelMtls:
     "8443":
       mode: PERMISSIVE
-
 ---
 # Copyright 2022 Google LLC
 #
