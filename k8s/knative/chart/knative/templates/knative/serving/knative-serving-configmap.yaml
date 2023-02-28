@@ -1098,13 +1098,13 @@ data:
     # eg. '{{`{{.Name}}`}}-{{`{{.Namespace}}`}}.{{`{{ index .Annotations "sub"}}`}}.{{`{{.Domain}}`}}'
     # and you have an annotation {"sub":"foo"}, then the generated template
     # would be {Name}-{Namespace}.foo.{Domain}
-    domain-template: "{{.Name}}.{{.Namespace}}.{{.Domain}}"
+    domain-template: "{{`{{.Name}}`}}.{{`{{.Namespace}}`}}.{{`{{.Domain}}`}}"
 
     # tagTemplate specifies the golang text template string to use
     # when constructing the DNS name for "tags" within the traffic blocks
     # of Routes and Configuration.  This is used in conjunction with the
     # domainTemplate above to determine the full URL for the tag.
-    tag-template: "{{.Tag}}-{{.Name}}"
+    tag-template: "{{`{{.Tag}}`}}-{{`{{.Name}}`}}"
 
     # Controls whether TLS certificates are automatically provisioned and
     # installed in the Knative ingress to terminate external TLS connection.
@@ -1258,7 +1258,7 @@ data:
     #   PodIP         string  // IP of the pod hosting the revision
     # }
     #
-    logging.request-log-template: '{"httpRequest": {"requestMethod": "{{.Request.Method}}", "requestUrl": "{{js .Request.RequestURI}}", "requestSize": "{{.Request.ContentLength}}", "status": {{.Response.Code}}, "responseSize": "{{.Response.Size}}", "userAgent": "{{js .Request.UserAgent}}", "remoteIp": "{{js .Request.RemoteAddr}}", "serverIp": "{{.Revision.PodIP}}", "referer": "{{js .Request.Referer}}", "latency": "{{.Response.Latency}}s", "protocol": "{{.Request.Proto}}"}, "traceId": "{{index .Request.Header "X-B3-Traceid"}}"}'
+    logging.request-log-template: '{"httpRequest": {"requestMethod": "{{`{{.Request.Method}}`}}", "requestUrl": "{{`{{js .Request.RequestURI}}`}}", "requestSize": "{{`{{.Request.ContentLength}}`}}", "status": {{`{{.Response.Code}}`}}, "responseSize": "{{`{{.Response.Size}}`}}", "userAgent": "{{`{{js .Request.UserAgent}}`}}", "remoteIp": "{{`{{js .Request.RemoteAddr}}`}}", "serverIp": "{{`{{.Revision.PodIP}}`}}", "referer": "{{`{{js .Request.Referer}}`}}", "latency": "{{`{{.Response.Latency}}`}}s", "protocol": "{{`{{.Request.Proto}}`}}"}, "traceId": "{{`{{index .Request.Header "X-B3-Traceid"}}`}}"}'
 
     # If true, the request logging will be enabled.
     # NB: up to and including Knative version 0.18 if logging.request-log-template is non-empty, this value
