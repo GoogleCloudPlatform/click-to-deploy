@@ -11,22 +11,16 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-# MySQL v8.0 installation and configuration recipe
 
-include_recipe 'mysql::install-mysql-apt-config'
+unified_mode true
 
-bash 'configure mysql-apt-config v8.0' do
-  user 'root'
-  code <<-EOH
-  debconf-set-selections <<< 'mysql-apt-config mysql-apt-config/select-server select mysql-8.0'
-  debconf-set-selections <<< 'mysql-apt-config mysql-apt-config/select-product: select Ok'
-  DEBIAN_FRONTEND=noninteractive dpkg-reconfigure mysql-apt-config
-EOH
-end
-
-apt_update 'update' do
-  action :update
-  retries 5
-  retry_delay 30
+action :apply do
+  bash 'Enable mysql_native_password' do
+    user 'root'
+    code <<-EOH
+    cat <<EOT >> /etc/mysql/mysql.conf.d/999-enable-native-password.cnf
+    [mysqld]
+    default-authentication-plugin=mysql_native_password
+  EOH
+  end
 end
