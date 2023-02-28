@@ -319,14 +319,14 @@ data:
     # container name, if none is specified.  This field supports
     # Go templating and is supplied with the ObjectMeta of the
     # enclosing Service or Configuration, so values such as
-    # {{.Name}} are also valid.
+    # {{`{{.Name}}`}} are also valid.
     container-name-template: "user-container"
 
     # init-container-name-template contains a template for the default
     # init container name, if none is specified.  This field supports
     # Go templating and is supplied with the ObjectMeta of the
     # enclosing Service or Configuration, so values such as
-    # {{.Name}} are also valid.
+    # {{`{{.Name}}`}} are also valid.
     init-container-name-template: "init-container"
 
     # container-concurrency specifies the maximum number
@@ -1077,7 +1077,7 @@ data:
 
     # domain-template specifies the golang text template string to use
     # when constructing the Knative service's DNS name. The default
-    # value is "{{.Name}}.{{.Namespace}}.{{.Domain}}".
+    # value is "{{`{{.Name}}`}}.{{`{{.Namespace}}`}}.{{`{{.Domain}}`}}".
     #
     # Valid variables defined in the template include Name, Namespace, Domain,
     # Labels, and Annotations. Name will be the result of the tagTemplate
@@ -1087,15 +1087,15 @@ data:
     # the domain name generated is problematic for wildcard certificates
     # that only support a single level of domain name added to the
     # certificate's domain. In those cases you might consider using a value
-    # of "{{.Name}}-{{.Namespace}}.{{.Domain}}", or removing the Namespace
+    # of "{{`{{.Name}}`}}-{{`{{.Namespace}}`}}.{{`{{.Domain}}`}}", or removing the Namespace
     # entirely from the template. When choosing a new value be thoughtful
     # of the potential for conflicts - for example, when users choose to use
     # characters such as `-` in their service, or namespace, names.
-    # {{.Annotations}} or {{.Labels}} can be used for any customization in the
+    # {{`{{.Annotations}}`}} or {{`{{.Labels}}`}} can be used for any customization in the
     # go template if needed.
     # We strongly recommend keeping namespace part of the template to avoid
     # domain name clashes:
-    # eg. '{{.Name}}-{{.Namespace}}.{{ index .Annotations "sub"}}.{{.Domain}}'
+    # eg. '{{`{{.Name}}`}}-{{`{{.Namespace}}`}}.{{`{{ index .Annotations "sub"}}`}}.{{`{{.Domain}}`}}'
     # and you have an annotation {"sub":"foo"}, then the generated template
     # would be {Name}-{Namespace}.foo.{Domain}
     domain-template: "{{.Name}}.{{.Namespace}}.{{.Domain}}"
