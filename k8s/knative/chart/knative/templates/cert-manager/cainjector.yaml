@@ -8,7 +8,7 @@ metadata:
   labels:
     app: cainjector
     app.kubernetes.io/name: cainjector
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "cainjector"
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -18,7 +18,7 @@ metadata:
   labels:
     app: cainjector
     app.kubernetes.io/name: cainjector
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "cainjector"
 rules:
   - apiGroups: ["cert-manager.io"]
@@ -47,7 +47,7 @@ metadata:
   labels:
     app: cainjector
     app.kubernetes.io/name: cainjector
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "cainjector"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -67,7 +67,7 @@ metadata:
   labels:
     app: cainjector
     app.kubernetes.io/name: cainjector
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "cainjector"
 rules:
   # Used for leader election by the controller
@@ -101,7 +101,7 @@ metadata:
   labels:
     app: cainjector
     app.kubernetes.io/name: cainjector
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "cainjector"
 
 roleRef:

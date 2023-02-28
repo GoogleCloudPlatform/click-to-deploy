@@ -8,7 +8,7 @@ metadata:
   labels:
     app: webhook
     app.kubernetes.io/name: webhook
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "webhook"
 ---
 apiVersion: v1
@@ -19,7 +19,7 @@ metadata:
   labels:
     app: webhook
     app.kubernetes.io/name: webhook
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "webhook"
 data:
 ---
@@ -30,7 +30,7 @@ metadata:
   labels:
     app: webhook
     app.kubernetes.io/name: webhook
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "webhook"
 rules:
 - apiGroups: ["authorization.k8s.io"]
@@ -44,7 +44,7 @@ metadata:
   labels:
     app: webhook
     app.kubernetes.io/name: webhook
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "webhook"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -64,7 +64,7 @@ metadata:
   labels:
     app: webhook
     app.kubernetes.io/name: webhook
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "webhook"
 rules:
 - apiGroups: [""]
@@ -85,7 +85,7 @@ metadata:
   labels:
     app: webhook
     app.kubernetes.io/name: webhook
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "webhook"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -105,7 +105,7 @@ metadata:
   labels:
     app: webhook
     app.kubernetes.io/name: webhook
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "webhook"
 spec:
   type: ClusterIP
@@ -116,7 +116,7 @@ spec:
     targetPort: "https"
   selector:
     app.kubernetes.io/name: webhook
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "webhook"
 ---
 apiVersion: apps/v1
@@ -191,7 +191,7 @@ metadata:
   labels:
     app: webhook
     app.kubernetes.io/name: webhook
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "webhook"
 
   annotations:
@@ -231,7 +231,7 @@ metadata:
   labels:
     app: webhook
     app.kubernetes.io/name: webhook
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "webhook"
 
   annotations:

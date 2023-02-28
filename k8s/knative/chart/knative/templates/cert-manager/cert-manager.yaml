@@ -8,7 +8,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "controller"
 ---
 # Issuer controller role
@@ -19,7 +19,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "controller"
 rules:
   - apiGroups: ["cert-manager.io"]
@@ -43,7 +43,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "controller"
 rules:
   - apiGroups: ["cert-manager.io"]
@@ -67,7 +67,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "controller"
 rules:
   - apiGroups: ["cert-manager.io"]
@@ -100,7 +100,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "controller"
 rules:
   - apiGroups: ["acme.cert-manager.io"]
@@ -136,7 +136,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "controller"
 rules:
   # Use to update challenge resource status
@@ -194,7 +194,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "controller"
 rules:
   - apiGroups: ["cert-manager.io"]
@@ -229,7 +229,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "controller"
     rbac.authorization.k8s.io/aggregate-to-view: "true"
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
@@ -249,7 +249,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "controller"
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
     rbac.authorization.k8s.io/aggregate-to-admin: "true"
@@ -269,7 +269,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "cert-manager"
 rules:
   - apiGroups: ["cert-manager.io"]
@@ -287,7 +287,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "cert-manager"
 
 rules:
@@ -312,7 +312,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "controller"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -330,7 +330,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "controller"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -348,7 +348,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "controller"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -366,7 +366,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "controller"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -384,7 +384,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "controller"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -402,7 +402,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "controller"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -420,7 +420,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "cert-manager"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -438,7 +438,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "cert-manager"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -457,7 +457,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "controller"
 rules:
   # Used for leader election by the controller
@@ -488,7 +488,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "controller"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -508,7 +508,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "controller"
 spec:
   type: ClusterIP
@@ -519,7 +519,7 @@ spec:
     targetPort: 9402
   selector:
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "controller"
 
 ---
