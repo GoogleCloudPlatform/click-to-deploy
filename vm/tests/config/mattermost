@@ -20,4 +20,4 @@ export ssh_username_deleted_allowed_users='mattermost'
 export metadata_db_pwd="$(cat /dev/urandom | tr -dc "a-zA-Z0-9" | fold -w 12 | head -n 1 | tr -d "\n")"
 export metadata_sitename="Click to Deploy Test"
 
-/opt/c2d/scripts/02-mattermost-setup
+/opt/c2d/scripts/03-mattermost-setup
