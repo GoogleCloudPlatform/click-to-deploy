@@ -107,7 +107,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: knative-local-gateway
-  namespace: istio-system
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/component: net-istio
     app.kubernetes.io/name: knative-serving
@@ -129,7 +129,7 @@ apiVersion: "security.istio.io/v1beta1"
 kind: "PeerAuthentication"
 metadata:
   name: "webhook"
-  namespace: "knative-serving"
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/component: net-istio
     app.kubernetes.io/name: knative-serving
@@ -147,7 +147,7 @@ apiVersion: "security.istio.io/v1beta1"
 kind: "PeerAuthentication"
 metadata:
   name: "domainmapping-webhook"
-  namespace: "knative-serving"
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/component: net-istio
     app.kubernetes.io/name: knative-serving
@@ -165,7 +165,7 @@ apiVersion: "security.istio.io/v1beta1"
 kind: "PeerAuthentication"
 metadata:
   name: "net-istio-webhook"
-  namespace: "knative-serving"
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/component: net-istio
     app.kubernetes.io/name: knative-serving
