@@ -3,3 +3,6 @@ operator:
   image:
     repository: null
     tag: null
+tls:
+  base64EncodedPrivateKey: null
+  base64EncodedCertificate: null
