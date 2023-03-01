@@ -1,3 +1,4 @@
+---
 apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingWebhookConfiguration
 metadata:
@@ -16,7 +17,6 @@ webhooks:
         namespace: "{{ .Release.Namespace }}"
         path: /inject
         port: 443
-      caBundle: ""
     sideEffects: None
     rules:
       - operations:
@@ -52,7 +52,6 @@ webhooks:
         namespace: "{{ .Release.Namespace }}"
         path: /inject
         port: 443
-      caBundle: ""
     sideEffects: None
     rules:
       - operations:
@@ -90,7 +89,6 @@ webhooks:
         namespace: "{{ .Release.Namespace }}"
         path: /inject
         port: 443
-      caBundle: ""
     sideEffects: None
     rules:
       - operations:
@@ -124,7 +122,6 @@ webhooks:
         namespace: "{{ .Release.Namespace }}"
         path: /inject
         port: 443
-      caBundle: ""
     sideEffects: None
     rules:
       - operations:
@@ -170,7 +167,6 @@ webhooks:
         name: istiod
         namespace: "{{ .Release.Namespace }}"
         path: /validate
-      caBundle: ""
     rules:
       - operations:
           - CREATE
