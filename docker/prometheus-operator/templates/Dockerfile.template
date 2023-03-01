@@ -28,7 +28,7 @@ RUN git config --global http.sslverify false \
     -o operator cmd/operator/main.go
 
 # Result Image
-FROM gcr.io/google-appengine/debian11:latest
+FROM {{ .From }}
 
 ENV C2D_RELEASE={{ $prometheus_operator.Version }}
 

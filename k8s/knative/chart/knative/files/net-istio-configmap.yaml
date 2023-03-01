@@ -1,4 +1,5 @@
 data:
+  # TODO(nghia): Extract the .svc.cluster.local suffix into its own config.
   _example: |
     ################################
     #                              #
@@ -38,15 +39,7 @@ data:
     # `knative-serving`
     local-gateway.knative-serving.knative-local-gateway: "knative-local-gateway.istio-system.svc.cluster.local"
 
-    # DEPRECATED: local-gateway.mesh is deprecated.
-    # See: https://github.com/knative/serving/issues/11523
-    #
-    # To use only Istio service mesh and no knative-local-gateway, replace
-    # all local-gateway.* entries by the following entry.
-    local-gateway.mesh: "mesh"
-
     # If true, knative will use the Istio VirtualService's status to determine
     # endpoint readiness. Otherwise, probe as usual.
     # NOTE: This feature is currently experimental and should not be used in production.
     enable-virtualservice-status: "false"
-  # TODO(nghia): Extract the .svc.cluster.local suffix into its own config.
