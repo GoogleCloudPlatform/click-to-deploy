@@ -31,6 +31,7 @@ function create_db_user() {
   local db_user="$3"
   local db_pwd="$4"
   local db_root_pwd="$5"
+  set -x
 
   echo >&2 "Creating database user..."
   mysql -u root -p"${db_root_pwd}" -e "CREATE USER '${db_user}'@'${db_host}' IDENTIFIED WITH mysql_native_password BY '${db_pwd}';"
