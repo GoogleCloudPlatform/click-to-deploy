@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -121,6 +122,12 @@ spec:
             - name: istio-kubeconfig
               mountPath: /var/run/secrets/remote
               readOnly: true
+            - name: istio-csr-dns-cert
+              mountPath: /var/run/secrets/istiod/tls
+              readOnly: true
+            - name: istio-csr-ca-configmap
+              mountPath: /var/run/secrets/istiod/ca
+              readOnly: true
       volumes:
         - emptyDir:
             medium: Memory
@@ -139,6 +146,15 @@ spec:
         - name: istio-kubeconfig
           secret:
             secretName: istio-kubeconfig
+            optional: true
+        - name: istio-csr-dns-cert
+          secret:
+            secretName: istiod-tls
+            optional: true
+        - name: istio-csr-ca-configmap
+          configMap:
+            name: istio-ca-root-cert
+            defaultMode: 420
             optional: true
 ---
 apiVersion: v1
@@ -172,31 +188,31 @@ spec:
     app: istiod
     istio: pilot
 ---
-apiVersion: autoscaling/v2beta2
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  labels:
-    app: istiod
-    install.operator.istio.io/owning-resource: unknown
-    istio.io/rev: default
-    operator.istio.io/component: Pilot
-    release: istio
   name: istiod
   namespace: "{{ .Release.Namespace }}"
+  labels:
+    app: istiod
+    release: istio
+    istio.io/rev: default
+    install.operator.istio.io/owning-resource: unknown
+    operator.istio.io/component: Pilot
 spec:
-  maxReplicas: 5
-  metrics:
-    - resource:
-        name: cpu
-        target:
-          type: Utilization
-          averageUtilization: 60
-      type: Resource
-  minReplicas: 1
+  maxReplicas: 10
+  minReplicas: 3
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
     name: istiod
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 60
 ---
 apiVersion: policy/v1
 kind: PodDisruptionBudget
@@ -215,4 +231,4 @@ spec:
   selector:
     matchLabels:
       app: istiod
-      istio: pilot
+      istio: pilot 
