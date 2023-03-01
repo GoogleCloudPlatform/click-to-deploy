@@ -41,3 +41,5 @@ spec:
                   fieldPath: metadata.namespace
             - name: OPERATOR_NAME
               value: "{{ template "jaeger_operator.DeploymentName" . }}"
+            - name: ENABLE_WEBHOOKS
+              value: "false"
