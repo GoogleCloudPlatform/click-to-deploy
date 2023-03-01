@@ -1,4 +1,5 @@
-# Copyright 2022 Google LLC
+---
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,8 +21,7 @@ metadata:
   labels:
     app.kubernetes.io/component: domain-mapping
     app.kubernetes.io/name: knative-serving
-    app.kubernetes.io/version: "1.2.0"
-    serving.knative.dev/release: "v1.2.0"
+    app.kubernetes.io/version: "1.9.0"
 spec:
   selector:
     matchLabels:
@@ -34,8 +34,7 @@ spec:
         app: domain-mapping
         app.kubernetes.io/component: domain-mapping
         app.kubernetes.io/name: knative-serving
-        app.kubernetes.io/version: "1.2.0"
-        serving.knative.dev/release: "v1.2.0"
+        app.kubernetes.io/version: "1.9.0"
     spec:
       # To avoid node becoming SPOF, spread our replicas to different nodes.
       affinity:
@@ -78,7 +77,9 @@ spec:
             runAsNonRoot: true
             capabilities:
               drop:
-                - all
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
           ports:
             - name: metrics
               containerPort: 9090
@@ -86,7 +87,7 @@ spec:
               containerPort: 8008
 
 ---
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -108,11 +109,10 @@ metadata:
   labels:
     app.kubernetes.io/component: domain-mapping
     app.kubernetes.io/name: knative-serving
-    app.kubernetes.io/version: "1.2.0"
-    serving.knative.dev/release: "v1.2.0"
+    app.kubernetes.io/version: "1.9.0"
 spec:
   selector:
-    matchLabels: &labels
+    matchLabels:
       app: domainmapping-webhook
       role: domainmapping-webhook
   template:
@@ -120,11 +120,11 @@ spec:
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
       labels:
-        !!merge <<: *labels
+        app: domainmapping-webhook
+        role: domainmapping-webhook
         app.kubernetes.io/component: domain-mapping
         app.kubernetes.io/name: knative-serving
-        app.kubernetes.io/version: "1.2.0"
-        serving.knative.dev/release: "v1.2.0"
+        app.kubernetes.io/version: "1.9.0"
     spec:
       # To avoid node becoming SPOF, spread our replicas to different nodes.
       affinity:
@@ -173,7 +173,9 @@ spec:
             runAsNonRoot: true
             capabilities:
               drop:
-                - all
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
           ports:
             - name: metrics
               containerPort: 9090
@@ -210,8 +212,7 @@ metadata:
     role: domainmapping-webhook
     app.kubernetes.io/component: domain-mapping
     app.kubernetes.io/name: knative-serving
-    app.kubernetes.io/version: "1.2.0"
-    serving.knative.dev/release: "v1.2.0"
+    app.kubernetes.io/version: "1.9.0"
   name: domainmapping-webhook
   namespace: "{{ .Release.Namespace }}"
 spec:
@@ -227,4 +228,5 @@ spec:
       port: 443
       targetPort: 8443
   selector:
+    app: domainmapping-webhook
     role: domainmapping-webhook

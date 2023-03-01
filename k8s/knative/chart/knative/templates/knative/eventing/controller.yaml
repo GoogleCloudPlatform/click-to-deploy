@@ -1,4 +1,5 @@
-# Copyright 2022 Google LLC
+---
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,10 +19,10 @@ metadata:
   name: eventing-controller
   namespace: "{{ .Release.Namespace }}"
   labels:
-    eventing.knative.dev/release: "v1.2.0"
+    eventing.knative.dev/release: "v1.9.0"
     knative.dev/high-availability: "true"
     app.kubernetes.io/component: eventing-controller
-    app.kubernetes.io/version: "1.2.0"
+    app.kubernetes.io/version: "1.9.0"
     app.kubernetes.io/name: knative-eventing
 spec:
   selector:
@@ -31,9 +32,9 @@ spec:
     metadata:
       labels:
         app: eventing-controller
-        eventing.knative.dev/release: "v1.2.0"
-        app.kubernetes.io/component: eventing-autoscaler
-        app.kubernetes.io/version: "1.2.0"
+        eventing.knative.dev/release: "v1.9.0"
+        app.kubernetes.io/component: eventing-controller
+        app.kubernetes.io/version: "1.9.0"
         app.kubernetes.io/name: knative-eventing
     spec:
       # To avoid node becoming SPOF, spread our replicas to different nodes.
@@ -69,7 +70,7 @@ spec:
               value: knative.dev/eventing
             # APIServerSource
             - name: APISERVER_RA_IMAGE
-              value: gcr.io/knative-releases/knative.dev/eventing/cmd/apiserver_receive_adapter@sha256:b2d41d5daaca21b63ba884e1456563ee4379bfb0325be6570dbe2b1a46741bfd
+              value: gcr.io/knative-releases/knative.dev/eventing/cmd/apiserver_receive_adapter@sha256:26a20c0b8894bc6d84266f245e1a4effa2ce61e88d8cd00edb8f94e140b988ba
             - name: POD_NAME
               valueFrom:
                 fieldRef:
@@ -90,9 +91,29 @@ spec:
             runAsNonRoot: true
             capabilities:
               drop:
-                - all
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: probes
+              scheme: HTTP
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: probes
+              scheme: HTTP
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            timeoutSeconds: 5
           ports:
             - name: metrics
               containerPort: 9090
             - name: profiling
               containerPort: 8008
+            - name: probes
+              containerPort: 8080
