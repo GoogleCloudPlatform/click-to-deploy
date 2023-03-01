@@ -23,7 +23,7 @@ readonly default_db_user="mattermost"
 readonly default_domain="localhost"
 
 # Get settings from metadata
-readonly root_db_pwd="$(get_attribute_value "mysql-root-password")"
+readonly root_db_pwd="${root_db_pwd:-$(get_attribute_value "mysql-root-password")}"
 readonly metadata_db_pwd="${metadata_db_pwd:-$(get_attribute_value "mattermost-database-pwd")}"
 readonly metadata_sitename="${metadata_sitename:-$(get_attribute_value "mattermost-sitename")}"
 

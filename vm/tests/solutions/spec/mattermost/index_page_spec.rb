@@ -14,19 +14,7 @@
 
 require 'spec_helper'
 
-describe port(22) do
-  it { should be_listening.on('0.0.0.0') }
-end
-
-describe port(80) do
-  it { should be_listening.on('0.0.0.0') }
-end
-
-describe port(3306) do
-  it { should be_listening.on('127.0.0.1') }
-  it { should_not be_listening.on('0.0.0.0') }
-end
-
-describe port(8065) do
-  it { should be_listening }
+describe command('curl -L http://localhost/') do
+  its(:stdout) { should match /<title>Mattermost<\/title>/ }
+  its(:exit_status) { should eq 0 }
 end
