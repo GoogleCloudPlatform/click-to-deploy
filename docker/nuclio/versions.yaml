@@ -17,53 +17,37 @@ cloudbuild:
   enable_parallel: false
 versions:
 - dir: 1/debian11/nuclio-dashboard/1.11
-  from: marketplace.gcr.io/google/debian11
+  from: marketplace.gcr.io/google/c2d-debian11
   packages:
     docker:
       version: 20.10.19
     golang:
       version: 1.18.7
     nuclio:
-      version: 1.11.9
+      version: 1.11.12
   repo: nuclio-dashboard1
   tags:
-  - 1.11.9-debian11
+  - 1.11.12-debian11
   - 1.11-debian11
   - 1-debian11
-  - 1.11.9
+  - 1.11.12
   - '1.11'
   - '1'
   - latest
   templateSubDir: nuclio_dashboard
-- dir: 1/debian11/nuclio-dashboard/1.10
-  from: marketplace.gcr.io/google/debian11
-  packages:
-    docker:
-      version: 20.10.19
-    golang:
-      version: 1.18.7
-    nuclio:
-      version: 1.10.9
-  repo: nuclio-dashboard1
-  tags:
-  - 1.10.9-debian11
-  - 1.10-debian11
-  - 1.10.9
-  - '1.10'
-  templateSubDir: nuclio_dashboard
 - dir: 1/debian11/nuclio-controller/1.11
-  from: marketplace.gcr.io/google/debian11
+  from: marketplace.gcr.io/google/c2d-debian11
   packages:
     golang:
       version: 1.18.7
     nuclio:
-      version: 1.11.9
+      version: 1.11.12
   repo: nuclio-controller1
   tags:
-  - 1.11.9
+  - 1.11.12
   - '1.11'
   - '1'
-  - 1.11.9-debian11
+  - 1.11.12-debian11
   - 1.11-debian11
   - 1-debian11
   - latest

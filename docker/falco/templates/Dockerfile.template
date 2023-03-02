@@ -20,7 +20,6 @@ RUN apt-get update \
 	bison \
 	clang-11 \
 	ca-certificates \
-	curl \
 	dkms \
 	flex \
 	gnupg2 \
@@ -32,8 +31,6 @@ RUN apt-get update \
 	llvm-11 \
 	netcat \
 	xz-utils \
-	openssl \
-  libtasn1-6 \
 	&& rm -rf /var/lib/apt/lists/*
 
 RUN ln -s /usr/bin/clang-11 /usr/bin/clang \

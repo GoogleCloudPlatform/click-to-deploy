@@ -17,7 +17,7 @@ cloudbuild:
   enable_parallel: false
 versions:
 - dir: 5/debian11/5.17
-  from: marketplace.gcr.io/google/debian11
+  from: marketplace.gcr.io/google/c2d-debian11
   packages:
     activemq:
       sha512: 8ed682fd8c9910f186cc14872552fcb1b5e8d361466b880c92dbd8a0f3a8fba339047023891e027ece7f57663a271fe47e73358e0290b371e78e5bfe70387468

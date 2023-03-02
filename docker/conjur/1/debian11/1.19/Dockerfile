@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian11
+FROM marketplace.gcr.io/google/c2d-debian11
 
 SHELL ["/bin/bash", "-c", "-l"]
 
@@ -11,7 +11,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     TMP_DIR=/opt/conjur-server/tmp \
     SSL_CERT_DIRECTORY=/opt/conjur/etc/ssl
 
-ENV CONJUR_APP_VERSION=1.19.1
+ENV CONJUR_APP_VERSION=1.19.2
 ENV RUBY_VERSION=3.0.0
 ENV OPENSSL_FIPS_ENABLED "false"
 
@@ -19,10 +19,8 @@ EXPOSE 80
 
 RUN apt-get update \
     && apt-get install \
-    curl \
     libz-dev \
     build-essential \
-    git \
     ldap-utils \
     apt-transport-https \
     ca-certificates \
@@ -30,7 +28,6 @@ RUN apt-get update \
     procps \
     libpq-dev \
     jq \
-    libtasn1-6 \
     -y --no-install-recommends \
     && apt-get autoremove -yqq --purge \
     && apt-get clean \
@@ -71,7 +68,7 @@ ENV RAILS_ENV production
 
 EXPOSE 80
 
-ENV C2D_RELEASE 1.19.1
+ENV C2D_RELEASE 1.19.2
 
 ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
 CMD ["conjurctl", "server"]

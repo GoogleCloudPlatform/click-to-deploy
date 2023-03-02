@@ -38,7 +38,9 @@ RUN groupadd supergroup && \
     pip install mysqlclient && \
     pip install pybigquery && \
     pip install statsd && \
-    pip install statsd-client
+    pip install statsd-client && \
+    pip install pyopenssl==22.1.0 && \
+    pip install cryptography
 
 # Configure Filesystem
 VOLUME /etc/superset

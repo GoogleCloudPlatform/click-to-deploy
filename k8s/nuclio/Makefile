@@ -8,7 +8,7 @@ APP_ID ?= $(CHART_NAME)
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 
-TRACK ?= 1.10
+TRACK ?= 1.11
 
 IMAGE_CONTROLLER ?= $(SOURCE_REGISTRY)/nuclio-controller1:$(TRACK)
 IMAGE_DASHBOARD ?= $(SOURCE_REGISTRY)/nuclio-dashboard1:$(TRACK)

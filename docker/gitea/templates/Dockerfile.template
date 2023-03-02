@@ -34,13 +34,11 @@ RUN apt-get update && \
     apt-get install -y \
     bash \
     ca-certificates \
-    curl \
     gettext \ 
     openssh-server \
     s6 \
     sqlite3 \
     gnupg \
-    git \
     musl-dev
 
 RUN ln -s /usr/lib/x86_64-linux-musl/libc.so /lib/libc.musl-x86_64.so.1 \
