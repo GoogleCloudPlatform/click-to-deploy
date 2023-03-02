@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@
 
 # Remember to check if repo component update
 # is needed when changing the version.
-default['mariadb']['version'] = '10.7'
+default['mariadb']['version'] = '10.11'
 default['mariadb']['apt_version'] = "1:#{default['mariadb']['version']}.*"
 
-default['mariadb']['repo']['uri'] = 'https://ftp.icm.edu.pl/pub/unix/database/mariadb/repo/10.5/debian'
-default['mariadb']['repo']['distribution'] = 'buster'
+default['mariadb']['repo']['uri'] = "https://ftp.icm.edu.pl/pub/unix/database/mariadb/repo/#{default['mariadb']['version']}/debian"
+default['mariadb']['repo']['distribution'] = 'bullseye'
 default['mariadb']['repo']['components'] = ['main']
 default['mariadb']['repo']['keyserver'] = 'https://mariadb.org/mariadb_release_signing_key.asc'
