@@ -32,11 +32,5 @@ apt-get -y install ruby
 gem install net-ssh -v 6.1.0
 gem install serverspec rake
 
-# If config script exists, run it
-declare config_script="config/${SOLUTION_NAME}"
-if [[ -f "${config_script}" ]]; then
-  chmod +x "${config_script}" && "${config_script}"
-fi
-
 cd solutions/
 rake "spec:${SOLUTION_NAME}" && success || failure
