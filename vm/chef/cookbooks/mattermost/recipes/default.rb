@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'mysql::version-8.0'
+include_recipe 'mysql::version-8.0-standalone'
 include_recipe 'git'
 
 # https://docs.mattermost.com/install/software-hardware-requirements.html#database-software

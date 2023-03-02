@@ -16,5 +16,3 @@
 
 include_recipe 'mysql::configure-apt-repo-version-8.0'
 include_recipe 'mysql::install-and-configure-mysqld'
-
-c2d_startup_script 'mysql8-root-localhost-password-setup'
