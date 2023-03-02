@@ -30,7 +30,7 @@ ENV C2D_RELEASE 1.11.12
 
 # install apache2-utils for htpasswd
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends ca-certificates apache2-utils libtasn1-6 \
+    && apt-get install -y --no-install-recommends ca-certificates apache2-utils \
     && apt-get autoremove -yqq --purge \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* 
