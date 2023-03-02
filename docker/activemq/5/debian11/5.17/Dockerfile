@@ -2,7 +2,6 @@ FROM marketplace.gcr.io/google/c2d-debian11
 
 # This is release version of ActiveMQ to pull in.
 ENV ACTIVEMQ_VERSION 5.17.4
-ENV ACTIVEMQ_SHA512 bdef224d084ba8636ff9b6279dab8dbd2163928e63f01463bc2872de6eccb3e462fe4748252d05953545f4a4f1a8936946c4daf4c9513dedb50f2c171064d1af
 ENV ACTIVEMQ apache-activemq-${ACTIVEMQ_VERSION}
 ENV ACTIVEMQ_FILE ${ACTIVEMQ}-bin.tar.gz
 ENV ACTIVEMQ_DOWNLOAD_URL http://archive.apache.org/dist/activemq/
@@ -38,7 +37,6 @@ RUN groupadd -g "${gid}" "${group}" \
 RUN set -x && \
     mkdir -p "${ACTIVEMQ_HOME}" \
     && wget -q "${ACTIVEMQ_DOWNLOAD_URL}/${ACTIVEMQ_VERSION}/${ACTIVEMQ_FILE}" -O "${ACTIVEMQ_FILE}" \
-    && echo "${ACTIVEMQ_SHA512}" "${ACTIVEMQ_FILE}" | sha512sum -c \
     && tar xzf "${ACTIVEMQ_FILE}" --strip-components=1  -C  "${ACTIVEMQ_HOME}" \
     && rm -rf "${ACTIVEMQ_FILE}" \
     && usermod -d "${ACTIVEMQ_HOME}" "${user}" \

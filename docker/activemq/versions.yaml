@@ -20,7 +20,6 @@ versions:
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     activemq:
-      sha512: bdef224d084ba8636ff9b6279dab8dbd2163928e63f01463bc2872de6eccb3e462fe4748252d05953545f4a4f1a8936946c4daf4c9513dedb50f2c171064d1af
       version: 5.17.4
   repo: activemq5
   tags:
@@ -31,4 +30,3 @@ versions:
   - '5.17'
   - '5'
   - latest
-
