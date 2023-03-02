@@ -12,19 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-## format 'user1\|user2\|user3'
-export ssh_username_deleted_allowed_users='mattermost'
+unified_mode true
 
-# Install Mattermost for testing purposes
-
-# Settings required for Mattermost startup script
-export metadata_db_pwd="$(cat /dev/urandom | tr -dc "a-zA-Z0-9" | fold -w 12 | head -n 1 | tr -d "\n")"
-export metadata_sitename="Click to Deploy Test"
-export root_db_pwd="root1234"
-
-# Settings required for MySQL startup script
-export password="${root_db_pwd}"
-
-/opt/c2d/scripts/01-mysql
-/opt/c2d/scripts/02-mysql8-root-localhost-password-setup
-/opt/c2d/scripts/03-mattermost-setup
+action :apply do
+  bash 'Enable mysql_native_password' do
+    user 'root'
+    code <<-EOH
+    cat <<EOT >> /etc/mysql/mysql.conf.d/999-enable-native-password.cnf
+    [mysqld]
+    default-authentication-plugin=mysql_native_password
+  EOH
+  end
+end
