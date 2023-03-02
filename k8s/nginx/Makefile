@@ -15,7 +15,7 @@ SOURCE_REGISTRY ?= marketplace.gcr.io/google
 IMAGE_NGINX ?= $(SOURCE_REGISTRY)/nginx1:$(TRACK)
 IMAGE_NGINX_EXPORTER = $(SOURCE_REGISTRY)/nginx-exporter0:$(EXPORTER_TAG)
 IMAGE_DEBIAN ?= $(SOURCE_REGISTRY)/c2d-debian11:latest
-IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+IMAGE_PROMETHEUS_TO_SD ?= gke.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 
 # Main image
