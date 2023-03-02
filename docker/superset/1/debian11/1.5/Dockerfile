@@ -1,7 +1,7 @@
 FROM marketplace.gcr.io/google/debian11:latest
 
-ARG SUPERSET_VERSION="1.5.0"
-ENV C2D_RELEASE "1.5.0"
+ARG SUPERSET_VERSION="1.5.3"
+ENV C2D_RELEASE "1.5.3"
 ENV SUPERSET_VERSION ${SUPERSET_VERSION}
 ENV FLASK_APP="superset.app:create_app()"
 ENV SUPERSET_HOME=/var/lib/superset
@@ -35,7 +35,9 @@ RUN groupadd supergroup && \
     pip install mysqlclient && \
     pip install pybigquery && \
     pip install statsd && \
-    pip install statsd-client
+    pip install statsd-client && \
+    pip install pyopenssl==22.1.0 && \
+    pip install cryptography
 
 # Configure Filesystem
 VOLUME /etc/superset

@@ -29,6 +29,14 @@ x-google-marketplace:
     istio:
       type: UNSUPPORTED
 properties:
+  certificate:
+    type: string
+    x-google-marketplace:
+      type: TLS_CERTIFICATE
+      tlsCertificate:
+        generatedProperties:
+          base64EncodedPrivateKey: tls.base64EncodedPrivateKey
+          base64EncodedCertificate: tls.base64EncodedCertificate
   name:
     type: string
     x-google-marketplace:

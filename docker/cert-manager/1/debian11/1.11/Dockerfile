@@ -1,9 +1,9 @@
-FROM  marketplace.gcr.io/google/debian11 as build
+FROM  marketplace.gcr.io/google/c2d-debian11 as build
 
 ENV APP_VERSION=1.11.0
 
 RUN apt-get update \
-    && apt-get install make git jq curl docker.io -y --no-install-recommends 
+    && apt-get install make jq docker.io -y --no-install-recommends 
 
 WORKDIR /src/cert-manager/
 
@@ -16,15 +16,9 @@ RUN make vendor-go \
  && make cmctl-linux
 
 # Result Image
-FROM marketplace.gcr.io/google/debian11
+FROM marketplace.gcr.io/google/c2d-debian11
 
 WORKDIR /app
-
-# Update openssl and libtasn
-RUN apt-get update \
-    && apt-get install --no-install-recommends -yqq openssl libtasn1-6 \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
 
 ENV C2D_RELEASE=1.11.0
 ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt

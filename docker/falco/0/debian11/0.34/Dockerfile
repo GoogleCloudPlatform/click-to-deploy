@@ -1,11 +1,11 @@
-FROM marketplace.gcr.io/google/debian11
+FROM marketplace.gcr.io/google/c2d-debian11
 
-ARG FALCO_VERSION=0.33.1
+ARG FALCO_VERSION=0.34.0
 ARG VERSION_BUCKET=deb
 ENV VERSION_BUCKET=${VERSION_BUCKET}
 
 ENV FALCO_VERSION ${FALCO_VERSION}
-ENV C2D_RELEASE 0.33.1
+ENV C2D_RELEASE 0.34.0
 ENV HOST_ROOT /host
 ENV HOME /root
 
@@ -18,7 +18,6 @@ RUN apt-get update \
 	bison \
 	clang-11 \
 	ca-certificates \
-	curl \
 	dkms \
 	flex \
 	gnupg2 \
@@ -30,8 +29,6 @@ RUN apt-get update \
 	llvm-11 \
 	netcat \
 	xz-utils \
-	openssl \
-  libtasn1-6 \
 	&& rm -rf /var/lib/apt/lists/*
 
 RUN ln -s /usr/bin/clang-11 /usr/bin/clang \

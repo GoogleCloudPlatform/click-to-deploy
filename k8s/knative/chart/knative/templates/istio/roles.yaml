@@ -1,3 +1,4 @@
+---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -358,6 +359,15 @@ rules:
       - update
       - patch
   - apiGroups:
+      - gateway.networking.k8s.io
+    resources:
+      - gatewayclasses
+    verbs:
+      - create
+      - update
+      - patch
+      - delete
+  - apiGroups:
       - ""
     resources:
       - secrets
@@ -583,6 +593,15 @@ rules:
     verbs:
       - update
   - apiGroups:
+      - gateway.networking.k8s.io
+    resources:
+      - gatewayclasses
+    verbs:
+      - create
+      - update
+      - patch
+      - delete
+  - apiGroups:
       - ""
     resources:
       - secrets
@@ -735,6 +754,12 @@ rules:
       - list
       - update
       - delete
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+    verbs:
+      - delete
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -814,3 +839,4 @@ subjects:
   - kind: ServiceAccount
     name: istiod-service-account
     namespace: "{{ .Release.Namespace }}"
+

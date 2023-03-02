@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian11
+FROM marketplace.gcr.io/google/c2d-debian11
 
 # This is release version of ActiveMQ to pull in.
 ENV ACTIVEMQ_VERSION 5.17.3
@@ -25,7 +25,7 @@ ARG gid=1000
 
 RUN set -ex \
   && apt-get --allow-releaseinfo-change update \
-  && apt-get -y install default-jdk ca-certificates wget openssl procps libtasn1-6 \
+  && apt-get -y install default-jdk ca-certificates wget procps \
   && rm -rf /var/lib/apt/lists/*
 
 # ActiveMQ run with user `activemq`, uid = 1000.
