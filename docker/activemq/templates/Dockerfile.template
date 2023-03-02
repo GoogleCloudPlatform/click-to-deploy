@@ -5,7 +5,6 @@ FROM {{ .From }}
 
 # This is release version of ActiveMQ to pull in.
 ENV ACTIVEMQ_VERSION {{ $activemq.Version }}
-ENV ACTIVEMQ_SHA512 {{ $activemq.Sha512 }}
 ENV ACTIVEMQ apache-activemq-${ACTIVEMQ_VERSION}
 ENV ACTIVEMQ_FILE ${ACTIVEMQ}-bin.tar.gz
 ENV ACTIVEMQ_DOWNLOAD_URL http://archive.apache.org/dist/activemq/
@@ -41,7 +40,6 @@ RUN groupadd -g "${gid}" "${group}" \
 RUN set -x && \
     mkdir -p "${ACTIVEMQ_HOME}" \
     && wget -q "${ACTIVEMQ_DOWNLOAD_URL}/${ACTIVEMQ_VERSION}/${ACTIVEMQ_FILE}" -O "${ACTIVEMQ_FILE}" \
-    && echo "${ACTIVEMQ_SHA512}" "${ACTIVEMQ_FILE}" | sha512sum -c \
     && tar xzf "${ACTIVEMQ_FILE}" --strip-components=1  -C  "${ACTIVEMQ_HOME}" \
     && rm -rf "${ACTIVEMQ_FILE}" \
     && usermod -d "${ACTIVEMQ_HOME}" "${user}" \

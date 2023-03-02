@@ -13,7 +13,7 @@
 # limitations under the License.
 
 default['mautic']['packages'] = [
-    'libicu64',
+    'libicu-dev',
     'libxmlrpc-epi0',
     'libxslt1.1',
     'libzip4',
@@ -22,6 +22,6 @@ default['mautic']['packages'] = [
     'php7.4-imap',
 ]
 
-default['mautic']['version'] = '4.2.0'
+default['mautic']['version'] = '4.4.6'
 default['mautic']['user'] = 'www-data'
 default['mautic']['db']['name'] = 'mautic'
