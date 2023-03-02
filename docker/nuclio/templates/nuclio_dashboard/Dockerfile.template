@@ -67,12 +67,9 @@ RUN apt-get update \
        libtirpc3 \
        libtirpc-common \
        libssl1.1 \
-       openssl \
        zlib1g \
        expat \
        libexpat1 \
-       libtasn1-6 \
-       libksba8 \
     && apt-get autoremove -yqq --purge \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
