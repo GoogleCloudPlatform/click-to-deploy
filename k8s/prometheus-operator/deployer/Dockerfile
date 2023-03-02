@@ -33,7 +33,7 @@ RUN cat /tmp/apptest/schema.yaml \
 
 FROM gcr.io/cloud-marketplace-tools/k8s/deployer_helm:$MARKETPLACE_TOOLS_TAG
 
-ENV VERSION 0.54.1
+ENV VERSION 0.63.0
 ARG CHART_NAME
 
 COPY deployer/apply_crds.sh /bin/apply_crds.sh
