@@ -14,7 +14,7 @@
 
 include_recipe 'apache2'
 
-package 'libapache2-mod-wsgi' do
+package 'libapache2-mod-wsgi-py3' do
   action :install
 end
 
