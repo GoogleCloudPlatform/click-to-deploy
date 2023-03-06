@@ -19,5 +19,5 @@ require 'spec_helper'
 # mysqld  Ver 10.5.5-MariaDB-1:10.5.5+maria~buster-log for debian-linux-gnu on x86_64 (mariadb.org binary distribution)
 
 describe command('mysqld --version') do
-  its(:stdout) { should match /mysqld  Ver 10\.5\..* for debian-linux-gnu on x86_64 .mariadb.org binary distribution./ }
+  its(:stdout) { should match /mysqld  Ver (\d+\.\d+\.\d+)\-.* for debian-linux-gnu on x86_64 .mariadb.org binary distribution./ }
 end

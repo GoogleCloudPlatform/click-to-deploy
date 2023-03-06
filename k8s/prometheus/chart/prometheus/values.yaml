@@ -5,8 +5,6 @@ prometheus:
   serviceAccountName: null
   replicas: 2
   storageClass: null
-  initContainer:
-    image: null
 
 alertmanager:
   image: null
@@ -20,7 +18,3 @@ nodeexporter:
   image: null
   serviceAccountName: null
 
-grafana:
-  image: null
-  password: null
-  serviceAccountName: null

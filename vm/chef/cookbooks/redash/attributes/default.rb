@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['redash']['version'] = 'v8.0.0'
-default['redash']['sha1'] = '3a4dbe8599c3326b639cfd5e3707e37973e40f16'
+default['redash']['version'] = 'v10.1.0'
+default['redash']['sha1'] = 'c85a15f0c1b66f2b542a094accc3b47d7ce67910'
 default['redash']['packages'] = ['jq']
 
 default['redash']['linux']['user'] = 'redash'

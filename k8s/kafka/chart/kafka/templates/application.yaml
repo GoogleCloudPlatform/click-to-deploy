@@ -98,7 +98,7 @@ spec:
   - group: v1
     kind: PersistentVolumeClaim
   {{- if not .Values.kafka.standalone}}
-  - group: policy/v1beta1
+  - group: policy/v1
     kind: PodDisruptionBudget
   {{- end}}
   - group: v1

@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,6 +14,6 @@
 
 include_recipe 'apache2'
 include_recipe 'apache2::security-config'
-include_recipe 'mysql'
+include_recipe 'mysql::version-8.0-standalone'
 include_recipe 'git'
 include_recipe 'django::default'

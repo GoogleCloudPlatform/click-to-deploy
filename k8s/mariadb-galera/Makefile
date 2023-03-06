@@ -8,14 +8,12 @@ APP_ID ?= $(CHART_NAME)
 
 VERIFY_WAIT_TIMEOUT = 1800
 
-TRACK ?= 10.6
+TRACK ?= 10.11
 METRICS_EXPORTER_TAG ?= v0.5.1
-PEER_FINDER_TAG ?= latest
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 IMAGE_MARIADB ?= $(SOURCE_REGISTRY)/mariadb10:$(TRACK)
-IMAGE_MYSQLD_EXPORTER ?= $(SOURCE_REGISTRY)/mysql5:exporter
-IMAGE_PEER_FINDER ?= $(SOURCE_REGISTRY)/peer-finder0:$(PEER_FINDER_TAG)
+IMAGE_MYSQLD_EXPORTER ?= $(SOURCE_REGISTRY)/mysql8:exporter
 IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 
@@ -23,11 +21,10 @@ IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_MARIADB))
 
 # List of images used in application
-ADDITIONAL_IMAGES := mysqld-exporter prometheus-to-sd peer-finder
+ADDITIONAL_IMAGES := mysqld-exporter prometheus-to-sd
 
 # Additional images variable names should correspond with ADDITIONAL_IMAGES list
 image-mysqld-exporter := $(call get_sha256,$(IMAGE_MYSQLD_EXPORTER))
-image-peer-finder := $(call get_sha256,$(IMAGE_PEER_FINDER))
 image-prometheus-to-sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))
 
 C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))

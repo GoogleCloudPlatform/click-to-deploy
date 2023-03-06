@@ -28,14 +28,6 @@ x-google-marketplace:
       properties:
         nodeexporter.image:
           type: FULL
-    grafana:
-      properties:
-        grafana.image:
-          type: FULL
-    init-container:
-      properties:
-        prometheus.initContainer.image:
-          type: FULL
 
 properties:
   name:
@@ -82,34 +74,6 @@ properties:
     description: The number of replicas for Prometheus StatefulSet
     default: 2
     minimum: 1
-
-  grafana.serviceAccountName:
-    type: string
-    title: Grafana Service Account
-    x-google-marketplace:
-      type: SERVICE_ACCOUNT
-      serviceAccount:
-        description: Service account used by Grafana Statefulset
-        roles:
-        - type: ClusterRole
-          rulesType: CUSTOM
-          rules:
-          - apiGroups: [""]
-            resources:
-            - endpoints
-            - pods
-            - nodes
-            verbs:
-            - get
-            - list
-  grafana.password:
-    type: string
-    x-google-marketplace:
-      type: GENERATED_PASSWORD
-      generatedPassword:
-        length: 10
-        includeSymbols: False
-        base64: False
 
   alertmanager.serviceAccountName:
     type: string

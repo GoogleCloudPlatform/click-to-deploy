@@ -17,18 +17,18 @@ cloudbuild:
   enable_parallel: false
   machineType: 'E2_HIGHCPU_32'
 versions:
-- dir: 15/debian11/15.4
+- dir: 15/debian11/15.6
   from: marketplace.gcr.io/google/debian11
   packages:
     gitlab:
-      version: 15.4.2
+      version: 15.6.3
   repo: gitlab15
   tags:
-  - 15.4.2-debian11
-  - 15.4-debian11
+  - 15.6.3-debian11
+  - 15.6-debian11
   - 15-debian11
-  - 15.4.2
-  - '15.4'
+  - 15.6.3
+  - '15.6'
   - '15'
   - latest
 - dir: 14/debian11/14.10

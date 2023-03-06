@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian11 AS build
+FROM marketplace.gcr.io/google/c2d-debian11 AS build
 
 ENV KEYCLOAK_VERSION 19.0.3
 ARG KEYCLOAK_DIST=https://github.com/keycloak/keycloak/releases/download/$KEYCLOAK_VERSION/keycloak-$KEYCLOAK_VERSION.tar.gz
@@ -21,7 +21,7 @@ ADD $SSHDCOMMON_DIST /opt/keycloak/org.apache.sshd.sshd-common-$SSHDCOMMON_VERSI
 RUN ln -s /opt/keycloak/org.apache.sshd.sshd-common-$SSHDCOMMON_VERSION.jar \
     /opt/keycloak/lib/lib/main/org.apache.sshd.sshd-common-2.7.0.jar
 
-FROM marketplace.gcr.io/google/debian11
+FROM marketplace.gcr.io/google/c2d-debian11
 ENV LANGUAGE=C.UTF-8 LANG=C.UTF-8 LC_ALL=C.UTF-8 LC_CTYPE=C.UTF-8 LC_MESSAGES=C.UTF-8
 
 COPY --from=build --chown=1000:0 /opt/keycloak /opt/keycloak

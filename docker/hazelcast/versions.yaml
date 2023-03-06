@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,44 +12,53 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-versions:
-# Hazelcast 5
-  - dir: '5/debian11/hazelcast/5.1'
-    repo: 'hazelcast5'
-    templateSubDir: 'hazelcast5'
-    tags:
-    - '5.1.4-debian11'
-    - '5.1.4'
-    - '5.1-debian11'
-    - '5.1'
-    - '5-debian11'
-    - '5'
-    - 'latest'
-    from: 'marketplace.gcr.io/google/debian11'
-    packages:
-      hazelcast:
-        version: '5.1.4'
-        sha256: '92c682407e56a4f300b903c0b906bea5800fd470532b81a87991853b743c9d38'
-    excludeTests:
-    - tests/functional_tests/hazelcast_mancenter_test.yaml
 
-# Hazelcast Management Center 5
-  - dir: '5/debian11/hazelcast-mc/5.1'
-    repo: 'hazelcast-mc5'
-    templateSubDir: 'hazelcast-mc5'
-    tags:
-    - '5.1-debian11'
-    - '5.1'
-    - '5'
-    - 'latest'
-    from: 'marketplace.gcr.io/google/debian11'
-    packages:
-      hazelcastmc:
-        version: '5.1.3'
-        sha256: '40090f0ccc34a24969341025c7155e0af96e8488d152f1c43b1df502a41a83b3'
-    excludeTests:
-    - tests/functional_tests/hazelcast_test.yaml
-
-# Enable parallel build.
 cloudbuild:
   enable_parallel: false
+versions:
+- dir: 5/debian11/hazelcast/5.2
+  excludeTests:
+  - tests/functional_tests/hazelcast_mancenter_test.yaml
+  from: marketplace.gcr.io/google/debian11
+  packages:
+    hazelcast:
+      version: 5.2.1
+  repo: hazelcast5
+  tags:
+  - 5.2.1-debian11
+  - 5.2-debian11
+  - 5-debian11
+  - 5.2.1
+  - '5.2'
+  - '5'
+  - latest
+  templateSubDir: hazelcast5
+- dir: 5/debian11/hazelcast/5.0
+  excludeTests:
+  - tests/functional_tests/hazelcast_mancenter_test.yaml
+  from: marketplace.gcr.io/google/debian11
+  packages:
+    hazelcast:
+      version: 5.0.4
+  repo: hazelcast5
+  tags:
+  - 5.0.4-debian11
+  - 5.0-debian11
+  - 5.0.4
+  - '5.0'
+  templateSubDir: hazelcast5
+- dir: 5/debian11/hazelcast-mc/5.2
+  excludeTests:
+  - tests/functional_tests/hazelcast_test.yaml
+  from: marketplace.gcr.io/google/debian11
+  packages:
+    hazelcastmc:
+      sha256: da63dc7072f8cf1e02ac10ff38ec5028c5c94977d3ae1ab91c85ea1aaeac0927
+      version: 5.2.1
+  repo: hazelcast-mc5
+  tags:
+  - 5.2.1
+  - '5.2'
+  - '5'
+  - latest
+  templateSubDir: hazelcast-mc5
