@@ -47,8 +47,6 @@ hydra:
   serviceAccount:
     name: hydra-sa
 
-  dangerousForceHttp: true
-
   autoscaling:
     enabled: true
     minReplicas: 1

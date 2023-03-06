@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,10 +29,9 @@ end
 
 c2d_startup_script 'mysql'
 
-bash 'rm_test_db_and_users' do
+bash 'rm_test_db' do
   user 'root'
   code <<-EOH
     mysql -u root -e "DROP DATABASE IF EXISTS test;"
-    mysql -u root -e "DELETE FROM mysql.user WHERE User != 'mysql.sys' AND User != 'root'"
   EOH
 end

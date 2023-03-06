@@ -84,7 +84,7 @@ spec:
     kind: ConfigMap
   - group: v1
     kind: ServiceAccount
-  - group: policy/v1beta1
+  - group: policy/v1
     kind: PodDisruptionBudget
   {{- if .Values.global.gossipEncryption.CreateSecretWithKey }}
   - group: v1
