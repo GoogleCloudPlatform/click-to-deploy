@@ -5,6 +5,7 @@ ENV DEV_APT_DEPS="\
      libtasn1-6 \
      libksba8 \
      libssl1.1 \
+     libaprutil1 \
      git \
      curl"
 
