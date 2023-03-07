@@ -31,7 +31,7 @@ include_recipe 'php81::module_xmlrpc'
 include_recipe 'php81::module_zip'
 
 remote_file '/tmp/moodle.tgz' do
-  source "https://download.moodle.org/download.php/direct/stable#{node['moodle']['track']}/moodle-latest-#{node['moodle']['version']}.tgz"
+  source "https://download.moodle.org/download.php/direct/stable#{node['moodle']['track']}/moodle-#{node['moodle']['version']}.tgz"
   action :create
 end
 
