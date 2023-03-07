@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['kong']['version'] = '3.0.2'
-default['kong']['sha256'] = 'f1044c40e758583e78015ae7eeaa1f8267cd03e51215de66c175983017dec7b8'
+default['kong']['version'] = '3.1.1'
+default['kong']['sha256'] = 'f1e4e11d72ddf05f61b09683943d634b3ab0f844a1d134bf1b0b637d475ed92b'
 default['kong']['db']['name'] = 'kong'
 default['kong']['packages'] = ['zlib1g-dev', 'boxes']

@@ -37,7 +37,7 @@ end
 
 # Download md5 checksum from apache
 remote_file '/tmp/kong.deb' do
-  source "https://github.com/Kong/kong/archive/refs/tags/3.0.2.tar.gz"
+  source "https://download.konghq.com/gateway-3.x-debian-buster/pool/all/k/kong/kong_#{node['kong']['version']}_amd64.deb"
   verify "echo '#{node['kong']['sha256']} %{path}' | sha256sum -c"
   action :create
 end
