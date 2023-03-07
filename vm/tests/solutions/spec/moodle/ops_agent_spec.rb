@@ -1,1 +1,0 @@
-../__common__/ops_agent_installed.rb
