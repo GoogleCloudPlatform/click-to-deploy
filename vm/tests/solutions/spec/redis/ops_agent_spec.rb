@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,14 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['redis']['version'] = '7.0.9'
+require 'spec_helper'
 
-default['redis']['download_url'] =
-  "http://download.redis.io/releases/redis-#{default['redis']['version']}.tar.gz"
+describe 'Installed Ops-agent' do
+  describe package('google-cloud-ops-agent') do
+    it { should be_installed }
+  end
 
-default['redis']['packages']['temp_dependencies'] = ['dpkg-dev', 'gcc', 'make']
-default['redis']['packages']['dependencies'] = ['libjemalloc2']
+  describe service('google-cloud-ops-agent.service') do
+    it { should be_enabled }
+    it { should be_running }
+  end
 
-default['redis']['packages']['all_dependencies'] =
-  default['redis']['packages']['temp_dependencies'] +
-  default['redis']['packages']['dependencies']
+  describe file('/etc/google-cloud-ops-agent/config.yaml') do
+    it { should exist }
+  end
+end
