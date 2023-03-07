@@ -14,5 +14,6 @@
 
 default['kong']['version'] = '3.1.1'
 default['kong']['sha256'] = 'f1e4e11d72ddf05f61b09683943d634b3ab0f844a1d134bf1b0b637d475ed92b'
+default['kong']['major'] = default['kong']['version'].split('.')[0]
 default['kong']['db']['name'] = 'kong'
 default['kong']['packages'] = ['zlib1g-dev', 'boxes']
