@@ -20,7 +20,7 @@ apt_repository 'add_neo4j_repo' do
   uri node['neo4j']['repository_url']
   components ['stable', node['neo4j']['version']]
   keyserver node['neo4j']['keyserver_url']
-  distribution nil
+  distribution 'binary/'
   trusted true
 end
 
