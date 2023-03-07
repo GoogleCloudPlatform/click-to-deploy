@@ -7,7 +7,7 @@ CHART_NAME := hazelcast
 APP_ID ?= $(CHART_NAME)
 
 TRACK ?= 5.2
-TRACK_MC ?= 5.1
+TRACK_MC ?= 5.2
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google

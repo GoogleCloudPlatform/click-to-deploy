@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,12 +14,17 @@
 
 require 'spec_helper'
 
-describe 'Hide PHP Version' do
-  describe file('/etc/php/8.1/apache2/php.ini') do
-    its(:content) { should match /^expose_php = Off$/ }
+describe 'Installed Ops-agent' do
+  describe package('google-cloud-ops-agent') do
+    it { should be_installed }
   end
 
-  describe command('curl -I http://localhost') do
-    its(:stdout) { should_not match /X-Powered-By:/ }
+  describe service('google-cloud-ops-agent.service') do
+    it { should be_enabled }
+    it { should be_running }
+  end
+
+  describe file('/etc/google-cloud-ops-agent/config.yaml') do
+    it { should exist }
   end
 end
