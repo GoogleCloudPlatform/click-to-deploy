@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['kong']['version'] = '2.8.0'
-default['kong']['sha256'] = '8f8b1cfb6d72898d558eed2823628cf90bec8aab9bf59883b498f2159308772b'
+default['kong']['version'] = '3.1.1'
+default['kong']['sha256'] = 'f1e4e11d72ddf05f61b09683943d634b3ab0f844a1d134bf1b0b637d475ed92b'
+default['kong']['major'] = default['kong']['version'].split('.')[0]
 default['kong']['db']['name'] = 'kong'
 default['kong']['packages'] = ['zlib1g-dev', 'boxes']
