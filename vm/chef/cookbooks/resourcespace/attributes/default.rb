@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['resourcespace']['version'] = '9.8'
+default['resourcespace']['version'] = '10.0'
 default['resourcespace']['db']['name'] = 'resourcespace'
 
 default['resourcespace']['packages'] = ['antiword',
