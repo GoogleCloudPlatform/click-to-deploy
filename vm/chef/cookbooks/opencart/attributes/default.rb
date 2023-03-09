@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,3 +15,5 @@
 default['opencart']['version'] = '4.0.1.1'
 default['opencart']['db']['name'] = 'opencart'
 default['opencart']['packages'] = ['jq']
+
+default['php81']['distribution'] = 'bullseye'
