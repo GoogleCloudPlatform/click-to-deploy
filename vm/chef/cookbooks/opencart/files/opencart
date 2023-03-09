@@ -45,7 +45,7 @@ setup_mysql_user "${opencart_db_user}" "${opencart_db_password}" \
 echo "Setting up OpenCart Installer..."
 setup_opencart_installer
 
-# Install Opencart
+# # Install Opencart
 echo "Setting up OpenCart DB..."
 install_opencart_db \
   "${opencart_db_user}" "${opencart_db_password}" "${opencart_db_name}" \
@@ -59,10 +59,6 @@ prepare_apache_and_php
 # Fix storage location
 echo "Fix Storage Location..."
 fix_storage_location
-
-# Fix vendor modules
-echo "Fix vendor modules..."
-fix_vendor_modules
 
 # Grants ownership to user on whole folder
 echo "Granting access to www-data..."
