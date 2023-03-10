@@ -26,4 +26,4 @@ default['resourcespace']['packages'] = ['antiword',
                                         'xpdf',
                                        ]
 
-default['php81']['distribution'] = 'bullseye'
+default['php81']['distribution'] = 'buster'
