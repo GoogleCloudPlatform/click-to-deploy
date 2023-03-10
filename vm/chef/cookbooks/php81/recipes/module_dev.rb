@@ -12,14 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'spec_helper'
-
-describe 'Hide PHP Version' do
-  describe file('/etc/php/8.1/apache2/php.ini') do
-    its(:content) { should match /^expose_php = Off$/ }
-  end
-
-  describe command('curl -I http://localhost') do
-    its(:stdout) { should_not match /X-Powered-By:/ }
-  end
-end
+package 'php8.1-dev'
