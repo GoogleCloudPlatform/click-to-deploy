@@ -24,6 +24,7 @@ default['resourcespace']['packages'] = ['antiword',
                                         'ffmpeg',
                                         'ghostscript',
                                         'subversion',
-                                        'xpdf']
+                                        'xpdf',
+                                       ]
                                        
 default['php81']['distribution'] = 'bullseye'
