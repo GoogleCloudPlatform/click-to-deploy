@@ -405,9 +405,9 @@ if [ "${cmd}" == "neo4j" ]; then
         # Will exit with error if users already exist (and print a message explaining that)
         # we probably don't want the message though, since it throws an error message on restarting the container.
         if [ "${do_reset}" == "true" ]; then
-            neo4j-admin set-initial-password "${password}" --require-password-change 2>/dev/null || true
+            neo4j-admin dbms set-initial-password "${password}" --require-password-change 2>/dev/null || true
         else
-            neo4j-admin set-initial-password "${password}" 2>/dev/null || true
+            neo4j-admin dbms set-initial-password "${password}" 2>/dev/null || true
         fi
     elif [ -n "${NEO4J_AUTH:-}" ]; then
         echo "$NEO4J_AUTH is invalid"
