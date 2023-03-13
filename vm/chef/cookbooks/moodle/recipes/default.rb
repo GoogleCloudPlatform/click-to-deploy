@@ -59,6 +59,15 @@ directory '/var/www/moodledata' do
   mode '0755'
 end
 
+bash 'php configuration' do
+  user 'root'
+  code <<-EOH
+    sed -i 's/^;max_input_vars = .*/max_input_vars = 5000/' /etc/php/*/apache2/php.ini
+    sed -i 's/^;max_input_vars = .*/max_input_vars = 5000/' /etc/php/*/cli/php.ini
+    a2enmod rewrite
+  EOH
+end
+
 cron 'configure cron' do
   user node['moodle']['user']
   minute '*/10'
