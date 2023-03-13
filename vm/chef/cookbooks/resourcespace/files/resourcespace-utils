@@ -48,7 +48,11 @@ function setup_mysql_user() {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 mysql -u root -p"${root_password}" -e "CREATE USER '${db_user}'@'localhost' IDENTIFIED WITH mysql_native_password BY '${db_password}';"
+=======
+mysql -u root -p"${mysql_password}" -e "CREATE USER '${db_user}'@'localhost' IDENTIFIED WITH mysql_native_password BY '${db_password};"
+>>>>>>> parent of 0232eb25 (updated)
 =======
 mysql -u root -p"${mysql_password}" -e "CREATE USER '${db_user}'@'localhost' IDENTIFIED WITH mysql_native_password BY '${db_password};"
 >>>>>>> parent of 0232eb25 (updated)

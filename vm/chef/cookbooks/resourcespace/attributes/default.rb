@@ -1,5 +1,8 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 0232eb25 (updated)
 =======
 >>>>>>> parent of 0232eb25 (updated)
 # Copyright 2022 Google LLC
@@ -18,10 +21,14 @@
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 default['resourcespace']['version'] = '10.1'
 =======
 default['resourcespace']['version'] = '9.8'
 >>>>>>> parent of 1ba3f97b (updated)
+=======
+default['resourcespace']['version'] = '10.0'
+>>>>>>> parent of 0232eb25 (updated)
 =======
 default['resourcespace']['version'] = '10.0'
 >>>>>>> parent of 0232eb25 (updated)
@@ -41,4 +48,7 @@ default['resourcespace']['packages'] = ['antiword',
 default['php81']['distribution'] = 'bullseye'
 =======
                                        ]
+<<<<<<< HEAD
+>>>>>>> parent of 0232eb25 (updated)
+=======
 >>>>>>> parent of 0232eb25 (updated)
