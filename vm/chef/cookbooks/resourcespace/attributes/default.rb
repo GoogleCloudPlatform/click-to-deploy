@@ -13,7 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+<<<<<<< HEAD
 default['resourcespace']['version'] = '10.1'
+=======
+default['resourcespace']['version'] = '9.8'
+>>>>>>> parent of 1ba3f97b (updated)
 default['resourcespace']['db']['name'] = 'resourcespace'
 
 default['resourcespace']['packages'] = ['antiword',
