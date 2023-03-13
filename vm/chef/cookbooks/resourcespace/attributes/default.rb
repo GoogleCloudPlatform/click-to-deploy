@@ -45,6 +45,7 @@ default['resourcespace']['packages'] = ['antiword',
                                         'xpdf',
 <<<<<<< HEAD
                                         ]
+<<<<<<< HEAD
 default['php81']['distribution'] = 'bullseye'
 =======
                                        ]
@@ -52,3 +53,6 @@ default['php81']['distribution'] = 'bullseye'
 >>>>>>> parent of 0232eb25 (updated)
 =======
 >>>>>>> parent of 0232eb25 (updated)
+=======
+default['php81']['distribution'] = 'bullseye'
+>>>>>>> parent of b1fc3489 (default.rb modification)
