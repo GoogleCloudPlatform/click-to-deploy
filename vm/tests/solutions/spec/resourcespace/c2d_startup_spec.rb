@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ describe 'C2D startup scripts should exists' do
     it { should exist }
   end
 
-  describe file('/opt/c2d/scripts/03-resourcespace') do
+  describe file('/opt/c2d/scripts/02-resourcespace') do
     it { should exist }
   end
 end
