@@ -28,7 +28,7 @@ spec:
     - name: APP_INSTANCE_NAME
       value: {{ .Release.Name }}
     - name: APP_SERVICE
-      value: "{{ .Release.Namespace }}-neo4j-svc.{{ .Release.Namespace }}.svc.cluster.local"
+      value: "{{ .Release.Name }}-neo4j-svc.{{ .Release.Namespace }}.svc.cluster.local"
     # Credentials for neo4j root user.
     - name: ROOT_USERNAME
       valueFrom:
