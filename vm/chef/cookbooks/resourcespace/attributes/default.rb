@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 default['resourcespace']['version'] = '10.1'
 
 default['resourcespace']['db']['name'] = 'resourcespace'
