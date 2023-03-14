@@ -35,7 +35,7 @@ declare -a args=(
   --bucket "${INFLUXDB_BUCKET}" \
   --retention 0 \
   --token "${INFLUX_TOKEN}" \
-)``
+)
 
 if [[ "$(get_attribute_value "enable-https")" = True ]]; then
   chown root:influxdb /etc/ssl/private
@@ -57,4 +57,3 @@ influx setup "${args[@]}"
 wait_for_app
 
 echo "Installation complete."
-
