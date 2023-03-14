@@ -4,12 +4,14 @@ include ../var.Makefile
 include ../images.Makefile
 
 CHART_NAME := neo4j-ce
-APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 4.4
+# APP_ID can not start from neo4j-
+APP_ID ?= $(shell echo $(CHART_NAME) | sed 's/^neo4j-/neo4j/')
+
+TRACK ?= 5.5
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
-IMAGE_NEO4J_CE ?= $(SOURCE_REGISTRY)/neo4j4:$(TRACK)
+IMAGE_NEO4J_CE ?= $(SOURCE_REGISTRY)/neo4j5:$(TRACK)
 
 # Main image
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_NEO4J_CE))
