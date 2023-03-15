@@ -6,7 +6,6 @@ metadata:
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: mariadb-server
 spec:
-  podManagementPolicy: OrderedReady
   replicas: {{ .Values.db.replicas }}
   selector:
     matchLabels: *MariaDBDeploymentLabels
@@ -65,9 +64,6 @@ spec:
       - name: mariadb
         image: "{{ .Values.mariadb.image.repo }}:{{ .Values.mariadb.image.tag }}"
         imagePullPolicy: Always
-        command:
-          - /docker-entrypoint.sh
-          - mysqld
         ports:
         - containerPort: {{ .Values.service.port }}
           name: mysql
@@ -99,11 +95,7 @@ spec:
         livenessProbe:
           tcpSocket:
             port: mysql
-          initialDelaySeconds: 35
-          timeoutSeconds: 5
-        readinessProbe:
-          tcpSocket:
-            port: mysql
+          initialDelaySeconds: 30
           timeoutSeconds: 5
         volumeMounts:
         - name: config
