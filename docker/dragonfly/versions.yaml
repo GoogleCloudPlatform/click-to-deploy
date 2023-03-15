@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2022 Google c2d-LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,9 +33,9 @@ versions:
     - '2-debian11'
     - '2'
     - 'latest'
-    from: 'marketplace.gcr.io/google/debian11'
+    from: 'marketplace.gcr.io/google/c2d-debian11'
     packages: *dragonfly208
-    excludeTests: 
+    excludeTests:
     - tests/functional_tests/scheduler_test.yaml
     - tests/functional_tests/seed-peer_test.yaml
     - tests/functional_tests/dfget_test.yaml
@@ -52,9 +52,9 @@ versions:
     - '2-debian11'
     - '2'
     - 'latest'
-    from: 'marketplace.gcr.io/google/debian11'
+    from: 'marketplace.gcr.io/google/c2d-debian11'
     packages: *dragonfly208
-    excludeTests: 
+    excludeTests:
     - tests/functional_tests/manager_test.yaml
     - tests/functional_tests/seed-peer_test.yaml
     - tests/functional_tests/dfget_test.yaml
@@ -71,9 +71,9 @@ versions:
     - '2-debian11'
     - '2'
     - 'latest'
-    from: 'marketplace.gcr.io/google/debian11'
+    from: 'marketplace.gcr.io/google/c2d-debian11'
     packages: *dragonfly208
-    excludeTests: 
+    excludeTests:
     - tests/functional_tests/manager_test.yaml
     - tests/functional_tests/scheduler_test.yaml
     - tests/functional_tests/dfget_test.yaml
@@ -90,9 +90,9 @@ versions:
     - '2-debian11'
     - '2'
     - 'latest'
-    from: 'marketplace.gcr.io/google/debian11'
+    from: 'marketplace.gcr.io/google/c2d-debian11'
     packages: *dragonfly208
-    excludeTests: 
+    excludeTests:
     - tests/functional_tests/manager_test.yaml
     - tests/functional_tests/scheduler_test.yaml
     - tests/functional_tests/seed-peer_test.yaml

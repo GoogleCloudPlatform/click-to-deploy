@@ -6,20 +6,20 @@ include ../images.Makefile
 CHART_NAME := drupal
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 9.4
+TRACK ?= 10.0
 
 EXPORTER_TAG ?= exporter
 APACHE_EXPORTER_TAG ?= 0.10
-METRICS_EXPORTER_TAG ?= v0.5.1
+METRICS_EXPORTER_TAG ?= v0.11.1-gke.1
 
 VERIFY_WAIT_TIMEOUT = 1800
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
-IMAGE_DRUPAL ?= $(SOURCE_REGISTRY)/drupal9-php8-apache:$(TRACK)
+IMAGE_DRUPAL ?= $(SOURCE_REGISTRY)/drupal10-php8-apache:$(TRACK)
 IMAGE_MARIADB ?= $(SOURCE_REGISTRY)/mariadb10:latest
 IMAGE_APACHE_EXPORTER ?= $(SOURCE_REGISTRY)/apache-exporter0:$(APACHE_EXPORTER_TAG)
 IMAGE_MYSQLD_EXPORTER ?= $(SOURCE_REGISTRY)/mysql8:$(EXPORTER_TAG)
-IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+IMAGE_PROMETHEUS_TO_SD ?= gke.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 
 # Main image

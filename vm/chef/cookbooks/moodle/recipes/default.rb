@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,21 +17,21 @@ include_recipe 'apache2'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 
-include_recipe 'mysql'
-include_recipe 'php74'
-include_recipe 'php74::module_curl'
-include_recipe 'php74::module_gd'
-include_recipe 'php74::module_intl'
-include_recipe 'php74::module_libapache2'
-include_recipe 'php74::module_mbstring'
-include_recipe 'php74::module_mysql'
-include_recipe 'php74::module_soap'
-include_recipe 'php74::module_xml'
-include_recipe 'php74::module_xmlrpc'
-include_recipe 'php74::module_zip'
+include_recipe 'mysql::version-8.0-standalone'
+include_recipe 'php81'
+include_recipe 'php81::module_curl'
+include_recipe 'php81::module_gd'
+include_recipe 'php81::module_intl'
+include_recipe 'php81::module_libapache2'
+include_recipe 'php81::module_mbstring'
+include_recipe 'php81::module_mysql'
+include_recipe 'php81::module_soap'
+include_recipe 'php81::module_xml'
+include_recipe 'php81::module_xmlrpc'
+include_recipe 'php81::module_zip'
 
 remote_file '/tmp/moodle.tgz' do
-  source "https://download.moodle.org/download.php/direct/stable#{node['moodle']['version']}/moodle-latest-#{node['moodle']['version']}.tgz"
+  source "https://download.moodle.org/download.php/direct/stable#{node['moodle']['track']}/moodle-#{node['moodle']['version']}.tgz"
   action :create
 end
 
@@ -57,6 +57,15 @@ directory '/var/www/moodledata' do
   group node['moodle']['group']
   action :create
   mode '0755'
+end
+
+bash 'php configuration' do
+  user 'root'
+  code <<-EOH
+    sed -i 's/^;max_input_vars = .*/max_input_vars = 5000/' /etc/php/*/apache2/php.ini
+    sed -i 's/^;max_input_vars = .*/max_input_vars = 5000/' /etc/php/*/cli/php.ini
+    a2enmod rewrite
+  EOH
 end
 
 cron 'configure cron' do
