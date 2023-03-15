@@ -6,6 +6,7 @@ metadata:
     app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: mariadb-server
 spec:
+  podManagementPolicy: OrderedReady
   replicas: {{ .Values.db.replicas }}
   selector:
     matchLabels: *MariaDBDeploymentLabels
@@ -25,6 +26,10 @@ spec:
         - 'sh'
         - '-cx'
         - |
+          # check if it's not a master node
+          if hostname | grep -v -q -E 'galera-0$'; then
+            sleep 10s
+          fi
           cp /configmap/*.cnf /etc/mysql/conf.d
           cp /configmap/*.sh /opt/galera
           chmod +x /opt/galera/*
@@ -91,12 +96,11 @@ spec:
         livenessProbe:
           tcpSocket:
             port: mysql
-          initialDelaySeconds: 10
+          initialDelaySeconds: 35
           timeoutSeconds: 5
         readinessProbe:
           tcpSocket:
             port: mysql
-          initialDelaySeconds: 20
           timeoutSeconds: 5
         volumeMounts:
         - name: config
@@ -124,10 +128,6 @@ spec:
         - name: exporter
           containerPort: 9104
         livenessProbe:
-          httpGet:
-            path: /metrics
-            port: 9104
-        readinessProbe:
           httpGet:
             path: /metrics
             port: 9104
