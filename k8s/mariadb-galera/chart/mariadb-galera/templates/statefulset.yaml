@@ -65,6 +65,9 @@ spec:
       - name: mariadb
         image: "{{ .Values.mariadb.image.repo }}:{{ .Values.mariadb.image.tag }}"
         imagePullPolicy: Always
+        command:
+          - /docker-entrypoint.sh
+          - mysqld
         ports:
         - containerPort: {{ .Values.service.port }}
           name: mysql
