@@ -1,7 +1,7 @@
 {
   "license": "c2d-opencart",
-  "source_image_family": "debian-10",
+  "source_image_family": "debian-11",
   "chef": {
-    "run_list": [ "c2d-config", "opencart", "stackdriver" ]
+    "run_list": [ "c2d-config", "opencart", "google-cloud-ops-agent" ]
   }
 }

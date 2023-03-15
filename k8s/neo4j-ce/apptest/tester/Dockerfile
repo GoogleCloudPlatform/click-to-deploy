@@ -14,7 +14,7 @@ RUN set -x \
         openjdk-11-jdk \
     && rm -rf /var/lib/apt/lists/*
 
-RUN curl -L -o cypher-shell.deb https://github.com/neo4j/cypher-shell/releases/download/4.0.1/cypher-shell_4.0.1_all.deb \
+RUN curl -L -o cypher-shell.deb https://github.com/neo4j/cypher-shell/releases/download/4.2.2/cypher-shell_4.2.2_all.deb \
     && dpkg -i cypher-shell.deb \
     && rm -f cypher-shell.deb
 

@@ -33,11 +33,15 @@ describe 'C2D startup scripts should exists' do
     it { should exist }
   end
 
-  describe file('/opt/c2d/scripts/02-create-self-signed-certificate') do
+  describe file('/opt/c2d/scripts/02-mysql8-root-localhost-password-setup') do
     it { should exist }
   end
 
-  describe file('/opt/c2d/scripts/03-wordpress-multisite-setup') do
+  describe file('/opt/c2d/scripts/03-create-self-signed-certificate') do
+    it { should exist }
+  end
+
+  describe file('/opt/c2d/scripts/04-wordpress-multisite-setup') do
     it { should exist }
   end
 end
