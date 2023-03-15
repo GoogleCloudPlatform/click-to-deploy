@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ apt_update 'update' do
   action :update
 end
 
-include_recipe 'mysql'
+include_recipe 'mysql::version-8.0-standalone'
 include_recipe 'nginx'
 include_recipe 'nodejs::default_nodejs14'
 

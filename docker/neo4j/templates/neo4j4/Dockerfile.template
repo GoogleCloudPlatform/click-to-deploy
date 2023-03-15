@@ -17,18 +17,15 @@ FROM {{ .From }}
 {{- $dockerneo4j := index .Packages "dockerneo4j" }}
 
 ENV NEO4J_VERSION {{ $neo4j.Version }}
-ENV NEO4J_SHA256 {{ $neo4j.Sha256 }}
 ENV NEO4J_HOME  /var/lib/neo4j
 ENV NEO4J_EDITION community
 ENV NEO4J_TARBALL neo4j.tar.gz
 
 ENV TINI_VERSION v{{ $tini.Version }}
-ENV TINI_SHA256 {{ $tini.Sha256 }}
 
 # Required for neo4jlabs-plugins.json
 ENV DOCKER_NEO4J_VERSION {{ $dockerneo4j.Version }}
 ENV DOCKER_NEO4J_TARBALL docker-neo4j.tar.gz
-ENV DOCKER_NEO4J_SHA256  {{ $dockerneo4j.Sha256 }}
 
 ENV C2D_RELEASE {{ $neo4j.Version }}
 
@@ -41,14 +38,11 @@ RUN addgroup --system neo4j && adduser --system --no-create-home --home "${NEO4J
 RUN apt update \
     && apt install -y curl wget gosu jq \
     && curl -L --fail --silent --show-error "https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini" > /sbin/tini \
-    && echo "${TINI_SHA256}  /sbin/tini" | sha256sum -c --strict --quiet \
     && chmod +x /sbin/tini \
     && curl -o ${NEO4J_TARBALL} --fail --silent --show-error --location --remote-name https://dist.neo4j.org/neo4j-community-${NEO4J_VERSION}-unix.tar.gz \
-    && echo "${NEO4J_SHA256}  ${NEO4J_TARBALL}" | sha256sum -c --strict --quiet \
     && tar --extract --file ${NEO4J_TARBALL} --directory /var/lib \
     && mv /var/lib/neo4j-* "${NEO4J_HOME}" \
     && curl -o ${DOCKER_NEO4J_TARBALL} --fail --silent --show-error --location --remote-name https://github.com/neo4j/docker-neo4j/archive/refs/tags/neo4j-${DOCKER_NEO4J_VERSION}.tar.gz \
-    && echo "${DOCKER_NEO4J_SHA256}  ${DOCKER_NEO4J_TARBALL}" | sha256sum -c --strict --quiet \
     && tar --extract --file ${DOCKER_NEO4J_TARBALL} --directory /tmp \
     && mv /tmp/docker-neo4j*/docker-image-src/common/neo4jlabs-plugins.json /neo4jlabs-plugins.json \
     && rm ${DOCKER_NEO4J_TARBALL} \
@@ -85,7 +79,6 @@ RUN set -x \
       libc-bin \
       libgnutls30 \
       libtirpc3 \
-      libtasn1-6 \
       libtirpc-common \
       libssl1.1 \
       openssl \
