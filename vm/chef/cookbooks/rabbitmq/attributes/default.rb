@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ default['rabbitmq']['packages'] = [
   'rabbitmq-server',
 ]
 
-default['rabbitmq']['apt']['lsb_codename'] = 'buster'
+default['rabbitmq']['apt']['lsb_codename'] = 'bullseye'
 default['rabbitmq']['apt']['components'] = ['main']
 default['rabbitmq']['apt']['keyserver'] = 'hkps://keys.openpgp.org'
 default['rabbitmq']['apt']['uri'] = 'https://dl.cloudsmith.io/public/rabbitmq/rabbitmq-server/deb/debian'
