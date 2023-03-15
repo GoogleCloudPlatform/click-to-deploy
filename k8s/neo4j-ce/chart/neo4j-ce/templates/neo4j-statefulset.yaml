@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: "neo4j-ce"
 spec:
-  serviceName: "{{ .Release.Name }}-neo4j-svc"
+  serviceName: "{{ regexReplaceAll "^neo4j-" .Release.Name "neo4j" }}-neo4j-svc"
   replicas: 1
   selector:
     matchLabels: *Neo4jDeploymentLabels
