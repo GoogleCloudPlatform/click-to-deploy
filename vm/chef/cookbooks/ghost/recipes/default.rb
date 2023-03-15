@@ -18,7 +18,7 @@ apt_update 'update' do
   action :update
 end
 
-include_recipe 'mysql::version-8.0-standalone'
+include_recipe 'mysql::version-8.0-embedded'
 include_recipe 'nginx'
 include_recipe 'nodejs::default_nodejs14'
 
