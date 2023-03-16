@@ -29,7 +29,7 @@ C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)
-VERIFY_WAIT_TIMEOUT := 1600
+VERIFY_WAIT_TIMEOUT := 800
 NAME ?= $(APP_ID)-1
 
 APP_PARAMETERS ?= { \
