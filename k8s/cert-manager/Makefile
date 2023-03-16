@@ -14,7 +14,7 @@ TRACK ?= 1.11
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 IMAGE_MAIN ?= $(SOURCE_REGISTRY)/cert-manager1:$(TRACK)
-IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+IMAGE_PROMETHEUS_TO_SD ?= registry.k8s.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 # Main image
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_MAIN))

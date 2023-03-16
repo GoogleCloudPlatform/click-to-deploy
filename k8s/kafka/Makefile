@@ -16,7 +16,7 @@ METRICS_EXPORTER_TAG ?= v0.5.1
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 IMAGE_KAFKA ?= $(SOURCE_REGISTRY)/kafka3:$(TRACK)
 IMAGE_EXPORTER ?= $(SOURCE_REGISTRY)/kafka-exporter1:$(EXPORTER_TRACK)
-IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+IMAGE_PROMETHEUS_TO_SD ?= registry.k8s.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 IMAGE_ZOOKEEPER ?= $(SOURCE_REGISTRY)/zookeeper3:$(ZK_TAG)
 
 # Main image

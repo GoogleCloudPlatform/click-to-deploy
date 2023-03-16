@@ -12,7 +12,7 @@ METRICS_EXPORTER_TAG ?= v0.5.1
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 IMAGE_MEMCACHED ?= $(SOURCE_REGISTRY)/memcached1:$(TRACK)
-IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+IMAGE_PROMETHEUS_TO_SD ?= registry.k8s.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 
 # Main image

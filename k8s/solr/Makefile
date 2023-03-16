@@ -14,7 +14,7 @@ METRICS_EXPORTER_TAG ?= v0.5.1
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 IMAGE_SOLR ?= $(SOURCE_REGISTRY)/solr9:$(TRACK)
-IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+IMAGE_PROMETHEUS_TO_SD ?= registry.k8s.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 IMAGE_ZOOKEEPER ?= $(SOURCE_REGISTRY)/zookeeper3:$(ZK_TAG)
 
 # Main image

@@ -17,7 +17,7 @@ SOURCE_REGISTRY ?= marketplace.gcr.io/google
 IMAGE_MAIN ?= $(SOURCE_REGISTRY)/redis7:$(TRACK)
 IMAGE_HAPROXY = $(SOURCE_REGISTRY)/haproxy2:2
 IMAGE_EXPORTER = $(SOURCE_REGISTRY)/redis-exporter1:$(REDIS_EXPORTER_TAG)
-IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+IMAGE_PROMETHEUS_TO_SD ?= registry.k8s.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 # Main image
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_MAIN))

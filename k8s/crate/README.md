@@ -1,6 +1,6 @@
 # Overview
 
-CrateDB is a distributed SQL database that makes it simple to store and analyze massive amounts of data in real-time. 
+CrateDB is a distributed SQL database that makes it simple to store and analyze massive amounts of data in real-time.
 CrateDB offers the benefits of an SQL database and the scalability and flexibility typically associated with NoSQL databases.
 
 ## About Google Click to Deploy
@@ -126,7 +126,7 @@ Configure the container images:
 
 ```shell
 export IMAGE_CRATE=marketplace.gcr.io/google/crate5
-export IMAGE_METRICS_EXPORTER=k8s.gcr.io/prometheus-to-sd:${METRICS_EXPORTER_TAG}
+export IMAGE_METRICS_EXPORTER=registry.k8s.io/prometheus-to-sd:${METRICS_EXPORTER_TAG}
 ```
 
 By default, Crate statefulset has 3 replicas, but you can choose to set the number of replicas.
@@ -251,7 +251,7 @@ echo "$UI_IP"
 
 ## Prometheus metrics
 
-The app can be configured to expose crate metrics 
+The app can be configured to expose crate metrics
 in the [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
 
 ### Configuring Prometheus to collect the metrics
@@ -317,8 +317,8 @@ scripts/backup.sh --app ${APP_INSTANCE_NAME} --namespace ${NAMESPACE} --table ${
 
 ### Restore your database
 
-To restore the database, you should use the script and restore dumped tables. 
-Put all jsons to the `/tmp/crate` folder. 
+To restore the database, you should use the script and restore dumped tables.
+Put all jsons to the `/tmp/crate` folder.
 Use the following commands:
 
 ```shell
@@ -399,4 +399,3 @@ by using this command:
 ```shell
 gcloud container clusters delete "${CLUSTER}" --zone "${ZONE}"
 ```
-

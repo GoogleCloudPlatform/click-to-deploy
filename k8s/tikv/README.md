@@ -1,7 +1,7 @@
 # Overview
 
-TiKV is an open source distributed Key-Value database which is based on the design of Google Spanner and HBase, 
-but it is simpler without dependency on any distributed file system. 
+TiKV is an open source distributed Key-Value database which is based on the design of Google Spanner and HBase,
+but it is simpler without dependency on any distributed file system.
 It has primary features including Geo-Replication, Horizontal scalability, Consistent distributed transactions, Coprocessor support.
 
 ## About Google Click to Deploy
@@ -127,7 +127,7 @@ Configure the container images:
 
 ```shell
 export IMAGE_TIKV=marketplace.gcr.io/google/tikv5
-export IMAGE_METRICS_EXPORTER=k8s.gcr.io/prometheus-to-sd:${METRICS_EXPORTER_TAG}
+export IMAGE_METRICS_EXPORTER=registry.k8s.io/prometheus-to-sd:${METRICS_EXPORTER_TAG}
 ```
 
 By default, TiKV deployment has 3 replica, but you can choose to set the number of replicas.
@@ -209,7 +209,7 @@ echo "$PD_IP"
 
 ## Prometheus metrics
 
-The app can be configured to expose PD and TiKV metrics 
+The app can be configured to expose PD and TiKV metrics
 in the [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
 
 ### Configuring Prometheus to collect the metrics
@@ -357,4 +357,3 @@ by using this command:
 ```shell
 gcloud container clusters delete "${CLUSTER}" --zone "${ZONE}"
 ```
-

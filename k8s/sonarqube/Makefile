@@ -18,7 +18,7 @@ SOURCE_REGISTRY ?= marketplace.gcr.io/google
 IMAGE_SONARQUBE ?= $(SOURCE_REGISTRY)/sonarqube8:$(TRACK)
 IMAGE_POSTGRESQL ?= $(SOURCE_REGISTRY)/postgresql10:$(POSTGRESQL_TAG)
 IMAGE_POSTGRESQL_EXPORTER ?= $(SOURCE_REGISTRY)/postgresql-exporter0:$(POSTGRESQL_EXPORTER_TAG)
-IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+IMAGE_PROMETHEUS_TO_SD ?= registry.k8s.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 
 # Main image

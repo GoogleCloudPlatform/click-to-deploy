@@ -14,9 +14,9 @@ METRICS_EXPORTER_TAG ?= v0.5.1
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 IMAGE_WORDPRESS ?= $(SOURCE_REGISTRY)/wordpress6-php7-apache:$(TRACK)
 IMAGE_APACHE_EXPORTER ?= $(SOURCE_REGISTRY)/apache-exporter0:0.10
-IMAGE_MYSQL ?= $(SOURCE_REGISTRY)/mariadb10:latest 
+IMAGE_MYSQL ?= $(SOURCE_REGISTRY)/mariadb10:latest
 IMAGE_MYSQLD_EXPORTER ?= $(SOURCE_REGISTRY)/mysql8:exporter
-IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+IMAGE_PROMETHEUS_TO_SD ?= registry.k8s.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 
 # Main image

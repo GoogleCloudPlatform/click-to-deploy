@@ -19,7 +19,7 @@ IMAGE_TIKV ?= $(SOURCE_REGISTRY)/tikv5:$(TRACK)
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_TIKV))
 
 # Prometheus-to-SD
-IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+IMAGE_PROMETHEUS_TO_SD ?= registry.k8s.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 # List of images used in application
 ADDITIONAL_IMAGES := prometheus-to-sd

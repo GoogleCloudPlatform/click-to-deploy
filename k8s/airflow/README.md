@@ -142,7 +142,7 @@ Configure the container images:
 export IMAGE_AIRFLOW=marketplace.gcr.io/google/airflow2
 export IMAGE_POSTGRESQL=marketplace.gcr.io/google/postgresql13
 export IMAGE_NFS=marketplace.gcr.io/google/nfs-server1
-export IMAGE_METRICS_EXPORTER=k8s.gcr.io/prometheus-to-sd:${METRICS_EXPORTER_TAG}
+export IMAGE_METRICS_EXPORTER=registry.k8s.io/prometheus-to-sd:${METRICS_EXPORTER_TAG}
 ```
 
 By default, each deployment has 1 replica, but you can choose to set the
@@ -256,8 +256,8 @@ echo "http://${SERVICE_IP}:8080/"
 
 ## Prometheus metrics
 
-The app can be configured to expose its metrics through the 
-[Airflow Exporter](https://github.com/epoch8/airflow-exporter) 
+The app can be configured to expose its metrics through the
+[Airflow Exporter](https://github.com/epoch8/airflow-exporter)
 in the [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
 
 You can access the Airflow metrics at `[AIRFLOW-SERVICE]:8080/admin/metrics`, where `[AIRFLOW-SERVICE]` is the
@@ -384,7 +384,7 @@ psql -U airflow -h 127.0.0.1 -p 5432 airflow > psql-backup.sql
 ```
 
 2. Use the following command to copy the contents of your local `dags` folder to `$AIRFLOW_HOME/dags` folder in the NFS Server Pod:
-   
+
 ```shell
 kubectl --namespace $NAMESPACE cp dags $(kubectl get pod -l component=nfs-server -o jsonpath={..metadata.name}):/exports/dags
 ```

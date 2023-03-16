@@ -17,7 +17,7 @@ SOURCE_REGISTRY ?= marketplace.gcr.io/google
 IMAGE_GITEA ?= $(SOURCE_REGISTRY)/gitea1:$(TRACK)
 IMAGE_POSTGRESQL ?= $(SOURCE_REGISTRY)/postgresql11:$(POSTGRESQL_TAG)
 IMAGE_POSTGRESQL_EXPORTER ?= $(SOURCE_REGISTRY)/postgresql-exporter0:$(EXPORTER_TAG)
-IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+IMAGE_PROMETHEUS_TO_SD ?= registry.k8s.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 # Main image
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_GITEA))

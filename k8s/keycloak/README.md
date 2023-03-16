@@ -1,6 +1,6 @@
 # keycloak
 
-Keycloak is an open source software product to allow single sign-on with 
+Keycloak is an open source software product to allow single sign-on with
 Identity and Access Management aimed at modern applications and services.
 
 For more information, visit the Keycloak [official website](https://www.keycloak.org/).
@@ -139,14 +139,14 @@ Configure the container images:
 ```shell
 export IMAGE_KEYCLOAK=marketplace.gcr.io/google/keycloak18
 export IMAGE_POSTGRESQL=marketplace.gcr.io/google/postgresql13
-export IMAGE_METRICS_EXPORTER=k8s.gcr.io/prometheus-to-sd:${METRICS_EXPORTER_TAG}
+export IMAGE_METRICS_EXPORTER=registry.k8s.io/prometheus-to-sd:${METRICS_EXPORTER_TAG}
 ```
 
 By default, Keycloak deployment has 1 replica, but you can choose to set the
 number of replicas for Keycloak webserver.
 
 ```shell
-export KEYCLOAK_REPLICAS=1 
+export KEYCLOAK_REPLICAS=1
 ```
 
 Set or generate the UI password:
@@ -281,10 +281,10 @@ echo "http://${SERVICE_IP}:8080/"
 
 ## Prometheus metrics
 
-The app configured to expose its metrics in the 
+The app configured to expose its metrics in the
 [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
 
-You can access the Keycloak metrics at `[KEYCLOAK-SERVICE]:8080/admin/metrics`, where `[KEYCLOAK-SERVICE]` is the 
+You can access the Keycloak metrics at `[KEYCLOAK-SERVICE]:8080/admin/metrics`, where `[KEYCLOAK-SERVICE]` is the
 [Kubernetes Service](https://kubernetes.io/docs/concepts/services-networking/service/) `${APP_INSTANCE_NAME}-keycloak-svc`.
 
 ### Configuring Prometheus to collect the metrics
@@ -457,4 +457,3 @@ by using this command:
 ```shell
 gcloud container clusters delete "${CLUSTER}" --zone "${ZONE}"
 ```
-

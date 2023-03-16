@@ -26,7 +26,7 @@ IMAGE_POSTGRESQL ?= $(SOURCE_REGISTRY)/postgresql13:$(POSTGRESQL_TRACK)
 IMAGE_NFS ?=  $(SOURCE_REGISTRY)/nfs-server1:$(NFS_TRACK)
 
 # Prometheus-to-SD
-IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+IMAGE_PROMETHEUS_TO_SD ?= registry.k8s.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 # Main image
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_GOGS))

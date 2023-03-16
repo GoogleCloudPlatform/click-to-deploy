@@ -18,7 +18,7 @@ SOURCE_REGISTRY ?= marketplace.gcr.io/google
 IMAGE_ARGOWORKFLOWS ?= $(SOURCE_REGISTRY)/argo-workflows3:$(TRACK)
 IMAGE_POSTGRESQL ?= $(SOURCE_REGISTRY)/postgresql13
 IMAGE_PG_EXPORTER ?= $(SOURCE_REGISTRY)/postgresql-exporter0:$(POSTGRESQL_EXPORTER_TAG)
-IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+IMAGE_PROMETHEUS_TO_SD ?= registry.k8s.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 # Main image
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_ARGOWORKFLOWS))

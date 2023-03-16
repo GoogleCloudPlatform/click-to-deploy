@@ -15,7 +15,7 @@ SOURCE_REGISTRY ?= marketplace.gcr.io/google
 IMAGE_MARIADB ?= $(SOURCE_REGISTRY)/mariadb10:$(TRACK)
 IMAGE_MYSQLD_EXPORTER ?= $(SOURCE_REGISTRY)/mysql8:exporter
 IMAGE_PEER_FINDER ?= $(SOURCE_REGISTRY)/peer-finder0:$(PEER_FINDER_TAG)
-IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+IMAGE_PROMETHEUS_TO_SD ?= registry.k8s.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 
 # Main image

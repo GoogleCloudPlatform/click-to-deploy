@@ -25,7 +25,7 @@ IMAGE_POSTGRESQL ?= $(SOURCE_REGISTRY)/postgresql13:$(POSTGRESQL_TRACK)
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_KEYCLOAK))
 
 # Prometheus-to-SD
-IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+IMAGE_PROMETHEUS_TO_SD ?= registry.k8s.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 # List of images used in application
 ADDITIONAL_IMAGES := postgresql prometheus-to-sd

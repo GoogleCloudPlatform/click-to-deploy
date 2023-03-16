@@ -13,7 +13,7 @@ METRICS_EXPORTER_TAG ?= v0.5.1
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 IMAGE_HAZELCAST ?= $(SOURCE_REGISTRY)/hazelcast5:$(TRACK)
 IMAGE_MANCENTER ?= $(SOURCE_REGISTRY)/hazelcast-mc5:$(TRACK_MC)
-IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+IMAGE_PROMETHEUS_TO_SD ?= registry.k8s.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 # Main image
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_HAZELCAST))

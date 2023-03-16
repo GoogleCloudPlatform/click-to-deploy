@@ -1830,9 +1830,9 @@
     gke.gcr.io/gke-metadata-server,
     gke.gcr.io/netd-amd64,
     gcr.io/google-containers/prometheus-to-sd,
-    k8s.gcr.io/ip-masq-agent-amd64,
-    k8s.gcr.io/kube-proxy,
-    k8s.gcr.io/prometheus-to-sd,
+    registry.k8s.io/ip-masq-agent-amd64,
+    registry.k8s.io/kube-proxy,
+    registry.k8s.io/prometheus-to-sd,
     public.ecr.aws/falcosecurity/falco,
     quay.io/calico/node,
     sysdig/sysdig,
@@ -2834,8 +2834,8 @@
 
 - list: user_known_k8s_ns_kube_system_images
   items: [
-      k8s.gcr.io/fluentd-gcp-scaler,
-      k8s.gcr.io/node-problem-detector/node-problem-detector
+      registry.k8s.io/fluentd-gcp-scaler,
+      registry.k8s.io/node-problem-detector/node-problem-detector
   ]
 
 - list: user_known_k8s_images
@@ -2844,7 +2844,7 @@
   ]
 
 # Whitelist for known docker client binaries run inside container
-# - k8s.gcr.io/fluentd-gcp-scaler in GCP/GKE
+# - registry.k8s.io/fluentd-gcp-scaler in GCP/GKE
 - macro: user_known_k8s_client_container
   condition: >
     (k8s.ns.name="kube-system" and container.image.repository in (user_known_k8s_ns_kube_system_images)) or container.image.repository in (user_known_k8s_images)

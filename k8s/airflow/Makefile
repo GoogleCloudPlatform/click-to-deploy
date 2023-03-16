@@ -29,7 +29,7 @@ IMAGE_NFS ?= $(SOURCE_REGISTRY)/nfs-server1:$(NFS_TRACK)
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_AIRFLOW))
 
 # Prometheus-to-SD
-IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+IMAGE_PROMETHEUS_TO_SD ?= registry.k8s.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 # List of images used in application
 ADDITIONAL_IMAGES := postgresql nfs prometheus-to-sd

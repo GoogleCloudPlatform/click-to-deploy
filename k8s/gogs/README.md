@@ -140,7 +140,7 @@ Configure the container images:
 export IMAGE_GOGS=marketplace.gcr.io/google/gogs0
 export IMAGE_POSTGRESQL=marketplace.gcr.io/google/postgresql13
 export IMAGE_NFS=marketplace.gcr.io/google/nfs-server1
-export IMAGE_METRICS_EXPORTER=k8s.gcr.io/prometheus-to-sd:${METRICS_EXPORTER_TAG}
+export IMAGE_METRICS_EXPORTER=registry.k8s.io/prometheus-to-sd:${METRICS_EXPORTER_TAG}
 ```
 
 Generate a random DB password:
@@ -159,7 +159,7 @@ By default, Gogs deployment has 1 replica, but you can choose to set the
 number of replicas for Gogs webserver.
 
 ```shell
-export GOGS_REPLICAS=1 
+export GOGS_REPLICAS=1
 ```
 
 (Optional) Expose the Service externally and configure Ingress:
@@ -255,7 +255,7 @@ echo "http://${SERVICE_IP}:3000/"
 
 ## Prometheus metrics
 
-The app is configured to expose metrics 
+The app is configured to expose metrics
 in the [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
 
 ### Configuring Prometheus to collect the metrics
@@ -445,4 +445,3 @@ by using this command:
 ```shell
 gcloud container clusters delete "${CLUSTER}" --zone "${ZONE}"
 ```
-
