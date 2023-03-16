@@ -14,7 +14,7 @@
 
 node.override['postgresql']['standalone']['allow_external'] = false
 
-include_recipe 'postgresql::standalone_buster'
+include_recipe 'postgresql::standalone_bullseye'
 include_recipe 'nginx::embedded'
 
 package 'Install packages' do
