@@ -5,8 +5,7 @@ include ../images.Makefile
 
 CHART_NAME := neo4j-ce
 
-# APP_ID can not start from neo4j-
-APP_ID ?= $(shell echo $(CHART_NAME) | sed 's/^neo4j-/neo4j/')
+APP_ID ?= $(CHART_NAME)
 
 TRACK ?= 5.5
 
