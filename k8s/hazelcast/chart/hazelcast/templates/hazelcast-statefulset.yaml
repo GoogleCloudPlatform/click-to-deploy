@@ -43,20 +43,20 @@ spec:
           httpGet:
             path: /hazelcast/health/node-state
             port: 5701
-          initialDelaySeconds: 30
+          initialDelaySeconds: 300
           periodSeconds: 10
-          timeoutSeconds: 10
+          timeoutSeconds: 30
           successThreshold: 1
-          failureThreshold: 20
+          failureThreshold: 10
         readinessProbe:
           httpGet:
             path: /hazelcast/health/ready
             port: 5701
           initialDelaySeconds: 30
           periodSeconds: 10
-          timeoutSeconds: 20
+          timeoutSeconds: 30
           successThreshold: 1
-          failureThreshold: 20
+          failureThreshold: 10
         volumeMounts:
         - name: {{ .Release.Name }}-pvc
           mountPath: /custom_folder

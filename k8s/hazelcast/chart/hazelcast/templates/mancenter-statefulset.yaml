@@ -41,7 +41,7 @@ spec:
           periodSeconds: 10
           timeoutSeconds: 10
           successThreshold: 1
-          failureThreshold: 10
+          failureThreshold: 20
         readinessProbe:
           tcpSocket:
             port: 8080
