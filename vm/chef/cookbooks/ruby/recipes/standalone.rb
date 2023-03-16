@@ -14,6 +14,6 @@
 
 include_recipe 'apache2'
 include_recipe 'apache2::security-config'
-include_recipe 'mysql::version-8.0-standalone'
+include_recipe 'mysql::version-8.0-embedded'
 include_recipe 'git'
 include_recipe 'ruby::default'
