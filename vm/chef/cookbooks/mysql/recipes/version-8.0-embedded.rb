@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,13 +11,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+# This recipe creates a MySQL VM that is configured to listen on localhost
+# and use password authentication for the 'root' user account
 
-require 'spec_helper'
+node.override['mysql']['log_bin_trust_function_creators'] = '1'
 
-# example output
-# mysqld --version
-# mysqld  Ver 5.7.25 for Linux on x86_64 (MySQL Community Server (GPL))
+include_recipe 'mysql::version-8.0'
 
-describe command('mysqld --version') do
-  its(:stdout) { should match /mysqld  Ver 5\.7\..* .MySQL Community Server .GPL../ }
-end
+c2d_startup_script 'mysql8-root-localhost-password-setup'
