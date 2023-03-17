@@ -20,7 +20,7 @@ include_recipe 'php74::module_xmlrpc'
 include_recipe 'composer::composer2'
 
 include_recipe 'git'
-include_recipe 'mysql::version-8.0-standalone'
+include_recipe 'mysql::version-8.0-embedded'
 
 include_recipe 'apache2'
 include_recipe 'apache2::ipv4-listen'

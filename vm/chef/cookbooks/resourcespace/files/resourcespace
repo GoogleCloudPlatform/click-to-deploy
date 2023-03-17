@@ -19,6 +19,7 @@ source /opt/c2d/resourcespace-utils || exit 1
 readonly app_name="$(get_attribute_value "app_name")"
 
 readonly mysql_db="resourcespace"
+readonly mysql_root_password="$(get_attribute_value "mysql-root-password")"
 readonly mysql_username="$(get_attribute_value "mysql_username")"
 readonly mysql_password="$(get_attribute_value "mysql_password")"
 readonly mysql_ro_username="$(get_attribute_value "mysql_ro_username")"
@@ -36,8 +37,8 @@ echo "Awaiting for MySQL be up..."
 wait_for_port "localhost" "3306"
 
 echo "Setting up MySQL users..."
-setup_mysql_user "${mysql_db}" "${mysql_username}" "${mysql_password}"
-setup_mysql_user "${mysql_db}" "${mysql_ro_username}" "${mysql_ro_password}"
+setup_mysql_user "${mysql_db}" "${mysql_username}" "${mysql_password}" "${mysql_root_password}"
+setup_mysql_user "${mysql_db}" "${mysql_ro_username}" "${mysql_ro_password}" "${mysql_root_password}"
 
 echo "Fill installation form..."
 readonly localhost_install_url="http://localhost/pages/setup.php"
