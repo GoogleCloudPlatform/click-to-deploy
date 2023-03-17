@@ -20,7 +20,7 @@ include_recipe 'apache2'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 
-include_recipe 'mysql::version-8.0-standalone'
+include_recipe 'mysql::version-8.0-embedded'
 
 include_recipe 'php80::default_buster'
 include_recipe 'php80::module_curl'

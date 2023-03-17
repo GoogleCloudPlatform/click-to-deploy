@@ -17,7 +17,7 @@
 include_recipe 'apache2'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
-include_recipe 'mysql::version-8.0-standalone'
+include_recipe 'mysql::version-8.0-embedded'
 
 # Reference: https://docs.opencart.com/requirements/
 include_recipe 'php81'
