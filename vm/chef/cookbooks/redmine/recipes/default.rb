@@ -17,7 +17,7 @@ ENV['DEBIAN_FRONTEND'] = 'noninteractive'
 include_recipe 'apache2'
 include_recipe 'apache2::mod-passenger'
 include_recipe 'apache2::security-config'
-include_recipe 'mysql'
+include_recipe 'mysql::version-8.0'
 include_recipe 'rvm'
 
 apt_update 'update' do
