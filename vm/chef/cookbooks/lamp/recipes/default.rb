@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+node.override['php81']['distribution'] = 'bullseye'
+
 include_recipe 'apache2'
 include_recipe 'apache2::security-config'
 include_recipe 'apache2::mod-rewrite'
