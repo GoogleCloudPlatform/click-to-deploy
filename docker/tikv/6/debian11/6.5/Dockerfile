@@ -1,8 +1,8 @@
-FROM marketplace.gcr.io/google/debian11:latest as builder
+FROM marketplace.gcr.io/google/c2d-debian11:latest as builder
 
 RUN apt-get update \
     && apt-get install curl perl build-essential cmake git unzip -y --no-install-recommends
-ENV GOLANG_VERSION=1.19
+ENV GOLANG_VERSION=1.20
 RUN curl -L https://golang.org/dl/go${GOLANG_VERSION}.linux-amd64.tar.gz -o /golang.tar.gz &&tar -xzf /golang.tar.gz -C /usr/local
 ENV PATH /usr/local/go/bin:$PATH
 
@@ -12,7 +12,7 @@ RUN cd / && \
     chmod +x jq
 
 #build pd
-ENV PD_APP_VERSION=6.1.4
+ENV PD_APP_VERSION=6.5.1
 
 RUN mkdir -p /go/src/github.com/tikv/pd
 WORKDIR /go/src/github.com/tikv/pd
@@ -36,7 +36,7 @@ RUN curl -LO "https://github.com/protocolbuffers/protobuf/releases/download/v3.1
 RUN unzip protoc-3.15.8-linux-x86_64.zip -d /usr/local/
 ENV PATH /usr/local/bin/:$PATH
 
-ENV TIKV_APP_VERSION=6.1.4
+ENV TIKV_APP_VERSION=6.5.1
 
 #build tikv
 WORKDIR /tikv
@@ -60,7 +60,7 @@ RUN make build_dist_release
 #copy inferno license to /usr/src
 RUN cp -r $(find /root/.cargo/registry -name "inferno-*" -type d) /usr/src/
 
-FROM marketplace.gcr.io/google/debian11:latest
+FROM marketplace.gcr.io/google/c2d-debian11:latest
 
 ENV PD_ENDPOINT 127.0.0.1:2379
 
@@ -83,6 +83,6 @@ COPY --from=builder /jq /usr/local/bin/jq
 COPY --from=builder /tikvtest/tikvtest /tikvtest
 
 EXPOSE 2379 2380 20160 20180
-ENV C2D_RELEASE 6.1.4
+ENV C2D_RELEASE 6.5.1
 
 CMD ["/tikv-server"]
