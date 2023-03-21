@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2022 Google Inc.
+# Copyright 2023 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ declare -r df_admin_password="$(get_attribute_value "dreamfactory-admin-password
 declare -r df_admin_firstname="Administrator"
 declare -r df_admin_lastname="User"
 declare -r nginx_usergroup="www-data:www-data"
+declare -r mysql_root_password="$(get_attribute_value "mysql-root-password")"
 
 echo "Stopping Webserver..."
 systemctl stop nginx
@@ -39,7 +40,7 @@ composer update --no-install
 composer install -n --no-dev
 
 echo "Create database user..."
-setup_mysql_user "${df_db_user}" "${df_db_password}" "${df_db_name}"
+setup_mysql_user "${df_db_user}" "${df_db_password}" "${df_db_name}" "${mysql_root_password}"
 
 echo "Creating configuration file..."
 create_config_file \
