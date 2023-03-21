@@ -23,7 +23,7 @@ declare -r redmine_admin_password="$(get_attribute_value "redmine-admin-password
 # Update Redmine's dedicated user password.
 mysql -u root -e "SET PASSWORD FOR 'redmineuser'@'localhost' = '${mysql_redmineuser_password}'";
 mysql -u root -e "GRANT ALL PRIVILEGES ON redmine.* TO 'redmineuser'@'localhost'";
-mysql -u root -e "FLUSH PRIVILEGES"
+mysql -u root -e "FLUSH PRIVILEGES";
 
 cd /opt/redmine
 
