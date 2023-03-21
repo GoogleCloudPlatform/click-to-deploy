@@ -22,16 +22,16 @@ cloudbuild:
   enable_parallel: false
 versions:
 - dir: 1/debian11/1.18
-  from: marketplace.gcr.io/google/debian11
+  from: marketplace.gcr.io/google/c2d-debian11
   packages:
     gitea:
       version: '1.18'
   repo: gitea1
   tags:
-  - 1.18.3-debian11
+  - 1.18.5-debian11
   - 1.18-debian11
   - 1-debian11
-  - 1.18.3
+  - 1.18.5
   - '1.18'
   - '1'
   - latest

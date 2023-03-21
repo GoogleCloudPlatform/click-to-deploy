@@ -1,4 +1,5 @@
-# Copyright 2022 Google LLC
+---
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: autoscaling/v2beta2
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: activator
@@ -20,11 +21,10 @@ metadata:
   labels:
     app.kubernetes.io/component: activator
     app.kubernetes.io/name: knative-serving
-    app.kubernetes.io/version: "1.2.0"
-    serving.knative.dev/release: "v1.2.0"
+    app.kubernetes.io/version: "1.9.0"
 spec:
   minReplicas: 1
-  maxReplicas: 5
+  maxReplicas: 20
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
@@ -49,16 +49,14 @@ metadata:
   labels:
     app.kubernetes.io/component: activator
     app.kubernetes.io/name: knative-serving
-    app.kubernetes.io/version: "1.2.0"
-    serving.knative.dev/release: "v1.2.0"
+    app.kubernetes.io/version: "1.9.0"
 spec:
   minAvailable: 80%
   selector:
     matchLabels:
       app: activator
-
 ---
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -79,9 +77,8 @@ metadata:
   namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/component: activator
-    app.kubernetes.io/version: "1.2.0"
+    app.kubernetes.io/version: "1.9.0"
     app.kubernetes.io/name: knative-serving
-    serving.knative.dev/release: "v1.2.0"
 spec:
   selector:
     matchLabels:
@@ -96,8 +93,7 @@ spec:
         role: activator
         app.kubernetes.io/component: activator
         app.kubernetes.io/name: knative-serving
-        app.kubernetes.io/version: "1.2.0"
-        serving.knative.dev/release: "v1.2.0"
+        app.kubernetes.io/version: "1.9.0"
     spec:
       serviceAccountName: controller
       containers:
@@ -143,7 +139,9 @@ spec:
             runAsNonRoot: true
             capabilities:
               drop:
-                - all
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
           ports:
             - name: metrics
               containerPort: 9090
@@ -159,13 +157,15 @@ spec:
               httpHeaders:
                 - name: k-kubelet-probe
                   value: "activator"
-            failureThreshold: 12
+            periodSeconds: 5
+            failureThreshold: 5
           livenessProbe:
             httpGet:
               port: 8012
               httpHeaders:
                 - name: k-kubelet-probe
                   value: "activator"
+            periodSeconds: 10
             failureThreshold: 12
             initialDelaySeconds: 15
       # The activator (often) sits on the dataplane, and may proxy long (e.g.
@@ -185,9 +185,8 @@ metadata:
   labels:
     app: activator
     app.kubernetes.io/component: activator
-    app.kubernetes.io/version: "1.2.0"
+    app.kubernetes.io/version: "1.9.0"
     app.kubernetes.io/name: knative-serving
-    serving.knative.dev/release: "v1.2.0"
 spec:
   selector:
     app: activator
@@ -205,4 +204,7 @@ spec:
     - name: http2
       port: 81
       targetPort: 8013
+    - name: https
+      port: 443
+      targetPort: 8112
   type: ClusterIP

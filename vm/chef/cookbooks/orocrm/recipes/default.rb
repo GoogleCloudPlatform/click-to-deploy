@@ -19,7 +19,7 @@ include_recipe 'apache2::mod_headers'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 
-include_recipe 'mysql::version-8.0-standalone'
+include_recipe 'mysql::version-8.0-embedded'
 
 include_recipe 'git'
 

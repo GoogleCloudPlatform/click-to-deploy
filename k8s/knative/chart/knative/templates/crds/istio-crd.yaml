@@ -1,3 +1,4 @@
+---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
@@ -9,6 +10,7 @@ metadata:
     heritage: Tiller
     istio: security
     release: istio
+    knative.dev/crd-install: "true"
   name: authorizationpolicies.security.istio.io
 spec:
   group: security.istio.io
@@ -214,6 +216,7 @@ metadata:
     chart: istio
     heritage: Tiller
     release: istio
+    knative.dev/crd-install: "true"
   name: destinationrules.networking.istio.io
 spec:
   group: networking.istio.io
@@ -279,11 +282,10 @@ spec:
                                       - UPGRADE
                                     type: string
                                   http1MaxPendingRequests:
-                                    description: Maximum number of pending HTTP requests to a destination.
                                     format: int32
                                     type: integer
                                   http2MaxRequests:
-                                    description: Maximum number of requests to a backend.
+                                    description: Maximum number of active requests to a destination.
                                     format: int32
                                     type: integer
                                   idleTimeout:
@@ -305,6 +307,9 @@ spec:
                                 properties:
                                   connectTimeout:
                                     description: TCP connection timeout.
+                                    type: string
+                                  maxConnectionDuration:
+                                    description: The maximum duration of a connection.
                                     type: string
                                   maxConnections:
                                     description: Maximum number of HTTP1 /TCP connections to a destination host.
@@ -332,50 +337,78 @@ spec:
                                         - simple
                                     - properties:
                                         consistentHash:
-                                          oneOf:
-                                            - not:
-                                                anyOf:
-                                                  - required:
-                                                      - httpHeaderName
-                                                  - required:
-                                                      - httpCookie
-                                                  - required:
-                                                      - useSourceIp
-                                                  - required:
-                                                      - httpQueryParameterName
-                                            - required:
-                                                - httpHeaderName
-                                            - required:
-                                                - httpCookie
-                                            - required:
-                                                - useSourceIp
-                                            - required:
-                                                - httpQueryParameterName
+                                          allOf:
+                                            - oneOf:
+                                                - not:
+                                                    anyOf:
+                                                      - required:
+                                                          - httpHeaderName
+                                                      - required:
+                                                          - httpCookie
+                                                      - required:
+                                                          - useSourceIp
+                                                      - required:
+                                                          - httpQueryParameterName
+                                                - required:
+                                                    - httpHeaderName
+                                                - required:
+                                                    - httpCookie
+                                                - required:
+                                                    - useSourceIp
+                                                - required:
+                                                    - httpQueryParameterName
+                                            - oneOf:
+                                                - not:
+                                                    anyOf:
+                                                      - required:
+                                                          - ringHash
+                                                      - required:
+                                                          - maglev
+                                                - required:
+                                                    - ringHash
+                                                - required:
+                                                    - maglev
+                                          properties:
+                                            minimumRingSize: {}
                                       required:
                                         - consistentHash
                               - required:
                                   - simple
                               - properties:
                                   consistentHash:
-                                    oneOf:
-                                      - not:
-                                          anyOf:
-                                            - required:
-                                                - httpHeaderName
-                                            - required:
-                                                - httpCookie
-                                            - required:
-                                                - useSourceIp
-                                            - required:
-                                                - httpQueryParameterName
-                                      - required:
-                                          - httpHeaderName
-                                      - required:
-                                          - httpCookie
-                                      - required:
-                                          - useSourceIp
-                                      - required:
-                                          - httpQueryParameterName
+                                    allOf:
+                                      - oneOf:
+                                          - not:
+                                              anyOf:
+                                                - required:
+                                                    - httpHeaderName
+                                                - required:
+                                                    - httpCookie
+                                                - required:
+                                                    - useSourceIp
+                                                - required:
+                                                    - httpQueryParameterName
+                                          - required:
+                                              - httpHeaderName
+                                          - required:
+                                              - httpCookie
+                                          - required:
+                                              - useSourceIp
+                                          - required:
+                                              - httpQueryParameterName
+                                      - oneOf:
+                                          - not:
+                                              anyOf:
+                                                - required:
+                                                    - ringHash
+                                                - required:
+                                                    - maglev
+                                          - required:
+                                              - ringHash
+                                          - required:
+                                              - maglev
+                                    properties:
+                                      minimumRingSize: {}
                                 required:
                                   - consistentHash
                             properties:
@@ -400,8 +433,22 @@ spec:
                                   httpQueryParameterName:
                                     description: Hash based on a specific HTTP query parameter.
                                     type: string
+                                  maglev:
+                                    description: The Maglev load balancer implements consistent hashing to backend hosts.
+                                    properties:
+                                      tableSize:
+                                        description: The table size for Maglev hashing.
+                                        type: integer
+                                    type: object
                                   minimumRingSize:
+                                    description: Deprecated.
                                     type: integer
+                                  ringHash:
+                                    description: The ring/modulo hash load balancer implements consistent hashing to backend hosts.
+                                    properties:
+                                      minimumRingSize:
+                                        type: integer
+                                    type: object
                                   useSourceIp:
                                     description: Hash based on the source IP address.
                                     type: boolean
@@ -445,10 +492,15 @@ spec:
                                 type: object
                               simple:
                                 enum:
-                                  - ROUND_ROBIN
+                                  - UNSPECIFIED
                                   - LEAST_CONN
                                   - RANDOM
                                   - PASSTHROUGH
+                                  - ROUND_ROBIN
+                                  - LEAST_REQUEST
+                                type: string
+                              warmupDurationSecs:
+                                description: Represents the warmup duration of Service.
                                 type: string
                             type: object
                           outlierDetection:
@@ -500,11 +552,10 @@ spec:
                                             - UPGRADE
                                           type: string
                                         http1MaxPendingRequests:
-                                          description: Maximum number of pending HTTP requests to a destination.
                                           format: int32
                                           type: integer
                                         http2MaxRequests:
-                                          description: Maximum number of requests to a backend.
+                                          description: Maximum number of active requests to a destination.
                                           format: int32
                                           type: integer
                                         idleTimeout:
@@ -526,6 +577,9 @@ spec:
                                       properties:
                                         connectTimeout:
                                           description: TCP connection timeout.
+                                          type: string
+                                        maxConnectionDuration:
+                                          description: The maximum duration of a connection.
                                           type: string
                                         maxConnections:
                                           description: Maximum number of HTTP1 /TCP connections to a destination host.
@@ -553,50 +607,78 @@ spec:
                                               - simple
                                           - properties:
                                               consistentHash:
-                                                oneOf:
-                                                  - not:
-                                                      anyOf:
-                                                        - required:
-                                                            - httpHeaderName
-                                                        - required:
-                                                            - httpCookie
-                                                        - required:
-                                                            - useSourceIp
-                                                        - required:
-                                                            - httpQueryParameterName
-                                                  - required:
-                                                      - httpHeaderName
-                                                  - required:
-                                                      - httpCookie
-                                                  - required:
-                                                      - useSourceIp
-                                                  - required:
-                                                      - httpQueryParameterName
+                                                allOf:
+                                                  - oneOf:
+                                                      - not:
+                                                          anyOf:
+                                                            - required:
+                                                                - httpHeaderName
+                                                            - required:
+                                                                - httpCookie
+                                                            - required:
+                                                                - useSourceIp
+                                                            - required:
+                                                                - httpQueryParameterName
+                                                      - required:
+                                                          - httpHeaderName
+                                                      - required:
+                                                          - httpCookie
+                                                      - required:
+                                                          - useSourceIp
+                                                      - required:
+                                                          - httpQueryParameterName
+                                                  - oneOf:
+                                                      - not:
+                                                          anyOf:
+                                                            - required:
+                                                                - ringHash
+                                                            - required:
+                                                                - maglev
+                                                      - required:
+                                                          - ringHash
+                                                      - required:
+                                                          - maglev
+                                                properties:
+                                                  minimumRingSize: {}
                                             required:
                                               - consistentHash
                                     - required:
                                         - simple
                                     - properties:
                                         consistentHash:
-                                          oneOf:
-                                            - not:
-                                                anyOf:
-                                                  - required:
-                                                      - httpHeaderName
-                                                  - required:
-                                                      - httpCookie
-                                                  - required:
-                                                      - useSourceIp
-                                                  - required:
-                                                      - httpQueryParameterName
-                                            - required:
-                                                - httpHeaderName
-                                            - required:
-                                                - httpCookie
-                                            - required:
-                                                - useSourceIp
-                                            - required:
-                                                - httpQueryParameterName
+                                          allOf:
+                                            - oneOf:
+                                                - not:
+                                                    anyOf:
+                                                      - required:
+                                                          - httpHeaderName
+                                                      - required:
+                                                          - httpCookie
+                                                      - required:
+                                                          - useSourceIp
+                                                      - required:
+                                                          - httpQueryParameterName
+                                                - required:
+                                                    - httpHeaderName
+                                                - required:
+                                                    - httpCookie
+                                                - required:
+                                                    - useSourceIp
+                                                - required:
+                                                    - httpQueryParameterName
+                                            - oneOf:
+                                                - not:
+                                                    anyOf:
+                                                      - required:
+                                                          - ringHash
+                                                      - required:
+                                                          - maglev
+                                                - required:
+                                                    - ringHash
+                                                - required:
+                                                    - maglev
+                                          properties:
+                                            minimumRingSize: {}
                                       required:
                                         - consistentHash
                                   properties:
@@ -621,8 +703,22 @@ spec:
                                         httpQueryParameterName:
                                           description: Hash based on a specific HTTP query parameter.
                                           type: string
+                                        maglev:
+                                          description: The Maglev load balancer implements consistent hashing to backend hosts.
+                                          properties:
+                                            tableSize:
+                                              description: The table size for Maglev hashing.
+                                              type: integer
+                                          type: object
                                         minimumRingSize:
+                                          description: Deprecated.
                                           type: integer
+                                        ringHash:
+                                          description: The ring/modulo hash load balancer implements consistent hashing to backend hosts.
+                                          properties:
+                                            minimumRingSize:
+                                              type: integer
+                                          type: object
                                         useSourceIp:
                                           description: Hash based on the source IP address.
                                           type: boolean
@@ -666,10 +762,15 @@ spec:
                                       type: object
                                     simple:
                                       enum:
-                                        - ROUND_ROBIN
+                                        - UNSPECIFIED
                                         - LEAST_CONN
                                         - RANDOM
                                         - PASSTHROUGH
+                                        - ROUND_ROBIN
+                                        - LEAST_REQUEST
+                                      type: string
+                                    warmupDurationSecs:
+                                      description: Represents the warmup duration of Service.
                                       type: string
                                   type: object
                                 outlierDetection:
@@ -773,6 +874,18 @@ spec:
                                   type: string
                                 type: array
                             type: object
+                          tunnel:
+                            properties:
+                              protocol:
+                                description: Specifies which protocol to use for tunneling the downstream connection.
+                                type: string
+                              targetHost:
+                                description: Specifies a host to which the downstream connection is tunneled.
+                                type: string
+                              targetPort:
+                                description: Specifies a port to which the downstream connection is tunneled.
+                                type: integer
+                            type: object
                         type: object
                     type: object
                   type: array
@@ -791,11 +904,10 @@ spec:
                                 - UPGRADE
                               type: string
                             http1MaxPendingRequests:
-                              description: Maximum number of pending HTTP requests to a destination.
                               format: int32
                               type: integer
                             http2MaxRequests:
-                              description: Maximum number of requests to a backend.
+                              description: Maximum number of active requests to a destination.
                               format: int32
                               type: integer
                             idleTimeout:
@@ -817,6 +929,9 @@ spec:
                           properties:
                             connectTimeout:
                               description: TCP connection timeout.
+                              type: string
+                            maxConnectionDuration:
+                              description: The maximum duration of a connection.
                               type: string
                             maxConnections:
                               description: Maximum number of HTTP1 /TCP connections to a destination host.
@@ -844,50 +959,78 @@ spec:
                                   - simple
                               - properties:
                                   consistentHash:
-                                    oneOf:
-                                      - not:
-                                          anyOf:
-                                            - required:
-                                                - httpHeaderName
-                                            - required:
-                                                - httpCookie
-                                            - required:
-                                                - useSourceIp
-                                            - required:
-                                                - httpQueryParameterName
-                                      - required:
-                                          - httpHeaderName
-                                      - required:
-                                          - httpCookie
-                                      - required:
-                                          - useSourceIp
-                                      - required:
-                                          - httpQueryParameterName
+                                    allOf:
+                                      - oneOf:
+                                          - not:
+                                              anyOf:
+                                                - required:
+                                                    - httpHeaderName
+                                                - required:
+                                                    - httpCookie
+                                                - required:
+                                                    - useSourceIp
+                                                - required:
+                                                    - httpQueryParameterName
+                                          - required:
+                                              - httpHeaderName
+                                          - required:
+                                              - httpCookie
+                                          - required:
+                                              - useSourceIp
+                                          - required:
+                                              - httpQueryParameterName
+                                      - oneOf:
+                                          - not:
+                                              anyOf:
+                                                - required:
+                                                    - ringHash
+                                                - required:
+                                                    - maglev
+                                          - required:
+                                              - ringHash
+                                          - required:
+                                              - maglev
+                                    properties:
+                                      minimumRingSize: {}
                                 required:
                                   - consistentHash
                         - required:
                             - simple
                         - properties:
                             consistentHash:
-                              oneOf:
-                                - not:
-                                    anyOf:
-                                      - required:
-                                          - httpHeaderName
-                                      - required:
-                                          - httpCookie
-                                      - required:
-                                          - useSourceIp
-                                      - required:
-                                          - httpQueryParameterName
-                                - required:
-                                    - httpHeaderName
-                                - required:
-                                    - httpCookie
-                                - required:
-                                    - useSourceIp
-                                - required:
-                                    - httpQueryParameterName
+                              allOf:
+                                - oneOf:
+                                    - not:
+                                        anyOf:
+                                          - required:
+                                              - httpHeaderName
+                                          - required:
+                                              - httpCookie
+                                          - required:
+                                              - useSourceIp
+                                          - required:
+                                              - httpQueryParameterName
+                                    - required:
+                                        - httpHeaderName
+                                    - required:
+                                        - httpCookie
+                                    - required:
+                                        - useSourceIp
+                                    - required:
+                                        - httpQueryParameterName
+                                - oneOf:
+                                    - not:
+                                        anyOf:
+                                          - required:
+                                              - ringHash
+                                          - required:
+                                              - maglev
+                                    - required:
+                                        - ringHash
+                                    - required:
+                                        - maglev
+                              properties:
+                                minimumRingSize: {}
                           required:
                             - consistentHash
                       properties:
@@ -912,8 +1055,22 @@ spec:
                             httpQueryParameterName:
                               description: Hash based on a specific HTTP query parameter.
                               type: string
+                            maglev:
+                              description: The Maglev load balancer implements consistent hashing to backend hosts.
+                              properties:
+                                tableSize:
+                                  description: The table size for Maglev hashing.
+                                  type: integer
+                              type: object
                             minimumRingSize:
+                              description: Deprecated.
                               type: integer
+                            ringHash:
+                              description: The ring/modulo hash load balancer implements consistent hashing to backend hosts.
+                              properties:
+                                minimumRingSize:
+                                  type: integer
+                              type: object
                             useSourceIp:
                               description: Hash based on the source IP address.
                               type: boolean
@@ -957,10 +1114,15 @@ spec:
                           type: object
                         simple:
                           enum:
-                            - ROUND_ROBIN
+                            - UNSPECIFIED
                             - LEAST_CONN
                             - RANDOM
                             - PASSTHROUGH
+                            - ROUND_ROBIN
+                            - LEAST_REQUEST
+                          type: string
+                        warmupDurationSecs:
+                          description: Represents the warmup duration of Service.
                           type: string
                       type: object
                     outlierDetection:
@@ -1012,11 +1174,10 @@ spec:
                                       - UPGRADE
                                     type: string
                                   http1MaxPendingRequests:
-                                    description: Maximum number of pending HTTP requests to a destination.
                                     format: int32
                                     type: integer
                                   http2MaxRequests:
-                                    description: Maximum number of requests to a backend.
+                                    description: Maximum number of active requests to a destination.
                                     format: int32
                                     type: integer
                                   idleTimeout:
@@ -1038,6 +1199,9 @@ spec:
                                 properties:
                                   connectTimeout:
                                     description: TCP connection timeout.
+                                    type: string
+                                  maxConnectionDuration:
+                                    description: The maximum duration of a connection.
                                     type: string
                                   maxConnections:
                                     description: Maximum number of HTTP1 /TCP connections to a destination host.
@@ -1065,50 +1229,78 @@ spec:
                                         - simple
                                     - properties:
                                         consistentHash:
-                                          oneOf:
-                                            - not:
-                                                anyOf:
-                                                  - required:
-                                                      - httpHeaderName
-                                                  - required:
-                                                      - httpCookie
-                                                  - required:
-                                                      - useSourceIp
-                                                  - required:
-                                                      - httpQueryParameterName
-                                            - required:
-                                                - httpHeaderName
-                                            - required:
-                                                - httpCookie
-                                            - required:
-                                                - useSourceIp
-                                            - required:
-                                                - httpQueryParameterName
+                                          allOf:
+                                            - oneOf:
+                                                - not:
+                                                    anyOf:
+                                                      - required:
+                                                          - httpHeaderName
+                                                      - required:
+                                                          - httpCookie
+                                                      - required:
+                                                          - useSourceIp
+                                                      - required:
+                                                          - httpQueryParameterName
+                                                - required:
+                                                    - httpHeaderName
+                                                - required:
+                                                    - httpCookie
+                                                - required:
+                                                    - useSourceIp
+                                                - required:
+                                                    - httpQueryParameterName
+                                            - oneOf:
+                                                - not:
+                                                    anyOf:
+                                                      - required:
+                                                          - ringHash
+                                                      - required:
+                                                          - maglev
+                                                - required:
+                                                    - ringHash
+                                                - required:
+                                                    - maglev
+                                          properties:
+                                            minimumRingSize: {}
                                       required:
                                         - consistentHash
                               - required:
                                   - simple
                               - properties:
                                   consistentHash:
-                                    oneOf:
-                                      - not:
-                                          anyOf:
-                                            - required:
-                                                - httpHeaderName
-                                            - required:
-                                                - httpCookie
-                                            - required:
-                                                - useSourceIp
-                                            - required:
-                                                - httpQueryParameterName
-                                      - required:
-                                          - httpHeaderName
-                                      - required:
-                                          - httpCookie
-                                      - required:
-                                          - useSourceIp
-                                      - required:
-                                          - httpQueryParameterName
+                                    allOf:
+                                      - oneOf:
+                                          - not:
+                                              anyOf:
+                                                - required:
+                                                    - httpHeaderName
+                                                - required:
+                                                    - httpCookie
+                                                - required:
+                                                    - useSourceIp
+                                                - required:
+                                                    - httpQueryParameterName
+                                          - required:
+                                              - httpHeaderName
+                                          - required:
+                                              - httpCookie
+                                          - required:
+                                              - useSourceIp
+                                          - required:
+                                              - httpQueryParameterName
+                                      - oneOf:
+                                          - not:
+                                              anyOf:
+                                                - required:
+                                                    - ringHash
+                                                - required:
+                                                    - maglev
+                                          - required:
+                                              - ringHash
+                                          - required:
+                                              - maglev
+                                    properties:
+                                      minimumRingSize: {}
                                 required:
                                   - consistentHash
                             properties:
@@ -1133,8 +1325,22 @@ spec:
                                   httpQueryParameterName:
                                     description: Hash based on a specific HTTP query parameter.
                                     type: string
+                                  maglev:
+                                    description: The Maglev load balancer implements consistent hashing to backend hosts.
+                                    properties:
+                                      tableSize:
+                                        description: The table size for Maglev hashing.
+                                        type: integer
+                                    type: object
                                   minimumRingSize:
+                                    description: Deprecated.
                                     type: integer
+                                  ringHash:
+                                    description: The ring/modulo hash load balancer implements consistent hashing to backend hosts.
+                                    properties:
+                                      minimumRingSize:
+                                        type: integer
+                                    type: object
                                   useSourceIp:
                                     description: Hash based on the source IP address.
                                     type: boolean
@@ -1178,10 +1384,15 @@ spec:
                                 type: object
                               simple:
                                 enum:
-                                  - ROUND_ROBIN
+                                  - UNSPECIFIED
                                   - LEAST_CONN
                                   - RANDOM
                                   - PASSTHROUGH
+                                  - ROUND_ROBIN
+                                  - LEAST_REQUEST
+                                type: string
+                              warmupDurationSecs:
+                                description: Represents the warmup duration of Service.
                                 type: string
                             type: object
                           outlierDetection:
@@ -1284,6 +1495,25 @@ spec:
                           items:
                             type: string
                           type: array
+                      type: object
+                    tunnel:
+                      properties:
+                        protocol:
+                          description: Specifies which protocol to use for tunneling the downstream connection.
+                          type: string
+                        targetHost:
+                          description: Specifies a host to which the downstream connection is tunneled.
+                          type: string
+                        targetPort:
+                          description: Specifies a port to which the downstream connection is tunneled.
+                          type: integer
+                      type: object
+                  type: object
+                workloadSelector:
+                  properties:
+                    matchLabels:
+                      additionalProperties:
+                        type: string
                       type: object
                   type: object
               type: object
@@ -1345,11 +1575,10 @@ spec:
                                       - UPGRADE
                                     type: string
                                   http1MaxPendingRequests:
-                                    description: Maximum number of pending HTTP requests to a destination.
                                     format: int32
                                     type: integer
                                   http2MaxRequests:
-                                    description: Maximum number of requests to a backend.
+                                    description: Maximum number of active requests to a destination.
                                     format: int32
                                     type: integer
                                   idleTimeout:
@@ -1371,6 +1600,9 @@ spec:
                                 properties:
                                   connectTimeout:
                                     description: TCP connection timeout.
+                                    type: string
+                                  maxConnectionDuration:
+                                    description: The maximum duration of a connection.
                                     type: string
                                   maxConnections:
                                     description: Maximum number of HTTP1 /TCP connections to a destination host.
@@ -1398,50 +1630,78 @@ spec:
                                         - simple
                                     - properties:
                                         consistentHash:
-                                          oneOf:
-                                            - not:
-                                                anyOf:
-                                                  - required:
-                                                      - httpHeaderName
-                                                  - required:
-                                                      - httpCookie
-                                                  - required:
-                                                      - useSourceIp
-                                                  - required:
-                                                      - httpQueryParameterName
-                                            - required:
-                                                - httpHeaderName
-                                            - required:
-                                                - httpCookie
-                                            - required:
-                                                - useSourceIp
-                                            - required:
-                                                - httpQueryParameterName
+                                          allOf:
+                                            - oneOf:
+                                                - not:
+                                                    anyOf:
+                                                      - required:
+                                                          - httpHeaderName
+                                                      - required:
+                                                          - httpCookie
+                                                      - required:
+                                                          - useSourceIp
+                                                      - required:
+                                                          - httpQueryParameterName
+                                                - required:
+                                                    - httpHeaderName
+                                                - required:
+                                                    - httpCookie
+                                                - required:
+                                                    - useSourceIp
+                                                - required:
+                                                    - httpQueryParameterName
+                                            - oneOf:
+                                                - not:
+                                                    anyOf:
+                                                      - required:
+                                                          - ringHash
+                                                      - required:
+                                                          - maglev
+                                                - required:
+                                                    - ringHash
+                                                - required:
+                                                    - maglev
+                                          properties:
+                                            minimumRingSize: {}
                                       required:
                                         - consistentHash
                               - required:
                                   - simple
                               - properties:
                                   consistentHash:
-                                    oneOf:
-                                      - not:
-                                          anyOf:
-                                            - required:
-                                                - httpHeaderName
-                                            - required:
-                                                - httpCookie
-                                            - required:
-                                                - useSourceIp
-                                            - required:
-                                                - httpQueryParameterName
-                                      - required:
-                                          - httpHeaderName
-                                      - required:
-                                          - httpCookie
-                                      - required:
-                                          - useSourceIp
-                                      - required:
-                                          - httpQueryParameterName
+                                    allOf:
+                                      - oneOf:
+                                          - not:
+                                              anyOf:
+                                                - required:
+                                                    - httpHeaderName
+                                                - required:
+                                                    - httpCookie
+                                                - required:
+                                                    - useSourceIp
+                                                - required:
+                                                    - httpQueryParameterName
+                                          - required:
+                                              - httpHeaderName
+                                          - required:
+                                              - httpCookie
+                                          - required:
+                                              - useSourceIp
+                                          - required:
+                                              - httpQueryParameterName
+                                      - oneOf:
+                                          - not:
+                                              anyOf:
+                                                - required:
+                                                    - ringHash
+                                                - required:
+                                                    - maglev
+                                          - required:
+                                              - ringHash
+                                          - required:
+                                              - maglev
+                                    properties:
+                                      minimumRingSize: {}
                                 required:
                                   - consistentHash
                             properties:
@@ -1466,8 +1726,22 @@ spec:
                                   httpQueryParameterName:
                                     description: Hash based on a specific HTTP query parameter.
                                     type: string
+                                  maglev:
+                                    description: The Maglev load balancer implements consistent hashing to backend hosts.
+                                    properties:
+                                      tableSize:
+                                        description: The table size for Maglev hashing.
+                                        type: integer
+                                    type: object
                                   minimumRingSize:
+                                    description: Deprecated.
                                     type: integer
+                                  ringHash:
+                                    description: The ring/modulo hash load balancer implements consistent hashing to backend hosts.
+                                    properties:
+                                      minimumRingSize:
+                                        type: integer
+                                    type: object
                                   useSourceIp:
                                     description: Hash based on the source IP address.
                                     type: boolean
@@ -1511,10 +1785,15 @@ spec:
                                 type: object
                               simple:
                                 enum:
-                                  - ROUND_ROBIN
+                                  - UNSPECIFIED
                                   - LEAST_CONN
                                   - RANDOM
                                   - PASSTHROUGH
+                                  - ROUND_ROBIN
+                                  - LEAST_REQUEST
+                                type: string
+                              warmupDurationSecs:
+                                description: Represents the warmup duration of Service.
                                 type: string
                             type: object
                           outlierDetection:
@@ -1566,11 +1845,10 @@ spec:
                                             - UPGRADE
                                           type: string
                                         http1MaxPendingRequests:
-                                          description: Maximum number of pending HTTP requests to a destination.
                                           format: int32
                                           type: integer
                                         http2MaxRequests:
-                                          description: Maximum number of requests to a backend.
+                                          description: Maximum number of active requests to a destination.
                                           format: int32
                                           type: integer
                                         idleTimeout:
@@ -1592,6 +1870,9 @@ spec:
                                       properties:
                                         connectTimeout:
                                           description: TCP connection timeout.
+                                          type: string
+                                        maxConnectionDuration:
+                                          description: The maximum duration of a connection.
                                           type: string
                                         maxConnections:
                                           description: Maximum number of HTTP1 /TCP connections to a destination host.
@@ -1619,50 +1900,78 @@ spec:
                                               - simple
                                           - properties:
                                               consistentHash:
-                                                oneOf:
-                                                  - not:
-                                                      anyOf:
-                                                        - required:
-                                                            - httpHeaderName
-                                                        - required:
-                                                            - httpCookie
-                                                        - required:
-                                                            - useSourceIp
-                                                        - required:
-                                                            - httpQueryParameterName
-                                                  - required:
-                                                      - httpHeaderName
-                                                  - required:
-                                                      - httpCookie
-                                                  - required:
-                                                      - useSourceIp
-                                                  - required:
-                                                      - httpQueryParameterName
+                                                allOf:
+                                                  - oneOf:
+                                                      - not:
+                                                          anyOf:
+                                                            - required:
+                                                                - httpHeaderName
+                                                            - required:
+                                                                - httpCookie
+                                                            - required:
+                                                                - useSourceIp
+                                                            - required:
+                                                                - httpQueryParameterName
+                                                      - required:
+                                                          - httpHeaderName
+                                                      - required:
+                                                          - httpCookie
+                                                      - required:
+                                                          - useSourceIp
+                                                      - required:
+                                                          - httpQueryParameterName
+                                                  - oneOf:
+                                                      - not:
+                                                          anyOf:
+                                                            - required:
+                                                                - ringHash
+                                                            - required:
+                                                                - maglev
+                                                      - required:
+                                                          - ringHash
+                                                      - required:
+                                                          - maglev
+                                                properties:
+                                                  minimumRingSize: {}
                                             required:
                                               - consistentHash
                                     - required:
                                         - simple
                                     - properties:
                                         consistentHash:
-                                          oneOf:
-                                            - not:
-                                                anyOf:
-                                                  - required:
-                                                      - httpHeaderName
-                                                  - required:
-                                                      - httpCookie
-                                                  - required:
-                                                      - useSourceIp
-                                                  - required:
-                                                      - httpQueryParameterName
-                                            - required:
-                                                - httpHeaderName
-                                            - required:
-                                                - httpCookie
-                                            - required:
-                                                - useSourceIp
-                                            - required:
-                                                - httpQueryParameterName
+                                          allOf:
+                                            - oneOf:
+                                                - not:
+                                                    anyOf:
+                                                      - required:
+                                                          - httpHeaderName
+                                                      - required:
+                                                          - httpCookie
+                                                      - required:
+                                                          - useSourceIp
+                                                      - required:
+                                                          - httpQueryParameterName
+                                                - required:
+                                                    - httpHeaderName
+                                                - required:
+                                                    - httpCookie
+                                                - required:
+                                                    - useSourceIp
+                                                - required:
+                                                    - httpQueryParameterName
+                                            - oneOf:
+                                                - not:
+                                                    anyOf:
+                                                      - required:
+                                                          - ringHash
+                                                      - required:
+                                                          - maglev
+                                                - required:
+                                                    - ringHash
+                                                - required:
+                                                    - maglev
+                                          properties:
+                                            minimumRingSize: {}
                                       required:
                                         - consistentHash
                                   properties:
@@ -1687,8 +1996,22 @@ spec:
                                         httpQueryParameterName:
                                           description: Hash based on a specific HTTP query parameter.
                                           type: string
+                                        maglev:
+                                          description: The Maglev load balancer implements consistent hashing to backend hosts.
+                                          properties:
+                                            tableSize:
+                                              description: The table size for Maglev hashing.
+                                              type: integer
+                                          type: object
                                         minimumRingSize:
+                                          description: Deprecated.
                                           type: integer
+                                        ringHash:
+                                          description: The ring/modulo hash load balancer implements consistent hashing to backend hosts.
+                                          properties:
+                                            minimumRingSize:
+                                              type: integer
+                                          type: object
                                         useSourceIp:
                                           description: Hash based on the source IP address.
                                           type: boolean
@@ -1732,10 +2055,15 @@ spec:
                                       type: object
                                     simple:
                                       enum:
-                                        - ROUND_ROBIN
+                                        - UNSPECIFIED
                                         - LEAST_CONN
                                         - RANDOM
                                         - PASSTHROUGH
+                                        - ROUND_ROBIN
+                                        - LEAST_REQUEST
+                                      type: string
+                                    warmupDurationSecs:
+                                      description: Represents the warmup duration of Service.
                                       type: string
                                   type: object
                                 outlierDetection:
@@ -1839,6 +2167,18 @@ spec:
                                   type: string
                                 type: array
                             type: object
+                          tunnel:
+                            properties:
+                              protocol:
+                                description: Specifies which protocol to use for tunneling the downstream connection.
+                                type: string
+                              targetHost:
+                                description: Specifies a host to which the downstream connection is tunneled.
+                                type: string
+                              targetPort:
+                                description: Specifies a port to which the downstream connection is tunneled.
+                                type: integer
+                            type: object
                         type: object
                     type: object
                   type: array
@@ -1857,11 +2197,10 @@ spec:
                                 - UPGRADE
                               type: string
                             http1MaxPendingRequests:
-                              description: Maximum number of pending HTTP requests to a destination.
                               format: int32
                               type: integer
                             http2MaxRequests:
-                              description: Maximum number of requests to a backend.
+                              description: Maximum number of active requests to a destination.
                               format: int32
                               type: integer
                             idleTimeout:
@@ -1883,6 +2222,9 @@ spec:
                           properties:
                             connectTimeout:
                               description: TCP connection timeout.
+                              type: string
+                            maxConnectionDuration:
+                              description: The maximum duration of a connection.
                               type: string
                             maxConnections:
                               description: Maximum number of HTTP1 /TCP connections to a destination host.
@@ -1910,50 +2252,78 @@ spec:
                                   - simple
                               - properties:
                                   consistentHash:
-                                    oneOf:
-                                      - not:
-                                          anyOf:
-                                            - required:
-                                                - httpHeaderName
-                                            - required:
-                                                - httpCookie
-                                            - required:
-                                                - useSourceIp
-                                            - required:
-                                                - httpQueryParameterName
-                                      - required:
-                                          - httpHeaderName
-                                      - required:
-                                          - httpCookie
-                                      - required:
-                                          - useSourceIp
-                                      - required:
-                                          - httpQueryParameterName
+                                    allOf:
+                                      - oneOf:
+                                          - not:
+                                              anyOf:
+                                                - required:
+                                                    - httpHeaderName
+                                                - required:
+                                                    - httpCookie
+                                                - required:
+                                                    - useSourceIp
+                                                - required:
+                                                    - httpQueryParameterName
+                                          - required:
+                                              - httpHeaderName
+                                          - required:
+                                              - httpCookie
+                                          - required:
+                                              - useSourceIp
+                                          - required:
+                                              - httpQueryParameterName
+                                      - oneOf:
+                                          - not:
+                                              anyOf:
+                                                - required:
+                                                    - ringHash
+                                                - required:
+                                                    - maglev
+                                          - required:
+                                              - ringHash
+                                          - required:
+                                              - maglev
+                                    properties:
+                                      minimumRingSize: {}
                                 required:
                                   - consistentHash
                         - required:
                             - simple
                         - properties:
                             consistentHash:
-                              oneOf:
-                                - not:
-                                    anyOf:
-                                      - required:
-                                          - httpHeaderName
-                                      - required:
-                                          - httpCookie
-                                      - required:
-                                          - useSourceIp
-                                      - required:
-                                          - httpQueryParameterName
-                                - required:
-                                    - httpHeaderName
-                                - required:
-                                    - httpCookie
-                                - required:
-                                    - useSourceIp
-                                - required:
-                                    - httpQueryParameterName
+                              allOf:
+                                - oneOf:
+                                    - not:
+                                        anyOf:
+                                          - required:
+                                              - httpHeaderName
+                                          - required:
+                                              - httpCookie
+                                          - required:
+                                              - useSourceIp
+                                          - required:
+                                              - httpQueryParameterName
+                                    - required:
+                                        - httpHeaderName
+                                    - required:
+                                        - httpCookie
+                                    - required:
+                                        - useSourceIp
+                                    - required:
+                                        - httpQueryParameterName
+                                - oneOf:
+                                    - not:
+                                        anyOf:
+                                          - required:
+                                              - ringHash
+                                          - required:
+                                              - maglev
+                                    - required:
+                                        - ringHash
+                                    - required:
+                                        - maglev
+                              properties:
+                                minimumRingSize: {}
                           required:
                             - consistentHash
                       properties:
@@ -1978,8 +2348,22 @@ spec:
                             httpQueryParameterName:
                               description: Hash based on a specific HTTP query parameter.
                               type: string
+                            maglev:
+                              description: The Maglev load balancer implements consistent hashing to backend hosts.
+                              properties:
+                                tableSize:
+                                  description: The table size for Maglev hashing.
+                                  type: integer
+                              type: object
                             minimumRingSize:
+                              description: Deprecated.
                               type: integer
+                            ringHash:
+                              description: The ring/modulo hash load balancer implements consistent hashing to backend hosts.
+                              properties:
+                                minimumRingSize:
+                                  type: integer
+                              type: object
                             useSourceIp:
                               description: Hash based on the source IP address.
                               type: boolean
@@ -2023,10 +2407,15 @@ spec:
                           type: object
                         simple:
                           enum:
-                            - ROUND_ROBIN
+                            - UNSPECIFIED
                             - LEAST_CONN
                             - RANDOM
                             - PASSTHROUGH
+                            - ROUND_ROBIN
+                            - LEAST_REQUEST
+                          type: string
+                        warmupDurationSecs:
+                          description: Represents the warmup duration of Service.
                           type: string
                       type: object
                     outlierDetection:
@@ -2078,11 +2467,10 @@ spec:
                                       - UPGRADE
                                     type: string
                                   http1MaxPendingRequests:
-                                    description: Maximum number of pending HTTP requests to a destination.
                                     format: int32
                                     type: integer
                                   http2MaxRequests:
-                                    description: Maximum number of requests to a backend.
+                                    description: Maximum number of active requests to a destination.
                                     format: int32
                                     type: integer
                                   idleTimeout:
@@ -2104,6 +2492,9 @@ spec:
                                 properties:
                                   connectTimeout:
                                     description: TCP connection timeout.
+                                    type: string
+                                  maxConnectionDuration:
+                                    description: The maximum duration of a connection.
                                     type: string
                                   maxConnections:
                                     description: Maximum number of HTTP1 /TCP connections to a destination host.
@@ -2131,50 +2522,78 @@ spec:
                                         - simple
                                     - properties:
                                         consistentHash:
-                                          oneOf:
-                                            - not:
-                                                anyOf:
-                                                  - required:
-                                                      - httpHeaderName
-                                                  - required:
-                                                      - httpCookie
-                                                  - required:
-                                                      - useSourceIp
-                                                  - required:
-                                                      - httpQueryParameterName
-                                            - required:
-                                                - httpHeaderName
-                                            - required:
-                                                - httpCookie
-                                            - required:
-                                                - useSourceIp
-                                            - required:
-                                                - httpQueryParameterName
+                                          allOf:
+                                            - oneOf:
+                                                - not:
+                                                    anyOf:
+                                                      - required:
+                                                          - httpHeaderName
+                                                      - required:
+                                                          - httpCookie
+                                                      - required:
+                                                          - useSourceIp
+                                                      - required:
+                                                          - httpQueryParameterName
+                                                - required:
+                                                    - httpHeaderName
+                                                - required:
+                                                    - httpCookie
+                                                - required:
+                                                    - useSourceIp
+                                                - required:
+                                                    - httpQueryParameterName
+                                            - oneOf:
+                                                - not:
+                                                    anyOf:
+                                                      - required:
+                                                          - ringHash
+                                                      - required:
+                                                          - maglev
+                                                - required:
+                                                    - ringHash
+                                                - required:
+                                                    - maglev
+                                          properties:
+                                            minimumRingSize: {}
                                       required:
                                         - consistentHash
                               - required:
                                   - simple
                               - properties:
                                   consistentHash:
-                                    oneOf:
-                                      - not:
-                                          anyOf:
-                                            - required:
-                                                - httpHeaderName
-                                            - required:
-                                                - httpCookie
-                                            - required:
-                                                - useSourceIp
-                                            - required:
-                                                - httpQueryParameterName
-                                      - required:
-                                          - httpHeaderName
-                                      - required:
-                                          - httpCookie
-                                      - required:
-                                          - useSourceIp
-                                      - required:
-                                          - httpQueryParameterName
+                                    allOf:
+                                      - oneOf:
+                                          - not:
+                                              anyOf:
+                                                - required:
+                                                    - httpHeaderName
+                                                - required:
+                                                    - httpCookie
+                                                - required:
+                                                    - useSourceIp
+                                                - required:
+                                                    - httpQueryParameterName
+                                          - required:
+                                              - httpHeaderName
+                                          - required:
+                                              - httpCookie
+                                          - required:
+                                              - useSourceIp
+                                          - required:
+                                              - httpQueryParameterName
+                                      - oneOf:
+                                          - not:
+                                              anyOf:
+                                                - required:
+                                                    - ringHash
+                                                - required:
+                                                    - maglev
+                                          - required:
+                                              - ringHash
+                                          - required:
+                                              - maglev
+                                    properties:
+                                      minimumRingSize: {}
                                 required:
                                   - consistentHash
                             properties:
@@ -2199,8 +2618,22 @@ spec:
                                   httpQueryParameterName:
                                     description: Hash based on a specific HTTP query parameter.
                                     type: string
+                                  maglev:
+                                    description: The Maglev load balancer implements consistent hashing to backend hosts.
+                                    properties:
+                                      tableSize:
+                                        description: The table size for Maglev hashing.
+                                        type: integer
+                                    type: object
                                   minimumRingSize:
+                                    description: Deprecated.
                                     type: integer
+                                  ringHash:
+                                    description: The ring/modulo hash load balancer implements consistent hashing to backend hosts.
+                                    properties:
+                                      minimumRingSize:
+                                        type: integer
+                                    type: object
                                   useSourceIp:
                                     description: Hash based on the source IP address.
                                     type: boolean
@@ -2244,10 +2677,15 @@ spec:
                                 type: object
                               simple:
                                 enum:
-                                  - ROUND_ROBIN
+                                  - UNSPECIFIED
                                   - LEAST_CONN
                                   - RANDOM
                                   - PASSTHROUGH
+                                  - ROUND_ROBIN
+                                  - LEAST_REQUEST
+                                type: string
+                              warmupDurationSecs:
+                                description: Represents the warmup duration of Service.
                                 type: string
                             type: object
                           outlierDetection:
@@ -2351,6 +2789,25 @@ spec:
                             type: string
                           type: array
                       type: object
+                    tunnel:
+                      properties:
+                        protocol:
+                          description: Specifies which protocol to use for tunneling the downstream connection.
+                          type: string
+                        targetHost:
+                          description: Specifies a host to which the downstream connection is tunneled.
+                          type: string
+                        targetPort:
+                          description: Specifies a port to which the downstream connection is tunneled.
+                          type: integer
+                      type: object
+                  type: object
+                workloadSelector:
+                  properties:
+                    matchLabels:
+                      additionalProperties:
+                        type: string
+                      type: object
                   type: object
               type: object
             status:
@@ -2372,6 +2829,7 @@ metadata:
     chart: istio
     heritage: Tiller
     release: istio
+    knative.dev/crd-install: "true"
   name: envoyfilters.networking.istio.io
 spec:
   group: networking.istio.io
@@ -2600,6 +3058,7 @@ metadata:
     chart: istio
     heritage: Tiller
     release: istio
+    knative.dev/crd-install: "true"
   name: gateways.networking.istio.io
 spec:
   group: networking.istio.io
@@ -2846,6 +3305,7 @@ metadata:
   name: istiooperators.install.istio.io
   labels:
     release: istio
+    knative.dev/crd-install: "true"
 spec:
   conversion:
     strategy: None
@@ -2894,6 +3354,7 @@ metadata:
     heritage: Tiller
     istio: security
     release: istio
+    knative.dev/crd-install: "true"
   name: peerauthentications.security.istio.io
 spec:
   group: security.istio.io
@@ -2979,6 +3440,7 @@ metadata:
     chart: istio
     heritage: Tiller
     release: istio
+    knative.dev/crd-install: "true"
   name: proxyconfigs.networking.istio.io
 spec:
   group: networking.istio.io
@@ -3044,6 +3506,7 @@ metadata:
     heritage: Tiller
     istio: security
     release: istio
+    knative.dev/crd-install: "true"
   name: requestauthentications.security.istio.io
 spec:
   group: security.istio.io
@@ -3136,6 +3599,7 @@ metadata:
     chart: istio
     heritage: Tiller
     release: istio
+    knative.dev/crd-install: "true"
   name: serviceentries.networking.istio.io
 spec:
   group: networking.istio.io
@@ -3398,6 +3862,7 @@ metadata:
     chart: istio
     heritage: Tiller
     release: istio
+    knative.dev/crd-install: "true"
   name: sidecars.networking.istio.io
 spec:
   group: networking.istio.io
@@ -3454,7 +3919,7 @@ spec:
                   items:
                     properties:
                       bind:
-                        description: The IP to which the listener should be bound.
+                        description: The IP(IPv4 or IPv6) to which the listener should be bound.
                         type: string
                       captureMode:
                         enum:
@@ -3623,7 +4088,7 @@ spec:
                   items:
                     properties:
                       bind:
-                        description: The IP to which the listener should be bound.
+                        description: The IP(IPv4 or IPv6) to which the listener should be bound.
                         type: string
                       captureMode:
                         enum:
@@ -3761,6 +4226,7 @@ metadata:
     heritage: Tiller
     istio: telemetry
     release: istio
+    knative.dev/crd-install: "true"
   name: telemetries.telemetry.istio.io
 spec:
   group: telemetry.istio.io
@@ -3801,6 +4267,16 @@ spec:
                         properties:
                           expression:
                             description: CEL expression for selecting when requests/connections should be logged.
+                            type: string
+                        type: object
+                      match:
+                        description: Allows tailoring of logging behavior to specific conditions.
+                        properties:
+                          mode:
+                            enum:
+                              - CLIENT_AND_SERVER
+                              - CLIENT
+                              - SERVER
                             type: string
                         type: object
                       providers:
@@ -3859,7 +4335,6 @@ spec:
                                     - GRPC_RESPONSE_MESSAGES
                                   type: string
                                 mode:
-                                  description: 'Controls which mode of metrics generation is selected: CLIENT and/or SERVER.'
                                   enum:
                                     - CLIENT_AND_SERVER
                                     - CLIENT
@@ -3935,7 +4410,6 @@ spec:
                                   type: string
                               type: object
                             header:
-                              description: RequestHeader adds the value of an header from the request to each span.
                               properties:
                                 defaultValue:
                                   description: Optional.
@@ -3958,6 +4432,16 @@ spec:
                         description: Controls span reporting.
                         nullable: true
                         type: boolean
+                      match:
+                        description: Allows tailoring of behavior to specific conditions.
+                        properties:
+                          mode:
+                            enum:
+                              - CLIENT_AND_SERVER
+                              - CLIENT
+                              - SERVER
+                            type: string
+                        type: object
                       providers:
                         description: Optional.
                         items:
@@ -3995,6 +4479,7 @@ metadata:
     chart: istio
     heritage: Tiller
     release: istio
+    knative.dev/crd-install: "true"
   name: virtualservices.networking.istio.io
 spec:
   group: networking.istio.io
@@ -4113,6 +4598,34 @@ spec:
                             description: Namespace specifies the namespace where the delegate VirtualService resides.
                             type: string
                         type: object
+                      directResponse:
+                        description: A HTTP rule can either return a direct_response, redirect or forward (default) traffic.
+                        properties:
+                          body:
+                            description: Specifies the content of the response body.
+                            oneOf:
+                              - not:
+                                  anyOf:
+                                    - required:
+                                        - string
+                                    - required:
+                                        - bytes
+                              - required:
+                                  - string
+                              - required:
+                                  - bytes
+                            properties:
+                              bytes:
+                                description: response body as base64 encoded bytes.
+                                format: binary
+                                type: string
+                              string:
+                                type: string
+                            type: object
+                          status:
+                            description: Specifies the HTTP response status to be returned.
+                            type: integer
+                        type: object
                       fault:
                         description: Fault injection policy to apply on HTTP traffic at the client side.
                         properties:
@@ -4134,6 +4647,7 @@ spec:
                                   - http2Error
                             properties:
                               grpcStatus:
+                                description: GRPC status code to use to abort the request.
                                 type: string
                               http2Error:
                                 type: string
@@ -4367,6 +4881,9 @@ spec:
                             sourceNamespace:
                               description: Source namespace constraining the applicability of a rule to workloads in that namespace.
                               type: string
+                            statPrefix:
+                              description: The human readable prefix to use when emitting statistics for this route.
+                              type: string
                             uri:
                               oneOf:
                                 - not:
@@ -4456,7 +4973,7 @@ spec:
                         description: The name assigned to the route for debugging purposes.
                         type: string
                       redirect:
-                        description: A HTTP rule can either redirect or forward (default) traffic.
+                        description: A HTTP rule can either return a direct_response, redirect or forward (default) traffic.
                         oneOf:
                           - not:
                               anyOf:
@@ -4515,7 +5032,7 @@ spec:
                             type: string
                         type: object
                       route:
-                        description: A HTTP rule can either redirect or forward (default) traffic.
+                        description: A HTTP rule can either return a direct_response, redirect or forward (default) traffic.
                         items:
                           properties:
                             destination:
@@ -4808,6 +5325,34 @@ spec:
                             description: Namespace specifies the namespace where the delegate VirtualService resides.
                             type: string
                         type: object
+                      directResponse:
+                        description: A HTTP rule can either return a direct_response, redirect or forward (default) traffic.
+                        properties:
+                          body:
+                            description: Specifies the content of the response body.
+                            oneOf:
+                              - not:
+                                  anyOf:
+                                    - required:
+                                        - string
+                                    - required:
+                                        - bytes
+                              - required:
+                                  - string
+                              - required:
+                                  - bytes
+                            properties:
+                              bytes:
+                                description: response body as base64 encoded bytes.
+                                format: binary
+                                type: string
+                              string:
+                                type: string
+                            type: object
+                          status:
+                            description: Specifies the HTTP response status to be returned.
+                            type: integer
+                        type: object
                       fault:
                         description: Fault injection policy to apply on HTTP traffic at the client side.
                         properties:
@@ -4829,6 +5374,7 @@ spec:
                                   - http2Error
                             properties:
                               grpcStatus:
+                                description: GRPC status code to use to abort the request.
                                 type: string
                               http2Error:
                                 type: string
@@ -5062,6 +5608,9 @@ spec:
                             sourceNamespace:
                               description: Source namespace constraining the applicability of a rule to workloads in that namespace.
                               type: string
+                            statPrefix:
+                              description: The human readable prefix to use when emitting statistics for this route.
+                              type: string
                             uri:
                               oneOf:
                                 - not:
@@ -5151,7 +5700,7 @@ spec:
                         description: The name assigned to the route for debugging purposes.
                         type: string
                       redirect:
-                        description: A HTTP rule can either redirect or forward (default) traffic.
+                        description: A HTTP rule can either return a direct_response, redirect or forward (default) traffic.
                         oneOf:
                           - not:
                               anyOf:
@@ -5210,7 +5759,7 @@ spec:
                             type: string
                         type: object
                       route:
-                        description: A HTTP rule can either redirect or forward (default) traffic.
+                        description: A HTTP rule can either return a direct_response, redirect or forward (default) traffic.
                         items:
                           properties:
                             destination:
@@ -5411,6 +5960,7 @@ metadata:
     chart: istio
     heritage: Tiller
     release: istio
+    knative.dev/crd-install: "true"
   name: wasmplugins.extensions.istio.io
 spec:
   group: extensions.istio.io
@@ -5437,7 +5987,6 @@ spec:
               description: 'Extend the functionality provided by the Istio proxy through WebAssembly filters. See more details at: https://istio.io/docs/reference/config/proxy_extensions/wasm-plugin.html'
               properties:
                 imagePullPolicy:
-                  description: The pull behaviour to be applied when fetching an OCI image.
                   enum:
                     - UNSPECIFIED_POLICY
                     - IfNotPresent
@@ -5446,6 +5995,25 @@ spec:
                 imagePullSecret:
                   description: Credentials to use for OCI image pulling.
                   type: string
+                match:
+                  items:
+                    properties:
+                      mode:
+                        enum:
+                          - UNDEFINED
+                          - CLIENT
+                          - SERVER
+                          - CLIENT_AND_SERVER
+                        type: string
+                      ports:
+                        items:
+                          properties:
+                            number:
+                              type: integer
+                          type: object
+                        type: array
+                    type: object
+                  type: array
                 phase:
                   description: Determines where in the filter chain this `WasmPlugin` is to be injected.
                   enum:
@@ -5479,6 +6047,26 @@ spec:
                   type: string
                 verificationKey:
                   type: string
+                vmConfig:
+                  description: Configuration for a Wasm VM.
+                  properties:
+                    env:
+                      description: Specifies environment variables to be injected to this VM.
+                      items:
+                        properties:
+                          name:
+                            type: string
+                          value:
+                            description: Value for the environment variable.
+                            type: string
+                          valueFrom:
+                            enum:
+                              - INLINE
+                              - HOST
+                            type: string
+                        type: object
+                      type: array
+                  type: object
               type: object
             status:
               type: object
@@ -5499,6 +6087,7 @@ metadata:
     chart: istio
     heritage: Tiller
     release: istio
+    knative.dev/crd-install: "true"
   name: workloadentries.networking.istio.io
 spec:
   group: networking.istio.io
@@ -5617,6 +6206,7 @@ metadata:
     chart: istio
     heritage: Tiller
     release: istio
+    knative.dev/crd-install: "true"
   name: workloadgroups.networking.istio.io
 spec:
   group: networking.istio.io
@@ -5909,4 +6499,3 @@ spec:
       storage: false
       subresources:
         status: {}
-

@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: "{{ .Release.Name }}-neo4j-svc"
+  name: "{{ regexReplaceAll "^neo4j-" .Release.Name "neo4j" }}-neo4j-svc"
   labels:
     app.kubernetes.io/name: "{{ .Release.Name }}"
     app.kubernetes.io/component: "neo4j-ce"

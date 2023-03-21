@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,14 @@ export ssh_username_deleted_allowed_users='mattermost'
 
 # Install Mattermost for testing purposes
 
+# Settings required for Mattermost startup script
 export metadata_db_pwd="$(cat /dev/urandom | tr -dc "a-zA-Z0-9" | fold -w 12 | head -n 1 | tr -d "\n")"
 export metadata_sitename="Click to Deploy Test"
+export root_db_pwd="root1234"
 
-/opt/c2d/scripts/02-mattermost-setup
+# Settings required for MySQL startup script
+export password="${root_db_pwd}"
+
+/opt/c2d/scripts/01-mysql
+/opt/c2d/scripts/02-mysql8-root-localhost-password-setup
+/opt/c2d/scripts/03-mattermost-setup

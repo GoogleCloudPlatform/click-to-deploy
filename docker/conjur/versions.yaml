@@ -17,18 +17,18 @@ cloudbuild:
   enable_parallel: false
 versions:
 - dir: 1/debian11/1.19
-  from: marketplace.gcr.io/google/debian11
+  from: marketplace.gcr.io/google/c2d-debian11
   packages:
     conjur:
-      version: 1.19.1
+      version: 1.19.2
     ruby:
       version: 3.0.0
   repo: conjur1
   tags:
-  - 1.19.1-debian11
+  - 1.19.2-debian11
   - 1.19-debian11
   - 1-debian11
-  - 1.19.1
+  - 1.19.2
   - '1.19'
   - '1'
   - latest

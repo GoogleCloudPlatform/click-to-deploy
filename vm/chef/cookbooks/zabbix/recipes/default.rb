@@ -18,7 +18,7 @@ include_recipe 'c2d-config::default'
 include_recipe 'apache2::default'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
-include_recipe 'postgresql::standalone_buster'
+include_recipe 'postgresql::standalone_bullseye'
 
 # install zabbix package
 apt_repository 'zabbix' do
