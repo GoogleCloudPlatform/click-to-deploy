@@ -23,7 +23,7 @@ image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_RABBITMQ))
 ADDITIONAL_IMAGES := debian11 prometheus-to-sd
 
 # Additional images variable names should correspond with ADDITIONAL_IMAGES list
-image-debian9 := $(call get_sha256,$(IMAGE_DEBIAN9))
+image-debian11 := $(call get_sha256,$(IMAGE_DEBIAN11))
 image-prometheus-to-sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))
 
 C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
