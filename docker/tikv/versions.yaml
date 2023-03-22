@@ -25,7 +25,7 @@ versions:
       version: 6.5.1
     golang:
       version: 1.20
-  repo: tikv5
+  repo: tikv6
   tags:
   - '6.5.1-debian11'
   - '6.5-debian11'
