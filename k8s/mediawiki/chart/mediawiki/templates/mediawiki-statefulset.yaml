@@ -64,14 +64,17 @@ spec:
             port: 80
           initialDelaySeconds: 90
           periodSeconds: 10
-          timeoutSeconds: 5
+          timeoutSeconds: 30
           successThreshold: 2
           failureThreshold: 5
         livenessProbe:
           httpGet:
             path: /index.php/Special:Version
             port: 80
-          initialDelaySeconds: 90
+          initialDelaySeconds: 150
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 10
       - image: {{ .Values.apache.exporter.image }}
         name: apache-exporter
         args:

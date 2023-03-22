@@ -13,4 +13,5 @@ spec:
     app.kubernetes.io/component: hazelcast-mancenter
   ports:
   - name: mancenterport
+    protocol: TCP
     port: 8080
