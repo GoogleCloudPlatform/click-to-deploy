@@ -33,14 +33,11 @@ describe 'C2D startup scripts should exists' do
     it { should exist }
   end
 
-  describe file('/opt/c2d/scripts/02-mysql8-root-localhost-password-setup') do
+   describe file('/opt/c2d/scripts/02-mysql8-root-localhost-password-setup') do
     it { should exist }
-  end
+  end 
 
   describe file('/opt/c2d/scripts/03-redmine') do
     it { should exist }
   end
-
-  #  01-mysql  02-mysql8-root-localhost-password-setup  03-redmine
-
 end
