@@ -71,7 +71,7 @@ template '/etc/apache2/sites-available/joomla.conf' do
   source 'joomla.conf.erb'
 end
 
-cookbook_file '/etc/php/7.4/apache2/conf.d/99-joomla.ini' do
+cookbook_file '/etc/php/8.1/apache2/conf.d/99-joomla.ini' do
   source 'php-joomla.ini'
   owner 'root'
   group 'root'
