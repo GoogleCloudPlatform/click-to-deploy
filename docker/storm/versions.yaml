@@ -17,7 +17,7 @@ cloudbuild:
   enable_parallel: false
 versions:
 - dir: 2/debian11/2.4
-  from: marketplace.gcr.io/google/debian11
+  from: marketplace.gcr.io/google/c2d-debian11
   packages:
     storm:
       version: 2.4.0

@@ -17,7 +17,7 @@ ARG MC_INSTALL_NAME="hazelcast-management-center-${MC_VERSION}"
 ARG MC_INSTALL_JAR="hazelcast-management-center-${MC_VERSION}.jar"
 ARG MC_INSTALL_ZIP="${MC_INSTALL_NAME}.zip"
 
-FROM marketplace.gcr.io/google/debian11 AS builder
+FROM marketplace.gcr.io/google/c2d-debian11 AS builder
 
 ARG MC_VERSION
 ARG MC_INSTALL_NAME
