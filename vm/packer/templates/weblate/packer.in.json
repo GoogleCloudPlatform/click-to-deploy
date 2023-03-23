@@ -2,6 +2,6 @@
   "license": "c2d-weblate",
   "source_image_family": "debian-11",
   "chef": {
-    "run_list": [ "google-cloud-ops-agent", "weblate"]
+    "run_list": [ "c2d-config", "google-cloud-ops-agent", "weblate"]
   }
 }
