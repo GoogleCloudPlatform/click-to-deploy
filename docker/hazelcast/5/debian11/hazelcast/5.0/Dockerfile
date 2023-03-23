@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM marketplace.gcr.io/google/debian11
+FROM marketplace.gcr.io/google/c2d-debian11
 
 ENV DEBUG_DOCKER_ENTRYPOINT false
 
