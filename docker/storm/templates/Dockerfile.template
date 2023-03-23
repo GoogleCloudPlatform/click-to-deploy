@@ -1,7 +1,7 @@
 {{- $storm := index .Packages "storm" -}}
 
 
-FROM marketplace.gcr.io/google/debian11:latest
+FROM {{ .From }}
 
 ARG STORM_VERSION="{{ $storm.Version }}"
 ENV C2D_RELEASE "{{ $storm.Version }}"
