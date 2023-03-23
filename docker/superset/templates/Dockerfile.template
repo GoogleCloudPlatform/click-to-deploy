@@ -1,7 +1,7 @@
 {{- $superset := index .Packages "superset" -}}
 
 
-FROM marketplace.gcr.io/google/debian11:latest
+FROM {{ .From }}
 
 ARG SUPERSET_VERSION="{{ $superset.Version }}"
 ENV C2D_RELEASE "{{ $superset.Version }}"

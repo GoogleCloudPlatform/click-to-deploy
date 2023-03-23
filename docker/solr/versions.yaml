@@ -17,7 +17,7 @@ cloudbuild:
   enable_parallel: false
 versions:
 - dir: 9/debian11/9.1
-  from: marketplace.gcr.io/google/debian11
+  from: marketplace.gcr.io/google/c2d-debian11
   packages:
     solr:
       gpg: 2085660D9C1FCCACC4A479A3BF160FF14992A24C 
