@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian11:latest
+FROM marketplace.gcr.io/google/c2d-debian11
 
 ARG SUPERSET_VERSION="1.5.3"
 ENV C2D_RELEASE "1.5.3"
