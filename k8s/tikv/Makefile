@@ -10,16 +10,16 @@ VERIFY_WAIT_TIMEOUT = 1800
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 
-TRACK ?= 5.3
-METRICS_EXPORTER_TAG ?= v0.5.1
+TRACK ?= 6.5
+METRICS_EXPORTER_TAG ?= v0.11.1-gke.1
 
-IMAGE_TIKV ?= $(SOURCE_REGISTRY)/tikv5:$(TRACK)
+IMAGE_TIKV ?= $(SOURCE_REGISTRY)/tikv6:$(TRACK)
 
 # Main image
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_TIKV))
 
 # Prometheus-to-SD
-IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+IMAGE_PROMETHEUS_TO_SD ?= gke.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 # List of images used in application
 ADDITIONAL_IMAGES := prometheus-to-sd
