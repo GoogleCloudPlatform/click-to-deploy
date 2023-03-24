@@ -119,15 +119,15 @@ It is advised to use a stable image reference, which you can find on:
 For example:
 
 ```shell
-export TIKV_TRACK=5.3
-export METRICS_EXPORTER_TAG=0.5
+export TIKV_TRACK=6.5
+export METRICS_EXPORTER_TAG=v0.11.1-gke.1
 ```
 
 Configure the container images:
 
 ```shell
-export IMAGE_TIKV=marketplace.gcr.io/google/tikv5
-export IMAGE_METRICS_EXPORTER=k8s.gcr.io/prometheus-to-sd:${METRICS_EXPORTER_TAG}
+export IMAGE_TIKV=marketplace.gcr.io/google/tikv6
+export IMAGE_METRICS_EXPORTER=gke.gcr.io/prometheus-to-sd:${METRICS_EXPORTER_TAG}
 ```
 
 By default, TiKV deployment has 3 replica, but you can choose to set the number of replicas.
