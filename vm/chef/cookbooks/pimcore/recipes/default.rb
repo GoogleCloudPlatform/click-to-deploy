@@ -23,7 +23,7 @@ include_recipe 'apache2::security-config'
 include_recipe 'mysql::version-8.0-embedded'
 
 include_recipe 'php81'
-include_recipe 'php81::default_buster'
+include_recipe 'php81::default_bullseye'
 include_recipe 'php81::module_curl'
 include_recipe 'php81::module_gd'
 include_recipe 'php81::module_intl'
