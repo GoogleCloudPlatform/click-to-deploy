@@ -76,5 +76,6 @@ default['pimcore']['packages'] = [
   'libwebp-dev',
   'libjpeg62-turbo-dev',
   'libonig-dev',
-  'ufraw',
+  'gimp',
 ]
+default['php81']['distribution'] = 'bullseye'
