@@ -212,7 +212,7 @@ Configure the container images:
 
 ```shell
 export IMAGE_RABBITMQ=marketplace.gcr.io/google/rabbitmq
-export IMAGE_RABBITMQ_INIT=marketplace.gcr.io/google/rabbitmq/debian11:${TAG}
+export IMAGE_RABBITMQ_INIT=marketplace.gcr.io/google/rabbitmq/c2d-debian11:${TAG}
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/rabbitmq/prometheus-to-sd:${TAG}"
 ```
 
