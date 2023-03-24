@@ -29,8 +29,7 @@ apt_repository 'php' do
     retries 5
     retry_delay 20
   end
-
+  
   node['php81']['modules'].each do |pkg|
     include_recipe "php81::module_#{pkg}"
   end
-end
