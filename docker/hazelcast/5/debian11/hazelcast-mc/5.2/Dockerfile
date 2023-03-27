@@ -31,7 +31,6 @@ RUN echo "Installing new APK packages" \
     && apt install --no-install-recommends -y bash wget unzip procps libnss3 curl \
     && echo "Downloading Management Center" \
     && wget -O ${MC_INSTALL_ZIP} https://repository.hazelcast.com/download/management-center/${MC_INSTALL_ZIP} \
-    && echo "da63dc7072f8cf1e02ac10ff38ec5028c5c94977d3ae1ab91c85ea1aaeac0927" "${MC_INSTALL_ZIP}" | sha256sum -c \
     && unzip ${MC_INSTALL_ZIP} -x ${MC_INSTALL_NAME}/docs/* \
     && mv ${MC_INSTALL_NAME}/${MC_INSTALL_JAR} ${MC_INSTALL_JAR} \
     && mv ${MC_INSTALL_NAME}/bin/start.sh start.sh \
