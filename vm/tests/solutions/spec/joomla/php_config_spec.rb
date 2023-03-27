@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 require 'spec_helper'
 
 describe 'Hide PHP Version' do
-  describe file('/etc/php/7.4/apache2/php.ini') do
+  describe file('/etc/php/8.1/apache2/php.ini') do
     its(:content) { should match /^expose_php = Off$/ }
   end
 

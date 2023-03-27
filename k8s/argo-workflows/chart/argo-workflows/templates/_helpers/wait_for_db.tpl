@@ -1,6 +1,6 @@
 {{- define "argoworkflows.wait_for_db" }}
 - name: check-db
-  image: marketplace.gcr.io/google/debian11
+  image: marketplace.gcr.io/google/c2d-debian11
   imagePullPolicy: IfNotPresent
   command:
     - sh
