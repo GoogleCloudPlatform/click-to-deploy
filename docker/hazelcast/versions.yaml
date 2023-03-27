@@ -53,7 +53,6 @@ versions:
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     hazelcastmc:
-      sha256: da63dc7072f8cf1e02ac10ff38ec5028c5c94977d3ae1ab91c85ea1aaeac0927
       version: 5.2.1
   repo: hazelcast-mc5
   tags:
