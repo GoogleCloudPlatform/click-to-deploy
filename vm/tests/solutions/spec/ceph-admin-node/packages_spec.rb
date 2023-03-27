@@ -14,6 +14,6 @@
 
 require 'spec_helper'
 
-describe package('ceph-deploy') do
+describe package('cephadm') do
   it { should be_installed }
 end
