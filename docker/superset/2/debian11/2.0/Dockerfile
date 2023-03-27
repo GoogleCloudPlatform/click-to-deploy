@@ -1,7 +1,7 @@
 FROM marketplace.gcr.io/google/c2d-debian11
 
-ARG SUPERSET_VERSION="1.5.3"
-ENV C2D_RELEASE "1.5.3"
+ARG SUPERSET_VERSION="2.0.1"
+ENV C2D_RELEASE "2.0.1"
 ENV SUPERSET_VERSION ${SUPERSET_VERSION}
 ENV FLASK_APP="superset.app:create_app()"
 ENV SUPERSET_HOME=/var/lib/superset
@@ -13,6 +13,7 @@ RUN apt-get update \
 
 # Create superset user & install dependencies
 WORKDIR /home/superset
+COPY requirements*.txt ./
 RUN groupadd supergroup && \
     useradd -U -G supergroup superset && \
     mkdir -p /etc/superset && \
@@ -25,19 +26,15 @@ RUN groupadd supergroup && \
         freetds-bin \
         freetds-dev \
         libaio1 \
+        libecpg-dev \
+        libffi-dev \
+        libldap2-dev \
         libpq-dev \
         libsasl2-2 \
         libsasl2-modules-gssapi-mit && \
-    pip install apache-superset==$SUPERSET_VERSION && \
-    pip install MarkupSafe==2.0.1 && \
-    pip install psycopg2-binary && \
-    pip install pillow && \
-    pip install mysqlclient && \
-    pip install pybigquery && \
-    pip install statsd && \
-    pip install statsd-client && \
-    pip install pyopenssl==22.1.0 && \
-    pip install cryptography
+    pip install --disable-pip-version-check --upgrade "pip==22.0.4" && \
+    pip install -r requirements.txt && \
+    pip install apache-superset==$SUPERSET_VERSION
 
 # Configure Filesystem
 VOLUME /etc/superset
