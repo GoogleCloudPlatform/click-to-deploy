@@ -15,7 +15,7 @@
 default['ceph']['version'] = 'pacific'
 default['ceph']['deploymentuser'] = 'cephdep'
 
-default['ceph']['adminnodepackages'] = %w(ceph-deploy rsync)
+default['ceph']['adminnodepackages'] = %w(cephadm rsync)
 default['ceph']['datanodepackages'] = %w(ceph ceph-osd ceph-mds ceph-mon radosgw rsync)
 
 default['ceph']['config-dir'] = "#{node['c2d-config']['config-dir']}/#{node['ceph']['deploymentuser']}"
