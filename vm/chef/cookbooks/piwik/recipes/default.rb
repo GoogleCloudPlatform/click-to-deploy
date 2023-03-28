@@ -23,7 +23,7 @@ include_recipe 'php74::module_gd'
 include_recipe 'php74::module_libapache2'
 include_recipe 'php74::module_mbstring'
 include_recipe 'php74::module_mysql'
-include_recipe 'mysql'
+include_recipe 'mysql::version-8.0-embedded'
 
 remote_file 'download_matomo' do
   path '/tmp/matomo.tar.gz'
