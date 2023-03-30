@@ -24,7 +24,7 @@ describe service('mysql'), :if => os[:family] == 'debian' do
   it { should be_running }
 end
 
-describe service('php8.0-fpm'), :if => os[:family] == 'debian' do
+describe service('php8.1-fpm'), :if => os[:family] == 'debian' do
   it { should be_enabled }
   it { should be_running }
 end

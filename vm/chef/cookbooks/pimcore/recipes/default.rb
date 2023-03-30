@@ -22,16 +22,17 @@ include_recipe 'apache2::security-config'
 
 include_recipe 'mysql::version-8.0-embedded'
 
-include_recipe 'php80::default_buster'
-include_recipe 'php80::module_curl'
-include_recipe 'php80::module_gd'
-include_recipe 'php80::module_intl'
-include_recipe 'php80::module_libapache2'
-include_recipe 'php80::module_mbstring'
-include_recipe 'php80::module_mysql'
-include_recipe 'php80::module_opcache'
-include_recipe 'php80::module_xml'
-include_recipe 'php80::module_zip'
+include_recipe 'php81'
+include_recipe 'php81::default_bullseye'
+include_recipe 'php81::module_curl'
+include_recipe 'php81::module_gd'
+include_recipe 'php81::module_intl'
+include_recipe 'php81::module_libapache2'
+include_recipe 'php81::module_mbstring'
+include_recipe 'php81::module_mysql'
+include_recipe 'php81::module_opcache'
+include_recipe 'php81::module_xml'
+include_recipe 'php81::module_zip'
 include_recipe 'composer::composer-only'
 
 include_recipe 'nodenvm'
@@ -84,7 +85,7 @@ cookbook_file '/opt/c2d/apache-pimcore.conf' do
   action :create
 end
 
-cookbook_file '/etc/php/8.0/apache2/conf.d/99-pimcore.ini' do
+cookbook_file '/etc/php/8.1/apache2/conf.d/99-pimcore.ini' do
   source 'php-pimcore.ini'
   owner 'root'
   group 'root'
