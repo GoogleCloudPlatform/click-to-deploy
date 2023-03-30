@@ -29,7 +29,7 @@ end
 bash 'unpackage ruby, compile ruby, and install ruby' do
   user 'root'
   environment({
-    'version' => node['ruby']['version']
+    'version' => node['ruby']['version'],
   })
   code <<-EOH
     tar -xzf /tmp/ruby.tar.gz -C /tmp/
