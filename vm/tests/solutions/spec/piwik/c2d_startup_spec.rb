@@ -33,7 +33,7 @@ describe 'C2D startup scripts should exists' do
     it { should exist }
   end
 
-  describe file('/opt/c2d/scripts/02-piwik') do
+  describe file('/opt/c2d/scripts/03-piwik') do
     it { should exist }
   end
 end

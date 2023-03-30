@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,6 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['kafka']['version'] = '3.4.0'
-default['scala']['version'] = '2.13'
-default['kafka']['packages'] = ['zookeeperd']
+apt_repository 'php' do
+  uri 'https://packages.sury.org/php/'
+  distribution 'bullseye'
+  key 'https://packages.sury.org/php/apt.gpg'
+  components ['main']
+end
+
+apt_update do
+  action :update
+end
+
+package 'install packages' do
+  package_name node['php81']['packages']
+  action :install
+  retries 5
+  retry_delay 20
+end
+
+node['php81']['modules'].each do |pkg|
+  include_recipe "php81::module_#{pkg}"
+end
