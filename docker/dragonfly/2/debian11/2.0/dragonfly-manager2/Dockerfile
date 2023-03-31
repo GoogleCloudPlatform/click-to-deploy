@@ -15,7 +15,7 @@
 FROM node:12-alpine as console-builder
 
 ARG MANAGER_CONSOLE_BRANCH=release-0.1.7
-ARG CONSOLE_DIST=https://github.com/dragonflyoss/console/archive/refs/heads/v0.1.7.tar.gz
+ARG CONSOLE_DIST=https://github.com/dragonflyoss/console/archive/refs/tags/v0.1.7.tar.gz
 
 ADD ${CONSOLE_DIST} .
 
