@@ -14,7 +14,7 @@
 
 FROM node:12-alpine as console-builder
 
-ARG MANAGER_CONSOLE_BRANCH=release-0.1.4
+ARG MANAGER_CONSOLE_BRANCH=release-0.1.7
 ARG CONSOLE_DIST=https://github.com/dragonflyoss/console/archive/refs/heads/${MANAGER_CONSOLE_BRANCH}.tar.gz
 
 ADD ${CONSOLE_DIST} .
@@ -30,8 +30,8 @@ FROM golang:1.19-alpine3.16 as server-builder
 ARG GOPROXY
 ARG GOTAGS
 ARG GOGCFLAGS
-ARG DRAGONFLY2_GITHUB_BRANCH=release-2.0.8
-ARG MANAGER_CONSOLE_BRANCH=release-0.1.4
+ARG DRAGONFLY2_GITHUB_BRANCH=release-2.0.9
+ARG MANAGER_CONSOLE_BRANCH=release-0.1.7
 
 WORKDIR /go/src/d7y.io/dragonfly/v2
 
@@ -54,7 +54,7 @@ RUN apt update && apt install -y wget && \
 FROM marketplace.gcr.io/google/c2d-debian11
 
 WORKDIR /opt/dragonfly
-ENV C2D_RELEASE 2.0.8
+ENV C2D_RELEASE 2.0.9
 ENV PATH=/opt/dragonfly/bin:$PATH
 ENV DRAGONFLY_MANAGER_ADDR localhost
 ENV DRAGONFLY_MYSQL_USER dragonfly
