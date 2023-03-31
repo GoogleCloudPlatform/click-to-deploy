@@ -1,7 +1,7 @@
 {{- $gitea := index .Packages "gitea"}}
 
 #Build stage
-FROM golang:1.18-alpine3.15 AS build-env
+FROM golang:1.20-alpine3.17 AS build-env
 
 ARG GOPROXY
 ENV GOPROXY ${GOPROXY:-proxy.golang.org}
@@ -15,7 +15,7 @@ ARG CGO_EXTRA_CFLAGS
 RUN apk --no-cache add build-base git nodejs npm
 
 #Setup repo
-RUN git clone -b ${GITEA_VERSION} https://github.com/go-gitea/gitea.git ${GOPATH}/src/code.gitea.io/gitea 
+RUN git clone -b ${GITEA_VERSION} https://github.com/go-gitea/gitea.git ${GOPATH}/src/code.gitea.io/gitea
 #COPY . /go/src/code.gitea.io/gitea
 WORKDIR ${GOPATH}/src/code.gitea.io/gitea
 
@@ -34,7 +34,7 @@ RUN apt-get update && \
     apt-get install -y \
     bash \
     ca-certificates \
-    gettext \ 
+    gettext \
     openssh-server \
     s6 \
     sqlite3 \
