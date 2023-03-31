@@ -15,12 +15,13 @@
 FROM node:12-alpine as console-builder
 
 ARG MANAGER_CONSOLE_BRANCH=release-0.1.7
-ARG CONSOLE_DIST=https://github.com/dragonflyoss/console/archive/refs/tags/v0.1.7.tar.gz
+ARG MANAGER_CONSOLE_TAR=v0.1.7
+ARG CONSOLE_DIST=https://github.com/dragonflyoss/console/archive/refs/tags/${MANAGER_CONSOLE_TAR}.tar.gz
 
 ADD ${CONSOLE_DIST} .
 
-RUN tar -xvf $MANAGER_CONSOLE_BRANCH.tar.gz && \
-    cd console-$MANAGER_CONSOLE_BRANCH && \
+RUN tar -xvf $MANAGER_CONSOLE_TAR.tar.gz && \
+    cd console-0.1.7 && \
     npm install --loglevel warn --progress false && \
     npm run build
 
@@ -39,7 +40,7 @@ RUN apk --no-cache add bash make gcc libc-dev git && \
     git clone -b ${DRAGONFLY2_GITHUB_BRANCH} https://github.com/dragonflyoss/Dragonfly2.git /go/src/d7y.io/dragonfly/v2 && \
     git clone -b ${MANAGER_CONSOLE_BRANCH} https://github.com/dragonflyoss/console.git /go/src/d7y.io/dragonfly/v2/manager/console
 
-COPY --from=console-builder /console-$MANAGER_CONSOLE_BRANCH/dist /go/src/d7y.io/dragonfly/v2/manager/dist
+COPY --from=console-builder /console-0.1.7/dist /go/src/d7y.io/dragonfly/v2/manager/dist
 
 RUN make build-manager-server && make install-manager
 
