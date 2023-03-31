@@ -20,15 +20,15 @@ versions:
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     airflow:
-      version: 2.5.1
+      version: 2.5.2
     pip:
       version: 22.3.1
   repo: airflow2
   tags:
-  - 2.5.1-debian11
+  - 2.5.2-debian11
   - 2.5-debian11
   - 2-debian11
-  - 2.5.1
+  - 2.5.2
   - '2.5'
   - '2'
   - latest
