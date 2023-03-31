@@ -22,8 +22,8 @@ versions:
   from: marketplace.gcr.io/google/php7-apache2:7.4
   packages:
     composer:
-      sha256: 91ce6cbf9463eae86ae9d5c21d42faa601a519f3fbb2b623a55ee24678079bd3
-      version: 2.5.4
+      sha256: 566a6d1cf4be1cc3ac882d2a2a13817ffae54e60f5aa7c9137434810a5809ffc
+      version: 2.5.5
     mediawiki:
       major: '1.39'
       sha512: 88e9f961cad1e1f69b3be04f3fa487cd2baf82ec3443b827b5f7541b7f717d8901d0c0be6928ba3e46db4c350edadf5d7f342d49e3b55f77e8a8b079e5aacd37
