@@ -25,7 +25,7 @@ WORKDIR /go/src/d7y.io/dragonfly/v2
 
 RUN apk --no-cache add bash make gcc libc-dev git && \
     git clone -b ${DRAGONFLY2_GITHUB_BRANCH} https://github.com/dragonflyoss/Dragonfly2.git /go/src/d7y.io/dragonfly/v2 && \
-    git clone -b ${MANAGER_CONSOLE_BRANCH} https://github.com/dragonflyoss/console.git /go/src/d7y.io/dragonfly/v2/manager/console
+
 
 RUN make build-scheduler && make install-scheduler
 
@@ -55,7 +55,7 @@ COPY --from=health /bin/grpc_health_probe /bin/grpc_health_probe
 COPY config/scheduler.yaml /etc/dragonfly/scheduler.yaml
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN apt update && apt install -y gettext-base && \
-    chmod +x /docker-entrypoint.sh 
+    chmod +x /docker-entrypoint.sh
 
 EXPOSE 8002
 

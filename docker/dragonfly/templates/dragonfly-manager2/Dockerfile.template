@@ -42,8 +42,8 @@ WORKDIR /go/src/d7y.io/dragonfly/v2
 
 RUN apk --no-cache add bash make gcc libc-dev git && \
     git clone -b ${DRAGONFLY2_GITHUB_BRANCH} https://github.com/dragonflyoss/Dragonfly2.git /go/src/d7y.io/dragonfly/v2 && \
-    git clone -b ${MANAGER_CONSOLE_BRANCH} https://github.com/dragonflyoss/console.git /go/src/d7y.io/dragonfly/v2/manager/console
 
+COPY --from=console-builder /console-{{ $manager_console.Version }} /go/src/d7y.io/dragonfly/v2/manager/console
 COPY --from=console-builder /console-{{ $manager_console.Version }}/dist /go/src/d7y.io/dragonfly/v2/manager/dist
 
 RUN make build-manager-server && make install-manager
