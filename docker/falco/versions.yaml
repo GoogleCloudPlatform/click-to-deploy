@@ -30,6 +30,17 @@ versions:
   - '0.34'
   - '0'
   - latest
+- dir: 0/debian11/0.33
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    falco:
+      version: 0.33.1
+  repo: falco0
+  tags:
+  - 0.33.1-debian11
+  - 0.33-debian11
+  - 0.33.1
+  - '0.33'
 - dir: exporter
   from: marketplace.gcr.io/google/c2d-debian11
   packages:

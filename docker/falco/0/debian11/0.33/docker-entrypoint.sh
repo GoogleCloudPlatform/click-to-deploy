@@ -1,4 +1,7 @@
-# Copyright 2023 Google LLC
+#!/usr/bin/env bash
+#
+# Copyright (C) 2020 The Falco Authors.
+#
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,25 +14,20 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
+# Set the SKIP_DRIVER_LOADER variable to skip loading the driver
 
-cloudbuild:
-  enable_parallel: false
-versions:
-- dir: 2/debian11/2.5
-  from: marketplace.gcr.io/google/c2d-debian11
-  packages:
-    airflow:
-      version: 2.5.2
-    pip:
-      version: 22.3.1
-  repo: airflow2
-  tags:
-  - 2.5.2-debian11
-  - 2.5-debian11
-  - 2-debian11
-  - 2.5.2
-  - '2.5'
-  - '2'
-  - latest
+if [[ -z "${SKIP_DRIVER_LOADER}" ]]; then
+    echo "* Setting up /usr/src links from host"
 
+    for i in "$HOST_ROOT/usr/src"/*
+    do
+        base=$(basename "$i")
+        ln -s "$i" "/usr/src/$base"
+    done
+
+    /usr/bin/falco-driver-loader
+fi
+
+exec "$@"
