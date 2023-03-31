@@ -11,7 +11,7 @@ RUN groupadd crate \
 #install crate
 WORKDIR /crate
 
-ENV CRATE_VERSION 5.2.2
+ENV CRATE_VERSION 5.2.5
 ARG CRATE_DIST=https://cdn.crate.io/downloads/releases/cratedb/x64_linux/crate-${CRATE_VERSION}.tar.gz
 
 ADD $CRATE_DIST /tmp/
@@ -27,7 +27,7 @@ ADD https://raw.githubusercontent.com/FasterXML/jackson-databind/2.15/LICENSE /c
 ADD https://raw.githubusercontent.com/apache/lucene/main/LICENSE.txt /crate/lucene_LICENSE
 ADD https://raw.githubusercontent.com/netty/netty/4.1/LICENSE.txt /crate/netty_LICENSE
 ADD https://raw.githubusercontent.com/qos-ch/slf4j/master/LICENSE.txt /crate/slf4j_LICENSE
-ADD https://raw.githubusercontent.com/apache/logging-log4j2/release-2.x/LICENSE.txt /crate/log4j_LICENSE
+ADD https://raw.githubusercontent.com/apache/logging-log4j2/2.x/LICENSE.txt /crate/log4j_LICENSE
 
 #install crash
 ENV CRASH_VERSION=0.28.0
@@ -57,7 +57,7 @@ WORKDIR /data
 # postgres protocol ports: 5432 tcp
 EXPOSE 4200 4300 5432
 
-ENV C2D_RELEASE 5.2.2
+ENV C2D_RELEASE 5.2.5
 
 COPY --chown=1000:0 config/crate.yml /crate/config/crate.yml
 COPY --chown=1000:0 config/log4j2.properties /crate/config/log4j2.properties
@@ -66,4 +66,3 @@ COPY docker-entrypoint.sh /
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["crate"]
-
