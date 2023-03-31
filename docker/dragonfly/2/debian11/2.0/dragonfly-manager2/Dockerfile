@@ -15,7 +15,7 @@
 FROM node:12-alpine as console-builder
 
 ARG MANAGER_CONSOLE_BRANCH=release-0.1.7
-ARG CONSOLE_DIST=https://github.com/dragonflyoss/console/archive/refs/heads/${MANAGER_CONSOLE_BRANCH}.tar.gz
+ARG CONSOLE_DIST=https://github.com/dragonflyoss/console/archive/refs/heads/v0.1.7.tar.gz
 
 ADD ${CONSOLE_DIST} .
 
@@ -73,7 +73,7 @@ COPY --from=health /bin/grpc_health_probe /bin/grpc_health_probe
 COPY config/manager.yaml /etc/dragonfly/manager.yaml
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN apt update && apt install -y curl gettext-base && \
-    chmod +x /docker-entrypoint.sh 
+    chmod +x /docker-entrypoint.sh
 
 EXPOSE 8080 65003
 
