@@ -37,7 +37,7 @@ ARG MANAGER_CONSOLE_BRANCH=release-0.1.7
 WORKDIR /go/src/d7y.io/dragonfly/v2
 
 RUN apk --no-cache add bash make gcc libc-dev git && \
-    git clone -b ${DRAGONFLY2_GITHUB_BRANCH} https://github.com/dragonflyoss/Dragonfly2.git /go/src/d7y.io/dragonfly/v2 &&
+    git clone -b ${DRAGONFLY2_GITHUB_BRANCH} https://github.com/dragonflyoss/Dragonfly2.git /go/src/d7y.io/dragonfly/v2
 
 COPY --from=console-builder /console-0.1.7/dist /go/src/d7y.io/dragonfly/v2/manager/dist
 
