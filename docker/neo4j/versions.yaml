@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,26 +16,6 @@
 cloudbuild:
   enable_parallel: true
 versions:
-- dir: 4/debian11/4.4
-  from: marketplace.gcr.io/google/c2d-debian11
-  packages:
-    dockerneo4j:
-      version: 4.4.16
-    neo4j:
-      version: 4.4.16
-    tini:
-      version: 0.19.0
-  repo: neo4j4
-  templateSubDir: 'neo4j4'
-  tags:
-  - 4.4.16-debian11
-  - 4.4-debian11
-  - 4-debian11
-  - 4.4.16
-  - '4.4'
-  - '4'
-  - latest
-
 - dir: 5/debian11/5.5
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
@@ -46,7 +26,6 @@ versions:
     tini:
       version: 0.19.0
   repo: neo4j5
-  templateSubDir: 'neo4j5'
   tags:
   - 5.5.0-debian11
   - 5.5-debian11
@@ -54,5 +33,23 @@ versions:
   - 5.5.0
   - '5.5'
   - '5'
+  - latest
+- dir: 4/debian11/4.4
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    dockerneo4j:
+      version: 4.4.17
+    neo4j:
+      version: 4.4.17
+    tini:
+      version: 0.19.0
+  repo: neo4j4
+  tags:
+  - 4.4.17-debian11
+  - 4.4-debian11
+  - 4-debian11
+  - 4.4.17
+  - '4.4'
+  - '4'
   - latest
 
