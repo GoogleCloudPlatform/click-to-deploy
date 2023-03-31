@@ -27,7 +27,7 @@ ADD https://raw.githubusercontent.com/FasterXML/jackson-databind/2.15/LICENSE /c
 ADD https://raw.githubusercontent.com/apache/lucene/main/LICENSE.txt /crate/lucene_LICENSE
 ADD https://raw.githubusercontent.com/netty/netty/4.1/LICENSE.txt /crate/netty_LICENSE
 ADD https://raw.githubusercontent.com/qos-ch/slf4j/master/LICENSE.txt /crate/slf4j_LICENSE
-ADD https://raw.githubusercontent.com/apache/logging-log4j2/release-2.x/LICENSE.txt /crate/log4j_LICENSE
+ADD https://raw.githubusercontent.com/apache/logging-log4j2/2.x/LICENSE.txt /crate/log4j_LICENSE
 
 #install crash
 ENV CRASH_VERSION=0.28.0
@@ -66,4 +66,3 @@ COPY docker-entrypoint.sh /
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["crate"]
-
