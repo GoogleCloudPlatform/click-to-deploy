@@ -22,13 +22,13 @@ versions:
     crash:
       version: 0.28.0
     crate:
-      version: 5.2.2
+      version: 5.2.5
   repo: crate5
   tags:
-  - 5.2.2-debian11
+  - 5.2.5-debian11
   - 5.2-debian11
   - 5-debian11
-  - 5.2.2
+  - 5.2.5
   - '5.2'
   - '5'
   - latest
