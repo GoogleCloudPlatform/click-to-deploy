@@ -6,7 +6,7 @@ FROM golang:1.20-alpine3.17 AS build-env
 ARG GOPROXY
 ENV GOPROXY ${GOPROXY:-proxy.golang.org}
 
-ARG GITEA_VERSION=release/v1.18
+ARG GITEA_VERSION=release/v1.19
 ARG TAGS="sqlite sqlite_unlock_notify"
 ENV TAGS "bindata timetzdata $TAGS"
 ARG CGO_EXTRA_CFLAGS
@@ -76,7 +76,7 @@ RUN addgroup \
 
 ENV USER git
 ENV GITEA_CUSTOM /data/gitea
-ENV C2D_RELEASE 1.18.9
+ENV C2D_RELEASE 1.19.9
 
 VOLUME ["/data"]
 
