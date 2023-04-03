@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,10 +17,10 @@ cloudbuild:
   enable_parallel: false
 versions:
 - dir: 3/debian11/3.4
-  templateSubDir: debian11
   excludeTests:
   - tests/functional_tests/exporter_test.yaml
   from: marketplace.gcr.io/google/c2d-debian11
+  templateSubDir: debian11
   packages:
     kafka:
       version: 3.4.0
@@ -36,10 +36,10 @@ versions:
   - '3'
   - latest
 - dir: exporter
-  templateSubDir: exporter
   excludeTests:
   - tests/functional_tests/running_test.yaml
   from: marketplace.gcr.io/google/c2d-debian11
+  templateSubDir: exporter
   packages:
     kafka_exporter:
       version: 1.6.0
@@ -50,4 +50,3 @@ versions:
   - '1'
   - latest
   templateSubDir: exporter
-

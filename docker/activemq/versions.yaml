@@ -16,6 +16,20 @@
 cloudbuild:
   enable_parallel: false
 versions:
+- dir: 5/debian11/5.18
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    activemq:
+      version: 5.18.0
+  repo: activemq5
+  tags:
+  - 5.18.0-debian11
+  - 5.18-debian11
+  - 5-debian11
+  - 5.18.0
+  - '5.18'
+  - '5'
+  - latest
 - dir: 5/debian11/5.17
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
@@ -25,8 +39,6 @@ versions:
   tags:
   - 5.17.4-debian11
   - 5.17-debian11
-  - 5-debian11
   - 5.17.4
   - '5.17'
-  - '5'
-  - latest
+
