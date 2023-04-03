@@ -14,13 +14,14 @@
 
 FROM node:12-alpine as console-builder
 
-ARG MANAGER_CONSOLE_BRANCH=release-0.1.4
-ARG CONSOLE_DIST=https://github.com/dragonflyoss/console/archive/refs/heads/${MANAGER_CONSOLE_BRANCH}.tar.gz
+ARG MANAGER_CONSOLE_BRANCH=release-0.1.7
+ARG MANAGER_CONSOLE_TAR=v0.1.7
+ARG CONSOLE_DIST=https://github.com/dragonflyoss/console/archive/refs/tags/${MANAGER_CONSOLE_TAR}.tar.gz
 
 ADD ${CONSOLE_DIST} .
 
-RUN tar -xvf $MANAGER_CONSOLE_BRANCH.tar.gz && \
-    cd console-$MANAGER_CONSOLE_BRANCH && \
+RUN tar -xvf $MANAGER_CONSOLE_TAR.tar.gz && \
+    cd console-0.1.7 && \
     npm install --loglevel warn --progress false && \
     npm run build
 
@@ -30,16 +31,15 @@ FROM golang:1.19-alpine3.16 as server-builder
 ARG GOPROXY
 ARG GOTAGS
 ARG GOGCFLAGS
-ARG DRAGONFLY2_GITHUB_BRANCH=release-2.0.8
-ARG MANAGER_CONSOLE_BRANCH=release-0.1.4
+ARG DRAGONFLY2_GITHUB_BRANCH=release-2.0.9
+ARG MANAGER_CONSOLE_BRANCH=release-0.1.7
 
 WORKDIR /go/src/d7y.io/dragonfly/v2
 
 RUN apk --no-cache add bash make gcc libc-dev git && \
-    git clone -b ${DRAGONFLY2_GITHUB_BRANCH} https://github.com/dragonflyoss/Dragonfly2.git /go/src/d7y.io/dragonfly/v2 && \
-    git clone -b ${MANAGER_CONSOLE_BRANCH} https://github.com/dragonflyoss/console.git /go/src/d7y.io/dragonfly/v2/manager/console
+    git clone -b ${DRAGONFLY2_GITHUB_BRANCH} --recurse-submodules https://github.com/dragonflyoss/Dragonfly2.git /go/src/d7y.io/dragonfly/v2
 
-COPY --from=console-builder /console-$MANAGER_CONSOLE_BRANCH/dist /go/src/d7y.io/dragonfly/v2/manager/dist
+COPY --from=console-builder /console-0.1.7/dist /go/src/d7y.io/dragonfly/v2/manager/dist
 
 RUN make build-manager-server && make install-manager
 
@@ -54,7 +54,7 @@ RUN apt update && apt install -y wget && \
 FROM marketplace.gcr.io/google/c2d-debian11
 
 WORKDIR /opt/dragonfly
-ENV C2D_RELEASE 2.0.8
+ENV C2D_RELEASE 2.0.9
 ENV PATH=/opt/dragonfly/bin:$PATH
 ENV DRAGONFLY_MANAGER_ADDR localhost
 ENV DRAGONFLY_MYSQL_USER dragonfly
@@ -73,7 +73,7 @@ COPY --from=health /bin/grpc_health_probe /bin/grpc_health_probe
 COPY config/manager.yaml /etc/dragonfly/manager.yaml
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN apt update && apt install -y curl gettext-base && \
-    chmod +x /docker-entrypoint.sh 
+    chmod +x /docker-entrypoint.sh
 
 EXPOSE 8080 65003
 
