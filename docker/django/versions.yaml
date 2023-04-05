@@ -27,13 +27,13 @@ versions:
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     django:
-      version: 4.1.7
+      version: 4.1.8
   repo: django4
   tags:
-  - 4.1.7-debian11
+  - 4.1.8-debian11
   - 4.1-debian11
   - 4-debian11
-  - 4.1.7
+  - 4.1.8
   - '4.1'
   - '4'
   - latest

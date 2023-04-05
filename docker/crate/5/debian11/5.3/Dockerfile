@@ -11,7 +11,7 @@ RUN groupadd crate \
 #install crate
 WORKDIR /crate
 
-ENV CRATE_VERSION 5.2.6
+ENV CRATE_VERSION 5.3.0
 ARG CRATE_DIST=https://cdn.crate.io/downloads/releases/cratedb/x64_linux/crate-${CRATE_VERSION}.tar.gz
 
 ADD $CRATE_DIST /tmp/
@@ -57,7 +57,7 @@ WORKDIR /data
 # postgres protocol ports: 5432 tcp
 EXPOSE 4200 4300 5432
 
-ENV C2D_RELEASE 5.2.6
+ENV C2D_RELEASE 5.3.0
 
 COPY --chown=1000:0 config/crate.yml /crate/config/crate.yml
 COPY --chown=1000:0 config/log4j2.properties /crate/config/log4j2.properties
