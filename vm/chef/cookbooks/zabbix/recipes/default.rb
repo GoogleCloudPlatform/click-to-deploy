@@ -58,8 +58,8 @@ RedirectMatch ^/$ /zabbix/
   su - postgres -c 'createdb -O zabbix -E Unicode zabbix'
   su - postgres -c 'createdb -O zabbix -E Unicode zabbix_proxy'
 
-  zcat /usr/share/doc/zabbix-sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix
-  cat /usr/share/doc/zabbix-sql-scripts/postgresql/proxy.sql | sudo -u zabbix psql zabbix_proxy
+  zcat /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix
+  cat /usr/share/zabbix-sql-scripts/postgresql/proxy.sql | sudo -u zabbix psql zabbix_proxy
 
   ### for PostgreSQL -- uses socket (localhost uses tcp)
   sed -i 's/^# DBHost=localhost/DBHost=localhost/' /etc/zabbix/zabbix_server.conf
