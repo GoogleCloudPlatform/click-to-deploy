@@ -54,7 +54,7 @@ spec:
           volumeMounts:
             - name: config-volume
               mountPath: /etc/config
-            - name: {{ .Release.Name }}-alertmanager-data
+            - name: {{ template "prometheus.alertmanagerName" . }}-alertmanager-data
               mountPath: "/data"
               subPath: ""
           resources:
@@ -80,7 +80,7 @@ spec:
             topologyKey: "kubernetes.io/hostname"
   volumeClaimTemplates:
   - metadata:
-      name: {{ template "prometheus.alertmanagerName" . }}-amanager-data
+      name: {{ template "prometheus.alertmanagerName" . }}-alertmanager-data
     spec:
       storageClassName: "{{ .Values.prometheus.storageClass }}"
       accessModes:
