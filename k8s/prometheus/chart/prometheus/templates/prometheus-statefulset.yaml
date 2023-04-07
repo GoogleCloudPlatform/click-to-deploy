@@ -62,7 +62,7 @@ spec:
           volumeMounts:
             - name: config-volume
               mountPath: /etc/config
-            - name: {{ .Release.Name }}-prometheus-data
+            - name: {{ template "prometheus.prometheusName" . }}-prometheus-data
               mountPath: /data
               subPath: ""
       terminationGracePeriodSeconds: 300
