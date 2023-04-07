@@ -1,5 +1,5 @@
 {{- define "prometheus.alertmanagerName" -}}
-{{- .Release.Name | trunc 14 -}}
+{{- .Release.Name | trunc 17 -}}
 {{- end -}}
 
 {{- define "prometheus.prometheusName" -}}

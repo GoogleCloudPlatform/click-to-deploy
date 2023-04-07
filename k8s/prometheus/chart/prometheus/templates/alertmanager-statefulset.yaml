@@ -80,7 +80,7 @@ spec:
             topologyKey: "kubernetes.io/hostname"
   volumeClaimTemplates:
   - metadata:
-      name: {{ template "prometheus.alertmanagerName" . }}-alertmanager-data
+      name: {{ template "prometheus.alertmanagerName" . }}-amanager-data
     spec:
       storageClassName: "{{ .Values.prometheus.storageClass }}"
       accessModes:
