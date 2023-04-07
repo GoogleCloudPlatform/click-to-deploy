@@ -17,9 +17,9 @@
 source /opt/c2d/c2d-utils || exit 1
 
 readonly postgres_sonar_db="$(get_attribute_value "sonar_db_pass")"
-readonly sonar_pass="$(get_attribute_value "sonar_password")"
 readonly user="admin"
-readonly new_salt="$(tr -dc A-Za-z0-9 </dev/urandom | head -c 40 ; echo '')"
+readonly sonar_pass="$(get_attribute_value "sonar_password")"
+readonly new_salt="$(tr -dc A-Za-z0-9 < /dev/urandom | head -c 40 ; echo '')"
 readonly new_password="${sonar_pass}"
 readonly salted_password="$(echo -n "--${new_salt}--${new_password}--" | sha1sum | awk '{print $1}')"
 readonly sonarqube_properties="/opt/sonarqube/conf/sonar.properties"

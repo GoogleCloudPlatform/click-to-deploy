@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,4 +15,4 @@
 default['sonarqube']['user'] = 'sonar'
 default['sonarqube']['db']['username'] = 'sonar'
 default['sonarqube']['db']['name'] = 'sonar'
-default['sonarqube']['version'] = '8.7.1.42226'
+default['sonarqube']['version'] = '10.0.0.68432'
