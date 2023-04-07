@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ .Release.Name }}-alertmanager
+  name: {{ template "prometheus.alertmanagerName" . }}-alertmanager
   labels: &Labels
     k8s-app: alertmanager
     app.kubernetes.io/name: "{{ .Release.Name }}"
@@ -80,7 +80,7 @@ spec:
             topologyKey: "kubernetes.io/hostname"
   volumeClaimTemplates:
   - metadata:
-      name: {{ .Release.Name }}-alertmanager-data
+      name: {{ template "prometheus.alertmanagerName" . }}-alertmanager-data
     spec:
       storageClassName: "{{ .Values.prometheus.storageClass }}"
       accessModes:
