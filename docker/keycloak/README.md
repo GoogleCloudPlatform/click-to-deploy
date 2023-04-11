@@ -81,7 +81,7 @@ docker run -d -p 8080:8080 \
     --name keycloak \
     -e KEYCLOAK_ADMIN=admin \
     -e KEYCLOAK_ADMIN_PASSWORD=admin \
-    -e KC_DB=dev-mem
+    -e KC_DB=dev-mem \
     marketplace.gcr.io/google/keycloak21 \
     start-dev
 ```
