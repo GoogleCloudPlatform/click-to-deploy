@@ -20,9 +20,6 @@ readonly postgres_sonar_db="$(get_attribute_value "sonar_db_pass")"
 readonly sonar_pass="$(get_attribute_value "sonar_password")"
 readonly user="admin"
 readonly default_pass="admin"
-readonly new_salt="$(tr -dc A-Za-z0-9 < /dev/urandom | head -c 40 ; echo '')"
-readonly new_password="${sonar_pass}"
-readonly salted_password="$(echo -n "--${new_salt}--${new_password}--" | sha1sum | awk '{print $1}')"
 readonly sonarqube_properties="/opt/sonarqube/conf/sonar.properties"
 
 # Await the application to be ready.
@@ -83,6 +80,7 @@ systemctl enable sonar
 wait_for_app "http://localhost" 200 ""
 
 # Ensure admin/admin password.
+# https://docs.sonarqube.org/latest/instance-administration/security/
 sudo -u sonar psql <<EOF
   update users set
   crypted_password='100000\$t2h8AtNs1AlCHuLobDjHQTn9XppwTIx88UjqUm4s8RsfTuXQHSd/fpFexAnewwPsO6jGFQUv/24DnO55hY6Xew==',
