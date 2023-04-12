@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2021 Google Inc.
+# Copyright 2023 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,12 +17,37 @@
 source /opt/c2d/c2d-utils || exit 1
 
 readonly postgres_sonar_db="$(get_attribute_value "sonar_db_pass")"
-readonly user="admin"
 readonly sonar_pass="$(get_attribute_value "sonar_password")"
+readonly user="admin"
+readonly default_pass="admin"
 readonly new_salt="$(tr -dc A-Za-z0-9 < /dev/urandom | head -c 40 ; echo '')"
 readonly new_password="${sonar_pass}"
 readonly salted_password="$(echo -n "--${new_salt}--${new_password}--" | sha1sum | awk '{print $1}')"
 readonly sonarqube_properties="/opt/sonarqube/conf/sonar.properties"
+
+# Await the application to be ready.
+function wait_for_app() {
+  local url="$1"
+  local target_code="$2"
+  local extra_params="$3"
+  local max_retries=10
+  local retry=1
+  local http_code=0
+
+  while [[ "${http_code}" -ne "${target_code}" && "${retry}" -le "${max_retries}" ]]; do
+    echo "Trying to fetch homepage... ${retry}"
+    http_code="$(curl ${extra_params} -s -L -o /dev/null -w "%{http_code}" ${url})"
+    echo "Status: ${http_code}"
+    (( retry=retry+1 ))
+
+    sleep 25
+  done
+
+  if [[ "${retry}" -gt "${max_retries}" ]]; then
+    echo "Max retries exceeded."
+    exit 1
+  fi
+}
 
 # Creating postgres DB for sonar.
 sudo -u postgres psql <<EOF
@@ -47,32 +72,45 @@ $sonar_pass
 $sonar_pass
 EOF
 
-# Enabling Sonarqube.
+# Hide Sonarqube from end-users while default credentials are still set
+sed 's/sonar.web.host=0.0.0.0/sonar.web.host=127.0.0.1/g' -i "${sonarqube_properties}"
+
+# Enable Sonarqube.
 systemctl start sonar
 systemctl enable sonar
 
-# Await the application to be ready.
-function wait_for_app() {
-  local max_retries=10
-  local retry=1
-  local http_code=0
+# Wait frontend return 200
+wait_for_app "http://localhost" 200 ""
 
-  while [[ "${http_code}" -ne 200 && "${retry}" -le "${max_retries}" ]]; do
-    echo "Trying to fetch homepage... ${retry}"
-    http_code="$(curl -s -L -o /dev/null -w "%{http_code}" http://localhost)"
-    (( retry=retry+1 ))
-    sleep 25
-  done
-
-  if [[ "${retry}" -gt "${max_retries}" ]]; then
-    echo "Max retries exceeded."
-    exit 1
-  fi
-}
-
-wait_for_app
-
-# Change admin password.
+# Ensure admin/admin password.
 sudo -u sonar psql <<EOF
-UPDATE users SET crypted_password='${salted_password}', salt='${new_salt}', hash_method='SHA1' WHERE login='${user}';
+  update users set
+  crypted_password='100000\$t2h8AtNs1AlCHuLobDjHQTn9XppwTIx88UjqUm4s8RsfTuXQHSd/fpFexAnewwPsO6jGFQUv/24DnO55hY6Xew==',
+  salt='k9x9eN127/3e/hf38iNiKwVfaVk=',
+  hash_method='PBKDF2',
+  reset_password='true',
+  user_local='true',
+  active='true'
+  where login='admin';
 EOF
+
+# Wait api return 200
+wait_for_app "http://localhost:9000/api" 200 "-u ${user}:${default_pass}"
+
+# Actually changes sonarqube user
+curl -v \
+  --retry 5 \
+  --retry-connrefused \
+  -s \
+  -X POST \
+  -u "${user}:${default_pass}" -f "http://localhost:9000/api/users/change_password?login=${user}&password=${sonar_pass}&previousPassword=${default_pass}"
+
+# Re-enable binding to all hosts and restart sonar
+sed 's/sonar.web.host=127.0.0.1/sonar.web.host=0.0.0.0/g' -i "${sonarqube_properties}"
+systemctl stop sonar
+systemctl start sonar
+
+# Wait frontend return 200
+wait_for_app "http://localhost" 200 ""
+
+echo "Finished."
