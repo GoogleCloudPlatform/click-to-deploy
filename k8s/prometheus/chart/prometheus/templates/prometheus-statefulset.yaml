@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ .Release.Name }}-prometheus
+  name: {{ template "prometheus.prometheusName" . }}-prometheus
   labels: &Labels
     k8s-app: prometheus
     app.kubernetes.io/name: "{{ .Release.Name }}"
@@ -62,7 +62,7 @@ spec:
           volumeMounts:
             - name: config-volume
               mountPath: /etc/config
-            - name: {{ .Release.Name }}-prometheus-data
+            - name: {{ template "prometheus.prometheusName" . }}-prometheus-data
               mountPath: /data
               subPath: ""
       terminationGracePeriodSeconds: 300
@@ -82,7 +82,7 @@ spec:
             topologyKey: "kubernetes.io/hostname"
   volumeClaimTemplates:
   - metadata:
-      name: {{ .Release.Name }}-prometheus-data
+      name: {{ template "prometheus.prometheusName" . }}-prometheus-data
       labels: *Labels
     spec:
       storageClassName: "{{ .Values.prometheus.storageClass }}"
