@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['pimcore']['version'] = '10.5.19'
+default['pimcore']['version'] = '10.5.20'
 default['pimcore']['db']['name'] = 'pimcore'
 default['pimcore']['packages'] = [
   'unzip',

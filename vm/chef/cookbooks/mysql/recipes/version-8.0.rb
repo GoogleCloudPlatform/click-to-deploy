@@ -15,4 +15,4 @@
 # MySQL v8.0 installation and configuration recipe
 
 include_recipe 'mysql::configure-apt-repo-version-8.0'
-include_recipe 'mysql::install-and-configure-mysqld'
+include_recipe 'mysql::install-and-configure-mysqld8'
