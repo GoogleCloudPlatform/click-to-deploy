@@ -19,7 +19,7 @@ package 'install_packages' do
   action :install
 end
 
-template '/etc/mysql/mysql.conf.d/mysqld.cnf' do
+template '/etc/mysql/conf.d/mysqld.cnf' do
   source 'mysqld8.cnf.erb'
   variables({
     bind_address: node['mysql']['bind_address'],
