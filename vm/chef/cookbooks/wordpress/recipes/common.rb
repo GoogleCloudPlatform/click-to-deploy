@@ -13,9 +13,9 @@
 # limitations under the License.
 
 include_recipe 'apache2'
-include_recipe 'apache2::mod_ssl'
-include_recipe 'apache2::security-config'
+include_recipe 'apache2::mod-ssl'
 include_recipe 'apache2::rm-index'
+include_recipe 'apache2::security-config'
 include_recipe 'mysql::version-8.0-embedded'
 
 apt_update do

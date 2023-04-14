@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,8 +15,8 @@
 # Reference: https://documentation.concretecms.org/developers/introduction/installing-concrete-cms
 
 include_recipe 'apache2'
-include_recipe 'apache2::mod_deflate'
-include_recipe 'apache2::mod_headers'
+include_recipe 'apache2::mod-deflate'
+include_recipe 'apache2::mod-headers'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 

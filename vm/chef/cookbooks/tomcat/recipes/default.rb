@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,9 +16,23 @@
 # Reference: https://www.mkyong.com/tomcat/tomcat-default-administrator-password/
 
 include_recipe 'c2d-config'
+include_recipe 'c2d-config::create-self-signed-certificate'
+include_recipe 'apache2'
+include_recipe 'apache2::mod-ssl'
+include_recipe 'apache2::mod-rewrite'
+include_recipe 'apache2::mod-proxy_http'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 include_recipe 'openjdk11'
+
+
+apt_update do
+  action :update
+end
+
+package 'xmlstarlet' do
+  action :install
+end
 
 # Create tomcat user.
 user node['tomcat']['user'] do
@@ -94,22 +108,6 @@ systemd_unit 'tomcat.service' do
   action [:create, :enable]
 end
 
-service 'tomcat' do
-  action :reload
-end
-
-execute 'enable proxy_http' do
-  command 'a2enmod proxy_http'
-end
-
-template '/etc/apache2/sites-available/tomcat.conf' do
-  source 'tomcat.conf.erb'
-end
-
-execute 'enable tomcat.conf' do
-  command 'a2ensite tomcat.conf'
-end
-
 bash 'add tomcat groups' do
   user 'root'
   code <<-EOH
@@ -120,6 +118,22 @@ sed -i -e '$ i \\
 ' /opt/tomcat/conf/tomcat-users.xml
 EOH
 end
+
+service 'tomcat' do
+  action :reload
+end
+
+# Configure Apache Reverse Proxy
+template '/etc/apache2/sites-available/tomcat.conf' do
+  source 'tomcat.conf.erb'
+end
+
+apache2_disable_site '000-default'
+apache2_enable_site 'tomcat'
+
+# service 'apache2' do
+#   action :restart
+# end
 
 c2d_startup_script 'tomcat' do
   source 'tomcat'

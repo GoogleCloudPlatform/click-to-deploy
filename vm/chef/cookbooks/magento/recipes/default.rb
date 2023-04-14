@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,10 +13,10 @@
 # limitations under the License.
 
 include_recipe 'apache2::mod-rewrite'
-include_recipe 'apache2::mod_deflate'
-include_recipe 'apache2::mod_expires'
-include_recipe 'apache2::mod_headers'
-include_recipe 'apache2::mod_ssl'
+include_recipe 'apache2::mod-deflate'
+include_recipe 'apache2::mod-expires'
+include_recipe 'apache2::mod-headers'
+include_recipe 'apache2::mod-ssl'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 include_recipe 'php74'
