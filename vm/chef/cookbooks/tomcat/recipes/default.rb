@@ -25,7 +25,6 @@ include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 include_recipe 'openjdk11'
 
-
 apt_update do
   action :update
 end
@@ -130,10 +129,6 @@ end
 
 apache2_disable_site '000-default'
 apache2_enable_site 'tomcat'
-
-# service 'apache2' do
-#   action :restart
-# end
 
 c2d_startup_script 'tomcat' do
   source 'tomcat'
