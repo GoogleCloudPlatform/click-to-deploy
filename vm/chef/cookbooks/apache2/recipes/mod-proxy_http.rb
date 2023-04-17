@@ -11,8 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-# MySQL v8.0 installation and configuration recipe
 
-include_recipe 'mysql::configure-apt-repo-version-8.0'
-include_recipe 'mysql::install-and-configure-mysqld8'
+include_recipe 'apache2'
+
+execute 'a2enmod proxy_http'

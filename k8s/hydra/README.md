@@ -163,6 +163,13 @@ export HYDRA_MEMORY_REQUEST=128Mi
 export HYDRA_CPU_REQUEST=100m
 ```
 
+Set the persistent disks size. The default disks size is "5Gi".
+
+```shell
+export DEFAULT_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
+export PSQL_PERSISTENT_DISK_SIZE="8Gi"
+```
+
 Set or generate the password for the PostgreSQL service:
 
 ```shell
@@ -258,6 +265,8 @@ helm template "${APP_INSTANCE_NAME}" chart/hydra \
   --set postgresql.image="${IMAGE_POSTGRESQL}" \
   --set postgresql.exporter.image="${IMAGE_POSTGRESQL_EXPORTER}" \
   --set postgresql.password="${POSTGRES_PASSWORD}" \
+  --set postgresql.persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \
+  --set postgresql.persistence.size="${PSQL_PERSISTENT_DISK_SIZE}" \
   --set hydra.memoryRequest="${HYDRA_MEMORY_REQUEST}" \
   --set hydra.cpuRequest="${HYDRA_CPU_REQUEST}" \
   --set ingress.public.enabled="${INGRESS_PUBLIC_ENABLED}" \
