@@ -13,4 +13,11 @@ spec:
     name: {{ .Release.Name }}
   minReplicas: {{ .Values.hydra.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.hydra.autoscaling.maxReplicas }}
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 100
 {{- end }}
