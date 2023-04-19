@@ -16,7 +16,7 @@
 
 source /opt/c2d/c2d-utils || exit 1
 
-readonly mysql_root_password="${mysql_root_password:-$(get_attribute_value "mysql-root-password")}"
+readonly mysql_root_password="${root_db_password:-$(get_attribute_value "mysql-root-password")}"
 readonly db_password="${liferay_db_password:-$(get_attribute_value "liferay-db-password")}"
 readonly db_username="liferay"
 readonly db_name="liferay"
