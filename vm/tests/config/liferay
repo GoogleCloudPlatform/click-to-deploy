@@ -19,5 +19,5 @@ export root_db_password="$(cat /dev/urandom | tr -dc "a-zA-Z0-9" | fold -w 12 | 
 
 /opt/c2d/scripts/01-mysql
 /opt/c2d/scripts/02-mysql8-root-localhost-password-setup
-/opt/c2d/scripts/02-liferay-db-setup
-/opt/c2d/scripts/03-liferay-setup
+/opt/c2d/scripts/03-liferay-db-setup
+/opt/c2d/scripts/04-liferay-setup
