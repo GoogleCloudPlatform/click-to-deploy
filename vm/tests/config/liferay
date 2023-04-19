@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
 ## format 'user1\|user2\|user3'
 export liferay_admin_password="$(cat /dev/urandom | tr -dc "a-zA-Z0-9" | fold -w 12 | head -n 1 | tr -d "\n")"
 export liferay_db_password="$(cat /dev/urandom | tr -dc "a-zA-Z0-9" | fold -w 12 | head -n 1 | tr -d "\n")"
+export mysql_root_password="$(cat /dev/urandom | tr -dc "a-zA-Z0-9" | fold -w 12 | head -n 1 | tr -d "\n")"
 
 /opt/c2d/scripts/02-liferay-db-setup
 /opt/c2d/scripts/03-liferay-setup
