@@ -30,8 +30,14 @@ spec:
           value: {{ .Release.Name }}-cassandra-svc
         - name: CASSANDRA_PROMETHEUS_ENABLED
           value: 'true'
+        {{- $fullName := .Release.Name }}
+        {{- $releaseName := .Release.Namespace }}
+        {{- $initialCluster := list }}
+        {{- range $e, $i := until (int .Values.cassandra.replicas) }}
+        {{- $initialCluster = append $initialCluster (printf "%s-cassandra-%d.%s-cassandra-svc.%s.svc.cluster.local" $fullName $i $fullName $releaseName) }}
+        {{- end }}
         - name: CASSANDRA_SEEDS
-          value: {{ .Release.Name }}-cassandra-0.{{ .Release.Name }}-cassandra-svc.{{ .Release.Namespace }}.svc.cluster.local, {{ .Release.Name }}-cassandra-1.{{ .Release.Name }}-cassandra-svc.{{ .Release.Namespace }}.svc.cluster.local, {{ .Release.Name }}-cassandra-2.{{ .Release.Name }}-cassandra-svc.{{ .Release.Namespace }}.svc.cluster.local
+          value: {{ printf "%s" (join "," $initialCluster) | quote }}
         ports:
         - name: pure-intra
           containerPort: 7000
@@ -60,13 +66,17 @@ spec:
             command: [ "/bin/sh", "-c", "nodetool -Dcom.sun.jndi.rmiURLParsing=legacy status" ]
           initialDelaySeconds: 90
           periodSeconds: 30
-          timeoutSeconds: 25
+          timeoutSeconds: 30
+          successThreshold: 1
+          failureThreshold: 5
         readinessProbe:
           exec:
             command: [ "/bin/sh", "-c", "nodetool -Dcom.sun.jndi.rmiURLParsing=legacy status | grep -E \"^UN\\s+${POD_IP}\"" ]
           initialDelaySeconds: 90
           periodSeconds: 30
-          timeoutSeconds: 25
+          timeoutSeconds: 30
+          successThreshold: 1
+          failureThreshold: 10
         lifecycle:
           preStop:
             exec:
