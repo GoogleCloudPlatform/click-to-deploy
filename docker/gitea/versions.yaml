@@ -28,10 +28,10 @@ versions:
       version: '1.19'
   repo: gitea1
   tags:
-  - 1.19.0-debian11
+  - 1.19.1-debian11
   - 1.19-debian11
   - 1-debian11
-  - 1.19.0
+  - 1.19.1
   - '1.19'
   - '1'
   - latest
