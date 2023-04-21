@@ -18,7 +18,7 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-ENV GOGS_VERSION 0.12.11
+ENV GOGS_VERSION 0.13.0
 ARG GOGS_DIST=https://github.com/gogs/gogs/releases/download/v${GOGS_VERSION}/gogs_${GOGS_VERSION}_linux_amd64.tar.gz
 ADD $GOGS_DIST /tmp/gogs.tar.gz
 RUN (tar -xvf /tmp/gogs.tar.gz -C /app/ && rm /tmp/gogs.tar.gz) || true
@@ -36,7 +36,7 @@ RUN mkdir -p /data/gogs/data \
 
 USER git
 
-ENV C2D_RELEASE 0.12.11
+ENV C2D_RELEASE 0.13.0
 
 VOLUME ["/data", "/backup"]
 EXPOSE 22 3000
