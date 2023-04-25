@@ -10,8 +10,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-pip \
     python3-setuptools \
     && pip install --upgrade pip \
-    && python -m pip install --upgrade wheel \
-    && python -m pip install cqlsh futures \
+    && pip install --upgrade wheel \
+    && pip install cqlsh futures \
     && rm -rf /var/lib/apt/lists/*
 
 RUN wget -q -O /bin/kubectl \
