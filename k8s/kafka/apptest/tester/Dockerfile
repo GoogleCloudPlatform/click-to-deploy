@@ -1,4 +1,4 @@
-FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.4
+FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.5
 
 ARG KUBECTL_VERSION=1.12.0
 ARG KAFKA_VERSION=2.8.0

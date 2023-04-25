@@ -1,4 +1,4 @@
-FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.4
+FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.5
 
 ARG DOCKER_CLI_VERSION="17.09.0-ce"
 ENV DOWNLOAD_URL="https://download.docker.com/linux/static/stable/x86_64/docker-$DOCKER_CLI_VERSION.tgz"
