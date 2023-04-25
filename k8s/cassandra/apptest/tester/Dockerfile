@@ -6,9 +6,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     jq \
     uuid-runtime \
     wget \
-    python \
-    python-pip \
-    python-setuptools \
+    python3 \
+    python3-pip \
+    python3-setuptools \
     && pip install --upgrade pip \
     && python -m pip install --upgrade wheel \
     && python -m pip install cqlsh futures \

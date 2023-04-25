@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     jq \
     uuid-runtime \
     wget \
-    mysql-client \
+    mariadb-client \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
