@@ -3,12 +3,11 @@ actions:
   bashTest:
     script: |-
       falcoPods=$(kubectl get pods -l app.kubernetes.io/component=falco --no-headers | cut -f1 -d" ")
-
       for podName in ${falcoPods}; do
-              kubectl exec -it ${podName} -c falco -- curl localhost:8765/healthz
-              if [ $? -ne 0 ]; then
-                  exit 1
-              fi
+        kubectl exec ${podName} -c falco -- curl localhost:8765/healthz
+          if [ $? -ne 0 ]; then
+            exit 1
+          fi
       done
     expect:
       exitCode:

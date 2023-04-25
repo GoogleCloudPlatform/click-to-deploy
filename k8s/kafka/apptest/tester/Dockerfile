@@ -13,7 +13,7 @@ RUN set -eu \
     uuid-runtime \
     wget \
     curl \
-    openjdk-8-jre \
+    openjdk-11-jre \
     netcat
 
 RUN set -eu \
