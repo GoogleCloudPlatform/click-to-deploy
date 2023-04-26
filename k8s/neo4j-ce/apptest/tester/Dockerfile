@@ -3,11 +3,6 @@ FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.5
 # Add debian backport source repository
 RUN set -x \
     && apt update \
-    && apt -y install debian-keyring debian-archive-keyring \
-    && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 04EE7237B7D453EC \
-    && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 648ACFD622F3D138 \
-    && echo 'deb http://ftp.debian.org/debian stretch-backports main' > /etc/apt/sources.list.d/stretch-backports.list \
-    && apt update \
     && apt install -y \
         curl \
         jq \
