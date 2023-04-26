@@ -27,7 +27,7 @@ function get_metadata_value() {
     -s \
     -f \
     -H "Metadata-Flavor: Google" \
-    "http://metadata/computeMetadata/v1/$1"
+    "http://metadata.google.internal/computeMetadata/v1/$1"
 }
 
 function get_attribute_value() {

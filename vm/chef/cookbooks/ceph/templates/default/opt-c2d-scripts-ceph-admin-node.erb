@@ -17,60 +17,31 @@
 source /opt/c2d/c2d-utils || exit 1
 
 set +e
-CLUSTER="$(get_attribute_value cluster)"
-CEPHNODES="$(get_attribute_value cephnodes)"
-DATADISKS="$(get_attribute_value number-of-data-disks)"
+MON_IP="$(get_internal_ip)"
+HOSTNAME="$(hostname --fqdn)"
 CONFIGNAME="$(get_attribute_value ceph-config-name)"
 set -e
 DEPUSER=<%= node['ceph']['deploymentuser'] %>
 DEPUSERHOME="/home/${DEPUSER}"
-AUTHORIZEDKEYS=<%= node['ceph']['rsync-dir'] %>/authorized_keys
+CEPHVERSION=<%= node['ceph']['version'] %>
+CEPHNODES="$(get_attribute_value data-nodes)"
+RSYNC_DIR=<%= node['ceph']['rsync-dir'] %>
+DATADISKS="$(get_attribute_value number-of-data-disks)"
 
-su - "${DEPUSER}" -c "ssh-keygen -t rsa -b 2048 -C '${DEPUSER}@ceph-adm' -f ${DEPUSERHOME}/.ssh/id_rsa -N ''"
-cp "${DEPUSERHOME}"/.ssh/id_rsa.pub "${AUTHORIZEDKEYS}"
-chown "${DEPUSER}":"${DEPUSER}" "${AUTHORIZEDKEYS}"
-chmod 644 "${AUTHORIZEDKEYS}"
+sudo su - ${DEPUSER}
+sudo cephadm bootstrap --mon-ip ${MON_IP} --skip-mon-network --ssh-user ${DEPUSER}
+sudo cephadm add-repo --release ${CEPHVERSION}
+sudo cephadm install ceph-common
 
-for NODE in ${CEPHNODES}; do
-  ssh-keyscan -T3 -H "${NODE}" > "${DEPUSERHOME}"/.ssh/known_hosts-tmp
-  while [[ ! -s "${DEPUSERHOME}"/.ssh/known_hosts-tmp ]]; do
-    sleep 3
-    ssh-keyscan -T3 -H "${NODE}" > "${DEPUSERHOME}"/.ssh/known_hosts-tmp
-  done
-  cat "${DEPUSERHOME}"/.ssh/known_hosts-tmp >> "${DEPUSERHOME}"/.ssh/known_hosts
-  rm "${DEPUSERHOME}"/.ssh/known_hosts-tmp
-  cat <<EOF >>"${DEPUSERHOME}"/.ssh/config
-Host ${NODE}
-  Hostname ${NODE}
-  User ${DEPUSER}
-EOF
-done
+sudo cp ${DEPUSERHOME}/.ssh/authorized_keys ${RSYNC_DIR}
+sudo chown ${DEPUSER}:${DEPUSER} ${RSYNC_DIR}/authorized_keys
+sudo chmod 0755 ${RSYNC_DIR}/authorized_keys
+
+sleep 30
 
 for NODE in ${CEPHNODES}; do
-  while ! su - "${DEPUSER}" -c "ssh ${NODE} exit"; do sleep 3; done
+  sudo ceph orch host add ${NODE}
+  sleep 10
 done
 
-su - "${DEPUSER}" -c "mkdir ${CLUSTER}"
-su - "${DEPUSER}" -c "cd ${CLUSTER}; ceph-deploy new ${CEPHNODES}"
-su - "${DEPUSER}" -c "cd ${CLUSTER}; ceph-deploy mon create-initial"
-su - "${DEPUSER}" -c "cd ${CLUSTER}; ceph-deploy admin ${CEPHNODES}"
-
-su - "${DEPUSER}" -c "cd ${CLUSTER}; ceph-deploy mds create ${CEPHNODES}"
-su - "${DEPUSER}" -c "cd ${CLUSTER}; ceph-deploy mgr create ${CEPHNODES}"
-
-PASSWORD="$(awk '/key = / {print $3}' /home/cephdep/"${CLUSTER}"/ceph.client.admin.keyring 2>/dev/null)"
-if [[ -n "${CONFIGNAME}" ]]; then
-  echo 'Setting runtime variables.'
-  set_rtc_var_text "${CONFIGNAME}" defaultPassword "${PASSWORD}"
-fi
-
-## this operation can take a lot of time
-{
-for DISK in $(seq 0 $((DATADISKS-1))); do
-  for NODE in ${CEPHNODES}; do
-    su - "${DEPUSER}" -c "cd ${CLUSTER}; ceph-deploy osd create ${NODE} --data /dev/disk/by-id/google-${NODE}-disk-data-${DISK}"
-  done
-done
-set_rtc_var_text "${CONFIGNAME}" disks-configuration/status success
-} &
-
+sudo ceph orch apply osd --all-available-devices
