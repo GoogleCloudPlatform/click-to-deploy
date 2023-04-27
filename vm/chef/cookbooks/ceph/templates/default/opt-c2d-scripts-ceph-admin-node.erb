@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2018 Google Inc.
+# Copyright 2023 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,6 +16,11 @@
 
 source /opt/c2d/c2d-utils || exit 1
 
+declare -r CEPHNODES="$(get_attribute_value data-nodes)"
+declare -r DATADISKS="$(get_attribute_value number-of-data-disks)"
+declare -r nodes_count="$(echo $CEPHNODES | wc -w)"
+declare -r expected_osds=$(($(( $nodes_count*$DATADISKS ))+1))
+
 set +e
 MON_IP="$(get_internal_ip)"
 HOSTNAME="$(hostname --fqdn)"
@@ -24,9 +29,7 @@ set -e
 DEPUSER=<%= node['ceph']['deploymentuser'] %>
 DEPUSERHOME="/home/${DEPUSER}"
 CEPHVERSION=<%= node['ceph']['version'] %>
-CEPHNODES="$(get_attribute_value data-nodes)"
 RSYNC_DIR=<%= node['ceph']['rsync-dir'] %>
-DATADISKS="$(get_attribute_value number-of-data-disks)"
 
 sudo su - ${DEPUSER}
 sudo cephadm bootstrap --mon-ip ${MON_IP} --skip-mon-network --ssh-user ${DEPUSER}
@@ -45,3 +48,29 @@ for NODE in ${CEPHNODES}; do
 done
 
 sudo ceph orch apply osd --all-available-devices
+
+sudo su
+function wait_for_nodes() {
+  local -r expected="$1"
+  local max_retries=50
+  local retry=0
+
+  while [[ "${retry}" -le "${max_retries}" ]]; do
+    echo "Checking ceph status, try: ${retry}..."
+    local osd_info="$(sudo ceph status | grep "osd:")"
+    echo "Current status: ${osd_info}"
+
+    local osd_up="$(echo $osd_info | grep -o -P "\d+ up" | grep -o -P "\d+")"
+    local osd_in="$(echo $osd_info | grep -o -P "\d+ in" | grep -o -P "\d+")"
+
+    if [[ "${osd_up}" -eq "${expected}" && "${osd_in}" -eq "${expected}" ]]; then
+      echo "All nodes up and running."
+      break
+    else
+      ((retry=$retry+1))
+      echo "Awaiting..."
+      sleep 30
+    fi
+  done
+}
+wait_for_nodes "${expected_osds}"
