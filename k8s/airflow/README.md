@@ -440,7 +440,7 @@ You can also delete the resources by using types and a label:
 kubectl delete application --namespace $NAMESPACE --selector app.kubernetes.io/name=${APP_INSTANCE_NAME}
 ```
 
-### Delete the persistent volumes of your installation
+### Delete the Persistent Volumes of your installation
 
 By design, the removal of StatefulSets in Kubernetes does not remove
 PersistentVolumeClaims that were attached to their Pods. This prevents your
