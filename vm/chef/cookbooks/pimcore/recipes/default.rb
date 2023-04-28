@@ -85,6 +85,15 @@ cookbook_file '/opt/c2d/apache-pimcore.conf' do
   action :create
 end
 
+# https://github.com/pimcore/pimcore/blob/10.5/doc/Development_Documentation/23_Installation_and_Upgrade/03_System_Setup_and_Hosting/01_Apache_Configuration.md
+cookbook_file '/opt/c2d/apache-pimcore-website.htaccess' do
+  source 'apache-pimcore-website.htaccess'
+  owner 'root'
+  group 'root'
+  mode 0644
+  action :create
+end
+
 cookbook_file '/etc/php/8.1/apache2/conf.d/99-pimcore.ini' do
   source 'php-pimcore.ini'
   owner 'root'

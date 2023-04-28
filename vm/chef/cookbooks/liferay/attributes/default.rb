@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['liferay']['version'] = '7.4.3.55-ga55'
+default['liferay']['version'] = '7.4.3.72-ga72'
 # SHA1 value check for liferay SOURCE, the cookbook download it from
 # https://github.com/liferay/liferay-portal/archive/refs/tags/<version>.tar.gz
-default['liferay']['sha1']['source'] = 'c65f7a3882ea03dea8b85dac09ca571e72a9d909'
+default['liferay']['sha1']['source'] = '6ec72fa189386ee7e4886786cbf054479ec45479'
 # SHA1 value check for liferay bundle, the cookbook download it from
 # https://github.com/liferay/liferay-portal/releases/download/<version>/liferay-ce-portal-tomcat-<version>-<date>.tar.gz
-default['liferay']['sha1']['bundle'] = 'ad592944a7ce33b479b9c2f1fb7ff08c51df1b64'
+default['liferay']['sha1']['bundle'] = 'a6c8882e14cf4ffe4ca609def4b3053b14ad1f50'
 default['liferay']['packages'] = ['jq', 'zip']
 
 default['liferay']['home'] = '/opt/liferay'

@@ -1,4 +1,4 @@
-FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.4
+FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.5
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     jq \
     uuid-runtime \
     wget \
-    mysql-client \
+    mariadb-client \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
