@@ -28,22 +28,11 @@ versions:
       version: '1.19'
   repo: gitea1
   tags:
-  - 1.19.1-debian11
+  - 1.19.2-debian11
   - 1.19-debian11
   - 1-debian11
-  - 1.19.1
+  - 1.19.2
   - '1.19'
   - '1'
   - latest
-- dir: 1/debian11/1.18
-  from: marketplace.gcr.io/google/c2d-debian11
-  packages:
-    gitea:
-      version: '1.18'
-  repo: gitea1
-  tags:
-  - 1.18.9-debian11
-  - 1.18-debian11
-  - 1.18.9
-  - '1.18'
 
