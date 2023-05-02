@@ -1,6 +1,6 @@
 FROM  marketplace.gcr.io/google/c2d-debian11 as build
 
-ENV APP_VERSION=1.11.0
+ENV APP_VERSION=1.11.1
 
 RUN apt-get update \
     && apt-get install make jq docker.io -y --no-install-recommends 
@@ -20,7 +20,7 @@ FROM marketplace.gcr.io/google/c2d-debian11
 
 WORKDIR /app
 
-ENV C2D_RELEASE=1.11.0
+ENV C2D_RELEASE=1.11.1
 ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 
 # Non root
