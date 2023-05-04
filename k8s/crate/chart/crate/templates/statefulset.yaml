@@ -1,0 +1,114 @@
+apiVersion: "apps/v1"
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-crate
+spec:
+  serviceName: {{ .Release.Name }}-crate
+  replicas: {{ .Values.crate.replicas }}
+  selector:
+    matchLabels: &Labels
+      app.kubernetes.io/name: {{ .Release.Name }}
+      app.kubernetes.io/component: crate
+  template:
+    metadata:
+      labels: *Labels
+      annotations:
+        pod.alpha.kubernetes.io/initialized: "true"
+    spec:
+      initContainers:
+        - name: init-sysctl
+          image: busybox
+          imagePullPolicy: IfNotPresent
+          command: ["sysctl", "-w", "vm.max_map_count=262144"]
+          securityContext:
+            privileged: true
+      containers:
+        - name: crate
+          image: "{{ .Values.crate.image.repo }}:{{ .Values.crate.image.tag }}"
+          imagePullPolicy: Always
+          args:
+            - -Ccluster.initial_master_nodes={{ .Release.Name }}-crate-0
+            - -Ccluster.name={{ .Release.Name }}
+            - -Cdiscovery.seed_providers=srv
+            - -Cdiscovery.srv.query=_transport._tcp.{{ .Release.Name }}-crate.{{ .Release.Namespace }}.svc.cluster.local
+            - -Cnetwork.host="0.0.0.0"
+            - -Cnode.name="$POD_NAME"
+            - -Cgateway.expected_data_nodes={{ .Values.crate.replicas }}
+            - -Cgateway.recover_after_data_nodes={{ div .Values.crate.replicas 2 | floor | add 1 }}
+            - -Chttp.cors.allow-origin="*"
+            - -Chttp.cors.enabled=false
+            - -Cpath.data=/data
+            - -Cprocessors="$MIN_VCPU_COUNT"
+          volumeMounts:
+            - mountPath: /data
+              name: {{ .Release.Name }}-data
+          resources:
+            requests:
+              cpu: 1
+              memory: {{ mul .Values.crate.heapSize 2 }}Gi
+            limits:
+              cpu: 1
+              memory: {{ mul .Values.crate.heapSize 3 }}Gi
+          ports:
+            - containerPort: 5432
+              name: psql
+            - containerPort: 4300
+              name: transport
+            - containerPort: 4200
+              name: ui
+            - containerPort: 7071
+              name: metrics
+          env:
+            - name: CRATE_HEAP_SIZE
+              value: {{ .Values.crate.heapSize }}g
+            - name: CLUSTER_NAME
+              value: {{ .Release.Name }}
+            - name: MIN_VCPU_COUNT
+              valueFrom:
+                resourceFieldRef:
+                  resource: requests.cpu
+                  divisor: 1
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          livenessProbe:
+            exec:
+              command: ["sh", "-c", "curl http://localhost:4200 2&>/dev/null | grep '\"ok\" : true'"]
+            initialDelaySeconds: 100
+            periodSeconds: 60
+        {{ if .Values.metrics.exporter.enabled }}
+        - name: stackdriver-exporter
+          image: {{ .Values.metrics.image }}
+          ports:
+          - name: profiler
+            containerPort: 6060
+          command:
+          - /monitor
+          - --stackdriver-prefix=custom.googleapis.com
+          - --source=postgresql:http://localhost:7071/metrics
+          - --pod-id=$(POD_NAME)
+          - --namespace-id=$(POD_NAMESPACE)
+          - --monitored-resource-types=k8s
+          env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+        {{ end }}
+  volumeClaimTemplates:
+    - metadata:
+        name: {{ .Release.Name }}-data
+        labels: *Labels
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: {{ .Values.crate.persistence.size | quote }}
+        storageClassName: "{{ .Values.crate.persistence.storageClass }}"
+

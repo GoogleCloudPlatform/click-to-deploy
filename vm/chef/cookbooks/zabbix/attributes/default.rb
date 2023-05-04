@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['zabbix']['version'] = '6.0'
+default['zabbix']['version'] = '6.4'
 default['zabbix']['packages'] = %w(mailutils php-pgsql zabbix-server-pgsql zabbix-frontend-php zabbix-proxy-pgsql zabbix-sql-scripts zabbix-apache-conf php-gd php-bcmath php-mbstring php-xml php-ldap php-json)
 default['zabbix']['repo']['uri'] = "https://repo.zabbix.com/zabbix/#{default['zabbix']['version']}/debian/"
 default['zabbix']['repo']['components'] = ['main']
-default['zabbix']['repo']['distribution'] = 'buster'
+default['zabbix']['repo']['distribution'] = 'bullseye'
 default['zabbix']['repo']['keyserver'] = 'https://repo.zabbix.com/zabbix-official-repo.key'

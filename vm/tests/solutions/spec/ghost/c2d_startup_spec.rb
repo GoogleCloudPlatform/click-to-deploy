@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,7 +33,11 @@ describe 'C2D startup scripts should exists' do
     it { should exist }
   end
 
-  describe file('/opt/c2d/scripts/02-ghost') do
+  describe file('/opt/c2d/scripts/02-mysql8-root-localhost-password-setup') do
+    it { should exist }
+  end
+
+  describe file('/opt/c2d/scripts/03-ghost') do
     it { should exist }
   end
 end

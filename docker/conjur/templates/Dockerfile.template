@@ -22,10 +22,8 @@ EXPOSE 80
 
 RUN apt-get update \
     && apt-get install \
-    curl \
     libz-dev \
     build-essential \
-    git \
     ldap-utils \
     apt-transport-https \
     ca-certificates \
@@ -65,6 +63,9 @@ RUN find / -name httpclient -type d -exec find {} -name *.pem -type f -delete \;
 
 RUN ln -sf /opt/conjur-server/bin/conjurctl /usr/local/bin/ \
     && echo ${CONJUR_APP_VERSION} > ./VERSION
+
+# remove dev packages to avoid security issues
+RUN apt-get purge -yqq libz-dev build-essential linux-libc-dev
 
 ENV RAILS_ENV production
 

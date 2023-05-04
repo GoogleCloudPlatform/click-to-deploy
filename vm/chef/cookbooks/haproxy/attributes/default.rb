@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['haproxy']['version'] = '2.5'
+default['haproxy']['version'] = '2.7'
 default['haproxy']['apt_version'] = "#{default['haproxy']['version']}.\*"
 default['haproxy']['repo']['uri'] = 'https://haproxy.debian.net'
 default['haproxy']['repo']['components'] = ['main']
-default['haproxy']['repo']['distribution'] = 'buster-backports-2.5'
+default['haproxy']['repo']['distribution'] = "bullseye-backports-#{default['haproxy']['version']}"
 default['haproxy']['repo']['keyserver'] = 'https://haproxy.debian.net/bernat.debian.org.gpg'

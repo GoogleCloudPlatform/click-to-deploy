@@ -71,7 +71,7 @@ properties:
           rulesType: CUSTOM
           rules:
             - apiGroups: ["nuclio.io"]
-              resources: ["nucliofunctions", "nuclioprojects", "nucliofunctionevents"]
+              resources: ["nucliofunctions", "nuclioprojects", "nucliofunctionevents", "nuclioapigateways"]
               verbs: ["*"]
             - apiGroups: [""]
               resources: ["services", "configmaps", "pods", "pods/log", "events", "secrets"]

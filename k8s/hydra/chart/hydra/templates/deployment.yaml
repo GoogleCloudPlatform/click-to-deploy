@@ -52,9 +52,7 @@ spec:
           args: [
             "serve",
             "all",
-            {{- if .Values.hydra.dangerousForceHttp }}
-            "--dangerous-force-http",
-            {{- end}}
+            "--dev",
             "--config",
             "/etc/config/config.yaml"
           ]
@@ -110,7 +108,7 @@ spec:
           command:
             - /monitor
             - --stackdriver-prefix=custom.googleapis.com
-            - --source=hydra:http://localhost:4445/metrics/prometheus
+            - --source=hydra:http://localhost:4445/admin/metrics/prometheus
             - --pod-id=$(POD_NAME)
             - --namespace-id=$(POD_NAMESPACE)
             - --monitored-resource-type-prefix=k8s_

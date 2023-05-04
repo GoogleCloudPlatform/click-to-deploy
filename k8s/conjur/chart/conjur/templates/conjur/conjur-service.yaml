@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-conjur-svc
+  labels: &ConjurLabels
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: conjur
+spec:
+  selector: *ConjurLabels
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+  {{ if .Values.enablePublicServiceAndIngress }}
+  type: NodePort
+  {{ else }}
+  type: ClusterIP
+  {{ end }}
+

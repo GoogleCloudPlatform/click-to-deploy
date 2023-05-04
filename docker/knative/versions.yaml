@@ -15,18 +15,18 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 1/debian11/1.3
-  from: marketplace.gcr.io/google/debian11
+- dir: 1/debian11/1.9
+  from: marketplace.gcr.io/google/c2d-debian11
   packages:
     knative:
-      version: 1.3.0
+      version: 1.9.0
   repo: knative1
   tags:
-  - 1.3.0-debian11
-  - 1.3-debian11
+  - 1.9.0-debian11
+  - 1.9-debian11
   - 1-debian11
-  - 1.3.0
-  - '1.3'
+  - 1.9.0
+  - '1.9'
   - '1'
   - latest
   templateSubDir: debian11

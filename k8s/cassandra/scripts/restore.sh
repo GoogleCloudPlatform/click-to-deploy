@@ -83,6 +83,8 @@ kubectl exec -i "${APP_INSTANCE_NAME}-cassandra-0" -n "${NAMESPACE}" -c cassandr
 info "Creating restore instance"
 info ""
 kubectl apply -f "${SCRIPT_DIR}/controller.yaml" -n "${NAMESPACE}"
+info "Wait for the cassandra-restore container"
+kubectl wait --for=condition=Ready -n "${NAMESPACE}" --timeout=60s pod cassandra-restore
 info "Uploading restore script"
 info ""
 kubectl cp "${SCRIPT_DIR}/instance_restore.sh" cassandra-restore:/tmp/instance_restore.sh -n "${NAMESPACE}"

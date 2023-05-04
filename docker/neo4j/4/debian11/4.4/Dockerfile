@@ -11,23 +11,20 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-FROM marketplace.gcr.io/google/debian11
+FROM marketplace.gcr.io/google/c2d-debian11
 
-ENV NEO4J_VERSION 4.4.10
-ENV NEO4J_SHA256 869ecb89ce36fe457b4d4c4fcaa48fdf2f2d739c45323bd2c8ccdf09aa11abbf
+ENV NEO4J_VERSION 4.4.17
 ENV NEO4J_HOME  /var/lib/neo4j
 ENV NEO4J_EDITION community
 ENV NEO4J_TARBALL neo4j.tar.gz
 
 ENV TINI_VERSION v0.19.0
-ENV TINI_SHA256 93dcc18adc78c65a028a84799ecf8ad40c936fdfc5f2a57b1acda5a8117fa82c
 
 # Required for neo4jlabs-plugins.json
-ENV DOCKER_NEO4J_VERSION 4.4.10
+ENV DOCKER_NEO4J_VERSION 4.4.17
 ENV DOCKER_NEO4J_TARBALL docker-neo4j.tar.gz
-ENV DOCKER_NEO4J_SHA256  40cde651c97b354f6dc6d84863d7d4dca301742bd2d92445a961e84ff85350a5
 
-ENV C2D_RELEASE 4.4.10
+ENV C2D_RELEASE 4.4.17
 
 # Workaround for CVE-2021-44228
 # https://www.docker.com/blog/apache-log4j-2-cve-2021-44228/
@@ -38,14 +35,11 @@ RUN addgroup --system neo4j && adduser --system --no-create-home --home "${NEO4J
 RUN apt update \
     && apt install -y curl wget gosu jq \
     && curl -L --fail --silent --show-error "https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini" > /sbin/tini \
-    && echo "${TINI_SHA256}  /sbin/tini" | sha256sum -c --strict --quiet \
     && chmod +x /sbin/tini \
     && curl -o ${NEO4J_TARBALL} --fail --silent --show-error --location --remote-name https://dist.neo4j.org/neo4j-community-${NEO4J_VERSION}-unix.tar.gz \
-    && echo "${NEO4J_SHA256}  ${NEO4J_TARBALL}" | sha256sum -c --strict --quiet \
     && tar --extract --file ${NEO4J_TARBALL} --directory /var/lib \
     && mv /var/lib/neo4j-* "${NEO4J_HOME}" \
     && curl -o ${DOCKER_NEO4J_TARBALL} --fail --silent --show-error --location --remote-name https://github.com/neo4j/docker-neo4j/archive/refs/tags/neo4j-${DOCKER_NEO4J_VERSION}.tar.gz \
-    && echo "${DOCKER_NEO4J_SHA256}  ${DOCKER_NEO4J_TARBALL}" | sha256sum -c --strict --quiet \
     && tar --extract --file ${DOCKER_NEO4J_TARBALL} --directory /tmp \
     && mv /tmp/docker-neo4j*/docker-image-src/common/neo4jlabs-plugins.json /neo4jlabs-plugins.json \
     && rm ${DOCKER_NEO4J_TARBALL} \

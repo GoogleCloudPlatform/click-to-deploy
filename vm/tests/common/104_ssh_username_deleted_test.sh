@@ -44,4 +44,3 @@ else
   echo "${homedir}"
   failure
 fi
-

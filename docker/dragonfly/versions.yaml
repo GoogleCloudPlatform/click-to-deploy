@@ -1,0 +1,96 @@
+cloudbuild:
+  enable_parallel: false
+versions:
+- dir: 2/debian11/2.0/dragonfly-manager2
+  excludeTests:
+  - tests/functional_tests/scheduler_test.yaml
+  - tests/functional_tests/seed-peer_test.yaml
+  - tests/functional_tests/dfget_test.yaml
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    dragonfly2_github:
+      version: 2.0.9
+    grpc_health_probe:
+      version: 0.4.11
+    manager_console:
+      version: 0.1.7
+  repo: dragonfly-manager2
+  tags:
+  - 2.0.9-debian11
+  - 2.0.9
+  - 2.0-debian11
+  - '2.0'
+  - 2-debian11
+  - '2'
+  - latest
+  templateSubDir: dragonfly-manager2
+- dir: 2/debian11/2.0/dragonfly-scheduler2
+  excludeTests:
+  - tests/functional_tests/manager_test.yaml
+  - tests/functional_tests/seed-peer_test.yaml
+  - tests/functional_tests/dfget_test.yaml
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    dragonfly2_github:
+      version: 2.0.9
+    grpc_health_probe:
+      version: 0.4.11
+    manager_console:
+      version: 0.1.7
+  repo: dragonfly-scheduler2
+  tags:
+  - 2.0.9-debian11
+  - 2.0.9
+  - 2.0-debian11
+  - '2.0'
+  - 2-debian11
+  - '2'
+  - latest
+  templateSubDir: dragonfly-scheduler2
+- dir: 2/debian11/2.0/dragonfly-seed-peer2
+  excludeTests:
+  - tests/functional_tests/manager_test.yaml
+  - tests/functional_tests/scheduler_test.yaml
+  - tests/functional_tests/dfget_test.yaml
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    dragonfly2_github:
+      version: 2.0.9
+    grpc_health_probe:
+      version: 0.4.11
+    manager_console:
+      version: 0.1.7
+  repo: dragonfly-seed-peer2
+  tags:
+  - 2.0.9-debian11
+  - 2.0.9
+  - 2.0-debian11
+  - '2.0'
+  - 2-debian11
+  - '2'
+  - latest
+  templateSubDir: dragonfly-seed-peer2
+- dir: 2/debian11/2.0/dragonfly-dfget2
+  excludeTests:
+  - tests/functional_tests/manager_test.yaml
+  - tests/functional_tests/scheduler_test.yaml
+  - tests/functional_tests/seed-peer_test.yaml
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    dragonfly2_github:
+      version: 2.0.9
+    grpc_health_probe:
+      version: 0.4.11
+    manager_console:
+      version: 0.1.7
+  repo: dragonfly-dfget2
+  tags:
+  - 2.0.9-debian11
+  - 2.0.9
+  - 2.0-debian11
+  - '2.0'
+  - 2-debian11
+  - '2'
+  - latest
+  templateSubDir: dragonfly-dfget2
+

@@ -15,7 +15,7 @@
 name 'concretecms'
 depends 'apache2'
 depends 'mysql'
-depends 'php80'
+depends 'php81'
 depends 'git'
 depends 'composer'
 depends 'nodejs'
