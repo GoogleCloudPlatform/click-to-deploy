@@ -63,7 +63,6 @@ RUN apt update \
 
 # Add debian backport source repository
 RUN set -x \
-    && echo 'deb http://ftp.debian.org/debian stretch-backports main' > /etc/apt/sources.list.d/stretch-backports.list \
     && apt update \
     && apt install -y \
     openjdk-17-jdk \

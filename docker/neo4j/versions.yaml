@@ -16,6 +16,26 @@
 cloudbuild:
   enable_parallel: true
 versions:
+- dir: 5/debian11/5.7
+  from: marketplace.gcr.io/google/c2d-debian11
+  templateSubDir: neo4j5
+  packages:
+    dockerneo4j:
+      version: 5.7.0
+    neo4j:
+      version: 5.7.0
+    tini:
+      version: 0.19.0
+  repo: neo4j5
+  tags:
+  - 5.7.0-debian11
+  - 5.7-debian11
+  - 5-debian11
+  - 5.7.0
+  - '5.7'
+  - '5'
+  - latest
+
 - dir: 5/debian11/5.5
   from: marketplace.gcr.io/google/c2d-debian11
   templateSubDir: neo4j5
@@ -30,27 +50,5 @@ versions:
   tags:
   - 5.5.0-debian11
   - 5.5-debian11
-  - 5-debian11
   - 5.5.0
   - '5.5'
-  - '5'
-  - latest
-- dir: 4/debian11/4.4
-  from: marketplace.gcr.io/google/c2d-debian11
-  templateSubDir: neo4j4
-  packages:
-    dockerneo4j:
-      version: 4.4.17
-    neo4j:
-      version: 4.4.17
-    tini:
-      version: 0.19.0
-  repo: neo4j4
-  tags:
-  - 4.4.17-debian11
-  - 4.4-debian11
-  - 4-debian11
-  - 4.4.17
-  - '4.4'
-  - '4'
-  - latest
