@@ -34,6 +34,7 @@ versions:
   - '5.5'
   - '5'
   - latest
+  templateSubDir: neo4j5
 - dir: 4/debian11/4.4
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
@@ -52,4 +53,4 @@ versions:
   - '4.4'
   - '4'
   - latest
-
+  templateSubDir: neo4j4
