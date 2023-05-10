@@ -16,6 +16,24 @@
 cloudbuild:
   enable_parallel: false
 versions:
+- dir: 21/debian11/21.1
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    h2database:
+      version: 1.4.197
+    keycloak:
+      version: 21.1.1
+    sshdcommon:
+      version: 2.9.2
+  repo: keycloak21
+  tags:
+  - 21.1.1-debian11
+  - 21.1-debian11
+  - 21-debian11
+  - 21.1.1
+  - '21.1'
+  - '21'
+  - latest
 - dir: 21/debian11/21.0
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
@@ -23,13 +41,66 @@ versions:
       version: 1.4.197
     keycloak:
       version: 21.0.2
+    sshdcommon:
+      version: 2.9.2
   repo: keycloak21
   tags:
   - 21.0.2-debian11
   - 21.0-debian11
-  - 21-debian11
   - 21.0.2
   - '21.0'
-  - '21'
+- dir: 20/debian11/20.0
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    h2database:
+      version: 1.4.197
+    keycloak:
+      version: 20.0.5
+    sshdcommon:
+      version: 2.9.2
+  repo: keycloak20
+  tags:
+  - 20.0.5-debian11
+  - 20.0-debian11
+  - 20-debian11
+  - 20.0.5
+  - '20.0'
+  - '20'
+  - latest
+- dir: 19/debian11/19.0
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    h2database:
+      version: 1.4.197
+    keycloak:
+      version: 19.0.3
+    sshdcommon:
+      version: 2.9.2
+  repo: keycloak19
+  tags:
+  - 19.0.3-debian11
+  - 19.0-debian11
+  - 19-debian11
+  - 19.0.3
+  - '19.0'
+  - '19'
+  - latest
+- dir: 18/debian11/18.0
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    h2database:
+      version: 1.4.197
+    keycloak:
+      version: 18.0.2
+    sshdcommon:
+      version: 2.9.2
+  repo: keycloak18
+  tags:
+  - 18.0.2-debian11
+  - 18.0-debian11
+  - 18-debian11
+  - 18.0.2
+  - '18.0'
+  - '18'
   - latest
 
