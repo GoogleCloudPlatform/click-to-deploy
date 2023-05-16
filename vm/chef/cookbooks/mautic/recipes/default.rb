@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,10 +17,11 @@ include_recipe 'php74::composer'
 include_recipe 'php74::module_libapache2'
 include_recipe 'php74::module_mysql'
 include_recipe 'php74::module_xmlrpc'
-include_recipe 'composer::composer1'
+include_recipe 'composer::composer2'
 
 include_recipe 'git'
-include_recipe 'mysql'
+include_recipe 'mysql::version-8.0-embedded'
+
 include_recipe 'apache2'
 include_recipe 'apache2::ipv4-listen'
 include_recipe 'apache2::mod-rewrite'

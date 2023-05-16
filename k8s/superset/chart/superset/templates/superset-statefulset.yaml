@@ -18,18 +18,11 @@ spec:
     spec:
       initContainers:
       - name: check-db
-        image: busybox:1.35
+        image: {{ .Values.postgresql.image }}
         imagePullPolicy: IfNotPresent
-        command:
-          - sh
-          - -c
-          - |
-            echo 'Waiting for PostgreSQL to become ready...'
-            until printf "." && nc -z -w 2 "{{ .Release.Name }}-postgresql-service" 5432; do
-            sleep 2;
-            done;
-            sleep 5;
-            echo 'PostgreSQL is ready'
+        command: ['sh', '-c',
+          'until pg_isready -h {{ .Release.Name }}-postgresql-service -p 5432;
+          do echo waiting for database; sleep 2; done;']
       containers:
       - image: {{ .Values.superset.image.repo }}:{{ .Values.superset.image.tag }}
         name: superset
@@ -110,3 +103,15 @@ spec:
         - name: config-volume
           configMap:
             name: superset-configmap
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Release.Name }}-superset-pvc
+      labels:
+        app.kubernetes.io/name: {{ .Release.Name }}
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      storageClassName: {{ .Values.superset.persistence.storageClass }}
+      resources:
+        requests:
+          storage: {{ .Values.superset.persistence.size }}

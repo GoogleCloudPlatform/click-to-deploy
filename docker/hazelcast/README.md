@@ -17,8 +17,8 @@ These images contain an installation of Hazelcast and Hazelcast Management Cente
 
 For more information, see the:
 
-- [Hazelcast Official Image Marketplace Page](https://console.cloud.google.com/marketplace/product/google/hazelcast4).
-- [Hazelcast Management Center Official Image Marketplace Page](https://console.cloud.google.com/marketplace/product/google/hazelcast-mc4).
+- [Hazelcast Official Image Marketplace Page](https://console.cloud.google.com/marketplace/product/google/hazelcast5).
+- [Hazelcast Management Center Official Image Marketplace Page](https://console.cloud.google.com/marketplace/product/google/hazelcast-mc5).
 
 ### Prerequisites
 
@@ -30,13 +30,13 @@ gcloud auth configure-docker
 ### Pull command
 
 ```shell
-docker -- pull marketplace.gcr.io/google/hazelcast4
-docker -- pull marketplace.gcr.io/google/hazelcast-mc4
+docker -- pull marketplace.gcr.io/google/hazelcast5
+docker -- pull marketplace.gcr.io/google/hazelcast-mc5
 ```
 Dockerfiles for this images can be found here:
 
-- [hazelcast4](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/docker/hazelcast/4/debian10/hazelcast4.2/)
-- [hazelcast-mc4](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/docker/hazelcast/4/debian10/hazelcast-mc/4.2021.12/)
+- [hazelcast5](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/docker/hazelcast/5/debian11/hazelcast5.2/)
+- [hazelcast-mc5](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/docker/hazelcast/5/debian11/hazelcast-mc/5/)
 
 # <a name="table-of-contents"></a>Table of Contents
 * [Using Docker](#using-docker)
@@ -66,7 +66,7 @@ Use the following content for the `docker-compose.yml` file, then run `docker-co
 version: '2'
 services:
   hazelcast:
-    image: marketplace.gcr.io/google/hazelcast4
+    image: marketplace.gcr.io/google/hazelcast5
     ports:
       - 5701:5701
 ```
@@ -77,7 +77,7 @@ Or you can use `docker run` directly:
 docker run -d \
     -p 5701:5701 \
     --name hazelcast \
-    marketplace.gcr.io/google/hazelcast4
+    marketplace.gcr.io/google/hazelcast5
 ```
 
 ### <a name="Running-Hazelcast-cluster"></a>Running Hazelcast cluster
@@ -91,7 +91,7 @@ services:
     container_name: hazelcast1
     restart: always
     hostname: hazelcast1
-    image: marketplace.gcr.io/google/hazelcast4
+    image: marketplace.gcr.io/google/hazelcast5
     ports:
       - 5701:5701
     environment:
@@ -100,7 +100,7 @@ services:
     container_name: hazelcast2
     restart: always
     hostname: hazelcast2
-    image: marketplace.gcr.io/google/hazelcast4
+    image: marketplace.gcr.io/google/hazelcast5
     ports:
       - 5702:5701
     environment:
@@ -109,7 +109,7 @@ services:
     container_name: hazelcast-mc
     restart: always
     hostname: hazelcast-mc
-    image: marketplace.gcr.io/google/hazelcast-mc4
+    image: marketplace.gcr.io/google/hazelcast-mc5
     ports:
       - 8080:8080
     environment:
@@ -136,7 +136,7 @@ services:
     container_name: hazelcast1
     restart: always
     hostname: hazelcast1
-    image: marketplace.gcr.io/google/hazelcast4
+    image: marketplace.gcr.io/google/hazelcast5
     ports:
       - 5701:5701
     environment:
@@ -147,7 +147,7 @@ services:
     container_name: hazelcast2
     restart: always
     hostname: hazelcast2
-    image: marketplace.gcr.io/google/hazelcast4
+    image: marketplace.gcr.io/google/hazelcast5
     ports:
       - 5702:5701
     environment:
@@ -158,7 +158,7 @@ services:
     container_name: hazelcast-mc
     restart: always
     hostname: hazelcast-mc
-    image: marketplace.gcr.io/google/hazelcast-mc4
+    image: marketplace.gcr.io/google/hazelcast-mc5
     ports:
       - 8080:8080
     environment:
@@ -218,7 +218,7 @@ docker run -d \
     -e HZ_NETWORK_PORT_AUTOINCREMENT=true \
     -e HZ_NETWORK_PORT_PORTCOUNT=100 \
     -e HZ_NETWORK_PORT_PORT=5701 \
-    marketplace.gcr.io/google/hazelcast4
+    marketplace.gcr.io/google/hazelcast5
 ```
 
 ### Hazelcast Management center

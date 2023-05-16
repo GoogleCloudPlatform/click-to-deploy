@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 # limitations under the License.
 
 default['percona']['version'] = 'latest'
-default['percona']['debian']['codename'] = 'stretch'
+default['percona']['debian']['codename'] = 'bullseye'
 default['percona']['pkg'] = 'lsof psmisc socat libaio1 libdbd-mysql-perl \
   libdbi-perl netcat-openbsd perl-base percona-xtradb-cluster-5.7 \
   percona-xtrabackup-24 debian-keyring'

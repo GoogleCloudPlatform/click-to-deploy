@@ -1,0 +1,136 @@
+x-google-marketplace:
+  # MUST be v2.
+  schemaVersion: v2
+
+  # MUST match the version of the Application custom resource object.
+  # This is the same as the top level applicationApiVersion field in v1.
+  applicationApiVersion: v1beta1
+
+  # The release version is required in the schema and MUST match the
+  # release tag on the the deployer.
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      Initial release.
+    releaseTypes:
+    - Feature
+    recommended: false
+
+  # Image declaration is required here. Refer to the Images section below.
+  images: 
+    '': 
+      properties:
+        manager.image.repo:
+          type: REPO_WITH_REGISTRY
+        manager.image.tag:
+          type: TAG
+    scheduler:
+      properties:
+        scheduler.image:
+          type: FULL
+    seedpeer:
+      properties:
+        seedPeer.image:
+          type: FULL
+    dfget:
+      properties:
+        dfget.image:
+          type: FULL
+    mysql:
+      properties:
+        db.image:
+          type: FULL
+    mysql-exporter:
+      properties:
+        db.exporter.image:
+          type: FULL
+    redis:
+      properties:
+        redis.image:
+          type: FULL
+    redis-exporter:
+      properties:
+        redis.exporter.image:
+          type: FULL
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
+
+# The Properties and Required sections of v2 are structured the same as those of v1
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+
+  persistence.storageClass:
+    type: string
+    title: StorageClass
+    description: You can choose an existing StorageClass or create a new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+
+
+  db.name:
+    type: string
+    title: Dragonfly database name
+    description: Dragonfly database name, which will be created in MySQL Server
+    default: dragonfly
+  # db.dragonflyPassword is the database user's password for the user dragonfly.
+  db.dragonflyPassword:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 10
+        includeSymbols: False
+        base64: False
+  # db.rootPassword is the database user's password for the user root.
+  db.rootPassword:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 10
+        includeSymbols: False
+        base64: False
+  # db.exporter.password is the database user's password for the user exporter.
+  db.exporter.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 10
+        includeSymbols: False
+        base64: False
+  # Redis related settings
+  redis.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 10
+        includeSymbols: False
+        base64: False
+  metrics.exporter.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project must have Stackdriver enabled. For non-GCP clusters,
+      the export of metrics to Stackdriver is not yet supported.
+    default: false
+
+required:
+- name
+- namespace
+- db.dragonflyPassword
+- db.rootPassword
+- db.exporter.password
+- redis.password
+- metrics.exporter.enabled

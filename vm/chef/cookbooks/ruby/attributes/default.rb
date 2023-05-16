@@ -13,3 +13,4 @@
 # limitations under the License.
 
 default['ruby']['packages'] = ['gcc', 'libssl-dev', 'make', 'zlib1g-dev']
+default['ruby']['version'] = '3.2.1'

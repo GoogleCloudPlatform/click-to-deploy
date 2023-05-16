@@ -7,16 +7,16 @@ CHART_NAME := keycloak
 APP_ID ?= $(CHART_NAME)
 WAIT_FOR_READY_TIMEOUT := 600
 
-TRACK ?= 18.0
+TRACK ?= 21.0
 # Track for components
-POSTGRESQL_TRACK ?= 13.4
-METRICS_EXPORTER_TAG ?= v0.5.1
+POSTGRESQL_TRACK ?= 13.8
+METRICS_EXPORTER_TAG ?= v0.11.1-gke.1
 
 VERIFY_WAIT_TIMEOUT = 1800
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 
-IMAGE_KEYCLOAK ?= $(SOURCE_REGISTRY)/keycloak18:$(TRACK)
+IMAGE_KEYCLOAK ?= $(SOURCE_REGISTRY)/keycloak21:$(TRACK)
 
 # POSTGRESQL
 IMAGE_POSTGRESQL ?= $(SOURCE_REGISTRY)/postgresql13:$(POSTGRESQL_TRACK)
@@ -25,7 +25,7 @@ IMAGE_POSTGRESQL ?= $(SOURCE_REGISTRY)/postgresql13:$(POSTGRESQL_TRACK)
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_KEYCLOAK))
 
 # Prometheus-to-SD
-IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+IMAGE_PROMETHEUS_TO_SD ?= gke.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 # List of images used in application
 ADDITIONAL_IMAGES := postgresql prometheus-to-sd
@@ -52,6 +52,8 @@ endif
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)" \
+  $(PUBLIC_SERVICE_AND_INGRESS_ENABLED_FIELD) \
+  $(METRICS_EXPORTER_ENABLED_FIELD) \
 }
 
 # c2d_deployer.Makefile provides the main targets for installing the application.

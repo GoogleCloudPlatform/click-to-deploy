@@ -45,16 +45,16 @@ spec:
             port: 5701
           initialDelaySeconds: 30
           periodSeconds: 10
-          timeoutSeconds: 10
+          timeoutSeconds: 30
           successThreshold: 1
           failureThreshold: 10
         readinessProbe:
           httpGet:
-            path: /hazelcast/health/node-state
+            path: /hazelcast/health/ready
             port: 5701
           initialDelaySeconds: 30
           periodSeconds: 10
-          timeoutSeconds: 10
+          timeoutSeconds: 30
           successThreshold: 1
           failureThreshold: 10
         volumeMounts:

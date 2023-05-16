@@ -32,7 +32,7 @@ kind: Ingress
 metadata:
   name: {{ .Release.Name }}-superset-ingress
   labels:
-    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/name: {{ .Release.Name }}
     app.kubernetes.io/component: apache-superset
 spec:
   tls:

@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,42 +12,44 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-_variables:
-  from10: &from10 marketplace.gcr.io/google/debian10:latest
-  nuclio: &nuclio
-    version: '1.8.12'
-versions:
-  - dir: 'nuclio_builder'
-    repo: nuclio_builder
-    templateSubDir: nuclio_builder
-    tags: [ 'latest' ]
-    builder: true
-    packages:
-      nuclio: *nuclio
-  - repo: nuclio-controller
-    builderImage: 'nuclio_builder:latest'
-    builderArgs: [ 'controller' ]
-    imageNameFromBuilder: 'local/controller:1.8.12'
-    tags:
-      - '1.8.12-debian10'
-      - '1.8-debian10'
-      - '1-debian10'
-      - '1.8.12'
-      - '1.8'
-      - '1'
-      - 'latest'
-  - repo: nuclio-dashboard
-    builderImage: 'nuclio_builder:latest'
-    builderArgs: [ 'dashboard' ]
-    imageNameFromBuilder: 'local/dashboard:1.8.12'
-    tags:
-      - '1.8.12-debian10'
-      - '1.8-debia10'
-      - '1-debian10'
-      - '1.8.12'
-      - '1.8'
-      - '1'
-      - 'latest'
 
 cloudbuild:
-  enable_parallel: true
+  enable_parallel: false
+versions:
+- dir: 1/debian11/nuclio-dashboard/1.11
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    docker:
+      version: 20.10.19
+    golang:
+      version: 1.18.7
+    nuclio:
+      version: 1.11.16
+  repo: nuclio-dashboard1
+  tags:
+  - 1.11.16-debian11
+  - 1.11-debian11
+  - 1-debian11
+  - 1.11.16
+  - '1.11'
+  - '1'
+  - latest
+  templateSubDir: nuclio_dashboard
+- dir: 1/debian11/nuclio-controller/1.11
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    golang:
+      version: 1.18.7
+    nuclio:
+      version: 1.11.16
+  repo: nuclio-controller1
+  tags:
+  - 1.11.16
+  - '1.11'
+  - '1'
+  - 1.11.16-debian11
+  - 1.11-debian11
+  - 1-debian11
+  - latest
+  templateSubDir: nuclio_controller
+

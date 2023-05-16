@@ -1,0 +1,156 @@
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      Initial release.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  clusterConstraints:
+    resources:
+      - replicas: 1
+        requests:
+          cpu: 100m
+          memory: 100Mi
+
+  images:
+    '':
+      properties:
+        core.image.repo:
+          type: REPO_WITH_REGISTRY
+        core.image.tag:
+          type: TAG
+
+    core:
+      properties:
+        core.image.repo:
+          type: REPO_WITH_REGISTRY
+        core.image.tag:
+          type: TAG
+
+    nginx:
+      properties:
+        nginx.image.repo:
+          type: REPO_WITH_REGISTRY
+        nginx.image.tag:
+          type: TAG
+
+    portal:
+      properties:
+        portal.image.repo:
+          type: REPO_WITH_REGISTRY
+        portal.image.tag:
+          type: TAG
+
+    jobservice:
+      properties:
+        jobservice.image.repo:
+          type: REPO_WITH_REGISTRY
+        jobservice.image.tag:
+          type: TAG
+
+    registry:
+      properties:
+        registry.registry.image.repo:
+          type: REPO_WITH_REGISTRY
+        registry.registry.image.tag:
+          type: TAG
+
+    registryctl:
+      properties:
+        registry.controller.image.repo:
+          type: REPO_WITH_REGISTRY
+        registry.controller.image.tag:
+          type: TAG
+
+    chartmuseum:
+      properties:
+        chartmuseum.image.repo:
+          type: REPO_WITH_REGISTRY
+        chartmuseum.image.tag:
+          type: TAG
+
+    trivy:
+      properties:
+        trivy.image.repo:
+          type: REPO_WITH_REGISTRY
+        trivy.image.tag:
+          type: TAG
+
+    notary-server:
+      properties:
+        notary.server.image.repo:
+          type: REPO_WITH_REGISTRY
+        notary.server.image.tag:
+          type: TAG
+
+    notary-signer:
+      properties:
+        notary.signer.image.repo:
+          type: REPO_WITH_REGISTRY
+        notary.signer.image.tag:
+          type: TAG
+
+    database:
+      properties:
+        database.image.repo:
+          type: REPO_WITH_REGISTRY
+        database.image.tag:
+          type: TAG
+
+    redis:
+      properties:
+        redis.image.repo:
+          type: REPO_WITH_REGISTRY
+        redis.image.tag:
+          type: TAG
+
+    exporter:
+      properties:
+        exporter.image.repo:
+          type: REPO_WITH_REGISTRY
+        exporter.image.tag:
+          type: TAG
+
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
+
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  expose.type:
+    type: string
+    title: Set how to expose the service.
+    description: Set the type as "ingress" or "clusterIP".
+    default: "clusterIP"
+    enum:
+    - "ingress"
+    - "clusterIP"
+  harborAdminPassword:
+    type: string
+    title: Set the initial password of Harbor admin. You can change it from portal after launching Harbor.
+    description: The initial password of Harbor admin.
+    default: "Harbor12345"
+  metrics.exporter.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter.
+    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet.
+    default: true
+
+required:
+- name
+- namespace
+- metrics.exporter.enabled

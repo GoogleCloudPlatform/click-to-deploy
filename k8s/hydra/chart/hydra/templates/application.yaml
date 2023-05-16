@@ -73,5 +73,5 @@ spec:
     kind: ServiceAccount
   - group: batch/v1
     kind: Job
-  - group: autoscaling/v2beta2
+  - group: autoscaling/v2
     kind: HorizontalPodAutoscaler

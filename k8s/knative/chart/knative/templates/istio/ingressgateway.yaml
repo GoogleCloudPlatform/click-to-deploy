@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -42,45 +43,8 @@ spec:
     spec:
       affinity:
         nodeAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - preference:
-                matchExpressions:
-                  - key: kubernetes.io/arch
-                    operator: In
-                    values:
-                      - amd64
-              weight: 2
-            - preference:
-                matchExpressions:
-                  - key: kubernetes.io/arch
-                    operator: In
-                    values:
-                      - arm64
-              weight: 2
-            - preference:
-                matchExpressions:
-                  - key: kubernetes.io/arch
-                    operator: In
-                    values:
-                      - ppc64le
-              weight: 2
-            - preference:
-                matchExpressions:
-                  - key: kubernetes.io/arch
-                    operator: In
-                    values:
-                      - s390x
-              weight: 2
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: kubernetes.io/arch
-                    operator: In
-                    values:
-                      - amd64
-                      - arm64
-                      - ppc64le
-                      - s390x
+          preferredDuringSchedulingIgnoredDuringExecution: null
+          requiredDuringSchedulingIgnoredDuringExecution: null
       containers:
         - args:
             - proxy
@@ -185,6 +149,12 @@ spec:
             privileged: false
             readOnlyRootFilesystem: true
           volumeMounts:
+            - mountPath: /var/run/secrets/workload-spiffe-uds
+              name: workload-socket
+            - mountPath: /var/run/secrets/credential-uds
+              name: credential-socket
+            - mountPath: /var/run/secrets/workload-spiffe-credentials
+              name: workload-certs
             - mountPath: /etc/istio/proxy
               name: istio-envoy
             - mountPath: /etc/istio/config
@@ -211,6 +181,12 @@ spec:
         runAsUser: 1337
       serviceAccountName: istio-ingressgateway-service-account
       volumes:
+        - emptyDir: {}
+          name: workload-socket
+        - emptyDir: {}
+          name: credential-socket
+        - emptyDir: {}
+          name: workload-certs
         - configMap:
             name: istio-ca-root-cert
           name: istiod-ca-cert
@@ -279,7 +255,7 @@ spec:
       protocol: TCP
       targetPort: 8443
 ---
-apiVersion: policy/v1beta1
+apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: istio-ingressgateway

@@ -1,7 +1,7 @@
 apiVersion: app.k8s.io/v1beta1
 kind: Application
 metadata:
-  name: "{{ .Release.Name }}"
+  name: {{ .Release.Name }}
   annotations:
     kubernetes-engine.cloud.google.com/icon: >-
       data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/name: "{{ .Release.Name }}"
 spec:
   descriptor:
-    type: superset
+    type: Superset
     version: "{{ .Values.superset.image.tag }}"
     description: |-
       Apache Superset is an open-source software application for data exploration and data visualization.
@@ -28,21 +28,63 @@ spec:
     - description: 'Superset: Installing from scratch'
       url: https://superset.apache.org/docs/installation/installing-superset-from-scratch
     notes: |-
-      # Access superset
+      {{- if .Values.enablePublicServiceAndIngress }}
+      # Open your Superset site
+      Get the external IP of your Superset site by using the following command:
 
+      ```
+      SERVICE_IP=$(kubectl get ingress {{ .Release.Name }}-superset-ingress \
+        --namespace {{ .Release.Namespace }} \
+        --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+      echo "https://${SERVICE_IP}/"
+      ```
+      The command shows you the URL of your site.
+
+      # Update TLS certificate for Superset
+      By default, the app uses a self-signed certificate. You can follow the steps at
+      [Update TLS certificate for Superset](https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/superset/README.md#create-tls-certificate-for-superset)
+      to update it.
+      {{- else }}
+
+      # Access Superset
       Superset is exposed in a ClusterIP-only service `{{.Release.Name}}-superset-svc`. To connect to
-      superset UI, you can either expose a public service endpoint or keep it private, but connect
+      Superset UI, you can either expose a public service endpoint or keep it private, but connect
       from you local environment with `kubectl port-forward`
 
       ```
       kubectl port-forward \
         --namespace {{ .Release.Namespace }} \
         svc/{{.Release.Name}}-superset-svc \
-        8088:8088
+        8088:80
       ```
 
       Then, navigate to the [http://localhost:8088](http://localhost:8088) endpoint.
+
+      {{ end }}
   info:
+  {{ if .Values.enablePublicServiceAndIngress }}
+  - name: Superset dashboard address
+    type: Reference
+    valueFrom:
+      ingressRef:
+        name: {{ .Release.Name }}-superset-ingress
+        protocol: HTTPS
+  - name: Superset login page
+    type: Reference
+    valueFrom:
+      ingressRef:
+        name: {{ .Release.Name }}-superset-ingress
+        path: /login
+        protocol: HTTPS
+  {{ else }}
+  - name: Forward Superset port locally
+    value: kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-superset-svc 8088:80
+  - name: Superset dashboard address
+    value: http://localhost:8088/
+  - name: Superset login page
+    value: http://localhost:8088/login
+  {{ end }}
   - name: Application Namespace
     value: {{ .Release.Namespace }}
   - name: Login for web console
@@ -55,7 +97,7 @@ spec:
         name: {{ .Release.Name }}-superset-secret
   selector:
     matchLabels:
-      app.kubernetes.io/name: "{{ .Release.Name }}"
+      app.kubernetes.io/name: {{ .Release.Name }}
   componentKinds:
   - group: apps/v1
     kind: StatefulSet

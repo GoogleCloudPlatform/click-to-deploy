@@ -17,7 +17,6 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-
 import os
 import platform
 from logging.handlers import SysLogHandler
@@ -848,7 +847,6 @@ REST_FRAMEWORK = {
         else "rest_framework.permissions.IsAuthenticatedOrReadOnly"
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "weblate.api.authentication.ProjectTokenAuthentication",
         "rest_framework.authentication.TokenAuthentication",
         "weblate.api.authentication.BearerAuthentication",
         "rest_framework.authentication.SessionAuthentication",
