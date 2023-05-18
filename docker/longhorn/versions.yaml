@@ -20,15 +20,15 @@ versions:
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     longhorn:
-      version: 1.4.1
+      version: 1.4.2
     manager:
-      version: 1.4.1
+      version: 1.4.2
   repo: longhorn1
   tags:
-  - 1.4.1-debian11
+  - 1.4.2-debian11
   - 1.4-debian11
   - 1-debian11
-  - 1.4.1
+  - 1.4.2
   - '1.4'
   - '1'
   - latest

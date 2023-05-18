@@ -21,13 +21,13 @@ versions:
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     gitlab:
-      version: 15.11.2
+      version: 15.11.4
   repo: gitlab15
   tags:
-  - 15.11.2-debian11
+  - 15.11.4-debian11
   - 15.11-debian11
   - 15-debian11
-  - 15.11.2
+  - 15.11.4
   - '15.11'
   - '15'
   - latest
