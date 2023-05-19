@@ -20,7 +20,6 @@ versions:
   excludeTests:
   - tests/functional_tests/exporter_test.yaml
   from: marketplace.gcr.io/google/c2d-debian11
-  templateSubDir: debian11
   packages:
     kafka:
       version: 3.4.0
@@ -35,11 +34,11 @@ versions:
   - '3.4'
   - '3'
   - latest
+  templateSubDir: debian11
 - dir: exporter
   excludeTests:
   - tests/functional_tests/running_test.yaml
   from: marketplace.gcr.io/google/c2d-debian11
-  templateSubDir: exporter
   packages:
     kafka_exporter:
       version: 1.6.0
@@ -50,3 +49,4 @@ versions:
   - '1'
   - latest
   templateSubDir: exporter
+
