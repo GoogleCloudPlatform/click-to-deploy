@@ -244,8 +244,7 @@ Use `helm template` to expand the template. We recommend that you save
 the expanded manifest file for future updates to your app.
 
 ```shell
-helm template chart/mariadb-galera \
-  --name "$APP_INSTANCE_NAME" \
+helm template "$APP_INSTANCE_NAME" chart/mariadb-galera \
   --namespace "$NAMESPACE" \
   --set mariadb.image.repo="$IMAGE_MARIADB" \
   --set mariadb.image.tag="$TAG" \

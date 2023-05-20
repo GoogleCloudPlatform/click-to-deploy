@@ -267,8 +267,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to your app.
 
 ```shell
-helm template chart/mediawiki \
-    --name "${APP_INSTANCE_NAME}" \
+helm template "${APP_INSTANCE_NAME}" chart/mediawiki \
     --namespace "${NAMESPACE}" \
     --set mediawiki.image.repo="${IMAGE_MEDIAWIKI}" \
     --set mediawiki.image.tag="${TAG}" \

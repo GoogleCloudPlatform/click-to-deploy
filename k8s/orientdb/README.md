@@ -194,8 +194,7 @@ To expand the template, use `helm template`. We recommend that you save the
 expanded manifest file for future updates to your app.
 
 ```shell
-helm template chart/orientdb \
-  --name "${APP_INSTANCE_NAME}" \
+helm template "${APP_INSTANCE_NAME}" chart/orientdb \
   --namespace "${NAMESPACE}" \
   --set orientdb.image.repo="${IMAGE_ORIENTDB}" \
   --set orientdb.image.tag="${TAG}" \

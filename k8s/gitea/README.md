@@ -236,8 +236,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to your app.
 
 ```shell
-helm template chart/gitea \
-  --name "${APP_INSTANCE_NAME}" \
+helm template "${APP_INSTANCE_NAME}" chart/gitea \
   --namespace "${NAMESPACE}" \
   --set gitea.image.repo="${IMAGE_GITEA}" \
   --set gitea.image.tag="${TAG}" \

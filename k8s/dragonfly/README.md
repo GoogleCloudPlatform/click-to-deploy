@@ -206,8 +206,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to your app.
 
 ```shell
-helm template chart/dragonfly \
-    --name "${APP_INSTANCE_NAME}" \
+helm template "${APP_INSTANCE_NAME}" chart/dragonfly \
     --namespace "${NAMESPACE}" \
     --set persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \
     --set manager.image.repo="${IMAGE_REGISTRY}" \

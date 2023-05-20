@@ -278,8 +278,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to your app.
 
 ```shell
-helm template chart/magento \
-    --name "${APP_INSTANCE_NAME}" \
+helm template "${APP_INSTANCE_NAME}" chart/magento \
     --namespace "${NAMESPACE}" \
     --set persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \
     --set magento.image.repo="${IMAGE_MAGENTO}" \

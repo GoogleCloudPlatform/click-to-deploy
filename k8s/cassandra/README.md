@@ -192,8 +192,7 @@ Use `helm template` to expand the template. We recommend that you save the
 expanded manifest file for future updates to the application.
 
 ```shell
-helm template chart/cassandra \
-  --name "${APP_INSTANCE_NAME}" \
+helm template "${APP_INSTANCE_NAME}" chart/cassandra \
   --namespace "${NAMESPACE}" \
   --set cassandra.image.repo="${IMAGE_CASSANDRA}" \
   --set cassandra.image.tag="${TAG}" \
