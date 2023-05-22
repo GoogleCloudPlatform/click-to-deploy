@@ -60,7 +60,7 @@ spec:
       # Open your Magento site
       Magento is exposed in a ClusterIP-only service, `{{ .Release.Name }}-magento-svc`.
       To connect to Magento UI, you can either expose a public service endpoint, or keep it private,
-      but connect from you local environment with `kubectl port-forward`.
+      but connect from your local environment with `kubectl port-forward`.
 
       ## Forward Magento port in local environment
       You can use the port forwarding feature of `kubectl` to forward Magento's port to your local
