@@ -41,7 +41,7 @@ steps:
   - run
   - --env=PROJECT=${PROJECT_ID}
   - --env=BUCKET=${_LOGS_BUCKET}
-  - --env=SERVICE_ACCOUNT_EMAIL=${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com
+  - --env=SERVICE_ACCOUNT_EMAIL=cloud-marketplace-ops-test-rel@cloud-marketplace-ops-test.iam.gserviceaccount.com
   - --env=CHEF_DIR=/chef
   - --env=PACKER_DIR=/packer/templates
   - --env=TESTS_DIR=/tests
