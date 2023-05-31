@@ -31,16 +31,3 @@ versions:
   - '1'
   - latest
   templateSubDir: cert-manager1
-- dir: 1/debian11/1.11
-  from: marketplace.gcr.io/google/c2d-debian11
-  packages:
-    cert-manager:
-      version: 1.11.3
-  repo: cert-manager1
-  tags:
-  - 1.11.3-debian11
-  - 1.11-debian11
-  - 1.11.3
-  - '1.11'
-  templateSubDir: cert-manager1
-
