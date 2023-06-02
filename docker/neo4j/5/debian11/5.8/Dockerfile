@@ -13,7 +13,7 @@
 
 FROM marketplace.gcr.io/google/c2d-debian11
 
-ENV NEO4J_VERSION 5.5.0
+ENV NEO4J_VERSION 5.8.0
 ENV NEO4J_HOME  /var/lib/neo4j
 ENV NEO4J_EDITION community
 ENV NEO4J_TARBALL neo4j.tar.gz
@@ -24,7 +24,7 @@ ENV TINI_VERSION v0.19.0
 ENV DOCKER_NEO4J_VERSION 5.8.0
 ENV DOCKER_NEO4J_TARBALL docker-neo4j.tar.gz
 
-ENV C2D_RELEASE 5.5.0
+ENV C2D_RELEASE 5.8.0
 
 # Workaround for CVE-2021-44228
 # https://www.docker.com/blog/apache-log4j-2-cve-2021-44228/
