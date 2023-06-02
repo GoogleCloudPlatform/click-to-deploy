@@ -21,7 +21,7 @@ versions:
   templateSubDir: neo4j5
   packages:
     dockerneo4j:
-      version: 5.5.0
+      version: 5.8.0
     neo4j:
       version: 5.5.0
     tini:
@@ -30,27 +30,24 @@ versions:
   tags:
   - 5.5.0-debian11
   - 5.5-debian11
-  - 5-debian11
   - 5.5.0
   - '5.5'
-  - '5'
-  - latest
-- dir: 4/debian11/4.4
+- dir: 5/debian11/5.8
   from: marketplace.gcr.io/google/c2d-debian11
-  templateSubDir: neo4j4
+  templateSubDir: neo4j5
   packages:
     dockerneo4j:
-      version: 4.4.17
+      version: 5.8.0
     neo4j:
-      version: 4.4.17
+      version: 5.8.0
     tini:
       version: 0.19.0
-  repo: neo4j4
+  repo: neo4j5
   tags:
-  - 4.4.17-debian11
-  - 4.4-debian11
-  - 4-debian11
-  - 4.4.17
-  - '4.4'
-  - '4'
+  - 5.8.0-debian11
+  - 5.8-debian11
+  - 5-debian11
+  - 5.8.0
+  - '5.8'
+  - '5'
   - latest
