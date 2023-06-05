@@ -54,6 +54,10 @@ spec:
           value: "true"
         - name: INSTALL_PROMETHEUS
           value: "true"
+        - name: COLLECT_DISK_USAGE
+          value: "true"
+        - name: COLLECTING_METRICS_PERIOD_IN_SECONDS
+          value: "120"
         resources:
           limits:
             memory: 2.0Gi
