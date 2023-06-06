@@ -21,7 +21,7 @@ ENV NEO4J_TARBALL neo4j.tar.gz
 ENV TINI_VERSION v0.19.0
 
 # Required for neo4jlabs-plugins.json
-ENV DOCKER_NEO4J_VERSION 5.5.0
+ENV DOCKER_NEO4J_VERSION 5.8.0
 ENV DOCKER_NEO4J_TARBALL docker-neo4j.tar.gz
 
 ENV C2D_RELEASE 5.5.0
@@ -60,7 +60,7 @@ RUN apt update \
 
 # Add debian backport source repository
 RUN set -x \
-    && echo 'deb http://ftp.debian.org/debian stretch-backports main' > /etc/apt/sources.list.d/stretch-backports.list \
+    && echo 'deb http://ftp.debian.org/debian bullseye-backports main' > /etc/apt/sources.list.d/bullseye-backports.list \
     && apt update \
     && apt install -y \
     openjdk-17-jdk \
