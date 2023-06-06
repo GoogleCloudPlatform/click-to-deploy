@@ -20,7 +20,7 @@ versions:
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     dockerneo4j:
-      version: 5.8.0
+      version: 5.5.0
     neo4j:
       version: 5.5.0
     tini:
