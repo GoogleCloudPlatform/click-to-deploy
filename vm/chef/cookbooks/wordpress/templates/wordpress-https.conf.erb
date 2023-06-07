@@ -9,4 +9,10 @@
     Options -Indexes
     AllowOverride FileInfo
   </Directory>
+
+  <Files xmlrpc.php>
+    order deny,allow
+    deny from all
+  </Files>
+
 </VirtualHost>

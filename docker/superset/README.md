@@ -19,7 +19,7 @@ This is not an official Google product.
 This image contains an installation of Apache Superset.
 
 For more information, see the
-[Official Image Marketplace Page](https://console.cloud.google.com/marketplace/product/google/superset1).
+[Official Image Marketplace Page](https://console.cloud.google.com/marketplace/product/google/superset2).
 
 ### Prerequisites
 
@@ -31,7 +31,7 @@ gcloud auth configure-docker
 ### Pull command
 
 ```shell
-docker -- pull marketplace.gcr.io/google/superset1
+docker -- pull marketplace.gcr.io/google/superset2
 ```
 Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/docker/superset/1/debian11/1.5/)
 =======
@@ -62,7 +62,7 @@ Use the following content for the `docker-compose.yml` file, then run `docker-co
 version: '2'
 services:
   superset:
-    image: marketplace.gcr.io/google/superset1
+    image: marketplace.gcr.io/google/superset2
     ports:
       - 8088:8088
 ```
@@ -73,7 +73,7 @@ Or you can use `docker run` directly:
 docker run -d \
     -p 8088:8088 \
     --name superset \
-    marketplace.gcr.io/google/superset1
+    marketplace.gcr.io/google/superset2
 ```
 
 ### <a name="running-superset-with-additional-parameters"></a>Running Superset with additional parameters
@@ -85,7 +85,7 @@ Use the following content for the `docker-compose.yml` file, then run `docker-co
 version: '2'
 services:
   superset:
-    image: marketplace.gcr.io/google/superset1
+    image: marketplace.gcr.io/google/superset2
     ports:
       - 8088:8088
     environment:
@@ -100,7 +100,7 @@ docker run -d \
     -p 8088:8088 \
     --name superset \
     -e SUPERSET_PASSWORD="superset/some-password" \
-    marketplace.gcr.io/google/superset1
+    marketplace.gcr.io/google/superset2
 ```
 
 # <a name="references"></a>References

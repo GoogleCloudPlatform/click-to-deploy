@@ -22,10 +22,8 @@ EXPOSE 80
 
 RUN apt-get update \
     && apt-get install \
-    curl \
     libz-dev \
     build-essential \
-    git \
     ldap-utils \
     apt-transport-https \
     ca-certificates \

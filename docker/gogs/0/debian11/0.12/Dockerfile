@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian11:latest
+FROM marketplace.gcr.io/google/c2d-debian11
 
 ENV GOGS_CUSTOM /data/gogs
 ENV GOGS_DB_TYPE sqlite3
@@ -13,12 +13,12 @@ ENV GOGS_EXTERNAL_URL http://localhost:3000/
 WORKDIR /app/gogs
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends curl git ca-certificates rsync sqlite3 gettext-base jq \
+    && apt-get install -y --no-install-recommends ca-certificates rsync sqlite3 gettext-base jq \
     && apt-get autoremove -yqq --purge \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-ENV GOGS_VERSION 0.12.10
+ENV GOGS_VERSION 0.12.11
 ARG GOGS_DIST=https://github.com/gogs/gogs/releases/download/v${GOGS_VERSION}/gogs_${GOGS_VERSION}_linux_amd64.tar.gz
 ADD $GOGS_DIST /tmp/gogs.tar.gz
 RUN (tar -xvf /tmp/gogs.tar.gz -C /app/ && rm /tmp/gogs.tar.gz) || true
@@ -36,7 +36,7 @@ RUN mkdir -p /data/gogs/data \
 
 USER git
 
-ENV C2D_RELEASE 0.12.10
+ENV C2D_RELEASE 0.12.11
 
 VOLUME ["/data", "/backup"]
 EXPOSE 22 3000

@@ -19,12 +19,13 @@
 FROM node:12-alpine as console-builder
 
 ARG MANAGER_CONSOLE_BRANCH=release-{{ $manager_console.Version }}
-ARG CONSOLE_DIST=https://github.com/dragonflyoss/console/archive/refs/heads/${MANAGER_CONSOLE_BRANCH}.tar.gz
+ARG MANAGER_CONSOLE_TAR=v{{ $manager_console.Version }}
+ARG CONSOLE_DIST=https://github.com/dragonflyoss/console/archive/refs/tags/${MANAGER_CONSOLE_TAR}.tar.gz
 
 ADD ${CONSOLE_DIST} .
 
-RUN tar -xvf $MANAGER_CONSOLE_BRANCH.tar.gz && \
-    cd console-$MANAGER_CONSOLE_BRANCH && \
+RUN tar -xvf $MANAGER_CONSOLE_TAR.tar.gz && \
+    cd console-{{ $manager_console.Version }} && \
     npm install --loglevel warn --progress false && \
     npm run build
 
@@ -40,10 +41,9 @@ ARG MANAGER_CONSOLE_BRANCH=release-{{ $manager_console.Version }}
 WORKDIR /go/src/d7y.io/dragonfly/v2
 
 RUN apk --no-cache add bash make gcc libc-dev git && \
-    git clone -b ${DRAGONFLY2_GITHUB_BRANCH} https://github.com/dragonflyoss/Dragonfly2.git /go/src/d7y.io/dragonfly/v2 && \
-    git clone -b ${MANAGER_CONSOLE_BRANCH} https://github.com/dragonflyoss/console.git /go/src/d7y.io/dragonfly/v2/manager/console
+    git clone -b ${DRAGONFLY2_GITHUB_BRANCH} --recurse-submodules https://github.com/dragonflyoss/Dragonfly2.git /go/src/d7y.io/dragonfly/v2
 
-COPY --from=console-builder /console-$MANAGER_CONSOLE_BRANCH/dist /go/src/d7y.io/dragonfly/v2/manager/dist
+COPY --from=console-builder /console-{{ $manager_console.Version }}/dist /go/src/d7y.io/dragonfly/v2/manager/dist
 
 RUN make build-manager-server && make install-manager
 
@@ -77,7 +77,7 @@ COPY --from=health /bin/grpc_health_probe /bin/grpc_health_probe
 COPY config/manager.yaml /etc/dragonfly/manager.yaml
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN apt update && apt install -y curl gettext-base && \
-    chmod +x /docker-entrypoint.sh 
+    chmod +x /docker-entrypoint.sh
 
 EXPOSE 8080 65003
 

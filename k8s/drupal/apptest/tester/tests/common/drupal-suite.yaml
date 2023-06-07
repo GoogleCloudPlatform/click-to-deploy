@@ -13,7 +13,7 @@ actions:
       bodyText:
         html:
           title:
-            equals: 'Welcome to Drupal_Site | Drupal_Site'
+            equals: 'Welcome! | Drupal_Site'
 
 - name: Login URL should be 200 OK (service DNS)
   httpTest:

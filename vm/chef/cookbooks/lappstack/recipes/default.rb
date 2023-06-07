@@ -15,7 +15,7 @@
 include_recipe 'apache2'
 include_recipe 'apache2::security-config'
 include_recipe 'apache2::mod-rewrite'
-include_recipe 'postgresql::standalone_buster'
+include_recipe 'postgresql::standalone_bullseye'
 include_recipe 'php74'
 include_recipe 'php74::module_libapache2'
 include_recipe 'php74::module_pgsql'

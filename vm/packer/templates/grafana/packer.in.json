@@ -1,7 +1,7 @@
 {
   "license": "c2d-grafana",
-  "source_image_family": "debian-10",
+  "source_image_family": "debian-11",
   "chef": {
-    "run_list": [ "c2d-config", "grafana", "stackdriver" ]
+    "run_list": [ "c2d-config", "grafana", "google-cloud-ops-agent" ]
   }
 }

@@ -16,7 +16,7 @@
 # Stage: Server and Workflow Controller: Builder
 FROM golang:1.18 as builder
 
-ARG ARGO_VERSION="3.4.2"
+ARG ARGO_VERSION="3.4.7"
 ENV ARGO_VERSION "${ARGO_VERSION}"
 
 RUN apt-get update && apt-get --no-install-recommends install -y \
@@ -85,9 +85,9 @@ RUN target=/root/.cache/go-build make dist/argo
 
 
 # Stage: Final Image
-FROM marketplace.gcr.io/google/debian11
+FROM marketplace.gcr.io/google/c2d-debian11
 
-ENV C2D_RELEASE "3.4.2"
+ENV C2D_RELEASE "3.4.7"
 USER 8737
 
 # Controller artifacts

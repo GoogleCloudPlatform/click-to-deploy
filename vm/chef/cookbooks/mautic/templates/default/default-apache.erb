@@ -17,6 +17,10 @@
            Require all granted
         </Directory>
 
+        <Directory /var/www/html/mautic/.git/>
+           Require all denied
+        </Directory>
+
         # Available loglevels: trace8, ..., trace1, debug, info, notice, warn,
         # error, crit, alert, emerg.
         # It is also possible to configure the loglevel for particular

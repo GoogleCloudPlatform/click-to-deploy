@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['espocrm']['version'] = '7.0.9'
+default['espocrm']['version'] = '7.2.7'
 default['espocrm']['db']['name'] = 'espo_crm'
 default['espocrm']['packages'] = [
   'unzip',

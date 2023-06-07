@@ -17,6 +17,8 @@ spec:
     metadata:
       labels: *JoomlaDeploymentLabels
     spec:
+      initContainers:
+        {{- include "joomla.init_container.check_db" . | indent 8 }}
       containers:
       - image: {{ .Values.joomla.image.repo }}:{{ .Values.joomla.image.tag }}
         name: joomla

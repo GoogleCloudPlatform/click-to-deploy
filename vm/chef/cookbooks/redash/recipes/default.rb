@@ -83,4 +83,9 @@ bash 'install redash' do
   })
 end
 
+remote_file 'Download composer manifest' do
+  path '/opt/redash/setup/docker-compose.yml'
+  source 'https://raw.githubusercontent.com/getredash/setup/master/data/docker-compose.yml'
+end
+
 c2d_startup_script 'redash-setup'

@@ -136,14 +136,14 @@ It is advised to use stable image reference which you can find on
 Example:
 
 ```shell
-export TAG="1.11.8-<BUILD_ID>"
+export TAG="2.0.3-<BUILD_ID>"
 ```
 
 Alternatively you can use short tag which points to the latest image for selected version.
 > Warning: this tag is not stable and referenced image might change over time.
 
 ```shell
-export TAG="1.11"
+export TAG="2.0"
 ```
 
 Configure the container images:
@@ -161,6 +161,13 @@ Request the amount of memory and CPU for Hydra Pod:
 ```shell
 export HYDRA_MEMORY_REQUEST=128Mi
 export HYDRA_CPU_REQUEST=100m
+```
+
+Set the persistent disks size. The default disks size is "5Gi".
+
+```shell
+export DEFAULT_STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
+export PSQL_PERSISTENT_DISK_SIZE="8Gi"
 ```
 
 Set or generate the password for the PostgreSQL service:
@@ -258,6 +265,8 @@ helm template "${APP_INSTANCE_NAME}" chart/hydra \
   --set postgresql.image="${IMAGE_POSTGRESQL}" \
   --set postgresql.exporter.image="${IMAGE_POSTGRESQL_EXPORTER}" \
   --set postgresql.password="${POSTGRES_PASSWORD}" \
+  --set postgresql.persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \
+  --set postgresql.persistence.size="${PSQL_PERSISTENT_DISK_SIZE}" \
   --set hydra.memoryRequest="${HYDRA_MEMORY_REQUEST}" \
   --set hydra.cpuRequest="${HYDRA_CPU_REQUEST}" \
   --set ingress.public.enabled="${INGRESS_PUBLIC_ENABLED}" \
@@ -300,9 +309,9 @@ To view your app, open the URL in your browser.
 The application is configured to natively expose its metrics in the
 [Prometheus format](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md).
 
-You can access the metrics at `[HYDRA_ADMIN_SVC_URL]:4445/metrics/prometheus`, where
+You can access the metrics at `[HYDRA_ADMIN_SVC_URL]:4445/admin/metrics/prometheus`, where
 `[HYDRA_ADMIN_SVC_URL]` is the IP address of the `hydra-admin` Service. For example, you can access the metrics at the
-[http://localhost:8080/metrics/prometheus](http://localhost:8080/metrics/prometheus) endpoint using port forwarding as below:
+[http://localhost:8080/metrics/prometheus](http://localhost:8080/admin/metrics/prometheus) endpoint using port forwarding as below:
 
 ```shell
 kubectl port-forward svc/${APP_INSTANCE_NAME}-admin 8080:4445

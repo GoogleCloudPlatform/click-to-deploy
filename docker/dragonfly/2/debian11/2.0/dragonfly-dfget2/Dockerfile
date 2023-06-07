@@ -18,18 +18,17 @@ ARG GOPROXY
 ARG GOTAGS
 ARG GOGCFLAGS
 
-ARG DRAGONFLY2_GITHUB_BRANCH=release-2.0.8
-ARG MANAGER_CONSOLE_BRANCH=release-0.1.4
+ARG DRAGONFLY2_GITHUB_BRANCH=release-2.0.9
+ARG MANAGER_CONSOLE_BRANCH=release-0.1.7
 
 WORKDIR /go/src/d7y.io/dragonfly/v2
 
 RUN apk --no-cache add bash make gcc libc-dev git && \
-    git clone -b ${DRAGONFLY2_GITHUB_BRANCH} https://github.com/dragonflyoss/Dragonfly2.git /go/src/d7y.io/dragonfly/v2 && \
-    git clone -b ${MANAGER_CONSOLE_BRANCH} https://github.com/dragonflyoss/console.git /go/src/d7y.io/dragonfly/v2/manager/console
+    git clone -b ${DRAGONFLY2_GITHUB_BRANCH} --recurse-submodules https://github.com/dragonflyoss/Dragonfly2.git /go/src/d7y.io/dragonfly/v2
 
 RUN make build-dfget && make install-dfget
 
-FROM marketplace.gcr.io/google/debian11 as health
+FROM marketplace.gcr.io/google/c2d-debian11 as health
 
 ARG GRPC_HEALTH_PROBE_VERSION=v0.4.11
 
@@ -43,9 +42,9 @@ RUN apt update && apt install -y wget && \
     fi && \
     chmod +x /bin/grpc_health_probe
 
-FROM marketplace.gcr.io/google/debian11
+FROM marketplace.gcr.io/google/c2d-debian11
 
-ENV C2D_RELEASE 2.0.8
+ENV C2D_RELEASE 2.0.9
 ENV DRAGONFLY_SCHEDULER_ADDR localhost
 
 
@@ -58,7 +57,7 @@ COPY --from=health /bin/grpc_health_probe /bin/grpc_health_probe
 COPY config/dfget.yaml /etc/dragonfly/dfget.yaml
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN apt update && apt install -y gettext-base && \
-    chmod +x /docker-entrypoint.sh 
+    chmod +x /docker-entrypoint.sh
 
 EXPOSE 65001
 

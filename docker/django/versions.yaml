@@ -1,61 +1,68 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
-# Redistribution and use in source and binary forms, with or without modification,
-# are permitted provided that the following conditions are met:
-
-#     1. Redistributions of source code must retain the above copyright notice,
-#        this list of conditions and the following disclaimer.
-
-#     2. Redistributions in binary form must reproduce the above copyright
-#        notice, this list of conditions and the following disclaimer in the
-#        documentation and/or other materials provided with the distribution.
-
-#     3. Neither the name of Django nor the names of its contributors may be used
-#        to endorse or promote products derived from this software without
-#        specific prior written permission.
-
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-# ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-# ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+# Redistribution and use in source and binary forms, with or without modification, are permitted
+# provided that the following conditions are met:
+#
+# 1. Redistributions of source code must retain the above copyright notice, this list of conditions
+# and the following disclaimer.
+#
+# 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions
+# and the following disclaimer in the documentation and/or other materials provided with
+# the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
+# IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+# FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+# WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 4/debian11/4.1
-  from: marketplace.gcr.io/google/debian11
+- dir: 4/debian11/4.2
+  from: marketplace.gcr.io/google/c2d-debian11
   packages:
-    gosu:
-      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
-      version: '1.14'
+    django:
+      version: 4.2.1
   repo: django4
   tags:
-  - 4.1.3-debian11
-  - 4.1-debian11
+  - 4.2.1-debian11
+  - 4.2-debian11
   - 4-debian11
-  - 4.1.3
-  - '4.1'
+  - 4.2.1
+  - '4.2'
   - '4'
   - latest
-
+- dir: 4/debian11/4.1
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    django:
+      version: 4.1.9
+  repo: django4
+  tags:
+  - 4.1.9-debian11
+  - 4.1-debian11
+  - 4.1.9
+  - '4.1'
 - dir: exporter
-  templateSubDir: exporter
-  from: marketplace.gcr.io/google/debian11
+  excludeTests:
+  - tests/functional_tests/basic_test.yaml
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    uwsgi_exporter:
+      version: 1.1.0
   repo: uwsgi-exporter1
   tags:
-  - 1.1.0-debian11
-  - 1.1-debian11
-  - 1-debian11
   - 1.1.0
   - '1.1'
   - '1'
+  - 1.1.0-debian11
+  - 1.1-debian11
+  - 1-debian11
   - latest
-  excludeTests:
-  - tests/functional_tests/basic_test.yaml
+  templateSubDir: exporter
+

@@ -28,6 +28,10 @@ spec:
             name: metrics
           args: ["start"]
           imagePullPolicy: Always
+          volumeMounts:
+          - mountPath: /tmp/k8s-webhook-server/serving-certs
+            name: cert
+            readOnly: true
           env:
             - name: WATCH_NAMESPACE
               value: ""
@@ -41,3 +45,8 @@ spec:
                   fieldPath: metadata.namespace
             - name: OPERATOR_NAME
               value: "{{ template "jaeger_operator.DeploymentName" . }}"
+      volumes:
+      - name: cert
+        secret:
+          defaultMode: 420
+          secretName: {{ .Release.Name }}-jaeger-secret

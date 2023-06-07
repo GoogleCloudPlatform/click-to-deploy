@@ -21,7 +21,7 @@ describe 'Disable Apache Web Server Signature' do
   end
 
   describe command('curl -I http://localhost') do
-    its(:stdout) { should match /^Server: Apache\r$/ }
+    its(:stdout) { should_not match /^Server: Apache\r$/ }
   end
 
   describe command('curl http://localhost/page-does-not-exists') do

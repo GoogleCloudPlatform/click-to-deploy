@@ -67,7 +67,6 @@ RUN apt-get update \
        libtirpc3 \
        libtirpc-common \
        libssl1.1 \
-       openssl \
        zlib1g \
        expat \
        libexpat1 \

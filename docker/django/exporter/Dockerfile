@@ -8,13 +8,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM marketplace.gcr.io/google/debian11
+FROM marketplace.gcr.io/google/c2d-debian11
+ENV EXPORTER_VERSION 1.1.0
 
-RUN apt-get update \
-    && apt-get -y install \
-      curl
-
-RUN curl -L -o uwsgi.tar.gz https://github.com/timonwong/uwsgi_exporter/releases/download/v1.1.0/uwsgi_exporter-1.1.0.linux-amd64.tar.gz \
+RUN curl -L -o uwsgi.tar.gz https://github.com/timonwong/uwsgi_exporter/releases/download/v${EXPORTER_VERSION}/uwsgi_exporter-${EXPORTER_VERSION}.linux-amd64.tar.gz \
     && tar -xvf uwsgi.tar.gz --strip-components=1 \
     && mv uwsgi_exporter /usr/local/bin/uwsgi_exporter \
     && rm -f uwsgi.tar.gz

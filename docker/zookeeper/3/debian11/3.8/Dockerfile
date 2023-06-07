@@ -1,6 +1,6 @@
-FROM marketplace.gcr.io/google/debian11
+FROM marketplace.gcr.io/google/c2d-debian11
 
-ARG ZK_VERSION=3.8.0
+ARG ZK_VERSION=3.8.1
 
 ENV ZOO_CONF_DIR=/conf \
     ZOO_DATA_DIR=/data \

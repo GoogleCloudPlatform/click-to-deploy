@@ -64,7 +64,7 @@ Use the following content for the `docker-compose.yml` file, then run `docker-co
 version: '3'
 services:
   keycloak:
-    image: marketplace.gcr.io/google/keycloak20
+    image: marketplace.gcr.io/google/keycloak21
     command: start-dev
     ports:
       - 8080:8080
@@ -81,8 +81,8 @@ docker run -d -p 8080:8080 \
     --name keycloak \
     -e KEYCLOAK_ADMIN=admin \
     -e KEYCLOAK_ADMIN_PASSWORD=admin \
-    -e KC_DB=dev-mem
-    marketplace.gcr.io/google/keycloak20 \
+    -e KC_DB=dev-mem \
+    marketplace.gcr.io/google/keycloak21 \
     start-dev
 ```
 
@@ -102,7 +102,7 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: password
   keycloak:
-    image: marketplace.gcr.io/google/keycloak20
+    image: marketplace.gcr.io/google/keycloak21
     command: start-dev
     environment:
         KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak

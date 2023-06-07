@@ -20,4 +20,4 @@ default['postgresql']['standalone']['distribution'] = 'buster'
 default['postgresql']['standalone']['allow_external'] = true
 
 default['postgresql']['cluster']['packages'] = ['postgresql-plperl-13', 'postgresql-client']
-default['postgresql']['cluster']['distribution'] = 'buster'
+default['postgresql']['cluster']['distribution'] = 'bullseye'

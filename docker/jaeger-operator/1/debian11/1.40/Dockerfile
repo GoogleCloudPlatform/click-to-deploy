@@ -28,7 +28,7 @@ RUN go install github.com/kardianos/govendor@latest \
 
 
 # Result Image
-FROM marketplace.gcr.io/google/debian11
+FROM marketplace.gcr.io/google/c2d-debian11
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
             openssl \

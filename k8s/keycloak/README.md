@@ -129,17 +129,17 @@ It is advised to use a stable image reference, which you can find on:
 For example:
 
 ```shell
-export KEYCLOAK_TRACK=18.0
-export POSTGRESQL_TRACK=13.4
-export METRICS_EXPORTER_TAG=0.5
+export KEYCLOAK_TRACK=21.0
+export POSTGRESQL_TRACK=13.8
+export METRICS_EXPORTER_TAG=v0.11.1-gke.1
 ```
 
 Configure the container images:
 
 ```shell
-export IMAGE_KEYCLOAK=marketplace.gcr.io/google/keycloak18
+export IMAGE_KEYCLOAK=marketplace.gcr.io/google/keycloak21
 export IMAGE_POSTGRESQL=marketplace.gcr.io/google/postgresql13
-export IMAGE_METRICS_EXPORTER=k8s.gcr.io/prometheus-to-sd:${METRICS_EXPORTER_TAG}
+export IMAGE_METRICS_EXPORTER=gke.gcr.io/prometheus-to-sd:${METRICS_EXPORTER_TAG}
 ```
 
 By default, Keycloak deployment has 1 replica, but you can choose to set the

@@ -26,9 +26,9 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-FROM marketplace.gcr.io/google/debian11
+FROM marketplace.gcr.io/google/c2d-debian11
 
-ENV C2D_RELEASE 4.1.2
+ENV C2D_RELEASE 4.1.9
 
 ENV C2D_DJANGO_USER="django" \
     C2D_DJANGO_UID="8983" \
