@@ -12,21 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM {{ .From }}
-
-{{- $hazelcast := index .Packages "hazelcast" }}
-{{- $cache_api := index .Packages "cache_api" }}
-{{- $jmx_prometheus_agent := index .Packages "jmx_prometheus_agent" }}
-{{- $log4j2 := index .Packages "log4j2" }}
+FROM marketplace.gcr.io/google/c2d-debian11
 
 ENV DEBUG_DOCKER_ENTRYPOINT false
 
-ENV HAZELCAST_VERSION {{ $hazelcast.Version }}
-ENV C2D_RELEASE {{ $hazelcast.Version }}
+ENV HAZELCAST_VERSION 5.0.4
+ENV C2D_RELEASE 5.0.4
 
 # Versions of Hazelcast and Hazelcast plugins
-ARG HZ_VERSION={{ $hazelcast.Version }}
-ARG HZ_VERSION_SHA={{ $hazelcast.Sha256 }}
+ARG HZ_VERSION=5.0.4
+ARG HZ_VERSION_SHA=
 
 # Build constants
 ARG HZ_HOME="/opt/hazelcast"
