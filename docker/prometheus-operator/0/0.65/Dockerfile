@@ -1,7 +1,7 @@
 # Clone git repo
 FROM alpine/git:1.0.7 as git
 
-ENV PROMETHEUS_OPERATOR_VERSION=v0.63.0
+ENV PROMETHEUS_OPERATOR_VERSION=v0.65.2
 
 RUN git clone https://github.com/coreos/prometheus-operator.git /src/prometheus-operator/ \
     && cd /src/prometheus-operator/ \
@@ -22,13 +22,13 @@ RUN git config --global http.sslverify false \
     && go get -u github.com/kardianos/govendor \
     && govendor license +vendor > NOTICES \
     && GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -a -installsuffix cgo -ldflags="-s \
-    -X github.com/coreos/prometheus-operator/pkg/version.Version=0.63.0" \
+    -X github.com/coreos/prometheus-operator/pkg/version.Version=0.65.2" \
     -o operator cmd/operator/main.go
 
 # Result Image
 FROM marketplace.gcr.io/google/c2d-debian11
 
-ENV C2D_RELEASE=0.63.0
+ENV C2D_RELEASE=0.65.2
 
 # Binaries
 COPY --from=builder /go/src/github.com/coreos/prometheus-operator/operator /bin
