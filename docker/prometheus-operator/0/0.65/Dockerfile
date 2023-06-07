@@ -7,7 +7,7 @@ RUN git clone https://github.com/coreos/prometheus-operator.git /src/prometheus-
     && cd /src/prometheus-operator/ \
     && git checkout $PROMETHEUS_OPERATOR_VERSION
 
-FROM golang:1.18 as builder
+FROM golang:1.20 as builder
 
 COPY --from=git /src/prometheus-operator /go/src/github.com/coreos/prometheus-operator
 
