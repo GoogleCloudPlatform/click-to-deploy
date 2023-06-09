@@ -16,6 +16,20 @@
 cloudbuild:
   enable_parallel: false
 versions:
+- dir: 2/debian11/2.1
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    superset:
+      version: 2.1.0
+  repo: superset2
+  tags:
+  - 2.1.0-debian11
+  - 2.1-debian11
+  - 2-debian11
+  - 2.1.0
+  - '2.1'
+  - '2'
+  - latest
 - dir: 2/debian11/2.0
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
@@ -25,49 +39,5 @@ versions:
   tags:
   - 2.0.1-debian11
   - 2.0-debian11
-  - 2-debian11
   - 2.0.1
   - '2.0'
-  - '2'
-  - latest
-- dir: 1/debian11/1.5
-  from: marketplace.gcr.io/google/c2d-debian11
-  packages:
-    superset:
-      version: 1.5.3
-  repo: superset1
-  tags:
-  - 1.5.3-debian11
-  - 1.5-debian11
-  - 1-debian11
-  - 1.5.3
-  - '1.5'
-  - '1'
-  - latest
-- dir: exporter
-  from: marketplace.gcr.io/google/c2d-debian11
-  packages:
-    statsd-exporter:
-      sha256: b04a25fe937a2e74dab097d589bd1f4da9e874d62b166c4e74d5d55b0f58eab6
-      version: 0.22.5
-  repo: statsd-exporter0
-  tags:
-  - 0.22.5
-  - '0.22'
-  - '0'
-  - latest
-  templateSubDir: exporter
-- dir: exporter
-  from: marketplace.gcr.io/google/c2d-debian11
-  packages:
-    statsd-exporter:
-      sha256: b04a25fe937a2e74dab097d589bd1f4da9e874d62b166c4e74d5d55b0f58eab6
-      version: 0.22.5
-  repo: statsd-exporter0
-  tags:
-  - 0.22.5
-  - '0.22'
-  - '0'
-  - latest
-  templateSubDir: exporter
-
