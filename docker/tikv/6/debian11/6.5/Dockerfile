@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/c2d-debian11 as builder
+FROM marketplace.gcr.io/google/c2d-debian11:latest as builder
 
 RUN apt-get update \
     && apt-get install curl perl build-essential cmake git unzip -y --no-install-recommends
@@ -60,7 +60,7 @@ RUN make build_dist_release
 #copy inferno license to /usr/src
 RUN cp -r $(find /root/.cargo/registry -name "inferno-*" -type d) /usr/src/
 
-FROM marketplace.gcr.io/google/c2d-debian11
+FROM marketplace.gcr.io/google/c2d-debian11:latest
 
 ENV PD_ENDPOINT 127.0.0.1:2379
 
