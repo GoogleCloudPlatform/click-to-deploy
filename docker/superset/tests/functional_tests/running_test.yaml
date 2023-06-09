@@ -51,7 +51,7 @@ setup:
   - 'DATABASE_PASSWORD=superset'
   - '-d'
   - '$IMAGE'
-- command: [sleep, '70s']
+- command: [sleep, '140s']
 
 teardown:
 - command: [docker, stop, some-superset-$UNIQUE-id, some-postgres-$UNIQUE-id]
@@ -65,4 +65,3 @@ tests:
   expect:
     stdout:
       matches: '200 OK'
-
