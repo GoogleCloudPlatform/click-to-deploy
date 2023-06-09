@@ -1,5 +1,0 @@
-server.host: "0.0.0.0"
-status.allowAnonymous: true
-elasticsearch.hosts: ["${es_protocol}://${es_host}:${es_port}"]
-elasticsearch.username: "${kibana_username}"
-elasticsearch.password: "${kibana_password}"

@@ -18,7 +18,7 @@ include_recipe 'openjdk11'
 include_recipe 'apache2'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
-include_recipe 'postgresql::standalone_buster'
+include_recipe 'postgresql::standalone_bullseye'
 
 # Notes:
 # 1) This recipe adds two new entries to /etc/hosts - pointing hostname to
