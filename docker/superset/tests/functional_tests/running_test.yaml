@@ -42,6 +42,8 @@ setup:
   - '-e'
   - 'SUPERSET__SQLALCHEMY_DATABASE_URI=postgresql+psycopg2://superset:superset@some-postgres-$UNIQUE-id/superset'
   - '-e'
+  - 'SUPERSET_SECRET_KEY=Lb3qA1jr7AZ945ccVUptd+ja8ZEJdmKahFJA240obgu4NzIuy4CJPOYP'
+  - '-e'
   - 'DATABASE_HOST=db'
   - '-e'
   - 'DATABASE_DB=superset'
@@ -51,7 +53,7 @@ setup:
   - 'DATABASE_PASSWORD=superset'
   - '-d'
   - '$IMAGE'
-- command: [sleep, '140s']
+- command: [sleep, '90s']
 
 teardown:
 - command: [docker, stop, some-superset-$UNIQUE-id, some-postgres-$UNIQUE-id]

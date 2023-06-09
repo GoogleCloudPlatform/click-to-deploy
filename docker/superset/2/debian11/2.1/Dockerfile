@@ -34,7 +34,9 @@ RUN groupadd supergroup && \
         libsasl2-modules-gssapi-mit && \
     pip install --disable-pip-version-check --upgrade "pip==22.0.4" && \
     pip install -r requirements.txt && \
-    pip install apache-superset==$SUPERSET_VERSION
+    pip install apache-superset==$SUPERSET_VERSION && \
+    pip install sqlparse=='0.4.3'
+# https://github.com/apache/superset/issues/23742
 
 # Configure Filesystem
 VOLUME /etc/superset
@@ -46,3 +48,4 @@ EXPOSE 8088
 COPY ./docker-entrypoint.sh /
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
+# ENTRYPOINT ["tail", "-f", "/dev/null"]
