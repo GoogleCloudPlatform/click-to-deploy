@@ -11,23 +11,20 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-FROM {{ .From }}
-{{- $neo4j := index .Packages "neo4j" }}
-{{- $tini := index .Packages "tini" }}
-{{- $dockerneo4j := index .Packages "dockerneo4j" }}
+FROM marketplace.gcr.io/google/c2d-debian11
 
-ENV NEO4J_VERSION {{ $neo4j.Version }}
+ENV NEO4J_VERSION 5.8.0
 ENV NEO4J_HOME  /var/lib/neo4j
 ENV NEO4J_EDITION community
 ENV NEO4J_TARBALL neo4j.tar.gz
 
-ENV TINI_VERSION v{{ $tini.Version }}
+ENV TINI_VERSION v0.19.0
 
 # Required for neo4jlabs-plugins.json
-ENV DOCKER_NEO4J_VERSION {{ $dockerneo4j.Version }}
+ENV DOCKER_NEO4J_VERSION 5.8.0
 ENV DOCKER_NEO4J_TARBALL docker-neo4j.tar.gz
 
-ENV C2D_RELEASE {{ $neo4j.Version }}
+ENV C2D_RELEASE 5.8.0
 
 # Workaround for CVE-2021-44228
 # https://www.docker.com/blog/apache-log4j-2-cve-2021-44228/
