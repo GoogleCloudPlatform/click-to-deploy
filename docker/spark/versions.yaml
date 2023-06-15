@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,24 +12,38 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 3/debian11/3.3
-  from: marketplace.gcr.io/google/debian11
+- dir: 3/debian11/3.4
+  from: marketplace.gcr.io/google/c2d-debian11
   packages:
     scala:
-      minor: 2.13
+      minor: '2.13'
     spark:
-      version: 3.3.0
-      sha256: 7fbfb59b46fcbf0f7b3584c923d43fe6d0b405ab050d5ad43f659ead8521b4e4
+      version: 3.4.0
   repo: spark3
   tags:
-  - 3.3.0-debian11
-  - 3.3-debian11
+  - 3.4.0-debian11
+  - 3.4-debian11
   - 3-debian11
-  - 3.3.0
-  - '3.3'
+  - 3.4.0
+  - '3.4'
   - '3'
   - latest
-  templateSubDir: 3
+  templateSubDir: '3'
+- dir: 3/debian11/3.3
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    scala:
+      minor: '2.13'
+    spark:
+      version: 3.3.2
+  repo: spark3
+  tags:
+  - 3.3.2-debian11
+  - 3.3-debian11
+  - 3.3.2
+  - '3.3'
+  templateSubDir: '3'

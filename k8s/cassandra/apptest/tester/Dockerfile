@@ -1,4 +1,4 @@
-FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.4
+FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.5
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
@@ -6,16 +6,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     jq \
     uuid-runtime \
     wget \
-    python \
-    python-pip \
-    python-setuptools \
+    python3 \
+    python3-pip \
+    python3-setuptools \
     && pip install --upgrade pip \
-    && python -m pip install --upgrade wheel \
-    && python -m pip install cqlsh \
+    && pip install --upgrade wheel \
+    && pip install cqlsh futures \
     && rm -rf /var/lib/apt/lists/*
 
 RUN wget -q -O /bin/kubectl \
-    https://storage.googleapis.com/kubernetes-release/release/v1.12.0/bin/linux/amd64/kubectl \
+    https://storage.googleapis.com/kubernetes-release/release/v1.24.10/bin/linux/amd64/kubectl \
       && chmod 755 /bin/kubectl
 
 COPY tests/basic-suite.yaml /tests/basic-suite.yaml

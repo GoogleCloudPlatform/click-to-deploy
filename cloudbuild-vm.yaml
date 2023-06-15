@@ -14,8 +14,6 @@
 #
 # The following variables are required to be provided:
 #
-# PROJECT_ID - <YOUR PROJECT ID>
-# _SERVICE_ACCOUNT_JSON_GCS - gs://<GCS URL TO SERVICE ACCOUNT JSON KEY>
 # _LOGS_BUCKET - <GCS BUCKET TO EXPORT PACKER LOGS>
 # _SOLUTION_NAME - <VM IMAGE TO BE BUILT>
 
@@ -23,13 +21,6 @@ timeout: 1800s # 30m
 options:
   workerPool: projects/${PROJECT_ID}/locations/us-central1/workerPools/gcb-workers-pool-e2
 steps:
-
-- id: Download Service Account Key
-  name: gcr.io/cloud-builders/gsutil
-  args:
-  - cp
-  - ${_SERVICE_ACCOUNT_JSON_GCS}
-  - service-account.json
 
 - id: Pull Imagebuilder Image
   name: gcr.io/cloud-builders/docker
@@ -45,13 +36,12 @@ steps:
 - id: Build VM-based Solution
   name: gcr.io/cloud-builders/docker
   waitFor:
-  - Download Service Account Key
   - Pull Imagebuilder Image
   args:
   - run
   - --env=PROJECT=${PROJECT_ID}
   - --env=BUCKET=${_LOGS_BUCKET}
-  - --env=KEY_FILE_PATH=/service-account.json
+  - --env=SERVICE_ACCOUNT_EMAIL=cloud-marketplace-ops-test-rel@cloud-marketplace-ops-test.iam.gserviceaccount.com
   - --env=CHEF_DIR=/chef
   - --env=PACKER_DIR=/packer/templates
   - --env=TESTS_DIR=/tests
@@ -64,5 +54,5 @@ steps:
   - --volume=/workspace/vm/chef:/chef:ro
   - --volume=/workspace/vm/packer:/packer:ro
   - --volume=/workspace/vm/tests:/tests:ro
-  - --volume=/workspace/service-account.json:/service-account.json:ro
+  - --network=cloudbuild
   - gcr.io/cloud-marketplace-tools/vm/imagebuilder:local

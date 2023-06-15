@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,19 +17,19 @@
 include_recipe 'apache2'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
-include_recipe 'mysql'
+include_recipe 'mysql::version-8.0-embedded'
 
-include_recipe 'php74'
-include_recipe 'php74::module_curl'
-include_recipe 'php74::module_dev'
-include_recipe 'php74::module_gd'
-include_recipe 'php74::module_intl'
-include_recipe 'php74::module_ldap'
-include_recipe 'php74::module_libapache2'
-include_recipe 'php74::module_mbstring'
-include_recipe 'php74::module_mysql'
-include_recipe 'php74::module_xml'
-include_recipe 'php74::module_zip'
+include_recipe 'php81'
+include_recipe 'php81::module_curl'
+include_recipe 'php81::module_dev'
+include_recipe 'php81::module_gd'
+include_recipe 'php81::module_intl'
+include_recipe 'php81::module_ldap'
+include_recipe 'php81::module_libapache2'
+include_recipe 'php81::module_mbstring'
+include_recipe 'php81::module_mysql'
+include_recipe 'php81::module_xml'
+include_recipe 'php81::module_zip'
 include_recipe 'git'
 
 apt_update do

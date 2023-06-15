@@ -1,4 +1,5 @@
-# Copyright 2022 Google LLC
+---
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: autoscaling/v2beta2
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: webhook
@@ -20,8 +21,7 @@ metadata:
   labels:
     app.kubernetes.io/component: webhook
     app.kubernetes.io/name: knative-serving
-    app.kubernetes.io/version: "1.2.0"
-    serving.knative.dev/release: "v1.2.0"
+    app.kubernetes.io/version: "1.9.0"
 spec:
   minReplicas: 1
   maxReplicas: 5
@@ -47,16 +47,14 @@ metadata:
   labels:
     app.kubernetes.io/component: webhook
     app.kubernetes.io/name: knative-serving
-    app.kubernetes.io/version: "1.2.0"
-    serving.knative.dev/release: "v1.2.0"
+    app.kubernetes.io/version: "1.9.0"
 spec:
   minAvailable: 80%
   selector:
     matchLabels:
       app: webhook
-
 ---
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -76,13 +74,12 @@ metadata:
   name: webhook
   namespace: "{{ .Release.Namespace }}"
   labels:
-    serving.knative.dev/release: "v1.2.0"
     app.kubernetes.io/component: webhook
-    app.kubernetes.io/version: "1.2.0"
+    app.kubernetes.io/version: "1.9.0"
     app.kubernetes.io/name: knative-serving
 spec:
   selector:
-    matchLabels: &labels
+    matchLabels:
       app: webhook
       role: webhook
   template:
@@ -90,10 +87,10 @@ spec:
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
       labels:
-        !!merge <<: *labels
-        serving.knative.dev/release: "v1.2.0"
+        app: webhook
+        role: webhook
         app.kubernetes.io/component: webhook
-        app.kubernetes.io/version: "1.2.0"
+        app.kubernetes.io/version: "1.9.0"
         app.kubernetes.io/name: knative-serving
     spec:
       # To avoid node becoming SPOF, spread our replicas to different nodes.
@@ -145,7 +142,9 @@ spec:
             runAsNonRoot: true
             capabilities:
               drop:
-                - all
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
           ports:
             - name: metrics
               containerPort: 9090
@@ -180,9 +179,8 @@ kind: Service
 metadata:
   labels:
     role: webhook
-    serving.knative.dev/release: "v1.2.0"
     app.kubernetes.io/component: webhook
-    app.kubernetes.io/version: "1.2.0"
+    app.kubernetes.io/version: "1.9.0"
     app.kubernetes.io/name: knative-serving
   name: webhook
   namespace: "{{ .Release.Namespace }}"
@@ -199,10 +197,10 @@ spec:
       port: 443
       targetPort: 8443
   selector:
+    app: webhook
     role: webhook
-
 ---
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -223,8 +221,7 @@ metadata:
   labels:
     app.kubernetes.io/component: webhook
     app.kubernetes.io/name: knative-serving
-    app.kubernetes.io/version: "1.2.0"
-    serving.knative.dev/release: "v1.2.0"
+    app.kubernetes.io/version: "1.9.0"
 webhooks:
   - admissionReviewVersions: ["v1", "v1beta1"]
     clientConfig:
@@ -234,14 +231,17 @@ webhooks:
     failurePolicy: Fail
     sideEffects: None
     name: config.webhook.serving.knative.dev
-    namespaceSelector:
+    objectSelector:
       matchExpressions:
-        - key: serving.knative.dev/release
-          operator: Exists
+        - key: app.kubernetes.io/name
+          operator: In
+          values: ["knative-serving"]
+        - key: app.kubernetes.io/component
+          operator: In
+          values: ["autoscaler", "controller", "logging", "networking", "observability", "tracing"]
     timeoutSeconds: 10
-
 ---
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -262,8 +262,7 @@ metadata:
   labels:
     app.kubernetes.io/component: webhook
     app.kubernetes.io/name: knative-serving
-    app.kubernetes.io/version: "1.2.0"
-    serving.knative.dev/release: "v1.2.0"
+    app.kubernetes.io/version: "1.9.0"
 webhooks:
   - admissionReviewVersions: ["v1", "v1beta1"]
     clientConfig:
@@ -295,9 +294,8 @@ webhooks:
           - revisions
           - routes
           - services
-
 ---
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -318,8 +316,7 @@ metadata:
   labels:
     app.kubernetes.io/component: domain-mapping
     app.kubernetes.io/name: knative-serving
-    app.kubernetes.io/version: "1.2.0"
-    serving.knative.dev/release: "v1.2.0"
+    app.kubernetes.io/version: "1.9.0"
 webhooks:
   - admissionReviewVersions: ["v1", "v1beta1"]
     clientConfig:
@@ -334,17 +331,17 @@ webhooks:
       - apiGroups:
           - serving.knative.dev
         apiVersions:
-          - v1alpha1
-          - v1beta1
+          - "*"
         operations:
           - CREATE
           - UPDATE
         scope: "*"
         resources:
           - domainmappings
+          - domainmappings/status
 
 ---
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -366,12 +363,10 @@ metadata:
   labels:
     app.kubernetes.io/component: domain-mapping
     app.kubernetes.io/name: knative-serving
-    app.kubernetes.io/version: "1.2.0"
-    serving.knative.dev/release: "v1.2.0"
+    app.kubernetes.io/version: "1.9.0"
 # The data is populated at install time.
-
 ---
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -392,8 +387,7 @@ metadata:
   labels:
     app.kubernetes.io/component: domain-mapping
     app.kubernetes.io/name: knative-serving
-    app.kubernetes.io/version: "1.2.0"
-    serving.knative.dev/release: "v1.2.0"
+    app.kubernetes.io/version: "1.9.0"
 webhooks:
   - admissionReviewVersions: ["v1", "v1beta1"]
     clientConfig:
@@ -408,8 +402,7 @@ webhooks:
       - apiGroups:
           - serving.knative.dev
         apiVersions:
-          - v1alpha1
-          - v1beta1
+          - "*"
         operations:
           - CREATE
           - UPDATE
@@ -417,9 +410,9 @@ webhooks:
         scope: "*"
         resources:
           - domainmappings
-
+          - domainmappings/status
 ---
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -440,8 +433,7 @@ metadata:
   labels:
     app.kubernetes.io/component: webhook
     app.kubernetes.io/name: knative-serving
-    app.kubernetes.io/version: "1.2.0"
-    serving.knative.dev/release: "v1.2.0"
+    app.kubernetes.io/version: "1.9.0"
 webhooks:
   - admissionReviewVersions: ["v1", "v1beta1"]
     clientConfig:
@@ -474,9 +466,8 @@ webhooks:
           - revisions
           - routes
           - services
-
 ---
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -498,6 +489,42 @@ metadata:
   labels:
     app.kubernetes.io/component: webhook
     app.kubernetes.io/name: knative-serving
-    app.kubernetes.io/version: "1.2.0"
-    serving.knative.dev/release: "v1.2.0"
+    app.kubernetes.io/version: "1.9.0"
 # The data is populated at install time.
+---
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: v1
+kind: Secret
+metadata:
+  # Do not drop -ctrl-ca suffix as control-protocol requires it.
+  # https://github.com/knative-sandbox/control-protocol/blob/main/pkg/certificates/reconciler/controller.go
+  name: serving-certs-ctrl-ca
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    serving-certs-ctrl: "data-plane"
+    networking.internal.knative.dev/certificate-uid: "serving-certs"
+
+# The data is populated when internal-encryption is enabled.
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: knative-serving-certs
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    serving-certs-ctrl: "data-plane"
+    networking.internal.knative.dev/certificate-uid: "serving-certs"
+# The data is populated when internal-encryption is enabled.

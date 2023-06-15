@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+include_recipe 'openjdk11'
+
 apt_repository 'cassandra_repository' do
   uri node['cassandra']['repo']['uri']
   components node['cassandra']['repo']['components']
@@ -70,6 +72,17 @@ bash 'prepare_env_config_script' do
     echo "JVM_OPTS=\\"\\$JVM_OPTS -XX:TargetSurvivorRatio=50\\"" >> "${env_template_file}"
     echo "JVM_OPTS=\\"\\$JVM_OPTS -XX:MaxDirectMemorySize=5g\\"" >> "${env_template_file}"
     echo "JVM_OPTS=\\"\\$JVM_OPTS -XX:+UseLargePages\\"" >> "${env_template_file}"
+EOH
+end
+
+# Set Java 11
+package 'java-common' do
+  :install
+end
+
+bash 'Set Java 11' do
+  code <<-EOH
+  update-java-alternatives -s java-1.11.0-openjdk-amd64
 EOH
 end
 

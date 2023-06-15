@@ -82,13 +82,13 @@ teardown:
 target: some-hydra-$UNIQUE-id
 tests:
   - name: Hydra Liveness Check
-    command: ['curl', '-k', 'https://localhost:4445/health/alive']
+    command: ['curl', '-k', 'http://localhost:4445/health/alive']
     expect:
       stdout:
         matches: '{"status":"ok"}'
 
   - name: Hydra Readiness Check
-    command: ['curl', '-k', 'https://localhost:4445/health/ready']
+    command: ['curl', '-k', 'http://localhost:4445/health/ready']
     expect:
       stdout:
         matches: '{"status":"ok"}'

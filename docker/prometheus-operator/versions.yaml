@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,19 +13,19 @@
 # limitations under the License.
 
 versions:
-  - dir: '0/0.58'
+  - dir: '0/0.65'
     repo: prometheus-operator0
     tags:
-      - '0.58.0-debian11'
-      - '0.58.0'
-      - '0.58-debian11'
-      - '0.58'
+      - '0.65.2-debian11'
+      - '0.65.2'
+      - '0.65-debian11'
+      - '0.65'
       - '0-debian11'
       - '0'
       - 'latest'
-    from: marketplace.gcr.io/google/debian11
+    from: marketplace.gcr.io/google/c2d-debian11
     packages:
       prometheus-operator:
-        version: '0.58.0'
+        version: '0.65.2'
 cloudbuild:
   enable_parallel: false

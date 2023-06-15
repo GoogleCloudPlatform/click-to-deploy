@@ -47,6 +47,14 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
+  postgresql.persistence.storageClass:
+    type: string
+    title: PostgreSQL StorageClass
+    description: You can choose an existing StorageClass or create a new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
   postgresql.persistence.size:
     type: string
     title: PostgreSQL storage size

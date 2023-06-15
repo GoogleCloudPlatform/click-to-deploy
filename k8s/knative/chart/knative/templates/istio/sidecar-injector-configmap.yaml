@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -12,6 +13,7 @@ data:
   values: |-
     {
       "global": {
+        "autoscalingv2API": true,
         "caAddress": "",
         "caName": "",
         "configCluster": false,
@@ -106,7 +108,7 @@ data:
         "sts": {
           "servicePort": 0
         },
-        "tag": "1.13.0",
+        "tag": "1.16.0",
         "tracer": {
           "datadog": {
             "address": "$(HOST_IP):8126"
@@ -125,7 +127,8 @@ data:
             "address": ""
           }
         },
-        "useMCP": false
+        "useMCP": false,
+        "variant": ""
       },
       "istio_cni": {
         "enabled": false
@@ -137,10 +140,6 @@ data:
         "enableNamespacesByDefault": false,
         "injectedAnnotations": {},
         "neverInjectSelector": [],
-        "objectSelector": {
-          "autoInject": true,
-          "enabled": true
-        },
         "rewriteAppHTTPProbe": true,
         "templates": {}
       }

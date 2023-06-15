@@ -29,6 +29,7 @@ if [[ ! -d "solutions/spec/${SOLUTION_NAME}" ]]; then
 fi
 
 apt-get -y install ruby
+gem install net-ssh -v 6.1.0
 gem install serverspec rake
 
 cd solutions/

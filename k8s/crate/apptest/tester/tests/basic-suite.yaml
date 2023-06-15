@@ -1,0 +1,37 @@
+actions:
+- name: kubectl smoke test
+  bashTest:
+    script: kubectl version
+    expect:
+      exitCode:
+        equals: 0
+- name: Wait for the Crate get ready
+  bashTest:
+    script: |
+      kubectl wait --for=condition=ready --timeout=120s --namespace $NAMESPACE pod "${APP_INSTANCE_NAME}-crate-0"
+      kubectl wait --for=condition=ready --timeout=120s --namespace $NAMESPACE pod "${APP_INSTANCE_NAME}-crate-1"
+      kubectl wait --for=condition=ready --timeout=120s --namespace $NAMESPACE pod "${APP_INSTANCE_NAME}-crate-2"
+    expect:
+      exitCode:
+        equals: 0
+- name: Create empty table
+  bashTest:
+    script: |
+      kubectl exec "${APP_INSTANCE_NAME}-crate-0" -c crate --namespace $NAMESPACE -- \
+      /bin/bash -c '2>&1 crash -c "CREATE TABLE test (id integer);"'                                              
+    expect:
+      stdout:
+        matches: 'CONNECT OK'
+      stdout:
+        matches: 'CREATE OK, 1 row affected'
+- name: Show tables
+  bashTest:
+    script: |
+      kubectl exec "${APP_INSTANCE_NAME}-crate-0" -c crate --namespace $NAMESPACE -- \
+      /bin/bash -c '2>&1 crash -c "SHOW TABLES;"'                                              
+    expect:
+      stdout:
+        matches: 'CONNECT OK'
+      stdout:
+        matches: 'SHOW 1 row in set'
+

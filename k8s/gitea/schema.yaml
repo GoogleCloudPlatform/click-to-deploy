@@ -1,0 +1,119 @@
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      A regular update.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  images:
+    '':
+      properties:
+        gitea.image.repo:
+          type: REPO_WITH_REGISTRY
+        gitea.image.tag:
+          type: TAG
+    postgresql:
+      properties:
+        postgresql.image:
+          type: FULL
+    postgresql-exporter:
+      properties:
+        postgresql.exporter.image:
+          type: FULL
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
+
+
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+
+  # Common storageClass for gitea, and postgresql PVCs
+  persistence.storageClass:
+    type: string
+    title: StorageClass
+    description: You can choose an existing StorageClass or create a new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  # gitea related settings
+  gitea.persistence.size:
+    type: string
+    title: Storage size for gitea persistent volumes
+    default: "6Gi"
+    description: gitea storage size per instance
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+
+  # gitea.admin.password is the password the user will login in the admin panel
+  gitea.admin.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 10
+        includeSymbols: False
+        base64: False
+
+  # postgresql related settings
+  # postgresql.password is the database user's password for the user gitea.
+  postgresql.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 10
+        includeSymbols: False
+        base64: False
+  
+  enablePublicServiceAndIngress:
+    type: boolean
+    title: Enable public IP access
+    description: Set the Gitea Service type to NodePort and enable Ingress
+    default: false
+
+  gitea.domainName:
+    type: string
+    title: Gitea instance domain name
+    description: If no domain name is set, the Gitea instance will be configured with an automatically-provided ClusterIP Service address.
+    pattern: '^(([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$'
+
+  metrics.exporter.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project must have Stackdriver enabled. For non-GCP clusters,
+      the export of metrics to Stackdriver is not yet supported.
+    default: false
+    
+  certificate:
+    type: string
+    x-google-marketplace:
+      type: TLS_CERTIFICATE
+      tlsCertificate:
+        generatedProperties:
+          base64EncodedPrivateKey: tls.base64EncodedPrivateKey
+          base64EncodedCertificate: tls.base64EncodedCertificate
+
+required:
+- name
+- namespace
+- gitea.persistence.size
+- gitea.admin.password
+- postgresql.password
+- enablePublicServiceAndIngress
+- metrics.exporter.enabled
+- certificate

@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['resourcespace']['version'] = '9.8'
+default['resourcespace']['version'] = '10.1'
+
 default['resourcespace']['db']['name'] = 'resourcespace'
 
 default['resourcespace']['packages'] = ['antiword',
@@ -24,4 +25,6 @@ default['resourcespace']['packages'] = ['antiword',
                                         'ghostscript',
                                         'subversion',
                                         'xpdf',
-                                       ]
+                                        ]
+
+default['php81']['distribution'] = 'bullseye'

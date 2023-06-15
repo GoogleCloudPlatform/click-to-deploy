@@ -39,10 +39,10 @@ default['odoo']['packages'] = [
 
 default['odoo']['pip-packages'] = 'vobject qrcode pyldap num2words xlwt pyopenssl sslcrypto'
 
-default['odoo']['version'] = '15.0'
-default['odoo']['release'] = '20211201'
-default['odoo']['sha256'] = 'a5c974da075e91f59a4331557b70a36865a2271148349db58e0064b20c972538'
-default['odoo']['src']['sha256'] = '2a14b4c4d84e0380a354ae542af04e3b46c38ab3184406187be27c4d2972e623'
+default['odoo']['version'] = '16.0'
+default['odoo']['release'] = '20230315'
+default['odoo']['sha256'] = '941bebc8939aa6516b0ab596d9fcbc80ee50e26376f8b2908c0913ede598ff57'
+default['odoo']['src']['sha256'] = '1058232165db2ab5fb088f7735567587ed12f2b80cdea832321db03246b1b322'
 
 default['odoo']['wkhtmltopdf']['version'] = '0.12.6'
 default['odoo']['wkhtmltopdf']['release'] = '0.12.6-1'

@@ -1,8 +1,8 @@
 # Overview
 
-Apache Solr is an open-source enterprise-search platform, written in Java, from the Apache Lucene project.
+Apache Solr is an open-source enterprise-search platform, written in Java.
 
-For more information on Apache Solr, see the Apache Solr [official website](https://lucene.apache.org/solr/).
+For more information on Apache Solr, see the Apache Solr [official website](https://solr.apache.org/).
 
 ## About Google Click to Deploy
 
@@ -14,9 +14,9 @@ Popular open stacks on Kubernetes, packaged by Google.
 
 This solution is focused on SolrCloud mode which uses ZooKeeper as a external repository. By default 3 replicas of SolrCloud nodes and 3 replicas of ZooKeeper nodes are deployed. For more information about SolrCloud visit [official documentation](https://lucene.apache.org/solr/guide/8_6/solrcloud.html).
 
-[Basic authentication plugin](https://lucene.apache.org/solr/guide/8_6/basic-authentication-plugin.html) is enabled for SolrCloud by Job resource during post deployment.
+[Basic authentication plugin](https://solr.apache.org/guide/solr/latest/deployment-guide/basic-authentication-plugin.html) is enabled for SolrCloud by Job resource during post deployment.
 
-[ZooKeeper Access Control](https://lucene.apache.org/solr/guide/8_6/zookeeper-access-control.html) also applied to protect SolrCloud contents in ZooKeeper.
+[ZooKeeper Access Control](https://solr.apache.org/guide/solr/latest/deployment-guide/zookeeper-access-control.html) also applied to protect SolrCloud contents in ZooKeeper.
 
 # Installation
 
@@ -131,13 +131,13 @@ export METRICS_EXPORTER_ENABLED=false
 Configure the image tag:
 
 ```shell
-export TAG=8.9
+export TAG=9.1
 export ZK_TAG=3.6
 ```
 Configure the container images:
 
 ```shell
-export IMAGE_SOLR="marketplace.gcr.io/google/solr"
+export IMAGE_SOLR="marketplace.gcr.io/google/solr9"
 export IMAGE_ZOOKEEPER="marketplace.gcr.io/google/solr/zookeeper:${TAG}"
 export IMAGE_DEPLOYER="marketplace.gcr.io/google/solr/deployer:${TAG}"
 ```
@@ -252,7 +252,7 @@ curl --user ${SOLR_USER}:${SOLR_PASSWORD} "http://localhost:8983/solr/admin/coll
 ### Interacting with SolrCloud via `solr` control script
 
 For example if you have collection created you can check healtcheck by help of Solr control script.
-> Visit [Solr Control Script Reference](https://lucene.apache.org/solr/guide/8_6/solr-control-script-reference.html) for more command options
+> Visit [Solr Control Script Reference](https://solr.apache.org/guide/solr/latest/deployment-guide/solr-control-script-reference.html) for more command options
 
 ```shell
 # Use your collection name instead of "my_collection"
@@ -278,7 +278,7 @@ kubectl -n ${NAMESPACE} exec -it ${APP_INSTANCE_NAME}-solr-0 -- bash -c "echo SO
 # Monitoring
 Solr image includes a Prometheus exporter to collect metrics and other data. In this solution seperate deployment and service used to access metrics. Exporter Deployment uses same Solr image, connects to main SolrCloud and ZooKeeper service, authenticates and exports metrics at 9983 port for `/metrics` endpoint.
 
-> Visit [Monitoring Solr with Prometheus and Grafana documentation](https://lucene.apache.org/solr/guide/8_6/monitoring-solr-with-prometheus-and-grafana.html) for more information.
+> Visit [Monitoring Solr with Prometheus and Grafana documentation](https://solr.apache.org/guide/solr/latest/deployment-guide/monitoring-with-prometheus-and-grafana.html) for more information.
 
 To check metrics from Solr exporter service forward exporter service port to local machine
 ```shell
@@ -306,13 +306,11 @@ When this option is used to scale down a cluster, it reduces the number of
 replicas without disconnecting nodes from the cluster. Scaling down also does
 not affect the `persistentvolumeclaims` of your StatefulSet.
 
-> Visit SolrCloud [Autoscaling documentation](https://lucene.apache.org/solr/guide/8_6/solrcloud-autoscaling-auto-add-replicas.html) to enable autoscaling for collections to replication collections automatically to new replicas.
-
 # Upgrading the app
 
 Before you upgrade the app, we recommend that you back up all of your
 SolrCloud collections.
-> Visit [Solr Upgrade Notes](https://lucene.apache.org/solr/guide/8_6/solr-upgrade-notes.html) to check limitations for upgrading between versions
+> Visit [Solr Upgrade Notes](https://solr.apache.org/guide/solr/latest/upgrade-notes/solr-upgrade-notes.html) to check limitations for upgrading between versions
 
 The Solr StatefulSet is configured to roll out updates automatically. To
 start the update, patch the StatefulSet with a new image reference, where
@@ -344,8 +342,8 @@ To deploy Solr as a standalone mode, run following commands:
 APP_INSTANCE_NAME=solr-standalone
 NAMESPACE=default
 STANDALONE_MODE_ENABLED=true
-TAG="8.9"
-IMAGE_SOLR="marketplace.gcr.io/google/solr8"
+TAG="9.1"
+IMAGE_SOLR="marketplace.gcr.io/google/solr9"
 IMAGE_DEPLOYER="marketplace.gcr.io/google/solr/deployer:${TAG}"
 STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
 PERSISTENT_SOLR_SIZE="2Gi"

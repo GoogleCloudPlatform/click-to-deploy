@@ -1,0 +1,16 @@
+{{- if .Values.enablePublicServiceAndIngress }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Release.Name }}-web-tls
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: keycloak
+data:
+  tls.key: |
+    {{- .Values.tls.base64EncodedPrivateKey | nindent 4 }}
+  tls.crt: |
+    {{- .Values.tls.base64EncodedCertificate | nindent 4 }}
+type: kubernetes.io/tls
+{{- end }}

@@ -1,0 +1,139 @@
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      Initial release.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  clusterConstraints:
+    resources:
+    - replicas: 1
+      requests:
+        cpu: 100m
+        memory: 100Mi
+
+  images:
+    '':
+      properties:
+        conjur.image.repo:
+          type: REPO_WITH_REGISTRY
+        conjur.image.tag:
+          type: TAG
+    postgresql:
+      properties:
+        postgresql.image.repo:
+          type: REPO_WITH_REGISTRY
+        postgresql.image.tag:
+          type: TAG
+
+  deployerServiceAccount:
+    description:
+      Creates app resources including persistentvolumes.
+    roles:
+      - type: ClusterRole  # For getting persistentvolumes
+        rulesType: CUSTOM
+        rules:
+          - apiGroups:
+            - 'rbac.authorization.k8s.io'
+            resources:
+            - 'clusterroles'
+            - 'clusterrolebindings'
+            verbs:
+            - '*'
+
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  conjur.replicas:
+    type: integer
+    title: Conjur replicas
+    description: Number of replicas of the Conjur webserver
+    default: 1
+    minimum: 1
+  conjur.data_key:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 32
+        includeSymbols: False
+        base64: True
+  conjur.serviceAccount:
+    type: string
+    title: Conjur Service Account
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        description: Service account used by Conjur deployment
+        roles:
+        - type: ClusterRole
+          rulesType: CUSTOM
+          rules:
+          - apiGroups: [""]
+            resources: ["pods", "serviceaccounts"]
+            verbs: ["get", "list"]
+          - apiGroups: ["extensions"]
+            resources: [ "deployments", "replicasets"]
+            verbs: ["get", "list"]
+          - apiGroups: ["apps"]
+            resources: [ "deployments", "statefulsets", "replicasets"]
+            verbs: ["get", "list"]
+          - apiGroups: [""]
+            resources: ["pods/exec"]
+            verbs: ["create", "get"]
+  enablePublicServiceAndIngress:
+    type: boolean
+    title: Enable public IP access
+    description: Set the Conjur Service type to NodePort and enable Ingress
+    default: false
+  postgresql.persistence.storageClass:
+    type: string
+    title: PostgreSQL StorageClass
+    description: You can choose an existing StorageClass or create a new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  postgresql.persistence.size:
+    type: string
+    title: Storage size for PostgreSQL persistent volume
+    default: "5Gi"
+    description: PostgreSQL storage size
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  conjur.db.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 16
+        includeSymbols: False
+        base64: False
+  certificate:
+    type: string
+    x-google-marketplace:
+      type: TLS_CERTIFICATE
+      tlsCertificate:
+        generatedProperties:
+          base64EncodedPrivateKey: tls.base64EncodedPrivateKey
+          base64EncodedCertificate: tls.base64EncodedCertificate
+
+required:
+- name
+- namespace
+- conjur.replicas
+- postgresql.persistence.size
+- enablePublicServiceAndIngress
+- certificate
+

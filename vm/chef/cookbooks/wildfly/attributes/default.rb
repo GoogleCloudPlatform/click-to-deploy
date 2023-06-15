@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['wildfly']['version'] = '26.0.1'
-default['wildfly']['sha256'] = 'bd40fcf0bc2ff1a910eb6c2e5f2cb1946053cb2d15c0323aefb40f0f3852c5e5'
+default['wildfly']['version'] = '27.0.1'
+default['wildfly']['sha256'] = 'c72892c996b05bfa78c6c632f1a5d4680523d3efb4c0321fa8485f052e15fba9'
 default['wildfly']['jboss_home'] = '/opt/jboss/wildfly'
 default['wildfly']['user'] = 'jboss'

@@ -96,10 +96,19 @@ properties:
     title: Enable Stackdriver Metrics Exporter
     description: Your GCP project must have Stackdriver enabled. Non-GCP clusters cannot export metrics to Stackdriver.
     default: false
+  certificate:
+    type: string
+    x-google-marketplace:
+      type: TLS_CERTIFICATE
+      tlsCertificate:
+        generatedProperties:
+          base64EncodedPrivateKey: tls.base64EncodedPrivateKey
+          base64EncodedCertificate: tls.base64EncodedCertificate
+
 required:
 - name
 - namespace
 - keycloak.replicas
 - postgresql.persistence.size
 - enablePublicServiceAndIngress
-
+- certificate

@@ -1,0 +1,99 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-postgresql
+  labels: &PostgreSQLLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: postgresql-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels: *PostgreSQLLabels
+  serviceName: {{ .Release.Name }}-postgresql-svc
+  template:
+    metadata:
+      labels: *PostgreSQLLabels
+    spec:
+      containers:
+      - name: postgresql
+        image: {{ .Values.db.image }}
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        ports:
+        - containerPort: 5432
+          name: postgres
+        volumeMounts:
+        - name: {{ .Release.Name }}-postgresql-pvc
+          mountPath: /var/lib/postgresql/data
+        env:
+        - name: PGDATA
+          value: "/var/lib/postgresql/data/pgdata"
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-postgresql-secret
+              key: db-user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-postgresql-secret
+              key: db-password
+        - name: POSTGRES_DB
+          value: "{{ .Values.db.database }}"
+      - name: prometheus-exporter
+        image: {{ .Values.db.exporter.image }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9187
+          name: exporter
+        env:
+        - name: "DATA_SOURCE_URI"
+          value: "localhost:5432/postgres?sslmode=disable"
+        - name: "DATA_SOURCE_USER"
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-postgresql-secret
+              key: db-user
+        - name: "DATA_SOURCE_PASS"
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-postgresql-secret
+              key: db-password
+      {{- if .Values.metrics.exporter.enabled }}
+      - name: stackdriver-exporter
+        image: {{ .Values.metrics.image }}
+        ports:
+        - name: profiler
+          containerPort: 6060
+        command:
+        - /monitor
+        - --stackdriver-prefix=custom.googleapis.com
+        - --source=postgresql:http://localhost:9187/metrics
+        - --pod-id=$(POD_NAME)
+        - --namespace-id=$(POD_NAMESPACE)
+        - --monitored-resource-types=k8s
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+      {{- end }}
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Release.Name }}-postgresql-pvc
+      labels: *PostgreSQLLabels
+    spec:
+      accessModes:
+      - {{ .Values.persistence.accessMode }}
+      storageClassName: {{ .Values.persistence.storageClass }}
+      resources:
+        requests:
+          storage: {{ .Values.db.persistence.size }}

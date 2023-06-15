@@ -1,4 +1,4 @@
-FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.4
+FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.5
 
 RUN set -eu \
     && apt-get update \
@@ -11,7 +11,7 @@ RUN set -eu \
     curl
 
 RUN set -eu \
-    && wget -q -O /bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v1.12.0/bin/linux/amd64/kubectl \
+    && wget -q -O /bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v1.23.15/bin/linux/amd64/kubectl \
     && chmod 755 /bin/kubectl
 
 COPY tests/solrCloud-test.yaml /tests/solrCloud-test.yaml

@@ -1,0 +1,35 @@
+actions:
+- name: kubectl smoke test
+  bashTest:
+    script: kubectl version
+    expect:
+      exitCode:
+        equals: 0
+- name: Wait for the webserver get ready
+  bashTest:
+    script: kubectl wait --for=condition=Available=True --timeout=120s --namespace $NAMESPACE deploy "${APP_INSTANCE_NAME}-gogs"
+    expect:
+      exitCode:
+        equals: 0
+- name: Try to run test
+  bashTest:
+    script: |
+      export GOGS_PODNAME=$(kubectl get pod --namespace $NAMESPACE -l app.kubernetes.io/component=gogs -o jsonpath={..metadata.name})
+      kubectl exec ${GOGS_PODNAME} -c gogs --namespace $NAMESPACE -- /usr/local/bin/run_test.sh 
+    expect:
+      stdout:
+        matches: 'Test user name is testuser'
+      stdout:
+        matches: 'Test repo clone url is http://localhost:3000/testuser/testrepo.git'
+      stdout:
+        matches: 'You appear to have cloned an empty repository'
+- name: Scale down gogs
+  bashTest:
+    script: |
+      kubectl scale deploy --replicas=0 $APP_INSTANCE_NAME-gogs -n $NAMESPACE
+      kubectl wait --for delete pod -l 'app.kubernetes.io/component=gogs' --timeout=180s -n $NAMESPACE
+      kubectl scale deploy --replicas=0 $APP_INSTANCE_NAME-nfs-server -n $NAMESPACE
+    expect:
+      exitCode:
+        equals: 0
+

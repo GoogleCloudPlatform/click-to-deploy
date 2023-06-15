@@ -15,7 +15,7 @@
 name 'opencart'
 depends 'apache2'
 depends 'mysql'
-depends 'php74'
+depends 'php81'
 depends 'git'
 depends 'composer'
 supports 'debian'

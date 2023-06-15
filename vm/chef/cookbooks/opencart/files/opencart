@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2021 Google Inc.
+# Copyright 2023 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,11 +18,13 @@ source /opt/c2d/opencart-utils || exit 1
 
 export COMPOSER_HOME="/root/.config/composer"
 
+readonly mysql_root_password="$(get_attribute_value "mysql-root-password")"
 readonly opencart_email="$(get_attribute_value "opencart-email")"
 readonly opencart_db_password="$(get_attribute_value "opencart-db-password")"
 readonly opencart_admin_password="$(get_attribute_value "opencart-admin-password")"
 readonly opencart_db_user="opencart"
 readonly opencart_db_name="opencart"
+
 readonly opencart_admin_user="admin"
 declare  opencart_url="http://$(get_internal_ip)/store/"
 
@@ -37,13 +39,13 @@ wait_for_port "localhost" "3306"
 # Setup MySQL user
 echo "Setting up MySQL user..."
 setup_mysql_user "${opencart_db_user}" "${opencart_db_password}" \
-  "${opencart_db_name}"
+  "${opencart_db_name}" "${mysql_root_password}"
 
 # Setup Opencart installer
 echo "Setting up OpenCart Installer..."
 setup_opencart_installer
 
-# Install Opencart
+# # Install Opencart
 echo "Setting up OpenCart DB..."
 install_opencart_db \
   "${opencart_db_user}" "${opencart_db_password}" "${opencart_db_name}" \
@@ -57,10 +59,6 @@ prepare_apache_and_php
 # Fix storage location
 echo "Fix Storage Location..."
 fix_storage_location
-
-# Fix vendor modules
-echo "Fix vendor modules..."
-fix_vendor_modules
 
 # Grants ownership to user on whole folder
 echo "Granting access to www-data..."

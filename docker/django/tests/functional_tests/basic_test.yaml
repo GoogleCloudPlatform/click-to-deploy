@@ -1,0 +1,87 @@
+# Copyright 2022 Google LLC
+#
+# Redistribution and use in source and binary forms, with or without modification,
+# are permitted provided that the following conditions are met:
+
+#     1. Redistributions of source code must retain the above copyright notice,
+#        this list of conditions and the following disclaimer.
+
+#     2. Redistributions in binary form must reproduce the above copyright
+#        notice, this list of conditions and the following disclaimer in the
+#        documentation and/or other materials provided with the distribution.
+
+#     3. Neither the name of Django nor the names of its contributors may be used
+#        to endorse or promote products derived from this software without
+#        specific prior written permission.
+
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+# ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+# ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+setup:
+- command: [docker, network, create, -d, bridge, testbridge-$UNIQUE-id]
+- command:
+  - 'docker'
+  - 'run'
+  - '--net'
+  - 'testbridge-$UNIQUE-id'
+  - '--name'
+  - 'some-postgres-$UNIQUE-id'
+  - '-e'
+  - 'POSTGRES_USER=django'
+  - '-e'
+  - 'POSTGRES_PASSWORD=django'
+  - '-e'
+  - 'POSTGRES_DB=django'
+  - '-d'
+  - 'marketplace.gcr.io/google/postgresql13'
+- command:
+  - 'docker'
+  - 'run'
+  - '--net'
+  - 'testbridge-$UNIQUE-id'
+  - '--name'
+  - 'some-django-$UNIQUE-id'
+  - '-e'
+  - 'C2D_DJANGO_SITENAME=mysite'
+  - '-e'
+  - "C2D_DJANGO_ALLOWED_HOSTS='.localhost', '127.0.0.1', '[::1]'"
+  - '-e'
+  - 'C2D_DJANGO_PORT=8080'
+  - '-e'
+  - 'C2D_DJANGO_DB_TYPE=postgresql'
+  - '-e'
+  - 'C2D_DJANGO_DB_NAME=django'
+  - '-e'
+  - 'C2D_DJANGO_DB_USER=django'
+  - '-e'
+  - 'C2D_DJANGO_DB_PASSWORD=django'
+  - '-e'
+  - 'C2D_DJANGO_DB_HOST=some-postgres-$UNIQUE-id'
+  - '-e'
+  - 'C2D_DJANGO_DB_PORT=5432'
+  - '-e'
+  - 'C2D_DJANGO_MODE=http'
+  - '-d'
+  - '$IMAGE'
+- command: [sleep, "30s"]
+
+teardown:
+- command: [docker, stop, some-django-$UNIQUE-id, some-postgres-$UNIQUE-id]
+- command: [docker, rm, some-django-$UNIQUE-id, some-postgres-$UNIQUE-id]
+- command: [docker, network, rm, testbridge-$UNIQUE-id]
+
+target: some-django-$UNIQUE-id
+tests:
+- name: Check Django Homepage
+  command: [curl, -L, "http://localhost:8080/"]
+  expect:
+    stdout:
+      matches: '<title>The install worked successfully! Congratulations!</title>'

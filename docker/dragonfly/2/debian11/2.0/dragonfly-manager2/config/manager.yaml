@@ -1,0 +1,150 @@
+# current server info used for server
+server:
+  # GRPC server configure.
+  grpc:
+    # # Advertise ip.
+    # advertiseIP: ${DRAGONFLY_MANAGER_ADDR}
+    # # Listen ip.
+    # listenIP: 0.0.0.0
+    # Listen port.
+    # when this port is not available, manager will try next port.
+    port:
+      start: 65003
+      end: 65003
+  # REST server configure
+  rest:
+    # REST server address
+    addr: :8080
+
+# Auth configuration.
+auth:
+  # JWT configuration used for sigining.
+  jwt:
+    # Realm name to display to the user, default value is Dragonfly.
+    realm: 'Dragonfly'
+    # Key is secret key used for signing, default value is
+    # encoded base64 of dragonfly.
+    # Please change the key in production.
+    key: 'ZHJhZ29uZmx5Cg=='
+    # Timeout is duration that a jwt token is valid,
+    # default duration is two days.
+    timeout: 48h
+    # MaxRefresh field allows clients to refresh their token
+    # until MaxRefresh has passed, default duration is two days.
+    maxRefresh: 48h
+# Database info used for server.
+database:
+  # Database type, supported types include mysql, mariadb and postgres.
+  type: mysql
+  # Mysql configure.
+  mysql:
+    user: ${DRAGONFLY_MYSQL_USER}
+    password: ${DRAGONFLY_MYSQL_PW}
+    host: ${DRAGONFLY_MYSQL_HOST}
+    port: 3306
+    dbname: ${DRAGONFLY_MYSQL_DBNAME}
+    migrate: true
+  # tlsConfig: preferred
+  # tls:
+  #   # Client certificate file path.
+  #   cert: /etc/ssl/certs/cert.pem
+  #   # Client key file path.
+  #   key: /etc/ssl/private/key.pem
+  #   # CA file path.
+  #   ca: /etc/ssl/certs/ca.pem
+  #   # Whether a client verifies the server's certificate chain and host name.
+  #   insecureSkipVerify: true
+  # Redis configure.
+  redis:
+    # Redis addresses.
+    addrs:
+      - "${DRAGONFLY_REDIS_HOST}:6379"
+    # Redis password.
+    password: ${DRAGONFLY_REDIS_PW}
+    # Redis DB name.
+    db: 0
+    # Redis brokerDB name.
+    brokerDB: 1
+    # Redis backendDB name.
+    backendDB: 2
+
+# Manager server cache.
+cache:
+  # Redis cache configure.
+  redis:
+    # Cache ttl configure.
+    ttl: 30s
+  # Local cache configure.
+  local:
+    # LFU cache size.
+    size: 10000
+    # Cache ttl configure.
+    ttl: 10s
+
+# Object storage service.
+objectStorage:
+  # Enable object storage.
+  enable: false
+  # Object storage name of type, it can be s3 or oss.
+  name: s3
+  # Storage region.
+  region: ''
+  # Datacenter endpoint.
+  endpoint: ''
+  # Access key id.
+  accessKey: ''
+  # Access key secret.
+  secretKey: ''
+
+# Prometheus metrics.
+metrics:
+  # Manager enable metrics service.
+  enable: false
+  # Metrics service address.
+  addr: ':8000'
+  # Enable peer gauge metrics.
+  enablePeerGauge: true
+
+security:
+  # autoIssueCert indicates to issue client certificates for all grpc call.
+  # If AutoIssueCert is false, any other option in Security will be ignored.
+  autoIssueCert: false
+  # caCert is the CA certificate for all grpc tls handshake, it can be path or PEM format string.
+  caCert: ''
+  # caKey is the CA private key, it can be path or PEM format string.
+  caKey: ''
+  # tlsPolicy controls the grpc shandshake behaviors:
+  #   force: both ClientHandshake and ServerHandshake are only support tls
+  #   prefer: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support tls
+  #   default: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support insecure (non-tls)
+  # Notice: If the drgaonfly service has been deployed, a two-step upgrade is required.
+  # The first step is to set tlsPolicy to default, and then upgrade the dragonfly services.
+  # The second step is to set tlsPolicy to prefer, and then completely upgrade the dragonfly services.
+  tlsPolicy: 'prefer'
+  certSpec:
+    # dnsNames is a list of dns names be set on the certificate.
+    dnsNames:
+      - 'dragonfly-manager'
+      - 'dragonfly-manager.dragonfly-system.svc'
+      - 'dragonfly-manager.dragonfly-system.svc.cluster.local'
+    # ipAddresses is a list of ip addresses be set on the certificate.
+    ipAddresses:
+    # validityPeriod is the validity period  of certificate.
+    validityPeriod: 87600h
+
+network:
+  # Enable ipv6.
+  enableIPv6: false
+
+# console shows log on console
+console: false
+
+# whether to enable debug level logger and enable pprof
+verbose: true
+
+# listen port for pprof, only valid when the verbose option is true
+# default is -1. If it is 0, pprof will use a random port.
+pprof-port: -1
+
+# jaeger endpoint url, like: http://jaeger.dragonfly.svc:14268/api/traces
+jaeger: ""
