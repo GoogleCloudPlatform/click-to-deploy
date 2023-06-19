@@ -16,6 +16,23 @@
 cloudbuild:
   enable_parallel: false
 versions:
+- dir: 3/debian11/3.4
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    scala:
+      minor: '2.13'
+    spark:
+      version: 3.4.0
+  repo: spark3
+  tags:
+  - 3.4.0-debian11
+  - 3.4-debian11
+  - 3-debian11
+  - 3.4.0
+  - '3.4'
+  - '3'
+  - latest
+  templateSubDir: '3'
 - dir: 3/debian11/3.3
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
@@ -27,10 +44,6 @@ versions:
   tags:
   - 3.3.2-debian11
   - 3.3-debian11
-  - 3-debian11
   - 3.3.2
   - '3.3'
-  - '3'
-  - latest
   templateSubDir: '3'
-
