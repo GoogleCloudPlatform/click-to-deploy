@@ -1,0 +1,101 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-web
+  labels:
+    app: {{ include "airflow.labels.app" . }}
+    component: web
+    name: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.web.replicas }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      ## multiple web pods can safely run concurrently
+      maxSurge: 25%
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: {{ include "airflow.labels.app" . }}
+      component: web
+      name: {{ .Release.Name }}
+  template:
+    metadata:
+      annotations:
+        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+      labels:
+        app: {{ include "airflow.labels.app" . }}
+        component: web
+        name: {{ .Release.Name }}
+    spec:
+      restartPolicy: Always
+      serviceAccountName: {{ include "airflow.serviceAccountName" . }}
+      initContainers:
+        {{- include "airflow.init_container.check_db" . | indent 8 }}
+        {{- include "airflow.init_container.wait_for_db_migrations" . | indent 8 }}
+      containers:
+        - name: airflow-web
+          {{- include "airflow.image" . | indent 10 }}
+          ports:
+            - name: web
+              containerPort: 8080
+              protocol: TCP
+          envFrom:
+            {{- include "airflow.envFrom" . | indent 12 }}
+          env:
+            {{- include "airflow.env" . | indent 12 }}
+            - name: _AIRFLOW_WWW_USER_CREATE 
+              value: 'true'
+          command:
+            {{- include "airflow.command" . | indent 12 }}
+          args:
+            - "bash"
+            - "-c"
+            - "exec airflow webserver"
+          livenessProbe: &probes
+            initialDelaySeconds: 30 
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 6
+            httpGet:
+              scheme: HTTP
+              path: /health
+              port: web
+          readinessProbe: *probes
+          volumeMounts:
+            {{- include "airflow.volumeMounts" . | indent 12 }}
+            - name: webserver-config
+              mountPath: /opt/airflow/webserver_config.py
+              subPath: webserver_config.py
+              readOnly: true
+        {{ if .Values.metrics.exporter.enabled }}
+        - name: stackdriver-exporter
+          image: {{ .Values.metrics.image }}
+          ports:
+          - name: profiler
+            containerPort: 6060
+          command:
+          - /monitor
+          - --stackdriver-prefix=custom.googleapis.com
+          - --source=airflow:http://localhost:8080/admin/metrics
+          - --pod-id=$(POD_NAME)
+          - --namespace-id=$(POD_NAMESPACE)
+          - --monitored-resource-types=k8s
+          env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+        {{ end }}
+      volumes:
+        {{- include "airflow.volumes" . | indent 8 }}
+        - name: webserver-config
+          secret:
+            secretName: {{ .Release.Name }}-webserver-config
+            defaultMode: 0644
+

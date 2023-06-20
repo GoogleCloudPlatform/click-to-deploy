@@ -1,0 +1,17 @@
+========================================================================
+Thanks for deploying Apache Airflow with the User-Community Helm Chart!
+
+====================
+        TIPS
+====================
+
+Default Airflow Webserver login:
+  * Username:  admin
+  * Password:  admin
+
+{{- if not .Values.enablePublicServiceAndIngress }}
+It looks like you have NOT exposed the Airflow Webserver, do this by:
+  1. Using a Kubernetes Ingress with target `{{ .Release.Name }}-web`
+  2. Using a Kubernetes NodePort service and Ingress with `enablePublicServiceAndIngress=true`
+{{ end }}
+

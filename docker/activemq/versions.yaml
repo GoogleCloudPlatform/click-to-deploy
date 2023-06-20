@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,19 +16,29 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 5/debian10/5.17
-  from: marketplace.gcr.io/google/debian10
+- dir: 5/debian11/5.18
+  from: marketplace.gcr.io/google/c2d-debian11
   packages:
     activemq:
-      sha512: cd30ace8dc4fd0fd0c960a0a1442e4f34733defb98fdaff06278a8b392696509fe57601f3e11fe6698f417e223dc43286bf4e86a4999a9848f3cc8dd68f4968f
-      version: 5.17.1
+      version: 5.18.1
   repo: activemq5
   tags:
-  - 5.17.1-debian10
-  - 5.17-debian10
-  - 5-debian10
-  - 5.17.1
-  - '5.17'
+  - 5.18.1-debian11
+  - 5.18-debian11
+  - 5-debian11
+  - 5.18.1
+  - '5.18'
   - '5'
   - latest
+- dir: 5/debian11/5.17
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    activemq:
+      version: 5.17.4
+  repo: activemq5
+  tags:
+  - 5.17.4-debian11
+  - 5.17-debian11
+  - 5.17.4
+  - '5.17'
 

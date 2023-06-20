@@ -1,0 +1,50 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-automigrate
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "hydra.labels" . | indent 4 }}
+  annotations:
+    helm.sh/hook-weight: "1"
+    helm.sh/hook-delete-policy: "before-hook-creation,hook-succeeded"
+spec:
+  template:
+    spec:
+      serviceAccountName: {{ .Values.job.serviceAccount.name }}
+      automountServiceAccountToken: true
+      initContainers:
+        - name: init-db
+          image: {{ .Values.postgresql.image }}
+          command: ['sh', '-c', "until pg_isready -h {{ .Release.Name }}-postgresql-svc -p 5432; do echo waiting for PostgreSQL; sleep 2; done"]
+          env:
+            - name: DSN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}
+                  key: dsn
+      containers:
+      - name: {{ .Release.Name }}-automigrate
+        image: "{{ .Values.hydra.image.repo }}:{{ .Values.hydra.image.tag }}"
+        imagePullPolicy: IfNotPresent
+        command: ["/opt/hydra"]
+        args: ["migrate", "sql", "-e", "--yes"]
+        env:
+          - name: DSN
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}
+                key: dsn
+        securityContext:
+          capabilities:
+            drop:
+              - ALL
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 100
+          allowPrivilegeEscalation: false
+          privileged: false
+      restartPolicy: Never
+      shareProcessNamespace: false
+  backoffLimit: 10

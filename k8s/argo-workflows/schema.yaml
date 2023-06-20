@@ -1,0 +1,111 @@
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      Initial release.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  images:
+    '':
+      properties:
+        argo_workflows.image.repo:
+          type: REPO_WITH_REGISTRY
+        argo_workflows.image.tag:
+          type: TAG
+    postgresql:
+      properties:
+        db.image:
+          type: FULL
+    postgresql-exporter:
+      properties:
+        db.exporter.image:
+          type: FULL
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
+
+  deployerServiceAccount:
+      description: >
+        Service account used by application deployer
+      roles:
+      - type: ClusterRole
+        rulesType: CUSTOM
+        rules:
+        - apiGroups: ['rbac.authorization.k8s.io']
+          resources:
+          - clusterroles
+          - clusterrolebindings
+          verbs:
+          - '*'
+        - apiGroups: ['apiextensions.k8s.io']
+          resources:
+          - customresourcedefinitions
+          verbs:
+          - '*'
+
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  persistence.storageClass:
+    type: string
+    title: StorageClass
+    description: You can choose an existing StorageClass or create a new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  argo_workflows.db.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 10
+        includeSymbols: False
+        base64: False
+
+  argo_workflows.sa.server:
+    type: string
+    title: Argo Server Service Account
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        description: Service account used by Argo Server
+  argo_workflows.sa.argo:
+    type: string
+    title: Argo Service Account
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        description: Service account used by Argo
+
+  db.persistence.size:
+    type: string
+    title: Storage size for PostgreSQL database.
+    default: "8Gi"
+    description: The storage size for PostgreSQL persistent volume
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  metrics.exporter.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
+    default: false
+
+required:
+- name
+- namespace
+- persistence.storageClass
+- db.persistence.size
+- metrics.exporter.enabled

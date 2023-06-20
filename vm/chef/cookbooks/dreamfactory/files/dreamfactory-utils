@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2021 Google Inc.
+# Copyright 2023 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,11 +27,12 @@ function setup_mysql_user() {
   local -r db_user="$1"
   local -r db_password="$2"
   local -r db_name="$3"
+  local -r root_password="$4"
 
-  mysql -u root -e "CREATE DATABASE ${db_name} CHARACTER SET utf8 COLLATE utf8_general_ci;"
-  mysql -u root -e "CREATE USER '${db_user}'@'localhost' IDENTIFIED BY '${db_password}';"
-  mysql -u root -e "GRANT SELECT, INSERT, UPDATE, DELETE, REFERENCES, CREATE, DROP, INDEX, ALTER, CREATE TEMPORARY TABLES ON ${db_name}.* TO '${db_user}'@'localhost' IDENTIFIED BY '${db_password}';";
-  mysql -u root -e "FLUSH PRIVILEGES;"
+  mysql -u root -p"${root_password}" -e "CREATE DATABASE ${db_name} CHARACTER SET utf8 COLLATE utf8_general_ci;"
+  mysql -u root -p"${root_password}" -e "CREATE USER '${db_user}'@'localhost' IDENTIFIED WITH mysql_native_password BY '${db_password}';"
+  mysql -u root -p"${root_password}" -e "GRANT SELECT, INSERT, UPDATE, DELETE, REFERENCES, CREATE, DROP, INDEX, ALTER, CREATE TEMPORARY TABLES ON ${db_name}.* TO '${db_user}'@'localhost';";
+  mysql -u root -p"${root_password}" -e "FLUSH PRIVILEGES;"
 }
 
 #######################################

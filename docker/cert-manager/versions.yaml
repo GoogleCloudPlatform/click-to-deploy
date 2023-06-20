@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 1/debian9/1.7
-  from: marketplace.gcr.io/google/debian9
+- dir: 1/debian11/1.11
+  from: marketplace.gcr.io/google/c2d-debian11
   packages:
     cert-manager:
-      version: 1.7.2
+      version: 1.11.2
   repo: cert-manager1
   tags:
-  - 1.7.2-debian9
-  - 1.7-debian9
-  - 1-debian9
-  - 1.7.2
-  - '1.7'
+  - 1.11.2-debian11
+  - 1.11-debian11
+  - 1-debian11
+  - 1.11.2
+  - '1.11'
   - '1'
   - latest
   templateSubDir: cert-manager1

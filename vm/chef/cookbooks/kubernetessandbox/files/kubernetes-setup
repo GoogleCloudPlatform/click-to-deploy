@@ -17,7 +17,7 @@
 source /opt/c2d/c2d-utils || exit 1
 
 # Configure kubernetes master node
-kubeadm init --cri-socket /run/containerd/containerd.sock
+kubeadm init --cri-socket unix:///run/containerd/containerd.sock --pod-network-cidr=10.244.0.0/16
 export KUBECONFIG="/etc/kubernetes/admin.conf"
 
 # Configure access
@@ -25,7 +25,7 @@ chmod 666 /etc/kubernetes/admin.conf
 
 # Make master schedulable
 timeout 10 bash -c \
-    'until kubectl get nodes| grep NotReady; do echo "waiting for master node response"; sleep 1; done'
+    'until kubectl get nodes | grep NotReady; do echo "waiting for master node response"; sleep 1; done'
 kubectl taint nodes --all node.kubernetes.io/not-ready-
 
 
@@ -34,6 +34,4 @@ echo "readOnlyPort: 0" >> /var/lib/kubelet/config.yaml
 service kubelet restart
 
 # Configure network plugin
-kubectl apply -f /opt/kubernetes/weave/network_addon.yaml
-sleep 5
-kubectl taint nodes --all node-role.kubernetes.io/master-
+kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml

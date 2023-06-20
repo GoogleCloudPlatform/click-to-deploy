@@ -1,4 +1,4 @@
-# Source: cert-manager/templates/cainjector-serviceaccount.yaml
+---
 apiVersion: v1
 kind: ServiceAccount
 automountServiceAccountToken: true
@@ -8,10 +8,9 @@ metadata:
   labels:
     app: cainjector
     app.kubernetes.io/name: cainjector
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "cainjector"
 ---
-# Source: cert-manager/templates/cainjector-rbac.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -19,7 +18,7 @@ metadata:
   labels:
     app: cainjector
     app.kubernetes.io/name: cainjector
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "cainjector"
 rules:
   - apiGroups: ["cert-manager.io"]
@@ -40,11 +39,7 @@ rules:
   - apiGroups: ["apiextensions.k8s.io"]
     resources: ["customresourcedefinitions"]
     verbs: ["get", "list", "watch", "update"]
-  - apiGroups: ["auditregistration.k8s.io"]
-    resources: ["auditsinks"]
-    verbs: ["get", "list", "watch", "update"]
 ---
-# Source: cert-manager/templates/cainjector-rbac.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -52,7 +47,7 @@ metadata:
   labels:
     app: cainjector
     app.kubernetes.io/name: cainjector
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "cainjector"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -63,7 +58,6 @@ subjects:
     namespace: "{{ .Release.Namespace }}"
     kind: ServiceAccount
 ---
-# Source: cert-manager/templates/cainjector-rbac.yaml
 # leader election rules
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -73,7 +67,7 @@ metadata:
   labels:
     app: cainjector
     app.kubernetes.io/name: cainjector
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "cainjector"
 rules:
   # Used for leader election by the controller
@@ -97,7 +91,6 @@ rules:
     resources: ["leases"]
     verbs: ["create"]
 ---
-# Source: cert-manager/templates/cainjector-rbac.yaml
 # grant cert-manager permission to manage the leaderelection configmap in the
 # leader election namespace
 apiVersion: rbac.authorization.k8s.io/v1
@@ -108,8 +101,9 @@ metadata:
   labels:
     app: cainjector
     app.kubernetes.io/name: cainjector
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "cainjector"
+
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -117,9 +111,8 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: cert-manager-cainjector
-    namespace: "{{ .Release.Namespace }}"
+    namespace: "{{ .Release.Namespace }}" 
 ---
-# Source: cert-manager/templates/cainjector-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -156,4 +149,3 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.namespace
----

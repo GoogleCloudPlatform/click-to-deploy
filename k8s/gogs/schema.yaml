@@ -1,0 +1,132 @@
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      Initial release.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  clusterConstraints:
+    resources:
+    - replicas: 1
+      requests:
+        cpu: 100m
+        memory: 100Mi
+
+  images:
+    '':
+      properties:
+        gogs.image.repo:
+          type: REPO_WITH_REGISTRY
+        gogs.image.tag:
+          type: TAG
+    postgresql:
+      properties:
+        postgresql.image.repo:
+          type: REPO_WITH_REGISTRY
+        postgresql.image.tag:
+          type: TAG
+    nfs:
+      properties:
+        nfs.image.repo:
+          type: REPO_WITH_REGISTRY
+        nfs.image.tag:
+          type: TAG
+
+  deployerServiceAccount:
+    description:
+      Creates app resources including persistentvolumes.
+    roles:
+      - type: ClusterRole  # For getting persistentvolumes
+        rulesType: CUSTOM
+        rules:
+          - apiGroups:
+            - '*'
+            resources:
+            - 'persistentvolumes'
+            verbs:
+            - '*'
+
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  gogs.replicas:
+    type: integer
+    title: Gogs replicas
+    description: Number of replicas of the Gogs webserver
+    default: 1
+    minimum: 1
+  gogs.secret_key:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 16
+        includeSymbols: False
+        base64: False
+  enablePublicServiceAndIngress:
+    type: boolean
+    title: Enable public IP access
+    description: Set the Keycloak Service type to NodePort and enable Ingress
+    default: false
+  postgresql.persistence.storageClass:
+    type: string
+    title: PostgreSQL StorageClass
+    description: You can choose an existing StorageClass or create a new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  postgresql.persistence.size:
+    type: string
+    title: Storage size for PostgreSQL persistent volume
+    default: "5Gi"
+    description: PostgreSQL storage size
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  nfs.persistence.storageClass:
+    type: string
+    title: NFS volume StorageClass
+    description: You can choose an existing StorageClass or create a new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  nfs.persistence.size:
+    type: string
+    title: Storage size for NFS persistent volume
+    default: "5Gi"
+    description: NFS storage size
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  gogs.db.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 16
+        includeSymbols: False
+        base64: False
+  metrics.exporter.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project must have Stackdriver enabled. Non-GCP clusters cannot export metrics to Stackdriver.
+    default: false
+
+required:
+- name
+- namespace
+- gogs.replicas
+- postgresql.persistence.size
+- nfs.persistence.size
+- enablePublicServiceAndIngress
+

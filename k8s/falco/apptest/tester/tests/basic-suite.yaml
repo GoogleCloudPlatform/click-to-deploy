@@ -1,0 +1,26 @@
+actions:
+- name: Are there all Falco pods healthy
+  bashTest:
+    script: |-
+      kubectl wait --for=condition=Available=True --timeout=120s --namespace $NAMESPACE daemonset "${APP_INSTANCE_NAME}-falco"
+      falcoPods=$(kubectl get pods -l app.kubernetes.io/component=falco --no-headers | cut -f1 -d" ")
+      for podName in ${falcoPods}; do
+        kubectl exec ${podName} -c falco -- curl localhost:8765/healthz
+          if [ $? -ne 0 ]; then
+             exit 1
+          fi
+      done
+    expect:
+      exitCode:
+        equals: 0
+
+- name: Is Falco /metrics HTTP endpoint working for Prometheus metrics
+  bashTest:
+    script: |-
+      sleep 20
+      curl -s -f "http://${SERVICE}:9376/metrics"
+    expect:
+      stdout:
+        contains: '# TYPE promhttp'
+      exitCode:
+        equals: 0

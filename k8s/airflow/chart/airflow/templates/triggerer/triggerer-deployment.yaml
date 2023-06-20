@@ -1,0 +1,89 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-triggerer
+  labels:
+    app: {{ include "airflow.labels.app" . }}
+    component: triggerer
+    name: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.triggerer.replicas }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      ## multiple triggerer pods can safely run concurrently
+      maxSurge: 25%
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: {{ include "airflow.labels.app" . }}
+      component: triggerer
+      name: {{ .Release.Name }}
+  template:
+    metadata:
+      annotations:
+        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+      labels:
+        app: {{ include "airflow.labels.app" . }}
+        component: triggerer
+        name: {{ .Release.Name }}
+    spec:
+      restartPolicy: Always
+      serviceAccountName: {{ include "airflow.serviceAccountName" . }}
+      initContainers:
+        {{- include "airflow.init_container.check_db" . | indent 8 }}
+        {{- include "airflow.init_container.wait_for_db_migrations" . | indent 8 }}
+      containers:
+        - name: airflow-triggerer
+          {{- include "airflow.image" . | indent 10 }}
+          envFrom:
+            {{- include "airflow.envFrom" . | indent 12 }}
+          env:
+            {{- include "airflow.env" . | indent 12 }}
+          command:
+            {{- include "airflow.command" . | indent 12 }}
+          args:
+            - "bash"
+            - "-c"
+            - "exec airflow triggerer"
+          livenessProbe:
+            initialDelaySeconds: 10 
+            periodSeconds: 30
+            timeoutSeconds: 60
+            failureThreshold: 5
+            exec:
+              command:
+                {{- include "airflow.command" . | indent 16 }}
+                - "python"
+                - "-Wignore"
+                - "-c"
+                - |
+                  import os
+                  import sys
+
+                  # suppress logs triggered from importing airflow packages
+                  os.environ["AIRFLOW__LOGGING__LOGGING_LEVEL"] = "ERROR"
+
+                  from airflow.jobs.triggerer_job import TriggererJob
+                  from airflow.utils.db import create_session
+                  from airflow.utils.net import get_hostname
+
+                  with create_session() as session:
+                      # ensure the TriggererJob with most recent heartbeat for this `hostname` is alive
+                      hostname = get_hostname()
+                      triggerer_job = session \
+                          .query(TriggererJob) \
+                          .filter_by(hostname=hostname) \
+                          .order_by(TriggererJob.latest_heartbeat.desc()) \
+                          .limit(1) \
+                          .first()
+                      if (triggerer_job is not None) and triggerer_job.is_alive():
+                          pass
+                      else:
+                          sys.exit(f"The TriggererJob (id={triggerer_job.id}) for hostname '{hostname}' is not alive")
+          volumeMounts:
+            {{- include "airflow.volumeMounts" . | indent 12 }}
+      volumes:
+        {{- include "airflow.volumes" . | indent 8 }}
+

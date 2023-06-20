@@ -1,0 +1,77 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: {{ .Release.Name }}
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": {{ .Chart.Name | quote }}, "partner_name": "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: hydra
+spec:
+  descriptor:
+    type: Hydra
+    version: "{{ .Values.hydra.image.tag }}"
+    description: |-
+      Ory Hydra is a hardened, OpenID Certified OAuth 2.0 Server and OpenID Connect Provider optimized for low-latency, high throughput, and low resource consumption.
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/hydra/).
+      Here's a few ways to find out what's happening and get involved - [Chat](https://slack.ory.sh/) | [Discussions](https://github.com/ory/hydra/discussions) | [Newsletter](http://eepurl.com/di390P).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy Hydra'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/falco/README.md
+    - description: 'Hydra documentation'
+      url: https://www.ory.sh/docs/hydra
+    notes: |-
+      # Get authentication credentials for the cluster
+
+      ```shell
+      gcloud container clusters get-credentials [CLUSTER_NAME] --zone [CLUSTER_ZONE]
+      ```
+      where:
+      * `[CLUSTER_NAME]` is the name of the cluster for this application
+      * `[CLUSTER_ZONE]` is the zone, in which the cluster is operating
+
+      Please read [here](https://cloud.google.com/kubernetes-engine/docs/quickstart#get_authentication_credentials_for_the_cluster) for more information.
+
+      # Verifying Hydra installation
+
+      To verify Hydra is running run the following command:
+      ```
+      kubectl get deployment {{ .Release.Name }}
+      ```
+
+  info:
+  - name: Hydra Deployment name
+    value: "{{ .Release.Name }}"
+  - name: Ingress public
+    value: "{{ .Release.Name }}-public"
+  - name: Ingress admin
+    value: "{{ .Release.Name }}-admin"
+  - name: PostgreSQL StatefulSet name
+    value: "{{ .Release.Name }}-postgresql"
+  - name: PostgreSQL Service name
+    value: "{{ .Release.Name }}-postgresql-svc"
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Release.Name }}
+  componentKinds:
+  - group: v1
+    kind: Deployment
+  - group: v1
+    kind: StatefulSet
+  - group: v1
+    kind: Service
+  - group: v1
+    kind: ConfigMap
+  - group: v1
+    kind: ServiceAccount
+  - group: batch/v1
+    kind: Job
+  - group: autoscaling/v2
+    kind: HorizontalPodAutoscaler

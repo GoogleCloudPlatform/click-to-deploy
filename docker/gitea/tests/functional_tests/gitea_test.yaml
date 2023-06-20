@@ -1,0 +1,23 @@
+setup:
+- command: 
+  - docker
+  - run
+  - '-d' 
+  - '-p'
+  - 3000:3000
+  - '--name'
+  - gitea-$UNIQUE-id
+  - '$IMAGE'
+- command: [sleep, 100s]
+
+teardown: 
+- command: [docker, stop, gitea-$UNIQUE-id]
+- command: [docker, rm, gitea-$UNIQUE-id]
+
+target: gitea-$UNIQUE-id
+tests:
+- name: Check gitea webpage
+  command: ['curl', '-s', 'http://localhost:3000']
+  expect:
+    stdout:
+      matches: "Installation - Gitea: Git with a cup of tea"

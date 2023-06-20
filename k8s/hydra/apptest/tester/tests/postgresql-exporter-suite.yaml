@@ -1,0 +1,9 @@
+actions:
+  - name: Prometheus metrics availability
+    bashTest:
+      script: |-
+        sleep 20
+        wget -O- http://${POSTGRESQL_EXPORTER_SERVICE}:9187/metrics
+      expect:
+        stdout:
+          matches: '(?m)^pg_up 1$'

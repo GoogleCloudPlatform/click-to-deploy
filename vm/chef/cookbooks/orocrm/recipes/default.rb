@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,12 +14,12 @@
 #
 # Reference: https://doc.oroinc.com/backend/setup/dev-environment/community-edition/
 include_recipe 'apache2'
-include_recipe 'apache2::mod_deflate'
-include_recipe 'apache2::mod_headers'
+include_recipe 'apache2::mod-deflate'
+include_recipe 'apache2::mod-headers'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 
-include_recipe 'mysql::version-8.0-standalone'
+include_recipe 'mysql::version-8.0-embedded'
 
 include_recipe 'git'
 

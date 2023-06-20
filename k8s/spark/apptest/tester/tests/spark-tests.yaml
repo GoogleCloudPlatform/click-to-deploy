@@ -1,0 +1,76 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+actions:
+- name: kubectl smoke test
+  bashTest:
+    script: kubectl version
+    expect:
+      exitCode:
+        equals: 0
+- name: Get Alive Workers via Master UI
+  bashTest:
+    script: |
+      export SERVICE_NAME="${APP_INSTANCE_NAME}-spark-master-svc.${NAMESPACE}.svc.cluster.local"
+      curl -L "http://${SPARK_SERVICE_URL}:8080/"
+    expect:
+      equals: 0
+    stdout:
+      contains: '<li><strong>Alive Workers:</strong> 3</li>'
+- name: Submit test job
+  bashTest:
+    script: |
+      export MASTER_POD_NAME="${APP_INSTANCE_NAME}-spark-master-0"
+      export MASTER_SERVICE_NAME="$(kubectl get svc \
+                                    -l "app.kubernetes.io/component=spark-master" \
+                                    --namespace "${NAMESPACE}" \
+                                    -o jsonpath={..metadata.name})"
+
+      kubectl exec -ti "${MASTER_POD_NAME}" -- /opt/spark/bin/spark-submit \
+          --master \
+          "spark://${MASTER_SERVICE_NAME}:7077" \
+          /opt/spark-apps/sample_job.py
+    expect:
+      exitCode:
+        equals: 0
+      stdout:
+        contains: PySpark C2D Example
+- name: Get completed jobs via History API
+  bashTest:
+    script: |
+      export MASTER_SERVICE_NAME="$(kubectl get svc \
+                                    -l "app.kubernetes.io/component=spark-master" \
+                                    --namespace "${NAMESPACE}" \
+                                    -o jsonpath={..metadata.name})"
+      sleep 30
+      curl -L "http://${MASTER_SERVICE_NAME}:18080/api/v1/applications?status=completed" | jq -r 'length'
+    expect:
+      exitCode:
+        equals: 0
+      stdout:
+        equals: 1
+- name: Check Prometheus Metrics
+  bashTest:
+    script: |
+      export MASTER_SERVICE_NAME="$(kubectl get svc \
+                                    -l "app.kubernetes.io/component=spark-master" \
+                                    --namespace "${NAMESPACE}" \
+                                    -o jsonpath={..metadata.name})"
+      sleep 30
+      curl -L "http://${MASTER_SERVICE_NAME}:8080/metrics/master/prometheus/"
+    expect:
+      exitCode:
+        equals: 0
+      stdout:
+        contains: 'metrics_master_aliveWorkers_Value{type="gauges"} 3'

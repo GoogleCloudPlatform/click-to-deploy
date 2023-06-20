@@ -1,0 +1,77 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-scheduler
+  labels: &DragonflySchedulerLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: dragonfly-scheduler
+spec:
+  replicas: 1
+  serviceName: scheduler
+  selector:
+    matchLabels: *DragonflySchedulerLabels
+  template:
+    metadata:
+      labels: *DragonflySchedulerLabels
+    spec:
+      initContainers:
+        {{- include "dragonfly.init_container.wait_for_manager" . | indent 8 }}
+      containers:
+        - name: scheduler
+          image: {{ .Values.scheduler.image }}
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: DRAGONFLY_MANAGER_ADDR
+              value: "{{ .Release.Name }}-manager-service.{{ .Release.Namespace }}.svc"
+            - name: DRAGONFLY_REDIS_HOST
+              value: "{{ .Release.Name }}-redis-svc.{{ .Release.Namespace }}.svc"
+            - name: DRAGONFLY_REDIS_PW
+              valueFrom: 
+                secretKeyRef:
+                  name: {{ .Release.Name }}-redis-secret
+                  key: password
+          ports:
+            - containerPort: 8002
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.scheduler.resources | nindent 12 }}    
+          volumeMounts:
+            - name: logs
+              mountPath: "/var/log/dragonfly/scheduler"
+          readinessProbe:
+            exec:
+              command: ["/bin/grpc_health_probe", "-addr=:8002"]
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            exec:
+              command: ["/bin/grpc_health_probe", "-addr=:8002"]
+            initialDelaySeconds: 15
+            periodSeconds: 10
+        {{- if .Values.metrics.enable }}
+        - name: stackdriver-exporter
+          image: {{ .Values.metrics.image }}
+          ports:
+            - name: profiler
+              containerPort: 6060
+              command:
+                - /monitor
+                - --stackdriver-prefix=custom.googleapis.com
+                - --source=gitlab:http://localhost:9090/metrics
+                - --pod-id=$(POD_NAME)
+                - --namespace-id=$(POD_NAMESPACE)
+                - --monitored-resource-types=k8s
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                fieldPath: metadata.namespace
+        {{- end }}
+      volumes:
+        - name: logs
+          emptyDir: {}

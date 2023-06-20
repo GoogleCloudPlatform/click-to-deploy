@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-nfs-server
+  labels:
+    name: "{{ .Release.Name }}"
+    component: nfs-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: nfs-server
+  template:
+    metadata:
+      labels:
+        role: nfs-server
+    spec:
+      initContainers:
+      - name: {{ .Release.Name }}-nfs-changeowner
+        image: busybox
+        command: ["sh", "-c", "mkdir -p /sites && chmod -R 777 /sites"]
+        volumeMounts:
+          - mountPath: /sites
+            name: {{ .Release.Name }}-nfs-server-pvc
+      containers:
+      - name: {{ .Release.Name }}-nfs-server
+        image: "{{ .Values.nfs.image.repo }}:{{ .Values.nfs.image.tag }}"
+        ports:
+          - name: nfs
+            containerPort: 2049
+          - name: mountd
+            containerPort: 20048
+        securityContext:
+          privileged: true
+        volumeMounts:
+          - mountPath: /exports
+            name: {{ .Release.Name }}-nfs-server-pvc
+      volumes:
+        - name: {{ .Release.Name }}-nfs-server-pvc
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-nfs-server-pvc

@@ -1,6 +1,6 @@
-
+---
 # net-certmanager.yaml
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,9 +21,8 @@ metadata:
   name: knative-serving-certmanager
   labels:
     app.kubernetes.io/component: net-certmanager
-    app.kubernetes.io/version: "1.2.0"
+    app.kubernetes.io/version: "1.9.0"
     app.kubernetes.io/name: knative-serving
-    serving.knative.dev/release: "v1.2.0"
     serving.knative.dev/controller: "true"
     networking.knative.dev/certificate-provider: cert-manager
 rules:
@@ -33,9 +32,8 @@ rules:
   - apiGroups: ["acme.cert-manager.io"]
     resources: ["challenges"]
     verbs: ["get", "list", "create", "update", "delete", "patch", "watch"]
-
 ---
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -55,9 +53,8 @@ metadata:
   name: config.webhook.net-certmanager.networking.internal.knative.dev
   labels:
     app.kubernetes.io/component: net-certmanager
-    app.kubernetes.io/version: "1.2.0"
+    app.kubernetes.io/version: "1.9.0"
     app.kubernetes.io/name: knative-serving
-    serving.knative.dev/release: "v1.2.0"
     networking.knative.dev/certificate-provider: cert-manager
 webhooks:
   - admissionReviewVersions:
@@ -70,13 +67,12 @@ webhooks:
     failurePolicy: Fail
     sideEffects: None
     name: config.webhook.net-certmanager.networking.internal.knative.dev
-    namespaceSelector:
-      matchExpressions:
-        - key: serving.knative.dev/release
-          operator: Exists
-
+    objectSelector:
+      matchLabels:
+        app.kubernetes.io/name: knative-serving
+        app.kubernetes.io/component: net-certmanager
 ---
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -97,13 +93,11 @@ metadata:
   namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/component: net-certmanager
-    app.kubernetes.io/version: "1.2.0"
+    app.kubernetes.io/version: "1.9.0"
     app.kubernetes.io/name: knative-serving
-    serving.knative.dev/release: "v1.2.0"
     networking.knative.dev/certificate-provider: cert-manager
-
 ---
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -124,9 +118,8 @@ metadata:
   namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/component: net-certmanager
-    app.kubernetes.io/version: "1.2.0"
+    app.kubernetes.io/version: "1.9.0"
     app.kubernetes.io/name: knative-serving
-    serving.knative.dev/release: "v1.2.0"
     networking.knative.dev/certificate-provider: cert-manager
 data:
   _example: |
@@ -146,14 +139,13 @@ data:
 
     # issuerRef is a reference to the issuer for this certificate.
     # IssuerRef should be either `ClusterIssuer` or `Issuer`.
-    # Please refer `IssuerRef` in https://github.com/jetstack/cert-manager/blob/master/pkg/apis/certmanager/v1alpha1/types_certificate.go
+    # Please refer `IssuerRef` in https://github.com/cert-manager/cert-manager/tree/master/pkg/apis/certmanager/v1/types_certificate.go
     # for more details about IssuerRef configuration.
     issuerRef: |
       kind: ClusterIssuer
       name: letsencrypt-issuer
-
 ---
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -174,9 +166,8 @@ metadata:
   namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/component: net-certmanager
-    app.kubernetes.io/version: "1.2.0"
+    app.kubernetes.io/version: "1.9.0"
     app.kubernetes.io/name: knative-serving
-    serving.knative.dev/release: "v1.2.0"
     networking.knative.dev/certificate-provider: cert-manager
 spec:
   selector:
@@ -189,9 +180,8 @@ spec:
       labels:
         app: net-certmanager-controller
         app.kubernetes.io/component: net-certmanager
-        app.kubernetes.io/version: "1.2.0"
+        app.kubernetes.io/version: "1.9.0"
         app.kubernetes.io/name: knative-serving
-        serving.knative.dev/release: "v1.2.0"
     spec:
       serviceAccountName: controller
       containers:
@@ -224,7 +214,7 @@ spec:
             runAsNonRoot: true
             capabilities:
               drop:
-                - all
+                - ALL
           ports:
             - name: metrics
               containerPort: 9090
@@ -237,9 +227,8 @@ metadata:
   labels:
     app: net-certmanager-controller
     app.kubernetes.io/component: net-certmanager
-    app.kubernetes.io/version: "1.2.0"
+    app.kubernetes.io/version: "1.9.0"
     app.kubernetes.io/name: knative-serving
-    serving.knative.dev/release: "v1.2.0"
     networking.knative.dev/certificate-provider: cert-manager
   name: net-certmanager-controller
   namespace: "{{ .Release.Namespace }}"
@@ -254,9 +243,8 @@ spec:
       targetPort: 8008
   selector:
     app: net-certmanager-controller
-
 ---
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -277,13 +265,12 @@ metadata:
   namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/component: net-certmanager
-    app.kubernetes.io/version: "1.2.0"
+    app.kubernetes.io/version: "1.9.0"
     app.kubernetes.io/name: knative-serving
-    serving.knative.dev/release: "v1.2.0"
     networking.knative.dev/certificate-provider: cert-manager
 spec:
   selector:
-    matchLabels: &labels
+    matchLabels:
       app: net-certmanager-webhook
       role: net-certmanager-webhook
   template:
@@ -291,11 +278,11 @@ spec:
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
       labels:
-        !!merge <<: *labels
+        app: net-certmanager-webhook
         app.kubernetes.io/component: net-certmanager
-        app.kubernetes.io/version: "1.2.0"
+        app.kubernetes.io/version: "1.9.0"
         app.kubernetes.io/name: knative-serving
-        serving.knative.dev/release: "v1.2.0"
+        role: net-certmanager-webhook
     spec:
       serviceAccountName: controller
       containers:
@@ -324,13 +311,17 @@ spec:
               value: knative.dev/net-certmanager
             - name: WEBHOOK_NAME
               value: net-certmanager-webhook
+            # If you change WEBHOOK_PORT, you will also need to change the
+            # containerPort "https-webhook" to the same value.
+            - name: WEBHOOK_PORT
+              value: "8443"
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             runAsNonRoot: true
             capabilities:
               drop:
-                - all
+                - ALL
           ports:
             - name: metrics
               containerPort: 9090
@@ -338,9 +329,8 @@ spec:
               containerPort: 8008
             - name: https-webhook
               containerPort: 8443
-
 ---
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -362,23 +352,20 @@ metadata:
   labels:
     role: net-certmanager-webhook
     app.kubernetes.io/component: net-certmanager
-    app.kubernetes.io/version: "1.2.0"
+    app.kubernetes.io/version: "1.9.0"
     app.kubernetes.io/name: knative-serving
-    serving.knative.dev/release: "v1.2.0"
     networking.knative.dev/certificate-provider: cert-manager
 spec:
   ports:
     # Define metrics and profiling for them to be accessible within service meshes.
     - name: http-metrics
       port: 9090
-      targetPort: 9090
+      targetPort: metrics
     - name: http-profiling
       port: 8008
-      targetPort: 8008
+      targetPort: profiling
     - name: https-webhook
       port: 443
-      targetPort: 8443
+      targetPort: https-webhook
   selector:
     app: net-certmanager-webhook
-
----

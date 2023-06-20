@@ -1,0 +1,124 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "hydra.labels" . | indent 4 }}
+    app.kubernetes.io/component: hydra
+spec:
+{{- if not .Values.hydra.autoscaling.enabled }}
+  replicas: 1
+{{- end }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Release.Name }}
+      app.kubernetes.io/component: hydra
+  template:
+    metadata:
+      labels:
+{{ include "hydra.labels" . | indent 8 }}
+        app.kubernetes.io/component: hydra
+    spec:
+      volumes:
+        - name: {{ .Release.Name }}-config-volume
+          configMap:
+            name: {{ .Release.Name }}
+      serviceAccountName: {{ .Values.hydra.serviceAccount.name }}
+      automountServiceAccountToken: true
+      initContainers:
+        - name: init-db
+          image: {{ .Values.postgresql.image }}
+          command: ['sh', '-c', "until psql $DSN -c \"select * from hydra_client;\"; do echo waiting for PostgreSQL; sleep 5; done"]
+          env:
+            - name: DSN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}
+                  key: dsn
+      containers:
+        - name: hydra
+          image: "{{ .Values.hydra.image.repo }}:{{ .Values.hydra.image.tag }}"
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              memory: {{ .Values.hydra.memoryRequest | quote }}
+              cpu: {{ .Values.hydra.cpuRequest | quote }}
+          command: ["/opt/hydra"]
+          volumeMounts:
+            - name: {{ .Release.Name }}-config-volume
+              mountPath: /etc/config
+              readOnly: true
+          args: [
+            "serve",
+            "all",
+            "--dev",
+            "--config",
+            "/etc/config/config.yaml"
+          ]
+          ports:
+            - name: http-public
+              containerPort: 4444
+              protocol: TCP
+            - name: http-admin
+              containerPort: 4445
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health/alive
+              port: http-admin
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 5
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: http-admin
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 5
+          env:
+            - name: DSN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}
+                  key: dsn
+            - name: SECRETS_SYSTEM
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}
+                  key: secretsSystem
+            - name: SECRETS_COOKIE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}
+                  key: secretsCookie
+          securityContext:
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 100
+            allowPrivilegeEscalation: false
+            privileged: false
+        {{ if .Values.metrics.exporter.enabled }}
+        - name: prometheus-to-sd
+          image: {{ .Values.metrics.image }}
+          command:
+            - /monitor
+            - --stackdriver-prefix=custom.googleapis.com
+            - --source=hydra:http://localhost:4445/admin/metrics/prometheus
+            - --pod-id=$(POD_NAME)
+            - --namespace-id=$(POD_NAMESPACE)
+            - --monitored-resource-type-prefix=k8s_
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+        {{ end }}

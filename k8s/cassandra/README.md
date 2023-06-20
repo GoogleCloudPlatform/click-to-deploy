@@ -163,24 +163,17 @@ export METRICS_EXPORTER_ENABLED=false
 Set up the image tag:
 
 It is advised to use stable image reference which you can find on
-[Marketplace Container Registry](https://marketplace.gcr.io/google/cassandra).
+[Marketplace Container Registry](https://marketplace.gcr.io/google/cassandra4).
 Example:
 
 ```shell
-export TAG="3.11.5-20200213-133738"
-```
-
-Alternatively you can use short tag which points to the latest image for selected version.
-> Warning: this tag is not stable and referenced image might change over time.
-
-```shell
-export TAG="3.11"
+export TAG="4.1"
 ```
 
 Configure the container images:
 
 ```shell
-export IMAGE_CASSANDRA="marketplace.gcr.io/google/cassandra"
+export IMAGE_CASSANDRA="marketplace.gcr.io/google/cassandra4"
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/cassandra/prometheus-to-sd:${TAG}"
 ```
 
@@ -261,8 +254,7 @@ external access, using the following options:
     Then, in your main terminal, start `cqlsh`:
 
     ```shell
-    cqlsh --cqlversion=3.4.4
-    ```
+    cqlsh --cqlversion=3.4.5
 
     In the response, you see the Cassandra welcome message:
 
@@ -306,7 +298,7 @@ echo $CASSANDRA_IP
 Connect `cqlsh` to the external IP address, using the following command:
 
 ```shell
-CQLSH_HOST=$CASSANDRA_IP cqlsh --cqlversion=3.4.4
+CQLSH_HOST=$CASSANDRA_IP cqlsh --cqlversion=3.4.5
 ```
 
 # Application metrics

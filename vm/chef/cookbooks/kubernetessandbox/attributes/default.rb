@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['kubernetes']['version'] = '1.22.4-00'
+default['kubernetes']['version'] = '1.27.0-00'
 default['kubernetes']['packages'] = ['kubelet', 'kubeadm', 'kubectl']
-default['kubernetes']['dependencies']['packages'] = ['ufw', 'containerd', 'apt-transport-https', 'ca-certificates', 'curl']
+default['kubernetes']['dependencies']['packages'] = ['ufw', 'containerd.io', 'apt-transport-https', 'ca-certificates', 'curl']
 
 default['kubernetes']['repo']['uri'] = 'http://apt.kubernetes.io/'
 default['kubernetes']['repo']['components'] = ['main']
@@ -24,5 +24,5 @@ default['kubernetes']['firewall']['ports'] = '22,6443,2379,2380,10250,10251,1025
 
 default['docker']['repo']['uri'] = 'https://download.docker.com/linux/debian'
 default['docker']['repo']['components'] = ['stable']
-default['docker']['repo']['distribution'] = 'buster'
+default['docker']['repo']['distribution'] = 'bullseye'
 default['docker']['repo']['keyserver'] = 'https://download.docker.com/linux/debian/gpg'

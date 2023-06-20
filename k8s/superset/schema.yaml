@@ -1,0 +1,126 @@
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      Initial release.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  clusterConstraints:
+    resources:
+      - replicas: 1
+        requests:
+          cpu: 100m
+          memory: 100Mi
+      - replicas: 1
+        requests:
+          cpu: 100m
+          memory: 100Mi
+
+  images:
+    '':
+      properties:
+        superset.image.repo:
+          type: REPO_WITH_REGISTRY
+        superset.image.tag:
+          type: TAG
+    redis-exporter:
+      properties:
+        redis.exporter.image:
+          type: FULL
+    redis:
+      properties:
+        redis.image:
+          type: FULL
+    postgresql:
+      properties:
+        postgresql.image:
+          type: FULL
+    postgresql-exporter:
+      properties:
+        postgresql.exporter.image:
+          type: FULL
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
+    statsd-exporter:
+      properties:
+        statsd.exporter.image:
+          type: FULL
+
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  postgresql.db.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 12
+  superset.persistence.storageClass:
+    type: string
+    title: StorageClass
+    description: You can choose an existing StorageClass or create a new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  superset.persistence.size:
+    type: string
+    title: Storage size for Superset.
+    default: "10Gi"
+    description: The storage size for Superset persistent volume
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  superset.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 10
+        includeSymbols: False
+        base64: False
+  redis.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 10
+        includeSymbols: False
+        base64: False
+  enablePublicServiceAndIngress:
+    type: boolean
+    title: Enable public IP access
+    description: Set the Superset Service type to NodePort and enable Ingress
+    default: false
+  metrics.exporter.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
+    default: false
+  certificate:
+    type: string
+    x-google-marketplace:
+      type: TLS_CERTIFICATE
+      tlsCertificate:
+        generatedProperties:
+          base64EncodedPrivateKey: tls.base64EncodedPrivateKey
+          base64EncodedCertificate: tls.base64EncodedCertificate
+
+required:
+- name
+- namespace
+- superset.persistence.size
+- enablePublicServiceAndIngress
+- metrics.exporter.enabled

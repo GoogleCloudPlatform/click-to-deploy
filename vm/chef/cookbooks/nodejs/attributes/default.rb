@@ -13,4 +13,4 @@
 # limitations under the License.
 
 default['nodejs']['packages'] = ['nodejs']
-default['nodejs']['version'] = '17'
+default['nodejs']['version'] = '19'

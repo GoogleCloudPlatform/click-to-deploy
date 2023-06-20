@@ -1,0 +1,18 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-spark-master-svc
+  labels: &SparkMasterDeploymentLabels
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: spark-master
+spec:
+  ports:
+  - name: spark
+    port: 7077
+  - name: ui
+    port: 8080
+  - name: history
+    port: 18080
+  selector: *SparkMasterDeploymentLabels
+  type: ClusterIP

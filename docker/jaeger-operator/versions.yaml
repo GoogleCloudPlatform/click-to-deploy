@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,20 +16,32 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 1/debian10/1.25
-  from: marketplace.gcr.io/google/debian10
+- dir: 1/debian11/1.45
+  from: marketplace.gcr.io/google/c2d-debian11
   packages:
     golang:
-      version: '1.14'
+      version: '1.19'
     jaeger-operator:
-      version: 1.25.0
+      version: 1.45.0
   repo: jaeger-operator1
   tags:
-  - 1.25.0-debian10
-  - 1.25-debian10
-  - 1-debian10
-  - 1.25.0
-  - '1.25'
+  - 1.45.0-debian11
+  - 1.45-debian11
+  - 1-debian11
+  - 1.45.0
+  - '1.45'
   - '1'
   - latest
-
+- dir: 1/debian11/1.40
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    golang:
+      version: '1.19'
+    jaeger-operator:
+      version: 1.40.0
+  repo: jaeger-operator1
+  tags:
+  - 1.40.0-debian11
+  - 1.40-debian11
+  - 1.40.0
+  - '1.40'

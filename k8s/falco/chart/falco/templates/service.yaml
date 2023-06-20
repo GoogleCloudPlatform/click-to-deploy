@@ -1,0 +1,23 @@
+---
+# Source: falco-exporter/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-exporter-svc
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    prometheus.io/port: "9376"
+    prometheus.io/scrape: "true"
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: falco
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9376
+      targetPort: 9376
+      protocol: TCP
+      name: metrics
+  selector:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: falco

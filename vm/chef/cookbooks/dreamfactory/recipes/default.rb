@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 #
 # Reference: https://wiki.dreamfactory.com/DreamFactory/Installation
 
-include_recipe 'mysql'
+include_recipe 'mysql::version-8.0-embedded'
 include_recipe 'nginx'
 include_recipe 'redis::standalone'
 
@@ -28,7 +28,7 @@ include_recipe 'php74::module_opcache'
 include_recipe 'php74::module_sqlite'
 include_recipe 'php74::module_simplexml'
 include_recipe 'php74::module_zip'
-include_recipe 'composer'
+include_recipe 'composer::composer2'
 include_recipe 'git'
 
 include_recipe 'c2d-config::create-self-signed-certificate'

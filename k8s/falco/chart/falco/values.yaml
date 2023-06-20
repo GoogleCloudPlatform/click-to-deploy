@@ -1,0 +1,15 @@
+falco:
+  image:
+    repo: null
+    tag: null
+  serviceAccount:
+    name: falco-sa
+  priority: null
+  exporter:
+    image: null
+  gVisor: true
+
+metrics:
+  image: null
+  exporter:
+    enabled: false

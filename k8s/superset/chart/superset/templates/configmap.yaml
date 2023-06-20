@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: superset-configmap
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: superset
+data:
+  superset_config.py: |-
+    # Superset specific config
+    ROW_LIMIT = 5000
+
+    SUPERSET_WEBSERVER_PORT = 8088
+
+    # Flask App Builder configuration
+    # Your App secret key will be used for securely signing the session cookie
+    # and encrypting sensitive information on the database
+    # Make sure you are changing this key for your deployment with a strong key.
+    # You can generate a strong key using `openssl rand -base64 42`
+
+    SECRET_KEY = '{{ .Values.postgresql.db.password}}'
+
+    # The SQLAlchemy connection string to your database backend
+    # This connection defines the path to the database that stores your
+    # superset metadata (slices, connections, tables, dashboards, ...).
+    # Note that the connection information to connect to the datasources
+    # you want to explore are managed directly in the web UI
+    SQLALCHEMY_DATABASE_URI = 'postgresql://{{ .Values.postgresql.db.user}}:{{ .Values.postgresql.db.password}}@{{ .Release.Name }}-postgresql-service:5432/{{.Values.postgresql.db.name}}'
+
+    # Flask-WTF flag for CSRF
+    WTF_CSRF_ENABLED = True
+    # Add endpoints that need to be exempt from CSRF protection
+    WTF_CSRF_EXEMPT_LIST = []
+    # A CSRF token that expires in 1 year
+    WTF_CSRF_TIME_LIMIT = 60 * 60 * 24 * 365
+
+    # Set this API key to enable Mapbox visualizations
+    MAPBOX_API_KEY = ''
+
+    CACHE_CONFIG = {
+    'CACHE_TYPE': 'RedisCache',
+    'CACHE_DEFAULT_TIMEOUT': 86400,
+    'CACHE_KEY_PREFIX': 'superset_',
+    'CACHE_REDIS_HOST': '{{ .Release.Name }}-redis-svc',
+    'CACHE_REDIS_URL': 'redis://:{{ .Values.redis.password}}@{{ .Release.Name }}-redis-svc:6379/1'
+    }
+
+    FILTER_STATE_CACHE_CONFIG = {
+    'CACHE_TYPE': 'RedisCache',
+    'CACHE_DEFAULT_TIMEOUT': 86400,
+    'CACHE_KEY_PREFIX': 'superset_filter_',
+    'CACHE_REDIS_URL': 'redis://:{{ .Values.redis.password}}@{{ .Release.Name }}-redis-svc:6379/2'
+    }
+
+    EXPLORE_FORM_DATA_CACHE_CONFIG = {
+    'CACHE_TYPE': 'RedisCache',
+    'CACHE_DEFAULT_TIMEOUT': 86400,
+    'CACHE_KEY_PREFIX': 'superset_explore_',
+    'CACHE_REDIS_URL': 'redis://:{{ .Values.redis.password}}@{{ .Release.Name }}-redis-svc:6379/3'
+    }
+
+    DATA_CACHE_CONFIG = {
+    'CACHE_TYPE': 'RedisCache',
+    'CACHE_KEY_PREFIX': 'superset_results_',
+    'CACHE_DEFAULT_TIMEOUT': 86400,
+    'CACHE_REDIS_URL': 'redis://:{{ .Values.redis.password}}@{{ .Release.Name }}-redis-svc:6379/4'
+    }
+
+    from superset.stats_logger import StatsdStatsLogger
+    STATS_LOGGER = StatsdStatsLogger(host='localhost', port=9125, prefix='superset')

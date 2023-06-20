@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2018 Google Inc.
+# Copyright 2022 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,6 +32,9 @@ readonly is_admin_node="$(get_attribute_value "is-admin-node" \
 
 readonly gcs_bucket_name="$(get_attribute_value "bucket-name")"
 
+# Stop Apache while Wordpress is not ready
+systemctl stop apache2
+
 chown -R www-data:www-data /var/www
 
 # Update Apache max workers number:
@@ -55,8 +58,6 @@ function set_apache_max_workers() {
     sed -i "/MaxRequestWorkers\s\+${max_workers}\$/ a\
       \\\\tServerLimit\t\t${max_workers}" "${mpm_config_file}"
   fi
-
-  service apache2 restart
 }
 
 readonly new_max_workers="$(( "$(nproc)" * 150 ))"
@@ -215,6 +216,9 @@ elif [[ "${is_admin_node}" == "false" ]]; then
   rm /opt/c2d/downloads/gcs-push.sh
   mv /opt/c2d/downloads/gcs-pull.sh /opt/c2d/downloads/gcs-sync
 fi
+
+# Start Apache after setup
+systemctl start apache2
 
 systemctl enable gcs-sync
 systemctl start gcs-sync

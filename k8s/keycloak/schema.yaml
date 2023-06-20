@@ -1,0 +1,114 @@
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      Initial release.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  clusterConstraints:
+    resources:
+    - replicas: 1
+      requests:
+        cpu: 100m
+        memory: 100Mi
+
+  images:
+    '':
+      properties:
+        keycloak.image.repo:
+          type: REPO_WITH_REGISTRY
+        keycloak.image.tag:
+          type: TAG
+    postgresql:
+      properties:
+        postgresql.image.repo:
+          type: REPO_WITH_REGISTRY
+        postgresql.image.tag:
+          type: TAG
+
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  keycloak.admin.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 16
+        includeSymbols: False
+        base64: False
+  keycloak.replicas:
+    type: integer
+    title: Keycloak webserver replicas
+    description: Number of replicas of the Keycloak webserver replicas
+    default: 1
+    minimum: 1
+  keycloak.serviceAccount:
+    type: string
+    title: Keycloak Service Account
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        description: Service account used by Keycloak deployment
+        roles:
+        - type: ClusterRole
+          rulesType: CUSTOM
+          rules:
+          - apiGroups: [""]
+            resources:
+            - pods
+            verbs:
+            - get
+            - list
+  enablePublicServiceAndIngress:
+    type: boolean
+    title: Enable public IP access
+    description: Set the Keycloak Service type to NodePort and enable Ingress
+    default: false
+  postgresql.persistence.storageClass:
+    type: string
+    title: PostgreSQL StorageClass
+    description: You can choose an existing StorageClass or create a new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  postgresql.persistence.size:
+    type: string
+    title: Storage size for PostgreSQL persistent volume
+    default: "5Gi"
+    description: PostgreSQL storage size
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  metrics.exporter.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project must have Stackdriver enabled. Non-GCP clusters cannot export metrics to Stackdriver.
+    default: false
+  certificate:
+    type: string
+    x-google-marketplace:
+      type: TLS_CERTIFICATE
+      tlsCertificate:
+        generatedProperties:
+          base64EncodedPrivateKey: tls.base64EncodedPrivateKey
+          base64EncodedCertificate: tls.base64EncodedCertificate
+
+required:
+- name
+- namespace
+- keycloak.replicas
+- postgresql.persistence.size
+- enablePublicServiceAndIngress
+- certificate

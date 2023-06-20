@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-public
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "hydra.labels" . | indent 4 }}
+    app.kubernetes.io/component: hydra
+  annotations:
+    cloud.google.com/backend-config: '{"default": "{{ .Release.Name }}-public"}'
+spec:
+  type: ClusterIP
+  ports:
+    - port: 4444
+      targetPort: http-public
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: hydra

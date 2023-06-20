@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -46,8 +46,11 @@ end
 bash 'Hold kubernetes packages version' do
   user 'root'
   code <<-EOH
-    apt-mark hold kubelet kubeadm kubectl containerd.io
+    apt-get install -y kubelet=${version} && apt-mark hold kubelet kubeadm kubectl containerd.io
 EOH
+  environment({
+    'version' => node['kubernetes']['version'],
+  })
 end
 
 bash 'Disable swap memory' do
@@ -99,6 +102,7 @@ bash 'Configure containerd' do
 
     mkdir -p /etc/containerd
     containerd config default > /etc/containerd/config.toml
+    sed -i 's/SystemdCgroup = false/SystemdCgroup = true/g' /etc/containerd/config.toml
     systemctl restart containerd
   EOH
 end
@@ -108,20 +112,6 @@ bash 'Add KUBECONFIG env' do
   code <<-EOH
     echo 'export KUBECONFIG="/etc/kubernetes/admin.conf"' >> /etc/profile
   EOH
-end
-
-bash 'Get weave network plugin' do
-  user 'root'
-  code <<-EOH
-    mkdir -p /opt/kubernetes/weave
-    curl -sSL -k https://cloud.weave.works/k8s/net?k8s-version=v${kubernetes_version} \
-      -o /opt/kubernetes/weave/network_addon.yaml
-    curl -sSL -k https://raw.githubusercontent.com/weaveworks/weave/master/LICENSE \
-      -o /opt/kubernetes/weave/LICENSE
-  EOH
-  environment({
-    'kubernetes_version' => node['kubernetes']['version'],
-  })
 end
 
 c2d_startup_script 'kubernetes-setup'
