@@ -6,8 +6,8 @@ include ../images.Makefile
 CHART_NAME := hazelcast
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 5.2
-TRACK_MC ?= 5.2
+TRACK ?= 5.3
+TRACK_MC ?= 5.3
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
