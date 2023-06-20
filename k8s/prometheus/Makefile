@@ -6,7 +6,7 @@ include ../images.Makefile
 CHART_NAME := prometheus
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 2.41
+TRACK ?= 2.42
 TRACK_ALERTMANAGER ?= 0.25
 TRACK_KUBESTATEMETRICS ?= 2.4
 TRACK_NODEEXPORTER ?= 1.5
