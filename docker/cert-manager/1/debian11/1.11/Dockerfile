@@ -3,7 +3,7 @@ FROM  marketplace.gcr.io/google/c2d-debian11 as build
 ENV APP_VERSION=1.11.2
 
 RUN apt-get update \
-    && apt-get install make jq docker.io -y --no-install-recommends 
+    && apt-get install make jq docker.io -y --no-install-recommends
 
 WORKDIR /src/cert-manager/
 
@@ -36,5 +36,7 @@ COPY --from=build /src/cert-manager/_bin/server/cainjector-linux-amd64 /app/cain
 COPY --from=build /src/cert-manager/_bin/server/webhook-linux-amd64 /app/webhook
 COPY --from=build /src/cert-manager/_bin/server/acmesolver-linux-amd64 /app/acmeresolver
 COPY --from=build /src/cert-manager/_bin/cmctl/cmctl-linux-amd64 /app/cmctl
+COPY --from=build /src/cert-manager/ /usr/src/cert-manager
+
 
 USER cert-manager
