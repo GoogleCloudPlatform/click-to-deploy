@@ -31,7 +31,7 @@ RUN groupadd -g 1000 git && useradd -m -u 1000 -g git -m -s /bin/bash -d /data/g
 RUN mkdir -p /data/gogs/data \
     && mkdir /data/gogs/conf \
     && mkdir /data/gogs/logs \
-    && mkdir /data/git/gogs-repositories \ 
+    && mkdir /data/git/gogs-repositories \
     && chown -R git:git /data
 
 USER git
@@ -40,6 +40,12 @@ ENV C2D_RELEASE 0.12.11
 
 VOLUME ["/data", "/backup"]
 EXPOSE 22 3000
+
+# Download Licenses
+COPY components.csv /components.csv
+COPY download-licenses.sh /download-licenses.sh
+RUN mkdir -p /usr/src && \
+		/download-licenses.sh /components.csv /usr/src/licenses
 
 ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
 CMD [ "/app/gogs/gogs", "web" ]
