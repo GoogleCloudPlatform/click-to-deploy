@@ -36,18 +36,18 @@ RUN mkdir -p /data/gogs/data \
     && mkdir /data/git/gogs-repositories \
     && chown -R git:git /data
 
+# Download Licenses
+COPY components.csv /components.csv
+COPY download-licenses.sh /download-licenses.sh
+RUN mkdir -p /usr/src && \
+		/download-licenses.sh /components.csv /usr/src/licenses
+
 USER git
 
 ENV C2D_RELEASE {{ $gogs.Version }}
 
 VOLUME ["/data", "/backup"]
 EXPOSE 22 3000
-
-# Download Licenses
-COPY components.csv /components.csv
-COPY download-licenses.sh /download-licenses.sh
-RUN mkdir -p /usr/src && \
-		/download-licenses.sh /components.csv /usr/src/licenses
 
 ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
 CMD [ "/app/gogs/gogs", "web" ]
