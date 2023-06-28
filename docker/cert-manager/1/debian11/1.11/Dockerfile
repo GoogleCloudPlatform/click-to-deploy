@@ -38,5 +38,10 @@ COPY --from=build /src/cert-manager/_bin/server/acmesolver-linux-amd64 /app/acme
 COPY --from=build /src/cert-manager/_bin/cmctl/cmctl-linux-amd64 /app/cmctl
 COPY --from=build /src/cert-manager/ /usr/src/cert-manager
 
+# Download Licenses
+COPY components.csv /components.csv
+COPY download-licenses.sh /download-licenses.sh
+RUN mkdir -p /usr/src && \
+		/download-licenses.sh /components.csv /usr/src/licenses
 
 USER cert-manager
