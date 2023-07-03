@@ -34,6 +34,9 @@ remote_file '/tmp/wp-cli.phar' do
   action :create
 end
 
+# OSPO
+
+
 # Reference: http://wp-cli.org/#installing
 bash 'configure wp cli' do
   cwd '/tmp'
@@ -96,4 +99,21 @@ bash 'edit php.ini' do
     sed -i 's/post_max_size = .*/post_max_size = 100M/' /etc/php/*/apache2/php.ini
     sed -i 's/max_execution_time = .*/max_execution_time = 120/' /etc/php/*/apache2/php.ini
 EOH
+end
+
+ospo_download 'Licenses and Source-code' do
+  licenses <<-EOF
+WordPress;https://github.com/WordPress/WordPress/blob/master/license.txt
+wp-cli;https://github.com/wp-cli/wp-cli/blob/main/LICENSE
+Apache_httpd;https://github.com/apache/httpd/blob/trunk/LICENSE
+PHP;https://github.com/php/php-src/blob/master/LICENSE
+Zend_Engine;https://github.com/php/php-src/blob/master/Zend/LICENSE
+MySQL8;https://github.com/mysql/mysql-server/blob/8.0/LICENSE
+EOF
+  repos <<-EOF
+https://github.com/WordPress/WordPress.git
+EOF
+  ref_repos <<-EOF
+  https://github.com/mysql/mysql-server
+EOF
 end
