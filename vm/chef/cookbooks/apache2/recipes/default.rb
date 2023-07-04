@@ -21,6 +21,12 @@ package 'install_packages' do
   action :install
 end
 
+ospo_download 'Licenses and Source-code' do
+  licenses <<-EOF
+Apache;https://github.com/apache/httpd/blob/trunk/LICENSE
+EOF
+end
+
 service 'apache2' do
   action [ :enable, :restart ]
 end
