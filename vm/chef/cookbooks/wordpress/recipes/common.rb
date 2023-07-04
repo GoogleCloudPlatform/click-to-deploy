@@ -34,9 +34,6 @@ remote_file '/tmp/wp-cli.phar' do
   action :create
 end
 
-# OSPO
-
-
 # Reference: http://wp-cli.org/#installing
 bash 'configure wp cli' do
   cwd '/tmp'

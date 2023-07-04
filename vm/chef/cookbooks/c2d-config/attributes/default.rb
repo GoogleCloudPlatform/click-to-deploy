@@ -14,6 +14,8 @@
 
 default['c2d-config']['common-packages'] = [
   'apt-transport-https',
+  'ca-certificates',
+  'wget',
   'git',
   'jq',
   'vim',
