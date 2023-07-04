@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,19 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-
-bash 'Setup Repo' do
-  user 'root'
-  code <<-EOH
-    wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
-EOH
-end
-
 apt_repository 'php' do
   uri 'https://packages.sury.org/php/'
-  # key 'https://packages.sury.org/php/apt.gpg'
   distribution node['php81']['distribution']
+  key 'https://packages.sury.org/php/apt.gpg'
   components ['main']
 end
 

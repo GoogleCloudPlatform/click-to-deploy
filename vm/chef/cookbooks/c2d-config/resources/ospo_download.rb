@@ -49,6 +49,8 @@ action :install do
   # Download all scripts
   ['download-licenses', 'download-repos', 'download-ref-repos'].each do |file|
     remote_file "#{scripts_dir}/#{file}.sh" do
+      # TODO(armandomiani): change it to master branch
+      # source "https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/miani-vm-wordpress-ospo-20230627/scripts/#{file}.sh"
       source "https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/miani-vm-wordpress-ospo-20230627/scripts/#{file}.sh"
       mode '0700'
       action :create
