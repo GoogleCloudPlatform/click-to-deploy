@@ -78,8 +78,7 @@ git fetch origin master
 git show-ref
 
 # Compare current branch with master
-git diff --name-only "local" "origin/master" \
-  all_changes
+git diff --name-only "local" "origin/master" > all_changes
 
 # Test if a solution has been changed
 if [[ ! $(grep -P -o "${match_solution_change}" all_changes) ]]; then
