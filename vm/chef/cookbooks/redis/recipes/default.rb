@@ -85,4 +85,16 @@ package 'remove_temporary_deps' do
   action :purge
 end
 
+ospo_download 'Licenses and Source-code' do
+  licenses <<-EOF
+Redis;https://github.com/redis/redis/blob/unstable/COPYING
+jemalloc;https://github.com/redis/redis/blob/unstable/deps/jemalloc/COPYING
+fpconv;https://github.com/redis/redis/blob/unstable/deps/fpconv/LICENSE.txt
+hdr_histogram;https://github.com/redis/redis/blob/unstable/deps/hdr_histogram/LICENSE.txt
+hiredis;https://github.com/redis/redis/blob/unstable/deps/hiredis/COPYING
+lua;https://github.com/redis/redis/blob/unstable/deps/lua/COPYRIGHT
+linenoise;https://github.com/antirez/linenoise/blob/master/LICENSE
+EOF
+end
+
 c2d_startup_script 'redis'

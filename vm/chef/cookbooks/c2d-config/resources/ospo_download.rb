@@ -61,7 +61,7 @@ end
 action :prepare do
   # Create diretory for storing the licenses and sources
   [ licenses_dir, sources_dir ].each do |dir|
-    directory licenses_dir do
+    directory dir do
       owner 'root'
       group 'root'
       mode '0600'
