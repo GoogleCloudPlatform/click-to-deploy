@@ -70,13 +70,25 @@ function trigger_build() {
     | awk '/QUEUED/ { print $1 }'
 }
 
+declare -r match_solution_change="^([a-zA-Z0-9._-]+)\/([a-zA-Z0-9._-]+)\/"
+
 # Rename target branch to local, fetch master and identify solution changes
 git branch -m "local"
 git fetch origin master
 git show-ref
 
-git diff --name-only "local" "origin/master" \
-  | grep -P -o "^([a-zA-Z0-9._-]+)\/([a-zA-Z0-9._-]+)\/" \
+# Compare current branch with master
+git diff --name-only "local" "origin/master" > all_changes
+
+# Test if a solution has been changed
+if [[ ! $(grep -P -o "${match_solution_change}" all_changes) ]]; then
+  echo "No solution has been changed."
+  exit 0
+fi
+
+# Retrieve unique solutions changed
+cat all_changes \
+  | grep -P -o "${match_solution_change}" \
   | uniq \
   | tee changes
 
