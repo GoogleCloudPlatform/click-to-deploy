@@ -33,3 +33,10 @@ end
 node['php81']['modules'].each do |pkg|
   include_recipe "php81::module_#{pkg}"
 end
+
+ospo_download 'Licenses and Source-code' do
+  licenses <<-EOF
+PHP;https://github.com/php/php-src/blob/master/LICENSE
+Zend_Engine;https://github.com/php/php-src/blob/master/Zend/LICENSE
+EOF
+end
