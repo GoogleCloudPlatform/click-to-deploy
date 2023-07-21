@@ -6,7 +6,7 @@ include ../images.Makefile
 CHART_NAME := hydra
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 2.0
+TRACK ?= 2.1
 POSTGRESQL_TAG ?= latest
 POSTGRESQL_EXPORTER_TAG ?= latest
 METRICS_EXPORTER_TAG ?= v0.11.1-gke.1

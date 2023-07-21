@@ -6,7 +6,7 @@ include ../images.Makefile
 CHART_NAME := superset
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 2.0
+TRACK ?= 2.1
 
 METRICS_EXPORTER_TAG ?= v0.11.1-gke.1
 REDIS_EXPORTER_TAG ?= 1.3.1

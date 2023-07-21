@@ -6,7 +6,7 @@ include ../images.Makefile
 CHART_NAME := rabbitmq
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 3.9
+TRACK ?= 3.11
 
 METRICS_EXPORTER_TAG ?= v0.9.0
 
