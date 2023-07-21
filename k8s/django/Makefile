@@ -6,7 +6,7 @@ include ../images.Makefile
 CHART_NAME := django
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 4.1
+TRACK ?= 4.2
 UWSGI_EXPORTER_TRACK ?= 1.1
 NGINX_TRACK ?= 1.23
 EXPORTER_TAG ?= 0.7
