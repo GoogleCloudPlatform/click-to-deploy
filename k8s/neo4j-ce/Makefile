@@ -7,7 +7,7 @@ CHART_NAME := neo4j-ce
 
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 5.5
+TRACK ?= 5.8
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 IMAGE_NEO4J_CE ?= $(SOURCE_REGISTRY)/neo4j5:$(TRACK)
