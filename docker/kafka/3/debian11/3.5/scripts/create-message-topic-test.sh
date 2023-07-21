@@ -1,33 +1,25 @@
-# Copyright 2023 Google LLC
+#!/bin/bash
+#
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#      http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+# Send message to a topic define in a Kafka broker list, script used by functional tests.
+#
+# Use:
+#
+# /opt/docker-kafka/scripts/create-message-topic-test.sh broker-list topic msg
+#
+set -e
 
-
-cloudbuild:
-  enable_parallel: false
-versions:
-- dir: 5/debian11/5.18
-  from: marketplace.gcr.io/google/c2d-debian11
-  packages:
-    activemq:
-      version: 5.18.1
-  repo: activemq5
-  tags:
-  - 5.18.1-debian11
-  - 5.18-debian11
-  - 5-debian11
-  - 5.18.1
-  - '5.18'
-  - '5'
-  - latest
-
+echo "$3" | /opt/kafka/bin/kafka-console-producer.sh --broker-list "$1" --topic "$2" 2>&1 >/dev/null && echo OK
