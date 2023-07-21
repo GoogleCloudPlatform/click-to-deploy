@@ -20,13 +20,13 @@ versions:
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     harbor:
-      version: 2.8.1
+      version: 2.8.2
   repo: harbor2
   tags:
-  - 2.8.1-debian11
+  - 2.8.2-debian11
   - 2.8-debian11
   - 2-debian11
-  - 2.8.1
+  - 2.8.2
   - '2.8'
   - '2'
   - latest
