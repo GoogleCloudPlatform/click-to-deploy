@@ -20,14 +20,14 @@ versions:
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     hydra:
-      gpg: d08082d99f45861f68189de3fcfa14d4857830049bc72a86b100354cc24a1958
-      version: 2.1.1
+      gpg: acab44b1f5324e001fcfecaa7115a5c3a07156e3e0d3840d8ed12deca4db6490
+      version: 2.1.2
   repo: hydra2
   tags:
-  - 2.1.1-debian11
+  - 2.1.2-debian11
   - 2.1-debian11
   - 2-debian11
-  - 2.1.1
+  - 2.1.2
   - '2.1'
   - '2'
   - latest
