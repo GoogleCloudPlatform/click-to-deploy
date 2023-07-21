@@ -7,7 +7,7 @@ CHART_NAME := gogs
 APP_ID ?= $(CHART_NAME)
 WAIT_FOR_READY_TIMEOUT := 600
 
-TRACK ?= 0.12
+TRACK ?= 0.13
 # Track for components
 POSTGRESQL_TRACK ?= 13.8
 NFS_TRACK ?= 1.3
