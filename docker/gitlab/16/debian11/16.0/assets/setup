@@ -1,0 +1,67 @@
+#!/bin/bash
+#
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -e
+
+source /etc/os-release
+
+# Generate release file
+/assets/generate-release
+
+# Install GitLab
+wget --quiet ${DOWNLOAD_URL} -O /tmp/gitlab.deb && dpkg -i /tmp/gitlab.deb && rm /tmp/gitlab.deb
+rm -rf /var/lib/apt/lists/*
+
+# Create sshd daemon
+mkdir -p /opt/gitlab/sv/sshd/supervise /opt/gitlab/sv/sshd/log/supervise
+mkfifo /opt/gitlab/sv/sshd/supervise/ok /opt/gitlab/sv/sshd/log/supervise/ok
+printf "#!/bin/sh\nexec 2>&1\numask 077\nexec /usr/sbin/sshd -D -f /assets/sshd_config -e" > /opt/gitlab/sv/sshd/run
+printf "#!/bin/sh\nexec svlogd -tt /var/log/gitlab/sshd" > /opt/gitlab/sv/sshd/log/run
+chmod a+x /opt/gitlab/sv/sshd/run /opt/gitlab/sv/sshd/log/run
+
+# Remove current gitlab.rb file
+rm -f /etc/gitlab/gitlab.rb
+
+# Patch omnibus package
+sed -i "s/external_url 'GENERATED_EXTERNAL_URL'/# external_url 'GENERATED_EXTERNAL_URL'/" /opt/gitlab/etc/gitlab.rb.template
+sed -i "s/\/etc\/gitlab\/gitlab.rb/\/assets\/gitlab.rb/" /opt/gitlab/embedded/cookbooks/gitlab/recipes/show_config.rb
+sed -i "s/\/etc\/gitlab\/gitlab.rb/\/assets\/gitlab.rb/" /opt/gitlab/embedded/cookbooks/gitlab/recipes/config.rb
+
+cp /assets/gitlab_sysctl.rb /opt/gitlab/embedded/cookbooks/package/resources/gitlab_sysctl.rb
+
+# Set install type to docker
+echo 'gitlab-docker' > /opt/gitlab/embedded/service/gitlab-rails/INSTALLATION_TYPE
+
+# Create groups
+groupadd -g 998 git
+groupadd -g 999 gitlab-www
+groupadd -g 997 gitlab-redis
+groupadd -g 996 gitlab-psql
+
+groupadd -g 994 mattermost
+groupadd -g 993 registry
+groupadd -g 992 gitlab-prometheus
+groupadd -g 991 gitlab-consul
+
+# Create accounts
+useradd -m -u 998 -g git -m -s /bin/sh -d /var/opt/gitlab git
+useradd -m -u 999 -g gitlab-www -m -s /bin/false -d /var/opt/gitlab/nginx gitlab-www
+useradd -m -u 997 -g gitlab-redis -m -s /bin/false -d /var/opt/gitlab/redis gitlab-redis
+useradd -m -u 996 -g gitlab-psql -m -s /bin/sh -d /var/opt/gitlab/postgresql gitlab-psql
+useradd -m -u 994 -g mattermost -m -s /bin/sh -d /var/opt/gitlab/mattermost mattermost
+useradd -m -u 993 -g registry -m -s /bin/sh -d /var/opt/gitlab/registry registry
+useradd -m -u 992 -g gitlab-prometheus -m -s /bin/sh -d /var/opt/gitlab/prometheus gitlab-prometheus
+useradd -m -u 991 -g gitlab-consul -m -s /bin/sh -d /var/opt/gitlab/consul gitlab-consul

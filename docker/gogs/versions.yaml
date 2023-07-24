@@ -30,7 +30,7 @@ versions:
   - '0.13'
   - '0'
   - latest
-  templateSubDir: 0.13
+  templateSubDir: '0.13'
 - dir: 0/debian11/0.12
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
@@ -42,4 +42,5 @@ versions:
   - 0.12-debian11
   - 0.12.11
   - '0.12'
-  templateSubDir: 0.12
+  templateSubDir: '0.12'
+
