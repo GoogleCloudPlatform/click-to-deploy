@@ -14,6 +14,12 @@
 
 include_recipe 'c2d-config'
 
+ospo_download 'Licenses and Source-code' do
+  licenses <<-EOF
+PostgreSQL;https://github.com/postgres/postgres/blob/master/COPYRIGHT
+EOF
+end
+
 apt_repository 'apt.postgresql.org' do
   uri node['postgresql']['repository_url']
   key node['postgresql']['key']

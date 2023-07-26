@@ -83,5 +83,23 @@ cookbook_file '/opt/c2d/kafka-utils' do
   action :create
 end
 
+ospo_download 'Licenses and Source-code' do
+  licenses <<-EOF
+Openjdk11;https://github.com/openjdk/jdk/blob/master/LICENSE
+Kafka;https://github.com/apache/kafka/blob/trunk/LICENSE
+argparse;https://github.com/apache/kafka/blob/trunk/licenses/argparse-MIT
+classgraph;https://github.com/apache/kafka/blob/trunk/licenses/classgraph-MIT
+jline;https://github.com/apache/kafka/blob/trunk/licenses/jline-BSD-3-clause
+jopt-simple-MIT;https://github.com/apache/kafka/blob/trunk/licenses/jopt-simple-MIT
+paranamer-BSD-3-clause;https://github.com/apache/kafka/blob/trunk/licenses/paranamer-BSD-3-clause
+pcollections;https://github.com/apache/kafka/blob/trunk/licenses/pcollections-MIT
+slf4j-MIT;https://github.com/apache/kafka/blob/trunk/licenses/slf4j-MIT
+zstd-jni-BSD-2-clause;https://github.com/apache/kafka/blob/trunk/licenses/zstd-jni-BSD-2-clause
+EOF
+  ref_repos <<-EOF
+https://github.com/openjdk/jdk
+EOF
+end
+
 # Copy startup script
 c2d_startup_script 'kafka'

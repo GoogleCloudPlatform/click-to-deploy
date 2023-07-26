@@ -12,18 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-execute 'download packages' do
-  command "curl -sL https://deb.nodesource.com/setup_#{node['nodejs']['version']}.x | bash -"
-end
-
-package 'install packages' do
-  package_name node['nodejs']['packages']
-  action :install
-end
-
 ospo_download 'Licenses and Source-code' do
+  repos <<-EOF
+https://github.com/paramiko/paramiko.git
+https://github.com/psycopg/psycopg2.git
+https://github.com/chardet/chardet.git
+https://github.com/Fyrd/caniuse
+https://github.com/ben-eb/caniuse-lite
+https://github.com/kemitchell/spdx-exceptions.json.git
+EOF
   licenses <<-EOF
+WordPress;https://github.com/WordPress/WordPress/blob/master/license.txt
+wp-cli;https://github.com/wp-cli/wp-cli/blob/main/LICENSE
 Apache_httpd;https://github.com/apache/httpd/blob/trunk/LICENSE
-NodeJS;https://github.com/nodejs/node/blob/main/LICENSE
+PHP;https://github.com/php/php-src/blob/master/LICENSE
+Zend_Engine;https://github.com/php/php-src/blob/master/Zend/LICENSE
+MySQL8;https://github.com/mysql/mysql-server/blob/8.0/LICENSE
 EOF
 end

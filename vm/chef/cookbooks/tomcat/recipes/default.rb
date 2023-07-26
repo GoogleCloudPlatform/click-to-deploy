@@ -130,6 +130,12 @@ end
 apache2_disable_site '000-default'
 apache2_enable_site 'tomcat'
 
+ospo_download 'Licenses and Source-code' do
+  licenses <<-EOF
+Apache_Tomcat;https://github.com/apache/tomcat/blob/main/LICENSE
+EOF
+end
+
 c2d_startup_script 'tomcat' do
   source 'tomcat'
   action :cookbook_file

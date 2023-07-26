@@ -41,3 +41,12 @@ package 'install packages' do
   retries 5
   retry_delay 60
 end
+
+ospo_download 'Licenses and Source-code' do
+  licenses <<-EOF
+OpenJDK;https://github.com/openjdk/jdk/blob/master/LICENSE
+EOF
+  ref_repos <<-EOF
+https://github.com/openjdk/jdk
+EOF
+end
