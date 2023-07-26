@@ -6,8 +6,8 @@ pillow==9.4.0
 pyopenssl==23.1.1
 wtforms==2.3.3
 wtforms-json==0.3.3
+mysqlclient==2.1.0
 psycopg2-binary
-mysqlclient
 pybigquery
 statsd
 statsd-client
