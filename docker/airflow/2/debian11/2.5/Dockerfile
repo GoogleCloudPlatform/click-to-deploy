@@ -35,6 +35,7 @@ ENV DEV_APT_DEPS="\
      lsb-release \
      nodejs \
      openssh-client \
+     pkg-config \
      postgresql-client \
      python3 \
      python3-pip \
@@ -150,6 +151,7 @@ ENV RUNTIME_APT_DEPS="\
        lsb-release \
        netcat \
        openssh-client \
+       pkg-config \
        postgresql-client \
        python2 \
        python3 \
