@@ -1,4 +1,4 @@
-ARG AIRFLOW_VERSION="2.6.1"
+ARG AIRFLOW_VERSION="2.6.3"
 ARG AIRFLOW_EXTRAS="amazon,async,celery,cncf.kubernetes,dask,docker,elasticsearch,ftp,google,google_auth,grpc,hashicorp,http,ldap,microsoft.azure,mysql,odbc,pandas,postgres,redis,sendgrid,sftp,slack,ssh,statsd,virtualenv"
 
 ARG AIRFLOW_HOME=/opt/airflow
@@ -35,6 +35,7 @@ ENV DEV_APT_DEPS="\
      lsb-release \
      nodejs \
      openssh-client \
+     pkg-config \
      postgresql-client \
      python3 \
      python3-pip \
@@ -150,6 +151,7 @@ ENV RUNTIME_APT_DEPS="\
        lsb-release \
        netcat \
        openssh-client \
+       pkg-config \
        postgresql-client \
        python2 \
        python3 \
@@ -221,7 +223,7 @@ WORKDIR ${AIRFLOW_HOME}
 EXPOSE 8080
 USER ${AIRFLOW_UID}
 
-ENV C2D_RELEASE 2.6.1
+ENV C2D_RELEASE 2.6.3
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--", "/entrypoint"]
 CMD [""]
