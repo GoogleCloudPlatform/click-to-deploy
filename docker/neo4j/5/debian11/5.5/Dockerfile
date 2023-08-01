@@ -60,6 +60,10 @@ RUN apt update \
 
 # Add debian backport source repository
 RUN set -x \
+<<<<<<< HEAD
+=======
+    && echo 'deb http://ftp.debian.org/debian bullseye-backports main' > /etc/apt/sources.list.d/bullseye-backports.list \
+>>>>>>> master
     && apt update \
     && apt install -y \
     openjdk-17-jdk \

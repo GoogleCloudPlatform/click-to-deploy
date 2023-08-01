@@ -16,18 +16,31 @@
 cloudbuild:
   enable_parallel: false
 versions:
+- dir: 0/debian11/0.13
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    gogs:
+      version: 0.13.0
+  repo: gogs0
+  tags:
+  - 0.13.0-debian11
+  - 0.13-debian11
+  - 0-debian11
+  - 0.13.0
+  - '0.13'
+  - '0'
+  - latest
+  templateSubDir: '0.13'
 - dir: 0/debian11/0.12
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     gogs:
-      version: 0.12.10
+      version: 0.12.11
   repo: gogs0
   tags:
-  - 0.12.10-debian11
+  - 0.12.11-debian11
   - 0.12-debian11
-  - 0-debian11
-  - 0.12.10
+  - 0.12.11
   - '0.12'
-  - '0'
-  - latest
+  templateSubDir: '0.12'
 

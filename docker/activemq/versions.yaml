@@ -30,15 +30,4 @@ versions:
   - '5.18'
   - '5'
   - latest
-- dir: 5/debian11/5.17
-  from: marketplace.gcr.io/google/c2d-debian11
-  packages:
-    activemq:
-      version: 5.17.4
-  repo: activemq5
-  tags:
-  - 5.17.4-debian11
-  - 5.17-debian11
-  - 5.17.4
-  - '5.17'
 

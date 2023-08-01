@@ -54,9 +54,9 @@ RUN a2enmod rewrite expires
 WORKDIR /usr/src/drupal
 
 # https://www.drupal.org/node/3060/release
-ENV DRUPAL_VERSION 10.0.8
-ENV C2D_RELEASE 10.0.8
-ENV DRUPAL_MD5 c51b557136b053e68220f095eee1dc1f
+ENV DRUPAL_VERSION 10.0.9
+ENV C2D_RELEASE 10.0.9
+ENV DRUPAL_MD5 d870e788eb9651dfc93fcff3e3636322
 
 # Download package and extract to web volume
 RUN set -eux; \
@@ -65,8 +65,8 @@ RUN set -eux; \
 	tar -xz --strip-components=1 -f drupal.tar.gz; \
 	rm drupal.tar.gz
 
-ENV COMPOSER_VERSION 2.2.8
-ENV COMPOSER_SHA256 e1e1c580a237c739ecc1be57cf512e6b741faaa566439257d19ecd739ddfefaf
+ENV COMPOSER_VERSION 2.5.8
+ENV COMPOSER_SHA256 f07934fad44f9048c0dc875a506cca31cc2794d6aebfc1867f3b1fbf48dce2c5
 
 # Install composer binary and install drush
 RUN set -eux; \
