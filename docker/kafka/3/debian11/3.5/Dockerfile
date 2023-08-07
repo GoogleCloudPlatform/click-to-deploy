@@ -1,9 +1,9 @@
 FROM marketplace.gcr.io/google/c2d-debian11
 
-ARG KAFKA_VERSION=3.4.1
+ARG KAFKA_VERSION=3.5.0
 ARG SCALA_VERSION=2.13
 
-ENV C2D_RELEASE 3.4.1
+ENV C2D_RELEASE 3.5.0
 
 RUN set -ex \
   && apt-get update \
@@ -30,7 +30,7 @@ RUN set -ex; \
 
 COPY --chown=$KAFKA_USER:$KAFKA_GROUP scripts ${KAFKA_DOCKER_SCRIPTS}
 
-# Download and setup kafka version v3.4.1
+# Download and setup kafka version v3.5.0
 RUN chmod a+x ${KAFKA_DOCKER_SCRIPTS}/*.sh \
   && ln -s ${KAFKA_DOCKER_SCRIPTS}/*.sh /usr/bin \
   && curl -sSL ${KAFKA_DIST_URL} -o "/opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz" \
