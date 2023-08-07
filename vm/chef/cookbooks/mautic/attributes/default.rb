@@ -25,3 +25,5 @@ default['mautic']['packages'] = [
 default['mautic']['version'] = '4.4.6'
 default['mautic']['user'] = 'www-data'
 default['mautic']['db']['name'] = 'mautic'
+
+default['php74']['distribution'] = 'bullseye'
