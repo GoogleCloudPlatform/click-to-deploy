@@ -20,13 +20,13 @@ versions:
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     argo_workflows:
-      version: 3.4.8
+      version: 3.4.10
   repo: argo-workflows3
   tags:
-  - 3.4.8-debian11
+  - 3.4.10-debian11
   - 3.4-debian11
   - 3-debian11
-  - 3.4.8
+  - 3.4.10
   - '3.4'
   - '3'
   - latest
