@@ -21,6 +21,8 @@ versions:
   packages:
     argo_workflows:
       version: 3.4.10
+    nodejs:
+      major: 20
   repo: argo-workflows3
   tags:
   - 3.4.10-debian11
@@ -30,4 +32,3 @@ versions:
   - '3.4'
   - '3'
   - latest
-
