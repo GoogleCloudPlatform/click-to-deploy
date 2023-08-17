@@ -41,3 +41,18 @@ versions:
   - 2.0-debian11
   - 2.0.1
   - '2.0'
+- dir: exporter
+  excludeTests:
+  - tests/functional_tests/running_test.yaml
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    statsd_exporter:
+      version: 0.23.1
+  repo: statsd-exporter0
+  tags:
+  - 0.23.1
+  - '0.23'
+  - '0'
+  - latest
+  templateSubDir: exporter
+
