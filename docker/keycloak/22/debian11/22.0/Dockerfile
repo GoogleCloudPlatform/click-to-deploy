@@ -19,9 +19,12 @@ ENV LANGUAGE=C.UTF-8 LANG=C.UTF-8 LC_ALL=C.UTF-8 LC_CTYPE=C.UTF-8 LC_MESSAGES=C.
 COPY --from=build --chown=1000:0 /opt/keycloak /opt/keycloak
 
 RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates-java
+
+RUN apt-get update \
     && apt-get install -y --no-install-recommends \
           ca-certificates-java \
-          curl\
+          curl \
           locales \
           openjdk-17-jre-headless \
           libh2-java \
