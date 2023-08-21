@@ -20,15 +20,15 @@ versions:
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     conjur:
-      version: 1.19.3
+      version: 1.19.5
     ruby:
       version: 3.0.0
   repo: conjur1
   tags:
-  - 1.19.3-debian11
+  - 1.19.5-debian11
   - 1.19-debian11
   - 1-debian11
-  - 1.19.3
+  - 1.19.5
   - '1.19'
   - '1'
   - latest
