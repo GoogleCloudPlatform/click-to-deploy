@@ -32,16 +32,4 @@ versions:
   - '2.6'
   - '2'
   - latest
-- dir: 2/debian11/2.5
-  from: marketplace.gcr.io/google/c2d-debian11
-  packages:
-    airflow:
-      version: 2.5.3
-    pip:
-      version: 22.3.1
-  repo: airflow2
-  tags:
-  - 2.5.3-debian11
-  - 2.5-debian11
-  - 2.5.3
-  - '2.5'
+
