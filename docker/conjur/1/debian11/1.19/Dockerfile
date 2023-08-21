@@ -11,7 +11,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     TMP_DIR=/opt/conjur-server/tmp \
     SSL_CERT_DIRECTORY=/opt/conjur/etc/ssl
 
-ENV CONJUR_APP_VERSION=1.19.3
+ENV CONJUR_APP_VERSION=1.19.5
 ENV RUBY_VERSION=3.0.0
 ENV OPENSSL_FIPS_ENABLED "false"
 
@@ -68,7 +68,7 @@ ENV RAILS_ENV production
 
 EXPOSE 80
 
-ENV C2D_RELEASE 1.19.3
+ENV C2D_RELEASE 1.19.5
 
 ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
 CMD ["conjurctl", "server"]

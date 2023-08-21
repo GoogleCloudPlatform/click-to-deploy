@@ -32,16 +32,4 @@ versions:
   - '1.45'
   - '1'
   - latest
-- dir: 1/debian11/1.40
-  from: marketplace.gcr.io/google/c2d-debian11
-  packages:
-    golang:
-      version: '1.19'
-    jaeger-operator:
-      version: 1.40.0
-  repo: jaeger-operator1
-  tags:
-  - 1.40.0-debian11
-  - 1.40-debian11
-  - 1.40.0
-  - '1.40'
+
