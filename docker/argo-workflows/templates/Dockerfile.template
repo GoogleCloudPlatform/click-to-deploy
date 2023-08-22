@@ -13,6 +13,7 @@
 # limitations under the License.
 
 {{ $argo_workflows := index .Packages "argo_workflows" }}
+{{ $nodejs := index .Packages "nodejs" }}
 # Stage: Server and Workflow Controller: Builder
 FROM golang:1.18 as builder
 
@@ -43,7 +44,7 @@ RUN go mod download
 
 
 # Stage: Server: UI
-FROM node:16 as argo-ui
+FROM node:{{ $nodejs.Major }} as argo-ui
 
 COPY --from=builder /go/src/github.com/argoproj/argo-workflows/ui/package.json ui/
 COPY --from=builder /go/src/github.com/argoproj/argo-workflows/ui/yarn.lock ui/
