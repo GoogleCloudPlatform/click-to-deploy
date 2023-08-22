@@ -20,13 +20,13 @@ versions:
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     activemq:
-      version: 5.18.1
+      version: 5.18.2
   repo: activemq5
   tags:
-  - 5.18.1-debian11
+  - 5.18.2-debian11
   - 5.18-debian11
   - 5-debian11
-  - 5.18.1
+  - 5.18.2
   - '5.18'
   - '5'
   - latest
