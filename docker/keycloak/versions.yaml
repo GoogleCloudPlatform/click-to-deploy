@@ -16,21 +16,39 @@
 cloudbuild:
   enable_parallel: false
 versions:
+- dir: 22/debian11/22.0
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    h2database:
+      version: 1.4.197
+    keycloak:
+      version: 22.0.1
+    sshdcommon:
+      version: 2.9.2
+  repo: keycloak22
+  tags:
+  - 22.0.1-debian11
+  - 22.0-debian11
+  - 22-debian11
+  - 22.0.1
+  - '22.0'
+  - '22'
+  - latest
 - dir: 21/debian11/21.1
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     h2database:
       version: 1.4.197
     keycloak:
-      version: 21.1.1
+      version: 21.1.2
     sshdcommon:
       version: 2.9.2
   repo: keycloak21
   tags:
-  - 21.1.1-debian11
+  - 21.1.2-debian11
   - 21.1-debian11
   - 21-debian11
-  - 21.1.1
+  - 21.1.2
   - '21.1'
   - '21'
   - latest
@@ -49,3 +67,4 @@ versions:
   - 21.0-debian11
   - 21.0.2
   - '21.0'
+
