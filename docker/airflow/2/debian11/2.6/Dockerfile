@@ -213,9 +213,6 @@ RUN set -eux; \
 	GNUPGHOME="$(mktemp -d)"; \
 	export GNUPGHOME; \
 	gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \
-	for key in $GPG_KEYS; do \
-		gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "$key"; \
-	done; \
 	gpg --batch --verify /usr/sbin/gosu.asc /usr/sbin/gosu; \
 	gpgconf --kill all; \
 	rm -rf "$GNUPGHOME" /usr/sbin/gosu.asc; \
