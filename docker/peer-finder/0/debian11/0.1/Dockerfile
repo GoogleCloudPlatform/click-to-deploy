@@ -22,9 +22,14 @@ RUN set -eux \
         wget \
         bash \
         dnsutils \
-        git \
-        golang \
-        govendor
+        git
+
+ENV GOLANG_VERSION 1.20
+
+# Download and Extract go binaries
+RUN curl -o go.tar.gz https://dl.google.com/go/go${GOLANG_VERSION}.linux-amd64.tar.gz \
+    && set -eux \
+    && tar -C /usr/local -zxvf go.tar.gz
 
 ADD peer-finder.go ${GOPATH}/src/peer-finder/peer-finder.go
 ADD LICENSE ${GOPATH}/src/peer-finder/LICENSE
@@ -32,6 +37,7 @@ ADD LICENSE ${GOPATH}/src/peer-finder/LICENSE
 RUN set -eux \
     && cd "${GOPATH}/src/peer-finder" \
     && export GO111MODULE=on \
+    && export PATH=$PATH:/usr/local/go/bin \
     && go mod init \
     && go get k8s.io/apimachinery/pkg/util/sets@v0.25.0 \
     && CGO_ENABLED=0 go build -o /peer-finder -a -installsuffix cgo --ldflags '-w' ./peer-finder.go
