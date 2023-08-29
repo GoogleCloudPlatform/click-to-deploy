@@ -25,6 +25,8 @@ versions:
       - 'latest'
     from: *from11
     packages:
+      golang:
+        version: '1.20'
       apimachinery:
         version: 0.25.0
 
