@@ -139,7 +139,6 @@ ENV RUNTIME_APT_DEPS="\
        curl \
        dumb-init \
        freetds-bin \
-       gosu \
        krb5-user \
        ldap-utils \
        libffi7 \
@@ -187,6 +186,43 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/log/* \
     && ln -s /usr/bin/python3 /usr/bin/python
+
+# Install Gosu
+# /usr/sbin/gosu
+ENV GOSU_VERSION 1.16
+RUN set -eux; \
+	apt-get update; \
+	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+		ca-certificates \
+		gpg \
+		gpgv \
+		libjemalloc2 \
+		pwgen \
+		tzdata \
+		xz-utils \
+		zstd ; \
+	savedAptMark="$(apt-mark showmanual)"; \
+	apt-get install -y --no-install-recommends \
+		dirmngr \
+		gpg-agent \
+		wget; \
+	rm -rf /var/lib/apt/lists/*; \
+	dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; \
+	wget -q -O /usr/sbin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch"; \
+	wget -q -O /usr/sbin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc"; \
+	GNUPGHOME="$(mktemp -d)"; \
+	export GNUPGHOME; \
+	gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \
+	gpg --batch --verify /usr/sbin/gosu.asc /usr/sbin/gosu; \
+	gpgconf --kill all; \
+	rm -rf "$GNUPGHOME" /usr/sbin/gosu.asc; \
+	apt-mark auto '.*' > /dev/null; \
+	[ -z "$savedAptMark" ] ||	apt-mark manual $savedAptMark >/dev/null; \
+	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+	chmod +x /usr/sbin/gosu; \
+	gosu --version; \
+	gosu nobody true
+
 
 COPY scripts/docker/install_mysql.sh /scripts/docker/install_mssql.sh /scripts/docker/
 RUN chmod a+x /scripts/docker/install_mysql.sh /scripts/docker/install_mssql.sh \
