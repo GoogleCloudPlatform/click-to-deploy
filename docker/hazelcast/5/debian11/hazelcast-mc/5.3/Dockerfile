@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ARG MC_VERSION=5.3.1
+ARG MC_VERSION=5.3.2
 ARG MC_INSTALL_NAME="hazelcast-management-center-${MC_VERSION}"
 ARG MC_INSTALL_JAR="hazelcast-management-center-${MC_VERSION}.jar"
 ARG MC_INSTALL_ZIP="${MC_INSTALL_NAME}.zip"
