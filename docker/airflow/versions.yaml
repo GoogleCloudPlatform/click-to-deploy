@@ -21,6 +21,9 @@ versions:
   packages:
     airflow:
       version: 2.6.3
+    gosu:
+      version: 1.16
+      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
     pip:
       version: 22.3.1
   repo: airflow2
@@ -32,4 +35,3 @@ versions:
   - '2.6'
   - '2'
   - latest
-
