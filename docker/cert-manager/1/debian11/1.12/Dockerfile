@@ -1,9 +1,9 @@
 FROM  marketplace.gcr.io/google/c2d-debian11 as build
 
-ENV APP_VERSION=1.11.3
+ENV APP_VERSION=1.12.2
 
 RUN apt-get update \
-    && apt-get install make jq docker.io -y --no-install-recommends
+    && apt-get install make jq docker.io -y --no-install-recommends 
 
 WORKDIR /src/cert-manager/
 
@@ -20,7 +20,7 @@ FROM marketplace.gcr.io/google/c2d-debian11
 
 WORKDIR /app
 
-ENV C2D_RELEASE=1.11.3
+ENV C2D_RELEASE=1.12.2
 ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 
 # Non root
@@ -36,12 +36,5 @@ COPY --from=build /src/cert-manager/_bin/server/cainjector-linux-amd64 /app/cain
 COPY --from=build /src/cert-manager/_bin/server/webhook-linux-amd64 /app/webhook
 COPY --from=build /src/cert-manager/_bin/server/acmesolver-linux-amd64 /app/acmeresolver
 COPY --from=build /src/cert-manager/_bin/cmctl/cmctl-linux-amd64 /app/cmctl
-COPY --from=build /src/cert-manager/ /usr/src/cert-manager
-
-# Download Licenses
-COPY components.csv /components.csv
-COPY download-licenses.sh /download-licenses.sh
-RUN mkdir -p /usr/src && \
-		/download-licenses.sh /components.csv /usr/src/licenses
 
 USER cert-manager
