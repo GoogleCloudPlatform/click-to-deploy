@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2020 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -133,8 +133,6 @@ gitlab-ctl reconfigure
 if [ "${GITLAB_SKIP_PG_UPGRADE}" != true ]; then
     gitlab-ctl pg-upgrade -w || failed_pg_upgrade
 fi
-
-gitlab-ctl reset-grafana
 
 if [ -n "${GITLAB_POST_RECONFIGURE_SCRIPT+x}" ]; then
   echo "Running Post Reconfigure Script..."
