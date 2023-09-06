@@ -22,14 +22,17 @@ versions:
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     zookeeper:
-      gpg: BBE7232D7991050B54C8EA0ADC08637CA615D22C
-      version: 3.8.1
+      gpg: 52A7EA3EECAE05B0A8306471790761798F6E35FC
+      version: 3.8.2
+    gosu:
+      version: 1.16
+      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
   repo: zookeeper3
   tags:
-  - 3.8.1-debian11
+  - 3.8.2-debian11
   - 3.8-debian11
   - 3-debian11
-  - 3.8.1
+  - 3.8.2
   - '3.8'
   - '3'
   - latest
@@ -49,4 +52,3 @@ versions:
   - exporter-1
   - exporter
   templateSubDir: exporter
-
