@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/component: superset
 data:
   superset_config.py: |-
-    # Superset specific config
+    # Superset specific config update
     ROW_LIMIT = 500000
 
     SUPERSET_WEBSERVER_PORT = 8088
