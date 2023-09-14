@@ -15,20 +15,19 @@
 
 cloudbuild:
   enable_parallel: false
-  machineType: E2_HIGHCPU_32
 versions:
-- dir: 1/debian11/1.12
+- dir: 1/debian11/1.13
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     cert-manager:
-      version: 1.12.4
+      version: 1.13.0
   repo: cert-manager1
   tags:
-  - 1.12.4-debian11
-  - 1.12-debian11
+  - 1.13.0-debian11
+  - 1.13-debian11
   - 1-debian11
-  - 1.12.4
-  - '1.12'
+  - 1.13.0
+  - '1.13'
   - '1'
   - latest
   templateSubDir: cert-manager1
@@ -44,3 +43,4 @@ versions:
   - 1.11.5
   - '1.11'
   templateSubDir: cert-manager1
+
