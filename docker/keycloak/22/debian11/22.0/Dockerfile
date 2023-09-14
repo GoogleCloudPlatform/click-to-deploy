@@ -1,6 +1,6 @@
 FROM marketplace.gcr.io/google/c2d-debian11 AS build
 
-ENV KEYCLOAK_VERSION 22.0.1
+ENV KEYCLOAK_VERSION 22.0.3
 ARG KEYCLOAK_DIST=https://github.com/keycloak/keycloak/releases/download/$KEYCLOAK_VERSION/keycloak-$KEYCLOAK_VERSION.tar.gz
 
 ADD $KEYCLOAK_DIST /tmp/keycloak/
@@ -36,7 +36,7 @@ RUN apt-get update \
 ENV KC_DB=postgres
 RUN /opt/keycloak/bin/kc.sh build --db=postgres
 
-ENV C2D_RELEASE 22.0.1
+ENV C2D_RELEASE 22.0.3
 
 USER 1000
 
