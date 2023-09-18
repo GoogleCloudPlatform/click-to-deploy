@@ -84,18 +84,3 @@ versions:
   - '1'
   - latest
   templateSubDir: exporter
-- dir: exporter
-  excludeTests:
-  - tests/functional_tests/running_test.yaml
-  from: marketplace.gcr.io/google/c2d-debian11
-  packages:
-    kafka_exporter:
-      version: 1.6.0
-  repo: kafka-exporter1
-  tags:
-  - 1.6.0
-  - '1.6'
-  - '1'
-  - latest
-  templateSubDir: exporter
-
