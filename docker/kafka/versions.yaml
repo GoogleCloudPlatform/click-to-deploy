@@ -16,25 +16,6 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 7/debian11/7.4
-  excludeTests:
-  - tests/functional_tests/exporter_test.yaml
-  from: marketplace.gcr.io/google/c2d-debian11
-  packages:
-    kafka:
-      version: 7.4.1
-    scala:
-      version: '2.13'
-  repo: kafka7
-  tags:
-  - 7.4.1-debian11
-  - 7.4-debian11
-  - 7-debian11
-  - 7.4.1
-  - '7.4'
-  - '7'
-  - latest
-  templateSubDir: debian11
 - dir: 3/debian11/3.5
   excludeTests:
   - tests/functional_tests/exporter_test.yaml
