@@ -1,7 +1,6 @@
 cloudbuild:
   enable_parallel: false
 versions:
-
 - dir: 2/debian11/2.1/dragonfly-manager2
   excludeTests:
   - tests/functional_tests/scheduler_test.yaml
@@ -11,6 +10,8 @@ versions:
   packages:
     dragonfly2_github:
       version: 2.1.9
+    golang:
+      version: 1.20
     grpc_health_probe:
       version: 0.4.11
     manager_console:
@@ -34,6 +35,8 @@ versions:
   packages:
     dragonfly2_github:
       version: 2.1.9
+    golang:
+      version: 1.20
     grpc_health_probe:
       version: 0.4.11
     manager_console:
@@ -57,6 +60,8 @@ versions:
   packages:
     dragonfly2_github:
       version: 2.1.9
+    golang:
+      version: 1.20
     grpc_health_probe:
       version: 0.4.11
     manager_console:
@@ -80,6 +85,8 @@ versions:
   packages:
     dragonfly2_github:
       version: 2.1.9
+    golang:
+      version: 1.20
     grpc_health_probe:
       version: 0.4.11
     manager_console:

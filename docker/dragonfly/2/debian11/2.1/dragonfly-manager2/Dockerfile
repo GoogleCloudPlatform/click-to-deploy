@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM node:12-alpine as console-builder
+FROM node:18-alpine as console-builder
 
 ARG MANAGER_CONSOLE_BRANCH=release-0.1.7
 ARG MANAGER_CONSOLE_TAR=v0.1.7
@@ -26,7 +26,7 @@ RUN tar -xvf $MANAGER_CONSOLE_TAR.tar.gz && \
     npm run build
 
 
-FROM golang:1.19-alpine3.16 as server-builder
+FROM golang:1.20-alpine as builder
 
 ARG GOPROXY
 ARG GOTAGS

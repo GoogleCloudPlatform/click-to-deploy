@@ -14,9 +14,10 @@
 
 {{ $dragonfly2_github := index .Packages "dragonfly2_github" -}}
 {{- $manager_console := index .Packages "manager_console" -}}
+{{- $golang := index .Packages "golang" -}}
 {{- $grpc_health_probe := index .Packages "grpc_health_probe" -}}
 
-FROM node:12-alpine as console-builder
+FROM node:18-alpine as console-builder
 
 ARG MANAGER_CONSOLE_BRANCH=release-{{ $manager_console.Version }}
 ARG MANAGER_CONSOLE_TAR=v{{ $manager_console.Version }}
@@ -30,7 +31,7 @@ RUN tar -xvf $MANAGER_CONSOLE_TAR.tar.gz && \
     npm run build
 
 
-FROM golang:1.19-alpine3.16 as server-builder
+FROM golang:{{ $golang.Version }}-alpine as builder
 
 ARG GOPROXY
 ARG GOTAGS
