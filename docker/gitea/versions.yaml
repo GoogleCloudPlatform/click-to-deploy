@@ -28,10 +28,10 @@ versions:
       version: '1.20'
   repo: gitea1
   tags:
-  - 1.20.2-debian11
+  - 1.20.4-debian11
   - 1.20-debian11
   - 1-debian11
-  - 1.20.2
+  - 1.20.4
   - '1.20'
   - '1'
   - latest
