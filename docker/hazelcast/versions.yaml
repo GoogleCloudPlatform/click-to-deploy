@@ -47,3 +47,4 @@ versions:
   - '5'
   - latest
   templateSubDir: hazelcast-mc5
+
