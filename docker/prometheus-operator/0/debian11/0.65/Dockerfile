@@ -1,7 +1,7 @@
 # Clone git repo
 FROM alpine/git:1.0.7 as git
 
-ENV PROMETHEUS_OPERATOR_VERSION=v0.67.0
+ENV PROMETHEUS_OPERATOR_VERSION=v0.65.2
 
 RUN git clone https://github.com/prometheus-operator/prometheus-operator.git /src/prometheus-operator/ \
     && cd /src/prometheus-operator/ \
@@ -20,7 +20,7 @@ RUN set -x && \
 
 RUN git config --global http.sslverify false \
     && GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -a -installsuffix cgo -ldflags="-s \
-    -X github.com/prometheus-operator/prometheus-operator/pkg/version.Version=0.67.0" \
+    -X github.com/prometheus-operator/prometheus-operator/pkg/version.Version=0.65.2" \
     -o operator cmd/operator/main.go
 
 # Download licenses
@@ -31,7 +31,7 @@ RUN go install github.com/google/go-licenses@latest \
 # Result Image
 FROM marketplace.gcr.io/google/c2d-debian11
 
-ENV C2D_RELEASE=0.67.0
+ENV C2D_RELEASE=0.65.2
 
 # Binaries
 COPY --from=builder /go/src/github.com/prometheus-operator/prometheus-operator/operator /bin
