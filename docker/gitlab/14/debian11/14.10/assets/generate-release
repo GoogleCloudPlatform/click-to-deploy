@@ -1,4 +1,6 @@
-# Copyright 2023 Google LLC
+#!/bin/bash
+#
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,33 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+set -e
 
-cloudbuild:
-  enable_parallel: false
-versions:
-- dir: 2/debian11/2.9
-  from: marketplace.gcr.io/google/c2d-debian11
-  packages:
-    harbor:
-      version: 2.9.0
-  repo: harbor2
-  tags:
-  - 2.9.0-debian11
-  - 2.9-debian11
-  - 2-debian11
-  - 2.9.0
-  - '2.9'
-  - '2'
-  - latest
-- dir: 2/debian11/2.7
-  from: marketplace.gcr.io/google/c2d-debian11
-  packages:
-    harbor:
-      version: 2.7.3
-  repo: harbor2
-  tags:
-  - 2.7.3-debian11
-  - 2.7-debian11
-  - 2.7.3
-  - '2.7'
-
+cat > /RELEASE <<EOF
+RELEASE_PACKAGE=gitlab-ee
+RELEASE_VERSION=${GITLAB_VERSION}-ee.0
+DOWNLOAD_URL=${DOWNLOAD_URL}
+EOF
