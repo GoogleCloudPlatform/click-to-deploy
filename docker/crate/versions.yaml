@@ -22,27 +22,27 @@ versions:
     crash:
       version: 0.28.0
     crate:
-      version: 5.4.2
+      version: 5.4.3
   repo: crate5
   tags:
-  - 5.4.2-debian11
+  - 5.4.3-debian11
   - 5.4-debian11
   - 5-debian11
-  - 5.4.2
+  - 5.4.3
   - '5.4'
   - '5'
   - latest
-- dir: 5/debian11/5.2
+- dir: 5/debian11/5.3
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     crash:
       version: 0.28.0
     crate:
-      version: 5.2.8
+      version: 5.3.6
   repo: crate5
   tags:
-  - 5.2.8-debian11
-  - 5.2-debian11
-  - 5.2.8
-  - '5.2'
+  - 5.3.6-debian11
+  - 5.3-debian11
+  - 5.3.6
+  - '5.3'
 
