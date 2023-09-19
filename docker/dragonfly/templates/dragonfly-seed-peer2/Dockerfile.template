@@ -14,8 +14,11 @@
 
 {{ $dragonfly2_github := index .Packages "dragonfly2_github" -}}
 {{- $manager_console := index .Packages "manager_console" -}}
+{{- $golang := index .Packages "golang" -}}
 {{- $grpc_health_probe := index .Packages "grpc_health_probe" -}}
-FROM golang:1.19-alpine3.16 as builder
+
+FROM golang:{{ $golang.Version }}-alpine as builder
+
 ARG GOPROXY
 ARG GOTAGS
 ARG GOGCFLAGS
