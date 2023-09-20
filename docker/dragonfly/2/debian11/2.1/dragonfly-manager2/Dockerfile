@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM node:12-alpine as console-builder
+FROM node:16-alpine as console-builder
 
 ARG MANAGER_CONSOLE_BRANCH=release-0.1.7
 ARG MANAGER_CONSOLE_TAR=v0.1.7
@@ -26,12 +26,12 @@ RUN tar -xvf $MANAGER_CONSOLE_TAR.tar.gz && \
     npm run build
 
 
-FROM golang:1.19-alpine3.16 as server-builder
+FROM golang:1.20-alpine as server-builder
 
 ARG GOPROXY
 ARG GOTAGS
 ARG GOGCFLAGS
-ARG DRAGONFLY2_GITHUB_BRANCH=release-2.0.9
+ARG DRAGONFLY2_GITHUB_BRANCH=release-2.1.9
 ARG MANAGER_CONSOLE_BRANCH=release-0.1.7
 
 WORKDIR /go/src/d7y.io/dragonfly/v2
@@ -54,7 +54,7 @@ RUN apt update && apt install -y wget && \
 FROM marketplace.gcr.io/google/c2d-debian11
 
 WORKDIR /opt/dragonfly
-ENV C2D_RELEASE 2.0.9
+ENV C2D_RELEASE 2.1.9
 ENV PATH=/opt/dragonfly/bin:$PATH
 ENV DRAGONFLY_MANAGER_ADDR localhost
 ENV DRAGONFLY_MYSQL_USER dragonfly
