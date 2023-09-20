@@ -25,8 +25,8 @@ versions:
       gpg: 52A7EA3EECAE05B0A8306471790761798F6E35FC
       version: 3.8.2
     gosu:
-      version: 1.16
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
+      version: '1.16'
   repo: zookeeper3
   tags:
   - 3.8.2-debian11
