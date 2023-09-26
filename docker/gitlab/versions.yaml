@@ -21,13 +21,13 @@ versions:
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     gitlab:
-      version: 16.3.3
+      version: 16.3.4
   repo: gitlab16
   tags:
-  - 16.3.3-debian11
+  - 16.3.4-debian11
   - 16.3-debian11
   - 16-debian11
-  - 16.3.3
+  - 16.3.4
   - '16.3'
   - '16'
   - latest
