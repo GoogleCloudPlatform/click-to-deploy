@@ -72,6 +72,8 @@ RUN echo "Adding license to /usr/share/hazelcast directory" \
 
 COPY log4j2.properties jmx_agent_config.yaml ${HZ_HOME}/config/
 
+RUN rm -f /opt/hazelcast/custom-lib/hazelcast-*.jar
+
 WORKDIR ${HZ_HOME}
 
 # Start Hazelcast server
