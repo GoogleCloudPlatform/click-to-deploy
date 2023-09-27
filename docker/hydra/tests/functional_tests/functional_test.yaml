@@ -28,7 +28,7 @@ setup:
     - '-e'
     - POSTGRES_DB=hydra
     - '-d'
-    - 'marketplace.gcr.io/google/postgresql:13.4'
+    - 'marketplace.gcr.io/google/postgresql13'
   - command: [sleep, 10s]
 
 # Running SQL migrations
