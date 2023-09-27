@@ -21,13 +21,13 @@ versions:
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     cert-manager:
-      version: 1.13.0
+      version: 1.13.1
   repo: cert-manager1
   tags:
-  - 1.13.0-debian11
+  - 1.13.1-debian11
   - 1.13-debian11
   - 1-debian11
-  - 1.13.0
+  - 1.13.1
   - '1.13'
   - '1'
   - latest
