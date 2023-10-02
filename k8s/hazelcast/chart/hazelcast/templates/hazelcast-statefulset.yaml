@@ -43,20 +43,20 @@ spec:
           httpGet:
             path: /hazelcast/health/node-state
             port: 5701
-          initialDelaySeconds: 30
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 30
           successThreshold: 1
           failureThreshold: 10
         readinessProbe:
           httpGet:
-            path: /hazelcast/health/ready
+            path: /hazelcast/health/node-state
             port: 5701
-          initialDelaySeconds: 30
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 30
           successThreshold: 1
-          failureThreshold: 10
+          failureThreshold: 20
         volumeMounts:
         - name: {{ .Release.Name }}-pvc
           mountPath: /custom_folder
@@ -72,7 +72,7 @@ spec:
         - name: PROMETHEUS_PORT
           value: "8080"
         - name: JAVA_OPTS
-          value: "-Dhazelcast.config=/data/hazelcast/hazelcast.xml -DserviceName={{ .Release.Name }}-svc -Dnamespace={{ .Release.Namespace }} -Dhazelcast.mancenter.enabled=true -Dhazelcast.mancenter.url=http://{{ .Release.Name }}-mancenter-svc.{{ .Release.Namespace }}.svc:8080/hazelcast-mancenter -Dhazelcast.shutdownhook.policy=GRACEFUL -Dhazelcast.shutdownhook.enabled=true -Dhazelcast.graceful.shutdown.max.wait=600 -Dhazelcast.jmx=true {{ .Values.hazelcast.javaOpts }}"
+          value: "-Dhazelcast.config=/data/hazelcast/hazelcast.xml -DserviceName={{ .Release.Name }}-svc -Dnamespace={{ .Release.Namespace }} -Dhazelcast.mancenter.enabled=true -Dhazelcast.mancenter.url=http://{{ .Release.Name }}-mancenter-svc.{{ .Release.Namespace }}.svc:8080/ -Dhazelcast.shutdownhook.policy=GRACEFUL -Dhazelcast.shutdownhook.enabled=true -Dhazelcast.graceful.shutdown.max.wait=600 -Dhazelcast.jmx=true {{ .Values.hazelcast.javaOpts }}"
         securityContext:
           runAsNonRoot: true
           runAsUser: 65534
