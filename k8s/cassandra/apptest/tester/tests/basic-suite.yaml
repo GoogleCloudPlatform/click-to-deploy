@@ -2,10 +2,13 @@ actions:
 
 - name: There are exactly 3 nodes in a cluster
   bashTest:
-    script: |-
-      kubectl get sts "${APP_INSTANCE_NAME}-cassandra" \
-        --namespace "${NAMESPACE}" \
-        --output jsonpath="{.spec.replicas}"
+    script: |
+      timeout 300 bash -c '
+        until (kubectl get sts "${APP_INSTANCE_NAME}-cassandra" \
+                --namespace "${NAMESPACE}" \
+                --output jsonpath="{.spec.replicas}" | grep -P "^3$");
+          do sleep 60;
+        done'
     expect:
       stdout:
         equals: '3'
@@ -29,10 +32,13 @@ actions:
 
 - name: Cluster is connected
   bashTest:
-    script: |-
+    script: |
       set -e
-      kubectl exec "${APP_INSTANCE_NAME}-cassandra-0" -- nodetool -h ::FFFF:127.0.0.1 status | \
-        grep "^UN" -c
+      timeout 300 bash -c '
+        until (kubectl exec "${APP_INSTANCE_NAME}-cassandra-0" -- nodetool -h ::FFFF:127.0.0.1 status \
+                | grep "^UN" -c | grep -P "^3$");
+          do sleep 60;
+        done'
     expect:
       stdout:
         equals: '3'
