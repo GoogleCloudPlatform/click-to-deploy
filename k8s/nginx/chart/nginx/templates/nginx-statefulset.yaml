@@ -100,46 +100,6 @@ spec:
         env:
         - name: "SCRAPE_URI"
           value: "http://localhost/stub_status"
-      {{ if .Values.metrics.curatedExporter.enabled }}
-      - name: prometheus-to-sd-curated
-        image: {{ .Values.metrics.image }}
-        ports:
-        - name: profiler
-          containerPort: 6060
-        command:
-        - /monitor
-        - --stackdriver-prefix=kubernetes.io
-        - --source=nginx:http://localhost:9113/metrics?customResourceType=k8s_container&customLabels[project_id]&customLabels[location]&customLabels[cluster_name]&customLabels[namespace_name]=$(POD_NAMESPACE)&customLabels[pod_name]=$(POD_NAME)&customLabels[container_name]=nginx
-        env:
-        - name: POD_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
-        - name: POD_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-      {{ end }}
-      {{ if .Values.metrics.exporter.enabled }}
-      - name: prometheus-to-sd
-        image: {{ .Values.metrics.image }}
-        ports:
-        - name: profiler
-          containerPort: 6060
-        command:
-        - /monitor
-        - --stackdriver-prefix=custom.googleapis.com
-        - --source=nginx:http://localhost:9113/metrics?customResourceType=k8s_container&customLabels[project_id]&customLabels[location]&customLabels[cluster_name]&customLabels[namespace_name]=$(POD_NAMESPACE)&customLabels[pod_name]=$(POD_NAME)&customLabels[container_name]=nginx
-        env:
-        - name: POD_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
-        - name: POD_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-      {{ end }}
       volumes:
       - name: certs
         secret:
