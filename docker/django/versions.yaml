@@ -27,27 +27,16 @@ versions:
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     django:
-      version: 4.2.1
+      version: 4.2.5
   repo: django4
   tags:
-  - 4.2.1-debian11
+  - 4.2.5-debian11
   - 4.2-debian11
   - 4-debian11
-  - 4.2.1
+  - 4.2.5
   - '4.2'
   - '4'
   - latest
-- dir: 4/debian11/4.1
-  from: marketplace.gcr.io/google/c2d-debian11
-  packages:
-    django:
-      version: 4.1.9
-  repo: django4
-  tags:
-  - 4.1.9-debian11
-  - 4.1-debian11
-  - 4.1.9
-  - '4.1'
 - dir: exporter
   excludeTests:
   - tests/functional_tests/basic_test.yaml

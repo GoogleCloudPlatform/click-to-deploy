@@ -1,6 +1,6 @@
 FROM marketplace.gcr.io/google/c2d-debian11
 
-ARG ZK_VERSION=3.8.1
+ARG ZK_VERSION=3.8.2
 
 ENV ZOO_CONF_DIR=/conf \
     ZOO_DATA_DIR=/data \
@@ -22,6 +22,42 @@ RUN set -eux; \
     mkdir -p "${ZOO_DATA_LOG_DIR}" "${ZOO_DATA_DIR}" "${ZOO_CONF_DIR}" "${ZOO_LOG_DIR}"; \
     chown zookeeper:zookeeper "${ZOO_DATA_LOG_DIR}" "${ZOO_DATA_DIR}" "${ZOO_CONF_DIR}" "${ZOO_LOG_DIR}"
 
+# Install Gosu from official repository
+# /usr/sbin/gosu
+ENV GOSU_VERSION 1.16
+RUN set -eux; \
+	apt-get update; \
+	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+		ca-certificates \
+		gpg \
+		gpgv \
+		libjemalloc2 \
+		pwgen \
+		tzdata \
+		xz-utils \
+		zstd ; \
+	savedAptMark="$(apt-mark showmanual)"; \
+	apt-get install -y --no-install-recommends \
+		dirmngr \
+		gpg-agent \
+		wget; \
+	rm -rf /var/lib/apt/lists/*; \
+	dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; \
+	wget -q -O /usr/sbin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch"; \
+	wget -q -O /usr/sbin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc"; \
+	GNUPGHOME="$(mktemp -d)"; \
+	export GNUPGHOME; \
+	gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \
+	gpg --batch --verify /usr/sbin/gosu.asc /usr/sbin/gosu; \
+	gpgconf --kill all; \
+	rm -rf "$GNUPGHOME" /usr/sbin/gosu.asc; \
+	apt-mark auto '.*' > /dev/null; \
+	[ -z "$savedAptMark" ] ||	apt-mark manual $savedAptMark >/dev/null; \
+	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+	chmod +x /usr/sbin/gosu; \
+	gosu --version; \
+	gosu nobody true
+
 # Install required packages.
 RUN set -eux; \
     apt-get update; \
@@ -30,16 +66,16 @@ RUN set -eux; \
         default-jdk \
         ca-certificates \
         dirmngr \
-        gosu \
         gnupg \
         netcat \
         openssl \
         wget; \
-    rm -rf /var/lib/apt/lists/*; \
-    # Verify that gosu binary works
-    gosu nobody true
+    rm -rf /var/lib/apt/lists/*
 
-ENV GPG_KEYS BBE7232D7991050B54C8EA0ADC08637CA615D22C
+    # Verify that gosu binary works
+    # gosu nobody true
+
+ENV GPG_KEYS 52A7EA3EECAE05B0A8306471790761798F6E35FC
 
 ARG SHORT_DISTRO_NAME="zookeeper-${ZK_VERSION}"
 ARG DISTRO_NAME="apache-zookeeper-${ZK_VERSION}-bin"

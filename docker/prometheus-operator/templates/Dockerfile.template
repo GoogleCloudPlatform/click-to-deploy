@@ -5,27 +5,30 @@ FROM alpine/git:1.0.7 as git
 
 ENV PROMETHEUS_OPERATOR_VERSION=v{{ $prometheus_operator.Version }}
 
-RUN git clone https://github.com/coreos/prometheus-operator.git /src/prometheus-operator/ \
+RUN git clone https://github.com/prometheus-operator/prometheus-operator.git /src/prometheus-operator/ \
     && cd /src/prometheus-operator/ \
     && git checkout $PROMETHEUS_OPERATOR_VERSION
 
-FROM golang:1.18 as builder
+FROM golang:1.20 as builder
 
-COPY --from=git /src/prometheus-operator /go/src/github.com/coreos/prometheus-operator
+COPY --from=git /src/prometheus-operator /go/src/github.com/prometheus-operator/prometheus-operator
 
-WORKDIR /go/src/github.com/coreos/prometheus-operator
+WORKDIR /go/src/github.com/prometheus-operator/prometheus-operator
 
 ENV GO111MODULE=on
 
 RUN set -x && \
-    apt-get update && apt-get install -qq -y govendor openssl
+    apt-get update && apt-get install -qq -y openssl
 
 RUN git config --global http.sslverify false \
-    && go get -u github.com/kardianos/govendor \
-    && govendor license +vendor > NOTICES \
     && GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -a -installsuffix cgo -ldflags="-s \
-    -X github.com/coreos/prometheus-operator/pkg/version.Version={{ $prometheus_operator.Version }}" \
+    -X github.com/prometheus-operator/prometheus-operator/pkg/version.Version={{ $prometheus_operator.Version }}" \
     -o operator cmd/operator/main.go
+
+# Download licenses
+RUN go install github.com/google/go-licenses@latest \
+    && go mod download \
+    && go-licenses report github.com/prometheus-operator/prometheus-operator/cmd/operator/ > all-licenses
 
 # Result Image
 FROM {{ .From }}
@@ -33,11 +36,10 @@ FROM {{ .From }}
 ENV C2D_RELEASE={{ $prometheus_operator.Version }}
 
 # Binaries
-COPY --from=builder /go/src/github.com/coreos/prometheus-operator/operator /bin
+COPY --from=builder /go/src/github.com/prometheus-operator/prometheus-operator/operator /bin
 
-# License and Notices
-COPY --from=builder /go/src/github.com/coreos/prometheus-operator/NOTICES /usr/share/prometheus-operator/NOTICES
-COPY --from=builder /go/src/github.com/coreos/prometheus-operator/LICENSE /usr/share/prometheus-operator/LICENSE
+# All Licenses
+COPY --from=builder /go/src/github.com/prometheus-operator/prometheus-operator/all-licenses /usr/share/prometheus-operator/LICENSE
 
 # User 'nobody' has uid `65534'
 USER 65534

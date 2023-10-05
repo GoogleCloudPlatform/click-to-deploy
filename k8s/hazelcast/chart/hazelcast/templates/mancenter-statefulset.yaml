@@ -35,7 +35,7 @@ spec:
             cpu: {{ .Values.mancenter.resources.cpu }}
         livenessProbe:
           httpGet:
-            path: /hazelcast-mancenter/health
+            path: /health
             port: 8081
           initialDelaySeconds: 90
           periodSeconds: 10

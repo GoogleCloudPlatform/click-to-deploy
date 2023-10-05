@@ -16,19 +16,19 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 9/debian11/9.1
+- dir: 9/debian11/9.2
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     solr:
-      gpg: 2085660D9C1FCCACC4A479A3BF160FF14992A24C
-      version: 9.1.0
+      gpg: FDB3D11D716BB32ACF8C93AB919B21537AA80271
+      version: 9.2.1
   repo: solr9
   tags:
-  - 9.1.0-debian11
-  - 9.1-debian11
+  - 9.2.1-debian11
+  - 9.2-debian11
   - 9-debian11
-  - 9.1.0
-  - '9.1'
+  - 9.2.1
+  - '9.2'
   - '9'
   - latest
 
