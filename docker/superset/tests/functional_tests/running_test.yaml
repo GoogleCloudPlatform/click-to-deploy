@@ -31,7 +31,7 @@ setup:
   - 'MYSQL_ROOT_PASSWORD=some-password'
   - '-d'
   - 'marketplace.gcr.io/google/postgresql13'
-- command: [sleep, '20s']
+- command: [sleep, '400s']
 - command:
   - 'docker'
   - 'run'
@@ -53,7 +53,7 @@ setup:
   - 'DATABASE_PASSWORD=superset'
   - '-d'
   - '$IMAGE'
-- command: [sleep, '90s']
+- command: [sleep, '200s']
 
 teardown:
 - command: [docker, stop, some-superset-$UNIQUE-id, some-postgres-$UNIQUE-id]
