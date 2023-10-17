@@ -35,10 +35,10 @@ RUN groupadd supergroup && \
         libpq-dev \
         libsasl2-2 \
         libsasl2-modules-gssapi-mit && \
-    pip install --disable-pip-version-check --upgrade "pip==22.0.4" && \
+    pip install --disable-pip-version-check --upgrade "pip==23.2.1" && \
     pip install -r requirements.txt && \
     pip install apache-superset==$SUPERSET_VERSION && \
-    pip install sqlparse=='0.4.3'
+    pip install sqlparse=='0.4.4'
 # https://github.com/apache/superset/issues/23742
 
 # Configure Filesystem

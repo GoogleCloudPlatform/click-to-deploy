@@ -16,19 +16,19 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 2/debian11/2.1
+- dir: 3/debian11/3.0
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     superset:
-      version: 2.1.0
-  repo: superset2
+      version: 3.0.0
+  repo: superset3
   tags:
-  - 2.1.0-debian11
-  - 2.1-debian11
-  - 2-debian11
-  - 2.1.0
-  - '2.1'
-  - '2'
+  - 3.0.0-debian11
+  - 3.0-debian11
+  - 3-debian11
+  - 3.0.0
+  - '3.0'
+  - '3'
   - latest
 - dir: exporter
   excludeTests:
