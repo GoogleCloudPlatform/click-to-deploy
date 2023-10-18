@@ -20,16 +20,32 @@ versions:
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     superset:
-      version: 2.1.0
+      version: 2.1.1
   repo: superset2
   tags:
-  - 2.1.0-debian11
+  - 2.1.1-debian11
   - 2.1-debian11
   - 2-debian11
-  - 2.1.0
+  - 2.1.1
   - '2.1'
   - '2'
   - latest
+  templateSubDir: 2
+- dir: 3/debian11/3.0
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    superset:
+      version: 3.0.0
+  repo: superset3
+  tags:
+  - 3.0.0-debian11
+  - 3.0-debian11
+  - 3-debian11
+  - 3.0.0
+  - '3.0'
+  - '3'
+  - latest
+  templateSubDir: 3  
 - dir: exporter
   excludeTests:
   - tests/functional_tests/running_test.yaml

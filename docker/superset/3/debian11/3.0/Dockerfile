@@ -1,7 +1,7 @@
 FROM marketplace.gcr.io/google/c2d-debian11
 
-ARG SUPERSET_VERSION="2.1.1"
-ENV C2D_RELEASE "2.1.1"
+ARG SUPERSET_VERSION="3.0.0"
+ENV C2D_RELEASE "3.0.0"
 ENV SUPERSET_VERSION ${SUPERSET_VERSION}
 ENV FLASK_APP="superset.app:create_app()"
 ENV SUPERSET_HOME=/var/lib/superset
@@ -32,10 +32,10 @@ RUN groupadd supergroup && \
         libpq-dev \
         libsasl2-2 \
         libsasl2-modules-gssapi-mit && \
-    pip install --disable-pip-version-check --upgrade "pip==22.0.4" && \
+    pip install --disable-pip-version-check --upgrade "pip==23.2.1" && \
     pip install -r requirements.txt && \
     pip install apache-superset==$SUPERSET_VERSION && \
-    pip install sqlparse=='0.4.3'
+    pip install sqlparse=='0.4.4'
 # https://github.com/apache/superset/issues/23742
 
 # Configure Filesystem
