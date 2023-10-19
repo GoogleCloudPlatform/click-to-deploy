@@ -6,7 +6,7 @@ pillow==9.4.0
 pyopenssl==23.1.1
 wtforms==2.3.3
 wtforms-json==0.3.3
-werkzeug==2.1.1
+werkzeug==2.2.3
 mysqlclient==2.1.0
 marshmallow_enum
 psycopg2-binary
