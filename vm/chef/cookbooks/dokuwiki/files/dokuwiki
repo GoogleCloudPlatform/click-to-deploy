@@ -23,3 +23,6 @@ export ADMIN_PASS_HASH=$(echo -n "${dokuwiki_admin_password}" | md5sum | awk '{p
 export ADMIN_EMAIL="$(get_attribute_value "dokuwiki-admin-email")"
 envsubst < /var/www/html/conf/users.auth.php.template > /var/www/html/conf/users.auth.php
 rm /var/www/html/conf/users.auth.php.template
+
+# Fix language
+sed -i  "s@\$conf\['lang'\] = .*;@\$conf\['lang'\] = 'en';@g" /var/www/html/conf/local.php
