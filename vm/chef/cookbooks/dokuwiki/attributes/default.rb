@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,8 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+default['dokuwiki']['download_version'] = '2023-04-04'
 default['dokuwiki']['user']['name'] = 'admin'
 default['dokuwiki']['user']['real_name'] = 'John Doe'
 default['dokuwiki']['user']['groups'] = 'admin,user'
 
 default['dokuwiki']['title'] = 'DokuWiki!'
+
+default['php81']['distribution'] = 'bullseye'
