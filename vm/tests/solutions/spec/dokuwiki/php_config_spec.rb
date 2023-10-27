@@ -15,7 +15,7 @@
 require 'spec_helper'
 
 describe 'Hide PHP Version' do
-  describe file('/etc/php/8.0/apache2/php.ini') do
+  describe file('/etc/php/8.1/apache2/php.ini') do
     its(:content) { should match /^expose_php = Off$/ }
   end
 
