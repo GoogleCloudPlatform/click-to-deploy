@@ -22,7 +22,7 @@ package 'install packages' do
 end
 
 remote_file '/tmp/ruby.tar.gz' do
-  source "https://cache.ruby-lang.org/pub/ruby/3.1/ruby-#{node['ruby']['version']}.tar.gz"
+  source "https://cache.ruby-lang.org/pub/ruby/3.2/ruby-#{node['ruby']['version']}.tar.gz"
   action :create
 end
 
