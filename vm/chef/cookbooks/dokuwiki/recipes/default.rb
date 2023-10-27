@@ -19,6 +19,14 @@ include_recipe 'php81'
 include_recipe 'php81::module_libapache2'
 include_recipe 'php81::module_xml'
 
+apt_update 'update' do
+  action :update
+  retries 5
+  retry_delay 30
+end
+
+package 'ca-certificates'
+
 # Restart Apache2 to have php modules enabled and active.
 service 'apache2' do
   action :restart
