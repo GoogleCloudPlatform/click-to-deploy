@@ -12,13 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'apache2'
-include_recipe 'apache2::rm-index'
-include_recipe 'apache2::security-config'
-include_recipe 'php81'
-include_recipe 'php81::module_libapache2'
-include_recipe 'php81::module_xml'
-
 apt_update 'update' do
   action :update
   retries 5
@@ -26,6 +19,13 @@ apt_update 'update' do
 end
 
 package 'ca-certificates'
+
+include_recipe 'apache2'
+include_recipe 'apache2::rm-index'
+include_recipe 'apache2::security-config'
+include_recipe 'php81'
+include_recipe 'php81::module_libapache2'
+include_recipe 'php81::module_xml'
 
 # Restart Apache2 to have php modules enabled and active.
 service 'apache2' do
