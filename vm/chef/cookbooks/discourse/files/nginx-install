@@ -20,15 +20,8 @@
 set -e
 
 # version check: https://nginx.org/en/download.html
-VERSION=1.17.9
-HASH="7dd65d405c753c41b7fdab9415cfb4bdbaf093ec6d9f7432072d52cb7bcbb689"
-
-cd /usr/src
-git clone https://github.com/bagder/libbrotli
-cd libbrotli
-./autogen.sh
-./configure
-make install
+VERSION=1.24.0
+HASH="77a2541637b92a621e3ee76776c8b7b40cf6d707e69ba53a940283e30ff2f55d"
 
 cd /usr/src
 curl -O https://nginx.org/download/nginx-$VERSION.tar.gz
