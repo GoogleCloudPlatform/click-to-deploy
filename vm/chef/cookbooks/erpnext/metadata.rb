@@ -15,4 +15,5 @@
 name 'erpnext'
 depends 'c2d-config'
 depends 'python'
+depends 'redis'
 supports 'debian'

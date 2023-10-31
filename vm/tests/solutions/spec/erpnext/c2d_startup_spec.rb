@@ -29,7 +29,11 @@ describe 'C2D startup scripts should exists' do
     it { should exist }
   end
 
-  describe file('/opt/c2d/scripts/01-erpnext-setup') do
+  describe file('/opt/c2d/scripts/01-redis-standalone') do
+    it { should exist }
+  end
+  
+  describe file('/opt/c2d/scripts/02-erpnext-setup') do
     it { should exist }
   end
 end
