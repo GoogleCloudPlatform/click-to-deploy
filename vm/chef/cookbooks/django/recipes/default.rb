@@ -27,7 +27,7 @@ bash 'install django via pip3' do
     pip3 install gunicorn django=="${django_version}"
 EOH
   environment({
-    'django_version': node['django']['version']
+    'django_version': node['django']['version'],
   })
 end
 
