@@ -13,6 +13,7 @@
 # limitations under the License.
 
 include_recipe 'python'
+include_recipe 'redis::standalone'
 
 apt_update do
   action :update
