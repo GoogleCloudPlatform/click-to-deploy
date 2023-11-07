@@ -33,11 +33,15 @@ describe 'C2D startup scripts should exists' do
     it { should exist }
   end
 
-  describe file('/opt/c2d/scripts/02-dolibarr-db-setup') do
+  describe file('/opt/c2d/scripts/02-mysql8-root-localhost-password-setup') do
     it { should exist }
   end
 
-  describe file('/opt/c2d/scripts/03-dolibarr-setup-wizard') do
+  describe file('/opt/c2d/scripts/03-dolibarr-db-setup') do
+    it { should exist }
+  end
+
+  describe file('/opt/c2d/scripts/04-dolibarr-setup-wizard') do
     it { should exist }
   end
 end
