@@ -22,6 +22,7 @@ default['discourse']['packages'] = [
   'build-essential',
   'libssl-dev',
   'libreadline-dev',
+  'libbrotli-dev',
   'gcc',
   'libxslt-dev',
   'libxml2-dev',
