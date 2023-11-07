@@ -13,6 +13,5 @@
 # limitations under the License.
 
 default['ruby']['packages'] = ['gcc', 'libssl-dev', 'libyaml-dev', 'make', 'zlib1g-dev']
-default['ruby']['minor'] = default['ruby']['version'].split('.')[..1].join('.')
 default['ruby']['version'] = '3.2.1'
-
+default['ruby']['minor'] = default['ruby']['version'].split('.')[1].join('.')
