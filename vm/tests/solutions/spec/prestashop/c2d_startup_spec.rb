@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,11 +33,15 @@ describe 'C2D startup scripts should exists' do
     it { should exist }
   end
 
-  describe file('/opt/c2d/scripts/02-prestashop-db-setup') do
+  describe file('/opt/c2d/scripts/02-mysql8-root-localhost-password-setup') do
     it { should exist }
   end
 
-  describe file('/opt/c2d/scripts/03-prestashop-install') do
+  describe file('/opt/c2d/scripts/03-prestashop-db-setup') do
+    it { should exist }
+  end
+
+  describe file('/opt/c2d/scripts/04-prestashop-install') do
     it { should exist }
   end
 end
