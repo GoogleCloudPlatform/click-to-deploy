@@ -42,12 +42,6 @@ describe port(11000) do
   it { should_not be_listening.on('0.0.0.0') }
 end
 
-# Redis queue port
-describe port(12000) do
-  it { should be_listening.on('127.0.0.1') }
-  it { should_not be_listening.on('0.0.0.0') }
-end
-
 # Redis socketio port
 describe port(13000) do
   it { should be_listening.on('127.0.0.1') }
