@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['dolibarr']['version'] = '16.0.3'
-default['dolibarr']['sha256'] = '52010375412c780b378145633a4e18abf6bde4c8e89a4cc1ad56d98fcd6120fd'
+default['dolibarr']['version'] = '18.0.2'
+default['dolibarr']['sha256'] = 'b3306562480a3194822f4f7c3c9909a147a5e1b09a7404abe75a0fa884fd00f6'
 
 default['dolibarr']['linux']['user'] = 'www-data'
 default['dolibarr']['db']['name'] = 'dolibarr'
