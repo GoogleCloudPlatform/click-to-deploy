@@ -24,7 +24,7 @@ include_recipe 'mysql::version-8.0-embedded'
 include_recipe 'git'
 
 # Reference: https://doc.oroinc.com/backend/setup/system-requirements/
-include_recipe 'php81::default_buster'
+include_recipe 'php81::default_bullseye'
 include_recipe 'php81::module_cli'
 include_recipe 'php81::module_ctype'
 include_recipe 'php81::module_fileinfo'
