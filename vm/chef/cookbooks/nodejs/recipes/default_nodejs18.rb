@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['ghost']['cli']['version'] = '1.24.0'
-default['ghost']['app']['version'] = '5.73.2'
-default['ghost']['app']['install_dir'] = '/var/www/ghost'
+execute 'download packages' do
+  command 'curl -sL https://deb.nodesource.com/setup_18.x | bash -'
+end
 
-default['ghost']['db']['user'] = 'ghost'
-default['ghost']['db']['name'] = 'ghost_production'
-
-default['ghost']['user'] = 'ghost_app'
+package 'install packages' do
+  package_name node['nodejs']['packages']
+  action :install
+end
