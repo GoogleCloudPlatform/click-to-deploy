@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,5 +13,6 @@
 # limitations under the License.
 
 default['ruby']['packages'] = ['gcc', 'libssl-dev', 'libyaml-dev', 'make', 'zlib1g-dev']
-default['ruby']['version'] = '3.2.1'
-default['ruby']['minor'] = default['ruby']['version'].split('.')[1].join('.')
+default['ruby']['version'] = '3.2.2'
+default['ruby']['major'] = node['ruby']['version'][0]
+default['ruby']['minor'] = node['ruby']['version'].split('.')[1]
