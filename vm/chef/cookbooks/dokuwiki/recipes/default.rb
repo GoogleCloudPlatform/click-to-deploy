@@ -12,12 +12,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+apt_update 'update' do
+  action :update
+  retries 5
+  retry_delay 30
+end
+
+package 'install_packages' do
+  package_name ['ca-certificates', 'curl']
+  retries 5
+  retry_delay 30
+  action :install
+end
+
 include_recipe 'apache2'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 include_recipe 'php81'
 include_recipe 'php81::module_libapache2'
 include_recipe 'php81::module_xml'
+
+bash 'Download key' do
+  user 'root'
+  code <<-EOH
+    curl -L -o /usr/share/keyrings/php-sury.org.gpg https://packages.sury.org/php/apt.gpg
+EOH
+end
 
 # Restart Apache2 to have php modules enabled and active.
 service 'apache2' do
