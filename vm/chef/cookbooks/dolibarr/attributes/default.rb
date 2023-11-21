@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,3 +17,5 @@ default['dolibarr']['sha256'] = 'b3306562480a3194822f4f7c3c9909a147a5e1b09a7404a
 
 default['dolibarr']['linux']['user'] = 'www-data'
 default['dolibarr']['db']['name'] = 'dolibarr'
+
+default['php81']['distribution'] = 'bullseye'
