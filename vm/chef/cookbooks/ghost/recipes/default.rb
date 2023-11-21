@@ -20,7 +20,7 @@ end
 
 include_recipe 'mysql::version-8.0-embedded'
 include_recipe 'nginx'
-include_recipe 'nodejs::default_nodejs14'
+include_recipe 'nodejs::default_nodejs18'
 
 file '/var/www/html/index.html' do
   action :delete
