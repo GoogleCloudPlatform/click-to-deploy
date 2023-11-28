@@ -1,12 +1,10 @@
-#!/bin/bash -eu
-#
-# Copyright 2017 Google Inc.
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#      http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source /opt/c2d/c2d-utils || exit 1
+execute 'download packages' do
+  command 'curl -sL https://deb.nodesource.com/setup_18.x | bash -'
+end
 
-prestashop_password="$(get_attribute_value "prestashop-db-password")"
-declare -r prestashop_password
-
-mysql -u root -e "CREATE USER 'prestashop'@'localhost'IDENTIFIED WITH mysql_native_password BY'${prestashop_password}';"
-mysql -u root -e "GRANT ALL PRIVILEGES ON prestashop.* TO 'prestashop'@'localhost';"
-mysql -u root -e "FLUSH PRIVILEGES"
+package 'install packages' do
+  package_name node['nodejs']['packages']
+  action :install
+end
