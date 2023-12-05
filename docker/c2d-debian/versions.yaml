@@ -28,5 +28,11 @@ versions:
   - '11.5.0'
   - '11.5'
   - '11'
+  templateSubDir: debian11
+- dir: 12/debian12
+  from: marketplace.gcr.io/google/debian12
+  repo: c2d-debian12
+  tags:
+  - '12'
   - latest
-
+  templateSubDir: debian12
