@@ -1,5 +1,7 @@
 FROM {{ .From }}
 
+{{- $c2d_debian := index .Packages "debian11" }}
+
 ENV DEV_APT_DEPS="\
      openssl \
      libtasn1-6 \
