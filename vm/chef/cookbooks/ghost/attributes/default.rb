@@ -13,7 +13,7 @@
 # limitations under the License.
 
 default['ghost']['cli']['version'] = '1.24.0'
-default['ghost']['app']['version'] = '5.37.0'
+default['ghost']['app']['version'] = '5.73.2'
 default['ghost']['app']['install_dir'] = '/var/www/ghost'
 
 default['ghost']['db']['user'] = 'ghost'

@@ -37,7 +37,7 @@ describe service('frappe-bench-redis:frappe-bench-redis-queue') do
   it { should be_running.under('supervisor') }
 end
 
-describe service('frappe-bench-redis:frappe-bench-redis-socketio') do
+describe service('frappe-bench-web:frappe-bench-node-socketio') do
   it { should be_running.under('supervisor') }
 end
 
