@@ -1,5 +1,8 @@
 FROM marketplace.gcr.io/google/debian12
 
+ENV DEBIAN_VERSION 12.4.0
+ENV C2D_RELEASE 12.4.0
+
 ENV DEV_APT_DEPS="\
      openssl \
      libtasn1-6 \
@@ -13,5 +16,3 @@ RUN apt-get update \
     && apt-get autoremove -yqq --purge \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-
-ENV C2D_RELEASE 12

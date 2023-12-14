@@ -36,7 +36,7 @@ versions:
   from: marketplace.gcr.io/google/debian12
   packages:
     debian12:
-      version: 12
+      version: 12.4.0
   repo: c2d-debian12
   tags:
   - '12'
