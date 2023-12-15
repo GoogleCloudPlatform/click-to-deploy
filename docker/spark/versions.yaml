@@ -15,7 +15,6 @@
 
 cloudbuild:
   enable_parallel: false
-  machine_type: 'E2_HIGHCPU_32'
 versions:
 - dir: 3/debian11/3.5
   from: marketplace.gcr.io/google/c2d-debian11
@@ -48,3 +47,4 @@ versions:
   - 3.4.1
   - '3.4'
   templateSubDir: '3'
+
