@@ -1,12 +1,12 @@
 FROM marketplace.gcr.io/google/c2d-debian11
 
 # This is release version of ActiveMQ to pull in.
-ENV ACTIVEMQ_VERSION 5.18.3
+ENV ACTIVEMQ_VERSION 6.0.1
 ENV ACTIVEMQ apache-activemq-${ACTIVEMQ_VERSION}
 ENV ACTIVEMQ_FILE ${ACTIVEMQ}-bin.tar.gz
 ENV ACTIVEMQ_DOWNLOAD_URL http://archive.apache.org/dist/activemq/
 
-ENV C2D_RELEASE 5.18.3
+ENV C2D_RELEASE 6.0.1
 
 ENV ACTIVEMQ_TCP=61616 \
     ACTIVEMQ_AMQP=5672 \
@@ -33,7 +33,7 @@ RUN set -ex \
 RUN groupadd -g "${gid}" "${group}" \
     && useradd -u "${uid}" -g "${gid}" -m -s /bin/bash "${user}"
 
-# Download and setup activemq version v5.18.3
+# Download and setup activemq version v6.0.1
 RUN set -x && \
     mkdir -p "${ACTIVEMQ_HOME}" \
     && wget -q "${ACTIVEMQ_DOWNLOAD_URL}/${ACTIVEMQ_VERSION}/${ACTIVEMQ_FILE}" -O "${ACTIVEMQ_FILE}" \
