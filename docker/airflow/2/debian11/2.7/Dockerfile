@@ -1,4 +1,4 @@
-ARG AIRFLOW_VERSION="2.7.1"
+ARG AIRFLOW_VERSION="2.7.3"
 ARG AIRFLOW_EXTRAS="amazon,async,celery,cncf.kubernetes,dask,docker,elasticsearch,ftp,google,google_auth,grpc,hashicorp,http,ldap,microsoft.azure,mysql,odbc,pandas,postgres,redis,sendgrid,sftp,slack,ssh,statsd,virtualenv"
 
 ARG AIRFLOW_HOME=/opt/airflow
@@ -189,7 +189,7 @@ RUN apt-get update \
 
 # Install Gosu
 # /usr/sbin/gosu
-ENV GOSU_VERSION 1.16
+ENV GOSU_VERSION 
 RUN set -eux; \
 	apt-get update; \
 	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
@@ -212,7 +212,7 @@ RUN set -eux; \
 	wget -q -O /usr/sbin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc"; \
 	GNUPGHOME="$(mktemp -d)"; \
 	export GNUPGHOME; \
-	gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \
+	gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys ; \
 	gpg --batch --verify /usr/sbin/gosu.asc /usr/sbin/gosu; \
 	gpgconf --kill all; \
 	rm -rf "$GNUPGHOME" /usr/sbin/gosu.asc; \
@@ -259,7 +259,7 @@ WORKDIR ${AIRFLOW_HOME}
 EXPOSE 8080
 USER ${AIRFLOW_UID}
 
-ENV C2D_RELEASE 2.7.1
+ENV C2D_RELEASE 2.7.3
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--", "/entrypoint"]
 CMD [""]
