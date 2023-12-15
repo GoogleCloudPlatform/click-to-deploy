@@ -30,5 +30,4 @@ versions:
   - '0.13'
   - '0'
   - latest
-  templateSubDir: '0.13'
 
