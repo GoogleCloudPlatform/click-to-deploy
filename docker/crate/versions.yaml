@@ -16,20 +16,20 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 5/debian11/5.4
+- dir: 5/debian11/5.5
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     crash:
       version: 0.28.0
     crate:
-      version: 5.4.3
+      version: 5.5.1
   repo: crate5
   tags:
-  - 5.4.3-debian11
-  - 5.4-debian11
+  - 5.5.1-debian11
+  - 5.5-debian11
   - 5-debian11
-  - 5.4.3
-  - '5.4'
+  - 5.5.1
+  - '5.5'
   - '5'
   - latest
 - dir: 5/debian11/5.3
@@ -38,11 +38,11 @@ versions:
     crash:
       version: 0.28.0
     crate:
-      version: 5.3.6
+      version: 5.3.7
   repo: crate5
   tags:
-  - 5.3.6-debian11
+  - 5.3.7-debian11
   - 5.3-debian11
-  - 5.3.6
+  - 5.3.7
   - '5.3'
 
