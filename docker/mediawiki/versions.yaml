@@ -19,7 +19,7 @@ cloudbuild:
   enable_parallel: false
 versions:
 - dir: 1/debian11/1.40
-  from: marketplace.gcr.io/google/php7-apache2:7.4
+  from: marketplace.gcr.io/google/php8-apache2:8.1
   packages:
     composer:
       sha256: 72600201c73c7c4b218f1c0511b36d8537963e36aafa244757f52309f885b314
@@ -38,7 +38,7 @@ versions:
   - '1'
   - latest
 - dir: 1/debian11/1.39
-  from: marketplace.gcr.io/google/php7-apache2:7.4
+  from: marketplace.gcr.io/google/php8-apache2:8.1
   packages:
     composer:
       sha256: 72600201c73c7c4b218f1c0511b36d8537963e36aafa244757f52309f885b314

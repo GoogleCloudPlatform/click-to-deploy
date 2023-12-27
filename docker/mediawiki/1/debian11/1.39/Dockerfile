@@ -16,7 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-FROM marketplace.gcr.io/google/php7-apache2:7.4
+FROM marketplace.gcr.io/google/php8-apache2:8.1
 
 ENV MEDIAWIKI_MAJOR_VERSION 1.39
 ENV MEDIAWIKI_VERSION 1.39.4
