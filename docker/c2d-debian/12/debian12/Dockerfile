@@ -1,13 +1,12 @@
-FROM marketplace.gcr.io/google/debian11
+FROM marketplace.gcr.io/google/debian12
 
-ENV DEBIAN_VERSION 11.5.0
-ENV C2D_RELEASE 11.5.0
+ENV DEBIAN_VERSION 12.4.0
+ENV C2D_RELEASE 12.4.0
 
 ENV DEV_APT_DEPS="\
      openssl \
      libtasn1-6 \
      libksba8 \
-     libssl1.1 \
      libaprutil1 \
      git \
      curl"

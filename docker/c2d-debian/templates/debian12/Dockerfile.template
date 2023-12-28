@@ -1,13 +1,16 @@
-FROM marketplace.gcr.io/google/debian11
+FROM {{ .From }}
 
-ENV DEBIAN_VERSION 11.5.0
-ENV C2D_RELEASE 11.5.0
+{{- $c2d_debian := index .Packages "debian12" }}
+
+{{- $template := index .TemplateArgs }}
+
+ENV DEBIAN_VERSION {{ $c2d_debian.Version }}
+ENV C2D_RELEASE {{ $c2d_debian.Version }}
 
 ENV DEV_APT_DEPS="\
      openssl \
      libtasn1-6 \
      libksba8 \
-     libssl1.1 \
      libaprutil1 \
      git \
      curl"
