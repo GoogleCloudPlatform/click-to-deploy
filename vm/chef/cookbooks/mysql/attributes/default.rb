@@ -18,6 +18,6 @@ default['mysql']['bind_address'] = 'localhost'
 default['mysql']['log_bin_trust_function_creators'] = '0'
 
 # Reference: https://dev.mysql.com/downloads/repo/apt/
-default['mysql']['apt']['file'] = 'mysql-apt-config_0.8.24-1_all.deb'
-default['mysql']['apt']['md5'] = '9aaa5526ad7676baadcdee91982c861c'
+default['mysql']['apt']['file'] = 'mysql-apt-config_0.8.29-1_all.deb'
+default['mysql']['apt']['md5'] = 'f732dd7d61d18dd67877c820d690756d'
 default['mysql']['apt']['url'] = "https://dev.mysql.com/get/#{node['mysql']['apt']['file']}"
