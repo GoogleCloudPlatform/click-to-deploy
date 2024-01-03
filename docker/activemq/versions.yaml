@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,13 +20,13 @@ versions:
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     activemq:
-      version: 5.18.2
+      version: 5.18.3
   repo: activemq5
   tags:
-  - 5.18.2-debian11
+  - 5.18.3-debian11
   - 5.18-debian11
   - 5-debian11
-  - 5.18.2
+  - 5.18.3
   - '5.18'
   - '5'
   - latest
