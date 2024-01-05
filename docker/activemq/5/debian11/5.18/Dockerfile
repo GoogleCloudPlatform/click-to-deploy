@@ -24,7 +24,7 @@ ARG gid=1000
 
 RUN set -ex \
   && apt-get --allow-releaseinfo-change update \
-  && apt-get -y install default-jdk ca-certificates wget procps \
+  && apt-get -y install openjdk-17-jdk-headless ca-certificates wget procps \
   && rm -rf /var/lib/apt/lists/*
 
 # ActiveMQ run with user `activemq`, uid = 1000.
