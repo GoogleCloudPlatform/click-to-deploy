@@ -12,6 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['kafka']['version'] = '3.4.0'
+default['kafka']['version'] = '3.6.1'
 default['scala']['version'] = '2.13'
 default['kafka']['packages'] = ['zookeeperd']
