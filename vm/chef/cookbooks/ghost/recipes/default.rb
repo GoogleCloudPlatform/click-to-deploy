@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ end
 
 include_recipe 'mysql::version-8.0-embedded'
 include_recipe 'nginx'
-include_recipe 'nodejs::default_nodejs18'
+include_recipe 'nodejs::default'
 
 file '/var/www/html/index.html' do
   action :delete
