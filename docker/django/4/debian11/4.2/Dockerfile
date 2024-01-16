@@ -42,7 +42,7 @@ RUN set -ex; \
 RUN apt-get update \
     && apt-get install -y \
       # Certificates
-      ca-certificates \
+      update-ca-certificates \
       # MySQL dependencies
       default-libmysqlclient-dev \
       libmariadb-dev \
