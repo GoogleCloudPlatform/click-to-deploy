@@ -35,6 +35,8 @@ ENV C2D_DJANGO_USER="django" \
     C2D_DJANGO_GROUP="django" \
     C2D_DJANGO_GID="8983"
 
+ENV CURL_CA_BUNDLE="/etc/ssl/certs/ca-certificates.crt"
+
 RUN set -ex; \
     groupadd -r --gid "${C2D_DJANGO_GID}" "${C2D_DJANGO_GROUP}"; \
     useradd -r --uid "${C2D_DJANGO_UID}" --gid "${C2D_DJANGO_GID}" "${C2D_DJANGO_USER}"
