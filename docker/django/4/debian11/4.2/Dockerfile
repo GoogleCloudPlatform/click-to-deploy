@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2024 Google LLC
 #
 # Redistribution and use in source and binary forms, with or without modification,
 # are permitted provided that the following conditions are met:
@@ -41,6 +41,8 @@ RUN set -ex; \
 
 RUN apt-get update \
     && apt-get install -y \
+      # Certificates
+      ca-certificates \
       # MySQL dependencies
       default-libmysqlclient-dev \
       libmariadb-dev \
