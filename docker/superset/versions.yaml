@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,21 +16,6 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 2/debian11/2.1
-  from: marketplace.gcr.io/google/c2d-debian11
-  packages:
-    superset:
-      version: 2.1.1
-  repo: superset2
-  tags:
-  - 2.1.1-debian11
-  - 2.1-debian11
-  - 2-debian11
-  - 2.1.1
-  - '2.1'
-  - '2'
-  - latest
-  templateSubDir: 2
 - dir: 3/debian11/3.0
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
@@ -45,18 +30,70 @@ versions:
   - '3.0'
   - '3'
   - latest
-  templateSubDir: 3  
-- dir: exporter
-  excludeTests:
-  - tests/functional_tests/running_test.yaml
+- dir: 2/debian11/2.1
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
-    statsd_exporter:
-      version: 0.23.1
+    superset:
+      version: 2.1.1
+  repo: superset2
+  tags:
+  - 2.1.1-debian11
+  - 2.1-debian11
+  - 2-debian11
+  - 2.1.1
+  - '2.1'
+  - '2'
+  - latest
+- dir: 1/debian11/1.5
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    superset:
+      version: 1.5.3
+  repo: superset1
+  tags:
+  - 1.5.3-debian11
+  - 1.5-debian11
+  - 1-debian11
+  - 1.5.3
+  - '1.5'
+  - '1'
+  - latest
+- dir: exporter
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    statsd-exporter:
+      sha256: b04a25fe937a2e74dab097d589bd1f4da9e874d62b166c4e74d5d55b0f58eab6
+      version: 0.22.5
   repo: statsd-exporter0
   tags:
-  - 0.23.1
-  - '0.23'
+  - 0.22.5
+  - '0.22'
+  - '0'
+  - latest
+  templateSubDir: exporter
+- dir: exporter
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    statsd-exporter:
+      sha256: b04a25fe937a2e74dab097d589bd1f4da9e874d62b166c4e74d5d55b0f58eab6
+      version: 0.22.5
+  repo: statsd-exporter0
+  tags:
+  - 0.22.5
+  - '0.22'
+  - '0'
+  - latest
+  templateSubDir: exporter
+- dir: exporter
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    statsd-exporter:
+      sha256: b04a25fe937a2e74dab097d589bd1f4da9e874d62b166c4e74d5d55b0f58eab6
+      version: 0.22.5
+  repo: statsd-exporter0
+  tags:
+  - 0.22.5
+  - '0.22'
   - '0'
   - latest
   templateSubDir: exporter
