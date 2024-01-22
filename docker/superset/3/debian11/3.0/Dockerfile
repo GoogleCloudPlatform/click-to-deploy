@@ -8,7 +8,7 @@ ENV SUPERSET_HOME=/var/lib/superset
 
 # Installing python3 and dependencies
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends build-essential libssl-dev libffi-dev python3-dev python3-pip libsasl2-dev openssl\
+    && apt-get install -y --no-install-recommends build-essential libssl-dev libffi-dev python3-dev python3-pip libsasl2-dev ca-certificates openssl\
     libldap2-dev default-libmysqlclient-dev
 
 # Create superset user & install dependencies
