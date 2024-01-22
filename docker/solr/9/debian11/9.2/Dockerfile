@@ -7,7 +7,7 @@ ENV C2D_RELEASE=9.2.1
 
 RUN set -ex; \
   apt-get update; \
-  apt-get -y install default-jdk acl dirmngr gpg lsof procps wget curl netcat tini; \
+  apt-get -y install default-jdk acl dirmngr gpg ca-certificates lsof procps wget curl netcat tini; \
   rm -rf /var/lib/apt/lists/*; \
   cd /usr/local/bin; wget -nv https://github.com/apangin/jattach/releases/download/v1.5/jattach; chmod 755 jattach; \
   echo >jattach.sha512 "d8eedbb3e192a8596c08efedff99b9acf1075331e1747107c07cdb1718db2abe259ef168109e46bd4cf80d47d43028ff469f95e6ddcbdda4d7ffa73a20e852f9  jattach"; \
