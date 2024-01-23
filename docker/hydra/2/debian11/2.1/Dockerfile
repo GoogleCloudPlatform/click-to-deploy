@@ -10,7 +10,7 @@ RUN addgroup --system ory; \
 
 RUN set -eu \
     # Installing utilities
-    && apt-get update && apt-get install -y --no-install-recommends wget vim lynx \
+    && apt-get update && apt-get install -y --no-install-recommends wget ca-certificates vim lynx \
     && rm -rf /var/lib/apt/lists/* \
     && wget -O /opt/hydra.tar.gz https://github.com/ory/hydra/releases/download/v${HYDRA_VERSION}/hydra_${HYDRA_VERSION}-linux_64bit.tar.gz \
     && echo "${HYDRA_SHA256} /opt/hydra.tar.gz" | sha256sum -c \
