@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ versions:
       major: '1.40'
       sha512: 7db5ba96de0b1be99c36b44551816df877d2926ca90042f26d216dcd7ba2d30d45bb7b034c20ee80e8752b9e5b69755c78b2aa5e7feb4e2d3f9d3b60aa1b61b0
       version: 1.40.0
-  repo: mediawiki1-php7-apache
+  repo: mediawiki1-php8-apache
   tags:
   - 1.40.0-debian11
   - 1.40-debian11
@@ -47,7 +47,7 @@ versions:
       major: '1.39'
       sha512: 869b8bcf7bc94202c409ddb0e4ba52ca9611b287609c1afe5078c8b6dbdd414786461d7eea87008e48c1739199aec84de399d040119a42b4dd075d3d54839940
       version: 1.39.4
-  repo: mediawiki1-php7-apache
+  repo: mediawiki1-php8-apache
   tags:
   - 1.39.4-debian11
   - 1.39-debian11
