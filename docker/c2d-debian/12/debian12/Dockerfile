@@ -5,6 +5,7 @@ ENV C2D_RELEASE 12.4.0
 
 ENV DEV_APT_DEPS="\
      openssl \
+     ca-certificates \
      libtasn1-6 \
      libksba8 \
      libaprutil1 \
