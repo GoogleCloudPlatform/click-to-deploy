@@ -22,15 +22,15 @@ versions:
     h2database:
       version: 1.4.197
     keycloak:
-      version: 23.0.4
+      version: 23.0.5
     sshdcommon:
       version: 2.9.2
   repo: keycloak23
   tags:
-  - 23.0.4-debian11
+  - 23.0.5-debian11
   - 23.0-debian11
   - 23-debian11
-  - 23.0.4
+  - 23.0.5
   - '23.0'
   - '23'
   - latest
@@ -85,3 +85,58 @@ versions:
   - 21.0-debian11
   - 21.0.2
   - '21.0'
+- dir: 20/debian11/20.0
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    h2database:
+      version: 1.4.197
+    keycloak:
+      version: 20.0.5
+    sshdcommon:
+      version: 2.9.2
+  repo: keycloak20
+  tags:
+  - 20.0.5-debian11
+  - 20.0-debian11
+  - 20-debian11
+  - 20.0.5
+  - '20.0'
+  - '20'
+  - latest
+- dir: 19/debian11/19.0
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    h2database:
+      version: 1.4.197
+    keycloak:
+      version: 19.0.3
+    sshdcommon:
+      version: 2.9.2
+  repo: keycloak19
+  tags:
+  - 19.0.3-debian11
+  - 19.0-debian11
+  - 19-debian11
+  - 19.0.3
+  - '19.0'
+  - '19'
+  - latest
+- dir: 18/debian11/18.0
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    h2database:
+      version: 1.4.197
+    keycloak:
+      version: 18.0.2
+    sshdcommon:
+      version: 2.9.2
+  repo: keycloak18
+  tags:
+  - 18.0.2-debian11
+  - 18.0-debian11
+  - 18-debian11
+  - 18.0.2
+  - '18.0'
+  - '18'
+  - latest
+
