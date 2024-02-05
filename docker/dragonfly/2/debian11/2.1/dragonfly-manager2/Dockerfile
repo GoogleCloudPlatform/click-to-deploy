@@ -31,7 +31,7 @@ FROM golang:1.20-alpine as server-builder
 ARG GOPROXY
 ARG GOTAGS
 ARG GOGCFLAGS
-ARG DRAGONFLY2_GITHUB_BRANCH=release-2.1.9
+ARG DRAGONFLY2_GITHUB_BRANCH=release-2.1.30
 ARG MANAGER_CONSOLE_BRANCH=release-0.1.7
 
 WORKDIR /go/src/d7y.io/dragonfly/v2
@@ -54,7 +54,7 @@ RUN apt update && apt install -y wget && \
 FROM marketplace.gcr.io/google/c2d-debian11
 
 WORKDIR /opt/dragonfly
-ENV C2D_RELEASE 2.1.9
+ENV C2D_RELEASE 2.1.30
 ENV PATH=/opt/dragonfly/bin:$PATH
 ENV DRAGONFLY_MANAGER_ADDR localhost
 ENV DRAGONFLY_MYSQL_USER dragonfly
