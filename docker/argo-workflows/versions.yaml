@@ -16,19 +16,19 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 3/debian11/3.5
+- dir: 3/debian11/3.4
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     argo_workflows:
-      version: 3.5.4
+      version: 3.4.16
     nodejs:
       major: 20
   repo: argo-workflows3
   tags:
-  - 3.5.4-debian11
-  - 3.5-debian11
+  - 3.4.16-debian11
+  - 3.4-debian11
   - 3-debian11
-  - 3.5.4
-  - '3.5'
+  - 3.4.16
+  - '3.4'
   - '3'
   - latest
