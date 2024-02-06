@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,13 +22,13 @@ versions:
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     hazelcast:
-      version: 5.3.2
+      version: 5.3.6
   repo: hazelcast5
   tags:
-  - 5.3.2-debian11
+  - 5.3.6-debian11
   - 5.3-debian11
   - 5-debian11
-  - 5.3.2
+  - 5.3.6
   - '5.3'
   - '5'
   - latest
@@ -39,10 +39,10 @@ versions:
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     hazelcastmc:
-      version: 5.3.2
+      version: 5.3.6
   repo: hazelcast-mc5
   tags:
-  - 5.3.2
+  - 5.3.6
   - '5.3'
   - '5'
   - latest
