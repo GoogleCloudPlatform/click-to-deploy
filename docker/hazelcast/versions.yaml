@@ -22,13 +22,13 @@ versions:
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     hazelcast:
-      version: 5.3.6
+      version: 5.3.3
   repo: hazelcast5
   tags:
-  - 5.3.6-debian11
+  - 5.3.3-debian11
   - 5.3-debian11
   - 5-debian11
-  - 5.3.6
+  - 5.3.3
   - '5.3'
   - '5'
   - latest
