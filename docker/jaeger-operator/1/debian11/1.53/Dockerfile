@@ -1,18 +1,18 @@
 # Clone git repo
 FROM alpine/git:1.0.7 as git
 
-ENV JAEGER_OPERATOR_VERSION=v1.45.0
+ENV JAEGER_OPERATOR_VERSION=v1.53.0
 
 RUN git clone https://github.com/jaegertracing/jaeger-operator.git /src/jaeger-operator/ \
     && cd /src/jaeger-operator/ \
     && git checkout ${JAEGER_OPERATOR_VERSION}
 
 
-FROM golang:1.19 as builder
+FROM golang:1.20 as builder
 
-ENV LD_FLAGS="-X github.com/jaegertracing/jaeger-operator/pkg/version.version=v1.45.0 \
+ENV LD_FLAGS="-X github.com/jaegertracing/jaeger-operator/pkg/version.version=v1.53.0 \
               -X github.com/jaegertracing/jaeger-operator/pkg/version.buildDate=${VERSION_DATE} \
-              -X github.com/jaegertracing/jaeger-operator/pkg/version.defaultJaeger=1.45.0"
+              -X github.com/jaegertracing/jaeger-operator/pkg/version.defaultJaeger=1.53.0"
 
 COPY --from=git /src/jaeger-operator /go/src/github.com/jaegertracing/jaeger-operator
 
@@ -38,7 +38,7 @@ ENV OPERATOR=/usr/local/bin/jaeger-operator \
     USER_UID=1001 \
     USER_NAME=jaeger-operator
 
-ENV C2D_RELEASE=1.45.0
+ENV C2D_RELEASE=1.53.0
 
 COPY --from=git /src/jaeger-operator/scripts/* /scripts/
 
