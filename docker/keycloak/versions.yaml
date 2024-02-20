@@ -22,15 +22,15 @@ versions:
     h2database:
       version: 1.4.197
     keycloak:
-      version: 23.0.4
+      version: 23.0.5
     sshdcommon:
       version: 2.9.2
   repo: keycloak23
   tags:
-  - 23.0.4-debian11
+  - 23.0.5-debian11
   - 23.0-debian11
   - 23-debian11
-  - 23.0.4
+  - 23.0.5
   - '23.0'
   - '23'
   - latest
