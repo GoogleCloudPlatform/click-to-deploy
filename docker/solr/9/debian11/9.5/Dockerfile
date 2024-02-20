@@ -1,7 +1,7 @@
 FROM marketplace.gcr.io/google/c2d-debian11
 
 ARG SOLR_VERSION=9.5.0
-ARG SOLR_KEYS=2085660D9C1FCCACC4A479A3BF160FF14992A24C
+ARG SOLR_KEYS=E05FDF113D89E7FB4A2DF4B2684D544160392455
 
 ENV C2D_RELEASE=9.5.0
 
@@ -65,7 +65,7 @@ RUN set -ex; \
   for url in $SOLR_DOWNLOAD_URL $SOLR_CLOSER_URL $SOLR_DIST_URL $SOLR_ARCHIVE_URL; do \
     if [ -f "/opt/solr-$SOLR_VERSION.tgz" ]; then break; fi; \
     echo "downloading $url"; \
-    if wget -t 10 --max-redirect $MAX_REDIRECTS --retry-connrefused -nv "$url" -O "/opt/solr-$SOLR_VERSION.tgz"; then break; else rm -f "/opt/solr-$SOLR_VERSION.tgz"; fi; \
+    if wget --header="Content-Type: application/x-gzip" -t 10 --max-redirect $MAX_REDIRECTS --retry-connrefused -nv "$url" -O "/opt/solr-$SOLR_VERSION.tgz"; then break; else rm -f "/opt/solr-$SOLR_VERSION.tgz"; fi; \
   done; \
   if [ ! -f "/opt/solr-$SOLR_VERSION.tgz" ]; then echo "failed all download attempts for solr-$SOLR_VERSION.tgz"; exit 1; fi; \
   echo "downloading $SOLR_ARCHIVE_URL.asc"; \
