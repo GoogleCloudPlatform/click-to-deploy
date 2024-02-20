@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,14 +25,14 @@ versions:
       gpg: f07934fad44f9048c0dc875a506cca31cc2794d6aebfc1867f3b1fbf48dce2c5
       version: 2.5.8
     drupal:
-      md5: 47b8b8ce1d9f23984e1d9a2fc8d413af
-      version: 10.1.3
+      md5: 2ea6f94091de2760908557dd3bb1956a
+      version: 10.1.8
   repo: drupal10-php8-apache
   tags:
-  - 10.1.3-debian11
+  - 10.1.8-debian11
   - 10.1-debian11
   - 10-debian11
-  - 10.1.3
+  - 10.1.8
   - '10.1'
   - '10'
   - latest
