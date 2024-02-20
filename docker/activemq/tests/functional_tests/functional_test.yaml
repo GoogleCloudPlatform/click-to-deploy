@@ -14,6 +14,7 @@
 
 setup:
 - command: [docker, run, --env, ACTIVEMQ_ADMIN_PASSWORD=some-passwd, --name, some-activemq-$UNIQUE-id, -d, '$IMAGE']
+- command: [sleep, '40s']
 teardown:
 - command: [docker, stop, some-activemq-$UNIQUE-id]
 - command: [docker, rm, some-activemq-$UNIQUE-id]
