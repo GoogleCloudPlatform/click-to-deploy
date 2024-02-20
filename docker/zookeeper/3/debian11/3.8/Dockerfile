@@ -1,6 +1,6 @@
 FROM marketplace.gcr.io/google/c2d-debian11
 
-ARG ZK_VERSION=3.8.2
+ARG ZK_VERSION=3.8.3
 
 ENV ZOO_CONF_DIR=/conf \
     ZOO_DATA_DIR=/data \
@@ -24,7 +24,7 @@ RUN set -eux; \
 
 # Install Gosu from official repository
 # /usr/sbin/gosu
-ENV GOSU_VERSION 
+ENV GOSU_VERSION 1.17
 RUN set -eux; \
 	apt-get update; \
 	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
@@ -47,7 +47,7 @@ RUN set -eux; \
 	wget -q -O /usr/sbin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc"; \
 	GNUPGHOME="$(mktemp -d)"; \
 	export GNUPGHOME; \
-	gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys ; \
+	gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \
 	gpg --batch --verify /usr/sbin/gosu.asc /usr/sbin/gosu; \
 	gpgconf --kill all; \
 	rm -rf "$GNUPGHOME" /usr/sbin/gosu.asc; \
@@ -75,7 +75,7 @@ RUN set -eux; \
     # Verify that gosu binary works
     # gosu nobody true
 
-ENV GPG_KEYS BBE7232D7991050B54C8EA0ADC08637CA615D22C
+ENV GPG_KEYS 3F7A1D16FA4217B1DC75E1C9FFE35B7F15DFA1BA
 
 ARG SHORT_DISTRO_NAME="zookeeper-${ZK_VERSION}"
 ARG DISTRO_NAME="apache-zookeeper-${ZK_VERSION}-bin"
