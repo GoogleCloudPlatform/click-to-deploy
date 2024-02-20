@@ -30,6 +30,7 @@ versions:
   - '6.0'
   - '6'
   - latest
+  templateSubDir: 6
 - dir: 5/debian11/5.18
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
@@ -44,4 +45,5 @@ versions:
   - '5.18'
   - '5'
   - latest
+  templateSubDir: 5
 
