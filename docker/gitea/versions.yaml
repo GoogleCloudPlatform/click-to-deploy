@@ -20,6 +20,7 @@
 
 cloudbuild:
   enable_parallel: false
+  machineType: 'E2_HIGHCPU_32'
 versions:
 - dir: 1/debian11/1.21
   from: marketplace.gcr.io/google/c2d-debian11
