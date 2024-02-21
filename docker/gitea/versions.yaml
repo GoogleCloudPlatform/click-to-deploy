@@ -26,12 +26,16 @@ versions:
   packages:
     gitea:
       version: '1.21'
+    golang:
+      version: '1.21'
+  templateArgs:
+    alpineVersion: '3.18'
   repo: gitea1
   tags:
-  - 1.21.4-debian11
+  - 1.21.5-debian11
   - 1.21-debian11
   - 1-debian11
-  - 1.21.4
+  - '1.21.5'
   - '1.21'
   - '1'
   - latest
@@ -40,10 +44,13 @@ versions:
   packages:
     gitea:
       version: '1.19'
+    golang:
+      version: '1.20'
+  templateArgs:
+    alpineVersion: '3.17'
   repo: gitea1
   tags:
   - 1.19.9-debian11
   - 1.19-debian11
-  - 1.19.9
+  - '1.19.9'
   - '1.19'
-

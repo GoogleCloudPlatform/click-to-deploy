@@ -1,18 +1,21 @@
-
-
 #Build stage
-FROM golang:1.21-alpine3.19 AS build-env
+FROM golang:1.21-alpine3.18 AS build-env
 
 ARG GOPROXY
-ENV GOPROXY ${GOPROXY:-proxy.golang.org}
+ENV GOPROXY ${GOPROXY:-direct}
 
 ARG GITEA_VERSION=release/v1.21
 ARG TAGS="sqlite sqlite_unlock_notify"
 ENV TAGS "bindata timetzdata $TAGS"
 ARG CGO_EXTRA_CFLAGS
 
-#Build deps
-RUN apk --no-cache add build-base git nodejs npm
+# Build deps
+RUN apk --no-cache add \
+    build-base \
+    git \
+    nodejs \
+    npm \
+    && rm -rf /var/cache/apk/*
 
 #Setup repo
 RUN git clone -b ${GITEA_VERSION} https://github.com/go-gitea/gitea.git ${GOPATH}/src/code.gitea.io/gitea
@@ -20,8 +23,8 @@ RUN git clone -b ${GITEA_VERSION} https://github.com/go-gitea/gitea.git ${GOPATH
 WORKDIR ${GOPATH}/src/code.gitea.io/gitea
 
 #Checkout version if set
-RUN if [ -n "${GITEA_VERSION}" ]; then git checkout "${GITEA_VERSION}"; fi \
-    && make clean-all build
+RUN if [ -n "${GITEA_VERSION}" ]; then git checkout "${GITEA_VERSION}"; fi
+RUN make clean-all build
 
 # Begin env-to-ini build
 RUN go build contrib/environment-to-ini/environment-to-ini.go
