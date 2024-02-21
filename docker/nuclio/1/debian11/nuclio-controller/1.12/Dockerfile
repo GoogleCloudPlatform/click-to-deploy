@@ -10,6 +10,7 @@ RUN (tar -xf /tmp/nuclio.tar.gz -C /app/ && rm /tmp/nuclio.tar.gz && mv /app/nuc
 
 #install golang
 ARG GOLANG_VERSION=1.18.7
+RUN apt-get update -y && apt-get install ca-certificates
 ADD https://golang.org/dl/go${GOLANG_VERSION}.linux-amd64.tar.gz /tmp/go.tar.gz
 RUN (tar -xf /tmp/go.tar.gz -C /usr/local/ && rm /tmp/go.tar.gz) || true
 ENV PATH="/usr/local/go/bin:${PATH}"
@@ -30,7 +31,7 @@ ENV C2D_RELEASE 1.12.3
 
 # install apache2-utils for htpasswd
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends ca-certificates apache2-utils \
+    && apt-get install -y --no-install-recommends apache2-utils \
     && apt-get autoremove -yqq --purge \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* 
