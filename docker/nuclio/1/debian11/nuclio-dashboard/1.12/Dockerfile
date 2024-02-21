@@ -24,7 +24,7 @@ RUN curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | ba
     && nvm install 10
 
 #install golang
-ARG GOLANG_VERSION=1.18.7
+ARG GOLANG_VERSION=1.21.0
 ADD https://golang.org/dl/go${GOLANG_VERSION}.linux-amd64.tar.gz /tmp/go.tar.gz
 RUN (tar -xf /tmp/go.tar.gz -C /usr/local/ && rm /tmp/go.tar.gz) || true
 ENV PATH="/usr/local/go/bin:${PATH}"

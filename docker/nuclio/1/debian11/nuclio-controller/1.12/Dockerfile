@@ -9,7 +9,7 @@ ADD $NUCLIO_DIST /tmp/nuclio.tar.gz
 RUN (tar -xf /tmp/nuclio.tar.gz -C /app/ && rm /tmp/nuclio.tar.gz && mv /app/nuclio-${NUCLIO_VERSION}/* /app/) || true
 
 #install golang
-ARG GOLANG_VERSION=1.18.7
+ARG GOLANG_VERSION=1.21.0
 RUN apt-get update -y && apt-get install ca-certificates
 ADD https://golang.org/dl/go${GOLANG_VERSION}.linux-amd64.tar.gz /tmp/go.tar.gz
 RUN (tar -xf /tmp/go.tar.gz -C /usr/local/ && rm /tmp/go.tar.gz) || true
