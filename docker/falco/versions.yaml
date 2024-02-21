@@ -16,18 +16,18 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 0/debian11/0.37
+- dir: 0/debian11/0.36
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     falco:
-      version: 0.37.0
+      version: 0.36.2
   repo: falco0
   tags:
-  - 0.37.0-debian11
-  - 0.37-debian11
+  - 0.36.2-debian11
+  - 0.36-debian11
   - 0-debian11
-  - 0.37.0
-  - '0.37'
+  - 0.36.2
+  - '0.36'
   - '0'
   - latest
 - dir: 0/debian11/0.34
