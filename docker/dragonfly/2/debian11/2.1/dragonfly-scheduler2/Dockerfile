@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM golang:1.20-alpine as builder
+FROM golang:-alpine as builder
 
 ARG GOPROXY
 ARG GOTAGS
 ARG GOGCFLAGS
 
-ARG DRAGONFLY2_GITHUB_BRANCH=release-2.1.9
+ARG DRAGONFLY2_GITHUB_BRANCH=release-2.1.30
 ARG MANAGER_CONSOLE_BRANCH=release-0.1.7
 
 WORKDIR /go/src/d7y.io/dragonfly/v2
@@ -38,7 +38,7 @@ RUN apt update && apt install -y wget && \
 
 FROM marketplace.gcr.io/google/c2d-debian11
 
-ENV C2D_RELEASE 2.1.9
+ENV C2D_RELEASE 2.1.30
 
 ENV DRAGONFLY_REDIS_PW dragonfly
 ENV DRAGONFLY_REDIS_HOST localhost
