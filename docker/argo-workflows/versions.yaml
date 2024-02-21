@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,17 +17,18 @@ cloudbuild:
   enable_parallel: false
 versions:
 - dir: 3/debian11/3.4
-  from: marketplace.gcr.io/google/debian11
+  from: marketplace.gcr.io/google/c2d-debian11
   packages:
     argo_workflows:
-      version: 3.4.4
+      version: 3.4.10
+    nodejs:
+      major: 20
   repo: argo-workflows3
   tags:
-  - 3.4.4-debian11
+  - 3.4.10-debian11
   - 3.4-debian11
   - 3-debian11
-  - 3.4.4
+  - 3.4.10
   - '3.4'
   - '3'
   - latest
-

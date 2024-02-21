@@ -3,7 +3,6 @@
 FROM {{ .From }}
 
 ARG SOLR_VERSION={{ $solr.Version }}
-ARG SOLR_SHA512={{ $solr.Sha512 }}
 ARG SOLR_KEYS={{ $solr.Gpg }}
 
 ENV C2D_RELEASE={{ $solr.Version }}
@@ -59,7 +58,6 @@ RUN set -ex; \
   if [ ! -f "/opt/solr-$SOLR_VERSION.tgz" ]; then echo "failed all download attempts for solr-$SOLR_VERSION.tgz"; exit 1; fi; \
   echo "downloading $SOLR_ARCHIVE_URL.asc"; \
   wget -nv "$SOLR_ARCHIVE_URL.asc" -O "/opt/solr-$SOLR_VERSION.tgz.asc"; \
-  echo "$SOLR_SHA512 */opt/solr-$SOLR_VERSION.tgz" | sha512sum -c -; \
     (>&2 ls -l "/opt/solr-$SOLR_VERSION.tgz" "/opt/solr-$SOLR_VERSION.tgz.asc"); \
   gpg --batch --verify "/opt/solr-$SOLR_VERSION.tgz.asc" "/opt/solr-$SOLR_VERSION.tgz"; \
   tar -C /opt --extract --preserve-permissions --file "/opt/solr-$SOLR_VERSION.tgz"; \

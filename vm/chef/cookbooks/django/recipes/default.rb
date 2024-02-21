@@ -13,7 +13,7 @@
 # limitations under the License.
 
 include_recipe 'c2d-config::default'
-include_recipe 'apache2::mod_wsgi'
+include_recipe 'apache2::mod-wsgi'
 
 apt_update do
   action :update

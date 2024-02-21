@@ -1,38 +1,91 @@
 actions:
 
-- name: Can create a database
+- name: Retrieve a organization
   bashTest:
-    script: curl "http://${APP_INSTANCE_NAME}-influxdb-svc:8086/query?u=${INFLUXDB_ADMIN_USER}&p=${INFLUXDB_ADMIN_PASSWORD}" --data-urlencode "q=CREATE DATABASE NOAA_water_database_1"
+    script: |-
+      # Retrieve org_id
+      curl -s --request GET "${APP_INSTANCE_NAME}-influxdb-svc:8086/api/v2/orgs" \
+         --header "Authorization: Token ${INFLUXDB_API_TOKEN}" > /tmp/orgs.json
+
+      # Output the Organization name
+      jq -r '.orgs[0].name' /tmp/orgs.json
     expect:
       stdout:
-        contains: '{"results":[{"statement_id":0}]}'
+        contains: 'example_org'
       exitCode:
         equals: 0
 
-- name: Can read a database
+- name: Can create a new bucket
   bashTest:
-    script: curl "http://${APP_INSTANCE_NAME}-influxdb-svc:8086/query?u=${INFLUXDB_ADMIN_USER}&p=${INFLUXDB_ADMIN_PASSWORD}" --data-urlencode "q=SHOW DATABASES"
+    script: |-
+      # Retrieve org_id retrieved on step 1
+      org_id="$(jq -r '.orgs[0].id' /tmp/orgs.json)"
+
+      jq -r --null-input --arg org_id "${org_id}" '{
+            "name": "c2d_bucket",
+            "description": "A bucket holding c2d tests",
+            "orgID": $org_id,
+            "retentionRules": [
+                {
+                    "type": "expire",
+                    "everySeconds": 2592000
+                }
+            ]
+          }' > /tmp/new_org_request.json
+
+      curl -v --request POST "http://${APP_INSTANCE_NAME}-influxdb-svc:8086/api/v2/buckets" \
+        --header "Authorization: Token ${INFLUXDB_API_TOKEN}" \
+        --header "Accept: application/json" \
+        --header "Content-Type: application/json" \
+        --data "$(cat /tmp/new_org_request.json)" 2>&1
     expect:
       stdout:
-        contains: 'NOAA_water_database_1'
+        contains: 'HTTP/1.1 201 Created'
       exitCode:
         equals: 0
 
-- name: Can not create a database with incorrect credentials
+- name: Write data
   bashTest:
-    script: curl "http://${APP_INSTANCE_NAME}-influxdb-svc:8086/query?u=root&p=password" --data-urlencode "q=CREATE DATABASE NOAA_water_database_2"
+    script: |-
+      # Retrieve org_id retrieved on step 1
+      org_id="$(jq -r '.orgs[0].id' /tmp/orgs.json)"
+
+      # Generate current timestamp
+      current_ts="$(date +%s)"
+
+      # Write data to the bucket
+      curl -v --request POST \
+        "${APP_INSTANCE_NAME}-influxdb-svc:8086/api/v2/write?org=${org_id}&bucket=c2d_bucket&precision=s" \
+          --header "Authorization: Token ${INFLUXDB_API_TOKEN}" \
+          --header "Content-Type: text/plain; charset=utf-8" \
+          --header "Accept: application/json" \
+          --data-binary "
+              home,room=Living\ Room temp=21.1,hum=35.9,co=0i ${current_ts}
+              home,room=Kitchen temp=21.0,hum=35.9,co=0i ${current_ts}
+            " 2>&1
     expect:
       stdout:
-        contains: '{"error":"authorization failed"}'
+        contains: 'HTTP/1.1 204 No Content'
       exitCode:
         equals: 0
 
-- name: Can not read a database with incorrect credentials
+- name: Query data
   bashTest:
-    script: curl "http://${APP_INSTANCE_NAME}-influxdb-svc:8086/query?u=root&p=password" --data-urlencode "q=SHOW DATABASES"
+    script: |-
+      # Retrieve org_id retrieved on step 1
+      org_id="$(jq -r '.orgs[0].id' /tmp/orgs.json)"
+
+      # Read data from bucket
+      curl -s --request POST "${APP_INSTANCE_NAME}-influxdb-svc:8086/api/v2/query?org=${org_id}" \
+        --header "Content-Type: application/vnd.flux" \
+        --header "Accept: application/csv" \
+        --header "Authorization: Token ${INFLUXDB_API_TOKEN}" \
+        --data 'from(bucket: "c2d_bucket")
+                  |> range(start: -10m)' | grep "Kitchen" | wc -l
+
     expect:
       stdout:
-        contains: '{"error":"authorization failed"}'
+        contains: '3'
       exitCode:
         equals: 0
 
@@ -48,6 +101,6 @@ actions:
     script: curl -f "http://${APP_INSTANCE_NAME}-influxdb-svc:8086/metrics"
     expect:
       stdout:
-        contains: '# HELP go_gc_duration_seconds A summary of the GC invocation durations.'
+        contains: 'influxdb_users_total 1'
       exitCode:
         equals: 0

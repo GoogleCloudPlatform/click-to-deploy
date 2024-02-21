@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,16 +19,15 @@ default['erpnext']['packages'] = [
     'python3-pip',
     'python3-setuptools',
     'python3-venv',
-    'redis-server',
     'supervisor',
     'virtualenv',
     'wkhtmltopdf',
 ]
 
-default['erpnext']['version'] = '14'
+default['erpnext']['version'] = '15'
 default['erpnext']['site'] = 'site1.local'
 
-default['erpnext']['nodejs']['version'] = '16'
+default['erpnext']['nodejs']['version'] = '19'
 
 default['erpnext']['mariadb']['version'] = '10.6'
 default['erpnext']['mariadb']['apt_version'] = "1:#{default['mariadb']['version']}.*"

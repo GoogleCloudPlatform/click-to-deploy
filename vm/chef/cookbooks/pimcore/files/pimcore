@@ -77,10 +77,11 @@ vendor/bin/pimcore-install -vv \
 # Assign permission to Apache user
 chown -R www-data:www-data "${pimcore_folder}/${pimcore_project}"
 
-# Configure Apache
+# Configure Apache and Pimcore Website
 rm -f /etc/apache2/sites-enabled/000-default.conf
 envsubst '\$pimcore_project' < /opt/c2d/apache-pimcore.conf \
   > /etc/apache2/sites-enabled/pimcore.conf
+cp -f /opt/c2d/apache-pimcore-website.htaccess "${pimcore_folder}/${pimcore_project}/public/.htaccess"
 
 # Restart Apache
 echo "Restarting Apache..."

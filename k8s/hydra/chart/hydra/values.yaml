@@ -13,6 +13,7 @@ postgresql:
   postgresDatabase: hydra
 
   persistence:
+    storageClass: standard
     size: 8Gi
 
 
@@ -46,8 +47,6 @@ hydra:
     tag: null
   serviceAccount:
     name: hydra-sa
-
-  dangerousForceHttp: true
 
   autoscaling:
     enabled: true

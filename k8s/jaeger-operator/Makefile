@@ -10,7 +10,7 @@ APP_ID ?= $(CHART_NAME)
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 
-TRACK ?= 1.25
+TRACK ?= 1.45
 
 IMAGE_MAIN ?= $(SOURCE_REGISTRY)/jaeger-operator1:$(TRACK)
 
@@ -31,9 +31,6 @@ $(info ---- TRACK = $(TRACK))
 $(info ---- RELEASE = $(RELEASE))
 $(info ---- SOURCE_REGISTRY = $(SOURCE_REGISTRY))
 
-APP_DEPLOYER_IMAGE ?= $(REGISTRY)/$(APP_ID)/deployer:$(RELEASE)
-APP_DEPLOYER_IMAGE_TRACK_TAG ?= $(REGISTRY)/$(APP_ID)/deployer:$(TRACK)
-APP_GCS_PATH ?= $(GCS_URL)/$(APP_ID)/$(TRACK)
 
 NAME ?= $(APP_ID)-1
 

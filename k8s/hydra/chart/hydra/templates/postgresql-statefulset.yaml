@@ -92,7 +92,7 @@ spec:
     spec:
       accessModes:
       - ReadWriteOnce
-      storageClassName: standard
+      storageClassName: {{ .Values.postgresql.persistence.storageClass }}
       resources:
         requests:
           storage: {{ .Values.postgresql.persistence.size }}

@@ -8,7 +8,7 @@ APP_ID ?= $(CHART_NAME)
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 
-TRACK ?= 0.54
+TRACK ?= 0.65
 
 IMAGE_MAIN ?= $(SOURCE_REGISTRY)/prometheus-operator0:$(TRACK)
 

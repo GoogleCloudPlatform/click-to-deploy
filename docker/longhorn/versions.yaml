@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,22 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 1/debian11/1.3
-  from: marketplace.gcr.io/google/debian11
+- dir: 1/debian11/1.4
+  from: marketplace.gcr.io/google/c2d-debian11
   packages:
     longhorn:
-      version: 1.3.2
+      version: 1.4.2
     manager:
-      version: 1.3.x-head
+      version: 1.4.2
   repo: longhorn1
   tags:
-  - 1.3.2-debian11
-  - 1.3-debian11
+  - 1.4.2-debian11
+  - 1.4-debian11
   - 1-debian11
-  - 1.3.2
-  - '1.3'
+  - 1.4.2
+  - '1.4'
   - '1'
   - latest
+

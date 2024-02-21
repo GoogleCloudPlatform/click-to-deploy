@@ -1,0 +1,111 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+ARG MC_VERSION=5.3.2
+ARG MC_INSTALL_NAME="hazelcast-management-center-${MC_VERSION}"
+ARG MC_INSTALL_JAR="hazelcast-management-center-${MC_VERSION}.jar"
+ARG MC_INSTALL_ZIP="${MC_INSTALL_NAME}.zip"
+
+FROM marketplace.gcr.io/google/c2d-debian11 AS builder
+
+ARG MC_VERSION
+ARG MC_INSTALL_NAME
+ARG MC_INSTALL_JAR
+ARG MC_INSTALL_ZIP
+
+WORKDIR /tmp/build
+
+RUN echo "Installing new APK packages" \
+  && apt update \
+    && apt install --no-install-recommends -y bash wget ca-certificates unzip procps libnss3 curl \
+    && echo "Downloading Management Center" \
+    && wget -O ${MC_INSTALL_ZIP} https://repository.hazelcast.com/download/management-center/${MC_INSTALL_ZIP} \
+    && unzip ${MC_INSTALL_ZIP} -x ${MC_INSTALL_NAME}/docs/* \
+    && mv ${MC_INSTALL_NAME}/${MC_INSTALL_JAR} ${MC_INSTALL_JAR} \
+    && mv ${MC_INSTALL_NAME}/bin/start.sh start.sh \
+    && mv ${MC_INSTALL_NAME}/bin/mc-conf.sh mc-conf.sh \
+    && mv ${MC_INSTALL_NAME}/bin/hz-mc hz-mc
+
+RUN echo "Adding license to /usr/share/hazelcast directory" \
+    && mkdir -p /usr/share/hazelcast-management-center/ \
+    && curl https://raw.githubusercontent.com/hazelcast/hazelcast/master/LICENSE \
+        -o /usr/share/hazelcast-management-center/LICENSE
+
+RUN chmod +x start.sh mc-conf.sh
+
+FROM gcr.io/google-appengine/debian11:latest
+ARG MC_VERSION
+ARG MC_INSTALL_NAME
+ARG MC_INSTALL_JAR
+ARG MC_INSTALL_ZIP
+ARG MC_REVISION=${MC_VERSION}
+
+LABEL hazelcast.mc.revision=${MC_REVISION}
+
+ENV MC_HOME=/opt/hazelcast/management-center \
+    MC_DATA=/data
+
+ENV JAVA_OPTS_DEFAULT="-Dhazelcast.mc.home=${MC_DATA} -Djava.net.preferIPv4Stack=true" \
+    MC_INSTALL_JAR="${MC_INSTALL_JAR}" \
+    USER_NAME="hazelcast" \
+    USER_UID=10001 \
+    MC_HTTP_PORT="8080" \
+    MC_HTTPS_PORT="8443" \
+    MC_HEALTH_CHECK_PORT="8081" \
+    LOGGING_LEVEL="" \
+    MC_CONTEXT_PATH="/" \
+    CONTAINER_SUPPORT="true" \
+    MIN_HEAP_SIZE="" \
+    MAX_HEAP_SIZE="" \
+    MC_INIT_SCRIPT="" \
+    MC_INIT_CMD="" \
+    MC_CLASSPATH="" \
+    MC_ADMIN_USER="" \
+    MC_ADMIN_PASSWORD=""
+
+# Workaround for CVE-2021-44228
+# https://www.docker.com/blog/apache-log4j-2-cve-2021-44228/
+ENV JAVA_OPTS="-Dlog4j.formatMsgNoLookups=true"
+
+RUN echo "Installing new APK packages" \
+ && apt update \
+    && apt install --no-install-recommends -y openjdk-11-jdk bash curl \
+    && apt install --no-install-recommends -y librocksdb-dev \
+    && mkdir -p ${MC_HOME} ${MC_DATA} \
+    && echo "Granting full access to ${MC_HOME} and ${MC_DATA} to allow running" \
+        "container as non-root with \"docker run --user\" option" \
+    && chmod a+rwx ${MC_HOME} ${MC_DATA}
+
+WORKDIR ${MC_HOME}
+
+COPY --from=builder /tmp/build/${MC_INSTALL_JAR} .
+COPY --from=builder /tmp/build/start.sh ./bin/start.sh
+COPY --from=builder /tmp/build/mc-conf.sh ./bin/mc-conf.sh
+COPY --from=builder /tmp/build/hz-mc ./bin/hz-mc
+COPY mc-start.sh ./bin/mc-start.sh
+
+VOLUME ["${MC_DATA}"]
+EXPOSE ${MC_HTTP_PORT} ${MC_HTTPS_PORT} ${MC_HEALTH_CHECK_PORT}
+
+RUN echo "Adding non-root user" \
+    && adduser --uid $USER_UID --system --home $MC_HOME --shell /sbin/nologin $USER_NAME \
+    && chown -R $USER_UID:0 $MC_HOME ${MC_DATA} \
+    && chmod -R g=u "$MC_HOME" ${MC_DATA} \
+    && chmod -R +r $MC_HOME ${MC_DATA}
+
+# Switch to hazelcast user
+USER ${USER_UID}
+
+# Start Management Center
+CMD ["bash", "./bin/hz-mc", "start"]

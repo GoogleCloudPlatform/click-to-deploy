@@ -1,7 +1,7 @@
 {
   "license": "c2d-haproxy",
-  "source_image_family": "debian-10",
+  "source_image_family": "debian-11",
   "chef": {
-    "run_list": [ "c2d-config", "haproxy", "stackdriver" ]
+    "run_list": [ "c2d-config", "haproxy", "google-cloud-ops-agent" ]
   }
 }

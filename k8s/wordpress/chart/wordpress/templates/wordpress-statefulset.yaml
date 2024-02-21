@@ -17,6 +17,8 @@ spec:
     metadata:
       labels: *WordPressDeploymentLabels
     spec:
+      initContainers:
+        {{- include "wordpress.init_container.check_db" . | indent 8 }}
       containers:
       - image: "{{ .Values.wordpress.image.repo }}:{{ .Values.wordpress.image.tag }}"
         name: wordpress
