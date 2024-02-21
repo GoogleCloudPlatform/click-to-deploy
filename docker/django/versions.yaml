@@ -68,21 +68,5 @@ versions:
   - 1-debian11
   - latest
   templateSubDir: exporter
-- dir: exporter
-  excludeTests:
-  - tests/functional_tests/basic_test.yaml
-  from: marketplace.gcr.io/google/c2d-debian11
-  packages:
-    uwsgi_exporter:
-      version: 1.1.0
-  repo: uwsgi-exporter1
-  tags:
-  - 1.1.0
-  - '1.1'
-  - '1'
-  - 1.1.0-debian11
-  - 1.1-debian11
-  - 1-debian11
-  - latest
-  templateSubDir: exporter
+  
 
