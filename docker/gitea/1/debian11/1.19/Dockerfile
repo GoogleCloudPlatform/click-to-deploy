@@ -1,10 +1,10 @@
 #Build stage
-FROM golang:1.19-alpine3.17 AS build-env
+FROM golang:1.20-alpine3.17 AS build-env
 
 ARG GOPROXY
 ENV GOPROXY ${GOPROXY:-direct}
 
-ARG GITEA_VERSION=release/v1.20
+ARG GITEA_VERSION=release/v1.19
 ARG TAGS="sqlite sqlite_unlock_notify"
 ENV TAGS "bindata timetzdata $TAGS"
 ARG CGO_EXTRA_CFLAGS

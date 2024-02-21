@@ -3,12 +3,12 @@
 {{- $distroMajor := index .TemplateArgs "alpineVersion" -}}
 
 #Build stage
-FROM golang:{{ $gitea.Version }}-alpine{{ $distroMajor }} AS build-env
+FROM golang:{{ $golang.Version }}-alpine{{ $distroMajor }} AS build-env
 
 ARG GOPROXY
 ENV GOPROXY ${GOPROXY:-direct}
 
-ARG GITEA_VERSION=release/v{{ $golang.Version }}
+ARG GITEA_VERSION=release/v{{ $gitea.Version }}
 ARG TAGS="sqlite sqlite_unlock_notify"
 ENV TAGS "bindata timetzdata $TAGS"
 ARG CGO_EXTRA_CFLAGS
