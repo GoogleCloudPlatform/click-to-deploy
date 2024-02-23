@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,31 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apt_repository 'php' do
-  uri 'https://packages.sury.org/php/'
-  distribution node['php81']['distribution']
-  key 'https://packages.sury.org/php/apt.gpg'
-  components ['main']
-end
-
-apt_update do
-  action :update
-end
-
-package 'install packages' do
-  package_name node['php81']['packages']
-  action :install
-  retries 5
-  retry_delay 20
-end
-
-node['php81']['modules'].each do |pkg|
-  include_recipe "php81::module_#{pkg}"
-end
-
 ospo_download 'Licenses and Source-code' do
+  repos <<-EOF
+https://github.com/paramiko/paramiko.git
+https://github.com/psycopg/psycopg2.git
+https://github.com/chardet/chardet.git
+https://github.com/Fyrd/caniuse
+https://github.com/ben-eb/caniuse-lite
+https://github.com/kemitchell/spdx-exceptions.json.git
+EOF
   licenses <<-EOF
+WordPress;https://github.com/WordPress/WordPress/blob/master/license.txt
+wp-cli;https://github.com/wp-cli/wp-cli/blob/main/LICENSE
+Apache_httpd;https://github.com/apache/httpd/blob/trunk/LICENSE
 PHP;https://github.com/php/php-src/blob/master/LICENSE
 Zend_Engine;https://github.com/php/php-src/blob/master/Zend/LICENSE
+MySQL8;https://github.com/mysql/mysql-server/blob/8.0/LICENSE
 EOF
 end

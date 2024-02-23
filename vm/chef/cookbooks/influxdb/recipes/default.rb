@@ -13,6 +13,7 @@
 # limitations under the License.
 
 include_recipe 'c2d-config::create-self-signed-certificate'
+include_recipe 'influxdb::ospo'
 
 bash 'Add Apt Repository' do
   cwd '/tmp'

@@ -40,4 +40,21 @@ template '/etc/apache2/sites-available/django.conf' do
   mode '0644'
 end
 
+ospo_download 'Licenses and Source-code' do
+  licenses <<-EOF
+Django;https://github.com/django/django/blob/main/LICENSE
+MySQLdb;https://github.com/PyMySQL/mysqlclient/blob/main/LICENSE
+asgiref;https://github.com/django/asgiref/blob/main/LICENSE
+mysqlclient;https://github.com/PyMySQL/mysqlclient/blob/main/LICENSE
+psycopg2;https://github.com/psycopg/psycopg2/blob/master/LICENSE
+sqlparse;https://github.com/andialbrecht/sqlparse/blob/master/LICENSE
+uWSGI;https://github.com/unbit/uwsgi/blob/master/LICENSE
+EOF
+  repos <<-EOF
+https://github.com/PyMySQL/mysqlclient.git
+https://github.com/psycopg/psycopg2.git
+https://github.com/unbit/uwsgi.git
+EOF
+end
+
 c2d_startup_script 'django-config-setup'

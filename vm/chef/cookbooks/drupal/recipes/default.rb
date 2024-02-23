@@ -84,6 +84,18 @@ execute 'move .gitignore ' do
   command 'mv example.gitignore .gitignore'
 end
 
+ospo_download 'Licenses and Source-code' do
+  licenses <<-EOF
+Drupal;https://www.drupal.org/about/licensing#drupal-license
+composer;https://github.com/composer/composer/blob/master/LICENSE
+drush;https://packagist.org/packages/drush/drush
+EOF
+  repos <<-EOF
+https://github.com/drupal/drupal.git
+https://github.com/drush-ops/drush.git
+EOF
+end
+
 c2d_startup_script 'drupal' do
   source 'drupal'
   action :cookbook_file

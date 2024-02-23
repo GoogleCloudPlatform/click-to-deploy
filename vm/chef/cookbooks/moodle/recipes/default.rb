@@ -29,6 +29,7 @@ include_recipe 'php81::module_soap'
 include_recipe 'php81::module_xml'
 include_recipe 'php81::module_xmlrpc'
 include_recipe 'php81::module_zip'
+include_recipe 'moodle::ospo'
 
 remote_file '/tmp/moodle.tgz' do
   source "https://download.moodle.org/download.php/direct/stable#{node['moodle']['track']}/moodle-#{node['moodle']['version']}.tgz"

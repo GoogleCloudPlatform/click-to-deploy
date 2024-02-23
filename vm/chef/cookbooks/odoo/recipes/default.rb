@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@ node.override['postgresql']['standalone']['allow_external'] = false
 
 include_recipe 'postgresql::standalone_bullseye'
 include_recipe 'nginx::embedded'
+include_recipe 'odoo::ospo'
 
 package 'Install packages' do
   package_name node['odoo']['packages']

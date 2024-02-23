@@ -28,6 +28,8 @@ include_recipe 'apache2::mod-rewrite'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 
+include_recipe 'mautic::ospo'
+
 package 'Install packages' do
   package_name node['mautic']['packages']
   action :install

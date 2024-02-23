@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,4 +19,11 @@ end
 package 'install packages' do
   package_name node['nodejs']['packages']
   action :install
+end
+
+ospo_download 'Licenses and Source-code' do
+  licenses <<-EOF
+Apache_httpd;https://github.com/apache/httpd/blob/trunk/LICENSE
+NodeJS;https://github.com/nodejs/node/blob/main/LICENSE
+EOF
 end
