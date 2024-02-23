@@ -12,16 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM node:16-alpine as console-builder
+FROM node:18-alpine as console-builder
 
-ARG MANAGER_CONSOLE_BRANCH=release-0.1.7
-ARG MANAGER_CONSOLE_TAR=v0.1.7
+ARG MANAGER_VERSION=1.0.23
+ARG MANAGER_CONSOLE_TAR=v${MANAGER_VERSION}
 ARG CONSOLE_DIST=https://github.com/dragonflyoss/console/archive/refs/tags/${MANAGER_CONSOLE_TAR}.tar.gz
 
-ADD ${CONSOLE_DIST} .
+RUN apk --no-cache add curl
 
-RUN tar -xvf $MANAGER_CONSOLE_TAR.tar.gz && \
-    cd console-0.1.7 && \
+RUN curl -L -o "manager.tar.gz" "${CONSOLE_DIST}" && \
+    mkdir -p console/ && \
+    tar -xvf manager.tar.gz --strip-components=1 -C console/ && \
+    cd console && \
     npm install --loglevel warn --progress false && \
     npm run build
 
@@ -32,14 +34,14 @@ ARG GOPROXY
 ARG GOTAGS
 ARG GOGCFLAGS
 ARG DRAGONFLY2_GITHUB_BRANCH=release-2.1.30
-ARG MANAGER_CONSOLE_BRANCH=release-0.1.7
+ARG MANAGER_CONSOLE_BRANCH=release-1.0.23
 
 WORKDIR /go/src/d7y.io/dragonfly/v2
 
 RUN apk --no-cache add bash make gcc libc-dev git && \
     git clone -b ${DRAGONFLY2_GITHUB_BRANCH} --recurse-submodules https://github.com/dragonflyoss/Dragonfly2.git /go/src/d7y.io/dragonfly/v2
 
-COPY --from=console-builder /console-0.1.7/dist /go/src/d7y.io/dragonfly/v2/manager/dist
+COPY --from=console-builder /console-1.0.23/dist /go/src/d7y.io/dragonfly/v2/manager/dist
 
 RUN make build-manager-server && make install-manager
 

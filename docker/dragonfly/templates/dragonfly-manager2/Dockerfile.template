@@ -17,7 +17,7 @@
 {{- $golang := index .Packages "golang" -}}
 {{- $grpc_health_probe := index .Packages "grpc_health_probe" -}}
 
-FROM node:16-alpine as console-builder
+FROM node:18-alpine as console-builder
 
 ARG MANAGER_CONSOLE_BRANCH=release-{{ $manager_console.Version }}
 ARG MANAGER_CONSOLE_TAR=v{{ $manager_console.Version }}
@@ -25,7 +25,10 @@ ARG CONSOLE_DIST=https://github.com/dragonflyoss/console/archive/refs/tags/${MAN
 
 ADD ${CONSOLE_DIST} .
 
-RUN tar -xvf $MANAGER_CONSOLE_TAR.tar.gz && \
+RUN apk --no-cache add curl
+
+RUN curl -L -o "$MANAGER_CONSOLE_TAR.tar.gz" "${CONSOLE_DIST}" && \
+    tar -xvf $MANAGER_CONSOLE_TAR.tar.gz && \
     cd console-{{ $manager_console.Version }} && \
     npm install --loglevel warn --progress false && \
     npm run build

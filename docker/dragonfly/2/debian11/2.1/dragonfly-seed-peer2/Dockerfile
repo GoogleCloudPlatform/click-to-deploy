@@ -12,14 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM golang:-alpine as builder
+FROM golang:1.21-alpine as builder
 
 ARG GOPROXY
 ARG GOTAGS
 ARG GOGCFLAGS
 
 ARG DRAGONFLY2_GITHUB_BRANCH=release-2.1.30
-ARG MANAGER_CONSOLE_BRANCH=release-0.1.7
+ARG MANAGER_CONSOLE_BRANCH=release-1.0.23
 
 WORKDIR /go/src/d7y.io/dragonfly/v2
 
