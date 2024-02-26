@@ -23,10 +23,22 @@ cloudbuild:
 versions:
 - dir: 11/debian11
   from: marketplace.gcr.io/google/debian11
+  packages:
+    debian11:
+      version: 11.5.0
   repo: c2d-debian11
   tags:
   - '11.5.0'
   - '11.5'
   - '11'
+  templateSubDir: debian11
+- dir: 12/debian12
+  from: marketplace.gcr.io/google/debian12
+  packages:
+    debian12:
+      version: 12.4.0
+  repo: c2d-debian12
+  tags:
+  - '12'
   - latest
-
+  templateSubDir: debian12

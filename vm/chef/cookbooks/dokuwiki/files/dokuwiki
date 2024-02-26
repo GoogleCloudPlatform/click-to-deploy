@@ -24,7 +24,6 @@ export ADMIN_EMAIL="$(get_attribute_value "dokuwiki-admin-email")"
 declare -r dokuwiki_config_folder="/var/www/html/conf"
 declare -r auth_config_template="${dokuwiki_config_folder}/users.auth.php.template"
 declare -r auth_config="${dokuwiki_config_folder}/users.auth.php"
-declare -r local_config="${dokuwiki_config_folder}/local.php"
 
 # Apply auth config file
 if [[ -f "${auth_config_template}" ]]; then
@@ -36,14 +35,6 @@ else
     >&2 echo "Auth config also does not exist. Quitting..."
     exit 1
   fi
-fi
-
-# Fix language
-if [[ -f "${local_config}" ]]; then
-  sed -i "s@\$conf\['lang'\] = .*;@\$conf\['lang'\] = 'en';@g" "${local_config}"
-else
-  >&2 echo ""${local_config}" does not exist."
-  exit 1
 fi
 
 >&2 echo "Finished!"
