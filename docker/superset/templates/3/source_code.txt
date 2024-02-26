@@ -1,0 +1,8 @@
+https://github.com/architest/pymeeus
+https://raw.githubusercontent.com/certifi/python-certifi/master/LICENSE
+https://github.com/kata198/func_timeout
+https://raw.githubusercontent.com/PyMySQL/mysqlclient/master/LICENSE
+https://raw.githubusercontent.com/paramiko/paramiko/master/LICENSE
+https://github.com/psycopg/psycopg2
+https://github.com/vinsci/geohash/blob/master/LICENSE.txt
+https://raw.githubusercontent.com/python/typing_extensions/master/LICENSE
