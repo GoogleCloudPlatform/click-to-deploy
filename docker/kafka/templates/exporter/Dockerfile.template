@@ -2,8 +2,6 @@
 
 FROM {{ .From }}
 
-COPY --from=ospo /usr/src /usr/src
-
 ENV EXPORTER_VERSION {{ $kafka_exporter.Version }}
 
 ENV EXPORTER_USER="exporter" \

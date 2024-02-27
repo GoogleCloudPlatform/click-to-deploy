@@ -23,7 +23,7 @@ RUN mkdir -p /usr/src/licenses \
 FROM {{ .From }}
 
 COPY --from=ospo /usr/src /usr/src
-\
+
 ARG KAFKA_VERSION={{ $kafka.Version }}
 ARG SCALA_VERSION={{ $scala.Version }}
 

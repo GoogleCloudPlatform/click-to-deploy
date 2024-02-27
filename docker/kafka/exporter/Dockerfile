@@ -1,7 +1,5 @@
 FROM marketplace.gcr.io/google/c2d-debian11
 
-COPY --from=ospo /usr/src /usr/src
-
 ENV EXPORTER_VERSION 1.6.0
 
 ENV EXPORTER_USER="exporter" \

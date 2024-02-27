@@ -19,7 +19,7 @@ RUN mkdir -p /usr/src/licenses \
 FROM marketplace.gcr.io/google/c2d-debian11
 
 COPY --from=ospo /usr/src /usr/src
-\
+
 ARG KAFKA_VERSION=3.4.1
 ARG SCALA_VERSION=2.13
 
