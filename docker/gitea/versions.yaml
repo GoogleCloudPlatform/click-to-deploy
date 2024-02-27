@@ -33,10 +33,10 @@ versions:
     alpineVersion: '3.18'
   repo: gitea1
   tags:
-  - 1.21.5-debian11
+  - 1.21.7-debian11
   - 1.21-debian11
   - 1-debian11
-  - '1.21.5'
+  - '1.21.7'
   - '1.21'
   - '1'
   - latest
