@@ -1,4 +1,21 @@
+FROM marketplace.gcr.io/google/php8-apache2:8.1 as ospo
+
+# Download Licenses and restricted source-code
+COPY components.csv /components.csv
+COPY source_code.txt /source_code.txt
+
+RUN curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
+		&& curl -o /download-ref-repos.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-ref-repos.sh \
+		&& chmod +x /download-licenses.sh \
+		&& chmod +x /download-ref-repos.sh
+
+RUN mkdir -p /usr/src/licenses \
+		&& /download-licenses.sh /components.csv /usr/src/licenses \
+		&& /download-ref-repos.sh /source_code.txt /usr/src
+
 FROM marketplace.gcr.io/google/php8-apache2:8.1
+
+COPY --from=ospo /usr/src /usr/src
 
 RUN set -ex; \
 	savedAptMark="$(apt-mark showmanual)"; \
@@ -54,9 +71,9 @@ RUN a2enmod rewrite expires
 WORKDIR /usr/src/drupal
 
 # https://www.drupal.org/node/3060/release
-ENV DRUPAL_VERSION 10.1.3
-ENV C2D_RELEASE 10.1.3
-ENV DRUPAL_MD5 47b8b8ce1d9f23984e1d9a2fc8d413af
+ENV DRUPAL_VERSION 10.1.8
+ENV C2D_RELEASE 10.1.8
+ENV DRUPAL_MD5 2ea6f94091de2760908557dd3bb1956a
 
 # Download package and extract to web volume
 RUN set -eux; \

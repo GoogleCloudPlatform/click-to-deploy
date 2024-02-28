@@ -108,7 +108,7 @@ Choose the instance name and namespace for the app. For most cases, you can
 use the `default` namespace.
 
 ```shell
-export APP_INSTANCE_NAME"=kafka-1"
+export APP_INSTANCE_NAME="kafka-1"
 export NAMESPACE="default"
 ```
 (Optional) Enable Stackdriver Metrics Exporter:
