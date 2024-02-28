@@ -49,7 +49,7 @@ ENV DEV_APT_DEPS="\
      yarn"
 
 ENV DEV_APT_COMMAND="\
-    curl --silent --fail --location https://deb.nodesource.com/setup_14.x | \
+    curl --silent --fail --location https://deb.nodesource.com/setup_18.x | \
     bash -o pipefail -o errexit -o nolog - \
     && curl --silent https://dl.yarnpkg.com/debian/pubkey.gpg | \
     apt-key add - >/dev/null 2>&1\
@@ -57,7 +57,7 @@ ENV DEV_APT_COMMAND="\
 
 RUN apt-get update \
     && apt-get install --no-install-recommends -yqq apt-utils >/dev/null 2>&1 \
-    && apt-get install -y --no-install-recommends curl gnupg2 \
+    && apt-get install -y --no-install-recommends curl ca-certificates gnupg2 \
     && mkdir -pv /usr/share/man/man1 \
     && mkdir -pv /usr/share/man/man7 \
     && bash -o pipefail -o errexit -o nounset -o nolog -c "${DEV_APT_COMMAND}" \
@@ -175,7 +175,7 @@ ENV RUNTIME_APT_COMMAND="echo" \
 
 RUN apt-get update \
     && apt-get install --no-install-recommends -yqq apt-utils >/dev/null 2>&1 \
-    && apt-get install -y --no-install-recommends curl gnupg2 \
+    && apt-get install -y --no-install-recommends curl ca-certificates gnupg2 \
     && mkdir -pv /usr/share/man/man1 \
     && mkdir -pv /usr/share/man/man7 \
     && bash -o pipefail -o errexit -o nounset -o nolog -c "${RUNTIME_APT_COMMAND}" \
@@ -189,7 +189,7 @@ RUN apt-get update \
 
 # Install Gosu
 # /usr/sbin/gosu
-ENV GOSU_VERSION 
+ENV GOSU_VERSION 1.17
 RUN set -eux; \
 	apt-get update; \
 	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
@@ -212,7 +212,7 @@ RUN set -eux; \
 	wget -q -O /usr/sbin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc"; \
 	GNUPGHOME="$(mktemp -d)"; \
 	export GNUPGHOME; \
-	gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys ; \
+	gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \
 	gpg --batch --verify /usr/sbin/gosu.asc /usr/sbin/gosu; \
 	gpgconf --kill all; \
 	rm -rf "$GNUPGHOME" /usr/sbin/gosu.asc; \

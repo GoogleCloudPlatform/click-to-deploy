@@ -23,6 +23,9 @@ versions:
       version: 2.8.1
     pip:
       version: 22.3.1
+    gosu:
+      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
+      version: '1.17'
   repo: airflow2
   tags:
   - 2.8.1-debian11
@@ -37,6 +40,9 @@ versions:
   packages:
     airflow:
       version: 2.6.3
+    gosu:
+      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
+      version: '1.17'
     pip:
       version: 22.3.1
   repo: airflow2
@@ -45,4 +51,3 @@ versions:
   - 2.6-debian11
   - 2.6.3
   - '2.6'
-

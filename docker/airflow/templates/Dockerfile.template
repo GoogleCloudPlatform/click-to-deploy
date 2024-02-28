@@ -53,7 +53,7 @@ ENV DEV_APT_DEPS="\
      yarn"
 
 ENV DEV_APT_COMMAND="\
-    curl --silent --fail --location https://deb.nodesource.com/setup_14.x | \
+    curl --silent --fail --location https://deb.nodesource.com/setup_18.x | \
     bash -o pipefail -o errexit -o nolog - \
     && curl --silent https://dl.yarnpkg.com/debian/pubkey.gpg | \
     apt-key add - >/dev/null 2>&1\
@@ -61,7 +61,7 @@ ENV DEV_APT_COMMAND="\
 
 RUN apt-get update \
     && apt-get install --no-install-recommends -yqq apt-utils >/dev/null 2>&1 \
-    && apt-get install -y --no-install-recommends curl gnupg2 \
+    && apt-get install -y --no-install-recommends curl ca-certificates gnupg2 \
     && mkdir -pv /usr/share/man/man1 \
     && mkdir -pv /usr/share/man/man7 \
     && bash -o pipefail -o errexit -o nounset -o nolog -c "${DEV_APT_COMMAND}" \
@@ -179,7 +179,7 @@ ENV RUNTIME_APT_COMMAND="echo" \
 
 RUN apt-get update \
     && apt-get install --no-install-recommends -yqq apt-utils >/dev/null 2>&1 \
-    && apt-get install -y --no-install-recommends curl gnupg2 \
+    && apt-get install -y --no-install-recommends curl ca-certificates gnupg2 \
     && mkdir -pv /usr/share/man/man1 \
     && mkdir -pv /usr/share/man/man7 \
     && bash -o pipefail -o errexit -o nounset -o nolog -c "${RUNTIME_APT_COMMAND}" \
