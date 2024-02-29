@@ -13,23 +13,23 @@
 # limitations under the License.
 
 ospo_download 'Licenses and Source-code' do
-  repos <<-EOF
+  ref_repos <<-EOF
 https://github.com/pysimplesoap/pysimplesoap
 https://github.com/certifi/python-certifi
 https://github.com/chardet/chardet
 https://github.com/jenkinsci/constant-pool-scanner
-https://docutils.sourceforge.io/COPYING.html
+https://docutils.sourceforge.io
 https://github.com/jakartaee/expression-language
 https://github.com/anchore/go-version
 https://github.com/go-sql-driver/mysql
 https://github.com/hashicorp/consul
 https://github.com/hashicorp/errwrap
 https://github.com/hashicorp/go-checkpoint
-https://github.com/hashicorp/go-clean
+https://github.com/hashicorp/go-cleanhttp
 https://github.com/hashicorp/go-immutable-radix
 https://github.com/hashicorp/go-multierror
 https://github.com/hashicorp/go-plugin
-https://github.com/hashicorp/go-retryable
+https://github.com/hashicorp/go-retryablehttp
 https://github.com/hashicorp/go-rootcerts
 https://github.com/hashicorp/go-uuid
 https://github.com/hashicorp/go-version
@@ -53,23 +53,32 @@ https://github.com/eclipse-ee4j/common-annotations-api
 https://github.com/eclipse-ee4j/mail
 https://github.com/eclipse-ee4j/jstl-api
 https://github.com/eclipse-ee4j/websocket-api
+https://github.com/jenkinsci/javax-activation-api-plugin
+https://github.com/jenkinsci/javax-mail-api-plugin
+https://github.com/javaee/activation
+https://github.com/javaee/javax.annotation
+https://github.com/javaee/el-spec
+https://github.com/javaee/javamail
+https://github.com/javaee/servlet-spec
+https://github.com/javaee/javaee-jsp-api
 https://github.com/jakartaee/websocket
-http://github.com/kohsuke/jcifs
+https://github.com/javaee/jaxb-spec
+https://github.com/kohsuke/jcifs
 https://github.com/jfree/jcommon
 https://github.com/jetty/jetty.project
 https://github.com/jfree/jfreechart
 https://github.com/java-native-access/jna
 https://github.com/AdoptOpenJDK/openjdk-jdk11
-https://github.com/jakartaee/pages/
-https://github.com/lattera/glibc/
-https://github.com/pycurl/pycurl/
-https://github.com/romlok/python-debian/
-https://github.com/jakartaee/servlet/
-https://github.com/jglick/sezpoz/
-https://github.com/spotbugs/spotbugs/
-https://github.com/kohsuke/tiger-types/
+https://github.com/jakartaee/pages
+https://github.com/lattera/glibc
+https://github.com/pycurl/pycurl
+https://github.com/romlok/python-debian
+https://github.com/jakartaee/servlet
+https://github.com/jglick/sezpoz
+https://github.com/spotbugs/spotbugs
+https://github.com/kohsuke/tiger-types
 https://github.com/eclipse-ee4j/tyrus
-https://github.com/mvo5/unattended-upgrades/
+https://github.com/mvo5/unattended-upgrades
 https://github.com/jenkinsci/winstone
 EOF
   licenses <<-EOF
