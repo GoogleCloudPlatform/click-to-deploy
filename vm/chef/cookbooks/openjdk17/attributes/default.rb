@@ -16,6 +16,6 @@
 # which is a dependency on openjdk-11-jre
 
 default['openjdk17']['packages'] = [
-  "openjdk-17-jdk-headless",
-  "openjdk-17-jre-headless",
+  'openjdk-17-jdk-headless',
+  'openjdk-17-jre-headless',
 ]
