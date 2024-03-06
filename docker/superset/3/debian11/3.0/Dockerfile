@@ -23,6 +23,7 @@ RUN groupadd supergroup && \
     apt-get update && \
     apt-get install -y \
         curl \
+        ca-certificates \
         freetds-bin \
         freetds-dev \
         libaio1 \
