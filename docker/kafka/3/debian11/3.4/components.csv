@@ -1,4 +1,4 @@
-activation;https://github.com/javaee/activation/blob/master/LICENSE.txt
+activation;https://rawhubusercontent.com/javaee/activation/master/LICENSE.txt
 aopalliance_repackaged;https://github.com/eclipse-ee4j/glassfish-hk2
 argparse4j;https://github.com/tatsuhiro-t/argparse4j
 audience_annotations;https://rawhubusercontent.com/apache/yetus/master/LICENSE
@@ -40,11 +40,11 @@ jakarta.ws.rs_api;https://github.com/eclipse-ee4j/jaxrs-api
 jakarta.xml.bind_api;https://rawhubusercontent.com/jakartaee/jaxb-api/master/LICENSE.md
 java_atk_wrapper;https://rawhubusercontent.com/GNOME/java-atk-wrapper/master/COPYING.LESSER
 javassist;https://github.com/jboss-javassist/javassist
-javax.activation_api;https://github.com/javaee/activation/blob/master/LICENSE.txt
+javax.activation_api;https://rawhubusercontent.com/javaee/activation/master/LICENSE.txt
 javax.annotation_api;https://rawhubusercontent.com/javaee/javax.annotation/master/LICENSE
 javax.servlet_api;https://rawhubusercontent.com/javaee/glassfish/master/LICENSE
 javax.ws.rs_api;https://github.com/eclipse-ee4j/jaxrs-api
-jaxb_api;https://github.com/javaee/jaxb-spec
+jaxb_api;https://rawhubusercontent.com/javaee/jaxb-spec/master/LICENSE.txt
 jctools_core;https://rawhubusercontent.com/JCTools/JCTools/master/LICENSE
 jersey_client;https://github.com/eclipse-ee4j/jersey
 jersey_common;https://github.com/eclipse-ee4j/jersey
