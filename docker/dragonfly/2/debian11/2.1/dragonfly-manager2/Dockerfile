@@ -14,7 +14,7 @@
 
 FROM node:21-alpine as console-builder
 
-ARG MANAGER_CONSOLE_BRANCH=v1.0.24
+ARG MANAGER_CONSOLE_BRANCH=release-1.0.24
 ARG MANAGER_CONSOLE_TAR=v1.0.24
 ARG CONSOLE_DIST=https://github.com/dragonflyoss/console/archive/refs/tags/${MANAGER_CONSOLE_TAR}.tar.gz
 
