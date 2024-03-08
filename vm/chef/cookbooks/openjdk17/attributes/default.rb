@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name 'jenkins'
-depends 'apache2'
-depends 'c2d-config'
-depends 'c2d-shared'
-depends 'openjdk17'
-supports 'debian'
+# headless packages installation omits agpl-licensed libpulse0 package,
+# which is a dependency on openjdk-11-jre
+
+default['openjdk17']['packages'] = [
+  'openjdk-17-jdk-headless',
+  'openjdk-17-jre-headless',
+]
