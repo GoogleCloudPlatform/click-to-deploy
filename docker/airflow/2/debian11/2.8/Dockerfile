@@ -6,6 +6,25 @@ ARG AIRFLOW_UID="50000"
 ARG AIRFLOW_USER_HOME_DIR=/home/airflow
 ARG AIRFLOW_PIP_VERSION="22.3.1"
 
+
+FROM marketplace.gcr.io/google/c2d-debian11 as ospo
+
+# Download Licenses and restricted source-code
+COPY components.csv /components.csv
+COPY source_code.txt /source_code.txt
+
+RUN apt update && apt -y install ca-certificates
+
+RUN curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
+		&& curl -o /download-ref-repos.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-ref-repos.sh \
+		&& chmod +x /download-licenses.sh \
+		&& chmod +x /download-ref-repos.sh
+
+RUN mkdir -p /usr/src/licenses \
+		&& /download-licenses.sh /components.csv /usr/src/licenses \
+		&& /download-ref-repos.sh /source_code.txt /usr/src
+
+
 FROM marketplace.gcr.io/google/c2d-debian11 as airflow-build-image
 
 SHELL ["/bin/bash", "-o", "pipefail", "-o", "errexit", "-o", "nounset", "-o", "nolog", "-c"]
@@ -118,6 +137,8 @@ RUN /scripts/docker/install_airflow.sh \
     && find "${AIRFLOW_USER_HOME_DIR}/.local" -print0 | xargs --null chmod g+rw
 
 FROM marketplace.gcr.io/google/c2d-debian11 as main
+
+COPY --from=ospo /usr/src /usr/src
 
 SHELL ["/bin/bash", "-o", "pipefail", "-o", "errexit", "-o", "nounset", "-o", "nolog", "-c"]
 
