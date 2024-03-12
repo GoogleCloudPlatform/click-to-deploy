@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 FROM node:21-alpine as console-builder
 
-ARG MANAGER_CONSOLE_BRANCH=release-1.0.24
+ARG MANAGER_CONSOLE_BRANCH=v1.0.24
 ARG MANAGER_CONSOLE_TAR=v1.0.24
 ARG CONSOLE_DIST=https://github.com/dragonflyoss/console/archive/refs/tags/${MANAGER_CONSOLE_TAR}.tar.gz
 
@@ -22,7 +22,7 @@ ADD ${CONSOLE_DIST} .
 
 RUN tar -xvf $MANAGER_CONSOLE_TAR.tar.gz && \
     cd console-1.0.24 && \
-    npm install --loglevel warn --progress false --legacy-peer-deps && \
+    npm install --loglevel warn --progress false && \
     npm run build
 
 
@@ -31,7 +31,7 @@ FROM golang:1.21-alpine as server-builder
 ARG GOPROXY
 ARG GOTAGS
 ARG GOGCFLAGS
-ARG DRAGONFLY2_GITHUB_BRANCH=v2.1.34
+ARG DRAGONFLY2_GITHUB_BRANCH=release-2.1.34
 ARG MANAGER_CONSOLE_BRANCH=release-1.0.24
 
 WORKDIR /go/src/d7y.io/dragonfly/v2
