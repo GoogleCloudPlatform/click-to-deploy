@@ -3,7 +3,7 @@ FROM marketplace.gcr.io/google/c2d-debian11 as build
 WORKDIR /app
 
 #copy Nuclio sources
-ARG NUCLIO_VERSION=1.12.3
+ARG NUCLIO_VERSION=1.13.0
 ARG NUCLIO_DIST=https://github.com/nuclio/nuclio/archive/refs/tags/${NUCLIO_VERSION}.tar.gz
 ADD $NUCLIO_DIST /tmp/nuclio.tar.gz
 RUN (tar -xf /tmp/nuclio.tar.gz -C /app/ && rm /tmp/nuclio.tar.gz && mv /app/nuclio-${NUCLIO_VERSION}/* /app/) || true
@@ -27,7 +27,7 @@ RUN cd /app/cmd/controller/ && GOOS=$GOOS GOARCH=$GOARCH CGO_ENABLED=0 go build 
 
 FROM marketplace.gcr.io/google/c2d-debian11
 
-ENV C2D_RELEASE 1.12.3
+ENV C2D_RELEASE 1.13.0
 
 # install apache2-utils for htpasswd
 RUN apt-get update \
