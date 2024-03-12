@@ -34,7 +34,17 @@ fi
 
 # Set admin password if defined.
 if [[ ! -z "${ACTIVEMQ_ADMIN_PASSWORD}" ]]; then
-    sed -i "/admin/ c admin: "${ACTIVEMQ_ADMIN_PASSWORD}", admin" "${ACTIVEMQ_HOME}/conf/jetty-realm.properties"
+    activemq_major="$(echo "${ACTIVEMQ_VERSION}" | cut -d '.' -f 1)"
+
+    # ActiveMQ 5
+    if [[ "${activemq_major}" -eq 5 ]]; then
+        sed -i "/admin/ c admin: "${ACTIVEMQ_ADMIN_PASSWORD}", admin" "${ACTIVEMQ_HOME}/conf/jetty-realm.properties"
+    fi
+
+    # ActiveMQ 6
+    if [[ "${activemq_major}" -eq 6 ]]; then
+        sed -i "s/admin=admin/admin=$ACTIVEMQ_ADMIN_PASSWORD/g" "${ACTIVEMQ_HOME}/conf/users.properties"
+    fi
 else
     echo "ACTIVEMQ_ADMIN_PASSWORD is required"
     exit 1
