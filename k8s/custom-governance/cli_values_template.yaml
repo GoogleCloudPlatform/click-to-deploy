@@ -6,7 +6,7 @@ cg:
     # Typically you do not need to modify this.
     repo: marketplace.gcr.io/custom-governance/custom-governance
     # Container tag
-    tag: 1.4.2
+    tag: 1.4.4
 # Required. Generate a new OAuth credential for IAP.
 oAuth:
   # Encode the client ID and secret in base64 like the following
