@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,6 +14,22 @@
 #
 # Packages wishes contains list of packages with we want to have on all images
 # installed by default.
+
+# cloudsdk apt repository has changed its Origin and Label metadata
+# from cloud-sdk-(distro) to namespaces/google.com:cloudsdktool/repositories/(distro)
+
+cookbook_file '/tmp/fix-cloudsdk-repository' do
+  source 'fix-cloudsdk-repository'
+  owner 'root'
+  group 'root'
+  mode 0700
+  action :create
+end
+
+execute 'fix_cloudsdk_repository' do
+  cwd '/var/lib/apt/lists'
+  command '/tmp/fix-cloudsdk-repository'
+end
 
 apt_update 'update' do
   action :update
