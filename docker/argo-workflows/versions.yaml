@@ -23,6 +23,8 @@ versions:
       version: 3.5.5
     nodejs:
       major: 20
+    golang:
+      version: 1.21
   repo: argo-workflows3
   tags:
   - 3.5.5-debian11
@@ -39,6 +41,8 @@ versions:
       version: 3.4.16
     nodejs:
       major: 20
+    golang:
+      version: 1.21
   repo: argo-workflows3
   tags:
   - 3.4.16-debian11

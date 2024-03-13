@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +14,9 @@
 
 
 
+
 # Stage: Server and Workflow Controller: Builder
-FROM golang:1.18 as builder
+FROM golang:1.21 as builder
 
 ARG ARGO_VERSION="3.5.5"
 ENV ARGO_VERSION "${ARGO_VERSION}"
