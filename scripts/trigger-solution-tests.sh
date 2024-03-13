@@ -2,6 +2,25 @@
 
 set -euo pipefail
 
+declare -a deprecated_solutions=(
+  "k8s/custom-governance"
+)
+
+function contains_element () {
+  local -r search="$1"
+  shift
+  local -r -a list="$@"
+  local result="not-found"
+
+  for item in ${list[@]}; do
+      if [[ "${search}" == "$item" ]]; then
+        echo "true"
+        return
+      fi
+  done
+  echo "false"
+}
+
 function watch_build() {
   local -r solution="$1"
   local -r build_id="$2"
@@ -98,6 +117,13 @@ declare -A builds=()
 while IFS="/" read -r app_type solution; do
   solution_key="${app_type}/${solution}"
 
+  # Skip tests when solution is deprecated
+  if [[ "$(contains_element "${solution_key}" "${deprecated_solutions[@]}")" == "true" ]]; then
+    echo "Solution deprecated: ${app_type}/${solution}. Skipping..."
+    continue
+  fi
+
+  # When change affects a docker or k8s solution
   if [[ "${app_type}" == "docker" || "${app_type}" == "k8s" ]]; then
     # Trigger the build and enqueues the build_id
     echo "Triggering build for ${app_type}/${solution}..."
@@ -115,4 +141,4 @@ for solution in "${!builds[@]}"; do
   watch_build "${solution}" "${build_id}"
 done
 
-echo "All completed."
+echo "All completed.?"
