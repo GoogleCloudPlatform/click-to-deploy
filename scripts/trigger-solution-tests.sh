@@ -10,7 +10,6 @@ function contains_element () {
   local -r search="$1"
   shift
   local -r -a list="$@"
-  local result="not-found"
 
   for item in ${list[@]}; do
       if [[ "${search}" == "$item" ]]; then
