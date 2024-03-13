@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ ARG GOPROXY
 ARG GOTAGS
 ARG GOGCFLAGS
 
-ARG DRAGONFLY2_GITHUB_BRANCH=release-2.1.34
+ARG DRAGONFLY2_GITHUB_BRANCH=v2.1.34
 ARG MANAGER_CONSOLE_BRANCH=release-1.0.24
 
 WORKDIR /go/src/d7y.io/dragonfly/v2
