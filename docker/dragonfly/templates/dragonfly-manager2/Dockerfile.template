@@ -17,7 +17,7 @@
 {{- $golang := index .Packages "golang" -}}
 {{- $grpc_health_probe := index .Packages "grpc_health_probe" -}}
 
-FROM node:16-alpine as console-builder
+FROM node:20-alpine as console-builder
 
 ARG MANAGER_CONSOLE_BRANCH=release-{{ $manager_console.Version }}
 ARG MANAGER_CONSOLE_TAR=v{{ $manager_console.Version }}
@@ -27,7 +27,8 @@ ADD ${CONSOLE_DIST} .
 
 RUN tar -xvf $MANAGER_CONSOLE_TAR.tar.gz && \
     cd console-{{ $manager_console.Version }} && \
-    npm install --loglevel warn --progress false && \
+    npm install -g npm@10.5.0 && \
+    npm install --legacy-peer-deps --loglevel warn --progress false && \
     npm run build
 
 
@@ -36,7 +37,7 @@ FROM golang:{{ $golang.Version }}-alpine as server-builder
 ARG GOPROXY
 ARG GOTAGS
 ARG GOGCFLAGS
-ARG DRAGONFLY2_GITHUB_BRANCH=release-{{ $dragonfly2_github.Version }}
+ARG DRAGONFLY2_GITHUB_BRANCH=v-{{ $dragonfly2_github.Version }}
 ARG MANAGER_CONSOLE_BRANCH=release-{{ $manager_console.Version }}
 
 WORKDIR /go/src/d7y.io/dragonfly/v2
