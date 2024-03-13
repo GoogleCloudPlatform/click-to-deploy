@@ -44,7 +44,7 @@ RUN go mod download
 
 
 # Stage: Server: UI
-FROM node: as argo-ui
+FROM node:20 as argo-ui
 
 COPY --from=builder /go/src/github.com/argoproj/argo-workflows/ui/package.json ui/
 COPY --from=builder /go/src/github.com/argoproj/argo-workflows/ui/yarn.lock ui/
