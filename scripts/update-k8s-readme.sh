@@ -94,5 +94,5 @@ done
 
 echo >&2 "Finished!"
 echo >&2 "---------"
-echo >&2 "Remind to double-check the documentation updates before merging this PR!"
+echo >&2 "Please double-check the documentation updates before merging this PR!"
 echo >&2 "---------"
