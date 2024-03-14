@@ -1,6 +1,6 @@
 FROM marketplace.gcr.io/google/c2d-debian11
 
-ARG ZK_VERSION=3.8.2
+ARG ZK_VERSION=3.8.3
 
 ENV ZOO_CONF_DIR=/conf \
     ZOO_DATA_DIR=/data \
@@ -75,7 +75,7 @@ RUN set -eux; \
     # Verify that gosu binary works
     # gosu nobody true
 
-ENV GPG_KEYS 52A7EA3EECAE05B0A8306471790761798F6E35FC
+ENV GPG_KEYS 3F7A1D16FA4217B1DC75E1C9FFE35B7F15DFA1BA
 
 ARG SHORT_DISTRO_NAME="zookeeper-${ZK_VERSION}"
 ARG DISTRO_NAME="apache-zookeeper-${ZK_VERSION}-bin"
