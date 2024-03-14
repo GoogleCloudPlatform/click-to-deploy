@@ -154,7 +154,7 @@ in the
 Example:
 
 ```shell
-export TAG="3.12.4-20200312-164607"
+export TAG="5.2.1-<BUILD_ID>"
 ```
 
 Alternatively, you can use a short tag to point to the latest
@@ -164,7 +164,7 @@ image for your selected version.
 > might change over time.
 
 ```shell
-export TAG="3.12"
+export TAG="5.2"
 ```
 
 Configure the container image:
