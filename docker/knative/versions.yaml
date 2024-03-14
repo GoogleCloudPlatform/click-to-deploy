@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,18 +15,18 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 1/debian11/1.10
+- dir: 1/debian11/1.13
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     knative:
-      version: 1.10.2
+      version: 1.13.0
   repo: knative1
   tags:
-  - 1.10.2-debian11
-  - 1.10-debian11
+  - 1.13.0-debian11
+  - 1.13-debian11
   - 1-debian11
-  - 1.10.2
-  - '1.10'
+  - 1.13.0
+  - '1.13'
   - '1'
   - latest
   templateSubDir: debian11
