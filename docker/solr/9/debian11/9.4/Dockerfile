@@ -1,13 +1,13 @@
 FROM marketplace.gcr.io/google/c2d-debian11
 
-ARG SOLR_VERSION=9.1.0
-ARG SOLR_KEYS=2085660D9C1FCCACC4A479A3BF160FF14992A24C
+ARG SOLR_VERSION=9.4.1
+ARG SOLR_KEYS=515EA995ED1DD799FA1422E5CA7514D8385D790B
 
-ENV C2D_RELEASE=9.1.0
+ENV C2D_RELEASE=9.4.1
 
 RUN set -ex; \
   apt-get update; \
-  apt-get -y install default-jdk acl dirmngr gpg lsof procps wget curl netcat tini; \
+  apt-get -y install default-jdk acl dirmngr gpg ca-certificates lsof procps wget curl netcat tini; \
   rm -rf /var/lib/apt/lists/*; \
   cd /usr/local/bin; wget -nv https://github.com/apangin/jattach/releases/download/v1.5/jattach; chmod 755 jattach; \
   echo >jattach.sha512 "d8eedbb3e192a8596c08efedff99b9acf1075331e1747107c07cdb1718db2abe259ef168109e46bd4cf80d47d43028ff469f95e6ddcbdda4d7ffa73a20e852f9  jattach"; \
