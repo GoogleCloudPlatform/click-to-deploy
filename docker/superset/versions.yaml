@@ -45,7 +45,7 @@ versions:
   - '3.0'
   - '3'
   - latest
-  templateSubDir: 3  
+  templateSubDir: 3
 - dir: exporter
   excludeTests:
   - tests/functional_tests/running_test.yaml
@@ -60,4 +60,3 @@ versions:
   - '0'
   - latest
   templateSubDir: exporter
-
