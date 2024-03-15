@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2024 Google LLC
 #
 # Redistribution and use in source and binary forms, with or without modification,
 # are permitted provided that the following conditions are met:
@@ -28,7 +28,7 @@
 
 FROM marketplace.gcr.io/google/c2d-debian11
 
-ENV C2D_RELEASE 4.2.5
+ENV C2D_RELEASE 4.2.9
 
 ENV C2D_DJANGO_USER="django" \
     C2D_DJANGO_UID="8983" \
@@ -41,6 +41,8 @@ RUN set -ex; \
 
 RUN apt-get update \
     && apt-get install -y \
+      # Certificates
+      ca-certificates \
       # MySQL dependencies
       default-libmysqlclient-dev \
       libmariadb-dev \
