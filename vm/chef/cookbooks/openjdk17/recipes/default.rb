@@ -12,9 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name 'jenkins'
-depends 'apache2'
-depends 'c2d-config'
-depends 'c2d-shared'
-depends 'openjdk17'
-supports 'debian'
+apt_update do
+  action :update
+end
+
+package 'install packages' do
+  only_if { platform?('debian') && node['platform_version'].to_i >= 10 }
+  package_name node['openjdk17']['packages']
+  action :install
+  retries 5
+  retry_delay 60
+end
