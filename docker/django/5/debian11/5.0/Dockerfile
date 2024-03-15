@@ -25,10 +25,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
-{{- $django := index .Packages "django" }}
-
-FROM {{ .From }} as ospo
+FROM marketplace.gcr.io/google/c2d-debian11 as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
@@ -45,10 +42,10 @@ RUN mkdir -p /usr/src/licenses \
 	        && /download-licenses.sh /components.csv /usr/src/licenses \
 	        && /download-ref-repos.sh /source_code.txt /usr/src
 
-FROM {{ .From }}
+FROM marketplace.gcr.io/google/c2d-debian11
 
 COPY --from=ospo /usr/src /usr/src
-ENV C2D_RELEASE {{ $django.Version }}
+ENV C2D_RELEASE 5.0.1
 
 ENV C2D_DJANGO_USER="django" \
     C2D_DJANGO_UID="8983" \
