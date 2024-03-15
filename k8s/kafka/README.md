@@ -127,7 +127,7 @@ export METRICS_EXPORTER_ENABLED=false
 Configure the image tag:
 
 ```shell
-export TAG=2.8
+export TAG=3.4
 ```
 Configure the container images:
 
