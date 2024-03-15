@@ -1,11 +1,29 @@
+FROM marketplace.gcr.io/google/c2d-debian11 as ospo
+
+# Download Licenses and restricted source-code
+COPY components.csv /components.csv
+COPY source_code.txt /source_code.txt
+
+RUN apt update && apt -y install ca-certificates
+
+RUN curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
+		&& curl -o /download-ref-repos.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-ref-repos.sh \
+		&& chmod +x /download-licenses.sh \
+		&& chmod +x /download-ref-repos.sh
+
+RUN mkdir -p /usr/src/licenses \
+		&& /download-licenses.sh /components.csv /usr/src/licenses \
+		&& /download-ref-repos.sh /source_code.txt /usr/src
+
 FROM marketplace.gcr.io/google/c2d-debian11
 
-ARG FALCO_VERSION=0.35.1
+COPY --from=ospo /usr/src /usr/src
+ARG FALCO_VERSION=0.36.2
 ARG VERSION_BUCKET=deb
 ENV VERSION_BUCKET=${VERSION_BUCKET}
 
 ENV FALCO_VERSION ${FALCO_VERSION}
-ENV C2D_RELEASE 0.35.1
+ENV C2D_RELEASE 0.36.2
 ENV HOST_ROOT /host
 ENV HOME /root
 
