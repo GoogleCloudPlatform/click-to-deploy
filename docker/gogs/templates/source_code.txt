@@ -1,0 +1,4 @@
+https://github.com/go-sql-driver/mysql
+https://github.com/hashicorp/errwrap
+https://github.com/hashicorp/go-multierror
+https://github.com/lattera/glibc
