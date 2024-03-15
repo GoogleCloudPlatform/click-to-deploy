@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,3 +17,9 @@ default['jenkins']['packages'] = %w(jenkins git subversion)
 default['jenkins']['repo']['uri'] = 'http://pkg.jenkins.io/debian-stable'
 default['jenkins']['repo']['components'] = ['binary/']
 default['jenkins']['repo']['keyserver'] = 'https://pkg.jenkins.io/debian/jenkins.io.key'
+
+default['jenkins']['ivy']['version'] = '2.5.2'
+default['jenkins']['ivy']['download_url'] = "https://dlcdn.apache.org/ant/ivy/#{default['jenkins']['ivy']['version']}/apache-ivy-#{default['jenkins']['ivy']['version']}-bin.tar.gz"
+
+default['jenkins']['xstream']['version'] = '1.4.20'
+default['jenkins']['xstream']['download_url'] = "https://repo1.maven.org/maven2/com/thoughtworks/xstream/xstream-distribution/#{default['jenkins']['xstream']['version']}/xstream-distribution-#{default['jenkins']['xstream']['version']}-bin.zip"

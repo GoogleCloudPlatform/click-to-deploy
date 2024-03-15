@@ -141,7 +141,7 @@ It is advised to use stable image reference which you can find on
 Example:
 
 ```shell
-export TAG="8.9.2-<BUILD_ID>"
+export TAG="8.9.3-<BUILD_ID>"
 ```
 
 Alternatively you can use short tag which points to the latest image for selected version.
