@@ -159,7 +159,7 @@ image for your selected version.
 > might change over time.
 
 ```shell
-export TAG="1.16"
+export TAG="1.19"
 ```
 
 Configure the container images:

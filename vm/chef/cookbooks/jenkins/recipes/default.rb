@@ -16,14 +16,15 @@ include_recipe 'c2d-config'
 include_recipe 'apache2'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
-include_recipe 'openjdk11'
 include_recipe 'jenkins::ospo'
+include_recipe 'openjdk17'
 
 apt_update do
   action :update
 end
 
-package 'wget' do
+package 'Install deps' do
+  package_name ['unzip', 'wget']
   action :install
 end
 
@@ -48,6 +49,43 @@ apt_package 'install_groovy' do
   package_name 'groovy'
   action :install
   options '--no-install-recommends'
+end
+
+# Upgrade vulnerable dependencies
+bash 'upgrade_ivy' do
+  user 'root'
+  environment({
+    'ivy_version': node['jenkins']['ivy']['version'],
+    'download_url': node['jenkins']['ivy']['download_url'],
+  })
+  code <<-EOH
+  mkdir -p /opt/ivy/dist \
+    && cd /opt/ivy \
+    && curl -L -o ivy.tar.gz "$download_url" \
+    && tar -xvf ivy.tar.gz -C dist/ --strip-components=1 \
+    && cp dist/ivy-*.jar /usr/share/java \
+    && cd / \
+    && rm -rf /opt/ivy \
+    && rm -f /usr/share/java/ivy-*.jar \
+    && ln -s -f /usr/share/java/ivy-$ivy_version.jar /usr/share/java/ivy.jar
+EOH
+end
+
+bash 'upgrade_xstream' do
+  user 'root'
+  environment({
+    'xstream_version': node['jenkins']['xstream']['version'],
+    'download_url': node['jenkins']['xstream']['download_url'],
+  })
+  code <<-EOH
+  mkdir -p /opt/xstream \
+  && cd /opt/xstream \
+  && curl -L -o xstream.zip "$download_url" \
+  && unzip xstream.zip \
+  && cp xstream-$xstream_version/lib/xstream-$xstream_version.jar /usr/share/java/ \
+  && rm -f /usr/share/java/xstream-*.jar \
+  && ln -s -f /usr/share/java/xstream-$xstream_version.jar /usr/share/java/xstream.jar
+EOH
 end
 
 template '/etc/apache2/conf-available/jenkins.conf' do
