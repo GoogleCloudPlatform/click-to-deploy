@@ -12,6 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+FROM marketplace.gcr.io/google/c2d-debian11 as ospo
+
+# Download Licenses and restricted source-code
+COPY components.csv /components.csv
+COPY source_code.txt /source_code.txt
+
+RUN apt update && apt -y install ca-certificates
+
+RUN curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
+		&& curl -o /download-ref-repos.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-ref-repos.sh \
+		&& chmod +x /download-licenses.sh \
+		&& chmod +x /download-ref-repos.sh
+
+RUN mkdir -p /usr/src/licenses \
+		&& /download-licenses.sh /components.csv /usr/src/licenses \
+		&& /download-ref-repos.sh /source_code.txt /usr/src
+
 FROM node:20-alpine as console-builder
 
 ARG MANAGER_CONSOLE_BRANCH=release-1.0.24
@@ -75,6 +92,8 @@ COPY config/manager.yaml /etc/dragonfly/manager.yaml
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN apt update && apt install -y curl gettext-base && \
     chmod +x /docker-entrypoint.sh
+
+COPY --from=ospo /usr/src /usr/src
 
 EXPOSE 8080 65003
 
