@@ -189,7 +189,7 @@ RUN apt-get update \
 
 # Install Gosu
 # /usr/sbin/gosu
-ENV GOSU_VERSION 1.16
+ENV GOSU_VERSION 
 RUN set -eux; \
 	apt-get update; \
 	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
@@ -212,7 +212,7 @@ RUN set -eux; \
 	wget -q -O /usr/sbin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc"; \
 	GNUPGHOME="$(mktemp -d)"; \
 	export GNUPGHOME; \
-	gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \
+	gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys ; \
 	gpg --batch --verify /usr/sbin/gosu.asc /usr/sbin/gosu; \
 	gpgconf --kill all; \
 	rm -rf "$GNUPGHOME" /usr/sbin/gosu.asc; \
