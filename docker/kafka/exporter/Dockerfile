@@ -11,8 +11,10 @@ ENV EXPORTER_USER="exporter" \
 ENV PATH="${PATH}:${EXPORTER_HOME}"
 
 RUN set -ex; \
-  groupadd -r --gid "${EXPORTER_GID}" "${EXPORTER_GROUP}"; \
-  useradd -r --uid "${EXPORTER_UID}" --gid "${EXPORTER_GID}" -s /sbin/nologin "${EXPORTER_USER}"
+  apt update \
+  && apt -y install ca-certificates \
+  && groupadd -r --gid "${EXPORTER_GID}" "${EXPORTER_GROUP}" \
+  && useradd -r --uid "${EXPORTER_UID}" --gid "${EXPORTER_GID}" -s /sbin/nologin "${EXPORTER_USER}"
 
 RUN set -eu \
     && rm -rf /var/lib/apt/lists/* \
