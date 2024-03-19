@@ -1,10 +1,27 @@
+FROM marketplace.gcr.io/google/c2d-debian11 as ospo
+
+# Download Licenses and restricted source-code
+COPY components.csv /components.csv
+COPY source_code.txt /source_code.txt
+
+RUN apt update && apt -y install ca-certificates
+
+RUN curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
+		&& curl -o /download-ref-repos.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-ref-repos.sh \
+		&& chmod +x /download-licenses.sh \
+		&& chmod +x /download-ref-repos.sh
+
+RUN mkdir -p /usr/src/licenses \
+		&& /download-licenses.sh /components.csv /usr/src/licenses \
+		&& /download-ref-repos.sh /source_code.txt /usr/src
+
 FROM marketplace.gcr.io/google/c2d-debian11 as build
 
 SHELL ["/bin/bash", "-c" ]
 WORKDIR /app
 
 #copy Nuclio sources
-ARG NUCLIO_VERSION=1.12.3
+ARG NUCLIO_VERSION=1.13.0
 ARG NUCLIO_DIST=https://github.com/nuclio/nuclio/archive/refs/tags/${NUCLIO_VERSION}.tar.gz
 ADD $NUCLIO_DIST /tmp/nuclio.tar.gz
 RUN (tar -xf /tmp/nuclio.tar.gz -C /app/ && rm /tmp/nuclio.tar.gz && mv /app/nuclio-${NUCLIO_VERSION}/* /app/) || true
@@ -24,7 +41,7 @@ RUN curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | ba
     && nvm install 10
 
 #install golang
-ARG GOLANG_VERSION=1.18.7
+ARG GOLANG_VERSION=1.21.0
 ADD https://golang.org/dl/go${GOLANG_VERSION}.linux-amd64.tar.gz /tmp/go.tar.gz
 RUN (tar -xf /tmp/go.tar.gz -C /usr/local/ && rm /tmp/go.tar.gz) || true
 ENV PATH="/usr/local/go/bin:${PATH}"
@@ -49,7 +66,7 @@ RUN cd /app/cmd/dashboard/ && GOOS=$GOOS GOARCH=$GOARCH CGO_ENABLED=0 go build \
 
 FROM marketplace.gcr.io/google/nginx1
 
-ENV C2D_RELEASE 1.12.3
+ENV C2D_RELEASE 1.13.0
 
 # fetch nuclio functions templates during build time to ease installation on offline environments
 # fix security issues
@@ -95,8 +112,10 @@ COPY --from=build /app/cmd/dashboard/docker/runner.sh /runner.sh
 COPY --from=build /app/cmd/dashboard/docker/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/cmd/dashboard/docker/nginx.conf /etc/nginx/nginx.conf
 
+# copy open-source licenses and source-code
+COPY --from=ospo /usr/src /usr/src
+
 HEALTHCHECK --interval=1s --timeout=3s CMD /usr/local/bin/uhttpc --url http://127.0.0.1:8082/ready || exit 1
 
 ENTRYPOINT []
 CMD ["sh",  "-c", "./runner.sh"]
-
