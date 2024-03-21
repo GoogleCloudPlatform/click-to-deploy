@@ -1,0 +1,17 @@
+https://github.com/ronf/asyncssh
+https://github.com/dequelabs/axe-core
+https://github.com/browserslist/caniuse-lite
+https://github.com/certifi/python-certifi
+https://github.com/chardet/chardet
+https://github.com/kieler/elkjs
+https://github.com/mattcg/language-subtag-registry
+https://github.com/cannatag/ldap3
+https://github.com/mdn/data
+https://github.com/PyMySQL/mysqlclient
+https://github.com/paramiko/paramiko
+https://github.com/cpburnz/python-pathspec
+https://github.com/psycopg/psycopg2
+https://github.com/kemitchell/spdx-exceptions.json
+https://github.com/jslicense/spdx-license-ids
+https://github.com/zopefoundation/zope.event
+https://github.com/zopefoundation/zope.interface
