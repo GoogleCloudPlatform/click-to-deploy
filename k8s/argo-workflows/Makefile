@@ -6,7 +6,7 @@ include ../images.Makefile
 CHART_NAME := argo-workflows
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 3.4
+TRACK ?= 3.5
 
 EXPORTER_TAG ?= exporter
 POSTGRESQL_EXPORTER_TAG ?= 0.8.0
