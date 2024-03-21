@@ -21,6 +21,10 @@ versions:
   packages:
     superset:
       version: 2.1.1
+    pip:
+      version: 22.0.4
+    sqlparse:
+      version: 0.4.3
   repo: superset2
   tags:
   - 2.1.1-debian11
@@ -30,12 +34,15 @@ versions:
   - '2.1'
   - '2'
   - latest
-  templateSubDir: 2
 - dir: 3/debian11/3.0
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     superset:
       version: 3.0.0
+    pip:
+      version: 23.2.1
+    sqlparse:
+      version: 0.4.4
   repo: superset3
   tags:
   - 3.0.0-debian11
@@ -45,7 +52,6 @@ versions:
   - '3.0'
   - '3'
   - latest
-  templateSubDir: 3
 - dir: exporter
   excludeTests:
   - tests/functional_tests/running_test.yaml
