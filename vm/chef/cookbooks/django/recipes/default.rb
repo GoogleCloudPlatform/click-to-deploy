@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,11 +24,8 @@ package node['django']['packages']
 bash 'install django via pip3' do
   user 'root'
   code <<-EOH
-    pip3 install gunicorn django=="${django_version}"
+    pip3 install django gunicorn
 EOH
-  environment({
-    'django_version': node['django']['version'],
-  })
 end
 
 execute 'enable_apache_modules' do
