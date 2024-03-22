@@ -182,8 +182,16 @@ function wait_for_airflow_db() {
 }
 
 function upgrade_db() {
-    # Runs airflow db upgrade
-    airflow db upgrade || true
+    local airflow_minor_version
+    airflow_minor_version="$(echo $AIRFLOW_VERSION | cut -d . -f 2)"
+
+    # https://airflow.apache.org/docs/apache-airflow/stable/installation/upgrading.html#why-you-need-to-upgrade
+    # Runs airflow db upgrade (< 2.8.x) or migrate (>= 2.8.x) according to the version
+    if [[ "${airflow_minor_version}" -ge 8 ]]; then
+        airflow db migrate || true
+    else
+        airflow db upgrade
+    fi
 }
 
 function wait_for_celery_broker() {
