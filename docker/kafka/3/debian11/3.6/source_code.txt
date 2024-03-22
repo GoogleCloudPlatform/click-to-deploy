@@ -1,0 +1,13 @@
+https://github.com/javaee/activation
+https://github.com/eclipse-ee4j/glassfish-hk2
+https://github.com/typetools/checker-framework
+https://github.com/eclipse-ee4j/common-annotations-api
+https://github.com/eclipse-ee4j/jaxrs-api
+https://github.com/GNOME/java-atk-wrapper
+https://github.com/jboss-javassist/javassist
+https://github.com/javaee/javax.annotation
+https://github.com/javaee/glassfish
+https://github.com/javaee/jaxb-spec
+https://github.com/eclipse-ee4j/jersey
+https://github.com/jetty/jetty.project
+https://github.com/AdoptOpenJDK/openjdk-jdk11

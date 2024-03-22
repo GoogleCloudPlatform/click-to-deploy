@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,19 +16,18 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 9/debian11/9.2
+- dir: 9/debian11/9.5
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     solr:
-      gpg: FDB3D11D716BB32ACF8C93AB919B21537AA80271
-      version: 9.2.1
+      gpg: E05FDF113D89E7FB4A2DF4B2684D544160392455
+      version: 9.5.0
   repo: solr9
   tags:
-  - 9.2.1-debian11
-  - 9.2-debian11
+  - 9.5.0-debian11
+  - 9.5-debian11
   - 9-debian11
-  - 9.2.1
-  - '9.2'
+  - '9.5.0'
+  - '9.5'
   - '9'
   - latest
-
