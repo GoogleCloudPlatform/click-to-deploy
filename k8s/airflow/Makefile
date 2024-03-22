@@ -7,7 +7,7 @@ CHART_NAME := airflow
 APP_ID ?= $(CHART_NAME)
 WAIT_FOR_READY_TIMEOUT := 600
 
-TRACK ?= 2.8
+TRACK ?= 2.6
 # Track for components
 POSTGRESQL_TRACK ?= 13.8
 NFS_TRACK ?= 1.3
