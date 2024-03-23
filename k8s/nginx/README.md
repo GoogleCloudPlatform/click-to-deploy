@@ -155,25 +155,6 @@ export DEFAULT_STORAGE_CLASS="standard" # provide your StorageClass name if not 
 export PERSISTENT_DISK_SIZE="1Gi"
 ```
 
-Enable Stackdriver Metrics Exporter:
-
-> **NOTE:** Your GCP project must have Stackdriver enabled. If you are using a
-> non-GCP cluster, you cannot export metrics to Stackdriver.
-
-By default, application export metrics to Stackdriver as free curated metrics.
-The metrics prefix would be `kubernetes.io/nginx/`. To disable this option,
-change the value of `CURATED_METRICS_EXPORTER_ENABLED` to `false`.
-
-To keep backward compatibility, users can still export metrics as custom metrics.
-To enable this option, change the value of `METRICS_EXPORTER_ENABLED` to `true`.
-
-We encourage users migrate to the free metrics as it saves cost for the users.
-
-```shell
-export CURATED_METRICS_EXPORTER_ENABLED=true
-export METRICS_EXPORTER_ENABLED=false
-```
-
 Set up the image tag:
 
 It is advised to use stable image reference which you can find on
@@ -197,7 +178,6 @@ Configure the container images:
 export IMAGE_NGINX="marketplace.gcr.io/google/nginx"
 export IMAGE_NGINX_INIT="marketplace.gcr.io/google/nginx/debian9:${TAG}"
 export IMAGE_NGINX_EXPORTER="marketplace.gcr.io/google/nginx/nginx-exporter:${TAG}"
-export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/nginx/prometheus-to-sd:${TAG}"
 ```
 
 #### Create TLS certificate for Nginx
@@ -246,9 +226,6 @@ helm template "$APP_INSTANCE_NAME" chart/nginx \
   --set nginx.persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \
   --set nginx.persistence.size="${PERSISTENT_DISK_SIZE}" \
   --set exporter.image="$IMAGE_NGINX_EXPORTER" \
-  --set metrics.image="$IMAGE_METRICS_EXPORTER" \
-  --set metrics.curatedExporter.enabled="$CURATED_METRICS_EXPORTER_ENABLED" \
-  --set metrics.exporter.enabled="$METRICS_EXPORTER_ENABLED" \
   --set tls.base64EncodedPrivateKey="$TLS_CERTIFICATE_KEY" \
   --set tls.base64EncodedCertificate="$TLS_CERTIFICATE_CRT" \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
@@ -316,24 +293,11 @@ Follow the steps in
 You configure the metrics in the
 [`scrape_configs` section](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config).
 
-## Exporting metrics to Stackdriver
+## Exporting metrics to Cloud Monitoring
 
-The deployment includes a
-[Prometheus to Stackdriver (`prometheus-to-sd`)](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd)
-container. If you enabled the option to export metrics to Stackdriver, the
-metrics are automatically exported to Stackdriver and visible in
-[Stackdriver Metrics Explorer](https://cloud.google.com/monitoring/charts/metrics-explorer).
-The name of each metric starts with the application's name, which you define in
-the `APP_INSTANCE_NAME` environment variable.
-
-The exporting option might not be available for GKE on-prem clusters.
-
-> Note: Stackdriver has [quotas](https://cloud.google.com/monitoring/quotas) for
-> the number of custom metrics created in a single GCP project. If the quota is
-> met, additional metrics might not show up in the Stackdriver Metrics Explorer.
-
-You can remove existing metric descriptors using
-[Stackdriver's REST API](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors/delete).
+We recommend you enable [Managed Service for Prometheus](https://cloud.google.com/stackdriver/docs/managed-prometheus) in your Kubernetes cluster.
+If you use managed collection, you can define a PodMonitoring resource corresponding
+to the Nginx Exporter configured above by [following these instructions](https://cloud.google.com/stackdriver/docs/managed-prometheus/exporters/nginx).
 
 # Scaling
 
