@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ default['redmine']['agpl_packages'] = [
   'libgs9-common',
   'libjbig2dec0',
 ]
-default['redmine']['version'] = '5.0.5'
+default['redmine']['version'] = '5.1.1'
 default['redmine']['ruby']['version'] = '3.0.5'
 
 # OS Settings
