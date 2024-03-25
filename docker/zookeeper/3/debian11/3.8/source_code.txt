@@ -1,0 +1,4 @@
+https://github.com/jetty/jetty.project
+https://github.com/AdoptOpenJDK/openjdk-jdk11
+https://github.com/qos-ch/logback
+https://github.com/javaee/servlet-spec

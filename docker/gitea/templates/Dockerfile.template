@@ -1,18 +1,42 @@
-{{- $gitea := index .Packages "gitea"}}
+{{- $gitea := index .Packages "gitea" -}}
+{{- $golang := index .Packages "golang" -}}
+{{- $distroMajor := index .TemplateArgs "alpineVersion" -}}
+
+FROM {{ .From }} as ospo
+
+# Download Licenses and restricted source-code
+COPY components.csv /components.csv
+COPY source_code.txt /source_code.txt
+
+RUN apt update && apt -y install ca-certificates
+
+RUN curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
+		&& curl -o /download-ref-repos.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-ref-repos.sh \
+		&& chmod +x /download-licenses.sh \
+		&& chmod +x /download-ref-repos.sh
+
+RUN mkdir -p /usr/src/licenses \
+		&& /download-licenses.sh /components.csv /usr/src/licenses \
+		&& /download-ref-repos.sh /source_code.txt /usr/src
 
 #Build stage
-FROM golang:1.20-alpine3.17 AS build-env
+FROM golang:{{ $golang.Version }}-alpine{{ $distroMajor }} AS build-env
 
 ARG GOPROXY
-ENV GOPROXY ${GOPROXY:-proxy.golang.org}
+ENV GOPROXY ${GOPROXY:-direct}
 
 ARG GITEA_VERSION=release/v{{ $gitea.Version }}
 ARG TAGS="sqlite sqlite_unlock_notify"
 ENV TAGS "bindata timetzdata $TAGS"
 ARG CGO_EXTRA_CFLAGS
 
-#Build deps
-RUN apk --no-cache add build-base git nodejs npm
+# Build deps
+RUN apk --no-cache add \
+    build-base \
+    git \
+    nodejs \
+    npm \
+    && rm -rf /var/cache/apk/*
 
 #Setup repo
 RUN git clone -b ${GITEA_VERSION} https://github.com/go-gitea/gitea.git ${GOPATH}/src/code.gitea.io/gitea
@@ -20,13 +44,15 @@ RUN git clone -b ${GITEA_VERSION} https://github.com/go-gitea/gitea.git ${GOPATH
 WORKDIR ${GOPATH}/src/code.gitea.io/gitea
 
 #Checkout version if set
-RUN if [ -n "${GITEA_VERSION}" ]; then git checkout "${GITEA_VERSION}"; fi \
-    && make clean-all build
+RUN if [ -n "${GITEA_VERSION}" ]; then git checkout "${GITEA_VERSION}"; fi
+RUN make clean-all build
 
 # Begin env-to-ini build
 RUN go build contrib/environment-to-ini/environment-to-ini.go
 
 FROM {{ .From }}
+
+COPY --from=ospo /usr/src /usr/src
 
 EXPOSE 22 3000
 
@@ -87,4 +113,4 @@ COPY --from=build-env /go/src/code.gitea.io/gitea/docker/root /
 RUN chmod 755 /usr/bin/entrypoint /app/gitea/gitea /usr/local/bin/gitea /usr/local/bin/environment-to-ini
 RUN chmod 755 /etc/s6/gitea/* /etc/s6/openssh/* /etc/s6/.s6-svscan/*
 ENTRYPOINT ["/usr/bin/entrypoint"]
-CMD ["/bin/s6-svscan", "/etc/s6"]
+CMD ["/usr/bin/s6-svscan", "/etc/s6"]

@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Redistribution and use in source and binary forms, with or without modification, are permitted
 # provided that the following conditions are met:
@@ -23,17 +23,31 @@
 cloudbuild:
   enable_parallel: false
 versions:
+- dir: 5/debian11/5.0
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    django:
+      version: 5.0.1
+  repo: django5
+  tags:
+  - 5.0.1-debian11
+  - 5.0-debian11
+  - 5-debian11
+  - 5.0.1
+  - '5.0'
+  - '5'
+  - latest
 - dir: 4/debian11/4.2
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     django:
-      version: 4.2.5
+      version: 4.2.9
   repo: django4
   tags:
-  - 4.2.5-debian11
+  - 4.2.9-debian11
   - 4.2-debian11
   - 4-debian11
-  - 4.2.5
+  - 4.2.9
   - '4.2'
   - '4'
   - latest
@@ -54,4 +68,5 @@ versions:
   - 1-debian11
   - latest
   templateSubDir: exporter
+
 

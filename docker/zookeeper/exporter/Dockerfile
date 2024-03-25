@@ -5,7 +5,7 @@ ENV EXPORTER_SHA256 c7446aa33d3505fc8b4a92327c89a543f217ebb246c76880ea796f2893d4
 
 RUN set -eu \
     # Installing utilities
-    && apt-get update && apt-get install -y --no-install-recommends wget \
+    && apt-get update && apt-get install -y --no-install-recommends ca-certificates wget \
     && rm -rf /var/lib/apt/lists/* \
     && wget -O /zookeeper_exporter https://github.com/carlpett/zookeeper_exporter/releases/download/v${EXPORTER_VERSION}/zookeeper_exporter \
     && wget -O /opt/exporter.tar.gz https://github.com/carlpett/zookeeper_exporter/archive/v${EXPORTER_VERSION}.tar.gz \

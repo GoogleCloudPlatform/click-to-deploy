@@ -135,7 +135,7 @@ It is advised to use a stable image reference, which you can find on
 For example:
 
 ```shell
-export TAG="5.0.7-20200428-171913"
+export TAG="7.2.1-<BUILD_ID>"
 ```
 
 Alternatively, you can use a short tag which points to the latest image for
@@ -145,7 +145,7 @@ the selected version.
 > over time.
 
 ```shell
-export TAG="6.2"
+export TAG="7.2"
 ```
 
 Configure the container image:

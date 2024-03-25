@@ -1,6 +1,24 @@
 {{- $nuclio := index .Packages "nuclio" -}}
 {{- $golang := index .Packages "golang" -}}
 {{- $docker := index .Packages "docker" -}}
+
+FROM {{ .From }} as ospo
+
+# Download Licenses and restricted source-code
+COPY components.csv /components.csv
+COPY source_code.txt /source_code.txt
+
+RUN apt update && apt -y install ca-certificates
+
+RUN curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
+		&& curl -o /download-ref-repos.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-ref-repos.sh \
+		&& chmod +x /download-licenses.sh \
+		&& chmod +x /download-ref-repos.sh
+
+RUN mkdir -p /usr/src/licenses \
+		&& /download-licenses.sh /components.csv /usr/src/licenses \
+		&& /download-ref-repos.sh /source_code.txt /usr/src
+
 FROM {{ .From }} as build
 
 SHELL ["/bin/bash", "-c" ]
@@ -98,8 +116,10 @@ COPY --from=build /app/cmd/dashboard/docker/runner.sh /runner.sh
 COPY --from=build /app/cmd/dashboard/docker/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/cmd/dashboard/docker/nginx.conf /etc/nginx/nginx.conf
 
+# copy open-source licenses and source-code
+COPY --from=ospo /usr/src /usr/src
+
 HEALTHCHECK --interval=1s --timeout=3s CMD /usr/local/bin/uhttpc --url http://127.0.0.1:8082/ready || exit 1
 
 ENTRYPOINT []
 CMD ["sh",  "-c", "./runner.sh"]
-
