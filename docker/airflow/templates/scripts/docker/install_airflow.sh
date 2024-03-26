@@ -21,6 +21,7 @@ function install_airflow() {
         --constraint "${CONSTRAINT_URL}" \
         --upgrade \
         --upgrade-strategy only-if-needed "${AIRFLOW_INSTALLATION_METHOD}[${AIRFLOW_EXTRAS}]==${AIRFLOW_VERSION}" airflow-exporter
+    pip install apache-airflow-providers-cncf-kubernetes
 }
 
 install_airflow
