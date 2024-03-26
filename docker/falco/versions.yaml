@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 0/debian11/0.35
+- dir: 0/debian11/0.36
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     falco:
-      version: 0.35.1
+      version: 0.36.2
   repo: falco0
   tags:
-  - 0.35.1-debian11
-  - 0.35-debian11
+  - 0.36.2-debian11
+  - 0.36-debian11
   - 0-debian11
-  - 0.35.1
-  - '0.35'
+  - 0.36.2
+  - '0.36'
   - '0'
   - latest
 - dir: 0/debian11/0.34
@@ -45,11 +45,11 @@ versions:
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     falco_exporter:
-      sha256: 42d82b7ac22c2c62609be5755506ca93524f2bc6beb28eb93b8acabeae5ec118
-      version: 0.8.2
+      sha256: 5bd3367a0f0839ec96a32ad36d86a0c113476a12424771925cf8b5c2da87be65
+      version: 0.8.6
   repo: falco-exporter0
   tags:
-  - 0.8.2
+  - 0.8.6
   - '0.8'
   - '0'
   - latest
