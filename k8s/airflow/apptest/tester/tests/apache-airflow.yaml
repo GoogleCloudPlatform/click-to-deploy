@@ -13,7 +13,7 @@ actions:
       import datetime
       import pendulum
       from airflow import DAG
-      from airflow.operators.bash import BashOperator     
+      from airflow.operators.bash import BashOperator
       with DAG(
           dag_id="testdag",
           schedule=None,
@@ -44,7 +44,7 @@ actions:
       kubectl exec ${AIRFLOW_PODNAME} -c airflow-web --namespace $NAMESPACE -- airflow dags test testdag | grep -c "test passed"
     expect:
       stdout:
-        matches: "2"
+        matches: "4"
 - name: Scale down airflow
   bashTest:
     script: |
