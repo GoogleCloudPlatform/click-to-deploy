@@ -74,7 +74,7 @@ spec:
             - name: GITEA_WORK_DIR
               value: "/data"
             - name: GITEA_TEMP
-              value: "/tmp/gitea"                     
+              value: "/tmp/gitea"
             - name: GITEA_ADMIN_USERNAME
               value: {{ .Values.gitea.admin.username | quote }}
             - name: GITEA_ADMIN_PASSWORD
@@ -113,7 +113,7 @@ spec:
             - name: http
               containerPort: {{ .Values.gitea.httpPort }}
             - name: exporter
-              containerPort: 9090          
+              containerPort: 9090
           livenessProbe:
             tcpSocket:
               port: http
@@ -121,7 +121,7 @@ spec:
             timeoutSeconds: 1
             periodSeconds: 10
             successThreshold: 1
-            failureThreshold: 10          
+            failureThreshold: 10
           readinessProbe:
             tcpSocket:
               port: http
@@ -129,7 +129,7 @@ spec:
             timeoutSeconds: 1
             periodSeconds: 10
             successThreshold: 1
-            failureThreshold: 10   
+            failureThreshold: 10
           volumeMounts:
             - name: temp
               mountPath: /tmp
