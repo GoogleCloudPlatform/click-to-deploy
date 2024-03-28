@@ -13,7 +13,7 @@ actions:
       import datetime
       import pendulum
       from airflow import DAG
-      from airflow.operators.bash import BashOperator     
+      from airflow.operators.bash import BashOperator
       with DAG(
           dag_id="testdag",
           schedule=None,
@@ -41,10 +41,10 @@ actions:
     script: |
       export AIRFLOW_PODNAME=$(kubectl get pod --namespace $NAMESPACE -l component=web -o jsonpath={..metadata.name})
       kubectl cp /tmp/testdag.py ${AIRFLOW_PODNAME}:/opt/airflow/dags/testdag.py -c airflow-web --namespace $NAMESPACE
-      kubectl exec ${AIRFLOW_PODNAME} -c airflow-web --namespace $NAMESPACE -- airflow dags test testdag | grep -c "test passed"
+      kubectl exec ${AIRFLOW_PODNAME} -c airflow-web --namespace $NAMESPACE -- airflow dags test testdag | grep -c -P "^(.*) INFO - test passed$"
     expect:
       stdout:
-        matches: "2"
+        matches: "1"
 - name: Scale down airflow
   bashTest:
     script: |
