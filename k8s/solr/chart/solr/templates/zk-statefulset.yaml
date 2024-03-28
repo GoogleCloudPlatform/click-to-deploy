@@ -83,15 +83,17 @@ spec:
             - -ec
             - |
               echo ruok | nc 127.0.0.1 ${1:-2181}
-          initialDelaySeconds: 10
-          timeoutSeconds: 5
+          initialDelaySeconds: 30
+          timeoutSeconds: 30
         livenessProbe:
           exec:
             command:
             - /bin/bash
             - -ec
             - |
-              zkServer.sh status
+              zkServer.sh --config /conf status
+          initialDelaySeconds: 30
+          timeoutSeconds: 30
         command:
         - /bin/bash
         - -ec
