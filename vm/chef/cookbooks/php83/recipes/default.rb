@@ -12,9 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name 'lamp'
-supports 'debian'
-depends 'apache2'
-depends 'mysql'
-depends 'php83'
-depends 'phpmyadmin'
+apt_repository 'php' do
+  uri 'https://packages.sury.org/php/'
+  distribution node['php83']['distribution']
+  key 'https://packages.sury.org/php/apt.gpg'
+  components ['main']
+end
+
+apt_update do
+  action :update
+end
+
+package 'install packages' do
+  package_name node['php83']['packages']
+  action :install
+  retries 5
+  retry_delay 20
+end
+
+node['php83']['modules'].each do |pkg|
+  include_recipe "php83::module_#{pkg}"
+end
