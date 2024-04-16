@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['haproxy']['version'] = '2.9'
+default['haproxy']['version'] = '2.8'
 default['haproxy']['apt_version'] = "#{default['haproxy']['version']}.\*"
 default['haproxy']['repo']['uri'] = 'https://haproxy.debian.net'
 default['haproxy']['repo']['components'] = ['main']
