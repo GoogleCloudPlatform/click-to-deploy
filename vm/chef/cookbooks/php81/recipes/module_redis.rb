@@ -12,12 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name 'mautic'
-depends 'c2d-config'
-depends 'composer'
-depends 'apache2'
-depends 'nodejs'
-depends 'mysql'
-depends 'php81'
-depends 'git'
-supports 'debian'
+package 'php8.1-redis' do
+  action :install
+  retries 5
+  retry_delay 20
+end

@@ -14,8 +14,12 @@
 
 include_recipe 'php81'
 include_recipe 'php81::module_libapache2'
-include_recipe 'php81::module_mysql'
+include_recipe 'php81::module_simplexml'
 include_recipe 'php81::module_xmlrpc'
+include_recipe 'php81::module_redis'
+include_recipe 'php81::module_mysql'
+include_recipe 'php81::module_dom'
+include_recipe 'php81::module_zip'
 include_recipe 'composer::composer2'
 
 include_recipe 'git'
@@ -26,6 +30,8 @@ include_recipe 'apache2::ipv4-listen'
 include_recipe 'apache2::mod-rewrite'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
+
+include_recipe 'nodejs::default_nodejs16'
 
 package 'Install packages' do
   package_name node['mautic']['packages']
@@ -71,7 +77,7 @@ bash 'install requirements' do
   user 'root'
   cwd '/var/www/html/mautic/'
   code <<-EOH
-composer install
+composer install -n
 chown -R ${user}:${user} ../mautic
 EOH
   environment({
