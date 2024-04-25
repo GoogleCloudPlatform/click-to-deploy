@@ -20,6 +20,7 @@ default['odoo']['packages'] = [
     'python3-dev',
     'python3-venv',
     'python3-wheel',
+    'libzip-dev',
     'libxlst-dev',
     'libldap2-dev',
     'libsasl2-dev',
