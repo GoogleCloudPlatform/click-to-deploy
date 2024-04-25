@@ -73,13 +73,13 @@ default['odoo']['packages'] = [
     'python3-xlwt',
     'python3-qrcode',
     'python3-renderpm',
-    'python3-zeep', 
+    'python3-zeep',
     'python3-freezegun',
     'python3-setuptools',
     'python3-vobject',
     'python3-watchdog',
     'libssl-dev',
-    'git'
+    'git',
 
 ]
 
