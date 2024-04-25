@@ -1,0 +1,176 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_kiddo
+# 
+# Translators:
+# Wil Odoo, 2023
+# Daye Jeong, 2023
+# Sarah Park, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:22+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Sarah Park, 2023\n"
+"Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ko\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_call_to_action
+msgid "2,000 parents<br/> brought their kid to our nursery."
+msgstr "2,000명의 학부모님께서<br/>저희에게 자녀를 맡겨 주셨습니다."
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_banner
+msgid "A little place <br/>of paradise"
+msgstr "천국과도 같은 <br/>작은 공간"
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_product_list
+msgid "About us"
+msgstr "회사 소개"
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_image_text
+msgid "Activities"
+msgstr "활동"
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_three_columns
+msgid ""
+"All activities are planned to meet each child’s individual needs. This "
+"approach will help your child to develop to the best of their ability."
+msgstr ""
+"모든 활동은 어린이가 개별적으로 필요한 내용에 맞추어 계획됩니다. 이러한 접근 방식을 통해 자녀의 능력을 최대한 발휘할 수 있도록 도와 "
+"줍니다."
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_call_to_action
+msgid "Contact us"
+msgstr "문의하기"
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_call_to_action
+msgid "Entrust us with your children and go to work with peace of mind"
+msgstr "자녀는 저희에게 믿고 맡겨주시고 안심하고 출근하세요."
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_product_list
+msgid "Events"
+msgstr "행사"
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_three_columns
+msgid "For every kid"
+msgstr "모든 어린이용"
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_cover
+msgid "Kiddo Nursery"
+msgstr "유아 돌봄"
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_picture
+msgid "Letting each child explore and grow at their own pace"
+msgstr "어린이가 자신만의 속도대로 맞추어 탐구하고 성장할 수 있도록 합니다."
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_three_columns
+msgid "Open-door policy"
+msgstr "개방 정책"
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_three_columns
+msgid ""
+"Our aim is to make the early years of your child’s life as enjoyable, "
+"rewarding and positive as possible."
+msgstr "저희는 여러분의 자녀가 즐겁고 보람차게 그리고 긍정적으로 유년기를 보내도록 하는 것을 목표로 합니다."
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_three_columns
+msgid "Our mission"
+msgstr "우리의 미션"
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_picture
+msgid ""
+"Our qualified staff ensure that each childs' needs are always recognised and"
+" fulfilled."
+msgstr "자격을 갖춘 저희 스탭이 모든 어린이가 무엇을 필요로 하는지를 항상 살피며 보살핍니다."
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_product_list
+msgid "Our team"
+msgstr "당사 팀"
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_image_text
+msgid "Our team is composed of experienced nursery nurses."
+msgstr "저희 팀은 풍부한 경험을 갖춘 보육교사들로 구성되어 있습니다."
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_product_list
+msgid "Playground"
+msgstr "운동장"
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_cover
+msgid ""
+"The countryside nursery since 2002.<br/>\n"
+"        A truly unique service in a highly secure and tranquil setting."
+msgstr ""
+"2002년부터 교외에서 운영 중인 보육 시설입니다.<br/>\n"
+"        최고 수준의 안전과 평온함 속에서 진정 특별한 서비스를 제공합니다. "
+
+#. module: theme_kiddo
+#: model:ir.model,name:theme_kiddo.model_theme_utils
+msgid "Theme Utils"
+msgstr "테마 유틸"
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_image_text
+msgid ""
+"They will propose to your children educational activities, playful, varied "
+"and adapted to the stage of development."
+msgstr "자녀의 발달 단계에 있어 즐겁고 다양하게 알맞은 교육 활동을 진행할 수 있도록 하고 있습니다."
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_banner
+msgid ""
+"This is a simple hero unit, a simple jumbotron-style component for calling "
+"extra attention to featured content or information."
+msgstr "점보트론을 이용하면, 웹사이트의 중요한 내용 또는 공지사항을 강조할 수 있습니다."
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_picture
+msgid ""
+"Through stimulating and fun activities, our aim<br/>\n"
+"        is to promote all areas of a childs' development."
+msgstr ""
+"오감을 자극하는 즐거운 활동을 통해, 저희는<br/>\n"
+"        아동의 발달 전 영역을 촉진시키는 것을 목표로 하고 있습니다."
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_product_list
+msgid "Visit us"
+msgstr "방문하기"
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_three_columns
+msgid ""
+"You are welcome to come and see the nursery and meet the team at any time "
+"convenient to you."
+msgstr "편하신 시간에 방문하시어 보육 내용을 살펴보시고 교직원을 만나보시기 바랍니다."
+
+#. module: theme_kiddo
+#. odoo-javascript
+#: code:addons/theme_kiddo/static/src/js/tour.js:0
+#, python-format
+msgid "width"
+msgstr "너비"

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_masonry_block_default_template" inherit_id="website.s_masonry_block_default_template">
+    <!-- Image Block -->
+    <xpath expr="//div[hasclass('o_grid_item_image')]" position="attributes">
+        <attribute name="class" add="col-lg-4 g-col-lg-4 border rounded" remove="col-lg-6 g-col-lg-6" separator=" "/>
+        <attribute name="style" add="border-color: rgb(255, 255, 255) !important; border-width: 10px !important; border-radius: 14px !important; grid-area: 1 / 1 / 11 / 5;" separator="; "/>
+    </xpath>
+    <!-- Image Block - Image -->
+    <xpath expr="//img" position="attributes">
+        <attribute name="style" add="border-radius: 4px !important;" separator="; "/>
+    </xpath>
+
+    <!-- Little Blocks -->
+    <!-- Little block #01 - Title -->
+    <xpath expr="//h3" position="replace" mode="inner">
+        Caterers
+    </xpath>
+    <!-- Little block #01 - Text -->
+    <xpath expr="//*[hasclass('col-lg-3')]//p" position="replace">
+        <p>Check out our list of favorite caterers.</p>
+        <p><a href="#" class="btn btn-secondary rounded-circle">Find a Caterer</a></p>
+    </xpath>
+     <!-- Little block #01 - Main div -->
+     <xpath expr="//div[hasclass('col-lg-3')]" position="attributes">
+        <attribute name="class" add="col-lg-4 g-col-lg-4 border rounded" remove="col-lg-3 g-col-lg-3" separator=" "/>
+        <attribute name="style" add="border-color: rgb(255, 255, 255) !important; border-width: 10px !important; border-radius: 14px !important; grid-area: 1 / 5 / 6 / 9;" separator="; "/>
+    </xpath>
+
+    <!-- Little block #02 - Title -->
+    <xpath expr="(//h3)[2]" position="replace" mode="inner">
+        Venues
+    </xpath>
+    <!-- Little block #02 - Text -->
+    <xpath expr="//*[hasclass('col-lg-3')]//p" position="replace">
+        <p>Check out our list of favorite venues.</p>
+        <p><a href="#" class="btn btn-secondary">Find a venue</a></p>
+    </xpath>
+    <!-- Little block #02 - Main div -->
+    <xpath expr="//*[hasclass('col-lg-3')]" position="attributes">
+        <attribute name="class" add="col-lg-4 g-col-lg-4 border rounded" remove="col-lg-3 g-col-lg-3" separator=" "/>
+        <attribute name="style" add="border-color: rgb(255, 255, 255) !important; border-width: 10px !important; border-radius: 14px !important; grid-area: 1 / 9 / 6 / 13;" separator="; "/>
+    </xpath>
+
+    <!-- Little block #03 - Title -->
+    <xpath expr="(//h3)[3]" position="replace" mode="inner">
+        Attire
+    </xpath>
+    <!-- Little block #03 - Text -->
+    <xpath expr="//*[hasclass('col-lg-3')]//p" position="replace">
+        <p>Find the perfect outfit for before, during and after the main event.</p>
+        <p><a href="#" class="btn btn-primary">Shop</a></p>
+    </xpath>
+    <!-- Little block #03 - Main div -->
+    <xpath expr="//*[hasclass('col-lg-3')]" position="attributes">
+        <attribute name="class" add="col-lg-4 g-col-lg-4 border rounded" remove="col-lg-3 g-col-lg-3" separator=" "/>
+        <attribute name="style" add="border-color: rgb(255, 255, 255) !important; border-width: 10px !important; border-radius: 14px !important; grid-area: 6 / 5 / 11 / 9;" separator="; "/>
+    </xpath>
+
+    <!-- Little block #04 - Title -->
+    <xpath expr="(//h3)[4]" position="replace" mode="inner">
+        FAQ
+    </xpath>
+    <!-- Little block #04 - Text -->
+    <xpath expr="//*[hasclass('col-lg-3')]//p" position="replace">
+        <p>Find the answers to all your questions <br/>in our FAQ.</p>
+        <p><a href="#" class="btn btn-primary">Go to FAQ</a></p>
+    </xpath>
+    <!-- Little block #04 - Main div -->
+    <xpath expr="//div[hasclass('col-lg-3')]" position="attributes">
+        <attribute name="class" add="col-lg-4 g-col-lg-4 border rounded" remove="col-lg-3 g-col-lg-3" separator=" "/>
+        <attribute name="style" add="border-color: rgb(255, 255, 255) !important; border-width: 10px !important; border-radius: 14px !important; grid-area: 6 / 9 / 11 / 13;" separator="; "/>
+    </xpath>
+</template>
+
+</odoo>

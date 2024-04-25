@@ -1,0 +1,164 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_paptic
+# 
+# Translators:
+# コフスタジオ, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: コフスタジオ, 2024\n"
+"Language-Team: Serbian (https://app.transifex.com/odoo/teams/41243/sr/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: sr\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_call_to_action
+msgid "<b>50,000+ companies</b> run Paptic to grow their businesses."
+msgstr "<b>50,000+ kompanija </b>koristi Paptic za rast svog poslovanja."
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_text_image
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-3) 100%);\" class=\"text-gradient\">A Section Subtitle</font>"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-3) 100%);\" class=\"text-gradient\">Podnaslov sekcije</font>"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_image_text
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-3) 100%);\" class=\"text-gradient\">Help you grow</font>"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-3) 100%);\" class=\"text-gradient\">Pomoći ću vam da "
+"rastete</font>"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_three_columns
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-3) 100%);\" class=\"text-gradient\">SUCCESS STORIES</font>"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-3) 100%);\" class=\"text-gradient\">USPEŠNE PRIČE</font>"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_image_text
+msgid "Always Improving"
+msgstr "Uvek unapređivanje"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_image_text
+msgid "DISCOVER MORE  <i class=\"fa fa-chevron-right\"/>"
+msgstr "OTKRIJTE VIŠE  <i class=\"fa fa-chevron-right\"/>"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_three_columns
+msgid "Fallanzy Integration Explained"
+msgstr "Fallanzy Integracija Objašnjena"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_three_columns
+msgid ""
+"Fallanzy has been active in the workspace design and ergonomics consulting "
+"business for over 20 years. Discover how we answered to the challenges of "
+"this company."
+msgstr ""
+"Fallanzy je aktivan u poslovima dizajna radnog prostora i konsultacija o "
+"ergonomiji već više od 20 godina. Otkrijte kako smo odgovorili na izazove "
+"ove kompanije."
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_cover
+msgid "Grow your Business.<br/>Optimize your time."
+msgstr "Poboljšajte svoj posao.<br/>Optimizujte svoje vreme."
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_three_columns
+msgid "HeyNosf Inc. Digital Transformation"
+msgstr "HeyNosf Inc. Digitalna transformacija"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_three_columns
+msgid ""
+"HeyNosf Inc. is a communication agency that was founded in 2006, by Jean-"
+"Louis Dewinter. He always had a strong interest in languages and decided to "
+"create a company reflecting his own interests."
+msgstr ""
+"HeyNosf Inc. je agencija za komunikaciju koja je osnovana 2006. godine, od "
+"strane Žan-Lui Deintera. Uvek je imao snažan interes za jezike i odlučio je "
+"da stvori kompaniju koja odražava njegove sopstvene interese."
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_three_columns
+msgid "Hotels Improvement Study"
+msgstr "Hotelsko istraživanje poboljšanja"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_cover
+msgid "Man waiting at the airport"
+msgstr "Čovek čeka na aerodromu"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_three_columns
+msgid ""
+"Our solution is suitable for Hotels as well. We help management to optimize "
+"their time and employee to be more efficient and more productive. Discover "
+"our study."
+msgstr ""
+"Naše rešenje je pogodno i za hotele. Pomažemo menadžmentu da optimizuje "
+"svoje vreme i zaposlenima da budu efikasniji i produktivniji. Otkrijte našu "
+"studiju."
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_cover
+msgid "SCHEDULE A DEMO"
+msgstr "ZAKAZATI DEMONSTRACIJU"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_cover
+msgid "START NOW"
+msgstr "POČNI SADA"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_image_text
+msgid "Scalable and Modular"
+msgstr "Skalabilno i modularno"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_image_text
+msgid ""
+"Thanks to our running release system, benefit from all updates (security and"
+" new features) in real time."
+msgstr ""
+"Zahvaljujući našem sistem za ažuriranje u realnom vremenu, iskoristite sve "
+"nadogradnje (sigurnosne i nove funkcionalnosti)."
+
+#. module: theme_paptic
+#: model:ir.model,name:theme_paptic.model_theme_utils
+msgid "Theme Utils"
+msgstr "Korišćenje teme"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_title
+msgid "Unique experiences."
+msgstr "Jedinstvena iskustva."
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_image_text
+msgid ""
+"Whether you start small or are already a large company, our solution adapts "
+"to your needs and grows with you."
+msgstr ""
+"Bez obzira da li počinjete malo ili već imate veliku kompaniju, naše rešenje"
+" se prilagođava vašim potrebama i raste zajedno sa vama."

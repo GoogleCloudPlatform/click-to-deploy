@@ -1,0 +1,153 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_paptic
+# 
+# Translators:
+# Wil Odoo, 2023
+# Tony Ng, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Tony Ng, 2024\n"
+"Language-Team: Chinese (Taiwan) (https://app.transifex.com/odoo/teams/41243/zh_TW/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: zh_TW\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_call_to_action
+msgid "<b>50,000+ companies</b> run Paptic to grow their businesses."
+msgstr "<b>50,000 多間公司</b>使用 Paptic 發展業務。"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_text_image
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-3) 100%);\" class=\"text-gradient\">A Section Subtitle</font>"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-3) 100%);\" class=\"text-gradient\">章節副標題</font>"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_image_text
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-3) 100%);\" class=\"text-gradient\">Help you grow</font>"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-3) 100%);\" class=\"text-gradient\">幫助你成長</font>"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_three_columns
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-3) 100%);\" class=\"text-gradient\">SUCCESS STORIES</font>"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-3) 100%);\" class=\"text-gradient\">成功故事</font>"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_image_text
+msgid "Always Improving"
+msgstr "不斷改進"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_image_text
+msgid "DISCOVER MORE  <i class=\"fa fa-chevron-right\"/>"
+msgstr "了解更多 <i class=\"fa fa-chevron-right\"/>"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_three_columns
+msgid "Fallanzy Integration Explained"
+msgstr "Fallanzy 整合說明"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_three_columns
+msgid ""
+"Fallanzy has been active in the workspace design and ergonomics consulting "
+"business for over 20 years. Discover how we answered to the challenges of "
+"this company."
+msgstr "20 多年來，Fallanzy 一直活躍於工作空間設計及人體工學顧問業務。了解我們如何協助這間公司應對挑戰。"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_cover
+msgid "Grow your Business.<br/>Optimize your time."
+msgstr "發展業務，<br/>善用工作時間"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_three_columns
+msgid "HeyNosf Inc. Digital Transformation"
+msgstr "HeyNosf Inc. 數碼轉型"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_three_columns
+msgid ""
+"HeyNosf Inc. is a communication agency that was founded in 2006, by Jean-"
+"Louis Dewinter. He always had a strong interest in languages and decided to "
+"create a company reflecting his own interests."
+msgstr ""
+"HeyNosf Inc. 是一家傳播機構，由 Jean-Louis Dewinter 創立於 2006 "
+"年。他一直對語言有濃厚興趣，並決定創建一家反映自己興趣的公司。"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_three_columns
+msgid "Hotels Improvement Study"
+msgstr "酒店改進研究"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_cover
+msgid "Man waiting at the airport"
+msgstr "男子在機場等候"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_three_columns
+msgid ""
+"Our solution is suitable for Hotels as well. We help management to optimize "
+"their time and employee to be more efficient and more productive. Discover "
+"our study."
+msgstr "我們的解決方案也適用於酒店。我們幫助管理層優化時間，幫助員工提高效率和生產力。了解我們的研究。"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_cover
+msgid "SCHEDULE A DEMO"
+msgstr "預約功能示範"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_cover
+msgid "START NOW"
+msgstr "現在開始"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_image_text
+msgid "Scalable and Modular"
+msgstr "容易擴展、模組化"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_image_text
+msgid ""
+"Thanks to our running release system, benefit from all updates (security and"
+" new features) in real time."
+msgstr "得益於我們運行中的發佈系統，所有更新（安全和新功能）均可實時更新。"
+
+#. module: theme_paptic
+#: model:ir.model,name:theme_paptic.model_theme_utils
+msgid "Theme Utils"
+msgstr "主題"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_title
+msgid "Unique experiences."
+msgstr "獨特體驗"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_image_text
+msgid ""
+"Whether you start small or are already a large company, our solution adapts "
+"to your needs and grows with you."
+msgstr "無論您是小型企業還是大型企業，我們的解決方案都能滿足您的需求，與您共同成長。"

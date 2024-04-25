@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,17 +14,18 @@
 
 node.override['postgresql']['standalone']['allow_external'] = false
 
-include_recipe 'postgresql::standalone_bullseye'
+include_recipe 'postgresql::standalone_bookworm'
 include_recipe 'nginx::embedded'
+
+bash 'Install Python3' do
+  user 'root'
+  code 'apt-get install -y python3'
+  
+end
 
 package 'Install packages' do
   package_name node['odoo']['packages']
   action :install
-end
-
-bash 'Update Pip3' do
-  code 'pip3 install --upgrade pip'
-  user 'root'
 end
 
 # Download WKHTMLtoPDF from the official server
@@ -90,9 +91,13 @@ bash 'Extract odoo source code' do
 EOH
 end
 
-bash 'Install python requirements' do
-  code "pip3 install #{node['odoo']['pip-packages']}"
+bash 'Install Dependencies' do
   user 'root'
+  code <<-EOH
+    virtualenv --python=python3 /opt/odoo-env
+    source /opt/odoo-env/bin/activate
+    pip install #{node['odoo']['pip-packages']}
+EOH
 end
 
 template '/etc/nginx/sites-available/odoo.conf' do

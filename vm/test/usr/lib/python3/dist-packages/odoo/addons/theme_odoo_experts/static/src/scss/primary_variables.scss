@@ -1,0 +1,141 @@
+//------------------------------------------------------------------------------
+// Fonts
+//------------------------------------------------------------------------------
+
+$o-theme-h1-font-size-multiplier: (62 / 16);
+$o-theme-h2-font-size-multiplier: (44 / 16);
+$o-theme-h3-font-size-multiplier: (36 / 16);
+$o-theme-h4-font-size-multiplier: (24 / 16);
+$o-theme-h5-font-size-multiplier: (21 / 16);
+$o-theme-h6-font-size-multiplier: (18 / 16);
+
+$o-theme-headings-font-weight: 700;
+
+$o-theme-font-configs: (
+    'Heebo': (
+        'family': ('Heebo', sans-serif),
+        'url': 'Heebo:300,300i,400,400i,700,700i',
+    ),
+    'Rajdhani': (
+        'family': ('Rajdhani', sans-serif),
+        'url': 'Rajdhani:300,300i,400,400i,700,700i',
+    ),
+    'Raleway': (
+        'family': ('Raleway', sans-serif),
+        'url': 'Raleway:300,300i,400,400i,700,700i',
+    ),
+    'Roboto': (
+        'family': ('Roboto', sans-serif),
+        'url': 'Roboto:300,300i,400,400i,700,700i',
+    ),
+    'Source Sans Pro': (
+        'family': ('Source Sans Pro', sans-serif),
+        'url': 'Source+Sans+Pro:300,300i,400,400i,700,700i',
+    ),
+    'Ubuntu': (
+        'family': ('Ubuntu', sans-serif),
+        'url': 'Ubuntu:300,300i,400,400i,700,700i',
+    ),
+    'Poppins': (
+        'family': ('Poppins', sans-serif),
+        'url': 'Poppins:300,300i,400,400i,700,700i',
+    ),
+    'Questrial': (
+        'family': ('Questrial', sans-serif),
+        'url': 'Questrial:300,300i,400,400i,700,700i',
+    ),
+    'Mulish': (
+        'family': ('Mulish', sans-serif),
+        'url': 'Mulish:300,300i,400,400i,700,700i',
+    ),
+    'Anton': (
+        'family': ('Anton', sans-serif),
+        'url': 'Anton:300,300i,400,400i,700,700i',
+    ),
+    'Lato': (
+        'family': ('Lato', sans-serif),
+        'url': 'Lato:300,300i,400,400i,700,700i',
+    ),
+    'Oswald': (
+        'family': ('Oswald', sans-serif),
+        'url': 'Oswald:300,300i,400,400i,700,700i',
+    ),
+    'Work Sans': (
+        'family': ('Work Sans', sans-serif),
+        'url': 'Work+Sans:300,300i,400,400i,700,700i',
+    ),
+);
+
+//------------------------------------------------------------------------------
+// Website customizations
+//------------------------------------------------------------------------------
+
+$o-website-values-palettes: (
+    (
+        'color-palettes-name': 'odoo-experts-1',
+        'logo-height': (52 / 16) * 1rem,
+        'fixed-logo-height': (52 / 16) * 1rem,
+        'header-font-size': 1rem,
+        'btn-border-radius': 10rem,
+        'btn-border-radius-lg': 10rem,
+        'btn-border-radius-sm': 10rem,
+        'btn-padding-y': .45rem,
+        'btn-padding-x': 1.35rem,
+        'btn-padding-y-sm': .3rem,
+        'btn-padding-x-sm': .9rem,
+        'btn-padding-y-lg': .6rem,
+        'btn-padding-x-lg': 1.8rem,
+        'font': 'Lato',
+        'headings-font': 'Work Sans',
+        'navbar-font': 'Work Sans',
+        'header-template': 'sales_three',
+        'footer-template': 'contact',
+        'link-underline': 'never',
+    ),
+);
+
+$o-palette-priority-prefix: 'odoo-experts';
+$o-selected-color-palettes-names: append($o-selected-color-palettes-names, 'odoo-experts-1');
+
+$o-color-palettes-compatibility-indexes: (
+    1: 'odoo-experts-1',
+    2: 'odoo-experts-2',
+    3: 'odoo-experts-3',
+    4: 'odoo-experts-4',
+    5: 'generic-1',
+    6: 'generic-2',
+    7: 'generic-3',
+    8: 'generic-4',
+    9: 'generic-5',
+    10: 'generic-6',
+    11: 'generic-7',
+    12: 'generic-8',
+    13: 'generic-9',
+    14: 'generic-10',
+    15: 'generic-11',
+    16: 'generic-12',
+    17: 'generic-13',
+    18: 'generic-14',
+    19: 'generic-15',
+    20: 'generic-16',
+    21: 'generic-17',
+);
+
+//------------------------------------------------------------------------------
+// Shapes
+//------------------------------------------------------------------------------
+
+$o-bg-shapes: change-shape-colors-mapping('web_editor', 'Origins/02_001', (5: 3));
+$o-bg-shapes: add-extra-shape-colors-mapping('web_editor', 'Origins/02_001', 'second', (4: 4, 5:2));
+$o-bg-shapes: add-extra-shape-colors-mapping('web_editor', 'Origins/02_001', 'third', (4: 2, 5: 1));
+$o-bg-shapes: change-shape-colors-mapping('web_editor', 'Origins/09_001', (3: 5));
+$o-bg-shapes: change-shape-colors-mapping('web_editor', 'Origins/16', (3: 1));
+$o-bg-shapes: change-shape-colors-mapping('web_editor', 'Floats/07', (1: 5));
+$o-bg-shapes: change-shape-colors-mapping('web_editor', 'Blobs/04', (5: 5));
+$o-bg-shapes: change-shape-colors-mapping('web_editor', 'Rainy/10', (1: 5, 3: 5));
+$o-bg-shapes: change-shape-colors-mapping('web_editor', 'Airy/01', (1: 3));
+$o-bg-shapes: change-shape-colors-mapping('web_editor', 'Airy/03_001', (5: 4));
+$o-bg-shapes: change-shape-colors-mapping('web_editor', 'Wavy/08', (2: 2));
+$o-bg-shapes: change-shape-colors-mapping('web_editor', 'Bold/01', (2: 2));
+$o-bg-shapes: change-shape-colors-mapping('web_editor', 'Airy/12_001', (1: 5, 3: 1));
+$o-bg-shapes: change-shape-colors-mapping('web_editor', 'Wavy/04', (1: 5, 5: 4));

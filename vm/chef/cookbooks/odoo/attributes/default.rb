@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# https://www.odoo.com/documentation/15.0/administration/install/install.html#
+# https://www..com/documentation/15.0/administration/install/install.html#
 
 default['odoo']['packages'] = [
     'python3-pip',
@@ -27,22 +27,68 @@ default['odoo']['packages'] = [
     'python3-setuptools',
     'node-less',
     'fonts-noto-cjk',
+    'fonts-inconsolata',
+    'fonts-font-awesome',
+    'fonts-roboto-unhinted',
+    'gsfonts',
     'python3-pyldap',
+    'python3-babel',
+    'python3-cryptography',
+    'python3-decorator',
+    'python3-docutils',
+    'python3-geoip2',
+    'python3-gevent',
+    'python3-greenlet',
+    'python3-jinja2',
+    'python3-libsass',
+    'python3-markupsafe',
+    'python3-num2words',
+    'python3-ofxparse',
+    'python3-openssl',
+    'python3-passlib',
+    'python3-gdbm',
+    'python3-dev',
+    'python3-pip',
+    'python3-virtualenv',
+    'virtualenv',
+    'tesseract-ocr',
+    'libtesseract-dev',
+    'libleptonica-dev',
+    'exim4',
+    'uwsgi',
+    'uwsgi-plugin-python3',
+    'python3-polib',
+    'python3-psutil',
+    'python3-psycopg2',
+    'python3-pydot',
+    'python3-pypdf2',
+    'python3-reportlab',
+    'python3-rjsmin',
+    'python3-serial',
+    'python3-stdnum',
+    'python3-usb',
+    'python3-xlrd',
+    'python3-werkzeug',
+    'python3-xlsxwriter',
+    'python3-xlwt',
     'python3-qrcode',
     'python3-renderpm',
+    'python3-zeep', 
+    'python3-freezegun',
     'python3-setuptools',
     'python3-vobject',
     'python3-watchdog',
     'libssl-dev',
-    'git',
+    'git'
+
 ]
 
 default['odoo']['pip-packages'] = 'vobject qrcode pyldap num2words xlwt pyopenssl sslcrypto'
 
-default['odoo']['version'] = '16.0'
-default['odoo']['release'] = '20230315'
-default['odoo']['sha256'] = '941bebc8939aa6516b0ab596d9fcbc80ee50e26376f8b2908c0913ede598ff57'
-default['odoo']['src']['sha256'] = '1058232165db2ab5fb088f7735567587ed12f2b80cdea832321db03246b1b322'
+default['odoo']['version'] = '17.0'
+default['odoo']['release'] = '20240416'
+default['odoo']['sha256'] = 'f2031c2633f7dd8fd18d64dac424a79b759d6e8ccd2f308f12bbbcdbe17e8d58'
+default['odoo']['src']['sha256'] = '404e39408a080039967b1b14a75225370730073e4a468a2ad623274d8202c0ca'
 
 default['odoo']['wkhtmltopdf']['version'] = '0.12.6'
 default['odoo']['wkhtmltopdf']['release'] = '0.12.6-1'

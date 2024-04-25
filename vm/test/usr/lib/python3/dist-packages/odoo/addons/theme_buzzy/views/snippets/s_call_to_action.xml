@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_call_to_action" inherit_id="website.s_call_to_action">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc5 pt88 pb48" remove="o_cc3 pt48 pb24" separator=" "/>
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Rainy/08_001","flip":[]}</attribute>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Rainy_08_001"/>
+    </xpath>
+    <!-- Container -->
+    <xpath expr="//div[hasclass('container')]" position="attributes">
+        <attribute name="class" add="o_container_small" remove="container" separator=" "/>
+    </xpath>
+    <!-- Left Column -->
+    <xpath expr="//div[hasclass('row')]//div" position="attributes">
+        <attribute name="class" add="col-lg-8" remove="col-lg-9" separator=" "/>
+    </xpath>
+    <!-- Title -->
+    <xpath expr="//h3" position="replace" mode="inner">
+        <b>Start to build</b> your robust activity with these powerful tools
+    </xpath>
+    <!-- Paragraph -->
+    <xpath expr="//div[hasclass('row')]//p" position="replace" mode="inner">
+        Make your company a better place.
+    </xpath>
+    <!-- Right Column -->
+    <xpath expr="//div[hasclass('row')]//div[2]" position="attributes">
+        <attribute name="class" add="col-lg-4" remove="col-lg-3" separator=" "/>
+    </xpath>
+</template>
+
+</odoo>
