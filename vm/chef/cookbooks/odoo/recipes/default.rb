@@ -20,7 +20,6 @@ include_recipe 'nginx::embedded'
 bash 'Install Python3' do
   user 'root'
   code 'apt-get install -y python3'
-  
 end
 
 package 'Install packages' do
