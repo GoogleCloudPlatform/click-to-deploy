@@ -14,7 +14,8 @@
 
 name 'lamp'
 supports 'debian'
-depends 'apache2'
-depends 'mysql'
-depends 'php83'
+depends 'c2d-shared'
 depends 'phpmyadmin'
+depends 'apache2'
+depends 'php83'
+depends 'mysql'

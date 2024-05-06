@@ -21,6 +21,8 @@ include_recipe 'php83::module_libapache2'
 include_recipe 'php83::module_mysql'
 include_recipe 'phpmyadmin'
 
+include_recipe 'lamp::ospo'
+
 cookbook_file '/etc/apache2/sites-available/lamp-server.conf' do
   source 'lamp-server.conf'
 end
