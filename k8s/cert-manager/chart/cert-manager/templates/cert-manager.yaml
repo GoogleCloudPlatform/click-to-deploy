@@ -13,7 +13,7 @@ metadata:
 ---
 # Issuer controller role
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: Role
 metadata:
   name: cert-manager-controller-issuers
   labels:
@@ -37,7 +37,7 @@ rules:
 ---
 # ClusterIssuer controller role
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: Role
 metadata:
   name: cert-manager-controller-clusterissuers
   labels:
@@ -61,7 +61,7 @@ rules:
 ---
 # Certificates controller role
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: Role
 metadata:
   name: cert-manager-controller-certificates
   labels:
@@ -94,7 +94,7 @@ rules:
 ---
 # Orders controller role
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: Role
 metadata:
   name: cert-manager-controller-orders
   labels:
@@ -130,7 +130,7 @@ rules:
 ---
 # Challenges controller role
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: Role
 metadata:
   name: cert-manager-controller-challenges
   labels:
@@ -188,7 +188,7 @@ rules:
 ---
 # ingress-shim controller role
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: Role
 metadata:
   name: cert-manager-controller-ingress-shim
   labels:
@@ -223,7 +223,7 @@ rules:
     verbs: ["create", "patch"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: Role
 metadata:
   name: cert-manager-view
   labels:
@@ -243,7 +243,7 @@ rules:
     verbs: ["get", "list", "watch"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: Role
 metadata:
   name: cert-manager-edit
   labels:
@@ -263,7 +263,7 @@ rules:
 ---
 # Permission to approve CertificateRequests referencing cert-manager.io Issuers and ClusterIssuers
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: Role
 metadata:
   name: cert-manager-controller-approve:cert-manager-io
   labels:
@@ -281,7 +281,7 @@ rules:
 # - Update and sign CertificatSigningeRequests referencing cert-manager.io Issuers and ClusterIssuers
 # - Perform SubjectAccessReviews to test whether users are able to reference Namespaced Issuers
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: Role
 metadata:
   name: cert-manager-controller-certificatesigningrequests
   labels:
@@ -306,7 +306,7 @@ rules:
     verbs: ["create"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
   name: cert-manager-controller-issuers
   labels:
@@ -316,7 +316,7 @@ metadata:
     app.kubernetes.io/component: "controller"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
+  kind: Role
   name: cert-manager-controller-issuers
 subjects:
   - name: cert-manager
@@ -324,7 +324,7 @@ subjects:
     kind: ServiceAccount
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
   name: cert-manager-controller-clusterissuers
   labels:
@@ -334,7 +334,7 @@ metadata:
     app.kubernetes.io/component: "controller"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
+  kind: Role
   name: cert-manager-controller-clusterissuers
 subjects:
   - name: cert-manager
@@ -342,7 +342,7 @@ subjects:
     kind: ServiceAccount
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
   name: cert-manager-controller-certificates
   labels:
@@ -352,7 +352,7 @@ metadata:
     app.kubernetes.io/component: "controller"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
+  kind: Role
   name: cert-manager-controller-certificates
 subjects:
   - name: cert-manager
@@ -360,7 +360,7 @@ subjects:
     kind: ServiceAccount
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
   name: cert-manager-controller-orders
   labels:
@@ -370,7 +370,7 @@ metadata:
     app.kubernetes.io/component: "controller"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
+  kind: Role
   name: cert-manager-controller-orders
 subjects:
   - name: cert-manager
@@ -378,7 +378,7 @@ subjects:
     kind: ServiceAccount
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
   name: cert-manager-controller-challenges
   labels:
@@ -388,7 +388,7 @@ metadata:
     app.kubernetes.io/component: "controller"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
+  kind: Role
   name: cert-manager-controller-challenges
 subjects:
   - name: cert-manager
@@ -396,7 +396,7 @@ subjects:
     kind: ServiceAccount
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
   name: cert-manager-controller-ingress-shim
   labels:
@@ -406,7 +406,7 @@ metadata:
     app.kubernetes.io/component: "controller"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
+  kind: Role
   name: cert-manager-controller-ingress-shim
 subjects:
   - name: cert-manager
@@ -414,7 +414,7 @@ subjects:
     kind: ServiceAccount
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
   name: cert-manager-controller-approve:cert-manager-io
   labels:
@@ -424,7 +424,7 @@ metadata:
     app.kubernetes.io/component: "cert-manager"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
+  kind: Role
   name: cert-manager-controller-approve:cert-manager-io
 subjects:
   - name: cert-manager
@@ -432,7 +432,7 @@ subjects:
     kind: ServiceAccount
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
   name: cert-manager-controller-certificatesigningrequests
   labels:
@@ -442,7 +442,7 @@ metadata:
     app.kubernetes.io/component: "cert-manager"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
+  kind: Role
   name: cert-manager-controller-certificatesigningrequests
 subjects:
   - name: cert-manager
