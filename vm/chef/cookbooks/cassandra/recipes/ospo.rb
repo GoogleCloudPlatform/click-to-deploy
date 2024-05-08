@@ -13,7 +13,7 @@
 # limitations under the License.
 
 ospo_download 'Licenses and Source-code' do
-    ref_repos <<-EOF
+  ref_repos <<-EOF
 https://github.com/pysimplesoap/pysimplesoap
 https://github.com/certifi/python-certifi
 https://github.com/chardet/chardet
