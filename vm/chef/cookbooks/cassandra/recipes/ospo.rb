@@ -81,7 +81,7 @@ https://github.com/eclipse-ee4j/tyrus
 https://github.com/mvo5/unattended-upgrades
 https://github.com/jenkinsci/winstone
 EOF
-    licenses <<-EOF
+  licenses <<-EOF
 private_repos_cnrm.googlesource.com_cnrm_;https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages/blob/main/LICENSE
 private_repos_cnrm.googlesource.com_cnrm_third_party_github.com_hashicorp_terraform_provider_google_beta;https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages/blob/main/LICENSE
 HdrHistogram;scm:git:https://github.com/HdrHistogram/HdrHistogram
