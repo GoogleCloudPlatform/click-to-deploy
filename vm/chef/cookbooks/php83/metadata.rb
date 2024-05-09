@@ -12,10 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name 'lamp'
+name 'php83'
 supports 'debian'
-depends 'c2d-shared'
-depends 'phpmyadmin'
-depends 'apache2'
-depends 'php83'
-depends 'mysql'

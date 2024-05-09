@@ -12,10 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name 'lamp'
-supports 'debian'
-depends 'c2d-shared'
-depends 'phpmyadmin'
-depends 'apache2'
-depends 'php83'
-depends 'mysql'
+default['php83']['packages'] = ['php8.3-fpm', 'php8.3-common', 'php8.3']
+default['php83']['distribution'] = 'bullseye'
+
+# Default modules to install
+default['php83']['modules'] = %w(cgi gd curl)
