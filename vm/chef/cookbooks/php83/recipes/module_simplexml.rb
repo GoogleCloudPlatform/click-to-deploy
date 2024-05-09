@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,10 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name 'lamp'
-supports 'debian'
-depends 'c2d-shared'
-depends 'phpmyadmin'
-depends 'apache2'
-depends 'php83'
-depends 'mysql'
+package 'php8.3-simplexml' do
+  action :install
+  retries 5
+  retry_delay 20
+end
