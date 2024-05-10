@@ -16,6 +16,7 @@ node.override['postgresql']['standalone']['allow_external'] = false
 
 include_recipe 'postgresql::standalone_bookworm'
 include_recipe 'nginx::embedded'
+include_recipe 'odoo::ospo'
 
 bash 'Install Python3' do
   user 'root'
