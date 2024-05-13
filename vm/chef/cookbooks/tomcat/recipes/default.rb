@@ -24,6 +24,7 @@ include_recipe 'apache2::mod-proxy_http'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 include_recipe 'openjdk11'
+include_recipe 'tomcat::ospo'
 
 apt_update do
   action :update
