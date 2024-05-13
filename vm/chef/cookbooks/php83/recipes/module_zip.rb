@@ -12,10 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name 'lamp'
-supports 'debian'
-depends 'c2d-shared'
-depends 'phpmyadmin'
-depends 'apache2'
-depends 'php83'
-depends 'mysql'
+package 'php8.3-zip' do
+  action :install
+  retries 5
+  retry_delay 20
+end
