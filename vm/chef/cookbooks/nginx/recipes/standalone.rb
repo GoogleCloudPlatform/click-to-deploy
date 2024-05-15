@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,10 +13,11 @@
 # limitations under the License.
 
 include_recipe 'mysql::version-8.0-embedded'
-include_recipe 'php81'
-include_recipe 'php81::module_mysql'
+include_recipe 'php83'
+include_recipe 'php83::module_mysql'
 
 include_recipe 'nginx'
+include_recipe 'nginx::ospo'
 
 bash 'Enable default homepage' do
   user 'root'
