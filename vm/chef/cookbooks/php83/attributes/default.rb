@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,13 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'nodejs::ospo'
+default['php83']['packages'] = ['php8.3-fpm', 'php8.3-common', 'php8.3']
+default['php83']['distribution'] = 'bullseye'
 
-execute 'download packages' do
-  command "curl -sL https://deb.nodesource.com/setup_#{node['nodejs']['version']}.x | bash -"
-end
-
-package 'install packages' do
-  package_name node['nodejs']['packages']
-  action :install
-end
+# Default modules to install
+default['php83']['modules'] = %w(cgi gd curl)
