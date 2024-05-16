@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,10 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'nodejs::ospo'
-
 execute 'download packages' do
-  command "curl -sL https://deb.nodesource.com/setup_#{node['nodejs']['version']}.x | bash -"
+  command 'curl -sL https://deb.nodesource.com/setup_19.x | bash -'
 end
 
 package 'install packages' do
