@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,16 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-node.override['php81']['distribution'] = 'bullseye'
-
 include_recipe 'apache2'
 include_recipe 'apache2::security-config'
 include_recipe 'apache2::mod-rewrite'
 include_recipe 'mysql::version-8.0-embedded'
-include_recipe 'php81'
-include_recipe 'php81::module_libapache2'
-include_recipe 'php81::module_mysql'
+include_recipe 'php83'
+include_recipe 'php83::module_libapache2'
+include_recipe 'php83::module_mysql'
 include_recipe 'phpmyadmin'
+
+include_recipe 'lamp::ospo'
 
 cookbook_file '/etc/apache2/sites-available/lamp-server.conf' do
   source 'lamp-server.conf'
