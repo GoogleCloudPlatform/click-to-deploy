@@ -1,0 +1,118 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_nano
+# 
+# Translators:
+# Wil Odoo, 2023
+# Sarah Park, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Sarah Park, 2023\n"
+"Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ko\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_parallax
+msgid ""
+"<font class=\"bg-o-color-5\">Feel free to come up with your big idea. <br/> "
+"We take care of the rest.</font>"
+msgstr ""
+"<font class=\"bg-o-color-5\">자유롭게 멋진 아이디어를 제안해 주세요. <br/> 저희가 추진해 "
+"드립니다.</font>"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.new_page_template_about_map_s_text_block_h1
+msgid "About Us"
+msgstr "회사 소개"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_features
+msgid "Adaptable"
+msgstr "적응성"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_cover
+msgid "Creative Studio"
+msgstr "크리에이티브 스튜디오"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_three_columns
+msgid "Details"
+msgstr "세부 정보"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_features
+msgid "Durable"
+msgstr "견고성"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_three_columns
+msgid "Handcrafted"
+msgstr "수공예"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_three_columns
+msgid "Innovative"
+msgstr "혁신적"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_features
+msgid "Intuitive"
+msgstr "직관적"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_three_columns
+msgid "Made in Santa's Workshop. High quality fabric &amp; exclusive designs."
+msgstr "산타의 작업실에서 만들었습니다. 고급 원단과 독점 디자인을 확인해 보세요."
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_three_columns
+msgid ""
+"People should love the things they own. Things should be built to last."
+msgstr "모두가 자신의 물건을 사랑할 수 있어야 합니다. 오래 쓸 수 있는 물건을 만들어야 합니다."
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_three_columns
+msgid "Tailored"
+msgstr "맞춤형"
+
+#. module: theme_nano
+#: model:ir.model,name:theme_nano.model_theme_utils
+msgid "Theme Utils"
+msgstr "테마 유틸"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_three_columns
+msgid "Transforming traditional crafts — with a shot of modern savvy!"
+msgstr "전통 공예품의 변신 — 현대적인 감각을 더했습니다!"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_features
+msgid "We build modular solutions."
+msgstr "모듈형 솔루션을 구축합니다."
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_cover
+msgid ""
+"We combine smart design with rich technology <br/>to craft innovative "
+"products."
+msgstr "스마트한 디자인을 풍부한 기술력과 결합하여 <br/>혁신적인 제품을 만들어 냅니다."
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_features
+msgid "We craft long-lasting goods."
+msgstr "오랫동안 사용할 수 있도록 제작합니다."
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_features
+msgid "We create easy-to-use products."
+msgstr "사용하기 쉽도록 제작합니다."

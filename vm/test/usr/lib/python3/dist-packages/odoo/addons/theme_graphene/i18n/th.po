@@ -1,0 +1,235 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_graphene
+# 
+# Translators:
+# Martin Trigaux, 2023
+# Wil Odoo, 2023
+# Rasareeyar Lappiam, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:22+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Rasareeyar Lappiam, 2024\n"
+"Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: th\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_comparisons
+msgid "24/7 support"
+msgstr "การสนับสนุนตลอด 24/7"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_call_to_action
+msgid "<b>50,000+ companies</b> run our software."
+msgstr "<b>บริษัทมากกว่า 50,000 แห่ง</b>ใช้งานซอฟต์แวร์ของเรา"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_cover
+msgid "<b>Making the difference.</b>"
+msgstr "<b>สร้างความแตกต่าง</b>"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_company_team
+msgid ""
+"<small>Aline is one of the iconic people in life who can say they love what "
+"they do. She mentors 100+ in-house developers and looks after the community "
+"of thousands of developers.</small>"
+msgstr ""
+"<small>Aline "
+"เป็นหนึ่งในบุคคลที่โดดเด่นในชีวิตที่สามารถพูดได้ว่าพวกเขารักในสิ่งที่ทำ "
+"เธอให้คำปรึกษาแก่นักพัฒนาภายในองค์กรมากกว่า 100 "
+"รายและดูแลคอมมูนิตี้นักพัฒนาหลายพันคน</small>"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_company_team
+msgid ""
+"<small>Founder and chief visionary, Tony is the driving force behind the "
+"company. He loves to keep his hands full by participating in the development"
+" of the software, marketing, and customer experience strategies.</small>"
+msgstr ""
+"<small>Tony "
+"ผู้ก่อตั้งและหัวหน้าผู้มีวิสัยทัศน์คือพลังขับเคลื่อนเบื้องหลังบริษัท "
+"เขาชอบที่จะมีส่วนร่วมอย่างเต็มที่โดยมีส่วนร่วมในการพัฒนาซอฟต์แวร์ การตลาด "
+"และกลยุทธ์ด้านประสบการณ์ของลูกค้า</small>"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_company_team
+msgid ""
+"<small>Iris, with her international experience, helps us easily understand "
+"the numbers and improves them. She is determined to drive success and "
+"delivers her professional acumen to bring the company to the next "
+"level.</small>"
+msgstr ""
+"<small>Iris "
+"มีประสบการณ์ในระดับนานาชาติช่วยให้เราเข้าใจตัวเลขได้อย่างง่ายดายและปรับปรุงให้ดีขึ้น"
+" "
+"เธอมุ่งมั่นที่จะขับเคลื่อนความสำเร็จและมอบความเฉียบแหลมทางวิชาชีพเพื่อนำบริษัทไปสู่อีกระดับ</small>"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_company_team
+msgid ""
+"<small>Mich loves taking on challenges. With his multi-year experience as "
+"Commercial Director in the software industry, Mich has helped the company to"
+" get where it is today. Mich is among the best minds.</small>"
+msgstr ""
+"<small>Mich ชอบที่จะเผชิญกับความท้าทาย "
+"ด้วยประสบการณ์หลายปีในตำแหน่งผู้อำนวยการฝ่ายพาณิชย์ในอุตสาหกรรมซอฟต์แวร์ "
+"Mich ได้ช่วยให้บริษัทก้าวไปสู่จุดที่เป็นอยู่ทุกวันนี้ Mich "
+"เป็นหนึ่งในผู้มีจิตใจดีที่สุด</small>"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_comparisons
+msgid "Access to all modules"
+msgstr "เข้าถึงโมดูลทั้งหมด"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_comparisons
+msgid "Access to all modules and features"
+msgstr "เข้าถึงโมดูลและฟีเจอร์ทั้งหมด"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_process_steps
+msgid "Add to Cart"
+msgstr "เพิ่มในตะกร้า"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_company_team
+msgid "Aline Turner, <small><b>CTO</b></small>"
+msgstr "Aline Turner, <small><b>CTO</b></small>"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_cover
+msgid "Contact us"
+msgstr "ติดต่อเรา"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_process_steps
+msgid "Get Delivered"
+msgstr "รับการจัดส่ง"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_picture
+msgid "Grow with Us"
+msgstr "โตไปด้วยกัน"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_company_team
+msgid "Iris Joe, <small><b>CFO</b></small>"
+msgstr "Iris Joe, <small><b>CFO</b></small>"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_company_team
+msgid "Mich Stark, <small><b>COO</b></small>"
+msgstr "Mich Stark, <small><b>COO</b></small>"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_three_columns
+msgid "Mobile Experience"
+msgstr "ประสบการณ์การใช้งานบนมือถือ"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_cover
+msgid ""
+"Our mission is to give customers the best experience.<br/>Extensive "
+"documentation &amp; guides, an active community,<br/>24/7 support make it a "
+"pleasure to work with us."
+msgstr ""
+"ภารกิจของเราคือการมอบประสบการณ์ที่ดีที่สุดแก่ลูกค้า <br/>เอกสารที่ครอบคลุม "
+"&amp; คำแนะนำ คอมมูนิตี้ที่กระตือรือร้น <br/>การสนับสนุนตลอด 24 "
+"ชั่วโมงทุกวันทำให้เรารู้สึกยินดีที่ได้ร่วมงานกับเรา"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_process_steps
+msgid "Pay"
+msgstr "จ่าย"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_three_columns
+msgid "Powerful API"
+msgstr "API อันทรงพลัง"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_three_columns
+msgid ""
+"Probably the only CRM with a full mobile experience. Never wondered how it "
+"works? That's because it just works"
+msgstr ""
+"น่าจะเป็น CRM เดียวที่มีประสบการณ์มือถือเต็มรูปแบบ "
+"ไม่เคยสงสัยเลยว่ามันทำงานยังไง? นั่นเป็นเพราะมันได้ผล"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_picture
+msgid ""
+"Put your people at the heart of your marketing with tools that help you get "
+"to know your audience <br/>and see who you should be talking to."
+msgstr ""
+"ให้ผู้คนเป็นหัวใจสำคัญของการตลาดด้วยเครื่องมือที่ช่วยให้คุณรู้จักผู้ชม<br/>และดูว่าคุณควรพูดคุยกับใคร"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_process_steps
+msgid "Sign In"
+msgstr "เข้าสู่ระบบ"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_comparisons
+msgid "Start Now"
+msgstr "เริ่มเลย"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_three_columns
+msgid "Support Team"
+msgstr "ทีมสนับสนุน"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_three_columns
+msgid ""
+"Thanks to our API, Developers report building their solutions 4x faster. "
+"Discover why and how."
+msgstr ""
+"ด้วย API ของเรา นักพัฒนารายงานการสร้างโซลูชันได้เร็วขึ้น 4 เท่า "
+"ค้นพบสาเหตุและวิธี"
+
+#. module: theme_graphene
+#: model:ir.model,name:theme_graphene.model_theme_utils
+msgid "Theme Utils"
+msgstr "ยูทิลิตี้ธีม"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_company_team
+msgid "Tony Fred, <small><b>CEO</b></small>"
+msgstr "Tony Fred, <small><b>CEO</b></small>"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_text_image
+msgid "Unique experiences to drive engagement"
+msgstr "ประสบการณ์ที่ไม่ซ้ำใครเพื่อขับเคลื่อนการมีส่วนร่วม"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_text_image
+msgid ""
+"Users are looking to consume engaging content.<br/>We empowers our teams to "
+"create the most relevant content."
+msgstr ""
+"ผู้ใช้กำลังมองหาเนื้อหาที่น่าสนใจ "
+"<br/>เราให้อำนาจกับทีมงานของเราในการสร้างเนื้อหาที่เข้าถึงมากที่สุด"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_three_columns
+msgid ""
+"We have a support team that will do everything to answer you as quickly as "
+"the voice assistants."
+msgstr ""
+"เรามีทีมสนับสนุนที่จะทำทุกอย่างเพื่อตอบคุณอย่างรวดเร็วเท่ากับระบบสั่งการด้วยเสียง"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_text_image
+msgid "We have one goal in mind, the user satisfaction."
+msgstr "เรามีเป้าหมายเดียวในใจคือความพึงพอใจของผู้ใช้"

@@ -1,0 +1,166 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_paptic
+# 
+# Translators:
+# Veikko Väätäjä <veikko.vaataja@gmail.com>, 2023
+# Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023\n"
+"Language-Team: Finnish (https://app.transifex.com/odoo/teams/41243/fi/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: fi\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_call_to_action
+msgid "<b>50,000+ companies</b> run Paptic to grow their businesses."
+msgstr ""
+"<b>yli 50 000 yritystä</b> käyttää Papticia liiketoimintansa kasvattamiseen."
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_text_image
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-3) 100%);\" class=\"text-gradient\">A Section Subtitle</font>"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-3) 100%);\" class=\"text-gradient\">A jakson "
+"alaotsikko</font>"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_image_text
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-3) 100%);\" class=\"text-gradient\">Help you grow</font>"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-3) 100%);\" class=\"text-gradient\">Auttaa sinua "
+"kasvamaan</font>"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_three_columns
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-3) 100%);\" class=\"text-gradient\">SUCCESS STORIES</font>"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-3) 100%);\" class=\"text-gradient\">MENESTYSTARINAT</font>"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_image_text
+msgid "Always Improving"
+msgstr "Aina parantamassa"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_image_text
+msgid "DISCOVER MORE  <i class=\"fa fa-chevron-right\"/>"
+msgstr "LÖYDÄ LISÄÄ <i class=\"fa fa-chevron-right\"/>"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_three_columns
+msgid "Fallanzy Integration Explained"
+msgstr "Fallanzy-integraatio selitettynä"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_three_columns
+msgid ""
+"Fallanzy has been active in the workspace design and ergonomics consulting "
+"business for over 20 years. Discover how we answered to the challenges of "
+"this company."
+msgstr ""
+"Fallanzy on toiminut työtilojen suunnittelun ja ergonomian konsultoinnin "
+"alalla yli 20 vuotta. Tutustu, miten vastasimme tämän yrityksen haasteisiin."
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_cover
+msgid "Grow your Business.<br/>Optimize your time."
+msgstr "Kasvata liiketoimintaasi.<br/>Optimoi aikasi."
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_three_columns
+msgid "HeyNosf Inc. Digital Transformation"
+msgstr "HeyNosf Inc. Digitaalinen transformaatio"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_three_columns
+msgid ""
+"HeyNosf Inc. is a communication agency that was founded in 2006, by Jean-"
+"Louis Dewinter. He always had a strong interest in languages and decided to "
+"create a company reflecting his own interests."
+msgstr ""
+"HeyNosf Inc. on viestintätoimisto, jonka perusti Jean-Louis Dewinter vuonna "
+"2006. Hän on aina ollut hyvin kiinnostunut kielistä ja päätti perustaa "
+"yrityksen, joka heijastaisi hänen omia kiinnostuksen kohteitaan."
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_three_columns
+msgid "Hotels Improvement Study"
+msgstr "Hotellien parannustutkimus"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_cover
+msgid "Man waiting at the airport"
+msgstr "Mies odottaa lentokentällä"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_three_columns
+msgid ""
+"Our solution is suitable for Hotels as well. We help management to optimize "
+"their time and employee to be more efficient and more productive. Discover "
+"our study."
+msgstr ""
+"Ratkaisumme sopii myös hotelleille. Autamme johtoa optimoimaan aikansa ja "
+"työntekijöitä tehostamaan ja lisäämään tuottavuuttaan. Tutustu "
+"tutkimukseemme."
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_cover
+msgid "SCHEDULE A DEMO"
+msgstr "VARAA AIKA ESITTELYYN"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_cover
+msgid "START NOW"
+msgstr "ALOITA NYT"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_image_text
+msgid "Scalable and Modular"
+msgstr "Skaalautuva ja modulaarinen"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_image_text
+msgid ""
+"Thanks to our running release system, benefit from all updates (security and"
+" new features) in real time."
+msgstr ""
+"Käynnissä olevan julkaisujärjestelmämme ansiosta saat kaikki päivitykset "
+"(tietoturva ja uudet ominaisuudet) reaaliajassa."
+
+#. module: theme_paptic
+#: model:ir.model,name:theme_paptic.model_theme_utils
+msgid "Theme Utils"
+msgstr "Teeman työkalut"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_title
+msgid "Unique experiences."
+msgstr "Ainutlaatuisia kokemuksia."
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_image_text
+msgid ""
+"Whether you start small or are already a large company, our solution adapts "
+"to your needs and grows with you."
+msgstr ""
+"Riippumatta siitä, oletko aloittava vai jo suuri yritys, ratkaisumme "
+"mukautuu tarpeisiisi ja kasvaa kanssasi."

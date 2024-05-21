@@ -1,0 +1,20 @@
+Metadata-Version: 2.1
+Name: odoo
+Version: 17.0.post20240416
+Summary: Odoo Server
+Home-page: https://www.odoo.com
+Author: OpenERP S.A.
+Author-email: info@odoo.com
+License: LGPL-3
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3
+Classifier: Programming Language :: Python
+Requires-Python: >=3.10
+Provides-Extra: ldap
+License-File: LICENSE
+
+Odoo is a complete ERP and CRM. The main features are accounting (analytic
+and financial), stock management, sales and purchases management, tasks
+automation, marketing campaigns, help desk, POS, etc. Technical features include
+a distributed server, an object database, a dynamic GUI,
+customizable reports, and XML-RPC interfaces.

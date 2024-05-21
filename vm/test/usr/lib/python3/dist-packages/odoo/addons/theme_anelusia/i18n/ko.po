@@ -1,0 +1,240 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_anelusia
+# 
+# Translators:
+# Wil Odoo, 2023
+# Sarah Park, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Sarah Park, 2023\n"
+"Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ko\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_references
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-2) 100%);\" class=\"text-gradient\">Our top brands</font>"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-2) 100%);\" class=\"text-gradient\">최고의 브랜드</font>"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_company_team
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%, var(--o-color-5) 100%);\" class=\"text-gradient\">Mich Stark</font>\n"
+"        <br/>Sports Reporter"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%, var(--o-color-5) 100%);\" class=\"text-gradient\">Mich Stark</font>\n"
+"        <br/>스포츠부 기자"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_company_team
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%, var(--o-color-5) 100%);\" class=\"text-gradient\">Tony Fred</font>\n"
+"        <br/>Editor-in-chief"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%, var(--o-color-5) 100%);\" class=\"text-gradient\">Tony Fred</font>\n"
+"        <br/>편집장"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_company_team
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-2) 0%, var(--o-color-5) 100%);\" class=\"text-gradient\">Aline Turner</font>\n"
+"        <br/>Photograph"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-2) 0%, var(--o-color-5) 100%);\" class=\"text-gradient\">Aline Turner</font>\n"
+"        <br/>사진 작가"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_company_team
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-2) 0%, var(--o-color-5) 100%);\" class=\"text-gradient\">Iris Joe</font>\n"
+"        <br/>Political Reporter"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-2) 0%, var(--o-color-5) 100%);\" class=\"text-gradient\">Iris Joe</font>\n"
+"        <br/>정치부 기자"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_company_team
+msgid ""
+"Aline is one of the iconic people in life who can say they love what they "
+"do. She likes to capture the moment from another point of view, another "
+"perspective."
+msgstr ""
+"Aline은 자신의 일을 사랑하는 대표적인 인물 중 한 명입니다. 또 다른 관점, 다른 시각에서 순간을 포착하는 것을 즐깁니다."
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_color_blocks_2
+msgid ""
+"Are you looking for sustainable clothing for men or women? Discover our "
+"exclusive fashion brand for both of you."
+msgstr "지속 가능한 남성복이나 여성복을 찾고 있으신가요? 양쪽 모두를 위한 저희 독점 패션 브랜드를 확인해 보세요."
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_call_to_action
+msgid "Be yourself, create your own style"
+msgstr "나만의 스타일을 만들어 보세요."
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_cover
+msgid "Color Matters"
+msgstr "중요한 것은 색상입니다."
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_text_cover
+msgid ""
+"Color trends are already waiting to spring <br/>into action for the  next "
+"summer."
+msgstr "색상 트렌드가<br/>벌써 내년 여름을 대비하고 있습니다."
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_cover
+msgid ""
+"Color trends are already waiting to spring into action for the next summer.\n"
+"        <br/>\n"
+"        <br/>"
+msgstr ""
+"색상 트렌드가 벌써 내년 여름을 대비하고 있습니다.\n"
+"        <br/>\n"
+"        <br/>"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_cover
+msgid "Discover"
+msgstr "알아보기"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_call_to_action
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_text_cover
+msgid "Discover it"
+msgstr "확인해 보세요."
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_call_to_action
+msgid "Discover the new summer collection."
+msgstr "새로운 여름 컬렉션을 확인해 보세요."
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_references
+msgid "Every style for everybody."
+msgstr "모든 사람을 위한 모든 스타일."
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_color_blocks_2
+msgid "Fancy for them"
+msgstr "팬시함의 극치"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_color_blocks_2
+msgid "Fashion for her"
+msgstr "여성분들을 위한 패션"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_company_team
+msgid ""
+"Founder and chief visionary, Tony is the driving force behind the company. "
+"He loves to keep his hands full by participating in the development of the "
+"magazine and does not hesitate to carry out field surveys."
+msgstr ""
+"창업자이자 최고비전책임자인 Tony는 회사의 숨은 원동력입니다. 매거진 개발에 참여함으로써 자신의 역량을 최대한 발휘하고 있으며 현장 "
+"조사를 하는 데도 주저함이 없습니다."
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_media_list
+msgid ""
+"Go off beaten track and discover unexpected and curious places. Here’s our "
+"ultimate guide to the best-kept secret spots that you simply must visit!"
+msgstr ""
+"정해진 길을 벗어나서 예상하지 못한 호기심 가득한 장소를 발견해 보세요. 반드시 방문해야만 하는 최고의 비밀 명소에 대한 궁극의 가이드를"
+" 선사해 드립니다!"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_company_team
+msgid ""
+"Iris, with her international experience, helps us easily understand global "
+"politics. She is determined to drive success and delivers her professional "
+"acumen to bring the magazine to the next level."
+msgstr ""
+"국제적인 경험을 가진 아이리스가 국제 정치에 대해 쉽게 이해할 수 있도록 도와 줍니다. 성공을 향한 노력과 전문적인 통찰력을 통해 잡지의"
+" 수준을 한 단계 더 높이고 있습니다."
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_company_team
+msgid ""
+"Mich loves taking on challenges. With his multi-year experience as a "
+"journalist, he wanted to join a team that puts people at the center of the "
+"stories."
+msgstr ""
+"마이클은 도전하는 것을 좋아합니다. 다년 간의 저널리스트 경험을 바탕으로, 이야기의 중심에 사람이 있는 팀에 합류하고 싶었습니다."
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_color_blocks_2
+msgid "More Details"
+msgstr "추가 세부사항"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_color_blocks_2
+msgid ""
+"Perfectly combined by fashion experts. Get fresh outfit ideas for the new "
+"season and every occasion. Discover what's made for him."
+msgstr ""
+"패션 전문가들이 만들어 낸 완벽한 조합입니다. 어떠한 상황에도 어울리는 새로운 시즌의 아웃핏에 대한 아이디어를 선사해 드립니다. 남성용도"
+" 확인해 보세요."
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_media_list
+msgid "Read more"
+msgstr "더 읽기"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_color_blocks_2
+msgid ""
+"Refresh your daily rotation with our women’s clothing range. Discover our "
+"last collection for her for the next summer."
+msgstr "저희 여성용 패션 컬렉션으로 새롭게 일상을 바꿔 보세요. 내년 여름을 위한 최신 컬렉션을 확인해 보세요."
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_color_blocks_2
+msgid "Style for him"
+msgstr "그를 위한 스타일"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_media_list
+msgid "Summer Essentials"
+msgstr "여름 필수품"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_text_cover
+msgid "The next<br/> summer<br/> collection"
+msgstr "다음<br/> 여름 시즌<br/> 컬렉션"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_media_list
+msgid ""
+"The right summer essentials can make the difference between a good time and "
+"a stand-out great time. Discover our selection for everyday wear during the "
+"warm summer months."
+msgstr ""
+"딱 맞는 여름 필수품이 만들어 내는 차이를 확인해 보세요. 그냥 좋은 시간을 보낼지 아니면 잊지 못할 멋진 시간으로 만들지를 결정합니다."
+" 더운 여름 기간을 위한 일상복 컬렉션을 만나 보세요."
+
+#. module: theme_anelusia
+#: model:ir.model,name:theme_anelusia.model_theme_utils
+msgid "Theme Utils"
+msgstr "테마 유틸"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_media_list
+msgid "World's top Hidden gems"
+msgstr "세계 최고의 감추어진 보물"

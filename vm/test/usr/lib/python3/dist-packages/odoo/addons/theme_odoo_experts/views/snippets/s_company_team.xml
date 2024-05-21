@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_company_team" inherit_id="website.s_company_team">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pt120 pb120" remove="pt48 pb48" separator=" "/>
+    </xpath>
+</template>
+
+<template id="configurator_s_company_team" inherit_id="website.configurator_s_company_team">
+    <!-- Shape option -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Origins/02_001","flip":["x"]}</attribute>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Origins_02_001 o_third_extra_shape_mapping" style="background-image: url('/web_editor/shape/web_editor/Origins/02_001.svg?c4=o-color-3&amp;c5=o-color-4&amp;flip=x'); background-position: 50% 100%;"/>
+    </xpath>
+</template>
+
+</odoo>

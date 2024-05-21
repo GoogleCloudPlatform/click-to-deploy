@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!-- Not used anymore by the editor: files and records kept for back-compatibility.
+Check in primary_variables.scss and theme.scss -->
+<record id="image_content_02" model="theme.ir.attachment">
+    <field name="key">theme_common.image_content_02</field>
+    <field name="name">theme_common.image_content_02</field>
+    <field name="url">/theme_loftspace/static/src/img/content/content_img_02.jpg</field>
+</record>
+<record id="image_content_03" model="theme.ir.attachment">
+    <field name="key">theme_common.image_content_03</field>
+    <field name="name">theme_common.image_content_03</field>
+    <field name="url">/theme_loftspace/static/src/img/content/content_img_03.jpg</field>
+</record>
+<record id="image_content_07" model="theme.ir.attachment">
+    <field name="key">theme_common.image_content_07</field>
+    <field name="name">theme_common.image_content_07</field>
+    <field name="url">/theme_loftspace/static/src/img/content/content_img_07.jpg</field>
+</record>
+<record id="image_content_09" model="theme.ir.attachment">
+    <field name="key">theme_common.image_content_09</field>
+    <field name="name">theme_common.image_content_09</field>
+    <field name="url">/theme_loftspace/static/src/img/content/content_img_09.jpg</field>
+</record>
+<record id="image_content_10" model="theme.ir.attachment">
+    <field name="key">theme_common.image_content_10</field>
+    <field name="name">theme_common.image_content_10</field>
+    <field name="url">/theme_loftspace/static/src/img/content/content_img_10.jpg</field>
+</record>
+<record id="image_content_11" model="theme.ir.attachment">
+    <field name="key">theme_common.image_content_11</field>
+    <field name="name">theme_common.image_content_11</field>
+    <field name="url">/theme_loftspace/static/src/img/content/content_img_11.jpg</field>
+</record>
+<record id="image_content_12" model="theme.ir.attachment">
+    <field name="key">theme_common.image_content_12</field>
+    <field name="name">theme_common.image_content_12</field>
+    <field name="url">/theme_loftspace/static/src/img/content/content_img_12.jpg</field>
+</record>
+
+<!-- Website Builder Custom Images -->
+<record id="s_banner_default_image" model="theme.ir.attachment">
+    <field name="key">website.s_banner_default_image</field>
+    <field name="name">website.s_banner_default_image</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_banner.jpg</field>
+</record>
+<record id="s_banner_default_image_2" model="theme.ir.attachment">
+    <field name="key">website.s_banner_default_image_2</field>
+    <field name="name">website.s_banner_default_image_2</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_banner_2.jpg</field>
+</record>
+<record id="s_banner_default_image_3" model="theme.ir.attachment">
+    <field name="key">website.s_banner_default_image_3</field>
+    <field name="name">website.s_banner_default_image_3</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_banner_3.jpg</field>
+</record>
+<record id="s_popup_default_image" model="theme.ir.attachment">
+    <field name="key">website.s_popup_default_image</field>
+    <field name="name">website.s_popup_default_image</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_popup.jpg</field>
+</record>
+<record id="s_cover_default_image" model="theme.ir.attachment">
+    <field name="key">website.s_cover_default_image</field>
+    <field name="name">website.s_cover_default_image</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_cover.jpg</field>
+</record>
+<record id="s_text_image_default_image" model="theme.ir.attachment">
+    <field name="key">website.s_text_image_default_image</field>
+    <field name="name">website.s_text_image_default_image</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_text_image.jpg</field>
+</record>
+<record id="s_image_text_default_image" model="theme.ir.attachment">
+    <field name="key">website.s_image_text_default_image</field>
+    <field name="name">website.s_image_text_default_image</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_image_text.jpg</field>
+</record>
+<record id="s_picture_default_image" model="theme.ir.attachment">
+    <field name="key">website.s_picture_default_image</field>
+    <field name="name">website.s_picture_default_image</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_picture.jpg</field>
+</record>
+<record id="s_three_columns_default_image_2" model="theme.ir.attachment">
+    <field name="key">website.s_three_columns_default_image_2</field>
+    <field name="name">website.s_three_columns_default_image_2</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/library_image_13.jpg</field>
+</record>
+<record id="library_image_11" model="theme.ir.attachment">
+    <field name="key">website.library_image_11</field>
+    <field name="name">website.library_image_11</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/library_image_11.jpg</field>
+</record>
+<record id="library_image_13" model="theme.ir.attachment">
+    <field name="key">website.library_image_13</field>
+    <field name="name">website.library_image_13</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_images_wall_05.jpg</field>
+</record>
+<record id="library_image_07" model="theme.ir.attachment">
+    <field name="key">website.library_image_07</field>
+    <field name="name">website.library_image_07</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/library_image_07.jpg</field>
+</record>
+<record id="library_image_03" model="theme.ir.attachment">
+    <field name="key">website.library_image_03</field>
+    <field name="name">website.library_image_03</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_images_wall_01.jpg</field>
+</record>
+<record id="library_image_10" model="theme.ir.attachment">
+    <field name="key">website.library_image_10</field>
+    <field name="name">website.library_image_10</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_images_wall_02.jpg</field>
+</record>
+<record id="library_image_05" model="theme.ir.attachment">
+    <field name="key">website.library_image_05</field>
+    <field name="name">website.library_image_05</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_images_wall_04.jpg</field>
+</record>
+<record id="library_image_14" model="theme.ir.attachment">
+    <field name="key">website.library_image_14</field>
+    <field name="name">website.library_image_14</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_images_wall_06.jpg</field>
+</record>
+<record id="library_image_16" model="theme.ir.attachment">
+    <field name="key">website.library_image_16</field>
+    <field name="name">website.library_image_16</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_images_wall_03.jpg</field>
+</record>
+<record id="s_masonry_block_default_image_1" model="theme.ir.attachment">
+    <field name="key">website.s_masonry_block_default_image_1</field>
+    <field name="name">website.s_masonry_block_default_image_1</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_masonry_block.jpg</field>
+</record>
+<record id="s_carousel_default_image_1" model="theme.ir.attachment">
+    <field name="key">website.s_carousel_default_image_1</field>
+    <field name="name">website.s_carousel_default_image_1</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_carousel_1.jpg</field>
+</record>
+<record id="s_carousel_default_image_2" model="theme.ir.attachment">
+    <field name="key">website.s_carousel_default_image_2</field>
+    <field name="name">website.s_carousel_default_image_2</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_carousel_2.jpg</field>
+</record>
+<record id="s_carousel_default_image_3" model="theme.ir.attachment">
+    <field name="key">website.s_carousel_default_image_3</field>
+    <field name="name">website.s_carousel_default_image_3</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_carousel_3.jpg</field>
+</record>
+<record id="s_media_list_default_image_1" model="theme.ir.attachment">
+    <field name="key">website.s_media_list_default_image_1</field>
+    <field name="name">website.s_media_list_default_image_1</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_media_list_1.jpg</field>
+</record>
+<record id="s_media_list_default_image_2" model="theme.ir.attachment">
+    <field name="key">website.s_media_list_default_image_2</field>
+    <field name="name">website.s_media_list_default_image_2</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_media_list_2.jpg</field>
+</record>
+<record id="s_media_list_default_image_3" model="theme.ir.attachment">
+    <field name="key">website.s_media_list_default_image_3</field>
+    <field name="name">website.s_media_list_default_image_3</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_media_list_3.jpg</field>
+</record>
+<record id="s_parallax_default_image" model="theme.ir.attachment">
+    <field name="key">website.s_parallax_default_image</field>
+    <field name="name">website.s_parallax_default_image</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_parallax.jpg</field>
+</record>
+<record id="s_company_team_image_1" model="theme.ir.attachment">
+    <field name="key">website.s_company_team_image_1</field>
+    <field name="name">website.s_company_team_image_1</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/uiface_1.jpg</field>
+</record>
+<record id="s_company_team_image_2" model="theme.ir.attachment">
+    <field name="key">website.s_company_team_image_2</field>
+    <field name="name">website.s_company_team_image_2</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/uiface_2.jpg</field>
+</record>
+<record id="s_company_team_image_3" model="theme.ir.attachment">
+    <field name="key">website.s_company_team_image_3</field>
+    <field name="name">website.s_company_team_image_3</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/uiface_3.jpg</field>
+</record>
+<record id="s_company_team_image_4" model="theme.ir.attachment">
+    <field name="key">website.s_company_team_image_4</field>
+    <field name="name">website.s_company_team_image_4</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/uiface_4.jpg</field>
+</record>
+<record id="s_product_catalog_default_image" model="theme.ir.attachment">
+    <field name="key">website.s_product_catalog_default_image</field>
+    <field name="name">website.s_product_catalog_default_image</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_product_catalog.jpg</field>
+</record>
+<record id="s_product_list_default_image_1" model="theme.ir.attachment">
+    <field name="key">website.s_product_list_default_image_1</field>
+    <field name="name">website.s_product_list_default_image_1</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_product_1.jpg</field>
+</record>
+<record id="s_product_list_default_image_2" model="theme.ir.attachment">
+    <field name="key">website.s_product_list_default_image_2</field>
+    <field name="name">website.s_product_list_default_image_2</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_product_2.jpg</field>
+</record>
+<record id="s_product_list_default_image_3" model="theme.ir.attachment">
+    <field name="key">website.s_product_list_default_image_3</field>
+    <field name="name">website.s_product_list_default_image_3</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_product_3.jpg</field>
+</record>
+<record id="s_product_list_default_image_4" model="theme.ir.attachment">
+    <field name="key">website.s_product_list_default_image_4</field>
+    <field name="name">website.s_product_list_default_image_4</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_product_4.jpg</field>
+</record>
+<record id="s_product_list_default_image_5" model="theme.ir.attachment">
+    <field name="key">website.s_product_list_default_image_5</field>
+    <field name="name">website.s_product_list_default_image_5</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_product_5.jpg</field>
+</record>
+<record id="s_product_list_default_image_6" model="theme.ir.attachment">
+    <field name="key">website.s_product_list_default_image_6</field>
+    <field name="name">website.s_product_list_default_image_6</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_product_6.jpg</field>
+</record>
+<record id="s_quotes_carousel_demo_image_1" model="theme.ir.attachment">
+    <field name="key">website.s_quotes_carousel_demo_image_1</field>
+    <field name="name">website.s_quotes_carousel_demo_image_1</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_quotes_carousel_1.jpg</field>
+</record>
+<record id="s_quotes_carousel_demo_image_2" model="theme.ir.attachment">
+    <field name="key">website.s_quotes_carousel_demo_image_2</field>
+    <field name="name">website.s_quotes_carousel_demo_image_2</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_quotes_carousel_2.jpg</field>
+</record>
+<record id="s_quotes_carousel_demo_image_3" model="theme.ir.attachment">
+    <field name="key">website.s_quotes_carousel_demo_image_3</field>
+    <field name="name">website.s_quotes_carousel_demo_image_3</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/uiface_3.jpg</field>
+</record>
+<record id="s_quotes_carousel_demo_image_4" model="theme.ir.attachment">
+    <field name="key">website.s_quotes_carousel_demo_image_4</field>
+    <field name="name">website.s_quotes_carousel_demo_image_4</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/uiface_1.jpg</field>
+</record>
+<record id="s_quotes_carousel_demo_image_5" model="theme.ir.attachment">
+    <field name="key">website.s_quotes_carousel_demo_image_5</field>
+    <field name="name">website.s_quotes_carousel_demo_image_5</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/uiface_4.jpg</field>
+</record>
+<record id="s_newsletter_block" model="theme.ir.attachment">
+    <field name="key">website.library_image_17</field>
+    <field name="name">website.library_image_17</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/s_newsletter.jpg</field>
+</record>
+<record id="s_blockquote_avatar" model="theme.ir.attachment">
+    <field name="key">website.s_blockquote_default_image</field>
+    <field name="name">website.s_blockquote_default_image</field>
+    <field name="url">/theme_loftspace/static/src/img/snippets/uiface_2.jpg</field>
+</record>
+
+</odoo>

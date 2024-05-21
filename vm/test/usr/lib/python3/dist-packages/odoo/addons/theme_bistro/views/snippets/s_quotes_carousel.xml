@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_quotes_carousel" inherit_id="website.s_quotes_carousel">
+    <!-- Carousel -->
+    <xpath expr="//*[hasclass('s_quotes_carousel')]" position="attributes">
+        <attribute name="class" add="s_carousel_rounded oe_img_bg o_bg_img_center" remove="s_carousel_default o_cc o_cc2" separator=" "/>
+        <attribute name="style">background-image: url('/web/image/website.s_quotes_carousel_demo_image_1');</attribute>
+    </xpath>
+    <!-- Slide #01 -->
+    <xpath expr="//*[hasclass('carousel-item')][1]" position="attributes">
+        <attribute name="class" add="pt120 pb120" remove="pt80 pb80" separator=" "/>
+        <attribute name="style">background-image: none;</attribute>
+    </xpath>
+    <xpath expr="//p[1]" position="replace" mode="inner">
+        Cosy and friendly, good atmosphere and super food. Especially the spiced fruit crumble.
+    </xpath>
+    <!-- Slide #02 -->
+    <xpath expr="//*[hasclass('carousel-item')][2]" position="attributes">
+        <attribute name="class" add="pt120 pb120" remove="pt80 pb80" separator=" "/>
+        <attribute name="style">background-image: none;</attribute>
+    </xpath>
+    <xpath expr="(//blockquote)[2]" position="attributes">
+        <attribute name="class" add="mx-auto" remove="me-auto" separator=" "/>
+    </xpath>
+    <xpath expr="(//p)[2]" position="replace" mode="inner">
+        This place is perfect for groups or a casual date night.
+    </xpath>
+    <!-- Slide #03 -->
+    <xpath expr="//*[hasclass('carousel-item')][3]" position="attributes">
+        <attribute name="class" add="pt120 pb120" remove="pt80 pb80" separator=" "/>
+        <attribute name="style">background-image: none;</attribute>
+    </xpath>
+    <xpath expr="(//blockquote)[3]" position="attributes">
+        <attribute name="class" add="mx-auto" remove="ms-auto" separator=" "/>
+    </xpath>
+    <xpath expr="(//p)[3]" position="replace" mode="inner">
+        A truly exquisite dining experience. I highly recommend the Mustard Sauce, out of this world.
+    </xpath>
+</template>
+
+</odoo>

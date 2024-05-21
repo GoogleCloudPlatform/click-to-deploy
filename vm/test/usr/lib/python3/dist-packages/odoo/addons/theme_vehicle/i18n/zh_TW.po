@@ -1,0 +1,218 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_vehicle
+# 
+# Translators:
+# Wil Odoo, 2023
+# Tony Ng, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:21+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Tony Ng, 2024\n"
+"Language-Team: Chinese (Taiwan) (https://app.transifex.com/odoo/teams/41243/zh_TW/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: zh_TW\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_call_to_action
+msgid "<b>50,000 pre-orders</b> already registered."
+msgstr "已有 <b>50,000 份預訂單</b>登記。"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_image_text
+msgid "<b>A greener lifestyle</b>"
+msgstr "<b>更環保的生活方式</b>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_text_image
+msgid "<b>The world is yours</b>"
+msgstr "<b>世界屬於你</b>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid "<span class=\"d-inline-block mb-4\"><b>From $14,000</b></span>"
+msgstr "<span class=\"d-inline-block mb-4\"><b>$14,000 起</b></span>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid "<span class=\"d-inline-block mb-4\"><b>From $19,000</b></span>"
+msgstr "<span class=\"d-inline-block mb-4\"><b>$19,000 起</b></span>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid "<span class=\"d-inline-block mb-4\"><b>From $25,000</b></span>"
+msgstr "<span class=\"d-inline-block mb-4\"><b>$25,000 起</b></span>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_picture
+msgid ""
+"<span class=\"text-o-color-3\">Our uniquely designed LED headlights are not "
+"only gorgeous but powerfully light your way.<br/></span>"
+msgstr ""
+"<span class=\"text-o-color-3\">我們設計獨特的 LED 前大燈，不僅好看，還能為您提供強力照明。<br/></span>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_product_list
+msgid "Brakes #1"
+msgstr "制動器 #1"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_product_list
+msgid "Brakes #2"
+msgstr "制動器 #2"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_product_list
+msgid "Brakes #3"
+msgstr "制動器 #3"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_product_list
+msgid "Brakes #4"
+msgstr "制動器 #4"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_product_list
+msgid "Brakes #5"
+msgstr "制動器 #5"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_product_list
+msgid "Brakes #6"
+msgstr "制動器 #6"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_picture
+msgid ""
+"Bring the KORAN to life on your smartphone or tablet so you can visualise it"
+" for yourself.<br/>"
+msgstr "在智能手機或平板電腦上將KORAN活靈活現地呈現在您的眼前，讓您親眼目睹。<br/>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid "Configure"
+msgstr "設定"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_features
+msgid "Dual Motor"
+msgstr "雙馬達"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_image_text
+msgid "Electric Driving"
+msgstr "電動駕駛"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_masonry_block_image_texts_image_template
+msgid "Electrifying <b>Performance</b>."
+msgstr "<b>表現</b>快如閃電"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_call_to_action
+msgid "Join the early joiners or request for a trial on track."
+msgstr "加入早鳥行列，或申請賽道試駕。"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid "Koran EQ"
+msgstr "KORAN EQ"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid "Koran GT"
+msgstr "KORAN GT"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid "Koran Mini"
+msgstr "Koran Mini"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_features
+msgid "Long Range"
+msgstr "長續航"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid ""
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris hendrerit "
+"est bibendum sollicitudin vestibulum."
+msgstr ""
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris hendrerit "
+"est bibendum sollicitudin vestibulum."
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_text_image
+msgid "No compromise"
+msgstr "不妥協"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_references
+msgid "Our Partners"
+msgstr "我們的合作夥伴"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_features_grid
+msgid "Our web store"
+msgstr "我們的網店"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_text_image
+msgid ""
+"Performance and design were the key words during the conception of this "
+"super car. No compromises were made to keep the pleasure of driving despite "
+"those constraints."
+msgstr "性能和設計是這款超級跑車設計過程中的關鍵詞。儘管有這些限制，但為了保持駕駛樂趣，我們沒有做出任何妥協。"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_masonry_block_image_texts_image_template
+msgid "Smarter <b>Range</b>."
+msgstr "<b>續航</b>更智能"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_cover
+msgid "Start the engine"
+msgstr "啟動引擎"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_text_image
+msgid "Take advantage of a free track trial to discover it."
+msgstr "利用免費賽道試駕，發掘特點。"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_cover
+msgid "Take it all. Compliments too."
+msgstr "盡情擁有,盡享讚美"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_cover
+msgid "The New KORAN X"
+msgstr "新 KORAN X"
+
+#. module: theme_vehicle
+#: model:ir.model,name:theme_vehicle.model_theme_utils
+msgid "Theme Utils"
+msgstr "主題"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_features
+msgid "Top Speed"
+msgstr "最高速度"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_picture
+msgid "View the all-new KORAN in 3D wherever you are<br/>"
+msgstr "隨時隨地 3D 檢視全新KORAN<br/>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_features_grid
+msgid "Your advantages"
+msgstr "你的優勢"

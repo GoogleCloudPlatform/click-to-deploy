@@ -1,0 +1,232 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_graphene
+# 
+# Translators:
+# Martin Trigaux, 2023
+# Wil Odoo, 2023
+# Malaz Abuidris <msea@odoo.com>, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:22+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
+"Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ar\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_comparisons
+msgid "24/7 support"
+msgstr "دعم على مدار الساعة "
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_call_to_action
+msgid "<b>50,000+ companies</b> run our software."
+msgstr "<b>أكثر من 50,000 شركة</b> تستخدم برنامجنا. "
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_cover
+msgid "<b>Making the difference.</b>"
+msgstr "<b>نصنع الفرق.</b>"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_company_team
+msgid ""
+"<small>Aline is one of the iconic people in life who can say they love what "
+"they do. She mentors 100+ in-house developers and looks after the community "
+"of thousands of developers.</small>"
+msgstr ""
+"<small>Aline هي أحد الأشخاص المميزين في الحياة الذين يحبون عملهم بشغف. تقوم "
+"بتدريب أكثر من 100 مطور في العمل وتساعد آلاف المطورين المجتمعيين.</small> "
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_company_team
+msgid ""
+"<small>Founder and chief visionary, Tony is the driving force behind the "
+"company. He loves to keep his hands full by participating in the development"
+" of the software, marketing, and customer experience strategies.</small>"
+msgstr ""
+"<small>توني، المؤسس وصاحب الرؤية، هو القوة الدافعة وراء الشركة. يحب العمل "
+"باستمرار عن طريق المشاركة في تطوير البرنامج والتسويق واستراتيجيات تجربة "
+"العملاء. </small> "
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_company_team
+msgid ""
+"<small>Iris, with her international experience, helps us easily understand "
+"the numbers and improves them. She is determined to drive success and "
+"delivers her professional acumen to bring the company to the next "
+"level.</small>"
+msgstr ""
+"<small>تُسخّر Iris خبرتها العالمية لمساعدتنا على فهم الأرقام وتحسينها، وهي "
+"مصممة على أن تحفزنا على النجاح وإيصال ذكائها المهني لتصعد بالشركة إلى "
+"المستوى التالي. </small> "
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_company_team
+msgid ""
+"<small>Mich loves taking on challenges. With his multi-year experience as "
+"Commercial Director in the software industry, Mich has helped the company to"
+" get where it is today. Mich is among the best minds.</small>"
+msgstr ""
+"<small>يحب Mich أن يواجه التحديات التي تعترض طريقه، وبالاستعانة بخبرته "
+"الطويلة كمدير تجاري في مجال التكنولوجيا والبرمجيات، تمكن Mich من مساعدة "
+"الشركة على الوصول إلى ما هي عليه الآن. إنه حقاً أحد العقول النيّرة. </small>"
+" "
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_comparisons
+msgid "Access to all modules"
+msgstr "صلاحية الوصول إلى كافة التطبيقات "
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_comparisons
+msgid "Access to all modules and features"
+msgstr "صلاحية الوصول إلى كافة التطبيقات والخصائص "
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_process_steps
+msgid "Add to Cart"
+msgstr "إضافة إلى عربة التسوق "
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_company_team
+msgid "Aline Turner, <small><b>CTO</b></small>"
+msgstr "Aline Turner، <small><b>مدير التكنولوجيا</b></small> "
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_cover
+msgid "Contact us"
+msgstr "تواصل معنا"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_process_steps
+msgid "Get Delivered"
+msgstr "التوصيل "
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_picture
+msgid "Grow with Us"
+msgstr "تطور معنا "
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_company_team
+msgid "Iris Joe, <small><b>CFO</b></small>"
+msgstr "Iris Joe، <small><b>الرئيس المالي</b></small> "
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_company_team
+msgid "Mich Stark, <small><b>COO</b></small>"
+msgstr "Mich Stark، <small><b>الرئيس التنفيذي للعمليات</b></small> "
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_three_columns
+msgid "Mobile Experience"
+msgstr "تجربة الهاتف المحمول "
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_cover
+msgid ""
+"Our mission is to give customers the best experience.<br/>Extensive "
+"documentation &amp; guides, an active community,<br/>24/7 support make it a "
+"pleasure to work with us."
+msgstr ""
+"مهمتنا هي أن نقدم للعملاء أفضل تجربة.<br/> وثائق واسعة النطاق وأدلة ومجتمع "
+"نشط <br/> ودعم على مدار الساعة طوال أيام الأسبوع يجعل العمل معنا أمرًا "
+"ممتعًا. "
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_process_steps
+msgid "Pay"
+msgstr "الدفع "
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_three_columns
+msgid "Powerful API"
+msgstr "واجهة برمجية قوية "
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_three_columns
+msgid ""
+"Probably the only CRM with a full mobile experience. Never wondered how it "
+"works? That's because it just works"
+msgstr ""
+"ربما يكون نظام إدارة علاقات العملاء (CRM) الوحيد الذي يتمتع بتجربة كاملة "
+"للهاتف المحمول. لم تتساءل أبدا كيف يعمل؟ هذا لأنه يعمل فقط "
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_picture
+msgid ""
+"Put your people at the heart of your marketing with tools that help you get "
+"to know your audience <br/>and see who you should be talking to."
+msgstr ""
+"ضع موظفيك في قلب عمليات التسويق باستخدام الأدوات التي تساعدك على التعرف على "
+"جمهورك <br/>ومعرفة من يجب أن تتحدث إليه. "
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_process_steps
+msgid "Sign In"
+msgstr "تسجيل الدخول"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_comparisons
+msgid "Start Now"
+msgstr "ابدأ الآن "
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_three_columns
+msgid "Support Team"
+msgstr "فريق الدعم "
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_three_columns
+msgid ""
+"Thanks to our API, Developers report building their solutions 4x faster. "
+"Discover why and how."
+msgstr ""
+"بفضل واجهتنا البرمجية، بات بوسع المطورين الإبلاغ عن بناء حلولهم بشكل أسرع بـ"
+" 4 مرات. اكتشف لماذا وكيف. "
+
+#. module: theme_graphene
+#: model:ir.model,name:theme_graphene.model_theme_utils
+msgid "Theme Utils"
+msgstr "أدوات السمة"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_company_team
+msgid "Tony Fred, <small><b>CEO</b></small>"
+msgstr "Tony Fred، <small><b>المدير التنفيذي</b></small> "
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_text_image
+msgid "Unique experiences to drive engagement"
+msgstr "تجربة فريدة لدفع التفاعل "
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_text_image
+msgid ""
+"Users are looking to consume engaging content.<br/>We empowers our teams to "
+"create the most relevant content."
+msgstr ""
+"يتطلع المستخدمون إلى استهلاك محتوى جذاب.<br/> نحن نمكّن فرقنا من إنشاء "
+"المحتوى الأكثر صلة. "
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_three_columns
+msgid ""
+"We have a support team that will do everything to answer you as quickly as "
+"the voice assistants."
+msgstr ""
+"لدينا فريق دعم سيبذل قصارى جهده للرد عليك بنفس سرعة المساعدين الصوتيين. "
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.s_text_image
+msgid "We have one goal in mind, the user satisfaction."
+msgstr "هناك هدف واحد فقط يهمنا، وهو رضا المستخدم. "
