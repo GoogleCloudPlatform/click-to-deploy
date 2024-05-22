@@ -42,6 +42,8 @@ versions:
   packages:
     prometheus-operator:
       version: 0.65.2
+    golang:
+      version: 1.21.6
   repo: prometheus-operator0
   tags:
   - 0.65.2-debian11
