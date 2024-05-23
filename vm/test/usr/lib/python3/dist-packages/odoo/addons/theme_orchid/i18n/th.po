@@ -1,0 +1,146 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_orchid
+# 
+# Translators:
+# Wil Odoo, 2023
+# Rasareeyar Lappiam, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Rasareeyar Lappiam, 2024\n"
+"Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: th\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_text_image
+msgid ""
+"<br/>\n"
+"        Deliver flowers to live up to your dedication for your loved ones."
+msgstr ""
+"<br/>\n"
+"        มอบดอกไม้เพื่อตอบแทนความทุ่มเทของคุณเพื่อคนที่คุณรัก"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_quotes_carousel
+msgid ""
+"A small shop with a very large selection of roses. Nice prices and above all"
+" a very professional and friendly welcome."
+msgstr ""
+"ร้านเล็กๆ ที่มีดอกกุหลาบให้เลือกมากมาย "
+"ราคาดีและเหนือสิ่งอื่นใดคือการต้อนรับอย่างมืออาชีพและเป็นกันเอง"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_quotes_carousel
+msgid ""
+"A wide range of high quality products and a warm welcome! I recommend this "
+"shop 200%!"
+msgstr ""
+"สินค้าคุณภาพสูงหลากหลายชนิดและการต้อนรับอันแสนอบอุ่น! ฉันแนะนำร้านนี้ 200%!"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_three_columns
+msgid ""
+"As we use local growers, our flowers last longer and smell better. Just like"
+" the event you want to celebrate with flowers!"
+msgstr ""
+"เนื่องจากเราใช้ผู้ปลูกในพื้นที่ "
+"ดอกไม้ของเราจึงมีอายุการใช้งานยาวนานและมีกลิ่นหอมมากขึ้น "
+"เช่นเดียวกับงานที่คุณอยากเฉลิมฉลองด้วยดอกไม้!"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_three_columns
+msgid "Bio Flowers"
+msgstr "ดอกไม้ชีวภาพ"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_three_columns
+msgid ""
+"Don't offer pesticides to your beloved one! By choosing our flowers, we "
+"guarantee you organic flowers."
+msgstr ""
+"อย่ามอบดอกไม้ที่ปนยาฆ่าแมลงให้กับคนที่คุณรัก! เลือกดอกไม้ของเรา "
+"เพราะเรารับประกันว่าคุณจะได้ดอกไม้ออร์แกนิก"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_three_columns
+msgid "Eco-Friendly Packaging"
+msgstr "บรรจุภัณฑ์ที่เป็นมิตรต่อสิ่งแวดล้อม"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_image_text
+msgid ""
+"From your local producer to your door, discover how we deliver our multiple "
+"sorts of flowers and bring you happiness."
+msgstr ""
+"จากผู้ผลิตในพื้นที่ของคุณถึงประตูบ้านคุณ "
+"ค้นพบวิธีที่เราจัดส่งดอกไม้นานาชนิดและนำความสุขมาสู่คุณ"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_cover
+msgid "Live life in full bloom"
+msgstr "ใช้ชีวิตให้เต็มที่"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_three_columns
+msgid "Local Producers"
+msgstr "ผู้ผลิตในท้องถิ่น"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_text_image
+msgid "Our Mission"
+msgstr "ภารกิจของเรา"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_image_text
+msgid "The Orchid Concept"
+msgstr "The Orchid Concept"
+
+#. module: theme_orchid
+#: model:ir.model,name:theme_orchid.model_theme_utils
+msgid "Theme Utils"
+msgstr "ยูทิลิตี้ธีม"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_call_to_action
+msgid "There are always flowers <br/>for those who want to see them."
+msgstr "มีดอกไม้<br/>สำหรับผู้ที่ต้องการชมดอกไม้อยู่เสมอ"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_text_image
+msgid ""
+"To do so, we collaborate with local producers who care about the environment"
+" and cultivate their flowers with love."
+msgstr ""
+"เพื่อทำเช่นนั้น "
+"เราร่วมมือกับผู้ผลิตในท้องถิ่นที่ใส่ใจสิ่งแวดล้อมและปลูกฝังดอกไม้ด้วยความรัก"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_quotes_carousel
+msgid ""
+"Very nice, colorful shop with many choices in the heart of a very pretty "
+"town."
+msgstr "ร้านค้าที่สวยงามมีให้เลือกมากมายใจในกลางเมือง"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_three_columns
+msgid ""
+"We use 100% recycled materials. We believe the best gifts should also do "
+"good for the planet."
+msgstr ""
+"เราใช้วัสดุรีไซเคิล 100% เราเชื่อว่าของขวัญที่ดีที่สุดควรส่งผลดีต่อโลกด้วย"
+
+#. module: theme_orchid
+#. odoo-javascript
+#: code:addons/theme_orchid/static/src/js/tour.js:0
+#, python-format
+msgid "width"
+msgstr "ความกว้าง"

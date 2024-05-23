@@ -1,0 +1,141 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_avantgarde
+# 
+# Translators:
+# Wil Odoo, 2023
+# Tony Ng, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:22+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Tony Ng, 2024\n"
+"Language-Team: Chinese (Taiwan) (https://app.transifex.com/odoo/teams/41243/zh_TW/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: zh_TW\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.s_call_to_action
+msgid "<b>Since 1992</b> creating around the world."
+msgstr "<b>由 1992 年起</b>，在世界各地創作。"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.s_carousel
+msgid ""
+"<font style=\"font-size: 62px; background-color: var(--o-color-4);\" "
+"class=\"o_default_snippet_text\">Making Simple</font>"
+msgstr ""
+"<font style=\"font-size: 62px; background-color: var(--o-color-4);\" "
+"class=\"o_default_snippet_text\">化繁為簡</font>"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.s_text_image
+msgid ""
+"<span class=\"text-break\" style=\"font-size: 62px; font-weight: "
+"bolder;\">Our R&amp;D Approach</span>"
+msgstr ""
+"<span class=\"text-break\" style=\"font-size: 62px; font-weight: "
+"bolder;\">我們的研發策略</span>"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.s_three_columns
+msgid "<span style=\"font-weight: bolder;\">Collaboration</span>"
+msgstr "<span style=\"font-weight: bolder;\">協作</span>"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.s_three_columns
+msgid "<span style=\"font-weight: bolder;\">Excellence</span>"
+msgstr "<span style=\"font-weight: bolder;\">卓越</span>"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.s_three_columns
+msgid "<span style=\"font-weight: bolder;\">Sustainability</span>"
+msgstr "<span style=\"font-weight: bolder;\">可持續</span>"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.s_picture
+msgid "Design Methodology"
+msgstr "設計方法"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.s_text_image
+msgid ""
+"Making innovative design requires us to push the limits of technological "
+"possibilities. As a group of in-house specialists, we develop and implement "
+"computational workflows and new technologies."
+msgstr "進行創新設計需要我們突破技術可能性的極限. 作為一個內部專業團隊，我們開發和實施計算工作流程和新技術."
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.s_picture
+msgid ""
+"Our design methodology is rooted in our core values.<br/>\n"
+"        We combine a wide spectrum of technologies with a good portion of creativity."
+msgstr ""
+"我們的設計方法植根於我們的核心價值觀.<br/>\n"
+"        我們將廣泛技術結合至大量創意."
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.s_three_columns
+msgid ""
+"Sustainability is at the heart of our design approach. We audit projects "
+"against global standards as well as our own, more comprehensive, "
+"responsibility framework."
+msgstr "可持續性是我們設計方法的核心. 我們根據全球標準，以及我們自己更全面的責任框架審核專案."
+
+#. module: theme_avantgarde
+#: model:ir.model,name:theme_avantgarde.model_theme_utils
+msgid "Theme Utils"
+msgstr "主題"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.s_text_image
+msgid ""
+"Through a mixture of project-based work and standalone research, we make "
+"efficient projects, adaptable in the face of change."
+msgstr "通過結合基於專案的工作和獨立研究，我們能執行高效的項目，適應變化."
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.s_cover
+msgid "We are Avantgarde."
+msgstr "我們是 Avantgarde."
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.s_picture
+msgid "We carry out an interdisciplinary design process."
+msgstr "我們進行跨學術的設計過程."
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.s_three_columns
+msgid ""
+"We conduct state-of-the-art research and development to solve complex design"
+" challenges, taking the latest advances out of the lab and into the hands of"
+" architects and engineers."
+msgstr "我們進行最先進的研究和開發，以解決複雜的設計挑戰，將最新進展從實驗室帶到設計師和工程師手中."
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.s_cover
+msgid ""
+"We create architecture, landscapes, interiors, product design and graphic design.<br/>\n"
+"        Our methods allow us to explore a future that is equitable, data-driven, and green."
+msgstr ""
+"我們創造建築、景觀、室內設計、產品設計和平面設計.<br/>\n"
+"         我們的方法使我們能夠探索公平、數據驅動和綠色的未來."
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.s_call_to_action
+msgid "We partner with ambitious clients. We’d love to hear from you."
+msgstr "我們與雄心勃勃的客戶合作. 很樂意聽取您的意見."
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.s_three_columns
+msgid ""
+"We thrive on rich collaborations to push our thinking. A continuous state of"
+" reinvention, driven by our partners in the process, is essential to our "
+"work."
+msgstr "我們依靠豐富的合作，推動我們的思維。在我們的合作夥伴推動下，持續不斷的重塑狀態，對我們的工作至關重要."

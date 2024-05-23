@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_call_to_action" inherit_id="website.s_call_to_action">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pb208 pt64 o_cc4" remove="pb24 pt48 o_cc3" separator=" "/>
+    </xpath>
+    <!-- Title & Paragraph -->
+    <xpath expr="//h3" position="replace" mode="inner">
+        <b>Want to discover more?</b>
+    </xpath>
+    <xpath expr="//p" position="replace" mode="inner">
+        Contact me for a visit of my studio.
+    </xpath>
+</template>
+
+<template id="configurator_s_call_to_action" inherit_id="website.configurator_s_call_to_action">
+    <!-- Shape option -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Airy/12_001","flip":["y"]}</attribute>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Airy_12_001" style="background-image: url('/web_editor/shape/web_editor/Airy/12_001.svg?c1=o-color-1&amp;c3=o-color-5&amp;flip=y'); background-position: 50% 100%;"/>
+    </xpath>
+</template>
+
+</odoo>

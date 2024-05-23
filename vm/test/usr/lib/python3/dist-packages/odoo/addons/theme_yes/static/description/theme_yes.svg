@@ -1,0 +1,212 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="700" height="1850" viewBox="0 0 700 1850">
+    <defs>
+        <!-- Font -->
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&amp;display=swap');
+        </style>
+        <!-- Box-shadow -->
+        <filter id="theme_yes_preview_shadow" x="0" y="0" filterUnits="userSpaceOnUse">
+            <feOffset dy="3" input="SourceAlpha"/>
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feFlood flood-opacity="0.15"/>
+            <feComposite operator="in" in2="blur"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+        <!-- Images -->
+        <pattern width="1" height="1" id="theme_yes_s_cover_default_image_id" patternunits="objectBoundingBox">
+            <image width="700" height="375" preserveAspectRatio="xMidYMid slice" href="#s_cover_default_image_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_yes_s_media_list_default_image_1_id" patternunits="objectBoundingBox">
+            <image width="80" height="110" preserveAspectRatio="xMidYMid slice" href="#s_media_list_default_image_1_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_yes_s_media_list_default_image_2_id" patternunits="objectBoundingBox">
+            <image width="80" height="110" preserveAspectRatio="xMidYMid slice" href="#s_media_list_default_image_2_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_yes_s_media_list_default_image_3_id" patternunits="objectBoundingBox">
+            <image width="80" height="110" preserveAspectRatio="xMidYMid slice" href="#s_media_list_default_image_3_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_yes_s_company_team_image_1_id" patternunits="objectBoundingBox">
+            <image width="80" height="80" preserveAspectRatio="xMidYMid slice" href="/web/image/website.s_company_team_image_1"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_yes_s_company_team_image_2_id" patternunits="objectBoundingBox">
+            <image width="80" height="80" preserveAspectRatio="xMidYMid slice" href="/web/image/website.s_company_team_image_2"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_yes_s_quotes_carousel_demo_image_0_id" patternunits="objectBoundingBox">
+            <image width="700" height="180" preserveAspectRatio="xMidYMid slice" href="#s_quotes_carousel_demo_image_0_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_yes_s_quotes_carousel_demo_image_1_id" patternunits="objectBoundingBox">
+            <image width="20" height="20" preserveAspectRatio="xMidYMid slice" href="/web/image/website.s_quotes_carousel_demo_image_3"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_yes_library_image_10_id" patternunits="objectBoundingBox">
+            <image width="178" height="120" preserveAspectRatio="xMidYMid slice" href="#library_image_10_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_yes_library_image_05_id" patternunits="objectBoundingBox">
+            <image width="178" height="260" preserveAspectRatio="xMidYMid slice" href="#library_image_05_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_yes_library_image_08_id" patternunits="objectBoundingBox">
+            <image width="178" height="260" preserveAspectRatio="xMidYMid slice" href="#library_image_08_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_yes_library_image_13_id" patternunits="objectBoundingBox">
+            <image width="178" height="120" preserveAspectRatio="xMidYMid slice" href="#library_image_13_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_yes_library_image_03_id" patternunits="objectBoundingBox">
+            <image width="178" height="120" preserveAspectRatio="xMidYMid slice" href="#library_image_03_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_yes_library_image_02_id" patternunits="objectBoundingBox">
+            <image width="178" height="260" preserveAspectRatio="xMidYMid slice" href="#library_image_02_url"/>
+        </pattern>
+        <filter id="filter_readability_yes">
+            <feColorMatrix in="SourceGraphic" type="saturate" values="0"/>
+            <feComponentTransfer>
+                <feFuncR type="table" tableValues="1 0"/>
+                <feFuncG type="table" tableValues="1 0"/>
+                <feFuncB type="table" tableValues="1 0"/>
+            </feComponentTransfer>
+            <feComponentTransfer>
+                <feFuncR type="linear" slope="10000" intercept="-4999.5"/>
+                <feFuncG type="linear" slope="10000" intercept="-4999.5"/>
+                <feFuncB type="linear" slope="10000" intercept="-4999.5"/>
+            </feComponentTransfer>
+        </filter>
+    </defs>
+
+    <g id="theme_yes_preview">
+
+        <g data-name="Header" class="svgc_menu">
+            <rect width="700" height="40" fill="#MENU_COLOR"/>
+            <rect width="40" height="8" rx="2" x="140" y="16" fill="#MENU_COLOR" class="svgc_text" filter="url(#filter_readability_yes)" opacity="0.5"/>
+            <rect width="40" height="8" rx="2" x="190" y="16" fill="#MENU_COLOR" class="svgc_text" filter="url(#filter_readability_yes)" opacity="0.5"/>
+            <rect width="40" height="8" rx="2" x="240" y="16" fill="#MENU_COLOR" class="svgc_text" filter="url(#filter_readability_yes)" opacity="0.5"/>
+            <rect width="50" height="8" rx="2" x="491" y="16" fill="#MENU_COLOR" class="svgc_text" filter="url(#filter_readability_yes)" opacity="0.5"/>
+            <g class="svgc_btn_group">
+                <rect width="70" height="20" rx="10" x="560" y="10" fill="#3AADAA"/>
+                <text x="574" y="24" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_yes)" font-size="12" font-family="Trebuchet MS, sans-serif" font-weight="400">Contact</text>
+            </g>
+            <text x="70" y="24" fill="#MENU_COLOR" class="svgc_text" filter="url(#filter_readability_yes)" font-size="14" font-family="Trebuchet MS, sans-serif" font-weight="700">LOGO</text>
+        </g>
+
+        <g data-name="Cover">
+            <rect width="700" height="375" x="0" y="40" fill="url(#theme_yes_s_cover_default_image_id)"/>
+            <rect width="700" height="375" x="0" y="40" opacity="0.5"/>
+            <text x="161" y="210" fill="#FFFFFD" font-size="48" font-family="Playfair Display, serif" font-weight="500">Welcome Message</text>
+            <rect width="180" height="8" rx="3" x="260" y="240" fill="#FFFFFD" opacity="0.8"/>
+            <g class="svgc_btn_group">
+                <rect width="70" height="20" rx="10" x="315" y="275" fill="#3AADAA"/>
+                <text x="330" y="290" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_yes)" font-size="12" font-family="Trebuchet MS, sans-serif" font-weight="400">Details</text>
+            </g>
+            <path d="M700,232.305c-72.558,10.2-202.176,16.993-350,16.993S72.558,242.505,0,232.305v32H700Z" transform="translate(0 160)" fill="#F6F6F6"/>
+        </g>
+
+        <g data-name="Company Team">
+            <rect width="700" height="200" x="0" y="420" fill="#F6F6F6"/>
+            <text x="278" y="463" fill="#3AADAA" font-size="24" font-family="Playfair Display, serif" font-weight="500">Section Title</text>
+            <g data-name="Team_1">
+                <circle r="40" cx="100" cy="533" fill="url(#theme_yes_s_company_team_image_1_id)"/>
+                <text x="165" y="510" fill="#383E45" font-size="16" font-family="Playfair Display, serif" font-weight="500">Entry Title</text>
+                <rect width="50" height="7" rx="2" x="165" y="525" fill="#3AADAA"/>
+                <rect width="120" height="6" rx="2" x="165" y="542" fill="#888"/>
+                <rect width="150" height="6" rx="2" x="165" y="554" fill="#888"/>
+                <rect width="90" height="6" rx="2" x="165" y="566" fill="#888"/>
+            </g>
+            <g data-name="Team_2">
+                <circle r="40" cx="400" cy="533" fill="url(#theme_yes_s_company_team_image_2_id)"/>
+                <text x="465" y="510" fill="#383E45" font-size="16" font-family="Playfair Display, serif" font-weight="500">Entry Title</text>
+                <rect width="50" height="7" rx="2" x="465" y="525" fill="#3AADAA"/>
+                <rect width="120" height="6" rx="2" x="465" y="542" fill="#888"/>
+                <rect width="150" height="6" rx="2" x="465" y="554" fill="#888"/>
+                <rect width="90" height="6" rx="2" x="465" y="566" fill="#888"/>
+            </g>
+            <path d="M700,232.305c-72.558,10.2-202.176,16.993-350,16.993S72.558,242.505,0,232.305v32H700Z" transform="translate(0 365)" fill="#FFFFFD"/>
+        </g>
+
+        <g data-name="Media List">
+            <rect width="700" height="430" x="0" y="625" fill="#FFFFFD"/>
+            <g data-name="Media_1">
+                <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#theme_yes_preview_shadow)">
+                    <rect width="360" height="110" rx="3" x="70" y="655" fill="#FFFFFD"/>
+                </g>
+                <rect width="80" height="110" x="350" y="655" fill="url(#theme_yes_s_media_list_default_image_1_id)"/>
+                <text x="90" y="688" fill="#383E45" font-size="18" font-family="Playfair Display, serif" font-weight="500">Entry Title</text>
+                <rect width="150" height="6" rx="2" x="90" y="715" fill="#888"/>
+                <rect width="200" height="6" rx="2" x="90" y="703" fill="#888"/>
+                <g class="svgc_btn_group">
+                    <rect width="70" height="20" rx="10" x="90" y="731" fill="#3AADAA"/>
+                </g>
+            </g>
+            <g data-name="Media_2">
+                <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#theme_yes_preview_shadow)">
+                    <rect width="360" height="110" rx="3" x="165" y="790" fill="#383E45"/>
+                </g>
+                <rect width="80" height="110" x="445" y="790" fill="url(#theme_yes_s_media_list_default_image_2_id)"/>
+                <text x="185" y="823" fill="#fff" font-size="18" font-family="Playfair Display, serif" font-weight="500">Entry Title</text>
+                <rect width="150" height="6" rx="2" x="185" y="850" fill="#383E45" class="svgc_text" filter="url(#filter_readability_yes)" opacity="0.8"/>
+                <rect width="200" height="6" rx="2" x="185" y="838" fill="#383E45" class="svgc_text" filter="url(#filter_readability_yes)" opacity="0.8"/>
+                <g class="svgc_btn_group">
+                    <rect width="70" height="20" rx="10" x="185" y="866" fill="#3AADAA"/>
+                </g>
+            </g>
+            <g data-name="Media_3">
+                <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#theme_yes_preview_shadow)">
+                    <rect width="360" height="110" rx="3" x="260" y="925" fill="#FFFFFD"/>
+                </g>
+                <rect width="80" height="110" x="540" y="925" fill="url(#theme_yes_s_media_list_default_image_3_id)"/>
+                <text x="280" y="958" fill="#383E45" font-size="18" font-family="Playfair Display, serif" font-weight="500">Entry Title</text>
+                <rect width="150" height="6" rx="2" x="280" y="985" fill="#888"/>
+                <rect width="200" height="6" rx="2" x="280" y="973" fill="#888"/>
+                <g class="svgc_btn_group">
+                    <rect width="70" height="20" rx="10" x="280" y="1001" fill="#3AADAA"/>
+                </g>
+            </g>
+        </g>
+
+        <g data-name="Images Wall">
+            <rect width="700" height="445" x="0" y="1055" fill="#FFFFFD"/>
+            <rect width="178" height="120" rx="4" x="70" y="1075" fill="url(#theme_yes_library_image_10_id)"/>
+            <rect width="178" height="260" rx="4" x="70" y="1205" fill="url(#theme_yes_library_image_05_id)"/>
+            <rect width="178" height="260" rx="4" x="258" y="1075" fill="url(#theme_yes_library_image_08_id)"/>
+            <rect width="178" height="120" rx="4" x="258" y="1345" fill="url(#theme_yes_library_image_13_id)"/>
+            <rect width="178" height="120" rx="4" x="445" y="1075" fill="url(#theme_yes_library_image_03_id)"/>
+            <rect width="178" height="260" rx="4" x="445" y="1205" fill="url(#theme_yes_library_image_02_id)"/>
+        </g>
+
+        <g data-name="Quotes Carousel">
+            <rect width="700" height="180" x="0" y="1500" fill="url(#theme_yes_s_quotes_carousel_demo_image_0_id)"/>
+            <rect width="700" height="180" x="0" y="1500" fill="#000" opacity=".25"/>
+            <rect width="260" height="90" x="233" y="1545" fill="#FFFFFD"/>
+            <path d="M4,0H25a0,0,0,0,1,0,0V25a0,0,0,0,1,0,0H4a4,4,0,0,1-4-4V4A4,4,0,0,1,4,0Z" transform="translate(208 1545)" fill="#3AADAA"/>
+            <rect width="220" height="6" rx="2" x="248" y="1565" fill="#888"/>
+            <rect width="120" height="6" rx="2" x="248" y="1575" fill="#888"/>
+            <circle r="10" cx="260" cy="1608" fill="url(#theme_yes_s_quotes_carousel_demo_image_1_id)"/>
+            <rect width="90" height="6" rx="2" x="278" y="1605" fill="#888"/>
+            <path d="M1293.692,417.043a1.689,1.689,0,0,1-1.2-.5l-7.711-7.711a1.7,1.7,0,0,1,0-2.4l7.711-7.711a1.7,1.7,0,0,1,2.4,0l.9.9a1.7,1.7,0,0,1,0,2.4l-5.589,5.615,5.589,5.615a1.7,1.7,0,0,1,0,2.4l-.9.9A1.689,1.689,0,0,1,1293.692,417.043Z" transform="translate(-1214 1182)" fill="#FFFFFD"/>
+            <path d="M1293.692,417.043a1.689,1.689,0,0,1-1.2-.5l-7.711-7.711a1.7,1.7,0,0,1,0-2.4l7.711-7.711a1.7,1.7,0,0,1,2.4,0l.9.9a1.7,1.7,0,0,1,0,2.4l-5.589,5.615,5.589,5.615a1.7,1.7,0,0,1,0,2.4l-.9.9A1.689,1.689,0,0,1,1293.692,417.043Z" transform="translate(1914 1998) rotate(180)" fill="#FFFFFD"/>
+        </g>
+
+        <g data-name="Footer" class="svgc_footer">
+            <rect width="700" height="135" x="0" y="1680" fill="#FOOTER_COLOR" class="svgc_footer_bg"/>
+            <text x="70" y="1726" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_yes)" font-size="16" font-family="Trebuchet MS, sans-serif" font-weight="500">Section Title</text>
+            <rect width="240" height="6" rx="2" x="70" y="1740" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_yes)" opacity="0.8"/>
+            <rect width="240" height="6" rx="2" x="70" y="1764" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_yes)" opacity="0.8"/>
+            <rect width="240" height="6" rx="2" x="70" y="1752" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_yes)" opacity="0.8"/>
+            <rect width="147" height="6" rx="2" x="70" y="1776" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_yes)" opacity="0.8"/>
+            <rect width="90" height="6" rx="2" x="392" y="1752" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_yes)" opacity="0.8"/>
+            <rect width="90" height="6" rx="2" x="392" y="1740" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_yes)" opacity="0.8"/>
+            <rect width="90" height="6" rx="2" x="392" y="1764" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_yes)" opacity="0.8"/>
+            <rect width="50" height="6" rx="2" x="392" y="1776" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_yes)" opacity="0.8"/>
+            <text x="392" y="1724" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_yes)" font-size="12" font-family="Trebuchet MS, sans-serif" font-weight="500">Entry Title</text>
+            <rect width="90" height="6" rx="2" x="540" y="1740" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_yes)" opacity="0.8"/>
+            <rect width="90" height="6" rx="2" x="540" y="1752" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_yes)" opacity="0.8"/>
+            <text x="540" y="1724" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_yes)" font-size="12" font-family="Trebuchet MS, sans-serif" font-weight="500">Entry Title</text>
+            <circle r="8" cx="548" cy="1775" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_yes)" opacity="0.5"/>
+            <circle r="8" cx="570" cy="1775" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_yes)" opacity="0.5"/>
+            <circle r="8" cx="591" cy="1775" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_yes)" opacity="0.5"/>
+            <circle r="8" cx="612" cy="1775" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_yes)" opacity="0.5"/>
+        </g>
+
+        <g data-name="Copyright">
+            <rect width="700" height="35" x="0" y="1815" fill="#3AADAA"/>
+            <rect width="120" height="6" rx="2" x="70" y="1830" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_yes)"/>
+        </g>
+
+    </g>
+</svg>

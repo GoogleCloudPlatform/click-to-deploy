@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!-- Library_image - Image_gallery & Images_wall-->
+<record id="library_image_08" model="theme.ir.attachment">
+    <field name="key">website.library_image_08</field>
+    <field name="name">website.library_image_08</field>
+    <field name="url">/theme_buzzy/static/src/img/photos/library_image_08.jpg</field>
+</record>
+<record id="library_image_03" model="theme.ir.attachment">
+    <field name="key">website.library_image_03</field>
+    <field name="name">website.library_image_03</field>
+    <field name="url">/theme_buzzy/static/src/img/photos/library_image_03.jpg</field>
+</record>
+<record id="library_image_02" model="theme.ir.attachment">
+    <field name="key">website.library_image_02</field>
+    <field name="name">website.library_image_02</field>
+    <field name="url">/theme_buzzy/static/src/img/photos/library_image_02.jpg</field>
+</record>
+<record id="library_image_10" model="theme.ir.attachment">
+    <field name="key">website.library_image_10</field>
+    <field name="name">website.library_image_10</field>
+    <field name="url">/theme_buzzy/static/src/img/photos/library_image_10.jpg</field>
+</record>
+<record id="library_image_13" model="theme.ir.attachment">
+    <field name="key">website.library_image_13</field>
+    <field name="name">website.library_image_13</field>
+    <field name="url">/theme_buzzy/static/src/img/photos/library_image_13.jpg</field>
+</record>
+<record id="library_image_05" model="theme.ir.attachment">
+    <field name="key">website.library_image_05</field>
+    <field name="name">website.library_image_05</field>
+    <field name="url">/theme_buzzy/static/src/img/photos/library_image_05.jpg</field>
+</record>
+<record id="library_image_14" model="theme.ir.attachment">
+    <field name="key">website.library_image_14</field>
+    <field name="name">website.library_image_14</field>
+    <field name="url">/theme_buzzy/static/src/img/photos/library_image_14.jpg</field>
+</record>
+<record id="library_image_16" model="theme.ir.attachment">
+    <field name="key">website.library_image_16</field>
+    <field name="name">website.library_image_16</field>
+    <field name="url">/theme_buzzy/static/src/img/photos/library_image_16.jpg</field>
+</record>
+<!-- Picture -->
+<record id="s_picture_default_image" model="theme.ir.attachment">
+    <field name="key">website.s_picture_default_image</field>
+    <field name="name">website.s_picture_default_image</field>
+    <field name="url">/theme_buzzy/static/src/img/photos/s_picture_default_image.jpg</field>
+</record>
+<!-- Masonry -->
+<record id="s_masonry_block_default_image_1" model="theme.ir.attachment">
+    <field name="key">website.s_masonry_block_default_image_1</field>
+    <field name="name">website.s_masonry_block_default_image_1</field>
+    <field name="url">/theme_buzzy/static/src/img/photos/s_masonry_block_default_image_1.jpg</field>
+</record>
+<!-- Carousel -->
+<record id="s_carousel_default_image_1" model="theme.ir.attachment">
+    <field name="key">website.s_carousel_default_image_1</field>
+    <field name="name">website.s_carousel_default_image_1</field>
+    <field name="url">/theme_buzzy/static/src/img/photos/s_carousel_default_image_1.jpg</field>
+</record>
+<record id="s_carousel_default_image_2" model="theme.ir.attachment">
+    <field name="key">website.s_carousel_default_image_2</field>
+    <field name="name">website.s_carousel_default_image_2</field>
+    <field name="url">/theme_buzzy/static/src/img/photos/s_carousel_default_image_2.jpg</field>
+</record>
+<record id="s_carousel_default_image_3" model="theme.ir.attachment">
+    <field name="key">website.s_carousel_default_image_3</field>
+    <field name="name">website.s_carousel_default_image_3</field>
+    <field name="url">/theme_buzzy/static/src/img/photos/s_carousel_default_image_3.jpg</field>
+</record>
+<!-- Popup -->
+<record id="s_popup_default_image" model="theme.ir.attachment">
+    <field name="key">website.s_popup_default_image</field>
+    <field name="name">website.s_popup_default_image</field>
+    <field name="url">/theme_buzzy/static/src/img/photos/s_popup_default_image.jpg</field>
+</record>
+<!-- Parallax -->
+<record id="s_parallax_default_image" model="theme.ir.attachment">
+    <field name="key">website.s_parallax_default_image</field>
+    <field name="name">website.s_parallax_default_image</field>
+    <field name="url">/theme_buzzy/static/src/img/photos/s_parallax_default_image.jpg</field>
+</record>
+<!-- Cover -->
+<record id="s_cover_default_image" model="theme.ir.attachment">
+    <field name="key">website.s_cover_default_image</field>
+    <field name="name">website.s_cover_default_image</field>
+    <field name="url">/theme_buzzy/static/src/img/photos/s_cover_default_image.jpg</field>
+</record>
+
+</odoo>
