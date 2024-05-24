@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_comparisons" inherit_id="website.s_comparisons">
+    <!-- Card #1 -->
+    <xpath expr="//div[hasclass('card')]" position="attributes">
+        <attribute name="class" add="bg-o-color-3" remove="bg-200" separator=" "/>
+    </xpath>
+    <!-- Card #2 -->
+    <xpath expr="(//div[hasclass('card')])[2]" position="attributes">
+        <attribute name="class" add="bg-o-color-1" remove="bg-o-color-5" separator=" "/>
+    </xpath>
+    <xpath expr="(//div[hasclass('card')])[2]//a[hasclass('btn')]" position="attributes">
+        <attribute name="class" add="btn-secondary" remove="btn-primary" separator=" "/>
+    </xpath>
+</template>
+
+</odoo>

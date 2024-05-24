@@ -1,0 +1,131 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_treehouse
+# 
+# Translators:
+# Istvan <leki69@gmail.com>, 2023
+# Tamás Németh <ntomasz81@gmail.com>, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:22+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Tamás Németh <ntomasz81@gmail.com>, 2023\n"
+"Language-Team: Hungarian (https://app.transifex.com/odoo/teams/41243/hu/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: hu\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_text_image
+msgid "<b>ABOUT US</b>"
+msgstr ""
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_cover
+msgid "<font style=\"font-size: 62px;\"><b>— Life on Earth —</b></font>"
+msgstr ""
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_title
+msgid "Changing the world is possible.<br/> We’ve done it before."
+msgstr ""
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_cover
+msgid "Get involved"
+msgstr ""
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_three_columns
+msgid "Habitat Model"
+msgstr ""
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_three_columns
+msgid ""
+"Habitats with a minimum footprint on the planet and a maximum positive "
+"impact on the local community."
+msgstr ""
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_banner
+msgid "Hello Planet."
+msgstr ""
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_call_to_action
+msgid "Help us protect and preserve for future generations"
+msgstr ""
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_call_to_action
+msgid "Join us and make the planet a better place."
+msgstr ""
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_three_columns
+msgid ""
+"Learn how to use organic gardening methods to grow the freshest food in your"
+" fruit and vegetable garden."
+msgstr ""
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_three_columns
+msgid "Organic Garden"
+msgstr ""
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_cover
+msgid ""
+"Our mission is to create a shared plan<br/> for saving the planet’s most "
+"exceptional wild places."
+msgstr ""
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_three_columns
+msgid "Read more"
+msgstr "Bővebben"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_three_columns
+msgid "Recycling water"
+msgstr ""
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_three_columns
+msgid ""
+"Recycling water for reuse applications instead of using freshwater supplies "
+"can be a water-saving measure."
+msgstr ""
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_text_image
+msgid "Shaping our future"
+msgstr ""
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_color_blocks_2
+msgid "Sky is the limit."
+msgstr ""
+
+#. module: theme_treehouse
+#: model:ir.model,name:theme_treehouse.model_theme_utils
+msgid "Theme Utils"
+msgstr "Téma eszközök"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_text_image
+msgid ""
+"With all the global problems our planet faces today,<br/> communities of "
+"people concerned with them are growing<br/> to prevent the negative impact."
+msgstr ""
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_picture
+msgid "Working Together"
+msgstr ""

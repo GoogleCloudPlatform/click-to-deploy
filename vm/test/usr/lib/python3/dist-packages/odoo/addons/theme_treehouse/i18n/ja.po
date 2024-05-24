@@ -1,0 +1,132 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_treehouse
+# 
+# Translators:
+# Wil Odoo, 2023
+# Junko Augias, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:22+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Junko Augias, 2023\n"
+"Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_text_image
+msgid "<b>ABOUT US</b>"
+msgstr "<b>当社について</b>"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_cover
+msgid "<font style=\"font-size: 62px;\"><b>— Life on Earth —</b></font>"
+msgstr "<font style=\"font-size: 62px;\"><b>— 地球上の生命 —</b></font>"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_title
+msgid "Changing the world is possible.<br/> We’ve done it before."
+msgstr "世界を変えることは可能です。<br/>当社はこれまでにも行ってきました。"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_cover
+msgid "Get involved"
+msgstr "参加する"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_three_columns
+msgid "Habitat Model"
+msgstr "生息域モデル"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_three_columns
+msgid ""
+"Habitats with a minimum footprint on the planet and a maximum positive "
+"impact on the local community."
+msgstr "地球への影響を最小限に抑え、地域社会に最大限の好影響を与える生息地。"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_banner
+msgid "Hello Planet."
+msgstr "こんにちは、惑星"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_call_to_action
+msgid "Help us protect and preserve for future generations"
+msgstr "未来の世代のために、保護と保全にご協力を"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_call_to_action
+msgid "Join us and make the planet a better place."
+msgstr "私たちと一緒に、地球をより良い場所にしましょう。"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_three_columns
+msgid ""
+"Learn how to use organic gardening methods to grow the freshest food in your"
+" fruit and vegetable garden."
+msgstr "果樹園や菜園で新鮮な食材を育てるための、オーガニック・ガーデニングの方法を学びましょう。"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_three_columns
+msgid "Organic Garden"
+msgstr "オーガニック・ガーデン"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_cover
+msgid ""
+"Our mission is to create a shared plan<br/> for saving the planet’s most "
+"exceptional wild places."
+msgstr "私たちの使命は、地球上で最も優れた野生の場所を守るための共有計画<br/>を作ることです。"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_three_columns
+msgid "Read more"
+msgstr "続きを読む"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_three_columns
+msgid "Recycling water"
+msgstr "水のリサイクル"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_three_columns
+msgid ""
+"Recycling water for reuse applications instead of using freshwater supplies "
+"can be a water-saving measure."
+msgstr "淡水の供給を利用する代わりに、水を再利用することは節水対策になります。"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_text_image
+msgid "Shaping our future"
+msgstr "私たちの未来を創る"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_color_blocks_2
+msgid "Sky is the limit."
+msgstr "空は無限"
+
+#. module: theme_treehouse
+#: model:ir.model,name:theme_treehouse.model_theme_utils
+msgid "Theme Utils"
+msgstr "テーマユーティリティ"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_text_image
+msgid ""
+"With all the global problems our planet faces today,<br/> communities of "
+"people concerned with them are growing<br/> to prevent the negative impact."
+msgstr ""
+"今日、地球が直面しているあらゆる地球規模の問題に対して、<br/>その問題に関心を持つ人々のコミュニティは、悪影響を防ぐために拡大<br/>しています。"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_picture
+msgid "Working Together"
+msgstr "協働する"

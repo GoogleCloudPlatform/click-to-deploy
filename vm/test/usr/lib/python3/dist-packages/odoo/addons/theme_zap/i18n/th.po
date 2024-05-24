@@ -1,0 +1,149 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_zap
+# 
+# Translators:
+# Wil Odoo, 2023
+# Rasareeyar Lappiam, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:21+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Rasareeyar Lappiam, 2024\n"
+"Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: th\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_banner
+msgid "<b>Software innovation</b><br/> at its best."
+msgstr "<b>นวัตกรรมซอฟต์แวร์</b><br/>ที่ดีที่สุด"
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_masonry_block_default_template
+msgid ""
+"<em class=\"lead\">Maintain a position of constant change<br/> and "
+"evolution, while always aiming<br/> for your success.</em>"
+msgstr ""
+"<em "
+"class=\"lead\">รักษาจุดยืนของการเปลี่ยนแปลง<br/>และวิวัฒนาการอย่างต่อเนื่อง "
+"ขณะเดียวกันก็<br/>มุ่งสู่ความสำเร็จของคุณอยู่เสมอ</em>"
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_numbers
+msgid "<font class=\"text-o-color-1\">Customers</font>"
+msgstr "<font class=\"text-o-color-1\">ลูกค้า</font>"
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_numbers
+msgid "<font class=\"text-o-color-1\">Languages</font>"
+msgstr "<font class=\"text-o-color-1\">ภาษา</font>"
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_numbers
+msgid "<font class=\"text-o-color-1\">Projects</font>"
+msgstr "<font class=\"text-o-color-1\">โปรเจ็กต์</font>"
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_numbers
+msgid "<font class=\"text-o-color-1\">Solutions</font>"
+msgstr "<font class=\"text-o-color-1\">โซลูชั่น</font>"
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_features
+msgid "All our data centers <br/>are emission-free."
+msgstr "ศูนย์ข้อมูลของเราทั้งหมด<br/>ปราศจากการปล่อยมลพิษ"
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_features
+msgid "All types of files <br/>are allowed."
+msgstr "อนุญาตให้ใช้ไฟล์<br/>ทุกประเภท"
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_three_columns
+msgid "Benefits"
+msgstr "สิทธิประโยชน์"
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_color_blocks_2
+msgid "Cloud <b>Solution</b>"
+msgstr "คลาวด์ <b>โซลูชั่น</b>"
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_features
+msgid "Eco-Friendly"
+msgstr "เป็นมิตรกับสิ่งแวดล้อม"
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_three_columns
+msgid "Features"
+msgstr "ฟีเจอร์ต่าง ๆ "
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_banner
+msgid ""
+"Harness the power of disruptive technologies to increase<br/> your day-to-"
+"day business operations."
+msgstr ""
+"ควบคุมพลังของเทคโนโลยีที่ก่อให้เกิดการเปลี่ยนแปลงเพื่อเพิ่ม<br/>การดำเนินธุรกิจในแต่ละวันของคุณ"
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_color_blocks_2
+msgid ""
+"Keep your files in one place. <br/>Manage documents online with an easy to "
+"use interface. <br/>Rely on an highly secure cloud storage."
+msgstr ""
+"เก็บไฟล์ของคุณไว้ในที่เดียว "
+"<br/>จัดการเอกสารออนไลน์ด้วยอินเทอร์เฟซที่ใช้งานง่าย "
+"<br/>พึ่งพาพื้นที่เก็บข้อมูลบนคลาวด์ที่มีความปลอดภัยสูง"
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_references
+msgid "Our <b>References</b>"
+msgstr "<b>การอ้างอิง</b>ของเรา"
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_banner
+msgid "Our Solutions"
+msgstr "โซลูชั่นของเรา"
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_features
+msgid "Security"
+msgstr "ความปลอดภัย"
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_three_columns
+msgid "Services"
+msgstr "บริการ"
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_masonry_block_default_template
+msgid "Super <b>Easy</b>"
+msgstr "<b>ง่าย</b>สุดๆ"
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_masonry_block_default_template
+msgid "Super <b>Fast</b>"
+msgstr "<b>รวดเร็ว</b>ทันใจ"
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_features
+msgid "Support"
+msgstr "สนับสนุน"
+
+#. module: theme_zap
+#: model:ir.model,name:theme_zap.model_theme_utils
+msgid "Theme Utils"
+msgstr "ยูทิลิตี้ธีม"
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_features
+msgid "We keep you safe <br/>in the cloud."
+msgstr "เราช่วยให้คุณปลอดภัย<br/>ในระบบคลาวด์"

@@ -15,4 +15,6 @@
 name 'nodejs'
 depends 'apache2'
 depends 'git'
+depends 'c2d-config'
+depends 'c2d-shared'
 supports 'debian'

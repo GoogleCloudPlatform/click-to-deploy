@@ -1,0 +1,352 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_yes
+# 
+# Translators:
+# Wil Odoo, 2023
+# Ryoko Tsuda <ryoko@quartile.co>, 2023
+# Junko Augias, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:21+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Junko Augias, 2023\n"
+"Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_call_to_action
+msgid "<b>345 couples</b> trusted us to organize their wedding."
+msgstr "<b>345組のカップル</b>が私共と結婚式を挙げました。"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_company_team
+msgid ""
+"<font style=\"font-weight: bolder;\" class=\"text-o-color-1\">The "
+"Designer</font>"
+msgstr "<font style=\"font-weight: bolder;\" class=\"text-o-color-1\">デザイナー</font>"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_company_team
+msgid ""
+"<font style=\"font-weight: bolder;\" class=\"text-o-color-1\">The Founder "
+"&amp; Planner</font>"
+msgstr ""
+"<font style=\"font-weight: bolder;\" class=\"text-o-color-1\">設立者 &amp; "
+"プランナー</font>"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_quotes_carousel
+msgid ""
+"<span class=\"s_blockquote_author\"><b>Jack and Mary</b> • Married in "
+"2019</span>"
+msgstr "<span class=\"s_blockquote_author\"><b>JackとMary</b> • 2019年に結婚</span>"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_quotes_carousel
+msgid ""
+"<span class=\"s_blockquote_author\"><b>Linda and Paul</b> • Married in "
+"2020</span>"
+msgstr "<span class=\"s_blockquote_author\"><b>LindaとPaul</b> • 2020年に結婚</span>"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_quotes_carousel
+msgid ""
+"<span class=\"s_blockquote_author\"><b>Rose and Peter</b> • Renewed their "
+"vows in 2021</span>"
+msgstr ""
+"<span class=\"s_blockquote_author\"><b>RoseとPeter</b> • 2021年誓いを新たに</span>"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_media_list
+msgid "<span style=\"font-size: 36px;\">Engagement ceremonies</span>"
+msgstr "<span style=\"font-size: 36px;\">婚約セレモニー</span>"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_media_list
+msgid "<span style=\"font-size: 36px;\">Vow renewals</span>"
+msgstr "<span style=\"font-size: 36px;\">再宣誓式</span>"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_media_list
+msgid "<span style=\"font-size: 36px;\">Wedding Receptions</span>"
+msgstr "<span style=\"font-size: 36px;\">結婚披露宴</span>"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_three_columns
+msgid "Accomodations"
+msgstr "宿泊"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_media_list
+msgid ""
+"As a full service experience, we monitor all aspects of your wedding from "
+"planning to execution."
+msgstr "結婚式のプランニングから実施まで、あらゆる面をフォローするフルサービスです。"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_company_team
+msgid ""
+"As a passionate wedding designer with a romantic soul, Clair adores "
+"celebrating the special moments in life in magical places and creating an "
+"authentic experience for couples."
+msgstr ""
+"ロマンチックな魂を持つ情熱的なウェディングデザイナーであるClaireは、魔法のような場所で人生の特別な瞬間を祝い、カップルのために本物の体験を創造する仕事を愛しています！"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Attire"
+msgstr "服装"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_three_columns
+msgid "Car Rental"
+msgstr "車レンタル"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Caterers"
+msgstr "ケータリング"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_carousel
+msgid "Check out our gallery"
+msgstr "ギャラリーを見る"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Check out our list of favorite caterers."
+msgstr "当社のお勧めケータリング業者リスト"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Check out our list of favorite venues."
+msgstr "当社のお勧め場所リスト"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_company_team
+msgid "Clair Stark"
+msgstr "Clair Stark"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "FAQ"
+msgstr "FAQ"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Find a Caterer"
+msgstr "ケータリング業者を探す"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_text_image
+msgid "Find a photographer"
+msgstr "フォトグラファーを探す"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_image_text
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Find a venue"
+msgstr "場所を探す"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Find the answers to all your questions <br/>in our FAQ."
+msgstr "全てのご質問に対する回答を<br/>FAQで見つける"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Find the perfect outfit for before, during and after the main event."
+msgstr "本番前、本番中、本番後にぴったりの衣装を見つけましょう。"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_quotes_carousel
+msgid ""
+"From the beginning of our planning process, our planner was incredible! She "
+"made us feel heard, gave great suggestions and was always just an email or "
+"call away when we had any last minute questions. Couldn't have done it "
+"without her!"
+msgstr ""
+"プランニングプロセスの最初から、プランナーは素晴らしかったです！彼女は私たちの意見を聞いてくれて、素晴らしい提案をしてくれましたし、直前の質問にはいつもメールや電話で対応してくれました。彼女なしでは開催することはできなかったでしょう！"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_carousel
+msgid "Get in touch"
+msgstr "連絡を取る"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_carousel
+msgid ""
+"Get inspired with the latest trends and advice from our wedding experts."
+msgstr "最新のトレンドやウェディングエキスパートからのアドバイスでインスピレーションを得ましょう。"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Go to FAQ"
+msgstr "FAQへ移動"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_picture
+msgid ""
+"Intimate or with hundreds of guests, outdoors or indoors : we organize the "
+"wedding of your dreams."
+msgstr "少人数でも大人数でも、屋外でも屋内でも、お二人の夢のウェディングを実現します。"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_call_to_action
+msgid "Join them and let us help you make this day unforgettable."
+msgstr "この日を忘れられないものにするお手伝いをさせて下さい。"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_banner
+msgid "Just as you dreamt it."
+msgstr "あなたの夢の通りに"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_carousel
+msgid "Let us plan your perfect day"
+msgstr "あなたの完璧な日を計画させて下さい"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_company_team
+msgid "Livia Sailor"
+msgstr "Livia Sailor"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_company_team
+msgid ""
+"Livia is our head wedding coordinator and stylist, she'll turn any of your "
+"ideas into reality, making sure your wedding day is smooth and looks better "
+"than anything you have ever seen on Pinterest."
+msgstr ""
+"Liviaはウェディング・コーディネーター兼スタイリストの責任者で、あなたのどんなアイデアも実現します。結婚式がスムーズで、あなたが今までピンタレストで見たどんなものよりも素敵に見えるようにします。"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_picture
+msgid "Love is in the air"
+msgstr "愛はあらゆるところに"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_three_columns
+msgid "Make up &amp;amp; Hair"
+msgstr "メイクアップ &amp;amp; ヘア"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_title
+msgid "Meet our team"
+msgstr "私たちのチーム"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_cover
+msgid "Meet us"
+msgstr "私たちの紹介"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_cover
+msgid "Once in a lifetime moments"
+msgstr "一生に一度の瞬間"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_quotes_carousel
+msgid ""
+"Our wedding coordinator made the entire process so much less stressful. She "
+"was more than kind, accommodating, and helpful in more ways than one! She "
+"always answered my emails within a day and thoroughly. She went above and "
+"beyond, I would recommend her to anyone!"
+msgstr ""
+"ウェディング・コーディネーターのおかげで、プロセス全体のストレスがとても軽減されました。彼女は親切で、親身になってくれ、いろいろな面でサポート頂きました！彼女はいつも1日以内に私の電子メールに徹底的に答えてくれました。誰にでもお勧めできます！"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_media_list
+msgid "See how others renewed their vows"
+msgstr "他の人々がどのように誓いを新たにしたかを見る"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_carousel
+msgid "See the blog"
+msgstr "ブログを見る"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Shop"
+msgstr "ショップ"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_media_list
+msgid "Start planning your engagement"
+msgstr "婚約式を計画し始める"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_media_list
+msgid "Start planning your wedding"
+msgstr "結婚式を計画し始める"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_picture
+msgid "Stuart and Iliana's wedding at the Barn."
+msgstr "StuartとIliana、納屋での結婚式"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_carousel
+msgid "Take a look at some of our favourite weddings."
+msgstr "私たちのお気に入りのウェディングをご覧下さい。"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_quotes_carousel
+msgid ""
+"Thank you so much for being a part of our special day. It was so nice "
+"working with you. Without your help the day would not have been as perfect "
+"as it was."
+msgstr ""
+"私たちの特別な日にご尽力いただき本当にありがとうございました。あなたと一緒に仕事ができて本当によかった。あなたの助けがなければ、この日はこれほど完璧なものにはならなかったでしょう。"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_media_list
+msgid ""
+"The heartfelt exchange of wedding vows is often the most memorable part of a"
+" marriage ceremony."
+msgstr "心のこもった結婚誓約書の交換は、多くの結婚式において最も印象的な部分です。"
+
+#. module: theme_yes
+#: model:ir.model,name:theme_yes.model_theme_utils
+msgid "Theme Utils"
+msgstr "テーマユーティリティ"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Venues"
+msgstr "場所"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_carousel
+msgid "View our blog for inspiration"
+msgstr "ブログを見てインスピレーションを得る"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_carousel
+msgid "View our work"
+msgstr "私たちの実績"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_carousel
+msgid ""
+"We are focused on providing high-quality service and customer satisfaction."
+msgstr "私たちは高品質のサービスと顧客満足を提供することに注力しています。"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_media_list
+msgid ""
+"We’ll help you mark the engagement milestone with an unforgettable ceremony."
+msgstr "婚約という節目に、忘れられないセレモニーをお手伝いします。"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_cover
+msgid "You focus on the big day, let us focus on you."
+msgstr "大切な日に集中して下さい。私たちがあなたに集中します。"

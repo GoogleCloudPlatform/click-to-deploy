@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_numbers" inherit_id="website.s_numbers">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pt80 pb192 o_cc5" remove="pt24 pb24 o_cc2" separator=" "/>
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Airy/03_001","flip":["y"]}</attribute>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Airy_03_001" style="background-image: url('/web_editor/shape/web_editor/Airy/03_001.svg?c5=o-color-1&amp;flip=y'); background-position: 50% 100%;"/>
+    </xpath>
+</template>
+
+</odoo>

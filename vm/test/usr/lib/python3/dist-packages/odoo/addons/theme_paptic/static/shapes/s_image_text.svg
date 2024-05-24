@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="761" height="589" viewBox="0 0 761 589">
+  <defs>
+    <linearGradient id="linearGradient-1" x1="59.122%" x2="40.884%" y1="73.159%" y2="26.831%">
+      <stop offset="0%" stop-color="gray" stop-opacity=".25"/>
+      <stop offset="54%" stop-color="gray" stop-opacity=".12"/>
+      <stop offset="100%" stop-color="gray" stop-opacity=".1"/>
+    </linearGradient>
+    <linearGradient id="linearGradient-2" x1="49.994%" x2="49.998%" y1="50.382%" y2="49.619%">
+      <stop offset="0%" stop-color="gray" stop-opacity=".25"/>
+      <stop offset="54%" stop-color="gray" stop-opacity=".12"/>
+      <stop offset="100%" stop-color="gray" stop-opacity=".1"/>
+    </linearGradient>
+    <linearGradient id="linearGradient-3" x1="49.913%" x2="49.966%" y1="100.055%" y2=".013%">
+      <stop offset="0%" stop-color="gray" stop-opacity=".25"/>
+      <stop offset="54%" stop-color="gray" stop-opacity=".12"/>
+      <stop offset="100%" stop-color="gray" stop-opacity=".1"/>
+    </linearGradient>
+    <linearGradient id="linearGradient-4" x1="49.905%" x2="49.957%" y1="100.055%" y2=".013%">
+      <stop offset="0%" stop-color="gray" stop-opacity=".25"/>
+      <stop offset="54%" stop-color="gray" stop-opacity=".12"/>
+      <stop offset="100%" stop-color="gray" stop-opacity=".1"/>
+    </linearGradient>
+    <linearGradient id="linearGradient-5" x1="50%" x2="50%" y1="100%" y2="0%">
+      <stop offset="0%" stop-color="gray" stop-opacity=".25"/>
+      <stop offset="54%" stop-color="gray" stop-opacity=".12"/>
+      <stop offset="100%" stop-color="gray" stop-opacity=".1"/>
+    </linearGradient>
+    <linearGradient id="linearGradient-6" x1="50.004%" x2="50.004%" y1="100.032%" y2=".016%">
+      <stop offset="0%" stop-color="gray" stop-opacity=".25"/>
+      <stop offset="54%" stop-color="gray" stop-opacity=".12"/>
+      <stop offset="100%" stop-color="gray" stop-opacity=".1"/>
+    </linearGradient>
+  </defs>
+  <g fill="none" fill-rule="evenodd" class="page_1">
+    <g class="s_image_text">
+      <polygon fill="url(#linearGradient-1)" fill-rule="nonzero" points="33 201.685 40.356 224.312 153.998 574 698 396.315 584.358 46.627 577.01 24" class="path"/>
+      <polygon fill="#3AADAA" fill-rule="nonzero" points="16 236.693 22.96 258.105 130.639 589 657 417.307 549.322 86.404 542.361 65" class="path"/>
+      <polygon fill="#F5F5F5" fill-rule="nonzero" points="33.287 117.921 586.553 118.008 586.557 140.5 33.291 140.412" class="path" transform="rotate(-18.072 309.922 129.21)"/>
+      <polygon fill="#FFF" fill-rule="nonzero" points="81.365 130.873 644.309 130.961 644.365 480.873 81.421 480.786" class="path" transform="rotate(-18.02 362.865 305.873)"/>
+      <path fill="#FF5252" fill-rule="nonzero" d="M64.705 208.145a6 6 0 1 1-11.412 3.71 6 6 0 0 1 11.412-3.71z" class="path"/>
+      <path fill="#FF0" fill-rule="nonzero" d="M81.708 203.145a6 6 0 1 1-11.412 3.71 6 6 0 0 1 11.412-3.71z" class="path"/>
+      <path fill="#69F0AE" fill-rule="nonzero" d="M98.708 198.145a6 6 0 1 1-11.412 3.71 6 6 0 0 1 11.412-3.71z" class="path"/>
+      <polygon fill="url(#linearGradient-2)" fill-rule="nonzero" points="70.327 225.307 247.803 225.335 247.806 240.767 70.33 240.739" class="path" transform="rotate(-18.07 159.066 233.037)"/>
+      <polygon fill="#3AADAA" fill-rule="nonzero" points="70.772 225.979 246.965 226.007 246.967 238.867 70.774 238.839" class="path" transform="rotate(-18.07 158.87 232.423)"/>
+      <polygon fill="#3AADAA" fill-rule="nonzero" points="404.573 117.126 580.767 117.153 580.769 130.013 404.575 129.985" class="path" transform="rotate(-18.07 492.67 123.57)"/>
+      <polygon fill="#3AADAA" fill-rule="nonzero" points="404.573 117.126 580.767 117.153 580.769 130.013 404.575 129.985" class="path" opacity=".2" transform="rotate(-18.07 492.67 123.57)"/>
+      <polygon fill="#3AADAA" fill-rule="nonzero" points="100.796 334.188 108.515 334.189 108.516 341.905 100.797 341.904" class="path" opacity=".2" transform="rotate(-18.07 104.656 338.047)"/>
+      <polygon fill="#3AADAA" fill-rule="nonzero" points="598.44 171.909 606.159 171.91 606.16 179.626 598.441 179.625" class="path" opacity=".5" transform="rotate(-18.07 602.3 175.767)"/>
+      <path fill="#3AADAA" fill-rule="nonzero" d="M148.31 323.66a14 14 0 1 1-17.64-8.974c7.349-2.38 15.237 1.633 17.64 8.974z" class="path" opacity=".2"/>
+      <path fill="#3AADAA" fill-rule="nonzero" d="M586.32 181.697c2.374 7.355-1.661 15.243-9.014 17.62-7.353 2.378-15.242-1.654-17.622-9.008-2.38-7.353 1.649-15.244 9-17.627 7.359-2.376 15.25 1.658 17.635 9.015h.001z" class="path" opacity=".5"/>
+      <polygon fill="#3AADAA" fill-rule="nonzero" points="157.713 303.879 237.445 303.892 237.446 311.608 157.714 311.595" class="path" opacity=".5" transform="rotate(-18.07 197.58 307.744)"/>
+      <polygon fill="#3AADAA" fill-rule="nonzero" points="179.603 371.157 259.335 371.17 259.336 378.886 179.604 378.873" class="path" opacity=".8" transform="rotate(-18.07 219.47 375.022)"/>
+      <polygon fill="#3AADAA" fill-rule="nonzero" points="283.532 337.261 363.264 337.273 363.265 344.989 283.533 344.977" class="path" opacity=".7" transform="rotate(-18.07 323.398 341.125)"/>
+      <polygon fill="#3AADAA" fill-rule="nonzero" points="387.463 303.375 467.196 303.388 467.197 311.103 387.465 311.091" class="path" opacity=".5" transform="rotate(-18.07 427.33 307.239)"/>
+      <polygon fill="#3AADAA" fill-rule="nonzero" points="491.401 269.479 571.133 269.491 571.134 277.207 491.402 277.195" class="path" opacity=".2" transform="rotate(-18.07 531.267 273.343)"/>
+      <polygon fill="#3AADAA" fill-rule="nonzero" points="201.493 438.435 281.225 438.448 281.227 446.163 201.494 446.151" class="path" opacity=".8" transform="rotate(-18.07 241.36 442.299)"/>
+      <polygon fill="#3AADAA" fill-rule="nonzero" points="305.422 404.539 385.154 404.551 385.155 412.267 305.423 412.255" class="path" opacity=".7" transform="rotate(-18.07 345.289 408.403)"/>
+      <polygon fill="#3AADAA" fill-rule="nonzero" points="409.354 370.653 489.086 370.665 489.087 378.381 409.355 378.369" class="path" opacity=".5" transform="rotate(-18.07 449.22 374.517)"/>
+      <polygon fill="#3AADAA" fill-rule="nonzero" points="513.291 336.757 593.023 336.769 593.024 344.485 513.292 344.473" class="path" opacity=".2" transform="rotate(-18.07 553.158 340.621)"/>
+      <polygon fill="#3AADAA" fill-rule="nonzero" points="261.641 269.983 341.374 269.995 341.375 277.711 261.643 277.699" class="path" opacity=".2" transform="rotate(-18.07 301.508 273.847)"/>
+      <polygon fill="#3AADAA" fill-rule="nonzero" points="365.573 236.097 445.305 236.11 445.307 243.826 365.574 243.813" class="path" transform="rotate(-18.07 405.44 239.961)"/>
+      <polygon fill="#3AADAA" fill-rule="nonzero" points="469.502 202.212 549.234 202.224 549.236 209.94 469.503 209.928" class="path" opacity=".2" transform="rotate(-18.07 509.369 206.076)"/>
+      <polygon fill="url(#linearGradient-3)" fill-rule="nonzero" points="120.053 380.992 159.923 380.999 159.93 420.877 120.059 420.871" class="path" transform="rotate(-18.07 139.991 400.934)"/>
+      <polygon fill="url(#linearGradient-4)" fill-rule="nonzero" points="141.943 448.27 181.814 448.277 181.82 488.155 141.95 488.149" class="path" transform="rotate(-18.07 161.881 468.213)"/>
+      <polygon fill="#3AADAA" fill-rule="nonzero" points="121.985 382.924 157.992 382.929 157.997 418.946 121.991 418.94" class="path" transform="rotate(-18.07 139.991 400.935)"/>
+      <polygon fill="#3AADAA" fill-rule="nonzero" points="143.876 450.202 179.882 450.207 179.888 486.224 143.881 486.218" class="path" transform="rotate(-18.07 161.882 468.213)"/>
+      <path fill="url(#linearGradient-5)" fill-rule="nonzero" d="M220.26 0L0 71.168 33.748 173.89l31.377-10.14c.119 4.525-.093 18.722-7.338 22.252 0 0 15.362.493 24.885-27.926L254 102.721 220.26 0z" class="path"/>
+      <path fill="#3AADAA" fill-rule="nonzero" d="M214.245 6L7 73.354l31.755 97.177 29.526-9.592c.118 4.29-.093 17.718-6.906 21.062 0 0 14.451.459 23.419-26.432L246 103.211 214.245 6z" class="path"/>
+      <line x1="27.5" x2="27.5" y1="78.5" y2="78.5" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" class="path"/>
+      <line x1="29" x2="49" y1="82" y2="145" stroke="#FFF" stroke-dasharray="0" stroke-linecap="round" stroke-linejoin="round" class="path"/>
+      <line x1="50.5" x2="50.5" y1="147.5" y2="147.5" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" class="path"/>
+      <line x1="52" x2="225" y1="153" y2="97" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" class="path"/>
+      <line x1="55" x2="201" y1="132" y2="85" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" class="path" opacity=".3"/>
+      <line x1="48" x2="194" y1="114" y2="67" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" class="path" opacity=".3"/>
+      <line x1="43" x2="189" y1="96" y2="49" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" class="path" opacity=".3"/>
+      <line x1="37" x2="183" y1="77" y2="30" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" class="path" opacity=".3"/>
+      <path fill="#FFF" fill-rule="nonzero" d="M84.067 124.034a3.028 3.028 0 0 1-.06-.848 5.22 5.22 0 0 1 4.404-4.749l.629-.127c4.114-1.026 8.338-2.543 11.11-5.74 4.351-5.087 3.85-12.812 3.102-19.07-.274-1.971 0-3.98.79-5.807 2.695-5.936 8.628-4.393 13.685-4.647 8.697-.646 15.9-6.988 17.621-15.516.629-3.562.23-7.233.74-10.811a21.377 21.377 0 0 1 6.893-12.795c3.825-3.392 8.78-5.325 13.54-6.978a33.736 33.736 0 0 1 11.824-1.942h.213a17.286 17.286 0 0 1 15.495 11.125c1.054 2.721 1.955 5.502 2.899 8.385 5.21 15.992 10.03 30.745 16.048 49.263-7.395 2.34-24.735 7.979-27.107 8.75l-25.865 8.42c-17.247 5.613-33.737 11.515-52.973 17.246-3.97 1.179 0 0-8.619 2.807-1.53-4.646-1.606-4.867-4.369-16.966z" class="path" opacity=".2"/>
+      <polygon fill="#6C63FF" fill-rule="nonzero" points="55.472 202.681 273.947 202.715 273.948 207.856 55.472 207.821" class="path" opacity=".1" transform="rotate(-18.072 164.71 205.268)"/>
+      <path fill="url(#linearGradient-6)" fill-rule="nonzero" d="M761 309.9L716.281 172l-64.646 21.125 6.37 19.645c-2.848.076-11.797-.059-14.005-4.588 0 0-.311 9.616 17.57 15.573L696.361 331 761 309.9z" class="path"/>
+      <path fill="#3AADAA" fill-rule="nonzero" d="M755 305.275L713.71 177l-59.643 19.683 5.862 18.277c-2.63.068-10.886-.05-12.93-4.23 0 0-.283 8.944 16.221 14.486L695.34 325 755 305.275z" class="path"/>
+      <line x1="710.5" x2="710.5" y1="190.5" y2="190.5" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" class="path"/>
+      <line x1="708" x2="671" y1="192" y2="204" stroke="#FFF" stroke-dasharray="0" stroke-linecap="round" stroke-linejoin="round" class="path"/>
+      <line x1="670.5" x2="670.5" y1="203.5" y2="203.5" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" class="path"/>
+      <line x1="665" x2="699" y1="205" y2="311" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" class="path"/>
+      <line x1="678" x2="707" y1="208" y2="297" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" class="path" opacity=".3"/>
+      <line x1="689" x2="718" y1="203" y2="292" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" class="path" opacity=".3"/>
+      <line x1="700" x2="729" y1="201" y2="290" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" class="path" opacity=".3"/>
+      <line x1="712" x2="741" y1="197" y2="286" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" class="path" opacity=".3"/>
+      <path fill="#FFF" fill-rule="nonzero" d="M683.245 226.017c.163-.023.329-.023.492 0 1.458.116 2.646 1.235 2.87 2.703 0 .161.05.288.075.382.617 2.542 1.527 5.084 3.462 6.78 3.054 2.669 7.742 2.364 11.522 1.898a6.473 6.473 0 0 1 3.512.483c3.57 1.695 2.653 5.296 2.803 8.39.375 5.335 4.208 9.762 9.369 10.822 2.152.39 4.372.135 6.532.457 2.987.45 5.723 1.95 7.734 4.237 2.052 2.348 3.22 5.382 4.213 8.306a20.975 20.975 0 0 1 1.168 7.254v.085c-.163 4.251-2.81 7.993-6.724 9.508-1.669.644-3.337 1.203-5.072 1.78L695.434 299c-1.41-4.542-4.814-15.178-5.281-16.627-1.777-5.543-3.337-10.322-5.081-15.873-3.387-10.576-6.95-20.695-10.403-32.492-.71-2.432 0 0-1.669-5.288 2.803-.966 2.937-1.008 10.245-2.703z" class="path" opacity=".2"/>
+      <polygon fill="#3AADAA" fill-rule="nonzero" points="621.337 210.542 627.766 210.543 627.787 344.32 621.359 344.319" class="path" opacity=".1" transform="rotate(-18.07 624.562 277.431)"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,160 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_buzzy
+# 
+# Translators:
+# Vasiliy Korobatov <korobatov@gmail.com>, 2023
+# Collex100, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:21+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Collex100, 2024\n"
+"Language-Team: Russian (https://app.transifex.com/odoo/teams/41243/ru/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ru\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_call_to_action
+msgid "<b>Start to build</b> your robust activity with these powerful tools"
+msgstr ""
+"<b>Начните строить</b> свою активную деятельность с помощью этих мощных "
+"инструментов"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_image_text
+msgid "A new open world"
+msgstr "Новый открытый мир"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_three_columns
+msgid "All data <br/>in your hands"
+msgstr "Все данные <br/>в ваших руках"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_cover
+msgid ""
+"Bring the best for your team, start the journey with our amazing tools "
+"<br/>and collaborate no matter where you are."
+msgstr ""
+"Принесите лучшее своей команде, начните путешествие с нашими удивительными "
+"инструментами <br/>и сотрудничайте, где бы вы ни находились."
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_three_columns
+msgid "Built to <br/>your effigy"
+msgstr "Построенный для <br/>вашего чучела"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_three_columns
+msgid ""
+"Don't miss any data anymore and get all reports you need when and where you "
+"want. Analyze them easily with our friendly interface and grow your "
+"activity."
+msgstr ""
+"Больше не пропускайте данные и получайте все необходимые отчеты, когда и где"
+" вам удобно. Анализируйте их с помощью нашего удобного интерфейса и "
+"развивайте свою деятельность."
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_three_columns
+msgid "Editable from <br/>A to Z"
+msgstr "Редактируется с сайта <br/>от А до Я"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_banner
+msgid "Every clever company deserve to work with clever tools."
+msgstr ""
+"Каждая умная компания заслуживает того, чтобы работать с умными "
+"инструментами."
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_cover
+msgid "Faster, lighter and more powerful"
+msgstr "Быстрее, легче и мощнее"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_three_columns
+msgid ""
+"Feel free to edit your content the way like you want. You don't need to know"
+" any technical and complex computer language. You will helped by our "
+"intuitive tools."
+msgstr ""
+"Не стесняйтесь редактировать свой контент по своему усмотрению. Вам не нужно"
+" знать никаких технических и сложных компьютерных языков. Вам помогут наши "
+"интуитивно понятные инструменты."
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_image_text
+msgid "Get what you want, where and when you want."
+msgstr "Получайте то, что хотите, где и когда хотите."
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_banner
+msgid "Great software <br/>for great people"
+msgstr "Отличное программное обеспечение <br/>для отличных людей"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_text_image
+msgid "Improve your efficiency"
+msgstr "Повысьте свою эффективность"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_title
+msgid "Increase your productivity"
+msgstr "Повысьте свою производительность"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_text_image
+msgid ""
+"It's not that easy to be efficient if we don't have the correct tools than "
+"we need. Can you imagine Batman saving Gotham City without his bat-tools?"
+msgstr ""
+"Не так-то просто быть эффективным, если у нас нет нужных инструментов. "
+"Можете ли вы представить себе Бэтмена, спасающего Готэм-сити без своих "
+"инструментов?"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_call_to_action
+msgid "Make your company a better place."
+msgstr "Сделайте свою компанию лучше."
+
+#. module: theme_buzzy
+#: model:ir.model,name:theme_buzzy.model_theme_utils
+msgid "Theme Utils"
+msgstr "Утилиты темы"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_text_image
+msgid "There is no magic, it's time to get the tools you deserve."
+msgstr ""
+"Волшебства не существует, пришло время получить инструменты, которых вы "
+"заслуживаете."
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_image_text
+msgid ""
+"Working at the office is good, but working where we want without distraction"
+" is better. With our Cloud service accessing to your data has never been so "
+"easy."
+msgstr ""
+"Работать в офисе - хорошо, но работать там, где хочется, не отвлекаясь, - "
+"еще лучше. С нашим облачным сервисом доступ к вашим данным еще никогда не "
+"был таким простым."
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_three_columns
+msgid ""
+"You will always find the ideal choice adapted to your needs. From the basic "
+"website based on our attractive templates to the tailor-made website "
+"reflecting your company's values."
+msgstr ""
+"Вы всегда найдете идеальный вариант, соответствующий вашим потребностям. От "
+"базового сайта на основе наших привлекательных шаблонов до сайта, созданного"
+" по индивидуальному заказу и отражающего ценности вашей компании."

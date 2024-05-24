@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_numbers" inherit_id="website.s_numbers">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pt200 pb200 oe_img_bg o_bg_img_center o_cc4" remove="pt24 pb24 o_cc2" separator=" "/>
+        <attribute name="style">background-image:url('/web_editor/shape/theme_odoo_experts/s_numbers.svg?c1=o-color-1');</attribute>
+    </xpath>
+    <!-- Numbers -->
+    <xpath expr="//span[hasclass('s_number')]" position="replace" mode="inner">
+        <b>12</b>
+    </xpath>
+    <xpath expr="(//span[hasclass('s_number')])[2]" position="replace" mode="inner">
+        <b>45</b>
+    </xpath>
+    <xpath expr="(//span[hasclass('s_number')])[3]" position="replace" mode="inner">
+        <b>8</b>
+    </xpath>
+    <xpath expr="(//span[hasclass('s_number')])[4]" position="replace" mode="inner">
+        <b>37</b>
+    </xpath>
+</template>
+
+<template id="configurator_s_numbers" inherit_id="website.configurator_s_numbers">
+    <!-- Shape option -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Origins/16","flip":[]}</attribute>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Origins_16"/>
+    </xpath>
+</template>
+
+</odoo>

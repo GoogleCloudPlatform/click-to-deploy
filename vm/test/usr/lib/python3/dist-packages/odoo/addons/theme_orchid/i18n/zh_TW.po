@@ -1,0 +1,133 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_orchid
+# 
+# Translators:
+# Wil Odoo, 2023
+# Tony Ng, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Tony Ng, 2024\n"
+"Language-Team: Chinese (Taiwan) (https://app.transifex.com/odoo/teams/41243/zh_TW/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: zh_TW\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_text_image
+msgid ""
+"<br/>\n"
+"        Deliver flowers to live up to your dedication for your loved ones."
+msgstr ""
+"<br/>\n"
+"        送上鮮花，對所愛的人貫徹付出。"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_quotes_carousel
+msgid ""
+"A small shop with a very large selection of roses. Nice prices and above all"
+" a very professional and friendly welcome."
+msgstr "這家小店的玫瑰品種非常豐富。價格優惠，最重要的是可作為非常專業和友善的歡迎。"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_quotes_carousel
+msgid ""
+"A wide range of high quality products and a warm welcome! I recommend this "
+"shop 200%!"
+msgstr "種類繁多的優質產品和熱情的接待，我 200% 推薦這家商店！"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_three_columns
+msgid ""
+"As we use local growers, our flowers last longer and smell better. Just like"
+" the event you want to celebrate with flowers!"
+msgstr "由於我們使用當地的種植者，我們的鮮花花期更長，氣味更芳香。就像您想用鮮花慶祝的活動一樣！"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_three_columns
+msgid "Bio Flowers"
+msgstr "生物花"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_three_columns
+msgid ""
+"Don't offer pesticides to your beloved one! By choosing our flowers, we "
+"guarantee you organic flowers."
+msgstr "不要向心愛的人送上殺蟲劑！選擇我們的鮮花，我們保證為您提供有機鮮花。"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_three_columns
+msgid "Eco-Friendly Packaging"
+msgstr "環保包裝"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_image_text
+msgid ""
+"From your local producer to your door, discover how we deliver our multiple "
+"sorts of flowers and bring you happiness."
+msgstr "從當地生產商到您家門口，了解我們如何送遞多種鮮花，並為您「送上」幸福。"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_cover
+msgid "Live life in full bloom"
+msgstr "讓生活精彩綻放"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_three_columns
+msgid "Local Producers"
+msgstr "本地生產商"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_text_image
+msgid "Our Mission"
+msgstr "我們的使命"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_image_text
+msgid "The Orchid Concept"
+msgstr "蘭花概念"
+
+#. module: theme_orchid
+#: model:ir.model,name:theme_orchid.model_theme_utils
+msgid "Theme Utils"
+msgstr "主題"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_call_to_action
+msgid "There are always flowers <br/>for those who want to see them."
+msgstr "有人想賞花？<br/>我們總能滿足需求"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_text_image
+msgid ""
+"To do so, we collaborate with local producers who care about the environment"
+" and cultivate their flowers with love."
+msgstr "為此，我們與當地的生產商合作，他們關心環境，用愛心培育鮮花。"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_quotes_carousel
+msgid ""
+"Very nice, colorful shop with many choices in the heart of a very pretty "
+"town."
+msgstr "在這個美麗小鎮的中心地帶，有一家非常漂亮、色彩繽紛、選擇眾多的商店。"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_three_columns
+msgid ""
+"We use 100% recycled materials. We believe the best gifts should also do "
+"good for the planet."
+msgstr "我們使用 100% 循環再造物料。我們相信，最好的禮物也應該對地球有益。"
+
+#. module: theme_orchid
+#. odoo-javascript
+#: code:addons/theme_orchid/static/src/js/tour.js:0
+#, python-format
+msgid "width"
+msgstr ""

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_quotes_carousel" inherit_id="website.s_quotes_carousel">
+    <!-- Slide #1 - Filter -->
+    <xpath expr="//div[hasclass('carousel-item')]//div[hasclass('container')]" position="before">
+        <div class="o_we_bg_filter bg-black-25"/>
+    </xpath>
+    <!-- Slide #2 - Filter -->
+    <xpath expr="//div[hasclass('carousel-item')][2]//div[hasclass('container')]" position="before">
+        <div class="o_we_bg_filter bg-black-25"/>
+    </xpath>
+    <!-- Slide #3 - Filter -->
+    <xpath expr="//div[hasclass('carousel-item')][3]//div[hasclass('container')]" position="before">
+        <div class="o_we_bg_filter bg-black-25"/>
+    </xpath>
+</template>
+
+</odoo>

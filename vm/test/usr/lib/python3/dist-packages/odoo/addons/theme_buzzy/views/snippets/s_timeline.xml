@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_timeline" inherit_id="website.s_timeline">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc o_cc2" separator=" "/>
+    </xpath>
+    <!-- Icon #1 -->
+    <xpath expr="//i" position="attributes">
+        <attribute name="class" add="bg-o-color-1" remove="bg-o-color-2" separator=" "/>
+    </xpath>
+    <!-- Icon #2 -->
+    <xpath expr="(//i)[2]" position="attributes">
+        <attribute name="class" add="bg-o-color-1" remove="bg-o-color-2" separator=" "/>
+    </xpath>
+    <!-- Icon #3 -->
+    <xpath expr="(//i)[3]" position="attributes">
+        <attribute name="class" add="bg-o-color-1" remove="bg-o-color-2" separator=" "/>
+    </xpath>
+    <!-- Icon #4 -->
+    <xpath expr="(//i)[4]" position="attributes">
+        <attribute name="class" add="bg-o-color-1" remove="bg-o-color-2" separator=" "/>
+    </xpath>
+</template>
+
+</odoo>

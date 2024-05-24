@@ -1,0 +1,141 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_enark
+# 
+# Translators:
+# Miku Laitinen <miku.laitinen@gmail.com>, 2023
+# Veikko Väätäjä <veikko.vaataja@gmail.com>, 2023
+# Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:21+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023\n"
+"Language-Team: Finnish (https://app.transifex.com/odoo/teams/41243/fi/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: fi\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_parallax
+msgid ""
+"<i>“One of the great beauties of architecture is that each time, it is like "
+"life starting all over again.”</i>"
+msgstr ""
+"<i>\"Yksi arkkitehtuurin hienouksista on se, että joka kerta se on kuin "
+"elämä alkaisi alusta.\"</i>"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_banner
+msgid "A Different Viewpoint."
+msgstr "Erilainen näkökulma."
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_call_to_action
+msgid "As <b>436 clients</b> before you, let’s work together"
+msgstr "Kuten <b>436 asiakasta</b> ennen sinua, tehdään työtä yhdessä"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_text_image
+msgid "Building Castle in Cloud"
+msgstr "Linnoituksen rakentaminen pilvessä"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_media_list
+msgid "Construction site"
+msgstr "Rakennustyömaa"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_picture
+msgid "Creating places that enhance the human experience."
+msgstr "Luodaan paikkoja, jotka parantavat ihmisen kokemusta."
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_banner
+msgid "Discover More"
+msgstr "Löydä lisää"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.enark_snippet_options
+msgid "Gradients"
+msgstr "Liukuvärit"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_media_list
+msgid "Know our clients."
+msgstr "Tunne asiakkaamme."
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_media_list
+msgid "Nature friendly"
+msgstr "Luontoystävällinen"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.enark_snippet_options
+msgid "None"
+msgstr "Ei mitään"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_media_list
+msgid ""
+"Our creations integrate and are in perfect harmony with their environment."
+msgstr ""
+"Luomuksemme integroituvat ympäristöönsä ja ovat täydellisessä sopusoinnussa "
+"sen kanssa."
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_media_list
+msgid ""
+"Our mastery of construction techniques has been built up over time through "
+"our close collaboration with the workers and our sustained presence on the "
+"construction sites."
+msgstr ""
+"Rakennustekniikoiden hallinta on kehittynyt ajan myötä tiiviissä "
+"yhteistyössä työntekijöiden kanssa ja jatkuvalla läsnäolollamme "
+"rakennustyömailla."
+
+#. module: theme_enark
+#: model:ir.model,name:theme_enark.model_theme_utils
+msgid "Theme Utils"
+msgstr "Teeman työkalut"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_picture
+msgid "We always put people and nature at the center of our projects."
+msgstr "Ihmiset ja luonto ovat aina projektiemme keskiössä."
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_media_list
+msgid ""
+"We always start by exploring our clients goals, priorities, lifestyle, and "
+"tastes."
+msgstr ""
+"Aloitamme aina tutkimalla asiakkaidemme tavoitteita, prioriteetteja, "
+"elämäntapaa ja makua."
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_banner
+msgid ""
+"We are a contemporary architecture firm working mainly in the residential, "
+"commercial and office sectors. Our projects are built all over the world, in"
+" urban and rural environments."
+msgstr ""
+"Olemme nykyaikainen arkkitehtitoimisto, joka työskentelee pääasiassa asuin-,"
+" liike- ja toimistosektorilla. Hankkeitamme rakennetaan ympäri maailmaa, "
+"kaupunki- ja maaseutuympäristöihin."
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_text_image
+msgid ""
+"When designing an architectural concept, we take into account the nine "
+"criteria that Zumthor considers to be important in creating an architectural"
+" atmosphere."
+msgstr ""
+"Arkkitehtonista konseptia suunnitellessamme otamme huomioon yhdeksän "
+"kriteeriä, joita Zumthor pitää tärkeinä arkkitehtonisen ilmapiirin "
+"luomisessa."
