@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -46,7 +46,8 @@ bash 'Configure NGINX' do
   user 'root'
   cwd '/etc/nginx'
   code <<-EOH
-  sed -i "/^.*include.*conf.d/a \ \ \ \ include /etc/nginx/sites-enabled/*.conf;" nginx.conf
+
+  grep "include /etc/nginx/sites-enabled" nginx.conf > /dev/null || sed -i "/^.*include.*conf.d/a \ \ \ \ include /etc/nginx/sites-enabled/*.conf;" nginx.conf
   sed -i 's/user \ nginx;/user www-data;/g' nginx.conf
 EOH
 end

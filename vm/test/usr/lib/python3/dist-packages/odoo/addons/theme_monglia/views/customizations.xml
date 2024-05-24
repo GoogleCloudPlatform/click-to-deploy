@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!-- ======== TITLE ======== -->
+<template id="s_title" inherit_id="website.s_title" name="Monglia s_title">
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc o_cc5" separator=" "/>
+    </xpath>
+    <xpath expr="//h2" position="replace">
+        <h2><font style="background-image: linear-gradient(135deg, var(--o-color-4) 25%, var(--o-color-1) 100%);" class="text-gradient">MAIN LINE UP</font></h2>
+    </xpath>
+</template>
+
+<!-- ======== Text ======== -->
+<template id="s_text_block" inherit_id="website.s_text_block" name="Monglia s_text_block">
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc5 pt0" remove="pt40" separator=" "/>
+    </xpath>
+    <xpath expr="//p" position="replace">
+        <p style="font-size:36px;">Kori Thill ■ Chana Smithwick ■ Cira Sherard ■ Elfriede Ogan ■ Mariko Yonker ■ Bella Maday ■ Shaneka Wilkerson ■ Raina Planck ■ Micaela Labonte ■ Chadwick Cottman ■ Emile Hornung ■ Genevie Mehaffey ■ Dottie Hinkson ■ Mariah Nurse ■ Velda Caster ■ Rossie Cranfield ■ Iva Madrid ■ Flossie Freitas ■ Tina Gregerson ■ Quiana Tassin </p>
+    </xpath>
+    <xpath expr="//p[2]" position="replace" />
+</template>
+
+<!-- ======== BANNER ======== -->
+ <template id="s_banner" inherit_id="website.s_banner" name="Monglia s_banner">
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_full_screen_height" separator=" "/>
+    </xpath>
+</template>
+
+<!-- ======== COVER ======== -->
+ <template id="s_cover" inherit_id="website.s_cover" name="Monglia s_cover">
+    <!-- Customize elements -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_full_screen_height o_cc o_cc5" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('o_we_bg_filter')]" position="replace">
+        <div class="o_we_bg_filter bg-black-25"/>
+    </xpath>
+    <xpath expr="//h1" position="replace">
+        <h1 style="text-align: left">X²O Festival</h1>
+    </xpath>
+    <xpath expr="//p[1]" position="replace">
+        <p class="lead" style="text-align: left">After a year's absence, the free and independent festival is back.</p>
+        <p class="lead" style="text-align: left">More than ever young talents are honoured on the big stage with more famous artists.</p>
+    </xpath>
+    <xpath expr="//p[3]" position="attributes">
+        <attribute name="style" add="text-align: left;" remove="text-align: center;" separator=";"/>
+    </xpath>
+    <xpath expr="//a[hasclass('btn')]" position="attributes">
+        <attribute name="class" add="btn-lg" separator=" "/>
+    </xpath>
+    <!-- Create column -->
+    <xpath expr="//div[hasclass('container')]" position="inside">
+        <div class="row">
+            <div class="o_colored_level col-lg-5"/>
+        </div>
+    </xpath>
+    <!-- Move all elements inside the new col -->
+    <xpath expr="//div[hasclass('col-lg-5')]" position="inside">
+        <xpath expr="//div[hasclass('container')]/h1" position="move"/>
+        <xpath expr="//div[hasclass('container')]/p"  position="move"/>
+        <xpath expr="//div[hasclass('container')]/p"  position="move"/>
+        <h2>21/22 December</h2><br/>
+        <xpath expr="//div[hasclass('container')]/p"  position="move"/>
+    </xpath>
+</template>
+
+<!-- ======== MEDIA LIST ======== -->
+ <template id="s_media_list" inherit_id="website.s_media_list" name="Monglia s_media_list">
+    <xpath expr="//div[hasclass('container')]/div/div[1]//h3" position="replace" mode="inner">
+        Old Town Road
+    </xpath>
+    <xpath expr="//div[hasclass('container')]/div/div[1]//p" position="replace" mode="inner">
+        Everyone knows The States is the home of country music, and they have the festivals to prove it. Grab your cowboy hat and boots because we've put together the best country bands in the USA.
+    </xpath>
+    <xpath expr="//div[hasclass('container')]/div/div[2]//h3" position="replace" mode="inner">
+        Smack My Band Up
+    </xpath>
+    <xpath expr="//div[hasclass('container')]/div/div[2]//p" position="replace" mode="inner">
+        Dj's and electro artists meet every year for the electro dance festival in the largest concert venue in Europe. Book your tickets now, there won't be room for everybody.
+    </xpath>
+    <xpath expr="//div[hasclass('container')]/div/div[3]//h3" position="replace" mode="inner">
+        Sodade Club
+    </xpath>
+    <xpath expr="//div[hasclass('container')]/div/div[3]//p" position="replace" mode="inner">
+        Sodade is a beautiful concept that is difficult to put into words, but can be experienced by enjoying the diverse range of music on offer.
+    </xpath>
+</template>
+
+<!-- ======== TEXT - IMAGE ======== -->
+ <template id="s_text_image" inherit_id="website.s_text_image" name="Monglia s_text_image">
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pt56 pb40 o_cc o_cc1" remove="pt32 pb32" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-6')]" position="attributes">
+        <attribute name="class" remove="col-lg-6" add="col-lg-5 offset-lg-1" separator=" "/>
+    </xpath>
+    <xpath expr="//img" position="attributes">
+        <attribute name="src">/web_editor/image_shape/website.s_text_image_default_image/web_editor/geometric/geo_square_3.svg</attribute>
+        <attribute name="data-shape">web_editor/geometric/geo_square_3</attribute>
+        <attribute name="data-original-mimetype">image/jpeg</attribute>
+        <attribute name="data-file-name">s_text_image.svg</attribute>
+        <attribute name="data-shape-colors">;;;;</attribute>
+    </xpath>
+    <xpath expr="//h2" position="replace" mode="inner">
+        <font style="background-image: linear-gradient(135deg, var(--o-color-1) 25%, var(--o-color-2) 100%);" class="text-gradient">Music is magic</font>
+    </xpath>
+    <xpath expr="//p" position="replace" mode="inner">
+        Open 24/7, the club welcomes you and your friends in a relaxed and friendly atmosphere.
+    </xpath>
+    <xpath expr="//p[2]" position="replace"/>
+    <xpath expr="//a" position="replace">
+        <a href="/contactus" class="btn btn-primary">Learn more</a>
+    </xpath>
+</template>
+
+<template id="configurator_s_text_image" inherit_id="website.configurator_s_text_image" name="Monglia s_text_image">
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Blocks/04","flip":["y"]}</attribute>
+    </xpath>
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Blocks_04 o_second_extra_shape_mapping" style="background-image: url('/web_editor/shape/web_editor/Blocks/04.svg?c1=o-color-1&amp;c2=o-color-2&amp;c3=o-color-3&amp;c5=o-color-5&amp;flip=y'); background-position: 50% 0%;"/>
+    </xpath>
+</template>
+
+<!-- ======== IMAGE - TEXT ======== -->
+<template id="s_image_text" inherit_id="website.s_image_text" name="Monglia s_image_text">
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc o_cc2 pt104 pb104" remove="pt32 pb32" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-6')][2]" position="attributes">
+        <attribute name="class" remove="col-lg-6" add="col-lg-5 offset-lg-1" separator=" "/>
+    </xpath>
+    <xpath expr="//h2" position="replace" mode="inner">
+        <font style="background-image: linear-gradient(135deg, var(--o-color-1) 25%, var(--o-color-2) 100%);" class="text-gradient">Mixology</font>
+    </xpath>
+    <xpath expr="//p" position="replace" mode="inner">
+        Every evening, renowned mixologists take turns preparing the best cocktails for you. Drink responsibly.
+    </xpath>
+    <xpath expr="//p[2]" position="replace"/>
+    <xpath expr="//img" position="attributes">
+        <attribute name="src">/web_editor/image_shape/website.s_image_text_default_image/web_editor/geometric/geo_square_6.svg</attribute>
+        <attribute name="data-shape">web_editor/geometric/geo_square_6</attribute>
+        <attribute name="data-original-mimetype">image/jpeg</attribute>
+        <attribute name="data-file-name">s_image_text.svg</attribute>
+        <attribute name="data-shape-colors">;;;;</attribute>
+    </xpath>
+</template>
+
+<!-- ======== CAROUSEL ======== -->
+ <template id="s_carousel" inherit_id="website.s_carousel" name="Monglia s_carousel">
+    <xpath expr="//h2" position="replace" mode="inner">
+        Martina Clarck
+    </xpath>
+    <xpath expr="//p" position="replace">
+        <p class="lead">This is the first full-length studio release in seven years for the British singer-songwriter.</p>
+    </xpath>
+    <xpath expr="//a" position="replace">
+        <a href="/contactus" class="btn btn-primary">Discover</a>
+    </xpath>
+</template>
+
+<!-- ======== QUOTES ======== -->
+ <template id="s_quotes_carousel" inherit_id="website.s_quotes_carousel" name="Monglia s_quotes_carousel">
+    <!-- Assign slide3 as 'active' and move it in first position -->
+    <xpath expr="//div[hasclass('carousel-inner')]/div" position="attributes">
+        <attribute name="class" remove="active" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('carousel-inner')]/div[3]" position="attributes">
+        <attribute name="class" add="active" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('carousel-inner')]/div" position="before">
+        <xpath expr="//div[hasclass('carousel-inner')]/div[3]" position="move"/>
+    </xpath>
+</template>
+
+<!-- ======== CALL TO ACTION ======== -->
+<template id="s_call_to_action" inherit_id="website.s_call_to_action" name="Monglia s_call_to_action">
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc4" remove="o_cc3" separator=" "/>
+    </xpath>
+    <xpath expr="//h3" position="replace">
+        <h3 style="text-align: left;"><b>APPLY FOR OUR V.I.P. CARD</b></h3>
+    </xpath>
+    <xpath expr="//p" position="replace">
+        <p style="text-align: left;">The vip card allows you to benefit from tickets before everyone else.</p>
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-9')]" position="attributes">
+        <attribute name="class" add="pt8" separator=" "/>
+    </xpath>
+</template>
+
+<!-- ======== 3-COLUMNS ======== -->
+<template id="s_three_columns" inherit_id="website.s_three_columns">
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pb0 o_cc5" remove="pb32 o_cc2" separator=" "/>
+    </xpath>
+    <xpath expr="//h3" position="replace" mode="inner">
+        Wilson Holt
+    </xpath>
+    <xpath expr="(//h3)[2]" position="replace" mode="inner">
+        Theia Hayward
+    </xpath>
+    <xpath expr="(//h3)[3]" position="replace" mode="inner">
+        Bruce Porter
+    </xpath>
+</template>
+
+<template id="configurator_s_three_columns" inherit_id="website.configurator_s_three_columns">
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Blocks/04","flip":[]}</attribute>
+    </xpath>
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Blocks_04"></div>
+    </xpath>
+</template>
+
+<!-- ======== GALLERY ======== -->
+<template id="s_images_wall" inherit_id="website.s_images_wall">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc2 o_spc-medium" remove="o_cc5 o_spc-small" separator=" "/>
+    </xpath>
+    <!-- Image -->
+    <xpath expr="//img" position="attributes">
+        <attribute name="class" add="rounded" separator=" "/>
+    </xpath>
+    <xpath expr="(//img)[2]" position="attributes">
+        <attribute name="class" add="rounded" separator=" "/>
+    </xpath>
+    <xpath expr="(//img)[3]" position="attributes">
+        <attribute name="class" add="rounded" separator=" "/>
+    </xpath>
+    <xpath expr="(//img)[4]" position="attributes">
+        <attribute name="class" add="rounded" separator=" "/>
+    </xpath>
+    <xpath expr="(//img)[5]" position="attributes">
+        <attribute name="class" add="rounded" separator=" "/>
+    </xpath>
+    <xpath expr="(//img)[6]" position="attributes">
+        <attribute name="class" add="rounded" separator=" "/>
+    </xpath>
+</template>
+
+</odoo>

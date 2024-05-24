@@ -1,0 +1,154 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_buzzy
+# 
+# Translators:
+# Wil Odoo, 2023
+# Rasareeyar Lappiam, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:21+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Rasareeyar Lappiam, 2024\n"
+"Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: th\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_call_to_action
+msgid "<b>Start to build</b> your robust activity with these powerful tools"
+msgstr ""
+"<b>เริ่มต้นสร้าง</b>กิจกรรมที่มีประสิทธิภาพของคุณด้วยเครื่องมืออันทรงพลังเหล่านี้"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_image_text
+msgid "A new open world"
+msgstr "เปิดโลกใหม่"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_three_columns
+msgid "All data <br/>in your hands"
+msgstr "ข้อมูลทั้งหมด<br/>ในมือของคุณ"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_cover
+msgid ""
+"Bring the best for your team, start the journey with our amazing tools "
+"<br/>and collaborate no matter where you are."
+msgstr ""
+"นำสิ่งที่ดีที่สุดมาสู่ทีมของคุณ เริ่มต้นการเดินทางด้วยเครื่องมือของเรา "
+"<br/>และทำงานร่วมกันได้ทุกที่"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_three_columns
+msgid "Built to <br/>your effigy"
+msgstr "สร้างมาเพื่อ"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_three_columns
+msgid ""
+"Don't miss any data anymore and get all reports you need when and where you "
+"want. Analyze them easily with our friendly interface and grow your "
+"activity."
+msgstr ""
+"ไม่พลาดข้อมูลอีกต่อไปและรับรายงานทั้งหมดที่คุณต้องการทุกที่ทุกเวลาที่คุณต้องการ"
+" "
+"วิเคราะห์ได้อย่างง่ายดายด้วยอินเทอร์เฟซที่เป็นมิตรของเราและทำให้กิจกรรมของคุณเติบโต"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_three_columns
+msgid "Editable from <br/>A to Z"
+msgstr "แก้ไขได้จาก<br/> A ถึง Z"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_banner
+msgid "Every clever company deserve to work with clever tools."
+msgstr "บริษัทที่ชาญฉลาดทุกแห่งสมควรที่จะทำงานกับเครื่องมืออันชาญฉลาด"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_cover
+msgid "Faster, lighter and more powerful"
+msgstr "เร็วขึ้น เบาขึ้น และทรงพลังยิ่งขึ้น"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_three_columns
+msgid ""
+"Feel free to edit your content the way like you want. You don't need to know"
+" any technical and complex computer language. You will helped by our "
+"intuitive tools."
+msgstr ""
+"คุณสามารถแก้ไขเนื้อหาของคุณได้ตามที่คุณต้องการ "
+"คุณไม่จำเป็นต้องรู้ภาษาคอมพิวเตอร์ทางเทคนิคและซับซ้อนใดๆ "
+"คุณจะได้รับความช่วยเหลือจากเครื่องมือที่ใช้งานง่ายของเรา"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_image_text
+msgid "Get what you want, where and when you want."
+msgstr "ได้รับสิ่งที่คุณต้องการ ที่ไหน และเมื่อไหร่ก็ได้ที่คุณต้องการ"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_banner
+msgid "Great software <br/>for great people"
+msgstr "ซอฟต์แวร์ที่ยอดเยี่ยม<br/>สำหรับคนเก่งๆ"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_text_image
+msgid "Improve your efficiency"
+msgstr "ปรับปรุงประสิทธิภาพของคุณ"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_title
+msgid "Increase your productivity"
+msgstr "เพิ่มประสิทธิภาพของคุณ"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_text_image
+msgid ""
+"It's not that easy to be efficient if we don't have the correct tools than "
+"we need. Can you imagine Batman saving Gotham City without his bat-tools?"
+msgstr ""
+"มันไม่ง่ายเลยที่จะมีประสิทธิภาพถ้าเราไม่มีเครื่องมือที่ถูกต้องตามที่เราต้องการ"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_call_to_action
+msgid "Make your company a better place."
+msgstr "ทำให้บริษัทของคุณเป็นสถานที่ที่ดีขึ้น"
+
+#. module: theme_buzzy
+#: model:ir.model,name:theme_buzzy.model_theme_utils
+msgid "Theme Utils"
+msgstr "ยูทิลิตี้ธีม"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_text_image
+msgid "There is no magic, it's time to get the tools you deserve."
+msgstr ""
+"ไม่จำเป็นต้องเสกคาถาอะไร ถึงเวลาแล้วที่คุณจะได้รับเครื่องมือที่คุณสมควรได้"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_image_text
+msgid ""
+"Working at the office is good, but working where we want without distraction"
+" is better. With our Cloud service accessing to your data has never been so "
+"easy."
+msgstr ""
+"การทำงานที่ออฟฟิศเป็นสิ่งที่ดี "
+"แต่การทำงานในที่ที่เราต้องการโดยไม่วอกแวกนั้นดีกว่า ด้วยบริการคลาวด์ของเรา "
+"การเข้าถึงข้อมูลของคุณไม่เคยง่ายขนาดนี้มาก่อน"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_three_columns
+msgid ""
+"You will always find the ideal choice adapted to your needs. From the basic "
+"website based on our attractive templates to the tailor-made website "
+"reflecting your company's values."
+msgstr ""
+"คุณจะพบกับตัวเลือกที่เหมาะสมที่สุดที่ปรับให้เหมาะกับความต้องการของคุณเสมอ "
+"ตั้งแต่เว็บไซต์พื้นฐานที่ใช้เทมเพลตที่น่าสนใจของเรา "
+"ไปจนถึงเว็บไซต์ที่ออกแบบตามความต้องการซึ่งสะท้อนถึงค่านิยมของบริษัทของคุณ"

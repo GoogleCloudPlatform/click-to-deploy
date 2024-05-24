@@ -1,0 +1,117 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_cobalt
+# 
+# Translators:
+# Wil Odoo, 2023
+# Tony Ng, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Tony Ng, 2024\n"
+"Language-Team: Chinese (Taiwan) (https://app.transifex.com/odoo/teams/41243/zh_TW/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: zh_TW\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_picture
+msgid "<em>Our office in Dhaka</em>"
+msgstr "<u>達卡辦事處</u>"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_color_blocks_2
+msgid ""
+"Are you a startup or a seasoned company looking for a new brand identity?"
+msgstr "您是一家初創公司，還是一家正在尋找新品牌標識的老牌公司?"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_color_blocks_2
+msgid "Are you an established brand looking for ongoing creative services?"
+msgstr "您是正在尋求持續創意服務的知名品牌嗎?"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_banner
+msgid ""
+"Building game-changing digital experiences designed to set your brand apart."
+msgstr "打造改變遊戲規則的數字體驗，讓您的品牌與眾不同."
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_text_image
+msgid "Digital Transformation"
+msgstr "數碼轉型"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_three_columns
+msgid "Latest projects"
+msgstr "側邊欄或頁腳的小部件，用簡短的摘錄顯示您的最新項目."
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_text_image
+msgid ""
+"Leader in digital business, we’re helping companies of all sizes to thrive "
+"in an ever-changing landscape."
+msgstr "作為數字業務領域的領導者，我們幫助各種規模的公司在不斷變化的環境中茁壯成長."
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_banner
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_image_text
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_text_image
+msgid "Marketing"
+msgstr "市場推廣"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_title
+msgid "Projects"
+msgstr "專案"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_call_to_action
+msgid "START NOW"
+msgstr "現在開始"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_image_text
+msgid "Strategy synchronising multiple channels"
+msgstr "多渠道同步策略"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_banner
+msgid "The ultimate marketing platform for brands"
+msgstr "品牌的終極營銷平台"
+
+#. module: theme_cobalt
+#: model:ir.model,name:theme_cobalt.model_theme_utils
+msgid "Theme Utils"
+msgstr "主題"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_image_text
+msgid ""
+"We create a consistent customer experience through a detailed digital "
+"strategy built on precise customer research."
+msgstr "我們通過建立在精確客戶研究基礎上的詳細數字戰略，創造始終如一的客戶體驗."
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_text_image
+msgid ""
+"We have collected solid experience in building native and cross-platform "
+"mobile applications and websites. Check our portfolio from clients around "
+"the world."
+msgstr "我們在構建本地和跨平台移動應用程序和網站方面積累了豐富的經驗。請查看我們來自世界各地客戶的作品集."
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_text_image
+msgid "Web &amp; App Development"
+msgstr "網頁及應用程式開發"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_text_image
+msgid "What we can do, <b>for you</b><br/>"
+msgstr "我們能<b>為您</b>做什麼<br/>"

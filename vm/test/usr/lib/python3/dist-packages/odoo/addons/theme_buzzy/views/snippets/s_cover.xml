@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_cover" inherit_id="website.s_cover">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc o_cc5 pt112 pb112" remove="pt96 pb96 bg-black-50" separator=" "/>
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Airy/03_001","flip":[]}</attribute>
+    </xpath>
+    <!-- Filter -->
+    <xpath expr="//div[hasclass('o_we_bg_filter')]" position="replace">
+        <div class="o_we_bg_filter" style="background-color: rgba(52,54,67,0.75) !important;"/>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//div[hasclass('o_we_bg_filter')]" position="after">
+        <div class="o_we_shape o_web_editor_Airy_03_001"/>
+    </xpath>
+    <!-- Title -->
+    <xpath expr="//h1" position="replace" mode="inner">
+        Faster, lighter and more powerful
+    </xpath>
+    <xpath expr="//h1" position="after">
+        <p><br/></p>
+    </xpath>
+    <!-- Paragraph -->
+    <xpath expr="//p[2]" position="replace" mode="inner">
+        Bring the best for your team, start the journey with our amazing tools <br/>and collaborate no matter where you are.
+    </xpath>
+</template>
+
+</odoo>

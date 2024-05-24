@@ -1,0 +1,68 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * theme_treehouse
+# 
+# Translators:
+# e2f <projects@e2f.com>, 2019
+# Xia Fajin <xia.fajin@elico-corp.com>, 2019
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-04-24 08:54+0000\n"
+"PO-Revision-Date: 2019-04-24 11:21+0000\n"
+"Last-Translator: Xia Fajin <xia.fajin@elico-corp.com>, 2019\n"
+"Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: zh_CN\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.preheader
+msgid "<i class=\"fa fa-envelope fa-1x\"/>Contact"
+msgstr ""
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.preheader
+msgid "<i class=\"fa fa-map-marker fa-1x\"/>Meet us"
+msgstr ""
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.treehouse_options
+msgid "<i class=\"fa fa-paint-brush\"/>Style"
+msgstr ""
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.preheader
+msgid "<i class=\"fa fa-plus-circle\"/>Add..."
+msgstr ""
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.treehouse_options
+msgid "Boxed"
+msgstr "盒装的"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.treehouse_options
+msgid "Muted"
+msgstr ""
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_share_extended
+msgid ""
+"Share\n"
+"                    <i class=\"text-muted fa fa-hand-o-right fa-1x\"/>"
+msgstr ""
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.treehouse_options
+msgid "Underline"
+msgstr "下划线"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.treehouse_options
+msgid "Uppercase"
+msgstr ""

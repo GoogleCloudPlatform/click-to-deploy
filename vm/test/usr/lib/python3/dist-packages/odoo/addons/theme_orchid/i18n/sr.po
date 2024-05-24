@@ -1,0 +1,147 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_orchid
+# 
+# Translators:
+# コフスタジオ, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: コフスタジオ, 2024\n"
+"Language-Team: Serbian (https://app.transifex.com/odoo/teams/41243/sr/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: sr\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_text_image
+msgid ""
+"<br/>\n"
+"        Deliver flowers to live up to your dedication for your loved ones."
+msgstr ""
+"<br/>\n"
+"            Isporučite cveće kako biste ispunili svoju posvećenost prema voljenima."
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_quotes_carousel
+msgid ""
+"A small shop with a very large selection of roses. Nice prices and above all"
+" a very professional and friendly welcome."
+msgstr ""
+"Mali prodavnica sa veoma velikim izborom ruža. Lepi cene i pre svega veoma "
+"profesionalan i prijateljski doček."
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_quotes_carousel
+msgid ""
+"A wide range of high quality products and a warm welcome! I recommend this "
+"shop 200%!"
+msgstr ""
+"Širok spektar visokokvalitetnih proizvoda i srdačna dobrodošlica! "
+"Preporučujem ovu prodavnicu 200%!"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_three_columns
+msgid ""
+"As we use local growers, our flowers last longer and smell better. Just like"
+" the event you want to celebrate with flowers!"
+msgstr ""
+"Kao što koristimo lokalne uzgajivače, naši cvetovi traju duže i lepše "
+"mirišu. Baš kao i događaj koji želite da proslavite sa cvećem!"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_three_columns
+msgid "Bio Flowers"
+msgstr "Bio Cveće"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_three_columns
+msgid ""
+"Don't offer pesticides to your beloved one! By choosing our flowers, we "
+"guarantee you organic flowers."
+msgstr ""
+"Nemojte nuditi pesticid svojoj voljenoj osobi! Odabirom našeg cveća, "
+"garantujemo vam organsko cveće."
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_three_columns
+msgid "Eco-Friendly Packaging"
+msgstr "Eko-prijateljsko pakovanje"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_image_text
+msgid ""
+"From your local producer to your door, discover how we deliver our multiple "
+"sorts of flowers and bring you happiness."
+msgstr ""
+"Od vašeg lokalnog proizvođača do vaših vrata, otkrijte kako dostavljamo naše"
+" različite vrste cveća i donosimo vam sreću."
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_cover
+msgid "Live life in full bloom"
+msgstr "Živi život u punom cvatu"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_three_columns
+msgid "Local Producers"
+msgstr "Lokalni proizvođači"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_text_image
+msgid "Our Mission"
+msgstr "Naša Misija"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_image_text
+msgid "The Orchid Concept"
+msgstr "Koncept orhideje"
+
+#. module: theme_orchid
+#: model:ir.model,name:theme_orchid.model_theme_utils
+msgid "Theme Utils"
+msgstr "Korišćenje teme"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_call_to_action
+msgid "There are always flowers <br/>for those who want to see them."
+msgstr "Uvek postoje cveće <br/>za one koji žele da ga vide."
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_text_image
+msgid ""
+"To do so, we collaborate with local producers who care about the environment"
+" and cultivate their flowers with love."
+msgstr ""
+"Da bismo to postigli, sarađujemo sa lokalnim proizvođačima koji brinu o "
+"životnoj sredini i uzgajaju svoje cveće sa ljubavlju."
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_quotes_carousel
+msgid ""
+"Very nice, colorful shop with many choices in the heart of a very pretty "
+"town."
+msgstr ""
+"Veoma lepa, šarena prodavnica sa mnogo izbora u srcu veoma lepog grada."
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_three_columns
+msgid ""
+"We use 100% recycled materials. We believe the best gifts should also do "
+"good for the planet."
+msgstr ""
+"Koristimo 100% reciklirane materijale. Verujemo da najbolji pokloni treba da"
+" čine dobro i za planetu."
+
+#. module: theme_orchid
+#. odoo-javascript
+#: code:addons/theme_orchid/static/src/js/tour.js:0
+#, python-format
+msgid "width"
+msgstr "širina"

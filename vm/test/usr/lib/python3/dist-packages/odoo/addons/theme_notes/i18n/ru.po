@@ -1,0 +1,405 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_notes
+# 
+# Translators:
+# Alena Vlasova, 2023
+# Сергей Шебанин <sergey@shebanin.ru>, 2023
+# Martin Trigaux, 2023
+# Vasiliy Korobatov <korobatov@gmail.com>, 2023
+# Wil Odoo, 2024
+# Collex100, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:22+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Collex100, 2024\n"
+"Language-Team: Russian (https://app.transifex.com/odoo/teams/41243/ru/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ru\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_catalog
+msgid "$109.50"
+msgstr "$109.50"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_catalog
+msgid "$115.50"
+msgstr "$115.50"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_catalog
+msgid "$19.00"
+msgstr "$19.00"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_catalog
+msgid "$25.00"
+msgstr "$25.00"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_catalog
+msgid "$59.00"
+msgstr "$59.00"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_catalog
+msgid "$65.00"
+msgstr "$65.00"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_masonry_block_default_template
+msgid "21th of August"
+msgstr "21 августа"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_masonry_block_default_template
+msgid "24th of August"
+msgstr "24 августа"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_masonry_block_default_template
+msgid "27th of August"
+msgstr "27 августа"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_masonry_block_default_template
+msgid "4th of September"
+msgstr "4 сентября"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_carousel
+msgid "6 Days Pass"
+msgstr "пропуск на 6 дней"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_cover
+msgid "<b>Discover <br/>the Miraillet Festival</b>"
+msgstr "<b>Откройте для себя <br/>фестиваль Miraillet</b>"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_media_list
+msgid ""
+"<br/>\n"
+"        Once again this year, the festival, with the support of the non-profit organisations that implement the necessary means to facilitate access to the event for people with reduced mobility and people affected by or carrying a disability."
+msgstr ""
+"<br/>\n"
+"        В этом году фестиваль вновь проходит при поддержке некоммерческих организаций, которые предоставляют необходимые средства для облегчения доступа на мероприятие людям с ограниченными возможностями передвижения и людям, страдающим или имеющим инвалидность."
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_media_list
+msgid ""
+"<br/>\n"
+"        Where and when to exchange your festival bracelets? Where to buy food and drink tickets? What is the price for children? The answer can be found here!"
+msgstr ""
+"<br/>\n"
+"        Где и когда можно обменять свои браслеты на фестивале? Где купить билеты на еду и напитки? Какова цена для детей? Ответ вы найдете здесь!"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_media_list
+msgid ""
+"<br/>\n"
+"        You will find here the different means of transport to get to the festival. The festival is accessible by bike. Be careful, you will be riding in the city centre where there are a lot of cars. Please make sure to park your bike in the designated areas of the city."
+msgstr ""
+"<br/>\n"
+"        Здесь вы найдете информацию о различных видах транспорта, на которых можно добраться до фестиваля. До фестиваля можно добраться на велосипеде. Будьте осторожны, вы будете ехать по центру города, где много машин. Пожалуйста, паркуйте велосипед в специально отведенных местах в городе."
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_text_image
+msgid "About the Festival"
+msgstr "О фестивале"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_company_team
+msgid "Aline"
+msgstr "Алин"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_company_team
+msgid ""
+"Aline is a French singer, songwriter and producer. In 2016, she was ranked "
+"as the most powerful and influential French person by Vanity Fair, who "
+"noticed her radiance of French genius."
+msgstr ""
+"Алин - французская певица, автор песен и продюсер. В 2016 году она вошла в "
+"рейтинг самых влиятельных и могущественных французов по версии Vanity Fair, "
+"который отметил ее сияние французского гения."
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_masonry_block_default_template
+msgid "Amsterdam"
+msgstr "Амстердам"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_numbers
+msgid "Artists from around the world"
+msgstr "Художники со всего мира"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_masonry_block_default_template
+msgid "Barcelona"
+msgstr "Барселона"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_masonry_block_default_template
+msgid "Brussels"
+msgstr "Брюссель"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_catalog
+msgid "Brussels edition"
+msgstr "Брюссельское издание"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_list
+msgid "CD Albums"
+msgstr "Альбомы на CD"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_list
+msgid "Caps"
+msgstr "Caps"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_text_image
+msgid "Discover more"
+msgstr "Узнать больше"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_carousel
+msgid ""
+"Discover what makes the reputation of the Miraillet festival through these "
+"after-movies."
+msgstr ""
+"Узнайте о том, что создает репутацию фестиваля Miraillet, посмотрев эти "
+"фильмы после съемок."
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_numbers
+msgid "Editions through the Europe"
+msgstr "Издания по Европе"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_banner
+msgid "Enjoy the atmosphere"
+msgstr "Наслаждайтесь атмосферой"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_carousel
+msgid ""
+"From the 12th to the 17th of August, come and enjoy the atmosphere at the "
+"Miraillet Festival. Discover the line up below."
+msgstr ""
+"С 12 по 17 августа приходите насладиться атмосферой фестиваля Miraillet. "
+"Ознакомьтесь с составом участников ниже."
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_call_to_action
+msgid "Get your ticket"
+msgstr "Получите билет"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_catalog
+msgid "Get your ticket now"
+msgstr "Получите билет прямо сейчас"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_media_list
+msgid "Go to the <br/>Miraillet Festival"
+msgstr "Посетите фестиваль <br/>Miraillet"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_list
+msgid "Hoodies"
+msgstr "Худи"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_call_to_action
+msgid "Join us and make this weekend unforgettable!"
+msgstr "Присоединяйтесь к нам и сделайте эти выходные незабываемыми!"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_company_team
+msgid "Joseris"
+msgstr "Джозерис"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_company_team
+msgid ""
+"Joseris is a Belgian band that formed in October 1995. Though originally "
+"categorised as a trip hop group, they quickly expanded their sound to the "
+"point where they could no longer be described as a lone genre, but rather "
+"encompass alternative, electronica, electro-pop, rock, and a mixture of "
+"others."
+msgstr ""
+"Joseris - бельгийская группа, образовавшаяся в октябре 1995 года. Изначально"
+" они классифицировались как трип-хоп группа, но быстро расширили свое "
+"звучание до такой степени, что их уже нельзя было отнести к какому-то одному"
+" жанру, а скорее они включали в себя альтернативу, электронику, электро-поп,"
+" рок и смесь других."
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_call_to_action
+msgid "Live the Miraillet <br/>Festival experience"
+msgstr "Почувствуйте себя участником фестиваля Miraillet <br/>"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_numbers
+msgid "Loyal partners"
+msgstr "Лояльные партнеры"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_company_team
+msgid "Mich Starck"
+msgstr "Миш Старк"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_company_team
+msgid ""
+"Mich Starck is a French DJ, record producer and songwriter. He has sold over"
+" nine million albums and thirty million singles worldwide. In 2011, he was "
+"voted as the number one DJ in the DJ Mag Top 100 DJs poll."
+msgstr ""
+"Миш Старк - французский диджей, продюсер и автор песен. Он продал более "
+"девяти миллионов альбомов и тридцати миллионов синглов по всему миру. В 2011"
+" году он был признан диджеем номер один в опросе DJ Mag Top 100 DJs."
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_carousel
+msgid "Miraillet Festival"
+msgstr "Фестиваль в Мирайе"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_carousel
+msgid "More Info"
+msgstr "Подробности"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_media_list
+msgid "More info"
+msgstr "Больше информации"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_masonry_block_default_template
+msgid "Paris"
+msgstr "Париж"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_catalog
+msgid "Paris edition"
+msgstr "Парижское издание"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_carousel
+msgid "Recent Editions"
+msgstr "Последние издания"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_catalog
+msgid "Regular ticket"
+msgstr "Обычный билет"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_catalog
+msgid "Regular ticket + hotel"
+msgstr "Обычный билет + отель"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_numbers
+msgid "Scenes outdoor &amp; indoor"
+msgstr "Сцены на открытом воздухе и в помещении"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_list
+msgid "Sunglasses"
+msgstr "Солнцезащитные очки"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_list
+msgid "T-shirts"
+msgstr "Футболки"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_image_text
+msgid "The History"
+msgstr "История"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_image_text
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_text_image
+msgid ""
+"The Miraillet Festival was born in 2002 from a common will of cultural, "
+"touristic and institutional actors of the region to propose a major cultural"
+" event in the very heart of the region during the summer period."
+msgstr ""
+"Фестиваль Miraillet родился в 2002 году благодаря общему желанию культурных,"
+" туристических и институциональных деятелей региона предложить крупное "
+"культурное событие в самом сердце региона в летний период."
+
+#. module: theme_notes
+#: model:ir.model,name:theme_notes.model_theme_utils
+msgid "Theme Utils"
+msgstr "Утилиты темы"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_media_list
+msgid "Ticketing <br/>&amp; timetables"
+msgstr "Билеты <br/> и расписание"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_carousel
+msgid ""
+"Tickets will be on sale soon. Do not miss our 6 Days Pass. Free camping!"
+msgstr ""
+"Билеты поступят в продажу в ближайшее время. Не пропустите наш 6-дневный "
+"абонемент. Бесплатный кемпинг!"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_company_team
+msgid "Tony"
+msgstr "Тони"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_company_team
+msgid ""
+"Tony is praised for the quality of his flow and beats but often criticised "
+"because of the controversial nature of his lyrics. He has also established a"
+" label, and developed a line of jewellery."
+msgstr ""
+"Тони хвалят за качество его потока и битов, но часто критикуют из-за "
+"противоречивого характера его текстов. Он также основал лейбл и разработал "
+"линию ювелирных украшений."
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_catalog
+msgid "Upcoming events"
+msgstr "Предстоящие события"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_catalog
+msgid "VIP ticket"
+msgstr "VIP-билет"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_list
+msgid "Vinyls"
+msgstr "Винилы"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_media_list
+msgid "Wheelchair <br/>accessibility"
+msgstr "Инвалидная коляска <br/>доступность"
+
+#. module: theme_notes
+#. odoo-javascript
+#: code:addons/theme_notes/static/src/js/tour.js:0
+#, python-format
+msgid "width"
+msgstr "ширина"
