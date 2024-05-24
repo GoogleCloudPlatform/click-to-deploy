@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!-- ==== Banner ===== -->
+<template id="s_banner" inherit_id="website.s_banner" name="Cobalt s_banner">
+    <!-- Content -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc o_cc2 pt152 pb128" remove="pt96 pb96" separator=" "/>
+    </xpath>
+    <!-- Row - remove grid mode -->
+    <xpath expr="//div[hasclass('row')]" position="attributes">
+        <attribute name="class" remove="o_grid_mode" separator=" "/>
+    </xpath>
+    <!-- Jumbotron -->
+    <xpath expr="//div[hasclass('col-lg-5')]" position="attributes">
+        <attribute name="class" add="col-lg-6" remove="o_grid_item g-height-4 g-col-lg-5 col-lg-5" separator=" "/>
+        <attribute name="style"/>
+    </xpath>
+    <!-- Remove grid images -->
+    <xpath expr="//div[hasclass('o_grid_item_image')]" position="replace"/>
+    <xpath expr="//div[hasclass('o_grid_item_image')]" position="replace"/>
+    <xpath expr="//div[hasclass('o_grid_item_image')]" position="replace"/>
+    <!-- Remove hr -->
+    <xpath expr="//div[hasclass('s_hr')]" position="replace"/>
+    <!-- Image -->
+    <xpath expr="//div[hasclass('col-lg-6')]" position="after">
+        <div class="pt16 pb16 o_colored_level col-lg-5 offset-lg-1">
+            <img src="/web_editor/shape/theme_cobalt/s_banner.svg?c1=o-color-1" style="width: 100%;" alt="Marketing"/>
+        </div>
+    </xpath>
+    <!-- Content -->
+    <xpath expr="//h1" position="attributes">
+        <attribute name="class" remove="display-1" separator=" "/>
+    </xpath>
+    <xpath expr="//h1" position="replace" mode="inner">
+        The ultimate marketing platform for brands
+    </xpath>
+    <xpath expr="//p" position="replace">
+        <p class="lead">Building game-changing digital experiences designed to set your brand apart.</p>
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-6')]//p[2]" position="attributes">
+        <attribute name="class" add="mb-0" separator=" "/>
+    </xpath>
+    <xpath expr="//a" position="attributes">
+        <attribute name="class" add="flat" separator=" "/>
+    </xpath>
+</template>
+
+<template id="configurator_s_banner" inherit_id="website.configurator_s_banner" name="Cobalt s_banner">
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Origins/11_001","flip":["y"]}</attribute>
+    </xpath>
+    <xpath expr="//section/div" position="before">
+        <div class="o_we_shape o_web_editor_Origins_11_001" style="background-image: url('/web_editor/shape/web_editor/Origins/11_001.svg?c3=o-color-4&amp;c4=o-color-4&amp;flip=y'); background-position: 50% 100%;"/>
+    </xpath>
+</template>
+
+<!-- ==== Image-Text ===== -->
+<template id="s_image_text" inherit_id="website.s_image_text" name="Cobalt s_image_text">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pt152 pb128" remove="pt32 pb32" separator=" "/>
+    </xpath>
+    <!-- Layout -->
+    <xpath expr="//div[hasclass('col-lg-6')][2]" position="attributes">
+        <attribute name="class" add="col-lg-5 offset-lg-1" remove="col-lg-6" separator=" "/>
+    </xpath>
+    <!-- Image -->
+    <xpath expr="//img" position="replace">
+        <img src="/web_editor/shape/theme_cobalt/s_image_text.svg?c1=o-color-1" style="width: 100%;" alt="Marketing"/>
+    </xpath>
+    <!-- Content -->
+    <xpath expr="//h2" position="replace" mode="inner">
+        Strategy synchronising multiple channels
+    </xpath>
+    <xpath expr="//p" position="replace" mode="inner">
+        We create a consistent customer experience through a detailed digital strategy built on precise customer research.
+    </xpath>
+    <xpath expr="//p[last()-1]" position="replace"/>
+    <xpath expr="//a[hasclass('btn')]" position="replace"/>
+</template>
+
+<template id="configurator_s_image_text" inherit_id="website.configurator_s_image_text" name="Cobalt s_image_text">
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Blobs/03","flip":[]}</attribute>
+    </xpath>
+    <xpath expr="//section/div" position="before">
+        <div class="o_we_shape o_web_editor_Blobs_03"/>
+    </xpath>
+</template>
+
+<!-- ==== Text-Image ===== -->
+<template id="s_text_image" inherit_id="website.s_text_image" name="Cobalt s_text_image">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pt80 pb88" remove="pt32 pb32" separator=" "/>
+    </xpath>
+    <!-- Content -->
+    <xpath expr="//h2" position="replace" mode="inner">
+        What we can do, <b>for you</b><br/>
+    </xpath>
+    <xpath expr="//img" position="replace">
+            <img src="/web_editor/shape/theme_cobalt/s_text_image.svg?c1=o-color-1" style="width: 100%;" alt="Marketing"/>
+    </xpath>
+    <xpath expr="//p" position="replace"/>
+    <xpath expr="//p" position="replace">
+        <h5>Digital Transformation</h5>
+        <p>Leader in digital business, we’re helping companies of all sizes to thrive in an ever-changing landscape.</p>
+        <br/>
+        <h5>Web &amp; App Development</h5>
+        <p>We have collected solid experience in building native and cross-platform mobile applications and websites. Check our portfolio from clients around the world.</p>
+        <br/>
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-6')]" position="attributes">
+        <attribute name="class" add="col-lg-5" remove="col-lg-6" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-6')]" position="attributes">
+        <attribute name="class" add="col-lg-7" remove="col-lg-6" separator=" "/>
+    </xpath>
+    <xpath expr="//a[hasclass('btn')]" position="replace"/>
+</template>
+
+<!-- ======== TITLE ======== -->
+<template id="s_title" inherit_id="website.s_title" name="Cobalt s_title">
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pt56" remove="pt40" separator=" "/>
+    </xpath>
+    <xpath expr="//h2" position="replace" mode="inner">
+        Projects
+    </xpath>
+</template>
+
+<!-- ======== QUOTES ======== -->
+ <template id="s_quotes_carousel" inherit_id="website.s_quotes_carousel" name="Cobalt s_quotes_carousel">
+    <!-- Assign slide3 as 'active' and move it in first position -->
+    <xpath expr="//div[hasclass('carousel-inner')]/div" position="attributes">
+        <attribute name="class" remove="active" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('carousel-inner')]/div[3]" position="attributes">
+        <attribute name="class" add="active" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('carousel-inner')]/div" position="before">
+        <xpath expr="//div[hasclass('carousel-inner')]/div[3]" position="move"/>
+    </xpath>
+    <!-- Adjust  (new-)slide3 bg position -->
+    <xpath expr="//div[hasclass('carousel-inner')]/div[3]" position="attributes">
+        <attribute name="style" remove="background-position: 50% 50%;" add="background-position: 50% 20%;" separator=";"/>
+    </xpath>
+</template>
+
+<!-- ==== References ===== -->
+<template id="s_references" inherit_id="website.s_references" name="Cobalt s_references">
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc o_cc1" remove="pt48 pb32" separator=" "/>
+    </xpath>
+    <xpath expr="//h2" position="replace"/>
+    <xpath expr="//p" position="replace"/>
+</template>
+
+<!-- ==== Three Columns ===== -->
+<template id="s_three_columns" inherit_id="website.s_three_columns" name="Cobalt s_three_columns">
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" remove="o_cc o_cc2 pt32 pb32" add="pt72 pb120" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('row')]" position="before">
+        <h2 style="text-align: center;">Latest projects</h2>
+        <p/>
+    </xpath>
+</template>
+
+<template id="configurator_s_three_columns" inherit_id="website.configurator_s_three_columns" name="Cobalt s_three_columns">
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Bold/01","flip":["x"]}</attribute>
+    </xpath>
+    <xpath expr="//section/div" position="before">
+        <div class="o_we_shape o_web_editor_Bold_01" style="background-image: url('/web_editor/shape/web_editor/Bold/01.svg?c2=o-color-3&amp;flip=x'); background-position: 50% 0%;"/>
+    </xpath>
+</template>
+
+<!-- ==== Call To Action ===== -->
+<template id="s_call_to_action" inherit_id="website.s_call_to_action" name="Cobalt s_call_to_action">
+    <xpath expr="//t[@t-esc='cta_btn_text']" position="replace" mode="inner">
+        START NOW
+    </xpath>
+</template>
+
+<!-- ==== Picture ===== -->
+<template id="s_picture" inherit_id="website.s_picture" name="Cobalt s_picture">
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pt72 overflow-hidden" remove="o_cc o_cc2 pt48" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('container')]" position="attributes">
+        <attribute name="class" add="container-fluid px-5 px-lg-0" remove="container" separator=" "/>
+    </xpath>
+    <xpath expr="//img" position="attributes">
+        <attribute name="class" remove="img-thumbnail padding-large" separator=" "/>
+    </xpath>
+    <xpath expr="//figcaption" position="replace">
+        <figcaption class="text-400"><em>Our office in Dhaka</em></figcaption>
+    </xpath>
+</template>
+
+<template id="configurator_s_picture" inherit_id="website.configurator_s_picture" name="Cobalt s_picture">
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Bold/01","flip":["y"]}</attribute>
+    </xpath>
+    <xpath expr="//section/div" position="before">
+        <div class="o_we_shape o_web_editor_Bold_01" style="background-image: url('/web_editor/shape/web_editor/Bold/01.svg?c2=o-color-3&amp;flip=y'); background-position: 50% 100%;"></div>
+    </xpath>
+</template>
+
+<!-- ==== Images Gallery ===== -->
+ <template id="s_image_gallery" inherit_id="website.s_image_gallery">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="s_image_gallery_cover" separator=" "/>
+    </xpath>
+</template>
+
+<!-- ==== Images Wall ===== -->
+<template id="s_images_wall" inherit_id="website.s_images_wall">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pb64" remove="pb24" separator=" "/>
+    </xpath>
+    <!-- Delete 3rd col -->
+    <xpath expr="(//div[hasclass('col-lg-4')])[last()]" position="replace"/>
+    <!-- Switch to col-4-->
+    <xpath expr="//div[hasclass('col-lg-4')]" position="attributes">
+        <attribute name="class" add="col-lg-6" remove="col-lg-4" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-4')][1]" position="attributes">
+        <attribute name="class" add="col-lg-6" remove="col-lg-4" separator=" "/>
+    </xpath>
+    <!-- Add one more row of images -->
+    <xpath expr="//div[hasclass('col-lg-6')]/img" position="after">
+        <img class="img img-fluid d-block" src="/web/image/website.library_image_14" data-index="1" data-name="Image"/>
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-6')][2]/img" position="after">
+        <img class="img img-fluid d-block" src="/web/image/website.library_image_16" data-index="1" data-name="Image"/>
+    </xpath>
+</template>
+
+<!-- ======== BIG BOXES ======== -->
+<template id="s_color_blocks_2" inherit_id="website.s_color_blocks_2" name="Cobalt s_color_blocks_2">
+    <!-- Left column -->
+    <xpath expr="//div[hasclass('col-lg-6')]" position="attributes">
+        <attribute name="class" add="o_cc4" remove="o_cc3" separator=" "/>
+        <attribute name="style" add="background-image: linear-gradient(135deg, var(--o-color-2) 0%, var(--o-color-1) 100%);" separator=";"/>
+    </xpath>
+    <!-- Left column - Icon -->
+    <xpath expr="//div[hasclass('col-lg-6')]//i" position="replace"/>
+    <!-- Left column - Text -->
+    <xpath expr="//div[hasclass('col-lg-6')]//p" position="replace"/>
+    <!-- Left column - Title -->
+    <xpath expr="//div[hasclass('col-lg-6')][1]//h2" position="replace" mode="inner">
+        Are you a startup or a seasoned company looking for a new brand identity?
+    </xpath>
+    <!-- Left column - Button -->
+    <xpath expr="//div[hasclass('col-lg-6')]//a[hasclass('btn')]" position="attributes">
+        <attribute name="class" add="btn-lg flat" separator=" "/>
+    </xpath>
+
+    <!-- Right column -->
+    <xpath expr="//div[hasclass('col-lg-6')][2]" position="attributes">
+        <attribute name="class" add="o_cc3" remove="o_cc5" separator=" "/>
+        <attribute name="style" add="background-image: linear-gradient(315deg, var(--o-color-2) 0%, var(--o-color-1) 100%);" separator=";"/>
+    </xpath>
+    <!-- Right column - Filter -->
+    <xpath expr="//div[hasclass('col-lg-6')][2]//i" position="replace"/>
+    <!-- Right column - Title -->
+    <xpath expr="//div[hasclass('col-lg-6')][2]//h2" position="replace" mode="inner">
+        Are you an established brand looking for ongoing creative services?
+    </xpath>
+    <!-- Right column - Text -->
+    <xpath expr="//div[hasclass('col-lg-6')][2]//p" position="replace"/>
+    <!-- Right column - Button -->
+    <xpath expr="//div[hasclass('col-lg-6')][2]//a[hasclass('btn')]" position="attributes">
+        <attribute name="class" add="btn-lg flat" separator=" "/>
+    </xpath>
+</template>
+
+</odoo>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_comparisons" inherit_id="website.s_comparisons">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc o_cc2 o_colored_level" separator=" "/>
+    </xpath>
+    <!-- Left card -->
+    <xpath expr="//div[hasclass('card')]" position="attributes">
+        <attribute name="class" add="bg-o-color-2" remove="bg-200" separator=" "/>
+    </xpath>
+    <!-- Middle card -->
+    <xpath expr="(//div[hasclass('card')])[2]" position="attributes">
+        <attribute name="class" add="bg-o-color-2" remove="bg-o-color-5" separator=" "/>
+    </xpath>
+</template>
+
+<template id="configurator_s_comparisons" inherit_id="website.configurator_s_comparisons">
+    <!-- Shape option -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Wavy/05","flip":["y"]}</attribute>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Wavy_05" style="background-image: url('/web_editor/shape/web_editor/Wavy/05.svg?c1=o-color-1&amp;c5=o-color-5&amp;flip=y'); background-position: 50% 100%;"/>
+    </xpath>
+</template>
+
+</odoo>

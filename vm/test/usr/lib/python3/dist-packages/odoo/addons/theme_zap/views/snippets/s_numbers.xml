@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_numbers" inherit_id="website.s_numbers">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pt80 pb80" remove="pt24 pb24" separator=" "/>
+    </xpath>
+    <!-- Column #01 -->
+    <xpath expr="//*[hasclass('row')]/*[1]" position="attributes">
+        <attribute name="class" add="o_cc o_cc1 rounded pt64 pb64" remove="pt24 pb24" separator=" "/>
+        <attribute name="style" add="box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 4px 0px !important;" separator=" "/>
+    </xpath>
+    <xpath expr="(//h6)[1]" position="replace" mode="inner">
+        <font class="text-o-color-1">Solutions</font>
+    </xpath>
+    <!-- Column #02 -->
+    <xpath expr="//*[hasclass('row')]/*[2]" position="attributes">
+        <attribute name="class" add="o_cc o_cc1 rounded pt64 pb64" remove="pt24 pb24" separator=" "/>
+        <attribute name="style" add="box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 4px 0px !important;" separator=" "/>
+    </xpath>
+    <xpath expr="(//h6)[2]" position="replace" mode="inner">
+        <font class="text-o-color-1">Customers</font>
+    </xpath>
+    <!-- Column #03 -->
+    <xpath expr="//*[hasclass('row')]/*[3]" position="attributes">
+        <attribute name="class" add="o_cc o_cc1 rounded pt64 pb64" remove="pt24 pb24" separator=" "/>
+        <attribute name="style" add="box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 4px 0px !important;" separator=" "/>
+    </xpath>
+    <xpath expr="(//h6)[3]" position="replace" mode="inner">
+        <font class="text-o-color-1">Languages</font>
+    </xpath>
+    <!-- Column #04 -->
+    <xpath expr="//*[hasclass('row')]/*[4]" position="attributes">
+        <attribute name="class" add="o_cc o_cc1 rounded pt64 pb64" remove="pt24 pb24" separator=" "/>
+        <attribute name="style" add="box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 4px 0px !important;" separator=" "/>
+    </xpath>
+    <xpath expr="(//h6)[4]" position="replace" mode="inner">
+        <font class="text-o-color-1">Projects</font>
+    </xpath>
+</template>
+
+</odoo>
