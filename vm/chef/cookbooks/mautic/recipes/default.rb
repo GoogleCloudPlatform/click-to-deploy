@@ -21,6 +21,7 @@ include_recipe 'php81::module_mysql'
 include_recipe 'php81::module_dom'
 include_recipe 'php81::module_zip'
 include_recipe 'composer::composer2'
+include_recipe 'mautic::ospo'
 
 include_recipe 'git'
 include_recipe 'mysql::version-8.0-embedded'

@@ -14,6 +14,7 @@
 
 name 'mautic'
 depends 'c2d-config'
+depends 'c2d-shared'
 depends 'composer'
 depends 'apache2'
 depends 'nodejs'
