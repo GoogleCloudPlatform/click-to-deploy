@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_carousel" inherit_id="website.s_carousel">
+    <!-- Container -->
+    <xpath expr="//div[hasclass('carousel-inner')]" position="replace">
+        <div class="carousel-inner">
+            <!-- Slide 1 -->
+            <div class="carousel-item pt256 pb256 oe_img_bg active o_cc o_cc3" style="background-image: url('/web/image/website.s_carousel_default_image_1'); background-position: 50% 20%; position: relative;" data-name="Slide">
+                <!-- Filter -->
+                <div class="o_we_bg_filter bg-black-50"/>
+                <div class="container">
+                    <div class="row">
+                        <div class="carousel-content col-lg-5">
+                            <!-- Paragraph -->
+                            <h2>Personal adviser</h2>
+                            <p class="lead"><br/>At any moment, you may contact our advisor through the in-app video meeting system.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Slide 2 -->
+            <div class="carousel-item pt256 pb256 oe_img_bg o_cc o_cc3" style="background-image: url('/web/image/website.s_carousel_default_image_2'); position: relative;" data-name="Slide">
+                <!-- Filter -->
+                <div class="o_we_bg_filter bg-black-50"/>
+                <div class="container">
+                    <div class="row">
+                        <div class="carousel-content col-lg-12 text-center">
+                            <!-- Paragraph -->
+                            <h2>Simplify things</h2>
+                            <p class="lead"><br/>We invest in strategic advice tailored to your<br/>
+                            business problems and needs.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Slide 3 -->
+            <div class="carousel-item pt256 pb256 oe_img_bg o_cc o_cc3" style="background-image: url('/web/image/website.s_carousel_default_image_3'); position: relative; background-position: 50% 65%;" data-name="Slide">
+                <!-- Filter -->
+                <div class="o_we_bg_filter bg-black-50"/>
+                <div class="container">
+                    <div class="row">
+                        <div class="carousel-content col-lg-5 offset-lg-7">
+                            <!-- Paragraph -->
+                            <h2>Efficient team processes</h2>
+                            <p class="lead"><br/>We integrate digital tools and solutions for better insights, enabling data-driven planning.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </xpath>
+</template>
+
+</odoo>

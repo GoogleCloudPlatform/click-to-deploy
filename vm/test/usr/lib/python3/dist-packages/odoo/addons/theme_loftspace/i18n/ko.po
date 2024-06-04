@@ -1,0 +1,110 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_loftspace
+# 
+# Translators:
+# Wil Odoo, 2023
+# Sarah Park, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:22+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Sarah Park, 2023\n"
+"Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ko\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_cover
+msgid "<b>Bringing life to your interior</b>"
+msgstr "<b>인테리어에 활기를 불어 넣습니다.</b>"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_title
+msgid "<b>Everything is designed.<br/> Few things are designed well.</b>"
+msgstr "<b>모든 것이 디자인된 것입니다.<br/> 훌륭하게 디자인된 것은 그다지 많지 않습니다.</b>"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_cover
+msgid "Discover More"
+msgstr "더 알아보기"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_cover
+msgid "Discover our unique pieces of furniture selected for you."
+msgstr "고객님을 위해 엄선된 특별한 가구를 확인해 보세요."
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_three_columns
+msgid ""
+"Every week our shop receive new products. Some are only on sale for a "
+"limited period of time."
+msgstr "매주 새로운 품목이 입고됩니다. 일부 품목은 한정 기간동안만 만나보실 수 있습니다."
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_three_columns
+msgid "For the whole Family"
+msgstr "온 가족을 위해 준비해 보세요."
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_banner
+msgid ""
+"Our products are designed for small to medium size companies willing to "
+"optimize their performance."
+msgstr "최고의 성능을 필요로 하는 중소기업을 위해서 만들어진 제품입니다."
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_call_to_action
+msgid "Our services"
+msgstr "서비스 소개"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_three_columns
+msgid "Tailored advice"
+msgstr "맞춤형 어드바이스"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_banner
+msgid "The art of Design"
+msgstr "예술적 디자인"
+
+#. module: theme_loftspace
+#: model:ir.model,name:theme_loftspace.model_theme_utils
+msgid "Theme Utils"
+msgstr "테마 유틸"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_three_columns
+msgid ""
+"To buy unique pieces is to buy a piece of the artist: His passion put in the"
+" execution of the object, his hours of reflexion, his dexterity... It is a "
+"committed, ethical act, which encourages a responsible and direct economy."
+msgstr ""
+"특별한 작품을 구입한다는 것은 예술가의 일부를 구입하는 것과 같습니다. 작품을 만들기 위해 쏟은 열정과 숙고의 시간, 기교에 이르기까지,"
+" 이는 책임감과 함께 직접적인 경제를 장려하는 헌신적이고 윤리적인 행위입니다."
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_three_columns
+msgid "Unique Items"
+msgstr "특별한 아이템"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_three_columns
+msgid ""
+"Whether it is to help you see clearly in a project, to confirm a choice or "
+"when you have no idea about the layout of your interior, our advisers are "
+"there to accompany you throughout your project."
+msgstr ""
+"프로젝트를 명확하게 꿰뚫어볼 수 있도록 도와주거나 선택한 내용을 확인 또는 인테리어 레이아웃에 대해 전혀 모르는 경우 등, 저희 "
+"어드바이저는 프로젝트 전반에 걸쳐 고객과 함께하고 있습니다."
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_call_to_action
+msgid "Would you like more information <br/>about a product?"
+msgstr "제품에 대한 자세한 정보가<br/>필요하신가요?"

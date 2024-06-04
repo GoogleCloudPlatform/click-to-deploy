@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!-- Backgrounds -->
+<record id="bg_img_01" model="theme.ir.attachment">
+    <field name="key">theme_treehouse.bg_img_01</field>
+    <field name="name">background_img_01.jpg</field>
+    <field name="url">/theme_treehouse/static/src/img/backgrounds/01.jpg</field>
+</record>
+<record id="bg_img_02" model="theme.ir.attachment">
+    <field name="key">theme_treehouse.bg_img_02</field>
+    <field name="name">background_img_02.jpg</field>
+    <field name="url">/theme_treehouse/static/src/img/backgrounds/02.jpg</field>
+</record>
+<record id="bg_img_03" model="theme.ir.attachment">
+    <field name="key">theme_treehouse.bg_img_03</field>
+    <field name="name">background_img_03.jpg</field>
+    <field name="url">/theme_treehouse/static/src/img/backgrounds/03.jpg</field>
+</record>
+<record id="bg_img_04" model="theme.ir.attachment">
+    <field name="key">theme_treehouse.bg_img_04</field>
+    <field name="name">background_img_04.jpg</field>
+    <field name="url">/theme_treehouse/static/src/img/backgrounds/04.jpg</field>
+</record>
+<record id="bg_img_05" model="theme.ir.attachment">
+    <field name="key">theme_treehouse.bg_img_05</field>
+    <field name="name">background_img_05.jpg</field>
+    <field name="url">/theme_treehouse/static/src/img/backgrounds/05.jpg</field>
+</record>
+<record id="bg_img_06" model="theme.ir.attachment">
+    <field name="key">theme_treehouse.bg_img_06</field>
+    <field name="name">background_img_06.jpg</field>
+    <field name="url">/theme_treehouse/static/src/img/backgrounds/06.jpg</field>
+</record>
+<record id="bg_img_07" model="theme.ir.attachment">
+    <field name="key">theme_treehouse.bg_img_07</field>
+    <field name="name">background_img_07.jpg</field>
+    <field name="url">/theme_treehouse/static/src/img/backgrounds/07.jpg</field>
+</record>
+<record id="bg_img_08" model="theme.ir.attachment">
+    <field name="key">theme_treehouse.bg_img_08</field>
+    <field name="name">background_img_08.jpg</field>
+    <field name="url">/theme_treehouse/static/src/img/backgrounds/08.jpg</field>
+</record>
+<record id="bg_img_09" model="theme.ir.attachment">
+    <field name="key">theme_treehouse.bg_img_09</field>
+    <field name="name">background_img_09.jpg</field>
+    <field name="url">/theme_treehouse/static/src/img/backgrounds/09.jpg</field>
+</record>
+<record id="bg_img_10" model="theme.ir.attachment">
+    <field name="key">theme_treehouse.bg_img_10</field>
+    <field name="name">background_img_10.jpg</field>
+    <field name="url">/theme_treehouse/static/src/img/backgrounds/10.jpg</field>
+</record>
+<record id="bg_img_11" model="theme.ir.attachment">
+    <field name="key">theme_treehouse.bg_img_11</field>
+    <field name="name">background_img_11.jpg</field>
+    <field name="url">/theme_treehouse/static/src/img/backgrounds/11.jpg</field>
+</record>
+<record id="bg_img_12" model="theme.ir.attachment">
+    <field name="key">theme_treehouse.bg_img_12</field>
+    <field name="name">background_img_12.jpg</field>
+    <field name="url">/theme_treehouse/static/src/img/backgrounds/12.jpg</field>
+</record>
+<record id="bg_img_13" model="theme.ir.attachment">
+    <field name="key">theme_treehouse.bg_img_13</field>
+    <field name="name">background_img_13.jpg</field>
+    <field name="url">/theme_treehouse/static/src/img/backgrounds/13.jpg</field>
+</record>
+<record id="bg_img_14" model="theme.ir.attachment">
+    <field name="key">theme_treehouse.bg_img_14</field>
+    <field name="name">background_img_14.jpg</field>
+    <field name="url">/theme_treehouse/static/src/img/backgrounds/14.jpg</field>
+</record>
+<record id="bg_img_15" model="theme.ir.attachment">
+    <field name="key">theme_treehouse.bg_img_15</field>
+    <field name="name">background_img_15.jpg</field>
+    <field name="url">/theme_treehouse/static/src/img/backgrounds/15.jpg</field>
+</record>
+<record id="bg_img_16" model="theme.ir.attachment">
+    <field name="key">theme_treehouse.bg_img_16</field>
+    <field name="name">background_img_16.jpg</field>
+    <field name="url">/theme_treehouse/static/src/img/backgrounds/16.jpg</field>
+</record>
+
+<!-- Patterns -->
+<record id="bg_pattern_01" model="theme.ir.attachment">
+    <field name="key">theme_treehouse.bg_pattern_01</field>
+    <field name="name">background_pattern_01.png</field>
+    <field name="url">/theme_treehouse/static/src/img/patterns/01.png</field>
+</record>
+<record id="bg_pattern_02" model="theme.ir.attachment">
+    <field name="key">theme_treehouse.bg_pattern_02</field>
+    <field name="name">background_pattern_02.png</field>
+    <field name="url">/theme_treehouse/static/src/img/patterns/02.png</field>
+</record>
+<record id="bg_pattern_03" model="theme.ir.attachment">
+    <field name="key">theme_treehouse.bg_pattern_03</field>
+    <field name="name">background_pattern_03.png</field>
+    <field name="url">/theme_treehouse/static/src/img/patterns/03.png</field>
+</record>
+<record id="bg_pattern_04" model="theme.ir.attachment">
+    <field name="key">theme_treehouse.bg_pattern_04</field>
+    <field name="name">background_pattern_04.png</field>
+    <field name="url">/theme_treehouse/static/src/img/patterns/04.png</field>
+</record>
+<record id="bg_pattern_05" model="theme.ir.attachment">
+    <field name="key">theme_treehouse.bg_pattern_05</field>
+    <field name="name">background_pattern_05.png</field>
+    <field name="url">/theme_treehouse/static/src/img/patterns/05.png</field>
+</record>
+<record id="bg_pattern_06" model="theme.ir.attachment">
+    <field name="key">theme_treehouse.bg_pattern_06</field>
+    <field name="name">background_pattern_06.png</field>
+    <field name="url">/theme_treehouse/static/src/img/patterns/06.png</field>
+</record>
+<record id="bg_pattern_07" model="theme.ir.attachment">
+    <field name="key">theme_treehouse.bg_pattern_07</field>
+    <field name="name">background_pattern_07.png</field>
+    <field name="url">/theme_treehouse/static/src/img/patterns/07.png</field>
+</record>
+<record id="bg_pattern_08" model="theme.ir.attachment">
+    <field name="key">theme_treehouse.bg_pattern_08</field>
+    <field name="name">background_pattern_08.png</field>
+    <field name="url">/theme_treehouse/static/src/img/patterns/08.png</field>
+</record>
+<record id="bg_pattern_09" model="theme.ir.attachment">
+    <field name="key">theme_treehouse.bg_pattern_09</field>
+    <field name="name">background_pattern_09.png</field>
+    <field name="url">/theme_treehouse/static/src/img/patterns/09.png</field>
+</record>
+
+<!-- Cover -->
+<record id="s_cover_default_image" model="theme.ir.attachment">
+    <field name="key">website.s_cover_default_image</field>
+    <field name="name">website.s_cover_default_image</field>
+    <field name="url">/theme_treehouse/static/src/img/content/cover.jpg</field>
+</record>
+
+<!-- Banner -->
+<record id="s_banner_default_image" model="theme.ir.attachment">
+    <field name="key">website.s_banner_default_image</field>
+    <field name="name">website.s_banner_default_image</field>
+    <field name="url">/theme_treehouse/static/src/img/backgrounds/02.jpg</field>
+</record>
+<record id="s_banner_default_image_2" model="theme.ir.attachment">
+    <field name="key">website.s_banner_default_image_2</field>
+    <field name="name">website.s_banner_default_image_2</field>
+    <field name="url">/theme_treehouse/static/src/img/backgrounds/17.jpg</field>
+</record>
+<record id="s_banner_default_image_3" model="theme.ir.attachment">
+    <field name="key">website.s_banner_default_image_3</field>
+    <field name="name">website.s_banner_default_image_3</field>
+    <field name="url">/theme_treehouse/static/src/img/backgrounds/18.jpg</field>
+</record>
+
+<!-- Text-Image -->
+<record id="s_text_image_default_image" model="theme.ir.attachment">
+    <field name="key">website.s_text_image_default_image</field>
+    <field name="name">website.s_text_image_default_image</field>
+    <field name="url">/theme_treehouse/static/src/img/content/text_image.jpg</field>
+</record>
+
+<!-- Image-Text -->
+<record id="s_image_text_default_image" model="theme.ir.attachment">
+    <field name="key">website.s_image_text_default_image</field>
+    <field name="name">website.s_image_text_default_image</field>
+    <field name="url">/theme_treehouse/static/src/img/content/image_text.jpg</field>
+</record>
+
+<!-- Three Columns -->
+<record id="s_three_columns_default_image_1" model="theme.ir.attachment">
+    <field name="key">website.s_three_columns_default_image_1</field>
+    <field name="name">website.s_three_columns_default_image_1</field>
+    <field name="url">/theme_treehouse/static/src/img/content/three_columns_01.jpg</field>
+</record>
+<record id="s_three_columns_default_image_2" model="theme.ir.attachment">
+    <field name="key">website.s_three_columns_default_image_2</field>
+    <field name="name">website.s_three_columns_default_image_2</field>
+    <field name="url">/theme_treehouse/static/src/img/content/three_columns_02.jpg</field>
+</record>
+<record id="s_three_columns_default_image_3" model="theme.ir.attachment">
+    <field name="key">website.s_three_columns_default_image_3</field>
+    <field name="name">website.s_three_columns_default_image_3</field>
+    <field name="url">/theme_treehouse/static/src/img/content/three_columns_03.jpg</field>
+</record>
+
+<!-- Picture -->
+<record id="s_picture_default_image" model="theme.ir.attachment">
+    <field name="key">website.s_picture_default_image</field>
+    <field name="name">website.s_picture_default_image</field>
+    <field name="url">/theme_treehouse/static/src/img/backgrounds/01.jpg</field>
+</record>
+
+<!-- Masonry -->
+<record id="s_masonry_block_default_image_1" model="theme.ir.attachment">
+    <field name="key">website.s_masonry_block_default_image_1</field>
+    <field name="name">website.s_masonry_block_default_image_1</field>
+    <field name="url">/theme_treehouse/static/src/img/content/masonry_block.jpg</field>
+</record>
+
+<!-- Carousel -->
+<record id="s_carousel_default_image_1" model="theme.ir.attachment">
+    <field name="key">website.s_carousel_default_image_1</field>
+    <field name="name">website.s_carousel_default_image_1</field>
+    <field name="url">/theme_treehouse/static/src/img/backgrounds/11.jpg</field>
+</record>
+<record id="s_carousel_default_image_2" model="theme.ir.attachment">
+    <field name="key">website.s_carousel_default_image_2</field>
+    <field name="name">website.s_carousel_default_image_2</field>
+    <field name="url">/theme_treehouse/static/src/img/backgrounds/12.jpg</field>
+</record>
+<record id="s_carousel_default_image_3" model="theme.ir.attachment">
+    <field name="key">website.s_carousel_default_image_3</field>
+    <field name="name">website.s_carousel_default_image_3</field>
+    <field name="url">/theme_treehouse/static/src/img/backgrounds/03.jpg</field>
+</record>
+
+<!-- Media List -->
+<record id="s_media_list_default_image_1" model="theme.ir.attachment">
+    <field name="key">website.s_media_list_default_image_1</field>
+    <field name="name">website.s_media_list_default_image_1</field>
+    <field name="url">/theme_treehouse/static/src/img/content/media_list_01.jpg</field>
+</record>
+<record id="s_media_list_default_image_2" model="theme.ir.attachment">
+    <field name="key">website.s_media_list_default_image_2</field>
+    <field name="name">website.s_media_list_default_image_2</field>
+    <field name="url">/theme_treehouse/static/src/img/content/media_list_02.jpg</field>
+</record>
+<record id="s_media_list_default_image_3" model="theme.ir.attachment">
+    <field name="key">website.s_media_list_default_image_3</field>
+    <field name="name">website.s_media_list_default_image_3</field>
+    <field name="url">/theme_treehouse/static/src/img/content/media_list_03.jpg</field>
+</record>
+
+<!-- Company Team -->
+<record id="s_company_team_default_image_1" model="theme.ir.attachment">
+    <field name="key">website.s_company_team_image_1</field>
+    <field name="name">website.s_company_team_image_1</field>
+    <field name="url">/theme_treehouse/static/src/img/content/company_team_01.jpg</field>
+</record>
+<record id="s_company_team_default_image_2" model="theme.ir.attachment">
+    <field name="key">website.s_company_team_image_2</field>
+    <field name="name">website.s_company_team_image_2</field>
+    <field name="url">/theme_treehouse/static/src/img/content/company_team_02.jpg</field>
+</record>
+<record id="s_company_team_default_image_3" model="theme.ir.attachment">
+    <field name="key">website.s_company_team_image_3</field>
+    <field name="name">website.s_company_team_image_3</field>
+    <field name="url">/theme_treehouse/static/src/img/content/company_team_03.jpg</field>
+</record>
+<record id="s_company_team_default_image_4" model="theme.ir.attachment">
+    <field name="key">website.s_company_team_image_4</field>
+    <field name="name">website.s_company_team_default_image_4</field>
+    <field name="url">/theme_treehouse/static/src/img/content/company_team_04.jpg</field>
+</record>
+
+<!-- Quotes Carousel -->
+<record id="s_quotes_carousel_default_image_1" model="theme.ir.attachment">
+    <field name="key">website.s_quotes_carousel_default_image_1</field>
+    <field name="name">website.s_quotes_carousel_default_image_1</field>
+    <field name="url">/theme_treehouse/static/src/img/content/quotes_carousel.jpg</field>
+</record>
+
+<!-- Image Gallery -->
+<record id="library_image_08" model="theme.ir.attachment">
+    <field name="key">website.library_image_08</field>
+    <field name="name">website.library_image_08</field>
+    <field name="url">/theme_treehouse/static/src/img/backgrounds/04.jpg</field>
+</record>
+<record id="library_image_03" model="theme.ir.attachment">
+    <field name="key">website.library_image_03</field>
+    <field name="name">website.library_image_03</field>
+    <field name="url">/theme_treehouse/static/src/img/backgrounds/05.jpg</field>
+</record>
+<record id="library_image_02" model="theme.ir.attachment">
+    <field name="key">website.library_image_02</field>
+    <field name="name">website.library_image_02</field>
+    <field name="url">/theme_treehouse/static/src/img/backgrounds/15.jpg</field>
+</record>
+
+</odoo>

@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!-- ======== COVER ======== -->
+<template id="s_cover" inherit_id="website.s_cover" name="Be Wise s_cover">
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pt200 pb200 o_cc o_cc5 oe_img_bg o_bg_img_center" remove="bg-black-50 s_parallax_is_fixed parallax pt96 pb96" separator=" "/>
+        <attribute name="style">background-image: url('/web/image/website.s_cover_default_image'); background-position: 50% 50%;</attribute>
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Rainy/08_001","flip":[]}</attribute>
+        <attribute name="data-scroll-background-ratio">0</attribute>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Rainy_08_001"/>
+    </xpath>
+    <!-- Remove the background image for parallax -->
+    <xpath expr="//span[hasclass('s_parallax_bg')]" position="replace"/>
+    <!-- Button -->
+    <xpath expr="//a[hasclass('btn')]" position="attributes">
+        <attribute name="class" add="btn-lg btn-secondary" remove="btn-primary" separator=" "/>
+    </xpath>
+    <!-- Title -->
+    <xpath expr="//h1" position="replace" mode="inner">
+        Always at the top
+    </xpath>
+    <!-- Subtitle -->
+    <xpath expr="//p" position="replace" mode="inner">
+        Our university has topped the The World University<br/>Rankings for a fifth consecutive year.
+    </xpath>
+    <xpath expr="//p" position="after">
+    <p><br/></p>
+    </xpath>
+</template>
+
+<!-- ======== TEXT-IMAGE ======== -->
+<template id="s_text_image" inherit_id="website.s_text_image" name="Be Wise s_text_image">
+    <xpath expr="//h2" position="replace" mode="inner">
+        Driven by Excellence
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-6')]" position="attributes">
+        <attribute name="class" add="col-lg-4 offset-lg-1" remove="col-lg-6" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-6')]" position="attributes">
+        <attribute name="class" add="col-lg-5 offset-lg-1" remove="col-lg-6" separator=" "/>
+    </xpath>
+    <xpath expr="//p" position="replace" mode="inner">
+        <br/>
+        Teachers are selected among experts of their domains. They are not just professors, they are professionals in their field of expertise.
+    </xpath>
+    <xpath expr="//p[2]" position="replace">
+        <p>Journalists, directors, developers, etc. working effectively in their fields of excellence.</p>
+        <div class="s_hr text-start p0 pb32" data-snippet="s_hr" data-name="Separator">
+            <hr class="w-100 mx-auto" style="border-top-width: 1px; border-top-style: solid; border-top-color: var(--o-color-3) !important;"/>
+        </div>
+    </xpath>
+    <xpath expr="//a[hasclass('btn')]" position="attributes">
+        <attribute name="class" add="btn-lg" separator=" "/>
+    </xpath>
+</template>
+
+<!-- ======== IMAGE-TEXT ======== -->
+<template id="s_image_text" inherit_id="website.s_image_text" name="Be Wise s_image_text">
+    <xpath expr="//div[hasclass('col-lg-6')][1]" position="attributes">
+        <attribute name="class" add="col-lg-5 offset-lg-1" remove="col-lg-6" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-6')][1]" position="attributes">
+        <attribute name="class" add="col-lg-4 offset-lg-1" remove="col-lg-6" separator=" "/>
+    </xpath>
+    <xpath expr="//h2" position="replace" mode="inner">
+        What makes us different?
+    </xpath>
+    <xpath expr="//p" position="replace" mode="inner">
+        <br/>
+        We make sure that everyone blossoms. We keep a human size in a warm and modern setting. All students benefit from individualised support.
+    </xpath>
+    <xpath expr="//p[2]" position="replace">
+        <p>All students benefit from individualised support.</p>
+        <div class="s_hr text-start p0 pb32" data-snippet="s_hr" data-name="Separator">
+            <hr class="w-100 mx-auto" style="border-top-width: 1px; border-top-style: solid; border-top-color: var(--o-color-3) !important;"/>
+        </div>
+    </xpath>
+    <xpath expr="//a[hasclass('btn')]" position="attributes">
+        <attribute name="class" add="btn-lg" separator=" "/>
+    </xpath>
+</template>
+
+<!-- ======== NUMBERS ======== -->
+<template id="s_numbers" inherit_id="website.s_numbers" name="Be Wise s_numbers">
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc3" remove="o_cc2" separator=" "/>
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Blobs/11","flip":["x"]}</attribute>
+    </xpath>
+    <xpath expr="//section/div" position="before">
+        <div class="o_we_shape o_web_editor_Blobs_11" style="background-image: url('/web_editor/shape/web_editor/Blobs/11.svg?c1=o-color-1&amp;flip=x'); background-position: 50% 50%;"/>
+    </xpath>
+    <xpath expr="//h6" position="replace" mode="inner">
+        Faculties
+    </xpath>
+    <xpath expr="//div[hasclass('row')]/div[2]/h6" position="replace" mode="inner">
+        Nationalities
+    </xpath>
+    <xpath expr="//div[hasclass('row')]/div[3]/h6" position="replace" mode="inner">
+        Libraries
+    </xpath>
+    <xpath expr="//div[hasclass('row')]/div[4]/h6" position="replace" mode="inner">
+        Students
+    </xpath>
+    <xpath expr="//div[hasclass('row')]/div[4]/span" position="replace" mode="inner" >
+        16,456
+    </xpath>
+</template>
+
+<!-- ======== QUOTES ======== -->
+<template id="s_quotes_carousel" inherit_id="website.s_quotes_carousel" name="Be Wise s_quotes_carousel">
+    <!-- Section : Add a main background to the carousel -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="oe_img_bg o_bg_img_center" separator=" "/>
+        <attribute name="style">background-image: url('/web/image/website.s_quotes_carousel_demo_image_2');</attribute>
+    </xpath>
+    <!-- Filter -->
+    <xpath expr="//div[hasclass('s_quotes_carousel')]" position="before">
+        <div class="o_we_bg_filter bg-black-15"/>
+    </xpath>
+    <!-- Carousel -->
+    <xpath expr="//div[hasclass('s_quotes_carousel')]" position="attributes">
+        <attribute name="class" add="s_carousel_rounded" remove="o_cc o_cc2 s_carousel_default" separator=" "/>
+    </xpath>
+    <!-- Slide #1 -->
+    <xpath expr="//div[hasclass('carousel-item')]" position="attributes">
+        <!-- Remove background image of the slide -->
+        <attribute name="style"/>
+        <attribute name="class" add="pt144 pb144" remove="pt80 pb80" separator=" "/>
+    </xpath>
+    <!-- Slide #1 - blockquote -->
+    <xpath expr="//blockquote" position="attributes">
+        <attribute name="class" add="w-75" remove="w-50" separator=" "/>
+    </xpath>
+    <xpath expr="//blockquote//i" position="attributes">
+        <attribute name="class" add="bg-o-color-1" remove="bg-o-color-2" separator=" "/>
+    </xpath>
+    <xpath expr="//blockquote//p" position="replace" mode="inner">
+        I have learned a lot, and I have realised professional projects thanks to the support of the mentors! The team is always at the top and always looking for solutions to problems, I felt accompanied and supported! It's not easy every day, but it's a great adventure!
+    </xpath>
+    <xpath expr="//span[hasclass('s_blockquote_author')]" position="replace" mode="inner">
+        <b>Iris DOE</b> • Graduated in 2019
+    </xpath>
+    <!-- Slide #2 -->
+    <xpath expr="//div[hasclass('carousel-item')][2]" position="attributes">
+        <!-- Remove background image of the slide -->
+        <attribute name="style"/>
+        <attribute name="class" add="pt184" remove="pt80" separator=" "/>
+    </xpath>
+    <!-- Slide #2 - blockquote -->
+    <xpath expr="(//blockquote)[2]" position="attributes">
+        <attribute name="class" add="w-75 mx-auto" remove="w-50 me-auto" separator=" "/>
+    </xpath>
+    <xpath expr="(//blockquote)[2]//i" position="attributes">
+        <attribute name="class" add="bg-o-color-1" remove="bg-o-color-2" separator=" "/>
+    </xpath>
+    <xpath expr="(//blockquote)[2]//p" position="replace" mode="inner">
+        Thanks to its innovative system, the school offers an academic training during which we are followed by a "mentor", a sort of "tutor"!
+    </xpath>
+    <xpath expr="(//span[hasclass('s_blockquote_author')])[2]" position="replace" mode="inner">
+        <b>Jane DOE</b> • Graduated in 2017
+    </xpath>
+    <!-- Slide #3 -->
+    <xpath expr="//div[hasclass('carousel-item')][3]" position="attributes">
+        <!-- Remove background image of the slide -->
+        <attribute name="style"/>
+        <attribute name="class" add="pt168" remove="pt80" separator=" "/>
+    </xpath>
+    <!-- Slide #3 - blockquote -->
+    <xpath expr="(//blockquote)[3]" position="attributes">
+        <attribute name="class" add="w-75 mx-auto" remove="w-50 ms-auto" separator=" "/>
+    </xpath>
+    <xpath expr="(//blockquote)[3]//i" position="attributes">
+        <attribute name="class" add="bg-o-color-1" remove="bg-o-color-2" separator=" "/>
+    </xpath>
+    <xpath expr="(//blockquote)[3]//p" position="replace" mode="inner">
+        Great support and quality courses! A mentor helps you move forward and can be contacted through flexible schedules. Everything you need to start your career on the web.
+    </xpath>
+    <xpath expr="(//span[hasclass('s_blockquote_author')])[3]" position="replace" mode="inner">
+        <b>John DOE</b> • Graduated in 2016
+    </xpath>
+</template>
+
+<template id="configurator_s_quotes_carousel" inherit_id="website.configurator_s_quotes_carousel" name="Be Wise s_quotes_carousel">
+    <!-- Shape option -->
+    <xpath expr="//div[hasclass('s_quotes_carousel')]" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Origins/14_001","flip":["y"]}</attribute>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//ol[hasclass('carousel-indicators')]" position="before">
+        <div class="o_we_shape o_web_editor_Origins_14_001" style="background-image: url('/web_editor/shape/web_editor/Origins/14_001.svg?c3=o-color-4&amp;c4=o-color-4&amp;flip=y'); background-position: 50% 0%;"/>
+    </xpath>
+</template>
+
+<!-- ======== CALL TO ACTION ======== -->
+<template id="s_call_to_action" inherit_id="website.s_call_to_action" name="Be Wise s_call_to_action">
+    <!-- Shape options -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Blobs/11","flip":[]}</attribute>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//section/div" position="before">
+        <div class="o_we_shape o_web_editor_Blobs_11"/>
+    </xpath>
+    <!-- Title -->
+    <xpath expr="//h3" position="replace">
+        <h4><b>3,000 students</b> graduate each year and find a job within 2 months</h4>
+    </xpath>
+    <!-- Subtitle -->
+    <xpath expr="//div[hasclass('col-lg-9')]/p" position="replace" mode="inner">
+        Join them and increase your chances to get hired.
+    </xpath>
+</template>
+
+<!-- ======== TEAM ======== -->
+<template id="s_company_team" inherit_id="website.s_company_team" name="Be Wise s_company_team">
+    <!-- Profile #1 -->
+    <xpath expr="//div[hasclass('s_nb_column_fixed')]/div//h4" position="replace" mode="inner">
+        <b>Tony Fred, Faculty Head of IT</b>
+    </xpath>
+    <xpath expr="//div[hasclass('s_nb_column_fixed')]/div//p" position="replace" mode="inner">
+        Tony received a degree in Electrical and Mechanical Engineering and a Ph D. degree in 1998 and 2004. After a post-doctoral experience  he joined the school as professor of mechatronics in 2006. In 2010, he became Head of IT.
+    </xpath>
+    <!-- Profile #2 -->
+    <xpath expr="//div[hasclass('s_nb_column_fixed')]/div[2]//h4" position="replace" mode="inner">
+        <b>Mich Stark, IT Officer</b>
+    </xpath>
+    <xpath expr="//div[hasclass('s_nb_column_fixed')]/div[2]//p" position="replace" mode="inner">
+        He is professor in the Institute of Mechanics, Materials and Civil Engineering since 2000. He lectures in mechanical drawing and mechanical design for undergraduate and graduate students. He is active in Problem and Project based learning. He is the promoter of 8 doctoral theses.
+    </xpath>
+    <!-- Profile #3 -->
+    <xpath expr="//div[hasclass('s_nb_column_fixed')]/div[3]//h4" position="replace" mode="inner">
+        <b>Aline Turner, Law professor</b>
+    </xpath>
+    <xpath expr="//div[hasclass('s_nb_column_fixed')]/div[3]//p" position="replace" mode="inner">
+        She has been practicing law at the French-speaking Brussels Bar since 2006. She has worked in various major law firms based in Brussels, as member and then head of their litigation/arbitration practice groups.
+    </xpath>
+    <!-- Profile #4 -->
+    <xpath expr="//div[hasclass('s_nb_column_fixed')]/div[4]//h4" position="replace" mode="inner">
+        <b>Iris Joe, team leader professor</b>
+    </xpath>
+</template>
+
+<template id="configurator_s_company_team" inherit_id="website.configurator_s_company_team" name="Be Wise s_company_team">
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Blobs/09","flip":[]}</attribute>
+    </xpath>
+    <xpath expr="//section/div" position="before">
+        <div class="o_we_shape o_web_editor_Blobs_09"/>
+    </xpath>
+</template>
+
+<!-- ======== BIG BOXES ======== -->
+<template id="s_color_blocks_2" inherit_id="website.s_color_blocks_2" name="Be Wise s_color_blocks_2">
+    <!-- Left column -->
+    <xpath expr="//div[hasclass('col-lg-6')]" position="attributes">
+        <attribute name="class" add="oe_img_bg o_bg_img_center o_cc5" remove="o_cc3" separator=" "/>
+        <attribute name="style">background-image: url('/web/image/website.s_media_list_default_image_1');</attribute>
+    </xpath>
+    <!-- Left column - Filter -->
+    <xpath expr="//div[hasclass('col-lg-6')]//i" position="before">
+        <div class="o_we_bg_filter bg-black-50"/>
+    </xpath>
+    <!-- Left column - Icon -->
+    <xpath expr="//div[hasclass('col-lg-6')]//i" position="attributes">
+        <attribute name="class" add="fa-3x fa-book" remove="fa-5x fa-shield" separator=" "/>
+    </xpath>
+    <!-- Left column - Title -->
+    <xpath expr="//div[hasclass('col-lg-6')]//h2" position="replace" mode="inner">
+        Programmes
+    </xpath>
+    <!-- Left column - Text -->
+    <xpath expr="//div[hasclass('col-lg-6')]//p" position="replace" mode="inner">
+        <br/>
+        Are you searching for a school where cutting-edge programmes are taught, in a continually evolving environment and located in the heart of a dynamic city? You have just found it!
+        <br/>
+        <br/>
+    </xpath>
+    <!-- Left column - Button -->
+    <xpath expr="//div[hasclass('col-lg-6')]//a[hasclass('btn')]" position="attributes">
+        <attribute name="class" add="btn-lg btn-secondary" remove="btn-primary" separator=" "/>
+    </xpath>
+    <!-- Right column -->
+    <xpath expr="//div[hasclass('col-lg-6')][2]" position="attributes">
+        <attribute name="class" add="oe_img_bg o_bg_img_center" separator=" "/>
+        <attribute name="style">background-image: url('/web/image/website.s_media_list_default_image_2');</attribute>
+    </xpath>
+    <!-- Right column - Filter -->
+    <xpath expr="//div[hasclass('col-lg-6')][2]//i" position="before">
+        <div class="o_we_bg_filter bg-black-50"/>
+    </xpath>
+    <!-- Right column - Icon -->
+    <xpath expr="//div[hasclass('col-lg-6')][2]//i" position="attributes">
+        <attribute name="class" add="fa-3x fa-institution" remove="fa-5x fa-cube" separator=" "/>
+    </xpath>
+    <!-- Right column - Title -->
+    <xpath expr="//div[hasclass('col-lg-6')][2]//h2" position="replace" mode="inner">
+        The campus
+    </xpath>
+    <!-- Right column - Text -->
+    <xpath expr="//div[hasclass('col-lg-6')][2]//p" position="replace" mode="inner">
+        <br/>
+        The small and modern campus is only a 10-minute walk away from the city centre and is easily accessible by car and public transport. It is also close to the train stations.
+        <br/>
+        <br/>
+    </xpath>
+    <!-- Right column - Button -->
+    <xpath expr="//div[hasclass('col-lg-6')][2]//a[hasclass('btn')]" position="attributes">
+        <attribute name="class" add="btn-lg btn-secondary" remove="btn-primary" separator=" "/>
+    </xpath>
+</template>
+
+<!-- ======== PICTURE ======== -->
+<template id="s_picture" inherit_id="website.s_picture" name="Be Wise s_picture">
+    <!-- Title - Remove font tag -->
+    <xpath expr="//h2" position="replace" mode="inner">
+        A punchy Headline
+    </xpath>
+</template>
+
+<!-- ======== FEATURES ======== -->
+<template id="s_features" inherit_id="website.s_features" name="Be Wise s_features">
+    <!-- Icons -->
+    <xpath expr="//i" position="attributes">
+        <attribute name="class" add="bg-o-color-4" remove="bg-o-color-1" separator=" "/>
+    </xpath>
+    <xpath expr="(//i)[2]" position="attributes">
+        <attribute name="class" add="bg-o-color-4" remove="bg-o-color-5" separator=" "/>
+    </xpath>
+    <xpath expr="(//i)[3]" position="attributes">
+        <attribute name="class" add="bg-o-color-4" remove="bg-o-color-2" separator=" "/>
+    </xpath>
+</template>
+
+<!-- ======== CAROUSEL ======== -->
+<template id="s_carousel" inherit_id="website.s_carousel" name="Be Wise s_carousel">
+    <xpath expr="//div[hasclass('carousel-item')]" position="attributes">
+        <attribute name="class" add="o_cc o_cc5" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('carousel-item')][3]" position="attributes">
+        <attribute name="style" add="background-position: 50% 25%" separator=";"/>
+    </xpath>
+    <xpath expr="//div[hasclass('carousel-item')][3]//p[last()]" position="replace" mode="inner">
+        <font class="bg-o-color-4">Good copy starts with understanding how your product or service helps your customers. Simple words communicate better than big words and pompous language.</font>
+    </xpath>
+</template>
+
+<!-- ======== MEDIA LIST ======== -->
+<template id="s_media_list" inherit_id="website.s_media_list" name="Be Wise s_media_list">
+    <!-- Shape options -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Airy/04_001","flip":[]}</attribute>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Airy_04_001"/>
+    </xpath>
+    <!-- Item #1 -->
+    <xpath expr="//div[hasclass('s_media_list_item')]" position="attributes">
+        <attribute name="class" add="col-lg-10" remove="col-lg-12" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('s_media_list_item')]/div" position="attributes">
+        <attribute name="class" remove="o_cc o_cc1" separator=" "/>
+    </xpath>
+    <!-- Set Image size to 1/2 - 1/2 -->
+    <xpath expr="//div[hasclass('s_media_list_body')]" position="attributes">
+        <attribute name="class" add="col-lg-6" remove="col-lg-8" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('s_media_list_img_wrapper')]" position="attributes">
+        <attribute name="class" add="col-lg-6" remove="col-lg-4" separator=" "/>
+    </xpath>
+    <!-- Item #2 -->
+    <xpath expr="//div[hasclass('s_media_list_item')][2]" position="attributes">
+        <attribute name="class" add="col-lg-10" remove="col-lg-12" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('s_media_list_item')][2]/div" position="attributes">
+        <attribute name="class" remove="o_cc o_cc1" separator=" "/>
+    </xpath>
+    <!-- Set Image size to 1/2 - 1/2 -->
+    <xpath expr="(//div[hasclass('s_media_list_body')])[2]" position="attributes">
+        <attribute name="class" add="col-lg-6" remove="col-lg-8" separator=" "/>
+    </xpath>
+    <xpath expr="(//div[hasclass('s_media_list_img_wrapper')])[2]" position="attributes">
+        <attribute name="class" add="col-lg-6" remove="col-lg-4" separator=" "/>
+    </xpath>
+    <!-- Item #3 -->
+    <xpath expr="//div[hasclass('s_media_list_item')][3]" position="attributes">
+        <attribute name="class" add="col-lg-10" remove="col-lg-12" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('s_media_list_item')][3]/div" position="attributes">
+        <attribute name="class" remove="o_cc o_cc1" separator=" "/>
+    </xpath>
+    <!-- Set Image size to 1/2 - 1/2 -->
+    <xpath expr="(//div[hasclass('s_media_list_body')])[3]" position="attributes">
+        <attribute name="class" add="col-lg-6" remove="col-lg-8" separator=" "/>
+    </xpath>
+    <xpath expr="(//div[hasclass('s_media_list_img_wrapper')])[3]" position="attributes">
+        <attribute name="class" add="col-lg-6" remove="col-lg-4" separator=" "/>
+    </xpath>
+</template>
+
+<!-- ======== COMPARISONS ======== -->
+<template id="s_comparisons" inherit_id="website.s_comparisons" name="Be Wise s_comparisons">
+    <xpath expr="//div[hasclass('card')]//li[hasclass('list-group-item')]" position="replace" mode="inner">
+        Basic sales &amp; marketing
+    </xpath>
+</template>
+
+<!-- ======== FEATURES GRID ======== -->
+<template id="s_features_grid" inherit_id="website.s_features_grid" name="Be Wise s_features_grid">
+    <!-- Icons -->
+    <xpath expr="//i" position="attributes">
+        <attribute name="class" add="bg-o-color-2" remove="fa-2x bg-o-color-1" separator=" "/>
+    </xpath>
+    <xpath expr="(//i)[2]" position="attributes">
+        <attribute name="class" add="bg-o-color-2" remove="fa-2x bg-o-color-1" separator=" "/>
+    </xpath>
+    <xpath expr="(//i)[3]" position="attributes">
+        <attribute name="class" add="bg-o-color-2" remove="fa-2x bg-o-color-1" separator=" "/>
+    </xpath>
+    <xpath expr="(//i)[4]" position="attributes">
+        <attribute name="class" add="rounded-circle" remove="fa-2x rounded" separator=" "/>
+    </xpath>
+    <xpath expr="(//i)[5]" position="attributes">
+        <attribute name="class" add="rounded-circle" remove="fa-2x rounded" separator=" "/>
+    </xpath>
+    <xpath expr="(//i)[6]" position="attributes">
+        <attribute name="class" add="rounded-circle" remove="fa-2x rounded" separator=" "/>
+    </xpath>
+</template>
+
+<!-- ======== PRICELIST ======== -->
+<template id="s_product_catalog" inherit_id="website.s_product_catalog" name="Be Wise s_product_catalog">
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc o_cc5 pt120 pb120" remove="pt48 pb32" separator=" "/>
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Floats/06","flip":[]}</attribute>
+    </xpath>
+    <!-- Filter & shape -->
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_bg_filter bg-black-75"/>
+        <div class="o_we_shape o_web_editor_Floats_06"/>
+    </xpath>
+</template>
+
+</odoo>

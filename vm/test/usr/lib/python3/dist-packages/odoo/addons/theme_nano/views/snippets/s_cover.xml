@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_cover" inherit_id="website.s_cover">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc o_cc5 pt200 pb200" remove="parallax s_parallax_is_fixed bg-black-50 pt96 pb96" separator=" "/>
+        <attribute name="data-scroll-background-ratio">0</attribute>
+        <attribute name="style">background-image: url('/web/image/website.s_cover_default_image'); background-position: 50% 0;</attribute>
+    </xpath>
+    <xpath expr="//*[hasclass('s_parallax_bg')]" position="replace"/>
+    <!-- Title & Text -->
+    <xpath expr="//h1" position="replace" mode="inner">
+        Creative Studio
+    </xpath>
+    <xpath expr="//p" position="replace" mode="inner">
+        We combine smart design with rich technology <br/>to craft innovative products.
+    </xpath>
+</template>
+
+<template id="configurator_s_cover" inherit_id="website.configurator_s_cover">
+    <!-- Shape option -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Bold/12_001","flip":["x"]}</attribute>
+    </xpath>
+    <xpath expr="//*[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Bold_12_001" style="background-image: url('/web_editor/shape/web_editor/Bold/12_001.svg?c1=rgba%280%2C%200%2C%200%2C%200.5%29&amp;c2=rgba%280%2C%200%2C%200%2C%200.25%29&amp;c5=o-color-5&amp;flip=x'); background-position: 50% 50%;"/>
+    </xpath>
+</template>
+
+</odoo>
