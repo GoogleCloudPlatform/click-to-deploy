@@ -14,6 +14,6 @@
 
 require 'spec_helper'
 
-describe package('php8.1') do
+describe package('php8.3') do
   it { should be_installed }
 end
