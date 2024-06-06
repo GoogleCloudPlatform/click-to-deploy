@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_text_block" inherit_id="website.s_text_block">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc o_cc1 pt96 pb96" remove="pt40 pb40" separator=" "/>
+    </xpath>
+    <!-- Content -->
+    <xpath expr="//*[hasclass('container')]" position="attributes">
+        <attribute name="class" add="o_container_small" remove="container" separator=" "/>
+    </xpath>
+</template>
+
+</odoo>

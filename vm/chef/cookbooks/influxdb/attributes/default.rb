@@ -12,5 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['influxdb']['version'] = '2.6.1'
-default['influxdb']['sha256'] = '003908bacc9653603cc7cad68e40f66552b6a09279305228d26b33b71346941e'
+default['influxdb']['version'] = '2.7.5'
+default['influxdb']['sha256'] = '79f286dfaeedb02b545449674c2621d1c1a0e019cd9ed3ffd0bbdf06b22d42f1'

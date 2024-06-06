@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<record id="theme_bewise.s_big_image_parallax_000_scss" model="theme.ir.asset">
+    <field name="key">theme_bewise.s_big_image_parallax_000_scss</field>
+    <field name="name">Big image parallax 000 SCSS</field>
+    <field name="bundle">web.assets_frontend</field>
+    <field name="path">theme_bewise/static/src/old_snippets/s_big_image_parallax/000.scss</field>
+    <field name="active" eval="False"/>
+</record>
+
+<record id="theme_bewise.s_big_image_000_scss" model="theme.ir.asset">
+    <field name="key">theme_bewise.s_big_image_000_scss</field>
+    <field name="name">Big image 000 SCSS</field>
+    <field name="bundle">web.assets_frontend</field>
+    <field name="path">theme_bewise/static/src/old_snippets/s_big_image/000.scss</field>
+    <field name="active" eval="False"/>
+</record>
+
+<record id="theme_bewise.s_icon_box_000_scss" model="theme.ir.asset">
+    <field name="key">theme_bewise.s_icon_box_000_scss</field>
+    <field name="name">Icon box 000 SCSS</field>
+    <field name="bundle">web.assets_frontend</field>
+    <field name="path">theme_bewise/static/src/old_snippets/s_icon_box/000.scss</field>
+    <field name="active" eval="False"/>
+</record>
+
+<record id="theme_bewise.s_big_icons_000_scss" model="theme.ir.asset">
+    <field name="key">theme_bewise.s_big_icons_000_scss</field>
+    <field name="name">Big icons 000 SCSS</field>
+    <field name="bundle">web.assets_frontend</field>
+    <field name="path">theme_bewise/static/src/old_snippets/s_big_icons/000.scss</field>
+    <field name="active" eval="False"/>
+</record>
+
+<record id="theme_bewise.primary_variables_scss" model="theme.ir.asset">
+    <field name="key">theme_bewise.primary_variables_scss</field>
+    <field name="name">Primary variables SCSS</field>
+    <field name="bundle">web._assets_primary_variables</field>
+    <field name="path">theme_bewise/static/src/scss/primary_variables.scss</field>
+</record>
+
+</odoo>

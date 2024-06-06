@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_carousel" inherit_id="website.s_carousel">
+    <!-- Slide 1 -->
+    <xpath expr="(//*[hasclass('container')])" position="before">
+        <div class="o_we_bg_filter" style="background-color: rgba(25, 41, 37, 0.55) !important;"/>
+    </xpath>
+    <xpath expr="//div[hasclass('carousel-content')]" position="replace">
+        <div class="jumbotron o_cc o_cc1 p-5 carousel-content col-lg-8 offset-lg-2 text-center rounded">
+            <h2>Let us plan your perfect day</h2>
+            <p class="lead">We are focused on providing high-quality service and customer satisfaction.</p>
+            <a href="/contactus" class="btn btn-primary">Get in touch</a>
+        </div>
+    </xpath>
+    <!-- Slide 2 -->
+    <xpath expr="(//*[hasclass('container')])[2]" position="before">
+        <div class="o_we_bg_filter" style="background-color: rgba(25, 41, 37, 0.55) !important;"/>
+    </xpath>
+    <xpath expr="//*[hasclass('carousel-item')][2]" position="attributes">
+        <attribute name="class" add="pt152 pb152" remove="pt96 pb96" separator=" "/>
+    </xpath>
+    <xpath expr="(//div[hasclass('carousel-content')])[2]" position="replace">
+        <div class="jumbotron o_cc o_cc3 p-5 carousel-content col-lg-8 offset-lg-2 text-center rounded">
+            <h2>View our blog for inspiration</h2>
+            <p class="lead">Get inspired with the latest trends and advice from our wedding experts.</p>
+            <a href="#" class="btn btn-primary">See the blog</a>
+        </div>
+    </xpath>
+    <!-- Slide 3 -->
+    <xpath expr="(//*[hasclass('container')])[3]" position="before">
+        <div class="o_we_bg_filter" style="background-color: rgba(25, 41, 37, 0.55) !important;"/>
+    </xpath>
+    <xpath expr="//*[hasclass('carousel-item')][3]" position="attributes">
+        <attribute name="class" add="pt152 pb152" remove="pt128 pb128" separator=" "/>
+    </xpath>
+    <xpath expr="(//*[hasclass('carousel-content')])[3]" position="replace">
+        <div class="jumbotron o_cc o_cc4 p-5 carousel-content col-lg-8 offset-lg-2 text-center rounded">
+            <h2>Check out our gallery</h2>
+            <p class="lead">Take a look at some of our favourite weddings.</p>
+            <a href="#" class="btn btn-primary">View our work</a>
+        </div>
+    </xpath>
+</template>
+
+</odoo>

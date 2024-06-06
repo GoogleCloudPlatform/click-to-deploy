@@ -1,0 +1,126 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_orchid
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Language-Team: Armenian (https://app.transifex.com/odoo/teams/41243/hy/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: hy\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_text_image
+msgid ""
+"<br/>\n"
+"        Deliver flowers to live up to your dedication for your loved ones."
+msgstr ""
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_quotes_carousel
+msgid ""
+"A small shop with a very large selection of roses. Nice prices and above all"
+" a very professional and friendly welcome."
+msgstr ""
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_quotes_carousel
+msgid ""
+"A wide range of high quality products and a warm welcome! I recommend this "
+"shop 200%!"
+msgstr ""
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_three_columns
+msgid ""
+"As we use local growers, our flowers last longer and smell better. Just like"
+" the event you want to celebrate with flowers!"
+msgstr ""
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_three_columns
+msgid "Bio Flowers"
+msgstr ""
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_three_columns
+msgid ""
+"Don't offer pesticides to your beloved one! By choosing our flowers, we "
+"guarantee you organic flowers."
+msgstr ""
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_three_columns
+msgid "Eco-Friendly Packaging"
+msgstr ""
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_image_text
+msgid ""
+"From your local producer to your door, discover how we deliver our multiple "
+"sorts of flowers and bring you happiness."
+msgstr ""
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_cover
+msgid "Live life in full bloom"
+msgstr ""
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_three_columns
+msgid "Local Producers"
+msgstr ""
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_text_image
+msgid "Our Mission"
+msgstr ""
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_image_text
+msgid "The Orchid Concept"
+msgstr ""
+
+#. module: theme_orchid
+#: model:ir.model,name:theme_orchid.model_theme_utils
+msgid "Theme Utils"
+msgstr ""
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_call_to_action
+msgid "There are always flowers <br/>for those who want to see them."
+msgstr ""
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_text_image
+msgid ""
+"To do so, we collaborate with local producers who care about the environment"
+" and cultivate their flowers with love."
+msgstr ""
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_quotes_carousel
+msgid ""
+"Very nice, colorful shop with many choices in the heart of a very pretty "
+"town."
+msgstr ""
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_three_columns
+msgid ""
+"We use 100% recycled materials. We believe the best gifts should also do "
+"good for the planet."
+msgstr ""
+
+#. module: theme_orchid
+#. odoo-javascript
+#: code:addons/theme_orchid/static/src/js/tour.js:0
+#, python-format
+msgid "width"
+msgstr ""

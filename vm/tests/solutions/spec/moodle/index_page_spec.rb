@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,6 +15,6 @@
 require 'spec_helper'
 
 describe command('curl -L http://localhost/') do
-  its(:stdout) { should match /<title>Installation - Moodle.*<\/title>/ }
+  its(:stdout) { should match /<title>Installation | Moodle.*<\/title>/ }
   its(:exit_status) { should eq 0 }
 end

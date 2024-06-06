@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<record id="theme_kiddo.s_discount_000_variables_scss" model="theme.ir.asset">
+    <field name="key">theme_kiddo.s_discount_000_variables_scss</field>
+    <field name="name">Discount 000 variables SCSS</field>
+    <field name="bundle">web._assets_primary_variables</field>
+    <field name="path">theme_kiddo/static/src/old_snippets/s_discount/000_variables.scss</field>
+    <field name="active" eval="False"/>
+</record>
+
+<record id="theme_kiddo.primary_variables_scss" model="theme.ir.asset">
+    <field name="key">theme_kiddo.primary_variables_scss</field>
+    <field name="name">Primary variables SCSS</field>
+    <field name="bundle">web._assets_primary_variables</field>
+    <field name="path">theme_kiddo/static/src/scss/primary_variables.scss</field>
+</record>
+
+<record id="theme_kiddo.secondary_variables_scss" model="theme.ir.asset">
+    <field name="key">theme_kiddo.secondary_variables_scss</field>
+    <field name="name">Secondary variables SCSS</field>
+    <field name="bundle">web._assets_secondary_variables</field>
+    <field name="path">theme_kiddo/static/src/scss/secondary_variables.scss</field>
+</record>
+
+<record id="theme_kiddo.bootstrap_overridden_scss" model="theme.ir.asset">
+    <field name="key">theme_kiddo.bootstrap_overridden_scss</field>
+    <field name="name">Bootstrap overridden SCSS</field>
+    <field name="bundle">web._assets_frontend_helpers</field>
+    <field name="directive">prepend</field>
+    <field name="path">theme_kiddo/static/src/scss/bootstrap_overridden.scss</field>
+</record>
+
+</odoo>

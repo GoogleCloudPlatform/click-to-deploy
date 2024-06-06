@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_product_catalog" inherit_id="website.s_product_catalog">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc o_cc4 pb88 pt88" remove="pb32 pt48" separator=" "/>
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Airy/07","flip":[]}</attribute>
+        <!-- Enable SVG dynamic color functionality -->
+        <attribute name="style">background-image: url('/web_editor/shape/theme_buzzy/s_product_catalog.svg?c1=o-color-1'); background-position: 50% 0%;</attribute>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//section/*" position="before">
+        <div class="o_we_shape o_web_editor_Airy_07"/>
+    </xpath>
+</template>
+
+</odoo>

@@ -1,0 +1,109 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_loftspace
+# 
+# Translators:
+# Wil Odoo, 2023
+# Junko Augias, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:22+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Junko Augias, 2023\n"
+"Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_cover
+msgid "<b>Bringing life to your interior</b>"
+msgstr "<b>インテリアに息吹を</b>"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_title
+msgid "<b>Everything is designed.<br/> Few things are designed well.</b>"
+msgstr "<b>全てがデザインされています。<br/>うまくデザインされているものは少ないです。</b>"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_cover
+msgid "Discover More"
+msgstr "詳細をご覧下さい"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_cover
+msgid "Discover our unique pieces of furniture selected for you."
+msgstr "あなたのためにセレクトされたユニークな家具をご覧下さい。"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_three_columns
+msgid ""
+"Every week our shop receive new products. Some are only on sale for a "
+"limited period of time."
+msgstr "毎週新商品が入荷します。期間限定のセールもございます。"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_three_columns
+msgid "For the whole Family"
+msgstr "家族みんなに"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_banner
+msgid ""
+"Our products are designed for small to medium size companies willing to "
+"optimize their performance."
+msgstr "当社のプロダクトは、業績の最適化を望む中小企業向けに設計されています。"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_call_to_action
+msgid "Our services"
+msgstr "当社のサービス"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_three_columns
+msgid "Tailored advice"
+msgstr "個別アドバイス"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_banner
+msgid "The art of Design"
+msgstr "デザインという芸術"
+
+#. module: theme_loftspace
+#: model:ir.model,name:theme_loftspace.model_theme_utils
+msgid "Theme Utils"
+msgstr "テーマユーティリティ"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_three_columns
+msgid ""
+"To buy unique pieces is to buy a piece of the artist: His passion put in the"
+" execution of the object, his hours of reflexion, his dexterity... It is a "
+"committed, ethical act, which encourages a responsible and direct economy."
+msgstr ""
+"ユニークな作品を買うということは、アーティストの作品を買うということだ: "
+"それは、オブジェに込められた情熱、何時間にもわたる熟考、器用さ......。それは、責任を持ち、直接的な経済を促す、献身的で倫理的な行為です。"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_three_columns
+msgid "Unique Items"
+msgstr "ユニークなアイテム"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_three_columns
+msgid ""
+"Whether it is to help you see clearly in a project, to confirm a choice or "
+"when you have no idea about the layout of your interior, our advisers are "
+"there to accompany you throughout your project."
+msgstr ""
+"プロジェクトの見通しを明確にしたい時、選択肢を確認したい時、インテリアのレイアウトがわからない時など、当社のアドバイザーがプロジェクト全体を通してお客様に寄り添います。"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_call_to_action
+msgid "Would you like more information <br/>about a product?"
+msgstr "プロダクトについてのさらに詳しい情報<br/>が必要ですか？"

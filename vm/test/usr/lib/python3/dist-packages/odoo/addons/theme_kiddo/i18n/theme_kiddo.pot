@@ -1,0 +1,164 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_kiddo
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:22+0000\n"
+"PO-Revision-Date: 2023-09-28 12:22+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_call_to_action
+msgid "2,000 parents<br/> brought their kid to our nursery."
+msgstr ""
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_banner
+msgid "A little place <br/>of paradise"
+msgstr ""
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_product_list
+msgid "About us"
+msgstr ""
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_image_text
+msgid "Activities"
+msgstr ""
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_three_columns
+msgid ""
+"All activities are planned to meet each child’s individual needs. This "
+"approach will help your child to develop to the best of their ability."
+msgstr ""
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_call_to_action
+msgid "Contact us"
+msgstr ""
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_call_to_action
+msgid "Entrust us with your children and go to work with peace of mind"
+msgstr ""
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_product_list
+msgid "Events"
+msgstr ""
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_three_columns
+msgid "For every kid"
+msgstr ""
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_cover
+msgid "Kiddo Nursery"
+msgstr ""
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_picture
+msgid "Letting each child explore and grow at their own pace"
+msgstr ""
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_three_columns
+msgid "Open-door policy"
+msgstr ""
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_three_columns
+msgid ""
+"Our aim is to make the early years of your child’s life as enjoyable, "
+"rewarding and positive as possible."
+msgstr ""
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_three_columns
+msgid "Our mission"
+msgstr ""
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_picture
+msgid ""
+"Our qualified staff ensure that each childs' needs are always recognised and"
+" fulfilled."
+msgstr ""
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_product_list
+msgid "Our team"
+msgstr ""
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_image_text
+msgid "Our team is composed of experienced nursery nurses."
+msgstr ""
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_product_list
+msgid "Playground"
+msgstr ""
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_cover
+msgid ""
+"The countryside nursery since 2002.<br/>\n"
+"        A truly unique service in a highly secure and tranquil setting."
+msgstr ""
+
+#. module: theme_kiddo
+#: model:ir.model,name:theme_kiddo.model_theme_utils
+msgid "Theme Utils"
+msgstr ""
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_image_text
+msgid ""
+"They will propose to your children educational activities, playful, varied "
+"and adapted to the stage of development."
+msgstr ""
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_banner
+msgid ""
+"This is a simple hero unit, a simple jumbotron-style component for calling "
+"extra attention to featured content or information."
+msgstr ""
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_picture
+msgid ""
+"Through stimulating and fun activities, our aim<br/>\n"
+"        is to promote all areas of a childs' development."
+msgstr ""
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_product_list
+msgid "Visit us"
+msgstr ""
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_three_columns
+msgid ""
+"You are welcome to come and see the nursery and meet the team at any time "
+"convenient to you."
+msgstr ""
+
+#. module: theme_kiddo
+#. odoo-javascript
+#: code:addons/theme_kiddo/static/src/js/tour.js:0
+#, python-format
+msgid "width"
+msgstr ""
