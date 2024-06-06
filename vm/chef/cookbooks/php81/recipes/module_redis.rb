@@ -12,18 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['mautic']['packages'] = [
-    'libicu-dev',
-    'libxmlrpc-epi0',
-    'libxslt1.1',
-    'libzip4',
-    'php8.1-bcmath',
-    'php8.1-gmp',
-    'php8.1-imap',
-]
-
-default['mautic']['version'] = '5.0.4'
-default['mautic']['user'] = 'www-data'
-default['mautic']['db']['name'] = 'mautic'
-
-default['php81']['distribution'] = 'bullseye'
+package 'php8.1-redis' do
+  action :install
+  retries 5
+  retry_delay 20
+end
