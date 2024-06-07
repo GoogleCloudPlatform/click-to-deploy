@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!-- ======== COVER ======== -->
+<template id="s_cover" inherit_id="website.s_cover" name="Avantgarde s_cover">
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="s_parallax_no_overflow_hidden o_full_screen_height" remove="s_parallax_is_fixed s_parallax" separator=" "/>
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Origins/18","flip":["x"]}</attribute>
+    </xpath>
+    <xpath expr="//span[hasclass('s_parallax_bg')]" position="attributes">
+        <attribute name="style" remove="background-position: 50% 0;" add="background-position: 50% 80%;" separator=";"/>
+    </xpath>
+    <xpath expr="//div[hasclass('s_allow_columns')]" position="before">
+        <div class="o_we_shape o_web_editor_Origins_18" style="background-image: url('/web_editor/shape/web_editor/Origins/18.svg?c1=o-color-2&amp;flip=x'); background-position: 50% 50%;"/>
+    </xpath>
+    <xpath expr="//h1" position="attributes">
+        <attribute name="class" add="text-o-color-1 text-break" separator=" "/>
+    </xpath>
+    <xpath expr="//h1" position="replace" mode="inner">
+        We are Avantgarde.
+    </xpath>
+    <xpath expr="//p" position="replace" mode="inner">
+        We create architecture, landscapes, interiors, product design and graphic design.<br/>
+        Our methods allow us to explore a future that is equitable, data-driven, and green.
+    </xpath>
+    <xpath expr="//a[hasclass('btn')]" position="attributes">
+        <attribute name="class" add="btn-lg" separator=" "/>
+    </xpath>
+</template>
+
+<!-- ======== PICTURE ======== -->
+<template id="s_picture" inherit_id="website.s_picture" name="Avantgarde s_cover">
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pt144 pb128" remove="pt48 pb24" separator=" "/>
+    </xpath>
+    <xpath expr="//h2" position="attributes">
+        <attribute name="style" remove="text-align: center;" separator=" "/>
+        <attribute name="class" add="text-break" separator=" "/>
+    </xpath>
+    <xpath expr="//h2" position="replace" mode="inner">
+        Design Methodology
+    </xpath>
+    <xpath expr="//p" position="attributes">
+        <attribute name="style" remove="text-align: center;" separator=" "/>
+    </xpath>
+    <xpath expr="//p" position="replace" mode="inner">
+        Our design methodology is rooted in our core values.<br/>
+        We combine a wide spectrum of technologies with a good portion of creativity.
+    </xpath>
+    <xpath expr="//img" position="attributes">
+        <attribute name="class" remove="img-thumbnail" separator=" "/>
+        <attribute name="src">/web_editor/image_shape/website.s_picture_default_image/web_editor/composition/composition_organic_line.svg?c2=o-color-2</attribute>
+        <attribute name="data-shape">web_editor/composition/composition_organic_line</attribute>
+        <attribute name="data-original-mimetype">image/jpeg</attribute>
+        <attribute name="data-file-name">bg_image_14.svg</attribute>
+        <attribute name="data-shape-colors">;o-color-2;;;</attribute>
+    </xpath>
+    <xpath expr="//figcaption" position="attributes">
+        <attribute name="style" add="text-align: right;" separator=" "/>
+    </xpath>
+    <xpath expr="//figcaption" position="replace" mode="inner">
+        We carry out an interdisciplinary design process.
+    </xpath>
+</template>
+
+<!-- ======== COLUMNS ======== -->
+<template id="s_three_columns" inherit_id="website.s_three_columns" name="Avantgarde s_three_columns">
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pt120 pb240 o_full_screen_height" remove="pt32 pb32" separator=" "/>
+    </xpath>
+    <xpath expr="//*[hasclass('card')]" position="attributes">
+        <attribute name="class" add="shadow border" separator=" "/>
+        <attribute name="style">border-color: var(--o-color-2) !important; box-shadow: var(--o-color-2) -25px -25px 0px 0px !important; border-width: 8px !important;</attribute>
+    </xpath>
+    <xpath expr="//h3" position="replace" mode="inner">
+        <span style="font-weight: bolder;">Excellence</span>
+    </xpath>
+    <xpath expr="(//p[hasclass('card-text')])[1]" position="replace" mode="inner">
+        We conduct state-of-the-art research and development to solve complex design challenges, taking the latest advances out of the lab and into the hands of architects and engineers.</xpath>
+    <xpath expr="(//*[hasclass('card')])[2]" position="attributes">
+        <attribute name="class" add="shadow border" separator=" "/>
+        <attribute name="style">border-color: var(--o-color-4) !important; border-width: 8px !important; box-shadow: var(--o-color-5) 0px 0px 100px -40px !important;</attribute>
+    </xpath>
+    <xpath expr="(//h3)[2]" position="replace" mode="inner">
+        <span style="font-weight: bolder;">Collaboration</span>
+    </xpath>
+    <xpath expr="(//p[hasclass('card-text')])[2]" position="replace" mode="inner">
+        We thrive on rich collaborations to push our thinking. A continuous state of reinvention, driven by our partners in the process, is essential to our work.
+    </xpath>
+    <xpath expr="(//*[hasclass('card')])[3]" position="attributes">
+        <attribute name="class" add="shadow border" separator=" "/>
+        <attribute name="style">box-shadow: var(--o-color-1) 25px 25px 0px 0px !important; border-color: var(--o-color-1) !important; border-width: 8px !important;</attribute>
+    </xpath>
+    <xpath expr="(//h3)[3]" position="replace" mode="inner">
+        <span style="font-weight: bolder;">Sustainability</span>
+    </xpath>
+    <xpath expr="(//p[hasclass('card-text')])[3]" position="replace" mode="inner">
+        Sustainability is at the heart of our design approach. We audit projects against global standards as well as our own, more comprehensive, responsibility framework.
+    </xpath>
+</template>
+
+<template id="configurator_s_three_columns" inherit_id="website.configurator_s_three_columns" name="Avantgarde s_three_columns">
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Wavy/20"}</attribute>
+    </xpath>
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Wavy_20"/>
+    </xpath>
+</template>
+
+<!-- ======== TEXT-IMAGE ======== -->
+<template id="s_text_image" inherit_id="website.s_text_image" name="Avantgarde s_text_image">
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc o_cc3 o_full_screen_height" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-6')]" position="attributes">
+        <attribute name="class" add="col-lg-4 offset-lg-1" remove="col-lg-6" separator=" "/>
+    </xpath>
+    <xpath expr="//h2" position="replace" mode="inner">
+        <span class="text-break" style="font-size: 62px; font-weight: bolder;">Our R&amp;D Approach</span>
+    </xpath>
+    <xpath expr="//p" position="before">
+        <p><br/></p>
+    </xpath>
+    <xpath expr="//p[2]" position="replace" mode="inner">
+        Making innovative design requires us to push the limits of technological possibilities. As a group of in-house specialists, we develop and implement computational workflows and new technologies.
+    </xpath>
+    <xpath expr="//p[3]" position="replace" mode="inner">
+        Through a mixture of project-based work and standalone research, we make efficient projects, adaptable in the face of change.
+    </xpath>
+    <xpath expr="//a[hasclass('btn')]" position="before">
+        <p><br/></p>
+    </xpath>
+    <xpath expr="//a[hasclass('btn')]" position="attributes">
+        <attribute name="class" add="btn-lg" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-6')]" position="attributes">
+        <attribute name="class" add="offset-lg-1" separator=" "/>
+    </xpath>
+    <xpath expr="//img" position="attributes">
+        <attribute name="class" remove="img-thumbnail" separator=" "/>
+        <attribute name="src">/web_editor/image_shape/website.s_text_image_default_image/web_editor/composition/composition_triangle_line.svg?c1=o-color-1</attribute>
+        <attribute name="data-shape">web_editor/composition/composition_triangle_line</attribute>
+        <attribute name="data-original-mimetype">image/jpeg</attribute>
+        <attribute name="data-file-name">bg_image_13.svg</attribute>
+        <attribute name="data-shape-colors">;o-color-1;;;</attribute>
+    </xpath>
+</template>
+
+<!-- ======== IMAGE-TEXT ======== -->
+<template id="s_image_text" inherit_id="website.s_image_text" name="Avantgarde s_image_text">
+    <xpath expr="//div[hasclass('col-lg-6')][1]" position="attributes">
+        <attribute name="class" add="col-lg-5 offset-lg-1" remove="col-lg-6" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-6')][1]" position="attributes">
+        <attribute name="class" add="col-lg-4 offset-lg-1" remove="col-lg-6" separator=" "/>
+    </xpath>
+    <xpath expr="//a[hasclass('btn')]" position="attributes">
+        <attribute name="class" add="btn-lg" separator=" "/>
+    </xpath>
+</template>
+
+<!-- ======== CALL TO ACTION ======== -->
+<template id="s_call_to_action" inherit_id="website.s_call_to_action" name="Avantgarde s_call_to_action">
+
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_half_screen_height pt0" remove="pt48" separator=" "/>
+    </xpath>
+    <xpath expr="//h3" position="replace">
+        <h3 style="text-align: right;"><b>Since 1992</b> creating around the world.</h3>
+    </xpath>
+    <xpath expr="//p" position="replace" mode="inner">
+        We partner with ambitious clients. We’d love to hear from you.
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-9')]" position="attributes">
+        <attribute name="class" add="col-lg-8" remove="col-lg-9" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-8')]/p" position="attributes">
+        <attribute name="style" add="text-align: right;" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-3')]" position="attributes">
+        <attribute name="class" add="col-lg-4" remove="col-lg-3" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-4')]/p" position="attributes">
+        <attribute name="style" add="text-align: left;" remove="text-align: right;" separator=";"/>
+    </xpath>
+</template>
+
+<template id="configurator_s_call_to_action" inherit_id="website.configurator_s_call_to_action" name="Avantgarde s_call_to_action">
+
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Origins/14_001"}</attribute>
+    </xpath>
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Origins_14_001"/>
+    </xpath>
+</template>
+
+<!-- ======== CAROUSEL ======== -->
+<template id="s_carousel" inherit_id="website.s_carousel" name="Avantgarde s_carousel">
+    <!-- Assign slide3 as 'active' and move it in first position -->
+    <xpath expr="//div[hasclass('carousel-inner')]/div" position="attributes">
+        <attribute name="class" remove="active" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('carousel-inner')]/div[3]" position="attributes">
+        <attribute name="class" add="active" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('carousel-inner')]/div" position="before">
+        <xpath expr="//div[hasclass('carousel-inner')]/div[3]" position="move"/>
+    </xpath>
+
+    <xpath expr="//h2/font" position="replace">
+        <font style="font-size: 62px; background-color: var(--o-color-4);" class="o_default_snippet_text">Making Simple</font>
+    </xpath>
+</template>
+
+<!-- ======== QUOTES ======== -->
+ <template id="s_quotes_carousel" inherit_id="website.s_quotes_carousel" name="Avantgarde s_quotes_carousel">
+    <!-- Assign slide2 as 'active' and move it in first position -->
+    <xpath expr="//div[hasclass('carousel-inner')]/div" position="attributes">
+        <attribute name="class" remove="active" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('carousel-inner')]/div[2]" position="attributes">
+        <attribute name="class" add="active" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('carousel-inner')]/div" position="before">
+        <xpath expr="//div[hasclass('carousel-inner')]/div[2]" position="move"/>
+    </xpath>
+</template>
+
+</odoo>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_picture" inherit_id="website.s_picture">
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pt72 overflow-hidden o_cc3 bg-o-color-3" remove="pt48 o_cc2" separator=" "/>
+    </xpath>
+    <xpath expr="//h2" position="replace" mode="inner">
+        Our travel agencies
+    </xpath>
+    <xpath expr="//img" position="attributes">
+        <attribute name="class" remove="img-thumbnail" separator=" "/>
+        <attribute name="style">width: 100%;</attribute>
+    </xpath>
+    <xpath expr="//figcaption" position="replace">
+        <figcaption class="text-400"><em>Odoo Travel New York</em></figcaption>
+    </xpath>
+</template>
+
+<template id="configurator_s_picture" inherit_id="website.configurator_s_picture">
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Bold/01","flip":[]}</attribute>
+    </xpath>
+    <xpath expr="//section/div" position="before">
+        <div class="o_we_shape o_web_editor_Bold_07_001"/>
+    </xpath>
+</template>
+
+</odoo>

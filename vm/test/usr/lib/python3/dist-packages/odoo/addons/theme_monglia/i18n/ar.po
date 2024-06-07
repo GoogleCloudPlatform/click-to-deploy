@@ -1,0 +1,203 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_monglia
+# 
+# Translators:
+# Wil Odoo, 2023
+# Malaz Abuidris <msea@odoo.com>, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
+"Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ar\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_cover
+msgid "21/22 December"
+msgstr "21/22 ديسمبر "
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_call_to_action
+msgid "<b>APPLY FOR OUR V.I.P. CARD</b>"
+msgstr "<b>تقدم بطلب الحصول على بطاقة كبار الشخصيات لدينا</b> "
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_image_text
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) "
+"25%, var(--o-color-2) 100%);\" class=\"text-gradient\">Mixology</font>"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) "
+"25%, var(--o-color-2) 100%);\" class=\"text-gradient\">ميكسولوجي</font> "
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_text_image
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) "
+"25%, var(--o-color-2) 100%);\" class=\"text-gradient\">Music is magic</font>"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) "
+"25%, var(--o-color-2) 100%);\" class=\"text-gradient\">الموسيقى هي "
+"كالسحر</font> "
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_title
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-4) "
+"25%, var(--o-color-1) 100%);\" class=\"text-gradient\">MAIN LINE UP</font>"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-4) "
+"25%, var(--o-color-1) 100%);\" class=\"text-gradient\">الخط الرئيسي</font> "
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_cover
+msgid "After a year's absence, the free and independent festival is back."
+msgstr "بعد غياب عام، عاد المهرجان الحر والمستقل. "
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_three_columns
+msgid "Bruce Porter"
+msgstr "Bruce Porter"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_carousel
+msgid "Discover"
+msgstr "اكتشف"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_media_list
+msgid ""
+"Dj's and electro artists meet every year for the electro dance festival in "
+"the largest concert venue in Europe. Book your tickets now, there won't be "
+"room for everybody."
+msgstr ""
+"يلتقي فنانو الدي جي وفنانو الإلكترو كل عام في مهرجان رقص إلكترو في أكبر مكان"
+" للحفلات الموسيقية في أوروبا. احجز تذكرتك الآن، لن يكون هناك متسع للجميع. "
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_image_text
+msgid ""
+"Every evening, renowned mixologists take turns preparing the best cocktails "
+"for you. Drink responsibly."
+msgstr ""
+"كل مساء، يتناوب خبراء الكوكتيل المشهورون في إعداد أفضل الكوكتيلات لك. اشرب "
+"بمسؤولية. "
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_media_list
+msgid ""
+"Everyone knows The States is the home of country music, and they have the "
+"festivals to prove it. Grab your cowboy hat and boots because we've put "
+"together the best country bands in the USA."
+msgstr ""
+"يعلم الجميع أن الولايات المتحدة الأمريكية هي موطن موسيقى الريف، ولديها "
+"المهرجانات التي تثبت ذلك. أحضر قبعة رعاة البقر وحذاءك لأننا قمنا بتجميع أفضل"
+" الفرق الموسيقية الريفية في الولايات المتحدة الأمريكية. "
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_text_block
+msgid ""
+"Kori Thill ■ Chana Smithwick ■ Cira Sherard ■ Elfriede Ogan ■ Mariko Yonker "
+"■ Bella Maday ■ Shaneka Wilkerson ■ Raina Planck ■ Micaela Labonte ■ "
+"Chadwick Cottman ■ Emile Hornung ■ Genevie Mehaffey ■ Dottie Hinkson ■ "
+"Mariah Nurse ■ Velda Caster ■ Rossie Cranfield ■ Iva Madrid ■ Flossie "
+"Freitas ■ Tina Gregerson ■ Quiana Tassin"
+msgstr ""
+"Kori Thill ■ Chana Smithwick ■ Cira Sherard ■ Elfriede Ogan ■ Mariko Yonker "
+"■ Bella Maday ■ Shaneka Wilkerson ■ Raina Planck ■ Micaela Labonte ■ "
+"Chadwick Cottman ■ Emile Hornung ■ Genevie Mehaffey ■ Dottie Hinkson ■ "
+"Mariah Nurse ■ Velda Caster ■ Rossie Cranfield ■ Iva Madrid ■ Flossie "
+"Freitas ■ Tina Gregerson ■ Quiana Tassin"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_text_image
+msgid "Learn more"
+msgstr "اعرف المزيد "
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_carousel
+msgid "Martina Clarck"
+msgstr "Martina Clarck"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_cover
+msgid ""
+"More than ever young talents are honoured on the big stage with more famous "
+"artists."
+msgstr ""
+"يتم تكريم المواهب الشابة أكثر من أي وقت مضى على المسرح الكبير مع المزيد من "
+"الفنانين المشهورين. "
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_media_list
+msgid "Old Town Road"
+msgstr "Old Town Road "
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_text_image
+msgid ""
+"Open 24/7, the club welcomes you and your friends in a relaxed and friendly "
+"atmosphere."
+msgstr ""
+"يفتح النادي على مدار 24 ساعة طوال أيام الأسبوع، ويرحب بك وبأصدقائك في جو "
+"مريح وودود. "
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_media_list
+msgid "Smack My Band Up"
+msgstr "Smack My Band Up"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_media_list
+msgid "Sodade Club"
+msgstr "نادي السوداد "
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_media_list
+msgid ""
+"Sodade is a beautiful concept that is difficult to put into words, but can "
+"be experienced by enjoying the diverse range of music on offer."
+msgstr ""
+"Sodade هو مفهوم جميل يصعب وصفه بالكلمات، ولكن يمكن تجربته من خلال الاستمتاع "
+"بمجموعة متنوعة من الموسيقى المتوفرة. "
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_call_to_action
+msgid "The vip card allows you to benefit from tickets before everyone else."
+msgstr "تتيح لك بطاقة كبار الشخصيات الاستفادة من التذاكر قبل أي شخص آخر. "
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_three_columns
+msgid "Theia Hayward"
+msgstr "Theia Hayward"
+
+#. module: theme_monglia
+#: model:ir.model,name:theme_monglia.model_theme_utils
+msgid "Theme Utils"
+msgstr "أدوات السمة"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_carousel
+msgid ""
+"This is the first full-length studio release in seven years for the British "
+"singer-songwriter."
+msgstr "هذا هو أول إصدار كامل للمغني وكاتب الأغاني البريطاني منذ سبع سنوات. "
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_three_columns
+msgid "Wilson Holt"
+msgstr "Wilson Holt"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_cover
+msgid "X²O Festival"
+msgstr "مهرجان X²O "

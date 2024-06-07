@@ -1,0 +1,138 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_enark
+# 
+# Translators:
+# Wil Odoo, 2023
+# Marianna Ciofani, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:21+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Marianna Ciofani, 2023\n"
+"Language-Team: Italian (https://app.transifex.com/odoo/teams/41243/it/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: it\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_parallax
+msgid ""
+"<i>“One of the great beauties of architecture is that each time, it is like "
+"life starting all over again.”</i>"
+msgstr ""
+"<i>“Una delle grandi bellezze dell'architettura è che ogni volta è come se "
+"la vita ricominciasse daccapo.”</i>"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_banner
+msgid "A Different Viewpoint."
+msgstr "Un punto di vista diverso."
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_call_to_action
+msgid "As <b>436 clients</b> before you, let’s work together"
+msgstr "Abbiamo lavorato con <b>436 clienti</b>, ora è il tuo momento"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_text_image
+msgid "Building Castle in Cloud"
+msgstr "Castelli tra le nuvole"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_media_list
+msgid "Construction site"
+msgstr "Cantiere"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_picture
+msgid "Creating places that enhance the human experience."
+msgstr "Creiamo luoghi che migliorano l'esperienza umana."
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_banner
+msgid "Discover More"
+msgstr "Scopri di più"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.enark_snippet_options
+msgid "Gradients"
+msgstr "Sfumature"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_media_list
+msgid "Know our clients."
+msgstr "Conosci i nostri clienti."
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_media_list
+msgid "Nature friendly"
+msgstr "Amici della natura"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.enark_snippet_options
+msgid "None"
+msgstr "Nessuna"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_media_list
+msgid ""
+"Our creations integrate and are in perfect harmony with their environment."
+msgstr "Le nostre creazioni sono in perfetta armonia con l'ambiente."
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_media_list
+msgid ""
+"Our mastery of construction techniques has been built up over time through "
+"our close collaboration with the workers and our sustained presence on the "
+"construction sites."
+msgstr ""
+"La nostra padronanza delle tecniche di costruzione si è consolidata nel "
+"tempo grazie alla stretta collaborazione con i lavoratori e alla presenza "
+"costante nei cantieri."
+
+#. module: theme_enark
+#: model:ir.model,name:theme_enark.model_theme_utils
+msgid "Theme Utils"
+msgstr "Utilità tema"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_picture
+msgid "We always put people and nature at the center of our projects."
+msgstr "Al centro dei nostri progetti ci sono sempre le persone e la natura."
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_media_list
+msgid ""
+"We always start by exploring our clients goals, priorities, lifestyle, and "
+"tastes."
+msgstr ""
+"Il primo passo è individuare gli obiettivi, le priorità, lo stile di vita e "
+"i gusti dei nostri clienti."
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_banner
+msgid ""
+"We are a contemporary architecture firm working mainly in the residential, "
+"commercial and office sectors. Our projects are built all over the world, in"
+" urban and rural environments."
+msgstr ""
+"Siamo uno studio di architettura contemporanea che opera principalmente nei "
+"settori residenziale, commerciale e degli uffici. I nostri progetti sono "
+"realizzati in tutto il mondo, in ambienti urbani e rurali."
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_text_image
+msgid ""
+"When designing an architectural concept, we take into account the nine "
+"criteria that Zumthor considers to be important in creating an architectural"
+" atmosphere."
+msgstr ""
+"Quando progettiamo un concetto architettonico, teniamo conto dei nove "
+"criteri che Zumthor considera importanti per creare un'atmosfera "
+"architettonica."

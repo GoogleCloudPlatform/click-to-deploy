@@ -1,0 +1,254 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_anelusia
+# 
+# Translators:
+# Wil Odoo, 2023
+# a75f12d3d37ea5bf159c4b3e85eb30e7_0fa6927, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: a75f12d3d37ea5bf159c4b3e85eb30e7_0fa6927, 2023\n"
+"Language-Team: Portuguese (Brazil) (https://app.transifex.com/odoo/teams/41243/pt_BR/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: pt_BR\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_references
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-2) 100%);\" class=\"text-gradient\">Our top brands</font>"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-2) 100%);\" class=\"text-gradient\">Nossas principais "
+"marcas</font>"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_company_team
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%, var(--o-color-5) 100%);\" class=\"text-gradient\">Mich Stark</font>\n"
+"        <br/>Sports Reporter"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%, var(--o-color-5) 100%);\" class=\"text-gradient\">Mich Stark</font>\n"
+"        <br/>Jornalista esportivo"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_company_team
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%, var(--o-color-5) 100%);\" class=\"text-gradient\">Tony Fred</font>\n"
+"        <br/>Editor-in-chief"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%, var(--o-color-5) 100%);\" class=\"text-gradient\">Tony Fred</font>\n"
+"        <br/>Editor-chefe"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_company_team
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-2) 0%, var(--o-color-5) 100%);\" class=\"text-gradient\">Aline Turner</font>\n"
+"        <br/>Photograph"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-2) 0%, var(--o-color-5) 100%);\" class=\"text-gradient\">Aline Turner</font>\n"
+"        <br/>Fotógrafa"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_company_team
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-2) 0%, var(--o-color-5) 100%);\" class=\"text-gradient\">Iris Joe</font>\n"
+"        <br/>Political Reporter"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-2) 0%, var(--o-color-5) 100%);\" class=\"text-gradient\">Iris Joe</font>\n"
+"        <br/>Jornalista político"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_company_team
+msgid ""
+"Aline is one of the iconic people in life who can say they love what they "
+"do. She likes to capture the moment from another point of view, another "
+"perspective."
+msgstr ""
+"Aline é uma das pessoas icônicas do mundo que ama o que faz. Ela gosta de "
+"capturar os momentos de outro ponto de vista, de outra perspectiva."
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_color_blocks_2
+msgid ""
+"Are you looking for sustainable clothing for men or women? Discover our "
+"exclusive fashion brand for both of you."
+msgstr ""
+"Está procurando roupas femininas e masculinas sustentáveis? Conheça nossa "
+"marca exclusiva."
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_call_to_action
+msgid "Be yourself, create your own style"
+msgstr "Seja você mesmo, crie seu próprio estilo"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_cover
+msgid "Color Matters"
+msgstr "Cores fazem a diferença"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_text_cover
+msgid ""
+"Color trends are already waiting to spring <br/>into action for the  next "
+"summer."
+msgstr ""
+"As tendências de cores já estão esperando <br/>para entrar em cena no "
+"próximo verão."
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_cover
+msgid ""
+"Color trends are already waiting to spring into action for the next summer.\n"
+"        <br/>\n"
+"        <br/>"
+msgstr ""
+"As tendências de cores já estão esperando para entrar em cena no próximo verão.\n"
+"        <br/>\n"
+"        <br/>"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_cover
+msgid "Discover"
+msgstr "Conferir"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_call_to_action
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_text_cover
+msgid "Discover it"
+msgstr "Confira"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_call_to_action
+msgid "Discover the new summer collection."
+msgstr "Confira a nova coleção de verão."
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_references
+msgid "Every style for everybody."
+msgstr "Todos os estilos para todo mundo."
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_color_blocks_2
+msgid "Fancy for them"
+msgstr "Elegância para todos"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_color_blocks_2
+msgid "Fashion for her"
+msgstr "Moda para elas"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_company_team
+msgid ""
+"Founder and chief visionary, Tony is the driving force behind the company. "
+"He loves to keep his hands full by participating in the development of the "
+"magazine and does not hesitate to carry out field surveys."
+msgstr ""
+"Fundador e principal visionário, Tony é a força motriz da empresa. Ele adora"
+" por a mão na massa participando do desenvolvimento da revista e não hesita "
+"em fazer pesquisas de campo."
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_media_list
+msgid ""
+"Go off beaten track and discover unexpected and curious places. Here’s our "
+"ultimate guide to the best-kept secret spots that you simply must visit!"
+msgstr ""
+"Saia do lugar comum e encontre lugares curiosos e inesperados. Aqui está "
+"nosso guia definitivo dos melhores lugares secretos que você precisa "
+"visitar!"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_company_team
+msgid ""
+"Iris, with her international experience, helps us easily understand global "
+"politics. She is determined to drive success and delivers her professional "
+"acumen to bring the magazine to the next level."
+msgstr ""
+"Iris, com sua experiência internacional, nos ajuda a entender facilmente os "
+"números e melhorá-los. Ela está determinada a impulsionar o sucesso e "
+"oferece sua perspicácia profissional para elevar a empresa ao próximo nível."
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_company_team
+msgid ""
+"Mich loves taking on challenges. With his multi-year experience as a "
+"journalist, he wanted to join a team that puts people at the center of the "
+"stories."
+msgstr ""
+"Mich adora assumir desafios. Com sua experiência de vários anos como "
+"jornalista, ele quis fazer parte de uma equipe que coloca as pessoas no "
+"centro da história."
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_color_blocks_2
+msgid "More Details"
+msgstr "Mais detalhes"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_color_blocks_2
+msgid ""
+"Perfectly combined by fashion experts. Get fresh outfit ideas for the new "
+"season and every occasion. Discover what's made for him."
+msgstr ""
+"Perfeitamente combinado com especialistas da moda. Veja ideias de looks para"
+" a nova estação e para cada ocasião. Confira o que temos para eles."
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_media_list
+msgid "Read more"
+msgstr "Leia mais"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_color_blocks_2
+msgid ""
+"Refresh your daily rotation with our women’s clothing range. Discover our "
+"last collection for her for the next summer."
+msgstr ""
+"Atualize sua variedade de roupas femininas para revezar no dia-a-dia. "
+"Confira a nossa nova coleção feminina para o próximo verão."
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_color_blocks_2
+msgid "Style for him"
+msgstr "Estilo para eles"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_media_list
+msgid "Summer Essentials"
+msgstr "Essenciais do verão"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_text_cover
+msgid "The next<br/> summer<br/> collection"
+msgstr "A nova coleção de<br/> verão<br/>"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_media_list
+msgid ""
+"The right summer essentials can make the difference between a good time and "
+"a stand-out great time. Discover our selection for everyday wear during the "
+"warm summer months."
+msgstr ""
+"Os essenciais de verão certos podem fazer a diferença entre um momento bom e"
+" um momento ótimo e inesquecível. Confira nossa seleção de roupas para todos"
+" os dias nos meses quentes do verão."
+
+#. module: theme_anelusia
+#: model:ir.model,name:theme_anelusia.model_theme_utils
+msgid "Theme Utils"
+msgstr "Utilitários de temas"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.s_media_list
+msgid "World's top Hidden gems"
+msgstr "Os principais tesouros ocultos do mundo"

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_three_columns" inherit_id="website.s_three_columns">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pt16 pb56 o_cc3" remove="pt32 pb32 o_cc2" separator=" "/>
+    </xpath>
+    <!-- Column #01 -->
+    <xpath expr="//div[hasclass('row')]/div[1]/div" position="replace">
+        <img class="position-relative d-block img-fluid figure-img rounded shadow-lg w-100" style="height:50vh; object-fit:cover; z-index:2;" src="/web/image/website.s_three_columns_default_image_1" alt="s_three_columns_1"/>
+        <div class="card-wrapper shadow-lg position-relative p-4 bg-white rounded-3 mt-n4" style="z-index:1;">
+            <h4 class="card-title mt-4">Paris</h4>
+            <p>Paris' monument-lined boulevards, museums, classical bistros and boutiques are enhanced by a new wave of multimedia galleries, creative wine bars...</p>
+            <a href="#" class="btn btn-primary">Book now</a>
+        </div>
+    </xpath>
+    <!-- Column #02 -->
+    <xpath expr="//div[hasclass('row')]/div[2]/div" position="replace">
+        <img class="position-relative d-block img-fluid figure-img rounded shadow-lg w-100" style="height:50vh; object-fit:cover; z-index:2;" src="/web/image/website.s_three_columns_default_image_2" alt="s_three_columns_2"/>
+        <div class="card-wrapper shadow-lg position-relative p-4 bg-white rounded-3 mt-n4" style="z-index:1;">
+            <h4 class="card-title mt-4">Rome</h4>
+            <p>A heady mix of haunting ruins, awe-inspiring art and vibrant street life, Italy’s hot-blooded capital is one of the world’s most romantic and charismatic cities.</p>
+            <a href="#" class="btn btn-primary">Book now</a>
+        </div>
+    </xpath>
+    <!-- Column #03 -->
+    <xpath expr="//div[hasclass('row')]/div[3]/div" position="replace">
+        <img class="position-relative d-block img-fluid figure-img rounded shadow-lg w-100" style="height:50vh; object-fit:cover; z-index:2;" src="/web/image/website.s_three_columns_default_image_3" alt="s_three_columns_3"/>
+        <div class="card-wrapper shadow-lg position-relative p-4 bg-white rounded-3 mt-n4" style="z-index:1;">
+            <h4 class="card-title mt-4">Prague</h4>
+            <p>Prague is the equal of Paris in terms of beauty. Its history goes back a millennium. And the beer? The best in Europe. Prague is the perfect city to walk around.</p>
+            <a href="#" class="btn btn-primary">Book now</a>
+        </div>
+    </xpath>
+</template>
+
+</odoo>

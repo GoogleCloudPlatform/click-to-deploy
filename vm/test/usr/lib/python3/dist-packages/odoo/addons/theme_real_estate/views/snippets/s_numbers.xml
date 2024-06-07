@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_numbers" inherit_id="website.s_numbers">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc1 pt32 pb56" remove="o_cc2 pt24 pb24" separator=" "/>
+    </xpath>
+    <!-- Column #01 -->
+    <xpath expr="//div[hasclass('col-lg-3')][1]/h6" position="replace" mode="inner">
+        properties already sold
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-3')][1]/span" position="replace" mode="inner">
+        14,000
+    </xpath>
+    <!-- Column #02 -->
+    <xpath expr="//div[hasclass('col-lg-3')][2]/span" position="replace" mode="inner">
+        97%
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-3')][2]/h6" position="replace" mode="inner">
+        happy customers
+    </xpath>
+    <!-- Column #03 -->
+    <xpath expr="//div[hasclass('col-lg-3')][3]/span" position="replace" mode="inner">
+        142
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-3')][3]/h6" position="replace" mode="inner">
+        amazing agents
+    </xpath>
+    <!-- Column #04 -->
+    <xpath expr="//div[hasclass('col-lg-3')][4]/span" position="replace" mode="inner">
+        100+
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-3')][4]/h6" position="replace" mode="inner">
+        offices
+    </xpath>
+</template>
+
+</odoo>
