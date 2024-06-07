@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -6,18 +6,23 @@
 #
 #      http://www.apache.org/licenses/LICENSE-2.0
 #
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'php74'
-include_recipe 'php74::composer'
-include_recipe 'php74::module_libapache2'
-include_recipe 'php74::module_mysql'
-include_recipe 'php74::module_xmlrpc'
+include_recipe 'php81'
+include_recipe 'php81::module_libapache2'
+include_recipe 'php81::module_simplexml'
+include_recipe 'php81::module_xmlrpc'
+include_recipe 'php81::module_redis'
+include_recipe 'php81::module_mysql'
+include_recipe 'php81::module_dom'
+include_recipe 'php81::module_zip'
 include_recipe 'composer::composer2'
+include_recipe 'mautic::ospo'
 
 include_recipe 'git'
 include_recipe 'mysql::version-8.0-embedded'
@@ -27,6 +32,8 @@ include_recipe 'apache2::ipv4-listen'
 include_recipe 'apache2::mod-rewrite'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
+
+include_recipe 'nodejs::default_nodejs16'
 
 package 'Install packages' do
   package_name node['mautic']['packages']
@@ -72,7 +79,7 @@ bash 'install requirements' do
   user 'root'
   cwd '/var/www/html/mautic/'
   code <<-EOH
-composer install
+composer install -n
 chown -R ${user}:${user} ../mautic
 EOH
   environment({
