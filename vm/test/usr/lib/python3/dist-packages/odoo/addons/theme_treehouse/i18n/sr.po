@@ -1,0 +1,141 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_treehouse
+# 
+# Translators:
+# コフスタジオ, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:22+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: コフスタジオ, 2024\n"
+"Language-Team: Serbian (https://app.transifex.com/odoo/teams/41243/sr/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: sr\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_text_image
+msgid "<b>ABOUT US</b>"
+msgstr "<b>O NAMA</b>"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_cover
+msgid "<font style=\"font-size: 62px;\"><b>— Life on Earth —</b></font>"
+msgstr "<font style=\"font-size: 62px;\"><b>— Život na Zemlji —</b></font>"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_title
+msgid "Changing the world is possible.<br/> We’ve done it before."
+msgstr "Promena sveta je moguća.<br/> Već smo to uradili."
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_cover
+msgid "Get involved"
+msgstr "Uključite se"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_three_columns
+msgid "Habitat Model"
+msgstr "Model staništa"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_three_columns
+msgid ""
+"Habitats with a minimum footprint on the planet and a maximum positive "
+"impact on the local community."
+msgstr ""
+"Staništa sa minimalnim uticajem na planetu i maksimalnim pozitivnim uticajem"
+" na lokalnu zajednicu."
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_banner
+msgid "Hello Planet."
+msgstr "Zdravo Planeto."
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_call_to_action
+msgid "Help us protect and preserve for future generations"
+msgstr "Pomozite nam da zaštitimo i sačuvamo za buduće generacije"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_call_to_action
+msgid "Join us and make the planet a better place."
+msgstr "Pridružite nam se i učinite planetu boljim mestom."
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_three_columns
+msgid ""
+"Learn how to use organic gardening methods to grow the freshest food in your"
+" fruit and vegetable garden."
+msgstr ""
+"Naučite kako koristiti organske metode baštovanstva da biste uzgajali "
+"najsvježiju hranu u svom voćnjaku i povrtnjaku."
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_three_columns
+msgid "Organic Garden"
+msgstr "Organska bašta"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_cover
+msgid ""
+"Our mission is to create a shared plan<br/> for saving the planet’s most "
+"exceptional wild places."
+msgstr ""
+"Naša misija je da stvorimo zajednički plan<br/> za spasavanje izuzetnijih "
+"divljih mesta na planeti."
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_three_columns
+msgid "Read more"
+msgstr "Pročitaj više"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_three_columns
+msgid "Recycling water"
+msgstr "Recikliranje vode"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_three_columns
+msgid ""
+"Recycling water for reuse applications instead of using freshwater supplies "
+"can be a water-saving measure."
+msgstr ""
+"Recikliranje vode za ponovnu upotrebu umesto korišćenja sveže vode može biti"
+" mera za uštedu vode."
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_text_image
+msgid "Shaping our future"
+msgstr "Oblikovanje naše budućnosti"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_color_blocks_2
+msgid "Sky is the limit."
+msgstr "Nebo je granica."
+
+#. module: theme_treehouse
+#: model:ir.model,name:theme_treehouse.model_theme_utils
+msgid "Theme Utils"
+msgstr "Korišćenje teme"
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_text_image
+msgid ""
+"With all the global problems our planet faces today,<br/> communities of "
+"people concerned with them are growing<br/> to prevent the negative impact."
+msgstr ""
+"Sa svim globalnim problemima sa kojima se naša planeta suočava danas, "
+"<br/>zajednice ljudi koji su zabrinuti zbog njih rastu <br/>kako bi sprečile"
+" negativan uticaj."
+
+#. module: theme_treehouse
+#: model_terms:theme.ir.ui.view,arch:theme_treehouse.s_picture
+msgid "Working Together"
+msgstr "Raditi zajedno"

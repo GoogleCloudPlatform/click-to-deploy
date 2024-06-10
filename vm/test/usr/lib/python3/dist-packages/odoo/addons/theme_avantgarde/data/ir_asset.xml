@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<record id="theme_avantgarde.s_showcase_slider_000_variables_scss" model="theme.ir.asset">
+    <field name="key">theme_avantgarde.s_showcase_slider_000_variables_scss</field>
+    <field name="name">Showcase slider 000 variables SCSS</field>
+    <field name="bundle">web._assets_primary_variables</field>
+    <field name="path">theme_avantgarde/static/src/old_snippets/s_showcase_slider/000_variables.scss</field>
+    <field name="active" eval="False"/>
+</record>
+
+<record id="theme_avantgarde.s_css_slider_000_variables_scss" model="theme.ir.asset">
+    <field name="key">theme_avantgarde.s_css_slider_000_variables_scss</field>
+    <field name="name">Css slider 000 variables SCSS</field>
+    <field name="bundle">web._assets_primary_variables</field>
+    <field name="path">theme_avantgarde/static/src/old_snippets/s_css_slider/000_variables.scss</field>
+    <field name="active" eval="False"/>
+</record>
+
+<record id="theme_avantgarde.primary_variables_scss" model="theme.ir.asset">
+    <field name="key">theme_avantgarde.primary_variables_scss</field>
+    <field name="name">Primary variables SCSS</field>
+    <field name="bundle">web._assets_primary_variables</field>
+    <field name="path">theme_avantgarde/static/src/scss/primary_variables.scss</field>
+</record>
+
+<record id="theme_avantgarde.secondary_variables_scss" model="theme.ir.asset">
+    <field name="key">theme_avantgarde.secondary_variables_scss</field>
+    <field name="name">Secondary variables SCSS</field>
+    <field name="bundle">web._assets_secondary_variables</field>
+    <field name="path">theme_avantgarde/static/src/scss/secondary_variables.scss</field>
+</record>
+
+</odoo>

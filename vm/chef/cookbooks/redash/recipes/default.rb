@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
 # Reference: https://github.com/getredash/setup
 include_recipe 'docker'
 include_recipe 'docker::compose'
+include_recipe 'redash::ospo'
 
 # Update sources
 apt_update 'update' do
@@ -85,7 +86,7 @@ end
 
 remote_file 'Download composer manifest' do
   path '/opt/redash/setup/docker-compose.yml'
-  source 'https://raw.githubusercontent.com/getredash/setup/master/data/docker-compose.yml'
+  source 'https://raw.githubusercontent.com/getredash/setup/master/data/compose.yaml'
 end
 
 c2d_startup_script 'redash-setup'

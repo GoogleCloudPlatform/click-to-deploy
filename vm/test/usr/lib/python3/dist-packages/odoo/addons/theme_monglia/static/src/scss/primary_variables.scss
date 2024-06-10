@@ -1,0 +1,187 @@
+
+//------------------------------------------------------------------------------
+// Colors
+//------------------------------------------------------------------------------
+
+// Theme colors
+$o-theme-color-palettes: map-merge($o-theme-color-palettes,
+    (
+        'monglia-1': (
+            'alpha': #ffffff,
+            'beta': #add3ce,
+            'gamma': #a7c7d5,
+            'delta': #47464b,
+            'epsilon': #f3997b,
+        ),
+        'monglia-2': (
+            'alpha': #f8f1d4,
+            'beta': #5b4645,
+            'gamma': #ffffff,
+            'delta': #21263a,
+            'epsilon': #8f8747,
+        ),
+        'monglia-3': (
+            'alpha': #dedede,
+            'beta': #adadad,
+            'gamma': #ffffff,
+            'delta': #3e3e3e,
+            'epsilon': #848f47,
+        ),
+        'monglia-4': (
+            'alpha': #cfcfcf,
+            'beta': #2e2e2e,
+            'gamma': #ffffff,
+            'delta': #000000,
+            'epsilon': #1ad68f,
+        ),
+        'monglia-5': (
+            'alpha': #9fcae2,
+            'beta': #bbc05c,
+            'gamma': #ffffff,
+            'delta': #112625,
+            'epsilon': #45b08c,
+        ),
+        'monglia-6': (
+            'alpha': #fdeacc,
+            'beta': #e8cda2,
+            'gamma': #ffffff,
+            'delta': #3e3f43,
+            'epsilon': #e1444d,
+        ),
+    )
+);
+
+//------------------------------------------------------------------------------
+// Fonts
+//------------------------------------------------------------------------------
+
+$o-theme-h1-font-size-multiplier: (48 / 14);
+$o-theme-h2-font-size-multiplier: (36 / 14);
+$o-theme-h3-font-size-multiplier: (30 / 14);
+$o-theme-h4-font-size-multiplier: (24 / 14);
+$o-theme-h5-font-size-multiplier: 1;
+$o-theme-h6-font-size-multiplier: (12 / 14);
+
+$o-theme-font-configs: (
+    'Handlee': (
+        'family': ('Handlee', cursive),
+        'url': 'Handlee:300,300i,400,400i,700,700i',
+    ),
+    'Gruppo': (
+        'family': ('Gruppo', cursive),
+        'url': 'Gruppo:300,300i,400,400i,700,700i',
+    ),
+    'Darker Grotesque': (
+        'family': ('Darker Grotesque', sans-serif),
+        'url': 'Darker+Grotesque:300,300i,500,500i,700,700i',
+    ),
+    'Bowlby One SC': (
+        'family': ('Bowlby One SC', cursive),
+        'url': 'Bowlby+One+SC:300,300i,400,400i,700,700i',
+    ),
+    'Lobster': (
+        'family': ('Lobster', cursive),
+        'url': 'Lobster:300,300i,400,400i,700,700i',
+    ),
+    'Nunito': (
+        'family': ('Nunito', sans-serif),
+        'url': 'Nunito:300,300i,400,400i,700,700i',
+    ),
+    'Raleway': (
+        'family': ('Raleway', sans-serif),
+        'url': 'Raleway:300,300i,400,400i,700,700i',
+    ),
+    'Source Sans Pro': (
+        'family': ('Source Sans Pro', sans-serif),
+        'url': 'Source+Sans+Pro:300,300i,400,400i,700,700i',
+    ),
+    'Amatic SC': (
+        'family': ('Amatic SC', cursive),
+        'url': 'Amatic+SC:300,300i,400,400i,700,700i',
+    ),
+    'Open Sans Condensed': (
+        'family': ('Open Sans Condensed', sans-serif),
+        'url': 'Open+Sans+Condensed:300,300i,400,400i,700,700i',
+    ),
+    'Oswald': (
+        'family': ('Oswald', sans-serif),
+        'url': 'Oswald:300,300i,400,400i,700,700i',
+    ),
+    'Roboto': (
+        'family': ('Roboto', sans-serif),
+        'url': 'Roboto:300,300i,400,400i,700,700i',
+    ),
+    'Permanent Marker': (
+        'family': ('Permanent Marker', cursive),
+        'url': 'Permanent+Marker:300,300i,400,400i,700,700i',
+    ),
+    'Pacifico': (
+        'family': ('Pacifico', cursive),
+        'url': 'Pacifico:300,300i,400,400i,700,700i',
+    ),
+    'Playfair Display': (
+        'family': ('Playfair Display', serif),
+        'url': 'Playfair+Display:300,300i,400,400i,700,700i',
+    ),
+    'Playfair Display SC': (
+        'family': ('Playfair Display SC', serif),
+        'url': 'Playfair+Display+SC:300,300i,400,400i,700,700i',
+    ),
+);
+
+//------------------------------------------------------------------------------
+// Website customizations
+//------------------------------------------------------------------------------
+
+$o-website-values-palettes: (
+    (
+        'color-palettes-name': 'monglia-1',
+
+        'header-font-size': (20 / 16) * 1rem,
+        'font': 'Roboto',
+        'headings-font': 'Darker Grotesque',
+        'navbar-font': 'Darker Grotesque',
+        'buttons-font': 'Roboto',
+        'footer-template': 'minimalist',
+
+        'btn-border-radius': 0,
+        'btn-border-radius-sm': 0,
+        'btn-border-radius-lg': 0,
+        'btn-padding-y': .474rem,
+        'btn-padding-x': 1.25rem,
+        'btn-padding-y-lg': .4rem,
+        'btn-padding-x-lg': 2rem,
+    ),
+);
+
+$o-selected-color-palettes-names: append($o-selected-color-palettes-names, 'monglia-1');
+
+$o-color-palettes-compatibility-indexes: (
+    1: 'monglia-1',
+    2: 'monglia-2',
+    3: 'monglia-3',
+    4: 'monglia-4',
+    5: 'monglia-5',
+    6: 'monglia-6',
+    7: 'generic-1',
+    8: 'generic-2',
+    9: 'generic-3',
+    10: 'generic-4',
+    11: 'generic-5',
+    12: 'generic-6',
+    13: 'generic-7',
+    14: 'generic-8',
+    15: 'generic-9',
+    16: 'generic-10',
+    17: 'generic-11',
+    18: 'generic-12',
+    19: 'generic-13',
+    20: 'generic-14',
+    21: 'generic-15',
+    22: 'generic-16',
+    23: 'generic-17',
+);
+
+$o-bg-shapes: change-shape-colors-mapping('web_editor', 'Blocks/04', (5:5, 3:2, 2:3, 1:4));
+$o-bg-shapes: add-extra-shape-colors-mapping('web_editor', 'Blocks/04', 'second', (5:5, 3:2, 2:3, 1:4));
+

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_banner" inherit_id="website.s_banner">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="s_parallax_no_overflow_hidden o_full_screen_height oe_img_bg o_bg_img_center pb216 pt72 o_cc o_cc5" remove="pt96 pb96" separator=" "/>
+        <attribute name="data-scroll-background-ratio">0</attribute>
+        <attribute name="style">background-image: url("/web/image/website.s_banner_default_image");</attribute>
+    </xpath>
+
+    <!-- Row - remove grid mode -->
+    <xpath expr="//div[hasclass('row')]" position="attributes">
+        <attribute name="class" remove="o_grid_mode" separator=" "/>
+    </xpath>
+
+    <!-- Remove grid images -->
+    <xpath expr="//div[hasclass('o_grid_item_image')]" position="replace"/>
+    <xpath expr="//div[hasclass('o_grid_item_image')]" position="replace"/>
+    <xpath expr="//div[hasclass('o_grid_item_image')]" position="replace"/>
+    
+    <!-- Remove hr -->
+    <xpath expr="//div[hasclass('s_hr')]" position="replace"/>
+
+    <!-- Filter -->
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_bg_filter" style="background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.15) 100%) !important;"/>
+    </xpath>
+
+    <!-- Paragraph -->
+    <xpath expr="//div[hasclass('col-lg-5')]" position="attributes">
+        <attribute name="class" add="col-lg-6 pt32 pb32" remove="o_grid_item g-height-4 g-col-lg-5 col-lg-5" separator=" "/>
+        <attribute name="style"/>
+    </xpath>
+    <xpath expr="//h1" position="replace" mode="inner">
+        A little place <br/>of paradise
+    </xpath>
+    <xpath expr="//p[hasclass('lead')]" position="replace" mode="inner">
+        This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.
+    </xpath>  
+    <xpath expr="//div[hasclass('col-lg-6')]//p[2]" position="attributes">
+        <attribute name="class" add="mb-0" separator=" "/>
+    </xpath>  
+</template>
+
+<template id="configurator_s_banner" inherit_id="website.configurator_s_banner">
+    <!-- Shape option -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Wavy/22","flip":["x"]}</attribute>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Wavy_22" style="background-image: url('/web_editor/shape/web_editor/Wavy/22.svg?c3=o-color-3&amp;flip=x'); background-position: 50% 100%;"/>
+    </xpath>
+</template>
+
+</odoo>

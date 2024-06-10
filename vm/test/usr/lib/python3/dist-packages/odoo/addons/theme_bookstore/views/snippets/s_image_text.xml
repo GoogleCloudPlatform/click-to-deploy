@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_image_text" inherit_id="website.s_image_text">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc o_cc2 pt112 pb112" remove="pt32 pb32" separator=" "/>
+    </xpath>
+    <!-- Image -->
+    <xpath expr="//img" position="attributes">
+        <attribute name="style" add="padding: 32px !important;" separator=";"/>
+        <attribute name="src">/web_editor/shape/theme_bookstore/s_image_text.svg?c1=o-color-1</attribute>
+    </xpath>
+    <!-- Title -->
+    <xpath expr="//h2" position="replace" mode="inner">
+        Once upon a time...
+    </xpath>
+    <!-- Paragraphs -->
+    <xpath expr="//p" position="replace" mode="inner">
+        <br/>
+        Discover the history of Belgium in this well-documented book with many illustrations and testimonials.
+    </xpath>
+    <xpath expr="//p[2]" position="replace" mode="inner">
+        Learn about the difficulties encountered by NASA engineers in sending the first men to Mars.
+    </xpath>
+</template>
+
+<template id="configurator_s_image_text" inherit_id="website.configurator_s_image_text">
+    <!-- Shape option -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Wavy/20","flip":[]}</attribute>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Wavy_20"/>
+    </xpath>
+</template>
+
+</odoo>
