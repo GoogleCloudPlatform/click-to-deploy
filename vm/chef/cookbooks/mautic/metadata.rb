@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,10 +13,12 @@
 # limitations under the License.
 
 name 'mautic'
-depends 'apache2'
-depends 'composer'
-depends 'git'
-depends 'mysql'
-depends 'php74'
 depends 'c2d-config'
+depends 'c2d-shared'
+depends 'composer'
+depends 'apache2'
+depends 'nodejs'
+depends 'mysql'
+depends 'php81'
+depends 'git'
 supports 'debian'
