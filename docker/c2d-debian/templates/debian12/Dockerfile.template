@@ -1,0 +1,23 @@
+FROM {{ .From }}
+
+{{- $c2d_debian := index .Packages "debian12" }}
+
+{{- $template := index .TemplateArgs }}
+
+ENV DEBIAN_VERSION {{ $c2d_debian.Version }}
+ENV C2D_RELEASE {{ $c2d_debian.Version }}
+
+ENV DEV_APT_DEPS="\
+     openssl \
+     ca-certificates \
+     libtasn1-6 \
+     libksba8 \
+     libaprutil1 \
+     git \
+     curl"
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ${DEV_APT_DEPS} \
+    && apt-get autoremove -yqq --purge \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*

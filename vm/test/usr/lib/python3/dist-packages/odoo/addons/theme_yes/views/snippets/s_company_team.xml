@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_company_team" inherit_id="website.s_company_team">
+    <!-- Row #1 - Col #1 -->
+    <xpath expr="//h4" position="replace" mode="inner">
+        Livia Sailor
+    </xpath>
+    <xpath expr="//p" position="replace">
+        <p><font style="font-weight: bolder;" class="text-o-color-1">The Founder &amp; Planner</font></p>
+        <p>Livia is our head wedding coordinator and stylist, she'll turn any of your ideas into reality, making sure your wedding day is smooth and looks better than anything you have ever seen on Pinterest.</p>
+    </xpath>
+    <!-- Row #1 - Col #2 -->
+    <xpath expr="(//h4)[2]" position="replace" mode="inner">
+        Clair Stark
+    </xpath>
+    <xpath expr="(//p)[3]" position="replace">
+        <p><font style="font-weight: bolder;" class="text-o-color-1">The Designer</font></p>
+        <p>As a passionate wedding designer with a romantic soul, Clair adores celebrating the special moments in life in magical places and creating an authentic experience for couples. </p>
+    </xpath>
+    <!-- Row -->
+    <xpath expr="//*[hasclass('col-lg-6')][4]" position="replace"/>
+    <xpath expr="//*[hasclass('col-lg-6')][3]" position="replace"/>
+</template>
+
+<template id="configurator_s_company_team" inherit_id="website.configurator_s_company_team">
+    <!-- Shape option -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Origins/14_001"}</attribute>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//*[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Origins_14_001 o_second_extra_shape_mapping bg-o-color-3"/>
+    </xpath>
+</template>
+
+</odoo>

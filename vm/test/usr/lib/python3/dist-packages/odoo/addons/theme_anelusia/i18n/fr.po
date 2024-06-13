@@ -1,0 +1,46 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * theme_anelusia
+# 
+# Translators:
+# Martin Trigaux, 2019
+# Eloïse Stilmant <est@odoo.com>, 2019
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-04-24 09:01+0000\n"
+"PO-Revision-Date: 2019-04-24 11:21+0000\n"
+"Last-Translator: Eloïse Stilmant <est@odoo.com>, 2019\n"
+"Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: fr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.option_layout_hamburger
+msgid "<span class=\"new-toggle-text\">MENU</span>"
+msgstr ""
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.theme_customize
+msgid "Hamburger"
+msgstr "Hamburger"
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.theme_customize
+msgid "Menu"
+msgstr "Menu"
+
+#. module: theme_anelusia
+#: model:ir.model,name:theme_anelusia.model_theme_utils
+msgid "Theme Utils"
+msgstr ""
+
+#. module: theme_anelusia
+#: model_terms:theme.ir.ui.view,arch:theme_anelusia.theme_customize
+msgid "Top Bar"
+msgstr ""

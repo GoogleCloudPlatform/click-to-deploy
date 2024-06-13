@@ -1,6 +1,6 @@
 {
   "license": "c2d-odoo",
-  "source_image_family": "debian-11",
+  "source_image_family": "debian-12",
   "chef": {
     "run_list": [ "c2d-config", "odoo", "google-cloud-ops-agent" ]
   }

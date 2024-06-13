@@ -6,11 +6,11 @@ include ../images.Makefile
 CHART_NAME := mediawiki
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 1.39
+TRACK ?= 1.40
 
 MARIADB_TAG ?= 10.11
 EXPORTER_TAG ?= exporter
-APACHE_EXPORTER_TAG ?= 0.10
+APACHE_EXPORTER_TAG ?= 0.13
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google

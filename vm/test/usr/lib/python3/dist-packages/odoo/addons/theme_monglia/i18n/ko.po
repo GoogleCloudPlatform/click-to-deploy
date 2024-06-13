@@ -1,0 +1,194 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_monglia
+# 
+# Translators:
+# Wil Odoo, 2023
+# Sarah Park, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Sarah Park, 2023\n"
+"Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ko\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_cover
+msgid "21/22 December"
+msgstr "12월 21일, 22일"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_call_to_action
+msgid "<b>APPLY FOR OUR V.I.P. CARD</b>"
+msgstr "<b>V.I.P. 카드 신청</b>"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_image_text
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) "
+"25%, var(--o-color-2) 100%);\" class=\"text-gradient\">Mixology</font>"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) "
+"25%, var(--o-color-2) 100%);\" class=\"text-gradient\">믹솔로지</font>"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_text_image
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) "
+"25%, var(--o-color-2) 100%);\" class=\"text-gradient\">Music is magic</font>"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) "
+"25%, var(--o-color-2) 100%);\" class=\"text-gradient\">음악은 마법과도 같습니다.</font>"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_title
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-4) "
+"25%, var(--o-color-1) 100%);\" class=\"text-gradient\">MAIN LINE UP</font>"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-4) "
+"25%, var(--o-color-1) 100%);\" class=\"text-gradient\">주요 라인업</font>"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_cover
+msgid "After a year's absence, the free and independent festival is back."
+msgstr "1년 간의 공백을 깨고, 자유와 독립의 페스티발이 돌아왔습니다."
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_three_columns
+msgid "Bruce Porter"
+msgstr "Bruce Porter"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_carousel
+msgid "Discover"
+msgstr "알아보기"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_media_list
+msgid ""
+"Dj's and electro artists meet every year for the electro dance festival in "
+"the largest concert venue in Europe. Book your tickets now, there won't be "
+"room for everybody."
+msgstr ""
+"유럽 최대 규모의 일렉트로 댄스 페스티벌을 위해 매년 디제이와 일렉 아티스트들이 모이고 있습니다. 좌석이 한정되어 있으니, 지금 바로 "
+"예매하세요. "
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_image_text
+msgid ""
+"Every evening, renowned mixologists take turns preparing the best cocktails "
+"for you. Drink responsibly."
+msgstr "매일 저녁 타임마다, 유명 믹솔로지스트가 차례로 최고의 칵테일을 선사해 드립니다. 주량에 맞춰 즐겨 보세요."
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_media_list
+msgid ""
+"Everyone knows The States is the home of country music, and they have the "
+"festivals to prove it. Grab your cowboy hat and boots because we've put "
+"together the best country bands in the USA."
+msgstr ""
+"미국이 컨트리 음악의 본고장임을 만천하에 알릴 페스티발에 참가해 보세요. 미국 최고의 컨트리 밴드가 한 자리에 모였습니다. 카우보이 "
+"모자와 부츠를 준비해서 함께 즐기세요."
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_text_block
+msgid ""
+"Kori Thill ■ Chana Smithwick ■ Cira Sherard ■ Elfriede Ogan ■ Mariko Yonker "
+"■ Bella Maday ■ Shaneka Wilkerson ■ Raina Planck ■ Micaela Labonte ■ "
+"Chadwick Cottman ■ Emile Hornung ■ Genevie Mehaffey ■ Dottie Hinkson ■ "
+"Mariah Nurse ■ Velda Caster ■ Rossie Cranfield ■ Iva Madrid ■ Flossie "
+"Freitas ■ Tina Gregerson ■ Quiana Tassin"
+msgstr ""
+"Kori Thill ■ Chana Smithwick ■ Cira Sherard ■ Elfriede Ogan ■ Mariko Yonker "
+"■ Bella Maday ■ Shaneka Wilkerson ■ Raina Planck ■ Micaela Labonte ■ "
+"Chadwick Cottman ■ Emile Hornung ■ Genevie Mehaffey ■ Dottie Hinkson ■ "
+"Mariah Nurse ■ Velda Caster ■ Rossie Cranfield ■ Iva Madrid ■ Flossie "
+"Freitas ■ Tina Gregerson ■ Quiana Tassin"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_text_image
+msgid "Learn more"
+msgstr "추가 정보"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_carousel
+msgid "Martina Clarck"
+msgstr "Martina Clarck"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_cover
+msgid ""
+"More than ever young talents are honoured on the big stage with more famous "
+"artists."
+msgstr "수많은 젊은이들이 유명 아티스트와 함께 큰 무대에 서는 영광을 누리게 되었습니다."
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_media_list
+msgid "Old Town Road"
+msgstr "Old Town Road"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_text_image
+msgid ""
+"Open 24/7, the club welcomes you and your friends in a relaxed and friendly "
+"atmosphere."
+msgstr "클럽은 연중무휴로 운영되며 편안하고 친절한 분위기 속에서 고객님과 친구분들을 맞이합니다."
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_media_list
+msgid "Smack My Band Up"
+msgstr "Smack My Band Up"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_media_list
+msgid "Sodade Club"
+msgstr "소다데 클럽"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_media_list
+msgid ""
+"Sodade is a beautiful concept that is difficult to put into words, but can "
+"be experienced by enjoying the diverse range of music on offer."
+msgstr ""
+"소다데는 이루 말로 표현할 수 없을 만큼 아름다운 컨셉트로. 다양한 음악에 대한 경험을 많은 분들께 선사해 드리고 있습니다. "
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_call_to_action
+msgid "The vip card allows you to benefit from tickets before everyone else."
+msgstr "VIP 카드를 제시하시면 다른 분보다 먼저 티켓을 수령하실 수 있습니다."
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_three_columns
+msgid "Theia Hayward"
+msgstr "Theia Hayward"
+
+#. module: theme_monglia
+#: model:ir.model,name:theme_monglia.model_theme_utils
+msgid "Theme Utils"
+msgstr "테마 유틸"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_carousel
+msgid ""
+"This is the first full-length studio release in seven years for the British "
+"singer-songwriter."
+msgstr "7년 만에 이 영국계 싱어송라이터가 처음으로 발표하는 정규 앨범입니다."
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_three_columns
+msgid "Wilson Holt"
+msgstr "Wilson Holt"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_cover
+msgid "X²O Festival"
+msgstr "X²O Festival"

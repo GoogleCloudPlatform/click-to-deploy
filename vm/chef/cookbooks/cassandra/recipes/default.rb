@@ -13,6 +13,7 @@
 # limitations under the License.
 
 include_recipe 'openjdk11'
+include_recipe 'cassandra::ospo'
 
 apt_repository 'cassandra_repository' do
   uri node['cassandra']['repo']['uri']

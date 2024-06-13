@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_masonry_block_default_template" inherit_id="website.s_masonry_block_default_template">
+    <!-- Block #01 -->
+    <xpath expr="//div[hasclass('col-lg-3')]" position="attributes">
+        <attribute name="class" add="o_cc1" remove="o_cc2" separator=" "/>
+    </xpath>
+    <xpath expr="//h3" position="replace"/>
+    <xpath expr="//p" position="replace" mode="inner">
+        <em class="lead">Maintain a position of constant change<br/> and evolution, while always aiming<br/> for your success.</em>
+    </xpath>
+    <!-- Block #02 -->
+    <xpath expr="//h3" position="before">
+        <i class="fa fa-2x fa-star text-o-color-2 rounded-circle shadow mx-auto my-3"/>
+    </xpath>
+    <xpath expr="//h3" position="replace" mode="inner">
+        Super <b>Easy</b>
+    </xpath>
+    <xpath expr="(//p)[2]" position="replace" mode="inner"/>
+    <!-- Block #03 -->
+    <xpath expr="(//h3)[2]" position="before">
+        <i class="fa fa-2x fa-rocket text-o-color-1 rounded-circle shadow mx-auto my-3"/>
+    </xpath>
+    <xpath expr="(//h3)[2]" position="replace" mode="inner">
+        Super <b>Fast</b>
+    </xpath>
+    <xpath expr="(//p)[3]" position="replace" mode="inner"/>
+    <!-- Block #04 -->
+    <xpath expr="//*[hasclass('col-lg-3')][4]" position="attributes">
+        <attribute name="class" add="o_grid_item_image" remove="o_cc o_cc2" separator=" "/>
+    </xpath>
+    <xpath expr="//*[hasclass('col-lg-3')][4]" position="replace" mode="inner">
+        <img src="/web/image/website.s_masonry_block_default_image_2" class="img img-fluid mx-auto" alt=""/>
+    </xpath>
+</template>
+
+</odoo>

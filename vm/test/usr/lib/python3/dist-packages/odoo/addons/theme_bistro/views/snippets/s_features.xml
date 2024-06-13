@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_features" inherit_id="website.s_features">
+    <!-- Column #01 -->
+    <xpath expr="//i" position="replace">
+        <i class="fa fa-2x fa-coffee rounded-circle bg-primary m-3"/>
+    </xpath>
+    <xpath expr="//h3" position="replace" mode="inner">
+        Breakfast
+    </xpath>
+    <xpath expr="//p" position="replace" mode="inner">
+        Help you start your morning right.<br/><small>From <b>7:30 am</b> to <b>10:30 am</b></small>
+    </xpath>
+    <!-- Column #02 -->
+    <xpath expr="(//i)[2]" position="replace">
+        <i class="fa fa-2x fa-cutlery rounded-circle bg-400 m-3"/>
+    </xpath>
+    <xpath expr="(//h3)[2]" position="replace" mode="inner">
+        Lunch
+    </xpath>
+    <xpath expr="(//p)[2]" position="replace" mode="inner">
+        Take a break from your busy schedule.<br/><small>From <b>11:30 am</b> to <b>2:30 pm</b></small>
+    </xpath>
+    <!-- Column #03 -->
+    <xpath expr="(//i)[3]" position="replace">
+        <i class="fa fa-2x fa-glass rounded-circle bg-secondary m-3"/>
+    </xpath>
+    <xpath expr="(//h3)[3]" position="replace" mode="inner">
+        Dinner
+    </xpath>
+    <xpath expr="(//p)[3]" position="replace" mode="inner">
+        Enjoy tasty food with friends.<br/><small>From <b>6:30 pm</b> to <b>10:30 pm</b></small>
+    </xpath>
+</template>
+
+</odoo>

@@ -1,4 +1,5 @@
 {{- $prometheus_operator := index .Packages "prometheus-operator" -}}
+{{- $golang := index .Packages "golang" -}}
 
 # Clone git repo
 FROM alpine/git:1.0.7 as git
@@ -9,7 +10,7 @@ RUN git clone https://github.com/prometheus-operator/prometheus-operator.git /sr
     && cd /src/prometheus-operator/ \
     && git checkout $PROMETHEUS_OPERATOR_VERSION
 
-FROM golang:1.20 as builder
+FROM golang:{{ $golang.Version }} as builder
 
 COPY --from=git /src/prometheus-operator /go/src/github.com/prometheus-operator/prometheus-operator
 

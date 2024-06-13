@@ -1,0 +1,152 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_bistro
+# 
+# Translators:
+# Wil Odoo, 2023
+# Sarah Park, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:22+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Sarah Park, 2023\n"
+"Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ko\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_product_catalog_dish
+msgid "<em>Add the description of this dish here.</em>"
+msgstr "<em>여기에 요리에 대한 설명을 추가하세요.</em>"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_text_block
+msgid ""
+"A healthy kitchen with local products. We’re constantly looking to propose "
+"new products and receipts. <b>While respecting seasons' products and "
+"nature.</b>"
+msgstr ""
+"지역 농산물을 사용한 건강한 주방입니다. 새로운 제품과 판매를 제안하기 위해 끊임없이 노력하고 있습니다. <b>제철 상품과 자연을 "
+"생각합니다.</b>"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_quotes_carousel
+msgid ""
+"A truly exquisite dining experience. I highly recommend the Mustard Sauce, "
+"out of this world."
+msgstr "정말로 강렬한 디너 시간을 경험해 보세요. 천상의 맛을 지닌 머스타드 소스를 강력히 추천합니다."
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_text_block
+msgid ""
+"At the Bistro, you can expect a healthy kitchen on a daily basis. <br/>Come "
+"and visit us for a Sunday brunch, healthy juices full of nutrition, or "
+"delicious cakes that satisfy your sweet tooth. <b>And each day, you’ll "
+"discover our Today’s Special.</b>"
+msgstr ""
+"비스트로에서는, 매일 건강한 주방을 기대하실 수 있습니다. <br/>방문하셔서 일요일의 브런치를 영양 가득한 건강식 주스 또는 달콤함으로"
+" 채워진 맛있는 케이크와 함께 하세요.<b> 또한 매일의 특선 메뉴를 확인해 보실 수 있습니다.</b>"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_features
+msgid "Breakfast"
+msgstr "조식"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_quotes_carousel
+msgid ""
+"Cosy and friendly, good atmosphere and super food. Especially the spiced "
+"fruit crumble."
+msgstr "편안하고 친근한, 훌륭한 분위기와 슈퍼 푸드. 특히 풍미 깊은 과일 크럼블을 맛보세요."
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_cover
+msgid ""
+"Daily fresh products combined with our professional yet convivial "
+"service<br/> to create a true gastronomic experience."
+msgstr "매일 신선한 제품을 전문적이면서도 유쾌한 서비스와 함께 하여<br/> 진정한 미식의 경험을 드립니다."
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_features
+msgid "Dinner"
+msgstr "디너"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_features
+msgid ""
+"Enjoy tasty food with friends.<br/><small>From <b>6:30 pm</b> to <b>10:30 "
+"pm</b></small>"
+msgstr ""
+"친구들과 함께 미식을 즐겨 보세요.<br/><small>시간은<b>6:30 pm</b>부터<b>10:30 "
+"pm</b>까지입니다.</small>"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_features
+msgid ""
+"Help you start your morning right.<br/><small>From <b>7:30 am</b> to "
+"<b>10:30 am</b></small>"
+msgstr ""
+"활기찬 아침을 시작하도록 도와 드립니다.<br/><small>시간은 <b>7:30 am</b>부터 <b>10:30 "
+"am</b>까지입니다.</small> "
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_features
+msgid "Lunch"
+msgstr "점심"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_cover
+msgid "Our Menu"
+msgstr "메뉴 보기"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_cover
+msgid "Seasonal<br/> Flavors"
+msgstr "시즌<br/> 메뉴"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_features
+msgid ""
+"Take a break from your busy schedule.<br/><small>From <b>11:30 am</b> to "
+"<b>2:30 pm</b></small>"
+msgstr ""
+"바쁜 일정 중 잠깐의 휴식을 즐기세요.<br/><small>시간은 <b>11:30 am</b>부터 <b>2:30 "
+"pm</b>까지입니다.</small>"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_picture
+msgid ""
+"Taste our chef's special, an almond macaroon with orange blossom "
+"buttercream."
+msgstr "셰프 스페셜로 오렌지 블라썸 버터 크림을 곁들인 아몬드 마카롱을 맛보세요."
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_banner
+msgid "Tasty Meals"
+msgstr "맛있는 식사"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_picture
+msgid "The perfect dessert to share for the table."
+msgstr "식탁에서 나눠 먹기 좋은 완벽한 디저트입니다."
+
+#. module: theme_bistro
+#: model:ir.model,name:theme_bistro.model_theme_utils
+msgid "Theme Utils"
+msgstr "테마 유틸"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_quotes_carousel
+msgid "This place is perfect for groups or a casual date night."
+msgstr "단체 모임이나 캐주얼한 데이트용으로 완벽한 장소입니다."
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_picture
+msgid "Today's special"
+msgstr "오늘의 스페셜 메뉴"

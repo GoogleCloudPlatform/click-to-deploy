@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_text_image" inherit_id="website.s_text_image">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pt64 pb64" remove="pt32 pb32" separator=" "/>
+    </xpath>
+    <!-- Row -->
+    <xpath expr="//div[hasclass('row')]" position="attributes">
+        <attribute name="class" add="align-items-stretch" remove="align-items-center" separator=" "/>
+    </xpath>
+    <!-- Text wrapper -->
+    <xpath expr="//div[hasclass('col-lg-6')]" position="attributes">
+        <attribute name="class" add="col-lg-4 px-5 o_cc o_cc5 rounded pt56 pb56" remove="col-lg-6 pt16 pb16" separator=" "/>
+    </xpath>
+    <!-- Title -->
+    <xpath expr="//h2" position="replace" mode="inner">
+        Our Mission
+    </xpath>
+    <!-- Paragraphs -->
+    <xpath expr="//p" position="replace" mode="inner">
+        <br/>
+        Deliver flowers to live up to your dedication for your loved ones.
+    </xpath>
+    <xpath expr="//p[2]" position="replace" mode="inner">
+        To do so, we collaborate with local producers who care about the environment and cultivate their flowers with love.
+    </xpath>
+    <!-- Img wrapper -->
+    <xpath expr="//div[hasclass('col-lg-6')]" position="attributes">
+        <attribute name="class" add="col-lg-7 offset-lg-1" remove="col-lg-6" separator=" "/>
+    </xpath>
+    <!-- Img -->
+    <xpath expr="//img" position="attributes">
+        <attribute name="src">/web_editor/image_shape/website.s_text_image_default_image/web_editor/solid/solid_blob_shadow_2.svg?c2=o-color-2</attribute>
+        <attribute name="data-shape">web_editor/solid/solid_blob_shadow_2</attribute>
+        <attribute name="data-original-mimetype">image/jpeg</attribute>
+        <attribute name="data-file-name">s_media_list_3.svg</attribute>
+        <attribute name="data-shape-colors">;o-color-2;;;</attribute>
+    </xpath>
+</template>
+
+<template id="configurator_s_text_image" inherit_id="website.configurator_s_text_image">
+    <!-- Shape option -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Wavy/07","flip":["x"]}</attribute>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Wavy_07" style="background-image: url('/web_editor/shape/web_editor/Wavy/07.svg?c3=o-color-1&amp;flip=x'); background-position: 50% 0%;"/>
+    </xpath>
+</template>
+
+</odoo>

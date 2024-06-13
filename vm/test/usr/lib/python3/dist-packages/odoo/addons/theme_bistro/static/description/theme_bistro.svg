@@ -1,0 +1,170 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="700" height="1850" viewBox="0 0 700 1850">
+
+    <defs>
+        <!-- Font -->
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&amp;display=swap');
+        </style>
+        <!-- Images -->
+        <pattern width="1" height="1" id="theme_bistro_s_cover_default_image_id" patternunits="objectBoundingBox">
+            <image width="700" height="330" preserveAspectRatio="xMidYMid slice" href="#s_cover_default_image_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_bistro_s_picture_default_image_id" patternunits="objectBoundingBox">
+            <image width="350" height="230" preserveAspectRatio="xMidYMid slice" href="#s_picture_default_image_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_bistro_s_product_catalog_default_image_id" patternunits="objectBoundingBox">
+            <image width="700" height="280" preserveAspectRatio="xMidYMid slice" href="#s_product_catalog_default_image_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_bistro_s_quotes_carousel_demo_image_1_id" patternunits="objectBoundingBox">
+            <image width="700" height="210" preserveAspectRatio="xMidYMid slice" href="#s_quotes_carousel_demo_image_1_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_bistro_s_quotes_carousel_demo_image_2_id" patternunits="objectBoundingBox">
+            <image width="30" height="30" preserveAspectRatio="xMidYMid slice" href="/web/image/website.s_quotes_carousel_demo_image_3"/>
+        </pattern>
+        <filter id="filter_readability_bistro">
+            <feColorMatrix in="SourceGraphic" type="saturate" values="0"/>
+            <feComponentTransfer>
+                <feFuncR type="table" tableValues="1 0"/>
+                <feFuncG type="table" tableValues="1 0"/>
+                <feFuncB type="table" tableValues="1 0"/>
+            </feComponentTransfer>
+            <feComponentTransfer>
+                <feFuncR type="linear" slope="10000" intercept="-4999.5"/>
+                <feFuncG type="linear" slope="10000" intercept="-4999.5"/>
+                <feFuncB type="linear" slope="10000" intercept="-4999.5"/>
+            </feComponentTransfer>
+        </filter>
+    </defs>
+
+    <!-- Layout -->
+    <g id="theme_bistro_preview">
+
+        <g data-name="Header" class="svgc_menu">
+            <rect width="700" height="70" fill="#MENU_COLOR" class="svgc_menu_bg"/>
+            <circle cx="75" cy="16" r="8" fill="#MENU_COLOR" class="svgc_text" opacity="0.8" filter="url(#filter_readability_bistro)"/>
+            <circle cx="100" cy="16" r="8" fill="#MENU_COLOR" class="svgc_text" opacity="0.8" filter="url(#filter_readability_bistro)"/>
+            <circle cx="125" cy="16" r="8" fill="#MENU_COLOR" class="svgc_text" opacity="0.8" filter="url(#filter_readability_bistro)"/>
+            <text x="333" y="22" fill="#MENU_COLOR" class="svgc_text" font-size="14" font-family="Poppins, sans-serif" font-weight="500" filter="url(#filter_readability_bistro)">LOGO</text>
+            <rect width="50" height="8" x="580" y="12" rx="2" fill="#MENU_COLOR" class="svgc_text" opacity="0.8" filter="url(#filter_readability_bistro)"/>
+            <rect width="560" height="1" x="70" y="35" fill="#MENU_COLOR" class="svgc_text" opacity="0.5" filter="url(#filter_readability_bistro)"/>
+            <rect width="40" height="8" x="280" y="48" rx="2" fill="#MENU_COLOR" class="svgc_text" opacity="0.5" filter="url(#filter_readability_bistro)"/>
+            <rect width="40" height="8" x="330" y="48" rx="2" fill="#MENU_COLOR" class="svgc_text" opacity="0.5" filter="url(#filter_readability_bistro)"/>
+            <rect width="40" height="8" x="380" y="48" rx="2" fill="#MENU_COLOR" class="svgc_text" opacity="0.5" filter="url(#filter_readability_bistro)"/>
+        </g>
+
+        <g data-name="Cover">
+            <rect width="700" height="330" x="0" y="70" fill="url(#theme_bistro_s_cover_default_image_id)" class="img_reference_s_cover_default_image"/>
+            <rect width="700" height="330" x="0" y="70" opacity="0.5"/>
+            <text x="330" y="160" fill="#3AADAA" font-size="50" font-family="FontAwesome, sans-serif">&#xf06c;</text>
+            <text x="200" y="223" fill="#FFFFFD" font-size="30" font-family="Poppins, sans-serif" font-weight="500">Welcome Message</text>
+            <rect width="200" height="7" x="250" y="260" rx="2" fill="#FFFFFD" opacity="0.8"/>
+            <rect width="120" height="7" x="290" y="245" rx="2" fill="#FFFFFD" opacity="0.8"/>
+            <g class="svgc_btn_group">
+                <rect width="80" height="24" rx="12" x="310" y="305" fill="#3AADAA"/>
+                <text x="324" y="322" fill="#3AADAA" class="svgc_text" font-size="12" font-family="Poppins, sans-serif" font-weight="500" filter="url(#filter_readability_bistro)">Discover</text>
+            </g>
+            <path d="M-329.166,20V12.1c7.291,0,7.291-12.1,14.583-12.1S-307.291,12.1-300,12.1V20Zm-29.167,0V12.1c7.292,0,7.292-12.1,14.584-12.1s7.291,12.1,14.584,12.1V20ZM-387.5,20V12.1c7.291,0,7.291-12.1,14.584-12.1s7.291,12.1,14.583,12.1V20Zm-29.166,0V12.1c7.291,0,7.291-12.1,14.583-12.1s7.292,12.1,14.584,12.1V20Zm-29.167,0V12.1c7.292,0,7.292-12.1,14.584-12.1s7.291,12.1,14.584,12.1V20ZM-475,20V12.1c7.291,0,7.291-12.1,14.584-12.1s7.291,12.1,14.583,12.1V20Zm-29.166,0V12.1c7.291,0,7.291-12.1,14.583-12.1S-482.291,12.1-475,12.1V20Zm-29.167,0V12.1c7.292,0,7.292-12.1,14.584-12.1s7.291,12.1,14.584,12.1V20ZM-562.5,20V12.1c7.291,0,7.291-12.1,14.584-12.1s7.291,12.1,14.583,12.1V20Zm-29.166,0V12.1c7.291,0,7.291-12.1,14.583-12.1s7.292,12.1,14.584,12.1V20Zm-29.167,0V12.1c7.292,0,7.292-12.1,14.584-12.1s7.291,12.1,14.584,12.1V20ZM-650,20V12.1c7.291,0,7.291-12.1,14.584-12.1s7.291,12.1,14.583,12.1V20Zm-29.166,0V12.1c7.291,0,7.291-12.1,14.583-12.1S-657.291,12.1-650,12.1V20Zm-29.167,0V12.1c7.292,0,7.292-12.1,14.584-12.1s7.291,12.1,14.584,12.1V20ZM-737.5,20V12.1c7.291,0,7.291-12.1,14.584-12.1s7.291,12.1,14.583,12.1V20Zm-29.166,0V12.1c7.291,0,7.291-12.1,14.583-12.1s7.292,12.1,14.584,12.1V20Zm-29.167,0V12.1c7.292,0,7.292-12.1,14.584-12.1s7.291,12.1,14.584,12.1V20ZM-825,20V12.1c7.291,0,7.291-12.1,14.584-12.1s7.291,12.1,14.583,12.1V20Zm-29.166,0V12.1c7.291,0,7.291-12.1,14.583-12.1S-832.291,12.1-825,12.1V20Zm-29.167,0V12.1c7.292,0,7.292-12.1,14.584-12.1s7.291,12.1,14.584,12.1V20ZM-912.5,20V12.1c7.291,0,7.291-12.1,14.584-12.1s7.291,12.1,14.583,12.1V20Zm-29.166,0V12.1c7.291,0,7.291-12.1,14.583-12.1s7.292,12.1,14.584,12.1V20Zm-29.167,0V12.1c7.292,0,7.292-12.1,14.584-12.1s7.291,12.1,14.584,12.1V20ZM-1000,20V12.1c7.291,0,7.291-12.1,14.584-12.1s7.291,12.1,14.583,12.1V20Z" transform="translate(1000 381)" fill="#FFFFFD"/>
+        </g>
+
+        <g data-name="Features">
+            <rect width="700" height="190" x="0" y="400" fill="#FFFFFD"/>
+            <g data-name="Feature_1">
+                <circle cx="160" cy="460" r="25" fill="#3AADAA"/>
+                <text x="105" y="515" font-size="18" font-family="Poppins, sans-serif" font-weight="500">Feature #01</text>
+                <rect width="130" height="6" x="95" y="532" rx="2" fill="#888"/>
+                <rect width="90" height="6" x="115" y="544" rx="2" fill="#888"/>
+            </g>
+            <g data-name="Feature_2">
+                <circle cx="350" cy="460" r="25" fill="#CED4DA"/>
+                <text x="295" y="515" font-size="18" font-family="Poppins, sans-serif" font-weight="500">Feature #01</text>
+                <rect width="130" height="6" x="285" y="532" rx="2" fill="#888"/>
+                <rect width="90" height="6" x="305" y="544" rx="2" fill="#888"/>
+            </g>
+            <g data-name="Feature_3">
+                <circle cx="535" cy="460" r="25" fill="#7C6576"/>
+                <text x="485" y="515" font-size="18" font-family="Poppins, sans-serif" font-weight="500">Feature #01</text>
+                <rect width="130" height="6" x="475" y="532" rx="2" fill="#888"/>
+                <rect width="90" height="6" x="495" y="544" rx="2" fill="#888"/>
+            </g>
+        </g>
+
+        <g data-name="Picture">
+            <rect width="700" height="160" x="0" y="590" fill="#383E45"/>
+            <rect width="700" height="260" x="0" y="750" fill="#3AADAA"/>
+            <text x="278" y="645" fill="#383E45" class="svgc_text" font-size="24" font-family="Poppins, sans-serif" font-weight="500" filter="url(#filter_readability_bistro)">Section Title</text>
+            <rect width="140" height="6" rx="2" x="280" y="667" fill="#383E45" class="svgc_text" filter="url(#filter_readability_bistro)"/>
+            <rect width="370" height="250" rx="4" x="165" y="700" fill="#FFFFFF"/>
+            <rect width="350" height="230" rx="4" x="175" y="710" fill="url(#theme_bistro_s_picture_default_image_id)" class="img_reference_s_picture_default_image"/>
+            <rect width="140" height="6" rx="2" x="280" y="972" fill="#3AADAA" class="svgc_text" opacity=".5" filter="url(#filter_readability_bistro)"/>
+        </g>
+
+        <g data-name="Pricelist">
+            <rect width="700" height="280" x="0" y="1010" fill="url(#theme_bistro_s_product_catalog_default_image_id)" class="img_reference_s_product_catalog_default_image"/>
+            <rect width="700" height="280" x="0" y="1010" fill="#000000" opacity="0.5"/>
+            <path d="M-329.167,20V12.1c7.292,0,7.292-12.1,14.584-12.1S-307.292,12.1-300,12.1V20Zm-29.166,0V12.1c7.292,0,7.292-12.1,14.584-12.1s7.292,12.1,14.583,12.1V20ZM-387.5,20V12.1c7.292,0,7.292-12.1,14.584-12.1s7.292,12.1,14.584,12.1V20Zm-29.166,0V12.1c7.292,0,7.292-12.1,14.584-12.1s7.292,12.1,14.583,12.1V20Zm-29.166,0V12.1c7.292,0,7.292-12.1,14.583-12.1s7.292,12.1,14.584,12.1V20ZM-475,20V12.1c7.292,0,7.292-12.1,14.584-12.1s7.292,12.1,14.584,12.1V20Zm-29.166,0V12.1c7.292,0,7.292-12.1,14.583-12.1S-482.292,12.1-475,12.1V20Zm-29.167,0V12.1c7.292,0,7.292-12.1,14.584-12.1s7.292,12.1,14.584,12.1V20ZM-562.5,20V12.1c7.292,0,7.292-12.1,14.584-12.1s7.292,12.1,14.583,12.1V20Zm-29.166,0V12.1c7.292,0,7.292-12.1,14.583-12.1s7.292,12.1,14.584,12.1V20Zm-29.167,0V12.1c7.292,0,7.292-12.1,14.584-12.1s7.292,12.1,14.584,12.1V20ZM-650,20V12.1c7.292,0,7.292-12.1,14.583-12.1s7.292,12.1,14.584,12.1V20Zm-29.167,0V12.1c7.292,0,7.292-12.1,14.584-12.1S-657.292,12.1-650,12.1V20Zm-29.166,0V12.1c7.292,0,7.292-12.1,14.584-12.1s7.291,12.1,14.583,12.1V20ZM-737.5,20V12.1c7.291,0,7.291-12.1,14.583-12.1s7.292,12.1,14.584,12.1V20Zm-29.167,0V12.1c7.292,0,7.292-12.1,14.584-12.1s7.292,12.1,14.584,12.1V20Zm-29.166,0V12.1c7.292,0,7.292-12.1,14.583-12.1s7.292,12.1,14.584,12.1V20ZM-825,20V12.1c7.292,0,7.292-12.1,14.584-12.1s7.292,12.1,14.584,12.1V20Zm-29.166,0V12.1c7.292,0,7.292-12.1,14.584-12.1S-832.291,12.1-825,12.1V20Zm-29.167,0H-912.5V12.1c7.292,0,7.292-12.1,14.584-12.1s7.291,12.1,14.583,12.1S-876.042,0-868.75,0s7.292,12.1,14.584,12.1V20Zm-58.333,0V12.1c7.292,0,7.292-12.1,14.583-12.1s7.292,12.1,14.584,12.1V20Zm-29.167,0V12.1c7.292,0,7.292-12.1,14.584-12.1s7.292,12.1,14.584,12.1V20ZM-1000,20V12.1c7.292,0,7.292-12.1,14.584-12.1s7.291,12.1,14.583,12.1V20Z" transform="translate(1000 1270)" fill="#FFFFFD"/>
+            <g data-name="Column_1">
+                <text x="70" y="1090" fill="#FFFFFD" font-size="21" font-family="Poppins, sans-serif" font-weight="500">Entry Title</text>
+                <rect width="120" height="6" x="70" y="1115" fill="#FFFFFD"/>
+                <rect width="240" height="6" x="70" y="1125" fill="#FFFFFD" opacity="0.5"/>
+                <text x="320" y="1190" fill="#FFFFFD" font-size="21" font-family="Poppins, sans-serif" font-weight="500">$</text>
+                <rect width="120" height="6" x="70" y="1145" fill="#FFFFFD"/>
+                <rect width="240" height="6" x="70" y="1155" fill="#FFFFFD" opacity="0.5"/>
+                <text x="320" y="1160" fill="#FFFFFD" font-size="21" font-family="Poppins, sans-serif" font-weight="500">$</text>
+                <rect width="120" height="6" x="70" y="1175" fill="#FFFFFD"/>
+                <rect width="240" height="6" x="70" y="1185" fill="#FFFFFD" opacity="0.5"/>
+                <text x="320" y="1130" fill="#FFFFFD" font-size="21" font-family="Poppins, sans-serif" font-weight="500">$</text>
+            </g>
+            <g data-name="Column_2">
+                <text x="360" y="1090" fill="#FFFFFD" font-size="21" font-family="Poppins, sans-serif" font-weight="500">Entry Title</text>
+                <rect width="120" height="6" x="360" y="1115" fill="#FFFFFD"/>
+                <rect width="240" height="6" x="360" y="1125" fill="#FFFFFD" opacity="0.5"/>
+                <text x="610" y="1130" fill="#FFFFFD" font-size="21" font-family="Poppins, sans-serif" font-weight="500">$</text>
+                <rect width="120" height="6" x="360" y="1145" fill="#FFFFFD"/>
+                <rect width="240" height="6" x="360" y="1155" fill="#FFFFFD" opacity="0.5"/>
+                <text x="610" y="1160" fill="#FFFFFD" font-size="21" font-family="Poppins, sans-serif" font-weight="500">$</text>
+                <rect width="120" height="6" x="360" y="1175" fill="#FFFFFD"/>
+                <rect width="240" height="6" x="360" y="1185" fill="#FFFFFD" opacity="0.5"/>
+                <text x="610" y="1190" fill="#FFFFFD" font-size="21" font-family="Poppins, sans-serif" font-weight="500">$</text>
+            </g>
+        </g>
+
+        <g data-name="Text Block">
+            <rect width="700" height="160" x="0" y="1290" fill="#FFFFFD"/>
+            <rect width="340" height="6" rx="2" x="175" y="1334" fill="#888888"/>
+            <rect width="240" height="6" rx="2" x="175" y="1346" fill="#888888"/>
+            <rect width="240" height="6" rx="2" x="175" y="1366" fill="#888888"/>
+            <rect width="350" height="6" rx="2" x="175" y="1378" fill="#888888"/>
+            <rect width="290" height="6" rx="2" x="175" y="1390" fill="#888888"/>
+        </g>
+
+        <g data-name="Quotes Carousel">
+            <rect width="700" height="210" x="0" y="1450" fill="url(#theme_bistro_s_quotes_carousel_demo_image_1_id)" class="img_reference_s_quotes_carousel_default_image_1"/>
+            <circle cx="613" cy="1556" r="18" fill="#FFFFFD"/>
+            <circle cx="88" cy="1556" r="18" fill="#FFFFFD"/>
+            <rect width="260" height="90" x="233" y="1510" fill="#FFFFFD"/>
+            <path d="M4,0H25a0,0,0,0,1,0,0V25a0,0,0,0,1,0,0H4a4,4,0,0,1-4-4V4A4,4,0,0,1,4,0Z" transform="translate(208 1510)" fill="#3AADAA"/>
+            <rect width="220" height="6" rx="2" x="248" y="1530" fill="#888888"/>
+            <rect width="120" height="6" rx="2" x="248" y="1540" fill="#888888"/>
+            <circle r="15" cx="260" cy="1570" fill="url(#theme_bistro_s_quotes_carousel_demo_image_2_id)"/>
+            <rect width="60" height="6" rx="2" x="290" y="1570" fill="#CCCCCC"/>
+        </g>
+
+        <g data-name="Footer" class="svgc_footer">
+            <rect width="700" height="155" x="0" y="1660" fill="#FOOTER_COLOR" class="svgc_footer_bg"/>
+            <circle cx="320" cy="1700" r="12" fill="#FOOTER_COLOR" class="svgc_text" opacity="0.8" filter="url(#filter_readability_bistro)"/>
+            <circle cx="350" cy="1700" r="12" fill="#FOOTER_COLOR" class="svgc_text" opacity="0.8" filter="url(#filter_readability_bistro)"/>
+            <circle cx="380" cy="1700" r="12" fill="#FOOTER_COLOR" class="svgc_text" opacity="0.8" filter="url(#filter_readability_bistro)"/>
+            <rect width="287" height="6" rx="2" x="207" y="1730" fill="#FOOTER_COLOR" class="svgc_text" opacity="0.5" filter="url(#filter_readability_bistro)"/>
+            <rect width="129" height="6" rx="2" x="344" y="1747" fill="#FOOTER_COLOR" class="svgc_text" opacity="0.5" filter="url(#filter_readability_bistro)"/>
+            <rect width="65" height="6" rx="2" x="242" y="1747" fill="#FOOTER_COLOR" class="svgc_text" opacity="0.5" filter="url(#filter_readability_bistro)"/>
+            <text x="330" y="1785" fill="#FOOTER_COLOR" class="svgc_text" font-size="14" font-family="Poppins, sans-serif" font-weight="500" filter="url(#filter_readability_bistro)">LOGO</text>
+        </g>
+
+        <g data-name="Copyright">
+            <rect width="700" height="35" x="0" y="1815" fill="#3AADAA"/>
+            <circle cx="615" cy="1815" r="15" fill="#FOOTER_COLOR"/>
+            <rect width="120" height="6" rx="2" x="70" y="1830" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_bistro)"/>
+        </g>
+
+    </g>
+</svg>
