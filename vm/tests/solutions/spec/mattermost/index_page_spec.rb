@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 require 'spec_helper'
 
-describe command('curl -L http://localhost/') do
-  its(:stdout) { should match /<title>Mattermost<\/title>/ }
+describe command('curl -L http://localhost') do
+  its(:stdout) { should match /<title>Click to Deploy Test<\/title>/ }
   its(:exit_status) { should eq 0 }
 end
