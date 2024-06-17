@@ -1,0 +1,117 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_cobalt
+# 
+# Translators:
+# Wil Odoo, 2023
+# 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2023\n"
+"Language-Team: Chinese (China) (https://app.transifex.com/odoo/teams/41243/zh_CN/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: zh_CN\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_picture
+msgid "<em>Our office in Dhaka</em>"
+msgstr "<em>我们在达卡的办事处</em>"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_color_blocks_2
+msgid ""
+"Are you a startup or a seasoned company looking for a new brand identity?"
+msgstr "您是一家初创公司，还是一家正在寻找新品牌标识的老牌公司？"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_color_blocks_2
+msgid "Are you an established brand looking for ongoing creative services?"
+msgstr "您是正在寻求持续创意服务的知名品牌吗？"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_banner
+msgid ""
+"Building game-changing digital experiences designed to set your brand apart."
+msgstr "打造改变游戏规则的数字体验，让您的品牌与众不同。"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_text_image
+msgid "Digital Transformation"
+msgstr "数字化转型"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_three_columns
+msgid "Latest projects"
+msgstr "侧边栏或页脚的小部件，用简短的摘录显示您的最新项目。"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_text_image
+msgid ""
+"Leader in digital business, we’re helping companies of all sizes to thrive "
+"in an ever-changing landscape."
+msgstr "作为数字业务领域的领导者，我们帮助各种规模的公司在不断变化的环境中茁壮成长。"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_banner
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_image_text
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_text_image
+msgid "Marketing"
+msgstr "市场"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_title
+msgid "Projects"
+msgstr "项目"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_call_to_action
+msgid "START NOW"
+msgstr "现在开始"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_image_text
+msgid "Strategy synchronising multiple channels"
+msgstr "多渠道同步战略"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_banner
+msgid "The ultimate marketing platform for brands"
+msgstr "品牌的终极营销平台"
+
+#. module: theme_cobalt
+#: model:ir.model,name:theme_cobalt.model_theme_utils
+msgid "Theme Utils"
+msgstr "主题用途"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_image_text
+msgid ""
+"We create a consistent customer experience through a detailed digital "
+"strategy built on precise customer research."
+msgstr "我们通过建立在精确客户研究基础上的详细数字战略，创造始终如一的客户体验。"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_text_image
+msgid ""
+"We have collected solid experience in building native and cross-platform "
+"mobile applications and websites. Check our portfolio from clients around "
+"the world."
+msgstr "我们在构建本地和跨平台移动应用程序和网站方面积累了丰富的经验。请查看我们来自世界各地客户的作品集。"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_text_image
+msgid "Web &amp; App Development"
+msgstr "网络和应用程序开发"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_text_image
+msgid "What we can do, <b>for you</b><br/>"
+msgstr "我们能<b>为您</b>做什么<br/>"

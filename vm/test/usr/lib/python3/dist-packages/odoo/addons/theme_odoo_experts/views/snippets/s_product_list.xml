@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_product_list" inherit_id="website.s_product_list">
+    <!-- Container -->
+    <xpath expr="//div[hasclass('container-fluid')]" position="replace">
+        <div class="container">
+            <!-- Row #1 -->
+            <div class="row">
+                <!-- Item #1 -->
+                <div class="h-100 pb16 col-lg-4">
+                    <a href="#">
+                        <img src="/web/image/website.s_product_list_default_image_1" alt="" class="img img-fluid w-100" style="max-height: 100%;"/>
+                    </a>
+                    <div class="s_product_list_item_link">
+                        <a href="#" class="btn btn-primary">Social Strategy</a>
+                    </div>
+                </div>
+                <!-- Item #2 -->
+                <div class="h-100 pb16 col-lg-4">
+                    <a href="#">
+                        <img src="/web/image/website.s_product_list_default_image_2" alt="" class="img img-fluid w-100" style="max-height: 100%;"/>
+                    </a>
+                    <div class="s_product_list_item_link">
+                        <a href="#" class="btn btn-primary">Executive Strategy</a>
+                    </div>
+                </div>
+                <!-- Item #3 -->
+                <div class="h-100 pb16 col-lg-4">
+                    <a href="#">
+                        <img src="/web/image/website.s_product_list_default_image_5" alt="" class="img img-fluid w-100" style="max-height: 100%;"/>
+                    </a>
+                    <div class="s_product_list_item_link">
+                        <a href="#" class="btn btn-primary">Corporate Finance</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Row #2 -->
+            <div class="row">
+                <!-- Item #4 -->
+                <div class="h-100 pb16 col-lg-4">
+                    <a href="#">
+                        <img src="/web/image/website.s_product_list_default_image_3" alt="" class="img img-fluid w-100" style="max-height: 100%;"/>
+                    </a>
+                    <div class="s_product_list_item_link">
+                        <a href="#" class="btn btn-primary">Growth &amp; Innovation</a>
+                    </div>
+                </div>
+                <!-- Item #5 -->
+                <div class="h-100 pb16 col-lg-4">
+                    <a href="#">
+                        <img src="/web/image/website.s_product_list_default_image_4" alt="" class="img img-fluid w-100" style="max-height: 100%;"/>
+                    </a>
+                    <div class="s_product_list_item_link">
+                        <a href="#" class="btn btn-primary">Digital Strategy</a>
+                    </div>
+                </div>
+                <!-- Item #6 -->
+                <div class="h-100 pb16 col-lg-4">
+                    <a href="#">
+                        <img src="/web/image/website.s_product_list_default_image_6" alt="" class="img img-fluid w-100" style="max-height: 100%;"/>
+                    </a>
+                    <div class="s_product_list_item_link">
+                        <a href="#" class="btn btn-primary">Business Strategy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </xpath>
+</template>
+
+</odoo>

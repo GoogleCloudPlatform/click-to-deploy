@@ -1,0 +1,228 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="700" height="1850" viewBox="0 0 700 1850">
+
+    <defs>
+        <!-- Font -->
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&amp;display=swap');
+        </style>
+        <!-- Box-shadow -->
+        <filter id="theme_zap_preview_shadow" x="0" y="0" filterUnits="userSpaceOnUse">
+            <feOffset dy="3" input="SourceAlpha"/>
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feFlood flood-opacity="0.15"/>
+            <feComposite operator="in" in2="blur"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+        <!-- Images -->
+        <pattern width="1" height="1" id="theme_zap_s_banner_default_image_id" patternunits="objectBoundingBox">
+            <image width="700" height="210" preserveAspectRatio="xMidYMid slice" href="#s_banner_default_image_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_zap_s_three_columns_default_image_1_id" patternunits="objectBoundingBox">
+            <image width="175" height="135" preserveAspectRatio="xMidYMid slice" href="#s_three_columns_default_image_1_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_zap_s_three_columns_default_image_2_id" patternunits="objectBoundingBox">
+            <image width="175" height="135" preserveAspectRatio="xMidYMid slice" href="#s_three_columns_default_image_2_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_zap_s_three_columns_default_image_3_id" patternunits="objectBoundingBox">
+            <image width="175" height="135" preserveAspectRatio="xMidYMid slice" href="#s_three_columns_default_image_3_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_zap_library_image_02_id" patternunits="objectBoundingBox">
+            <image width="350" height="280" preserveAspectRatio="xMidYMid slice" href="#library_image_02_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_zap_s_masonry_block_default_image_1_id" patternunits="objectBoundingBox">
+            <image width="350" height="240" preserveAspectRatio="xMidYMid slice" href="#s_masonry_block_default_image_1_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_zap_library_image_08_id" patternunits="objectBoundingBox">
+            <image width="175" height="120" preserveAspectRatio="xMidYMid slice" href="#library_image_08_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_zap_s_references_1_id" patternunits="objectBoundingBox">
+            <image width="120" height="60" preserveAspectRatio="xMidYMid slice" href="/web/image/website.s_reference_demo_image_1"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_zap_s_references_2_id" patternunits="objectBoundingBox">
+            <image width="120" height="60" preserveAspectRatio="xMidYMid slice" href="/web/image/website.s_reference_demo_image_2"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_zap_s_references_3_id" patternunits="objectBoundingBox">
+            <image width="120" height="60" preserveAspectRatio="xMidYMid slice" href="/web/image/website.s_reference_demo_image_3"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_zap_s_references_4_id" patternunits="objectBoundingBox">
+            <image width="120" height="60" preserveAspectRatio="xMidYMid slice" href="/web/image/website.s_reference_demo_image_4"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_zap_s_references_5_id" patternunits="objectBoundingBox">
+            <image width="120" height="60" preserveAspectRatio="xMidYMid slice" href="/web/image/website.s_reference_demo_image_5"/>
+        </pattern>
+        <filter id="filter_readability_zap">
+            <feColorMatrix in="SourceGraphic" type="saturate" values="0"/>
+            <feComponentTransfer>
+                <feFuncR type="table" tableValues="1 0"/>
+                <feFuncG type="table" tableValues="1 0"/>
+                <feFuncB type="table" tableValues="1 0"/>
+            </feComponentTransfer>
+            <feComponentTransfer>
+                <feFuncR type="linear" slope="10000" intercept="-4999.5"/>
+                <feFuncG type="linear" slope="10000" intercept="-4999.5"/>
+                <feFuncB type="linear" slope="10000" intercept="-4999.5"/>
+            </feComponentTransfer>
+        </filter>
+    </defs>
+
+    <!-- Layout -->
+    <g id="theme_zap_preview">
+
+        <g data-name="Header" class="svgc_menu">
+            <rect width="700" height="50" fill="#MENU_COLOR" class="svgc_menu_bg"/>
+            <rect width="20" height="2" x="70" y="18" fill="#MENU_COLOR" class="svgc_text" filter="url(#filter_readability_zap)"/>
+            <rect width="20" height="2" x="70" y="24" fill="#MENU_COLOR" class="svgc_text" filter="url(#filter_readability_zap)"/>
+            <rect width="20" height="2" x="70" y="30" fill="#MENU_COLOR" class="svgc_text" filter="url(#filter_readability_zap)"/>
+            <text x="295" y="30" fill="#MENU_COLOR" class="svgc_text" filter="url(#filter_readability_zap)" font-size="14" font-family="Lato, sans-serif" font-weight="bold">LOGO</text>
+            <rect width="30" height="6" rx="2" x="510" y="22" fill="#MENU_COLOR" class="svgc_text" filter="url(#filter_readability_zap)" opacity="0.5"/>
+            <g class="svgc_btn_group">
+                <rect width="70" height="30" rx="3" x="560" y="10" fill="#3AADAA"/>
+                <text x="573" y="29" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_zap)" font-size="12" font-family="Lato, sans-serif" font-weight="700">Contact</text>
+            </g>
+        </g>
+
+        <g data-name="Banner">
+            <rect width="700" height="210" x="0" y="50" fill="url(#theme_zap_s_banner_default_image_id)" class="img_reference_s_banner_default_image"/>
+            <rect width="700" height="110" x="0" y="260" fill="#3AADAA"/>
+            <rect width="380" height="180" rx="4" x="70" y="170" fill="#FFFFFD" filter="url(#theme_zap_preview_shadow)"/>
+            <text x="105" y="230" fill="#383E45" font-size="32" font-family="Lato, sans-serif" font-weight="400">Welcome Message</text>
+            <rect width="120" height="8" rx="2" x="105" y="250" fill="#888"/>
+            <rect width="200" height="8" rx="2" x="105" y="265" fill="#888"/>
+            <g class="svgc_btn_group">
+                <rect width="70" height="30" rx="3" x="105" y="295" fill="#3AADAA"/>
+                <text x="116" y="315" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_zap)" font-size="12" font-family="Lato, sans-serif" font-weight="700">Discover</text>
+            </g>
+        </g>
+
+        <g data-name="Columns">
+            <rect width="700" height="340" x="0" y="370" fill="#E9ECEF"/>
+            <g data-name="Column_1">
+                <rect width="175" height="250" rx="4" x="70" y="415" fill="#FFFFFD" filter="url(#theme_zap_preview_shadow)"/>
+                <rect width="175" height="135" x="70" y="415" fill="url(#theme_zap_s_three_columns_default_image_1_id)" class="img_reference_s_three_columns_default_image_1"/>
+                <text x="86" y="585" font-size="18" font-family="Lato, sans-serif" font-weight="400">Entry Title</text>
+                <rect width="110" height="6" x="85" y="600" fill="#888"/>
+                <rect width="130" height="6" x="85" y="612" fill="#888"/>
+                <rect width="90" height="6" x="85" y="624" fill="#888"/>
+            </g>
+            <g data-name="Column_2">
+                <rect width="175" height="250" rx="4" x="263" y="415" fill="#FFFFFD" filter="url(#theme_zap_preview_shadow)"/>
+                <rect width="175" height="135" x="263" y="415" fill="url(#theme_zap_s_three_columns_default_image_2_id)" class="img_reference_s_three_columns_default_image_2"/>
+                <text x="279" y="585" font-size="18" font-family="Lato, sans-serif" font-weight="400">Entry Title</text>
+                <rect width="110" height="6" x="280" y="600" fill="#888"/>
+                <rect width="130" height="6" x="280" y="612" fill="#888"/>
+                <rect width="90" height="6" x="280" y="624" fill="#888"/>
+            </g>
+            <g data-name="Column_3">
+                <rect width="175" height="250" rx="4" x="455" y="415" fill="#FFFFFD" filter="url(#theme_zap_preview_shadow)"/>
+                <rect width="175" height="135" x="455" y="415" fill="url(#theme_zap_s_three_columns_default_image_3_id)" class="img_reference_s_three_columns_default_image_3"/>
+                <text x="471" y="585" font-size="18" font-family="Font Awesome, sans-serif">Entry Title</text>
+                <rect width="110" height="6" x="470" y="600" fill="#888"/>
+                <rect width="130" height="6" x="470" y="612" fill="#888"/>
+                <rect width="90" height="6" x="470" y="623" fill="#888"/>
+            </g>
+        </g>
+
+        <g data-name="Color Blocks">
+            <rect width="350" height="280" x="0" y="710" fill="#3AADAA"/>
+            <circle cx="90" cy="770" r="20" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_zap)"/>
+            <text x="70" y="830" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_zap)" font-size="24" font-family="Lato, sans-serif" font-weight="400">Section Title</text>
+            <rect width="100" height="6" rx="2" x="70" y="852" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_zap)" opacity="0.8"/>
+            <rect width="210" height="6" rx="2" x="70" y="864" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_zap)" opacity="0.8"/>
+            <rect width="140" height="6" rx="2" x="70" y="876" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_zap)" opacity="0.8"/>
+            <g class="svgc_btn_group">
+                <rect width="70" height="30" rx="3" x="70" y="910" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_zap)"/>
+                <text x="85" y="930" fill="#000000" opacity="0.5" font-size="12" font-family="Lato, sans-serif" font-weight="700">Details</text>
+            </g>
+            <rect width="350" height="280" x="350" y="710" fill="url(#theme_zap_library_image_02_id)" class="img_reference_library_image_02"/>
+        </g>
+
+        <g data-name="Features">
+            <rect width="700" height="250" x="0" y="980" fill="#E9ECEF"/>
+            <g data-name="Feature_1">
+                <rect width="186" height="150" x="70" y="1030" fill="#FFFFFD" filter="url(#theme_zap_preview_shadow)"/>
+                <circle cx="163" cy="1072" r="20" fill="#3AADAA"/>
+                <text x="118" y="1120" font-size="18" font-family="Lato, sans-serif" font-weight="400">Feature #01</text>
+                <rect width="80" height="6" x="123" y="1133" rx="2" fill="#888"/>
+                <rect width="50" height="6" x="138" y="1145" rx="2" fill="#888"/>
+            </g>
+            <g data-name="Feature_2" >
+                <rect width="186" height="150" x="257" y="1030" fill="#FFFFFD" filter="url(#theme_zap_preview_shadow)"/>
+                <circle cx="350" cy="1072" r="20" fill="#383E45"/>
+                <text x="303" y="1120" font-size="18" font-family="Lato, sans-serif" font-weight="400">Feature #02</text>
+                <rect width="80" height="6" x="310" y="1133" rx="2" fill="#888"/>
+                <rect width="50" height="6" x="325" y="1145" rx="2" fill="#888"/>
+            </g>
+            <g data-name="Feature_3">
+                <rect width="186" height="150" x="444" y="1030" fill="#FFFFFD" filter="url(#theme_zap_preview_shadow)"/>
+                <circle cx="537" cy="1072" r="20" fill="#7C6576"/>
+                <text x="490" y="1120" font-size="18" font-family="Lato, sans-serif" font-weight="400">Feature #03</text>
+                <rect width="80" height="6" x="497" y="1133" rx="2" fill="#888"/>
+                <rect width="50" height="6" x="512" y="1145" rx="2" fill="#888"/>
+            </g>
+        </g>
+
+        <g data-name="Masonry">
+            <rect width="350" height="240" x="0" y="1230" fill="url(#theme_zap_s_masonry_block_default_image_1_id)" class="img_reference_s_masonry_block_default_image_1"/>
+            <rect width="175" height="120" x="350" y="1230" fill="#FFFFFD"/>
+            <rect width="120" height="6" rx="2" x="378" y="1275" fill="#888"/>
+            <rect width="140" height="6" rx="2" x="367" y="1287" fill="#888"/>
+            <rect width="70" height="6" rx="2" x="402" y="1299" fill="#888"/>
+            <rect width="175" height="120" x="525" y="1230" fill="#7C6576"/>
+            <circle cx="612" cy="1275" r="20" fill="#7C6576" class="svgc_text" filter="url(#filter_readability_zap)"/>
+            <text x="571" y="1324" fill="#7C6576" class="svgc_text" filter="url(#filter_readability_zap)" font-size="16" font-family="Lato, sans-serif" font-weight="400">Subtitle #01</text>
+            <rect width="175" height="120" x="350" y="1350" fill="#3AADAA"/>
+            <circle cx="438" cy="1395" r="20" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_zap)"/>
+            <text x="397" y="1444" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_zap)" font-size="16" font-family="Lato, sans-serif" font-weight="400">Subtitle #02</text>
+            <rect width="175" height="120" x="525" y="1350" fill="url(#theme_zap_library_image_08_id)" class="img_reference_library_image_08"/>
+        </g>
+
+        <g data-name="References">
+            <rect width="700" height="215" x="0" y="1470" fill="#E9ECEF"/>
+            <text x="305" y="1520" fill="#383E45" font-size="20" font-family="Lato, sans-serif" font-weight="400">Section Title</text>
+            <rect width="560" height="90" x="70" y="1550" fill="#FFFFFD" filter="url(#theme_zap_preview_shadow)"/>
+            <rect width="120" height="70" x="85" y="1568" fill="url(#theme_zap_s_references_1_id)"/>
+            <rect width="120" height="70" x="185" y="1565" fill="url(#theme_zap_s_references_4_id)"/>
+            <rect width="120" height="60" x="300" y="1565" fill="url(#theme_zap_s_references_3_id)"/>
+            <rect width="120" height="70" x="425" y="1565" fill="url(#theme_zap_s_references_2_id)"/>
+            <rect width="120" height="70" x="520" y="1570" fill="url(#theme_zap_s_references_5_id)"/>
+        </g>
+
+        <g data-name="Footer" class="svgc_footer">
+            <rect width="700" height="130" x="0" y="1685" fill="#FOOTER_COLOR" class="svgc_footer_bg"/>
+            <rect width="80" height="6" rx="2" x="372" y="1730" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_zap)" opacity="0.8"/>
+            <rect width="30" height="6" rx="2" x="70" y="1730" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_zap)" opacity="0.8"/>
+            <rect width="30" height="6" rx="2" x="167" y="1730" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_zap)" opacity="0.8"/>
+            <rect width="30" height="6" rx="2" x="280" y="1730" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_zap)" opacity="0.8"/>
+            <rect width="50" height="6" rx="2" x="70" y="1746" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_zap)" opacity="0.8"/>
+            <rect width="50" height="6" rx="2" x="167" y="1746" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_zap)" opacity="0.8"/>
+            <rect width="50" height="6" rx="2" x="280" y="1746" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_zap)" opacity="0.8"/>
+            <rect width="40" height="6" rx="2" x="70" y="1762" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_zap)" opacity="0.8"/>
+            <rect width="40" height="6" rx="2" x="167" y="1762" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_zap)" opacity="0.8"/>
+            <rect width="40" height="6" rx="2" x="280" y="1762" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_zap)" opacity="0.8"/>
+            <rect width="50" height="6" rx="2" x="70" y="1778" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_zap)" opacity="0.8"/>
+            <rect width="50" height="6" rx="2" x="167" y="1778" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_zap)" opacity="0.8"/>
+            <rect width="50" height="6" rx="2" x="280" y="1778" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_zap)" opacity="0.8"/>
+            <rect width="65" height="6" rx="2" x="372" y="1747" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_zap)" opacity="0.8"/>
+            <circle cx="270" cy="1733" r="5" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_zap)" opacity="0.5"/>
+            <circle cx="362" cy="1733" r="5" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_zap)" opacity="0.5"/>
+            <circle cx="270" cy="1749" r="5" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_zap)" opacity="0.5"/>
+            <circle cx="362" cy="1749" r="5" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_zap)" opacity="0.5"/>
+            <circle cx="270" cy="1765" r="5" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_zap)" opacity="0.5"/>
+            <circle cx="270" cy="1781" r="5" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_zap)" opacity="0.5"/>
+            <rect width="120" height="6" rx="2" x="501" y="1728" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_zap)" opacity="0.8"/>
+            <rect width="80" height="6" rx="2" x="501" y="1740" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_zap)" opacity="0.8"/>
+            <rect width="50" height="6" rx="2" x="501" y="1752" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_zap)" opacity="0.8"/>
+            <text x="70" y="1716" font-size="12" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_zap)" font-family="Lato, sans-serif" font-weight="700">Entry Title</text>
+            <text x="167" y="1716" font-size="12" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_zap)" font-family="Lato, sans-serif" font-weight="700">Entry Title</text>
+            <text x="264" y="1716" font-size="12" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_zap)" font-family="Lato, sans-serif" font-weight="700">Entry Title</text>
+            <text x="357" y="1716" font-size="12" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_zap)" font-family="Lato, sans-serif" font-weight="700">Entry Title</text>
+            <text x="498" y="1716" font-size="12" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_zap)" font-family="Lato, sans-serif" font-weight="700">Entry Title</text>
+        </g>
+
+        <g data-name="Copyright">
+            <rect width="700" height="35" x="0" y="1815" fill="#3AADAA"/>
+            <rect width="120" height="6" rx="2" x="70" y="1830" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_zap)" opacity="0.5"/>
+        </g>
+
+    </g>
+</svg>

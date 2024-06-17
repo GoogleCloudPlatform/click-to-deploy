@@ -1,0 +1,283 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_bewise
+# 
+# Translators:
+# Wil Odoo, 2023
+# Malaz Abuidris <msea@odoo.com>, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2024\n"
+"Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ar\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_numbers
+msgid "16,456"
+msgstr "16,456"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_call_to_action
+msgid ""
+"<b>3,000 students</b> graduate each year and find a job within 2 months"
+msgstr "<b>3,000 طالب</b> يتخرجون كل عام ويحصلون على وظائف في غضون شهرين "
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_company_team
+msgid "<b>Aline Turner, Law professor</b>"
+msgstr "<b>Aline Turner، بروفيسور في القانون</b> "
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_quotes_carousel
+msgid "<b>Iris DOE</b> • Graduated in 2019"
+msgstr "<b>Iris DOE</b> • تخرجت عام 2019 "
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_company_team
+msgid "<b>Iris Joe, team leader professor</b>"
+msgstr "<b>Iris Joe، بروفيسور قائد الفريق</b> "
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_quotes_carousel
+msgid "<b>Jane DOE</b> • Graduated in 2017"
+msgstr "<b>Jane DOE</b> • تخرجت عام 2017 "
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_quotes_carousel
+msgid "<b>John DOE</b> • Graduated in 2016"
+msgstr "<b>John DOE</b> • تخرج عام 2016 "
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_company_team
+msgid "<b>Mich Stark, IT Officer</b>"
+msgstr "<b>Mich Stark، موظف تقنية المعلومات</b> "
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_company_team
+msgid "<b>Tony Fred, Faculty Head of IT</b>"
+msgstr "<b>Tony Fred، رئيس كلية تكنولوجيا المعلومات</b> "
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_color_blocks_2
+msgid ""
+"<br/>\n"
+"        Are you searching for a school where cutting-edge programmes are taught, in a continually evolving environment and located in the heart of a dynamic city? You have just found it!\n"
+"        <br/>\n"
+"        <br/>"
+msgstr ""
+"<br/>\n"
+"        هل تبحث عن مدرسة يتم فيها تدريس البرامج المتطورة في بيئة تتطور باستمرار وتقع في قلب مدينة ديناميكية؟ أنت في المكان الصحيح!\n"
+"        <br/>\n"
+"        <br/>"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_text_image
+msgid ""
+"<br/>\n"
+"        Teachers are selected among experts of their domains. They are not just professors, they are professionals in their field of expertise."
+msgstr ""
+"<br/>\n"
+"        يتم اختيار المعلمين من بين الخبراء في مجالاتهم. إنهم ليسوا مجرد بروفيسورات، بل هم محترفون في مجال خبرتهم. "
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_color_blocks_2
+msgid ""
+"<br/>\n"
+"        The small and modern campus is only a 10-minute walk away from the city centre and is easily accessible by car and public transport. It is also close to the train stations.\n"
+"        <br/>\n"
+"        <br/>"
+msgstr ""
+"<br/>\n"
+"        يقع الحرم الجامعي الصغير والحديث على بعد 10 دقائق فقط سيراً على الأقدام من وسط المدينة ويمكن الوصول إليه بسهولة بالسيارة ووسائل النقل العام. كما أنه قريب من محطات القطار.\n"
+"        <br/>\n"
+"        <br/>"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_image_text
+msgid ""
+"<br/>\n"
+"        We make sure that everyone blossoms. We keep a human size in a warm and modern setting. All students benefit from individualised support."
+msgstr ""
+"<br/>\n"
+"        نحن نحرص على أن يزدهر الجميع. يستفيد جميع الطلاب من الدعم الفردي. "
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_carousel
+msgid ""
+"<font class=\"bg-o-color-4\">Good copy starts with understanding how your "
+"product or service helps your customers. Simple words communicate better "
+"than big words and pompous language.</font>"
+msgstr ""
+"<font class=\"bg-o-color-4\">تبدأ النسخة الجيدة بفهم كيف تساعد منتجاتك أو "
+"خدماتك العملاء. التواصل باستخدام الكلمات البسيطة فعّال أكثر من استخدام "
+"الكلمات الكبيرة واللغة المنمقة.</font> "
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_picture
+msgid "A punchy Headline"
+msgstr "عنوان جذاب"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_image_text
+msgid "All students benefit from individualised support."
+msgstr "يستفيد كافة الطلاب من الدعم الفردي. "
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_cover
+msgid "Always at the top"
+msgstr "في الصدارة دائماً "
+
+#. module: theme_bewise
+#. odoo-javascript
+#: code:addons/theme_bewise/static/src/js/tour.js:0
+#: code:addons/theme_bewise/static/src/js/tour.js:0
+#, python-format
+msgid "Background Shape"
+msgstr "شكل الخلفية "
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_comparisons
+msgid "Basic sales &amp; marketing"
+msgstr "المبيعات والتسويق الأساسيين "
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_text_image
+msgid "Driven by Excellence"
+msgstr "يقوده التميز "
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_numbers
+msgid "Faculties"
+msgstr "الكليات "
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_quotes_carousel
+msgid ""
+"Great support and quality courses! A mentor helps you move forward and can "
+"be contacted through flexible schedules. Everything you need to start your "
+"career on the web."
+msgstr ""
+"دعم رائع ودورات عالية الجودة! يساعدك المرشد على المضي قدماً ويمكنك التواصل "
+"معه بكل سهولة مع جدول أعماله المرن. كل ما تحتاج إليه لبدء حياتك المهنية على "
+"شبكة الإنترنت. "
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_company_team
+msgid ""
+"He is professor in the Institute of Mechanics, Materials and Civil "
+"Engineering since 2000. He lectures in mechanical drawing and mechanical "
+"design for undergraduate and graduate students. He is active in Problem and "
+"Project based learning. He is the promoter of 8 doctoral theses."
+msgstr ""
+"إنه بروفيسور في معهد الميكانيكا والمواد والهندسة المدنية منذ عام 2000. "
+"ويحاضر في الرسم الميكانيكي والتصميم الميكانيكي لطلاب المرحلة الجامعية "
+"والدراسات العليا. وهو نشط في التعلم القائم على المشكلات والمشاريع. قام "
+"بتأليف 8 رسائل دكتوراه. "
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_quotes_carousel
+msgid ""
+"I have learned a lot, and I have realised professional projects thanks to "
+"the support of the mentors! The team is always at the top and always looking"
+" for solutions to problems, I felt accompanied and supported! It's not easy "
+"every day, but it's a great adventure!"
+msgstr ""
+"لقد تعلمت الكثير، ونفذت مشاريع احترافية بفضل دعم الموجهين! الفريق في القمة "
+"دوماً ويبحث دائماً عن حلول للمشكلات، شعرت بالدعم وأنني أنتمي مجموعة! الأمر "
+"ليس سهلاً كل يوم، لكنها مغامرة رائعة! "
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_call_to_action
+msgid "Join them and increase your chances to get hired."
+msgstr "انضم إليهم وزد من فرص أن يتم تعيينك. "
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_text_image
+msgid ""
+"Journalists, directors, developers, etc. working effectively in their fields"
+" of excellence."
+msgstr "الصحفيون والمخرجون والمطورون وغيرهم يعملون بفعالية في مجالات تميزهم. "
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_numbers
+msgid "Libraries"
+msgstr "المكتبات "
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_numbers
+msgid "Nationalities"
+msgstr "الجنسيات "
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_cover
+msgid ""
+"Our university has topped the The World University<br/>Rankings for a fifth "
+"consecutive year."
+msgstr ""
+"تصدرت جامعتنا تصنيفات الجامعات العالمية <br/> للعام الخامس على التوالي. "
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_color_blocks_2
+msgid "Programmes"
+msgstr "البرامج "
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_company_team
+msgid ""
+"She has been practicing law at the French-speaking Brussels Bar since 2006. "
+"She has worked in various major law firms based in Brussels, as member and "
+"then head of their litigation/arbitration practice groups."
+msgstr ""
+"إنها تمارس مهنة المحاماة في نقابة المحامين الناطقة بالفرنسية في بروكسل منذ "
+"عام 2006. وقد عملت في العديد من مكاتب المحاماة الكبرى التي يوجد مقرها في "
+"بروكسل، كعضو ثم رئيسة لمجموعات ممارسة التقاضي/التحكيم. "
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_numbers
+msgid "Students"
+msgstr "الطلاب "
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_quotes_carousel
+msgid ""
+"Thanks to its innovative system, the school offers an academic training "
+"during which we are followed by a \"mentor\", a sort of \"tutor\"!"
+msgstr ""
+"بفضل نظامها المبتكر، تقدم المدرسة تدريباً أكاديمياً حيث يتبعنا \"مرشد\"، وهو"
+" نوع من \"المدرسين\"! "
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_color_blocks_2
+msgid "The campus"
+msgstr "الحرم الجامعي "
+
+#. module: theme_bewise
+#: model:ir.model,name:theme_bewise.model_theme_utils
+msgid "Theme Utils"
+msgstr "أدوات السمة"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_company_team
+msgid ""
+"Tony received a degree in Electrical and Mechanical Engineering and a Ph D. "
+"degree in 1998 and 2004. After a post-doctoral experience  he joined the "
+"school as professor of mechatronics in 2006. In 2010, he became Head of IT."
+msgstr ""
+"حصل توني على شهادة في الهندسة الكهربائية والميكانيكية ودرجة الدكتوراه في "
+"عامي 1998 و2004. وبعد تجربة ما بعد الدكتوراه انضم إلى المدرسة كأستاذ في "
+"الميكاترونكس في عام 2006. وفي عام 2010، أصبح رئيسًا لقسم تكنولوجيا "
+"المعلومات. "
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_image_text
+msgid "What makes us different?"
+msgstr "ما الذي يجعلنا مختلفين؟ "

@@ -1,0 +1,212 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_odoo_experts
+# 
+# Translators:
+# Wil Odoo, 2023
+# Daye Jeong, 2023
+# Sarah Park, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Sarah Park, 2023\n"
+"Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ko\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_call_to_action
+msgid "50,000+ clients trust us <br/>to protect their assets"
+msgstr "5만 명 이상의 신뢰 속에서<br/>고객님의 자산을 보호합니다."
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_numbers
+msgid "<b>12</b>"
+msgstr "<b>12</b>"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_numbers
+msgid "<b>37</b>"
+msgstr "<b>37</b>"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_numbers
+msgid "<b>45</b>"
+msgstr "<b>45</b>"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_numbers
+msgid "<b>8</b>"
+msgstr "<b>8</b>"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_picture
+msgid ""
+"<br/>\n"
+"        Ask your questions and discuss your projects with our partners.<br/>\n"
+"        They are here to help you grow your business!"
+msgstr ""
+"<br/>\n"
+"        프로젝트와 관련하여 파트너에게 질문하고 함께 논의하세요.<br/>\n"
+"        여러분의 비즈니스가 성장하도록 저희가 지원해 드립니다!"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_cover
+msgid ""
+"<br/>\n"
+"        Guided by expertise gained over 20 years of achieving success for clients, we practice with passion and strategic focus on the future."
+msgstr ""
+"<br/>\n"
+"        고객 성공을 위해 20년간 쌓아 온 전문 지식을 바탕으로, 미래에 대한 열정과 전략에 중심을 두고 진행합니다."
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_picture
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-5) 0%, var(--o-color-1) 100%);\" class=\"text-gradient\">\n"
+"            Unleash your</font><br/>\n"
+"            <font style=\"background-image: linear-gradient(135deg, var(--o-color-5) 0%, var(--o-color-1) 100%);\" class=\"text-gradient\">growth potential</font>"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-5) 0%, var(--o-color-1) 100%);\" class=\"text-gradient\">\n"
+"            성공을 향해</font><br/>\n"
+"            <font style=\"background-image: linear-gradient(135deg, var(--o-color-5) 0%, var(--o-color-1) 100%);\" class=\"text-gradient\">성장할 시간입니다.</font>"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_media_list
+msgid "<span class=\"text-o-color-1\">1.</span> Litigation"
+msgstr "<span class=\"text-o-color-1\">1.</span> 소송"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_media_list
+msgid "<span class=\"text-o-color-1\">2.</span> Arbitration"
+msgstr "<span class=\"text-o-color-1\">2.</span> 조정"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_media_list
+msgid "<span class=\"text-o-color-1\">3.</span> Mediation"
+msgstr "<span class=\"text-o-color-1\">3.</span> 중재"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_image_text
+msgid "A solution for <br/>every need"
+msgstr "니즈에 맞춘 <br/>솔루션"
+
+#. module: theme_odoo_experts
+#. odoo-javascript
+#: code:addons/theme_odoo_experts/static/src/js/tour.js:0
+#: code:addons/theme_odoo_experts/static/src/js/tour.js:0
+#, python-format
+msgid "Background Shape"
+msgstr "배경 모양"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_product_list
+msgid "Business Strategy"
+msgstr "비즈니스 전략"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_picture
+msgid "Contact Us"
+msgstr "문의하기"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_call_to_action
+msgid "Contact us for a personalized meeting"
+msgstr "맞춤형 미팅의 경우에는 문의해 주시기 바랍니다."
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_product_list
+msgid "Corporate Finance"
+msgstr "기업 금융"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_product_list
+msgid "Digital Strategy"
+msgstr "디지털 전략"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_cover
+msgid "Discover More"
+msgstr "더 알아보기"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_product_list
+msgid "Executive Strategy"
+msgstr "경영 전략"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_product_list
+msgid "Growth &amp; Innovation"
+msgstr "성장과 혁신"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_text_image
+msgid ""
+"Guided by expertise gained over 20 years of achieving success for clients, "
+"we practice with passion and strategic focus on the future."
+msgstr "고객 성공을 위해 20년간 쌓아 온 전문 지식을 바탕으로, 미래에 대한 열정과 전략에 중심을 두고 진행합니다."
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_media_list
+msgid ""
+"In mediation, the parties find a solution for their conflict, with the "
+"assistance of a mediator who has no decision-making power."
+msgstr "중재를 통하여, 의사 결정 권한을 갖지 않는 중재자의 지원 하에서 당사자들은 갈등에 대한 해결책을 찾게 됩니다."
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_media_list
+msgid ""
+"Litigation is our core-business. Our lawyers have been involved in many "
+"high-profile cases for 20 years."
+msgstr "소송은 저희의 핵심 사업에 해당합니다. 소속 변호사들은 20년 동안 수많은 유명 사건을 다루어 왔습니다."
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_banner
+msgid "Our expertise <br/>at your service"
+msgstr "전문적인<br/>서비스"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_media_list
+msgid ""
+"Over the past years, our lawyers have gained significant experience in "
+"arbitration, both as counsel as well as arbitrators."
+msgstr "지난 몇 년 동안, 저희 소속 변호사들은 중재 및 고문 변호인 양쪽 분야에서 의미 있는 경험을 쌓아왔습니다."
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_title
+msgid "Pricing to suit<br/> all sizes of business"
+msgstr "모든 비즈니스 규모에<br/>적합한 수임료"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_product_list
+msgid "Social Strategy"
+msgstr "사회적 전략"
+
+#. module: theme_odoo_experts
+#: model:ir.model,name:theme_odoo_experts.model_theme_utils
+msgid "Theme Utils"
+msgstr "테마 유틸"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_cover
+msgid "We care <br/>about results"
+msgstr "결과를 <br/>중요하게 여깁니다."
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_text_image
+msgid "We care about results"
+msgstr "결과를 중요하게 여깁니다."
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_image_text
+msgid ""
+"We see our role as that of a legal partner responsible for constantly "
+"finding practical and pragmatic solutions that are adapted to our clients' "
+"needs."
+msgstr "법무 파트너로서 책임지고 고객의 니즈에 맞는 현실적이고 실용적인 솔루션을 지속적으로 제시하는 역할을 맡고자 합니다."

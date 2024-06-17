@@ -1,0 +1,227 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_bookstore
+# 
+# Translators:
+# Wil Odoo, 2023
+# Malaz Abuidris <msea@odoo.com>, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
+"Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ar\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_text_image
+msgid ""
+"<br/>\n"
+"        Discover all the publications. There is probably your next favorite book amoung them."
+msgstr ""
+"<br/>\n"
+"        اكتشف جميع المنشورات. قد يكون كتابك المفضل التالي بينهم. "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_image_text
+msgid ""
+"<br/>\n"
+"        Discover the history of Belgium in this well-documented book with many illustrations and testimonials."
+msgstr ""
+"<br/>\n"
+"        اكتشف تاريخ بلجيكا في هذا الكتاب الموثق جيداً والذي يحتوي على العديد من الرسوم التوضيحية والشهادات. "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_three_columns
+msgid "A Belgian Story"
+msgstr "قصة بلجيكية "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_numbers
+msgid "Amazing pages"
+msgstr "صفحات مذهلة "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_three_columns
+msgid "At the Mars conquest"
+msgstr "عند غزو المريخ "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_numbers
+msgid "Beautiful snippets"
+msgstr "قصاصات مميزة "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_masonry_block_default_template
+msgid "Biographies"
+msgstr "السير الذاتية "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_call_to_action
+msgid "Browse collection"
+msgstr "تصفح المجموعة "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_call_to_action
+msgid "Browse through <br/>our complete library"
+msgstr "تصفح <br/> مكتبتنا الكاملة "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_banner
+msgid "Discover it <span class=\"fa fa-angle-right ms-2\"/>"
+msgstr "استكشفها <span class=\"fa fa-angle-right ms-2\"/> "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_cover
+msgid "Discover more"
+msgstr "اكتشف المزيد "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_picture
+msgid "Discover our <br/>limited editions"
+msgstr "استكشف كافة <br/> الإصدارات المحدودة "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_three_columns
+msgid ""
+"Discover the history of Belgium in this well-documented book with many "
+"illustrations and testimonials."
+msgstr ""
+"اكتشف تاريخ بلجيكا في هذا الكتاب الموثق جيداً والذي يحتوي على العديد من "
+"الرسوم التوضيحية والشهادات. "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_masonry_block_default_template
+msgid "Discover unknown universes"
+msgstr "استكشف العوالم غير المعروفة "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_picture
+msgid "Don't rely on a book's cover,"
+msgstr "لا تعتمد على غلاف الكتاب، "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_masonry_block_default_template
+msgid "Enjoy your fears"
+msgstr "استمتع بمخاوفك "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_picture
+msgid ""
+"Explore our top-end Collector's Editions. <br/>Signed and limited tributes "
+"to some of the most outstanding writers of all time."
+msgstr ""
+"استكشف إصدارات الجامعين الراقية. <br/>تحية موقعة ومحدودة لبعض الكُتّاب "
+"الأكثر تميزا في كل العصور. "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_masonry_block_default_template
+msgid "Horror"
+msgstr "الرعب "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_cover
+msgid "Immerse yourself <br/>in original universes"
+msgstr "اغمر نفسك <br/> في عوالم فريدة من نوعها "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_image_text
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_three_columns
+msgid ""
+"Learn about the difficulties encountered by NASA engineers in sending the "
+"first men to Mars."
+msgstr ""
+"تعرف على الصعوبات التي واجهها مهندسو ناسا في إرسال أول رجال إلى المريخ. "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_masonry_block_default_template
+msgid "Meet great people"
+msgstr "قابل أشخاصاً عظماء "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_image_text
+msgid "Once upon a time..."
+msgstr "كان يا مكان... "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_numbers
+msgid "Outstanding images"
+msgstr "صور رائعة "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_text_image
+msgid "Probably your next <br/>favorite book"
+msgstr "غالباً ما سيكون <br/>كتابك المفضل التالي "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_three_columns
+msgid "Re-edition"
+msgstr "طبعة "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_masonry_block_default_template
+msgid "Read the best love stories"
+msgstr "اقرأ أفضل قصص الحب "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_title
+msgid "Reading means borrowing"
+msgstr "القراءة تعني الاستعارة "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_masonry_block_default_template
+msgid "Romance"
+msgstr "الرومانسية "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_masonry_block_default_template
+msgid "Science fiction"
+msgstr "الخيال العلمي "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_banner
+msgid "The best sellers <br/>of the year"
+msgstr "الأفضل مبيعاً <br/>لهذا العام "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_three_columns
+msgid ""
+"The first re-edition of this Latin dictionary, from 1460. Printed originally"
+" on the Gutenberg press."
+msgstr ""
+"إعادة الطبعة الأولى لهذا القاموس اللاتيني، من عام 1460. طبع في الأصل في "
+"مطبعة جوتنبرج. "
+
+#. module: theme_bookstore
+#: model:ir.model,name:theme_bookstore.model_theme_utils
+msgid "Theme Utils"
+msgstr "أدوات السمة"
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_numbers
+msgid "Useful options"
+msgstr "خيارات مفيدة "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_product_list
+msgid "View the book"
+msgstr "عرض الكتاب "
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_picture
+msgid "discover more about it"
+msgstr "استكشف المزيد عنه "
+
+#. module: theme_bookstore
+#. odoo-javascript
+#: code:addons/theme_bookstore/static/src/js/tour.js:0
+#, python-format
+msgid "width"
+msgstr "العرض "

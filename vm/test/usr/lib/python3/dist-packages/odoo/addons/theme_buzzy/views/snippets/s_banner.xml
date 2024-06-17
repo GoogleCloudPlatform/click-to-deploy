@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_banner" inherit_id="website.s_banner">
+   <!-- Section -->
+   <xpath expr="//section" position="attributes">
+      <attribute name="class" add="pb120 pt256 oe_img_bg o_bg_img_center" remove="pt96 pb96" separator=" "/>
+      <!-- Enable SVG dynamic color functionality -->
+      <attribute name="style">background-image:url('/web_editor/shape/theme_buzzy/s_banner.svg?c1=o-color-1'); background-position: 50% 37%</attribute>
+   </xpath>
+   <!-- Remove grid images -->
+   <xpath expr="//div[hasclass('o_grid_item_image')]" position="replace"/>
+   <xpath expr="//div[hasclass('o_grid_item_image')]" position="replace"/>
+   <xpath expr="//div[hasclass('o_grid_item_image')]" position="replace"/>
+   <!-- Remove hr -->
+   <xpath expr="//div[hasclass('s_hr')]" position="replace"/>
+   <!-- Row - remove grid mode -->
+   <xpath expr="//div[hasclass('row')]" position="attributes">
+      <attribute name="class" remove="o_grid_mode" separator=" "/>
+   </xpath>
+   <!-- Jumbotron -->
+   <xpath expr="//div[hasclass('col-lg-5')]" position="attributes">
+      <attribute name="class" add="col-lg-6 o_cc o_cc1 pt32 pb32 shadow rounded" remove="o_grid_item g-height-4 g-col-lg-5 col-lg-5" separator=" "/>
+      <attribute name="style"/>
+   </xpath>
+   <!-- Title -->
+   <xpath expr="//h1" position="attributes">
+      <attribute name="class" remove="display-1" separator=" "/>
+   </xpath>
+   <xpath expr="//h1" position="replace" mode="inner">
+      Great software <br/>for great people
+   </xpath>
+   <!-- Paragraphs -->
+   <xpath expr="//p[hasclass('lead')]" position="replace" mode="inner">
+      Every clever company deserve to work with clever tools.
+   </xpath>
+   <xpath expr="//div[hasclass('col-lg-6')]//p[2]" position="attributes">
+      <attribute name="class" add="mb-0" separator=" "/>
+   </xpath>
+</template>
+
+<template id="configurator_s_banner" inherit_id="website.configurator_s_banner">
+    <!-- Shape option -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Origins/02_001","flip":[]}</attribute>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Origins_02_001"/>
+    </xpath>
+</template>
+
+</odoo>

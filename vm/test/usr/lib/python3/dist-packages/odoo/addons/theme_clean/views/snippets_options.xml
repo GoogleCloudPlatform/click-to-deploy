@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="clean_snippet_options" inherit_id="website.snippet_options">
+    <xpath expr="//div[@data-js='Box']" position="before">
+        <div data-js="gradientpicker" data-selector="section, .parallax, .s_color_blocks_2 .row > div, .s_team_profile_box">
+            <we-select string="Gradients">
+                <we-button data-select-class="">None</we-button>
+                <we-divider/>
+                <we-button data-select-class="bg_gradient_primary_up"><div class="bg_option_menu_gradient bg_gradient_primary_up d-block mx-auto"/></we-button>
+                <we-button data-select-class="bg_gradient_primary_down"><div class="bg_option_menu_gradient bg_gradient_primary_down d-block mx-auto"/></we-button>
+                <we-button data-select-class="bg_gradient_white_up"><div class="bg_option_menu_gradient bg_gradient_white_up_thumb d-block mx-auto"/></we-button>
+                <we-button data-select-class="bg_gradient_white_down"><div class="bg_option_menu_gradient bg_gradient_white_down_thumb d-block mx-auto"/></we-button>
+                <we-button data-select-class="bg_gradient_black_up"><div class="bg_option_menu_gradient bg_gradient_black_up d-block mx-auto"/></we-button>
+                <we-button data-select-class="bg_gradient_black_down"><div class="bg_option_menu_gradient bg_gradient_black_down d-block mx-auto"/></we-button>
+            </we-select>
+        </div>
+    </xpath>
+</template>
+
+</odoo>

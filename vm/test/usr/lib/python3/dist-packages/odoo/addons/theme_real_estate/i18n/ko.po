@@ -1,0 +1,326 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_real_estate
+# 
+# Translators:
+# Wil Odoo, 2023
+# Daye Jeong, 2023
+# Sarah Park, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:22+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Sarah Park, 2023\n"
+"Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ko\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_numbers
+msgid "100+"
+msgstr "100+"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_numbers
+msgid "14,000"
+msgstr "14,000"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_numbers
+msgid "142"
+msgstr "142"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_numbers
+msgid "97%"
+msgstr "97%"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_quotes_carousel
+msgid "<b>Iris Doe</b> • Customer, sold an appartement"
+msgstr "<b>Iris Doe</b> • 아파트 분양 고객"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_quotes_carousel
+msgid "<b>Jane Doe</b> • Customer, bought a house"
+msgstr "<b>Jane Doe</b> • 주택 구매 고객"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_quotes_carousel
+msgid "<b>John Doe</b> • Customer, bought an appartement"
+msgstr "<b>John Doe</b> • 아파트 분양 고객"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_banner
+msgid "<b>Real Estate Agency.<br/>Near You.</b>"
+msgstr "<b>주변의<br/>부동산 중개업소</b>"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_three_columns
+msgid "<span class=\"text-600 fw-bold\">$1,295,000,000</span>"
+msgstr "<span class=\"text-600 fw-bold\">$1,295,000,000</span>"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_three_columns
+msgid "<span class=\"text-600 fw-bold\">$295,000</span>"
+msgstr "<span class=\"text-600 fw-bold\">$295,000</span>"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_three_columns
+msgid "<span class=\"text-600 fw-bold\">$455,000</span>"
+msgstr "<span class=\"text-600 fw-bold\">$455,000</span>"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_quotes_carousel
+msgid ""
+"Amazing team! smiling, always nice to talk with, they always have the best "
+"advices for you, adapted to your needs!"
+msgstr "놀라운 팀입니다! 미소와 함께 항상 대화를 즐기며 언제나 고객이 필요한 최고의 조언을 드립니다!"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_text_image
+msgid "Are you thinking of selling?"
+msgstr "매도를 계획 중이신가요?"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_text_block
+msgid ""
+"At <b>Odoo Travel Agency</b> our agents are more than a consultant, they are"
+" fellow <b>travelers with a passion</b> to help you explore the world. With "
+"more than 75 years combined experience you can be sure we are devoted to "
+"finding the best solutions for your travel plans."
+msgstr ""
+"<b>Odoo 여행사</b>에서 저희 직원들은 단순한 컨설턴트가 아니라, 세계를 누비도록 도와드릴 <b>열정을 가진 여행가</b> "
+"동료입니다. 75년 이상의 다양한 경험을 바탕으로, 고객의 여행 계획에 최고의 솔루션을 선사하기 위해 최선을 다하고 있습니다."
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_masonry_block_default_template
+msgid ""
+"At Real Estate Agency we have fixed price fees. This means we only charge "
+"when your home sale is confirmed."
+msgstr "부동산 중개 수수료는 고정 가격입니다. 즉, 주택을 매도하기로 확정하신 경우에만 수수료를 청구합니다."
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_image_text
+msgid "Bored with your interior?"
+msgstr "인테리어가 따분하게 느껴지시나요?"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_image_text
+msgid ""
+"Discover our tailor-made services to embellish the decoration of your home."
+msgstr "맞춤형 서비스로 집 내부 장식을 멋지게 꾸며 보세요."
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_three_columns
+msgid ""
+"Elegant, modern sophisticated architecture with an impressive in large scale"
+" home designed with the finest imported finishes. Marble and wood floors..."
+msgstr ""
+"최고급의 수입 마감재를 사용하여 우아하고 현대적으로 세련되게 디자인된 인상적인 대저택입니다. 대리석과 나무 바닥을 확인해 보세요."
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_image_text
+msgid "Explore our services"
+msgstr "서비스를 확인해 보세요."
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_quotes_carousel
+msgid ""
+"From start to finish, they were extremely professional, friendly, helpful "
+"and easy to do business with. Very happy with the experience and the "
+"company."
+msgstr ""
+"처음부터 끝까지, 굉장히 전문적이고 친절하면서도 많은 도움을 주셔서 함께 사업하기가 편했습니다. 경험한 내용과 회사에 아주 만족합니다."
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_three_columns
+msgid "House On The Hill"
+msgstr "언덕 위의 저택"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_masonry_block_default_template
+msgid ""
+"Increase Visitor retention. Customer engagement on a website with virtual "
+"tour is 5 times longer compared to a site without it."
+msgstr ""
+"방문자 유지율을 높여 보세요. 웹사이트에 있는 사이버 투어 기능이 있는 경우에는 없을 때와 비교하면 고객 참여도가 5배 이상 높습니다."
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_masonry_block_default_template
+msgid "Increased Visibility"
+msgstr "가시성 향상"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_text_image
+msgid ""
+"Make an appointment for a free valuation of your property. We visit the property, advise you on a realistic asking price and we explain our way of working. <br/>\n"
+"        You can decide in all freedom whether or not you would like to work with us for the sale of your property."
+msgstr ""
+"부동산 감정 평가를 무료로 예약해 보세요. 매물을 방문하여 현실적인 희망 가격에 대해 조언해 드리고 저희의 업무 방식에 대해서 설명해 드립니다. <br/>\n"
+"        저희에게 매물을 맡기실 지 여부는 완전히 자유롭게 결정하실 수 있습니다."
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_three_columns
+msgid "Moutain View"
+msgstr "마운틴 뷰"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_masonry_block_default_template
+msgid "No fixed fees"
+msgstr "고정 수수료 없음"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_banner
+msgid ""
+"Now you can find more than 5,000+ property choices with our professional "
+"agents!<br/>"
+msgstr "이제 전문 에이전트와 함께 5,000개 이상의 매물을 찾아 보실 수 있습니다!<br/>"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_picture
+msgid "Open your horizons"
+msgstr "시야를 넓혀 보세요."
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_image_text
+msgid ""
+"Our decoration experts are at your disposal to guide you step by step in the"
+" design of your interior and will give you the best advice for your interior"
+" design."
+msgstr ""
+"실내 건축 장식 전문가가 고객의 인테리어 디자인을 단계별로 안내해 드리며, 인테리어 디자인에 대해서 최고의 조언을 해 드립니다."
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_three_columns
+msgid "Paradise Residence"
+msgstr "천국에서의 삶"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_quotes_carousel
+msgid ""
+"Positive energy, great team spirit, hard workers and awesome people! I "
+"warmly recommend them!"
+msgstr "긍정적인 에너지와 탁월한 팀 정신, 열심히 일하는 직원들과 멋진 사람들! 자신있게 추천합니다!"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_masonry_block_default_template
+msgid "Premium Quality"
+msgstr "프리미엄 퀄리티"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_masonry_block_default_template
+msgid "Pro Photo Shoot"
+msgstr "프로 사진 촬영"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_picture
+msgid "Property on the coasts of the Mediterranean."
+msgstr "지중해 연안의 건물"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_banner
+msgid "See properties"
+msgstr "부동산 확인하기"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_three_columns
+msgid ""
+"The house is surrounded by garden terraces that create unique spaces and an "
+"intimate ambience. With no overlooking neighbours, the garden offers real "
+"privacy."
+msgstr ""
+"가옥은 독특한 공간과 친근한 분위기를 자아내는 정원 테라스로 둘러싸여 있습니다. 내려다 보는 이웃이 없는 진정한 사생활을 정원에서 "
+"즐기세요."
+
+#. module: theme_real_estate
+#: model:ir.model,name:theme_real_estate.model_theme_utils
+msgid "Theme Utils"
+msgstr "테마 유틸"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_masonry_block_default_template
+msgid ""
+"They say an image is worth a thousand words and we know you know how "
+"important it is to have the best photography."
+msgstr ""
+"한 장의 이미지가 천 마디의 말보다도 중요하다고들 합니다. 최고의 사진을 가질 수 있다는 것이 얼마나 중요한지 알고 있습니다."
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_three_columns
+msgid "View details"
+msgstr "자세히 보기"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_call_to_action
+msgid "Want To Become A Real Estate Agent?"
+msgstr "부동산 중개사가 되고 싶으신가요?"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_three_columns
+msgid ""
+"Waste no time in viewing this truly stunning property. The property's "
+"surroundings really set it apart, offering idyllic sea views overlooking a "
+"park."
+msgstr ""
+"정말 아름다운 이 건물을 감상하기 위해 아낌없이 시간을 투자해 보세요. 공원이 내려다보이는 목가적인 바다 전망과 함께 건물의 주변 환경을"
+" 진정 차별화됩니다."
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_text_block
+msgid ""
+"We are <b>Odoo Travel Agency</b>, dedicated to making your vacation dreams "
+"come true! Overwhelmed with too many choices on the internet? We offer you "
+"answers, support, advice, and itineraries that will amaze you with their "
+"<b>thoroughness and thoughtfulness</b>."
+msgstr ""
+"<b>Odoo 여행사</b>에서는 고객이 바라는 멋진 휴가를 실현해드리기 위해 최선을 다하고 있습니다! 인터넷에 선택지가 너무 많아서 "
+"움츠러드신다고요? 저희가 선사하는  <b>전반적이고 사려깊은 </b>답변과 지원, 조언 및 여행 일정에 고객은 깜짝 놀라실 것입니다."
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_masonry_block_default_template
+msgid ""
+"We are committed to delivering high quality services that enhance your brand"
+" by allowing visitors to interact virtually."
+msgstr ""
+"가상의 공간에서 방문자가 상호 소통할 수 있도록 하여 브랜드를 제고하는 고품질 서비스를 제공할 수 있도록 최선을 다하고 있습니다."
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_call_to_action
+msgid "We'll help you to grow your career and growth."
+msgstr "커리어를 개발하고 발전하시도록 도와드립니다."
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_picture
+msgid ""
+"We’ve selected properties from all types and all areas.<br/>\n"
+"        The house of your dreams is around the corner."
+msgstr ""
+"전체 지역에 있는 모든 종류의 매물을 엄선했습니다.<br/>\n"
+"        꿈꿔 왔던 집을 직접 확인해 보세요."
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_numbers
+msgid "amazing agents"
+msgstr "능력있는 에이전트"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_numbers
+msgid "happy customers"
+msgstr "고객을 만족시킵니다."
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_numbers
+msgid "offices"
+msgstr "사무실"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_numbers
+msgid "properties already sold"
+msgstr "거래 완료된 매물"

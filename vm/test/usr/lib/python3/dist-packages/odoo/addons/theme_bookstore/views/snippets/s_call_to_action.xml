@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_call_to_action" inherit_id="website.s_call_to_action">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc1 pt128 pb32" remove="o_cc3 pt48 pb24" separator=" "/>
+    </xpath>
+    <!-- Paragraph #1 -->
+    <xpath expr="//div[hasclass('col-lg-9')]" position="replace">
+        <div class="pb16 col-lg-12 text-center">
+            <h2>Browse through <br/>our complete library</h2>
+        </div>
+    </xpath>
+    <!-- Paragraph #2 -->
+    <xpath expr="//div[hasclass('col-lg-3')]" position="attributes">
+        <attribute name="class" add="col-lg-12" remove="col-lg-3" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-12')][2]/p" position="attributes">
+        <attribute name="style">text-align: center;</attribute>
+    </xpath>
+    <xpath expr="//a[hasclass('btn')]/t" position="replace" mode="inner">
+        Browse collection
+    </xpath>
+</template>
+
+<template id="configurator_s_call_to_action" inherit_id="website.configurator_s_call_to_action">
+    <!-- Shape option -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Wavy/20","flip":["x","y"]}</attribute>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Wavy_20" style="background-image: url('/web_editor/shape/web_editor/Wavy/20.svg?c2=o-color-5&amp;flip=xy'); background-position: 50% 0%;"/>
+    </xpath>
+</template>
+
+</odoo>

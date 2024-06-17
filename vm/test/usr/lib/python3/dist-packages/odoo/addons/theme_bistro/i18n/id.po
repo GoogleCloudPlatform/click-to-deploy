@@ -1,0 +1,163 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_bistro
+# 
+# Translators:
+# Wil Odoo, 2023
+# Abe Manyo, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:22+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Abe Manyo, 2023\n"
+"Language-Team: Indonesian (https://app.transifex.com/odoo/teams/41243/id/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: id\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_product_catalog_dish
+msgid "<em>Add the description of this dish here.</em>"
+msgstr "<em>Tambahkan keterangan menu di sini.</em>"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_text_block
+msgid ""
+"A healthy kitchen with local products. We’re constantly looking to propose "
+"new products and receipts. <b>While respecting seasons' products and "
+"nature.</b>"
+msgstr ""
+"A healthy kitchen with local products. We’re constantly looking to propose "
+"new products and receipts. <b>While respecting seasons' products and "
+"nature.</b>"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_quotes_carousel
+msgid ""
+"A truly exquisite dining experience. I highly recommend the Mustard Sauce, "
+"out of this world."
+msgstr ""
+"A truly exquisite dining experience. I highly recommend the Mustard Sauce, "
+"out of this world."
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_text_block
+msgid ""
+"At the Bistro, you can expect a healthy kitchen on a daily basis. <br/>Come "
+"and visit us for a Sunday brunch, healthy juices full of nutrition, or "
+"delicious cakes that satisfy your sweet tooth. <b>And each day, you’ll "
+"discover our Today’s Special.</b>"
+msgstr ""
+"At the Bistro, you can expect a healthy kitchen on a daily basis. <br/>Come "
+"and visit us for a Sunday brunch, healthy juices full of nutrition, or "
+"delicious cakes that satisfy your sweet tooth. <b>And each day, you’ll "
+"discover our Today’s Special.</b>"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_features
+msgid "Breakfast"
+msgstr "Breakfast"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_quotes_carousel
+msgid ""
+"Cosy and friendly, good atmosphere and super food. Especially the spiced "
+"fruit crumble."
+msgstr ""
+"Cosy and friendly, good atmosphere and super food. Especially the spiced "
+"fruit crumble."
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_cover
+msgid ""
+"Daily fresh products combined with our professional yet convivial "
+"service<br/> to create a true gastronomic experience."
+msgstr ""
+"Daily fresh products combined with our professional yet convivial "
+"service<br/> to create a true gastronomic experience."
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_features
+msgid "Dinner"
+msgstr "Dinner"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_features
+msgid ""
+"Enjoy tasty food with friends.<br/><small>From <b>6:30 pm</b> to <b>10:30 "
+"pm</b></small>"
+msgstr ""
+"Enjoy tasty food with friends.<br/><small>From <b>6:30 pm</b> to <b>10:30 "
+"pm</b></small>"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_features
+msgid ""
+"Help you start your morning right.<br/><small>From <b>7:30 am</b> to "
+"<b>10:30 am</b></small>"
+msgstr ""
+"Help you start your morning right.<br/><small>From <b>7:30 am</b> to "
+"<b>10:30 am</b></small>"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_features
+msgid "Lunch"
+msgstr "Makan siang"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_cover
+msgid "Our Menu"
+msgstr "Our Menu"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_cover
+msgid "Seasonal<br/> Flavors"
+msgstr "Seasonal<br/> Flavors"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_features
+msgid ""
+"Take a break from your busy schedule.<br/><small>From <b>11:30 am</b> to "
+"<b>2:30 pm</b></small>"
+msgstr ""
+"Take a break from your busy schedule.<br/><small>From <b>11:30 am</b> to "
+"<b>2:30 pm</b></small>"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_picture
+msgid ""
+"Taste our chef's special, an almond macaroon with orange blossom "
+"buttercream."
+msgstr ""
+"Taste our chef's special, an almond macaroon with orange blossom "
+"buttercream."
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_banner
+msgid "Tasty Meals"
+msgstr "Tasty Meals"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_picture
+msgid "The perfect dessert to share for the table."
+msgstr "The perfect dessert to share for the table."
+
+#. module: theme_bistro
+#: model:ir.model,name:theme_bistro.model_theme_utils
+msgid "Theme Utils"
+msgstr "Utilities Tema"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_quotes_carousel
+msgid "This place is perfect for groups or a casual date night."
+msgstr "This place is perfect for groups or a casual date night."
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_picture
+msgid "Today's special"
+msgstr "Today's special"
