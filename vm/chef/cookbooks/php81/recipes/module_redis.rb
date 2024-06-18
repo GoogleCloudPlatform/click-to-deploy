@@ -12,10 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['moodle']['user'] = 'www-data'
-default['moodle']['group'] = 'www-data'
-default['moodle']['db']['name'] = 'moodle'
-default['moodle']['track'] = '404'
-default['moodle']['version'] = '4.4'
-
-default['php81']['distribution'] = 'bullseye'
+package 'php8.1-redis' do
+  action :install
+  retries 5
+  retry_delay 20
+end
