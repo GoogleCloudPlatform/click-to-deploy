@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_quotes_carousel" inherit_id="website.s_quotes_carousel">
+    <!-- Quote 1 -->
+    <xpath expr="//div[hasclass('carousel-item')]" position="attributes">
+        <attribute name="style" add="background-image: url('/web/image/website.s_quotes_carousel_demo_image_0'); background-position: 50% 25%;" separator="; "/>
+    </xpath>
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_bg_filter" style="background-color: rgba(25, 41, 37, 0.55) !important;"/>
+    </xpath>
+    <xpath expr="//blockquote[hasclass('s_blockquote')]" position="attributes">
+        <attribute name="class" add="me-auto" remove="mx-auto" separator=" "/>
+    </xpath>
+    <xpath expr="(//i[hasclass('s_blockquote_icon')])" position="attributes">
+        <attribute name="style" add="background-color: rgba(255, 0, 0, 0) !important;" separator="; "></attribute>
+        <attribute name="class" add="text-o-color-3" remove="bg-o-color-2" separator=" "/>
+    </xpath>
+    <xpath expr="(//*[hasclass('s_blockquote_content')])[1]" position="attributes">
+        <attribute name="class" add="bg-o-color-2 rounded" remove="o_cc1" separator=" "/>
+        <attribute name="style" add="box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px 0px !important;" separator="; "/>
+    </xpath>
+    <xpath expr="(//div[hasclass('s_blockquote_content')])[1]/p" position="replace">
+        <p style="font-size: 16px">Thank you so much for being a part of our special day. It was so nice working with you. Without your help the day would not have been as perfect as it was.</p>
+    </xpath>
+    <xpath expr="(//span[hasclass('s_blockquote_author')])[1]" position="replace">
+        <span class="s_blockquote_author"><b>Linda and Paul</b> • Married in 2020</span>
+    </xpath>
+    <!-- Quote 2 -->
+    <xpath expr="(//*[hasclass('carousel-item')])[2]" position="attributes">
+        <attribute name="style" add="background-position: 50% 25%;" remove="background-position: 50% 50%;" separator="; "/>
+    </xpath>
+    <xpath expr="(//*[hasclass('container')])[2]" position="before">
+        <div class="o_we_bg_filter" style="background-color: rgba(25, 41, 37, 0.55) !important;"/>
+    </xpath>
+    <xpath expr="(//i[hasclass('s_blockquote_icon')])[2]" position="attributes">
+        <attribute name="style">background-color: rgba(255, 0, 0, 0) !important;</attribute>
+        <attribute name="class" add="text-o-color-3" remove="bg-o-color-2" separator=" "/>
+    </xpath>
+    <xpath expr="(//*[hasclass('s_blockquote_content')])[2]" position="attributes">
+        <attribute name="class" add="bg-o-color-1 rounded" remove="o_cc1" separator=" "/>
+        <attribute name="style" add="box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px 0px !important;" separator="; "/>
+    </xpath>
+    <xpath expr="(//div[hasclass('s_blockquote_content')])[2]/p" position="replace">
+        <p style="font-size:16px">Our wedding coordinator made the entire process so much less stressful. She was more than kind, accommodating, and helpful in more ways than one! She always answered my emails within a day and thoroughly. She went above and beyond, I would recommend her to anyone!</p>
+    </xpath>
+    <xpath expr="(//span[hasclass('s_blockquote_author')])[2]" position="replace">
+        <span class="s_blockquote_author"><b>Jack and Mary</b> • Married in 2019</span>
+    </xpath>
+    <!-- Quote 3 -->
+    <xpath expr="(//*[hasclass('carousel-item')])[3]" position="attributes">
+        <attribute name="style" add="background-position: 50% 20%;" remove="background-position: 50% 50%;" separator="; "/>
+    </xpath>
+    <xpath expr="(//*[hasclass('container')])[3]" position="before">
+        <div class="o_we_bg_filter" style="background-color: rgba(25, 41, 37, 0.55) !important;"/>
+    </xpath>
+    <xpath expr="(//i[hasclass('s_blockquote_icon')])[3]" position="attributes">
+        <attribute name="style" add="background-color: rgba(255, 0, 0, 0) !important;" separator="; "/>
+        <attribute name="class" add="text-o-color-3" remove="bg-o-color-2" separator=" "/>
+    </xpath>
+    <xpath expr="(//*[hasclass('s_blockquote_content')])[3]" position="attributes">
+        <attribute name="class" add="rounded" separator=" "/>
+        <attribute name="style" add="box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px 0px !important;" separator="; "/>
+    </xpath>
+    <xpath expr="(//*[hasclass('s_blockquote_content')])[3]/p" position="replace">
+        <p style="font-size:16px">From the beginning of our planning process, our planner was incredible! She made us feel heard, gave great suggestions and was always just an email or call away when we had any last minute questions. Couldn't have done it without her!</p>
+    </xpath>
+    <xpath expr="(//*[hasclass('s_blockquote_author')])[3]" position="replace">
+        <span class="s_blockquote_author"><b>Rose and Peter</b> • Renewed their vows in 2021</span>
+    </xpath>
+</template>
+
+</odoo>

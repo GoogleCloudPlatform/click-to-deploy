@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_product_catalog" inherit_id="website.s_product_catalog">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc o_cc4" separator=" "/>
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Airy/11","flip":[]}</attribute>
+        <!-- Remove the background image -->
+        <attribute name="style"/>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Airy_11"/>
+    </xpath>
+</template>
+
+</odoo>

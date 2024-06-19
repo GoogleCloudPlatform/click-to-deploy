@@ -1,0 +1,224 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_odoo_experts
+# 
+# Translators:
+# Martin Trigaux, 2023
+# Vasiliy Korobatov <korobatov@gmail.com>, 2023
+# Wil Odoo, 2024
+# Collex100, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Collex100, 2024\n"
+"Language-Team: Russian (https://app.transifex.com/odoo/teams/41243/ru/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ru\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_call_to_action
+msgid "50,000+ clients trust us <br/>to protect their assets"
+msgstr "50 000+ клиентов доверяют нам <br/>защиту своих активов"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_numbers
+msgid "<b>12</b>"
+msgstr "<b>12</b>"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_numbers
+msgid "<b>37</b>"
+msgstr "<b>37</b>"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_numbers
+msgid "<b>45</b>"
+msgstr "<b>45</b>"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_numbers
+msgid "<b>8</b>"
+msgstr "<b>8</b>"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_picture
+msgid ""
+"<br/>\n"
+"        Ask your questions and discuss your projects with our partners.<br/>\n"
+"        They are here to help you grow your business!"
+msgstr ""
+"<br/>\n"
+"        Задавайте свои вопросы и обсуждайте проекты с нашими партнерами.<br/>\n"
+"        Они готовы помочь вам в развитии вашего бизнеса!"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_cover
+msgid ""
+"<br/>\n"
+"        Guided by expertise gained over 20 years of achieving success for clients, we practice with passion and strategic focus on the future."
+msgstr ""
+"<br/>\n"
+"        Руководствуясь опытом, накопленным за 20 лет успешной работы с клиентами, мы работаем со страстью и стратегическим прицелом на будущее."
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_picture
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-5) 0%, var(--o-color-1) 100%);\" class=\"text-gradient\">\n"
+"            Unleash your</font><br/>\n"
+"            <font style=\"background-image: linear-gradient(135deg, var(--o-color-5) 0%, var(--o-color-1) 100%);\" class=\"text-gradient\">growth potential</font>"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-5) 0%, var(--o-color-1) 100%);\" class=\"text-gradient\">\n"
+"            Раскройте свой</font><br/>\n"
+"            <font style=\"background-image: linear-gradient(135deg, var(--o-color-5) 0%, var(--o-color-1) 100%);\" class=\"text-gradient\">потенциал роста</font>"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_media_list
+msgid "<span class=\"text-o-color-1\">1.</span> Litigation"
+msgstr "<span class=\"text-o-color-1\">1.</span> Судебная практика"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_media_list
+msgid "<span class=\"text-o-color-1\">2.</span> Arbitration"
+msgstr "<span class=\"text-o-color-1\">2.</span> Арбитраж"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_media_list
+msgid "<span class=\"text-o-color-1\">3.</span> Mediation"
+msgstr "<span class=\"text-o-color-1\">3.</span> Посредничество"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_image_text
+msgid "A solution for <br/>every need"
+msgstr "Решение для <br/>на любой вкус"
+
+#. module: theme_odoo_experts
+#. odoo-javascript
+#: code:addons/theme_odoo_experts/static/src/js/tour.js:0
+#: code:addons/theme_odoo_experts/static/src/js/tour.js:0
+#, python-format
+msgid "Background Shape"
+msgstr "Форма фона"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_product_list
+msgid "Business Strategy"
+msgstr "Бизнес Стратегия"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_picture
+msgid "Contact Us"
+msgstr "Свяжитесь с нами"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_call_to_action
+msgid "Contact us for a personalized meeting"
+msgstr "Свяжитесь с нами для индивидуальной встречи"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_product_list
+msgid "Corporate Finance"
+msgstr "Корпоративные финансы"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_product_list
+msgid "Digital Strategy"
+msgstr "Цифровая стратегия"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_cover
+msgid "Discover More"
+msgstr "Показать больше"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_product_list
+msgid "Executive Strategy"
+msgstr "Исполнительная стратегия"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_product_list
+msgid "Growth &amp; Innovation"
+msgstr "Рост и инновации"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_text_image
+msgid ""
+"Guided by expertise gained over 20 years of achieving success for clients, "
+"we practice with passion and strategic focus on the future."
+msgstr ""
+"Руководствуясь опытом, накопленным за 20 лет успешной работы с клиентами, мы"
+" работаем со страстью и стратегическим прицелом на будущее."
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_media_list
+msgid ""
+"In mediation, the parties find a solution for their conflict, with the "
+"assistance of a mediator who has no decision-making power."
+msgstr ""
+"При медиации стороны находят решение своего конфликта с помощью посредника, "
+"который не имеет права принимать решения."
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_media_list
+msgid ""
+"Litigation is our core-business. Our lawyers have been involved in many "
+"high-profile cases for 20 years."
+msgstr ""
+"Судебные разбирательства - наш основной вид деятельности. За 20 лет работы "
+"наши юристы участвовали во многих громких делах."
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_banner
+msgid "Our expertise <br/>at your service"
+msgstr "Наш опыт <br/>к вашим услугам"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_media_list
+msgid ""
+"Over the past years, our lawyers have gained significant experience in "
+"arbitration, both as counsel as well as arbitrators."
+msgstr ""
+"За последние годы наши юристы приобрели значительный опыт работы в "
+"арбитраже, как в качестве адвокатов, так и в качестве арбитров."
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_title
+msgid "Pricing to suit<br/> all sizes of business"
+msgstr "Ценообразование подходит для<br/> всех размеров бизнеса"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_product_list
+msgid "Social Strategy"
+msgstr "Социальная стратегия"
+
+#. module: theme_odoo_experts
+#: model:ir.model,name:theme_odoo_experts.model_theme_utils
+msgid "Theme Utils"
+msgstr "Утилиты темы"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_cover
+msgid "We care <br/>about results"
+msgstr "Мы заботимся <br/>о результатах"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_text_image
+msgid "We care about results"
+msgstr "Мы заботимся о результатах"
+
+#. module: theme_odoo_experts
+#: model_terms:theme.ir.ui.view,arch:theme_odoo_experts.s_image_text
+msgid ""
+"We see our role as that of a legal partner responsible for constantly "
+"finding practical and pragmatic solutions that are adapted to our clients' "
+"needs."
+msgstr ""
+"Мы видим свою роль в качестве юридического партнера, ответственного за "
+"постоянный поиск практических и прагматичных решений, адаптированных к "
+"потребностям наших клиентов."

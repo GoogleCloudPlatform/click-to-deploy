@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_numbers" inherit_id="website.s_numbers">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pt0 pb48" remove="pt24 pb24" separator=" "/>
+    </xpath>
+    <!-- Replace h6 by paragraphs -->
+    <xpath expr="//h6" position="replace" mode="inner">
+        Different lenses
+    </xpath>
+    <xpath expr="(//h6)[2]" position="replace" mode="inner">
+        Storage capacity (GB)
+    </xpath>
+    <xpath expr="(//h6)[3]" position="replace" mode="inner">
+        Number of controllers
+    </xpath>
+    <xpath expr="(//h6)[4]" position="replace" mode="inner">
+        New games every week
+    </xpath>
+</template>
+
+</odoo>

@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,5 +14,5 @@
 
 default['docker']['packages'] = ['apt-transport-https', 'ca-certificates', 'curl', 'gnupg2', 'software-properties-common']
 
-default['docker']['compose']['version'] = '1.29.2'
-default['docker']['compose']['sha1'] = '2c149783900f15a910381636791bf68039d546fe'
+default['docker']['compose']['version'] = '2.27.1'
+default['docker']['compose']['sha1'] = '38ab1e3229c2627dd788d299e526145491aadd1d'

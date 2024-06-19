@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_features" inherit_id="website.s_features">
+    <!-- First column : icon -->
+    <xpath expr="//div[hasclass('row')]//div//i" position="attributes">
+        <attribute name="class" add="bg-o-color-3" remove="bg-o-color-1" separator=" "/>
+    </xpath>
+    <!-- Second column : icon -->
+    <xpath expr="//div[hasclass('row')]//div[2]//i" position="attributes">
+        <attribute name="class" add="bg-o-color-3" remove="bg-o-color-5" separator=" "/>
+    </xpath>
+    <!-- Third column : icon -->
+    <xpath expr="//div[hasclass('row')]//div[3]//i" position="attributes">
+        <attribute name="class" add="bg-o-color-3" remove="bg-o-color-2" separator=" "/>
+    </xpath>
+</template>
+
+</odoo>

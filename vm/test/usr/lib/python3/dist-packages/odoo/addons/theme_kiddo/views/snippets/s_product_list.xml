@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_product_list" inherit_id="website.s_product_list">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pt96 pb96" separator=" "/>
+    </xpath>
+
+    <!-- Container -->
+    <xpath expr="//div[hasclass('container-fluid')]" position="attributes">
+        <attribute name="class" add="container" remove="container-fluid" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('row')]" position="attributes">
+        <attribute name="class" add="justify-content-center" separator=" "/>
+    </xpath>
+    
+    <!-- Item n°1 -->
+    <xpath expr="//div[hasclass('col-lg-2')]" position="attributes">
+        <attribute name="class" add="border rounded mx-3" separator=" "/>
+        <attribute name="style">border-radius: 16px !important; border-width: 4px !important; border-style: dotted !important; border-color: var(--o-color-2) !important;</attribute>
+    </xpath>
+    <xpath expr="//div[hasclass('s_product_list_item_link')]" position="attributes">
+        <attribute name="class" add="pb24" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('s_product_list_item_link')]//a" position="replace">
+        <a t-att-href="url">About us</a>
+    </xpath>
+    <!-- Item n°1 : SVG with dynamic color -->
+    <xpath expr="//div[hasclass('col-lg-2')]//img" position="attributes">
+        <attribute name="src">/web_editor/shape/theme_kiddo/s_product_list_1.svg?c1=o-color-1&amp;c2=o-color-2</attribute>
+    </xpath>
+    
+    <!-- Item n°2 -->
+    <xpath expr="(//div[hasclass('col-lg-2')])[2]" position="attributes">
+        <attribute name="class" add="border rounded mx-3" separator=" "/>
+        <attribute name="style">border-radius: 16px !important; border-width: 4px !important; border-style: dotted !important; border-color: var(--o-color-2) !important;</attribute>
+    </xpath>
+    <xpath expr="(//div[hasclass('s_product_list_item_link')])[2]" position="attributes">
+        <attribute name="class" add="pb24" separator=" "/>
+    </xpath>
+    <xpath expr="(//div[hasclass('s_product_list_item_link')])[2]//a" position="replace">
+        <a t-att-href="url">Our team</a>
+    </xpath>
+    <!-- Item n°2 : SVG with dynamic color -->
+    <xpath expr="(//div[hasclass('col-lg-2')])[2]//img" position="attributes">
+        <attribute name="src">/web_editor/shape/theme_kiddo/s_product_list_2.svg?c1=o-color-1&amp;c2=o-color-2</attribute>
+    </xpath>
+    
+    <!-- Item n°3 -->
+    <xpath expr="(//div[hasclass('col-lg-2')])[3]" position="attributes">
+        <attribute name="class" add="border rounded mx-3" separator=" "/>
+        <attribute name="style">border-radius: 16px !important; border-width: 4px !important; border-style: dotted !important; border-color: var(--o-color-2) !important;</attribute>
+    </xpath>
+    <xpath expr="(//div[hasclass('s_product_list_item_link')])[3]" position="attributes">
+        <attribute name="class" add="pb24" separator=" "/>
+    </xpath>
+    <xpath expr="(//div[hasclass('s_product_list_item_link')])[3]//a" position="replace">
+        <a t-att-href="url">Playground</a>
+    </xpath>
+    <!-- Item n°3 : SVG with dynamic color -->
+    <xpath expr="(//div[hasclass('col-lg-2')])[3]//img" position="attributes">
+        <attribute name="src">/web_editor/shape/theme_kiddo/s_product_list_3.svg?c1=o-color-1&amp;c2=o-color-2</attribute>
+    </xpath>
+    
+    <!-- Item n°4 -->
+    <xpath expr="(//div[hasclass('col-lg-2')])[4]" position="attributes">
+        <attribute name="class" add="border rounded mx-3" separator=" "/>
+        <attribute name="style">border-radius: 16px !important; border-width: 4px !important; border-style: dotted !important; border-color: var(--o-color-2) !important;</attribute>
+    </xpath>
+    <xpath expr="(//div[hasclass('s_product_list_item_link')])[4]" position="attributes">
+        <attribute name="class" add="pb24" separator=" "/>
+    </xpath>
+    <xpath expr="(//div[hasclass('s_product_list_item_link')])[4]//a" position="replace">
+        <a t-att-href="url">Events</a>
+    </xpath>
+    <!-- Item n°4 : SVG with dynamic color -->
+    <xpath expr="(//div[hasclass('col-lg-2')])[4]//img" position="attributes">
+        <attribute name="src">/web_editor/shape/theme_kiddo/s_product_list_4.svg?c1=o-color-1&amp;c2=o-color-2</attribute>
+    </xpath>
+    
+    <!-- Item n°5 -->
+    <xpath expr="(//div[hasclass('col-lg-2')])[5]" position="attributes">
+        <attribute name="class" add="border rounded mx-3" separator=" "/>
+        <attribute name="style">border-radius: 16px !important; border-width: 4px !important; border-style: dotted !important; border-color: var(--o-color-2) !important;</attribute>
+    </xpath>
+    <xpath expr="(//div[hasclass('s_product_list_item_link')])[5]" position="attributes">
+        <attribute name="class" add="pb24" separator=" "/>
+    </xpath>
+    <xpath expr="(//div[hasclass('s_product_list_item_link')])[5]//a" position="replace">
+        <a t-att-href="url">Visit us</a>
+    </xpath>
+    <!-- Item n°5 : SVG with dynamic color -->
+    <xpath expr="(//div[hasclass('col-lg-2')])[5]//img" position="attributes">
+        <attribute name="src">/web_editor/shape/theme_kiddo/s_product_list_6.svg?c1=o-color-1&amp;c2=o-color-2</attribute>
+    </xpath>
+    
+    <!-- Remove last item -->
+    <xpath expr="(//div[hasclass('col-lg-2')])[6]" position="replace"/>
+</template>
+
+</odoo>

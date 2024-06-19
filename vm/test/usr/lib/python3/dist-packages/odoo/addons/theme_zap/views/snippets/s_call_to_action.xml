@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_call_to_action" inherit_id="website.s_call_to_action">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pt64 pb48 o_cc4" remove="pt48 pb24 o_cc3" separator=" "/>
+    </xpath>
+</template>
+
+</odoo>
