@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ include_recipe 'apache2::default'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 include_recipe 'postgresql::standalone_bookworm'
+include_recipe 'zabbix::ospo'
 
 # install zabbix package
 apt_repository 'zabbix' do
