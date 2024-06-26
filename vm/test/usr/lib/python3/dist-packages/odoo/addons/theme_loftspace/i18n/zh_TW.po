@@ -1,0 +1,107 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_loftspace
+# 
+# Translators:
+# Wil Odoo, 2023
+# Tony Ng, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:22+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Tony Ng, 2024\n"
+"Language-Team: Chinese (Taiwan) (https://app.transifex.com/odoo/teams/41243/zh_TW/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: zh_TW\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_cover
+msgid "<b>Bringing life to your interior</b>"
+msgstr "<b>為您的室內裝飾注入活力</b>"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_title
+msgid "<b>Everything is designed.<br/> Few things are designed well.</b>"
+msgstr "<b>萬事萬物都是設計出來的。<br/>很少有設計得好的東西。</b>"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_cover
+msgid "Discover More"
+msgstr "了解更多"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_cover
+msgid "Discover our unique pieces of furniture selected for you."
+msgstr "了解我們為您精選的獨特傢俬。"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_three_columns
+msgid ""
+"Every week our shop receive new products. Some are only on sale for a "
+"limited period of time."
+msgstr "本店每週都會收到新產品。有些產品只會限時銷售。"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_three_columns
+msgid "For the whole Family"
+msgstr "全家分享"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_banner
+msgid ""
+"Our products are designed for small to medium size companies willing to "
+"optimize their performance."
+msgstr "我們的產品專為希望優化業績的中小型公司設計。"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_call_to_action
+msgid "Our services"
+msgstr "我們的服務"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_three_columns
+msgid "Tailored advice"
+msgstr "度身設計的建議"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_banner
+msgid "The art of Design"
+msgstr "設計的藝術"
+
+#. module: theme_loftspace
+#: model:ir.model,name:theme_loftspace.model_theme_utils
+msgid "Theme Utils"
+msgstr "主題"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_three_columns
+msgid ""
+"To buy unique pieces is to buy a piece of the artist: His passion put in the"
+" execution of the object, his hours of reflexion, his dexterity... It is a "
+"committed, ethical act, which encourages a responsible and direct economy."
+msgstr ""
+"要購買獨一無二的作品，就是購買藝術家的作品：他在創作過程中投入的熱情，他長時間的思考，他的靈巧......這是一種堅定的道德行為，鼓勵負責任的直接經濟."
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_three_columns
+msgid "Unique Items"
+msgstr "獨特物品"
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_three_columns
+msgid ""
+"Whether it is to help you see clearly in a project, to confirm a choice or "
+"when you have no idea about the layout of your interior, our advisers are "
+"there to accompany you throughout your project."
+msgstr "無論是幫助您看清一個專案項目，確認一個選擇，還是當您對室內佈局毫無頭緒時，我們的顧問都會全程陪伴您."
+
+#. module: theme_loftspace
+#: model_terms:theme.ir.ui.view,arch:theme_loftspace.s_call_to_action
+msgid "Would you like more information <br/>about a product?"
+msgstr "你想知產品的<br/>更多資料嗎？"

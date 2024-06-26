@@ -1,0 +1,289 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_bewise
+# 
+# Translators:
+# Veikko Väätäjä <veikko.vaataja@gmail.com>, 2023
+# Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023\n"
+"Language-Team: Finnish (https://app.transifex.com/odoo/teams/41243/fi/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: fi\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_numbers
+msgid "16,456"
+msgstr "16 456"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_call_to_action
+msgid ""
+"<b>3,000 students</b> graduate each year and find a job within 2 months"
+msgstr ""
+"<b>3,000 opiskelijaa</b> valmistuvat vuosittain ja löytävät työpaikan kahden"
+" kuukauden kuluessa"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_company_team
+msgid "<b>Aline Turner, Law professor</b>"
+msgstr "<b>Aline Turner, oikeustieteen professori</b>"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_quotes_carousel
+msgid "<b>Iris DOE</b> • Graduated in 2019"
+msgstr "<b>Iris DOE</b> - Valmistui vuonna 2019"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_company_team
+msgid "<b>Iris Joe, team leader professor</b>"
+msgstr "<b>Iris Joe, ryhmänjohtaja, professori</b>"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_quotes_carousel
+msgid "<b>Jane DOE</b> • Graduated in 2017"
+msgstr "<b>Jane DOE</b> - Valmistui vuonna 2017"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_quotes_carousel
+msgid "<b>John DOE</b> • Graduated in 2016"
+msgstr "<b>John DOE</b> - Valmistui vuonna 2016"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_company_team
+msgid "<b>Mich Stark, IT Officer</b>"
+msgstr "<b>Mich Stark, IT-vastaava</b>"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_company_team
+msgid "<b>Tony Fred, Faculty Head of IT</b>"
+msgstr "<b>Tony Fred, tiedekunnan tietotekniikkapäällikkö</b>"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_color_blocks_2
+msgid ""
+"<br/>\n"
+"        Are you searching for a school where cutting-edge programmes are taught, in a continually evolving environment and located in the heart of a dynamic city? You have just found it!\n"
+"        <br/>\n"
+"        <br/>"
+msgstr ""
+"<br/>\n"
+"        Etsitkö koulua, jossa opetetaan huippuluokan ohjelmia jatkuvasti kehittyvässä ympäristössä ja joka sijaitsee dynaamisen kaupungin sydämessä? Olet juuri löytänyt sen!\n"
+"       <br/>\n"
+"        <br/>"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_text_image
+msgid ""
+"<br/>\n"
+"        Teachers are selected among experts of their domains. They are not just professors, they are professionals in their field of expertise."
+msgstr ""
+"<br/>\n"
+"        Opettajat valitaan oman alansa asiantuntijoiden joukosta. He eivät ole pelkkiä professoreita, vaan oman alansa ammattilaisia."
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_color_blocks_2
+msgid ""
+"<br/>\n"
+"        The small and modern campus is only a 10-minute walk away from the city centre and is easily accessible by car and public transport. It is also close to the train stations.\n"
+"        <br/>\n"
+"        <br/>"
+msgstr ""
+"<br/>\n"
+"        Pieni ja moderni kampus sijaitsee vain 10 minuutin kävelymatkan päässä kaupungin keskustasta, ja sinne pääsee helposti autolla ja julkisilla liikennevälineillä. Se on myös lähellä rautatieasemia.\n"
+"       <br/>\n"
+"        <br/>"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_image_text
+msgid ""
+"<br/>\n"
+"        We make sure that everyone blossoms. We keep a human size in a warm and modern setting. All students benefit from individualised support."
+msgstr ""
+"<br/>\n"
+"        Pidämme huolen siitä, että kaikki kukoistavat. Säilytämme inhimillisen koon lämpimässä ja modernissa ympäristössä. Kaikki oppilaat hyötyvät yksilöllisestä tuesta."
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_carousel
+msgid ""
+"<font class=\"bg-o-color-4\">Good copy starts with understanding how your "
+"product or service helps your customers. Simple words communicate better "
+"than big words and pompous language.</font>"
+msgstr ""
+"<font class=\"bg-o-color-4\">Hyvä kopiointi alkaa siitä, että ymmärrät, "
+"miten tuotteesi tai palvelusi auttaa asiakkaitasi. Yksinkertaiset sanat "
+"viestivät paremmin kuin suuret sanat ja mahtipontinen kieli.</font>"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_picture
+msgid "A punchy Headline"
+msgstr "Iskevä otsikko"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_image_text
+msgid "All students benefit from individualised support."
+msgstr "Kaikki oppilaat hyötyvät yksilöllisestä tuesta."
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_cover
+msgid "Always at the top"
+msgstr "Aina huipulla"
+
+#. module: theme_bewise
+#. odoo-javascript
+#: code:addons/theme_bewise/static/src/js/tour.js:0
+#: code:addons/theme_bewise/static/src/js/tour.js:0
+#, python-format
+msgid "Background Shape"
+msgstr "Taustan muoto"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_comparisons
+msgid "Basic sales &amp; marketing"
+msgstr "Perusmyynti ja -markkinointi"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_text_image
+msgid "Driven by Excellence"
+msgstr "Huippuosaamisen ohjaamana"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_numbers
+msgid "Faculties"
+msgstr "Tiedekunnat"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_quotes_carousel
+msgid ""
+"Great support and quality courses! A mentor helps you move forward and can "
+"be contacted through flexible schedules. Everything you need to start your "
+"career on the web."
+msgstr ""
+"Suuri tuki ja laadukkaat kurssit! Mentori auttaa sinua eteenpäin ja häneen "
+"voi ottaa yhteyttä joustavien aikataulujen kautta. Kaikki mitä tarvitset "
+"aloittaaksesi urasi verkossa."
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_company_team
+msgid ""
+"He is professor in the Institute of Mechanics, Materials and Civil "
+"Engineering since 2000. He lectures in mechanical drawing and mechanical "
+"design for undergraduate and graduate students. He is active in Problem and "
+"Project based learning. He is the promoter of 8 doctoral theses."
+msgstr ""
+"Hän on toiminut mekaniikan, materiaalien ja rakennustekniikan laitoksen "
+"professorina vuodesta 2000. Hän luennoi mekaanisesta piirtämisestä ja "
+"mekaanisesta suunnittelusta perustutkinto- ja jatko-opiskelijoille. Hän on "
+"aktiivinen ongelma- ja projektipohjaisen oppimisen alalla. Hän on kahdeksan "
+"väitöskirjan ohjaaja."
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_quotes_carousel
+msgid ""
+"I have learned a lot, and I have realised professional projects thanks to "
+"the support of the mentors! The team is always at the top and always looking"
+" for solutions to problems, I felt accompanied and supported! It's not easy "
+"every day, but it's a great adventure!"
+msgstr ""
+"Olen oppinut paljon ja toteuttanut ammatillisia projekteja mentoreiden tuen "
+"ansiosta! Tiimi on aina huipulla ja etsii aina ratkaisuja ongelmiin, tunsin "
+"olevani mukana ja sain tukea! Joka päivä ei ole helppoa, mutta se on hieno "
+"seikkailu!"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_call_to_action
+msgid "Join them and increase your chances to get hired."
+msgstr "Liity niihin ja lisää mahdollisuuksiasi saada töitä."
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_text_image
+msgid ""
+"Journalists, directors, developers, etc. working effectively in their fields"
+" of excellence."
+msgstr ""
+"Toimittajat, ohjaajat, kehittäjät jne., jotka työskentelevät tehokkaasti "
+"omalla alallaan."
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_numbers
+msgid "Libraries"
+msgstr "Kirjastot"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_numbers
+msgid "Nationalities"
+msgstr "Kansallisuudet"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_cover
+msgid ""
+"Our university has topped the The World University<br/>Rankings for a fifth "
+"consecutive year."
+msgstr ""
+"Yliopistomme on ollut The World University<br/>Rankings -listan kärjessä jo "
+"viidettä vuotta peräkkäin."
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_color_blocks_2
+msgid "Programmes"
+msgstr "Ohjelmat"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_company_team
+msgid ""
+"She has been practicing law at the French-speaking Brussels Bar since 2006. "
+"She has worked in various major law firms based in Brussels, as member and "
+"then head of their litigation/arbitration practice groups."
+msgstr ""
+"Hän on toiminut asianajajana Brysselin ranskankielisessä "
+"asianajajayhdistyksessä vuodesta 2006. Hän on työskennellyt useissa suurissa"
+" Brysselin asianajotoimistoissa ensin jäsenenä ja sitten niiden riita- ja "
+"sovittelumenettelyyn erikoistuneiden ryhmien johtajana."
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_numbers
+msgid "Students"
+msgstr "Opiskelijat"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_quotes_carousel
+msgid ""
+"Thanks to its innovative system, the school offers an academic training "
+"during which we are followed by a \"mentor\", a sort of \"tutor\"!"
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_color_blocks_2
+msgid "The campus"
+msgstr "Kampus"
+
+#. module: theme_bewise
+#: model:ir.model,name:theme_bewise.model_theme_utils
+msgid "Theme Utils"
+msgstr "Teeman työkalut"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_company_team
+msgid ""
+"Tony received a degree in Electrical and Mechanical Engineering and a Ph D. "
+"degree in 1998 and 2004. After a post-doctoral experience  he joined the "
+"school as professor of mechatronics in 2006. In 2010, he became Head of IT."
+msgstr ""
+"Tony on suorittanut sähkö- ja konetekniikan tutkinnon sekä tohtorin "
+"tutkinnon vuosina 1998 ja 2004. Tohtorintutkinnon jälkeisen kokemuksen "
+"jälkeen hän aloitti koulussa mekatroniikan professorina vuonna 2006. Vuonna "
+"2010 hänestä tuli tietotekniikan päällikkö."
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_image_text
+msgid "What makes us different?"
+msgstr "Mikä tekee meistä erilaisia?"

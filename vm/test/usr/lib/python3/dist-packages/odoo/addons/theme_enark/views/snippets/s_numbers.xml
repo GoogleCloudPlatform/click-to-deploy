@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_numbers" inherit_id="website.s_numbers">
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc1 pb48 pt0" remove="pt24 pb24 o_cc2" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('row')]/div" position="attributes">
+        <attribute name="class" add="col-lg-4 d-flex align-items-center justify-content-center " remove="col-lg-3" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('row')]/div[2]" position="attributes">
+        <attribute name="class" add="col-lg-4 d-flex align-items-center justify-content-center " remove="col-lg-3" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('row')]/div[3]" position="attributes">
+        <attribute name="class" add="col-lg-4 d-flex align-items-center justify-content-center " remove="col-lg-3" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('row')]/div[4]" position="replace">
+        <attribute name="class" remove="col-lg-3" separator=" "/>
+    </xpath>
+    <xpath expr="(//h6)[1]" position="attributes">
+        <attribute name="class" add="m-0 ps-3" separator=" "/>
+    </xpath>
+    <xpath expr="(//h6)[2]" position="attributes">
+        <attribute name="class" add="m-0 ps-3" separator=" "/>
+    </xpath>
+    <xpath expr="(//h6)[3]" position="attributes">
+        <attribute name="class" add="m-0 ps-3" separator=" "/>
+    </xpath>
+</template>
+
+</odoo>

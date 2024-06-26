@@ -1,0 +1,185 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_kiddo
+# 
+# Translators:
+# Wil Odoo, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:22+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
+"Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_call_to_action
+msgid "2,000 parents<br/> brought their kid to our nursery."
+msgstr "2.000 Eltern<br/> haben ihr Kind unserem Kindergarten anvertraut."
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_banner
+msgid "A little place <br/>of paradise"
+msgstr "Ein kleines <br/>Paradies"
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_product_list
+msgid "About us"
+msgstr "Über uns"
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_image_text
+msgid "Activities"
+msgstr "Aktivitäten"
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_three_columns
+msgid ""
+"All activities are planned to meet each child’s individual needs. This "
+"approach will help your child to develop to the best of their ability."
+msgstr ""
+"Alle Aktivitäten werden so geplant, dass die individuellen Bedürfnissen "
+"jedes Kindes erfüllt werden. Dieser Ansatz wird Ihrem Kind helfen, sich "
+"bestmöglich zu entwickeln."
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_call_to_action
+msgid "Contact us"
+msgstr "Kontaktieren Sie uns"
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_call_to_action
+msgid "Entrust us with your children and go to work with peace of mind"
+msgstr "Vertrauen Sie uns Ihre Kinder an und gehen Sie unbesorgt zur Arbeit"
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_product_list
+msgid "Events"
+msgstr "Veranstaltungen"
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_three_columns
+msgid "For every kid"
+msgstr "Für jedes Kind"
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_cover
+msgid "Kiddo Nursery"
+msgstr "Kiddo-Kindergarten"
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_picture
+msgid "Letting each child explore and grow at their own pace"
+msgstr "Jedes Kind entdeckt und wächst in seinem eigenen Tempo"
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_three_columns
+msgid "Open-door policy"
+msgstr "Politik der offenen Tür"
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_three_columns
+msgid ""
+"Our aim is to make the early years of your child’s life as enjoyable, "
+"rewarding and positive as possible."
+msgstr ""
+"Unser Ziel ist es, die ersten Jahre im Leben Ihres Kindes so unterhaltsam, "
+"angenehm und positiv wie möglich zu gestalten."
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_three_columns
+msgid "Our mission"
+msgstr "Unsere Mission"
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_picture
+msgid ""
+"Our qualified staff ensure that each childs' needs are always recognised and"
+" fulfilled."
+msgstr ""
+"Unser qualifiziertes Personal sorgt dafür, dass die Bedürfnisse jedes Kindes"
+" stets erkannt und erfüllt werden."
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_product_list
+msgid "Our team"
+msgstr "Unser Team"
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_image_text
+msgid "Our team is composed of experienced nursery nurses."
+msgstr "Unser Team besteht aus erfahrenen Kindergärtnern."
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_product_list
+msgid "Playground"
+msgstr "Spielplatz"
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_cover
+msgid ""
+"The countryside nursery since 2002.<br/>\n"
+"        A truly unique service in a highly secure and tranquil setting."
+msgstr ""
+"Der ländliche Kindergarten seit 2002.<br/>\n"
+"        Ein wahrhaft einzigartiger Service in einer äußerst sicheren und ruhigen Umgebung."
+
+#. module: theme_kiddo
+#: model:ir.model,name:theme_kiddo.model_theme_utils
+msgid "Theme Utils"
+msgstr "Designwerkzeuge"
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_image_text
+msgid ""
+"They will propose to your children educational activities, playful, varied "
+"and adapted to the stage of development."
+msgstr ""
+"Sie werden Ihren Kindern pädagogische Aktivitäten vorschlagen, die "
+"spielerisch, abwechslungsreich und an den Entwicklungsstand angepasst sind."
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_banner
+msgid ""
+"This is a simple hero unit, a simple jumbotron-style component for calling "
+"extra attention to featured content or information."
+msgstr ""
+"Dies ist eine einfache Hero-Unit, eine einfache Komponente im Jumbotron-"
+"Stil, die die Aufmerksamkeit auf besondere Inhalte oder Informationen lenkt."
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_picture
+msgid ""
+"Through stimulating and fun activities, our aim<br/>\n"
+"        is to promote all areas of a childs' development."
+msgstr ""
+"Unser Ziel ist es, durch anregende und unterhaltsame Aktivitäten<br/>\n"
+"        ist es unser Ziel, alle Bereiche der kindlichen Entwicklung zu fördern."
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_product_list
+msgid "Visit us"
+msgstr "Besuchen Sie uns"
+
+#. module: theme_kiddo
+#: model_terms:theme.ir.ui.view,arch:theme_kiddo.s_three_columns
+msgid ""
+"You are welcome to come and see the nursery and meet the team at any time "
+"convenient to you."
+msgstr ""
+"Sie sind herzlich eingeladen, unseren Kindergarten zu besichtigen und das "
+"Team kennenzulernen, wann immer es Ihnen passt."
+
+#. module: theme_kiddo
+#. odoo-javascript
+#: code:addons/theme_kiddo/static/src/js/tour.js:0
+#, python-format
+msgid "width"
+msgstr "Breite"

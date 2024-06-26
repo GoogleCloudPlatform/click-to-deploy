@@ -1,0 +1,57 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * theme_monglia
+# 
+# Translators:
+# Martin Trigaux, 2019
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-04-24 08:55+0000\n"
+"PO-Revision-Date: 2019-04-24 11:21+0000\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
+"Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: nl\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.theme_customize
+msgid "Hamburger"
+msgstr "Hamburger"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.theme_customize
+msgid "Hamburger Menu Position"
+msgstr "Hamburger menu positie"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.theme_customize
+msgid "Left"
+msgstr "Links"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.theme_customize
+msgid "Menu"
+msgstr "Menu"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.theme_customize
+msgid "Right"
+msgstr "Rechts"
+
+#. module: theme_monglia
+#: model:ir.model,name:theme_monglia.model_theme_utils
+msgid "Theme Utils"
+msgstr "Thema tools"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.theme_customize
+msgid "Top Bar"
+msgstr "Top balk"

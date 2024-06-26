@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_call_to_action" inherit_id="website.s_call_to_action">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pt128 pb128 o_cc4" remove="pt48 pb24 o_cc3" separator=" "/>
+    </xpath>
+    <!-- Layout -->
+    <xpath expr="//div[hasclass('col-lg-9')]" position="attributes">
+        <attribute name="class" add="col-lg-12 text-center" remove="col-lg-9" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-3')]" position="attributes">
+        <attribute name="class" add="col-lg-12" remove="col-lg-3" separator=" "/>
+    </xpath>
+    <!-- Title & paragraph -->
+    <xpath expr="//h3" position="replace" mode="inner">
+        Would you like more information <br/>about a product?
+    </xpath>
+    <xpath expr="//p" position="replace"/>
+    <!-- Button -->
+    <xpath expr="//div[hasclass('col-lg-12')]/p" position="attributes">
+        <attribute name="style" add="text-align: center;" remove="text-align: right;" separator=";"/>
+    </xpath>
+    <xpath expr="//a[hasclass('btn')]" position="attributes">
+        <attribute name="class" add="mb-2" separator=" "/>
+    </xpath>
+    <!-- Add secondary button -->
+    <xpath expr="//a[hasclass('btn')]" position="before">
+        <a href="#" class="btn btn-secondary btn-lg me-2 mb-2">Our services</a>
+    </xpath>
+</template>
+
+<template id="configurator_s_call_to_action" inherit_id="website.configurator_s_call_to_action">
+    <!-- Shape option -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Airy/13_001","flip":[]}</attribute>
+    </xpath>
+    <!-- Add shape -->
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Airy_13_001"/>
+    </xpath>
+</template>
+
+</odoo>

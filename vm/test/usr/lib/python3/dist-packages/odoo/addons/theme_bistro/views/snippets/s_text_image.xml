@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_text_image" inherit_id="website.s_text_image">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pt80 pb80" remove="o_cc o_cc2 pt32 pb32" separator=" "/>
+    </xpath>
+    <!-- Image -->
+    <xpath expr="//img" position="attributes">
+        <attribute name="src">/web_editor/image_shape/website.s_text_image_default_image/web_editor/geometric_round/geo_round_square_2.svg</attribute>
+        <attribute name="data-file-name">text_image.svg</attribute>
+        <attribute name="data-shape">web_editor/geometric_round/geo_round_square_2</attribute>
+        <attribute name="data-shape-colors">;;;;</attribute>
+    </xpath>
+</template>
+
+</odoo>

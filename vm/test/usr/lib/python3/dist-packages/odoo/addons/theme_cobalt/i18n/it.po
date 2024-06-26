@@ -1,0 +1,127 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_cobalt
+# 
+# Translators:
+# Wil Odoo, 2023
+# Marianna Ciofani, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Marianna Ciofani, 2023\n"
+"Language-Team: Italian (https://app.transifex.com/odoo/teams/41243/it/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: it\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_picture
+msgid "<em>Our office in Dhaka</em>"
+msgstr "<em>Il nostro ufficio a Dhaka</em>"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_color_blocks_2
+msgid ""
+"Are you a startup or a seasoned company looking for a new brand identity?"
+msgstr ""
+"Hai una startup o un'azienda consolidata alla ricerca di una nuova identità?"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_color_blocks_2
+msgid "Are you an established brand looking for ongoing creative services?"
+msgstr "Hai un brand ben avviato ma sei alla ricerca di servizi creativi?"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_banner
+msgid ""
+"Building game-changing digital experiences designed to set your brand apart."
+msgstr ""
+"Costruiamo esperienze digitali rivoluzionarie per far distinguere il tuo "
+"marchio."
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_text_image
+msgid "Digital Transformation"
+msgstr "Trasformazione digitale"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_three_columns
+msgid "Latest projects"
+msgstr "Ultimi progetti"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_text_image
+msgid ""
+"Leader in digital business, we’re helping companies of all sizes to thrive "
+"in an ever-changing landscape."
+msgstr ""
+"Leader nel settore del business digitale, aiutiamo le aziende di tutte le "
+"dimensioni a prosperare in un panorama in continua evoluzione."
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_banner
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_image_text
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_text_image
+msgid "Marketing"
+msgstr "Marketing"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_title
+msgid "Projects"
+msgstr "Progetti"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_call_to_action
+msgid "START NOW"
+msgstr "INIZIA ORA"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_image_text
+msgid "Strategy synchronising multiple channels"
+msgstr "Strategia per la sincronizzazione di canali multipli"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_banner
+msgid "The ultimate marketing platform for brands"
+msgstr "La nuova piattaforma di marketing per i brand"
+
+#. module: theme_cobalt
+#: model:ir.model,name:theme_cobalt.model_theme_utils
+msgid "Theme Utils"
+msgstr "Utilità tema"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_image_text
+msgid ""
+"We create a consistent customer experience through a detailed digital "
+"strategy built on precise customer research."
+msgstr ""
+"Mettiamo a punto un'esperienza clienti su misura basata su strategie "
+"digitali e ricerche."
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_text_image
+msgid ""
+"We have collected solid experience in building native and cross-platform "
+"mobile applications and websites. Check our portfolio from clients around "
+"the world."
+msgstr ""
+"Abbiamo accumulato una solida esperienza nella realizzazione di app e siti "
+"web e multipiattaforma. Consulta il nostro portfolio di clienti provenienti "
+"da tutto il mondo."
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_text_image
+msgid "Web &amp; App Development"
+msgstr "Web e sviluppo app"
+
+#. module: theme_cobalt
+#: model_terms:theme.ir.ui.view,arch:theme_cobalt.s_text_image
+msgid "What we can do, <b>for you</b><br/>"
+msgstr "Cosa possiamo fare <b>per te</b><br/>"
