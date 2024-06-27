@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,10 +13,9 @@
 # limitations under the License.
 
 name 'wordpress'
-depends 'c2d-shared'
 depends 'c2d-config'
-depends 'phpmyadmin'
 depends 'apache2'
 depends 'mysql'
 depends 'php81'
+depends 'phpmyadmin'
 supports 'debian'

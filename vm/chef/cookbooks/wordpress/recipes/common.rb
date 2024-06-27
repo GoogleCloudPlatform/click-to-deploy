@@ -17,7 +17,6 @@ include_recipe 'apache2::mod-ssl'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 include_recipe 'mysql::version-8.0-embedded'
-include_recipe 'wordpress::ospo'
 
 apt_update do
   action :update
