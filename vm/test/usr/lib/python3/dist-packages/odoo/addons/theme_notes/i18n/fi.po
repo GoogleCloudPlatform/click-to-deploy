@@ -1,0 +1,403 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_notes
+# 
+# Translators:
+# Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2023
+# Tuomo Aura <tuomo.aura@web-veistamo.fi>, 2023
+# Veikko Väätäjä <veikko.vaataja@gmail.com>, 2023
+# Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:22+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023\n"
+"Language-Team: Finnish (https://app.transifex.com/odoo/teams/41243/fi/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: fi\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_catalog
+msgid "$109.50"
+msgstr "$109.50"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_catalog
+msgid "$115.50"
+msgstr "$115.50"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_catalog
+msgid "$19.00"
+msgstr "$19.00"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_catalog
+msgid "$25.00"
+msgstr "$25.00"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_catalog
+msgid "$59.00"
+msgstr "$59.00"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_catalog
+msgid "$65.00"
+msgstr "$65.00"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_masonry_block_default_template
+msgid "21th of August"
+msgstr "21. elokuuta"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_masonry_block_default_template
+msgid "24th of August"
+msgstr "24. elokuuta"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_masonry_block_default_template
+msgid "27th of August"
+msgstr "27. elokuuta"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_masonry_block_default_template
+msgid "4th of September"
+msgstr "4. syyskuuta"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_carousel
+msgid "6 Days Pass"
+msgstr "6 päivän lippu"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_cover
+msgid "<b>Discover <br/>the Miraillet Festival</b>"
+msgstr "<b>Tutustu <br/>Miraillet-festivaaliin</b>"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_media_list
+msgid ""
+"<br/>\n"
+"        Once again this year, the festival, with the support of the non-profit organisations that implement the necessary means to facilitate access to the event for people with reduced mobility and people affected by or carrying a disability."
+msgstr ""
+"<br/>\n"
+"        Jälleen kerran tänä vuonna festivaali tukee voittoa tavoittelemattomia järjestöjä, jotka toteuttavat tarvittavat keinot helpottaakseen liikuntarajoitteisten ja vammaisten henkilöiden pääsyä tapahtumaan."
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_media_list
+msgid ""
+"<br/>\n"
+"        Where and when to exchange your festival bracelets? Where to buy food and drink tickets? What is the price for children? The answer can be found here!"
+msgstr ""
+"<br/>\n"
+"        Missä ja milloin voit vaihtaa festivaalirannekkeesi? Mistä ostaa ruoka- ja juomalippuja? Mikä on lasten hinta? Vastaus löytyy täältä!"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_media_list
+msgid ""
+"<br/>\n"
+"        You will find here the different means of transport to get to the festival. The festival is accessible by bike. Be careful, you will be riding in the city centre where there are a lot of cars. Please make sure to park your bike in the designated areas of the city."
+msgstr ""
+"<br/>\n"
+"        Löydät täältä eri liikennevälineet, joilla pääset festivaalille. Festivaalille pääsee pyörällä. Ole varovainen, sillä pyöräilet kaupungin keskustassa, jossa on paljon autoja. Muistathan pysäköidä pyöräsi kaupungin niille varatuille alueille."
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_text_image
+msgid "About the Festival"
+msgstr "Tietoa festivaalista"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_company_team
+msgid "Aline"
+msgstr "Aline"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_company_team
+msgid ""
+"Aline is a French singer, songwriter and producer. In 2016, she was ranked "
+"as the most powerful and influential French person by Vanity Fair, who "
+"noticed her radiance of French genius."
+msgstr ""
+"Aline on ranskalainen laulaja, lauluntekijä ja tuottaja. Vuonna 2016 Vanity "
+"Fair rankkasi hänet vaikutusvaltaisimmaksi ja vaikutusvaltaisimmaksi "
+"ranskalaiseksi henkilöksi ja huomasi hänen säteilevän ranskalaista neroutta."
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_masonry_block_default_template
+msgid "Amsterdam"
+msgstr "Amsterdam"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_numbers
+msgid "Artists from around the world"
+msgstr "Taiteilijoita ympäri maailmaa"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_masonry_block_default_template
+msgid "Barcelona"
+msgstr "Barcelona"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_masonry_block_default_template
+msgid "Brussels"
+msgstr "Bryssel"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_catalog
+msgid "Brussels edition"
+msgstr "Brysselin painos"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_list
+msgid "CD Albums"
+msgstr "CD-albumit"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_list
+msgid "Caps"
+msgstr "Korkit"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_text_image
+msgid "Discover more"
+msgstr "Lue lisää"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_carousel
+msgid ""
+"Discover what makes the reputation of the Miraillet festival through these "
+"after-movies."
+msgstr ""
+"Tutustu Miraillet-festivaalin maineeseen näiden jälkielokuvien avulla."
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_numbers
+msgid "Editions through the Europe"
+msgstr "Julkaisut Euroopan kautta"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_banner
+msgid "Enjoy the atmosphere"
+msgstr "Nauti ilmapiiristä"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_carousel
+msgid ""
+"From the 12th to the 17th of August, come and enjoy the atmosphere at the "
+"Miraillet Festival. Discover the line up below."
+msgstr ""
+"Tule nauttimaan Miraillet-festivaalin tunnelmasta 12.-17. elokuuta. Tutustu "
+"kokoonpanoon alla."
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_call_to_action
+msgid "Get your ticket"
+msgstr "Hanki lippusi"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_catalog
+msgid "Get your ticket now"
+msgstr "Hanki lippusi nyt"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_media_list
+msgid "Go to the <br/>Miraillet Festival"
+msgstr "Vieraile <br/>Miraillet-festivaalilla"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_list
+msgid "Hoodies"
+msgstr "Hupparit"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_call_to_action
+msgid "Join us and make this weekend unforgettable!"
+msgstr "Tule mukaan ja tee tästä viikonlopusta unohtumaton!"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_company_team
+msgid "Joseris"
+msgstr "Joseris"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_company_team
+msgid ""
+"Joseris is a Belgian band that formed in October 1995. Though originally "
+"categorised as a trip hop group, they quickly expanded their sound to the "
+"point where they could no longer be described as a lone genre, but rather "
+"encompass alternative, electronica, electro-pop, rock, and a mixture of "
+"others."
+msgstr ""
+"Joseris on belgialainen yhtye, joka perustettiin lokakuussa 1995. Vaikka "
+"heidät alun perin luokiteltiin trip hop -yhtyeeksi, he laajensivat nopeasti "
+"soundiaan niin, että heitä ei enää voitu kuvata yksinäiseksi genreksi, vaan "
+"ne sisälsivät pikemminkin alternativea, elektroniikkaa, elektropoppia, "
+"rockia ja näiden sekoituksia."
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_call_to_action
+msgid "Live the Miraillet <br/>Festival experience"
+msgstr "Koe Miraillet <br/>-festivaalin elämys"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_numbers
+msgid "Loyal partners"
+msgstr "Uskolliset kumppanit"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_company_team
+msgid "Mich Starck"
+msgstr "Mich Starck"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_company_team
+msgid ""
+"Mich Starck is a French DJ, record producer and songwriter. He has sold over"
+" nine million albums and thirty million singles worldwide. In 2011, he was "
+"voted as the number one DJ in the DJ Mag Top 100 DJs poll."
+msgstr ""
+"Mich Starck on ranskalainen DJ, levytuottaja ja lauluntekijä. Hän on myynyt "
+"maailmanlaajuisesti yli yhdeksän miljoonaa albumia ja kolmekymmentä "
+"miljoonaa singleä. Vuonna 2011 hänet äänestettiin DJ Mag Top 100 DJs "
+"-äänestyksessä DJ Magin ykköseksi."
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_carousel
+msgid "Miraillet Festival"
+msgstr "Miraillet-festivaali"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_carousel
+msgid "More Info"
+msgstr "Lisätiedot"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_media_list
+msgid "More info"
+msgstr "Lisätiedot"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_masonry_block_default_template
+msgid "Paris"
+msgstr "Pariisi"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_catalog
+msgid "Paris edition"
+msgstr "Pariisin painos"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_carousel
+msgid "Recent Editions"
+msgstr "Viimeisimmät painokset"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_catalog
+msgid "Regular ticket"
+msgstr "Tavallinen lippu"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_catalog
+msgid "Regular ticket + hotel"
+msgstr "Tavallinen lippu + hotelli"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_numbers
+msgid "Scenes outdoor &amp; indoor"
+msgstr "Kohtaukset ulkona &amp; sisätiloissa"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_list
+msgid "Sunglasses"
+msgstr "Aurinkolasit"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_list
+msgid "T-shirts"
+msgstr "T-paidat"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_image_text
+msgid "The History"
+msgstr "Historia"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_image_text
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_text_image
+msgid ""
+"The Miraillet Festival was born in 2002 from a common will of cultural, "
+"touristic and institutional actors of the region to propose a major cultural"
+" event in the very heart of the region during the summer period."
+msgstr ""
+"Miraillet-festivaali syntyi vuonna 2002 alueen kulttuuri-, matkailu- ja "
+"institutionaalisten toimijoiden yhteisestä tahdosta järjestää kesäkaudella "
+"merkittävä kulttuuritapahtuma alueen sydämessä."
+
+#. module: theme_notes
+#: model:ir.model,name:theme_notes.model_theme_utils
+msgid "Theme Utils"
+msgstr "Teeman työkalut"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_media_list
+msgid "Ticketing <br/>&amp; timetables"
+msgstr "Lipunmyynti <br/> ja aikataulut"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_carousel
+msgid ""
+"Tickets will be on sale soon. Do not miss our 6 Days Pass. Free camping!"
+msgstr ""
+"Liput tulevat pian myyntiin. Älä päästä kuuden päivän lippua saataviltasi. "
+"Ilmainen leiriytyminen!"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_company_team
+msgid "Tony"
+msgstr "Tony"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_company_team
+msgid ""
+"Tony is praised for the quality of his flow and beats but often criticised "
+"because of the controversial nature of his lyrics. He has also established a"
+" label, and developed a line of jewellery."
+msgstr ""
+"Tony on saanut kiitosta flow'nsa ja biittiensä laadusta, mutta häntä "
+"kritisoidaan usein hänen sanoitustensa kiistanalaisuudesta. Hän on myös "
+"perustanut levy-yhtiön ja kehittänyt korumalliston."
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_catalog
+msgid "Upcoming events"
+msgstr "Tulevat tapahtumat"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_catalog
+msgid "VIP ticket"
+msgstr "VIP-lippu"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_product_list
+msgid "Vinyls"
+msgstr "Vinyylit"
+
+#. module: theme_notes
+#: model_terms:theme.ir.ui.view,arch:theme_notes.s_media_list
+msgid "Wheelchair <br/>accessibility"
+msgstr "Pyörätuoli <br/>esteettömyys"
+
+#. module: theme_notes
+#. odoo-javascript
+#: code:addons/theme_notes/static/src/js/tour.js:0
+#, python-format
+msgid "width"
+msgstr "leveys"

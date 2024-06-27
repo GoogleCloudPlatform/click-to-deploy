@@ -1,0 +1,311 @@
+<svg width="700px" height="1850px" viewBox="0 0 700 1850" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>theme_bewise</title>
+    <defs>
+        <style type="text/css">
+            @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@600&amp;display=swap');
+        </style>
+        <pattern width="1" height="1" id="theme_bewise_s_cover_default_image_id" patternUnits="objectBoundingBox">
+            <image width="700" height="310" preserveAspectRatio="xMidYMid slice" href="#s_cover_default_image_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_bewise_s_text_image_default_image_id" patternUnits="objectBoundingBox">
+            <image width="269.2525634765625" height="168" preserveAspectRatio="xMidYMid slice" href="#s_text_image_default_image_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_bewise_s_image_text_default_image_id" patternUnits="objectBoundingBox">
+            <image width="282" height="190" preserveAspectRatio="xMidYMid slice" href="#s_image_text_default_image_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_bewise_s_quotes_carousel_demo_image_1_id" patternUnits="objectBoundingBox">
+            <image width="700" height="354" preserveAspectRatio="xMidYMid slice" href="#s_quotes_carousel_demo_image_1_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_bewise_s_media_list_default_image_1_id" patternUnits="objectBoundingBox">
+            <image width="351" height="295" preserveAspectRatio="xMidYMid slice" href="#s_media_list_default_image_1_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_bewise_s_media_list_default_image_2_id" patternUnits="objectBoundingBox">
+            <image width="351" height="295" preserveAspectRatio="xMidYMid slice" href="#s_media_list_default_image_2_url"/>
+        </pattern>
+        <pattern id="theme_bewise_s_quotes_carousel_demo_image_3_id" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" viewBox="0 0 128 128">
+            <image width="128" height="128" href="/web/image/website.s_quotes_carousel_demo_image_3"/>
+        </pattern>
+        <filter id="theme_bewise_bright_down">
+            <feComponentTransfer>
+                <feFuncR type="linear" slope=".75" />
+                <feFuncG type="linear" slope=".75" />
+                <feFuncB type="linear" slope=".75" />
+            </feComponentTransfer>
+        </filter>
+        <!-- Filter -->
+        <filter id="filter_readability_bewise">
+            <feColorMatrix in="SourceGraphic" type="saturate" values="0"/>
+            <feComponentTransfer>
+                <feFuncR type="table" tableValues="1 0"/>
+                <feFuncG type="table" tableValues="1 0"/>
+                <feFuncB type="table" tableValues="1 0"/>
+            </feComponentTransfer>
+            <feComponentTransfer>
+                <feFuncR type="linear" slope="10000" intercept="-4999.5"/>
+                <feFuncG type="linear" slope="10000" intercept="-4999.5"/>
+                <feFuncB type="linear" slope="10000" intercept="-4999.5"/>
+            </feComponentTransfer>
+        </filter>
+        <rect id="theme_bewise_path-1" width="700" height="113"/>
+        <rect id="theme_bewise_path-3" width="700" height="88.2510038"/>
+    </defs>
+
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" class="theme_bewise">
+        <rect fill="#FFFEFE" width="700" height="1850"/>
+        <g class="svgc_menu">
+            <rect fill="#MENU_COLOR" width="700" height="37" class="svgc_menu_bg"/>
+            <path d="M76.2753882,22.9664902 L76.2753882,21.4509459 L72.5806453,21.4509459 L72.5806453,14.2722753 L70.7585227,14.2722753 L70.7585227,22.9664902 L76.2753882,22.9664902 Z M80.8960242,23.0853564 C81.656294,23.0853564 82.3415187,22.9105948 82.9516983,22.5610715 C83.561878,22.2115482 84.0444108,21.7042441 84.3992969,21.0391593 C84.754183,20.3740746 84.931626,19.5674824 84.931626,18.6193827 C84.931626,17.6712831 84.754183,16.8646909 84.3992969,16.1996061 C84.0444108,15.5345213 83.561878,15.0272173 82.9516983,14.677694 C82.3415187,14.3281707 81.656294,14.1534091 80.8960242,14.1534091 C80.1301436,14.1534091 79.4428148,14.3281707 78.8340379,14.677694 C78.225261,15.0272173 77.7441308,15.5345213 77.3906475,16.1996061 C77.0371641,16.8646909 76.8604224,17.6712831 76.8604224,18.6193827 C76.8604224,19.5646522 77.0371641,20.3698293 77.3906475,21.0349141 C77.7441308,21.6999989 78.225261,22.2080105 78.8340379,22.5589489 C79.4428148,22.9098872 80.1301436,23.0853564 80.8960242,23.0853564 Z M80.8960242,21.4594363 C80.4555727,21.4594363 80.0712297,21.3504756 79.7429951,21.1325542 C79.4147606,20.9146328 79.1601684,20.5948261 78.9792186,20.173134 C78.7982687,19.751442 78.7077938,19.2335249 78.7077938,18.6193827 C78.7077938,18.0052406 78.7982687,17.4873235 78.9792186,17.0656315 C79.1601684,16.6439394 79.4147606,16.3241327 79.7429951,16.1062113 C80.0712297,15.8882899 80.4555727,15.7793292 80.8960242,15.7793292 C81.3364757,15.7793292 81.7208187,15.8882899 82.0490533,16.1062113 C82.3772879,16.3241327 82.6318801,16.6439394 82.8128299,17.0656315 C82.9937797,17.4873235 83.0842546,18.0052406 83.0842546,18.6193827 C83.0842546,19.2335249 82.9937797,19.751442 82.8128299,20.173134 C82.6318801,20.5948261 82.3772879,20.9146328 82.0490533,21.1325542 C81.7208187,21.3504756 81.3364757,21.4594363 80.8960242,21.4594363 Z M90.0580725,23.0853564 C90.7818718,23.0853564 91.4243138,22.9374812 91.9853985,22.6417307 C92.5464832,22.3459802 92.9869347,21.9242882 93.306753,21.3766545 C93.6265713,20.8290209 93.7864805,20.173134 93.7864805,19.4089941 L93.7864805,19.4089941 L93.7864805,18.3137268 L90.1801085,18.3137268 L90.1801085,19.6976692 L92.0289526,19.6979182 L92.0252005,19.8237287 C92.0079004,20.0598888 91.956,20.2740367 91.8694995,20.4661723 L91.7981365,20.6061467 C91.6424355,20.8778409 91.4180016,21.0879794 91.1248348,21.2365622 C90.8316681,21.385145 90.4788861,21.4594363 90.0664888,21.4594363 C89.6120102,21.4594363 89.2178482,21.348353 88.8840028,21.1261864 C88.5501574,20.9040198 88.2920584,20.5806754 88.1097059,20.1561532 C87.9273533,19.7316309 87.8361771,19.216544 87.8361771,18.6108923 C87.8361771,18.0052406 87.928756,17.4922763 88.113914,17.0719993 C88.2990719,16.6517223 88.5578723,16.331208 88.890315,16.1104565 C89.2227577,15.8897049 89.6092048,15.7793292 90.0496563,15.7793292 C90.2853118,15.7793292 90.5006281,15.8090457 90.695605,15.8684788 C90.890582,15.9279119 91.0645182,16.0135239 91.2174138,16.1253148 C91.3703094,16.2371056 91.5000602,16.3729527 91.6066663,16.5328561 C91.7132724,16.6927594 91.7960324,16.8760115 91.8549463,17.0826123 L91.8549463,17.0826123 L93.7065259,17.0826123 C93.647612,16.6524298 93.5143544,16.2583317 93.306753,15.900318 C93.0991517,15.5423043 92.8319351,15.2331106 92.5051032,14.972737 C92.1782714,14.7123633 91.8044487,14.5107153 91.3836352,14.3677928 C90.9628216,14.2248703 90.508343,14.1534091 90.0201993,14.1534091 C89.4506983,14.1534091 88.921876,14.2538793 88.4337323,14.4548199 C87.9455886,14.6557604 87.5177615,14.9486807 87.150251,15.3335808 C86.7827405,15.718481 86.4972886,16.187578 86.2938954,16.740872 C86.0905022,17.2941659 85.9888056,17.9231663 85.9888056,18.6278732 C85.9888056,19.5448412 86.1592351,20.3365751 86.5000941,21.003075 C86.840953,21.6695748 87.3171737,22.1832467 87.928756,22.5440906 C88.5403384,22.9049345 89.2501105,23.0853564 90.0580725,23.0853564 Z M98.9036703,23.0853564 C99.6639401,23.0853564 100.349165,22.9105948 100.959344,22.5610715 C101.569524,22.2115482 102.052057,21.7042441 102.406943,21.0391593 C102.761829,20.3740746 102.939272,19.5674824 102.939272,18.6193827 C102.939272,17.6712831 102.761829,16.8646909 102.406943,16.1996061 C102.052057,15.5345213 101.569524,15.0272173 100.959344,14.677694 C100.349165,14.3281707 99.6639401,14.1534091 98.9036703,14.1534091 C98.1377897,14.1534091 97.4504609,14.3281707 96.841684,14.677694 C96.232907,15.0272173 95.7517769,15.5345213 95.3982935,16.1996061 C95.0448102,16.8646909 94.8680685,17.6712831 94.8680685,18.6193827 C94.8680685,19.5646522 95.0448102,20.3698293 95.3982935,21.0349141 C95.7517769,21.6999989 96.232907,22.2080105 96.841684,22.5589489 C97.4504609,22.9098872 98.1377897,23.0853564 98.9036703,23.0853564 Z M98.9036703,21.4594363 C98.4632188,21.4594363 98.0788758,21.3504756 97.7506412,21.1325542 C97.4224066,20.9146328 97.1678145,20.5948261 96.9868646,20.173134 C96.8059148,19.751442 96.7154399,19.2335249 96.7154399,18.6193827 C96.7154399,18.0052406 96.8059148,17.4873235 96.9868646,17.0656315 C97.1678145,16.6439394 97.4224066,16.3241327 97.7506412,16.1062113 C98.0788758,15.8882899 98.4632188,15.7793292 98.9036703,15.7793292 C99.3441218,15.7793292 99.7284648,15.8882899 100.056699,16.1062113 C100.384934,16.3241327 100.639526,16.6439394 100.820476,17.0656315 C101.001426,17.4873235 101.091901,18.0052406 101.091901,18.6193827 C101.091901,19.2335249 101.001426,19.751442 100.820476,20.173134 C100.639526,20.5948261 100.384934,20.9146328 100.056699,21.1325542 C99.7284648,21.3504756 99.3441218,21.4594363 98.9036703,21.4594363 Z" fill="#MENU_COLOR" fill-rule="nonzero" class="svgc_text" filter="url(#filter_readability_bewise)"/>
+            <g opacity="0.6" transform="translate(245, 15)" fill="#2D442A">
+                <rect width="37" height="7" class="svgc_text" fill="#MENU_COLOR" filter="url(#filter_readability_bewise)"/>
+                <rect x="58" width="37" height="7" class="svgc_text" fill="#MENU_COLOR" filter="url(#filter_readability_bewise)"/>
+                <rect x="116" width="37" height="7" class="svgc_text" fill="#MENU_COLOR" filter="url(#filter_readability_bewise)"/>
+                <rect x="174" width="37" height="7" class="svgc_text" fill="#MENU_COLOR" filter="url(#filter_readability_bewise)"/>
+            </g>
+            <rect fill="#MENU_COLOR" x="593" y="15" width="37" height="7" class="svgc_text" filter="url(#filter_readability_bewise)"/>
+        </g>
+        <g transform="translate(0.46, 37)">
+            <g class="s_cover">
+                <rect fill="url(#theme_bewise_s_cover_default_image_id)" width="700" height="310" class="img_reference_s_cover_default_image"/>
+                <rect fill="#000000" opacity="0.342660086" width="700" height="310"/>
+            </g>
+            <g transform="translate(176.481856, 93.957031)">
+                <text font-family="RalewayRoman-SemiBold, Raleway" font-size="38" font-weight="500" letter-spacing="0.164790249" fill="#FFFFFD">
+                    <tspan y="36">Welcome Message</tspan>
+                </text>
+                <g transform="translate(107.933144, 59.042969)" fill="#FFFFFD" opacity="0.55">
+                    <g>
+                        <rect width="131" height="2"/>
+                        <rect x="8" y="5" width="116" height="2"/>
+                        <rect x="26" y="10" width="79" height="2"/>
+                        <rect x="20" y="15" width="91" height="2"/>
+                    </g>
+                </g>
+                <g transform="translate(125.058144, 94.042969)" class="svgc_btn_group">
+                    <rect fill="#3AADAA" width="94" height="28" rx="2"/>
+                    <text font-family="Arial-BoldMT, Arial" font-size="10" font-weight="bold" letter-spacing="0.043365855" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_bewise)">
+                        <tspan x="25.7034897" y="18">Discover</tspan>
+                    </text>
+                </g>
+            </g>
+        </g>
+
+        <g transform="translate(0, 347)" class="s_call_to_action">
+            <mask id="theme_bewise_mask-2" fill="white">
+                <use xlink:href="#theme_bewise_path-1"/>
+            </mask>
+            <use fill="#7C6576" xlink:href="#theme_bewise_path-1"/>
+            <g mask="url(#theme_bewise_mask-2)">
+                <g transform="translate(535, 43)" class="svgc_btn_group">
+                    <rect fill="#3AADAA" width="94" height="28" rx="2"/>
+                    <text font-family="Arial-BoldMT, Arial" font-size="10" font-weight="bold" letter-spacing="0.043365855" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_bewise)">
+                        <tspan x="25.7034897" y="18">Discover</tspan>
+                    </text>
+                </g>
+            </g>
+            <ellipse fill="#3AADAA" filter="url(#theme_bewise_bright_down)" mask="url(#theme_bewise_mask-2)" cx="93.5" cy="61.5" rx="209.5" ry="151.5"/>
+            <g mask="url(#theme_bewise_mask-2)">
+                <g transform="translate(69, 32.255371)">
+                    <text font-family="RalewayRoman-SemiBold, Raleway" font-size="13" font-weight="500" letter-spacing="0.0563756115">
+                        <tspan x="0.331054688" y="13.0172335" fill="#FFFFFF">A very long Subtitle</tspan>
+                    </text>
+                    <g fill="#EAEAEA" stroke-width="1" fill-rule="evenodd" transform="translate(0, 25.744629)" opacity="0.55">
+                        <rect width="131" height="2"/>
+                        <rect y="5" width="116" height="2"/>
+                        <rect y="10" width="79" height="2"/>
+                        <rect y="15" width="91" height="2"/>
+                    </g>
+                </g>
+            </g>
+        </g>
+        <g transform="translate(0.50, 459.775)" class="s_text_image">
+            <rect fill="#FFFFFF" width="700" height="260"/>
+            <rect fill="url(#theme_bewise_s_text_image_default_image_id)" x="361" y="54.1758065" width="269.252595" height="168" class="img_reference_s_text_image_default_image"/>
+            <g transform="translate(104.35, 128.025)" fill="#000000" opacity="0.505047753">
+                <rect opacity="0.55" width="131" height="2"/>
+                <rect opacity="0.55" y="5" width="116" height="2"/>
+                <rect opacity="0.55" y="10" width="79" height="2"/>
+                <rect opacity="0.55" y="15" width="91" height="2"/>
+            </g>
+            <text font-family="RalewayRoman-SemiBold, Raleway" font-size="20" font-weight="500" letter-spacing="0.08673171" fill="#1A1A1A" x="104.5" y="115.242233">
+                Section Title
+            </text>
+            <g transform="translate(104.50, 167.225)" class="svgc_btn_group">
+                <rect fill="#3AADAA" width="94" height="28" rx="2"/>
+                <text font-family="Arial-BoldMT, Arial" font-size="10" font-weight="bold" letter-spacing="0.043365855" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_bewise)" x="25.7034897" y="18">
+                    Discover
+                </text>
+            </g>
+        </g>
+        <g transform="translate(0, 717.676568)" class="s_numbers">
+            <mask id="theme_bewise_mask-4" fill="white">
+                <use xlink:href="#theme_bewise_path-3"/>
+            </mask>
+            <use fill="#7C6576" xlink:href="#theme_bewise_path-3"/>
+            <ellipse fill="#3AADAA" filter="url(#theme_bewise_bright_down)" mask="url(#theme_bewise_mask-4)" cx="559.5" cy="43.9001384" rx="209.5" ry="135.693107"/>
+            <g mask="url(#theme_bewise_mask-4)">
+                <g transform="translate(115, 12.373773)">
+                    <g transform="translate(0, 49.035629)" fill="#EBEBEB" opacity="0.6">
+                        <rect opacity="0.55" width="51" height="1.0603325"/>
+                        <rect opacity="0.55" x="3.11450382" y="2.65083126" width="45.1603053" height="1.0603325"/>
+                        <rect opacity="0.55" x="10.1221374" y="5.30166252" width="30.7557252" height="1.0603325"/>
+                        <rect opacity="0.55" x="7.78625954" y="7.95249378" width="35.4274809" height="1.0603325"/>
+                    </g>
+                    <g transform="translate(140, 49.035629)" fill="#EBEBEB" opacity="0.6">
+                        <rect opacity="0.55" width="51" height="1.0603325"/>
+                        <rect opacity="0.55" x="3.11450382" y="2.65083126" width="45.1603053" height="1.0603325"/>
+                        <rect opacity="0.55" x="10.1221374" y="5.30166252" width="30.7557252" height="1.0603325"/>
+                        <rect opacity="0.55" x="7.78625954" y="7.95249378" width="35.4274809" height="1.0603325"/>
+                    </g>
+                    <g transform="translate(282, 49.035629)" fill="#EBEBEB" opacity="0.6">
+                        <rect opacity="0.55" width="51" height="1.0603325"/>
+                        <rect opacity="0.55" x="3.11450382" y="2.65083126" width="45.1603053" height="1.0603325"/>
+                        <rect opacity="0.55" x="10.1221374" y="5.30166252" width="30.7557252" height="1.0603325"/>
+                        <rect opacity="0.55" x="7.78625954" y="7.95249378" width="35.4274809" height="1.0603325"/>
+                    </g>
+                    <g transform="translate(421, 49.035629)" fill="#EBEBEB" opacity="0.6">
+                        <rect opacity="0.55" width="51" height="1.0603325"/>
+                        <rect opacity="0.55" x="3.11450382" y="2.65083126" width="45.1603053" height="1.0603325"/>
+                        <rect opacity="0.55" x="10.1221374" y="5.30166252" width="30.7557252" height="1.0603325"/>
+                        <rect opacity="0.55" x="7.78625954" y="7.95249378" width="35.4274809" height="1.0603325"/>
+                    </g>
+                    <text font-family="RalewayRoman-SemiBold, Raleway" font-size="38" font-weight="500" letter-spacing="0.164790249" fill="#FFFFFD" x="139.952475" y="36">40</text>
+                    <text font-family="RalewayRoman-SemiBold, Raleway" font-size="38" font-weight="500" letter-spacing="0.164790249" fill="#FFFFFD" x="286.979955" y="36">23</text>
+                    <text font-family="RalewayRoman-SemiBold, Raleway" font-size="38" font-weight="500" letter-spacing="0.164790249" fill="#FFFFFD" x="433.502335" y="36">8</text>
+                    <text font-family="RalewayRoman-SemiBold, Raleway" font-size="38" font-weight="500" letter-spacing="0.164790249" fill="#FFFFFD" x="4.46048654" y="36">12</text>
+                </g>
+            </g>
+        </g>
+        <g transform="translate(0.46, 805.944)" class="s_image_text">
+            <rect fill="#FFFFFF" width="700" height="258"/>
+            <rect fill="url(#theme_bewise_s_image_text_default_image_id)" x="68" y="35.8822581" width="282" height="190" class="img_reference_s_image_text_default_image"/>
+            <g transform="translate(424.54, 81.056)">
+                <g transform="translate(0, 31.782767)" fill="#383E45" opacity="0.4">
+                    <rect width="131" height="2"/>
+                    <rect y="5" width="116" height="2"/>
+                    <rect y="10" width="79" height="2"/>
+                    <rect y="15" width="91" height="2"/>
+                </g>
+                <text font-family="RalewayRoman-SemiBold, Raleway" font-size="20" font-weight="500" letter-spacing="0.08673171" fill="#1A1A1A" x="0.15" y="19">
+                    Section Title
+                </text>
+                <g transform="translate(0.15, 70.982767)" class="svgc_btn_group">
+                    <rect fill="#3AADAA" width="94" height="28" rx="2"/>
+                    <text font-family="Arial-BoldMT, Arial" font-size="10" font-weight="bold" letter-spacing="0.043365855" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_bewise)" x="25.7034897" y="18">
+                        Discover
+                    </text>
+                </g>
+            </g>
+        </g>
+        <g transform="translate(0, 1063)" class="s_quotes_carousel">
+            <g>
+                <rect fill="url(#theme_bewise_s_quotes_carousel_demo_image_1_id)" y="1" width="700" height="354" class="img_reference_s_quotes_carousel_demo_image_1"/>
+                <g transform="translate(350, 11.500) scale(1, -1) translate(-350, -11.500) " fill="#FEFEFE" fill-rule="nonzero">
+                    <path d="M0,0 L0,23 L700,23 L700,0 C457.85,20.5339168 224,21.7417943 0,0 Z"/>
+                </g>
+            </g>
+            <g transform="translate(24, 127)">
+                <g transform="translate(171, 0)">
+                    <rect fill="#F9F9F9" x="32" width="278" height="125"/>
+                    <g class="svgc_btn_group">
+                        <rect fill="#3AADAA" width="32" height="22"/>
+                        <path d="M19.8047493,16 C20.6912929,16 21.4454705,15.745509 22.0672823,15.2365269 C22.6890941,14.7275449 23,14.1387226 23,13.4700599 C23,12.8313373 22.7291117,12.2799401 22.1873351,11.8158683 C21.6455585,11.3517964 21.0237467,11.1197605 20.3218997,11.1197605 C19.7185576,11.1197605 19.2198769,11.2345309 18.8258575,11.4640719 C18.7027265,11.5339321 18.6103782,11.5688623 18.5488127,11.5688623 C18.4872471,11.5688623 18.4318382,11.5389222 18.3825858,11.4790419 C18.3087071,11.3892216 18.2717678,11.249501 18.2717678,11.0598802 C18.2717678,10.1816367 18.6350044,9.33582834 19.3614776,8.52245509 C20.0879507,7.70908184 21.0914688,7.11277445 22.3720317,6.73353293 L22.3720317,6.73353293 L22.3720317,6 C20.1679859,6.64870259 18.5549692,7.50698603 17.5329815,8.5748503 C16.5109938,9.64271457 16,10.8502994 16,12.1976048 C16,13.3552894 16.3755497,14.2784431 17.1266491,14.9670659 C17.8777485,15.6556886 18.7704485,16 19.8047493,16 Z M11.8047493,16 C12.6912929,16 13.4454705,15.745509 14.0672823,15.2365269 C14.6890941,14.7275449 15,14.1387226 15,13.4700599 C15,12.8313373 14.7291117,12.2799401 14.1873351,11.8158683 C13.6455585,11.3517964 13.0237467,11.1197605 12.3218997,11.1197605 C11.7185576,11.1197605 11.2198769,11.2345309 10.8258575,11.4640719 C10.7027265,11.5339321 10.6103782,11.5688623 10.5488127,11.5688623 C10.4872471,11.5688623 10.4318382,11.5389222 10.3825858,11.4790419 C10.3087071,11.3892216 10.2717678,11.249501 10.2717678,11.0598802 C10.2717678,10.1816367 10.6350044,9.33582834 11.3614776,8.52245509 C12.0879507,7.70908184 13.0914688,7.11277445 14.3720317,6.73353293 L14.3720317,6.73353293 L14.3720317,6 C12.1679859,6.64870259 10.5549692,7.50698603 9.53298153,8.5748503 C8.51099384,9.64271457 8,10.8502994 8,12.1976048 C8,13.3552894 8.37554969,14.2784431 9.12664908,14.9670659 C9.87774846,15.6556886 10.7704485,16 11.8047493,16 Z" fill="#3AADAA" fill-rule="nonzero" class="svgc_text" filter="url(#filter_readability_bewise)"/>
+                    </g>
+                </g>
+                <g transform="translate(622, 44)" fill="#FFFFFF" class="svgc_btn_group">
+                    <rect width="28" height="28" rx="14"/>
+                    <text font-family="Arial-BoldMT, Arial" font-size="10" font-weight="bold" letter-spacing="0.043365855" class="svgc_text" fill="null" filter="url(#filter_readability_bewise)">
+                        <tspan x="11.0583952" y="18">&gt;</tspan>
+                    </text>
+                </g>
+                <g transform="translate(228, 18)" fill="#383E45" opacity="0.4">
+                    <rect width="195" height="2"/>
+                    <rect y="5" width="172.671756" height="2"/>
+                    <rect y="10" width="117.59542" height="2"/>
+                    <rect y="15" width="135.458015" height="2"/>
+                    <rect y="22" width="236" height="2"/>
+                    <rect y="27" width="208.977099" height="2"/>
+                    <rect y="32" width="142.320611" height="2"/>
+                    <rect y="37" width="163.938931" height="2"/>
+                </g>
+                <g transform="translate(267, 90)" fill="#383E45" opacity="0.4">
+                    <rect width="89" height="2"/>
+                    <rect y="5" width="78.8091603" height="2"/>
+                    <rect y="10" width="53.6717557" height="2"/>
+                    <rect y="15" width="61.8244275" height="2"/>
+                </g>
+                <circle cx="242" cy="91" r="15" fill="url(#theme_bewise_s_quotes_carousel_demo_image_3_id)"/>
+                <g transform="translate(0, 40)" fill="#FFFFFF">
+                    <g transform="translate(14, 14) scale(-1, 1) translate(-14, -14) " class="svgc_btn_group">
+                        <rect width="28" height="28" rx="14"/>
+                        <text font-family="Arial-BoldMT, Arial" font-size="10" font-weight="bold" letter-spacing="0.043365855" class="svgc_text" fill="null" filter="url(#filter_readability_bewise)">
+                            <tspan x="11.0583952" y="18">&gt;</tspan>
+                        </text>
+                    </g>
+                </g>
+            </g>
+        </g>
+        <g transform="translate(-1, 1418)" class="s_media_list">
+            <g>
+                <rect fill="url(#theme_bewise_s_media_list_default_image_1_id)" width="351" height="295" class="img_reference_s_media_list_default_image_1"/>
+                <rect fill="#000000" opacity="0.5" x="1" width="350" height="295"/>
+                <g transform="translate(108.297656, 123.464453)" fill="#FFFFFD" opacity="0.55">
+                    <rect width="131" height="2"/>
+                    <rect x="8" y="5" width="116" height="2"/>
+                    <rect x="26" y="10" width="79" height="2"/>
+                    <rect x="20" y="15" width="91" height="2"/>
+                </g>
+                <text font-family="RalewayRoman-SemiBold, Raleway" font-size="18" font-weight="500" letter-spacing="0.078058539" fill="#FFFFFD">
+                    <tspan x="128.15487" y="110.464453">Block Title</tspan>
+                </text>
+                <g transform="translate(127.297656, 156.464453)" fill="#FFFFFF" class="svgc_btn_group">
+                    <rect width="94" height="28" rx="2"/>
+                    <text font-family="Arial-BoldMT, Arial" font-size="10" font-weight="bold" letter-spacing="0.043365855" class="svgc_text" fill="null" filter="url(#filter_readability_bewise)">
+                        <tspan x="25.7034897" y="18">Discover</tspan>
+                    </text>
+                </g>
+            </g>
+            <g transform="translate(351, 0)">
+                <rect fill="url(#theme_bewise_s_media_list_default_image_2_id)" width="351" height="295" class="img_reference_s_media_list_default_image_2"/>
+                <rect fill="#000000" opacity="0.5" width="350" height="295"/>
+                <text font-family="RalewayRoman-SemiBold, Raleway" font-size="18" font-weight="500" letter-spacing="0.078058539" fill="#FFFFFD">
+                    <tspan x="133.15487" y="110.464453">Block Title</tspan>
+                </text>
+                <g transform="translate(113.297656, 123.464453)" fill="#EBEBEB" opacity="0.55">
+                    <rect width="131" height="2"/>
+                    <rect x="8" y="5" width="116" height="2"/>
+                    <rect x="26" y="10" width="79" height="2"/>
+                    <rect x="20" y="15" width="91" height="2"/>
+                </g>
+                <g transform="translate(132.297656, 156.464453)" fill="#FFFFFF" class="svgc_btn_group">
+                    <rect width="94" height="28" rx="2"/>
+                    <text font-family="Arial-BoldMT, Arial" font-size="10" font-weight="bold" letter-spacing="0.043365855" class="svgc_text" fill="null" filter="url(#filter_readability_bewise)">
+                        <tspan x="25.7034897" y="18">Discover</tspan>
+                    </text>
+                </g>
+            </g>
+        </g>
+        <g transform="translate(0, 1713)" class="svgc_footer">
+            <rect fill="#FOOTER_COLOR" width="700" height="137" class="svgc_footer_bg"/>
+            <path d="M75.5168655,77.8130811 L75.5168655,76.2975368 L71.8221226,76.2975368 L71.8221226,69.1188662 L70,69.1188662 L70,77.8130811 L75.5168655,77.8130811 Z M80.1375015,77.9319473 C80.8977713,77.9319473 81.582996,77.7571857 82.1931756,77.4076624 C82.8033552,77.0581391 83.2858881,76.5508351 83.6407742,75.8857503 C83.9956603,75.2206655 84.1731033,74.4140733 84.1731033,73.4659737 C84.1731033,72.5178741 83.9956603,71.7112819 83.6407742,71.0461971 C83.2858881,70.3811123 82.8033552,69.8738082 82.1931756,69.5242849 C81.582996,69.1747616 80.8977713,69 80.1375015,69 C79.3716209,69 78.6842921,69.1747616 78.0755152,69.5242849 C77.4667382,69.8738082 76.9856081,70.3811123 76.6321247,71.0461971 C76.2786414,71.7112819 76.1018997,72.5178741 76.1018997,73.4659737 C76.1018997,74.4112431 76.2786414,75.2164202 76.6321247,75.881505 C76.9856081,76.5465898 77.4667382,77.0546014 78.0755152,77.4055398 C78.6842921,77.7564781 79.3716209,77.9319473 80.1375015,77.9319473 Z M80.1375015,76.3060272 C79.69705,76.3060272 79.312707,76.1970665 78.9844724,75.9791451 C78.6562378,75.7612237 78.4016456,75.441417 78.2206958,75.0197249 C78.039746,74.5980329 77.9492711,74.0801158 77.9492711,73.4659737 C77.9492711,72.8518315 78.039746,72.3339144 78.2206958,71.9122224 C78.4016456,71.4905303 78.6562378,71.1707236 78.9844724,70.9528022 C79.312707,70.7348808 79.69705,70.6259201 80.1375015,70.6259201 C80.577953,70.6259201 80.962296,70.7348808 81.2905306,70.9528022 C81.6187651,71.1707236 81.8733573,71.4905303 82.0543072,71.9122224 C82.235257,72.3339144 82.3257319,72.8518315 82.3257319,73.4659737 C82.3257319,74.0801158 82.235257,74.5980329 82.0543072,75.0197249 C81.8733573,75.441417 81.6187651,75.7612237 81.2905306,75.9791451 C80.962296,76.1970665 80.577953,76.3060272 80.1375015,76.3060272 Z M89.2995498,77.9319473 C90.0233491,77.9319473 90.6657911,77.7840721 91.2268758,77.4883216 C91.7879605,77.1925711 92.228412,76.7708791 92.5482303,76.2232454 C92.8680486,75.6756118 93.0279577,75.0197249 93.0279577,74.255585 L93.0279577,74.255585 L93.0279577,73.1603177 L89.4215857,73.1603177 L89.4215857,74.5442601 L91.2704298,74.5445091 L91.2666777,74.6703196 C91.2493776,74.9064797 91.1974773,75.1206276 91.1109767,75.3127632 L91.0396138,75.4527376 C90.8839128,75.7244318 90.6594789,75.9345703 90.3663121,76.0831531 C90.0731454,76.2317359 89.7203633,76.3060272 89.3079661,76.3060272 C88.8534875,76.3060272 88.4593254,76.1949439 88.12548,75.9727773 C87.7916346,75.7506107 87.5335357,75.4272663 87.3511831,75.0027441 C87.1688306,74.5782218 87.0776543,74.0631349 87.0776543,73.4574832 C87.0776543,72.8518315 87.1702333,72.3388672 87.3553913,71.9185902 C87.5405492,71.4983132 87.7993495,71.1777989 88.1317922,70.9570474 C88.4642349,70.7362958 88.850682,70.6259201 89.2911335,70.6259201 C89.5267891,70.6259201 89.7421054,70.6556366 89.9370823,70.7150697 C90.1320592,70.7745028 90.3059955,70.8601148 90.4588911,70.9719057 C90.6117867,71.0836965 90.7415375,71.2195436 90.8481436,71.379447 C90.9547497,71.5393504 91.0375097,71.7226024 91.0964236,71.9292033 L91.0964236,71.9292033 L92.9480032,71.9292033 C92.8890893,71.4990207 92.7558317,71.1049226 92.5482303,70.7469089 C92.340629,70.3888952 92.0734124,70.0797015 91.7465805,69.8193279 C91.4197487,69.5589542 91.045926,69.3573062 90.6251124,69.2143837 C90.2042989,69.0714612 89.7498203,69 89.2616766,69 C88.6921756,69 88.1633533,69.1004703 87.6752095,69.3014108 C87.1870658,69.5023513 86.7592387,69.7952716 86.3917283,70.1801717 C86.0242178,70.5650719 85.7387659,71.0341689 85.5353727,71.5874629 C85.3319795,72.1407568 85.2302829,72.7697572 85.2302829,73.4744641 C85.2302829,74.3914321 85.4007124,75.183166 85.7415713,75.8496659 C86.0824303,76.5161657 86.558651,77.0298376 87.1702333,77.3906815 C87.7818156,77.7515254 88.4915878,77.9319473 89.2995498,77.9319473 Z M98.1451476,77.9319473 C98.9054174,77.9319473 99.5906421,77.7571857 100.200822,77.4076624 C100.811001,77.0581391 101.293534,76.5508351 101.64842,75.8857503 C102.003306,75.2206655 102.180749,74.4140733 102.180749,73.4659737 C102.180749,72.5178741 102.003306,71.7112819 101.64842,71.0461971 C101.293534,70.3811123 100.811001,69.8738082 100.200822,69.5242849 C99.5906421,69.1747616 98.9054174,69 98.1451476,69 C97.3792669,69 96.6919382,69.1747616 96.0831612,69.5242849 C95.4743843,69.8738082 94.9932542,70.3811123 94.6397708,71.0461971 C94.2862874,71.7112819 94.1095457,72.5178741 94.1095457,73.4659737 C94.1095457,74.4112431 94.2862874,75.2164202 94.6397708,75.881505 C94.9932542,76.5465898 95.4743843,77.0546014 96.0831612,77.4055398 C96.6919382,77.7564781 97.3792669,77.9319473 98.1451476,77.9319473 Z M98.1451476,76.3060272 C97.7046961,76.3060272 97.320353,76.1970665 96.9921185,75.9791451 C96.6638839,75.7612237 96.4092917,75.441417 96.2283419,75.0197249 C96.0473921,74.5980329 95.9569172,74.0801158 95.9569172,73.4659737 C95.9569172,72.8518315 96.0473921,72.3339144 96.2283419,71.9122224 C96.4092917,71.4905303 96.6638839,71.1707236 96.9921185,70.9528022 C97.320353,70.7348808 97.7046961,70.6259201 98.1451476,70.6259201 C98.5855991,70.6259201 98.9699421,70.7348808 99.2981767,70.9528022 C99.6264112,71.1707236 99.8810034,71.4905303 100.061953,71.9122224 C100.242903,72.3339144 100.333378,72.8518315 100.333378,73.4659737 C100.333378,74.0801158 100.242903,74.5980329 100.061953,75.0197249 C99.8810034,75.441417 99.6264112,75.7612237 99.2981767,75.9791451 C98.9699421,76.1970665 98.5855991,76.3060272 98.1451476,76.3060272 Z" fill="#FOOTER_COLOR" fill-rule="nonzero" class="svgc_text" filter="url(#filter_readability_bewise)"/>
+            <rect fill="#FOOTER_COLOR" opacity="0.6" x="256" y="104" width="37" height="7" class="svgc_text" filter="url(#filter_readability_bewise)"/>
+            <rect fill="#FOOTER_COLOR" opacity="0.6" x="306" y="104" width="37" height="7" class="svgc_text" filter="url(#filter_readability_bewise)"/>
+            <rect fill="#FOOTER_COLOR" opacity="0.6" x="356" y="104" width="37" height="7" class="svgc_text" filter="url(#filter_readability_bewise)"/>
+            <rect fill="#FOOTER_COLOR" opacity="0.6" x="406" y="104" width="37" height="7" class="svgc_text" filter="url(#filter_readability_bewise)"/>
+            <circle fill="#FOOTER_COLOR" cx="566.5" cy="107.5" r="7.5" class="svgc_text" filter="url(#filter_readability_bewise)"/>
+            <circle fill="#FOOTER_COLOR" cx="594.5" cy="107.5" r="7.5" class="svgc_text" filter="url(#filter_readability_bewise)"/>
+            <circle fill="#FOOTER_COLOR" cx="622.5" cy="107.5" r="7.5" class="svgc_text" filter="url(#filter_readability_bewise)"/>
+            <g transform="translate(70, 29)" fill="#2D442A" opacity="0.55">
+                <rect width="131" height="2" class="svgc_text" fill="#FOOTER_COLOR" filter="url(#filter_readability_bewise)"/>
+                <rect y="5" width="116" height="2" class="svgc_text" fill="#FOOTER_COLOR" filter="url(#filter_readability_bewise)"/>
+                <rect y="10" width="79" height="2" class="svgc_text" fill="#FOOTER_COLOR" filter="url(#filter_readability_bewise)"/>
+                <rect y="15" width="91" height="2" class="svgc_text" fill="#FOOTER_COLOR" filter="url(#filter_readability_bewise)"/>
+            </g>
+            <g transform="translate(263, 29)" fill="#2D442A" opacity="0.55">
+                <rect width="232" height="2" class="svgc_text" fill="#FOOTER_COLOR" filter="url(#filter_readability_bewise)"/>
+                <rect y="5" width="205.435115" height="2" class="svgc_text" fill="#FOOTER_COLOR" filter="url(#filter_readability_bewise)"/>
+                <rect y="10" width="139.908397" height="2" class="svgc_text" fill="#FOOTER_COLOR" filter="url(#filter_readability_bewise)"/>
+                <rect y="15" width="161.160305" height="2" class="svgc_text" fill="#FOOTER_COLOR" filter="url(#filter_readability_bewise)"/>
+            </g>
+        </g>
+    </g>
+</svg>

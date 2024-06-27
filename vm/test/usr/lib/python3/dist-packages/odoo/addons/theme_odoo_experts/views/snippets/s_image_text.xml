@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_image_text" inherit_id="website.s_image_text">
+    <!-- Column #1 -->
+    <xpath expr="//div[hasclass('col-lg-6')]" position="attributes">
+        <attribute name="class" add="col-lg-5" remove="col-lg-6" separator=" "/>
+    </xpath>
+    <!-- Image -->
+    <xpath expr="//img" position="attributes">
+        <attribute name="src">/web_editor/image_shape/website.s_image_text_device_perspective/web_editor/devices/iphone_3d_portrait_01.svg?c5=o-color-5</attribute>
+        <attribute name="data-shape">web_editor/devices/iphone_3d_portrait_01</attribute>
+        <attribute name="data-original-mimetype">image/jpg</attribute>
+        <attribute name="data-file-name">s_image_text_device_perspective.svg</attribute>
+        <attribute name="data-shape-colors">;;;;o-color-5</attribute>
+        <attribute name="style">padding: 48px !important;</attribute>
+    </xpath>
+    <!-- Column #2 -->
+    <xpath expr="//div[hasclass('col-lg-6')]" position="attributes">
+        <attribute name="class" add="offset-lg-1" separator=" "/>
+    </xpath>
+    <!-- Column #2 - Title -->
+    <xpath expr="//h2" position="replace" mode="inner">
+        A solution for <br/>every need
+    </xpath>
+    <!-- Column #2 - Paragraphs -->
+    <xpath expr="//p" position="replace" mode="inner">
+        <br/>
+    </xpath>
+    <xpath expr="//p[2]" position="replace" mode="inner">
+        We see our role as that of a legal partner responsible for constantly finding practical and pragmatic solutions that are adapted to our clients' needs.
+    </xpath>
+</template>
+
+<template id="configurator_s_image_text" inherit_id="website.configurator_s_image_text">
+    <!-- Shape option -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Bold/01","flip":[]}</attribute>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Bold_01"/>
+    </xpath>
+</template>
+
+</odoo>

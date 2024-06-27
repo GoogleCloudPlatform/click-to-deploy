@@ -1,0 +1,285 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="700" height="1850" viewBox="0 0 700 1850">
+    <defs>
+        <clipPath id="theme_notes_clip-path">
+            <rect width="700" height="315" transform="translate(1407 273)" fill="#383E45"/>
+        </clipPath>
+        <linearGradient id="theme_notes_linear-gradient_1" x1="7.421" y1="-0.26" x2="7.422" y2="-0.26" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#383E45"/>
+            <stop offset="1" stop-color="#383E45"/>
+        </linearGradient>
+        <linearGradient id="theme_notes_linear-gradient_2" x1="7.421" y1="-0.323" x2="7.422" y2="-0.323" xlink:href="#theme_notes_linear-gradient_1"/>
+        <linearGradient id="theme_notes_linear-gradient_3" x1="7.421" y1="-0.361" x2="7.422" y2="-0.361" xlink:href="#theme_notes_linear-gradient_1"/>
+        <linearGradient id="theme_notes_linear-gradient_4" x1="7.421" y1="-0.358" x2="7.422" y2="-0.358" xlink:href="#theme_notes_linear-gradient_1"/>
+        <linearGradient id="theme_notes_linear-gradient_5" x1="7.421" y1="-0.305" x2="7.422" y2="-0.305" xlink:href="#theme_notes_linear-gradient_1"/>
+        <linearGradient id="theme_notes_linear-gradient_6" x1="7.421" y1="-0.349" x2="7.422" y2="-0.349" xlink:href="#theme_notes_linear-gradient_1"/>
+        <pattern id="theme_notes_member_1" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" viewBox="0 0 186 186">
+            <image width="186" height="186" href="/web/image/website.s_company_team_image_1"/>
+        </pattern>
+        <pattern id="theme_notes_member_2" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" viewBox="0 0 186 186">
+            <image width="186" height="186" href="/web/image/website.s_company_team_image_2"/>
+        </pattern>
+        <pattern id="theme_notes_member_3" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" viewBox="0 0 186 186">
+            <image width="186" height="186" href="/web/image/website.s_company_team_image_3"/>
+        </pattern>
+        <pattern id="theme_notes_member_4" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" viewBox="0 0 186 186">
+            <image width="186" height="186" xlink:href="/web/image/website.s_company_team_image_4"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_notes_s_carousel_default_image_1_id" patternunits="objectBoundingBox">
+            <image width="700" height="310" preserveAspectRatio="xMidYMid slice" href="#s_carousel_default_image_1_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_notes_s_masonry_block_default_image_1_id" patternunits="objectBoundingBox">
+            <image width="350" height="196" preserveAspectRatio="xMidYMid slice" href="#s_masonry_block_default_image_1_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_notes_s_text_image_default_image_id" patternunits="objectBoundingBox">
+            <image width="186" height="107" preserveAspectRatio="xMidYMid slice" href="#s_text_image_default_image_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_notes_s_product_catalog_default_image_id" patternunits="objectBoundingBox">
+            <image width="700" height="240" preserveAspectRatio="xMidYMid slice" href="#s_product_catalog_default_image_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_notes_s_media_list_default_image_1_id" patternunits="objectBoundingBox">
+            <image width="280" height="141" preserveAspectRatio="xMidYMid slice" href="#s_media_list_default_image_1_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_notes_s_media_list_default_image_2_id" patternunits="objectBoundingBox">
+            <image width="280" height="141" preserveAspectRatio="xMidYMid slice" href="#s_media_list_default_image_2_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_notes_s_media_list_default_image_3_id" patternunits="objectBoundingBox">
+            <image width="280" height="141" preserveAspectRatio="xMidYMid slice" href="#s_media_list_default_image_3_url"/>
+        </pattern>
+        <filter id="filter_readability_notes">
+            <feColorMatrix in="SourceGraphic" type="saturate" values="0"/>
+            <feComponentTransfer>
+                <feFuncR type="table" tableValues="1 0"/>
+                <feFuncG type="table" tableValues="1 0"/>
+                <feFuncB type="table" tableValues="1 0"/>
+            </feComponentTransfer>
+            <feComponentTransfer>
+                <feFuncR type="linear" slope="10000" intercept="-4999.5"/>
+                <feFuncG type="linear" slope="10000" intercept="-4999.5"/>
+                <feFuncB type="linear" slope="10000" intercept="-4999.5"/>
+            </feComponentTransfer>
+        </filter>
+    </defs>
+    <g fill="none" fill-rule="evenodd" class="theme_notes">
+        <rect width="700" height="1850" fill="#FFFFFF"/>
+        <g class="svgc_menu">
+            <rect width="700" height="37" class="svgc_menu_bg" fill="#MENU_COLOR"/>
+            <path class="svgc_text" opacity="1" fill="#MENU_COLOR" fill-rule="nonzero" filter="url(#filter_readability_notes)" d="M76.345 23v-1.521h-3.741v-7.206h-1.845V23h5.586zm4.68.12c.77 0 1.463-.176 2.08-.527.619-.35 1.107-.86 1.467-1.528.36-.667.539-1.477.539-2.429 0-.951-.18-1.761-.54-2.429-.359-.667-.847-1.176-1.465-1.527-.618-.351-1.312-.527-2.082-.527-.775 0-1.471.176-2.088.527-.616.35-1.104.86-1.461 1.527-.358.668-.537 1.478-.537 2.43 0 .948.179 1.756.537 2.424a3.753 3.753 0 0 0 1.461 1.53c.617.352 1.313.528 2.088.528zm0-1.633a2.08 2.08 0 0 1-1.168-.328c-.333-.219-.59-.54-.774-.963-.183-.423-.275-.943-.275-1.56 0-.616.092-1.136.275-1.56.183-.423.441-.744.774-.962a2.075 2.075 0 0 1 1.167-.328c.446 0 .835.109 1.168.328.332.218.59.54.773.963.184.423.275.943.275 1.56 0 .616-.091 1.136-.275 1.559-.183.423-.44.744-.773.963a2.075 2.075 0 0 1-1.168.328zm9.277 1.632c.733 0 1.384-.148 1.952-.445a3.292 3.292 0 0 0 1.338-1.27c.324-.55.486-1.208.486-1.975v-1.1h-3.652v1.39h1.872l-.004.126c-.017.237-.07.452-.157.645l-.073.14a1.591 1.591 0 0 1-.682.633c-.296.15-.654.224-1.071.224-.46 0-.86-.111-1.198-.334-.338-.223-.6-.548-.784-.974-.184-.426-.277-.943-.277-1.551s.094-1.123.281-1.545c.188-.422.45-.744.787-.965a2.086 2.086 0 0 1 1.174-.332c.238 0 .456.03.654.089.197.06.373.146.528.258.155.112.286.248.394.409.108.16.192.344.252.552h1.875a3.19 3.19 0 0 0-.405-1.187 3.27 3.27 0 0 0-.812-.931 3.741 3.741 0 0 0-1.135-.607 4.3 4.3 0 0 0-1.381-.216 4.21 4.21 0 0 0-1.607.303 3.756 3.756 0 0 0-1.3.882 4.021 4.021 0 0 0-.867 1.413c-.206.555-.309 1.186-.309 1.894 0 .92.173 1.715.518 2.384a3.725 3.725 0 0 0 1.447 1.547c.62.362 1.338.543 2.156.543zm8.958 0c.77 0 1.463-.175 2.081-.526.618-.35 1.107-.86 1.466-1.528.36-.667.54-1.477.54-2.429 0-.951-.18-1.761-.54-2.429-.36-.667-.848-1.176-1.466-1.527s-1.311-.527-2.081-.527c-.776 0-1.472.176-2.088.527-.617.35-1.104.86-1.462 1.527-.358.668-.537 1.478-.537 2.43 0 .948.179 1.756.537 2.424.358.668.845 1.178 1.462 1.53.616.352 1.312.528 2.088.528zm0-1.632c-.446 0-.836-.11-1.168-.328-.332-.219-.59-.54-.773-.963-.184-.423-.275-.943-.275-1.56 0-.616.091-1.136.275-1.56.183-.423.44-.744.773-.962a2.075 2.075 0 0 1 1.168-.328c.446 0 .835.109 1.167.328.333.218.59.54.774.963.183.423.275.943.275 1.56 0 .616-.092 1.136-.275 1.559-.184.423-.441.744-.774.963a2.075 2.075 0 0 1-1.167.328z"/>
+            <g opacity=".6" transform="translate(145 15)">
+                <rect width="37" height="7" fill="#MENU_COLOR" class="svgc_text" filter="url(#filter_readability_notes)"/>
+                <rect width="37" height="7" x="58" fill="#MENU_COLOR" class="svgc_text" filter="url(#filter_readability_notes)"/>
+                <rect width="37" height="7" x="116" fill="#MENU_COLOR" class="svgc_text" filter="url(#filter_readability_notes)"/>
+                <rect width="37" height="7" x="174" fill="#MENU_COLOR" class="svgc_text" filter="url(#filter_readability_notes)"/>
+            </g>
+            <rect width="37" height="7" x="593" y="15" fill="#MENU_COLOR" opacity="1" class="svgc_text" filter="url(#filter_readability_notes)"/>
+        </g>
+        <g class="s_masonry_block" transform="translate(-1407 -241)">
+            <rect fill="url(#theme_notes_s_masonry_block_default_image_1_id)" class="img_reference_s_masonry_block_default_image_1"  width="350" height="196" transform="translate(1407 588)"/>
+            <rect width="175" height="100" transform="translate(1757 588)" fill="#F6F6F6"/>
+            <rect width="175" height="100" transform="translate(1757 684)" fill="#3AADAA"/>
+            <rect width="175" height="100" transform="translate(1932 588)" fill="#7C6576"/>
+            <rect width="175" height="100" transform="translate(1932 684)" fill="#F6F6F6"/>
+            <text transform="translate(1796 634)" fill="#3AADAA" font-size="18" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="0" y="0">Entry Title</tspan></text>
+            <g transform="translate(1801 646.125)" opacity="0.4">
+                <rect width="86.811" height="2" fill="#212529"/>
+                <rect width="71.811" height="2" transform="translate(8 5)" fill="#212529"/>
+            </g>
+            <text transform="translate(1796 733)" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_notes)" font-size="18" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="0" y="0">Entry Title</tspan></text>
+            <g transform="translate(1801 744.324)" opacity="0.4">
+                <rect width="86.811" height="2" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_notes)"/>
+                <rect width="71.811" height="2" transform="translate(8 5)" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_notes)"/>
+            </g>
+            <text transform="translate(1970 634)" fill="#7C6576" class="svgc_text" filter="url(#filter_readability_notes)" font-size="18" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="0" y="0">Entry Title</tspan></text>
+            <g transform="translate(1976 646.125)" opacity="0.4">
+                <rect width="86.811" height="2" fill="#7C6576" class="svgc_text" filter="url(#filter_readability_notes)"/>
+                <rect width="71.811" height="2" transform="translate(8 5)" fill="#7C6576" class="svgc_text" filter="url(#filter_readability_notes)"/>
+            </g>
+            <text transform="translate(1970 733)" fill="#3AADAA" font-size="18" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="0" y="0">Entry Title</tspan></text>
+            <g transform="translate(1976 744.324)" opacity="0.4">
+                <rect width="86.811" height="2" fill="#212529"/>
+                <rect width="71.811" height="2" transform="translate(8 5)" fill="#212529"/>
+            </g>
+        </g>
+        <g class="s_carousel" transform="translate(-1407 -242)">
+            <rect fill="url(#theme_notes_s_carousel_default_image_1_id)" class="img_reference_s_carousel_default_image_1" width="700" height="311" transform="translate(1407 279)"/>
+            <g transform="translate(3514 866) rotate(180)" clip-path="url(#theme_notes_clip-path)">
+                <g transform="translate(1407 276)">
+                    <path d="M700,0V367.642q-70-57.677-140-77.379t-140,4.13q-70,23.832-140-42.857T140,218.089Q70,251.332,0,155.419V0Z" fill="#383E45" opacity="0.4"/>
+                    <path d="M700,0V284.437q-70-7.937-140-18.157a1036.493,1036.493,0,0,1-140-30.593,572.76,572.76,0,0,0-140-22.878q-70-2.505-140-53.972T0,152.627V0Z" fill="#383E45" opacity="0.4"/>
+                    <path d="M700,0V363.832A965.779,965.779,0,0,0,560,325.79q-70-13.367-140-77.709T280,190.972q-70,7.233-140-18.844T0,173.736V0Z" fill="#383E45" opacity="0.4"/>
+                    <path d="M700,0V342.4q-70-12.861-140-27.89T420,240.58q-70-58.9-140-14.115T140,166.222Q70,61.2,0,137.242V0Z" fill="#383E45" opacity="0.4"/>
+                    <path d="M700,0V353.371q-70-48.863-140-57.523T420,281.354q-70-5.833-140-58.987T140,190.353q-70,21.14-140,12.1V0Z" fill="#383E45" opacity="0.4"/>
+                </g>
+            </g>
+            <text transform="translate(1477 405)" fill="#FFFFFF" font-size="28" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="0" y="0">Welcome Message</tspan></text>
+            <g transform="translate(-7 -12)">
+                <g transform="translate(1482.425 400.975)" opacity="0.4">
+                    <rect width="235" height="2" transform="translate(1.575 32.025)" fill="#FFFFFF"/>
+                    <rect width="220" height="2" transform="translate(1.575 37.025)" fill="#FFFFFF"/>
+                    <rect width="128" height="2" transform="translate(1.575 42.025)" fill="#FFFFFF"/>
+                    <rect width="154" height="2" transform="translate(1.575 47.025)" fill="#FFFFFF"/>
+                </g>
+                <path d="M2,0H92a2,2,0,0,1,2,2V26a2,2,0,0,1-2,2H2a2,2,0,0,1-2-2V2A2,2,0,0,1,2,0Z" transform="translate(1484.15 472.2)" fill="#3AADAA"/>
+                <text transform="translate(1506 490)" fill="#FFFFFF" font-size="11" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="0" y="0">Discover</tspan></text>
+            </g>
+        </g>
+        <g class="s_text_image" transform="translate(0 -21)">
+            <path d="M0,0H700V172H0Z" transform="translate(0 564)" fill="#FFFFFF"/>
+            <g transform="translate(95 599.203)">
+                <g transform="translate(0 34.15)" opacity="0.4">
+                    <rect width="131" height="2" fill="#212529"/>
+                    <rect width="116" height="2" transform="translate(0 5)" fill="#212529"/>
+                    <rect width="79" height="2" transform="translate(0 10)" fill="#212529"/>
+                    <rect width="91" height="2" transform="translate(0 15)" fill="#212529"/>
+                </g>
+                <path d="M2,0H92a2,2,0,0,1,2,2V26a2,2,0,0,1-2,2H2a2,2,0,0,1-2-2V2A2,2,0,0,1,2,0Z" transform="translate(0.15 73.35)" fill="#3AADAA"/>
+                <text transform="translate(-1 18.797)" fill="#212529" font-size="24" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="0" y="0">Section Title</tspan></text>
+                <text transform="translate(22 91.797)" fill="#FFFFFF" font-size="11" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="0" y="0">Discover</tspan></text>
+            </g>
+            <rect fill="url(#theme_notes_s_text_image_default_image_id)" class="img_reference_s_text_image_default_image" width="186" height="107" transform="translate(444 595)"/>
+        </g>
+        <g class="s_product_catalog" transform="translate(0 -133)">
+            <path fill="url(#theme_notes_s_product_catalog_default_image_id)" class="img_reference_s_product_catalog_default_image" d="M0,0H700V240H0Z" transform="translate(0 848)"/>
+            <g transform="translate(0 761.718)">
+                <path d="M0,237.581a1300.051,1300.051,0,0,1,175-16.167q87.5-2.094,175,30.51t175,34.664q87.5,2.05,175,10.527V140.527q-87.5-5.122-175-8.892a762,762,0,0,1-175-28.51Q262.5,78.371,175,158.48T0,147.01Z" transform="translate(0 0)" opacity="0.4" fill="url(#theme_notes_linear-gradient_1)" style="isolation: isolate"/>
+                <path d="M0,260.033q87.5-9.84,175-11.027A689.043,689.043,0,0,1,350,269.4a1037.353,1037.353,0,0,0,175,27.816,1233.689,1233.689,0,0,0,175,.03V114q-87.5,28.159-175,26.4a1086.65,1086.65,0,0,1-175-17.882Q262.5,106.4,175,142.238T0,155.227Z" transform="translate(0 -7.897)" opacity="0.4" fill="url(#theme_notes_linear-gradient_2)" style="isolation: isolate"/>
+                <path d="M0,243.192a640.546,640.546,0,0,0,175,21.873q87.5-1.355,175-6.269a651.857,651.857,0,0,1,175,14.047q87.5,18.936,175-16.458v-132q-87.5-7.412-175-9.133T350,159.327q-87.5,45.809-175,4.822T0,168.566Z" transform="translate(0 -8.459)" opacity="0.4" fill="url(#theme_notes_linear-gradient_3)" style="isolation: isolate"/>
+                <path d="M0,274.075Q87.5,247.12,175,245.64t175,48.2q87.5,49.686,175-16.113t175,4.059V143.008q-87.5,1.908-175-1.406T350,129.946q-87.5-8.347-175,17.648T0,170.981Z" transform="translate(0 -14.471)" opacity="0.4" fill="url(#theme_notes_linear-gradient_4)" style="isolation: isolate"/>
+                <path d="M0,230.888q87.5,40.263,175,35.655a1089.4,1089.4,0,0,0,175-23.675q87.5-19.067,175,40.667t175,8.917V123.281q-87.5,36.907-175,33.68a827.06,827.06,0,0,1-175-25.62q-87.5-22.388-175-12.932T0,157.614Z" transform="translate(0 -8.653)" opacity="0.4" fill="url(#theme_notes_linear-gradient_5)" style="isolation: isolate"/>
+                <path d="M0,243.092q87.5-.065,175-2.938T350,260.9q87.5,23.606,175,6.642t175,47.574V125.81q-87.5,25.564-175,21.329A627.77,627.77,0,0,0,350,163.5q-87.5,20.6-175-12.146T0,153.9Z" transform="translate(0 -13.475)" opacity="0.4" fill="url(#theme_notes_linear-gradient_6)" style="isolation: isolate"/>
+            </g>
+            <g transform="translate(0 5.044)">
+                <g transform="translate(0 17.828)">
+                    <g transform="translate(-3837 -290)">
+                        <rect width="100.548" height="9" transform="translate(3907 1256.5)" fill="#FFFFFF"/>
+                        <rect width="70.577" height="9" transform="translate(3907 1276.5)" fill="#FFFFFF"/>
+                        <rect width="82.178" height="9" transform="translate(3907 1296.5)" fill="#FFFFFF"/>
+                        <rect width="34.805" height="9" transform="translate(4105.195 1256.5)" fill="#FFFFFF"/>
+                        <rect width="34.805" height="9" transform="translate(4105.195 1276.5)" fill="#FFFFFF"/>
+                        <rect width="34.805" height="9" transform="translate(4105.195 1296.5)" fill="#FFFFFF"/>
+                        <rect width="88" height="2" transform="translate(4012 1259)" fill="#FFFFFF" opacity="0.6"/>
+                        <rect width="118" height="2" transform="translate(3982 1279)" fill="#FFFFFF" opacity="0.6"/>
+                        <rect width="106" height="2" transform="translate(3994 1299)" fill="#FFFFFF" opacity="0.6"/>
+                    </g>
+                    <g transform="translate(-3510 -290)">
+                        <rect width="100.548" height="9" transform="translate(3907 1256.5)" fill="#FFFFFF"/>
+                        <rect width="70.577" height="9" transform="translate(3907 1276.5)" fill="#FFFFFF"/>
+                        <rect width="82.178" height="9" transform="translate(3907 1296.5)" fill="#FFFFFF"/>
+                        <rect width="34.805" height="9" transform="translate(4105.195 1256.5)" fill="#FFFFFF"/>
+                        <rect width="34.805" height="9" transform="translate(4105.195 1276.5)" fill="#FFFFFF"/>
+                        <rect width="34.805" height="9" transform="translate(4105.195 1296.5)" fill="#FFFFFF"/>
+                        <rect width="88" height="2" transform="translate(4012 1259)" fill="#FFFFFF" opacity="0.6"/>
+                        <rect width="118" height="2" transform="translate(3982 1279)" fill="#FFFFFF" opacity="0.6"/>
+                        <rect width="106" height="2" transform="translate(3994 1299)" fill="#FFFFFF" opacity="0.6"/>
+                    </g>
+                    <text transform="translate(69 951.128)" fill="#FFFFFF" font-size="20" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="0" y="0">Entry Title</tspan></text>
+                    <text transform="translate(396 951.128)" fill="#FFFFFF" font-size="20" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="0" y="0">Entry Title</tspan></text>
+                </g>
+                <g>
+                    <text transform="translate(272 912.956)" fill="#FFFFFF" font-size="24" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="0" y="0">Section Title</tspan></text>
+                    <rect width="88" height="2" transform="translate(306 925)" fill="#FFFFFF" opacity="0.6"/>
+                </g>
+            </g>
+        </g>
+        <g class="s_media_list">
+            <rect width="700" height="490" transform="translate(0 955)" fill="#FFFFFF"/>
+            <path d="M0,285V0L189.3,16.4a618.3,618.3,0,0,1,322,124.55L700,285Z" transform="translate(0 1160)" fill="#F6F6F6"/>
+            <g>
+                <g transform="translate(115.425 1291.82)" opacity="0.4">
+                    <rect width="131" height="2" transform="translate(1.575 32.025)" fill="#212529"/>
+                    <rect width="116" height="2" transform="translate(1.575 37.025)" fill="#212529"/>
+                    <rect width="79" height="2" transform="translate(1.575 42.025)" fill="#212529"/>
+                    <rect width="91" height="2" transform="translate(1.575 47.025)" fill="#212529"/>
+                </g>
+                <path d="M2,0H92a2,2,0,0,1,2,2V26a2,2,0,0,1-2,2H2a2,2,0,0,1-2-2V2A2,2,0,0,1,2,0Z" transform="translate(117.15 1363.045)" fill="#3AADAA"/>
+                <text transform="translate(117 1308)" fill="#212529" font-size="20" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="0" y="0">Section Title</tspan></text>
+                <text transform="translate(139 1381)" fill="#FFFFFF" font-size="11" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="0" y="0">Discover</tspan></text>
+            </g>
+            <g>
+                <g transform="translate(395.425 1150.32)" opacity="0.4">
+                    <rect width="131" height="2" transform="translate(1.575 32.025)" fill="#212529"/>
+                    <rect width="116" height="2" transform="translate(1.575 37.025)" fill="#212529"/>
+                    <rect width="79" height="2" transform="translate(1.575 42.025)" fill="#212529"/>
+                    <rect width="91" height="2" transform="translate(1.575 47.025)" fill="#212529"/>
+                </g>
+                <path d="M2,0H92a2,2,0,0,1,2,2V26a2,2,0,0,1-2,2H2a2,2,0,0,1-2-2V2A2,2,0,0,1,2,0Z" transform="translate(397.15 1221.545)" fill="#3AADAA"/>
+                <text transform="translate(397 1166)" fill="#212529" font-size="20" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="0" y="0">Section Title</tspan></text>
+                <text transform="translate(419 1240)" fill="#FFFFFF" font-size="11" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="0" y="0">Discover</tspan></text>
+            </g>
+            <g>
+                <g transform="translate(115.425 1009.82)" opacity="0.4">
+                    <rect width="131" height="2" transform="translate(1.575 32.025)" fill="#212529"/>
+                    <rect width="116" height="2" transform="translate(1.575 37.025)" fill="#212529"/>
+                    <rect width="79" height="2" transform="translate(1.575 42.025)" fill="#212529"/>
+                    <rect width="91" height="2" transform="translate(1.575 47.025)" fill="#212529"/>
+                </g>
+                <path d="M2,0H92a2,2,0,0,1,2,2V26a2,2,0,0,1-2,2H2a2,2,0,0,1-2-2V2A2,2,0,0,1,2,0Z" transform="translate(117.15 1081.045)" fill="#3AADAA"/>
+                <text transform="translate(117 1026)" fill="#212529" font-size="20" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="0" y="0">Section Title</tspan></text>
+                <text transform="translate(139 1100)" fill="#FFFFFF" font-size="11" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="0" y="0">Discover</tspan></text>
+            </g>
+            <rect fill="url(#theme_notes_s_media_list_default_image_3_id)" class="img_reference_s_media_list_default_image_3" width="280" height="141" transform="translate(350 1271)"/>
+            <rect fill="url(#theme_notes_s_media_list_default_image_2_id)" class="img_reference_s_media_list_default_image_2" width="280" height="141" transform="translate(70 1130)"/>
+            <rect fill="url(#theme_notes_s_media_list_default_image_1_id)" class="img_reference_s_media_list_default_image_1" width="280" height="141" transform="translate(350 989)"/>
+        </g>
+        <g class="s_company_team">
+            <rect width="700" height="260" transform="translate(0 1444)" fill="#F6F6F6"/>
+            <path d="M680.05,525.1h0a4.979,4.979,0,0,0-7.05,0h0l-4.6,4.6a7.967,7.967,0,0,1-11.25,0h0a8.661,8.661,0,0,0-12.2,0h0a4.979,4.979,0,0,1-7.05,0l-6.1-6.1a8.9,8.9,0,0,0-12.55,0h0a3.561,3.561,0,0,1-5.05,0h0a4.979,4.979,0,0,0-7.05,0l-6.1,6.1a4.979,4.979,0,0,1-7.05,0l-8-8a9.854,9.854,0,0,0-13.9-.1h0a9.6,9.6,0,0,1-13.5-.1h0a9.6,9.6,0,0,0-13.5-.05L531.3,535a9.385,9.385,0,0,1-13.25,0h0a9.385,9.385,0,0,0-13.25,0h0l-2.4,2.4a9.385,9.385,0,0,1-13.25,0l-.45-.45a5.945,5.945,0,0,0-8.45,0h0a10.019,10.019,0,0,1-14.15,0h0l-5.8-5.8a8.857,8.857,0,0,0-12.55,0h0l-.1.1a2.9,2.9,0,0,1-4.05,0l-.1-.1a10.019,10.019,0,0,0-14.15,0h0l-5.9,5.9a2.384,2.384,0,0,1-3.4,0h0l-.15-.15a3.32,3.32,0,0,0-4.7-.05h-.05l-.1.1a10.019,10.019,0,0,1-14.15,0h0l-4.7-4.7a10.019,10.019,0,0,0-14.15,0h0l-8.9,8.9a3.984,3.984,0,0,1-5.7,0h0l-.05-.05a4.982,4.982,0,0,0-4.7-1.35c-2.35.55-5.75.95-7.45-.75l-12-12a15,15,0,0,0-21.2,0l-4.6,4.7a17.458,17.458,0,0,1-24.7,0h0l-.25-.25a10.034,10.034,0,0,0-14.2-.1l-.05.05-9.05,9.05a4.979,4.979,0,0,1-7.05,0l-.25-.25a4.979,4.979,0,0,0-7.05,0l-.25.25a4.979,4.979,0,0,1-7.05,0h0l-3.35-3.35a10.019,10.019,0,0,0-14.15,0h0a9.906,9.906,0,0,1-8.15,2.85c-1.7-.2-3.4-.1-4.2.7l-.15.15a10.019,10.019,0,0,1-14.15,0l-9.4-9.35a5.7,5.7,0,0,0-8.1,0h0l-.15.15a10.019,10.019,0,0,1-14.15,0h0l-.45-.45a4.2,4.2,0,0,0-5.95,0h0a4.861,4.861,0,0,1-4.5,1.35c-1.75-.35-4.05-.5-5.2.7l-.15.15a15,15,0,0,1-21.2,0l-5.9-5.65a3.153,3.153,0,0,0-4.45,0h0l-.3.3a7.454,7.454,0,0,1-10.6,0h0l-.2-.2a10.019,10.019,0,0,0-14.15,0l-3.6,3.6a2.686,2.686,0,0,1-3.8,0h0a4.979,4.979,0,0,0-7.05,0l-3.8,3.8a4.979,4.979,0,0,1-7.05,0l-7.35-7.4a4.979,4.979,0,0,0-7.05,0L55,531.65a10.019,10.019,0,0,1-14.15,0h0L35.2,526a12.373,12.373,0,0,0-17.45,0h0a4.979,4.979,0,0,1-7.05,0h0l-2.2-2.2A4.975,4.975,0,0,0,0,527.35v17H700V526.3a5.015,5.015,0,0,0-5-5,5.121,5.121,0,0,0-3.4,1.35l-2.7,2.5a6.292,6.292,0,0,1-8.85-.05Z" transform="translate(0 1159.65)" fill="#FOOTER_COLOR"/>
+            <g transform="translate(184.404 1504.04)" opacity="0.4">
+                <rect width="131" height="2" transform="translate(1.575 32.025)" fill="#212529"/>
+                <rect width="116" height="2" transform="translate(1.575 37.025)" fill="#212529"/>
+                <rect width="79" height="2" transform="translate(1.575 42.025)" fill="#212529"/>
+                <rect width="91" height="2" transform="translate(1.575 47.025)" fill="#212529"/>
+            </g>
+            <g transform="translate(184.404 1591.04)" opacity="0.4">
+                <rect width="131" height="2" transform="translate(1.575 32.025)" fill="#212529"/>
+                <rect width="116" height="2" transform="translate(1.575 37.025)" fill="#212529"/>
+                <rect width="79" height="2" transform="translate(1.575 42.025)" fill="#212529"/>
+                <rect width="91" height="2" transform="translate(1.575 47.025)" fill="#212529"/>
+            </g>
+            <g transform="translate(464.425 1504.04)" opacity="0.4">
+                <rect width="131" height="2" transform="translate(1.575 32.025)" fill="#212529"/>
+                <rect width="116" height="2" transform="translate(1.575 37.025)" fill="#212529"/>
+                <rect width="79" height="2" transform="translate(1.575 42.025)" fill="#212529"/>
+                <rect width="91" height="2" transform="translate(1.575 47.025)" fill="#212529"/>
+            </g>
+            <g transform="translate(464.425 1591.04)" opacity="0.4">
+                <rect width="131" height="2" transform="translate(1.575 32.025)" fill="#212529"/>
+                <rect width="116" height="2" transform="translate(1.575 37.025)" fill="#212529"/>
+                <rect width="79" height="2" transform="translate(1.575 42.025)" fill="#212529"/>
+                <rect width="91" height="2" transform="translate(1.575 47.025)" fill="#212529"/>
+            </g>
+            <circle cx="30" cy="30" r="30" transform="translate(103 1501)" fill="url(#theme_notes_member_1)"/>
+            <circle cx="30" cy="30" r="30" transform="translate(384 1501)" fill="url(#theme_notes_member_2)"/>
+            <circle cx="30" cy="30" r="30" transform="translate(384 1588)" fill="url(#theme_notes_member_3)"/>
+            <circle cx="30" cy="30" r="30" transform="translate(103 1588)" fill="url(#theme_notes_member_4)"/>
+            <text transform="translate(186 1521)" fill="#3AADAA" font-size="14" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="0" y="0">Team Member</tspan></text>
+            <text transform="translate(186 1608)" fill="#3AADAA" font-size="14" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="0" y="0">Team Member</tspan></text>
+            <text transform="translate(466 1521)" fill="#3AADAA" font-size="14" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="0" y="0">Team Member</tspan></text>
+            <text transform="translate(466 1608)" fill="#3AADAA" font-size="14" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="0" y="0">Team Member</tspan></text>
+        </g>
+        <g transform="translate(0 1713)" class="svgc_footer">
+            <rect width="700" height="147" transform="translate(0 -10)" class="svgc_footer_bg" fill="#FOOTER_COLOR"/>
+            <g transform="translate(0 -31)">
+                <circle cx="7.5" cy="7.5" r="7.5" transform="translate(559 100)" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_notes)"/>
+                <circle cx="7.5" cy="7.5" r="7.5" transform="translate(587 100)" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_notes)"/>
+                <circle cx="7.5" cy="7.5" r="7.5" transform="translate(615 100)" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_notes)"/>
+            </g>
+            <g transform="translate(84 -1717)">
+                <rect width="71" height="2" transform="translate(475 1773)" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_notes)"/>
+                <rect width="59" height="2" transform="translate(475 1778)" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_notes)"/>
+            </g>
+            <g transform="translate(401.371 56)" opacity="0.4">
+                <rect width="111" height="2" transform="translate(-4.372)" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_notes)"/>
+                <rect width="72" height="2" transform="translate(-4.372 5)" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_notes)"/>
+                <rect width="103" height="2" transform="translate(-4.372 10)" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_notes)"/>
+                <rect width="115" height="2" transform="translate(-4.372 15)" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_notes)"/>
+            </g>
+            <g transform="translate(70 56)" opacity="0.4">
+                <rect width="233" height="2" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_notes)"/>
+                <rect width="218" height="2" transform="translate(0 5)" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_notes)"/>
+                <rect width="233" height="2" transform="translate(0 10)" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_notes)"/>
+                <rect width="218" height="2" transform="translate(0 15)" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_notes)"/>
+            </g>
+            <text transform="translate(69 42)" fill="#FOOTER_COLOR" opacity="1" class="svgc_text" filter="url(#filter_readability_notes)" font-size="16" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="0" y="0">Entry Title</tspan></text>
+        </g>
+    </g>
+</svg>

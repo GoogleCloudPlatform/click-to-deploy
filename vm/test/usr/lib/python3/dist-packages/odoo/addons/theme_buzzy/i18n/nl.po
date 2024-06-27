@@ -1,0 +1,153 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_buzzy
+# 
+# Translators:
+# Wil Odoo, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:21+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
+"Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: nl\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_call_to_action
+msgid "<b>Start to build</b> your robust activity with these powerful tools"
+msgstr "<b>Bouw</b> je blijvende activiteit met deze krachtige tools"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_image_text
+msgid "A new open world"
+msgstr "Een nieuwe open wereld"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_three_columns
+msgid "All data <br/>in your hands"
+msgstr "Alle gegevens <br/>in jouw handen"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_cover
+msgid ""
+"Bring the best for your team, start the journey with our amazing tools "
+"<br/>and collaborate no matter where you are."
+msgstr ""
+"Haal het beste in huis voor je team, begin de reis met onze geweldige tools "
+"<br/>en werk samen, waar je ook bent."
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_three_columns
+msgid "Built to <br/>your effigy"
+msgstr "Gebouwd naar <br/>jouw behoeften"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_three_columns
+msgid ""
+"Don't miss any data anymore and get all reports you need when and where you "
+"want. Analyze them easily with our friendly interface and grow your "
+"activity."
+msgstr ""
+"Mis geen gegevens meer en ontvang alle rapporten die je nodig hebt waar en "
+"wanneer je maar wilt. Analyseer ze eenvoudigweg met onze "
+"gebruiksvriendelijke interface en laat je business groeien."
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_three_columns
+msgid "Editable from <br/>A to Z"
+msgstr "Aanpasbaar van <br/>A tot Z"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_banner
+msgid "Every clever company deserve to work with clever tools."
+msgstr "Elk slim bedrijf verdient het om met slimme tools te werken."
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_cover
+msgid "Faster, lighter and more powerful"
+msgstr "Sneller, lichter en krachtiger"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_three_columns
+msgid ""
+"Feel free to edit your content the way like you want. You don't need to know"
+" any technical and complex computer language. You will helped by our "
+"intuitive tools."
+msgstr ""
+"Aarzel niet om de inhoud te bewerken zoals jij dat wilt. Je hoeft geen "
+"technische en ingewikkelde computertaal te kennen. Onze intuïtieve tools "
+"begeleiden je."
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_image_text
+msgid "Get what you want, where and when you want."
+msgstr "Krijg wat je wilt, waar en wanneer je wilt."
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_banner
+msgid "Great software <br/>for great people"
+msgstr "Geweldige software <br/>voor geweldige mensen"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_text_image
+msgid "Improve your efficiency"
+msgstr "Verbeter je efficiëntie"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_title
+msgid "Increase your productivity"
+msgstr "Verhoog je productiviteit"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_text_image
+msgid ""
+"It's not that easy to be efficient if we don't have the correct tools than "
+"we need. Can you imagine Batman saving Gotham City without his bat-tools?"
+msgstr ""
+"Het is niet zo eenvoudig om efficiënt te zijn zonder de juiste tools. Kan je"
+" je voorstellen dat Batman Gotham City redt zonder zijn bat-tools?"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_call_to_action
+msgid "Make your company a better place."
+msgstr "Maak van je bedrijf een betere plek."
+
+#. module: theme_buzzy
+#: model:ir.model,name:theme_buzzy.model_theme_utils
+msgid "Theme Utils"
+msgstr "Thematools"
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_text_image
+msgid "There is no magic, it's time to get the tools you deserve."
+msgstr ""
+"Magie bestaat niet. Het is tijd om de tools te krijgen die je verdient."
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_image_text
+msgid ""
+"Working at the office is good, but working where we want without distraction"
+" is better. With our Cloud service accessing to your data has never been so "
+"easy."
+msgstr ""
+"Op kantoor werken is goed, maar werken waar je wilt zonder afleiding is "
+"beter. Met onze Clouddiensten is de toegang tot je gegevens nog nooit zo "
+"eenvoudig geweest."
+
+#. module: theme_buzzy
+#: model_terms:theme.ir.ui.view,arch:theme_buzzy.s_three_columns
+msgid ""
+"You will always find the ideal choice adapted to your needs. From the basic "
+"website based on our attractive templates to the tailor-made website "
+"reflecting your company's values."
+msgstr ""
+"Je vindt altijd de ideale keuze, aangepast aan jouw behoeften. Van de "
+"basiswebsite gemaakt met onze aantrekkelijke sjablonen tot de op maat "
+"gemaakte website die de waarden van je bedrijf weerspiegelt."
