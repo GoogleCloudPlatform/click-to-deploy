@@ -1,0 +1,293 @@
+<svg width="700px" height="1850px" viewBox="0 0 700 1850" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>theme_monglia</title>
+    <defs>
+        <style type="text/css">
+            @import url('https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@500&amp;display=swap');
+        </style>
+        <pattern width="1" height="1" id="theme_monglia_s_cover_default_image_id" patternUnits="objectBoundingBox">
+            <image width="700" height="409" preserveAspectRatio="xMidYMid slice" href="#s_cover_default_image_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_monglia_s_three_columns_default_image_1_id" patternUnits="objectBoundingBox">
+            <image width="164.00001525878906" height="100" preserveAspectRatio="xMidYMid slice" href="#s_three_columns_default_image_1_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_monglia_s_three_columns_default_image_2_id" patternUnits="objectBoundingBox">
+            <image width="164" height="100" preserveAspectRatio="xMidYMid slice" href="#s_three_columns_default_image_2_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_monglia_s_three_columns_default_image_3_id" patternUnits="objectBoundingBox">
+            <image width="164" height="100" preserveAspectRatio="xMidYMid slice" href="#s_three_columns_default_image_3_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_monglia_library_image_13_id" patternUnits="objectBoundingBox">
+            <image width="164" height="100" preserveAspectRatio="xMidYMid slice" href="#library_image_13_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_monglia_library_image_14_id" patternUnits="objectBoundingBox">
+            <image width="164" height="100" preserveAspectRatio="xMidYMid slice" href="#library_image_14_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_monglia_library_image_16_id" patternUnits="objectBoundingBox">
+            <image width="164" height="100" preserveAspectRatio="xMidYMid slice" href="#library_image_16_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_monglia_library_image_02_id" patternUnits="objectBoundingBox">
+            <image width="164" height="100" preserveAspectRatio="xMidYMid slice" href="#library_image_02_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_monglia_library_image_03_id" patternUnits="objectBoundingBox">
+            <image width="164" height="100" preserveAspectRatio="xMidYMid slice" href="#library_image_03_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_monglia_library_image_10_id" patternUnits="objectBoundingBox">
+            <image width="164" height="100" preserveAspectRatio="xMidYMid slice" href="#library_image_10_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_monglia_s_media_list_default_image_1_id" patternUnits="objectBoundingBox">
+            <image width="169" height="100" preserveAspectRatio="xMidYMid slice" href="#s_media_list_default_image_1_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_monglia_s_media_list_default_image_2_id" patternUnits="objectBoundingBox">
+            <image width="169" height="100" preserveAspectRatio="xMidYMid slice" href="#s_media_list_default_image_2_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_monglia_s_media_list_default_image_3_id" patternUnits="objectBoundingBox">
+            <image width="169" height="99.9998779296875" preserveAspectRatio="xMidYMid slice" href="#s_media_list_default_image_3_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_monglia_s_text_image_default_image_id" patternUnits="objectBoundingBox">
+            <image width="186" height="163" preserveAspectRatio="xMidYMid slice" href="#s_text_image_default_image_url"/>
+        </pattern>
+        <rect id="theme_monglia_path-1" width="700" height="66"/>
+        <filter id="theme_monglia_bright_up">
+            <feComponentTransfer>
+                <feFuncR type="linear" slope="2" />
+                <feFuncG type="linear" slope="2" />
+                <feFuncB type="linear" slope="2" />
+            </feComponentTransfer>
+        </filter>
+        <filter id="filter_readability_monglia">
+            <feColorMatrix in="SourceGraphic" type="saturate" values="0"/>
+            <feComponentTransfer>
+                <feFuncR type="table" tableValues="1 0"/>
+                <feFuncG type="table" tableValues="1 0"/>
+                <feFuncB type="table" tableValues="1 0"/>
+            </feComponentTransfer>
+            <feComponentTransfer>
+                <feFuncR type="linear" slope="10000" intercept="-4999.5"/>
+                <feFuncG type="linear" slope="10000" intercept="-4999.5"/>
+                <feFuncB type="linear" slope="10000" intercept="-4999.5"/>
+            </feComponentTransfer>
+        </filter>
+    </defs>
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" class="theme_monglia">
+        <rect fill="#F6F6F6" width="700" height="1850"/>
+        <g class="svgc_menu">
+            <rect fill="#MENU_COLOR" width="700" height="37" class="svgc_menu_bg"/>
+            <path d="M95.2753882,22.9664902 L95.2753882,21.4509459 L91.5806453,21.4509459 L91.5806453,14.2722753 L89.7585227,14.2722753 L89.7585227,22.9664902 L95.2753882,22.9664902 Z M99.8960242,23.0853564 C100.656294,23.0853564 101.341519,22.9105948 101.951698,22.5610715 C102.561878,22.2115482 103.044411,21.7042441 103.399297,21.0391593 C103.754183,20.3740746 103.931626,19.5674824 103.931626,18.6193827 C103.931626,17.6712831 103.754183,16.8646909 103.399297,16.1996061 C103.044411,15.5345213 102.561878,15.0272173 101.951698,14.677694 C101.341519,14.3281707 100.656294,14.1534091 99.8960242,14.1534091 C99.1301436,14.1534091 98.4428148,14.3281707 97.8340379,14.677694 C97.225261,15.0272173 96.7441308,15.5345213 96.3906475,16.1996061 C96.0371641,16.8646909 95.8604224,17.6712831 95.8604224,18.6193827 C95.8604224,19.5646522 96.0371641,20.3698293 96.3906475,21.0349141 C96.7441308,21.6999989 97.225261,22.2080105 97.8340379,22.5589489 C98.4428148,22.9098872 99.1301436,23.0853564 99.8960242,23.0853564 Z M99.8960242,21.4594363 C99.4555727,21.4594363 99.0712297,21.3504756 98.7429951,21.1325542 C98.4147606,20.9146328 98.1601684,20.5948261 97.9792186,20.173134 C97.7982687,19.751442 97.7077938,19.2335249 97.7077938,18.6193827 C97.7077938,18.0052406 97.7982687,17.4873235 97.9792186,17.0656315 C98.1601684,16.6439394 98.4147606,16.3241327 98.7429951,16.1062113 C99.0712297,15.8882899 99.4555727,15.7793292 99.8960242,15.7793292 C100.336476,15.7793292 100.720819,15.8882899 101.049053,16.1062113 C101.377288,16.3241327 101.63188,16.6439394 101.81283,17.0656315 C101.99378,17.4873235 102.084255,18.0052406 102.084255,18.6193827 C102.084255,19.2335249 101.99378,19.751442 101.81283,20.173134 C101.63188,20.5948261 101.377288,20.9146328 101.049053,21.1325542 C100.720819,21.3504756 100.336476,21.4594363 99.8960242,21.4594363 Z M109.058073,23.0853564 C109.781872,23.0853564 110.424314,22.9374812 110.985399,22.6417307 C111.546483,22.3459802 111.986935,21.9242882 112.306753,21.3766545 C112.626571,20.8290209 112.78648,20.173134 112.78648,19.4089941 L112.78648,19.4089941 L112.78648,18.3137268 L109.180108,18.3137268 L109.180108,19.6976692 L111.028953,19.6979182 L111.0252,19.8237287 C111.0079,20.0598888 110.956,20.2740367 110.869499,20.4661723 L110.798137,20.6061467 C110.642435,20.8778409 110.418002,21.0879794 110.124835,21.2365622 C109.831668,21.385145 109.478886,21.4594363 109.066489,21.4594363 C108.61201,21.4594363 108.217848,21.348353 107.884003,21.1261864 C107.550157,20.9040198 107.292058,20.5806754 107.109706,20.1561532 C106.927353,19.7316309 106.836177,19.216544 106.836177,18.6108923 C106.836177,18.0052406 106.928756,17.4922763 107.113914,17.0719993 C107.299072,16.6517223 107.557872,16.331208 107.890315,16.1104565 C108.222758,15.8897049 108.609205,15.7793292 109.049656,15.7793292 C109.285312,15.7793292 109.500628,15.8090457 109.695605,15.8684788 C109.890582,15.9279119 110.064518,16.0135239 110.217414,16.1253148 C110.370309,16.2371056 110.50006,16.3729527 110.606666,16.5328561 C110.713272,16.6927594 110.796032,16.8760115 110.854946,17.0826123 L110.854946,17.0826123 L112.706526,17.0826123 C112.647612,16.6524298 112.514354,16.2583317 112.306753,15.900318 C112.099152,15.5423043 111.831935,15.2331106 111.505103,14.972737 C111.178271,14.7123633 110.804449,14.5107153 110.383635,14.3677928 C109.962822,14.2248703 109.508343,14.1534091 109.020199,14.1534091 C108.450698,14.1534091 107.921876,14.2538793 107.433732,14.4548199 C106.945589,14.6557604 106.517761,14.9486807 106.150251,15.3335808 C105.78274,15.718481 105.497289,16.187578 105.293895,16.740872 C105.090502,17.2941659 104.988806,17.9231663 104.988806,18.6278732 C104.988806,19.5448412 105.159235,20.3365751 105.500094,21.003075 C105.840953,21.6695748 106.317174,22.1832467 106.928756,22.5440906 C107.540338,22.9049345 108.250111,23.0853564 109.058073,23.0853564 Z M117.90367,23.0853564 C118.66394,23.0853564 119.349165,22.9105948 119.959344,22.5610715 C120.569524,22.2115482 121.052057,21.7042441 121.406943,21.0391593 C121.761829,20.3740746 121.939272,19.5674824 121.939272,18.6193827 C121.939272,17.6712831 121.761829,16.8646909 121.406943,16.1996061 C121.052057,15.5345213 120.569524,15.0272173 119.959344,14.677694 C119.349165,14.3281707 118.66394,14.1534091 117.90367,14.1534091 C117.13779,14.1534091 116.450461,14.3281707 115.841684,14.677694 C115.232907,15.0272173 114.751777,15.5345213 114.398294,16.1996061 C114.04481,16.8646909 113.868068,17.6712831 113.868068,18.6193827 C113.868068,19.5646522 114.04481,20.3698293 114.398294,21.0349141 C114.751777,21.6999989 115.232907,22.2080105 115.841684,22.5589489 C116.450461,22.9098872 117.13779,23.0853564 117.90367,23.0853564 Z M117.90367,21.4594363 C117.463219,21.4594363 117.078876,21.3504756 116.750641,21.1325542 C116.422407,20.9146328 116.167814,20.5948261 115.986865,20.173134 C115.805915,19.751442 115.71544,19.2335249 115.71544,18.6193827 C115.71544,18.0052406 115.805915,17.4873235 115.986865,17.0656315 C116.167814,16.6439394 116.422407,16.3241327 116.750641,16.1062113 C117.078876,15.8882899 117.463219,15.7793292 117.90367,15.7793292 C118.344122,15.7793292 118.728465,15.8882899 119.056699,16.1062113 C119.384934,16.3241327 119.639526,16.6439394 119.820476,17.0656315 C120.001426,17.4873235 120.091901,18.0052406 120.091901,18.6193827 C120.091901,19.2335249 120.001426,19.751442 119.820476,20.173134 C119.639526,20.5948261 119.384934,20.9146328 119.056699,21.1325542 C118.728465,21.3504756 118.344122,21.4594363 117.90367,21.4594363 Z" fill="#MENU_COLOR" fill-rule="nonzero" class="svgc_text" filter="url(#filter_readability_monglia)"/>
+            <g opacity="0.6" transform="translate(153, 16)">
+                <rect width="37" height="7" class="svgc_text" fill="#MENU_COLOR" filter="url(#filter_readability_monglia)"/>
+                <rect x="58" width="37" height="7" class="svgc_text" fill="#MENU_COLOR" filter="url(#filter_readability_monglia)"/>
+                <rect x="116" width="37" height="7" class="svgc_text" fill="#MENU_COLOR" filter="url(#filter_readability_monglia)"/>
+                <rect x="174" width="37" height="7" class="svgc_text" fill="#MENU_COLOR" filter="url(#filter_readability_monglia)"/>
+            </g>
+            <rect fill="#MENU_COLOR" x="574" y="15" width="37" height="7" class="svgc_text" filter="url(#filter_readability_monglia)"/>
+        </g>
+
+        <g transform="translate(0, 37)" class="s_cover">
+            <rect fill="url(#theme_monglia_s_cover_default_image_id)" width="700" height="409" class="img_reference_s_cover_default_image"/>
+            <rect fill="#000000" opacity="0.4" width="700" height="409"/>
+            <g transform="translate(89.96, 107)">
+                <text font-family="DarkerGrotesque-SemiBold, Darker Grotesque" font-size="40" font-weight="500" line-spacing="40" letter-spacing="0.17346342" fill="#FFFFFD">
+                    <tspan x="0.04" y="42">Welcome</tspan>
+                    <tspan x="0.04" y="82">Message</tspan>
+                </text>
+                <g transform="translate(0.04, 102)" fill="#c6c6c6">
+                    <rect width="131" height="2"/>
+                    <rect y="5" width="116" height="2"/>
+                    <rect y="10" width="79" height="2"/>
+                    <rect y="15" width="91" height="2"/>
+                </g>
+                <g transform="translate(0.04, 132)" fill="#c6c6c6">
+                    <rect width="131" height="2"/>
+                    <rect y="5" width="116" height="2"/>
+                    <rect y="10" width="79" height="2"/>
+                    <rect y="15" width="91" height="2"/>
+                </g>
+                <g transform="translate(0, 170.754034)" class="svgc_btn_group">
+                    <rect fill="#3AADAA" width="78.8571429" height="24" rx="2"/>
+                    <text font-family="Arial-BoldMT, Arial" font-size="10" font-weight="bold" letter-spacing="0.043365855" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_monglia)" x="18.1320611" y="15.9285714">Discover</text>
+                </g>
+            </g>
+        </g>
+        <g transform="translate(0, 445)" class="s_title">
+            <polygon fill="#383E45" points="-1.51788304e-16 0 700 0 700 192 0 309"/>
+            <g transform="translate(9.3, 154)" fill-rule="nonzero">
+                <polygon fill="#7C6576" points="57.85 127.65 0 137.85 0 158.55 57.85 148.35"/>
+                <polygon fill="#3AADAA" points="87.65 101.75 29.8 111.95 29.8 132.65 87.65 122.45"/>
+                <polygon fill="#7C6576" points="609.85 63.7 696.25 48.45 696.25 27.45 609.85 42.7"/>
+                <polygon fill="#3AADAA" points="719.7 23.3 642.15 37 642.15 13.65 719.7 0"/>
+                <polygon fill="#383E45" opacity="0.29" points="613.15 45 526.8 60.2 526.8 36.9 613.15 21.65"/>
+                <path d="M695.25,49.65 L695.25,68.75 L653.75,76 L653.75,56.9 L695.25,49.65 M696.25,48.45 L652.75,56.05 L652.75,77.15 L696.25,69.55 L696.25,48.45 L696.25,48.45 Z" fill="#383E45" opacity="0.08"/>
+                <path d="M105.8,94.15 L105.8,112.75 L12.1,129.25 L12.1,110.65 L105.8,94.15 M106.8,92.95 L11.05,109.85 L11.05,130.5 L106.75,113.65 L106.75,92.95 L106.8,92.95 Z" fill="#383E45" opacity="0"/>
+                <polygon fill="#3AADAA" opacity="0.4" points="661.7 79.3 638.25 83.45 638.25 62.45 661.7 58.3"/>
+            </g>
+            <text font-family="DarkerGrotesque-SemiBold, Darker Grotesque" font-size="32" font-weight="500" letter-spacing="0.138770736" filter="url(#theme_monglia_bright_up)" fill="#3AADAA" x="186.5" y="54"> TITLE</text>
+            <text font-family="DarkerGrotesque-SemiBold, Darker Grotesque" font-size="32" font-weight="500" letter-spacing="0.138770736" fill="#FFFFFF" x="89.5" y="54">BLOCK</text>
+            <g transform="translate(90, 74)" fill="#EAEAEA" opacity="0.809290568">
+                <rect opacity="0.6" width="508" height="3.88235294"/>
+                <rect opacity="0.6" y="9.70588235" width="449.832061" height="3.88235294"/>
+                <rect opacity="0.6" y="19.4117647" width="306.351145" height="3.88235294"/>
+                <rect opacity="0.6" y="29.1176471" width="352.885496" height="3.88235294"/>
+            </g>
+            <g transform="translate(90, 121)" fill="#EAEAEA" opacity="0.809290568">
+                <rect opacity="0.6" width="520" height="2.94117647"/>
+                <rect opacity="0.6" y="7.35294118" width="460.458015" height="2.94117647"/>
+                <rect opacity="0.6" y="14.7058824" width="313.587786" height="2.94117647"/>
+                <rect opacity="0.6" y="22.0588235" width="361.221374" height="2.94117647"/>
+            </g>
+        </g>
+        <g transform="translate(0, 1048)" class="s_title">
+            <mask id="theme_monglia_mask-2" fill="white">
+                <use xlink:href="#theme_monglia_path-1"/>
+            </mask>
+            <use fill="#383E45" xlink:href="#theme_monglia_path-1"/>
+            <text mask="url(#theme_monglia_mask-2)" font-family="DarkerGrotesque-SemiBold, Darker Grotesque" font-size="28" font-weight="500" letter-spacing="0.121424394" fill="#FFFFFF" x="90" y="41">BLOCK</text>
+            <text mask="url(#theme_monglia_mask-2)" font-family="DarkerGrotesque-SemiBold, Darker Grotesque" font-size="28" font-weight="500" filter="url(#theme_monglia_bright_up)" letter-spacing="0.121424394" fill="#3AADAA" x="180" y="41">TITLE</text>
+        </g>
+        <g transform="translate(89.878829, 624)" class="s_three_columns">
+            <g>
+                <rect fill="url(#theme_monglia_s_three_columns_default_image_1_id)" width="164" height="100" class="img_reference_s_three_columns_default_image_1"/>
+                <rect fill="#FFFFFD" y="99.9036617" width="164" height="76"/>
+                <g transform="translate(14, 102)">
+                    <text font-family="DarkerGrotesque-SemiBold, Darker Grotesque" font-size="18" font-weight="500" line-spacing="40" letter-spacing="0.078058539" fill="#000000" y="19">Card Title</text>
+                    <g transform="translate(0, 36.984252)" fill="#383E45" opacity="0.4">
+                        <rect width="84" height="1.99814734"/>
+                        <rect y="4.99536835" width="74.3816794" height="1.99814734"/>
+                        <rect y="9.9907367" width="50.6564885" height="1.99814734"/>
+                        <rect y="14.9861051" width="58.351145" height="1.99814734"/>
+                    </g>
+                </g>
+            </g>
+            <g transform="translate(177, 0)">
+                <rect fill="url(#theme_monglia_s_three_columns_default_image_2_id)" width="164" height="100" class="img_reference_s_three_columns_default_image_2"/>
+                <rect fill="#FFFFFD" y="99.9036617" width="164" height="76"/>
+                <g transform="translate(19, 102)">
+                    <g transform="translate(0, 36.631794)" fill="#383E45" opacity="0.4">
+                        <rect width="101" height="1.99814734"/>
+                        <rect y="4.99536835" width="89.4351145" height="1.99814734"/>
+                        <rect y="9.9907367" width="60.9083969" height="1.99814734"/>
+                        <rect y="14.9861051" width="70.1603053" height="1.99814734"/>
+                    </g>
+                    <text font-family="DarkerGrotesque-SemiBold, Darker Grotesque" font-size="18" font-weight="500" line-spacing="40" letter-spacing="0.078058539" fill="#000000" y="18.9814734">Card Title</text>
+                </g>
+            </g>
+            <g transform="translate(356, 0)">
+                <rect fill="url(#theme_monglia_s_three_columns_default_image_3_id)" width="164" height="100" class="img_reference_s_three_columns_default_image_3"/>
+                <rect fill="#FFFFFD" y="99.9036617" width="164" height="76"/>
+                <g transform="translate(20, 102)">
+                    <g transform="translate(0, 34.652174)" fill="#383E45" opacity="0.4">
+                        <rect width="131" height="1.99814734"/>
+                        <rect y="4.99536835" width="116" height="1.99814734"/>
+                        <rect y="9.9907367" width="79" height="1.99814734"/>
+                        <rect y="14.9861051" width="91" height="1.99814734"/>
+                    </g>
+                    <text font-family="DarkerGrotesque-SemiBold, Darker Grotesque" font-size="18" font-weight="500" line-spacing="40" letter-spacing="0.078058539" fill="#000000" y="19">Card Title</text>
+                </g>
+            </g>
+        </g>
+        <g transform="translate(90, 812)" fill="#1EB028" class="s_images_wall">
+            <rect width="164" height="100" class="img_reference_library_image_13" fill="url(#theme_monglia_library_image_13_id)"/>
+            <rect x="177" width="164" height="100" class="img_reference_library_image_14" fill="url(#theme_monglia_library_image_14_id)"/>
+            <rect x="356" width="164" height="100" class="img_reference_library_image_16" fill="url(#theme_monglia_library_image_16_id)"/>
+            <rect y="116.386441" width="164" height="100" class="img_reference_library_image_02" fill="url(#theme_monglia_library_image_02_id)"/>
+            <rect x="177" y="116.386441" width="164" height="100" class="img_reference_library_image_03" fill="url(#theme_monglia_library_image_03_id)"/>
+            <rect x="356" y="116.386441" width="164" height="100" class="img_reference_library_image_10" fill="url(#theme_monglia_library_image_10_id)"/>
+        </g>
+        <g transform="translate(-0.5, 1142)" class="s_media_list">
+            <polygon fill="#FFFFFF" points="1 395.5 700.5 496.5 700 575 0 575"/>
+            <g transform="translate(90.5, 0)">
+                <rect fill="url(#theme_monglia_s_media_list_default_image_1_id)" width="169" height="100" class="img_reference_s_media_list_default_image_1"/>
+                <rect fill="#FFFFFF" x="169" width="350.584501" height="100"/>
+                <g transform="translate(196, 12)">
+                    <g transform="translate(0, 40)" fill="#383E45" opacity="0.4">
+                        <rect width="163" height="2.94117647"/>
+                        <rect y="7.35294118" width="144.335878" height="2.94117647"/>
+                        <rect y="14.7058824" width="98.2977099" height="2.94117647"/>
+                        <rect y="22.0588235" width="113.229008" height="2.94117647"/>
+                    </g>
+                    <text font-family="DarkerGrotesque-SemiBold, Darker Grotesque" font-size="18" font-weight="500" line-spacing="40" letter-spacing="0.078058539" fill="#000000" y="19">Card Title</text>
+                </g>
+            </g>
+            <g transform="translate(90.5, 115.588663)">
+                <rect fill="url(#theme_monglia_s_media_list_default_image_2_id)" width="169" height="100" class="img_reference_s_media_list_default_image_2"/>
+                <rect fill="#FFFFFF" x="169" width="350.584501" height="100"/>
+                <g transform="translate(196, 11)">
+                    <g transform="translate(0, 38)" fill="#383E45" opacity="0.4">
+                        <rect width="262" height="2.9127907"/>
+                        <rect y="7.28197674" width="232" height="2.9127907"/>
+                        <rect y="14.5639535" width="158" height="2.9127907"/>
+                        <rect y="21.8459302" width="182" height="2.9127907"/>
+                    </g>
+                    <text font-family="DarkerGrotesque-SemiBold, Darker Grotesque" font-size="18" font-weight="500" line-spacing="40" letter-spacing="0.078058539" fill="#000000" y="19">Card Title</text>
+                </g>
+            </g>
+            <g transform="translate(90.5, 231.177326)">
+                <rect fill="url(#theme_monglia_s_media_list_default_image_3_id)" width="169" height="100" class="img_reference_s_media_list_default_image_3"/>
+                <rect fill="#FFFFFF" x="169.415499" width="350.584501" height="100"/>
+                <g transform="translate(196, 10.659884)">
+                    <g transform="translate(0, 40)" fill="#383E45" opacity="0.4">
+                        <rect width="211" height="2.94117647"/>
+                        <rect y="7.35294118" width="186.839695" height="2.94117647"/>
+                        <rect y="14.7058824" width="127.244275" height="2.94117647"/>
+                        <rect y="22.0588235" width="146.572519" height="2.94117647"/>
+                    </g>
+                    <text font-family="DarkerGrotesque-SemiBold, Darker Grotesque" font-size="18" font-weight="500" line-spacing="40" letter-spacing="0.078058539" fill="#000000" y="19">Card Title</text>
+                </g>
+            </g>
+        </g>
+        <g transform="translate(0, 1504)" class="s_text_image">
+            <g transform="translate(350, 73.375000) scale(-1, 1) translate(-350, -73.375000) " fill-rule="nonzero">
+                <polygon fill="#FFFFFF" points="0 146.6 700 146.75 700 23.3 0 146.75"/>
+                <polygon fill="#7C6576" points="144.15 100.65 86.3 110.85 86.3 131.55 144.15 121.35"/>
+                <polygon fill="#3AADAA" points="154.95 79.75 97.1 89.95 97.1 110.65 154.95 100.45"/>
+                <polygon fill="#7C6576" points="590.15 63.7 676.55 48.45 676.55 27.45 590.15 42.7"/>
+                <polygon fill="#3AADAA" points="700 23.3 622.45 37 622.45 13.65 700 0"/>
+                <polygon fill="#383E45" opacity="0.29" points="622.45 37 536.1 52.2 536.1 28.9 622.45 13.65"/>
+                <polygon fill="#3AADAA" opacity="0.4" points="700 44.3 676.55 48.45 676.55 27.45 700 23.3"/>
+                <path d="M675.55,49.65 L675.55,68.75 L634.05,76 L634.05,56.9 L675.55,49.65 M676.55,48.45 L633.05,56.05 L633.05,77.15 L676.55,69.55 L676.55,48.45 L676.55,48.45 Z" fill="#383E45" opacity="0.08"/>
+                <polygon fill="#383E45" opacity="0.29" points="0 126.1 86.3 110.85 86.3 131.55 0 146.75"/>
+                <path d="M115.1,86.15 L115.1,104.75 L21.4,121.25 L21.4,102.65 L115.1,86.15 M116.1,84.95 L20.35,101.85 L20.35,122.5 L116.05,105.65 L116.05,84.95 L116.1,84.95 Z" fill="#383E45" opacity="0"/>
+            </g>
+            <g transform="translate(350.182143, 14)" class="img_reference_s_text_image_default_image">
+                <polygon points="0 2.76132741e-19 186 18.0445507 186 138.548122 0 163" class="img_reference_s_text_image_default_image" fill="url(#theme_monglia_s_text_image_default_image_id)"/>
+            </g>
+            <g transform="translate(182.522059, 48.5)">
+                <g transform="translate(0.477941, 29.5)" fill="#383E45" opacity="0.4">
+                    <rect width="127" height="2.94117647"/>
+                    <rect y="7.35294118" width="112.458015" height="2.94117647"/>
+                    <rect y="14.7058824" width="76.5877863" height="2.94117647"/>
+                    <rect y="22.0588235" width="88.221374" height="2.94117647"/>
+                </g>
+                <g transform="translate(0.477941, 66.5)" class="svgc_btn_group">
+                    <rect fill="#3AADAA" width="94" height="28" rx="2"/>
+                    <text font-family="Arial-BoldMT, Arial" font-size="10" font-weight="bold" letter-spacing="0.043365855" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_monglia)" x="25.7034897" y="18">Discover</text>
+                </g>
+                <text fill="#1A1A1A" font-family="DarkerGrotesque-SemiBold, Darker Grotesque" font-size="18" font-weight="500" letter-spacing="0.078058539" x="0.0966780354" y="19">
+                    Block Title
+                </text>
+            </g>
+        </g>
+        <g transform="translate(0.345170, 1715.265909)" class="svgc_footer">
+            <rect fill="#FOOTER_COLOR" width="700" height="135" class="svgc_footer_bg"/>
+            <path d="M75.5168655,76.6771237 L75.5168655,75.1837041 L71.8221226,75.1837041 L71.8221226,68.1098317 L70,68.1098317 L70,76.6771237 L75.5168655,76.6771237 Z M80.1375015,76.7942547 C80.8977713,76.7942547 81.582996,76.6220443 82.1931756,76.2776235 C82.8033552,75.9332028 83.2858881,75.4333046 83.6407742,74.7779291 C83.9956603,74.1225536 84.1731033,73.3277364 84.1731033,72.3934777 C84.1731033,71.459219 83.9956603,70.6644018 83.6407742,70.0090263 C83.2858881,69.3536508 82.8033552,68.8537526 82.1931756,68.5093319 C81.582996,68.1649111 80.8977713,67.9927007 80.1375015,67.9927007 C79.3716209,67.9927007 78.6842921,68.1649111 78.0755152,68.5093319 C77.4667382,68.8537526 76.9856081,69.3536508 76.6321247,70.0090263 C76.2786414,70.6644018 76.1018997,71.459219 76.1018997,72.3934777 C76.1018997,73.3249476 76.2786414,74.1183703 76.6321247,74.7737458 C76.9856081,75.4291214 77.4667382,75.9297167 78.0755152,76.2755319 C78.6842921,76.6213471 79.3716209,76.7942547 80.1375015,76.7942547 Z M80.1375015,75.1920706 C79.69705,75.1920706 79.312707,75.0847006 78.9844724,74.8699605 C78.6562378,74.6552205 78.4016456,74.3400825 78.2206958,73.9245465 C78.039746,73.5090105 77.9492711,72.9986542 77.9492711,72.3934777 C77.9492711,71.7883011 78.039746,71.2779449 78.2206958,70.8624089 C78.4016456,70.4468729 78.6562378,70.1317349 78.9844724,69.9169948 C79.312707,69.7022548 79.69705,69.5948847 80.1375015,69.5948847 C80.577953,69.5948847 80.962296,69.7022548 81.2905306,69.9169948 C81.6187651,70.1317349 81.8733573,70.4468729 82.0543072,70.8624089 C82.235257,71.2779449 82.3257319,71.7883011 82.3257319,72.3934777 C82.3257319,72.9986542 82.235257,73.5090105 82.0543072,73.9245465 C81.8733573,74.3400825 81.6187651,74.6552205 81.2905306,74.8699605 C80.962296,75.0847006 80.577953,75.1920706 80.1375015,75.1920706 Z M89.2995498,76.7942547 C90.0233491,76.7942547 90.6657911,76.6485382 91.2268758,76.3571052 C91.7879605,76.0656723 92.228412,75.6501363 92.5482303,75.1104973 C92.8680486,74.5708583 93.0279577,73.9245465 93.0279577,73.1715618 L93.0279577,73.1715618 L93.0279577,72.0922838 L89.4215857,72.0922838 L89.4215857,73.4560227 L91.2704298,73.4562681 L91.2666777,73.5802419 C91.2493776,73.8129545 91.1974773,74.0239761 91.1109767,74.2133068 L91.0396138,74.3512378 C90.8839128,74.6189657 90.6594789,74.8260364 90.3663121,74.9724501 C90.0731454,75.1188638 89.7203633,75.1920706 89.3079661,75.1920706 C88.8534875,75.1920706 88.4593254,75.082609 88.12548,74.8636857 C87.7916346,74.6447624 87.5335357,74.3261383 87.3511831,73.9078135 C87.1688306,73.4894887 87.0776543,72.9819213 87.0776543,72.3851112 C87.0776543,71.7883011 87.1702333,71.2828253 87.3553913,70.8686838 C87.5405492,70.4545422 87.7993495,70.138707 88.1317922,69.9211781 C88.4642349,69.7036492 88.850682,69.5948847 89.2911335,69.5948847 C89.5267891,69.5948847 89.7421054,69.6241675 89.9370823,69.6827329 C90.1320592,69.7412984 90.3059955,69.8256606 90.4588911,69.9358195 C90.6117867,70.0459783 90.7415375,70.1798423 90.8481436,70.3374113 C90.9547497,70.4949803 91.0375097,70.6755572 91.0964236,70.8791419 L91.0964236,70.8791419 L92.9480032,70.8791419 C92.8890893,70.4552394 92.7558317,70.0668946 92.5482303,69.7141073 C92.340629,69.3613201 92.0734124,69.0566402 91.7465805,68.8000676 C91.4197487,68.5434951 91.045926,68.3447908 90.6251124,68.2039548 C90.2042989,68.0631187 89.7498203,67.9927007 89.2616766,67.9927007 C88.6921756,67.9927007 88.1633533,68.0917043 87.6752095,68.2897113 C87.1870658,68.4877184 86.7592387,68.7763625 86.3917283,69.1556437 C86.0242178,69.5349248 85.7387659,69.9971738 85.5353727,70.5423904 C85.3319795,71.0876071 85.2302829,71.707425 85.2302829,72.4018442 C85.2302829,73.3054258 85.4007124,74.0856015 85.7415713,74.7423715 C86.0824303,75.3991414 86.558651,75.9053144 87.1702333,76.2608905 C87.7818156,76.6164666 88.4915878,76.7942547 89.2995498,76.7942547 Z M98.1451476,76.7942547 C98.9054174,76.7942547 99.5906421,76.6220443 100.200822,76.2776235 C100.811001,75.9332028 101.293534,75.4333046 101.64842,74.7779291 C102.003306,74.1225536 102.180749,73.3277364 102.180749,72.3934777 C102.180749,71.459219 102.003306,70.6644018 101.64842,70.0090263 C101.293534,69.3536508 100.811001,68.8537526 100.200822,68.5093319 C99.5906421,68.1649111 98.9054174,67.9927007 98.1451476,67.9927007 C97.3792669,67.9927007 96.6919382,68.1649111 96.0831612,68.5093319 C95.4743843,68.8537526 94.9932542,69.3536508 94.6397708,70.0090263 C94.2862874,70.6644018 94.1095457,71.459219 94.1095457,72.3934777 C94.1095457,73.3249476 94.2862874,74.1183703 94.6397708,74.7737458 C94.9932542,75.4291214 95.4743843,75.9297167 96.0831612,76.2755319 C96.6919382,76.6213471 97.3792669,76.7942547 98.1451476,76.7942547 Z M98.1451476,75.1920706 C97.7046961,75.1920706 97.320353,75.0847006 96.9921185,74.8699605 C96.6638839,74.6552205 96.4092917,74.3400825 96.2283419,73.9245465 C96.0473921,73.5090105 95.9569172,72.9986542 95.9569172,72.3934777 C95.9569172,71.7883011 96.0473921,71.2779449 96.2283419,70.8624089 C96.4092917,70.4468729 96.6638839,70.1317349 96.9921185,69.9169948 C97.320353,69.7022548 97.7046961,69.5948847 98.1451476,69.5948847 C98.5855991,69.5948847 98.9699421,69.7022548 99.2981767,69.9169948 C99.6264112,70.1317349 99.8810034,70.4468729 100.061953,70.8624089 C100.242903,71.2779449 100.333378,71.7883011 100.333378,72.3934777 C100.333378,72.9986542 100.242903,73.5090105 100.061953,73.9245465 C99.8810034,74.3400825 99.6264112,74.6552205 99.2981767,74.8699605 C98.9699421,75.0847006 98.5855991,75.1920706 98.1451476,75.1920706 Z" fill="#FOOTER_COLOR" fill-rule="nonzero" class="svgc_text" filter="url(#filter_readability_monglia)"/>
+            <rect fill="#FOOTER_COLOR" opacity="0.6" x="256" y="102.481752" width="37" height="6.89781022" class="svgc_text" filter="url(#filter_readability_monglia)"/>
+            <rect fill="#FOOTER_COLOR" opacity="0.6" x="306" y="102.481752" width="37" height="6.89781022" class="svgc_text" filter="url(#filter_readability_monglia)"/>
+            <rect fill="#FOOTER_COLOR" opacity="0.6" x="356" y="102.481752" width="37" height="6.89781022" class="svgc_text" filter="url(#filter_readability_monglia)"/>
+            <rect fill="#FOOTER_COLOR" opacity="0.6" x="406" y="102.481752" width="37" height="6.89781022" class="svgc_text" filter="url(#filter_readability_monglia)"/>
+            <ellipse fill="#FOOTER_COLOR" cx="566.5" cy="105.930657" rx="7.5" ry="7.39051095" class="svgc_text" filter="url(#filter_readability_monglia)"/>
+            <ellipse fill="#FOOTER_COLOR" cx="594.5" cy="105.930657" rx="7.5" ry="7.39051095" class="svgc_text" filter="url(#filter_readability_monglia)"/>
+            <ellipse fill="#FOOTER_COLOR" cx="622.5" cy="105.930657" rx="7.5" ry="7.39051095" class="svgc_text" filter="url(#filter_readability_monglia)"/>
+            <g transform="translate(70, 28.576642)" opacity="0.6">
+                <rect width="131" height="1.97080292" class="svgc_text" fill="#FOOTER_COLOR" filter="url(#filter_readability_monglia)"/>
+                <rect y="4.9270073" width="116" height="1.97080292" class="svgc_text" fill="#FOOTER_COLOR" filter="url(#filter_readability_monglia)"/>
+                <rect y="9.8540146" width="79" height="1.97080292" class="svgc_text" fill="#FOOTER_COLOR" filter="url(#filter_readability_monglia)"/>
+                <rect y="14.7810219" width="91" height="1.97080292" class="svgc_text" fill="#FOOTER_COLOR" filter="url(#filter_readability_monglia)"/>
+            </g>
+            <g transform="translate(263, 28.576642)" opacity="0.6">
+                <rect width="232" height="1.97080292" class="svgc_text" fill="#FOOTER_COLOR" filter="url(#filter_readability_monglia)"/>
+                <rect y="4.9270073" width="205.435115" height="1.97080292" class="svgc_text" fill="#FOOTER_COLOR" filter="url(#filter_readability_monglia)"/>
+                <rect y="9.8540146" width="139.908397" height="1.97080292" class="svgc_text" fill="#FOOTER_COLOR" filter="url(#filter_readability_monglia)"/>
+                <rect y="14.7810219" width="161.160305" height="1.97080292" class="svgc_text" fill="#FOOTER_COLOR" filter="url(#filter_readability_monglia)"/>
+            </g>
+        </g>
+    </g>
+</svg>

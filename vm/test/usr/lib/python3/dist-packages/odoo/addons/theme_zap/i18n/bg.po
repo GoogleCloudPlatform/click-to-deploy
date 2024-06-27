@@ -1,0 +1,142 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_zap
+# 
+# Translators:
+# aleksandar ivanov, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:21+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Maria Boyadjieva <marabo2000@gmail.com>, 2023\n"
+"Language-Team: Bulgarian (https://app.transifex.com/odoo/teams/41243/bg/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: bg\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_banner
+msgid "<b>Software innovation</b><br/> at its best."
+msgstr ""
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_masonry_block_default_template
+msgid ""
+"<em class=\"lead\">Maintain a position of constant change<br/> and "
+"evolution, while always aiming<br/> for your success.</em>"
+msgstr ""
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_numbers
+msgid "<font class=\"text-o-color-1\">Customers</font>"
+msgstr ""
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_numbers
+msgid "<font class=\"text-o-color-1\">Languages</font>"
+msgstr ""
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_numbers
+msgid "<font class=\"text-o-color-1\">Projects</font>"
+msgstr ""
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_numbers
+msgid "<font class=\"text-o-color-1\">Solutions</font>"
+msgstr ""
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_features
+msgid "All our data centers <br/>are emission-free."
+msgstr ""
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_features
+msgid "All types of files <br/>are allowed."
+msgstr ""
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_three_columns
+msgid "Benefits"
+msgstr ""
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_color_blocks_2
+msgid "Cloud <b>Solution</b>"
+msgstr ""
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_features
+msgid "Eco-Friendly"
+msgstr ""
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_three_columns
+msgid "Features"
+msgstr "Функции"
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_banner
+msgid ""
+"Harness the power of disruptive technologies to increase<br/> your day-to-"
+"day business operations."
+msgstr ""
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_color_blocks_2
+msgid ""
+"Keep your files in one place. <br/>Manage documents online with an easy to "
+"use interface. <br/>Rely on an highly secure cloud storage."
+msgstr ""
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_references
+msgid "Our <b>References</b>"
+msgstr ""
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_banner
+msgid "Our Solutions"
+msgstr ""
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_features
+msgid "Security"
+msgstr "Сигурност"
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_three_columns
+msgid "Services"
+msgstr "Услуги"
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_masonry_block_default_template
+msgid "Super <b>Easy</b>"
+msgstr ""
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_masonry_block_default_template
+msgid "Super <b>Fast</b>"
+msgstr ""
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_features
+msgid "Support"
+msgstr "Поддръжка"
+
+#. module: theme_zap
+#: model:ir.model,name:theme_zap.model_theme_utils
+msgid "Theme Utils"
+msgstr ""
+
+#. module: theme_zap
+#: model_terms:theme.ir.ui.view,arch:theme_zap.s_features
+msgid "We keep you safe <br/>in the cloud."
+msgstr ""

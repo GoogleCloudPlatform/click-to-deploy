@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_three_columns" inherit_id="website.s_three_columns">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc1 pt80 pb80" remove="o_cc2 pt32 pb32" separator=" "/>
+    </xpath>
+    <!-- Row -->
+    <xpath expr="//div[hasclass('row')]" position="attributes">
+        <attribute name="class" add="align-items-end" remove="align-items-stretch" separator=" "/>
+    </xpath>
+
+    <!-- Column 1 -->
+    <xpath expr="//div[hasclass('card')]" position="attributes">
+        <attribute name="style">border-width: 0px !important;</attribute>
+    </xpath>
+    <!-- Column 1 - Title -->
+    <xpath expr="//h3" position="replace" mode="inner">
+        Local Producers
+    </xpath>
+    <!-- Column 1 - Paragraph -->
+    <xpath expr="//p" position="replace" mode="inner">
+        As we use local growers, our flowers last longer and smell better. Just like the event you want to celebrate with flowers!
+    </xpath>
+    <!-- Column 1 - Img -->
+    <xpath expr="//img" position="attributes">
+        <attribute name="src">/web_editor/image_shape/website.s_three_columns_default_image_1/web_editor/composition/composition_square_1.svg?c1=o-color-1&amp;c2=o-color-2</attribute>
+        <attribute name="data-shape">web_editor/composition/composition_square_1</attribute>
+        <attribute name="data-original-mimetype">image/jpeg</attribute>
+        <attribute name="data-file-name">library_image_11.svg</attribute>
+        <attribute name="data-shape-colors">o-color-1;o-color-2;;;</attribute>
+    </xpath>
+
+    <!-- Column 2 -->
+    <xpath expr="(//div[hasclass('card')])[2]" position="attributes">
+        <attribute name="style">border-width: 0px !important;</attribute>
+    </xpath>
+    <!-- Column 2 - Title -->
+    <xpath expr="(//h3)[2]" position="replace" mode="inner">
+        Bio Flowers
+    </xpath>
+    <!-- Column 2 - Paragraph -->
+    <xpath expr="(//p)[2]" position="replace" mode="inner">
+        Don't offer pesticides to your beloved one! By choosing our flowers, we guarantee you organic flowers.
+    </xpath>
+    <!-- Column 2 - Img -->
+    <xpath expr="(//img)[2]" position="attributes">
+        <attribute name="src">/web_editor/image_shape/website.s_three_columns_default_image_2/web_editor/composition/composition_square_3.svg?c1=o-color-1&amp;c5=o-color-5</attribute>
+        <attribute name="data-shape">web_editor/composition/composition_square_3</attribute>
+        <attribute name="data-original-mimetype">image/jpeg</attribute>
+        <attribute name="data-file-name">library_image_13.svg</attribute>
+        <attribute name="data-shape-colors">o-color-1;;;;o-color-5</attribute>
+    </xpath>
+
+    <!-- Column 3 -->
+    <xpath expr="(//div[hasclass('card')])[3]" position="attributes">
+        <attribute name="style">border-width: 0px !important;</attribute>
+    </xpath>
+    <!-- Column 3 - Title -->
+    <xpath expr="(//h3)[3]" position="replace" mode="inner">
+        Eco-Friendly Packaging
+    </xpath>
+    <!-- Column 3 - Paragraph -->
+    <xpath expr="(//p)[3]" position="replace" mode="inner">
+        We use 100% recycled materials. We believe the best gifts should also do good for the planet.
+    </xpath>
+    <!-- Column 3 - Img -->
+    <xpath expr="(//img)[3]" position="attributes">
+        <attribute name="src">/web_editor/image_shape/website.s_three_columns_default_image_3/web_editor/composition/composition_square_2.svg?c2=o-color-1&amp;c5=o-color-2</attribute>
+        <attribute name="data-shape">web_editor/composition/composition_square_2</attribute>
+        <attribute name="data-original-mimetype">image/jpeg</attribute>
+        <attribute name="data-file-name">library_image_07.svg</attribute>
+        <attribute name="data-shape-colors">;o-color-1;;;o-color-2</attribute>
+    </xpath>
+</template>
+
+<template id="configurator_s_three_columns" inherit_id="website.configurator_s_three_columns">
+    <!-- Shape option -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Wavy/04","flip":[]}</attribute>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Wavy_04"/>
+    </xpath>
+</template>
+
+</odoo>

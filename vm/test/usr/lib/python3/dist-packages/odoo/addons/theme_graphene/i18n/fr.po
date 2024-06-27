@@ -1,0 +1,171 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * theme_graphene
+# 
+# Translators:
+# 44fd1b7fd1ad5b321e37d151521961ad, 2019
+# Martin Trigaux, 2019
+# Frédéric LIETART <stuff@tifred.fr>, 2019
+# Clo <clo@odoo.com>, 2019
+# Eloïse Stilmant <est@odoo.com>, 2019
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-04-24 09:01+0000\n"
+"PO-Revision-Date: 2019-04-24 11:21+0000\n"
+"Last-Translator: Eloïse Stilmant <est@odoo.com>, 2019\n"
+"Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: fr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.graphene_typo_pattern
+msgid "<i class=\"fa fa-font\"/>Font Family"
+msgstr ""
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.graphene_google_map
+msgid "<i class=\"fa fa-fw fa-paint-brush\"/>Style"
+msgstr ""
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.graphene_top_content_options
+msgid "<i class=\"fa fa-magic\"/>Position"
+msgstr ""
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.graphene_typo_pattern
+msgid "<i class=\"fa fa-paint-brush\"/>Text Effects"
+msgstr ""
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.graphene_bg_effects
+msgid "<i class=\"fa fa-sliders\"/>Background Effects"
+msgstr ""
+
+#. module: theme_graphene
+#. openerp-web
+#: code:addons/theme_graphene/static/src/xml/s_media_block_modal_ext.xml:12
+#, python-format
+msgid "Animated colors"
+msgstr ""
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.graphene_bg_effects
+msgid "Big Inset Shadow"
+msgstr ""
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.graphene_typo_pattern
+msgid "Boxed"
+msgstr "En boîte"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.graphene_typo_pattern
+msgid "Default"
+msgstr "Par défaut"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.graphene_bg_effects
+msgid "Glossy"
+msgstr ""
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.graphene_bg_effects
+msgid "Glossy Medium"
+msgstr ""
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.graphene_bg_effects
+msgid "Glossy Soft"
+msgstr ""
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.graphene_bg_effects
+msgid "Inset Shadow"
+msgstr ""
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.graphene_google_map
+msgid "Light Mono"
+msgstr ""
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.graphene_top_content_options
+msgid "Move to top"
+msgstr ""
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.graphene_bg_effects
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.graphene_typo_pattern
+msgid "No effects"
+msgstr ""
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.graphene_top_content_options
+msgid "Normal"
+msgstr "Normale"
+
+#. module: theme_graphene
+#. openerp-web
+#: code:addons/theme_graphene/static/src/xml/s_media_block_modal_ext.xml:21
+#, python-format
+msgid "Opacity"
+msgstr "Opacité"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.theme_customize
+msgid "Postcard"
+msgstr "Carte postale"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.graphene_typo_pattern
+msgid "Sans-Serif"
+msgstr ""
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.theme_customize
+msgid "Sans-serif"
+msgstr ""
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.graphene_typo_pattern
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.theme_customize
+msgid "Serif"
+msgstr ""
+
+#. module: theme_graphene
+#. openerp-web
+#: code:addons/theme_graphene/static/src/xml/s_media_block_modal_ext.xml:13
+#, python-format
+msgid "Static Black"
+msgstr ""
+
+#. module: theme_graphene
+#: model:ir.model,name:theme_graphene.model_theme_utils
+msgid "Theme Utils"
+msgstr ""
+
+#. module: theme_graphene
+#. openerp-web
+#: code:addons/theme_graphene/static/src/xml/s_media_block_modal_ext.xml:11
+#, python-format
+msgid "Transparent"
+msgstr "Transparent"
+
+#. module: theme_graphene
+#: model_terms:theme.ir.ui.view,arch:theme_graphene.graphene_typo_pattern
+msgid "Underlined"
+msgstr "Souligné"
+
+#. module: theme_graphene
+#. openerp-web
+#: code:addons/theme_graphene/static/src/xml/s_media_block_modal_ext.xml:8
+#, python-format
+msgid "Video background"
+msgstr ""

@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -21,18 +21,20 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 0/debian11/0.68
+- dir: 0/debian11/0.74
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     prometheus-operator:
-      version: 0.68.0
+      version: 0.74.0
+    golang:
+      version: 1.22.0
   repo: prometheus-operator0
   tags:
-  - 0.68.0-debian11
-  - 0.68-debian11
+  - 0.74.0-debian11
+  - 0.74-debian11
   - 0-debian11
-  - 0.68.0
-  - '0.68'
+  - 0.74.0
+  - '0.74'
   - '0'
   - latest
 - dir: 0/debian11/0.65
@@ -40,10 +42,11 @@ versions:
   packages:
     prometheus-operator:
       version: 0.65.2
+    golang:
+      version: 1.21.6
   repo: prometheus-operator0
   tags:
   - 0.65.2-debian11
   - 0.65-debian11
   - 0.65.2
   - '0.65'
-

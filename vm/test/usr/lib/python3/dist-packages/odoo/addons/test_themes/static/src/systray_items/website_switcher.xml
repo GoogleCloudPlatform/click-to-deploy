@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+<t t-name="test_themes.ThemeTooltip">
+    <img t-att-src="url" width="150"/>
+</t>
+
+<t t-name="test_themes.WebsiteSwitcherSystray" t-inherit="website.WebsiteSwitcherSystray" t-inherit-mode="extension">
+    <xpath expr="//DropdownItem" position="attributes">
+        <attribute name="dataset">this.tooltips[element.id]</attribute>
+    </xpath>
+    <!-- With this module installed, disable the warning -->
+    <xpath expr="//DropdownItem/t[@t-if='!element.domain']" position="replace">
+    </xpath>
+</t>
+</templates>

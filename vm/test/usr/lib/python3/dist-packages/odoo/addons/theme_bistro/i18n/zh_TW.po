@@ -1,0 +1,143 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_bistro
+# 
+# Translators:
+# Wil Odoo, 2023
+# Tony Ng, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:22+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Tony Ng, 2024\n"
+"Language-Team: Chinese (Taiwan) (https://app.transifex.com/odoo/teams/41243/zh_TW/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: zh_TW\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_product_catalog_dish
+msgid "<em>Add the description of this dish here.</em>"
+msgstr "<span>在此加入菜式描述。</span>"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_text_block
+msgid ""
+"A healthy kitchen with local products. We’re constantly looking to propose "
+"new products and receipts. <b>While respecting seasons' products and "
+"nature.</b>"
+msgstr "健康的入廚之道是採用當地產品。我們不斷尋找新產品及貨源，<b>同時尊重自然規律及季節當造產品。</b>"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_quotes_carousel
+msgid ""
+"A truly exquisite dining experience. I highly recommend the Mustard Sauce, "
+"out of this world."
+msgstr "真正精緻的用餐體驗。我強烈推薦芥末醬，真是世界頂級。"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_text_block
+msgid ""
+"At the Bistro, you can expect a healthy kitchen on a daily basis. <br/>Come "
+"and visit us for a Sunday brunch, healthy juices full of nutrition, or "
+"delicious cakes that satisfy your sweet tooth. <b>And each day, you’ll "
+"discover our Today’s Special.</b>"
+msgstr ""
+"在小酒館內，你每天都可以享受健康的美食。<br/>快來我們這裏享用星期日早午餐、營養豐富的健康果汁，或滿足你對甜食渴求的美味蛋糕。<b>每天都有是日精選。</b>"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_features
+msgid "Breakfast"
+msgstr "早餐"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_quotes_carousel
+msgid ""
+"Cosy and friendly, good atmosphere and super food. Especially the spiced "
+"fruit crumble."
+msgstr "舒適友善，氣氛融和，食物超級棒。尤其是五香果脆。"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_cover
+msgid ""
+"Daily fresh products combined with our professional yet convivial "
+"service<br/> to create a true gastronomic experience."
+msgstr "每日新鮮產品，結合我們專業而歡欣的服務，<br/>創造真正美食體驗。"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_features
+msgid "Dinner"
+msgstr "晚餐"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_features
+msgid ""
+"Enjoy tasty food with friends.<br/><small>From <b>6:30 pm</b> to <b>10:30 "
+"pm</b></small>"
+msgstr "與好友共嚐美味佳餚。<br/><small><b>晚上 6:30</b> 至 <b>晚上 10:30</b></small>"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_features
+msgid ""
+"Help you start your morning right.<br/><small>From <b>7:30 am</b> to "
+"<b>10:30 am</b></small>"
+msgstr "為你展開美妙的新一天。<br/><small><b>早上 7:30</b> 至 <b>早上 10:30</b></small>"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_features
+msgid "Lunch"
+msgstr "午餐"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_cover
+msgid "Our Menu"
+msgstr "我們的菜單"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_cover
+msgid "Seasonal<br/> Flavors"
+msgstr "時令<br/>風味"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_features
+msgid ""
+"Take a break from your busy schedule.<br/><small>From <b>11:30 am</b> to "
+"<b>2:30 pm</b></small>"
+msgstr "忙裏偷閒，放鬆休息片刻。<br/><small><b>上午 11:30</b> 至 <b>下午 2:30</b></small>"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_picture
+msgid ""
+"Taste our chef's special, an almond macaroon with orange blossom "
+"buttercream."
+msgstr "品嘗主廚特製的杏仁馬卡龍及橙花奶油蛋糕。"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_banner
+msgid "Tasty Meals"
+msgstr "美味餐饗"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_picture
+msgid "The perfect dessert to share for the table."
+msgstr "適合全桌客人分享的完美甜品。"
+
+#. module: theme_bistro
+#: model:ir.model,name:theme_bistro.model_theme_utils
+msgid "Theme Utils"
+msgstr "主題"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_quotes_carousel
+msgid "This place is perfect for groups or a casual date night."
+msgstr "這個地方最適合團體或平日約會之夜。"
+
+#. module: theme_bistro
+#: model_terms:theme.ir.ui.view,arch:theme_bistro.s_picture
+msgid "Today's special"
+msgstr "今日精選"
