@@ -5,15 +5,20 @@ ENV C2D_RELEASE "3.0.0"
 ENV SUPERSET_VERSION ${SUPERSET_VERSION}
 ENV FLASK_APP="superset.app:create_app()"
 ENV SUPERSET_HOME=/var/lib/superset
+ENV PIP_VERSION "23.2.1"
+ENV SQLPARSE_VERSION "0.4.4"
+
 
 # Installing python3 and dependencies
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends build-essential libssl-dev libffi-dev python3-dev python3-pip libsasl2-dev openssl\
+    && apt-get install -y --no-install-recommends build-essential ca-certificates curl libssl-dev libffi-dev python3-dev python3-pip libsasl2-dev openssl\
     libldap2-dev default-libmysqlclient-dev
 
 # Create superset user & install dependencies
 WORKDIR /home/superset
+
 COPY requirements*.txt ./
+
 RUN groupadd supergroup && \
     useradd -U -G supergroup superset && \
     mkdir -p /etc/superset && \
@@ -32,10 +37,10 @@ RUN groupadd supergroup && \
         libpq-dev \
         libsasl2-2 \
         libsasl2-modules-gssapi-mit && \
-    pip install --disable-pip-version-check --upgrade "pip==23.2.1" && \
+    pip install --disable-pip-version-check --upgrade "pip==${PIP_VERSION}" && \
     pip install -r requirements.txt && \
-    pip install apache-superset==$SUPERSET_VERSION && \
-    pip install sqlparse=='0.4.4'
+    pip install apache-superset==${SUPERSET_VERSION} && \
+    pip install sqlparse==${SQLPARSE_VERSION}
 # https://github.com/apache/superset/issues/23742
 
 # Configure Filesystem
@@ -48,4 +53,3 @@ EXPOSE 8088
 COPY ./docker-entrypoint.sh /
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
-# ENTRYPOINT ["tail", "-f", "/dev/null"]
