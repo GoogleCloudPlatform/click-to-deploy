@@ -158,8 +158,8 @@ bash 'Pre-config Redmine' do
     source /usr/local/rvm/scripts/rvm
     rvm use $rubyVersion --default
     echo "gem 'blankslate'" >> Gemfile
-    gem "'passenger'" >> Gemfile
-    gem "'base64', '0.1.1'" >> Gemfile
+    echo "gem 'passenger'" >> Gemfile
+    echo "gem 'base64', '0.1.1'" >> Gemfile
     bundle install
 EOH
 end
