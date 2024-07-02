@@ -1,0 +1,349 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_yes
+# 
+# Translators:
+# Wil Odoo, 2023
+# Tony Ng, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:21+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Tony Ng, 2024\n"
+"Language-Team: Chinese (Taiwan) (https://app.transifex.com/odoo/teams/41243/zh_TW/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: zh_TW\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_call_to_action
+msgid "<b>345 couples</b> trusted us to organize their wedding."
+msgstr "<b>345</b> 對新人信任我們，讓我們為他們舉辦婚禮。"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_company_team
+msgid ""
+"<font style=\"font-weight: bolder;\" class=\"text-o-color-1\">The "
+"Designer</font>"
+msgstr "<font style=\"font-weight: bolder;\" class=\"text-o-color-1\">設計師</font>"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_company_team
+msgid ""
+"<font style=\"font-weight: bolder;\" class=\"text-o-color-1\">The Founder "
+"&amp; Planner</font>"
+msgstr "<font style=\"font-weight: bolder;\" class=\"text-o-color-1\">創辦人及策劃人</font>"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_quotes_carousel
+msgid ""
+"<span class=\"s_blockquote_author\"><b>Jack and Mary</b> • Married in "
+"2019</span>"
+msgstr "<span class=\"s_blockquote_author\"><b>Jack 與 Mary</b> • 2019 年結婚</span>"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_quotes_carousel
+msgid ""
+"<span class=\"s_blockquote_author\"><b>Linda and Paul</b> • Married in "
+"2020</span>"
+msgstr "<span class=\"s_blockquote_author\"><b>Linda 與 Paul</b> • 2020 年結婚</span>"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_quotes_carousel
+msgid ""
+"<span class=\"s_blockquote_author\"><b>Rose and Peter</b> • Renewed their "
+"vows in 2021</span>"
+msgstr ""
+"<span class=\"s_blockquote_author\"><b>Rose 及 Peter</b> - 2021 年重續誓言</span>"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_media_list
+msgid "<span style=\"font-size: 36px;\">Engagement ceremonies</span>"
+msgstr "<span style=\"font-size: 36px;\">訂婚儀式</span>"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_media_list
+msgid "<span style=\"font-size: 36px;\">Vow renewals</span>"
+msgstr "<span style=\"font-size: 36px;\">重續誓言</span>"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_media_list
+msgid "<span style=\"font-size: 36px;\">Wedding Receptions</span>"
+msgstr "<span style=\"font-size: 36px;\">婚宴</span>"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_three_columns
+msgid "Accomodations"
+msgstr "住宿"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_media_list
+msgid ""
+"As a full service experience, we monitor all aspects of your wedding from "
+"planning to execution."
+msgstr "作為一項全方位的服務體驗, 我們對婚禮從策劃到執行的所有環節進行監控。"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_company_team
+msgid ""
+"As a passionate wedding designer with a romantic soul, Clair adores "
+"celebrating the special moments in life in magical places and creating an "
+"authentic experience for couples."
+msgstr "作為一名充滿激情、擁有浪漫靈魂的婚禮設計師，Clair 熱衷於在神奇的地方慶祝生命中的特殊時刻, 並為新人創造真實的體驗。"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Attire"
+msgstr "服裝"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_three_columns
+msgid "Car Rental"
+msgstr "租車"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Caterers"
+msgstr "餐飲"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_carousel
+msgid "Check out our gallery"
+msgstr "查看我們的圖片庫"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Check out our list of favorite caterers."
+msgstr "查看我們最喜愛的餐飲供應商名單。"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Check out our list of favorite venues."
+msgstr "查看我們最喜歡的場所清單。"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_company_team
+msgid "Clair Stark"
+msgstr "Clair Stark"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "FAQ"
+msgstr "常見問答"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Find a Caterer"
+msgstr "尋找餐飲供應商"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_text_image
+msgid "Find a photographer"
+msgstr "尋找攝影師"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_image_text
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Find a venue"
+msgstr "尋找場地"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Find the answers to all your questions <br/>in our FAQ."
+msgstr "在我們的常見問答中,<br/>找到所有問題的答案。"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Find the perfect outfit for before, during and after the main event."
+msgstr "為主要儀式之前、期間和之後的活動, 尋找完美的服裝。"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_quotes_carousel
+msgid ""
+"From the beginning of our planning process, our planner was incredible! She "
+"made us feel heard, gave great suggestions and was always just an email or "
+"call away when we had any last minute questions. Couldn't have done it "
+"without her!"
+msgstr ""
+"從我們的策劃過程開始，我們的策劃師就非常出色。她讓我們感覺到她在傾聽我們的心聲，給了我們很多好的建議，當我們有任何問題時，她總是能在第一時間給我們發郵件或打電話。沒有她,"
+" 我們根本無法完成婚禮！"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_carousel
+msgid "Get in touch"
+msgstr "取得聯絡"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_carousel
+msgid ""
+"Get inspired with the latest trends and advice from our wedding experts."
+msgstr "從我們婚禮專家的最新趨勢和建議中, 獲得靈感。"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Go to FAQ"
+msgstr "前往常見問答"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_picture
+msgid ""
+"Intimate or with hundreds of guests, outdoors or indoors : we organize the "
+"wedding of your dreams."
+msgstr "無論是私密婚禮還是數百賓客的婚禮, 無論是戶外婚禮還是室內婚禮: 我們都能為您舉辦夢寐以求的婚禮。"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_call_to_action
+msgid "Join them and let us help you make this day unforgettable."
+msgstr "加入他們, 讓我們幫助您度過難忘的一天。"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_banner
+msgid "Just as you dreamt it."
+msgstr "就如你夢想的那樣"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_carousel
+msgid "Let us plan your perfect day"
+msgstr "讓我們為您策劃完美的一天"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_company_team
+msgid "Livia Sailor"
+msgstr "Livia Sailor"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_company_team
+msgid ""
+"Livia is our head wedding coordinator and stylist, she'll turn any of your "
+"ideas into reality, making sure your wedding day is smooth and looks better "
+"than anything you have ever seen on Pinterest."
+msgstr ""
+"Livia 是我們的首席婚禮協調人和造型師，她會將您的任何想法變為現實，確保您的婚禮順利進行, 而且比您在 Pinterest 上看到的任何東西都更美。"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_picture
+msgid "Love is in the air"
+msgstr "洋溢愛的氣氛"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_three_columns
+msgid "Make up &amp;amp; Hair"
+msgstr "化妝及髮型"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_title
+msgid "Meet our team"
+msgstr "認識我們的團隊"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_cover
+msgid "Meet us"
+msgstr "與我們見面"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_cover
+msgid "Once in a lifetime moments"
+msgstr "一生難忘的時刻"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_quotes_carousel
+msgid ""
+"Our wedding coordinator made the entire process so much less stressful. She "
+"was more than kind, accommodating, and helpful in more ways than one! She "
+"always answered my emails within a day and thoroughly. She went above and "
+"beyond, I would recommend her to anyone!"
+msgstr ""
+"我們的婚禮協調人讓整個過程的壓力大大減少。她非常和藹可親、通情達理，在很多方面都很有幫助！她總是在一天之內回覆我的郵件，而且回復得很詳盡。她的工作超出了我的想象,"
+" 我會向任何人推薦她！"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_media_list
+msgid "See how others renewed their vows"
+msgstr "看看其他人如何重續誓言"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_carousel
+msgid "See the blog"
+msgstr "查看網誌"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Shop"
+msgstr "商店"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_media_list
+msgid "Start planning your engagement"
+msgstr "開始計劃您的訂婚"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_media_list
+msgid "Start planning your wedding"
+msgstr "開始籌備婚禮"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_picture
+msgid "Stuart and Iliana's wedding at the Barn."
+msgstr "Stuart 與 Iliana 在穀倉舉行的婚禮。"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_carousel
+msgid "Take a look at some of our favourite weddings."
+msgstr "看看我們最喜歡的幾場婚禮。"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_quotes_carousel
+msgid ""
+"Thank you so much for being a part of our special day. It was so nice "
+"working with you. Without your help the day would not have been as perfect "
+"as it was."
+msgstr "非常感謝你們參與我們特殊的一天。與您合作非常愉快。沒有你們的幫助，我們的婚禮不會如此完美。"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_media_list
+msgid ""
+"The heartfelt exchange of wedding vows is often the most memorable part of a"
+" marriage ceremony."
+msgstr "摯誠交換結婚誓言往往是結婚儀式中最令人難忘的部分。"
+
+#. module: theme_yes
+#: model:ir.model,name:theme_yes.model_theme_utils
+msgid "Theme Utils"
+msgstr "主題"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Venues"
+msgstr "場地"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_carousel
+msgid "View our blog for inspiration"
+msgstr "查看我們的網誌, 獲取靈感"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_carousel
+msgid "View our work"
+msgstr "查看我們的作品"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_carousel
+msgid ""
+"We are focused on providing high-quality service and customer satisfaction."
+msgstr "我們致力提供優質服務，讓客戶滿意。"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_media_list
+msgid ""
+"We’ll help you mark the engagement milestone with an unforgettable ceremony."
+msgstr "我們將幫助您用一場難忘的儀式, 紀念訂婚的里程碑。"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_cover
+msgid "You focus on the big day, let us focus on you."
+msgstr "您專注於大日子，讓我們專注於您。"

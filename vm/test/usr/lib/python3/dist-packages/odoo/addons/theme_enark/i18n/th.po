@@ -1,0 +1,134 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_enark
+# 
+# Translators:
+# Wil Odoo, 2023
+# Rasareeyar Lappiam, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:21+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Rasareeyar Lappiam, 2024\n"
+"Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: th\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_parallax
+msgid ""
+"<i>“One of the great beauties of architecture is that each time, it is like "
+"life starting all over again.”</i>"
+msgstr ""
+"<i>“ความงดงามอย่างหนึ่งของสถาปัตยกรรมก็คือในการสร้างแต่ละครั้งมันก็เหมือนกับชีวิตที่เริ่มต้นใหม่อีกครั้ง”</i>"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_banner
+msgid "A Different Viewpoint."
+msgstr "มุมมองที่แตกต่าง"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_call_to_action
+msgid "As <b>436 clients</b> before you, let’s work together"
+msgstr "ในฐานะ<b>ลูกค้า 436</b> คนก่อนหน้าคุณ มาร่วมงานกัน"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_text_image
+msgid "Building Castle in Cloud"
+msgstr "สร้างปราสาทในคลาวด์"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_media_list
+msgid "Construction site"
+msgstr "สถานที่ก่อสร้าง"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_picture
+msgid "Creating places that enhance the human experience."
+msgstr "การสร้างสถานที่ที่ยกระดับประสบการณ์ของมนุษย์"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_banner
+msgid "Discover More"
+msgstr "ค้นพบเพิ่มเติม"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.enark_snippet_options
+msgid "Gradients"
+msgstr "การไล่ระดับสี"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_media_list
+msgid "Know our clients."
+msgstr "รู้จักลูกค้าของเรา"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_media_list
+msgid "Nature friendly"
+msgstr "เป็นมิตรกับสิ่งแวดล้อม"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.enark_snippet_options
+msgid "None"
+msgstr "ไม่มี"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_media_list
+msgid ""
+"Our creations integrate and are in perfect harmony with their environment."
+msgstr "การสร้างสรรค์ของเราผสมผสานและกลมกลืนกับสภาพแวดล้อมได้อย่างสมบูรณ์แบบ"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_media_list
+msgid ""
+"Our mastery of construction techniques has been built up over time through "
+"our close collaboration with the workers and our sustained presence on the "
+"construction sites."
+msgstr ""
+"ความเชี่ยวชาญในเทคนิคการก่อสร้างของเราได้รับการสั่งสมประสบการณ์มาเป็นเวลานานผ่านความร่วมมืออย่างใกล้ชิดกับคนงานและการมีอยู่อย่างยั่งยืนของเราในสถานที่ก่อสร้าง"
+
+#. module: theme_enark
+#: model:ir.model,name:theme_enark.model_theme_utils
+msgid "Theme Utils"
+msgstr "ยูทิลิตี้ธีม"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_picture
+msgid "We always put people and nature at the center of our projects."
+msgstr "เราให้ความสำคัญกับผู้คนและธรรมชาติสำหรับโปรเจ็กต์ของเราเสมอ"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_media_list
+msgid ""
+"We always start by exploring our clients goals, priorities, lifestyle, and "
+"tastes."
+msgstr ""
+"เราเริ่มต้นด้วยการสำรวจเป้าหมาย เรียงลำดับความสำคัญ "
+"ไลฟ์สไตล์และรสนิยมของลูกค้าเสมอ"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_banner
+msgid ""
+"We are a contemporary architecture firm working mainly in the residential, "
+"commercial and office sectors. Our projects are built all over the world, in"
+" urban and rural environments."
+msgstr ""
+"เราเป็นบริษัทสถาปัตยกรรมร่วมสมัยที่ทำงานในภาคที่อยู่อาศัย พาณิชยกรรม "
+"และสำนักงานเป็นหลัก โปรเจ็กต์ของเราถูกสร้างขึ้นทั่วโลก "
+"ทั้งในสภาพแวดล้อมในเมืองและในชนบท"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_text_image
+msgid ""
+"When designing an architectural concept, we take into account the nine "
+"criteria that Zumthor considers to be important in creating an architectural"
+" atmosphere."
+msgstr ""
+"เมื่อออกแบบแนวคิดทางสถาปัตยกรรม เราคำนึงถึงเกณฑ์เก้าข้อที่ Zumthor "
+"พิจารณาว่ามีความสำคัญในการสร้างบรรยากาศทางสถาปัตยกรรม"

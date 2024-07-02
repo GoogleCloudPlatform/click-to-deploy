@@ -31,6 +31,7 @@ include_recipe 'apache2::security-config'
 include_recipe 'php81'
 include_recipe 'php81::module_libapache2'
 include_recipe 'php81::module_xml'
+include_recipe 'dokuwiki::ospo'
 
 bash 'Download key' do
   user 'root'

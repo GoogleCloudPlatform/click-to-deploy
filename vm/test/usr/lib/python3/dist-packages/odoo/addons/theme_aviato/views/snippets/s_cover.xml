@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_cover" inherit_id="website.s_cover">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pt192 pb192" remove="pt96 pb96 s_parallax_is_fixed" separator=" "/>
+    </xpath>
+    <xpath expr="//span[hasclass('s_parallax_bg')]" position="replace">
+        <span class="s_parallax_bg oe_img_bg" style="background-image: url('/web/image/website.s_cover_default_image'); background-position: 50% 50%;"/>
+    </xpath>
+    <!-- Title -->
+    <xpath expr="//h1" position="replace" mode="inner">
+        Travel to any corner <br/>of the world
+    </xpath>
+    <!-- Paragraphs -->
+    <xpath expr="//p" position="replace" mode="inner">
+        <b>A travel agent helps you to plan your <br/> trip from start to finish.</b>
+        <br/>
+    </xpath>
+    <!-- Button -->
+    <xpath expr="//a" position="replace" mode="inner">
+        Plan your trip with us
+    </xpath>
+</template>
+
+<template id="configurator_s_cover" inherit_id="website.configurator_s_cover">
+    <!-- Shape option -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Wavy/21","flip":["y"]}</attribute>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Wavy_21" style="background-image: url('/web_editor/shape/web_editor/Wavy/21.svg?c2=o-color-4&amp;flip=y'); background-position: 50% 100%;"/>
+    </xpath>
+</template>
+
+</odoo>

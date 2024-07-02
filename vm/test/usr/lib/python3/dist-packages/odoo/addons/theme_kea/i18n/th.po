@@ -1,0 +1,242 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_kea
+# 
+# Translators:
+# Wil Odoo, 2023
+# Rasareeyar Lappiam, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Rasareeyar Lappiam, 2024\n"
+"Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: th\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_features
+msgid "<b>360-degree vision</b>"
+msgstr "<b>วิสัยทัศน์ 360 องศา</b>"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_features
+msgid "<b>Built in mic</b>"
+msgstr "<b>ไมโครโฟนในตัว</b>"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_features
+msgid "<b>Stunning visuals</b>"
+msgstr "<b>ภาพที่สวยงาม</b>"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_image_text
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-2) 100%);\" class=\"text-gradient\">Enter in a new "
+"world</font>"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-2) 100%);\" class=\"text-gradient\">เข้าไปในโลกใหม่</font>"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_text_image
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-2) 100%);\" class=\"text-gradient\">Full immersion</font>"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-2) 100%);\" class=\"text-"
+"gradient\">ดื่มด่ำอย่างเต็มที่</font>"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_features
+msgid "A small explanation of this great feature, in clear words."
+msgstr "คำอธิบายย่อเกี่ยวกับฟีเจอร์ที่ยอดเยี่ยมนี้ด้วยคำพูดที่ชัดเจน"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_media_list
+msgid "Comfort &amp; Ease"
+msgstr "ความสะดวก &amp; ใช้งานง่าย"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_color_blocks_2
+msgid ""
+"Conquer leaderboards, crush workouts, create with friends and more. Get lost"
+" in a growing library of VR classics and all-new experiences."
+msgstr ""
+"พิชิตกระดานผู้นำ พิชิตการออกกำลังกาย สร้างสรรค์ร่วมกับเพื่อนและอื่นๆ "
+"อีกมากมาย ดื่มด่ำไปกับคลัง VR สุดคลาสสิกและประสบการณ์ใหม่เอี่ยมที่กำลังมาแรง"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_three_columns
+msgid "Design"
+msgstr "ออกแบบ"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_numbers
+msgid "Different lenses"
+msgstr "การมองเห็นที่แตกต่าง"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_cover
+msgid "Discover more"
+msgstr "ค้นพบเพิ่มขึ้น"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_picture
+msgid "Experience a new world"
+msgstr "สัมผัสโลกใหม่"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_media_list
+msgid "Fitting design"
+msgstr "การออกแบบที่เหมาะสม"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_color_blocks_2
+msgid "Freedom"
+msgstr "อิสรภาพ"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_three_columns
+msgid ""
+"From design concept to the showroom, create and manage workflows with better"
+" collaboration."
+msgstr ""
+"ตั้งแต่แนวคิดการออกแบบไปจนถึงโชว์รูม "
+"สร้างและจัดการขั้นตอนการทำงานด้วยการทำงานร่วมกันที่ดียิ่งขึ้น"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_three_columns
+msgid ""
+"From high-risk safety simulations and maintenance procedures to soft skills "
+"like public speaking."
+msgstr ""
+"ตั้งแต่การจำลองความปลอดภัยที่มีความเสี่ยงสูงและขั้นตอนการบำรุงรักษาไปจนถึงทักษะด้านอารมณ์"
+" เช่น การพูดในที่สาธารณะ"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_three_columns
+msgid "Gaming"
+msgstr "เกมมิ่ง"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_color_blocks_2
+msgid "Multiplayer"
+msgstr "ผู้เล่นหลายคน"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_media_list
+msgid "Natural control"
+msgstr "การควบคุมอย่างเป็นธรรมชาติ"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_numbers
+msgid "New games every week"
+msgstr "เกมใหม่ทุกสัปดาห์"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_color_blocks_2
+msgid ""
+"No matter who you are, with a growing library of games and experiences there"
+" is no limit to where you can go and what you can do in virtual reality."
+msgstr ""
+"ไม่ว่าคุณจะเป็นใคร ด้วยคลังเกมและประสบการณ์ที่เพิ่มมากขึ้น "
+"คุณจะไปได้ที่ไหนและทำอะไรได้บ้างในความเป็นจริงเสมือน"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_numbers
+msgid "Number of controllers"
+msgstr "จำนวนตัวควบคุม"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_picture
+msgid ""
+"Put yourself at the center of an extraordinary gaming universe with "
+"exclusive games."
+msgstr "พาตัวเองเข้าสู่ศูนย์กลางของจักรวาลเกมสุดพิเศษด้วยเกมสุดพิเศษ"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_numbers
+msgid "Storage capacity (GB)"
+msgstr "ความจุ (GB)"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_features
+msgid "Tell what's the value for the customer for this feature."
+msgstr "บอกถึงคุณค่าที่ลูกค้าจะได้รับสำหรับฟีเจอร์นี้"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_cover
+msgid "The Revolution <br/> in Virtual Reality"
+msgstr "การปฏิวัติ<br/>ในโลกเสมือนจริง"
+
+#. module: theme_kea
+#: model:ir.model,name:theme_kea.model_theme_utils
+msgid "Theme Utils"
+msgstr "ยูทิลิตี้ธีม"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_three_columns
+msgid "Training"
+msgstr "การอบรม"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_media_list
+msgid ""
+"Use this snippet to build various types of components that feature a left- "
+"or right-aligned image alongside textual content. Duplicate the element to "
+"create a list that fits your needs."
+msgstr ""
+"ใช้ snippet นี้เพื่อสร้างส่วนประกอบประเภทต่าง ๆ "
+"ที่จัดอยู่ในด้านซ้ายหรือขวาของรูปภาพควบคู่ไปกับเนื้อหาที่เป็นข้อความ "
+"ทำซ้ำองค์ประกอบเพื่อสร้างรายการที่ตรงกับความต้องการของคุณ"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_three_columns
+msgid ""
+"VR takes immersive gaming to another level. From deep environmental "
+"interactions to puzzle solving."
+msgstr ""
+"VR ยกระดับการเล่นเกมที่ดื่มด่ำไปอีกระดับหนึ่ง "
+"จากการมีปฏิสัมพันธ์กับสิ่งแวดล้อมอย่างลึกซึ้งไปจนถึงการไขปริศนา"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_picture
+msgid ""
+"Watch as a living game world comes alive all around you, with a seamless "
+"field of view wherever you look."
+msgstr ""
+"รับชมโลกของเกมที่มีชีวิตกลับมามีชีวิตชีวารอบตัวคุณ ด้วยมุมมองที่ไร้รอยต่อ"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_media_list
+msgid ""
+"We only use original parts or parts of equivalent quality. ​We make sure you"
+" get the best quality available on the market at the best price. All our "
+"interventions are guaranteed for a period of one year."
+msgstr ""
+"เราใช้เฉพาะชิ้นส่วนดั้งเดิมหรือชิ้นส่วนที่มีคุณภาพเทียบเท่าเท่านั้น "
+"เรามั่นใจว่าคุณจะได้รับคุณภาพที่ดีที่สุดในตลาดในราคาที่ดีที่สุด "
+"การดำเนินการทั้งหมดของเรารับประกันเป็นระยะเวลาหนึ่งปี"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_text_image
+msgid ""
+"Write one or two paragraphs describing your product or services. To be "
+"successful your content needs to be useful to your readers."
+msgstr ""
+"เขียนหนึ่งหรือสองย่อหน้าเพื่ออธิบายผลิตภัณฑ์หรือบริการ "
+"เพื่อให้คุณประสบความสำเร็จเนื้อหาจะต้องเป็นประโยชน์ต่อผู้อ่านของคุณ"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_features
+msgid "Write what the customer would like to know, not what you want to show."
+msgstr "เขียนสิ่งที่ลูกค้าอยากรู้ ไม่ใช่สิ่งที่คุณต้องการแสดง"

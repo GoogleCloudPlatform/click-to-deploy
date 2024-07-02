@@ -1,0 +1,225 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_vehicle
+# 
+# Translators:
+# Wichanon Jamwutthipreecha, 2023
+# Wil Odoo, 2023
+# Rasareeyar Lappiam, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:21+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Rasareeyar Lappiam, 2024\n"
+"Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: th\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_call_to_action
+msgid "<b>50,000 pre-orders</b> already registered."
+msgstr "ลงทะเบียนล่วงหน้าแล้ว 50,000 รายการ"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_image_text
+msgid "<b>A greener lifestyle</b>"
+msgstr "<b>วิถีชีวิตที่เป็นมิตรต่อสิ่งแวดล้อมมากขึ้น</b>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_text_image
+msgid "<b>The world is yours</b>"
+msgstr "<b>โลกเป็นของคุณ</b>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid "<span class=\"d-inline-block mb-4\"><b>From $14,000</b></span>"
+msgstr "<span class=\"d-inline-block mb-4\"><b>จาก $14,000</b></span>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid "<span class=\"d-inline-block mb-4\"><b>From $19,000</b></span>"
+msgstr "<span class=\"d-inline-block mb-4\"><b>จาก $19,000</b></span>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid "<span class=\"d-inline-block mb-4\"><b>From $25,000</b></span>"
+msgstr "<span class=\"d-inline-block mb-4\"><b>จาก $25,000</b></span>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_picture
+msgid ""
+"<span class=\"text-o-color-3\">Our uniquely designed LED headlights are not "
+"only gorgeous but powerfully light your way.<br/></span>"
+msgstr ""
+"<span class=\"text-o-color-3\">ไฟหน้า LED "
+"ที่ได้รับการออกแบบอย่างมีเอกลักษณ์ของเราไม่เพียงแต่มีความสวยงาม "
+"แต่ยังส่องสว่างอย่างทรงพลังให้กับคุณอีกด้วย<br/></span>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_product_list
+msgid "Brakes #1"
+msgstr "เบรค #1"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_product_list
+msgid "Brakes #2"
+msgstr "เบรค #2"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_product_list
+msgid "Brakes #3"
+msgstr "เบรค #3"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_product_list
+msgid "Brakes #4"
+msgstr "เบรค #4"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_product_list
+msgid "Brakes #5"
+msgstr "เบรค #5"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_product_list
+msgid "Brakes #6"
+msgstr "เบรค #6"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_picture
+msgid ""
+"Bring the KORAN to life on your smartphone or tablet so you can visualise it"
+" for yourself.<br/>"
+msgstr ""
+"ทำให้อัลกุรอานมีชีวิตชีวาบนสมาร์ทโฟนหรือแท็บเล็ตของคุณ "
+"เพื่อให้คุณเห็นภาพรวมได้ด้วยตัวเอง<br/>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid "Configure"
+msgstr "กำหนดค่า"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_features
+msgid "Dual Motor"
+msgstr "มอเตอร์คู่"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_image_text
+msgid "Electric Driving"
+msgstr "การขับขี่แบบไฟฟ้า"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_masonry_block_image_texts_image_template
+msgid "Electrifying <b>Performance</b>."
+msgstr "<b>ประสิทธิภาพ</b>อันเร้าใจ"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_call_to_action
+msgid "Join the early joiners or request for a trial on track."
+msgstr "เข้าร่วมกับผู้ที่เข้าร่วมก่อนใครหรือขอทดลองใช้งาน"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid "Koran EQ"
+msgstr "อัลกุรอาน EQ"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid "Koran GT"
+msgstr "อัลกุรอาน GT"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid "Koran Mini"
+msgstr "อัลกุรอานมินิ"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_features
+msgid "Long Range"
+msgstr "ระยะยาว"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid ""
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris hendrerit "
+"est bibendum sollicitudin vestibulum."
+msgstr ""
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris hendrerit "
+"est bibendum sollicitudin vestibulum."
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_text_image
+msgid "No compromise"
+msgstr "ไม่มีการประนีประนอม"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_references
+msgid "Our Partners"
+msgstr "พาร์ทเนอร์ของเรา"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_features_grid
+msgid "Our web store"
+msgstr "ร้านค้าบนเว็บของเรา"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_text_image
+msgid ""
+"Performance and design were the key words during the conception of this "
+"super car. No compromises were made to keep the pleasure of driving despite "
+"those constraints."
+msgstr ""
+"สมรรถนะและการออกแบบคือหัวใจสำคัญของแนวคิดของซุปเปอร์คาร์คันนี้ "
+"ยังคงรักษาความเพลิดเพลินในการขับขี่แม้ว่าจะมีข้อจำกัดเหล่านั้นก็ตาม"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_masonry_block_image_texts_image_template
+msgid "Smarter <b>Range</b>."
+msgstr "<b>ช่วง</b>ที่ชาญฉลาดยิ่งขึ้น"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_cover
+msgid "Start the engine"
+msgstr "สตาร์ทเครื่องยนต์"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_text_image
+msgid "Take advantage of a free track trial to discover it."
+msgstr "ใช้ประโยชน์จากการทดลองใช้แทร็กฟรีเพื่อค้นพบเพิ่มเติม"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_cover
+msgid "Take it all. Compliments too."
+msgstr "รับไปทั้งหมดและรับคำชมเช่นกัน"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_cover
+msgid "The New KORAN X"
+msgstr "อัลกุรอานใหม่ X"
+
+#. module: theme_vehicle
+#: model:ir.model,name:theme_vehicle.model_theme_utils
+msgid "Theme Utils"
+msgstr "ยูทิลิตี้ธีม"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_features
+msgid "Top Speed"
+msgstr "ความเร็วสูงสุด"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_picture
+msgid "View the all-new KORAN in 3D wherever you are<br/>"
+msgstr "ดูอัลกุรอานใหม่ทั้งหมดในรูปแบบ 3 มิติไม่ว่าคุณจะอยู่ที่ไหน <br/>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_features_grid
+msgid "Your advantages"
+msgstr "ข้อได้เปรียบของคุณ"

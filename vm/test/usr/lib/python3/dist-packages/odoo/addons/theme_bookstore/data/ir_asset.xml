@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<record id="theme_bookstore.primary_variables_scss" model="theme.ir.asset">
+    <field name="key">theme_bookstore.primary_variables_scss</field>
+    <field name="name">Primary variables SCSS</field>
+    <field name="bundle">web._assets_primary_variables</field>
+    <field name="path">theme_bookstore/static/src/scss/primary_variables.scss</field>
+</record>
+
+<record id="theme_bookstore.bootstrap_overridden_scss" model="theme.ir.asset">
+    <field name="key">theme_bookstore.bootstrap_overridden_scss</field>
+    <field name="name">Bootstrap overridden SCSS</field>
+    <field name="bundle">web._assets_frontend_helpers</field>
+    <field name="directive">prepend</field>
+    <field name="path">theme_bookstore/static/src/scss/bootstrap_overridden.scss</field>
+</record>
+
+<record id="theme_bookstore.compatibility_saas_11_4_variables_scss" model="theme.ir.asset">
+    <field name="key">theme_bookstore.compatibility_saas_11_4_variables_scss</field>
+    <field name="name">Compatibility saas 11 4 variables SCSS</field>
+    <field name="bundle">web._assets_primary_variables</field>
+    <field name="path">/theme_bookstore/static/src/scss/compatibility-saas-11.4-variables.scss</field>
+    <field name="active" eval="False"/>
+</record>
+
+</odoo>

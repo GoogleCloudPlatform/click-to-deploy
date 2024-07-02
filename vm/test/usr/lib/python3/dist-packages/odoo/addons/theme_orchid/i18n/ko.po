@@ -1,0 +1,135 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_orchid
+# 
+# Translators:
+# Wil Odoo, 2023
+# Daye Jeong, 2023
+# Sarah Park, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Sarah Park, 2023\n"
+"Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ko\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_text_image
+msgid ""
+"<br/>\n"
+"        Deliver flowers to live up to your dedication for your loved ones."
+msgstr ""
+"<br/>\n"
+"        사랑하는 사람을 위한 마음을 담아 꽃다발을 전달해 보세요."
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_quotes_carousel
+msgid ""
+"A small shop with a very large selection of roses. Nice prices and above all"
+" a very professional and friendly welcome."
+msgstr ""
+"장미 종류를 아주 다양하게 갖추고 있는 작은 가게입니다. 가격면에서도 훌륭하고 무엇보다도 매우 전문적이고 친절하게 환영해 줍니다."
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_quotes_carousel
+msgid ""
+"A wide range of high quality products and a warm welcome! I recommend this "
+"shop 200%!"
+msgstr "다양한 고품질의 품목으로 따뜻하게 환영받습니다! 이 상점을 200% 추천합니다!"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_three_columns
+msgid ""
+"As we use local growers, our flowers last longer and smell better. Just like"
+" the event you want to celebrate with flowers!"
+msgstr "현지 재배이기 때문에, 꽃의 수명이 더 길고 더 향기가 그윽합니다. 꽃과 함께 축하하고 싶은 이벤트에 딱 맞습니다!"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_three_columns
+msgid "Bio Flowers"
+msgstr "Bio Flowers"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_three_columns
+msgid ""
+"Don't offer pesticides to your beloved one! By choosing our flowers, we "
+"guarantee you organic flowers."
+msgstr "사랑하는 사람에게 농약 범벅인 꽃을 선물하지 마세요! 저희는 유기농 꽃을 보장해 드립니다."
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_three_columns
+msgid "Eco-Friendly Packaging"
+msgstr "친환경 패키지"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_image_text
+msgid ""
+"From your local producer to your door, discover how we deliver our multiple "
+"sorts of flowers and bring you happiness."
+msgstr "현지 생산자로부터 고객 자택까지, 다양한 종류의 꽃다발을 배송하여 행복을 선사해 드리는 방법을 알아 보세요."
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_cover
+msgid "Live life in full bloom"
+msgstr "삶을 활짝 꽃 피우세요."
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_three_columns
+msgid "Local Producers"
+msgstr "현지 생산자"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_text_image
+msgid "Our Mission"
+msgstr "우리의 미션"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_image_text
+msgid "The Orchid Concept"
+msgstr "오키드 컨셉"
+
+#. module: theme_orchid
+#: model:ir.model,name:theme_orchid.model_theme_utils
+msgid "Theme Utils"
+msgstr "테마 유틸"
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_call_to_action
+msgid "There are always flowers <br/>for those who want to see them."
+msgstr "꽃을 감상하고자 하는 분들을 위해 <br/>항상 꽃을 준비해 둡니다."
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_text_image
+msgid ""
+"To do so, we collaborate with local producers who care about the environment"
+" and cultivate their flowers with love."
+msgstr "이를 위해, 환경을 생각하고 사랑으로 꽃을 가꾸는 현지의 생산자와 협력합니다. "
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_quotes_carousel
+msgid ""
+"Very nice, colorful shop with many choices in the heart of a very pretty "
+"town."
+msgstr "아주 예쁜 마을의 중심에 있는 정말 멋지고 다채로운 가게에서 다양한 선택을 해 보세요."
+
+#. module: theme_orchid
+#: model_terms:theme.ir.ui.view,arch:theme_orchid.s_three_columns
+msgid ""
+"We use 100% recycled materials. We believe the best gifts should also do "
+"good for the planet."
+msgstr "100% 재활용 소재를 사용합니다. 최고의 선물은 지구를 위해서도 좋은 것이어야 한다고 믿습니다."
+
+#. module: theme_orchid
+#. odoo-javascript
+#: code:addons/theme_orchid/static/src/js/tour.js:0
+#, python-format
+msgid "width"
+msgstr "너비"

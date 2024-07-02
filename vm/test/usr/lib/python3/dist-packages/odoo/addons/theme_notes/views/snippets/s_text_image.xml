@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_text_image" inherit_id="website.s_text_image">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc o_cc1 pt80 pb80" remove="pt32 pb32" separator=" "/>
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Wavy/11","flip":["x"]}</attribute>
+    </xpath>
+    <!-- Title & Paragraph -->
+    <xpath expr="//h2" position="replace" mode="inner">
+        About the Festival
+    </xpath>
+    <xpath expr="//p" position="replace" mode="inner">
+        <br/>
+    </xpath>
+    <xpath expr="//p[2]" position="replace" mode="inner">
+        The Miraillet Festival was born in 2002 from a common will of cultural, touristic and institutional actors of the region to propose a major cultural event in the very heart of the region during the summer period.
+    </xpath>
+    <xpath expr="//a[hasclass('btn')]" position="replace" mode="inner">
+        Discover more
+    </xpath>
+    <!-- Image wrapper -->
+    <xpath expr="//div[hasclass('col-lg-6')][2]" position="attributes">
+        <attribute name="class" add="col-lg-4 offset-lg-2" remove="col-lg-6" separator=" "/>
+    </xpath>
+</template>
+
+</odoo>

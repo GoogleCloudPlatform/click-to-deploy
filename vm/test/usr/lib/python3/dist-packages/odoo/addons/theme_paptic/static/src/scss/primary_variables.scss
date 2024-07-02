@@ -1,0 +1,95 @@
+//------------------------------------------------------------------------------
+// Fonts
+//------------------------------------------------------------------------------
+
+$o-theme-h1-font-size-multiplier: (48 / 14);
+$o-theme-h2-font-size-multiplier: (38 / 14);
+$o-theme-h3-font-size-multiplier: (28 / 14);
+$o-theme-h4-font-size-multiplier: (24 / 14);
+$o-theme-h5-font-size-multiplier: (21 / 14);
+$o-theme-h6-font-size-multiplier: (18 / 14);
+
+$o-theme-font-configs: (
+    'Inter': (
+        'family': ('Inter', serif),
+        'url': 'Inter:400,400i,600,600i,800,800i',
+    ),
+
+    'Nunito': (
+        'family': ('Nunito', serif),
+        'url': 'Nunito:300,300i,400,400i,700,700i',
+    ),
+
+    'Abril Fatface': (
+        'family': ('Nunito', serif),
+        'url': 'Abril+Fatface:300,300i,400,400i,700,700i',
+    ),
+);
+
+
+//------------------------------------------------------------------------------
+// Website customizations
+//------------------------------------------------------------------------------
+
+$o-website-values-palettes: (
+    (
+        'color-palettes-name': 'paptic-1',
+
+        'font': 'Inter',
+        'headings-font': 'Nunito',
+        'navbar-font': 'Nunito',
+        'buttons-font': 'Nunito',
+
+        'font-size-base': (14 / 16) * 1rem,
+        'header-font-size': (14 / 16) * 1rem,
+        'headings-line-height': 1.1,
+
+        'menu-box-shadow': false,
+
+        'btn-ripple': true,
+
+        'btn-font-size': (14 / 16) * 1rem,
+        'btn-border-radius': 2px,
+
+        'btn-font-size-lg': (14 / 16) * 1rem,
+        'btn-padding-y-lg': 1rem,
+        'btn-padding-x-lg': (28 / 16) * 1rem,
+    ),
+);
+
+$o-selected-color-palettes-names: append($o-selected-color-palettes-names, 'paptic-1');
+
+$o-color-palettes-compatibility-indexes: (
+    1: 'paptic-1',
+    2: 'generic-1',
+    3: 'generic-2',
+    4: 'generic-3',
+    5: 'generic-4',
+    6: 'generic-5',
+    7: 'generic-6',
+    8: 'generic-7',
+    9: 'generic-8',
+    10: 'generic-9',
+    11: 'generic-10',
+    12: 'generic-11',
+    13: 'generic-12',
+    14: 'generic-13',
+    15: 'generic-14',
+    16: 'generic-15',
+    17: 'generic-16',
+    18: 'generic-17',
+);
+
+//------------------------------------------------------------------------------
+// Shapes
+//------------------------------------------------------------------------------
+
+$o-bg-shapes: change-shape-colors-mapping('web_editor', 'Blocks/04', (3: 1));
+$o-bg-shapes: change-shape-colors-mapping('web_editor', 'Origins/03', (3: 1));
+$o-bg-shapes: change-shape-colors-mapping('web_editor', 'Origins/01', (2: 3, 5: 3));
+$o-bg-shapes: change-shape-colors-mapping('web_editor', 'Origins/02_001', (4: 1, 5: 3));
+$o-bg-shapes: change-shape-colors-mapping('web_editor', 'Origins/07_002', (3: 1, 4: 3, 5: 1));
+$o-bg-shapes: change-shape-colors-mapping('web_editor', 'Floats/03', (1: 4, 2: 2, 3: 3, 5: 2));
+$o-bg-shapes: change-shape-colors-mapping('web_editor', 'Airy/12_001', (1: 5, 3: 1));
+$o-bg-shapes: change-shape-colors-mapping('web_editor', 'Bold/08', (1: 3));
+$o-bg-shapes: change-shape-colors-mapping('web_editor', 'Blocks/01_001', (1: 4, 3: 2, 5: 4));

@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!-- Not used anymore by the editor: files and records kept for back-compatibility.
+Check in images.scss, primary_variables.scss, main.scss and theme_common's mixins.scss -->
+<record id="image_content_01" model="theme.ir.attachment">
+    <field name="key">theme_common.image_content_01</field>
+    <field name="name">theme_common.image_content_01</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_01.jpg</field>
+</record>
+<record id="image_content_02" model="theme.ir.attachment">
+    <field name="key">theme_common.image_content_02</field>
+    <field name="name">theme_common.image_content_02</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_02.jpg</field>
+</record>
+<record id="image_content_03" model="theme.ir.attachment">
+    <field name="key">theme_common.image_content_03</field>
+    <field name="name">theme_common.image_content_03</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_03.jpg</field>
+</record>
+<record id="image_content_04" model="theme.ir.attachment">
+    <field name="key">theme_common.image_content_04</field>
+    <field name="name">theme_common.image_content_04</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_04.jpg</field>
+</record>
+<record id="image_content_05" model="theme.ir.attachment">
+    <field name="key">theme_common.image_content_05</field>
+    <field name="name">theme_common.image_content_05</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_05.jpg</field>
+</record>
+<record id="image_content_06" model="theme.ir.attachment">
+    <field name="key">theme_common.image_content_06</field>
+    <field name="name">theme_common.image_content_06</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_06.jpg</field>
+</record>
+<record id="image_content_07" model="theme.ir.attachment">
+    <field name="key">theme_common.image_content_07</field>
+    <field name="name">theme_common.image_content_07</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_07.jpg</field>
+</record>
+<record id="image_content_08" model="theme.ir.attachment">
+    <field name="key">theme_common.image_content_08</field>
+    <field name="name">theme_common.image_content_08</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_08.jpg</field>
+</record>
+<record id="image_content_09" model="theme.ir.attachment">
+    <field name="key">theme_common.image_content_09</field>
+    <field name="name">theme_common.image_content_09</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_09.jpg</field>
+</record>
+<record id="image_content_10" model="theme.ir.attachment">
+    <field name="key">theme_common.image_content_10</field>
+    <field name="name">theme_common.image_content_10</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_10.jpg</field>
+</record>
+<record id="image_content_11" model="theme.ir.attachment">
+    <field name="key">theme_common.image_content_11</field>
+    <field name="name">theme_common.image_content_11</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_11.jpg</field>
+</record>
+<record id="image_content_12" model="theme.ir.attachment">
+    <field name="key">theme_common.image_content_12</field>
+    <field name="name">theme_common.image_content_12</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_12.jpg</field>
+</record>
+<record id="image_content_20" model="theme.ir.attachment">
+    <field name="key">theme_common.image_content_20</field>
+    <field name="name">theme_common.image_content_20</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_01.jpg</field>
+</record>
+<record id="image_content_21" model="theme.ir.attachment">
+    <field name="key">theme_common.image_content_21</field>
+    <field name="name">theme_common.image_content_21</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_02.jpg</field>
+</record>
+<record id="image_content_22" model="theme.ir.attachment">
+    <field name="key">theme_common.image_content_22</field>
+    <field name="name">theme_common.image_content_22</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_03.jpg</field>
+</record>
+<record id="library_image_11" model="theme.ir.attachment">
+    <field name="key">website.library_image_11</field>
+    <field name="name">website.library_image_11</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_15.jpg</field>
+</record>
+<record id="library_image_13" model="theme.ir.attachment">
+    <field name="key">website.library_image_13</field>
+    <field name="name">website.library_image_13</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_16.jpg</field>
+</record>
+<record id="library_image_07" model="theme.ir.attachment">
+    <field name="key">website.library_image_07</field>
+    <field name="name">website.library_image_07</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_17.jpg</field>
+</record>
+
+<!-- Change default background images -->
+<record id="s_background_image_01" model="theme.ir.attachment">
+    <field name="key">website.s_background_image_01</field>
+    <field name="name">Background Image 01</field>
+    <field name="url">/theme_avantgarde/static/src/img/patterns/bg_pattern_01.jpg</field>
+</record>
+<record id="s_background_image_02" model="theme.ir.attachment">
+    <field name="key">website.s_background_image_02</field>
+    <field name="name">Background Image 02</field>
+    <field name="url">/theme_avantgarde/static/src/img/patterns/bg_pattern_02.jpg</field>
+</record>
+<record id="s_background_image_03" model="theme.ir.attachment">
+    <field name="key">website.s_background_image_03</field>
+    <field name="name">Background Image 03</field>
+    <field name="url">/theme_avantgarde/static/src/img/patterns/bg_pattern_03.jpg</field>
+</record>
+<record id="s_background_image_04" model="theme.ir.attachment">
+    <field name="key">website.s_background_image_04</field>
+    <field name="name">Background Image 04</field>
+    <field name="url">/theme_avantgarde/static/src/img/patterns/bg_pattern_04.jpg</field>
+</record>
+<record id="s_background_image_05" model="theme.ir.attachment">
+    <field name="key">website.s_background_image_05</field>
+    <field name="name">Background Image 05</field>
+    <field name="url">/theme_avantgarde/static/src/img/patterns/bg_pattern_05.jpg</field>
+</record>
+<record id="s_background_image_06" model="theme.ir.attachment">
+    <field name="key">website.s_background_image_06</field>
+    <field name="name">Background Image 06</field>
+    <field name="url">/theme_avantgarde/static/src/img/patterns/bg_pattern_06.jpg</field>
+</record>
+
+<!-- Change default images of snippets -->
+<record id="s_cover_default_image" model="theme.ir.attachment">
+    <field name="key">website.s_cover_default_image</field>
+    <field name="name">website.s_cover_default_image</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_08.jpg</field>
+</record>
+<record id="s_banner_default_image" model="theme.ir.attachment">
+    <field name="key">website.s_banner_default_image</field>
+    <field name="name">website.s_banner_default_image</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_04.jpg</field>
+</record>
+<record id="s_banner_default_image_2" model="theme.ir.attachment">
+    <field name="key">website.s_banner_default_image_2</field>
+    <field name="name">website.s_banner_default_image_2</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_34.jpg</field>
+</record>
+<record id="s_banner_default_image_3" model="theme.ir.attachment">
+    <field name="key">website.s_banner_default_image_3</field>
+    <field name="name">website.s_banner_default_image_3</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_35.jpg</field>
+</record>
+<record id="s_popup_default_image" model="theme.ir.attachment">
+    <field name="key">website.s_popup_default_image</field>
+    <field name="name">website.s_popup_default_image</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/s_popup.jpg</field>
+</record>
+<record id="s_text_image_default_image" model="theme.ir.attachment">
+    <field name="key">website.s_text_image_default_image</field>
+    <field name="name">website.s_text_image_default_image</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_13.jpg</field>
+</record>
+<record id="s_image_text_default_image" model="theme.ir.attachment">
+    <field name="key">website.s_image_text_default_image</field>
+    <field name="name">website.s_image_text_default_image</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_09.jpg</field>
+</record>
+<record id="s_picture_default_image" model="theme.ir.attachment">
+    <field name="key">website.s_picture_default_image</field>
+    <field name="name">website.s_picture_default_image</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_14.jpg</field>
+</record>
+<record id="s_three_columns_default_image_1" model="theme.ir.attachment">
+    <field name="key">website.s_three_columns_default_image_1</field>
+    <field name="name">website.s_three_columns_default_image_1</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_15.jpg</field>
+</record>
+<record id="s_three_columns_default_image_2" model="theme.ir.attachment">
+    <field name="key">website.s_three_columns_default_image_2</field>
+    <field name="name">website.s_three_columns_default_image_2</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_16.jpg</field>
+</record>
+<record id="s_three_columns_default_image_3" model="theme.ir.attachment">
+    <field name="key">website.s_three_columns_default_image_3</field>
+    <field name="name">website.s_three_columns_default_image_3</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_17.jpg</field>
+</record>
+<record id="s_masonry_block_default_image_1" model="theme.ir.attachment">
+    <field name="key">website.s_masonry_block_default_image_1</field>
+    <field name="name">website.s_masonry_block_default_image_1</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_19.jpg</field>
+</record>
+<record id="s_carousel_default_image_1" model="theme.ir.attachment">
+    <field name="key">website.s_carousel_default_image_1</field>
+    <field name="name">website.s_carousel_default_image_1</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_28.jpg</field>
+</record>
+<record id="s_carousel_default_image_2" model="theme.ir.attachment">
+    <field name="key">website.s_carousel_default_image_2</field>
+    <field name="name">website.s_carousel_default_image_2</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_29.jpg</field>
+</record>
+<record id="s_carousel_default_image_3" model="theme.ir.attachment">
+    <field name="key">website.s_carousel_default_image_3</field>
+    <field name="name">website.s_carousel_default_image_3</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_30.jpg</field>
+</record>
+<record id="s_media_list_default_image_1" model="theme.ir.attachment">
+    <field name="key">website.s_media_list_default_image_1</field>
+    <field name="name">website.s_media_list_default_image_1</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_31.jpg</field>
+</record>
+<record id="s_media_list_default_image_2" model="theme.ir.attachment">
+    <field name="key">website.s_media_list_default_image_2</field>
+    <field name="name">website.s_media_list_default_image_2</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_32.jpg</field>
+</record>
+<record id="s_media_list_default_image_3" model="theme.ir.attachment">
+    <field name="key">website.s_media_list_default_image_3</field>
+    <field name="name">website.s_media_list_default_image_3</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_33.jpg</field>
+</record>
+<record id="s_parallax_default_image" model="theme.ir.attachment">
+    <field name="key">website.s_parallax_default_image</field>
+    <field name="name">website.s_parallax_default_image</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_18.jpg</field>
+</record>
+<record id="s_company_team_image_1" model="theme.ir.attachment">
+    <field name="key">website.s_company_team_image_1</field>
+    <field name="name">website.s_company_team_image_1</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/uiface_02.jpg</field>
+</record>
+<record id="s_company_team_image_2" model="theme.ir.attachment">
+    <field name="key">website.s_company_team_image_2</field>
+    <field name="name">website.s_company_team_image_2</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/uiface_01.jpg</field>
+</record>
+<record id="s_company_team_image_3" model="theme.ir.attachment">
+    <field name="key">website.s_company_team_image_3</field>
+    <field name="name">website.s_company_team_image_3</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/uiface_03.jpg</field>
+</record>
+<record id="s_company_team_image_4" model="theme.ir.attachment">
+    <field name="key">website.s_company_team_image_4</field>
+    <field name="name">website.s_company_team_image_4</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/uiface_04.jpg</field>
+</record>
+<record id="s_product_catalog_default_image" model="theme.ir.attachment">
+    <field name="key">website.s_product_catalog_default_image</field>
+    <field name="name">website.s_product_catalog_default_image</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_27.jpg</field>
+</record>
+<record id="s_quotes_carousel_demo_image_1" model="theme.ir.attachment">
+    <field name="key">website.s_quotes_carousel_demo_image_1</field>
+    <field name="name">website.s_quotes_carousel_demo_image_1</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_18.jpg</field>
+</record>
+<record id="s_quotes_carousel_demo_image_2" model="theme.ir.attachment">
+    <field name="key">website.s_quotes_carousel_demo_image_2</field>
+    <field name="name">website.s_quotes_carousel_demo_image_2</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_04.jpg</field>
+</record>
+<record id="s_quotes_carousel_demo_image_3" model="theme.ir.attachment">
+    <field name="key">website.s_quotes_carousel_demo_image_3</field>
+    <field name="name">website.s_quotes_carousel_demo_image_3</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/uiface_03.jpg</field>
+</record>
+<record id="s_quotes_carousel_demo_image_4" model="theme.ir.attachment">
+    <field name="key">website.s_quotes_carousel_demo_image_4</field>
+    <field name="name">website.s_quotes_carousel_demo_image_4</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/uiface_02.jpg</field>
+</record>
+<record id="s_quotes_carousel_demo_image_5" model="theme.ir.attachment">
+    <field name="key">website.s_quotes_carousel_demo_image_5</field>
+    <field name="name">website.s_quotes_carousel_demo_image_5</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/uiface_04.jpg</field>
+</record>
+<record id="s_product_list_default_image_1" model="theme.ir.attachment">
+    <field name="key">website.s_product_list_default_image_1</field>
+    <field name="name">website.s_product_list_default_image_1</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/item_01.jpg</field>
+</record>
+<record id="s_product_list_default_image_2" model="theme.ir.attachment">
+    <field name="key">website.s_product_list_default_image_2</field>
+    <field name="name">website.s_product_list_default_image_2</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/item_02.jpg</field>
+</record>
+<record id="s_product_list_default_image_3" model="theme.ir.attachment">
+    <field name="key">website.s_product_list_default_image_3</field>
+    <field name="name">website.s_product_list_default_image_3</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/item_03.jpg</field>
+</record>
+<record id="s_product_list_default_image_4" model="theme.ir.attachment">
+    <field name="key">website.s_product_list_default_image_4</field>
+    <field name="name">website.s_product_list_default_image_4</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/item_04.jpg</field>
+</record>
+<record id="s_product_list_default_image_5" model="theme.ir.attachment">
+    <field name="key">website.s_product_list_default_image_5</field>
+    <field name="name">website.s_product_list_default_image_5</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/item_05.jpg</field>
+</record>
+<record id="s_product_list_default_image_6" model="theme.ir.attachment">
+    <field name="key">website.s_product_list_default_image_6</field>
+    <field name="name">website.s_product_list_default_image_6</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/item_06.jpg</field>
+</record>
+<record id="s_newsletter_block" model="theme.ir.attachment">
+    <field name="key">website.library_image_17</field>
+    <field name="name">website.library_image_17</field>
+    <field name="url">/theme_avantgarde/static/src/img/pictures/bg_image_33.jpg</field>
+</record>
+
+</odoo>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_image_text" inherit_id="website.s_image_text">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pt64 pb64" remove="pt32 pb32" separator=" "/>
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Airy/10","flip":["x"]}</attribute>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Airy_10" style="background-image: url('/web_editor/shape/web_editor/Airy/10.svg?c5=o-color-1&amp;flip=x'); background-position: 50% 100%;"/>
+    </xpath>
+    <!-- Img wrapper -->
+    <xpath expr="//div[hasclass('row')]//div" position="attributes">
+        <attribute name="class" add="col-lg-5" remove="col-lg-6" separator=" "/>
+    </xpath>
+    <!-- Column text -->
+    <xpath expr="//div[hasclass('row')]//div[2]" position="attributes">
+        <attribute name="class" add="offset-lg-1" separator=" "/>
+    </xpath>
+</template>
+
+</odoo>

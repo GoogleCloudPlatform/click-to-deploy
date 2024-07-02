@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_color_blocks_2" inherit_id="website.s_color_blocks_2">
+    <!-- Column #1 -->
+    <xpath expr="//div[hasclass('col-lg-6')]" position="attributes">
+        <attribute name="class" add="oe_img_bg" separator=" "/>
+        <attribute name="style">background-image: url('/web/image/website.s_color_blocks_2_default_image_1');</attribute>
+    </xpath>
+    <xpath expr="//i" position="before">
+        <div class="o_we_bg_filter bg-black-50"/>
+    </xpath>
+    <!-- Column #2 -->
+    <xpath expr="//div[hasclass('col-lg-6')][2]" position="attributes">
+        <attribute name="class" add="oe_img_bg" separator=" "/>
+        <attribute name="style">background-image: url('/web/image/website.s_color_blocks_2_default_image_2');</attribute>
+    </xpath>
+    <xpath expr="(//i)[2]" position="before">
+        <div class="o_we_bg_filter bg-black-50"/>
+    </xpath>
+</template>
+
+</odoo>

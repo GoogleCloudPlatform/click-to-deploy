@@ -1,0 +1,250 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_kea
+# 
+# Translators:
+# Wil Odoo, 2023
+# Marianna Ciofani, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Marianna Ciofani, 2023\n"
+"Language-Team: Italian (https://app.transifex.com/odoo/teams/41243/it/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: it\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_features
+msgid "<b>360-degree vision</b>"
+msgstr "<b>Visione a 360 gradi</b>"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_features
+msgid "<b>Built in mic</b>"
+msgstr "<b>Microfono integrato</b>"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_features
+msgid "<b>Stunning visuals</b>"
+msgstr "<b>Visuale fantastica</b>"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_image_text
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-2) 100%);\" class=\"text-gradient\">Enter in a new "
+"world</font>"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-2) 100%);\" class=\"text-gradient\">Entra in un nuovo "
+"mondo</font>"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_text_image
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-2) 100%);\" class=\"text-gradient\">Full immersion</font>"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-2) 100%);\" class=\"text-gradient\">Immersione "
+"completa</font>"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_features
+msgid "A small explanation of this great feature, in clear words."
+msgstr ""
+"Una breve spiegazione con parole chiare di questa straordinaria "
+"funzionalità."
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_media_list
+msgid "Comfort &amp; Ease"
+msgstr "Comodità e semplicità"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_color_blocks_2
+msgid ""
+"Conquer leaderboards, crush workouts, create with friends and more. Get lost"
+" in a growing library of VR classics and all-new experiences."
+msgstr ""
+"Conquista le classifiche, distruggi gli allenamenti, crea con gli amici e "
+"molto altro ancora. Perditi in una raccolta in continua crescita fatta di "
+"classici VR e di nuove esperienze."
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_three_columns
+msgid "Design"
+msgstr "Progettazione"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_numbers
+msgid "Different lenses"
+msgstr "Varie lenti"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_cover
+msgid "Discover more"
+msgstr "Scopri di più"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_picture
+msgid "Experience a new world"
+msgstr "Esplora un nuovo mondo"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_media_list
+msgid "Fitting design"
+msgstr "Design adatto"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_color_blocks_2
+msgid "Freedom"
+msgstr "Libertà"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_three_columns
+msgid ""
+"From design concept to the showroom, create and manage workflows with better"
+" collaboration."
+msgstr ""
+"Dall'idea progettuale allo showroom, crea e gestidi i flussi di lavoro con "
+"una migliore collaborazione."
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_three_columns
+msgid ""
+"From high-risk safety simulations and maintenance procedures to soft skills "
+"like public speaking."
+msgstr ""
+"Da simulazioni di sicurezza ad alto rischio e procedure di manutenzione a "
+"competenze trasversali come il parlare in pubblico."
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_three_columns
+msgid "Gaming"
+msgstr "Gaming"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_color_blocks_2
+msgid "Multiplayer"
+msgstr "Multigiocatore"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_media_list
+msgid "Natural control"
+msgstr "Controllo naturale"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_numbers
+msgid "New games every week"
+msgstr "Nuovi giochi ogni settimana"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_color_blocks_2
+msgid ""
+"No matter who you are, with a growing library of games and experiences there"
+" is no limit to where you can go and what you can do in virtual reality."
+msgstr ""
+"Non importa chi siete, con una libreria di giochi ed esperienze in continua "
+"crescita, non c'è limite a dove puoi andare e cosa puoi fare nella realtà "
+"virtuale."
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_numbers
+msgid "Number of controllers"
+msgstr "Numero di controller"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_picture
+msgid ""
+"Put yourself at the center of an extraordinary gaming universe with "
+"exclusive games."
+msgstr ""
+"Metti te stesso al centro di un universo di gioco straordinario, grazie a "
+"giochi fantastici."
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_numbers
+msgid "Storage capacity (GB)"
+msgstr "Capacità di archiviazione (GB)"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_features
+msgid "Tell what's the value for the customer for this feature."
+msgstr "Indica qual è il valore di questa funzionalità per il cliente."
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_cover
+msgid "The Revolution <br/> in Virtual Reality"
+msgstr "La rivoluzione <br/> della realtà virtuale"
+
+#. module: theme_kea
+#: model:ir.model,name:theme_kea.model_theme_utils
+msgid "Theme Utils"
+msgstr "Utilità tema"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_three_columns
+msgid "Training"
+msgstr "Formazione"
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_media_list
+msgid ""
+"Use this snippet to build various types of components that feature a left- "
+"or right-aligned image alongside textual content. Duplicate the element to "
+"create a list that fits your needs."
+msgstr ""
+"Usa questo snippet per costruire componenti di vario tipo composti da una "
+"immagine allineata a destra o a sinistra affiancata da un testo. Duplica "
+"l'elemento per creare un elenco che si adatti alle tue esigenze."
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_three_columns
+msgid ""
+"VR takes immersive gaming to another level. From deep environmental "
+"interactions to puzzle solving."
+msgstr ""
+"La VR porta il gioco immersivo a un altro livello. Dalle interazioni "
+"ambientali profonde alla risoluzione di puzzle."
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_picture
+msgid ""
+"Watch as a living game world comes alive all around you, with a seamless "
+"field of view wherever you look."
+msgstr ""
+"Osserva come il mondo del gioco prende vita intorno a te, con un campo "
+"visivo senza soluzione di continuità ovunque tu guardi."
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_media_list
+msgid ""
+"We only use original parts or parts of equivalent quality. ​We make sure you"
+" get the best quality available on the market at the best price. All our "
+"interventions are guaranteed for a period of one year."
+msgstr ""
+"Utilizziamo solo ricambi originali o di qualità equivalente. Ci assicuriamo "
+"che abbia la migliore qualità disponibile sul mercato al miglior prezzo. "
+"Tutti i nostri interventi sono garantiti per un periodo di un anno."
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_text_image
+msgid ""
+"Write one or two paragraphs describing your product or services. To be "
+"successful your content needs to be useful to your readers."
+msgstr ""
+"Scrivi uno o due paragrafi che descrivono il prodotto o i servizi. Per avere"
+" successo, il contenuto deve essere utile ai lettori. "
+
+#. module: theme_kea
+#: model_terms:theme.ir.ui.view,arch:theme_kea.s_features
+msgid "Write what the customer would like to know, not what you want to show."
+msgstr "Scrivi ciò che il cliente vorrebbe sapere, non ciò che vuoi mostrare."

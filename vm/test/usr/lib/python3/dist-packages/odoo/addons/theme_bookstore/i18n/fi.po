@@ -1,0 +1,231 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_bookstore
+# 
+# Translators:
+# Miika Nissi <miika.nissi@tawasta.fi>, 2023
+# Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2023
+# Veikko Väätäjä <veikko.vaataja@gmail.com>, 2023
+# Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023\n"
+"Language-Team: Finnish (https://app.transifex.com/odoo/teams/41243/fi/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: fi\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_text_image
+msgid ""
+"<br/>\n"
+"        Discover all the publications. There is probably your next favorite book amoung them."
+msgstr ""
+"<br/>\n"
+"        Tutustu kaikkiin julkaisuihin. Niiden joukossa on luultavasti seuraava suosikkikirjasi."
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_image_text
+msgid ""
+"<br/>\n"
+"        Discover the history of Belgium in this well-documented book with many illustrations and testimonials."
+msgstr ""
+"<br/>\n"
+"        Tutustu Belgian historiaan tässä hyvin dokumentoidussa kirjassa, jossa on paljon kuvitusta ja todistuksia."
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_three_columns
+msgid "A Belgian Story"
+msgstr "Belgialainen tarina"
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_numbers
+msgid "Amazing pages"
+msgstr "Mahtavat sivut"
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_three_columns
+msgid "At the Mars conquest"
+msgstr "Marsin valloituksessa"
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_numbers
+msgid "Beautiful snippets"
+msgstr "Kauniita palikoita"
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_masonry_block_default_template
+msgid "Biographies"
+msgstr "Elämäkerrat"
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_call_to_action
+msgid "Browse collection"
+msgstr "Selaa kokoelmaa"
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_call_to_action
+msgid "Browse through <br/>our complete library"
+msgstr "Selaa <br/>koko kirjastoamme"
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_banner
+msgid "Discover it <span class=\"fa fa-angle-right ms-2\"/>"
+msgstr "Tutustu siihen <span class=\"fa fa-angle-right ms-2\"/>"
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_cover
+msgid "Discover more"
+msgstr "Lue lisää"
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_picture
+msgid "Discover our <br/>limited editions"
+msgstr "Tutustu <br/>rajoitettuihin painoksiin"
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_three_columns
+msgid ""
+"Discover the history of Belgium in this well-documented book with many "
+"illustrations and testimonials."
+msgstr ""
+"Tutustu Belgian historiaan tässä hyvin dokumentoidussa kirjassa, jossa on "
+"paljon kuvitusta ja todistuksia."
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_masonry_block_default_template
+msgid "Discover unknown universes"
+msgstr "Tutustu tuntemattomiin universumeihin"
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_picture
+msgid "Don't rely on a book's cover,"
+msgstr "Älä luota kirjan kanteen,"
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_masonry_block_default_template
+msgid "Enjoy your fears"
+msgstr "Nauti peloistasi"
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_picture
+msgid ""
+"Explore our top-end Collector's Editions. <br/>Signed and limited tributes "
+"to some of the most outstanding writers of all time."
+msgstr ""
+"Tutustu huippuluokan keräilypainoksiin. <br/>Signeerattuja ja rajoitettuja "
+"kunnianosoituksia joillekin kaikkien aikojen merkittävimmistä "
+"kirjailijoista."
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_masonry_block_default_template
+msgid "Horror"
+msgstr "Kauhu"
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_cover
+msgid "Immerse yourself <br/>in original universes"
+msgstr "Uppoudu <br/>alkuperäisiin universumeihin"
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_image_text
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_three_columns
+msgid ""
+"Learn about the difficulties encountered by NASA engineers in sending the "
+"first men to Mars."
+msgstr ""
+"Tutustu vaikeuksiin, joita NASAn insinöörit kohtasivat ensimmäisten ihmisten"
+" lähettämisessä Marsiin."
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_masonry_block_default_template
+msgid "Meet great people"
+msgstr "Tapaa hienoja ihmisiä"
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_image_text
+msgid "Once upon a time..."
+msgstr "Olipa kerran..."
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_numbers
+msgid "Outstanding images"
+msgstr "Erinomaisia kuvia"
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_text_image
+msgid "Probably your next <br/>favorite book"
+msgstr "Luultavasti seuraava <br/>suosikkikirjasi"
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_three_columns
+msgid "Re-edition"
+msgstr "Uudelleenjulkaisu"
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_masonry_block_default_template
+msgid "Read the best love stories"
+msgstr "Lue parhaat rakkaustarinat"
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_title
+msgid "Reading means borrowing"
+msgstr "Lukeminen tarkoittaa lainaamista"
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_masonry_block_default_template
+msgid "Romance"
+msgstr "Romanssi"
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_masonry_block_default_template
+msgid "Science fiction"
+msgstr "Science fiction"
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_banner
+msgid "The best sellers <br/>of the year"
+msgstr "Vuoden myydyimmät <br/>"
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_three_columns
+msgid ""
+"The first re-edition of this Latin dictionary, from 1460. Printed originally"
+" on the Gutenberg press."
+msgstr ""
+"Tämän latinankielisen sanakirjan ensimmäinen uusintapainos vuodelta 1460. "
+"Painettu alun perin Gutenbergin painokoneella."
+
+#. module: theme_bookstore
+#: model:ir.model,name:theme_bookstore.model_theme_utils
+msgid "Theme Utils"
+msgstr "Teeman työkalut"
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_numbers
+msgid "Useful options"
+msgstr "Hyödyllisiä vaihtoehtoja"
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_product_list
+msgid "View the book"
+msgstr "Näytä kirja"
+
+#. module: theme_bookstore
+#: model_terms:theme.ir.ui.view,arch:theme_bookstore.s_picture
+msgid "discover more about it"
+msgstr "tutustu siihen tarkemmin"
+
+#. module: theme_bookstore
+#. odoo-javascript
+#: code:addons/theme_bookstore/static/src/js/tour.js:0
+#, python-format
+msgid "width"
+msgstr "leveys"
