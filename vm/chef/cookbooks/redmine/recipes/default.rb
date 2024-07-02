@@ -148,6 +148,22 @@ bash 'Redmine Bundle Install' do
 EOH
 end
 
+bash 'Pre-config Redmine' do
+  cwd '/opt/redmine'
+  user 'redmine'
+  environment({
+    'rubyVersion' => node['redmine']['ruby']['version'],
+  })
+  code <<-EOH
+    source /usr/local/rvm/scripts/rvm
+    rvm use $rubyVersion --default
+    echo "gem 'blankslate'" >> Gemfile
+    echo "gem 'passenger'" >> Gemfile
+    echo "gem 'base64', '0.1.1'" >> Gemfile
+    bundle install
+EOH
+end
+
 bash 'Configure Redmine' do
   user node['redmine']['user']
   cwd '/opt/redmine'
