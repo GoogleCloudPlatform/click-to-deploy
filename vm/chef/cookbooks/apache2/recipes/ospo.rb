@@ -44,7 +44,6 @@ https://github.com/hashicorp/terraform-plugin-sdk
 https://github.com/hashicorp/terraform-registry-address
 https://github.com/hashicorp/terraform-svchost
 https://github.com/hashicorp/yamux
-https://github.com/opencontainers/go-digest
 https://github.com/excid3/python-apt
 https://github.com/venthur/python-debianbts
 https://github.com/mvo5/unattended-upgrades
