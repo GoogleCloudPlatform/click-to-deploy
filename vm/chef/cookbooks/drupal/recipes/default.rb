@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,16 +21,18 @@ include_recipe 'apache2::security-config'
 include_recipe 'mysql'
 
 # Reference: https://www.drupal.org/docs/8/system-requirements/php
-include_recipe 'php74'
-include_recipe 'php74::module_curl'
-include_recipe 'php74::module_gd'
-include_recipe 'php74::module_json'
-include_recipe 'php74::module_libapache2'
-include_recipe 'php74::module_mbstring'
-include_recipe 'php74::module_mysql'
-include_recipe 'php74::module_opcache'
-include_recipe 'php74::module_xml'
-include_recipe 'php74::module_zip'
+include_recipe 'php81'
+include_recipe 'php81::module_curl'
+include_recipe 'php81::module_gd'
+include_recipe 'php81::module_json'
+include_recipe 'php81::module_libapache2'
+include_recipe 'php81::module_mbstring'
+include_recipe 'php81::module_mysql'
+include_recipe 'php81::module_opcache'
+include_recipe 'php81::module_xml'
+include_recipe 'php81::module_zip'
+
+include_recipe 'drupal::ospo'
 
 remote_file '/tmp/drupal.tar.gz' do
   source 'https://www.drupal.org/download-latest/tar.gz'
