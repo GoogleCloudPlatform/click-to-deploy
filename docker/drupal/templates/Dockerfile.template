@@ -1,7 +1,24 @@
 {{- $drupal := index .Packages "drupal" -}}
 {{- $composer := index .Packages "composer" -}}
 
+FROM marketplace.gcr.io/google/php8-apache2:8.1 as ospo
+
+# Download Licenses and restricted source-code
+COPY components.csv /components.csv
+COPY source_code.txt /source_code.txt
+
+RUN curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
+		&& curl -o /download-ref-repos.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-ref-repos.sh \
+		&& chmod +x /download-licenses.sh \
+		&& chmod +x /download-ref-repos.sh
+
+RUN mkdir -p /usr/src/licenses \
+		&& /download-licenses.sh /components.csv /usr/src/licenses \
+		&& /download-ref-repos.sh /source_code.txt /usr/src
+
 FROM {{ .From }}
+
+COPY --from=ospo /usr/src /usr/src
 
 RUN set -ex; \
 	savedAptMark="$(apt-mark showmanual)"; \
@@ -15,9 +32,8 @@ RUN set -ex; \
 	; \
 	\
 	docker-php-ext-configure gd \
-		--with-freetype-dir=/usr \
-		--with-jpeg-dir=/usr \
-		--with-png-dir=/usr \
+		--with-freetype=/usr \
+		--with-jpeg=/usr \
 	; \
 	\
 	docker-php-ext-install -j "$(nproc)" \
@@ -35,7 +51,7 @@ RUN set -ex; \
 	ldd "$(php -r 'echo ini_get("extension_dir");')"/*.so \
 		| awk '/=>/ { print $3 }' \
 		| sort -u \
-		| xargs -r dpkg-query -S \
+		| xargs -r realpath | xargs -r dpkg-query --search \
 		| cut -d: -f1 \
 		| sort -u \
 		| xargs -rt apt-mark manual; \
@@ -78,7 +94,7 @@ RUN set -eux; \
 	curl -o composer.phar "https://getcomposer.org/download/${COMPOSER_VERSION}/composer.phar"; \
 	echo "${COMPOSER_SHA256} composer.phar" | sha256sum -c - ; \
 	chmod +x composer.phar; \
-	php -d memory_limit=2G ./composer.phar require drush/drush; \
+	php -d memory_limit=4G ./composer.phar require drush/drush; \
 	cp LICENSE.txt vendor/drush/drush/src/; \
 	rm -f composer.phar; \
 	rm -rf /var/lib/apt/lists/*

@@ -12,6 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['neo4j']['version'] = '4.2'
+default['neo4j']['version'] = 'latest'
 default['neo4j']['repository_url'] = 'https://debian.neo4j.com'
 default['neo4j']['keyserver_url'] = 'https://debian.neo4j.com/neotechnology.gpg.key'

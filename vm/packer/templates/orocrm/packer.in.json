@@ -1,0 +1,7 @@
+{
+  "license": "c2d-orocrm",
+  "source_image_family": "debian-11",
+  "chef": {
+    "run_list": [ "c2d-config", "orocrm", "google-cloud-ops-agent" ]
+  }
+}

@@ -1,6 +1,21 @@
-<Location />
-  ProxyPass http://127.0.0.1:8080/
-  ProxyPassReverse http://127.0.0.1:8080/
-</Location>
+<VirtualHost *:443>
+  ServerAdmin admin@example.com
+  DocumentRoot /var/www/html
+  SSLEngine on
+  SSLCertificateFile /etc/ssl/certs/c2d-temporary-self-signed-cert.pem
+  SSLCertificateKeyFile /etc/ssl/private/c2d-temporary-self-signed-cert.key
 
-AllowEncodedSlashes On
+  <Location />
+    ProxyPass http://127.0.0.1:8080/
+    ProxyPassReverse http://127.0.0.1:8080/
+  </Location>
+
+  AllowEncodedSlashes On
+</VirtualHost>
+
+<VirtualHost *:80>
+  RewriteEngine on
+  RewriteCond %{HTTPS} off [OR]
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^/(.*) https://%{HTTP_HOST}/$1 [NC,R=301,L]
+</VirtualHost>

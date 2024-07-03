@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-istio
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/component: net-istio
+    app.kubernetes.io/name: knative-serving
+    app.kubernetes.io/version: "1.9.0"
+    serving.knative.dev/release: "v1.9.0"
+    networking.knative.dev/ingress-provider: istio
+{{ .Files.Get "files/net-istio-configmap.yaml" }}
+

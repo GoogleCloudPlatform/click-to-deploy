@@ -14,6 +14,6 @@
 
 require 'spec_helper'
 
-describe user('tomcat8') do
+describe user('tomcat') do
   it { should exist }
 end

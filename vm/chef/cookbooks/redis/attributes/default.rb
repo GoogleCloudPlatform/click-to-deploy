@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+default['redis']['version'] = '7.2.3'
+
 default['redis']['download_url'] =
-  'http://download.redis.io/releases/redis-stable.tar.gz'
+  "http://download.redis.io/releases/redis-#{default['redis']['version']}.tar.gz"
 
 default['redis']['packages']['temp_dependencies'] = ['dpkg-dev', 'gcc', 'make']
-default['redis']['packages']['dependencies'] = ['libjemalloc1']
+default['redis']['packages']['dependencies'] = ['libjemalloc2']
 
 default['redis']['packages']['all_dependencies'] =
   default['redis']['packages']['temp_dependencies'] +

@@ -1,0 +1,94 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-scheduler
+  labels:
+    app: {{ include "airflow.labels.app" . }}
+    component: scheduler
+    name: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.scheduler.replicas }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: {{ include "airflow.labels.app" . }}
+      component: scheduler
+      name: {{ .Release.Name }}
+  template:
+    metadata:
+      annotations:
+        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+      labels:
+        app: {{ include "airflow.labels.app" . }}
+        component: scheduler
+        name: {{ .Release.Name }}
+    spec:
+      restartPolicy: Always
+      serviceAccountName: {{ include "airflow.serviceAccountName" . }}
+      initContainers:
+        {{- include "airflow.init_container.check_db" . | indent 8 }}
+        {{- include "airflow.init_container.wait_for_db_migrations" . | indent 8 }}
+      containers:
+        - name: airflow-scheduler
+          {{- include "airflow.image" . | indent 10 }}
+          envFrom:
+            {{- include "airflow.envFrom" . | indent 12 }}
+          env:
+            {{- include "airflow.env" . | indent 12 }}
+          command:
+            {{- include "airflow.command" . | indent 12 }}
+          args:
+            - "bash"
+            - "-c"
+            - "exec airflow scheduler -n -1"
+          livenessProbe:
+            initialDelaySeconds: 10 
+            periodSeconds: 30
+            failureThreshold: 5
+            timeoutSeconds: 60
+            exec:
+              command:
+                {{- include "airflow.command" . | indent 16 }}
+                - "python"
+                - "-Wignore"
+                - "-c"
+                - |
+                  import os
+                  import sys
+
+                  os.environ["AIRFLOW__LOGGING__LOGGING_LEVEL"] = "ERROR"
+
+                  from airflow.jobs.scheduler_job import SchedulerJob
+                  from airflow.utils.db import create_session
+                  from airflow.utils.net import get_hostname
+
+                  with create_session() as session:
+                      # ensure the SchedulerJob with most recent heartbeat for this `hostname` is alive
+                      hostname = get_hostname()
+                      scheduler_job = session \
+                          .query(SchedulerJob) \
+                          .filter_by(hostname=hostname) \
+                          .order_by(SchedulerJob.latest_heartbeat.desc()) \
+                          .limit(1) \
+                          .first()
+                      if (scheduler_job is not None) and scheduler_job.is_alive():
+                          pass
+                      else:
+                          sys.exit(f"The SchedulerJob (id={scheduler_job.id}) for hostname '{hostname}' is not alive")
+          volumeMounts:
+            {{- include "airflow.volumeMounts" . | indent 12 }}
+            - name: pod-template
+              mountPath: /opt/airflow/pod_templates/pod_template.yaml
+              subPath: pod_template.yaml
+              readOnly: true
+      volumes:
+        {{- include "airflow.volumes" . | indent 8 }}
+        - name: pod-template
+          configMap:
+            name: {{ .Release.Name }}-pod-template
+

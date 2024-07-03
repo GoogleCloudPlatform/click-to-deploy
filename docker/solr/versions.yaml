@@ -1,10 +1,10 @@
-# Copyright 2020 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#      http://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,40 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-versions:
-  # Solr image
-  - dir: '8/debian10/8.9'
-    repo: 'solr8'
-    templateSubDir: debian10
-    tags:
-      - '8.9.0-debian10'
-      - '8.9.0'
-      - '8.9-debian10'
-      - '8.9'
-      - '8-debian10'
-      - '8'
-      - 'latest'
-    from: marketplace.gcr.io/google/debian10
-    packages:
-      solr:
-        version: '8.9.0'
-        sha512: '15150b7f191fd9e8d2c1bd8bb619dd4b3f27af2e0e94b7609031f7e745a2e263391c30f68865c208afb97ccaa9bde6d16050200e9bfccef65f762c2ed743c242'
-    templateArgs:
-      solrkeys: '9722F25F650057E26C803B60A6D064D833B3A969'
-  - dir: '8/debian10/8.6'
-    repo: 'solr8'
-    templateSubDir: debian10
-    tags:
-      - '8.6.1-debian10'
-      - '8.6.1'
-      - '8.6-debian10'
-      - '8.6'
-    from: marketplace.gcr.io/google/debian10
-    packages:
-      solr:
-        version: '8.6.1'
-        sha512: 'c4af7bfc3a67306aafd98a100c1411beee9b59ed6cb30a2ed86d495a3c2bb48d2a4453422d9b5b8eef49268cc17c4f9a8793152054f6a6aa2c2ec48039407cc6'
-    templateArgs:
-      solrkeys: '50E3EE1C91C7E0CB4DFB007B369424FC98F3F6EC'
+
 cloudbuild:
   enable_parallel: false
+versions:
+- dir: 9/debian11/9.5
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    solr:
+      gpg: E05FDF113D89E7FB4A2DF4B2684D544160392455
+      version: 9.5.0
+  repo: solr9
+  tags:
+  - 9.5.0-debian11
+  - 9.5-debian11
+  - 9-debian11
+  - '9.5.0'
+  - '9.5'
+  - '9'
+  - latest

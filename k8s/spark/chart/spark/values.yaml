@@ -1,0 +1,13 @@
+spark:
+  image:
+    repo: null
+    tag: null
+  persistence:
+    storageClass: null
+    size: null
+  workers: 3
+
+metrics:
+  image: null
+  exporter:
+    enabled: null

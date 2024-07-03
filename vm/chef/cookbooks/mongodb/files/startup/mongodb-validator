@@ -22,7 +22,7 @@ readonly mongodb_servers="$(get_attribute_value "mongodb_servers")"
 readonly mongodb_arbiters="$(get_attribute_value "mongodb_arbiters")"
 
 # Test if we can connect to MongoDB on this instance.
-until mongo --eval 'printjson(rs.status())'; do
+until mongo --eval 'quit(rs.status().code)'; do
   echo "Waiting for MongoDB on current node..." && sleep 2
 done
 

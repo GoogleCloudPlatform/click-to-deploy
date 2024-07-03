@@ -1,0 +1,24 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: istio
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    istio.io/rev: default
+    install.operator.istio.io/owning-resource: unknown
+    operator.istio.io/component: Pilot
+    release: istio
+data:
+  meshNetworks: 'networks: {}'
+  mesh: |-
+    defaultConfig:
+      discoveryAddress: istiod.{{ .Release.Namespace }}.svc:15012
+      proxyMetadata: {}
+      terminationDrainDuration: 20s
+      tracing:
+        zipkin:
+          address: zipkin.{{ .Release.Namespace }}:9411
+    enablePrometheusMerge: true
+    rootnamespace: "{{ .Release.Namespace }}"
+    trustDomain: cluster.local

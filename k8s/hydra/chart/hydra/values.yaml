@@ -1,0 +1,74 @@
+## Configuration values for the PostgreSQL server.
+postgresql:
+  image: null
+
+  exporter:
+    image: null
+
+  cpu: 1000m
+  memory: 1Gi
+
+  user: hydra
+  password: null
+  postgresDatabase: hydra
+
+  persistence:
+    storageClass: standard
+    size: 8Gi
+
+
+metrics:
+  image: null
+  exporter:
+    enabled: true
+
+deployer:
+  image: null
+
+# -- Configure ingress
+ingress:
+  public:
+    enabled: false
+    tls:
+      base64EncodedPrivateKey: null
+      base64EncodedCertificate: null
+  admin:
+    enabled: false
+    tls:
+      base64EncodedPrivateKey: null
+      base64EncodedCertificate: null
+
+# -- Configure ORY Hydra itself
+hydra:
+  cpuRequest: null
+  memoryRequest: null
+  image:
+    repo: null
+    tag: null
+  serviceAccount:
+    name: hydra-sa
+
+  autoscaling:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 3
+
+  config:
+    serve:
+      public:
+        port: 4444
+      admin:
+        port: 4445
+      tls:
+        allow_termination_from:
+          - 10.0.0.0/8
+          - 172.16.0.0/12
+          - 192.168.0.0/16
+
+    urls:
+      self: {}
+
+# -- Values for initialization job
+job:
+  serviceAccount:
+    name: "hydra-migration-sa"

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_quotes_carousel" inherit_id="website.s_quotes_carousel">
+    <!-- Carousel item #1 - filter -->
+    <xpath expr="//div[hasclass('carousel-item')]//div[hasclass('container')]" position="before">
+        <div class="o_we_bg_filter bg-black-50"/>
+    </xpath>
+    <!-- Carousel item #1 - icon -->
+    <xpath expr="//i" position="attributes">
+        <attribute name="class" add="bg-o-color-1" remove="bg-o-color-2" separator=" "/>
+    </xpath>
+    <!-- Carousel item #2 - filter -->
+    <xpath expr="//div[hasclass('carousel-item')][2]//div[hasclass('container')]" position="before">
+        <div class="o_we_bg_filter bg-black-50"/>
+    </xpath>
+    <!-- Carousel item #2 - icon -->
+    <xpath expr="(//i)[2]" position="attributes">
+        <attribute name="class" add="bg-o-color-1" remove="bg-o-color-2" separator=" "/>
+    </xpath>
+    <!-- Carousel item #2 - blockquote -->
+    <xpath expr="//div[hasclass('carousel-item')][2]//blockquote" position="attributes">
+        <attribute name="class" add="mx-auto" remove="me-auto" separator=" "/>
+    </xpath>
+    <!-- Carousel item #3 - filter -->
+    <xpath expr="//div[hasclass('carousel-item')][3]//div[hasclass('container')]" position="before">
+        <div class="o_we_bg_filter bg-black-50"/>
+    </xpath>
+    <!-- Carousel item #3 - icon -->
+    <xpath expr="(//i)[3]" position="attributes">
+        <attribute name="class" add="bg-o-color-1" remove="bg-o-color-2" separator=" "/>
+    </xpath>
+    <!-- Carousel item #3 - blockquote -->
+    <xpath expr="//div[hasclass('carousel-item')][3]//blockquote" position="attributes">
+        <attribute name="class" add="mx-auto" remove="ms-auto" separator=" "/>
+    </xpath>
+</template>
+
+</odoo>

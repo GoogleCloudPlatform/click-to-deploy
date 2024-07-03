@@ -21,6 +21,7 @@ readonly redis_port=6379
 readonly node_config_file=/etc/redis/redis_node.conf
 
 # Get the list of Redis nodes
+readonly redis_password="$(get_attribute_value "redis_password")"
 readonly nodes_attr="$(get_attribute_value "redis_node_hostnames")"
 readonly persistent_nodes_attr="$(get_attribute_value "redis_persistent_nodes")"
 
@@ -42,6 +43,9 @@ declare -r persistent_nodes_count
 echo "Nodes: ${nodes[*]}"
 echo "Persistent nodes: ${persistent_nodes[*]}"
 
+# Set password
+echo "requirepass ${redis_password}" >> /etc/redis/redis.conf
+
 # Only set up persistent nodes if number of persistent nodes is gt 0.
 if [[ "${persistent_nodes_count}" -gt 0 ]]; then
   for persistent_node in "${persistent_nodes[@]}"; do
@@ -56,6 +60,7 @@ fi
 if [[ "$(hostname)" != "${master_node}" ]]; then
   echo "Configuring slave mode on current node..."
   echo "slaveof ${master_node} ${redis_port}" >> "${node_config_file}"
+  echo "masterauth ${redis_password}" >> "${node_config_file}"
 fi
 
 readonly sentinel_quorum="$((nodes_count / 2 + 1))"
@@ -81,6 +86,6 @@ echo "Starting redis-sentinel service.."
 systemctl start redis-sentinel
 
 # Wait until redis is up and running
-until [[ "$(redis-cli ping)" == "PONG" ]]; do
+until [[ "$(redis-cli -a "${redis_password}" ping)" == "PONG" ]]; do
   echo "Waiting for redis-cli to report PONG..." && sleep 5
 done

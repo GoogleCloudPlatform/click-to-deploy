@@ -7,3 +7,5 @@ persistence:
   size: 5Gi
 consolePassword: null
 enableBashDebug: false
+admin:
+  bindAllHosts: false

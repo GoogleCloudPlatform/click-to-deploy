@@ -1,8 +1,8 @@
 {
   "license": "c2d-liferay",
-  "source_image_family": "debian-9",
+  "source_image_family": "debian-11",
   "disk_size": "30",
   "chef": {
-    "run_list": [ "c2d-config", "liferay", "stackdriver" ]
+    "run_list": [ "c2d-config", "liferay", "google-cloud-ops-agent" ]
   }
 }

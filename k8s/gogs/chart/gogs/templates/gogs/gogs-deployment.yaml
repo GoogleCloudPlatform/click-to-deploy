@@ -1,0 +1,108 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-gogs
+  labels: &gogsLabels
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: gogs
+spec:
+  replicas: {{ .Values.gogs.replicas }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+  selector:
+    matchLabels: *gogsLabels
+  template:
+    metadata:
+      annotations:
+        prometheus.io/port: "3000"
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/-/metrics"
+      labels: *gogsLabels
+    spec:
+      serviceAccountName: "{{ .Values.gogs.serviceAccount }}"
+      initContainers:
+        {{- include "gogs.init_container.check_db" . | indent 8 }}
+      containers:
+        - name: gogs
+          image: "{{ .Values.gogs.image.repo }}:{{ .Values.gogs.image.tag }}"
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: 30
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 10
+          readinessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          volumeMounts:
+            - name: gogs-data
+              mountPath: /data/gogs
+              subPath: data
+            - name: gogs-data
+              mountPath: /data/git/gogs-repositories
+              subPath: git
+          env:
+          - name: "GOGS_DB_TYPE"
+            value: "postgres"
+          - name: "GOGS_DB_PASSWORD"
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-config-envs
+                key: POSTGRES_PASSWORD
+          - name: "GOGS_DB_NAME"
+            value: "gogs"
+          - name: "GOGS_DB_USER"
+            value: "gogs"
+          - name: "GOGS_DB_HOST"
+            value: "{{ .Release.Name }}-postgresql-svc"
+          - name: "GOGS_DOMAIN"
+            value: "{{ .Release.Name }}-gogs-svc"
+          - name: "GOGS_EXTERNAL_URL"
+            value: "http://{{ .Release.Name }}-gogs-svc:3000/"
+          - name: "GOGS_SECRET_KEY"
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-config-envs
+                key: GOGS_SECRET_KEY
+        {{ if .Values.metrics.exporter.enabled }}
+        - name: stackdriver-exporter
+          image: {{ .Values.metrics.image }}
+          ports:
+          - name: profiler
+            containerPort: 6060
+          command:
+          - /monitor
+          - --stackdriver-prefix=custom.googleapis.com
+          - --source=gogs:http://localhost:3000/-/metrics
+          - --pod-id=$(POD_NAME)
+          - --namespace-id=$(POD_NAMESPACE)
+          - --monitored-resource-types=k8s
+          env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+        {{ end }}
+      volumes:
+        - name: gogs-data
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-nfs-gogs
+
+

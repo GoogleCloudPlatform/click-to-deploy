@@ -1,0 +1,18 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-alertmanager
+  labels:
+    k8s-app: alertmanager
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: alertmanager
+spec:
+  ports:
+    - name: http
+      port: 9093
+      protocol: TCP
+      targetPort: 9093
+  selector:
+    k8s-app: alertmanager
+  type: "ClusterIP"

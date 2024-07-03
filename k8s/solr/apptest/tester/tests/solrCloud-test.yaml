@@ -15,7 +15,7 @@ actions:
             curl "http://${APP_INSTANCE_NAME}-solr-svc:8983/solr/admin/collections?action=CLUSTERSTATUS" 2> /dev/null
     expect:
       stdout:
-        contains: "<body><h2>HTTP ERROR 401 require authentication</h2>"
+        contains: "<body><h2>HTTP ERROR 401 Authentication failed, Response code: 401</h2>"
       exitCode:
         equals: 0
 - name: Check if wrong creds will fail

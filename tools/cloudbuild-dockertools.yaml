@@ -1,0 +1,40 @@
+steps:
+- id: Build Dockertools Docker Image
+  name: gcr.io/cloud-builders/docker
+  args:
+  - build
+  - --tag
+  - dockertools
+  - --file
+  - tools/dockertools.Dockerfile
+  - tools
+
+- id: Share dockertools using workspaces
+  name: dockertools
+  entrypoint: bash
+  args:
+  - -c
+  - |
+    cp /bin/cloudbuild /workspace/cloudbuild &&
+    cp /bin/dockerfiles /workspace/dockerfiles &&
+    cp /bin/cloudbuild /workspace/cloudbuild_$TAG_NAME &&
+    cp /bin/dockerfiles /workspace/dockerfiles_$TAG_NAME
+
+- id: Create a new GitHub Release.
+  name: dockertools
+  entrypoint: bash
+  args:
+  - -c
+  - |
+    gh release create $TAG_NAME --notes "Dockertools" /workspace/{cloudbuild,dockerfiles}
+  secretEnv: ['GH_TOKEN']
+
+artifacts:
+  objects:
+    location: 'gs://$PROJECT_ID-kokoro/'
+    paths: ['/workspace/cloudbuild', '/workspace/dockerfiles', '/workspace/cloudbuild_$TAG_NAME', '/workspace/dockerfiles_$TAG_NAME']
+
+availableSecrets:
+  secretManager:
+  - versionName: projects/$PROJECT_ID/secrets/GH_TOKEN/versions/latest
+    env: 'GH_TOKEN'

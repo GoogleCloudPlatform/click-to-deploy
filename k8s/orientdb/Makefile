@@ -6,7 +6,7 @@ include ../images.Makefile
 CHART_NAME := orientdb
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 3.1
+TRACK ?= 3.2
 
 VERIFY_WAIT_TIMEOUT = 1800
 

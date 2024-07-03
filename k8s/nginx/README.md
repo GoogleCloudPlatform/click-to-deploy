@@ -188,7 +188,7 @@ Alternatively you can use short tag which points to the latest image for selecte
 > Warning: this tag is not stable and referenced image might change over time.
 
 ```shell
-export TAG="1.15"
+export TAG="1.25"
 ```
 
 Configure the container images:
@@ -196,6 +196,7 @@ Configure the container images:
 ```shell
 export IMAGE_NGINX="marketplace.gcr.io/google/nginx"
 export IMAGE_NGINX_INIT="marketplace.gcr.io/google/nginx/debian9:${TAG}"
+export IMAGE_NGINX_EXPORTER="marketplace.gcr.io/google/nginx/nginx-exporter:${TAG}"
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/nginx/prometheus-to-sd:${TAG}"
 ```
 
@@ -244,6 +245,7 @@ helm template "$APP_INSTANCE_NAME" chart/nginx \
   --set nginx.image.tag="$TAG" \
   --set nginx.persistence.storageClass="${DEFAULT_STORAGE_CLASS}" \
   --set nginx.persistence.size="${PERSISTENT_DISK_SIZE}" \
+  --set exporter.image="$IMAGE_NGINX_EXPORTER" \
   --set metrics.image="$IMAGE_METRICS_EXPORTER" \
   --set metrics.curatedExporter.enabled="$CURATED_METRICS_EXPORTER_ENABLED" \
   --set metrics.exporter.enabled="$METRICS_EXPORTER_ENABLED" \

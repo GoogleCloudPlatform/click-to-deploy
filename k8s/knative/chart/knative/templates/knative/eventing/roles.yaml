@@ -1,0 +1,1112 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: eventing-controller
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+subjects:
+  - kind: ServiceAccount
+    name: eventing-controller
+    namespace: "{{ .Release.Namespace }}"
+roleRef:
+  kind: ClusterRole
+  name: knative-eventing-controller
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: eventing-controller-resolver
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+subjects:
+  - kind: ServiceAccount
+    name: eventing-controller
+    namespace: "{{ .Release.Namespace }}"
+roleRef:
+  kind: ClusterRole
+  name: addressable-resolver
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: eventing-controller-source-observer
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+subjects:
+  - kind: ServiceAccount
+    name: eventing-controller
+    namespace: "{{ .Release.Namespace }}"
+roleRef:
+  kind: ClusterRole
+  name: source-observer
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: eventing-controller-sources-controller
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+subjects:
+  - kind: ServiceAccount
+    name: eventing-controller
+    namespace: "{{ .Release.Namespace }}"
+roleRef:
+  kind: ClusterRole
+  name: knative-eventing-sources-controller
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: eventing-controller-manipulator
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+subjects:
+  - kind: ServiceAccount
+    name: eventing-controller
+    namespace: "{{ .Release.Namespace }}"
+roleRef:
+  kind: ClusterRole
+  name: channelable-manipulator
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: knative-eventing-pingsource-mt-adapter
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+subjects:
+  - kind: ServiceAccount
+    name: pingsource-mt-adapter
+    namespace: "{{ .Release.Namespace }}"
+roleRef:
+  kind: ClusterRole
+  name: knative-eventing-pingsource-mt-adapter
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: eventing-webhook
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+subjects:
+  - kind: ServiceAccount
+    name: eventing-webhook
+    namespace: "{{ .Release.Namespace }}"
+roleRef:
+  kind: ClusterRole
+  name: knative-eventing-webhook
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  namespace: "{{ .Release.Namespace }}"
+  name: eventing-webhook
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+subjects:
+  - kind: ServiceAccount
+    name: eventing-webhook
+    namespace: "{{ .Release.Namespace }}"
+roleRef:
+  kind: Role
+  name: knative-eventing-webhook
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: eventing-webhook-resolver
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+subjects:
+  - kind: ServiceAccount
+    name: eventing-webhook
+    namespace: "{{ .Release.Namespace }}"
+roleRef:
+  kind: ClusterRole
+  name: addressable-resolver
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: eventing-webhook-podspecable-binding
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+subjects:
+  - kind: ServiceAccount
+    name: eventing-webhook
+    namespace: "{{ .Release.Namespace }}"
+roleRef:
+  kind: ClusterRole
+  name: podspecable-binding
+  apiGroup: rbac.authorization.k8s.io
+---
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Use this aggregated ClusterRole when you need readonly access to "Addressables"
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: addressable-resolver
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+aggregationRule:
+  clusterRoleSelectors:
+    - matchLabels:
+        duck.knative.dev/addressable: "true"
+rules: [] # Rules are automatically filled in by the controller manager.
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: service-addressable-resolver
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    duck.knative.dev/addressable: "true"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+# Do not use this role directly. These rules will be added to the "addressable-resolver" role.
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - services
+    verbs:
+      - get
+      - list
+      - watch
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: serving-addressable-resolver
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    duck.knative.dev/addressable: "true"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+# Do not use this role directly. These rules will be added to the "addressable-resolver" role.
+rules:
+  - apiGroups:
+      - serving.knative.dev
+    resources:
+      - routes
+      - routes/status
+      - services
+      - services/status
+    verbs:
+      - get
+      - list
+      - watch
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: channel-addressable-resolver
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    duck.knative.dev/addressable: "true"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+# Do not use this role directly. These rules will be added to the "addressable-resolver" role.
+rules:
+  - apiGroups:
+      - messaging.knative.dev
+    resources:
+      - channels
+      - channels/status
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - messaging.knative.dev
+    resources:
+      - channels/finalizers
+    verbs:
+      - update
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: broker-addressable-resolver
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    duck.knative.dev/addressable: "true"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+# Do not use this role directly. These rules will be added to the "addressable-resolver" role.
+rules:
+  - apiGroups:
+      - eventing.knative.dev
+    resources:
+      - brokers
+      - brokers/status
+    verbs:
+      - get
+      - list
+      - watch
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: flows-addressable-resolver
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    duck.knative.dev/addressable: "true"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+# Do not use this role directly. These rules will be added to the "addressable-resolver" role.
+rules:
+  - apiGroups:
+      - flows.knative.dev
+    resources:
+      - sequences
+      - sequences/status
+      - parallels
+      - parallels/status
+    verbs:
+      - get
+      - list
+      - watch
+
+---
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: eventing-broker-filter
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - "configmaps"
+    verbs:
+      - "get"
+      - "list"
+      - "watch"
+  - apiGroups:
+      - "eventing.knative.dev"
+    resources:
+      - "triggers"
+      - "triggers/status"
+    verbs:
+      - "get"
+      - "list"
+      - "watch"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: eventing-broker-ingress
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - "configmaps"
+    verbs:
+      - "get"
+      - "list"
+      - "watch"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: eventing-config-reader
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - "configmaps"
+    verbs:
+      - "get"
+      - "list"
+      - "watch"
+
+---
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Use this aggregated ClusterRole when you need read and update permissions on "Channelables".
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: channelable-manipulator
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+aggregationRule:
+  clusterRoleSelectors:
+    - matchLabels:
+        duck.knative.dev/channelable: "true"
+rules: [] # Rules are automatically filled in by the controller manager.
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: meta-channelable-manipulator
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    duck.knative.dev/channelable: "true"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+# Do not use this role directly. These rules will be added to the "channelable-manipulator" role.
+rules:
+  - apiGroups:
+      - messaging.knative.dev
+    resources:
+      - channels
+      - channels/status
+    verbs:
+      - create
+      - get
+      - list
+      - watch
+      - update
+      - patch
+      - delete
+
+---
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: knative-eventing-namespaced-admin
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    rbac.authorization.k8s.io/aggregate-to-admin: "true"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+rules:
+  - apiGroups: ["eventing.knative.dev"]
+    resources: ["*"]
+    verbs: ["*"]
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: knative-messaging-namespaced-admin
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    rbac.authorization.k8s.io/aggregate-to-admin: "true"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+rules:
+  - apiGroups: ["messaging.knative.dev"]
+    resources: ["*"]
+    verbs: ["*"]
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: knative-flows-namespaced-admin
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    rbac.authorization.k8s.io/aggregate-to-admin: "true"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+rules:
+  - apiGroups: ["flows.knative.dev"]
+    resources: ["*"]
+    verbs: ["*"]
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: knative-sources-namespaced-admin
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    rbac.authorization.k8s.io/aggregate-to-admin: "true"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+rules:
+  - apiGroups: ["sources.knative.dev"]
+    resources: ["*"]
+    verbs: ["*"]
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: knative-bindings-namespaced-admin
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    rbac.authorization.k8s.io/aggregate-to-admin: "true"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+rules:
+  - apiGroups: ["bindings.knative.dev"]
+    resources: ["*"]
+    verbs: ["*"]
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: knative-eventing-namespaced-edit
+  labels:
+    rbac.authorization.k8s.io/aggregate-to-edit: "true"
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+rules:
+  - apiGroups: ["eventing.knative.dev", "messaging.knative.dev", "sources.knative.dev", "flows.knative.dev", "bindings.knative.dev"]
+    resources: ["*"]
+    verbs: ["create", "update", "patch", "delete"]
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: knative-eventing-namespaced-view
+  labels:
+    rbac.authorization.k8s.io/aggregate-to-view: "true"
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+rules:
+  - apiGroups: ["eventing.knative.dev", "messaging.knative.dev", "sources.knative.dev", "flows.knative.dev", "bindings.knative.dev"]
+    resources: ["*"]
+    verbs: ["get", "list", "watch"]
+
+---
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: knative-eventing-controller
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - "namespaces"
+      - "secrets"
+      - "configmaps"
+      - "services"
+      - "endpoints"
+      - "events"
+      - "serviceaccounts"
+      - "pods"
+    verbs: &everything
+      - "get"
+      - "list"
+      - "create"
+      - "update"
+      - "delete"
+      - "patch"
+      - "watch"
+  # Brokers and the namespace annotation controllers manipulate Deployments.
+  - apiGroups:
+      - "apps"
+    resources:
+      - "deployments"
+    verbs: *everything
+  # PingSource controller manipulates Deployment owner reference
+  - apiGroups:
+      - "apps"
+    resources:
+      - "deployments/finalizers"
+    verbs:
+      - "update"
+  # The namespace annotation controller needs to manipulate RoleBindings.
+  - apiGroups:
+      - "rbac.authorization.k8s.io"
+    resources:
+      - "rolebindings"
+    verbs: *everything
+  # Our own resources and statuses we care about.
+  - apiGroups:
+      - "eventing.knative.dev"
+    resources:
+      - "brokers"
+      - "brokers/status"
+      - "triggers"
+      - "triggers/status"
+      - "eventtypes"
+      - "eventtypes/status"
+    verbs: *everything
+  # Eventing resources and finalizers we care about.
+  - apiGroups:
+      - "eventing.knative.dev"
+    resources:
+      - "brokers/finalizers"
+      - "triggers/finalizers"
+    verbs:
+      - "update"
+  # Our own resources and statuses we care about.
+  - apiGroups:
+      - "messaging.knative.dev"
+    resources:
+      - "sequences"
+      - "sequences/status"
+      - "channels"
+      - "channels/status"
+      - "parallels"
+      - "parallels/status"
+      - "subscriptions"
+      - "subscriptions/status"
+    verbs: *everything
+  # Flow resources and statuses we care about.
+  - apiGroups:
+      - "flows.knative.dev"
+    resources:
+      - "sequences"
+      - "sequences/status"
+      - "parallels"
+      - "parallels/status"
+    verbs: *everything
+  # Messaging resources and finalizers we care about.
+  - apiGroups:
+      - "messaging.knative.dev"
+    resources:
+      - "sequences/finalizers"
+      - "parallels/finalizers"
+      - "channels/finalizers"
+    verbs:
+      - "update"
+  # Flows resources and finalizers we care about.
+  - apiGroups:
+      - "flows.knative.dev"
+    resources:
+      - "sequences/finalizers"
+      - "parallels/finalizers"
+    verbs:
+      - "update"
+  # The subscription controller needs to retrieve and watch CustomResourceDefinitions.
+  - apiGroups:
+      - "apiextensions.k8s.io"
+    resources:
+      - "customresourcedefinitions"
+    verbs:
+      - "get"
+      - "list"
+      - "watch"
+  # For leader election
+  - apiGroups:
+      - "coordination.k8s.io"
+    resources:
+      - "leases"
+    verbs: *everything
+
+---
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: knative-eventing-pingsource-mt-adapter
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - "configmaps"
+    verbs:
+      - "get"
+      - "list"
+      - "watch"
+  - apiGroups:
+      - sources.knative.dev
+    resources:
+      - pingsources
+      - pingsources/status
+    verbs:
+      - get
+      - list
+      - watch
+      - patch
+  - apiGroups:
+      - sources.knative.dev
+    resources:
+      - pingsources/finalizers
+    verbs:
+      - "patch"
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs:
+      - "create"
+      - "patch"
+  - apiGroups:
+      - coordination.k8s.io
+    resources:
+      - leases
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+
+---
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Use this aggregated ClusterRole when you need readonly access to "PodSpecables"
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: podspecable-binding
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+aggregationRule:
+  clusterRoleSelectors:
+    - matchLabels:
+        duck.knative.dev/podspecable: "true"
+rules: [] # Rules are automatically filled in by the controller manager.
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: builtin-podspecable-binding
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    duck.knative.dev/podspecable: "true"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+# Do not use this role directly. These rules will be added to the "podspecable-binding role.
+rules:
+  # To patch the subjects of our bindings
+  - apiGroups:
+      - "apps"
+    resources:
+      - "deployments"
+      - "daemonsets"
+      - "statefulsets"
+      - "replicasets"
+    verbs:
+      - "list"
+      - "watch"
+      - "patch"
+  - apiGroups:
+      - "batch"
+    resources:
+      - "jobs"
+    verbs:
+      - "list"
+      - "watch"
+      - "patch"
+
+---
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Use this aggregated ClusterRole when you need to read "Sources".
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: source-observer
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+aggregationRule:
+  clusterRoleSelectors:
+    - matchLabels:
+        duck.knative.dev/source: "true"
+rules: [] # Rules are automatically filled in by the controller manager.
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: eventing-sources-source-observer
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    duck.knative.dev/source: "true"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+# Do not use this role directly. These rules will be added to the "source-observer" role.
+rules:
+  - apiGroups:
+      - sources.knative.dev
+    resources:
+      - apiserversources
+      - pingsources
+      - sinkbindings
+      - containersources
+    verbs:
+      - get
+      - list
+      - watch
+
+---
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: knative-eventing-sources-controller
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - "secrets"
+      - "configmaps"
+      - "services"
+    verbs: &everything
+      - "get"
+      - "list"
+      - "create"
+      - "update"
+      - "delete"
+      - "patch"
+      - "watch"
+  # Deployments admin
+  - apiGroups:
+      - "apps"
+    resources:
+      - "deployments"
+    verbs: *everything
+  # Source resources and statuses we care about.
+  - apiGroups:
+      - "sources.knative.dev"
+    resources:
+      - "sinkbindings"
+      - "sinkbindings/status"
+      - "sinkbindings/finalizers"
+      - "apiserversources"
+      - "apiserversources/status"
+      - "apiserversources/finalizers"
+      - "pingsources"
+      - "pingsources/status"
+      - "pingsources/finalizers"
+      - "containersources"
+      - "containersources/status"
+      - "containersources/finalizers"
+    verbs: *everything
+  # Knative Services admin
+  - apiGroups:
+      - serving.knative.dev
+    resources:
+      - services
+    verbs: *everything
+  # EventTypes admin
+  - apiGroups:
+      - eventing.knative.dev
+    resources:
+      - eventtypes
+    verbs: *everything
+  # Events admin
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs: *everything
+  # Authorization checker
+  - apiGroups:
+      - authorization.k8s.io
+    resources:
+      - subjectaccessreviews
+    verbs:
+      - create
+
+---
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: knative-eventing-webhook
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+rules:
+  # For watching logging configuration and getting certs.
+  - apiGroups:
+      - ""
+    resources:
+      - "configmaps"
+    verbs:
+      - "get"
+      - "list"
+      - "watch"
+  # For manipulating certs into secrets.
+  - apiGroups:
+      - ""
+    resources:
+      - "namespaces"
+    verbs:
+      - "get"
+      - "create"
+      - "update"
+      - "list"
+      - "watch"
+      - "patch"
+  # finalizers are needed for the owner reference of the webhook
+  - apiGroups:
+      - ""
+    resources:
+      - "namespaces/finalizers"
+    verbs:
+      - "update"
+  # For getting our Deployment so we can decorate with ownerref.
+  - apiGroups:
+      - "apps"
+    resources:
+      - "deployments"
+    verbs:
+      - "get"
+  - apiGroups:
+      - "apps"
+    resources:
+      - "deployments/finalizers"
+    verbs:
+      - update
+  # For actually registering our webhook.
+  - apiGroups:
+      - "admissionregistration.k8s.io"
+    resources:
+      - "mutatingwebhookconfigurations"
+      - "validatingwebhookconfigurations"
+    verbs: &everything
+      - "get"
+      - "list"
+      - "create"
+      - "update"
+      - "delete"
+      - "patch"
+      - "watch"
+  # For running the SinkBinding reconciler.
+  - apiGroups:
+      - "sources.knative.dev"
+    resources:
+      - "sinkbindings"
+      - "sinkbindings/status"
+      - "sinkbindings/finalizers"
+    verbs: *everything
+  # For leader election
+  - apiGroups:
+      - "coordination.k8s.io"
+    resources:
+      - "leases"
+    verbs: *everything
+  # For creating events
+  - apiGroups:
+      - ""
+      - "events.k8s.io"
+    resources:
+      - "events"
+    verbs:
+      - "get"
+      - "list"
+      - "create"
+      - "patch"
+  # Necessary for conversion webhook. These are copied from the serving
+  # TODO: Do we really need all these permissions?
+  - apiGroups: ["apiextensions.k8s.io"]
+    resources: ["customresourcedefinitions"]
+    verbs: ["get", "list", "create", "update", "delete", "patch", "watch"]
+---
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: "{{ .Release.Namespace }}"
+  name: knative-eventing-webhook
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+rules:
+  # For manipulating certs into secrets.
+  - apiGroups:
+      - ""
+    resources:
+      - "secrets"
+    verbs:
+      - "get"
+      - "create"
+      - "update"
+      - "list"
+      - "watch"
+      - "patch"

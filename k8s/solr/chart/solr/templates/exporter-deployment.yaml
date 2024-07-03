@@ -64,7 +64,7 @@ spec:
             - containerPort: 8983
               name: solr-client
           command:
-            - "/opt/solr/contrib/prometheus-exporter/bin/solr-exporter"
+            - "/opt/solr/prometheus-exporter/bin/solr-exporter"
             - "-p"
             - "9983"
             {{- if not .Values.solr.standalone }}
@@ -74,7 +74,7 @@ spec:
             - "-n"
             - "7"
             - "-f"
-            - "/opt/solr/contrib/prometheus-exporter/conf/solr-exporter-config.xml"
+            - "/opt/solr/prometheus-exporter/conf/solr-exporter-config.xml"
           livenessProbe:
             initialDelaySeconds: 20
             periodSeconds: 10

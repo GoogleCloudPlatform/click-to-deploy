@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_banner" inherit_id="website.s_banner">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc o_cc3 parallax s_parallax_is_fixed" remove="pt96 pb96" separator=" "/>
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Origins/18","flip":["x"]}</attribute>
+        <attribute name="data-scroll-background-ratio">1</attribute>
+    </xpath>
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <span class="s_parallax_bg oe_img_bg" style="background-image: url('/web/image/website.s_banner_default_image'); background-position: 50% 0;"/>
+        <div class="o_we_bg_filter bg-black-50"/>
+        <div class="o_we_shape o_web_editor_Origins_18" style="background-image: url('/web_editor/shape/web_editor/Origins/18.svg?c1=o-color-2&amp;flip=x'); background-position: 50% 50%;"/>
+    </xpath>
+
+    <!-- Row - remove grid mode -->
+    <xpath expr="//div[hasclass('row')]" position="attributes">
+        <attribute name="class" remove="o_grid_mode" separator=" "/>
+    </xpath>
+    
+    <!-- Remove grid images -->
+    <xpath expr="//div[hasclass('o_grid_item_image')]" position="replace"/>
+    <xpath expr="//div[hasclass('o_grid_item_image')]" position="replace"/>
+    <xpath expr="//div[hasclass('o_grid_item_image')]" position="replace"/>
+
+    <!-- Remove hr -->
+    <xpath expr="//div[hasclass('s_hr')]" position="replace"/>
+
+    <!-- Jumbotron -->
+    <xpath expr="//div[hasclass('col-lg-5')]" position="attributes">
+        <attribute name="class" add="col-lg-7 h-100 pt160 pb160" remove="o_grid_item g-height-4 g-col-lg-5 col-lg-5" separator=" "/>
+        <attribute name="style"/>
+    </xpath>
+
+    <!-- Title -->
+    <xpath expr="//h1" position="attributes">
+        <attribute name="class" remove="display-1" separator=" "/>
+    </xpath>
+    <xpath expr="//h1" position="replace" mode="inner">
+        <b>Real Estate Agency.<br/>Near You.</b>
+    </xpath>
+
+    <!-- Paragraph -->
+    <xpath expr="//p" position="replace">
+        <p class="lead">Now you can find more than 5,000+ property choices with our professional agents!<br/></p>
+    </xpath>
+
+    <!-- Button -->
+    <xpath expr="//div[hasclass('col-lg-7')]//p[2]" position="attributes">
+        <attribute name="class" add="mb-0" separator=" "/>
+    </xpath>
+    <xpath expr="//a[@t-att-href='cta_btn_href']" position="replace" mode="inner">
+        See properties
+    </xpath>
+</template>
+
+</odoo>

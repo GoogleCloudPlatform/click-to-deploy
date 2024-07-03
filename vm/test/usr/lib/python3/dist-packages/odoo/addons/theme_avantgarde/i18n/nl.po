@@ -1,0 +1,213 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * theme_avantgarde
+# 
+# Translators:
+# Martin Trigaux, 2019
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-04-24 08:51+0000\n"
+"PO-Revision-Date: 2019-04-24 11:21+0000\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
+"Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: nl\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.avantgarde_typo_pattern
+msgid "<i class=\"fa fa-font\"/>Font Style"
+msgstr "<i class=\"fa fa-font\"/>Lettertype"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.avantgarde_google_map
+msgid "<i class=\"fa fa-fw fa-paint-brush\"/>Style"
+msgstr "<i class=\"fa fa-fw fa-paint-brush\"/>Stijl"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.avantgarde_typo_pattern
+msgid "<i class=\"fa fa-header\"/>Text Tranform"
+msgstr "<i class=\"fa fa-header\"/>Tekst transformatie"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.avantgarde_top_content_options
+msgid "<i class=\"fa fa-magic\"/>Position"
+msgstr "<i class=\"fa fa-magic\"/>Positie"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.avantgarde_bg_effects
+msgid "<i class=\"fa fa-sliders\"/>Background Effects"
+msgstr "<i class=\"fa fa-sliders\"/>Achtergrond effecten"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.avantgarde_header
+msgid "Add your custom text here"
+msgstr "Voeg hier uw gepersonaliseerde tekst toe"
+
+#. module: theme_avantgarde
+#. openerp-web
+#: code:addons/theme_avantgarde/static/src/xml/s_media_block_modal_ext.xml:12
+#, python-format
+msgid "Animated colors"
+msgstr "Geanimeerde kleuren"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.avantgarde_bg_effects
+msgid "Big Inset Shadow"
+msgstr "Grote inbrengschaduw"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.avantgarde_typo_pattern
+msgid "Drop Caps"
+msgstr "Verwijder hoofdletters"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.avantgarde_typo_pattern
+msgid "Drop Caps Alpha"
+msgstr "Verwijder hoofdletters alpha"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.avantgarde_typo_pattern
+msgid "Drop Caps Beta"
+msgstr "Verwijder caps beta"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.avantgarde_typo_pattern
+msgid "Drop Caps Delta"
+msgstr "Verwijder caps Delta"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.avantgarde_typo_pattern
+msgid "Drop Caps Epsilon"
+msgstr "Verwijder caps Epsilon"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.avantgarde_typo_pattern
+msgid "Drop Caps Gamma"
+msgstr "Verwijder caps Gamma"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.avantgarde_bg_effects
+msgid "Glossy"
+msgstr "Glossy"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.avantgarde_bg_effects
+msgid "Glossy Medium"
+msgstr "Glossy medium"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.avantgarde_bg_effects
+msgid "Glossy Soft"
+msgstr "Glossy zacht"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.theme_customize
+msgid "Hide"
+msgstr "Verberg"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.avantgarde_bg_effects
+msgid "Inset Shadow"
+msgstr "Inbrengschaduw"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.theme_customize
+msgid "Logo"
+msgstr "Logo"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.avantgarde_top_content_options
+msgid "Move to top"
+msgstr "Naar boven verplaatsen"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.avantgarde_bg_effects
+msgid "No effects"
+msgstr "Geen effecten"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.theme_customize
+msgid "None"
+msgstr "Geen"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.avantgarde_top_content_options
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.avantgarde_typo_pattern
+msgid "Normal"
+msgstr "Normaal"
+
+#. module: theme_avantgarde
+#. openerp-web
+#: code:addons/theme_avantgarde/static/src/xml/s_media_block_modal_ext.xml:21
+#, python-format
+msgid "Opacity"
+msgstr "Doorzichtigheid"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.theme_customize
+msgid "Pre Header"
+msgstr "Pre hoofding"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.theme_customize
+msgid "Show"
+msgstr "Toon"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.avantgarde_typo_pattern
+msgid "Small Caps"
+msgstr "Kleine letters"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.theme_customize
+msgid "Standard"
+msgstr "Standaard"
+
+#. module: theme_avantgarde
+#. openerp-web
+#: code:addons/theme_avantgarde/static/src/xml/s_media_block_modal_ext.xml:13
+#, python-format
+msgid "Static Black"
+msgstr "Statisch zwart"
+
+#. module: theme_avantgarde
+#: model:ir.model,name:theme_avantgarde.model_theme_utils
+msgid "Theme Utils"
+msgstr "Thema tools"
+
+#. module: theme_avantgarde
+#. openerp-web
+#: code:addons/theme_avantgarde/static/src/xml/s_media_block_modal_ext.xml:11
+#, python-format
+msgid "Transparent"
+msgstr "Transparant"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.avantgarde_typo_pattern
+msgid "Uppercase"
+msgstr "Hoofdletters"
+
+#. module: theme_avantgarde
+#. openerp-web
+#: code:addons/theme_avantgarde/static/src/xml/s_media_block_modal_ext.xml:8
+#, python-format
+msgid "Video background"
+msgstr "Video achtergrond"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.theme_customize
+msgid "Wide"
+msgstr "Bree"
+
+#. module: theme_avantgarde
+#: model_terms:theme.ir.ui.view,arch:theme_avantgarde.theme_customize
+msgid "Year"
+msgstr "Jaar"

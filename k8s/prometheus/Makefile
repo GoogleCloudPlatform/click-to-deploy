@@ -1,153 +1,50 @@
-include ../app.Makefile
 include ../crd.Makefile
 include ../gcloud.Makefile
 include ../var.Makefile
+include ../images.Makefile
 
-TAG ?= 2.18
+CHART_NAME := prometheus
+APP_ID ?= $(CHART_NAME)
 
-$(info ---- TAG = $(TAG))
+TRACK ?= 2.49
+TRACK_ALERTMANAGER ?= 0.25
+TRACK_KUBESTATEMETRICS ?= 2.4
+TRACK_NODEEXPORTER ?= 1.5
+METRICS_EXPORTER_TAG ?= v0.5.1
 
-APP_DEPLOYER_IMAGE ?= $(REGISTRY)/prometheus/deployer:$(TAG)
-NAME ?= prometheus-1
+SOURCE_REGISTRY ?= marketplace.gcr.io/google
+IMAGE_PROMETHEUS ?= $(SOURCE_REGISTRY)/prometheus2:$(TRACK)
+IMAGE_ALERTMANAGER ?= $(SOURCE_REGISTRY)/prometheus-alertmanager0:$(TRACK_ALERTMANAGER)
+IMAGE_NODEEXPORTER ?= $(SOURCE_REGISTRY)/prometheus-nodeexporter1:$(TRACK_NODEEXPORTER)
+IMAGE_KUBESTATEMETRICS ?= $(SOURCE_REGISTRY)/kube-state-metrics2:$(TRACK_KUBESTATEMETRICS)
 
-ifdef IMAGE_PROMETHEUS
-  IMAGE_PROMETHEUS_FIELD = , "IMAGE_PROMETHEUS": "$(IMAGE_PROMETHEUS)"
-endif
+# Main image
+image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_PROMETHEUS))
 
-ifdef IMAGE_ALERTMANAGER
-  IMAGE_ALERTMANAGER_FIELD = , "IMAGE_ALERTMANAGER": "$(IMAGE_ALERTMANAGER)"
-endif
+# List of images used in application
+ADDITIONAL_IMAGES := alertmanager nodeexporter kubestatemetrics
 
-ifdef IMAGE_NODE_EXPORTER
-  IMAGE_NODE_EXPORTER_FIELD = , "IMAGE_NODE_EXPORTER": "$(IMAGE_NODE_EXPORTER)"
-endif
+# Additional images variable names should correspond with ADDITIONAL_IMAGES list
+image-alertmanager := $(call get_sha256,$(IMAGE_ALERTMANAGER))
+image-nodeexporter := $(call get_sha256,$(IMAGE_NODEEXPORTER))
+image-kubestatemetrics := $(call get_sha256,$(IMAGE_KUBESTATEMETRICS))
 
-ifdef IMAGE_KUBE_STATE_METRICS
-  IMAGE_KUBE_STATE_METRICS_FIELD = , "IMAGE_KUBE_STATE_METRICS": "$(IMAGE_KUBE_STATE_METRICS)"
-endif
+C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
 
-ifdef IMAGE_GRAFANA
-  IMAGE_GRAFANA_FIELD = , "IMAGE_GRAFANA": "$(IMAGE_GRAFANA)"
-endif
-
-ifdef IMAGE_PROMETHEUS_INIT
-  IMAGE_PROMETHEUS_INIT_FIELD = , "IMAGE_PROMETHEUS_INIT": "$(IMAGE_PROMETHEUS_INIT)"
-endif
-
-ifdef PROMETHEUS_REPLICAS
-  PROMETHEUS_REPLICAS_FIELD = , "PROMETHEUS_REPLICAS": "$(PROMETHEUS_REPLICAS)"
-endif
+BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
+RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)
+VERIFY_WAIT_TIMEOUT := 800
+NAME ?= $(APP_ID)-1
 
 APP_PARAMETERS ?= { \
-  "APP_INSTANCE_NAME": "$(NAME)", \
-  "NAMESPACE": "$(NAMESPACE)" \
-  $(IMAGE_ALERTMANAGER_FIELD) \
-  $(IMAGE_KUBE_STATE_METRICS_FIELD) \
-  $(IMAGE_NODE_EXPORTER_FIELD) \
-  $(IMAGE_PROMETHEUS_FIELD) \
-  $(IMAGE_GRAFANA_FIELD) \
-  $(IMAGE_PROMETHEUS_INIT_FIELD) \
-  $(PROMETHEUS_REPLICAS_FIELD) \
+  "name": "$(NAME)", \
+  "namespace": "$(NAMESPACE)" \
 }
 
-TESTER_IMAGE ?= $(REGISTRY)/prometheus/tester:$(TAG)
+# c2d_deployer.Makefile provides the main targets for installing the application.
+# It requires several APP_* variables defined above, and thus must be included after.
+include ../c2d_deployer.Makefile
 
 
-app/build:: .build/prometheus/alertmanager \
-            .build/prometheus/debian9 \
-            .build/prometheus/deployer \
-            .build/prometheus/grafana \
-            .build/prometheus/kubestatemetrics \
-            .build/prometheus/nodeexporter \
-            .build/prometheus/server \
-            .build/prometheus/tester
-
-
-.build/prometheus: | .build
-	mkdir -p "$@"
-
-
-.build/prometheus/deployer: deployer/* \
-                            manifest/* \
-                            schema.yaml \
-                            .build/var/APP_DEPLOYER_IMAGE \
-                            .build/var/MARKETPLACE_TOOLS_TAG \
-                            .build/var/REGISTRY \
-                            .build/var/TAG \
-                            | .build/prometheus
-	docker build \
-	    --build-arg REGISTRY="$(REGISTRY)/prometheus" \
-	    --build-arg TAG="$(TAG)" \
-	    --build-arg MARKETPLACE_TOOLS_TAG="$(MARKETPLACE_TOOLS_TAG)" \
-	    --tag "$(APP_DEPLOYER_IMAGE)" \
-	    -f deployer/Dockerfile \
-	    .
-	docker push "$(APP_DEPLOYER_IMAGE)"
-	@touch "$@"
-
-
-.build/prometheus/server: .build/var/REGISTRY \
-                          .build/var/TAG \
-                          | .build/prometheus
-	docker pull marketplace.gcr.io/google/prometheus2:$(TAG)
-	docker tag marketplace.gcr.io/google/prometheus2:$(TAG) "$(REGISTRY)/prometheus:$(TAG)"
-	docker push "$(REGISTRY)/prometheus:$(TAG)"
-	@touch "$@"
-
-
-.build/prometheus/alertmanager: .build/var/REGISTRY \
-                                .build/var/TAG \
-                                | .build/prometheus
-	docker pull marketplace.gcr.io/google/prometheus-alertmanager0:0.14
-	docker tag marketplace.gcr.io/google/prometheus-alertmanager0:0.14 \
-	  "$(REGISTRY)/prometheus/alertmanager:$(TAG)"
-	docker push "$(REGISTRY)/prometheus/alertmanager:$(TAG)"
-	@touch "$@"
-
-
-.build/prometheus/debian9: .build/var/REGISTRY \
-                           .build/var/TAG \
-                           | .build/prometheus
-	docker pull marketplace.gcr.io/google/debian9
-	docker tag marketplace.gcr.io/google/debian9 "$(REGISTRY)/prometheus/debian9:$(TAG)"
-	docker push "$(REGISTRY)/prometheus/debian9:$(TAG)"
-	@touch "$@"
-
-
-.build/prometheus/kubestatemetrics: .build/var/REGISTRY \
-                                    .build/var/TAG \
-                                    | .build/prometheus
-	docker pull marketplace.gcr.io/google/kube-state-metrics1:1.9
-	docker tag marketplace.gcr.io/google/kube-state-metrics1:1.9 \
-	  "$(REGISTRY)/prometheus/kubestatemetrics:$(TAG)"
-	docker push "$(REGISTRY)/prometheus/kubestatemetrics:$(TAG)"
-	@touch "$@"
-
-
-.build/prometheus/nodeexporter: .build/var/REGISTRY \
-                                .build/var/TAG \
-                                | .build/prometheus
-	docker pull marketplace.gcr.io/google/prometheus-nodeexporter0:0.16
-	docker tag marketplace.gcr.io/google/prometheus-nodeexporter0:0.16 \
-	  "$(REGISTRY)/prometheus/nodeexporter:$(TAG)"
-	docker push "$(REGISTRY)/prometheus/nodeexporter:$(TAG)"
-	@touch "$@"
-
-
-.build/prometheus/grafana: .build/var/REGISTRY \
-                           .build/var/TAG \
-                           | .build/prometheus
-	docker pull marketplace.gcr.io/google/grafana6:6.7
-	docker tag marketplace.gcr.io/google/grafana6:6.7 "$(REGISTRY)/prometheus/grafana:$(TAG)"
-	docker push "$(REGISTRY)/prometheus/grafana:$(TAG)"
-	@touch "$@"
-
-
-.build/prometheus/tester: .build/var/TESTER_IMAGE \
-                          $(shell find apptest -type f) \
-                          | .build/prometheus
-	$(call print_target,$@)
-	cd apptest/tester \
-	    && docker build --tag "$(TESTER_IMAGE)" .
-	docker push "$(TESTER_IMAGE)"
-	@touch "$@"
+# Build tester image
+app/build:: .build/$(CHART_NAME)/tester

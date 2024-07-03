@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,10 +21,10 @@ end
 
 template '/etc/mysql/mysql.conf.d/mysqld.cnf' do
   source 'mysqld.cnf.erb'
-  variables(
-    :bind_address => node['mysql']['bind_address'],
-    :log_bin_trust_function_creators => node['mysql']['log_bin_trust_function_creators']
-  )
+  variables({
+    bind_address: node['mysql']['bind_address'],
+    log_bin_trust_function_creators: node['mysql']['log_bin_trust_function_creators'],
+  })
 end
 
 c2d_startup_script 'mysql'

@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2020 Google Inc.
+# Copyright 2021 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source /opt/c2d/c2d-utils || exit 1
 source /opt/mattermost-utils || exit 1
 
 # Default values
@@ -24,12 +23,14 @@ readonly default_db_user="mattermost"
 readonly default_domain="localhost"
 
 # Get settings from metadata
+readonly root_db_pwd="${root_db_pwd:-$(get_attribute_value "mysql-root-password")}"
 readonly metadata_db_pwd="${metadata_db_pwd:-$(get_attribute_value "mattermost-database-pwd")}"
 readonly metadata_sitename="${metadata_sitename:-$(get_attribute_value "mattermost-sitename")}"
 
 # Create user in MySQL database
 create_db_user \
-  "${default_db_host}" "${default_db_name}" "${default_db_user}" "${metadata_db_pwd}"
+  "${default_db_host}" "${default_db_name}" "${default_db_user}" "${metadata_db_pwd}" \
+  "${root_db_pwd}"
 
 # Build Data Source config
 database_dsn="${default_db_user}:${metadata_db_pwd}@tcp(${default_db_host}:3306)/${default_db_name}?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s"
@@ -41,7 +42,10 @@ update_config "${database_dsn}" "${metadata_sitename}"
 setup_nginx "${default_domain}"
 
 # Start Mattermost
+systemctl enable mattermost
 systemctl start mattermost
 
 # Wait until ready.
 wait_for_app
+
+echo "Installation complete."

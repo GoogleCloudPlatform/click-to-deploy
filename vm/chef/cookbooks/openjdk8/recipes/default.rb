@@ -16,17 +16,8 @@ apt_update do
   action :update
 end
 
-package 'install packages' do # ~FC009
-  only_if { node['platform_version'].include? '8.' }
-  package_name node['openjdk8']['packages']
-  default_release 'jessie-backports'
-  action :install
-  retries 5
-  retry_delay 60
-end
-
 package 'install packages' do
-  only_if { node['platform_version'].include? '9.' }
+  only_if { platform?('debian') && node['platform_version'].to_i >= 9 }
   package_name node['openjdk8']['packages']
   action :install
   retries 5

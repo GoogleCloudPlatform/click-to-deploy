@@ -1,61 +1,53 @@
-# Copyright 2020 Google LLC
+# Copyright 2023 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-# this file except in compliance with the License. You may obtain a copy of the
-# License at
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
-# http://www.apache.org/licenses/LICENSE-2.0
 
-# Unless required by applicable law or agreed to in writing, software distributed
-# under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-# CONDITIONS OF ANY KIND, either express or implied. See the License for the
-# specific language governing permissions and limitations under the License.
-
-_variables:
-  from9: &from9 'gcr.io/google-appengine/debian9'
-
-versions:
-  # Neo4j 4.x
-  - dir: '4/debian9/4.3'
-    repo: 'neo4j4'
-    tags:
-    - '4.3.3-debian9'
-    - '4.3-debian9'
-    - '4-debian9'
-    - '4.3.3'
-    - '4.3'
-    - '4'
-    - 'latest'
-    from: *from9
-    packages:
-      neo4j:
-        version: '4.3.3'
-        sha256: 'bb3965c18e613ee738f07af1c7c8da985ba3ca8025054ce66266376c6d4f7065'
-      tini:
-        version: '0.19.0'
-        sha256: '93dcc18adc78c65a028a84799ecf8ad40c936fdfc5f2a57b1acda5a8117fa82c'
-      dockerneo4j:
-        version: '4.3.3'
-        sha256: 'ef1465574f1fe2d1a6fc8c59a28b1d09909855c5f96dc707aaa590ffe2ab3ffe'
-  - dir: '4/debian9/4.1'
-    repo: 'neo4j4'
-    tags:
-    - '4.1.6-debian9'
-    - '4.1-debian9'
-    - '4.1.6'
-    - '4.1'
-    from: *from9
-    packages:
-      neo4j:
-        version: '4.1.6'
-        sha256: '877fab336425465728284c008c15401982a7695c019cd2874c9b0f6ef8d5bf36'
-      tini:
-        version: '0.18.0'
-        sha256: '12d20136605531b09a2c2dac02ccee85e1b874eb322ef6baf7561cd93f93c855'
-      dockerneo4j:
-        version: '4.1.6'
-        sha256: 'f36222e76127e7fc30191d74f66bdf69ea2360de2d222d7db1266ed4fc235f27'        
-     
-# Enable parallel build.
 cloudbuild:
   enable_parallel: true
+versions:
+- dir: 5/debian11/5.5
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    dockerneo4j:
+      version: 5.5.0
+    neo4j:
+      version: 5.5.0
+    tini:
+      version: 0.19.0
+  repo: neo4j5
+  tags:
+  - 5.5.0-debian11
+  - 5.5-debian11
+  - 5.5.0
+  - '5.5'
+  templateSubDir: neo4j5
+- dir: 5/debian11/5.8
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    dockerneo4j:
+      version: 5.8.0
+    neo4j:
+      version: 5.8.0
+    tini:
+      version: 0.19.0
+  repo: neo4j5
+  tags:
+  - 5.8.0-debian11
+  - 5.8-debian11
+  - 5-debian11
+  - 5.8.0
+  - '5.8'
+  - '5'
+  - latest
+  templateSubDir: neo4j5

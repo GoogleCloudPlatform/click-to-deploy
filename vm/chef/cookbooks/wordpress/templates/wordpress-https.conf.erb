@@ -1,0 +1,18 @@
+<VirtualHost *:443>
+  ServerAdmin admin@example.com
+  DocumentRoot /var/www/html
+  SSLEngine on
+  SSLCertificateFile /etc/ssl/certs/c2d-temporary-self-signed-cert.pem
+  SSLCertificateKeyFile /etc/ssl/private/c2d-temporary-self-signed-cert.key
+
+  <Directory /var/www/html>
+    Options -Indexes
+    AllowOverride FileInfo
+  </Directory>
+
+  <Files xmlrpc.php>
+    order deny,allow
+    deny from all
+  </Files>
+
+</VirtualHost>

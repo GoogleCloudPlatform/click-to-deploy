@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,51 +12,85 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# Reference: https://docs.joomla.org/J3.x:Installing_Joomla
+# Reference: https://docs.joomla.org/J4.x:Installing_Joomla
 
 include_recipe 'apache2'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
-include_recipe 'mysql'
 
-include_recipe 'php74'
-include_recipe 'php74::module_cli'
-include_recipe 'php74::module_curl'
-include_recipe 'php74::module_gd'
-include_recipe 'php74::module_intl'
-include_recipe 'php74::module_json'
-include_recipe 'php74::module_libapache2'
-include_recipe 'php74::module_mysql'
-include_recipe 'php74::module_opcache'
-include_recipe 'php74::module_readline'
-include_recipe 'php74::module_soap'
-include_recipe 'php74::module_xml'
-include_recipe 'php74::module_zip'
+include_recipe 'git'
+include_recipe 'joomla::ospo'
+
+include_recipe 'mysql::version-8.0-embedded'
+
+include_recipe 'php81'
+include_recipe 'php81::module_cli'
+include_recipe 'php81::module_curl'
+include_recipe 'php81::module_gd'
+include_recipe 'php81::module_intl'
+include_recipe 'php81::module_ldap'
+include_recipe 'php81::module_libapache2'
+include_recipe 'php81::module_mbstring'
+include_recipe 'php81::module_mysql'
+include_recipe 'php81::module_xml'
+include_recipe 'php81::module_zip'
 
 remote_file '/tmp/joomla.tar.gz' do
   source "https://github.com/joomla/joomla-cms/releases/download/#{node['joomla']['version']}/Joomla_#{node['joomla']['version']}-Stable-Full_Package.tar.gz"
-  verify "echo '#{node['joomla']['sha1']} %{path}' | sha1sum -c"
+  verify "echo '#{node['joomla']['sha256']} %{path}' | sha256sum -c"
   action :create
 end
 
-bash 'configuration' do
-  user 'root'
+directory '/opt/joomla' do
+  owner 'www-data'
+  group 'www-data'
+  mode '0755'
+  action :create
+end
+
+bash 'Extract Joomla' do
+  user 'www-data'
   cwd '/tmp'
   code <<-EOH
-# extract to /var/www/html :]
-tar -xf joomla.tar.gz -C /var/www/html
-chown -R $user:$user /var/www/html/
+tar -xf joomla.tar.gz -C /opt/joomla
+EOH
+end
 
-mysql -u root -e "CREATE DATABASE $defdb"
+bash 'Configure Database' do
+  user 'root'
+  cwd '/opt/joomla'
+  code <<-EOH
+# create db
+mysql -u root -e "CREATE DATABASE $defdb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
 EOH
   environment({
-    'user' => node['joomla']['user'],
     'defdb' => node['joomla']['db']['name'],
   })
 end
 
 template '/etc/apache2/sites-available/joomla.conf' do
   source 'joomla.conf.erb'
+end
+
+cookbook_file '/etc/php/8.1/apache2/conf.d/99-joomla.ini' do
+  source 'php-joomla.ini'
+  owner 'root'
+  group 'root'
+  mode 0644
+  action :create
+end
+
+# Copy the utils file for joomla startup
+cookbook_file '/opt/c2d/joomla-utils' do
+  source 'joomla-utils'
+  owner 'root'
+  group 'root'
+  mode 0644
+  action :create
+end
+
+execute 'disable 000-default.conf' do
+  command 'a2dissite 000-default'
 end
 
 execute 'enable joomla.conf' do
@@ -67,33 +101,8 @@ execute 'enable apache modules' do
   command 'a2enmod rewrite'
 end
 
-# Reference: https://docs.joomla.org/Preconfigured_htaccess
-execute 'enable .htaccess ' do
-  cwd '/var/www/html'
-  command 'mv htaccess.txt .htaccess'
+service 'apache2' do
+  action :restart
 end
 
-execute 'enable robots.txt ' do
-  cwd '/var/www/html'
-  command 'mv robots.txt.dist robots.txt'
-end
-
-# Reference: https://forum.joomla.org/viewtopic.php?t=613245
-file '/var/www/html/web.config.txt' do
-  action :delete
-end
-
-bash 'edit php.ini' do
-  user 'root'
-  code <<-EOH
-    sed -i 's/memory_limit = .*/memory_limit = 128M/' /etc/php/*/apache2/php.ini
-    sed -i 's/upload_max_filesize = .*/upload_max_filesize = 40M/' /etc/php/*/apache2/php.ini
-    sed -i 's/post_max_size = .*/post_max_size = 40M/' /etc/php/*/apache2/php.ini
-    sed -i 's/max_execution_time = .*/max_execution_time = 120/' /etc/php/*/apache2/php.ini
-EOH
-end
-
-c2d_startup_script 'joomla' do
-  source 'joomla'
-  action :cookbook_file
-end
+c2d_startup_script 'joomla'

@@ -17,7 +17,7 @@ apt_repository 'mariadb_repository' do
   uri node['mariadb']['repo']['uri']
   components node['mariadb']['repo']['components']
   keyserver node['mariadb']['repo']['keyserver']
-  distribution false
+  distribution node['mariadb']['repo']['distribution']
   trusted true
   deb_src true
 end
@@ -26,8 +26,13 @@ apt_update 'update' do
   action :update
 end
 
+apt_preference 'mariadb-server' do
+  pin          "version #{node['mariadb']['apt_version']}"
+  pin_priority '1000'
+end
+
 package 'mariadb-server' do
-  version node['mariadb']['version']
+  :install
 end
 
 ['pam-ssh', 'ssh', 'master-replication', 'replica-replication'].each do |file|

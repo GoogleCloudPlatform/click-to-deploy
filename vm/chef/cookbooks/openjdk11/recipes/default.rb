@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ apt_update do
   action :update
 end
 
-package 'install packages' do # ~FC009
+package 'install packages' do
   only_if { node['platform_version'].include? '8.' }
   package_name node['openjdk11']['packages']
   default_release 'jessie-backports'
@@ -35,7 +35,7 @@ package 'install packages' do
 end
 
 package 'install packages' do
-  only_if { node['platform_version'].include? '10.' }
+  only_if { platform?('debian') && node['platform_version'].to_i >= 10 }
   package_name node['openjdk11']['packages']
   action :install
   retries 5

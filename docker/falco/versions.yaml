@@ -1,0 +1,57 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+cloudbuild:
+  enable_parallel: false
+versions:
+- dir: 0/debian11/0.36
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    falco:
+      version: 0.36.2
+  repo: falco0
+  tags:
+  - 0.36.2-debian11
+  - 0.36-debian11
+  - 0-debian11
+  - 0.36.2
+  - '0.36'
+  - '0'
+  - latest
+- dir: 0/debian11/0.34
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    falco:
+      version: 0.34.1
+  repo: falco0
+  tags:
+  - 0.34.1-debian11
+  - 0.34-debian11
+  - 0.34.1
+  - '0.34'
+- dir: exporter
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    falco_exporter:
+      sha256: 5bd3367a0f0839ec96a32ad36d86a0c113476a12424771925cf8b5c2da87be65
+      version: 0.8.6
+  repo: falco-exporter0
+  tags:
+  - 0.8.6
+  - '0.8'
+  - '0'
+  - latest
+  templateSubDir: exporter
+

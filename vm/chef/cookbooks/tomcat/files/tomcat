@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2017 Google Inc.
+# Copyright 2023 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,14 +16,27 @@
 
 source /opt/c2d/c2d-utils || exit 1
 
-pass=$(get_metadata_value "instance/attributes/tomcat-tomcat-password")
+declare -r tomcat_admin_password="$(get_attribute_value "tomcat-admin-password")"
+declare -r tomcat_config_folder="/opt/tomcat/conf"
 
+# Stop Tomcat for applying the configs
+systemctl stop tomcat
+
+# Apply the managers password
 sed -i -e '$ i \
-  <user username="tomcat" password="'"$pass"'" roles="manager-gui,admin-gui"/>
-' /etc/tomcat8/tomcat-users.xml
+  <user username="tomcat" password="'"${tomcat_admin_password}"'" roles="manager-gui,admin-gui"/>
+' "${tomcat_config_folder}/tomcat-users.xml"
 
-/etc/init.d/tomcat8 restart
+# Binds tomcat to localhost
+xmlstarlet ed -L -a "/Server/Service[@name='Catalina']/Connector[@port='8080']" \
+  -t attr -n address -v "localhost" "${tomcat_config_folder}/server.xml"
+
+# Starts Tomcat
+systemctl start tomcat
+systemctl restart apache2
 
 until curl -s -f localhost > /dev/null; do
   sleep 3
 done
+
+echo "Installation complete!"

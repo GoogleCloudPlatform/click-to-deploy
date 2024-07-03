@@ -1,0 +1,99 @@
+#!/bin/bash -eu
+#
+# Copyright 2021 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
+
+#######################################
+# Awaits for website at localhost be ready.
+#######################################
+function wait_for_app() {
+  local max_retries=10
+  local retry=1
+  local http_code=0
+  local host_ip=""
+
+  # Prevent exit on error in case of request max-time reached.
+  set +e
+
+  echo "Checking for app readiness..."
+
+  while [[ "${http_code}" -ne 200 && "${retry}" -le "${max_retries}" ]]; do
+    echo "Retry: ${retry}"
+    http_code="$(curl --max-time 5 -s -L -o /dev/null -w "%{http_code}" http://localhost)"
+    echo "Http Code: ${http_code}"
+    (( retry=retry+1 ))
+
+    if [[ "${http_code}" -ne 200 ]]; then
+      systemctl restart apache2
+      sleep 30
+    fi
+  done
+
+  if [[ "${retry}" -gt "${max_retries}" ]]; then
+    echo "Max retries exceeded."
+    exit 1
+  else
+    echo "App is ready."
+  fi
+
+  set -e
+}
+
+#######################################
+# Creates app database user.
+#######################################
+function create_db_user() {
+  mysql --user="root" --password="${MYSQL_PASSWORD}" --database="mysql" <<-EOSQL
+  CREATE USER '${ESPO_DB_USER}'@'localhost' IDENTIFIED BY '${ESPO_DB_PASSWORD}';
+  GRANT ALL ON ${ESPO_DB_NAME}.* TO '${ESPO_DB_USER}'@'localhost';
+EOSQL
+}
+
+#######################################
+# Change PHP configuration
+#######################################
+function change_php_config() {
+  local -r php_version="$(php -v | awk '/PHP [0-9]+\.[0-9]+/ {print $2}' | grep -o -P "^[0-9]+\.[0-9]+")"
+  local -r php_conf="/etc/php/${php_version}/apache2/php.ini"
+  echo "Change PHP configuration files..."
+  sed -i "s|^memory_limit.*|memory_limit = 256M|" "${php_conf}"
+  sed -i "s|^upload_max_filesize.*|upload_max_filesize = 50M|" "${php_conf}"
+  sed -i "s|^post_max_size.*|post_max_size = 50M|" "${php_conf}"
+  sed -i "s|^max_input_time.*|max_input_time = 180|" "${php_conf}"
+  sed -i "s|^max_execution_time.*|max_execution_time = 180|" "${php_conf}"
+}
+
+#######################################
+# Installs EspoCRM app.
+#######################################
+function install_app() {
+  local -r curl="curl --request POST -c /tmp/cookie -b /tmp/cookie"
+  local -r url="http://localhost/install/"
+  $curl "${url}" --data "user-lang=en_US&action=step1"
+  $curl "${url}" --data "license-agree=1&action=step2"
+  $curl "${url}" --data "hostName=localhost&dbName="${ESPO_DB_NAME}"&dbUserName="${ESPO_DB_USER}"&dbUserPass="${ESPO_DB_PASSWORD}"&action=settingsTest"
+  $curl "${url}" --data "host-name=localhost&db-name="${ESPO_DB_NAME}"&db-user-name="${ESPO_DB_USER}"&db-user-password="${ESPO_DB_PASSWORD}"&action=setupConfirmation"
+  $curl "${url}" --data "action=saveSettings"
+  $curl "${url}" --data "action=buildDatabase"
+  $curl "${url}" --data "action=step3"
+  $curl "${url}" --data "name="${ESPO_ADMIN_USER}"&pass="${ESPO_ADMIN_PASSWORD}"&confPass="${ESPO_ADMIN_PASSWORD}"&user-name="${ESPO_ADMIN_USER}"&user-pass="${ESPO_ADMIN_PASSWORD}"&action=createUser"
+  $curl "${url}" --data "user-name="${ESPO_ADMIN_USER}"&user-pass="${ESPO_ADMIN_PASSWORD}"&user-confirm-pass="${ESPO_ADMIN_PASSWORD}"&action=step4"
+  $curl "${url}" --data "dateFormat=MM%2FDD%2FYYYY&timeFormat=HH%3Amm&timeZone=UTC&weekStart=0&defaultCurrency=USD&thousandSeparator=%2C&decimalMark=.&language=en_US&action=savePreferences"
+  $curl "${url}" --data "dateFormat=MM%2FDD%2FYYYY&timeFormat=HH%3Amm&timeZone=UTC&weekStart=0&defaultCurrency=USD&thousandSeparator=%2C&decimalMark=.&language=en_US&action=step5"
+  $curl "${url}" --data "smtpServer=&smtpPort=25&smtpAuth=false&smtpSecurity=TLS&smtpUsername=&smtpPassword=&outboundEmailFromName=&outboundEmailFromAddress=&outboundEmailIsShared=false&action=saveEmailSettings"
+  $curl "${url}" --data "outboundEmailFromName=&outboundEmailFromAddress=&outboundEmailIsShared=on&smtpServer=&smtpPort=25&smtpSecurity=TLS&smtpUsername=&smtpPassword=&action=finish"
+  rm -f /tmp/cookie
+}

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 default['mongodb']['debian']['codename'] = 'buster'
-default['mongodb']['release'] = '4.4'
+default['mongodb']['release'] = '5.0'
 
 default['mongodb']['package'] = 'mongodb-org'
 default['mongodb']['source_package'] = 'mongodb'

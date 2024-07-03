@@ -122,6 +122,13 @@ for (var i = 0; i < hosts.length; i++) {
   }
 }
 
+db.adminCommand({
+  "setDefaultRWConcern" : 1,
+  "defaultWriteConcern" : {
+    "w" : 2
+  }
+});
+
 hosts = (arbiters.length == 0) ? [] : arbiters.split(/ +/);
 for (var i = 0; i < hosts.length; i++) {
   var host = hosts[i];
@@ -129,6 +136,7 @@ for (var i = 0; i < hosts.length; i++) {
   if (host == "${mongodb_primary_instance}") {
     continue;
   }
+
   for (var j=0; j < MAX_ADD_RETRIES; j++) {
     res = rs.addArb(host);
     if (!res.ok) {

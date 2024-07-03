@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,9 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'mysql'
-include_recipe 'php7'
-include_recipe 'php7::module_mysql'
+include_recipe 'mysql::version-8.0-embedded'
+include_recipe 'php83'
+include_recipe 'php83::module_mysql'
 
-include_recipe 'nginx::default'
-include_recipe 'nginx::config-php7'
+include_recipe 'nginx'
+include_recipe 'nginx::ospo'
+
+bash 'Enable default homepage' do
+  user 'root'
+  cwd '/etc/nginx'
+  code <<-EOH
+  mv conf.d/default.conf sites-enabled/default.conf
+EOH
+end

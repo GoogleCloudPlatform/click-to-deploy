@@ -1,0 +1,94 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+setup:
+  - command: [docker, network, create, -d, bridge, testbridge-$UNIQUE-id]
+  - command:
+    - 'docker'
+    - 'run'
+    - '--net'
+    - testbridge-$UNIQUE-id
+    - '--name'
+    - 'some-postgres-$UNIQUE-id'
+    - '-e'
+    - POSTGRES_USER=hydra
+    - '-e'
+    - POSTGRES_PASSWORD=secret
+    - '-e'
+    - POSTGRES_DB=hydra
+    - '-d'
+    - 'marketplace.gcr.io/google/postgresql13'
+  - command: [sleep, 10s]
+
+# Running SQL migrations
+  - command:
+    - 'docker'
+    - 'run'
+    - '--net'
+    - testbridge-$UNIQUE-id
+    - '--name'
+    - 'some-hydra-sql-migration-$UNIQUE-id'
+    - '-d'
+    - '$IMAGE'
+    - 'migrate'
+    - 'sql'
+    - '--yes'
+    - postgres://hydra:secret@some-postgres-$UNIQUE-id:5432/hydra?sslmode=disable
+  - command: [sleep, 10s]
+
+  - command:
+    - 'docker'
+    - 'run'
+    - '--net'
+    - testbridge-$UNIQUE-id
+    - '--name'
+    - 'some-hydra-$UNIQUE-id'
+    - '-e'
+    - SECRETS_SYSTEM=3AD1LUmKa9ZMWFHeQ8uLdno8rX7haoog
+    - '-e'
+    - DSN=postgres://hydra:secret@some-postgres-$UNIQUE-id:5432/hydra?sslmode=disable
+    - '-e'
+    - URLS_SELF_ISSUER=https://localhost:5444/
+    - '-e'
+    - URLS_CONSENT=http://localhost:9020/consent
+    - '-e'
+    - URLS_LOGIN=http://localhost:9020/login
+    - '-d'
+    - '$IMAGE'
+    - serve
+    - all
+  - command: [sleep, 15s]
+
+teardown:
+  - command: [docker, stop, some-postgres-$UNIQUE-id]
+  - command: [docker, stop, some-hydra-sql-migration-$UNIQUE-id]
+  - command: [docker, stop, some-hydra-$UNIQUE-id]
+  - command: [docker, rm, some-postgres-$UNIQUE-id]
+  - command: [docker, rm, some-hydra-sql-migration-$UNIQUE-id]
+  - command: [docker, rm, some-hydra-$UNIQUE-id]
+  - command: [docker, network, rm, testbridge-$UNIQUE-id]
+
+target: some-hydra-$UNIQUE-id
+tests:
+  - name: Hydra Liveness Check
+    command: ['curl', '-k', 'http://localhost:4445/health/alive']
+    expect:
+      stdout:
+        matches: '{"status":"ok"}'
+
+  - name: Hydra Readiness Check
+    command: ['curl', '-k', 'http://localhost:4445/health/ready']
+    expect:
+      stdout:
+        matches: '{"status":"ok"}'

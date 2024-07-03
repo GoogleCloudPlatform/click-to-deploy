@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,16 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# Reference: https://docs.ghost.org/v1.0.0/docs/install
-# Reference: https://www.linuxbabe.com/ubuntu/install-ghost-blog-ubuntu
+# Reference: https://ghost.org/docs/install/ubuntu/
 
 apt_update 'update' do
   action :update
 end
 
-include_recipe 'mysql'
+include_recipe 'mysql::version-8.0-embedded'
 include_recipe 'nginx'
-include_recipe 'nodejs'
+include_recipe 'nodejs::default'
+include_recipe 'ghost::ospo'
 
 file '/var/www/html/index.html' do
   action :delete
@@ -35,28 +35,31 @@ execute 'install ghost-cli' do
   command "npm install -g ghost-cli@#{node['ghost']['cli']['version']}"
 end
 
+# Create ghost user.
+user node['ghost']['user'] do
+  home '/home/ghost_app'
+  shell '/bin/bash'
+  action :create
+  manage_home true
+end
+
+# Assign permissions for install directory.
 directory node['ghost']['app']['install_dir'] do
-  owner 'root'
-  group 'root'
+  owner node['ghost']['user']
+  group node['ghost']['user']
   mode '0755'
   action :create
   recursive true
 end
 
-# Using Ghost-CLI programatically: https://docs.ghost.org/v1/docs/using-ghost-cli-programatically
-bash 'install ghost' do
-  user 'root'
-  cwd node['ghost']['app']['install_dir']
-  code <<-EOH
-    ghost install "${version}" --no-prompt --no-setup --no-stack
-    ghost config --no-prompt --url=http://localhost:2368 --db=mysql --dbhost=localhost --dbuser="${dbuser}" --dbname="${dbname}"
-    ghost setup linux-user --no-prompt
-EOH
-  environment({
-    'version' => node['ghost']['app']['version'],
-    'dbuser' => node['ghost']['db']['user'],
-    'dbname' => node['ghost']['db']['name'],
-  })
+# Add ghost user to sudoers.
+template "/opt/c2d/#{node['ghost']['user']}" do
+  source 'etc-sudoers.d-ghost_app.erb'
+  owner  'root'
+  group  'root'
+  mode   '0440'
+  verify 'visudo -c -f %{path}'
+  variables(ghost_app: node['ghost']['user'])
 end
 
 c2d_startup_script 'ghost'

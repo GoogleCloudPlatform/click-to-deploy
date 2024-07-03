@@ -20,13 +20,14 @@ readonly db_username="kong"
 readonly db_password="$(get_attribute_value "kong-db-password")"
 readonly db_name="kong"
 readonly external_ip="$(get_external_ip)"
+readonly config_file="/etc/kong/kong.conf"
 
 # Create kong.conf file
-cp /etc/kong/kong.conf.default /etc/kong/kong.conf
-sed -i "s/#database =.*/database = postgres/" /etc/kong/kong.conf
-sed -i "s/#pg_user =.*/pg_user = ${db_username}/" /etc/kong/kong.conf
-sed -i "s/#pg_password =.*/pg_password = ${db_password}/" /etc/kong/kong.conf
-sed -i "s/#pg_database = .*/pg_database = kong/" /etc/kong/kong.conf
+cp /etc/kong/kong.conf.default "${config_file}"
+sed -i "s/#database =.*/database = postgres/" "${config_file}"
+sed -i "s/#pg_user =.*/pg_user = ${db_username}/" "${config_file}"
+sed -i "s/#pg_password =.*/pg_password = ${db_password}/" "${config_file}"
+sed -i "s/#pg_database = .*/pg_database = kong/" "${config_file}"
 
 # Run kong migration script and enable service
 kong migrations bootstrap

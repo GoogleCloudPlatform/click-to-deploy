@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 require 'spec_helper'
 
 describe command('curl -L http://localhost/') do
-  its(:stdout) { should match /<h2>Welcome!<\/h2>/ }
-  its(:stdout) { should match /<p>Matomo is a free\/libre web analytics software that makes it easy to get the information you want from your visitors.<\/p>/ }
+  its(:stdout) { should match /<h2>Welcome<\/h2>/ }
+  its(:stdout) { should match /<p>Matomo is libre software used to analyze traffic from your visitors.<\/p>/ }
   its(:exit_status) { should eq 0 }
 end

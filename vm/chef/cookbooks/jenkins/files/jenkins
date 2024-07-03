@@ -24,8 +24,6 @@ readonly hash="#jbcrypt:$(htpasswd -bnBC 10 "" "${jenkins_password}" \
                           | tr -d ':\n' \
                           | sed 's/$2y/$2a/')"
 
-readonly token=$(dd if=/dev/urandom bs=72 count=1 2>/dev/null | base64 - | tr -d \\n)
-
 systemctl stop jenkins
 
 rm -f /var/lib/jenkins/secrets/initialAdminPassword
@@ -39,9 +37,6 @@ cat <<EOF >/var/lib/jenkins/users/${jenkins_user}/config.xml
 <user>
   <fullName>admin</fullName>
   <properties>
-    <jenkins.security.ApiTokenProperty>
-      <apiToken>${token}</apiToken>
-    </jenkins.security.ApiTokenProperty>
     <hudson.model.MyViewsProperty>
       <views>
         <hudson.model.AllView>

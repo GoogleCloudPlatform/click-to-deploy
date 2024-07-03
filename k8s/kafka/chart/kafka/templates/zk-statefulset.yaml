@@ -1,0 +1,129 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-zk
+  labels: &ZookeeperDeploymentLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: zookeeper
+spec:
+  serviceName: {{ .Release.Name }}-zk-headless
+{{- if not .Values.kafka.standalone }}
+  replicas: {{ .Values.zookeeper.replicas }}
+{{- else }}
+  replicas: 1
+{{- end }}
+  selector:
+    matchLabels: *ZookeeperDeploymentLabels
+  podManagementPolicy: "Parallel"
+  template:
+    metadata:
+      labels: *ZookeeperDeploymentLabels
+    spec:
+    {{- if not .Values.kafka.standalone }}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: "app.kubernetes.io/component"
+                    operator: In
+                    values:
+                    - zookeeper
+              topologyKey: "kubernetes.io/hostname"
+    {{- end }}
+      containers:
+      - name: zookeeper
+        imagePullPolicy: Always
+        image: {{ .Values.zookeeper.image }}
+        resources:
+          requests:
+            memory: "1250Mi"
+            cpu: "300m"
+        ports:
+        - containerPort: 2181
+          name: client
+        - containerPort: 2888
+          name: server
+        - containerPort: 3888
+          name: leader-election
+        env:
+        - name: JAVA_OPTS
+          value: >-
+                -Dlog4j2.formatMsgNoLookups=true
+                -Dlog4j2.disable.jmx=true
+        - name: JMXAUTH
+          value: "false"
+        - name: JMXDISABLE
+          value: "false"
+        - name: JMXPORT
+          value: "1099"
+        - name: JMXSSL
+          value: "false"
+        - name : ZK_REPLICAS
+        {{- if not .Values.kafka.standalone }}
+          value: "{{ .Values.zookeeper.replicas }}"
+        {{- else }}
+          value: "1"
+        {{- end }}
+        - name : ZK_HEAP_SIZE
+          value: "1000M"
+        - name : ZK_TICK_TIME
+          value: "2000"
+        - name : ZK_MAX_CLIENT_CNXNS
+          value: "60"
+        - name: ZK_SNAP_RETAIN_COUNT
+          value: "3"
+        - name: ZK_PURGE_INTERVAL
+          value: "24"
+        - name: ZK_CLIENT_PORT
+          value: "2181"
+        - name: ZK_SERVER_PORT
+          value: "2888"
+        - name: ZK_ELECTION_PORT
+          value: "3888"
+        - name: ZOO_4LW_COMMANDS_WHITELIST
+          value: "*"
+        - name: ZK_DATA_DIR
+          value: /data
+        readinessProbe:
+          exec:
+            command:
+            - /bin/bash
+            - -ec
+            - |
+              echo ruok | nc 127.0.0.1 ${1:-2181}
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        livenessProbe:
+          exec:
+            command:
+            - /bin/bash
+            - -ec
+            - |
+              zkServer.sh status
+        command:
+        - /bin/bash
+        - -ec
+        - /config-scripts/start.sh
+        volumeMounts:
+        - name: config
+          mountPath: /config-scripts
+        - name: datadir
+          mountPath: /opt/zookeeper
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1000
+      volumes:
+        - name: config
+          configMap:
+            name: {{ .Release.Name }}-zk-config-scripts
+            defaultMode: 0555
+  volumeClaimTemplates:
+  - metadata:
+      name: datadir
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: {{ .Values.persistence.storageClass }}
+      resources:
+        requests:
+          storage: {{ .Values.persistence.zookeeper.storageSize }}

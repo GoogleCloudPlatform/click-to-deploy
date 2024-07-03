@@ -1,0 +1,150 @@
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      Initial release.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  clusterConstraints:
+    resources:
+    - replicas: 1
+      requests:
+        cpu: 100m
+        memory: 100Mi
+
+  images:
+    '':
+      properties:
+        airflow.image.repo:
+          type: REPO_WITH_REGISTRY
+        airflow.image.tag:
+          type: TAG
+    postgresql:
+      properties:
+        postgresql.image.repo:
+          type: REPO_WITH_REGISTRY
+        postgresql.image.tag:
+          type: TAG
+    nfs:
+      properties:
+        nfs.image.repo:
+          type: REPO_WITH_REGISTRY
+        nfs.image.tag:
+          type: TAG
+
+  deployerServiceAccount:
+    description:
+      Creates app resources including persistentvolumes.
+    roles:
+      - type: ClusterRole  # For getting persistentvolumes
+        rulesType: CUSTOM
+        rules:
+          - apiGroups:
+            - 'rbac.authorization.k8s.io'
+            resources:
+            - 'clusterroles'
+            - 'clusterrolebindings'
+            verbs:
+            - '*'
+          - apiGroups:
+            - '*'
+            resources:
+            - 'persistentvolumes'
+            verbs:
+            - '*'
+          
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  airflow.admin.email:
+    type: string
+    title: Airflow UI admin e-mail address
+    description: Administrator e-mail address who will be able to manage the Airflow.
+    default: admin@store.example
+    pattern:  ^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$
+  airflow.admin.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 16
+        includeSymbols: False
+        base64: False
+  scheduler.replicas:
+    type: integer
+    title: Airflow Scheduler replicas
+    description: Number of replicas of the Airflow Scheduler
+    default: 1
+    minimum: 1
+  web.replicas:
+    type: integer
+    title: Airflow Webserver replicas
+    description: Number of replicas of the Airflow Webserver
+    default: 1
+    minimum: 1
+  triggerer.replicas:
+    type: integer
+    title: Airflow Triggerer replicas
+    description: Number of replicas of the Airflow Triggerer
+    default: 1
+    minimum: 1
+  enablePublicServiceAndIngress:
+    type: boolean
+    title: Enable public IP access
+    description: Set the Airflow Service type to NodePort and enable Ingress
+    default: false
+  nfs.persistence.storageClass:
+    type: string
+    title: NFS volume StorageClass
+    description: You can choose an existing StorageClass or create a new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  nfs.persistence.size:
+    type: string
+    title: Storage size for NFS Persistent Volume
+    default: "5Gi"
+    description: NFS storage size
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  postgresql.persistence.storageClass:
+    type: string
+    title: PostgreSQL StorageClass
+    description: You can choose an existing StorageClass or create a new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  postgresql.persistence.size:
+    type: string
+    title: Storage size for PostgreSQL Persistent Volume
+    default: "5Gi"
+    description: PostgreSQL storage size
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  metrics.exporter.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project must have Stackdriver enabled. Non-GCP clusters cannot export metrics to Stackdriver.
+    default: false
+required:
+- name
+- namespace
+- scheduler.replicas
+- web.replicas
+- triggerer.replicas
+- nfs.persistence.size
+- postgresql.persistence.size
+- enablePublicServiceAndIngress
+

@@ -7,16 +7,19 @@ CHART_NAME := jenkins
 APP_ID ?= $(CHART_NAME)
 VERIFY_WAIT_TIMEOUT = 1800
 
-TRACK ?= 2.288
+TRACK ?= 2
+METRICS_EXPORTER_TAG ?= v0.5.1
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 IMAGE_JENKINS = $(SOURCE_REGISTRY)/jenkins2:$(TRACK)
+IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 # Main image
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_JENKINS))
+image-prometheus-to-sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))
 
 # List of images used in application
-ADDITIONAL_IMAGES :=
+ADDITIONAL_IMAGES := prometheus-to-sd
 
 C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
 
@@ -28,7 +31,6 @@ NAME ?= $(APP_ID)-1
 ifdef METRICS_EXPORTER_ENABLED
   METRICS_EXPORTER_ENABLED_FIELD = , "metrics.exporter.enabled": $(METRICS_EXPORTER_ENABLED)
 endif
-
 
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \

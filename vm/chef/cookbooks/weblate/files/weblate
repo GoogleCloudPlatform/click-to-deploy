@@ -1,0 +1,102 @@
+#!/bin/bash -eu
+#
+# Copyright 2022 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/weblate-utils || exit 1
+
+export WEBLATE_ADMIN_USER="admin"
+export WEBLATE_ADMIN_NAME="$(get_attribute_value "weblate-admin-name")"
+export WEBLATE_ADMIN_EMAIL="$(get_attribute_value "weblate-admin-email")"
+export WEBLATE_ADMIN_PASSWORD="$(get_attribute_value "weblate-admin-password")"
+export WEBLATE_SITE_TITLE="$(get_attribute_value "weblate-site-title")"
+export WEBLATE_DB_NAME="$(get_attribute_value "weblate-db-name")"
+export WEBLATE_DB_USER="$(get_attribute_value "weblate-db-user")"
+export WEBLATE_DB_PASSWORD="$(get_attribute_value "weblate-db-password")"
+export WEBLATE_SENDER_EMAIL="$(get_attribute_value "weblate-sender-email")"
+export WEBLATE_REDIS_PASSWORD="$(get_attribute_value "redis-password")"
+export DJANGO_SECRET_KEY="$(openssl rand 40 | openssl base64 -A)"
+
+# Generate env file
+generate_envfile
+
+echo "Awaiting for PostgreSQL..."
+wait_for_port "localhost" "5432"
+
+echo "Awaiting for Redis..."
+wait_for_redis "${WEBLATE_REDIS_PASSWORD}"
+
+# Create database and user
+create_db_user
+
+activate_virtualenv
+
+# Install Weblate and uwsgi
+echo "Installing weblate..."
+pip3 install Weblate==4.15
+# On some Linux distributions running Weblate fails with libffi error:
+# ffi_prep_closure(): bad user_data (it seems that the version of the libffi library seen at runtime is different from the 'ffi.h' file seen at compile-time)
+# This is caused by incompatibility of binary packages distributed via PyPI with the distribution. To address this, you need to rebuild the package on your system:
+pip3 install --force-reinstall --no-binary :all: cffi
+
+# Create configuration file
+echo "Creating configuration file..."
+declare -r python_folder="$(ls -la /opt/weblate-env/lib | grep "python" | awk '{ print $9 }')"
+declare -r config_file="/opt/weblate-env/lib/${python_folder}/site-packages/weblate/settings.py"
+cp -f /opt/c2d/weblate-settings.py "${config_file}"
+
+# Create log file
+touch /var/log/weblate.log
+chown weblate:weblate /var/log/weblate.log
+
+# Setup initial database
+echo "Setup initial database..."
+weblate migrate
+
+# Create admin user
+echo "Create admin user..."
+weblate createadmin \
+  --password "${WEBLATE_ADMIN_PASSWORD}" \
+  --username "${WEBLATE_ADMIN_USER}" \
+  --email "${WEBLATE_ADMIN_EMAIL}" \
+  --name "${WEBLATE_ADMIN_NAME}"
+
+# Prepare static files
+weblate collectstatic --clear --no-input
+weblate compress --force
+
+# Set permissions for weblate user
+chown -R weblate:weblate /opt/weblate-env
+
+# Start background worker into /var/log folder
+# in order to generate log files into the right folder
+mkdir -p /var/log/weblate
+cd /var/log/weblate
+/opt/weblate-env/lib/*/site-packages/weblate/examples/celery start
+
+# Start back-end server as uwsgi mode
+systemctl enable weblate
+systemctl start weblate
+wait_for_port "127.0.0.1" "8080"
+
+# Configure NGINX
+rm -f /etc/nginx/conf.d/default.conf \
+  && rm -f /etc/nginx/sites-enabled/default \
+  && ln -s /etc/nginx/sites-available/weblate.conf /etc/nginx/sites-enabled/weblate.conf \
+  && systemctl restart nginx
+
+# Await for app be ready
+wait_for_app
+
+echo "Installation complete."

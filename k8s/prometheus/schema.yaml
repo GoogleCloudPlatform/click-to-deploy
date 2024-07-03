@@ -1,73 +1,127 @@
-application_api_version: v1beta1
+x-google-marketplace:
+  schemaVersion: v2
+  applicationApiVersion: v1beta1
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      A regular update.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  images:
+    '':
+      properties:
+        prometheus.image.repo:
+          type: REPO_WITH_REGISTRY
+        prometheus.image.tag:
+          type: TAG
+    alertmanager:
+      properties:
+        alertmanager.image:
+          type: FULL
+    kubestatemetrics:
+      properties:
+        kubestatemetrics.image:
+          type: FULL
+    nodeexporter:
+      properties:
+        nodeexporter.image:
+          type: FULL
+
 properties:
-  APP_INSTANCE_NAME:
+  name:
     type: string
     x-google-marketplace:
       type: NAME
-  NAMESPACE:
+  namespace:
     type: string
     x-google-marketplace:
       type: NAMESPACE
-  PROMETHEUS_REPLICAS:
-    type: integer
-    title: Prometheus replicas
-    description: The number of replicas for Prometheus StatefulSet
-    default: 2
-    minimum: 1
-  GRAFANA_GENERATED_PASSWORD:
-    type: string
-    x-google-marketplace:
-      type: GENERATED_PASSWORD
-      generatedPassword:
-        length: 12
-  IMAGE_PROMETHEUS:
-    type: string
-    default: $REGISTRY:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  IMAGE_ALERTMANAGER:
-    type: string
-    default: $REGISTRY/alertmanager:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  IMAGE_KUBE_STATE_METRICS:
-    type: string
-    default: $REGISTRY/kubestatemetrics:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  IMAGE_NODE_EXPORTER:
-    type: string
-    default: $REGISTRY/nodeexporter:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  IMAGE_GRAFANA:
-    type: string
-    default: $REGISTRY/grafana:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  IMAGE_PROMETHEUS_INIT:
-    type: string
-    default: $REGISTRY/debian9:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  PROMETHEUS_SERVICE_ACCOUNT:
+
+  prometheus.serviceAccountName:
     type: string
     title: Prometheus Service Account
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
-        description: Service account used by main Prometheus StatefulSet
+        description: Service account used by Prometheus Statefulset
         roles:
         - type: ClusterRole
-          rulesType: PREDEFINED
-          rulesFromRoleName: cluster-admin
-  KUBE_STATE_METRICS_SERVICE_ACCOUNT:
+          rulesType: CUSTOM
+          rules:
+          - apiGroups:
+            - apps
+            resources:
+            - statefulsets
+            verbs:
+            - '*'
+          - apiGroups: ["*"]
+            resources:
+            - endpoints
+            - pods
+            - nodes
+            - services
+            - services/finalizers
+            - endpoints
+            verbs:
+            - watch
+            - get
+            - list
+  prometheus.replicas:
+    type: integer
+    title: Prometheus Replicas
+    description: The number of replicas for Prometheus StatefulSet
+    default: 2
+    minimum: 1
+
+  alertmanager.serviceAccountName:
+    type: string
+    title: Alert Manager Service Account
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        description: Service account used by AlertManager Statefulset
+        roles:
+        - type: ClusterRole
+          rulesType: CUSTOM
+          rules:
+          - apiGroups: [""]
+            resources:
+            - endpoints
+            - pods
+            - nodes
+            verbs:
+            - get
+            - list
+
+  nodeexporter.serviceAccountName:
+    type: string
+    title: Node Exporter Service Account
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        description: Service account used by Node Exporter DaemonSet
+        roles:
+        - type: ClusterRole
+          rulesType: CUSTOM
+          rules:
+          - apiGroups: [""]
+            resources:
+            - endpoints
+            - pods
+            - nodes
+            verbs:
+            - get
+            - list
+
+  kubestatemetrics.serviceAccountName:
     type: string
     title: Kube State Metrics Service Account
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
-        description: Service account used by main Kube State Metrics Deployment
+        description: Service account used by Kube State Metrics Deployment
         roles:
         - type: ClusterRole
           rulesType: CUSTOM
@@ -100,7 +154,7 @@ properties:
             - daemonsets
             - deployments
             - replicasets
-            verbs: ["list", "watch"]
+            verbs: ["get", "list", "watch"]
           - apiGroups: ["batch"]
             resources:
             - cronjobs
@@ -110,62 +164,43 @@ properties:
             resources:
             - horizontalpodautoscalers
             verbs: ["list", "watch"]
-  ALERTMANAGER_SERVICE_ACCOUNT:
-    type: string
-    title: Alertmanager Service Account
-    x-google-marketplace:
-      type: SERVICE_ACCOUNT
-      serviceAccount:
-        description: Service account used by Alertmanager StatefulSet
-        roles:
-        - type: ClusterRole
-          rulesType: PREDEFINED
-          rulesFromRoleName: cluster-admin
-  GRAFANA_SERVICE_ACCOUNT:
-    type: string
-    title: Grafana Service Account
-    x-google-marketplace:
-      type: SERVICE_ACCOUNT
-      serviceAccount:
-        description: Service account used by Grafana StatefulSet
-        roles:
-        - type: ClusterRole
-          rulesType: PREDEFINED
-          rulesFromRoleName: cluster-admin
-  NODE_EXPORTER_SERVICE_ACCOUNT:
-    type: string
-    title: Node Exporter Service Account
-    x-google-marketplace:
-      type: SERVICE_ACCOUNT
-      serviceAccount:
-        description: Service account used by Node Exporter DaemonSet
-        roles:
-        - type: ClusterRole
-          rulesType: PREDEFINED
-          rulesFromRoleName: cluster-admin
-  STORAGE_CLASS:
+          - apiGroups: ["certificates.k8s.io"]
+            resources:
+            - certificatesigningrequests
+            verbs: ["get", "list", "watch"]
+          - apiGroups: ["policy"]
+            resources:
+            - poddisruptionbudgets
+            verbs: ["get", "list", "watch"]
+          - apiGroups: ["networking.k8s.io"]
+            resources:
+            - ingresses
+            - networkpolicies
+            verbs: ["get", "list", "watch"]
+          - apiGroups: ["coordination.k8s.io"]
+            resources:
+            - leases
+            verbs: ["get", "list", "watch"]
+          - apiGroups: ["admissionregistration.k8s.io"]
+            resources:
+            - mutatingwebhookconfigurations
+            - validatingwebhookconfigurations
+            verbs: ["get", "list", "watch"]
+          - apiGroups: ["storage.k8s.io"]
+            resources:
+            - storageclasses
+            - volumeattachments
+            verbs: ["get", "list", "watch"]
+
+  prometheus.storageClass:
     type: string
     title: StorageClass
-    description: You can choose an existing StorageClass or create a new one.
+    description: You can choose an existing StorageClass, or create a new one.
     x-google-marketplace:
       type: STORAGE_CLASS
       storageClass:
         type: SSD
 
 required:
-- APP_INSTANCE_NAME
-- NAMESPACE
-- STORAGE_CLASS
-- PROMETHEUS_REPLICAS
-- GRAFANA_GENERATED_PASSWORD
-- IMAGE_ALERTMANAGER
-- IMAGE_KUBE_STATE_METRICS
-- IMAGE_NODE_EXPORTER
-- IMAGE_PROMETHEUS
-- IMAGE_GRAFANA
-- IMAGE_PROMETHEUS_INIT
-- PROMETHEUS_SERVICE_ACCOUNT
-- KUBE_STATE_METRICS_SERVICE_ACCOUNT
-- ALERTMANAGER_SERVICE_ACCOUNT
-- GRAFANA_SERVICE_ACCOUNT
-- NODE_EXPORTER_SERVICE_ACCOUNT
+- name
+- namespace

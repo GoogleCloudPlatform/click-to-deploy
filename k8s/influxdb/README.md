@@ -183,7 +183,7 @@ export METRICS_EXPORTER_ENABLED=false
 Configure the container image:
 
 ```shell
-export TAG=1.7
+export TAG=1.8
 export IMAGE_INFLUXDB="marketplace.gcr.io/google/influxdb"
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/influxdb/prometheus-to-sd:${TAG}"
 ```

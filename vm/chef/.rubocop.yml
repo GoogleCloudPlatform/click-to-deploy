@@ -1,21 +1,21 @@
-ChefStyle/CommentFormat:
+Chef/Style/CommentFormat:
   Enabled: false
 
-ChefCorrectness/TmpPath:
+Chef/Correctness/TmpPath:
   Enabled: false
 
-ChefStyle/FileMode:
-  Enabled: false
-
-Style/BracesAroundHashParameters:
-  Enabled: false
-
-# TODO(wgrzelak): Fix code and remove the rule.
-ChefRedundantCode/NamePropertyIsRequired:
+Chef/Style/FileMode:
   Enabled: false
 
 Style/WordArray:
   Enabled: false
 
-Style/HashSyntax:
+Chef/Modernize/CronDFileOrTemplate:
+  Enabled: false
+
+# TODO(armadom): Fix code and remove the rule.
+Chef/RedundantCode/NamePropertyIsRequired:
+ Enabled: false
+
+Chef/Correctness/MetadataMissingVersion:
   Enabled: false

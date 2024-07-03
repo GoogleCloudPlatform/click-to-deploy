@@ -15,7 +15,7 @@
 apt_update 'update'
 
 package 'install packages' do
-  only_if { node['platform_version'].include? '9.' }
+  only_if { platform?('debian') && node['platform_version'].to_i >= 10 }
   package_name node['rvm']['packages']
   action :install
   retries 5

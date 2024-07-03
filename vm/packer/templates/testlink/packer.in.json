@@ -1,0 +1,7 @@
+{
+  "license": "c2d-testlink",
+  "source_image_family": "debian-10",
+  "chef": {
+    "run_list": [ "c2d-config", "testlink", "stackdriver" ]
+  }
+}

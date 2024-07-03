@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['joomla']['version'] = '3.9.24'
-default['joomla']['sha1'] = '882c25c664b2c7b11963a7b589484a79e10eb5ff'
+default['joomla']['version'] = '5.1.0'
+default['joomla']['sha256'] = 'dbc4630923f02ed4e90be3c8734947a48285334ac8a416774d4e602d794ed227'
 default['joomla']['user'] = 'www-data'
+default['joomla']['db']['name'] = 'joomla_db'
 
-default['joomla']['db']['name'] = 'joomla'
+default['php81']['distribution'] = 'bullseye'

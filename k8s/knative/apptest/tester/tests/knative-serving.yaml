@@ -1,0 +1,46 @@
+actions:
+- name: Create helloworld kservice
+  bashTest:
+    script: |
+      kubectl apply --namespace $NAMESPACE -f - <<EOF
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      metadata:
+        name: helloworld-knative-test
+      spec:
+        template:
+          metadata:
+            name: helloworld-knative-test-v1
+          spec:
+            containers:
+              - image: gcr.io/knative-samples/helloworld-go
+                ports:
+                  - containerPort: 8080
+                env:
+                  - name: TARGET
+                    value: "knative"
+      EOF
+    expect:
+      exitCode:
+        equals: 0
+- name: Try to get response from ingress
+  bashTest:
+    script: |
+      kubectl wait --for=condition=Ready --timeout=120s \
+        --namespace $NAMESPACE kservice helloworld-knative-test
+      timeout 60 bash -c 'while [[ "$(curl -s -H "Host: helloworld-knative-test.$NAMESPACE" \
+        -o /dev/null -w ''%{http_code}'' http://knative-local-gateway)" != "200" ]]; \
+        do sleep 5;done' 
+      curl -s -H "Host: helloworld-knative-test.$NAMESPACE" http://knative-local-gateway | grep -qz 'Hello knative'
+    expect:
+      exitCode:
+        equals: 0
+- name: Delete kservice
+  bashTest:
+    script: |
+      kubectl delete --namespace $NAMESPACE kservice helloworld-knative-test
+      kubectl delete --namespace $NAMESPACE service autoscaler-bucket-00-of-01
+    expect:
+      exitCode:
+        equals: 0
+

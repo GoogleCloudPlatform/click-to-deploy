@@ -1,0 +1,77 @@
+#!/bin/bash -eu
+#
+# Copyright 2023 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/dreamfactory-utils || exit 1
+
+export COMPOSER_HOME="/root/.config/composer"
+
+declare -r df_install_folder="/opt/dreamfactory"
+declare -r df_config_file="${df_install_folder}/.env"
+declare -r df_db_name="dreamfactory"
+declare -r df_db_user="$(get_attribute_value "dreamfactory-db-user")"
+declare -r df_db_password="$(get_attribute_value "dreamfactory-db-password")"
+declare -r df_redis_password="$(get_attribute_value "redis-password")"
+declare -r df_admin_email="$(get_attribute_value "dreamfactory-admin-email")"
+declare -r df_admin_password="$(get_attribute_value "dreamfactory-admin-password")"
+declare -r df_admin_firstname="Administrator"
+declare -r df_admin_lastname="User"
+declare -r nginx_usergroup="www-data:www-data"
+declare -r mysql_root_password="$(get_attribute_value "mysql-root-password")"
+
+echo "Stopping Webserver..."
+systemctl stop nginx
+
+echo "Installing dependencies..."
+cd "${df_install_folder}"
+composer update --no-install
+composer install -n --no-dev
+
+echo "Create database user..."
+setup_mysql_user "${df_db_user}" "${df_db_password}" "${df_db_name}" "${mysql_root_password}"
+
+echo "Creating configuration file..."
+create_config_file \
+  "${df_db_name}" "${df_db_user}" "${df_db_password}" "${df_redis_password}"
+
+echo "Setting up application database..."
+setup_database \
+  "${df_admin_firstname}" "${df_admin_lastname}" "${df_admin_email}" "${df_admin_password}"
+
+echo "Setting up folder permissions..."
+chown -R "${nginx_usergroup}" storage/ bootstrap/cache/
+chmod -R 2775 storage/ bootstrap/cache/
+
+echo "Setting up PHP-FPM..."
+configure_phpfpm
+
+# Configure NGINX
+echo "Setting up NGINX..."
+configure_nginx
+
+# Configure dreamfactory website and
+#  remove web.config due security
+echo "Enabling Website..."
+rm -f "${df_install_folder}/public/web.config"
+rm -f /etc/nginx/sites-enabled/default.conf
+ln -s /etc/nginx/sites-available/dreamfactory.conf /etc/nginx/sites-enabled/
+
+echo "Starting Webserver..."
+systemctl start nginx
+
+# Await for app
+wait_for_app
+
+echo "Installation complete."

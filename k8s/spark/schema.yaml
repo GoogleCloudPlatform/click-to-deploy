@@ -1,0 +1,67 @@
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      A regular update.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  images:
+    '':
+      properties:
+        spark.image.repo:
+          type: REPO_WITH_REGISTRY
+        spark.image.tag:
+          type: TAG
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
+
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  spark.persistence.storageClass:
+    type: string
+    title: StorageClass
+    description: You can choose an existing StorageClass or create a new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  spark.persistence.size:
+    type: string
+    title: Storage size for Spark persistent volumes
+    default: "6Gi"
+    description: Magento storage size per instance
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  spark.workers:
+    type: integer
+    title: Workers
+    description: The number of Spark workers
+    default: 3
+  metrics.exporter.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project must have Stackdriver enabled. For non-GCP clusters,
+      the export of metrics to Stackdriver is not yet supported.
+    default: false
+
+required:
+- name
+- namespace
+- spark.persistence.storageClass
+- spark.persistence.size
+- spark.workers
+- metrics.exporter.enabled

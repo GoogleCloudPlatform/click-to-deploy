@@ -1,0 +1,93 @@
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      Initial release.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  clusterConstraints:
+    resources:
+      - replicas: 1
+        requests:
+          cpu: 100m
+          memory: 100Mi
+
+  images:
+    '':
+      properties:
+        falco.image.repo:
+          type: REPO_WITH_REGISTRY
+        falco.image.tag:
+          type: TAG
+    falco-exporter:
+      properties:
+        falco.exporter.image:
+          type: FULL
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
+
+  deployerServiceAccount:
+    description: Creates app resources, including Webhooks and ClusterRoleBindings.
+    roles:
+      - type: ClusterRole
+        rulesType: CUSTOM
+        rules:
+          - apiGroups:
+            - 'rbac.authorization.k8s.io'
+            resources:
+            - 'clusterroles'
+            - 'clusterrolebindings'
+            verbs:
+            - '*'
+          - apiGroups:
+            - ''
+            resources:
+            - 'namespaces'
+            verbs:
+            - 'create'
+            - 'list'
+            - 'update'
+            - 'patch'
+
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  falco.priority:
+    type: string
+    title: Minimum rule priority level to load and run
+    description: You can choose the rule priority.
+    default: "debug"
+    enum:
+    - "emergency"
+    - "alert"
+    - "critical"
+    - "error"
+    - "warning"
+    - "notice"
+    - "informational"
+    - "debug"
+  metrics.exporter.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet
+    default: false
+
+required:
+- name
+- namespace
+- falco.priority
+- metrics.exporter.enabled

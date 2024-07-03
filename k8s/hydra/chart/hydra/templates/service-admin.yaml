@@ -1,0 +1,43 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-admin
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "hydra.labels" . | indent 4 }}
+    app.kubernetes.io/component: admin
+  annotations:
+    cloud.google.com/backend-config: '{"default": "{{ .Release.Name }}-admin"}'
+spec:
+  type: ClusterIP
+  ports:
+    - port: 4445
+      targetPort: http-admin
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: hydra
+{{- if.Capabilities.APIVersions.Has "monitoring.coreos.com/v1" }}
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ .Release.Name }}-admin
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: admin
+{{ include "hydra.labels" . | indent 4 }}
+spec:
+  endpoints:
+  - path: /metrics/prometheus
+    port: http
+    scheme: http
+    interval: 60s
+    scrapeTimeout: 30s
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Release.Name }}
+      app.kubernetes.io/component: admin
+{{- end -}}

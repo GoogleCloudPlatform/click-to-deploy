@@ -1,0 +1,57 @@
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+---
+driver:
+  # Usage: https://github.com/test-kitchen/kitchen-vagrant
+  #
+  # 1. Have VirtualBox & VirtualBox Extensions installed
+  #
+  # 2. If running locally (outside of CI), set the platform variables from Vagrant Bento:
+  #  export CHEF_PLATFORM=centos-8.3
+  #  export AGENT_TYPE=ops-agent
+  #  export VERSION=latest
+  #  export CHEF_TEST_DIR=test/integration/${AGENT_TYPE}/${VERSION}
+  #  export STATE="present"
+  #
+  # 3. If using a custom config or additional config.
+  #  export MAIN_CONFIG=<file path to custom config>
+  #  export ADDITIONAL_CONFIG_DIR=<directory path to custom config>
+  #
+  # 4. Run 'kitchen test'
+  name: vagrant
+
+# Use CINC, the open source distribution of Chef
+# https://cinc.sh/blog/cooking_with_cinc/
+provisioner:
+  name: chef_zero
+  product_name: cinc
+  download_url: https://omnitruck.cinc.sh/install.sh
+
+verifier:
+  # Use CINC Auditor, which installs a symlink for inspec
+  # /usr/local/bin/inspec -> /opt/cinc/bin/cinc-wrapper
+  # https://cinc.sh/start/auditor/
+  name: inspec
+
+platforms:
+  - name: <%= ENV['CHEF_PLATFORM'] %>
+
+suites:
+  - name: default
+    verifier:
+      inspec_tests: ["<%= ENV['CHEF_TEST_DIR'] %>"]
+    attributes:
+      agent_type: <%= ENV['AGENT_TYPE'] %>
+      version: <%= ENV['VERSION'] %>
+      package_state: <%= ENV['STATE'] %>

@@ -18,6 +18,6 @@ describe package('postgresql') do
   it { should be_installed }
 end
 
-describe package('openjdk-8-jdk-headless:amd64') do
+describe package('openjdk-11-jdk-headless:amd64') do
   it { should be_installed }
 end

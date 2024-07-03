@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,3 +13,10 @@
 # limitations under the License.
 
 default['nginx']['packages'] = ['nginx']
+default['nginx']['version'] = '1.25.4'
+default['nginx']['repo']['uri'] = 'https://nginx.org/packages/debian/'
+default['nginx']['repo']['components'] = ['nginx']
+default['nginx']['repo']['distribution'] = 'buster'
+default['nginx']['repo']['keyserver'] = 'http://nginx.org/keys/nginx_signing.key'
+
+default['php81']['distribution'] = 'bullseye'

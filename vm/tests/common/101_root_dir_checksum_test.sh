@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2020 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ DEBIAN_VERSION=$(cat /etc/debian_version)
 declare -r DEBIAN_VERSION
 
 # Check Debian version.
+echo "Debian version: ${DEBIAN_VERSION}" # Debug print
 case "${DEBIAN_VERSION}" in
   8*)
     echo "e12f5739f81b08c470f20890304bf53e /root/.bashrc" >> "${ROOT_MD5}"
@@ -32,6 +33,19 @@ case "${DEBIAN_VERSION}" in
   9*|10*)
     echo "e12f5739f81b08c470f20890304bf53e /root/.bashrc" >> "${ROOT_MD5}"
     echo "46438b614dcb2175148fa7e0bdc604a4 /root/.profile" >> "${ROOT_MD5}"
+  ;;
+  11*|12*)
+    echo "0a540d50c157ed0070459b82c358a05a /root/.bashrc" >> "${ROOT_MD5}"
+    echo "d68ce7c7d7d2bb7d48aeb2f137b828e4 /root/.profile" >> "${ROOT_MD5}"
+    # generate and add md5 for files in .ssh folder
+    if [[ -d /root/.ssh && -n $(ls -A /root/.ssh) ]]; then # dodajemy sprawdzenie, czy katalog /root/.ssh istnieje i czy jest niepusty
+      for file in /root/.ssh/*; do
+        if [[ -f "${file}" ]]; then # dodatkowo upewniamy się, że "${file}" jest plikiem (a nie np. podkatalogiem)
+          md5="$(md5sum "${file}")"
+          echo "${md5}" >> "${ROOT_MD5}"
+        fi
+      done
+    fi
   ;;
   *)
     failure_msg "Debian ${DEBIAN_VERSION} is not supported!"
@@ -46,7 +60,7 @@ cat "${ROOT_MD5}"
 
 # FIND different files that $ROOT_MD5 has
 for file in $(find /root/ -mindepth 1); do
-  if [[ "${file}" == /root/.config* || "${file}" == /root/.gsutil* ]]; then
+  if [[ "${file}" == /root/.config* || "${file}" == /root/.gsutil* || "${file}" == /root/.ssh*   ]]; then
     echo "${file}: gcloud config. Skip."
     continue
   else
@@ -59,9 +73,9 @@ for file in $(find /root/ -mindepth 1); do
   fi
 done
 
-# If this test fails, update the MD5 hashes above.
-# To update MD5 hashes we have to log in to an instance
-# with debian-8 or debian-9 base image
-# and execute this command as root: find /root/ -mindepth 1 | xargs md5sum
-# CHECKSUM
+# # If this test fails, update the MD5 hashes above.
+# # To update MD5 hashes we have to log in to an instance
+# # with debian-8 or debian-9 base image
+# # and execute this command as root: find /root/ -mindepth 1 | xargs md5sum
+# # CHECKSUM
 md5sum -c "${ROOT_MD5}" && success || failure

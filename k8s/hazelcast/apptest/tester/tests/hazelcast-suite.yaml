@@ -36,11 +36,10 @@ actions:
   bashTest:
     script: |-
       kubectl exec -it "{{ .Env.APP_INSTANCE_NAME }}-hazelcast-0" -n "{{ .Env.NAMESPACE }}" -- curl -X POST -d 'hello' 'http://localhost:5701/hazelcast/rest/maps/mapName/message'
-      sleep 30
+      sleep 5
       kubectl exec -it "{{ .Env.APP_INSTANCE_NAME }}-hazelcast-0" -n "{{ .Env.NAMESPACE }}" -- curl 'http://localhost:5701/hazelcast/rest/maps/mapName/message' | grep hello
       kubectl exec -it "{{ .Env.APP_INSTANCE_NAME }}-hazelcast-1" -n "{{ .Env.NAMESPACE }}" -- curl 'http://localhost:5701/hazelcast/rest/maps/mapName/message' | grep hello
       kubectl exec -it "{{ .Env.APP_INSTANCE_NAME }}-hazelcast-2" -n "{{ .Env.NAMESPACE }}" -- curl 'http://localhost:5701/hazelcast/rest/maps/mapName/message' | grep hello
-
     expect:
       exitCode:
         equals: 0

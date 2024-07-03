@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['dolibarr']['version'] = '13.0.2'
-default['dolibarr']['sha1'] = 'eb2a602638b9319edb545665a5cca899461b0922'
+default['dolibarr']['version'] = '18.0.3'
+default['dolibarr']['sha256'] = '8639d466b26f0fba7d2b610a96ffcf36a657b1e00bdc2e5a1ac5287521dcb4ed'
 
 default['dolibarr']['linux']['user'] = 'www-data'
 default['dolibarr']['db']['name'] = 'dolibarr'

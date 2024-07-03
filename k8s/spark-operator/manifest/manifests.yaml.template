@@ -17,8 +17,6 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: "$APP_INSTANCE_NAME"
-      initializers:
-        pending: []
     spec:
       serviceAccountName: $SERVICE_ACCOUNT
       volumes:

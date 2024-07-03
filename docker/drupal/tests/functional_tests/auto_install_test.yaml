@@ -68,7 +68,7 @@ tests:
   command: [curl, -L, 'http://localhost']
   expect:
     stdout:
-      matches: '<title>Welcome to Drupal_Site \| Drupal_Site</title>'
+      matches: '<title>Welcome! | Drupal_Site</title>'
 - name: Test Drupal login page
   command: [curl, -L, 'http://localhost/user/login/']
   expect:

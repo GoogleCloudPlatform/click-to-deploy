@@ -1,0 +1,37 @@
+#!/bin/bash -eu
+#
+# Copyright 2021 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
+
+readonly install_phppgadmin="$(get_attribute_value "pgadmin-install" \
+  | tr '[:upper:]' '[:lower:]')"
+
+# Skip script if pgadmin should not be installed
+if [[ "${install_phppgadmin:-}" != "true" ]]; then
+  echo "Skipping phppgadmin setup."
+  exit 0
+fi
+
+echo "Starting phppgadmin setup..."
+
+readonly pgadmin_username="pgadmin"
+readonly pgadmin_password="$(get_attribute_value "pgadmin-password")"
+readonly setup_folder="/usr/share/"
+
+echo "Creating pgadmin user..."
+sudo -u postgres psql -c "CREATE ROLE ${pgadmin_username} WITH SUPERUSER CREATEDB CREATEROLE LOGIN ENCRYPTED PASSWORD '${pgadmin_password}'";
+
+echo "phpPgAdmin installed!"

@@ -1,0 +1,7 @@
+{
+  "license": "c2d-espocrm",
+  "source_image_family": "debian-11",
+  "chef": {
+    "run_list": [ "c2d-config", "espocrm", "google-cloud-ops-agent" ]
+  }
+}

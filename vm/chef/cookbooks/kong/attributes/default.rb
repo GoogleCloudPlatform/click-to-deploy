@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['kong']['version'] = '2.5.0'
-default['kong']['sha1'] = 'c1fc7092253914c980fe369b9083cf1ef04f41f2'
+default['kong']['version'] = '3.1.1'
+default['kong']['sha256'] = 'f1e4e11d72ddf05f61b09683943d634b3ab0f844a1d134bf1b0b637d475ed92b'
+default['kong']['major'] = default['kong']['version'].split('.')[0]
 default['kong']['db']['name'] = 'kong'
 default['kong']['packages'] = ['zlib1g-dev', 'boxes']

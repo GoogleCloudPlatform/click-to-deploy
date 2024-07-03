@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2020 Google Inc.
+# Copyright 2023 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source /opt/c2d/c2d-utils || exit 1
+
 #######################################
 # Creates a user for Mattermost application in MYSQL database.
 # Arguments:
@@ -21,17 +23,20 @@
 #   MySQL Database Name.
 #   MySQL Username to be created.
 #   MySQL Password for username created.
+#   MySQL Root Password for creating app user.
 #######################################
 function create_db_user() {
   local db_host="$1"
   local db_name="$2"
   local db_user="$3"
   local db_pwd="$4"
+  local db_root_pwd="$5"
 
   echo >&2 "Creating database user..."
-  mysql -u root -e "CREATE USER '${db_user}'@'${db_host}' IDENTIFIED BY '${db_pwd}';"
-  mysql -u root -e "GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, CREATE TEMPORARY TABLES ON ${db_name}.* TO '${db_user}'@'${db_host}' IDENTIFIED BY '${db_pwd}';";
-  mysql -u root -e "FLUSH PRIVILEGES"
+  set -x
+  mysql -u root -p"${db_root_pwd}" -e "CREATE USER '${db_user}'@'${db_host}' IDENTIFIED WITH mysql_native_password BY '${db_pwd}';"
+  mysql -u root -p"${db_root_pwd}" -e "GRANT ALL PRIVILEGES ON ${db_name}.* TO '${db_user}'@'${db_host}';";
+  mysql -u root -p"${db_root_pwd}" -e "FLUSH PRIVILEGES"
 }
 
 #######################################
@@ -133,5 +138,7 @@ function wait_for_app() {
   if [[ "${retry}" -gt "${max_retries}" ]]; then
     echo "Max retries exceeded."
     exit 1
+  else
+    echo "App is ready."
   fi
 }

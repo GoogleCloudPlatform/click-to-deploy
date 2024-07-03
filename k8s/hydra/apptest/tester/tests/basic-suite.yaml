@@ -1,0 +1,26 @@
+actions:
+  - name: Hydra Liveness Check
+    bashTest:
+      script: |-
+        curl --retry 3 --retry-connrefused --retry-delay 5 http://$APP_INSTANCE_NAME-admin.$NAMESPACE.svc.cluster.local:4445/health/alive
+      expect:
+        stdout:
+          contains: '{"status":"ok"}'
+
+  - name: Hydra Readiness Check
+    bashTest:
+      script: |-
+        curl --retry 3 --retry-connrefused --retry-delay 5 http://$APP_INSTANCE_NAME-admin.$NAMESPACE.svc.cluster.local:4445/health/ready
+      expect:
+        stdout:
+          contains: '{"status":"ok"}'
+
+  - name: Is Hydra /metrics/prometheus HTTP endpoint working for Prometheus metrics
+    bashTest:
+      script: |-
+        curl --retry 3 --retry-connrefused --retry-delay 5 http://$APP_INSTANCE_NAME-admin.$NAMESPACE.svc.cluster.local:4445/admin/metrics/prometheus
+      expect:
+        stdout:
+          contains: '# TYPE process_cpu_seconds_total counter'
+        exitCode:
+          equals: 0

@@ -1,7 +1,7 @@
 {
   "license": "c2d-discourse",
-  "source_image_family": "debian-9",
+  "source_image_family": "debian-11",
   "chef": {
-    "run_list": [ "c2d-config", "discourse", "stackdriver" ]
+    "run_list": [ "c2d-config", "discourse", "google-cloud-ops-agent" ]
   }
 }

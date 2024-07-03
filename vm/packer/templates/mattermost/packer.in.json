@@ -1,7 +1,7 @@
 {
     "license": "c2d-mattermost",
-    "source_image_family": "debian-9",
+    "source_image_family": "debian-11",
     "chef": {
-      "run_list": [ "c2d-config", "mattermost", "stackdriver" ]
+      "run_list": [ "c2d-config", "mattermost", "google-cloud-ops-agent" ]
     }
   }

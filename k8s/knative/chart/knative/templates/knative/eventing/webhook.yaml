@@ -1,0 +1,359 @@
+---
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: eventing-webhook
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/component: eventing-webhook
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: eventing-webhook
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 100
+---
+# Webhook PDB.
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: eventing-webhook
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/component: eventing-webhook
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+spec:
+  minAvailable: 80%
+  selector:
+    matchLabels:
+      app: eventing-webhook
+---
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eventing-webhook
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/component: eventing-webhook
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+spec:
+  selector:
+    matchLabels: &labels
+      app: eventing-webhook
+      role: eventing-webhook
+  template:
+    metadata:
+      labels:
+        !!merge <<: *labels
+        eventing.knative.dev/release: "v1.9.0"
+        app.kubernetes.io/component: eventing-webhook
+        app.kubernetes.io/version: "1.9.0"
+        app.kubernetes.io/name: knative-eventing
+    spec:
+      # To avoid node becoming SPOF, spread our replicas to different nodes.
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app: eventing-webhook
+                topologyKey: kubernetes.io/hostname
+              weight: 100
+      serviceAccountName: eventing-webhook
+      enableServiceLinks: false
+      containers:
+        - name: eventing-webhook
+          terminationMessagePolicy: FallbackToLogsOnError
+          # This is the Go import path for the binary that is containerized
+          # and substituted here.
+          image: {{ .Values.knative.eventing.webhook.image.repo }}:{{ .Values.knative.eventing.webhook.image.tag }}
+          resources:
+            requests:
+              # taken from serving.
+              cpu: 100m
+              memory: 50Mi
+            limits:
+              # taken from serving.
+              cpu: 200m
+              memory: 200Mi
+          env:
+            - name: SYSTEM_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: CONFIG_LOGGING_NAME
+              value: config-logging
+            - name: METRICS_DOMAIN
+              value: knative.dev/eventing
+            - name: WEBHOOK_NAME
+              value: eventing-webhook
+            - name: WEBHOOK_PORT
+              value: "8443"
+              # SINK_BINDING_SELECTION_MODE specifies the NamespaceSelector and ObjectSelector
+              # for the sinkbinding webhook.
+              # If `inclusion` is selected, namespaces/objects labelled as `bindings.knative.dev/include:true`
+              # will be considered by the sinkbinding webhook;
+              # If `exclusion` is selected, namespaces/objects labelled as `bindings.knative.dev/exclude:true`
+              # will NOT be considered by the sinkbinding webhook.
+              # The default is `exclusion`.
+            - name: SINK_BINDING_SELECTION_MODE
+              value: "exclusion"
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
+          ports:
+            - name: https-webhook
+              containerPort: 8443
+            - name: metrics
+              containerPort: 9090
+            - name: profiling
+              containerPort: 8008
+          readinessProbe: &probe
+            periodSeconds: 1
+            httpGet:
+              scheme: HTTPS
+              port: 8443
+              httpHeaders:
+                - name: k-kubelet-probe
+                  value: "webhook"
+          livenessProbe:
+            !!merge <<: *probe
+            initialDelaySeconds: 120
+      # Our webhook should gracefully terminate by lame ducking first, set this to a sufficiently
+      # high value that we respect whatever value it has configured for the lame duck grace period.
+      terminationGracePeriodSeconds: 300
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    role: eventing-webhook
+    app.kubernetes.io/component: eventing-webhook
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+  name: eventing-webhook
+  namespace: "{{ .Release.Namespace }}"
+spec:
+  ports:
+    - name: https-webhook
+      port: 443
+      targetPort: 8443
+  selector:
+    role: eventing-webhook
+
+---
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: config.webhook.eventing.knative.dev
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+webhooks:
+  - admissionReviewVersions: ["v1", "v1beta1"]
+    clientConfig:
+      service:
+        name: eventing-webhook
+        namespace: "{{ .Release.Namespace }}"
+    sideEffects: None
+    failurePolicy: Ignore
+    name: config.webhook.eventing.knative.dev
+    namespaceSelector:
+      matchExpressions:
+        - key: eventing.knative.dev/release
+          operator: Exists
+    timeoutSeconds: 10
+---
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: webhook.eventing.knative.dev
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+webhooks:
+  - admissionReviewVersions: ["v1", "v1beta1"]
+    clientConfig:
+      service:
+        name: eventing-webhook
+        namespace: "{{ .Release.Namespace }}"
+    sideEffects: None
+    failurePolicy: Fail
+    name: webhook.eventing.knative.dev
+    timeoutSeconds: 10
+---
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: validation.webhook.eventing.knative.dev
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+webhooks:
+  - admissionReviewVersions: ["v1", "v1beta1"]
+    clientConfig:
+      service:
+        name: eventing-webhook
+        namespace: "{{ .Release.Namespace }}"
+    sideEffects: None
+    failurePolicy: Fail
+    name: validation.webhook.eventing.knative.dev
+    timeoutSeconds: 10
+---
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: eventing-webhook-certs
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+# The data is populated at install time.
+---
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: sinkbindings.webhook.sources.knative.dev
+  labels:
+    eventing.knative.dev/release: "v1.9.0"
+    app.kubernetes.io/version: "1.9.0"
+    app.kubernetes.io/name: knative-eventing
+webhooks:
+  - admissionReviewVersions: ["v1", "v1beta1"]
+    clientConfig:
+      service:
+        name: eventing-webhook
+        namespace: "{{ .Release.Namespace }}"
+    failurePolicy: Fail
+    sideEffects: None
+    name: sinkbindings.webhook.sources.knative.dev
+    timeoutSeconds: 10

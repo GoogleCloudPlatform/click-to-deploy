@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,32 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+cloudbuild:
+  enable_parallel: false
+  machineType: E2_HIGHCPU_32
 versions:
-  - dir: '14/debian10/14.1'
-    repo: gitlab14
-    tags:
-      - '14.1.3-debian10'
-      - '14.1-debian10'
-      - '14-debian10'
-      - '14.1.3'
-      - '14.1'
-      - '14'
-      - 'latest'
-    from: marketplace.gcr.io/google/debian10
-    packages:
-      gitlab:
-        version: '14.1.3'
-  - dir: '13/debian10/13.5'
-    repo: gitlab13
-    tags:
-      - '13.5.1-debian10'
-      - '13.5-debian10'
-      - '13-debian10'
-      - '13.5.1'
-      - '13.5'
-      - '13'
-      - 'latest'
-    from: marketplace.gcr.io/google/debian10
-    packages:
-      gitlab:
-        version: '13.5.1'
+- dir: 16/debian11/16.8
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    gitlab:
+      version: 16.8.1
+  repo: gitlab16
+  tags:
+  - 16.8.1-debian11
+  - 16.8-debian11
+  - 16-debian11
+  - 16.8.1
+  - '16.8'
+  - '16'
+  - latest
+

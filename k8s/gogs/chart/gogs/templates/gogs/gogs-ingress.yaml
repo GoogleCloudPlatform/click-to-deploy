@@ -1,0 +1,17 @@
+{{ if .Values.enablePublicServiceAndIngress }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-gogs
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: gogs
+  tls:
+  - secretName: {{ .Release.Name }}-web-tls
+  defaultBackend:
+    service:
+      name: {{ .Release.Name }}-gogs-svc
+      port:
+        name: http
+{{- end }}

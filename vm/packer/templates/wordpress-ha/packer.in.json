@@ -1,6 +1,6 @@
 {
   "license": "c2d-wordpress-ha",
-  "source_image_family": "debian-9",
+  "source_image_family": "debian-10",
   "chef": {
     "run_list": [ "c2d-shared::aptget-update", "c2d-config", "wordpress-ha" ]
   }

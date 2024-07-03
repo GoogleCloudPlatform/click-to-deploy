@@ -20,18 +20,19 @@ include_recipe 'apache2'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 
-include_recipe 'mysql::version-8.0-standalone'
+include_recipe 'mysql::version-8.0-embedded'
 
-include_recipe 'php80'
-include_recipe 'php80::module_curl'
-include_recipe 'php80::module_gd'
-include_recipe 'php80::module_intl'
-include_recipe 'php80::module_libapache2'
-include_recipe 'php80::module_mbstring'
-include_recipe 'php80::module_mysql'
-include_recipe 'php80::module_opcache'
-include_recipe 'php80::module_xml'
-include_recipe 'php80::module_zip'
+include_recipe 'php81'
+include_recipe 'php81::default_bullseye'
+include_recipe 'php81::module_curl'
+include_recipe 'php81::module_gd'
+include_recipe 'php81::module_intl'
+include_recipe 'php81::module_libapache2'
+include_recipe 'php81::module_mbstring'
+include_recipe 'php81::module_mysql'
+include_recipe 'php81::module_opcache'
+include_recipe 'php81::module_xml'
+include_recipe 'php81::module_zip'
 include_recipe 'composer::composer-only'
 
 include_recipe 'nodenvm'
@@ -84,7 +85,16 @@ cookbook_file '/opt/c2d/apache-pimcore.conf' do
   action :create
 end
 
-cookbook_file '/etc/php/8.0/apache2/conf.d/99-pimcore.ini' do
+# https://github.com/pimcore/pimcore/blob/10.5/doc/Development_Documentation/23_Installation_and_Upgrade/03_System_Setup_and_Hosting/01_Apache_Configuration.md
+cookbook_file '/opt/c2d/apache-pimcore-website.htaccess' do
+  source 'apache-pimcore-website.htaccess'
+  owner 'root'
+  group 'root'
+  mode 0644
+  action :create
+end
+
+cookbook_file '/etc/php/8.1/apache2/conf.d/99-pimcore.ini' do
   source 'php-pimcore.ini'
   owner 'root'
   group 'root'

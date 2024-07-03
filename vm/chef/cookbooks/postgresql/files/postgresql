@@ -20,6 +20,6 @@ until pg_isready; do
   sleep 3
 done
 
-readonly password="$(get_metadata_value "instance/attributes/postgresql-postgres-password")"
+readonly password="$(get_attribute_value "postgresql-postgres-password")"
 
 su - postgres -c "psql -c \"alter role postgres with password '${password}'\""

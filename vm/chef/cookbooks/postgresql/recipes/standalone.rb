@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,12 +14,14 @@
 
 include_recipe 'postgresql::default'
 
-bash 'configure postgresql' do
-  user 'root'
-  code <<-EOH
-  set -x
-  set -e
-  echo 'host    all     postgres        0.0.0.0/0          md5' >> /etc/postgresql/*/main/pg_hba.conf
-  sed -i "s/^#listen_addresses = 'localhost'/listen_addresses = '*'/" /etc/postgresql/*/main/postgresql.conf
-EOH
+if node['postgresql']['standalone']['allow_external']
+  bash 'configure postgresql' do
+    user 'root'
+    code <<-EOH
+    set -x
+    set -e
+    echo 'host    all     postgres        0.0.0.0/0          md5' >> /etc/postgresql/*/main/pg_hba.conf
+    sed -i "s/^#listen_addresses = 'localhost'/listen_addresses = '*'/" /etc/postgresql/*/main/postgresql.conf
+  EOH
+  end
 end

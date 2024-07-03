@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,6 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+include_recipe 'couchdb::ospo'
 
 bash 'add apache repo' do
   cwd '/tmp'
@@ -30,14 +32,16 @@ bash 'preparing user environment and install' do
   cwd '/tmp'
   code <<-EOH
     COUCHDB_PASSWORD=#{node['couchdb']['password']}
-    echo "couchdb couchdb/mode select standalone \
-    couchdb couchdb/mode seen true \
-    couchdb couchdb/bindaddress string 127.0.0.1 \
-    couchdb couchdb/bindaddress seen true \
-    couchdb couchdb/adminpass password ${COUCHDB_PASSWORD} \
-    couchdb couchdb/adminpass seen true \
-    couchdb couchdb/adminpass_again password ${COUCHDB_PASSWORD} \
-    couchdb couchdb/adminpass_again seen true" | debconf-set-selections
+    echo "couchdb couchdb/mode select standalone" | debconf-set-selections
+    echo "couchdb couchdb/mode seen true" | debconf-set-selections
+    echo "couchdb couchdb/cookie string #{node['couchdb']['cookie']}" | debconf-set-selections
+    echo "couchdb couchdb/cookie seen true" | debconf-set-selections
+    echo "couchdb couchdb/bindaddress string 127.0.0.1" | debconf-set-selections
+    echo "couchdb couchdb/bindaddress seen true" | debconf-set-selections
+    echo "couchdb couchdb/adminpass password ${COUCHDB_PASSWORD}" | debconf-set-selections
+    echo "couchdb couchdb/adminpass seen true" | debconf-set-selections
+    echo "couchdb couchdb/adminpass_again password ${COUCHDB_PASSWORD}" | debconf-set-selections
+    echo "couchdb couchdb/adminpass_again seen true" | debconf-set-selections
     DEBIAN_FRONTEND=noninteractive apt-get install -y couchdb
 EOH
 end

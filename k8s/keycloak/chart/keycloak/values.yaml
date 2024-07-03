@@ -1,0 +1,28 @@
+keycloak:
+  image:
+    repo: null
+    tag: null
+  replicas: 1
+  serviceAccount: null
+  admin:   
+    password: null
+
+metrics:
+  image: null
+  exporter:
+    enabled: false
+
+enablePublicServiceAndIngress: false
+
+postgresql:
+  image:
+    repo: null
+    tag: null
+  persistence:
+    storageClass: standard
+    size: 5Gi
+
+tls:
+  base64EncodedPrivateKey: null
+  base64EncodedCertificate: null
+

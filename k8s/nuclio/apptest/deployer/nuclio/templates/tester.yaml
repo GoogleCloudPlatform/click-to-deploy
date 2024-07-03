@@ -15,7 +15,7 @@ spec:
 # TODO(click-to-deploy/issues/324): Add deadline after migrating to Job
 #  activeDeadlineSeconds: 1200
 # TODO(click-to-deploy/issues/323): Remove following dependency on internal name
-  serviceAccountName: {{ .Values.controller.serviceAccountName }}
+  serviceAccountName: {{ .Values.nuclio.serviceAccountName }}
   containers:
   - name: tester
     image: "{{ .Values.testerImage }}"

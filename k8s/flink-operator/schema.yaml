@@ -48,6 +48,7 @@ properties:
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: Service account used by Flink Operator
         roles:
         - type: ClusterRole
           rulesType: CUSTOM
@@ -163,6 +164,7 @@ properties:
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: Service account used by CRD Deployer
         roles:
         - type: ClusterRole
           rulesType: CUSTOM

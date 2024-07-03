@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'openjdk8'
+node.override['postgresql']['standalone']['allow_external'] = false
+
+include_recipe 'openjdk11'
 include_recipe 'apache2'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
-include_recipe 'postgresql'
+include_recipe 'postgresql::standalone_bullseye'
 
 # Notes:
 # 1) This recipe adds two new entries to /etc/hosts - pointing hostname to
@@ -51,6 +53,11 @@ end
 # Download installation file and verify its checksum
 # NOTE: this operation is conducted without certificate check,
 # because DigiCert's certificates are untrusted on Debian 9
+
+apt_package 'wget' do
+  action :install
+end
+
 bash 'download_and_check_alfresco' do
   code <<-EOH
     wget --no-check-certificate $alfresco_install_url -O /tmp/alfresco.bin

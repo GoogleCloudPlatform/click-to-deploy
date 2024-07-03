@@ -1,0 +1,111 @@
+---
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "{{ .Release.Name }}"
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": {{ .Chart.Name | quote }}, "partner_name": "Google Click to Deploy"}'
+
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+spec:
+  descriptor:
+    type: {{ template "kafkaMode" . }}
+    version: {{ .Values.kafka.image.tag | quote}}
+    description: >-
+      Apache Kafka is an open-source distributed event streaming platform used for high-performance
+      data pipelines, streaming analytics, data integration, and mission-critical applications.
+
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [community forums](https://kafka.apache.org/).
+
+      Additional community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/kafka/).
+
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy Kafka'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/kafka/README.md
+    - description: Getting started with Kafka
+      url: https://kafka.apache.org/quickstart
+    notes: |-
+      # Get authentication credentials for the cluster
+
+      ```shell
+      gcloud container clusters get-credentials \
+        [CLUSTER_NAME] --zone [CLUSTER_ZONE]
+      ```
+      where:
+      * `[CLUSTER_NAME]` is the name of the cluster for this app
+      * `[CLUSTER_ZONE]` is the zone in which the cluster is operating
+
+      For more information, read the [instructions for getting authentication credentials for the cluster](https://cloud.google.com/kubernetes-engine/docs/quickstart#get_authentication_credentials_for_the_cluster).
+
+      Make sure that all components are in `ready` status.
+
+      Deployed service of {{ template "kafkaMode" . }} is ClusterIP type, so you can reach to {{ template "kafkaMode" . }} Admin UI within a kubernetes cluster.
+
+      {{- if not .Values.kafka.standalone }}
+      Kafka cluster is configured with [SASL PLAINTEXT](https://kafka.apache.org/090/documentation.html#security_sasl).
+      You can check credentials from application page in console or you can print it by running below commands:
+
+      ```shell
+      # Get and print Kafka cluster user credentials
+      KAFKA_PASSWORD=$(kubectl get secret \
+        --namespace {{ .Release.Namespace }} \
+        {{ .Release.Name }}-kafka-secrets \
+        -o jsonpath="{.data.kafka_password}" |
+        base64 --decode)
+
+      echo "username: kafka"
+      echo "password: ${KAFKA_PASSWORD}"
+      ```
+      {{- else }}
+
+      Kafka deployed as a standalone mode without any authentication enabled and for development and testing purposes.
+
+      {{- end }}
+
+  info:
+  - name: {{ template "kafkaMode" . }} service
+    type: Reference
+    valueFrom:
+      serviceRef:
+        name: "{{ .Release.Name }}-kafka-client"
+  {{- if not .Values.kafka.standalone }}
+  - name: Kakfa Cluster User
+    value: kafka
+  - name: Kafka Cluster Password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: kafka_password
+        name: "{{ .Release.Name }}-kafka-secrets"
+  {{- end }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "{{ .Release.Name }}"
+  componentKinds:
+  - group: apps/v1
+    kind: StatefulSet
+  - group: apps/v1
+    kind: Deployment
+  - group: v1
+    kind: PersistentVolumeClaim
+  {{- if not .Values.kafka.standalone}}
+  - group: policy/v1
+    kind: PodDisruptionBudget
+  {{- end}}
+  - group: v1
+    kind: Secret
+  - group: v1
+    kind: Service
+  - group: v1
+    kind: ConfigMap
+  - group: v1
+    kind: ServiceAccount

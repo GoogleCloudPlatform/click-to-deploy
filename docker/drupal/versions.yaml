@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2024 Google LLC
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,55 +18,55 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 9/php7/debian9/9.2/apache
-  from: marketplace.gcr.io/google/php7-apache2:7.3
+- dir: 10/php8/debian11/10.1/apache
+  from: marketplace.gcr.io/google/php8-apache2:8.1
   packages:
     composer:
-      gpg: 1f210b9037fcf82670d75892dfc44400f13fe9ada7af9e787f93e50e3b764111
-      version: 1.9.1
+      gpg: f07934fad44f9048c0dc875a506cca31cc2794d6aebfc1867f3b1fbf48dce2c5
+      version: 2.5.8
     drupal:
-      md5: e71724d790495869b8d4bba1a917804e
-      version: 9.2.4
-  repo: drupal9-php7-apache
+      md5: 2ea6f94091de2760908557dd3bb1956a
+      version: 10.1.8
+  repo: drupal10-php8-apache
   tags:
-  - 9.2.4-debian9
-  - 9.2-debian9
-  - 9-debian9
-  - 9.2.4
-  - '9.2'
-  - '9'
+  - 10.1.8-debian11
+  - 10.1-debian11
+  - 10-debian11
+  - 10.1.8
+  - '10.1'
+  - '10'
   - latest
-- dir: 9/php7/debian9/9.1/apache
-  from: marketplace.gcr.io/google/php7-apache2:7.3
+- dir: 10/php8/debian11/10.0/apache
+  from: marketplace.gcr.io/google/php8-apache2:8.1
   packages:
     composer:
-      gpg: 1f210b9037fcf82670d75892dfc44400f13fe9ada7af9e787f93e50e3b764111
-      version: 1.9.1
+      gpg: f07934fad44f9048c0dc875a506cca31cc2794d6aebfc1867f3b1fbf48dce2c5
+      version: 2.5.8
     drupal:
-      md5: 329c0b496bdbcae2fea3f79df024ff32
-      version: 9.1.12
-  repo: drupal9-php7-apache
+      md5: 77c50e72068aa4bdef458f02d493aaa8
+      version: 10.0.10
+  repo: drupal10-php8-apache
   tags:
-  - 9.1.12-debian9
-  - 9.1-debian9
-  - 9.1.12
-  - '9.1'
-- dir: 8/php7/debian9/8.9/apache
-  from: marketplace.gcr.io/google/php7-apache2:7.3
+  - 10.0.10-debian11
+  - 10.0-debian11
+  - 10.0.10
+  - '10.0'
+- dir: 9/php8/debian11/9.5/apache
+  from: marketplace.gcr.io/google/php8-apache2:8.1
   packages:
     composer:
-      gpg: 1f210b9037fcf82670d75892dfc44400f13fe9ada7af9e787f93e50e3b764111
-      version: 1.9.1
+      gpg: f07934fad44f9048c0dc875a506cca31cc2794d6aebfc1867f3b1fbf48dce2c5
+      version: 2.5.8
     drupal:
-      md5: 4a4a79691a98d4b6c86275331827c931
-      version: 8.9.18
-  repo: drupal8-php7-apache
+      md5: 064c3e9becb3599b95e1ff38fc335d34
+      version: 9.5.10
+  repo: drupal9-php8-apache
   tags:
-  - 8.9.18-debian9
-  - 8.9-debian9
-  - 8-debian9
-  - 8.9.18
-  - '8.9'
-  - '8'
+  - 9.5.10-debian11
+  - 9.5-debian11
+  - 9-debian11
+  - 9.5.10
+  - '9.5'
+  - '9'
   - latest
 

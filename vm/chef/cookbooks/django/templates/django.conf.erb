@@ -1,0 +1,9 @@
+<VirtualHost *:80>
+    ServerName example.com
+    ServerAdmin admin@example.com
+    ProxyPreserveHost On
+    ProxyPass / http://127.0.0.1:8000/
+    ProxyPassReverse / http://127.0.0.1:8000/
+    TransferLog /var/log/apache2/django_access.log
+    ErrorLog /var/log/apache2/django_error.log
+</VirtualHost>

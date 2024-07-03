@@ -29,6 +29,14 @@ x-google-marketplace:
     istio:
       type: UNSUPPORTED
 properties:
+  certificate:
+    type: string
+    x-google-marketplace:
+      type: TLS_CERTIFICATE
+      tlsCertificate:
+        generatedProperties:
+          base64EncodedPrivateKey: tls.base64EncodedPrivateKey
+          base64EncodedCertificate: tls.base64EncodedCertificate
   name:
     type: string
     x-google-marketplace:
@@ -125,6 +133,13 @@ properties:
               - kafkausers
               verbs:
               - '*'
+            - apiGroups:
+              - networking.k8s.io
+              resources:
+              - ingresses
+              verbs:
+              - '*'
+
   CDRJobServiceAccount:
     type: string
     title: CRD deployer Service Account
@@ -138,7 +153,7 @@ properties:
           rules:
             - apiGroups: ["apiextensions.k8s.io"]
               resources: ["customresourcedefinitions"]
-              verbs: ["get","list","create"]
+              verbs: ["get","list","create","patch"]
   deployerHelm.image:
     type: string
     x-google-marketplace:

@@ -37,7 +37,7 @@ spec:
   type: ClusterIP
 {{ if .Values.enablePublicServiceAndIngress }}
 ---
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Release.Name }}-drupal-ingress
@@ -47,7 +47,9 @@ metadata:
 spec:
   tls:
   - secretName: {{ .Release.Name }}-tls
-  backend:
-    serviceName: {{ .Release.Name }}-drupal-svc
-    servicePort: http
+  defaultBackend:
+    service:
+      name: {{ .Release.Name }}-drupal-svc
+      port:
+        name: http
 {{ end }}

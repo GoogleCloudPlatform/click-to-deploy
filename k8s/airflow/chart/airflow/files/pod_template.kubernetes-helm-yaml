@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: airflow-worker
+spec:
+  restartPolicy: Never
+  serviceAccountName: {{ include "airflow.serviceAccountName" . }}
+  shareProcessNamespace: "false"
+  containers:
+    - name: base
+      {{- include "airflow.image" . | indent 6 }}
+      envFrom:
+        {{- include "airflow.envFrom" . | indent 8 }}
+      env:
+        ## KubernetesExecutor Pods use LocalExecutor internally
+        - name: AIRFLOW__CORE__EXECUTOR
+          value: LocalExecutor
+        {{- /* NOTE: the FIRST definition of an `env` takes precedence (so we include user-defined `env` LAST) */ -}}
+        {{- /* NOTE: we set `CONNECTION_CHECK_MAX_COUNT=20` to enable airflow's `/entrypoint` db connection check */ -}}
+        {{- include "airflow.env" (dict "Release" .Release "Values" .Values "CONNECTION_CHECK_MAX_COUNT" "20")  | indent 8 }}
+      ports: []
+      command: []
+      args: []
+      volumeMounts:
+        {{- include "airflow.volumeMounts" . | indent 8 }}
+  volumes:
+    {{- include "airflow.volumes" .  | indent 4 }}

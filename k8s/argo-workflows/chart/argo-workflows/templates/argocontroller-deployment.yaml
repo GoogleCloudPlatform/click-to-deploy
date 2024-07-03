@@ -1,0 +1,77 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Release.Name }}-controller"
+  namespace: "{{ .Release.Namespace }}"
+spec:
+  selector:
+    matchLabels:
+      app: "{{ .Release.Name }}-controller"
+      app.kubernetes.io/name: "{{ .Release.Name }}-controller"
+  template:
+    metadata:
+      labels:
+        app: "{{ .Release.Name }}-controller"
+        app.kubernetes.io/name: "{{ .Release.Name }}-controller"
+    spec:
+      initContainers:
+        {{- include "argoworkflows.wait_for_db" . | indent 8 }}
+      containers:
+      - name: workflow-controller
+        image: "{{ .Values.argo_workflows.image.repo }}:{{ .Values.argo_workflows.image.tag }}"
+        args:
+        - --namespaced
+        env:
+        - name: MODE
+          value: controller
+        - name: LEADER_ELECTION_IDENTITY
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: 6060
+          initialDelaySeconds: 90
+          periodSeconds: 60
+          timeoutSeconds: 30
+        ports:
+        - containerPort: 9090
+          name: metrics
+        - containerPort: 6060
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+      {{- if .Values.metrics.exporter.enabled }}
+      - name: stackdriver-exporter
+        image: {{ .Values.metrics.image }}
+        ports:
+        - name: profiler
+          containerPort: 6060
+        command:
+        - /monitor
+        - --stackdriver-prefix=custom.googleapis.com
+        - --source=postgresql:http://localhost:9090/metrics
+        - --pod-id=$(POD_NAME)
+        - --namespace-id=$(POD_NAMESPACE)
+        - --monitored-resource-types=k8s
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+      {{- end }}
+      nodeSelector:
+        kubernetes.io/os: linux
+      serviceAccountName: "{{ .Values.argo_workflows.sa.argo }}"

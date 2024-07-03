@@ -18,7 +18,7 @@
 include_recipe 'apache2'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
-include_recipe 'mysql'
+include_recipe 'mysql::version-8.0'
 
 # Reference: https://www.drupal.org/docs/8/system-requirements/php
 include_recipe 'php81'

@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ bash 'extract_redis_sources' do
   cwd '/usr/src'
   code <<-EOH
     tar xvzf redis.tar.gz
-    mv "redis-stable" redis
+    mv "redis-#{node['redis']['version']}" redis
 EOH
 end
 

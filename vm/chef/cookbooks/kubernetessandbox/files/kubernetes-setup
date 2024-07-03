@@ -1,0 +1,37 @@
+#!/bin/bash -eu
+#
+# Copyright 2022 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
+
+# Configure kubernetes master node
+kubeadm init --cri-socket unix:///run/containerd/containerd.sock --pod-network-cidr=10.244.0.0/16
+export KUBECONFIG="/etc/kubernetes/admin.conf"
+
+# Configure access
+chmod 666 /etc/kubernetes/admin.conf
+
+# Make master schedulable
+timeout 10 bash -c \
+    'until kubectl get nodes | grep NotReady; do echo "waiting for master node response"; sleep 1; done'
+kubectl taint nodes --all node.kubernetes.io/not-ready-
+
+
+# Disable the read-only port
+echo "readOnlyPort: 0" >> /var/lib/kubelet/config.yaml
+service kubelet restart
+
+# Configure network plugin
+kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml

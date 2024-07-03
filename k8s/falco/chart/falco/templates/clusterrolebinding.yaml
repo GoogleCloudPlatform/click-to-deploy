@@ -1,0 +1,15 @@
+kind: ClusterRoleBinding
+apiVersion: {{ template "rbac.apiVersion" . }}
+metadata:
+  name: {{ template "falco.fullname" .}}
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: falco
+subjects:
+  - kind: ServiceAccount
+    name: {{ .Values.falco.serviceAccount.name }}
+    namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: ClusterRole
+  name: {{ template "falco.fullname" .}}
+  apiGroup: rbac.authorization.k8s.io

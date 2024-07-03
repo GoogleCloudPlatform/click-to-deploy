@@ -163,14 +163,14 @@ It is advised to use stable image reference which you can find on
 Example:
 
 ```shell
-export TAG="1.1.33-20200306-110059"
+export TAG="1.11.20-<BUILD_ID>"
 ```
 
 Alternatively you can use short tag which points to the latest image for selected version.
 > Warning: this tag is not stable and referenced image might change over time.
 
 ```shell
-export TAG="1.1"
+export TAG="1.11"
 ```
 
 Configure the container images:
@@ -246,9 +246,7 @@ from the official Kubernetes documentation.
 Define the environment variables:
 
 ```shell
-export DASHBOARD_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-nuclio-dashboard"
-export CONTROLLER_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-nuclio-controller"
-export CRD_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-nuclio-crd-creator-job"
+export NUCLIO_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-nuclio-sa"
 ```
 
 Expand the manifest to create Service accounts:
@@ -257,9 +255,7 @@ Expand the manifest to create Service accounts:
 cat resources/service-accounts.yaml \
   | envsubst '${APP_INSTANCE_NAME} \
               ${NAMESPACE} \
-              ${DASHBOARD_SERVICE_ACCOUNT} \
-              ${CONTROLLER_SERVICE_ACCOUNT} \
-              ${CRD_SERVICE_ACCOUNT}' \
+              ${NUCLIO_SERVICE_ACCOUNT} \
     > "${APP_INSTANCE_NAME}_sa_manifest.yaml"
 ```
 
@@ -287,9 +283,7 @@ helm template chart/nuclio \
   $( [[ -n "${PUSH_PULL_URL}" ]] && echo "--set registry.pushPullUrl=${PUSH_PULL_URL}" ) \
   $( [[ -n "${REGISTRY_SECRET}" ]] && echo "--set registry.registry.secretName=${REGISTRY_SECRET}" ) \
   $( [[ -n "${DASHBOARD_REPLICAS}" ]] && echo "--set dashboard.replicas=${DASHBOARD_REPLICAS}" ) \
-  --set dashboard.serviceAccountName=${DASHBOARD_SERVICE_ACCOUNT} \
-  --set controller.serviceAccountName=${CONTROLLER_SERVICE_ACCOUNT} \
-  --set CDRJobServiceAccount=${CRD_SERVICE_ACCOUNT} \
+  --set nuclio.serviceAccountName=${NUCLIO_SERVICE_ACCOUNT} \
   > ${APP_INSTANCE_NAME}_manifest.yaml
 ```
 

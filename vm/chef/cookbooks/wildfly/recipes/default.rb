@@ -26,7 +26,7 @@ user node['wildfly']['user'] do
 end
 
 remote_file '/tmp/wildfly.tar.gz' do
-  source "https://download.jboss.org/wildfly/#{node['wildfly']['version']}.Final/wildfly-#{node['wildfly']['version']}.Final.tar.gz"
+  source "https://github.com/wildfly/wildfly/releases/download/#{node['wildfly']['version']}.Final/wildfly-#{node['wildfly']['version']}.Final.tar.gz"
   checksum node['wildfly']['sha256']
   action :create
 end

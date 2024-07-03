@@ -1,0 +1,69 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: {{ .Release.Name }}
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": "prometheus", "partner_name": "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+spec:
+  descriptor:
+    type: Prometheus
+    version: '{{ .Values.prometheus.image.tag }}'
+    description: |-
+      Prometheus is an open-source monitoring and alerting platform, widely adopted by many companies
+      as a Kubernetes monitoring tool. 
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/prometheus/).
+      Additional support is available on [community forums](https://prometheus.io/community/).
+    links:
+    - description: 'User Guide: Google Click to Deploy Prometheus'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/prometheus/README.md
+    - description: 'First steps with Prometheus'
+      url: https://prometheus.io/docs/introduction/first_steps/
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    notes: |-
+      # Access Prometheus UI
+
+      Prometheus is exposed in a ClusterP-only service `{{ .Release.Name }}-prometheus`. To connect to
+      Prometheus UI, you can either expose a public service endpoint or keep it private, but connect
+      from you local environment with `kubectl port-forward`.
+
+      ## Forward Prometheus port in local environment
+
+      You can use port forwarding feature of `kubectl` to forward Grafana's port to your local
+      machine. Run the following command in background:
+
+      ```shell
+      kubectl port-forward --namespace ${NAMESPACE} ${APP_INSTANCE_NAME}-prometheus-0 9090
+      ```
+
+      Now you can access Prometheus UI with `http://localhost:9090/`.
+  info:
+  - name: Forward Prometheus port locally
+    value: kubectl port-forward --namespace ${NAMESPACE} ${APP_INSTANCE_NAME}-prometheus-0 9090
+  - name: Prometheus UI URL
+    value: http://localhost:9090/
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "{{ .Release.Name }}"
+  componentKinds:
+  - group: v1
+    kind: ConfigMap
+  - group: apps/v1
+    kind: DaemonSet
+  - group: apps/v1
+    kind: Deployment
+  - group: v1
+    kind: PersistentVolumeClaim
+  - group: v1
+    kind: Secret
+  - group: v1
+    kind: Service
+  - group: apps/v1
+    kind: StatefulSet

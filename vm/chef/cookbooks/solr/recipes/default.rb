@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# Reference: https://lucene.apache.org/solr/guide/6_6/taking-solr-to-production.html
+# Reference: https://solr.apache.org/guide/solr/latest/deployment-guide/taking-solr-to-production.html
 
 include_recipe 'apache2'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
-include_recipe 'openjdk8'
+include_recipe 'openjdk11'
 
 package 'install_packages' do
   package_name node['solr']['packages']
@@ -26,13 +26,13 @@ end
 
 # Download sha512 checksum from apache
 remote_file '/tmp/solr-checksum.sha512' do
-  source "https://archive.apache.org/dist/lucene/solr/#{node['solr']['version']}/solr-#{node['solr']['version']}.tgz.sha512"
+  source "https://archive.apache.org/dist/solr/solr/#{node['solr']['version']}/solr-#{node['solr']['version']}.tgz.sha512"
   action :create
 end
 
 # Download solr from apache
 remote_file "/tmp/solr-#{node['solr']['version']}.tgz" do
-  source "https://archive.apache.org/dist/lucene/solr/#{node['solr']['version']}/solr-#{node['solr']['version']}.tgz"
+  source "https://archive.apache.org/dist/solr/solr/#{node['solr']['version']}/solr-#{node['solr']['version']}.tgz"
   verify 'sed -i -e "s/ .*//; s=$=  %{path}=" /tmp/solr-checksum.sha512 && sha512sum -c /tmp/solr-checksum.sha512'
   action :create
 end

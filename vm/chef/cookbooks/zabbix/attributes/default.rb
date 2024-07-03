@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['zabbix']['version'] = '4.2'
-default['zabbix']['release'] = '4.2-1'
-default['zabbix']['packages'] = %w(mailutils php-pgsql zabbix-server-pgsql zabbix-proxy-pgsql zabbix-frontend-php)
+default['zabbix']['version'] = '7.0'
+default['zabbix']['packages'] = %w(mailutils php-pgsql zabbix-server-pgsql zabbix-frontend-php zabbix-proxy-pgsql zabbix-sql-scripts zabbix-apache-conf php-gd php-bcmath php-mbstring php-xml php-ldap php-json)
+default['zabbix']['repo']['uri'] = "https://repo.zabbix.com/zabbix/#{default['zabbix']['version']}/debian/"
+default['zabbix']['repo']['components'] = ['main']
+default['zabbix']['repo']['distribution'] = 'bookworm'
+default['zabbix']['repo']['keyserver'] = 'https://repo.zabbix.com/zabbix-official-repo.key'

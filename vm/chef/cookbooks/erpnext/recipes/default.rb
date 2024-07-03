@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,20 +12,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+include_recipe 'python'
+include_recipe 'redis::standalone'
+
 apt_update do
   action :update
+end
+
+node['erpnext']['mariadb']['packages'].each do |pkg|
+  apt_preference pkg do
+    pin          "version #{node['erpnext']['mariadb']['apt_version']}"
+    pin_priority '1000'
+  end
+end
+
+package 'Install packages' do
+  package_name node['erpnext']['mariadb']['packages']
+  action :install
 end
 
 package 'Install packages' do
   package_name node['erpnext']['packages']
   action :install
-end
-
-node['erpnext']['mariadb']['packages'].each do |pkg|
-  package pkg do
-    version node['erpnext']['mariadb']['version']
-    action :install
-  end
 end
 
 # Create frappe user.
@@ -106,7 +114,7 @@ bash 'Init bench' do
     su - #{node['erpnext']['frappe']['user']} -c \
       "bench init \
         --frappe-branch version-#{node['erpnext']['version']} \
-        --python /usr/bin/python3 \
+        --python /usr/local/bin/python3.10 \
         #{node['erpnext']['frappe']['bench']}"
   EOH
 end
@@ -137,6 +145,19 @@ bash 'Setup production' do
   cwd "/home/#{node['erpnext']['frappe']['user']}/#{node['erpnext']['frappe']['bench']}"
   code <<-EOH
     sudo bench setup production #{node['erpnext']['frappe']['user']} --yes
+  EOH
+end
+
+link '/etc/supervisor/conf.d/frappe-bench.conf' do
+  to "/home/#{node['erpnext']['frappe']['user']}/#{node['erpnext']['frappe']['bench']}/config/supervisor.conf"
+end
+
+bash 'Setup supervisor' do
+  user node['erpnext']['frappe']['user']
+  cwd "/home/#{node['erpnext']['frappe']['user']}/#{node['erpnext']['frappe']['bench']}"
+  code <<-EOH
+    sudo supervisorctl update
+    sudo supervisorctl restart all
   EOH
 end
 

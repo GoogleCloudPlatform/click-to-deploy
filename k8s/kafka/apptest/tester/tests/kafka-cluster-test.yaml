@@ -1,0 +1,75 @@
+actions:
+- name: Check if zookeeper shows 3 live kafka brokers
+  bashTest:
+    script: |
+          echo dump | nc ${APP_INSTANCE_NAME}-zk-client 2181 | grep brokers | wc -l | grep 3
+    expect:
+      stdout:
+        matches: "3"
+      exitCode:
+        equals: 0
+- name: Check if auth with broker service fail
+  bashTest:
+    script: |
+          cat << EOF > admin.properties
+          security.protocol=SASL_PLAINTEXT
+          sasl.mechanism=PLAIN
+          sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="wronguser" password="wrongpassword";
+          EOF
+
+          /opt/kafka/bin/kafka-topics.sh --create --bootstrap-server ${APP_INSTANCE_NAME}-kafka-client:9092  --replication-factor 2 --partitions 4 --topic test --command-config admin.properties
+    expect:
+      exitCode:
+        equals: 1
+      stdout:
+        matches: Invalid username or password
+
+- name: Create topic test
+  bashTest:
+    script: |
+          cat << EOF > admin.properties
+          security.protocol=SASL_PLAINTEXT
+          sasl.mechanism=PLAIN
+          sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="${KAFKA_USER}" password="${KAFKA_PASSWORD}";
+          EOF
+
+          /opt/kafka/bin/kafka-topics.sh --create --bootstrap-server ${APP_INSTANCE_NAME}-kafka-client:9092  --replication-factor 1 --partitions 4 --topic test --command-config admin.properties
+    expect:
+      exitCode:
+        equals: 0
+      stdout:
+        matches: Created topic test.
+
+- name: Create message in test topic
+  bashTest:
+    script: |
+          cat << EOF > admin.properties
+          security.protocol=SASL_PLAINTEXT
+          sasl.mechanism=PLAIN
+          sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="${KAFKA_USER}" password="${KAFKA_PASSWORD}";
+          EOF
+
+          echo "test-message" | /opt/kafka/bin/kafka-console-producer.sh --broker-list ${APP_INSTANCE_NAME}-kafka-client:9092 --topic "test" --producer.config admin.properties 2>&1 >/dev/null && echo OK
+    expect:
+      exitCode:
+        equals: 0
+      stdout:
+        matches: OK
+
+- name: Get message from test topic
+  bashTest:
+    script: |
+          cat << EOF > admin.properties
+          security.protocol=SASL_PLAINTEXT
+          sasl.mechanism=PLAIN
+          sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="${KAFKA_USER}" password="${KAFKA_PASSWORD}";
+          EOF
+
+          /opt/kafka/bin/kafka-console-consumer.sh --bootstrap-server ${APP_INSTANCE_NAME}-kafka-client:9092 --topic test --from-beginning --max-messages 1 --timeout-ms 5000 --consumer.config admin.properties
+    expect:
+      exitCode:
+        equals: 0
+    stdout:
+      matches: "test-message"
+    stderr:
+      matches: "Processed a total of 1 messages"

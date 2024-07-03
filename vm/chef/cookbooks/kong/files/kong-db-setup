@@ -20,5 +20,21 @@ readonly db_username="kong"
 readonly db_password="$(get_attribute_value "kong-db-password")"
 readonly db_name="kong"
 
+# Set PostgreSQL Auth method to md5 which is supported by Kong
+echo "Setting up pgsql password encryption:"
+sed -i 's/scram-sha-256/md5/g' /etc/postgresql/*/main/pg_hba.conf
+echo "password_encryption = md5" >> /etc/postgresql/*/main/postgresql.conf
+
+# Ensure configuration is properly set before set up Kong
+declare password_encryption=""
+while [[ "${password_encryption}" != "md5" ]]; do
+  echo "Reloading PostgreSQL..."
+  systemctl restart postgresql
+
+  password_encryption="$(sudo -u postgres psql -t --csv -c "show password_encryption;")"
+  echo "Password Encryption: ${password_encryption}"
+done
+
+# Create user and database
 sudo -u postgres psql -c "CREATE USER ${db_username} WITH PASSWORD '${db_password}';"
 sudo -u postgres psql -c "CREATE DATABASE ${db_name} OWNER ${db_username};"

@@ -12,4 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-package 'php8.0-cli'
+package 'php8.0-cli' do
+  action :install
+  retries 5
+  retry_delay 20
+end

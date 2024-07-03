@@ -32,6 +32,8 @@ spec:
             secretKeyRef:
               name: {{ .Release.Name }}-activemq-secret
               key: console-password
+        - name: ACTIVEMQ_ADMIN_BIND_ALL
+          value: {{ .Values.admin.bindAllHosts | quote }}
         - name: DEBUG_DOCKER_ENTERYPOINT
           value: {{ .Values.enableBashDebug | quote }}
         ports:

@@ -1,4 +1,4 @@
-ChefStyle/CommentFormat:
+Chef/Style/CommentFormat:
   Enabled: false
 
 Style/HashSyntax:

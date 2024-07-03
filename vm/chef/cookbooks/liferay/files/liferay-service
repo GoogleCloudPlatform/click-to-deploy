@@ -5,6 +5,7 @@ After=network.target
 [Service]
 Type=forking
 Environment=CATALINA_PID=/opt/liferay/tomcat/tmp/tomcat.pid
+Environment='CATALINA_OPTS=-Dlog4j2.formatMsgNoLookups=true'
 ExecStart=/opt/liferay/tomcat/bin/startup.sh
 ExecStop=/opt/liferay/tomcat/bin/shutdown.sh
 

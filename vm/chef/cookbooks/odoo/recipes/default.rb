@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,8 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'postgresql'
-include_recipe 'nginx'
+node.override['postgresql']['standalone']['allow_external'] = false
+
+include_recipe 'postgresql::standalone_bookworm'
+include_recipe 'nginx::embedded'
+include_recipe 'odoo::ospo'
+
+bash 'Install Python3' do
+  user 'root'
+  code 'apt-get install -y python3'
+end
 
 package 'Install packages' do
   package_name node['odoo']['packages']
@@ -22,7 +30,7 @@ end
 
 # Download WKHTMLtoPDF from the official server
 remote_file '/tmp/wkhtmltopdf.deb' do
-  source "https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/#{node['odoo']['wkhtmltopdf']['version']}/wkhtmltox_#{node['odoo']['wkhtmltopdf']['release']}.stretch_amd64.deb"
+  source "https://github.com/wkhtmltopdf/packaging/releases/download/#{node['odoo']['wkhtmltopdf']['release']}/wkhtmltox_#{node['odoo']['wkhtmltopdf']['release']}.buster_amd64.deb"
   checksum node['odoo']['wkhtmltopdf']['sha256']
   action :create
 end
@@ -83,13 +91,26 @@ bash 'Extract odoo source code' do
 EOH
 end
 
-bash 'Install python requirements' do
-  code "pip3 install #{node['odoo']['pip-packages']}"
+bash 'Install Dependencies' do
   user 'root'
+  code <<-EOH
+    virtualenv --python=python3 /opt/odoo-env
+    source /opt/odoo-env/bin/activate
+    pip install #{node['odoo']['pip-packages']}
+EOH
 end
 
-template '/etc/nginx/sites-available/default' do
+template '/etc/nginx/sites-available/odoo.conf' do
   source 'default-nginx.erb'
+end
+
+bash 'Configure website' do
+  user 'root'
+  code 'ln -s /etc/nginx/sites-available/odoo.conf /etc/nginx/sites-enabled/odoo.conf'
+end
+
+service 'nginx' do
+  action [ :reload ]
 end
 
 c2d_startup_script 'odoo-setup'

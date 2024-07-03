@@ -1,0 +1,111 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "{{ .Release.Name }}"
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": "keycloak", "partner_name": "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+spec:
+  descriptor:
+    type: Keycloak
+    version: "{{ .Values.postgresql.image.tag }}"
+    description: |-
+      Keycloak is an open source software product to allow single sign-on with Identity and Access Management aimed at modern applications and services. 
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/keycloak/).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy Keycloak'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/keycloak/README.md
+    notes: |-
+      # Access Keycloak
+      {{ if .Values.enablePublicServiceAndIngress -}}
+      # Open your Keycloak Webserver
+      To get the external IP of your Keycloak Webserver, use the following command:
+
+      ```
+      SERVICE_IP=$(kubectl get ingress {{ .Release.Name }}-keycloak-web \
+        --namespace {{ .Release.Namespace }} \
+        --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+      echo "https://${SERVICE_IP}/"
+      ```
+      {{- else -}}
+      # Open your Keycloak Webserver
+
+      Keycloak is exposed by the ClusterIP-only service `{{ .Release.Name }}-keycloak-svc`. To connect to the
+      Keycloak Webserver, you can either expose a public service endpoint, or keep it private, but connect
+      from your local environment with `kubectl port-forward`.
+
+      ## Forward the Keycloak Webserver port in your local environment
+
+      To use `kubectl`'s port forwarding feature to forward MediaWiki's port to your local
+      machine, run the following command in the background:
+
+      ```shell
+      kubectl port-forward \
+        --namespace {{ .Release.Namespace }} \
+        svc/{{ .Release.Name }}-keycloak-svc \
+        8080:8080
+      ```
+
+      Now you can access the Keycloak Webserver with [http://localhost:8080](http://localhost:8080).
+      {{- end }}
+  info:
+  {{ if .Values.enablePublicServiceAndIngress -}}
+  - name: Keycloak site address
+    type: Reference
+    valueFrom:
+      ingressRef:
+        name: {{ .Release.Name }}-keycloak-web
+        protocol: HTTPS
+  {{- else -}}
+  - name: Forward Keycloak Webserver port locally
+    value: kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-keycloak-svc 8080:8080
+  - name: Keycloak Webserver address (local only)
+    value: "http://localhost:8080/"
+  {{- end }}
+  - name: Keycloak - admin user password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: KEYCLOAK_ADMIN_PASSWORD
+        name: {{ .Release.Name }}-config-envs
+  - name: PostgreSQL - Keycloak user password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: KC_DB_PASSWORD
+        name: {{ .Release.Name }}-config-envs
+  - name: Application Namespace
+    value: "{{ .Release.Namespace }}"
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "{{ .Release.Name }}"
+  componentKinds:
+  - group: apps/v1
+    kind: StatefulSet
+  - group: v1
+    kind: Secret
+  - group: v1
+    kind: Service
+  {{ if .Values.enablePublicServiceAndIngress }}
+  - group: networking.k8s.io
+    kind: Ingress
+  {{ end }}
+  - group: apps/v1
+    kind: Deployment
+  - group: v1
+    kind: ConfigMap
+  - group: v1
+    kind: ServiceAccount
+  - group: rbac.authorization.k8s.io/v1
+    kind:  Role
+  - group: rbac.authorization.k8s.io/v1
+    kind:  RoleBinding

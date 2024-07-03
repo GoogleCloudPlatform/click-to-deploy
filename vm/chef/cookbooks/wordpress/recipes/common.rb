@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,14 +13,21 @@
 # limitations under the License.
 
 include_recipe 'apache2'
-include_recipe 'apache2::security-config'
+include_recipe 'apache2::mod-ssl'
 include_recipe 'apache2::rm-index'
-include_recipe 'mysql'
-include_recipe 'php74'
-include_recipe 'php74::module_libapache2'
-include_recipe 'php74::module_mbstring'
-include_recipe 'php74::module_mysql'
-include_recipe 'php74::module_xml'
+include_recipe 'apache2::security-config'
+include_recipe 'mysql::version-8.0-embedded'
+
+apt_update do
+  action :update
+end
+
+include_recipe 'php81'
+include_recipe 'php81::module_libapache2'
+include_recipe 'php81::module_mbstring'
+include_recipe 'php81::module_mysql'
+include_recipe 'php81::module_xml'
+include_recipe 'c2d-config::create-self-signed-certificate'
 
 remote_file '/tmp/wp-cli.phar' do
   source node['wordpress']['cli']['url']
@@ -66,15 +73,19 @@ execute 'a2enmods' do
 end
 
 execute 'a2enconfs' do
-  command 'a2enconf php7.4-fpm'
+  command 'a2enconf php8.1-fpm'
 end
 
-template '/etc/apache2/sites-available/wordpress.conf' do
-  source 'wordpress.conf.erb'
+# Include both configurations to the image
+['http', 'https'].each do |file|
+  template "/etc/apache2/sites-available/wordpress-#{file}.conf" do
+    source "wordpress-#{file}.conf.erb"
+  end
 end
 
+# Enable HTTP version by default on image build
 execute 'enable wordpress.conf' do
-  command 'a2ensite wordpress'
+  command 'a2ensite wordpress-http'
 end
 
 bash 'edit php.ini' do

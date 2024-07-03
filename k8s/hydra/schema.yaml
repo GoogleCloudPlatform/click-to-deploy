@@ -1,0 +1,140 @@
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      Initial release.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  clusterConstraints:
+    resources:
+      - replicas: 1
+        requests:
+          cpu: 200m
+          memory: 200Mi
+
+  images:
+    '':
+      properties:
+        hydra.image.repo:
+          type: REPO_WITH_REGISTRY
+        hydra.image.tag:
+          type: TAG
+    postgresql:
+      properties:
+        postgresql.image:
+          type: FULL
+    postgresql-exporter:
+      properties:
+        postgresql.exporter.image:
+          type: FULL
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
+
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  postgresql.persistence.storageClass:
+    type: string
+    title: PostgreSQL StorageClass
+    description: You can choose an existing StorageClass or create a new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  postgresql.persistence.size:
+    type: string
+    title: PostgreSQL storage size
+    description: Storage size for PostgreSQL persistent volume.
+    default: '8Gi'
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  ingress.public.enabled:
+    type: boolean
+    title: Expose Public API Endpoint
+    description: Enable Ingress for Public API Endpoint.
+    default: false
+  ingress.admin.enabled:
+    type: boolean
+    title: Expose Administrative API Endpoint
+    description: Enable Ingress for Administrative API Endpoint.
+    default: false
+  hydra.memoryRequest:
+    type: string
+    title: Request memory for Hydra
+    description: Memory for a Hydra Pod
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i$'
+    default: '128Mi'
+  hydra.cpuRequest:
+    type: string
+    title: Request CPU for Hydra
+    description: CPU for a Hydra Pod
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?m$'
+    default: '100m'
+  hydra.dangerousForceHttp:
+    type: boolean
+    title: Disable HTTP/2 over TLS (HTTPS)
+    description: Disable HTTP/2 over TLS (HTTPS) and serves HTTP instead. After enabling "HTTP/2 over TLS (HTTPS)" you will have to configure some other options. For more information see the [reference configuration | Ory Hydra](https://www.ory.sh/docs/hydra/reference/configuration).
+    default: true
+  hydra.config.urls.login:
+    type: string
+    title: Login endpoint of the User Login & Consent flow.
+    description: Sets the login endpoint of the User Login & Consent flow.
+  hydra.config.urls.logout:
+    type: string
+    title: Logout endpoint of the User Login & Consent flow.
+    description: Sets the logout endpoint of the User Login & Consent flow.
+  hydra.config.urls.consent:
+    type: string
+    title: The consent endpoint of the User Login & Consent flow.
+    description: Sets the consent endpoint of the User Login & Consent flow.
+  hydra.config.urls.self.issuer:
+    type: string
+    title: This value will be used as the "issuer" in access and ID tokens.
+    description: Sets value that will be used as the "issuer" in access and ID tokens. It must be specified and using HTTPS protocol, unless --dangerous-force-http is set. This should typically be equal to the public value.
+  metrics.exporter.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters, export of metrics to Stackdriver is not supported yet.
+    default: false
+
+  # Generated values
+  postgresql.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 32
+  certificate-admin:
+    type: string
+    x-google-marketplace:
+      type: TLS_CERTIFICATE
+      tlsCertificate:
+        generatedProperties:
+          base64EncodedPrivateKey: ingress.admin.tls.base64EncodedPrivateKey
+          base64EncodedCertificate: ingress.admin.tls.base64EncodedCertificate
+  certificate-public:
+    type: string
+    x-google-marketplace:
+      type: TLS_CERTIFICATE
+      tlsCertificate:
+        generatedProperties:
+          base64EncodedPrivateKey: ingress.public.tls.base64EncodedPrivateKey
+          base64EncodedCertificate: ingress.public.tls.base64EncodedCertificate
+
+required:
+- name
+- namespace
+- metrics.exporter.enabled

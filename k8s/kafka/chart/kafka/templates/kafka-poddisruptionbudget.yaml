@@ -1,0 +1,13 @@
+{{- if not .Values.kafka.standalone}}
+apiVersion: "policy/v1"
+kind: "PodDisruptionBudget"
+metadata:
+  name: "{{ .Release.Name }}-kafka-pdb"
+  labels: &KafkaDeploymentLabels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: kafka
+spec:
+  selector:
+    matchLabels: *KafkaDeploymentLabels
+  maxUnavailable: 1
+{{- end}}

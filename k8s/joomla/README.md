@@ -184,14 +184,14 @@ It is advised to use stable image reference which you can find on
 Example:
 
 ```shell
-export TAG="3.9.15-20200311-092327"
+export TAG="4.2.9-<BUILD_ID>"
 ```
 
 Alternatively you can use short tag which points to the latest image for selected version.
 > Warning: this tag is not stable and referenced image might change over time.
 
 ```shell
-export TAG="3.9"
+export TAG="4.2"
 ```
 
 Configure the container images:

@@ -1,0 +1,93 @@
+---
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "{{ .Release.Name }}"
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": "postgresql", "partner_name": "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+spec:
+  descriptor:
+    type: Argo-Workflows
+    version: "{{ .Values.argo_workflows.image.tag }}"
+    description: |-
+      Argo Workflows is an open source container-native workflow engine for orchestrating parallel jobs on Kubernetes.
+
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/argo-workflows/).
+      Additional community support is available on [official Slack channel](https://argoproj.github.io/community/join-slack).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy Argo Workflows'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/argo-workflows/README.md
+    - description: 'Argo Workflows: Getting Started'
+      url: https://argoproj.github.io/argo-workflows/quick-start/
+    notes: |-
+      # Access Argo Workflows Server UI
+
+      Forward the Server UI port locally:
+
+      ```
+      kubectl port-forward \
+        --namespace "${NAMESPACE}" \
+        "${APP_INSTANCE_NAME}-server" 2746
+      ```
+
+      Access the UI at https://localhost:2746/
+  info:
+  - name: Application Namespace
+    value: "{{ .Release.Namespace }}"
+  - name: server-service
+    type: Reference
+    valueFrom:
+      serviceRef:
+        name: "{{ .Release.Name }}-server"
+  - name: controller-service
+    type: Reference
+    valueFrom:
+      serviceRef:
+        name: "{{ .Release.Name }}-controller"
+  - name: Database user
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: username
+        name: argo-pg-secret
+  - name: Database password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: password
+        name: argo-pg-secret
+  - name: Argo ServiceAccount
+    value: "{{ .Values.argo_workflows.sa.argo }}"
+  - name: Argo Server ServiceAccount
+    value: "{{ .Values.argo_workflows.sa.server }}"
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "{{ .Release.Name }}"
+  componentKinds:
+  - group: apps/v1
+    kind: Deployment
+  - group: apps/v1
+    kind: StatefulSet
+  - group: v1
+    kind: PersistentVolumeClaim
+  - group: v1
+    kind: Secret
+  - group: v1
+    kind: Service
+  - group: v1
+    kind: ConfigMap
+  - group: rbac.authorization.k8s.io/v1
+    kind: RoleBinding
+  - group: rbac.authorization.k8s.io/v1
+    kind: ClusterRoleBinding
+  - group: rbac.authorization.k8s.io/v1
+    kind: Role

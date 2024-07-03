@@ -1,0 +1,113 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_beauty
+# 
+# Translators:
+# Wil Odoo, 2023
+# Abe Manyo, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:21+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Abe Manyo, 2023\n"
+"Language-Team: Indonesian (https://app.transifex.com/odoo/teams/41243/id/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: id\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_text_image
+msgid ""
+"<br/>\n"
+"        Escape from everyday busy reality and treat your body with intensive care. Beauty and health go hand in hand. Take time to slow down in our relaxing spa, and everything you’re chasing will come around."
+msgstr ""
+"<br/>\n"
+"        Kabur dari kesulitan keseharian dan berikan badan Anda perawatan intensif. Kecantikan dan kesehatan selalu berdampingan. Ambil waktu untuk santai di spa kami, dan semua yang Anda kejar akan datang."
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_company_team
+msgid "Aline"
+msgstr "Aline"
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_call_to_action
+msgid "Beauty without <br/>expression is boring"
+msgstr "Beauty without <br/>expression is boring"
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_title
+msgid ""
+"Close your eyes and let yourself go in the expert hands of our beauticians."
+msgstr ""
+"Tutup mata Anda dan taruh kepercayaan pada tangan pakar-pakar ahli "
+"kecantikan kami."
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_product_list
+msgid "Essential oils"
+msgstr "Essential oils"
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_product_list
+msgid "Eyeliner"
+msgstr "Eyeliner"
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_company_team
+msgid "Iris"
+msgstr "Iris"
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_call_to_action
+msgid "Join us and enjoy the pleasure of caring for yourself."
+msgstr "Join us and enjoy the pleasure of caring for yourself."
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_product_list
+msgid "Lipstick"
+msgstr "Lipstik"
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_product_list
+msgid "Make-up"
+msgstr "Make-up"
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_company_team
+msgid "Mich"
+msgstr "Mich"
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_text_image
+msgid "Pamper Yourself"
+msgstr "Pamper Yourself"
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_product_list
+msgid "Perfume"
+msgstr "Parfum"
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_product_list
+msgid "Skin gel"
+msgstr "Gel kulit"
+
+#. module: theme_beauty
+#: model:ir.model,name:theme_beauty.model_theme_utils
+msgid "Theme Utils"
+msgstr "Utilities Tema"
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_company_team
+msgid "Tony"
+msgstr "Tony"
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_cover
+msgid "Working beauty <br/>from the inside out"
+msgstr "Working beauty <br/>from the inside out"

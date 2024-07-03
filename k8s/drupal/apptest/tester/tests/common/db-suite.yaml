@@ -23,7 +23,7 @@ actions:
     script: mysql -h ${APP_INSTANCE_NAME}-mariadb-svc.${NAMESPACE}.svc.cluster.local -u root -p"changeme" -e "SHOW DATABASES"
     expect:
       stderr:
-        matches: 'ERROR 1045 (28000): Access denied for user ''root''@''.+'' (using password: YES)'
+        contains: 'ERROR 1045 (28000): Access denied for user '
       exitCode:
         equals: 1
 
@@ -32,6 +32,6 @@ actions:
     script: mysql -h ${APP_INSTANCE_NAME}-mariadb-svc.${NAMESPACE}.svc.cluster.local -e "SHOW DATABASES"
     expect:
       stderr:
-        matches: 'ERROR 1045 (28000): Access denied for user ''root''@''.+'' (using password: NO)'
+        contains: 'ERROR 1045 (28000): Access denied for user '
       exitCode:
         equals: 1

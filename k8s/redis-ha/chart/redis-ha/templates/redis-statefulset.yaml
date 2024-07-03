@@ -180,6 +180,7 @@ spec:
     spec:
       accessModes:
         - ReadWriteOnce
+      storageClassName: {{ .Values.redis.persistence.storageClass }}
       resources:
         requests:
           storage: {{ .Values.redis.persistence.size | quote }}

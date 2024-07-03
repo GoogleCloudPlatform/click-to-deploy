@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,8 +17,10 @@ ENV['DEBIAN_FRONTEND'] = 'noninteractive'
 include_recipe 'apache2'
 include_recipe 'apache2::mod-passenger'
 include_recipe 'apache2::security-config'
-include_recipe 'mysql'
+include_recipe 'mysql::version-8.0-embedded'
 include_recipe 'rvm'
+
+include_recipe 'redmine::ospo'
 
 apt_update 'update' do
   action :update

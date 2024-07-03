@@ -5,28 +5,16 @@ actions:
     expect:
       exitCode:
         equals: 0
-- name: Test nuclio build
-  bashTest:
-    script: |
-      REGISTRY_IP=$(host registry-service.${NAMESPACE}.svc.cluster.local | cut -d" " -f 4);
-      nuctl build hello-world \
-            --path /helloworld.py \
-            --registry ${REGISTRY_IP}:5000 \
-            --namespace ${NAMESPACE}
-    expect:
-      exitCode:
-        equals: 0
 - name: Test nuclio deploy
   bashTest:
     script: |
-      export NAMESPACE;
       timeout --preserve-status 180 bash -c '
-      REGISTRY_IP=$(host registry-service.${NAMESPACE}.svc.cluster.local | cut -d" " -f 4);
       nuctl deploy hello-world-${NAMESPACE} \
-            --run-image ${REGISTRY_IP}:5000/nuclio/processor-hello-world:latest \
+            --path /helloworld.py \
+            --registry "ttl.sh" \
+            --namespace ${NAMESPACE} \
             --runtime python:3.6 \
             --handler helloworld:handler \
-            --namespace ${NAMESPACE} \
             --platform kube \
             --readiness-timeout 90'
     expect:

@@ -134,27 +134,17 @@ export METRICS_EXPORTER_ENABLED=true
 Set up the image tag:
 
 It is advised to use a stable image reference, which you can find on
-[Marketplace Container Registry](https://marketplace.gcr.io/google/cert-manager).
+[Marketplace Container Registry](https://marketplace.gcr.io/google/cert-manager1).
 For example:
 
 ```shell
-export TAG="0.13.0-20200311-092536"
-```
-
-Alternatively, you can use a short tag which points to the latest image for
-the selected version.
-
-> Warning: This tag is not stable, and the image it references might change
-> over time.
-
-```shell
-export TAG="0.13"
+export TAG="1.13"
 ```
 
 Configure the container image:
 
 ```shell
-export IMAGE_CONTROLLER="marketplace.gcr.io/google/cert-manager"
+export IMAGE_CONTROLLER="marketplace.gcr.io/google/cert-manager1"
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/cert-manager/prometheus-to-sd:${TAG}"
 ```
 
@@ -176,37 +166,6 @@ command to create a new namespace:
 kubectl create namespace "${NAMESPACE}"
 ```
 
-##### Create dedicated Service Accounts
-
-Define the environment variables:
-
-```shell
-export CONTROLLER_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-cert-manager-controller"
-export WEBHOOK_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-cert-manager-webhook"
-export CAINJECTOR_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-cert-manager-cainjector"
-export CRD_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-crd-creator-job"
-```
-
-Expand the manifest to create Service Accounts:
-
-```shell
-cat resources/service-accounts.yaml \
-  | envsubst '${APP_INSTANCE_NAME} \
-              ${NAMESPACE} \
-              ${CONTROLLER_SERVICE_ACCOUNT} \
-              ${WEBHOOK_SERVICE_ACCOUNT} \
-              ${CAINJECTOR_SERVICE_ACCOUNT} \
-              ${CRD_SERVICE_ACCOUNT}' \
-    > "${APP_INSTANCE_NAME}_sa_manifest.yaml"
-```
-
-Create the accounts on the same cluster as `kubectl`:
-
-```shell
-kubectl apply -f "${APP_INSTANCE_NAME}_sa_manifest.yaml" \
-    --namespace "${NAMESPACE}"
-```
-
 #### Expand the manifest template
 
 Use `helm template` to expand the template. We recommend that you save the
@@ -215,15 +174,10 @@ expanded manifest file for future updates to your app.
 ```shell
 helm template "${APP_INSTANCE_NAME}" chart/cert-manager \
   --namespace "${NAMESPACE}" \
-  --set controller.image.repo="${IMAGE_CONTROLLER}" \
-  --set controller.image.tag="${TAG}" \
-  --set controller.serviceAccountName="${CONTROLLER_SERVICE_ACCOUNT}" \
+  --set image.repository="${IMAGE_CONTROLLER}" \
+  --set image.tag="${TAG}" \
   --set controller.replicas="${CONTROLLER_REPLICAS:-1}" \
-  --set deployer.image="gcr.io/cloud-marketplace-tools/k8s/deployer_helm:0.8.0" \
-  --set CDRJobServiceAccount="${CRD_SERVICE_ACCOUNT}" \
-  --set webhook.serviceAccountName="${WEBHOOK_SERVICE_ACCOUNT}" \
   --set webhook.replicas="${WEBHOOK_REPLICAS:-1}" \
-  --set cainjector.serviceAccountName="${CAINJECTOR_SERVICE_ACCOUNT}" \
   --set cainjector.replicas="${CAINJECTOR_REPLICAS:-1}" \
   --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED:-false}" \
   > "${APP_INSTANCE_NAME}_manifest.yaml"

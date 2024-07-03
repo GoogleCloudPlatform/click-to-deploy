@@ -10,10 +10,10 @@ APP_ID ?= $(CHART_NAME)
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 
-TRACK ?= 0.13
+TRACK ?= 1.13
 METRICS_EXPORTER_TAG ?= v0.5.1
 
-IMAGE_MAIN ?= $(SOURCE_REGISTRY)/cert-manager0:$(TRACK)
+IMAGE_MAIN ?= $(SOURCE_REGISTRY)/cert-manager1:$(TRACK)
 IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 # Main image

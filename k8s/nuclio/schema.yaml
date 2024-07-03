@@ -59,34 +59,44 @@ properties:
     default: null
     title: Docker credentials secret name
     description: Name of the Secret which contains login credentials for the Docker registry. To create this, follow the steps in the README.
-  dashboard.serviceAccountName:
-    type: string
-    title: Nuclio Dashboard Service Account
-    x-google-marketplace:
-      type: SERVICE_ACCOUNT
-      serviceAccount:
-        description: Service account used by Nuclio Dashboard StatefulSet
-        roles:
-        - type: ClusterRole
-          rulesType: CUSTOM
-          rules:
-             - apiGroups: ["nuclio.io"]
-               resources: ["nucliofunctions", "nuclioprojects", "nucliofunctionevents"]
-               verbs: ["*"]
-             - apiGroups: [""]
-               resources: ["nodes","pods"]
-               verbs: ["get", "list"]
-  controller.serviceAccountName:
+  nuclio.serviceAccountName:
     type: string
     title: Nuclio Controller Service Account
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
-        description: Service account used by Nuclio Controller StatefulSet
+        description: Service account used by Nuclio Controller and Dashboard StatefulSets
         roles:
         - type: ClusterRole
-          rulesType: PREDEFINED
-          rulesFromRoleName: cluster-admin
+          rulesType: CUSTOM
+          rules:
+            - apiGroups: ["nuclio.io"]
+              resources: ["nucliofunctions", "nuclioprojects", "nucliofunctionevents", "nuclioapigateways"]
+              verbs: ["*"]
+            - apiGroups: [""]
+              resources: ["services", "configmaps", "pods", "pods/log", "events", "secrets"]
+              verbs: ["*"]
+            - apiGroups: ["apps", "extensions"]
+              resources: ["deployments"]
+              verbs: ["*"]
+            - apiGroups: ["extensions","networking.k8s.io"]
+              resources: ["ingresses"]
+              verbs: ["*"]
+            - apiGroups: ["autoscaling"]
+              resources: ["horizontalpodautoscalers"]
+              verbs: ["*"]
+            - apiGroups: ["metrics.k8s.io", "custom.metrics.k8s.io"]
+              resources: ["*"]
+              verbs: ["*"]
+            - apiGroups: ["batch"]
+              resources: ["jobs", "cronjobs"]
+              verbs: ["*"]
+            - apiGroups: [""]
+              resources: ["endpoints","nodes"]
+              verbs: ["get","list"]
+            - apiGroups: ["apiextensions.k8s.io"]
+              resources: ["customresourcedefinitions"]
+              verbs: ["get","list","create"]
   CDRJobServiceAccount:
     type: string
     title: CRD deployer Service Account
@@ -100,7 +110,7 @@ properties:
           rules:
             - apiGroups: ["apiextensions.k8s.io"]
               resources: ["customresourcedefinitions"]
-              verbs: ["get","list","create"]
+              verbs: ["get","list","create","patch"]
   deployerHelm.image:
     type: string
     x-google-marketplace:

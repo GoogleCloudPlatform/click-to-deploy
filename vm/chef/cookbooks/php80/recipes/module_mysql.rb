@@ -12,4 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-package 'php8.0-mysql'
+package 'php8.0-mysql' do
+  action :install
+  retries 5
+  retry_delay 20
+end

@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2021 Google Inc.
+# Copyright 2022 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,52 +14,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source /opt/c2d/c2d-utils
+source /opt/c2d/kafka-utils
 
+readonly kafka_user="$(get_attribute_value "kafka-user")"
+readonly kafka_password="$(get_attribute_value "kafka-password")"
 readonly kafka_nodes="$(get_attribute_value "kafka-nodes")"
 readonly kafka_nodes_count="$(echo "${kafka_nodes}" | wc -w)"
-readonly kafka_config="/opt/kafka/config/server.properties"
-readonly zookeeper_config="/opt/kafka/config/zookeeper.properties"
 
-# Configure Kafka in Cluster mode
+# Stop Kafka
+systemctl stop kafka
+
+# # Configure Kafka in Cluster mode
 if [[ "${kafka_nodes_count}" -gt 1 ]]; then
-  echo "Starting cluster-mode configuration..."
-
-  # Get Broker Id
-  declare current_node_id="$(hostname -a | awk -F '-' '{ print $NF }')"
-  declare broker_id="$((current_node_id + 1))"
-
-  # Get Zookeeper Master
-  declare zookeeper_master="$(echo "${kafka_nodes}" | cut -f 1 -d ' ')"
-  declare zookeeper_master_ip="$(getent hosts "${zookeeper_master}" | awk '{ print $1 }')"
-  declare zookeeper_master_port="2181"
-  declare zookeeper_connection="${zookeeper_master_ip}:${zookeeper_master_port}"
-
-  # Stop Kafka
-  systemctl stop kafka
-
-  # Configure Zookeeper
-  mkdir -p /var/data/kafka
-
-  # Configure Zookeeper Set data dir
-  sed -i 's@dataDir=/tmp/zookeeper@data=/var/data/kafka@g' "${zookeeper_config}"
-
-  # Remove existing Kafka settings
-  sed -i '/broker.id=0/d' "${kafka_config}"
-  sed -i '/log.dirs/d' "${kafka_config}"
-  sed -i '/zookeeper.connect=/d' "${kafka_config}"
-
-  # Create new configurations
-  cat << EOF >> "${kafka_config}"
-######## C2D Custom Configuration ########
-broker.id=${broker_id}
-broker.rack=RACK1
-logs.dirs=/var/data/kafka
-zookeeper.connect=${zookeeper_connection}
-EOF
-
-  # Start Kafka
-  systemctl start kafka
-
-  echo "Configuration finished."
+  setup_cluster_config "${kafka_nodes}" "${kafka_user}" "${kafka_password}"
+else
+  setup_kafka_auth "standalone" "${kafka_user}" "${kafka_password}"
 fi
+
+echo "Setup finished."
+
+# Start Kafka
+systemctl start kafka

@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,8 +13,8 @@
 # limitations under the License.
 
 default['mattermost']['packages'] = ['jq', 'nginx', 'gettext-base']
-default['mattermost']['version'] = '5.37.0'
-default['mattermost']['sha256'] = 'ff1f194047e4a395795b6a6b7de664ad0a0095d7762685745f842130154e97f5'
+default['mattermost']['version'] = '9.5.3'
+default['mattermost']['sha256'] = '7f665aa7fd794cecb308ff7b0461a65e29b001ad664cfe36c37ed14e836402c4'
 
 # OS Settings
 default['mattermost']['user'] = 'mattermost'
@@ -23,4 +23,4 @@ default['mattermost']['password'] = `openssl rand -base64 12 | fold -w 12 | head
 # DB Settings
 default['mattermost']['db']['name'] = 'mattermost'
 
-default['mattermost']['certbot']['version'] = '1.5.0'
+default['mattermost']['certbot']['version'] = '2.3.0'

@@ -1,7 +1,7 @@
 {
   "license": "c2d-redis",
-  "source_image_family": "debian-9",
+  "source_image_family": "debian-11",
   "chef": {
-    "run_list": [ "c2d-config", "redis", "stackdriver" ]
+    "run_list": [ "c2d-config", "redis", "google-cloud-ops-agent" ]
   }
 }

@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,34 +16,34 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 5/debian9/5.16
-  from: gcr.io/google-appengine/openjdk
+- dir: 6/debian11/6.0
+  from: marketplace.gcr.io/google/c2d-debian11
   packages:
     activemq:
-      sha512: 3394afe9963f55cf62dafb287bdc58cac1fb76a614cc87939bec7b7909972eb5b3069022a9eb324242a315899b1096335c0531af75152c74eb309c0c5981b217
-      version: 5.16.3
+      version: 6.0.1
+      major: '6'
+  repo: activemq6
+  tags:
+  - 6.0.1-debian11
+  - 6.0-debian11
+  - 6-debian11
+  - 6.0.1
+  - '6.0'
+  - '6'
+  - latest
+
+- dir: 5/debian11/5.18
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    activemq:
+      version: 5.18.3
+      major: '5'
   repo: activemq5
   tags:
-  - 5.16.3-debian9
-  - 5.16-debian9
-  - 5-debian9
-  - 5.16.3
-  - '5.16'
+  - 5.18.3-debian11
+  - 5.18-debian11
+  - 5-debian11
+  - 5.18.3
+  - '5.18'
   - '5'
   - latest
-  excludeTests:
-  - tests/functional_tests/activemq_start_test.yaml
-- dir: 5/debian9/5.15
-  from: gcr.io/google-appengine/openjdk
-  packages:
-    activemq:
-      sha512: bb8819e03a907ac82089b3573a4338d62eb84e58930fc74da5d3852b5088d317707e889ad1c625ecc2bb0948482f7fa83d20e8af3f49a6bd2817962a5ebe9850
-      version: 5.15.15
-  repo: activemq5
-  tags:
-  - 5.15.15-debian9
-  - 5.15-debian9
-  - 5.15.15
-  - '5.15'
-  excludeTests:
-  - tests/functional_tests/activemq_start_test.yaml

@@ -3,6 +3,7 @@ redis:
   masterGroupName: mymaster
   persistence:
     size: null
+    storageClass: null
   password: null
   image:
     repo: null

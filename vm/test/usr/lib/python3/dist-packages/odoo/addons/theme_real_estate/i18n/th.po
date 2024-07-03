@@ -1,0 +1,344 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_real_estate
+# 
+# Translators:
+# Wil Odoo, 2023
+# Rasareeyar Lappiam, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:22+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Rasareeyar Lappiam, 2024\n"
+"Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: th\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_numbers
+msgid "100+"
+msgstr "100+"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_numbers
+msgid "14,000"
+msgstr "14,000"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_numbers
+msgid "142"
+msgstr "142"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_numbers
+msgid "97%"
+msgstr "97%"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_quotes_carousel
+msgid "<b>Iris Doe</b> • Customer, sold an appartement"
+msgstr "<b>Iris Doe</b> • ลูกค้า ขายอพาร์ทเมนท์"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_quotes_carousel
+msgid "<b>Jane Doe</b> • Customer, bought a house"
+msgstr "<b>Jane Doe</b> • ลูกค้า ซื้อบ้าน"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_quotes_carousel
+msgid "<b>John Doe</b> • Customer, bought an appartement"
+msgstr "<b>John Doe</b> • ลูกค้า ซื้ออพาร์ตเมนต์"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_banner
+msgid "<b>Real Estate Agency.<br/>Near You.</b>"
+msgstr "<b>ตัวแทนอสังหาริมทรัพย์<br/>ใกล้คุณ</b>"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_three_columns
+msgid "<span class=\"text-600 fw-bold\">$1,295,000,000</span>"
+msgstr "<span class=\"text-600 fw-bold\">$1,295,000,000</span>"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_three_columns
+msgid "<span class=\"text-600 fw-bold\">$295,000</span>"
+msgstr "<span class=\"text-600 fw-bold\">$295,000</span>"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_three_columns
+msgid "<span class=\"text-600 fw-bold\">$455,000</span>"
+msgstr "<span class=\"text-600 fw-bold\">$455,000</span>"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_quotes_carousel
+msgid ""
+"Amazing team! smiling, always nice to talk with, they always have the best "
+"advices for you, adapted to your needs!"
+msgstr ""
+"เป็นทีมน่าทึ่ง ทุกคนยิ้มแย้ม ยินดีที่ได้พูดคุยด้วย "
+"พวกเขามีคำแนะนำที่ดีที่สุดให้กับคุณเสมอและพร้อมปรับคำแนะนำให้เข้ากับความต้องการของคุณ!"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_text_image
+msgid "Are you thinking of selling?"
+msgstr "คุณคิดที่จะขายหรือไม่?"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_text_block
+msgid ""
+"At <b>Odoo Travel Agency</b> our agents are more than a consultant, they are"
+" fellow <b>travelers with a passion</b> to help you explore the world. With "
+"more than 75 years combined experience you can be sure we are devoted to "
+"finding the best solutions for your travel plans."
+msgstr ""
+"ที่ <b>Odoo ทราเวลเอเจนซี่</b> ตัวแทนของเราเป็นมากกว่าที่ปรึกษา "
+"พวกเขาเป็นเพื่อน<b>นักเดินทางที่มีความหลงใหล</b>ที่จะช่วยคุณสำรวจโลก "
+"ด้วยประสบการณ์ที่สั่งสมมายาวนานกว่า 75 ปี "
+"คุณจึงมั่นใจได้ว่าเราทุ่มเทเพื่อค้นหาโซลูชั่นที่ดีที่สุดสำหรับแผนการเดินทางของคุณ"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_masonry_block_default_template
+msgid ""
+"At Real Estate Agency we have fixed price fees. This means we only charge "
+"when your home sale is confirmed."
+msgstr ""
+"ที่ตัวแทนอสังหาริมทรัพย์เรามีค่าธรรมเนียมราคาคงที่ "
+"ซึ่งหมายความว่าเราจะเรียกเก็บเงินเมื่อการขายบ้านของคุณได้รับการยืนยันเท่านั้น"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_image_text
+msgid "Bored with your interior?"
+msgstr "เบื่อกับการตกแต่งภายในของคุณหรือไม่?"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_image_text
+msgid ""
+"Discover our tailor-made services to embellish the decoration of your home."
+msgstr "ค้นพบบริการที่ออกแบบเฉพาะของเราเพื่อตกแต่งบ้านของคุณ"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_three_columns
+msgid ""
+"Elegant, modern sophisticated architecture with an impressive in large scale"
+" home designed with the finest imported finishes. Marble and wood floors..."
+msgstr ""
+"สถาปัตยกรรมหรูหราทันสมัยและซับซ้อนพร้อมบ้านขนาดใหญ่ที่น่าประทับใจซึ่งออกแบบด้วยวัสดุนำเข้าที่ดีที่สุด"
+" พื้นหินอ่อนและไม้..."
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_image_text
+msgid "Explore our services"
+msgstr "ค้นหาบริการของเรา"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_quotes_carousel
+msgid ""
+"From start to finish, they were extremely professional, friendly, helpful "
+"and easy to do business with. Very happy with the experience and the "
+"company."
+msgstr ""
+"ตั้งแต่ต้นจนจบ พวกเขาเป็นมืออาชีพอย่างยิ่ง เป็นมิตร ช่วยเหลือดี "
+"และง่ายต่อการทำธุรกิจด้วย มีความสุขมากกับประสบการณ์และบริษัท"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_three_columns
+msgid "House On The Hill"
+msgstr "บ้านบนเนินเขา"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_masonry_block_default_template
+msgid ""
+"Increase Visitor retention. Customer engagement on a website with virtual "
+"tour is 5 times longer compared to a site without it."
+msgstr ""
+"เพิ่มการรักษาผู้เยี่ยมชม "
+"การมีส่วนร่วมของลูกค้าบนเว็บไซต์ที่มีทัวร์เสมือนจริงนั้นยาวนานกว่า 5 "
+"เท่าเมื่อเทียบกับเว็บไซต์ที่ไม่มีทัวร์เสมือนจริง"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_masonry_block_default_template
+msgid "Increased Visibility"
+msgstr "เพิ่มการมองเห็น"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_text_image
+msgid ""
+"Make an appointment for a free valuation of your property. We visit the property, advise you on a realistic asking price and we explain our way of working. <br/>\n"
+"        You can decide in all freedom whether or not you would like to work with us for the sale of your property."
+msgstr ""
+"นัดหมายเพื่อประเมินราคาทรัพย์สินของคุณฟรี เราเยี่ยมชมสถานที่ ให้คำแนะนำคุณเกี่ยวกับราคาที่ถามได้จริง และเราอธิบายวิธีการทำงานของเรา <br/>\n"
+"        คุณสามารถตัดสินใจได้อย่างอิสระว่าคุณต้องการร่วมงานกับเราเพื่อขายทรัพย์สินของคุณหรือไม่"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_three_columns
+msgid "Moutain View"
+msgstr "วิวภูเขา"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_masonry_block_default_template
+msgid "No fixed fees"
+msgstr "ไม่มีค่าธรรมเนียมคงที่"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_banner
+msgid ""
+"Now you can find more than 5,000+ property choices with our professional "
+"agents!<br/>"
+msgstr ""
+"ขณะนี้คุณสามารถค้นหาตัวเลือกอสังหาริมทรัพย์มากกว่า 5,000+ "
+"รายการกับตัวแทนมืออาชีพของเรา!<br/>"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_picture
+msgid "Open your horizons"
+msgstr "เปิดโลกทัศน์ของคุณ"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_image_text
+msgid ""
+"Our decoration experts are at your disposal to guide you step by step in the"
+" design of your interior and will give you the best advice for your interior"
+" design."
+msgstr ""
+"ผู้เชี่ยวชาญด้านการตกแต่งของเราพร้อมให้คำแนะนำคุณในการออกแบบตกแต่งภายในทีละขั้นตอน"
+" และจะให้คำแนะนำที่ดีที่สุดสำหรับการออกแบบตกแต่งภายในของคุณ"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_three_columns
+msgid "Paradise Residence"
+msgstr "พาราไดซ์ เรสซิเดนซ์"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_quotes_carousel
+msgid ""
+"Positive energy, great team spirit, hard workers and awesome people! I "
+"warmly recommend them!"
+msgstr ""
+"พลังเชิงบวก จิตวิญญาณของทีมที่ยอดเยี่ยม การทำงานหนัก และผู้คนที่ยอดเยี่ยม! "
+"ฉันขอแนะนำพวกเขา!"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_masonry_block_default_template
+msgid "Premium Quality"
+msgstr "คุณภาพระดับพรีเมียม"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_masonry_block_default_template
+msgid "Pro Photo Shoot"
+msgstr "ถ่ายภาพมืออาชีพ"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_picture
+msgid "Property on the coasts of the Mediterranean."
+msgstr "สถานที่ให้บริการบนชายฝั่งทะเลเมดิเตอร์เรเนียน"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_banner
+msgid "See properties"
+msgstr "ดูคุณสมบัติ"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_three_columns
+msgid ""
+"The house is surrounded by garden terraces that create unique spaces and an "
+"intimate ambience. With no overlooking neighbours, the garden offers real "
+"privacy."
+msgstr ""
+"บ้านล้อมรอบด้วยระเบียงสวนที่สร้างพื้นที่อันเป็นเอกลักษณ์และบรรยากาศที่เป็นส่วนตัว"
+" ไม่มีเพื่อนบ้านให้เห็น สวนจึงให้ความเป็นส่วนตัวอย่างแท้จริง"
+
+#. module: theme_real_estate
+#: model:ir.model,name:theme_real_estate.model_theme_utils
+msgid "Theme Utils"
+msgstr "ยูทิลิตี้ธีม"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_masonry_block_default_template
+msgid ""
+"They say an image is worth a thousand words and we know you know how "
+"important it is to have the best photography."
+msgstr ""
+"เขาว่ากันว่าภาพหนึ่งภาพแทนคำพูดได้นับพันคำ "
+"และเรารู้ว่าคุณทราบดีว่าการถ่ายภาพที่ดีที่สุดนั้นสำคัญมากแค่ไหน"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_three_columns
+msgid "View details"
+msgstr "ดูรายละเอียด"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_call_to_action
+msgid "Want To Become A Real Estate Agent?"
+msgstr "ต้องการเป็นตัวแทนอสังหาริมทรัพย์หรือไม่?"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_three_columns
+msgid ""
+"Waste no time in viewing this truly stunning property. The property's "
+"surroundings really set it apart, offering idyllic sea views overlooking a "
+"park."
+msgstr ""
+"ไม่เสียเวลาในการดูสถานที่ที่งดงามนี้ "
+"สภาพแวดล้อมของสถานที่จริงทำให้เกิดความโดดเด่นมากยิ่งขึ้น "
+"มอบการมองเห็นที่สวยงามของทะเลที่มองเห็นได้จากสวนสาธารณะ"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_text_block
+msgid ""
+"We are <b>Odoo Travel Agency</b>, dedicated to making your vacation dreams "
+"come true! Overwhelmed with too many choices on the internet? We offer you "
+"answers, support, advice, and itineraries that will amaze you with their "
+"<b>thoroughness and thoughtfulness</b>."
+msgstr ""
+"เราคือ <b>Odoo ทราเวลเอเจนซี่</b> "
+"ที่ทุ่มเทเพื่อทำให้ความฝันการท่องเที่ยวของคุณเป็นจริง! "
+"คุณเห็นตัวเลือกบนอินเทอร์เน็ตที่มากเกินไปใช่ไหม เรามีคำตอบ การสนับสนุน "
+"คำแนะนำ และแผนการเดินทางที่จะทำให้คุณทึ่งด้วย<b>ความละเอียดและความรอบคอบ</b>"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_masonry_block_default_template
+msgid ""
+"We are committed to delivering high quality services that enhance your brand"
+" by allowing visitors to interact virtually."
+msgstr ""
+"เรามุ่งมั่นที่จะนำเสนอบริการคุณภาพสูงที่ช่วยยกระดับแบรนด์ของคุณโดยอนุญาตให้ผู้เยี่ยมชมโต้ตอบได้แบบเสมือนจริง"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_call_to_action
+msgid "We'll help you to grow your career and growth."
+msgstr "เราจะช่วยให้คุณเติบโตในอาชีพการงานและการเติบโตของคุณ"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_picture
+msgid ""
+"We’ve selected properties from all types and all areas.<br/>\n"
+"        The house of your dreams is around the corner."
+msgstr ""
+"เราได้คัดสรรคุณสมบัติจากทุกประเภทและทุกพื้นที่<br/>\n"
+"        บ้านในฝันของคุณอยู่ใกล้แค่เอื้อม"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_numbers
+msgid "amazing agents"
+msgstr "ตัวแทนที่น่าทึ่ง"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_numbers
+msgid "happy customers"
+msgstr "ลูกค้าที่มีความสุข"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_numbers
+msgid "offices"
+msgstr "สำนักงาน"
+
+#. module: theme_real_estate
+#: model_terms:theme.ir.ui.view,arch:theme_real_estate.s_numbers
+msgid "properties already sold"
+msgstr "ขายทรัพย์สินไปแล้ว"

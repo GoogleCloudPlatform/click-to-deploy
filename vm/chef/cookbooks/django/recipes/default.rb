@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+include_recipe 'c2d-config::default'
+include_recipe 'apache2::mod-wsgi'
+
 apt_update do
   action :update
 end
@@ -21,6 +24,20 @@ package node['django']['packages']
 bash 'install django via pip3' do
   user 'root'
   code <<-EOH
-    pip3 install django
+    pip3 install django gunicorn
 EOH
 end
+
+execute 'enable_apache_modules' do
+  command 'a2enmod proxy proxy_http'
+end
+
+template '/etc/apache2/sites-available/django.conf' do
+  source 'django.conf.erb'
+  action :create
+  owner 'root'
+  group 'root'
+  mode '0644'
+end
+
+c2d_startup_script 'django-config-setup'

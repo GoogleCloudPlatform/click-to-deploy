@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2021 Google Inc.
+# Copyright 2022 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,8 +15,16 @@
 # limitations under the License.
 
 start() {
+  set -x
+
+  # Start services
+  if [[ -f /opt/kafka/config/zookeeper_jaas.conf ]]; then
+    export KAFKA_OPTS="-Djava.security.auth.login.config=/opt/kafka/config/zookeeper_jaas.conf"
+  fi
   /opt/kafka/bin/zookeeper-server-start.sh -daemon /opt/kafka/config/zookeeper.properties
+
   sleep 10
+  export KAFKA_OPTS="-Djava.security.auth.login.config=/opt/kafka/config/kafka_server_jaas.conf"
   /opt/kafka/bin/kafka-server-start.sh -daemon /opt/kafka/config/server.properties
 }
 
@@ -24,7 +32,6 @@ stop(){
   /opt/kafka/bin/kafka-server-stop.sh /opt/kafka/config/server.properties
   /opt/kafka/bin/zookeeper-server-stop.sh /opt/kafka/config/zookeeper.properties
 }
-
 
 case "$1" in
   start)

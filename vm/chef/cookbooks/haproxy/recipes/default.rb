@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,9 +12,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-package 'install packages' do
-  package_name node['haproxy']['packages']
-  action :install
+include_recipe 'haproxy::ospo'
+# install haproxy package
+apt_repository 'haproxy' do
+  uri node['haproxy']['repo']['uri']
+  components node['haproxy']['repo']['components']
+  distribution node['haproxy']['repo']['distribution']
+  key node['haproxy']['repo']['keyserver']
+  trusted true
+  deb_src true
+end
+
+apt_update 'update' do
+  action :update
+end
+
+apt_preference 'haproxy' do
+  pin          "version #{node['haproxy']['apt_version']}"
+  pin_priority '1000'
+end
+
+package 'haproxy' do
+  :install
 end
 
 template '/etc/haproxy/haproxy.cfg' do

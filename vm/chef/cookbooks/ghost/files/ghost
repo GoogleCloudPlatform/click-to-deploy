@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2017 Google Inc.
+# Copyright 2023 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,14 +16,30 @@
 
 source /opt/c2d/c2d-utils || exit 1
 
-ghost_db_password="$(get_attribute_value "ghost-db-password")"
-declare -r ghost_db_password
+declare -r mysql_root_password="$(get_attribute_value "mysql-root-password")"
 
-mysql -u root -e "CREATE USER 'ghost'@'localhost' IDENTIFIED BY '${ghost_db_password}';"
-mysql -u root -e "GRANT ALL PRIVILEGES ON ghost_production.* TO 'ghost'@'localhost' IDENTIFIED BY '${ghost_db_password}';";
-mysql -u root -e "FLUSH PRIVILEGES;"
+declare -r ghost_user="ghost_app"
+declare -r ghost_db_name="ghost_production"
+declare -r ghost_db_user="ghost"
+declare -r ghost_db_password="$(get_attribute_value "ghost-db-password")"
+
+mysql -u root -p"${mysql_root_password}" -e "CREATE USER '${ghost_db_user}'@'localhost' IDENTIFIED WITH mysql_native_password BY '${ghost_db_password}';"
+mysql -u root -p"${mysql_root_password}" -e "GRANT ALL PRIVILEGES ON ${ghost_db_name}.* TO '${ghost_db_user}'@'localhost';";
+mysql -u root -p"${mysql_root_password}" -e "FLUSH PRIVILEGES;"
 
 cd /var/www/ghost
 
-ghost config --no-prompt --url="http://$(get_external_ip)" --dbpass="${ghost_db_password}"
-ghost setup --no-prompt --no-setup-mysql --no-setup-ssl
+mv /opt/c2d/ghost_app /etc/sudoers.d/ghost_app
+
+runuser ${ghost_user} -c "ghost install \
+  --no-stack \
+  --no-prompt \
+  --no-setup-ssl \
+  --url="http://$(get_external_ip)" \
+  --db=mysql \
+  --dbhost=localhost \
+  --dbuser="${ghost_db_user}" \
+  --dbname="${ghost_db_name}" \
+  --dbpass="${ghost_db_password}""
+
+rm /etc/sudoers.d/ghost_app

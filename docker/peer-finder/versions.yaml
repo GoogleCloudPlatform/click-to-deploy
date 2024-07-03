@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,19 +13,22 @@
 # limitations under the License.
 
 _variables:
-  from9: &from9 gcr.io/google-appengine/debian9:latest
+  from9: &from11 marketplace.gcr.io/google/c2d-debian11
 
 versions:
-  - dir: '0/debian9/0.1'
+  - dir: '0/debian11/0.1'
     repo: peer-finder0
     tags:
-      - '0.1-debian9'
+      - '0.1-debian11'
       - '0.1'
       - '0'
       - 'latest'
-    from: *from9
-    templateArgs:
-      peer_finder_notices_check_sum: '0a8f689176d60e15b61fba62513dea66186cd455cadeeb0ba5791d588f361fe5'
+    from: *from11
+    packages:
+      golang:
+        version: '1.20'
+      apimachinery:
+        version: 0.25.0
 
 cloudbuild:
   enable_parallel: false

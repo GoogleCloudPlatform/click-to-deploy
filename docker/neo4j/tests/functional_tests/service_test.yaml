@@ -15,7 +15,7 @@ setup:
 - command: [docker, run, -ti, --name, some-neo4j-$UNIQUE, -d, -e, "NEO4J_AUTH=neo4j/admin123", $IMAGE]
 - command: [docker, exec, some-neo4j-$UNIQUE, apt, update]
 - command: [docker, exec, some-neo4j-$UNIQUE, apt, -y, install, curl]
-- command: [sleep, 10s]
+- command: [sleep, 20s]
 
 teardown:
 - command: [docker, stop, some-neo4j-$UNIQUE]

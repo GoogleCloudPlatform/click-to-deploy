@@ -1,0 +1,109 @@
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      A regular update.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  images:
+    '':
+      properties:
+        kafka.image.repo:
+          type: REPO_WITH_REGISTRY
+        kafka.image.tag:
+          type: TAG
+    zookeeper:
+      properties:
+        zookeeper.image:
+          type: FULL
+    exporter:
+      properties:
+        exporter.image:
+          type: FULL
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
+
+
+  clusterConstraints:
+    resources:
+      - replicas: 3
+        requests:
+          cpu: 500m
+          memory: 1Gi
+        affinity:
+          simpleNodeAffinity:
+            type: REQUIRE_ONE_NODE_PER_REPLICA
+            minimumNodeCount: 3
+
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  deployer.image:
+    type: string
+    x-google-marketplace:
+      type: DEPLOYER_IMAGE
+  persistence.storageClass:
+    type: string
+    title: StorageClass
+    description: You can choose an existing StorageClass or create new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  kafka.standalone:
+    type: boolean
+    title: Kafka Standalone mode
+    description: Kafka Standalone mode is mainly for development and testing purposes. If this option is enabled external ZooKeeper ensemble will not be deployed and authentication will be disabled for the Kafka services.
+    default: false
+  persistence.kafka.storage.size:
+    type: string
+    title: Storage size for Kafka instance
+    default: "10Gi"
+    description: Kafka instance storage size
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  persistence.zookeeper.storage.size:
+    type: string
+    title: Storage size for ZooKeeper instance
+    default: "5Gi"
+    description: ZooKeeper instance storage size
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  kafka.kUser:
+    type: string
+    title: Kakfa username
+    default: "kafka"
+    description: Username for kafka auth
+    pattern: '^[a-zA-Z]{1,10}$'
+  kafka.kPassword:
+    type: string
+    title: Kakfa user password
+    description: User password for kafka auth
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 10
+        includeSymbols: False
+        base64: False
+  metrics.exporter.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project must have Stackdriver enabled. Non-GCP clusters cannot export metrics to Stackdriver.
+    default: false
+
+required:
+- name
+- namespace
+- persistence.kafka.storage.size
+- persistence.zookeeper.storage.size

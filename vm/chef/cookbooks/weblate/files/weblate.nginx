@@ -1,0 +1,29 @@
+server {
+    listen 80;
+    server_name weblate;
+    # Not used
+    root /var/www/html;
+
+    location ~ ^/favicon.ico$ {
+        alias /opt/weblate-env/lib/python3.9/site-packages/data/static/favicon.ico;
+        expires 30d;
+    }
+
+    location /static/ {
+        # DATA_DIR/static/
+        alias /opt/weblate-env/lib/python3.9/site-packages/data/static/;
+        expires 30d;
+    }
+
+    location /media/ {
+        alias /opt/weblate-env/lib/python3.9/site-packages/data/media/;
+        expires 30d;
+    }
+
+    location / {
+        include uwsgi_params;
+        # Needed for long running operations in admin interface
+        uwsgi_read_timeout 3600;
+        uwsgi_pass 127.0.0.1:8080;
+    }
+}

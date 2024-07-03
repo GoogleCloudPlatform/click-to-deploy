@@ -25,7 +25,7 @@ setup:
   - gitlab-$UNIQUE-id
   - '-d'
   - '$IMAGE'
-- command: [sleep, 600s]
+- command: [sleep, 1600s]
 
 teardown:
 - command: [docker, stop, gitlab-$UNIQUE-id]

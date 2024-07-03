@@ -154,14 +154,14 @@ It is advised to use stable image reference which you can find on
 Example:
 
 ```shell
-export TAG="10.3.22-20200311-092534"
+export TAG="11.0.3-<BUILD_ID>"
 ```
 
 Alternatively you can use short tag which points to the latest image for selected version.
 > Warning: this tag is not stable and referenced image might change over time.
 
 ```shell
-export TAG="10.3"
+export TAG="11.0"
 ```
 
 Configure the container images:
@@ -172,7 +172,6 @@ IMAGE_REGISTRY="marketplace.gcr.io/google"
 export IMAGE_MARIADB="${IMAGE_REGISTRY}/mariadb-galera"
 export IMAGE_MYSQL_EXPORTER="${IMAGE_REGISTRY}/mariadb-galera/mysqld-exporter:${TAG}"
 export IMAGE_METRICS_EXPORTER="${IMAGE_REGISTRY}/mariadb-galera/prometheus-to-sd:${TAG}"
-export IMAGE_PEER_FINDER="${IMAGE_REGISTRY}/mariadb-galera/peer-finder:${TAG}"
 ```
 
 Specify the number of replicas for your MariaDB Galera cluster:
@@ -257,7 +256,6 @@ helm template chart/mariadb-galera \
   --set db.exporter.password="$EXPORTER_DB_PASSWORD" \
   --set metrics.image="$IMAGE_METRICS_EXPORTER" \
   --set metrics.exporter.enabled="$METRICS_EXPORTER_ENABLED" \
-  --set peerFinder.image="$IMAGE_PEER_FINDER" \
   --set tls.base64EncodedPrivateKey="$TLS_CERTIFICATE_KEY" \
   --set tls.base64EncodedCertificate="$TLS_CERTIFICATE_CRT" \
   --set db.replicas="$REPLICAS" \

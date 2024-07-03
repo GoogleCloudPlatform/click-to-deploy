@@ -34,7 +34,7 @@ include_recipe 'apache2::mod-rewrite'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 
-include_recipe 'mysql'
+include_recipe 'mysql::version-8.0-embedded'
 
 # Restart Apache2 to have php modules enabled and active.
 service 'apache2' do
@@ -59,7 +59,7 @@ end
 
 remote_file '/tmp/dolibarr.tar.gz' do
   source "https://github.com/Dolibarr/dolibarr/archive/refs/tags/#{node['dolibarr']['version']}.tar.gz"
-  verify "echo '#{node['dolibarr']['sha1']} %{path}' | sha1sum -c"
+  verify "echo '#{node['dolibarr']['sha256']} %{path}' | sha256sum -c"
   action :create
 end
 

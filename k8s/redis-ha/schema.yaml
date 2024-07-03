@@ -55,6 +55,14 @@ properties:
     description: Number of replicas of the Redis
     default: 3
     minimum: 3
+  redis.persistence.storageClass:
+    type: string
+    title: StorageClass
+    description: You can choose an existing StorageClass or create a new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
   redis.persistence.size:
     type: string
     title: Redis Storage size for persistent volumes

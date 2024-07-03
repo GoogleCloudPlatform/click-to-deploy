@@ -6,7 +6,7 @@ include ../images.Makefile
 CHART_NAME := activemq
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 5.15
+TRACK ?= 5.18
 
 VERIFY_WAIT_TIMEOUT = 1800
 

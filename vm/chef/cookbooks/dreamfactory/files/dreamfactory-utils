@@ -1,0 +1,149 @@
+#!/bin/bash -eu
+#
+# Copyright 2023 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+source /opt/c2d/c2d-utils || exit 1
+
+#######################################
+# Create a user for Dreamfactory application in MySQL database.
+# Arguments:
+#   MySQL Username to be created.
+#   MySQL Password for username created.
+#   MySQL Database Name.
+#######################################
+function setup_mysql_user() {
+  local -r db_user="$1"
+  local -r db_password="$2"
+  local -r db_name="$3"
+  local -r root_password="$4"
+
+  mysql -u root -p"${root_password}" -e "CREATE DATABASE ${db_name} CHARACTER SET utf8 COLLATE utf8_general_ci;"
+  mysql -u root -p"${root_password}" -e "CREATE USER '${db_user}'@'localhost' IDENTIFIED WITH mysql_native_password BY '${db_password}';"
+  mysql -u root -p"${root_password}" -e "GRANT SELECT, INSERT, UPDATE, DELETE, REFERENCES, CREATE, DROP, INDEX, ALTER, CREATE TEMPORARY TABLES ON ${db_name}.* TO '${db_user}'@'localhost';";
+  mysql -u root -p"${root_password}" -e "FLUSH PRIVILEGES;"
+}
+
+#######################################
+# Create DreamFactory configuration file.
+# Arguments:
+#   MySQL Database.
+#   MySQL Username.
+#   MySQL Password.
+#   Redis Password.
+#######################################
+function create_config_file() {
+  local db_name="$1"
+  local db_user="$2"
+  local db_password="$3"
+  local redis_password="$4"
+
+  php artisan df:env \
+    --db_connection="mysql" \
+    --db_host="localhost" \
+    --db_port="3306" \
+    --db_database="${db_name}" \
+    --db_username="${db_user}" \
+    --db_password="${db_password}" \
+    --no-interaction
+
+  # Configure Cache settings
+  sed -i "s/#CACHE_HOST=/CACHE_HOST=localhost/" "${df_config_file}"
+  sed -i "s/#CACHE_DATABASE=2/CACHE_DATABASE=2/" "${df_config_file}"
+  sed -i "s/CACHE_DRIVER=file/CACHE_DRIVER=redis/" "${df_config_file}"
+  sed -i "s/#CACHE_PORT=/CACHE_PORT=6379/" "${df_config_file}"
+  sed -i "s/#CACHE_PASSWORD=/CACHE_PASSWORD=${redis_password}/" "${df_config_file}"
+}
+
+#######################################
+# Configure PHP with recommended settings.
+#######################################
+function configure_phpfpm() {
+  local -r php_version="$(php -v | awk '/PHP [0-9]+\.[0-9]+/ {print $2}' | grep -o -P "^[0-9]+\.[0-9]+")"
+  local -r phpfpm_config="/etc/php/${php_version}/fpm/pool.d/www.conf"
+  sed -i "s/pm.max_children = 5/pm.max_children = 5000/" "${phpfpm_config}"
+  sed -i "s/pm.start_servers = 2/pm.start_servers = 150/" "${phpfpm_config}"
+  sed -i "s/pm.min_spare_servers = 1/pm.min_spare_servers = 100/" "${phpfpm_config}"
+  sed -i "s/pm.max_spare_servers = 3/pm.max_spare_servers = 200/" "${phpfpm_config}"
+  sed -i "s/pm = dynamic/pm = ondemand/" "${phpfpm_config}"
+  sed -i "s|listen = /run/php/.*$|listen = /var/run/php/php-fpm.sock|g" "${phpfpm_config}"
+  systemctl restart "php${php_version}-fpm"
+}
+
+#######################################
+# Configure NGINX with recommended settings.
+#######################################
+function configure_nginx() {
+  declare nginx_config="/etc/nginx/nginx.conf"
+  sed -i "s/worker_connections.*;/worker_connections 2048;/" "${nginx_config}"
+  sed -i "s/keepalive_timeout.*;/keepalive_timeout 10;/" "${nginx_config}"
+}
+
+#######################################
+# Setup initial database for DreamFactory.
+# A first-user is also created.
+# Arguments:
+#   First name.
+#   Last name.
+#   Administrator Email.
+#   Administrator Password.
+#######################################
+function setup_database() {
+  local -r first_name="$1"
+  local -r last_name="$2"
+  local -r email="$3"
+  local -r password="$4"
+
+  php artisan df:setup \
+    --admin_first_name="${first_name}" \
+    --admin_last_name="${last_name}" \
+    --admin_email="${email}" \
+    --admin_password="${password}" \
+    --admin_phone="000000000000" \
+    --no-interaction
+}
+
+#######################################
+# Await application respond with success.
+#######################################
+function wait_for_app() {
+  local max_retries=10
+  local retry=1
+  local http_code=0
+
+  echo "Checking for app readiness..."
+
+  while [[ "${http_code}" -ne 200 && "${retry}" -le "${max_retries}" ]]; do
+    echo "Retry: ${retry}"
+    http_code="$(curl \
+                  --silent \
+                  --insecure \
+                  --location \
+                  --output /dev/null \
+                  --write-out "%{http_code}" https://localhost)"
+    echo "Http Code: ${http_code}"
+    (( retry=retry+1 ))
+
+    if [[ "${http_code}" -ne 200 ]]; then
+      sleep 30
+    fi
+  done
+
+  if [[ "${retry}" -gt "${max_retries}" ]]; then
+    echo "Max retries exceeded."
+    exit 1
+  else
+    echo "App is ready."
+  fi
+}

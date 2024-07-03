@@ -20,7 +20,7 @@ apt_repository 'add_neo4j_repo' do
   uri node['neo4j']['repository_url']
   components ['stable', node['neo4j']['version']]
   keyserver node['neo4j']['keyserver_url']
-  distribution false
+  distribution nil
   trusted true
 end
 
@@ -42,10 +42,12 @@ service 'neo4j.service' do
 end
 
 # Clone neo4j source code per license requirements.
-git '/usr/src/neo4j' do
-  repository 'https://github.com/neo4j/neo4j.git'
-  reference node['neo4j']['version']
-  action :checkout
+apt_repository 'add_neo4j_repo' do
+  uri node['neo4j']['repository_url']
+  components ['stable', node['neo4j']['version']]
+  keyserver node['neo4j']['keyserver_url']
+  distribution nil
+  trusted true
 end
 
 # Copy startup script

@@ -1,6 +1,6 @@
 # Overview
 
-Neo4j Community Edition 4.x is an open source graph database management system,
+Neo4j Community Edition 5.x is an open source graph database management system,
 written in Java. It provides a web dashboard for managing data and users. You
 can access its service by using an HTTP REST API or the Bolt binary protocol.
 
@@ -132,9 +132,9 @@ export NAMESPACE=default
 Configure the container image:
 
 ```shell
-TAG=4.0
+TAG=5.5
 export IMAGE_REGISTRY="marketplace.gcr.io/google"
-export IMAGE_NEO4J_CE="${IMAGE_REGISTRY}/neo4j4"
+export IMAGE_NEO4J_CE="${IMAGE_REGISTRY}/neo4j5"
 ```
 
 For persistent disk provisioning of the Neo4j CE servers, you must:

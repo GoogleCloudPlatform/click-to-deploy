@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,4 +16,8 @@ default['wordpress-ha']['user'] = 'www-data'
 default['wordpress-ha']['version'] = 'latest'
 default['wordpress-ha']['cli']['url'] = 'https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar'
 default['wordpress-ha']['temp_packages'] = ['unzip']
-default['wordpress-ha']['wp-stateless']['version'] = '2.3.2'
+default['wordpress-ha']['wp-stateless']['version'] = '3.2.2'
+default['wordpress-ha']['packages'] = [
+  'mysql-client',
+  'openssl',
+]

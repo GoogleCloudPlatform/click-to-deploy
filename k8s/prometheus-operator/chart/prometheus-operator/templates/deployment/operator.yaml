@@ -4,7 +4,7 @@ metadata:
   labels:
     app.kubernetes.io/component: controller
     app.kubernetes.io/name: "{{ .Release.Name }}"
-    app.kubernetes.io/version: v{{ .Values.operator.image.tag }}
+    app.kubernetes.io/version: v{{ .Values.operator.image.track }}
   name: {{ template "prometheus_operator.DeploymentName" . }}
 spec:
   replicas: 1 {{- /* Should be only one replica. */}}
@@ -17,12 +17,12 @@ spec:
       labels:
         app.kubernetes.io/component: controller
         app.kubernetes.io/name: "{{ .Release.Name }}"
-        app.kubernetes.io/version: v{{ .Values.operator.image.tag }}
+        app.kubernetes.io/version: v{{ .Values.operator.image.track }}
     spec:
       containers:
       - args:
         - --kubelet-service=kube-system/kubelet
-        - --logtostderr=true
+        - --prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v{{ .Values.operator.image.track }}
         image: {{ .Values.operator.image.repo }}:{{ .Values.operator.image.tag }}
         name: prometheus-operator
         ports:

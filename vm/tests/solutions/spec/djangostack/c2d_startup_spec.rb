@@ -32,4 +32,8 @@ describe 'C2D startup scripts should exists' do
   describe file('/opt/c2d/scripts/01-mysql') do
     it { should exist }
   end
+
+  describe file('/opt/c2d/scripts/03-django-config-setup') do
+    it { should exist }
+  end
 end

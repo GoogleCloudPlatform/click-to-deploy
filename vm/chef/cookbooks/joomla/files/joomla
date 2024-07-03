@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2017 Google Inc.
+# Copyright 2021 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,11 +14,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source /opt/c2d/c2d-utils || exit 1
+source /opt/c2d/joomla-utils || exit 1
 
-joomla_password="$(get_attribute_value "joomla-db-password")"
-declare -r joomla_password
+declare -r joomla_db_password="$(get_attribute_value "joomla-db-password")"
+declare -r mysql_password="$(get_attribute_value "mysql-root-password")"
+declare -r joomla_db_name="joomla_db"
+declare -r joomla_db_username="joomla"
 
-mysql -u root -e "CREATE USER 'joomla'@'localhost' IDENTIFIED BY '${joomla_password}';"
-mysql -u root -e "GRANT ALL PRIVILEGES ON joomla.* TO 'joomla'@'localhost' IDENTIFIED BY '${joomla_password}'";
-mysql -u root -e "FLUSH PRIVILEGES"
+echo "Creating database user..."
+create_db_user "${mysql_password}" "${joomla_db_password}" "${joomla_db_name}" "${joomla_db_username}"
+
+echo "Waiting application to be ready..."
+wait_for_app
+
+echo "Installation complete!"

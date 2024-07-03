@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,10 +18,10 @@ include_recipe 'c2d-config::default'
 include_recipe 'apache2::default'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
-include_recipe 'postgresql::default'
+include_recipe 'postgresql::standalone_bullseye'
 
-package 'install openjdk-11-jdk' do
-  package_name 'openjdk-11-jdk'
+package 'install openjdk-17-jdk' do
+  package_name 'openjdk-17-jdk'
   action :install
 end
 

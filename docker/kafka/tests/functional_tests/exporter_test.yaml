@@ -1,0 +1,37 @@
+# Copyright 2019 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+setup:
+- command: [docker, network, create, kafka-$UNIQUE-network]
+- command: [docker, run, -d, --network, kafka-$UNIQUE-network, --hostname, zk-$UNIQUE-id, -e, ZOO_4LW_COMMANDS_WHITELIST="*", --name, zk-$UNIQUE-id, --restart, always, "marketplace.gcr.io/google/zookeeper3"]
+- command: [docker, run, -d, --network, kafka-$UNIQUE-network, --hostname, kafka-$UNIQUE-id-1, -e,"KAFKA_ZOOKEEPER_CONNECT=zk-$UNIQUE-id:2181", -e, "KAFKA_ADVERTISED_HOST_NAME=kafka-$UNIQUE-id-1", -e, "KAFKA_ADVERTISED_PORT=9092", -e, "KAFKA_PORT=9092",--name, kafka-$UNIQUE-id-1, 'marketplace.gcr.io/google/kafka2']
+- command: [sleep, 10s]
+- command: [docker, run, --network, kafka-$UNIQUE-network, --name, exporter-$UNIQUE-id, -d, '$IMAGE', '--kafka.server=kafka-$UNIQUE-id-1:9092']
+- command: [sleep, 5s]
+
+teardown:
+- command: [docker, stop, exporter-$UNIQUE-id, kafka-$UNIQUE-id-1, zk-$UNIQUE-id]
+- command: [docker, rm, exporter-$UNIQUE-id, kafka-$UNIQUE-id-1, zk-$UNIQUE-id]
+- command: [docker, network, rm, kafka-$UNIQUE-network]
+
+target: exporter-$UNIQUE-id
+tests:
+- name: Exporter can export data from Kafka
+  command:
+  - curl
+  - http://localhost:9308/metrics
+  expect:
+    stdout:
+      matches: 'kafka_brokers 1'
+

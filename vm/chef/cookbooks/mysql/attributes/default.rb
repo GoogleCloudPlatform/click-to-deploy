@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,6 +18,6 @@ default['mysql']['bind_address'] = 'localhost'
 default['mysql']['log_bin_trust_function_creators'] = '0'
 
 # Reference: https://dev.mysql.com/downloads/repo/apt/
-default['mysql']['apt']['file'] = 'mysql-apt-config_0.8.18-1_all.deb'
-default['mysql']['apt']['md5'] = 'e4859996303bd28a61b3261875560d62'
+default['mysql']['apt']['file'] = 'mysql-apt-config_0.8.29-1_all.deb'
+default['mysql']['apt']['md5'] = 'f732dd7d61d18dd67877c820d690756d'
 default['mysql']['apt']['url'] = "https://dev.mysql.com/get/#{node['mysql']['apt']['file']}"

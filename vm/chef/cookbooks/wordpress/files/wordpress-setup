@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2017 Google Inc.
+# Copyright 2023 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,34 +16,40 @@
 
 source /opt/c2d/c2d-utils || exit 1
 
-readonly wordpress_admin_username="admin"
-readonly wordpress_admin_password="$(get_attribute_value "wordpress-admin-password")"
-readonly wordpress_admin_email="$(get_attribute_value "wordpress-admin-email")"
-readonly wordpress_mysql_password="$(get_attribute_value "wordpress-mysql-password")"
 readonly mysql_root_password="$(get_attribute_value "mysql-root-password")"
+readonly wordpress_admin_username="admin"
+readonly wordpress_admin_email="$(get_attribute_value "wordpress-admin-email")"
+readonly wordpress_admin_password="$(get_attribute_value "wordpress-admin-password")"
+readonly wordpress_mysql_password="$(get_attribute_value "wordpress-mysql-password")"
+readonly wordpress_enable_https="$(get_attribute_value "wordpress-enable-https" \
+  | tr '[:upper:]' '[:lower:]')"
 
-mysql -u root -p"${mysql_root_password}" -e "CREATE USER 'wordpress'@'localhost' IDENTIFIED BY '${wordpress_mysql_password}'"
+# Stop Apache while Wordpress is not ready
+systemctl stop apache2
+
+mysql -u root -p"${mysql_root_password}" -e "CREATE USER 'wordpress'@'localhost' IDENTIFIED WITH mysql_native_password BY '${wordpress_mysql_password}';"
 echo "Created wordpress user."
-mysql -u root -p"${mysql_root_password}" -e "GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpress'@'localhost' IDENTIFIED BY '${wordpress_mysql_password}'"
+mysql -u root -p"${mysql_root_password}" -e "GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpress'@'localhost';"
 echo "Grant privileges to wordpress user."
 mysql -u root -p"${mysql_root_password}" -e "FLUSH PRIVILEGES"
 echo "Flushed privileges."
 
 sudo -u www-data wp config create \
---dbname=wordpress \
---dbuser=wordpress \
---dbpass="${wordpress_mysql_password}" \
---path=/var/www/html/ \
---force
+  --dbname=wordpress \
+  --dbuser=wordpress \
+  --dbpass="${wordpress_mysql_password}" \
+  --path=/var/www/html/ \
+  --force
 
 # Run the CLI installer for WordPress
-declare -a args
-args=(--title="WordPress on Google Compute Engine" \
---admin_user="${wordpress_admin_username}" \
---admin_password="${wordpress_admin_password}" \
---admin_email="${wordpress_admin_email}" \
---path=/var/www/html/ \
---skip-email)
+declare -a args=(
+  --title="WordPress on Google Compute Engine" \
+  --admin_user="${wordpress_admin_username}" \
+  --admin_password="${wordpress_admin_password}" \
+  --admin_email="${wordpress_admin_email}" \
+  --path=/var/www/html/ \
+  --skip-email
+)
 
 if has_external_ip; then
   args+=(--url="$(get_external_ip)")
@@ -52,3 +58,15 @@ else
 fi
 
 sudo -u www-data wp core install "${args[@]}"
+
+cd /var/www/html/
+sudo -u www-data wp cache flush
+
+# If https is enabled, apply the configuration
+if [[ "${wordpress_enable_https}" == "true" ]]; then
+  a2dissite wordpress-http
+  a2ensite wordpress-https
+fi
+
+# Start Apache after setup
+systemctl start apache2

@@ -1,0 +1,40 @@
+kafka:
+  image:
+    repo: null
+    tag: null
+  replicas: 3
+  # if set "true", kafka will be deployed as standalone mode with
+  # single kafka and zookeeper instances and no any authentication.
+  # Don't set true for production deployment
+  standalone: false
+
+  # Kafka user and password
+  kUser: kafka
+  kPassword: null
+
+metrics:
+  image: null
+  enabled: true
+  exporter:
+    enabled: false
+
+persistence:
+  storageClass: null
+  kafka:
+    storageSize: "10Gi"
+  zookeeper:
+    storageSize: "5Gi"
+
+zookeeper:
+  image: null
+  # The number of replicas must be 2n + 1 ZooKeeper servers where
+  # n is any number greater than 0. The odd number of servers allows
+  # ZooKeeper to perform majority elections for leadership.
+  # https://docs.confluent.io/platform/current/zookeeper/deployment.html#multi-node-setup
+  replicas: 3
+
+exporter:
+  image: null
+
+deployer:
+  image: null
