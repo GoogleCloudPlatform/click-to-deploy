@@ -43,6 +43,7 @@ systemctl restart mysql
 
 cd /var/www/ghost
 
+# Temporarily ghost user as sudoer
 echo "${ghost_user} ALL = (ALL) NOPASSWD:ALL" > /etc/sudoers.d/ghost_app
 
 # Install dependencies
@@ -70,6 +71,14 @@ runuser ${ghost_user} -c "ghost setup \
   --dbpass="${ghost_db_password}" \
   --no-prommpt"
 
+# Remove default nginx config
+rm -f /etc/nginx/conf.d/default.conf
+systemctl restart nginx
+
+# Remove sudoer for ghost suer
 rm /etc/sudoers.d/ghost_app
+
+# Pre-warm request
+curl http://localhost
 
 echo "Setup finished."
