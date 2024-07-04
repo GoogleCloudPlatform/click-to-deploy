@@ -20,7 +20,7 @@ end
 
 include_recipe 'mysql::version-8.0-embedded'
 include_recipe 'nginx'
-include_recipe 'nodejs::default'
+include_recipe 'nodejs::default_nodejs18'
 include_recipe 'ghost::ospo'
 
 file '/var/www/html/index.html' do

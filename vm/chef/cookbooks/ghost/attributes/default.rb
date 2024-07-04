@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['ghost']['cli']['version'] = '1.25.3'
+default['ghost']['cli']['version'] = '1.26.0'
 default['ghost']['app']['version'] = '5.82.1'
 default['ghost']['app']['install_dir'] = '/var/www/ghost'
 
