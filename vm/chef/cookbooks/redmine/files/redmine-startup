@@ -27,8 +27,7 @@ mysql -u root -e "FLUSH PRIVILEGES";
 
 # Temporay disable error handling for suppress errors from ruby
 set +eu \
-  && source /usr/local/rvm/scripts/rvm \
-  && set -eu
+  && source /usr/local/rvm/scripts/rvm
 
 export RAILS_ENV=production
 
@@ -41,3 +40,7 @@ mkdir -p /tmp && chown -R redmine:redmine tmp/
 
 # Replace default password for Redmine admin user:
 bin/rails runner "user = User.find_by_login('admin') ; user.password, user.password_confirmation = '${redmine_admin_password}'; user.save!" -e production
+
+set -eu
+
+echo "Setup finished."
