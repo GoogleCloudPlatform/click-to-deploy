@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2017 Google Inc.
+# Copyright 2024 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,19 +25,22 @@ mysql -u root -e "SET PASSWORD FOR 'redmineuser'@'localhost' = '${mysql_redmineu
 mysql -u root -e "GRANT ALL PRIVILEGES ON redmine.* TO 'redmineuser'@'localhost'";
 mysql -u root -e "FLUSH PRIVILEGES";
 
+# Temporay disable error handling for suppress errors from ruby
+set +eu \
+  && source /usr/local/rvm/scripts/rvm
+
+export RAILS_ENV=production
+
 cd /opt/redmine
 
 # Replace auto-generated password for Redmine's MySQL user:
 sed -i "s/password: temp/password: ${mysql_redmineuser_password}/g" config/database.yml
 
-export RAILS_ENV=production
-
-# Temporay disable error handling for suppress errors from ruby
-set +eu \
-  && source /usr/local/rvm/scripts/rvm \
-  && set -eu
-
 mkdir -p /tmp && chown -R redmine:redmine tmp/
 
 # Replace default password for Redmine admin user:
 bin/rails runner "user = User.find_by_login('admin') ; user.password, user.password_confirmation = '${redmine_admin_password}'; user.save!" -e production
+
+set -eu
+
+echo "Setup finished."
