@@ -12,10 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name 'zabbix'
-depends 'apache2'
-depends 'c2d-config'
-depends 'c2d-shared'
-depends 'postgresql'
-depends 'openssh'
-supports 'debian'
+# Copy the script file
+cookbook_file '/opt/c2d/upgrade-openssh.sh' do
+  source 'upgrade-openssh.sh'
+  mode '0755'
+  owner 'root'
+  group 'root'
+end
+
+# Execute the script
+bash 'execute_script' do
+  code <<-EOH
+    /bin/bash '/opt/c2d/upgrade-openssh.sh'
+  EOH
+  environment({
+    'OPENSSH_VERSION': '9.8p1'
+  })
+end

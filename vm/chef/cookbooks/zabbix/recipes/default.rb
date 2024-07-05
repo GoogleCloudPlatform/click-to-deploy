@@ -20,6 +20,7 @@ include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 include_recipe 'postgresql::standalone_bookworm'
 include_recipe 'zabbix::ospo'
+include_recipe 'openssh'
 
 # install zabbix package
 apt_repository 'zabbix' do
