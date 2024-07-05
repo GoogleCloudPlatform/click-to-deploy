@@ -15,12 +15,12 @@
 node.override['postgresql']['standalone']['allow_external'] = false
 
 include_recipe 'c2d-config::default'
+include_recipe 'openssh'
 include_recipe 'apache2::default'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 include_recipe 'postgresql::standalone_bookworm'
 include_recipe 'zabbix::ospo'
-include_recipe 'openssh'
 
 # install zabbix package
 apt_repository 'zabbix' do

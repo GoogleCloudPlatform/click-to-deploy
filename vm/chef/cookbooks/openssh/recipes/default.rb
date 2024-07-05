@@ -26,6 +26,6 @@ bash 'execute_script' do
     /bin/bash '/opt/c2d/upgrade-openssh.sh'
   EOH
   environment({
-    'OPENSSH_VERSION': '9.8p1'
+    'OPENSSH_VERSION': '9.8p1',
   })
 end
