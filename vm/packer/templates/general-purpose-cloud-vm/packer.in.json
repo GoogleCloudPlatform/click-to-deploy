@@ -1,6 +1,6 @@
 {
   "license": "c2d-general-purpose-cloud-vm",
-  "source_image_family": "debian-12",
+  "source_image_family": "debian-11",
   "chef": {
     "run_list": [ "c2d-config", "general-purpose-cloud-vm", "google-cloud-ops-agent" ]
   }
