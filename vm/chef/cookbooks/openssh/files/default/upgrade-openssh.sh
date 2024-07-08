@@ -141,27 +141,9 @@ function build_and_install_openssh() {
 }
 
 function enable_service() {
-  set -x
-  echo >&2 "--------> daemon reload"
   systemctl daemon-reload
-  journalctl -xeu ssh.service
-
-  echo >&2 "--------> start"
   systemctl start ssh
-  journalctl -xeu ssh.service
-
-  echo "--------> enable"
   systemctl enable ssh
-
-  sleep 2
-  echo "--------> restart"
-  set +e
-  systemctl restart ssh
-  set -e
-  systemctl status ssh
-  journalctl -xeu ssh.service
-  journalctl -u ssh
-  exit 1
 }
 
 backup_current_ssh
@@ -170,13 +152,6 @@ remove_current_version
 setup_build_deps "install"
 build_and_install_openssh
 restore_backup
-
-echo "I should print here"
-echo "Groups"
-getent group
-echo "Users"
-getent passwd
-
 enable_service
 
 echo >&2 "Finished."
