@@ -15,6 +15,7 @@
 node.override['postgresql']['standalone']['allow_external'] = false
 
 include_recipe 'c2d-config::default'
+include_recipe 'openssh'
 include_recipe 'apache2::default'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
