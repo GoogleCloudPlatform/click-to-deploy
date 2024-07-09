@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@ include_recipe 'apache2::mod-passenger'
 include_recipe 'apache2::security-config'
 include_recipe 'mysql::version-8.0-embedded'
 include_recipe 'rvm'
+
+include_recipe 'redmine::ospo'
 
 apt_update 'update' do
   action :update
@@ -143,6 +145,22 @@ bash 'Redmine Bundle Install' do
     source /usr/local/rvm/scripts/rvm
     rvm use $rubyVersion --default
     bundle install --path vendor/bundle
+EOH
+end
+
+bash 'Pre-config Redmine' do
+  cwd '/opt/redmine'
+  user 'redmine'
+  environment({
+    'rubyVersion' => node['redmine']['ruby']['version'],
+  })
+  code <<-EOH
+    source /usr/local/rvm/scripts/rvm
+    rvm use $rubyVersion --default
+    echo "gem 'blankslate'" >> Gemfile
+    echo "gem 'passenger'" >> Gemfile
+    echo "gem 'base64', '0.1.1'" >> Gemfile
+    bundle install
 EOH
 end
 

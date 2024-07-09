@@ -12,11 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['ghost']['cli']['version'] = '1.26.0'
-default['ghost']['app']['version'] = '5.82.1'
-default['ghost']['app']['install_dir'] = '/var/www/ghost'
+# Copy the script file
+cookbook_file '/opt/c2d/upgrade-openssh.sh' do
+  source 'upgrade-openssh.sh'
+  mode '0755'
+  owner 'root'
+  group 'root'
+end
 
-default['ghost']['db']['user'] = 'ghost'
-default['ghost']['db']['name'] = 'ghost_production'
-
-default['ghost']['user'] = 'ghost_app'
+# Execute the script
+bash 'execute_script' do
+  code <<-EOH
+    /bin/bash '/opt/c2d/upgrade-openssh.sh'
+  EOH
+  environment({
+    'OPENSSH_VERSION': '9.8p1',
+  })
+end
