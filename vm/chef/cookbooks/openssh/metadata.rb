@@ -12,11 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['ghost']['cli']['version'] = '1.26.0'
-default['ghost']['app']['version'] = '5.82.1'
-default['ghost']['app']['install_dir'] = '/var/www/ghost'
-
-default['ghost']['db']['user'] = 'ghost'
-default['ghost']['db']['name'] = 'ghost_production'
-
-default['ghost']['user'] = 'ghost_app'
+name 'openssh'
+supports 'debian'
