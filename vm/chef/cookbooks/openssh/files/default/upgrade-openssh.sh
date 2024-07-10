@@ -138,6 +138,13 @@ function build_and_install_openssh() {
   install -v -m755 -d "/usr/share/doc/openssh-${OPENSSH_VERSION}"     && \
   install -v -m644    INSTALL LICENCE OVERVIEW README* \
                       "/usr/share/doc/openssh-${OPENSSH_VERSION}"
+
+  # Setup sftp-server
+  make install
+  install -v -m755  sftp-server  /usr/bin
+  rm -f /usr/lib/openssh/sftp-server
+  mkdir -p /usr/lib/openssh
+  ln -s /usr/bin/sftp-server /usr/lib/openssh/sftp-server
 }
 
 function enable_service() {
