@@ -12,9 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name 'solr'
-depends 'apache2'
-depends 'openjdk11'
-depends 'c2d-config'
-depends 'c2d-shared'
+name 'openssh'
 supports 'debian'
