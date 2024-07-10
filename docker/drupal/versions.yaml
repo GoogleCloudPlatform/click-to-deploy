@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,6 +18,24 @@
 cloudbuild:
   enable_parallel: false
 versions:
+- dir: 10/php8/debian11/10.1/apache
+  from: marketplace.gcr.io/google/php8-apache2:8.1
+  packages:
+    composer:
+      gpg: f07934fad44f9048c0dc875a506cca31cc2794d6aebfc1867f3b1fbf48dce2c5
+      version: 2.5.8
+    drupal:
+      md5: 2ea6f94091de2760908557dd3bb1956a
+      version: 10.1.8
+  repo: drupal10-php8-apache
+  tags:
+  - 10.1.8-debian11
+  - 10.1-debian11
+  - 10-debian11
+  - 10.1.8
+  - '10.1'
+  - '10'
+  - latest
 - dir: 10/php8/debian11/10.0/apache
   from: marketplace.gcr.io/google/php8-apache2:8.1
   packages:
@@ -25,17 +43,14 @@ versions:
       gpg: f07934fad44f9048c0dc875a506cca31cc2794d6aebfc1867f3b1fbf48dce2c5
       version: 2.5.8
     drupal:
-      md5: d870e788eb9651dfc93fcff3e3636322
-      version: 10.0.9
+      md5: 77c50e72068aa4bdef458f02d493aaa8
+      version: 10.0.10
   repo: drupal10-php8-apache
   tags:
-  - 10.0.9-debian11
+  - 10.0.10-debian11
   - 10.0-debian11
-  - 10-debian11
-  - 10.0.9
+  - 10.0.10
   - '10.0'
-  - '10'
-  - latest
 - dir: 9/php8/debian11/9.5/apache
   from: marketplace.gcr.io/google/php8-apache2:8.1
   packages:
@@ -43,14 +58,14 @@ versions:
       gpg: f07934fad44f9048c0dc875a506cca31cc2794d6aebfc1867f3b1fbf48dce2c5
       version: 2.5.8
     drupal:
-      md5: 81c240665d2997b83b2f9ebaf5eb5d53
-      version: 9.5.9
+      md5: 064c3e9becb3599b95e1ff38fc335d34
+      version: 9.5.10
   repo: drupal9-php8-apache
   tags:
-  - 9.5.9-debian11
+  - 9.5.10-debian11
   - 9.5-debian11
   - 9-debian11
-  - 9.5.9
+  - 9.5.10
   - '9.5'
   - '9'
   - latest

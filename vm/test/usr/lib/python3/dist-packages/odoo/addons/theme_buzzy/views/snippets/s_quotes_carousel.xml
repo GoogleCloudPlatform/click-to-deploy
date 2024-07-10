@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_quotes_carousel" inherit_id="website.s_quotes_carousel">
+    <!-- Carousel -->
+    <xpath expr="//div[hasclass('s_quotes_carousel')]" position="attributes">
+        <attribute name="class" add="s_carousel_rounded o_cc5" remove="s_carousel_default o_cc2" separator=" "/>
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Rainy/10","flip":[]}</attribute>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//ol[hasclass('carousel-indicators')]" position="before">
+        <div class="o_we_shape o_web_editor_Rainy_10"/>
+    </xpath>
+    <!-- Icons quote -->
+    <xpath expr="//i" position="attributes">
+        <attribute name="class" add="bg-o-color-1" remove="bg-o-color-2" separator=" "/>
+    </xpath>
+    <xpath expr="(//i)[2]" position="attributes">
+        <attribute name="class" add="bg-o-color-1" remove="bg-o-color-2" separator=" "/>
+    </xpath>
+    <xpath expr="(//i)[3]" position="attributes">
+        <attribute name="class" add="bg-o-color-1" remove="bg-o-color-2" separator=" "/>
+    </xpath>
+    <!-- Carousel items - Remove background image -->
+    <xpath expr="//div[hasclass('carousel-item')]" position="attributes">
+        <attribute name="style"/>
+    </xpath>
+    <xpath expr="(//div[hasclass('carousel-item')])[2]" position="attributes">
+        <attribute name="style"/>
+    </xpath>
+    <xpath expr="(//div[hasclass('carousel-item')])[3]" position="attributes">
+        <attribute name="style"/>
+    </xpath>
+</template>
+
+</odoo>

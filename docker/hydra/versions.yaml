@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,16 +31,4 @@ versions:
   - '2.1'
   - '2'
   - latest
-- dir: 2/debian11/2.0
-  from: marketplace.gcr.io/google/c2d-debian11
-  packages:
-    hydra:
-      gpg: e24bec23bfd75b634fa357e2a412eb7bd01a4cdf032b141da95e5401888f6b3c
-      version: 2.0.3
-  repo: hydra2
-  tags:
-  - 2.0.3-debian11
-  - 2.0-debian11
-  - 2.0.3
-  - '2.0'
 

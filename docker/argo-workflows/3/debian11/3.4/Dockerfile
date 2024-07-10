@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,10 +13,30 @@
 # limitations under the License.
 
 
-# Stage: Server and Workflow Controller: Builder
-FROM golang:1.18 as builder
 
-ARG ARGO_VERSION="3.4.8"
+
+
+FROM marketplace.gcr.io/google/c2d-debian11 as ospo
+
+# Download Licenses and restricted source-code
+COPY components.csv /components.csv
+COPY source_code.txt /source_code.txt
+
+RUN apt update && apt -y install ca-certificates
+
+RUN curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
+		&& curl -o /download-ref-repos.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-ref-repos.sh \
+		&& chmod +x /download-licenses.sh \
+		&& chmod +x /download-ref-repos.sh
+
+RUN mkdir -p /usr/src/licenses \
+		&& /download-licenses.sh /components.csv /usr/src/licenses \
+		&& /download-ref-repos.sh /source_code.txt /usr/src
+
+# Stage: Server and Workflow Controller: Builder
+FROM golang:1.21 as builder
+
+ARG ARGO_VERSION="3.4.16"
 ENV ARGO_VERSION "${ARGO_VERSION}"
 
 RUN apt-get update && apt-get --no-install-recommends install -y \
@@ -43,7 +63,7 @@ RUN go mod download
 
 
 # Stage: Server: UI
-FROM node:16 as argo-ui
+FROM node:20 as argo-ui
 
 COPY --from=builder /go/src/github.com/argoproj/argo-workflows/ui/package.json ui/
 COPY --from=builder /go/src/github.com/argoproj/argo-workflows/ui/yarn.lock ui/
@@ -87,7 +107,9 @@ RUN target=/root/.cache/go-build make dist/argo
 # Stage: Final Image
 FROM marketplace.gcr.io/google/c2d-debian11
 
-ENV C2D_RELEASE "3.4.8"
+COPY --from=ospo /usr/src /usr/src
+
+ENV C2D_RELEASE "3.4.16"
 USER 8737
 
 # Controller artifacts

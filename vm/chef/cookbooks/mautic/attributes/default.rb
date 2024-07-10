@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,11 +17,13 @@ default['mautic']['packages'] = [
     'libxmlrpc-epi0',
     'libxslt1.1',
     'libzip4',
-    'php7.4-bcmath',
-    'php7.4-gmp',
-    'php7.4-imap',
+    'php8.1-bcmath',
+    'php8.1-gmp',
+    'php8.1-imap',
 ]
 
-default['mautic']['version'] = '4.4.6'
+default['mautic']['version'] = '5.0.4'
 default['mautic']['user'] = 'www-data'
 default['mautic']['db']['name'] = 'mautic'
+
+default['php81']['distribution'] = 'bullseye'

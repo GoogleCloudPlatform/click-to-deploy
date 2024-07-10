@@ -11,7 +11,8 @@
 FROM marketplace.gcr.io/google/c2d-debian11
 ENV EXPORTER_VERSION 1.1.0
 
-RUN curl -L -o uwsgi.tar.gz https://github.com/timonwong/uwsgi_exporter/releases/download/v${EXPORTER_VERSION}/uwsgi_exporter-${EXPORTER_VERSION}.linux-amd64.tar.gz \
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates \
+    && curl -L -o uwsgi.tar.gz https://github.com/timonwong/uwsgi_exporter/releases/download/v${EXPORTER_VERSION}/uwsgi_exporter-${EXPORTER_VERSION}.linux-amd64.tar.gz \
     && tar -xvf uwsgi.tar.gz --strip-components=1 \
     && mv uwsgi_exporter /usr/local/bin/uwsgi_exporter \
     && rm -f uwsgi.tar.gz

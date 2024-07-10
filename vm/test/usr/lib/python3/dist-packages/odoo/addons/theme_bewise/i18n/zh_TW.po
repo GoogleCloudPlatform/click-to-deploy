@@ -1,0 +1,268 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_bewise
+# 
+# Translators:
+# Wil Odoo, 2023
+# Tony Ng, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Tony Ng, 2024\n"
+"Language-Team: Chinese (Taiwan) (https://app.transifex.com/odoo/teams/41243/zh_TW/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: zh_TW\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_numbers
+msgid "16,456"
+msgstr "16,456"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_call_to_action
+msgid ""
+"<b>3,000 students</b> graduate each year and find a job within 2 months"
+msgstr "每年<b>有 3,000 名學生</b>畢業，並在 2 個月內找到工作"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_company_team
+msgid "<b>Aline Turner, Law professor</b>"
+msgstr "<b>Aline Turner，法律教授</b>"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_quotes_carousel
+msgid "<b>Iris DOE</b> • Graduated in 2019"
+msgstr "<b>Iris DOE</b> • 2019 年畢業"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_company_team
+msgid "<b>Iris Joe, team leader professor</b>"
+msgstr "<b>Iris Joe，團隊領導教授</b>"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_quotes_carousel
+msgid "<b>Jane DOE</b> • Graduated in 2017"
+msgstr "<b>Jane DOE</b> • 2017 年畢業"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_quotes_carousel
+msgid "<b>John DOE</b> • Graduated in 2016"
+msgstr "<b>John DOE</b> • 2016 年畢業"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_company_team
+msgid "<b>Mich Stark, IT Officer</b>"
+msgstr "<b>Mich Stark，資訊科技主任</b>"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_company_team
+msgid "<b>Tony Fred, Faculty Head of IT</b>"
+msgstr "<b>Tony Fred，資訊科技部門主管</b>"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_color_blocks_2
+msgid ""
+"<br/>\n"
+"        Are you searching for a school where cutting-edge programmes are taught, in a continually evolving environment and located in the heart of a dynamic city? You have just found it!\n"
+"        <br/>\n"
+"        <br/>"
+msgstr ""
+"<br/>\n"
+"        是否正尋找一所能在不斷發展的環境中教授尖端課程，並位處於充滿活力的城市中心的學校？這就是了\n"
+"        <br/>\n"
+"        <br/>"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_text_image
+msgid ""
+"<br/>\n"
+"        Teachers are selected among experts of their domains. They are not just professors, they are professionals in their field of expertise."
+msgstr ""
+"<br/>\n"
+"        教師是從各自領域的專家中挑選，他們不僅僅是教授，他們是自己專業領域的專業人士."
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_color_blocks_2
+msgid ""
+"<br/>\n"
+"        The small and modern campus is only a 10-minute walk away from the city centre and is easily accessible by car and public transport. It is also close to the train stations.\n"
+"        <br/>\n"
+"        <br/>"
+msgstr ""
+"<br/>\n"
+"        小而現代化的校園，距離市中心僅 10 分鐘步行路程，可駕駛或使用公共交通輕鬆抵達，也靠近火車站.\n"
+"        <br/>\n"
+"        <br/>"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_image_text
+msgid ""
+"<br/>\n"
+"        We make sure that everyone blossoms. We keep a human size in a warm and modern setting. All students benefit from individualised support."
+msgstr ""
+"<br/>\n"
+"        我們確保每個人的才華都能綻放。我們在溫暖且現代化的環境中，保持人性化的每班人數。所有學生都受益於個人化支援。"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_carousel
+msgid ""
+"<font class=\"bg-o-color-4\">Good copy starts with understanding how your "
+"product or service helps your customers. Simple words communicate better "
+"than big words and pompous language.</font>"
+msgstr ""
+"<font class=\"bg-o-color-4\">好的文案，始於了解產品或服務能如何幫助客戶. "
+"簡單的言詞比浮誇的語言更有效傳達訊息.</font>"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_picture
+msgid "A punchy Headline"
+msgstr "有力的標題"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_image_text
+msgid "All students benefit from individualised support."
+msgstr "所有學生都受益於個人化的支持."
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_cover
+msgid "Always at the top"
+msgstr "永遠在頂尖"
+
+#. module: theme_bewise
+#. odoo-javascript
+#: code:addons/theme_bewise/static/src/js/tour.js:0
+#: code:addons/theme_bewise/static/src/js/tour.js:0
+#, python-format
+msgid "Background Shape"
+msgstr "背景形狀"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_comparisons
+msgid "Basic sales &amp; marketing"
+msgstr "基本銷售及營銷"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_text_image
+msgid "Driven by Excellence"
+msgstr "由卓越驅動"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_numbers
+msgid "Faculties"
+msgstr "學系"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_quotes_carousel
+msgid ""
+"Great support and quality courses! A mentor helps you move forward and can "
+"be contacted through flexible schedules. Everything you need to start your "
+"career on the web."
+msgstr "強大支援及優質課程！導師可以幫助您前進，並可通過靈活的時間表與您聯絡。在網絡上開始您職業生涯所需的一切."
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_company_team
+msgid ""
+"He is professor in the Institute of Mechanics, Materials and Civil "
+"Engineering since 2000. He lectures in mechanical drawing and mechanical "
+"design for undergraduate and graduate students. He is active in Problem and "
+"Project based learning. He is the promoter of 8 doctoral theses."
+msgstr ""
+"2000 年起擔任機械、物料與土木工程學院教授，為本科生與研究生講授機械繪圖及機械設計。他積極參與基於問題和專案形式的學習，並是 8 "
+"篇博士論文的指導顧問。"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_quotes_carousel
+msgid ""
+"I have learned a lot, and I have realised professional projects thanks to "
+"the support of the mentors! The team is always at the top and always looking"
+" for solutions to problems, I felt accompanied and supported! It's not easy "
+"every day, but it's a great adventure!"
+msgstr ""
+"我學到了很多東西，在導師們的支持下，我實現了專業的專案! 團隊始終處於領先地位，始終在尋找問題的解決方案，我感到被陪伴和支持! "
+"每天都不容易，但這是一次偉大的冒險!"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_call_to_action
+msgid "Join them and increase your chances to get hired."
+msgstr "加入他們，增加你被錄用的機會."
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_text_image
+msgid ""
+"Journalists, directors, developers, etc. working effectively in their fields"
+" of excellence."
+msgstr "記者、導演、開發人員等，在各自的卓越領域高效工作。"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_numbers
+msgid "Libraries"
+msgstr "圖書館"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_numbers
+msgid "Nationalities"
+msgstr "國籍"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_cover
+msgid ""
+"Our university has topped the The World University<br/>Rankings for a fifth "
+"consecutive year."
+msgstr "我們連續第五年<br/>位居世界大學排行榜榜首."
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_color_blocks_2
+msgid "Programmes"
+msgstr "課程"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_company_team
+msgid ""
+"She has been practicing law at the French-speaking Brussels Bar since 2006. "
+"She has worked in various major law firms based in Brussels, as member and "
+"then head of their litigation/arbitration practice groups."
+msgstr "自 2006 年以來，她一直在布魯塞爾法語區的律師事務所執業，曾在布魯塞爾的多家主要律師事務所工作，擔任其訴訟/仲裁業務組的成員和負責人."
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_numbers
+msgid "Students"
+msgstr "學生"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_quotes_carousel
+msgid ""
+"Thanks to its innovative system, the school offers an academic training "
+"during which we are followed by a \"mentor\", a sort of \"tutor\"!"
+msgstr "由於其創新的系統，學校提供學術培訓，在此期間我們有一個\"輔導員\"，類似一種\"導師\"!"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_color_blocks_2
+msgid "The campus"
+msgstr "校園"
+
+#. module: theme_bewise
+#: model:ir.model,name:theme_bewise.model_theme_utils
+msgid "Theme Utils"
+msgstr "主題"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_company_team
+msgid ""
+"Tony received a degree in Electrical and Mechanical Engineering and a Ph D. "
+"degree in 1998 and 2004. After a post-doctoral experience  he joined the "
+"school as professor of mechatronics in 2006. In 2010, he became Head of IT."
+msgstr ""
+"Tony 分別於 1998 年和 2004 年獲得機電工程學位和博士學位。在博士後經歷後，他於 2006 年加入學校擔任機電一體化教授. 2010 "
+"年，他成為 IT 負責人."
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_image_text
+msgid "What makes us different?"
+msgstr "是甚麼讓我們與眾不同？"

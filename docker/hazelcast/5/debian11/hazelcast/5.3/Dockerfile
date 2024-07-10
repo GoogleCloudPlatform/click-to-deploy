@@ -16,11 +16,11 @@ FROM marketplace.gcr.io/google/c2d-debian11
 
 ENV DEBUG_DOCKER_ENTRYPOINT false
 
-ENV HAZELCAST_VERSION 5.3.0
-ENV C2D_RELEASE 5.3.0
+ENV HAZELCAST_VERSION 5.3.2
+ENV C2D_RELEASE 5.3.2
 
 # Versions of Hazelcast and Hazelcast plugins
-ARG HZ_VERSION=5.3.0
+ARG HZ_VERSION=5.3.2
 ARG HZ_VERSION_SHA=
 
 # Build constants
@@ -66,6 +66,8 @@ RUN echo "Adding license to /usr/share/hazelcast directory" \
 
 
 COPY log4j2.properties jmx_agent_config.yaml ${HZ_HOME}/config/
+
+RUN rm -f /opt/hazelcast/custom-lib/hazelcast-*.jar
 
 WORKDIR ${HZ_HOME}
 

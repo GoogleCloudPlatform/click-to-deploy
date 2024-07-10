@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -20,19 +20,38 @@
 
 cloudbuild:
   enable_parallel: false
+  machineType: 'E2_HIGHCPU_32'
 versions:
+- dir: 1/debian11/1.21
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    gitea:
+      version: '1.21'
+    golang:
+      version: '1.21'
+  templateArgs:
+    alpineVersion: '3.18'
+  repo: gitea1
+  tags:
+  - 1.21.7-debian11
+  - 1.21-debian11
+  - 1-debian11
+  - '1.21.7'
+  - '1.21'
+  - '1'
+  - latest
 - dir: 1/debian11/1.19
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     gitea:
       version: '1.19'
+    golang:
+      version: '1.20'
+  templateArgs:
+    alpineVersion: '3.17'
   repo: gitea1
   tags:
   - 1.19.9-debian11
   - 1.19-debian11
-  - 1-debian11
-  - 1.19.9
+  - '1.19.9'
   - '1.19'
-  - '1'
-  - latest
-

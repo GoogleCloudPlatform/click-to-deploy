@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 # limitations under the License.
 
 remote_file '/tmp/docker-compose' do
-  source "https://github.com/docker/compose/releases/download/#{node['docker']['compose']['version']}/docker-compose-Linux-x86_64"
+  source "https://github.com/docker/compose/releases/download/v#{node['docker']['compose']['version']}/docker-compose-linux-x86_64"
   verify "echo '#{node['docker']['compose']['sha1']} %{path}' | sha1sum -c"
   action :create
 end

@@ -19,6 +19,6 @@ source /opt/c2d/c2d-utils || exit 1
 prestashop_password="$(get_attribute_value "prestashop-db-password")"
 declare -r prestashop_password
 
-mysql -u root -e "CREATE USER 'prestashop'@'localhost' IDENTIFIED BY '${prestashop_password}';"
-mysql -u root -e "GRANT ALL PRIVILEGES ON prestashop.* TO 'prestashop'@'localhost' IDENTIFIED BY '${prestashop_password}'";
+mysql -u root -e "CREATE USER 'prestashop'@'localhost'IDENTIFIED WITH mysql_native_password BY'${prestashop_password}';"
+mysql -u root -e "GRANT ALL PRIVILEGES ON prestashop.* TO 'prestashop'@'localhost';"
 mysql -u root -e "FLUSH PRIVILEGES"

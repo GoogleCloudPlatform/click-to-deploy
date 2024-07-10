@@ -1,3 +1,0 @@
----
-ssl: false
-whitelistObjectNames: ["com.hazelcast*:type=Metrics,*"]

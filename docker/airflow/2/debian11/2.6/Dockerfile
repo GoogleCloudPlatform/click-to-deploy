@@ -1,10 +1,29 @@
 ARG AIRFLOW_VERSION="2.6.3"
-ARG AIRFLOW_EXTRAS="amazon,async,celery,cncf.kubernetes,dask,docker,elasticsearch,ftp,google,google_auth,grpc,hashicorp,http,ldap,microsoft.azure,mysql,odbc,pandas,postgres,redis,sendgrid,sftp,slack,ssh,statsd,virtualenv"
+ARG AIRFLOW_EXTRAS="amazon,async,celery,cncf.kubernetes,dask,docker,elasticsearch,ftp,google,google_auth,grpc,hashicorp,http,ldap,microsoft.azure,mysql,odbc,pandas,postgres,redis,sendgrid,sftp,slack,ssh,statsd,virtualenv,apache-airflow-providers-cncf-kubernetes"
 
 ARG AIRFLOW_HOME=/opt/airflow
 ARG AIRFLOW_UID="50000"
 ARG AIRFLOW_USER_HOME_DIR=/home/airflow
 ARG AIRFLOW_PIP_VERSION="22.3.1"
+
+
+FROM marketplace.gcr.io/google/c2d-debian11 as ospo
+
+# Download Licenses and restricted source-code
+COPY components.csv /components.csv
+COPY source_code.txt /source_code.txt
+
+RUN apt update && apt -y install ca-certificates
+
+RUN curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
+		&& curl -o /download-ref-repos.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-ref-repos.sh \
+		&& chmod +x /download-licenses.sh \
+		&& chmod +x /download-ref-repos.sh
+
+RUN mkdir -p /usr/src/licenses \
+		&& /download-licenses.sh /components.csv /usr/src/licenses \
+		&& /download-ref-repos.sh /source_code.txt /usr/src
+
 
 FROM marketplace.gcr.io/google/c2d-debian11 as airflow-build-image
 
@@ -49,7 +68,7 @@ ENV DEV_APT_DEPS="\
      yarn"
 
 ENV DEV_APT_COMMAND="\
-    curl --silent --fail --location https://deb.nodesource.com/setup_14.x | \
+    curl --silent --fail --location https://deb.nodesource.com/setup_18.x | \
     bash -o pipefail -o errexit -o nolog - \
     && curl --silent https://dl.yarnpkg.com/debian/pubkey.gpg | \
     apt-key add - >/dev/null 2>&1\
@@ -57,7 +76,7 @@ ENV DEV_APT_COMMAND="\
 
 RUN apt-get update \
     && apt-get install --no-install-recommends -yqq apt-utils >/dev/null 2>&1 \
-    && apt-get install -y --no-install-recommends curl gnupg2 \
+    && apt-get install -y --no-install-recommends curl ca-certificates gnupg2 \
     && mkdir -pv /usr/share/man/man1 \
     && mkdir -pv /usr/share/man/man7 \
     && bash -o pipefail -o errexit -o nounset -o nolog -c "${DEV_APT_COMMAND}" \
@@ -119,6 +138,8 @@ RUN /scripts/docker/install_airflow.sh \
 
 FROM marketplace.gcr.io/google/c2d-debian11 as main
 
+COPY --from=ospo /usr/src /usr/src
+
 SHELL ["/bin/bash", "-o", "pipefail", "-o", "errexit", "-o", "nounset", "-o", "nolog", "-c"]
 
 ARG AIRFLOW_USER_HOME_DIR
@@ -139,7 +160,6 @@ ENV RUNTIME_APT_DEPS="\
        curl \
        dumb-init \
        freetds-bin \
-       gosu \
        krb5-user \
        ldap-utils \
        libffi7 \
@@ -176,7 +196,7 @@ ENV RUNTIME_APT_COMMAND="echo" \
 
 RUN apt-get update \
     && apt-get install --no-install-recommends -yqq apt-utils >/dev/null 2>&1 \
-    && apt-get install -y --no-install-recommends curl gnupg2 \
+    && apt-get install -y --no-install-recommends curl ca-certificates gnupg2 \
     && mkdir -pv /usr/share/man/man1 \
     && mkdir -pv /usr/share/man/man7 \
     && bash -o pipefail -o errexit -o nounset -o nolog -c "${RUNTIME_APT_COMMAND}" \
@@ -187,6 +207,43 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/log/* \
     && ln -s /usr/bin/python3 /usr/bin/python
+
+# Install Gosu
+# /usr/sbin/gosu
+ENV GOSU_VERSION 1.17
+RUN set -eux; \
+	apt-get update; \
+	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+		ca-certificates \
+		gpg \
+		gpgv \
+		libjemalloc2 \
+		pwgen \
+		tzdata \
+		xz-utils \
+		zstd ; \
+	savedAptMark="$(apt-mark showmanual)"; \
+	apt-get install -y --no-install-recommends \
+		dirmngr \
+		gpg-agent \
+		wget; \
+	rm -rf /var/lib/apt/lists/*; \
+	dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; \
+	wget -q -O /usr/sbin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch"; \
+	wget -q -O /usr/sbin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc"; \
+	GNUPGHOME="$(mktemp -d)"; \
+	export GNUPGHOME; \
+	gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \
+	gpg --batch --verify /usr/sbin/gosu.asc /usr/sbin/gosu; \
+	gpgconf --kill all; \
+	rm -rf "$GNUPGHOME" /usr/sbin/gosu.asc; \
+	apt-mark auto '.*' > /dev/null; \
+	[ -z "$savedAptMark" ] ||	apt-mark manual $savedAptMark >/dev/null; \
+	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+	chmod +x /usr/sbin/gosu; \
+	gosu --version; \
+	gosu nobody true
+
 
 COPY scripts/docker/install_mysql.sh /scripts/docker/install_mssql.sh /scripts/docker/
 RUN chmod a+x /scripts/docker/install_mysql.sh /scripts/docker/install_mssql.sh \

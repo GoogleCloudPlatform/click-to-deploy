@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,17 +30,4 @@ versions:
   - '0.13'
   - '0'
   - latest
-  templateSubDir: '0.13'
-- dir: 0/debian11/0.12
-  from: marketplace.gcr.io/google/c2d-debian11
-  packages:
-    gogs:
-      version: 0.12.11
-  repo: gogs0
-  tags:
-  - 0.12.11-debian11
-  - 0.12-debian11
-  - 0.12.11
-  - '0.12'
-  templateSubDir: '0.12'
 

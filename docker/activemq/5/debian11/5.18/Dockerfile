@@ -1,12 +1,33 @@
+
+
+FROM marketplace.gcr.io/google/c2d-debian11 as ospo
+
+# Download Licenses and restricted source-code
+COPY components.csv /components.csv
+COPY source_code.txt /source_code.txt
+
+RUN apt update && apt -y install ca-certificates
+
+RUN curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
+		&& curl -o /download-ref-repos.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-ref-repos.sh \
+		&& chmod +x /download-licenses.sh \
+		&& chmod +x /download-ref-repos.sh
+
+RUN mkdir -p /usr/src/licenses \
+		&& /download-licenses.sh /components.csv /usr/src/licenses \
+		&& /download-ref-repos.sh /source_code.txt /usr/src
+
 FROM marketplace.gcr.io/google/c2d-debian11
 
+COPY --from=ospo /usr/src /usr/src
+
 # This is release version of ActiveMQ to pull in.
-ENV ACTIVEMQ_VERSION 5.18.1
+ENV ACTIVEMQ_VERSION 5.18.3
 ENV ACTIVEMQ apache-activemq-${ACTIVEMQ_VERSION}
 ENV ACTIVEMQ_FILE ${ACTIVEMQ}-bin.tar.gz
 ENV ACTIVEMQ_DOWNLOAD_URL http://archive.apache.org/dist/activemq/
 
-ENV C2D_RELEASE 5.18.1
+ENV C2D_RELEASE 5.18.3
 
 ENV ACTIVEMQ_TCP=61616 \
     ACTIVEMQ_AMQP=5672 \
@@ -24,7 +45,7 @@ ARG gid=1000
 
 RUN set -ex \
   && apt-get --allow-releaseinfo-change update \
-  && apt-get -y install default-jdk ca-certificates wget procps \
+  && apt-get -y install openjdk-17-jdk-headless ca-certificates wget procps \
   && rm -rf /var/lib/apt/lists/*
 
 # ActiveMQ run with user `activemq`, uid = 1000.
@@ -33,7 +54,7 @@ RUN set -ex \
 RUN groupadd -g "${gid}" "${group}" \
     && useradd -u "${uid}" -g "${gid}" -m -s /bin/bash "${user}"
 
-# Download and setup activemq version v5.18.1
+# Download and setup activemq version v5.18.3
 RUN set -x && \
     mkdir -p "${ACTIVEMQ_HOME}" \
     && wget -q "${ACTIVEMQ_DOWNLOAD_URL}/${ACTIVEMQ_VERSION}/${ACTIVEMQ_FILE}" -O "${ACTIVEMQ_FILE}" \

@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Find target file
+cd /var/lib/apt/lists/
+target_file="$(ls | grep -P "packages.cloud.google.com_apt_dists_cloud-sdk-(.*)_InRelease")"
+
+# Get current origin
+origin="$(grep -o -P '^Origin: (.*)$' "${target_file}" \
+          | cut -f 2 -d ':' \
+          | tr -d ' ')"
+
+# Fix if its required
+if [[ "${origin}" == "cloud-sdk"* ]]; then
+  sed -i 's/Origin: \(.*\)/Origin: namespaces\/google.com:cloudsdktool\/repositories\/\1/' "${target_file}"
+fi
+
+# Get current origin
+label="$(grep -o -P '^Label: (.*)$' "${target_file}" \
+          | cut -f 2 -d ':' \
+          | tr -d ' ')"
+
+# Fix if its required
+if [[ "${label}" == "cloud-sdk"* ]]; then
+  sed -i 's/Label: \(.*\)/Label: namespaces\/google.com:cloudsdktool\/repositories\/\1/' "${target_file}"
+fi

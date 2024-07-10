@@ -108,7 +108,7 @@ Choose the instance name and namespace for the app. For most cases, you can
 use the `default` namespace.
 
 ```shell
-export APP_INSTANCE_NAME"=kafka-1"
+export APP_INSTANCE_NAME="kafka-1"
 export NAMESPACE="default"
 ```
 (Optional) Enable Stackdriver Metrics Exporter:
@@ -127,7 +127,7 @@ export METRICS_EXPORTER_ENABLED=false
 Configure the image tag:
 
 ```shell
-export TAG=2.8
+export TAG=3.4
 ```
 Configure the container images:
 

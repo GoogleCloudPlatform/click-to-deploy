@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,15 +14,16 @@
 
 {{ $dragonfly2_github := index .Packages "dragonfly2_github" -}}
 {{- $manager_console := index .Packages "manager_console" -}}
+{{- $golang := index .Packages "golang" -}}
 {{- $grpc_health_probe := index .Packages "grpc_health_probe" -}}
 
-FROM golang:1.19-alpine3.16 as builder
+FROM golang:{{ $golang.Version }}-alpine as builder
 
 ARG GOPROXY
 ARG GOTAGS
 ARG GOGCFLAGS
 
-ARG DRAGONFLY2_GITHUB_BRANCH=release-{{ $dragonfly2_github.Version}}
+ARG DRAGONFLY2_GITHUB_BRANCH=v{{ $dragonfly2_github.Version}}
 ARG MANAGER_CONSOLE_BRANCH=release-{{ $manager_console.Version }}
 
 WORKDIR /go/src/d7y.io/dragonfly/v2
