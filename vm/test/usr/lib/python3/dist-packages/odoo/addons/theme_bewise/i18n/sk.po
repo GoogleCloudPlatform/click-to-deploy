@@ -1,0 +1,247 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_bewise
+# 
+# Translators:
+# Wil Odoo, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
+"Language-Team: Slovak (https://app.transifex.com/odoo/teams/41243/sk/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: sk\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);\n"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_numbers
+msgid "16,456"
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_call_to_action
+msgid ""
+"<b>3,000 students</b> graduate each year and find a job within 2 months"
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_company_team
+msgid "<b>Aline Turner, Law professor</b>"
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_quotes_carousel
+msgid "<b>Iris DOE</b> • Graduated in 2019"
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_company_team
+msgid "<b>Iris Joe, team leader professor</b>"
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_quotes_carousel
+msgid "<b>Jane DOE</b> • Graduated in 2017"
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_quotes_carousel
+msgid "<b>John DOE</b> • Graduated in 2016"
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_company_team
+msgid "<b>Mich Stark, IT Officer</b>"
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_company_team
+msgid "<b>Tony Fred, Faculty Head of IT</b>"
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_color_blocks_2
+msgid ""
+"<br/>\n"
+"        Are you searching for a school where cutting-edge programmes are taught, in a continually evolving environment and located in the heart of a dynamic city? You have just found it!\n"
+"        <br/>\n"
+"        <br/>"
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_text_image
+msgid ""
+"<br/>\n"
+"        Teachers are selected among experts of their domains. They are not just professors, they are professionals in their field of expertise."
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_color_blocks_2
+msgid ""
+"<br/>\n"
+"        The small and modern campus is only a 10-minute walk away from the city centre and is easily accessible by car and public transport. It is also close to the train stations.\n"
+"        <br/>\n"
+"        <br/>"
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_image_text
+msgid ""
+"<br/>\n"
+"        We make sure that everyone blossoms. We keep a human size in a warm and modern setting. All students benefit from individualised support."
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_carousel
+msgid ""
+"<font class=\"bg-o-color-4\">Good copy starts with understanding how your "
+"product or service helps your customers. Simple words communicate better "
+"than big words and pompous language.</font>"
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_picture
+msgid "A punchy Headline"
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_image_text
+msgid "All students benefit from individualised support."
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_cover
+msgid "Always at the top"
+msgstr ""
+
+#. module: theme_bewise
+#. odoo-javascript
+#: code:addons/theme_bewise/static/src/js/tour.js:0
+#: code:addons/theme_bewise/static/src/js/tour.js:0
+#, python-format
+msgid "Background Shape"
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_comparisons
+msgid "Basic sales &amp; marketing"
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_text_image
+msgid "Driven by Excellence"
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_numbers
+msgid "Faculties"
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_quotes_carousel
+msgid ""
+"Great support and quality courses! A mentor helps you move forward and can "
+"be contacted through flexible schedules. Everything you need to start your "
+"career on the web."
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_company_team
+msgid ""
+"He is professor in the Institute of Mechanics, Materials and Civil "
+"Engineering since 2000. He lectures in mechanical drawing and mechanical "
+"design for undergraduate and graduate students. He is active in Problem and "
+"Project based learning. He is the promoter of 8 doctoral theses."
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_quotes_carousel
+msgid ""
+"I have learned a lot, and I have realised professional projects thanks to "
+"the support of the mentors! The team is always at the top and always looking"
+" for solutions to problems, I felt accompanied and supported! It's not easy "
+"every day, but it's a great adventure!"
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_call_to_action
+msgid "Join them and increase your chances to get hired."
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_text_image
+msgid ""
+"Journalists, directors, developers, etc. working effectively in their fields"
+" of excellence."
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_numbers
+msgid "Libraries"
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_numbers
+msgid "Nationalities"
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_cover
+msgid ""
+"Our university has topped the The World University<br/>Rankings for a fifth "
+"consecutive year."
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_color_blocks_2
+msgid "Programmes"
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_company_team
+msgid ""
+"She has been practicing law at the French-speaking Brussels Bar since 2006. "
+"She has worked in various major law firms based in Brussels, as member and "
+"then head of their litigation/arbitration practice groups."
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_numbers
+msgid "Students"
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_quotes_carousel
+msgid ""
+"Thanks to its innovative system, the school offers an academic training "
+"during which we are followed by a \"mentor\", a sort of \"tutor\"!"
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_color_blocks_2
+msgid "The campus"
+msgstr ""
+
+#. module: theme_bewise
+#: model:ir.model,name:theme_bewise.model_theme_utils
+msgid "Theme Utils"
+msgstr "Téma Utils"
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_company_team
+msgid ""
+"Tony received a degree in Electrical and Mechanical Engineering and a Ph D. "
+"degree in 1998 and 2004. After a post-doctoral experience  he joined the "
+"school as professor of mechatronics in 2006. In 2010, he became Head of IT."
+msgstr ""
+
+#. module: theme_bewise
+#: model_terms:theme.ir.ui.view,arch:theme_bewise.s_image_text
+msgid "What makes us different?"
+msgstr ""

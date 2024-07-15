@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2021 Google Inc.
+# Copyright 2024 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -45,8 +45,16 @@ EOF
 echo "export COMPOSE_PROJECT_NAME=redash" >> /etc/profile
 echo "export COMPOSE_FILE=/opt/redash/setup/docker-compose.yml" >> /etc/profile
 
+# Prepare docker-compose
+# https://github.com/getredash/setup/blob/master/setup.sh#L247
 export COMPOSE_PROJECT_NAME=redash
 export COMPOSE_FILE=/opt/redash/setup/docker-compose.yml
+
+PORT=5000
+TAG="10.1.0.b50633"
+sed -i "s|__TAG__|$TAG|" "${COMPOSE_FILE}"
+sed -i "s|__PORT__|$PORT|" "${COMPOSE_FILE}"
+
 docker-compose run --rm server create_db
 docker-compose up -d
 

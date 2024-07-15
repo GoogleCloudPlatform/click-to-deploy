@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_picture" inherit_id="website.s_picture">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc3 pt64" remove="o_cc2 pt48 pb24" separator=" "/>
+    </xpath>
+    <!-- Size -->
+    <xpath expr="//div[hasclass('col-lg-10')]" position="attributes">
+        <attribute name="class" add="col-lg-8 offset-lg-2" remove="col-lg-10 offset-lg-1" separator=" "/>
+    </xpath>
+    <!-- Title -->
+    <xpath expr="//h2" position="replace" mode="inner">
+        Today's special
+    </xpath>
+    <!-- Text -->
+    <xpath expr="//p" position="replace" mode="inner">
+        Taste our chef's special, an almond macaroon with orange blossom buttercream.
+    </xpath>
+    <!-- Caption -->
+    <xpath expr="//figcaption" position="replace" mode="inner">
+        The perfect dessert to share for the table.
+    </xpath>
+</template>
+
+<template id="configurator_s_picture" inherit_id="website.configurator_s_picture">
+    <!-- Shape option -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Origins/04_001"}</attribute>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Origins_04_001"/>
+    </xpath>
+</template>
+
+</odoo>

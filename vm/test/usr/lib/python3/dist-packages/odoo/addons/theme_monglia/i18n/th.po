@@ -1,0 +1,204 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_monglia
+# 
+# Translators:
+# Wil Odoo, 2023
+# Rasareeyar Lappiam, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Rasareeyar Lappiam, 2024\n"
+"Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: th\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_cover
+msgid "21/22 December"
+msgstr "21/22 ธันวาคม"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_call_to_action
+msgid "<b>APPLY FOR OUR V.I.P. CARD</b>"
+msgstr "<b>สมัครบัตรวีไอพีของเรา</b>"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_image_text
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) "
+"25%, var(--o-color-2) 100%);\" class=\"text-gradient\">Mixology</font>"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) "
+"25%, var(--o-color-2) 100%);\" class=\"text-"
+"gradient\">การผสมเครื่องดื่ม</font>"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_text_image
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) "
+"25%, var(--o-color-2) 100%);\" class=\"text-gradient\">Music is magic</font>"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) "
+"25%, var(--o-color-2) 100%);\" class=\"text-"
+"gradient\">ดนตรีคือความมหัศจรรย์</font>"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_title
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-4) "
+"25%, var(--o-color-1) 100%);\" class=\"text-gradient\">MAIN LINE UP</font>"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-4) "
+"25%, var(--o-color-1) 100%);\" class=\"text-gradient\">บรรทัดหลักขึ้น</font>"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_cover
+msgid "After a year's absence, the free and independent festival is back."
+msgstr "หลังจากหายไปหนึ่งปี เทศกาลและอิสระก็กลับมาอีกครั้ง"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_three_columns
+msgid "Bruce Porter"
+msgstr "Bruce Porter"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_carousel
+msgid "Discover"
+msgstr "ค้นพบ"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_media_list
+msgid ""
+"Dj's and electro artists meet every year for the electro dance festival in "
+"the largest concert venue in Europe. Book your tickets now, there won't be "
+"room for everybody."
+msgstr ""
+"ดีเจและศิลปินอิเล็กโทรมาพบกันทุกปีในเทศกาลเต้นรำแนวอิเล็กโทรในสถานที่จัดคอนเสิร์ตที่ใหญ่ที่สุดในยุโรป"
+" จองตั๋วตอนนี้ ที่ว่างมีจำกัด"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_image_text
+msgid ""
+"Every evening, renowned mixologists take turns preparing the best cocktails "
+"for you. Drink responsibly."
+msgstr ""
+"ทุกเย็น นักผสมเครื่องดื่มชื่อดังจะผลัดกันเตรียมค็อกเทลที่ดีที่สุดให้กับคุณ "
+"โปรดดื่มอย่างมีความรับผิดชอบ"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_media_list
+msgid ""
+"Everyone knows The States is the home of country music, and they have the "
+"festivals to prove it. Grab your cowboy hat and boots because we've put "
+"together the best country bands in the USA."
+msgstr ""
+"ทุกคนรู้ดีว่ารัฐคือแหล่งกำเนิดของเพลงคันทรี่ และพวกเขามีเทศกาลต่างๆ "
+"ที่จะพิสูจน์ให้เห็น "
+"คว้าหมวกคาวบอยและรองเท้าบูทของคุณเพราะเราได้รวบรวมวงดนตรีคันทรี่ที่ดีที่สุดในอเมริกาไว้ด้วยกัน"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_text_block
+msgid ""
+"Kori Thill ■ Chana Smithwick ■ Cira Sherard ■ Elfriede Ogan ■ Mariko Yonker "
+"■ Bella Maday ■ Shaneka Wilkerson ■ Raina Planck ■ Micaela Labonte ■ "
+"Chadwick Cottman ■ Emile Hornung ■ Genevie Mehaffey ■ Dottie Hinkson ■ "
+"Mariah Nurse ■ Velda Caster ■ Rossie Cranfield ■ Iva Madrid ■ Flossie "
+"Freitas ■ Tina Gregerson ■ Quiana Tassin"
+msgstr ""
+"Kori Thill ■ Chana Smithwick ■ Cira Sherard ■ Elfriede Ogan ■ Mariko Yonker "
+"■ Bella Maday ■ Shaneka Wilkerson ■ Raina Planck ■ Micaela Labonte ■ "
+"Chadwick Cottman ■ Emile Hornung ■ Genevie Mehaffey ■ Dottie Hinkson ■ "
+"Mariah Nurse ■ Velda Caster ■ Rossie Cranfield ■ Iva Madrid ■ Flossie "
+"Freitas ■ Tina Gregerson ■ Quiana Tassin"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_text_image
+msgid "Learn more"
+msgstr "เรียนรู้เพิ่มเติม"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_carousel
+msgid "Martina Clarck"
+msgstr "Martina Clarck"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_cover
+msgid ""
+"More than ever young talents are honoured on the big stage with more famous "
+"artists."
+msgstr ""
+"เยาวชนที่มีพรสวรรค์ได้รับเกียรติบนเวทีใหญ่ร่วมกับศิลปินชื่อดังอีกมากมาย"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_media_list
+msgid "Old Town Road"
+msgstr "ถนนเมืองเก่า"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_text_image
+msgid ""
+"Open 24/7, the club welcomes you and your friends in a relaxed and friendly "
+"atmosphere."
+msgstr ""
+"คลับเปิดทุกวันตลอด 24 ชั่วโมง ยินดีต้อนรับคุณและเพื่อนๆ "
+"ในบรรยากาศที่ผ่อนคลายและเป็นกันเอง"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_media_list
+msgid "Smack My Band Up"
+msgstr "ตีวงดนตรีของฉันขึ้น"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_media_list
+msgid "Sodade Club"
+msgstr "Sodade Club"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_media_list
+msgid ""
+"Sodade is a beautiful concept that is difficult to put into words, but can "
+"be experienced by enjoying the diverse range of music on offer."
+msgstr ""
+"Sodade เป็นแนวคิดที่สวยงามซึ่งยากจะบรรยายออกมาเป็นคำพูด "
+"แต่สามารถสัมผัสได้ด้วยการเพลิดเพลินกับดนตรีที่มีให้เลือกมากมาย"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_call_to_action
+msgid "The vip card allows you to benefit from tickets before everyone else."
+msgstr "บัตรวีไอพีช่วยให้คุณได้รับสิทธิประโยชน์ก่อนใคร"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_three_columns
+msgid "Theia Hayward"
+msgstr "Theia Hayward"
+
+#. module: theme_monglia
+#: model:ir.model,name:theme_monglia.model_theme_utils
+msgid "Theme Utils"
+msgstr "ยูทิลิตี้ธีม"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_carousel
+msgid ""
+"This is the first full-length studio release in seven years for the British "
+"singer-songwriter."
+msgstr ""
+"นี่เป็นสตูดิโอเต็มรูปแบบครั้งแรกในรอบเจ็ดปีสำหรับนักร้องนักแต่งเพลงชาวอังกฤษ"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_three_columns
+msgid "Wilson Holt"
+msgstr "Wilson Holt"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_cover
+msgid "X²O Festival"
+msgstr "เทศกาล X²O"

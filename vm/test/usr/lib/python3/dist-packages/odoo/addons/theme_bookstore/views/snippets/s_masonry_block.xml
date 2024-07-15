@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_masonry_block_default_template" inherit_id="website.s_masonry_block_default_template">
+    <!-- Little block #1 -->
+    <!-- Main div -->
+    <xpath expr="//div[hasclass('col-lg-3')]" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Rainy/10","flip":[]}</attribute>
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-3')]/h3" position="before">
+        <div class="o_we_shape o_web_editor_Rainy_10"/>
+    </xpath>
+    <!-- Title -->
+    <xpath expr="//div[hasclass('col-lg-3')]/h3" position="replace" mode="inner">
+        Science fiction
+    </xpath>
+    <!-- Paragraph -->
+    <xpath expr="//div[hasclass('col-lg-3')]/p" position="replace" mode="inner">
+        Discover unknown universes
+    </xpath>
+
+    <!-- Little block #2 -->
+    <!-- Main div -->
+    <xpath expr="//div[hasclass('col-lg-3')][2]" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Airy/02","flip":[]}</attribute>
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-3')][2]/h3" position="before">
+        <div class="o_we_shape o_web_editor_Airy_02"/>
+    </xpath>
+    <!-- Title -->
+    <xpath expr="//div[hasclass('col-lg-3')][2]/h3" position="replace" mode="inner">
+        Biographies
+    </xpath>
+    <!-- Paragraph -->
+    <xpath expr="//div[hasclass('col-lg-3')][2]/p" position="replace" mode="inner">
+        Meet great people
+    </xpath>
+
+    <!-- Little block #3 -->
+    <!-- Main div -->
+    <xpath expr="//div[hasclass('col-lg-3')][3]" position="attributes">
+        <attribute name="class" add="o_cc5" remove="bg-200 o_cc4" separator=" "/>
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Rainy/04","flip":[]}</attribute>
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-3')][3]/h3" position="before">
+        <div class="o_we_shape o_web_editor_Rainy_04"/>
+    </xpath>
+    <!-- Title -->
+    <xpath expr="//div[hasclass('col-lg-3')][3]/h3" position="replace" mode="inner">
+        Horror
+    </xpath>
+    <!-- Paragraph -->
+    <xpath expr="//div[hasclass('col-lg-3')][3]/p" position="replace" mode="inner">
+        Enjoy your fears
+    </xpath>
+
+    <!-- Little block #4 -->
+    <!-- Main div -->
+    <xpath expr="//div[hasclass('col-lg-3')][4]" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Wavy/26","flip":[]}</attribute>
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-3')][4]/h3" position="before">
+        <div class="o_we_shape o_web_editor_Wavy_26"/>
+    </xpath>
+    <!-- Title -->
+    <xpath expr="//div[hasclass('col-lg-3')][4]/h3" position="replace" mode="inner">
+        Romance
+    </xpath>
+    <!-- Paragraph -->
+    <xpath expr="//div[hasclass('col-lg-3')][4]/p" position="replace" mode="inner">
+        Read the best love stories
+    </xpath>
+</template>
+
+</odoo>

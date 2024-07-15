@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_picture" inherit_id="website.s_picture">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc1" remove="o_cc2" separator=" "/>
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Rainy/06","flip":["x"]}</attribute>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Rainy_06" style="background-image: url('/web_editor/shape/web_editor/Rainy/06.svg?c1=o-color-1&amp;c2=o-color-2&amp;c3=o-color-3&amp;flip=x'); background-position: 50% 100%;"/>
+    </xpath>
+</template>
+
+</odoo>

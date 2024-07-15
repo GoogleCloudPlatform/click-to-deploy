@@ -1,0 +1,232 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_aviato
+# 
+# Translators:
+# Wil Odoo, 2023
+# Junko Augias, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:21+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Junko Augias, 2023\n"
+"Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_cover
+msgid ""
+"<b>A travel agent helps you to plan your <br/> trip from start to finish.</b>\n"
+"        <br/>"
+msgstr ""
+"<b>旅行代理店があなたの<br/>旅の計画を始めから最後までサポートします</b>\n"
+"        <br/>"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_quotes_carousel
+msgid "<b>Jacques and Marie</b> • From France"
+msgstr "<b>Jacques＆Marie</b> • フランスから"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_quotes_carousel
+msgid "<b>Linda and Paulo</b> • From Italy"
+msgstr "<b>Linda ＆ Paulo</b> • イタリアから"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_quotes_carousel
+msgid "<b>Rose and Peter</b> • From United Kingdom"
+msgstr "<b>Rose ＆ Peter</b> • 英国から"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_picture
+msgid "<em>Odoo Travel New York</em>"
+msgstr "<em>Odooトラベル・ニューヨーク</em>"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_three_columns
+msgid ""
+"A heady mix of haunting ruins, awe-inspiring art and vibrant street life, "
+"Italy’s hot-blooded capital is one of the world’s most romantic and "
+"charismatic cities."
+msgstr ""
+"心を揺さぶる遺跡、畏敬の念を抱かせる芸術、活気あふれるストリートライフが混在するイタリアの首都は、世界で最もロマンチックでカリスマ的な都市のひとつです。"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_quotes_carousel
+msgid ""
+"As always, Odoo Travel has delivered a truly wonderful travel experience for"
+" us. Norway was a great travel destination. The parts of the country we "
+"visited were beautiful, people were friendly, everything we ate was "
+"delicious, and there were many fun things to see and do."
+msgstr ""
+"いつものように、Odooトラベルは私たちに本当に素晴らしい旅行体験を届けてくれました。ノルウェーは素晴らしい旅行先でした。訪れた国々は美しく、人々は親切で、食べるものすべてがおいしく、楽しいことが盛り沢山でした。"
+
+#. module: theme_aviato
+#. odoo-javascript
+#: code:addons/theme_aviato/static/src/js/tour.js:0
+#: code:addons/theme_aviato/static/src/js/tour.js:0
+#, python-format
+msgid "Background Shape"
+msgstr "背景形状"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_three_columns
+msgid "Book now"
+msgstr "今すぐ予約"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_popup
+msgid "Check out now and get $200 off your first booking."
+msgstr "今すぐ支払うと初回の予約から200ドルの割引が適用されます。"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_features
+msgid "Flight Booking"
+msgstr "フライト予約"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_features
+msgid "Hotel Booking"
+msgstr "ホテル予約"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_quotes_carousel
+msgid ""
+"It's difficult to describe how awesome the trip was. I feel like my life has"
+" changed forever. It would take too long to describe day by day the sights, "
+"sounds, architecture, art, food, history, and people that we came across. "
+"Ireland was fantastic."
+msgstr ""
+"この旅がどれほど素晴らしいものだったかを表現するのは簡単ではありません。私の人生は永遠に変わったような気がします。私たちが出会った景色、音、建築物、芸術、食べ物、歴史、人々について一日一日説明するには時間が足りません。アイルランドは最高でした。"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_image_text
+msgid "Itinerary Planning"
+msgstr "行程計画"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_text_image
+msgid ""
+"Our team travels widely the globe to bring our clients first-hand knowledge "
+"of upcoming destinations, new \"hot\" hotels and ships, local restaurants, "
+"neighborhood hangouts, bars, pubs, the best. beaches and places to visit and"
+" not to see."
+msgstr ""
+"私たちのチームは世界中を飛び回り、これから訪れるべき場所、新しい \"ホット "
+"\"なホテルや船、地元のレストラン、近隣の出かける場所、バー、パブ、最高のビーチ、訪れるべき場所、そして行かなくても良い場所について、お客様に生の情報をお届けしています。"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_picture
+msgid "Our travel agencies"
+msgstr "当社の旅行代理店"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_image_text
+msgid ""
+"Our vision is to make travel planning stress free and make travel more fun. "
+"No matter the type of trip you have in mind, we have the resources and "
+"expertise necessary to create the perfect trip"
+msgstr ""
+"当社のビジョンは、旅行計画をストレスフリーにし、旅行をもっと楽しくすることです。どのようなご旅行をお考えでも、完璧なご旅行を実現するために必要なリソースと専門知識をご提供します。"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_three_columns
+msgid "Paris"
+msgstr "パリ"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_three_columns
+msgid ""
+"Paris' monument-lined boulevards, museums, classical bistros and boutiques "
+"are enhanced by a new wave of multimedia galleries, creative wine bars..."
+msgstr ""
+"パリのモニュメントが並ぶ大通り、美術館、クラシカルなビストロやブティックは、マルチメディアギャラリーやクリエイティブなワインバーなどの新しい波によってさらに充実しています。"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_cover
+msgid "Plan your trip with us"
+msgstr "私たちと旅行を企画しましょう"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_three_columns
+msgid "Prague"
+msgstr "プラハ"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_three_columns
+msgid ""
+"Prague is the equal of Paris in terms of beauty. Its history goes back a "
+"millennium. And the beer? The best in Europe. Prague is the perfect city to "
+"walk around."
+msgstr "プラハの美しさはパリに匹敵し、その歴史は千年前に遡ります。そして、ビールはヨーロッパで一番。プラハは散策するのにぴったりの街です。"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_three_columns
+msgid "Rome"
+msgstr "ローマ"
+
+#. module: theme_aviato
+#: model:ir.model,name:theme_aviato.model_theme_utils
+msgid "Theme Utils"
+msgstr "テーマユーティリティ"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_features
+msgid "Ticket Booking"
+msgstr "チケット予約"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_title
+msgid "Top Destinations"
+msgstr "トップ旅行先"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_popup
+msgid "Travel Now"
+msgstr "今すぐ旅行へ！"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_cover
+msgid "Travel to any corner <br/>of the world"
+msgstr "世界中のあらゆる場所<br/>へ旅する"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_quotes_carousel
+msgid ""
+"We would like to thank Odoo Travel for organising wonderful tour for us in "
+"Delhi, Agra and Rajasthan. Everything was very well organised. Thank you "
+"very much for everything!"
+msgstr ""
+"デリー、アグラ、ラジャスタンでの素晴らしいツアーを企画してくれたOdooトラベルに感謝します。全てとてもよくオーガナイズされていました。本当にありがとうございました！"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_text_image
+msgid "What we can do, <b>for you</b>"
+msgstr "当社が<b>お客様のために</b>できること"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_popup
+msgid "Win 200$"
+msgstr "200ドルを獲得"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_three_columns
+msgid "s_three_columns_1"
+msgstr "s_three_columns_1"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_three_columns
+msgid "s_three_columns_2"
+msgstr "s_three_columns_2"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_three_columns
+msgid "s_three_columns_3"
+msgstr "s_three_columns_3"

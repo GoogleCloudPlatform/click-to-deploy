@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_product_catalog" inherit_id="website.s_product_catalog">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="style"/>
+        <attribute name="class" add="parallax s_parallax_is_fixed o_cc o_cc5 pt120 pb104" remove="pt48 pb32" separator=" "/>
+        <attribute name="data-scroll-background-ratio">1</attribute>
+    </xpath>
+    <xpath expr="//*[hasclass('container')]" position="before">
+        <span class="s_parallax_bg oe_img_bg" style="background-image: url('/web/image/website.s_product_catalog_default_image'); background-position: 50% 0%;"/>
+        <div class="o_we_bg_filter bg-black-50"/>
+    </xpath>
+    <!-- Title -->
+    <xpath expr="//h2" position="replace"/>
+    <!-- Paragraph -->
+    <xpath expr="//p" position="replace"/>
+</template>
+
+<template id="configurator_s_product_catalog" inherit_id="website.configurator_s_product_catalog">
+    <!-- Shape option -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Zigs/06"}</attribute>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//*[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Zigs_06"/>
+    </xpath>
+</template>
+
+<template id="s_product_catalog_dish" inherit_id="website.s_product_catalog_dish">
+    <xpath expr="//li" position="inside">
+        <p class="s_product_catalog_dish_description border-top text-muted pt-1 o_default_snippet_text">
+            <em>Add the description of this dish here.</em>
+        </p>
+    </xpath>
+    <xpath expr="//*[hasclass('s_product_catalog_dish_name')]" position="attributes">
+        <attribute name="class" remove="s_product_catalog_dish_dot_leaders" separator=" "/>
+    </xpath>
+</template>
+
+</odoo>
