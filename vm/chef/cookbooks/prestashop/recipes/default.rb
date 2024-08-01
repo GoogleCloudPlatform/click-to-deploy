@@ -39,9 +39,8 @@ execute 'create prestashop database' do
   command "mysql -u root -e 'CREATE DATABASE #{node['prestashop']['db']['name']}'"
 end
 
-# Download prestashop & verify its checksum
-remote_file '/tmp/prestashop.zip' do
-  source "https://download.prestashop.com/download/releases/prestashop_#{node['prestashop']['version']}.zip"
+remote_file '/tmp/prestashop.tar.gz' do
+  source "https://github.com/PrestaShop/PrestaShop/archive/refs/tags/#{node['prestashop']['version']}.tar.gz"
   action :create
 end
 
@@ -53,10 +52,13 @@ bash 'configure_prestashop' do
     folder=$(mktemp -d)
 
     # Unzip prestashop archive to temporary directory
-    unzip -q /tmp/prestashop.zip -d $folder
+    tar -xf /tmp/prestashop.tar.gz -C $folder
 
-    # Unzip source of prestashop to the final location
-    unzip -n -q $folder/prestashop.zip -d /var/www/html/
+    # Check contents of the folder, debug step
+    ls -al $folder
+
+    # Assuming the structure contains a directory named PrestaShop which then gets moved to /var/www/html
+    mv $folder/PrestaShop* /var/www/html/
 EOH
 end
 
@@ -78,6 +80,6 @@ c2d_startup_script 'prestashop-install' do
   action :cookbook_file
 end
 
-package node['prestashop']['temp_packages'] do
-  action :purge
-end
+# package node['prestashop']['temp_packages'] do
+#   action :purge
+# end
